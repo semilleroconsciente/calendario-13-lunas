@@ -1,0 +1,8 @@
+node_modules/
+dist-empaquetado/
+donate.json
+web/donate.json
+.env
+*.log
+.DS_Store
+Thumbs.db

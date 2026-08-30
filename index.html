@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Calendario de las 13 Lunas</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <aside id="sidebar">
+    <div class="brand">
+      <div class="brand-moons">🌑 🌒 🌓 🌔 🌕 🌖 🌗 🌘</div>
+      <h1>Mari Küla Küyen</h1>
+      <p class="brand-sub">Calendario de las 13 Lunas<br>Penco · Bío-Bío · Chile</p>
+    </div>
+    <div id="liveClock" class="live-clock" title="Hora de Penco · America/Santiago">--:--:--</div>
+    <label class="cycle-label" for="userSel">Usuario</label>
+    <div class="user-row">
+      <select id="userSel"></select>
+      <button id="btnAddUser" class="btn btn-icon" title="Agregar usuario">➕</button>
+      <button id="btnDelUser" class="btn btn-icon" title="Eliminar usuario actual">🗑</button>
+    </div>
+    <label class="cycle-label" for="searchBox">Buscar en notas</label>
+    <input type="text" id="searchBox" placeholder="palabra o frase..." autocomplete="off">
+    <label class="cycle-label" for="cycleSel">Ciclo (We Tripantu)</label>
+    <select id="cycleSel"></select>
+    <label class="cycle-label" for="themeSel">🎨 Tema de colores</label>
+    <select id="themeSel">
+      <option value="auto">Auto — según luna</option>
+      <option value="noche">Noche — azul profundo</option>
+      <option value="claro">Claro — día luminoso</option>
+      <option value="bosque">Bosque — verde pewü</option>
+      <option value="oceano">Océano — celeste pukem</option>
+      <option value="atardecer">Atardecer — cálido rimü</option>
+      <option value="medianoche">Medianoche — negro</option>
+    </select>
+    <button id="btnToday" class="btn btn-accent">◉ Ir a hoy</button>
+    <nav id="moonNav"></nav>
+    <div class="sidebar-foot">
+      <span id="dataInfo"></span>
+    </div>
+  </aside>
+
+  <main id="main">
+    <header id="lunaHeader">
+      <div class="lh-top">
+        <div>
+          <h2 id="lunaTitle">Luna 1 · We Tripantü Küyen</h2>
+          <div id="lunaMeta"></div>
+        </div>
+        <div id="seasonChip"></div>
+      </div>
+      <p id="lunaDesc"></p>
+      <div id="phaseChips"></div>
+    </header>
+
+    <section id="gridWrap">
+      <div class="dow-row" id="dowRow"></div>
+      <div id="grid"></div>
+    </section>
+
+    <section id="monthNoteWrap">
+      <label for="monthNote">NOTAS DE LA LUNA</label>
+      <textarea id="monthNote" rows="3" placeholder="Reflexión o resumen de esta luna completa..."></textarea>
+    </section>
+
+    <section id="galleryWrap" class="hidden">
+      <label>FOTOS DE LA LUNA</label>
+      <div id="gallery"></div>
+    </section>
+
+    <footer id="actions">
+      <button id="btnTides" class="btn">🌊 Mareas</button>
+      <button id="btnFishing" class="btn">🎣 Pesca</button>
+      <button id="btnWeather" class="btn">🌤️ Clima</button>
+      <button id="btnSiembra" class="btn">🌱 Siembra lunar</button>
+      <button id="btnEkadashi" class="btn">📿 Ekadashi</button>
+      <button id="btnMenstrual" class="btn">🌸 Ciclo</button>
+      <button id="btnMedic" class="btn">🌿 Medicina</button>
+      <button id="btnHabits" class="btn">✅ Hábitos</button>
+      <button id="btnMeal" class="btn">🥗 Comidas</button>
+      <button id="btnShopping" class="btn">🛒 Compras</button>
+      <button id="btnDiscipline" class="btn">🎯 Disciplina</button>
+      <button id="btnDreams" class="btn">💭 Sueños</button>
+      <button id="btnBreath" class="btn">🌬️ Respiración</button>
+      <button id="btnSchedule" class="btn">📚 Horario</button>
+      <button id="btnGym" class="btn">🏋️ Gym</button>
+      <button id="btnCircadian" class="btn">🌞 Circadiano</button>
+      <button id="btnGolden" class="btn">📸 Hora Dorada</button>
+      <button id="btnConvert" class="btn">📏 Conversión</button>
+      <button id="btnTimer" class="btn">⏱ Tiempo</button>
+      <button id="btnRemind" class="btn">🔔 Recordatorios</button>
+      <button id="btnBackup" class="btn">💾 Respaldo</button>
+      <button id="btnRestore" class="btn">📥 Restaurar</button>
+      <button id="btnShortcut" class="btn">📌 Acceso directo</button>
+      <button id="btnPdfLuna" class="btn">📄 PDF luna</button>
+      <button id="btnPdfCiclo" class="btn">📚 PDF ciclo</button>
+      <button id="btnDonate" class="btn btn-accent" style="width:auto">❤ Aporte voluntario</button>
+      <button id="btnHelp" class="btn" style="width:auto">❓ Cómo usar</button>
+      <span id="statusMsg"></span>
+    </footer>
+
+    <section id="weatherPanel" class="hidden"></section>
+    <section id="tidesPanel" class="hidden"></section>
+  </main>
+
+  <dialog id="dayDialog">
+    <form method="dialog">
+      <h3 id="dlgTitle">Día</h3>
+      <p id="dlgDate" class="muted"></p>
+      <blockquote id="dlgQuote" class="dlg-quote"></blockquote>
+      <div class="dlg-mood" id="dlgMood"></div>
+      <label>☀️ / 🌧️ Clima del día
+        <input type="text" id="fClima" placeholder="ej: nublado, viento sur...">
+      </label>
+      <div class="conv-row">
+        <label>🌊 Pleamar <input type="text" id="fMareaAlta" placeholder="ej: 03:02 1.58m"></label>
+        <label>🌊 Bajamar <input type="text" id="fMareaBaja" placeholder="ej: 09:27 0.90m"></label>
+      </div>
+      <label>Notas del día
+        <textarea id="fNota" rows="5" placeholder="tareas, ánimo, sueños, registros..."></textarea>
+      </label>
+      <div class="dlg-grid hidden" style="display:none">
+        <label>📷 Foto del día
+          <input type="file" id="fFoto" accept="image/*">
+        </label>
+        <div class="foto-preview-wrap">
+          <img id="fotoPreview" class="hidden" alt="">
+          <button type="button" id="fotoDel" class="btn hidden">✖ Quitar foto</button>
+        </div>
+      </div>
+      <div id="dlgHabits" class="dlg-habits"></div>
+      <div class="dlg-actions" style="justify-content:space-between">
+        <button type="button" id="dlgMenstrual" class="btn" style="width:auto" title="Marcar o quitar este día como inicio de ciclo menstrual">🌸 Marcar inicio ciclo</button>
+        <span style="display:flex;gap:10px">
+          <button type="button" id="dlgShare" class="btn">📤 Compartir</button>
+          <button type="button" id="dlgCancel" class="btn">Cancelar</button>
+          <button type="button" id="dlgSave" class="btn btn-accent">Guardar día</button>
+        </span>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="searchDialog">
+    <form method="dialog">
+      <h3>Resultados</h3>
+      <div id="searchResults"></div>
+      <div class="dlg-actions"><button type="button" id="searchClose" class="btn">Cerrar</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="siembraDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0">🌱 Guía de siembra lunar</h3>
+        <button type="button" id="siembraCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
+      </div>
+      <p class="muted">Tradición de siembra por fases, adaptada al sur de Chile.</p>
+      <div id="siembraContent"></div>
+      <div class="dlg-actions"><button type="button" id="siembraClose" class="btn">Cerrar</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="fishingDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">🎣 Pesca — Penco / Golfo de Arauco</h3>
+        <button type="button" id="fishingCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
+      </div>
+      <p class="muted" style="line-height:1.5">Pesca artesanal de caletas Lirquén, Penco y Talcahuano. Datos para orilla, kayak y bote. <b>Respeta vedas y tallas</b> — pesca es sustento, no depredación.</p>
+      <div id="fishingTodayBox" class="menstrual-card" style="border-color:var(--gold)"></div>
+      <div id="fishingLunaBox" class="menstrual-card" style="margin-top:10px"></div>
+      <div class="fishing-grid" style="margin-top:10px">
+        <div class="menstrual-card">
+          <h4>🐟 Especies locales</h4>
+          <div id="fishingSpeciesBox"></div>
+        </div>
+        <div class="menstrual-card">
+          <h4>🌓 Influencia lunar</h4>
+          <p class="muted" style="font-size:11px">Luna nueva/llena → mareas vivas, más movimiento → peces comen más. Cuarto creciente/menguante → intermedio.</p>
+          <div id="fishingMoonBox" class="chip" style="display:block;white-space:normal"></div>
+        </div>
+      </div>
+      <div class="menstrual-card" style="margin-top:10px">
+        <h4>🎯 Tips Penco</h4>
+        <p class="muted" style="font-size:11px">• Mejor 2h antes/después de pleamar (ver 🌊 Mareas). • Amanecer y atardecer = pique. • Con luna clara, usa señuelo oscuro; con luna oscura, claro. • Lleva linterna roja, no blanca. • Si hay viento sur fuerte, no salgas.</p>
+        <p class="muted" style="font-size:10px">Fuentes: Sernapesca vedas, SHOA mareas, saberes caleta Lirquén. Verifica siempre norma vigente en sernapesca.cl</p>
+      </div>
+      <div class="dlg-actions"><button type="button" id="fishingClose" class="btn">Cerrar</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="ekadashiDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">📿 Ekadashi — ayuno lunar</h3>
+        <button type="button" id="ekadashiCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
+      </div>
+      <p class="muted">Dos veces por mes lunar, el día 11 de la quincena clara y oscura. Tradición de ayuno y claridad para cuerpo y mente.</p>
+      <div id="ekadashiIntro" style="font-size:13px;color:#cdd3ee;line-height:1.55;margin-bottom:12px"></div>
+      <div id="ekadashiList"></div>
+      <div class="dlg-actions" style="justify-content:space-between;align-items:center">
+        <span id="ekadashiHint" class="muted" style="margin:0;font-size:12px"></span>
+        <button type="button" id="ekadashiClose" class="btn">Cerrar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="menstrualDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">🌸 Ciclo menstrual — 13 lunas x 28 días</h3>
+        <button type="button" id="menstrualCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
+      </div>
+      <p class="muted" style="line-height:1.5">El calendario de 13 lunas (364 días = 13 × 28) resuena con el ciclo promedio de 28 días. Esta sección honra el vínculo cuerpo–luna con registro <b>privado y local</b> — nada sale de este dispositivo. No es consejo médico; si tienes dudas consulta a tu matrona/profesional.</p>
+      <div class="menstrual-grid">
+        <div class="menstrual-card">
+          <h4>⚙️ Configuración</h4>
+          <div class="conv-row">
+            <label>Duración ciclo (días) <input type="number" id="mensCycleLen" min="20" max="45" value="28" style="width:90px"></label>
+            <label>Duración sangrado (días) <input type="number" id="mensPeriodLen" min="1" max="10" value="5" style="width:90px"></label>
+          </div>
+          <label class="check-row"><input type="checkbox" id="mensShowCal"> Mostrar predicción en calendario</label>
+          <label class="check-row"><input type="checkbox" id="mensNotify"> Avisar 1 día antes (notificación suave)</label>
+          <div class="conv-row" style="margin-top:8px">
+            <label>Último inicio <input type="date" id="mensLastDate"></label>
+            <button type="button" id="mensAddLast" class="btn" style="width:auto">+ Registrar fecha</button>
+          </div>
+          <div class="dlg-actions" style="justify-content:flex-start;margin-top:8px">
+            <button type="button" id="mensAddToday" class="btn btn-accent" style="width:auto">◉ Registrar hoy como inicio</button>
+          </div>
+        </div>
+        <div id="mensPredictBox" class="menstrual-card menstrual-predict"></div>
+      </div>
+      <div id="mensLunaBox" class="menstrual-card" style="margin-top:10px"></div>
+      <div class="menstrual-card" style="margin-top:10px">
+        <h4>🧬 Diagrama hormonal (28 días)</h4>
+        <p class="muted" style="font-size:11px">Curvas estimadas de Estrógeno, Progesterona, LH y FSH. Toca un día para ver detalle. No es medición real — solo educativo.</p>
+        <div style="position:relative">
+          <canvas id="hormonalChart" width="480" height="220" style="width:100%;height:auto;background:var(--panel);border:1px solid var(--line);border-radius:8px"></canvas>
+          <div id="hormonalTooltip" class="hormonal-tooltip hidden"></div>
+        </div>
+        <div class="hormonal-legend">
+          <span><i class="horm-dot" style="background:#e76e8a"></i> Estrógeno</span>
+          <span><i class="horm-dot" style="background:#7ab8ff"></i> Progesterona</span>
+          <span><i class="horm-dot" style="background:#e8c56a"></i> LH (pico ovulatorio)</span>
+          <span><i class="horm-dot" style="background:#8fd694"></i> FSH</span>
+        </div>
+        <div class="conv-row" style="margin-top:8px;align-items:center">
+          <label style="flex:1">Día del ciclo <input type="range" id="hormDaySlider" min="1" max="28" value="1" style="width:100%"></label>
+          <span id="hormDayLabel" class="chip" style="min-width:70px;text-align:center">Día 1</span>
+        </div>
+        <div id="hormDayInfo" class="chip" style="margin-top:6px;display:block;white-space:normal;line-height:1.4"></div>
+      </div>
+      <details class="menstrual-details"><summary>📚 Las 4 fases — energía y autocuidado</summary>
+        <div class="si-card"><h4>1 · Menstrual (días 1-5) — Invierno interior · Pukem</h4><p>Energía baja, introspección. Descanso, calor, hierro, escritura. Como la luna nueva: vaciamiento.</p></div>
+        <div class="si-card"><h4>2 · Folicular (días 6-14) — Primavera · Pewü</h4><p>Energía ascendente, creatividad y planificación. Ideal para iniciar proyectos, como cuarto creciente.</p></div>
+        <div class="si-card"><h4>3 · Ovulatoria (días 14-16) — Verano · Walüng</h4><p>Pico de energía y comunicación. Ventana fértil. Como luna llena: plenitud y magnetismo.</p></div>
+        <div class="si-card"><h4>4 · Lútea (días 17-28) — Otoño · Rimü</h4><p>Energía hacia adentro, anidar y cerrar. Necesidad de límites. Como luna menguante: cosechar y soltar.</p></div>
+      </details>
+      <div id="mensHistoryBox" class="menstrual-card" style="margin-top:10px"></div>
+      <div class="dlg-actions" style="justify-content:space-between;align-items:center">
+        <button type="button" id="mensClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar historial</button>
+        <button type="button" id="menstrualClose" class="btn">Cerrar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="habitsDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">✅ Seguimiento de hábitos</h3>
+        <button type="button" id="habitsCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
+      </div>
+      <p class="muted" style="line-height:1.5">Define hábitos diarios y márcalos en el calendario. Racha, % mensual y vista por luna. Todo queda <b>local y privado</b> por usuario.</p>
+      <div class="habits-form">
+        <div class="conv-row">
+          <label style="flex:2">Hábito <input type="text" id="habitName" placeholder="ej: Meditar 10 min, Caminar, Leer, Regar plantas" maxlength="40"></label>
+          <label>Icono <input type="text" id="habitIcon" placeholder="✓" maxlength="4" style="width:70px;text-align:center" readonly></label>
+        </div>
+        <div id="habitIconPicker" class="habit-icon-picker"></div>
+        <div class="conv-row">
+          <label>Color <input type="color" id="habitColor" value="#e8c56a" style="height:36px;padding:2px;width:60px"></label>
+          <label>Frecuencia
+            <select id="habitFreq">
+              <option value="diaria">Diaria</option>
+              <option value="semanal">Semanal</option>
+            </select>
+          </label>
+          <button type="button" id="habitAdd" class="btn btn-accent" style="width:auto;align-self:flex-end">+ Agregar</button>
+          <button type="button" id="habitUpdate" class="btn hidden" style="width:auto;align-self:flex-end">↻ Actualizar</button>
+          <button type="button" id="habitCancelEdit" class="btn hidden" style="width:auto;align-self:flex-end">Cancelar</button>
+        </div>
+      </div>
+      <div id="habitsList" class="habits-list"></div>
+      <div id="habitsTodayBox" class="menstrual-card" style="margin-top:10px"></div>
+      <div id="habitsStatsBox" class="menstrual-card" style="margin-top:10px"></div>
+      <div id="habitsLunaBox" class="menstrual-card" style="margin-top:10px"></div>
+      <div class="dlg-actions" style="justify-content:space-between;align-items:center">
+        <button type="button" id="habitsClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar todo</button>
+        <button type="button" id="habitsClose" class="btn">Cerrar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="medicDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">🌿 Medicina — farmacológica y natural</h3>
+        <button type="button" id="medicCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
+      </div>
+      <p class="muted" style="line-height:1.5">Registra <b>privado y local</b> qué tomar y cuándo. Te avisa con notificación suave si das permiso. No reemplaza indicación médica.</p>
+      <div class="medic-grid">
+        <div class="medic-form">
+          <label>Medicamento <input type="text" id="medicName" placeholder="ej: Levotiroxina 75mcg, Hierro, Vitamina D" maxlength="60"></label>
+          <label>Dosis <input type="text" id="medicDose" placeholder="ej: 1 comprimido, 10 ml" maxlength="40"></label>
+          <div class="conv-row">
+            <label>Frecuencia
+              <select id="medicFreq">
+                <option value="diaria">Diaria</option>
+                <option value="cada8">Cada 8 h</option>
+                <option value="cada12">Cada 12 h</option>
+                <option value="semanal">Semanal</option>
+                <option value="personalizada">Personalizada (días)</option>
+              </select>
+            </label>
+            <label>Hora <input type="time" id="medicTime" value="08:00"></label>
+          </div>
+          <div class="conv-row" id="medicDaysRow" style="display:none">
+            <label style="flex:1">Días (ej: 1,3,5 = lun/mié/vie del ciclo 13 lunas o semana) <input type="text" id="medicDays" placeholder="ej: 1,3,5"></label>
+          </div>
+          <div class="conv-row">
+            <label>Desde <input type="date" id="medicFrom"></label>
+            <label>Hasta (opcional) <input type="date" id="medicTo"></label>
+          </div>
+          <label>Notas <input type="text" id="medicNotes" placeholder="con comida, en ayunas, luna llena..." maxlength="80"></label>
+          <div class="dlg-actions" style="justify-content:flex-start">
+            <button type="button" id="medicAdd" class="btn btn-accent" style="width:auto">+ Agregar medicamento</button>
+            <button type="button" id="medicUpdate" class="btn hidden" style="width:auto">↻ Actualizar</button>
+            <button type="button" id="medicCancelEdit" class="btn hidden" style="width:auto">Cancelar</button>
+          </div>
+        </div>
+        <div id="medicList" class="medic-list"></div>
+      </div>
+      <div id="medicNextBox" class="menstrual-card" style="margin-top:10px"></div>
+      <div class="menstrual-card" style="margin-top:10px">
+        <h4>🌱 Medicina natural — hierbas de Penco</h4>
+        <p class="muted" style="font-size:11px">Usos tradicionales, no reemplaza indicación profesional. Toca para agregar a tu botiquín personal.</p>
+        <div id="naturalList" class="habits-list" style="max-height:160px"></div>
+        <div class="conv-row" style="margin-top:8px">
+          <label style="flex:2">Hierba <input type="text" id="naturalName" placeholder="ej: Matico" maxlength="30"></label>
+          <label style="flex:2">Uso <input type="text" id="naturalUse" placeholder="ej: cicatrizante, infusión" maxlength="50"></label>
+          <button type="button" id="naturalAdd" class="btn btn-accent" style="width:auto;align-self:flex-end">+ Agregar</button>
+        </div>
+        <div id="naturalUserList" class="habits-list" style="margin-top:8px"></div>
+        <p class="muted" style="font-size:10px;margin-top:6px">Sugeridas: Matico (heridas), Boldo (digestión), Manzanilla (calmante), Menta (vías respiratorias), Orégano (antiséptico), Laurel, Eucalipto, Romero.</p>
+      </div>
+      <div class="dlg-actions" style="justify-content:space-between;align-items:center">
+        <label class="check-row" style="margin:0"><input type="checkbox" id="medicNotify"> Notificaciones de medicamentos</label>
+        <button type="button" id="medicClose" class="btn">Cerrar</button>
+      </div>
+    </form>
+  </dialog>
+
+  
+  <dialog id="mealDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">🥗 Planificador de comidas</h3>
+        <button type="button" id="mealCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
+      </div>
+      <p class="muted" style="line-height:1.5">Planifica por día. Queda <b>privado y local</b> por usuario y se refleja en la luna (puntos 🥗 en el calendario). Conecta con 🛒 Compras.</p>
+      <div class="conv-row">
+        <label>Fecha <input type="date" id="mealDate"></label>
+        <button type="button" id="mealToday" class="btn" style="width:auto;align-self:flex-end">Hoy</button>
+        <button type="button" id="mealClearDay" class="btn" style="width:auto;align-self:flex-end">Limpiar día</button>
+      </div>
+      <div class="meal-grid">
+        <label>Desayuno <input type="text" id="mealBreakfast" placeholder="ej: Avena con berries" maxlength="80"></label>
+        <label>Almuerzo <input type="text" id="mealLunch" placeholder="ej: Lentejas con ensalada" maxlength="80"></label>
+        <label>Cena <input type="text" id="mealDinner" placeholder="ej: Sopa de verduras" maxlength="80"></label>
+        <label>Colación / Snack <input type="text" id="mealSnack" placeholder="ej: Yogur, fruta" maxlength="80"></label>
+      </div>
+      <label>Notas <input type="text" id="mealNotes" placeholder="ej: sin gluten, con lo cosechado" maxlength="80"></label>
+      <div class="dlg-actions" style="justify-content:flex-start">
+        <button type="button" id="mealSave" class="btn btn-accent" style="width:auto">💾 Guardar día</button>
+        <button type="button" id="mealToShopping" class="btn" style="width:auto">🛒 → Lista</button>
+      </div>
+      <div id="mealWeekBox" class="menstrual-card" style="margin-top:10px"></div>
+      <div id="mealLunaBox" class="menstrual-card" style="margin-top:10px"></div>
+      <div id="mealNutritionBox" class="menstrual-card" style="margin-top:10px"></div>
+      <div id="mealSuggestionsBox" class="menstrual-card" style="margin-top:10px"></div>
+      <div class="dlg-actions"><button type="button" id="mealClose" class="btn">Cerrar</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="shoppingDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">🛒 Lista de compras</h3>
+        <button type="button" id="shoppingCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
+      </div>
+      <p class="muted" style="line-height:1.5">Organiza por categorías. Todo <b>local</b> por usuario. Se puede generar desde 🥗 Comidas.</p>
+      <div class="conv-row">
+        <label style="flex:2">Producto <input type="text" id="shopName" placeholder="ej: Tomates, Pan, Avena" maxlength="40"></label>
+        <label>Cant. <input type="text" id="shopQty" placeholder="1 kg" maxlength="20" style="width:90px"></label>
+        <label>Categoría
+          <select id="shopCat">
+            <option value="Verduras">Verduras</option>
+            <option value="Frutas">Frutas</option>
+            <option value="Abarrotes">Abarrotes</option>
+            <option value="Proteínas">Proteínas</option>
+            <option value="Lácteos">Lácteos</option>
+            <option value="Panadería">Panadería</option>
+            <option value="Otros">Otros</option>
+          </select>
+        </label>
+        <button type="button" id="shopAdd" class="btn btn-accent" style="width:auto;align-self:flex-end">+ Agregar</button>
+      </div>
+      <div id="shoppingListBox" class="shopping-list"></div>
+      <div class="dlg-actions" style="justify-content:space-between;align-items:center">
+        <span id="shoppingStats" class="muted" style="font-size:12px"></span>
+        <span style="display:flex;gap:8px">
+          <button type="button" id="shoppingClearDone" class="btn" style="width:auto">✓ Limpiar comprados</button>
+          <button type="button" id="shoppingClearAll" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Vaciar</button>
+        </span>
+      </div>
+      <div class="dlg-actions"><button type="button" id="shoppingClose" class="btn">Cerrar</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="convertDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">📏 Conversión de unidades</h3>
+        <button type="button" id="convertCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
+      </div>
+      <p class="muted">Convierte longitud, peso, volumen, temperatura y superficie. Útil para cocina, huerta y obra.</p>
+      <div class="conv-grid">
+        <label>Categoría
+          <select id="convCat"></select>
+        </label>
+        <div class="conv-row">
+          <label>Valor <input type="number" id="convVal" value="1" step="any"></label>
+          <label>De <select id="convFrom"></select></label>
+          <label>A <select id="convTo"></select></label>
+        </div>
+        <div id="convResult" class="conv-result">—</div>
+        <button type="button" id="convSwap" class="btn">⇄ Intercambiar</button>
+      </div>
+      <div id="convTable" class="conv-table"></div>
+      <div class="dlg-actions"><button type="button" id="convertClose" class="btn">Cerrar</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="timerDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">⏱ Cronómetro y Temporizador</h3>
+        <button type="button" id="timerCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
+      </div>
+      <div class="timer-tabs">
+        <button type="button" id="tabChrono" class="btn btn-accent" style="width:auto">Cronómetro</button>
+        <button type="button" id="tabCount" class="btn" style="width:auto">Temporizador</button>
+      </div>
+      <div id="chronoPanel">
+        <div id="chronoDisplay" class="timer-display">00:00:00.0</div>
+        <div class="dlg-actions" style="justify-content:center">
+          <button type="button" id="chronoStart" class="btn btn-accent" style="width:auto">▶ Iniciar</button>
+          <button type="button" id="chronoLap" class="btn" style="width:auto">◉ Vuelta</button>
+          <button type="button" id="chronoReset" class="btn" style="width:auto">↺ Reiniciar</button>
+        </div>
+        <div id="chronoLaps" class="chrono-laps"></div>
+      </div>
+      <div id="countPanel" class="hidden">
+        <div class="conv-row" style="justify-content:center">
+          <label>Horas <input type="number" id="countH" min="0" max="99" value="0" style="width:70px"></label>
+          <label>Minutos <input type="number" id="countM" min="0" max="59" value="5" style="width:70px"></label>
+          <label>Segundos <input type="number" id="countS" min="0" max="59" value="0" style="width:70px"></label>
+        </div>
+        <div id="countDisplay" class="timer-display">00:05:00</div>
+        <div class="dlg-actions" style="justify-content:center">
+          <button type="button" id="countStart" class="btn btn-accent" style="width:auto">▶ Iniciar</button>
+          <button type="button" id="countPause" class="btn" style="width:auto">⏸ Pausa</button>
+          <button type="button" id="countReset" class="btn" style="width:auto">↺ Reiniciar</button>
+        </div>
+        <p class="muted" style="text-align:center;margin-top:8px">Sonará y vibrará al terminar. Mantén la ventana abierta.</p>
+      </div>
+      <div class="dlg-actions"><button type="button" id="timerClose" class="btn">Cerrar</button></div>
+    </form>
+  </dialog>
+
+
+
+  <dialog id="donateDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">❤ Aporte voluntario — Mari Küla Küyen</h3>
+        <button type="button" id="donateCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
+      </div>
+      <p class="muted" style="line-height:1.55">Este calendario es gratuito y sin publicidad. Si te sirve para tu vida en Penco, tus rituales o tu huerta, tu aporte ayuda a mantenerlo, mejorar la app y sostener el trabajo. <b>Todo aporte es voluntario</b> — gracias desde la Bahía de Concepción.</p>
+      <div class="donate-grid">
+        <div class="donate-card">
+          <h4>🛒 Mercado Pago</h4>
+          <p class="muted" style="font-size:12px">Link directo verificado:</p>
+          <a id="donateMPLink" href="https://link.mercadopago.cl/semilleroconsciente" target="_blank" class="btn" style="width:auto;display:inline-block;text-decoration:none;text-align:center;background:#009ee3;color:#fff;border-color:#009ee3">Pagar con Mercado Pago</a>
+          <p class="muted" style="font-size:11px;margin-top:6px">https://link.mercadopago.cl/semilleroconsciente</p>
+        </div>
+        <div class="donate-card">
+          <h4>🌍 PayPal — Internacional</h4>
+          <p class="muted" style="font-size:12px">Correo PayPal verificado:</p>
+          <a id="donatePaypalLink" href="https://www.paypal.com/donate?business=semilleroconsciente@gmail.com" target="_blank" class="btn" style="width:auto;display:inline-block;text-decoration:none;text-align:center;background:#003087;color:#fff;border-color:#003087">Donar con PayPal</a>
+          <p class="muted" style="font-size:11px;margin-top:6px">semilleroconsciente@gmail.com</p>
+        </div>
+      </div>
+      <p style="text-align:center;margin-top:14px;font-style:italic;color:var(--accent);line-height:1.6">Gracias por valorar este calendario hecho a mano en Penco, entre mareas y lunas. Cada aporte, grande o pequeño, sostiene este trabajo independiente y lo mantiene libre y sin publicidad para todos. <br><b>¡Küme mañum — muchas gracias!</b></p>
+      <div class="dlg-actions"><button type="button" id="donateClose" class="btn">Cerrar</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="helpDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">❓ Cómo usar el calendario</h3>
+        <button type="button" id="helpCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
+      </div>
+      <p class="muted" style="line-height:1.5"><b>Bienvenido a Mari Küla Küyen.</b> Guía en 3 pasos: <b>1)</b> Elige Usuario y Luna · <b>2)</b> Haz clic en un día para anotar · <b>3)</b> Usa los botones de abajo según lo que necesites. Todo queda <b>privado y local</b> (13×28=364 + 1 Día Fuera del Tiempo, We Tripantu 21 jun).</p>
+            <div class="help-grid">
+        <div class="help-card">
+          <h4>🌙 Navegación</h4>
+          <p><b>Lateral:</b> Usuario, Ciclo, Luna 1-13 o Día Fuera del Tiempo. <b>◉ Ir a hoy</b> + búsqueda Enter.</p>
+          <p><b>Arriba:</b> luna, fechas, descripción Penco, chip estación + fases. <b>Calendario:</b> 28 días con sol/fase/ánimo/foto.</p>
+        </div>
+        <div class="help-card">
+          <h4>📝 Día a día</h4>
+          <p>Clic en día: ánimo, clima/notas, foto, <b>📤 Compartir</b> imagen, <b>🌸 Marcar inicio ciclo</b> y <b>✅ Hábitos</b> con galería de 46 iconos.</p>
+          <p><b>Notas de la luna</b> y <b>Galería</b> abajo si hay fotos en la luna.</p>
+        </div>
+        <div class="help-card">
+          <h4>🌊 Territorio</h4>
+          <p><b>🌊 Mareas</b> 3d SHOA · <b>🌤️ Clima</b> 7d/48h · <b>🌱 Siembra</b> por luna/fase · <b>📿 Ekadashi</b> 3 lunas con guía completa · <b>📸 Hora Dorada</b> · <b>🌞 Circadiano</b>.</p>
+          <p><b>🎯 Disciplina</b> 8 técnicas + MIT · <b>💭 Sueños</b> 8 prácticas · <b>🌬️ Respiración</b> 10 técnicas con guía visual · <b>📚 Horario</b> semanal.</p>
+        </div>
+        <div class="help-card">
+          <h4>🌸 Cuerpo</h4>
+          <p><b>🌸 Ciclo</b> periodo/ventana/ovulación + <b>🧬 Diagrama</b> con alimentos/entreno/prácticas por día.</p>
+          <p><b>💊 Medicina</b> agenda con notifs · <b>✅ Hábitos</b> icono/color, racha y % mes/luna → puntitos en calendario.</p>
+        </div>
+        <div class="help-card">
+          <h4>🎯 Mente</h4>
+          <p><b>🎯 Disciplina</b> 8 técnicas (Pomodoro 25/5, 2min, Sapo, Time Blocking, 5seg, WOOP, Apilar, Ambiente) + MIT y Si-Entonces → Pomodoro.</p>
+          <p><b>💭 Sueños</b> 8 prácticas (intención, diario, inmóvil 60s, 3 palabras) + guardar sueño en nota de hoy con “Sueño:”.</p>
+        </div>
+        <div class="help-card">
+          <h4>🔧 Utilidades</h4>
+          <p><b>🎨 Tema</b> Auto/Noche/... · <b>🕰 Reloj</b> · <b>📏 Conversión</b> · <b>⏱ Tiempo</b> · <b>🥗 Comidas</b> plan por día/luna + <b>🛒 Compras</b> por categorías.</p>
+          <p><b>🔔 Recordatorios</b> fases lunares y notifs suaves ciclo/medicamentos.</p>
+        </div>
+        <div class="help-card">
+          <h4>💾 Guardar</h4>
+          <p><b>💾/📥 Respaldo</b> JSON por usuario · <b>📌 Acceso directo</b> (PC) · <b>📄/📚 PDF</b> luna/ciclo.</p>
+          <p><b>❤ Aporte</b> público: Mercado Pago y PayPal (RUT/MACH privado en donate.json).</p>
+        </div>
+        <div class="help-card" style="border-color:var(--gold);background:linear-gradient(135deg,var(--panel),var(--card))">
+          <h4>💡 Tips</h4>
+          <p>• Chip estación = significado. • Móvil: desliza lunas. • Escribe “Sueño:” para buscar sueños. • Todo offline salvo clima.</p>
+          <p style="text-align:center;margin-top:6px;color:var(--gold)"><b>¡Que tu ciclo florezca con la luna! — Küme mañum</b></p>
+        </div>
+      </div>
+      <div class="dlg-actions"><button type="button" id="helpClose" class="btn">Cerrar</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="circadianDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">🌞 Ciclo Circadiano — Penco</h3>
+        <button type="button" id="circadianCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
+      </div>
+      <p class="muted" style="line-height:1.5">Tu reloj interno de ~24h. Se sincroniza con la luz de <b>Penco (America/Santiago)</b> y la luna. No es diagnóstico, solo guía de energía.</p>
+      <div id="circadianNowBox" class="menstrual-card" style="border-color:var(--gold)"></div>
+      <div style="position:relative;margin-top:10px">
+        <canvas id="circadianChart" width="480" height="160" style="width:100%;height:auto;background:var(--panel);border:1px solid var(--line);border-radius:8px"></canvas>
+      </div>
+      <div id="circadianPhases" class="circadian-grid"></div>
+      <details class="menstrual-details" style="margin-top:10px"><summary>📚 Consejos por fase</summary>
+        <div class="si-card"><h4>05:00-08:00 Despertar — Cortisol</h4><p>Luz natural, estirar, agua. Evita café inmediato.</p></div>
+        <div class="si-card"><h4>08:00-12:00 Pico mental</h4><p>Tareas de foco, estudio, decisiones.</p></div>
+        <div class="si-card"><h4>12:00-15:00 Digestión / bajón</h4><p>Comida ligera, caminata corta, siesta 10-20 min si necesitas.</p></div>
+        <div class="si-card"><h4>15:00-19:00 Tarde creativa</h4><p>Movimiento, social, siembra/huerta.</p></div>
+        <div class="si-card"><h4>19:00-22:00 Anochecer — Melatonina</h4><p>Luz cálida, pantallas bajas, ritual luna.</p></div>
+        <div class="si-card"><h4>22:00-05:00 Sueño profundo</h4><p>Oscuridad total, fresco, sin pantallas.</p></div>
+      </details>
+      <div class="dlg-actions"><button type="button" id="circadianClose" class="btn">Cerrar</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="goldenDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">📸 Hora Dorada — Penco</h3>
+        <button type="button" id="goldenCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
+      </div>
+      <p class="muted" style="line-height:1.5">Luz cálida ideal para fotos, ritual y cosecha. Calculado con <b>salida/puesta del sol</b> de Penco. Hora local America/Santiago.</p>
+      <div id="goldenTodayBox" class="menstrual-card" style="border-color:var(--gold)"></div>
+      <div id="goldenWeekBox" class="menstrual-card" style="margin-top:10px"></div>
+      <div class="menstrual-card" style="margin-top:10px">
+        <h4>💡 Tips</h4>
+        <p class="muted" style="font-size:12px">Dorado mañana: desde <b>salida -15 min hasta +60 min</b>. Dorado tarde: <b>puesta -60 min hasta +15 min</b>. Azul: 30 min antes/después. Evita mediodía duro.</p>
+      </div>
+      <div class="dlg-actions"><button type="button" id="goldenClose" class="btn">Cerrar</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="disciplineDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">🎯 Disciplina sin procrastinar</h3>
+        <button type="button" id="disciplineCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
+      </div>
+      <p class="muted" style="line-height:1.5">No es falta de ganas, es falta de <b>sistema</b>. Elige 1-2 técnicas, pruébalas 7 días y ajusta. La luna enseña ciclos, no perfección.</p>
+      <div class="discipline-grid">
+        <div class="discipline-card">
+          <h4>🍅 Pomodoro — 25/5</h4>
+          <p><b>Cómo:</b> 25 min foco total + 5 min pausa. Tras 4, pausa larga 15-30 min.</p>
+          <p class="muted">Ideal para tareas que postergas. Si aparece distracción, anótala y sigue.</p>
+          <button type="button" class="btn discipline-try" data-try="Pomodoro 25/5" style="width:auto;font-size:11px">Probar con ⏱</button>
+        </div>
+        <div class="discipline-card">
+          <h4>⚡ Regla 2 minutos</h4>
+          <p><b>Cómo:</b> Si toma &lt;2 min, hazlo ahora.</p>
+          <p class="muted">Evita acumular micro-pendientes (responder, lavar taza, agendar).</p>
+        </div>
+        <div class="discipline-card">
+          <h4>🐸 Cómete el sapo</h4>
+          <p><b>Cómo:</b> Haz primero la tarea más difícil/importante del día.</p>
+          <p class="muted">Tu MIT (Most Important Task) antes de redes o correo.</p>
+        </div>
+        <div class="discipline-card">
+          <h4>📅 Time Blocking</h4>
+          <p><b>Cómo:</b> Bloquea en el calendario horas con nombre: “Luna 3 — escribir 09:00-10:00”.</p>
+          <p class="muted">Trata el bloque como cita médica. Si fallas, re-agenda, no abandones.</p>
+        </div>
+        <div class="discipline-card">
+          <h4>5️⃣ Regla 5 segundos</h4>
+          <p><b>Cómo:</b> Cuenta 5-4-3-2-1 y muévete antes que el cerebro ponga excusas.</p>
+          <p class="muted">Para levantarte, empezar ejercicio, abrir documento.</p>
+        </div>
+        <div class="discipline-card">
+          <h4>🗺️ WOOP</h4>
+          <p><b>Deseo</b> → <b>Resultado</b> → <b>Obstáculo</b> → <b>Plan</b>. Ej: “Si son las 19:00 y estoy en casa, entonces camino 20 min”.</p>
+          <p class="muted">Une motivación con obstáculo real.</p>
+        </div>
+        <div class="discipline-card">
+          <h4>🔗 Apilar hábitos</h4>
+          <p><b>Cómo:</b> “Después de [hábito actual], haré [nuevo]”. Ej: Después de hervir agua, medito 2 min.</p>
+          <p class="muted">Aprovecha tu rutina + calendario de hábitos ✅.</p>
+        </div>
+        <div class="discipline-card">
+          <h4>🧱 Diseña tu ambiente</h4>
+          <p><b>Cómo:</b> Sube fricción a distracciones, baja a lo que quieres. Ej: móvil en otra pieza, ropa deporte lista.</p>
+          <p class="muted">Disciplina = ambiente que te ayuda, no fuerza de voluntad infinita.</p>
+        </div>
+      </div>
+      <div class="menstrual-card" style="margin-top:12px">
+        <h4>✍️ Herramienta rápida — hoy</h4>
+        <label>Mi MIT de hoy (1 tarea importante) <input type="text" id="disciplineMIT" placeholder="ej: Escribir 500 palabras Luna 4"></label>
+        <div class="conv-row">
+          <label>Si <input type="text" id="disciplineIf" placeholder="ej: son las 08:00 y estoy en escritorio"></label>
+          <label>entonces <input type="text" id="disciplineThen" placeholder="ej: abro documento y escribo 10 min"></label>
+        </div>
+        <div class="dlg-actions" style="justify-content:flex-start">
+          <button type="button" id="disciplineSave" class="btn btn-accent" style="width:auto">💾 Guardar intención</button>
+          <button type="button" id="disciplineStartPomodoro" class="btn" style="width:auto">🍅 Pomodoro 25′</button>
+        </div>
+        <p id="disciplineStatus" class="muted" style="font-size:11px;margin-top:6px"></p>
+      </div>
+      <div class="menstrual-card" style="margin-top:10px">
+        <h4>📏 Reglas de oro</h4>
+        <p class="muted" style="font-size:12px">• Sistema &gt; motivación. • 2 min para empezar, no para terminar. • Hecho 70% &gt; perfecto 0%. • Mide racha, no culpa — usa ✅ Hábitos para ver tu %.</p>
+      </div>
+      <div class="dlg-actions"><button type="button" id="disciplineClose" class="btn">Cerrar</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="dreamsDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">💭 Prácticas para recordar los sueños</h3>
+        <button type="button" id="dreamsCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
+      </div>
+      <p class="muted" style="line-height:1.5">Entrena tu memoria onírica. La luna y el descanso profundo se nutren mutuamente. Elige 2 prácticas y hazlas 7 noches seguidas.</p>
+      <div class="discipline-grid">
+        <div class="discipline-card">
+          <h4>🌙 1. Intención nocturna</h4>
+          <p>Antes de dormir, repite 3 veces: <i>“Esta noche recordaré mis sueños y los escribiré al despertar”</i>. Visualiza que anotas.</p>
+          <p class="muted">Programa tu cerebro como si fuera un recordatorio.</p>
+        </div>
+        <div class="discipline-card">
+          <h4>📓 2. Diario al lado de la cama</h4>
+          <p>Cuaderno + lápiz/voz a mano. No uses el celular al despertar — la luz borra el sueño.</p>
+          <p class="muted">Deja la página abierta con fecha y luna de hoy.</p>
+        </div>
+        <div class="discipline-card">
+          <h4>🧘 3. Despertar sin moverte</h4>
+          <p>Al abrir los ojos, quédate 60 seg inmóvil, ojos cerrados. Pregunta: <i>¿Qué soñaba? ¿Qué sentía?</i></p>
+          <p class="muted">El movimiento borra el rastro. Primero recuerda, luego anota.</p>
+        </div>
+        <div class="discipline-card">
+          <h4>🏷️ 4. 3 palabras + emoción</h4>
+          <p>Si no recuerdas todo, anota 3 palabras clave y una emoción: <i>“bosque — río — abuela / calma”</i>.</p>
+          <p class="muted">Con eso el recuerdo vuelve más tarde en el día.</p>
+        </div>
+        <div class="discipline-card">
+          <h4>⏰ 5. Horario regular</h4>
+          <p>Acuéstate y levántate a la misma hora (+/-30 min). El ciclo circadiano ordena los sueños REM.</p>
+          <p class="muted">Evita pantallas 60 min antes y cena liviana.</p>
+        </div>
+        <div class="discipline-card">
+          <h4>💧 6. Cuerpo preparado</h4>
+          <p>Hidratación moderada, pieza fresca (18-20°C), oscura y silenciosa. Evita alcohol y café tarde.</p>
+          <p class="muted">Una infusión de manzanilla/pasiflora ayuda si no hay contraindicación.</p>
+        </div>
+        <div class="discipline-card">
+          <h4>🔄 7. MILD / WBTB suave</h4>
+          <p><b>MILD:</b> al despertar de madrugada, repasa el sueño y duerme con intención. <b>WBTB:</b> despierta 30 min antes, lee tu diario y vuelve a dormir.</p>
+          <p class="muted">Solo si duermes 7-8h; no fuerces si estás cansado.</p>
+        </div>
+        <div class="discipline-card">
+          <h4>🌿 8. Revisión con luna</h4>
+          <p>A la mañana, escribe y al anochecer relee bajo la luna del día. Busca patrones por fase (ej: lunas llenas sueños vívidos).</p>
+          <p class="muted">Usa la nota del día con prefijo <b>Sueño:</b> para buscarlos luego.</p>
+        </div>
+      </div>
+      <div class="menstrual-card" style="margin-top:12px">
+        <h4>✍️ Herramienta — esta noche</h4>
+        <label>Intención para esta noche <input type="text" id="dreamIntention" placeholder="ej: Recordaré y agradeceré mi sueño"></label>
+        <label>Sueño de esta mañana (se guardará en la nota del día con “Sueño:”) <textarea id="dreamText" rows="3" placeholder="Escribe lo que recuerdas, aunque sea fragmento..."></textarea></label>
+        <div class="dlg-actions" style="justify-content:flex-start">
+          <button type="button" id="dreamSave" class="btn btn-accent" style="width:auto">💾 Guardar sueño de hoy</button>
+          <button type="button" id="dreamSetIntention" class="btn" style="width:auto">🌙 Fijar intención</button>
+        </div>
+        <p id="dreamStatus" class="muted" style="font-size:11px;margin-top:6px"></p>
+      </div>
+      <div class="menstrual-card" style="margin-top:10px">
+        <h4>📏 Reglas de oro</h4>
+        <p class="muted" style="font-size:12px">• Sin juicio: sueño raro = mensaje útil. • 5 min cada mañana > 1 hora un día. • Si no recuerdas, escribe “no recuerdo” y sigue. La constancia crea recuerdo.</p>
+      </div>
+      <div class="dlg-actions"><button type="button" id="dreamsClose" class="btn">Cerrar</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="breathDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">🌬️ Técnicas de Respiración</h3>
+        <button type="button" id="breathCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
+      </div>
+      <p class="muted" style="line-height:1.5">Respiraciones simples. Mente en calma. Tú en equilibrio. Elige una técnica de la imagen y practica con guía visual.</p>
+      <div class="breath-grid" id="breathGrid"></div>
+      <div class="menstrual-card" style="margin-top:10px;text-align:center">
+        <h4 id="breathTitle" style="color:var(--gold)">4-7-8 Respiración</h4>
+        <p id="breathDesc" class="muted" style="font-size:12px">Ideal para el sueño y la ansiedad. Calma profunda.</p>
+        <div id="breathCircle" class="breath-circle"><span id="breathPhase">Listo</span><span id="breathCount">—</span></div>
+        <p id="breathPattern" class="chip" style="display:inline-block;margin-top:8px">Inhala 4 → Retén 7 → Exhala 8</p>
+        <div class="dlg-actions" style="justify-content:center;margin-top:10px">
+          <button type="button" id="breathStart" class="btn btn-accent" style="width:auto">▶ Iniciar</button>
+          <button type="button" id="breathPause" class="btn" style="width:auto">⏸ Pausa</button>
+          <button type="button" id="breathReset" class="btn" style="width:auto">↺ Reiniciar</button>
+        </div>
+        <p class="muted" style="font-size:11px;margin-top:6px">Siéntate con espalda recta. 4 ciclos. Si mareas, vuelve a 4-6.</p>
+      </div>
+      <div class="dlg-actions"><button type="button" id="breathClose" class="btn">Cerrar</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="scheduleDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">📚 Horario de Clases / Estudio</h3>
+        <button type="button" id="scheduleCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
+      </div>
+      <p class="muted" style="line-height:1.5">Organiza tu semana por bloques. Queda <b>privado y local</b> por usuario. Se muestra “Hoy tienes” en la portada.</p>
+      <div class="conv-row">
+        <label style="flex:2">Asignatura <input type="text" id="schedSubject" placeholder="ej: Matemáticas, Historia, Yoga" maxlength="40"></label>
+        <label>Día
+          <select id="schedDay">
+            <option value="1">Lunes</option><option value="2">Martes</option><option value="3">Miércoles</option><option value="4">Jueves</option><option value="5">Viernes</option><option value="6">Sábado</option><option value="0">Domingo</option>
+          </select>
+        </label>
+      </div>
+      <div class="conv-row">
+        <label>Inicio <input type="time" id="schedStart" value="08:00"></label>
+        <label>Fin <input type="time" id="schedEnd" value="09:30"></label>
+        <label>Color <input type="color" id="schedColor" value="#e8c56a" style="height:36px;padding:2px;width:60px"></label>
+      </div>
+      <div class="conv-row">
+        <label>Lugar / Sala <input type="text" id="schedPlace" placeholder="ej: Sala 3, Online, Biblioteca" maxlength="30"></label>
+        <button type="button" id="schedAdd" class="btn btn-accent" style="width:auto;align-self:flex-end">+ Agregar</button>
+        <button type="button" id="schedUpdate" class="btn hidden" style="width:auto;align-self:flex-end">↻ Actualizar</button>
+        <button type="button" id="schedCancel" class="btn hidden" style="width:auto;align-self:flex-end">Cancelar</button>
+      </div>
+      <div id="scheduleTodayBox" class="menstrual-card" style="margin-top:10px"></div>
+      <div id="scheduleWeekGrid" class="schedule-week"></div>
+      <div id="scheduleList" class="habits-list" style="margin-top:10px"></div>
+      <div class="dlg-actions"><button type="button" id="scheduleClose" class="btn">Cerrar</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="gymDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">🏋️ Rutinas de Gimnasio</h3>
+        <button type="button" id="gymCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
+      </div>
+      <p class="muted" style="line-height:1.5">Planifica tus entrenamientos por día. Queda <b>privado y local</b> por usuario. Marca como completado y ve tu racha.</p>
+      <div class="conv-row">
+        <label style="flex:2">Rutina <input type="text" id="gymName" placeholder="ej: Push - Pecho/Hombro/Tríceps, Cardio, Piernas" maxlength="50"></label>
+        <label>Día
+          <select id="gymDay">
+            <option value="1">Lunes</option><option value="2">Martes</option><option value="3">Miércoles</option><option value="4">Jueves</option><option value="5">Viernes</option><option value="6">Sábado</option><option value="0">Domingo</option>
+          </select>
+        </label>
+      </div>
+      <div class="conv-row">
+        <label>Inicio <input type="time" id="gymStart" value="07:00"></label>
+        <label>Fin <input type="time" id="gymEnd" value="08:30"></label>
+        <label>Color <input type="color" id="gymColor" value="#e76e8a" style="height:36px;padding:2px;width:60px"></label>
+      </div>
+      <label>Ejercicios (series x reps - peso / descanso) <textarea id="gymExercises" rows="3" placeholder="ej:&#10;Press banca 4x8 60kg 90s&#10;Fondos 3x12 45s&#10;Plancha 3x45s"></textarea></label>
+      <div class="conv-row">
+        <label>Lugar <input type="text" id="gymPlace" placeholder="ej: Gimnasio Penco, Casa, Calistenia" maxlength="30"></label>
+        <button type="button" id="gymAdd" class="btn btn-accent" style="width:auto;align-self:flex-end">+ Agregar rutina</button>
+        <button type="button" id="gymUpdate" class="btn hidden" style="width:auto;align-self:flex-end">↻ Actualizar</button>
+        <button type="button" id="gymCancel" class="btn hidden" style="width:auto;align-self:flex-end">Cancelar</button>
+      </div>
+      <div id="gymTodayBox" class="menstrual-card" style="margin-top:10px"></div>
+      <div id="gymWeekGrid" class="schedule-week"></div>
+      <div id="gymList" class="habits-list" style="margin-top:10px"></div>
+      <div id="gymStatsBox" class="menstrual-card" style="margin-top:10px"></div>
+      <div class="dlg-actions"><button type="button" id="gymClose" class="btn">Cerrar</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="userDialog">
+    <form method="dialog">
+      <h3>Nuevo usuario</h3>
+      <p class="muted">Cada usuario tiene sus propias notas, mareas y reflexiones.</p>
+      <label>Nombre
+        <input type="text" id="fUserName" maxlength="30" placeholder="ej: Esteban, Mamá, Papá...">
+      </label>
+      <div class="dlg-actions">
+        <button type="button" id="userCancel" class="btn">Cancelar</button>
+        <button type="button" id="userSave" class="btn btn-accent">Crear usuario</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="astro.js"></script>
+  <script src="data.js"></script>
+  <script src="frases.js"></script>
+  <script src="cal.js"></script>
+  <script src="renderer.js"></script>
+</body>
+</html>

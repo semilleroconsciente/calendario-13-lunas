@@ -1,0 +1,37 @@
+CALENDARIO DE LAS 13 LUNAS - VERSION WEB / CELULAR
+====================================================
+
+USAR EN ESTE COMPUTADOR
+-----------------------
+Doble clic en "Servir Web.bat" y se abre en el navegador.
+
+USAR EN EL CELULAR (misma red WiFi)
+-----------------------------------
+1. Abre "Servir Web.bat" en el computador.
+2. En el celular, entra a la direccion que muestra la consola,
+   reemplazando localhost por la IP del computador
+   (ej: http://192.168.1.50:8137). Para ver tu IP:
+   ejecuta "ipconfig" y busca Direccion IPv4.
+
+COMPARTIR CON AMIGOS (por internet, gratis)
+-------------------------------------------
+Opcion A - Netlify Drop (la mas facil):
+  1. Entra a https://app.netlify.com/drop
+  2. Arrastra la carpeta "web" completa.
+  3. Te da un enlace publico para compartir.
+
+Opcion B - GitHub Pages:
+  Sube el contenido de "web" a un repositorio y activa Pages.
+
+CONVERTIR LA WEB EN APK ANDROID (gratis)
+----------------------------------------
+1. Publica la web primero (Opcion A o B).
+2. Entra a https://www.pwabuilder.com
+3. Pega la URL de tu pagina y descarga el paquete Android/APK.
+   No requiere saber programar.
+
+NOTAS
+-----
+- Las notas y mareas se guardan en el navegador de cada dispositivo
+  (no se sincronizan con la version de escritorio).
+- En el celular usa "Agregar a pantalla de inicio" del navegador.
