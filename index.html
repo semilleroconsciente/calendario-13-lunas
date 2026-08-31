@@ -84,6 +84,7 @@
       <button id="btnBreath" class="btn">🌬️ Respiración</button>
       <button id="btnSchedule" class="btn">📚 Horario</button>
       <button id="btnGym" class="btn">🏋️ Gym</button>
+      <button id="btnStudy" class="btn">🧠 Estudio</button>
       <button id="btnCircadian" class="btn">🌞 Circadiano</button>
       <button id="btnGolden" class="btn">📸 Hora Dorada</button>
       <button id="btnConvert" class="btn">📏 Conversión</button>
@@ -844,6 +845,79 @@
       <div id="gymList" class="habits-list" style="margin-top:10px"></div>
       <div id="gymStatsBox" class="menstrual-card" style="margin-top:10px"></div>
       <div class="dlg-actions"><button type="button" id="gymClose" class="btn">Cerrar</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="studyDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">🧠 Técnicas de Estudio</h3>
+        <button type="button" id="studyCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
+      </div>
+      <p class="muted" style="line-height:1.5">Aprende mejor, no más horas. Elige 1 técnica de cada pestaña y pruébala 7 días con tu horario 📚 y hábitos ✅. Todo queda local.</p>
+      <div class="timer-tabs" style="margin-bottom:10px">
+        <button type="button" id="tabStudyGeneral" class="btn btn-accent" style="width:auto">📖 Generales</button>
+        <button type="button" id="tabStudyMnemo" class="btn" style="width:auto">🧩 Mnemotecnias</button>
+        <button type="button" id="tabStudySpeed" class="btn" style="width:auto">⚡ Lectura veloz</button>
+      </div>
+      <div id="studyGeneralPanel">
+        <div class="discipline-grid">
+          <div class="discipline-card"><h4>🔁 Recuperación activa</h4><p><b>Cómo:</b> cierra apuntes y escribe todo lo que recuerdas. Luego corrige.</p><p class="muted">Es 2× más efectivo que releer. Hazlo al terminar cada bloque.</p></div>
+          <div class="discipline-card"><h4>📅 Repetición espaciada</h4><p><b>Cómo:</b> repasa día 1 → día 3 → día 7 → día 14 (Anki/Notion).</p><p class="muted">Vence la curva del olvido. Ideal para lunas.</p></div>
+          <div class="discipline-card"><h4>🧑‍🏫 Feynman</h4><p><b>Cómo:</b> explica el tema como a un niño de 10 años. Si te trabas, ahí está el hueco.</p><p class="muted">Usa la nota del día: “Hoy aprendí…”</p></div>
+          <div class="discipline-card"><h4>🔀 Intercalado</h4><p><b>Cómo:</b> mezcla ejercicios A-B-C en vez de A-A-A.</p><p class="muted">Más difícil al inicio, retienes más a largo plazo.</p></div>
+          <div class="discipline-card"><h4>❓ Elaboración</h4><p><b>Cómo:</b> pregúntate <i>¿por qué esto es así? ¿cómo se conecta con X?</i></p><p class="muted">Crea conexiones, no copias.</p></div>
+          <div class="discipline-card"><h4>🎯 Enfoque + descanso</h4><p><b>Cómo:</b> 25/5 Pomodoro (usa ⏱ Tiempo) + pausa real sin pantalla.</p><p class="muted">4 pomodoros = pausa larga 15-30 min.</p></div>
+        </div>
+        <div class="menstrual-card" style="margin-top:10px">
+          <h4>✍️ Mini Feynman — pruébalo</h4>
+          <label>Tema <input type="text" id="studyFeynmanTopic" placeholder="ej: Fases lunares"></label>
+          <label>Explícalo simple <textarea id="studyFeynmanText" rows="2" placeholder="Como si tuviera 10 años..."></textarea></label>
+          <button type="button" id="studyFeynmanSave" class="btn btn-accent" style="width:auto">💾 Guardar en nota de hoy</button>
+        </div>
+      </div>
+      <div id="studyMnemoPanel" class="hidden">
+        <div class="discipline-grid">
+          <div class="discipline-card"><h4>🔤 Acrónimos</h4><p>Crea sigla con iniciales: <b>M</b>ercurio <b>V</b>enus <b>T</b>ierra → <b>MVT</b>.</p><p class="muted">Para listas cortas.</p></div>
+          <div class="discipline-card"><h4>📜 Acrósticos</h4><p>Frase con iniciales: <b>Mi Vieja Tía Marta…</b> para planetas.</p><p class="muted">Más memorable que siglas sueltas.</p></div>
+          <div class="discipline-card"><h4>🏛️ Palacio de la memoria (Loci)</h4><p>Asocia cada dato a un lugar de tu casa. Recorre mentalmente.</p><p class="muted">Ideal para 10-20 ítems ordenados.</p></div>
+          <div class="discipline-card"><h4>📌 Perchas</h4><p>1=sol, 2=bici, 3=trébol. Cuelga dato en la percha.</p><p class="muted">Para listas numeradas.</p></div>
+          <div class="discipline-card"><h4>🔢 Sistema Mayor</h4><p>Convierte números en sonidos → palabras. Ej: 13 → T-M → “TéM”.</p><p class="muted">Para fechas y números largos.</p></div>
+          <div class="discipline-card"><h4>📖 Historia</h4><p>Une palabras en historia absurda y vívida. Cuanto más rara, mejor se recuerda.</p><p class="muted">Para vocabulario o conceptos.</p></div>
+        </div>
+        <div class="menstrual-card" style="margin-top:10px">
+          <h4>🛠️ Generador — acrónimo / historia</h4>
+          <label>Palabras separadas por coma <input type="text" id="mnemoInput" placeholder="ej: Penco, Lirquén, Tomé, Dichato"></label>
+          <div class="dlg-actions" style="justify-content:flex-start">
+            <button type="button" id="mnemoAcronym" class="btn" style="width:auto">🔤 Acrónimo</button>
+            <button type="button" id="mnemoStory" class="btn" style="width:auto">📖 Historia</button>
+          </div>
+          <div id="mnemoOutput" class="chip" style="display:block;margin-top:8px;white-space:normal"></div>
+        </div>
+      </div>
+      <div id="studySpeedPanel" class="hidden">
+        <div class="discipline-grid">
+          <div class="discipline-card"><h4>👁️ Previsualizar</h4><p>Mira títulos, subtítulos, negritas y diagramas 30s antes de leer.</p><p class="muted">Tu cerebro crea un mapa y lee 20% más rápido.</p></div>
+          <div class="discipline-card"><h4>👆 Guía con dedo/lápiz</h4><p>Desliza dedo bajo la línea a velocidad constante. Evita regresiones.</p><p class="muted">Base de la lectura veloz.</p></div>
+          <div class="discipline-card"><h4>🤫 Subvocalización</h4><p>Tararea “mmm” suave o cuenta 1-2-3 mientras lees para soltar la voz interna.</p><p class="muted">No eliminar, solo reducir.</p></div>
+          <div class="discipline-card"><h4>🔭 Visión periférica</h4><p>Lee en bloques de 2-3 palabras, no letra a letra. Amplía tu foco.</p><p class="muted">Entrena con columnas estrechas.</p></div>
+          <div class="discipline-card"><h4>📖 SQ3R</h4><p><b>Survey, Question, Read, Recite, Review.</b> Pregunta antes, recita después.</p><p class="muted">Para estudio profundo, no solo velocidad.</p></div>
+          <div class="discipline-card"><h4>⚡ RSVP</h4><p>Una palabra a la vez en el centro (como el tester abajo). Ideal para repaso rápido.</p><p class="muted">Usa para 300-500 ppm.</p></div>
+        </div>
+        <div class="menstrual-card" style="margin-top:10px;text-align:center">
+          <h4>⏱️ Tester — palabras por minuto</h4>
+          <label style="text-align:left">Texto <textarea id="speedText" rows="2">La luna de Penco refleja mareas y siembras. Leer con ritmo y foco entrena tu mente como la huerta: poco cada día, mejor cada luna.</textarea></label>
+          <div class="conv-row" style="justify-content:center;align-items:center">
+            <label>PPM <input type="range" id="speedRange" min="150" max="700" value="300" style="width:140px"></label>
+            <span id="speedValue" class="chip">300 ppm</span>
+            <button type="button" id="speedStart" class="btn btn-accent" style="width:auto">▶ Probar</button>
+            <button type="button" id="speedStop" class="btn" style="width:auto">⏹ Parar</button>
+          </div>
+          <div id="speedDisplay" class="timer-display" style="font-size:28px;min-height:56px;display:flex;align-items:center;justify-content:center">—</div>
+          <p id="speedResult" class="muted" style="font-size:11px"></p>
+        </div>
+      </div>
+      <div class="dlg-actions"><button type="button" id="studyClose" class="btn">Cerrar</button></div>
     </form>
   </dialog>
 

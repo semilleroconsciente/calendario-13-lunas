@@ -2367,6 +2367,92 @@ function setupGymDialog(){
 
 setTimeout(setupGymDialog, 870);
 
+function setupStudyDialog(){
+  const btn=$('btnStudy'); if(btn) btn.onclick=()=>{ $('studyDialog').showModal(); };
+  const ct=$('studyCloseTop'), cb=$('studyClose'); if(ct) ct.onclick=()=>$('studyDialog').close(); if(cb) cb.onclick=()=>$('studyDialog').close();
+  const tabG=$('tabStudyGeneral'), tabM=$('tabStudyMnemo'), tabS=$('tabStudySpeed');
+  const pG=$('studyGeneralPanel'), pM=$('studyMnemoPanel'), pS=$('studySpeedPanel');
+  function show(tab){
+    [tabG,tabM,tabS].forEach(b=> b && b.classList.remove('btn-accent'));
+    [pG,pM,pS].forEach(p=> p && p.classList.add('hidden'));
+    if(tab==='g'){ tabG&&tabG.classList.add('btn-accent'); pG&&pG.classList.remove('hidden'); }
+    if(tab==='m'){ tabM&&tabM.classList.add('btn-accent'); pM&&pM.classList.remove('hidden'); }
+    if(tab==='s'){ tabS&&tabS.classList.add('btn-accent'); pS&&pS.classList.remove('hidden'); }
+  }
+  if(tabG) tabG.onclick=()=> show('g');
+  if(tabM) tabM.onclick=()=> show('m');
+  if(tabS) tabS.onclick=()=> show('s');
+  // Feynman save to today's note
+  const feySave=$('studyFeynmanSave');
+  if(feySave) feySave.onclick=()=>{
+    const topic=$('studyFeynmanTopic').value.trim();
+    const text=$('studyFeynmanText').value.trim();
+    if(!topic && !text) return alert('Escribe tema y explicación');
+    const info=todayInfo();
+    if(!info) return alert('No se pudo ubicar hoy');
+    const note = (topic? 'Feynman - '+topic+': ':'') + text;
+    if(info.luna==='dft'){
+      const c=cyc(currentCycleYear()); c.dft.nota = (c.dft.nota? c.dft.nota+"\n":"") + note;
+    } else {
+      const cell=dayCell(info.luna, info.diaN);
+      cell.nota = (cell.nota? cell.nota+"\n":"") + note;
+    }
+    scheduleSave(); if(currentView.tipo==='luna') renderLuna(); else renderDFT();
+    alert('Guardado en la nota de hoy ✓');
+    $('studyFeynmanTopic').value=''; $('studyFeynmanText').value='';
+  };
+  // Mnemo generators
+  const mnemoIn=$('mnemoInput'), out=$('mnemoOutput');
+  const acro=$('mnemoAcronym'), story=$('mnemoStory');
+  if(acro) acro.onclick=()=>{
+    const words=mnemoIn.value.split(',').map(s=>s.trim()).filter(Boolean);
+    if(!words.length) return;
+    const acronym=words.map(w=>w[0].toUpperCase()).join('');
+    out.textContent='Acrónimo: '+acronym+' → '+words.join(' · ');
+  };
+  if(story) story.onclick=()=>{
+    const words=mnemoIn.value.split(',').map(s=>s.trim()).filter(Boolean);
+    if(!words.length) return;
+    const connectors=['cruzó','encontró','lanzó','escondió','iluminó','persiguió'];
+    let storyText='Imagina: ';
+    words.forEach((w,i)=>{
+      const conn=connectors[i%connectors.length];
+      storyText+= w + (i<words.length-1? ' '+conn+' ' : '. ¡Cuanto más absurdo, mejor!');
+    });
+    out.textContent=storyText;
+  };
+  // Speed reading tester
+  const speedText=$('speedText'), speedRange=$('speedRange'), speedVal=$('speedValue'), speedDisp=$('speedDisplay'), speedRes=$('speedResult');
+  let speedTimer=null, speedIdx=0, speedWords=[];
+  function updateSpeedVal(){ if(speedVal) speedVal.textContent=speedRange.value+' ppm'; }
+  if(speedRange) speedRange.oninput=updateSpeedVal;
+  updateSpeedVal();
+  const sStart=$('speedStart'), sStop=$('speedStop');
+  if(sStart) sStart.onclick=()=>{
+    const text=speedText.value.trim(); if(!text) return;
+    speedWords=text.split(/\s+/);
+    speedIdx=0;
+    const ppm=parseInt(speedRange.value)||300;
+    const interval=60000/ppm;
+    clearInterval(speedTimer);
+    const startTime=Date.now();
+    speedTimer=setInterval(()=>{
+      if(speedIdx>=speedWords.length){
+        clearInterval(speedTimer);
+        const elapsed=(Date.now()-startTime)/1000;
+        const wpm=Math.round(speedWords.length/(elapsed/60));
+        if(speedRes) speedRes.textContent='Leído '+speedWords.length+' palabras en '+elapsed.toFixed(1)+'s ≈ '+wpm+' ppm';
+        return;
+      }
+      if(speedDisp) speedDisp.textContent=speedWords[speedIdx++];
+    }, interval);
+  };
+  if(sStop) sStop.onclick=()=>{ clearInterval(speedTimer); if(speedDisp) speedDisp.textContent='—'; };
+  show('g');
+}
+
+setTimeout(setupStudyDialog, 872);
+
 
 // === SUEÑOS ===
 function setupDreamsDialog(){
