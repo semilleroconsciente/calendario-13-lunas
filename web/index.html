@@ -579,19 +579,25 @@
         <h3 style="margin:0;color:var(--accent)">🌞 Ciclo Circadiano — Penco</h3>
         <button type="button" id="circadianCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
       </div>
-      <p class="muted" style="line-height:1.5">Tu reloj interno de ~24h. Se sincroniza con la luz de <b>Penco (America/Santiago)</b> y la luna. No es diagnóstico, solo guía de energía.</p>
+      <div style="background:linear-gradient(135deg,var(--panel),var(--card));border:1px solid var(--gold);border-radius:10px;padding:12px;margin-bottom:10px">
+        <p style="margin:0;font-size:13px;line-height:1.55"><b>¿Qué es?</b> Tu reloj interno de ~24h en el núcleo supraquiasmático. Regula <b>cortisol</b> (energía mañana) y <b>melatonina</b> (sueño noche). Se ajusta con <b>luz, comida y movimiento</b> en Penco (America/Santiago).</p>
+        <p class="muted" style="font-size:11px;margin-top:6px"><b>Cómo usar:</b> 1) Mira <b>Ahora</b> → tu fase actual. 2) Observa el <b>gráfico 24h</b> (amarillo pico, azul noche). 3) Toca una fase abajo para ver qué hacer. No es diagnóstico.</p>
+      </div>
       <div id="circadianNowBox" class="menstrual-card" style="border-color:var(--gold)"></div>
       <div style="position:relative;margin-top:10px">
         <canvas id="circadianChart" width="480" height="160" style="width:100%;height:auto;background:var(--panel);border:1px solid var(--line);border-radius:8px"></canvas>
       </div>
       <div id="circadianPhases" class="circadian-grid"></div>
-      <details class="menstrual-details" style="margin-top:10px"><summary>📚 Consejos por fase</summary>
-        <div class="si-card"><h4>05:00-08:00 Despertar — Cortisol</h4><p>Luz natural, estirar, agua. Evita café inmediato.</p></div>
-        <div class="si-card"><h4>08:00-12:00 Pico mental</h4><p>Tareas de foco, estudio, decisiones.</p></div>
-        <div class="si-card"><h4>12:00-15:00 Digestión / bajón</h4><p>Comida ligera, caminata corta, siesta 10-20 min si necesitas.</p></div>
-        <div class="si-card"><h4>15:00-19:00 Tarde creativa</h4><p>Movimiento, social, siembra/huerta.</p></div>
-        <div class="si-card"><h4>19:00-22:00 Anochecer — Melatonina</h4><p>Luz cálida, pantallas bajas, ritual luna.</p></div>
-        <div class="si-card"><h4>22:00-05:00 Sueño profundo</h4><p>Oscuridad total, fresco, sin pantallas.</p></div>
+      <details class="menstrual-details" style="margin-top:10px" open><summary>📚 Guía detallada por fase — qué hacer</summary>
+        <div class="si-card"><h4>🌅 05:00-08:00 Despertar — Cortisol sube</h4><p><b>Haz:</b> luz natural 5-10 min, estirar, agua tibia. <b>Evita:</b> café 90 min, pantallas intensas. Ideal respiración 4-6.</p></div>
+        <div class="si-card"><h4>☀️ 08:00-12:00 Pico mental</h4><p><b>Haz:</b> foco profundo, estudio, decisiones. Bloquea notificaciones, Pomodoro 25/5.</p></div>
+        <div class="si-card"><h4>🍽️ 12:00-15:00 Bajón post-comida</h4><p><b>Haz:</b> comida ligera, caminata 10 min, siesta 10-20 min. <b>Evita:</b> reuniones críticas.</p></div>
+        <div class="si-card"><h4>🌿 15:00-19:00 Tarde creativa/física</h4><p><b>Haz:</b> siembra, gym fuerza, social, tareas creativas. Mejor hora para entrenar.</p></div>
+        <div class="si-card"><h4>🌙 19:00-22:00 Anochecer — Melatonina sube</h4><p><b>Haz:</b> luz cálida tenue, cena 2-3h antes, ritual luna, lectura.</p></div>
+        <div class="si-card"><h4>😴 22:00-05:00 Sueño profundo</h4><p><b>Haz:</b> oscuridad total, fresco 18-20°C, horario regular. Si despiertas, 4-7-8 sin luz.</p></div>
+      </details>
+      <details class="menstrual-details" style="margin-top:8px"><summary>🔧 Si estás desfasado</summary>
+        <p class="muted" style="font-size:11px">Jet lag o pantallas tarde desajustan el reloj. Re-sincroniza 3 noches: 1) luz mañana 15 min, 2) come a horas fijas, 3) atenúa luz 2h antes de dormir.</p>
       </details>
       <div class="dlg-actions"><button type="button" id="circadianClose" class="btn">Cerrar</button></div>
     </form>
