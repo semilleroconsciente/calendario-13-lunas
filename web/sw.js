@@ -1,4 +1,4 @@
-const CACHE = 'cal13-v3';
+const CACHE = 'cal13-v4-sin-fotos';
 const CORE = [
   './',
   './index.html',

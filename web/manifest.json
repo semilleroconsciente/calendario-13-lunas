@@ -1,16 +1,30 @@
 {
   "name": "Calendario de las 13 Lunas",
   "short_name": "13 Lunas",
-  "description": "Calendario de las 13 Lunas - Mari Küla Küyen - Penco, Bío-Bío, Chile",
+  "description": "Calendario de las 13 Lunas - Mari Küla Küyen - Penco, Bío-Bío, Chile. 13 lunas × 28 días, siembra, mareas y territorio.",
   "lang": "es",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
+  "orientation": "any",
   "background_color": "#0b1026",
   "theme_color": "#0b1026",
+  "categories": ["lifestyle", "education", "health"],
   "icons": [
     { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
     { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
     { "src": "icon-512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
-  ]
+  ],
+  "shortcuts": [
+    { "name": "Ir a hoy", "short_name": "Hoy", "description": "Abrir calendario en la luna y día de hoy", "url": "./#hoy", "icons": [{ "src": "icon-192.png", "sizes": "192x192" }] },
+    { "name": "Mareas Penco", "short_name": "Mareas", "description": "Ver mareas SHOA 3 días", "url": "./#mareas", "icons": [{ "src": "icon-192.png", "sizes": "192x192" }] },
+    { "name": "Siembra Lunar", "short_name": "Siembra", "description": "Guía de siembra y cosecha por luna", "url": "./#siembra", "icons": [{ "src": "icon-192.png", "sizes": "192x192" }] },
+    { "name": "Hábitos", "short_name": "Hábitos", "description": "Registrar hábitos diarios", "url": "./#habitos", "icons": [{ "src": "icon-192.png", "sizes": "192x192" }] }
+  ],
+  "screenshots": [
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "form_factor": "wide", "label": "Calendario 13 Lunas — vista de luna 4×7" },
+    { "src": "icon-512-maskable.png", "sizes": "512x512", "type": "image/png", "label": "Mari Küla Küyen — Penco" }
+  ],
+  "handle_links": "preferred",
+  "launch_handler": { "client_mode": "navigate-existing" }
 }

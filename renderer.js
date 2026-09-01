@@ -640,70 +640,45 @@ function getSiembraTresLunas(){
 }
 function renderSiembraTresBox(){
   const box = $('siembraTresBox'); if(!box) return;
-  const tres = getSiembraTresLunas();
-  const nowKey = cal.fmtKey.format(new Date());
-  let html = '<h4 style="color:var(--gold)">🌙 Próximas 3 lunas — vista rápida</h4><p class="muted" style="font-size:11px">Actual + siguientes 2 · Toca para ir a esa luna</p><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px">';
-  tres.forEach((n,i)=>{
-    const s = SIEMBRA_LUNAS[n]; const meta = MOONS[n-1];
-    const isCur = i===0;
-    const plaga = n<=3?'Babosas/hongos': n<=6?'Pulgones/mosca': n<=9?'Mosca blanca/gusano':'Hongos frío';
-    html+= `<div class="si-card" style="cursor:pointer;${isCur?'border-color:var(--gold);background:var(--card-hover)':''}" data-luna3="${n}"><h4 style="font-size:12px">${isCur?'▶ ':''}Luna ${n} · ${escapeHtml(meta.nombre)} ${isCur?'<span class="chip" style="font-size:9px">actual</span>':''}</h4><p style="font-size:10px;color:var(--muted)">${escapeHtml(s.epoca)}</p><p style="font-size:11px"><b style="color:#8fd694">🌱 ${escapeHtml(s.directa.slice(0,42))}…</b></p><p style="font-size:10px"><b>🌾 Cosecha:</b> ${escapeHtml(s.cosecha.slice(0,48))}…</p><p style="font-size:10px;color:#ff9a9a"><b>🐛 ${escapeHtml(plaga)}</b></p></div>`;
-  });
-  html+='</div>';
-  box.innerHTML = html;
-  box.querySelectorAll('[data-luna3]').forEach(el=> el.onclick=()=>{ selectMoon(+el.dataset.luna3); renderSiembraTresBox(); renderSiembraContent(siembraTab); });
+  // Vista rápida eliminada: solo luna actual + 2 siguientes en el contenido principal
+  box.style.display='none';
+  box.classList.add('hidden');
+  box.innerHTML='';
 }
 function renderSiembraContent(tab){
   siembraTab = tab||siembraTab;
   const box = $('siembraContent'); const hBox=$('siembraHarvestBox');
   if(!box) return;
-  // tabs ui
   const tS=$('tabSiembra'), tC=$('tabCosecha');
   if(tS&&tC){ tS.classList.toggle('btn-accent', siembraTab==='siembra'); tC.classList.toggle('btn-accent', siembraTab==='cosecha'); }
+  const tres=getSiembraTresLunas();
   if(siembraTab==='cosecha'){
     box.innerHTML = '';
     if(hBox){
-      let html='<p class="muted" style="font-size:11px;margin-bottom:8px">Cosecha y plagas por luna — vista completa 3 lunas + todo el ciclo</p>';
-      const tres=getSiembraTresLunas();
-      html+='<div style="display:grid;grid-template-columns:1fr;gap:8px;margin-bottom:12px">';
-      tres.forEach(n=>{
+      let html='<p class="muted" style="font-size:11px;margin-bottom:8px">Cosecha y plagas — <b>luna actual + 2 siguientes</b></p>';
+      html+='<div style="display:grid;grid-template-columns:1fr;gap:8px">';
+      tres.forEach((n,i)=>{
         const s=SIEMBRA_LUNAS[n]; const meta=MOONS[n-1];
-        html+=`<div class="si-card" style="border-color:var(--gold)"><h4>🌾 Luna ${n} · ${escapeHtml(meta.nombre)} <span class="chip" style="font-size:10px">${n===tres[0]?'actual': n===tres[1]?'próxima':'siguiente'}</span></h4><p style="font-size:11px;color:var(--muted)">${escapeHtml(s.epoca)}</p><p style="font-size:12px"><b>🌾 Cosecha:</b> ${escapeHtml(s.cosecha)}</p><p style="font-size:11px;color:#ff9a9a"><b>🐛 Vigila:</b> ${n<=3?'Babosas/hongos por humedad': n<=6?'Pulgones en brotes': n<=9?'Mosca blanca/gusano fruto':'Hongos por frío/humedad'}</p><p style="font-size:11px"><b>🛠️ Tarea:</b> ${escapeHtml(s.tareas)}</p></div>`;
+        const badge=i===0?'actual': i===1?'próxima':'siguiente';
+        const plaga = n<=3?'Babosas/hongos por humedad': n<=6?'Pulgones en brotes': n<=9?'Mosca blanca/gusano fruto':'Hongos por frío/humedad';
+        html+=`<div class="si-card" style="${i===0?'border-color:var(--gold)':''}"><h4>🌾 Luna ${n} · ${escapeHtml(meta.nombre)} <span class="chip" style="font-size:10px">${badge}</span></h4><p style="font-size:11px;color:var(--muted)">${escapeHtml(s.epoca)}</p><p style="font-size:12px"><b>🌾 Cosecha:</b> ${escapeHtml(s.cosecha)}</p><p style="font-size:11px;color:#ff9a9a"><b>🐛 Plagas:</b> ${escapeHtml(plaga)}</p><p style="font-size:11px"><b>🛠️ Tarea:</b> ${escapeHtml(s.tareas)}</p></div>`;
       });
-      html+='</div><hr style="border:none;border-top:1px solid var(--line);margin:10px 0"><p class="muted" style="font-size:11px">Ciclo completo (13 lunas) — referencia rápida:</p>';
-      for(let n=1;n<=13;n++){
-        const s=SIEMBRA_LUNAS[n];
-        const isCur=tres.includes(n);
-        html+=`<div class="si-card" style="${isCur?'border-color:var(--gold);background:var(--card-hover)':''}"><h4>${isCur?'▶ ':''}Luna ${n} · ${escapeHtml(MOONS[n-1].nombre)}</h4><p style="font-size:12px"><b>🌾 Cosecha:</b> ${escapeHtml(s.cosecha)}</p><p style="font-size:11px;color:#ff9a9a">🐛 ${n<=3?'Babosas/hongos': n<=6?'Pulgones': n<=9?'Mosca blanca/gusano':'Hongos frío'}</p></div>`;
-      }
+      html+='</div>';
       hBox.innerHTML=html;
     }
     return;
   }
-  // siembra tab
+  // siembra: solo luna actual + 2 siguientes (sin vista rápida, sin ciclo completo, sin guía por fase)
   if(hBox) hBox.innerHTML='';
-  let html='';
-  if(currentView.tipo==='luna' && SIEMBRA_LUNAS[currentView.luna]){
-    const s=SIEMBRA_LUNAS[currentView.luna]; const meta=MOONS[currentView.luna-1];
-    html+=`<div class="si-luna-card"><h4>🌙 Luna ${currentView.luna}: ${escapeHtml(meta.nombre)}</h4><p class="muted" style="margin-bottom:8px">${escapeHtml(s.epoca)}</p><h4 style="color:var(--gold)">${escapeHtml(s.titulo)}</h4><p class="si-sem">🌱 Siembra directa: ${escapeHtml(s.directa)}</p><p class="si-tar">🌱 Almácigos: ${escapeHtml(s.almacigos)}</p><p class="si-tar">🍅 Cosecha: ${escapeHtml(s.cosecha)}</p><p>🛠️ ${escapeHtml(s.tareas)}</p></div>`;
-    html+='<p class="muted" style="font-size:11px;margin:10px 0 8px">También para las <b>2 lunas siguientes</b>:</p>';
-    const tres=getSiembraTresLunas().slice(1);
-    tres.forEach(n=>{
-      const ss=SIEMBRA_LUNAS[n]; const mm=MOONS[n-1];
-      html+=`<div class="si-card" style="opacity:0.95;cursor:pointer" data-luna="${n}"><h4>Luna ${n} · ${escapeHtml(mm.nombre)} <span style="font-weight:400;color:var(--muted);font-size:12px">· ${escapeHtml(ss.epoca)}</span></h4><p class="si-sem">🌱 ${escapeHtml(ss.directa)}</p><p style="font-size:11px">🌾 Cosecha: ${escapeHtml(ss.cosecha)}</p></div>`;
-    });
-  } else {
-    html+='<p class="muted">Recomendaciones por luna — cada luna de Penco es distinta (actual +2 destacadas):</p>';
-    const tres=getSiembraTresLunas();
-    for(let n=1;n<=13;n++){
-      const s=SIEMBRA_LUNAS[n]; const isTres=tres.includes(n);
-      html+=`<div class="si-card" style="cursor:pointer;${isTres?'border-color:var(--gold);background:var(--card-hover)':''}" data-luna="${n}"><h4>Luna ${n} · ${escapeHtml(MOONS[n-1].nombre)} ${isTres?'<span class="chip" style="font-size:10px">próxima</span>':''} <span style="font-weight:400;color:var(--muted);font-size:12px">· ${escapeHtml(s.epoca)}</span></h4><p class="si-sem">🌱 ${escapeHtml(s.directa)}</p><p class="si-tar" style="font-size:12px">${escapeHtml(s.titulo)}</p></div>`;
-    }
-  }
-  html+='<hr style="border:none;border-top:1px solid var(--line);margin:12px 0"><p class="muted" style="font-size:12px;margin-bottom:8px">Guía por fase lunar (general):</p>';
-  html+=Object.values(SIEMBRA).map(s=>`<div class="si-card" style="opacity:0.9"><h4>${escapeHtml(s.fase)} — ${escapeHtml(s.titulo)}</h4><p style="font-size:13px">${escapeHtml(s.texto)}</p><p class="si-sem">🌱 ${escapeHtml(s.siembra)}</p><p class="si-tar">🛠️ ${escapeHtml(s.tareas)}</p></div>`).join('');
+  let html='<p class="muted" style="font-size:11px;margin-bottom:8px">Siembra — <b>luna actual + 2 siguientes</b></p>';
+  html+='<div style="display:grid;grid-template-columns:1fr;gap:8px">';
+  tres.forEach((n,i)=>{
+    const s=SIEMBRA_LUNAS[n]; const meta=MOONS[n-1];
+    const badge=i===0?'actual': i===1?'próxima':'siguiente';
+    html+=`<div class="si-card" style="${i===0?'border-color:var(--gold);background:var(--card-hover)':''}"><h4>🌱 Luna ${n} · ${escapeHtml(meta.nombre)} <span class="chip" style="font-size:10px">${badge}</span></h4><p style="font-size:11px;color:var(--muted)">${escapeHtml(s.epoca)}</p><p style="font-size:11px;color:var(--gold)"><b>${escapeHtml(s.titulo)}</b></p><p class="si-sem">🌱 Siembra directa: ${escapeHtml(s.directa)}</p><p class="si-tar">🌱 Almácigos: ${escapeHtml(s.almacigos)}</p><p style="font-size:11px">🌾 Cosecha: ${escapeHtml(s.cosecha)}</p><p style="font-size:11px">🛠️ ${escapeHtml(s.tareas)}</p></div>`;
+  });
+  html+='</div>';
   box.innerHTML=html;
-  box.querySelectorAll('.si-card[data-luna]').forEach(el=> el.onclick=()=>{ selectMoon(+el.dataset.luna); renderSiembraTresBox(); renderSiembraContent('siembra'); });
 }
 function openSiembra(tab){
   renderSiembraTresBox();

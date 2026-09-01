@@ -76,9 +76,10 @@ function cyc(year) {
 function dayCell(lunaN, diaN) {
   const c = cyc(currentCycleYear());
   const m = c.moons[String(lunaN)];
-  if (!m.days[diaN]) m.days[diaN] = { alta: '', baja: '', clima: '', nota: '', animo: -1, foto: '' };
+  if (!m.days[diaN]) m.days[diaN] = { alta: '', baja: '', clima: '', nota: '', animo: -1 };
   if (m.days[diaN].animo === undefined) m.days[diaN].animo = -1;
-  if (m.days[diaN].foto === undefined) m.days[diaN].foto = '';
+  // migración: eliminar campo foto legacy si existe (ahora sin fotos)
+  if (m.days[diaN].foto !== undefined) delete m.days[diaN].foto;
   return m.days[diaN];
 }
 
@@ -286,11 +287,10 @@ function renderLuna() {
       ${fishIcons ? `<div class="dc-habits">${fishIcons}</div>` : ''}
       ${astroIcons ? `<div class="dc-habits">${astroIcons}</div>` : ''}
       ${comunaIcons ? `<div class="dc-habits">${comunaIcons}</div>` : ''}
-      ${efe ? `<div class="dc-efe" title="${efe}">📅 ${efe}</div>` : ''}
-      ${mood ? `<div class="dc-clima">Ánimo: ${mood.e} ${mood.n}</div>` : ''}
-      ${cell.clima ? `<div class="dc-clima">${cell.clima}</div>` : ''}
-      ${cell.foto ? '<div class="dc-clima">📷 con foto</div>' : ''}
-      <div class="dc-note">${cell.nota ? cell.nota.split('\n')[0] : ''}</div>`;
+      ${efe ? `<div class="dc-efe" title="${escapeHtml(efe)}">📅 ${escapeHtml(efe)}</div>` : ''}
+      ${mood ? `<div class="dc-clima">Ánimo: ${escapeHtml(mood.e)} ${escapeHtml(mood.n)}</div>` : ''}
+      ${cell.clima ? `<div class="dc-clima">${escapeHtml(cell.clima)}</div>` : ''}
+      <div class="dc-note">${escapeHtml(cell.nota ? cell.nota.split('\n')[0] : '')}</div>`;
     card.onclick = () => openDayDialog(meta.n, d.diaN);
     grid.appendChild(card);
   }
@@ -302,27 +302,6 @@ function renderLuna() {
     scheduleSave();
   };
 
-  renderGallery(meta.n);
-}
-
-function renderGallery(lunaN) {
-  const wrap = $('galleryWrap');
-  const gal = $('gallery');
-  const items = [];
-  for (let dia = 1; dia <= 28; dia++) {
-    const cell = dayCell(lunaN, dia);
-    if (cell.foto) items.push({ dia, foto: cell.foto });
-  }
-  if (!items.length) { wrap.classList.add('hidden'); gal.innerHTML = ''; return; }
-  wrap.classList.remove('hidden');
-  gal.innerHTML = '';
-  for (const it of items) {
-    const div = document.createElement('div');
-    div.className = 'gal-item';
-    div.innerHTML = `<img src="${it.foto}" alt=""><div class="g-l">Día ${it.dia}</div>`;
-    div.onclick = () => openDayDialog(lunaN, it.dia);
-    gal.appendChild(div);
-  }
 }
 
 function renderDFT() {
@@ -383,7 +362,6 @@ function renderDFT() {
 
 let editing = null;
 let pendingMood = -1;
-let pendingFoto = '';
 
 function openDayDialog(lunaN, diaN) {
   editing = { lunaN, diaN };
@@ -413,10 +391,6 @@ function openDayDialog(lunaN, diaN) {
     moodBox.appendChild(b);
   });
 
-  pendingFoto = cell.foto || '';
-  updateFotoPreview();
-  $('fFoto').value = '';
-
   $('fClima').value = cell.clima || '';
   $('fMareaAlta').value = cell.alta || '';
   $('fMareaBaja').value = cell.baja || '';
@@ -443,58 +417,18 @@ function openDayDialog(lunaN, diaN) {
   $('dayDialog').showModal();
 }
 
-function updateFotoPreview() {
-  const img = $('fotoPreview');
-  const del = $('fotoDel');
-  if (pendingFoto) {
-    img.src = pendingFoto;
-    img.classList.remove('hidden');
-    del.classList.remove('hidden');
-  } else {
-    img.classList.add('hidden');
-    del.classList.add('hidden');
-  }
-}
-
-function resizeImage(dataUrl, maxSide) {
-  return new Promise(res => {
-    const img = new Image();
-    img.onload = () => {
-      const sc = Math.min(1, maxSide / Math.max(img.width, img.height));
-      const c = document.createElement('canvas');
-      c.width = Math.round(img.width * sc);
-      c.height = Math.round(img.height * sc);
-      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
-      res(c.toDataURL('image/jpeg', 0.72));
-    };
-    img.src = dataUrl;
-  });
-}
-
 $('dlgCancel').onclick = () => $('dayDialog').close();
 $('dlgSave').onclick = () => {
   const cell = dayCell(editing.lunaN, editing.diaN);
-  cell.clima = $('fClima').value.trim();
-  cell.alta = $('fMareaAlta').value.trim();
-  cell.baja = $('fMareaBaja').value.trim();
-  cell.nota = $('fNota').value;
+  cell.clima = sanitizeText($('fClima').value.trim(), 60);
+  cell.alta = sanitizeText($('fMareaAlta').value.trim(), 30);
+  cell.baja = sanitizeText($('fMareaBaja').value.trim(), 30);
+  cell.nota = sanitizeText($('fNota').value, 2000);
   cell.animo = pendingMood;
-  cell.foto = pendingFoto;
   $('dayDialog').close();
   scheduleSave();
   if (currentView.tipo === 'luna') renderLuna();
 };
-$('fFoto').onchange = () => {
-  const f = $('fFoto').files[0];
-  if (!f) return;
-  const r = new FileReader();
-  r.onload = async () => {
-    pendingFoto = await resizeImage(r.result, 900);
-    updateFotoPreview();
-  };
-  r.readAsDataURL(f);
-};
-$('fotoDel').onclick = () => { pendingFoto = ''; updateFotoPreview(); $('fFoto').value = ''; };
 
 $('dlgShare').onclick = async () => {
   const dataUrl = buildShareImage(editing.lunaN, editing.diaN);
@@ -640,70 +574,45 @@ function getSiembraTresLunas(){
 }
 function renderSiembraTresBox(){
   const box = $('siembraTresBox'); if(!box) return;
-  const tres = getSiembraTresLunas();
-  const nowKey = cal.fmtKey.format(new Date());
-  let html = '<h4 style="color:var(--gold)">🌙 Próximas 3 lunas — vista rápida</h4><p class="muted" style="font-size:11px">Actual + siguientes 2 · Toca para ir a esa luna</p><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px">';
-  tres.forEach((n,i)=>{
-    const s = SIEMBRA_LUNAS[n]; const meta = MOONS[n-1];
-    const isCur = i===0;
-    const plaga = n<=3?'Babosas/hongos': n<=6?'Pulgones/mosca': n<=9?'Mosca blanca/gusano':'Hongos frío';
-    html+= `<div class="si-card" style="cursor:pointer;${isCur?'border-color:var(--gold);background:var(--card-hover)':''}" data-luna3="${n}"><h4 style="font-size:12px">${isCur?'▶ ':''}Luna ${n} · ${escapeHtml(meta.nombre)} ${isCur?'<span class="chip" style="font-size:9px">actual</span>':''}</h4><p style="font-size:10px;color:var(--muted)">${escapeHtml(s.epoca)}</p><p style="font-size:11px"><b style="color:#8fd694">🌱 ${escapeHtml(s.directa.slice(0,42))}…</b></p><p style="font-size:10px"><b>🌾 Cosecha:</b> ${escapeHtml(s.cosecha.slice(0,48))}…</p><p style="font-size:10px;color:#ff9a9a"><b>🐛 ${escapeHtml(plaga)}</b></p></div>`;
-  });
-  html+='</div>';
-  box.innerHTML = html;
-  box.querySelectorAll('[data-luna3]').forEach(el=> el.onclick=()=>{ selectMoon(+el.dataset.luna3); renderSiembraTresBox(); renderSiembraContent(siembraTab); });
+  // Vista rápida eliminada: solo luna actual + 2 siguientes en el contenido principal
+  box.style.display='none';
+  box.classList.add('hidden');
+  box.innerHTML='';
 }
 function renderSiembraContent(tab){
   siembraTab = tab||siembraTab;
   const box = $('siembraContent'); const hBox=$('siembraHarvestBox');
   if(!box) return;
-  // tabs ui
   const tS=$('tabSiembra'), tC=$('tabCosecha');
   if(tS&&tC){ tS.classList.toggle('btn-accent', siembraTab==='siembra'); tC.classList.toggle('btn-accent', siembraTab==='cosecha'); }
+  const tres=getSiembraTresLunas();
   if(siembraTab==='cosecha'){
     box.innerHTML = '';
     if(hBox){
-      let html='<p class="muted" style="font-size:11px;margin-bottom:8px">Cosecha y plagas por luna — vista completa 3 lunas + todo el ciclo</p>';
-      const tres=getSiembraTresLunas();
-      html+='<div style="display:grid;grid-template-columns:1fr;gap:8px;margin-bottom:12px">';
-      tres.forEach(n=>{
+      let html='<p class="muted" style="font-size:11px;margin-bottom:8px">Cosecha y plagas — <b>luna actual + 2 siguientes</b></p>';
+      html+='<div style="display:grid;grid-template-columns:1fr;gap:8px">';
+      tres.forEach((n,i)=>{
         const s=SIEMBRA_LUNAS[n]; const meta=MOONS[n-1];
-        html+=`<div class="si-card" style="border-color:var(--gold)"><h4>🌾 Luna ${n} · ${escapeHtml(meta.nombre)} <span class="chip" style="font-size:10px">${n===tres[0]?'actual': n===tres[1]?'próxima':'siguiente'}</span></h4><p style="font-size:11px;color:var(--muted)">${escapeHtml(s.epoca)}</p><p style="font-size:12px"><b>🌾 Cosecha:</b> ${escapeHtml(s.cosecha)}</p><p style="font-size:11px;color:#ff9a9a"><b>🐛 Vigila:</b> ${n<=3?'Babosas/hongos por humedad': n<=6?'Pulgones en brotes': n<=9?'Mosca blanca/gusano fruto':'Hongos por frío/humedad'}</p><p style="font-size:11px"><b>🛠️ Tarea:</b> ${escapeHtml(s.tareas)}</p></div>`;
+        const badge=i===0?'actual': i===1?'próxima':'siguiente';
+        const plaga = n<=3?'Babosas/hongos por humedad': n<=6?'Pulgones en brotes': n<=9?'Mosca blanca/gusano fruto':'Hongos por frío/humedad';
+        html+=`<div class="si-card" style="${i===0?'border-color:var(--gold)':''}"><h4>🌾 Luna ${n} · ${escapeHtml(meta.nombre)} <span class="chip" style="font-size:10px">${badge}</span></h4><p style="font-size:11px;color:var(--muted)">${escapeHtml(s.epoca)}</p><p style="font-size:12px"><b>🌾 Cosecha:</b> ${escapeHtml(s.cosecha)}</p><p style="font-size:11px;color:#ff9a9a"><b>🐛 Plagas:</b> ${escapeHtml(plaga)}</p><p style="font-size:11px"><b>🛠️ Tarea:</b> ${escapeHtml(s.tareas)}</p></div>`;
       });
-      html+='</div><hr style="border:none;border-top:1px solid var(--line);margin:10px 0"><p class="muted" style="font-size:11px">Ciclo completo (13 lunas) — referencia rápida:</p>';
-      for(let n=1;n<=13;n++){
-        const s=SIEMBRA_LUNAS[n];
-        const isCur=tres.includes(n);
-        html+=`<div class="si-card" style="${isCur?'border-color:var(--gold);background:var(--card-hover)':''}"><h4>${isCur?'▶ ':''}Luna ${n} · ${escapeHtml(MOONS[n-1].nombre)}</h4><p style="font-size:12px"><b>🌾 Cosecha:</b> ${escapeHtml(s.cosecha)}</p><p style="font-size:11px;color:#ff9a9a">🐛 ${n<=3?'Babosas/hongos': n<=6?'Pulgones': n<=9?'Mosca blanca/gusano':'Hongos frío'}</p></div>`;
-      }
+      html+='</div>';
       hBox.innerHTML=html;
     }
     return;
   }
-  // siembra tab
+  // siembra: solo luna actual + 2 siguientes (sin vista rápida, sin ciclo completo, sin guía por fase)
   if(hBox) hBox.innerHTML='';
-  let html='';
-  if(currentView.tipo==='luna' && SIEMBRA_LUNAS[currentView.luna]){
-    const s=SIEMBRA_LUNAS[currentView.luna]; const meta=MOONS[currentView.luna-1];
-    html+=`<div class="si-luna-card"><h4>🌙 Luna ${currentView.luna}: ${escapeHtml(meta.nombre)}</h4><p class="muted" style="margin-bottom:8px">${escapeHtml(s.epoca)}</p><h4 style="color:var(--gold)">${escapeHtml(s.titulo)}</h4><p class="si-sem">🌱 Siembra directa: ${escapeHtml(s.directa)}</p><p class="si-tar">🌱 Almácigos: ${escapeHtml(s.almacigos)}</p><p class="si-tar">🍅 Cosecha: ${escapeHtml(s.cosecha)}</p><p>🛠️ ${escapeHtml(s.tareas)}</p></div>`;
-    html+='<p class="muted" style="font-size:11px;margin:10px 0 8px">También para las <b>2 lunas siguientes</b>:</p>';
-    const tres=getSiembraTresLunas().slice(1);
-    tres.forEach(n=>{
-      const ss=SIEMBRA_LUNAS[n]; const mm=MOONS[n-1];
-      html+=`<div class="si-card" style="opacity:0.95;cursor:pointer" data-luna="${n}"><h4>Luna ${n} · ${escapeHtml(mm.nombre)} <span style="font-weight:400;color:var(--muted);font-size:12px">· ${escapeHtml(ss.epoca)}</span></h4><p class="si-sem">🌱 ${escapeHtml(ss.directa)}</p><p style="font-size:11px">🌾 Cosecha: ${escapeHtml(ss.cosecha)}</p></div>`;
-    });
-  } else {
-    html+='<p class="muted">Recomendaciones por luna — cada luna de Penco es distinta (actual +2 destacadas):</p>';
-    const tres=getSiembraTresLunas();
-    for(let n=1;n<=13;n++){
-      const s=SIEMBRA_LUNAS[n]; const isTres=tres.includes(n);
-      html+=`<div class="si-card" style="cursor:pointer;${isTres?'border-color:var(--gold);background:var(--card-hover)':''}" data-luna="${n}"><h4>Luna ${n} · ${escapeHtml(MOONS[n-1].nombre)} ${isTres?'<span class="chip" style="font-size:10px">próxima</span>':''} <span style="font-weight:400;color:var(--muted);font-size:12px">· ${escapeHtml(s.epoca)}</span></h4><p class="si-sem">🌱 ${escapeHtml(s.directa)}</p><p class="si-tar" style="font-size:12px">${escapeHtml(s.titulo)}</p></div>`;
-    }
-  }
-  html+='<hr style="border:none;border-top:1px solid var(--line);margin:12px 0"><p class="muted" style="font-size:12px;margin-bottom:8px">Guía por fase lunar (general):</p>';
-  html+=Object.values(SIEMBRA).map(s=>`<div class="si-card" style="opacity:0.9"><h4>${escapeHtml(s.fase)} — ${escapeHtml(s.titulo)}</h4><p style="font-size:13px">${escapeHtml(s.texto)}</p><p class="si-sem">🌱 ${escapeHtml(s.siembra)}</p><p class="si-tar">🛠️ ${escapeHtml(s.tareas)}</p></div>`).join('');
+  let html='<p class="muted" style="font-size:11px;margin-bottom:8px">Siembra — <b>luna actual + 2 siguientes</b></p>';
+  html+='<div style="display:grid;grid-template-columns:1fr;gap:8px">';
+  tres.forEach((n,i)=>{
+    const s=SIEMBRA_LUNAS[n]; const meta=MOONS[n-1];
+    const badge=i===0?'actual': i===1?'próxima':'siguiente';
+    html+=`<div class="si-card" style="${i===0?'border-color:var(--gold);background:var(--card-hover)':''}"><h4>🌱 Luna ${n} · ${escapeHtml(meta.nombre)} <span class="chip" style="font-size:10px">${badge}</span></h4><p style="font-size:11px;color:var(--muted)">${escapeHtml(s.epoca)}</p><p style="font-size:11px;color:var(--gold)"><b>${escapeHtml(s.titulo)}</b></p><p class="si-sem">🌱 Siembra directa: ${escapeHtml(s.directa)}</p><p class="si-tar">🌱 Almácigos: ${escapeHtml(s.almacigos)}</p><p style="font-size:11px">🌾 Cosecha: ${escapeHtml(s.cosecha)}</p><p style="font-size:11px">🛠️ ${escapeHtml(s.tareas)}</p></div>`;
+  });
+  html+='</div>';
   box.innerHTML=html;
-  box.querySelectorAll('.si-card[data-luna]').forEach(el=> el.onclick=()=>{ selectMoon(+el.dataset.luna); renderSiembraTresBox(); renderSiembraContent('siembra'); });
 }
 function openSiembra(tab){
   renderSiembraTresBox();
@@ -1206,7 +1115,12 @@ $('btnDelUser').onclick = () => {
 };
 
 function escapeHtml(s) {
-  return (s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  return (s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+function sanitizeText(s, maxLen) {
+  let t = (s || '').toString().slice(0, maxLen || 500);
+  // elimina caracteres de control peligrosos
+  return t.replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, '');
 }
 
 function lunaHTML(y, meta, opts) {
@@ -1375,14 +1289,23 @@ $('btnRestore').onclick = async () => {
   if (!j) return;
   try {
     const d = JSON.parse(j);
-    if (!d.usuarios || !d.notas) throw new Error('formato');
+    if (!d.usuarios || !Array.isArray(d.usuarios) || !d.notas || typeof d.notas !== 'object') throw new Error('formato');
+    if (d.usuarios.length === 0 || d.usuarios.length > 50) throw new Error('usuarios');
+    // validación básica de estructura y tamaño (evita JSON malicioso gigante)
+    const size = JSON.stringify(d).length;
+    if (size > 5 * 1024 * 1024) throw new Error('tamaño');
+    // sanitizar nombres
+    d.usuarios = d.usuarios.map(u => ({ id: String(u.id).slice(0,40), nombre: sanitizeText(u.nombre, 30) }));
     DATA = d;
     if (!DATA.notas[DATA.actual]) DATA.actual = DATA.usuarios[0].id;
+    // limpiar fotos legacy si existen en respaldo antiguo
+    try { for (const uid of Object.keys(DATA.notas)) { const cycles = DATA.notas[uid].cycles||{}; for (const ck of Object.keys(cycles)) { const c = cycles[ck]; for (const mk of Object.keys(c.moons||{})) { for (const dk of Object.keys(c.moons[mk].days||{})) delete c.moons[mk].days[dk].foto; } } } } catch {}
     await window.api.saveData(JSON.stringify(DATA));
     buildSidebar();
     selectCycle(currentCycleYear(), currentView.tipo === 'dft' ? 'dft' : currentView.luna);
     $('statusMsg').textContent = 'Respaldo restaurado ✓';
-  } catch {
+  } catch (e) {
+    console.warn('Restore error', e);
     $('statusMsg').textContent = 'Archivo de respaldo no válido';
   }
   setTimeout(() => { $('statusMsg').textContent = ''; }, 2500);
@@ -2362,11 +2285,23 @@ function applyVisibility(){
   const vis=getVisibleConfig();
   ALL_BTNS.forEach(id=>{
     const el=document.getElementById(id);
-    if(el) el.style.display = vis[id] ? '' : 'none';
+    if(el) el.classList.toggle('hidden-by-config', !vis[id]);
   });
+  updateGroupCounts();
   const large = (DATA.config && DATA.config.largeText);
   document.body.classList.toggle('large-text', !!large);
   const cb=document.getElementById('cfgLargeText'); if(cb) cb.checked=!!large;
+}
+function updateGroupCounts(){
+  document.querySelectorAll('.action-group').forEach(g=>{
+    const total = g.querySelectorAll('.group-btns .btn').length;
+    const visible = g.querySelectorAll('.group-btns .btn:not(.hidden-by-config):not(.hidden-by-search)').length;
+    const c = g.querySelector('.ag-count');
+    if(c) c.textContent = `(${visible}/${total})`;
+    // ocultar grupo vacío por config (no por búsqueda)
+    const hasVisible = g.querySelectorAll('.group-btns .btn:not(.hidden-by-config)').length > 0;
+    g.style.display = hasVisible ? '' : 'none';
+  });
 }
 function setupConfigDialog(){
   const btn=$('btnConfig'); if(btn) btn.onclick=()=>{
@@ -2407,6 +2342,52 @@ function setupConfigDialog(){
 }
 
 setTimeout(setupConfigDialog, 860);
+
+// === BÚSQUEDA DE ACCIONES (Command Palette light) ===
+function setupActionSearch(){
+  const input = $('actionSearch');
+  if(!input) return;
+  function filter(q){
+    const needle = (q||'').toLowerCase().trim();
+    document.querySelectorAll('#actions .group-btns .btn').forEach(btn=>{
+      const txt = (btn.textContent + ' ' + (btn.dataset.keywords||'')).toLowerCase();
+      const match = !needle || txt.includes(needle);
+      btn.classList.toggle('hidden-by-search', !match);
+    });
+    // abrir grupos que tienen coincidencias, cerrar los que no
+    document.querySelectorAll('.action-group').forEach(g=>{
+      const hasMatch = g.querySelectorAll('.group-btns .btn:not(.hidden-by-search):not(.hidden-by-config)').length > 0;
+      const hasVisibleConfig = g.querySelectorAll('.group-btns .btn:not(.hidden-by-config)').length > 0;
+      if(needle){
+        g.open = hasMatch;
+        g.style.display = hasMatch ? '' : 'none';
+      } else {
+        // restaurar visibilidad por config
+        g.style.display = hasVisibleConfig ? '' : 'none';
+        // no forzar open, dejar como estaba
+      }
+    });
+    updateGroupCounts();
+  }
+  input.addEventListener('input', ()=> filter(input.value));
+  input.addEventListener('keydown', e=>{
+    if(e.key==='Escape'){ input.value=''; filter(''); input.blur(); }
+    if(e.key==='Enter'){
+      const first = document.querySelector('#actions .group-btns .btn:not(.hidden-by-search):not(.hidden-by-config)');
+      if(first){ first.click(); input.value=''; filter(''); }
+    }
+  });
+  document.addEventListener('keydown', e=>{
+    if((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='k'){ e.preventDefault(); input.focus(); input.select(); }
+  });
+  // limpiar al hacer clic fuera
+  document.addEventListener('click', e=>{
+    if(!e.target.closest('#actions') && !e.target.closest('.actions-toolbar')) { /* no auto clear */ }
+  });
+  // inicial counts
+  setTimeout(()=>{ try{ updateGroupCounts(); }catch{} }, 900);
+}
+setTimeout(setupActionSearch, 880);
 
 // === DISCIPLINA ===
 function getDisciplineData(){
