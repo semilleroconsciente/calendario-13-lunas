@@ -589,13 +589,14 @@ function renderSiembraContent(tab){
   if(siembraTab==='cosecha'){
     box.innerHTML = '';
     if(hBox){
-      let html='<p class="muted" style="font-size:11px;margin-bottom:8px">Cosecha y plagas — <b>luna actual + 2 siguientes</b></p>';
-      html+='<div style="display:grid;grid-template-columns:1fr;gap:8px">';
+      let html='<p class="muted" style="font-size:11px;margin-bottom:12px">Cosecha y plagas — <b>luna actual + 2 siguientes</b></p>';
+      html+='<div style="display:flex;flex-direction:column;gap:14px">';
       tres.forEach((n,i)=>{
         const s=SIEMBRA_LUNAS[n]; const meta=MOONS[n-1];
         const badge=i===0?'actual': i===1?'próxima':'siguiente';
         const plaga = n<=3?'Babosas/hongos por humedad': n<=6?'Pulgones en brotes': n<=9?'Mosca blanca/gusano fruto':'Hongos por frío/humedad';
-        html+=`<div class="si-card" style="${i===0?'border-color:var(--gold)':''}"><h4>🌾 Luna ${n} · ${escapeHtml(meta.nombre)} <span class="chip" style="font-size:10px">${badge}</span></h4><p style="font-size:11px;color:var(--muted)">${escapeHtml(s.epoca)}</p><p style="font-size:12px"><b>🌾 Cosecha:</b> ${escapeHtml(s.cosecha)}</p><p style="font-size:11px;color:#ff9a9a"><b>🐛 Plagas:</b> ${escapeHtml(plaga)}</p><p style="font-size:11px"><b>🛠️ Tarea:</b> ${escapeHtml(s.tareas)}</p></div>`;
+        html+=`<div class="si-card" style="margin:0;${i===0?'border-color:var(--gold);background:linear-gradient(135deg,var(--panel),var(--card))':''}"><h4>🌱 Luna ${n} · ${escapeHtml(meta.nombre)} <span class="chip" style="font-size:10px">${badge}</span></h4><p style="font-size:11px;color:var(--muted)">${escapeHtml(s.epoca)}</p><p style="font-size:11px;color:var(--gold)"><b>${escapeHtml(s.titulo)}</b></p><p class="si-sem" style="font-size:11px">🌾 Cosecha: ${escapeHtml(s.cosecha)}</p><p style="font-size:11px;color:#ff9a9a">🐛 Plagas: ${escapeHtml(plaga)}</p><p style="font-size:11px">🛠️ ${escapeHtml(s.tareas)}</p></div>`;
+        if(i<2) html+='<div style="height:1px;background:var(--line);opacity:0.6;margin:2px 12px"></div>';
       });
       html+='</div>';
       hBox.innerHTML=html;
@@ -604,12 +605,13 @@ function renderSiembraContent(tab){
   }
   // siembra: solo luna actual + 2 siguientes (sin vista rápida, sin ciclo completo, sin guía por fase)
   if(hBox) hBox.innerHTML='';
-  let html='<p class="muted" style="font-size:11px;margin-bottom:8px">Siembra — <b>luna actual + 2 siguientes</b></p>';
-  html+='<div style="display:grid;grid-template-columns:1fr;gap:8px">';
+  let html='<p class="muted" style="font-size:11px;margin-bottom:12px">Siembra — <b>luna actual + 2 siguientes</b></p>';
+  html+='<div style="display:flex;flex-direction:column;gap:14px">';
   tres.forEach((n,i)=>{
     const s=SIEMBRA_LUNAS[n]; const meta=MOONS[n-1];
     const badge=i===0?'actual': i===1?'próxima':'siguiente';
-    html+=`<div class="si-card" style="${i===0?'border-color:var(--gold);background:var(--card-hover)':''}"><h4>🌱 Luna ${n} · ${escapeHtml(meta.nombre)} <span class="chip" style="font-size:10px">${badge}</span></h4><p style="font-size:11px;color:var(--muted)">${escapeHtml(s.epoca)}</p><p style="font-size:11px;color:var(--gold)"><b>${escapeHtml(s.titulo)}</b></p><p class="si-sem">🌱 Siembra directa: ${escapeHtml(s.directa)}</p><p class="si-tar">🌱 Almácigos: ${escapeHtml(s.almacigos)}</p><p style="font-size:11px">🌾 Cosecha: ${escapeHtml(s.cosecha)}</p><p style="font-size:11px">🛠️ ${escapeHtml(s.tareas)}</p></div>`;
+    html+=`<div class="si-card" style="margin:0;${i===0?'border-color:var(--gold);background:linear-gradient(135deg,var(--panel),var(--card))':''}"><h4>🌱 Luna ${n} · ${escapeHtml(meta.nombre)} <span class="chip" style="font-size:10px">${badge}</span></h4><p style="font-size:11px;color:var(--muted)">${escapeHtml(s.epoca)}</p><p style="font-size:11px;color:var(--gold)"><b>${escapeHtml(s.titulo)}</b></p><p class="si-sem">🌱 Siembra directa: ${escapeHtml(s.directa)}</p><p class="si-tar">🌱 Almácigos: ${escapeHtml(s.almacigos)}</p><p style="font-size:11px">🌾 Cosecha: ${escapeHtml(s.cosecha)}</p><p style="font-size:11px">🛠️ ${escapeHtml(s.tareas)}</p></div>`;
+    if(i<2) html+='<div style="height:1px;background:var(--line);opacity:0.6;margin:2px 12px"></div>';
   });
   html+='</div>';
   box.innerHTML=html;
