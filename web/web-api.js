@@ -1,4 +1,5 @@
 window.api = {
+  openExternal: async (url) => { try { window.open(url, '_blank', 'noopener,noreferrer'); return true; } catch { window.location.href = url; return false; } },
   loadData: async () => {
     try { return localStorage.getItem('cal13-data') || '{}'; } catch { return '{}'; }
   },

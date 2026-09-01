@@ -9,5 +9,6 @@ contextBridge.exposeInMainWorld('api', {
   backupSave: (json) => ipcRenderer.invoke('backup:save', json),
   backupOpen: () => ipcRenderer.invoke('backup:open'),
   imageSave: (dataUrl) => ipcRenderer.invoke('image:save', dataUrl),
-  loadDonate: () => ipcRenderer.invoke('donate:load')
+  loadDonate: () => ipcRenderer.invoke('donate:load'),
+  openExternal: (url) => ipcRenderer.invoke('openExternal', url)
 });
