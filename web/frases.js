@@ -365,4 +365,6 @@ window.frases = [
   { t: "Utopía está en el horizonte: camino dos pasos, ella se aleja dos pasos. Sirve para eso: para caminar.", a: "Eduardo Galeano" },
   { t: "En medio de la dificultad reside la oportunidad.", a: "Albert Einstein" },
 ];
+// Frase especial para el Día Fuera del Tiempo (20 jun · víspera del We Tripantu) — no pertenece a ninguna luna
+window.fraseDFT = { t: "Hoy el tiempo se detiene para que el alma respire. No es un día que se cuenta, es un día que se siente: cierra el ciclo con gratitud, suelta lo que ya no sirve y abre el corazón al nuevo sol.", a: "Día Fuera del Tiempo · 20 de junio · We Tripantu" };
 window.fraseDelDia = function(i){ return window.frases[i % window.frases.length]; };
