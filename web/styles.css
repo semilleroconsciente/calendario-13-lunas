@@ -428,8 +428,8 @@ body[data-theme="medianoche"] { --bg:#050508; --bg2:#0a0a10; --panel:#141418; --
 body.large-text { font-size: 17px; }
 body.large-text .day-card { min-height: 124px; }
 body.large-text #lunaDesc, body.large-text .chip, body.large-text .btn { font-size: 15px; }
-.skip-link { position:absolute; left:-999px; top:6px; background:var(--gold); color:#10142c; padding:6px 10px; border-radius:8px; }
-.skip-link:focus { left:10px; z-index:9999; }
+.skip-link { position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); clip-path:inset(50%); white-space:nowrap; background:var(--gold); color:#10142c; padding:6px 10px; border-radius:8px; text-decoration:none; }
+.skip-link:focus { left:10px; top:10px; width:auto; height:auto; overflow:visible; clip:auto; clip-path:none; white-space:normal; z-index:9999; }
 
 ::-webkit-scrollbar { width: 10px; }
 ::-webkit-scrollbar-thumb { background: var(--line); border-radius: 5px; }

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#0b1026">
   <title>Calendario de las 13 Lunas</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=8">
   <link rel="manifest" href="manifest.json">
 </head>
 <body>
@@ -39,6 +39,7 @@
     </select>
     <button id="btnToday" class="btn btn-accent">◉ Ir a hoy</button>
     <button id="btnConfig" class="btn" style="margin-top:8px">⚙️ Personalizar</button>
+    <button id="btnSharePage" class="btn" style="margin-top:8px" title="Copiar enlace https://calendario-13-lunas.pages.dev/">🔗 Compartir calendario</button>
     <nav id="moonNav"></nav>
     <div class="sidebar-foot">
       <span id="dataInfo"></span>
@@ -139,7 +140,10 @@
 
   <dialog id="dayDialog" aria-labelledby="dlgTitle" aria-modal="true">
     <form method="dialog">
-      <h3 id="dlgTitle">Día</h3>
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 id="dlgTitle" style="margin:0">Día</h3>
+        <button type="button" id="dlgCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
+      </div>
       <p id="dlgDate" class="muted"></p>
       <blockquote id="dlgQuote" class="dlg-quote"></blockquote>
       <div class="dlg-mood" id="dlgMood"></div>
@@ -179,14 +183,16 @@
         <h3 style="margin:0">🌱 Siembra &amp; Cosecha — Penco</h3>
         <button type="button" id="siembraCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
       </div>
-      <p class="muted">Guía por lunas: <b>luna actual + 2 siguientes</b> con siembra, cosecha y plagas.</p>
-       <div class="timer-tabs" style="margin-bottom:10px">
-         <button type="button" id="tabSiembra" class="btn btn-accent" style="width:auto">🌱 Siembra</button>
-         <button type="button" id="tabCosecha" class="btn" style="width:auto">🌾 Cosecha &amp; Plagas</button>
-       </div>
-       <div id="siembraTresBox" class="hidden" style="display:none"></div>
-      <div id="siembraContent"></div>
-      <div id="siembraHarvestBox"></div>
+       <p class="muted">Guía por lunas: <b>luna actual + 2 siguientes</b> con siembra, cosecha y plagas. <span style="color:var(--gold)">Nuevo: 🤝 Asociaciones</span> para combinar cultivos.</p>
+        <div class="timer-tabs" style="margin-bottom:10px">
+          <button type="button" id="tabSiembra" class="btn btn-accent" style="width:auto">🌱 Siembra</button>
+          <button type="button" id="tabCosecha" class="btn" style="width:auto">🌾 Cosecha &amp; Plagas</button>
+          <button type="button" id="tabAsociaciones" class="btn" style="width:auto">🤝 Asociaciones</button>
+        </div>
+        <div id="siembraTresBox" class="hidden" style="display:none"></div>
+       <div id="siembraContent"></div>
+       <div id="siembraHarvestBox"></div>
+       <div id="siembraAsociacionesBox" class="hidden"></div>
       <div class="dlg-actions"><button type="button" id="siembraClose" class="btn">Cerrar</button></div>
     </form>
   </dialog>
@@ -239,7 +245,10 @@
         <div id="fishLogList" class="habits-list" style="margin-top:10px"></div>
         <div class="dlg-actions" style="justify-content:space-between;align-items:center;margin-top:8px">
           <span id="fishLogStats" class="muted" style="font-size:11px"></span>
-          <button type="button" id="fishLogClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar todo</button>
+          <span style="display:flex;gap:8px">
+            <button type="button" id="fishLogShare" class="btn" style="width:auto">📤 Compartir</button>
+            <button type="button" id="fishLogClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar todo</button>
+          </span>
         </div>
       </div>
       <div class="dlg-actions"><button type="button" id="fishingClose" class="btn">Cerrar</button></div>
@@ -295,7 +304,8 @@
         <div class="dlg-actions" style="justify-content:space-between;align-items:center;margin-top:8px">
           <span id="birdsStats" class="muted" style="font-size:11px"></span>
           <span style="display:flex;gap:8px">
-            <button type="button" id="birdsExport" class="btn" style="width:auto">📤 Exportar</button>
+            <button type="button" id="birdsShare" class="btn" style="width:auto">📤 Compartir</button>
+            <button type="button" id="birdsExport" class="btn" style="width:auto">📥 Exportar</button>
             <button type="button" id="birdsClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar</button>
           </span>
         </div>
@@ -1254,12 +1264,12 @@
     </form>
   </dialog>
 
-  <script src="web-api.js"></script>
-  <script src="astro.js"></script>
-  <script src="data.js"></script>
-  <script src="frases.js"></script>
-  <script src="cal.js"></script>
-  <script src="renderer.js"></script>
+  <script src="web-api.js?v=8"></script>
+  <script src="astro.js?v=8"></script>
+  <script src="data.js?v=8"></script>
+  <script src="frases.js?v=8"></script>
+  <script src="cal.js?v=8"></script>
+  <script src="renderer.js?v=8"></script>
   <script>
     if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
   </script>

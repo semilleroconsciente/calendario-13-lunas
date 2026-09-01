@@ -239,4 +239,30 @@ const EVENTOS_COMUNA_PENCO = [
   { md: "01-01", nombre: "Año Nuevo — feria amanecida", icon: "🎉", desc: "Feria madrugada 1 ene", cat: "feria" }
 ];
 
- window.pencoData = { PENCO, ESTACIONES, MOONS, DFT, INTRO, MOODS, EFEMERIDES, SIEMBRA, SIEMBRA_LUNAS, DONATE, AVES_PENCO, EVENTOS_ASTRONOMICOS, EVENTOS_COMUNA_PENCO };
+const ASOCIACIONES_CULTIVOS = [
+  { cultivo: "Tomate", icono: "🍅", familia: "Solanácea", buenas: ["Albahaca","Zanahoria","Perejil","Lechuga","Ajo","Cebolla"], malas: ["Repollo","Coliflor","Hinojo","Papa"], nota: "Albahaca repele mosca blanca y pulgón; no junto a repollo compite por nutrientes. 40-60 cm entre plantas." },
+  { cultivo: "Lechuga", icono: "🥬", familia: "Asterácea", buenas: ["Rabanito","Zanahoria","Frutilla","Pepino","Cebolla","Betarraga"], malas: ["Perejil","Apio"], nota: "Rabanito marca hileras y se cosecha antes; buena entre tomates para sombra parcial." },
+  { cultivo: "Zanahoria", icono: "🥕", familia: "Apiácea", buenas: ["Cebolla","Ajo","Lechuga","Tomate","Arveja","Rábano"], malas: ["Eneldo","Perejil en exceso"], nota: "Cebolla/ajo confunden mosca de la zanahoria. Siembra rala, intercala con lechuga." },
+  { cultivo: "Cebolla", icono: "🧅", familia: "Amarilidácea", buenas: ["Zanahoria","Lechuga","Betarraga","Frutilla","Manzanilla"], malas: ["Arveja","Poroto","Haba"], nota: "Repele pulgón y mosca. No con leguminosas (inhibe crecimiento)." },
+  { cultivo: "Ajo chilote", icono: "🧄", familia: "Amarilidácea", buenas: ["Frutilla","Lechuga","Zanahoria","Tomate","Betarraga"], malas: ["Arveja","Poroto","Repollo"], nota: "Fungicida natural. Plantar en borde de bancal en menguante." },
+  { cultivo: "Haba", icono: "🫘", familia: "Leguminosa", buenas: ["Maíz","Papa","Acelga","Lechuga","Zanahoria"], malas: ["Cebolla","Ajo","Puerro"], nota: "Fija nitrógeno. Ideal como abono verde antes de maíz/tomate. Tutorar si viento." },
+  { cultivo: "Arveja", icono: "🟢", familia: "Leguminosa", buenas: ["Zanahoria","Rábano","Maíz","Pepino","Lechuga"], malas: ["Cebolla","Ajo","Papa"], nota: "Enramar 1,5 m. Cosecha escalonada; deja raíces para fertilizar." },
+  { cultivo: "Poroto / Frijol", icono: "🫘", familia: "Leguminosa", buenas: ["Maíz","Zapallo","Rábano","Zanahoria","Albahaca"], malas: ["Cebolla","Ajo","Hinojo"], nota: "Milpa: maíz tutor + zapallo cubre suelo. No con cebolla." },
+  { cultivo: "Maíz / Choclo", icono: "🌽", familia: "Gramínea", buenas: ["Poroto","Zapallo","Arveja","Papa","Pepino"], malas: ["Betarraga"], nota: "Tres hermanas mapuche: maíz + poroto + zapallo. Deja cañas para tutor de poroto." },
+  { cultivo: "Zapallo / Calabaza", icono: "🎃", familia: "Cucurbitácea", buenas: ["Maíz","Poroto","Rábano","Manzanilla"], malas: ["Papa","Zapallo italiano juntos"], nota: "Rastrero tapa suelo y conserva humedad. Separar 1,2 m. Flores atraen polinizadores." },
+  { cultivo: "Zapallo italiano", icono: "🥒", familia: "Cucurbitácea", buenas: ["Maíz","Poroto","Albahaca","Lechuga"], malas: ["Papa"], nota: "Cosecha tierno cada 3 días para seguir produciendo." },
+  { cultivo: "Pepino", icono: "🥒", familia: "Cucurbitácea", buenas: ["Maíz","Arveja","Lechuga","Girasol","Ajo"], malas: ["Papa","Tomate muy cerca"], nota: "Guía vertical mejora aireación. Con girasol atrae abejas." },
+  { cultivo: "Pimiento / Ají", icono: "🫑", familia: "Solanácea", buenas: ["Albahaca","Zanahoria","Espinaca","Ajo"], malas: ["Repollo","Hinojo"], nota: "Misma familia que tomate, mismas asociaciones. Protege de viento sur." },
+  { cultivo: "Papa", icono: "🥔", familia: "Solanácea", buenas: ["Haba","Maíz","Ajo","Rábano","Repollo"], malas: ["Tomate","Zapallo","Pepino","Cebolla"], nota: "No junto a tomate (tizón). Apórcar tierra 2 veces." },
+  { cultivo: "Betarraga", icono: "🟣", familia: "Amarantácea", buenas: ["Lechuga","Cebolla","Ajo","Repollo","Acelga"], malas: ["Poroto","Maíz"], nota: "Afloja suelo arcilloso de Penco. Raleo a 8 cm." },
+  { cultivo: "Espinaca", icono: "🌿", familia: "Amarantácea", buenas: ["Frutilla","Rábano","Lechuga","Poroto","Cebolla"], malas: ["Betarraga muy densa"], nota: "Sombra parcial en verano. Siembra escalonada cada 20 días." },
+  { cultivo: "Acelga", icono: "🥬", familia: "Amarantácea", buenas: ["Lechuga","Cebolla","Ajo","Rábano","Haba"], malas: ["Perejil"], nota: "Corte hoja a hoja, dura 8 meses. Muy rústica para Penco." },
+  { cultivo: "Repollo / Col", icono: "🥬", familia: "Brasicácea", buenas: ["Papa","Betarraga","Manzanilla","Eneldo","Cebolla"], malas: ["Tomate","Frutilla","Ajo en exceso"], nota: "Manzanilla mejora sabor y repele polilla. Rotar cada 3 años." },
+  { cultivo: "Brócoli / Coliflor", icono: "🥦", familia: "Brasicácea", buenas: ["Papa","Cebolla","Manzanilla","Lechuga","Betarraga"], malas: ["Frutilla","Tomate"], nota: "Exigente en compost. Cosecha antes que abra flor." },
+  { cultivo: "Rábano", icono: "🔴", familia: "Brasicácea", buenas: ["Lechuga","Zanahoria","Espinaca","Arveja","Pepino"], malas: ["Haba densa"], nota: "Ciclo 25 días, ideal para marcar hileras de zanahoria. No en sombra." },
+  { cultivo: "Albahaca", icono: "🌱", familia: "Lamiácea", buenas: ["Tomate","Pimiento","Lechuga","Frutilla"], malas: ["Salvia cerca"], nota: "Repelente estrella. Intercalar 1 cada 4 tomates. Cosecha puntas para ramificar." },
+  { cultivo: "Frutilla", icono: "🍓", familia: "Rosácea", buenas: ["Ajo","Lechuga","Espinaca","Cebolla","Betarraga"], malas: ["Repollo","Papa"], nota: "Ajo entre frutillas reduce botritis. Mulch de paja, renovar cada 3 años." },
+  { cultivo: "Perejil / Cilantro", icono: "🌿", familia: "Apiácea", buenas: ["Tomate","Maíz","Espárrago"], malas: ["Lechuga en exceso"], nota: "Atrae sírfidos (comen pulgón). Dejar florecer una planta para semillas." }
+];
+
+ window.pencoData = { PENCO, ESTACIONES, MOONS, DFT, INTRO, MOODS, EFEMERIDES, SIEMBRA, SIEMBRA_LUNAS, DONATE, AVES_PENCO, EVENTOS_ASTRONOMICOS, EVENTOS_COMUNA_PENCO, ASOCIACIONES_CULTIVOS };

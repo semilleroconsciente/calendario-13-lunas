@@ -1,14 +1,21 @@
-const CACHE = 'cal13-v4-sin-fotos';
+const CACHE = 'cal13-v8-asociaciones-cultivos';
 const CORE = [
   './',
   './index.html',
   './styles.css',
+  './styles.css?v=8',
   './web-api.js',
+  './web-api.js?v=8',
   './astro.js',
+  './astro.js?v=8',
   './data.js',
+  './data.js?v=8',
   './frases.js',
+  './frases.js?v=8',
   './cal.js',
+  './cal.js?v=8',
   './renderer.js',
+  './renderer.js?v=8',
   './manifest.json',
   './icon-192.png',
   './icon-512.png',

@@ -76,9 +76,10 @@ function cyc(year) {
 function dayCell(lunaN, diaN) {
   const c = cyc(currentCycleYear());
   const m = c.moons[String(lunaN)];
-  if (!m.days[diaN]) m.days[diaN] = { alta: '', baja: '', clima: '', nota: '', animo: -1, foto: '' };
+  if (!m.days[diaN]) m.days[diaN] = { alta: '', baja: '', clima: '', nota: '', animo: -1 };
   if (m.days[diaN].animo === undefined) m.days[diaN].animo = -1;
-  if (m.days[diaN].foto === undefined) m.days[diaN].foto = '';
+  // migración: eliminar campo foto legacy si existe (ahora sin fotos)
+  if (m.days[diaN].foto !== undefined) delete m.days[diaN].foto;
   return m.days[diaN];
 }
 
@@ -286,11 +287,10 @@ function renderLuna() {
       ${fishIcons ? `<div class="dc-habits">${fishIcons}</div>` : ''}
       ${astroIcons ? `<div class="dc-habits">${astroIcons}</div>` : ''}
       ${comunaIcons ? `<div class="dc-habits">${comunaIcons}</div>` : ''}
-      ${efe ? `<div class="dc-efe" title="${efe}">📅 ${efe}</div>` : ''}
-      ${mood ? `<div class="dc-clima">Ánimo: ${mood.e} ${mood.n}</div>` : ''}
-      ${cell.clima ? `<div class="dc-clima">${cell.clima}</div>` : ''}
-      ${cell.foto ? '<div class="dc-clima">📷 con foto</div>' : ''}
-      <div class="dc-note">${cell.nota ? cell.nota.split('\n')[0] : ''}</div>`;
+      ${efe ? `<div class="dc-efe" title="${escapeHtml(efe)}">📅 ${escapeHtml(efe)}</div>` : ''}
+      ${mood ? `<div class="dc-clima">Ánimo: ${escapeHtml(mood.e)} ${escapeHtml(mood.n)}</div>` : ''}
+      ${cell.clima ? `<div class="dc-clima">${escapeHtml(cell.clima)}</div>` : ''}
+      <div class="dc-note">${escapeHtml(cell.nota ? cell.nota.split('\n')[0] : '')}</div>`;
     card.onclick = () => openDayDialog(meta.n, d.diaN);
     grid.appendChild(card);
   }
@@ -302,27 +302,6 @@ function renderLuna() {
     scheduleSave();
   };
 
-  renderGallery(meta.n);
-}
-
-function renderGallery(lunaN) {
-  const wrap = $('galleryWrap');
-  const gal = $('gallery');
-  const items = [];
-  for (let dia = 1; dia <= 28; dia++) {
-    const cell = dayCell(lunaN, dia);
-    if (cell.foto) items.push({ dia, foto: cell.foto });
-  }
-  if (!items.length) { wrap.classList.add('hidden'); gal.innerHTML = ''; return; }
-  wrap.classList.remove('hidden');
-  gal.innerHTML = '';
-  for (const it of items) {
-    const div = document.createElement('div');
-    div.className = 'gal-item';
-    div.innerHTML = `<img src="${it.foto}" alt=""><div class="g-l">Día ${it.dia}</div>`;
-    div.onclick = () => openDayDialog(lunaN, it.dia);
-    gal.appendChild(div);
-  }
 }
 
 function renderDFT() {
@@ -347,7 +326,7 @@ function renderDFT() {
   $('dowRow').innerHTML = '';
   const key = cal.fmtKey.format(new Date(dftDay.noonMs));
   const evs = phaseMap[key] || [];
-  const frDft = window.frases ? window.frases[364] : null;
+  const frDft = window.fraseDFT || (window.frases ? window.frases[364] : null);
   grid.innerHTML = `
     <div class="day-card today" style="max-width:520px">
       <div class="dc-head"><span class="dc-n">365</span><span class="dc-date">${cal.fmtDate.format(new Date(dftDay.noonMs))}</span></div>
@@ -383,7 +362,6 @@ function renderDFT() {
 
 let editing = null;
 let pendingMood = -1;
-let pendingFoto = '';
 
 function openDayDialog(lunaN, diaN) {
   editing = { lunaN, diaN };
@@ -413,10 +391,6 @@ function openDayDialog(lunaN, diaN) {
     moodBox.appendChild(b);
   });
 
-  pendingFoto = cell.foto || '';
-  updateFotoPreview();
-  $('fFoto').value = '';
-
   $('fClima').value = cell.clima || '';
   $('fMareaAlta').value = cell.alta || '';
   $('fMareaBaja').value = cell.baja || '';
@@ -443,58 +417,19 @@ function openDayDialog(lunaN, diaN) {
   $('dayDialog').showModal();
 }
 
-function updateFotoPreview() {
-  const img = $('fotoPreview');
-  const del = $('fotoDel');
-  if (pendingFoto) {
-    img.src = pendingFoto;
-    img.classList.remove('hidden');
-    del.classList.remove('hidden');
-  } else {
-    img.classList.add('hidden');
-    del.classList.add('hidden');
-  }
-}
-
-function resizeImage(dataUrl, maxSide) {
-  return new Promise(res => {
-    const img = new Image();
-    img.onload = () => {
-      const sc = Math.min(1, maxSide / Math.max(img.width, img.height));
-      const c = document.createElement('canvas');
-      c.width = Math.round(img.width * sc);
-      c.height = Math.round(img.height * sc);
-      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
-      res(c.toDataURL('image/jpeg', 0.72));
-    };
-    img.src = dataUrl;
-  });
-}
-
 $('dlgCancel').onclick = () => $('dayDialog').close();
+const _dlgCloseTop = $('dlgCloseTop'); if (_dlgCloseTop) _dlgCloseTop.onclick = () => $('dayDialog').close();
 $('dlgSave').onclick = () => {
   const cell = dayCell(editing.lunaN, editing.diaN);
-  cell.clima = $('fClima').value.trim();
-  cell.alta = $('fMareaAlta').value.trim();
-  cell.baja = $('fMareaBaja').value.trim();
-  cell.nota = $('fNota').value;
+  cell.clima = sanitizeText($('fClima').value.trim(), 60);
+  cell.alta = sanitizeText($('fMareaAlta').value.trim(), 30);
+  cell.baja = sanitizeText($('fMareaBaja').value.trim(), 30);
+  cell.nota = sanitizeText($('fNota').value, 2000);
   cell.animo = pendingMood;
-  cell.foto = pendingFoto;
   $('dayDialog').close();
   scheduleSave();
   if (currentView.tipo === 'luna') renderLuna();
 };
-$('fFoto').onchange = () => {
-  const f = $('fFoto').files[0];
-  if (!f) return;
-  const r = new FileReader();
-  r.onload = async () => {
-    pendingFoto = await resizeImage(r.result, 900);
-    updateFotoPreview();
-  };
-  r.readAsDataURL(f);
-};
-$('fotoDel').onclick = () => { pendingFoto = ''; updateFotoPreview(); $('fFoto').value = ''; };
 
 $('dlgShare').onclick = async () => {
   const dataUrl = buildShareImage(editing.lunaN, editing.diaN);
@@ -558,6 +493,111 @@ function wrapText(x, text, cx, y, maxW, lh) {
   }
   x.fillText(line.trim(), cx, yy);
 }
+
+// === Helpers de compartir (bitácoras y página) ===
+async function shareText(title, text, url) {
+  const shareData = { title, text };
+  if (url) shareData.url = url;
+  // Intentar Web Share API nativa (móvil/desktop moderno)
+  try {
+    if (navigator.share && navigator.canShare && !navigator.canShare(shareData)) {
+      // canShare false por url no soportada, intentar sin url
+      delete shareData.url;
+    }
+    if (navigator.share) {
+      await navigator.share(shareData);
+      if ($('statusMsg')) { $('statusMsg').textContent = 'Compartido ✓'; setTimeout(()=>{$('statusMsg').textContent='';},2500); }
+      return true;
+    }
+  } catch(e) {
+    if (e && e.name === 'AbortError') return false;
+  }
+  // Fallback: copiar al portapapeles
+  try {
+    const full = url ? `${text}\n${url}` : text;
+    await navigator.clipboard.writeText(full);
+    if ($('statusMsg')) { $('statusMsg').textContent = 'Copiado al portapapeles ✓'; setTimeout(()=>{$('statusMsg').textContent='';},2500); }
+    else alert('Copiado al portapapeles');
+    return true;
+  } catch {}
+  // Último fallback: prompt
+  try { window.prompt('Copia el texto:', (url? `${text}\n${url}`: text)); } catch {}
+  return false;
+}
+function buildFishingShareText(entryOrAll) {
+  if (Array.isArray(entryOrAll)) {
+    if (!entryOrAll.length) return 'Bitácora de pesca — Penco · sin registros aún';
+    let t = '🎣 Bitácora de pesca — Penco / Golfo de Arauco\n';
+    t += `Calendario 13 Lunas · ${entryOrAll.length} salidas\n\n`;
+    entryOrAll.slice().sort((a,b)=>a.date.localeCompare(b.date)).forEach(e=>{
+      t += `• ${e.date} · ${e.species||'—'} ${e.qty? '('+e.qty+')':''} · ${e.place||'—'}`;
+      if (e.tide) t += ` · ${e.tide}`;
+      if (e.weather) t += ` · ${e.weather}`;
+      if (e.notes) t += ` — ${e.notes}`;
+      t += '\n';
+    });
+    t += '\n— Mari Küla Küyen · Penco';
+    return t;
+  } else {
+    const e = entryOrAll;
+    let t = `🎣 ${e.species||'Salida de pesca'} · ${e.date}\n`;
+    if (e.place) t += `📍 ${e.place}\n`;
+    if (e.qty) t += `Cantidad: ${e.qty}\n`;
+    if (e.tide) t += `🌊 ${e.tide}\n`;
+    if (e.weather) t += `☁️ ${e.weather}\n`;
+    if (e.notes) t += `📝 ${e.notes}\n`;
+    const luna = mensLunaForKey(e.date); if (luna) t += `🌙 Luna ${luna.luna} día ${luna.dia}\n`;
+    t += '\n— Bitácora de pesca · Mari Küla Küyen';
+    return t;
+  }
+}
+function buildBirdsShareText(entryOrAll) {
+  if (Array.isArray(entryOrAll)) {
+    if (!entryOrAll.length) return 'Bitácora de aves — Penco · sin registros aún';
+    let t = '🦅 Bitácora de aves — Penco · Rocuant\n';
+    t += `${entryOrAll.length} avistamientos · ${new Set(entryOrAll.map(x=>x.species)).size} especies\n\n`;
+    entryOrAll.slice().sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time)).forEach(e=>{
+      t += `• ${e.date} ${e.time||''} · ${e.species} ×${e.count} · ${e.place||'—'} (${e.activity||'—'})`;
+      if (e.notes) t += ` — ${e.notes}`;
+      t += '\n';
+    });
+    t += '\n— Mari Küla Küyen · Penco';
+    return t;
+  } else {
+    const e = entryOrAll;
+    let t = `🦅 ${e.species} ×${e.count} · ${e.date} ${e.time||''}\n`;
+    if (e.place) t += `📍 ${e.place}\n`;
+    if (e.activity) t += `Actividad: ${e.activity}\n`;
+    if (e.notes) t += `📝 ${e.notes}\n`;
+    const luna = mensLunaForKey(e.date); if (luna) t += `🌙 Luna ${luna.luna} día ${luna.dia}\n`;
+    t += '\n— Bitácora de aves · Mari Küla Küyen';
+    return t;
+  }
+}
+function setupPageShare(){
+  const b=$('btnSharePage'); if(!b) return;
+  const CAL_URL='https://calendario-13-lunas.pages.dev/';
+  b.onclick=async()=>{
+    const title='Mari Küla Küyen — Calendario de las 13 Lunas';
+    const text='Calendario de las 13 Lunas · Penco · Bío-Bío — 13 lunas de 28 días + Día Fuera del Tiempo. Lunas, mareas, siembra y bitácoras locales.';
+    // Copiar enlace fijo al portapapeles (requisito) y luego intentar compartir nativo
+    try { await navigator.clipboard.writeText(CAL_URL); } catch {}
+    // Intentar Web Share API con URL fija si disponible, sino fallback a helper
+    try {
+      if (navigator.share) {
+        await navigator.share({ title, text, url: CAL_URL });
+        if ($('statusMsg')) { $('statusMsg').textContent='Enlace copiado y compartido ✓'; setTimeout(()=>{$('statusMsg').textContent='';},2500); }
+        return;
+      }
+    } catch(e){ if(e && e.name==='AbortError') return; }
+    // Fallback: usar helper que también copia y muestra estado
+    await shareText(title, text + ' ' + CAL_URL, null);
+    // Asegurar que el enlace puro quede en portapapeles
+    try { await navigator.clipboard.writeText(CAL_URL); } catch {}
+    if ($('statusMsg')) { $('statusMsg').textContent='Enlace copiado ✓ — ' + CAL_URL; setTimeout(()=>{$('statusMsg').textContent='';},3000); }
+  };
+}
+setTimeout(setupPageShare, 700);
 
 const WMO = [
   [0, 'Despejado', '☀️'], [1, 'Mayormente despejado', '🌤️'], [2, 'Parcialmente nublado', '⛅'], [3, 'Nublado', '☁️'],
@@ -647,11 +687,24 @@ function renderSiembraTresBox(){
 }
 function renderSiembraContent(tab){
   siembraTab = tab||siembraTab;
-  const box = $('siembraContent'); const hBox=$('siembraHarvestBox');
+  const box = $('siembraContent'); const hBox=$('siembraHarvestBox'); const aBox=$('siembraAsociacionesBox');
   if(!box) return;
-  const tS=$('tabSiembra'), tC=$('tabCosecha');
-  if(tS&&tC){ tS.classList.toggle('btn-accent', siembraTab==='siembra'); tC.classList.toggle('btn-accent', siembraTab==='cosecha'); }
+  const tS=$('tabSiembra'), tC=$('tabCosecha'), tA=$('tabAsociaciones');
+  if(tS&&tC&&tA){ tS.classList.toggle('btn-accent', siembraTab==='siembra'); tC.classList.toggle('btn-accent', siembraTab==='cosecha'); tA.classList.toggle('btn-accent', siembraTab==='asociaciones'); }
+  else if(tS&&tC){ tS.classList.toggle('btn-accent', siembraTab==='siembra'); tC.classList.toggle('btn-accent', siembraTab==='cosecha'); }
+  // gestionar visibilidad de contenedores
+  if(aBox){
+    if(siembraTab==='asociaciones'){ aBox.classList.remove('hidden'); aBox.style.display=''; } else { aBox.classList.add('hidden'); }
+  }
   const tres=getSiembraTresLunas();
+  if(siembraTab==='asociaciones'){
+    if(box) box.innerHTML='';
+    if(hBox) hBox.innerHTML='';
+    renderSiembraAsociaciones();
+    return;
+  }
+  // ocultar asociaciones si no es esa pestaña ya hecho; asegurar box visible
+  if(aBox) aBox.classList.add('hidden');
   if(siembraTab==='cosecha'){
     box.innerHTML = '';
     if(hBox){
@@ -682,6 +735,66 @@ function renderSiembraContent(tab){
   html+='</div>';
   box.innerHTML=html;
 }
+// === ASOCIACIONES DE CULTIVOS ===
+const ASOC_DATA = (typeof ASOCIACIONES_CULTIVOS !== 'undefined' ? ASOCIACIONES_CULTIVOS : (window.pencoData && window.pencoData.ASOCIACIONES_CULTIVOS) || []);
+function renderSiembraAsociaciones(filterText){
+  const aBox=$('siembraAsociacionesBox'); if(!aBox) return;
+  const ft=(filterText||$('asocSearch')&&$('asocSearch').value||'').toLowerCase().trim();
+  // cultivos de la luna actual para destacar
+  let destacados=new Set();
+  try{
+    const tres=getSiembraTresLunas();
+    tres.forEach(n=>{
+      const s=SIEMBRA_LUNAS[n];
+      const txt=(s.directa+' '+s.almacigos).toLowerCase();
+      ASOC_DATA.forEach(a=>{
+        const name=a.cultivo.toLowerCase();
+        // si el nombre aparece en el texto de siembra (tomate en directa etc.) marcar
+        if(txt.includes(name.split(' ')[0]) || txt.includes(name.toLowerCase())) destacados.add(a.cultivo);
+      });
+    });
+  }catch{}
+  let list=ASOC_DATA;
+  if(ft){
+    list=list.filter(a=> a.cultivo.toLowerCase().includes(ft) || a.buenas.join(' ').toLowerCase().includes(ft) || a.malas.join(' ').toLowerCase().includes(ft) || a.familia.toLowerCase().includes(ft));
+  }
+  let html='';
+  html+='<div class="menstrual-card" style="background:linear-gradient(135deg,var(--panel),var(--card));border-color:var(--gold)">';
+  html+='<h4 style="color:var(--gold)">🤝 Asociaciones — qué plantar junto</h4>';
+  html+='<p class="muted" style="font-size:11px">Combina cultivos para repeler plagas, mejorar sabor y aprovechar espacio. <b>Verde</b>=buena compañía, <b>rojo</b>=evitar. Basado en huerto de Penco (Bío-Bío).</p>';
+  html+='<div class="conv-row" style="margin-top:8px"><label style="flex:1">🔍 Buscar cultivo <input type="text" id="asocSearch" placeholder="ej: tomate, lechuga, ajo..." value="'+escapeHtml(ft)+'"></label><span class="chip" style="align-self:flex-end">'+list.length+' cultivos</span></div>';
+  if(destacados.size) html+='<p class="muted" style="font-size:11px;margin-top:6px">⭐ Destacados esta luna: '+Array.from(destacados).join(', ')+'</p>';
+  html+='<div class="fishing-grid" style="margin-top:10px">';
+  html+='<div class="menstrual-card" style="background:var(--panel)"><h4 style="font-size:11px;color:#8fd694">✅ Buenas combinaciones</h4><p class="muted" style="font-size:11px">Ej: Maíz + Poroto + Zapallo (milpa), Tomate + Albahaca, Zanahoria + Cebolla, Frutilla + Ajo.</p></div>';
+  html+='<div class="menstrual-card" style="background:var(--panel)"><h4 style="font-size:11px;color:#ff9a9a">🚫 Malas combinaciones</h4><p class="muted" style="font-size:11px">Ej: Cebolla con leguminosas, Tomate con Repollo/Papa, Haba con Ajo.</p></div>';
+  html+='</div>';
+  // Tabla 3 hermanas
+  html+='<div class="si-card" style="margin-top:10px;border-color:var(--gold)"><h4>🌽 Las Tres Hermanas — milpa mapuche</h4><p style="font-size:12px;color:#cdd3ee"><b>Maíz</b> es tutor del <b>Poroto</b> (aporta nitrógeno) y <b>Zapallo</b> cubre suelo, guarda humedad y frena maleza. Juntas producen más que separadas. Espacio: maíz 40 cm, poroto al pie, zapallo 1,2 m entre mata.</p></div>';
+  html+='</div>';
+  if(!list.length){
+    html+='<p class="muted" style="margin-top:10px">Sin resultados para “'+escapeHtml(ft)+'”.</p>';
+  } else {
+    html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px">';
+    list.forEach(a=>{
+      const isDest=destacados.has(a.cultivo);
+      html+='<div class="si-card" style="margin:0;'+(isDest?'border-color:var(--gold);background:linear-gradient(135deg,var(--panel),var(--card))':'')+'">';
+      html+='<h4>'+a.icono+' '+escapeHtml(a.cultivo)+' <span class="chip" style="font-size:10px">'+escapeHtml(a.familia)+'</span>'+(isDest?' <span class="chip" style="font-size:10px;background:var(--gold);color:#10142c">luna actual</span>':'')+'</h4>';
+      html+='<p style="font-size:11px;color:#8fd694">✅ Con: '+escapeHtml(a.buenas.join(', '))+'</p>';
+      html+='<p style="font-size:11px;color:#ff9a9a">🚫 Evitar: '+escapeHtml(a.malas.join(', '))+'</p>';
+      html+='<p style="font-size:11px;color:var(--muted)">💡 '+escapeHtml(a.nota)+'</p>';
+      html+='</div>';
+    });
+    html+='</div>';
+  }
+  html+='<p class="muted" style="font-size:10px;margin-top:8px">Tip: alterna familias cada luna (no repetir solanácea tras solanácea). Deja flores (caléndula, cosmos) para atraer polinizadores.</p>';
+  aBox.innerHTML=html;
+  const inp=$('asocSearch');
+  if(inp){
+    inp.oninput=()=> renderSiembraAsociaciones(inp.value);
+    // mantener foco después de render
+    inp.focus(); const v=inp.value; inp.setSelectionRange(v.length, v.length);
+  }
+}
 function openSiembra(tab){
   renderSiembraTresBox();
   renderSiembraContent(tab||'siembra');
@@ -690,9 +803,10 @@ function openSiembra(tab){
 $('btnSiembra').onclick = () => openSiembra('siembra');
 $('siembraClose').onclick = () => $('siembraDialog').close();
 if ($('siembraCloseTop')) $('siembraCloseTop').onclick = () => $('siembraDialog').close();
-const _tabS=$('tabSiembra'), _tabC=$('tabCosecha');
+const _tabS=$('tabSiembra'), _tabC=$('tabCosecha'), _tabA=$('tabAsociaciones');
 if(_tabS) _tabS.onclick=()=> renderSiembraContent('siembra');
 if(_tabC) _tabC.onclick=()=> renderSiembraContent('cosecha');
+if(_tabA) _tabA.onclick=()=> renderSiembraContent('asociaciones');
 
 
 // === PESCA ===
@@ -775,9 +889,13 @@ function renderFishingLog(){
   box.innerHTML=sorted.map(it=>{
     const luna=mensLunaForKey(it.date);
     const lunaTxt=luna? `Luna ${luna.luna} d${luna.dia}`: '';
-    return `<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center"><span><b>${escapeHtml(it.species||'—')}</b> — ${escapeHtml(it.qty||'')} · ${escapeHtml(it.place||'')} <br><span class="muted" style="font-size:11px">${it.date} ${it.tide? '· '+escapeHtml(it.tide):''} ${lunaTxt? '· '+lunaTxt:''} ${it.weather? '· '+escapeHtml(it.weather):''}</span><br><span class="muted" style="font-size:11px">${escapeHtml(it.notes||'')}</span></span><span style="display:flex;gap:6px;flex:0 0 auto"><button data-id="${it.id}" class="btn fishlog-edit" style="width:auto;font-size:11px">✏️</button><button data-id="${it.id}" class="btn fishlog-del" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕</button></span></div>`;
+    return `<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center"><span><b>${escapeHtml(it.species||'—')}</b> — ${escapeHtml(it.qty||'')} · ${escapeHtml(it.place||'')} <br><span class="muted" style="font-size:11px">${it.date} ${it.tide? '· '+escapeHtml(it.tide):''} ${lunaTxt? '· '+lunaTxt:''} ${it.weather? '· '+escapeHtml(it.weather):''}</span><br><span class="muted" style="font-size:11px">${escapeHtml(it.notes||'')}</span></span><span style="display:flex;gap:6px;flex:0 0 auto"><button data-id="${it.id}" class="btn fishlog-share" style="width:auto;font-size:11px" title="Compartir esta salida">📤</button><button data-id="${it.id}" class="btn fishlog-edit" style="width:auto;font-size:11px">✏️</button><button data-id="${it.id}" class="btn fishlog-del" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕</button></span></div>`;
   }).join('');
   if(stats) stats.textContent=`${data.length} salidas · ${data.filter(x=>x.qty).length} con captura`;
+  box.querySelectorAll('.fishlog-share').forEach(b=> b.onclick=async()=>{
+    const it=data.find(x=>x.id===b.dataset.id); if(!it) return;
+    await shareText(`🎣 ${it.species||'Pesca'} · ${it.date}`, buildFishingShareText(it));
+  });
   box.querySelectorAll('.fishlog-edit').forEach(b=> b.onclick=()=>{
     const it=data.find(x=>x.id===b.dataset.id); if(!it) return;
     fishLogEditingId=it.id;
@@ -810,6 +928,11 @@ function setupFishingDialog(){
   };
   const cancel=$('fishLogCancelEdit'); if(cancel) cancel.onclick=()=>{ fishLogEditingId=null; $('fishLogAdd').textContent='+ Guardar salida'; cancel.classList.add('hidden'); $('fishLogSpecies').value=''; $('fishLogQty').value=''; $('fishLogNotes').value=''; };
   const clear=$('fishLogClear'); if(clear) clear.onclick=()=>{ if(!confirm('¿Borrar toda la bitácora de pesca?')) return; const d=userData(); d.fishingLog=[]; scheduleSave(); renderFishingLog(); };
+  const share=$('fishLogShare'); if(share) share.onclick=async()=>{
+    const arr=getFishingLogData();
+    if(!arr.length) return alert('Sin registros para compartir');
+    await shareText('🎣 Bitácora de pesca — Penco', buildFishingShareText(arr));
+  };
   // auto fill tide from today's prediction
   const tideInput=$('fishLogTide');
   if(tideInput) tideInput.addEventListener('focus', ()=>{
@@ -862,10 +985,14 @@ function renderBirdsLog(){
   const sorted=[...data].sort((a,b)=> (b.date+b.time).localeCompare(a.date+a.time));
   box.innerHTML=sorted.slice(0,60).map(it=>{
     const luna=mensLunaForKey(it.date);
-    return `<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center"><span><b>${escapeHtml(it.species)}</b> ×${it.count} — ${escapeHtml(it.place||'—')} · ${escapeHtml(it.activity||'')} <br><span class="muted" style="font-size:11px">${it.date} ${it.time||''} ${luna? '· Luna '+luna.luna+' d'+luna.dia:''}</span><br><span class="muted" style="font-size:11px">${escapeHtml(it.notes||'')}</span></span><span style="display:flex;gap:6px;flex:0 0 auto"><button data-id="${it.id}" class="btn bird-edit" style="width:auto;font-size:11px">✏️</button><button data-id="${it.id}" class="btn bird-del" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕</button></span></div>`;
+    return `<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center"><span><b>${escapeHtml(it.species)}</b> ×${it.count} — ${escapeHtml(it.place||'—')} · ${escapeHtml(it.activity||'')} <br><span class="muted" style="font-size:11px">${it.date} ${it.time||''} ${luna? '· Luna '+luna.luna+' d'+luna.dia:''}</span><br><span class="muted" style="font-size:11px">${escapeHtml(it.notes||'')}</span></span><span style="display:flex;gap:6px;flex:0 0 auto"><button data-id="${it.id}" class="btn bird-share" style="width:auto;font-size:11px" title="Compartir avistamiento">📤</button><button data-id="${it.id}" class="btn bird-edit" style="width:auto;font-size:11px">✏️</button><button data-id="${it.id}" class="btn bird-del" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕</button></span></div>`;
   }).join('');
   const speciesSet=new Set(data.map(x=>x.species));
   if(stats) stats.textContent=`${data.length} avistamientos · ${speciesSet.size} especies · ${data.reduce((s,x)=>s+(parseInt(x.count)||0),0)} individuos`;
+  box.querySelectorAll('.bird-share').forEach(b=> b.onclick=async()=>{
+    const it=getBirdData().entries.find(x=>x.id===b.dataset.id); if(!it) return;
+    await shareText(`🦅 ${it.species} · ${it.date}`, buildBirdsShareText(it));
+  });
   box.querySelectorAll('.bird-edit').forEach(b=> b.onclick=()=>{
     const d=getBirdData().entries.find(x=>x.id===b.dataset.id); if(!d) return;
     birdEditingId=d.id; $('birdDate').value=d.date; $('birdTime').value=d.time||'07:00'; $('birdPlace').value=d.place||''; $('birdSpecies').value=d.species||''; $('birdCount').value=d.count||1; $('birdActivity').value=d.activity||'posada'; $('birdNotes').value=d.notes||'';
@@ -890,6 +1017,11 @@ function setupBirdsDialog(){
   };
   const cancel=$('birdCancelEdit'); if(cancel) cancel.onclick=()=>{ birdEditingId=null; $('birdAdd').textContent='+ Guardar avistamiento'; cancel.classList.add('hidden'); $('birdSpecies').value=''; $('birdNotes').value=''; };
   const clear=$('birdsClear'); if(clear) clear.onclick=()=>{ if(!confirm('¿Borrar toda la bitácora de aves?')) return; getBirdData().entries=[]; scheduleSave(); renderBirdsDialog(); };
+  const shareB=$('birdsShare'); if(shareB) shareB.onclick=async()=>{
+    const arr=getBirdData().entries;
+    if(!arr.length) return alert('Sin registros para compartir');
+    await shareText('🦅 Bitácora de aves — Penco', buildBirdsShareText(arr));
+  };
   const exp=$('birdsExport'); if(exp) exp.onclick=()=>{
     const arr=getBirdData().entries;
     if(!arr.length) return alert('Sin datos para exportar');
@@ -1183,7 +1315,12 @@ $('btnDelUser').onclick = () => {
 };
 
 function escapeHtml(s) {
-  return (s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  return (s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+function sanitizeText(s, maxLen) {
+  let t = (s || '').toString().slice(0, maxLen || 500);
+  // elimina caracteres de control peligrosos
+  return t.replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, '');
 }
 
 function lunaHTML(y, meta, opts) {
@@ -1352,14 +1489,23 @@ $('btnRestore').onclick = async () => {
   if (!j) return;
   try {
     const d = JSON.parse(j);
-    if (!d.usuarios || !d.notas) throw new Error('formato');
+    if (!d.usuarios || !Array.isArray(d.usuarios) || !d.notas || typeof d.notas !== 'object') throw new Error('formato');
+    if (d.usuarios.length === 0 || d.usuarios.length > 50) throw new Error('usuarios');
+    // validación básica de estructura y tamaño (evita JSON malicioso gigante)
+    const size = JSON.stringify(d).length;
+    if (size > 5 * 1024 * 1024) throw new Error('tamaño');
+    // sanitizar nombres
+    d.usuarios = d.usuarios.map(u => ({ id: String(u.id).slice(0,40), nombre: sanitizeText(u.nombre, 30) }));
     DATA = d;
     if (!DATA.notas[DATA.actual]) DATA.actual = DATA.usuarios[0].id;
+    // limpiar fotos legacy si existen en respaldo antiguo
+    try { for (const uid of Object.keys(DATA.notas)) { const cycles = DATA.notas[uid].cycles||{}; for (const ck of Object.keys(cycles)) { const c = cycles[ck]; for (const mk of Object.keys(c.moons||{})) { for (const dk of Object.keys(c.moons[mk].days||{})) delete c.moons[mk].days[dk].foto; } } } } catch {}
     await window.api.saveData(JSON.stringify(DATA));
     buildSidebar();
     selectCycle(currentCycleYear(), currentView.tipo === 'dft' ? 'dft' : currentView.luna);
     $('statusMsg').textContent = 'Respaldo restaurado ✓';
-  } catch {
+  } catch (e) {
+    console.warn('Restore error', e);
     $('statusMsg').textContent = 'Archivo de respaldo no válido';
   }
   setTimeout(() => { $('statusMsg').textContent = ''; }, 2500);
@@ -2339,11 +2485,23 @@ function applyVisibility(){
   const vis=getVisibleConfig();
   ALL_BTNS.forEach(id=>{
     const el=document.getElementById(id);
-    if(el) el.style.display = vis[id] ? '' : 'none';
+    if(el) el.classList.toggle('hidden-by-config', !vis[id]);
   });
+  updateGroupCounts();
   const large = (DATA.config && DATA.config.largeText);
   document.body.classList.toggle('large-text', !!large);
   const cb=document.getElementById('cfgLargeText'); if(cb) cb.checked=!!large;
+}
+function updateGroupCounts(){
+  document.querySelectorAll('.action-group').forEach(g=>{
+    const total = g.querySelectorAll('.group-btns .btn').length;
+    const visible = g.querySelectorAll('.group-btns .btn:not(.hidden-by-config):not(.hidden-by-search)').length;
+    const c = g.querySelector('.ag-count');
+    if(c) c.textContent = `(${visible}/${total})`;
+    // ocultar grupo vacío por config (no por búsqueda)
+    const hasVisible = g.querySelectorAll('.group-btns .btn:not(.hidden-by-config)').length > 0;
+    g.style.display = hasVisible ? '' : 'none';
+  });
 }
 function setupConfigDialog(){
   const btn=$('btnConfig'); if(btn) btn.onclick=()=>{
@@ -2384,6 +2542,52 @@ function setupConfigDialog(){
 }
 
 setTimeout(setupConfigDialog, 860);
+
+// === BÚSQUEDA DE ACCIONES (Command Palette light) ===
+function setupActionSearch(){
+  const input = $('actionSearch');
+  if(!input) return;
+  function filter(q){
+    const needle = (q||'').toLowerCase().trim();
+    document.querySelectorAll('#actions .group-btns .btn').forEach(btn=>{
+      const txt = (btn.textContent + ' ' + (btn.dataset.keywords||'')).toLowerCase();
+      const match = !needle || txt.includes(needle);
+      btn.classList.toggle('hidden-by-search', !match);
+    });
+    // abrir grupos que tienen coincidencias, cerrar los que no
+    document.querySelectorAll('.action-group').forEach(g=>{
+      const hasMatch = g.querySelectorAll('.group-btns .btn:not(.hidden-by-search):not(.hidden-by-config)').length > 0;
+      const hasVisibleConfig = g.querySelectorAll('.group-btns .btn:not(.hidden-by-config)').length > 0;
+      if(needle){
+        g.open = hasMatch;
+        g.style.display = hasMatch ? '' : 'none';
+      } else {
+        // restaurar visibilidad por config
+        g.style.display = hasVisibleConfig ? '' : 'none';
+        // no forzar open, dejar como estaba
+      }
+    });
+    updateGroupCounts();
+  }
+  input.addEventListener('input', ()=> filter(input.value));
+  input.addEventListener('keydown', e=>{
+    if(e.key==='Escape'){ input.value=''; filter(''); input.blur(); }
+    if(e.key==='Enter'){
+      const first = document.querySelector('#actions .group-btns .btn:not(.hidden-by-search):not(.hidden-by-config)');
+      if(first){ first.click(); input.value=''; filter(''); }
+    }
+  });
+  document.addEventListener('keydown', e=>{
+    if((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='k'){ e.preventDefault(); input.focus(); input.select(); }
+  });
+  // limpiar al hacer clic fuera
+  document.addEventListener('click', e=>{
+    if(!e.target.closest('#actions') && !e.target.closest('.actions-toolbar')) { /* no auto clear */ }
+  });
+  // inicial counts
+  setTimeout(()=>{ try{ updateGroupCounts(); }catch{} }, 900);
+}
+setTimeout(setupActionSearch, 880);
 
 // === DISCIPLINA ===
 function getDisciplineData(){

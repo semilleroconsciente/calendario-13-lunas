@@ -117,8 +117,20 @@ textarea {
   font-family: inherit; font-size: 13px; resize: vertical;
 }
 
-#actions { margin-top: 16px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.actions-toolbar { display:flex; gap:10px; align-items:center; margin-top:16px; }
+#actionSearch { flex:1; max-width:420px; padding:8px 12px; border-radius:10px; border:1px solid var(--line); background:var(--panel); color:var(--text); font-size:13px; }
+#actionSearch:focus { outline:2px solid var(--gold); border-color:var(--gold); }
+#actions { margin-top:12px; display:flex; flex-direction:column; gap:10px; max-width:1100px; }
+.action-group { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:0; overflow:hidden; }
+.action-group[open] { background:var(--card); }
+.action-group summary { list-style:none; cursor:pointer; padding:10px 14px; font-weight:700; font-size:13px; color:var(--accent); display:flex; justify-content:space-between; align-items:center; user-select:none; }
+.action-group summary::-webkit-details-marker { display:none; }
+.action-group summary::after { content:'▸'; color:var(--muted); transition:transform .15s; }
+.action-group[open] summary::after { transform:rotate(90deg); }
+.group-btns { display:flex; flex-wrap:wrap; gap:8px; padding:0 14px 14px; }
+.ag-count { font-weight:400; color:var(--muted); font-size:11px; }
 #statusMsg { color: #8fd694; font-size: 13px; margin-left: 4px; }
+.btn.hidden-by-search, .btn.hidden-by-config { display:none !important; }
 
 #tidesPanel {
   margin-top: 14px; max-width: 980px; background: var(--panel);
@@ -208,7 +220,6 @@ dialog input, dialog textarea {
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .day-card .dc-mood { margin-left: auto; font-size: 12px; }
-.day-card .dc-foto { color: #c9a0dc; }
 
 .dlg-mood { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
 .mood-btn {
@@ -218,19 +229,6 @@ dialog input, dialog textarea {
 }
 .mood-btn.sel { outline: 2px solid var(--gold); background: var(--card-hover); }
 .mood-btn:hover { background: var(--card-hover); }
-
-.foto-preview-wrap { display: flex; flex-direction: column; gap: 6px; align-items: flex-start; }
-#fotoPreview { max-width: 100%; max-height: 140px; border-radius: 8px; border: 1px solid var(--line); }
-#fotoPreview.hidden { display: none; }
-#fotoDel.hidden { display: none; }
-
-#galleryWrap { margin-top: 16px; max-width: 1100px; }
-#galleryWrap.hidden { display: none; }
-#galleryWrap label { font-size: 11px; letter-spacing: 1.5px; color: var(--muted); }
-#gallery { display: flex; gap: 10px; overflow-x: auto; padding: 8px 0 4px; }
-.gal-item { flex: 0 0 auto; text-align: center; cursor: pointer; }
-.gal-item img { width: 120px; height: 90px; object-fit: cover; border-radius: 8px; border: 1px solid var(--line); }
-.gal-item .g-l { font-size: 11px; color: var(--muted); margin-top: 3px; }
 
 #ekadashiList .ek-card {
   background: var(--card); border: 1px solid var(--line); border-radius: 10px;
@@ -424,6 +422,14 @@ body[data-theme="medianoche"] { --bg:#050508; --bg2:#0a0a10; --panel:#141418; --
 .shop-item.done .shop-name { text-decoration: line-through; }
 .shop-name { flex: 1; font-size: 13px; }
 .hidden { display: none !important; }
+
+/* Accesibilidad */
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+body.large-text { font-size: 17px; }
+body.large-text .day-card { min-height: 124px; }
+body.large-text #lunaDesc, body.large-text .chip, body.large-text .btn { font-size: 15px; }
+.skip-link { position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); clip-path:inset(50%); white-space:nowrap; background:var(--gold); color:#10142c; padding:6px 10px; border-radius:8px; text-decoration:none; }
+.skip-link:focus { left:10px; top:10px; width:auto; height:auto; overflow:visible; clip:auto; clip-path:none; white-space:normal; z-index:9999; }
 
 ::-webkit-scrollbar { width: 10px; }
 ::-webkit-scrollbar-thumb { background: var(--line); border-radius: 5px; }
