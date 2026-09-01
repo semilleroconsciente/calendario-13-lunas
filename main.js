@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, dialog } = require('electron');
+const { app, BrowserWindow, ipcMain, dialog, shell } = require('electron');
 const path = require('path');
 const fs = require('fs');
 const { spawnSync } = require('child_process');
@@ -39,6 +39,11 @@ function createWindow() {
     }
   });
   win.setMenuBarVisibility(false);
+  // Abrir links externos en navegador por defecto
+  win.webContents.setWindowOpenHandler(({ url }) => { shell.openExternal(url); return { action: 'deny' }; });
+  win.webContents.on('will-navigate', (e, url) => {
+    if (url !== win.webContents.getURL()) { e.preventDefault(); shell.openExternal(url); }
+  });
   win.loadFile('index.html');
 }
 
@@ -76,6 +81,10 @@ ipcMain.handle('donate:load', async () => {
       return null;
     }
   }
+});
+
+ipcMain.handle('openExternal', async (_e, url) => {
+  try { await shell.openExternal(url); return true; } catch { return false; }
 });
 
 ipcMain.handle('export:pdf', async (_e, html) => {

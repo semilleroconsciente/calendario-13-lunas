@@ -2411,6 +2411,13 @@ async function loadDonateConfig(){
   }catch(e){}
   return cfg;
 }
+function openExternalLink(url){
+  if(!url || url==='#') return false;
+  try{ if(window.api && window.api.openExternal){ window.api.openExternal(url); return true; } }catch(e){}
+  try{ window.open(url, '_blank', 'noopener,noreferrer'); return true; }catch(e){}
+  window.location.href = url;
+  return true;
+}
 function setupDonateDialog(){
   const btn=$('btnDonate'); if(!btn) return;
   btn.onclick= async ()=>{
@@ -2430,11 +2437,21 @@ function setupDonateDialog(){
     set('donateMachTitular', d.machTitular||'ESTEBAN MIGUEL ORMENO MORALES');
     set('donateMachCorreo', d.machCorreo||'semilleroconsciente@gmail.com');
     const mp=$('donateMPLink'), pp=$('donatePaypalLink');
-    if(mp){ mp.href = d.mercadopago||'https://link.mercadopago.cl/semilleroconsciente'; mp.style.opacity = d.mercadopago? '1':'0.45'; mp.onclick = e=>{ if(!d.mercadopago){ e.preventDefault(); alert('Configura tu link Mercado Pago en donate.json → mercadopago'); }}; }
-    if(pp){ pp.href = d.paypal||'https://www.paypal.com/donate?business=semilleroconsciente@gmail.com'; pp.style.opacity = d.paypal? '1':'0.45'; pp.onclick = e=>{ if(!d.paypal){ e.preventDefault(); alert('Configura tu link PayPal en donate.json → paypal'); }}; }
+    const fallbackMP='https://link.mercadopago.cl/semilleroconsciente';
+    const fallbackPP='https://www.paypal.com/donate?business=semilleroconsciente@gmail.com';
+    if(mp){
+      const url = (d.mercadopago && String(d.mercadopago).trim()) || fallbackMP;
+      mp.href = url; mp.target = '_blank'; mp.rel = 'noopener noreferrer'; mp.style.opacity='1'; mp.style.pointerEvents='auto';
+      mp.onclick = e=>{ e.stopPropagation(); e.preventDefault(); openExternalLink(url); };
+    }
+    if(pp){
+      const url = (d.paypal && String(d.paypal).trim()) || fallbackPP;
+      pp.href = url; pp.target = '_blank'; pp.rel = 'noopener noreferrer'; pp.style.opacity='1'; pp.style.pointerEvents='auto';
+      pp.onclick = e=>{ e.stopPropagation(); e.preventDefault(); openExternalLink(url); };
+    }
     const flow=$('donateFlowLink'), kf=$('donateKofiLink');
-    if(flow){ flow.href = d.flow||'#'; flow.style.opacity = d.flow? '1':'0.45'; }
-    if(kf){ kf.href = d.kofi||'#'; kf.style.opacity = d.kofi? '1':'0.45'; }
+    if(flow){ flow.href = d.flow||'#'; flow.target = d.flow ? '_blank' : ''; flow.rel='noopener noreferrer'; flow.style.opacity = d.flow? '1':'0.45'; flow.style.pointerEvents = d.flow? 'auto':'none'; if(d.flow) flow.onclick = e=>{ e.stopPropagation(); e.preventDefault(); openExternalLink(d.flow); }; }
+    if(kf){ kf.href = d.kofi||'#'; kf.target = d.kofi ? '_blank' : ''; kf.rel='noopener noreferrer'; kf.style.opacity = d.kofi? '1':'0.45'; kf.style.pointerEvents = d.kofi? 'auto':'none'; if(d.kofi) kf.onclick = e=>{ e.stopPropagation(); e.preventDefault(); openExternalLink(d.kofi); }; }
     $('donateDialog').showModal();
   };
   const ct=$('donateCloseTop'), cb=$('donateClose'); if(ct) ct.onclick=()=>$('donateDialog').close(); if(cb) cb.onclick=()=>$('donateDialog').close();
