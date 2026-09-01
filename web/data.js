@@ -178,4 +178,65 @@ const DONATE = {
   machCorreo: '' // privado
 };
 
-window.pencoData = { PENCO, ESTACIONES, MOONS, DFT, INTRO, MOODS, EFEMERIDES, SIEMBRA, SIEMBRA_LUNAS, DONATE };
+const AVES_PENCO = [
+  { nombre: "Gaviota dominicana", cient: "Larus dominicanus", hab: "Costa, playa, bahía", icon: "🕊️", epoca: "Todo el año" },
+  { nombre: "Zarapito", cient: "Numenius phaeopus", hab: "Humedal Rocuant, orilla", icon: "🦩", epoca: "Sep – Mar (migratoria)" },
+  { nombre: "Pilpilén", cient: "Haematopus palliatus", hab: "Playa, roqueríos", icon: "🐦", epoca: "Todo el año" },
+  { nombre: "Garza cuca", cient: "Ardea cocoi", hab: "Humedal, estero Penco", icon: "🦢", epoca: "Todo el año" },
+  { nombre: "Cisne coscoroba", cient: "Coscoroba coscoroba", hab: "Humedal Rocuant", icon: "🦢", epoca: "Invierno-primavera" },
+  { nombre: "Trabajador", cient: "Phleocryptes melanops", hab: "Totora, humedal", icon: "🐦", epoca: "Todo el año" },
+  { nombre: "Loica", cient: "Leistes loyca", hab: "Pradera, borde cerro", icon: "🐦", epoca: "Todo el año – canto primavera" },
+  { nombre: "Chorlo nevado", cient: "Charadrius nivosus", hab: "Playa, duna", icon: "🐧", epoca: "Oct – Feb (nidifica)" },
+  { nombre: "Yeco / Cormorán", cient: "Phalacrocorax brasilianus", hab: "Rocas, muelle Lirquén", icon: "🦅", epoca: "Todo el año" },
+  { nombre: "Pato jergón", cient: "Anas georgica", hab: "Humedal, laguna", icon: "🦆", epoca: "Todo el año" },
+  { nombre: "Fío-fío", cient: "Elaenia albiceps", hab: "Matorral, bosque", icon: "🐦", epoca: "Sep – Mar" },
+  { nombre: "Zorzal", cient: "Turdus falcklandii", hab: "Jardín, bosque", icon: "🐦", epoca: "Todo el año – canto invierno" },
+  { nombre: "Bandurria", cient: "Theristicus melanopis", hab: "Pradera, humedal", icon: "🦩", epoca: "Todo el año" },
+  { nombre: "Queltrehue / Treile", cient: "Vanellus chilensis", hab: "Pastizal, cancha", icon: "🐦", epoca: "Todo el año" },
+  { nombre: "Picaflor chico", cient: "Sephanoides sephaniodes", hab: "Jardín, bosque", icon: "🐝", epoca: "Sep – Abr" },
+  { nombre: "Concón", cient: "Strix rufipes", hab: "Bosque nativo", icon: "🦉", epoca: "Todo el año – nocturna" }
+];
+
+const EVENTOS_ASTRONOMICOS = [
+  // 2026 – visibles sur Chile / general
+  { date: "2026-02-17", tipo: "eclipse", icon: "🌘", nombre: "Eclipse anular de Sol", desc: "Antártida / sur. Desde Penco parcial muy bajo. No mirar directo." },
+  { date: "2026-03-03", tipo: "eclipse", icon: "🌕", nombre: "Eclipse total de Luna", desc: "Visible en Chile madrugada. Luna roja ~3:00–4:30 CL." },
+  { date: "2026-03-20", tipo: "equinoccio", icon: "🍂", nombre: "Equinoccio de otoño", desc: "Inicio otoño sur. Sol cruza ecuador." },
+  { date: "2026-06-21", tipo: "solsticio", icon: "❄️", nombre: "Solsticio de invierno + We Tripantu", desc: "Día más corto. Año nuevo mapuche." },
+  { date: "2026-08-12", tipo: "eclipse", icon: "🌘", nombre: "Eclipse total de Sol (Ártico/Europa)", desc: "No visible en Chile. Lo listamos para referencia." },
+  { date: "2026-08-28", tipo: "eclipse", icon: "🌕", nombre: "Eclipse parcial de Luna", desc: "Visible en Chile al amanecer. Parte norte." },
+  { date: "2026-09-22", tipo: "equinoccio", icon: "🌸", nombre: "Equinoccio de primavera", desc: "Inicio primavera sur." },
+  { date: "2026-12-21", tipo: "solsticio", icon: "☀️", nombre: "Solsticio de verano", desc: "Día más largo." },
+  { date: "2026-11-24", tipo: "superluna", icon: "🌕", nombre: "Superluna (perigeo)", desc: "Luna llena más grande. Marea más alta." },
+  { date: "2026-12-24", tipo: "superluna", icon: "🌕", nombre: "Superluna fría", desc: "Última llena del año, perigeo." },
+  // Lluvias anuales (picos)
+  { date: "2026-01-03", tipo: "lluvia", icon: "☄️", nombre: "Cuadrántidas (pico)", desc: "Hasta 40 met/h. Mejor 03:00-06:00." },
+  { date: "2026-04-22", tipo: "lluvia", icon: "☄️", nombre: "Líridas (pico)", desc: "10-15 met/h. Madrugada." },
+  { date: "2026-05-06", tipo: "lluvia", icon: "☄️", nombre: "Eta Acuáridas (pico)", desc: "Restos cometa Halley. Sur ideal 30 met/h." },
+  { date: "2026-08-12", tipo: "lluvia", icon: "☄️", nombre: "Perseidas (pico)", desc: "50 met/h. Mejor norte, pero visible." },
+  { date: "2026-10-21", tipo: "lluvia", icon: "☄️", nombre: "Oriónidas (pico)", desc: "Halley otra vez. 15 met/h." },
+  { date: "2026-11-17", tipo: "lluvia", icon: "☄️", nombre: "Leónidas (pico)", desc: "10 met/h, bólidos." },
+  { date: "2026-12-14", tipo: "lluvia", icon: "☄️", nombre: "Gemínidas (pico)", desc: "Mejor del año 120 met/h. Madrugada." },
+  // 2027 adelanto
+  { date: "2027-02-06", tipo: "eclipse", icon: "🌘", nombre: "Eclipse anular de Sol", desc: "África/Sur América. Parcial en sur Chile tarde." },
+  { date: "2027-08-02", tipo: "eclipse", icon: "🌘", nombre: "Eclipse total de Sol", desc: "Norte África/España. No visible Chile." }
+];
+
+const EVENTOS_COMUNA_PENCO = [
+  { md: "02-12", nombre: "Aniversario fundación de Penco", icon: "🏛️", desc: "1550 fundación de Concepción en Penco. Actos municipales, desfile", cat: "municipal" },
+  { md: "02-14", nombre: "Carnaval de Penco — Playa", icon: "🎭", desc: "Música, comparsas en costanera. Fecha móvil feb", cat: "fiesta" },
+  { md: "03-08", nombre: "Día de la Mujer — Feria Rocuant", icon: "💜", desc: "Feria de emprendedoras, humedal", cat: "cultura" },
+  { md: "05-21", nombre: "Glorias Navales — desfile", icon: "⚓", desc: "Escuelas y Armada en plaza", cat: "municipal" },
+  { md: "06-21", nombre: "We Tripantu comunal", icon: "🌿", desc: "Rogativa al amanecer en playa/borde río", cat: "cultura" },
+  { md: "06-29", nombre: "Fiesta de San Pedro — Caleta Lirquén", icon: "🐟", desc: "Patrono pescadores. Misa, procesión a mar", cat: "religioso" },
+  { md: "07-26", nombre: "Santa Ana — patrona Penco", icon: "⛪", desc: "Fiesta religiosa local, feria", cat: "religioso" },
+  { md: "08-15", nombre: "Feria costumbrista invierno", icon: "🥘", desc: "Gastronomía, chupalla, artesanía", cat: "feria" },
+  { md: "09-18", nombre: "Fiestas Patrias — ramadas Penco", icon: "🇨🇱", desc: "18-19 ramadas en estadio/costanera", cat: "fiesta" },
+  { md: "10-12", nombre: "Aniversario Cuerpo Bomberos Penco", icon: "🚒", desc: "Desfile, ejercicio", cat: "municipal" },
+  { md: "11-01", nombre: "Noche de las velas — cementerio", icon: "🕯️", desc: "Tradición familiar", cat: "cultura" },
+  { md: "12-08", nombre: "Virgen de la Candelaria — Lirquén", icon: "🙏", desc: "Procesión", cat: "religioso" },
+  { md: "12-31", nombre: "Año Nuevo en playa — show pirotecnia", icon: "🎆", desc: "Costanera Penco, música", cat: "fiesta" },
+  { md: "01-01", nombre: "Año Nuevo — feria amanecida", icon: "🎉", desc: "Feria madrugada 1 ene", cat: "feria" }
+];
+
+ window.pencoData = { PENCO, ESTACIONES, MOONS, DFT, INTRO, MOODS, EFEMERIDES, SIEMBRA, SIEMBRA_LUNAS, DONATE, AVES_PENCO, EVENTOS_ASTRONOMICOS, EVENTOS_COMUNA_PENCO };
