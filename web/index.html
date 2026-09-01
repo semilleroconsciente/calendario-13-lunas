@@ -9,7 +9,8 @@
   <link rel="manifest" href="manifest.json">
 </head>
 <body>
-  <aside id="sidebar">
+  <a href="#main" class="skip-link">Saltar al contenido</a>
+  <aside id="sidebar" aria-label="Navegación lateral">
     <div class="brand">
       <div class="brand-moons">🌑 🌒 🌓 🌔 🌕 🌖 🌗 🌘</div>
       <h1>Mari Küla Küyen</h1>
@@ -67,53 +68,76 @@
       <textarea id="monthNote" rows="3" placeholder="Reflexión o resumen de esta luna completa..."></textarea>
     </section>
 
-    <section id="galleryWrap" class="hidden">
-      <label>FOTOS DE LA LUNA</label>
-      <div id="gallery"></div>
-    </section>
-
-    <footer id="actions">
-      <button id="btnTides" class="btn">🌊 Mareas</button>
-      <button id="btnFishing" class="btn">🎣 Pesca</button>
-      <button id="btnBirds" class="btn">🦅 Aves</button>
-      <button id="btnWeather" class="btn">🌤️ Clima</button>
-      <button id="btnSiembra" class="btn">🌱 Siembra lunar</button>
-      <button id="btnEkadashi" class="btn">📿 Ekadashi</button>
-      <button id="btnMenstrual" class="btn">🌸 Ciclo</button>
-      <button id="btnMedic" class="btn">🌿 Medicina</button>
-      <button id="btnHabits" class="btn">✅ Hábitos</button>
-      <button id="btnMeal" class="btn">🥗 Comidas</button>
-      <button id="btnShopping" class="btn">🛒 Compras</button>
-      <button id="btnDiscipline" class="btn">🎯 Disciplina</button>
-      <button id="btnDreams" class="btn">💭 Sueños</button>
-      <button id="btnBreath" class="btn">🌬️ Respiración</button>
-      <button id="btnSchedule" class="btn">📚 Horario</button>
-      <button id="btnGym" class="btn">🏋️ Gym</button>
-      <button id="btnTales" class="btn">📖 Cuentos</button>
-      <button id="btnMemory" class="btn">🧩 Memoria</button>
-      <button id="btnAstro" class="btn">🔭 Astro</button>
-      <button id="btnComuna" class="btn">🎉 Penco</button>
-      <button id="btnStudy" class="btn">🧠 Estudio</button>
-      <button id="btnCircadian" class="btn">🌞 Circadiano</button>
-      <button id="btnGolden" class="btn">📸 Hora Dorada</button>
-      <button id="btnConvert" class="btn">📏 Conversión</button>
-      <button id="btnTimer" class="btn">⏱ Tiempo</button>
-      <button id="btnRemind" class="btn">🔔 Recordatorios</button>
-      <button id="btnBackup" class="btn">💾 Respaldo</button>
-      <button id="btnRestore" class="btn">📥 Restaurar</button>
-      <button id="btnShortcut" class="btn">📌 Acceso directo</button>
-      <button id="btnPdfLuna" class="btn">📄 PDF luna</button>
-      <button id="btnPdfCiclo" class="btn">📚 PDF ciclo</button>
-      <button id="btnDonate" class="btn btn-accent" style="width:auto">❤ Aporte voluntario</button>
-      <button id="btnHelp" class="btn" style="width:auto">❓ Cómo usar</button>
+    <div class="actions-toolbar">
+      <input type="search" id="actionSearch" placeholder="🔍 Buscar función... (Ctrl+K) — ej: mareas, siembra, hábitos" autocomplete="off" aria-label="Buscar funciones">
       <span id="statusMsg"></span>
+    </div>
+    <footer id="actions">
+      <details class="action-group" open data-group="territorio">
+        <summary>🌊 Territorio <span class="ag-count"></span></summary>
+        <div class="group-btns">
+          <button id="btnTides" class="btn" data-keywords="mareas shoa talcahuano pleamar bajamar">🌊 Mareas</button>
+          <button id="btnFishing" class="btn" data-keywords="pesca peces artesanal lirquen golfo arauco">🎣 Pesca</button>
+          <button id="btnBirds" class="btn" data-keywords="aves pajaro observacion humedal rocuant">🦅 Aves</button>
+          <button id="btnWeather" class="btn" data-keywords="clima tiempo viento lluvia temperatura">🌤️ Clima</button>
+          <button id="btnSiembra" class="btn" data-keywords="siembra cosecha huerta semilla luna">🌱 Siembra lunar</button>
+          <button id="btnAstro" class="btn" data-keywords="astro astronomia eclipse meteoros superluna">🔭 Astro</button>
+          <button id="btnComuna" class="btn" data-keywords="penco comuna fiesta evento aniversario">🎉 Penco</button>
+          <button id="btnEkadashi" class="btn" data-keywords="ekadashi ayuno lunar tithi">📿 Ekadashi</button>
+          <button id="btnGolden" class="btn" data-keywords="hora dorada fotografia sol salida puesta">📸 Hora Dorada</button>
+          <button id="btnCircadian" class="btn" data-keywords="circadiano sueño melatonina cortisol ciclo">🌞 Circadiano</button>
+        </div>
+      </details>
+      <details class="action-group" open data-group="cuerpo">
+        <summary>🌸 Cuerpo &amp; Salud <span class="ag-count"></span></summary>
+        <div class="group-btns">
+          <button id="btnMenstrual" class="btn" data-keywords="ciclo menstrual periodo fertil ovulacion mujer">🌸 Ciclo</button>
+          <button id="btnMedic" class="btn" data-keywords="medicina medicamento hierba matico natural">🌿 Medicina</button>
+          <button id="btnGym" class="btn" data-keywords="gym gimnasio rutina ejercicio entrenamiento">🏋️ Gym</button>
+          <button id="btnBreath" class="btn" data-keywords="respiracion 478 caja cuadrada ansiedad">🌬️ Respiración</button>
+          <button id="btnDreams" class="btn" data-keywords="sueños diario onirico rem dormir">💭 Sueños</button>
+        </div>
+      </details>
+      <details class="action-group" open data-group="mente">
+        <summary>🧠 Mente &amp; Estudio <span class="ag-count"></span></summary>
+        <div class="group-btns">
+          <button id="btnHabits" class="btn" data-keywords="habitos rutina racha disciplina">✅ Hábitos</button>
+          <button id="btnDiscipline" class="btn" data-keywords="disciplina pomodoro procrastinar foco">🎯 Disciplina</button>
+          <button id="btnStudy" class="btn" data-keywords="estudio mnemotecnia lectura feynman">🧠 Estudio</button>
+          <button id="btnSchedule" class="btn" data-keywords="horario clases estudio semana">📚 Horario</button>
+          <button id="btnTales" class="btn" data-keywords="cuentos infantil niños luna historia">📖 Cuentos</button>
+          <button id="btnMemory" class="btn" data-keywords="memoria pares loci atencion">🧩 Memoria</button>
+        </div>
+      </details>
+      <details class="action-group" open data-group="vida">
+        <summary>🍽️ Vida diaria <span class="ag-count"></span></summary>
+        <div class="group-btns">
+          <button id="btnMeal" class="btn" data-keywords="comida meal plan cena almuerzo">🥗 Comidas</button>
+          <button id="btnShopping" class="btn" data-keywords="compras lista supermercado verduras">🛒 Compras</button>
+        </div>
+      </details>
+      <details class="action-group" data-group="herramientas">
+        <summary>🛠️ Herramientas <span class="ag-count"></span></summary>
+        <div class="group-btns">
+          <button id="btnConvert" class="btn" data-keywords="conversion unidades peso longitud">📏 Conversión</button>
+          <button id="btnTimer" class="btn" data-keywords="tiempo timer cronometro pomodoro">⏱ Tiempo</button>
+          <button id="btnRemind" class="btn" data-keywords="recordatorio notificacion luna fase">🔔 Recordatorios</button>
+          <button id="btnBackup" class="btn" data-keywords="respaldo backup guardar exportar">💾 Respaldo</button>
+          <button id="btnRestore" class="btn" data-keywords="restaurar importar backup json">📥 Restaurar</button>
+          <button id="btnShortcut" class="btn" data-keywords="acceso directo escritorio pwa instalar">📌 Acceso directo</button>
+          <button id="btnPdfLuna" class="btn" data-keywords="pdf luna imprimir exportar">📄 PDF luna</button>
+          <button id="btnPdfCiclo" class="btn" data-keywords="pdf ciclo completo imprimir">📚 PDF ciclo</button>
+          <button id="btnDonate" class="btn btn-accent" style="width:auto" data-keywords="aporte donar mercadopago paypal">❤ Aporte voluntario</button>
+          <button id="btnHelp" class="btn" style="width:auto" data-keywords="ayuda como usar guia instrucciones">❓ Cómo usar</button>
+        </div>
+      </details>
     </footer>
 
     <section id="weatherPanel" class="hidden"></section>
     <section id="tidesPanel" class="hidden"></section>
   </main>
 
-  <dialog id="dayDialog">
+  <dialog id="dayDialog" aria-labelledby="dlgTitle" aria-modal="true">
     <form method="dialog">
       <h3 id="dlgTitle">Día</h3>
       <p id="dlgDate" class="muted"></p>
@@ -129,15 +153,6 @@
       <label>Notas del día
         <textarea id="fNota" rows="5" placeholder="tareas, ánimo, sueños, registros..."></textarea>
       </label>
-      <div class="dlg-grid hidden" style="display:none">
-        <label>📷 Foto del día
-          <input type="file" id="fFoto" accept="image/*">
-        </label>
-        <div class="foto-preview-wrap">
-          <img id="fotoPreview" class="hidden" alt="">
-          <button type="button" id="fotoDel" class="btn hidden">✖ Quitar foto</button>
-        </div>
-      </div>
       <div id="dlgHabits" class="dlg-habits"></div>
       <div class="dlg-actions" style="justify-content:space-between">
         <button type="button" id="dlgMenstrual" class="btn" style="width:auto" title="Marcar o quitar este día como inicio de ciclo menstrual">🌸 Marcar inicio ciclo</button>
@@ -164,12 +179,12 @@
         <h3 style="margin:0">🌱 Siembra &amp; Cosecha — Penco</h3>
         <button type="button" id="siembraCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
       </div>
-      <p class="muted">Guía por fases y por lunas. Ahora incluye cosecha integrada y vista de <b>3 lunas</b> (actual + 2 siguientes).</p>
-      <div class="timer-tabs" style="margin-bottom:10px">
-        <button type="button" id="tabSiembra" class="btn btn-accent" style="width:auto">🌱 Siembra</button>
-        <button type="button" id="tabCosecha" class="btn" style="width:auto">🌾 Cosecha &amp; Plagas</button>
-      </div>
-      <div id="siembraTresBox" class="menstrual-card" style="margin-bottom:10px;border-color:var(--gold)"></div>
+      <p class="muted">Guía por lunas: <b>luna actual + 2 siguientes</b> con siembra, cosecha y plagas.</p>
+       <div class="timer-tabs" style="margin-bottom:10px">
+         <button type="button" id="tabSiembra" class="btn btn-accent" style="width:auto">🌱 Siembra</button>
+         <button type="button" id="tabCosecha" class="btn" style="width:auto">🌾 Cosecha &amp; Plagas</button>
+       </div>
+       <div id="siembraTresBox" class="hidden" style="display:none"></div>
       <div id="siembraContent"></div>
       <div id="siembraHarvestBox"></div>
       <div class="dlg-actions"><button type="button" id="siembraClose" class="btn">Cerrar</button></div>
@@ -628,12 +643,12 @@
         <div class="help-card">
           <h4>🌙 Navegación</h4>
           <p><b>Lateral:</b> Usuario, Ciclo, Luna 1-13 o Día Fuera del Tiempo. <b>◉ Ir a hoy</b> + búsqueda Enter.</p>
-          <p><b>Arriba:</b> luna, fechas, descripción Penco, chip estación + fases. <b>Calendario:</b> 28 días con sol/fase/ánimo/foto.</p>
+          <p><b>Arriba:</b> luna, fechas, descripción Penco, chip estación + fases. <b>Calendario:</b> 28 días con sol/fase/ánimo.</p>
         </div>
         <div class="help-card">
           <h4>📝 Día a día</h4>
-          <p>Clic en día: ánimo, clima/notas, foto, <b>📤 Compartir</b> imagen, <b>🌸 Marcar inicio ciclo</b> y <b>✅ Hábitos</b> con galería de 46 iconos.</p>
-          <p><b>Notas de la luna</b> y <b>Galería</b> abajo si hay fotos en la luna.</p>
+          <p>Clic en día: ánimo, clima/notas, <b>📤 Compartir</b> imagen, <b>🌸 Marcar inicio ciclo</b> y <b>✅ Hábitos</b> con 46 iconos.</p>
+          <p><b>Notas de la luna</b> abajo con tu reflexión del ciclo.</p>
         </div>
         <div class="help-card">
           <h4>🌊 Territorio</h4>
