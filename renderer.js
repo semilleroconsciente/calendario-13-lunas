@@ -251,6 +251,27 @@ function renderLuna() {
       gymIcons = gymForDay.map(it=> `<span class="dc-habit" style="background:${it.color}22;color:${it.color};border-color:${it.color}55" title="${escapeHtml(it.name)} ${it.start}-${it.end}">🏋️</span>`).join('');
       hasGym = gymForDay.length ? ' has-gym' : '';
     }catch(e){}
+    let birdIcons='', fishIcons='', astroIcons='', comunaIcons='';
+    try{
+      const bd=getBirdData();
+      const birdsToday=bd.entries.filter(x=>x.date===key);
+      if(birdsToday.length) birdIcons=birdsToday.map(b=> `<span class="dc-habit" style="background:#7ab8ff22;color:#7ab8ff;border-color:#7ab8ff55" title="${escapeHtml(b.species)} ×${b.count}">🦅</span>`).join('');
+    }catch(e){}
+    try{
+      const fl=getFishingLogData();
+      const fishToday=fl.filter(x=>x.date===key);
+      if(fishToday.length) fishIcons=fishToday.map(f=> `<span class="dc-habit" style="background:#a9d18e22;color:#a9d18e;border-color:#a9d18e55" title="${escapeHtml(f.species)} ${escapeHtml(f.qty)}">🎣</span>`).join('');
+    }catch(e){}
+    try{
+      const astroToday=astroVisibleForDate(key);
+      if(astroToday.length) astroIcons=astroToday.map(a=> `<span class="dc-habit" style="background:#c9a0dc22;color:#c9a0dc;border-color:#c9a0dc55" title="${escapeHtml(a.nombre)}">🔭</span>`).join('');
+    }catch(e){}
+    try{
+      if(isComunaShowCal()){
+        const comToday=getAllComunaEventsForMD(key.slice(5));
+        if(comToday.length) comunaIcons=comToday.map(c=> `<span class="dc-habit" style="background:#f0d48822;color:#f0d488;border-color:#f0d48855" title="${escapeHtml(c.nombre)}">🎉</span>`).join('');
+      }
+    }catch(e){}
     const card = document.createElement('div');
     card.className = 'day-card' + (key === todayKey ? ' today' : '') + (mensType ? ' mens-'+mensType : '') + hasHabits + hasGym;
     card.dataset.luna = meta.n;
@@ -261,6 +282,10 @@ function renderLuna() {
       ${mensType ? `<div class="dc-mens ${mensType}">${mensLabel}</div>` : ''}
       ${habitIcons ? `<div class="dc-habits">${habitIcons}</div>` : ''}
       ${gymIcons ? `<div class="dc-habits">${gymIcons}</div>` : ''}
+      ${birdIcons ? `<div class="dc-habits">${birdIcons}</div>` : ''}
+      ${fishIcons ? `<div class="dc-habits">${fishIcons}</div>` : ''}
+      ${astroIcons ? `<div class="dc-habits">${astroIcons}</div>` : ''}
+      ${comunaIcons ? `<div class="dc-habits">${comunaIcons}</div>` : ''}
       ${efe ? `<div class="dc-efe" title="${efe}">📅 ${efe}</div>` : ''}
       ${mood ? `<div class="dc-clima">Ánimo: ${mood.e} ${mood.n}</div>` : ''}
       ${cell.clima ? `<div class="dc-clima">${cell.clima}</div>` : ''}
@@ -607,31 +632,90 @@ async function fetchWeather() {
 }
 $('btnWeather').onclick = fetchWeather;
 
-$('btnSiembra').onclick = () => {
-  const box = $('siembraContent');
-  let html = '';
-  if (currentView.tipo === 'luna' && SIEMBRA_LUNAS[currentView.luna]) {
-    const s = SIEMBRA_LUNAS[currentView.luna];
-    const meta = MOONS[currentView.luna - 1];
-    html += `<div class="si-luna-card"><h4>🌙 Luna ${currentView.luna}: ${meta.nombre}</h4><p class="muted" style="margin-bottom:8px">${s.epoca}</p><h4 style="color:var(--gold)">${s.titulo}</h4><p class="si-sem">🌱 Siembra directa: ${s.directa}</p><p class="si-tar">🌱 Almácigos: ${s.almacigos}</p><p class="si-tar">🍅 Cosecha: ${s.cosecha}</p><p>🛠️ ${s.tareas}</p></div><hr style="border:none;border-top:1px solid var(--line);margin:14px 0">`;
-  } else {
-    html += '<p class="muted">Recomendaciones por luna — cada luna de Penco es distinta:</p>';
-    for (let n = 1; n <= 13; n++) {
-      const s = SIEMBRA_LUNAS[n];
-      html += `<div class="si-card" style="cursor:pointer" data-luna="${n}"><h4>Luna ${n} · ${MOONS[n - 1].nombre} <span style="font-weight:400;color:var(--muted);font-size:12px">· ${s.epoca}</span></h4><p class="si-sem">🌱 ${s.directa}</p><p class="si-tar" style="font-size:12px">${s.titulo}</p></div>`;
+let siembraTab = 'siembra';
+function getSiembraTresLunas(){
+  if (currentView.tipo === 'dft') return [13,1,2];
+  const cur = currentView.luna;
+  return [cur, cur%13+1, (cur+1)%13+1];
+}
+function renderSiembraTresBox(){
+  const box = $('siembraTresBox'); if(!box) return;
+  const tres = getSiembraTresLunas();
+  const nowKey = cal.fmtKey.format(new Date());
+  let html = '<h4 style="color:var(--gold)">🌙 Próximas 3 lunas — vista rápida</h4><p class="muted" style="font-size:11px">Actual + siguientes 2 · Toca para ir a esa luna</p><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px">';
+  tres.forEach((n,i)=>{
+    const s = SIEMBRA_LUNAS[n]; const meta = MOONS[n-1];
+    const isCur = i===0;
+    const plaga = n<=3?'Babosas/hongos': n<=6?'Pulgones/mosca': n<=9?'Mosca blanca/gusano':'Hongos frío';
+    html+= `<div class="si-card" style="cursor:pointer;${isCur?'border-color:var(--gold);background:var(--card-hover)':''}" data-luna3="${n}"><h4 style="font-size:12px">${isCur?'▶ ':''}Luna ${n} · ${escapeHtml(meta.nombre)} ${isCur?'<span class="chip" style="font-size:9px">actual</span>':''}</h4><p style="font-size:10px;color:var(--muted)">${escapeHtml(s.epoca)}</p><p style="font-size:11px"><b style="color:#8fd694">🌱 ${escapeHtml(s.directa.slice(0,42))}…</b></p><p style="font-size:10px"><b>🌾 Cosecha:</b> ${escapeHtml(s.cosecha.slice(0,48))}…</p><p style="font-size:10px;color:#ff9a9a"><b>🐛 ${escapeHtml(plaga)}</b></p></div>`;
+  });
+  html+='</div>';
+  box.innerHTML = html;
+  box.querySelectorAll('[data-luna3]').forEach(el=> el.onclick=()=>{ selectMoon(+el.dataset.luna3); renderSiembraTresBox(); renderSiembraContent(siembraTab); });
+}
+function renderSiembraContent(tab){
+  siembraTab = tab||siembraTab;
+  const box = $('siembraContent'); const hBox=$('siembraHarvestBox');
+  if(!box) return;
+  // tabs ui
+  const tS=$('tabSiembra'), tC=$('tabCosecha');
+  if(tS&&tC){ tS.classList.toggle('btn-accent', siembraTab==='siembra'); tC.classList.toggle('btn-accent', siembraTab==='cosecha'); }
+  if(siembraTab==='cosecha'){
+    box.innerHTML = '';
+    if(hBox){
+      let html='<p class="muted" style="font-size:11px;margin-bottom:8px">Cosecha y plagas por luna — vista completa 3 lunas + todo el ciclo</p>';
+      const tres=getSiembraTresLunas();
+      html+='<div style="display:grid;grid-template-columns:1fr;gap:8px;margin-bottom:12px">';
+      tres.forEach(n=>{
+        const s=SIEMBRA_LUNAS[n]; const meta=MOONS[n-1];
+        html+=`<div class="si-card" style="border-color:var(--gold)"><h4>🌾 Luna ${n} · ${escapeHtml(meta.nombre)} <span class="chip" style="font-size:10px">${n===tres[0]?'actual': n===tres[1]?'próxima':'siguiente'}</span></h4><p style="font-size:11px;color:var(--muted)">${escapeHtml(s.epoca)}</p><p style="font-size:12px"><b>🌾 Cosecha:</b> ${escapeHtml(s.cosecha)}</p><p style="font-size:11px;color:#ff9a9a"><b>🐛 Vigila:</b> ${n<=3?'Babosas/hongos por humedad': n<=6?'Pulgones en brotes': n<=9?'Mosca blanca/gusano fruto':'Hongos por frío/humedad'}</p><p style="font-size:11px"><b>🛠️ Tarea:</b> ${escapeHtml(s.tareas)}</p></div>`;
+      });
+      html+='</div><hr style="border:none;border-top:1px solid var(--line);margin:10px 0"><p class="muted" style="font-size:11px">Ciclo completo (13 lunas) — referencia rápida:</p>';
+      for(let n=1;n<=13;n++){
+        const s=SIEMBRA_LUNAS[n];
+        const isCur=tres.includes(n);
+        html+=`<div class="si-card" style="${isCur?'border-color:var(--gold);background:var(--card-hover)':''}"><h4>${isCur?'▶ ':''}Luna ${n} · ${escapeHtml(MOONS[n-1].nombre)}</h4><p style="font-size:12px"><b>🌾 Cosecha:</b> ${escapeHtml(s.cosecha)}</p><p style="font-size:11px;color:#ff9a9a">🐛 ${n<=3?'Babosas/hongos': n<=6?'Pulgones': n<=9?'Mosca blanca/gusano':'Hongos frío'}</p></div>`;
+      }
+      hBox.innerHTML=html;
     }
-    box.innerHTML = html;
-    box.querySelectorAll('.si-card[data-luna]').forEach(el => { el.onclick = () => { selectMoon(+el.dataset.luna); $('siembraDialog').close(); }; });
-    $('siembraDialog').showModal();
     return;
   }
-  html += '<p class="muted" style="font-size:12px;margin-bottom:8px">Guía por fase lunar (general):</p>';
-  html += Object.values(SIEMBRA).map(s => `<div class="si-card" style="opacity:0.9"><h4>${s.fase} — ${s.titulo}</h4><p style="font-size:13px">${s.texto}</p><p class="si-sem">🌱 ${s.siembra}</p><p class="si-tar">🛠️ ${s.tareas}</p></div>`).join('');
-  box.innerHTML = html;
+  // siembra tab
+  if(hBox) hBox.innerHTML='';
+  let html='';
+  if(currentView.tipo==='luna' && SIEMBRA_LUNAS[currentView.luna]){
+    const s=SIEMBRA_LUNAS[currentView.luna]; const meta=MOONS[currentView.luna-1];
+    html+=`<div class="si-luna-card"><h4>🌙 Luna ${currentView.luna}: ${escapeHtml(meta.nombre)}</h4><p class="muted" style="margin-bottom:8px">${escapeHtml(s.epoca)}</p><h4 style="color:var(--gold)">${escapeHtml(s.titulo)}</h4><p class="si-sem">🌱 Siembra directa: ${escapeHtml(s.directa)}</p><p class="si-tar">🌱 Almácigos: ${escapeHtml(s.almacigos)}</p><p class="si-tar">🍅 Cosecha: ${escapeHtml(s.cosecha)}</p><p>🛠️ ${escapeHtml(s.tareas)}</p></div>`;
+    html+='<p class="muted" style="font-size:11px;margin:10px 0 8px">También para las <b>2 lunas siguientes</b>:</p>';
+    const tres=getSiembraTresLunas().slice(1);
+    tres.forEach(n=>{
+      const ss=SIEMBRA_LUNAS[n]; const mm=MOONS[n-1];
+      html+=`<div class="si-card" style="opacity:0.95;cursor:pointer" data-luna="${n}"><h4>Luna ${n} · ${escapeHtml(mm.nombre)} <span style="font-weight:400;color:var(--muted);font-size:12px">· ${escapeHtml(ss.epoca)}</span></h4><p class="si-sem">🌱 ${escapeHtml(ss.directa)}</p><p style="font-size:11px">🌾 Cosecha: ${escapeHtml(ss.cosecha)}</p></div>`;
+    });
+  } else {
+    html+='<p class="muted">Recomendaciones por luna — cada luna de Penco es distinta (actual +2 destacadas):</p>';
+    const tres=getSiembraTresLunas();
+    for(let n=1;n<=13;n++){
+      const s=SIEMBRA_LUNAS[n]; const isTres=tres.includes(n);
+      html+=`<div class="si-card" style="cursor:pointer;${isTres?'border-color:var(--gold);background:var(--card-hover)':''}" data-luna="${n}"><h4>Luna ${n} · ${escapeHtml(MOONS[n-1].nombre)} ${isTres?'<span class="chip" style="font-size:10px">próxima</span>':''} <span style="font-weight:400;color:var(--muted);font-size:12px">· ${escapeHtml(s.epoca)}</span></h4><p class="si-sem">🌱 ${escapeHtml(s.directa)}</p><p class="si-tar" style="font-size:12px">${escapeHtml(s.titulo)}</p></div>`;
+    }
+  }
+  html+='<hr style="border:none;border-top:1px solid var(--line);margin:12px 0"><p class="muted" style="font-size:12px;margin-bottom:8px">Guía por fase lunar (general):</p>';
+  html+=Object.values(SIEMBRA).map(s=>`<div class="si-card" style="opacity:0.9"><h4>${escapeHtml(s.fase)} — ${escapeHtml(s.titulo)}</h4><p style="font-size:13px">${escapeHtml(s.texto)}</p><p class="si-sem">🌱 ${escapeHtml(s.siembra)}</p><p class="si-tar">🛠️ ${escapeHtml(s.tareas)}</p></div>`).join('');
+  box.innerHTML=html;
+  box.querySelectorAll('.si-card[data-luna]').forEach(el=> el.onclick=()=>{ selectMoon(+el.dataset.luna); renderSiembraTresBox(); renderSiembraContent('siembra'); });
+}
+function openSiembra(tab){
+  renderSiembraTresBox();
+  renderSiembraContent(tab||'siembra');
   $('siembraDialog').showModal();
-};
+}
+$('btnSiembra').onclick = () => openSiembra('siembra');
 $('siembraClose').onclick = () => $('siembraDialog').close();
 if ($('siembraCloseTop')) $('siembraCloseTop').onclick = () => $('siembraDialog').close();
+const _tabS=$('tabSiembra'), _tabC=$('tabCosecha');
+if(_tabS) _tabS.onclick=()=> renderSiembraContent('siembra');
+if(_tabC) _tabC.onclick=()=> renderSiembraContent('cosecha');
 
 
 // === PESCA ===
@@ -697,13 +781,148 @@ function renderFishingDialog(){
     moonBox.innerHTML='<b>'+r.label+'</b> — '+r.desc+' (tithi '+r.tithi+')';
   }
 }
+// === BITÁCORA DE PESCA (dentro de Pesca) ===
+function getFishingLogData(){
+  const u=userData();
+  if(!u.fishingLog) u.fishingLog=[];
+  if(!Array.isArray(u.fishingLog)) u.fishingLog=[];
+  return u.fishingLog;
+}
+let fishLogEditingId=null;
+function renderFishingLog(){
+  const box=$('fishLogList'); if(!box) return;
+  const data=getFishingLogData();
+  const stats=$('fishLogStats');
+  if(!data.length){ box.innerHTML='<p class="muted">Sin salidas registradas. Agrega tu primera arriba.</p>'; if(stats) stats.textContent='0 salidas'; return; }
+  const sorted=[...data].sort((a,b)=> b.date.localeCompare(a.date));
+  box.innerHTML=sorted.map(it=>{
+    const luna=mensLunaForKey(it.date);
+    const lunaTxt=luna? `Luna ${luna.luna} d${luna.dia}`: '';
+    return `<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center"><span><b>${escapeHtml(it.species||'—')}</b> — ${escapeHtml(it.qty||'')} · ${escapeHtml(it.place||'')} <br><span class="muted" style="font-size:11px">${it.date} ${it.tide? '· '+escapeHtml(it.tide):''} ${lunaTxt? '· '+lunaTxt:''} ${it.weather? '· '+escapeHtml(it.weather):''}</span><br><span class="muted" style="font-size:11px">${escapeHtml(it.notes||'')}</span></span><span style="display:flex;gap:6px;flex:0 0 auto"><button data-id="${it.id}" class="btn fishlog-edit" style="width:auto;font-size:11px">✏️</button><button data-id="${it.id}" class="btn fishlog-del" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕</button></span></div>`;
+  }).join('');
+  if(stats) stats.textContent=`${data.length} salidas · ${data.filter(x=>x.qty).length} con captura`;
+  box.querySelectorAll('.fishlog-edit').forEach(b=> b.onclick=()=>{
+    const it=data.find(x=>x.id===b.dataset.id); if(!it) return;
+    fishLogEditingId=it.id;
+    $('fishLogDate').value=it.date; $('fishLogPlace').value=it.place||''; $('fishLogSpecies').value=it.species||''; $('fishLogQty').value=it.qty||''; $('fishLogTide').value=it.tide||''; $('fishLogWeather').value=it.weather||''; $('fishLogNotes').value=it.notes||'';
+    $('fishLogAdd').textContent='↻ Actualizar'; $('fishLogCancelEdit').classList.remove('hidden');
+  });
+  box.querySelectorAll('.fishlog-del').forEach(b=> b.onclick=()=>{
+    if(!confirm('¿Eliminar salida?')) return;
+    const d=getFishingLogData(); const idx=d.findIndex(x=>x.id===b.dataset.id); if(idx>=0) d.splice(idx,1);
+    scheduleSave(); renderFishingLog();
+  });
+}
 function setupFishingDialog(){
-  const btn=$('btnFishing'); if(btn) btn.onclick=()=>{ renderFishingDialog(); $('fishingDialog').showModal(); };
+  const btn=$('btnFishing'); if(btn) btn.onclick=()=>{
+    renderFishingDialog(); renderFishingLog();
+    const d=$('fishLogDate'); if(d && !d.value) d.value=cal.fmtKey.format(new Date());
+    $('fishingDialog').showModal();
+  };
   const ct=$('fishingCloseTop'), cb=$('fishingClose'); if(ct) ct.onclick=()=>$('fishingDialog').close(); if(cb) cb.onclick=()=>$('fishingDialog').close();
+  const add=$('fishLogAdd'); if(add) add.onclick=()=>{
+    const date=$('fishLogDate').value; if(!date) return alert('Elige fecha');
+    const rec={ id: fishLogEditingId||'f'+Date.now(), date, place:$('fishLogPlace').value.trim(), species:$('fishLogSpecies').value.trim(), qty:$('fishLogQty').value.trim(), tide:$('fishLogTide').value.trim(), weather:$('fishLogWeather').value.trim(), notes:$('fishLogNotes').value.trim() };
+    const data=getFishingLogData();
+    if(fishLogEditingId){
+      const idx=data.findIndex(x=>x.id===fishLogEditingId); if(idx>=0) data[idx]=rec;
+      fishLogEditingId=null; add.textContent='+ Guardar salida'; $('fishLogCancelEdit').classList.add('hidden');
+    } else data.push(rec);
+    scheduleSave(); $('fishLogSpecies').value=''; $('fishLogQty').value=''; $('fishLogNotes').value='';
+    renderFishingLog();
+  };
+  const cancel=$('fishLogCancelEdit'); if(cancel) cancel.onclick=()=>{ fishLogEditingId=null; $('fishLogAdd').textContent='+ Guardar salida'; cancel.classList.add('hidden'); $('fishLogSpecies').value=''; $('fishLogQty').value=''; $('fishLogNotes').value=''; };
+  const clear=$('fishLogClear'); if(clear) clear.onclick=()=>{ if(!confirm('¿Borrar toda la bitácora de pesca?')) return; const d=userData(); d.fishingLog=[]; scheduleSave(); renderFishingLog(); };
+  // auto fill tide from today's prediction
+  const tideInput=$('fishLogTide');
+  if(tideInput) tideInput.addEventListener('focus', ()=>{
+    if(tideInput.value) return;
+    const k=($('fishLogDate').value||cal.fmtKey.format(new Date())).slice(5);
+    const t=getTidesForKey(k); if(t.tides.length) tideInput.placeholder=t.tides.map(x=>x.h+' '+x.t).join(', ');
+  });
 }
 
 setTimeout(setupFishingDialog, 560);
-if ($('siembraCloseTop')) $('siembraCloseTop').onclick = () => $('siembraDialog').close();
+
+// === AVES — Observación ===
+const BIRDS_CATALOG = (typeof AVES_PENCO!=='undefined'? AVES_PENCO : (window.pencoData&&window.pencoData.AVES_PENCO)||[
+  { nombre:"Gaviota dominicana", cient:"Larus dominicanus", hab:"Costa", icon:"🕊️", epoca:"Todo año"},
+  { nombre:"Zorzal", cient:"Turdus falcklandii", hab:"Jardín", icon:"🐦", epoca:"Todo año"}
+]);
+function getBirdData(){
+  const u=userData();
+  if(!u.birds) u.birds={ entries:[] };
+  if(!Array.isArray(u.birds.entries)) u.birds.entries=[];
+  return u.birds;
+}
+let birdEditingId=null;
+function renderBirdsDialog(){
+  const todayKey=cal.fmtKey.format(new Date());
+  const todayBox=$('birdsTodayBox');
+  if(todayBox){
+    const cnt=getBirdData().entries.length;
+    const todayCnt=getBirdData().entries.filter(x=>x.date===todayKey).length;
+    todayBox.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:14px"><b>🦅 Hoy — ${cal.fmtFull.format(new Date())}</b></span><span class="chip" style="background:var(--gold);color:#10142c">${todayCnt} hoy · ${cnt} total</span></div><p class="muted" style="font-size:11px;margin-top:6px">Humedal Rocuant es sitio clave: pleamar concentra aves limícolas. Mejor 06:30-09:00 y 17:30-19:00. Viento sur fuerte → poca actividad.</p>`;
+  }
+  const moonBox=$('birdsMoonBox');
+  if(moonBox){
+    const k=cal.fmtKey.format(new Date());
+    const r=getFishingRatingForKey(k);
+    moonBox.innerHTML=`<b>${r.label}</b> — ${r.desc} (luna influye menos que marea, más que luz nocturna)`;
+  }
+  const catBox=$('birdsCatalogBox');
+  if(catBox){
+    catBox.innerHTML='<div class="fishing-species">'+BIRDS_CATALOG.map(b=>`<div class="fishing-species-item" style="cursor:pointer" data-bird="${escapeHtml(b.nombre)}"><b>${b.icon} ${escapeHtml(b.nombre)}</b> — <span class="muted" style="font-size:10px">${escapeHtml(b.cient)}</span><br><span style="font-size:11px">${escapeHtml(b.hab)} · ${escapeHtml(b.epoca)}</span></div>`).join('')+'</div>';
+    catBox.querySelectorAll('[data-bird]').forEach(el=> el.onclick=()=>{ $('birdSpecies').value=el.dataset.bird; $('birdSpecies').focus(); });
+  }
+  renderBirdsLog();
+}
+function renderBirdsLog(){
+  const box=$('birdsLogBox'); if(!box) return;
+  const data=getBirdData().entries;
+  const stats=$('birdsStats');
+  if(!data.length){ box.innerHTML='<p class="muted">Sin avistamientos. Registra tu primero arriba.</p>'; if(stats) stats.textContent='0 avistamientos'; return; }
+  const sorted=[...data].sort((a,b)=> (b.date+b.time).localeCompare(a.date+a.time));
+  box.innerHTML=sorted.slice(0,60).map(it=>{
+    const luna=mensLunaForKey(it.date);
+    return `<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center"><span><b>${escapeHtml(it.species)}</b> ×${it.count} — ${escapeHtml(it.place||'—')} · ${escapeHtml(it.activity||'')} <br><span class="muted" style="font-size:11px">${it.date} ${it.time||''} ${luna? '· Luna '+luna.luna+' d'+luna.dia:''}</span><br><span class="muted" style="font-size:11px">${escapeHtml(it.notes||'')}</span></span><span style="display:flex;gap:6px;flex:0 0 auto"><button data-id="${it.id}" class="btn bird-edit" style="width:auto;font-size:11px">✏️</button><button data-id="${it.id}" class="btn bird-del" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕</button></span></div>`;
+  }).join('');
+  const speciesSet=new Set(data.map(x=>x.species));
+  if(stats) stats.textContent=`${data.length} avistamientos · ${speciesSet.size} especies · ${data.reduce((s,x)=>s+(parseInt(x.count)||0),0)} individuos`;
+  box.querySelectorAll('.bird-edit').forEach(b=> b.onclick=()=>{
+    const d=getBirdData().entries.find(x=>x.id===b.dataset.id); if(!d) return;
+    birdEditingId=d.id; $('birdDate').value=d.date; $('birdTime').value=d.time||'07:00'; $('birdPlace').value=d.place||''; $('birdSpecies').value=d.species||''; $('birdCount').value=d.count||1; $('birdActivity').value=d.activity||'posada'; $('birdNotes').value=d.notes||'';
+    $('birdAdd').textContent='↻ Actualizar'; $('birdCancelEdit').classList.remove('hidden');
+  });
+  box.querySelectorAll('.bird-del').forEach(b=> b.onclick=()=>{
+    if(!confirm('¿Eliminar avistamiento?')) return;
+    const arr=getBirdData().entries; const idx=arr.findIndex(x=>x.id===b.dataset.id); if(idx>=0) arr.splice(idx,1);
+    scheduleSave(); renderBirdsDialog();
+  });
+}
+function setupBirdsDialog(){
+  const btn=$('btnBirds'); if(btn) btn.onclick=()=>{ renderBirdsDialog(); const d=$('birdDate'); if(d && !d.value) d.value=cal.fmtKey.format(new Date()); $('birdsDialog').showModal(); };
+  const ct=$('birdsCloseTop'), cb=$('birdsClose'); if(ct) ct.onclick=()=>$('birdsDialog').close(); if(cb) cb.onclick=()=>$('birdsDialog').close();
+  const add=$('birdAdd'); if(add) add.onclick=()=>{
+    const date=$('birdDate').value; const species=$('birdSpecies').value.trim(); if(!date||!species) return alert('Especie y fecha son obligatorias');
+    const rec={ id: birdEditingId||'b'+Date.now(), date, time:$('birdTime').value||'07:00', place:$('birdPlace').value.trim(), species, count: parseInt($('birdCount').value)||1, activity:$('birdActivity').value, notes:$('birdNotes').value.trim() };
+    const arr=getBirdData().entries;
+    if(birdEditingId){ const idx=arr.findIndex(x=>x.id===birdEditingId); if(idx>=0) arr[idx]=rec; birdEditingId=null; add.textContent='+ Guardar avistamiento'; $('birdCancelEdit').classList.add('hidden'); }
+    else arr.push(rec);
+    scheduleSave(); $('birdSpecies').value=''; $('birdNotes').value=''; renderBirdsDialog();
+  };
+  const cancel=$('birdCancelEdit'); if(cancel) cancel.onclick=()=>{ birdEditingId=null; $('birdAdd').textContent='+ Guardar avistamiento'; cancel.classList.add('hidden'); $('birdSpecies').value=''; $('birdNotes').value=''; };
+  const clear=$('birdsClear'); if(clear) clear.onclick=()=>{ if(!confirm('¿Borrar toda la bitácora de aves?')) return; getBirdData().entries=[]; scheduleSave(); renderBirdsDialog(); };
+  const exp=$('birdsExport'); if(exp) exp.onclick=()=>{
+    const arr=getBirdData().entries;
+    if(!arr.length) return alert('Sin datos para exportar');
+    let txt='Bitácora de aves — Penco\nFecha,Hora,Lugar,Especie,Cantidad,Actividad,Notas,Luna\n';
+    arr.forEach(r=>{ const l=mensLunaForKey(r.date); txt+=`${r.date},${r.time},${r.place},${r.species},${r.count},${r.activity},${r.notes},${l? 'Luna '+l.luna:''}\n`; });
+    const blob=new Blob([txt],{type:'text/csv'});
+    const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='aves-penco-'+cal.fmtKey.format(new Date())+'.csv'; a.click(); URL.revokeObjectURL(url);
+  };
+}
+setTimeout(setupBirdsDialog, 570);
 
 function generateIconPNG() {
   const c = document.createElement('canvas');
@@ -2118,6 +2337,77 @@ function setupHelpDialog(){
 }
 setTimeout(setupHelpDialog, 850);
 
+// === CONFIGURACIÓN PERSONALIZABLE ===
+const ALL_BTNS = ["btnTides","btnFishing","btnBirds","btnWeather","btnSiembra","btnAstro","btnComuna","btnEkadashi","btnMenstrual","btnMedic","btnHabits","btnMeal","btnShopping","btnDiscipline","btnDreams","btnBreath","btnSchedule","btnGym","btnCircadian","btnGolden","btnConvert","btnTimer","btnRemind","btnBackup","btnRestore","btnShortcut","btnPdfLuna","btnPdfCiclo","btnDonate","btnHelp","btnStudy","btnTales","btnMemory"];
+const PRESETS = {
+  todo: Object.fromEntries(ALL_BTNS.map(k=>[k,true])),
+  esencial: {btnTides:true,btnWeather:true,btnSiembra:true,btnEkadashi:true,btnBackup:true,btnRestore:true,btnPdfLuna:true,btnPdfCiclo:true,btnHelp:true,btnDonate:true},
+  infantil: {btnWeather:true,btnSiembra:true,btnHabits:true,btnDreams:true,btnBreath:true,btnSchedule:true,btnHelp:true},
+  adolescente: {btnHabits:true,btnStudy:true,btnSchedule:true,btnDiscipline:true,btnDreams:true,btnBreath:true,btnConvert:true,btnTimer:true,btnHelp:true},
+  adulto: Object.fromEntries(ALL_BTNS.map(k=>[k,true])),
+  mayor: {btnTides:true,btnWeather:true,btnSiembra:true,btnMenstrual:true,btnMedic:true,btnDreams:true,btnBreath:true,btnHelp:true,btnDonate:true},
+  estudiante: {btnWeather:true,btnSiembra:true,btnHabits:true,btnStudy:true,btnSchedule:true,btnDiscipline:true,btnConvert:true,btnTimer:true,btnHelp:true},
+  agricultor: {btnTides:true,btnFishing:true,btnBirds:true,btnWeather:true,btnSiembra:true,btnGolden:true,btnCircadian:true,btnHelp:true},
+  pescador: {btnTides:true,btnFishing:true,btnBirds:true,btnWeather:true,btnSiembra:true,btnGolden:true,btnHelp:true},
+  salud: {btnMenstrual:true,btnMedic:true,btnHabits:true,btnGym:true,btnCircadian:true,btnDreams:true,btnBreath:true,btnMeal:true,btnHelp:true},
+  deportista: {btnHabits:true,btnGym:true,btnMeal:true,btnShopping:true,btnCircadian:true,btnBreath:true,btnTimer:true,btnHelp:true},
+  docente: {btnSiembra:true,btnEkadashi:true,btnStudy:true,btnSchedule:true,btnHabits:true,btnDiscipline:true,btnConvert:true,btnPdfCiclo:true,btnHelp:true}
+};
+function getVisibleConfig(){
+  const c = (DATA.config && DATA.config.visible) || {};
+  const out={}; ALL_BTNS.forEach(k=> out[k]= c[k]!==false );
+  return out;
+}
+function applyVisibility(){
+  const vis=getVisibleConfig();
+  ALL_BTNS.forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.style.display = vis[id] ? '' : 'none';
+  });
+  const large = (DATA.config && DATA.config.largeText);
+  document.body.classList.toggle('large-text', !!large);
+  const cb=document.getElementById('cfgLargeText'); if(cb) cb.checked=!!large;
+}
+function setupConfigDialog(){
+  const btn=$('btnConfig'); if(btn) btn.onclick=()=>{
+    const vis=getVisibleConfig();
+    document.querySelectorAll('#configDialog input[data-btn]').forEach(cb=>{
+      cb.checked = !!vis[cb.dataset.btn];
+    });
+    $('configDialog').showModal();
+  };
+  const ct=$('configCloseTop'), cb=$('configClose'); if(ct) ct.onclick=()=>$('configDialog').close(); if(cb) cb.onclick=()=>$('configDialog').close();
+  document.querySelectorAll('#configDialog input[data-btn]').forEach(cb=>{
+    cb.onchange=()=>{
+      DATA.config=DATA.config||{}; DATA.config.visible=DATA.config.visible||{};
+      DATA.config.visible[cb.dataset.btn]=cb.checked;
+      scheduleSave(); applyVisibility();
+    };
+  });
+  document.querySelectorAll('.config-preset').forEach(b=>{
+    b.onclick=()=>{
+      const preset=PRESETS[b.dataset.preset];
+      if(!preset) return;
+      DATA.config=DATA.config||{};
+      const vis={}; ALL_BTNS.forEach(k=> vis[k]= preset[k] ? true : false);
+      // si preset no define, dejar false
+      DATA.config.visible=vis;
+      scheduleSave();
+      document.querySelectorAll('#configDialog input[data-btn]').forEach(cb=> cb.checked=!!vis[cb.dataset.btn]);
+      applyVisibility();
+    };
+  });
+  const largeCb=$('cfgLargeText'); if(largeCb) largeCb.onchange=()=>{ DATA.config=DATA.config||{}; DATA.config.largeText=largeCb.checked; scheduleSave(); applyVisibility(); };
+  const reset=$('configReset'); if(reset) reset.onclick=()=>{
+    DATA.config=DATA.config||{}; DATA.config.visible=Object.fromEntries(ALL_BTNS.map(k=>[k,true]));
+    scheduleSave();
+    document.querySelectorAll('#configDialog input[data-btn]').forEach(cb=> cb.checked=true);
+    applyVisibility();
+  };
+}
+
+setTimeout(setupConfigDialog, 860);
+
 // === DISCIPLINA ===
 function getDisciplineData(){
   const u=userData();
@@ -2497,6 +2787,310 @@ function setupDreamsDialog(){
 }
 setTimeout(setupDreamsDialog, 865);
 
+
+// === CUENTOS LUNARES ===
+const DEFAULT_TALES = [
+  { n:1, nombre:'We Tripantü Küyen', titulo:'El fuego que no se apaga', texto:'En la noche más larga, la machi Rayén reunió a los niños alrededor del fogón de Penco. Afuera llovía fuerte sobre el golfo y las olas golpeaban Lirquén. “Esta luna guarda el fuego —dijo—. No es para quemar, sino para recordar”. Les entregó a cada uno una semilla de avellano: “Guárdenla seca, oscura y sin apuro. Como el sol ahora, parece dormida, pero late”. El niño Antü guardó la suya en una cajita de quila. Cada noche la miraba antes de dormir, aprendiendo la paciencia del invierno. En esa espera, comprendió que guardar también es sembrar.', moral:'Paciencia y cuidado — lo que se guarda con amor, brota a su tiempo.' },
+  { n:2, nombre:'Llitunül Wilki Küyen', titulo:'El zorzal que enseñó a escuchar', texto:'En la luna del zorzal, el canto despertaba a Penco antes que el sol. Millaray decía que no oía nada, hasta que su abuelo la llevó al humedal al amanecer, con frío y neblina. Se quedaron inmóviles. Primero un zorzal, luego dos, luego un coro. “Si caminas apurada, el canto pasa por encima —dijo el abuelo—. Si respiras con la niebla, el canto entra”. Desde entonces Millaray abría la ventana cada mañana y, antes de mirar el celular, escuchaba. Su día empezaba afinado, como un instrumento.', moral:'Escuchar es un oficio — quien hace silencio, entiende el día.' },
+  { n:3, nombre:'Llitun Pofpof Anümka Küyen', titulo:'Las manos brotadas', texto:'La tierra de Nahuelbuta olía a brote. En la escuela, cada niño hizo un almácigo en una cáscara de huevo. Ñarki lo regaba todos los días tres veces, impaciente. “Así se ahoga”, le dijo su tía, y le enseñó a tocar la tierra: si brilla, no pide; si se quiebra, tiene sed. A los diez días, un tallo verde asomó. Ñarki no gritó; sonrió largo, como si él mismo hubiera brotado. Entendió que cuidar es medir, no apurar.', moral:'Cuidado atento — la tierra responde a la mano que observa.' },
+  { n:4, nombre:'Rayen Awar Küyen', titulo:'La flor que no se corta', texto:'Los cerros de Penco se pintaron de copihue. Ana quería cortar el más lindo para su pieza. Su mamá la llevó donde crecía y le mostró el camino de la semilla: flor → fruto → pájaro → bosque. “Si lo cortas hoy, mañana no hay flor ni bosque —dijo—. Míralo, dibújalo, agradece, deja su semilla”. Ana lo fotografió a contraluz y lo dibujó en su cuaderno. El copihue siguió colgando, y en el verano los colibríes lo visitaron frente a su ventana.', moral:'Respeto — admirar sin poseer deja que la belleza siga.' },
+  { n:5, nombre:'Longkon Kachilla Küyen', titulo:'Las viajeras del humedal', texto:'Llegaron las aves migratorias al Rocuant. El curso de Elka hizo un mapa con hilos: desde el norte de América hasta Penco. “¿Cómo saben dónde es Penco sin GPS?”, preguntó Elka. La profesora les mostró el viento, la luna y el instinto. Cada niña eligió un ave y la esperó sin ruido. Cuando un zarapito bajó a la orilla, todas contuvieron el aliento. No aplaudieron; anotaron. Aprendieron que el mundo es una casa con muchos patios, y que Penco es patio de muchos.', moral:'Pertenece a una ruta mayor — cuidar el humedal es cuidar el camino de otros.' },
+  { n:6, nombre:'Karü Kachilla Küyen', titulo:'Nudos que salvan', texto:'Era luna de preparar artes. Don Heraldo, pescador de Lirquén, enseñó a hacer nudos a los jóvenes. “Un nudo mal hecho pierde pescado y deja tarraya en el mar —dijo—. Un nudo bien hecho da de comer y no contamina”. Cada uno practicó diez veces el mismo. Al principio se enredaban, luego la mano recordaba sola. Guardaron las redes remendadas y anotaron la veda en el calendario. Entendieron que el mar se pesca con respeto y con manos aprendidas.', moral:'Oficio y respeto — la técnica bien hecha cuida el sustento.' },
+  { n:7, nombre:'Kudewallüng Küyen', titulo:'Luciérnagas de verano', texto:'En la noche de luciérnagas, Penco no necesitó faroles. Los niños caminaron a la playa de Rocuant sin linterna: la arena aún tibia, el cielo naranja después de la puesta. Jugaron a contar luces: una, tres, diez. “No las atrapen —dijo la tía—. Si las miran sin tocar, vuelven”. Se acostaron boca arriba. El mar sonaba y las luces parecían estrellas bajas. Se durmieron con la sensación de que el verano era una respiración larga.', moral:'Asombro sin captura — hay luces que solo viven si no se encierran.' },
+  { n:8, nombre:'Püramuwün Kachilla Küyen · Are Küyen', titulo:'La mesa larga', texto:'Era luna de cosecha y el calor apretaba. En la población, la vecina Rosa hizo una mesa larga con lo cosechado: tomates, choclos, pimientos y pan amasado. Cada familia llevó algo y se sirvieron sin contar. “¿Y si falta?”, preguntó un niño. “Si falta, alcanzamos menos, pero comimos juntos —dijo Rosa—. Eso también es abundancia”. Comieron hasta tarde, con el sol demorándose tras los cerros. Sobró poco, y ese poco fue semilla.', moral:'Abundancia compartida — cosechar es repartir.' },
+  { n:9, nombre:'Trüntarü Küyen', titulo:'El dulce que fermenta', texto:'En la vendimia del valle, el abuelo mostró dos frascos: uno con uva pisada hoy, otro fermentando hace días. “Hoy es dulce —dijo—. En unos días será chicha; si esperas más, será vinagre. Todo a su tiempo”. Dejó a cada nieto revolver el mosto y probar con la punta del dedo. Olía a verano que cambiaba de nombre. Aprendieron que madurar no es apurarse ni atrasarse: es estar atentos al punto justo.', moral:'Tiempo justo — madurar es saber cuándo detener la mano.' },
+  { n:10, nombre:'Ngülliw Küyen', titulo:'El bosque que cambia de ropa', texto:'El bosque se volvió rojo y amarillo. La profesora llevó a los niños a recoger hojas y clasificarlas por color, sin arrancar ramas. “El árbol no se muere —dijo—, se guarda. Como nosotros cuando guardamos la ropa de verano”. Cada hoja en el herbário tenía fecha y luna. Al volver, escribieron qué soltarían ellos ese otoño: el apuro, una pelea, el miedo a preguntar. Dejar caer, como el bosque, también es crecer.', moral:'Soltar — como el otoño, desprenderse deja espacio nuevo.' },
+  { n:11, nombre:'Malliñ Ko Küyen', titulo:'Los piñones del abuelo', texto:'En precordillera, el abuelo pehuenche enseñó a golpear la araucaria con vara larga, no a cortar. Cayó una lluvia de piñones. “Uno para el suelo, uno para el chucao, uno para nosotros”, contaba. Los niños pelaron piñones al fuego y los comieron con miel. Guardaron un saco para el invierno. Entendieron que la cosecha tiene medida: si tomas todo, el bosque no vuelve.', moral:'Cosecha con medida — tomar solo parte deja futuro.' },
+  { n:12, nombre:'Trangliñ Küyen', titulo:'La helada que enseña', texto:'Llegó la primera helada y los almácigos amanecieron blancos. Martín corrió a mojarlos al sol. “No —dijo su mamá—, así se quiebran. Que se descongelen solos, a la sombra”. Cubrieron con malla y esperaron. Dos plantines se salvaron, uno no. Martín anotó en el calendario: tapar antes de las 18 h. Aprendió a anticipar en vez de lamentar, y que el frío también es maestro.', moral:'Previsión — la helada avisa; quien cubre a tiempo, salva.' },
+  { n:13, nombre:'Mawün Kürüf Küyen', titulo:'El viento que cierra el círculo', texto:'La última luna trajo lluvia y viento fuerte sobre la bahía. La casa crujía y el fuego era refugio. La abuela sacó el cuaderno del ciclo: “¿Qué sembraron, qué cosecharon, qué agradecen?”. Cada uno dijo una memoria. Luego soplaron una vela y estuvieron un minuto a oscuras, escuchando el viento. Cuando la volvieron a encender, el año parecía lavado, listo para el fuego nuevo del We Tripantu.', moral:'Memoria y cierre — nombrar lo vivido hace lugar a lo que viene.' }
+];
+function getTalesData(){
+  const u=userData();
+  if(!u.tales) u.tales={ edits:{} };
+  if(!u.tales.edits || typeof u.tales.edits!=='object') u.tales.edits={};
+  return u.tales;
+}
+function getEffectiveTales(){
+  const edits=getTalesData().edits;
+  return DEFAULT_TALES.map(d=>{
+    const ov=edits[String(d.n)];
+    if(!ov) return d;
+    return { n:d.n, nombre: ov.nombre||d.nombre, titulo: ov.titulo||d.titulo, texto: ov.texto||d.texto, moral: ov.moral||d.moral };
+  });
+}
+const TALES = DEFAULT_TALES;
+let talesEditingN=null;
+function renderTalesGrid(){
+  const g=$('talesGrid'); if(!g) return;
+  const eff=getEffectiveTales();
+  g.innerHTML=eff.map(t=>{
+    const isEdited = !!getTalesData().edits[String(t.n)];
+    return `<div class="discipline-card" style="cursor:pointer;${isEdited?'border-color:var(--gold)':''}" data-n="${t.n}"><h4>🌙 Luna ${t.n} — ${escapeHtml(t.titulo)} ${isEdited?'<span class="chip" style="font-size:10px">editado</span>':''}</h4><p style="font-size:11px;color:var(--muted)">${escapeHtml(t.nombre)}</p><p class="muted" style="font-size:11px;margin-top:4px">${escapeHtml(t.texto.slice(0,120))}…</p><p style="font-size:10px;color:var(--gold)"><i>Moraleja: ${escapeHtml(t.moral)}</i></p></div>`;
+  }).join('');
+  g.querySelectorAll('[data-n]').forEach(el=> el.onclick=()=>{
+    const eff2=getEffectiveTales();
+    const t=eff2.find(x=> String(x.n)===el.dataset.n);
+    talesEditingN=t.n;
+    const r=$('talesReader'); const eBox=$('talesEditBox');
+    if(r){ r.classList.remove('hidden');
+      r.innerHTML='<h4 style="color:var(--gold)">🌙 Luna '+t.n+' — '+escapeHtml(t.titulo)+'</h4><p style="font-size:11px;color:var(--muted)">'+escapeHtml(t.nombre)+' · '+escapeHtml(MOONS[t.n-1].traduccion)+'</p><p style="font-size:13px;color:#cdd3ee;line-height:1.75;margin-top:8px;white-space:pre-wrap">'+escapeHtml(t.texto)+'</p><p style="font-size:12px;color:var(--gold);margin-top:10px"><b>Moraleja:</b> <i>'+escapeHtml(t.moral)+'</i></p><div class="dlg-actions" style="justify-content:flex-start;margin-top:10px"><button type="button" class="btn btn-accent tales-edit-btn" style="width:auto">✏️ Editar este cuento</button></div>';
+      const eb=r.querySelector('.tales-edit-btn'); if(eb) eb.onclick=()=> openTalesEdit(t.n);
+      r.scrollIntoView({behavior:'smooth',block:'nearest'});
+    }
+    if(eBox) eBox.classList.add('hidden');
+  });
+}
+function openTalesEdit(n){
+  const eff=getEffectiveTales(); const t=eff.find(x=>x.n===n); if(!t) return;
+  talesEditingN=n;
+  $('talesEditLuna').textContent=n;
+  $('talesEditTitle').value=t.titulo;
+  $('talesEditText').value=t.texto;
+  $('talesEditMoral').value=t.moral;
+  $('talesReader').classList.add('hidden');
+  $('talesEditBox').classList.remove('hidden');
+  $('talesEditBox').scrollIntoView({behavior:'smooth'});
+}
+function setupTalesDialog(){
+  const b=$('btnTales'); if(b) b.onclick=()=>{ renderTalesGrid(); const r=$('talesReader'); if(r) r.classList.add('hidden'); const eb=$('talesEditBox'); if(eb) eb.classList.add('hidden'); $('talesDialog').showModal(); };
+  const ct=$('talesCloseTop'), cb=$('talesClose'); if(ct) ct.onclick=()=>$('talesDialog').close(); if(cb) cb.onclick=()=>$('talesDialog').close();
+  const save=$('talesSave'); if(save) save.onclick=()=>{
+    const n=talesEditingN; if(!n) return;
+    const title=$('talesEditTitle').value.trim(), texto=$('talesEditText').value.trim(), moral=$('talesEditMoral').value.trim();
+    if(!texto) return alert('El cuento no puede quedar vacío');
+    const td=getTalesData();
+    td.edits[String(n)]={ titulo: title||DEFAULT_TALES[n-1].titulo, texto, moral: moral||DEFAULT_TALES[n-1].moral, nombre: DEFAULT_TALES[n-1].nombre };
+    scheduleSave();
+    $('talesEditBox').classList.add('hidden');
+    renderTalesGrid();
+    const r=$('talesReader'); if(r){ const t=getEffectiveTales().find(x=>x.n===n); r.classList.remove('hidden'); r.innerHTML='<h4 style="color:var(--gold)">🌙 Luna '+t.n+' — '+escapeHtml(t.titulo)+' <span class="chip" style="font-size:10px">guardado</span></h4><p style="font-size:13px;color:#cdd3ee;line-height:1.75;white-space:pre-wrap">'+escapeHtml(t.texto)+'</p><p style="font-size:12px;color:var(--gold)"><b>Moraleja:</b> <i>'+escapeHtml(t.moral)+'</i></p>'; }
+  };
+  const restore=$('talesRestore'); if(restore) restore.onclick=()=>{
+    const n=talesEditingN; if(!n) return;
+    if(!confirm('¿Restaurar cuento original de la Luna '+n+'?')) return;
+    const td=getTalesData(); delete td.edits[String(n)]; scheduleSave();
+    $('talesEditBox').classList.add('hidden'); renderTalesGrid();
+    const r=$('talesReader'); if(r) r.classList.add('hidden');
+  };
+  const cancel=$('talesCancelEdit'); if(cancel) cancel.onclick=()=>{ $('talesEditBox').classList.add('hidden'); const r=$('talesReader'); if(r) r.classList.add('hidden'); };
+}
+
+// === MEMORIA ===
+let memoryPairsFirst=null, memoryPairsLock=false, memoryPairsScore=0;
+function renderMemoryPairs(){
+  const grid=$('memoryPairsGrid'); if(!grid) return;
+  const icons=["🌙","☀️","🌊","🌱","🍎","🌾","🐟","⭐"];
+  const deck=[...icons, ...icons].sort(()=>Math.random()-0.5);
+  grid.innerHTML='';
+  memoryPairsFirst=null; memoryPairsLock=false; memoryPairsScore=0;
+  const scoreEl=$('memoryPairsScore'); if(scoreEl) scoreEl.textContent='0 pares';
+  deck.forEach(icon=>{
+    const btn=document.createElement('button');
+    btn.type='button'; btn.className='habit-icon-opt'; btn.textContent='?'; btn.dataset.icon=icon; btn.dataset.revealed='0';
+    btn.onclick=()=>{
+      if(memoryPairsLock || btn.dataset.revealed==='1') return;
+      btn.textContent=btn.dataset.icon; btn.dataset.revealed='1'; btn.style.background='var(--card-hover)';
+      if(!memoryPairsFirst){ memoryPairsFirst=btn; }
+      else {
+        memoryPairsLock=true;
+        setTimeout(()=>{
+          if(memoryPairsFirst.dataset.icon===btn.dataset.icon){
+            memoryPairsFirst.style.borderColor='var(--gold)'; btn.style.borderColor='var(--gold)';
+            memoryPairsScore++; if(scoreEl) scoreEl.textContent=memoryPairsScore+' pares';
+            if(memoryPairsScore===icons.length) setTimeout(()=> alert('¡Excelente! Memoria entrenada.'),200);
+            memoryPairsFirst=null; memoryPairsLock=false;
+          } else {
+            memoryPairsFirst.textContent='?'; memoryPairsFirst.dataset.revealed='0'; memoryPairsFirst.style.background='';
+            btn.textContent='?'; btn.dataset.revealed='0'; btn.style.background='';
+            memoryPairsFirst=null; memoryPairsLock=false;
+          }
+        },600);
+      }
+    };
+    grid.appendChild(btn);
+  });
+}
+function setupMemoryDialog(){
+  const b=$('btnMemory'); if(b) b.onclick=()=>{ $('memoryDialog').showModal(); };
+  const ct=$('memoryCloseTop'), cb=$('memoryClose'); if(ct) ct.onclick=()=>$('memoryDialog').close(); if(cb) cb.onclick=()=>$('memoryDialog').close();
+  const tabL=$('tabMemoryLoci'), tabP=$('tabMemoryPairs'), pL=$('memoryLociPanel'), pP=$('memoryPairsPanel');
+  if(tabL) tabL.onclick=()=>{ tabL.classList.add('btn-accent'); tabP.classList.remove('btn-accent'); pL.classList.remove('hidden'); pP.classList.add('hidden'); };
+  if(tabP) tabP.onclick=()=>{ tabP.classList.add('btn-accent'); tabL.classList.remove('btn-accent'); pP.classList.remove('hidden'); pL.classList.add('hidden'); renderMemoryPairs(); };
+  const build=$('memoryBuildLoci'); if(build) build.onclick=()=>{
+    const words=$('memoryWords').value.split(',').map(s=>s.trim()).filter(Boolean);
+    if(!words.length) return;
+    const places=['Entrada','Cocina','Living','Baño','Dormitorio'];
+    const out=words.map((w,i)=> `${i+1}. ${places[i%places.length]} → imagina <b>${escapeHtml(w)}</b> gigante ahí`).join('<br>');
+    $('memoryLociOutput').innerHTML=out;
+  };
+  const newGame=$('memoryPairsNew'); if(newGame) newGame.onclick=renderMemoryPairs;
+  renderMemoryPairs();
+}
+
+setTimeout(setupTalesDialog, 875);
+setTimeout(setupMemoryDialog, 880);
+
+// === EVENTOS ASTRONÓMICOS ===
+const ASTRO_EVENTS = (typeof EVENTOS_ASTRONOMICOS!=='undefined'? EVENTOS_ASTRONOMICOS : (window.pencoData&&window.pencoData.EVENTOS_ASTRONOMICOS)||[]);
+function getAstroForMonth(mdKey){ // mdKey MM-DD or YYYY-MM-DD
+  const mmdd = mdKey.length===5? mdKey : mdKey.slice(5);
+  // include recurring solst/equinoc + year-specific
+  return ASTRO_EVENTS.filter(e=> e.date.slice(5)===mmdd || e.date===mdKey);
+}
+function astroVisibleForDate(key){ // key YYYY-MM-DD
+  return ASTRO_EVENTS.filter(e=> e.date===key);
+}
+let astroTab='upcoming';
+function renderAstroDialog(tab){
+  astroTab=tab||astroTab;
+  const tU=$('tabAstroUpcoming'), tY=$('tabAstroYear'), tL=$('tabAstroLuna');
+  if(tU&&tY&&tL){
+    [tU,tY,tL].forEach(b=> b.classList.remove('btn-accent'));
+    if(astroTab==='upcoming') tU.classList.add('btn-accent');
+    if(astroTab==='year') tY.classList.add('btn-accent');
+    if(astroTab==='luna') tL.classList.add('btn-accent');
+  }
+  const todayKey=cal.fmtKey.format(new Date());
+  const todayBox=$('astroTodayBox');
+  if(todayBox){
+    const todayEvents=astroVisibleForDate(todayKey);
+    const phases=phaseMap[todayKey]||[];
+    const phaseTxt=phases.length? phases.map(p=> p.simbolo+' '+p.tipo.replace('-',' ')).join(' · ') : 'Sin fase exacta hoy';
+    todayBox.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center"><span><b>🔭 Hoy — ${cal.weekdayName(mensKeyToMs(todayKey))} ${cal.fmtFull.format(new Date(mensKeyToMs(todayKey)))}</b></span><span class="chip">${phaseTxt}</span></div>` + (todayEvents.length? todayEvents.map(e=> `<div class="chip" style="display:block;margin-top:6px;border-color:var(--gold)">${e.icon} <b>${escapeHtml(e.nombre)}</b> — ${escapeHtml(e.desc)}</div>`).join('') : '<p class="muted" style="font-size:11px;margin-top:6px">Hoy sin eclipse/lluvia destacada. Revisa fases arriba.</p>') + `<p class="muted" style="font-size:11px;margin-top:6px">Penco: lat ${PENCO.lat}, lng ${PENCO.lng}. Cielo ideal: humedal Rocuant sin luces.</p>`;
+  }
+  const list=$('astroList'); if(!list) return;
+  let events=[];
+  if(astroTab==='upcoming'){
+    const now=new Date(); const nowKey=cal.fmtKey.format(now);
+    events=ASTRO_EVENTS.filter(e=> e.date >= nowKey).sort((a,b)=> a.date.localeCompare(b.date)).slice(0,8);
+    if(!events.length) events=ASTRO_EVENTS.slice(0,6);
+    list.innerHTML='<h4 style="color:var(--gold);margin-top:10px">⏳ Próximos 8 eventos</h4>' + events.map(e=> {
+      const isToday=e.date===todayKey;
+      const luna=mensLunaForKey(e.date);
+      return `<div class="si-card" style="${isToday?'border-color:var(--gold);background:var(--card-hover)':''}"><h4>${e.icon} ${escapeHtml(e.nombre)} <span class="chip" style="font-size:10px">${e.tipo}</span> ${isToday?'<span class="chip" style="font-size:10px;background:var(--gold);color:#10142c">hoy</span>':''}</h4><p style="font-size:12px;color:var(--gold)">${e.date} ${luna? '· Luna '+luna.luna+' d'+luna.dia:''}</p><p style="font-size:12px">${escapeHtml(e.desc)}</p></div>`;
+    }).join('');
+  } else if(astroTab==='year'){
+    const yr=new Date().getFullYear();
+    const yearEvents=ASTRO_EVENTS.filter(e=> e.date.startsWith(String(yr)) || e.date.startsWith(String(yr+1))).sort((a,b)=>a.date.localeCompare(b.date));
+    const byType={}; yearEvents.forEach(e=>{ if(!byType[e.tipo]) byType[e.tipo]=[]; byType[e.tipo].push(e); });
+    let html=`<h4 style="color:var(--gold);margin-top:10px">📅 ${yr} — ${yr+1} ciclo</h4>`;
+    Object.keys(byType).forEach(t=>{ html+=`<p class="muted" style="font-size:11px;margin:8px 0 4px"><b>${t}</b> · ${byType[t].length}</p>` + byType[t].map(e=> `<div class="si-card" style="padding:8px 10px"><h4 style="font-size:12px">${e.icon} ${escapeHtml(e.nombre)} <span class="muted" style="font-size:11px">${e.date}</span></h4><p style="font-size:11px">${escapeHtml(e.desc)}</p></div>`).join(''); });
+    list.innerHTML=html;
+  } else { // luna
+    const lunaDays = currentView.tipo==='dft'? [] : cycle.days.filter(d=> d.luna===currentView.luna);
+    const lunaName = currentView.tipo==='dft'? 'Día Fuera del Tiempo' : MOONS[currentView.luna-1].nombre;
+    let html=`<h4 style="color:var(--gold);margin-top:10px">🌙 Luna ${currentView.tipo==='dft'?'DFT':currentView.luna} — ${escapeHtml(lunaName)} · fases y eventos</h4>`;
+    // fases
+    const chips=[];
+    lunaDays.forEach(d=>{ const k=cal.fmtKey.format(new Date(d.noonMs)); (phaseMap[k]||[]).forEach(ev=> chips.push({k,ev})); });
+    if(chips.length) html+=`<div class="menstrual-card" style="margin-top:8px"><h4>Fases exactas en esta luna</h4>`+chips.map(c=>`<span class="chip" style="display:inline-block;margin:4px 4px 0 0">${c.ev.simbolo} <b>${escapeHtml(c.ev.tipo)}</b> · ${cal.fmtDate.format(new Date(c.ev.utcMs))} ${cal.fmtTime.format(new Date(c.ev.utcMs))}</span>`).join('')+`</div>`;
+    // astro in luna
+    let astroInLuna=[];
+    lunaDays.forEach(d=>{ const k=cal.fmtKey.format(new Date(d.noonMs)); const evs=astroVisibleForDate(k); evs.forEach(e=> astroInLuna.push({k,e})); });
+    if(astroInLuna.length) html+=`<div style="margin-top:8px">`+astroInLuna.map(o=>`<div class="si-card" style="border-color:var(--gold)"><h4>${o.e.icon} ${escapeHtml(o.e.nombre)}</h4><p style="font-size:12px;color:var(--gold)">${o.k}</p><p style="font-size:12px">${escapeHtml(o.e.desc)}</p></div>`).join('')+`</div>`;
+    else html+='<p class="muted" style="margin-top:8px">Sin eclipses/lluvias en estos 28 días. Revisa pestaña Próximos.</p>';
+    list.innerHTML=html;
+  }
+}
+function setupAstroDialog(){
+  const btn=$('btnAstro'); if(btn) btn.onclick=()=>{ renderAstroDialog('upcoming'); $('astroDialog').showModal(); };
+  const ct=$('astroCloseTop'), cb=$('astroClose'); if(ct) ct.onclick=()=>$('astroDialog').close(); if(cb) cb.onclick=()=>$('astroDialog').close();
+  const tU=$('tabAstroUpcoming'), tY=$('tabAstroYear'), tL=$('tabAstroLuna');
+  if(tU) tU.onclick=()=> renderAstroDialog('upcoming');
+  if(tY) tY.onclick=()=> renderAstroDialog('year');
+  if(tL) tL.onclick=()=> renderAstroDialog('luna');
+}
+setTimeout(setupAstroDialog, 880);
+
+// === EVENTOS ANUALES COMUNA PENCO ===
+const COMUNA_OFICIAL = (typeof EVENTOS_COMUNA_PENCO!=='undefined'? EVENTOS_COMUNA_PENCO : (window.pencoData&&window.pencoData.EVENTOS_COMUNA_PENCO)||[]);
+function getComunaData(){
+  const u=userData();
+  if(!u.comunaEventos) u.comunaEventos={ list:[], showCal:true };
+  if(!Array.isArray(u.comunaEventos.list)) u.comunaEventos.list=[];
+  if(typeof u.comunaEventos.showCal!=='boolean') u.comunaEventos.showCal=true;
+  return u.comunaEventos;
+}
+function isComunaShowCal(){ try{ return getComunaData().showCal!==false; }catch{ return true; } }
+function getAllComunaEventsForMD(md){
+  const oficial=COMUNA_OFICIAL.filter(e=> e.md===md);
+  const personal=getComunaData().list.filter(e=> e.md===md);
+  return [...oficial,...personal];
+}
+function getAllComunaEvents(){
+  const map={};
+  COMUNA_OFICIAL.forEach(e=>{ if(!map[e.md]) map[e.md]=[]; map[e.md].push({...e, oficial:true}); });
+  getComunaData().list.forEach(e=>{ if(!map[e.md]) map[e.md]=[]; map[e.md].push({...e, oficial:false}); });
+  // flatten
+  let all=[];
+  Object.keys(map).sort().forEach(md=> map[md].forEach(ev=> all.push(ev)));
+  return all;
+}
+let comunaEditingId=null;
+function renderComunaDialog(){
+  const cbShow=$('comunaShowCal'); if(cbShow){ cbShow.checked=isComunaShowCal(); cbShow.onchange=()=>{ getComunaData().showCal=cbShow.checked; scheduleSave(); renderLuna(); }; }
+  const todayKey=cal.fmtKey.format(new Date());
+  const mdToday=todayKey.slice(5);
+  const todayBox=$('comunaTodayBox');
+  if(todayBox){
+    const todayEvents=getAllComunaEventsForMD(mdToday);
+    todayBox.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center"><span><b>🎉 Hoy — ${cal.fmtFull.format(new Date())}</b></span><span class="chip">${todayEvents.length? todayEvents.length+' evento(s)':'Sin evento hoy'}</span></div>` + (todayEvents.length? todayEvents.map(e=> `<div class="chip" style="display:block;margin-top:6px">${e.icon} <b>${escapeHtml(e.nombre)}</b> — ${escapeHtml(e.desc)}</div>`).join('') : '<p class="muted" style="font-size:11px;margin-top:6px">Hoy sin evento comunal. ¡Crea uno anual!</p>');
+  }
+  const lunaBox=$('comunaLunaBox');
+  if(lunaBox){
+    const yr=currentCycleYear();
+    const lunaName=currentView.tipo==='dft'? 'DFT' : MOONS[currentView.luna-1].nombre;
+    lunaBox.innerHTML=`<h4 style="color:var(--accent)">🌙 Luna ${currentView.tipo==='dft'?'DFT':currentView.luna} · ${escapeHtml(lunaName)}</h4><p class="muted" style="font-size:11px">Eventos anuales que caen dentro de esta luna (28 días) aparecen en el calendario como 📅.</p>`;
+  }
+  const lunaList=$('comunaLunaList');
+  if(lunaList){
+    const lunaDays = currentView.tipo==='dft'? [] : cycle.days.filter(d=> d.luna===currentView.luna);
+    let html='';
+    lunaDays.forEach(d=>{
+      const md=cal.fmtKey.format(new Date(d.noonMs)).slice(5);
+      const evs=getAllComunaEventsForMD(md);
+      evs.forEach(e=>{
+        html+=`<div class="si-card" style="padding:8px 10px"><h4>${e.icon} ${escapeHtml(e.nombre)} <span class="chip" style="font-size:10px">${e.cat||'evento'}</span></h4><p style="font-size:11px;color:var(--muted)">${cal.fmtDate.format(new Date(d.noonMs))} (${md})</p><p style="font-size:12px">${escapeHtml(e.desc)}</p></div>`;
+      });
+    });
+    lunaList.innerHTML=html||'<p class="muted">Sin eventos anuales en esta luna.</p>';
+  }
+  const list=$('comunaList'); if(list){
+    const all=getAllComunaEvents();
+    if(!all.length) list.innerHTML='<p class="muted">Sin eventos.</p>';
+    else list.innerHTML=all.map(e=> `<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center"><span><b>${e.icon} ${escapeHtml(e.nombre)}</b> <span class="chip" style="font-size:10px">${e.md} · ${e.cat||''} ${e.oficial? '· oficial':''}</span><br><span class="muted" style="font-size:11px">${escapeHtml(e.desc)}</span></span><span style="display:flex;gap:6px;flex:0 0 auto">${!e.oficial?`<button data-id="${e.id}" class="btn comuna-edit" style="width:auto;font-size:11px">✏️</button><button data-id="${e.id}" class="btn comuna-del" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕</button>`: '<span class="muted" style="font-size:10px">oficial</span>'}</span></div>`).join('');
+    list.querySelectorAll('.comuna-edit').forEach(b=> b.onclick=()=>{
+      const d=getComunaData().list.find(x=>x.id===b.dataset.id); if(!d) return;
+      comunaEditingId=d.id; $('comunaDate').value=new Date().getFullYear()+'-'+d.md; $('comunaName').value=d.nombre; $('comunaDesc').value=d.desc; $('comunaIcon').value=d.icon||'🎉'; $('comunaCat').value=d.cat||'otro';
+      $('comunaAdd').classList.add('hidden'); $('comunaUpdate').classList.remove('hidden'); $('comunaCancel').classList.remove('hidden');
+    });
+    list.querySelectorAll('.comuna-del').forEach(b=> b.onclick=()=>{
+      if(!confirm('¿Borrar evento anual?')) return;
+      const arr=getComunaData().list; const idx=arr.findIndex(x=>x.id===b.dataset.id); if(idx>=0) arr.splice(idx,1);
+      scheduleSave(); renderComunaDialog(); renderLuna();
+    });
+  }
+  // date default
+  const dateIn=$('comunaDate'); if(dateIn && !dateIn.value) dateIn.value=cal.fmtKey.format(new Date());
+}
+function setupComunaDialog(){
+  const btn=$('btnComuna'); if(btn) btn.onclick=()=>{ renderComunaDialog(); $('comunaDialog').showModal(); };
+  const ct=$('comunaCloseTop'), cb=$('comunaClose'); if(ct) ct.onclick=()=>$('comunaDialog').close(); if(cb) cb.onclick=()=>$('comunaDialog').close();
+  const add=$('comunaAdd'); if(add) add.onclick=()=>{
+    const date=$('comunaDate').value; const nombre=$('comunaName').value.trim(); if(!date||!nombre) return alert('Fecha y nombre obligatorios');
+    const md=date.slice(5); const rec={ id:'c'+Date.now(), md, nombre, desc:$('comunaDesc').value.trim(), icon:$('comunaIcon').value.trim()||'🎉', cat:$('comunaCat').value };
+    getComunaData().list.push(rec); scheduleSave(); $('comunaName').value=''; $('comunaDesc').value=''; renderComunaDialog(); renderLuna();
+  };
+  const upd=$('comunaUpdate'); if(upd) upd.onclick=()=>{
+    const d=getComunaData().list.find(x=>x.id===comunaEditingId); if(!d) return;
+    const date=$('comunaDate').value; if(!date) return;
+    d.md=date.slice(5); d.nombre=$('comunaName').value.trim(); d.desc=$('comunaDesc').value.trim(); d.icon=$('comunaIcon').value.trim()||'🎉'; d.cat=$('comunaCat').value;
+    scheduleSave(); comunaEditingId=null; $('comunaAdd').classList.remove('hidden'); upd.classList.add('hidden'); $('comunaCancel').classList.add('hidden'); $('comunaName').value=''; $('comunaDesc').value=''; renderComunaDialog(); renderLuna();
+  };
+  const cancel=$('comunaCancel'); if(cancel) cancel.onclick=()=>{ comunaEditingId=null; $('comunaAdd').classList.remove('hidden'); $('comunaUpdate').classList.add('hidden'); cancel.classList.add('hidden'); $('comunaName').value=''; $('comunaDesc').value=''; };
+}
+setTimeout(setupComunaDialog, 882);
+
 // === CICLO CIRCADIANO ===
 const CIRCADIAN_PHASES = [
   { h0:5, h1:8, label:"Despertar", icon:"🌅", desc:"Cortisol alto", tip:"Luz natural, estirar, agua" },
@@ -2792,6 +3386,7 @@ if ($('btnTimer')) {
   const savedTheme = getTheme();
   applyTheme(savedTheme);
   setupThemeSelector();
+  applyVisibility();
   setTimeout(checkReminders, 3000);
   setTimeout(()=>{ try{ mensCheckNotify(); }catch{} }, 4500);
   window.api.dataPath().then(p => {

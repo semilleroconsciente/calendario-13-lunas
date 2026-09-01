@@ -37,6 +37,7 @@
       <option value="medianoche">Medianoche — negro</option>
     </select>
     <button id="btnToday" class="btn btn-accent">◉ Ir a hoy</button>
+    <button id="btnConfig" class="btn" style="margin-top:8px">⚙️ Personalizar</button>
     <nav id="moonNav"></nav>
     <div class="sidebar-foot">
       <span id="dataInfo"></span>
@@ -74,6 +75,7 @@
     <footer id="actions">
       <button id="btnTides" class="btn">🌊 Mareas</button>
       <button id="btnFishing" class="btn">🎣 Pesca</button>
+      <button id="btnBirds" class="btn">🦅 Aves</button>
       <button id="btnWeather" class="btn">🌤️ Clima</button>
       <button id="btnSiembra" class="btn">🌱 Siembra lunar</button>
       <button id="btnEkadashi" class="btn">📿 Ekadashi</button>
@@ -87,6 +89,10 @@
       <button id="btnBreath" class="btn">🌬️ Respiración</button>
       <button id="btnSchedule" class="btn">📚 Horario</button>
       <button id="btnGym" class="btn">🏋️ Gym</button>
+      <button id="btnTales" class="btn">📖 Cuentos</button>
+      <button id="btnMemory" class="btn">🧩 Memoria</button>
+      <button id="btnAstro" class="btn">🔭 Astro</button>
+      <button id="btnComuna" class="btn">🎉 Penco</button>
       <button id="btnStudy" class="btn">🧠 Estudio</button>
       <button id="btnCircadian" class="btn">🌞 Circadiano</button>
       <button id="btnGolden" class="btn">📸 Hora Dorada</button>
@@ -155,11 +161,17 @@
   <dialog id="siembraDialog">
     <form method="dialog">
       <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
-        <h3 style="margin:0">🌱 Guía de siembra lunar</h3>
+        <h3 style="margin:0">🌱 Siembra &amp; Cosecha — Penco</h3>
         <button type="button" id="siembraCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
       </div>
-      <p class="muted">Tradición de siembra por fases, adaptada al sur de Chile.</p>
+      <p class="muted">Guía por fases y por lunas. Ahora incluye cosecha integrada y vista de <b>3 lunas</b> (actual + 2 siguientes).</p>
+      <div class="timer-tabs" style="margin-bottom:10px">
+        <button type="button" id="tabSiembra" class="btn btn-accent" style="width:auto">🌱 Siembra</button>
+        <button type="button" id="tabCosecha" class="btn" style="width:auto">🌾 Cosecha &amp; Plagas</button>
+      </div>
+      <div id="siembraTresBox" class="menstrual-card" style="margin-bottom:10px;border-color:var(--gold)"></div>
       <div id="siembraContent"></div>
+      <div id="siembraHarvestBox"></div>
       <div class="dlg-actions"><button type="button" id="siembraClose" class="btn">Cerrar</button></div>
     </form>
   </dialog>
@@ -189,7 +201,91 @@
         <p class="muted" style="font-size:11px">• Mejor 2h antes/después de pleamar (ver 🌊 Mareas). • Amanecer y atardecer = pique. • Con luna clara, usa señuelo oscuro; con luna oscura, claro. • Lleva linterna roja, no blanca. • Si hay viento sur fuerte, no salgas.</p>
         <p class="muted" style="font-size:10px">Fuentes: Sernapesca vedas, SHOA mareas, saberes caleta Lirquén. Verifica siempre norma vigente en sernapesca.cl</p>
       </div>
+      <div class="menstrual-card" style="margin-top:10px">
+        <h4>📓 Bitácora de pesca — registro personal</h4>
+        <p class="muted" style="font-size:11px">Queda <b>privado y local</b> por usuario. Registra salida, especie, kilos, marea y lugar para aprender de tu mar.</p>
+        <div class="conv-row">
+          <label>Fecha <input type="date" id="fishLogDate"></label>
+          <label>Lugar <input type="text" id="fishLogPlace" placeholder="ej: Lirquén, Playa negra" maxlength="30"></label>
+        </div>
+        <div class="conv-row">
+          <label>Especie <input type="text" id="fishLogSpecies" placeholder="ej: Corvina" maxlength="30"></label>
+          <label>Cantidad / kg <input type="text" id="fishLogQty" placeholder="ej: 2 / 1.5 kg" maxlength="20"></label>
+        </div>
+        <div class="conv-row">
+          <label>Marea / hora <input type="text" id="fishLogTide" placeholder="ej: pleamar 08:00" maxlength="30"></label>
+          <label>Clima <input type="text" id="fishLogWeather" placeholder="ej: nublado sur" maxlength="30"></label>
+        </div>
+        <label>Notas <input type="text" id="fishLogNotes" placeholder="carnada, señuelo, aprendizaje" maxlength="80"></label>
+        <div class="dlg-actions" style="justify-content:flex-start">
+          <button type="button" id="fishLogAdd" class="btn btn-accent" style="width:auto">+ Guardar salida</button>
+          <button type="button" id="fishLogCancelEdit" class="btn hidden" style="width:auto">Cancelar</button>
+        </div>
+        <div id="fishLogList" class="habits-list" style="margin-top:10px"></div>
+        <div class="dlg-actions" style="justify-content:space-between;align-items:center;margin-top:8px">
+          <span id="fishLogStats" class="muted" style="font-size:11px"></span>
+          <button type="button" id="fishLogClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar todo</button>
+        </div>
+      </div>
       <div class="dlg-actions"><button type="button" id="fishingClose" class="btn">Cerrar</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="birdsDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">🦅 Observación de aves — Penco · Rocuant · Bío-Bío</h3>
+        <button type="button" id="birdsCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
+      </div>
+      <p class="muted" style="line-height:1.5">Bitácora de aves del humedal y costa pencona. Registra <b>privado y local</b> por usuario. Observa sin molestar: distancia, silencio y binoculares.</p>
+      <div id="birdsTodayBox" class="menstrual-card" style="border-color:var(--gold)"></div>
+      <div class="fishing-grid" style="margin-top:10px">
+        <div class="menstrual-card">
+          <h4>🦩 Aves frecuentes</h4>
+          <div id="birdsCatalogBox" class="fishing-species"></div>
+          <p class="muted" style="font-size:10px;margin-top:6px">Toca una especie para cargarla en el formulario.</p>
+        </div>
+        <div class="menstrual-card">
+          <h4>🌙 Luna y actividad</h4>
+          <p class="muted" style="font-size:11px">Migratorias más activas en pleamar y amanecer. Luna llena: mejor visibilidad nocturna para aves de borde.</p>
+          <div id="birdsMoonBox" class="chip" style="display:block;white-space:normal"></div>
+          <div class="menstrual-card" style="margin-top:8px;background:var(--panel)">
+            <h4 style="font-size:11px">🌿 Tips observación</h4>
+            <p class="muted" style="font-size:11px">• Amanecer y atardecer = mayor canto. • Viento sur fuerte espanta aves. • No des nidos ni uses flash. • Lleva libreta y anota comportamiento.</p>
+          </div>
+        </div>
+      </div>
+      <div class="menstrual-card" style="margin-top:10px">
+        <h4>📓 Bitácora — avistamientos</h4>
+        <div class="conv-row">
+          <label>Fecha <input type="date" id="birdDate"></label>
+          <label>Hora <input type="time" id="birdTime" value="07:00"></label>
+          <label>Lugar <input type="text" id="birdPlace" placeholder="ej: Humedal Rocuant" maxlength="30"></label>
+        </div>
+        <div class="conv-row">
+          <label>Especie <input type="text" id="birdSpecies" placeholder="ej: Loica" maxlength="30"></label>
+          <label>Cantidad <input type="number" id="birdCount" min="1" value="1" style="width:80px"></label>
+          <label>Actividad
+            <select id="birdActivity">
+              <option value="posada">Posada</option><option value="vuelo">Vuelo</option><option value="canto">Canto</option><option value="alimentándose">Alimentándose</option><option value="nido">Nido/cría</option>
+            </select>
+          </label>
+        </div>
+        <label>Notas <input type="text" id="birdNotes" placeholder="ej: junto a totora, juvenil, foto tomada" maxlength="80"></label>
+        <div class="dlg-actions" style="justify-content:flex-start">
+          <button type="button" id="birdAdd" class="btn btn-accent" style="width:auto">+ Guardar avistamiento</button>
+          <button type="button" id="birdCancelEdit" class="btn hidden" style="width:auto">Cancelar</button>
+        </div>
+        <div id="birdsLogBox" class="habits-list" style="margin-top:10px;max-height:240px"></div>
+        <div class="dlg-actions" style="justify-content:space-between;align-items:center;margin-top:8px">
+          <span id="birdsStats" class="muted" style="font-size:11px"></span>
+          <span style="display:flex;gap:8px">
+            <button type="button" id="birdsExport" class="btn" style="width:auto">📤 Exportar</button>
+            <button type="button" id="birdsClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar</button>
+          </span>
+        </div>
+      </div>
+      <div class="dlg-actions"><button type="button" id="birdsClose" class="btn">Cerrar</button></div>
     </form>
   </dialog>
 
@@ -921,6 +1017,211 @@
         </div>
       </div>
       <div class="dlg-actions"><button type="button" id="studyClose" class="btn">Cerrar</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="configDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">⚙️ Personalizar calendario</h3>
+        <button type="button" id="configCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
+      </div>
+      <p class="muted" style="line-height:1.5">Elige qué secciones ver según tu <b>edad o profesión</b>. Se guarda por usuario y puedes cambiarlo cuando quieras. Lo oculto no se borra, solo se esconde.</p>
+      <div class="menstrual-card">
+        <h4>✨ Perfiles rápidos</h4>
+        <div class="conv-row" style="flex-wrap:wrap;gap:6px">
+          <button type="button" class="btn config-preset" data-preset="todo" style="width:auto">Todo</button>
+          <button type="button" class="btn config-preset" data-preset="esencial" style="width:auto">Esencial</button>
+          <button type="button" class="btn config-preset" data-preset="infantil" style="width:auto">👧 Infantil 8-12</button>
+          <button type="button" class="btn config-preset" data-preset="adolescente" style="width:auto">🧑‍🎓 Adolescente</button>
+          <button type="button" class="btn config-preset" data-preset="adulto" style="width:auto">🧑 Adulto</button>
+          <button type="button" class="btn config-preset" data-preset="mayor" style="width:auto">👴 Mayor 60+</button>
+          <button type="button" class="btn config-preset" data-preset="estudiante" style="width:auto">📚 Estudiante</button>
+          <button type="button" class="btn config-preset" data-preset="agricultor" style="width:auto">🌱 Agricultor</button>
+          <button type="button" class="btn config-preset" data-preset="pescador" style="width:auto">🎣 Pescador</button>
+          <button type="button" class="btn config-preset" data-preset="salud" style="width:auto">🌸 Bienestar</button>
+          <button type="button" class="btn config-preset" data-preset="deportista" style="width:auto">🏋️ Deportista</button>
+          <button type="button" class="btn config-preset" data-preset="docente" style="width:auto">👩‍🏫 Docente</button>
+        </div>
+      </div>
+      <div class="config-grid">
+        <div class="config-group">
+          <h5>🌊 Territorio</h5>
+          <label class="check-row"><input type="checkbox" data-btn="btnTides"> 🌊 Mareas</label>
+          <label class="check-row"><input type="checkbox" data-btn="btnFishing"> 🎣 Pesca</label>
+          <label class="check-row"><input type="checkbox" data-btn="btnBirds"> 🦅 Aves</label>
+          <label class="check-row"><input type="checkbox" data-btn="btnWeather"> 🌤️ Clima</label>
+          <label class="check-row"><input type="checkbox" data-btn="btnSiembra"> 🌱 Siembra</label>
+          <label class="check-row"><input type="checkbox" data-btn="btnAstro"> 🔭 Astro</label>
+          <label class="check-row"><input type="checkbox" data-btn="btnComuna"> 🎉 Penco</label>
+          <label class="check-row"><input type="checkbox" data-btn="btnEkadashi"> 📿 Ekadashi</label>
+          <label class="check-row"><input type="checkbox" data-btn="btnGolden"> 📸 Hora Dorada</label>
+          <label class="check-row"><input type="checkbox" data-btn="btnCircadian"> 🌞 Circadiano</label>
+        </div>
+        <div class="config-group">
+          <h5>🌸 Cuerpo y salud</h5>
+          <label class="check-row"><input type="checkbox" data-btn="btnMenstrual"> 🌸 Ciclo</label>
+          <label class="check-row"><input type="checkbox" data-btn="btnMedic"> 💊 Medicina</label>
+          <label class="check-row"><input type="checkbox" data-btn="btnGym"> 🏋️ Gym</label>
+          <label class="check-row"><input type="checkbox" data-btn="btnBreath"> 🌬️ Respiración</label>
+          <label class="check-row"><input type="checkbox" data-btn="btnDreams"> 💭 Sueños</label>
+        </div>
+        <div class="config-group">
+          <h5>🧠 Mente y estudio</h5>
+          <label class="check-row"><input type="checkbox" data-btn="btnHabits"> ✅ Hábitos</label>
+          <label class="check-row"><input type="checkbox" data-btn="btnDiscipline"> 🎯 Disciplina</label>
+          <label class="check-row"><input type="checkbox" data-btn="btnStudy"> 🧠 Estudio</label>
+          <label class="check-row"><input type="checkbox" data-btn="btnSchedule"> 📚 Horario</label>
+          <label class="check-row"><input type="checkbox" data-btn="btnTales"> 📖 Cuentos</label>
+          <label class="check-row"><input type="checkbox" data-btn="btnMemory"> 🧩 Memoria</label>
+        </div>
+        <div class="config-group">
+          <h5>🍽️ Vida diaria</h5>
+          <label class="check-row"><input type="checkbox" data-btn="btnMeal"> 🥗 Comidas</label>
+          <label class="check-row"><input type="checkbox" data-btn="btnShopping"> 🛒 Compras</label>
+        </div>
+        <div class="config-group">
+          <h5>🛠️ Herramientas</h5>
+          <label class="check-row"><input type="checkbox" data-btn="btnConvert"> 📏 Conversión</label>
+          <label class="check-row"><input type="checkbox" data-btn="btnTimer"> ⏱ Tiempo</label>
+          <label class="check-row"><input type="checkbox" data-btn="btnRemind"> 🔔 Recordatorios</label>
+          <label class="check-row"><input type="checkbox" data-btn="btnBackup"> 💾 Respaldo</label>
+          <label class="check-row"><input type="checkbox" data-btn="btnRestore"> 📥 Restaurar</label>
+          <label class="check-row"><input type="checkbox" data-btn="btnShortcut"> 📌 Acceso directo</label>
+          <label class="check-row"><input type="checkbox" data-btn="btnPdfLuna"> 📄 PDF luna</label>
+          <label class="check-row"><input type="checkbox" data-btn="btnPdfCiclo"> 📚 PDF ciclo</label>
+          <label class="check-row"><input type="checkbox" data-btn="btnDonate"> ❤ Aporte</label>
+          <label class="check-row"><input type="checkbox" data-btn="btnHelp"> ❓ Cómo usar</label>
+        </div>
+        <div class="config-group">
+          <h5>♿ Accesibilidad</h5>
+          <label class="check-row"><input type="checkbox" id="cfgLargeText"> 🔍 Texto grande (ideal 60+)</label>
+        </div>
+      </div>
+      <div class="dlg-actions" style="justify-content:space-between;margin-top:10px">
+        <button type="button" id="configReset" class="btn" style="width:auto">↺ Restablecer todo</button>
+        <button type="button" id="configClose" class="btn btn-accent" style="width:auto">Guardar y cerrar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="talesDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">📖 Cuentos Lunares — para niñas y niños</h3>
+        <button type="button" id="talesCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
+      </div>
+      <p class="muted" style="line-height:1.5">13 lunas, 13 cuentos cuidados de Penco. Lee uno por luna antes de dormir. Toca la luna para leerlo — ahora puedes <b>editar cada cuento</b> a tu gusto; queda privado por usuario.</p>
+      <div id="talesGrid" class="discipline-grid"></div>
+      <div id="talesReader" class="menstrual-card hidden" style="margin-top:10px"></div>
+      <div id="talesEditBox" class="menstrual-card hidden" style="margin-top:10px">
+        <h4 style="color:var(--gold)">✏️ Editar cuento — Luna <span id="talesEditLuna"></span></h4>
+        <label>Título <input type="text" id="talesEditTitle" maxlength="60"></label>
+        <label>Cuento <textarea id="talesEditText" rows="6" placeholder="Escribe tu versión..."></textarea></label>
+        <label>Moraleja <input type="text" id="talesEditMoral" maxlength="80" placeholder="ej: Cada semilla tiene su tiempo"></label>
+        <div class="dlg-actions" style="justify-content:flex-start">
+          <button type="button" id="talesSave" class="btn btn-accent" style="width:auto">💾 Guardar cuento</button>
+          <button type="button" id="talesRestore" class="btn" style="width:auto">↺ Restaurar original</button>
+          <button type="button" id="talesCancelEdit" class="btn" style="width:auto">Cancelar</button>
+        </div>
+        <p class="muted" style="font-size:11px;margin-top:6px">Se guarda solo para tu usuario actual. Usa “Restaurar” para volver al original.</p>
+      </div>
+      <div class="dlg-actions"><button type="button" id="talesClose" class="btn">Cerrar</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="memoryDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">🧩 Memoria y Atención</h3>
+        <button type="button" id="memoryCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
+      </div>
+      <p class="muted" style="line-height:1.5">Entrena memoria con el método loci y juego de pares. 3 minutos al día. Ideal para 60+ y estudiantes.</p>
+      <div class="timer-tabs" style="margin-bottom:10px">
+        <button type="button" id="tabMemoryLoci" class="btn btn-accent" style="width:auto">🏛️ Loci</button>
+        <button type="button" id="tabMemoryPairs" class="btn" style="width:auto">🃏 Pares</button>
+      </div>
+      <div id="memoryLociPanel">
+        <div class="menstrual-card">
+          <h4>🏛️ Palacio — 5 lugares de tu casa</h4>
+          <p class="muted" style="font-size:11px">Asocia cada palabra a un lugar. Ej: 1=Entrada, 2=Cocina...</p>
+          <label>Palabras a recordar (coma) <input type="text" id="memoryWords" placeholder="ej: luna, pez, harina, risa, viento"></label>
+          <button type="button" id="memoryBuildLoci" class="btn" style="width:auto">Crear palacio</button>
+          <div id="memoryLociOutput" class="chip" style="display:block;margin-top:8px;white-space:normal"></div>
+        </div>
+      </div>
+      <div id="memoryPairsPanel" class="hidden">
+        <div class="menstrual-card" style="text-align:center">
+          <h4>🃏 Pares — encuentra los iguales</h4>
+          <div id="memoryPairsGrid" class="habit-icon-picker" style="justify-content:center"></div>
+          <p class="muted" style="font-size:11px;margin-top:6px">Toca 2 cartas. Si coinciden, quedan abiertas. ¡Entrena atención!</p>
+          <button type="button" id="memoryPairsNew" class="btn btn-accent" style="width:auto">Nuevo juego</button>
+          <span id="memoryPairsScore" class="chip" style="margin-left:8px">0 pares</span>
+        </div>
+      </div>
+      <div class="dlg-actions"><button type="button" id="memoryClose" class="btn">Cerrar</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="astroDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">🔭 Eventos Astronómicos — Penco</h3>
+        <button type="button" id="astroCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
+      </div>
+      <p class="muted" style="line-height:1.5">Cielo del Bío-Bío. Horas en <b>America/Santiago</b>. Fases ya se ven en el calendario; aquí: eclipses, superlunas y lluvias de meteoros visibles desde Penco.</p>
+      <div class="timer-tabs" style="margin-bottom:10px">
+        <button type="button" id="tabAstroUpcoming" class="btn btn-accent" style="width:auto">⏳ Próximos</button>
+        <button type="button" id="tabAstroYear" class="btn" style="width:auto">📅 Año</button>
+        <button type="button" id="tabAstroLuna" class="btn" style="width:auto">🌙 Fases de esta luna</button>
+      </div>
+      <div id="astroTodayBox" class="menstrual-card" style="border-color:var(--gold)"></div>
+      <div id="astroList"></div>
+      <p class="muted" style="font-size:10px;margin-top:8px">Fuentes: NASA/IMCCE efemérides. Lluvias: mejor madrugada, cielo oscuro, lejos de luces de Concepción. Eclipses: confirma visibilidad local.</p>
+      <div class="dlg-actions"><button type="button" id="astroClose" class="btn">Cerrar</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="comunaDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">🎉 Eventos Anuales — Comuna de Penco</h3>
+        <button type="button" id="comunaCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
+      </div>
+      <p class="muted" style="line-height:1.5">Fiestas y efemérides penconas. Los <b>anuales</b> se repiten cada año y aparecen en el calendario. Puedes <b>agregar los tuyos</b> (junta de vecinos, feria, aniversario). Queda <b>privado y local</b> por usuario.</p>
+      <label class="check-row" style="margin:8px 0"><input type="checkbox" id="comunaShowCal"> Mostrar eventos de Penco en el calendario (iconos 🎉 por día)</label>
+      <div id="comunaTodayBox" class="menstrual-card" style="border-color:var(--gold)"></div>
+      <div id="comunaLunaBox" class="menstrual-card" style="margin-top:10px"></div>
+      <div class="menstrual-card" style="margin-top:10px">
+        <h4>📅 Eventos de esta luna (28 días)</h4>
+        <div id="comunaLunaList" class="habits-list"></div>
+      </div>
+      <div class="menstrual-card" style="margin-top:10px">
+        <h4>➕ Agregar evento anual</h4>
+        <div class="conv-row">
+          <label>Fecha anual <input type="date" id="comunaDate" value=""></label>
+          <label>Hora (opcional) <input type="time" id="comunaTime"></label>
+        </div>
+        <label>Nombre <input type="text" id="comunaName" placeholder="ej: Aniversario Penco, Feria Rocuant" maxlength="50"></label>
+        <label>Descripción <input type="text" id="comunaDesc" placeholder="lugar, qué se celebra" maxlength="80"></label>
+        <div class="conv-row">
+          <label>Icono <input type="text" id="comunaIcon" placeholder="🎉" maxlength="4" style="width:80px;text-align:center"></label>
+          <label>Categoría
+            <select id="comunaCat">
+              <option value="fiesta">Fiesta</option><option value="cultura">Cultura</option><option value="deporte">Deporte</option><option value="feria">Feria</option><option value="religioso">Religioso</option><option value="municipal">Municipal</option><option value="otro">Otro</option>
+            </select>
+          </label>
+          <button type="button" id="comunaAdd" class="btn btn-accent" style="width:auto;align-self:flex-end">+ Agregar</button>
+          <button type="button" id="comunaUpdate" class="btn hidden" style="width:auto;align-self:flex-end">↻ Actualizar</button>
+          <button type="button" id="comunaCancel" class="btn hidden" style="width:auto;align-self:flex-end">Cancelar</button>
+        </div>
+      </div>
+      <div class="menstrual-card" style="margin-top:10px">
+        <h4>📋 Todos los eventos (oficiales + tus anuales)</h4>
+        <div id="comunaList" class="habits-list" style="max-height:260px"></div>
+        <p class="muted" style="font-size:10px;margin-top:6px">Toca el lápiz para editar o la X para borrar solo tus eventos. Los oficiales no se borran.</p>
+      </div>
+      <div class="dlg-actions"><button type="button" id="comunaClose" class="btn">Cerrar</button></div>
     </form>
   </dialog>
 
