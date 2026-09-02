@@ -129,10 +129,11 @@ ipcMain.handle('backup:open', async () => {
   return fs.readFileSync(filePaths[0], 'utf8');
 });
 
-ipcMain.handle('image:save', async (_e, dataUrl) => {
+ipcMain.handle('image:save', async (_e, dataUrl, suggestedName) => {
+  const safeName = suggestedName || 'calendario-13-lunas.png';
   const { canceled, filePath } = await dialog.showSaveDialog(win, {
     title: 'Guardar imagen del día',
-    defaultPath: path.join(app.getPath('pictures'), 'calendario-13-lunas.png'),
+    defaultPath: path.join(app.getPath('pictures'), safeName),
     filters: [{ name: 'PNG', extensions: ['png'] }]
   });
   if (canceled || !filePath) return null;
