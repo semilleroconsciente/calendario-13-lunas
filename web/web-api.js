@@ -49,18 +49,19 @@ window.api = {
     };
     i.click();
   }),
-  imageSave: async (dataUrl) => {
+  imageSave: async (dataUrl, suggestedName) => {
+    const fileName = suggestedName || 'calendario-13-lunas.png';
     try {
       const blob = await (await fetch(dataUrl)).blob();
-      const file = new File([blob], 'calendario-13-lunas.png', { type: 'image/png' });
+      const file = new File([blob], fileName, { type: 'image/png' });
       if (navigator.canShare && navigator.canShare({ files: [file] })) {
-        await navigator.share({ files: [file], title: 'Calendario de las 13 Lunas' });
+        await navigator.share({ files: [file], title: fileName.replace(/\.png$/i,'') });
         return 'compartido';
       }
     } catch {}
     const a = document.createElement('a');
     a.href = dataUrl;
-    a.download = 'calendario-13-lunas.png';
+    a.download = fileName;
     a.click();
     return 'descargado';
   }

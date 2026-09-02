@@ -433,7 +433,8 @@ $('dlgSave').onclick = () => {
 
 $('dlgShare').onclick = async () => {
   const dataUrl = buildShareImage(editing.lunaN, editing.diaN);
-  const res = await window.api.imageSave(dataUrl);
+  const fileName = `Luna ${editing.lunaN} · Día ${editing.diaN} de 28.png`;
+  const res = await window.api.imageSave(dataUrl, fileName);
   $('statusMsg').textContent = res === 'compartido' ? 'Compartido ✓' : res ? 'Imagen guardada ✓' : 'Cancelado';
   setTimeout(() => { $('statusMsg').textContent = ''; }, 2500);
 };
@@ -1910,22 +1911,44 @@ function renderMedicList(){
 }
 function renderMedicNextBox(){
   const box=$('medicNextBox'); if(!box) return;
-  const data=getMedicData(); if(!data.list.length){ box.innerHTML='<p class="muted">Agrega medicamentos para ver próximas tomas.</p>'; return; }
-  const all=[]; data.list.forEach(med=>{ medicNextDoses(med, Date.now(), 3).forEach(t=> all.push({t, med})); });
+  const farma=getMedicData().list;
+  const nat=getMedicNaturalData().list;
+  const allLists=[...farma.map(m=>({...m, _tipo:'💊'})), ...nat.map(m=>({...m, _tipo:'🌿'}))];
+  if(!allLists.length){ box.innerHTML='<p class="muted">Agrega medicamentos o preparados naturales para ver próximas tomas.</p>'; return; }
+  const all=[]; allLists.forEach(med=>{ medicNextDoses(med, Date.now(), 3).forEach(t=> all.push({t, med})); });
   all.sort((a,b)=>a.t-b.t);
   const next5=all.slice(0,5);
-  box.innerHTML='<h4 style="color:var(--gold)">⏰ Próximas tomas (5)</h4>'+ (next5.length? '<div class="mens-history">'+ next5.map(o=>`<div class="mens-hist-item"><span><b>${escapeHtml(o.med.name)}</b> — ${cal.weekdayName(o.t)} ${cal.fmtFull.format(new Date(o.t))} ${cal.fmtTime.format(new Date(o.t))} · ${escapeHtml(o.med.dose)}</span><span class="muted" style="font-size:10px">${o.t-Date.now()<3600000? '¡pronto!':''}</span></div>`).join('')+'</div>' : '<p class="muted">Sin tomas próximas.</p>');
+  box.innerHTML='<h4 style="color:var(--gold)">⏰ Próximas tomas — farmacología + natural (5)</h4>'+ (next5.length? '<div class="mens-history">'+ next5.map(o=>`<div class="mens-hist-item"><span><b>${o.med._tipo} ${escapeHtml(o.med.name)}</b> — ${cal.weekdayName(o.t)} ${cal.fmtFull.format(new Date(o.t))} ${cal.fmtTime.format(new Date(o.t))} · ${escapeHtml(o.med.dose||o.med.notes||'')}</span><span class="muted" style="font-size:10px">${o.t-Date.now()<3600000? '¡pronto!':''}</span></div>`).join('')+'</div>' : '<p class="muted">Sin tomas próximas.</p>');
 }
 function medicCheckNotify(){
-  const data=getMedicData(); if(!data.notify||!data.list.length) return;
+  const farma=getMedicData(); const nat=getMedicNaturalData();
+  const hasFarma=farma.notify && farma.list.length; const hasNat=nat.list.length;
+  if(!hasFarma && !hasNat) return;
   if(typeof Notification==='undefined'||Notification.permission!=='granted') return;
-  const now=Date.now(); const all=[]; data.list.forEach(med=> medicNextDoses(med, now-60000, 2).forEach(t=> all.push({t,med})));
-  all.forEach(o=>{ const diff=o.t-now; if(diff>=-60000 && diff<=60000){ const key='medic-last-'+o.med.id+'-'+o.t; if(localStorage.getItem(key)) return; try{ new Notification('💊 Medicamento', {body:`${o.med.name} — ${o.med.dose} · ${cal.fmtTime.format(new Date(o.t))}`}); localStorage.setItem(key,'1'); if(navigator.vibrate) navigator.vibrate([200,100,200]); }catch{} } });
+  const now=Date.now(); const all=[];
+  if(farma.notify) farma.list.forEach(med=> medicNextDoses(med, now-60000, 2).forEach(t=> all.push({t,med, tipo:'💊'})));
+  else if(nat.list.length) { /* si solo natural, igual notifica si farma notify está on */ }
+  nat.list.forEach(med=> medicNextDoses(med, now-60000, 2).forEach(t=> all.push({t,med, tipo:'🌿'})));
+  all.forEach(o=>{ const diff=o.t-now; if(diff>=-60000 && diff<=60000){ const key='medic-last-'+o.med.id+'-'+o.t; if(localStorage.getItem(key)) return; try{ new Notification((o.tipo==='🌿'?'🌿 Natural':'💊 Medicamento'), {body:`${o.med.name} — ${o.med.dose||o.med.notes||''} · ${cal.fmtTime.format(new Date(o.t))}`}); localStorage.setItem(key,'1'); if(navigator.vibrate) navigator.vibrate([200,100,200]); }catch{} } });
 }
 function setupMedicDialog(){
-  const btn=$('btnMedic'); if(btn) btn.onclick=()=>{ renderMedicList(); renderMedicNextBox(); const c=$('medicNotify'); if(c) c.checked=getMedicData().notify; $('medicFrom').value=cal.fmtKey.format(new Date()); $('medicDialog').showModal(); };
+  const btn=$('btnMedic'); if(btn) btn.onclick=()=>{
+    renderMedicList(); renderNaturalList(); renderNaturalUserList(); renderMedicNextBox();
+    const c=$('medicNotify'); if(c) c.checked=getMedicData().notify;
+    const mf=$('medicFrom'); if(mf && !mf.value) mf.value=cal.fmtKey.format(new Date());
+    const nf=$('naturalFrom'); if(nf && !nf.value) nf.value=cal.fmtKey.format(new Date());
+    // tabs default
+    const farPanel=$('medicFarmaPanel'), natPanel=$('medicNaturalPanel'), tF=$('tabMedicFarma'), tN=$('tabMedicNatural');
+    if(farPanel && natPanel){ farPanel.classList.remove('hidden'); natPanel.classList.add('hidden'); if(tF) tF.classList.add('btn-accent'); if(tN) tN.classList.remove('btn-accent'); }
+    $('medicDialog').showModal();
+  };
   const cTop=$('medicCloseTop'), cBot=$('medicClose'); if(cTop) cTop.onclick=()=>$('medicDialog').close(); if(cBot) cBot.onclick=()=>$('medicDialog').close();
+  // tabs
+  const tF=$('tabMedicFarma'), tN=$('tabMedicNatural');
+  if(tF) tF.onclick=()=>{ $('medicFarmaPanel').classList.remove('hidden'); $('medicNaturalPanel').classList.add('hidden'); tF.classList.add('btn-accent'); tN.classList.remove('btn-accent'); };
+  if(tN) tN.onclick=()=>{ $('medicNaturalPanel').classList.remove('hidden'); $('medicFarmaPanel').classList.add('hidden'); tN.classList.add('btn-accent'); tF.classList.remove('btn-accent'); };
   const freq=$('medicFreq'), daysRow=$('medicDaysRow'); if(freq) freq.onchange=()=>{ daysRow.style.display= freq.value==='personalizada'?'flex':'none'; };
+  const nFreq=$('naturalFreq'), nDaysRow=$('naturalDaysRow'); if(nFreq) nFreq.onchange=()=>{ nDaysRow.style.display= nFreq.value==='personalizada'?'flex':'none'; };
   const add=$('medicAdd'); if(add) add.onclick=()=>{
     const name=$('medicName').value.trim(); if(!name) return alert('Ingresa nombre');
     const med={ id:'med'+Date.now(), name, dose:$('medicDose').value.trim(), freq:$('medicFreq').value, time:$('medicTime').value, from:$('medicFrom').value, to:$('medicTo').value, days:$('medicDays').value.trim(), notes:$('medicNotes').value.trim() };
@@ -1937,6 +1960,19 @@ function setupMedicDialog(){
     scheduleSave(); medicEditingId=null; $('medicAdd').classList.remove('hidden'); upd.classList.add('hidden'); $('medicCancelEdit').classList.add('hidden'); $('medicName').value=''; $('medicDose').value=''; $('medicNotes').value=''; renderMedicList(); renderMedicNextBox();
   };
   const cancel=$('medicCancelEdit'); if(cancel) cancel.onclick=()=>{ medicEditingId=null; $('medicAdd').classList.remove('hidden'); $('medicUpdate').classList.add('hidden'); cancel.classList.add('hidden'); $('medicName').value=''; $('medicDose').value=''; $('medicNotes').value=''; };
+  // natural add/update/cancel
+  const nAdd=$('naturalAdd'); if(nAdd) nAdd.onclick=()=>{
+    const name=$('naturalName').value.trim(); if(!name) return alert('Ingresa hierba / preparado');
+    const med={ id:'nat'+Date.now(), name, dose:$('naturalDose').value.trim(), freq:$('naturalFreq').value, time:$('naturalTime').value, from:$('naturalFrom').value, to:$('naturalTo').value, days:$('naturalDays').value.trim(), notes:$('naturalNotes').value.trim() };
+    if(!med.from) med.from=cal.fmtKey.format(new Date());
+    getMedicNaturalData().list.push(med); scheduleSave(); $('naturalName').value=''; $('naturalDose').value=''; $('naturalNotes').value=''; renderNaturalUserList(); renderMedicNextBox();
+  };
+  const nUpd=$('naturalUpdate'); if(nUpd) nUpd.onclick=()=>{
+    const med=getMedicNaturalData().list.find(x=>x.id===naturalEditingId); if(!med) return;
+    med.name=$('naturalName').value.trim(); med.dose=$('naturalDose').value.trim(); med.freq=$('naturalFreq').value; med.time=$('naturalTime').value; med.from=$('naturalFrom').value; med.to=$('naturalTo').value; med.days=$('naturalDays').value.trim(); med.notes=$('naturalNotes').value.trim();
+    scheduleSave(); naturalEditingId=null; $('naturalAdd').classList.remove('hidden'); nUpd.classList.add('hidden'); $('naturalCancelEdit').classList.add('hidden'); $('naturalName').value=''; $('naturalDose').value=''; $('naturalNotes').value=''; renderNaturalUserList(); renderMedicNextBox();
+  };
+  const nCancel=$('naturalCancelEdit'); if(nCancel) nCancel.onclick=()=>{ naturalEditingId=null; $('naturalAdd').classList.remove('hidden'); $('naturalUpdate').classList.add('hidden'); nCancel.classList.add('hidden'); $('naturalName').value=''; $('naturalDose').value=''; $('naturalNotes').value=''; };
   const notChk=$('medicNotify'); if(notChk) notChk.onchange= async ()=>{ getMedicData().notify=notChk.checked; scheduleSave(); if(notChk.checked) try{ if(Notification&&Notification.requestPermission) await Notification.requestPermission(); }catch{} };
 }
 setTimeout(setupMedicDialog, 600);
@@ -2145,16 +2181,16 @@ setTimeout(setupHabitsDialog, 700);
 
 // === MEDICINA NATURAL ===
 const NATURAL_HERBS = [
-  { n:"Matico", uso:"Cicatrizante, hemorragias", prep:"Infusión hojas 1 cdta/taza, lavado heridas", luna:"Llena" },
-  { n:"Boldo", uso:"Digestión, hígado", prep:"1-2 hojas infusión corta, no prolongado", luna:"Menguante" },
-  { n:"Manzanilla", uso:"Calmante, digestión", prep:"Flores 1 cda/taza 5 min", luna:"Nueva" },
-  { n:"Menta / Mentha", uso:"Vías respiratorias, digestión", prep:"Hojas frescas infusión", luna:"Creciente" },
-  { n:"Orégano", uso:"Antiséptico, respiratorio", prep:"1 cdta seca/taza", luna:"Creciente" },
-  { n:"Laurel", uso:"Digestión, sahumerio", prep:"1 hoja infusión", luna:"Creciente" },
-  { n:"Eucalipto", uso:"Respiratorio, vapor", prep:"Vahos 3-5 hojas", luna:"Menguante" },
-  { n:"Romero", uso:"Circulación, memoria", prep:"1 ramita infusión corta", luna:"Creciente" },
-  { n:"Melisa/Toronjil", uso:"Ansiedad, sueño", prep:"Hojas 1 cda/taza", luna:"Nueva" },
-  { n:"Ortiga", uso:"Hierro, depurativa", prep:"Hojas secas 1 cdta/taza (cocida si fresca)", luna:"Nueva" }
+  { n:"Matico", uso:"Cicatrizante, hemorragias", prep:"Infusión hojas 1 cdta/taza, lavado heridas", luna:"Llena", freq:"diaria", time:"20:00", notes:"Lavado externo, no prolongar" },
+  { n:"Boldo", uso:"Digestión, hígado", prep:"1-2 hojas infusión corta, no prolongado", luna:"Menguante", freq:"diaria", time:"08:00", notes:"No en embarazo, max 7 días" },
+  { n:"Manzanilla", uso:"Calmante, digestión", prep:"Flores 1 cda/taza 5 min", luna:"Nueva", freq:"diaria", time:"21:00", notes:"Noche, relajante" },
+  { n:"Menta / Mentha", uso:"Vías respiratorias, digestión", prep:"Hojas frescas infusión", luna:"Creciente", freq:"cada12", time:"10:00", notes:"Post comida" },
+  { n:"Orégano", uso:"Antiséptico, respiratorio", prep:"1 cdta seca/taza", luna:"Creciente", freq:"cada8", time:"09:00", notes:"Antiséptico" },
+  { n:"Laurel", uso:"Digestión, sahumerio", prep:"1 hoja infusión", luna:"Creciente", freq:"diaria", time:"08:00", notes:"Digestivo" },
+  { n:"Eucalipto", uso:"Respiratorio, vapor", prep:"Vahos 3-5 hojas", luna:"Menguante", freq:"diaria", time:"19:00", notes:"Vahos noche" },
+  { n:"Romero", uso:"Circulación, memoria", prep:"1 ramita infusión corta", luna:"Creciente", freq:"diaria", time:"07:30", notes:"Mañana" },
+  { n:"Melisa/Toronjil", uso:"Ansiedad, sueño", prep:"Hojas 1 cda/taza", luna:"Nueva", freq:"diaria", time:"21:30", notes:"Antes de dormir" },
+  { n:"Ortiga", uso:"Hierro, depurativa", prep:"Hojas secas 1 cdta/taza (cocida si fresca)", luna:"Nueva", freq:"diaria", time:"08:00", notes:"Con hierro" }
 ];
 function getNaturalData(){
   const u=userData();
@@ -2162,22 +2198,60 @@ function getNaturalData(){
   if(!Array.isArray(u.natural.list)) u.natural.list=[];
   return u.natural;
 }
+function getMedicNaturalData(){
+  const u=userData();
+  if(!u.medicinaNatural) u.medicinaNatural={ list:[] };
+  if(!Array.isArray(u.medicinaNatural.list)) u.medicinaNatural.list=[];
+  // migrar botiquín simple antiguo si existe y natural aún simple
+  if(u.natural && Array.isArray(u.natural.list) && u.natural.list.length && !u.medicinaNatural._migrated){
+    u.natural.list.forEach(x=>{
+      if(x.n && x.uso && !x.name){
+        u.medicinaNatural.list.push({ id: x.id||'nat'+Date.now()+Math.random().toString(36).slice(2), name: x.n, dose: x.uso, freq:'diaria', time:'08:00', from: cal.fmtKey.format(new Date()), to:'', days:'', notes: x.uso });
+      }
+    });
+    if(u.medicinaNatural.list.length) u.medicinaNatural._migrated=true;
+  }
+  return u.medicinaNatural;
+}
+let naturalEditingId=null;
 function renderNaturalList(){
   const box=$('naturalList'); if(!box) return;
-  box.innerHTML=NATURAL_HERBS.map(h=>`<div class="habit-item" style="cursor:pointer" data-n="${escapeHtml(h.n)}"><div style="display:flex;justify-content:space-between;align-items:center"><b>${escapeHtml(h.n)}</b><span class="chip" style="font-size:10px">${h.luna}</span></div><div class="muted" style="font-size:11px">${escapeHtml(h.uso)} — ${escapeHtml(h.prep)}</div></div>`).join('');
+  box.innerHTML=NATURAL_HERBS.map(h=>`<div class="habit-item" style="cursor:pointer" data-n="${escapeHtml(h.n)}"><div style="display:flex;justify-content:space-between;align-items:center"><b>${escapeHtml(h.n)}</b><span class="chip" style="font-size:10px">${h.luna} · ${h.freq} ${h.time}</span></div><div class="muted" style="font-size:11px">${escapeHtml(h.uso)} — ${escapeHtml(h.prep)}</div><div class="muted" style="font-size:10px">Sug: ${h.freq} ${h.time}${h.notes?' · '+escapeHtml(h.notes):''}</div></div>`).join('');
   box.querySelectorAll('[data-n]').forEach(el=> el.onclick=()=>{
     const h=NATURAL_HERBS.find(x=>x.n===el.dataset.n);
     if(!h) return;
-    $('naturalName').value=h.n; $('naturalUse').value=h.uso + ' — ' + h.prep;
+    $('naturalName').value=h.n;
+    $('naturalDose').value=h.prep;
+    const f=$('naturalFreq'); if(f) f.value=h.freq||'diaria';
+    const t=$('naturalTime'); if(t) t.value=h.time||'08:00';
+    const n=$('naturalNotes'); if(n) n.value=h.uso+' — '+h.luna+(h.notes?' · '+h.notes:'');
+    const daysRow=$('naturalDaysRow'); if(daysRow) daysRow.style.display= h.freq==='personalizada'?'flex':'none';
+    $('naturalName').focus();
   });
 }
 function renderNaturalUserList(){
   const box=$('naturalUserList'); if(!box) return;
-  const d=getNaturalData();
-  if(!d.list.length){ box.innerHTML='<p class="muted">Tu botiquín personal está vacío. Toca una sugerida o agrega la tuya.</p>'; return; }
-  box.innerHTML=d.list.map(x=>`<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center"><span><b>${escapeHtml(x.n)}</b> — <span class="muted" style="font-size:11px">${escapeHtml(x.uso)}</span></span><button data-id="${x.id}" class="btn btn-icon natural-del" style="padding:4px 8px">✕</button></div>`).join('');
+  const d=getMedicNaturalData();
+  if(!d.list.length){ box.innerHTML='<p class="muted">Tu botiquín personal está vacío. Toca una sugerida arriba o agrega la tuya con frecuencia/hora/desde/hasta/notas.</p>'; return; }
+  box.innerHTML='';
+  d.list.forEach(med=>{
+    const div=document.createElement('div'); div.className='medic-item';
+    const next = medicNextDoses(med, Date.now(), 1)[0];
+    const nextTxt = next ? cal.weekdayName(next)+' '+cal.fmtFull.format(new Date(next))+' '+med.time : '—';
+    const luna = next? mensLunaForKey(mensMsToKey(next)): null;
+    div.innerHTML=`<div class="medic-head"><b>🌿 ${escapeHtml(med.name)}</b> <span class="muted" style="font-size:11px">${escapeHtml(med.dose||'')}</span></div><div class="muted" style="font-size:12px">⏰ ${med.freq} ${med.time} ${med.days? '('+escapeHtml(med.days)+')':''} · ${med.from||'?'} → ${med.to||'∞'}</div><div class="muted" style="font-size:11px">${escapeHtml(med.notes||'')}</div><div style="margin-top:4px;font-size:12px;color:var(--gold)">Próxima: ${nextTxt} ${luna? '· Luna '+luna.luna:''}</div><div class="dlg-actions" style="justify-content:flex-end;margin-top:6px"><button data-id="${med.id}" class="btn natural-edit" style="width:auto;font-size:11px">✏️ Editar</button><button data-id="${med.id}" class="btn natural-del" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕ Eliminar</button></div>`;
+    box.appendChild(div);
+  });
+  box.querySelectorAll('.natural-edit').forEach(b=> b.onclick=()=>{
+    const med=d.list.find(x=>x.id===b.dataset.id); if(!med) return;
+    naturalEditingId=med.id;
+    $('naturalName').value=med.name; $('naturalDose').value=med.dose||''; $('naturalFreq').value=med.freq||'diaria'; $('naturalTime').value=med.time||'08:00'; $('naturalFrom').value=med.from||''; $('naturalTo').value=med.to||''; $('naturalDays').value=med.days||''; $('naturalNotes').value=med.notes||'';
+    $('naturalDaysRow').style.display= med.freq==='personalizada'?'flex':'none';
+    $('naturalAdd').classList.add('hidden'); $('naturalUpdate').classList.remove('hidden'); $('naturalCancelEdit').classList.remove('hidden');
+  });
   box.querySelectorAll('.natural-del').forEach(b=> b.onclick=()=>{
-    const d2=getNaturalData(); d2.list=d2.list.filter(x=>x.id!==b.dataset.id); scheduleSave(); renderNaturalUserList();
+    if(!confirm('¿Eliminar este preparado natural?')) return;
+    d.list=d.list.filter(x=>x.id!==b.dataset.id); scheduleSave(); renderNaturalUserList(); renderMedicNextBox();
   });
 }
 
@@ -2441,17 +2515,25 @@ function setupDonateDialog(){
     const fallbackPP='https://www.paypal.com/donate?business=semilleroconsciente@gmail.com';
     if(mp){
       const url = (d.mercadopago && String(d.mercadopago).trim()) || fallbackMP;
-      mp.href = url; mp.target = '_blank'; mp.rel = 'noopener noreferrer'; mp.style.opacity='1'; mp.style.pointerEvents='auto';
+      mp.href = url;
+      mp.target = '_blank';
+      mp.rel = 'noopener noreferrer';
+      mp.style.opacity = '1';
+      mp.style.pointerEvents = 'auto';
       mp.onclick = e=>{ e.stopPropagation(); e.preventDefault(); openExternalLink(url); };
     }
     if(pp){
       const url = (d.paypal && String(d.paypal).trim()) || fallbackPP;
-      pp.href = url; pp.target = '_blank'; pp.rel = 'noopener noreferrer'; pp.style.opacity='1'; pp.style.pointerEvents='auto';
+      pp.href = url;
+      pp.target = '_blank';
+      pp.rel = 'noopener noreferrer';
+      pp.style.opacity = '1';
+      pp.style.pointerEvents = 'auto';
       pp.onclick = e=>{ e.stopPropagation(); e.preventDefault(); openExternalLink(url); };
     }
     const flow=$('donateFlowLink'), kf=$('donateKofiLink');
-    if(flow){ flow.href = d.flow||'#'; flow.target = d.flow ? '_blank' : ''; flow.rel='noopener noreferrer'; flow.style.opacity = d.flow? '1':'0.45'; flow.style.pointerEvents = d.flow? 'auto':'none'; if(d.flow) flow.onclick = e=>{ e.stopPropagation(); e.preventDefault(); openExternalLink(d.flow); }; }
-    if(kf){ kf.href = d.kofi||'#'; kf.target = d.kofi ? '_blank' : ''; kf.rel='noopener noreferrer'; kf.style.opacity = d.kofi? '1':'0.45'; kf.style.pointerEvents = d.kofi? 'auto':'none'; if(d.kofi) kf.onclick = e=>{ e.stopPropagation(); e.preventDefault(); openExternalLink(d.kofi); }; }
+    if(flow){ flow.href = d.flow||'#'; flow.target = d.flow ? '_blank' : ''; flow.rel = 'noopener noreferrer'; flow.style.opacity = d.flow? '1':'0.45'; flow.style.pointerEvents = d.flow? 'auto':'none'; if(d.flow) flow.onclick = e=>{ e.stopPropagation(); e.preventDefault(); openExternalLink(d.flow); }; }
+    if(kf){ kf.href = d.kofi||'#'; kf.target = d.kofi ? '_blank' : ''; kf.rel = 'noopener noreferrer'; kf.style.opacity = d.kofi? '1':'0.45'; kf.style.pointerEvents = d.kofi? 'auto':'none'; if(kf && d.kofi) kf.onclick = e=>{ e.stopPropagation(); e.preventDefault(); openExternalLink(d.kofi); }; }
     $('donateDialog').showModal();
   };
   const ct=$('donateCloseTop'), cb=$('donateClose'); if(ct) ct.onclick=()=>$('donateDialog').close(); if(cb) cb.onclick=()=>$('donateDialog').close();
@@ -2768,25 +2850,72 @@ function setupScheduleDialog(){
 }
 setTimeout(setupBreathDialog, 860);
 setTimeout(setupScheduleDialog, 865);
-// === GYM / ENTRENAMIENTOS ===
+// === ENTRENAMIENTOS (Gym / Terapia / Calistenia / Prácticas) ===
+const TRAINING_CATS = {
+  gym: { label:'Gym', icon:'🏋️', color:'#e76e8a' },
+  fisio: { label:'Terapia física', icon:'🩹', color:'#7ab8ff' },
+  calistenia: { label:'Calistenia', icon:'🤸', color:'#a9d18e' },
+  varias: { label:'Prácticas varias', icon:'🌿', color:'#e8c56a' }
+};
+const TRAINING_SUGGESTIONS = {
+  gym: [
+    { name:'Push — Pecho/Hombro/Tríceps', exercises:'Press banca 4x8 60kg 90s\nFondos paralelas 3x12 45s\nPress hombro 3x10 30kg 60s\nPlancha 3x45s', place:'Gimnasio Penco', color:'#e76e8a' },
+    { name:'Pull — Espalda/Bíceps', exercises:'Dominadas 4x6\nRemo barra 4x8 50kg\nCurl bíceps 3x12 15kg\nFace pull 3x15', place:'Gimnasio Penco', color:'#e76e8a' },
+    { name:'Piernas — Cuádriceps/Glúteo', exercises:'Sentadilla 4x8 70kg\nPeso muerto 3x8 80kg\nPrensa 3x12\nGemelos 3x15', place:'Gimnasio Penco', color:'#e76e8a' },
+    { name:'Cardio HIIT 20′', exercises:'Calentamiento 5′\n8x (30s sprint / 90s trote)\nEnfriamiento 5′ + estiramiento', place:'Costanera Penco', color:'#ff9a76' }
+  ],
+  fisio: [
+    { name:'Movilidad hombro', exercises:'Círculos hombro 3x15\nBanda rotación externa 3x12\nEstiramiento pectoral 3x30s\nPéndulo Codman 2x1′', place:'Casa / Kine', color:'#7ab8ff' },
+    { name:'Rodilla — rehab suave', exercises:'Cuádriceps isométrico 3x15s\nPuente glúteo 3x12\nSentadilla parcial 3x10\nHielo 10′ final', place:'Casa', color:'#7ab8ff' },
+    { name:'Espalda baja — core', exercises:'Bird-dog 3x10 lado\nPlancha 3x30s\nPuente 3x12\nEstiramiento gato-camello 3x8', place:'Casa', color:'#7ab8ff' },
+    { name:'Respiración + diafragma', exercises:'Respiración diafragmática 5′\n4-7-8 x4 ciclos\nMovilidad costal con banda 3x10', place:'Casa', color:'#8fd9d6' }
+  ],
+  calistenia: [
+    { name:'Push calistenia', exercises:'Flexiones 4x12\nFondos paralelas 3x10\nPike push-ups 3x8\nPlancha 3x45s', place:'Plaza Penco / Casa', color:'#a9d18e' },
+    { name:'Pull calistenia', exercises:'Dominadas 4x6\nAustralian pull-ups 3x12\nColgado pasivo 3x30s\nCurl toalla 3x10', place:'Parque / Casa', color:'#a9d18e' },
+    { name:'Core + piernas', exercises:'Sentadilla 4x20\nZancadas 3x10 lado\nPlancha lateral 3x30s lado\nHollow hold 3x20s', place:'Casa', color:'#a9d18e' },
+    { name:'Fullbody principiantes', exercises:'Flexiones rodillas 3x8\nSentadilla 3x15\nRemo mochila 3x12\nPlancha 3x20s', place:'Casa', color:'#c3e0ab' }
+  ],
+  varias: [
+    { name:'Yoga suave 30′', exercises:'Saludo al sol 5x\nGuerrero II 3x30s lado\nTriángulo 3x30s\nSavasana 3′ + 4-7-8', place:'Casa', color:'#e8c56a' },
+    { name:'Caminata Playa Penco 45′', exercises:'Caminata ritmo medio 40′\n5′ movilidad tobillo/cadera\nRespiración 5-5 al final', place:'Playa Penco', color:'#e8c56a' },
+    { name:'Estiramientos full 15′', exercises:'Cuello/hombros 3′\nIsquios 2x30s lado\nCuádriceps 2x30s\nEspalda gato-camello 3x8', place:'Casa', color:'#f0d488' },
+    { name:'Práctica respiración + movilidad 20′', exercises:'Respiración caja 4-4-4-4 5′\nMovilidad cadera 5′\nPlancha 3x30s\nEstiramiento global 5′', place:'Casa', color:'#f0d488' }
+  ]
+};
 function getGymData(){
   const u=userData();
   if(!u.gym) u.gym={ items:[], completions:{} };
   if(!Array.isArray(u.gym.items)) u.gym.items=[];
   if(typeof u.gym.completions!=='object' || Array.isArray(u.gym.completions)) u.gym.completions={};
+  // migrar cat faltante
+  u.gym.items.forEach(it=>{ if(!it.cat) it.cat='gym'; if(!TRAINING_CATS[it.cat]) it.cat='gym'; });
   return u.gym;
 }
 let gymEditingId=null;
+let gymCurrentTab='gym';
+function renderGymSuggestions(cat){
+  const box=$('gymSuggestionsBox'); if(!box) return;
+  const list=TRAINING_SUGGESTIONS[cat]||[];
+  const catInfo=TRAINING_CATS[cat];
+  box.innerHTML=`<h4 style="color:var(--gold)">${catInfo.icon} ${catInfo.label} — sugerencias (toca para cargar)</h4>` + list.map(s=>`<div class="habit-item" style="cursor:pointer;border-left:3px solid ${s.color}" data-sug="${escapeHtml(s.name)}" data-cat="${cat}"><b>${escapeHtml(s.name)}</b> <span class="muted" style="font-size:10px">${escapeHtml(s.place)}</span><br><span class="muted" style="font-size:11px;white-space:pre-wrap">${escapeHtml(s.exercises)}</span><br><span class="chip" style="font-size:10px;margin-top:4px">+ Agregar al calendario</span></div>`).join('') + `<p class="muted" style="font-size:10px;margin-top:6px">Toca una tarjeta para cargar nombre/lugar/ejercicios/color y luego elige día/hora y pulsa “Agregar al calendario”.</p>`;
+  box.querySelectorAll('[data-sug]').forEach(el=> el.onclick=()=>{
+    const cat2=el.dataset.cat; const s=TRAINING_SUGGESTIONS[cat2].find(x=>x.name===el.dataset.sug); if(!s) return;
+    $('gymName').value=s.name; $('gymCategory').value=cat2; $('gymPlace').value=s.place; $('gymExercises').value=s.exercises; $('gymColor').value=s.color;
+    $('gymName').focus();
+  });
+}
 function renderGymTodayBox(){
   const box=$('gymTodayBox'); if(!box) return;
   const d=getGymData();
   const today=new Date().getDay();
   const todays=d.items.filter(x=> parseInt(x.day)===today).sort((a,b)=> a.start.localeCompare(b.start));
   const todayKey=cal.fmtKey.format(new Date());
-  if(!todays.length) box.innerHTML='<p class="muted">Hoy no tienes rutinas. ¡Descanso activo o caminata!</p>';
+  if(!todays.length) box.innerHTML='<p class="muted">Hoy no tienes entrenamientos. ¡Toca una sugerencia arriba y agrégala!</p>';
   else box.innerHTML='<h4 style="color:var(--gold)">Hoy — '+['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'][today]+'</h4>' + todays.map(it=>{
     const done = d.completions[todayKey] && d.completions[todayKey][it.id];
-    return `<div class="mens-hist-item" style="border-left:3px solid ${it.color}"><span><b>${escapeHtml(it.name)}</b> ${it.start}–${it.end} · ${escapeHtml(it.place||'')} ${done?'<span class="chip" style="background:var(--gold);color:#10142c;margin-left:6px">✓ hecho</span>':''}</span><label class="check-row" style="margin:0"><input type="checkbox" data-id="${it.id}" ${done?'checked':''}> Hecho</label></div>`;
+    const cat=TRAINING_CATS[it.cat]||TRAINING_CATS.gym;
+    return `<div class="mens-hist-item" style="border-left:3px solid ${it.color}"><span><b>${cat.icon} ${escapeHtml(it.name)}</b> <span class="chip" style="font-size:10px">${cat.label}</span> ${it.start}–${it.end} · ${escapeHtml(it.place||'')} ${done?'<span class="chip" style="background:var(--gold);color:#10142c;margin-left:6px">✓ hecho</span>':''}</span><label class="check-row" style="margin:0"><input type="checkbox" data-id="${it.id}" ${done?'checked':''}> Hecho</label></div>`;
   }).join('') + '<p class="muted" style="font-size:10px;margin-top:6px">Marca como hecho para racha.</p>';
   box.querySelectorAll('input[type="checkbox"]').forEach(cb=> cb.onchange=()=>{
     const id=cb.dataset.id; const key=cal.fmtKey.format(new Date());
@@ -2805,20 +2934,26 @@ function renderGymWeekGrid(){
   days.forEach(([name, idx])=>{
     const items=d.items.filter(x=> parseInt(x.day)===idx).sort((a,b)=> a.start.localeCompare(b.start));
     const isToday=new Date().getDay()===idx;
-    html+=`<div class="schedule-day ${isToday?'schedule-today':''}"><b>${name}</b>${items.length? items.map(it=>`<div class="schedule-block" style="background:${it.color};border:1px solid ${it.color}">${escapeHtml(it.name)}<br><span style="font-size:10px">${it.start}–${it.end}</span></div>`).join('') : '<p class="muted" style="font-size:10px">—</p>'}</div>`;
+    html+=`<div class="schedule-day ${isToday?'schedule-today':''}"><b>${name}</b>${items.length? items.map(it=>{
+      const cat=TRAINING_CATS[it.cat]||TRAINING_CATS.gym;
+      return `<div class="schedule-block" style="background:${it.color};border:1px solid ${it.color}">${cat.icon} ${escapeHtml(it.name)}<br><span style="font-size:10px">${it.start}–${it.end}</span></div>`;
+    }).join('') : '<p class="muted" style="font-size:10px">—</p>'}</div>`;
   });
   box.innerHTML=html;
 }
 function renderGymList(){
   const box=$('gymList'); if(!box) return;
   const d=getGymData();
-  if(!d.items.length){ box.innerHTML='<p class="muted">Sin rutinas aún. Agrega tu primera arriba.</p>'; return; }
+  if(!d.items.length){ box.innerHTML='<p class="muted">Sin entrenamientos aún. Toca una sugerencia arriba o crea uno.</p>'; return; }
   const sorted=[...d.items].sort((a,b)=> parseInt(a.day)-parseInt(b.day) || a.start.localeCompare(b.start));
-  box.innerHTML=sorted.map(it=>`<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center"><span><b style="color:${it.color}">●</b> ${escapeHtml(it.name)} — ${['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'][it.day]} ${it.start}–${it.end} ${it.place? '· '+escapeHtml(it.place):''}<br><span class="muted" style="font-size:11px">${escapeHtml((it.exercises||'').split('\n')[0]||'')}</span></span><span style="display:flex;gap:6px"><button data-id="${it.id}" class="btn gym-edit" style="width:auto;font-size:11px">✏️</button><button data-id="${it.id}" class="btn gym-del" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕</button></span></div>`).join('');
+  box.innerHTML=sorted.map(it=>{
+    const cat=TRAINING_CATS[it.cat]||TRAINING_CATS.gym;
+    return `<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center"><span><b style="color:${it.color}">${cat.icon}</b> <span class="chip" style="font-size:10px;background:${cat.color};color:#10142c">${cat.label}</span> <b>${escapeHtml(it.name)}</b> — ${['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'][it.day]} ${it.start}–${it.end} ${it.place? '· '+escapeHtml(it.place):''}<br><span class="muted" style="font-size:11px">${escapeHtml((it.exercises||'').split('\n')[0]||'')}</span></span><span style="display:flex;gap:6px"><button data-id="${it.id}" class="btn gym-edit" style="width:auto;font-size:11px">✏️</button><button data-id="${it.id}" class="btn gym-del" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕</button></span></div>`;
+  }).join('');
   box.querySelectorAll('.gym-edit').forEach(b=> b.onclick=()=>{
     const it=d.items.find(x=>x.id===b.dataset.id); if(!it) return;
     gymEditingId=it.id;
-    $('gymName').value=it.name; $('gymDay').value=it.day; $('gymStart').value=it.start; $('gymEnd').value=it.end; $('gymColor').value=it.color; $('gymPlace').value=it.place||''; $('gymExercises').value=it.exercises||'';
+    $('gymName').value=it.name; $('gymCategory').value=it.cat||'gym'; $('gymDay').value=it.day; $('gymStart').value=it.start; $('gymEnd').value=it.end; $('gymColor').value=it.color; $('gymPlace').value=it.place||''; $('gymExercises').value=it.exercises||'';
     $('gymAdd').classList.add('hidden'); $('gymUpdate').classList.remove('hidden'); $('gymCancel').classList.remove('hidden');
   });
   box.querySelectorAll('.gym-del').forEach(b=> b.onclick=()=>{
@@ -2834,20 +2969,31 @@ function renderGymStatsBox(){
   const todayKey=cal.fmtKey.format(new Date());
   const todayDone = d.completions[todayKey] ? Object.keys(d.completions[todayKey]).length : 0;
   const weekDone = Object.keys(d.completions).filter(k=>{ const ms=mensKeyToMs(k); return Math.abs(ms - Date.now()) < 7*86400000; }).length;
-  box.innerHTML='<h4 style="color:var(--accent)">📊 Progreso</h4><div class="habit-stats"><span>Hoy: '+todayDone+' completadas</span><span>Esta semana: '+weekDone+' días</span><span>Total rutinas: '+d.items.length+'</span></div>';
+  const byCat={}; d.items.forEach(it=>{ byCat[it.cat]=(byCat[it.cat]||0)+1; });
+  const catTxt=Object.entries(byCat).map(([k,c])=>`${TRAINING_CATS[k].icon} ${c}`).join(' · ') || '0';
+  box.innerHTML='<h4 style="color:var(--accent)">📊 Progreso</h4><div class="habit-stats"><span>Hoy: '+todayDone+' completadas</span><span>Esta semana: '+weekDone+' días</span><span>Total: '+d.items.length+' ('+catTxt+')</span></div>';
 }
 function setupGymDialog(){
-  const btn=$('btnGym'); if(btn) btn.onclick=()=>{ renderGymTodayBox(); renderGymWeekGrid(); renderGymList(); renderGymStatsBox(); $('gymDialog').showModal(); };
+  const btn=$('btnGym'); if(btn) btn.onclick=()=>{ renderGymSuggestions(gymCurrentTab); renderGymTodayBox(); renderGymWeekGrid(); renderGymList(); renderGymStatsBox(); $('gymDialog').showModal(); };
   const ct=$('gymCloseTop'), cb=$('gymClose'); if(ct) ct.onclick=()=>$('gymDialog').close(); if(cb) cb.onclick=()=>$('gymDialog').close();
+  // tabs
+  const tabs={ gym:$('tabGymGym'), fisio:$('tabGymFisio'), calistenia:$('tabGymCalis'), varias:$('tabGymVarias') };
+  Object.entries(tabs).forEach(([cat,el])=>{
+    if(!el) return;
+    el.onclick=()=>{ gymCurrentTab=cat; Object.entries(tabs).forEach(([c,e])=> e && e.classList.toggle('btn-accent', c===cat)); renderGymSuggestions(cat); const sel=$('gymCategory'); if(sel) sel.value=cat; };
+  });
+  const catSel=$('gymCategory'); if(catSel) catSel.onchange=()=>{ const v=catSel.value; if(TRAINING_CATS[v]){ gymCurrentTab=v; Object.entries(tabs).forEach(([c,e])=> e && e.classList.toggle('btn-accent', c===v)); renderGymSuggestions(v); } };
   const add=$('gymAdd'); if(add) add.onclick=()=>{
     const name=$('gymName').value.trim(); if(!name) return alert('Escribe nombre de rutina');
-    const it={ id:'gym'+Date.now(), name, day:$('gymDay').value, start:$('gymStart').value, end:$('gymEnd').value, color:$('gymColor').value, place:$('gymPlace').value.trim(), exercises:$('gymExercises').value.trim() };
+    const it={ id:'gym'+Date.now(), name, cat:$('gymCategory').value||'gym', day:$('gymDay').value, start:$('gymStart').value, end:$('gymEnd').value, color:$('gymColor').value, place:$('gymPlace').value.trim(), exercises:$('gymExercises').value.trim() };
     if(it.start>=it.end) return alert('Hora inicio debe ser antes que fin');
+    if(!TRAINING_CATS[it.cat]) it.cat='gym';
     getGymData().items.push(it); scheduleSave(); $('gymName').value=''; $('gymExercises').value=''; renderGymList(); renderGymWeekGrid(); renderGymTodayBox(); renderGymStatsBox(); renderLuna();
   };
   const upd=$('gymUpdate'); if(upd) upd.onclick=()=>{
     const it=getGymData().items.find(x=>x.id===gymEditingId); if(!it) return;
-    it.name=$('gymName').value.trim(); it.day=$('gymDay').value; it.start=$('gymStart').value; it.end=$('gymEnd').value; it.color=$('gymColor').value; it.place=$('gymPlace').value.trim(); it.exercises=$('gymExercises').value.trim();
+    it.name=$('gymName').value.trim(); it.cat=$('gymCategory').value||it.cat; it.day=$('gymDay').value; it.start=$('gymStart').value; it.end=$('gymEnd').value; it.color=$('gymColor').value; it.place=$('gymPlace').value.trim(); it.exercises=$('gymExercises').value.trim();
+    if(!TRAINING_CATS[it.cat]) it.cat='gym';
     scheduleSave(); gymEditingId=null; $('gymAdd').classList.remove('hidden'); upd.classList.add('hidden'); $('gymCancel').classList.add('hidden'); $('gymName').value=''; $('gymExercises').value=''; renderGymList(); renderGymWeekGrid(); renderGymTodayBox(); renderGymStatsBox(); renderLuna();
   };
   const cancel=$('gymCancel'); if(cancel) cancel.onclick=()=>{ gymEditingId=null; $('gymAdd').classList.remove('hidden'); $('gymUpdate').classList.add('hidden'); cancel.classList.add('hidden'); $('gymName').value=''; $('gymExercises').value=''; };

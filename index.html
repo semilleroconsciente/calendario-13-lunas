@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#0b1026">
   <title>Calendario de las 13 Lunas</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=8">
   <link rel="manifest" href="manifest.json">
 </head>
 <body>
@@ -94,7 +94,7 @@
         <div class="group-btns">
           <button id="btnMenstrual" class="btn" data-keywords="ciclo menstrual periodo fertil ovulacion mujer">🌸 Ciclo</button>
           <button id="btnMedic" class="btn" data-keywords="medicina medicamento hierba matico natural">🌿 Medicina</button>
-          <button id="btnGym" class="btn" data-keywords="gym gimnasio rutina ejercicio entrenamiento">🏋️ Gym</button>
+          <button id="btnGym" class="btn" data-keywords="entrenamientos gym gimnasio terapia fisica fisioterapia calistenia practicas varias rutina ejercicio movilidad kine">💪 Entrenamientos</button>
           <button id="btnBreath" class="btn" data-keywords="respiracion 478 caja cuadrada ansiedad">🌬️ Respiración</button>
           <button id="btnDreams" class="btn" data-keywords="sueños diario onirico rem dormir">💭 Sueños</button>
         </div>
@@ -434,51 +434,84 @@
         <button type="button" id="medicCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
       </div>
       <p class="muted" style="line-height:1.5">Registra <b>privado y local</b> qué tomar y cuándo. Te avisa con notificación suave si das permiso. No reemplaza indicación médica.</p>
-      <div class="medic-grid">
-        <div class="medic-form">
-          <label>Medicamento <input type="text" id="medicName" placeholder="ej: Levotiroxina 75mcg, Hierro, Vitamina D" maxlength="60"></label>
-          <label>Dosis <input type="text" id="medicDose" placeholder="ej: 1 comprimido, 10 ml" maxlength="40"></label>
-          <div class="conv-row">
-            <label>Frecuencia
-              <select id="medicFreq">
-                <option value="diaria">Diaria</option>
-                <option value="cada8">Cada 8 h</option>
-                <option value="cada12">Cada 12 h</option>
-                <option value="semanal">Semanal</option>
-                <option value="personalizada">Personalizada (días)</option>
-              </select>
-            </label>
-            <label>Hora <input type="time" id="medicTime" value="08:00"></label>
+      <div class="timer-tabs" style="margin-bottom:10px">
+        <button type="button" id="tabMedicFarma" class="btn btn-accent" style="width:auto">💊 Farmacología</button>
+        <button type="button" id="tabMedicNatural" class="btn" style="width:auto">🌱 Natural</button>
+      </div>
+      <div id="medicFarmaPanel">
+        <div class="medic-grid">
+          <div class="medic-form">
+            <label>Medicamento <input type="text" id="medicName" placeholder="ej: Levotiroxina 75mcg, Hierro, Vitamina D" maxlength="60"></label>
+            <label>Dosis <input type="text" id="medicDose" placeholder="ej: 1 comprimido, 10 ml" maxlength="40"></label>
+            <div class="conv-row">
+              <label>Frecuencia
+                <select id="medicFreq">
+                  <option value="diaria">Diaria</option>
+                  <option value="cada8">Cada 8 h</option>
+                  <option value="cada12">Cada 12 h</option>
+                  <option value="semanal">Semanal</option>
+                  <option value="personalizada">Personalizada (días)</option>
+                </select>
+              </label>
+              <label>Hora <input type="time" id="medicTime" value="08:00"></label>
+            </div>
+            <div class="conv-row" id="medicDaysRow" style="display:none">
+              <label style="flex:1">Días (ej: 1,3,5 = lun/mié/vie del ciclo 13 lunas o semana) <input type="text" id="medicDays" placeholder="ej: 1,3,5"></label>
+            </div>
+            <div class="conv-row">
+              <label>Desde <input type="date" id="medicFrom"></label>
+              <label>Hasta (opcional) <input type="date" id="medicTo"></label>
+            </div>
+            <label>Notas <input type="text" id="medicNotes" placeholder="con comida, en ayunas, luna llena..." maxlength="80"></label>
+            <div class="dlg-actions" style="justify-content:flex-start">
+              <button type="button" id="medicAdd" class="btn btn-accent" style="width:auto">+ Agregar medicamento</button>
+              <button type="button" id="medicUpdate" class="btn hidden" style="width:auto">↻ Actualizar</button>
+              <button type="button" id="medicCancelEdit" class="btn hidden" style="width:auto">Cancelar</button>
+            </div>
           </div>
-          <div class="conv-row" id="medicDaysRow" style="display:none">
-            <label style="flex:1">Días (ej: 1,3,5 = lun/mié/vie del ciclo 13 lunas o semana) <input type="text" id="medicDays" placeholder="ej: 1,3,5"></label>
+          <div id="medicList" class="medic-list"></div>
+        </div>
+      </div>
+      <div id="medicNaturalPanel" class="hidden">
+        <div class="medic-grid">
+          <div class="medic-form" style="border-color:var(--gold)">
+            <label>Hierba / Preparado <input type="text" id="naturalName" placeholder="ej: Matico, Infusión de Manzanilla" maxlength="60"></label>
+            <label>Preparación / Dosis <input type="text" id="naturalDose" placeholder="ej: 1 cdta hojas secas / taza, 5 min" maxlength="60"></label>
+            <div class="conv-row">
+              <label>Frecuencia
+                <select id="naturalFreq">
+                  <option value="diaria">Diaria</option>
+                  <option value="cada8">Cada 8 h</option>
+                  <option value="cada12">Cada 12 h</option>
+                  <option value="semanal">Semanal</option>
+                  <option value="personalizada">Personalizada (días)</option>
+                </select>
+              </label>
+              <label>Hora <input type="time" id="naturalTime" value="08:00"></label>
+            </div>
+            <div class="conv-row" id="naturalDaysRow" style="display:none">
+              <label style="flex:1">Días (ej: 1,3,5) <input type="text" id="naturalDays" placeholder="ej: 1,3,5"></label>
+            </div>
+            <div class="conv-row">
+              <label>Desde <input type="date" id="naturalFrom"></label>
+              <label>Hasta (opcional) <input type="date" id="naturalTo"></label>
+            </div>
+            <label>Notas <input type="text" id="naturalNotes" placeholder="luna llena, en ayunas, 7 días..." maxlength="80"></label>
+            <div class="dlg-actions" style="justify-content:flex-start">
+              <button type="button" id="naturalAdd" class="btn btn-accent" style="width:auto">+ Agregar natural</button>
+              <button type="button" id="naturalUpdate" class="btn hidden" style="width:auto">↻ Actualizar</button>
+              <button type="button" id="naturalCancelEdit" class="btn hidden" style="width:auto">Cancelar</button>
+            </div>
+            <p class="muted" style="font-size:10px;margin-top:6px">Sugeridas: Matico, Boldo, Manzanilla, Menta, Orégano, Laurel, Eucalipto, Romero, Melisa, Ortiga.</p>
           </div>
-          <div class="conv-row">
-            <label>Desde <input type="date" id="medicFrom"></label>
-            <label>Hasta (opcional) <input type="date" id="medicTo"></label>
-          </div>
-          <label>Notas <input type="text" id="medicNotes" placeholder="con comida, en ayunas, luna llena..." maxlength="80"></label>
-          <div class="dlg-actions" style="justify-content:flex-start">
-            <button type="button" id="medicAdd" class="btn btn-accent" style="width:auto">+ Agregar medicamento</button>
-            <button type="button" id="medicUpdate" class="btn hidden" style="width:auto">↻ Actualizar</button>
-            <button type="button" id="medicCancelEdit" class="btn hidden" style="width:auto">Cancelar</button>
+          <div>
+            <div id="naturalList" class="habits-list" style="max-height:160px"></div>
+            <p class="muted" style="font-size:10px;margin-top:6px">Toca una sugerida para cargarla en el formulario (con frecuencia/hora/notas).</p>
+            <div id="naturalUserList" class="medic-list" style="max-height:260px;margin-top:8px"></div>
           </div>
         </div>
-        <div id="medicList" class="medic-list"></div>
       </div>
       <div id="medicNextBox" class="menstrual-card" style="margin-top:10px"></div>
-      <div class="menstrual-card" style="margin-top:10px">
-        <h4>🌱 Medicina natural — hierbas de Penco</h4>
-        <p class="muted" style="font-size:11px">Usos tradicionales, no reemplaza indicación profesional. Toca para agregar a tu botiquín personal.</p>
-        <div id="naturalList" class="habits-list" style="max-height:160px"></div>
-        <div class="conv-row" style="margin-top:8px">
-          <label style="flex:2">Hierba <input type="text" id="naturalName" placeholder="ej: Matico" maxlength="30"></label>
-          <label style="flex:2">Uso <input type="text" id="naturalUse" placeholder="ej: cicatrizante, infusión" maxlength="50"></label>
-          <button type="button" id="naturalAdd" class="btn btn-accent" style="width:auto;align-self:flex-end">+ Agregar</button>
-        </div>
-        <div id="naturalUserList" class="habits-list" style="margin-top:8px"></div>
-        <p class="muted" style="font-size:10px;margin-top:6px">Sugeridas: Matico (heridas), Boldo (digestión), Manzanilla (calmante), Menta (vías respiratorias), Orégano (antiséptico), Laurel, Eucalipto, Romero.</p>
-      </div>
       <div class="dlg-actions" style="justify-content:space-between;align-items:center">
         <label class="check-row" style="margin:0"><input type="checkbox" id="medicNotify"> Notificaciones de medicamentos</label>
         <button type="button" id="medicClose" class="btn">Cerrar</button>
@@ -648,49 +681,64 @@
         <h3 style="margin:0;color:var(--accent)">❓ Cómo usar el calendario</h3>
         <button type="button" id="helpCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
       </div>
-      <p class="muted" style="line-height:1.5"><b>Bienvenido a Mari Küla Küyen.</b> Guía en 3 pasos: <b>1)</b> Elige Usuario y Luna · <b>2)</b> Haz clic en un día para anotar · <b>3)</b> Usa los botones de abajo según lo que necesites. Todo queda <b>privado y local</b> (13×28=364 + 1 Día Fuera del Tiempo, We Tripantu 21 jun).</p>
-            <div class="help-grid">
-        <div class="help-card">
-          <h4>🌙 Navegación</h4>
-          <p><b>Lateral:</b> Usuario, Ciclo, Luna 1-13 o Día Fuera del Tiempo. <b>◉ Ir a hoy</b> + búsqueda Enter.</p>
-          <p><b>Arriba:</b> luna, fechas, descripción Penco, chip estación + fases. <b>Calendario:</b> 28 días con sol/fase/ánimo.</p>
-        </div>
-        <div class="help-card">
-          <h4>📝 Día a día</h4>
-          <p>Clic en día: ánimo, clima/notas, <b>📤 Compartir</b> imagen, <b>🌸 Marcar inicio ciclo</b> y <b>✅ Hábitos</b> con 46 iconos.</p>
-          <p><b>Notas de la luna</b> abajo con tu reflexión del ciclo.</p>
-        </div>
-        <div class="help-card">
-          <h4>🌊 Territorio</h4>
-          <p><b>🌊 Mareas</b> 3d SHOA · <b>🌤️ Clima</b> 7d/48h · <b>🌱 Siembra</b> por luna/fase · <b>📿 Ekadashi</b> 3 lunas con guía completa · <b>📸 Hora Dorada</b> · <b>🌞 Circadiano</b>.</p>
-          <p><b>🎯 Disciplina</b> 8 técnicas + MIT · <b>💭 Sueños</b> 8 prácticas · <b>🌬️ Respiración</b> 10 técnicas con guía visual · <b>📚 Horario</b> semanal.</p>
-        </div>
-        <div class="help-card">
-          <h4>🌸 Cuerpo</h4>
-          <p><b>🌸 Ciclo</b> periodo/ventana/ovulación + <b>🧬 Diagrama</b> con alimentos/entreno/prácticas por día.</p>
-          <p><b>💊 Medicina</b> agenda con notifs · <b>✅ Hábitos</b> icono/color, racha y % mes/luna → puntitos en calendario.</p>
-        </div>
-        <div class="help-card">
-          <h4>🎯 Mente</h4>
-          <p><b>🎯 Disciplina</b> 8 técnicas (Pomodoro 25/5, 2min, Sapo, Time Blocking, 5seg, WOOP, Apilar, Ambiente) + MIT y Si-Entonces → Pomodoro.</p>
-          <p><b>💭 Sueños</b> 8 prácticas (intención, diario, inmóvil 60s, 3 palabras) + guardar sueño en nota de hoy con “Sueño:”.</p>
-        </div>
-        <div class="help-card">
-          <h4>🔧 Utilidades</h4>
-          <p><b>🎨 Tema</b> Auto/Noche/... · <b>🕰 Reloj</b> · <b>📏 Conversión</b> · <b>⏱ Tiempo</b> · <b>🥗 Comidas</b> plan por día/luna + <b>🛒 Compras</b> por categorías.</p>
-          <p><b>🔔 Recordatorios</b> fases lunares y notifs suaves ciclo/medicamentos.</p>
-        </div>
-        <div class="help-card">
-          <h4>💾 Guardar</h4>
-          <p><b>💾/📥 Respaldo</b> JSON por usuario · <b>📌 Acceso directo</b> (PC) · <b>📄/📚 PDF</b> luna/ciclo.</p>
-          <p><b>❤ Aporte</b> público: Mercado Pago y PayPal (RUT/MACH privado en donate.json).</p>
-        </div>
-        <div class="help-card" style="border-color:var(--gold);background:linear-gradient(135deg,var(--panel),var(--card))">
-          <h4>💡 Tips</h4>
-          <p>• Chip estación = significado. • Móvil: desliza lunas. • Escribe “Sueño:” para buscar sueños. • Todo offline salvo clima.</p>
-          <p style="text-align:center;margin-top:6px;color:var(--gold)"><b>¡Que tu ciclo florezca con la luna! — Küme mañum</b></p>
-        </div>
-      </div>
+      <p class="muted" style="line-height:1.5"><b>Bienvenido a Mari Küla Küyen — 13 lunas × 28 días + Día Fuera del Tiempo.</b> Guía en 3 pasos: <b>1)</b> Elige Usuario y Ciclo (We Tripantu 21 jun) · <b>2)</b> Clic en un día para anotar · <b>3)</b> Usa los botones por grupo. Todo queda <b>privado y local</b> — sin nube, por usuario.</p>
+             <div class="help-grid">
+         <div class="help-card">
+           <h4>🌙 Navegación</h4>
+           <p><b>Lateral:</b> Usuario (+/🗑), Ciclo 13 lunas, selector 🎨 Tema (Auto/Noche/Claro/Bosque/Océano/Atardecer/Medianoche) y <b>◉ Ir a hoy</b>. <b>🔗 Compartir</b> copia https://calendario-13-lunas.pages.dev/</p>
+           <p><b>Arriba:</b> título, rango fechas, descripción Penco, chip estación (PUKEM/PEWU/WALUNG/RIMU) + chips de fases lunares. <b>Calendario:</b> 28 tarjetas con sol, fase, ánimo, clima y puntitos de hábitos/gym/aves/pesca/astro/🎉.</p>
+           <p><b>🔍 Buscar funciones</b> (Ctrl+K) filtra botones por palabra clave — ej: “mareas”, “siembra”.</p>
+         </div>
+         <div class="help-card">
+           <h4>📝 Día a día</h4>
+           <p>Clic en día: elige <b>ánimo</b> (8), escribe <b>clima/notas</b> y <b>mareas</b> (pleamar/bajamar), <b>📤 Compartir</b> genera imagen PNG, <b>🌸 Marcar inicio ciclo</b> enlaza con Ciclo menstrual y <b>✅ Hábitos</b> del día.</p>
+           <p><b>Notas de la luna</b> (abajo del grid) guardan reflexión del ciclo de 28 días. <b>DFT 20 jun</b> trae reflexión del año completo.</p>
+           <p><b>Búsqueda notas:</b> escribe en “Buscar en notas” y Enter.</p>
+         </div>
+         <div class="help-card">
+           <h4>🌊 Territorio — Penco · Bío-Bío</h4>
+           <p><b>🌊 Mareas:</b> tabla 3 días SHOA con pleamar/bajamar por hora. <b>🎣 Pesca:</b> rating lunar (tithi), mejores días de la luna, 8 especies locales con talla/veda/carnada + <b>bitácora privada</b> por usuario (fecha/lugar/especie/kg/marea) y 📤 Compartir. <b>🦅 Aves:</b> catálogo 16 aves Rocuant, actividad por luna + <b>bitácora</b> (fecha/hora/cantidad/actividad) y export.</p>
+           <p><b>🌤️ Clima:</b> Open-Meteo 7 días + 48h por hora (America/Santiago). <b>🌱 Siembra:</b> 13 lunas con directa/almácigos/cosecha/tareas — pestañas <b>Siembra / Cosecha & Plagas / 🤝 Asociaciones</b> (23 cultivos, Tres Hermanas maíz-poroto-zapallo, buenas/malas compañías).</p>
+           <p><b>🔭 Astro:</b> eclipses/superlunas/lluvias 2026-27 + fases de la luna actual. <b>🎉 Penco:</b> 14 eventos anuales + tus eventos anuales editables (aparecen como 🎉 en el calendario). <b>📿 Ekadashi:</b> cálculo tithi con 3 lunas, ayuno shukla/krishna.</p>
+           <p><b>📸 Hora Dorada:</b> salida/puesta Penco + ventana dorada/azul. <b>🌞 Circadiano:</b> gráfico 24h, fase actual, 6 bloques con qué hacer.</p>
+         </div>
+         <div class="help-card">
+           <h4>🌸 Cuerpo & Salud</h4>
+           <p><b>🌸 Ciclo:</b> registro de inicios, predicción período/fértil/ovulación (opcional en calendario), historial + <b>🧬 Diagrama hormonal</b> 28 días (Estrógeno/Progesterona/LH/FSH) con slider, alimentos/entreno/prácticas por día y 4 fases explicadas.</p>
+            <p><b>🌿 Medicina:</b> 2 pestañas — <b>💊 Farmacología</b> y <b>🌱 Natural</b>, ambas con <i>frecuencia/hora/desde/hasta/notas</i> + próximas tomas y notificaciones. Sugerencias 10 hierbas (Matico, Boldo…) cargables. <b>💪 Entrenamientos:</b> 4 categorías — 🏋️ Gym, 🩹 Terapia física, 🤸 Calistenia, 🌿 Prácticas varias — con sugerencias por categoría, agrega al calendario semanal con día/hora/color y marca ✓ hecho (puntitos 💪 en calendario).</p>
+           <p><b>🌬️ Respiración:</b> 10 técnicas (4-7-8, caja 4-4-4-4, 5-5, 6-6…) con guía visual y cronómetro. <b>💭 Sueños:</b> 8 prácticas (intención, diario, inmóvil 60s, 3 palabras) — guarda “Sueño:” en la nota de hoy.</p>
+           <p><b>✅ Hábitos:</b> icono (46 opciones) + color + frecuencia, racha, % mensual/por luna → puntitos de color en el día.</p>
+         </div>
+         <div class="help-card">
+           <h4>🧠 Mente & Estudio</h4>
+           <p><b>🎯 Disciplina:</b> 8 técnicas (Pomodoro 25/5, 2 min, Sapo, Time Blocking, 5 seg, WOOP, Apilar, Ambiente) + MIT del día y Si-Entonces → inicia ⏱ Pomodoro automático.</p>
+           <p><b>🧠 Estudio:</b> pestañas <b>Generales</b> (recuperación, espaciada, Feynman…), <b>Mnemotecnias</b> (acrónimo/historia/palacio) con generador y <b>Lectura veloz</b> (RSVP tester ppm).</p>
+           <p><b>📚 Horario:</b> bloques semanales por día/hora/color/lugar + vista “Hoy”. <b>📖 Cuentos:</b> 13 cuentos lunares (uno por luna) — toca para leer y <b>✏️ Editar</b> tu versión privada. <b>🧩 Memoria:</b> Palacio Loci + juego Pares 8×2.</p>
+         </div>
+         <div class="help-card">
+           <h4>🍽️ Vida diaria</h4>
+           <p><b>🥗 Comidas:</b> plan por fecha (desayuno/almuerzo/cena/snack/notas), guarda por día, genera <b>🛒 Compras</b> automático, ve semana/luna, sugerencias nutricionales. Queda local por usuario.</p>
+           <p><b>🛒 Compras:</b> lista por categorías (Verduras/Frutas/Abarrotes/Proteínas/Lácteos/Panadería/Otros), cantidad, tacha ✓ comprados, limpia comprados o vacía.</p>
+         </div>
+         <div class="help-card">
+           <h4>🛠️ Herramientas & Personalización</h4>
+           <p><b>📏 Conversión:</b> longitud/peso/volumen/temperatura/superficie con tabla. <b>⏱ Tiempo:</b> Cronómetro (vueltas) + Temporizador h/m/s con sonido/vibración.</p>
+           <p><b>🔔 Recordatorios:</b> fases lunares y notificaciones suaves (ciclo/medicina). <b>⚙️ Personalizar:</b> elige qué botones ver (perfiles Todo/Esencial/Infantil/Adolescente/Mayor/Estudiante/Agricultor/Pescador/Bienestar/Deportista/Docente) + texto grande.</p>
+           <p><b>🎨 Tema + 🕰 Reloj</b> America/Santiago en sidebar.</p>
+         </div>
+         <div class="help-card">
+           <h4>💾 Guardar & Compartir</h4>
+           <p><b>💾 Respaldo / 📥 Restaurar:</b> JSON por usuario (descarga/subida). <b>📌 Acceso directo:</b> crea .url / .lnk al escritorio. <b>📄 PDF luna / 📚 PDF ciclo:</b> imprime vía ventana de impresión.</p>
+           <p><b>❤ Aporte voluntario — ACTUALIZADO sep 2026:</b> links <b>corregidos</b> — ahora abren siempre en pestaña externa (window.open / shell.openExternal) y no se bloquean dentro del diálogo. Mercado Pago <code>link.mercadopago.cl/semilleroconsciente</code> y PayPal <code>semilleroconsciente@gmail.com</code>. RUT/MACH privados en <code>donate.json</code>.</p>
+           <p><b>🔗 Compartir calendario</b> y <b>📤 Compartir día/pesca/aves</b> usan Web Share API o copiado.</p>
+         </div>
+         <div class="help-card" style="border-color:var(--gold);background:linear-gradient(135deg,var(--panel),var(--card))">
+           <h4>💡 Tips & Novedades 2026</h4>
+           <p>• <b>Nuevo:</b> 🤝 Asociaciones de cultivos (23) en 🌱 Siembra. • <b>Nuevo:</b> bitácoras privadas de 🎣 Pesca y 🦅 Aves con compartir. • <b>Fix:</b> ❤ Aporte links externos. • Chip estación = paleta de color. • Móvil: desliza lunas horizontal.</p>
+           <p>• Escribe “Sueño:” en nota para buscar sueños. • Todo offline salvo clima/mareas. • Ctrl+K para filtrar funciones.</p>
+           <p style="text-align:center;margin-top:6px;color:var(--gold)"><b>¡Que tu ciclo florezca con la luna! — Küme mañum · Penco 2026</b></p>
+         </div>
+       </div>
       <div class="dlg-actions"><button type="button" id="helpClose" class="btn">Cerrar</button></div>
     </form>
   </dialog>
@@ -940,12 +988,27 @@
   <dialog id="gymDialog">
     <form method="dialog">
       <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
-        <h3 style="margin:0;color:var(--accent)">🏋️ Rutinas de Gimnasio</h3>
+        <h3 style="margin:0;color:var(--accent)">💪 Entrenamientos</h3>
         <button type="button" id="gymCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
       </div>
-      <p class="muted" style="line-height:1.5">Planifica tus entrenamientos por día. Queda <b>privado y local</b> por usuario. Marca como completado y ve tu racha.</p>
-      <div class="conv-row">
-        <label style="flex:2">Rutina <input type="text" id="gymName" placeholder="ej: Push - Pecho/Hombro/Tríceps, Cardio, Piernas" maxlength="50"></label>
+      <p class="muted" style="line-height:1.5">Planifica <b>Gym, Terapia física, Calistenia y Prácticas varias</b>. Todo queda <b>privado y local</b> por usuario. Toca una sugerencia para cargarla y agrégala al calendario semanal.</p>
+      <div class="timer-tabs" style="margin-bottom:10px">
+        <button type="button" id="tabGymGym" class="btn btn-accent" style="width:auto">🏋️ Gym</button>
+        <button type="button" id="tabGymFisio" class="btn" style="width:auto">🩹 Terapia</button>
+        <button type="button" id="tabGymCalis" class="btn" style="width:auto">🤸 Calistenia</button>
+        <button type="button" id="tabGymVarias" class="btn" style="width:auto">🌿 Prácticas</button>
+      </div>
+      <div id="gymSuggestionsBox" class="menstrual-card" style="max-height:220px;overflow-y:auto"></div>
+      <div class="conv-row" style="margin-top:10px">
+        <label style="flex:2">Rutina <input type="text" id="gymName" placeholder="ej: Push - Pecho/Hombro/Tríceps, Movilidad hombro, Yoga suave" maxlength="50"></label>
+        <label>Tipo
+          <select id="gymCategory">
+            <option value="gym">🏋️ Gym</option>
+            <option value="fisio">🩹 Terapia física</option>
+            <option value="calistenia">🤸 Calistenia</option>
+            <option value="varias">🌿 Prácticas varias</option>
+          </select>
+        </label>
         <label>Día
           <select id="gymDay">
             <option value="1">Lunes</option><option value="2">Martes</option><option value="3">Miércoles</option><option value="4">Jueves</option><option value="5">Viernes</option><option value="6">Sábado</option><option value="0">Domingo</option>
@@ -957,10 +1020,10 @@
         <label>Fin <input type="time" id="gymEnd" value="08:30"></label>
         <label>Color <input type="color" id="gymColor" value="#e76e8a" style="height:36px;padding:2px;width:60px"></label>
       </div>
-      <label>Ejercicios (series x reps - peso / descanso) <textarea id="gymExercises" rows="3" placeholder="ej:&#10;Press banca 4x8 60kg 90s&#10;Fondos 3x12 45s&#10;Plancha 3x45s"></textarea></label>
+      <label>Ejercicios / Detalle (series x reps - peso / descanso) <textarea id="gymExercises" rows="3" placeholder="ej:&#10;Press banca 4x8 60kg 90s&#10;Fondos 3x12 45s&#10;Plancha 3x45s"></textarea></label>
       <div class="conv-row">
-        <label>Lugar <input type="text" id="gymPlace" placeholder="ej: Gimnasio Penco, Casa, Calistenia" maxlength="30"></label>
-        <button type="button" id="gymAdd" class="btn btn-accent" style="width:auto;align-self:flex-end">+ Agregar rutina</button>
+        <label>Lugar <input type="text" id="gymPlace" placeholder="ej: Gimnasio Penco, Casa, Box, Playa" maxlength="30"></label>
+        <button type="button" id="gymAdd" class="btn btn-accent" style="width:auto;align-self:flex-end">+ Agregar al calendario</button>
         <button type="button" id="gymUpdate" class="btn hidden" style="width:auto;align-self:flex-end">↻ Actualizar</button>
         <button type="button" id="gymCancel" class="btn hidden" style="width:auto;align-self:flex-end">Cancelar</button>
       </div>
@@ -1264,12 +1327,12 @@
     </form>
   </dialog>
 
-  <script src="web-api.js"></script>
-  <script src="astro.js"></script>
-  <script src="data.js"></script>
-  <script src="frases.js"></script>
-  <script src="cal.js"></script>
-  <script src="renderer.js"></script>
+  <script src="web-api.js?v=8"></script>
+  <script src="astro.js?v=8"></script>
+  <script src="data.js?v=8"></script>
+  <script src="frases.js?v=8"></script>
+  <script src="cal.js?v=8"></script>
+  <script src="renderer.js?v=8"></script>
   <script>
     if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
   </script>
