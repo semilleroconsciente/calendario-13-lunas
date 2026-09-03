@@ -252,7 +252,7 @@ function renderLuna() {
       gymIcons = gymForDay.map(it=> `<span class="dc-habit" style="background:${it.color}22;color:${it.color};border-color:${it.color}55" title="${escapeHtml(it.name)} ${it.start}-${it.end}">🏋️</span>`).join('');
       hasGym = gymForDay.length ? ' has-gym' : '';
     }catch(e){}
-    let birdIcons='', fishIcons='', astroIcons='', comunaIcons='';
+    let birdIcons='', fishIcons='', astroIcons='', comunaIcons='', financeIcons='';
     try{
       const bd=getBirdData();
       const birdsToday=bd.entries.filter(x=>x.date===key);
@@ -273,6 +273,15 @@ function renderLuna() {
         if(comToday.length) comunaIcons=comToday.map(c=> `<span class="dc-habit" style="background:#f0d48822;color:#f0d488;border-color:#f0d48855" title="${escapeHtml(c.nombre)}">🎉</span>`).join('');
       }
     }catch(e){}
+    try{
+      const fd=getFinanceData();
+      const finToday=fd.entries.filter(x=>x.date===key);
+      if(finToday.length){
+        const totG=finToday.filter(x=>x.tipo==='gasto').reduce((s,x)=>s+(parseInt(x.monto)||0),0);
+        const totI=finToday.filter(x=>x.tipo==='ingreso').reduce((s,x)=>s+(parseInt(x.monto)||0),0);
+        financeIcons=`<span class="dc-habit" style="background:#e8c56a22;color:#e8c56a;border-color:#e8c56a55" title="${finToday.length} mov. · gastos $${totG.toLocaleString('es-CL')} · ingresos $${totI.toLocaleString('es-CL')}">💰</span>`;
+      }
+    }catch(e){}
     const card = document.createElement('div');
     card.className = 'day-card' + (key === todayKey ? ' today' : '') + (mensType ? ' mens-'+mensType : '') + hasHabits + hasGym;
     card.dataset.luna = meta.n;
@@ -287,6 +296,7 @@ function renderLuna() {
       ${fishIcons ? `<div class="dc-habits">${fishIcons}</div>` : ''}
       ${astroIcons ? `<div class="dc-habits">${astroIcons}</div>` : ''}
       ${comunaIcons ? `<div class="dc-habits">${comunaIcons}</div>` : ''}
+      ${financeIcons ? `<div class="dc-habits">${financeIcons}</div>` : ''}
       ${efe ? `<div class="dc-efe" title="${escapeHtml(efe)}">📅 ${escapeHtml(efe)}</div>` : ''}
       ${mood ? `<div class="dc-clima">Ánimo: ${escapeHtml(mood.e)} ${escapeHtml(mood.n)}</div>` : ''}
       ${cell.clima ? `<div class="dc-clima">${escapeHtml(cell.clima)}</div>` : ''}
@@ -609,9 +619,22 @@ const WMO = [
   [80, 'Chubascos leves', '🌦️'], [81, 'Chubascos', '🌧️'], [82, 'Chubascos fuertes', '⛈️'],
   [95, 'Tormenta', '⛈️'], [96, 'Tormenta con granizo', '⛈️'], [99, 'Tormenta severa', '⛈️']
 ];
-function wmo(code) {
+function wmo(code, isDay) {
   const f = WMO.find(w => w[0] === code);
-  return f ? { desc: f[1], ico: f[2] } : { desc: '—', ico: '🌡️' };
+  let ico = f ? f[2] : '🌡️';
+  const desc = f ? f[1] : '—';
+  // noche: reemplazar sol por luna en códigos despejados/parciales
+  if (isDay === 0) {
+    if (code === 0) ico = '🌙';
+    else if (code === 1) ico = '🌙☁️';
+    else if (code === 2) ico = '☁️';
+    // 3, niebla, lluvia, nieve, tormenta mantienen mismo icono
+  }
+  return { desc, ico };
+}
+function isDayFallback(hour) {
+  // fallback simple: 06:00-19:59 día, resto noche (complementa is_day del API)
+  return (hour >= 6 && hour < 20) ? 1 : 0;
 }
 const DIRS = ['N', 'NE', 'E', 'SE', 'S', 'SO', 'O', 'NO'];
 function dirName(deg) { return DIRS[Math.round(deg / 45) % 8]; }
@@ -623,18 +646,19 @@ async function fetchWeather() {
   panel.innerHTML = '<i>Cargando clima…</i>';
   try {
     const url = 'https://api.open-meteo.com/v1/forecast?latitude=-36.73194&longitude=-72.9925' +
-      '&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m,wind_direction_10m,precipitation' +
-      '&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max' +
-      '&hourly=temperature_2m,weather_code,precipitation_probability,wind_speed_10m' +
+      '&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m,wind_direction_10m,precipitation,is_day' +
+      '&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,sunrise,sunset' +
+      '&hourly=temperature_2m,weather_code,precipitation_probability,wind_speed_10m,is_day' +
       '&timezone=America%2FSantiago&forecast_days=7';
     const r = await fetch(url);
     const j = await r.json();
     const cur = j.current;
-    const cw = wmo(cur.weather_code);
+    const curIsDay = (cur.is_day !== undefined) ? cur.is_day : isDayFallback(new Date().getHours());
+    const cw = wmo(cur.weather_code, curIsDay);
     let html = `<div class="wp-current">${cw.ico} <b>Penco ahora:</b> ${cw.desc} · ${cur.temperature_2m}°C (sensación ${cur.apparent_temperature}°C)` +
       ` · 💨 ${cur.wind_speed_10m} km/h ${dirName(cur.wind_direction_10m)} · 💧 ${cur.precipitation} mm</div><div class="wp-days">`;
     j.daily.time.forEach((t, i) => {
-      const dw = wmo(j.daily.weather_code[i]);
+      const dw = wmo(j.daily.weather_code[i], 1);
       html += `<div class="wp-day"><div class="wd-date">${t.slice(8)}/${t.slice(5, 7)}</div><div class="wd-ico">${dw.ico}</div>` +
         `<div>${Math.round(j.daily.temperature_2m_min[i])}–${Math.round(j.daily.temperature_2m_max[i])}°C</div>` +
         `<div class="wd-date">💧${j.daily.precipitation_probability_max[i]}%</div></div>`;
@@ -657,10 +681,11 @@ async function fetchWeather() {
         const wd = new Date(Date.UTC(+dkey.slice(0, 4), +dkey.slice(5, 7) - 1, +dkey.slice(8, 10))).getUTCDay();
         html += `<div class="wp-hgroup"><div class="wp-hday">${WD[wd]} ${dkey.slice(8, 10)}/${dkey.slice(5, 7)}</div><div class="wp-hrow">`;
       }
-      const hw = wmo(j.hourly.weather_code[k]);
+      const isDayHour = (j.hourly.is_day && j.hourly.is_day[k] !== undefined) ? j.hourly.is_day[k] : isDayFallback(parseInt(t.slice(11,13),10));
+      const hw = wmo(j.hourly.weather_code[k], isDayHour);
       const pp = j.hourly.precipitation_probability[k];
-      html += `<div class="wp-hour${k === idx ? ' now' : ''}" title="${hw.desc} · viento ${j.hourly.wind_speed_10m[k]} km/h">` +
-        `<div class="hh">${t.slice(11, 13)}h</div><div class="hi">${hw.ico}</div>` +
+      html += `<div class="wp-hour${k === idx ? ' now' : ''}" title="${hw.desc} · viento ${j.hourly.wind_speed_10m[k]} km/h${isDayHour===0?' · noche':''}">` +
+        `<div class="hh">${t.slice(11, 13)}h${isDayHour===0?' 🌙':''}</div><div class="hi">${hw.ico}</div>` +
         `<div class="ht">${Math.round(j.hourly.temperature_2m[k])}°</div>` +
         `<div class="hp">💧${pp == null ? '–' : pp}%</div></div>`;
       const nextT = times[k + 1];
@@ -2389,14 +2414,198 @@ function renderMealSuggestionsBox(){
   box.innerHTML='<h4 style="color:var(--accent)">💡 Sugerencias</h4>' + sug.map(s=>'<p class="muted" style="font-size:11.5px;margin:4px 0">'+s+'</p>').join('') + '<p class="muted" style="font-size:10px;margin-top:6px">Sugerencias estacionales para Penco, no diagnóstico.</p>';
 }
 
+// === CALCULADORA NUTRICIONAL + MENÚS ===
+function getNutritionProfile(){
+  const u=userData();
+  if(!u.nutricion) u.nutricion={ sexo:'mujer', edad:30, peso:65, altura:165, actividad:'1.55', objetivo:'mantener', prote:'1.8', ultimaCalc:null };
+  return u.nutricion;
+}
+function calcNutrition(p){
+  const peso=parseFloat(p.peso), altura=parseFloat(p.altura), edad=parseInt(p.edad);
+  if(!peso||!altura||!edad) return null;
+  const act=parseFloat(p.actividad)||1.55;
+  const protFactor=parseFloat(p.prote)||1.8;
+  let tmb;
+  if(p.sexo==='hombre') tmb = 10*peso + 6.25*altura -5*edad +5;
+  else if(p.sexo==='mujer') tmb = 10*peso + 6.25*altura -5*edad -161;
+  else tmb = 10*peso + 6.25*altura -5*edad -78; // promedio
+  const tdee = Math.round(tmb*act);
+  let ajuste=0;
+  if(p.objetivo==='perder_suave') ajuste=-300;
+  else if(p.objetivo==='perder') ajuste=-500;
+  else if(p.objetivo==='ganar_suave') ajuste=300;
+  else if(p.objetivo==='ganar') ajuste=500;
+  const objetivoKcal = tdee + ajuste;
+  const protG = Math.round(peso * protFactor);
+  const protKcal = protG*4;
+  const fatG = Math.round(peso*0.9); // 0.9g/kg ~ 25-30%
+  const fatKcal = fatG*9;
+  let carbKcal = objetivoKcal - protKcal - fatKcal;
+  if(carbKcal<0) carbKcal=0;
+  const carbG = Math.round(carbKcal/4);
+  const imc = peso / Math.pow(altura/100,2);
+  const agua = Math.round(peso*35); // ml
+  return { tmb:Math.round(tmb), tdee, objetivoKcal, protG, fatG, carbG, imc: imc.toFixed(1), agua, ajuste };
+}
+function renderCalcResultado(){
+  const box=$('calcResultado'); const det=$('calcDetalle'); if(!box) return;
+  const prof=getNutritionProfile();
+  const r=calcNutrition(prof);
+  if(!r){ box.innerHTML='<p class="muted">Completa edad, peso y altura para calcular.</p>'; if(det) det.classList.add('hidden'); return; }
+  const imcCat = r.imc<18.5?'Bajo peso': r.imc<25?'Normal': r.imc<30?'Sobrepeso':'Obesidad';
+  box.innerHTML=`<h4 style="color:var(--gold)">🎯 Tu meta: ${r.objetivoKcal} kcal/día</h4>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:6px">
+      <div class="chip" style="text-align:center"><b>${r.tmb}</b><br><span class="muted" style="font-size:10px">TMB</span></div>
+      <div class="chip" style="text-align:center"><b>${r.tdee}</b><br><span class="muted" style="font-size:10px">TDEE</span></div>
+      <div class="chip" style="text-align:center"><b>${r.objetivoKcal}</b><br><span class="muted" style="font-size:10px">Objetivo</span></div>
+      <div class="chip" style="text-align:center"><b>${r.protG}g</b><br><span class="muted" style="font-size:10px">Proteína</span></div>
+      <div class="chip" style="text-align:center"><b>${r.carbG}g</b><br><span class="muted" style="font-size:10px">Carbos</span></div>
+      <div class="chip" style="text-align:center"><b>${r.fatG}g</b><br><span class="muted" style="font-size:10px">Grasa</span></div>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+      <span class="chip">IMC ${r.imc} · ${imcCat}</span>
+      <span class="chip">💧 Agua ~${r.agua} ml/día</span>
+      <span class="chip">${prof.objetivo.replace('_',' ')} (${r.ajuste>=0?'+'+r.ajuste:r.ajuste} kcal)</span>
+    </div>
+    <div style="margin-top:8px;background:var(--panel);border-radius:6px;height:10px;overflow:hidden;display:flex">
+      <div style="width:${Math.round(r.protG*4/r.objetivoKcal*100)}%;background:#a9d18e"></div>
+      <div style="width:${Math.round(r.carbG*4/r.objetivoKcal*100)}%;background:#e8c56a"></div>
+      <div style="width:${Math.round(r.fatG*9/r.objetivoKcal*100)}%;background:#7ab8ff"></div>
+    </div>
+    <p class="muted" style="font-size:10px;margin-top:4px">Distribución: <span style="color:#a9d18e">● Proteína ${Math.round(r.protG*4/r.objetivoKcal*100)}%</span> · <span style="color:#e8c56a">● Carbos ${Math.round(r.carbG*4/r.objetivoKcal*100)}%</span> · <span style="color:#7ab8ff">● Grasa ${Math.round(r.fatG*9/r.objetivoKcal*100)}%</span></p>`;
+  if(det){
+    det.classList.remove('hidden');
+    det.innerHTML=`<h4>📋 Detalle</h4>
+      <p class="muted" style="font-size:11px;line-height:1.5">TMB (reposo) ${r.tmb} × actividad ${prof.actividad} = TDEE ${r.tdee}. Objetivo ${r.objetivoKcal} kcal. Proteína ${r.protG}g ×4=${r.protG*4} kcal · Grasa ${r.fatG}g ×9=${r.fatG*9} kcal · Carbos resto ${r.carbG}g.</p>
+      <p class="muted" style="font-size:11px">Recomendación: 25-35g fibra, &lt;2300mg sodio, 5 porciones verdura/fruta. Si entrenas fuerza, prioriza proteína repartida en 3-4 comidas.</p>
+      <p class="muted" style="font-size:10px">Cálculo informativo, no reemplaza evaluación profesional.</p>`;
+  }
+  renderMealCompareBox();
+  renderMealMenus();
+}
+function renderMealCompareBox(){
+  const box=$('mealCompareBox'); if(!box) return;
+  const k=$('mealDate')?.value;
+  const r=calcNutrition(getNutritionProfile());
+  if(!r){ box.innerHTML=''; return; }
+  const e=k? getMealData().entries[k]:null;
+  const tot=e? parseNutrition([e.breakfast,e.lunch,e.dinner,e.snack].filter(Boolean).join(', ')) : null;
+  if(!tot){ box.innerHTML=`<h4 style="color:var(--accent)">⚖️ Plan vs meta (${r.objetivoKcal} kcal)</h4><p class="muted">Sin plan este día. Carga un menú de 🍽️ Menús sugeridos.</p>`; return; }
+  const pctCal=Math.round(tot.cal/r.objetivoKcal*100);
+  const pctProt=Math.round(tot.prot/r.protG*100);
+  const pctCarb=Math.round(tot.carb/r.carbG*100);
+  const pctFat=Math.round(tot.fat/r.fatG*100);
+  const bar=(pct, col)=> `<div style="background:var(--panel);border-radius:6px;height:8px;overflow:hidden;margin-top:2px"><div style="width:${Math.min(100,pct)}%;height:100%;background:${col}"></div></div>`;
+  box.innerHTML=`<h4 style="color:var(--accent)">⚖️ Plan del día vs meta (${r.objetivoKcal} kcal)</h4>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px;font-size:11px">
+      <div><b>${Math.round(tot.cal)} kcal</b> <span class="muted">${pctCal}% meta</span>${bar(pctCal, pctCal>110?'#e76e8a': pctCal<70?'#e8c56a':'#a9d18e')}</div>
+      <div><b>${tot.prot.toFixed(1)}g prot</b> <span class="muted">${pctProt}%</span>${bar(pctProt,'#a9d18e')}</div>
+      <div><b>${tot.carb.toFixed(1)}g carb</b> <span class="muted">${pctCarb}%</span>${bar(pctCarb,'#e8c56a')}</div>
+      <div><b>${tot.fat.toFixed(1)}g grasa</b> <span class="muted">${pctFat}%</span>${bar(pctFat,'#7ab8ff')}</div>
+    </div>
+    <p class="muted" style="font-size:11px;margin-top:6px">${pctCal<80?'⚡ Te faltan ~'+(r.objetivoKcal-Math.round(tot.cal))+' kcal — agrega snack (yogur+fruta, palta+pan).': pctCal>115?'⚠️ Excedes ~'+(Math.round(tot.cal)-r.objetivoKcal)+' kcal — aligera cena.':'✅ Dentro de rango (±15%).'}</p>`;
+}
+const MENUS_SUGERIDOS = [
+  { id:'m1', nombre:'Penco Económico', kcal:1850, prot:95, carb:220, fat:65, precio:'$ bajo', desc:'Feria + legumbre — ideal para presupuesto ajustado', desayuno:'Avena 60g + leche 200ml + manzana + miel 5g', almuerzo:'Lentejas 120g secas + arroz 60g + ensalada tomate/lechuga + palta 30g', cena:'Tortilla espinaca 2 huevos + papa 150g + zanahoria', snack:'Yogur natural 200g + avena 20g' },
+  { id:'m2', nombre:'Equilibrado Costa', kcal:2100, prot:110, carb:250, fat:70, precio:'$$ medio', desc:'Mantener — proteína moderada, fibra alta', desayuno:'Pan 80g + huevo 1 + palta 40g + leche 200ml', almuerzo:'Pescado 150g + quinoa 70g + brocoli 150g + tomate', cena:'Pollo 130g + papa 200g + ensalada betarraga/zanahoria', snack:'Manzana + almendras 15g + yogur 150g' },
+  { id:'m3', nombre:'Activo / Ganar músculo', kcal:2500, prot:140, carb:280, fat:85, precio:'$$$', desc:'Entreno 4-5 días — más proteína y carb', desayuno:'Avena 80g + leche 250ml + plátano + almendras 10g + miel', almuerzo:'Pollo 180g + arroz 90g + poroto 60g + ensalada', cena:'Pescado 160g + quinoa 80g + palta 50g + espinaca', snack:'Queso fresco 60g + pan 40g + berries 80g' },
+  { id:'m4', nombre:'Ligero / Perder suave', kcal:1650, prot:90, carb:170, fat:55, precio:'$ bajo', desc:'Déficit suave — saciedad con legumbre y verdura', desayuno:'Yogur 200g + avena 40g + manzana', almuerzo:'Ensalada grande lentejas 80g + pollo 100g + tomate/pepino', cena:'Sopa verduras + huevo 2 + pan 40g', snack:'Zanahoria + hummus 40g (o poroto molido)' },
+  { id:'m5', nombre:'Vegetariano Penco', kcal:2050, prot:85, carb:260, fat:68, precio:'$$', desc:'Sin carne — huevo/lácteo + legumbre', desayuno:'Avena 60g + leche 200ml + chía 10g + plátano', almuerzo:'Quinoa 80g + lentejas 100g + brocoli + zanahoria + palta 30g', cena:'Tortilla 2 huevos + arroz 60g + ensalada', snack:'Yogur + nuez 15g + manzana' }
+];
+function renderMealMenus(){
+  const resumen=$('menusResumen'); const lista=$('menusLista'); if(!lista) return;
+  const prof=getNutritionProfile(); const r=calcNutrition(prof);
+  if(!r){
+    if(resumen) resumen.innerHTML='<p class="muted">Calcula primero tu meta en 🧮 Calculadora.</p>';
+    lista.innerHTML='';
+    return;
+  }
+  if(resumen){
+    resumen.innerHTML=`<h4 style="color:var(--gold)">🍽️ Menús para ${r.objetivoKcal} kcal · Prot ${r.protG}g · Carb ${r.carbG}g · Grasa ${r.fatG}g</h4>
+      <p class="muted" style="font-size:11px">Mostrando menús ordenados por cercanía a tu meta. Toca <b>Cargar</b> para copiar al plan del día.</p>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:6px">
+        <div class="chip" style="text-align:center"><b>${r.objetivoKcal}</b><br><span class="muted" style="font-size:10px">kcal meta</span></div>
+        <div class="chip" style="text-align:center"><b>${r.imc}</b><br><span class="muted" style="font-size:10px">IMC</span></div>
+        <div class="chip" style="text-align:center"><b>${r.agua} ml</b><br><span class="muted" style="font-size:10px">agua</span></div>
+      </div>`;
+  }
+  const sorted=[...MENUS_SUGERIDOS].map(m=> ({...m, diff: Math.abs(m.kcal - r.objetivoKcal) + Math.abs(m.prot - r.protG)*4 })).sort((a,b)=>a.diff-b.diff);
+  lista.innerHTML=sorted.map(m=>{
+    const delta=m.kcal - r.objetivoKcal;
+    const tag= Math.abs(delta)<100 ? '<span class="chip" style="background:#a9d18e;color:#10142c">✓ Cerca</span>' : delta>0? `<span class="chip">${'+'+delta} kcal</span>` : `<span class="chip">${delta} kcal</span>`;
+    return `<div class="si-card" style="border-left:3px solid var(--gold)">
+      <div style="display:flex;justify-content:space-between;align-items:center"><h4>${escapeHtml(m.nombre)} ${tag}</h4><span class="muted" style="font-size:11px">${m.precio}</span></div>
+      <p class="muted" style="font-size:11px">${escapeHtml(m.desc)} — ${m.kcal} kcal · P ${m.prot}g · C ${m.carb}g · G ${m.fat}g</p>
+      <div style="font-size:11px;color:#cdd3ee;line-height:1.5;margin-top:4px">
+        <b>Desayuno:</b> ${escapeHtml(m.desayuno)}<br>
+        <b>Almuerzo:</b> ${escapeHtml(m.almuerzo)}<br>
+        <b>Cena:</b> ${escapeHtml(m.cena)}<br>
+        <b>Snack:</b> ${escapeHtml(m.snack)}
+      </div>
+      <div class="dlg-actions" style="justify-content:flex-start;margin-top:8px">
+        <button data-id="${m.id}" class="btn btn-accent menu-load" style="width:auto">📥 Cargar en plan de hoy</button>
+        <button data-id="${m.id}" class="btn menu-shop" style="width:auto">🛒 A lista</button>
+      </div>
+    </div>`;
+  }).join('');
+  lista.querySelectorAll('.menu-load').forEach(b=> b.onclick=()=>{
+    const m=MENUS_SUGERIDOS.find(x=>x.id===b.dataset.id); if(!m) return;
+    const k=$('mealDate')?.value || cal.fmtKey.format(new Date());
+    $('mealBreakfast').value=m.desayuno;
+    $('mealLunch').value=m.almuerzo;
+    $('mealDinner').value=m.cena;
+    $('mealSnack').value=m.snack;
+    $('mealNotes').value=`Menú ${m.nombre} · ${m.kcal} kcal (meta ${r.objetivoKcal})`;
+    // switch to plan tab
+    showMealTab('plan');
+    loadMealDate(k); // to sync preview? but we just set values, need to render boxes
+    setTimeout(()=>{ renderMealNutritionBox(); renderMealSuggestionsBox(); renderMealCompareBox(); },80);
+    $('statusMsg').textContent='Menú cargado en formulario — pulsa Guardar día';
+    setTimeout(()=> $('statusMsg').textContent='',2000);
+  });
+  lista.querySelectorAll('.menu-shop').forEach(b=> b.onclick=()=>{
+    const m=MENUS_SUGERIDOS.find(x=>x.id===b.dataset.id); if(!m) return;
+    const shop=getShoppingData();
+    const txt=[m.desayuno,m.almuerzo,m.cena,m.snack].join(', ');
+    const parts=txt.split(/[,;]+/).map(s=>s.trim()).slice(0,12);
+    parts.forEach(p=>{
+      const name=p.split(' ').slice(0,3).join(' ');
+      if(name) shop.items.push({ id:'s'+Date.now()+Math.random().toString(36).slice(2,5), name: name.slice(0,40), qty:'', cat:'Otros', done:false });
+    });
+    scheduleSave(); renderShoppingList();
+    $('statusMsg').textContent='Ingredientes añadidos a 🛒';
+    setTimeout(()=> $('statusMsg').textContent='',1500);
+  });
+}
+function showMealTab(tab){
+  const pPlan=$('mealPlanPanel'), pCalc=$('mealCalcPanel'), pMenus=$('mealMenusPanel');
+  const tPlan=$('tabMealPlan'), tCalc=$('tabMealCalc'), tMenus=$('tabMealMenus');
+  [tPlan,tCalc,tMenus].forEach(b=> b&&b.classList.remove('btn-accent'));
+  [pPlan,pCalc,pMenus].forEach(p=> p&&p.classList.add('hidden'));
+  if(tab==='plan'){ tPlan&&tPlan.classList.add('btn-accent'); pPlan&&pPlan.classList.remove('hidden'); }
+  else if(tab==='calc'){ tCalc&&tCalc.classList.add('btn-accent'); pCalc&&pCalc.classList.remove('hidden'); }
+  else { tMenus&&tMenus.classList.add('btn-accent'); pMenus&&pMenus.classList.remove('hidden'); }
+}
 function loadMealDate(k){
   const e=getMealData().entries[k]||{ breakfast:'', lunch:'', dinner:'', snack:'', notes:'' };
   $('mealBreakfast').value=e.breakfast||''; $('mealLunch').value=e.lunch||''; $('mealDinner').value=e.dinner||''; $('mealSnack').value=e.snack||''; $('mealNotes').value=e.notes||'';
-  setTimeout(()=>{ try{ renderMealNutritionBox(); renderMealSuggestionsBox(); }catch(e){} },50);
+  setTimeout(()=>{ try{ renderMealNutritionBox(); renderMealSuggestionsBox(); renderMealCompareBox(); }catch(e){} },50);
 }
 function setupMealDialog(){
   const btn=$('btnMeal'); if(btn) btn.onclick=()=>{
-    const today=cal.fmtKey.format(new Date()); $('mealDate').value=today; loadMealDate(today); renderMealWeekBox(); renderMealLunaBox(); renderMealNutritionBox(); renderMealSuggestionsBox(); $('mealDialog').showModal();
+    const today=cal.fmtKey.format(new Date()); $('mealDate').value=today; loadMealDate(today); renderMealWeekBox(); renderMealLunaBox(); renderMealNutritionBox(); renderMealSuggestionsBox(); renderMealCompareBox();
+    // load profile into calc form
+    const prof=getNutritionProfile();
+    if($('calcSexo')) $('calcSexo').value=prof.sexo;
+    if($('calcEdad')) $('calcEdad').value=prof.edad||'';
+    if($('calcPeso')) $('calcPeso').value=prof.peso||'';
+    if($('calcAltura')) $('calcAltura').value=prof.altura||'';
+    if($('calcActividad')) $('calcActividad').value=prof.actividad;
+    if($('calcObjetivo')) $('calcObjetivo').value=prof.objetivo;
+    if($('calcProte')) $('calcProte').value=prof.prote;
+    renderCalcResultado(); renderMealMenus();
+    showMealTab('plan');
+    $('mealDialog').showModal();
   };
   const ct=$('mealCloseTop'), cb=$('mealClose'); if(ct) ct.onclick=()=>$('mealDialog').close(); if(cb) cb.onclick=()=>$('mealDialog').close();
   const todayBtn=$('mealToday'); if(todayBtn) todayBtn.onclick=()=>{ const k=cal.fmtKey.format(new Date()); $('mealDate').value=k; loadMealDate(k); };
@@ -2408,7 +2617,7 @@ function setupMealDialog(){
     const k=$('mealDate').value; if(!k) return alert('Elige fecha');
     const e={ breakfast:$('mealBreakfast').value.trim(), lunch:$('mealLunch').value.trim(), dinner:$('mealDinner').value.trim(), snack:$('mealSnack').value.trim(), notes:$('mealNotes').value.trim() };
     if(!e.breakfast && !e.lunch && !e.dinner && !e.snack) return alert('Escribe al menos una comida');
-    getMealData().entries[k]=e; scheduleSave(); renderMealWeekBox(); renderMealLunaBox(); renderMealNutritionBox(); renderMealSuggestionsBox(); renderLuna();
+    getMealData().entries[k]=e; scheduleSave(); renderMealWeekBox(); renderMealLunaBox(); renderMealNutritionBox(); renderMealSuggestionsBox(); renderMealCompareBox(); renderLuna();
     $('statusMsg').textContent='Comida guardada ✓'; setTimeout(()=>$('statusMsg').textContent='',1500);
   };
   const toShop=$('mealToShopping'); if(toShop) toShop.onclick=()=>{
@@ -2422,6 +2631,31 @@ function setupMealDialog(){
     scheduleSave(); renderShoppingList();
     alert('Añadido a 🛒 Compras');
   };
+  // tabs meal
+  const tPlan=$('tabMealPlan'), tCalc=$('tabMealCalc'), tMenus=$('tabMealMenus');
+  if(tPlan) tPlan.onclick=()=> showMealTab('plan');
+  if(tCalc) tCalc.onclick=()=> { const prof=getNutritionProfile(); if($('calcSexo')) $('calcSexo').value=prof.sexo; renderCalcResultado(); showMealTab('calc'); };
+  if(tMenus) tMenus.onclick=()=> { renderMealMenus(); showMealTab('menus'); };
+  const calcBtn=$('calcCalcular'); if(calcBtn) calcBtn.onclick=()=>{
+    const prof=getNutritionProfile();
+    prof.sexo=$('calcSexo').value; prof.edad=parseInt($('calcEdad').value)||0; prof.peso=parseFloat($('calcPeso').value)||0; prof.altura=parseInt($('calcAltura').value)||0; prof.actividad=$('calcActividad').value; prof.objetivo=$('calcObjetivo').value; prof.prote=$('calcProte').value;
+    if(!prof.edad||!prof.peso||!prof.altura) return alert('Completa edad, peso y altura');
+    renderCalcResultado();
+    $('calcStatus').textContent='Calculado ✓ (no guardado aún)';
+    setTimeout(()=> $('calcStatus').textContent='',1500);
+  };
+  const saveProf=$('calcGuardar'); if(saveProf) saveProf.onclick=()=>{
+    const prof=getNutritionProfile();
+    prof.sexo=$('calcSexo').value; prof.edad=parseInt($('calcEdad').value)||0; prof.peso=parseFloat($('calcPeso').value)||0; prof.altura=parseInt($('calcAltura').value)||0; prof.actividad=$('calcActividad').value; prof.objetivo=$('calcObjetivo').value; prof.prote=$('calcProte').value;
+    if(!prof.edad||!prof.peso||!prof.altura) return alert('Completa edad, peso y altura');
+    prof.ultimaCalc=calcNutrition(prof);
+    scheduleSave();
+    renderCalcResultado(); renderMealMenus(); renderMealCompareBox();
+    $('calcStatus').textContent='Perfil guardado ✓';
+    setTimeout(()=> $('calcStatus').textContent='',1500);
+  };
+  // live update on input
+  ['calcEdad','calcPeso','calcAltura'].forEach(id=>{ const el=$(id); if(el) el.oninput=()=>{ try{ renderMealCompareBox(); }catch{} }});
 }
 
 // === LISTA DE COMPRAS ===
@@ -2470,6 +2704,241 @@ function setupShoppingDialog(){
   const nameIn=$('shopName'); if(nameIn) nameIn.addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); $('shopAdd').click(); } });
 }
 
+
+// === FINANZAS PERSONALES ===
+const FIN_CAT_GASTO = ["Alimentación","Transporte","Vivienda","Servicios (luz/agua/internet)","Salud","Educación","Ocio","Deudas/Crédito","Vestuario","Otros"];
+const FIN_CAT_INGRESO = ["Sueldo","Venta","Freelance/Extra","Bono/Ayuda","Reembolso","Otros"];
+const FIN_TIPS = [
+  { icon:"📊", titulo:"Regla 50/30/20", desc:"50% necesidades (vivienda, comida, transporte), 30% gustos (ocio, delivery, ropa no esencial), 20% ahorro/deudas. Si no llegas, parte 70/20/10 y ajusta cada luna.", ejemplo:"Con $600.000: $300k / $180k / $120k" },
+  { icon:"🐜", titulo:"Caza gastos hormiga", desc:"Café diario $2.500 × 30 = $75.000/mes. Suscripciones sin uso, delivery y snacks se comen el ahorro sin sentir.", tip:"Anota 7 días todo lo de $500-$3.000 y decide 2 a recortar." },
+  { icon:"🪣", titulo:"Método de sobres / 4 frascos", desc:"Divide ingreso al recibirlo: 1) Vivienda 2) Comida+Transporte 3) Deudas+Ahorro 4) Ocio. No toques otro sobre si uno se acaba.", tip:"Físico o en app con 4 cuentas: evita 'pedir prestado' entre sobres." },
+  { icon:"❄️", titulo:"Fondo de emergencia", desc:"Meta inicial: 1 mes de gastos básicos (ej. $400k). Luego 3 meses. Solo para urgencia real: salud, pega, pana mayor.", tip:"Automatiza $5k-$20k al recibir sueldo, aunque sea poco." },
+  { icon:"💳", titulo:"Deudas caras primero", desc:"Ordena deudas por interés (crédito consumo > tarjeta). Paga mínimo en todas y extra a la más cara. Evita pagar mínimo eterno.", tip:"Si pagas solo mínimo 5% de $500k al 3% mensual, demoras 4+ años." },
+  { icon:"🛒", titulo:"Compra consciente", desc:"Antes de comprar: Espera 48h si es > $30k y no es urgente. Haz lista, compara feria vs super, compra estación.", tip:"Feria Penco martes/sábado suele ser 20-30% más barata en verdura." },
+  { icon:"📅", titulo:"Ritual de luna (5 min)", desc:"Cada luna revisa: total gastado vs ingresado, top 3 categorías, 1 cosa a mejorar próxima luna. Pequeño ajuste sostenido gana.", tip:"Usa la vista 'Luna' aquí para ver avance lunar." },
+  { icon:"🎯", titulo:"Meta visible", desc:"Ahorra con nombre: 'Bici $300k', 'Matrícula mar $250k'. Ver avance motiva más que 'ahorrar por ahorrar'.", tip:"Pon foto/meta en celular y descuenta cada abono." }
+];
+const FIN_RULES = [
+  { t:"Necesidades ≤50%", d:"Arriendo, dividendo, comida base, luz/agua, transporte al trabajo" },
+  { t:"Gustos ≤30%", d:"Delivery, ropa extra, streaming, carrete, antojos" },
+  { t:"Ahorro/Deuda ≥20%", d:"Fondo emergencia, pagar deuda, inversión simple (Cuenta 2, depósito)" },
+  { t:"1% mejor cada luna", d:"Recorta 1 gasto hormiga y aumenta 1% ahorro. En 13 lunas es 13%." }
+];
+function getFinanceData(){
+  const u=userData();
+  if(!u.finanzas) u.finanzas={ entries:[], presupuesto:0 };
+  if(!Array.isArray(u.finanzas.entries)) u.finanzas.entries=[];
+  if(typeof u.finanzas.presupuesto!=='number') u.finanzas.presupuesto=parseInt(u.finanzas.presupuesto)||0;
+  return u.finanzas;
+}
+function formatCLP(n){
+  const v=parseInt(n)||0;
+  return '$' + v.toLocaleString('es-CL');
+}
+function financeMonthKey(dateStr){ return dateStr.slice(0,7); }
+function financeTotals(entries){
+  let gasto=0, ingreso=0;
+  entries.forEach(e=>{ const v=parseInt(e.monto)||0; if(e.tipo==='gasto') gasto+=v; else ingreso+=v; });
+  return { gasto, ingreso, balance: ingreso-gasto };
+}
+function renderFinanceResumen(){
+  const box=$('financeResumen'); if(!box) return;
+  const fd=getFinanceData();
+  const monthFilter=$('finMonthFilter')?.value || '';
+  const filterText=($('finFilter')?.value||'').toLowerCase();
+  let entries=fd.entries.slice();
+  if(monthFilter) entries=entries.filter(e=> financeMonthKey(e.date)===monthFilter);
+  if(filterText) entries=entries.filter(e=> (e.desc||'').toLowerCase().includes(filterText) || (e.categoria||'').toLowerCase().includes(filterText));
+  const tot=financeTotals(entries);
+  const pres=fd.presupuesto||0;
+  const gastoMes = (()=>{
+    const curMonth = monthFilter || new Date().toISOString().slice(0,7);
+    const mesEntries=fd.entries.filter(e=> financeMonthKey(e.date)===curMonth && e.tipo==='gasto');
+    return mesEntries.reduce((s,x)=>s+(parseInt(x.monto)||0),0);
+  })();
+  const pctPres = pres? Math.round(gastoMes/pres*100):0;
+  const colorBal = tot.balance>=0? '#a9d18e' : '#e76e8a';
+  const colorPres = pctPres>100? '#e76e8a' : pctPres>80? '#e8c56a' : '#a9d18e';
+  const todayKey=cal.fmtKey.format(new Date());
+  const hoyGasto=fd.entries.filter(e=> e.date===todayKey && e.tipo==='gasto').reduce((s,x)=>s+(parseInt(x.monto)||0),0);
+  box.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+    <span style="font-size:15px"><b>💰 Balance ${monthFilter||'total filtrado'}</b></span>
+    <span class="chip" style="background:${colorBal};color:#10142c">${formatCLP(tot.balance)} ${tot.balance>=0?'· positivo':'· negativo'}</span>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px">
+    <div class="chip" style="text-align:center"><span class="muted" style="font-size:10px">Ingresos</span><br><b style="color:#a9d18e">${formatCLP(tot.ingreso)}</b></div>
+    <div class="chip" style="text-align:center"><span class="muted" style="font-size:10px">Gastos</span><br><b style="color:#e76e8a">${formatCLP(tot.gasto)}</b></div>
+    <div class="chip" style="text-align:center"><span class="muted" style="font-size:10px">Movimientos</span><br><b>${entries.length}</b></div>
+  </div>
+  ${pres? `<div style="margin-top:8px"><div style="display:flex;justify-content:space-between;font-size:11px"><span class="muted">Presupuesto ${formatCLP(pres)} · Gastado ${formatCLP(gastoMes)} (${pctPres}%)</span><span style="color:${colorPres};font-weight:700">${pctPres>100? '¡Excedido!':'En rango'}</span></div><div style="margin-top:4px;background:var(--panel);border-radius:6px;height:10px;overflow:hidden"><div style="width:${Math.min(100,pctPres)}%;height:100%;background:${colorPres};transition:width .3s"></div></div></div>` : '<p class="muted" style="font-size:11px;margin-top:6px">Define un presupuesto mensual abajo para ver barra de avance.</p>'}
+  <p class="muted" style="font-size:11px;margin-top:6px">Hoy ${todayKey} gastado: <b style="color:#e8c56a">${formatCLP(hoyGasto)}</b> · Luna actual: ${currentView.tipo==='dft'?'DFT':'Luna '+currentView.luna}</p>`;
+}
+function renderFinanceCatBox(){
+  const box=$('financeCatBox'); if(!box) return;
+  const fd=getFinanceData();
+  const monthFilter=$('finMonthFilter')?.value || new Date().toISOString().slice(0,7);
+  const entries=fd.entries.filter(e=> financeMonthKey(e.date)===monthFilter);
+  if(!entries.length){ box.innerHTML='<h4 style="color:var(--accent)">📊 Por categoría — '+monthFilter+'</h4><p class="muted">Sin movimientos este mes.</p>'; return; }
+  const byCat={};
+  entries.filter(e=>e.tipo==='gasto').forEach(e=>{ byCat[e.categoria]=(byCat[e.categoria]||0)+(parseInt(e.monto)||0); });
+  const sorted=Object.entries(byCat).sort((a,b)=>b[1]-a[1]);
+  const totalG=sorted.reduce((s,x)=>s+x[1],0);
+  box.innerHTML='<h4 style="color:var(--accent)">📊 Gastos por categoría — '+monthFilter+' (total '+formatCLP(totalG)+')</h4>' + (sorted.length? sorted.map(([cat,val])=>{
+    const pct= totalG? Math.round(val/totalG*100):0;
+    return `<div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px"><span style="font-size:12px">${escapeHtml(cat)} <span class="muted" style="font-size:11px">${formatCLP(val)} · ${pct}%</span></span><span style="flex:1;margin:0 8px;background:var(--panel);border-radius:6px;height:8px;overflow:hidden;display:inline-block;max-width:140px"><span style="display:block;width:${pct}%;height:100%;background:linear-gradient(90deg,#e8c56a,#e76e8a)"></span></span></div>`;
+  }).join('') : '<p class="muted">Sin gastos.</p>');
+}
+function renderFinanceLunaBox(){
+  const box=$('financeLunaBox'); if(!box||!cycle) return;
+  const fd=getFinanceData();
+  if(currentView.tipo==='dft'){ box.innerHTML='<p class="muted">DFT — sin luna; revisa mes gregoriano.</p>'; return; }
+  const lunaDays=cycle.days.filter(d=>d.luna===currentView.luna);
+  let lunaEntries=[];
+  lunaDays.forEach(d=>{
+    const k=cal.fmtKey.format(new Date(d.noonMs));
+    fd.entries.filter(e=>e.date===k).forEach(e=> lunaEntries.push(e));
+  });
+  const tot=financeTotals(lunaEntries);
+  const avgDia = lunaDays.length? Math.round(tot.gasto / 28):0;
+  box.innerHTML=`<h4 style="color:var(--accent)">🌙 Luna ${currentView.luna} · ${MOONS[currentView.luna-1].nombre} — 28 días</h4>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:6px">
+      <div class="chip" style="text-align:center"><span class="muted" style="font-size:10px">Gastos luna</span><br><b style="color:#e76e8a">${formatCLP(tot.gasto)}</b></div>
+      <div class="chip" style="text-align:center"><span class="muted" style="font-size:10px">Ingresos luna</span><br><b style="color:#a9d18e">${formatCLP(tot.ingreso)}</b></div>
+      <div class="chip" style="text-align:center"><span class="muted" style="font-size:10px">Promedio/día gasto</span><br><b>${formatCLP(avgDia)}</b></div>
+    </div>
+    <p class="muted" style="font-size:11px;margin-top:6px">${lunaEntries.length} movimientos en esta luna · Balance ${formatCLP(tot.balance)} ${tot.balance>=0?'😊':'⚠️'}</p>`;
+}
+function updateFinanceCatOptions(){
+  const sel=$('finCat'); if(!sel) return;
+  const tipo=$('finTipo')?.value||'gasto';
+  const cats = tipo==='gasto'? FIN_CAT_GASTO : FIN_CAT_INGRESO;
+  sel.innerHTML=cats.map(c=>`<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('');
+}
+let financeEditingId=null;
+function renderFinanceList(){
+  const box=$('financeListBox'); if(!box) return;
+  const fd=getFinanceData();
+  const monthFilter=$('finMonthFilter')?.value || '';
+  const filterText=($('finFilter')?.value||'').toLowerCase().trim();
+  let entries=fd.entries.slice().sort((a,b)=> b.date.localeCompare(a.date) || b.id.localeCompare(a.id));
+  if(monthFilter) entries=entries.filter(e=> financeMonthKey(e.date)===monthFilter);
+  if(filterText) entries=entries.filter(e=> (e.desc||'').toLowerCase().includes(filterText) || (e.categoria||'').toLowerCase().includes(filterText) || (e.metodo||'').toLowerCase().includes(filterText));
+  const stats=$('financeStats');
+  if(!entries.length){ box.innerHTML='<p class="muted">Sin movimientos con esos filtros. Agrega tu primero arriba.</p>'; if(stats) stats.textContent='0 movimientos'; return; }
+  box.innerHTML=entries.slice(0,80).map(e=>{
+    const color=e.tipo==='gasto'? '#e76e8a' : '#a9d18e';
+    const sign=e.tipo==='gasto'? '-' : '+';
+    const luna=mensLunaForKey(e.date);
+    return `<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center;border-left:3px solid ${color}">
+      <span><b style="color:${color}">${e.tipo==='gasto'?'💸':'💰'} ${sign}${formatCLP(e.monto)}</b> — ${escapeHtml(e.categoria)} · ${escapeHtml(e.metodo||'')}<br>
+      <span class="muted" style="font-size:11px">${e.date} ${luna? '· Luna '+luna.luna+' d'+luna.dia:''} ${e.desc? '· '+escapeHtml(e.desc):''}</span></span>
+      <span style="display:flex;gap:6px;flex:0 0 auto"><button data-id="${e.id}" class="btn fin-edit" style="width:auto;font-size:11px">✏️</button><button data-id="${e.id}" class="btn fin-del" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕</button></span>
+    </div>`;
+  }).join('');
+  if(stats){
+    const tot=financeTotals(entries);
+    stats.textContent=`${entries.length} mov. · Ingresos ${formatCLP(tot.ingreso)} · Gastos ${formatCLP(tot.gasto)} · Balance ${formatCLP(tot.balance)}`;
+  }
+  box.querySelectorAll('.fin-edit').forEach(b=> b.onclick=()=>{
+    const e=fd.entries.find(x=>x.id===b.dataset.id); if(!e) return;
+    financeEditingId=e.id;
+    $('finDate').value=e.date; $('finTipo').value=e.tipo; updateFinanceCatOptions(); $('finCat').value=e.categoria; $('finMonto').value=e.monto; $('finMetodo').value=e.metodo||'Efectivo'; $('finDesc').value=e.desc||'';
+    $('finAdd').classList.add('hidden'); $('finUpdate').classList.remove('hidden'); $('finCancelEdit').classList.remove('hidden');
+  });
+  box.querySelectorAll('.fin-del').forEach(b=> b.onclick=()=>{
+    if(!confirm('¿Eliminar movimiento?')) return;
+    const idx=fd.entries.findIndex(x=>x.id===b.dataset.id); if(idx>=0) fd.entries.splice(idx,1);
+    scheduleSave(); renderFinanceResumen(); renderFinanceList(); renderFinanceLunaBox(); renderFinanceCatBox(); renderLuna();
+  });
+}
+function renderFinanceTips(){
+  const box=$('financeTipsBox'); if(!box) return;
+  box.innerHTML=FIN_TIPS.map(t=>`<div class="si-card" style="margin-bottom:8px"><h4>${t.icon} ${escapeHtml(t.titulo)}</h4><p style="font-size:12px;color:#cdd3ee">${escapeHtml(t.desc)}</p>${t.ejemplo?'<p class="muted" style="font-size:11px">Ej: '+escapeHtml(t.ejemplo)+'</p>':''}${t.tip?'<p style="font-size:11px;color:var(--gold)">💡 '+escapeHtml(t.tip)+'</p>':''}</div>`).join('');
+  const rules=$('financeRulesBox'); if(rules){
+    rules.innerHTML=FIN_RULES.map(r=>`<div class="help-card"><h4>${escapeHtml(r.t)}</h4><p>${escapeHtml(r.d)}</p></div>`).join('');
+  }
+}
+function buildFinanceShareText(){
+  const fd=getFinanceData();
+  const month = $('finMonthFilter')?.value || new Date().toISOString().slice(0,7);
+  const entries=fd.entries.filter(e=> financeMonthKey(e.date)===month);
+  const tot=financeTotals(entries);
+  let t=`💰 Finanzas — ${month}\n`;
+  t+=`Ingresos ${formatCLP(tot.ingreso)} · Gastos ${formatCLP(tot.gasto)} · Balance ${formatCLP(tot.balance)}\n`;
+  if(fd.presupuesto) t+=`Presupuesto ${formatCLP(fd.presupuesto)} · ${Math.round(tot.gasto/(fd.presupuesto||1)*100)}% usado\n`;
+  t+=`\n`;
+  const byCat={}; entries.filter(e=>e.tipo==='gasto').forEach(e=>{ byCat[e.categoria]=(byCat[e.categoria]||0)+(parseInt(e.monto)||0); });
+  Object.entries(byCat).sort((a,b)=>b[1]-a[1]).slice(0,5).forEach(([c,v])=> t+=`• ${c}: ${formatCLP(v)}\n`);
+  if(entries.length){
+    t+=`\nÚltimos 5:\n`;
+    entries.slice().sort((a,b)=>b.date.localeCompare(a.date)).slice(0,5).forEach(e=> t+=`${e.date} ${e.tipo==='gasto'?'-':'+'}${formatCLP(e.monto)} ${e.categoria} ${e.desc? '— '+e.desc:''}\n`);
+  }
+  t+=`\n— Mari Küla Küyen · Penco`;
+  return t;
+}
+function setupFinanceDialog(){
+  const btn=$('btnFinance'); if(btn) btn.onclick=()=>{
+    updateFinanceCatOptions();
+    const d=$('finDate'); if(d && !d.value) d.value=cal.fmtKey.format(new Date());
+    const mf=$('finMonthFilter'); if(mf && !mf.value) mf.value=new Date().toISOString().slice(0,7);
+    const presIn=$('finPresupuesto'); if(presIn) presIn.value=getFinanceData().presupuesto||'';
+    renderFinanceResumen(); renderFinanceList(); renderFinanceLunaBox(); renderFinanceCatBox(); renderFinanceTips();
+    $('financeDialog').showModal();
+  };
+  const ct=$('financeCloseTop'), cb=$('financeClose'); if(ct) ct.onclick=()=>$('financeDialog').close(); if(cb) cb.onclick=()=>$('financeDialog').close();
+  const tabR=$('tabFinanceReg'), tabT=$('tabFinanceTips'), pR=$('financeRegPanel'), pT=$('financeTipsPanel');
+  if(tabR) tabR.onclick=()=>{ tabR.classList.add('btn-accent'); tabT.classList.remove('btn-accent'); pR.classList.remove('hidden'); pT.classList.add('hidden'); };
+  if(tabT) tabT.onclick=()=>{ tabT.classList.add('btn-accent'); tabR.classList.remove('btn-accent'); pT.classList.remove('hidden'); pR.classList.add('hidden'); };
+  const tipoSel=$('finTipo'); if(tipoSel) tipoSel.onchange=()=>{ updateFinanceCatOptions(); };
+  const add=$('finAdd'); if(add) add.onclick=()=>{
+    const date=$('finDate').value; const monto=parseInt($('finMonto').value);
+    if(!date) return alert('Elige fecha');
+    if(!monto || monto<=0) return alert('Monto debe ser mayor a 0');
+    const rec={ id:'f'+Date.now(), date, tipo:$('finTipo').value, categoria:$('finCat').value, monto, metodo:$('finMetodo').value, desc:sanitizeText($('finDesc').value.trim(),60) };
+    getFinanceData().entries.push(rec); scheduleSave();
+    $('finMonto').value=''; $('finDesc').value='';
+    renderFinanceResumen(); renderFinanceList(); renderFinanceLunaBox(); renderFinanceCatBox(); renderLuna();
+  };
+  const upd=$('finUpdate'); if(upd) upd.onclick=()=>{
+    const e=getFinanceData().entries.find(x=>x.id===financeEditingId); if(!e) return;
+    const monto=parseInt($('finMonto').value); if(!monto||monto<=0) return alert('Monto inválido');
+    e.date=$('finDate').value; e.tipo=$('finTipo').value; e.categoria=$('finCat').value; e.monto=monto; e.metodo=$('finMetodo').value; e.desc=sanitizeText($('finDesc').value.trim(),60);
+    scheduleSave(); financeEditingId=null; $('finAdd').classList.remove('hidden'); upd.classList.add('hidden'); $('finCancelEdit').classList.add('hidden');
+    $('finMonto').value=''; $('finDesc').value='';
+    renderFinanceResumen(); renderFinanceList(); renderFinanceLunaBox(); renderFinanceCatBox(); renderLuna();
+  };
+  const cancel=$('finCancelEdit'); if(cancel) cancel.onclick=()=>{ financeEditingId=null; $('finAdd').classList.remove('hidden'); $('finUpdate').classList.add('hidden'); cancel.classList.add('hidden'); $('finMonto').value=''; $('finDesc').value=''; };
+  const filter=$('finFilter'); if(filter) filter.oninput=()=>{ renderFinanceResumen(); renderFinanceList(); };
+  const monthF=$('finMonthFilter'); if(monthF) monthF.onchange=()=>{ renderFinanceResumen(); renderFinanceList(); renderFinanceCatBox(); };
+  const presBtn=$('finSavePresupuesto'); if(presBtn) presBtn.onclick=()=>{
+    const v=parseInt($('finPresupuesto').value)||0;
+    getFinanceData().presupuesto=v; scheduleSave(); renderFinanceResumen();
+    $('statusMsg').textContent='Presupuesto guardado ✓'; setTimeout(()=>$('statusMsg').textContent='',1500);
+  };
+  const exp=$('financeExport'); if(exp) exp.onclick=()=>{
+    const fd=getFinanceData();
+    if(!fd.entries.length) return alert('Sin datos para exportar');
+    let csv='Fecha,Tipo,Categoria,Monto,Metodo,Descripcion,Luna\n';
+    fd.entries.slice().sort((a,b)=>a.date.localeCompare(b.date)).forEach(e=>{
+      const luna=mensLunaForKey(e.date);
+      const lunaTxt=luna? 'Luna '+luna.luna : '';
+      csv+=`${e.date},${e.tipo},${e.categoria},${e.monto},${e.metodo},${(e.desc||'').replace(/,/g,';')},${lunaTxt}\n`;
+    });
+    const blob=new Blob([csv],{type:'text/csv'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='finanzas-penco-'+cal.fmtKey.format(new Date())+'.csv'; a.click(); URL.revokeObjectURL(url);
+  };
+  const share=$('financeShare'); if(share) share.onclick=async()=>{
+    const txt=buildFinanceShareText();
+    await shareText('💰 Finanzas — Penco', txt);
+  };
+  const clear=$('financeClear'); if(clear) clear.onclick=()=>{
+    const mf=$('finMonthFilter')?.value; if(!mf) return alert('Elige mes a borrar');
+    if(!confirm('¿Borrar movimientos del mes '+mf+'?')) return;
+    const fd=getFinanceData();
+    fd.entries=fd.entries.filter(e=> financeMonthKey(e.date)!==mf);
+    scheduleSave(); renderFinanceResumen(); renderFinanceList(); renderFinanceLunaBox(); renderFinanceCatBox(); renderLuna();
+  };
+}
+setTimeout(setupFinanceDialog, 670);
 
 // === APORTE VOLUNTARIO ===
 async function loadDonateConfig(){
@@ -2560,7 +3029,7 @@ function setupHelpDialog(){
 setTimeout(setupHelpDialog, 850);
 
 // === CONFIGURACIÓN PERSONALIZABLE ===
-const ALL_BTNS = ["btnTides","btnFishing","btnBirds","btnWeather","btnSiembra","btnAstro","btnComuna","btnEkadashi","btnMenstrual","btnMedic","btnHabits","btnMeal","btnShopping","btnDiscipline","btnDreams","btnBreath","btnSchedule","btnGym","btnCircadian","btnGolden","btnConvert","btnTimer","btnRemind","btnBackup","btnRestore","btnShortcut","btnPdfLuna","btnPdfCiclo","btnDonate","btnHelp","btnStudy","btnTales","btnMemory"];
+const ALL_BTNS = ["btnTides","btnFishing","btnBirds","btnWeather","btnSiembra","btnAstro","btnComuna","btnEkadashi","btnMenstrual","btnMedic","btnHabits","btnMeal","btnShopping","btnFinance","btnDiscipline","btnDreams","btnBreath","btnSchedule","btnGym","btnCircadian","btnGolden","btnConvert","btnEnergy","btnTimer","btnRemind","btnBackup","btnRestore","btnShortcut","btnPdfLuna","btnPdfCiclo","btnDonate","btnHelp","btnStudy","btnTales","btnMemory"];
 const PRESETS = {
   todo: Object.fromEntries(ALL_BTNS.map(k=>[k,true])),
   esencial: {btnTides:true,btnWeather:true,btnSiembra:true,btnEkadashi:true,btnBackup:true,btnRestore:true,btnPdfLuna:true,btnPdfCiclo:true,btnHelp:true,btnDonate:true},
@@ -2572,7 +3041,7 @@ const PRESETS = {
   agricultor: {btnTides:true,btnFishing:true,btnBirds:true,btnWeather:true,btnSiembra:true,btnGolden:true,btnCircadian:true,btnHelp:true},
   pescador: {btnTides:true,btnFishing:true,btnBirds:true,btnWeather:true,btnSiembra:true,btnGolden:true,btnHelp:true},
   salud: {btnMenstrual:true,btnMedic:true,btnHabits:true,btnGym:true,btnCircadian:true,btnDreams:true,btnBreath:true,btnMeal:true,btnHelp:true},
-  deportista: {btnHabits:true,btnGym:true,btnMeal:true,btnShopping:true,btnCircadian:true,btnBreath:true,btnTimer:true,btnHelp:true},
+  deportista: {btnHabits:true,btnGym:true,btnMeal:true,btnShopping:true,btnFinance:true,btnCircadian:true,btnBreath:true,btnTimer:true,btnHelp:true},
   docente: {btnSiembra:true,btnEkadashi:true,btnStudy:true,btnSchedule:true,btnHabits:true,btnDiscipline:true,btnConvert:true,btnPdfCiclo:true,btnHelp:true}
 };
 function getVisibleConfig(){
@@ -3582,13 +4051,182 @@ function updateLiveClock() {
 setInterval(updateLiveClock, 1000);
 setTimeout(updateLiveClock, 200);
 
+// === CONSUMO ELÉCTRICO ===
+const ENERGY_PRESETS = [
+  { nombre:'Refrigerador 300L', watts:150, horas:24, dias:30, cat:'Frío' },
+  { nombre:'Congelador', watts:120, horas:24, dias:30, cat:'Frío' },
+  { nombre:'Iluminación LED 10W ×5', watts:50, horas:5, dias:30, cat:'Iluminación' },
+  { nombre:'TV LED 50"', watts:80, horas:4, dias:30, cat:'Entretenimiento' },
+  { nombre:'TV 65" + deco', watts:150, horas:4, dias:30, cat:'Entretenimiento' },
+  { nombre:'Notebook', watts:65, horas:6, dias:30, cat:'Computación' },
+  { nombre:'PC + monitor', watts:200, horas:4, dias:30, cat:'Computación' },
+  { nombre:'Lavadora 10kg', watts:500, horas:1, dias:12, cat:'Lavado' },
+  { nombre:'Secadora', watts:2000, horas:1, dias:8, cat:'Lavado' },
+  { nombre:'Hervidor', watts:1500, horas:0.25, dias:30, cat:'Cocina' },
+  { nombre:'Microondas', watts:1200, horas:0.3, dias:30, cat:'Cocina' },
+  { nombre:'Horno eléctrico', watts:2000, horas:0.5, dias:12, cat:'Cocina' },
+  { nombre:'Aire split 9000 BTU', watts:800, horas:4, dias:30, cat:'Clima' },
+  { nombre:'Calefactor 1000W', watts:1000, horas:3, dias:15, cat:'Clima' },
+  { nombre:'Ducha eléctrica', watts:3500, horas:0.25, dias:30, cat:'Agua caliente' },
+  { nombre:'Router + ONT', watts:15, horas:24, dias:30, cat:'Red' }
+];
+function getEnergyData(){
+  const u=userData();
+  if(!u.energia) u.energia={ tarifa:140, items:[] };
+  if(typeof u.energia.tarifa!=='number') u.energia.tarifa=parseInt(u.energia.tarifa)||140;
+  if(!Array.isArray(u.energia.items)) u.energia.items=[];
+  return u.energia;
+}
+function calcEnergyItem(it){
+  const w=parseFloat(it.watts)||0, h=parseFloat(it.horasDia)||0, d=parseInt(it.diasMes)||0, c=parseInt(it.cantidad)||1;
+  const kWhDia = w/1000 * h * c;
+  const kWhMes = kWhDia * d;
+  return { kWhDia, kWhMes };
+}
+function renderEnergyPresets(){
+  const box=$('energyPresets'); if(!box) return;
+  box.innerHTML=ENERGY_PRESETS.map(p=> `<button type="button" class="btn" style="width:auto;font-size:11px" data-preset="${escapeHtml(p.nombre)}">${escapeHtml(p.nombre)} · ${p.watts}W</button>`).join('');
+  box.querySelectorAll('[data-preset]').forEach(b=> b.onclick=()=>{
+    const p=ENERGY_PRESETS.find(x=>x.nombre===b.dataset.preset); if(!p) return;
+    $('energyName').value=p.nombre; $('energyWatts').value=p.watts; $('energyHoras').value=p.horas; $('energyDias').value=p.dias; $('energyCant').value=1; $('energyName').focus();
+  });
+}
+function renderEnergyResumen(){
+  const box=$('energyResumen'); if(!box) return;
+  const d=getEnergyData();
+  const tarifa=parseInt(d.tarifa)||140;
+  let totalKwh=0;
+  d.items.forEach(it=>{ totalKwh += calcEnergyItem(it).kWhMes; });
+  const totalCosto = Math.round(totalKwh*tarifa);
+  const totalDia = totalKwh/30;
+  const potenciaPico = d.items.reduce((s,it)=> s + (parseFloat(it.watts)||0)*(parseInt(it.cantidad)||1),0);
+  const lunaName=currentView&&currentView.tipo==='luna'? MOONS[currentView.luna-1].nombre : '—';
+  box.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px"><span style="font-size:15px"><b>⚡ Total mes</b></span><span class="chip" style="background:var(--gold);color:#10142c">${totalKwh.toFixed(1)} kWh</span></div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px">
+      <div class="chip" style="text-align:center"><b>$${totalCosto.toLocaleString('es-CL')}</b><br><span class="muted" style="font-size:10px">a $${tarifa}/kWh</span></div>
+      <div class="chip" style="text-align:center"><b>${totalDia.toFixed(2)} kWh/día</b><br><span class="muted" style="font-size:10px">${Math.round(totalDia*1000)} Wh/día</span></div>
+      <div class="chip" style="text-align:center"><b>${(potenciaPico/1000).toFixed(2)} kW</b><br><span class="muted" style="font-size:10px">pico instalado</span></div>
+    </div>
+    <p class="muted" style="font-size:11px;margin-top:6px">${d.items.length} artefactos · Tarifa $${tarifa}/kWh · Luna actual: ${lunaName} · Estimación mes 30 días; ajusta tarifa con tu boleta (energía + cargos).</p>`;
+}
+function renderEnergyList(){
+  const box=$('energyList'); if(!box) return;
+  const d=getEnergyData();
+  const tarifa=parseInt(d.tarifa)||140;
+  if(!d.items.length){ box.innerHTML='<p class="muted">Sin artefactos. Agrega uno o usa un preset.</p>'; $('energyStats').textContent='0 artefactos'; return; }
+  const sorted=[...d.items].map(it=> ({...it, ...calcEnergyItem(it)})).sort((a,b)=> b.kWhMes - a.kWhMes);
+  box.innerHTML=sorted.map(it=>{
+    const costo=Math.round(it.kWhMes*tarifa);
+    const pctTotal = sorted.reduce((s,x)=>s+x.kWhMes,0) ? Math.round(it.kWhMes / sorted.reduce((s,x)=>s+x.kWhMes,0)*100) : 0;
+    return `<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center;border-left:3px solid var(--gold)">
+      <span><b>${escapeHtml(it.nombre)}</b> · ${it.watts}W ×${it.cantidad} · ${it.horasDia}h/día ×${it.diasMes}d<br><span class="muted" style="font-size:11px">${it.kWhMes.toFixed(2)} kWh/mes · $${costo.toLocaleString('es-CL')} · ${pctTotal}% del total</span><div style="margin-top:4px;background:var(--panel);border-radius:6px;height:6px;overflow:hidden"><div style="width:${pctTotal}%;height:100%;background:linear-gradient(90deg,#e8c56a,#e8c56a)"></div></div></span>
+      <span style="display:flex;gap:6px;flex:0 0 auto"><button data-id="${it.id}" class="btn energy-edit" style="width:auto;font-size:11px">✏️</button><button data-id="${it.id}" class="btn energy-del" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕</button></span>
+    </div>`;
+  }).join('');
+  const totalKwh=sorted.reduce((s,x)=>s+x.kWhMes,0);
+  const totalCosto=Math.round(totalKwh*tarifa);
+  $('energyStats').textContent=`${d.items.length} artefactos · ${totalKwh.toFixed(1)} kWh · $${totalCosto.toLocaleString('es-CL')}`;
+  box.querySelectorAll('.energy-edit').forEach(b=> b.onclick=()=>{
+    const it=d.items.find(x=>x.id===b.dataset.id); if(!it) return;
+    energyEditingId=it.id;
+    $('energyName').value=it.nombre; $('energyWatts').value=it.watts; $('energyCant').value=it.cantidad; $('energyHoras').value=it.horasDia; $('energyDias').value=it.diasMes; $('energyTarifa').value=d.tarifa;
+    $('energyAdd').classList.add('hidden'); $('energyUpdate').classList.remove('hidden'); $('energyCancel').classList.remove('hidden');
+  });
+  box.querySelectorAll('.energy-del').forEach(b=> b.onclick=()=>{
+    if(!confirm('¿Eliminar artefacto?')) return;
+    const idx=d.items.findIndex(x=>x.id===b.dataset.id); if(idx>=0) d.items.splice(idx,1);
+    scheduleSave(); renderEnergyResumen(); renderEnergyList(); renderEnergyTips(); renderEnergyLuna();
+  });
+}
+function renderEnergyTips(){
+  const box=$('energyTips'); if(!box) return;
+  const d=getEnergyData();
+  const sorted=[...d.items].map(it=> ({...it, ...calcEnergyItem(it)})).sort((a,b)=> b.kWhMes-a.kWhMes);
+  const top=sorted[0];
+  let tips=[];
+  if(sorted.length) tips.push(`🔝 Mayor consumo: <b>${escapeHtml(top.nombre)}</b> ${top.kWhMes.toFixed(1)} kWh/mes — revisa horas o eficiencia.`);
+  tips.push('💡 Cambia a LED (10W vs 60W) ahorra 80% iluminación.');
+  tips.push('🔌 Corta stand-by: zapatilla con switch para TV/deco/router noche.');
+  tips.push('❄️ Refri: 3-4°C, no abrir largo, alejado de horno, sello impecable.');
+  tips.push('🫖 Hervidor: hierve solo lo necesario, descalcifica.');
+  tips.push('👕 Lava con agua fría y carga completa; seca al sol, no secadora.');
+  box.innerHTML=`<h4 style="color:var(--accent)">💡 Consejos ahorro Penco</h4>`+ tips.map(t=> `<p class="muted" style="font-size:11px;margin:4px 0">• ${t}</p>`).join('') + `<p class="muted" style="font-size:10px;margin-top:6px">Tarifa referencial CGE 2025-26 ~$120-160/kWh según tramo y cargos. Ajusta arriba para tu boleta real.</p>`;
+}
+function renderEnergyLuna(){
+  const box=$('energyLuna'); if(!box) return;
+  const d=getEnergyData();
+  const totalKwh=d.items.reduce((s,it)=> s+calcEnergyItem(it).kWhMes,0);
+  const kwhDia= totalKwh/30;
+  const lunaDias=28;
+  const kwhLuna= kwhDia*lunaDias;
+  const costoLuna=Math.round(kwhLuna*(parseInt(d.tarifa)||140));
+  const nombre=currentView&&currentView.tipo!=='dft'? MOONS[currentView.luna-1].nombre : 'DFT';
+  box.innerHTML=`<h4 style="color:var(--accent)">🌙 Luna ${currentView&&currentView.tipo!=='dft'? currentView.luna:'—'} · ${escapeHtml(nombre)} — proyección 28 días</h4>
+    <p class="muted" style="font-size:11px">~${kwhLuna.toFixed(1)} kWh / luna · ~$${costoLuna.toLocaleString('es-CL')} con tarifa actual. Útil para comparar lunas y fijar meta de ahorro.</p>
+    <div style="margin-top:6px;background:var(--panel);border-radius:6px;height:8px;overflow:hidden"><div style="width:${Math.min(100, Math.round(kwhLuna/2))}%;height:100%;background:linear-gradient(90deg,#7ab8ff,#e8c56a)"></div></div>`;
+}
+let energyEditingId=null;
+function setupEnergyDialog(){
+  const btn=$('btnEnergy'); if(btn) btn.onclick=()=>{
+    const d=getEnergyData();
+    $('energyTarifa').value=d.tarifa;
+    renderEnergyPresets(); renderEnergyResumen(); renderEnergyList(); renderEnergyTips(); renderEnergyLuna();
+    $('energyDialog').showModal();
+  };
+  const ct=$('energyCloseTop'), cb=$('energyClose'); if(ct) ct.onclick=()=>$('energyDialog').close(); if(cb) cb.onclick=()=>$('energyDialog').close();
+  const add=$('energyAdd'); if(add) add.onclick=()=>{
+    const nombre=$('energyName').value.trim(); const watts=parseFloat($('energyWatts').value);
+    const horas=parseFloat($('energyHoras').value); const dias=parseInt($('energyDias').value)||30; const cant=parseInt($('energyCant').value)||1;
+    const tarifa=parseInt($('energyTarifa').value)||140;
+    if(!nombre) return alert('Nombre del artefacto');
+    if(!watts||watts<=0) return alert('Potencia W inválida');
+    if(isNaN(horas)||horas<0||horas>24) return alert('Horas 0-24');
+    const d=getEnergyData(); d.tarifa=tarifa;
+    d.items.push({ id:'e'+Date.now(), nombre, watts, horasDia:horas, diasMes:dias, cantidad:cant });
+    scheduleSave(); $('energyName').value=''; $('energyWatts').value=''; $('energyHoras').value=''; 
+    renderEnergyResumen(); renderEnergyList(); renderEnergyTips(); renderEnergyLuna();
+  };
+  const upd=$('energyUpdate'); if(upd) upd.onclick=()=>{
+    const it=getEnergyData().items.find(x=>x.id===energyEditingId); if(!it) return;
+    it.nombre=$('energyName').value.trim(); it.watts=parseFloat($('energyWatts').value)||it.watts; it.cantidad=parseInt($('energyCant').value)||1; it.horasDia=parseFloat($('energyHoras').value)||0; it.diasMes=parseInt($('energyDias').value)||30;
+    getEnergyData().tarifa=parseInt($('energyTarifa').value)||140;
+    scheduleSave(); energyEditingId=null; $('energyAdd').classList.remove('hidden'); upd.classList.add('hidden'); $('energyCancel').classList.add('hidden'); $('energyName').value=''; $('energyWatts').value=''; $('energyHoras').value='';
+    renderEnergyResumen(); renderEnergyList(); renderEnergyTips(); renderEnergyLuna();
+  };
+  const cancel=$('energyCancel'); if(cancel) cancel.onclick=()=>{ energyEditingId=null; $('energyAdd').classList.remove('hidden'); $('energyUpdate').classList.add('hidden'); cancel.classList.add('hidden'); $('energyName').value=''; $('energyWatts').value=''; $('energyHoras').value=''; };
+  const tarifaIn=$('energyTarifa'); if(tarifaIn) tarifaIn.onchange=()=>{ getEnergyData().tarifa=parseInt(tarifaIn.value)||140; scheduleSave(); renderEnergyResumen(); renderEnergyList(); renderEnergyLuna(); };
+  const exp=$('energyExport'); if(exp) exp.onclick=()=>{
+    const d=getEnergyData(); if(!d.items.length) return alert('Sin datos');
+    let csv='Nombre,Watts,Cantidad,HorasDia,DiasMes,kWhMes,CostoCLP\n';
+    const tarifa=parseInt(d.tarifa)||140;
+    d.items.forEach(it=>{ const k=calcEnergyItem(it).kWhMes; csv+=`${it.nombre},${it.watts},${it.cantidad},${it.horasDia},${it.diasMes},${k.toFixed(2)},${Math.round(k*tarifa)}\n`; });
+    const blob=new Blob([csv],{type:'text/csv'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='consumo-electrico-'+cal.fmtKey.format(new Date())+'.csv'; a.click(); URL.revokeObjectURL(url);
+  };
+  const share=$('energyShare'); if(share) share.onclick=async()=>{
+    const d=getEnergyData(); const tarifa=parseInt(d.tarifa)||140; let total=0; d.items.forEach(it=> total+=calcEnergyItem(it).kWhMes);
+    let txt=`⚡ Consumo eléctrico — Penco\n${d.items.length} artefactos · ${total.toFixed(1)} kWh/mes · $${Math.round(total*tarifa).toLocaleString('es-CL')} a $${tarifa}/kWh\n`;
+    d.items.slice().sort((a,b)=> calcEnergyItem(b).kWhMes - calcEnergyItem(a).kWhMes).slice(0,5).forEach(it=>{ const k=calcEnergyItem(it).kWhMes; txt+=`• ${it.nombre}: ${k.toFixed(1)} kWh ($${Math.round(k*tarifa).toLocaleString('es-CL')})\n`; });
+    txt+=`\n— Mari Küla Küyen`;
+    await shareText('⚡ Consumo eléctrico', txt);
+  };
+  const clear=$('energyClear'); if(clear) clear.onclick=()=>{ if(!confirm('¿Vaciar lista de artefactos?')) return; getEnergyData().items=[]; scheduleSave(); renderEnergyResumen(); renderEnergyList(); renderEnergyTips(); renderEnergyLuna(); };
+}
+setTimeout(setupEnergyDialog, 675);
+
 // === CONVERSIÓN DE UNIDADES ===
 const CONV = {
-  longitud: { label: 'Longitud', units: { mm: 1, cm: 10, m: 1000, km: 1000000, pulg: 25.4, pie: 304.8, yarda: 914.4, milla: 1609344 }, defFrom: 'm', defTo: 'cm' },
-  peso: { label: 'Peso', units: { mg: 1, g: 1000, kg: 1000000, tonelada: 1e9, onza: 28349.5, libra: 453592, quintal: 45359200 }, defFrom: 'kg', defTo: 'g' },
-  volumen: { label: 'Volumen', units: { ml: 1, l: 1000, m3: 1e6, cda: 15, cdta: 5, taza: 240, galon: 3785.41, pulg3: 16.387 }, defFrom: 'l', defTo: 'ml' },
-  temperatura: { label: 'Temperatura', units: {}, isTemp: true, defFrom: 'C', defTo: 'F' },
-  superficie: { label: 'Superficie', units: { mm2: 1, cm2: 100, m2: 1000000, ha: 1e10, km2: 1e12, acre: 4046860000, pie2: 92903 }, defFrom: 'm2', defTo: 'ha' },
+  longitud: { label: '📏 Longitud', units: { mm: 1, cm: 10, m: 1000, km: 1000000, pulg: 25.4, pie: 304.8, yarda: 914.4, milla: 1609344, legua: 4828000, año_luz: 9.461e15 }, defFrom: 'm', defTo: 'cm' },
+  peso: { label: '⚖️ Peso', units: { mg: 1, g: 1000, kg: 1000000, tonelada: 1e9, onza: 28349.5, libra: 453592, quintal: 45359200, arroba: 11500000 }, defFrom: 'kg', defTo: 'g' },
+  volumen: { label: '🧪 Volumen', units: { ml: 1, l: 1000, m3: 1e6, cda: 15, cdta: 5, taza: 240, galon: 3785.41, galon_imp: 4546.09, pulg3: 16.387, pie3: 28316.8, barril: 158987 }, defFrom: 'l', defTo: 'ml' },
+  temperatura: { label: '🌡️ Temperatura', units: {}, isTemp: true, defFrom: 'C', defTo: 'F' },
+  superficie: { label: '🟦 Superficie', units: { mm2: 1, cm2: 100, m2: 1000000, ha: 1e10, km2: 1e12, acre: 4046860000, pie2: 92903, tarea: 628.86*1e6 }, defFrom: 'm2', defTo: 'ha' },
+  tiempo: { label: '⏱️ Tiempo', units: { ms: 1, s: 1000, min: 60000, h: 3600000, dia: 86400000, semana: 604800000, mes30: 2592000000, año: 31536000000 }, defFrom: 'h', defTo: 'min' },
+  velocidad: { label: '🚀 Velocidad', units: { 'm/s': 1, 'km/h': 0.277777, mph: 0.44704, nudo: 0.514444, 'pie/s': 0.3048 }, defFrom: 'km/h', defTo: 'm/s' },
+  energia: { label: '🔋 Energía', units: { J: 1, kJ: 1000, cal: 4.184, kcal: 4184, Wh: 3600, kWh: 3600000, BTU: 1055.06 }, defFrom: 'kWh', defTo: 'kJ' },
+  potencia: { label: '💡 Potencia', units: { W: 1, kW: 1000, HP: 745.7, 'BTU/h': 0.293071, kcal_h: 1.163 }, defFrom: 'W', defTo: 'kW' },
+  presion: { label: '🌀 Presión', units: { Pa: 1, kPa: 1000, bar: 100000, psi: 6894.76, atm: 101325, mmHg: 133.322 }, defFrom: 'bar', defTo: 'psi' },
+  datos: { label: '💾 Datos', units: { B: 1, KB: 1024, MB: 1048576, GB: 1073741824, TB: 1099511627776 }, defFrom: 'MB', defTo: 'KB' },
+  angulo: { label: '📐 Ángulo', units: { grados: 1, radianes: 57.2958, gon: 0.9, vuelta: 360 }, defFrom: 'grados', defTo: 'radianes' },
 };
 function convertValue(v, from, to, cat) {
   if (cat === 'temperatura') {
