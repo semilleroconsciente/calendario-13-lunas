@@ -115,12 +115,14 @@
         <div class="group-btns">
           <button id="btnMeal" class="btn" data-keywords="comida meal plan cena almuerzo">🥗 Comidas</button>
           <button id="btnShopping" class="btn" data-keywords="compras lista supermercado verduras">🛒 Compras</button>
+          <button id="btnFinance" class="btn" data-keywords="finanzas gastos dinero presupuesto ahorro deuda ingreso egreso plata billetera">💰 Finanzas</button>
         </div>
       </details>
       <details class="action-group" data-group="herramientas">
         <summary>🛠️ Herramientas <span class="ag-count"></span></summary>
         <div class="group-btns">
-          <button id="btnConvert" class="btn" data-keywords="conversion unidades peso longitud">📏 Conversión</button>
+          <button id="btnConvert" class="btn" data-keywords="conversion unidades peso longitud tiempo velocidad energia potencia presion datos angulo">📏 Conversión</button>
+          <button id="btnEnergy" class="btn" data-keywords="energia consumo electrico luz kwh watts tarifa electrodomestico">⚡ Consumo eléctrico</button>
           <button id="btnTimer" class="btn" data-keywords="tiempo timer cronometro pomodoro">⏱ Tiempo</button>
           <button id="btnRemind" class="btn" data-keywords="recordatorio notificacion luna fase">🔔 Recordatorios</button>
           <button id="btnBackup" class="btn" data-keywords="respaldo backup guardar exportar">💾 Respaldo</button>
@@ -526,27 +528,102 @@
         <h3 style="margin:0;color:var(--accent)">🥗 Planificador de comidas</h3>
         <button type="button" id="mealCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
       </div>
-      <p class="muted" style="line-height:1.5">Planifica por día. Queda <b>privado y local</b> por usuario y se refleja en la luna (puntos 🥗 en el calendario). Conecta con 🛒 Compras.</p>
-      <div class="conv-row">
-        <label>Fecha <input type="date" id="mealDate"></label>
-        <button type="button" id="mealToday" class="btn" style="width:auto;align-self:flex-end">Hoy</button>
-        <button type="button" id="mealClearDay" class="btn" style="width:auto;align-self:flex-end">Limpiar día</button>
+      <p class="muted" style="line-height:1.5">Planifica por día. Queda <b>privado y local</b> por usuario y se refleja en la luna (puntos 🥗 en el calendario). Conecta con 🛒 Compras y con tu meta nutricional.</p>
+      <div class="timer-tabs" style="margin-bottom:10px">
+        <button type="button" id="tabMealPlan" class="btn btn-accent" style="width:auto">🥗 Plan</button>
+        <button type="button" id="tabMealCalc" class="btn" style="width:auto">🧮 Calculadora</button>
+        <button type="button" id="tabMealMenus" class="btn" style="width:auto">🍽️ Menús sugeridos</button>
       </div>
-      <div class="meal-grid">
-        <label>Desayuno <input type="text" id="mealBreakfast" placeholder="ej: Avena con berries" maxlength="80"></label>
-        <label>Almuerzo <input type="text" id="mealLunch" placeholder="ej: Lentejas con ensalada" maxlength="80"></label>
-        <label>Cena <input type="text" id="mealDinner" placeholder="ej: Sopa de verduras" maxlength="80"></label>
-        <label>Colación / Snack <input type="text" id="mealSnack" placeholder="ej: Yogur, fruta" maxlength="80"></label>
+      <div id="mealPlanPanel">
+        <div class="conv-row">
+          <label>Fecha <input type="date" id="mealDate"></label>
+          <button type="button" id="mealToday" class="btn" style="width:auto;align-self:flex-end">Hoy</button>
+          <button type="button" id="mealClearDay" class="btn" style="width:auto;align-self:flex-end">Limpiar día</button>
+        </div>
+        <div class="meal-grid">
+          <label>Desayuno <input type="text" id="mealBreakfast" placeholder="ej: Avena con berries" maxlength="80"></label>
+          <label>Almuerzo <input type="text" id="mealLunch" placeholder="ej: Lentejas con ensalada" maxlength="80"></label>
+          <label>Cena <input type="text" id="mealDinner" placeholder="ej: Sopa de verduras" maxlength="80"></label>
+          <label>Colación / Snack <input type="text" id="mealSnack" placeholder="ej: Yogur, fruta" maxlength="80"></label>
+        </div>
+        <label>Notas <input type="text" id="mealNotes" placeholder="ej: sin gluten, con lo cosechado" maxlength="80"></label>
+        <div class="dlg-actions" style="justify-content:flex-start">
+          <button type="button" id="mealSave" class="btn btn-accent" style="width:auto">💾 Guardar día</button>
+          <button type="button" id="mealToShopping" class="btn" style="width:auto">🛒 → Lista</button>
+        </div>
+        <div id="mealWeekBox" class="menstrual-card" style="margin-top:10px"></div>
+        <div id="mealLunaBox" class="menstrual-card" style="margin-top:10px"></div>
+        <div id="mealNutritionBox" class="menstrual-card" style="margin-top:10px"></div>
+        <div id="mealCompareBox" class="menstrual-card" style="margin-top:10px"></div>
+        <div id="mealSuggestionsBox" class="menstrual-card" style="margin-top:10px"></div>
       </div>
-      <label>Notas <input type="text" id="mealNotes" placeholder="ej: sin gluten, con lo cosechado" maxlength="80"></label>
-      <div class="dlg-actions" style="justify-content:flex-start">
-        <button type="button" id="mealSave" class="btn btn-accent" style="width:auto">💾 Guardar día</button>
-        <button type="button" id="mealToShopping" class="btn" style="width:auto">🛒 → Lista</button>
+      <div id="mealCalcPanel" class="hidden">
+        <div class="menstrual-card" style="border-color:var(--gold);background:linear-gradient(135deg,var(--panel),var(--card))">
+          <h4 style="color:var(--gold)">🧮 Calculadora nutricional — Mifflin-St Jeor</h4>
+          <p class="muted" style="font-size:11px">Estimación basada en edad, peso, altura, sexo y actividad. No es diagnóstico médico. Útil para planificar tu plan en Penco.</p>
+        </div>
+        <div class="menstrual-card" style="margin-top:10px">
+          <h4>Datos personales (privado y local)</h4>
+          <div class="conv-row">
+            <label>Sexo
+              <select id="calcSexo">
+                <option value="mujer">Mujer</option>
+                <option value="hombre">Hombre</option>
+                <option value="otro">Otro / Prefiero no decir</option>
+              </select>
+            </label>
+            <label>Edad <input type="number" id="calcEdad" min="10" max="100" placeholder="ej: 30"></label>
+            <label>Peso kg <input type="number" id="calcPeso" min="20" max="250" step="0.5" placeholder="ej: 68.5"></label>
+            <label>Altura cm <input type="number" id="calcAltura" min="100" max="250" placeholder="ej: 165"></label>
+          </div>
+          <div class="conv-row">
+            <label style="flex:1">Actividad
+              <select id="calcActividad">
+                <option value="1.2">Sedentaria — poco o nada ejercicio</option>
+                <option value="1.375">Ligera — 1-3 días/semana</option>
+                <option value="1.55">Moderada — 3-5 días/semana</option>
+                <option value="1.725">Activa — 6-7 días/semana</option>
+                <option value="1.9">Muy activa — trabajo físico + entreno</option>
+              </select>
+            </label>
+          </div>
+          <div class="conv-row">
+            <label>Objetivo
+              <select id="calcObjetivo">
+                <option value="mantener">Mantener peso</option>
+                <option value="perder_suave">Perder suave (−300 kcal)</option>
+                <option value="perder">Perder (−500 kcal)</option>
+                <option value="ganar_suave">Ganar músculo suave (+300 kcal)</option>
+                <option value="ganar">Ganar (+500 kcal)</option>
+              </select>
+            </label>
+            <label>Fórmula proteína
+              <select id="calcProte">
+                <option value="1.6">Estándar 1.6 g/kg</option>
+                <option value="1.8">Activa 1.8 g/kg</option>
+                <option value="2.0">Alta 2.0 g/kg</option>
+                <option value="2.2">Muy alta 2.2 g/kg</option>
+              </select>
+            </label>
+          </div>
+          <div class="dlg-actions" style="justify-content:flex-start;margin-top:8px">
+            <button type="button" id="calcCalcular" class="btn btn-accent" style="width:auto">🧮 Calcular</button>
+            <button type="button" id="calcGuardar" class="btn" style="width:auto">💾 Guardar perfil</button>
+            <span id="calcStatus" class="muted" style="font-size:11px;align-self:center"></span>
+          </div>
+        </div>
+        <div id="calcResultado" class="menstrual-card" style="margin-top:10px"></div>
+        <div id="calcDetalle" class="menstrual-card hidden" style="margin-top:10px"></div>
       </div>
-      <div id="mealWeekBox" class="menstrual-card" style="margin-top:10px"></div>
-      <div id="mealLunaBox" class="menstrual-card" style="margin-top:10px"></div>
-      <div id="mealNutritionBox" class="menstrual-card" style="margin-top:10px"></div>
-      <div id="mealSuggestionsBox" class="menstrual-card" style="margin-top:10px"></div>
+      <div id="mealMenusPanel" class="hidden">
+        <div id="menusResumen" class="menstrual-card" style="border-color:var(--gold)"></div>
+        <div id="menusLista" style="margin-top:10px"></div>
+        <div class="menstrual-card" style="margin-top:10px">
+          <h4>🔄 Cómo usar</h4>
+          <p class="muted" style="font-size:11px;line-height:1.5">1) Calcula tu meta en 🧮 Calculadora y guarda. 2) Aquí ves menús que se acercan a tu meta (ej. 1800-2600 kcal) con ingredientes de feria Penco. 3) Toca <b>“Cargar en plan de hoy”</b> y se copia a 🥗 Plan. Luego ajusta porciones y guarda.</p>
+          <p class="muted" style="font-size:10px">Menús son plantillas; adapta alergias, presupuesto y temporada. Si tienes condición médica, consulta profesional.</p>
+        </div>
+      </div>
       <div class="dlg-actions"><button type="button" id="mealClose" class="btn">Cerrar</button></div>
     </form>
   </dialog>
@@ -586,13 +663,146 @@
     </form>
   </dialog>
 
+  <dialog id="financeDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">💰 Finanzas personales</h3>
+        <button type="button" id="financeCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
+      </div>
+      <p class="muted" style="line-height:1.5">Registra <b>gastos e ingresos</b> por día. Todo queda <b>privado y local</b> por usuario. Ve balance por luna, mes gregoriano y consejos. Los días con movimiento aparecen con 💰 en el calendario.</p>
+      <div class="timer-tabs" style="margin-bottom:10px">
+        <button type="button" id="tabFinanceReg" class="btn btn-accent" style="width:auto">💸 Registro</button>
+        <button type="button" id="tabFinanceTips" class="btn" style="width:auto">💡 Consejos</button>
+      </div>
+      <div id="financeRegPanel">
+        <div id="financeResumen" class="menstrual-card" style="border-color:var(--gold);background:linear-gradient(135deg,var(--panel),var(--card))"></div>
+        <div class="menstrual-card" style="margin-top:10px">
+          <h4>➕ Nuevo movimiento</h4>
+          <div class="conv-row">
+            <label>Fecha <input type="date" id="finDate"></label>
+            <label>Tipo
+              <select id="finTipo">
+                <option value="gasto">💸 Gasto</option>
+                <option value="ingreso">💰 Ingreso</option>
+              </select>
+            </label>
+            <label>Categoría
+              <select id="finCat"></select>
+            </label>
+          </div>
+          <div class="conv-row">
+            <label style="flex:1">Monto CLP $ <input type="number" id="finMonto" placeholder="ej: 15000" min="0" step="100" inputmode="numeric"></label>
+            <label>Método
+              <select id="finMetodo">
+                <option value="Efectivo">Efectivo</option>
+                <option value="Transferencia">Transferencia</option>
+                <option value="Tarjeta débito">Tarjeta débito</option>
+                <option value="Tarjeta crédito">Tarjeta crédito</option>
+                <option value="Otro">Otro</option>
+              </select>
+            </label>
+          </div>
+          <label>Descripción <input type="text" id="finDesc" placeholder="ej: Feria Penco, sueldo, bencina, luz" maxlength="60"></label>
+          <div class="dlg-actions" style="justify-content:flex-start">
+            <button type="button" id="finAdd" class="btn btn-accent" style="width:auto">+ Guardar</button>
+            <button type="button" id="finUpdate" class="btn hidden" style="width:auto">↻ Actualizar</button>
+            <button type="button" id="finCancelEdit" class="btn hidden" style="width:auto">Cancelar</button>
+          </div>
+        </div>
+        <div class="conv-row" style="margin-top:10px;align-items:center">
+          <label style="flex:1">🔍 Filtrar <input type="text" id="finFilter" placeholder="buscar por descripción o categoría"></label>
+          <label>Mes <input type="month" id="finMonthFilter"></label>
+        </div>
+        <div class="conv-row" style="margin-top:6px">
+          <label style="flex:1">Presupuesto mensual $ <input type="number" id="finPresupuesto" placeholder="ej: 500000" min="0" step="1000"></label>
+          <button type="button" id="finSavePresupuesto" class="btn" style="width:auto;align-self:flex-end">💾 Guardar presupuesto</button>
+        </div>
+        <div id="financeListBox" class="habits-list" style="margin-top:10px;max-height:300px"></div>
+        <div class="dlg-actions" style="justify-content:space-between;align-items:center;margin-top:8px">
+          <span id="financeStats" class="muted" style="font-size:11px"></span>
+          <span style="display:flex;gap:8px">
+            <button type="button" id="financeExport" class="btn" style="width:auto">📥 Exportar CSV</button>
+            <button type="button" id="financeShare" class="btn" style="width:auto">📤 Compartir resumen</button>
+            <button type="button" id="financeClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar mes</button>
+          </span>
+        </div>
+        <div id="financeLunaBox" class="menstrual-card" style="margin-top:10px"></div>
+        <div id="financeCatBox" class="menstrual-card" style="margin-top:10px"></div>
+      </div>
+      <div id="financeTipsPanel" class="hidden">
+        <div class="menstrual-card" style="background:linear-gradient(135deg,var(--panel),var(--card));border-color:var(--gold)">
+          <h4 style="color:var(--gold)">💡 Finanzas personales — consejos prácticos para Penco</h4>
+          <p class="muted" style="font-size:11px">No es asesoría profesional, son hábitos simples. Adapta a tu realidad. Revisa cada luna: pequeño avance sostenido vale más que perfección de un día.</p>
+        </div>
+        <div id="financeTipsBox" style="margin-top:10px"></div>
+        <div class="menstrual-card" style="margin-top:10px">
+          <h4>🧮 Reglas rápidas</h4>
+          <div id="financeRulesBox" class="help-grid" style="margin-top:6px"></div>
+          <p class="muted" style="font-size:10px;margin-top:8px">Ejemplo 50/30/20 con $500.000: $250.000 necesidades · $150.000 gustos · $100.000 ahorro/deuda. Ajusta a tu ingreso real.</p>
+        </div>
+        <div class="menstrual-card" style="margin-top:10px">
+          <h4>📅 Ritual de luna — revisión en 5 min</h4>
+          <p class="muted" style="font-size:11px;line-height:1.5">1) Mira balance de la luna (¿gastaste más que la anterior?). 2) Anota <b>3 gastos hormiga</b> a recortar la próxima luna. 3) Destina aunque sea $5.000 a ahorro. 4) Paga deuda más cara primero. 5) Agradece lo que sí alcanzaste.</p>
+        </div>
+      </div>
+      <div class="dlg-actions"><button type="button" id="financeClose" class="btn">Cerrar</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="energyDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">⚡ Consumo eléctrico mensual</h3>
+        <button type="button" id="energyCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
+      </div>
+      <p class="muted" style="line-height:1.5">Calcula <b>kWh y $CLP</b> por artefacto. Todo <b>privado y local</b>. Ajusta tarifa de tu boleta (ej. $140/kWh con cargos) y ve ranking, consejos y comparación por luna.</p>
+      <div id="energyResumen" class="menstrual-card" style="border-color:var(--gold);background:linear-gradient(135deg,var(--panel),var(--card))"></div>
+      <div class="menstrual-card" style="margin-top:10px">
+        <h4>➕ Artefacto</h4>
+        <div class="conv-row">
+          <label style="flex:2">Nombre <input type="text" id="energyName" placeholder="ej: Refrigerador, TV 50&quot;, Hervidor" maxlength="40"></label>
+          <label>Potencia W <input type="number" id="energyWatts" placeholder="ej: 150" min="1" max="10000" step="1"></label>
+          <label>Cant. <input type="number" id="energyCant" value="1" min="1" max="20" step="1" style="width:70px"></label>
+        </div>
+        <div class="conv-row">
+          <label>Horas/día <input type="number" id="energyHoras" placeholder="ej: 24" min="0" max="24" step="0.25"></label>
+          <label>Días/mes <input type="number" id="energyDias" value="30" min="1" max="31" step="1" style="width:90px"></label>
+          <label>Tarifa $/kWh <input type="number" id="energyTarifa" placeholder="ej: 140" min="1" step="1"></label>
+        </div>
+        <p class="muted" style="font-size:10px;margin-top:4px">Pista: revisa etiqueta (W) o manual. Presets abajo cargan valores típicos.</p>
+        <div class="dlg-actions" style="justify-content:flex-start">
+          <button type="button" id="energyAdd" class="btn btn-accent" style="width:auto">+ Agregar</button>
+          <button type="button" id="energyUpdate" class="btn hidden" style="width:auto">↻ Actualizar</button>
+          <button type="button" id="energyCancel" class="btn hidden" style="width:auto">Cancelar</button>
+        </div>
+      </div>
+      <div class="menstrual-card" style="margin-top:10px">
+        <h4>⚡ Presets — toca para cargar</h4>
+        <div id="energyPresets" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px"></div>
+        <p class="muted" style="font-size:10px;margin-top:6px">Valores promedio Chile; ajusta horas reales de tu hogar.</p>
+      </div>
+      <div id="energyList" class="habits-list" style="margin-top:10px;max-height:280px"></div>
+      <div class="dlg-actions" style="justify-content:space-between;align-items:center;margin-top:8px">
+        <span id="energyStats" class="muted" style="font-size:11px"></span>
+        <span style="display:flex;gap:8px">
+          <button type="button" id="energyExport" class="btn" style="width:auto">📥 Exportar CSV</button>
+          <button type="button" id="energyShare" class="btn" style="width:auto">📤 Compartir</button>
+          <button type="button" id="energyClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Vaciar</button>
+        </span>
+      </div>
+      <div id="energyTips" class="menstrual-card" style="margin-top:10px"></div>
+      <div id="energyLuna" class="menstrual-card" style="margin-top:10px"></div>
+      <div class="dlg-actions"><button type="button" id="energyClose" class="btn">Cerrar</button></div>
+    </form>
+  </dialog>
+
   <dialog id="convertDialog">
     <form method="dialog">
       <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
         <h3 style="margin:0;color:var(--accent)">📏 Conversión de unidades</h3>
         <button type="button" id="convertCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
       </div>
-      <p class="muted">Convierte longitud, peso, volumen, temperatura y superficie. Útil para cocina, huerta y obra.</p>
+      <p class="muted">Convierte longitud, peso, volumen, temperatura, superficie, tiempo, velocidad, energía, potencia, presión, datos y ángulo. Útil para cocina, huerta, obra y estudios.</p>
       <div class="conv-grid">
         <label>Categoría
           <select id="convCat"></select>
@@ -715,17 +925,18 @@
            <p><b>🧠 Estudio:</b> pestañas <b>Generales</b> (recuperación, espaciada, Feynman…), <b>Mnemotecnias</b> (acrónimo/historia/palacio) con generador y <b>Lectura veloz</b> (RSVP tester ppm).</p>
            <p><b>📚 Horario:</b> bloques semanales por día/hora/color/lugar + vista “Hoy”. <b>📖 Cuentos:</b> 13 cuentos lunares (uno por luna) — toca para leer y <b>✏️ Editar</b> tu versión privada. <b>🧩 Memoria:</b> Palacio Loci + juego Pares 8×2.</p>
          </div>
-         <div class="help-card">
-           <h4>🍽️ Vida diaria</h4>
-           <p><b>🥗 Comidas:</b> plan por fecha (desayuno/almuerzo/cena/snack/notas), guarda por día, genera <b>🛒 Compras</b> automático, ve semana/luna, sugerencias nutricionales. Queda local por usuario.</p>
-           <p><b>🛒 Compras:</b> lista por categorías (Verduras/Frutas/Abarrotes/Proteínas/Lácteos/Panadería/Otros), cantidad, tacha ✓ comprados, limpia comprados o vacía.</p>
-         </div>
-         <div class="help-card">
-           <h4>🛠️ Herramientas & Personalización</h4>
-           <p><b>📏 Conversión:</b> longitud/peso/volumen/temperatura/superficie con tabla. <b>⏱ Tiempo:</b> Cronómetro (vueltas) + Temporizador h/m/s con sonido/vibración.</p>
-           <p><b>🔔 Recordatorios:</b> fases lunares y notificaciones suaves (ciclo/medicina). <b>⚙️ Personalizar:</b> elige qué botones ver (perfiles Todo/Esencial/Infantil/Adolescente/Mayor/Estudiante/Agricultor/Pescador/Bienestar/Deportista/Docente) + texto grande.</p>
-           <p><b>🎨 Tema + 🕰 Reloj</b> America/Santiago en sidebar.</p>
-         </div>
+           <div class="help-card">
+             <h4>🍽️ Vida diaria</h4>
+             <p><b>🥗 Comidas:</b> plan por fecha (desayuno/almuerzo/cena/snack/notas), guarda por día, genera <b>🛒 Compras</b> automático, ve semana/luna. Pestaña <b>🧮 Calculadora</b>: edad/peso/altura/actividad → TMB/TDEE, meta kcal, macros (prot/carb/grasa), IMC y agua, con gráfico 50/30/20. Pestaña <b>🍽️ Menús sugeridos</b>: 5 plantillas Penco (Económico 1850, Equilibrado 2100, Activo 2500, Ligero 1650, Vegetariano 2050) ordenadas por tu meta; carga al plan de hoy y compara plan vs meta.</p>
+             <p><b>🛒 Compras:</b> lista por categorías (Verduras/Frutas/Abarrotes/Proteínas/Lácteos/Panadería/Otros), cantidad, tacha ✓ comprados, limpia comprados o vacía.</p>
+             <p><b>💰 Finanzas:</b> registra gastos e ingresos por día (categoría, monto $CLP, método), ve balance total/mensual/por luna, presupuesto y barra de avance, gráfico por categoría, proyección 13 lunas. Consejos: 50/30/20, gastos hormiga, sobres, fondo emergencia. Exporta CSV y comparte resumen. Días con 💰 en calendario.</p>
+           </div>
+          <div class="help-card">
+            <h4>🛠️ Herramientas & Personalización</h4>
+            <p><b>📏 Conversión:</b> 12 categorías — longitud, peso, volumen, temperatura, superficie, tiempo, velocidad, energía, potencia, presión, datos, ángulo — con tabla dinámica e intercambio. <b>⚡ Consumo eléctrico:</b> lista artefactos (W, h/día, días/mes, cantidad), presets chilenos, total kWh y $CLP con tarifa editable, ranking y proyección luna.</p>
+            <p><b>⏱ Tiempo:</b> Cronómetro (vueltas) + Temporizador h/m/s con sonido/vibración. <b>🔔 Recordatorios:</b> fases lunares y notificaciones suaves (ciclo/medicina). <b>⚙️ Personalizar:</b> elige qué botones ver (incluye ⚡ Consumo) + texto grande.</p>
+            <p><b>🎨 Tema + 🕰 Reloj</b> America/Santiago en sidebar.</p>
+          </div>
          <div class="help-card">
            <h4>💾 Guardar & Compartir</h4>
            <p><b>💾 Respaldo / 📥 Restaurar:</b> JSON por usuario (descarga/subida). <b>📌 Acceso directo:</b> crea .url / .lnk al escritorio. <b>📄 PDF luna / 📚 PDF ciclo:</b> imprime vía ventana de impresión.</p>
