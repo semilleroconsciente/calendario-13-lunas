@@ -102,9 +102,9 @@ function moonPhaseEvents(fromMs, toMs) {
   const kEnd = k + Math.ceil(((toMs - fromMs) / DAY_MS) / SYNODIC) * 4 + 12;
   const types = [
     ['nueva', '🌑'],
-    ['cuarto-creciente', '🌓'],
+    ['cuarto-creciente', '🌗'],
     ['llena', '🌕'],
-    ['cuarto-menguante', '🌗']
+    ['cuarto-menguante', '🌓']
   ];
   for (; k <= kEnd; k += 0.25) {
     const jde = phaseJDE(k);
@@ -146,7 +146,7 @@ function moonInfo(ms) {
   return { fraction, phase };
 }
 
-const ICONS = ['🌑', '🌒', '🌓', '🌔', '🌕', '🌖', '🌗', '🌘'];
+const ICONS = ['🌑', '🌘', '🌗', '🌖', '🌕', '🌔', '🌓', '🌒'];
 function moonIcon(ms) {
   const p = moonInfo(ms).phase;
   return ICONS[Math.round(p * 8) % 8];

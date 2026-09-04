@@ -414,6 +414,17 @@ body[data-theme="medianoche"] { --bg:#050508; --bg2:#0a0a10; --panel:#141418; --
 .dc-habit { font-size: 10px; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; border-radius: 50%; border: 1px solid; font-weight: 600; }
 .dlg-habits { margin: 10px 0; padding: 8px; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; }
 .dlg-habits:empty { display: none; }
+.dlg-horas-box { margin: 10px 0; background: var(--panel); border:1px solid var(--line); border-radius:10px; padding:12px; }
+.dlg-horas-label { font-size:13px; color:var(--accent); font-weight:700; display:block; margin-bottom:2px; }
+.dlg-horas-grid { display:flex; flex-direction:column; gap:8px; max-height:260px; overflow-y:auto; margin-bottom:10px; }
+.hora-block { background:var(--card); border:1px solid var(--line); border-radius:8px; padding:8px 10px; }
+.hora-label { font-size:12px; color:var(--gold); font-weight:700; margin-bottom:6px; }
+.hora-item { display:flex; justify-content:space-between; align-items:center; gap:8px; padding:6px 8px; background:var(--panel); border:1px solid var(--line); border-radius:6px; margin-bottom:4px; font-size:12px; }
+.hora-text { flex:1; color:var(--text); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.hora-actions { display:flex; gap:6px; align-items:center; flex:0 0 auto; }
+.dlg-horas-add { display:flex; gap:6px; align-items:center; flex-wrap:wrap; }
+.dlg-horas-add select { padding:7px; border-radius:6px; border:1px solid var(--line); background:var(--card); color:var(--text); font-size:13px; }
+.dlg-horas-add input { flex:1; min-width:120px; }
 .meal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 .shopping-list { display: flex; flex-direction: column; gap: 6px; max-height: 320px; overflow-y: auto; }
 .shop-cat { font-size: 11px; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; margin-top: 8px; }
