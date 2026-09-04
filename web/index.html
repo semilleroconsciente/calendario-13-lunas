@@ -119,6 +119,14 @@
           <button id="btnMeal" class="btn" data-keywords="comida meal plan cena almuerzo">🥗 Comidas</button>
           <button id="btnShopping" class="btn" data-keywords="compras lista supermercado verduras">🛒 Compras</button>
           <button id="btnFinance" class="btn" data-keywords="finanzas gastos dinero presupuesto ahorro deuda ingreso egreso plata billetera">💰 Finanzas</button>
+          <button id="btnHomeTasks" class="btn" data-keywords="tareas hogar limpieza casa organizacion quehaceres rutina habitaciones baño cocina ropa mantenimiento orden">🏠 Tareas Hogar</button>
+        </div>
+      </details>
+      <details class="action-group" open data-group="emergencia">
+        <summary>🚨 Emergencias & Comunidad <span class="ag-count"></span></summary>
+        <div class="group-btns">
+          <button id="btnFirstAid" class="btn" data-keywords="primeros auxilios emergencia salud rcp hemorragia quemadura fractura atragantamiento heimlich botiquin samu bomberos carabineros">🩹 Primeros Auxilios</button>
+          <button id="btnAnimalCare" class="btn" data-keywords="cuidado animal veterinaria mascota perro gato tenencia responsable esterilizacion vacuna antirrabica comuna animal perdido maltrato">🐾 Cuidado Animal</button>
         </div>
       </details>
       <details class="action-group" data-group="herramientas">
@@ -191,16 +199,18 @@
         <h3 style="margin:0">🌱 Siembra &amp; Cosecha — Penco</h3>
         <button type="button" id="siembraCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
       </div>
-       <p class="muted">Guía por lunas: <b>luna actual + 2 siguientes</b> con siembra, cosecha y plagas. <span style="color:var(--gold)">Nuevo: 🤝 Asociaciones</span> para combinar cultivos.</p>
-        <div class="timer-tabs" style="margin-bottom:10px">
-          <button type="button" id="tabSiembra" class="btn btn-accent" style="width:auto">🌱 Siembra</button>
-          <button type="button" id="tabCosecha" class="btn" style="width:auto">🌾 Cosecha &amp; Plagas</button>
-          <button type="button" id="tabAsociaciones" class="btn" style="width:auto">🤝 Asociaciones</button>
-        </div>
-        <div id="siembraTresBox" class="hidden" style="display:none"></div>
-       <div id="siembraContent"></div>
-       <div id="siembraHarvestBox"></div>
-       <div id="siembraAsociacionesBox" class="hidden"></div>
+        <p class="muted">Guía por lunas: <b>luna actual + 2 siguientes</b> con siembra, cosecha y plagas. <span style="color:var(--gold)">Nuevo: 🤝 Asociaciones · 🧪 Preparados</span></p>
+         <div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">
+           <button type="button" id="tabSiembra" class="btn btn-accent" style="width:auto">🌱 Siembra</button>
+           <button type="button" id="tabCosecha" class="btn" style="width:auto">🌾 Cosecha &amp; Plagas</button>
+           <button type="button" id="tabAsociaciones" class="btn" style="width:auto">🤝 Asociaciones</button>
+           <button type="button" id="tabPreparados" class="btn" style="width:auto">🧪 Preparados</button>
+         </div>
+         <div id="siembraTresBox" class="hidden" style="display:none"></div>
+        <div id="siembraContent"></div>
+        <div id="siembraHarvestBox"></div>
+        <div id="siembraAsociacionesBox" class="hidden"></div>
+        <div id="siembraPreparadosBox" class="hidden"></div>
       <div class="dlg-actions"><button type="button" id="siembraClose" class="btn">Cerrar</button></div>
     </form>
   </dialog>
@@ -755,6 +765,147 @@
     </form>
   </dialog>
 
+  <dialog id="homeTasksDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">🏠 Tareas del Hogar — organización por áreas</h3>
+        <button type="button" id="homeTasksCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
+      </div>
+      <p class="muted" style="line-height:1.5">Organiza <b>limpieza, ropa, cocina, baño y mantenimiento</b> con frecuencia, prioridad y responsable. Todo queda <b>privado y local</b> por usuario. Marca a diario y ve avance por semana y por <b>luna de 28 días</b>. Días con tareas aparecen con 🏠 en el calendario.</p>
+
+      <div id="homeTasksResumen" class="menstrual-card" style="border-color:var(--gold);background:linear-gradient(135deg,var(--panel),var(--card))"></div>
+
+      <div class="timer-tabs" style="margin:12px 0 10px;flex-wrap:wrap">
+        <button type="button" id="tabHomeTareas" class="btn btn-accent" style="width:auto">📋 Tareas</button>
+        <button type="button" id="tabHomeSemana" class="btn" style="width:auto">🗓️ Semana</button>
+        <button type="button" id="tabHomePlantillas" class="btn" style="width:auto">🧹 Plantillas</button>
+        <button type="button" id="tabHomeStats" class="btn" style="width:auto">📊 Luna & Consejos</button>
+      </div>
+
+      <!-- TAB TAREAS -->
+      <div id="homeTasksTareasPanel">
+        <div class="menstrual-card" style="border-color:var(--gold)">
+          <h4>➕ Nueva tarea</h4>
+          <div class="conv-row">
+            <label style="flex:2">Tarea <input type="text" id="homeTaskName" placeholder="ej: Barrer living, Lavar baño, Sacar basura, Regar plantas" maxlength="50"></label>
+            <label>Área
+              <select id="homeTaskArea">
+                <option value="Cocina">🍳 Cocina</option>
+                <option value="Baño">🚿 Baño</option>
+                <option value="Habitaciones">🛏️ Habitaciones</option>
+                <option value="Living/Comedor">🛋️ Living/Comedor</option>
+                <option value="Ropa">👕 Ropa/Lavandería</option>
+                <option value="Patio/Jardín">🌿 Patio/Jardín</option>
+                <option value="Mantenimiento">🛠️ Mantenimiento</option>
+                <option value="General">🏠 General</option>
+                <option value="Compras Hogar">🛒 Compras Hogar</option>
+                <option value="Otro">📦 Otro</option>
+              </select>
+            </label>
+          </div>
+          <div class="conv-row">
+            <label>Frecuencia
+              <select id="homeTaskFreq">
+                <option value="diaria">Diaria</option>
+                <option value="semanal">Semanal</option>
+                <option value="quincenal">Quincenal</option>
+                <option value="mensual">Mensual</option>
+                <option value="puntual">Puntual / una vez</option>
+              </select>
+            </label>
+            <label>Día preferido
+              <select id="homeTaskDay">
+                <option value="todos">Todos / sin día fijo</option>
+                <option value="1">Lunes</option><option value="2">Martes</option><option value="3">Miércoles</option><option value="4">Jueves</option><option value="5">Viernes</option><option value="6">Sábado</option><option value="0">Domingo</option>
+              </select>
+            </label>
+            <label>Prioridad
+              <select id="homeTaskPriority">
+                <option value="media">● Media</option>
+                <option value="alta">🔴 Alta</option>
+                <option value="baja">🟢 Baja</option>
+              </select>
+            </label>
+          </div>
+          <div class="conv-row">
+            <label>Tiempo est. <select id="homeTaskTime"><option value="5">5 min</option><option value="15">15 min</option><option value="30" selected>30 min</option><option value="60">60 min</option><option value="120">120 min</option></select></label>
+            <label>Responsable <input type="text" id="homeTaskOwner" placeholder="ej: Yo, Pareja, Hija, Todos" maxlength="20"></label>
+            <label>Fecha puntual <input type="date" id="homeTaskDate"></label>
+          </div>
+          <label>Notas <input type="text" id="homeTaskNotes" placeholder="ej: con desinfectante, antes de las 10h" maxlength="80"></label>
+          <div class="dlg-actions" style="justify-content:flex-start">
+            <button type="button" id="homeTaskAdd" class="btn btn-accent" style="width:auto">+ Agregar tarea</button>
+            <button type="button" id="homeTaskUpdate" class="btn hidden" style="width:auto">↻ Actualizar</button>
+            <button type="button" id="homeTaskCancel" class="btn hidden" style="width:auto">Cancelar</button>
+          </div>
+        </div>
+
+        <div class="conv-row" style="margin-top:10px;align-items:center;flex-wrap:wrap">
+          <label style="flex:1">🔍 Filtrar <input type="text" id="homeTaskFilter" placeholder="buscar por nombre, área o responsable"></label>
+          <label>Área <select id="homeTaskFilterArea"><option value="">Todas</option><option value="Cocina">Cocina</option><option value="Baño">Baño</option><option value="Habitaciones">Habitaciones</option><option value="Living/Comedor">Living</option><option value="Ropa">Ropa</option><option value="Patio/Jardín">Patio</option><option value="Mantenimiento">Mantenimiento</option><option value="General">General</option></select></label>
+          <label>Estado <select id="homeTaskFilterStatus"><option value="">Todas</option><option value="pendientes">Solo pendientes hoy</option><option value="hechas">Hechas hoy</option></select></label>
+        </div>
+
+        <div id="homeTasksTodayBox" class="menstrual-card" style="margin-top:10px"></div>
+        <div id="homeTasksList" class="habits-list" style="margin-top:10px;max-height:320px"></div>
+        <div class="dlg-actions" style="justify-content:space-between;align-items:center;margin-top:8px">
+          <span id="homeTasksStats" class="muted" style="font-size:11px"></span>
+          <span style="display:flex;gap:8px;flex-wrap:wrap">
+            <button type="button" id="homeTasksShare" class="btn" style="width:auto">📤 Compartir</button>
+            <button type="button" id="homeTasksExport" class="btn" style="width:auto">📥 Exportar CSV</button>
+            <button type="button" id="homeTasksClearDone" class="btn" style="width:auto">✓ Limpiar hechas hoy</button>
+            <button type="button" id="homeTasksClearAll" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Vaciar</button>
+          </span>
+        </div>
+      </div>
+
+      <!-- TAB SEMANA -->
+      <div id="homeTasksSemanaPanel" class="hidden">
+        <div id="homeTasksWeekGrid" class="schedule-week"></div>
+        <div id="homeTasksWeekList" class="menstrual-card" style="margin-top:10px"></div>
+        <p class="muted" style="font-size:10px;margin-top:6px">La semana muestra tareas diarias + las semanales/quincenales/mensuales que caen hoy. Marca ✓ en 📋 Tareas para reflejar aquí.</p>
+      </div>
+
+      <!-- TAB PLANTILLAS -->
+      <div id="homeTasksPlantillasPanel" class="hidden">
+        <div class="menstrual-card" style="background:linear-gradient(135deg,var(--panel),var(--card));border-color:var(--gold)">
+          <h4 style="color:var(--gold)">🧹 Plantillas — carga con un toque</h4>
+          <p class="muted" style="font-size:11px">Toque una tarjeta para cargar sus tareas al formulario (luego elige frecuencia/responsable y agrega una por una). Basadas en método <b>FlyLady + 15 min</b> adaptado a casa pencona (humedad, viento sur, mareas).</p>
+        </div>
+        <div id="homeTasksTemplates" style="margin-top:10px"></div>
+        <div class="menstrual-card" style="margin-top:10px">
+          <h4>⚡ Acciones rápidas</h4>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button type="button" id="homeTasksLoadBase" class="btn btn-accent" style="width:auto">🏠 Cargar kit básico (10 tareas)</button>
+            <button type="button" id="homeTasksLoadWeekly" class="btn" style="width:auto">🗓️ Cargar rutina semanal completa</button>
+          </div>
+          <p class="muted" style="font-size:10px;margin-top:6px">Evita duplicar: si ya tienes “Lavar loza”, no la agregues de nuevo.</p>
+        </div>
+      </div>
+
+      <!-- TAB STATS -->
+      <div id="homeTasksStatsPanel" class="hidden">
+        <div id="homeTasksLunaBox" class="menstrual-card" style="border-color:var(--gold)"></div>
+        <div id="homeTasksAreasBox" class="menstrual-card" style="margin-top:10px"></div>
+        <div class="menstrual-card" style="margin-top:10px">
+          <h4>💡 Método 3×15 + consejos Penco</h4>
+          <div class="help-grid" style="margin-top:6px">
+            <div class="help-card"><h4>🔄 Rutina diaria 15+15+5</h4><p style="font-size:11px"><b>Mañana 15:</b> camas + ventilar 5 min (humedad Penco) + loza desayuno<br><b>Tarde 15:</b> barrido rápido + baño express<br><b>Noche 5:</b> dejar cocina lista (mise en place mañana)</p></div>
+            <div class="help-card"><h4>📅 Semana por zonas</h4><p style="font-size:11px"><b>Lun:</b> Habitaciones + ropa<br><b>Mar:</b> Baños profundo<br><b>Mié:</b> Cocina a fondo<br><b>Jue:</b> Living + polvo<br><b>Vie:</b> Patio/jardín + compras<br><b>Sáb:</b> Mantenimiento ligero<br><b>Dom:</b> Descanso / repaso 15 min</p></div>
+            <div class="help-card"><h4>🌧️ Anti-humedad Penco</h4><p style="font-size:11px">Ventila 10 min aunque llueva (efecto chimenea), revisa sellos ventana, aspira moho con mascarilla, usa deshumidificador casero (sal gruesa) en closet. Luna Pukem: revisa techo antes de invierno.</p></div>
+            <div class="help-card"><h4>👥 Reparto equitativo</h4><p style="font-size:11px">Asigna responsable rotativo por semana (ej: “Baño — Semana 1: Yo, 2: Pareja”). Usa “Responsable: Rotativo” y cambia el nombre cada luna. Niños: tareas de 5 min con checklist visual.</p></div>
+          </div>
+        </div>
+        <div class="menstrual-card" style="margin-top:10px">
+          <h4>📏 Regla 2-minutos</h4>
+          <p class="muted" style="font-size:11px;line-height:1.5">Si toma &lt;2 min (colgar chaqueta, enjuagar taza, guardar zapatos) hazlo ahora. Evita “montaña de pendientes” y deja la luna fluida.</p>
+        </div>
+      </div>
+
+      <div class="dlg-actions"><button type="button" id="homeTasksClose" class="btn">Cerrar</button></div>
+    </form>
+  </dialog>
+
   <dialog id="energyDialog">
     <form method="dialog">
       <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
@@ -864,6 +1015,102 @@
   </dialog>
 
 
+
+  <dialog id="firstAidDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">🩹 Primeros Auxilios — Guía básica Penco</h3>
+        <button type="button" id="firstAidCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
+      </div>
+      <p class="muted" style="line-height:1.5"><b>No reemplaza atención profesional.</b> Esta guía es educativa y territorial, adaptada a Penco · Bío-Bío. Ante duda grave, llama a <b>131</b> (SAMU) o acude a CESFAM/Hospital. Guarda esta sección en tu celular offline.</p>
+
+      <div id="firstAidEmergencyCard" class="menstrual-card" style="border-color:#ff6b6b;background:linear-gradient(135deg,#2a1a20,var(--card))">
+        <h4 style="color:#ff6b6b">🚨 Números de emergencia — Chile & Penco</h4>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">
+          <a href="tel:131" class="btn" style="text-decoration:none;text-align:center;background:#c0392b;color:#fff;border-color:#e74c3c">🚑 SAMU 131</a>
+          <a href="tel:132" class="btn" style="text-decoration:none;text-align:center;background:#e67e22;color:#fff;border-color:#f39c12">🚒 Bomberos 132</a>
+          <a href="tel:133" class="btn" style="text-decoration:none;text-align:center;background:#2980b9;color:#fff;border-color:#3498db">🚓 Carabineros 133</a>
+          <a href="tel:134" class="btn" style="text-decoration:none;text-align:center;background:#7f8c8d;color:#fff;border-color:#95a5a6">🕵️ PDI 134</a>
+        </div>
+        <div class="help-grid" style="margin-top:10px">
+          <div class="help-card" style="padding:8px">
+            <h4 style="font-size:11px">🏥 Salud Penco — Comuna</h4>
+            <p style="font-size:11px;line-height:1.5"><b>Hospital Penco-Lirquén:</b> <a href="tel:+56412726300" style="color:var(--gold)">41 272 6300</a> · Av. Pedro Aguirre Cerda 1400<br><b>CESFAM Penco:</b> <a href="tel:+56412726000" style="color:var(--gold)">41 272 6000</a> · R. Freire 600<br><b>CESFAM Lirquén:</b> <a href="tel:+56412726100" style="color:var(--gold)">41 272 6100</a><br><b>SAR Penco (urgencia 24h):</b> <a href="tel:+56412726350" style="color:var(--gold)">41 272 6350</a><br><b>Salud Responde 600 360 7777</b> (24h orientación)</p>
+          </div>
+          <div class="help-card" style="padding:8px">
+            <h4 style="font-size:11px">🏛️ Municipal & Seguridad</h4>
+            <p style="font-size:11px;line-height:1.5"><b>Municipalidad Penco:</b> <a href="tel:+56412261000" style="color:var(--gold)">41 226 1000</a> · O'Higgins 500<br><b>Seguridad Ciudadana Penco:</b> <a href="tel:+56912345678" style="color:var(--gold)">*4117 / 41 226 1017</a> (patrullaje)<br><b>2ª Comisaría Penco:</b> <a href="tel:+56412143240" style="color:var(--gold)">41 214 3240</a> · 133<br><b>Armada / Capitanía Lirquén:</b> 137 · <a href="tel:+56412751006" style="color:var(--gold)">41 275 1006</a></p>
+          </div>
+        </div>
+        <p class="muted" style="font-size:10px;margin-top:6px">Verifica números en web municipal munipenco.cl — pueden cambiar. Si hay marejada/tsunami, sigue alerta SHOA/Armada (137) y evacuación a cerro.</p>
+      </div>
+
+      <div class="timer-tabs" style="margin:12px 0 10px;flex-wrap:wrap">
+        <button type="button" id="tabFA1" class="btn btn-accent" style="width:auto">🚨 Actuar</button>
+        <button type="button" id="tabFA2" class="btn" style="width:auto">🫀 RCP & Atragant.</button>
+        <button type="button" id="tabFA3" class="btn" style="width:auto">🩹 Heridas</button>
+        <button type="button" id="tabFA4" class="btn" style="width:auto">🔥 Quemaduras</button>
+        <button type="button" id="tabFA5" class="btn" style="width:auto">🦴 Trauma</button>
+        <button type="button" id="tabFA6" class="btn" style="width:auto">🎒 Botiquín</button>
+      </div>
+
+      <div id="firstAidPanel"></div>
+
+      <div class="menstrual-card" style="margin-top:10px;background:var(--panel)">
+        <h4>⚠️ Cuándo llamar a SAMU 131 vs ir a CESFAM/SAR</h4>
+        <p class="muted" style="font-size:11px;line-height:1.5"><b>SAMU 131:</b> inconsciente, no respira, dolor pecho opresivo >5min, convulsión >5min, hemorragia masiva, dificultad respiratoria grave, sospecha ACV (cara caída / habla rara / brazo sin fuerza), intoxicación grave, caída grave. <b>CESFAM/SAR 41 272 6350:</b> fiebre alta 2+ días, corte que necesita sutura, esguince sin deformidad, vómitos/diarrea con deshidratación, picadura infectada, quemadura leve. Lleva carnet, lista de medicamentos y alergias.</p>
+      </div>
+
+      <div class="dlg-actions"><button type="button" id="firstAidClose" class="btn">Cerrar</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="animalCareDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">🐾 Cuidado Animal — Penco</h3>
+        <button type="button" id="animalCareCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
+      </div>
+      <p class="muted" style="line-height:1.5">Tenencia responsable bajo <b>Ley 21.020 (Ley Cholito)</b> — registro, vacunas, esterilización y bienestar. Guía práctica para perros, gatos y fauna del <b>Humedal Rocuant</b>. <b>Maltrato es delito</b>: denuncia en BIDEMA o Fiscalía.</p>
+
+      <div id="animalEmergencyCard" class="menstrual-card" style="border-color:#a9d18e;background:linear-gradient(135deg,#1a2a1a,var(--card))">
+        <h4 style="color:#a9d18e">📞 Contactos — Comuna de Penco</h4>
+        <div class="help-grid" style="margin-top:8px">
+          <div class="help-card" style="padding:8px">
+            <h4 style="font-size:11px">🐾 Municipal — Veterinaria & Ambiente</h4>
+            <p style="font-size:11px;line-height:1.5"><b>Of. Medio Ambiente / Veterinaria Municipal Penco:</b> <a href="tel:+56412261017" style="color:var(--gold)">41 226 1017</a> anexo 22 · O'Higgins 500, 2º piso<br><b>Operativos esterilización gratuita (SUBDERE):</b> consulta en DIDECO <a href="tel:+56412261020" style="color:var(--gold)">41 226 1020</a> — inscriben por lista<br><b>Aseo y Ornato / Canil:</b> <a href="tel:+56412261033" style="color:var(--gold)">41 226 1033</a><br><b>Email:</b> medioambiente@munipenco.cl</p>
+          </div>
+          <div class="help-card" style="padding:8px">
+            <h4 style="font-size:11px">🚨 Urgencias & Denuncias</h4>
+            <p style="font-size:11px;line-height:1.5"><b>Urgencia veterinaria 24h Concepción (referencia):</b> Clínica Vet Conce — <a href="tel:+56412223456" style="color:var(--gold)">41 222 3456</a> / Hospital Vet UdeC Chillán<br><b>Maltrato animal — BIDEMA PDI:</b> <a href="tel:+56412153400" style="color:var(--gold)">41 215 3400</a> o 134<br><b>Carabineros Penco:</b> 133 / <a href="tel:+56412143240" style="color:var(--gold)">41 214 3240</a><br><b>SAG Bío-Bío (fauna silvestre):</b> <a href="tel:+56412740600" style="color:var(--gold)">41 274 0600</a> · <b>SERNAPESCA</b> varamientos: 800 320 032</p>
+          </div>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">
+          <a href="tel:+56412261017" class="btn" style="width:auto;font-size:11px">📞 Vet Municipal</a>
+          <a href="tel:133" class="btn" style="width:auto;font-size:11px">🚓 Denunciar maltrato 133/134</a>
+          <a href="tel:+56412740600" class="btn" style="width:auto;font-size:11px">🦅 SAG fauna</a>
+        </div>
+        <p class="muted" style="font-size:10px;margin-top:6px">Horarios municipales Lun-Vie 8:30-14:00. Para fauna herida del humedal (cisne, gaviota, lobo) no la manipules sin guantes — llama a SAG.</p>
+      </div>
+
+      <div class="timer-tabs" style="margin:12px 0 10px;flex-wrap:wrap">
+        <button type="button" id="tabAC1" class="btn btn-accent" style="width:auto">🏠 Tenencia</button>
+        <button type="button" id="tabAC2" class="btn" style="width:auto">🩺 Auxilios</button>
+        <button type="button" id="tabAC3" class="btn" style="width:auto">💉 Salud</button>
+        <button type="button" id="tabAC4" class="btn" style="width:auto">🌿 Bienestar</button>
+        <button type="button" id="tabAC5" class="btn" style="width:auto">🦅 Humedal</button>
+      </div>
+
+      <div id="animalCarePanel"></div>
+
+      <div class="menstrual-card" style="margin-top:10px;background:var(--panel)">
+        <h4>📋 Checklist tenencia responsable (Penco)</h4>
+        <p class="muted" style="font-size:11px;line-height:1.5">✔ Registro en <b>registratumascota.cl</b> (chip) · ✔ Vacunas al día · ✔ Esterilizado/a · ✔ Paseo con correa + bolsa · ✔ Agua fresca diaria · ✔ Sombra y abrigo · ✔ Desparasitado cada 3 meses. Sin estas 7, hay multa por Ley Cholito (0,5-30 UTM). Los operativos municipales son gratuitos y priorizan familias vulnerables — inscríbete con anticipación.</p>
+      </div>
+
+      <div class="dlg-actions"><button type="button" id="animalCareClose" class="btn">Cerrar</button></div>
+    </form>
+  </dialog>
 
   <dialog id="donateDialog">
     <form method="dialog">
