@@ -38,8 +38,11 @@
       <option value="medianoche">Medianoche — negro</option>
     </select>
     <button id="btnToday" class="btn btn-accent">◉ Ir a hoy</button>
-    <button id="btnConfig" class="btn" style="margin-top:8px">⚙️ Personalizar</button>
-    <button id="btnSharePage" class="btn" style="margin-top:8px" title="Copiar enlace https://calendario-13-lunas.pages.dev/">🔗 Compartir calendario</button>
+    <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap">
+      <button id="btnConfig" class="btn" style="flex:1">⚙️ Personalizar</button>
+      <button id="btnSharePage" class="btn" style="flex:1" title="Copiar enlace https://calendario-13-lunas.pages.dev/">🔗 Compartir</button>
+      <button id="btnHelp" class="btn" style="flex:1" data-keywords="ayuda como usar guia instrucciones vision que es calendario">❓ Guía</button>
+    </div>
     <nav id="moonNav"></nav>
     <div class="sidebar-foot">
       <span id="dataInfo"></span>
@@ -131,7 +134,6 @@
           <button id="btnPdfLuna" class="btn" data-keywords="pdf luna imprimir exportar">📄 PDF luna</button>
           <button id="btnPdfCiclo" class="btn" data-keywords="pdf ciclo completo imprimir">📚 PDF ciclo</button>
           <button id="btnDonate" class="btn btn-accent" style="width:auto" data-keywords="aporte donar mercadopago paypal">❤ Aporte voluntario</button>
-          <button id="btnHelp" class="btn" style="width:auto" data-keywords="ayuda como usar guia instrucciones">❓ Cómo usar</button>
         </div>
       </details>
     </footer>
@@ -149,16 +151,20 @@
       <p id="dlgDate" class="muted"></p>
       <blockquote id="dlgQuote" class="dlg-quote"></blockquote>
       <div class="dlg-mood" id="dlgMood"></div>
-      <label>☀️ / 🌧️ Clima del día
-        <input type="text" id="fClima" placeholder="ej: nublado, viento sur...">
-      </label>
-      <div class="conv-row">
-        <label>🌊 Pleamar <input type="text" id="fMareaAlta" placeholder="ej: 03:02 1.58m"></label>
-        <label>🌊 Bajamar <input type="text" id="fMareaBaja" placeholder="ej: 09:27 0.90m"></label>
+      <div id="dlgHorasBox" class="dlg-horas-box">
+        <label class="dlg-horas-label" for="fNota">📝 Notas del día</label>
+        <textarea id="fNota" rows="4" placeholder="tareas, ánimo, sueños, registros..."></textarea>
+        <div style="height:12px"></div>
+        <label class="dlg-horas-label">🕐 Compromisos — por hora</label>
+        <p class="muted" style="font-size:11px;margin:2px 0 8px">Agrega compromisos, actividades o recordatorios por hora. Activa 🔔 para recibir notificación a esa hora.</p>
+        <div id="dlgHorasGrid" class="dlg-horas-grid"></div>
+        <div class="dlg-horas-add">
+          <select id="dlgHourSel" aria-label="Hora"></select>
+          <input type="text" id="dlgHourText" placeholder="Compromiso / actividad..." maxlength="80">
+          <label class="check-row" style="margin:0;white-space:nowrap" title="Activar notificación a esa hora"><input type="checkbox" id="dlgHourNotify"> 🔔</label>
+          <button type="button" id="dlgHourAdd" class="btn btn-accent" style="width:auto">+ Agregar</button>
+        </div>
       </div>
-      <label>Notas del día
-        <textarea id="fNota" rows="5" placeholder="tareas, ánimo, sueños, registros..."></textarea>
-      </label>
       <div id="dlgHabits" class="dlg-habits"></div>
       <div class="dlg-actions" style="justify-content:space-between">
         <button type="button" id="dlgMenstrual" class="btn" style="width:auto" title="Marcar o quitar este día como inicio de ciclo menstrual">🌸 Marcar inicio ciclo</button>
@@ -888,23 +894,45 @@
   <dialog id="helpDialog">
     <form method="dialog">
       <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
-        <h3 style="margin:0;color:var(--accent)">❓ Cómo usar el calendario</h3>
+        <h3 style="margin:0;color:var(--accent)">❓ Guía — Mari Küla Küyen · 13 Lunas</h3>
         <button type="button" id="helpCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
       </div>
-      <p class="muted" style="line-height:1.5"><b>Bienvenido a Mari Küla Küyen — 13 lunas × 28 días + Día Fuera del Tiempo.</b> Guía en 3 pasos: <b>1)</b> Elige Usuario y Ciclo (We Tripantu 21 jun) · <b>2)</b> Clic en un día para anotar · <b>3)</b> Usa los botones por grupo. Todo queda <b>privado y local</b> — sin nube, por usuario.</p>
+      <p class="muted" style="line-height:1.5"><b>Mari Küla Küyen — 13 lunas × 28 días + Día Fuera del Tiempo.</b> Un calendario territorial de Penco, inspirado en el tiempo mapuche y lunar. Todo queda <b>privado y local</b> en tu dispositivo, por usuario. Elige tu ciclo (We Tripantu 21 junio), toca un día para registrar y explora los grupos de herramientas.</p>
+      <!-- GUÍA: Qué es + Visión -->
+      <div class="help-grid" style="margin-bottom:12px">
+        <div class="help-card" id="helpGuiaQueEs" style="grid-column:1/-1;border-color:var(--gold);background:linear-gradient(135deg,var(--panel),var(--card))">
+          <h4>🌙 ¿Qué es Mari Küla Küyen?</h4>
+          <p><b>Calendario de 13 lunas de 28 días = 364 días + 1 Día Fuera del Tiempo (20 junio)</b>, alineado al <b>We Tripantu</b> — Año Nuevo mapuche y solsticio de invierno (21 junio). Cada luna tiene nombre en mapudungun, estación (PUKEM invierno, PEWU primavera, WALUNG verano, RIMU otoño) y relato del territorio de Penco · Bío-Bío.</p>
+          <p>No es un sustituto del gregoriano: es un <b>tiempo complementario</b> para ordenar la vida al ritmo de la luna, el cuerpo, la huerta y el mar. 28 días resuena con el ciclo menstrual promedio, con mareas y siembras; 13 lunas cierran el año sin meses desiguales.</p>
+          <p class="muted" style="font-size:11px;margin-top:6px">Basado en el calendario de 13 lunas difundido por José Argüelles y la cuenta mapuche del solsticio, adaptado a Penco: mareas SHOA Talcahuano, siembra local, aves del humedal Rocuant, pesca del Golfo de Arauco, fiestas comunales y clima Open-Meteo.</p>
+        </div>
+        <div class="help-card" style="border-color:var(--gold);background:linear-gradient(135deg,var(--panel),var(--card))">
+          <h4>👁️ Visión</h4>
+          <p><b>Devolver el tiempo a lo natural y a lo comunitario.</b> Frente al tiempo lineal y acelerado, proponemos un tiempo <b>circular, observable y reparador</b>: mirar la luna, escuchar el mar, respetar el descanso, sembrar y cosechar a tiempo.</p>
+          <p><b>Territorial:</b> Penco al centro — su mar, humedal, caletas y cerros enseñan cada luna. <b>Intercultural:</b> honra el kimün mapuche sin apropiar, como puente respetuoso. <b>Soberano:</b> datos privados y locales, sin nube, por usuario — tú controlas tu memoria. <b>Cuidador:</b> integra cuerpo (ciclo, hábitos, medicina), mente (estudio, disciplina) y territorio (mareas, siembra) para una vida más coherente con los ciclos.</p>
+          <p style="text-align:center;color:var(--gold);margin-top:6px"><b>“Ordenar el tiempo es ordenar la vida” — Küme mañum · Penco 2026</b></p>
+        </div>
+        <div class="help-card" style="border-color:var(--gold);background:linear-gradient(135deg,var(--panel),var(--card))">
+          <h4>📖 Cómo está organizado</h4>
+          <p><b>13 × 28 + 1:</b> Luna 1 We Tripantü Küyen (21 jun – 18 jul) hasta Luna 13 Mawün Kürüf (23 may – 19 jun) y luego <b>Día Fuera del Tiempo 20 jun</b> — día de cierre, memoria y baño al mar. Cada luna = 28 tarjetas (4 semanas × 7).</p>
+          <p><b>Tarjeta del día:</b> fecha gregoriana, sol (salida/puesta Penco), fases lunares exactas ({{simbolo}}), efeméride, ánimo, puntitos de hábitos/gym/aves/pesca/finanzas/🎉 y resumen de notas/compromisos. Clic para entrar.</p>
+          <p><b>Grupos:</b> 🌊 Territorio · 🌸 Cuerpo & Salud · 🧠 Mente & Estudio · 🍽️ Vida diaria · 🛠️ Herramientas — filtrables con <b>🔍 Buscar función (Ctrl+K)</b> y personalizables por perfil (⚙️ Personalizar).</p>
+        </div>
+      </div>
              <div class="help-grid">
-         <div class="help-card">
-           <h4>🌙 Navegación</h4>
-           <p><b>Lateral:</b> Usuario (+/🗑), Ciclo 13 lunas, selector 🎨 Tema (Auto/Noche/Claro/Bosque/Océano/Atardecer/Medianoche) y <b>◉ Ir a hoy</b>. <b>🔗 Compartir</b> copia https://calendario-13-lunas.pages.dev/</p>
-           <p><b>Arriba:</b> título, rango fechas, descripción Penco, chip estación (PUKEM/PEWU/WALUNG/RIMU) + chips de fases lunares. <b>Calendario:</b> 28 tarjetas con sol, fase, ánimo, clima y puntitos de hábitos/gym/aves/pesca/astro/🎉.</p>
-           <p><b>🔍 Buscar funciones</b> (Ctrl+K) filtra botones por palabra clave — ej: “mareas”, “siembra”.</p>
-         </div>
-         <div class="help-card">
-           <h4>📝 Día a día</h4>
-           <p>Clic en día: elige <b>ánimo</b> (8), escribe <b>clima/notas</b> y <b>mareas</b> (pleamar/bajamar), <b>📤 Compartir</b> genera imagen PNG, <b>🌸 Marcar inicio ciclo</b> enlaza con Ciclo menstrual y <b>✅ Hábitos</b> del día.</p>
-           <p><b>Notas de la luna</b> (abajo del grid) guardan reflexión del ciclo de 28 días. <b>DFT 20 jun</b> trae reflexión del año completo.</p>
-           <p><b>Búsqueda notas:</b> escribe en “Buscar en notas” y Enter.</p>
-         </div>
+          <div class="help-card">
+            <h4>🌙 Navegación</h4>
+            <p><b>Lateral:</b> Usuario (+/🗑), Ciclo 13 lunas, selector 🎨 Tema (Auto/Noche/Claro/Bosque/Océano/Atardecer/Medianoche), <b>◉ Ir a hoy</b> y fila <b>⚙️ Personalizar · 🔗 Compartir · ❓ Guía</b> (los tres arriba). <b>🔗 Compartir</b> copia https://calendario-13-lunas.pages.dev/</p>
+            <p><b>Arriba:</b> título, rango fechas, descripción Penco, chip estación (PUKEM/PEWU/WALUNG/RIMU) + chips de fases lunares intercambiados (creciente ↔ menguante corregido). <b>Calendario:</b> 28 tarjetas con sol, fase, ánimo y puntitos de hábitos/gym/aves/pesca/astro/finanzas/🎉 + resumen de notas/compromisos.</p>
+            <p><b>🔍 Buscar funciones</b> (Ctrl+K) filtra botones por palabra clave — ej: “mareas”, “siembra”. <b>⚙️ Personalizar</b> oculta/muestra grupos y hace que <b>🌸 Marcar inicio ciclo</b> dentro del día desaparezca si 🌸 Ciclo está oculto.</p>
+          </div>
+          <div class="help-card" style="border-color:var(--gold)">
+            <h4>📝 Día a día — notas + compromisos</h4>
+            <p>Clic en un día: elige <b>ánimo</b> (8 estados), escribe en <b>📝 Notas del día</b> (texto libre: tareas, ánimo, sueños — se busca con “Buscar en notas”) y aparte gestiona <b>🕐 Compromisos — por hora</b>.</p>
+            <p><b>Compromisos:</b> selecciona hora (00-23), escribe actividad (ej: “reunión centro Penco”) y marca <b>🔔</b> si quieres <b>notificación a esa hora</b> (usa Notificaciones del navegador — pide permiso la primera vez y suena a la hora exacta con vibración). Quedan listados agrupados por hora, puedes activar/desactivar 🔔 o eliminar con ✕. Se guardan junto a tu nota y aparecen como <code>🕐 2 compromisos</code> en la tarjeta del calendario.</p>
+            <p><b>📤 Compartir</b> genera imagen PNG con fase, sol, frase y tus notas/compromisos. <b>🌸 Marcar inicio ciclo</b> (si está visible en ⚙️ Personalizar) enlaza con 🌸 Ciclo menstrual. Abajo, <b>✅ Hábitos</b> del día.</p>
+            <p><b>Notas de la luna</b> (abajo del grid) = reflexión de 28 días. <b>DFT 20 jun</b> = reflexión del año completo.</p>
+          </div>
          <div class="help-card">
            <h4>🌊 Territorio — Penco · Bío-Bío</h4>
            <p><b>🌊 Mareas:</b> tabla 3 días SHOA con pleamar/bajamar por hora. <b>🎣 Pesca:</b> rating lunar (tithi), mejores días de la luna, 8 especies locales con talla/veda/carnada + <b>bitácora privada</b> por usuario (fecha/lugar/especie/kg/marea) y 📤 Compartir. <b>🦅 Aves:</b> catálogo 16 aves Rocuant, actividad por luna + <b>bitácora</b> (fecha/hora/cantidad/actividad) y export.</p>

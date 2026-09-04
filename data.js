@@ -115,7 +115,7 @@ const SIEMBRA = {
     tareas: 'Abonar y mulchear · remover tierra · controlar malezas · evitar podar.'
   },
   creciente: {
-    fase: '🌓 Cuarto Creciente',
+    fase: '🌗 Cuarto Creciente',
     titulo: 'Siembra de frutos y flores',
     texto: 'La savia sube: es el mejor momento para sembrar y trasplantar lo que da fruto o flor.',
     siembra: 'Tomate, poroto, zapallo, choclo, pimentón, flores y hierbas aromáticas.',
@@ -129,7 +129,7 @@ const SIEMBRA = {
     tareas: 'Cosechar hojas y frutos · elaborar conservas · fermentar · preparar tinturas.'
   },
   menguante: {
-    fase: '🌗 Cuarto Menguante',
+    fase: '🌓 Cuarto Menguante',
     titulo: 'Raíces, poda y cuidado',
     texto: 'La energía vuelve a las raíces: tiempo de sembrar lo que crece bajo tierra, podar y prevenir plagas.',
     siembra: 'Papa, zanahoria, betarraga, rabanito, ajo, cebolla.',

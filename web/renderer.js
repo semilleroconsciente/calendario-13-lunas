@@ -76,10 +76,16 @@ function cyc(year) {
 function dayCell(lunaN, diaN) {
   const c = cyc(currentCycleYear());
   const m = c.moons[String(lunaN)];
-  if (!m.days[diaN]) m.days[diaN] = { alta: '', baja: '', clima: '', nota: '', animo: -1 };
+  if (!m.days[diaN]) m.days[diaN] = { nota: '', animo: -1, agenda: [] };
+  // migración agenda / limpiar campos legacy clima/marea
+  if (!Array.isArray(m.days[diaN].agenda)) m.days[diaN].agenda = [];
   if (m.days[diaN].animo === undefined) m.days[diaN].animo = -1;
-  // migración: eliminar campo foto legacy si existe (ahora sin fotos)
   if (m.days[diaN].foto !== undefined) delete m.days[diaN].foto;
+  // si había nota legacy sin agenda, mantener nota pero no migrar auto (usuario decide)
+  // limpiar campos obsoletos si existen sin perder agenda
+  if (m.days[diaN].clima !== undefined) delete m.days[diaN].clima;
+  if (m.days[diaN].alta !== undefined) delete m.days[diaN].alta;
+  if (m.days[diaN].baja !== undefined) delete m.days[diaN].baja;
   return m.days[diaN];
 }
 
@@ -299,8 +305,8 @@ function renderLuna() {
       ${financeIcons ? `<div class="dc-habits">${financeIcons}</div>` : ''}
       ${efe ? `<div class="dc-efe" title="${escapeHtml(efe)}">📅 ${escapeHtml(efe)}</div>` : ''}
       ${mood ? `<div class="dc-clima">Ánimo: ${escapeHtml(mood.e)} ${escapeHtml(mood.n)}</div>` : ''}
-      ${cell.clima ? `<div class="dc-clima">${escapeHtml(cell.clima)}</div>` : ''}
-      <div class="dc-note">${escapeHtml(cell.nota ? cell.nota.split('\n')[0] : '')}</div>`;
+      ${Array.isArray(cell.agenda)&&cell.agenda.length ? `<div class="dc-clima" title="${escapeHtml(cell.agenda.map(a=>String(a.hour).padStart(2,'0')+':00 '+a.text + (a.notify?' 🔔':'')).join(' · '))}">🕐 ${cell.agenda.length} compromiso${cell.agenda.length>1?'s':''} · ${escapeHtml(cell.agenda.slice(0,2).map(a=>String(a.hour).padStart(2,'0')+':00 '+a.text).join(' · '))}${cell.agenda.length>2?' …':''}</div>` : ''}
+      ${cell.nota ? `<div class="dc-note">${escapeHtml(cell.nota.split('\n')[0])}</div>` : (Array.isArray(cell.agenda)&&cell.agenda.length ? `<div class="dc-note">${escapeHtml(cell.agenda[0].text.split('\n')[0])}</div>` : `<div class="dc-note"></div>`)}`;
     card.onclick = () => openDayDialog(meta.n, d.diaN);
     grid.appendChild(card);
   }
@@ -373,6 +379,125 @@ function renderDFT() {
 let editing = null;
 let pendingMood = -1;
 
+// === NOTAS DEL DÍA POR HORAS + AGENDA ===
+function ensureHourSel() {
+  const sel = $('dlgHourSel');
+  if (!sel || sel.options.length) return;
+  for (let h=0; h<24; h++) {
+    const o = document.createElement('option');
+    o.value = String(h);
+    o.textContent = String(h).padStart(2,'0') + ':00';
+    sel.appendChild(o);
+  }
+  const now = new Date();
+  const cur = now.getHours();
+  sel.value = String(cur);
+}
+function renderDlgHoras() {
+  const grid = $('dlgHorasGrid');
+  if (!grid || !editing) return;
+  const cell = dayCell(editing.lunaN, editing.diaN);
+  if (!Array.isArray(cell.agenda)) cell.agenda = [];
+  // ordenar por hora
+  const sorted = [...cell.agenda].sort((a,b)=> a.hour-b.hour || (a.id||'').localeCompare(b.id||''));
+  if (!sorted.length) {
+    grid.innerHTML = '<p class="muted" style="font-size:11px;padding:8px;border:1px dashed var(--line);border-radius:8px;text-align:center">Sin compromisos aún. Agrega uno por hora abajo.</p>';
+    return;
+  }
+  // agrupar por hora
+  const byHour = {};
+  sorted.forEach(it=> { if(!byHour[it.hour]) byHour[it.hour]=[]; byHour[it.hour].push(it); });
+  const hours = Object.keys(byHour).map(Number).sort((a,b)=>a-b);
+  grid.innerHTML = hours.map(h=>{
+    const items = byHour[h];
+    return `<div class="hora-block"><div class="hora-label">🕐 ${String(h).padStart(2,'0')}:00 <span class="muted" style="font-size:10px">· ${items.length} ${items.length===1?'compromiso':'compromisos'}</span></div>` +
+      items.map(it=>`<div class="hora-item"><span class="hora-text">${escapeHtml(it.text)}</span><span class="hora-actions"><span class="chip" style="font-size:10px;padding:2px 6px">${it.notify?'🔔':'🔕'}</span><button type="button" class="btn btn-icon hora-notify" data-id="${it.id}" title="${it.notify?'Desactivar':'Activar'} notificación">${it.notify?'🔔':'🔕'}</button><button type="button" class="btn btn-icon hora-del" data-id="${it.id}" title="Eliminar">✕</button></span></div>`).join('') + `</div>`;
+  }).join('');
+  grid.querySelectorAll('.hora-del').forEach(b=> b.onclick=()=>{
+    const id=b.dataset.id;
+    const c=dayCell(editing.lunaN, editing.diaN);
+    c.agenda=c.agenda.filter(x=>x.id!==id);
+    scheduleSave(); renderDlgHoras(); if(currentView.tipo==='luna') renderLuna();
+  });
+  grid.querySelectorAll('.hora-notify').forEach(b=> b.onclick=async()=>{
+    const id=b.dataset.id;
+    const c=dayCell(editing.lunaN, editing.diaN);
+    const it=c.agenda.find(x=>x.id===id); if(!it) return;
+    if (!it.notify) {
+      try{ if(typeof Notification!=='undefined' && Notification.permission!=='granted' && Notification.requestPermission) await Notification.requestPermission(); }catch{}
+    }
+    it.notify=!it.notify;
+    it.notified=false;
+    scheduleSave(); renderDlgHoras();
+  });
+}
+function agendaCheckNotify() {
+  if (typeof Notification==='undefined' || Notification.permission!=='granted') return;
+  const now = new Date();
+  const todayKey = cal.fmtKey.format(now);
+  const nowHour = now.getHours();
+  const nowMin = now.getMinutes();
+  try{
+    const cycles = (userData().cycles)||{};
+    for(const y of Object.keys(cycles)){
+      const c=cycles[y];
+      for(const mk of Object.keys(c.moons||{})){
+        for(const dk of Object.keys(c.moons[mk].days||{})){
+          const cell=c.moons[mk].days[dk];
+          if(!cell||!Array.isArray(cell.agenda)||!cell.agenda.length) continue;
+          // reconstruir fecha de esa luna/dia -> buscar en cycle actual o reconstruir via cal.buildCycle
+          // buscar día gregoriano correspondiente
+          let foundMs=null;
+          try{
+            const cy=cal.buildCycle(parseInt(y));
+            const dd=cy.days.find(x=> String(x.luna)===String(mk) && x.diaN===parseInt(dk));
+            if(dd) foundMs=dd.noonMs;
+          }catch{}
+          if(!foundMs) continue;
+          const key=cal.fmtKey.format(new Date(foundMs));
+          if(key!==todayKey) continue;
+          cell.agenda.forEach(it=>{
+            if(!it.notify || it.notified) return;
+            if(it.hour===nowHour && nowMin===0){
+              try{ new Notification(`⏰ ${String(it.hour).padStart(2,'0')}:00 — ${it.text}`, { body: `Luna ${mk} · Día ${dk} — ${it.text}`}); if(navigator.vibrate) navigator.vibrate([200,100,200]); }catch{}
+              it.notified=true;
+            } else if(it.hour < nowHour) {
+              // si ya pasó y no se notificó, marcar para no repetir hoy
+              // no hacer nada, dejar notified false hasta medianoche? simplemente no notificar tarde
+            }
+          });
+        }
+      }
+    }
+    // guardar marca notified sin spam guardar frecuente
+    // scheduleSave ligero
+    scheduleSave();
+  }catch(e){}
+}
+setInterval(()=>{ try{ agendaCheckNotify(); }catch{} }, 60000);
+function setupDlgHorasAdd(){
+  const btn=$('dlgHourAdd'); if(!btn) return;
+  btn.onclick=async()=>{
+    const sel=$('dlgHourSel'); const txtEl=$('dlgHourText'); const chk=$('dlgHourNotify');
+    if(!editing) return;
+    const hour=parseInt(sel.value); const text=sanitizeText((txtEl.value||'').trim(),80);
+    if(!text) return;
+    const notify=!!(chk && chk.checked);
+    if(notify){
+      try{ if(typeof Notification!=='undefined' && Notification.permission!=='granted' && Notification.requestPermission) await Notification.requestPermission(); }catch{}
+    }
+    const cell=dayCell(editing.lunaN, editing.diaN);
+    if(!Array.isArray(cell.agenda)) cell.agenda=[];
+    cell.agenda.push({ id:'a'+Date.now()+Math.random().toString(36).slice(2,4), hour, text, notify, notified:false });
+    scheduleSave();
+    txtEl.value=''; if(chk) chk.checked=false;
+    renderDlgHoras(); if(currentView.tipo==='luna') renderLuna();
+  };
+  const txtEl2=$('dlgHourText');
+  if(txtEl2) txtEl2.addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); $('dlgHourAdd').click(); } });
+}
+setTimeout(setupDlgHorasAdd, 500);
+
 function openDayDialog(lunaN, diaN) {
   editing = { lunaN, diaN };
   const cell = dayCell(lunaN, diaN);
@@ -401,16 +526,22 @@ function openDayDialog(lunaN, diaN) {
     moodBox.appendChild(b);
   });
 
-  $('fClima').value = cell.clima || '';
-  $('fMareaAlta').value = cell.alta || '';
-  $('fMareaBaja').value = cell.baja || '';
-  $('fNota').value = cell.nota || '';
-  // botón menstrual en dialog día
+  ensureHourSel();
+  // Notas del día (textarea libre) — mantener separado de compromisos por hora
+  const notaEl = $('fNota');
+  if (notaEl) notaEl.value = cell.nota || '';
+  $('dlgHourText').value = '';
+  $('dlgHourNotify').checked = false;
+  renderDlgHoras();
+  // botón menstrual en dialog día — ocultar si opción está desactivada en Personalizar
   const mensBtn = $('dlgMenstrual');
   if (mensBtn) {
+    const vis = (typeof getVisibleConfig==='function') ? getVisibleConfig() : null;
+    const showMens = !vis || vis['btnMenstrual']!==false;
     const dlgKey = cal.fmtKey.format(new Date(d.noonMs));
     const md = getMensData();
     const isStart = md.history.includes(dlgKey);
+    mensBtn.style.display = showMens ? '' : 'none';
     mensBtn.textContent = isStart ? '🌸 Quitar inicio ciclo' : '🌸 Marcar inicio ciclo';
     mensBtn.classList.toggle('btn-accent', isStart);
     mensBtn.onclick = () => {
@@ -431,11 +562,10 @@ $('dlgCancel').onclick = () => $('dayDialog').close();
 const _dlgCloseTop = $('dlgCloseTop'); if (_dlgCloseTop) _dlgCloseTop.onclick = () => $('dayDialog').close();
 $('dlgSave').onclick = () => {
   const cell = dayCell(editing.lunaN, editing.diaN);
-  cell.clima = sanitizeText($('fClima').value.trim(), 60);
-  cell.alta = sanitizeText($('fMareaAlta').value.trim(), 30);
-  cell.baja = sanitizeText($('fMareaBaja').value.trim(), 30);
-  cell.nota = sanitizeText($('fNota').value, 2000);
   cell.animo = pendingMood;
+  const notaEl = $('fNota');
+  if (notaEl) cell.nota = sanitizeText(notaEl.value, 2000);
+  // agenda ya se guarda al agregar/eliminar; solo persistir estado actual
   $('dayDialog').close();
   scheduleSave();
   if (currentView.tipo === 'luna') renderLuna();
@@ -483,11 +613,15 @@ function buildShareImage(lunaN, diaN) {
     x.fillStyle = '#9aa3c7'; x.font = '28px Segoe UI';
     x.fillText(`— ${fr.a}`, 540, 700);
   }
-  x.fillStyle = '#8fc7e8'; x.font = '30px Segoe UI';
-  x.fillText(`🌊 Marea alta: ${cell.alta || '—'}   Baja: ${cell.baja || '—'}`, 540, 1130);
-  if (cell.nota) {
+  // Notas + agenda por horas en imagen compartida
+  const agendaTxt = Array.isArray(cell.agenda) && cell.agenda.length ? cell.agenda.slice().sort((a,b)=>a.hour-b.hour).map(a=> `${String(a.hour).padStart(2,'0')}:00 ${a.text}${a.notify?' 🔔':''}`).join(' · ') : '';
+  const notaTxt = cell.nota ? cell.nota.trim() : '';
+  let shareNote = '';
+  if (agendaTxt && notaTxt) shareNote = `🕐 ${agendaTxt} — ${notaTxt}`;
+  else shareNote = agendaTxt ? `🕐 ${agendaTxt}` : notaTxt;
+  if (shareNote) {
     x.fillStyle = '#cdd3ee'; x.font = '26px Segoe UI';
-    wrapText(x, cell.nota.slice(0, 220), 540, 1190, 900, 34);
+    wrapText(x, shareNote.slice(0, 240), 540, 1190, 900, 34);
   }
   x.fillStyle = '#5a6390'; x.font = '22px Segoe UI';
   x.fillText('Calendario de las 13 Lunas · Penco, Bío-Bío', 540, 1300);
@@ -1356,18 +1490,18 @@ function lunaHTML(y, meta, opts) {
   const rows = [[], [], [], []];
   for (let dia = 1; dia <= 28; dia++) {
     const ms = start + ((meta.n - 1) * 28 + dia - 1) * 86400000;
-    const cell = (cc.moons[String(meta.n)].days && cc.moons[String(meta.n)].days[dia]) || { alta: '', baja: '', clima: '', nota: '' };
+    const cell = (cc.moons[String(meta.n)].days && cc.moons[String(meta.n)].days[dia]) || { nota: '', agenda: [] };
     const sun = cal.sunForDay(ms);
     const key = cal.fmtKey.format(new Date(ms));
     const evs = (phaseMap[key] || []);
+    const agendaHtml = Array.isArray(cell.agenda)&&cell.agenda.length ? `<div class="pd-note">🕐 ${escapeHtml(cell.agenda.map(a=> String(a.hour).padStart(2,'0')+':00 '+a.text).join(' · '))}</div>` : '';
     rows[Math.floor((dia - 1) / 7)].push(`
       <td>
         <div class="pd-head"><b>${String(dia).padStart(2, '0')}</b> ${escapeHtml(cal.fmtDate.format(new Date(ms)))}</div>
         <div class="pd-sun">☀ ${sun.rise ? escapeHtml(cal.fmtTime.format(new Date(sun.rise))) : '--'}–${sun.set ? escapeHtml(cal.fmtTime.format(new Date(sun.set))) : '--'}</div>
-        <div class="pd-tide">🌊 A:${escapeHtml(cell.alta || '__')} B:${escapeHtml(cell.baja || '__')}</div>
         ${evs.map(e => `<div class="pd-ph">${e.simbolo} ${escapeHtml(e.tipo)} ${escapeHtml(cal.fmtTime.format(new Date(e.utcMs)))}</div>`).join('')}
         ${cell.nota ? `<div class="pd-note">${escapeHtml(cell.nota)}</div>` : ''}
-        ${cell.clima ? `<div class="pd-cl">${escapeHtml(cell.clima)}</div>` : ''}
+        ${agendaHtml}
       </td>`);
   }
   const chips = [];
@@ -1470,7 +1604,8 @@ function runSearch(q) {
   for (const [y, c] of Object.entries(cycles)) {
     for (const [ln, m] of Object.entries(c.moons || {})) {
       for (const [dn, cell] of Object.entries(m.days || {})) {
-        const txt = [cell.nota, cell.clima].filter(Boolean).join(' ');
+        const agendaTxt = Array.isArray(cell.agenda) ? cell.agenda.map(a=>a.text).join(' ') : '';
+        const txt = [cell.nota, agendaTxt].filter(Boolean).join(' ');
         if (txt.toLowerCase().includes(ql)) {
           hits.push({ y: +y, luna: +ln, dia: +dn, txt: txt.slice(0, 140), tipo: 'Notas del día' });
         }
