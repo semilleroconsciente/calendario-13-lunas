@@ -315,8 +315,8 @@ body[data-theme="medianoche"] { --bg:#050508; --bg2:#0a0a10; --panel:#141418; --
 .chrono-laps { margin-top: 10px; max-height: 140px; overflow-y: auto; display: flex; flex-direction: column; gap: 4px; }
 .chrono-lap { background: var(--card); border: 1px solid var(--line); border-radius: 6px; padding: 6px 10px; font-size: 12px; color: var(--text); }
 
-#convertDialog, #timerDialog, #ekadashiDialog, #siembraDialog, #menstrualDialog, #medicDialog, #habitsDialog, #donateDialog, #helpDialog, #circadianDialog, #goldenDialog, #disciplineDialog, #dreamsDialog, #mealDialog, #shoppingDialog, #financeDialog, #energyDialog, #breathDialog, #scheduleDialog, #fishingDialog, #gymDialog, #birdsDialog, #astroDialog, #comunaDialog { width: 520px; max-width: 96vw; max-height: 88vh; overflow-y: auto; }
-#helpDialog, #disciplineDialog, #dreamsDialog, #breathDialog, #scheduleDialog, #fishingDialog, #birdsDialog, #astroDialog, #comunaDialog, #studyDialog { width: 680px; }
+#convertDialog, #timerDialog, #ekadashiDialog, #siembraDialog, #menstrualDialog, #medicDialog, #habitsDialog, #donateDialog, #helpDialog, #circadianDialog, #goldenDialog, #disciplineDialog, #dreamsDialog, #mealDialog, #shoppingDialog, #financeDialog, #energyDialog, #breathDialog, #scheduleDialog, #fishingDialog, #gymDialog, #birdsDialog, #astroDialog, #comunaDialog, #firstAidDialog, #animalCareDialog, #homeTasksDialog { width: 520px; max-width: 96vw; max-height: 88vh; overflow-y: auto; }
+#helpDialog, #disciplineDialog, #dreamsDialog, #breathDialog, #scheduleDialog, #fishingDialog, #birdsDialog, #astroDialog, #comunaDialog, #studyDialog, #firstAidDialog, #animalCareDialog, #homeTasksDialog { width: 680px; }
 .help-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .help-card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 12px; }
 .help-card h4 { color: var(--gold); margin-bottom: 6px; font-size: 13px; }
@@ -427,6 +427,52 @@ body[data-theme="medianoche"] { --bg:#050508; --bg2:#0a0a10; --panel:#141418; --
 .dlg-horas-add input { flex:1; min-width:120px; }
 .meal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 .shopping-list { display: flex; flex-direction: column; gap: 6px; max-height: 320px; overflow-y: auto; }
+/* Asociaciones y Preparados — ordenado */
+.asoc-controls{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-top:10px}
+.asoc-control{flex:1;min-width:140px;display:flex;flex-direction:column;gap:4px;font-size:11px;color:var(--muted)}
+.asoc-control input,.asoc-control select{margin-top:0}
+.asoc-count{align-self:flex-end}
+.asoc-destacados{margin-top:8px;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.asoc-legend{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.asoc-legend-item{font-size:11px;padding:4px 8px;border-radius:999px;border:1px solid var(--line);background:var(--panel);color:var(--muted)}
+.asoc-legend-item.good{background:#8fd69422;color:#8fd694;border-color:#8fd69455}
+.asoc-legend-item.bad{background:#ff9a9a22;color:#ff9a9a;border-color:#ff9a9a55}
+.asoc-legend-item.tip{background:var(--gold)22;color:var(--gold);border-color:var(--gold)55}
+.asoc-list{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.asoc-familia-sep{margin:6px 0 2px;padding:6px 10px;background:var(--panel);border:1px solid var(--line);border-radius:8px;color:var(--gold);font-weight:700;font-size:12px;letter-spacing:1px;text-transform:uppercase}
+.asoc-card{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;transition:transform .08s}
+.asoc-card:hover{transform:translateY(-1px);border-color:var(--line)}
+.asoc-card.dest{border-color:var(--gold);background:linear-gradient(135deg,var(--panel),var(--card));box-shadow:0 0 0 1px #e8c56a22}
+.asoc-card-head{display:flex;gap:10px;align-items:center;padding:10px 12px;background:rgba(255,255,255,0.02);border-bottom:1px solid var(--line)}
+.asoc-icon{font-size:22px;flex:0 0 auto}
+.asoc-titles{display:flex;flex-wrap:wrap;gap:6px;align-items:center;flex:1}
+.asoc-name{color:var(--text);font-size:13px}
+.asoc-familia{font-size:10px;background:var(--panel);border-color:var(--line)}
+.asoc-luna{font-size:10px;background:var(--gold);color:#10142c;border-color:var(--gold)}
+.asoc-card-body{padding:10px 12px;display:flex;flex-direction:column;gap:8px}
+.asoc-row{display:flex;gap:8px;align-items:flex-start}
+.asoc-label{font-size:11px;font-weight:700;min-width:78px;flex:0 0 auto;padding:2px 6px;border-radius:6px;text-align:center}
+.asoc-label.good{background:#8fd69422;color:#8fd694;border:1px solid #8fd69455}
+.asoc-label.bad{background:#ff9a9a22;color:#ff9a9a;border:1px solid #ff9a9a55}
+.asoc-pills{display:flex;flex-wrap:wrap;gap:6px;flex:1}
+.pill{font-size:11px;padding:3px 8px;border-radius:999px;border:1px solid var(--line);background:var(--panel)}
+.pill.good{background:#8fd69422;color:#c8f5d0;border-color:#8fd69455}
+.pill.bad{background:#ff9a9a22;color:#ffd1d1;border-color:#ff9a9a55}
+.asoc-note{font-size:11px;color:var(--muted);line-height:1.4;background:var(--panel);border:1px dashed var(--line);border-radius:8px;padding:8px}
+.asoc-milpa{padding:12px}
+.prep-list{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+.prep-card{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.prep-card:hover{border-color:var(--gold)55}
+.prep-head{display:flex;gap:10px;align-items:center;padding:10px 12px;border-bottom:1px solid var(--line);background:rgba(232,197,106,0.06)}
+.prep-tipo{font-size:10px}
+.prep-tipo.good{background:#8fd69422;color:#8fd694;border-color:#8fd69455}
+.prep-tipo.fungi{background:#7ab8ff22;color:#7ab8ff;border-color:#7ab8ff55}
+.prep-tipo.bad{background:#ff9a9a22;color:#ff9a9a;border-color:#ff9a9a55}
+.prep-body{padding:10px 12px;display:flex;flex-direction:column;gap:8px}
+.prep-row{font-size:11px;line-height:1.5}
+.prep-label{font-size:11px;font-weight:700;color:var(--gold);display:block;margin-bottom:2px}
+.prep-row p{margin:0;color:#cdd3ee}
+.prep-caution{font-size:11px;color:#ff9a9a;background:#ff9a9a12;border:1px solid #ff9a9a33;border-radius:8px;padding:8px}
 .shop-cat { font-size: 11px; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; margin-top: 8px; }
 .shop-item { display: flex; align-items: center; gap: 8px; padding: 6px 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); }
 .shop-item.done { opacity: 0.6; }

@@ -258,7 +258,7 @@ function renderLuna() {
       gymIcons = gymForDay.map(it=> `<span class="dc-habit" style="background:${it.color}22;color:${it.color};border-color:${it.color}55" title="${escapeHtml(it.name)} ${it.start}-${it.end}">🏋️</span>`).join('');
       hasGym = gymForDay.length ? ' has-gym' : '';
     }catch(e){}
-    let birdIcons='', fishIcons='', astroIcons='', comunaIcons='', financeIcons='';
+    let birdIcons='', fishIcons='', astroIcons='', comunaIcons='', financeIcons='', homeIcons='';
     try{
       const bd=getBirdData();
       const birdsToday=bd.entries.filter(x=>x.date===key);
@@ -288,6 +288,17 @@ function renderLuna() {
         financeIcons=`<span class="dc-habit" style="background:#e8c56a22;color:#e8c56a;border-color:#e8c56a55" title="${finToday.length} mov. · gastos $${totG.toLocaleString('es-CL')} · ingresos $${totI.toLocaleString('es-CL')}">💰</span>`;
       }
     }catch(e){}
+    try{
+      const ht=getHomeTasksData();
+      const homeToday=homeTasksForDate(key);
+      if(homeToday.length){
+        const doneCount=homeToday.filter(t=> ht.completions[key] && ht.completions[key][t.id]).length;
+        const pending=homeToday.length - doneCount;
+        const bg= pending===0 ? '#a9d18e' : '#ffd98a';
+        const fg= pending===0 ? '#1a2a1a' : '#4a3410';
+        homeIcons=`<span class="dc-habit" style="background:${bg}22;color:${bg};border-color:${bg}55" title="${homeToday.length} tareas hogar · ${doneCount} hechas · ${pending} pendientes">${pending===0?'🏠✓':'🏠'}</span>`;
+      }
+    }catch(e){}
     const card = document.createElement('div');
     card.className = 'day-card' + (key === todayKey ? ' today' : '') + (mensType ? ' mens-'+mensType : '') + hasHabits + hasGym;
     card.dataset.luna = meta.n;
@@ -303,6 +314,7 @@ function renderLuna() {
       ${astroIcons ? `<div class="dc-habits">${astroIcons}</div>` : ''}
       ${comunaIcons ? `<div class="dc-habits">${comunaIcons}</div>` : ''}
       ${financeIcons ? `<div class="dc-habits">${financeIcons}</div>` : ''}
+      ${homeIcons ? `<div class="dc-habits">${homeIcons}</div>` : ''}
       ${efe ? `<div class="dc-efe" title="${escapeHtml(efe)}">📅 ${escapeHtml(efe)}</div>` : ''}
       ${mood ? `<div class="dc-clima">Ánimo: ${escapeHtml(mood.e)} ${escapeHtml(mood.n)}</div>` : ''}
       ${Array.isArray(cell.agenda)&&cell.agenda.length ? `<div class="dc-clima" title="${escapeHtml(cell.agenda.map(a=>String(a.hour).padStart(2,'0')+':00 '+a.text + (a.notify?' 🔔':'')).join(' · '))}">🕐 ${cell.agenda.length} compromiso${cell.agenda.length>1?'s':''} · ${escapeHtml(cell.agenda.slice(0,2).map(a=>String(a.hour).padStart(2,'0')+':00 '+a.text).join(' · '))}${cell.agenda.length>2?' …':''}</div>` : ''}
@@ -847,20 +859,32 @@ function renderSiembraTresBox(){
 }
 function renderSiembraContent(tab){
   siembraTab = tab||siembraTab;
-  const box = $('siembraContent'); const hBox=$('siembraHarvestBox'); const aBox=$('siembraAsociacionesBox');
+  const box = $('siembraContent'); const hBox=$('siembraHarvestBox'); const aBox=$('siembraAsociacionesBox'); const pBox=$('siembraPreparadosBox');
   if(!box) return;
-  const tS=$('tabSiembra'), tC=$('tabCosecha'), tA=$('tabAsociaciones');
-  if(tS&&tC&&tA){ tS.classList.toggle('btn-accent', siembraTab==='siembra'); tC.classList.toggle('btn-accent', siembraTab==='cosecha'); tA.classList.toggle('btn-accent', siembraTab==='asociaciones'); }
+  const tS=$('tabSiembra'), tC=$('tabCosecha'), tA=$('tabAsociaciones'), tP=$('tabPreparados');
+  if(tS&&tC&&tA&&tP){ tS.classList.toggle('btn-accent', siembraTab==='siembra'); tC.classList.toggle('btn-accent', siembraTab==='cosecha'); tA.classList.toggle('btn-accent', siembraTab==='asociaciones'); tP.classList.toggle('btn-accent', siembraTab==='preparados'); }
+  else if(tS&&tC&&tA){ tS.classList.toggle('btn-accent', siembraTab==='siembra'); tC.classList.toggle('btn-accent', siembraTab==='cosecha'); tA.classList.toggle('btn-accent', siembraTab==='asociaciones'); }
   else if(tS&&tC){ tS.classList.toggle('btn-accent', siembraTab==='siembra'); tC.classList.toggle('btn-accent', siembraTab==='cosecha'); }
   // gestionar visibilidad de contenedores
   if(aBox){
     if(siembraTab==='asociaciones'){ aBox.classList.remove('hidden'); aBox.style.display=''; } else { aBox.classList.add('hidden'); }
   }
+  if(pBox){
+    if(siembraTab==='preparados'){ pBox.classList.remove('hidden'); pBox.style.display=''; } else { pBox.classList.add('hidden'); }
+  }
   const tres=getSiembraTresLunas();
   if(siembraTab==='asociaciones'){
     if(box) box.innerHTML='';
     if(hBox) hBox.innerHTML='';
+    if(pBox) pBox.innerHTML='';
     renderSiembraAsociaciones();
+    return;
+  }
+  if(siembraTab==='preparados'){
+    if(box) box.innerHTML='';
+    if(hBox) hBox.innerHTML='';
+    if(aBox) aBox.classList.add('hidden');
+    renderSiembraPreparados();
     return;
   }
   // ocultar asociaciones si no es esa pestaña ya hecho; asegurar box visible
@@ -897,6 +921,8 @@ function renderSiembraContent(tab){
 }
 // === ASOCIACIONES DE CULTIVOS ===
 const ASOC_DATA = (typeof ASOCIACIONES_CULTIVOS !== 'undefined' ? ASOCIACIONES_CULTIVOS : (window.pencoData && window.pencoData.ASOCIACIONES_CULTIVOS) || []);
+let asocSortMode = 'destacado'; // destacado | alfabetico | familia
+let asocFamiliaFilter = '';
 function renderSiembraAsociaciones(filterText){
   const aBox=$('siembraAsociacionesBox'); if(!aBox) return;
   const ft=(filterText||$('asocSearch')&&$('asocSearch').value||'').toLowerCase().trim();
@@ -909,51 +935,127 @@ function renderSiembraAsociaciones(filterText){
       const txt=(s.directa+' '+s.almacigos).toLowerCase();
       ASOC_DATA.forEach(a=>{
         const name=a.cultivo.toLowerCase();
-        // si el nombre aparece en el texto de siembra (tomate en directa etc.) marcar
         if(txt.includes(name.split(' ')[0]) || txt.includes(name.toLowerCase())) destacados.add(a.cultivo);
       });
     });
   }catch{}
-  let list=ASOC_DATA;
+  let list=ASOC_DATA.slice();
   if(ft){
     list=list.filter(a=> a.cultivo.toLowerCase().includes(ft) || a.buenas.join(' ').toLowerCase().includes(ft) || a.malas.join(' ').toLowerCase().includes(ft) || a.familia.toLowerCase().includes(ft));
   }
+  if(asocFamiliaFilter) list=list.filter(a=> a.familia===asocFamiliaFilter);
+  // orden
+  if(asocSortMode==='alfabetico') list.sort((a,b)=> a.cultivo.localeCompare(b.cultivo));
+  else if(asocSortMode==='familia') list.sort((a,b)=> a.familia.localeCompare(b.familia) || a.cultivo.localeCompare(b.cultivo));
+  else { // destacado primero, luego alfabetico
+    list.sort((a,b)=>{
+      const da=destacados.has(a.cultivo)?0:1; const db=destacados.has(b.cultivo)?0:1;
+      if(da!==db) return da-db;
+      return a.cultivo.localeCompare(b.cultivo);
+    });
+  }
+  const familias=[...new Set(ASOC_DATA.map(a=>a.familia))].sort();
   let html='';
-  html+='<div class="menstrual-card" style="background:linear-gradient(135deg,var(--panel),var(--card));border-color:var(--gold)">';
+  // Encabezado ordenado
+  html+='<div class="menstrual-card asoc-header" style="background:linear-gradient(135deg,var(--panel),var(--card));border-color:var(--gold)">';
   html+='<h4 style="color:var(--gold)">🤝 Asociaciones — qué plantar junto</h4>';
   html+='<p class="muted" style="font-size:11px">Combina cultivos para repeler plagas, mejorar sabor y aprovechar espacio. <b>Verde</b>=buena compañía, <b>rojo</b>=evitar. Basado en huerto de Penco (Bío-Bío).</p>';
-  html+='<div class="conv-row" style="margin-top:8px"><label style="flex:1">🔍 Buscar cultivo <input type="text" id="asocSearch" placeholder="ej: tomate, lechuga, ajo..." value="'+escapeHtml(ft)+'"></label><span class="chip" style="align-self:flex-end">'+list.length+' cultivos</span></div>';
-  if(destacados.size) html+='<p class="muted" style="font-size:11px;margin-top:6px">⭐ Destacados esta luna: '+Array.from(destacados).join(', ')+'</p>';
-  html+='<div class="fishing-grid" style="margin-top:10px">';
-  html+='<div class="menstrual-card" style="background:var(--panel)"><h4 style="font-size:11px;color:#8fd694">✅ Buenas combinaciones</h4><p class="muted" style="font-size:11px">Ej: Maíz + Poroto + Zapallo (milpa), Tomate + Albahaca, Zanahoria + Cebolla, Frutilla + Ajo.</p></div>';
-  html+='<div class="menstrual-card" style="background:var(--panel)"><h4 style="font-size:11px;color:#ff9a9a">🚫 Malas combinaciones</h4><p class="muted" style="font-size:11px">Ej: Cebolla con leguminosas, Tomate con Repollo/Papa, Haba con Ajo.</p></div>';
+  html+='<div class="asoc-controls">';
+  html+='<label class="asoc-control">🔍 Buscar<input type="text" id="asocSearch" placeholder="ej: tomate, lechuga, ajo..." value="'+escapeHtml(ft)+'"></label>';
+  html+='<label class="asoc-control">↕️ Orden<select id="asocSort"><option value="destacado" '+(asocSortMode==='destacado'?'selected':'')+'>⭐ Luna actual primero</option><option value="alfabetico" '+(asocSortMode==='alfabetico'?'selected':'')+'>🔤 A → Z</option><option value="familia" '+(asocSortMode==='familia'?'selected':'')+'>🌿 Por familia</option></select></label>';
+  html+='<label class="asoc-control">🌿 Familia<select id="asocFamilia"><option value="">Todas</option>'+familias.map(f=>'<option value="'+escapeHtml(f)+'" '+(asocFamiliaFilter===f?'selected':'')+'>'+escapeHtml(f)+'</option>').join('')+'</select></label>';
+  html+='<span class="chip asoc-count">'+list.length+' cultivos'+(asocFamiliaFilter?' · '+escapeHtml(asocFamiliaFilter):'')+'</span>';
   html+='</div>';
-  // Tabla 3 hermanas
-  html+='<div class="si-card" style="margin-top:10px;border-color:var(--gold)"><h4>🌽 Las Tres Hermanas — milpa mapuche</h4><p style="font-size:12px;color:#cdd3ee"><b>Maíz</b> es tutor del <b>Poroto</b> (aporta nitrógeno) y <b>Zapallo</b> cubre suelo, guarda humedad y frena maleza. Juntas producen más que separadas. Espacio: maíz 40 cm, poroto al pie, zapallo 1,2 m entre mata.</p></div>';
+  if(destacados.size) html+='<div class="asoc-destacados"><span class="muted" style="font-size:11px">⭐ Destacados esta luna ('+destacados.size+'):</span> '+Array.from(destacados).map(c=>'<span class="pill good" style="font-size:11px">'+escapeHtml(c)+'</span>').join(' ')+'</div>';
+  html+='<div class="asoc-legend">';
+  html+='<span class="asoc-legend-item good">✅ Buena compañía</span><span class="asoc-legend-item bad">🚫 Evitar</span><span class="asoc-legend-item tip">💡 Consejo</span>';
   html+='</div>';
+  html+='</div>';
+  // Bloque Tres Hermanas destacado ordenado
+  html+='<div class="si-card asoc-milpa" style="border-color:var(--gold);display:flex;gap:12px;align-items:flex-start"><span style="font-size:28px">🌽</span><div><h4>Las Tres Hermanas — milpa mapuche</h4><p style="font-size:12px;color:#cdd3ee">Técnica ancestral: <b>Maíz</b> es tutor del <b>Poroto</b> (fija nitrógeno) y <b>Zapallo</b> cubre suelo, guarda humedad y frena maleza. Juntas producen más que separadas.</p><p class="muted" style="font-size:11px">Espacio: maíz 40 cm, poroto al pie, zapallo 1,2 m entre mata. Siembra las 3 en la misma luna de Pewü.</p></div></div>';
   if(!list.length){
-    html+='<p class="muted" style="margin-top:10px">Sin resultados para “'+escapeHtml(ft)+'”.</p>';
+    html+='<p class="muted" style="margin-top:14px;text-align:center">Sin resultados para “'+escapeHtml(ft)+'”'+(asocFamiliaFilter?' en '+escapeHtml(asocFamiliaFilter):'')+'. Prueba con otro término.</p>';
   } else {
-    html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px">';
+    // Lista ordenada vertical, una card por fila, más legible
+    html+='<div class="asoc-list">';
+    let currentFamilia=null;
     list.forEach(a=>{
       const isDest=destacados.has(a.cultivo);
-      html+='<div class="si-card" style="margin:0;'+(isDest?'border-color:var(--gold);background:linear-gradient(135deg,var(--panel),var(--card))':'')+'">';
-      html+='<h4>'+a.icono+' '+escapeHtml(a.cultivo)+' <span class="chip" style="font-size:10px">'+escapeHtml(a.familia)+'</span>'+(isDest?' <span class="chip" style="font-size:10px;background:var(--gold);color:#10142c">luna actual</span>':'')+'</h4>';
-      html+='<p style="font-size:11px;color:#8fd694">✅ Con: '+escapeHtml(a.buenas.join(', '))+'</p>';
-      html+='<p style="font-size:11px;color:#ff9a9a">🚫 Evitar: '+escapeHtml(a.malas.join(', '))+'</p>';
-      html+='<p style="font-size:11px;color:var(--muted)">💡 '+escapeHtml(a.nota)+'</p>';
+      if(asocSortMode==='familia' && currentFamilia!==a.familia){
+        currentFamilia=a.familia;
+        html+='<div class="asoc-familia-sep"><span>'+escapeHtml(currentFamilia)+'</span></div>';
+      }
+      html+='<div class="asoc-card'+(isDest?' dest':'' )+'">';
+      html+='<div class="asoc-card-head">';
+      html+='<span class="asoc-icon">'+a.icono+'</span>';
+      html+='<div class="asoc-titles"><b class="asoc-name">'+escapeHtml(a.cultivo)+'</b><span class="chip asoc-familia">'+escapeHtml(a.familia)+'</span>'+(isDest?' <span class="chip asoc-luna">⭐ luna actual</span>':'')+'</div>';
+      html+='</div>';
+      html+='<div class="asoc-card-body">';
+      html+='<div class="asoc-row"><span class="asoc-label good">✅ Con</span><div class="asoc-pills">'+a.buenas.map(b=>'<span class="pill good">'+escapeHtml(b)+'</span>').join('')+'</div></div>';
+      html+='<div class="asoc-row"><span class="asoc-label bad">🚫 Evitar</span><div class="asoc-pills">'+a.malas.map(b=>'<span class="pill bad">'+escapeHtml(b)+'</span>').join('')+'</div></div>';
+      html+='<div class="asoc-note">💡 '+escapeHtml(a.nota)+'</div>';
+      html+='</div>';
       html+='</div>';
     });
     html+='</div>';
   }
-  html+='<p class="muted" style="font-size:10px;margin-top:8px">Tip: alterna familias cada luna (no repetir solanácea tras solanácea). Deja flores (caléndula, cosmos) para atraer polinizadores.</p>';
+  html+='<p class="muted" style="font-size:10px;margin-top:10px;text-align:center">Tip: alterna familias cada luna (no repetir solanácea tras solanácea). Deja flores (caléndula, cosmos) para atraer polinizadores. Toca ⭐ para ver destacadas arriba.</p>';
   aBox.innerHTML=html;
   const inp=$('asocSearch');
   if(inp){
     inp.oninput=()=> renderSiembraAsociaciones(inp.value);
-    // mantener foco después de render
-    inp.focus(); const v=inp.value; inp.setSelectionRange(v.length, v.length);
+    inp.focus(); const v=inp.value; try{ inp.setSelectionRange(v.length, v.length);}catch{}
   }
+  const sel=$('asocSort'); if(sel) sel.onchange=()=>{ asocSortMode=sel.value; renderSiembraAsociaciones(); };
+  const fam=$('asocFamilia'); if(fam) fam.onchange=()=>{ asocFamiliaFilter=fam.value; renderSiembraAsociaciones(); };
+}
+// === PREPARADOS ORGÁNICOS ===
+const PREP_DATA = (typeof PREPARADOS_ORGANICOS !== 'undefined' ? PREPARADOS_ORGANICOS : (window.pencoData && window.pencoData.PREPARADOS_ORGANICOS) || []);
+let prepFilterTipo = '';
+let prepSearch = '';
+function renderSiembraPreparados(){
+  const pBox=$('siembraPreparadosBox'); if(!pBox) return;
+  const ft=(prepSearch||$('prepSearch')&&$('prepSearch').value||'').toLowerCase().trim();
+  const tipoFiltro = prepFilterTipo || ($('prepTipo')&&$('prepTipo').value||'');
+  let list=PREP_DATA.slice();
+  if(ft) list=list.filter(p=> p.nombre.toLowerCase().includes(ft) || p.tipo.toLowerCase().includes(ft) || p.ingredientes.toLowerCase().includes(ft) || p.uso.toLowerCase().includes(ft));
+  if(tipoFiltro) list=list.filter(p=> p.familia===tipoFiltro || p.tipo.toLowerCase().includes(tipoFiltro.toLowerCase()));
+  const tipos=[...new Set(PREP_DATA.map(p=>p.familia))].sort();
+  let html='';
+  html+='<div class="menstrual-card" style="background:linear-gradient(135deg,var(--panel),var(--card));border-color:var(--gold)">';
+  html+='<h4 style="color:var(--gold)">🧪 Preparados orgánicos — botica de la huerta pencona</h4>';
+  html+='<p class="muted" style="font-size:11px">Alternativa sin venenos para <b>fertilizar, prevenir hongos y repeler insectos</b>. Todos se hacen con ingredientes locales (ortiga, cola de caballo, ajo, ceniza). Respeta dosis y luna: menos es más.</p>';
+  html+='<div class="asoc-controls">';
+  html+='<label class="asoc-control">🔍 Buscar<input type="text" id="prepSearch" placeholder="ej: pulgón, ortiga, neem..." value="'+escapeHtml(ft)+'"></label>';
+  html+='<label class="asoc-control">🧪 Tipo<select id="prepTipo"><option value="">Todos</option>'+tipos.map(t=>'<option value="'+escapeHtml(t)+'" '+(tipoFiltro===t?'selected':'')+'>'+escapeHtml(t)+'</option>').join('')+'</select></label>';
+  html+='<span class="chip asoc-count">'+list.length+' preparados</span>';
+  html+='</div>';
+  html+='<div class="asoc-legend"><span class="asoc-legend-item good">🌿 Fertilizante</span><span class="asoc-legend-item" style="background:#7ab8ff22;color:#7ab8ff;border-color:#7ab8ff55">🍄 Fungicida</span><span class="asoc-legend-item bad">🐛 Insecticida</span><span class="asoc-legend-item tip">⚗️ Trampa</span></div>';
+  html+='</div>';
+  if(!list.length){
+    html+='<p class="muted" style="margin-top:14px;text-align:center">Sin preparados para ese filtro. Prueba “ortiga” o “jabón”.</p>';
+  } else {
+    html+='<div class="prep-list">';
+    list.forEach(p=>{
+      const tipoClass = p.familia==='Fertilizante'?'good': p.familia==='Fungicida'?'fungi': p.familia==='Insecticida'?'bad':'tip';
+      const lunaIcon = p.luna.includes('Creciente')?'🌒': p.luna.includes('Menguante')?'🌘':'🌕';
+      html+='<div class="prep-card">';
+      html+='<div class="prep-head"><span class="asoc-icon">'+p.icono+'</span><div class="asoc-titles"><b class="asoc-name">'+escapeHtml(p.nombre)+'</b><span class="chip prep-tipo '+tipoClass+'">'+escapeHtml(p.tipo)+'</span><span class="chip asoc-luna">'+lunaIcon+' '+escapeHtml(p.luna)+'</span></div></div>';
+      html+='<div class="prep-body">';
+      html+='<div class="prep-row"><span class="prep-label">🧾 Ingredientes</span><p>'+escapeHtml(p.ingredientes)+'</p></div>';
+      html+='<div class="prep-row"><span class="prep-label">⚗️ Preparación</span><p>'+escapeHtml(p.preparacion)+'</p></div>';
+      html+='<div class="prep-row"><span class="prep-label">💧 Dosis</span><p style="color:#8fd694"><b>'+escapeHtml(p.dosis)+'</b></p></div>';
+      html+='<div class="prep-row"><span class="prep-label">🎯 Uso</span><p>'+escapeHtml(p.uso)+'</p></div>';
+      html+='<div class="prep-caution">⚠️ '+escapeHtml(p.precauciones)+'</div>';
+      html+='</div>';
+      html+='</div>';
+    });
+    html+='</div>';
+  }
+  html+='<div class="si-card" style="border-color:var(--gold);margin-top:12px"><h4>📅 Calendario de preparados — por luna</h4><p style="font-size:11px;color:#cdd3ee"><b>Pukem (invierno):</b> cola de caballo + caldo bordelés preventivo. <b>Pewü:</b> ortiga + jabón potásico para brotes. <b>Walüng:</b> neem + ajo-ají para mosca blanca. <b>Rimü:</b> sulfocálcico + té de compost para guardar.</p><p class="muted" style="font-size:10px">Aplica siempre al atardecer, sin viento sur. Alterna preparados (no repitas cobre >3 veces). Lava hortalizas antes de consumir y respeta carencias.</p></div>';
+  pBox.innerHTML=html;
+  const inp=$('prepSearch'); if(inp){ inp.oninput=()=>{ prepSearch=inp.value; renderSiembraPreparados(); inp.focus(); try{const v=inp.value; inp.setSelectionRange(v.length,v.length);}catch{} }; }
+  const sel=$('prepTipo'); if(sel) sel.onchange=()=>{ prepFilterTipo=sel.value; renderSiembraPreparados(); };
 }
 function openSiembra(tab){
   renderSiembraTresBox();
@@ -963,10 +1065,11 @@ function openSiembra(tab){
 $('btnSiembra').onclick = () => openSiembra('siembra');
 $('siembraClose').onclick = () => $('siembraDialog').close();
 if ($('siembraCloseTop')) $('siembraCloseTop').onclick = () => $('siembraDialog').close();
-const _tabS=$('tabSiembra'), _tabC=$('tabCosecha'), _tabA=$('tabAsociaciones');
+const _tabS=$('tabSiembra'), _tabC=$('tabCosecha'), _tabA=$('tabAsociaciones'), _tabP=$('tabPreparados');
 if(_tabS) _tabS.onclick=()=> renderSiembraContent('siembra');
 if(_tabC) _tabC.onclick=()=> renderSiembraContent('cosecha');
 if(_tabA) _tabA.onclick=()=> renderSiembraContent('asociaciones');
+if(_tabP) _tabP.onclick=()=> renderSiembraContent('preparados');
 
 
 // === PESCA ===
@@ -3075,6 +3178,394 @@ function setupFinanceDialog(){
 }
 setTimeout(setupFinanceDialog, 670);
 
+// === TAREAS DEL HOGAR ===
+const HOME_AREAS = ["Cocina","Baño","Habitaciones","Living/Comedor","Ropa","Patio/Jardín","Mantenimiento","General","Compras Hogar","Otro"];
+const HOME_AREA_ICON = { "Cocina":"🍳","Baño":"🚿","Habitaciones":"🛏️","Living/Comedor":"🛋️","Ropa":"👕","Patio/Jardín":"🌿","Mantenimiento":"🛠️","General":"🏠","Compras Hogar":"🛒","Otro":"📦" };
+const HOME_TEMPLATES = [
+  { nombre:"Kit básico — 10 esenciales", tareas:[
+    {name:"Lavar loza desayuno", area:"Cocina", freq:"diaria", time:"15", priority:"alta"},
+    {name:"Tender camas + ventilar 10 min", area:"Habitaciones", freq:"diaria", time:"15", priority:"alta"},
+    {name:"Barrido rápido living/comedor", area:"Living/Comedor", freq:"diaria", time:"15", priority:"media"},
+    {name:"Limpieza baño express (lavamanos + WC)", area:"Baño", freq:"diaria", time:"5", priority:"media"},
+    {name:"Sacar basura / reciclaje", area:"Cocina", freq:"diaria", time:"5", priority:"media"},
+    {name:"Lavar ropa (1 carga)", area:"Ropa", freq:"semanal", day:"1", time:"30", priority:"media"},
+    {name:"Aspirar / trapear a fondo", area:"Living/Comedor", freq:"semanal", day:"6", time:"60", priority:"media"},
+    {name:"Limpieza profunda baño", area:"Baño", freq:"semanal", day:"2", time:"60", priority:"alta"},
+    {name:"Cocina a fondo (horno/micro)", area:"Cocina", freq:"quincenal", time:"60", priority:"baja"},
+    {name:"Revisar despensa + lista compras hogar", area:"Compras Hogar", freq:"semanal", day:"5", time:"30", priority:"media"}
+  ]},
+  { nombre:"Rutina mañana (Penco — anti-humedad)", tareas:[
+    {name:"Abrir ventanas 10 min (aire cruzado)", area:"General", freq:"diaria", time:"5", priority:"alta"},
+    {name:"Camas hechas + ropa noche guardada", area:"Habitaciones", freq:"diaria", time:"5", priority:"media"},
+    {name:"Loza noche lavada + cocina limpia", area:"Cocina", freq:"diaria", time:"15", priority:"alta"},
+    {name:"Revisar ropa húmeda / colgar", area:"Ropa", freq:"diaria", time:"15", priority:"media"}
+  ]},
+  { nombre:"Rutina noche 5 min", tareas:[
+    {name:"Recoger living (zapatos, juguetes)", area:"Living/Comedor", freq:"diaria", time:"5", priority:"media"},
+    {name:"Preparar ropa + mochila mañana", area:"General", freq:"diaria", time:"5", priority:"baja"},
+    {name:"Dejar cocina lista (mise en place)", area:"Cocina", freq:"diaria", time:"5", priority:"media"}
+  ]},
+  { nombre:"Semana por zonas (FlyLady)", tareas:[
+    {name:"Lunes: Habitaciones + cambio sábanas + polvo", area:"Habitaciones", freq:"semanal", day:"1", time:"60", priority:"media"},
+    {name:"Martes: Baños profundo + espejos + WC", area:"Baño", freq:"semanal", day:"2", time:"60", priority:"alta"},
+    {name:"Miércoles: Cocina a fondo + refrigerador", area:"Cocina", freq:"semanal", day:"3", time:"60", priority:"media"},
+    {name:"Jueves: Living/comedor + polvo + vidrios", area:"Living/Comedor", freq:"semanal", day:"4", time:"60", priority:"media"},
+    {name:"Viernes: Patio/jardín + basura voluminosa", area:"Patio/Jardín", freq:"semanal", day:"5", time:"60", priority:"media"},
+    {name:"Sábado: Lavandería + planchado + mantenimiento", area:"Ropa", freq:"semanal", day:"6", time:"120", priority:"media"},
+    {name:"Domingo: Descanso + repaso 15 min + revisar luna", area:"General", freq:"semanal", day:"0", time:"15", priority:"baja"}
+  ]},
+  { nombre:"Mantenimiento mensual Penco", tareas:[
+    {name:"Revisar techos/canaletas (antes de lluvia)", area:"Mantenimiento", freq:"mensual", time:"60", priority:"alta"},
+    {name:"Limpiar filtro campana/calefont", area:"Mantenimiento", freq:"mensual", time:"30", priority:"media"},
+    {name:"Desinfectar contenedores basura", area:"General", freq:"mensual", time:"30", priority:"media"},
+    {name:"Revisar sellos ventanas (humedad)", area:"Mantenimiento", freq:"mensual", time:"30", priority:"media"},
+    {name:"Fondo despensa + botiquín hogar", area:"Compras Hogar", freq:"mensual", time:"30", priority:"baja"}
+  ]}
+];
+function getHomeTasksData(){
+  const u=userData();
+  if(!u.homeTasks) u.homeTasks={ tasks:[], completions:{} };
+  if(!Array.isArray(u.homeTasks.tasks)) u.homeTasks.tasks=[];
+  if(typeof u.homeTasks.completions!=='object' || Array.isArray(u.homeTasks.completions)) u.homeTasks.completions={};
+  u.homeTasks.tasks.forEach(t=>{
+    if(!t.area) t.area="General";
+    if(!t.freq) t.freq="diaria";
+    if(!t.priority) t.priority="media";
+    if(!t.time) t.time="30";
+    if(t.day===undefined) t.day="todos";
+    if(!t.owner) t.owner="";
+  });
+  return u.homeTasks;
+}
+function homeTaskApplicableOnDate(task, dateStr){
+  if(task.freq==='diaria') return true;
+  if(task.freq==='puntual') return task.date===dateStr;
+  if(task.freq==='semanal'){
+    if(task.day==='todos') return true;
+    const dow=new Date(dateStr+"T12:00:00").getDay();
+    return String(dow)===String(task.day);
+  }
+  if(task.freq==='quincenal'){
+    // cada 14 días desde su creación o desde fecha base; simplificado: semanas pares/impares alternas según id hash
+    const dow=new Date(dateStr+"T12:00:00").getDay();
+    if(task.day!=='todos' && String(dow)!==String(task.day)) return false;
+    // quincenal: solo si la semana del año es par/impar según hash del id
+    const d=new Date(dateStr+"T12:00:00");
+    const start=new Date(d.getFullYear(),0,1);
+    const week=Math.ceil((((d - start)/86400000)+start.getDay()+1)/7);
+    const hash=task.id.split('').reduce((a,c)=>a+c.charCodeAt(0),0)%2;
+    return (week%2)===hash;
+  }
+  if(task.freq==='mensual'){
+    // primer aparición según día creado; hoy: si es día 1 del mes o mismo día de semana del mes (simplificado primer lunes etc.) -> mostrar el día del mes que corresponde al día creación
+    // Simplificado: aparece el día preferido del mes o todos si es 'todos' el día 15
+    if(task.day==='todos'){
+      return dateStr.slice(8,10)==='15';
+    } else {
+      const dow=new Date(dateStr+"T12:00:00").getDay();
+      if(String(dow)!==String(task.day)) return false;
+      // solo primera semana del mes
+      const dayNum=parseInt(dateStr.slice(8,10),10);
+      return dayNum<=7;
+    }
+  }
+  return true;
+}
+function homeTasksForDate(dateStr){
+  const ht=getHomeTasksData();
+  return ht.tasks.filter(t=> homeTaskApplicableOnDate(t,dateStr));
+}
+function renderHomeTasksResumen(){
+  const box=$('homeTasksResumen'); if(!box) return;
+  const ht=getHomeTasksData();
+  const todayKey=cal.fmtKey.format(new Date());
+  const todayTasks=homeTasksForDate(todayKey);
+  const doneToday= (ht.completions[todayKey] ? Object.keys(ht.completions[todayKey]).length : 0);
+  const pending=Math.max(0, todayTasks.length - doneToday);
+  const totalMin=todayTasks.reduce((s,t)=> s+ (parseInt(t.time)||0),0);
+  const doneMin=todayTasks.filter(t=> ht.completions[todayKey] && ht.completions[todayKey][t.id]).reduce((s,t)=> s+ (parseInt(t.time)||0),0);
+  const lunaName=currentView && currentView.tipo!=='dft' ? MOONS[currentView.luna-1].nombre : '—';
+  box.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px"><span style="font-size:15px"><b>🏠 Hoy</b> — ${cal.weekdayName(mensKeyToMs(todayKey))} ${cal.fmtDate.format(new Date(mensKeyToMs(todayKey)))}</span><span class="chip" style="background:${pending===0?'#a9d18e':'var(--gold)'};color:#10142c">${doneToday}/${todayTasks.length} hechas</span></div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px">
+    <div class="chip" style="text-align:center"><b>${pending} pendientes</b><br><span class="muted" style="font-size:10px">${todayTasks.length} hoy · ${totalMin} min est.</span></div>
+    <div class="chip" style="text-align:center"><b>${doneMin} min hecho</b><br><span class="muted" style="font-size:10px">${totalMin? Math.round(doneMin/totalMin*100):0}% tiempo</span></div>
+    <div class="chip" style="text-align:center"><b>${ht.tasks.length} tareas</b><br><span class="muted" style="font-size:10px">Luna: ${escapeHtml(lunaName)}</span></div>
+  </div>
+  <div style="margin-top:8px;background:var(--panel);border-radius:6px;height:8px;overflow:hidden"><div style="width:${todayTasks.length? Math.round(doneToday/todayTasks.length*100):0}%;height:100%;background:linear-gradient(90deg,#a9d18e,#e8c56a)"></div></div>
+  <p class="muted" style="font-size:10px;margin-top:6px">Tip: toca ☑ en 📋 Tareas para marcar. Las tareas diarias aparecen todos los días; semanales solo su día.</p>`;
+}
+function renderHomeTasksTodayBox(){
+  const box=$('homeTasksTodayBox'); if(!box) return;
+  const ht=getHomeTasksData();
+  const todayKey=cal.fmtKey.format(new Date());
+  const todayTasks=homeTasksForDate(todayKey);
+  if(!todayTasks.length){ box.innerHTML='<p class="muted">Sin tareas para hoy. Agrega en ➕ Nueva tarea o carga una plantilla en 🧹 Plantillas.</p>'; return; }
+  const completions=ht.completions[todayKey]||{};
+  // agrupar por área
+  const byArea={}; todayTasks.forEach(t=>{ if(!byArea[t.area]) byArea[t.area]=[]; byArea[t.area].push(t); });
+  let html='<h4 style="color:var(--gold)">☑ Hoy — marca al terminar</h4>';
+  Object.keys(byArea).sort().forEach(area=>{
+    const icon=HOME_AREA_ICON[area]||"🏠";
+    html+=`<div class="shop-cat" style="margin-top:8px">${icon} ${escapeHtml(area)} · ${byArea[area].length}</div>`;
+    byArea[area].forEach(t=>{
+      const done=!!completions[t.id];
+      const priColor=t.priority==='alta'?'#ff6b6b': t.priority==='baja'?'#8fd694':'var(--gold)';
+      html+=`<label class="shop-item ${done?'done':''}" style="border-left:3px solid ${priColor}"><input type="checkbox" data-home-id="${t.id}" ${done?'checked':''}><span class="shop-name"><b>${escapeHtml(t.name)}</b> <span class="muted" style="font-size:11px">· ${escapeHtml(t.owner||'Sin asignar')} · ${t.time}′ · ${t.freq}${t.day!=='todos'?' · '+['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'][t.day]:''}</span>${t.notes? '<br><span class="muted" style="font-size:11px">'+escapeHtml(t.notes)+'</span>':''}</span><span class="chip" style="font-size:10px;background:${priColor};color:#10142c">${t.priority}</span></label>`;
+    });
+  });
+  box.innerHTML=html;
+  box.querySelectorAll('input[data-home-id]').forEach(cb=> cb.onchange=()=>{
+    const id=cb.dataset.homeId; const key=cal.fmtKey.format(new Date());
+    const htd=getHomeTasksData();
+    if(!htd.completions[key]) htd.completions[key]={};
+    if(cb.checked) htd.completions[key][id]=true;
+    else { delete htd.completions[key][id]; if(Object.keys(htd.completions[key]).length===0) delete htd.completions[key]; }
+    scheduleSave(); renderHomeTasksResumen(); renderHomeTasksTodayBox(); renderHomeTasksWeekGrid(); renderHomeTasksLunaBox(); renderHomeTasksAreasBox(); renderHomeTasksList(); renderLuna();
+  });
+}
+function renderHomeTasksList(){
+  const box=$('homeTasksList'); if(!box) return;
+  const ht=getHomeTasksData();
+  const filterText=($('homeTaskFilter')&&$('homeTaskFilter').value||'').toLowerCase().trim();
+  const filterArea=$('homeTaskFilterArea')&&$('homeTaskFilterArea').value||'';
+  const filterStatus=$('homeTaskFilterStatus')&&$('homeTaskFilterStatus').value||'';
+  const todayKey=cal.fmtKey.format(new Date());
+  const todayTasksIds=new Set(homeTasksForDate(todayKey).map(t=>t.id));
+  const completionsToday=ht.completions[todayKey]||{};
+  let list=[...ht.tasks];
+  if(filterArea) list=list.filter(t=> t.area===filterArea);
+  if(filterText) list=list.filter(t=> (t.name+' '+t.area+' '+(t.owner||'')+' '+(t.notes||'')).toLowerCase().includes(filterText));
+  if(filterStatus==='pendientes') list=list.filter(t=> todayTasksIds.has(t.id) && !completionsToday[t.id]);
+  if(filterStatus==='hechas') list=list.filter(t=> todayTasksIds.has(t.id) && completionsToday[t.id]);
+  list=list.sort((a,b)=> (a.area.localeCompare(b.area)) || (a.name.localeCompare(b.name)));
+  if(!list.length){ box.innerHTML='<p class="muted">Sin tareas con ese filtro. Ajusta búsqueda o agrega nueva.</p>'; const s=$('homeTasksStats'); if(s) s.textContent=`${ht.tasks.length} tareas totales`; return; }
+  box.innerHTML=list.map(t=>{
+    const inToday=todayTasksIds.has(t.id);
+    const done=inToday && completionsToday[t.id];
+    const priColor=t.priority==='alta'?'#ff6b6b': t.priority==='baja'?'#8fd694':'var(--gold)';
+    const icon=HOME_AREA_ICON[t.area]||"🏠";
+    const freqLabel=t.freq + (t.day!=='todos'?' · '+['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'][t.day]:'') + (t.freq==='puntual' && t.date? ' · '+t.date : '');
+    return `<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center;border-left:3px solid ${priColor};${inToday?'':'opacity:0.75'}">
+      <span><b>${icon} ${escapeHtml(t.name)}</b> <span class="chip" style="font-size:10px">${escapeHtml(t.area)}</span> <span class="chip" style="font-size:10px;background:${priColor};color:#10142c">${t.priority}</span> ${inToday? (done? '<span class="chip" style="font-size:10px;background:#a9d18e;color:#10142c">✓ hoy</span>': '<span class="chip" style="font-size:10px">hoy</span>') : '<span class="muted" style="font-size:10px">no hoy</span>'}<br><span class="muted" style="font-size:11px">${escapeHtml(freqLabel)} · ${t.time}′ · ${escapeHtml(t.owner||'Sin asignar')}</span>${t.notes? '<br><span class="muted" style="font-size:11px">'+escapeHtml(t.notes)+'</span>':''}</span>
+      <span style="display:flex;gap:6px;flex:0 0 auto"><button data-id="${t.id}" class="btn home-edit" style="width:auto;font-size:11px">✏️</button><button data-id="${t.id}" class="btn home-del" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕</button></span>
+    </div>`;
+  }).join('');
+  const stats=$('homeTasksStats'); if(stats){ const pend=homeTasksForDate(todayKey).filter(t=> !completionsToday[t.id]).length; stats.textContent=`${list.length} mostradas · ${ht.tasks.length} totales · ${pend} pendientes hoy`; }
+  box.querySelectorAll('.home-edit').forEach(b=> b.onclick=()=>{
+    const t=ht.tasks.find(x=>x.id===b.dataset.id); if(!t) return;
+    homeTasksEditingId=t.id;
+    $('homeTaskName').value=t.name; $('homeTaskArea').value=t.area; $('homeTaskFreq').value=t.freq; $('homeTaskDay').value=t.day||'todos'; $('homeTaskPriority').value=t.priority; $('homeTaskTime').value=t.time; $('homeTaskOwner').value=t.owner||''; $('homeTaskDate').value=t.date||''; $('homeTaskNotes').value=t.notes||'';
+    $('homeTaskAdd').classList.add('hidden'); $('homeTaskUpdate').classList.remove('hidden'); $('homeTaskCancel').classList.remove('hidden');
+    $('homeTaskName').focus();
+  });
+  box.querySelectorAll('.home-del').forEach(b=> b.onclick=()=>{
+    if(!confirm('¿Eliminar tarea del hogar? Se borrará su historial de marcas.')) return;
+    const idx=ht.tasks.findIndex(x=>x.id===b.dataset.id); if(idx>=0) ht.tasks.splice(idx,1);
+    Object.keys(ht.completions).forEach(k=>{ if(ht.completions[k][b.dataset.id]) delete ht.completions[k][b.dataset.id]; if(Object.keys(ht.completions[k]).length===0) delete ht.completions[k]; });
+    scheduleSave(); renderHomeTasksResumen(); renderHomeTasksTodayBox(); renderHomeTasksList(); renderHomeTasksWeekGrid(); renderHomeTasksLunaBox(); renderHomeTasksAreasBox(); renderLuna();
+  });
+}
+function renderHomeTasksWeekGrid(){
+  const grid=$('homeTasksWeekGrid'); if(!grid) return;
+  const ht=getHomeTasksData();
+  const days=[['Lunes',1],['Martes',2],['Miércoles',3],['Jueves',4],['Viernes',5],['Sábado',6],['Domingo',0]];
+  const today=new Date().getDay();
+  let html='';
+  days.forEach(([name, idx])=>{
+    // construir fecha de esa semana para cada día
+    const now=new Date();
+    const diff=(idx - now.getDay() + 7)%7; // días hasta ese weekday
+    // si queremos semana actual (lunes a domingo), recalcular base lunes
+    const monday=new Date(now); monday.setDate(now.getDate() - ((now.getDay()+6)%7));
+    const d=new Date(monday); d.setDate(monday.getDate() + (idx===0?6: idx-1));
+    // para domingo idx0 -> 6
+    const dateStr=cal.fmtKey.format(d);
+    const tasks=homeTasksForDate(dateStr);
+    const completions=ht.completions[dateStr]||{};
+    const done=tasks.filter(t=> completions[t.id]).length;
+    const isToday=today===idx;
+    html+=`<div class="schedule-day ${isToday?'schedule-today':''}"><b>${name} <span class="muted" style="font-size:10px">${dateStr.slice(8,10)}/${dateStr.slice(5,7)}</span></b><span class="chip" style="font-size:10px;margin-top:4px;display:inline-block">${done}/${tasks.length}</span>${tasks.length? tasks.map(t=>{ const icon=HOME_AREA_ICON[t.area]||"🏠"; const isDone=completions[t.id]; return `<div class="schedule-block" style="background:${isDone?'#a9d18e': t.priority==='alta'?'#ff9a76':'#e8c56a'};border:1px solid ${isDone?'#a9d18e':'var(--line)'};opacity:${isDone?'0.85':1}">${icon} ${escapeHtml(t.name)}<br><span style="font-size:10px">${t.time}′ ${isDone?'✓':''}</span></div>`; }).join('') : '<p class="muted" style="font-size:10px">Sin tareas</p>'}</div>`;
+  });
+  grid.innerHTML=html;
+  const weekBox=$('homeTasksWeekList'); if(weekBox){
+    const now=new Date(); const monday=new Date(now); monday.setDate(now.getDate() - ((now.getDay()+6)%7));
+    let weekTasks=new Set();
+    for(let i=0;i<7;i++){ const d=new Date(monday); d.setDate(monday.getDate()+i); const ds=cal.fmtKey.format(d); homeTasksForDate(ds).forEach(t=> weekTasks.add(t.id)); }
+    const totalWeek=weekTasks.size;
+    let doneWeek=0; for(let i=0;i<7;i++){ const d=new Date(monday); d.setDate(monday.getDate()+i); const ds=cal.fmtKey.format(d); const comp=ht.completions[ds]||{}; Object.keys(comp).forEach(id=>{ if(!weekTasks.has(id)) return; doneWeek++; }); }
+    // dedup no needed for simple count; mostrar estimación
+    weekBox.innerHTML=`<h4 style="color:var(--accent)">🗓️ Semana — ${cal.fmtDate.format(monday)} al ${cal.fmtDate.format(new Date(monday.getTime()+6*86400000))}</h4><p class="muted" style="font-size:11px">${totalWeek} tareas distintas esta semana · ${Object.keys(ht.completions).filter(k=>{ const d=new Date(k+"T12:00:00"); return d>=monday && d<=new Date(monday.getTime()+6*86400000); }).length} días con avance. Revisa 📋 Tareas para marcar.</p>`;
+  }
+}
+function renderHomeTasksLunaBox(){
+  const box=$('homeTasksLunaBox'); if(!box) return;
+  const ht=getHomeTasksData();
+  const lunaDays = currentView && currentView.tipo==='dft' ? [] : (cycle && cycle.days.filter(d=> d.luna===currentView.luna) || []);
+  const lunaName = currentView && currentView.tipo==='dft' ? 'Día Fuera del Tiempo' : (currentView? MOONS[currentView.luna-1].nombre : '—');
+  const lunaN = currentView && currentView.tipo!=='dft' ? currentView.luna : '—';
+  let totalOccurrences=0; let doneOccurrences=0;
+  lunaDays.forEach(d=>{
+    const ds=cal.fmtKey.format(new Date(d.noonMs));
+    const tasks=homeTasksForDate(ds);
+    totalOccurrences+=tasks.length;
+    const comp=ht.completions[ds]||{};
+    doneOccurrences+=tasks.filter(t=> comp[t.id]).length;
+  });
+  const pct= totalOccurrences? Math.round(doneOccurrences/totalOccurrences*100):0;
+  box.innerHTML=`<h4 style="color:var(--gold)">🌙 Luna ${lunaN} · ${escapeHtml(lunaName)} — proyección 28 días</h4>
+    <p class="muted" style="font-size:11px">${totalOccurrences} ocurrencias de tareas en esta luna · ${doneOccurrences} hechas · ${pct}% avance</p>
+    <div style="margin-top:6px;background:var(--panel);border-radius:6px;height:8px;overflow:hidden"><div style="width:${pct}%;height:100%;background:linear-gradient(90deg,#7ab8ff,#a9d18e)"></div></div>
+    <p class="muted" style="font-size:10px;margin-top:6px">Las tareas diarias cuentan 28 veces; semanales ~4 veces; quincenales ~2; mensuales 1. Útil para planificar carga real por luna.</p>`;
+}
+function renderHomeTasksAreasBox(){
+  const box=$('homeTasksAreasBox'); if(!box) return;
+  const ht=getHomeTasksData();
+  const todayKey=cal.fmtKey.format(new Date());
+  const todayTasks=homeTasksForDate(todayKey);
+  const compToday=ht.completions[todayKey]||{};
+  const byArea={}; ht.tasks.forEach(t=>{ if(!byArea[t.area]) byArea[t.area]=0; byArea[t.area]++; });
+  const byAreaToday={}; todayTasks.forEach(t=>{ if(!byAreaToday[t.area]) byAreaToday[t.area]={total:0,done:0}; byAreaToday[t.area].total++; if(compToday[t.id]) byAreaToday[t.area].done++; });
+  let html='<h4 style="color:var(--accent)">📦 Por área — totales y hoy</h4><div class="help-grid" style="margin-top:8px">';
+  Object.keys(byArea).sort().forEach(area=>{
+    const icon=HOME_AREA_ICON[area]||"🏠";
+    const tot=byArea[area];
+    const todayInfo=byAreaToday[area] ? `${byAreaToday[area].done}/${byAreaToday[area].total} hoy` : `0/${tot} hoy — no toca`;
+    html+=`<div class="help-card" style="padding:8px"><h4>${icon} ${escapeHtml(area)}</h4><p style="font-size:11px"><b>${tot} tareas</b> · ${todayInfo}</p><div style="margin-top:4px;background:var(--panel);border-radius:6px;height:6px;overflow:hidden"><div style="width:${byAreaToday[area]? Math.round(byAreaToday[area].done/Math.max(1,byAreaToday[area].total)*100):0}%;height:100%;background:var(--gold)"></div></div></div>`;
+  });
+  html+='</div>';
+  if(!ht.tasks.length) html='<h4 style="color:var(--accent)">📦 Por área</h4><p class="muted">Aún sin tareas. Carga el kit básico en 🧹 Plantillas.</p>';
+  box.innerHTML=html;
+}
+function renderHomeTasksTemplates(){
+  const box=$('homeTasksTemplates'); if(!box) return;
+  let html='<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">';
+  HOME_TEMPLATES.forEach(tpl=>{
+    html+=`<div class="si-card" style="margin:0"><h4>🧹 ${escapeHtml(tpl.nombre)} <span class="chip" style="font-size:10px">${tpl.tareas.length} tareas</span></h4><p class="muted" style="font-size:11px">${tpl.tareas.slice(0,4).map(t=> escapeHtml(t.name)).join(' · ')}${tpl.tareas.length>4?' …':''}</p><button type="button" class="btn" style="width:auto;font-size:11px;margin-top:6px" data-tpl="${escapeHtml(tpl.nombre)}">👁️ Ver / Cargar</button></div>`;
+  });
+  html+='</div>';
+  box.innerHTML=html;
+  box.querySelectorAll('[data-tpl]').forEach(b=> b.onclick=()=>{
+    const tpl=HOME_TEMPLATES.find(x=>x.nombre===b.dataset.tpl); if(!tpl) return;
+    // mostrar detalle y ofrecer cargar una por una en formulario
+    const detail=`<div class="menstrual-card" style="margin-top:10px"><h4>${escapeHtml(tpl.nombre)}</h4>` + tpl.tareas.map(t=>`<div class="habit-item" style="padding:6px 8px"><span><b>${HOME_AREA_ICON[t.area]||"🏠"} ${escapeHtml(t.name)}</b> · ${escapeHtml(t.area)} · ${t.freq}${t.day?' · '+t.day:''} · ${t.time}′</span><button data-tpltask="${escapeHtml(t.name)}" class="btn" style="width:auto;font-size:11px">↗ Cargar</button></div>`).join('') + `<p class="muted" style="font-size:10px;margin-top:6px">Toca “Cargar” para llevar la tarea al formulario y ajustarla antes de agregar.</p><div style="display:flex;gap:8px;margin-top:8px"><button id="tplAddAll" class="btn btn-accent" style="width:auto">+ Agregar todas (${tpl.tareas.length})</button></div></div>`;
+    const existing=box.querySelector('#tplDetail'); if(existing) existing.remove();
+    const div=document.createElement('div'); div.id='tplDetail'; div.innerHTML=detail; box.appendChild(div);
+    div.querySelectorAll('[data-tpltask]').forEach(btn=> btn.onclick=()=>{
+      const task=tpl.tareas.find(x=>x.name===btn.dataset.tpltask); if(!task) return;
+      $('homeTaskName').value=task.name; $('homeTaskArea').value=task.area; $('homeTaskFreq').value=task.freq; if(task.day) $('homeTaskDay').value=task.day; $('homeTaskTime').value=task.time; $('homeTaskPriority').value=task.priority||'media';
+      // switch to tareas tab
+      renderHomeTasksTab('tareas');
+      $('homeTaskName').focus();
+    });
+    const addAll=div.querySelector('#tplAddAll'); if(addAll) addAll.onclick=()=>{
+      const ht=getHomeTasksData();
+      let added=0;
+      tpl.tareas.forEach(t=>{
+        if(ht.tasks.some(x=> x.name===t.name && x.area===t.area)) return;
+        ht.tasks.push({ id:'h'+Date.now()+Math.random().toString(36).slice(2,6), name:t.name, area:t.area, freq:t.freq, day:t.day||'todos', priority:t.priority||'media', time:t.time, owner:'', date:'', notes:'' });
+        added++;
+      });
+      scheduleSave(); renderHomeTasksResumen(); renderHomeTasksTodayBox(); renderHomeTasksList(); renderHomeTasksWeekGrid(); renderHomeTasksLunaBox(); renderHomeTasksAreasBox();
+      addAll.textContent=`✓ ${added} agregadas`;
+      setTimeout(()=> addAll.textContent=`+ Agregar todas (${tpl.tareas.length})`,1500);
+    };
+    div.scrollIntoView({behavior:'smooth',block:'nearest'});
+  });
+}
+let homeTasksEditingId=null;
+let homeTasksCurrentTab='tareas';
+function renderHomeTasksTab(tab){
+  homeTasksCurrentTab=tab||homeTasksCurrentTab;
+  const tabs={tareas:'tabHomeTareas', semana:'tabHomeSemana', plantillas:'tabHomePlantillas', stats:'tabHomeStats'};
+  Object.entries(tabs).forEach(([k,id])=>{ const el=$(id); if(el) el.classList.toggle('btn-accent', k===homeTasksCurrentTab); });
+  const panels={tareas:'homeTasksTareasPanel', semana:'homeTasksSemanaPanel', plantillas:'homeTasksPlantillasPanel', stats:'homeTasksStatsPanel'};
+  Object.entries(panels).forEach(([k,id])=>{ const el=$(id); if(el) el.classList.toggle('hidden', k!==homeTasksCurrentTab); });
+  if(homeTasksCurrentTab==='tareas'){ renderHomeTasksResumen(); renderHomeTasksTodayBox(); renderHomeTasksList(); }
+  if(homeTasksCurrentTab==='semana'){ renderHomeTasksWeekGrid(); }
+  if(homeTasksCurrentTab==='plantillas'){ renderHomeTasksTemplates(); }
+  if(homeTasksCurrentTab==='stats'){ renderHomeTasksLunaBox(); renderHomeTasksAreasBox(); }
+}
+function setupHomeTasksDialog(){
+  const btn=$('btnHomeTasks'); if(btn) btn.onclick=()=>{ renderHomeTasksResumen(); renderHomeTasksTab('tareas'); renderHomeTasksTemplates(); $('homeTasksDialog').showModal(); };
+  const ct=$('homeTasksCloseTop'), cb=$('homeTasksClose'); if(ct) ct.onclick=()=>$('homeTasksDialog').close(); if(cb) cb.onclick=()=>$('homeTasksDialog').close();
+  ['tabHomeTareas','tabHomeSemana','tabHomePlantillas','tabHomeStats'].forEach(id=>{
+    const el=$(id); if(!el) return;
+    el.onclick=()=>{ const map={tabHomeTareas:'tareas',tabHomeSemana:'semana',tabHomePlantillas:'plantillas',tabHomeStats:'stats'}; renderHomeTasksTab(map[id]); };
+  });
+  // frecuencia -> mostrar/ocultar fecha puntual y día preferido
+  const freqEl=$('homeTaskFreq'), dayEl=$('homeTaskDay'), dateEl=$('homeTaskDate');
+  function updateHomeTaskFreqUI(){
+    const v=freqEl.value;
+    const dayLabel=dayEl.parentElement; const dateLabel=dateEl.parentElement;
+    if(v==='puntual'){ dateLabel.style.display=''; dayLabel.style.opacity='0.45'; dayEl.disabled=true; }
+    else if(v==='diaria'){ dayLabel.style.opacity='0.45'; dayEl.disabled=true; dateLabel.style.display='none'; }
+    else if(v==='mensual' || v==='quincenal' || v==='semanal'){ dayLabel.style.opacity='1'; dayEl.disabled=false; dateLabel.style.display='none'; }
+    else { dayLabel.style.opacity='1'; dayEl.disabled=false; dateLabel.style.display='none'; }
+  }
+  if(freqEl) freqEl.onchange=updateHomeTaskFreqUI;
+  setTimeout(updateHomeTaskFreqUI, 400);
+  const add=$('homeTaskAdd'); if(add) add.onclick=()=>{
+    const name=$('homeTaskName').value.trim(); if(!name) return alert('Escribe el nombre de la tarea');
+    const rec={ id:'h'+Date.now(), name, area:$('homeTaskArea').value, freq:$('homeTaskFreq').value, day:$('homeTaskDay').value, priority:$('homeTaskPriority').value, time:$('homeTaskTime').value, owner:$('homeTaskOwner').value.trim(), date:$('homeTaskDate').value, notes:$('homeTaskNotes').value.trim() };
+    if(rec.freq==='puntual' && !rec.date) return alert('Elige la fecha para tarea puntual');
+    getHomeTasksData().tasks.push(rec); scheduleSave();
+    $('homeTaskName').value=''; $('homeTaskNotes').value=''; $('homeTaskOwner').value=''; 
+    renderHomeTasksResumen(); renderHomeTasksTodayBox(); renderHomeTasksList(); renderHomeTasksWeekGrid(); renderHomeTasksLunaBox(); renderHomeTasksAreasBox(); renderLuna();
+  };
+  const upd=$('homeTaskUpdate'); if(upd) upd.onclick=()=>{
+    const t=getHomeTasksData().tasks.find(x=>x.id===homeTasksEditingId); if(!t) return;
+    t.name=$('homeTaskName').value.trim(); t.area=$('homeTaskArea').value; t.freq=$('homeTaskFreq').value; t.day=$('homeTaskDay').value; t.priority=$('homeTaskPriority').value; t.time=$('homeTaskTime').value; t.owner=$('homeTaskOwner').value.trim(); t.date=$('homeTaskDate').value; t.notes=$('homeTaskNotes').value.trim();
+    scheduleSave(); homeTasksEditingId=null; $('homeTaskAdd').classList.remove('hidden'); upd.classList.add('hidden'); $('homeTaskCancel').classList.add('hidden'); $('homeTaskName').value=''; $('homeTaskNotes').value='';
+    renderHomeTasksResumen(); renderHomeTasksTodayBox(); renderHomeTasksList(); renderHomeTasksWeekGrid(); renderHomeTasksLunaBox(); renderHomeTasksAreasBox(); renderLuna();
+  };
+  const cancel=$('homeTaskCancel'); if(cancel) cancel.onclick=()=>{ homeTasksEditingId=null; $('homeTaskAdd').classList.remove('hidden'); $('homeTaskUpdate').classList.add('hidden'); cancel.classList.add('hidden'); $('homeTaskName').value=''; $('homeTaskNotes').value=''; };
+  // filtros
+  ['homeTaskFilter','homeTaskFilterArea','homeTaskFilterStatus'].forEach(id=>{
+    const el=$(id); if(el) el.oninput=renderHomeTasksList; if(el && el.tagName==='SELECT') el.onchange=renderHomeTasksList;
+  });
+  const share=$('homeTasksShare'); if(share) share.onclick=async()=>{
+    const ht=getHomeTasksData(); if(!ht.tasks.length) return alert('Sin tareas para compartir');
+    const todayKey=cal.fmtKey.format(new Date());
+    const todayTasks=homeTasksForDate(todayKey);
+    const comp=ht.completions[todayKey]||{};
+    let txt=`🏠 Tareas del Hogar — Penco · ${cal.fmtFull.format(new Date())}\n${todayTasks.length} hoy · ${Object.keys(comp).length} hechas\n\n`;
+    todayTasks.forEach(t=>{ const done=comp[t.id]?'✓':'○'; txt+=`${done} ${HOME_AREA_ICON[t.area]||"🏠"} ${t.name} · ${t.area} · ${t.time}′ · ${t.owner||''}\n`; });
+    txt+=`\nTotal: ${ht.tasks.length} tareas · Luna ${currentView&&currentView.tipo!=='dft'? currentView.luna:'—'} — Mari Küla Küyen`;
+    await shareText('🏠 Tareas del Hogar', txt);
+  };
+  const exp=$('homeTasksExport'); if(exp) exp.onclick=()=>{
+    const ht=getHomeTasksData(); if(!ht.tasks.length) return alert('Sin tareas');
+    let csv='Nombre,Area,Frecuencia,Dia,Priority,TiempoMin,Responsable,FechaPuntual,Notas\n';
+    ht.tasks.forEach(t=>{ csv+=`"${t.name}","${t.area}","${t.freq}","${t.day}","${t.priority}","${t.time}","${t.owner}","${t.date}","${t.notes}"\n`; });
+    const blob=new Blob([csv],{type:'text/csv'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='tareas-hogar-'+cal.fmtKey.format(new Date())+'.csv'; a.click(); URL.revokeObjectURL(url);
+  };
+  const clearDone=$('homeTasksClearDone'); if(clearDone) clearDone.onclick=()=>{
+    const key=cal.fmtKey.format(new Date());
+    const ht=getHomeTasksData();
+    if(!ht.completions[key] || !Object.keys(ht.completions[key]).length) return alert('Nada hecho hoy para limpiar');
+    if(!confirm('¿Desmarcar todo lo hecho hoy? (No borra tareas, solo marcas de hoy)')) return;
+    delete ht.completions[key]; scheduleSave(); renderHomeTasksResumen(); renderHomeTasksTodayBox(); renderHomeTasksList(); renderHomeTasksWeekGrid(); renderHomeTasksLunaBox(); renderHomeTasksAreasBox(); renderLuna();
+  };
+  const clearAll=$('homeTasksClearAll'); if(clearAll) clearAll.onclick=()=>{
+    if(!confirm('¿Borrar TODAS las tareas del hogar y su historial? Esta acción no se puede deshacer.')) return;
+    const ht=getHomeTasksData(); ht.tasks=[]; ht.completions={}; scheduleSave(); renderHomeTasksResumen(); renderHomeTasksTodayBox(); renderHomeTasksList(); renderHomeTasksWeekGrid(); renderHomeTasksLunaBox(); renderHomeTasksAreasBox(); renderLuna();
+  };
+  const loadBase=$('homeTasksLoadBase'); if(loadBase) loadBase.onclick=()=>{
+    const tpl=HOME_TEMPLATES[0]; const ht=getHomeTasksData(); let added=0;
+    tpl.tareas.forEach(t=>{ if(ht.tasks.some(x=> x.name===t.name && x.area===t.area)) return; ht.tasks.push({ id:'h'+Date.now()+Math.random().toString(36).slice(2,6), name:t.name, area:t.area, freq:t.freq, day:t.day||'todos', priority:t.priority||'media', time:t.time, owner:'', date:'', notes:'' }); added++; });
+    scheduleSave(); renderHomeTasksResumen(); renderHomeTasksTodayBox(); renderHomeTasksList(); renderHomeTasksWeekGrid(); renderHomeTasksLunaBox(); renderHomeTasksAreasBox(); renderLuna();
+    loadBase.textContent=`✓ ${added} agregadas`; setTimeout(()=> loadBase.textContent='🏠 Cargar kit básico (10 tareas)',1500);
+  };
+  const loadWeekly=$('homeTasksLoadWeekly'); if(loadWeekly) loadWeekly.onclick=()=>{
+    const tpl=HOME_TEMPLATES.find(x=>x.nombre.includes('Semana por zonas')); if(!tpl) return;
+    const ht=getHomeTasksData(); let added=0;
+    tpl.tareas.forEach(t=>{ if(ht.tasks.some(x=> x.name===t.name)) return; ht.tasks.push({ id:'h'+Date.now()+Math.random().toString(36).slice(2,6), name:t.name, area:t.area, freq:t.freq, day:t.day||'todos', priority:t.priority||'media', time:t.time, owner:'', date:'', notes:'' }); added++; });
+    scheduleSave(); renderHomeTasksResumen(); renderHomeTasksTodayBox(); renderHomeTasksList(); renderHomeTasksWeekGrid(); renderHomeTasksLunaBox(); renderHomeTasksAreasBox(); renderLuna();
+    loadWeekly.textContent=`✓ ${added} agregadas`; setTimeout(()=> loadWeekly.textContent='🗓️ Cargar rutina semanal completa',1500);
+  };
+}
+setTimeout(setupHomeTasksDialog, 672);
+
 // === APORTE VOLUNTARIO ===
 async function loadDonateConfig(){
   let cfg = (typeof DONATE!=='undefined'? DONATE : (window.pencoData&&window.pencoData.DONATE)) || {};
@@ -3164,7 +3655,7 @@ function setupHelpDialog(){
 setTimeout(setupHelpDialog, 850);
 
 // === CONFIGURACIÓN PERSONALIZABLE ===
-const ALL_BTNS = ["btnTides","btnFishing","btnBirds","btnWeather","btnSiembra","btnAstro","btnComuna","btnEkadashi","btnMenstrual","btnMedic","btnHabits","btnMeal","btnShopping","btnFinance","btnDiscipline","btnDreams","btnBreath","btnSchedule","btnGym","btnCircadian","btnGolden","btnConvert","btnEnergy","btnTimer","btnRemind","btnBackup","btnRestore","btnShortcut","btnPdfLuna","btnPdfCiclo","btnDonate","btnHelp","btnStudy","btnTales","btnMemory"];
+const ALL_BTNS = ["btnTides","btnFishing","btnBirds","btnWeather","btnSiembra","btnAstro","btnComuna","btnEkadashi","btnMenstrual","btnMedic","btnHabits","btnMeal","btnShopping","btnFinance","btnHomeTasks","btnDiscipline","btnDreams","btnBreath","btnSchedule","btnGym","btnCircadian","btnGolden","btnFirstAid","btnAnimalCare","btnConvert","btnEnergy","btnTimer","btnRemind","btnBackup","btnRestore","btnShortcut","btnPdfLuna","btnPdfCiclo","btnDonate","btnHelp","btnStudy","btnTales","btnMemory"];
 const PRESETS = {
   todo: Object.fromEntries(ALL_BTNS.map(k=>[k,true])),
   esencial: {btnTides:true,btnWeather:true,btnSiembra:true,btnEkadashi:true,btnBackup:true,btnRestore:true,btnPdfLuna:true,btnPdfCiclo:true,btnHelp:true,btnDonate:true},
@@ -3175,7 +3666,7 @@ const PRESETS = {
   estudiante: {btnWeather:true,btnSiembra:true,btnHabits:true,btnStudy:true,btnSchedule:true,btnDiscipline:true,btnConvert:true,btnTimer:true,btnHelp:true},
   agricultor: {btnTides:true,btnFishing:true,btnBirds:true,btnWeather:true,btnSiembra:true,btnGolden:true,btnCircadian:true,btnHelp:true},
   pescador: {btnTides:true,btnFishing:true,btnBirds:true,btnWeather:true,btnSiembra:true,btnGolden:true,btnHelp:true},
-  salud: {btnMenstrual:true,btnMedic:true,btnHabits:true,btnGym:true,btnCircadian:true,btnDreams:true,btnBreath:true,btnMeal:true,btnHelp:true},
+  salud: {btnMenstrual:true,btnMedic:true,btnHabits:true,btnGym:true,btnCircadian:true,btnDreams:true,btnBreath:true,btnMeal:true,btnFirstAid:true,btnAnimalCare:true,btnHelp:true},
   deportista: {btnHabits:true,btnGym:true,btnMeal:true,btnShopping:true,btnFinance:true,btnCircadian:true,btnBreath:true,btnTimer:true,btnHelp:true},
   docente: {btnSiembra:true,btnEkadashi:true,btnStudy:true,btnSchedule:true,btnHabits:true,btnDiscipline:true,btnConvert:true,btnPdfCiclo:true,btnHelp:true}
 };
@@ -4038,6 +4529,177 @@ function setupComunaDialog(){
   const cancel=$('comunaCancel'); if(cancel) cancel.onclick=()=>{ comunaEditingId=null; $('comunaAdd').classList.remove('hidden'); $('comunaUpdate').classList.add('hidden'); cancel.classList.add('hidden'); $('comunaName').value=''; $('comunaDesc').value=''; };
 }
 setTimeout(setupComunaDialog, 882);
+
+// === PRIMEROS AUXILIOS ===
+let firstAidTab = 'actuar';
+function renderFirstAidPanel(tab){
+  firstAidTab = tab || firstAidTab;
+  const ids = {actuar:'tabFA1', rcp:'tabFA2', heridas:'tabFA3', quemaduras:'tabFA4', trauma:'tabFA5', botiquin:'tabFA6'};
+  Object.entries(ids).forEach(([k,id])=>{ const el=$(id); if(el) el.classList.toggle('btn-accent', k===firstAidTab); });
+  const box = $('firstAidPanel'); if(!box) return;
+  let html = '';
+  if(firstAidTab==='actuar'){
+    html += `<div class="menstrual-card" style="background:linear-gradient(135deg,var(--panel),var(--card));border-color:#ff6b6b">
+      <h4 style="color:#ff6b6b">🚨 PAS — Proteger · Avisar · Socorrer</h4>
+      <p class="muted" style="font-size:11px">En Penco, con marejada y cerros, la escena puede ser cambiante. Nunca te conviertas en segunda víctima.</p>
+      <div class="help-grid" style="margin-top:8px">
+        <div class="help-card"><h4>1️⃣ Proteger</h4><p style="font-size:11px">Haz segura la escena: corta gas/cocina, aleja de agua/cable eléctrico, usa guantes si hay sangre. Señaliza si es en carretera Penco-Lirquén.</p></div>
+        <div class="help-card"><h4>2️⃣ Avisar — 131</h4><p style="font-size:11px">Llama <b>131 SAMU</b> (24h) o <b>132 Bomberos</b> si hay atrapados. Di: <i>“Estoy en Penco, calle X con Y, referencia (CESFAM/playa), adulto/niño, consciente sí/no, respira sí/no, sangra mucho sí/no”</i>. No cuelgues primero. Si no tienes señal, pide a otra persona que llame.</p></div>
+      </div>
+      <div class="help-card" style="margin-top:8px"><h4>3️⃣ Socorrer — Evaluación primaria (XABCDE)</h4><p style="font-size:11px;line-height:1.5"><b>X</b> Hemorragia exsanguinante → presiona ya · <b>A</b> Vía aérea → abre frente-mentón si no hay trauma · <b>B</b> Respiración → mira 10s · <b>C</b> Circulación → pulso/sangrado · <b>D</b> Discapacidad (¿responde? habla, dolor, inconsciente) · <b>E</b> Exposición → abriga (hipotermia en Penco en invierno). Si inconsciente pero respira → <b>Posición Lateral de Seguridad</b>; si no respira → inicia RCP (pestaña siguiente).</p></div>
+      <details class="menstrual-details" style="margin-top:8px" open><summary>🗒️ Protocolo telefónico — qué decir al 131</summary><p class="muted" style="font-size:11px;line-height:1.5">1. Lugar exacto + comuna Penco, nº, intersección, punto de referencia (Playa Penco / CESFAM / Cerro Verde).<br>2. Edad y sexo aproximado, ¿cuántas víctimas?<br>3. ¿Consciente? ¿Respira? ¿Sangra mucho? ¿Convulsiona?<br>4. ¿Qué pasó? (caída, atropello, ahogamiento, infarto).<br>5. Tu nombre y teléfono. Mantén línea, sigue instrucciones del operador. Si te dice “comprime”, pon altavoz.</p></details>
+    </div>
+    <div class="help-grid" style="margin-top:10px">
+      <div class="help-card"><h4>😵‍💫 Desmayo (síncope)</h4><p style="font-size:11px">Acuesta boca arriba, eleva piernas 30cm, afloja ropa, ventila, controla respiración 2 min. Si no despierta en 1 min o convulsiona → 131. No le des agua si está inconsciente.</p></div>
+      <div class="help-card"><h4>⚡ Convulsión</h4><p style="font-size:11px">No sujetes, no metas nada en la boca, aparta objetos, pon algo blando bajo cabeza, cronometra. Al terminar → lateral seguridad. Si dura &gt;5 min, se repite, o es primera vez → 131. Anota hora y duración.</p></div>
+      <div class="help-card"><h4>🧠 ACV — reconoce FAST</h4><p style="font-size:11px"><b>F</b> Face caída de un lado — pide sonreír<br><b>A</b> Arms — pide levantar brazos, ¿uno cae?<br><b>S</b> Speech — habla raro o no entiende<br><b>T</b> Time — llama 131 de inmediato, anota hora inicio. No le des aspirina sin indicación.</p></div>
+      <div class="help-card"><h4>💔 Dolor torácico / Infarto</h4><p style="font-size:11px">Opresión pecho 5+ min con irradiación a brazo/mandíbula, sudor frío, náusea, falta de aire → 131 ya, recuesta semi-sentado, afloja ropa, no caminar/esforzar, si toma medicación y la tiene a mano ayúdale, monitorea pulso. No manejes tú a urgencias si hay SAMU.</p></div>
+    </div>`;
+  } else if(firstAidTab==='rcp'){
+    html += `<div class="help-grid">
+      <div class="help-card" style="border-color:#e74c3c"><h4>🫀 RCP básico adulto — 30:2</h4><p style="font-size:11px;line-height:1.5">Solo si <b>no respira y no responde</b>. 1) Confirma, pide 131 y DEA si hay. 2) Víctima en suelo duro. 3) Talón de mano en centro del pecho, otra encima, brazos rectos. 4) <b>Comprime 5-6 cm, 100-120/min</b> (ritmo “Stayin’ Alive”), deja que el pecho vuelva. 5) 30 compresiones → 2 ventilaciones si sabes (si no, solo comprime). 6) No pares hasta que llegue ayuda o respire. Si hay DEA, sigue sus instrucciones, no toques durante descarga.</p><p class="muted" style="font-size:10px">Curso práctico recomendado en CESFAM/Bomberos Penco — esta guía no reemplaza práctica presencial.</p></div>
+      <div class="help-card"><h4>👶 Niños y lactantes — diferencias</h4><p style="font-size:11px;line-height:1.5"><b>Niño 1-8 años:</b> 1 mano si es pequeño, profundidad 1/3 del tórax (~5cm), 30:2 igual, si 2 reanimadores 15:2.<br><b>Lactante &lt;1 año:</b> 2 dedos centro pecho, 4cm profundidad, 30:2 (solo 15:2 con 2 reanimadores), no inclinación excesiva de cabeza.<br>Si te ahogas solo, llama 131 y haz compresiones contra respaldo de silla.</p></div>
+    </div>
+    <div class="menstrual-card" style="margin-top:10px;border-color:#ff9a76"><h4>🫁 Atragantamiento — Heimlich</h4>
+      <div class="help-grid" style="margin-top:6px">
+        <div class="help-card"><h4>Adulto consciente que no tose/habla</h4><p style="font-size:11px">Abraza por detrás, puño sobre ombligo (sobre cicatriz umbilical, bajo esternón), otra mano encima, compresiones en J hacia adentro y arriba (5 veces). Alterna 5 palmadas entre omóplatos + 5 Heimlich hasta que expulse o llegue ayuda. Si queda inconsciente → inicia RCP.</p></div>
+        <div class="help-card"><h4>🤰 Embarazada / obeso</h4><p style="font-size:11px">Compresiones en <b>centro del esternón</b>, no en abdomen. Misma alternancia 5+5.</p></div>
+        <div class="help-card"><h4>👶 Lactante atragantado</h4><p style="font-size:11px">Boca abajo sobre antebrazo, cabeza más baja que tronco, 5 palmadas suaves entre omóplatos. Gira boca arriba, 5 compresiones con 2 dedos en centro pecho. Repite. Si pierde conciencia → RCP lactante. No metas dedos a ciegas.</p></div>
+        <div class="help-card"><h4>🪞 Si te atragantas solo</h4><p style="font-size:11px">Tose fuerte, si no puedes, apoya tu abdomen sobre respaldo de silla/mesón y haz presión brusca hacia adentro-arriba. Llama 131 aunque lo expulses — revisa vía aérea en Hospital.</p></div>
+      </div>
+    </div>
+    <div class="menstrual-card" style="margin-top:10px;background:var(--panel)"><h4>🌊 Ahogamiento (mar/piscina) — Penco costa</h4><p class="muted" style="font-size:11px;line-height:1.5">No entres al agua sin salvavidas/cuerda; pide rescate (Armada 137). Si rescatas: saca sin golpear, acuesta, evalúa respiración. Si no respira → RCP + 131 de inmediato. No hagas “sacar agua” apretando abdomen. Abriga (hipotermia). Si vomita → lateral. Tras cualquier inmersión, aunque respire, evalúalo en Hospital (edema tardío).</p></div>`;
+  } else if(firstAidTab==='heridas'){
+    html += `<div class="help-grid">
+      <div class="help-card"><h4>🩹 Corte leve / erosión</h4><p style="font-size:11px;line-height:1.5">Lava manos, presiona con gasa limpia, lava con agua potable abundante (no alcohol directo), retira tierra visible, seca, povidona si hay solo alrededor (no dentro profunda), tapa con apósito limpio. Cambia diario. Vigila: enrojecimiento creciente, pus, fiebre → CESFAM. Vacuna antitetánica al día.</p></div>
+      <div class="help-card" style="border-color:#ff6b6b"><h4>🩸 Hemorragia grave</h4><p style="font-size:11px;line-height:1.5"><b>Presión directa</b> con gasa/compresa, no retires, añade capas. Eleva extremidad si no hay fractura. <b>Torniquete</b> solo si sangrado masivo que no para en extremidad (cinturón/ancho 5cm, 5cm sobre herida, anota hora, no lo sueltes). Llama 131. No quites objeto clavado — estabilízalo. Shock: pálido, frío, sed → acuesta, eleva piernas, abriga.</p></div>
+      <div class="help-card"><h4>👃 Sangrado nasal</h4><p style="font-size:11px">Siéntate inclinado adelante, presiona ala blanda de nariz 10-15 min sin soltar, respira por boca, no te suenes ni te acuestes. Frío local. Si dura &gt;20 min, sangra mucho o es por golpe fuerte → SAR/Hospital.</p></div>
+      <div class="help-card"><h4>🐶 Mordedura / araña</h4><p style="font-size:11px">Lava con agua y jabón 5 min, no cierres, cubre, consulta CESFAM (antirrábica/antitetánica). Si es araña de rincón (violín) → lleva araña/foto, marca hora, aplica frío, no cortes. En Penco, conserva ejemplar para identificación. Si alergia (hinchazón cara/dificultad respirar) → 131.</p></div>
+    </div>
+    <div class="menstrual-card" style="margin-top:10px"><h4>🦟 Picaduras — manejo local</h4><p class="muted" style="font-size:11px;line-height:1.5"><b>Abeja/avispa:</b> retira aguijón raspando (no aprietes), lava, frío 10 min, antihistamínico si pica generalizado. <b>Zancudo/ pulga:</b> lava, no rasques, frío. Vigila infección. <b>Medusa / fragata portuguesa</b> (costa Penco): lava con <b>agua de mar</b> (no dulce), retira tentáculos con pinza/guante, no frotes con arena, frío, vinagre no. Si dolor extenso, vómitos, dificultad respirar → 131. Reporta a Capitanía 41 275 1006.</p></div>`;
+  } else if(firstAidTab==='quemaduras'){
+    html += `<div class="help-grid">
+      <div class="help-card" style="border-color:#ff9a76"><h4>🔥 Quemadura térmica</h4><p style="font-size:11px;line-height:1.5"><b>1º grado</b> (roja, duele): enfría con <b>agua potable 15-20 min</b> (no hielo, no pasta dental, no mantequilla), cubre con gasa limpia, hidrata, analgésico si no hay alergia.<br><b>2º grado</b> (ampolla): no revientes, enfría, cubre sin apretar, SAR/Hospital.<br><b>3º grado</b> (blanca/negra, no duele): no retires ropa pegada, cubre con paño limpio húmedo, 131 ya. En cara/manos/ingles o extensa → 131.</p></div>
+      <div class="help-card"><h4>💨 Inhalación de humo (incendio, brasero)</h4><p style="font-size:11px">Saca al aire, 131, semi-sentado si respira, lateral si inconsciente pero respira. Vigila tos persistente, hollín en nariz — indica daño vía aérea. No vuelvas a entrar por objetos. En Penco inviernos, ventila brasero a leña/parafina: bota ceniza afuera fría.</p></div>
+      <div class="help-card"><h4>🧴 Química (cloro, soda)</h4><p style="font-size:11px">Piel: lava agua abundante 20 min, retira ropa contaminada. Ojos: lava 15 min párpado abierto, agua templada. No neutralices con vinagre. Lleva etiqueta del producto a urgencias. 131 / CITUC 22 635 3800.</p></div>
+      <div class="help-card"><h4>⚗️ Intoxicación / envenenamiento</h4><p style="font-size:11px">Llama <b>CITUC 22 635 3800</b> (24h) y 131 si grave. No induzcas vómito, no des leche. Guarda envase y anota hora y cantidad. Si no respira → RCP. Niños: guarda medicamentos/bleach bajo llave — en Penco, guarda a altura, nunca en botella de bebida.</p></div>
+    </div>
+    <div class="menstrual-card" style="margin-top:10px;background:var(--panel)"><h4>🌡️ Golpe de calor & Hipotermia — Penco costero</h4><p class="muted" style="font-size:11px;line-height:1.5"><b>Calor</b> (verano playa, sin sombra): náusea, dolor cabeza, piel caliente → sombra, desabrocha, paños húmedos en cuello/axilas, sorbitos agua, si confuso/vomita o no suda → 131.<br><b>Hipotermia</b> (viento sur, lluvia, mar): temblor → quietud → somnolencia → quita ropa mojada, abriga seco, manta, bebida tibia si consciente, no alcohol, no fricción brusca, 131 si grave. En marejadas, no te acerques a rocas por fotos.</p></div>`;
+  } else if(firstAidTab==='trauma'){
+    html += `<div class="help-grid">
+      <div class="help-card"><h4>🦴 Fractura / sospecha</h4><p style="font-size:11px">Dolor intenso, deformidad, crujido, impotencia: <b>no endereces</b>, no masajees. Inmoviliza como está (tabla/cartón acolchado), por encima y debajo de la fractura. Frío intermitente, eleva si es extremidad. Llama 131 / traslada a Hospital Penco sin mover mucho. Controla hemorragia y shock.</p></div>
+      <div class="help-card"><h4>🤸 Esguince / luxación</h4><p style="font-size:11px">Reposo, Hielo 15min cada 2h (con paño), Compresión suave, Elevación (RICE). Si deformidad o clic → no intentes encajar, inmoviliza y 131. Usa cabestrillo con pañuelo para brazo.</p></div>
+      <div class="help-card"><h4>🧠 TEC — golpe en cabeza</h4><p style="font-size:11px">Si cayó de altura, golpe fuerte, pérdida conciencia aunque breve, vómito, dolor cabeza creciente, pupilas distintas, sangrado oído → 131, no lo dejes solo 24h, no automediques, no duermas sin vigilancia. Niños: llanto inconsolable o somnolencia → urgencias ya.</p></div>
+      <div class="help-card" style="border-color:#ff6b6b"><h4>🦽 Sospecha lesión de columna (caída, zambullida, atropello)</h4><p style="font-size:11px"><b>No muevas</b>, no lo sientes, no le quites casco. Estabiliza cabeza con manos, pide 131, abriga. Solo mueve si hay peligro inminente (fuego) arrastrando en bloque.</p></div>
+    </div>
+    <div class="menstrual-card" style="margin-top:10px"><h4>🫁 Obstrucción nasal / cuerpo extraño</h4><p class="muted" style="font-size:11px">Nariz/oído con objeto: no intentes con pinza profunda, lleva a SAR. Si es pila botón (reloj) → 131 de inmediato (quema en 2h). Atragantamiento ver pestaña RCP.</p></div>`;
+  } else if(firstAidTab==='botiquin'){
+    html += `<div class="menstrual-card" style="background:linear-gradient(135deg,var(--panel),var(--card));border-color:var(--gold)">
+      <h4 style="color:var(--gold)">🎒 Botiquín hogar Penco — revisa cada luna (28 días)</h4>
+      <div class="help-grid" style="margin-top:8px">
+        <div class="help-card"><h4>🩹 Básico</h4><p style="font-size:11px">Guantes desechables, mascarilla, gasas estériles, apósitos, tela adhesiva, vendaje elástico, curitas, suero fisiológico 0,9% (o agua hervida fría), tijera punta roma, pinza, termómetro, linterna, manta.</p></div>
+        <div class="help-card"><h4>💊 Botiquín (con receta según caso)</h4><p style="font-size:11px">Paracetamol/ibuprofeno, antihistamínico, sales rehidratación oral, povidona yodada, alcohol 70% (solo para instrumental), crema quemadura leve. Guarda prospectos y fechas de vencimiento. No automediques antibióticos.</p></div>
+        <div class="help-card"><h4>📄 Documentos</h4><p style="font-size:11px">Fotocopia carnet, previsión, alergias, medicamentos crónicos, contactos (131/132/133, Hospital 41 272 6300, persona de confianza), plan de evacuación a cerro si vives bajo 30 msnm (tsunami).</p></div>
+        <div class="help-card"><h4>🌧️ Extra Penco invernal</h4><p style="font-size:11px">Impermeable, nylon, silbato, power bank, agua 2L p/persona, barras cereal, copia llaves. En bolsa ziploc seca. Si vives cerca de estero, ten saco de arena y pala.</p></div>
+      </div>
+      <p class="muted" style="font-size:10px;margin-top:8px">Guarda en lugar seco, alto para niños, señalizado. Reemplaza lo usado y lo vencido. Haz simulacro familiar: ¿quién llama, quién abre la puerta a SAMU, dónde esperan?</p>
+    </div>
+    <div class="help-grid" style="margin-top:10px">
+      <div class="help-card"><h4>🗓️ Rutina mensual</h4><p style="font-size:11px">Luna 1 revisa vencimientos · Luna 4 simulacro · Luna 7 reposición · Luna 10 curso Bomberos/CESFAM. Anota en “Notas de la Luna”.</p></div>
+      <div class="help-card"><h4>♿ Inclusivo</h4><p style="font-size:11px">Si hay adulto mayor/movilidad reducida: ten silla/camilla cerca, lista de medicamentos en refrigerador visible para rescatistas, pulsera con datos.</p></div>
+    </div>`;
+  }
+  box.innerHTML = html;
+}
+function setupFirstAidDialog(){
+  const btn=$('btnFirstAid'); if(btn) btn.onclick=()=>{ renderFirstAidPanel('actuar'); $('firstAidDialog').showModal(); };
+  const ct=$('firstAidCloseTop'), cb=$('firstAidClose'); if(ct) ct.onclick=()=>$('firstAidDialog').close(); if(cb) cb.onclick=()=>$('firstAidDialog').close();
+  ['tabFA1','tabFA2','tabFA3','tabFA4','tabFA5','tabFA6'].forEach(id=>{
+    const el=$(id); if(!el) return;
+    el.onclick=()=>{ const map={tabFA1:'actuar',tabFA2:'rcp',tabFA3:'heridas',tabFA4:'quemaduras',tabFA5:'trauma',tabFA6:'botiquin'}; renderFirstAidPanel(map[id]); };
+  });
+}
+setTimeout(setupFirstAidDialog, 883);
+
+// === CUIDADO ANIMAL ===
+let animalCareTab = 'tenencia';
+function renderAnimalCarePanel(tab){
+  animalCareTab = tab || animalCareTab;
+  const ids = {tenencia:'tabAC1', auxilios:'tabAC2', salud:'tabAC3', bienestar:'tabAC4', humedal:'tabAC5'};
+  Object.entries(ids).forEach(([k,id])=>{ const el=$(id); if(el) el.classList.toggle('btn-accent', k===animalCareTab); });
+  const box = $('animalCarePanel'); if(!box) return;
+  let html='';
+  if(animalCareTab==='tenencia'){
+    html+= `<div class="menstrual-card" style="background:linear-gradient(135deg,var(--panel),var(--card));border-color:#a9d18e">
+      <h4 style="color:#a9d18e">🏠 Tenencia responsable — Ley 21.020 (Ley Cholito)</h4>
+      <p class="muted" style="font-size:11px">Eres responsable legal de su bienestar, registro y daños. Multas 1-30 UTM.</p>
+      <div class="help-grid" style="margin-top:8px">
+        <div class="help-card"><h4>📝 Obligatorio en Penco</h4><p style="font-size:11px;line-height:1.5">1. <b>Microchip + Registro</b> en <b>registratumascota.cl</b> (con Clave Única) — perro y gato.<br>2. <b>Vacunas y desparasitación</b> al día (ver pestaña 💉).<br>3. <b>Esterilización recomendada</b> (gratuita en operativos DIDECO 41 226 1020).<br>4. <b>Paseo con correa</b>, bozal si es razas fuertes, <b>bolsa para fecas</b> — multa municipal si no recoges (Ord. Penco).<br>5. <b>No abandono:</b> si no puedes cuidar, busca adopción, no lo sueltes en humedal/cerro.</p></div>
+        <div class="help-card"><h4>🏡 Patio Penco</h4><p style="font-size:11px;line-height:1.5">Viento sur y lluvia horizontal: cucha elevada, seca, con techo y aislación, no amarrado con cadena corta. Agua fresca diaria, sombra en verano (Walüng), no dejar en auto ni balcón al sol. Si arriendas, confirma que acepten mascotas.</p></div>
+      </div>
+      <details class="menstrual-details" style="margin-top:8px" open><summary>🐕‍🦺 Paseo seguro en costanera / humedal</summary><p class="muted" style="font-size:11px;line-height:1.5">Correa 1,5-2m, no extensible en zona de aves. Lleva agua y bolsa. Evita horas de calor 12-17h (asfalto quema patas — prueba 7s con tu mano). Si tu perro persigue aves, usa correa corta: el <b>chorlo nevado</b> nidifica en arena Oct-Feb y abandona nido si lo asustan.</p></details>
+    </div>
+    <div class="help-grid" style="margin-top:10px">
+      <div class="help-card"><h4>🐶 Perro — rutina diaria</h4><p style="font-size:11px">2 paseos 20-30min + juego olfativo, agua limpia, croqueta según peso/edad (no sobras condimentadas), cepillado, no huesos astillables. Sociabiliza de cachorro.</p></div>
+      <div class="help-card"><h4>🐱 Gato — indoor</h4><p style="font-size:11px">Indoor o con catio: arenero limpio diario, rascador, juguete, agua fresca lejos de comida, esteriliza a los 5-6 meses. No collar con cascabel permanente.</p></div>
+    </div>`;
+  } else if(animalCareTab==='auxilios'){
+    html+= `<div class="help-grid">
+      <div class="help-card" style="border-color:#ff6b6b"><h4>🩸 Herida / hemorragia</h4><p style="font-size:11px;line-height:1.5">Guantes, presiona con gasa limpia 5 min sin retirar, venda suave. No uses alcohol directo ni torniquete improvisado apretado. Collar isabelino/cartón para que no lama. Traslada a vet (41 222 3456 Conce 24h) si es profunda, no para de sangrar o hay objeto clavado.</p></div>
+      <div class="help-card"><h4>🚗 Atropello</h4><p style="font-size:11px;line-height:1.5">No lo abraces brusco: puede morder por dolor. Inmoviliza en manta rígida, controla hemorragia, abriga (shock), llama vet. Si es callejero, avisa a Vet Municipal 41 226 1017 y Carabineros 133. Anota patente si se da a la fuga.</p></div>
+      <div class="help-card"><h4>🤢 Envenenamiento (raticida, anticongelante, chocolate, cebolla, lirio)</h4><p style="font-size:11px;line-height:1.5"><b>No des leche, aceite ni induzcas vómito</b>. Retira resto del hocico, guarda envase, llama vet ya. Lirio y anticongelante son letales en gatos/perros. Xilitol (chicle) → hipoglucemia grave en perro. Tiempo es oro.</p></div>
+      <div class="help-card"><h4>🥵 Golpe de calor</h4><p style="font-size:11px;line-height:1.5">Jadeo extremo, babeo, tambaleo, encías rojas → sombra, agua fresca (no helada) en patas y panza, ventilador, ofrece agua a sorbos, no lo sumerjas en hielo. Traslada ya: daño renal. En Penco, nunca dejes perro en auto ni patio sin sombra en verano.</p></div>
+    </div>
+    <div class="help-grid" style="margin-top:10px">
+      <div class="help-card"><h4>🫁 Atragantamiento animal</h4><p style="font-size:11px">Perro: si tose y puede respirar, déjalo toser. Si no respira y está consciente, abre hocico, mira objeto, retíralo con pinza si lo ves (no a ciegas). Si inconsciente → maniobra Heimlich adaptada (compresión abdominal suave por detrás). Gato similar. Tras expulsar, vet.</p></div>
+      <div class="help-card"><h4>🌀 Convulsión</h4><p style="font-size:11px">No sujetes, aparta muebles, baja luz y ruido, cronometra, no metas mano en hocico. Al terminar, abriga y traslada. Anota duración. Si &gt;5min o se repite → urgencia.</p></div>
+      <div class="help-card"><h4>🦂 Picadura abeja / araña</h4><p style="font-size:11px">Retira aguijón raspando, frío 10min, vigila hinchazón cara/dificultad respirar (anafilaxia) → vet ya. Araña de rincón: lleva ejemplar, frío, no cortes.</p></div>
+      <div class="help-card"><h4>🧰 Cómo trasladar seguro</h4><p style="font-size:11px">Manta como camilla, hocico con bozal casero (venda suave, no aprietes si vomita o tiene dificultad respirar), cabeza levemente elevada si respira mal. Lleva carnet vacuna. En moto/auto, jaula o arnés.</p></div>
+    </div>`;
+  } else if(animalCareTab==='salud'){
+    html+= `<div class="menstrual-card" style="background:linear-gradient(135deg,var(--panel),var(--card));border-color:#7ab8ff">
+      <h4 style="color:#7ab8ff">💉 Vacunas & desparasitación — calendario Penco</h4>
+      <div class="help-grid" style="margin-top:8px">
+        <div class="help-card"><h4>🐶 Cachorro perro</h4><p style="font-size:11px;line-height:1.5"><b>45 días:</b> Puppy DP<br><b>60/90/120 días:</b> Óctuple (3 dosis)<br><b>120 días:</b> Antirrábica (obligatoria, anual)<br><b>+</b> KC si va a hotel canil.<br>Desparasita interna cada 15 días hasta 3 meses, luego mensual hasta 6m, luego cada 3 meses.</p></div>
+        <div class="help-card"><h4>🐶 Adulto perro</h4><p style="font-size:11px;line-height:1.5"><b>Anual:</b> Óctuple + Antirrábica.<br><b>Cada 3 meses:</b> antiparasitario interno (según peso).<br><b>Mensual:</b> pipeta/pastilla pulga-garrapata (Bío-Bío hay garrapatas todo el año, más en Walüng).<br>Chequeo vet 1-2 veces/año.</p></div>
+        <div class="help-card"><h4>🐱 Gatito</h4><p style="font-size:11px;line-height:1.5"><b>60/90/120 días:</b> Triple felina (3 dosis)<br><b>120 días:</b> Antirrábica<br><b>Leucemia:</b> test + vacuna si negativo.<br>Desparasita igual que perro. Esteriliza 5-6 meses.</p></div>
+        <div class="help-card"><h4>✂️ Esterilización municipal</h4><p style="font-size:11px;line-height:1.5">Gratuita vía SUBDERE — inscribe en DIDECO 41 226 1020. Ayuna 8h, lleva manta, collar isabelino. Post-op: 10 días reposo, no lamer, antibiótico según receta. Evita camadas no deseadas y reduce tumores/abandono.</p></div>
+      </div>
+      <p class="muted" style="font-size:10px;margin-top:6px">Siempre verifica con tu veterinario: calendario puede variar por marca y estado del animal.</p>
+    </div>
+    <div class="menstrual-card" style="margin-top:10px"><h4>🚨 Signos de alarma — consulta hoy</h4><p class="muted" style="font-size:11px;line-height:1.5">No come 24h + decaído, vómitos/diarrea con sangre, no orina, dificultad respirar, bulto que crece rápido, cojera &gt;24h, rascado con heridas, cambio brusco de conducta. No automediques con paracetamol/ibuprofeno: <b>es tóxico para perros y letal para gatos</b>.</p></div>`;
+  } else if(animalCareTab==='bienestar'){
+    html+= `<div class="help-grid">
+      <div class="help-card"><h4>🥣 Alimentación & agua</h4><p style="font-size:11px;line-height:1.5">Croqueta según edad/peso (cachorro/adulto/senior) — raciona, no a libre demanda. Agua fresca siempre, cambia diario, lava bebedero. No chocolate, xilitol, uva/pasa, cebolla/ajo, huesos cocidos astillables, leche en exceso. En Penco, guarda alimento seco en tarro hermético (humedad).</p></div>
+      <div class="help-card"><h4>🐾 Paseo & juego</h4><p style="font-size:11px;line-height:1.5">Perro: 2 paseos + 15min olfato/juego. No lo sueltes cerca de avenida o humedal. Gato: juguete caña 10min, rascador, cajas, hierba gatera. Castra → menos fuga.</p></div>
+      <div class="help-card"><h4>🧹 Higiene</h4><p style="font-size:11px;line-height:1.5">Cepillado semanal (más en muda Rimü), baño cada 3-4 semanas con shampoo vet, no uses detergente. Corte uñas cada 3 semanas, limpieza oídos si olor. Arenero gato: 1 por gato +1, en lugar tranquilo.</p></div>
+      <div class="help-card"><h4>❄️☀️ Penco clima extremo</h4><p style="font-size:11px;line-height:1.5"><b>Invierno Pukem:</b> cucha aislada del suelo, manta seca, no lo dejes en patio con helada/lluvia toda la noche. <b>Verano Walüng:</b> sombra, agua, no paseo 12-17h, no auto. Tras marejada, lava patas si pisó petróleo/algas rojas.</p></div>
+    </div>
+    <div class="menstrual-card" style="margin-top:10px;background:var(--panel)"><h4>🏠 Si encuentras animal perdido/herido</h4><p class="muted" style="font-size:11px;line-height:1.5">1) Foto + ubicación (calle, playa, humedal) y comparte en redes Penco. 2) Revisa chapita/código QR; si tiene chip, Vet Municipal 41 226 1017 lo lee gratis. 3) No lo persigas si está asustado — usa comida. 4) Herido → traslada con manta a vet; si es fauna silvestre (cisne, gaviota enferma) → no lo toques sin guantes, llama SAG 41 274 0600. 5) Denuncia abandono/maltrato: BIDEMA 41 215 3400 o 134 + evidencia (foto/video, fecha).</p></div>`;
+  } else if(animalCareTab==='humedal'){
+    html+= `<div class="menstrual-card" style="background:linear-gradient(135deg,#1a2a1a,var(--card));border-color:#7ab8ff">
+      <h4 style="color:#7ab8ff">🦅 Humedal Rocuant-Andalién — aves & fauna protegida</h4>
+      <p class="muted" style="font-size:11px;line-height:1.5">Sitio prioritario Penco-Lirquén: nidifican <b>chorlo nevado, pilpilén, zarapito</b>. Ley 19.300 y Ordenanza Municipal prohíben caza, captura, ingreso de perros sueltos y botar basura.</p>
+      <div class="help-grid" style="margin-top:8px">
+        <div class="help-card"><h4>🚫 No hagas</h4><p style="font-size:11px">No sueltes perro sin correa en playa/humedal (espanta nidada y multa). No des <b>pan</b> a cisnes/patos (hincha, desnutre) — si quieres alimentar, usa grano específico con autorización. No toques nidos ni uses flash. No entres con 4x4 a la arena.</p></div>
+        <div class="help-card"><h4>✅ Qué sí</h4><p style="font-size:11px">Observa a 30m con binoculares, silencio, no dejes rastro. Recoge tus fecas de perro en bolsa y llévala. Reporta varamiento de lobo/cisne a SERNAPESCA 800 320 032 o SAG 41 274 0600. Participa en limpiezas de playa.</p></div>
+        <div class="help-card"><h4>📅 Calendario fauna</h4><p style="font-size:11px"><b>Oct-Feb:</b> chorlo nevado nidifica en arena — no pises dunas.<br><b>Sep-Mar:</b> zarapito migratorio en Rocuant.<br><b>Ago-Nov:</b> ballenas frente a golfo (no acercar embarcación &lt;300m).</p></div>
+        <div class="help-card"><h4>📞 Reportes</h4><p style="font-size:11px"><b>SAG Bío-Bío:</b> 41 274 0600 (fauna silvestre herida)<br><b>SERNAPESCA:</b> 800 320 032 (varamiento lobo/ballena)<br><b>Municipal Medio Ambiente:</b> 41 226 1017<br><b>Capitanía Lirquén:</b> 41 275 1006 (contaminación mar)</p></div>
+      </div>
+    </div>
+    <div class="menstrual-card" style="margin-top:10px"><h4>🐾 Gatos ferales & perros comunitarios</h4><p class="muted" style="font-size:11px;line-height:1.5">Penco tiene colonias gestionadas con método TNR (captura-esteriliza-retorna). No los alimentes con sobras en vía pública sin coordinar con Medio Ambiente — genera foco de roedores. Si quieres ayudar, ofrece traslado a operativo o adopción.</p></div>`;
+  }
+  box.innerHTML = html;
+}
+function setupAnimalCareDialog(){
+  const btn=$('btnAnimalCare'); if(btn) btn.onclick=()=>{ renderAnimalCarePanel('tenencia'); $('animalCareDialog').showModal(); };
+  const ct=$('animalCareCloseTop'), cb=$('animalCareClose'); if(ct) ct.onclick=()=>$('animalCareDialog').close(); if(cb) cb.onclick=()=>$('animalCareDialog').close();
+  ['tabAC1','tabAC2','tabAC3','tabAC4','tabAC5'].forEach(id=>{
+    const el=$(id); if(!el) return;
+    el.onclick=()=>{ const map={tabAC1:'tenencia',tabAC2:'auxilios',tabAC3:'salud',tabAC4:'bienestar',tabAC5:'humedal'}; renderAnimalCarePanel(map[id]); };
+  });
+}
+setTimeout(setupAnimalCareDialog, 884);
 
 // === CICLO CIRCADIANO ===
 const CIRCADIAN_PHASES = [
