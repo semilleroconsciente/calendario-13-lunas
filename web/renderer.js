@@ -258,7 +258,7 @@ function renderLuna() {
       gymIcons = gymForDay.map(it=> `<span class="dc-habit" style="background:${it.color}22;color:${it.color};border-color:${it.color}55" title="${escapeHtml(it.name)} ${it.start}-${it.end}">🏋️</span>`).join('');
       hasGym = gymForDay.length ? ' has-gym' : '';
     }catch(e){}
-    let birdIcons='', fishIcons='', astroIcons='', comunaIcons='', financeIcons='', homeIcons='';
+    let birdIcons='', fishIcons='', interIcons='', bosqueIcons='', astroIcons='', comunaIcons='', financeIcons='', homeIcons='';
     try{
       const bd=getBirdData();
       const birdsToday=bd.entries.filter(x=>x.date===key);
@@ -268,6 +268,14 @@ function renderLuna() {
       const fl=getFishingLogData();
       const fishToday=fl.filter(x=>x.date===key);
       if(fishToday.length) fishIcons=fishToday.map(f=> `<span class="dc-habit" style="background:#a9d18e22;color:#a9d18e;border-color:#a9d18e55" title="${escapeHtml(f.species)} ${escapeHtml(f.qty)}">🎣</span>`).join('');
+    }catch(e){}
+    try{
+      const id=getIntermarealData(); const interToday=id.entries.filter(x=>x.date===key);
+      if(interToday.length) interIcons=interToday.map(r=> `<span class="dc-habit" style="background:#ff8c6a22;color:#ff8c6a;border-color:#ff8c6a55" title="${escapeHtml(r.species)} ${escapeHtml(r.qty||'') } 🦀">🦀</span>`).join('');
+    }catch(e){}
+    try{
+      const bd2=getBosqueData(); const bosqueToday=bd2.entries.filter(x=>x.date===key);
+      if(bosqueToday.length) bosqueIcons=bosqueToday.map(r=> `<span class="dc-habit" style="background:#4caf7d22;color:#4caf7d;border-color:#4caf7d55" title="${escapeHtml(r.species)} · ${escapeHtml(r.action||'')}">🌳</span>`).join('');
     }catch(e){}
     try{
       const astroToday=astroVisibleForDate(key);
@@ -316,6 +324,8 @@ function renderLuna() {
       ${gymIcons ? `<div class="dc-habits">${gymIcons}</div>` : ''}
       ${birdIcons ? `<div class="dc-habits">${birdIcons}</div>` : ''}
       ${fishIcons ? `<div class="dc-habits">${fishIcons}</div>` : ''}
+      ${interIcons ? `<div class="dc-habits">${interIcons}</div>` : ''}
+      ${bosqueIcons ? `<div class="dc-habits">${bosqueIcons}</div>` : ''}
       ${astroIcons ? `<div class="dc-habits">${astroIcons}</div>` : ''}
       ${comunaIcons ? `<div class="dc-habits">${comunaIcons}</div>` : ''}
       ${financeIcons ? `<div class="dc-habits">${financeIcons}</div>` : ''}
@@ -1313,6 +1323,265 @@ function setupBirdsDialog(){
   };
 }
 setTimeout(setupBirdsDialog, 570);
+
+// === INTERMAREAL — Rocas y pozas ===
+const INTER_CATALOG = (typeof INTERMAREAL_PENCO!=='undefined'? INTERMAREAL_PENCO : (window.pencoData&&window.pencoData.INTERMAREAL_PENCO)||[]);
+const INTER_CONSEJOS = (typeof CONSEJOS_INTERMAREAL!=='undefined'? CONSEJOS_INTERMAREAL : (window.pencoData&&window.pencoData.CONSEJOS_INTERMAREAL)||{});
+function getIntermarealData(){
+  const u=userData();
+  if(!u.intermareal) u.intermareal={ entries:[] };
+  if(!Array.isArray(u.intermareal.entries)) u.intermareal.entries=[];
+  return u.intermareal;
+}
+let interEditingId=null;
+function buildInterShareText(entryOrAll){
+  if(Array.isArray(entryOrAll)){
+    if(!entryOrAll.length) return 'Bitácora intermareal — Penco · sin registros aún';
+    let t='🦀 Bitácora intermareal — Penco · Rocas Lirquén / Playa Negra\n';
+    t+=`${entryOrAll.length} salidas · ${new Set(entryOrAll.map(x=>x.species)).size} especies/hallazgos\n\n`;
+    entryOrAll.slice().sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time)).forEach(e=>{
+      t+=`• ${e.date} ${e.time||''} · ${e.species} ${e.qty? '('+e.qty+')':''} · ${e.place||'—'}`;
+      if(e.tide) t+=` · 🌊 ${e.tide}`;
+      if(e.notes) t+=` — ${e.notes}`;
+      t+=`\n`;
+    });
+    t+='\n— Mari Küla Küyen · Penco';
+    return t;
+  } else {
+    const e=entryOrAll;
+    let t=`🦀 ${e.species} · ${e.date} ${e.time||''}\n`;
+    if(e.place) t+=`📍 ${e.place}\n`;
+    if(e.qty) t+=`Cantidad: ${e.qty}\n`;
+    if(e.tide) t+=`🌊 ${e.tide}\n`;
+    if(e.notes) t+=`📝 ${e.notes}\n`;
+    const luna=mensLunaForKey(e.date); if(luna) t+=`🌙 Luna ${luna.luna} día ${luna.dia}\n`;
+    t+='\n— Bitácora intermareal · Mari Küla Küyen';
+    return t;
+  }
+}
+function renderIntermarealDialog(){
+  const todayKey=cal.fmtKey.format(new Date());
+  const lunaInfo = currentView.tipo==='dft'? null : MOONS[currentView.luna-1];
+  const estKey = lunaInfo ? lunaInfo.estacion : ESTACIONES.RIMU ? 'RIMU' : 'PUKEM';
+  // recalcular est real por luna actual
+  let consejoEst = 'PUKEM';
+  try{ if(lunaInfo) consejoEst=lunaInfo.estacion; else consejoEst='RIMU'; }catch{}
+  const consejo=INTER_CONSEJOS[consejoEst]||Object.values(INTER_CONSEJOS)[0];
+  // box today
+  const todayBox=$('interTodayBox');
+  if(todayBox){
+    const cnt=getIntermarealData().entries.length;
+    const todayCnt=getIntermarealData().entries.filter(x=>x.date===todayKey).length;
+    const tide=getTidesForKey(todayKey.slice(5));
+    const bajamares=tide.tides.filter(t=>t.t==='bajamar');
+    const mejor=bajamares.length? bajamares.sort((a,b)=> parseFloat(a.a)-parseFloat(b.a))[0] : null;
+    const puede = mejor && parseFloat(mejor.a) < 0.6 ? '✅ Ventana buena hoy' : '⚠️ Revisa altura — ideal <0.6m';
+    todayBox.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:14px"><b>🦀 Hoy — ${cal.fmtFull.format(new Date())}</b></span><span class="chip" style="background:var(--gold);color:#10142c">${todayCnt} hoy · ${cnt} total</span></div>`+
+      `<p class="muted" style="font-size:11px;margin-top:6px">Mareas hoy: ${tide.tides.map(t=> t.h+' '+t.t+' '+t.a).join(' · ')} ${tide.estimated?'*est.':''}</p>`+
+      `<p class="muted" style="font-size:11px">${puede}${mejor? ' · mejor bajamar '+mejor.h+' ('+mejor.a+') · ventana 1h antes/después':''}</p>`+
+      `<p class="muted" style="font-size:10px">Sernapesca marea roja: consulta sernapesca.cl antes de cosechar. Nunca solo, zapatilla con agarre.</p>`;
+  }
+  const moonBox=$('interMoonBox');
+  if(moonBox){
+    const k=cal.fmtKey.format(new Date());
+    const r=getFishingRatingForKey(k);
+    moonBox.innerHTML=`<b>${r.label}</b> — ${r.desc} · Bajamar viva = más roca expuesta. Luna nueva/llena → mejor.`;
+  }
+  const consejoBox=$('interConsejoBox');
+  if(consejoBox && consejo){
+    consejoBox.innerHTML=`<h4 style="font-size:11px;color:var(--gold)">🌊 ${escapeHtml(consejo.titulo)}</h4><p class="muted" style="font-size:11px;margin-top:4px">${escapeHtml(consejo.texto)}</p>`;
+  }
+  const catBox=$('interCatalogBox');
+  if(catBox){
+    catBox.innerHTML='<div class="fishing-species">'+INTER_CATALOG.map(b=>`<div class="fishing-species-item" style="cursor:pointer" data-inter="${escapeHtml(b.nombre)}"><b>${b.icon} ${escapeHtml(b.nombre)}</b> — <span class="muted" style="font-size:10px">${escapeHtml(b.cient)}</span><br><span style="font-size:11px">${escapeHtml(b.hab)} · ${escapeHtml(b.epoca)}</span><br><span class="muted" style="font-size:10px">${escapeHtml(b.nota)}</span></div>`).join('')+'</div>';
+    catBox.querySelectorAll('[data-inter]').forEach(el=> el.onclick=()=>{ $('interSpecies').value=el.dataset.inter; $('interSpecies').focus(); });
+  }
+  renderIntermarealLog();
+}
+function renderIntermarealLog(){
+  const box=$('interLogBox'); if(!box) return;
+  const data=getIntermarealData().entries;
+  const stats=$('interStats');
+  if(!data.length){ box.innerHTML='<p class="muted">Sin salidas. Registra tu primera visita a roquerío arriba.</p>'; if(stats) stats.textContent='0 salidas'; return; }
+  const sorted=[...data].sort((a,b)=> (b.date+b.time).localeCompare(a.date+a.time));
+  box.innerHTML=sorted.slice(0,60).map(it=>{
+    const luna=mensLunaForKey(it.date);
+    return `<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center"><span><b>${escapeHtml(it.species)}</b> ${it.qty? '· '+escapeHtml(it.qty):''} — ${escapeHtml(it.place||'—')}<br><span class="muted" style="font-size:11px">${it.date} ${it.time||''} ${it.tide? '· 🌊 '+escapeHtml(it.tide):''} ${luna? '· Luna '+luna.luna+' d'+luna.dia:''}</span><br><span class="muted" style="font-size:11px">${escapeHtml(it.notes||'')}</span></span><span style="display:flex;gap:6px;flex:0 0 auto"><button data-id="${it.id}" class="btn inter-share" style="width:auto;font-size:11px" title="Compartir">📤</button><button data-id="${it.id}" class="btn inter-edit" style="width:auto;font-size:11px">✏️</button><button data-id="${it.id}" class="btn inter-del" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕</button></span></div>`;
+  }).join('');
+  const speciesSet=new Set(data.map(x=>x.species));
+  if(stats) stats.textContent=`${data.length} salidas · ${speciesSet.size} especies · ${data.filter(x=>x.qty).length} con cosecha`;
+  box.querySelectorAll('.inter-share').forEach(b=> b.onclick=async()=>{
+    const it=getIntermarealData().entries.find(x=>x.id===b.dataset.id); if(!it) return;
+    await shareText(`🦀 ${it.species} · ${it.date}`, buildInterShareText(it));
+  });
+  box.querySelectorAll('.inter-edit').forEach(b=> b.onclick=()=>{
+    const d=getIntermarealData().entries.find(x=>x.id===b.dataset.id); if(!d) return;
+    interEditingId=d.id; $('interDate').value=d.date; $('interTime').value=d.time||'08:00'; $('interPlace').value=d.place||''; $('interSpecies').value=d.species||''; $('interQty').value=d.qty||''; $('interTide').value=d.tide||''; $('interNotes').value=d.notes||'';
+    $('interAdd').textContent='↻ Actualizar'; $('interCancelEdit').classList.remove('hidden');
+  });
+  box.querySelectorAll('.inter-del').forEach(b=> b.onclick=()=>{
+    if(!confirm('¿Eliminar registro intermareal?')) return;
+    const arr=getIntermarealData().entries; const idx=arr.findIndex(x=>x.id===b.dataset.id); if(idx>=0) arr.splice(idx,1);
+    scheduleSave(); renderIntermarealDialog(); renderLuna();
+  });
+}
+function setupIntermarealDialog(){
+  const btn=$('btnIntermareal'); if(btn) btn.onclick=()=>{ renderIntermarealDialog(); const d=$('interDate'); if(d && !d.value) d.value=cal.fmtKey.format(new Date()); $('intermarealDialog').showModal(); };
+  const ct=$('intermarealCloseTop'), cb=$('intermarealClose'); if(ct) ct.onclick=()=>$('intermarealDialog').close(); if(cb) cb.onclick=()=>$('intermarealDialog').close();
+  const add=$('interAdd'); if(add) add.onclick=()=>{
+    const date=$('interDate').value; const species=$('interSpecies').value.trim(); if(!date||!species) return alert('Fecha y especie/hallazgo son obligatorios');
+    const rec={ id: interEditingId||'i'+Date.now(), date, time:$('interTime').value||'08:00', place:$('interPlace').value.trim(), species, qty:$('interQty').value.trim(), tide:$('interTide').value.trim(), notes:$('interNotes').value.trim() };
+    const arr=getIntermarealData().entries;
+    if(interEditingId){ const idx=arr.findIndex(x=>x.id===interEditingId); if(idx>=0) arr[idx]=rec; interEditingId=null; add.textContent='+ Guardar salida'; $('interCancelEdit').classList.add('hidden'); }
+    else arr.push(rec);
+    scheduleSave(); $('interSpecies').value=''; $('interQty').value=''; $('interNotes').value=''; renderIntermarealDialog(); renderLuna();
+  };
+  const cancel=$('interCancelEdit'); if(cancel) cancel.onclick=()=>{ interEditingId=null; $('interAdd').textContent='+ Guardar salida'; cancel.classList.add('hidden'); $('interSpecies').value=''; $('interQty').value=''; $('interNotes').value=''; };
+  const clear=$('interClear'); if(clear) clear.onclick=()=>{ if(!confirm('¿Borrar toda la bitácora intermareal?')) return; getIntermarealData().entries=[]; scheduleSave(); renderIntermarealDialog(); renderLuna(); };
+  const shareB=$('interShare'); if(shareB) shareB.onclick=async()=>{
+    const arr=getIntermarealData().entries;
+    if(!arr.length) return alert('Sin registros para compartir');
+    await shareText('🦀 Bitácora intermareal — Penco', buildInterShareText(arr));
+  };
+  const exp=$('interExport'); if(exp) exp.onclick=()=>{
+    const arr=getIntermarealData().entries;
+    if(!arr.length) return alert('Sin datos para exportar');
+    let txt='Bitácora intermareal — Penco\nFecha,Hora,Lugar,Especie/Cantidad,Marea,Notas,Luna\n';
+    arr.forEach(r=>{ const l=mensLunaForKey(r.date); txt+=`${r.date},${r.time},${r.place},${r.species} ${r.qty},${r.tide},${r.notes},${l? 'Luna '+l.luna:''}\n`; });
+    const blob=new Blob([txt],{type:'text/csv'});
+    const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='intermareal-penco-'+cal.fmtKey.format(new Date())+'.csv'; a.click(); URL.revokeObjectURL(url);
+  };
+  const tideInput=$('interTide');
+  if(tideInput) tideInput.addEventListener('focus', ()=>{
+    if(tideInput.value) return;
+    const k=($('interDate').value||cal.fmtKey.format(new Date())).slice(5);
+    const t=getTidesForKey(k); const baj=t.tides.filter(x=>x.t==='bajamar'); if(bajamaresToStr(baj).length) tideInput.placeholder=baj.map(x=>x.h+' '+x.a).join(', ');
+    function bajamaresToStr(b){ return b; }
+  });
+}
+setTimeout(setupIntermarealDialog, 575);
+
+// === BOSQUE NATIVO ===
+const BOSQUE_CATALOG = (typeof BOSQUE_NATIVO_PENCO!=='undefined'? BOSQUE_NATIVO_PENCO : (window.pencoData&&window.pencoData.BOSQUE_NATIVO_PENCO)||[]);
+const BOSQUE_CONSEJOS = (typeof CONSEJOS_BOSQUE!=='undefined'? CONSEJOS_BOSQUE : (window.pencoData&&window.pencoData.CONSEJOS_BOSQUE)||{});
+function getBosqueData(){
+  const u=userData();
+  if(!u.bosque) u.bosque={ entries:[] };
+  if(!Array.isArray(u.bosque.entries)) u.bosque.entries=[];
+  return u.bosque;
+}
+let bosqueEditingId=null;
+function buildBosqueShareText(entryOrAll){
+  if(Array.isArray(entryOrAll)){
+    if(!entryOrAll.length) return 'Bitácora bosque nativo — Penco · sin registros aún';
+    let t='🌳 Bitácora bosque nativo — Penco · Cordillera de la Costa\n';
+    t+=`${entryOrAll.length} registros · ${new Set(entryOrAll.map(x=>x.species)).size} especies/acciones\n\n`;
+    entryOrAll.slice().sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time)).forEach(e=>{
+      t+=`• ${e.date} ${e.time||''} · ${e.species} · ${e.action||'—'} ${e.qty? '('+e.qty+')':''} · ${e.place||'—'}`;
+      if(e.notes) t+=` — ${e.notes}`;
+      t+=`\n`;
+    });
+    t+='\n— Mari Küla Küyen · Penco';
+    return t;
+  } else {
+    const e=entryOrAll;
+    let t=`🌳 ${e.species} · ${e.action||''} · ${e.date} ${e.time||''}\n`;
+    if(e.place) t+=`📍 ${e.place}\n`;
+    if(e.qty) t+=`Cantidad: ${e.qty}\n`;
+    if(e.notes) t+=`📝 ${e.notes}\n`;
+    const luna=mensLunaForKey(e.date); if(luna) t+=`🌙 Luna ${luna.luna} día ${luna.dia}\n`;
+    t+='\n— Bitácora bosque nativo · Mari Küla Küyen';
+    return t;
+  }
+}
+function renderBosqueDialog(){
+  const todayKey=cal.fmtKey.format(new Date());
+  const lunaInfo = currentView.tipo==='dft'? null : MOONS[currentView.luna-1];
+  let consejoEst='PUKEM'; try{ if(lunaInfo) consejoEst=lunaInfo.estacion; }catch{}
+  const consejo=BOSQUE_CONSEJOS[consejoEst]||Object.values(BOSQUE_CONSEJOS)[0];
+  const todayBox=$('bosqueTodayBox');
+  if(todayBox){
+    const cnt=getBosqueData().entries.length;
+    const todayCnt=getBosqueData().entries.filter(x=>x.date===todayKey).length;
+    const estNombre = lunaInfo? ESTACIONES[lunaInfo.estacion].nombre : '—';
+    todayBox.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:14px"><b>🌳 Hoy — ${cal.fmtFull.format(new Date())} · ${estNombre}</b></span><span class="chip" style="background:var(--gold);color:#10142c">${todayCnt} hoy · ${cnt} total</span></div>`+
+      `<p class="muted" style="font-size:11px;margin-top:6px">Cordillera de Penco: bosque esclerófilo (boldo, peumo, quillay) + laurifolio en quebradas (lingue, canelo). No hagas fuego, no dejes rastro.</p>`;
+  }
+  const moonBox=$('bosqueMoonBox');
+  if(moonBox){
+    const k=cal.fmtKey.format(new Date());
+    // consejo luna
+    let tithi=0; try{ tithi=window.astro.tithi(mensKeyToMs(k)); }catch{}
+    const fase = tithi<7? 'Creciente — esquejes/brotes' : tithi<14? 'Llena — cosecha frutos/semillas' : tithi<21? 'Menguante — plantar/podar' : 'Nueva — descanso/preparar suelo';
+    moonBox.innerHTML=`<b>${fase}</b> (tithi ${tithi}) — guarda semillas en papel, no plástico.`;
+  }
+  const consejoBox=$('bosqueConsejoBox');
+  if(consejoBox && consejo){
+    consejoBox.innerHTML=`<h4 style="font-size:11px;color:var(--gold)">🌳 ${escapeHtml(consejo.titulo)}</h4><p class="muted" style="font-size:11px;margin-top:4px">${escapeHtml(consejo.texto)}</p>`;
+  }
+  const catBox=$('bosqueCatalogBox');
+  if(catBox){
+    catBox.innerHTML='<div class="fishing-species">'+BOSQUE_CATALOG.map(b=>`<div class="fishing-species-item" style="cursor:pointer" data-bosque="${escapeHtml(b.nombre)}"><b>${b.icon} ${escapeHtml(b.nombre)}</b> — <span class="muted" style="font-size:10px">${escapeHtml(b.cient)}</span><span class="chip" style="font-size:9px;margin-left:6px">${escapeHtml(b.tipo)}</span><br><span style="font-size:11px">${escapeHtml(b.hab)} · ${escapeHtml(b.epoca)}</span><br><span style="font-size:11px;color:var(--gold)">🌰 Semillas: ${escapeHtml(b.semillas||'—')}</span><br><span class="muted" style="font-size:10px">${escapeHtml(b.nota)}</span></div>`).join('')+'</div>';
+    catBox.querySelectorAll('[data-bosque]').forEach(el=> el.onclick=()=>{ $('bosqueSpecies').value=el.dataset.bosque; $('bosqueSpecies').focus(); });
+  }
+  renderBosqueLog();
+}
+function renderBosqueLog(){
+  const box=$('bosqueLogBox'); if(!box) return;
+  const data=getBosqueData().entries;
+  const stats=$('bosqueStats');
+  if(!data.length){ box.innerHTML='<p class="muted">Sin registros. Observa un árbol, planta o cosecha semilla y anótalo.</p>'; if(stats) stats.textContent='0 registros'; return; }
+  const sorted=[...data].sort((a,b)=> (b.date+b.time).localeCompare(a.date+a.time));
+  box.innerHTML=sorted.slice(0,60).map(it=>{
+    const luna=mensLunaForKey(it.date);
+    return `<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center"><span><b>${escapeHtml(it.species)}</b> · <span class="chip" style="font-size:10px">${escapeHtml(it.action||'observación')}</span> ${it.qty? '· '+escapeHtml(it.qty):''} — ${escapeHtml(it.place||'—')}<br><span class="muted" style="font-size:11px">${it.date} ${it.time||''} ${luna? '· Luna '+luna.luna+' d'+luna.dia:''}</span><br><span class="muted" style="font-size:11px">${escapeHtml(it.notes||'')}</span></span><span style="display:flex;gap:6px;flex:0 0 auto"><button data-id="${it.id}" class="btn bosque-share" style="width:auto;font-size:11px" title="Compartir">📤</button><button data-id="${it.id}" class="btn bosque-edit" style="width:auto;font-size:11px">✏️</button><button data-id="${it.id}" class="btn bosque-del" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕</button></span></div>`;
+  }).join('');
+  const speciesSet=new Set(data.map(x=>x.species));
+  const byAction={}; data.forEach(x=>{ byAction[x.action]=(byAction[x.action]||0)+1; });
+  if(stats) stats.textContent=`${data.length} registros · ${speciesSet.size} especies · ${Object.entries(byAction).map(([k,v])=>k+':'+v).join(' · ')}`;
+  box.querySelectorAll('.bosque-share').forEach(b=> b.onclick=async()=>{
+    const it=getBosqueData().entries.find(x=>x.id===b.dataset.id); if(!it) return;
+    await shareText(`🌳 ${it.species} · ${it.date}`, buildBosqueShareText(it));
+  });
+  box.querySelectorAll('.bosque-edit').forEach(b=> b.onclick=()=>{
+    const d=getBosqueData().entries.find(x=>x.id===b.dataset.id); if(!d) return;
+    bosqueEditingId=d.id; $('bosqueDate').value=d.date; $('bosqueTime').value=d.time||'09:00'; $('bosquePlace').value=d.place||''; $('bosqueSpecies').value=d.species||''; $('bosqueAction').value=d.action||'observación'; $('bosqueQty').value=d.qty||''; $('bosqueNotes').value=d.notes||'';
+    $('bosqueAdd').textContent='↻ Actualizar'; $('bosqueCancelEdit').classList.remove('hidden');
+  });
+  box.querySelectorAll('.bosque-del').forEach(b=> b.onclick=()=>{
+    if(!confirm('¿Eliminar registro bosque?')) return;
+    const arr=getBosqueData().entries; const idx=arr.findIndex(x=>x.id===b.dataset.id); if(idx>=0) arr.splice(idx,1);
+    scheduleSave(); renderBosqueDialog(); renderLuna();
+  });
+}
+function setupBosqueDialog(){
+  const btn=$('btnBosque'); if(btn) btn.onclick=()=>{ renderBosqueDialog(); const d=$('bosqueDate'); if(d && !d.value) d.value=cal.fmtKey.format(new Date()); $('bosqueDialog').showModal(); };
+  const ct=$('bosqueCloseTop'), cb=$('bosqueClose'); if(ct) ct.onclick=()=>$('bosqueDialog').close(); if(cb) cb.onclick=()=>$('bosqueDialog').close();
+  const add=$('bosqueAdd'); if(add) add.onclick=()=>{
+    const date=$('bosqueDate').value; const species=$('bosqueSpecies').value.trim(); if(!date||!species) return alert('Fecha y especie/acción son obligatorias');
+    const rec={ id: bosqueEditingId||'bos'+Date.now(), date, time:$('bosqueTime').value||'09:00', place:$('bosquePlace').value.trim(), species, action:$('bosqueAction').value, qty:$('bosqueQty').value.trim(), notes:$('bosqueNotes').value.trim() };
+    const arr=getBosqueData().entries;
+    if(bosqueEditingId){ const idx=arr.findIndex(x=>x.id===bosqueEditingId); if(idx>=0) arr[idx]=rec; bosqueEditingId=null; add.textContent='+ Guardar registro'; $('bosqueCancelEdit').classList.add('hidden'); }
+    else arr.push(rec);
+    scheduleSave(); $('bosqueSpecies').value=''; $('bosqueQty').value=''; $('bosqueNotes').value=''; renderBosqueDialog(); renderLuna();
+  };
+  const cancel=$('bosqueCancelEdit'); if(cancel) cancel.onclick=()=>{ bosqueEditingId=null; $('bosqueAdd').textContent='+ Guardar registro'; cancel.classList.add('hidden'); $('bosqueSpecies').value=''; $('bosqueQty').value=''; $('bosqueNotes').value=''; };
+  const clear=$('bosqueClear'); if(clear) clear.onclick=()=>{ if(!confirm('¿Borrar toda la bitácora bosque?')) return; getBosqueData().entries=[]; scheduleSave(); renderBosqueDialog(); renderLuna(); };
+  const shareB=$('bosqueShare'); if(shareB) shareB.onclick=async()=>{
+    const arr=getBosqueData().entries;
+    if(!arr.length) return alert('Sin registros para compartir');
+    await shareText('🌳 Bitácora bosque nativo — Penco', buildBosqueShareText(arr));
+  };
+  const exp=$('bosqueExport'); if(exp) exp.onclick=()=>{
+    const arr=getBosqueData().entries;
+    if(!arr.length) return alert('Sin datos para exportar');
+    let txt='Bitácora bosque nativo — Penco\nFecha,Hora,Lugar,Especie,Accion,Cantidad,Notas,Luna\n';
+    arr.forEach(r=>{ const l=mensLunaForKey(r.date); txt+=`${r.date},${r.time},${r.place},${r.species},${r.action},${r.qty},${r.notes},${l? 'Luna '+l.luna:''}\n`; });
+    const blob=new Blob([txt],{type:'text/csv'});
+    const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='bosque-nativo-penco-'+cal.fmtKey.format(new Date())+'.csv'; a.click(); URL.revokeObjectURL(url);
+  };
+}
+setTimeout(setupBosqueDialog, 576);
 
 function generateIconPNG() {
   const c = document.createElement('canvas');
@@ -3673,7 +3942,7 @@ function setupHelpDialog(){
 setTimeout(setupHelpDialog, 850);
 
 // === CONFIGURACIÓN PERSONALIZABLE ===
-const ALL_BTNS = ["btnTides","btnFishing","btnBirds","btnWeather","btnSiembra","btnAstro","btnComuna","btnEkadashi","btnMenstrual","btnMedic","btnHabits","btnMeal","btnShopping","btnFinance","btnHomeTasks","btnDiscipline","btnDreams","btnBreath","btnGratitud","btnSchedule","btnGym","btnCircadian","btnGolden","btnCompost","btnRecicla","btnAire","btnLawen","btnFirstAid","btnAnimalCare","btnViolence","btnEvac","btnConvert","btnEnergy","btnLena","btnTimer","btnRemind","btnBackup","btnRestore","btnShortcut","btnPdfLuna","btnPdfCiclo","btnDonate","btnHelp","btnStudy","btnTales","btnMemory","btnMapu"];
+const ALL_BTNS = ["btnTides","btnFishing","btnBirds","btnIntermareal","btnBosque","btnWeather","btnSiembra","btnAstro","btnComuna","btnEkadashi","btnMenstrual","btnMedic","btnHabits","btnMeal","btnShopping","btnFinance","btnHomeTasks","btnDiscipline","btnDreams","btnBreath","btnGratitud","btnSchedule","btnGym","btnCircadian","btnGolden","btnCompost","btnRecicla","btnAire","btnLawen","btnFirstAid","btnAnimalCare","btnViolence","btnEvac","btnConvert","btnEnergy","btnLena","btnTimer","btnRemind","btnBackup","btnRestore","btnShortcut","btnPdfLuna","btnPdfCiclo","btnDonate","btnHelp","btnStudy","btnTales","btnMemory","btnMapu"];
 const PRESETS = {
   todo: Object.fromEntries(ALL_BTNS.map(k=>[k,true])),
   esencial: {btnTides:true,btnWeather:true,btnSiembra:true,btnEkadashi:true,btnFirstAid:true,btnEvac:true,btnBackup:true,btnRestore:true,btnPdfLuna:true,btnPdfCiclo:true,btnHelp:true,btnDonate:true},
@@ -3682,8 +3951,8 @@ const PRESETS = {
   adulto: Object.fromEntries(ALL_BTNS.map(k=>[k,true])),
   mayor: {btnTides:true,btnWeather:true,btnSiembra:true,btnMenstrual:true,btnMedic:true,btnDreams:true,btnGratitud:true,btnBreath:true,btnAire:true,btnLena:true,btnHelp:true,btnDonate:true},
   estudiante: {btnWeather:true,btnSiembra:true,btnHabits:true,btnStudy:true,btnSchedule:true,btnDiscipline:true,btnMapu:true,btnTales:true,btnConvert:true,btnTimer:true,btnHelp:true},
-  agricultor: {btnTides:true,btnFishing:true,btnBirds:true,btnWeather:true,btnSiembra:true,btnCompost:true,btnLawen:true,btnRecicla:true,btnAire:true,btnGolden:true,btnCircadian:true,btnHelp:true},
-  pescador: {btnTides:true,btnFishing:true,btnBirds:true,btnWeather:true,btnSiembra:true,btnGolden:true,btnHelp:true},
+  agricultor: {btnTides:true,btnFishing:true,btnBirds:true,btnIntermareal:true,btnBosque:true,btnWeather:true,btnSiembra:true,btnCompost:true,btnLawen:true,btnRecicla:true,btnAire:true,btnGolden:true,btnCircadian:true,btnHelp:true},
+  pescador: {btnTides:true,btnFishing:true,btnBirds:true,btnIntermareal:true,btnBosque:true,btnWeather:true,btnSiembra:true,btnGolden:true,btnHelp:true},
   salud: {btnMenstrual:true,btnMedic:true,btnLawen:true,btnHabits:true,btnGym:true,btnCircadian:true,btnDreams:true,btnGratitud:true,btnBreath:true,btnMeal:true,btnAire:true,btnFirstAid:true,btnAnimalCare:true,btnEvac:true,btnHelp:true},
   deportista: {btnHabits:true,btnGym:true,btnMeal:true,btnShopping:true,btnFinance:true,btnCircadian:true,btnBreath:true,btnTimer:true,btnHelp:true},
   docente: {btnSiembra:true,btnEkadashi:true,btnStudy:true,btnSchedule:true,btnHabits:true,btnDiscipline:true,btnMapu:true,btnTales:true,btnGratitud:true,btnRecicla:true,btnConvert:true,btnPdfCiclo:true,btnHelp:true}

@@ -279,4 +279,51 @@ const PREPARADOS_ORGANICOS = [
   { nombre: "Purín de ortiga + consuelda (potásico)", icono: "🍌", tipo: "Potásico floración", familia: "Fertilizante", ingredientes: "500 g ortiga + 500 g consuelda + cáscaras plátano + 10 L agua", preparacion: "Fermentar igual que purín ortiga 14 días. Cáscaras aportan potasio.", dosis: "1:10 cada 14 días en floración/fructificación.", uso: "Tomate, pimiento, frutilla en Walüng para cuaje y sabor.", luna: "Creciente-llena", precauciones: "No en plantines jóvenes." }
 ];
 
- window.pencoData = { PENCO, ESTACIONES, MOONS, DFT, INTRO, MOODS, EFEMERIDES, SIEMBRA, SIEMBRA_LUNAS, DONATE, AVES_PENCO, EVENTOS_ASTRONOMICOS, EVENTOS_COMUNA_PENCO, ASOCIACIONES_CULTIVOS, PREPARADOS_ORGANICOS };
+const INTERMAREAL_PENCO = [
+  { nombre: "Cochayuyo", cient: "Durvillaea antarctica", hab: "Roquerío expuesto, pozas bajas", icon: "🌿", epoca: "Todo el año · mejor bajamar", nota: "Alga parda gigante. Cosecha sostenible: corta frondas, no arranque raíz. Seca al sol para guardar." },
+  { nombre: "Luche", cient: "Pyropia spp.", hab: "Rocas altas intermareal", icon: "🍃", epoca: "Jun–Oct (invierno)", nota: "Alga roja fina, muy nutritiva. Solo en bajamar viva 0.3–0.5m. Enjuaga con agua de mar." },
+  { nombre: "Huiro negro", cient: "Lessonia nigrescens", hab: "Roquerío bajo, pozas", icon: "🌊", epoca: "Todo el año", nota: "Forma bosques submareales. No extraer planta completa. Indicador de agua limpia." },
+  { nombre: "Chorito", cient: "Mytilus chilensis", hab: "Rocas medias, colonias", icon: "🦪", epoca: "Todo el año · veda vigilar", nota: "Talla mínima 5 cm. Solo 2–3 kg por familia. No en marea roja." },
+  { nombre: "Choro zapato", cient: "Choromytilus chorus", hab: "Rocas bajas, submareal", icon: "🐚", epoca: "Evitar en primavera si toxina", nota: "Más grande que chorito. Limpia agua, no saquear bancos." },
+  { nombre: "Piure", cient: "Pyura chilensis", hab: "Roquerío bajo, pozas hondas", icon: "🔴", epoca: "Todo el año", nota: "Tunicado rojo. Solo buceo apnea en bajamar. Corte limpio, deja base." },
+  { nombre: "Lapa", cient: "Fissurella spp.", hab: "Roca expuesta, intermareal medio", icon: "🐚", epoca: "Todo el año", nota: "Talla 6 cm+. Una por roca, deja reproductores. Usa espátula, no cuchillo." },
+  { nombre: "Jaiba mora", cient: "Homalaspis plana", hab: "Pozas, bajo piedras", icon: "🦀", epoca: "Sep–Mar", nota: "Hembras con huevos no se toman. Talla 12 cm. Devuelve pequeñas." },
+  { nombre: "Erizo", cient: "Loxechinus albus", hab: "Roquerío bajo, submareal", icon: "🟣", epoca: "Veda variable (Sernapesca)", nota: "Veda frecuente. Consulta sernapesca.cl antes. No en luna llena (desove)." },
+  { nombre: "Ulte (tallo cochayuyo)", cient: "Durvillaea antarctica", hab: "Base cochayuyo", icon: "🥢", epoca: "Todo el año", nota: "Tallo comestible, crujiente. Pelar y picar, ensalada o escabeche." },
+  { nombre: "Caracol trumulco", cient: "Chorus giganteus", hab: "Fango, pozas", icon: "🐌", epoca: "Veda (en recuperación)", nota: "En veda larga. Solo observar. Foto y registro, no extracción." },
+  { nombre: "Estrella de mar", cient: "Stichaster striatus", hab: "Pozas, rocas bajas", icon: "⭐", epoca: "Todo el año", nota: "No tocar ni sacar del agua. Indicadora de salud. Solo foto." }
+];
+
+const BOSQUE_NATIVO_PENCO = [
+  { nombre: "Canelo", cient: "Drimys winteri", hab: "Quebradas húmedas, borde estero", icon: "🌳", epoca: "Flor Aug–Oct", tipo: "Árbol sagrado", semillas: "Dic–Feb", nota: "Árbol sagrado mapuche (foye). Corteza pimienta. No talar: esqueje en menguante otoñal. Semilla en baya negra; recolecta fruto maduro Dic–Feb y siembra inmediato (recalcitrante, no guardar seca)." },
+  { nombre: "Boldo", cient: "Peumus boldus", hab: "Ladera, bosque esclerófilo", icon: "🍃", epoca: "Flor Jul–Sep · Fruto Ene", tipo: "Árbol medicinal", semillas: "Ene–Feb", nota: "Hoja digestiva. Recolecta 3–4 hojas por rama, nunca defoliar. Semilla en drupa: cosecha fruto maduro Ene–Feb, limpia pulpa y siembra otoño temprano." },
+  { nombre: "Peumo", cient: "Cryptocarya alba", hab: "Bosque costero, cerros Penco", icon: "🔴", epoca: "Fruto Mar–May", tipo: "Árbol", semillas: "Mar–May", nota: "Fruto rojo comestible cocido. Recalcitrante: recolecta caído Mar–May y siembra directo en bolsa profunda sin demora (no deshidratar)." },
+  { nombre: "Arrayán", cient: "Luma apiculata", hab: "Estero, humedal borde", icon: "🟠", epoca: "Flor Dic–Ene · Fruto Feb", tipo: "Árbol", semillas: "Feb–Abr", nota: "Corteza canela. Madera dura. Flor melífera. Baya negra Feb–Abr: macera y siembra primavera, sombra parcial." },
+  { nombre: "Quillay", cient: "Quillaja saponaria", hab: "Ladera asoleada", icon: "🌿", epoca: "Flor Nov–Ene", tipo: "Árbol", semillas: "Dic–Feb", nota: "Corteza con saponina. Melífero clave. Cápsula estrellada seca Dic–Feb: recoge antes que abra, guarda en papel y siembra primavera (previo remojo 24h)." },
+  { nombre: "Maitén", cient: "Maytenus boaria", hab: "Pradera, cerco vivo", icon: "🌲", epoca: "Todo el año", tipo: "Árbol", semillas: "Ene–Mar", nota: "Forraje, cerco. Crece rápido. Cápsula con arilo rojo Ene–Mar: recolecta y siembra en almácigo otoñal." },
+  { nombre: "Avellano", cient: "Gevuina avellana", hab: "Bosque templado, vega", icon: "🌰", epoca: "Flor Nov–Ene · Avellana Mar–May", tipo: "Árbol", semillas: "Mar–May", nota: "Nuez nativa. Cosecha avellana caída Mar–May, no vareo: siembra directa a 3 cm, estrato húmedo. Tostar solo las de consumo." },
+  { nombre: "Lingue", cient: "Persea lingue", hab: "Quebrada, bosque laurifolio", icon: "🌳", epoca: "Vulnerable", tipo: "Árbol", semillas: "Feb–Abr", nota: "Madera valiosa en categoría vulnerable. Solo observar y proteger, no cortar. Baya Feb–Abr: si logras recolectar, siembra inmediata (muy recalcitrante)." },
+  { nombre: "Copihue", cient: "Lapageria rosea", hab: "Quebrada sombría, quila", icon: "🌺", epoca: "Flor Feb–Jul", tipo: "Enredadera nacional", semillas: "Sep–Nov", nota: "Flor nacional. Protegida por ley. No cortar. Baya Sep–Nov: solo observar. Reproducción por semilla fresca en laboratorio, no extraer del bosque." },
+  { nombre: "Chupalla", cient: "Eryngium paniculatum", hab: "Roquerío, cerro costero", icon: "🌵", epoca: "Flor Dic–Mar", tipo: "Hierba", semillas: "Feb–Abr", nota: "Fibra para artesanía. Solo hojas externas, deja roseta. Semilla seca Feb–Abr: cosecha cabezuela marrón, trilla suave." },
+  { nombre: "Lloyin / Hongos", cient: "Ramaria, Amanita, Boletus", hab: "Suelo bosque otoñal", icon: "🍄", epoca: "Abr–Jun", tipo: "Hongo", semillas: "No aplica (esporas Abr–Jun)", nota: "Solo recolecta si 100% seguro (loyo, changle). Lleva canasto aireado. Deja micelio. Propaga por esporas, no semillas." },
+  { nombre: "Maqui", cient: "Aristotelia chilensis", hab: "Borde bosque, quebrada", icon: "🫐", epoca: "Fruto Dic–Ene", tipo: "Arbusto", semillas: "Dic–Ene", nota: "Superfruto. Cosecha con tijera Dic–Ene, deja 30% para aves. Extrae semilla lavando pulpa; siembra primavera con estratificación fría 30 días." },
+  { nombre: "Trihue / Laurel", cient: "Laurelia sempervirens", hab: "Quebrada húmeda, bosque laurifolio costero", icon: "🌿", epoca: "Flor Nov–Dic", tipo: "Árbol laurifolio", semillas: "Ene–Mar", nota: "Laurel chileno aromático (trihue). Muy escaso en Penco: solo observar y proteger. Aquenio plumoso Ene–Mar: colecta con malla antes que vuele, siembra inmediata (viabilidad corta)." },
+  { nombre: "Naranjillo", cient: "Citronella mucronata", hab: "Ladera sombría, bosque esclerófilo húmedo", icon: "🍋", epoca: "Flor Nov–Dic · Fruto Feb–Mar", tipo: "Árbol nativo", semillas: "Feb–Abr", nota: "Endémico vulnerable. Drupa negra Feb–Abr para aves. Recolecta caída, despulpa y siembra otoño en sombra húmeda (recalcitrante)." },
+  { nombre: "Keule", cient: "Gomortega keule", hab: "Quebrada costera, bosque relicto Bío-Bío", icon: "🌰", epoca: "Fruto Mar–May · En Peligro", tipo: "Árbol endémico", semillas: "Mar–May (con permiso CONAF)", nota: "Endémico Bío-Bío–Maule, en peligro crítico Monumento Natural. Fruto amarillo Mar–May. Protegido: solo observar/fotografiar. No recolectar sin autorización; siembra de hueso inmediata tras despulpado." }
+];
+
+const CONSEJOS_INTERMAREAL = {
+  PUKEM: { titulo: "Pukem — Invierno: marejadas, poco acceso", texto: "Marejadas fuertes, rocas resbalosas. Solo bajamares diurnas <0.5m y sin alerta SHOA. Lleva cuerda y nunca vayas solo. Es tiempo de observar, no de cosechar grande." },
+  PEWU: { titulo: "Pewü — Primavera: bajamares vivas", texto: "Lunas nueva/llena → mareas más bajas, ventana larga. Ideal para luche y cochayuyo tierno. Respeta talla y deja reproductores. Lava en sitio, lleva bolsa de malla." },
+  WALUNG: { titulo: "Walüng — Verano: pozas y sol", texto: "Sol fuerte + pozas calientes: lleva gorro, agua y bloqueador. Marea baja temprano (06–09h). Revisa marea roja (sernapesca.cl) antes de mariscar. No dejes basura." },
+  RIMU: { titulo: "Rimü — Otoño: cierre y preparación", texto: "Últimas bajamares buenas antes de invierno. Cosecha ulte/cochayuyo para guardar seco. Revisa bancos: si ves menos, no coseches esa poza el próximo ciclo." }
+};
+
+const CONSEJOS_BOSQUE = {
+  PUKEM: { titulo: "Pukem — Invierno: lluvia y suelo", texto: "Suelo blando: planta nativo (peumo, quillay, canelo) esta luna. No entres con suelo barroso profundo (compactas). Junta semillas caídas y guárdalas en papel, no plástico." },
+  PEWU: { titulo: "Pewü — Primavera: brotes y flores", texto: "Floración de boldo/canelo. No cortes flores. Cámara y libreta. Es momento de esquejes semileñosos y de eliminar eucalipto/pino invasor en día menguante." },
+  WALUNG: { titulo: "Walüng — Verano: fruto y sombra", texto: "Cosecha maqui, avellana, arrayán. Solo fruto maduro caído o con tijera. Lleva agua, no hagas fuego. Observa aves que dispersan semillas." },
+  RIMU: { titulo: "Rimü — Otoño: siembra y hongos", texto: "Mejor siembra directa de nativo (peumo, avellano) ni bien cae semilla. Hongos: cesta aireada, corta pie con cuchillo, deja micelio. No arranques todo." }
+};
+
+ window.pencoData = { PENCO, ESTACIONES, MOONS, DFT, INTRO, MOODS, EFEMERIDES, SIEMBRA, SIEMBRA_LUNAS, DONATE, AVES_PENCO, EVENTOS_ASTRONOMICOS, EVENTOS_COMUNA_PENCO, ASOCIACIONES_CULTIVOS, PREPARADOS_ORGANICOS, INTERMAREAL_PENCO, BOSQUE_NATIVO_PENCO, CONSEJOS_INTERMAREAL, CONSEJOS_BOSQUE };

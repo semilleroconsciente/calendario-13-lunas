@@ -90,6 +90,8 @@
           <button id="btnEkadashi" class="btn" data-keywords="ekadashi ayuno lunar tithi">📿 Ekadashi</button>
           <button id="btnGolden" class="btn" data-keywords="hora dorada fotografia sol salida puesta">📸 Hora Dorada</button>
           <button id="btnCircadian" class="btn" data-keywords="circadiano sueño melatonina cortisol ciclo">🌞 Circadiano</button>
+          <button id="btnIntermareal" class="btn" data-keywords="intermareal roquerio poza marea baja cochayuyo luche lapa chorito jaiba algas mariscos cosecha sostenible">🦀 Intermareal</button>
+          <button id="btnBosque" class="btn" data-keywords="bosque nativo arbol canelo boldo peumo arrayan quillay maiten avellano reforestacion semilla hongo maqui trihue laurelia naranjillo citronella keule gomortega">🌳 Bosque Nativo</button>
           <button id="btnCompost" class="btn" data-keywords="compost suelo humus vermicompostera bocashi tierra ph arcilla abono menguante">🪱 Compost & Suelo</button>
           <button id="btnRecicla" class="btn" data-keywords="reciclaje punto limpio feria basura residuo plastico vidrio papel miercoles sabado lirquen">♻️ Reciclaje & Ferias</button>
           <button id="btnAire" class="btn" data-keywords="aire calidad contaminacion mp25 leña humo alerta preemergencia sinca mma ventilacion">🌬️ Aire Penco</button>
@@ -340,6 +342,122 @@
         </div>
       </div>
       <div class="dlg-actions"><button type="button" id="birdsClose" class="btn">Cerrar</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="intermarealDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">🦀 Intermareal — Penco · Rocas de Lirquén & Playa Negra</h3>
+        <button type="button" id="intermarealCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
+      </div>
+      <p class="muted" style="line-height:1.5">Zona entre mareas: pozas, roqueríos y algas del borde costero penqueño. <b>Observa y cosecha con medida</b> — respeta vedas, tallas mínimas y marea roja. Todo queda <b>privado y local</b> por usuario.</p>
+      <div id="interTodayBox" class="menstrual-card" style="border-color:var(--gold)"></div>
+      <div class="fishing-grid" style="margin-top:10px">
+        <div class="menstrual-card">
+          <h4>🌿 Especies intermareales</h4>
+          <div id="interCatalogBox" class="fishing-species"></div>
+          <p class="muted" style="font-size:10px;margin-top:6px">Toca una especie para cargarla en el formulario.</p>
+        </div>
+        <div class="menstrual-card">
+          <h4>🌙 Luna & mareas</h4>
+          <p class="muted" style="font-size:11px">Luna nueva/llena → bajamares más bajas (mejor ventana). Rocas resbalosas: usa zapatilla con agarre y nunca vayas solo.</p>
+          <div id="interMoonBox" class="chip" style="display:block;white-space:normal"></div>
+          <div id="interConsejoBox" class="menstrual-card" style="margin-top:8px;background:var(--panel)"></div>
+        </div>
+      </div>
+      <div class="menstrual-card" style="margin-top:10px">
+        <h4>⚠️ Consejos — seguridad & cosecha sostenible</h4>
+        <p class="muted" style="font-size:11px;line-height:1.5">• Solo entra 1h antes a 1h después de bajamar &lt;0.6m y sin alerta SHOA. • No extraigas raíz de cochayuyo/huiro — corta fronda. • Chorito/lapa &gt;5–6 cm, deja chicos y hembras con huevos. • En <b>marea roja</b> no coseches ni consumas (sernapesca.cl). • Lleva malla, no plástico; pesa y anota; deja 30% en la roca.</p>
+      </div>
+      <div class="menstrual-card" style="margin-top:10px">
+        <h4>📓 Bitácora intermareal — salidas a roquerío</h4>
+        <div class="conv-row">
+          <label>Fecha <input type="date" id="interDate"></label>
+          <label>Hora <input type="time" id="interTime" value="08:00"></label>
+          <label>Lugar <input type="text" id="interPlace" placeholder="ej: Playa Negra, Cueva Lirquén" maxlength="30"></label>
+        </div>
+        <div class="conv-row">
+          <label>Especie / hallazgo <input type="text" id="interSpecies" placeholder="ej: Cochayuyo, Lapa, Poza con estrellas" maxlength="30"></label>
+          <label>Cantidad / kg <input type="text" id="interQty" placeholder="ej: 1.5 kg / 3 lapas" maxlength="20"></label>
+          <label>Marea / altura <input type="text" id="interTide" placeholder="ej: bajamar 0.45m 08:20" maxlength="30"></label>
+        </div>
+        <label>Notas <input type="text" id="interNotes" placeholder="ej: corte limpio, dejé raíz, poza con 5 estrellas" maxlength="80"></label>
+        <div class="dlg-actions" style="justify-content:flex-start">
+          <button type="button" id="interAdd" class="btn btn-accent" style="width:auto">+ Guardar salida</button>
+          <button type="button" id="interCancelEdit" class="btn hidden" style="width:auto">Cancelar</button>
+        </div>
+        <div id="interLogBox" class="habits-list" style="margin-top:10px;max-height:240px"></div>
+        <div class="dlg-actions" style="justify-content:space-between;align-items:center;margin-top:8px">
+          <span id="interStats" class="muted" style="font-size:11px"></span>
+          <span style="display:flex;gap:8px">
+            <button type="button" id="interShare" class="btn" style="width:auto">📤 Compartir</button>
+            <button type="button" id="interExport" class="btn" style="width:auto">📥 Exportar</button>
+            <button type="button" id="interClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar</button>
+          </span>
+        </div>
+      </div>
+      <div class="dlg-actions"><button type="button" id="intermarealClose" class="btn">Cerrar</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="bosqueDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">🌳 Bosque Nativo — Penco · Cordillera de la Costa</h3>
+        <button type="button" id="bosqueCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
+      </div>
+      <p class="muted" style="line-height:1.5">Bosque esclerófilo y laurifolio costero de Penco. <b>Observa, restaura y cosecha con respeto</b> — no talas, no arranques. Registra <b>privado y local</b> por usuario.</p>
+      <div id="bosqueTodayBox" class="menstrual-card" style="border-color:var(--gold)"></div>
+      <div class="fishing-grid" style="margin-top:10px">
+        <div class="menstrual-card">
+          <h4>🌿 Especies nativas</h4>
+          <div id="bosqueCatalogBox" class="fishing-species"></div>
+          <p class="muted" style="font-size:10px;margin-top:6px">Toca una especie para cargarla en el formulario.</p>
+        </div>
+        <div class="menstrual-card">
+          <h4>🌙 Luna & estación</h4>
+          <p class="muted" style="font-size:11px">Menguante otoñal → mejor para plantar y podar. Creciente primavera → esquejes. Frutos otoñales se siembran inmediato.</p>
+          <div id="bosqueMoonBox" class="chip" style="display:block;white-space:normal"></div>
+          <div id="bosqueConsejoBox" class="menstrual-card" style="margin-top:8px;background:var(--panel)"></div>
+        </div>
+      </div>
+      <div class="menstrual-card" style="margin-top:10px">
+        <h4>⚠️ Consejos — buen vivir en el bosque</h4>
+        <p class="muted" style="font-size:11px;line-height:1.5">• No hagas fuego en bosque (ordenanza CONAF). • Lleva bastón, agua y vuelve con tu basura. • Cosecha 30% del fruto, deja 70% para aves y suelo. • Si ves zarza/eucalipto invasor, anótalo para jornada de control. • Planta nativo en Pukem con lluvia, hoyo 40×40 + compost.</p>
+      </div>
+      <div class="menstrual-card" style="margin-top:10px">
+        <h4>📓 Bitácora — salidas al bosque</h4>
+        <div class="conv-row">
+          <label>Fecha <input type="date" id="bosqueDate"></label>
+          <label>Hora <input type="time" id="bosqueTime" value="09:00"></label>
+          <label>Lugar / sendero <input type="text" id="bosquePlace" placeholder="ej: Cerro Penco, Quebrada Honda" maxlength="30"></label>
+        </div>
+        <div class="conv-row">
+          <label>Especie / acción <input type="text" id="bosqueSpecies" placeholder="ej: Peumo — planté 5, Boldo — observé flor" maxlength="30"></label>
+          <label>Tipo
+            <select id="bosqueAction">
+              <option value="observación">Observación</option><option value="plantación">Plantación</option><option value="recolección semillas">Recolección semillas</option><option value="recolección frutos">Recolección frutos</option><option value="hongos">Hongos</option><option value="limpieza">Limpieza / control invasoras</option>
+            </select>
+          </label>
+          <label>Cantidad <input type="text" id="bosqueQty" placeholder="ej: 5 plantines / 2 kg" maxlength="20"></label>
+        </div>
+        <label>Notas <input type="text" id="bosqueNotes" placeholder="ej: suelo húmedo, sembré inmediato, aves dispersoras" maxlength="80"></label>
+        <div class="dlg-actions" style="justify-content:flex-start">
+          <button type="button" id="bosqueAdd" class="btn btn-accent" style="width:auto">+ Guardar registro</button>
+          <button type="button" id="bosqueCancelEdit" class="btn hidden" style="width:auto">Cancelar</button>
+        </div>
+        <div id="bosqueLogBox" class="habits-list" style="margin-top:10px;max-height:240px"></div>
+        <div class="dlg-actions" style="justify-content:space-between;align-items:center;margin-top:8px">
+          <span id="bosqueStats" class="muted" style="font-size:11px"></span>
+          <span style="display:flex;gap:8px">
+            <button type="button" id="bosqueShare" class="btn" style="width:auto">📤 Compartir</button>
+            <button type="button" id="bosqueExport" class="btn" style="width:auto">📥 Exportar</button>
+            <button type="button" id="bosqueClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar</button>
+          </span>
+        </div>
+      </div>
+      <div class="dlg-actions"><button type="button" id="bosqueClose" class="btn">Cerrar</button></div>
     </form>
   </dialog>
 
@@ -2066,6 +2184,8 @@
           <label class="check-row"><input type="checkbox" data-btn="btnEkadashi"> 📿 Ekadashi</label>
           <label class="check-row"><input type="checkbox" data-btn="btnGolden"> 📸 Hora Dorada</label>
           <label class="check-row"><input type="checkbox" data-btn="btnCircadian"> 🌞 Circadiano</label>
+          <label class="check-row"><input type="checkbox" data-btn="btnIntermareal"> 🦀 Intermareal</label>
+          <label class="check-row"><input type="checkbox" data-btn="btnBosque"> 🌳 Bosque Nativo</label>
           <label class="check-row"><input type="checkbox" data-btn="btnCompost"> 🪱 Compost & Suelo</label>
           <label class="check-row"><input type="checkbox" data-btn="btnRecicla"> ♻️ Reciclaje & Ferias</label>
           <label class="check-row"><input type="checkbox" data-btn="btnAire"> 🌬️ Aire Penco</label>
