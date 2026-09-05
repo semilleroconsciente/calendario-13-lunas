@@ -3655,7 +3655,7 @@ function setupHelpDialog(){
 setTimeout(setupHelpDialog, 850);
 
 // === CONFIGURACIÓN PERSONALIZABLE ===
-const ALL_BTNS = ["btnTides","btnFishing","btnBirds","btnWeather","btnSiembra","btnAstro","btnComuna","btnEkadashi","btnMenstrual","btnMedic","btnHabits","btnMeal","btnShopping","btnFinance","btnHomeTasks","btnDiscipline","btnDreams","btnBreath","btnSchedule","btnGym","btnCircadian","btnGolden","btnFirstAid","btnAnimalCare","btnViolence","btnConvert","btnEnergy","btnTimer","btnRemind","btnBackup","btnRestore","btnShortcut","btnPdfLuna","btnPdfCiclo","btnDonate","btnHelp","btnStudy","btnTales","btnMemory"];
+const ALL_BTNS = ["btnTides","btnFishing","btnBirds","btnWeather","btnSiembra","btnAstro","btnComuna","btnEkadashi","btnMenstrual","btnMedic","btnHabits","btnMeal","btnShopping","btnFinance","btnHomeTasks","btnDiscipline","btnDreams","btnBreath","btnSchedule","btnGym","btnCircadian","btnGolden","btnFirstAid","btnAnimalCare","btnViolence","btnConvert","btnEnergy","btnCompass","btnInclinometer","btnTimer","btnRemind","btnBackup","btnRestore","btnShortcut","btnPdfLuna","btnPdfCiclo","btnDonate","btnHelp","btnStudy","btnTales","btnMemory"];
 const PRESETS = {
   todo: Object.fromEntries(ALL_BTNS.map(k=>[k,true])),
   esencial: {btnTides:true,btnWeather:true,btnSiembra:true,btnEkadashi:true,btnBackup:true,btnRestore:true,btnPdfLuna:true,btnPdfCiclo:true,btnHelp:true,btnDonate:true},
@@ -5075,14 +5075,273 @@ function renderEnergyLuna(){
     <div style="margin-top:6px;background:var(--panel);border-radius:6px;height:8px;overflow:hidden"><div style="width:${Math.min(100, Math.round(kwhLuna/2))}%;height:100%;background:linear-gradient(90deg,#7ab8ff,#e8c56a)"></div></div>`;
 }
 let energyEditingId=null;
+let energyTab='consumo';
+function switchEnergyTab(tab){
+  energyTab=tab;
+  const bC=$('tabEnergyConsumo'), bK=$('tabEnergyCalc'), bS=$('tabEnergySolar');
+  if(bC) bC.classList.toggle('btn-accent', tab==='consumo');
+  if(bK) bK.classList.toggle('btn-accent', tab==='calc');
+  if(bS) bS.classList.toggle('btn-accent', tab==='solar');
+  const pC=$('energyConsumoPanel'), pK=$('energyCalcPanel'), pS=$('energySolarPanel');
+  if(pC) pC.classList.toggle('hidden', tab!=='consumo');
+  if(pK) pK.classList.toggle('hidden', tab!=='calc');
+  if(pS) pS.classList.toggle('hidden', tab!=='solar');
+}
+function setupOhmCalc(){
+  const vEl=$('ohmV'), iEl=$('ohmI'), rEl=$('ohmR'), pEl=$('ohmP'), resEl=$('ohmResult'), statusEl=$('ohmStatus');
+  const btn=$('ohmCalc'), clr=$('ohmClear');
+  function parseVal(el){ const v=parseFloat(el.value); return isNaN(v)? null : v; }
+  function fmt(n){ if(n===null||!isFinite(n)) return '—'; if(Math.abs(n)>=1000) return n.toFixed(2); if(Math.abs(n)>=1) return n.toFixed(3); return n.toFixed(4); }
+  function calc(){
+    let V=parseVal(vEl), I=parseVal(iEl), R=parseVal(rEl), P=parseVal(pEl);
+    const vals=[V,I,R,P].filter(x=>x!==null).length;
+    if(vals<2){ if(statusEl) statusEl.textContent='Ingresa al menos 2 valores'; if(resEl) resEl.innerHTML='<span class="muted">Necesitas 2 datos para resolver. Ej: V=220 + P=1500 → I y R automáticos.</span>'; return; }
+    if(statusEl) statusEl.textContent='';
+    // iterative solving
+    let changed=true, iter=0;
+    while(changed && iter<10){ changed=false; iter++;
+      if(V===null && I!==null && R!==null){ V=I*R; if(vEl) vEl.value=fmt(V); changed=true; }
+      if(V===null && P!==null && I!==null && I!==0){ V=P/I; if(vEl) vEl.value=fmt(V); changed=true; }
+      if(V===null && P!==null && R!==null && R!==0){ V=Math.sqrt(P*R); if(vEl) vEl.value=fmt(V); changed=true; }
+      if(I===null && V!==null && R!==null && R!==0){ I=V/R; if(iEl) iEl.value=fmt(I); changed=true; }
+      if(I===null && P!==null && V!==null && V!==0){ I=P/V; if(iEl) iEl.value=fmt(I); changed=true; }
+      if(I===null && P!==null && R!==null && R!==0){ I=Math.sqrt(P/R); if(iEl) iEl.value=fmt(I); changed=true; }
+      if(R===null && V!==null && I!==null && I!==0){ R=V/I; if(rEl) rEl.value=fmt(R); changed=true; }
+      if(R===null && P!==null && I!==null && I!==0){ R=P/(I*I); if(rEl) rEl.value=fmt(R); changed=true; }
+      if(R===null && V!==null && P!==null && P!==0){ R=(V*V)/P; if(rEl) rEl.value=fmt(R); changed=true; }
+      if(P===null && V!==null && I!==null){ P=V*I; if(pEl) pEl.value=fmt(P); changed=true; }
+      if(P===null && I!==null && R!==null){ P=I*I*R; if(pEl) pEl.value=fmt(P); changed=true; }
+      if(P===null && V!==null && R!==null && R!==0){ P=(V*V)/R; if(pEl) pEl.value=fmt(P); changed=true; }
+      // reparse
+      V=parseVal(vEl); I=parseVal(iEl); R=parseVal(rEl); P=parseVal(pEl);
+    }
+    V=parseVal(vEl); I=parseVal(iEl); R=parseVal(rEl); P=parseVal(pEl);
+    const E_kWh = (P!==null)? (P*1/1000).toFixed(4) : '—';
+    if(resEl){
+      if(V===null||I===null||R===null||P===null){ resEl.innerHTML='<span style="color:#ff9a9a">Faltan datos o combinación inconsistente. Prueba con V+I, V+R, V+P, I+R, I+P o R+P.</span>'; }
+      else { resEl.innerHTML=`<b style="color:var(--gold)">V=${fmt(V)} V · I=${fmt(I)} A · R=${fmt(R)} Ω · P=${fmt(P)} W</b><br><span class="muted">Comprobación: V=I·R → ${fmt(I*R)} V · P=V·I → ${fmt(V*I)} W · En 1h → ${E_kWh} kWh</span>`; }
+    }
+  }
+  if(btn) btn.onclick=calc;
+  if(clr) clr.onclick=()=>{ [vEl,iEl,rEl,pEl].forEach(el=>{ if(el) el.value=''; }); if(resEl) resEl.innerHTML=''; if(statusEl) statusEl.textContent=''; };
+  document.querySelectorAll('[data-ohm]').forEach(b=> b.onclick=()=>{
+    const parts=(b.dataset.ohm||'').split(',');
+    if(vEl) vEl.value=parts[0]||''; if(iEl) iEl.value=parts[1]||''; if(rEl) rEl.value=parts[2]||''; if(pEl) pEl.value=parts[3]||'';
+    calc();
+  });
+}
+function setupEnergyCalcExtras(){
+  const enP=$('enP'), enT=$('enT'), enTar=$('enTar'), enBtn=$('enCalc'), enRes=$('enResult');
+  if(enBtn) enBtn.onclick=()=>{
+    const P=parseFloat(enP&&enP.value), t=parseFloat(enT&&enT.value), tar=parseFloat(enTar&&enTar.value)||140;
+    if(isNaN(P)||isNaN(t)){ if(enRes) enRes.textContent='Ingresa P y t'; return; }
+    const e=P*t/1000; const costo=e*tar;
+    if(enRes) enRes.innerHTML=`<b>${e.toFixed(3)} kWh</b> · $${Math.round(costo).toLocaleString('es-CL')} a $${tar}/kWh`;
+  };
+  const rv=$('resistVals'), rBtn=$('resistCalc'), rRes=$('resistResult');
+  if(rBtn) rBtn.onclick=()=>{
+    const txt=(rv&&rv.value||'').trim(); if(!txt){ if(rRes) rRes.textContent='Ingresa valores'; return; }
+    const vals=txt.split(',').map(s=>parseFloat(s.trim())).filter(v=>!isNaN(v)&&v>0);
+    if(vals.length<2){ if(rRes) rRes.textContent='Mínimo 2 resistencias'; return; }
+    const serie=vals.reduce((a,b)=>a+b,0);
+    const paral=1/vals.reduce((a,b)=>a+1/b,0);
+    if(rRes) rRes.innerHTML=`Serie: <b>${serie.toFixed(2)} Ω</b> · Paralelo: <b>${paral.toFixed(2)} Ω</b>`;
+  };
+  const vs=$('ledVs'), vf=$('ledVf'), iff=$('ledIf'), lBtn=$('ledCalc'), lRes=$('ledResult');
+  if(lBtn) lBtn.onclick=()=>{
+    const Vs=parseFloat(vs&&vs.value), Vf=parseFloat(vf&&vf.value), IfmA=parseFloat(iff&&iff.value);
+    if(isNaN(Vs)||isNaN(Vf)||isNaN(IfmA)||IfmA<=0){ if(lRes) lRes.textContent='Completa Vs, Vf, If'; return; }
+    const IfA=IfmA/1000; const R=(Vs - Vf)/IfA; const PR=IfA*IfA*R;
+    if(R<=0){ if(lRes) lRes.innerHTML='<span style="color:#ff9a9a">Vs debe ser mayor que Vf</span>'; return; }
+    const comercial=[10,22,47,100,120,150,220,270,330,470,510,560,680,1000];
+    let rec=comercial.find(v=>v>=R)||Math.ceil(R);
+    if(lRes) lRes.innerHTML=`R = <b>${R.toFixed(1)} Ω</b> → usa <b>${rec} Ω</b> comercial · P≈${PR.toFixed(3)}W (usa 0.5W si <0.25W)`;
+  };
+  const ci=$('cableI'), cl=$('cableL'), cs=$('cableS'), cv=$('cableV'), cBtn=$('cableCalc'), cRes=$('cableResult'), awgEl=$('cableAWG');
+  const awgTable=[{mm:0.326,awg:22},{mm:0.823,awg:18},{mm:1.31,awg:16},{mm:2.08,awg:14},{mm:3.31,awg:12},{mm:5.26,awg:10},{mm:8.37,awg:8},{mm:13.3,awg:6},{mm:21.15,awg:4}];
+  function awgFor(mm){ let r=awgTable[0]; for(const e of awgTable){ if(mm>=e.mm) r=e; } return r.awg; }
+  if(cBtn) cBtn.onclick=()=>{
+    const I=parseFloat(ci&&ci.value), L=parseFloat(cl&&cl.value), S=parseFloat(cs&&cs.value), Vn=parseFloat(cv&&cv.value)||220;
+    if(isNaN(I)||isNaN(L)||isNaN(S)||S<=0){ if(cRes) cRes.textContent='Completa I, L, S'; return; }
+    const rho=0.0178; const dV=2*I*L*rho / S; const perc=dV/Vn*100;
+    const ok=perc<3? '✅' : perc<5? '⚠️' : '❌';
+    if(cRes) cRes.innerHTML=`Caída: <b>${dV.toFixed(2)} V</b> (${perc.toFixed(2)}% de ${Vn}V) ${ok}`;
+    if(awgEl){
+      const awg=awgFor(S);
+      let tip=perc<3? 'Ok para alumbrado (<3%)' : perc<5? 'Ok fuerza (<5%) pero no alumbrado' : 'Excede norma — sube sección';
+      awgEl.innerHTML=`≈ AWG ${awg} para ${S}mm² · ${tip}. Fórmula: ΔV=2·I·L·0.0178 / S`;
+    }
+  };
+}
+function setupSolarPV(){
+  const kwhEl=$('solarKwhMes'), hspEl=$('solarHSP'), prEl=$('solarPR'), wpEl=$('solarWp'), precioEl=$('solarPrecioPanel'), tarifaEl=$('solarTarifa'), tipoEl=$('solarTipo'), autEl=$('solarAutonomia'), voltEl=$('solarVolt'), dodEl=$('solarDOD'), effEl=$('solarEff'), batInfo=$('solarBatInfo');
+  const btn=$('solarCalc'), fromBtn=$('solarFromConsumo'), resEl=$('solarResult'), detEl=$('solarDetalle'), batBox=$('solarBateriaBox'), statusEl=$('solarStatus');
+  const offRow=$('solarOffGridRow');
+  function toggleOff(){ if(!tipoEl||!offRow) return; const isOff=tipoEl.value!=='ongrid'; offRow.style.display=isOff?'':'flex'; offRow.style.opacity=isOff?'1':'0.5'; }
+  if(tipoEl) tipoEl.onchange=toggleOff; toggleOff();
+  function calc(){
+    const kwhMes=parseFloat(kwhEl&&kwhEl.value), HSP=parseFloat(hspEl&&hspEl.value), PR=parseFloat(prEl&&prEl.value), Wp=parseFloat(wpEl&&wpEl.value), precio=parseFloat(precioEl&&precioEl.value)||180000, tarifa=parseFloat(tarifaEl&&tarifaEl.value)||140;
+    const tipo=tipoEl&&tipoEl.value||'ongrid', autonomia=parseFloat(autEl&&autEl.value)||2, volt=parseFloat(voltEl&&voltEl.value)||24, dod=parseFloat(dodEl&&dodEl.value)||50, eff=parseFloat(effEl&&effEl.value)||90;
+    if(isNaN(kwhMes)||isNaN(HSP)||isNaN(PR)||isNaN(Wp)){ if(statusEl) statusEl.textContent='Completa kWh, HSP, PR y Wp'; return; }
+    if(HSP<=0||PR<=0||Wp<=0){ if(statusEl) statusEl.textContent='Valores inválidos'; return; }
+    if(statusEl) statusEl.textContent='';
+    const kwhDia=kwhMes/30;
+    const potenciaNecKW=kwhDia/(HSP*PR);
+    const nPaneles=Math.max(1, Math.ceil(potenciaNecKW*1000 / Wp));
+    const potInstKW=nPaneles*Wp/1000;
+    const prodDia=potInstKW*HSP*PR;
+    const prodMes=prodDia*30;
+    const area=nPaneles*1.7;
+    const costoPaneles=nPaneles*precio;
+    const costoTotal=Math.round(costoPaneles*1.65);
+    const ahorroMes=Math.min(prodMes, kwhMes)*tarifa;
+    const paybackMeses=ahorroMes>0? Math.ceil(costoTotal/ahorroMes):999;
+    const paybackAnos=(paybackMeses/12).toFixed(1);
+    const co2=prodMes*0.39;
+    let html=`<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+      <div class="chip" style="text-align:center;padding:10px"><b style="font-size:18px;color:var(--gold)">${nPaneles} paneles</b><br><span class="muted" style="font-size:10px">${Wp}Wp · ${potInstKW.toFixed(2)} kWp</span></div>
+      <div class="chip" style="text-align:center;padding:10px"><b>${prodDia.toFixed(1)} kWh/día</b><br><span class="muted" style="font-size:10px">${prodMes.toFixed(0)} kWh/mes</span></div>
+      <div class="chip" style="text-align:center;padding:10px"><b>~${area.toFixed(1)} m²</b><br><span class="muted" style="font-size:10px">${(area/1.7).toFixed(0)} paneles · 1.7m² c/u</span></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px">
+      <div class="chip" style="text-align:center"><b>$${costoTotal.toLocaleString('es-CL')}</b><br><span class="muted" style="font-size:10px">inversión total est.</span></div>
+      <div class="chip" style="text-align:center"><b>$${Math.round(ahorroMes).toLocaleString('es-CL')}/mes</b><br><span class="muted" style="font-size:10px">ahorro (NetBilling 80-90%)</span></div>
+      <div class="chip" style="text-align:center"><b>${paybackAnos} años</b><br><span class="muted" style="font-size:10px">${paybackMeses} meses ROI</span></div>
+    </div>
+    <p class="muted" style="font-size:11px;margin-top:8px">Potencia necesaria: <b>${(potenciaNecKW*1000).toFixed(0)} W</b> = ${kwhDia.toFixed(1)} kWh/día ÷ (${HSP}h × ${PR}) · Producción cubre <b>${Math.min(100, Math.round(prodMes/kwhMes*100))}%</b> de tu consumo · CO₂ evitado ~<b>${co2.toFixed(0)} kg/mes</b></p>`;
+    if(resEl) resEl.innerHTML=html;
+    if(detEl){
+      detEl.classList.remove('hidden');
+      detEl.innerHTML=`<h4 style="color:var(--gold)">📐 Detalle técnico Penco</h4>
+        <div class="help-grid" style="margin-top:6px">
+          <div class="help-card"><h4>☀️ Producción</h4><p style="font-size:11px">E_día = ${potInstKW.toFixed(2)}kWp × ${HSP}h × ${PR} = <b>${prodDia.toFixed(2)} kWh/día</b><br>E_mes = <b>${prodMes.toFixed(0)} kWh</b></p></div>
+          <div class="help-card"><h4>🏠 Consumo</h4><p style="font-size:11px">${kwhMes} kWh/mes → <b>${kwhDia.toFixed(2)} kWh/día</b><br>Tipo: <b>${tipo}</b> · PR ${PR} (pérdidas ${(1-PR*100).toFixed(0)}%)</p></div>
+          <div class="help-card"><h4>📦 Área y peso</h4><p style="font-size:11px">${nPaneles} × 1.7m² = <b>${area.toFixed(1)} m²</b><br>Peso ~${(nPaneles*21).toFixed(0)} kg · Viento sur: anclaje reforzado</p></div>
+          <div class="help-card"><h4>💡 Costos 2026</h4><p style="font-size:11px">Paneles: $${costoPaneles.toLocaleString('es-CL')} (${nPaneles}×$${precio.toLocaleString('es-CL')})<br>Total c/inversor/estructura: <b>$${costoTotal.toLocaleString('es-CL')}</b></p></div>
+        </div>
+        <p class="muted" style="font-size:10px;margin-top:8px">Cálculo referencial. Para TE4 y NetBilling consulta instalador SEC. HSP anual 4.9h es promedio; invierno real 2.8-3.0h → produce menos (usa dato mensual para precisión).</p>`;
+    }
+    if(batBox){
+      if(tipo==='ongrid'){ batBox.classList.add('hidden'); }
+      else {
+        batBox.classList.remove('hidden');
+        const energiaKwh=kwhDia*autonomia;
+        const ah=energiaKwh*1000 / (volt * (dod/100) * (eff/100));
+        const ahRed=Math.ceil(ah/10)*10;
+        const batInfoTxt=`${ah.toFixed(0)} Ah (${ahRed} Ah comercial) a ${volt}V`;
+        if(batInfo) batInfo.value=batInfoTxt;
+        const nBat100=Math.ceil(ah/100);
+        batBox.innerHTML=`<h4 style="color:#7ab8ff">🔋 Banco baterías — ${tipo}</h4>
+          <p style="font-size:11px;line-height:1.5">Autonomía <b>${autonomia} días</b> → ${energiaKwh.toFixed(1)} kWh almacenados<br>Capacidad necesaria: <b>${ah.toFixed(0)} Ah</b> a ${volt}V (DOD ${dod}%, eff ${eff}%)<br>→ <b>${ahRed} Ah</b> mínimo → ej: <b>${nBat100}× 100Ah ${volt}V LiFePO4</b><br><span class="muted" style="font-size:10px">LiFePO4 DOD 80-90% y 4000 ciclos; plomo-ácido DOD 50%.</span></p>`;
+      }
+    }
+  }
+  if(btn) btn.onclick=calc;
+  if(fromBtn) fromBtn.onclick=()=>{
+    try{
+      const d=getEnergyData(); let total=0; d.items.forEach(it=> total+=calcEnergyItem(it).kWhMes);
+      if(total>5){ if(kwhEl) kwhEl.value=Math.round(total).toString(); calc(); if(statusEl) statusEl.textContent=`Cargado ${Math.round(total)} kWh desde 📊 Consumo`; }
+      else { if(statusEl) statusEl.textContent='Sin consumo cargado — agrega artefactos en 📊'; }
+    }catch(e){ if(statusEl) statusEl.textContent='Error al cargar consumo'; }
+  };
+  // auto calc init
+  setTimeout(calc, 300);
+}
+function setupCompassInclin(){
+  // BRÚJULA
+  const needle=$('compassNeedle'), headingEl=$('compassHeading'), cardinalEl=$('compassCardinal'), statusEl=$('compassStatus'), btnStart=$('compassStart'), btnStop=$('compassStop');
+  let watchId=null, listening=false;
+  function cardinal(deg){
+    const dirs=['N','NE','E','SE','S','SO','O','NO'];
+    return dirs[Math.round(deg/45)%8];
+  }
+  function updateCompass(deg){
+    if(needle) needle.style.transform=`translate(-50%,-50%) rotate(${deg}deg)`;
+    if(headingEl) headingEl.textContent=Math.round(deg)+'°';
+    if(cardinalEl) cardinalEl.textContent=cardinal(deg)+' · '+(deg<22.5||deg>=337.5?'Norte (paneles aquí)': deg>=157.5&&deg<202.5?'Sur':'');
+  }
+  function handler(e){
+    let h=null;
+    if(e.webkitCompassHeading!==undefined) h=e.webkitCompassHeading;
+    else if(e.alpha!==null) h=360 - e.alpha;
+    if(h!==null && !isNaN(h)) updateCompass((h+360)%360);
+  }
+  async function start(){
+    if(listening) return;
+    try{
+      if(typeof DeviceOrientationEvent!=='undefined' && DeviceOrientationEvent.requestPermission){
+        const p=await DeviceOrientationEvent.requestPermission();
+        if(p!=='granted'){ if(statusEl) statusEl.textContent='Permiso denegado. En iPhone: Ajustes>Safari>Movimiento y orientación.'; return; }
+      }
+      window.addEventListener('deviceorientation', handler, true);
+      listening=true; if(statusEl) statusEl.textContent='Brújula activa. Calibra moviendo en 8.';
+    }catch(err){ if(statusEl) statusEl.textContent='Sin sensor o navegador no soporta.'; }
+  }
+  function stop(){ window.removeEventListener('deviceorientation', handler, true); listening=false; if(statusEl) statusEl.textContent='Pausada.'; }
+  if(btnStart) btnStart.onclick=start;
+  if(btnStop) btnStop.onclick=stop;
+  // INCLINÓMETRO
+  const pitchEl=$('inclinPitch'), rollEl=$('inclinRoll'), barEl=$('inclinBar'), iStatus=$('inclinStatus'), iStart=$('inclinStart'), iStop=$('inclinStop'), iCalib=$('inclinCalib');
+  let iListening=false, calibPitch=0, calibRoll=0;
+  function iHandler(e){
+    let p=e.beta, r=e.gamma;
+    if(p===null||r===null) return;
+    p-=calibPitch; r-=calibRoll;
+    if(pitchEl) pitchEl.textContent=p.toFixed(1)+'°';
+    if(rollEl) rollEl.textContent=r.toFixed(1)+'°';
+    if(barEl){
+      const off=Math.max(-45, Math.min(45, r));
+      barEl.style.left=`calc(50% + ${off*2}px)`;
+      barEl.style.background=Math.abs(r)<2&&Math.abs(p-34)<5?'#8fd694': 'var(--gold)';
+    }
+  }
+  async function iStartFn(){
+    if(iListening) return;
+    try{
+      if(typeof DeviceOrientationEvent!=='undefined' && DeviceOrientationEvent.requestPermission){
+        const p=await DeviceOrientationEvent.requestPermission();
+        if(p!=='granted'){ if(iStatus) iStatus.textContent='Permiso denegado.'; return; }
+      }
+      window.addEventListener('deviceorientation', iHandler, true);
+      iListening=true; if(iStatus) iStatus.textContent='Inclinómetro activo.';
+    }catch{ if(iStatus) iStatus.textContent='Sensor no disponible.'; }
+  }
+  function iStopFn(){ window.removeEventListener('deviceorientation', iHandler, true); iListening=false; if(iStatus) iStatus.textContent='Pausado.'; }
+  function calib(){ calibPitch=parseFloat(pitchEl&&pitchEl.textContent)||0; calibRoll=parseFloat(rollEl&&rollEl.textContent)||0; if(iStatus) iStatus.textContent='Calibrado a 0°.'; // actually store current
+    // re-read current beta/gamma
+    calibPitch=0; calibRoll=0;
+    // Quick trick: capture next event as zero
+    const once=(e)=>{ if(e.beta!==null){ calibPitch=e.beta; calibRoll=e.gamma||0; window.removeEventListener('deviceorientation', once, true); if(iStatus) iStatus.textContent='Cero fijado.'; } };
+    window.addEventListener('deviceorientation', once, true);
+  }
+  if(iStart) iStart.onclick=iStartFn;
+  if(iStop) iStop.onclick=iStopFn;
+  if(iCalib) iCalib.onclick=calib;
+  // botones herramientas web
+  const bc=$('btnCompass'), bi=$('btnInclinometer');
+  if(bc) bc.onclick=()=>{ $('compassDialog').showModal(); };
+  if(bi) bi.onclick=()=>{ $('inclinDialog').showModal(); };
+  const ccT=$('compassCloseTop'), cc=$('compassClose'); if(ccT) ccT.onclick=()=>$('compassDialog').close(); if(cc) cc.onclick=()=>$('compassDialog').close();
+  const icT=$('inclinCloseTop'), ic=$('inclinClose'); if(icT) icT.onclick=()=>$('inclinDialog').close(); if(ic) ic.onclick=()=>$('inclinDialog').close();
+  // auto pause on dialog close
+  ['compassDialog','inclinDialog'].forEach(id=>{
+    const dlg=$(id); if(dlg) dlg.addEventListener('close', ()=>{ stop(); iStopFn(); });
+  });
+}
 function setupEnergyDialog(){
   const btn=$('btnEnergy'); if(btn) btn.onclick=()=>{
     const d=getEnergyData();
     $('energyTarifa').value=d.tarifa;
     renderEnergyPresets(); renderEnergyResumen(); renderEnergyList(); renderEnergyTips(); renderEnergyLuna();
+    switchEnergyTab('consumo');
+    setupOhmCalc(); setupEnergyCalcExtras(); setupSolarPV();
     $('energyDialog').showModal();
   };
   const ct=$('energyCloseTop'), cb=$('energyClose'); if(ct) ct.onclick=()=>$('energyDialog').close(); if(cb) cb.onclick=()=>$('energyDialog').close();
+  const tC=$('tabEnergyConsumo'), tK=$('tabEnergyCalc'), tS=$('tabEnergySolar');
+  if(tC) tC.onclick=()=> switchEnergyTab('consumo');
+  if(tK) tK.onclick=()=> switchEnergyTab('calc');
+  if(tS) tS.onclick=()=> switchEnergyTab('solar');
   const add=$('energyAdd'); if(add) add.onclick=()=>{
     const nombre=$('energyName').value.trim(); const watts=parseFloat($('energyWatts').value);
     const horas=parseFloat($('energyHoras').value); const dias=parseInt($('energyDias').value)||30; const cant=parseInt($('energyCant').value)||1;
@@ -5121,6 +5380,7 @@ function setupEnergyDialog(){
   const clear=$('energyClear'); if(clear) clear.onclick=()=>{ if(!confirm('¿Vaciar lista de artefactos?')) return; getEnergyData().items=[]; scheduleSave(); renderEnergyResumen(); renderEnergyList(); renderEnergyTips(); renderEnergyLuna(); };
 }
 setTimeout(setupEnergyDialog, 675);
+setTimeout(setupCompassInclin, 676);
 
 // === CONVERSIÓN DE UNIDADES ===
 const CONV = {

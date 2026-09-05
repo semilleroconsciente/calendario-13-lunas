@@ -134,8 +134,10 @@
         <summary>🛠️ Herramientas <span class="ag-count"></span></summary>
         <div class="group-btns">
           <button id="btnConvert" class="btn" data-keywords="conversion unidades peso longitud tiempo velocidad energia potencia presion datos angulo">📏 Conversión</button>
-          <button id="btnEnergy" class="btn" data-keywords="energia consumo electrico luz kwh watts tarifa electrodomestico">⚡ Consumo eléctrico</button>
+          <button id="btnEnergy" class="btn" data-keywords="energia consumo electrico luz kwh watts tarifa electrodomestico ohm ley ohm potencia voltaje corriente resistencia calculadora electrica solar fotovoltaica panel">⚡ Consumo eléctrico</button>
           <button id="btnTimer" class="btn" data-keywords="tiempo timer cronometro pomodoro">⏱ Tiempo</button>
+          <button id="btnCompass" class="btn" data-keywords="brujula compass norte magnetica web inclinacion nivel burbuja">🧭 Brújula</button>
+          <button id="btnInclinometer" class="btn" data-keywords="inclinacion nivel burbuja inclinometro angulo pendiente web sensor">📐 Inclinación</button>
           <button id="btnRemind" class="btn" data-keywords="recordatorio notificacion luna fase">🔔 Recordatorios</button>
           <button id="btnBackup" class="btn" data-keywords="respaldo backup guardar exportar">💾 Respaldo</button>
           <button id="btnRestore" class="btn" data-keywords="restaurar importar backup json">📥 Restaurar</button>
@@ -910,46 +912,202 @@
   <dialog id="energyDialog">
     <form method="dialog">
       <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
-        <h3 style="margin:0;color:var(--accent)">⚡ Consumo eléctrico mensual</h3>
+        <h3 style="margin:0;color:var(--accent)">⚡ Consumo eléctrico & Calculadora</h3>
         <button type="button" id="energyCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
       </div>
-      <p class="muted" style="line-height:1.5">Calcula <b>kWh y $CLP</b> por artefacto. Todo <b>privado y local</b>. Ajusta tarifa de tu boleta (ej. $140/kWh con cargos) y ve ranking, consejos y comparación por luna.</p>
-      <div id="energyResumen" class="menstrual-card" style="border-color:var(--gold);background:linear-gradient(135deg,var(--panel),var(--card))"></div>
-      <div class="menstrual-card" style="margin-top:10px">
-        <h4>➕ Artefacto</h4>
-        <div class="conv-row">
-          <label style="flex:2">Nombre <input type="text" id="energyName" placeholder="ej: Refrigerador, TV 50&quot;, Hervidor" maxlength="40"></label>
-          <label>Potencia W <input type="number" id="energyWatts" placeholder="ej: 150" min="1" max="10000" step="1"></label>
-          <label>Cant. <input type="number" id="energyCant" value="1" min="1" max="20" step="1" style="width:70px"></label>
+      <p class="muted" style="line-height:1.5">Calcula <b>kWh/$CLP</b> y usa la <b>calculadora eléctrica</b> (Ohm, potencia, resistencias, LED, caída de tensión). Todo <b>privado y local</b>.</p>
+      <div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">
+        <button type="button" id="tabEnergyConsumo" class="btn btn-accent" style="width:auto">📊 Consumo</button>
+        <button type="button" id="tabEnergyCalc" class="btn" style="width:auto">⚡ Ohm</button>
+        <button type="button" id="tabEnergySolar" class="btn" style="width:auto">☀️ Solar FV</button>
+      </div>
+      <div id="energyConsumoPanel">
+        <div id="energyResumen" class="menstrual-card" style="border-color:var(--gold);background:linear-gradient(135deg,var(--panel),var(--card))"></div>
+        <div class="menstrual-card" style="margin-top:10px">
+          <h4>➕ Artefacto</h4>
+          <div class="conv-row">
+            <label style="flex:2">Nombre <input type="text" id="energyName" placeholder="ej: Refrigerador, TV 50&quot;, Hervidor" maxlength="40"></label>
+            <label>Potencia W <input type="number" id="energyWatts" placeholder="ej: 150" min="1" max="10000" step="1"></label>
+            <label>Cant. <input type="number" id="energyCant" value="1" min="1" max="20" step="1" style="width:70px"></label>
+          </div>
+          <div class="conv-row">
+            <label>Horas/día <input type="number" id="energyHoras" placeholder="ej: 24" min="0" max="24" step="0.25"></label>
+            <label>Días/mes <input type="number" id="energyDias" value="30" min="1" max="31" step="1" style="width:90px"></label>
+            <label>Tarifa $/kWh <input type="number" id="energyTarifa" placeholder="ej: 140" min="1" step="1"></label>
+          </div>
+          <p class="muted" style="font-size:10px;margin-top:4px">Pista: revisa etiqueta (W) o manual. Presets abajo cargan valores típicos.</p>
+          <div class="dlg-actions" style="justify-content:flex-start">
+            <button type="button" id="energyAdd" class="btn btn-accent" style="width:auto">+ Agregar</button>
+            <button type="button" id="energyUpdate" class="btn hidden" style="width:auto">↻ Actualizar</button>
+            <button type="button" id="energyCancel" class="btn hidden" style="width:auto">Cancelar</button>
+          </div>
         </div>
-        <div class="conv-row">
-          <label>Horas/día <input type="number" id="energyHoras" placeholder="ej: 24" min="0" max="24" step="0.25"></label>
-          <label>Días/mes <input type="number" id="energyDias" value="30" min="1" max="31" step="1" style="width:90px"></label>
-          <label>Tarifa $/kWh <input type="number" id="energyTarifa" placeholder="ej: 140" min="1" step="1"></label>
+        <div class="menstrual-card" style="margin-top:10px">
+          <h4>⚡ Presets — toca para cargar</h4>
+          <div id="energyPresets" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px"></div>
+          <p class="muted" style="font-size:10px;margin-top:6px">Valores promedio Chile; ajusta horas reales de tu hogar.</p>
         </div>
-        <p class="muted" style="font-size:10px;margin-top:4px">Pista: revisa etiqueta (W) o manual. Presets abajo cargan valores típicos.</p>
-        <div class="dlg-actions" style="justify-content:flex-start">
-          <button type="button" id="energyAdd" class="btn btn-accent" style="width:auto">+ Agregar</button>
-          <button type="button" id="energyUpdate" class="btn hidden" style="width:auto">↻ Actualizar</button>
-          <button type="button" id="energyCancel" class="btn hidden" style="width:auto">Cancelar</button>
+        <div id="energyList" class="habits-list" style="margin-top:10px;max-height:280px"></div>
+        <div class="dlg-actions" style="justify-content:space-between;align-items:center;margin-top:8px">
+          <span id="energyStats" class="muted" style="font-size:11px"></span>
+          <span style="display:flex;gap:8px">
+            <button type="button" id="energyExport" class="btn" style="width:auto">📥 Exportar CSV</button>
+            <button type="button" id="energyShare" class="btn" style="width:auto">📤 Compartir</button>
+            <button type="button" id="energyClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Vaciar</button>
+          </span>
+        </div>
+        <div id="energyTips" class="menstrual-card" style="margin-top:10px"></div>
+        <div id="energyLuna" class="menstrual-card" style="margin-top:10px"></div>
+      </div>
+      <div id="energyCalcPanel" class="hidden">
+        <div class="menstrual-card" style="border-color:var(--gold);background:linear-gradient(135deg,var(--panel),var(--card))">
+          <h4 style="color:var(--gold)">⚡ Calculadora eléctrica — Ley de Ohm y más (220V Chile)</h4>
+          <p class="muted" style="font-size:11px;line-height:1.5">Resuelve <b>V = I·R</b>, <b>P = V·I = I²·R = V²/R</b> y <b>E = P·t</b>. Ingresa <b>2 valores</b> y calcula los otros. Ideal para taller, huerta (bombas, cercos), hogar y estudios. <b>220V</b> domicilio Penco.</p>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">
+            <span class="chip">V volt (V)</span><span class="chip">I ampere (A)</span><span class="chip">R ohm (Ω)</span><span class="chip">P watt (W)</span>
+          </div>
+        </div>
+        <!-- OHM + POTENCIA -->
+        <div class="menstrual-card" style="margin-top:10px">
+          <h4>🔋 1) Ley de Ohm + Potencia — ingresa 2 valores</h4>
+          <div class="conv-row">
+            <label>V (V) <input type="number" id="ohmV" placeholder="ej: 220" step="any"></label>
+            <label>I (A) <input type="number" id="ohmI" placeholder="ej: 2.5" step="any"></label>
+            <label>R (Ω) <input type="number" id="ohmR" placeholder="ej: 88" step="any"></label>
+            <label>P (W) <input type="number" id="ohmP" placeholder="ej: 550" step="any"></label>
+          </div>
+          <div class="dlg-actions" style="justify-content:flex-start;margin-top:8px">
+            <button type="button" id="ohmCalc" class="btn btn-accent" style="width:auto">⚡ Calcular faltantes</button>
+            <button type="button" id="ohmClear" class="btn" style="width:auto">↺ Limpiar</button>
+            <span id="ohmStatus" class="muted" style="font-size:11px;align-self:center"></span>
+          </div>
+          <div id="ohmResult" class="chip" style="display:block;margin-top:8px;white-space:normal;line-height:1.5"></div>
+          <div class="help-grid" style="margin-top:8px">
+            <div class="help-card"><h4>Fórmulas</h4><p style="font-size:11px">V=I·R · I=V/R · R=V/I<br>P=V·I · P=I²·R · P=V²/R<br>E(kWh)=P(W)·t(h)/1000</p></div>
+            <div class="help-card"><h4>Ejemplo Penco</h4><p style="font-size:11px">Hervidor 1500W a 220V → I=1500/220=<b>6.82A</b><br>R=V/I=32.3Ω · En 0.25h → 0.375 kWh (~$52 a $140/kWh)</p></div>
+          </div>
+          <div id="ohmExamples" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px">
+            <button type="button" class="btn" style="width:auto;font-size:11px" data-ohm="220,6.82,,1500">Hervidor 220V 1500W</button>
+            <button type="button" class="btn" style="width:auto;font-size:11px" data-ohm="12,0.02,600,">LED 12V 20mA</button>
+            <button type="button" class="btn" style="width:auto;font-size:11px" data-ohm="220,,220,220">Ampolleta 220Ω</button>
+            <button type="button" class="btn" style="width:auto;font-size:11px" data-ohm=",10,22,">R 22Ω 10A</button>
+          </div>
+        </div>
+        <!-- ENERGÍA / COSTO -->
+        <div class="menstrual-card" style="margin-top:10px">
+          <h4>⏱️ 2) Energía y costo (kWh / $CLP)</h4>
+          <div class="conv-row">
+            <label>P (W) <input type="number" id="enP" placeholder="ej: 1500" step="any"></label>
+            <label>t (h) <input type="number" id="enT" placeholder="ej: 2" step="any"></label>
+            <label>Tarifa $/kWh <input type="number" id="enTar" placeholder="ej: 140" step="any"></label>
+          </div>
+          <div class="dlg-actions" style="justify-content:flex-start">
+            <button type="button" id="enCalc" class="btn btn-accent" style="width:auto">Calcular kWh</button>
+            <span id="enResult" class="chip" style="margin-left:8px"></span>
+          </div>
+          <p class="muted" style="font-size:10px;margin-top:6px">E = P·t /1000 · Costo = E·tarifa. Para consumo mensual usa pestaña 📊 Consumo.</p>
+        </div>
+        <!-- SERIE / PARALELO -->
+        <div class="menstrual-card" style="margin-top:10px">
+          <h4>🔗 3) Resistencias serie / paralelo</h4>
+          <label>Valores Ω separados por coma <input type="text" id="resistVals" placeholder="ej: 100, 220, 330"></label>
+          <div class="dlg-actions" style="justify-content:flex-start;margin-top:6px">
+            <button type="button" id="resistCalc" class="btn btn-accent" style="width:auto">Calcular</button>
+            <span id="resistResult" class="chip" style="margin-left:8px;white-space:normal"></span>
+          </div>
+          <p class="muted" style="font-size:10px;margin-top:6px">Serie: Rₜ=ΣR · Paralelo: 1/Rₜ=Σ(1/R)</p>
+        </div>
+        <!-- LED -->
+        <div class="menstrual-card" style="margin-top:10px">
+          <h4>💡 4) Resistencia para LED</h4>
+          <div class="conv-row">
+            <label>V fuente (V) <input type="number" id="ledVs" value="12" step="any"></label>
+            <label>Vf LED (V) <input type="number" id="ledVf" value="2.0" step="any"></label>
+            <label>If (mA) <input type="number" id="ledIf" value="20" step="any"></label>
+          </div>
+          <div class="dlg-actions" style="justify-content:flex-start">
+            <button type="button" id="ledCalc" class="btn btn-accent" style="width:auto">Calcular R</button>
+            <span id="ledResult" class="chip" style="margin-left:8px"></span>
+          </div>
+          <p class="muted" style="font-size:10px;margin-top:6px">R = (Vs - Vf) / If · Usa valor comercial ≥ calculado. Potencia R: P = If²·R.</p>
+        </div>
+        <!-- CALIBRE / CAÍDA -->
+        <div class="menstrual-card" style="margin-top:10px">
+          <h4>🔌 5) Calibre y caída de tensión — cobre</h4>
+          <div class="conv-row">
+            <label>I (A) <input type="number" id="cableI" placeholder="ej: 10" step="any"></label>
+            <label>Longitud ida (m) <input type="number" id="cableL" placeholder="ej: 15" step="any"></label>
+            <label>Sección mm² <input type="number" id="cableS" placeholder="ej: 1.5" step="any"></label>
+          </div>
+          <div class="conv-row">
+            <label>V nominal (V) <input type="number" id="cableV" value="220" step="any"></label>
+            <label style="flex:0 0 auto;align-self:flex-end"><button type="button" id="cableCalc" class="btn btn-accent" style="width:auto">Calcular caída</button></label>
+            <span id="cableResult" class="chip" style="white-space:normal;flex:1"></span>
+          </div>
+          <p class="muted" style="font-size:10px;margin-top:6px">ΔV = 2·I·L·ρ / S (ρ cobre 0.0178 Ω·mm²/m). Norma: caída &lt;3% alumbrado, &lt;5% fuerza. Si supera, sube sección.</p>
+          <div id="cableAWG" class="chip" style="display:block;margin-top:6px;white-space:normal"></div>
+        </div>
+        <div class="menstrual-card" style="margin-top:10px;background:var(--panel)">
+          <h4>⚠️ Seguridad — Penco 220V</h4>
+          <p class="muted" style="font-size:11px;line-height:1.5">Corta energía en tablero antes de medir/manipular. Usa tester CAT III, guantes. No sobrecargues alargadores (1500W max típico). Para instalación fija o caída &gt;3% consulta a eléctrico certificado SEC.</p>
         </div>
       </div>
-      <div class="menstrual-card" style="margin-top:10px">
-        <h4>⚡ Presets — toca para cargar</h4>
-        <div id="energyPresets" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px"></div>
-        <p class="muted" style="font-size:10px;margin-top:6px">Valores promedio Chile; ajusta horas reales de tu hogar.</p>
+      <div id="energySolarPanel" class="hidden">
+        <div class="menstrual-card" style="border-color:#f0d488;background:linear-gradient(135deg,#2a2210,var(--card))">
+          <h4 style="color:#f0d488">☀️ Calculadora Solar Fotovoltaica — Penco · -36.73° · 220V</h4>
+          <p class="muted" style="font-size:11px;line-height:1.5">Dimensiona tu kit <b>on-grid / off-grid</b> con datos reales de Penco. Usa <b>HSP</b> (Horas Sol Pico) local: <b>4.2</b> invierno, <b>5.8</b> verano, <b>4.9</b> promedio anual. Inclinación óptima <b>≈33-36°</b> mirando <b>norte</b>. Todo local, sin permisos extra.</p>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">
+            <span class="chip">HSP Penco 4.9h</span><span class="chip">220V / 380V</span><span class="chip">PR 0.78</span><span class="chip">Norte 0°</span>
+          </div>
+        </div>
+        <div class="menstrual-card" style="margin-top:10px">
+          <h4>📊 Datos de tu consumo</h4>
+          <div class="conv-row">
+            <label>Consumo mensual kWh <input type="number" id="solarKwhMes" placeholder="ej: 250" value="250" step="1"></label>
+            <label>HSP Penco (h/día) <input type="number" id="solarHSP" value="4.9" step="0.1" min="2" max="7"></label>
+            <label>PR (pérdidas) <input type="number" id="solarPR" value="0.78" step="0.01" min="0.5" max="0.95"></label>
+          </div>
+          <div class="conv-row">
+            <label>Potencia panel Wp <select id="solarWp"><option value="330">330 W</option><option value="400">400 W</option><option value="450" selected>450 W</option><option value="550">550 W</option><option value="610">610 W</option></select></label>
+            <label>Precio panel CLP <input type="number" id="solarPrecioPanel" value="180000" step="1000"></label>
+            <label>Tarifa $/kWh <input type="number" id="solarTarifa" value="140" step="1"></label>
+          </div>
+          <div class="conv-row">
+            <label>Sistema
+              <select id="solarTipo">
+                <option value="ongrid">On-Grid (inyecta red)</option>
+                <option value="offgrid">Off-Grid (con baterías)</option>
+                <option value="hibrido">Híbrido</option>
+              </select>
+            </label>
+            <label>Autonomía (días) <input type="number" id="solarAutonomia" value="2" min="1" max="5" step="1"></label>
+            <label>Voltaje banco (V) <select id="solarVolt"><option value="12">12V</option><option value="24" selected>24V</option><option value="48">48V</option></select></label>
+          </div>
+          <div class="conv-row" id="solarOffGridRow">
+            <label>DOD batería % <input type="number" id="solarDOD" value="50" min="20" max="90" step="5"></label>
+            <label>Ef inversor % <input type="number" id="solarEff" value="90" min="70" max="98" step="1"></label>
+            <label>Cap. batería Ah (auto) <input type="text" id="solarBatInfo" readonly placeholder="—" style="background:var(--panel)"></label>
+          </div>
+          <div class="dlg-actions" style="justify-content:flex-start;margin-top:8px">
+            <button type="button" id="solarCalc" class="btn btn-accent" style="width:auto">☀️ Dimensionar</button>
+            <button type="button" id="solarFromConsumo" class="btn" style="width:auto">📊 Usar consumo mensual</button>
+            <span id="solarStatus" class="muted" style="font-size:11px;align-self:center"></span>
+          </div>
+        </div>
+        <div id="solarResult" class="menstrual-card" style="margin-top:10px;border-color:#f0d488"></div>
+        <div id="solarDetalle" class="menstrual-card hidden" style="margin-top:10px"></div>
+        <div id="solarBateriaBox" class="menstrual-card hidden" style="margin-top:10px"></div>
+        <div class="help-grid" style="margin-top:10px">
+          <div class="help-card"><h4>📐 Inclinación Penco</h4><p style="font-size:11px">Anual óptima <b>30-36°</b> (≈latitud). Invierno +15° (50°), verano -15° (15°). Si techo 15-20°, igual produce 90%. <b>Norte</b> ±15°.</p></div>
+          <div class="help-card"><h4>📅 HSP mensual Penco</h4><p style="font-size:11px">Ene 6.5 · Feb 5.9 · Mar 5.0 · Abr 3.8 · May 3.0 · Jun 2.8 · Jul 3.0 · Ago 3.7 · Sep 4.7 · Oct 5.4 · Nov 6.0 · Dic 6.6 · <b>Prom 4.7</b> (Fuente Explorador Solar UC).</p></div>
+          <div class="help-card"><h4>💰 Costos ref. 2026</h4><p style="font-size:11px">Panel 450W $170-210k · Inversor 3kW $450k · Microinversor $120k · Batería LiFePO4 100Ah 48V $700k · Instalación $300-600k. ROI on-grid 4-6 años en Bío-Bío.</p></div>
+          <div class="help-card"><h4>🔌 NetBilling Chile</h4><p style="font-size:11px">Ley 20.571: inyectas excedente y descuenta $ en boleta (no paga igual que tarifa). Dimensiona para <b>80-90% de tu consumo</b>, no 100%. Declara TE4 con SEC.</p></div>
+        </div>
+        <div class="menstrual-card" style="margin-top:10px;background:var(--panel)">
+          <h4>⚠️ Recomendación Penco costa</h4>
+          <p class="muted" style="font-size:11px;line-height:1.5">Viento sur y brisa marina: anclaje reforzado, corrosión (marco anodizado), limpia polvo/sal cada 2 meses. Evita sombras de pino/eucalipto. Si no tienes norte, este-oeste funciona con +15% paneles. Consulta instalador SEC autorizado.</p>
+        </div>
       </div>
-      <div id="energyList" class="habits-list" style="margin-top:10px;max-height:280px"></div>
-      <div class="dlg-actions" style="justify-content:space-between;align-items:center;margin-top:8px">
-        <span id="energyStats" class="muted" style="font-size:11px"></span>
-        <span style="display:flex;gap:8px">
-          <button type="button" id="energyExport" class="btn" style="width:auto">📥 Exportar CSV</button>
-          <button type="button" id="energyShare" class="btn" style="width:auto">📤 Compartir</button>
-          <button type="button" id="energyClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Vaciar</button>
-        </span>
-      </div>
-      <div id="energyTips" class="menstrual-card" style="margin-top:10px"></div>
-      <div id="energyLuna" class="menstrual-card" style="margin-top:10px"></div>
       <div class="dlg-actions"><button type="button" id="energyClose" class="btn">Cerrar</button></div>
     </form>
   </dialog>
@@ -1016,6 +1174,74 @@
   </dialog>
 
 
+
+  <dialog id="compassDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">🧭 Brújula — Web (sin permisos extra)</h3>
+        <button type="button" id="compassCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
+      </div>
+      <p class="muted" style="line-height:1.5">Funciona en móvil/tablet con sensor magnético. Mantén el dispositivo plano. No necesita permisos extra en Android/Chrome; en iPhone pide 1 toque. Útil para orientar paneles solares al <b>norte</b> en Penco.</p>
+      <div class="menstrual-card" style="text-align:center;border-color:var(--gold)">
+        <div id="compassRose" style="width:200px;height:200px;margin:10px auto;position:relative;border:2px solid var(--line);border-radius:50%;background:radial-gradient(circle at 50% 50%, var(--panel), var(--card))">
+          <div style="position:absolute;top:6px;left:50%;transform:translateX(-50%);color:#ff6b6b;font-weight:800;font-size:14px">N</div>
+          <div style="position:absolute;bottom:6px;left:50%;transform:translateX(-50%);color:var(--muted);font-size:12px">S</div>
+          <div style="position:absolute;left:8px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:12px">O</div>
+          <div style="position:absolute;right:8px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:12px">E</div>
+          <div id="compassNeedle" style="position:absolute;left:50%;top:50%;width:3px;height:88px;background:linear-gradient(to bottom, #ff3b30 50%, #9aa3c7 50%);transform:translate(-50%, -50%) rotate(0deg);transform-origin:center; border-radius:2px; transition:transform 0.2s ease-out"></div>
+          <div style="position:absolute;left:50%;top:50%;width:12px;height:12px;background:var(--gold);border-radius:50%;transform:translate(-50%,-50%)"></div>
+        </div>
+        <div id="compassHeading" class="chip" style="display:inline-block;margin-top:8px;font-size:16px">—°</div>
+        <div id="compassCardinal" class="muted" style="font-size:12px;margin-top:4px">—</div>
+        <p id="compassStatus" class="muted" style="font-size:11px;margin-top:6px"></p>
+      </div>
+      <div class="menstrual-card" style="margin-top:10px">
+        <h4>📍 Datos Penco</h4>
+        <div class="conv-row">
+          <span class="chip">Lat -36.7319</span><span class="chip">Lng -72.9925</span><span class="chip">Dec. magnética ~ -5° (2026)</span>
+        </div>
+        <p class="muted" style="font-size:11px;margin-top:6px">Para solar, apunta paneles al <b>norte verdadero</b> (brújula +5° hacia este para corregir). Inclinación óptima 33-36°. Usa también 📐 Inclinación para ajustar.</p>
+        <div class="dlg-actions" style="justify-content:flex-start;margin-top:8px">
+          <button type="button" id="compassStart" class="btn btn-accent" style="width:auto">▶ Activar / Permiso iPhone</button>
+          <button type="button" id="compassStop" class="btn" style="width:auto">⏸ Pausar</button>
+        </div>
+      </div>
+      <div class="dlg-actions"><button type="button" id="compassClose" class="btn">Cerrar</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="inclinDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">📐 Inclinación / Nivel — Web</h3>
+        <button type="button" id="inclinCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
+      </div>
+      <p class="muted" style="line-height:1.5">Mide inclinación con el giroscopio del móvil (sin permisos extra). Apoya el borde del celular sobre el panel / techo para ver ángulo.</p>
+      <div class="menstrual-card" style="text-align:center;border-color:var(--gold)">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div class="chip" style="padding:12px"><b>↕ Pitch (cabeceo)</b><div id="inclinPitch" style="font-size:22px;color:var(--gold);margin-top:4px">—°</div></div>
+          <div class="chip" style="padding:12px"><b>↔ Roll (alabeo)</b><div id="inclinRoll" style="font-size:22px;color:#7ab8ff;margin-top:4px">—°</div></div>
+        </div>
+        <div style="margin-top:12px">
+          <div style="width:200px;height:20px;margin:0 auto;background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden;position:relative">
+            <div id="inclinBar" style="position:absolute;left:50%;top:0;bottom:0;width:4px;background:var(--gold);transform:translateX(-50%);transition:left 0.1s"></div>
+          </div>
+          <div id="inclinTarget" class="muted" style="font-size:11px;margin-top:6px">Objetivo Penco: 33-36° norte</div>
+        </div>
+        <p id="inclinStatus" class="muted" style="font-size:11px;margin-top:8px"></p>
+      </div>
+      <div class="menstrual-card" style="margin-top:10px">
+        <h4>🎯 Cómo usar para solar</h4>
+        <p class="muted" style="font-size:11px;line-height:1.5">1. Activa y coloca el celular <b>a lo largo del panel</b> (borde largo). 2. Inclina hasta ver <b>~34°</b> en Pitch. 3. Verifica con brújula que apunte al norte. Para techo, mide directamente la chapa.</p>
+        <div class="dlg-actions" style="justify-content:flex-start;margin-top:8px">
+          <button type="button" id="inclinStart" class="btn btn-accent" style="width:auto">▶ Activar</button>
+          <button type="button" id="inclinStop" class="btn" style="width:auto">⏸ Pausar</button>
+          <button type="button" id="inclinCalib" class="btn" style="width:auto">⟲ Calibrar 0°</button>
+        </div>
+      </div>
+      <div class="dlg-actions"><button type="button" id="inclinClose" class="btn">Cerrar</button></div>
+    </form>
+  </dialog>
 
   <dialog id="firstAidDialog">
     <form method="dialog">
@@ -1191,6 +1417,25 @@
            <a id="donatePaypalLink" href="https://www.paypal.com/donate?business=semilleroconsciente@gmail.com" target="_blank" rel="noopener noreferrer" class="btn" style="width:auto;display:inline-block;text-decoration:none;text-align:center;background:#003087;color:#fff;border-color:#003087">Donar con PayPal</a>
           <p class="muted" style="font-size:11px;margin-top:6px">semilleroconsciente@gmail.com</p>
         </div>
+      </div>
+      <div class="donate-grid" style="margin-top:10px">
+        <div class="donate-card" style="border-color:var(--gold);background:linear-gradient(135deg,var(--panel),var(--card))">
+          <h4>🗺️ ¿Quieres el calendario para tu territorio?</h4>
+          <p class="muted" style="font-size:12px;line-height:1.5">Este calendario nació para <b>Penco · Bío-Bío</b>, pero puedo adaptarlo a <b>tu comuna, valle o bioregión</b> (toponimia, mareas, siembra, fiestas y lunas locales).</p>
+          <p class="muted" style="font-size:11px">Previa consulta — es un trabajo artesanal y territorial.</p>
+          <a href="mailto:semilleroconsciente@gmail.com?subject=Calendario%20para%20mi%20territorio%20-%20consulta&body=Hola%20Semillero%2C%0A%0AMe%20interesa%20adaptar%20el%20calendario%20a%20mi%20territorio%3A%0A-%20Comuna%2Fterritorio%3A%0A-%20Regi%C3%B3n%2Fpa%C3%ADs%3A%0A-%20Qu%C3%A9%20elementos%20te%20gustaria%20incluir%3A%20(mareas%2C%20siembra%2C%20fiestas%2C%20lunas)%0A%0AGracias%21" class="btn btn-accent" style="width:auto;display:inline-block;text-align:center;text-decoration:none;margin-top:6px">✉️ Consultar por correo</a>
+          <p class="muted" style="font-size:11px;margin-top:6px"><b>semilleroconsciente@gmail.com</b></p>
+        </div>
+        <div class="donate-card" style="border-color:#a9d18e;background:linear-gradient(135deg,var(--panel),var(--card))">
+          <h4>💡 Opiniones e ideas para mejorar</h4>
+          <p class="muted" style="font-size:12px;line-height:1.5">¿Tienes una idea, corrección o sugerencia?</p>
+          <p class="muted" style="font-size:11px">Tu opinión hace crecer el calendario. Escríbeme y respondo personalmente. ¡Toda idea es bienvenida!</p>
+          <a href="mailto:semilleroconsciente@gmail.com?subject=Idea%20para%20mejorar%20el%20Calendario%2013%20Lunas&body=Hola%20Semillero%2C%0A%0AMi%20idea%2Fopini%C3%B3n%20para%20el%20calendario%3A%0A%0A-%20Qu%C3%A9%20mejoraria%3A%0A-%20Qu%C3%A9%20te%20gusta%20m%C3%A1s%3A%0A%0AGracias%20por%20este%20trabajo%20colectivo%20!" class="btn" style="width:auto;display:inline-block;text-align:center;text-decoration:none;background:#a9d18e;color:#0e1a12;border-color:#a9d18e;margin-top:6px">💬 Enviar idea / opinión</a>
+          <p class="muted" style="font-size:11px;margin-top:6px"><b>semilleroconsciente@gmail.com</b> · Respuesta en 2-3 días</p>
+        </div>
+      </div>
+      <div class="menstrual-card" style="margin-top:10px;background:var(--panel);text-align:center">
+        <p class="muted" style="font-size:11px;line-height:1.5;margin:0">📬 <b>Contacto directo:</b> <a href="mailto:semilleroconsciente@gmail.com" style="color:var(--gold)">semilleroconsciente@gmail.com</a> · Para territorios, colaboraciones, talleres o simplemente saludar. ¡Küme mañum!</p>
       </div>
       <p style="text-align:center;margin-top:14px;font-style:italic;color:var(--accent);line-height:1.6">Gracias por valorar este calendario hecho a mano en Penco, entre mareas y lunas. Cada aporte, grande o pequeño, sostiene este trabajo independiente y lo mantiene libre y sin publicidad para todos. <br><b>¡Küme mañum — muchas gracias!</b></p>
       <div class="dlg-actions"><button type="button" id="donateClose" class="btn">Cerrar</button></div>
@@ -1724,6 +1969,9 @@
         <div class="config-group">
           <h5>🛠️ Herramientas</h5>
           <label class="check-row"><input type="checkbox" data-btn="btnConvert"> 📏 Conversión</label>
+          <label class="check-row"><input type="checkbox" data-btn="btnEnergy"> ⚡ Consumo</label>
+          <label class="check-row"><input type="checkbox" data-btn="btnCompass"> 🧭 Brújula</label>
+          <label class="check-row"><input type="checkbox" data-btn="btnInclinometer"> 📐 Inclinación</label>
           <label class="check-row"><input type="checkbox" data-btn="btnTimer"> ⏱ Tiempo</label>
           <label class="check-row"><input type="checkbox" data-btn="btnRemind"> 🔔 Recordatorios</label>
           <label class="check-row"><input type="checkbox" data-btn="btnBackup"> 💾 Respaldo</label>
