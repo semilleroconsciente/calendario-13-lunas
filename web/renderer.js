@@ -4905,14 +4905,21 @@ function setupEvacDialog(){
 }
 setTimeout(setupEvacDialog, 886);
 
-// === KIMÜN MAPUZUGUN — BÁSICO ===
+// === KIMÜN MAPUZUGUN — BÁSICO · INTERMEDIO · AVANZADO ===
 const MAPU_WORDS = [
-  { m:'mari mari', e:'hola / saludo', x:'Mari mari, chaltu may — hola, muchas gracias', t:'saludo' },
+  { m:'mari mari', e:'hola / saludo', x:'Mari mari, lamngen — hola, hermano/a', t:'saludo' },
   { m:'chaltu', e:'gracias', x:'Chaltu por tu ayuda', t:'saludo' },
+  { m:'chaltu may', e:'muchas gracias', x:'Chaltu may por compartir tu kimün', t:'saludo' },
+  { m:'peukayal', e:'nos vemos / hasta pronto', x:'Peukayal, wüle — nos vemos mañana', t:'saludo' },
   { m:'kimün', e:'conocimiento, saber', x:'Kimün mapuche — saber del territorio', t:'saber' },
   { m:'mapu', e:'tierra', x:'Mapu Penco — tierra de Penco', t:'tierra' },
   { m:'ko', e:'agua', x:'Ko lafken — agua de mar', t:'naturaleza' },
   { m:'lafken', e:'mar, lago grande', x:'Lafken de Penco — mar frente a la bahía', t:'naturaleza' },
+  { m:'leufu', e:'río', x:'Leufu Biobío — río grande cercano', t:'naturaleza' },
+  { m:'mawiza', e:'montaña / bosque nativo', x:'Mawiza de Nahuelbuta', t:'naturaleza' },
+  { m:'menoko', e:'humedal, ojo de agua', x:'Menoko Rocuant — humedal de Penco', t:'naturaleza' },
+  { m:'kürüf', e:'viento', x:'Kürüf wenu — viento del sur', t:'naturaleza' },
+  { m:'mawün', e:'lluvia', x:'Mawün pukem — lluvia de invierno', t:'naturaleza' },
   { m:'antü', e:'sol, día', x:'Antü poud — salió el sol', t:'naturaleza' },
   { m:'küyen', e:'luna, mes', x:'Mari küla küyen — 13 lunas', t:'luna' },
   { m:'wenu', e:'cielo, arriba', x:'Wenu mapu — mundo de arriba', t:'cosmos' },
@@ -4922,31 +4929,106 @@ const MAPU_WORDS = [
   { m:'walüng', e:'verano', x:'Walüng cosecha — tiempo de abundancia', t:'estación' },
   { m:'rimü', e:'otoño', x:'Rimü guarda — tiempo de guardar', t:'estación' },
   { m:'che', e:'persona, gente', x:'Mapuche — gente de la tierra', t:'gente' },
-  { m:'ruca', e:'casa', x:'Ruca Surgery? no — ruca = casa', t:'casa' },
+  { m:'lafken che', e:'gente del mar (lafkenche)', x:'Lafkenche de Penco-Lirquén', t:'gente' },
+  { m:'pichike che', e:'niño/a', x:'Pichike che juega — el niño juega', t:'gente' },
+  { m:'ñuke', e:'madre', x:'Ñuke mapu — madre tierra', t:'familia' },
+  { m:'chaw', e:'padre', x:'Chaw engu ñuke — padre y madre', t:'familia' },
+  { m:'peñi', e:'hermano (entre hombres)', x:'Mari mari, peñi', t:'familia' },
+  { m:'lamngen', e:'hermana / hermano (respetuoso)', x:'Mari mari, lamngen', t:'familia' },
+  { m:'ruca', e:'casa', x:'Ruca lafkenche — casa junto al mar', t:'casa' },
+  { m:'küme', e:'bueno / bien', x:'Küme mongen — buen vivir', t:'valor' },
+  { m:'küme mongen', e:'buen vivir, vida en equilibrio', x:'Küme mongen en Penco', t:'valor' },
+  { m:'newen', e:'fuerza, energía', x:'Newen lafken — fuerza del mar', t:'valor' },
+  { m:'rakizuam', e:'pensamiento, reflexión', x:'Rakizuam kimün — pensar con saber', t:'saber' },
+  { m:'dungu', e:'palabra, asunto, idioma', x:'Mapuzugun — idioma de la tierra', t:'saber' },
+  { m:'pewma', e:'sueño (soñado)', x:'Pewma küme — buen sueño', t:'saber' },
+  { m:'epew', e:'cuento, relato que enseña', x:'Epew del zorro y la luna', t:'saber' },
+  { m:'ülkantun', e:'canto', x:'Ülkantun lafkenche', t:'arte' },
+  { m:'küdaw', e:'trabajo', x:'Küdaw huerta — trabajo en la huerta', t:'vida' },
+  { m:'iyael', e:'comida', x:'Iyael mapuche: kofke, muday', t:'vida' },
+  { m:'kofke', e:'pan', x:'Kofke ruka — pan de casa', t:'vida' },
+  { m:'challwa', e:'pez / pescado', x:'Challwa lafken — pescado del mar', t:'vida' },
+  { m:'üñüm', e:'pájaro', x:'Üñüm wilki — el zorzal canta', t:'naturaleza' },
+  { m:'ngürü', e:'zorro', x:'Ngürü epew — el zorro del cuento', t:'naturaleza' },
+  { m:'kelü', e:'rojo', x:'Kelü copihue', t:'color' },
+  { m:'karü', e:'verde', x:'Karü mawiza — verde montaña', t:'color' },
+  { m:'kalfu', e:'azul', x:'Kalfu lafken — mar azul', t:'color' },
+  { m:'lig', e:'blanco', x:'Lig küyen — luna blanca', t:'color' },
+  { m:'kurü', e:'negro', x:'Kurü kürüf — noche oscura', t:'color' },
+  { m:'chod', e:'amarillo', x:'Chod rayen — flor amarilla', t:'color' },
+  { m:'rayen', e:'flor', x:'Rayen pewü — flor de primavera', t:'naturaleza' },
+  { m:'ngillatun', e:'rogativa, ceremonia', x:'Ngillatun al amanecer en We Tripantu', t:'ceremonia' },
+  { m:'we tripantu', e:'año nuevo mapuche', x:'We Tripantu 21 jun — nuevo ciclo', t:'ceremonia' },
   { m:'küla', e:'tres', x:'Küla küyen — tres lunas', t:'número' },
   { m:'meli', e:'cuatro', x:'Meli — cuatro', t:'número' },
   { m:'aylla', e:'nueve', x:'Aylla — nueve', t:'número' },
-  { m:'mari', e:'diez', x:'Mari — diez', t:'número' },
-  { m:'lafken che', e:'gente del mar (lafkenche)', x:'Lafkenche de Penco-Lirquén', t:'gente' },
-  { m:'ngillatun', e:'rogativa, ceremonia', x:'Ngillatun al amanecer en We Tripantu', t:'ceremonia' },
-  { m:'we tripantu', e:'año nuevo mapuche', x:'We Tripantu 21 jun — nuevo ciclo', t:'ceremonia' },
-  { m:'pichike che', e:'niño/a', x:'Pichike che juega — el niño juega', t:'gente' }
+  { m:'mari', e:'diez', x:'Mari — diez', t:'número' }
 ];
-const MAPU_NUMS = [['kiñe',1],['epu',2],['küla',3],['meli',4],['kechu',5],['kayu',6],['regle',7],['pura',8],['aylla',9],['mari',10],['mari kiñe',11],['mari epu',12],['mari küla',13]];
+const MAPU_NUMS = [['kiñe',1],['epu',2],['küla',3],['meli',4],['kechu',5],['kayu',6],['regle',7],['pura',8],['aylla',9],['mari',10],['mari kiñe',11],['mari epu',12],['mari küla',13],['mari meli',14],['mari kechu',15],['epu mari',20],['küla mari',30],['meli mari',40],['pataka',100]];
+// --- NIVEL INTERMEDIO: verbos, frases y pronombres ---
+const MAPU_VERBOS = [
+  { m:'mongen', e:'vivir / vida', x:'Küme mongen — vivir bien' },
+  { m:'kim-', e:'saber / conocer', x:'Kimn — yo sé · Kimnymi — tú sabes' },
+  { m:'ayü-', e:'amar, querer', x:'Ayün — yo amo / quiero' },
+  { m:'pi-', e:'decir', x:'Pin — yo digo' },
+  { m:'amu-', e:'ir', x:'Amun Penco meu — voy a Penco' },
+  { m:'küpa-', e:'venir', x:'Küpan — vengo / vine' },
+  { m:'müle-', e:'estar / haber', x:'Mülen Penco — estoy en Penco' },
+  { m:'küdaw-', e:'trabajar', x:'Küdawn huerta meu — trabajo en la huerta' },
+  { m:'ngillatu-', e:'rogar / pedir en ceremonia', x:'Ngillatun wenu mapu meu' },
+  { m:'pentuku-', e:'visitar / saludar formalmente', x:'Pentukun — vengo a saludar' },
+  { m:'chalintuku-', e:'saludar, dar la mano', x:'Chalintukun, peñi' },
+  { m:'pewma-', e:'soñar', x:'Pewman küme pewma — soñé un buen sueño' }
+];
+const MAPU_FRASES_M = [
+  { m:'Mari mari, chumleymi?', e:'Hola, ¿cómo estás?', x:'Respuesta: Kümelekan, ¿eymi kay? — Estoy bien, ¿y tú?' },
+  { m:'Iney pingeymi?', e:'¿Cómo te llamas?', x:'Iñche Ana pingen — Yo me llamo Ana' },
+  { m:'Chew müleymi?', e:'¿Dónde vives / estás?', x:'Penco mew mülen — Vivo en Penco' },
+  { m:'Chumlechi mongelemi?', e:'¿Cómo va tu vida / cómo has estado?', x:'Para conversar largo, con calma' },
+  { m:'Kümelekan, chaltu may', e:'Estoy bien, muchas gracias', x:'Respuesta amable completa' },
+  { m:'Peukayal, lamngen', e:'Nos vemos, hermano/a', x:'Despedida respetuosa' },
+  { m:'Wüle pewaiñ', e:'Mañana nos vemos', x:'Compromiso: wüle = mañana' },
+  { m:'Feymew, küme amulepe', e:'Entonces, que vayas bien', x:'Desear buen camino' },
+  { m:'Chem am ta küdawkeeymi?', e:'¿En qué trabajas?', x:'Huerta meu küdawken — trabajo en huerta' },
+  { m:'Ayün mapuzugun', e:'Quiero / amo el mapuzugun', x:'Expresa motivación por aprender' },
+  { m:'Kimkelay mapuzugun, welu ayün kimam', e:'No sé mapuzugun, pero quiero aprender', x:'Frase honesta para pedir ayuda' },
+  { m:'Eymi kimeltuchefe, chaltu may', e:'Tú eres mi maestro/a, gracias', x:'Reconocer a quien enseña' },
+  { m:'Lafken mew amukeaiñ wüle', e:'Mañana iremos al mar', x:'Futuro con -a-: amukeaiñ = iremos' },
+  { m:'Küme iyael, chaltu ñuke', e:'Rica comida, gracias mamá', x:'En la mesa, con respeto' }
+];
+const MAPU_PRONOMBRES = [['iñche','yo'],['eymi','tú'],['fey','él / ella'],['iñchiñ','nosotros/as dos'],['eymu','ustedes dos'],['feyengu','ellos/as dos'],['iñchiñ / iñcheñ','nosotros/as (varios)'],['eymün','ustedes (varios)'],['feyengün','ellos/as (varios)']];
+// --- NIVEL AVANZADO: rakizuam, gramática y epew ---
+const MAPU_FRASES_A = [
+  { m:'Kimün mapu mew müley', e:'El saber está en la tierra', x:'Rakizuam: se aprende observando el territorio' },
+  { m:'Lafken ñi newen, che ñi mongen', e:'La fuerza del mar es la vida de la gente', x:'Pensamiento lafkenche' },
+  { m:'Ngillatun wenu mapu meu, chaltu pukem', e:'Rogativa al cielo por las lluvias', x:'Lengua ceremonial, se usa con guía' },
+  { m:'Epew pin: ngürü ka küyen', e:'Cuento dice: el zorro y la luna', x:'Inicio clásico de epew' },
+  { m:'Küme mongen, küme dungu, küme küdaw', e:'Buen vivir, buena palabra, buen trabajo', x:'Tres pilares del ad mapu' },
+  { m:'Kimlayaymiñ tüfachi dungu?', e:'¿No sabemos esta palabra?', x:'Negación + pregunta avanzada' },
+  { m:'Wüle amuaimi waria meu?', e:'¿Irás mañana al pueblo/ciudad?', x:'Futuro -a- + pregunta -mi' },
+  { m:'Tüfachi lawen küme mongen mew', e:'Esta medicina es para el buen vivir', x:'Uso de demostrativo tüfachi = este/a' }
+];
 let mapuTab = 'palabra';
 let mapuQuizQ = null;
+let mapuQuizLevel = 'todo';
 function getMapuData(){ try{ const u=userData(); if(!u.mapu) u.mapu={ok:0,total:0,streak:0,lastDay:''}; return u.mapu; }catch{ return {ok:0,total:0,streak:0,lastDay:''}; } }
 function mapuDayIndex(){ const n=new Date(); const s=n.getFullYear()*1000+(Math.floor((n-new Date(n.getFullYear(),0,0))/864e5)); return s % MAPU_WORDS.length; }
 function mapuSpeak(txt){ try{ if(!('speechSynthesis' in window)) return; speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(txt); u.lang='es-CL'; u.rate=0.85; speechSynthesis.speak(u); }catch{} }
+function mapuQuizPool(){
+  if(mapuQuizLevel==='basico') return MAPU_WORDS;
+  if(mapuQuizLevel==='intermedio') return MAPU_FRASES_M.concat(MAPU_VERBOS);
+  if(mapuQuizLevel==='avanzado') return MAPU_FRASES_A;
+  return MAPU_WORDS.concat(MAPU_FRASES_M).concat(MAPU_FRASES_A);
+}
 function renderMapuStreak(){
   const b=$('mapuStreakBox'); if(!b) return;
   const d=getMapuData();
   const pct = d.total? Math.round(d.ok/d.total*100):0;
-  b.innerHTML = `<b>🌱 Tu kimün:</b> ${d.ok}/${d.total} buenas (${pct}%) · racha ${d.streak} 🔥 <span class="muted" style="font-size:11px">— practica 1 palabra al día, se guarda local</span>`;
+  b.innerHTML = `<b>🌱 Tu kimün:</b> ${d.ok}/${d.total} buenas (${pct}%) · racha ${d.streak} 🔥 <span class="muted" style="font-size:11px">— Básico: 1 palabra/día · Intermedio: 1 frase/día · Avanzado: rakizuam. Todo se guarda local.</span>`;
 }
 function renderMapuPanel(tab){
   mapuTab = tab || mapuTab;
-  const ids={palabra:'tabMP1',numeros:'tabMP2',lunas:'tabMP3',quiz:'tabMP4'};
+  const ids={palabra:'tabMP1',numeros:'tabMP2',intermedio:'tabMP3',avanzado:'tabMP4',lunas:'tabMP5',quiz:'tabMP6'};
   Object.entries(ids).forEach(([k,id])=>{ const el=$(id); if(el) el.classList.toggle('btn-accent', k===mapuTab); });
   renderMapuStreak();
   const box=$('mapuPanel'); if(!box) return;
@@ -4955,9 +5037,9 @@ function renderMapuPanel(tab){
     const w = MAPU_WORDS[mapuDayIndex()];
     const rel = [MAPU_WORDS[(mapuDayIndex()+5)%MAPU_WORDS.length], MAPU_WORDS[(mapuDayIndex()+9)%MAPU_WORDS.length]];
     html+= `<div class="menstrual-card" style="background:linear-gradient(135deg,var(--panel),var(--card));border-color:var(--gold);text-align:center">
-      <p class="muted" style="font-size:11px">☀️ PALABRA DE HOY · ${cal.fmtDate.format(new Date())}</p>
+      <p class="muted" style="font-size:11px">☀️ PALABRA DE HOY · NIVEL BÁSICO · ${cal.fmtDate.format(new Date())} · ${MAPU_WORDS.length} palabras en total</p>
       <div style="font-size:30px;font-weight:800;color:var(--gold);margin:6px 0">${escapeHtml(w.m)}</div>
-      <div style="font-size:15px;color:#e8eaf6"><b>${escapeHtml(w.e)}</b></div>
+      <div style="font-size:15px;color:#e8eaf6"><b>${escapeHtml(w.e)}</b> <span class="chip" style="font-size:10px">${escapeHtml(w.t||'')}</span></div>
       <p class="muted" style="font-size:12px;margin-top:6px">“${escapeHtml(w.x)}”</p>
       <div style="display:flex;gap:6px;justify-content:center;margin-top:8px;flex-wrap:wrap">
         <button type="button" id="mapuSpeakBtn" class="btn" style="width:auto">🔊 Escuchar</button>
@@ -4965,16 +5047,48 @@ function renderMapuPanel(tab){
       </div></div>
       <div class="help-grid" style="margin-top:10px">`+
       rel.map(r=>`<div class="help-card"><h4>${escapeHtml(r.m)}</h4><p style="font-size:11px">${escapeHtml(r.e)}<br><span class="muted">“${escapeHtml(r.x)}”</span></p></div>`).join('')+`</div>
-      <p class="muted" style="font-size:10px;margin-top:6px">Grafemario usado: Azümchefe simplificado (ü, ng, tr). Puede variar por zona — lo importante es usar con respeto.</p>`;
+      <div class="help-grid" style="margin-top:10px">
+        <div class="help-card"><h4>🗣️ ¿Cómo pronunciar?</h4><p style="font-size:11px;line-height:1.6"><b>ü</b> → suena entre i y u (küla ≈ kula cerrada)<br><b>ng</b> → nasal como en <i>ngillatun</i><br><b>tr</b> → suave, no enrollada<br><b>Habla lento y con respeto</b>, mejor que perfecto. Repite 3 veces en voz alta.</p></div>
+        <div class="help-card"><h4>📚 ¿Cómo avanzar?</h4><p style="font-size:11px;line-height:1.6">1) Aprende 1 palabra/día de esta pestaña.<br>2) Pasa a <b>💬 Intermedio</b> cuando reconozcas 30 sin mirar.<br>3) Pasa a <b>📜 Avanzado</b> cuando armes frases solas.<br>El quiz te dice tu nivel real.</p></div>
+      </div>
+      <p class="muted" style="font-size:10px;margin-top:6px">Grafemarios: <b>Azümchefe</b> (el usado aquí) · <b>Unificado</b> · <b>Raguileo</b>. Ej: <i>kimün = kimvn / kimün</i> según grafemario. Puede variar por zona — lo importante es usar con respeto y preguntar.</p>`;
   } else if(mapuTab==='numeros'){
-    html+= `<div class="menstrual-card" style="border-color:#7ab8ff"><h4 style="color:#7ab8ff">🔢 Números 1–13 — las 13 lunas se cuentan así</h4>
+    html+= `<div class="menstrual-card" style="border-color:#7ab8ff"><h4 style="color:#7ab8ff">🔢 Números 1–100 — las 13 lunas se cuentan así</h4>
       <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:6px;margin-top:8px">`+
       MAPU_NUMS.map(([m,n])=>`<button type="button" class="btn mapu-word" data-w="${escapeHtml(m)}" style="font-size:12px"><b>${n}</b> · ${escapeHtml(m)}</button>`).join('')+`</div>
-      <p class="muted" style="font-size:11px;margin-top:8px">Mari küla = 10+3 = 13. Así se dice <b>mari küla küyen</b>.</p></div>
+      <p class="muted" style="font-size:11px;margin-top:8px">Lógica: <b>mari küla = 10+3 = 13</b> → <b>mari küla küyen</b>. <b>epu mari = 2×10 = 20</b>, <b>küla mari = 30</b>, <b>pataka = 100</b>. Toca para escuchar.</p></div>
       <div class="help-grid" style="margin-top:10px">
-        <div class="help-card"><h4>👋 Saludos</h4><p style="font-size:11px;line-height:1.5"><b>Mari mari</b> — hola (a una o varias personas)<br><b>Chaltu may</b> — muchas gracias<br><b>Lemorria / welu</b> — permiso / por favor (varía por zona)<br><b>Peukayal</b> — nos vemos / hasta pronto<br>Toca 🔊 para practicar en voz alta.</p></div>
-        <div class="help-card"><h4>🗣️ Pronunciación rápida</h4><p style="font-size:11px;line-height:1.5"><b>ü</b> como u casi cerrada (küla ≈ kula)<br><b>ng</b> nasal (ngillatun)<br><b>tr</b> suave, no como español fuerte<br><b>Habla lento</b>, mejor que perfecto.</p></div>
+        <div class="help-card"><h4>👋 Saludos lafkenche</h4><p style="font-size:11px;line-height:1.6"><b>Mari mari</b> — hola (una o varias personas)<br><b>Mari mari, lamngen</b> — hola hermano/a (respetuoso)<br><b>Chaltu may</b> — muchas gracias<br><b>Küme mañum</b> — gracias con reconocimiento<br><b>Peukayal / wüle pewaiñ</b> — nos vemos / mañana nos vemos<br><b>Pentukun</b> — vengo a saludar formalmente.</p></div>
+        <div class="help-card"><h4>🗣️ Pronunciación rápida</h4><p style="font-size:11px;line-height:1.6"><b>ü</b> como u casi cerrada (küla ≈ kula)<br><b>ng</b> nasal (ngillatun)<br><b>tr</b> suave, no como español fuerte<br><b>Habla lento</b>, mejor que perfecto. En Penco, territorio lafkenche, se saluda mirando a los ojos.</p></div>
       </div>`;
+  } else if(mapuTab==='intermedio'){
+    html+= `<div class="menstrual-card" style="border-color:#7fd8a0"><h4 style="color:#7fd8a0">💬 Nivel Intermedio — conversa de verdad</h4>
+      <p class="muted" style="font-size:11px;line-height:1.5">Ya sabes palabras sueltas. Ahora: <b>pronombres + verbos + 14 frases</b> para presentarte, ir a la feria y a la playa. Toca 🔊 en cada frase.</p></div>
+      <div class="help-grid" style="margin-top:10px">
+        <div class="help-card"><h4>👥 Pronombres (quién)</h4><p style="font-size:11px;line-height:1.7">`+
+        MAPU_PRONOMBRES.map(([m,e])=>`<b>${escapeHtml(m)}</b> = ${escapeHtml(e)}`).join('<br>')+`</p><p class="muted" style="font-size:10px">Dual (dos personas) y plural (varios) existen — el mapuzugun es preciso con cuántos somos.</p></div>
+        <div class="help-card"><h4>🏃 12 verbos base (raíz + -n = yo)</h4><p style="font-size:11px;line-height:1.7">`+
+        MAPU_VERBOS.map(v=>`<button type="button" class="btn mapu-word" data-w="${escapeHtml(v.m)}" style="font-size:11px;width:100%;text-align:left;margin-bottom:4px"><b>${escapeHtml(v.m)}</b> — ${escapeHtml(v.e)}<br><span class="muted">“${escapeHtml(v.x)}”</span></button>`).join('')+`</p></div>
+      </div>
+      <div class="menstrual-card" style="margin-top:10px;border-color:#7fd8a0"><h4 style="color:#7fd8a0">💬 14 frases para Penco — toca para escuchar</h4>
+      <div style="display:flex;flex-direction:column;gap:6px;margin-top:8px">`+
+      MAPU_FRASES_M.map(f=>`<button type="button" class="btn mapu-word" data-w="${escapeHtml(f.m)}" style="width:100%;text-align:left;font-size:12px"><b>${escapeHtml(f.m)}</b><br><span style="color:#e8eaf6">${escapeHtml(f.e)}</span><br><span class="muted" style="font-size:11px">“${escapeHtml(f.x)}”</span></button>`).join('')+`</div></div>
+      <div class="menstrual-card" style="margin-top:10px;background:var(--panel)"><h4>🎭 Mini-diálogo: en la feria de Penco</h4><p style="font-size:11px;line-height:1.7">— <b>Mari mari, lamngen, chumleymi?</b> (Hola, ¿cómo estás?)<br>— <b>Kümelekan, chaltu may. ¿Eymi kay?</b> (Bien, gracias. ¿Y tú?)<br>— <b>Kümelekan. Chem am ta küdawkeeymi?</b> (Bien. ¿En qué trabajas?)<br>— <b>Huerta meu küdawken. Wüle lafken mew amukeaiñ.</b> (Trabajo en huerta. Mañana iremos al mar.)<br>— <b>Feymew, peukayal!</b> (¡Entonces, nos vemos!)<br><span class="muted">Practícalo con alguien: uno hace cada fila.</span></p></div>`;
+  } else if(mapuTab==='avanzado'){
+    html+= `<div class="menstrual-card" style="border-color:#d8a0ff"><h4 style="color:#d8a0ff">📜 Nivel Avanzado — rakizuam y gramática viva</h4>
+      <p class="muted" style="font-size:11px;line-height:1.5">Ya conversas. Ahora piensa en mapuzugun: <b>conjugación, negación, futuro, ad mapu y epew</b>. Este nivel no se memoriza: se mastica, se conversa con kimeltuchefe.</p></div>
+      <div class="help-grid" style="margin-top:10px">
+        <div class="help-card"><h4>⚙️ Conjugación presente (verbo kim- = saber)</h4><p style="font-size:11px;line-height:1.7"><b>kimn</b> = yo sé<br><b>kimnimi / kimnymi</b> = tú sabes<br><b>kimy</b> = él/ella sabe<br><b>kimiñ</b> = nosotros sabemos<br><b>kimymün</b> = ustedes saben<br><b>kimyngün</b> = ellos saben<br><span class="muted">Raíz + terminación. Prueba con amu-, müle-, ayü-.</span></p></div>
+        <div class="help-card"><h4>🔮 Futuro + negación + pregunta</h4><p style="font-size:11px;line-height:1.7"><b>Futuro -a-:</b> amu- → <b>amuan</b> = iré · <b>amukeaiñ</b> = iremos<br><b>Negación la / no-:</b> <b>kimlan</b> = no sé · <b>kimkelay</b> = no sabe/no conoce<br><b>Pregunta -mi / -kam:</b> <b>chumleymi?</b> = ¿cómo estás? · <b>amuaimi?</b> = ¿irás?<br><b>Posesivo ñi:</b> <b>lafken ñi newen</b> = la fuerza del mar.</p></div>
+      </div>
+      <div class="menstrual-card" style="margin-top:10px;border-color:#d8a0ff"><h4 style="color:#d8a0ff">🧠 8 frases rakizuam — toca para escuchar</h4>
+      <div style="display:flex;flex-direction:column;gap:6px;margin-top:8px">`+
+      MAPU_FRASES_A.map(f=>`<button type="button" class="btn mapu-word" data-w="${escapeHtml(f.m)}" style="width:100%;text-align:left;font-size:12px"><b>${escapeHtml(f.m)}</b><br><span style="color:#e8eaf6">${escapeHtml(f.e)}</span><br><span class="muted" style="font-size:11px">“${escapeHtml(f.x)}”</span></button>`).join('')+`</div></div>
+      <div class="help-grid" style="margin-top:10px">
+        <div class="help-card"><h4>📖 Epew corto: Ngürü ka Küyen</h4><p style="font-size:11px;line-height:1.7">Epew pin: ngürü amuy lafken meu.<br><span class="muted">Cuenta el cuento: el zorro fue al mar.</span><br>Küyen wallme mew, ko küme azküy.<br><span class="muted">En la luna llena, el agua se ve hermosa.</span><br>Ngürü rakizuamy: “kimün mapu mew müley”.<br><span class="muted">El zorro pensó: “el saber está en la tierra”.</span><br><b>Moraleja lafkenche:</b> mirar antes de tomar.</p></div>
+        <div class="help-card" style="border-color:var(--gold)"><h4>🤝 Ad mapu — cómo usar sin dañar</h4><p style="font-size:11px;line-height:1.6">1) <b>Pide permiso:</b> “Kimkelay, ayün kimam” antes de usar lengua ceremonial.<br>2) <b>Ngillatun y canelo</b> no son adorno: solo con guía y comunidad.<br>3) <b>No mezcles</b> sagrado con broma o comercio.<br>4) <b>Devuelve:</b> enseña a un pichike lo que aprendas.<br>5) En Penco, reconoce: estás en <b>territorio lafkenche</b>.</p></div>
+      </div>
+      <div class="menstrual-card" style="margin-top:10px;background:var(--panel)"><h4>🔤 Grafemarios (por qué ves 3 escrituras)</h4><p class="muted" style="font-size:11px;line-height:1.6">El mapuzugun fue oral por siglos. Hoy hay 3 formas de escribirlo: <b>Azümchefe</b> (ü, ng — usado aquí, escolar), <b>Unificado</b> (ü, ng, tr — académico) y <b>Raguileo</b> (v, q, x — propio mapuche, sin letras españolas). Ej: <i>tierra = mapu (los tres)</i> · <i>saber = kimün / kimvn / kimvn</i>. Si ves otra escritura, no está mal: es otro grafemario.</p></div>`;
   } else if(mapuTab==='lunas'){
     try{
       html+= `<div class="menstrual-card" style="border-color:#a9d18e"><h4 style="color:#a9d18e">🌙 Las 13 lunas en kimün — toca para escuchar</h4>
@@ -4984,23 +5098,28 @@ function renderMapuPanel(tab){
   } else if(mapuTab==='quiz'){
     const d=getMapuData();
     if(!mapuQuizQ){
-      const w = MAPU_WORDS[Math.floor(Math.random()*MAPU_WORDS.length)];
+      const pool=mapuQuizPool();
+      const w = pool[Math.floor(Math.random()*pool.length)];
       const opts = new Set([w.e]);
-      while(opts.size<4){ opts.add(MAPU_WORDS[Math.floor(Math.random()*MAPU_WORDS.length)].e); }
+      let guard=0;
+      while(opts.size<4 && guard<50){ guard++; opts.add(pool[Math.floor(Math.random()*pool.length)].e); }
       mapuQuizQ = { w, opts:[...opts].sort(()=>Math.random()-0.5) };
     }
     const q=mapuQuizQ;
-    html+= `<div class="menstrual-card" style="border-color:#d8a0ff;text-align:center"><h4 style="color:#d8a0ff">🧩 ¿Qué significa?</h4>
+    const lvBtn=(v,l)=>`<button type="button" class="btn mapu-lv${mapuQuizLevel===v?' btn-accent':''}" data-lv="${v}" style="width:auto;font-size:11px">${l}</button>`;
+    html+= `<div class="menstrual-card" style="border-color:#d8a0ff;text-align:center"><h4 style="color:#d8a0ff">🧩 Quiz por niveles</h4>
+      <div style="display:flex;gap:6px;justify-content:center;margin:8px 0;flex-wrap:wrap">${lvBtn('todo','🌎 Todo')}${lvBtn('basico','☀️ Básico')}${lvBtn('intermedio','💬 Intermedio')}${lvBtn('avanzado','📜 Avanzado')}</div>
       <div style="font-size:26px;font-weight:800;color:var(--gold);margin:8px 0">“${escapeHtml(q.w.m)}”</div>
       <div style="display:grid;gap:6px;margin-top:8px">`+
       q.opts.map(o=>`<button type="button" class="btn mapu-opt" data-o="${escapeHtml(o)}" style="width:100%">${escapeHtml(o)}</button>`).join('')+`</div>
       <div id="mapuQuizFb" style="margin-top:8px;font-size:13px;min-height:20px"></div>
-      <p class="muted" style="font-size:11px;margin-top:6px">Aciertos ${d.ok}/${d.total} · racha ${d.streak}</p></div>`;
+      <p class="muted" style="font-size:11px;margin-top:6px">Aciertos ${d.ok}/${d.total} · racha ${d.streak} · nivel quiz: <b>${escapeHtml(mapuQuizLevel)}</b> · pool: ${mapuQuizPool().length} palabras/frases</p></div>`;
   }
   box.innerHTML = html;
   const sp=$('mapuSpeakBtn'); if(sp) sp.onclick=()=> mapuSpeak(MAPU_WORDS[mapuDayIndex()].m);
   const nx=$('mapuNextBtn'); if(nx) nx.onclick=()=>{ const w=MAPU_WORDS[Math.floor(Math.random()*MAPU_WORDS.length)]; mapuSpeak(w.m); renderMapuPanel('palabra'); };
   box.querySelectorAll('.mapu-word').forEach(b=> b.onclick=()=> mapuSpeak(b.dataset.w));
+  box.querySelectorAll('.mapu-lv').forEach(b=> b.onclick=()=>{ mapuQuizLevel=b.dataset.lv; mapuQuizQ=null; renderMapuPanel('quiz'); });
   box.querySelectorAll('.mapu-opt').forEach(b=> b.onclick=()=>{
     const d2=getMapuData(); const ok = b.dataset.o===mapuQuizQ.w.e;
     d2.total=(d2.total||0)+1; if(ok){ d2.ok=(d2.ok||0)+1; d2.streak=(d2.streak||0)+1; } else { d2.streak=0; }
@@ -5015,9 +5134,9 @@ function renderMapuPanel(tab){
 function setupMapuDialog(){
   const btn=$('btnMapu'); if(btn) btn.onclick=()=>{ renderMapuPanel('palabra'); $('mapuDialog').showModal(); };
   const ct=$('mapuCloseTop'), cb=$('mapuClose'); if(ct) ct.onclick=()=>$('mapuDialog').close(); if(cb) cb.onclick=()=>$('mapuDialog').close();
-  ['tabMP1','tabMP2','tabMP3','tabMP4'].forEach(id=>{
+  ['tabMP1','tabMP2','tabMP3','tabMP4','tabMP5','tabMP6'].forEach(id=>{
     const el=$(id); if(!el) return;
-    el.onclick=()=>{ const map={tabMP1:'palabra',tabMP2:'numeros',tabMP3:'lunas',tabMP4:'quiz'}; if(map[id]!=='quiz') mapuQuizQ=null; renderMapuPanel(map[id]); };
+    el.onclick=()=>{ const map={tabMP1:'palabra',tabMP2:'numeros',tabMP3:'intermedio',tabMP4:'avanzado',tabMP5:'lunas',tabMP6:'quiz'}; if(map[id]!=='quiz') mapuQuizQ=null; renderMapuPanel(map[id]); };
   });
 }
 setTimeout(setupMapuDialog, 887);
