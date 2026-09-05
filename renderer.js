@@ -5268,14 +5268,35 @@ function setupCompassInclin(){
   }
   async function start(){
     if(listening) return;
+    // HTTPS requerido
+    if(window.isSecureContext===false){
+      if(statusEl) statusEl.innerHTML='⚠️ Necesitas <b>HTTPS</b>. Abre la web como <b>https://calendario-13-lunas.pages.dev</b> (no http ni archivo local).';
+      return;
+    }
+    if(!('DeviceOrientationEvent' in window)){ if(statusEl) statusEl.innerHTML='❌ Este dispositivo/navegador no expone brújula. Prueba Chrome Android actualizado. Modo manual: usa el mapa y la rosa.'; return; }
     try{
       if(typeof DeviceOrientationEvent!=='undefined' && DeviceOrientationEvent.requestPermission){
         const p=await DeviceOrientationEvent.requestPermission();
-        if(p!=='granted'){ if(statusEl) statusEl.textContent='Permiso denegado. En iPhone: Ajustes>Safari>Movimiento y orientación.'; return; }
+        if(p!=='granted'){
+          if(statusEl) statusEl.innerHTML='🔒 Permiso denegado.<br><b>iPhone:</b> Ajustes > Safari > Movimiento y orientación > Activar y recarga.<br><b>Android Chrome:</b> candado en barra > Configuración del sitio > <b>Sensores de movimiento > Permitir</b> > recarga. Activa también Ubicación/GPS y usa Chrome actualizado. En Firefox Android puede no funcionar — prueba Chrome.';
+          return;
+        }
+      } else {
+        // Android no pide requestPermission pero puede estar bloqueado a nivel sitio
+        if(navigator.permissions && navigator.permissions.query){
+          try{
+            const q=await navigator.permissions.query({name:'gyroscope'});
+            if(q.state==='denied'){ if(statusEl) statusEl.innerHTML='🔒 Sensor bloqueado. Android Chrome: candado > Configuración del sitio > Sensores de movimiento > Permitir > recarga. Verifica también <i>Ajustes Android > Ubicación > Activada</i>.'; return; }
+          }catch{}
+        }
       }
       window.addEventListener('deviceorientation', handler, true);
+      // Test si llegan datos en 1.5s, si no avisa
+      let got=false; const once=(e)=>{ if(e.alpha!==null) got=true; window.removeEventListener('deviceorientation', once, true); };
+      window.addEventListener('deviceorientation', once, true);
+      setTimeout(()=>{ if(!got && listening && statusEl) statusEl.innerHTML='⏳ Sin datos aún. En Android: asegúrate de dar <b>Permitir</b> cuando el navegador pregunte, recarga la página y no uses modo incógnito con bloqueo de sensores.'; }, 1500);
       listening=true; if(statusEl) statusEl.textContent='Brújula activa. Calibra moviendo en 8.';
-    }catch(err){ if(statusEl) statusEl.textContent='Sin sensor o navegador no soporta.'; }
+    }catch(err){ if(statusEl) statusEl.innerHTML='❌ Sin sensor o navegador no soporta.<br>Android: usa Chrome (no WebView), HTTPS y Ubicación activada. Alternativa manual disponible abajo.'; }
   }
   function stop(){ window.removeEventListener('deviceorientation', handler, true); listening=false; if(statusEl) statusEl.textContent='Pausada.'; }
   if(btnStart) btnStart.onclick=start;
@@ -5297,14 +5318,19 @@ function setupCompassInclin(){
   }
   async function iStartFn(){
     if(iListening) return;
+    if(window.isSecureContext===false){ if(iStatus) iStatus.innerHTML='⚠️ Requiere <b>HTTPS</b>.'; return; }
+    if(!('DeviceOrientationEvent' in window)){ if(iStatus) iStatus.innerHTML='❌ Sin giroscopio en este navegador. Usa Chrome Android.'; return; }
     try{
       if(typeof DeviceOrientationEvent!=='undefined' && DeviceOrientationEvent.requestPermission){
         const p=await DeviceOrientationEvent.requestPermission();
-        if(p!=='granted'){ if(iStatus) iStatus.textContent='Permiso denegado.'; return; }
+        if(p!=='granted'){ if(iStatus) iStatus.innerHTML='🔒 Permiso denegado.<br><b>Android:</b> candado > Configuración del sitio > Sensores de movimiento > Permitir. <b>iPhone:</b> Ajustes > Safari > Movimiento > Activar.'; return; }
       }
       window.addEventListener('deviceorientation', iHandler, true);
+      let got=false; const once=(e)=>{ if(e.beta!==null) got=true; window.removeEventListener('deviceorientation', once, true); };
+      window.addEventListener('deviceorientation', once, true);
+      setTimeout(()=>{ if(!got && iListening && iStatus) iStatus.innerHTML='⏳ Esperando sensor... Activa Ubicación y recarga con HTTPS.'; }, 1500);
       iListening=true; if(iStatus) iStatus.textContent='Inclinómetro activo.';
-    }catch{ if(iStatus) iStatus.textContent='Sensor no disponible.'; }
+    }catch{ if(iStatus) iStatus.innerHTML='❌ Sensor no disponible. Android: Chrome + HTTPS + Ubicación activada. Usa modo manual si persiste.'; }
   }
   function iStopFn(){ window.removeEventListener('deviceorientation', iHandler, true); iListening=false; if(iStatus) iStatus.textContent='Pausado.'; }
   function calib(){ calibPitch=parseFloat(pitchEl&&pitchEl.textContent)||0; calibRoll=parseFloat(rollEl&&rollEl.textContent)||0; if(iStatus) iStatus.textContent='Calibrado a 0°.'; // actually store current
