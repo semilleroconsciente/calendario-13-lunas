@@ -299,6 +299,11 @@ function renderLuna() {
         homeIcons=`<span class="dc-habit" style="background:${bg}22;color:${bg};border-color:${bg}55" title="${homeToday.length} tareas hogar · ${doneCount} hechas · ${pending} pendientes">${pending===0?'🏠✓':'🏠'}</span>`;
       }
     }catch(e){}
+    let gratIcons='';
+    try{
+      const gd=getGratitudData(); const g=gd.entries[key];
+      if(g && (g.t1||g.t2||g.t3)) gratIcons=`<span class="dc-habit" style="background:#d8a0ff22;color:#d8a0ff;border-color:#d8a0ff55" title="Gratitud: ${escapeHtml([g.t1,g.t2,g.t3].filter(Boolean).join(' · ').slice(0,80))}">✨</span>`;
+    }catch(e){}
     const card = document.createElement('div');
     card.className = 'day-card' + (key === todayKey ? ' today' : '') + (mensType ? ' mens-'+mensType : '') + hasHabits + hasGym;
     card.dataset.luna = meta.n;
@@ -315,6 +320,7 @@ function renderLuna() {
       ${comunaIcons ? `<div class="dc-habits">${comunaIcons}</div>` : ''}
       ${financeIcons ? `<div class="dc-habits">${financeIcons}</div>` : ''}
       ${homeIcons ? `<div class="dc-habits">${homeIcons}</div>` : ''}
+      ${gratIcons ? `<div class="dc-habits">${gratIcons}</div>` : ''}
       ${efe ? `<div class="dc-efe" title="${escapeHtml(efe)}">📅 ${escapeHtml(efe)}</div>` : ''}
       ${mood ? `<div class="dc-clima">Ánimo: ${escapeHtml(mood.e)} ${escapeHtml(mood.n)}</div>` : ''}
       ${Array.isArray(cell.agenda)&&cell.agenda.length ? `<div class="dc-clima" title="${escapeHtml(cell.agenda.map(a=>String(a.hour).padStart(2,'0')+':00 '+a.text + (a.notify?' 🔔':'')).join(' · '))}">🕐 ${cell.agenda.length} compromiso${cell.agenda.length>1?'s':''} · ${escapeHtml(cell.agenda.slice(0,2).map(a=>String(a.hour).padStart(2,'0')+':00 '+a.text).join(' · '))}${cell.agenda.length>2?' …':''}</div>` : ''}
@@ -859,10 +865,10 @@ function renderSiembraTresBox(){
 }
 function renderSiembraContent(tab){
   siembraTab = tab||siembraTab;
-  const box = $('siembraContent'); const hBox=$('siembraHarvestBox'); const aBox=$('siembraAsociacionesBox'); const pBox=$('siembraPreparadosBox');
+  const box = $('siembraContent'); const hBox=$('siembraHarvestBox'); const aBox=$('siembraAsociacionesBox'); const pBox=$('siembraPreparadosBox'); const sBox=$('siembraSemillasBox');
   if(!box) return;
-  const tS=$('tabSiembra'), tC=$('tabCosecha'), tA=$('tabAsociaciones'), tP=$('tabPreparados');
-  if(tS&&tC&&tA&&tP){ tS.classList.toggle('btn-accent', siembraTab==='siembra'); tC.classList.toggle('btn-accent', siembraTab==='cosecha'); tA.classList.toggle('btn-accent', siembraTab==='asociaciones'); tP.classList.toggle('btn-accent', siembraTab==='preparados'); }
+  const tS=$('tabSiembra'), tC=$('tabCosecha'), tA=$('tabAsociaciones'), tP=$('tabPreparados'), tM=$('tabSemillas');
+  if(tS&&tC&&tA&&tP){ tS.classList.toggle('btn-accent', siembraTab==='siembra'); tC.classList.toggle('btn-accent', siembraTab==='cosecha'); tA.classList.toggle('btn-accent', siembraTab==='asociaciones'); tP.classList.toggle('btn-accent', siembraTab==='preparados'); if(tM) tM.classList.toggle('btn-accent', siembraTab==='semillas'); }
   else if(tS&&tC&&tA){ tS.classList.toggle('btn-accent', siembraTab==='siembra'); tC.classList.toggle('btn-accent', siembraTab==='cosecha'); tA.classList.toggle('btn-accent', siembraTab==='asociaciones'); }
   else if(tS&&tC){ tS.classList.toggle('btn-accent', siembraTab==='siembra'); tC.classList.toggle('btn-accent', siembraTab==='cosecha'); }
   // gestionar visibilidad de contenedores
@@ -872,7 +878,18 @@ function renderSiembraContent(tab){
   if(pBox){
     if(siembraTab==='preparados'){ pBox.classList.remove('hidden'); pBox.style.display=''; } else { pBox.classList.add('hidden'); }
   }
+  if(sBox){
+    if(siembraTab==='semillas'){ sBox.classList.remove('hidden'); sBox.style.display=''; } else { sBox.classList.add('hidden'); sBox.style.display='none'; }
+  }
   const tres=getSiembraTresLunas();
+  if(siembraTab==='semillas'){
+    if(box) box.innerHTML='';
+    if(hBox) hBox.innerHTML='';
+    if(aBox) aBox.classList.add('hidden');
+    if(pBox) pBox.classList.add('hidden');
+    renderSiembraSemillas();
+    return;
+  }
   if(siembraTab==='asociaciones'){
     if(box) box.innerHTML='';
     if(hBox) hBox.innerHTML='';
@@ -1065,11 +1082,12 @@ function openSiembra(tab){
 $('btnSiembra').onclick = () => openSiembra('siembra');
 $('siembraClose').onclick = () => $('siembraDialog').close();
 if ($('siembraCloseTop')) $('siembraCloseTop').onclick = () => $('siembraDialog').close();
-const _tabS=$('tabSiembra'), _tabC=$('tabCosecha'), _tabA=$('tabAsociaciones'), _tabP=$('tabPreparados');
+const _tabS=$('tabSiembra'), _tabC=$('tabCosecha'), _tabA=$('tabAsociaciones'), _tabP=$('tabPreparados'), _tabM=$('tabSemillas');
 if(_tabS) _tabS.onclick=()=> renderSiembraContent('siembra');
 if(_tabC) _tabC.onclick=()=> renderSiembraContent('cosecha');
 if(_tabA) _tabA.onclick=()=> renderSiembraContent('asociaciones');
 if(_tabP) _tabP.onclick=()=> renderSiembraContent('preparados');
+if(_tabM) _tabM.onclick=()=> renderSiembraContent('semillas');
 
 
 // === PESCA ===
@@ -3655,20 +3673,20 @@ function setupHelpDialog(){
 setTimeout(setupHelpDialog, 850);
 
 // === CONFIGURACIÓN PERSONALIZABLE ===
-const ALL_BTNS = ["btnTides","btnFishing","btnBirds","btnWeather","btnSiembra","btnAstro","btnComuna","btnEkadashi","btnMenstrual","btnMedic","btnHabits","btnMeal","btnShopping","btnFinance","btnHomeTasks","btnDiscipline","btnDreams","btnBreath","btnSchedule","btnGym","btnCircadian","btnGolden","btnFirstAid","btnAnimalCare","btnViolence","btnConvert","btnEnergy","btnTimer","btnRemind","btnBackup","btnRestore","btnShortcut","btnPdfLuna","btnPdfCiclo","btnDonate","btnHelp","btnStudy","btnTales","btnMemory"];
+const ALL_BTNS = ["btnTides","btnFishing","btnBirds","btnWeather","btnSiembra","btnAstro","btnComuna","btnEkadashi","btnMenstrual","btnMedic","btnHabits","btnMeal","btnShopping","btnFinance","btnHomeTasks","btnDiscipline","btnDreams","btnBreath","btnGratitud","btnSchedule","btnGym","btnCircadian","btnGolden","btnCompost","btnRecicla","btnAire","btnLawen","btnFirstAid","btnAnimalCare","btnViolence","btnEvac","btnConvert","btnEnergy","btnLena","btnTimer","btnRemind","btnBackup","btnRestore","btnShortcut","btnPdfLuna","btnPdfCiclo","btnDonate","btnHelp","btnStudy","btnTales","btnMemory","btnMapu"];
 const PRESETS = {
   todo: Object.fromEntries(ALL_BTNS.map(k=>[k,true])),
-  esencial: {btnTides:true,btnWeather:true,btnSiembra:true,btnEkadashi:true,btnBackup:true,btnRestore:true,btnPdfLuna:true,btnPdfCiclo:true,btnHelp:true,btnDonate:true},
-  infantil: {btnWeather:true,btnSiembra:true,btnHabits:true,btnDreams:true,btnBreath:true,btnSchedule:true,btnHelp:true},
-  adolescente: {btnHabits:true,btnStudy:true,btnSchedule:true,btnDiscipline:true,btnDreams:true,btnBreath:true,btnConvert:true,btnTimer:true,btnHelp:true},
+  esencial: {btnTides:true,btnWeather:true,btnSiembra:true,btnEkadashi:true,btnFirstAid:true,btnEvac:true,btnBackup:true,btnRestore:true,btnPdfLuna:true,btnPdfCiclo:true,btnHelp:true,btnDonate:true},
+  infantil: {btnWeather:true,btnSiembra:true,btnHabits:true,btnDreams:true,btnBreath:true,btnSchedule:true,btnTales:true,btnMapu:true,btnHelp:true},
+  adolescente: {btnHabits:true,btnStudy:true,btnSchedule:true,btnDiscipline:true,btnDreams:true,btnBreath:true,btnMapu:true,btnConvert:true,btnTimer:true,btnHelp:true},
   adulto: Object.fromEntries(ALL_BTNS.map(k=>[k,true])),
-  mayor: {btnTides:true,btnWeather:true,btnSiembra:true,btnMenstrual:true,btnMedic:true,btnDreams:true,btnBreath:true,btnHelp:true,btnDonate:true},
-  estudiante: {btnWeather:true,btnSiembra:true,btnHabits:true,btnStudy:true,btnSchedule:true,btnDiscipline:true,btnConvert:true,btnTimer:true,btnHelp:true},
-  agricultor: {btnTides:true,btnFishing:true,btnBirds:true,btnWeather:true,btnSiembra:true,btnGolden:true,btnCircadian:true,btnHelp:true},
+  mayor: {btnTides:true,btnWeather:true,btnSiembra:true,btnMenstrual:true,btnMedic:true,btnDreams:true,btnGratitud:true,btnBreath:true,btnAire:true,btnLena:true,btnHelp:true,btnDonate:true},
+  estudiante: {btnWeather:true,btnSiembra:true,btnHabits:true,btnStudy:true,btnSchedule:true,btnDiscipline:true,btnMapu:true,btnTales:true,btnConvert:true,btnTimer:true,btnHelp:true},
+  agricultor: {btnTides:true,btnFishing:true,btnBirds:true,btnWeather:true,btnSiembra:true,btnCompost:true,btnLawen:true,btnRecicla:true,btnAire:true,btnGolden:true,btnCircadian:true,btnHelp:true},
   pescador: {btnTides:true,btnFishing:true,btnBirds:true,btnWeather:true,btnSiembra:true,btnGolden:true,btnHelp:true},
-  salud: {btnMenstrual:true,btnMedic:true,btnHabits:true,btnGym:true,btnCircadian:true,btnDreams:true,btnBreath:true,btnMeal:true,btnFirstAid:true,btnAnimalCare:true,btnHelp:true},
+  salud: {btnMenstrual:true,btnMedic:true,btnLawen:true,btnHabits:true,btnGym:true,btnCircadian:true,btnDreams:true,btnGratitud:true,btnBreath:true,btnMeal:true,btnAire:true,btnFirstAid:true,btnAnimalCare:true,btnEvac:true,btnHelp:true},
   deportista: {btnHabits:true,btnGym:true,btnMeal:true,btnShopping:true,btnFinance:true,btnCircadian:true,btnBreath:true,btnTimer:true,btnHelp:true},
-  docente: {btnSiembra:true,btnEkadashi:true,btnStudy:true,btnSchedule:true,btnHabits:true,btnDiscipline:true,btnConvert:true,btnPdfCiclo:true,btnHelp:true}
+  docente: {btnSiembra:true,btnEkadashi:true,btnStudy:true,btnSchedule:true,btnHabits:true,btnDiscipline:true,btnMapu:true,btnTales:true,btnGratitud:true,btnRecicla:true,btnConvert:true,btnPdfCiclo:true,btnHelp:true}
 };
 function getVisibleConfig(){
   const c = (DATA.config && DATA.config.visible) || {};
@@ -4812,6 +4830,547 @@ function setupViolenceDialog(){
   if(q1) q1.onclick=quickExit; if(q2) q2.onclick=quickExit;
 }
 setTimeout(setupViolenceDialog, 885);
+
+// === EVACUACIÓN TSUNAMI — PENCO ===
+let evacTab = 'rutas';
+function getEvacCheck(){ try{ const u=userData(); if(!u.evacCheck) u.evacCheck={}; return u.evacCheck; }catch{ return {}; } }
+function renderEvacPanel(tab){
+  evacTab = tab || evacTab;
+  const ids = {rutas:'tabEV1', mochila:'tabEV2', plan:'tabEV3', sismo:'tabEV4'};
+  Object.entries(ids).forEach(([k,id])=>{ const el=$(id); if(el) el.classList.toggle('btn-accent', k===evacTab); });
+  const box = $('evacPanel'); if(!box) return;
+  let html='';
+  if(evacTab==='rutas'){
+    html+= `<div class="menstrual-card" style="background:linear-gradient(135deg,var(--panel),var(--card));border-color:#ff6b6b">
+      <h4 style="color:#ff6b6b">🗺️ Rutas orientativas — sube a pie al cerro</h4>
+      <p class="muted" style="font-size:11px">Orientativo: confirma en carta SHOA y municipio. El principio es uno solo: <b>desde costanera, sube por la calle más corta al cerro, sin auto</b>.</p>
+      <div class="help-grid" style="margin-top:8px">
+        <div class="help-card"><h4>🏖️ Penco centro / Costanera</h4><p style="font-size:11px;line-height:1.5">Costanera → <b>Freire / O'Higgins hacia arriba</b> (este, al cerro). Punto alto: sector <b>Plaza / Municipalidad y más arriba</b>. No uses auto: tacos bloquean. Si estás en playa, deja todo y sube.</p></div>
+        <div class="help-card"><h4>⚓ Lirquén / Caleta</h4><p style="font-size:11px;line-height:1.5">Puerto y caleta → sube por <b>camino a Lirquén alto / cerros tras la línea férrea</b>. Pescadores: si el sismo es largo y estás en bote cerca, no vuelvas a puerto bajo — sigue instrucción Armada 137.</p></div>
+        <div class="help-card"><h4>🌿 Rocuant / Humedal</h4><p style="font-size:11px;line-height:1.5">Zona plana e inundable. Sal <b>tierra adentro hacia Andalién / camino a Concepción en altura</b>. No cruces esteros crecidos. Con niños/mascotas, sal antes.</p></div>
+        <div class="help-card"><h4>🏠 Si vives sobre 30 msnm</h4><p style="font-size:11px;line-height:1.5">Quédate en casa en lugar seguro (ver pestaña Sismo). Recibe a familiares de abajo en tu <b>punto de encuentro</b>. Ten lista de contactos y radio a pilas.</p></div>
+      </div>
+      <p class="muted" style="font-size:10px;margin-top:6px">Señal natural = alerta: sismo que bota, ruido marino raro, mar que se recoge. Sirenas + mensaje SAE confirman. Practica la caminata 1 vez por luna.</p>
+    </div>`;
+  } else if(evacTab==='mochila'){
+    const chk = getEvacCheck();
+    const items = [
+      ['agua','💧 Agua 2L p/persona + sales rehidratación'],
+      ['comida','🍫 Comida 72h: barras, frutos secos, conservas'],
+      ['docs','📄 Copias carnet, previsión, alergias, contactos 131/132/133/137'],
+      ['botiquin','🩹 Botiquín + medicamentos crónicos 7 días'],
+      ['abrigo','🧥 Manta térmica, impermeable, muda seca, zapatillas'],
+      ['luz','🔦 Linterna + power bank + radio a pilas'],
+      ['higiene','🧻 Higiene: mascarilla, toallas, bolsas, pañales si aplica'],
+      ['mascota','🐾 Correa, comida mascota, bozal, bolsa fecas'],
+      ['llaves','🔑 Copia llaves, algo de efectivo, silbato']
+    ];
+    html+= `<div class="menstrual-card" style="border-color:var(--gold)"><h4 style="color:var(--gold)">🎒 Mochila 72h — una por familia (marca avance)</h4>
+      <p class="muted" style="font-size:11px">Toca para marcar. Se guarda local por usuario. Meta: 9/9 antes de Luna 4.</p>
+      <div id="evacCheckList" class="habits-list" style="margin-top:8px">` +
+      items.map(([id,label])=>`<label class="check-row" style="border:1px solid var(--line);border-radius:8px;padding:8px;margin-bottom:6px;cursor:pointer"><input type="checkbox" data-evac="${id}" ${chk[id]?'checked':''}> <span style="font-size:12px">${label}</span></label>`).join('') +
+      `</div><p class="muted" id="evacCheckStats" style="font-size:11px"></p></div>`;
+  } else if(evacTab==='plan'){
+    html+= `<div class="help-grid">
+      <div class="help-card"><h4>📋 Ficha familiar (escríbela a mano)</h4><p style="font-size:11px;line-height:1.5">• Punto encuentro 1 (cerro): ______<br>• Punto encuentro 2 (fuera Penco): ______<br>• Contacto fuera de la zona (todo llaman a él): ______<br>• Quién busca a niños en escuela: ______<br>• Mascota quién la toma: ______<br>• Lugar medicamentos/llaves/mochila: ______</p></div>
+      <div class="help-card"><h4>🏫 Escuela / trabajo</h4><p style="font-size:11px;line-height:1.5">Pregunta el <b>plan PISE</b> de la escuela: ¿dónde retiran? ¿quién autorizado? No llames en masa (colapsa red): usa <b>SMS / WhatsApp corto</b> + contacto único. Niños no se devuelven solos a casa en alerta.</p></div>
+      <div class="help-card"><h4>♿ Movilidad reducida</h4><p style="font-size:11px;line-height:1.5">Vecino de apoyo asignado, silla cerca, lista medicamentos visible en refrigerador, pulsera con datos. Ensaya traslado a pie.</p></div>
+      <div class="help-card"><h4>🔁 Simulacro 10 min</h4><p style="font-size:11px;line-height:1.5">1) Suena alarma (celular). 2) Cortan gas/luz/agua. 3) Toman mochila + mascota. 4) Caminan a punto alto cronometrando. 5) Anotan en Notas de la Luna qué falló. Repite en <b>Luna 1, 4, 7, 10</b>.</p></div>
+    </div>`;
+  } else if(evacTab==='sismo'){
+    html+= `<div class="help-grid">
+      <div class="help-card" style="border-color:#ff6b6b"><h4>🏚️ Durante el sismo</h4><p style="font-size:11px;line-height:1.5"><b>Agáchate, cúbrete, afírmate</b> bajo mesa firme, lejos de ventanas/estantes. No uses ascensor ni escalera corriendo. Si cocinas, apaga fuego si alcanzas sin riesgo. En auto: detente lejos de postes, quédate dentro.</p></div>
+      <div class="help-card"><h4>🌊 Después — decide evacuar</h4><p style="font-size:11px;line-height:1.5">Evacúa si: sismo largo, no te podías parar, alerta SAE/SHOA, mar extraño. <b>A pie, con mochila, sin volver por cosas.</b> Corta gas si huele. No entres a casas dañadas. Escucha radio, no rumores de WhatsApp.</p></div>
+      <div class="help-card"><h4>📻 Vuelta a casa</h4><p style="font-size:11px;line-height:1.5">Solo cuando autoridad levanta alerta. Revisa grietas, gas, cables. Hierve agua si hubo corte. Foto daños para FIBE/municipio. Contiene a niños: rutina, juego, relato.</p></div>
+      <div class="help-card"><h4>📞 Números Penco</h4><p style="font-size:11px;line-height:1.5">Armada/Capitanía Lirquén <b>137 / 41 275 1006</b> · Bomberos 132 · Carabineros 133 / 2ª Comisaría 41 214 3240 · SAMU 131 · Municipalidad 41 226 1000 · Hospital Penco-Lirquén 41 272 6300.</p></div>
+    </div>`;
+  }
+  box.innerHTML = html;
+  if(evacTab==='mochila'){
+    const stats = $('evacCheckStats');
+    const paint = ()=>{ const c=getEvacCheck(); const n=Object.values(c).filter(Boolean).length; if(stats) stats.textContent = `Avance: ${n}/9 ${n===9?'✓ lista':''}`; };
+    paint();
+    box.querySelectorAll('input[data-evac]').forEach(cb=>{
+      cb.onchange=()=>{ const c=getEvacCheck(); c[cb.dataset.evac]=cb.checked; scheduleSave('Guardado ✓'); paint(); };
+    });
+  }
+}
+function setupEvacDialog(){
+  const btn=$('btnEvac'); if(btn) btn.onclick=()=>{ renderEvacPanel('rutas'); $('evacDialog').showModal(); };
+  const ct=$('evacCloseTop'), cb=$('evacClose'); if(ct) ct.onclick=()=>$('evacDialog').close(); if(cb) cb.onclick=()=>$('evacDialog').close();
+  ['tabEV1','tabEV2','tabEV3','tabEV4'].forEach(id=>{
+    const el=$(id); if(!el) return;
+    el.onclick=()=>{ const map={tabEV1:'rutas',tabEV2:'mochila',tabEV3:'plan',tabEV4:'sismo'}; renderEvacPanel(map[id]); };
+  });
+}
+setTimeout(setupEvacDialog, 886);
+
+// === KIMÜN MAPUZUGUN — BÁSICO ===
+const MAPU_WORDS = [
+  { m:'mari mari', e:'hola / saludo', x:'Mari mari, chaltu may — hola, muchas gracias', t:'saludo' },
+  { m:'chaltu', e:'gracias', x:'Chaltu por tu ayuda', t:'saludo' },
+  { m:'kimün', e:'conocimiento, saber', x:'Kimün mapuche — saber del territorio', t:'saber' },
+  { m:'mapu', e:'tierra', x:'Mapu Penco — tierra de Penco', t:'tierra' },
+  { m:'ko', e:'agua', x:'Ko lafken — agua de mar', t:'naturaleza' },
+  { m:'lafken', e:'mar, lago grande', x:'Lafken de Penco — mar frente a la bahía', t:'naturaleza' },
+  { m:'antü', e:'sol, día', x:'Antü poud — salió el sol', t:'naturaleza' },
+  { m:'küyen', e:'luna, mes', x:'Mari küla küyen — 13 lunas', t:'luna' },
+  { m:'wenu', e:'cielo, arriba', x:'Wenu mapu — mundo de arriba', t:'cosmos' },
+  { m:'lawen', e:'medicina, hierba', x:'Lawen matico — remedio de matico', t:'salud' },
+  { m:'pewü', e:'primavera', x:'Pewü florece — tiempo de brotes', t:'estación' },
+  { m:'pukem', e:'invierno', x:'Pukem llueve — tiempo de lluvias', t:'estación' },
+  { m:'walüng', e:'verano', x:'Walüng cosecha — tiempo de abundancia', t:'estación' },
+  { m:'rimü', e:'otoño', x:'Rimü guarda — tiempo de guardar', t:'estación' },
+  { m:'che', e:'persona, gente', x:'Mapuche — gente de la tierra', t:'gente' },
+  { m:'ruca', e:'casa', x:'Ruca Surgery? no — ruca = casa', t:'casa' },
+  { m:'küla', e:'tres', x:'Küla küyen — tres lunas', t:'número' },
+  { m:'meli', e:'cuatro', x:'Meli — cuatro', t:'número' },
+  { m:'aylla', e:'nueve', x:'Aylla — nueve', t:'número' },
+  { m:'mari', e:'diez', x:'Mari — diez', t:'número' },
+  { m:'lafken che', e:'gente del mar (lafkenche)', x:'Lafkenche de Penco-Lirquén', t:'gente' },
+  { m:'ngillatun', e:'rogativa, ceremonia', x:'Ngillatun al amanecer en We Tripantu', t:'ceremonia' },
+  { m:'we tripantu', e:'año nuevo mapuche', x:'We Tripantu 21 jun — nuevo ciclo', t:'ceremonia' },
+  { m:'pichike che', e:'niño/a', x:'Pichike che juega — el niño juega', t:'gente' }
+];
+const MAPU_NUMS = [['kiñe',1],['epu',2],['küla',3],['meli',4],['kechu',5],['kayu',6],['regle',7],['pura',8],['aylla',9],['mari',10],['mari kiñe',11],['mari epu',12],['mari küla',13]];
+let mapuTab = 'palabra';
+let mapuQuizQ = null;
+function getMapuData(){ try{ const u=userData(); if(!u.mapu) u.mapu={ok:0,total:0,streak:0,lastDay:''}; return u.mapu; }catch{ return {ok:0,total:0,streak:0,lastDay:''}; } }
+function mapuDayIndex(){ const n=new Date(); const s=n.getFullYear()*1000+(Math.floor((n-new Date(n.getFullYear(),0,0))/864e5)); return s % MAPU_WORDS.length; }
+function mapuSpeak(txt){ try{ if(!('speechSynthesis' in window)) return; speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(txt); u.lang='es-CL'; u.rate=0.85; speechSynthesis.speak(u); }catch{} }
+function renderMapuStreak(){
+  const b=$('mapuStreakBox'); if(!b) return;
+  const d=getMapuData();
+  const pct = d.total? Math.round(d.ok/d.total*100):0;
+  b.innerHTML = `<b>🌱 Tu kimün:</b> ${d.ok}/${d.total} buenas (${pct}%) · racha ${d.streak} 🔥 <span class="muted" style="font-size:11px">— practica 1 palabra al día, se guarda local</span>`;
+}
+function renderMapuPanel(tab){
+  mapuTab = tab || mapuTab;
+  const ids={palabra:'tabMP1',numeros:'tabMP2',lunas:'tabMP3',quiz:'tabMP4'};
+  Object.entries(ids).forEach(([k,id])=>{ const el=$(id); if(el) el.classList.toggle('btn-accent', k===mapuTab); });
+  renderMapuStreak();
+  const box=$('mapuPanel'); if(!box) return;
+  let html='';
+  if(mapuTab==='palabra'){
+    const w = MAPU_WORDS[mapuDayIndex()];
+    const rel = [MAPU_WORDS[(mapuDayIndex()+5)%MAPU_WORDS.length], MAPU_WORDS[(mapuDayIndex()+9)%MAPU_WORDS.length]];
+    html+= `<div class="menstrual-card" style="background:linear-gradient(135deg,var(--panel),var(--card));border-color:var(--gold);text-align:center">
+      <p class="muted" style="font-size:11px">☀️ PALABRA DE HOY · ${cal.fmtDate.format(new Date())}</p>
+      <div style="font-size:30px;font-weight:800;color:var(--gold);margin:6px 0">${escapeHtml(w.m)}</div>
+      <div style="font-size:15px;color:#e8eaf6"><b>${escapeHtml(w.e)}</b></div>
+      <p class="muted" style="font-size:12px;margin-top:6px">“${escapeHtml(w.x)}”</p>
+      <div style="display:flex;gap:6px;justify-content:center;margin-top:8px;flex-wrap:wrap">
+        <button type="button" id="mapuSpeakBtn" class="btn" style="width:auto">🔊 Escuchar</button>
+        <button type="button" id="mapuNextBtn" class="btn" style="width:auto">🎲 Otra palabra</button>
+      </div></div>
+      <div class="help-grid" style="margin-top:10px">`+
+      rel.map(r=>`<div class="help-card"><h4>${escapeHtml(r.m)}</h4><p style="font-size:11px">${escapeHtml(r.e)}<br><span class="muted">“${escapeHtml(r.x)}”</span></p></div>`).join('')+`</div>
+      <p class="muted" style="font-size:10px;margin-top:6px">Grafemario usado: Azümchefe simplificado (ü, ng, tr). Puede variar por zona — lo importante es usar con respeto.</p>`;
+  } else if(mapuTab==='numeros'){
+    html+= `<div class="menstrual-card" style="border-color:#7ab8ff"><h4 style="color:#7ab8ff">🔢 Números 1–13 — las 13 lunas se cuentan así</h4>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:6px;margin-top:8px">`+
+      MAPU_NUMS.map(([m,n])=>`<button type="button" class="btn mapu-word" data-w="${escapeHtml(m)}" style="font-size:12px"><b>${n}</b> · ${escapeHtml(m)}</button>`).join('')+`</div>
+      <p class="muted" style="font-size:11px;margin-top:8px">Mari küla = 10+3 = 13. Así se dice <b>mari küla küyen</b>.</p></div>
+      <div class="help-grid" style="margin-top:10px">
+        <div class="help-card"><h4>👋 Saludos</h4><p style="font-size:11px;line-height:1.5"><b>Mari mari</b> — hola (a una o varias personas)<br><b>Chaltu may</b> — muchas gracias<br><b>Lemorria / welu</b> — permiso / por favor (varía por zona)<br><b>Peukayal</b> — nos vemos / hasta pronto<br>Toca 🔊 para practicar en voz alta.</p></div>
+        <div class="help-card"><h4>🗣️ Pronunciación rápida</h4><p style="font-size:11px;line-height:1.5"><b>ü</b> como u casi cerrada (küla ≈ kula)<br><b>ng</b> nasal (ngillatun)<br><b>tr</b> suave, no como español fuerte<br><b>Habla lento</b>, mejor que perfecto.</p></div>
+      </div>`;
+  } else if(mapuTab==='lunas'){
+    try{
+      html+= `<div class="menstrual-card" style="border-color:#a9d18e"><h4 style="color:#a9d18e">🌙 Las 13 lunas en kimün — toca para escuchar</h4>
+      <div style="display:flex;flex-direction:column;gap:6px;margin-top:8px">`+
+      MOONS.map(m=>`<button type="button" class="btn mapu-word" data-w="${escapeHtml(m.nombre)}" style="width:100%;text-align:left;font-size:12px"><b>Luna ${m.n}</b> · ${escapeHtml(m.nombre)}<br><span class="muted" style="font-size:11px">${escapeHtml(m.traduccion)}</span></button>`).join('')+`</div></div>`;
+    }catch{ html+='<p class="muted">No se pudo cargar lunas.</p>'; }
+  } else if(mapuTab==='quiz'){
+    const d=getMapuData();
+    if(!mapuQuizQ){
+      const w = MAPU_WORDS[Math.floor(Math.random()*MAPU_WORDS.length)];
+      const opts = new Set([w.e]);
+      while(opts.size<4){ opts.add(MAPU_WORDS[Math.floor(Math.random()*MAPU_WORDS.length)].e); }
+      mapuQuizQ = { w, opts:[...opts].sort(()=>Math.random()-0.5) };
+    }
+    const q=mapuQuizQ;
+    html+= `<div class="menstrual-card" style="border-color:#d8a0ff;text-align:center"><h4 style="color:#d8a0ff">🧩 ¿Qué significa?</h4>
+      <div style="font-size:26px;font-weight:800;color:var(--gold);margin:8px 0">“${escapeHtml(q.w.m)}”</div>
+      <div style="display:grid;gap:6px;margin-top:8px">`+
+      q.opts.map(o=>`<button type="button" class="btn mapu-opt" data-o="${escapeHtml(o)}" style="width:100%">${escapeHtml(o)}</button>`).join('')+`</div>
+      <div id="mapuQuizFb" style="margin-top:8px;font-size:13px;min-height:20px"></div>
+      <p class="muted" style="font-size:11px;margin-top:6px">Aciertos ${d.ok}/${d.total} · racha ${d.streak}</p></div>`;
+  }
+  box.innerHTML = html;
+  const sp=$('mapuSpeakBtn'); if(sp) sp.onclick=()=> mapuSpeak(MAPU_WORDS[mapuDayIndex()].m);
+  const nx=$('mapuNextBtn'); if(nx) nx.onclick=()=>{ const w=MAPU_WORDS[Math.floor(Math.random()*MAPU_WORDS.length)]; mapuSpeak(w.m); renderMapuPanel('palabra'); };
+  box.querySelectorAll('.mapu-word').forEach(b=> b.onclick=()=> mapuSpeak(b.dataset.w));
+  box.querySelectorAll('.mapu-opt').forEach(b=> b.onclick=()=>{
+    const d2=getMapuData(); const ok = b.dataset.o===mapuQuizQ.w.e;
+    d2.total=(d2.total||0)+1; if(ok){ d2.ok=(d2.ok||0)+1; d2.streak=(d2.streak||0)+1; } else { d2.streak=0; }
+    scheduleSave('Guardado ✓');
+    const fb=$('mapuQuizFb');
+    if(fb) fb.innerHTML = ok? '✅ ¡Muy bien! <b>'+escapeHtml(mapuQuizQ.w.x)+'</b>' : '❌ Era <b>'+escapeHtml(mapuQuizQ.w.e)+'</b> — “'+escapeHtml(mapuQuizQ.w.x)+'”';
+    box.querySelectorAll('.mapu-opt').forEach(x=>{ x.disabled=true; if(x.dataset.o===mapuQuizQ.w.e){ x.classList.add('btn-accent'); } });
+    renderMapuStreak();
+    setTimeout(()=>{ mapuQuizQ=null; if(mapuTab==='quiz') renderMapuPanel('quiz'); }, ok?1400:2200);
+  });
+}
+function setupMapuDialog(){
+  const btn=$('btnMapu'); if(btn) btn.onclick=()=>{ renderMapuPanel('palabra'); $('mapuDialog').showModal(); };
+  const ct=$('mapuCloseTop'), cb=$('mapuClose'); if(ct) ct.onclick=()=>$('mapuDialog').close(); if(cb) cb.onclick=()=>$('mapuDialog').close();
+  ['tabMP1','tabMP2','tabMP3','tabMP4'].forEach(id=>{
+    const el=$(id); if(!el) return;
+    el.onclick=()=>{ const map={tabMP1:'palabra',tabMP2:'numeros',tabMP3:'lunas',tabMP4:'quiz'}; if(map[id]!=='quiz') mapuQuizQ=null; renderMapuPanel(map[id]); };
+  });
+}
+setTimeout(setupMapuDialog, 887);
+
+// === LAWEN — HERBARIO BÍO-BÍO (20 fichas) ===
+const LAWEN_PLANTS = [
+  { n:'Matico', i:'🌿', uso:'Heridas, úlceras leves, higiene bucal', prep:'Infusión 1 cdta hojas secas / taza, 5 min. Enfriar para lavado de herida limpia.', luna:'Llena', rec:'Pewü-Walüng, mañana seca', cui:'No en embarazo. No reemplaza sutura/antibiótico si hay infección.', k:'matico herida ulcera cicatrizante lavado' },
+  { n:'Boldo', i:'🍃', uso:'Digestión pesada, hígado', prep:'1-2 hojas / taza, 5 min. Máx 1 taza/día, no más de 7 días.', luna:'Menguante', rec:'Todo el año, hojas maduras', cui:'No en embarazo, lactancia ni obstrucción biliar. Tóxico en exceso.', k:'boldo digestion higado graso' },
+  { n:'Manzanilla', i:'🌼', uso:'Digestión, cólico leve, calma', prep:'1 cda flores / taza, 5 min tapada.', luna:'Llena', rec:'Pewü, flores abiertas', cui:'Alergia a asteráceas. No en embarazo en exceso.', k:'manzanilla digestion colico calma sueño' },
+  { n:'Menta / Hierbabuena', i:'🌱', uso:'Digestión, gases, descongestión', prep:'1 cdta hojas / taza. Vahos con toalla 5 min.', luna:'Creciente', rec:'Pewü-Walüng', cui:'No en reflujo severo ni bebés (mentol).', k:'menta gases estomago resfrio vaho' },
+  { n:'Orégano', i:'🌿', uso:'Resfrío, tos, digestión', prep:'1 cdta / taza. Miel si hay tos (mayores 1 año).', luna:'Llena', rec:'Walüng floración', cui:'No en embarazo en dosis medicinal.', k:'oregano tos resfrio' },
+  { n:'Romero', i:'🌲', uso:'Memoria, circulación, cocina tónica', prep:'1 cdta / taza. Baño de pies para cansancio.', luna:'Creciente', rec:'Todo el año', cui:'No en embarazo/hipertensión descompensada en exceso.', k:'romero memoria circulacion pelo' },
+  { n:'Eucalipto', i:'🍂', uso:'Descongestión (vahos, no infusión fuerte)', prep:'Vahos: puñado hojas / olla agua caliente, 5 min. No beber aceite esencial.', luna:'Menguante', rec:'Rimü, hojas adultas', cui:'No ingerir aceite. No en niños pequeños ni asma sin guía.', k:'eucalipto tos moco vaho resfrio' },
+  { n:'Laurel de cocina', i:'🍃', uso:'Condimento digestivo', prep:'1 hoja en cocción, retirar. No comer la hoja.', luna:'Cualquiera', rec:'Todo el año', cui:'Solo Laurus nobilis. No confundir con laurel de flor (tóxico).', k:'laurel comida digestion' },
+  { n:'Melisa / Toronjil', i:'🌿', uso:'Ansiedad leve, insomnio, digestión nerviosa', prep:'1 cda / taza noche. 3-4 noches seguidas.', luna:'Llena', rec:'Pewü-Walüng', cui:'Somnolencia: no manejar. Interactúa con sedantes/tiroides.', k:'melisa toronjil ansiedad sueño calma' },
+  { n:'Ortiga', i:'🌾', uso:'Fertilizante (purín) + remineralizante suave', prep:'Comida: hojas cocidas como espinaca. Purín ver 🌱 Siembra → 🧪.', luna:'Creciente', rec:'Pewü tierna con guantes', cui:'Pica en fresco. No en embarazo ni riñón sin guía.', k:'ortiga purin hierro abono' },
+  { n:'Maqui', i:'🫐', uso:'Antioxidante, garganta, energía', prep:'Fruto fresco/seco, jugo o masticar. Infusión suave de hoja.', luna:'Llena', rec:'Walüng cosecha frutos', cui:'Bien tolerado. Lava frutos. Diabéticos: moderar jugo.', k:'maqui antioxidante garganta energia' },
+  { n:'Canelo', i:'🌳', uso:'Sagrado mapuche, uso ceremonial y resfrío suave', prep:'Infusión muy suave de hoja, uso ocasional. Corteza solo con guía.', luna:'Menguante', rec:'No podar nativo sin permiso', cui:'Árbol sagrado: no extraer corteza. No automedicar en embarazo.', k:'canelo sagrado ceremonia resfrio' },
+  { n:'Bailahuén', i:'🌼', uso:'Digestión, hígado, montaña', prep:'1 cdta / taza, 5 min. Cursos cortos.', luna:'Menguante', rec:'Precordillera verano', cui:'No en embarazo. Solo de cultivo o compra (no depredar).', k:'bailahuen digestion higado' },
+  { n:'Poleo', i:'🌱', uso:'Digestivo, resfrío leve', prep:'1 cdta / taza. No concentrado.', luna:'Llena', rec:'Borde estero Pewü', cui:'No en embarazo (riesgo). No aceite esencial interno.', k:'poleo digestion guata' },
+  { n:'Paico', i:'🌿', uso:'Parásitos leves, empacho (uso tradicional)', prep:'Dosis baja tradicional, curso corto. Comida bien cocida + higiene.', luna:'Menguante', rec:'Walüng', cui:'Tóxico en exceso. No en embarazo ni niños sin profesional.', k:'paico parasitos empacho' },
+  { n:'Ruda', i:'🌿', uso:'Tradicional dolores menstruales (uso externo mayormente)', prep:'Preferencia uso externo/baños. Interno solo con guía (riesgo).', luna:'Menguante', rec:'Todo el año', cui:'ABORTIVA: prohibida en embarazo. Fotosensible. No automedicar.', k:'ruda menstruacion aborto cuidado' },
+  { n:'Llantén', i:'🍃', uso:'Tos, garganta, heridas leves (cataplasma)', prep:'Gárgaras tibias. Hoja limpia machacada sobre picadura leve.', luna:'Llena', rec:'Pewü bordes húmedos', cui:'Lavar bien (perros/camino). No en obstrucción intestinal.', k:'llanten tos garganta herida' },
+  { n:'Caléndula', i:'🌼', uso:'Piel, rozaduras, enjuague bucal suave', prep:'Aceite macerado o infusión para lavado. Pétalos comestibles.', luna:'Llena', rec:'Pewü-Walüng flores', cui:'Alergia asteráceas. Uso externo preferente.', k:'calendula piel herida rozadura' },
+  { n:'Ajo', i:'🧄', uso:'Resfrío, presión (apoyo), cocina sana', prep:'1 diente crudo picado con comida. Miel-ajo 7 días en resfrío.', luna:'Menguante', rec:'Rimü cosecha', cui:'Anticoagulantes: avisar. Acidez en exceso.', k:'ajo resfrio presion' },
+  { n:'Diente de león', i:'🌼', uso:'Digestión, hígado, ensalada amarga', prep:'Hojas tiernas en ensalada. Raíz tostada como “café”.', luna:'Creciente', rec:'Pewü lejos de camino', cui:'Cálculos biliares o diuréticos: consultar.', k:'diente leon digestion higado ensalada' }
+];
+function getLawenUserData(){ try{ const u=userData(); if(!u.lawenUser) u.lawenUser=[]; if(!Array.isArray(u.lawenUser)) u.lawenUser=[]; return u.lawenUser; }catch{ return []; } }
+function setLawenUserData(a){ try{ userData().lawenUser=a; }catch{} }
+function lawenCardHTML(p, mine, idx){
+  const del = mine? `<button type="button" class="btn btn-icon lawen-del" data-i="${idx}" title="Borrar mi ficha" style="width:26px;height:26px;font-size:11px;flex:none">✕</button>` : '';
+  const mineChip = mine? `<span class="chip" style="font-size:10px;background:#a9d18e22;color:#a9d18e;border-color:#a9d18e55;white-space:nowrap">🌱 mía</span>` : '';
+  return `<div class="si-card" style="margin:0;padding:10px 12px;${mine?'border-style:dashed;':''}">`
+    + `<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span style="font-size:22px;line-height:1;flex:none">${p.i||'🌱'}</span><b style="font-size:14px">${escapeHtml(p.n)}</b>${mineChip}<span style="flex:1"></span><span class="chip" style="font-size:10px;white-space:nowrap">🌙 ${escapeHtml(p.luna||'Cualquiera')}</span>${del}</div>`
+    + `<div style="display:grid;grid-template-columns:74px 1fr;gap:4px 8px;font-size:11px;line-height:1.5">`
+    + `<span style="color:var(--gold);font-weight:700">USO</span><span>${escapeHtml(p.uso||'—')}</span>`
+    + (p.prep? `<span style="color:var(--gold);font-weight:700">PREPARA</span><span>🫖 ${escapeHtml(p.prep)}</span>`:'')
+    + (p.rec? `<span style="color:#9aa3c7;font-weight:700">RECOLECTA</span><span>📅 ${escapeHtml(p.rec)}</span>`:'')
+    + `</div>`
+    + (p.cui? `<div style="margin-top:6px;background:#e76e8a12;border:1px solid #e76e8a44;border-radius:6px;padding:5px 8px;font-size:11px;line-height:1.5;color:#ff9a9a">⚠️ ${escapeHtml(p.cui)}</div>`:'')
+    + `</div>`;
+}
+function renderLawenList(){
+  const box=$('lawenList'); if(!box) return;
+  const q=(($('lawenSearch')&&$('lawenSearch').value)||'').toLowerCase().trim();
+  const mf=(($('lawenMoonFilter')&&$('lawenMoonFilter').value)||'');
+  const match=p=>{
+    const txt=(p.n+' '+(p.uso||'')+' '+(p.prep||'')+' '+(p.cui||'')+' '+(p.rec||'')+' '+(p.k||'')+' '+(p.luna||'')).toLowerCase();
+    if(q && !txt.includes(q)) return false;
+    if(mf && mf!=='Cualquiera' && p.luna!==mf && p.luna!=='Cualquiera') return false;
+    return true;
+  };
+  const mine=getLawenUserData();
+  const base=LAWEN_PLANTS.filter(match);
+  const own=mine.map((p,i)=>({p,i})).filter(({p})=>match(p));
+  const total=base.length+own.length;
+  let html=`<p class="muted" style="font-size:11px;margin-bottom:8px">🌿 ${LAWEN_PLANTS.length} fichas base${mine.length?` + <b>${mine.length} mías</b>`:''} · mostrando <b>${total}</b></p>`;
+  if(total){
+    html+=`<div style="display:flex;flex-direction:column;gap:10px">`+base.map(p=>lawenCardHTML(p,false,-1)).join('');
+    if(own.length) html+=`<div style="display:flex;align-items:center;gap:8px;margin-top:2px"><span style="flex:1;height:1px;background:var(--line)"></span><span class="muted" style="font-size:11px">🌱 Mis fichas (${own.length})</span><span style="flex:1;height:1px;background:var(--line)"></span></div>`+own.map(({p,i})=>lawenCardHTML(p,true,i)).join('');
+    html+=`</div>`;
+  } else {
+    html+=`<div class="menstrual-card" style="text-align:center"><p style="font-size:12px">Sin resultados para “${escapeHtml(q)}”.</p><p class="muted" style="font-size:11px">Prueba “tos”, “herida”, “digestión” — o agrégala como ficha propia:</p><button type="button" id="lawenEmptyAdd" class="btn btn-accent" style="width:auto;margin-top:6px">➕ Agregar “${escapeHtml(q.slice(0,30))}” como mi lawen</button></div>`;
+  }
+  box.innerHTML=html;
+  box.querySelectorAll('.lawen-del').forEach(b=> b.onclick=()=>{ const arr=getLawenUserData(); arr.splice(parseInt(b.dataset.i),1); setLawenUserData(arr); scheduleSave('Guardado ✓'); renderLawenList(); });
+  const eb=$('lawenEmptyAdd');
+  if(eb) eb.onclick=()=>{
+    const nm=$('lawenName'); if(nm) nm.value=q.slice(0,40);
+    const det=$('lawenAddBox'); if(det) det.open=true;
+    const us=$('lawenUso'); if(us) us.focus();
+  };
+}
+function setupLawenDialog(){
+  const btn=$('btnLawen'); if(btn) btn.onclick=()=>{ renderLawenList(); $('lawenDialog').showModal(); };
+  const ct=$('lawenCloseTop'), cb=$('lawenClose'); if(ct) ct.onclick=()=>$('lawenDialog').close(); if(cb) cb.onclick=()=>$('lawenDialog').close();
+  const s=$('lawenSearch'), f=$('lawenMoonFilter');
+  if(s) s.oninput=renderLawenList; if(f) f.onchange=renderLawenList;
+  const add=$('lawenAdd');
+  if(add) add.onclick=()=>{
+    const n=sanitizeText(($('lawenName').value||'').trim(),40);
+    const uso=sanitizeText(($('lawenUso').value||'').trim(),80);
+    if(!n || !uso){ if($('statusMsg')){ $('statusMsg').textContent='Falta nombre y uso ✎'; setTimeout(()=>{$('statusMsg').textContent='';},2000); } return; }
+    const arr=getLawenUserData();
+    arr.push({ n, uso, prep:sanitizeText(($('lawenPrep').value||'').trim(),80), luna:$('lawenLuna').value||'Cualquiera', rec:sanitizeText(($('lawenRec').value||'').trim(),60), cui:sanitizeText(($('lawenCui').value||'').trim(),80), i:'🌱', k:'' });
+    setLawenUserData(arr); scheduleSave('Guardado ✓');
+    ['lawenName','lawenUso','lawenPrep','lawenRec','lawenCui'].forEach(id=>{ const el=$(id); if(el) el.value=''; });
+    renderLawenList();
+  };
+  const nm0=$('lawenName');
+  if(nm0) nm0.addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); const a=$('lawenAdd'); if(a) a.click(); } });
+}
+setTimeout(setupLawenDialog, 888);
+
+// === COMPOST & SUELO — PILA + LUNA ===
+let compostTab='pila';
+function getCompostData(){ try{ const u=userData(); if(!u.compost) u.compost={type:'pila',start:'',turns:[],note:''}; if(!Array.isArray(u.compost.turns)) u.compost.turns=[]; return u.compost; }catch{ return {type:'pila',start:'',turns:[],note:''}; } }
+function compostNextMenguantes(){
+  try{
+    const out=[];
+    Object.keys(phaseMap||{}).sort().forEach(k=>{
+      (phaseMap[k]||[]).forEach(e=>{
+        if(/menguante/i.test(e.tipo||'')) out.push({key:k, e});
+      });
+    });
+    const today = cal.fmtKey.format(new Date());
+    return out.filter(o=> o.key>=today).slice(0,4);
+  }catch{ return []; }
+}
+function renderCompostStatus(){
+  const b=$('compostStatusBox'); if(!b) return;
+  const c=getCompostData();
+  const n=c.turns.length;
+  const last=c.turns.slice().sort().pop()||'—';
+  const tipo=c.type==='vermi'?'🪱 Vermicompostera':c.type==='bocashi'?'♻️ Bocashi':'🪱 Pila caliente';
+  b.innerHTML=`<b>${tipo}</b> · inicio ${escapeHtml(c.start||'—')} · volteos <b>${n}</b> · último ${escapeHtml(last)} <span class="muted" style="font-size:11px">— voltea en menguante, se guarda local</span>`;
+}
+function renderCompostPanel(tab){
+  compostTab=tab||compostTab;
+  const ids={pila:'tabCP1',suelo:'tabCP2',luna:'tabCP3'};
+  Object.entries(ids).forEach(([k,id])=>{ const el=$(id); if(el) el.classList.toggle('btn-accent', k===compostTab); });
+  renderCompostStatus();
+  const box=$('compostPanel'); if(!box) return;
+  let html='';
+  if(compostTab==='pila'){
+    const c=getCompostData();
+    html+=`<div class="menstrual-card" style="border-color:var(--gold)"><h4 style="color:var(--gold)">🪱 Mi pila — registro</h4>
+      <div class="conv-row"><label>Tipo <select id="cpType"><option value="pila" ${c.type==='pila'?'selected':''}>Pila caliente</option><option value="vermi" ${c.type==='vermi'?'selected':''}>Vermicompostera</option><option value="bocashi" ${c.type==='bocashi'?'selected':''}>Bocashi</option></select></label>
+      <label>Inicio <input type="date" id="cpStart" value="${escapeHtml(c.start||'')}"></label>
+      <button type="button" id="cpToday" class="btn" style="width:auto;align-self:flex-end">◉ Hoy volteé</button></div>
+      <label>Nota <input type="text" id="cpNote" placeholder="olor, humedad, temperatura, qué agregué" maxlength="80" value="${escapeHtml(c.note||'')}"></label>
+      <div id="cpTurns" class="habits-list" style="margin-top:8px;max-height:160px">`+
+      (c.turns.slice().sort().reverse().map(t=>`<div class="hora-item"><span>🪱 ${escapeHtml(t)}</span><button type="button" class="btn btn-icon cp-del" data-t="${escapeHtml(t)}">✕</button></div>`).join('')||'<p class="muted" style="font-size:11px">Sin volteos aún. Marca “Hoy volteé”.</p>')+`</div></div>
+      <div class="help-grid" style="margin-top:10px">
+        <div class="help-card"><h4>🟤 Receta base Penco</h4><p style="font-size:11px">3 secos (hojas, cartón, paja) x 1 verde (restos cocina, pasto). Puño húmedo, no chorreo. Tapa con nylon en Pukem.</p></div>
+        <div class="help-card"><h4>🚫 No va</h4><p style="font-size:11px">Carne, lácteos, aceite, fecas perro/gato, ceniza con carbón pintado, maleza con semilla.</p></div>
+      </div>`;
+  } else if(compostTab==='suelo'){
+    html+=`<div class="help-grid">
+      <div class="help-card"><h4>🧪 Suelo Penco arcilloso</h4><p style="font-size:11px;line-height:1.5">Prueba puño: bola que no se desarma = arcilla. Mejora con <b>compost 3-5 cm + mulch hojas</b>, nunca arena sola (hace ladrillo). pH típico 5,5-6,5: cal agrícola solo si mediste ácido.</p></div>
+      <div class="help-card"><h4>🪱 Vermi vs Pila vs Bocashi</h4><p style="font-size:11px;line-height:1.5"><b>Vermi:</b> ideal depto, lombriz roja, cosecha 3 meses.<br><b>Pila:</b> patio, volteo menguante, 2-3 meses.<br><b>Bocashi:</b> fermentado 14 días, ver 🌱→🧪 receta.</p></div>
+      <div class="help-card"><h4>💧 Riego arcilla</h4><p style="font-size:11px">Riego profundo y espaciado, no diario superficial. Mulch 5 cm guarda humedad Walüng.</p></div>
+      <div class="help-card"><h4>🌱 Conexión Siembra</h4><p style="font-size:11px">Aplica compost maduro (olor tierra, no se reconoce) 7 días antes de siembra. Ver 🌱 Siembra lunar.</p></div>
+    </div>`;
+  } else if(compostTab==='luna'){
+    const ms=compostNextMenguantes();
+    html+=`<div class="menstrual-card" style="border-color:#a9d18e"><h4 style="color:#a9d18e">📅 Voltea en menguante — próximos</h4>`+
+    (ms.length? `<div style="display:flex;flex-direction:column;gap:6px;margin-top:8px">`+ms.map(o=>`<div class="hora-item"><span>🌓 ${escapeHtml(o.key)} · ${escapeHtml((o.e.tipo||'menguante').replace(/-/g,' '))} ${o.e.simbolo||''}</span><button type="button" class="btn cp-go" data-k="${escapeHtml(o.key)}" style="width:auto;font-size:11px">Marcar volteo</button></div>`).join('')+`</div>`
+    : '<p class="muted" style="font-size:11px">Cambia de luna en el calendario para cargar fases.</p>')+
+    `<p class="muted" style="font-size:11px;margin-top:6px">Menguante = energía a raíces + menos moscas. Airea, ajusta humedad y agrega seco.</p></div>`;
+  }
+  box.innerHTML=html;
+  if(compostTab==='pila'){
+    const c=getCompostData();
+    const t=$('cpType'), s=$('cpStart'), n=$('cpNote');
+    if(t) t.onchange=()=>{ c.type=t.value; scheduleSave(); renderCompostStatus(); };
+    if(s) s.onchange=()=>{ c.start=s.value; scheduleSave(); renderCompostStatus(); };
+    if(n) n.oninput=()=>{ c.note=n.value.slice(0,80); scheduleSave(); };
+    const b=$('cpToday'); if(b) b.onclick=()=>{ const k=cal.fmtKey.format(new Date()); if(!c.turns.includes(k)) c.turns.push(k); scheduleSave('Guardado ✓'); renderCompostPanel('pila'); };
+    box.querySelectorAll('.cp-del').forEach(x=> x.onclick=()=>{ const cc=getCompostData(); cc.turns=cc.turns.filter(t=>t!==x.dataset.t); scheduleSave(); renderCompostPanel('pila'); });
+  }
+  if(compostTab==='luna'){
+    box.querySelectorAll('.cp-go').forEach(b=> b.onclick=()=>{ const c=getCompostData(); if(!c.turns.includes(b.dataset.k)) c.turns.push(b.dataset.k); scheduleSave('Guardado ✓'); renderCompostPanel('luna'); });
+  }
+}
+function setupCompostDialog(){
+  const btn=$('btnCompost'); if(btn) btn.onclick=()=>{ renderCompostPanel('pila'); $('compostDialog').showModal(); };
+  const ct=$('compostCloseTop'), cb=$('compostClose'); if(ct) ct.onclick=()=>$('compostDialog').close(); if(cb) cb.onclick=()=>$('compostDialog').close();
+  ['tabCP1','tabCP2','tabCP3'].forEach(id=>{ const el=$(id); if(!el) return; el.onclick=()=>{ const map={tabCP1:'pila',tabCP2:'suelo',tabCP3:'luna'}; renderCompostPanel(map[id]); }; });
+}
+setTimeout(setupCompostDialog, 889);
+
+// === RECICLAJE & FERIAS ===
+const RECICLA_ITEMS = [
+  { n:'Botella plástica PET', d:'Punto limpio', e:'Lava, aplasta, sin tapa', k:'botella plastico pet bebida' },
+  { n:'Vidrio (botella/frasco)', d:'Punto limpio', e:'Sin quebrar, sin tapa, no ventanas', k:'vidrio botella frasco' },
+  { n:'Cartón / papel', d:'Punto limpio', e:'Seco, amarra, no encerado ni sucio con grasa', k:'carton papel diario caja' },
+  { n:'Lata aluminio / conserva', d:'Punto limpio', e:'Lava y aplasta', k:'lata aluminio conserva atun' },
+  { n:'Pilas / baterías', d:'Peligroso', e:'Nunca a basura. Punto limpio o campaña municipal', k:'pila bateria control' },
+  { n:'Aceite cocina usado', d:'Peligroso', e:'En botella cerrada a punto limpio. Nunca al lavaplatos', k:'aceite fritura cocina' },
+  { n:'Ropa buena', d:'Feria', e:'Feria, trueque o donación. Ver Banco Semillas', k:'ropa zapato textil' },
+  { n:'Ropa rota / trapo', d:'Basura', e:'Bolsa cerrada a aseo. No a punto limpio', k:'trapo ropa rota' },
+  { n:'Restos verdura / cáscara', d:'Compost', e:'A compost (ver 🪱). No carne/lácteos', k:'verdura cascara resto comida compost' },
+  { n:'Escombro / voluminoso', d:'Basura', e:'Operativo municipal / Aseo 41 226 1033, no a humedal', k:'escombro mueble colchon voluminoso' },
+  { n:'Electrónico chico', d:'Peligroso', e:'Campaña e-waste municipal, no a basura', k:'celular cargador electronico tele' },
+  { n:'Tetra pack', d:'Punto limpio', e:'Lava, abre y seca', k:'tetra leche jugo' },
+  { n:'Plumavit', d:'Basura', e:'Evita. Solo limpio en algunos puntos', k:'plumavit aislapol' },
+  { n:'Medicamento vencido', d:'Peligroso', e:'A farmacia/CESFAM, nunca WC ni basura suelta', k:'remedio medicamento vencido' }
+];
+function renderReciclaList(){
+  const box=$('reciclaList'); if(!box) return;
+  const q=(($('reciclaSearch')&&$('reciclaSearch').value)||'').toLowerCase().trim();
+  const f=(($('reciclaFilter')&&$('reciclaFilter').value)||'');
+  const list=RECICLA_ITEMS.filter(p=>{ if(f && p.d!==f) return false; if(q && !(p.n+' '+p.e+' '+p.k).toLowerCase().includes(q)) return false; return true; });
+  const col={ 'Punto limpio':'#7ab8ff', 'Feria':'#a9d18e', 'Compost':'#c9a86a', 'Basura':'#9aa3c7', 'Peligroso':'#e76e8a' };
+  box.innerHTML = list.length? `<div style="display:flex;flex-direction:column;gap:6px">`+list.map(p=>`<div class="hora-item" style="justify-content:flex-start;gap:8px"><span class="chip" style="font-size:10px;background:${col[p.d]}22;color:${col[p.d]};border-color:${col[p.d]}55;white-space:nowrap">${escapeHtml(p.d)}</span><span style="font-size:12px"><b>${escapeHtml(p.n)}</b> — ${escapeHtml(p.e)}</span></div>`).join('')+`</div>` : '<p class="muted" style="text-align:center">Sin resultados. Prueba “botella”, “pila”, “aceite”.</p>';
+}
+function setupReciclaDialog(){
+  const btn=$('btnRecicla'); if(btn) btn.onclick=()=>{ renderReciclaList(); $('reciclaDialog').showModal(); };
+  const ct=$('reciclaCloseTop'), cb=$('reciclaClose'); if(ct) ct.onclick=()=>$('reciclaDialog').close(); if(cb) cb.onclick=()=>$('reciclaDialog').close();
+  const s=$('reciclaSearch'), f=$('reciclaFilter'); if(s) s.oninput=renderReciclaList; if(f) f.onchange=renderReciclaList;
+}
+setTimeout(setupReciclaDialog, 890);
+
+// === AIRE PENCO ===
+function renderAireTips(pm25){
+  const box=$('aireTipsBox'); if(!box) return;
+  let nivel = pm25==null? null : pm25<=12? 'Bueno': pm25<=35? 'Moderado': pm25<=55? 'Regular': 'Malo';
+  const tips = [
+    ['🔥 Leña seca','Quema solo <25% humedad, carga pequeña y aire abierto. Humo denso = mala combustión.'],
+    ['🪟 Ventila','Ventila 10 min al mediodía (mejor aire), no de noche con humo.'],
+    ['😷 Grupos sensibles','Niños, mayores y asma: evita ejercicio costanera con humo. Mascarilla si hay preemergencia.'],
+    ['📻 Alerta','Preemergencia SEREMI: no más humo, sigue radio/muni. Denuncia humo industrial a SMA.']
+  ];
+  box.innerHTML = `<div class="help-grid">`+tips.map(t=>`<div class="help-card"><h4>${t[0]}</h4><p style="font-size:11px">${t[1]}</p></div>`).join('')+`</div>`+
+    (nivel? `<p class="muted" style="font-size:11px;margin-top:6px">PM2.5 ahora ≈ <b>${Math.round(pm25)} µg/m³ (${nivel})</b> — referencia OMS diaria 15. Si está Regular/Malo, baja la estufa y ventila corto.</p>` : `<p class="muted" style="font-size:11px;margin-top:6px">Sin dato en vivo (offline). Usa la guía: si ves humo estancado sobre la bahía, aplica modo invierno.</p>`);
+}
+async function fetchAire(){
+  const box=$('aireLiveBox'); if(box) box.innerHTML='<i>Cargando aire…</i>';
+  try{
+    const url='https://air-quality-api.open-meteo.com/v1/air-quality?latitude=-36.73194&longitude=-72.9925&hourly=pm2_5,us_aqi&timezone=America%2FSantiago&forecast_days=1';
+    const r=await fetch(url); const j=await r.json();
+    const times=j.hourly.time; const vals=j.hourly.pm2_5;
+    const p=cal.santiagoParts(Date.now());
+    const key=`${p.y}-${String(p.m).padStart(2,'0')}-${String(p.d).padStart(2,'0')}T${String(p.hh).padStart(2,'0')}`;
+    let idx=times.findIndex(t=>t>=key); if(idx<0) idx=vals.length-1;
+    const pm25=vals[idx];
+    if(box) box.innerHTML=`<b>🌬️ Penco ahora:</b> PM2.5 ≈ <b>${pm25==null?'—':Math.round(pm25)+' µg/m³'}</b> · AQI US ${j.hourly.us_aqi[idx]??'—'} <span class="muted" style="font-size:11px">(Open-Meteo, modelo, no estación oficial — contrasta con SINCA sinca.mma.gob.cl)</span>`;
+    renderAireTips(pm25);
+  }catch{ if(box) box.innerHTML='<i>Sin conexión: guía offline abajo. Estación oficial: SINCA (sinca.mma.gob.cl) / SEREMI Bío-Bío.</i>'; renderAireTips(null); }
+}
+function setupAireDialog(){
+  const btn=$('btnAire'); if(btn) btn.onclick=()=>{ $('aireDialog').showModal(); fetchAire(); };
+  const ct=$('aireCloseTop'), cb=$('aireClose'); if(ct) ct.onclick=()=>$('aireDialog').close(); if(cb) cb.onclick=()=>$('aireDialog').close();
+}
+setTimeout(setupAireDialog, 891);
+
+// === MIS SEMILLAS — INVENTARIO DENTRO DE SIEMBRA ===
+function getSemillasInvData(){ try{ const u=userData(); if(!u.semillasInv) u.semillasInv=[]; if(!Array.isArray(u.semillasInv)) u.semillasInv=[]; return u.semillasInv; }catch{ return []; } }
+function setSemillasInvData(a){ try{ userData().semillasInv=a; }catch{} }
+function renderSiembraSemillas(){
+  const box=$('siembraSemillasBox'); if(!box) return;
+  const a=getSemillasInvData();
+  const totalSobres=a.reduce((s,e)=> s+(parseInt(e.qty)||0), 0);
+  let ahora='';
+  try{
+    const tres=(typeof getSiembraTresLunas==='function')? getSiembraTresLunas() : [currentView.luna||1];
+    ahora=tres.map(n=>{ try{ const s=SIEMBRA_LUNAS[n]; return `Luna ${n}: ${s.directa.split('.')[0].slice(0,80)}…`; }catch{ return 'Luna '+n; } }).map(escapeHtml).join('<br>');
+  }catch{}
+  box.innerHTML = `<div class="menstrual-card" style="border-color:var(--gold);background:linear-gradient(135deg,var(--panel),var(--card))">
+    <h4 style="color:var(--gold)">🌰 Mis semillas — recuento (${a.length} variedades · ${totalSobres} sobres/semillas)</h4>
+    <p class="muted" style="font-size:11px">Tu stock personal, <b>local por usuario</b>. Descuenta al sembrar (−) y suma al cosechar/cosechar semilla (+). Úsalo con la guía de arriba.</p>
+    ${ahora? `<p style="font-size:11px;margin-top:6px"><b>Siembra ahora:</b><br><span class="muted">${ahora}</span></p>`:''}
+    <div class="conv-row" style="margin-top:8px">
+      <label style="flex:2">Variedad <input type="text" id="semInvName" placeholder="ej: Tomate rosado, Poroto manteca" maxlength="40"></label>
+      <label>Cant. <input type="number" id="semInvQty" min="0" value="1" style="width:80px"></label>
+      <label>Detalle <input type="text" id="semInvNote" placeholder="ej: sobres, gr, 2026" maxlength="30"></label>
+    </div>
+    <div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="semInvAdd" class="btn btn-accent" style="width:auto">+ Agregar</button></div>
+    <div id="semInvList" class="habits-list" style="margin-top:8px;max-height:240px"></div>
+    <div class="dlg-actions" style="justify-content:space-between;align-items:center;margin-top:6px">
+      <span id="semInvStats" class="muted" style="font-size:11px"></span>
+      <span style="display:flex;gap:8px"><button type="button" id="semInvShare" class="btn" style="width:auto">📤 Compartir</button><button type="button" id="semInvClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Vaciar</button></span>
+    </div></div>`;
+  const list=$('semInvList');
+  const paint=()=>{
+    const arr=getSemillasInvData();
+    list.innerHTML = arr.length? arr.map((e,i)=>
+      `<div class="hora-item"><span style="font-size:12px"><b>${escapeHtml(e.name)}</b> <span class="chip" style="font-size:10px">${escapeHtml(String(e.qty))} ${escapeHtml(e.note||'')}</span></span><span class="hora-actions"><button type="button" class="btn btn-icon sem-dec" data-i="${i}" title="Sembré 1 (−)">−</button><button type="button" class="btn btn-icon sem-inc" data-i="${i}" title="Sumar 1 (+)">+</button><button type="button" class="btn btn-icon sem-del" data-i="${i}" title="Borrar">✕</button></span></div>`).join('')
+      : '<p class="muted" style="font-size:11px;text-align:center">Vacío. Agrega tu primer sobre arriba.</p>';
+    const st=$('semInvStats'); if(st) st.textContent = arr.length? `${arr.length} variedades · bajo stock (≤2): ${arr.filter(x=>(parseInt(x.qty)||0)<=2).length}` : '';
+    list.querySelectorAll('.sem-dec').forEach(b=> b.onclick=()=>{ const ar=getSemillasInvData(); const it=ar[parseInt(b.dataset.i)]; if(!it) return; it.qty=Math.max(0,(parseInt(it.qty)||0)-1); setSemillasInvData(ar); scheduleSave(); paint(); });
+    list.querySelectorAll('.sem-inc').forEach(b=> b.onclick=()=>{ const ar=getSemillasInvData(); const it=ar[parseInt(b.dataset.i)]; if(!it) return; it.qty=(parseInt(it.qty)||0)+1; setSemillasInvData(ar); scheduleSave(); paint(); });
+    list.querySelectorAll('.sem-del').forEach(b=> b.onclick=()=>{ const ar=getSemillasInvData(); ar.splice(parseInt(b.dataset.i),1); setSemillasInvData(ar); scheduleSave(); paint(); });
+  };
+  paint();
+  const add=$('semInvAdd');
+  if(add) add.onclick=()=>{
+    const name=sanitizeText(($('semInvName').value||'').trim(),40); if(!name) return;
+    const qty=Math.max(0, parseInt($('semInvQty').value)||0);
+    const note=sanitizeText(($('semInvNote').value||'').trim(),30);
+    const arr=getSemillasInvData();
+    const found=arr.find(x=> x.name.toLowerCase()===name.toLowerCase());
+    if(found){ found.qty=(parseInt(found.qty)||0)+qty; if(note) found.note=note; }
+    else arr.push({name, qty, note});
+    setSemillasInvData(arr); scheduleSave('Guardado ✓');
+    $('semInvName').value=''; $('semInvQty').value='1'; $('semInvNote').value=''; paint();
+  };
+  const sh=$('semInvShare'); if(sh) sh.onclick=async()=>{ const arr=getSemillasInvData(); const t=arr.length? '🌰 Mis semillas\n'+arr.map(e=>`• ${e.name}: ${e.qty}${e.note?' '+e.note:''}`).join('\n') : 'Mis semillas — sin stock aún'; await shareText('Mis semillas', t, null); };
+  const cl=$('semInvClear'); if(cl) cl.onclick=()=>{ if(!confirm('¿Vaciar todo el inventario?')) return; setSemillasInvData([]); scheduleSave(); paint(); };
+}
+
+// === GRATITUD DIARIA ===
+function getGratitudData(){ try{ const u=userData(); if(!u.gratitud) u.gratitud={entries:{}}; if(!u.gratitud.entries) u.gratitud.entries={}; return u.gratitud; }catch{ return {entries:{}}; } }
+function gratitudStreak(){
+  const e=getGratitudData().entries; let s=0; const d=new Date();
+  for(let i=0;i<365;i++){ const k=cal.fmtKey.format(d); const g=e[k]; if(g&&(g.t1||g.t2||g.t3)){ s++; d.setDate(d.getDate()-1); } else if(i===0){ d.setDate(d.getDate()-1); continue; } else break; }
+  return s;
+}
+function renderGratitudBox(){
+  const b=$('gratitudStreakBox'); if(!b) return;
+  const e=getGratitudData().entries; const n=Object.keys(e).filter(k=>{ const g=e[k]; return g&&(g.t1||g.t2||g.t3); }).length;
+  b.innerHTML=`<b>✨ Racha:</b> ${gratitudStreak()} días seguidos · <b>${n}</b> días con gratitud <span class="muted" style="font-size:11px">— 28 días = 1 luna completa</span>`;
+}
+function renderGratHistory(){
+  const box=$('gratHistory'); if(!box) return;
+  const e=getGratitudData().entries;
+  const keys=Object.keys(e).sort().reverse().slice(0,14);
+  box.innerHTML = keys.length? keys.map(k=>{ const g=e[k]; return `<div class="hora-item" style="align-items:flex-start"><span style="font-size:11px"><b>${escapeHtml(k)}</b><br>· ${escapeHtml(g.t1||'—')}<br>· ${escapeHtml(g.t2||'—')}<br>· ${escapeHtml(g.t3||'—')}</span><button type="button" class="btn btn-icon grat-del" data-k="${escapeHtml(k)}">✕</button></div>`; }).join('')
+    : '<p class="muted" style="font-size:11px;text-align:center">Sin registros. Escribe tus 3 de hoy.</p>';
+  box.querySelectorAll('.grat-del').forEach(x=> x.onclick=()=>{ const gd=getGratitudData(); delete gd.entries[x.dataset.k]; scheduleSave(); renderGratitudBox(); renderGratHistory(); if(currentView.tipo==='luna') renderLuna(); });
+}
+function setupGratitudDialog(){
+  const btn=$('btnGratitud'); if(btn) btn.onclick=()=>{
+    const t=cal.fmtKey.format(new Date()); const d=$('gratDate'); if(d && !d.value) d.value=t;
+    const g=getGratitudData().entries[d.value||t]||{};
+    if($('grat1')) $('grat1').value=g.t1||''; if($('grat2')) $('grat2').value=g.t2||''; if($('grat3')) $('grat3').value=g.t3||'';
+    renderGratitudBox(); renderGratHistory(); $('gratitudDialog').showModal();
+  };
+  const ct=$('gratitudCloseTop'), cb=$('gratitudClose'); if(ct) ct.onclick=()=>$('gratitudDialog').close(); if(cb) cb.onclick=()=>$('gratitudDialog').close();
+  const dt=$('gratDate'); if(dt) dt.onchange=()=>{ const g=getGratitudData().entries[dt.value]||{}; if($('grat1')) $('grat1').value=g.t1||''; if($('grat2')) $('grat2').value=g.t2||''; if($('grat3')) $('grat3').value=g.t3||''; };
+  const today=$('gratToday'); if(today) today.onclick=()=>{ const t=cal.fmtKey.format(new Date()); $('gratDate').value=t; $('gratDate').onchange(); };
+  const sv=$('gratSave'); if(sv) sv.onclick=()=>{
+    const k=$('gratDate').value||cal.fmtKey.format(new Date());
+    const gd=getGratitudData();
+    gd.entries[k]={ t1:sanitizeText($('grat1').value.trim(),120), t2:sanitizeText($('grat2').value.trim(),120), t3:sanitizeText($('grat3').value.trim(),120) };
+    scheduleSave('Guardado ✓'); renderGratitudBox(); renderGratHistory(); if(currentView.tipo==='luna') renderLuna();
+  };
+}
+setTimeout(setupGratitudDialog, 893);
+
+// === LEÑA & PELLET ===
+function setupLenaDialog(){
+  const btn=$('btnLena'); if(btn) btn.onclick=()=>{ $('lenaDialog').showModal(); if(!$('lenaResult').innerHTML) renderLenaEmpty(); };
+  const ct=$('lenaCloseTop'), cb=$('lenaClose'); if(ct) ct.onclick=()=>$('lenaDialog').close(); if(cb) cb.onclick=()=>$('lenaDialog').close();
+  const c=$('lenaCalc'); if(c) c.onclick=renderLenaCalc;
+}
+function renderLenaEmpty(){ const b=$('lenaResult'); if(b) b.innerHTML='<span class="muted" style="font-size:11px">Ingresa cantidad y precio para comparar. Ej: 1 m³ eucalipto ≈ 450 kg seco.</span>'; }
+function renderLenaCalc(){
+  const box=$('lenaResult'); if(!box) return;
+  const tipo=$('lenaTipo').value, cant=parseFloat($('lenaCant').value)||0, uni=$('lenaUnidad').value, precio=parseFloat($('lenaPrecio').value)||0;
+  if(!cant){ box.innerHTML='Ingresa una cantidad válida.'; return; }
+  const KWH={ eucalipto:4.5, pino:4.0, humeda:2.6, pellet:4.8, parafina:9.8 };
+  const KG={ kg:1, m3:450, bolsa:15, litro:0.8 };
+  const NOM={ eucalipto:'Eucalipto seco', pino:'Pino/Aromo seco', humeda:'Leña húmeda', pellet:'Pellet', parafina:'Parafina' };
+  const kg=cant*(KG[uni]||1);
+  const kwh=kg*(KWH[tipo]||4);
+  const perKwh=precio>0&&kwh>0? ` · <b>$${Math.round(precio/kwh)}/kWh</b>` : '';
+  const dias=kwh>0? ` ≈ calefacción de una casa Penco chica por <b>${(kwh/25).toFixed(1)} días</b> (25 kWh/día invierno)` : '';
+  const warn=tipo==='humeda'? `<br><span style="color:#ff9a9a">⚠️ Húmeda rinde ~40% menos y satura el aire (ver 🌬️ Aire). Seca 6+ meses bajo techo.</span>` : tipo==='parafina'? `<br><span class="muted" style="font-size:11px">Ventila siempre con parafina, nunca durmiendo.</span>` : '';
+  box.innerHTML=`<b>${escapeHtml(NOM[tipo])}</b> ${cant} ${escapeHtml(uni)} ≈ <b>${Math.round(kwh)} kWh</b>${perKwh}${dias}${warn}<br><span class="muted" style="font-size:11px">Ref: 1 m³ estéreo ≈ 450 kg seco · pellet 15 kg ≈ 72 kWh · compara $/kWh antes de comprar.</span>`;
+}
+setTimeout(setupLenaDialog, 894);
 
 // === CICLO CIRCADIANO ===
 const CIRCADIAN_PHASES = [
