@@ -136,8 +136,6 @@
           <button id="btnConvert" class="btn" data-keywords="conversion unidades peso longitud tiempo velocidad energia potencia presion datos angulo">📏 Conversión</button>
           <button id="btnEnergy" class="btn" data-keywords="energia consumo electrico luz kwh watts tarifa electrodomestico ohm ley ohm potencia voltaje corriente resistencia calculadora electrica solar fotovoltaica panel">⚡ Consumo eléctrico</button>
           <button id="btnTimer" class="btn" data-keywords="tiempo timer cronometro pomodoro">⏱ Tiempo</button>
-          <button id="btnCompass" class="btn" data-keywords="brujula compass norte magnetica web inclinacion nivel burbuja">🧭 Brújula</button>
-          <button id="btnInclinometer" class="btn" data-keywords="inclinacion nivel burbuja inclinometro angulo pendiente web sensor">📐 Inclinación</button>
           <button id="btnRemind" class="btn" data-keywords="recordatorio notificacion luna fase">🔔 Recordatorios</button>
           <button id="btnBackup" class="btn" data-keywords="respaldo backup guardar exportar">💾 Respaldo</button>
           <button id="btnRestore" class="btn" data-keywords="restaurar importar backup json">📥 Restaurar</button>
@@ -1175,84 +1173,6 @@
 
 
 
-  <dialog id="compassDialog">
-    <form method="dialog">
-      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
-        <h3 style="margin:0;color:var(--accent)">🧭 Brújula — Web (sin permisos extra)</h3>
-        <button type="button" id="compassCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
-      </div>
-      <p class="muted" style="line-height:1.5">Funciona en móvil/tablet con sensor magnético. Mantén el dispositivo plano. No necesita permisos extra en Android/Chrome; en iPhone pide 1 toque. Útil para orientar paneles solares al <b>norte</b> en Penco.</p>
-      <div class="menstrual-card" style="text-align:center;border-color:var(--gold)">
-        <div id="compassRose" style="width:200px;height:200px;margin:10px auto;position:relative;border:2px solid var(--line);border-radius:50%;background:radial-gradient(circle at 50% 50%, var(--panel), var(--card))">
-          <div style="position:absolute;top:6px;left:50%;transform:translateX(-50%);color:#ff6b6b;font-weight:800;font-size:14px">N</div>
-          <div style="position:absolute;bottom:6px;left:50%;transform:translateX(-50%);color:var(--muted);font-size:12px">S</div>
-          <div style="position:absolute;left:8px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:12px">O</div>
-          <div style="position:absolute;right:8px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:12px">E</div>
-          <div id="compassNeedle" style="position:absolute;left:50%;top:50%;width:3px;height:88px;background:linear-gradient(to bottom, #ff3b30 50%, #9aa3c7 50%);transform:translate(-50%, -50%) rotate(0deg);transform-origin:center; border-radius:2px; transition:transform 0.2s ease-out"></div>
-          <div style="position:absolute;left:50%;top:50%;width:12px;height:12px;background:var(--gold);border-radius:50%;transform:translate(-50%,-50%)"></div>
-        </div>
-        <div id="compassHeading" class="chip" style="display:inline-block;margin-top:8px;font-size:16px">—°</div>
-        <div id="compassCardinal" class="muted" style="font-size:12px;margin-top:4px">—</div>
-        <p id="compassStatus" class="muted" style="font-size:11px;margin-top:6px"></p>
-      </div>
-      <div class="menstrual-card" style="margin-top:10px">
-        <h4>📍 Datos Penco</h4>
-        <div class="conv-row">
-          <span class="chip">Lat -36.7319</span><span class="chip">Lng -72.9925</span><span class="chip">Dec. magnética ~ -5° (2026)</span>
-        </div>
-        <p class="muted" style="font-size:11px;margin-top:6px">Para solar, apunta paneles al <b>norte verdadero</b> (brújula +5° hacia este para corregir). Inclinación óptima 33-36°. Usa también 📐 Inclinación para ajustar.</p>
-        <div class="dlg-actions" style="justify-content:flex-start;margin-top:8px">
-          <button type="button" id="compassStart" class="btn btn-accent" style="width:auto">▶ Activar brújula</button>
-          <button type="button" id="compassStop" class="btn" style="width:auto">⏸ Pausar</button>
-        </div>
-      </div>
-      <details class="menstrual-details" style="margin-top:10px"><summary>🔧 Si dice "Permiso denegado" — Android y iPhone</summary>
-        <div class="help-grid" style="margin-top:8px">
-          <div class="help-card"><h4>🤖 Android Chrome (más común)</h4><p style="font-size:11px;line-height:1.5">1. Abre con <b>https://</b> (candado cerrado). 2. Toca <b>candado > Configuración del sitio > Sensores de movimiento > Permitir</b> > recarga. 3. Activa <b>Ubicación/GPS</b> del celular. 4. Usa <b>Chrome actualizado</b> (no WebView/Facebook browser). 5. No uses modo incógnito con bloqueo. Si aún falla, tu equipo no tiene magnetómetro — usa modo manual mirando el sol al mediodía (sombra apunta al sur).</p></div>
-          <div class="help-card"><h4>🍎 iPhone Safari</h4><p style="font-size:11px;line-height:1.5">Ajustes > Safari > Movimiento y orientación > Activar. Luego toca <b>▶ Activar brújula</b> y acepta <i>Permitir</i>. Debe ser <b>https</b>.</p></div>
-        </div>
-        <p class="muted" style="font-size:10px;margin-top:6px">Tip: Agita el celular en forma de 8 para calibrar el magnetómetro.</p>
-      </details>
-      <div class="dlg-actions"><button type="button" id="compassClose" class="btn">Cerrar</button></div>
-    </form>
-  </dialog>
-
-  <dialog id="inclinDialog">
-    <form method="dialog">
-      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
-        <h3 style="margin:0;color:var(--accent)">📐 Inclinación / Nivel — Web</h3>
-        <button type="button" id="inclinCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
-      </div>
-      <p class="muted" style="line-height:1.5">Mide inclinación con el giroscopio del móvil (sin permisos extra). Apoya el borde del celular sobre el panel / techo para ver ángulo.</p>
-      <div class="menstrual-card" style="text-align:center;border-color:var(--gold)">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-          <div class="chip" style="padding:12px"><b>↕ Pitch (cabeceo)</b><div id="inclinPitch" style="font-size:22px;color:var(--gold);margin-top:4px">—°</div></div>
-          <div class="chip" style="padding:12px"><b>↔ Roll (alabeo)</b><div id="inclinRoll" style="font-size:22px;color:#7ab8ff;margin-top:4px">—°</div></div>
-        </div>
-        <div style="margin-top:12px">
-          <div style="width:200px;height:20px;margin:0 auto;background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden;position:relative">
-            <div id="inclinBar" style="position:absolute;left:50%;top:0;bottom:0;width:4px;background:var(--gold);transform:translateX(-50%);transition:left 0.1s"></div>
-          </div>
-          <div id="inclinTarget" class="muted" style="font-size:11px;margin-top:6px">Objetivo Penco: 33-36° norte</div>
-        </div>
-        <p id="inclinStatus" class="muted" style="font-size:11px;margin-top:8px"></p>
-      </div>
-      <div class="menstrual-card" style="margin-top:10px">
-        <h4>🎯 Cómo usar para solar</h4>
-        <p class="muted" style="font-size:11px;line-height:1.5">1. Activa y coloca el celular <b>a lo largo del panel</b> (borde largo). 2. Inclina hasta ver <b>~34°</b> en Pitch. 3. Verifica con brújula que apunte al norte. Para techo, mide directamente la chapa.</p>
-        <div class="dlg-actions" style="justify-content:flex-start;margin-top:8px">
-          <button type="button" id="inclinStart" class="btn btn-accent" style="width:auto">▶ Activar</button>
-          <button type="button" id="inclinStop" class="btn" style="width:auto">⏸ Pausar</button>
-          <button type="button" id="inclinCalib" class="btn" style="width:auto">⟲ Calibrar 0°</button>
-        </div>
-      </div>
-      <details class="menstrual-details" style="margin-top:10px"><summary>🔧 Si no activa — Android</summary>
-        <p class="muted" style="font-size:11px;line-height:1.5">Mismo que brújula: <b>https://</b>, candado > Sensores de movimiento > Permitir, Ubicación activada, Chrome actualizado. Si no tienes giroscopio, usa nivel de burbuja físico o app de nivel externa.</p>
-      </details>
-      <div class="dlg-actions"><button type="button" id="inclinClose" class="btn">Cerrar</button></div>
-    </form>
-  </dialog>
-
   <dialog id="firstAidDialog">
     <form method="dialog">
       <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
@@ -1980,8 +1900,6 @@
           <h5>🛠️ Herramientas</h5>
           <label class="check-row"><input type="checkbox" data-btn="btnConvert"> 📏 Conversión</label>
           <label class="check-row"><input type="checkbox" data-btn="btnEnergy"> ⚡ Consumo</label>
-          <label class="check-row"><input type="checkbox" data-btn="btnCompass"> 🧭 Brújula</label>
-          <label class="check-row"><input type="checkbox" data-btn="btnInclinometer"> 📐 Inclinación</label>
           <label class="check-row"><input type="checkbox" data-btn="btnTimer"> ⏱ Tiempo</label>
           <label class="check-row"><input type="checkbox" data-btn="btnRemind"> 🔔 Recordatorios</label>
           <label class="check-row"><input type="checkbox" data-btn="btnBackup"> 💾 Respaldo</label>
