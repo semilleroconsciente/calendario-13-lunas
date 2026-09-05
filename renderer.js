@@ -3655,7 +3655,7 @@ function setupHelpDialog(){
 setTimeout(setupHelpDialog, 850);
 
 // === CONFIGURACIÓN PERSONALIZABLE ===
-const ALL_BTNS = ["btnTides","btnFishing","btnBirds","btnWeather","btnSiembra","btnAstro","btnComuna","btnEkadashi","btnMenstrual","btnMedic","btnHabits","btnMeal","btnShopping","btnFinance","btnHomeTasks","btnDiscipline","btnDreams","btnBreath","btnSchedule","btnGym","btnCircadian","btnGolden","btnFirstAid","btnAnimalCare","btnViolence","btnConvert","btnEnergy","btnCompass","btnInclinometer","btnTimer","btnRemind","btnBackup","btnRestore","btnShortcut","btnPdfLuna","btnPdfCiclo","btnDonate","btnHelp","btnStudy","btnTales","btnMemory"];
+const ALL_BTNS = ["btnTides","btnFishing","btnBirds","btnWeather","btnSiembra","btnAstro","btnComuna","btnEkadashi","btnMenstrual","btnMedic","btnHabits","btnMeal","btnShopping","btnFinance","btnHomeTasks","btnDiscipline","btnDreams","btnBreath","btnSchedule","btnGym","btnCircadian","btnGolden","btnFirstAid","btnAnimalCare","btnViolence","btnConvert","btnEnergy","btnTimer","btnRemind","btnBackup","btnRestore","btnShortcut","btnPdfLuna","btnPdfCiclo","btnDonate","btnHelp","btnStudy","btnTales","btnMemory"];
 const PRESETS = {
   todo: Object.fromEntries(ALL_BTNS.map(k=>[k,true])),
   esencial: {btnTides:true,btnWeather:true,btnSiembra:true,btnEkadashi:true,btnBackup:true,btnRestore:true,btnPdfLuna:true,btnPdfCiclo:true,btnHelp:true,btnDonate:true},
@@ -5247,113 +5247,6 @@ function setupSolarPV(){
   // auto calc init
   setTimeout(calc, 300);
 }
-function setupCompassInclin(){
-  // BRÚJULA
-  const needle=$('compassNeedle'), headingEl=$('compassHeading'), cardinalEl=$('compassCardinal'), statusEl=$('compassStatus'), btnStart=$('compassStart'), btnStop=$('compassStop');
-  let watchId=null, listening=false;
-  function cardinal(deg){
-    const dirs=['N','NE','E','SE','S','SO','O','NO'];
-    return dirs[Math.round(deg/45)%8];
-  }
-  function updateCompass(deg){
-    if(needle) needle.style.transform=`translate(-50%,-50%) rotate(${deg}deg)`;
-    if(headingEl) headingEl.textContent=Math.round(deg)+'°';
-    if(cardinalEl) cardinalEl.textContent=cardinal(deg)+' · '+(deg<22.5||deg>=337.5?'Norte (paneles aquí)': deg>=157.5&&deg<202.5?'Sur':'');
-  }
-  function handler(e){
-    let h=null;
-    if(e.webkitCompassHeading!==undefined) h=e.webkitCompassHeading;
-    else if(e.alpha!==null) h=360 - e.alpha;
-    if(h!==null && !isNaN(h)) updateCompass((h+360)%360);
-  }
-  async function start(){
-    if(listening) return;
-    // HTTPS requerido
-    if(window.isSecureContext===false){
-      if(statusEl) statusEl.innerHTML='⚠️ Necesitas <b>HTTPS</b>. Abre la web como <b>https://calendario-13-lunas.pages.dev</b> (no http ni archivo local).';
-      return;
-    }
-    if(!('DeviceOrientationEvent' in window)){ if(statusEl) statusEl.innerHTML='❌ Este dispositivo/navegador no expone brújula. Prueba Chrome Android actualizado. Modo manual: usa el mapa y la rosa.'; return; }
-    try{
-      if(typeof DeviceOrientationEvent!=='undefined' && DeviceOrientationEvent.requestPermission){
-        const p=await DeviceOrientationEvent.requestPermission();
-        if(p!=='granted'){
-          if(statusEl) statusEl.innerHTML='🔒 Permiso denegado.<br><b>iPhone:</b> Ajustes > Safari > Movimiento y orientación > Activar y recarga.<br><b>Android Chrome:</b> candado en barra > Configuración del sitio > <b>Sensores de movimiento > Permitir</b> > recarga. Activa también Ubicación/GPS y usa Chrome actualizado. En Firefox Android puede no funcionar — prueba Chrome.';
-          return;
-        }
-      } else {
-        // Android no pide requestPermission pero puede estar bloqueado a nivel sitio
-        if(navigator.permissions && navigator.permissions.query){
-          try{
-            const q=await navigator.permissions.query({name:'gyroscope'});
-            if(q.state==='denied'){ if(statusEl) statusEl.innerHTML='🔒 Sensor bloqueado. Android Chrome: candado > Configuración del sitio > Sensores de movimiento > Permitir > recarga. Verifica también <i>Ajustes Android > Ubicación > Activada</i>.'; return; }
-          }catch{}
-        }
-      }
-      window.addEventListener('deviceorientation', handler, true);
-      // Test si llegan datos en 1.5s, si no avisa
-      let got=false; const once=(e)=>{ if(e.alpha!==null) got=true; window.removeEventListener('deviceorientation', once, true); };
-      window.addEventListener('deviceorientation', once, true);
-      setTimeout(()=>{ if(!got && listening && statusEl) statusEl.innerHTML='⏳ Sin datos aún. En Android: asegúrate de dar <b>Permitir</b> cuando el navegador pregunte, recarga la página y no uses modo incógnito con bloqueo de sensores.'; }, 1500);
-      listening=true; if(statusEl) statusEl.textContent='Brújula activa. Calibra moviendo en 8.';
-    }catch(err){ if(statusEl) statusEl.innerHTML='❌ Sin sensor o navegador no soporta.<br>Android: usa Chrome (no WebView), HTTPS y Ubicación activada. Alternativa manual disponible abajo.'; }
-  }
-  function stop(){ window.removeEventListener('deviceorientation', handler, true); listening=false; if(statusEl) statusEl.textContent='Pausada.'; }
-  if(btnStart) btnStart.onclick=start;
-  if(btnStop) btnStop.onclick=stop;
-  // INCLINÓMETRO
-  const pitchEl=$('inclinPitch'), rollEl=$('inclinRoll'), barEl=$('inclinBar'), iStatus=$('inclinStatus'), iStart=$('inclinStart'), iStop=$('inclinStop'), iCalib=$('inclinCalib');
-  let iListening=false, calibPitch=0, calibRoll=0;
-  function iHandler(e){
-    let p=e.beta, r=e.gamma;
-    if(p===null||r===null) return;
-    p-=calibPitch; r-=calibRoll;
-    if(pitchEl) pitchEl.textContent=p.toFixed(1)+'°';
-    if(rollEl) rollEl.textContent=r.toFixed(1)+'°';
-    if(barEl){
-      const off=Math.max(-45, Math.min(45, r));
-      barEl.style.left=`calc(50% + ${off*2}px)`;
-      barEl.style.background=Math.abs(r)<2&&Math.abs(p-34)<5?'#8fd694': 'var(--gold)';
-    }
-  }
-  async function iStartFn(){
-    if(iListening) return;
-    if(window.isSecureContext===false){ if(iStatus) iStatus.innerHTML='⚠️ Requiere <b>HTTPS</b>.'; return; }
-    if(!('DeviceOrientationEvent' in window)){ if(iStatus) iStatus.innerHTML='❌ Sin giroscopio en este navegador. Usa Chrome Android.'; return; }
-    try{
-      if(typeof DeviceOrientationEvent!=='undefined' && DeviceOrientationEvent.requestPermission){
-        const p=await DeviceOrientationEvent.requestPermission();
-        if(p!=='granted'){ if(iStatus) iStatus.innerHTML='🔒 Permiso denegado.<br><b>Android:</b> candado > Configuración del sitio > Sensores de movimiento > Permitir. <b>iPhone:</b> Ajustes > Safari > Movimiento > Activar.'; return; }
-      }
-      window.addEventListener('deviceorientation', iHandler, true);
-      let got=false; const once=(e)=>{ if(e.beta!==null) got=true; window.removeEventListener('deviceorientation', once, true); };
-      window.addEventListener('deviceorientation', once, true);
-      setTimeout(()=>{ if(!got && iListening && iStatus) iStatus.innerHTML='⏳ Esperando sensor... Activa Ubicación y recarga con HTTPS.'; }, 1500);
-      iListening=true; if(iStatus) iStatus.textContent='Inclinómetro activo.';
-    }catch{ if(iStatus) iStatus.innerHTML='❌ Sensor no disponible. Android: Chrome + HTTPS + Ubicación activada. Usa modo manual si persiste.'; }
-  }
-  function iStopFn(){ window.removeEventListener('deviceorientation', iHandler, true); iListening=false; if(iStatus) iStatus.textContent='Pausado.'; }
-  function calib(){ calibPitch=parseFloat(pitchEl&&pitchEl.textContent)||0; calibRoll=parseFloat(rollEl&&rollEl.textContent)||0; if(iStatus) iStatus.textContent='Calibrado a 0°.'; // actually store current
-    // re-read current beta/gamma
-    calibPitch=0; calibRoll=0;
-    // Quick trick: capture next event as zero
-    const once=(e)=>{ if(e.beta!==null){ calibPitch=e.beta; calibRoll=e.gamma||0; window.removeEventListener('deviceorientation', once, true); if(iStatus) iStatus.textContent='Cero fijado.'; } };
-    window.addEventListener('deviceorientation', once, true);
-  }
-  if(iStart) iStart.onclick=iStartFn;
-  if(iStop) iStop.onclick=iStopFn;
-  if(iCalib) iCalib.onclick=calib;
-  // botones herramientas web
-  const bc=$('btnCompass'), bi=$('btnInclinometer');
-  if(bc) bc.onclick=()=>{ $('compassDialog').showModal(); };
-  if(bi) bi.onclick=()=>{ $('inclinDialog').showModal(); };
-  const ccT=$('compassCloseTop'), cc=$('compassClose'); if(ccT) ccT.onclick=()=>$('compassDialog').close(); if(cc) cc.onclick=()=>$('compassDialog').close();
-  const icT=$('inclinCloseTop'), ic=$('inclinClose'); if(icT) icT.onclick=()=>$('inclinDialog').close(); if(ic) ic.onclick=()=>$('inclinDialog').close();
-  // auto pause on dialog close
-  ['compassDialog','inclinDialog'].forEach(id=>{
-    const dlg=$(id); if(dlg) dlg.addEventListener('close', ()=>{ stop(); iStopFn(); });
-  });
-}
 function setupEnergyDialog(){
   const btn=$('btnEnergy'); if(btn) btn.onclick=()=>{
     const d=getEnergyData();
@@ -5406,7 +5299,6 @@ function setupEnergyDialog(){
   const clear=$('energyClear'); if(clear) clear.onclick=()=>{ if(!confirm('¿Vaciar lista de artefactos?')) return; getEnergyData().items=[]; scheduleSave(); renderEnergyResumen(); renderEnergyList(); renderEnergyTips(); renderEnergyLuna(); };
 }
 setTimeout(setupEnergyDialog, 675);
-setTimeout(setupCompassInclin, 676);
 
 // === CONVERSIÓN DE UNIDADES ===
 const CONV = {
