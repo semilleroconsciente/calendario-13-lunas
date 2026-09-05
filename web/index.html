@@ -127,6 +127,7 @@
         <div class="group-btns">
           <button id="btnFirstAid" class="btn" data-keywords="primeros auxilios emergencia salud rcp hemorragia quemadura fractura atragantamiento heimlich botiquin samu bomberos carabineros">🩹 Primeros Auxilios</button>
           <button id="btnAnimalCare" class="btn" data-keywords="cuidado animal veterinaria mascota perro gato tenencia responsable esterilizacion vacuna antirrabica comuna animal perdido maltrato">🐾 Cuidado Animal</button>
+          <button id="btnViolence" class="btn" data-keywords="violencia domestica intrafamiliar vif violencia genero mujer pareja fisica psicologica sexual economica vicaria digital denuncia 149 1455 sernameg carabineros">🟣 Violencia Doméstica</button>
         </div>
       </details>
       <details class="action-group" data-group="herramientas">
@@ -1112,6 +1113,64 @@
     </form>
   </dialog>
 
+  <dialog id="violenceDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:#d8a0ff">🟣 Violencia Doméstica — tipos y qué hacer</h3>
+        <button type="button" id="violenceCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
+      </div>
+      <p class="muted" style="line-height:1.5"><b>No estás sola/o. No es tu culpa.</b> Esta sección es <b>informativa y de orientación</b>, no reemplaza asesoría legal/psicológica ni denuncia. Si hay <b>peligro ahora</b>, prioriza tu seguridad y llama a emergencia. Todo queda <b>offline y privado</b> — no guarda historial. Usa <b>Salir rápido</b> si necesitas borrar pantalla.</p>
+
+      <div id="violenceEmergencyCard" class="menstrual-card" style="border-color:#d8a0ff;background:linear-gradient(135deg,#231a33,var(--card))">
+        <h4 style="color:#d8a0ff">🚨 Ayuda inmediata — 24 horas · Chile</h4>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">
+          <a href="tel:133" class="btn" style="text-decoration:none;text-align:center;background:#e76e8a;color:#fff;border-color:#e76e8a">🚓 Carabineros 133</a>
+          <a href="tel:149" class="btn" style="text-decoration:none;text-align:center;background:#c96fb1;color:#fff;border-color:#d8a0ff">📞 Fono Familia 149</a>
+          <a href="tel:1455" class="btn" style="text-decoration:none;text-align:center;background:#7a6fa5;color:#fff;border-color:#9a8ac2">🟣 SERNAMEG 1455</a>
+          <a href="tel:131" class="btn" style="text-decoration:none;text-align:center;background:#2980b9;color:#fff;border-color:#3498db">🚑 SAMU 131</a>
+        </div>
+        <div class="help-grid" style="margin-top:10px">
+          <div class="help-card" style="padding:8px">
+            <h4 style="font-size:11px">📱 Otros números clave</h4>
+            <p style="font-size:11px;line-height:1.5"><b>*149 Fono Familia Carabineros</b> (24h, orientación VIF, deriva a Comisaría)<br><b>1455 SERNAMEG</b> (24h, violencia contra la mujer — WhatsApp <b>+569 9700 7000</b> silencioso)<br><b>133 Carabineros</b> / <b>134 PDI</b> urgencias<br><b>800 104 008</b> Salud Responde (orientación 24h)<br><b>600 360 7777</b> Salud Responde · <b>800 730 800</b> Maltrato infantil · <b>1455</b> también para violencia diversa</p>
+          </div>
+          <div class="help-card" style="padding:8px">
+            <h4 style="font-size:11px">🏠 Penco · Bío-Bío</h4>
+            <p style="font-size:11px;line-height:1.5"><b>Centro de la Mujer Concepción (SERNAMEG):</b> <a href="tel:+56412467700" style="color:var(--gold)">41 246 7700</a> · atiende Penco<br><b>Of. de la Mujer Penco (DIDECO):</b> <a href="tel:+56412261020" style="color:var(--gold)">41 226 1020</a> · O'Higgins 500<br><b>2ª Comisaría Penco:</b> <a href="tel:+56412143240" style="color:var(--gold)">41 214 3240</a> / 133<br><b>SAR/CESFAM Penco:</b> <a href="tel:+56412726350" style="color:var(--gold)">41 272 6350</a> (constatación lesiones)<br><b>Tribunal Familia Conce:</b> 41 274 4000</p>
+          </div>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">
+          <a href="tel:1455" class="btn" style="width:auto;font-size:11px">🟣 Llamar 1455</a>
+          <a href="tel:149" class="btn" style="width:auto;font-size:11px">📞 149 Fono Familia</a>
+          <a href="https://www.sernameg.gob.cl" target="_blank" rel="noopener" class="btn" style="width:auto;font-size:11px">🌐 SERNAMEG</a>
+          <button type="button" id="violenceQuickExitTop" class="btn" style="width:auto;background:#2a1a20;color:#ff9a9a;border-color:#ff6b6b">⚡ Salida rápida</button>
+        </div>
+        <p class="muted" style="font-size:10px;margin-top:6px">Si te controlan el celular, borra historial/usa incógnito. Chat silencioso SERNAMEG WhatsApp +56 9 9700 7000 no genera llamada.</p>
+      </div>
+
+      <div class="timer-tabs" style="margin:12px 0 10px;flex-wrap:wrap">
+        <button type="button" id="tabVD1" class="btn btn-accent" style="width:auto">📚 Tipos</button>
+        <button type="button" id="tabVD2" class="btn" style="width:auto">⚠️ Señales & Ciclo</button>
+        <button type="button" id="tabVD3" class="btn" style="width:auto">🛡️ Qué hacer</button>
+        <button type="button" id="tabVD4" class="btn" style="width:auto">🎒 Plan seguridad</button>
+        <button type="button" id="tabVD5" class="btn" style="width:auto">🏛️ Redes & Denuncia</button>
+        <button type="button" id="tabVD6" class="btn" style="width:auto">🤝 Ayudar a otra</button>
+      </div>
+
+      <div id="violencePanel"></div>
+
+      <div class="menstrual-card" style="margin-top:10px;background:var(--panel)">
+        <h4>🔒 Navegación segura & privacidad</h4>
+        <p class="muted" style="font-size:11px;line-height:1.5">Esta guía queda <b>local</b> y no envía datos. Para más seguridad: 1) usa <b>navegación incógnito</b>, 2) borra historial si te controlan, 3) no guardes fotos de lesiones en galería visible (usa carpeta oculta o correo seguro), 4) ten a mano <b>contacto de confianza</b> con código (ej: “¿Me prestas azúcar?” = ven a buscarme). Si esta app te pone en riesgo, desinstálala y accede vía web.</p>
+      </div>
+
+      <div class="dlg-actions" style="justify-content:space-between;align-items:center">
+        <button type="button" id="violenceQuickExit" class="btn" style="width:auto;background:#2a1a20;color:#ff9a9a;border-color:#ff6b6b">⚡ Salida rápida → Google</button>
+        <button type="button" id="violenceClose" class="btn">Cerrar</button>
+      </div>
+    </form>
+  </dialog>
+
   <dialog id="donateDialog">
     <form method="dialog">
       <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
@@ -1653,6 +1712,14 @@
           <h5>🍽️ Vida diaria</h5>
           <label class="check-row"><input type="checkbox" data-btn="btnMeal"> 🥗 Comidas</label>
           <label class="check-row"><input type="checkbox" data-btn="btnShopping"> 🛒 Compras</label>
+          <label class="check-row"><input type="checkbox" data-btn="btnFinance"> 💰 Finanzas</label>
+          <label class="check-row"><input type="checkbox" data-btn="btnHomeTasks"> 🏠 Tareas Hogar</label>
+        </div>
+        <div class="config-group">
+          <h5>🚨 Emergencias & Comunidad</h5>
+          <label class="check-row"><input type="checkbox" data-btn="btnFirstAid"> 🩹 Primeros Auxilios</label>
+          <label class="check-row"><input type="checkbox" data-btn="btnAnimalCare"> 🐾 Cuidado Animal</label>
+          <label class="check-row"><input type="checkbox" data-btn="btnViolence"> 🟣 Violencia Doméstica</label>
         </div>
         <div class="config-group">
           <h5>🛠️ Herramientas</h5>

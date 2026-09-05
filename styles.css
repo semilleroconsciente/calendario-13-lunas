@@ -315,8 +315,8 @@ body[data-theme="medianoche"] { --bg:#050508; --bg2:#0a0a10; --panel:#141418; --
 .chrono-laps { margin-top: 10px; max-height: 140px; overflow-y: auto; display: flex; flex-direction: column; gap: 4px; }
 .chrono-lap { background: var(--card); border: 1px solid var(--line); border-radius: 6px; padding: 6px 10px; font-size: 12px; color: var(--text); }
 
-#convertDialog, #timerDialog, #ekadashiDialog, #siembraDialog, #menstrualDialog, #medicDialog, #habitsDialog, #donateDialog, #helpDialog, #circadianDialog, #goldenDialog, #disciplineDialog, #dreamsDialog, #mealDialog, #shoppingDialog, #financeDialog, #energyDialog, #breathDialog, #scheduleDialog, #fishingDialog, #gymDialog, #birdsDialog, #astroDialog, #comunaDialog, #firstAidDialog, #animalCareDialog, #homeTasksDialog { width: 520px; max-width: 96vw; max-height: 88vh; overflow-y: auto; }
-#helpDialog, #disciplineDialog, #dreamsDialog, #breathDialog, #scheduleDialog, #fishingDialog, #birdsDialog, #astroDialog, #comunaDialog, #studyDialog, #firstAidDialog, #animalCareDialog, #homeTasksDialog { width: 680px; }
+#convertDialog, #timerDialog, #ekadashiDialog, #siembraDialog, #menstrualDialog, #medicDialog, #habitsDialog, #donateDialog, #helpDialog, #circadianDialog, #goldenDialog, #disciplineDialog, #dreamsDialog, #mealDialog, #shoppingDialog, #financeDialog, #energyDialog, #breathDialog, #scheduleDialog, #fishingDialog, #gymDialog, #birdsDialog, #astroDialog, #comunaDialog, #firstAidDialog, #animalCareDialog, #violenceDialog, #homeTasksDialog { width: 520px; max-width: 96vw; max-height: 88vh; overflow-y: auto; }
+#helpDialog, #disciplineDialog, #dreamsDialog, #breathDialog, #scheduleDialog, #fishingDialog, #birdsDialog, #astroDialog, #comunaDialog, #studyDialog, #firstAidDialog, #animalCareDialog, #violenceDialog, #homeTasksDialog { width: 680px; }
 .help-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .help-card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 12px; }
 .help-card h4 { color: var(--gold); margin-bottom: 6px; font-size: 13px; }
