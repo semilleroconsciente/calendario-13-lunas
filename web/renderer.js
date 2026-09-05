@@ -5013,7 +5013,12 @@ let mapuQuizQ = null;
 let mapuQuizLevel = 'todo';
 function getMapuData(){ try{ const u=userData(); if(!u.mapu) u.mapu={ok:0,total:0,streak:0,lastDay:''}; return u.mapu; }catch{ return {ok:0,total:0,streak:0,lastDay:''}; } }
 function mapuDayIndex(){ const n=new Date(); const s=n.getFullYear()*1000+(Math.floor((n-new Date(n.getFullYear(),0,0))/864e5)); return s % MAPU_WORDS.length; }
-function mapuSpeak(txt){ try{ if(!('speechSynthesis' in window)) return; speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(txt); u.lang='es-CL'; u.rate=0.85; speechSynthesis.speak(u); }catch{} }
+// AUDIO MAPUZUGUN: desactivado temporalmente (se subirán grabaciones nativas).
+// Para reactivar con audios propios: pon MAPU_AUDIO_ENABLED=true y define mapuPlayNative(id)
+// para reproducir tus archivos (ej: audio/mapu/mari_mari.mp3). speechSynthesis queda apagado.
+const MAPU_AUDIO_ENABLED = false;
+function mapuSpeak(txt){ return; /* 🔊 desactivado — grabación nativa en curso */ }
+function mapuPlayNative(id){ return; /* hook futuro: reproducir audio/mapu/<id>.mp3 */ }
 function mapuQuizPool(){
   if(mapuQuizLevel==='basico') return MAPU_WORDS;
   if(mapuQuizLevel==='intermedio') return MAPU_FRASES_M.concat(MAPU_VERBOS);
@@ -5042,7 +5047,7 @@ function renderMapuPanel(tab){
       <div style="font-size:15px;color:#e8eaf6"><b>${escapeHtml(w.e)}</b> <span class="chip" style="font-size:10px">${escapeHtml(w.t||'')}</span></div>
       <p class="muted" style="font-size:12px;margin-top:6px">“${escapeHtml(w.x)}”</p>
       <div style="display:flex;gap:6px;justify-content:center;margin-top:8px;flex-wrap:wrap">
-        <button type="button" id="mapuSpeakBtn" class="btn" style="width:auto">🔊 Escuchar</button>
+        <button type="button" id="mapuSpeakBtn" class="btn" style="width:auto" disabled title="Audio nativo en grabación">🔇 Audio próximamente</button>
         <button type="button" id="mapuNextBtn" class="btn" style="width:auto">🎲 Otra palabra</button>
       </div></div>
       <div class="help-grid" style="margin-top:10px">`+
@@ -5063,14 +5068,14 @@ function renderMapuPanel(tab){
       </div>`;
   } else if(mapuTab==='intermedio'){
     html+= `<div class="menstrual-card" style="border-color:#7fd8a0"><h4 style="color:#7fd8a0">💬 Nivel Intermedio — conversa de verdad</h4>
-      <p class="muted" style="font-size:11px;line-height:1.5">Ya sabes palabras sueltas. Ahora: <b>pronombres + verbos + 14 frases</b> para presentarte, ir a la feria y a la playa. Toca 🔊 en cada frase.</p></div>
+      <p class="muted" style="font-size:11px;line-height:1.5">Ya sabes palabras sueltas. Ahora: <b>pronombres + verbos + 14 frases</b> para presentarte, ir a la feria y a la playa. (🔇 Audio nativo en grabación.)</p></div>
       <div class="help-grid" style="margin-top:10px">
         <div class="help-card"><h4>👥 Pronombres (quién)</h4><p style="font-size:11px;line-height:1.7">`+
         MAPU_PRONOMBRES.map(([m,e])=>`<b>${escapeHtml(m)}</b> = ${escapeHtml(e)}`).join('<br>')+`</p><p class="muted" style="font-size:10px">Dual (dos personas) y plural (varios) existen — el mapuzugun es preciso con cuántos somos.</p></div>
         <div class="help-card"><h4>🏃 12 verbos base (raíz + -n = yo)</h4><p style="font-size:11px;line-height:1.7">`+
         MAPU_VERBOS.map(v=>`<button type="button" class="btn mapu-word" data-w="${escapeHtml(v.m)}" style="font-size:11px;width:100%;text-align:left;margin-bottom:4px"><b>${escapeHtml(v.m)}</b> — ${escapeHtml(v.e)}<br><span class="muted">“${escapeHtml(v.x)}”</span></button>`).join('')+`</p></div>
       </div>
-      <div class="menstrual-card" style="margin-top:10px;border-color:#7fd8a0"><h4 style="color:#7fd8a0">💬 14 frases para Penco — toca para escuchar</h4>
+      <div class="menstrual-card" style="margin-top:10px;border-color:#7fd8a0"><h4 style="color:#7fd8a0">💬 14 frases para Penco</h4>
       <div style="display:flex;flex-direction:column;gap:6px;margin-top:8px">`+
       MAPU_FRASES_M.map(f=>`<button type="button" class="btn mapu-word" data-w="${escapeHtml(f.m)}" style="width:100%;text-align:left;font-size:12px"><b>${escapeHtml(f.m)}</b><br><span style="color:#e8eaf6">${escapeHtml(f.e)}</span><br><span class="muted" style="font-size:11px">“${escapeHtml(f.x)}”</span></button>`).join('')+`</div></div>
       <div class="menstrual-card" style="margin-top:10px;background:var(--panel)"><h4>🎭 Mini-diálogo: en la feria de Penco</h4><p style="font-size:11px;line-height:1.7">— <b>Mari mari, lamngen, chumleymi?</b> (Hola, ¿cómo estás?)<br>— <b>Kümelekan, chaltu may. ¿Eymi kay?</b> (Bien, gracias. ¿Y tú?)<br>— <b>Kümelekan. Chem am ta küdawkeeymi?</b> (Bien. ¿En qué trabajas?)<br>— <b>Huerta meu küdawken. Wüle lafken mew amukeaiñ.</b> (Trabajo en huerta. Mañana iremos al mar.)<br>— <b>Feymew, peukayal!</b> (¡Entonces, nos vemos!)<br><span class="muted">Practícalo con alguien: uno hace cada fila.</span></p></div>`;
@@ -5081,7 +5086,7 @@ function renderMapuPanel(tab){
         <div class="help-card"><h4>⚙️ Conjugación presente (verbo kim- = saber)</h4><p style="font-size:11px;line-height:1.7"><b>kimn</b> = yo sé<br><b>kimnimi / kimnymi</b> = tú sabes<br><b>kimy</b> = él/ella sabe<br><b>kimiñ</b> = nosotros sabemos<br><b>kimymün</b> = ustedes saben<br><b>kimyngün</b> = ellos saben<br><span class="muted">Raíz + terminación. Prueba con amu-, müle-, ayü-.</span></p></div>
         <div class="help-card"><h4>🔮 Futuro + negación + pregunta</h4><p style="font-size:11px;line-height:1.7"><b>Futuro -a-:</b> amu- → <b>amuan</b> = iré · <b>amukeaiñ</b> = iremos<br><b>Negación la / no-:</b> <b>kimlan</b> = no sé · <b>kimkelay</b> = no sabe/no conoce<br><b>Pregunta -mi / -kam:</b> <b>chumleymi?</b> = ¿cómo estás? · <b>amuaimi?</b> = ¿irás?<br><b>Posesivo ñi:</b> <b>lafken ñi newen</b> = la fuerza del mar.</p></div>
       </div>
-      <div class="menstrual-card" style="margin-top:10px;border-color:#d8a0ff"><h4 style="color:#d8a0ff">🧠 8 frases rakizuam — toca para escuchar</h4>
+      <div class="menstrual-card" style="margin-top:10px;border-color:#d8a0ff"><h4 style="color:#d8a0ff">🧠 8 frases rakizuam</h4>
       <div style="display:flex;flex-direction:column;gap:6px;margin-top:8px">`+
       MAPU_FRASES_A.map(f=>`<button type="button" class="btn mapu-word" data-w="${escapeHtml(f.m)}" style="width:100%;text-align:left;font-size:12px"><b>${escapeHtml(f.m)}</b><br><span style="color:#e8eaf6">${escapeHtml(f.e)}</span><br><span class="muted" style="font-size:11px">“${escapeHtml(f.x)}”</span></button>`).join('')+`</div></div>
       <div class="help-grid" style="margin-top:10px">
@@ -5091,7 +5096,7 @@ function renderMapuPanel(tab){
       <div class="menstrual-card" style="margin-top:10px;background:var(--panel)"><h4>🔤 Grafemarios (por qué ves 3 escrituras)</h4><p class="muted" style="font-size:11px;line-height:1.6">El mapuzugun fue oral por siglos. Hoy hay 3 formas de escribirlo: <b>Azümchefe</b> (ü, ng — usado aquí, escolar), <b>Unificado</b> (ü, ng, tr — académico) y <b>Raguileo</b> (v, q, x — propio mapuche, sin letras españolas). Ej: <i>tierra = mapu (los tres)</i> · <i>saber = kimün / kimvn / kimvn</i>. Si ves otra escritura, no está mal: es otro grafemario.</p></div>`;
   } else if(mapuTab==='lunas'){
     try{
-      html+= `<div class="menstrual-card" style="border-color:#a9d18e"><h4 style="color:#a9d18e">🌙 Las 13 lunas en kimün — toca para escuchar</h4>
+      html+= `<div class="menstrual-card" style="border-color:#a9d18e"><h4 style="color:#a9d18e">🌙 Las 13 lunas en kimün</h4>
       <div style="display:flex;flex-direction:column;gap:6px;margin-top:8px">`+
       MOONS.map(m=>`<button type="button" class="btn mapu-word" data-w="${escapeHtml(m.nombre)}" style="width:100%;text-align:left;font-size:12px"><b>Luna ${m.n}</b> · ${escapeHtml(m.nombre)}<br><span class="muted" style="font-size:11px">${escapeHtml(m.traduccion)}</span></button>`).join('')+`</div></div>`;
     }catch{ html+='<p class="muted">No se pudo cargar lunas.</p>'; }
@@ -5115,10 +5120,10 @@ function renderMapuPanel(tab){
       <div id="mapuQuizFb" style="margin-top:8px;font-size:13px;min-height:20px"></div>
       <p class="muted" style="font-size:11px;margin-top:6px">Aciertos ${d.ok}/${d.total} · racha ${d.streak} · nivel quiz: <b>${escapeHtml(mapuQuizLevel)}</b> · pool: ${mapuQuizPool().length} palabras/frases</p></div>`;
   }
-  box.innerHTML = html;
-  const sp=$('mapuSpeakBtn'); if(sp) sp.onclick=()=> mapuSpeak(MAPU_WORDS[mapuDayIndex()].m);
-  const nx=$('mapuNextBtn'); if(nx) nx.onclick=()=>{ const w=MAPU_WORDS[Math.floor(Math.random()*MAPU_WORDS.length)]; mapuSpeak(w.m); renderMapuPanel('palabra'); };
-  box.querySelectorAll('.mapu-word').forEach(b=> b.onclick=()=> mapuSpeak(b.dataset.w));
+  box.innerHTML = html + `<p class="muted" style="font-size:10px;margin-top:8px">🔇 Audio desactivado temporalmente — estamos grabando audio nativo. El quiz y el vocabulario funcionan sin sonido.</p>`;
+  const sp=$('mapuSpeakBtn'); if(sp) sp.onclick=(e)=>{ try{ e.preventDefault(); }catch{} };
+  const nx=$('mapuNextBtn'); if(nx) nx.onclick=()=>{ renderMapuPanel('palabra'); };
+  /* audio desactivado: las tarjetas .mapu-word ya no hablan al tocar */
   box.querySelectorAll('.mapu-lv').forEach(b=> b.onclick=()=>{ mapuQuizLevel=b.dataset.lv; mapuQuizQ=null; renderMapuPanel('quiz'); });
   box.querySelectorAll('.mapu-opt').forEach(b=> b.onclick=()=>{
     const d2=getMapuData(); const ok = b.dataset.o===mapuQuizQ.w.e;
