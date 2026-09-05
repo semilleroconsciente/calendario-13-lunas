@@ -7,6 +7,43 @@ let saveTimer = null;
 
 const $ = id => document.getElementById(id);
 
+// === SONIDO DE NOTIFICACIÓN ===
+let _notifyAudio = null;
+function getNotifyAudio(){
+  if(_notifyAudio) return _notifyAudio;
+  try{
+    _notifyAudio = new Audio('assets/notify.mp3');
+    _notifyAudio.preload='auto';
+    _notifyAudio.volume=0.9;
+  }catch(e){ _notifyAudio=null; }
+  return _notifyAudio;
+}
+function playNotifySound(){
+  try{
+    const a=getNotifyAudio();
+    if(!a) return;
+    a.currentTime=0;
+    const p=a.play();
+    if(p && p.catch) p.catch(()=>{});
+  }catch(e){}
+  try{ if(navigator.vibrate) navigator.vibrate([400,200,400]); }catch(e){}
+}
+// desbloquear audio en primer gesto (autoplay policy móvil)
+try{
+  const unlock=()=>{
+    const a=getNotifyAudio();
+    if(a){
+      a.muted=true;
+      const p=a.play();
+      if(p && p.then) p.then(()=>{ a.pause(); a.currentTime=0; a.muted=false; }).catch(()=>{ a.muted=false; });
+    }
+    document.removeEventListener('click', unlock);
+    document.removeEventListener('touchstart', unlock);
+  };
+  document.addEventListener('click', unlock, {once:true});
+  document.addEventListener('touchstart', unlock, {once:true});
+}catch(e){}
+
 // === TEMAS DE COLORES ===
 const THEMES = {
   auto: { label: 'Auto — según luna' },
@@ -487,7 +524,7 @@ function agendaCheckNotify() {
           cell.agenda.forEach(it=>{
             if(!it.notify || it.notified) return;
             if(it.hour===nowHour && nowMin===0){
-              try{ new Notification(`⏰ ${String(it.hour).padStart(2,'0')}:00 — ${it.text}`, { body: `Luna ${mk} · Día ${dk} — ${it.text}`}); if(navigator.vibrate) navigator.vibrate([200,100,200]); }catch{}
+              try{ playNotifySound(); new Notification(`⏰ ${String(it.hour).padStart(2,'0')}:00 — ${it.text}`, { body: `Luna ${mk} · Día ${dk} — ${it.text}`, silent:false}); }catch{}
               it.notified=true;
             } else if(it.hour < nowHour) {
               // si ya pasó y no se notificó, marcar para no repetir hoy
@@ -2098,8 +2135,10 @@ function checkReminders() {
   if (!targets.length || last === todayKey) return;
   for (const t of targets) {
     try {
+      playNotifySound();
       new Notification(`🌕 ${t.e.tipo.replace('-', ' ')} ${t.when}`, {
-        body: `${t.e.simbolo} ${t.e.tipo.replace('-', ' ')} — ${cal.fmtTime.format(new Date(t.e.utcMs))} (hora de Chile)`
+        body: `${t.e.simbolo} ${t.e.tipo.replace('-', ' ')} — ${cal.fmtTime.format(new Date(t.e.utcMs))} (hora de Chile)`,
+        silent:false
       });
     } catch {}
   }
@@ -2255,7 +2294,7 @@ function mensCheckNotify() {
   if (tomorrowKey===nextKey) {
     const lastNot = localStorage.getItem('mens-lastNotify');
     if (lastNot===todayKey) return;
-    try{ new Notification('🌸 Ciclo — mañana periodo', { body: `Predicción: mañana ${cal.fmtFull.format(new Date(pred.nextPeriodMs))} · ${mensLunaForKey(nextKey)? 'Luna '+mensLunaForKey(nextKey).luna:''}`}); localStorage.setItem('mens-lastNotify', todayKey);}catch{}
+    try{ playNotifySound(); new Notification('🌸 Ciclo — mañana periodo', { body: `Predicción: mañana ${cal.fmtFull.format(new Date(pred.nextPeriodMs))} · ${mensLunaForKey(nextKey)? 'Luna '+mensLunaForKey(nextKey).luna:''}`, silent:false}); localStorage.setItem('mens-lastNotify', todayKey);}catch{}
   }
 }
 function setupMensDialogEvents() {
@@ -2479,7 +2518,7 @@ function medicCheckNotify(){
   if(farma.notify) farma.list.forEach(med=> medicNextDoses(med, now-60000, 2).forEach(t=> all.push({t,med, tipo:'💊'})));
   else if(nat.list.length) { /* si solo natural, igual notifica si farma notify está on */ }
   nat.list.forEach(med=> medicNextDoses(med, now-60000, 2).forEach(t=> all.push({t,med, tipo:'🌿'})));
-  all.forEach(o=>{ const diff=o.t-now; if(diff>=-60000 && diff<=60000){ const key='medic-last-'+o.med.id+'-'+o.t; if(localStorage.getItem(key)) return; try{ new Notification((o.tipo==='🌿'?'🌿 Natural':'💊 Medicamento'), {body:`${o.med.name} — ${o.med.dose||o.med.notes||''} · ${cal.fmtTime.format(new Date(o.t))}`}); localStorage.setItem(key,'1'); if(navigator.vibrate) navigator.vibrate([200,100,200]); }catch{} } });
+  all.forEach(o=>{ const diff=o.t-now; if(diff>=-60000 && diff<=60000){ const key='medic-last-'+o.med.id+'-'+o.t; if(localStorage.getItem(key)) return; try{ playNotifySound(); new Notification((o.tipo==='🌿'?'🌿 Natural':'💊 Medicamento'), {body:`${o.med.name} — ${o.med.dose||o.med.notes||''} · ${cal.fmtTime.format(new Date(o.t))}`, silent:false}); localStorage.setItem(key,'1'); }catch{} } });
 }
 function setupMedicDialog(){
   const btn=$('btnMedic'); if(btn) btn.onclick=()=>{
@@ -6354,7 +6393,7 @@ function setupTimerDialog() {
   let countInt=null, countRem=0, countRunning=false;
   function countFmt(s) { const h=Math.floor(s/3600), m=Math.floor(s%3600/60), sec=s%60; return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`; }
   function countShow() { const el=$('countDisplay'); if(el) el.textContent = countFmt(countRem); }
-  function countTick() { if(countRem<=0){ clearInterval(countInt); countRunning=false; $('countStart').textContent='▶ Iniciar'; countShow(); try{ new Audio('data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQQAAAAAAA==').play().catch(()=>{});}catch{}; try{ navigator.vibrate&&navigator.vibrate([400,200,400]); }catch{}; try{ new Notification('⏱ Temporizador', {body:'¡Tiempo cumplido!'});}catch{}; return; } countRem--; countShow(); }
+  function countTick() { if(countRem<=0){ clearInterval(countInt); countRunning=false; $('countStart').textContent='▶ Iniciar'; countShow(); try{ playNotifySound(); }catch{}; try{ new Notification('⏱ Temporizador', {body:'¡Tiempo cumplido!', silent:false});}catch{}; return; } countRem--; countShow(); }
   $('countStart').onclick = () => {
     if (!countRunning) {
       if (countRem<=0) { const h=+$('countH').value||0, m=+$('countM').value||0, s=+$('countS').value||0; countRem = h*3600+m*60+s; if(countRem<=0) return; }

@@ -27,7 +27,8 @@
       "data.js",
       "frases.js",
       "donate.json",
-      "icon.ico"
+      "icon.ico",
+      "assets/**/*"
     ],
     "win": {
       "target": ["portable"],
