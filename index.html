@@ -84,12 +84,15 @@
           <button id="btnFishing" class="btn" data-keywords="pesca peces artesanal lirquen golfo arauco">🎣 Pesca</button>
           <button id="btnBirds" class="btn" data-keywords="aves pajaro observacion humedal rocuant">🦅 Aves</button>
           <button id="btnWeather" class="btn" data-keywords="clima tiempo viento lluvia temperatura">🌤️ Clima</button>
-          <button id="btnSiembra" class="btn" data-keywords="siembra cosecha huerta semilla luna">🌱 Siembra lunar</button>
+          <button id="btnSiembra" class="btn" data-keywords="siembra cosecha huerta semilla semillas inventario recuento stock luna">🌱 Siembra lunar</button>
           <button id="btnAstro" class="btn" data-keywords="astro astronomia eclipse meteoros superluna">🔭 Astro</button>
           <button id="btnComuna" class="btn" data-keywords="penco comuna fiesta evento aniversario">🎉 Penco</button>
           <button id="btnEkadashi" class="btn" data-keywords="ekadashi ayuno lunar tithi">📿 Ekadashi</button>
           <button id="btnGolden" class="btn" data-keywords="hora dorada fotografia sol salida puesta">📸 Hora Dorada</button>
           <button id="btnCircadian" class="btn" data-keywords="circadiano sueño melatonina cortisol ciclo">🌞 Circadiano</button>
+          <button id="btnCompost" class="btn" data-keywords="compost suelo humus vermicompostera bocashi tierra ph arcilla abono menguante">🪱 Compost & Suelo</button>
+          <button id="btnRecicla" class="btn" data-keywords="reciclaje punto limpio feria basura residuo plastico vidrio papel miercoles sabado lirquen">♻️ Reciclaje & Ferias</button>
+          <button id="btnAire" class="btn" data-keywords="aire calidad contaminacion mp25 leña humo alerta preemergencia sinca mma ventilacion">🌬️ Aire Penco</button>
         </div>
       </details>
       <details class="action-group" open data-group="cuerpo">
@@ -100,6 +103,7 @@
           <button id="btnGym" class="btn" data-keywords="entrenamientos gym gimnasio terapia fisica fisioterapia calistenia practicas varias rutina ejercicio movilidad kine">💪 Entrenamientos</button>
           <button id="btnBreath" class="btn" data-keywords="respiracion 478 caja cuadrada ansiedad">🌬️ Respiración</button>
           <button id="btnDreams" class="btn" data-keywords="sueños diario onirico rem dormir">💭 Sueños</button>
+          <button id="btnLawen" class="btn" data-keywords="lawen herbario hierba matico boldo maqui canelo bailahuen manzanilla medicina natural remedio planta">🌿 Lawen Herbario</button>
         </div>
       </details>
       <details class="action-group" open data-group="mente">
@@ -111,6 +115,8 @@
           <button id="btnSchedule" class="btn" data-keywords="horario clases estudio semana">📚 Horario</button>
           <button id="btnTales" class="btn" data-keywords="cuentos infantil niños luna historia">📖 Cuentos</button>
           <button id="btnMemory" class="btn" data-keywords="memoria pares loci atencion">🧩 Memoria</button>
+          <button id="btnMapu" class="btn" data-keywords="mapuzugun mapuche kimun kimün palabra idioma numero saludo quiz luna">🗣️ Kimün Mapuzugun</button>
+          <button id="btnGratitud" class="btn" data-keywords="gratitud diario gracias wenu bienestar animo positivo racha">📓 Gratitud Diaria</button>
         </div>
       </details>
       <details class="action-group" open data-group="vida">
@@ -128,6 +134,7 @@
           <button id="btnFirstAid" class="btn" data-keywords="primeros auxilios emergencia salud rcp hemorragia quemadura fractura atragantamiento heimlich botiquin samu bomberos carabineros">🩹 Primeros Auxilios</button>
           <button id="btnAnimalCare" class="btn" data-keywords="cuidado animal veterinaria mascota perro gato tenencia responsable esterilizacion vacuna antirrabica comuna animal perdido maltrato">🐾 Cuidado Animal</button>
           <button id="btnViolence" class="btn" data-keywords="violencia domestica intrafamiliar vif violencia genero mujer pareja fisica psicologica sexual economica vicaria digital denuncia 149 1455 sernameg carabineros">🟣 Violencia Doméstica</button>
+          <button id="btnEvac" class="btn" data-keywords="evacuacion tsunami sismo terremoto cerro mochila plan familiar senapred shoa armada cota inundacion punto encuentro">🌊🚨 Evacuación Tsunami</button>
         </div>
       </details>
       <details class="action-group" data-group="herramientas">
@@ -142,6 +149,7 @@
           <button id="btnShortcut" class="btn" data-keywords="acceso directo escritorio pwa instalar">📌 Acceso directo</button>
           <button id="btnPdfLuna" class="btn" data-keywords="pdf luna imprimir exportar">📄 PDF luna</button>
           <button id="btnPdfCiclo" class="btn" data-keywords="pdf ciclo completo imprimir">📚 PDF ciclo</button>
+          <button id="btnLena" class="btn" data-keywords="leña pellet calefaccion estufa bosca invierno kwh humedad eucalipto pino calculadora termica">🪵 Leña & Pellet</button>
           <button id="btnDonate" class="btn btn-accent" style="width:auto" data-keywords="aporte donar mercadopago paypal">❤ Aporte voluntario</button>
         </div>
       </details>
@@ -200,18 +208,20 @@
         <h3 style="margin:0">🌱 Siembra &amp; Cosecha — Penco</h3>
         <button type="button" id="siembraCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
       </div>
-        <p class="muted">Guía por lunas: <b>luna actual + 2 siguientes</b> con siembra, cosecha y plagas. <span style="color:var(--gold)">Nuevo: 🤝 Asociaciones · 🧪 Preparados</span></p>
+        <p class="muted">Guía por lunas: <b>luna actual + 2 siguientes</b> con siembra, cosecha y plagas. <span style="color:var(--gold)">Nuevo: 🤝 Asociaciones · 🧪 Preparados · 🌰 Mis Semillas</span></p>
          <div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">
-           <button type="button" id="tabSiembra" class="btn btn-accent" style="width:auto">🌱 Siembra</button>
-           <button type="button" id="tabCosecha" class="btn" style="width:auto">🌾 Cosecha &amp; Plagas</button>
-           <button type="button" id="tabAsociaciones" class="btn" style="width:auto">🤝 Asociaciones</button>
-           <button type="button" id="tabPreparados" class="btn" style="width:auto">🧪 Preparados</button>
-         </div>
-         <div id="siembraTresBox" class="hidden" style="display:none"></div>
-        <div id="siembraContent"></div>
-        <div id="siembraHarvestBox"></div>
-        <div id="siembraAsociacionesBox" class="hidden"></div>
-        <div id="siembraPreparadosBox" class="hidden"></div>
+            <button type="button" id="tabSiembra" class="btn btn-accent" style="width:auto">🌱 Siembra</button>
+            <button type="button" id="tabCosecha" class="btn" style="width:auto">🌾 Cosecha &amp; Plagas</button>
+            <button type="button" id="tabAsociaciones" class="btn" style="width:auto">🤝 Asociaciones</button>
+            <button type="button" id="tabPreparados" class="btn" style="width:auto">🧪 Preparados</button>
+            <button type="button" id="tabSemillas" class="btn" style="width:auto">🌰 Mis Semillas</button>
+          </div>
+          <div id="siembraTresBox" class="hidden" style="display:none"></div>
+         <div id="siembraContent"></div>
+         <div id="siembraHarvestBox"></div>
+         <div id="siembraAsociacionesBox" class="hidden"></div>
+         <div id="siembraPreparadosBox" class="hidden"></div>
+         <div id="siembraSemillasBox" class="hidden"></div>
       <div class="dlg-actions"><button type="button" id="siembraClose" class="btn">Cerrar</button></div>
     </form>
   </dialog>
@@ -1327,6 +1337,185 @@
     </form>
   </dialog>
 
+  <dialog id="evacDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">🌊🚨 Evacuación Tsunami — Penco</h3>
+        <button type="button" id="evacCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
+      </div>
+      <p class="muted" style="line-height:1.5"><b>Penco es borde costero bajo.</b> Si el sismo te bota o no te puedes mantener en pie, no esperes alerta: evacúa a pie a cota alta. Guía <b>orientativa y offline</b> — verifica tu ruta real en carta SHOA y web municipal munipenco.cl.</p>
+
+      <div id="evacEmergencyCard" class="menstrual-card" style="border-color:#ff6b6b;background:linear-gradient(135deg,#2a1a20,var(--card))">
+        <h4 style="color:#ff6b6b">🚨 Alertas y números — tsunami / sismo</h4>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">
+          <a href="tel:137" class="btn" style="text-decoration:none;text-align:center;background:#c0392b;color:#fff;border-color:#e74c3c">⚓ Armada 137</a>
+          <a href="tel:132" class="btn" style="text-decoration:none;text-align:center;background:#e67e22;color:#fff;border-color:#f39c12">🚒 Bomberos 132</a>
+          <a href="tel:133" class="btn" style="text-decoration:none;text-align:center;background:#2980b9;color:#fff;border-color:#3498db">🚓 Carabineros 133</a>
+          <a href="tel:131" class="btn" style="text-decoration:none;text-align:center;background:#7f8c8d;color:#fff;border-color:#95a5a6">🚑 SAMU 131</a>
+        </div>
+        <p class="muted" style="font-size:11px;line-height:1.5;margin-top:8px"><b>Regla de oro:</b> sismo largo (&gt;1 min) o que impide caminar en costa = tsunami posible. Evacúa <b>a pie, sin auto</b>, a <b>+30 msnm o 1 km tierra adentro</b>. Sigue sirena/alerta SAE y radio. No vuelvas por cosas. No vayas a la playa a mirar.</p>
+      </div>
+
+      <div class="timer-tabs" style="margin:12px 0 10px;flex-wrap:wrap">
+        <button type="button" id="tabEV1" class="btn btn-accent" style="width:auto">🗺️ Rutas Penco</button>
+        <button type="button" id="tabEV2" class="btn" style="width:auto">🎒 Mochila 72h</button>
+        <button type="button" id="tabEV3" class="btn" style="width:auto">👨‍👩‍👧 Plan Familiar</button>
+        <button type="button" id="tabEV4" class="btn" style="width:auto">🏚️ Sismo</button>
+      </div>
+
+      <div id="evacPanel"></div>
+
+      <div class="menstrual-card" style="margin-top:10px;background:var(--panel)">
+        <h4>📍 Verifica tu cota y punto de encuentro</h4>
+        <p class="muted" style="font-size:11px;line-height:1.5">1) Busca tu calle en la <b>carta de inundación SHOA</b> (shoa.cl → tsunami → cartas). 2) Camina tu ruta de día y de noche, cronometra. 3) Fija <b>2 puntos de encuentro</b>: uno en cerro y uno fuera de Penco. 4) Repasa cada <b>Luna 4</b> con tu familia. Si arriendas o recibes visitas, pega la ruta en el refrigerador.</p>
+      </div>
+
+      <div class="dlg-actions"><button type="button" id="evacClose" class="btn">Cerrar</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="mapuDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">🗣️ Kimün Mapuzugun — básico Penco</h3>
+        <button type="button" id="mapuCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
+      </div>
+      <p class="muted" style="line-height:1.5">Vocabulario <b>básico y offline</b> para honrar la lengua del territorio. Sin audio nativo: usa 🔊 para escuchar aproximación y verifica con kimeltuchefe / escuela. Toca palabras para practicar.</p>
+      <div id="mapuStreakBox" class="menstrual-card" style="border-color:var(--gold)"></div>
+      <div class="timer-tabs" style="margin:12px 0 10px;flex-wrap:wrap">
+        <button type="button" id="tabMP1" class="btn btn-accent" style="width:auto">☀️ Palabra del día</button>
+        <button type="button" id="tabMP2" class="btn" style="width:auto">🔢 Números & Saludos</button>
+        <button type="button" id="tabMP3" class="btn" style="width:auto">🌙 Lunas Kimün</button>
+        <button type="button" id="tabMP4" class="btn" style="width:auto">🧩 Quiz</button>
+      </div>
+      <div id="mapuPanel"></div>
+      <div class="dlg-actions"><button type="button" id="mapuClose" class="btn">Cerrar</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="lawenDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">🌿 Lawen — Herbario Bío-Bío</h3>
+        <button type="button" id="lawenCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
+      </div>
+      <p class="muted" style="line-height:1.5">Fichas base de Penco · Bío-Bío <b>más tus propias plantas</b>. <b>Información educativa, no receta médica.</b> Si estás embarazada, das lactancia, tomas medicamentos crónicos o es para niños, consulta CESFAM/matrona. Parte con dosis baja y 1 planta a la vez.</p>
+      <div class="conv-row" style="align-items:center">
+        <label style="flex:2">🔍 Buscar <input type="text" id="lawenSearch" placeholder="ej: matico, tos, herida, luna llena"></label>
+        <label>Luna <select id="lawenMoonFilter"><option value="">Todas</option><option value="Nueva">🌑 Nueva</option><option value="Creciente">🌗 Creciente</option><option value="Llena">🌕 Llena</option><option value="Menguante">🌓 Menguante</option></select></label>
+      </div>
+      <details id="lawenAddBox" style="margin-top:8px;border:1px dashed var(--gold);border-radius:10px;padding:8px 10px">
+        <summary style="cursor:pointer;font-size:12px;color:var(--gold)"><b>➕ Agregar mi lawen (si no está en la lista)</b></summary>
+        <div class="conv-row" style="margin-top:8px">
+          <label style="flex:2">Nombre * <input type="text" id="lawenName" placeholder="ej: Palo negro, Hierba del paño" maxlength="40"></label>
+          <label>Luna <select id="lawenLuna"><option value="Cualquiera">Cualquiera</option><option value="Nueva">🌑 Nueva</option><option value="Creciente">🌗 Creciente</option><option value="Llena">🌕 Llena</option><option value="Menguante">🌓 Menguante</option></select></label>
+        </div>
+        <label>¿Para qué sirve? * <input type="text" id="lawenUso" placeholder="ej: Tos seca, dolor de guata" maxlength="80"></label>
+        <label>Preparación <input type="text" id="lawenPrep" placeholder="ej: 1 cdta / taza, 5 min" maxlength="80"></label>
+        <label>Recolecta <input type="text" id="lawenRec" placeholder="ej: Pewü, mañana seca" maxlength="60"></label>
+        <label>⚠️ Advertencia <input type="text" id="lawenCui" placeholder="ej: No en embarazo" maxlength="80"></label>
+        <div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="lawenAdd" class="btn btn-accent" style="width:auto">+ Guardar mi lawen</button></div>
+      </details>
+      <div id="lawenList" style="margin-top:10px"></div>
+      <div class="menstrual-card" style="margin-top:10px;background:var(--panel)">
+        <h4>⚠️ Reglas lawen seguro</h4>
+        <p class="muted" style="font-size:11px;line-height:1.5">1) Identifica 100% la planta (foto + olor + lugar). 2) No recolectes junto a camino/microbasural ni en humedal protegido. 3) Máx 1-2 tazas/día, 7 días, descansa. 4) Suspende si hay alergia, palpitaciones o malestar. 5) Boldo, ruda y paico tienen límites estrictos — lee su ficha.</p>
+      </div>
+      <div class="dlg-actions"><button type="button" id="lawenClose" class="btn">Cerrar</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="compostDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">🪱 Compost & Suelo — arcilla de Penco</h3>
+        <button type="button" id="compostCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
+      </div>
+      <p class="muted" style="line-height:1.5">Suelo arcilloso + lluvia Pukem = se aprieta. El compost lo esponja. <b>Cierra el ciclo:</b> 🌱 Siembra → 🍂 restos → 🪱 compost → 🌱 tierra nueva. Todo local y offline, ligado a la <b>luna menguante</b> para voltear.</p>
+      <div id="compostStatusBox" class="menstrual-card" style="border-color:var(--gold)"></div>
+      <div class="timer-tabs" style="margin:12px 0 10px;flex-wrap:wrap">
+        <button type="button" id="tabCP1" class="btn btn-accent" style="width:auto">🪱 Mi pila</button>
+        <button type="button" id="tabCP2" class="btn" style="width:auto">🧪 Suelo Penco</button>
+        <button type="button" id="tabCP3" class="btn" style="width:auto">📅 Calendario lunar</button>
+      </div>
+      <div id="compostPanel"></div>
+      <div class="dlg-actions"><button type="button" id="compostClose" class="btn">Cerrar</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="reciclaDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">♻️ Reciclaje & Ferias — Penco</h3>
+        <button type="button" id="reciclaCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
+      </div>
+      <p class="muted" style="line-height:1.5">Guía <b>offline y orientativa</b>: verifica horarios en munipenco.cl porque cambian. Ferias: <b>Penco centro mié/sáb mañana · Lirquén sáb</b>. Punto Limpio y recolección abajo.</p>
+      <div class="conv-row" style="align-items:center">
+        <label style="flex:2">🔍 ¿Dónde va? <input type="text" id="reciclaSearch" placeholder="ej: botella, pila, aceite, ropa"></label>
+        <label>Filtrar <select id="reciclaFilter"><option value="">Todo</option><option value="Punto limpio">Punto limpio</option><option value="Feria">Feria / Reutiliza</option><option value="Compost">Compost</option><option value="Basura">Basura / Aseo</option><option value="Peligroso">Peligroso</option></select></label>
+      </div>
+      <div id="reciclaList" style="margin-top:10px"></div>
+      <div class="help-grid" style="margin-top:10px">
+        <div class="help-card"><h4>🗓️ Recolección Penco</h4><p style="font-size:11px;line-height:1.5">Domiciliaria 2-3x/semana según sector (consulta tu calle en Aseo y Ornato 41 226 1033). Saca la noche anterior, no con viento sur fuerte. Voluminosos: operativos municipales por junta de vecinos.</p></div>
+        <div class="help-card"><h4>🥬 Ferias libres</h4><p style="font-size:11px;line-height:1.5"><b>Penco centro:</b> mié y sáb 8:30-14:00 · <b>Lirquén:</b> sáb mañana. Lleva bolsa reutilizable, compra temporada (ver 🌱 Siembra) y conversa trueque (ver 🌱 Banco Semillas).</p></div>
+      </div>
+      <div class="dlg-actions"><button type="button" id="reciclaClose" class="btn">Cerrar</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="aireDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">🌬️ Aire Penco — humo y ventilación</h3>
+        <button type="button" id="aireCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
+      </div>
+      <p class="muted" style="line-height:1.5">Penco + Concepción sufren <b>humo de leña en Pukem</b> e industria. Dato en vivo (requiere internet, Open-Meteo) + guía offline. No reemplaza alerta SEREMI/MMA.</p>
+      <div id="aireLiveBox" class="menstrual-card" style="border-color:var(--gold)"><i>Cargando aire…</i></div>
+      <div id="aireTipsBox" style="margin-top:10px"></div>
+      <div class="dlg-actions"><button type="button" id="aireClose" class="btn">Cerrar</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="gratitudDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">📓 Gratitud Diaria — Wenu</h3>
+        <button type="button" id="gratitudCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
+      </div>
+      <p class="muted" style="line-height:1.5">3 líneas al día, 2 minutos. <b>Privado y local.</b> La racha cuenta días seguidos. Se refleja en el calendario con ✨.</p>
+      <div id="gratitudStreakBox" class="menstrual-card" style="border-color:var(--gold)"></div>
+      <div class="conv-row" style="margin-top:8px"><label>Fecha <input type="date" id="gratDate"></label><button type="button" id="gratToday" class="btn" style="width:auto;align-self:flex-end">Hoy</button></div>
+      <label>1 · Agradezco <input type="text" id="grat1" placeholder="ej: el sol tras la lluvia" maxlength="120"></label>
+      <label>2 · Agradezco <input type="text" id="grat2" placeholder="ej: la sopa de mi mamá" maxlength="120"></label>
+      <label>3 · Agradezco <input type="text" id="grat3" placeholder="ej: caminar a la playa" maxlength="120"></label>
+      <div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="gratSave" class="btn btn-accent" style="width:auto">💾 Guardar día</button></div>
+      <div id="gratHistory" class="habits-list" style="margin-top:10px;max-height:200px"></div>
+      <div class="dlg-actions"><button type="button" id="gratitudClose" class="btn">Cerrar</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="lenaDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">🪵 Leña & Pellet — calculadora Penco</h3>
+        <button type="button" id="lenaCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
+      </div>
+      <p class="muted" style="line-height:1.5">Invierno Pukem: la leña húmeda contamina y rinde la mitad. Calcula <b>$ por kWh</b> para elegir. Estimación educativa.</p>
+      <div class="conv-row">
+        <label>Combustible <select id="lenaTipo"><option value="eucalipto">Eucalipto (seco)</option><option value="pino">Pino / Aromo</option><option value="humeda">Leña húmeda &gt;30%</option><option value="pellet">Pellet (bolsa 15kg)</option><option value="parafina">Parafina / Kerosene</option></select></label>
+        <label>Cantidad <input type="number" id="lenaCant" min="0" step="0.5" placeholder="ej: 100"></label>
+        <label>Unidad <select id="lenaUnidad"><option value="kg">kg</option><option value="m3">m³ estéreo</option><option value="bolsa">bolsas 15kg</option><option value="litro">litros</option></select></label>
+      </div>
+      <div class="conv-row">
+        <label style="flex:1">Precio total pagado $ <input type="number" id="lenaPrecio" min="0" step="500" placeholder="ej: 45000"></label>
+        <button type="button" id="lenaCalc" class="btn btn-accent" style="width:auto;align-self:flex-end">🧮 Calcular</button>
+      </div>
+      <div id="lenaResult" class="menstrual-card" style="margin-top:10px"></div>
+      <div class="menstrual-card" style="margin-top:10px;background:var(--panel)"><h4>🔥 Tips Penco</h4><p class="muted" style="font-size:11px;line-height:1.5">Leña seca (&lt;25% humedad, 2 grietas en punta, suena hueco) rinde casi el doble y hace menos humo (ver 🌬️ Aire). Guarda bajo techo con ventilación, no directo al suelo. Limpia cañón mensual en invierno. Nunca quemes pintado/MDF ni basura.</p></div>
+      <div class="dlg-actions"><button type="button" id="lenaClose" class="btn">Cerrar</button></div>
+    </form>
+  </dialog>
+
   <dialog id="donateDialog">
     <form method="dialog">
       <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
@@ -1396,15 +1585,15 @@
         <div class="help-card" style="border-color:var(--gold);background:linear-gradient(135deg,var(--panel),var(--card))">
           <h4>📖 Cómo está organizado</h4>
           <p><b>13 × 28 + 1:</b> Luna 1 We Tripantü Küyen (21 jun – 18 jul) hasta Luna 13 Mawün Kürüf (23 may – 19 jun) y luego <b>Día Fuera del Tiempo 20 jun</b> — día de cierre, memoria y baño al mar. Cada luna = 28 tarjetas (4 semanas × 7).</p>
-          <p><b>Tarjeta del día:</b> fecha gregoriana, sol (salida/puesta Penco), fases lunares exactas ({{simbolo}}), efeméride, ánimo, puntitos de hábitos/gym/aves/pesca/finanzas/🎉 y resumen de notas/compromisos. Clic para entrar.</p>
-          <p><b>Grupos:</b> 🌊 Territorio · 🌸 Cuerpo & Salud · 🧠 Mente & Estudio · 🍽️ Vida diaria · 🛠️ Herramientas — filtrables con <b>🔍 Buscar función (Ctrl+K)</b> y personalizables por perfil (⚙️ Personalizar).</p>
+          <p><b>Tarjeta del día:</b> fecha gregoriana, sol (salida/puesta Penco), fases lunares exactas ({{simbolo}}), efeméride, ánimo, puntitos de hábitos/gym/aves/pesca/finanzas/🏠/✨/🎉 y resumen de notas/compromisos. Clic para entrar.</p>
+          <p><b>Grupos:</b> 🌊 Territorio · 🌸 Cuerpo & Salud · 🧠 Mente & Estudio · 🍽️ Vida diaria · 🚨 Emergencias & Comunidad · 🛠️ Herramientas — filtrables con <b>🔍 Buscar función (Ctrl+K)</b> y personalizables por perfil (⚙️ Personalizar).</p>
         </div>
       </div>
              <div class="help-grid">
           <div class="help-card">
             <h4>🌙 Navegación</h4>
             <p><b>Lateral:</b> Usuario (+/🗑), Ciclo 13 lunas, selector 🎨 Tema (Auto/Noche/Claro/Bosque/Océano/Atardecer/Medianoche), <b>◉ Ir a hoy</b> y fila <b>⚙️ Personalizar · 🔗 Compartir · ❓ Guía</b> (los tres arriba). <b>🔗 Compartir</b> copia https://calendario-13-lunas.pages.dev/</p>
-            <p><b>Arriba:</b> título, rango fechas, descripción Penco, chip estación (PUKEM/PEWU/WALUNG/RIMU) + chips de fases lunares intercambiados (creciente ↔ menguante corregido). <b>Calendario:</b> 28 tarjetas con sol, fase, ánimo y puntitos de hábitos/gym/aves/pesca/astro/finanzas/🎉 + resumen de notas/compromisos.</p>
+            <p><b>Arriba:</b> título, rango fechas, descripción Penco, chip estación (PUKEM/PEWU/WALUNG/RIMU) + chips de fases lunares intercambiados (creciente ↔ menguante corregido). <b>Calendario:</b> 28 tarjetas con sol, fase, ánimo y puntitos de hábitos/gym/aves/pesca/astro/finanzas/🏠/✨/🎉 + resumen de notas/compromisos.</p>
             <p><b>🔍 Buscar funciones</b> (Ctrl+K) filtra botones por palabra clave — ej: “mareas”, “siembra”. <b>⚙️ Personalizar</b> oculta/muestra grupos y hace que <b>🌸 Marcar inicio ciclo</b> dentro del día desaparezca si 🌸 Ciclo está oculto.</p>
           </div>
           <div class="help-card" style="border-color:var(--gold)">
@@ -1417,33 +1606,42 @@
          <div class="help-card">
            <h4>🌊 Territorio — Penco · Bío-Bío</h4>
            <p><b>🌊 Mareas:</b> tabla 3 días SHOA con pleamar/bajamar por hora. <b>🎣 Pesca:</b> rating lunar (tithi), mejores días de la luna, 8 especies locales con talla/veda/carnada + <b>bitácora privada</b> por usuario (fecha/lugar/especie/kg/marea) y 📤 Compartir. <b>🦅 Aves:</b> catálogo 16 aves Rocuant, actividad por luna + <b>bitácora</b> (fecha/hora/cantidad/actividad) y export.</p>
-           <p><b>🌤️ Clima:</b> Open-Meteo 7 días + 48h por hora (America/Santiago). <b>🌱 Siembra:</b> 13 lunas con directa/almácigos/cosecha/tareas — pestañas <b>Siembra / Cosecha & Plagas / 🤝 Asociaciones</b> (23 cultivos, Tres Hermanas maíz-poroto-zapallo, buenas/malas compañías).</p>
-           <p><b>🔭 Astro:</b> eclipses/superlunas/lluvias 2026-27 + fases de la luna actual. <b>🎉 Penco:</b> 14 eventos anuales + tus eventos anuales editables (aparecen como 🎉 en el calendario). <b>📿 Ekadashi:</b> cálculo tithi con 3 lunas, ayuno shukla/krishna.</p>
-           <p><b>📸 Hora Dorada:</b> salida/puesta Penco + ventana dorada/azul. <b>🌞 Circadiano:</b> gráfico 24h, fase actual, 6 bloques con qué hacer.</p>
+            <p><b>🌤️ Clima:</b> Open-Meteo 7 días + 48h por hora (America/Santiago). <b>🌱 Siembra:</b> 13 lunas con directa/almácigos/cosecha/tareas — pestañas <b>Siembra / Cosecha & Plagas / 🤝 Asociaciones</b> (23 cultivos, Tres Hermanas maíz-poroto-zapallo) <b>/ 🧪 Preparados</b> (10 recetas orgánicas: purín, bordelés, neem…) <b>/ 🌰 Mis Semillas</b> (tu inventario: agrega variedad y cantidad, descuenta − al sembrar, suma + al guardar).</p>
+            <p><b>🔭 Astro:</b> eclipses/superlunas/lluvias 2026-27 + fases de la luna actual. <b>🎉 Penco:</b> 14 eventos anuales + tus eventos anuales editables (aparecen como 🎉 en el calendario). <b>📿 Ekadashi:</b> cálculo tithi con 3 lunas, ayuno shukla/krishna.</p>
+            <p><b>📸 Hora Dorada:</b> salida/puesta Penco + ventana dorada/azul. <b>🌞 Circadiano:</b> gráfico 24h, fase actual, 6 bloques con qué hacer.</p>
+            <p><b>🪱 Compost:</b> pila/vermi/bocashi con registro de volteos ligados a la menguante. <b>♻️ Reciclaje:</b> buscador “¿dónde va?” (punto limpio/feria/compost/basura/peligroso) + ferias Penco mié/sáb. <b>🌬️ Aire:</b> PM2.5 en vivo + guía de leña y ventilación en Pukem.</p>
          </div>
          <div class="help-card">
            <h4>🌸 Cuerpo & Salud</h4>
            <p><b>🌸 Ciclo:</b> registro de inicios, predicción período/fértil/ovulación (opcional en calendario), historial + <b>🧬 Diagrama hormonal</b> 28 días (Estrógeno/Progesterona/LH/FSH) con slider, alimentos/entreno/prácticas por día y 4 fases explicadas.</p>
             <p><b>🌿 Medicina:</b> 2 pestañas — <b>💊 Farmacología</b> y <b>🌱 Natural</b>, ambas con <i>frecuencia/hora/desde/hasta/notas</i> + próximas tomas y notificaciones. Sugerencias 10 hierbas (Matico, Boldo…) cargables. <b>💪 Entrenamientos:</b> 4 categorías — 🏋️ Gym, 🩹 Terapia física, 🤸 Calistenia, 🌿 Prácticas varias — con sugerencias por categoría, agrega al calendario semanal con día/hora/color y marca ✓ hecho (puntitos 💪 en calendario).</p>
-           <p><b>🌬️ Respiración:</b> 10 técnicas (4-7-8, caja 4-4-4-4, 5-5, 6-6…) con guía visual y cronómetro. <b>💭 Sueños:</b> 8 prácticas (intención, diario, inmóvil 60s, 3 palabras) — guarda “Sueño:” en la nota de hoy.</p>
+            <p><b>🌬️ Respiración:</b> 10 técnicas (4-7-8, caja 4-4-4-4, 5-5, 6-6…) con guía visual y cronómetro. <b>💭 Sueños:</b> 8 prácticas (intención, diario, inmóvil 60s, 3 palabras) — guarda “Sueño:” en la nota de hoy.</p>
+            <p><b>🌿 Lawen:</b> herbario de 20 plantas del Bío-Bío (matico, boldo, maqui…) con uso, preparación, luna óptima y advertencias — buscable por síntoma — <b>más tus propias fichas</b> (➕ Agregar mi lawen, quedan guardadas). Educativo, no receta médica.</p>
            <p><b>✅ Hábitos:</b> icono (46 opciones) + color + frecuencia, racha, % mensual/por luna → puntitos de color en el día.</p>
          </div>
          <div class="help-card">
            <h4>🧠 Mente & Estudio</h4>
            <p><b>🎯 Disciplina:</b> 8 técnicas (Pomodoro 25/5, 2 min, Sapo, Time Blocking, 5 seg, WOOP, Apilar, Ambiente) + MIT del día y Si-Entonces → inicia ⏱ Pomodoro automático.</p>
            <p><b>🧠 Estudio:</b> pestañas <b>Generales</b> (recuperación, espaciada, Feynman…), <b>Mnemotecnias</b> (acrónimo/historia/palacio) con generador y <b>Lectura veloz</b> (RSVP tester ppm).</p>
-           <p><b>📚 Horario:</b> bloques semanales por día/hora/color/lugar + vista “Hoy”. <b>📖 Cuentos:</b> 13 cuentos lunares (uno por luna) — toca para leer y <b>✏️ Editar</b> tu versión privada. <b>🧩 Memoria:</b> Palacio Loci + juego Pares 8×2.</p>
+            <p><b>📚 Horario:</b> bloques semanales por día/hora/color/lugar + vista “Hoy”. <b>📖 Cuentos:</b> 13 cuentos lunares (uno por luna) — toca para leer y <b>✏️ Editar</b> tu versión privada. <b>🧩 Memoria:</b> Palacio Loci + juego Pares 8×2.</p>
+            <p><b>🗣️ Kimün:</b> palabra del día, números 1–13, saludos y las 13 lunas con 🔊 aproximado + quiz con racha. <b>📓 Gratitud:</b> 3 líneas diarias, racha y días ✨ en el calendario.</p>
          </div>
            <div class="help-card">
              <h4>🍽️ Vida diaria</h4>
              <p><b>🥗 Comidas:</b> plan por fecha (desayuno/almuerzo/cena/snack/notas), guarda por día, genera <b>🛒 Compras</b> automático, ve semana/luna. Pestaña <b>🧮 Calculadora</b>: edad/peso/altura/actividad → TMB/TDEE, meta kcal, macros (prot/carb/grasa), IMC y agua, con gráfico 50/30/20. Pestaña <b>🍽️ Menús sugeridos</b>: 5 plantillas Penco (Económico 1850, Equilibrado 2100, Activo 2500, Ligero 1650, Vegetariano 2050) ordenadas por tu meta; carga al plan de hoy y compara plan vs meta.</p>
              <p><b>🛒 Compras:</b> lista por categorías (Verduras/Frutas/Abarrotes/Proteínas/Lácteos/Panadería/Otros), cantidad, tacha ✓ comprados, limpia comprados o vacía.</p>
-             <p><b>💰 Finanzas:</b> registra gastos e ingresos por día (categoría, monto $CLP, método), ve balance total/mensual/por luna, presupuesto y barra de avance, gráfico por categoría, proyección 13 lunas. Consejos: 50/30/20, gastos hormiga, sobres, fondo emergencia. Exporta CSV y comparte resumen. Días con 💰 en calendario.</p>
+              <p><b>💰 Finanzas:</b> registra gastos e ingresos por día (categoría, monto $CLP, método), ve balance total/mensual/por luna, presupuesto y barra de avance, gráfico por categoría, proyección 13 lunas. Consejos: 50/30/20, gastos hormiga, sobres, fondo emergencia. Exporta CSV y comparte resumen. Días con 💰 en calendario.</p>
+              <p><b>🏠 Tareas Hogar:</b> tareas por habitación con rutina y checklist por fecha (🏠 en el día, 🏠✓ si están todas hechas).</p>
            </div>
-          <div class="help-card">
-            <h4>🛠️ Herramientas & Personalización</h4>
-            <p><b>📏 Conversión:</b> 12 categorías — longitud, peso, volumen, temperatura, superficie, tiempo, velocidad, energía, potencia, presión, datos, ángulo — con tabla dinámica e intercambio. <b>⚡ Consumo eléctrico:</b> lista artefactos (W, h/día, días/mes, cantidad), presets chilenos, total kWh y $CLP con tarifa editable, ranking y proyección luna.</p>
-            <p><b>⏱ Tiempo:</b> Cronómetro (vueltas) + Temporizador h/m/s con sonido/vibración. <b>🔔 Recordatorios:</b> fases lunares y notificaciones suaves (ciclo/medicina). <b>⚙️ Personalizar:</b> elige qué botones ver (incluye ⚡ Consumo) + texto grande.</p>
+           <div class="help-card" style="border-color:#ff6b6b">
+             <h4>🚨 Emergencias & Comunidad</h4>
+             <p><b>🩹 Primeros Auxilios:</b> guía básica (RCP, heridas, quemaduras, trauma) + botiquín y números 131/132/133. <b>🐾 Cuidado Animal:</b> tenencia Ley Cholito, auxilios, vacunas y humedal Rocuant. <b>🟣 Violencia Doméstica:</b> tipos, señales, qué hacer, plan de seguridad y redes 149/1455 — con ⚡ salida rápida.</p>
+             <p><b>🌊🚨 Evacuación Tsunami:</b> rutas a pie a cota alta por sector (centro/Lirquén/Rocuant), <b>🎒 mochila 72h</b> con checklist 9 ítems que se guarda, plan familiar y qué hacer en el sismo. Orientativo: verifica tu ruta en la carta SHOA.</p>
+           </div>
+           <div class="help-card">
+             <h4>🛠️ Herramientas & Personalización</h4>
+             <p><b>📏 Conversión:</b> 12 categorías — longitud, peso, volumen, temperatura, superficie, tiempo, velocidad, energía, potencia, presión, datos, ángulo — con tabla dinámica e intercambio. <b>⚡ Consumo eléctrico:</b> lista artefactos (W, h/día, días/mes, cantidad), presets chilenos, total kWh y $CLP con tarifa editable, ranking y proyección luna.</p>
+             <p><b>🪵 Leña & Pellet:</b> calculadora $/kWh por combustible (eucalipto/pino/húmeda/pellet/parafina) + equivalencia en días de calefacción y tips de leña seca. <b>⏱ Tiempo:</b> Cronómetro (vueltas) + Temporizador h/m/s con sonido/vibración. <b>🔔 Recordatorios:</b> fases lunares y notificaciones suaves (ciclo/medicina). <b>⚙️ Personalizar:</b> elige qué botones ver + texto grande.</p>
             <p><b>🎨 Tema + 🕰 Reloj</b> America/Santiago en sidebar.</p>
           </div>
          <div class="help-card">
@@ -1454,7 +1652,8 @@
          </div>
          <div class="help-card" style="border-color:var(--gold);background:linear-gradient(135deg,var(--panel),var(--card))">
            <h4>💡 Tips & Novedades 2026</h4>
-           <p>• <b>Nuevo:</b> 🤝 Asociaciones de cultivos (23) en 🌱 Siembra. • <b>Nuevo:</b> bitácoras privadas de 🎣 Pesca y 🦅 Aves con compartir. • <b>Fix:</b> ❤ Aporte links externos. • Chip estación = paleta de color. • Móvil: desliza lunas horizontal.</p>
+            <p>• <b>Nuevo sep 2026:</b> 🌊🚨 Evacuación Tsunami · 🗣️ Kimün Mapuzugun · 🌿 Lawen Herbario (20) · 🪱 Compost & Suelo · ♻️ Reciclaje & Ferias · 🌬️ Aire Penco · 📓 Gratitud Diaria (✨) · 🪵 Leña & Pellet · 🌰 Mis Semillas (inventario dentro de 🌱 Siembra).</p>
+            <p>• <b>Antes:</b> 🤝 Asociaciones (23 cultivos) y 🧪 Preparados (10) en 🌱 Siembra · bitácoras privadas 🎣 Pesca y 🦅 Aves · 🏠 Tareas Hogar. • <b>Fix:</b> ❤ Aporte links externos. • Chip estación = paleta de color. • Móvil: desliza lunas horizontal.</p>
            <p>• Escribe “Sueño:” en nota para buscar sueños. • Todo offline salvo clima/mareas. • Ctrl+K para filtrar funciones.</p>
            <p style="text-align:center;margin-top:6px;color:var(--gold)"><b>¡Que tu ciclo florezca con la luna! — Küme mañum · Penco 2026</b></p>
          </div>
@@ -1865,6 +2064,9 @@
           <label class="check-row"><input type="checkbox" data-btn="btnEkadashi"> 📿 Ekadashi</label>
           <label class="check-row"><input type="checkbox" data-btn="btnGolden"> 📸 Hora Dorada</label>
           <label class="check-row"><input type="checkbox" data-btn="btnCircadian"> 🌞 Circadiano</label>
+          <label class="check-row"><input type="checkbox" data-btn="btnCompost"> 🪱 Compost & Suelo</label>
+          <label class="check-row"><input type="checkbox" data-btn="btnRecicla"> ♻️ Reciclaje & Ferias</label>
+          <label class="check-row"><input type="checkbox" data-btn="btnAire"> 🌬️ Aire Penco</label>
         </div>
         <div class="config-group">
           <h5>🌸 Cuerpo y salud</h5>
@@ -1873,6 +2075,7 @@
           <label class="check-row"><input type="checkbox" data-btn="btnGym"> 🏋️ Gym</label>
           <label class="check-row"><input type="checkbox" data-btn="btnBreath"> 🌬️ Respiración</label>
           <label class="check-row"><input type="checkbox" data-btn="btnDreams"> 💭 Sueños</label>
+          <label class="check-row"><input type="checkbox" data-btn="btnLawen"> 🌿 Lawen Herbario</label>
         </div>
         <div class="config-group">
           <h5>🧠 Mente y estudio</h5>
@@ -1882,6 +2085,8 @@
           <label class="check-row"><input type="checkbox" data-btn="btnSchedule"> 📚 Horario</label>
           <label class="check-row"><input type="checkbox" data-btn="btnTales"> 📖 Cuentos</label>
           <label class="check-row"><input type="checkbox" data-btn="btnMemory"> 🧩 Memoria</label>
+          <label class="check-row"><input type="checkbox" data-btn="btnMapu"> 🗣️ Kimün Mapuzugun</label>
+          <label class="check-row"><input type="checkbox" data-btn="btnGratitud"> 📓 Gratitud Diaria</label>
         </div>
         <div class="config-group">
           <h5>🍽️ Vida diaria</h5>
@@ -1895,6 +2100,7 @@
           <label class="check-row"><input type="checkbox" data-btn="btnFirstAid"> 🩹 Primeros Auxilios</label>
           <label class="check-row"><input type="checkbox" data-btn="btnAnimalCare"> 🐾 Cuidado Animal</label>
           <label class="check-row"><input type="checkbox" data-btn="btnViolence"> 🟣 Violencia Doméstica</label>
+          <label class="check-row"><input type="checkbox" data-btn="btnEvac"> 🌊🚨 Evacuación Tsunami</label>
         </div>
         <div class="config-group">
           <h5>🛠️ Herramientas</h5>
@@ -1907,6 +2113,7 @@
           <label class="check-row"><input type="checkbox" data-btn="btnShortcut"> 📌 Acceso directo</label>
           <label class="check-row"><input type="checkbox" data-btn="btnPdfLuna"> 📄 PDF luna</label>
           <label class="check-row"><input type="checkbox" data-btn="btnPdfCiclo"> 📚 PDF ciclo</label>
+          <label class="check-row"><input type="checkbox" data-btn="btnLena"> 🪵 Leña & Pellet</label>
           <label class="check-row"><input type="checkbox" data-btn="btnDonate"> ❤ Aporte</label>
           <label class="check-row"><input type="checkbox" data-btn="btnHelp"> ❓ Cómo usar</label>
         </div>

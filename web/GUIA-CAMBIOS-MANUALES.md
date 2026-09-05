@@ -45,13 +45,20 @@ Cambia el texto entre etiquetas y guarda. Ejemplo:
 <h1>Mi Calendario Lunar</h1>
 ```
 
-Botones del footer `index.html:76-108` — cada uno es:
+Botones del footer `index.html:80-155` (~46 botones en 6 grupos: Territorio · Cuerpo & Salud · Mente & Estudio · Vida diaria · Emergencias & Comunidad · Herramientas) — cada uno es:
 
 ```html
-<button id="btnTides" class="btn">🌊 Mareas</button>
+<button id="btnTides" class="btn" data-keywords="mareas shoa talcahuano pleamar bajamar">🌊 Mareas</button>
 ```
 
-Borra la línea para quitar el botón, o duplica cambiando `id` y texto para agregar uno nuevo (requiere lógica en `renderer.js` si debe hacer algo).
+`data-keywords` alimenta el **🔍 Buscar función (Ctrl+K)** — incluye sinónimos al agregar un botón.
+
+Para agregar una herramienta completa (patrón usado en sep 2026):
+1. Botón en el grupo (`index.html`) + checkbox en `configDialog` (`index.html:~1960-2030`).
+2. `<dialog id="...">` con pestañas `.timer-tabs` + `<div id="...Panel">` (`index.html`).
+3. `render...Panel()` + `setup...Dialog()` + `setTimeout(setup..., 88x)` (`renderer.js`).
+4. Agregar el `id` a `ALL_BTNS` (`renderer.js:~3669`) y a los `PRESETS` que corresponda.
+5. Copiar `index.html` y `renderer.js` a `web/` (son espejos) y pasar `node --check renderer.js`.
 
 ---
 
@@ -195,6 +202,8 @@ Para agregar efeméride nueva, solo agrega línea:
 '07-15': 'Fiesta local de ...',
 ```
 
+> Nota: los datos de las herramientas agregadas en sep 2026 **no viven en `data.js`** sino en `renderer.js` (listas `const` junto a su `render...`). Ver §14.
+
 ---
 
 ## 7. Cambiar donaciones y links
@@ -312,4 +321,28 @@ Ver `LEEME.txt:16-25`:
 
 ---
 
-*Última actualización: 2026-09-01 — Mantener esta guía junto a `LEEME.txt`.*
+## 14. Herramientas agregadas sep 2026 (dónde está cada una)
+
+Todo 100% offline salvo 🌬️ Aire (vivo opcional). Datos personales en `DATA` por usuario (ver `userData()` en `renderer.js:62`).
+
+| Herramienta | Botón (`index.html`) | Diálogo | Lógica (`renderer.js`) | Datos |
+|---|---|---|---|---|
+| 🌊🚨 Evacuación Tsunami | `btnEvac` (Emergencias) | `evacDialog` | `renderEvacPanel` / `setupEvacDialog` — tabs rutas/mochila/plan/sismo | Checklist en `DATA.evacCheck` |
+| 🗣️ Kimün Mapuzugun | `btnMapu` (Mente) | `mapuDialog` | `renderMapuPanel` / `setupMapuDialog` — palabra/números/lunas/quiz, 🔊 `speechSynthesis` | `MAPU_WORDS`, `MAPU_NUMS`; puntaje en `DATA.mapu` |
+| 🌿 Lawen Herbario | `btnLawen` (Cuerpo) | `lawenDialog` | `renderLawenList` + `lawenCardHTML` — buscador, filtro luna, fichas propias | `LAWEN_PLANTS` (20 base) + `DATA.lawenUser` (fichas propias) |
+| 🪱 Compost & Suelo | `btnCompost` (Territorio) | `compostDialog` | `renderCompostPanel` — pila/suelo/menguantes desde `phaseMap` | `DATA.compost.turns` |
+| ♻️ Reciclaje & Ferias | `btnRecicla` (Territorio) | `reciclaDialog` | `renderReciclaList` — buscador + filtro destino | `RECICLA_ITEMS` (14) |
+| 🌬️ Aire Penco | `btnAire` (Territorio) | `aireDialog` | `fetchAire` (Open-Meteo air-quality, con fallback offline) + `renderAireTips` | En vivo, sin guardar |
+| 📓 Gratitud Diaria | `btnGratitud` (Mente) | `gratitudDialog` | `renderGratitudBox` / `renderGratHistory` — racha + ✨ en calendario (`renderLuna`) | `DATA.gratitud.entries` |
+| 🪵 Leña & Pellet | `btnLena` (Herramientas) | `lenaDialog` | `renderLenaCalc` — $/kWh por combustible y unidad | Constantes `KWH`/`KG` en función |
+| 🌰 Mis Semillas | pestaña `tabSemillas` en `siembraDialog` | `siembraSemillasBox` | `renderSiembraSemillas` — inventario con −/+/✕, cableada en `renderSiembraContent` + tabs | `DATA.semillasInv` |
+| 🚨 Emergencias (grupo) | — | `helpDialog` | Tarjeta “🚨 Emergencias & Comunidad” agregada a la ❓ Guía in-app | — |
+
+Notas:
+- El botón standalone 🌱 Banco Semillas se eliminó; su reemplazo es 🌰 Mis Semillas dentro de 🌱 Siembra. Quedó `DATA.semillas` huérfano (sin uso) por si hay que migrar avisos viejos.
+- La ❓ Guía in-app (`helpDialog` en `index.html:~1552-1641`) documenta todas las herramientas por grupo + “Tips & Novedades”.
+- `ALL_BTNS` + `PRESETS` (`renderer.js:~3669-3682`): agricultor trae compost/lawen/recicla/aire; salud trae lawen/gratitud/aire/evac; mayor trae gratitud/aire/leña; docente trae mapu/gratitud/recicla.
+
+---
+
+*Última actualización: 2026-09-05 — Mantener esta guía junto a `LEEME.txt`.*
