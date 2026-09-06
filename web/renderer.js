@@ -335,7 +335,7 @@ function miniDayCard(key, opts){
     <div class="dc-head"><span class="dc-n">${dt.getDate()}</span><span class="dc-phases">${evs.map(e=>`<span class="dc-phase" title="${e.tipo}">${e.simbolo}</span>`).join('')}</span><span class="dc-date">${lunaTxt}</span></div>
     <div class="dc-sun">${cal.weekdayName(dt.getTime()).slice(0,3)}</div>
     ${agenda.length? `<div class="dc-clima">🕐 ${agenda.length} · ${escapeHtml(agenda.slice(0,2).map(a=>agendaTimeStr(a)+' '+a.text).join(' · '))}${agenda.length>2?' …':''}</div>`:''}
-    ${nota? `<div class="dc-note">${escapeHtml(nota.split('\n')[0])}</div>`:'<div class="dc-note"></div>'}
+    ${nota? `<div class="dc-note">${escapeHtml(nota.split('\n')[0])}</div>`:''}
   </div>`;
 }
 function bindMiniCards(scope){
@@ -368,6 +368,7 @@ function renderMesView(){
   $('phaseChips').innerHTML='<span class="chip">🌙 Luna = vista por defecto</span><span class="chip">📅 Mes = gregoriano</span>';
   document.body.dataset.tema = (currentView&&currentView.tipo==='luna'&&MOONS[currentView.luna-1]) ? MOONS[currentView.luna-1].estacion : 'RIMU';
   const curTheme=getTheme(); if(curTheme!=='auto') document.body.setAttribute('data-theme',curTheme); else document.body.removeAttribute('data-theme');
+  dow.classList.remove('dow-week');
   dow.innerHTML=['lun','mar','mié','jue','vie','sáb','dom'].map(d=>`<div>${d}</div>`).join('');
   const firstDow=(new Date(Date.UTC(y,m-1,1)).getUTCDay()+6)%7; // lunes=0
   const dim=new Date(Date.UTC(y,m,0)).getUTCDate();
@@ -395,6 +396,7 @@ function renderSemanaView(){
   $('lunaMeta').innerHTML='Vista semanal · toca un día para abrirlo';
   $('lunaDesc').textContent='Compromisos a cualquier hora (HH:MM) con 🔔 opcional.';
   $('phaseChips').innerHTML='';
+  dow.classList.add('dow-week');
   dow.innerHTML=['lunes','martes','miércoles','jueves','viernes','sábado','domingo'].map(d=>`<div>${d}</div>`).join('');
   let html='<div class="week-grid">';
   for(let i=0;i<7;i++){ const d=new Date(monday); d.setDate(monday.getDate()+i); html+=miniDayCard(f(d)); }
@@ -480,7 +482,7 @@ function miniLunarCard(key, evMap, idx){
     <div class="dc-head"><span class="dc-n">${idx!==undefined? String(idx).padStart(2,'0') : dt.getDate()}</span><span class="dc-phases">${moon.icon} ${evs.map(e=>`<span class="dc-phase" title="${e.tipo}">${e.simbolo}</span>`).join('')}</span><span class="dc-date">${dt.getDate()}/${dt.getMonth()+1}</span></div>
     <div class="dc-sun">${moon.illum===null?'🌙':moon.illum+'%'} · ${escapeHtml(wd.slice(0,3))}${lunaTxt? ' · '+lunaTxt:''}</div>
     ${agenda.length? `<div class="dc-clima">🕐 ${agenda.length} · ${escapeHtml(agenda.slice(0,2).map(a=>agendaTimeStr(a)+' '+a.text).join(' · '))}${agenda.length>2?' …':''}</div>`:''}
-    ${nota? `<div class="dc-note">${escapeHtml(nota.split('\n')[0])}</div>`:'<div class="dc-note"></div>'}
+    ${nota? `<div class="dc-note">${escapeHtml(nota.split('\n')[0])}</div>`:''}
   </div>`;
 }
 function applyLunarTema(){
@@ -503,6 +505,7 @@ function renderSemanaLunarView(){
   const chips=[];
   keys.forEach(k=> (evMap[k]||[]).forEach(e=> chips.push(`<span class="chip">${e.simbolo} <b>${e.tipo.replace('-',' ')}</b> · ${cal.fmtDate.format(new Date(k+'T12:00:00'))} ${cal.fmtTime.format(new Date(e.utcMs))}</span>`)));
   $('phaseChips').innerHTML = chips.join('') || '<span class="chip" style="color:var(--muted)">Sin fases exactas estos 7 días</span>';
+  dow.classList.add('dow-week');
   dow.innerHTML=keys.map(k=>{ const w=cal.weekdayName(new Date(k+'T12:00:00').getTime()); return `<div>${w.slice(0,3)}</div>`; }).join('');
   grid.style.display='block';
   grid.innerHTML='<div class="week-grid">'+keys.map((k,i)=>miniLunarCard(k, evMap, i+1)).join('')+'</div>';
@@ -554,6 +557,7 @@ function renderLuna() {
   const wdNames = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
   const firstWd = new Date(cal.santiagoParts(first.noonMs).y, cal.santiagoParts(first.noonMs).m - 1, cal.santiagoParts(first.noonMs).d);
   const startIdx = new Date(Date.UTC(cal.santiagoParts(first.noonMs).y, cal.santiagoParts(first.noonMs).m - 1, cal.santiagoParts(first.noonMs).d)).getUTCDay();
+  $('dowRow').classList.remove('dow-week');
   $('dowRow').innerHTML = Array.from({ length: 7 }, (_, i) =>
     `<div>${wdNames[(startIdx + i) % 7]}</div>`).join('');
 
@@ -698,6 +702,7 @@ function renderDFT() {
   const sun = cal.sunForDay(dftDay.noonMs);
   const grid = $('grid');
   grid.style.display = 'block';
+  $('dowRow').classList.remove('dow-week');
   $('dowRow').innerHTML = '';
   const key = cal.fmtKey.format(new Date(dftDay.noonMs));
   const evs = phaseMap[key] || [];
