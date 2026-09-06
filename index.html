@@ -62,6 +62,21 @@
       <div id="phaseChips"></div>
     </header>
 
+    <section id="viewBar" aria-label="Cambiar vista del calendario">
+      <div class="view-switch" role="tablist" aria-label="Vistas">
+        <button type="button" id="viewLuna" class="btn btn-accent view-btn" role="tab" aria-selected="true" title="Vista por defecto: luna de 28 días (13 lunas)">🌙 Luna</button>
+        <button type="button" id="viewSemanaLunar" class="btn view-btn" role="tab" aria-selected="false" title="Semana lunar: 7 días corridos con fase e iluminación de la luna">🌗 Semana lunar</button>
+        <button type="button" id="viewMes" class="btn view-btn" role="tab" aria-selected="false" title="Vista mensual gregoriana">📅 Mes</button>
+        <button type="button" id="viewSemana" class="btn view-btn" role="tab" aria-selected="false" title="Vista semanal gregoriana (lunes a domingo)">🗓️ Semana</button>
+      </div>
+      <div id="viewNav" class="view-nav hidden">
+        <button type="button" id="viewPrev" class="btn btn-icon" title="Anterior">◀</button>
+        <button type="button" id="viewTodayBtn" class="btn" title="Ir a hoy">◉ Hoy</button>
+        <button type="button" id="viewNext" class="btn btn-icon" title="Siguiente">▶</button>
+        <span id="viewNavLabel" class="muted" style="margin:0"></span>
+      </div>
+    </section>
+
     <section id="gridWrap">
       <div class="dow-row" id="dowRow"></div>
       <div id="grid"></div>
@@ -83,7 +98,7 @@
           <button id="btnTides" class="btn" data-keywords="mareas shoa talcahuano pleamar bajamar">🌊 Mareas</button>
           <button id="btnFishing" class="btn" data-keywords="pesca peces artesanal lirquen golfo arauco">🎣 Pesca</button>
           <button id="btnBirds" class="btn" data-keywords="aves pajaro observacion humedal rocuant">🦅 Aves</button>
-          <button id="btnWeather" class="btn" data-keywords="clima tiempo viento lluvia temperatura">🌤️ Clima</button>
+          <button id="btnWeather" class="btn" data-keywords="clima tiempo viento lluvia temperatura aire calidad humo ventilacion sol uv radiacion playa exposicion">🌤️ Clima</button>
           <button id="btnSiembra" class="btn" data-keywords="siembra cosecha huerta semilla semillas inventario recuento stock luna">🌱 Siembra lunar</button>
           <button id="btnAstro" class="btn" data-keywords="astro astronomia eclipse meteoros superluna">🔭 Astro</button>
           <button id="btnComuna" class="btn" data-keywords="penco comuna fiesta evento aniversario">🎉 Penco</button>
@@ -94,7 +109,6 @@
           <button id="btnBosque" class="btn" data-keywords="bosque nativo arbol canelo boldo peumo arrayan quillay maiten avellano reforestacion semilla hongo maqui trihue laurelia naranjillo citronella keule gomortega">🌳 Bosque Nativo</button>
           <button id="btnCompost" class="btn" data-keywords="compost suelo humus vermicompostera bocashi tierra ph arcilla abono menguante">🪱 Compost & Suelo</button>
           <button id="btnRecicla" class="btn" data-keywords="reciclaje punto limpio feria basura residuo plastico vidrio papel miercoles sabado lirquen">♻️ Reciclaje & Ferias</button>
-          <button id="btnAire" class="btn" data-keywords="aire calidad contaminacion mp25 leña humo alerta preemergencia sinca mma ventilacion">🌬️ Aire Penco</button>
         </div>
       </details>
       <details class="action-group" open data-group="cuerpo">
@@ -127,7 +141,7 @@
           <button id="btnMeal" class="btn" data-keywords="comida meal plan cena almuerzo">🥗 Comidas</button>
           <button id="btnShopping" class="btn" data-keywords="compras lista supermercado verduras">🛒 Compras</button>
           <button id="btnFinance" class="btn" data-keywords="finanzas gastos dinero presupuesto ahorro deuda ingreso egreso plata billetera">💰 Finanzas</button>
-          <button id="btnHomeTasks" class="btn" data-keywords="tareas hogar limpieza casa organizacion quehaceres rutina habitaciones baño cocina ropa mantenimiento orden">🏠 Tareas Hogar</button>
+          <button id="btnHomeTasks" class="btn" data-keywords="tareas hogar limpieza casa organizacion quehaceres rutina habitaciones baño cocina ropa mantenimiento orden diogenes acumulacion acumulador desorden tirar botar soltar apego">🏠 Tareas Hogar</button>
         </div>
       </details>
       <details class="action-group" open data-group="emergencia">
@@ -174,11 +188,11 @@
         <label class="dlg-horas-label" for="fNota">📝 Notas del día</label>
         <textarea id="fNota" rows="4" placeholder="tareas, ánimo, sueños, registros..."></textarea>
         <div style="height:12px"></div>
-        <label class="dlg-horas-label">🕐 Compromisos — por hora</label>
-        <p class="muted" style="font-size:11px;margin:2px 0 8px">Agrega compromisos, actividades o recordatorios por hora. Activa 🔔 para recibir notificación a esa hora.</p>
+        <label class="dlg-horas-label">🕐 Compromisos — a cualquier hora</label>
+        <p class="muted" style="font-size:11px;margin:2px 0 8px">Agrega compromisos a cualquier hora exacta (ej 08:37, 14:05). Activa 🔔 para recibir notificación a esa hora y minuto.</p>
         <div id="dlgHorasGrid" class="dlg-horas-grid"></div>
         <div class="dlg-horas-add">
-          <select id="dlgHourSel" aria-label="Hora"></select>
+          <input type="time" id="dlgHourSel" aria-label="Hora (cualquiera, ej 08:37)" value="08:00" step="60" style="max-width:110px">
           <input type="text" id="dlgHourText" placeholder="Compromiso / actividad..." maxlength="80">
           <label class="check-row" style="margin:0;white-space:nowrap" title="Activar notificación a esa hora"><input type="checkbox" id="dlgHourNotify"> 🔔</label>
           <button type="button" id="dlgHourAdd" class="btn btn-accent" style="width:auto">+ Agregar</button>
@@ -909,6 +923,7 @@
         <button type="button" id="tabHomeSemana" class="btn" style="width:auto">🗓️ Semana</button>
         <button type="button" id="tabHomePlantillas" class="btn" style="width:auto">🧹 Plantillas</button>
         <button type="button" id="tabHomeStats" class="btn" style="width:auto">📊 Luna & Consejos</button>
+        <button type="button" id="tabHomeDiogenes" class="btn" style="width:auto">🧠 Orden & Diógenes</button>
       </div>
 
       <!-- TAB TAREAS -->
@@ -1028,6 +1043,54 @@
         <div class="menstrual-card" style="margin-top:10px">
           <h4>📏 Regla 2-minutos</h4>
           <p class="muted" style="font-size:11px;line-height:1.5">Si toma &lt;2 min (colgar chaqueta, enjuagar taza, guardar zapatos) hazlo ahora. Evita “montaña de pendientes” y deja la luna fluida.</p>
+        </div>
+      </div>
+
+      <!-- TAB DIOGENES / ACUMULACIÓN -->
+      <div id="homeTasksDiogenesPanel" class="hidden">
+        <div class="menstrual-card" style="border-color:var(--gold);background:linear-gradient(135deg,var(--panel),var(--card))">
+          <h4 style="color:var(--gold)">🧠 Orden progresivo — combatir acumulación y síndrome de Diógenes</h4>
+          <p class="muted" style="font-size:11px;line-height:1.5">Guía compasiva y práctica para cuando <b>cuesta botar, se acumula o la casa se vuelve difícil de habitar</b>. No es diagnóstico ni reemplaza ayuda profesional. Avanza <b>de a poco, sin culpa</b>: 15 min por día. Todo tu avance queda <b>privado y local</b>.</p>
+          <div id="diogenesProgress" style="margin-top:8px"></div>
+        </div>
+        <div id="diogenesChecklist" class="menstrual-card" style="margin-top:10px"></div>
+        <div class="menstrual-card" style="margin-top:10px">
+          <h4>📶 Niveles de acumulación — ubícate sin juzgarte</h4>
+          <div class="help-grid" style="margin-top:6px">
+            <div class="help-card"><h4>Nivel 1 · Desorden leve</h4><p style="font-size:11px">Cosas fuera de lugar, pero cocina/baño/cama usables. <b>Acción:</b> rutina 15+15+5 y regla 1 entra / 1 sale.</p></div>
+            <div class="help-card"><h4>Nivel 2 · Acumulación visible</h4><p style="font-size:11px">Pilitas en living/piezas, cuesta limpiar fondo. <b>Acción:</b> método caja-4 por zona, 1 zona por semana.</p></div>
+            <div class="help-card"><h4>Nivel 3 · Habitación bloqueada</h4><p style="font-size:11px">Una pieza/baño poco usable, olor/humedad, plagas leves. <b>Acción:</b> plan 28 días + pedir apoyo (familia/CESFAM). No hacerlo solo.</p></div>
+            <div class="help-card"><h4>Nivel 4-5 · Riesgo sanitario</h4><p style="font-size:11px">Cocina/baño inutilizables, basura orgánica, heces/plagas, riesgo incendio. <b>Acción:</b> ayuda profesional ya (CESFAM, municipio, Salud Responde 600 360 7777). No es flojera: es salud.</p></div>
+          </div>
+          <p class="muted" style="font-size:10px;margin-top:6px">Si hay menores, mayores postrados o animales afectados, pide ayuda hoy aunque dé vergüenza. En Chile puedes partir por tu CESFAM Penco / Lirquén.</p>
+        </div>
+        <div class="menstrual-card" style="margin-top:10px">
+          <h4>🧰 Estrategias que sí funcionan</h4>
+          <div class="help-grid" style="margin-top:6px">
+            <div class="help-card"><h4>📦 Caja-4 (20 min)</h4><p style="font-size:11px">Toma 4 bolsas/cajas: <b>1 Quedarse · 2 Donar/vender · 3 Reciclar · 4 Basura</b>. Solo una repisa o 1 m² por vez. Foto antes/después para ver avance.</p></div>
+            <div class="help-card"><h4>⏱️ 15 min + timer</h4><p style="font-size:11px">Pon ⏱ Tiempo del calendario 15 min. Para cuando suene, aunque quede a medias. Frecuencia le gana a intensidad y evita crisis de angustia.</p></div>
+            <div class="help-card"><h4>🔁 1 entra / 2 salen</h4><p style="font-size:11px">Por cada cosa nueva que entra, salen 2 (donar/reciclar). Frena compras: lista 72h — si en 3 días no lo necesitas, no lo compres.</p></div>
+            <div class="help-card"><h4>❓ 5 preguntas filtro</h4><p style="font-size:11px">1 ¿Lo usé el último año? 2 ¿Tengo otro igual? 3 ¿Ocupa lugar de vivir? 4 ¿Lo guardaría si me cambio a 1 pieza? 5 ¿Me da paz o culpa? Si hay 2+ “no”, suéltalo con foto de recuerdo.</p></div>
+            <div class="help-card"><h4>🗺️ Por zonas, no por ganas</h4><p style="font-size:11px"><b>Sem 1:</b> salida (puerta/pasillo) <b>Sem 2:</b> cocina/mesa <b>Sem 3:</b> baño <b>Sem 4:</b> dormitorio/cama. Una zona por luna si es mucho.</p></div>
+            <div class="help-card"><h4>🤝 Sin vergüenza, con compañía</h4><p style="font-size:11px">No ordenes con quien critica. Invita a 1 persona amable 1 hora. Turnos: uno sostiene bolsa, otro decide. Agradece en 📓 Gratitud cada avance.</p></div>
+          </div>
+        </div>
+        <div class="menstrual-card" style="margin-top:10px">
+          <h4>🌙 Plan 28 días (una luna) — anti-acumulación</h4>
+          <p class="muted" style="font-size:11px"><b>Días 1-7 Salida despejada:</b> pasillo + puerta + 1 bolsa diaria (basura/reciclaje). Ventilar 10 min.<br><b>Días 8-14 Cocina viva:</b> mesa libre para comer, 1 cajón por día, vencidos a basura, frascos a ♻️ Reciclaje.<br><b>Días 15-21 Baño seguro:</b> piso visible, vencidos/medicamentos al punto limpio, 1 toalla por persona.<br><b>Días 22-28 Cama y ropa:</b> cama usable, 1 bolsa ropa donar, suelo dormitorio visible. Celebra y repite próxima luna.</p>
+          <p class="muted" style="font-size:10px">Regla de oro: nunca saques todo de golpe (“montaña”). Siempre por pedacitos con bolsas listas y destino decidido (donar/reciclar/botar) el mismo día.</p>
+        </div>
+        <div class="menstrual-card" style="margin-top:10px">
+          <h4>♻️ Destinos en Penco — que no vuelva a entrar</h4>
+          <p class="muted" style="font-size:11px;line-height:1.5">• <b>Reciclaje:</b> usa ♻️ Reciclaje & Ferias del calendario (punto limpio, vidrio/plástico/papel).<br>• <b>Donar:</b> ferias Lirquén/Penco, ropa limpia en bolsa rotulada, muebles por redes vecinales el mismo día.<br>• <b>Basura voluminosa:</b> operativos municipales — consulta en DIDECO Penco, no acumules “para llevarlo después”.<br>• <b>Peligrosos:</b> medicamentos vencidos a farmacia/CESFAM, pilas y aceite a punto limpio, nunca al desagüe.<br>• <b>Plagas/hongos:</b> mascarilla + guantes + ventilación. Si hay fecas de ratón o moho negro extenso, no limpies solo: pide apoyo sanitario.</p>
+        </div>
+        <div class="menstrual-card" style="margin-top:10px;border-color:#e76e8a">
+          <h4 style="color:#e76e8a">🆘 Cuándo pedir ayuda profesional (Chile)</h4>
+          <p class="muted" style="font-size:11px;line-height:1.5">• No puedes usar cocina, baño o cama hace semanas.<br>• Angustia fuerte al botar, llanto o bloqueo.<br>• Familia/conflicto, riesgo incendio, plagas, mal olor persistente.<br>• Eres mayor, estás solo/a o cuidas a otro.<br><b>Dónde partir:</b> CESFAM Penco / Lirquén (hora salud mental), <b>Salud Responde 600 360 7777</b> (24h), SENAMA 800 400 035 (mayores), 149 Fono Familia si hay riesgo. Si hay peligro inmediato: 131 SAMU / 132 Bomberos / 133 Carabineros.</p>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
+            <button type="button" id="diogenesShare" class="btn" style="width:auto">📤 Compartir mi avance</button>
+            <button type="button" id="diogenesReset" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">↺ Reiniciar checklist</button>
+          </div>
         </div>
       </div>
 
@@ -1727,7 +1790,7 @@
            <h4>🌊 Territorio — Penco · Bío-Bío</h4>
            <p><b>🌊 Mareas:</b> tabla 3 días SHOA con pleamar/bajamar por hora. <b>🎣 Pesca:</b> rating lunar (tithi), mejores días de la luna, 8 especies locales con talla/veda/carnada + <b>bitácora privada</b> por usuario (fecha/lugar/especie/kg/marea) y 📤 Compartir. <b>🦅 Aves:</b> catálogo 16 aves Rocuant, actividad por luna + <b>bitácora</b> (fecha/hora/cantidad/actividad) y export.</p>
             <p><b>🌤️ Clima:</b> Open-Meteo 7 días + 48h por hora (America/Santiago). <b>🌱 Siembra:</b> 13 lunas con directa/almácigos/cosecha/tareas — pestañas <b>Siembra / Cosecha & Plagas / 🤝 Asociaciones</b> (23 cultivos, Tres Hermanas maíz-poroto-zapallo) <b>/ 🧪 Preparados</b> (10 recetas orgánicas: purín, bordelés, neem…) <b>/ 🌰 Mis Semillas</b> (tu inventario: agrega variedad y cantidad, descuenta − al sembrar, suma + al guardar).</p>
-            <p><b>🔭 Astro:</b> eclipses/superlunas/lluvias 2026-27 + fases de la luna actual. <b>🎉 Penco:</b> 14 eventos anuales + tus eventos anuales editables (aparecen como 🎉 en el calendario). <b>📿 Ekadashi:</b> cálculo tithi con 3 lunas, ayuno shukla/krishna.</p>
+            <p><b>🔭 Astro:</b> eclipses/superlunas/lluvias 2026-27 (⏳ Próximos ordenados, 🌕 Mes lunar con iluminación día por día y sus eventos, 📅 Año por tipo). Las fases se ven directo en el calendario. <b>🎉 Penco:</b> 14 eventos anuales + tus eventos anuales editables (aparecen como 🎉 en el calendario). <b>📿 Ekadashi:</b> cálculo tithi con 3 lunas, ayuno shukla/krishna.</p>
             <p><b>📸 Hora Dorada:</b> salida/puesta Penco + ventana dorada/azul. <b>🌞 Circadiano:</b> gráfico 24h, fase actual, 6 bloques con qué hacer.</p>
             <p><b>🪱 Compost:</b> pila/vermi/bocashi con registro de volteos ligados a la menguante. <b>♻️ Reciclaje:</b> buscador “¿dónde va?” (punto limpio/feria/compost/basura/peligroso) + ferias Penco mié/sáb. <b>🌬️ Aire:</b> PM2.5 en vivo + guía de leña y ventilación en Pukem.</p>
          </div>
@@ -2188,7 +2251,6 @@
           <label class="check-row"><input type="checkbox" data-btn="btnBosque"> 🌳 Bosque Nativo</label>
           <label class="check-row"><input type="checkbox" data-btn="btnCompost"> 🪱 Compost & Suelo</label>
           <label class="check-row"><input type="checkbox" data-btn="btnRecicla"> ♻️ Reciclaje & Ferias</label>
-          <label class="check-row"><input type="checkbox" data-btn="btnAire"> 🌬️ Aire Penco</label>
         </div>
         <div class="config-group">
           <h5>🌸 Cuerpo y salud</h5>
@@ -2316,10 +2378,10 @@
         <button type="button" id="astroCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
       </div>
       <p class="muted" style="line-height:1.5">Cielo del Bío-Bío. Horas en <b>America/Santiago</b>. Fases ya se ven en el calendario; aquí: eclipses, superlunas y lluvias de meteoros visibles desde Penco.</p>
-      <div class="timer-tabs" style="margin-bottom:10px">
+      <div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">
         <button type="button" id="tabAstroUpcoming" class="btn btn-accent" style="width:auto">⏳ Próximos</button>
+        <button type="button" id="tabAstroMesLunar" class="btn" style="width:auto">🌕 Mes lunar</button>
         <button type="button" id="tabAstroYear" class="btn" style="width:auto">📅 Año</button>
-        <button type="button" id="tabAstroLuna" class="btn" style="width:auto">🌙 Fases de esta luna</button>
       </div>
       <div id="astroTodayBox" class="menstrual-card" style="border-color:var(--gold)"></div>
       <div id="astroList"></div>
