@@ -591,3 +591,18 @@ body.large-text #lunaDesc, body.large-text .chip, body.large-text .btn { font-si
   .schedule-week { grid-template-columns: 1fr; }
   .fishing-grid { grid-template-columns: 1fr; }
 }
+/* Semana / Semana lunar en celular: filas compactas, sin encabezado duplicado */
+@media (max-width: 920px) {
+  .dow-row.dow-week { display: none; }
+  .week-grid { grid-template-columns: 1fr; gap: 6px; }
+  .week-grid .day-card { min-height: 0; padding: 10px 12px; border-radius: 10px; }
+  .week-grid .day-card .dc-head { gap: 6px; align-items: center; }
+  .week-grid .day-card .dc-n { font-size: 15px; }
+  .week-grid .day-card .dc-phases { font-size: 13px; text-align: left; }
+  .week-grid .day-card .dc-date { font-size: 11px; }
+  .week-grid .day-card .dc-sun { font-size: 12px; margin-top: 3px; }
+  .week-grid .day-card .dc-clima,
+  .week-grid .day-card .dc-note { font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .week-grid .day-card .dc-note:empty,
+  .week-grid .day-card .dc-clima:empty { display: none; }
+}
