@@ -85,7 +85,27 @@ body {
 .dow-row { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 8px; margin-bottom: 6px; }
 .dow-row div { text-align: center; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); }
 
+#viewBar { display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:space-between; margin-bottom:12px; }
+.view-switch { display:flex; gap:6px; flex-wrap:wrap; }
+.view-btn { width:auto; }
+.view-btn.btn-accent { box-shadow:0 0 0 1px #e8c56a88; }
+.view-nav { display:flex; gap:6px; align-items:center; flex-wrap:wrap; }
+.view-nav.hidden { display:none !important; }
+#viewNavLabel { font-size:13px; }
+.day-view-card { max-width:720px; background:var(--card); border:1px solid var(--gold); border-radius:14px; padding:16px 18px; }
+.day-view-hours { display:flex; flex-direction:column; gap:6px; margin-top:10px; }
+.day-view-hour { display:flex; gap:8px; align-items:baseline; padding:6px 10px; background:var(--panel); border:1px solid var(--line); border-radius:8px; font-size:13px; }
+.day-view-hour.past { opacity:.55; }
+.day-view-hour.now { outline:2px solid var(--gold); }
+.day-view-hour .hh { color:var(--gold); font-weight:700; min-width:48px; font-variant-numeric:tabular-nums; }
+.week-grid { display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:8px; }
+@media (max-width:920px){ .week-grid{ grid-template-columns:1fr; } }
+.mini-cal-nav { display:flex; gap:8px; align-items:center; margin-bottom:8px; flex-wrap:wrap; }
+
 #grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 8px; }
+#grid.view-mes { grid-template-columns: repeat(7, minmax(0, 1fr)); }
+#grid.view-semana { display:block; }
+#grid.view-dia { display:block; }
 
 .day-card {
   background: var(--card); border: 1px solid var(--line); border-radius: 10px;
@@ -478,6 +498,38 @@ body[data-theme="medianoche"] { --bg:#050508; --bg2:#0a0a10; --panel:#141418; --
 .shop-item.done { opacity: 0.6; }
 .shop-item.done .shop-name { text-decoration: line-through; }
 .shop-name { flex: 1; font-size: 13px; }
+/* Diógenes — checklist compacto con scroll */
+.dio-compact { display: flex; flex-direction: column; gap: 4px; max-height: 220px; overflow-y: auto; padding-right: 2px; }
+.dio-item { display: flex; align-items: center; gap: 8px; padding: 4px 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); cursor: pointer; }
+.dio-item.done { opacity: 0.6; }
+.dio-item.done .dio-txt b { text-decoration: line-through; }
+.dio-item input { width: 14px; height: 14px; flex: 0 0 auto; margin: 0; accent-color: var(--gold); }
+.dio-txt { flex: 1; line-height: 1.25; min-width: 0; }
+.dio-txt b { font-size: 12px; font-weight: 600; }
+.dio-txt small { display: block; color: var(--muted); font-size: 10.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dio-check { font-size: 10px; color: var(--muted); border: 1px solid var(--line); border-radius: 20px; padding: 1px 7px; flex: 0 0 auto; }
+.dio-item.done .dio-check { color: #a9d18e; border-color: #a9d18e55; }
+/* Astro — próximos ordenados + mes lunar */
+.astro-month { margin:12px 0 6px; padding:6px 10px; background:var(--panel); border:1px solid var(--line); border-radius:8px; color:var(--gold); font-weight:700; font-size:12px; letter-spacing:1px; text-transform:uppercase; }
+.astro-item { display:flex; gap:10px; align-items:flex-start; background:var(--card); border:1px solid var(--line); border-radius:12px; padding:10px 12px; margin-bottom:8px; }
+.astro-item.today { border-color:var(--gold); background:linear-gradient(135deg,var(--panel),var(--card)); box-shadow:0 0 0 1px #e8c56a22; }
+.astro-date { flex:0 0 46px; text-align:center; background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:6px 4px; }
+.astro-date b { display:block; font-size:20px; color:var(--gold); line-height:1; }
+.astro-date span { font-size:10px; color:var(--muted); text-transform:uppercase; }
+.astro-body { flex:1; min-width:0; }
+.astro-body p { margin:4px 0 0; color:#cdd3ee; line-height:1.45; }
+.astro-top { display:flex; gap:8px; align-items:center; justify-content:space-between; flex-wrap:wrap; }
+.astro-name { font-weight:700; font-size:13px; color:var(--text); }
+.astro-cd { font-size:10px; white-space:nowrap; }
+.astro-phases { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-top:10px; }
+@media (max-width:920px){ .astro-phases { grid-template-columns:repeat(2,1fr); } }
+.astro-phase { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:10px 8px; text-align:center; display:flex; flex-direction:column; gap:2px; align-items:center; font-size:12px; }
+.astro-phase-icon { font-size:26px; }
+.astro-luna-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(64px,1fr)); gap:6px; margin-top:8px; }
+.astro-luna-cell { background:var(--card); border:1px solid var(--line); border-radius:8px; padding:6px 4px; text-align:center; display:flex; flex-direction:column; gap:2px; align-items:center; }
+.astro-luna-cell.today { border-color:var(--gold); outline:1px solid var(--gold); }
+.astro-bar { display:block; width:100%; height:4px; background:var(--panel); border-radius:3px; overflow:hidden; }
+.astro-bar i { display:block; height:100%; background:linear-gradient(90deg,#7ab8ff,#e8c56a); }
 .hidden { display: none !important; }
 
 /* Accesibilidad */

@@ -208,14 +208,306 @@ function selectCycle(year, keepLuna) {
 
 function selectMoon(n) {
   currentView = { tipo: 'luna', luna: n };
+  viewMode = 'luna';
+  updateViewButtons();
   markActiveNav('luna', n);
   renderLuna();
 }
 
 function selectDFT() {
   currentView = { tipo: 'dft', luna: null };
+  viewMode = 'luna';
+  updateViewButtons();
   markActiveNav('dft', null);
   renderDFT();
+}
+
+// === VISTAS: LUNA (defecto) / MES / SEMANA / DÍA ===
+let viewMode = 'luna'; // luna = 13 lunas (defecto) | mes | semana | dia
+let viewDateMs = Date.now(); // pivote gregoriano para mes/semana/día
+let _lunaByKeyCache = null;
+function rebuildLunaByKey(){
+  _lunaByKeyCache = {};
+  try{
+    for(const y of CYCLE_YEARS){
+      const c = cal.buildCycle(y);
+      for(const d of c.days){
+        const k = cal.fmtKey.format(new Date(d.noonMs));
+        if(!_lunaByKeyCache[k]) _lunaByKeyCache[k] = { y, luna: d.luna, diaN: d.diaN, noonMs: d.noonMs };
+      }
+    }
+  }catch(e){}
+}
+function lunaMapForKey(key){
+  if(!_lunaByKeyCache) rebuildLunaByKey();
+  return _lunaByKeyCache[key] || null;
+}
+function cellForLunaRef(ref){
+  if(!ref || ref.luna==='dft') return null;
+  try{
+    const savedCycle = cycle;
+    const savedYear = currentCycleYear();
+    let cell = null;
+    if(ref.y === savedYear){
+      cell = dayCell(ref.luna, ref.diaN);
+    } else {
+      // leer sin cambiar ciclo visible: acceso directo a DATA
+      const u = userData();
+      const c = u.cycles[String(ref.y)];
+      if(c && c.moons[String(ref.luna)] && c.moons[String(ref.luna)].days[ref.diaN]) cell = c.moons[String(ref.luna)].days[ref.diaN];
+    }
+    return cell;
+  }catch(e){ return null; }
+}
+function agendaTimeStr(a){
+  if(a.time && /^\d{2}:\d{2}$/.test(a.time)) return a.time;
+  const h = String(a.hour||0).padStart(2,'0');
+  const m = String(a.minute||0).padStart(2,'0');
+  return h+':'+m;
+}
+function updateViewButtons(){
+  const map = { luna:'viewLuna', semanaLunar:'viewSemanaLunar', mes:'viewMes', semana:'viewSemana' };
+  Object.entries(map).forEach(([m,id])=>{
+    const el = $(id); if(!el) return;
+    const on = (viewMode===m);
+    el.classList.toggle('btn-accent', on);
+    el.setAttribute('aria-selected', on ? 'true':'false');
+  });
+  const nav = $('viewNav');
+  if(nav) nav.classList.toggle('hidden', viewMode==='luna' && currentView.tipo!=='dft' ? true : false);
+  // En vista luna pura ocultamos nav de mes/semana/día; en DFT también oculto
+  if(nav && (viewMode==='luna')) nav.classList.add('hidden');
+  else if(nav) nav.classList.remove('hidden');
+}
+function setViewMode(m){
+  viewMode = m;
+  if(m!=='luna') viewDateMs = Date.now();
+  updateViewButtons();
+  renderCurrentView();
+}
+function renderCurrentView(){
+  updateViewButtons();
+  if(viewMode==='semanaLunar') renderSemanaLunarView();
+  else if(viewMode==='mes') renderMesView();
+  else if(viewMode==='semana') renderSemanaView();
+  else {
+    if(currentView.tipo==='dft') renderDFT();
+    else renderLuna();
+  }
+}
+function gregMonthLabel(ms){
+  const d = new Date(ms);
+  const name = d.toLocaleDateString('es-CL',{timeZone:cal.TZ, month:'long', year:'numeric'});
+  return name.charAt(0).toUpperCase()+name.slice(1);
+}
+function shiftViewDate(diff){
+  const d = new Date(viewDateMs);
+  if(viewMode==='mes'){ d.setMonth(d.getMonth()+diff); }
+  else if(viewMode==='semana'){ d.setDate(d.getDate()+diff*7); }
+  else if(viewMode==='semanaLunar'){ d.setDate(d.getDate()+diff*7); }
+  viewDateMs = d.getTime();
+  renderCurrentView();
+}
+function goViewToday(){ viewDateMs = Date.now(); renderCurrentView(); }
+function setupViewBar(){
+  const bL=$('viewLuna'), bSL=$('viewSemanaLunar'), bM=$('viewMes'), bS=$('viewSemana');
+  if(bL) bL.onclick=()=>{ viewMode='luna'; renderCurrentView(); };
+  if(bSL) bSL.onclick=()=>{ viewMode='semanaLunar'; viewDateMs=Date.now(); renderCurrentView(); };
+  if(bM) bM.onclick=()=>{ viewMode='mes'; viewDateMs=Date.now(); renderCurrentView(); };
+  if(bS) bS.onclick=()=>{ viewMode='semana'; viewDateMs=Date.now(); renderCurrentView(); };
+  const pv=$('viewPrev'), nx=$('viewNext'), td=$('viewTodayBtn');
+  if(pv) pv.onclick=()=>shiftViewDate(-1);
+  if(nx) nx.onclick=()=>shiftViewDate(1);
+  if(td) td.onclick=()=>goViewToday();
+}
+function miniDayCard(key, opts){
+  opts = opts||{};
+  const ref = lunaMapForKey(key);
+  const dt = new Date(key+'T12:00:00');
+  const isToday = key===cal.fmtKey.format(new Date());
+  const cell = ref ? cellForLunaRef(ref) : null;
+  const agenda = (cell && Array.isArray(cell.agenda)) ? [...cell.agenda].sort((a,b)=> agendaTimeStr(a).localeCompare(agendaTimeStr(b))) : [];
+  const nota = cell && cell.nota ? cell.nota : '';
+  const evs = (typeof phaseMap!=='undefined' && phaseMap[key]) ? phaseMap[key] : [];
+  const lunaTxt = ref ? (ref.luna==='dft' ? '✷ DFT' : 'L'+ref.luna+'·D'+ref.diaN) : '';
+  const dim = !!opts.dim;
+  return `<div class="day-card${isToday?' today':''}" data-key="${key}" style="${dim?'opacity:.45':''};cursor:pointer">
+    <div class="dc-head"><span class="dc-n">${dt.getDate()}</span><span class="dc-phases">${evs.map(e=>`<span class="dc-phase" title="${e.tipo}">${e.simbolo}</span>`).join('')}</span><span class="dc-date">${lunaTxt}</span></div>
+    <div class="dc-sun">${cal.weekdayName(dt.getTime()).slice(0,3)}</div>
+    ${agenda.length? `<div class="dc-clima">🕐 ${agenda.length} · ${escapeHtml(agenda.slice(0,2).map(a=>agendaTimeStr(a)+' '+a.text).join(' · '))}${agenda.length>2?' …':''}</div>`:''}
+    ${nota? `<div class="dc-note">${escapeHtml(nota.split('\n')[0])}</div>`:'<div class="dc-note"></div>'}
+  </div>`;
+}
+function bindMiniCards(scope){
+  (scope||document).querySelectorAll('.day-card[data-key]').forEach(c=>{
+    c.onclick=()=>{
+      const key=c.dataset.key;
+      const ref=lunaMapForKey(key);
+      if(ref && ref.luna!=='dft'){
+        if(String(ref.y)!==String(currentCycleYear())){
+          try{ selectCycle(ref.y, ref.luna); }catch(e){}
+        }
+        openDayDialog(ref.luna, ref.diaN);
+      } else {
+        viewDateMs = new Date(key+'T12:00:00').getTime();
+        viewMode='semanaLunar'; renderCurrentView();
+      }
+    };
+  });
+}
+function renderMesView(){
+  const grid=$('grid'), dow=$('dowRow');
+  const base=new Date(viewDateMs);
+  const parts=cal.santiagoParts(base.getTime());
+  const y=parts.y, m=parts.m; // 1-12 Santiago
+  $('monthNoteWrap').style.display='none';
+  $('lunaTitle').textContent='📅 '+gregMonthLabel(base.getTime());
+  const ref0=lunaMapForKey(cal.fmtKey.format(new Date(Date.UTC(y,m-1,1,12))));
+  $('lunaMeta').innerHTML='Vista mensual gregoriana · Penco (America/Santiago)'+(ref0&&ref0.luna!=='dft'?` · cruza Luna ${ref0.luna}`:'')+'<br><i>La vista por defecto sigue siendo 🌙 Luna de 28 días</i>';
+  $('lunaDesc').textContent='Toca un día para abrir sus notas y compromisos por hora. Los compromisos aceptan cualquier hora (HH:MM).';
+  $('phaseChips').innerHTML='<span class="chip">🌙 Luna = vista por defecto</span><span class="chip">📅 Mes = gregoriano</span>';
+  document.body.dataset.tema = (currentView&&currentView.tipo==='luna'&&MOONS[currentView.luna-1]) ? MOONS[currentView.luna-1].estacion : 'RIMU';
+  const curTheme=getTheme(); if(curTheme!=='auto') document.body.setAttribute('data-theme',curTheme); else document.body.removeAttribute('data-theme');
+  dow.innerHTML=['lun','mar','mié','jue','vie','sáb','dom'].map(d=>`<div>${d}</div>`).join('');
+  const firstDow=(new Date(Date.UTC(y,m-1,1)).getUTCDay()+6)%7; // lunes=0
+  const dim=new Date(Date.UTC(y,m,0)).getUTCDate();
+  let html='';
+  for(let i=0;i<firstDow;i++) html+='<div></div>';
+  for(let d=1;d<=dim;d++){
+    const key=y+'-'+String(m).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+    html+=miniDayCard(key);
+  }
+  grid.className=''; grid.id='grid';
+  grid.style.display='grid';
+  grid.innerHTML=html;
+  bindMiniCards(grid);
+  const lb=$('viewNavLabel'); if(lb) lb.textContent=gregMonthLabel(base.getTime());
+}
+function renderSemanaView(){
+  const grid=$('grid'), dow=$('dowRow');
+  $('monthNoteWrap').style.display='none';
+  const base=new Date(viewDateMs);
+  const dowIdx=(base.getDay()+6)%7;
+  const monday=new Date(base); monday.setDate(base.getDate()-dowIdx);
+  const sunday=new Date(monday); sunday.setDate(monday.getDate()+6);
+  const f=d=>cal.fmtKey.format(d);
+  $('lunaTitle').textContent='🗓️ Semana '+cal.fmtDate.format(monday)+' — '+cal.fmtDate.format(sunday);
+  $('lunaMeta').innerHTML='Vista semanal · toca un día para abrirlo';
+  $('lunaDesc').textContent='Compromisos a cualquier hora (HH:MM) con 🔔 opcional.';
+  $('phaseChips').innerHTML='';
+  dow.innerHTML=['lunes','martes','miércoles','jueves','viernes','sábado','domingo'].map(d=>`<div>${d}</div>`).join('');
+  let html='<div class="week-grid">';
+  for(let i=0;i<7;i++){ const d=new Date(monday); d.setDate(monday.getDate()+i); html+=miniDayCard(f(d)); }
+  html+='</div>';
+  grid.style.display='block';
+  grid.innerHTML=html;
+  bindMiniCards(grid);
+  const lb=$('viewNavLabel'); if(lb) lb.textContent=cal.fmtDate.format(monday)+' — '+cal.fmtDate.format(sunday);
+}
+// === VISTA LUNAR (astronómica): SEMANA LUNAR ===
+// Semana lunar = 7 días corridos desde la fecha pivote, con fase e
+// iluminación diaria. El detalle de la lunación completa vive en 🔭 Astro.
+function lunarEvents(fromMs, toMs){
+  try{ return window.astro.moonPhaseEvents(fromMs, toMs).sort((a,b)=>a.utcMs-b.utcMs); }
+  catch(e){ return []; }
+}
+function lunarEventsMap(fromMs, toMs){
+  const map = {};
+  for(const e of lunarEvents(fromMs, toMs)){
+    const k = cal.fmtKey.format(new Date(e.utcMs));
+    if(!map[k]) map[k]=[];
+    map[k].push(e);
+  }
+  try{
+    if(typeof phaseMap!=='undefined'){
+      for(const k of Object.keys(phaseMap)){
+        const t = new Date(k+'T12:00:00').getTime();
+        if(t>=fromMs-86400000 && t<=toMs+86400000 && !map[k]) map[k]=phaseMap[k];
+      }
+    }
+  }catch(e){}
+  return map;
+}
+function lunarMonthRange(ms){
+  const SYNODIC_MS = 29.530588861*86400000;
+  const targetKey = cal.fmtKey.format(new Date(ms));
+  const nuevas = lunarEvents(ms-45*86400000, ms+45*86400000).filter(e=>e.tipo==='nueva').sort((a,b)=>a.utcMs-b.utcMs);
+  let startEv = null;
+  if(nuevas.length){
+    startEv = nuevas[0];
+    for(const e of nuevas){
+      if(cal.fmtKey.format(new Date(e.utcMs)) <= targetKey) startEv = e;
+    }
+    let endEv = nuevas[nuevas.indexOf(startEv)+1] || null;
+    if(!endEv) endEv = { utcMs: startEv.utcMs+SYNODIC_MS, tipo:'nueva', simbolo:'🌑' };
+    const startKey = cal.fmtKey.format(new Date(startEv.utcMs));
+    const endKey = cal.fmtKey.format(new Date(endEv.utcMs));
+    const days = [];
+    let cur = new Date(startKey+'T12:00:00').getTime();
+    const endT = new Date(endKey+'T12:00:00').getTime();
+    let guard = 0;
+    while(cur < endT && guard < 32){ days.push(cal.fmtKey.format(new Date(cur))); cur += 86400000; guard++; }
+    return { startEv, endEv, startKey, endKey, days };
+  }
+  // fallback sin efemérides: ventana de 30 días desde el pivote
+  const startKey = targetKey;
+  const days = [];
+  let cur = new Date(startKey+'T12:00:00').getTime();
+  for(let i=0;i<30;i++){ days.push(cal.fmtKey.format(new Date(cur))); cur += 86400000; }
+  return { startEv:null, endEv:null, startKey, endKey:days[days.length-1], days };
+}
+function moonDaily(key){
+  try{
+    const noon = new Date(key+'T12:00:00').getTime();
+    const icon = window.astro.moonIcon(noon);
+    const info = window.astro.moonInfo(noon);
+    const illum = Math.round((info.fraction||0)*100);
+    return { icon: icon||'🌙', illum };
+  }catch(e){ return { icon:'🌙', illum:null }; }
+}
+function miniLunarCard(key, evMap, idx){
+  const ref = lunaMapForKey(key);
+  const dt = new Date(key+'T12:00:00');
+  const isToday = key===cal.fmtKey.format(new Date());
+  const cell = ref ? cellForLunaRef(ref) : null;
+  const agenda = (cell && Array.isArray(cell.agenda)) ? [...cell.agenda].sort((a,b)=> agendaTimeStr(a).localeCompare(agendaTimeStr(b))) : [];
+  const nota = cell && cell.nota ? cell.nota : '';
+  const evs = (evMap && evMap[key]) ? evMap[key] : [];
+  const moon = moonDaily(key);
+  const lunaTxt = ref ? (ref.luna==='dft' ? '✷ DFT' : 'L'+ref.luna+'·D'+ref.diaN) : '';
+  const wd = cal.weekdayName(dt.getTime());
+  return `<div class="day-card${isToday?' today':''}" data-key="${key}" style="cursor:pointer" title="${escapeHtml(wd)} ${escapeHtml(key)} · ${moon.illum===null?'':moon.illum+'% iluminada'}">
+    <div class="dc-head"><span class="dc-n">${idx!==undefined? String(idx).padStart(2,'0') : dt.getDate()}</span><span class="dc-phases">${moon.icon} ${evs.map(e=>`<span class="dc-phase" title="${e.tipo}">${e.simbolo}</span>`).join('')}</span><span class="dc-date">${dt.getDate()}/${dt.getMonth()+1}</span></div>
+    <div class="dc-sun">${moon.illum===null?'🌙':moon.illum+'%'} · ${escapeHtml(wd.slice(0,3))}${lunaTxt? ' · '+lunaTxt:''}</div>
+    ${agenda.length? `<div class="dc-clima">🕐 ${agenda.length} · ${escapeHtml(agenda.slice(0,2).map(a=>agendaTimeStr(a)+' '+a.text).join(' · '))}${agenda.length>2?' …':''}</div>`:''}
+    ${nota? `<div class="dc-note">${escapeHtml(nota.split('\n')[0])}</div>`:'<div class="dc-note"></div>'}
+  </div>`;
+}
+function applyLunarTema(){
+  document.body.dataset.tema = (currentView&&currentView.tipo==='luna'&&MOONS[currentView.luna-1]) ? MOONS[currentView.luna-1].estacion : 'RIMU';
+  const curTheme=getTheme(); if(curTheme!=='auto') document.body.setAttribute('data-theme',curTheme); else document.body.removeAttribute('data-theme');
+}
+function renderSemanaLunarView(){
+  const grid=$('grid'), dow=$('dowRow');
+  $('monthNoteWrap').style.display='none';
+  applyLunarTema();
+  const startKey = cal.fmtKey.format(new Date(viewDateMs));
+  const keys = [];
+  let cur = new Date(startKey+'T12:00:00').getTime();
+  for(let i=0;i<7;i++){ keys.push(cal.fmtKey.format(new Date(cur))); cur += 86400000; }
+  const evMap = lunarEventsMap(new Date(keys[0]+'T12:00:00').getTime()-86400000, new Date(keys[6]+'T12:00:00').getTime()+86400000);
+  const d0=new Date(keys[0]+'T12:00:00'), d6=new Date(keys[6]+'T12:00:00');
+  $('lunaTitle').textContent='🌗 Semana lunar · '+cal.fmtDate.format(d0)+' — '+cal.fmtDate.format(d6);
+  $('lunaMeta').innerHTML='7 días corridos desde el pivote · con fase e iluminación diaria<br><i>La semana gregoriana (lun–dom) sigue en 🗓️ Semana</i>';
+  $('lunaDesc').textContent='Toca un día para abrir sus notas y compromisos a cualquier hora (HH:MM).';
+  const chips=[];
+  keys.forEach(k=> (evMap[k]||[]).forEach(e=> chips.push(`<span class="chip">${e.simbolo} <b>${e.tipo.replace('-',' ')}</b> · ${cal.fmtDate.format(new Date(k+'T12:00:00'))} ${cal.fmtTime.format(new Date(e.utcMs))}</span>`)));
+  $('phaseChips').innerHTML = chips.join('') || '<span class="chip" style="color:var(--muted)">Sin fases exactas estos 7 días</span>';
+  dow.innerHTML=keys.map(k=>{ const w=cal.weekdayName(new Date(k+'T12:00:00').getTime()); return `<div>${w.slice(0,3)}</div>`; }).join('');
+  grid.style.display='block';
+  grid.innerHTML='<div class="week-grid">'+keys.map((k,i)=>miniLunarCard(k, evMap, i+1)).join('')+'</div>';
+  bindMiniCards(grid);
+  const lb=$('viewNavLabel'); if(lb) lb.textContent=cal.fmtDate.format(d0)+' — '+cal.fmtDate.format(d6);
 }
 
 function seasonChip(el, estKey) {
@@ -226,6 +518,8 @@ function seasonChip(el, estKey) {
 }
 
 function renderLuna() {
+  if(viewMode && viewMode!=='luna'){ renderCurrentView(); return; }
+  updateViewButtons();
   const meta = MOONS[currentView.luna - 1];
   const lunaDays = cycle.days.filter(d => d.luna === meta.n);
   const first = lunaDays[0], last = lunaDays[27];
@@ -236,7 +530,7 @@ function renderLuna() {
   if (curTheme !== 'auto') document.body.setAttribute('data-theme', curTheme);
   else document.body.removeAttribute('data-theme');
   $('monthNoteWrap').style.display = '';
-  $('grid').style.display = '';
+  $('grid').style.display = 'grid';
   document.querySelector('#monthNoteWrap label').textContent = 'NOTAS DE LA LUNA';
   $('monthNote').placeholder = 'Reflexión o resumen de esta luna completa...';
 
@@ -370,7 +664,7 @@ function renderLuna() {
       ${gratIcons ? `<div class="dc-habits">${gratIcons}</div>` : ''}
       ${efe ? `<div class="dc-efe" title="${escapeHtml(efe)}">📅 ${escapeHtml(efe)}</div>` : ''}
       ${mood ? `<div class="dc-clima">Ánimo: ${escapeHtml(mood.e)} ${escapeHtml(mood.n)}</div>` : ''}
-      ${Array.isArray(cell.agenda)&&cell.agenda.length ? `<div class="dc-clima" title="${escapeHtml(cell.agenda.map(a=>String(a.hour).padStart(2,'0')+':00 '+a.text + (a.notify?' 🔔':'')).join(' · '))}">🕐 ${cell.agenda.length} compromiso${cell.agenda.length>1?'s':''} · ${escapeHtml(cell.agenda.slice(0,2).map(a=>String(a.hour).padStart(2,'0')+':00 '+a.text).join(' · '))}${cell.agenda.length>2?' …':''}</div>` : ''}
+      ${Array.isArray(cell.agenda)&&cell.agenda.length ? `<div class="dc-clima" title="${escapeHtml(cell.agenda.map(a=>getAgendaTime(a)+' '+a.text + (a.notify?' 🔔':'')).join(' · '))}">🕐 ${cell.agenda.length} compromiso${cell.agenda.length>1?'s':''} · ${escapeHtml(cell.agenda.slice(0,2).map(a=>getAgendaTime(a)+' '+a.text).join(' · '))}${cell.agenda.length>2?' …':''}</div>` : ''}
       ${cell.nota ? `<div class="dc-note">${escapeHtml(cell.nota.split('\n')[0])}</div>` : (Array.isArray(cell.agenda)&&cell.agenda.length ? `<div class="dc-note">${escapeHtml(cell.agenda[0].text.split('\n')[0])}</div>` : `<div class="dc-note"></div>`)}`;
     card.onclick = () => openDayDialog(meta.n, d.diaN);
     grid.appendChild(card);
@@ -444,10 +738,28 @@ function renderDFT() {
 let editing = null;
 let pendingMood = -1;
 
-// === NOTAS DEL DÍA POR HORAS + AGENDA ===
+// === NOTAS DEL DÍA POR HORAS + AGENDA (cualquier hora HH:MM) ===
+function getAgendaTime(a){
+  if(a && typeof a.time==='string' && /^\d{1,2}:\d{2}$/.test(a.time)){
+    const [hh,mm]=a.time.split(':').map(Number);
+    return String(hh).padStart(2,'0')+':'+String(mm).padStart(2,'0');
+  }
+  const h = (a && a.hour!==undefined) ? a.hour : 0;
+  const m = (a && a.minute!==undefined) ? a.minute : 0;
+  return String(h).padStart(2,'0')+':'+String(m).padStart(2,'0');
+}
 function ensureHourSel() {
   const sel = $('dlgHourSel');
-  if (!sel || sel.options.length) return;
+  if (!sel) return;
+  // Nuevo: input type=time → cualquier hora/minuto. Legacy: select con options.
+  if(sel.tagName==='INPUT'){
+    if(!sel.value){
+      const now = new Date();
+      sel.value = String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
+    }
+    return;
+  }
+  if (sel.options.length) return;
   for (let h=0; h<24; h++) {
     const o = document.createElement('option');
     o.value = String(h);
@@ -463,19 +775,25 @@ function renderDlgHoras() {
   if (!grid || !editing) return;
   const cell = dayCell(editing.lunaN, editing.diaN);
   if (!Array.isArray(cell.agenda)) cell.agenda = [];
-  // ordenar por hora
-  const sorted = [...cell.agenda].sort((a,b)=> a.hour-b.hour || (a.id||'').localeCompare(b.id||''));
+  // migración suave: hora legacy → time HH:MM
+  cell.agenda.forEach(a=>{
+    if(!a.time || !/^\d{2}:\d{2}$/.test(a.time)) a.time = getAgendaTime(a);
+    if(a.hour===undefined) a.hour = parseInt(a.time.slice(0,2),10);
+    if(a.minute===undefined) a.minute = parseInt(a.time.slice(3,5),10);
+  });
+  // ordenar por hora exacta
+  const sorted = [...cell.agenda].sort((a,b)=> getAgendaTime(a).localeCompare(getAgendaTime(b)) || (a.id||'').localeCompare(b.id||''));
   if (!sorted.length) {
-    grid.innerHTML = '<p class="muted" style="font-size:11px;padding:8px;border:1px dashed var(--line);border-radius:8px;text-align:center">Sin compromisos aún. Agrega uno por hora abajo.</p>';
+    grid.innerHTML = '<p class="muted" style="font-size:11px;padding:8px;border:1px dashed var(--line);border-radius:8px;text-align:center">Sin compromisos aún. Agrega uno a cualquier hora abajo (ej 08:37).</p>';
     return;
   }
-  // agrupar por hora
-  const byHour = {};
-  sorted.forEach(it=> { if(!byHour[it.hour]) byHour[it.hour]=[]; byHour[it.hour].push(it); });
-  const hours = Object.keys(byHour).map(Number).sort((a,b)=>a-b);
-  grid.innerHTML = hours.map(h=>{
-    const items = byHour[h];
-    return `<div class="hora-block"><div class="hora-label">🕐 ${String(h).padStart(2,'0')}:00 <span class="muted" style="font-size:10px">· ${items.length} ${items.length===1?'compromiso':'compromisos'}</span></div>` +
+  // agrupar por hora exacta (HH:MM)
+  const byTime = {};
+  sorted.forEach(it=> { const t=getAgendaTime(it); if(!byTime[t]) byTime[t]=[]; byTime[t].push(it); });
+  const times = Object.keys(byTime).sort();
+  grid.innerHTML = times.map(t=>{
+    const items = byTime[t];
+    return `<div class="hora-block"><div class="hora-label">🕐 ${t} <span class="muted" style="font-size:10px">· ${items.length} ${items.length===1?'compromiso':'compromisos'}</span></div>` +
       items.map(it=>`<div class="hora-item"><span class="hora-text">${escapeHtml(it.text)}</span><span class="hora-actions"><span class="chip" style="font-size:10px;padding:2px 6px">${it.notify?'🔔':'🔕'}</span><button type="button" class="btn btn-icon hora-notify" data-id="${it.id}" title="${it.notify?'Desactivar':'Activar'} notificación">${it.notify?'🔔':'🔕'}</button><button type="button" class="btn btn-icon hora-del" data-id="${it.id}" title="Eliminar">✕</button></span></div>`).join('') + `</div>`;
   }).join('');
   grid.querySelectorAll('.hora-del').forEach(b=> b.onclick=()=>{
@@ -523,12 +841,11 @@ function agendaCheckNotify() {
           if(key!==todayKey) continue;
           cell.agenda.forEach(it=>{
             if(!it.notify || it.notified) return;
-            if(it.hour===nowHour && nowMin===0){
-              try{ playNotifySound(); new Notification(`⏰ ${String(it.hour).padStart(2,'0')}:00 — ${it.text}`, { body: `Luna ${mk} · Día ${dk} — ${it.text}`, silent:false}); }catch{}
+            const t = (typeof getAgendaTime==='function') ? getAgendaTime(it) : (it.time || String(it.hour).padStart(2,'0')+':00');
+            const [hh,mm] = t.split(':').map(Number);
+            if(hh===nowHour && mm===nowMin){
+              try{ playNotifySound(); new Notification(`⏰ ${t} — ${it.text}`, { body: `Luna ${mk} · Día ${dk} — ${it.text}`, silent:false}); }catch{}
               it.notified=true;
-            } else if(it.hour < nowHour) {
-              // si ya pasó y no se notificó, marcar para no repetir hoy
-              // no hacer nada, dejar notified false hasta medianoche? simplemente no notificar tarde
             }
           });
         }
@@ -539,13 +856,24 @@ function agendaCheckNotify() {
     scheduleSave();
   }catch(e){}
 }
-setInterval(()=>{ try{ agendaCheckNotify(); }catch{} }, 60000);
+setInterval(()=>{ try{ agendaCheckNotify(); }catch{} }, 30000);
 function setupDlgHorasAdd(){
   const btn=$('dlgHourAdd'); if(!btn) return;
   btn.onclick=async()=>{
     const sel=$('dlgHourSel'); const txtEl=$('dlgHourText'); const chk=$('dlgHourNotify');
     if(!editing) return;
-    const hour=parseInt(sel.value); const text=sanitizeText((txtEl.value||'').trim(),80);
+    let timeStr='08:00', hour=8, minute=0;
+    const raw=(sel.value||'').trim();
+    if(/^\d{1,2}:\d{2}/.test(raw)){
+      const [hh,mm]=raw.split(':').map(Number);
+      if(hh>=0&&hh<=23&&mm>=0&&mm<=59){ hour=hh; minute=mm; timeStr=String(hh).padStart(2,'0')+':'+String(mm).padStart(2,'0'); }
+      else return alert('Hora inválida (00:00 a 23:59)');
+    } else if(/^\d{1,2}$/.test(raw)){
+      hour=parseInt(raw,10); timeStr=String(hour).padStart(2,'0')+':00';
+    } else {
+      return alert('Elige una hora válida (ej 08:37)');
+    }
+    const text=sanitizeText((txtEl.value||'').trim(),80);
     if(!text) return;
     const notify=!!(chk && chk.checked);
     if(notify){
@@ -553,10 +881,10 @@ function setupDlgHorasAdd(){
     }
     const cell=dayCell(editing.lunaN, editing.diaN);
     if(!Array.isArray(cell.agenda)) cell.agenda=[];
-    cell.agenda.push({ id:'a'+Date.now()+Math.random().toString(36).slice(2,4), hour, text, notify, notified:false });
+    cell.agenda.push({ id:'a'+Date.now()+Math.random().toString(36).slice(2,4), hour, minute, time:timeStr, text, notify, notified:false });
     scheduleSave();
     txtEl.value=''; if(chk) chk.checked=false;
-    renderDlgHoras(); if(currentView.tipo==='luna') renderLuna();
+    renderDlgHoras(); renderCurrentView();
   };
   const txtEl2=$('dlgHourText');
   if(txtEl2) txtEl2.addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); $('dlgHourAdd').click(); } });
@@ -591,7 +919,11 @@ function openDayDialog(lunaN, diaN) {
     moodBox.appendChild(b);
   });
 
-  ensureHourSel();
+  const hourSel = $('dlgHourSel');
+  if(hourSel && hourSel.tagName==='INPUT'){
+    const now = new Date();
+    hourSel.value = String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
+  } else ensureHourSel();
   // Notas del día (textarea libre) — mantener separado de compromisos por hora
   const notaEl = $('fNota');
   if (notaEl) notaEl.value = cell.nota || '';
@@ -679,7 +1011,7 @@ function buildShareImage(lunaN, diaN) {
     x.fillText(`— ${fr.a}`, 540, 700);
   }
   // Notas + agenda por horas en imagen compartida
-  const agendaTxt = Array.isArray(cell.agenda) && cell.agenda.length ? cell.agenda.slice().sort((a,b)=>a.hour-b.hour).map(a=> `${String(a.hour).padStart(2,'0')}:00 ${a.text}${a.notify?' 🔔':''}`).join(' · ') : '';
+  const agendaTxt = Array.isArray(cell.agenda) && cell.agenda.length ? cell.agenda.slice().sort((a,b)=>getAgendaTime(a).localeCompare(getAgendaTime(b))).map(a=> `${getAgendaTime(a)} ${a.text}${a.notify?' 🔔':''}`).join(' · ') : '';
   const notaTxt = cell.nota ? cell.nota.trim() : '';
   let shareNote = '';
   if (agendaTxt && notaTxt) shareNote = `🕐 ${agendaTxt} — ${notaTxt}`;
@@ -838,61 +1170,373 @@ function isDayFallback(hour) {
 const DIRS = ['N', 'NE', 'E', 'SE', 'S', 'SO', 'O', 'NO'];
 function dirName(deg) { return DIRS[Math.round(deg / 45) % 8]; }
 
+// === CLIMA OFFLINE PENCO (no depende de internet) ===
+// Climatología de referencia Golfo de Arauco / Penco (promedios históricos).
+// No es pronóstico exacto: sirve para prever escenario probable sin conexión.
+const CLIMA_PENCO_MESES = [
+  { m: 1,  nombre: 'Enero',      icono: '🌤️', tmax: 23, tmin: 12, lluviaMm: 12,  diasLluvia: 2,  probLluvia: 5,  viento: 'Sur / SO 15–30 km/h en tardes', resumen: 'Seco y templado. Mañanas frescas con vaguada costera, tardes con viento sur. Niebla matinal que despeja a media mañana.' },
+  { m: 2,  nombre: 'Febrero',    icono: '🌤️', tmax: 23, tmin: 12, lluviaMm: 13,  diasLluvia: 2,  probLluvia: 5,  viento: 'Sur / SO 15–30 km/h en tardes', resumen: 'El mes más estable. Calor moderado, noches frescas. Viento sur fuerte en la costa después de las 14h.' },
+  { m: 3,  nombre: 'Marzo',      icono: '⛅', tmax: 21, tmin: 11, lluviaMm: 25,  diasLluvia: 4,  probLluvia: 15, viento: 'Sur débil + calmas matinales', resumen: 'Transición. Menos viento sur, nieblas matinales, primera lluvia débil a fin de mes.' },
+  { m: 4,  nombre: 'Abril',      icono: '🌦️', tmax: 18, tmin: 9,  lluviaMm: 70,  diasLluvia: 7,  probLluvia: 35, viento: 'Norte / NO con frentes 20–40 km/h', resumen: 'Otoño instalado. Frentes del norte, mañanas frías, chubascos intermitentes y arcoíris.' },
+  { m: 5,  nombre: 'Mayo',       icono: '🌧️', tmax: 16, tmin: 7,  lluviaMm: 150, diasLluvia: 12, probLluvia: 55, viento: 'Norte / NO temporal 40–70 km/h', resumen: 'Lluvioso. Temporales del N/NO, marejadas, barro. Primeras heladas débiles tras despeje.' },
+  { m: 6,  nombre: 'Junio',      icono: '🌧️', tmax: 14, tmin: 6,  lluviaMm: 190, diasLluvia: 14, probLluvia: 65, viento: 'Norte temporal + sur helado tras frente', resumen: 'Pleno Pukem. Frentes seguidos, viento norte fuerte, heladas tras la lluvia. Días cortos.' },
+  { m: 7,  nombre: 'Julio',      icono: '🌧️', tmax: 13, tmin: 5,  lluviaMm: 170, diasLluvia: 13, probLluvia: 65, viento: 'Norte / NO + calmas heladas', resumen: 'El mes más frío. Lluvia + heladas matinales (0–3°C). Rocío congelado y escarcha en quebradas.' },
+  { m: 8,  nombre: 'Agosto',     icono: '🌦️', tmax: 14, tmin: 5,  lluviaMm: 140, diasLluvia: 12, probLluvia: 55, viento: 'Norte / Sur alternados', resumen: 'Fin de invierno. Alterna temporal con días despejados fríos. Viento sur anuncia despeje.' },
+  { m: 9,  nombre: 'Septiembre', icono: '⛅', tmax: 16, tmin: 6,  lluviaMm: 80,  diasLluvia: 9,  probLluvia: 40, viento: 'Sur vuelve 15–25 km/h', resumen: 'Primavera temprana. Chubascos + días luminosos. Viento sur vuelve y limpia el cielo.' },
+  { m: 10, nombre: 'Octubre',    icono: '⛅', tmax: 18, tmin: 7,  lluviaMm: 50,  diasLluvia: 6,  probLluvia: 25, viento: 'Sur / SO moderado', resumen: 'Primavera plena. Días largos, mañanas frías, tardes templadas. Últimas lluvias útiles para la huerta.' },
+  { m: 11, nombre: 'Noviembre',  icono: '🌤️', tmax: 20, tmin: 9,  lluviaMm: 30,  diasLluvia: 4,  probLluvia: 15, viento: 'Sur 15–30 km/h', resumen: 'Primavera tardía. Estable, sur moderado, baja lluvia. Ideal para trasplantes y pesca de orilla.' },
+  { m: 12, nombre: 'Diciembre',  icono: '☀️', tmax: 22, tmin: 11, lluviaMm: 18,  diasLluvia: 3,  probLluvia: 10, viento: 'Sur / SO fuerte en tardes', resumen: 'Inicio de verano. Seco, tardes ventosas, vaguada matinal. Riesgo de insolación 12–17h.' }
+];
+function climaMesOffline(date) {
+  let m = 1;
+  try {
+    if (typeof cal !== 'undefined' && cal.santiagoParts) m = cal.santiagoParts(date.getTime()).m;
+    else m = date.getMonth() + 1;
+  } catch { m = date.getMonth() + 1; }
+  return CLIMA_PENCO_MESES[m - 1];
+}
+function climaConsejosOffline(mes) {
+  // Consejos prácticos ligados al escenario del mes (funcionan 100% offline)
+  const c = [];
+  if (mes.probLluvia >= 50) {
+    c.push({ t: '🌧️ Lluvia / temporal', d: 'Limpia canaletas y acequias. Guarda leña bajo techo y levanta camas de huerta. Evita roqueríos y costanera con marejada. Lleva capa, no paraguas con viento norte.' });
+    c.push({ t: '🧥 Salud invernal', d: 'Ventila 10 min al día aunque llueva (evita hongos). Seca ropa con ventilación, no sobre estufa. Caldo caliente + lawen (eucalipto/maqui) ante resfrío. Revisa 🌬️ Aire Penco si usas leña.' });
+  } else if (mes.probLluvia >= 25) {
+    c.push({ t: '🌦️ Chubascos intermitentes', d: 'Sal con capas: mañana fría + tarde templada. Aprovecha claros para sembrar/trasplantar (ver 🌱 Siembra). Cubre almacigos de noche.' });
+  } else {
+    c.push({ t: '☀️ Seco / estable', d: 'Riega al atardecer (menos evaporación). Cosecha y seca hierbas a la sombra. Protector solar y gorro 12–17h. Guarda agua si tienes estanque.' });
+  }
+  if (mes.tmin <= 6) c.push({ t: '❄️ Heladas', d: 'Tapa plantines con manta térmica o botellas cortadas. Entra mascotas/plantas sensibles. No riegues de noche (se congela). En la mañana, riego suave solo si no hay escarcha.' });
+  if (/Sur/.test(mes.viento)) c.push({ t: '💨 Viento sur', d: 'Buen tiempo 2–3 días. Ideal para pesca de orilla 2h antes/después de pleamar, secar ropa y ventilar casa. Afirma invernadero y malla sombra. No hagas fuego en bosque/quebrada.' });
+  if (/Norte/.test(mes.viento)) c.push({ t: '🧭 Viento norte', d: 'Anuncia lluvia en 12–24h. Asegura techo, toldos y botes. No salgas en kayak/bote. Revisa 🌊 Mareas + alerta SHOA/Senapred.' });
+  if (mes.tmax >= 21) c.push({ t: '🌡️ Calor costa', d: 'Hidrata + sombra. Evita esfuerzo 12–17h. Revisa marea roja antes de mariscar (sernapesca.cl). Guarda semillas en lugar fresco.' });
+  else c.push({ t: '🌱 Huerta del mes', d: 'Revisa 🌱 Siembra lunar: este mes ' + mes.resumen.split('.')[0] + '. Mulchea para guardar calor y evita encharcar.' });
+  c.push({ t: '🎣 Pesca / costa', d: 'Con sur estable: amanecer y atardecer = pique. Con norte/temporal: no salgas. Consulta 🌊 Mareas y bitácora 🎣 Pesca.' });
+  return c;
+}
+function climaSenasNaturalesHTML() {
+  return `<details class="menstrual-details"><summary>🔭 Prevé sin internet — señas del cielo, mar y campo (Penco)</summary>
+    <div class="si-card"><h4>☁️ Nubes</h4><p>Cirros altos en velo + presión bajando = lluvia en 12–24h. Estratos bajos pegados al cerro en la mañana que no levantan a las 11h = tarde lluviosa. Cúmulos algodonosos aislados con sur = buen tiempo.</p></div>
+    <div class="si-card"><h4>💨 Viento</h4><p><b>Norte tibio y húmedo</b> que gira al NO + mar picado = frente llegando. <b>Sur frío y seco</b> que limpia = despeje 2–3 días. Calma total + niebla espesa en Rocuant = helada nocturna si despeja.</p></div>
+    <div class="si-card"><h4>🌙 Luna y cielo</h4><p>Halo alrededor de la luna (cerco) = humedad alta, lluvia en 24–48h. Luna muy nítida + estrellas titilando poco + aire frío = helada. Atardecer rojo intenso con sur = buen día siguiente; atardecer plomo con norte = agua.</p></div>
+    <div class="si-card"><h4>🌊 Mar y aves</h4><p>Olas que rompen más adentro + espuma amarillenta + gaviotas tierra adentro = marejada/temporal. Yecos y pelícanos pegados a la costa = viento norte. Zorzal cantando fuerte al amanecer invernal = despeje parcial.</p></div>
+    <div class="si-card"><h4>📏 Truco casero 3 pasos (sin instrumentos)</h4><p>1) Mira el oeste al atardecer (de dónde viene el clima). 2) Siente el viento en la cara 1 min: norte húmedo = agua, sur seco = despeje. 3) Mira la luna/estrellas de noche: halo = prepara capa y guarda leña. Anota en 📝 Notas del día para aprender tu microclima.</p></div>
+  </details>`;
+}
+// --- Guía offline ordenada por secciones (pestañas internas) ---
+let climaOfflineSec = 'mes'; // mes | consejos | senas
+function climaRefDias(nowDate) {
+  const dd = nowDate.getDate();
+  const WD = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
+  return [0, 1, 2].map(off => {
+    const d = new Date(nowDate); d.setDate(dd + off);
+    const mm = climaMesOffline(d);
+    const v = (off * 37 + d.getDate() * 13) % 3;
+    const tmax = mm.tmax + (v === 0 ? -1 : v === 2 ? 1 : 0);
+    const tmin = mm.tmin + (v === 2 ? -1 : 0);
+    const prob = Math.max(0, Math.min(90, mm.probLluvia + (v === 0 ? -5 : v === 2 ? 8 : 0)));
+    const label = off === 0 ? 'Hoy ' + WD[d.getDay()] + ' ' + d.getDate() : off === 1 ? 'Mañana ' + WD[d.getDay()] + ' ' + d.getDate() : WD[d.getDay()] + ' ' + d.getDate();
+    return { label, icono: mm.icono, tmax, tmin, prob, viento: mm.viento };
+  });
+}
+function buildOfflineMesHTML(nowDate, cacheInfo) {
+  const mes = climaMesOffline(nowDate);
+  const dias = climaRefDias(nowDate);
+  const cacheTxt = cacheInfo && cacheInfo.ts
+    ? `<span class="chip">💾 Último dato online: ${cacheInfo.ts} · ${escapeHtml(cacheInfo.resumen || '')}</span>`
+    : `<span class="chip" style="color:var(--muted)">💾 Sin dato online guardado aún — conéctate una vez para guardar referencia</span>`;
+  return `<div class="wp-current">${mes.icono} <b>Penco · ${mes.nombre}:</b> esperable ${mes.tmin}–${mes.tmax}°C · 💧${mes.probLluvia}% lluvia · 💨 ${escapeHtml(mes.viento)}</div>
+  <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px">${cacheTxt}<span class="chip">🌧️ Lluvia mes ~${mes.lluviaMm} mm en ~${mes.diasLluvia} días</span></div>
+  <p class="muted" style="margin:4px 0 8px">${escapeHtml(mes.resumen)}</p>
+  <div class="wp-hours-title">Referencia próximos 3 días (climatología)</div>
+  <div class="wp-days">${dias.map(d => `<div class="wp-day"><div class="wd-date">${escapeHtml(d.label)}</div><div class="wd-ico">${d.icono}</div><div>${d.tmin}–${d.tmax}°C</div><div class="wd-date">💧${d.prob}%</div><div class="wd-date" style="font-size:10px">${escapeHtml(d.viento.split(' ')[0])} ${escapeHtml(d.viento.split(' ')[1] || '')}</div></div>`).join('')}</div>
+  <p class="muted" style="font-size:11px;margin-top:8px">📴 Climatología histórica, no pronóstico exacto. Promedios Concepción/Penco — ajusta mirando cielo y viento.</p>`;
+}
+function buildOfflineConsejosHTML(nowDate) {
+  const mes = climaMesOffline(nowDate);
+  const consejos = climaConsejosOffline(mes);
+  return `<div style="display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))">${consejos.map(c => `<div class="si-card"><h4>${escapeHtml(c.t)}</h4><p>${escapeHtml(c.d)}</p></div>`).join('')}</div>
+  <p class="muted" style="font-size:12px;margin-top:8px">Conecta: 🌱 Siembra lunar · 🎣 Pesca según viento · 🪵 Leña & Pellet en heladas · 🌬️ Aire Penco si hay humo · 🌊 Mareas antes de costa · 🌿 Lawen para resfríos. Todo funciona offline.</p>`;
+}
+function buildOfflineSenasHTML() {
+  // Contenido directo (sin <details> anidado): al hacer clic en 🔭 Señas se ve al tiro
+  return `<p class="muted" style="margin:4px 0 8px">🔭 Señas del cielo, mar y campo en Penco — mira esto antes de salir, sin internet.</p>
+  <div style="display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))">
+    <div class="si-card"><h4>☁️ Nubes</h4><p>Cirros altos en velo = lluvia en 12–24h. Estratos pegados al cerro que no levantan a las 11h = tarde lluviosa. Cúmulos algodonosos aislados con sur = buen tiempo.</p></div>
+    <div class="si-card"><h4>💨 Viento</h4><p><b>Norte tibio y húmedo</b> que gira al NO + mar picado = frente llegando. <b>Sur frío y seco</b> que limpia = despeje 2–3 días. Calma + niebla espesa en Rocuant = helada nocturna si despeja.</p></div>
+    <div class="si-card"><h4>🌙 Luna y cielo</h4><p>Halo alrededor de la luna (cerco) = humedad alta, lluvia en 24–48h. Luna nítida + estrellas que casi no titilan + aire frío = helada. Atardecer rojo con sur = buen día; plomo con norte = agua.</p></div>
+    <div class="si-card"><h4>🌊 Mar y aves</h4><p>Olas que rompen más adentro + espuma amarillenta + gaviotas tierra adentro = marejada/temporal. Yecos pegados a la costa = viento norte. Zorzal cantando fuerte al amanecer invernal = despeje parcial.</p></div>
+    <div class="si-card"><h4>📏 Truco 3 pasos</h4><p>1) Mira el oeste al atardecer. 2) Siente el viento 1 min: norte húmedo = agua, sur seco = despeje. 3) De noche: halo = prepara capa y guarda leña. Anótalo en 📝 Notas del día.</p></div>
+  </div>`;
+}
+function buildOfflineClimaHTML(nowDate, cacheInfo) {
+  // Sub-pestañas ordenadas dentro de la guía offline
+  const sec = climaOfflineSec || 'mes';
+  const btn = (id, label) => `<button type="button" id="${id}" class="btn${sec === id.replace('climaSec', '').toLowerCase() ? ' btn-accent' : ''}" style="width:auto">${label}</button>`;
+  let body = '';
+  if (sec === 'consejos') body = buildOfflineConsejosHTML(nowDate);
+  else if (sec === 'senas') body = buildOfflineSenasHTML();
+  else body = buildOfflineMesHTML(nowDate, cacheInfo);
+  return `<div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">
+      <button type="button" id="climaSecMes" class="btn${sec === 'mes' ? ' btn-accent' : ''}" style="width:auto">📅 Mes</button>
+      <button type="button" id="climaSecConsejos" class="btn${sec === 'consejos' ? ' btn-accent' : ''}" style="width:auto">💡 Consejos</button>
+      <button type="button" id="climaSecSenas" class="btn${sec === 'senas' ? ' btn-accent' : ''}" style="width:auto">🔭 Señas</button>
+    </div><div id="climaOfflineBody">${body}</div>`;
+}
+function bindOfflineClimaTabs(nowDate, cacheInfo) {
+  const m = $('climaSecMes'), c = $('climaSecConsejos'), s = $('climaSecSenas');
+  const body = $('climaOfflineBody');
+  if (!body) return;
+  const paint = () => {
+    if (m) m.classList.toggle('btn-accent', climaOfflineSec === 'mes');
+    if (c) c.classList.toggle('btn-accent', climaOfflineSec === 'consejos');
+    if (s) s.classList.toggle('btn-accent', climaOfflineSec === 'senas');
+    if (climaOfflineSec === 'consejos') body.innerHTML = buildOfflineConsejosHTML(nowDate);
+    else if (climaOfflineSec === 'senas') body.innerHTML = buildOfflineSenasHTML();
+    else body.innerHTML = buildOfflineMesHTML(nowDate, cacheInfo);
+  };
+  if (m) m.onclick = () => { climaOfflineSec = 'mes'; paint(); };
+  if (c) c.onclick = () => { climaOfflineSec = 'consejos'; paint(); };
+  if (s) s.onclick = () => { climaOfflineSec = 'senas'; paint(); };
+}
+function getClimaCache() {
+  try {
+    const raw = localStorage.getItem('climaPencoCacheV1');
+    if (!raw) return null;
+    return JSON.parse(raw);
+  } catch { return null; }
+}
+function setClimaCache(resumen) {
+  try {
+    const now = new Date();
+    const ts = now.toLocaleString('es-CL', { timeZone: 'America/Santiago', day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+    localStorage.setItem('climaPencoCacheV1', JSON.stringify({ ts, resumen }));
+  } catch {}
+}
+// === UV / SOL + AIRE dentro de Clima ===
+const UV_PENCO_MES = [11, 10, 8, 5, 3, 2, 2, 3, 5, 7, 9, 11];
+function uvNivel(v) {
+  if (v == null || isNaN(v)) return { label: '—', color: '#9aa3c7', consejo: 'Sin dato UV.' };
+  if (v < 3) return { label: 'Bajo', color: '#7ab8ff', consejo: 'Riesgo bajo. Igual usa gorro si estás horas al sol.' };
+  if (v < 6) return { label: 'Moderado', color: '#a9d18e', consejo: 'Bloqueador FPS 30+, gorro y sombra al mediodía.' };
+  if (v < 8) return { label: 'Alto', color: '#e8c56a', consejo: 'FPS 50, evita 12–16h. Niños y piel clara a la sombra.' };
+  if (v < 11) return { label: 'Muy alto', color: '#ff9a6a', consejo: 'Evita playa 11–17h. Reaplica bloqueador cada 2h + tras baño.' };
+  return { label: 'Extremo', color: '#e76e8a', consejo: 'No te expongas 11–17h. Sombra, agua, manga larga y lentes UV.' };
+}
+function uvMesOffline(date) {
+  let m = 1;
+  try { m = (typeof cal !== 'undefined' && cal.santiagoParts) ? cal.santiagoParts(date.getTime()).m : date.getMonth() + 1; }
+  catch { m = date.getMonth() + 1; }
+  return { mes: m, uv: UV_PENCO_MES[m - 1] };
+}
+function buildSolOfflineHTML(nowDate) {
+  const { mes, uv } = uvMesOffline(nowDate);
+  const n = uvNivel(uv);
+  const nombreMes = CLIMA_PENCO_MESES[mes - 1].nombre;
+  return `<div class="wp-current">☀️ <b>Sol / UV · ${nombreMes} (offline):</b> índice máximo típico <b style="color:${n.color}">UV ${uv} (${n.label})</b></div>
+  <p class="muted" style="margin:4px 0 8px">${escapeHtml(n.consejo)} En Penco el viento sur engaña: quema aunque esté fresco.</p>
+  <div class="wp-days">${UV_PENCO_MES.map((u, i) => { const nn = uvNivel(u); return `<div class="wp-day${i + 1 === mes ? ' now' : ''}" title="${CLIMA_PENCO_MESES[i].nombre}: ${nn.label}"><div class="wd-date">${CLIMA_PENCO_MESES[i].nombre.slice(0, 3)}</div><div class="wd-ico">☀️</div><div><b style="color:${nn.color}">UV ${u}</b></div><div class="wd-date">${nn.label}</div></div>`; }).join('')}</div>
+  <div style="display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));margin-top:8px">
+    <div class="si-card"><h4>🏖️ Horarios playa Penco</h4><p>Antes de las 11h y después de las 17h = exposición más segura. Entre 12–16h busca sombra (quiosco, árbol, toldo). Con vaguada matinal el UV igual atraviesa la nube.</p></div>
+    <div class="si-card"><h4>🧴 Exposición segura</h4><p>FPS 50 en cara/hombros, reaplica cada 2h y tras baño. Gorro ala ancha + lentes con filtro UV. Niños y bebés siempre a la sombra + hidratación. Lleva 1L agua por persona.</p></div>
+    <div class="si-card"><h4>🌬️ Viento + sol</h4><p>Sur fuerte reseca y quema labios: bálsamo + agua. Norte nublado no significa UV cero: igual protege si estás horas fuera. Revisa 💨 viento en Pronóstico antes de toldos.</p></div>
+    <div class="si-card"><h4>⚠️ Golpe de calor</h4><p>Mareo, piel caliente, dolor cabeza = sombra + agua + paños fríos. No dejes niños/mascotas en auto. Si no mejora, llama al 131 / ve al CESFAM.</p></div>
+  </div>`;
+}
+function getAireCache() { try { const r = localStorage.getItem('airePencoCacheV1'); return r ? JSON.parse(r) : null; } catch { return null; } }
+function setAireCache(pm25, aqi) {
+  try {
+    const ts = new Date().toLocaleString('es-CL', { timeZone: 'America/Santiago', day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+    localStorage.setItem('airePencoCacheV1', JSON.stringify({ ts, pm25, aqi }));
+  } catch {}
+}
+function buildAireOfflineHTML(nowDate) {
+  const c = getAireCache();
+  let mes = 1;
+  try { mes = (typeof cal !== 'undefined' && cal.santiagoParts) ? cal.santiagoParts(nowDate.getTime()).m : nowDate.getMonth() + 1; } catch { mes = nowDate.getMonth() + 1; }
+  const invierno = (mes >= 4 && mes <= 9);
+  return `<div class="wp-current">🌬️ <b>Aire Penco ${invierno ? '(Pukem: riesgo humo de leña)' : '(estable, ventila sin miedo)'}:</b> ${c && c.ts ? `💾 último PM2.5 ≈ <b>${Math.round(c.pm25)} µg/m³</b> · AQI ${c.aqi ?? '—'} <span class="muted">(${escapeHtml(c.ts)})</span>` : 'sin dato online guardado — usa la guía visual'}</div>
+  <p class="muted" style="margin:4px 0 8px">${invierno ? 'Abr–Sep el humo se estanca sobre la bahía. Si ves capa gris + olor a leña, aplica modo invierno.' : 'Con sur estable ventila 10 min al mediodía. Si hay incendio/forestal, cierra y recircula.'}</p>
+  <div style="display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))">
+    <div class="si-card"><h4>🔥 Leña seca</h4><p>Quema solo &lt;25% humedad, carga pequeña y aire abierto. Humo denso = mala combustión = más PM2.5 en tu casa y la vecina.</p></div>
+    <div class="si-card"><h4>🪟 Ventila</h4><p>10 min al mediodía (mejor aire), no de noche con humo. Si hay preemergencia SEREMI: no más humo, sigue radio/muni.</p></div>
+    <div class="si-card"><h4>😷 Grupos sensibles</h4><p>Niños, mayores y asma: evita ejercicio en costanera con humo. Mascarilla si hay alerta. Oficial: SINCA sinca.mma.gob.cl.</p></div>
+  </div>
+  <div class="dlg-actions" style="justify-content:flex-start;margin-top:8px"><button type="button" id="climaOpenAire" class="btn btn-accent" style="width:auto">🌬️ Abrir Aire Penco completo</button></div>`;
+}
+function bindClimaOpenAire() {
+  const b = $('climaOpenAire') || $('climaOpenAire2');
+  if (b) b.onclick = () => { try { $('aireDialog').showModal(); if (typeof fetchAire === 'function') fetchAire(); } catch {} };
+}
+async function fetchAireMiniInto() {
+  const box = $('climaAireMini');
+  if (!box) return;
+  const c = getAireCache();
+  try {
+    const ctrl = new AbortController();
+    const to = setTimeout(() => ctrl.abort(), 8000);
+    const r = await fetch('https://air-quality-api.open-meteo.com/v1/air-quality?latitude=-36.73194&longitude=-72.9925&hourly=pm2_5,us_aqi&timezone=America%2FSantiago&forecast_days=1', { signal: ctrl.signal });
+    clearTimeout(to);
+    if (!r.ok) throw new Error('http');
+    const j = await r.json();
+    const times = j.hourly.time, vals = j.hourly.pm2_5, aqis = j.hourly.us_aqi;
+    let p = null;
+    try { p = cal.santiagoParts(Date.now()); } catch {}
+    const key = p ? `${p.y}-${String(p.m).padStart(2, '0')}-${String(p.d).padStart(2, '0')}T${String(p.hh).padStart(2, '0')}` : '';
+    let idx = key ? times.findIndex(t => t >= key) : vals.length - 1;
+    if (idx < 0) idx = vals.length - 1;
+    const pm25 = vals[idx], aqi = aqis ? aqis[idx] : null;
+    setAireCache(pm25, aqi);
+    const nivel = pm25 == null ? '—' : pm25 <= 12 ? 'Bueno' : pm25 <= 35 ? 'Moderado' : pm25 <= 55 ? 'Regular' : 'Malo';
+    box.innerHTML = `🌬️ <b>Aire Penco ahora:</b> PM2.5 ≈ <b>${pm25 == null ? '—' : Math.round(pm25) + ' µg/m³'} (${nivel})</b> · AQI US ${aqi ?? '—'} <span class="muted" style="font-size:11px">(modelo, contrasta con SINCA)</span> <button type="button" id="climaOpenAire2" class="btn" style="width:auto;font-size:11px;margin-left:6px">Ver detalle</button>`;
+    bindClimaOpenAire();
+  } catch {
+    box.innerHTML = `🌬️ <b>Aire Penco:</b> <span class="muted">sin conexión — ${c && c.ts ? `último PM2.5 ≈ ${Math.round(c.pm25)} µg/m³ (${escapeHtml(c.ts)})` : 'usa la guía offline en 📴 Guía offline → 🌬️ Aire'}</span> <button type="button" id="climaOpenAire2" class="btn" style="width:auto;font-size:11px;margin-left:6px">Abrir guía</button>`;
+    bindClimaOpenAire();
+  }
+}
+function buildUVOnlineHTML(j) {
+  try {
+    const maxs = j.daily && j.daily.uv_index_max ? j.daily.uv_index_max : null;
+    if (!maxs) {
+      const { uv } = uvMesOffline(new Date());
+      const n = uvNivel(uv);
+      return `<div class="wp-hours-title">☀️ Radiación UV (referencia offline)</div><p class="muted">UV máx típico del mes: <b style="color:${n.color}">UV ${uv} (${n.label})</b> — ${escapeHtml(n.consejo)} <span style="color:var(--muted)">Detalle en 📴 Guía offline → ☀️ Sol.</span></p>`;
+    }
+    const t0 = maxs[0], n0 = uvNivel(t0);
+    const days = maxs.slice(0, 4).map((u, i) => { const n = uvNivel(u); return `<div class="wp-day"><div class="wd-date">${i === 0 ? 'Hoy' : '+' + i + 'd'}</div><div class="wd-ico">☀️</div><div><b style="color:${n.color}">UV ${u == null ? '—' : Math.round(u)}</b></div><div class="wd-date">${n.label}</div></div>`; }).join('');
+    return `<div class="wp-hours-title">☀️ Radiación UV — playa / exposición</div><div class="wp-days">${days}</div><p class="muted" style="font-size:12px;margin-top:6px">Hoy: <b style="color:${n0.color}">UV ${t0 == null ? '—' : t0} (${n0.label})</b> — ${escapeHtml(n0.consejo)} Horario seguro: antes de 11h / después de 17h. <span style="color:var(--muted)">Guía completa en 📴 Guía offline → ☀️ Sol.</span></p>`;
+  } catch { return ''; }
+}
+function renderOnlineClimaHTML(j) {
+  const cur = j.current;
+  const curIsDay = (cur.is_day !== undefined) ? cur.is_day : isDayFallback(new Date().getHours());
+  const cw = wmo(cur.weather_code, curIsDay);
+  let html = `<div class="wp-current">${cw.ico} <b>Penco ahora (online):</b> ${cw.desc} · ${cur.temperature_2m}°C (sensación ${cur.apparent_temperature}°C)` +
+    ` · 💨 ${cur.wind_speed_10m} km/h ${dirName(cur.wind_direction_10m)} · 💧 ${cur.precipitation} mm</div><div class="wp-days">`;
+  j.daily.time.forEach((t, i) => {
+    const dw = wmo(j.daily.weather_code[i], 1);
+    const uv = (j.daily.uv_index_max && j.daily.uv_index_max[i] != null) ? Math.round(j.daily.uv_index_max[i]) : null;
+    html += `<div class="wp-day"><div class="wd-date">${t.slice(8)}/${t.slice(5, 7)}</div><div class="wd-ico">${dw.ico}</div>` +
+      `<div>${Math.round(j.daily.temperature_2m_min[i])}–${Math.round(j.daily.temperature_2m_max[i])}°C</div>` +
+      `<div class="wd-date">💧${j.daily.precipitation_probability_max[i]}%</div>` +
+      (uv != null ? `<div class="wd-date" title="Índice UV máximo">☀️UV ${uv}</div>` : '') + `</div>`;
+  });
+  html += '</div>';
+  const p = cal.santiagoParts(Date.now());
+  const nowKey = `${p.y}-${String(p.m).padStart(2, '0')}-${String(p.d).padStart(2, '0')}T${String(p.hh).padStart(2, '0')}`;
+  const times = j.hourly.time;
+  let idx = times.findIndex(t => t >= nowKey);
+  if (idx < 0) idx = 0;
+  const WD = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
+  html += '<div class="wp-hours-title">Próximas 48 horas (online)</div>';
+  let groupDate = null;
+  for (let k = idx; k < Math.min(idx + 48, times.length); k++) {
+    const t = times[k];
+    const dkey = t.slice(0, 10);
+    if (dkey !== groupDate) {
+      groupDate = dkey;
+      const wd = new Date(Date.UTC(+dkey.slice(0, 4), +dkey.slice(5, 7) - 1, +dkey.slice(8, 10))).getUTCDay();
+      html += `<div class="wp-hgroup"><div class="wp-hday">${WD[wd]} ${dkey.slice(8, 10)}/${dkey.slice(5, 7)}</div><div class="wp-hrow">`;
+    }
+    const isDayHour = (j.hourly.is_day && j.hourly.is_day[k] !== undefined) ? j.hourly.is_day[k] : isDayFallback(parseInt(t.slice(11, 13), 10));
+    const hw = wmo(j.hourly.weather_code[k], isDayHour);
+    const pp = j.hourly.precipitation_probability[k];
+    html += `<div class="wp-hour${k === idx ? ' now' : ''}" title="${hw.desc} · viento ${j.hourly.wind_speed_10m[k]} km/h${isDayHour === 0 ? ' · noche' : ''}">` +
+      `<div class="hh">${t.slice(11, 13)}h${isDayHour === 0 ? ' 🌙' : ''}</div><div class="hi">${hw.ico}</div>` +
+      `<div class="ht">${Math.round(j.hourly.temperature_2m[k])}°</div>` +
+      `<div class="hp">💧${pp == null ? '–' : pp}%</div></div>`;
+    const nextT = times[k + 1];
+    if (!nextT || nextT.slice(0, 10) !== groupDate) html += '</div></div>';
+  }
+  return html;
+}
+// Clima con 4 apartados lado a lado: Pronóstico | Guía offline | Aire | Sol/UV
+let climaTab = 'online'; // online | offline | aire | sol
+let climaOnlineData = null;
+let climaOnlineError = '';
+function buildAireTabHTML(now) {
+  return `<div class="chip" style="margin-bottom:8px">🌬️ Aire Penco — humo y ventilación <span style="color:var(--muted)">(antes botón suelto, ahora aquí)</span></div>` +
+    `<div id="climaAireMini" class="menstrual-card" style="border-color:var(--gold)"><i>Cargando aire…</i></div>` +
+    `<div style="height:8px"></div>` + buildAireOfflineHTML(now);
+}
+function buildSolTabHTML(now) {
+  const on = climaOnlineData ? buildUVOnlineHTML(climaOnlineData) : `<p class="muted">Sin dato UV online aún — abajo la referencia offline del mes.</p>`;
+  return `<div class="chip" style="margin-bottom:8px">☀️ Sol / UV — playa y exposición</div>` + on +
+    `<div class="wp-hours-title">Referencia offline por mes</div>` + buildSolOfflineHTML(now);
+}
+function renderWeatherPanel() {
+  const panel = $('weatherPanel');
+  if (!panel) return;
+  const now = new Date();
+  const cache = getClimaCache();
+  const tabBar = `<div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">
+      <button type="button" id="climaTabOnline" class="btn${climaTab === 'online' ? ' btn-accent' : ''}" style="width:auto">🌐 Pronóstico</button>
+      <button type="button" id="climaTabOffline" class="btn${climaTab === 'offline' ? ' btn-accent' : ''}" style="width:auto">📴 Guía offline</button>
+      <button type="button" id="climaTabAire" class="btn${climaTab === 'aire' ? ' btn-accent' : ''}" style="width:auto">🌬️ Aire</button>
+      <button type="button" id="climaTabSol" class="btn${climaTab === 'sol' ? ' btn-accent' : ''}" style="width:auto">☀️ Sol / UV</button>
+    </div>`;
+  let body = '';
+  if (climaTab === 'offline') {
+    body = `<div class="chip" style="margin-bottom:8px">📴 Guía offline Penco — climatología + consejos, sin internet</div>` +
+      buildOfflineClimaHTML(now, cache);
+  } else if (climaTab === 'aire') {
+    body = buildAireTabHTML(now);
+  } else if (climaTab === 'sol') {
+    body = buildSolTabHTML(now);
+  } else if (climaOnlineData) {
+    body = `<div class="chip" style="margin-bottom:8px">🟢 En línea — Open-Meteo · Penco</div>` + renderOnlineClimaHTML(climaOnlineData);
+  } else if (climaOnlineError) {
+    const c2 = cache;
+    body = `<div class="chip" style="margin-bottom:8px">📴 Sin conexión — ${escapeHtml(climaOnlineError)} ${c2 && c2.ts ? '· 💾 Último dato: ' + escapeHtml(c2.ts) + ' ' + escapeHtml(c2.resumen || '') : ''} · <span style="color:var(--muted)">usa la 📴 Guía offline</span></div>` +
+      `<p class="muted">No se pudo obtener el pronóstico online. Revisa la guía offline mientras tanto.</p>`;
+  } else {
+    body = '<i>Cargando clima…</i>';
+  }
+  panel.innerHTML = tabBar + `<div id="climaTabBody">${body}</div>`;
+  const bOn = $('climaTabOnline'), bOff = $('climaTabOffline'), bAi = $('climaTabAire'), bSo = $('climaTabSol');
+  if (bOn) bOn.onclick = () => { climaTab = 'online'; renderWeatherPanel(); };
+  if (bOff) bOff.onclick = () => { climaTab = 'offline'; renderWeatherPanel(); };
+  if (bAi) bAi.onclick = () => { climaTab = 'aire'; renderWeatherPanel(); };
+  if (bSo) bSo.onclick = () => { climaTab = 'sol'; renderWeatherPanel(); };
+  if (climaTab === 'offline') bindOfflineClimaTabs(now, cache);
+  else if (climaTab === 'aire') { fetchAireMiniInto(); bindClimaOpenAire(); }
+}
 async function fetchWeather() {
   $('tidesPanel').classList.add('hidden');
   const panel = $('weatherPanel');
   panel.classList.remove('hidden');
-  panel.innerHTML = '<i>Cargando clima…</i>';
+  // Mantiene la vista anterior: pestaña Pronóstico visible primero
+  climaTab = 'online';
+  climaOnlineData = null;
+  climaOnlineError = '';
+  renderWeatherPanel();
+  panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   try {
+    const ctrl = new AbortController();
+    const to = setTimeout(() => ctrl.abort(), 9000);
     const url = 'https://api.open-meteo.com/v1/forecast?latitude=-36.73194&longitude=-72.9925' +
       '&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m,wind_direction_10m,precipitation,is_day' +
-      '&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,sunrise,sunset' +
-      '&hourly=temperature_2m,weather_code,precipitation_probability,wind_speed_10m,is_day' +
+      '&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,sunrise,sunset,uv_index_max' +
+      '&hourly=temperature_2m,weather_code,precipitation_probability,wind_speed_10m,is_day,uv_index' +
       '&timezone=America%2FSantiago&forecast_days=7';
-    const r = await fetch(url);
+    const r = await fetch(url, { signal: ctrl.signal });
+    clearTimeout(to);
+    if (!r.ok) throw new Error('http ' + r.status);
     const j = await r.json();
     const cur = j.current;
-    const curIsDay = (cur.is_day !== undefined) ? cur.is_day : isDayFallback(new Date().getHours());
-    const cw = wmo(cur.weather_code, curIsDay);
-    let html = `<div class="wp-current">${cw.ico} <b>Penco ahora:</b> ${cw.desc} · ${cur.temperature_2m}°C (sensación ${cur.apparent_temperature}°C)` +
-      ` · 💨 ${cur.wind_speed_10m} km/h ${dirName(cur.wind_direction_10m)} · 💧 ${cur.precipitation} mm</div><div class="wp-days">`;
-    j.daily.time.forEach((t, i) => {
-      const dw = wmo(j.daily.weather_code[i], 1);
-      html += `<div class="wp-day"><div class="wd-date">${t.slice(8)}/${t.slice(5, 7)}</div><div class="wd-ico">${dw.ico}</div>` +
-        `<div>${Math.round(j.daily.temperature_2m_min[i])}–${Math.round(j.daily.temperature_2m_max[i])}°C</div>` +
-        `<div class="wd-date">💧${j.daily.precipitation_probability_max[i]}%</div></div>`;
-    });
-    html += '</div>';
-
-    const p = cal.santiagoParts(Date.now());
-    const nowKey = `${p.y}-${String(p.m).padStart(2, '0')}-${String(p.d).padStart(2, '0')}T${String(p.hh).padStart(2, '0')}`;
-    const times = j.hourly.time;
-    let idx = times.findIndex(t => t >= nowKey);
-    if (idx < 0) idx = 0;
-    const WD = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
-    html += '<div class="wp-hours-title">Próximas 48 horas</div>';
-    let groupDate = null;
-    for (let k = idx; k < Math.min(idx + 48, times.length); k++) {
-      const t = times[k];
-      const dkey = t.slice(0, 10);
-      if (dkey !== groupDate) {
-        groupDate = dkey;
-        const wd = new Date(Date.UTC(+dkey.slice(0, 4), +dkey.slice(5, 7) - 1, +dkey.slice(8, 10))).getUTCDay();
-        html += `<div class="wp-hgroup"><div class="wp-hday">${WD[wd]} ${dkey.slice(8, 10)}/${dkey.slice(5, 7)}</div><div class="wp-hrow">`;
-      }
-      const isDayHour = (j.hourly.is_day && j.hourly.is_day[k] !== undefined) ? j.hourly.is_day[k] : isDayFallback(parseInt(t.slice(11,13),10));
-      const hw = wmo(j.hourly.weather_code[k], isDayHour);
-      const pp = j.hourly.precipitation_probability[k];
-      html += `<div class="wp-hour${k === idx ? ' now' : ''}" title="${hw.desc} · viento ${j.hourly.wind_speed_10m[k]} km/h${isDayHour===0?' · noche':''}">` +
-        `<div class="hh">${t.slice(11, 13)}h${isDayHour===0?' 🌙':''}</div><div class="hi">${hw.ico}</div>` +
-        `<div class="ht">${Math.round(j.hourly.temperature_2m[k])}°</div>` +
-        `<div class="hp">💧${pp == null ? '–' : pp}%</div></div>`;
-      const nextT = times[k + 1];
-      if (!nextT || nextT.slice(0, 10) !== groupDate) html += '</div></div>';
-    }
-    panel.innerHTML = html;
+    const cw = wmo(cur.weather_code, cur.is_day);
+    setClimaCache(`${cw.desc} ${cur.temperature_2m}°C`);
+    climaOnlineData = j;
+    climaOnlineError = '';
+    climaTab = 'online';
+    renderWeatherPanel();
   } catch {
-    panel.innerHTML = '<i>No se pudo obtener el clima (sin conexión a internet).</i>';
+    climaOnlineData = null;
+    climaOnlineError = 'sin conexión a internet.';
+    // Sin internet:Vista online muestra el aviso, pero se salta a la guía offline ordenada
+    climaTab = 'offline';
+    renderWeatherPanel();
   }
 }
 $('btnWeather').onclick = fetchWeather;
@@ -1921,7 +2565,7 @@ function lunaHTML(y, meta, opts) {
     const sun = cal.sunForDay(ms);
     const key = cal.fmtKey.format(new Date(ms));
     const evs = (phaseMap[key] || []);
-    const agendaHtml = Array.isArray(cell.agenda)&&cell.agenda.length ? `<div class="pd-note">🕐 ${escapeHtml(cell.agenda.map(a=> String(a.hour).padStart(2,'0')+':00 '+a.text).join(' · '))}</div>` : '';
+    const agendaHtml = Array.isArray(cell.agenda)&&cell.agenda.length ? `<div class="pd-note">🕐 ${escapeHtml(cell.agenda.map(a=> getAgendaTime(a)+' '+a.text).join(' · '))}</div>` : '';
     rows[Math.floor((dia - 1) / 7)].push(`
       <td>
         <div class="pd-head"><b>${String(dia).padStart(2, '0')}</b> ${escapeHtml(cal.fmtDate.format(new Date(ms)))}</div>
@@ -2015,8 +2659,12 @@ $('btnToday').onclick = () => {
   if (!info) return;
   if (String(info.y) !== $('cycleSel').value) {
     selectCycle(info.y, info.luna === 'dft' ? 'dft' : info.luna);
+    return;
   }
+  if(viewMode && viewMode!=='luna'){ viewDateMs = Date.now(); renderCurrentView(); }
   if (info.luna === 'dft') selectDFT(); else selectMoon(info.luna);
+  // sincronizar vista día/mes/semana con hoy si estaban activas
+  if(viewMode && viewMode!=='luna'){ viewDateMs = Date.now(); renderCurrentView(); }
 };
 
 $('searchBox').addEventListener('keydown', e => {
@@ -2031,7 +2679,7 @@ function runSearch(q) {
   for (const [y, c] of Object.entries(cycles)) {
     for (const [ln, m] of Object.entries(c.moons || {})) {
       for (const [dn, cell] of Object.entries(m.days || {})) {
-        const agendaTxt = Array.isArray(cell.agenda) ? cell.agenda.map(a=>a.text).join(' ') : '';
+        const agendaTxt = Array.isArray(cell.agenda) ? cell.agenda.map(a=>(a.time||'')+' '+a.text).join(' ') : '';
         const txt = [cell.nota, agendaTxt].filter(Boolean).join(' ');
         if (txt.toLowerCase().includes(ql)) {
           hits.push({ y: +y, luna: +ln, dia: +dn, txt: txt.slice(0, 140), tipo: 'Notas del día' });
@@ -3798,25 +4446,82 @@ function renderHomeTasksTemplates(){
     div.scrollIntoView({behavior:'smooth',block:'nearest'});
   });
 }
+// === ORDEN & DIÓGENES — checklist progresivo local ===
+const DIOGENES_STEPS = [
+  {id:'d1', t:'Despejé la salida (puerta/pasillo libre)', d:'Puerta abre completa, pasillo caminable sin esquivar.'},
+  {id:'d2', t:'Saqué 1 bolsa de basura hoy', d:'Bolsa cerrada y fuera de la casa el mismo día.'},
+  {id:'d3', t:'Saqué 1 bolsa de reciclaje', d:'Vidrio/plástico/papel al punto limpio o contenedor.'},
+  {id:'d4', t:'Mesa de cocina libre para comer', d:'Sin pilas: solo lo de la comida actual.'},
+  {id:'d5', t:'Boté 3 vencidos (despensa/refri)', d:'Revisa fechas, huele, bota sin culpa.'},
+  {id:'d6', t:'Piso del baño visible + WC usable', d:'Sin ropa/cajas en el suelo.'},
+  {id:'d7', t:'Cama usable para dormir', d:'Sin cosas sobre la cama esta noche.'},
+  {id:'d8', t:'Junté 5 cosas para donar', d:'Bolsa rotulada “donar” lista para entregar.'},
+  {id:'d9', t:'Apliqué caja-4 en 1 m² (20 min)', d:'1 repisa o esquina: quedarse/donar/reciclar/botar.'},
+  {id:'d10', t:'Frené 1 compra (lista 72h)', d:'Anoté el antojo y esperé 3 días.'},
+  {id:'d11', t:'Pedí ayuda a 1 persona / CESFAM', d:'Llamé, pedí hora o invité 1h de compañía amable.'},
+  {id:'d12', t:'Foto antes/después de mi zona', d:'Registro para ver avance en la próxima luna.'}
+];
+function getDiogenesData(){
+  const ht=getHomeTasksData();
+  if(!ht.diogenes || typeof ht.diogenes!=='object') ht.diogenes={done:{}};
+  if(!ht.diogenes.done || typeof ht.diogenes.done!=='object') ht.diogenes.done={};
+  return ht.diogenes;
+}
+function renderDiogenes(){
+  const box=$('diogenesChecklist'); if(!box) return;
+  const dg=getDiogenesData();
+  const done=Object.keys(dg.done||{}).filter(k=>dg.done[k]).length;
+  const pct=Math.round(done/DIOGENES_STEPS.length*100);
+  const prog=$('diogenesProgress');
+  if(prog) prog.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px"><b>${done}/${DIOGENES_STEPS.length}</b> pasos · ${pct}%</span><span class="chip" style="background:${pct===100?'#a9d18e':'var(--gold)'};color:#10142c">${pct===100?'🎉 Luna despejada':'🌱 paso a paso'}</span></div><div style="margin-top:6px;background:var(--panel);border-radius:6px;height:8px;overflow:hidden"><div style="width:${pct}%;height:100%;background:linear-gradient(90deg,#a9d18e,#e8c56a)"></div></div><p class="muted" style="font-size:10px;margin-top:6px">Marca solo lo hecho de verdad. 1 paso por día está perfecto.</p>`;
+  box.innerHTML='<h4 style="color:var(--gold);font-size:12.5px;margin:0 0 6px">✅ Checklist 12 pasos — 1 por día si puedes</h4><div class="dio-compact">'+DIOGENES_STEPS.map(s=>{
+    const on=!!(dg.done&&dg.done[s.id]);
+    return `<label class="dio-item ${on?'done':''}"><input type="checkbox" data-dio="${s.id}" ${on?'checked':''}><span class="dio-txt" title="${escapeHtml(s.d)}"><b>${escapeHtml(s.t)}</b><small>${escapeHtml(s.d)}</small></span><span class="dio-check">${on?'✓':'○'}</span></label>`;
+  }).join('')+'</div>';
+  box.querySelectorAll('input[data-dio]').forEach(cb=> cb.onchange=()=>{
+    const d=getDiogenesData();
+    if(cb.checked) d.done[cb.dataset.dio]=cal.fmtKey.format(new Date());
+    else delete d.done[cb.dataset.dio];
+    scheduleSave(); renderDiogenes();
+  });
+  const sh=$('diogenesShare');
+  if(sh && !sh.dataset.bind){
+    sh.dataset.bind='1';
+    sh.onclick=async()=>{
+      const d2=getDiogenesData();
+      const n=Object.keys(d2.done||{}).length;
+      await shareText('🧠 Orden progresivo', `🧠 Orden progresivo — Penco\n${n}/${DIOGENES_STEPS.length} pasos (${Math.round(n/DIOGENES_STEPS.length*100)}%)\n`+DIOGENES_STEPS.map(s=>`${d2.done&&d2.done[s.id]?'✓':'○'} ${s.t}`).join('\n')+`\n\n— Mari Küla Küyen · sin culpa, paso a paso`);
+    };
+  }
+  const rs=$('diogenesReset');
+  if(rs && !rs.dataset.bind){
+    rs.dataset.bind='1';
+    rs.onclick=()=>{
+      if(!confirm('¿Reiniciar checklist de orden? Se borran las marcas, no tus tareas.')) return;
+      getDiogenesData().done={}; scheduleSave(); renderDiogenes();
+    };
+  }
+}
 let homeTasksEditingId=null;
 let homeTasksCurrentTab='tareas';
 function renderHomeTasksTab(tab){
   homeTasksCurrentTab=tab||homeTasksCurrentTab;
-  const tabs={tareas:'tabHomeTareas', semana:'tabHomeSemana', plantillas:'tabHomePlantillas', stats:'tabHomeStats'};
+  const tabs={tareas:'tabHomeTareas', semana:'tabHomeSemana', plantillas:'tabHomePlantillas', stats:'tabHomeStats', diogenes:'tabHomeDiogenes'};
   Object.entries(tabs).forEach(([k,id])=>{ const el=$(id); if(el) el.classList.toggle('btn-accent', k===homeTasksCurrentTab); });
-  const panels={tareas:'homeTasksTareasPanel', semana:'homeTasksSemanaPanel', plantillas:'homeTasksPlantillasPanel', stats:'homeTasksStatsPanel'};
+  const panels={tareas:'homeTasksTareasPanel', semana:'homeTasksSemanaPanel', plantillas:'homeTasksPlantillasPanel', stats:'homeTasksStatsPanel', diogenes:'homeTasksDiogenesPanel'};
   Object.entries(panels).forEach(([k,id])=>{ const el=$(id); if(el) el.classList.toggle('hidden', k!==homeTasksCurrentTab); });
   if(homeTasksCurrentTab==='tareas'){ renderHomeTasksResumen(); renderHomeTasksTodayBox(); renderHomeTasksList(); }
   if(homeTasksCurrentTab==='semana'){ renderHomeTasksWeekGrid(); }
   if(homeTasksCurrentTab==='plantillas'){ renderHomeTasksTemplates(); }
   if(homeTasksCurrentTab==='stats'){ renderHomeTasksLunaBox(); renderHomeTasksAreasBox(); }
+  if(homeTasksCurrentTab==='diogenes'){ renderDiogenes(); }
 }
 function setupHomeTasksDialog(){
   const btn=$('btnHomeTasks'); if(btn) btn.onclick=()=>{ renderHomeTasksResumen(); renderHomeTasksTab('tareas'); renderHomeTasksTemplates(); $('homeTasksDialog').showModal(); };
   const ct=$('homeTasksCloseTop'), cb=$('homeTasksClose'); if(ct) ct.onclick=()=>$('homeTasksDialog').close(); if(cb) cb.onclick=()=>$('homeTasksDialog').close();
-  ['tabHomeTareas','tabHomeSemana','tabHomePlantillas','tabHomeStats'].forEach(id=>{
+  ['tabHomeTareas','tabHomeSemana','tabHomePlantillas','tabHomeStats','tabHomeDiogenes'].forEach(id=>{
     const el=$(id); if(!el) return;
-    el.onclick=()=>{ const map={tabHomeTareas:'tareas',tabHomeSemana:'semana',tabHomePlantillas:'plantillas',tabHomeStats:'stats'}; renderHomeTasksTab(map[id]); };
+    el.onclick=()=>{ const map={tabHomeTareas:'tareas',tabHomeSemana:'semana',tabHomePlantillas:'plantillas',tabHomeStats:'stats',tabHomeDiogenes:'diogenes'}; renderHomeTasksTab(map[id]); };
   });
   // frecuencia -> mostrar/ocultar fecha puntual y día preferido
   const freqEl=$('homeTaskFreq'), dayEl=$('homeTaskDay'), dateEl=$('homeTaskDate');
@@ -3981,18 +4686,18 @@ function setupHelpDialog(){
 setTimeout(setupHelpDialog, 850);
 
 // === CONFIGURACIÓN PERSONALIZABLE ===
-const ALL_BTNS = ["btnTides","btnFishing","btnBirds","btnIntermareal","btnBosque","btnWeather","btnSiembra","btnAstro","btnComuna","btnEkadashi","btnMenstrual","btnMedic","btnHabits","btnMeal","btnShopping","btnFinance","btnHomeTasks","btnDiscipline","btnDreams","btnBreath","btnGratitud","btnSchedule","btnGym","btnCircadian","btnGolden","btnCompost","btnRecicla","btnAire","btnLawen","btnFirstAid","btnAnimalCare","btnViolence","btnEvac","btnConvert","btnEnergy","btnLena","btnTimer","btnRemind","btnBackup","btnRestore","btnShortcut","btnPdfLuna","btnPdfCiclo","btnDonate","btnHelp","btnStudy","btnTales","btnMemory","btnMapu"];
+const ALL_BTNS = ["btnTides","btnFishing","btnBirds","btnIntermareal","btnBosque","btnWeather","btnSiembra","btnAstro","btnComuna","btnEkadashi","btnMenstrual","btnMedic","btnHabits","btnMeal","btnShopping","btnFinance","btnHomeTasks","btnDiscipline","btnDreams","btnBreath","btnGratitud","btnSchedule","btnGym","btnCircadian","btnGolden","btnCompost","btnRecicla","btnLawen","btnFirstAid","btnAnimalCare","btnViolence","btnEvac","btnConvert","btnEnergy","btnLena","btnTimer","btnRemind","btnBackup","btnRestore","btnShortcut","btnPdfLuna","btnPdfCiclo","btnDonate","btnHelp","btnStudy","btnTales","btnMemory","btnMapu"];
 const PRESETS = {
   todo: Object.fromEntries(ALL_BTNS.map(k=>[k,true])),
   esencial: {btnTides:true,btnWeather:true,btnSiembra:true,btnEkadashi:true,btnFirstAid:true,btnEvac:true,btnBackup:true,btnRestore:true,btnPdfLuna:true,btnPdfCiclo:true,btnHelp:true,btnDonate:true},
   infantil: {btnWeather:true,btnSiembra:true,btnHabits:true,btnDreams:true,btnBreath:true,btnSchedule:true,btnTales:true,btnMapu:true,btnHelp:true},
   adolescente: {btnHabits:true,btnStudy:true,btnSchedule:true,btnDiscipline:true,btnDreams:true,btnBreath:true,btnMapu:true,btnConvert:true,btnTimer:true,btnHelp:true},
   adulto: Object.fromEntries(ALL_BTNS.map(k=>[k,true])),
-  mayor: {btnTides:true,btnWeather:true,btnSiembra:true,btnMenstrual:true,btnMedic:true,btnDreams:true,btnGratitud:true,btnBreath:true,btnAire:true,btnLena:true,btnHelp:true,btnDonate:true},
+  mayor: {btnTides:true,btnWeather:true,btnSiembra:true,btnMenstrual:true,btnMedic:true,btnDreams:true,btnGratitud:true,btnBreath:true,btnLena:true,btnHelp:true,btnDonate:true},
   estudiante: {btnWeather:true,btnSiembra:true,btnHabits:true,btnStudy:true,btnSchedule:true,btnDiscipline:true,btnMapu:true,btnTales:true,btnConvert:true,btnTimer:true,btnHelp:true},
-  agricultor: {btnTides:true,btnFishing:true,btnBirds:true,btnIntermareal:true,btnBosque:true,btnWeather:true,btnSiembra:true,btnCompost:true,btnLawen:true,btnRecicla:true,btnAire:true,btnGolden:true,btnCircadian:true,btnHelp:true},
+  agricultor: {btnTides:true,btnFishing:true,btnBirds:true,btnIntermareal:true,btnBosque:true,btnWeather:true,btnSiembra:true,btnCompost:true,btnLawen:true,btnRecicla:true,btnGolden:true,btnCircadian:true,btnHelp:true},
   pescador: {btnTides:true,btnFishing:true,btnBirds:true,btnIntermareal:true,btnBosque:true,btnWeather:true,btnSiembra:true,btnGolden:true,btnHelp:true},
-  salud: {btnMenstrual:true,btnMedic:true,btnLawen:true,btnHabits:true,btnGym:true,btnCircadian:true,btnDreams:true,btnGratitud:true,btnBreath:true,btnMeal:true,btnAire:true,btnFirstAid:true,btnAnimalCare:true,btnEvac:true,btnHelp:true},
+  salud: {btnMenstrual:true,btnMedic:true,btnLawen:true,btnHabits:true,btnGym:true,btnCircadian:true,btnDreams:true,btnGratitud:true,btnBreath:true,btnMeal:true,btnFirstAid:true,btnAnimalCare:true,btnEvac:true,btnHelp:true},
   deportista: {btnHabits:true,btnGym:true,btnMeal:true,btnShopping:true,btnFinance:true,btnCircadian:true,btnBreath:true,btnTimer:true,btnHelp:true},
   docente: {btnSiembra:true,btnEkadashi:true,btnStudy:true,btnSchedule:true,btnHabits:true,btnDiscipline:true,btnMapu:true,btnTales:true,btnGratitud:true,btnRecicla:true,btnConvert:true,btnPdfCiclo:true,btnHelp:true}
 };
@@ -4705,15 +5410,33 @@ function getAstroForMonth(mdKey){ // mdKey MM-DD or YYYY-MM-DD
 function astroVisibleForDate(key){ // key YYYY-MM-DD
   return ASTRO_EVENTS.filter(e=> e.date===key);
 }
+const ASTRO_TYPE_COLOR={ eclipse:'#ff9a9a', superluna:'var(--gold)', lluvia:'#7ab8ff', equinoccio:'#8fd694', solsticio:'#8fd694' };
+function astroCountdown(e, todayKey, todayNoon){
+  if(e.date===todayKey) return 'hoy';
+  const diff=Math.round((new Date(e.date+'T12:00:00').getTime()-todayNoon)/86400000);
+  if(diff===1) return 'mañana';
+  if(diff<0) return 'hace '+Math.abs(diff)+' días';
+  return 'en '+diff+' días';
+}
+function astroItemHTML(e, todayKey, todayNoon){
+  const isToday=e.date===todayKey;
+  const luna=mensLunaForKey(e.date);
+  const dt=new Date(e.date+'T12:00:00');
+  const wd=cal.weekdayName(dt.getTime());
+  const tc=ASTRO_TYPE_COLOR[e.tipo]||'var(--muted)';
+  const cd=astroCountdown(e, todayKey, todayNoon);
+  return `<div class="astro-item${isToday?' today':''}"><div class="astro-date"><b>${dt.getDate()}</b><span>${escapeHtml(wd.slice(0,3))}</span></div><div class="astro-body"><div class="astro-top"><span class="astro-name">${e.icon} ${escapeHtml(e.nombre)}</span><span class="chip astro-cd"${isToday?' style="background:var(--gold);color:#10142c"':''}>${cd}</span></div><div style="margin:4px 0"><span class="chip" style="font-size:10px;background:${tc}22;color:${tc};border-color:${tc}55">${escapeHtml(e.tipo)}</span>${luna? ` <span class="muted" style="font-size:11px">Luna ${luna.luna}·d${luna.dia}</span>`:''}</div><p style="font-size:12px">${escapeHtml(e.desc)}</p></div></div>`;
+}
 let astroTab='upcoming';
 function renderAstroDialog(tab){
   astroTab=tab||astroTab;
-  const tU=$('tabAstroUpcoming'), tY=$('tabAstroYear'), tL=$('tabAstroLuna');
-  if(tU&&tY&&tL){
-    [tU,tY,tL].forEach(b=> b.classList.remove('btn-accent'));
+  const tU=$('tabAstroUpcoming'), tM=$('tabAstroMesLunar'), tY=$('tabAstroYear');
+  if(tU&&tY){
+    [tU,tY].forEach(b=> b.classList.remove('btn-accent'));
+    if(tM) tM.classList.remove('btn-accent');
     if(astroTab==='upcoming') tU.classList.add('btn-accent');
+    if(astroTab==='mesLunar' && tM) tM.classList.add('btn-accent');
     if(astroTab==='year') tY.classList.add('btn-accent');
-    if(astroTab==='luna') tL.classList.add('btn-accent');
   }
   const todayKey=cal.fmtKey.format(new Date());
   const todayBox=$('astroTodayBox');
@@ -4727,13 +5450,49 @@ function renderAstroDialog(tab){
   let events=[];
   if(astroTab==='upcoming'){
     const now=new Date(); const nowKey=cal.fmtKey.format(now);
+    const todayNoon=new Date(todayKey+'T12:00:00').getTime();
     events=ASTRO_EVENTS.filter(e=> e.date >= nowKey).sort((a,b)=> a.date.localeCompare(b.date)).slice(0,8);
     if(!events.length) events=ASTRO_EVENTS.slice(0,6);
-    list.innerHTML='<h4 style="color:var(--gold);margin-top:10px">⏳ Próximos 8 eventos</h4>' + events.map(e=> {
-      const isToday=e.date===todayKey;
-      const luna=mensLunaForKey(e.date);
-      return `<div class="si-card" style="${isToday?'border-color:var(--gold);background:var(--card-hover)':''}"><h4>${e.icon} ${escapeHtml(e.nombre)} <span class="chip" style="font-size:10px">${e.tipo}</span> ${isToday?'<span class="chip" style="font-size:10px;background:var(--gold);color:#10142c">hoy</span>':''}</h4><p style="font-size:12px;color:var(--gold)">${e.date} ${luna? '· Luna '+luna.luna+' d'+luna.dia:''}</p><p style="font-size:12px">${escapeHtml(e.desc)}</p></div>`;
+    const monthOf=d=>{ const dt=new Date(d+'T12:00:00'); let n=dt.toLocaleDateString('es-CL',{month:'long',year:'numeric'}); return n.charAt(0).toUpperCase()+n.slice(1); };
+    let html='<h4 style="color:var(--gold);margin-top:10px">⏳ Próximos — ordenados por fecha</h4>';
+    let lastMonth='';
+    html+=events.map(e=> {
+      const m=monthOf(e.date);
+      const mHead=(m!==lastMonth)? `<div class="astro-month">${escapeHtml(m)}</div>` : '';
+      lastMonth=m;
+      return mHead+astroItemHTML(e, todayKey, todayNoon);
     }).join('');
+    list.innerHTML=html;
+  } else if(astroTab==='mesLunar'){
+    const range=lunarMonthRange(Date.now());
+    const evMap=lunarEventsMap(new Date(range.startKey+'T12:00:00').getTime()-86400000, new Date(range.endKey+'T12:00:00').getTime()+86400000);
+    const moon=moonDaily(todayKey);
+    const d0=new Date(range.startKey+'T12:00:00'), d1=new Date(range.days[range.days.length-1]+'T12:00:00');
+    const keyPhase={};
+    range.days.forEach(k=>{ (evMap[k]||[]).forEach(e=>{ if(!keyPhase[e.tipo]) keyPhase[e.tipo]={k,e}; }); });
+    const phaseOrder=['nueva','cuarto-creciente','llena','cuarto-menguante'];
+    const phaseLabel={'nueva':'Luna nueva','cuarto-creciente':'Cuarto creciente','llena':'Luna llena','cuarto-menguante':'Cuarto menguante'};
+    let html=`<h4 style="color:var(--gold);margin-top:10px">🌕 Mes lunar · ${cal.fmtDate.format(d0)} — ${cal.fmtDate.format(d1)}</h4>`;
+    html+=`<div class="menstrual-card" style="border-color:var(--gold);background:linear-gradient(135deg,var(--panel),var(--card))"><div style="display:flex;gap:10px;align-items:center"><span style="font-size:34px">${moon.icon}</span><span><b>Hoy: ${moon.illum===null?'—':moon.illum+'% iluminada'}</b><br><span class="muted" style="font-size:11px">Lunación de ${range.days.length} días · Penco (America/Santiago)</span></span></div></div>`;
+    html+='<div class="astro-phases">'+phaseOrder.map(t=>{
+      const o=keyPhase[t];
+      if(!o) return '';
+      const dk=new Date(o.k+'T12:00:00');
+      return `<div class="astro-phase"><span class="astro-phase-icon">${o.e.simbolo}</span><b>${phaseLabel[t]}</b><span class="muted" style="font-size:11px">${cal.weekdayName(dk.getTime()).slice(0,3)} ${cal.fmtDate.format(dk)}</span><span style="font-size:11px;color:var(--gold)">${cal.fmtTime.format(new Date(o.e.utcMs))}</span></div>`;
+    }).join('')+'</div>';
+    html+=`<p class="muted" style="font-size:11px;margin-top:8px">💡 Cielo más oscuro para meteoros cerca de la <b>luna nueva</b> · luna más brillante en la <b>llena</b>. Para sembrar revisa 🌱 Siembra lunar.</p>`;
+    html+=`<h4 style="color:var(--accent);margin-top:10px">🌙 Iluminación día por día</h4><div class="astro-luna-grid">`+range.days.map((k,i)=>{
+      const md=moonDaily(k); const dk=new Date(k+'T12:00:00');
+      const hasEv=(evMap[k]||[]).length>0;
+      return `<div class="astro-luna-cell${k===todayKey?' today':''}" title="${escapeHtml(k)}"><span class="muted" style="font-size:10px">${dk.getDate()}/${dk.getMonth()+1}</span><span style="font-size:20px">${hasEv? (evMap[k][0].simbolo) : md.icon}</span><span style="font-size:10px;color:var(--gold)">${md.illum===null?'—':md.illum+'%'}</span><span class="astro-bar"><i style="width:${md.illum||0}%"></i></span></div>`;
+    }).join('')+`</div>`;
+    const todayNoonML=new Date(todayKey+'T12:00:00').getTime();
+    const inLuna=ASTRO_EVENTS.filter(e=> e.date>=range.startKey && e.date<range.endKey).sort((a,b)=> a.date.localeCompare(b.date));
+    html+=`<h4 style="color:var(--accent);margin-top:12px">🔭 Eventos en esta lunación · ${inLuna.length}</h4>`;
+    html+= inLuna.length
+      ? inLuna.map(e=> astroItemHTML(e, todayKey, todayNoonML)).join('')
+      : '<p class="muted" style="font-size:11px">Sin eclipses, superlunas ni lluvias destacadas entre estas dos lunas nuevas. Revisa ⏳ Próximos.</p>';
+    list.innerHTML=html;
   } else if(astroTab==='year'){
     const yr=new Date().getFullYear();
     const yearEvents=ASTRO_EVENTS.filter(e=> e.date.startsWith(String(yr)) || e.date.startsWith(String(yr+1))).sort((a,b)=>a.date.localeCompare(b.date));
@@ -4741,29 +5500,18 @@ function renderAstroDialog(tab){
     let html=`<h4 style="color:var(--gold);margin-top:10px">📅 ${yr} — ${yr+1} ciclo</h4>`;
     Object.keys(byType).forEach(t=>{ html+=`<p class="muted" style="font-size:11px;margin:8px 0 4px"><b>${t}</b> · ${byType[t].length}</p>` + byType[t].map(e=> `<div class="si-card" style="padding:8px 10px"><h4 style="font-size:12px">${e.icon} ${escapeHtml(e.nombre)} <span class="muted" style="font-size:11px">${e.date}</span></h4><p style="font-size:11px">${escapeHtml(e.desc)}</p></div>`).join(''); });
     list.innerHTML=html;
-  } else { // luna
-    const lunaDays = currentView.tipo==='dft'? [] : cycle.days.filter(d=> d.luna===currentView.luna);
-    const lunaName = currentView.tipo==='dft'? 'Día Fuera del Tiempo' : MOONS[currentView.luna-1].nombre;
-    let html=`<h4 style="color:var(--gold);margin-top:10px">🌙 Luna ${currentView.tipo==='dft'?'DFT':currentView.luna} — ${escapeHtml(lunaName)} · fases y eventos</h4>`;
-    // fases
-    const chips=[];
-    lunaDays.forEach(d=>{ const k=cal.fmtKey.format(new Date(d.noonMs)); (phaseMap[k]||[]).forEach(ev=> chips.push({k,ev})); });
-    if(chips.length) html+=`<div class="menstrual-card" style="margin-top:8px"><h4>Fases exactas en esta luna</h4>`+chips.map(c=>`<span class="chip" style="display:inline-block;margin:4px 4px 0 0">${c.ev.simbolo} <b>${escapeHtml(c.ev.tipo)}</b> · ${cal.fmtDate.format(new Date(c.ev.utcMs))} ${cal.fmtTime.format(new Date(c.ev.utcMs))}</span>`).join('')+`</div>`;
-    // astro in luna
-    let astroInLuna=[];
-    lunaDays.forEach(d=>{ const k=cal.fmtKey.format(new Date(d.noonMs)); const evs=astroVisibleForDate(k); evs.forEach(e=> astroInLuna.push({k,e})); });
-    if(astroInLuna.length) html+=`<div style="margin-top:8px">`+astroInLuna.map(o=>`<div class="si-card" style="border-color:var(--gold)"><h4>${o.e.icon} ${escapeHtml(o.e.nombre)}</h4><p style="font-size:12px;color:var(--gold)">${o.k}</p><p style="font-size:12px">${escapeHtml(o.e.desc)}</p></div>`).join('')+`</div>`;
-    else html+='<p class="muted" style="margin-top:8px">Sin eclipses/lluvias en estos 28 días. Revisa pestaña Próximos.</p>';
-    list.innerHTML=html;
+  } else {
+    // fallback seguro: cualquier tab desconocido vuelve a Próximos
+    astroTab='upcoming'; renderAstroDialog('upcoming'); return;
   }
 }
 function setupAstroDialog(){
   const btn=$('btnAstro'); if(btn) btn.onclick=()=>{ renderAstroDialog('upcoming'); $('astroDialog').showModal(); };
   const ct=$('astroCloseTop'), cb=$('astroClose'); if(ct) ct.onclick=()=>$('astroDialog').close(); if(cb) cb.onclick=()=>$('astroDialog').close();
-  const tU=$('tabAstroUpcoming'), tY=$('tabAstroYear'), tL=$('tabAstroLuna');
+  const tU=$('tabAstroUpcoming'), tM=$('tabAstroMesLunar'), tY=$('tabAstroYear');
   if(tU) tU.onclick=()=> renderAstroDialog('upcoming');
+  if(tM) tM.onclick=()=> renderAstroDialog('mesLunar');
   if(tY) tY.onclick=()=> renderAstroDialog('year');
-  if(tL) tL.onclick=()=> renderAstroDialog('luna');
 }
 setTimeout(setupAstroDialog, 880);
 
@@ -6435,6 +7183,9 @@ if ($('btnTimer')) {
   cycle = cal.buildCycle(startY);
   phaseMap = cal.phasesByDay(cycle.start, cycle.start + 365 * 86400000);
 
+  rebuildLunaByKey();
+  setupViewBar();
+  updateViewButtons();
   buildSidebar();
   if (info) {
     if (info.luna === 'dft') selectDFT(); else selectMoon(info.luna);
