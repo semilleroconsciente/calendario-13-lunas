@@ -120,6 +120,7 @@
           <button id="btnBreath" class="btn" data-keywords="respiracion 478 caja cuadrada ansiedad">🌬️ Respiración</button>
           <button id="btnDreams" class="btn" data-keywords="sueños diario onirico rem dormir">💭 Sueños</button>
           <button id="btnLawen" class="btn" data-keywords="lawen herbario hierba matico boldo maqui canelo bailahuen manzanilla medicina natural remedio planta">🌿 Lawen Herbario</button>
+          <button id="btnEspiritual" class="btn" data-keywords="practicas espirituales sol amanecer atardecer agua solarizada ducha fria grounding earthing luz roja noche ritual meditacion sungazing">🕉️ Prácticas Espirituales</button>
         </div>
       </details>
       <details class="action-group" open data-group="mente">
@@ -130,9 +131,11 @@
           <button id="btnStudy" class="btn" data-keywords="estudio mnemotecnia lectura feynman">🧠 Estudio</button>
           <button id="btnSchedule" class="btn" data-keywords="horario clases estudio semana">📚 Horario</button>
           <button id="btnTales" class="btn" data-keywords="cuentos infantil niños luna historia">📖 Cuentos</button>
-          <button id="btnMemory" class="btn" data-keywords="memoria pares loci atencion">🧩 Memoria</button>
+          <button id="btnMemory" class="btn" data-keywords="memoria pares loci atencion secuencia simon palabras numeros schulte distinto">🧩 Memoria</button>
           <button id="btnMapu" class="btn" data-keywords="mapuzugun mapuche kimun kimün palabra idioma numero saludo quiz luna intermedio avanzado frases verbos gramatica">🗣️ Kimün Mapuzugun</button>
+          <button id="btnEnglish" class="btn" data-keywords="ingles english idioma levels a1 a2 b1 b2 c1 basic intermediate advanced quiz vocabulary grammar frases verbos">Ingles</button>
           <button id="btnGratitud" class="btn" data-keywords="gratitud diario gracias wenu bienestar animo positivo racha">📓 Gratitud Diaria</button>
+          <button id="btnGuitar" class="btn" data-keywords="guitarra acordes principiante intermedio avanzado practica afinador metronomo cejilla fingerpicking escalas canciones ritmo rasgueo">🎸 Guitarra</button>
         </div>
       </details>
       <details class="action-group" open data-group="vida">
@@ -166,7 +169,7 @@
           <button id="btnPdfLuna" class="btn" data-keywords="pdf luna imprimir exportar">📄 PDF luna</button>
           <button id="btnPdfCiclo" class="btn" data-keywords="pdf ciclo completo imprimir">📚 PDF ciclo</button>
           <button id="btnLena" class="btn" data-keywords="leña pellet calefaccion estufa bosca invierno kwh humedad eucalipto pino calculadora termica">🪵 Leña & Pellet</button>
-          <button id="btnDonate" class="btn btn-accent" style="width:auto" data-keywords="aporte donar mercadopago paypal">❤ Aporte voluntario</button>
+          <button id="btnDonate" class="btn btn-accent" style="width:auto" data-keywords="aporte donar mercadopago paypal personalizado organizacion encargo medida territorio">❤ Aporte voluntario</button>
         </div>
       </details>
     </footer>
@@ -1576,6 +1579,27 @@
     </form>
   </dialog>
 
+  <dialog id="englishDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">Ingles</h3>
+        <button type="button" id="englishCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
+      </div>
+      <p class="muted" style="line-height:1.5">Aprende inglés por <b>niveles CEFR (A1 → C1) y offline</b>, como el Kimün Mapuzugun: 1 palabra/frase al día + gramática + quiz. Toca 🔊 para escuchar (voz del dispositivo, en-US). Todo se guarda <b>local y privado</b> por usuario.</p>
+      <div id="englishStreakBox" class="menstrual-card" style="border-color:var(--gold)"></div>
+      <div class="timer-tabs" style="margin:12px 0 10px;flex-wrap:wrap">
+        <button type="button" id="tabEN1" class="btn btn-accent" style="width:auto">☀️ Word of the day</button>
+        <button type="button" id="tabEN2" class="btn" style="width:auto">🌱 A1 Principiante</button>
+        <button type="button" id="tabEN3" class="btn" style="width:auto">🌿 A2 Básico</button>
+        <button type="button" id="tabEN4" class="btn" style="width:auto">💬 B1 Intermedio</button>
+        <button type="button" id="tabEN5" class="btn" style="width:auto">📜 B2–C1 Avanzado</button>
+        <button type="button" id="tabEN6" class="btn" style="width:auto">🧩 Quiz</button>
+      </div>
+      <div id="englishPanel"></div>
+      <div class="dlg-actions"><button type="button" id="englishClose" class="btn">Cerrar</button></div>
+    </form>
+  </dialog>
+
   <dialog id="lawenDialog">
     <form method="dialog">
       <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
@@ -1734,6 +1758,16 @@
           <p class="muted" style="font-size:11px">Tu opinión hace crecer el calendario. Escríbeme y respondo personalmente. ¡Toda idea es bienvenida!</p>
           <a href="mailto:semilleroconsciente@gmail.com?subject=Idea%20para%20mejorar%20el%20Calendario%2013%20Lunas&body=Hola%20Semillero%2C%0A%0AMi%20idea%2Fopini%C3%B3n%20para%20el%20calendario%3A%0A%0A-%20Qu%C3%A9%20mejoraria%3A%0A-%20Qu%C3%A9%20te%20gusta%20m%C3%A1s%3A%0A%0AGracias%20por%20este%20trabajo%20colectivo%20!" class="btn" style="width:auto;display:inline-block;text-align:center;text-decoration:none;background:#a9d18e;color:#0e1a12;border-color:#a9d18e;margin-top:6px">💬 Enviar idea / opinión</a>
           <p class="muted" style="font-size:11px;margin-top:6px"><b>semilleroconsciente@gmail.com</b> · Respuesta en 2-3 días</p>
+        </div>
+      </div>
+      <div class="donate-grid" style="margin-top:10px">
+        <div class="donate-card" style="grid-column:1/-1;border-color:var(--accent);background:linear-gradient(135deg,var(--panel),var(--card))">
+          <h4>🎨 ¿Necesitas una versión personalizada?</h4>
+          <p class="muted" style="font-size:12px;line-height:1.5">Si necesitas una versión del calendario a medida para tu contexto personal (familia, proyecto, emprendimiento, escuela, práctica espiritual o terapéutica) o para tu organización (comunidad, junta de vecinos, municipio, ONG, empresa, centro de salud o educativo).</p>
+          <p class="muted" style="font-size:11px;line-height:1.5">Se puede personalizar y dejarlo a tu medida.</p>
+          <p class="muted" style="font-size:11px">Trabajo artesanal, por encargo y a precio justo — escríbeme y lo conversamos sin compromiso.</p>
+          <a href="mailto:semilleroconsciente@gmail.com?subject=Versi%C3%B3n%20personalizada%20del%20calendario%20-%20solicitud&body=Hola%20Semillero%2C%0A%0AMe%20interesa%20una%20versi%C3%B3n%20personalizada%20del%20calendario%2013%20Lunas%3A%0A%0A-%20Tipo%3A%20(personal%20%2F%20organizaci%C3%B3n)%0A-%20Nombre%20persona%20u%20organizaci%C3%B3n%3A%0A-%20Contexto%20%2F%20para%20qu%C3%A9%20la%20necesito%3A%0A-%20Qu%C3%A9%20me%20gustar%C3%ADa%20personalizar%3A%20(logo%20y%20colores%2C%20efem%C3%A9rides%2C%20mareas%2Fsiembra%20de%20mi%20zona%2C%20m%C3%B3dulos%2C%20idioma)%0A-%20Plazo%20ideal%3A%0A%0AGracias%20!" class="btn btn-accent" style="width:auto;display:inline-block;text-align:center;text-decoration:none;margin-top:6px">✨ Solicitar versión personalizada</a>
+          <p class="muted" style="font-size:11px;margin-top:6px"><b>semilleroconsciente@gmail.com</b> · Asunto sugerido: Versión personalizada</p>
         </div>
       </div>
       <div class="menstrual-card" style="margin-top:10px;background:var(--panel);text-align:center">
@@ -2054,6 +2088,98 @@
     </form>
   </dialog>
 
+  <dialog id="espiritualDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">🕉️ Prácticas Espirituales — luz, agua, tierra y noche</h3>
+        <button type="button" id="espiritualCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
+      </div>
+      <p class="muted" style="line-height:1.5">Rituales simples de <b>sol, agua, tierra y oscuridad</b> para ordenar energía y sueño en Penco. Elige 1–2, hazlas 7 días seguidos y registra tu racha. No es consejo médico: si tienes condición fotosensible, cardiovascular, embarazo o tomas remedios, consulta antes.</p>
+      <div id="espiritualTodayBox" class="menstrual-card" style="border-color:var(--gold)"></div>
+      <div class="timer-tabs" style="margin:10px 0;flex-wrap:wrap">
+        <button type="button" id="espTabPracticas" class="btn btn-accent" style="width:auto">🕉️ Prácticas</button>
+        <button type="button" id="espTabKit" class="btn" style="width:auto">🎒 Kit &amp; Recursos</button>
+        <button type="button" id="espTabRegistro" class="btn" style="width:auto">📓 Mi Registro</button>
+      </div>
+      <div id="espPracticasPanel">
+        <div class="menstrual-card" style="margin-bottom:10px;text-align:center">
+          <h4 style="color:var(--gold)">⏱ Temporizador de práctica</h4>
+          <div class="conv-row" style="align-items:flex-end">
+            <label style="flex:1">Práctica
+              <select id="espTimerPractice">
+                <option value="amanecer">🌅 Sol amanecer</option>
+                <option value="atardecer">🌇 Sol atardecer</option>
+                <option value="agua">💧 Beber agua solarizada (pausa)</option>
+                <option value="ducha">🧊 Ducha fría</option>
+                <option value="grounding">🦶 Grounding</option>
+                <option value="respiracion">🌬️ Respiración al sol</option>
+                <option value="luna">🌙 Contemplación lunar</option>
+                <option value="silencio">🧘 Silencio / Meditación</option>
+              </select>
+            </label>
+            <label>Minutos
+              <select id="espTimerMinutes">
+                <option value="1">1</option><option value="2" selected>2</option><option value="5">5</option><option value="10">10</option><option value="15">15</option><option value="20">20</option><option value="30">30</option>
+              </select>
+            </label>
+          </div>
+          <div id="espTimerDisplay" class="timer-display" style="margin-top:8px">02:00</div>
+          <div class="dlg-actions" style="justify-content:center;margin-top:8px">
+            <button type="button" id="espTimerStart" class="btn btn-accent" style="width:auto">▶ Iniciar</button>
+            <button type="button" id="espTimerPause" class="btn" style="width:auto">⏸ Pausa</button>
+            <button type="button" id="espTimerReset" class="btn" style="width:auto">↺ Reset</button>
+            <button type="button" id="espTimerDone" class="btn" style="width:auto" title="Marca la práctica del temporizador como hecha hoy">✅ Marcar hecha</button>
+          </div>
+          <p class="muted" style="font-size:11px;margin-top:6px">Deja el celu a un lado, solo escucha el aviso final. Al terminar suena 🔔.</p>
+        </div>
+        <div id="espiritualCards"></div>
+        <div class="menstrual-card" style="margin-top:10px">
+          <h4>🔗 Conecta con el calendario</h4>
+          <p class="muted" style="font-size:12px">🌞 <b>Circadiano</b> explica tu cortisol/melatonina · 📸 <b>Hora Dorada</b> da salida/puesta exacta · 🌬️ <b>Respiración</b> guía 4-7-8 y caja · 💭 <b>Sueños</b> para diario onírico · ✅ <b>Hábitos</b> para racha larga.</p>
+          <div class="dlg-actions" style="justify-content:flex-start">
+            <button type="button" id="espGoCircadian" class="btn" style="width:auto">🌞 Circadiano</button>
+            <button type="button" id="espGoGolden" class="btn" style="width:auto">📸 Hora Dorada</button>
+            <button type="button" id="espGoBreath" class="btn" style="width:auto">🌬️ Respiración</button>
+          </div>
+        </div>
+      </div>
+      <div id="espKitPanel" class="hidden">
+        <div class="si-card"><h4>🎒 Kit mínimo (una sola compra, dura años)</h4><p>Botella de <b>vidrio transparente o azul</b> 1L con tapa · vaso/taza · toalla + chalas firmes · manta o cojín para suelo · <b>ampolleta roja cálida</b> E27 5–7W + lámpara velador · antifaz o cortina oscura · cuaderno “sol/luna” + lápiz · termo con agua · bloqueador solo si estarás &gt;20 min al sol fuerte.</p></div>
+        <div class="si-card"><h4>🔴 Cómo dejar luz roja en la noche (paso a paso)</h4><p>1) Cambia el velador por ampolleta <b>roja/ámbar 590–660nm, 5–7W</b> (ferretería o tienda led, pide “luz cálida roja E27”). 2) Desde las <b>20:30–21:00</b> apaga blancos/techo y deja solo roja. 3) Activa <b>modo noche + brillo mínimo</b> en celu/PC. 4) Si ves tele, baja brillo y aléjate. 5) Al dormir: <b>oscuridad total</b> (apaga roja también). Alternativa $0: vela + celular guardado.</p></div>
+        <div class="si-card"><h4>💧 Cómo cargar agua con sol (2 métodos)</h4><p><b>Rápido (30–60 min):</b> llena botella vidrio ¾, tapa sin apretar, ponla al sol directo de mañana, trae adentro. <b>Profundo (3–4 h):</b> misma botella al sol de 10:00–14:00, luego guarda a la sombra y bebe en el día. Lava la botella a diario, no uses plástico al sol, no guardes más de 24 h. Si hay smog/polvo, enjuaga la botella por fuera.</p></div>
+        <div class="si-card"><h4>🦶 Dónde hacer grounding en Penco</h4><p>Playa Negra / Lirquén (arena húmeda de orilla), pasto de plaza o patio sin barnizar, tierra de huerta, roca costera seca con pies secos (solo bajamar y sin oleaje). 10–20 min descalzo, respira lento. Lleva bolsa para basura y vuelve con todo.</p></div>
+        <div class="si-card"><h4>🧊 Ducha fría sin sufrir (protocolo)</h4><p>Termina tu ducha tibia normal con <b>15–30 seg fría</b> (piernas → brazos → pecho, cara al final). Respira por nariz, no aguantes aire. Sube 15 seg por semana hasta 1–3 min. Toalla a mano, pieza temperada. <b>No hagas</b> si tienes hipertensión descompensada, corazón, embarazo, fiebre o te mareas — usa tibia-fresca.</p></div>
+        <div class="si-card"><h4>⚠️ Seguridad sol (lee esto)</h4><p><b>Nunca mires el sol fijo ni con lentes/bino­culares.</b> Amanecer/atardecer = luz suave mirando al horizonte con parpadeo normal, 2–10 min. Mediodía (11:00–16:30 en verano) = piel protegida, sombra y gorro. Piel muy blanca, lunares raros, remedios fotosensibles o post-operatorio: solo luz indirecta + consulta. Si arde, pica o mareas → sombra + agua.</p></div>
+        <div class="menstrual-card" style="margin-top:10px">
+          <h4>✅ Checklist para imprimir / copiar</h4>
+          <p class="muted" style="font-size:11px">Copia y pega en tu cuaderno o comparte por WhatsApp.</p>
+          <div class="dlg-actions" style="justify-content:flex-start">
+            <button type="button" id="espCopyKit" class="btn" style="width:auto">📋 Copiar checklist</button>
+            <button type="button" id="espShareKit" class="btn" style="width:auto">📤 Compartir</button>
+          </div>
+          <p id="espKitStatus" class="muted" style="font-size:11px;margin-top:6px"></p>
+        </div>
+      </div>
+      <div id="espRegistroPanel" class="hidden">
+        <div id="espTodayChecks" class="menstrual-card" style="border-color:var(--gold)"></div>
+        <div class="conv-row" style="margin-top:10px">
+          <label style="flex:2">Nota de hoy (ej: “amanecer con neblina, 5 min, me sentí calmo”) <input type="text" id="espNoteInput" placeholder="cómo estuvo tu práctica hoy..." maxlength="120"></label>
+          <button type="button" id="espNoteSave" class="btn btn-accent" style="width:auto;align-self:flex-end">💾 Guardar</button>
+        </div>
+        <div id="espStatsBox" class="menstrual-card" style="margin-top:10px"></div>
+        <div id="espLogBox" class="habits-list" style="margin-top:10px;max-height:240px"></div>
+        <div class="dlg-actions" style="justify-content:space-between;align-items:center;margin-top:8px">
+          <span style="display:flex;gap:8px;flex-wrap:wrap">
+            <button type="button" id="espAgendar" class="btn" style="width:auto">🕐 Agendar hoy</button>
+            <button type="button" id="espShareLog" class="btn" style="width:auto">📤 Compartir semana</button>
+            <button type="button" id="espClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar</button>
+          </span>
+        </div>
+      </div>
+      <div class="dlg-actions"><button type="button" id="espiritualClose" class="btn">Cerrar</button></div>
+    </form>
+  </dialog>
+
   <dialog id="scheduleDialog">
     <form method="dialog">
       <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
@@ -2210,6 +2336,146 @@
     </form>
   </dialog>
 
+  <dialog id="guitarDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">🎸 Guitarra — Principiante · Intermedio · Avanzado</h3>
+        <button type="button" id="guitarCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
+      </div>
+      <p class="muted" style="line-height:1.5">Aprende y practica guitarra por <b>niveles, 100% offline</b>. Elige tu nivel, sigue la rutina de 15 min, afina con el afinador de referencia y mantén tu racha. Todo tu progreso queda <b>local y privado</b> por usuario.</p>
+      <div class="conv-row" style="align-items:center">
+        <label style="flex:1">🎚️ Mi nivel
+          <select id="guitarLevelSel">
+            <option value="principiante">🌱 Principiante — 0 a 3 meses</option>
+            <option value="intermedio">🌿 Intermedio — 3 a 18 meses</option>
+            <option value="avanzado">🌳 Avanzado — 18+ meses</option>
+          </select>
+        </label>
+        <span id="guitarStreakChip" class="chip" style="align-self:flex-end">🔥 0 días · 0 min total</span>
+      </div>
+      <div class="timer-tabs" style="margin:12px 0 10px;flex-wrap:wrap">
+        <button type="button" id="tabGuiB" class="btn btn-accent" style="width:auto">🌱 Principiante</button>
+        <button type="button" id="tabGuiI" class="btn" style="width:auto">🌿 Intermedio</button>
+        <button type="button" id="tabGuiA" class="btn" style="width:auto">🌳 Avanzado</button>
+        <button type="button" id="tabGuiP" class="btn" style="width:auto">🛠️ Práctica & Herramientas</button>
+      </div>
+      <div id="guitarBegPanel">
+        <div class="discipline-grid">
+          <div class="discipline-card"><h4>🤏 Postura y manos</h4><p><b>Cómo:</b> espalda recta, guitarra apoyada en pierna derecha (o izquierda si eres zurdo), pulgar detrás del mástil.</p><p class="muted">Dedos en punta, cerca del traste sin tocarlo. Si duele la yema 5 min, descansa — el callo llega en 2-3 semanas.</p></div>
+          <div class="discipline-card"><h4>🎵 Primeros 5 acordes</h4><p><b>Em · Am · C · G · D.</b> Toca cada cuerda por separado: si suena apagada (“mute”), mueve el dedo.</p><p class="muted">Meta semana 1-2: cambiar Em→Am→C sin parar, 60 bpm.</p></div>
+          <div class="discipline-card"><h4>👇 Rasgueo base</h4><p><b>Abajo-Abajo-Arriba-Arriba-Abajo-Arriba</b> (D-D-U-U-D-U). Muñeca suelta, no codo duro.</p><p class="muted">Practica con cuerdas muteadas (mano izquierda suelta) 5 min para soltar ritmo.</p></div>
+          <div class="discipline-card"><h4>🔄 Cambios limpios</h4><p><b>Cómo:</b> cambia en el aire, en el último “arriba”. Deja un dedo pivote (ej: dedo 1 en C→Am).</p><p class="muted">Ejercicio: Em 4 tiempos → Am 4 tiempos × 5 min con metrónomo 60-70 bpm.</p></div>
+          <div class="discipline-card"><h4>🎶 3 canciones fáciles</h4><p><b>Knockin' on Heaven's Door</b> (G-D-Am) · <b>La Bamba</b> (C-F-G simplificado) · <b>Cueca simple</b> (A-E).</p><p class="muted">Toca una entera aunque sea lenta — terminar canciones motiva más que ejercicios.</p></div>
+          <div class="discipline-card"><h4>⚠️ Errores típicos</h4><p>1) Apretar demasiado (cansa y desafina). 2) Pulgar colgando sobre el mástil. 3) Mirar solo la mano derecha.</p><p class="muted">Regla: 15 min diarios &gt; 2 h un día. Afina siempre antes (pestaña Herramientas).</p></div>
+        </div>
+        <div class="menstrual-card" style="margin-top:10px">
+          <h4>✅ Rutina principiante — 15 min</h4>
+          <p class="muted" style="font-size:11px;line-height:1.6">1) Afinar 2 min · 2) Cambios Em-Am-C-G 5 min (metrónomo 60) · 3) Rasgueo D-D-U-U-D-U 4 min · 4) Canción favorita 4 min. Marca tu práctica abajo en 🛠️ Práctica.</p>
+        </div>
+      </div>
+      <div id="guitarIntPanel" class="hidden">
+        <div class="discipline-grid">
+          <div class="discipline-card"><h4>✊ Cejilla sin dolor (F · Bm)</h4><p><b>Cómo:</b> dedo 1 recto pegado al traste, codo hacia abajo, usa el peso del brazo no la fuerza del pulgar.</p><p class="muted">Progresión: F simplificado (xx3211) → F completo → Bm. 2 min diarios de “aprieta-suelta”.</p></div>
+          <div class="discipline-card"><h4>⚡ Power chords & palm mute</h4><p><b>E5-A5-D5:</b> dedo 1 + 3 (ej: 6ta cuerda traste 5 = A5). Palma derecha rozando el puente para “chug”.</p><p class="muted">Ideal rock/punk: practica E5-G5-A5-C5 con downstrokes a 90 bpm.</p></div>
+          <div class="discipline-card"><h4>🤌 Fingerpicking base (P-I-M-A)</h4><p><b>Patrón:</b> pulgar (6-5-4) + índice-medio-anular (3-2-1). Empieza con Travis: T-I-T-M.</p><p class="muted">Canción puente: “Hallelujah” arpegiada (C-Am-F-G) lento.</p></div>
+          <div class="discipline-card"><h4>🎸 Escala pentatónica menor</h4><p><b>La menor, posición 1:</b> 6ta cuerda 5-8 · 5ta 5-7 · 4ta 5-7 · 3ra 5-7 · 2da 5-8 · 1ra 5-8.</p><p class="muted">Sube-baja con metrónomo 70→100 bpm. Luego improvisa sobre base Am-Dm-E.</p></div>
+          <div class="discipline-card"><h4>🔨 Hammer-on & Pull-off</h4><p><b>Hammer:</b> golpea el traste sin púa. <b>Pull:</b> tira hacia abajo “pellizcando”.</p><p class="muted">Lick clásico: 5h7-5p3 en 2da cuerda. Practica limpio antes que rápido.</p></div>
+          <div class="discipline-card"><h4>🎶 Repertorio intermedio</h4><p><b>Zombie</b> (Em-C-G-D) · <b>Wish You Were Here</b> (intro) · <b>Gracias a la vida</b> (arpegio).</p><p class="muted">Meta: 5 canciones completas de memoria + 1 con cejilla fluida.</p></div>
+        </div>
+        <div class="menstrual-card" style="margin-top:10px">
+          <h4>✅ Rutina intermedia — 20 min</h4>
+          <p class="muted" style="font-size:11px;line-height:1.6">1) Cejilla 3 min · 2) Pentatónica 5 min (metrónomo) · 3) Fingerpicking 5 min · 4) Canción con cejilla 7 min. Graba 30s con el celular 1×/semana para oír tu avance.</p>
+        </div>
+      </div>
+      <div id="guitarAdvPanel" class="hidden">
+        <div class="discipline-grid">
+          <div class="discipline-card"><h4>🎹 Acordes jazz & extensiones</h4><p><b>Maj7 · m7 · 9 · sus · slash</b> (ej: Cmaj7 x32000, Dm9 xx0210, G/B x20003).</p><p class="muted">Practica II-V-I en C (Dm7-G7-Cmaj7) en 3 posiciones del mástil.</p></div>
+          <div class="discipline-card"><h4>🗺️ CAGED + modos</h4><p><b>C-A-G-E-D</b> conecta todo el mástil. Luego <b>dórico y mixolidio</b> para solos con color.</p><p class="muted">Ejercicio: toca C mayor en las 5 formas CAGED seguidas, 1 octava cada una.</p></div>
+          <div class="discipline-card"><h4>👆 Hybrid picking & tapping</h4><p><b>Hybrid:</b> púa + dedos M-A. <b>Tapping base:</b> mano derecha traste 12, izquierda 5h7.</p><p class="muted">Lento y con compresión leve. Limpieza &gt; velocidad: usa metrónomo +10 bpm/semana.</p></div>
+          <div class="discipline-card"><h4>🎼 Arreglos fingerstyle</h4><p><b>Bajo + melodía + acorde</b> a la vez. Bajo con pulgar, melodía con A, relleno con I-M.</p><p class="muted">Arregla una cueca o tonada: primero bajo, luego agrega melodía compás por compás.</p></div>
+          <div class="discipline-card"><h4>🎙️ Improvisación y fraseo</h4><p><b>Call & response:</b> frase de 2 compases, silencio 1, respuesta. Bending afinado (sube hasta la nota vecina).</p><p class="muted">Grábate sobre backing track Am 5 min y escucha: ¿respiran tus frases?</p></div>
+          <div class="discipline-card"><h4>💡 Composición y sonido</h4><p><b>Progresiones no obvias:</b> Am-F-C-G con melodía en 1ra cuerda. Cuida calibre (0.10 versátil) y acción.</p><p class="muted">Lleva cuaderno: 1 idea/día (riff, letra, ritmo). Al mes tienes 30 para elegir.</p></div>
+        </div>
+        <div class="menstrual-card" style="margin-top:10px">
+          <h4>✅ Rutina avanzada — 30 min</h4>
+          <p class="muted" style="font-size:11px;line-height:1.6">1) CAGED 5 min · 2) II-V-I o modos 8 min · 3) Técnica (hybrid/tapping) 7 min · 4) Repertorio/composición 10 min. Toca con otros 1×/mes — nada reemplaza el ensamble.</p>
+        </div>
+      </div>
+      <div id="guitarPracPanel" class="hidden">
+        <div class="menstrual-card">
+          <h4>🎚️ Afinador de referencia (E-A-D-G-B-e)</h4>
+          <p class="muted" style="font-size:11px">Cada botón suena como <b>cuerda pulsada de guitarra acústica</b>. Afina hasta que no se oigan “olas” entre tu cuerda y esta. A432 suena un poco más grave — úsalo solo si todo tu grupo afina igual.</p>
+          <div class="conv-row" style="align-items:center">
+            <label style="flex:1">🎼 Referencia
+              <select id="guitarTuneRef">
+                <option value="440">A440 · estándar (recomendado)</option>
+                <option value="432">A432 · más grave</option>
+              </select>
+            </label>
+          </div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">
+            <button type="button" class="btn guitar-tune" data-f="82.41" data-n="6ta Mi grave" data-s="6ta E" style="width:auto">6ta E · 82Hz</button>
+            <button type="button" class="btn guitar-tune" data-f="110" data-n="5ta La" data-s="5ta A" style="width:auto">5ta A · 110Hz</button>
+            <button type="button" class="btn guitar-tune" data-f="146.83" data-n="4ta Re" data-s="4ta D" style="width:auto">4ta D · 147Hz</button>
+            <button type="button" class="btn guitar-tune" data-f="196" data-n="3ra Sol" data-s="3ra G" style="width:auto">3ra G · 196Hz</button>
+            <button type="button" class="btn guitar-tune" data-f="246.94" data-n="2da Si" data-s="2da B" style="width:auto">2da B · 247Hz</button>
+            <button type="button" class="btn guitar-tune" data-f="329.63" data-n="1ra Mi agudo" data-s="1ra e" style="width:auto">1ra e · 330Hz</button>
+            <button type="button" id="guitarTuneAll" class="btn btn-accent" style="width:auto">▶ Las 6 cuerdas</button>
+            <button type="button" id="guitarTuneStop" class="btn" style="width:auto">⏹ Parar</button>
+          </div>
+          <p id="guitarTuneStatus" class="muted" style="font-size:11px;margin-top:6px">Toca una cuerda para escucharla 4 segundos (sonido de acústica).</p>
+        </div>
+        <div class="menstrual-card" style="margin-top:10px;text-align:center">
+          <h4>⏱️ Metrónomo</h4>
+          <div class="conv-row" style="justify-content:center;align-items:center">
+            <label>BPM <input type="range" id="metroBpm" min="40" max="208" value="80" style="width:140px"></label>
+            <span id="metroBpmVal" class="chip">80 bpm</span>
+            <button type="button" id="metroStart" class="btn btn-accent" style="width:auto">▶ Iniciar</button>
+            <button type="button" id="metroStop" class="btn" style="width:auto">⏹ Parar</button>
+          </div>
+          <div id="metroBeat" style="font-size:28px;min-height:40px;display:flex;align-items:center;justify-content:center;gap:8px">♪</div>
+          <p class="muted" style="font-size:11px">Principiante 60-80 · Intermedio 80-110 · Avanzado 110+. Sube +5 bpm cuando toques limpio 3 veces seguidas.</p>
+        </div>
+        <div class="menstrual-card" style="margin-top:10px">
+          <h4>📚 Biblioteca de acordes</h4>
+          <label>🔍 Buscar <input type="text" id="guitarChordSearch" placeholder="ej: F, cejilla, do, menor, 7" autocomplete="off"></label>
+          <div id="guitarChordGrid" class="fishing-species" style="margin-top:8px"></div>
+          <p class="muted" style="font-size:10px;margin-top:6px">Toca un acorde para ver digitación y consejo. Formato: 6ta→1ra, x=mute, 0=al aire.</p>
+          <div id="guitarChordDetail" class="chip" style="display:block;margin-top:8px;white-space:normal;line-height:1.6"></div>
+        </div>
+        <div class="menstrual-card" style="margin-top:10px">
+          <h4>📓 Bitácora de práctica — registro personal</h4>
+          <p class="muted" style="font-size:11px">Queda <b>privado y local</b> por usuario. Suma minutos, racha y nivel.</p>
+          <div class="conv-row">
+            <label>Fecha <input type="date" id="pracDate"></label>
+            <label>Minutos <input type="number" id="pracMinutes" min="1" max="480" value="15" style="width:90px"></label>
+            <label>Nivel
+              <select id="pracLevel">
+                <option value="principiante">🌱 Principiante</option>
+                <option value="intermedio">🌿 Intermedio</option>
+                <option value="avanzado">🌳 Avanzado</option>
+              </select>
+            </label>
+          </div>
+          <label>¿Qué practiqué? <input type="text" id="pracDetail" placeholder="ej: cambios C-G, pentatónica 80bpm, Zombie completa" maxlength="80"></label>
+          <div class="dlg-actions" style="justify-content:flex-start">
+            <button type="button" id="pracAdd" class="btn btn-accent" style="width:auto">+ Guardar práctica</button>
+            <button type="button" id="pracCancelEdit" class="btn hidden" style="width:auto">Cancelar</button>
+          </div>
+          <div id="pracList" class="habits-list" style="margin-top:10px;max-height:240px"></div>
+          <div class="dlg-actions" style="justify-content:space-between;align-items:center;margin-top:8px">
+            <span id="pracStats" class="muted" style="font-size:11px"></span>
+            <span style="display:flex;gap:8px">
+              <button type="button" id="pracShare" class="btn" style="width:auto">📤 Compartir</button>
+              <button type="button" id="pracClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar</button>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="dlg-actions"><button type="button" id="guitarClose" class="btn">Cerrar</button></div>
+    </form>
+  </dialog>
+
   <dialog id="configDialog">
     <form method="dialog">
       <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
@@ -2260,6 +2526,7 @@
           <label class="check-row"><input type="checkbox" data-btn="btnBreath"> 🌬️ Respiración</label>
           <label class="check-row"><input type="checkbox" data-btn="btnDreams"> 💭 Sueños</label>
           <label class="check-row"><input type="checkbox" data-btn="btnLawen"> 🌿 Lawen Herbario</label>
+          <label class="check-row"><input type="checkbox" data-btn="btnEspiritual"> 🕉️ Prácticas Espirituales</label>
         </div>
         <div class="config-group">
           <h5>🧠 Mente y estudio</h5>
@@ -2271,6 +2538,7 @@
           <label class="check-row"><input type="checkbox" data-btn="btnMemory"> 🧩 Memoria</label>
           <label class="check-row"><input type="checkbox" data-btn="btnMapu"> 🗣️ Kimün Mapuzugun</label>
           <label class="check-row"><input type="checkbox" data-btn="btnGratitud"> 📓 Gratitud Diaria</label>
+          <label class="check-row"><input type="checkbox" data-btn="btnGuitar"> 🎸 Guitarra</label>
         </div>
         <div class="config-group">
           <h5>🍽️ Vida diaria</h5>
@@ -2344,27 +2612,212 @@
         <h3 style="margin:0;color:var(--accent)">🧩 Memoria y Atención</h3>
         <button type="button" id="memoryCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
       </div>
-      <p class="muted" style="line-height:1.5">Entrena memoria con el método loci y juego de pares. 3 minutos al día. Ideal para 60+ y estudiantes.</p>
-      <div class="timer-tabs" style="margin-bottom:10px">
+      <p class="muted" style="line-height:1.5">Gimnasio mental: 6 recursos para entrenar memoria visual, verbal, numérica y atención. 3 minutos al día. Ideal para 60+ y estudiantes. Todo se guarda <b>local y privado</b>.</p>
+      <div id="memoryStreakBar" class="chip" style="display:block;margin:6px 0;white-space:normal"></div>
+      <div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">
         <button type="button" id="tabMemoryLoci" class="btn btn-accent" style="width:auto">🏛️ Loci</button>
         <button type="button" id="tabMemoryPairs" class="btn" style="width:auto">🃏 Pares</button>
+        <button type="button" id="tabMemorySeq" class="btn" style="width:auto">🔢 Secuencia</button>
+        <button type="button" id="tabMemoryWords" class="btn" style="width:auto">📝 Palabras</button>
+        <button type="button" id="tabMemoryAtt" class="btn" style="width:auto">👁️ Atención</button>
+        <button type="button" id="tabMemoryProg" class="btn" style="width:auto">📊 Progreso</button>
       </div>
       <div id="memoryLociPanel">
         <div class="menstrual-card">
-          <h4>🏛️ Palacio — 5 lugares de tu casa</h4>
-          <p class="muted" style="font-size:11px">Asocia cada palabra a un lugar. Ej: 1=Entrada, 2=Cocina...</p>
-          <label>Palabras a recordar (coma) <input type="text" id="memoryWords" placeholder="ej: luna, pez, harina, risa, viento"></label>
-          <button type="button" id="memoryBuildLoci" class="btn" style="width:auto">Crear palacio</button>
-          <div id="memoryLociOutput" class="chip" style="display:block;margin-top:8px;white-space:normal"></div>
+          <h4>🏛️ Palacio de la memoria — método Loci</h4>
+          <p class="muted" style="font-size:11px">Asocia cada palabra a un lugar de un recorrido que conoces. Ej: 1=Entrada → imagina la palabra gigante ahí. Mientras más absurda la imagen, mejor se graba.</p>
+          <div class="conv-row">
+            <label style="flex:1">Recorrido
+              <select id="memoryRoute">
+                <option value="casa">🏠 Mi casa (5 lugares)</option>
+                <option value="feria">🧺 Feria de Penco (7 lugares)</option>
+                <option value="playa">🌊 Borde costero (7 lugares)</option>
+                <option value="cuerpo">🧍 Mi cuerpo (10 lugares)</option>
+              </select>
+            </label>
+            <label style="flex:1">Nivel
+              <select id="memoryLociN">
+                <option value="5">Fácil · 5 palabras</option>
+                <option value="7" selected>Medio · 7 palabras</option>
+                <option value="10">Avanzado · 10 palabras</option>
+              </select>
+            </label>
+          </div>
+          <label>Palabras a recordar (separadas por coma) <input type="text" id="memoryWords" placeholder="ej: luna, pez, harina, risa, viento, boldo, lluvia"></label>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">
+            <button type="button" id="memoryRandomWords" class="btn" style="width:auto">🎲 Palabras al azar</button>
+            <button type="button" id="memoryBuildLoci" class="btn btn-accent" style="width:auto">Crear palacio</button>
+            <button type="button" id="memoryQuizLoci" class="btn hidden" style="width:auto">🙈 Ocultar y practicar</button>
+          </div>
+          <div id="memoryLociOutput" class="chip" style="display:block;margin-top:8px;white-space:normal;line-height:1.7"></div>
+          <div id="memoryLociQuiz" class="hidden" style="margin-top:8px"></div>
+          <p class="muted" style="font-size:10px;margin-top:6px">💡 Técnica: 1) Lee en voz alta · 2) Cierra los ojos y recorre · 3) Repite a los 10 min, 1 día y 7 días (repetición espaciada). Lo absurdo y con olor/sabor se recuerda 3× más.</p>
         </div>
       </div>
       <div id="memoryPairsPanel" class="hidden">
         <div class="menstrual-card" style="text-align:center">
-          <h4>🃏 Pares — encuentra los iguales</h4>
-          <div id="memoryPairsGrid" class="habit-icon-picker" style="justify-content:center"></div>
-          <p class="muted" style="font-size:11px;margin-top:6px">Toca 2 cartas. Si coinciden, quedan abiertas. ¡Entrena atención!</p>
-          <button type="button" id="memoryPairsNew" class="btn btn-accent" style="width:auto">Nuevo juego</button>
-          <span id="memoryPairsScore" class="chip" style="margin-left:8px">0 pares</span>
+          <h4>🃏 Pares — memoria visual y atención</h4>
+          <p class="muted" style="font-size:11px">Toca 2 cartas. Si coinciden, quedan abiertas. Menos movimientos y menos tiempo = mejor.</p>
+          <div style="display:flex;gap:6px;justify-content:center;margin:8px 0;flex-wrap:wrap">
+            <button type="button" class="btn mem-pairs-lv" data-lv="facil" style="width:auto;font-size:11px">😌 Fácil 4×3</button>
+            <button type="button" class="btn mem-pairs-lv btn-accent" data-lv="medio" style="width:auto;font-size:11px">🙂 Medio 4×4</button>
+            <button type="button" class="btn mem-pairs-lv" data-lv="dificil" style="width:auto;font-size:11px">🔥 Difícil 6×4</button>
+          </div>
+          <div style="display:flex;gap:6px;justify-content:center;margin-bottom:8px;flex-wrap:wrap">
+            <span id="memoryPairsScore" class="chip">0 pares</span>
+            <span id="memoryPairsMoves" class="chip">0 intentos</span>
+            <span id="memoryPairsTime" class="chip">0:00</span>
+            <span id="memoryPairsBest" class="chip">récord —</span>
+          </div>
+          <div id="memoryPairsGrid" class="mem-grid"></div>
+          <div style="margin-top:8px;display:flex;gap:6px;justify-content:center">
+            <button type="button" id="memoryPairsNew" class="btn btn-accent" style="width:auto">🔀 Nuevo juego</button>
+          </div>
+        </div>
+      </div>
+      <div id="memorySeqPanel" class="hidden">
+        <div class="menstrual-card" style="text-align:center">
+          <h4>🔢 Secuencia lunar — memoria de trabajo (estilo Simón)</h4>
+          <p class="muted" style="font-size:11px">Mira la secuencia de lunas, luego repítela en orden. Cada ronda agrega 1 paso. ¿Hasta qué nivel llegas?</p>
+          <div style="display:flex;gap:6px;justify-content:center;margin:6px 0;flex-wrap:wrap">
+            <span id="memorySeqLevel" class="chip">Nivel 0</span>
+            <span id="memorySeqBest" class="chip">récord 0</span>
+            <span id="memorySeqMsg" class="chip">pulsa Iniciar</span>
+          </div>
+          <div id="memorySeqGrid" class="mem-seq-grid"></div>
+          <div style="display:flex;gap:6px;justify-content:center;margin-top:10px;flex-wrap:wrap">
+            <button type="button" id="memorySeqStart" class="btn btn-accent" style="width:auto">▶ Iniciar</button>
+            <button type="button" id="memorySeqSlow" class="btn" style="width:auto;font-size:11px">🐢 Lento</button>
+            <button type="button" id="memorySeqFast" class="btn" style="width:auto;font-size:11px">🐇 Rápido</button>
+          </div>
+          <p class="muted" style="font-size:10px;margin-top:6px">💡 Truco: ponle nombre en voz alta a cada luna (ej: “nueva, llena, menguante…”) — la doble codificación verbal+visual duplica el recuerdo.</p>
+        </div>
+      </div>
+      <div id="memoryWordsPanel" class="hidden">
+        <div class="menstrual-card">
+          <h4>📝 Palabras y números — memoria verbal</h4>
+          <p class="muted" style="font-size:11px">Memoriza la lista (o el número), ocúltala y escríbela de memoria. Entrena para compras, recados y estudios.</p>
+          <div class="timer-tabs" style="margin:8px 0">
+            <button type="button" id="tabMemWList" class="btn btn-accent" style="width:auto;font-size:11px">📝 Lista</button>
+            <button type="button" id="tabMemWNum" class="btn" style="width:auto;font-size:11px">🔢 Número</button>
+          </div>
+          <div id="memWListBox">
+            <div class="conv-row">
+              <label style="flex:1">Cantidad
+                <select id="memoryWordsN">
+                  <option value="5">5 palabras</option>
+                  <option value="7" selected>7 palabras</option>
+                  <option value="10">10 palabras</option>
+                </select>
+              </label>
+              <label style="flex:1">Tiempo para mirar
+                <select id="memoryWordsT">
+                  <option value="15">15 seg</option>
+                  <option value="30" selected>30 seg</option>
+                  <option value="60">60 seg</option>
+                </select>
+              </label>
+            </div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;margin:6px 0">
+              <button type="button" id="memoryWordsGen" class="btn btn-accent" style="width:auto">🎲 Generar lista</button>
+              <button type="button" id="memoryWordsHide" class="btn hidden" style="width:auto">🙈 Ocultar</button>
+              <button type="button" id="memoryWordsShow" class="btn hidden" style="width:auto">👁️ Mostrar</button>
+            </div>
+            <div id="memoryWordsList" class="chip" style="display:block;white-space:normal;line-height:1.8;min-height:40px">Pulsa “Generar lista”.</div>
+            <div id="memoryWordsTimer" class="chip hidden" style="display:block;margin-top:6px;text-align:center"></div>
+            <div id="memoryWordsRecallBox" class="hidden" style="margin-top:8px">
+              <label>Escríbelas de memoria (coma o una por línea) <textarea id="memoryWordsRecall" rows="3" placeholder="ej: luna, mar, boldo..."></textarea></label>
+              <div style="display:flex;gap:6px;margin-top:6px">
+                <button type="button" id="memoryWordsCheck" class="btn btn-accent" style="width:auto">✓ Evaluar</button>
+              </div>
+              <div id="memoryWordsResult" class="chip" style="display:block;margin-top:6px;white-space:normal"></div>
+            </div>
+          </div>
+          <div id="memWNumBox" class="hidden">
+            <div class="conv-row">
+              <label style="flex:1">Dígitos
+                <select id="memoryNumN">
+                  <option value="4">4 (teléfono corto)</option>
+                  <option value="6" selected>6</option>
+                  <option value="8">8</option>
+                  <option value="10">10 (desafío)</option>
+                </select>
+              </label>
+              <label style="flex:1">Tiempo
+                <select id="memoryNumT">
+                  <option value="10">10 seg</option>
+                  <option value="20" selected>20 seg</option>
+                  <option value="40">40 seg</option>
+                </select>
+              </label>
+            </div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;margin:6px 0">
+              <button type="button" id="memoryNumGen" class="btn btn-accent" style="width:auto">🎲 Generar número</button>
+              <button type="button" id="memoryNumHide" class="btn hidden" style="width:auto">🙈 Ocultar</button>
+              <button type="button" id="memoryNumShow" class="btn hidden" style="width:auto">👁️ Mostrar</button>
+            </div>
+            <div id="memoryNumList" class="chip" style="display:block;text-align:center;font-size:26px;letter-spacing:4px;font-weight:800;min-height:48px">— — —</div>
+            <div id="memoryNumTimer" class="chip hidden" style="display:block;margin-top:6px;text-align:center"></div>
+            <div id="memoryNumRecallBox" class="hidden" style="margin-top:8px">
+              <label>Escríbelo de memoria <input type="text" id="memoryNumRecall" inputmode="numeric" placeholder="ej: 482916" maxlength="12"></label>
+              <div style="display:flex;gap:6px;margin-top:6px">
+                <button type="button" id="memoryNumCheck" class="btn btn-accent" style="width:auto">✓ Evaluar</button>
+              </div>
+              <div id="memoryNumResult" class="chip" style="display:block;margin-top:6px;white-space:normal"></div>
+            </div>
+            <p class="muted" style="font-size:10px;margin-top:6px">💡 Agrupa de a 2-3 dígitos (48-29-16) y crea una historia. Es la técnica de “chunking” que usan los campeones de memoria.</p>
+          </div>
+        </div>
+      </div>
+      <div id="memoryAttPanel" class="hidden">
+        <div class="menstrual-card" style="text-align:center">
+          <h4>👁️ Encuentra el distinto — velocidad de atención</h4>
+          <p class="muted" style="font-size:11px">Hay 1 emoji distinto entre todos. Tócalo lo más rápido posible. 5 rondas.</p>
+          <div style="display:flex;gap:6px;justify-content:center;margin:6px 0;flex-wrap:wrap">
+            <span id="memoryOddRound" class="chip">Ronda 0/5</span>
+            <span id="memoryOddTime" class="chip">0.0s</span>
+            <span id="memoryOddBest" class="chip">récord —</span>
+          </div>
+          <div id="memoryOddGrid" class="mem-grid"></div>
+          <div style="margin-top:8px"><button type="button" id="memoryOddNew" class="btn btn-accent" style="width:auto">▶ Nueva partida (5 rondas)</button></div>
+        </div>
+        <div class="menstrual-card" style="text-align:center;margin-top:10px">
+          <h4>🔢 Tabla de Schulte 5×5 — atención plena</h4>
+          <p class="muted" style="font-size:11px">Toca los números del 1 al 25 en orden, lo más rápido posible, sin mover mucho los ojos. Excelente para lectura y concentración.</p>
+          <div style="display:flex;gap:6px;justify-content:center;margin:6px 0;flex-wrap:wrap">
+            <span id="memorySchNext" class="chip">Siguiente: 1</span>
+            <span id="memorySchTime" class="chip">0.0s</span>
+            <span id="memorySchBest" class="chip">récord —</span>
+          </div>
+          <div id="memorySchGrid" class="mem-schulte"></div>
+          <div style="margin-top:8px;display:flex;gap:6px;justify-content:center;flex-wrap:wrap">
+            <button type="button" id="memorySchNew" class="btn btn-accent" style="width:auto">🔀 Nueva tabla</button>
+          </div>
+          <p class="muted" style="font-size:10px;margin-top:6px">Meta sana: &lt;60s principiante · &lt;40s intermedio · &lt;25s avanzado. Si te frustras, respira y vuelve mañana.</p>
+        </div>
+      </div>
+      <div id="memoryProgPanel" class="hidden">
+        <div class="menstrual-card">
+          <h4>📊 Tu progreso — racha y récords</h4>
+          <div id="memoryProgStats" class="chip" style="display:block;white-space:normal;line-height:1.7"></div>
+          <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap">
+            <button type="button" id="memoryProgReset" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar récords</button>
+          </div>
+        </div>
+        <div class="menstrual-card" style="margin-top:10px">
+          <h4>🗓️ Rutina 3 minutos al día (sugerida)</h4>
+          <div class="help-grid" style="margin-top:8px">
+            <div class="help-card"><h4>Lun · Pares</h4><p style="font-size:11px">Medio 4×4, 1 partida. Calienta la vista.</p></div>
+            <div class="help-card"><h4>Mar · Secuencia</h4><p style="font-size:11px">Llega a nivel 6. Memoria de trabajo.</p></div>
+            <div class="help-card"><h4>Mié · Palabras</h4><p style="font-size:11px">7 palabras en 30 seg. Verbal.</p></div>
+            <div class="help-card"><h4>Jue · Atención</h4><p style="font-size:11px">5 rondas del distinto + 1 Schulte.</p></div>
+            <div class="help-card"><h4>Vie · Loci</h4><p style="font-size:11px">Crea 1 palacio con tu lista de compras.</p></div>
+            <div class="help-card"><h4>Sáb/Dom · Libre</h4><p style="font-size:11px">Repite tu favorito o descansa. Dormir consolida.</p></div>
+          </div>
+        </div>
+        <div class="menstrual-card" style="margin-top:10px">
+          <h4>📚 7 hábitos que cuidan la memoria (60+)</h4>
+          <p class="muted" style="font-size:11px;line-height:1.7">1) <b>Dormir 7-8h</b> — el sueño fija recuerdos.<br>2) <b>Caminar 20-30 min</b> — oxigena el hipocampo.<br>3) <b>Agua y comida de verdad</b> — menos ultraprocesados.<br>4) <b>Repetir en voz alta</b> — nombres, recados, listas.<br>5) <b>Un cuaderno siempre</b> — descargar en papel libera memoria.<br>6) <b>Vida social</b> — conversar es el mejor entrenamiento.<br>7) <b>Chequeo médico</b> si hay olvidos que preocupan (no es consejo médico: consulta a tu CESFAM).<br><br>⚠️ Si los olvidos interfieren con tu vida diaria, pide hora con profesional. Entrenar ayuda, pero no reemplaza evaluación.</p>
         </div>
       </div>
       <div class="dlg-actions"><button type="button" id="memoryClose" class="btn">Cerrar</button></div>

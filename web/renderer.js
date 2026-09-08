@@ -331,7 +331,9 @@ function miniDayCard(key, opts){
   const evs = (typeof phaseMap!=='undefined' && phaseMap[key]) ? phaseMap[key] : [];
   const lunaTxt = ref ? (ref.luna==='dft' ? '✷ DFT' : 'L'+ref.luna+'·D'+ref.diaN) : '';
   const dim = !!opts.dim;
+  const wdFull = cal.weekdayName(dt.getTime());
   return `<div class="day-card${isToday?' today':''}" data-key="${key}" style="${dim?'opacity:.45':''};cursor:pointer">
+    <div class="dc-day">${escapeHtml(wdFull)} ${dt.getDate()}/${dt.getMonth()+1}</div>
     <div class="dc-head"><span class="dc-n">${dt.getDate()}</span><span class="dc-phases">${evs.map(e=>`<span class="dc-phase" title="${e.tipo}">${e.simbolo}</span>`).join('')}</span><span class="dc-date">${lunaTxt}</span></div>
     <div class="dc-sun">${cal.weekdayName(dt.getTime()).slice(0,3)}</div>
     ${agenda.length? `<div class="dc-clima">🕐 ${agenda.length} · ${escapeHtml(agenda.slice(0,2).map(a=>agendaTimeStr(a)+' '+a.text).join(' · '))}${agenda.length>2?' …':''}</div>`:''}
@@ -479,6 +481,7 @@ function miniLunarCard(key, evMap, idx){
   const lunaTxt = ref ? (ref.luna==='dft' ? '✷ DFT' : 'L'+ref.luna+'·D'+ref.diaN) : '';
   const wd = cal.weekdayName(dt.getTime());
   return `<div class="day-card${isToday?' today':''}" data-key="${key}" style="cursor:pointer" title="${escapeHtml(wd)} ${escapeHtml(key)} · ${moon.illum===null?'':moon.illum+'% iluminada'}">
+    <div class="dc-day">${escapeHtml(wd)} ${dt.getDate()}/${dt.getMonth()+1}</div>
     <div class="dc-head"><span class="dc-n">${idx!==undefined? String(idx).padStart(2,'0') : dt.getDate()}</span><span class="dc-phases">${moon.icon} ${evs.map(e=>`<span class="dc-phase" title="${e.tipo}">${e.simbolo}</span>`).join('')}</span><span class="dc-date">${dt.getDate()}/${dt.getMonth()+1}</span></div>
     <div class="dc-sun">${moon.illum===null?'🌙':moon.illum+'%'} · ${escapeHtml(wd.slice(0,3))}${lunaTxt? ' · '+lunaTxt:''}</div>
     ${agenda.length? `<div class="dc-clima">🕐 ${agenda.length} · ${escapeHtml(agenda.slice(0,2).map(a=>agendaTimeStr(a)+' '+a.text).join(' · '))}${agenda.length>2?' …':''}</div>`:''}
@@ -647,6 +650,12 @@ function renderLuna() {
       const gd=getGratitudData(); const g=gd.entries[key];
       if(g && (g.t1||g.t2||g.t3)) gratIcons=`<span class="dc-habit" style="background:#d8a0ff22;color:#d8a0ff;border-color:#d8a0ff55" title="Gratitud: ${escapeHtml([g.t1,g.t2,g.t3].filter(Boolean).join(' · ').slice(0,80))}">✨</span>`;
     }catch(e){}
+    let espIcons='';
+    try{
+      const ed=(userData().espiritual&&userData().espiritual.done)||{};
+      const eo=ed[key];
+      if(eo&&typeof eo==='object'){ const n=Object.values(eo).filter(Boolean).length; if(n>0) espIcons=`<span class="dc-habit" style="background:#e8c56a22;color:#e8c56a;border-color:#e8c56a55" title="Prácticas espirituales: ${n} hechas">🕉️</span>`; }
+    }catch(e){}
     const card = document.createElement('div');
     card.className = 'day-card' + (key === todayKey ? ' today' : '') + (mensType ? ' mens-'+mensType : '') + hasHabits + hasGym;
     card.dataset.luna = meta.n;
@@ -666,6 +675,7 @@ function renderLuna() {
       ${financeIcons ? `<div class="dc-habits">${financeIcons}</div>` : ''}
       ${homeIcons ? `<div class="dc-habits">${homeIcons}</div>` : ''}
       ${gratIcons ? `<div class="dc-habits">${gratIcons}</div>` : ''}
+      ${espIcons ? `<div class="dc-habits">${espIcons}</div>` : ''}
       ${efe ? `<div class="dc-efe" title="${escapeHtml(efe)}">📅 ${escapeHtml(efe)}</div>` : ''}
       ${mood ? `<div class="dc-clima">Ánimo: ${escapeHtml(mood.e)} ${escapeHtml(mood.n)}</div>` : ''}
       ${Array.isArray(cell.agenda)&&cell.agenda.length ? `<div class="dc-clima" title="${escapeHtml(cell.agenda.map(a=>getAgendaTime(a)+' '+a.text + (a.notify?' 🔔':'')).join(' · '))}">🕐 ${cell.agenda.length} compromiso${cell.agenda.length>1?'s':''} · ${escapeHtml(cell.agenda.slice(0,2).map(a=>getAgendaTime(a)+' '+a.text).join(' · '))}${cell.agenda.length>2?' …':''}</div>` : ''}
@@ -4070,7 +4080,7 @@ function renderFinanceList(){
 }
 function renderFinanceTips(){
   const box=$('financeTipsBox'); if(!box) return;
-  box.innerHTML=FIN_TIPS.map(t=>`<div class="si-card" style="margin-bottom:8px"><h4>${t.icon} ${escapeHtml(t.titulo)}</h4><p style="font-size:12px;color:#cdd3ee">${escapeHtml(t.desc)}</p>${t.ejemplo?'<p class="muted" style="font-size:11px">Ej: '+escapeHtml(t.ejemplo)+'</p>':''}${t.tip?'<p style="font-size:11px;color:var(--gold)">💡 '+escapeHtml(t.tip)+'</p>':''}</div>`).join('');
+  box.innerHTML=FIN_TIPS.map(t=>`<div class="si-card"><div class="fin-tip-head"><span class="fin-tip-ico">${t.icon}</span><h4>${escapeHtml(t.titulo)}</h4></div><p class="fin-tip-desc">${escapeHtml(t.desc)}</p>${t.ejemplo?'<p class="fin-tip-ej">Ej: '+escapeHtml(t.ejemplo)+'</p>':''}${t.tip?'<p class="fin-tip-tip">💡 '+escapeHtml(t.tip)+'</p>':''}</div>`).join('');
   const rules=$('financeRulesBox'); if(rules){
     rules.innerHTML=FIN_RULES.map(r=>`<div class="help-card"><h4>${escapeHtml(r.t)}</h4><p>${escapeHtml(r.d)}</p></div>`).join('');
   }
@@ -4691,20 +4701,20 @@ function setupHelpDialog(){
 setTimeout(setupHelpDialog, 850);
 
 // === CONFIGURACIÓN PERSONALIZABLE ===
-const ALL_BTNS = ["btnTides","btnFishing","btnBirds","btnIntermareal","btnBosque","btnWeather","btnSiembra","btnAstro","btnComuna","btnEkadashi","btnMenstrual","btnMedic","btnHabits","btnMeal","btnShopping","btnFinance","btnHomeTasks","btnDiscipline","btnDreams","btnBreath","btnGratitud","btnSchedule","btnGym","btnCircadian","btnGolden","btnCompost","btnRecicla","btnLawen","btnFirstAid","btnAnimalCare","btnViolence","btnEvac","btnConvert","btnEnergy","btnLena","btnTimer","btnRemind","btnBackup","btnRestore","btnShortcut","btnPdfLuna","btnPdfCiclo","btnDonate","btnHelp","btnStudy","btnTales","btnMemory","btnMapu"];
+const ALL_BTNS = ["btnTides","btnFishing","btnBirds","btnIntermareal","btnBosque","btnWeather","btnSiembra","btnAstro","btnComuna","btnEkadashi","btnMenstrual","btnMedic","btnHabits","btnMeal","btnShopping","btnFinance","btnHomeTasks","btnDiscipline","btnDreams","btnBreath","btnGratitud","btnSchedule","btnGym","btnCircadian","btnGolden","btnEspiritual","btnCompost","btnRecicla","btnLawen","btnFirstAid","btnAnimalCare","btnViolence","btnEvac","btnConvert","btnEnergy","btnLena","btnTimer","btnRemind","btnBackup","btnRestore","btnShortcut","btnPdfLuna","btnPdfCiclo","btnDonate","btnHelp","btnStudy","btnTales","btnMemory","btnMapu","btnEnglish","btnGuitar"];
 const PRESETS = {
   todo: Object.fromEntries(ALL_BTNS.map(k=>[k,true])),
   esencial: {btnTides:true,btnWeather:true,btnSiembra:true,btnEkadashi:true,btnFirstAid:true,btnEvac:true,btnBackup:true,btnRestore:true,btnPdfLuna:true,btnPdfCiclo:true,btnHelp:true,btnDonate:true},
-  infantil: {btnWeather:true,btnSiembra:true,btnHabits:true,btnDreams:true,btnBreath:true,btnSchedule:true,btnTales:true,btnMapu:true,btnHelp:true},
-  adolescente: {btnHabits:true,btnStudy:true,btnSchedule:true,btnDiscipline:true,btnDreams:true,btnBreath:true,btnMapu:true,btnConvert:true,btnTimer:true,btnHelp:true},
+  infantil: {btnWeather:true,btnSiembra:true,btnHabits:true,btnDreams:true,btnBreath:true,btnSchedule:true,btnTales:true,btnMapu:true,btnEnglish:true,btnGuitar:true,btnHelp:true},
+  adolescente: {btnHabits:true,btnStudy:true,btnSchedule:true,btnDiscipline:true,btnDreams:true,btnBreath:true,btnMapu:true,btnEnglish:true,btnGuitar:true,btnConvert:true,btnTimer:true,btnHelp:true},
   adulto: Object.fromEntries(ALL_BTNS.map(k=>[k,true])),
   mayor: {btnTides:true,btnWeather:true,btnSiembra:true,btnMenstrual:true,btnMedic:true,btnDreams:true,btnGratitud:true,btnBreath:true,btnLena:true,btnHelp:true,btnDonate:true},
-  estudiante: {btnWeather:true,btnSiembra:true,btnHabits:true,btnStudy:true,btnSchedule:true,btnDiscipline:true,btnMapu:true,btnTales:true,btnConvert:true,btnTimer:true,btnHelp:true},
+  estudiante: {btnWeather:true,btnSiembra:true,btnHabits:true,btnStudy:true,btnSchedule:true,btnDiscipline:true,btnMapu:true,btnEnglish:true,btnGuitar:true,btnTales:true,btnConvert:true,btnTimer:true,btnHelp:true},
   agricultor: {btnTides:true,btnFishing:true,btnBirds:true,btnIntermareal:true,btnBosque:true,btnWeather:true,btnSiembra:true,btnCompost:true,btnLawen:true,btnRecicla:true,btnGolden:true,btnCircadian:true,btnHelp:true},
   pescador: {btnTides:true,btnFishing:true,btnBirds:true,btnIntermareal:true,btnBosque:true,btnWeather:true,btnSiembra:true,btnGolden:true,btnHelp:true},
-  salud: {btnMenstrual:true,btnMedic:true,btnLawen:true,btnHabits:true,btnGym:true,btnCircadian:true,btnDreams:true,btnGratitud:true,btnBreath:true,btnMeal:true,btnFirstAid:true,btnAnimalCare:true,btnEvac:true,btnHelp:true},
-  deportista: {btnHabits:true,btnGym:true,btnMeal:true,btnShopping:true,btnFinance:true,btnCircadian:true,btnBreath:true,btnTimer:true,btnHelp:true},
-  docente: {btnSiembra:true,btnEkadashi:true,btnStudy:true,btnSchedule:true,btnHabits:true,btnDiscipline:true,btnMapu:true,btnTales:true,btnGratitud:true,btnRecicla:true,btnConvert:true,btnPdfCiclo:true,btnHelp:true}
+  salud: {btnMenstrual:true,btnMedic:true,btnLawen:true,btnHabits:true,btnGym:true,btnCircadian:true,btnDreams:true,btnGratitud:true,btnBreath:true,btnEspiritual:true,btnMeal:true,btnFirstAid:true,btnAnimalCare:true,btnEvac:true,btnHelp:true},
+  deportista: {btnHabits:true,btnGym:true,btnMeal:true,btnShopping:true,btnFinance:true,btnCircadian:true,btnBreath:true,btnEspiritual:true,btnTimer:true,btnHelp:true},
+  docente: {btnSiembra:true,btnEkadashi:true,btnStudy:true,btnSchedule:true,btnHabits:true,btnDiscipline:true,btnMapu:true,btnEnglish:true,btnGuitar:true,btnTales:true,btnGratitud:true,btnRecicla:true,btnConvert:true,btnPdfCiclo:true,btnHelp:true}
 };
 function getVisibleConfig(){
   const c = (DATA.config && DATA.config.visible) || {};
@@ -5351,55 +5361,386 @@ function setupTalesDialog(){
 }
 
 // === MEMORIA ===
-let memoryPairsFirst=null, memoryPairsLock=false, memoryPairsScore=0;
-function renderMemoryPairs(){
+function getMemoryData(){ try{ const u=userData(); if(!u.memory) u.memory={bestPairs:{},bestSeq:0,bestWords:0,bestNum:0,bestOdd:0,bestSchulte:0,streak:0,lastDay:'',sessions:0}; const m=u.memory; if(!m.bestPairs) m.bestPairs={}; return m; }catch{ return {bestPairs:{},bestSeq:0,bestWords:0,bestNum:0,bestOdd:0,bestSchulte:0,streak:0,lastDay:'',sessions:0}; } }
+function memoryTodayKey(){ try{ return cal.fmtKey.format(new Date()); }catch{ const d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); } }
+function memoryTouchDay(){
+  const m=getMemoryData(); const t=memoryTodayKey();
+  if(m.lastDay!==t){
+    const y=new Date(); y.setDate(y.getDate()-1);
+    let yk=''; try{ yk=cal.fmtKey.format(y); }catch{ yk=y.getFullYear()+'-'+String(y.getMonth()+1).padStart(2,'0')+'-'+String(y.getDate()).padStart(2,'0'); }
+    m.streak = (m.lastDay===yk)? (m.streak||0)+1 : 1;
+    m.lastDay=t; m.sessions=(m.sessions||0)+1;
+    try{ scheduleSave(); }catch{}
+  }
+  renderMemoryStreak();
+}
+function renderMemoryStreak(){
+  const bar=$('memoryStreakBar'); if(!bar) return;
+  const m=getMemoryData();
+  const bp=m.bestPairs||{};
+  const fmtP = v=> v? (v.moves+' intentos · '+v.time+'s') : '—';
+  bar.innerHTML='🔥 Racha <b>'+(m.streak||0)+' día(s)</b> · 🎮 '+(m.sessions||0)+' sesiones · 🃏 Mejor pares medio: <b>'+fmtP(bp.medio)+'</b> · 🔢 Secuencia: <b>'+(m.bestSeq||0)+'</b> · 📝 Palabras: <b>'+(m.bestWords||0)+'</b> · 👁️ Distinto: <b>'+(m.bestOdd? m.bestOdd+'s':'—')+'</b> · Schulte: <b>'+(m.bestSchulte? m.bestSchulte+'s':'—')+'</b>';
+}
+function renderMemoryProg(){
+  const box=$('memoryProgStats'); if(!box) return;
+  const m=getMemoryData(); const bp=m.bestPairs||{};
+  const row=(e,v)=> '<div>'+e+' <b>'+v+'</b></div>';
+  box.innerHTML='<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px 12px;font-size:12px;text-align:left">'
+    +row('🔥 Racha',(m.streak||0)+' día(s)')+row('🎮 Sesiones',m.sessions||0)
+    +row('🃏 Pares fácil',bp.facil? bp.facil.moves+' int · '+bp.facil.time+'s':'—')
+    +row('🃏 Pares medio',bp.medio? bp.medio.moves+' int · '+bp.medio.time+'s':'—')
+    +row('🃏 Pares difícil',bp.dificil? bp.dificil.moves+' int · '+bp.dificil.time+'s':'—')
+    +row('🔢 Secuencia',(m.bestSeq||0)+' nivel')
+    +row('📝 Palabras',(m.bestWords||0)+'/máx')
+    +row('🔢 Número',(m.bestNum||0)+' dígitos')
+    +row('👁️ Distinto 5 rondas',(m.bestOdd? m.bestOdd+'s':'—'))
+    +row('🔢 Schulte 5×5',(m.bestSchulte? m.bestSchulte+'s':'—'))
+    +'</div><p class="muted" style="font-size:10px;margin-top:6px">La racha sube 1 vez al día cuando completas cualquier juego. Los récords quedan por usuario, privados y locales.</p>';
+}
+// --- LOCI ---
+const MEMORY_ROUTES={
+  casa:['Entrada','Cocina','Living','Baño','Dormitorio'],
+  feria:['Portón feria','Puesto verduras','Puesto pescado','Flores','Pan','Quesos','Salida'],
+  playa:['Arena','Roca','Poza','Muelle','Bote','Faro','Ola'],
+  cuerpo:['Cabeza','Ojos','Boca','Hombros','Manos','Bolsillo','Rodillas','Pies','Espalda','Corazón']
+};
+const MEMORY_WORD_BANK=['luna','mar','boldo','peumo','lluvia','viento','harina','risa','pez','canela','maqui','lancha','cerro','niebla','copa','semilla','miel','piedra','canto','fogata','chaleco','mate','huerta','estrella','caracol','trigo','nube','remo','hilo','manzana'];
+function memoryPickWords(n){
+  const pool=[...MEMORY_WORD_BANK].sort(()=>Math.random()-0.5);
+  return pool.slice(0,n);
+}
+let memoryLociAnswers=[];
+function setupMemoryLoci(){
+  const rnd=$('memoryRandomWords'); if(rnd) rnd.onclick=()=>{
+    const n=parseInt(($('memoryLociN')||{}).value||'7');
+    $('memoryWords').value=memoryPickWords(n).join(', ');
+  };
+  const build=$('memoryBuildLoci'); if(build) build.onclick=()=>{
+    let words=$('memoryWords').value.split(',').map(s=>s.trim()).filter(Boolean);
+    const want=parseInt(($('memoryLociN')||{}).value||'7');
+    if(!words.length){ words=memoryPickWords(want); $('memoryWords').value=words.join(', '); }
+    words=words.slice(0,10);
+    const route=(($('memoryRoute')||{}).value||'casa');
+    const places=MEMORY_ROUTES[route]||MEMORY_ROUTES.casa;
+    memoryLociAnswers=words.map((w,i)=>({place:places[i%places.length],word:w}));
+    const out=words.map((w,i)=> (i+1)+'. '+places[i%places.length]+' → imagina <b>'+escapeHtml(w)+'</b> gigante, con olor y sonido').join('<br>');
+    $('memoryLociOutput').innerHTML='🏛️ Tu palacio ('+route+'):<br>'+out;
+    const q=$('memoryQuizLoci'); if(q) q.classList.remove('hidden');
+    const qb=$('memoryLociQuiz'); if(qb) qb.classList.add('hidden');
+  };
+  const quiz=$('memoryQuizLoci'); if(quiz) quiz.onclick=()=>{
+    if(!memoryLociAnswers.length) return;
+    const qb=$('memoryLociQuiz'); qb.classList.remove('hidden');
+    qb.innerHTML='<p class="muted" style="font-size:11px">Escribe qué palabra va en cada lugar (en orden):</p>'
+      +memoryLociAnswers.map((a,i)=>'<label style="font-size:12px">'+(i+1)+'. '+escapeHtml(a.place)+' <input type="text" data-loci-i="'+i+'" placeholder="palabra..." style="margin-top:2px"></label>').join('')
+      +'<div style="display:flex;gap:6px;margin-top:6px"><button type="button" id="memoryLociCheck" class="btn btn-accent" style="width:auto">✓ Evaluar</button></div><div id="memoryLociFb" class="chip" style="display:block;margin-top:6px;white-space:normal"></div>';
+    $('memoryLociCheck').onclick=()=>{
+      let ok=0;
+      qb.querySelectorAll('[data-loci-i]').forEach(inp=>{
+        const i=parseInt(inp.dataset.lociI); const exp=memoryLociAnswers[i].word.toLowerCase();
+        const got=inp.value.trim().toLowerCase();
+        const good=got===exp;
+        if(good) ok++;
+        inp.style.borderColor=good? '#8fd694':'#e76e8a';
+        inp.value=inp.value.trim()+(good?' ✓':' (era: '+memoryLociAnswers[i].word+')');
+        inp.disabled=true;
+      });
+      $('memoryLociFb').innerHTML='Obtuviste <b>'+ok+'/'+memoryLociAnswers.length+'</b> '+(ok===memoryLociAnswers.length?'🌟 ¡Palacio perfecto!':'💪 Repite el recorrido con los ojos cerrados.');
+      if(ok===memoryLociAnswers.length) memoryTouchDay();
+    };
+  };
+}
+// --- PARES por niveles ---
+let memoryPairsFirst=null, memoryPairsLock=false, memoryPairsScore=0, memoryPairsMoves=0, memoryPairsTotal=8, memoryPairsLevel='medio', memoryPairsT0=0, memoryPairsTimer=null, memoryPairsSecs=0;
+const MEMORY_PAIRS_CFG={ facil:{pairs:6,cols:4}, medio:{pairs:8,cols:4}, dificil:{pairs:12,cols:6} };
+const MEMORY_PAIRS_ICONS=["🌙","☀️","🌊","🌱","🍎","🌾","🐟","⭐","🌵","🦅","🍯","🔥","🌧️","🌻","🐚","🍇"];
+function memoryPairsStopTimer(){ if(memoryPairsTimer){ clearInterval(memoryPairsTimer); memoryPairsTimer=null; } }
+function memoryPairsFmt(s){ return Math.floor(s/60)+':'+String(s%60).padStart(2,'0'); }
+function renderMemoryPairs(level){
+  if(level) memoryPairsLevel=level;
+  const cfg=MEMORY_PAIRS_CFG[memoryPairsLevel]||MEMORY_PAIRS_CFG.medio;
   const grid=$('memoryPairsGrid'); if(!grid) return;
-  const icons=["🌙","☀️","🌊","🌱","🍎","🌾","🐟","⭐"];
+  document.querySelectorAll('.mem-pairs-lv').forEach(b=> b.classList.toggle('btn-accent', b.dataset.lv===memoryPairsLevel));
+  const icons=[...MEMORY_PAIRS_ICONS].sort(()=>Math.random()-0.5).slice(0,cfg.pairs);
   const deck=[...icons, ...icons].sort(()=>Math.random()-0.5);
+  memoryPairsTotal=cfg.pairs;
+  grid.style.gridTemplateColumns='repeat('+cfg.cols+',1fr)';
   grid.innerHTML='';
-  memoryPairsFirst=null; memoryPairsLock=false; memoryPairsScore=0;
-  const scoreEl=$('memoryPairsScore'); if(scoreEl) scoreEl.textContent='0 pares';
+  memoryPairsFirst=null; memoryPairsLock=false; memoryPairsScore=0; memoryPairsMoves=0; memoryPairsSecs=0;
+  $('memoryPairsScore').textContent='0/'+cfg.pairs+' pares';
+  $('memoryPairsMoves').textContent='0 intentos';
+  $('memoryPairsTime').textContent='0:00';
+  const m=getMemoryData(); const b=(m.bestPairs||{})[memoryPairsLevel];
+  $('memoryPairsBest').textContent=b? ('récord '+b.moves+' int · '+b.time+'s') : 'récord —';
+  memoryPairsStopTimer(); memoryPairsT0=Date.now();
+  memoryPairsTimer=setInterval(()=>{ memoryPairsSecs=Math.floor((Date.now()-memoryPairsT0)/1000); const t=$('memoryPairsTime'); if(t) t.textContent=memoryPairsFmt(memoryPairsSecs); },1000);
   deck.forEach(icon=>{
     const btn=document.createElement('button');
-    btn.type='button'; btn.className='habit-icon-opt'; btn.textContent='?'; btn.dataset.icon=icon; btn.dataset.revealed='0';
+    btn.type='button'; btn.className='mem-card'; btn.textContent='?'; btn.dataset.icon=icon; btn.dataset.revealed='0';
     btn.onclick=()=>{
       if(memoryPairsLock || btn.dataset.revealed==='1') return;
-      btn.textContent=btn.dataset.icon; btn.dataset.revealed='1'; btn.style.background='var(--card-hover)';
+      btn.textContent=btn.dataset.icon; btn.dataset.revealed='1'; btn.classList.add('open');
       if(!memoryPairsFirst){ memoryPairsFirst=btn; }
       else {
-        memoryPairsLock=true;
+        memoryPairsLock=true; memoryPairsMoves++;
+        $('memoryPairsMoves').textContent=memoryPairsMoves+' intentos';
         setTimeout(()=>{
           if(memoryPairsFirst.dataset.icon===btn.dataset.icon){
-            memoryPairsFirst.style.borderColor='var(--gold)'; btn.style.borderColor='var(--gold)';
-            memoryPairsScore++; if(scoreEl) scoreEl.textContent=memoryPairsScore+' pares';
-            if(memoryPairsScore===icons.length) setTimeout(()=> alert('¡Excelente! Memoria entrenada.'),200);
+            memoryPairsFirst.classList.add('done'); btn.classList.add('done');
+            memoryPairsScore++; $('memoryPairsScore').textContent=memoryPairsScore+'/'+memoryPairsTotal+' pares';
             memoryPairsFirst=null; memoryPairsLock=false;
+            if(memoryPairsScore===memoryPairsTotal){
+              memoryPairsStopTimer();
+              const mm=getMemoryData(); mm.bestPairs=mm.bestPairs||{};
+              const prev=mm.bestPairs[memoryPairsLevel];
+              const better=!prev || memoryPairsMoves<prev.moves || (memoryPairsMoves===prev.moves && memoryPairsSecs<prev.time);
+              if(better){ mm.bestPairs[memoryPairsLevel]={moves:memoryPairsMoves,time:memoryPairsSecs}; }
+              try{ scheduleSave(); }catch{}
+              memoryTouchDay(); renderMemoryProg();
+              const bb=(getMemoryData().bestPairs||{})[memoryPairsLevel];
+              $('memoryPairsBest').textContent='récord '+bb.moves+' int · '+bb.time+'s';
+              setTimeout(()=> alert('¡Excelente! '+memoryPairsTotal+' pares en '+memoryPairsMoves+' intentos y '+memoryPairsFmt(memoryPairsSecs)+(better?' — ¡nuevo récord! 🏆':'')),200);
+            }
           } else {
-            memoryPairsFirst.textContent='?'; memoryPairsFirst.dataset.revealed='0'; memoryPairsFirst.style.background='';
-            btn.textContent='?'; btn.dataset.revealed='0'; btn.style.background='';
+            memoryPairsFirst.textContent='?'; memoryPairsFirst.dataset.revealed='0'; memoryPairsFirst.classList.remove('open');
+            btn.textContent='?'; btn.dataset.revealed='0'; btn.classList.remove('open');
             memoryPairsFirst=null; memoryPairsLock=false;
           }
-        },600);
+        },550);
       }
     };
     grid.appendChild(btn);
   });
 }
-function setupMemoryDialog(){
-  const b=$('btnMemory'); if(b) b.onclick=()=>{ $('memoryDialog').showModal(); };
-  const ct=$('memoryCloseTop'), cb=$('memoryClose'); if(ct) ct.onclick=()=>$('memoryDialog').close(); if(cb) cb.onclick=()=>$('memoryDialog').close();
-  const tabL=$('tabMemoryLoci'), tabP=$('tabMemoryPairs'), pL=$('memoryLociPanel'), pP=$('memoryPairsPanel');
-  if(tabL) tabL.onclick=()=>{ tabL.classList.add('btn-accent'); tabP.classList.remove('btn-accent'); pL.classList.remove('hidden'); pP.classList.add('hidden'); };
-  if(tabP) tabP.onclick=()=>{ tabP.classList.add('btn-accent'); tabL.classList.remove('btn-accent'); pP.classList.remove('hidden'); pL.classList.add('hidden'); renderMemoryPairs(); };
-  const build=$('memoryBuildLoci'); if(build) build.onclick=()=>{
-    const words=$('memoryWords').value.split(',').map(s=>s.trim()).filter(Boolean);
-    if(!words.length) return;
-    const places=['Entrada','Cocina','Living','Baño','Dormitorio'];
-    const out=words.map((w,i)=> `${i+1}. ${places[i%places.length]} → imagina <b>${escapeHtml(w)}</b> gigante ahí`).join('<br>');
-    $('memoryLociOutput').innerHTML=out;
+// --- SECUENCIA (Simón lunar) ---
+let memSeq=[], memSeqUser=0, memSeqPlaying=false, memSeqSpeed=700, memSeqAccept=false;
+const MEM_SEQ_BTNS=[
+  {e:'🌑',n:'nueva'},
+  {e:'🌒',n:'creciente'},
+  {e:'🌕',n:'llena'},
+  {e:'🌖',n:'menguante'}
+];
+function memSeqRenderMsg(t){ const el=$('memorySeqMsg'); if(el) el.textContent=t; }
+function memSeqRenderLevel(){ const el=$('memorySeqLevel'); if(el) el.textContent='Nivel '+memSeq.length; const b=$('memorySeqBest'); if(b) b.textContent='récord '+(getMemoryData().bestSeq||0); }
+function memSeqBuildGrid(){
+  const g=$('memorySeqGrid'); if(!g) return; g.innerHTML='';
+  MEM_SEQ_BTNS.forEach((bb,i)=>{
+    const d=document.createElement('button');
+    d.type='button'; d.className='mem-seq-btn'; d.dataset.i=i;
+    d.innerHTML='<span style="font-size:30px">'+bb.e+'</span><small>'+bb.n+'</small>';
+    d.onclick=()=> memSeqPress(i,d);
+    g.appendChild(d);
+  });
+}
+function memSeqFlash(i,cb){
+  const g=$('memorySeqGrid'); if(!g){ if(cb)cb(); return; }
+  const btn=g.children[i]; if(!btn){ if(cb)cb(); return; }
+  btn.classList.add('lit');
+  try{ playNotifySound(); }catch{}
+  setTimeout(()=>{ btn.classList.remove('lit'); setTimeout(()=>{ if(cb)cb(); },120); },memSeqSpeed*0.6);
+}
+function memSeqPlay(){
+  memSeqAccept=false; memSeqPlaying=true; memSeqUser=0;
+  memSeqRenderMsg('👀 Mira…'); memSeqRenderLevel();
+  let k=0;
+  const step=()=>{ if(k>=memSeq.length){ memSeqAccept=true; memSeqPlaying=false; memSeqRenderMsg('✋ Tu turno: repite'); return; } memSeqFlash(memSeq[k],()=>{ k++; setTimeout(step,180); }); };
+  setTimeout(step,500);
+}
+function memSeqPress(i,el){
+  if(!memSeqAccept) return;
+  el.classList.add('lit'); setTimeout(()=>el.classList.remove('lit'),220);
+  if(i===memSeq[i===undefined?-1:memSeqUser]){
+    memSeqUser++;
+    if(memSeqUser>=memSeq.length){
+      memSeqAccept=false;
+      memSeq.push(Math.floor(Math.random()*4));
+      const m=getMemoryData(); if(memSeq.length>(m.bestSeq||0)){ m.bestSeq=memSeq.length; try{ scheduleSave(); }catch{} }
+      memSeqRenderLevel(); memSeqRenderMsg('✅ ¡Bien! +1 paso…');
+      memoryTouchDay(); renderMemoryProg();
+      setTimeout(memSeqPlay,900);
+    }
+  } else {
+    memSeqAccept=false;
+    memSeqRenderMsg('❌ Era “'+MEM_SEQ_BTNS[memSeq[memSeqUser]].n+'”. Nivel '+memSeq.length);
+    memoryTouchDay(); renderMemoryProg();
+    memSeq=[];
+    memSeqRenderLevel();
+  }
+}
+function setupMemorySeq(){
+  memSeqBuildGrid(); memSeqRenderLevel();
+  const s=$('memorySeqStart'); if(s) s.onclick=()=>{ memSeq=[Math.floor(Math.random()*4)]; memSeqRenderLevel(); memSeqPlay(); };
+  const sl=$('memorySeqSlow'); if(sl) sl.onclick=()=>{ memSeqSpeed=900; sl.classList.add('btn-accent'); $('memorySeqFast').classList.remove('btn-accent'); };
+  const fa=$('memorySeqFast'); if(fa) fa.onclick=()=>{ memSeqSpeed=450; fa.classList.add('btn-accent'); $('memorySeqSlow').classList.remove('btn-accent'); };
+}
+// --- PALABRAS y NÚMEROS ---
+let memWCurrent=[], memWLeft=0, memWTimer=null, memNumCurrent='', memNumLeft=0, memNumTimer=null;
+function memWStopT(){ if(memWTimer){ clearInterval(memWTimer); memWTimer=null; } }
+function setupMemoryWords(){
+  const t1=$('tabMemWList'), t2=$('tabMemWNum'), b1=$('memWListBox'), b2=$('memWNumBox');
+  if(t1) t1.onclick=()=>{ t1.classList.add('btn-accent'); t2.classList.remove('btn-accent'); b1.classList.remove('hidden'); b2.classList.add('hidden'); };
+  if(t2) t2.onclick=()=>{ t2.classList.add('btn-accent'); t1.classList.remove('btn-accent'); b2.classList.remove('hidden'); b1.classList.add('hidden'); };
+  const gen=$('memoryWordsGen'); if(gen) gen.onclick=()=>{
+    const n=parseInt(($('memoryWordsN')||{}).value||'7');
+    memWCurrent=memoryPickWords(n);
+    $('memoryWordsList').innerHTML=memWCurrent.map((w,i)=>'<span class="mem-word">'+(i+1)+'. '+escapeHtml(w)+'</span>').join('');
+    $('memoryWordsRecallBox').classList.add('hidden'); $('memoryWordsResult').textContent='';
+    $('memoryWordsHide').classList.remove('hidden'); $('memoryWordsShow').classList.add('hidden');
+    memWStopT();
+    let left=parseInt(($('memoryWordsT')||{}).value||'30'); memWLeft=left;
+    const tt=$('memoryWordsTimer'); tt.classList.remove('hidden');
+    tt.textContent='⏳ '+left+'s para memorizar… repite en voz alta';
+    memWTimer=setInterval(()=>{ left--; memWLeft=left;
+      if(left<=0){ memWStopT(); tt.textContent='🙈 ¡Tiempo! Oculta y escribe de memoria'; $('memoryWordsHide').classList.remove('hidden'); }
+      else tt.textContent='⏳ '+left+'s — repite en voz alta';
+    },1000);
   };
-  const newGame=$('memoryPairsNew'); if(newGame) newGame.onclick=renderMemoryPairs;
-  renderMemoryPairs();
+  const hide=$('memoryWordsHide'); if(hide) hide.onclick=()=>{
+    $('memoryWordsList').innerHTML='<span class="muted">🙈 Lista oculta — escribe lo que recuerdes abajo</span>';
+    $('memoryWordsRecallBox').classList.remove('hidden'); hide.classList.add('hidden');
+    $('memoryWordsShow').classList.remove('hidden'); memWStopT(); $('memoryWordsTimer').classList.add('hidden');
+    setTimeout(()=>{ const r=$('memoryWordsRecall'); if(r) r.focus(); },100);
+  };
+  const show=$('memoryWordsShow'); if(show) show.onclick=()=>{
+    $('memoryWordsList').innerHTML=memWCurrent.map((w,i)=>'<span class="mem-word">'+(i+1)+'. '+escapeHtml(w)+'</span>').join('');
+    show.classList.add('hidden'); $('memoryWordsHide').classList.remove('hidden');
+  };
+  const chk=$('memoryWordsCheck'); if(chk) chk.onclick=()=>{
+    const got=$('memoryWordsRecall').value.toLowerCase().split(/[,;\n]+/).map(s=>s.trim()).filter(Boolean);
+    let ok=0; const used=new Set();
+    memWCurrent.forEach(w=>{
+      const idx=got.findIndex((g,i)=> !used.has(i) && g===w.toLowerCase());
+      if(idx>=0){ ok++; used.add(idx); }
+    });
+    const pct=Math.round(ok/memWCurrent.length*100);
+    $('memoryWordsResult').innerHTML='Obtuviste <b>'+ok+'/'+memWCurrent.length+' ('+pct+'%)</b> '+(pct===100?'🌟 ¡Perfecto!':pct>=70?'💪 ¡Muy bien!':'🌱 Bien, repite mañana.')+'<br><span class="muted">Correctas: '+memWCurrent.filter(w=>got.includes(w.toLowerCase())).map(escapeHtml).join(', ')+' · Faltaron: '+memWCurrent.filter(w=>!got.includes(w.toLowerCase())).map(escapeHtml).join(', ')+'</span>';
+    const m=getMemoryData(); if(ok>(m.bestWords||0)){ m.bestWords=ok; try{ scheduleSave(); }catch{} }
+    memoryTouchDay(); renderMemoryStreak(); renderMemoryProg();
+  };
+  const ng=$('memoryNumGen'); if(ng) ng.onclick=()=>{
+    const n=parseInt(($('memoryNumN')||{}).value||'6');
+    memNumCurrent=Array.from({length:n},()=>Math.floor(Math.random()*10)).join('');
+    $('memoryNumList').textContent=memNumCurrent.split('').join(' ');
+    $('memoryNumRecallBox').classList.add('hidden'); $('memoryNumResult').textContent='';
+    $('memoryNumHide').classList.remove('hidden'); $('memoryNumShow').classList.add('hidden');
+    if(memNumTimer) clearInterval(memNumTimer);
+    let left=parseInt(($('memoryNumT')||{}).value||'20');
+    const tt=$('memoryNumTimer'); tt.classList.remove('hidden'); tt.textContent='⏳ '+left+'s — agrupa de a 2-3';
+    memNumTimer=setInterval(()=>{ left--; if(left<=0){ clearInterval(memNumTimer); tt.textContent='🙈 ¡Tiempo! Oculta y escríbelo'; } else tt.textContent='⏳ '+left+'s — agrupa de a 2-3'; },1000);
+  };
+  const nh=$('memoryNumHide'); if(nh) nh.onclick=()=>{
+    $('memoryNumList').textContent='• '.repeat(memNumCurrent.length);
+    $('memoryNumRecallBox').classList.remove('hidden'); nh.classList.add('hidden'); $('memoryNumShow').classList.remove('hidden');
+    if(memNumTimer) clearInterval(memNumTimer); $('memoryNumTimer').classList.add('hidden');
+  };
+  const ns=$('memoryNumShow'); if(ns) ns.onclick=()=>{
+    $('memoryNumList').textContent=memNumCurrent.split('').join(' ');
+    ns.classList.add('hidden'); $('memoryNumHide').classList.remove('hidden');
+  };
+  const nc=$('memoryNumCheck'); if(nc) nc.onclick=()=>{
+    const got=($('memoryNumRecall').value||'').replace(/\D/g,'');
+    let okDigits=0; for(let i=0;i<Math.max(got.length,memNumCurrent.length);i++){ if(got[i]===memNumCurrent[i]) okDigits++; }
+    const perfect=got===memNumCurrent;
+    $('memoryNumResult').innerHTML=perfect? '🌟 <b>¡Perfecto! '+memNumCurrent.length+' dígitos.</b> Sube a '+(memNumCurrent.length+2)+' la próxima.' : 'Obtuviste <b>'+okDigits+'/'+memNumCurrent.length+' dígitos en posición</b>.<br><span class="muted">Era: '+escapeHtml(memNumCurrent)+' · Escribiste: '+escapeHtml(got||'—')+'</span>';
+    const m=getMemoryData(); if(perfect && memNumCurrent.length>(m.bestNum||0)){ m.bestNum=memNumCurrent.length; try{ scheduleSave(); }catch{} }
+    memoryTouchDay(); renderMemoryStreak(); renderMemoryProg();
+  };
+}
+// --- ATENCIÓN: el distinto + Schulte ---
+let memOddRound=0, memOddT0=0, memOddTimer=null, memOddTotal=0, memOddActive=false;
+const MEM_ODD_SETS=[['🌊','🐟'],['🌙','🌕'],['🌱','🌻'],['⭐','✨'],['🍎','🍏'],['🐚','🦪'],['🌲','🌵'],['🔥','💧']];
+function memOddStop(){ if(memOddTimer){ clearInterval(memOddTimer); memOddTimer=null; } }
+function memOddNewRound(){
+  const g=$('memoryOddGrid'); if(!g) return;
+  const set=MEM_ODD_SETS[Math.floor(Math.random()*MEM_ODD_SETS.length)];
+  const n=25; const diff=Math.floor(Math.random()*n);
+  g.style.gridTemplateColumns='repeat(5,1fr)'; g.innerHTML='';
+  for(let i=0;i<n;i++){
+    const b=document.createElement('button'); b.type='button'; b.className='mem-card mem-odd'; b.textContent=(i===diff? set[1]:set[0]);
+    if(i===diff) b.onclick=()=>{
+      if(!memOddActive) return;
+      memOddRound++;
+      $('memoryOddRound').textContent='Ronda '+memOddRound+'/5';
+      if(memOddRound>=5){
+        memOddActive=false; memOddStop();
+        const secs=(Date.now()-memOddT0)/1000; memOddTotal=secs;
+        $('memoryOddTime').textContent=secs.toFixed(1)+'s total';
+        const m=getMemoryData();
+        if(!m.bestOdd || secs<m.bestOdd){ m.bestOdd=Math.round(secs*10)/10; try{ scheduleSave(); }catch{} }
+        $('memoryOddBest').textContent='récord '+(getMemoryData().bestOdd)+'s';
+        memoryTouchDay(); renderMemoryProg();
+        setTimeout(()=> alert('¡5 rondas en '+secs.toFixed(1)+'s! '+(secs<30?'⚡ Atención de lince.':'💪 Bien, la velocidad mejora con práctica.')),200);
+      } else memOddNewRound();
+    };
+    else b.onclick=()=>{ try{ playNotifySound(); }catch{} b.classList.add('shake'); setTimeout(()=>b.classList.remove('shake'),300); };
+    g.appendChild(b);
+  }
+}
+function setupMemoryOdd(){
+  const nw=$('memoryOddNew'); if(nw) nw.onclick=()=>{
+    memOddRound=0; memOddActive=true; memOddT0=Date.now();
+    $('memoryOddRound').textContent='Ronda 0/5'; $('memoryOddTime').textContent='0.0s';
+    $('memoryOddBest').textContent='récord '+((getMemoryData().bestOdd||0)? getMemoryData().bestOdd+'s':'—');
+    memOddStop();
+    memOddTimer=setInterval(()=>{ if(!memOddActive) return; $('memoryOddTime').textContent=((Date.now()-memOddT0)/1000).toFixed(1)+'s'; },100);
+    memOddNewRound();
+  };
+  $('memoryOddBest').textContent='récord '+((getMemoryData().bestOdd||0)? getMemoryData().bestOdd+'s':'—');
+}
+let memSchNext=1, memSchT0=0, memSchTimer=null, memSchActive=false;
+function memSchStop(){ if(memSchTimer){ clearInterval(memSchTimer); memSchTimer=null; } }
+function memSchNew(){
+  const g=$('memorySchGrid'); if(!g) return;
+  const nums=[...Array(25)].map((_,i)=>i+1).sort(()=>Math.random()-0.5);
+  memSchNext=1; memSchActive=true; memSchT0=Date.now();
+  $('memorySchNext').textContent='Siguiente: 1';
+  $('memorySchBest').textContent='récord '+((getMemoryData().bestSchulte||0)? getMemoryData().bestSchulte+'s':'—');
+  g.innerHTML='';
+  memSchStop();
+  memSchTimer=setInterval(()=>{ if(!memSchActive) return; $('memorySchTime').textContent=((Date.now()-memSchT0)/1000).toFixed(1)+'s'; },100);
+  nums.forEach(n=>{
+    const b=document.createElement('button'); b.type='button'; b.className='mem-schulte-cell'; b.textContent=n;
+    b.onclick=()=>{
+      if(!memSchActive) return;
+      if(n===memSchNext){
+        b.classList.add('done'); b.disabled=true; memSchNext++;
+        if(memSchNext>25){
+          memSchActive=false; memSchStop();
+          const secs=Math.round((Date.now()-memSchT0)/100)/10;
+          $('memorySchTime').textContent=secs+'s';
+          const m=getMemoryData(); if(!m.bestSchulte || secs<m.bestSchulte){ m.bestSchulte=secs; try{ scheduleSave(); }catch{} }
+          $('memorySchBest').textContent='récord '+getMemoryData().bestSchulte+'s';
+          $('memorySchNext').textContent='¡Completada! 🎉';
+          memoryTouchDay(); renderMemoryProg();
+        } else $('memorySchNext').textContent='Siguiente: '+memSchNext;
+      } else { b.classList.add('shake'); setTimeout(()=>b.classList.remove('shake'),300); }
+    };
+    g.appendChild(b);
+  });
+}
+function setupMemorySch(){
+  const b=$('memorySchNew'); if(b) b.onclick=memSchNew;
+  memSchNew();
+}
+function setupMemoryDialog(){
+  const b=$('btnMemory'); if(b) b.onclick=()=>{ renderMemoryStreak(); renderMemoryProg(); $('memoryDialog').showModal(); };
+  const ct=$('memoryCloseTop'), cb=$('memoryClose'); if(ct) ct.onclick=()=>$('memoryDialog').close(); if(cb) cb.onclick=()=>$('memoryDialog').close();
+  const tabs={ tabMemoryLoci:'memoryLociPanel', tabMemoryPairs:'memoryPairsPanel', tabMemorySeq:'memorySeqPanel', tabMemoryWords:'memoryWordsPanel', tabMemoryAtt:'memoryAttPanel', tabMemoryProg:'memoryProgPanel' };
+  Object.entries(tabs).forEach(([tid,pid])=>{
+    const t=$(tid); if(!t) return;
+    t.onclick=()=>{
+      Object.keys(tabs).forEach(k=>{ const e=$(k); if(e) e.classList.remove('btn-accent'); const p=$(tabs[k]); if(p) p.classList.add('hidden'); });
+      t.classList.add('btn-accent'); $(pid).classList.remove('hidden');
+      if(pid==='memoryPairsPanel') renderMemoryPairs();
+      if(pid==='memoryProgPanel') renderMemoryProg();
+      if(pid==='memoryAttPanel'){ $('memoryOddBest').textContent='récord '+((getMemoryData().bestOdd||0)? getMemoryData().bestOdd+'s':'—'); $('memorySchBest').textContent='récord '+((getMemoryData().bestSchulte||0)? getMemoryData().bestSchulte+'s':'—'); }
+    };
+  });
+  document.querySelectorAll('.mem-pairs-lv').forEach(x=> x.onclick=()=> renderMemoryPairs(x.dataset.lv));
+  const newGame=$('memoryPairsNew'); if(newGame) newGame.onclick=()=> renderMemoryPairs();
+  const rst=$('memoryProgReset'); if(rst) rst.onclick=()=>{ if(!confirm('¿Borrar récords de memoria?')) return; const u=userData(); u.memory={bestPairs:{},bestSeq:0,bestWords:0,bestNum:0,bestOdd:0,bestSchulte:0,streak:0,lastDay:'',sessions:0}; try{ scheduleSave('Récords borrados'); }catch{} renderMemoryStreak(); renderMemoryProg(); renderMemoryPairs(); };
+  setupMemoryLoci(); setupMemorySeq(); setupMemoryWords(); setupMemoryOdd(); setupMemorySch();
+  renderMemoryPairs('medio'); renderMemoryStreak();
 }
 
 setTimeout(setupTalesDialog, 875);
@@ -6207,6 +6548,473 @@ function setupMapuDialog(){
 }
 setTimeout(setupMapuDialog, 887);
 
+// === ENGLISH · INGLÉS POR NIVELES (A1 → C1) — espejo de Kimün Mapuzugun ===
+const ENG_A1 = [
+  { en:'hello / hi', es:'hola', ex:'Hello, how are you? — Hola, ¿cómo estás?' },
+  { en:'thank you / thanks', es:'gracias', ex:'Thank you very much. — Muchas gracias.' },
+  { en:'please', es:'por favor', ex:'A coffee, please. — Un café, por favor.' },
+  { en:'good morning', es:'buenos días', ex:'Good morning, class. — Buenos días, clase.' },
+  { en:'good night', es:'buenas noches (despedida)', ex:'Good night, see you tomorrow. — Buenas noches, nos vemos mañana.' },
+  { en:'my name is...', es:'me llamo...', ex:'My name is Ana. — Me llamo Ana.' },
+  { en:'where are you from?', es:'¿de dónde eres?', ex:'I am from Penco, Chile. — Soy de Penco, Chile.' },
+  { en:'water', es:'agua', ex:'I need water. — Necesito agua.' },
+  { en:'food / bread', es:'comida / pan', ex:'Bread and fish, please. — Pan y pescado, por favor.' },
+  { en:'house / home', es:'casa / hogar', ex:'My house is near the sea. — Mi casa está cerca del mar.' },
+  { en:'day / today', es:'día / hoy', ex:'Today is a good day. — Hoy es un buen día.' },
+  { en:'to be: I am / you are', es:'ser/estar: yo soy-estoy / tú eres-estás', ex:'I am tired. You are kind. — Estoy cansado. Eres amable.' },
+  { en:'to have: I have', es:'tener: yo tengo', ex:'I have two sisters. — Tengo dos hermanas.' },
+  { en:'numbers 1–20', es:'números 1–20', ex:'One, two, three… twenty. — Uno, dos, tres… veinte.' },
+  { en:'colors: red, blue, green', es:'colores: rojo, azul, verde', ex:'The sea is blue. — El mar es azul.' },
+  { en:'family: mother, father', es:'familia: madre, padre', ex:'My mother cooks well. — Mi mamá cocina bien.' },
+  { en:'I like...', es:'me gusta...', ex:'I like the sea. — Me gusta el mar.' },
+  { en:'I need...', es:'necesito...', ex:'I need help, please. — Necesito ayuda, por favor.' },
+  { en:'see you tomorrow', es:'nos vemos mañana', ex:'Bye! See you tomorrow. — ¡Chao! Nos vemos mañana.' },
+  { en:'sorry / excuse me', es:'perdón / disculpe', ex:'Sorry, I am late. — Perdón, llegué tarde.' }
+];
+const ENG_A2 = [
+  { en:'What did you do yesterday?', es:'¿Qué hiciste ayer?', ex:'I worked in the garden. — Trabajé en la huerta.' },
+  { en:'I am going to...', es:'voy a... (futuro)', ex:'I am going to cook. — Voy a cocinar.' },
+  { en:'bigger than / the biggest', es:'más grande que / el más grande', ex:'The sea is bigger than the river. — El mar es más grande que el río.' },
+  { en:'How much / How many', es:'¿Cuánto / Cuántos?', ex:'How much is it? — ¿Cuánto cuesta?' },
+  { en:'I have to work', es:'tengo que trabajar', ex:'I have to go now. — Me tengo que ir ahora.' },
+  { en:'Can you help me?', es:'¿Puedes ayudarme?', ex:'Can you speak slowly? — ¿Puedes hablar lento?' },
+  { en:'There is / There are', es:'Hay (singular / plural)', ex:'There is a market. There are fruits. — Hay un mercado. Hay frutas.' },
+  { en:'weather: It is sunny / rainy', es:'clima: está soleado / lluvioso', ex:'It is windy in Penco. — Está ventoso en Penco.' },
+  { en:'past: went, ate, saw', es:'pasado: fui, comí, vi', ex:'We went to the beach. — Fuimos a la playa.' },
+  { en:'shopping: How much is it?', es:'compras: ¿cuánto cuesta?', ex:'It is five thousand pesos. — Cuesta cinco mil pesos.' },
+  { en:'directions: turn left / right', es:'direcciones: gira izquierda / derecha', ex:'Turn left at the plaza. — Gira a la izquierda en la plaza.' },
+  { en:'feelings: happy, tired, sick', es:'sentimientos: feliz, cansado, enfermo', ex:'I feel tired today. — Me siento cansado hoy.' },
+  { en:'to cook / to clean / to wash', es:'cocinar / limpiar / lavar', ex:'I cook every day. — Cocino todos los días.' },
+  { en:'appointment: at 3 pm', es:'cita: a las 3 pm', ex:'See you at five. — Nos vemos a las cinco.' }
+];
+const ENG_B1 = [
+  { en:'I have lived here for 5 years', es:'he vivido aquí por 5 años (present perfect)', ex:'I have never seen snow. — Nunca he visto nieve.' },
+  { en:'If it rains, we will stay home', es:'si llueve, nos quedaremos (condicional 1)', ex:'If you study, you will learn. — Si estudias, aprenderás.' },
+  { en:'look for / look after / give up', es:'buscar / cuidar / rendirse (phrasal verbs)', ex:'Don’t give up! — ¡No te rindas!' },
+  { en:'travel: I would like a ticket', es:'viajes: quisiera un pasaje', ex:'A ticket to Concepción, please. — Un pasaje a Concepción, por favor.' },
+  { en:'work: I am in charge of...', es:'trabajo: estoy a cargo de...', ex:'I am in charge of the garden. — Estoy a cargo de la huerta.' },
+  { en:'opinion: I think / In my opinion', es:'opinión: creo / en mi opinión', ex:'I think it is a good idea. — Creo que es buena idea.' },
+  { en:'used to + verb', es:'solía + verbo', ex:'I used to play guitar. — Solía tocar guitarra.' },
+  { en:'so / because / although', es:'así que / porque / aunque', ex:'It was cold, so we stayed home. — Hacía frío, así que nos quedamos.' },
+  { en:'health: I have a headache', es:'salud: me duele la cabeza', ex:'I need an appointment. — Necesito una hora médica.' },
+  { en:'email: Best regards,', es:'correo: saludos cordiales', ex:'Best regards, Ana. — Saludos cordiales, Ana.' }
+];
+const ENG_B2C1 = [
+  { en:'break the ice', es:'romper el hielo', ex:'A joke breaks the ice. — Un chiste rompe el hielo.' },
+  { en:'once in a blue moon', es:'muy rara vez', ex:'We eat out once in a blue moon. — Salimos a comer muy rara vez.' },
+  { en:'It had already left when I arrived', es:'ya se había ido cuando llegué (past perfect)', ex:'Pluscuamperfecto para contar historias.' },
+  { en:'If I had studied, I would have passed', es:'si hubiera estudiado, habría pasado (condicional 3)', ex:'Arrepentimientos y lecciones.' },
+  { en:'The beach was cleaned by volunteers', es:'la playa fue limpiada (voz pasiva)', ex:'Passive: be + participio.' },
+  { en:'She said she was tired', es:'dijo que estaba cansada (reported speech)', ex:'Directo → indirecto: am → was.' },
+  { en:'take something for granted', es:'dar algo por sentado', ex:'Don’t take water for granted. — No des el agua por sentada.' },
+  { en:'job interview: strengths', es:'entrevista: fortalezas', ex:'My strength is teamwork. — Mi fortaleza es el trabajo en equipo.' },
+  { en:'essay linkers: however, moreover', es:'ensayo: sin embargo, además', ex:'However, the sea is life. — Sin embargo, el mar es vida.' },
+  { en:'bite the bullet', es:'apretar los dientes / afrontar', ex:'I bit the bullet and spoke English. — Afronté y hablé inglés.' }
+];
+let engTab = 'word';
+let engQuizQ = null;
+let engQuizLevel = 'todo';
+function getEnglishData(){ try{ const u=userData(); if(!u.english) u.english={ok:0,total:0,streak:0,lastDay:''}; return u.english; }catch{ return {ok:0,total:0,streak:0,lastDay:''}; } }
+function engDayIndex(){ const all=ENG_A1.concat(ENG_A2,ENG_B1,ENG_B2C1); const n=new Date(); const s=n.getFullYear()*1000+(Math.floor((n-new Date(n.getFullYear(),0,0))/864e5)); return s % all.length; }
+function engSpeak(txt){
+  try{
+    if(!('speechSynthesis' in window)) return;
+    speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(txt);
+    u.lang='en-US'; u.rate=0.9; u.pitch=1;
+    speechSynthesis.speak(u);
+  }catch{}
+}
+function engQuizPool(){
+  if(engQuizLevel==='a1') return ENG_A1;
+  if(engQuizLevel==='a2') return ENG_A2;
+  if(engQuizLevel==='b1') return ENG_B1;
+  if(engQuizLevel==='b2c1') return ENG_B2C1;
+  return ENG_A1.concat(ENG_A2,ENG_B1,ENG_B2C1);
+}
+function renderEnglishStreak(){
+  const b=$('englishStreakBox'); if(!b) return;
+  const d=getEnglishData();
+  const pct = d.total? Math.round(d.ok/d.total*100):0;
+  b.innerHTML = `<b>🌱 Your English:</b> ${d.ok}/${d.total} correct (${pct}%) · streak ${d.streak} 🔥 <span class="muted" style="font-size:11px">— Word a day · A1→C1 · todo se guarda local.</span>`;
+}
+function engCard(item, lv){
+  return `<button type="button" class="btn eng-word" data-w="${escapeHtml(item.en)}" style="width:100%;text-align:left;font-size:12px"><b>🔊 ${escapeHtml(item.en)}</b> <span class="chip" style="font-size:10px">${lv}</span><br><span style="color:#e8eaf6">${escapeHtml(item.es)}</span><br><span class="muted" style="font-size:11px">“${escapeHtml(item.ex)}”</span></button>`;
+}
+function renderEnglishPanel(tab){
+  engTab = tab || engTab;
+  const ids={word:'tabEN1',a1:'tabEN2',a2:'tabEN3',b1:'tabEN4',avanzado:'tabEN5',quiz:'tabEN6'};
+  Object.entries(ids).forEach(([k,id])=>{ const el=$(id); if(el) el.classList.toggle('btn-accent', k===engTab); });
+  renderEnglishStreak();
+  const box=$('englishPanel'); if(!box) return;
+  let html='';
+  if(engTab==='word'){
+    const all=ENG_A1.concat(ENG_A2,ENG_B1,ENG_B2C1);
+    const w = all[engDayIndex()];
+    const rel = [all[(engDayIndex()+7)%all.length], all[(engDayIndex()+13)%all.length]];
+    html+= `<div class="menstrual-card" style="background:linear-gradient(135deg,var(--panel),var(--card));border-color:var(--gold);text-align:center">
+      <p class="muted" style="font-size:11px">☀️ WORD OF THE DAY · ${cal.fmtDate.format(new Date())} · ${all.length} words & phrases</p>
+      <div style="font-size:28px;font-weight:800;color:var(--gold);margin:6px 0">${escapeHtml(w.en)}</div>
+      <div style="font-size:15px;color:#e8eaf6"><b>${escapeHtml(w.es)}</b></div>
+      <p class="muted" style="font-size:12px;margin-top:6px">“${escapeHtml(w.ex)}”</p>
+      <div style="display:flex;gap:6px;justify-content:center;margin-top:8px;flex-wrap:wrap">
+        <button type="button" id="engSpeakBtn" class="btn btn-accent" style="width:auto">🔊 Listen</button>
+        <button type="button" id="engNextBtn" class="btn" style="width:auto">🎲 Another word</button>
+      </div></div>
+      <div class="help-grid" style="margin-top:10px">`+
+      rel.map(r=>`<div class="help-card"><h4>${escapeHtml(r.en)}</h4><p style="font-size:11px">${escapeHtml(r.es)}<br><span class="muted">“${escapeHtml(r.ex)}”</span></p></div>`).join('')+`</div>
+      <div class="help-grid" style="margin-top:10px">
+        <div class="help-card"><h4>🗣️ How to practice?</h4><p style="font-size:11px;line-height:1.6">1) <b>Listen</b> with 🔊 and repeat 3 times aloud.<br>2) <b>Write</b> 1 sentence with the word in Notas del día.<br>3) <b>Use it</b> today: 1 word/day → ~365/year.<br>Pass to A1 when you know 20 without looking.</p></div>
+        <div class="help-card"><h4>📚 Levels (CEFR)</h4><p style="font-size:11px;line-height:1.6">🌱 <b>A1:</b> survive (hello, food, home).<br>🌿 <b>A2:</b> daily life (past, future, shopping).<br>💬 <b>B1:</b> travel + work + opinions.<br>📜 <b>B2–C1:</b> idioms, passive, interviews, essays.</p></div>
+      </div>`;
+  } else if(engTab==='a1'){
+    html+= `<div class="menstrual-card" style="border-color:#8fd694"><h4 style="color:#8fd694">🌱 A1 Principiante — survive in English</h4>
+      <p class="muted" style="font-size:11px;line-height:1.5">Meta: presentarte, pedir comida, contar 1–100. Gramática: <b>to be (I am / you are), a/an/the, I like / I need, plural -s</b>. Toca 🔊 en cada tarjeta para escuchar.</p>
+      <div style="display:flex;flex-direction:column;gap:6px;margin-top:8px">`+
+      ENG_A1.map(f=>engCard(f,'A1')).join('')+`</div></div>
+      <div class="help-grid" style="margin-top:10px">
+        <div class="help-card"><h4>⚙️ To be (ser/estar)</h4><p style="font-size:11px;line-height:1.7"><b>I am</b> tired · <b>You are</b> kind<br><b>He/She is</b> here · <b>We are</b> friends<br><b>They are</b> from Penco<br><span class="muted">Negación: I am <b>not</b>… Pregunta: <b>Are</b> you…?</span></p></div>
+        <div class="help-card"><h4>🎭 Mini-dialog: market</h4><p style="font-size:11px;line-height:1.7">— <b>Hello! How much is it?</b><br>— <b>Five thousand pesos.</b><br>— <b>Thank you. See you tomorrow!</b><br><span class="muted">Practice: one person per line.</span></p></div>
+      </div>`;
+  } else if(engTab==='a2'){
+    html+= `<div class="menstrual-card" style="border-color:#7ab8ff"><h4 style="color:#7ab8ff">🌿 A2 Básico — daily life</h4>
+      <p class="muted" style="font-size:11px;line-height:1.5">Meta: contar qué hiciste, planes, compras y direcciones. Gramática: <b>past simple (went/ate), going to future, comparatives, there is/are, can</b>.</p>
+      <div style="display:flex;flex-direction:column;gap:6px;margin-top:8px">`+
+      ENG_A2.map(f=>engCard(f,'A2')).join('')+`</div></div>
+      <div class="menstrual-card" style="margin-top:10px;background:var(--panel)"><h4>🎭 Mini-dialog: directions in Penco</h4><p style="font-size:11px;line-height:1.7">— <b>Excuse me, where is the beach?</b><br>— <b>Go straight, then turn left at the plaza.</b><br>— <b>Thank you very much!</b> — <b>You’re welcome!</b><br><span class="muted">Key: straight = derecho, turn = girar, near = cerca.</span></p></div>`;
+  } else if(engTab==='b1'){
+    html+= `<div class="menstrual-card" style="border-color:#e8c56a"><h4 style="color:#e8c56a">💬 B1 Intermedio — travel, work & opinions</h4>
+      <p class="muted" style="font-size:11px;line-height:1.5">Meta: viajar, trabajar y opinar. Gramática: <b>present perfect (have lived), conditional 1 (if… will), used to, phrasal verbs (look for, give up)</b>.</p>
+      <div style="display:flex;flex-direction:column;gap:6px;margin-top:8px">`+
+      ENG_B1.map(f=>engCard(f,'B1')).join('')+`</div></div>
+      <div class="menstrual-card" style="margin-top:10px;background:var(--panel)"><h4>🎭 Mini-dialog: travel</h4><p style="font-size:11px;line-height:1.7">— <b>I would like a ticket to Concepción.</b><br>— <b>Single or return?</b> — <b>Return, please.</b><br>— <b>Have you been here before?</b> — <b>Yes, I have lived here for 5 years.</b><br><span class="muted">Practice with times, prices and “I have…”.</span></p></div>`;
+  } else if(engTab==='avanzado'){
+    html+= `<div class="menstrual-card" style="border-color:#d8a0ff"><h4 style="color:#d8a0ff">📜 B2–C1 Avanzado — idioms & real grammar</h4>
+      <p class="muted" style="font-size:11px;line-height:1.5">Meta: entrevistas, ensayos e idioms. Gramática: <b>past perfect, conditional 3, passive voice, reported speech, linkers (however, moreover)</b>.</p>
+      <div style="display:flex;flex-direction:column;gap:6px;margin-top:8px">`+
+      ENG_B2C1.map(f=>engCard(f,'B2–C1')).join('')+`</div></div>
+      <div class="help-grid" style="margin-top:10px">
+        <div class="help-card"><h4>⚙️ Passive + Reported</h4><p style="font-size:11px;line-height:1.7"><b>Passive:</b> The beach <b>was cleaned</b>.<br><b>Reported:</b> “I am tired” → She said she <b>was</b> tired.<br><b>Cond. 3:</b> If I <b>had studied</b>, I <b>would have passed</b>.</p></div>
+        <div class="help-card"><h4>💼 Interview kit</h4><p style="font-size:11px;line-height:1.7">— <b>Tell me about yourself.</b><br>— <b>I am responsible and I work well in a team.</b><br>— <b>My strength is… My goal is…</b><br><span class="muted">Close: “Thank you for your time.”</span></p></div>
+      </div>`;
+  } else if(engTab==='quiz'){
+    const d=getEnglishData();
+    if(!engQuizQ){
+      const pool=engQuizPool();
+      const w = pool[Math.floor(Math.random()*pool.length)];
+      const opts = new Set([w.es]);
+      let guard=0;
+      while(opts.size<4 && guard<60){ guard++; opts.add(pool[Math.floor(Math.random()*pool.length)].es); }
+      engQuizQ = { w, opts:[...opts].sort(()=>Math.random()-0.5) };
+    }
+    const q=engQuizQ;
+    const lvBtn=(v,l)=>`<button type="button" class="btn eng-lv${engQuizLevel===v?' btn-accent':''}" data-lv="${v}" style="width:auto;font-size:11px">${l}</button>`;
+    html+= `<div class="menstrual-card" style="border-color:#d8a0ff;text-align:center"><h4 style="color:#d8a0ff">🧩 Quiz por niveles</h4>
+      <div style="display:flex;gap:6px;justify-content:center;margin:8px 0;flex-wrap:wrap">${lvBtn('todo','🌎 Todo')}${lvBtn('a1','🌱 A1')}${lvBtn('a2','🌿 A2')}${lvBtn('b1','💬 B1')}${lvBtn('b2c1','📜 B2–C1')}</div>
+      <div style="font-size:26px;font-weight:800;color:var(--gold);margin:8px 0">“${escapeHtml(q.w.en)}”</div>
+      <button type="button" id="engQuizSpeak" class="btn" style="width:auto;font-size:11px">🔊 Listen</button>
+      <div style="display:grid;gap:6px;margin-top:8px">`+
+      q.opts.map(o=>`<button type="button" class="btn eng-opt" data-o="${escapeHtml(o)}" style="width:100%">${escapeHtml(o)}</button>`).join('')+`</div>
+      <div id="engQuizFb" style="margin-top:8px;font-size:13px;min-height:20px"></div>
+      <p class="muted" style="font-size:11px;margin-top:6px">Correct ${d.ok}/${d.total} · streak ${d.streak} · level: <b>${escapeHtml(engQuizLevel)}</b> · pool: ${engQuizPool().length} words/phrases</p></div>`;
+  }
+  box.innerHTML = html + `<p class="muted" style="font-size:10px;margin-top:8px">🔊 Toca cualquier tarjeta para escuchar en inglés (en-US, voz del dispositivo). El quiz suma a tu racha local y privada.</p>`;
+  const sp=$('engSpeakBtn'); if(sp) sp.onclick=(e)=>{ try{ e.preventDefault(); }catch{} engSpeak(all_eng_word_current()); };
+  const nx=$('engNextBtn'); if(nx) nx.onclick=()=>{ engQuizQ=null; renderEnglishPanel('word'); };
+  const qs=$('engQuizSpeak'); if(qs) qs.onclick=(e)=>{ try{ e.preventDefault(); }catch{} if(engQuizQ) engSpeak(engQuizQ.w.en); };
+  box.querySelectorAll('.eng-word').forEach(b=> b.onclick=(e)=>{ try{ e.preventDefault(); }catch{} engSpeak(b.dataset.w); });
+  box.querySelectorAll('.eng-lv').forEach(b=> b.onclick=()=>{ engQuizLevel=b.dataset.lv; engQuizQ=null; renderEnglishPanel('quiz'); });
+  box.querySelectorAll('.eng-opt').forEach(b=> b.onclick=()=>{
+    const d2=getEnglishData(); const ok = b.dataset.o===engQuizQ.w.es;
+    d2.total=(d2.total||0)+1; if(ok){ d2.ok=(d2.ok||0)+1; d2.streak=(d2.streak||0)+1; } else { d2.streak=0; }
+    scheduleSave('Guardado ✓');
+    const fb=$('engQuizFb');
+    if(fb) fb.innerHTML = ok? '✅ Great! <b>'+escapeHtml(engQuizQ.w.ex)+'</b>' : '❌ It was <b>'+escapeHtml(engQuizQ.w.es)+'</b> — “'+escapeHtml(engQuizQ.w.ex)+'”';
+    box.querySelectorAll('.eng-opt').forEach(x=>{ x.disabled=true; if(x.dataset.o===engQuizQ.w.es){ x.classList.add('btn-accent'); } });
+    renderEnglishStreak();
+    setTimeout(()=>{ engQuizQ=null; if(engTab==='quiz') renderEnglishPanel('quiz'); }, ok?1400:2200);
+  });
+}
+function all_eng_word_current(){
+  try{
+    const all=ENG_A1.concat(ENG_A2,ENG_B1,ENG_B2C1);
+    return all[engDayIndex()].en;
+  }catch{ return 'Hello'; }
+}
+function setupEnglishDialog(){
+  const btn=$('btnEnglish'); if(btn) btn.onclick=()=>{ renderEnglishPanel('word'); $('englishDialog').showModal(); };
+  const ct=$('englishCloseTop'), cb=$('englishClose'); if(ct) ct.onclick=()=>$('englishDialog').close(); if(cb) cb.onclick=()=>$('englishDialog').close();
+  ['tabEN1','tabEN2','tabEN3','tabEN4','tabEN5','tabEN6'].forEach(id=>{
+    const el=$(id); if(!el) return;
+    el.onclick=()=>{ const map={tabEN1:'word',tabEN2:'a1',tabEN3:'a2',tabEN4:'b1',tabEN5:'avanzado',tabEN6:'quiz'}; if(map[id]!=='quiz') engQuizQ=null; renderEnglishPanel(map[id]); };
+  });
+}
+setTimeout(setupEnglishDialog, 888);
+
+// === GUITARRA — Principiante / Intermedio / Avanzado (offline, local por usuario) ===
+const GUITAR_CHORDS = [
+  { n:'Em', f:'022000', niv:'principiante', k:'mi menor facil primero 2 dedos', tip:'El más fácil: dedos 2 y 3 en 5ta y 4ta cuerda, traste 2. Todas las cuerdas suenan.' },
+  { n:'Am', f:'x02210', niv:'principiante', k:'la menor facil', tip:'Dedos 2-3-1 en 4ta/3ra/2da cuerda. No toques la 6ta (x). Puerta a F.' },
+  { n:'C', f:'x32010', niv:'principiante', k:'do mayor facil cambio pivote', tip:'Dedo 1 en 2da cuerda traste 1. Deja dedo 1 pivote para pasar a Am rápido.' },
+  { n:'G', f:'320003', niv:'principiante', k:'sol mayor 4 dedos', tip:'Versión 4 dedos. Alternativa fácil G7 simplificado 320001 si te cuesta estirar.' },
+  { n:'D', f:'xx0232', niv:'principiante', k:'re mayor triángulo', tip:'Forma triángulo con dedos 1-2-3. Toca solo cuerdas 4-1 (las graves en x no van).' },
+  { n:'A', f:'x02220', niv:'principiante', k:'la mayor', tip:'3 dedos juntos en 2do traste. Si se chocan, prueba dedos 1-2-3 en diagonal.' },
+  { n:'E', f:'022100', niv:'principiante', k:'mi mayor', tip:'Base del rock. Practica E→Am: solo mueves 1 dedo. Rasgueo abajo firme.' },
+  { n:'Dm', f:'xx0231', niv:'principiante', k:'re menor triste', tip:'Como D pero dedo 1 en 1ra cuerda traste 1. Suena melancólico, ideal arpegios.' },
+  { n:'F simplificado', f:'xx3211', niv:'intermedio', k:'fa facil sin cejilla puente', tip:'Puente a la cejilla: mini-cejilla dedo 1 en cuerdas 1-2, traste 1. Cuando salga limpio, agrega cejilla completa.' },
+  { n:'F (cejilla)', f:'133211', niv:'intermedio', k:'fa cejilla barra dolor', tip:'Dedo 1 recto pegado al traste 1, codo abajo, peso del brazo. 2 min/día aprieta-suelta. Sale en 2-4 semanas.' },
+  { n:'Bm', f:'x24432', niv:'intermedio', k:'si menor cejilla', tip:'Cejilla en traste 2 + forma Am desplazada. Si zumba, sube el dedo 1 justo tras el traste.' },
+  { n:'A7', f:'x02020', niv:'intermedio', k:'la séptima blues', tip:'Quita un dedo de A y suena blues. Puerta a progresión A7-D7-E7 de 12 compases.' },
+  { n:'E7', f:'020100', niv:'intermedio', k:'mi séptima blues', tip:'Blues clásico. Alterna E-E7 con el meñique entrando/saliendo (truco rockabilly).' },
+  { n:'Dsus4', f:'xx0233',niv:'intermedio', k:'re suspendido color', tip:'D + meñique en 1ra cuerda traste 3. Juega D-Dsus4-D para dar movimiento (Wish You Were Here).' },
+  { n:'Cadd9', f:'x32033', niv:'intermedio', k:'do agregado novena wonderwall', tip:'C + meñique y anular en traste 3 (1ra y 2da). Sonido pop (Wonderwall, Zombie).' },
+  { n:'Am7', f:'x02010', niv:'intermedio', k:'la menor séptima suave', tip:'Am sin un dedo: más aire. Ideal fingerpicking y bossa suave.' },
+  { n:'Cmaj7', f:'x32000', niv:'avanzado', k:'do maj7 jazz bossa', tip:'C sin dedo 1: suena jazzy/bossa. Base II-V-I en C: Dm7-G7-Cmaj7.' },
+  { n:'Dm7', f:'xx0211', niv:'avanzado', k:'re menor séptima jazz', tip:'Mini-cejilla dedo 1 en trastes 1 (1ra y 2da). Imprescindible en bossa y funk.' },
+  { n:'G7', f:'320001', niv:'avanzado', k:'sol séptima blues jazz', tip:'G + dedo 1 en 1ra cuerda traste 1. Dominante que pide resolver a C.' },
+  { n:'B7', f:'x21202', niv:'avanzado', k:'si séptima blues', tip:'Forma incómoda pero clave en blues en E (E-A-B7). Practica E→B7 lento.' },
+  { n:'Fmaj7', f:'xx3211', niv:'avanzado', k:'fa maj7 sin cejilla suave', tip:'Igual que F simplificado: el aire de la 6ta cuerda en x lo hace suave. Úsalo en vez de F cuando duela la mano.' },
+  { n:'Dm9', f:'xx0210', niv:'avanzado', k:'re menor novena jazz neo soul', tip:'Dm7 moviendo un dedo: color neo-soul. Arpegia cuerda por cuerda para oír cada nota.' },
+];
+function getGuitarData(){
+  const u = userData();
+  if(!u.guitar) u.guitar = { level:'principiante', log:[], tuneRef:440 };
+  if(!Array.isArray(u.guitar.log)) u.guitar.log = [];
+  if(!u.guitar.level) u.guitar.level = 'principiante';
+  if(u.guitar.tuneRef !== 432 && u.guitar.tuneRef !== 440) u.guitar.tuneRef = 440;
+  return u.guitar;
+}
+let guitarEditingId = null;
+let guitarAudioCtx = null, guitarTuneNodes = null, guitarTuneTimer = null, guitarSeqTimers = [];
+let metroTimer = null, metroOn = false, metroBeat = 0;
+function guitarStats(){
+  const log = getGuitarData().log;
+  const totalMin = log.reduce((a,b)=> a + (+b.min||0), 0);
+  const days = [...new Set(log.map(x=>x.date))].sort();
+  let streak = 0;
+  const today = new Date(); today.setHours(0,0,0,0);
+  let cursor = new Date(today);
+  const daySet = new Set(days);
+  const fmt = d => d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+  if(!daySet.has(fmt(cursor))){ cursor.setDate(cursor.getDate()-1); }
+  while(daySet.has(fmt(cursor))){ streak++; cursor.setDate(cursor.getDate()-1); }
+  return { total: log.length, totalMin, streak, days: days.length };
+}
+function renderGuitarStreak(){
+  const chip = $('guitarStreakChip'); if(!chip) return;
+  const s = guitarStats();
+  chip.textContent = `🔥 ${s.streak} día${s.streak===1?'':'s'} · ${s.totalMin} min total · ${s.total} prácticas`;
+}
+function renderGuitarChords(filter){
+  const grid = $('guitarChordGrid'); if(!grid) return;
+  const q = (filter||'').toLowerCase().trim();
+  const list = GUITAR_CHORDS.filter(c=>{
+    if(!q) return true;
+    return (c.n+' '+c.f+' '+c.niv+' '+c.k+' '+c.tip).toLowerCase().includes(q);
+  });
+  if(!list.length){ grid.innerHTML = '<p class="muted">Sin resultados. Prueba “cejilla”, “menor”, “jazz”, “F”…</p>'; return; }
+  const colors = { principiante:'#8fd694', intermedio:'#e8c56a', avanzado:'#e76e8a' };
+  grid.innerHTML = list.map((c,i)=>`<button type="button" class="fishing-species-item guitar-chord-btn" data-ch="${escapeHtml(c.n)}" style="cursor:pointer;border-left:3px solid ${colors[c.niv]||'#888'}"><b>🎸 ${escapeHtml(c.n)}</b> <span class="chip" style="font-size:10px">${escapeHtml(c.f)}</span><br><span style="font-size:10px" class="muted">${c.niv==='principiante'?'🌱':c.niv==='intermedio'?'🌿':'🌳'} ${escapeHtml(c.niv)}</span></button>`).join('');
+  grid.querySelectorAll('.guitar-chord-btn').forEach(el=> el.onclick=()=>{
+    const c = GUITAR_CHORDS.find(x=>x.n===el.dataset.ch); if(!c) return;
+    const det = $('guitarChordDetail');
+    if(det) det.innerHTML = `<b>🎸 ${escapeHtml(c.n)} <span class="chip">${escapeHtml(c.f)}</span></b> <span class="muted" style="font-size:11px">6ta→1ra · x=no tocar · 0=al aire</span><br>💡 ${escapeHtml(c.tip)}`;
+  });
+}
+function renderGuitarLog(){
+  const box = $('pracList'); if(!box) return;
+  const data = getGuitarData().log;
+  const stats = $('pracStats');
+  if(!data.length){ box.innerHTML = '<p class="muted">Sin prácticas. Registra tus primeros 15 min arriba 👆</p>'; if(stats) stats.textContent = '0 prácticas'; renderGuitarStreak(); return; }
+  const sorted = [...data].sort((a,b)=> (b.date||'').localeCompare(a.date||''));
+  box.innerHTML = sorted.slice(0,60).map(it=>{
+    const lv = it.level==='avanzado'?'🌳':it.level==='intermedio'?'🌿':'🌱';
+    return `<div class="habit-row"><span style="flex:1">📅 <b>${escapeHtml(it.date||'')}</b> · ${lv} ${escapeHtml(it.level||'')} · <b>${escapeHtml(String(it.min||0))} min</b><br><span class="muted" style="font-size:11px">${escapeHtml(it.detail||'')}</span></span><span style="display:flex;gap:4px"><button type="button" class="btn btn-icon prac-edit" data-id="${it.id}" title="Editar" style="width:28px;height:28px">✏️</button><button type="button" class="btn btn-icon prac-del" data-id="${it.id}" title="Borrar" style="width:28px;height:28px">✕</button></span></div>`;
+  }).join('');
+  const s = guitarStats();
+  if(stats) stats.textContent = `${s.total} prácticas · ${s.days} días distintos · ${s.totalMin} min · racha ${s.streak} 🔥`;
+  box.querySelectorAll('.prac-del').forEach(b=> b.onclick=()=>{
+    const d = getGuitarData(); d.log = d.log.filter(x=>String(x.id)!==String(b.dataset.id));
+    scheduleSave(); renderGuitarLog();
+  });
+  box.querySelectorAll('.prac-edit').forEach(b=> b.onclick=()=>{
+    const d = getGuitarData(); const it = d.log.find(x=>String(x.id)===String(b.dataset.id)); if(!it) return;
+    guitarEditingId = it.id;
+    $('pracDate').value = it.date||''; $('pracMinutes').value = it.min||15; $('pracLevel').value = it.level||'principiante'; $('pracDetail').value = it.detail||'';
+    $('pracAdd').textContent = '↻ Actualizar'; $('pracCancelEdit').classList.remove('hidden');
+  });
+  renderGuitarStreak();
+}
+function guitarPluckBuffer(freq, secs){
+  // Síntesis de cuerda pulsada (Karplus-Strong) con retardo fraccionario:
+  // el filtro promedio del algoritmo retrasa el loop ~0.5 muestra, y sin
+  // compensar la 1ra cuerda quedaba ~10 cents baja ("desafinada").
+  // Con delay = sr/freq - 0.5 el pitch queda exacto (<1 cent) en las 6.
+  const sr = guitarAudioCtx.sampleRate;
+  const len = Math.max(1024, Math.floor(sr * secs));
+  const buf = guitarAudioCtx.createBuffer(1, len, sr);
+  const d = buf.getChannelData(0);
+  const delay = sr / freq - 0.5;
+  const N = Math.max(2, Math.floor(delay));
+  const frac = Math.min(0.999, Math.max(0, delay - N));
+  const c0 = 0.5 * (1 - frac), c2 = 0.5 * frac;
+  for(let i=0;i<=N+1 && i<len;i++) d[i] = Math.random()*2-1;
+  const decay = freq < 120 ? 0.9975 : freq < 200 ? 0.9968 : 0.996;
+  for(let i=N+2;i<len;i++){
+    d[i] = decay * (c0*d[i-N] + 0.5*d[i-N-1] + c2*d[i-N-2]);
+  }
+  let peak = 0;
+  for(let i=0;i<len;i++){ const v = Math.abs(d[i]); if(v>peak) peak = v; }
+  const norm = peak > 0 ? 0.9/peak : 1;
+  const fade = Math.min(len, Math.floor(sr*0.05));
+  for(let i=0;i<len;i++){ d[i] *= norm; if(i > len-fade) d[i] *= (len-i)/fade; }
+  return buf;
+}
+function playGuitarTone(freq, secs){
+  try{
+    stopGuitarTone(true);
+    if(!guitarAudioCtx) guitarAudioCtx = new (window.AudioContext||window.webkitAudioContext)();
+    if(guitarAudioCtx.state==='suspended') guitarAudioCtx.resume();
+    secs = secs || 4;
+    const src = guitarAudioCtx.createBufferSource();
+    src.buffer = guitarPluckBuffer(freq, secs);
+    const lp = guitarAudioCtx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 5000;
+    const g = guitarAudioCtx.createGain(); g.gain.value = 0.9;
+    src.connect(lp); lp.connect(g); g.connect(guitarAudioCtx.destination);
+    src.start();
+    guitarTuneNodes = { o: src, g };
+    clearTimeout(guitarTuneTimer);
+    guitarTuneTimer = setTimeout(()=> stopGuitarTone(true), secs*1000+150);
+  }catch(e){ alert('Audio no disponible en este dispositivo'); }
+}
+function guitarRefRatio(){
+  return (getGuitarData().tuneRef === 432 ? 432 : 440) / 440;
+}
+function guitarRefLabel(){
+  return getGuitarData().tuneRef === 432 ? 'A432' : 'A440';
+}
+function renderGuitarTuneLabels(){
+  // data-f guarda la frecuencia base en A440; el label muestra la real según referencia
+  const r = guitarRefRatio();
+  document.querySelectorAll('.guitar-tune').forEach(b=>{
+    const base = parseFloat(b.dataset.f) || 0;
+    const s = b.dataset.s || '';
+    b.textContent = `${s} · ${Math.round(base*r)}Hz`;
+  });
+  const sel = $('guitarTuneRef'); if(sel) sel.value = getGuitarData().tuneRef === 432 ? '432' : '440';
+}
+function playGuitarAllSix(){
+  // Secuencia 6ta→1ra como al afinar una acústica de verdad, 1.4s entre cuerdas
+  const r = guitarRefRatio(), ref = guitarRefLabel();
+  const seq = [82.41*r, 110*r, 146.83*r, 196*r, 246.94*r, 329.63*r];
+  const names = ['6ta Mi grave','5ta La','4ta Re','3ra Sol','2da Si','1ra Mi agudo'];
+  stopGuitarTone(true);
+  const st = $('guitarTuneStatus');
+  seq.forEach((f, i)=>{
+    guitarSeqTimers.push(setTimeout(()=>{
+      playGuitarTone(f, 2.2);
+      if(st) st.textContent = `🔊 ${i+1}/6 · ${names[i]} (${f.toFixed(1)} Hz · ${ref}) — afina tu ${names[i].split(' ')[0]} cuerda y espera la siguiente…`;
+    }, i*1400));
+  });
+  guitarSeqTimers.push(setTimeout(()=>{ if(st) st.textContent = 'Toca una cuerda para escucharla 4 segundos (sonido de acústica).'; }, seq.length*1400));
+}
+function stopGuitarTone(silent){
+  try{ if(guitarTuneNodes){ try{ guitarTuneNodes.o.stop(); }catch{} try{ guitarTuneNodes.g.disconnect(); }catch{} guitarTuneNodes = null; } clearTimeout(guitarTuneTimer); }catch{}
+  try{ guitarSeqTimers.forEach(clearTimeout); guitarSeqTimers = []; }catch{}
+  if(!silent){ const st=$('guitarTuneStatus'); if(st) st.textContent='Toca una cuerda para escucharla 4 segundos (sonido de acústica).'; }
+}
+function metroClick(accent){
+  try{
+    if(!guitarAudioCtx) guitarAudioCtx = new (window.AudioContext||window.webkitAudioContext)();
+    if(guitarAudioCtx.state==='suspended') guitarAudioCtx.resume();
+    const o = guitarAudioCtx.createOscillator(), g = guitarAudioCtx.createGain();
+    o.type = 'square'; o.frequency.value = accent?1600:1000;
+    g.gain.setValueAtTime(0.25, guitarAudioCtx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.0001, guitarAudioCtx.currentTime+0.07);
+    o.connect(g); g.connect(guitarAudioCtx.destination); o.start(); o.stop(guitarAudioCtx.currentTime+0.08);
+  }catch{}
+}
+function metroStopFn(){
+  metroOn = false; clearInterval(metroTimer); metroTimer = null;
+  const b = $('metroStart'); if(b) b.textContent = '▶ Iniciar';
+  const beat = $('metroBeat'); if(beat) beat.textContent = '♪';
+}
+function setupGuitarDialog(){
+  const btn = $('btnGuitar'); if(btn) btn.onclick=()=>{
+    const g = getGuitarData();
+    const sel = $('guitarLevelSel'); if(sel) sel.value = g.level||'principiante';
+    renderGuitarTuneLabels();
+    const pd = $('pracDate'); if(pd && !pd.value){ try{ pd.value = cal.fmtKey.format(new Date()); }catch{ pd.valueAsDate = new Date(); } }
+    const pl = $('pracLevel'); if(pl) pl.value = g.level||'principiante';
+    renderGuitarStreak(); renderGuitarChords(''); renderGuitarLog();
+    showGuitarTab('b');
+    $('guitarDialog').showModal();
+  };
+  const ct=$('guitarCloseTop'), cb=$('guitarClose'); if(ct) ct.onclick=()=>{ metroStopFn(); stopGuitarTone(true); $('guitarDialog').close(); }; if(cb) cb.onclick=()=>{ metroStopFn(); stopGuitarTone(true); $('guitarDialog').close(); };
+  function showGuitarTab(t){
+    const tabs={ b:['tabGuiB','guitarBegPanel'], i:['tabGuiI','guitarIntPanel'], a:['tabGuiA','guitarAdvPanel'], p:['tabGuiP','guitarPracPanel'] };
+    Object.values(tabs).forEach(([bid,pid])=>{ const b=$(bid), p=$(pid); if(b) b.classList.remove('btn-accent'); if(p) p.classList.add('hidden'); });
+    const cur=tabs[t]; if(cur){ const b=$(cur[0]), p=$(cur[1]); if(b) b.classList.add('btn-accent'); if(p) p.classList.remove('hidden'); }
+  }
+  window.showGuitarTab = showGuitarTab;
+  const tB=$('tabGuiB'), tI=$('tabGuiI'), tA=$('tabGuiA'), tP=$('tabGuiP');
+  if(tB) tB.onclick=()=>showGuitarTab('b'); if(tI) tI.onclick=()=>showGuitarTab('i');
+  if(tA) tA.onclick=()=>showGuitarTab('a'); if(tP) tP.onclick=()=>showGuitarTab('p');
+  const lvl=$('guitarLevelSel'); if(lvl) lvl.onchange=()=>{ const g=getGuitarData(); g.level=lvl.value; const pl=$('pracLevel'); if(pl) pl.value=lvl.value; scheduleSave(); showGuitarTab(lvl.value==='principiante'?'b':lvl.value==='intermedio'?'i':'a'); };
+  // Afinador
+  document.querySelectorAll('.guitar-tune').forEach(b=> b.onclick=()=>{
+    const base=parseFloat(b.dataset.f), n=b.dataset.n||'';
+    const f = base * guitarRefRatio(), ref = guitarRefLabel();
+    playGuitarTone(f, 4);
+    const st=$('guitarTuneStatus'); if(st) st.textContent=`🔊 Sonando ${n} (${f.toFixed(1)} Hz · ${ref}, cuerda pulsada) — afina hasta que no se oigan "olas" entre tu cuerda y esta.`;
+  });
+  const tStop=$('guitarTuneStop'); if(tStop) tStop.onclick=()=>stopGuitarTone();
+  const tAll=$('guitarTuneAll'); if(tAll) tAll.onclick=()=>playGuitarAllSix();
+  const tRef=$('guitarTuneRef'); if(tRef) tRef.onchange=()=>{ const g=getGuitarData(); g.tuneRef=parseInt(tRef.value,10)===432?432:440; scheduleSave(); stopGuitarTone(true); renderGuitarTuneLabels(); };
+  // Metrónomo
+  const bpm=$('metroBpm'), bpmVal=$('metroBpmVal');
+  function updBpm(){ if(bpmVal&&bpm) bpmVal.textContent=bpm.value+' bpm'; }
+  if(bpm) bpm.oninput=()=>{ updBpm(); if(metroOn){ metroStopFn(); $('metroStart').click(); } };
+  updBpm();
+  const mStart=$('metroStart'); if(mStart) mStart.onclick=()=>{
+    if(metroOn){ metroStopFn(); return; }
+    const v=parseInt((bpm&&bpm.value)||80,10)||80;
+    metroOn=true; metroBeat=0; mStart.textContent='⏸ Pausar';
+    const beat=$('metroBeat');
+    const tick=()=>{ metroBeat++; const accent=(metroBeat%4===1); try{ metroClick(accent); }catch{} if(beat) beat.textContent=accent?'🔴 1 · 2 · 3 · 4':'🟡 '+(metroBeat%4||4)+' / 4'; };
+    tick(); metroTimer=setInterval(tick, 60000/v);
+  };
+  const mStop=$('metroStop'); if(mStop) mStop.onclick=metroStopFn;
+  // Biblioteca
+  const search=$('guitarChordSearch'); if(search) search.oninput=()=>renderGuitarChords(search.value);
+  // Bitácora
+  const add=$('pracAdd'); if(add) add.onclick=()=>{
+    const date=$('pracDate').value||(()=>{ try{ return cal.fmtKey.format(new Date()); }catch{ return new Date().toISOString().slice(0,10); } })();
+    const min=Math.max(1, Math.min(480, parseInt($('pracMinutes').value)||15));
+    const level=$('pracLevel').value||'principiante';
+    const detail=$('pracDetail').value.trim();
+    if(!detail) return alert('Cuéntanos qué practicaste (ej: cambios C-G 70bpm)');
+    const d=getGuitarData();
+    if(guitarEditingId){
+      const idx=d.log.findIndex(x=>String(x.id)===String(guitarEditingId));
+      if(idx>=0) d.log[idx]={...d.log[idx], date, min, level, detail};
+      guitarEditingId=null; add.textContent='+ Guardar práctica'; $('pracCancelEdit').classList.add('hidden');
+    } else d.log.push({ id: Date.now()+''+Math.floor(Math.random()*999), date, min, level, detail });
+    scheduleSave(); $('pracDetail').value='';
+    renderGuitarLog();
+  };
+  const cancel=$('pracCancelEdit'); if(cancel) cancel.onclick=()=>{ guitarEditingId=null; $('pracAdd').textContent='+ Guardar práctica'; cancel.classList.add('hidden'); $('pracDetail').value=''; };
+  const clear=$('pracClear'); if(clear) clear.onclick=()=>{ if(!confirm('¿Borrar toda la bitácora de guitarra?')) return; getGuitarData().log=[]; scheduleSave(); renderGuitarLog(); };
+  const share=$('pracShare'); if(share) share.onclick=async()=>{
+    const d=getGuitarData().log; if(!d.length) return alert('Sin prácticas para compartir');
+    const s=guitarStats();
+    const lines=[...d].sort((a,b)=>(b.date||'').localeCompare(a.date||'')).slice(0,20).map(x=>`· ${x.date} — ${x.level} ${x.min}min: ${x.detail}`);
+    await shareText('🎸 Mi práctica de guitarra', `🎸 Guitarra — ${s.total} prácticas · ${s.totalMin} min · racha ${s.streak} días 🔥\nNivel actual: ${getGuitarData().level}\n\n`+lines.join('\n'));
+  };
+  showGuitarTab('b');
+}
+setTimeout(setupGuitarDialog, 892);
+
 // === LAWEN — HERBARIO BÍO-BÍO (20 fichas) ===
 const LAWEN_PLANTS = [
   { n:'Matico', i:'🌿', uso:'Heridas, úlceras leves, higiene bucal', prep:'Infusión 1 cdta hojas secas / taza, 5 min. Enfriar para lavado de herida limpia.', luna:'Llena', rec:'Pewü-Walüng, mañana seca', cui:'No en embarazo. No reemplaza sutura/antibiótico si hay infección.', k:'matico herida ulcera cicatrizante lavado' },
@@ -6235,14 +7043,14 @@ function setLawenUserData(a){ try{ userData().lawenUser=a; }catch{} }
 function lawenCardHTML(p, mine, idx){
   const del = mine? `<button type="button" class="btn btn-icon lawen-del" data-i="${idx}" title="Borrar mi ficha" style="width:26px;height:26px;font-size:11px;flex:none">✕</button>` : '';
   const mineChip = mine? `<span class="chip" style="font-size:10px;background:#a9d18e22;color:#a9d18e;border-color:#a9d18e55;white-space:nowrap">🌱 mía</span>` : '';
-  return `<div class="si-card" style="margin:0;padding:10px 12px;${mine?'border-style:dashed;':''}">`
-    + `<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span style="font-size:22px;line-height:1;flex:none">${p.i||'🌱'}</span><b style="font-size:14px">${escapeHtml(p.n)}</b>${mineChip}<span style="flex:1"></span><span class="chip" style="font-size:10px;white-space:nowrap">🌙 ${escapeHtml(p.luna||'Cualquiera')}</span>${del}</div>`
-    + `<div style="display:grid;grid-template-columns:74px 1fr;gap:4px 8px;font-size:11px;line-height:1.5">`
-    + `<span style="color:var(--gold);font-weight:700">USO</span><span>${escapeHtml(p.uso||'—')}</span>`
-    + (p.prep? `<span style="color:var(--gold);font-weight:700">PREPARA</span><span>🫖 ${escapeHtml(p.prep)}</span>`:'')
-    + (p.rec? `<span style="color:#9aa3c7;font-weight:700">RECOLECTA</span><span>📅 ${escapeHtml(p.rec)}</span>`:'')
+  return `<div class="si-card lawen-card${mine?' mine':''}">`
+    + `<div class="lawen-head"><span class="lawen-ico">${p.i||'🌱'}</span><span class="lawen-name">${escapeHtml(p.n)}</span>${mineChip}<span style="flex:1"></span><span class="chip lawen-luna">🌙 ${escapeHtml(p.luna||'Cualquiera')}</span>${del}</div>`
+    + `<div class="lawen-grid">`
+    + `<span class="lawen-label">USO</span><span class="lawen-val">${escapeHtml(p.uso||'—')}</span>`
+    + (p.prep? `<span class="lawen-label">PREPARA</span><span class="lawen-val">🫖 ${escapeHtml(p.prep)}</span>`:'')
+    + (p.rec? `<span class="lawen-label dim">RECOLECTA</span><span class="lawen-val">📅 ${escapeHtml(p.rec)}</span>`:'')
     + `</div>`
-    + (p.cui? `<div style="margin-top:6px;background:#e76e8a12;border:1px solid #e76e8a44;border-radius:6px;padding:5px 8px;font-size:11px;line-height:1.5;color:#ff9a9a">⚠️ ${escapeHtml(p.cui)}</div>`:'')
+    + (p.cui? `<div class="lawen-warn">⚠️ ${escapeHtml(p.cui)}</div>`:'')
     + `</div>`;
 }
 function renderLawenList(){
@@ -6447,19 +7255,17 @@ function renderSiembraSemillas(){
   const box=$('siembraSemillasBox'); if(!box) return;
   const a=getSemillasInvData();
   const totalSobres=a.reduce((s,e)=> s+(parseInt(e.qty)||0), 0);
-  let ahora='';
-  try{
-    const tres=(typeof getSiembraTresLunas==='function')? getSiembraTresLunas() : [currentView.luna||1];
-    ahora=tres.map(n=>{ try{ const s=SIEMBRA_LUNAS[n]; return `Luna ${n}: ${s.directa.split('.')[0].slice(0,80)}…`; }catch{ return 'Luna '+n; } }).map(escapeHtml).join('<br>');
-  }catch{}
   box.innerHTML = `<div class="menstrual-card" style="border-color:var(--gold);background:linear-gradient(135deg,var(--panel),var(--card))">
     <h4 style="color:var(--gold)">🌰 Mis semillas — recuento (${a.length} variedades · ${totalSobres} sobres/semillas)</h4>
-    <p class="muted" style="font-size:11px">Tu stock personal, <b>local por usuario</b>. Descuenta al sembrar (−) y suma al cosechar/cosechar semilla (+). Úsalo con la guía de arriba.</p>
-    ${ahora? `<p style="font-size:11px;margin-top:6px"><b>Siembra ahora:</b><br><span class="muted">${ahora}</span></p>`:''}
+    <p class="muted" style="font-size:11px">Tu stock personal, <b>local por usuario</b>. Descuenta al sembrar (−) y suma al cosechar semilla (+). Úsalo con la guía de arriba.</p>
+    <div style="font-size:11px;margin-top:6px;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px"><b>🏺 Cómo almacenar tus semillas:</b><ul style="margin:4px 0 0 16px;padding:0" class="muted"><li>Seca bien a la sombra, lugar ventilado, 7–14 días antes de guardar.</li><li>Guarda en <b>sobre de papel</b>, no plástico (respira y evita hongos).</li><li>Frasco hermético en lugar <b>fresco, seco y oscuro</b> (ideal &lt;20 °C).</li><li>Etiqueta siempre: variedad + <b>fecha de recolección</b> + origen.</li><li>Revisa cada luna: descarta las húmedas o con moho.</li></ul></div>
     <div class="conv-row" style="margin-top:8px">
       <label style="flex:2">Variedad <input type="text" id="semInvName" placeholder="ej: Tomate rosado, Poroto manteca" maxlength="40"></label>
-      <label>Cant. <input type="number" id="semInvQty" min="0" value="1" style="width:80px"></label>
-      <label>Detalle <input type="text" id="semInvNote" placeholder="ej: sobres, gr, 2026" maxlength="30"></label>
+      <label>Cant. <input type="number" id="semInvQty" min="0" value="1" style="width:70px"></label>
+    </div>
+    <div class="conv-row" style="margin-top:6px">
+      <label>📅 Recolección <input type="date" id="semInvHarvest" style="min-width:140px"></label>
+      <label style="flex:2">Detalle <input type="text" id="semInvNote" placeholder="ej: sobres, gr, origen" maxlength="30"></label>
     </div>
     <div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="semInvAdd" class="btn btn-accent" style="width:auto">+ Agregar</button></div>
     <div id="semInvList" class="habits-list" style="margin-top:8px;max-height:240px"></div>
@@ -6471,7 +7277,7 @@ function renderSiembraSemillas(){
   const paint=()=>{
     const arr=getSemillasInvData();
     list.innerHTML = arr.length? arr.map((e,i)=>
-      `<div class="hora-item"><span style="font-size:12px"><b>${escapeHtml(e.name)}</b> <span class="chip" style="font-size:10px">${escapeHtml(String(e.qty))} ${escapeHtml(e.note||'')}</span></span><span class="hora-actions"><button type="button" class="btn btn-icon sem-dec" data-i="${i}" title="Sembré 1 (−)">−</button><button type="button" class="btn btn-icon sem-inc" data-i="${i}" title="Sumar 1 (+)">+</button><button type="button" class="btn btn-icon sem-del" data-i="${i}" title="Borrar">✕</button></span></div>`).join('')
+      `<div class="hora-item"><span style="font-size:12px"><b>${escapeHtml(e.name)}</b> <span class="chip" style="font-size:10px">${escapeHtml(String(e.qty))} ${escapeHtml(e.note||'')}</span>${e.harvest?` <span class="chip" style="font-size:10px">📅 ${escapeHtml(e.harvest)}</span>`:''}</span><span class="hora-actions"><button type="button" class="btn btn-icon sem-dec" data-i="${i}" title="Sembré 1 (−)">−</button><button type="button" class="btn btn-icon sem-inc" data-i="${i}" title="Sumar 1 (+)">+</button><button type="button" class="btn btn-icon sem-del" data-i="${i}" title="Borrar">✕</button></span></div>`).join('')
       : '<p class="muted" style="font-size:11px;text-align:center">Vacío. Agrega tu primer sobre arriba.</p>';
     const st=$('semInvStats'); if(st) st.textContent = arr.length? `${arr.length} variedades · bajo stock (≤2): ${arr.filter(x=>(parseInt(x.qty)||0)<=2).length}` : '';
     list.querySelectorAll('.sem-dec').forEach(b=> b.onclick=()=>{ const ar=getSemillasInvData(); const it=ar[parseInt(b.dataset.i)]; if(!it) return; it.qty=Math.max(0,(parseInt(it.qty)||0)-1); setSemillasInvData(ar); scheduleSave(); paint(); });
@@ -6483,15 +7289,16 @@ function renderSiembraSemillas(){
   if(add) add.onclick=()=>{
     const name=sanitizeText(($('semInvName').value||'').trim(),40); if(!name) return;
     const qty=Math.max(0, parseInt($('semInvQty').value)||0);
+    const harvest=(($('semInvHarvest')&&$('semInvHarvest').value)||'').trim();
     const note=sanitizeText(($('semInvNote').value||'').trim(),30);
     const arr=getSemillasInvData();
     const found=arr.find(x=> x.name.toLowerCase()===name.toLowerCase());
-    if(found){ found.qty=(parseInt(found.qty)||0)+qty; if(note) found.note=note; }
-    else arr.push({name, qty, note});
+    if(found){ found.qty=(parseInt(found.qty)||0)+qty; if(note) found.note=note; if(harvest) found.harvest=harvest; }
+    else arr.push({name, qty, harvest, note});
     setSemillasInvData(arr); scheduleSave('Guardado ✓');
-    $('semInvName').value=''; $('semInvQty').value='1'; $('semInvNote').value=''; paint();
+    $('semInvName').value=''; $('semInvQty').value='1'; if($('semInvHarvest')) $('semInvHarvest').value=''; $('semInvNote').value=''; paint();
   };
-  const sh=$('semInvShare'); if(sh) sh.onclick=async()=>{ const arr=getSemillasInvData(); const t=arr.length? '🌰 Mis semillas\n'+arr.map(e=>`• ${e.name}: ${e.qty}${e.note?' '+e.note:''}`).join('\n') : 'Mis semillas — sin stock aún'; await shareText('Mis semillas', t, null); };
+  const sh=$('semInvShare'); if(sh) sh.onclick=async()=>{ const arr=getSemillasInvData(); const t=arr.length? '🌰 Mis semillas\n'+arr.map(e=>`• ${e.name}: ${e.qty}${e.harvest?' (recol. '+e.harvest+')':''}${e.note?' '+e.note:''}`).join('\n') : 'Mis semillas — sin stock aún'; await shareText('Mis semillas', t, null); };
   const cl=$('semInvClear'); if(cl) cl.onclick=()=>{ if(!confirm('¿Vaciar todo el inventario?')) return; setSemillasInvData([]); scheduleSave(); paint(); };
 }
 
@@ -6671,6 +7478,220 @@ function setupGoldenDialog(){
   const ct=$('goldenCloseTop'), cb=$('goldenClose'); if(ct) ct.onclick=()=>$('goldenDialog').close(); if(cb) cb.onclick=()=>$('goldenDialog').close();
 }
 setTimeout(setupGoldenDialog, 870);
+
+// === PRÁCTICAS ESPIRITUALES: sol, agua, tierra y noche ===
+const ESP_PRACTICES = [
+  { id:'amanecer', icon:'🌅', nombre:'Sol de amanecer', sub:'luz suave que despierta cortisol bueno', nivel:'Principiante', tiempo:'2–10 min', horario:'Salida del sol ±60 min', mats:'Solo tu cuerpo · opcional manta, cuaderno', cuidado:'Nunca mires fijo al sol. Mira al horizonte, parpadea normal. Si arde o mareas, cierra ojos y sombra.',
+    pasos:['Sal en los primeros 60 min tras la salida (ver hora de hoy arriba).','Párate o siéntate mirando al horizonte, no al disco directo.','Respira por nariz 4 tiempos inhala / 6 exhala, hombros sueltos.','Quédate 2 min (día 1–3), sube a 5–10 min en 2 semanas.','Termina con 3 respiraciones profundas + vaso de agua.'] , mins:5 },
+  { id:'atardecer', icon:'🌇', nombre:'Sol de atardecer', sub:'luz cálida que baja revoluciones', nivel:'Principiante', tiempo:'5–15 min', horario:'Puesta del sol −60 min', mats:'Manta o silla · cuaderno · ropa abrigada', cuidado:'Mismo que amanecer: sin fijar vista, sin lentes de sol oscuros puestos. Abrígate, Penco enfría rápido.',
+    pasos:['Sal 30–60 min antes de la puesta (ver hora de hoy).','Camina lento 5 min o siéntate orientado al oeste.','Suelta hombros, mandíbula y manos; mira el cielo/horizonte.','Agradece en voz baja 3 cosas del día.','Al ocultarse, quédate 2 min en silencio y entra a luz tenue.'], mins:10 },
+  { id:'agua', icon:'💧', nombre:'Agua cargada con sol', sub:'agua solarizada en vidrio', nivel:'Principiante', tiempo:'30 min – 4 h de sol + beber', horario:'10:00–14:00 para carga profunda', mats:'Botella vidrio transparente/azul 1L + tapa · agua potable', cuidado:'Vidrio sí, plástico al sol no. Lavar diario, beber en 24 h. No reemplaza potabilizar si el agua no es segura.',
+    pasos:['Llena la botella de vidrio ¾ con agua potable.','Tapa sin apretar del todo.','Rápido: 30–60 min al sol de mañana. Profundo: 3–4 h (10–14h).','Entra la botella, deja entibiar a la sombra.','Bebe 1–2 vasos con pausa y respiración; resto en el día.'], mins:2 },
+  { id:'ducha', icon:'🧊', nombre:'Ducha fría consciente', sub:'cierre frío de 15 seg a 3 min', nivel:'Intermedio', tiempo:'15 seg – 3 min frío', horario:'Mañana (despierta) o post-ejercicio', mats:'Ducha · toalla a mano · pieza temperada', cuidado:'Evita si hipertensión descompensada, corazón, embarazo, fiebre o mareos. Nunca cabeza brusco al inicio ni apnea larga.',
+    pasos:['Dúchate tibio normal primero.','Al final abre fría: piernas 15 seg → brazos 15 seg → pecho 15 seg.','Respira por nariz, exhala largo, no bloquees aire.','Semana 1: 15–30 seg. Suma 15 seg/semana hasta 1–3 min.','Seca enérgico, abrígate y mueve hombros 1 min.'], mins:2 },
+  { id:'grounding', icon:'🦶', nombre:'Grounding / Earthing', sub:'pies descalzos en tierra', nivel:'Principiante', tiempo:'10–20 min', horario:'Mañana o atardecer, tierra seca/sombra', mats:'Pies descalzos · toalla · bolsa basura (lleva tu basura)', cuidado:'Playa solo con bajamar y sin oleaje; roca resbalosa con zapatilla si dudas. Heridas en pies, vidrios o frío extremo: usa pasto limpio o pospón.',
+    pasos:['Elige arena húmeda, pasto, tierra de huerta o roca seca segura.','Sácate zapatos/calcetines, pisa 1 min sintiendo textura y temperatura.','Camina lento o párate 10–20 min respirando 4/6.','Si mente corre, nombra 5 cosas que sientes en pies.','Limpia pies, anota cómo quedó tu energía (1–10).'], mins:15 },
+  { id:'luzroja', icon:'🔴', nombre:'Luz roja de noche', sub:'higiene lumínica para melatonina', nivel:'Principiante', tiempo:'Toda la tarde-noche', horario:'Desde 20:30 hasta dormir', mats:'Ampolleta roja/ámbar E27 5–7W + velador · modo noche celu', cuidado:'La roja también se apaga al dormir: oscuridad total. Si trabajas de noche o usas pantallas, baja brillo al mínimo.',
+    pasos:['Cambia el velador a ampolleta roja/ámbar 5–7W.','Desde las 20:30 apaga blancos/techo, deja solo roja.','Pon celu/PC en modo noche + brillo mínimo.','Cena liviana 2–3 h antes, lectura o ritual luna.','Al acostarte apaga todo: fresco, oscuro y silencioso.'], mins:5 },
+  { id:'respiracion', icon:'🌬️', nombre:'Respiración al sol', sub:'4/6 frente a la mañana', nivel:'Principiante', tiempo:'4 ciclos (3–5 min)', horario:'Junto al sol de amanecer', mats:'Nada · opcional usa 🌬️ Respiración guiada', cuidado:'Sentado si te mareas. Si hiperventilas, vuelve a respiración normal.',
+    pasos:['Siéntate con espalda recta frente a la luz suave.','Inhala 4 tiempos por nariz.','Exhala 6 tiempos por boca entreabierta.','Repite 4 ciclos (puedes usar el temporizador 5 min).','Abre ojos lento, mira el horizonte 30 seg.'], mins:5 },
+  { id:'luna', icon:'🌙', nombre:'Contemplación lunar', sub:'cierre nocturno 5 min', nivel:'Principiante', tiempo:'3–5 min', horario:'Noche con luna visible', mats:'Manta · vela opcional · diario', cuidado:'Abrígate; no uses flash ni mires con prismáticos al sol de día. Solo contemplación.',
+    pasos:['Sal o asómate donde veas la luna/cielo.','3 respiraciones 4/6 mirando la luna.','Relee tu nota del día en voz baja.','Escribe 1 línea: qué suelto / qué agradezco.','Apaga pantallas y entra a oscuridad.'], mins:5 },
+  { id:'silencio', icon:'🧘', nombre:'Silencio 5 min', sub:'meditación sin app', nivel:'Todos', tiempo:'5 min', horario:'Amanecer o antes de dormir', mats:'Cojín/manta · temporizador de aquí', cuidado:'Si ansiedad fuerte, abre ojos y mira un punto fijo. 5 min basta.',
+    pasos:['Siéntate cómodo, espalda recta, manos en piernas.','Pon el temporizador en 5 min y cierra ojos.','Cuenta exhalaciones 1–10 y vuelve a 1.','Si te pierdes, vuelve amable al conteo.','Al sonar, abre ojos lento + 3 respiraciones.'], mins:5 }
+];
+function getEspiritualData(){
+  const u=userData();
+  if(!u.espiritual) u.espiritual={ done:{}, notes:{} };
+  if(!u.espiritual.done) u.espiritual.done={};
+  if(!u.espiritual.notes) u.espiritual.notes={};
+  return u.espiritual;
+}
+function espTodayKey(){ try{ return cal.fmtKey.format(new Date()); }catch(e){ const d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); } }
+function espSunToday(){
+  try{
+    const nowMs=Date.now();
+    const p=cal.santiagoParts(nowMs);
+    const noon=Date.UTC(p.y, p.m-1, p.d, 12);
+    const sun=cal.sunForDay(noon);
+    const f=ms=> ms? new Intl.DateTimeFormat('es-CL',{timeZone:'America/Santiago',hour:'2-digit',minute:'2-digit',hour12:false}).format(new Date(ms)) : '—';
+    return { rise:sun.rise, set:sun.set, riseT:f(sun.rise), setT:f(sun.set) };
+  }catch(e){ return { rise:null, set:null, riseT:'—', setT:'—' }; }
+}
+function renderEspiritualTodayBox(){
+  const box=$('espiritualTodayBox'); if(!box) return;
+  const s=espSunToday();
+  const k=espTodayKey();
+  const d=getEspiritualData();
+  const doneToday=(d.done[k]&&typeof d.done[k]==='object')? Object.keys(d.done[k]).filter(pid=>d.done[k][pid]).length : 0;
+  const nowStr=new Intl.DateTimeFormat('es-CL',{timeZone:'America/Santiago',hour:'2-digit',minute:'2-digit'}).format(new Date());
+  box.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><span style="font-size:15px"><b>☀️ Hoy Penco</b> · salida <b>${s.riseT}</b> · puesta <b>${s.setT}</b></span><span class="chip">${nowStr} · ${doneToday}/9 hoy</span></div>
+  <p class="muted" style="margin-top:6px">🌅 Amanecer ideal: <b>${s.riseT} → +60 min</b> · 🌇 Atardecer ideal: <b>−60 min → ${s.setT}</b> · 💧 Agua: 10:00–14:00 · 🔴 Roja desde 20:30. <span style="color:var(--gold)">Marca abajo cada práctica hecha.</span></p>`;
+}
+function renderEspiritualCards(){
+  const box=$('espiritualCards'); if(!box) return;
+  const s=espSunToday();
+  const horaTxt={ amanecer:`${s.riseT} → +60 min`, atardecer:`−60 min → ${s.setT}`, agua:'10:00–14:00', ducha:'mañana', grounding:'mañana/tarde', luzroja:'20:30 → dormir', respiracion:`con amanecer ${s.riseT}`, luna:'noche', silencio:'amanecer/noche' };
+  box.innerHTML=ESP_PRACTICES.map(p=>`
+    <div class="esp-card">
+      <div class="esp-card-head"><span class="esp-icon">${p.icon}</span>
+        <div class="esp-titles"><div class="esp-name">${escapeHtml(p.nombre)}</div><div class="esp-sub">${escapeHtml(p.sub)}</div></div>
+        <span class="chip esp-level">${escapeHtml(p.nivel)}</span>
+      </div>
+      <div class="esp-body">
+        <div class="esp-meta"><span class="esp-pill gold">⏱ ${escapeHtml(p.tiempo)}</span><span class="esp-pill green">🕐 ${escapeHtml(horaTxt[p.id]||p.horario)}</span><span class="esp-pill">🎒 ${escapeHtml(p.mats)}</span></div>
+        <ol class="esp-steps">${p.pasos.map(st=>`<li>${escapeHtml(st)}</li>`).join('')}</ol>
+        <p class="esp-pill red" style="margin:0">⚠️ ${escapeHtml(p.cuidado)}</p>
+        <div class="esp-actions">
+          <button type="button" class="btn btn-accent esp-done" data-id="${p.id}" style="width:auto;font-size:11px">✅ Hice esta hoy</button>
+          <button type="button" class="btn esp-timer" data-id="${p.id}" data-mins="${p.mins}" style="width:auto;font-size:11px">⏱ ${p.mins} min</button>
+          <button type="button" class="btn esp-agendar" data-id="${p.id}" style="width:auto;font-size:11px">🕐 Agendar</button>
+        </div>
+      </div>
+    </div>`).join('');
+  box.querySelectorAll('.esp-done').forEach(b=> b.onclick=()=>{ espMarkDone(b.dataset.id, true); });
+  box.querySelectorAll('.esp-timer').forEach(b=> b.onclick=()=>{
+    const sel=$('espTimerPractice'); if(sel) sel.value=b.dataset.id;
+    const mm=$('espTimerMinutes'); if(mm) mm.value=String(b.dataset.mins);
+    espTimerReset(); espTimerStart();
+    document.getElementById('espTimerDisplay').scrollIntoView({behavior:'smooth', block:'center'});
+  });
+  box.querySelectorAll('.esp-agendar').forEach(b=> b.onclick=()=> espAgendar(b.dataset.id));
+}
+function espMarkDone(pid, val){
+  const k=espTodayKey(); const d=getEspiritualData();
+  if(!d.done[k]||typeof d.done[k]!=='object') d.done[k]={};
+  d.done[k][pid]= val===undefined ? !d.done[k][pid] : !!val;
+  scheduleSave('Guardado ✓');
+  renderEspiritualTodayBox(); renderEspTodayChecks(); renderEspStats(); renderEspLog();
+  try{ if(currentView&&currentView.tipo==='luna') renderLuna(); }catch(e){}
+}
+function renderEspTodayChecks(){
+  const box=$('espTodayChecks'); if(!box) return;
+  const k=espTodayKey(); const d=getEspiritualData();
+  const cur=(d.done[k]&&typeof d.done[k]==='object')? d.done[k] : {};
+  const note=(d.notes[k]&&d.notes[k].t)||'';
+  box.innerHTML=`<h4>✅ Hoy ${k} — toca para marcar</h4>
+    <div class="esp-check-grid">${ESP_PRACTICES.map(p=>`<label class="esp-check ${cur[p.id]?'done':''}"><input type="checkbox" data-id="${p.id}" ${cur[p.id]?'checked':''}> ${p.icon} ${escapeHtml(p.nombre)}</label>`).join('')}</div>
+    ${note?`<p class="muted" style="font-size:11px;margin-top:6px">📝 ${escapeHtml(note)}</p>`:''}`;
+  box.querySelectorAll('input[type=checkbox]').forEach(cb=> cb.onchange=()=> espMarkDone(cb.dataset.id, cb.checked));
+  const ni=$('espNoteInput'); if(ni && !ni.dataset.bound){ ni.dataset.bound='1'; }
+}
+function espStreak(pid){
+  let s=0; const d=getEspiritualData();
+  let cur=new Date(espTodayKey()+'T12:00:00');
+  for(let i=0;i<365;i++){
+    const k=cur.getFullYear()+'-'+String(cur.getMonth()+1).padStart(2,'0')+'-'+String(cur.getDate()).padStart(2,'0');
+    if(d.done[k]&&d.done[k][pid]) s++;
+    else if(i===0) { /* hoy aún no hecha: mira ayer */ }
+    else break;
+    cur=new Date(cur.getTime()-86400000);
+    if(i===0 && !(d.done[k]&&d.done[k][pid])) continue;
+  }
+  return s;
+}
+function renderEspStats(){
+  const box=$('espStatsBox'); if(!box) return;
+  const d=getEspiritualData();
+  const keys=Object.keys(d.done).sort().slice(-7);
+  let totalWeek=0;
+  keys.forEach(k=>{ const o=d.done[k]; if(o&&typeof o==='object') totalWeek+=Object.values(o).filter(Boolean).length; });
+  const rows=ESP_PRACTICES.map(p=>{
+    let c7=0; keys.forEach(k=>{ if(d.done[k]&&d.done[k][p.id]) c7++; });
+    return `<span class="esp-pill ${c7>0?'gold':''}">${p.icon} ${escapeHtml(p.nombre)}: <b>${c7}/7</b></span>`;
+  }).join('');
+  box.innerHTML=`<h4>📊 Últimos 7 días: <b>${totalWeek}</b> prácticas</h4><div class="esp-meta" style="margin-top:6px">${rows}</div>
+  <p class="muted" style="font-size:11px;margin-top:6px">Consejo: racha se construye con 1–2 prácticas diarias, no con las 9. Si fallas un día, retoma al siguiente sin culpa.</p>`;
+}
+function renderEspLog(){
+  const box=$('espLogBox'); if(!box) return;
+  const d=getEspiritualData();
+  const keys=Object.keys(d.done).sort().reverse().slice(0,14);
+  if(!keys.length){ box.innerHTML='<p class="muted" style="font-size:11px">Sin registros aún. Marca tu primera práctica arriba ⬆️</p>'; return; }
+  box.innerHTML=keys.map(k=>{
+    const o=d.done[k]||{};
+    const names=ESP_PRACTICES.filter(p=>o[p.id]).map(p=>p.icon+' '+p.nombre).join(' · ')||'—';
+    const n=(d.notes[k]&&d.notes[k].t)? ' · 📝 '+d.notes[k].t : '';
+    return `<div class="habit-item"><div class="habit-head"><b style="color:var(--gold)">${k}</b><span class="muted" style="font-size:11px">${Object.values(o).filter(Boolean).length} prácticas</span></div><div style="font-size:12px;color:#cdd3ee">${escapeHtml(names)}${escapeHtml(n)}</div></div>`;
+  }).join('');
+}
+function espAgendar(pid){
+  try{
+    const p=ESP_PRACTICES.find(x=>x.id===pid);
+    const label=p? p.icon+' '+p.nombre : pid;
+    const k=espTodayKey();
+    const ref=(typeof lunaMapForKey==='function')? lunaMapForKey(k) : null;
+    if(!ref||ref.luna==='dft'){ alert('Hoy está fuera del ciclo visible; igual puedes usar ⏱ y ✅.'); return; }
+    let defH='07:00';
+    if(pid==='atardecer'){ try{ defH=espSunToday().setT||'19:00'; const [h,m]=defH.split(':').map(Number); const dd=new Date(); dd.setHours(h,Math.max(0,m-30)); defH=String(dd.getHours()).padStart(2,'0')+':'+String(dd.getMinutes()).padStart(2,'0'); }catch(e){} }
+    else if(pid==='amanecer'){ try{ defH=espSunToday().riseT||'07:00'; }catch(e){} }
+    else if(pid==='luzroja') defH='20:30';
+    else if(pid==='ducha') defH='08:00';
+    const cell=dayCell(ref.luna, ref.diaN);
+    if(!Array.isArray(cell.agenda)) cell.agenda=[];
+    cell.agenda.push({ id:'e'+Date.now()+Math.random().toString(36).slice(2,4), hour:parseInt(defH.slice(0,2),10), minute:parseInt(defH.slice(3,5),10), time:defH, text:label, notify:false, notified:false });
+    scheduleSave('Agendado ✓');
+    alert('Agendado hoy '+defH+' · '+label+' (puedes activar 🔔 en el día)');
+  }catch(e){ alert('No se pudo agendar'); }
+}
+function espKitText(){
+  const s=espSunToday();
+  return `🕉️ MI KIT ESPIRITUAL — Penco\nHoy salida ${s.riseT} · puesta ${s.setT}\n\nKIT: botella vidrio 1L + tapa · vaso · toalla + chalas · manta/cojín · ampolleta roja E27 5-7W · antifaz/cortina · cuaderno + lápiz · termo agua\n\nRUTINA MÍNIMA:\n🌅 Sol amanecer ${s.riseT} (+60min) 2-10 min, sin mirar fijo\n💧 Agua solar 30min-4h en vidrio, beber en 24h\n🦶 Grounding 10-20 min descalzo\n🧊 Ducha: cierra 15-30 seg frío, sube semanal\n🌇 Sol atardecer -60min ${s.setT}\n🔴 Roja desde 20:30, dormir oscuro total\n\n⚠️ Nunca sol fijo ni mediodía sin protección. Ducha fría no con corazón/hipertensión/embarazo/fiebre.`;
+}
+// Timer
+let espTimerTotal=120, espTimerLeft=120, espTimerInt=null;
+function espTimerFmt(s){ return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0'); }
+function espTimerPaint(){ const el=$('espTimerDisplay'); if(el) el.textContent=espTimerFmt(espTimerLeft); }
+function espTimerReset(){ clearInterval(espTimerInt); espTimerInt=null; const mm=parseInt(($('espTimerMinutes')||{}).value||'2',10); espTimerTotal=mm*60; espTimerLeft=espTimerTotal; espTimerPaint(); }
+function espTimerStart(){
+  if(espTimerInt) return;
+  if(espTimerLeft<=0) espTimerReset();
+  espTimerInt=setInterval(()=>{
+    espTimerLeft--;
+    espTimerPaint();
+    if(espTimerLeft<=0){ clearInterval(espTimerInt); espTimerInt=null; try{ playNotifySound(); }catch(e){} try{ if(navigator.vibrate) navigator.vibrate([300,150,300]); }catch(e){}
+      const sel=$('espTimerPractice'); const pid=sel? sel.value : '';
+      if(pid && pid!=='luzroja'){ espMarkDone(pid, true); }
+      alert('⏱ Práctica terminada. ¡Bien! Quedó marcada ✅'); }
+  },1000);
+}
+function renderEspiritualAll(){ renderEspiritualTodayBox(); renderEspiritualCards(); renderEspTodayChecks(); renderEspStats(); renderEspLog(); espTimerPaint(); }
+function setupEspiritualDialog(){
+  const btn=$('btnEspiritual'); if(btn) btn.onclick=()=>{ renderEspiritualAll(); $('espiritualDialog').showModal(); };
+  const ct=$('espiritualCloseTop'), cb=$('espiritualClose'); if(ct) ct.onclick=()=>$('espiritualDialog').close(); if(cb) cb.onclick=()=>$('espiritualDialog').close();
+  const tP=$('espTabPracticas'), tK=$('espTabKit'), tR=$('espTabRegistro');
+  const pP=$('espPracticasPanel'), pK=$('espKitPanel'), pR=$('espRegistroPanel');
+  function tab(which){
+    if(!pP) return;
+    pP.classList.toggle('hidden', which!=='p'); pK.classList.toggle('hidden', which!=='k'); pR.classList.toggle('hidden', which!=='r');
+    tP.classList.toggle('btn-accent', which==='p'); tK.classList.toggle('btn-accent', which==='k'); tR.classList.toggle('btn-accent', which==='r');
+    if(which!=='p'&&which==='r'){ renderEspTodayChecks(); renderEspStats(); renderEspLog(); }
+  }
+  if(tP) tP.onclick=()=>tab('p'); if(tK) tK.onclick=()=>tab('k'); if(tR) tR.onclick=()=>tab('r');
+  const mm=$('espTimerMinutes'); if(mm) mm.onchange=()=>espTimerReset();
+  const pr=$('espTimerPractice'); if(pr) pr.onchange=()=>{ const f=ESP_PRACTICES.find(x=>x.id===pr.value); if(f&&mm){ mm.value=String(f.mins); espTimerReset(); } };
+  const bS=$('espTimerStart'); if(bS) bS.onclick=()=>espTimerStart();
+  const bP=$('espTimerPause'); if(bP) bP.onclick=()=>{ clearInterval(espTimerInt); espTimerInt=null; };
+  const bR=$('espTimerReset'); if(bR) bR.onclick=()=>espTimerReset();
+  const bD=$('espTimerDone'); if(bD) bD.onclick=()=>{ const sel=$('espTimerPractice'); if(sel){ espMarkDone(sel.value, true); clearInterval(espTimerInt); espTimerInt=null; } };
+  const nS=$('espNoteSave'); if(nS) nS.onclick=()=>{
+    const v=sanitizeText(($('espNoteInput')||{}).value||'',120).trim(); if(!v) return;
+    const k=espTodayKey(); const d=getEspiritualData(); d.notes[k]={t:v}; scheduleSave('Guardado ✓'); $('espNoteInput').value=''; renderEspTodayChecks(); renderEspLog();
+  };
+  const ag=$('espAgendar'); if(ag) ag.onclick=()=>{ const sel=$('espTimerPractice'); espAgendar(sel? sel.value : 'amanecer'); };
+  const sh=$('espShareLog'); if(sh) sh.onclick=async()=>{
+    const d=getEspiritualData(); const keys=Object.keys(d.done).sort().slice(-7);
+    const txt=`🕉️ Mis prácticas (7 días)\n`+keys.map(k=>{ const o=d.done[k]||{}; const n=Object.values(o).filter(Boolean).length; return `${k}: ${n} prácticas`; }).join('\n');
+    await shareText('Prácticas Espirituales', txt);
+  };
+  const cl=$('espClear'); if(cl) cl.onclick=()=>{ if(!confirm('¿Borrar todo tu registro de prácticas?')) return; const d=getEspiritualData(); d.done={}; d.notes={}; scheduleSave(); renderEspiritualAll(); };
+  const ck=$('espCopyKit'); if(ck) ck.onclick=async()=>{ try{ await navigator.clipboard.writeText(espKitText()); $('espKitStatus').textContent='Copiado ✓ pégalo donde quieras'; }catch(e){ $('espKitStatus').textContent='No se pudo copiar'; } setTimeout(()=>{ $('espKitStatus').textContent=''; },2000); };
+  const sk=$('espShareKit'); if(sk) sk.onclick=async()=>{ await shareText('Kit Espiritual', espKitText()); };
+  const g1=$('espGoCircadian'); if(g1) g1.onclick=()=>{ try{ $('espiritualDialog').close(); }catch(e){} setTimeout(()=>{ const b=$('btnCircadian'); if(b) b.click(); },150); };
+  const g2=$('espGoGolden'); if(g2) g2.onclick=()=>{ try{ $('espiritualDialog').close(); }catch(e){} setTimeout(()=>{ const b=$('btnGolden'); if(b) b.click(); },150); };
+  const g3=$('espGoBreath'); if(g3) g3.onclick=()=>{ try{ $('espiritualDialog').close(); }catch(e){} setTimeout(()=>{ const b=$('btnBreath'); if(b) b.click(); },150); };
+}
+setTimeout(setupEspiritualDialog, 880);
 
 
   // Natural handlers extension
