@@ -1890,6 +1890,9 @@ const FISHING_SPECIES = [
   { nombre:"Sierra", temporada:"Dic-Mar", talla:"35 cm", carnada:"Sardina viva", nota:"Corriente, mañana" },
   { nombre:"Congrio", temporada:"Veda Jul-Ago", talla:"40 cm", carnada:"Jaiba", nota:"Rocoso, noche" }
 ];
+// === ESPECIES PERSONALIZADAS — Pesca (privado por usuario, como Lawen) ===
+function getFishingCustom(){ try{ const u=userData(); if(!u.fishingCustom) u.fishingCustom=[]; if(!Array.isArray(u.fishingCustom)) u.fishingCustom=[]; return u.fishingCustom; }catch(e){ return []; } }
+function getAllFishingSpecies(){ try{ return FISHING_SPECIES.concat(getFishingCustom()); }catch(e){ return FISHING_SPECIES; } }
 function getFishingRatingForKey(key){
   // key YYYY-MM-DD
   try{
@@ -1934,7 +1937,28 @@ function renderFishingDialog(){
   }
   const speciesBox=$('fishingSpeciesBox');
   if(speciesBox){
-    speciesBox.innerHTML='<div class="fishing-species">'+FISHING_SPECIES.map(s=>'<div class="fishing-species-item"><b>'+escapeHtml(s.nombre)+'</b> — <span class="muted">'+escapeHtml(s.temporada)+' · Talla '+escapeHtml(s.talla)+'</span><br><span style="font-size:11px">Carnada: '+escapeHtml(s.carnada)+'</span><br><span class="muted" style="font-size:10px">'+escapeHtml(s.nota)+'</span></div>').join('')+'</div>';
+    const mine=getFishingCustom();
+    speciesBox.innerHTML='<div class="fishing-species">'
+      +FISHING_SPECIES.map(s=>'<div class="fishing-species-item" style="cursor:pointer" data-fish="'+escapeHtml(s.nombre)+'"><b>'+escapeHtml(s.nombre)+'</b> — <span class="muted">'+escapeHtml(s.temporada)+' · Talla '+escapeHtml(s.talla)+'</span><br><span style="font-size:11px">Carnada: '+escapeHtml(s.carnada)+'</span><br><span class="muted" style="font-size:10px">'+escapeHtml(s.nota)+'</span></div>').join('')
+      +mine.map((s,i)=>'<div class="fishing-species-item" style="cursor:pointer;border-color:#a9d18e55" data-fish="'+escapeHtml(s.nombre)+'"><div style="display:flex;justify-content:space-between;align-items:center;gap:6px"><span><b>🎣 '+escapeHtml(s.nombre)+'</b> <span class="chip" style="font-size:9px;background:#a9d18e22;color:#a9d18e;border-color:#a9d18e55">mía</span></span><button type="button" class="btn btn-icon fishsp-del" data-i="'+i+'" title="Borrar mi especie" style="width:24px;height:24px;font-size:11px;flex:none">✕</button></div><span class="muted">'+escapeHtml(s.temporada||'—')+' · Talla '+escapeHtml(s.talla||'—')+'</span><br><span style="font-size:11px">Carnada: '+escapeHtml(s.carnada||'—')+'</span><br><span class="muted" style="font-size:10px">'+escapeHtml(s.nota||'')+'</span></div>').join('')
+      +'</div>'
+      +'<p class="muted" style="font-size:10px;margin:6px 0">Toca una especie para cargarla en la bitácora. '+FISHING_SPECIES.length+' base'+(mine.length? ' + <b>'+mine.length+' mías</b>':'')+'.</p>'
+      +'<details style="border:1px dashed var(--gold);border-radius:10px;padding:8px 10px;margin-top:6px"><summary style="cursor:pointer;font-size:12px;color:var(--gold)"><b>➕ Agregar especie</b></summary>'
+      +'<div class="conv-row" style="margin-top:8px"><label style="flex:2">Especie * <input type="text" id="fishSpName" placeholder="ej: Cabrilla, Pejesapo" maxlength="30"></label><label>Temporada <input type="text" id="fishSpTemp" placeholder="ej: Oct-Mar" maxlength="20"></label></div>'
+      +'<div class="conv-row"><label>Talla mín. <input type="text" id="fishSpTalla" placeholder="ej: 30 cm" maxlength="20"></label><label style="flex:2">Carnada / señuelo <input type="text" id="fishSpCarn" placeholder="ej: Jibia, cuchara rosada" maxlength="40"></label></div>'
+      +'<label>Nota <input type="text" id="fishSpNota" placeholder="ej: Amanecer, fondo arena" maxlength="80"></label>'
+      +'<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="fishSpAdd" class="btn btn-accent" style="width:auto">+ Guardar especie</button></div></details>';
+    speciesBox.querySelectorAll('[data-fish]').forEach(el=> el.onclick=(e)=>{ if(e.target && e.target.classList && e.target.classList.contains('fishsp-del')) return; const v=el.dataset.fish; const inp=$('fishLogSpecies'); if(inp){ inp.value=v; inp.focus(); } });
+    speciesBox.querySelectorAll('.fishsp-del').forEach(b=> b.onclick=(e)=>{ e.stopPropagation(); const arr=getFishingCustom(); arr.splice(parseInt(b.dataset.i,10),1); scheduleSave('Guardado ✓'); renderFishingDialog(); });
+    const fishSpAdd=$('fishSpAdd');
+    if(fishSpAdd) fishSpAdd.onclick=()=>{
+      const n=sanitizeText(($('fishSpName').value||'').trim(),30);
+      if(!n) return alert('Pon el nombre de la especie');
+      const arr=getFishingCustom();
+      if(FISHING_SPECIES.some(x=>x.nombre.toLowerCase()===n.toLowerCase())||arr.some(x=>x.nombre.toLowerCase()===n.toLowerCase())) return alert('Esa especie ya existe');
+      arr.push({ nombre:n, temporada:sanitizeText(($('fishSpTemp').value||'').trim(),20)||'Todo año', talla:sanitizeText(($('fishSpTalla').value||'').trim(),20)||'—', carnada:sanitizeText(($('fishSpCarn').value||'').trim(),40)||'—', nota:sanitizeText(($('fishSpNota').value||'').trim(),80) });
+      scheduleSave('Guardado ✓'); renderFishingDialog();
+    };
   }
   const moonBox=$('fishingMoonBox');
   if(moonBox){
@@ -2019,6 +2043,9 @@ const BIRDS_CATALOG = (typeof AVES_PENCO!=='undefined'? AVES_PENCO : (window.pen
   { nombre:"Gaviota dominicana", cient:"Larus dominicanus", hab:"Costa", icon:"🕊️", epoca:"Todo año"},
   { nombre:"Zorzal", cient:"Turdus falcklandii", hab:"Jardín", icon:"🐦", epoca:"Todo año"}
 ]);
+// === ESPECIES PERSONALIZADAS — Aves (privado por usuario) ===
+function getBirdsCustom(){ try{ const u=userData(); if(!u.birdsCustom) u.birdsCustom=[]; if(!Array.isArray(u.birdsCustom)) u.birdsCustom=[]; return u.birdsCustom; }catch(e){ return []; } }
+function getAllBirdsCatalog(){ try{ return BIRDS_CATALOG.concat(getBirdsCustom()); }catch(e){ return BIRDS_CATALOG; } }
 function getBirdData(){
   const u=userData();
   if(!u.birds) u.birds={ entries:[] };
@@ -2042,8 +2069,28 @@ function renderBirdsDialog(){
   }
   const catBox=$('birdsCatalogBox');
   if(catBox){
-    catBox.innerHTML='<div class="fishing-species">'+BIRDS_CATALOG.map(b=>`<div class="fishing-species-item" style="cursor:pointer" data-bird="${escapeHtml(b.nombre)}"><b>${b.icon} ${escapeHtml(b.nombre)}</b> — <span class="muted" style="font-size:10px">${escapeHtml(b.cient)}</span><br><span style="font-size:11px">${escapeHtml(b.hab)} · ${escapeHtml(b.epoca)}</span></div>`).join('')+'</div>';
-    catBox.querySelectorAll('[data-bird]').forEach(el=> el.onclick=()=>{ $('birdSpecies').value=el.dataset.bird; $('birdSpecies').focus(); });
+    const mineB=getBirdsCustom();
+    catBox.innerHTML='<div class="fishing-species">'
+      +BIRDS_CATALOG.map(b=>`<div class="fishing-species-item" style="cursor:pointer" data-bird="${escapeHtml(b.nombre)}"><b>${escapeHtml(b.icon||'🐦')} ${escapeHtml(b.nombre)}</b> — <span class="muted" style="font-size:10px">${escapeHtml(b.cient||'')}</span><br><span style="font-size:11px">${escapeHtml(b.hab||'')} · ${escapeHtml(b.epoca||'')}</span></div>`).join('')
+      +mineB.map((b,i)=>`<div class="fishing-species-item" style="cursor:pointer;border-color:#a9d18e55" data-bird="${escapeHtml(b.nombre)}"><div style="display:flex;justify-content:space-between;align-items:center;gap:6px"><span><b>${escapeHtml(b.icon||'🐦')} ${escapeHtml(b.nombre)}</b> <span class="chip" style="font-size:9px;background:#a9d18e22;color:#a9d18e;border-color:#a9d18e55">mía</span></span><button type="button" class="btn btn-icon birdsp-del" data-i="${i}" title="Borrar mi especie" style="width:24px;height:24px;font-size:11px;flex:none">✕</button></div><span class="muted" style="font-size:10px">${escapeHtml(b.cient||'')}</span><br><span style="font-size:11px">${escapeHtml(b.hab||'')} · ${escapeHtml(b.epoca||'')}</span></div>`).join('')
+      +'</div>'
+      +'<p class="muted" style="font-size:10px;margin:6px 0">Toca una especie para cargarla en el formulario. '+BIRDS_CATALOG.length+' base'+(mineB.length? ' + <b>'+mineB.length+' mías</b>':'')+'.</p>'
+      +'<details style="border:1px dashed var(--gold);border-radius:10px;padding:8px 10px;margin-top:6px"><summary style="cursor:pointer;font-size:12px;color:var(--gold)"><b>➕ Agregar especie</b></summary>'
+      +'<div class="conv-row" style="margin-top:8px"><label style="flex:2">Especie * <input type="text" id="birdSpName" placeholder="ej: Diuca, Tenca" maxlength="30"></label><label>Icono <input type="text" id="birdSpIcon" placeholder="🐦" maxlength="4" style="width:60px;text-align:center"></label></div>'
+      +'<div class="conv-row"><label style="flex:2">Nombre científico <input type="text" id="birdSpCient" placeholder="ej: Diuca diuca" maxlength="40"></label><label>Época <input type="text" id="birdSpEpoca" placeholder="ej: Sep-Mar" maxlength="20"></label></div>'
+      +'<label>Hábitat / lugar <input type="text" id="birdSpHab" placeholder="ej: Humedal Rocuant, cerro" maxlength="50"></label>'
+      +'<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="birdSpAdd" class="btn btn-accent" style="width:auto">+ Guardar especie</button></div></details>';
+    catBox.querySelectorAll('[data-bird]').forEach(el=> el.onclick=(e)=>{ if(e.target && e.target.classList && e.target.classList.contains('birdsp-del')) return; const inp=$('birdSpecies'); if(inp){ inp.value=el.dataset.bird; inp.focus(); } });
+    catBox.querySelectorAll('.birdsp-del').forEach(b=> b.onclick=(e)=>{ e.stopPropagation(); const arr=getBirdsCustom(); arr.splice(parseInt(b.dataset.i,10),1); scheduleSave('Guardado ✓'); renderBirdsDialog(); });
+    const birdSpAdd=$('birdSpAdd');
+    if(birdSpAdd) birdSpAdd.onclick=()=>{
+      const n=sanitizeText(($('birdSpName').value||'').trim(),30);
+      if(!n) return alert('Pon el nombre de la especie');
+      const arr=getBirdsCustom();
+      if(BIRDS_CATALOG.some(x=>x.nombre.toLowerCase()===n.toLowerCase())||arr.some(x=>x.nombre.toLowerCase()===n.toLowerCase())) return alert('Esa especie ya existe');
+      arr.push({ nombre:n, icon:sanitizeText(($('birdSpIcon').value||'').trim(),4)||'🐦', cient:sanitizeText(($('birdSpCient').value||'').trim(),40), hab:sanitizeText(($('birdSpHab').value||'').trim(),50)||'Penco', epoca:sanitizeText(($('birdSpEpoca').value||'').trim(),20)||'Todo el año' });
+      scheduleSave('Guardado ✓'); renderBirdsDialog();
+    };
   }
   renderBirdsLog();
 }
@@ -2106,6 +2153,8 @@ setTimeout(setupBirdsDialog, 570);
 // === INTERMAREAL — Rocas y pozas ===
 const INTER_CATALOG = (typeof INTERMAREAL_PENCO!=='undefined'? INTERMAREAL_PENCO : (window.pencoData&&window.pencoData.INTERMAREAL_PENCO)||[]);
 const INTER_CONSEJOS = (typeof CONSEJOS_INTERMAREAL!=='undefined'? CONSEJOS_INTERMAREAL : (window.pencoData&&window.pencoData.CONSEJOS_INTERMAREAL)||{});
+// === ESPECIES PERSONALIZADAS — Intermareal (privado por usuario) ===
+function getInterCustom(){ try{ const u=userData(); if(!u.interCustom) u.interCustom=[]; if(!Array.isArray(u.interCustom)) u.interCustom=[]; return u.interCustom; }catch(e){ return []; } }
 function getIntermarealData(){
   const u=userData();
   if(!u.intermareal) u.intermareal={ entries:[] };
@@ -2172,8 +2221,29 @@ function renderIntermarealDialog(){
   }
   const catBox=$('interCatalogBox');
   if(catBox){
-    catBox.innerHTML='<div class="fishing-species">'+INTER_CATALOG.map(b=>`<div class="fishing-species-item" style="cursor:pointer" data-inter="${escapeHtml(b.nombre)}"><b>${b.icon} ${escapeHtml(b.nombre)}</b> — <span class="muted" style="font-size:10px">${escapeHtml(b.cient)}</span><br><span style="font-size:11px">${escapeHtml(b.hab)} · ${escapeHtml(b.epoca)}</span><br><span class="muted" style="font-size:10px">${escapeHtml(b.nota)}</span></div>`).join('')+'</div>';
-    catBox.querySelectorAll('[data-inter]').forEach(el=> el.onclick=()=>{ $('interSpecies').value=el.dataset.inter; $('interSpecies').focus(); });
+    const mineI=getInterCustom();
+    catBox.innerHTML='<div class="fishing-species">'
+      +INTER_CATALOG.map(b=>`<div class="fishing-species-item" style="cursor:pointer" data-inter="${escapeHtml(b.nombre)}"><b>${escapeHtml(b.icon||'🦀')} ${escapeHtml(b.nombre)}</b> — <span class="muted" style="font-size:10px">${escapeHtml(b.cient||'')}</span><br><span style="font-size:11px">${escapeHtml(b.hab||'')} · ${escapeHtml(b.epoca||'')}</span><br><span class="muted" style="font-size:10px">${escapeHtml(b.nota||'')}</span></div>`).join('')
+      +mineI.map((b,i)=>`<div class="fishing-species-item" style="cursor:pointer;border-color:#a9d18e55" data-inter="${escapeHtml(b.nombre)}"><div style="display:flex;justify-content:space-between;align-items:center;gap:6px"><span><b>${escapeHtml(b.icon||'🦀')} ${escapeHtml(b.nombre)}</b> <span class="chip" style="font-size:9px;background:#a9d18e22;color:#a9d18e;border-color:#a9d18e55">mía</span></span><button type="button" class="btn btn-icon intersp-del" data-i="${i}" title="Borrar mi especie" style="width:24px;height:24px;font-size:11px;flex:none">✕</button></div><span class="muted" style="font-size:10px">${escapeHtml(b.cient||'')}</span><br><span style="font-size:11px">${escapeHtml(b.hab||'')} · ${escapeHtml(b.epoca||'')}</span><br><span class="muted" style="font-size:10px">${escapeHtml(b.nota||'')}</span></div>`).join('')
+      +'</div>'
+      +'<p class="muted" style="font-size:10px;margin:6px 0">Toca una especie para cargarla en el formulario. '+INTER_CATALOG.length+' base'+(mineI.length? ' + <b>'+mineI.length+' mías</b>':'')+'.</p>'
+      +'<details style="border:1px dashed var(--gold);border-radius:10px;padding:8px 10px;margin-top:6px"><summary style="cursor:pointer;font-size:12px;color:var(--gold)"><b>➕ Agregar especie</b></summary>'
+      +'<div class="conv-row" style="margin-top:8px"><label style="flex:2">Especie * <input type="text" id="interSpName" placeholder="ej: Lapa negra, Huiro palo" maxlength="30"></label><label>Icono <input type="text" id="interSpIcon" placeholder="🦀" maxlength="4" style="width:60px;text-align:center"></label></div>'
+      +'<div class="conv-row"><label style="flex:2">Nombre científico <input type="text" id="interSpCient" placeholder="ej: Fissurella sp." maxlength="40"></label><label>Época <input type="text" id="interSpEpoca" placeholder="ej: Todo el año" maxlength="25"></label></div>'
+      +'<label>Hábitat <input type="text" id="interSpHab" placeholder="ej: Roquerío Playa Negra, pozas" maxlength="50"></label>'
+      +'<label>Nota (talla, cosecha, cuidado) <input type="text" id="interSpNota" placeholder="ej: Talla 6cm+, 1 por roca" maxlength="80"></label>'
+      +'<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="interSpAdd" class="btn btn-accent" style="width:auto">+ Guardar especie</button></div></details>';
+    catBox.querySelectorAll('[data-inter]').forEach(el=> el.onclick=(e)=>{ if(e.target && e.target.classList && e.target.classList.contains('intersp-del')) return; const inp=$('interSpecies'); if(inp){ inp.value=el.dataset.inter; inp.focus(); } });
+    catBox.querySelectorAll('.intersp-del').forEach(b=> b.onclick=(e)=>{ e.stopPropagation(); const arr=getInterCustom(); arr.splice(parseInt(b.dataset.i,10),1); scheduleSave('Guardado ✓'); renderIntermarealDialog(); });
+    const interSpAdd=$('interSpAdd');
+    if(interSpAdd) interSpAdd.onclick=()=>{
+      const n=sanitizeText(($('interSpName').value||'').trim(),30);
+      if(!n) return alert('Pon el nombre de la especie');
+      const arr=getInterCustom();
+      if(INTER_CATALOG.some(x=>x.nombre.toLowerCase()===n.toLowerCase())||arr.some(x=>x.nombre.toLowerCase()===n.toLowerCase())) return alert('Esa especie ya existe');
+      arr.push({ nombre:n, icon:sanitizeText(($('interSpIcon').value||'').trim(),4)||'🦀', cient:sanitizeText(($('interSpCient').value||'').trim(),40), hab:sanitizeText(($('interSpHab').value||'').trim(),50)||'Intermareal Penco', epoca:sanitizeText(($('interSpEpoca').value||'').trim(),25)||'Todo el año', nota:sanitizeText(($('interSpNota').value||'').trim(),80) });
+      scheduleSave('Guardado ✓'); renderIntermarealDialog();
+    };
   }
   renderIntermarealLog();
 }
@@ -2243,6 +2313,8 @@ setTimeout(setupIntermarealDialog, 575);
 // === BOSQUE NATIVO ===
 const BOSQUE_CATALOG = (typeof BOSQUE_NATIVO_PENCO!=='undefined'? BOSQUE_NATIVO_PENCO : (window.pencoData&&window.pencoData.BOSQUE_NATIVO_PENCO)||[]);
 const BOSQUE_CONSEJOS = (typeof CONSEJOS_BOSQUE!=='undefined'? CONSEJOS_BOSQUE : (window.pencoData&&window.pencoData.CONSEJOS_BOSQUE)||{});
+// === ESPECIES PERSONALIZADAS — Bosque (privado por usuario) ===
+function getBosqueCustom(){ try{ const u=userData(); if(!u.bosqueCustom) u.bosqueCustom=[]; if(!Array.isArray(u.bosqueCustom)) u.bosqueCustom=[]; return u.bosqueCustom; }catch(e){ return []; } }
 function getBosqueData(){
   const u=userData();
   if(!u.bosque) u.bosque={ entries:[] };
@@ -2300,8 +2372,30 @@ function renderBosqueDialog(){
   }
   const catBox=$('bosqueCatalogBox');
   if(catBox){
-    catBox.innerHTML='<div class="fishing-species">'+BOSQUE_CATALOG.map(b=>`<div class="fishing-species-item" style="cursor:pointer" data-bosque="${escapeHtml(b.nombre)}"><b>${b.icon} ${escapeHtml(b.nombre)}</b> — <span class="muted" style="font-size:10px">${escapeHtml(b.cient)}</span><span class="chip" style="font-size:9px;margin-left:6px">${escapeHtml(b.tipo)}</span><br><span style="font-size:11px">${escapeHtml(b.hab)} · ${escapeHtml(b.epoca)}</span><br><span style="font-size:11px;color:var(--gold)">🌰 Semillas: ${escapeHtml(b.semillas||'—')}</span><br><span class="muted" style="font-size:10px">${escapeHtml(b.nota)}</span></div>`).join('')+'</div>';
-    catBox.querySelectorAll('[data-bosque]').forEach(el=> el.onclick=()=>{ $('bosqueSpecies').value=el.dataset.bosque; $('bosqueSpecies').focus(); });
+    const mineBo=getBosqueCustom();
+    catBox.innerHTML='<div class="fishing-species">'
+      +BOSQUE_CATALOG.map(b=>`<div class="fishing-species-item" style="cursor:pointer" data-bosque="${escapeHtml(b.nombre)}"><b>${escapeHtml(b.icon||'🌳')} ${escapeHtml(b.nombre)}</b> — <span class="muted" style="font-size:10px">${escapeHtml(b.cient||'')}</span><span class="chip" style="font-size:9px;margin-left:6px">${escapeHtml(b.tipo||'')}</span><br><span style="font-size:11px">${escapeHtml(b.hab||'')} · ${escapeHtml(b.epoca||'')}</span><br><span style="font-size:11px;color:var(--gold)">🌰 Semillas: ${escapeHtml(b.semillas||'—')}</span><br><span class="muted" style="font-size:10px">${escapeHtml(b.nota||'')}</span></div>`).join('')
+      +mineBo.map((b,i)=>`<div class="fishing-species-item" style="cursor:pointer;border-color:#a9d18e55" data-bosque="${escapeHtml(b.nombre)}"><div style="display:flex;justify-content:space-between;align-items:center;gap:6px"><span><b>${escapeHtml(b.icon||'🌳')} ${escapeHtml(b.nombre)}</b> <span class="chip" style="font-size:9px;background:#a9d18e22;color:#a9d18e;border-color:#a9d18e55">mía</span></span><button type="button" class="btn btn-icon bosquesp-del" data-i="${i}" title="Borrar mi especie" style="width:24px;height:24px;font-size:11px;flex:none">✕</button></div><span class="muted" style="font-size:10px">${escapeHtml(b.cient||'')}</span> <span class="chip" style="font-size:9px;margin-left:6px">${escapeHtml(b.tipo||'')}</span><br><span style="font-size:11px">${escapeHtml(b.hab||'')} · ${escapeHtml(b.epoca||'')}</span><br><span style="font-size:11px;color:var(--gold)">🌰 Semillas: ${escapeHtml(b.semillas||'—')}</span><br><span class="muted" style="font-size:10px">${escapeHtml(b.nota||'')}</span></div>`).join('')
+      +'</div>'
+      +'<p class="muted" style="font-size:10px;margin:6px 0">Toca una especie para cargarla en el formulario. '+BOSQUE_CATALOG.length+' base'+(mineBo.length? ' + <b>'+mineBo.length+' mías</b>':'')+'.</p>'
+      +'<details style="border:1px dashed var(--gold);border-radius:10px;padding:8px 10px;margin-top:6px"><summary style="cursor:pointer;font-size:12px;color:var(--gold)"><b>➕ Agregar especie</b></summary>'
+      +'<div class="conv-row" style="margin-top:8px"><label style="flex:2">Especie * <input type="text" id="bosqueSpName" placeholder="ej: Huillipatagua, Olivillo" maxlength="30"></label><label>Icono <input type="text" id="bosqueSpIcon" placeholder="🌳" maxlength="4" style="width:60px;text-align:center"></label></div>'
+      +'<div class="conv-row"><label style="flex:2">Nombre científico <input type="text" id="bosqueSpCient" placeholder="ej: Citronella mucronata" maxlength="40"></label><label>Tipo <input type="text" id="bosqueSpTipo" placeholder="ej: Árbol, Arbusto" maxlength="20"></label></div>'
+      +'<div class="conv-row"><label style="flex:2">Hábitat <input type="text" id="bosqueSpHab" placeholder="ej: Quebrada Honda" maxlength="50"></label><label>Época <input type="text" id="bosqueSpEpoca" placeholder="ej: Flor Nov-Dic" maxlength="25"></label></div>'
+      +'<label>🌰 Semillas <input type="text" id="bosqueSpSem" placeholder="ej: Feb-Abr, siembra inmediata" maxlength="50"></label>'
+      +'<label>Nota <input type="text" id="bosqueSpNota" placeholder="ej: Solo observar, no cortar" maxlength="80"></label>'
+      +'<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="bosqueSpAdd" class="btn btn-accent" style="width:auto">+ Guardar especie</button></div></details>';
+    catBox.querySelectorAll('[data-bosque]').forEach(el=> el.onclick=(e)=>{ if(e.target && e.target.classList && (e.target.classList.contains('bosquesp-del'))) return; const inp=$('bosqueSpecies'); if(inp){ inp.value=el.dataset.bosque; inp.focus(); } });
+    catBox.querySelectorAll('.bosquesp-del').forEach(b=> b.onclick=(e)=>{ e.stopPropagation(); const arr=getBosqueCustom(); arr.splice(parseInt(b.dataset.i,10),1); scheduleSave('Guardado ✓'); renderBosqueDialog(); });
+    const bosqueSpAdd=$('bosqueSpAdd');
+    if(bosqueSpAdd) bosqueSpAdd.onclick=()=>{
+      const n=sanitizeText(($('bosqueSpName').value||'').trim(),30);
+      if(!n) return alert('Pon el nombre de la especie');
+      const arr=getBosqueCustom();
+      if(BOSQUE_CATALOG.some(x=>x.nombre.toLowerCase()===n.toLowerCase())||arr.some(x=>x.nombre.toLowerCase()===n.toLowerCase())) return alert('Esa especie ya existe');
+      arr.push({ nombre:n, icon:sanitizeText(($('bosqueSpIcon').value||'').trim(),4)||'🌳', cient:sanitizeText(($('bosqueSpCient').value||'').trim(),40), tipo:sanitizeText(($('bosqueSpTipo').value||'').trim(),20)||'Nativa', hab:sanitizeText(($('bosqueSpHab').value||'').trim(),50)||'Penco', epoca:sanitizeText(($('bosqueSpEpoca').value||'').trim(),25)||'Todo el año', semillas:sanitizeText(($('bosqueSpSem').value||'').trim(),50), nota:sanitizeText(($('bosqueSpNota').value||'').trim(),80) });
+      scheduleSave('Guardado ✓'); renderBosqueDialog();
+    };
   }
   renderBosqueLog();
 }
