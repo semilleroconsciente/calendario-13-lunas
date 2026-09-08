@@ -100,6 +100,9 @@ body {
 .day-view-hour .hh { color:var(--gold); font-weight:700; min-width:48px; font-variant-numeric:tabular-nums; }
 .week-grid { display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:8px; }
 @media (max-width:920px){ .week-grid{ grid-template-columns:1fr; } }
+/* Etiqueta de día arriba de cada tarjeta (solo vistas Semana / Semana lunar) */
+.dc-day { display: none; }
+.week-grid .dc-day { display:block; font-weight:700; color:var(--gold); font-size:13px; text-transform:capitalize; margin-bottom:2px; }
 .mini-cal-nav { display:flex; gap:8px; align-items:center; margin-bottom:8px; flex-wrap:wrap; }
 
 #grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 8px; }
@@ -278,6 +281,58 @@ dialog input, dialog textarea {
 }
 #siembraContent .si-luna-card h4 { color: var(--gold); }
 
+/* === Tarjeta base ordenada — misma línea que menstrual-card / help-card === */
+/* Antes .si-card solo tenía estilo dentro de #siembraContent y #siembraHarvestBox, */
+/* por eso Finanzas-Consejos, Lawen, Clima, Menús, Plantillas y Comuna se veían */
+/* pegadas al borde / cortadas. Ahora todas comparten esta base. */
+.si-card {
+  background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+  padding: 12px 14px; margin-bottom: 10px; min-width: 0;
+  overflow-wrap: break-word; word-break: break-word;
+}
+.si-card:last-child { margin-bottom: 0; }
+.si-card h4 { color: var(--accent); margin-bottom: 6px; font-size: 13.5px; line-height: 1.4; }
+.si-card p { font-size: 12.5px; color: #cdd3ee; margin-bottom: 6px; line-height: 1.55; }
+.si-card p:last-child { margin-bottom: 0; }
+.si-card .si-sem { color: #8fd694; }
+.si-card .si-tar { color: #8fc7e8; }
+.si-card .muted { margin-bottom: 4px; }
+
+/* === Finanzas · Consejos — lista vertical ordenada === */
+#financeTipsBox { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+#financeTipsBox .si-card {
+  margin: 0; border-left: 3px solid var(--gold);
+  padding: 12px 14px;
+}
+.fin-tip-head { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; min-width: 0; }
+.fin-tip-ico {
+  width: 30px; height: 30px; flex: 0 0 auto; display: flex; align-items: center; justify-content: center;
+  font-size: 16px; background: var(--panel); border: 1px solid var(--line); border-radius: 9px;
+}
+.fin-tip-head h4 { margin: 0; flex: 1; min-width: 0; }
+.fin-tip-desc { font-size: 12.5px; color: #cdd3ee; line-height: 1.55; margin: 0 0 6px; }
+.fin-tip-ej { font-size: 11px; color: var(--muted); background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 6px 9px; margin: 0 0 6px; line-height: 1.5; }
+.fin-tip-tip { font-size: 11px; color: var(--gold); background: rgba(232,197,106,0.08); border: 1px dashed rgba(232,197,106,0.4); border-radius: 8px; padding: 6px 9px; margin: 0; line-height: 1.5; }
+
+/* === Lawen · Herbario — ficha ordenada === */
+#lawenList { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; min-width: 0; }
+#lawenList > div[style*="flex-direction:column"] { display: flex; flex-direction: column; gap: 10px; }
+.lawen-card { margin: 0; padding: 0; overflow: hidden; }
+.lawen-card.mine { border-style: dashed; border-color: var(--gold); }
+.lawen-head { display: flex; align-items: center; gap: 8px; padding: 10px 12px; border-bottom: 1px solid var(--line); background: rgba(255,255,255,0.02); min-width: 0; }
+.lawen-ico { font-size: 22px; line-height: 1; flex: 0 0 auto; }
+.lawen-name { font-size: 14px; font-weight: 700; color: var(--text); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lawen-luna { font-size: 10px; white-space: nowrap; flex: 0 0 auto; }
+.lawen-grid { display: grid; grid-template-columns: 86px minmax(0,1fr); gap: 6px 10px; padding: 10px 12px; font-size: 11.5px; line-height: 1.55; align-items: start; }
+.lawen-label { font-weight: 700; font-size: 10.5px; letter-spacing: 0.6px; color: var(--gold); background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 2px 4px; text-align: center; white-space: nowrap; }
+.lawen-label.dim { color: var(--muted); }
+.lawen-val { min-width: 0; color: #cdd3ee; overflow-wrap: break-word; }
+.lawen-warn { margin: 0 12px 12px; background: rgba(231,110,138,0.08); border: 1px solid rgba(231,110,138,0.3); border-radius: 8px; padding: 7px 10px; font-size: 11px; line-height: 1.5; color: #ff9a9a; overflow-wrap: break-word; }
+
+/* Evita texto cortado dentro de dialogs en pantallas angostas */
+dialog form { min-width: 0; }
+dialog .si-card, dialog .menstrual-card, dialog .help-card { min-width: 0; max-width: 100%; }
+
 .search-hit {
   text-align: left; width: 100%; background: var(--card); border: 1px solid var(--line);
   border-radius: 8px; padding: 8px 12px; margin-bottom: 6px; cursor: pointer; color: var(--text);
@@ -335,8 +390,29 @@ body[data-theme="medianoche"] { --bg:#050508; --bg2:#0a0a10; --panel:#141418; --
 .chrono-laps { margin-top: 10px; max-height: 140px; overflow-y: auto; display: flex; flex-direction: column; gap: 4px; }
 .chrono-lap { background: var(--card); border: 1px solid var(--line); border-radius: 6px; padding: 6px 10px; font-size: 12px; color: var(--text); }
 
-#convertDialog, #timerDialog, #ekadashiDialog, #siembraDialog, #menstrualDialog, #medicDialog, #habitsDialog, #donateDialog, #helpDialog, #circadianDialog, #goldenDialog, #disciplineDialog, #dreamsDialog, #mealDialog, #shoppingDialog, #financeDialog, #energyDialog, #breathDialog, #scheduleDialog, #fishingDialog, #gymDialog, #birdsDialog, #intermarealDialog, #bosqueDialog, #astroDialog, #comunaDialog, #firstAidDialog, #animalCareDialog, #violenceDialog, #homeTasksDialog { width: 520px; max-width: 96vw; max-height: 88vh; overflow-y: auto; }
-#helpDialog, #disciplineDialog, #dreamsDialog, #breathDialog, #scheduleDialog, #fishingDialog, #birdsDialog, #intermarealDialog, #bosqueDialog, #astroDialog, #comunaDialog, #studyDialog, #firstAidDialog, #animalCareDialog, #violenceDialog, #homeTasksDialog { width: 680px; }
+#convertDialog, #timerDialog, #ekadashiDialog, #siembraDialog, #menstrualDialog, #medicDialog, #habitsDialog, #donateDialog, #helpDialog, #circadianDialog, #goldenDialog, #disciplineDialog, #dreamsDialog, #mealDialog, #shoppingDialog, #financeDialog, #energyDialog, #breathDialog, #scheduleDialog, #fishingDialog, #gymDialog, #birdsDialog, #intermarealDialog, #bosqueDialog, #astroDialog, #comunaDialog, #firstAidDialog, #animalCareDialog, #violenceDialog, #homeTasksDialog, #espiritualDialog { width: 520px; max-width: 96vw; max-height: 88vh; overflow-y: auto; }
+#helpDialog, #disciplineDialog, #dreamsDialog, #breathDialog, #scheduleDialog, #fishingDialog, #birdsDialog, #intermarealDialog, #bosqueDialog, #astroDialog, #comunaDialog, #studyDialog, #firstAidDialog, #animalCareDialog, #violenceDialog, #homeTasksDialog, #espiritualDialog { width: 680px; }
+/* Prácticas Espirituales — fichas */
+.esp-card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; margin-bottom: 10px; }
+.esp-card-head { display: flex; gap: 10px; align-items: center; padding: 10px 12px; background: rgba(232,197,106,0.06); border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+.esp-icon { font-size: 24px; flex: 0 0 auto; }
+.esp-titles { flex: 1; min-width: 180px; }
+.esp-name { font-weight: 700; font-size: 14px; color: var(--text); }
+.esp-sub { font-size: 11px; color: var(--gold); }
+.esp-level { font-size: 10px; white-space: nowrap; }
+.esp-body { padding: 10px 12px; display: flex; flex-direction: column; gap: 8px; }
+.esp-steps { margin: 0; padding-left: 18px; font-size: 12px; line-height: 1.55; color: #cdd3ee; }
+.esp-steps li { margin-bottom: 3px; }
+.esp-meta { display: flex; flex-wrap: wrap; gap: 6px; }
+.esp-pill { font-size: 11px; padding: 3px 8px; border-radius: 999px; border: 1px solid var(--line); background: var(--panel); color: var(--muted); }
+.esp-pill.gold { background: rgba(232,197,106,0.12); color: var(--gold); border-color: rgba(232,197,106,0.4); }
+.esp-pill.green { background: #8fd69422; color: #8fd694; border-color: #8fd69455; }
+.esp-pill.red { background: #ff9a9a14; color: #ff9a9a; border-color: #ff9a9a44; }
+.esp-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+.esp-check-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 8px; margin-top: 8px; }
+.esp-check { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); cursor: pointer; font-size: 13px; transition: background .15s; }
+.esp-check.done { background: var(--card-hover); border-color: var(--gold); }
+.esp-check input { accent-color: var(--gold); width: 16px; height: 16px; }
 .help-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .help-card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 12px; }
 .help-card h4 { color: var(--gold); margin-bottom: 6px; font-size: 13px; }
@@ -530,6 +606,25 @@ body[data-theme="medianoche"] { --bg:#050508; --bg2:#0a0a10; --panel:#141418; --
 .astro-luna-cell.today { border-color:var(--gold); outline:1px solid var(--gold); }
 .astro-bar { display:block; width:100%; height:4px; background:var(--panel); border-radius:3px; overflow:hidden; }
 .astro-bar i { display:block; height:100%; background:linear-gradient(90deg,#7ab8ff,#e8c56a); }
+/* Memoria — gimnasio mental */
+.mem-grid { display:grid; gap:6px; justify-content:center; margin:8px auto; max-width:420px; }
+.mem-card { min-width:52px; min-height:52px; display:flex; align-items:center; justify-content:center; font-size:22px; border:1px solid var(--line); border-radius:10px; background:var(--bg2); cursor:pointer; transition:transform .12s, background .12s, border-color .12s; user-select:none; padding:8px; }
+.mem-card:hover { background:var(--card-hover); transform:translateY(-1px); }
+.mem-card.open { background:var(--card-hover); border-color:var(--gold); }
+.mem-card.done { border-color:var(--gold); background:linear-gradient(135deg,var(--panel),var(--card)); box-shadow:0 0 0 1px #e8c56a33; }
+.mem-card.mem-odd { font-size:24px; }
+.mem-card.shake, .mem-schulte-cell.shake, .mem-seq-btn.shake { animation:memShake .3s; border-color:#e76e8a !important; }
+@keyframes memShake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-4px)} 75%{transform:translateX(4px)} }
+.mem-seq-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; max-width:380px; margin:8px auto; }
+.mem-seq-btn { display:flex; flex-direction:column; align-items:center; gap:2px; padding:10px 6px; border-radius:12px; border:1px solid var(--line); background:var(--bg2); cursor:pointer; transition:transform .12s, background .15s, box-shadow .15s; }
+.mem-seq-btn small { font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; }
+.mem-seq-btn.lit { background:var(--gold); transform:scale(1.08); box-shadow:0 0 18px #e8c56a88; }
+.mem-seq-btn.lit small { color:#10142c; }
+.mem-word { display:inline-block; background:var(--bg2); border:1px solid var(--line); border-radius:8px; padding:4px 10px; margin:2px; font-size:13px; }
+.mem-schulte { display:grid; grid-template-columns:repeat(5,1fr); gap:6px; max-width:340px; margin:8px auto; }
+.mem-schulte-cell { min-height:52px; font-size:18px; font-weight:700; border-radius:10px; border:1px solid var(--line); background:var(--bg2); color:var(--text); cursor:pointer; }
+.mem-schulte-cell:hover { background:var(--card-hover); }
+.mem-schulte-cell.done { background:#1e3a2a; border-color:#8fd694; color:#8fd694; }
 .hidden { display: none !important; }
 
 /* Accesibilidad */
@@ -591,11 +686,12 @@ body.large-text #lunaDesc, body.large-text .chip, body.large-text .btn { font-si
   .schedule-week { grid-template-columns: 1fr; }
   .fishing-grid { grid-template-columns: 1fr; }
 }
-/* Semana / Semana lunar en celular: filas compactas, sin encabezado duplicado */
+/* Semana / Semana lunar en celular: lista vertical con el día arriba de cada tarjeta */
 @media (max-width: 920px) {
   .dow-row.dow-week { display: none; }
-  .week-grid { grid-template-columns: 1fr; gap: 6px; }
-  .week-grid .day-card { min-height: 0; padding: 10px 12px; border-radius: 10px; }
+  .week-grid { grid-template-columns: 1fr !important; gap: 6px; }
+  .week-grid .day-card { min-height: 0; padding: 10px 12px; border-radius: 10px; display:flex; flex-direction:column; }
+  .week-grid .dc-day { display:block; order:-1; font-size:14px; font-weight:700; color:var(--gold); text-transform:capitalize; margin-bottom:4px; }
   .week-grid .day-card .dc-head { gap: 6px; align-items: center; }
   .week-grid .day-card .dc-n { font-size: 15px; }
   .week-grid .day-card .dc-phases { font-size: 13px; text-align: left; }
