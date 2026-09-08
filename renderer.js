@@ -300,11 +300,63 @@ function gregMonthLabel(ms){
   const name = d.toLocaleDateString('es-CL',{timeZone:cal.TZ, month:'long', year:'numeric'});
   return name.charAt(0).toUpperCase()+name.slice(1);
 }
+// Semana gregoriana ISO 8601 (lunes=1). Se calcula con la fecha de Santiago.
+function isoWeekNumber(ms){
+  try{
+    const p = cal.santiagoParts(ms);
+    const d = new Date(Date.UTC(p.y, p.m - 1, p.d));
+    const dayNum = (d.getUTCDay() + 6) % 7 + 1; // lunes=1 … domingo=7
+    d.setUTCDate(d.getUTCDate() + 4 - dayNum); // jueves de esa semana manda el año
+    const isoYear = d.getUTCFullYear();
+    const jan1 = new Date(Date.UTC(isoYear, 0, 1));
+    const week = Math.ceil((((d - jan1) / 86400000) + 1) / 7);
+    return { week, year: isoYear };
+  }catch(e){ return null; }
+}
+// Semana lunar fija dentro de la Luna de 28 días: S1=01-07, S2=08-14, S3=15-21, S4=22-28.
+function lunarWeekForMs(ms){
+  try{
+    const key = cal.fmtKey.format(new Date(ms));
+    const ref = lunaMapForKey(key);
+    if(!ref || ref.luna === 'dft') return null;
+    const semanaIdx = Math.ceil(ref.diaN / 7);
+    const diaStart = (semanaIdx - 1) * 7 + 1;
+    const diaEnd = diaStart + 6;
+    const c = cal.buildCycle(ref.y);
+    const days = c.days
+      .filter(x => x.luna === ref.luna && x.diaN >= diaStart && x.diaN <= diaEnd)
+      .sort((a, b) => a.diaN - b.diaN);
+    if(days.length !== 7) return null;
+    const keys = days.map(x => cal.fmtKey.format(new Date(x.noonMs)));
+    return { y: ref.y, luna: ref.luna, semanaIdx, diaStart, diaEnd, keys, days };
+  }catch(e){ return null; }
+}
+function shiftSemanaLunar(diff){
+  const cur = lunarWeekForMs(viewDateMs);
+  if(!cur){
+    const d = new Date(viewDateMs); d.setDate(d.getDate() + diff * 7);
+    viewDateMs = d.getTime(); return;
+  }
+  let targetY = cur.y, targetLuna = cur.luna, targetIdx = cur.semanaIdx;
+  const step = diff > 0 ? 1 : -1;
+  for(let s = 0; s < Math.abs(diff); s++){
+    targetIdx += step;
+    if(targetIdx > 4){ targetIdx = 1; targetLuna++; if(targetLuna > 13){ targetLuna = 1; targetY++; } }
+    if(targetIdx < 1){ targetIdx = 4; targetLuna--; if(targetLuna < 1){ targetLuna = 13; targetY--; } }
+  }
+  try{
+    const c = cal.buildCycle(targetY);
+    const first = c.days.find(x => x.luna === targetLuna && x.diaN === (targetIdx - 1) * 7 + 1);
+    if(first){ viewDateMs = first.noonMs; return; }
+  }catch(e){}
+  const d = new Date(viewDateMs); d.setDate(d.getDate() + diff * 7);
+  viewDateMs = d.getTime();
+}
 function shiftViewDate(diff){
   const d = new Date(viewDateMs);
   if(viewMode==='mes'){ d.setMonth(d.getMonth()+diff); }
   else if(viewMode==='semana'){ d.setDate(d.getDate()+diff*7); }
-  else if(viewMode==='semanaLunar'){ d.setDate(d.getDate()+diff*7); }
+  else if(viewMode==='semanaLunar'){ shiftSemanaLunar(diff); renderCurrentView(); return; }
   viewDateMs = d.getTime();
   renderCurrentView();
 }
@@ -394,10 +446,13 @@ function renderSemanaView(){
   const monday=new Date(base); monday.setDate(base.getDate()-dowIdx);
   const sunday=new Date(monday); sunday.setDate(monday.getDate()+6);
   const f=d=>cal.fmtKey.format(d);
-  $('lunaTitle').textContent='🗓️ Semana '+cal.fmtDate.format(monday)+' — '+cal.fmtDate.format(sunday);
-  $('lunaMeta').innerHTML='Vista semanal · toca un día para abrirlo';
+  const iso = isoWeekNumber(monday.getTime());
+  const isoShort = iso ? `Semana ${iso.week}` : 'Semana';
+  const isoLong = iso ? `Semana <b>${iso.week}</b> del año gregoriano ${iso.year}` : 'Semana gregoriana';
+  $('lunaTitle').textContent=`🗓️ ${isoShort} · `+cal.fmtDate.format(monday)+' — '+cal.fmtDate.format(sunday);
+  $('lunaMeta').innerHTML=`Vista semanal (lunes a domingo) · ${isoLong} según calendario gregoriano · toca un día para abrirlo`;
   $('lunaDesc').textContent='Compromisos a cualquier hora (HH:MM) con 🔔 opcional.';
-  $('phaseChips').innerHTML='';
+  $('phaseChips').innerHTML= iso ? `<span class="chip">🗓️ <b>Semana ${iso.week}</b> · ${iso.year}</span><span class="chip">${cal.fmtDate.format(monday)} — ${cal.fmtDate.format(sunday)}</span>` : '';
   dow.classList.add('dow-week');
   dow.innerHTML=['lunes','martes','miércoles','jueves','viernes','sábado','domingo'].map(d=>`<div>${d}</div>`).join('');
   let html='<div class="week-grid">';
@@ -406,11 +461,11 @@ function renderSemanaView(){
   grid.style.display='block';
   grid.innerHTML=html;
   bindMiniCards(grid);
-  const lb=$('viewNavLabel'); if(lb) lb.textContent=cal.fmtDate.format(monday)+' — '+cal.fmtDate.format(sunday);
+  const lb=$('viewNavLabel'); if(lb) lb.textContent=(iso?`Sem ${iso.week} · `:'')+cal.fmtDate.format(monday)+' — '+cal.fmtDate.format(sunday);
 }
-// === VISTA LUNAR (astronómica): SEMANA LUNAR ===
-// Semana lunar = 7 días corridos desde la fecha pivote, con fase e
-// iluminación diaria. El detalle de la lunación completa vive en 🔭 Astro.
+// === VISTA LUNAR: SEMANA LUNAR (bloques fijos de la Luna de 28 días) ===
+// Semana 1 = días 01–07 · Semana 2 = 08–14 · Semana 3 = 15–21 · Semana 4 = 22–28.
+// Con fase e iluminación diaria. El detalle de la lunación completa vive en 🔭 Astro.
 function lunarEvents(fromMs, toMs){
   try{ return window.astro.moonPhaseEvents(fromMs, toMs).sort((a,b)=>a.utcMs-b.utcMs); }
   catch(e){ return []; }
@@ -496,24 +551,52 @@ function renderSemanaLunarView(){
   const grid=$('grid'), dow=$('dowRow');
   $('monthNoteWrap').style.display='none';
   applyLunarTema();
-  const startKey = cal.fmtKey.format(new Date(viewDateMs));
-  const keys = [];
-  let cur = new Date(startKey+'T12:00:00').getTime();
-  for(let i=0;i<7;i++){ keys.push(cal.fmtKey.format(new Date(cur))); cur += 86400000; }
+  const pad2 = n => String(n).padStart(2, '0');
+  const wk = lunarWeekForMs(viewDateMs);
+  if(!wk){
+    // Fallback: fecha fuera del ciclo (ej. ✷ DFT) → 7 días corridos desde el pivote
+    const startKey = cal.fmtKey.format(new Date(viewDateMs));
+    const keys = [];
+    let cur = new Date(startKey+'T12:00:00').getTime();
+    for(let i=0;i<7;i++){ keys.push(cal.fmtKey.format(new Date(cur))); cur += 86400000; }
+    const evMap = lunarEventsMap(new Date(keys[0]+'T12:00:00').getTime()-86400000, new Date(keys[6]+'T12:00:00').getTime()+86400000);
+    const d0=new Date(keys[0]+'T12:00:00'), d6=new Date(keys[6]+'T12:00:00');
+    $('lunaTitle').textContent='🌗 Semana lunar · '+cal.fmtDate.format(d0)+' — '+cal.fmtDate.format(d6);
+    $('lunaMeta').innerHTML='7 días corridos · con fase e iluminación diaria<br><i>La semana gregoriana (lun–dom) sigue en 🗓️ Semana</i>';
+    $('lunaDesc').textContent='Toca un día para abrir sus notas y compromisos a cualquier hora (HH:MM).';
+    const chips=[];
+    keys.forEach(k=> (evMap[k]||[]).forEach(e=> chips.push(`<span class="chip">${e.simbolo} <b>${e.tipo.replace('-',' ')}</b> · ${cal.fmtDate.format(new Date(k+'T12:00:00'))} ${cal.fmtTime.format(new Date(e.utcMs))}</span>`)));
+    $('phaseChips').innerHTML = chips.join('') || '<span class="chip" style="color:var(--muted)">Sin fases exactas estos 7 días</span>';
+    dow.classList.add('dow-week');
+    dow.innerHTML=keys.map(k=>{ const w=cal.weekdayName(new Date(k+'T12:00:00').getTime()); return `<div>${w.slice(0,3)}</div>`; }).join('');
+    grid.style.display='block';
+    grid.innerHTML='<div class="week-grid">'+keys.map((k,i)=>miniLunarCard(k, evMap, i+1)).join('')+'</div>';
+    bindMiniCards(grid);
+    const lb=$('viewNavLabel'); if(lb) lb.textContent=cal.fmtDate.format(d0)+' — '+cal.fmtDate.format(d6);
+    return;
+  }
+  const keys = wk.keys;
+  const diaNums = wk.days.map(x => x.diaN);
+  const meta = (typeof MOONS !== 'undefined' && MOONS[wk.luna - 1]) ? MOONS[wk.luna - 1] : null;
   const evMap = lunarEventsMap(new Date(keys[0]+'T12:00:00').getTime()-86400000, new Date(keys[6]+'T12:00:00').getTime()+86400000);
   const d0=new Date(keys[0]+'T12:00:00'), d6=new Date(keys[6]+'T12:00:00');
-  $('lunaTitle').textContent='🌗 Semana lunar · '+cal.fmtDate.format(d0)+' — '+cal.fmtDate.format(d6);
-  $('lunaMeta').innerHTML='7 días corridos desde el pivote · con fase e iluminación diaria<br><i>La semana gregoriana (lun–dom) sigue en 🗓️ Semana</i>';
+  const rango = `Días ${pad2(wk.diaStart)}–${pad2(wk.diaEnd)}`;
+  $('lunaTitle').textContent=`🌗 Semana lunar ${wk.semanaIdx} · ${rango} · Luna ${wk.luna} · `+cal.fmtDate.format(d0)+' — '+cal.fmtDate.format(d6);
+  $('lunaMeta').innerHTML=`Luna ${wk.luna}${meta ? ' · ' + escapeHtml(meta.nombre) : ''} · <b>${rango} de 28 (Semana ${wk.semanaIdx} de 4)</b> · ${cal.fmtDate.format(d0)} — ${cal.fmtDate.format(d6)}<br><i>La semana gregoriana (lun–dom) sigue en 🗓️ Semana</i>`;
   $('lunaDesc').textContent='Toca un día para abrir sus notas y compromisos a cualquier hora (HH:MM).';
-  const chips=[];
+  const chips=[`<span class="chip">🌗 <b>Semana ${wk.semanaIdx}</b> · ${rango}</span>`];
   keys.forEach(k=> (evMap[k]||[]).forEach(e=> chips.push(`<span class="chip">${e.simbolo} <b>${e.tipo.replace('-',' ')}</b> · ${cal.fmtDate.format(new Date(k+'T12:00:00'))} ${cal.fmtTime.format(new Date(e.utcMs))}</span>`)));
-  $('phaseChips').innerHTML = chips.join('') || '<span class="chip" style="color:var(--muted)">Sin fases exactas estos 7 días</span>';
+  $('phaseChips').innerHTML = chips.join('');
   dow.classList.add('dow-week');
-  dow.innerHTML=keys.map(k=>{ const w=cal.weekdayName(new Date(k+'T12:00:00').getTime()); return `<div>${w.slice(0,3)}</div>`; }).join('');
+  dow.innerHTML=diaNums.map(diaN=>{
+    const k = keys[diaNums.indexOf(diaN)];
+    const w=cal.weekdayName(new Date(k+'T12:00:00').getTime());
+    return `<div>Día ${pad2(diaN)}<br><small style="font-weight:400;opacity:.75">${w.slice(0,3)}</small></div>`;
+  }).join('');
   grid.style.display='block';
-  grid.innerHTML='<div class="week-grid">'+keys.map((k,i)=>miniLunarCard(k, evMap, i+1)).join('')+'</div>';
+  grid.innerHTML='<div class="week-grid">'+keys.map((k,i)=>miniLunarCard(k, evMap, diaNums[i])).join('')+'</div>';
   bindMiniCards(grid);
-  const lb=$('viewNavLabel'); if(lb) lb.textContent=cal.fmtDate.format(d0)+' — '+cal.fmtDate.format(d6);
+  const lb=$('viewNavLabel'); if(lb) lb.textContent=`Luna ${wk.luna} · S${wk.semanaIdx} (${pad2(wk.diaStart)}–${pad2(wk.diaEnd)}) · `+cal.fmtDate.format(d0)+' — '+cal.fmtDate.format(d6);
 }
 
 function seasonChip(el, estKey) {
