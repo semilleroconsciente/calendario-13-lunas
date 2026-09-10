@@ -8233,11 +8233,14 @@ const METODOS_TOPICS = [
   {id:'yogananda', icon:'🕉️', nombre:'Yogananda'},
   {id:'zen', icon:'🎋', nombre:'Zen'},
   {id:'patanjali', icon:'🧘', nombre:'Patanjali'},
+  {id:'ikigai', icon:'🌸', nombre:'Ikigai'},
   {id:'toltecas', icon:'🌵', nombre:'Toltecas'},
   {id:'gurdjieff', icon:'👁️', nombre:'Gurdjieff'},
   {id:'grinberg', icon:'🧠', nombre:'Grinberg'},
   {id:'grof', icon:'🌊', nombre:'Grof'},
   {id:'hermetismo', icon:'⚗️', nombre:'Hermetismo'},
+  {id:'conny', icon:'💫', nombre:'Conny Méndez'},
+  {id:'gnosis', icon:'🔮', nombre:'Gnosis'},
   {id:'kimun', icon:'🌿', nombre:'Kimün mapuche'}
 ];
 function metodosTopicName(id){ const t=METODOS_TOPICS.find(x=>x.id===id); return t? (t.icon+' '+t.nombre) : id; }
