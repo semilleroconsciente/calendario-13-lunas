@@ -50,6 +50,7 @@
   </aside>
 
   <main id="main">
+    <section id="todayView" class="hidden" aria-label="Hoy"></section>
     <header id="lunaHeader">
       <div class="lh-top">
         <div>
@@ -2899,6 +2900,14 @@
       </div>
     </form>
   </dialog>
+
+  <nav id="mobileDock" aria-label="Navegación móvil">
+    <button type="button" id="dockHoy" class="dock-btn" title="Hoy">◉<small>Hoy</small></button>
+    <button type="button" id="dockLuna" class="dock-btn" title="Luna">🌙<small>Luna</small></button>
+    <button type="button" id="dockSemana" class="dock-btn" title="Semana">🗓️<small>Semana</small></button>
+    <button type="button" id="dockMes" class="dock-btn" title="Mes">📅<small>Mes</small></button>
+    <button type="button" id="dockMas" class="dock-btn" title="Herramientas">🧰<small>Más</small></button>
+  </nav>
 
   <script src="web-api.js?v=8"></script>
   <script src="astro.js?v=8"></script>
