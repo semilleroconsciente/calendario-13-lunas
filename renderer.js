@@ -406,7 +406,7 @@ function renderTodayView(){
       key = cal.fmtKey.format(new Date(info.noonMs));
       sun = cal.sunForDay(info.noonMs);
       try{ moon = cal.moonForDay(info.noonMs); }catch(e){}
-      fr = window.fraseDFT || (window.frases ? window.frases[364] : null);
+      fr = (typeof effectiveFraseDFT === 'function') ? effectiveFraseDFT(info.y) : (window.fraseDFT || (window.frases ? window.frases[364] : null));
       evs = (typeof phaseMap!=='undefined' && phaseMap[key]) ? phaseMap[key] : [];
     }catch(e){}
   } else {
@@ -418,7 +418,7 @@ function renderTodayView(){
     key = cal.fmtKey.format(new Date(info.noonMs));
     meta = MOONS[lunaN-1];
     const idx = (lunaN-1)*28+(diaN-1);
-    fr = window.frases ? window.frases[idx] : null;
+    fr = (typeof effectiveFraseFor === 'function') ? effectiveFraseFor(lunaN, diaN, info.y) : (window.frases ? window.frases[idx] : null);
     try{ sun = cal.sunForDay(info.noonMs); }catch(e){}
     try{ moon = cal.moonForDay(info.noonMs); }catch(e){}
     try{ evs = (typeof phaseMap!=='undefined' && phaseMap[key]) ? phaseMap[key] : []; }catch(e){}
@@ -464,8 +464,14 @@ function renderTodayView(){
     + '<div class="t-sub">'+escapeHtml(lunaSub)+'</div>'
     + '<div><span class="t-penco">📍 Penco · Bío-Bío · Chile</span></div>'
     + '</div>'
-    + '<div class="today-card"><h3>💬 Frase del día</h3>'
-    + (fr ? '<p class="today-quote">«'+escapeHtml(fr.t)+'»<span>— '+escapeHtml(fr.a)+'</span></p>' : '<p class="muted">Sin frase para hoy.</p>')
+    + '<div class="today-card"><h3>💬 Frase del día'+(fr&&fr.custom?' · ✨ Tu frase':'')+'</h3>'
+    + (fr ? '<p class="today-quote">«'+escapeHtml(fr.t)+'»<span>— '+escapeHtml(fr.a||'Anónimo')+'</span></p>' : '<p class="muted">Sin frase para hoy.</p>')
+    + '<div class="frase-edit">'
+    + '<label>Tu frase para hoy <input type="text" id="todayFraseText" placeholder="Escribe tu frase..." maxlength="300" autocomplete="off"></label>'
+    + '<div class="frase-edit-row"><label>Autor <input type="text" id="todayFraseAuthor" placeholder="Autor (opcional)" maxlength="60" autocomplete="off"></label>'
+    + '<span class="frase-edit-btns"><button type="button" id="todayFraseSave" class="btn btn-accent" style="width:auto">💾 Guardar frase</button>'
+    + (fr&&fr.custom?'<button type="button" id="todayFraseReset" class="btn" style="width:auto">↩ Original</button>':'')
+    + '</span></div></div>'
     + '</div>'
     + '<div class="today-card"><h3>☀️🌙 Sol y luna de hoy</h3>'
     + '<div class="today-sun"><span class="chip">☀️ Amanecer <b>'+(sun.rise?cal.fmtTime.format(new Date(sun.rise)):'--')+'</b></span>'
@@ -518,6 +524,27 @@ function renderTodayView(){
   if(main && picker){
     main.onclick=()=>{ picker.classList.toggle('hidden'); if(!picker.classList.contains('hidden') && !picker.innerHTML) paintPicker(); };
   }
+  // --- frase del día personalizada (hoy) ---
+  try{
+    const fSave = $('todayFraseSave');
+    if(fSave) fSave.onclick = ()=>{
+      const t = ($('todayFraseText')||{}).value || '', a = ($('todayFraseAuthor')||{}).value || '';
+      if(!String(t||'').trim()){ alert('Escribe tu frase primero'); return; }
+      try{
+        if(isDFT) writeCustomFraseDFT(info.y, t, a);
+        else writeCustomFrase(lunaN, diaN, info.y, t, a);
+      }catch(e){}
+      renderTodayView();
+    };
+    const fReset = $('todayFraseReset');
+    if(fReset) fReset.onclick = ()=>{
+      try{
+        if(isDFT) writeCustomFraseDFT(info.y, '', '');
+        else writeCustomFrase(lunaN, diaN, info.y, '', '');
+      }catch(e){}
+      renderTodayView();
+    };
+  }catch(e){}
   // --- notas ---
   const noteEl = $('todayNote');
   if(noteEl){
@@ -1164,7 +1191,7 @@ function renderDFT() {
   $('dowRow').innerHTML = '';
   const key = cal.fmtKey.format(new Date(dftDay.noonMs));
   const evs = phaseMap[key] || [];
-  const frDft = window.fraseDFT || (window.frases ? window.frases[364] : null);
+  const frDft = (typeof effectiveFraseDFT === 'function') ? effectiveFraseDFT(currentCycleYear()) : (window.fraseDFT || (window.frases ? window.frases[364] : null));
   grid.innerHTML = `
     <div class="day-card today" style="max-width:520px">
       <div class="dc-head"><span class="dc-n">365</span><span class="dc-date">${cal.fmtDate.format(new Date(dftDay.noonMs))}</span></div>
@@ -1355,14 +1382,93 @@ function setupDlgHorasAdd(){
 }
 setTimeout(setupDlgHorasAdd, 500);
 
+// === FRASE DEL DÍA PERSONALIZADA (una por cada día de luna / DFT) ===
+// Si el día tiene frase propia guardada se usa esa; si no, la frase base de frases.js.
+function defaultFraseFor(lunaN, diaN){
+  try{
+    const idx = (lunaN - 1) * 28 + (diaN - 1);
+    return (window.frases && window.frases[idx]) ? window.frases[idx] : null;
+  }catch(e){ return null; }
+}
+function readCustomFrase(lunaN, diaN, year){
+  try{
+    const y = String(year !== undefined && year !== null ? year : currentCycleYear());
+    const u = userData();
+    const c = u.cycles[y];
+    const d = c && c.moons[String(lunaN)] && c.moons[String(lunaN)].days[diaN];
+    if(d && d.frase && d.frase.t && String(d.frase.t).trim()) return { t: String(d.frase.t), a: String(d.frase.a || '') };
+  }catch(e){}
+  return null;
+}
+function effectiveFraseFor(lunaN, diaN, year){
+  const custom = readCustomFrase(lunaN, diaN, year);
+  if(custom) return { t: custom.t, a: custom.a, custom: true };
+  const d = defaultFraseFor(lunaN, diaN);
+  return d ? { t: d.t, a: d.a, custom: false } : null;
+}
+function writeCustomFrase(lunaN, diaN, year, t, a){
+  const y = (year !== undefined && year !== null) ? year : currentCycleYear();
+  const cell = (String(y) === String(currentCycleYear())) ? dayCell(lunaN, diaN) : (()=>{ const c = cyc(y); const m = c.moons[String(lunaN)]; if(!m.days[diaN]) m.days[diaN] = { nota:'', animo:-1, agenda:[] }; return m.days[diaN]; })();
+  t = sanitizeText((t || '').trim(), 300);
+  a = sanitizeText((a || '').trim(), 60);
+  if(!t){ delete cell.frase; scheduleSave('Frase original ✓'); }
+  else { cell.frase = { t, a }; scheduleSave('Frase guardada ✓'); }
+}
+function defaultFraseDFT(){
+  try{ return window.fraseDFT || (window.frases ? window.frases[364] : null); }catch(e){ return null; }
+}
+function effectiveFraseDFT(year){
+  try{
+    const u = userData();
+    const c = u.cycles[String(year !== undefined && year !== null ? year : currentCycleYear())];
+    if(c && c.dft && c.dft.frase && c.dft.frase.t && String(c.dft.frase.t).trim()) return { t: String(c.dft.frase.t), a: String(c.dft.frase.a || ''), custom: true };
+  }catch(e){}
+  const d = defaultFraseDFT();
+  return d ? { t: d.t, a: d.a, custom: false } : null;
+}
+function writeCustomFraseDFT(year, t, a){
+  const c = cyc(year !== undefined && year !== null ? year : currentCycleYear());
+  c.dft = c.dft || { nota: '' };
+  t = sanitizeText((t || '').trim(), 300);
+  a = sanitizeText((a || '').trim(), 60);
+  if(!t){ delete c.dft.frase; scheduleSave('Frase original ✓'); }
+  else { c.dft.frase = { t, a }; scheduleSave('Frase guardada ✓'); }
+}
+
 function openDayDialog(lunaN, diaN) {
   editing = { lunaN, diaN };
   const cell = dayCell(lunaN, diaN);
   const d = cycle.days.find(x => x.luna === lunaN && x.diaN === diaN);
   const meta = MOONS[lunaN - 1];
-  const idx = (lunaN - 1) * 28 + (diaN - 1);
-  const fr = window.frases ? window.frases[idx] : null;
-  $('dlgQuote').innerHTML = fr ? `«${fr.t}»<span class="q-a">— ${fr.a}</span>` : '';
+  // Frase del día: base o personalizada + editor para agregar la propia
+  const paintDlgFrase = ()=>{
+    const fr = effectiveFraseFor(lunaN, diaN);
+    $('dlgQuote').innerHTML = fr ? `«${escapeHtml(fr.t)}»<span class="q-a">— ${escapeHtml(fr.a || 'Anónimo')}</span>` : '<span class="muted">Sin frase para este día.</span>';
+    const badge = $('dlgFraseBadge');
+    if(badge){
+      if(fr && fr.custom){ badge.textContent = '✨ Tu frase'; badge.classList.remove('hidden'); }
+      else { badge.textContent = ''; badge.classList.add('hidden'); }
+    }
+    const reset = $('dlgFraseReset');
+    if(reset) reset.classList.toggle('hidden', !(fr && fr.custom));
+  };
+  paintDlgFrase();
+  const ft = $('dlgFraseText'), fa = $('dlgFraseAuthor');
+  if(ft) ft.value = '';
+  if(fa) fa.value = '';
+  const fsBtn = $('dlgFraseSave');
+  if(fsBtn) fsBtn.onclick = ()=>{
+    const t = ft ? ft.value : '', a = fa ? fa.value : '';
+    if(!String(t || '').trim()){ alert('Escribe tu frase primero'); return; }
+    writeCustomFrase(lunaN, diaN, currentCycleYear(), t, a);
+    if(ft) ft.value = ''; if(fa) fa.value = '';
+    paintDlgFrase();
+  };
+  const frReset = $('dlgFraseReset');
+  if(frReset) frReset.onclick = ()=>{
+    writeCustomFrase(lunaN, diaN, currentCycleYear(), '', '');
+    paintDlgFrase();
+  };
   const efe = EFEMERIDES[cal.fmtKey.format(new Date(d.noonMs)).slice(5)];
   $('dlgTitle').textContent = `Luna ${lunaN} · Día ${diaN} de 28`;
   $('dlgDate').textContent = `${meta.nombre} — ${cal.weekdayName(d.noonMs)} ${cal.fmtFull.format(new Date(d.noonMs))}${efe ? ' · 📅 ' + efe : ''}`;
@@ -1479,8 +1585,7 @@ function buildShareImage(lunaN, diaN) {
   const cell = dayCell(lunaN, diaN);
   const d = cycle.days.find(x => x.luna === lunaN && x.diaN === diaN);
   const meta = MOONS[lunaN - 1];
-  const idx = (lunaN - 1) * 28 + (diaN - 1);
-  const fr = window.frases ? window.frases[idx] : null;
+  const fr = effectiveFraseFor(lunaN, diaN);
   const sun = cal.sunForDay(d.noonMs);
   const evs = phaseMap[cal.fmtKey.format(new Date(d.noonMs))] || [];
   const c = document.createElement('canvas');
