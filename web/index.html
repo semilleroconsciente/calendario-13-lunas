@@ -1789,10 +1789,10 @@
       </div>
       <p class="muted" style="line-height:1.5"><b>Mari Küla Küyen — 13 lunas × 28 días + Día Fuera del Tiempo.</b> Un calendario territorial de Penco, inspirado en el tiempo mapuche y lunar. Todo queda <b>privado y local</b> en tu dispositivo, por usuario. Elige tu ciclo (We Tripantu 21 junio), toca un día para registrar y explora los grupos de herramientas.</p>
       <div class="timer-tabs" style="margin-bottom:10px" role="tablist" aria-label="Nivel de guía">
-        <button type="button" id="tabGuiaBasica" class="btn btn-accent" style="width:auto" role="tab" aria-selected="true">🌱 Guía Básica</button>
-        <button type="button" id="tabGuiaDetallada" class="btn" style="width:auto" role="tab" aria-selected="false">📚 Guía Detallada</button>
+        <button type="button" id="tabGuiaBasica" class="btn" style="width:auto" role="tab" aria-selected="false">🌱 Guía Básica</button>
+        <button type="button" id="tabGuiaDetallada" class="btn btn-accent" style="width:auto" role="tab" aria-selected="true">📚 Guía Detallada</button>
       </div>
-      <div id="guiaBasicaPanel">
+      <div id="guiaBasicaPanel" class="hidden">
         <div class="help-grid" style="margin-bottom:12px">
           <div class="help-card" style="grid-column:1/-1;border-color:var(--gold);background:linear-gradient(135deg,var(--panel),var(--card))">
             <h4>🌱 Empieza en 5 pasos</h4>
@@ -1818,7 +1818,7 @@
           </div>
         </div>
       </div>
-      <div id="guiaDetalladaPanel" class="hidden">
+      <div id="guiaDetalladaPanel">
       <!-- GUÍA: Qué es + Visión -->
       <div class="help-grid" style="margin-bottom:12px">
         <div class="help-card" id="helpGuiaQueEs" style="grid-column:1/-1;border-color:var(--gold);background:linear-gradient(135deg,var(--panel),var(--card))">
