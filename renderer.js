@@ -431,9 +431,10 @@ function renderTodayView(){
     const nombres=['Luna nueva','Luna creciente','Cuarto creciente','Creciente gibosa','Luna llena','Menguante gibosa','Cuarto menguante','Luna menguante'];
     aproxFase = nombres[Math.round((mi.phase||0)*8)%8] || '';
   }catch(e){}
-  const faseTxt = evs.length
+  const faseBase = evs.length
     ? evs.map(e=>e.simbolo+' '+e.tipo.replace('-',' ')).join(' · ')
-    : ((aproxFase||'Fase lunar')+(illum!==null ? ' · '+illum+'% iluminada' : ''));
+    : (aproxFase||'Fase lunar');
+  const faseTxt = faseBase + (illum!==null ? ' · '+illum+'% iluminada' : '');
   const cur = (animo>=0 && MOODS[animo]) ? MOODS[animo] : null;
   const sug = cur || { e:'🙂', n:'¿Cómo estás hoy? Toca para elegir' };
   const wd = cal.weekdayName(noonMs);
@@ -472,10 +473,9 @@ function renderTodayView(){
     + '<div style="height:8px"></div>'
     + '<div class="today-sun"><span class="chip">🌙 Sale <b>'+(moon.rise?cal.fmtTime.format(new Date(moon.rise)):'--')+'</b></span>'
     + '<span class="chip">🌘 Se pone <b>'+(moon.set?cal.fmtTime.format(new Date(moon.set)):'--')+'</b></span></div>'
-    + '<p class="muted" style="font-size:10px;margin:6px 0 0">Luna en Penco · hora local · aprox. ±15 min (horizonte sin cerros).</p>'
+    + '<p class="muted" style="font-size:10px;margin:6px 0 0">Luna en Penco · hora local · aprox. ±15 min según lugar de observación.</p>'
     + '<div style="height:8px"></div>'
     + '<div class="today-sun"><span class="chip">'+moonIcon+' Fase <b>'+escapeHtml(faseTxt)+'</b></span>'
-    + (illum!==null?'<span class="chip">💡 Iluminación <b>'+illum+'%</b></span>':'')
     + '</div></div>'
     + '<div class="today-card"><h3>📝 Notas del día</h3>'
     + '<textarea id="todayNote" class="today-note" rows="6" placeholder="tareas, ánimo, sueños, registros...">'+escapeHtml(nota)+'</textarea></div>'
@@ -6446,7 +6446,7 @@ function renderAstroDialog(tab){
     }catch(e){}
     todayBox.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center"><span><b>🔭 Hoy — ${cal.weekdayName(mensKeyToMs(todayKey))} ${cal.fmtFull.format(new Date(mensKeyToMs(todayKey)))}</b></span><span class="chip">${phaseTxt}</span></div>`
     + `<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px"><span class="chip">🌙 Sale <b>${moonRiseTxt}</b></span><span class="chip">🌘 Se pone <b>${moonSetTxt}</b></span></div>`
-    + `<p class="muted" style="font-size:10px;margin:4px 0 0">Luna en Penco · hora local · aprox. ±15 min (horizonte sin cerros).</p>`
+    + `<p class="muted" style="font-size:10px;margin:4px 0 0">Luna en Penco · hora local · aprox. ±15 min según lugar de observación.</p>`
     + (todayEvents.length? todayEvents.map(e=> `<div class="chip" style="display:block;margin-top:6px;border-color:var(--gold)">${e.icon} <b>${escapeHtml(e.nombre)}</b> — ${escapeHtml(e.desc)}</div>`).join('') : '<p class="muted" style="font-size:11px;margin-top:6px">Hoy sin eclipse/lluvia destacada. Revisa fases arriba.</p>') + `<p class="muted" style="font-size:11px;margin-top:6px">Penco: lat ${PENCO.lat}, lng ${PENCO.lng}. Cielo ideal: humedal Rocuant sin luces.</p>`;
   }
   const list=$('astroList'); if(!list) return;
