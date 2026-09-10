@@ -406,13 +406,17 @@ function renderTodayView(){
     try{ sun = cal.sunForDay(info.noonMs); }catch(e){}
     try{ evs = (typeof phaseMap!=='undefined' && phaseMap[key]) ? phaseMap[key] : []; }catch(e){}
   }
-  let moonIcon='🌙', illum=null;
+  let moonIcon='🌙', illum=null, aproxFase='';
   try{
     moonIcon = window.astro.moonIcon(noonMs) || '🌙';
     const mi = window.astro.moonInfo(noonMs);
     illum = Math.round((mi.fraction||0)*100);
+    const nombres=['Luna nueva','Luna creciente','Cuarto creciente','Creciente gibosa','Luna llena','Menguante gibosa','Cuarto menguante','Luna menguante'];
+    aproxFase = nombres[Math.round((mi.phase||0)*8)%8] || '';
   }catch(e){}
-  const faseTxt = evs.length ? evs.map(e=>e.simbolo+' '+e.tipo.replace('-',' ')).join(' · ') : 'Sin fase exacta hoy';
+  const faseTxt = evs.length
+    ? evs.map(e=>e.simbolo+' '+e.tipo.replace('-',' ')).join(' · ')
+    : ((aproxFase||'Fase lunar')+(illum!==null ? ' · '+illum+'% iluminada' : ''));
   const cur = (animo>=0 && MOODS[animo]) ? MOODS[animo] : null;
   const sug = cur || { e:'🙂', n:'¿Cómo estás hoy? Toca para elegir' };
   const wd = cal.weekdayName(noonMs);
@@ -450,12 +454,8 @@ function renderTodayView(){
     + '<div class="today-sun"><span class="chip">'+moonIcon+' Fase <b>'+escapeHtml(faseTxt)+'</b></span>'
     + (illum!==null?'<span class="chip">💡 Iluminación <b>'+illum+'%</b></span>':'')
     + '</div></div>'
-    + '<div class="today-card"><h3>😊 Estado de ánimo</h3>'
-    + '<button type="button" id="todayMoodMain" class="today-mood-main"><span class="tm-ico">'+sug.e+'</span><span>'+(cur?escapeHtml(cur.n)+' · toca para cambiar':'Sugerencia: '+sug.e+' · '+escapeHtml(sug.n))+'</span></button>'
-    + '<div id="todayMoodPicker" class="today-mood-picker hidden"></div></div>'
-    + '<div class="today-card"><h3>✅ Hábitos de hoy</h3><div id="todayHabitsBox">'+habHTML+'</div></div>'
     + '<div class="today-card"><h3>📝 Notas del día</h3>'
-    + '<textarea id="todayNote" class="today-note" rows="3" placeholder="tareas, ánimo, sueños, registros...">'+escapeHtml(nota)+'</textarea></div>'
+    + '<textarea id="todayNote" class="today-note" rows="6" placeholder="tareas, ánimo, sueños, registros...">'+escapeHtml(nota)+'</textarea></div>'
     + '<div class="today-card"><h3>🕐 Compromisos · '+agenda.length+'</h3>'
     + '<div id="todayAgendaList" class="today-agenda-list"></div>'
     + (isDFT
@@ -467,7 +467,11 @@ function renderTodayView(){
     + (isDFT ? '' : '<button type="button" id="todayShareBtn" class="btn" style="flex:1;width:auto">📤 Compartir</button>')
     + (isDFT ? '' : '<button type="button" id="todayOpenDay" class="btn" style="flex:1;width:auto">📖 Día completo</button>')
     + '</div>'
-    + '</div>';
+    + '</div>'
+    + '<div class="today-card"><h3>✅ Hábitos de hoy</h3><div id="todayHabitsBox">'+habHTML+'</div></div>'
+    + '<div class="today-card"><h3>😊 Estado de ánimo</h3>'
+    + '<button type="button" id="todayMoodMain" class="today-mood-main"><span class="tm-ico">'+sug.e+'</span><span>'+(cur?escapeHtml(cur.n)+' · toca para cambiar':'Sugerencia: '+sug.e+' · '+escapeHtml(sug.n))+'</span></button>'
+    + '<div id="todayMoodPicker" class="today-mood-picker hidden"></div></div>';
   // --- ánimo: sugerencia + expandir opciones ---
   const main = $('todayMoodMain'), picker = $('todayMoodPicker');
   const paintPicker = ()=>{

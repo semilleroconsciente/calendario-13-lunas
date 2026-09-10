@@ -762,7 +762,7 @@ body.large-text #lunaDesc, body.large-text .chip, body.large-text .btn { font-si
     font-size: 26px; background: var(--card); border: 1px solid var(--line); border-radius: 12px;
   }
   .today-mood-picker { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
-  .today-note { min-height: 76px; }
+  .today-note { min-height: 150px; font-size: 14px; line-height: 1.6; }
   .today-agenda-list { display: flex; flex-direction: column; gap: 6px; margin-bottom: 8px; }
   .today-agenda-item {
     display: flex; align-items: center; gap: 8px;
