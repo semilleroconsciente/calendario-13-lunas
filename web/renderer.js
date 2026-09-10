@@ -302,48 +302,64 @@ function renderCurrentView(){
 
 // === VISTA HOY (solo móvil) + dock inferior persistente ===
 // PC queda igual: todo este bloque solo se activa con matchMedia max-width 920px.
+// mobileSec: 'hoy' (día directo) | 'luna' (mensual lunar 28 días) | 'completa' (todo)
+// Guía y Ajustes abren sus diálogos sin cambiar de sección.
+let mobileSec = null;
 function isMobileWidth(){
   try{ return window.matchMedia('(max-width: 920px)').matches; }
   catch(e){ return (window.innerWidth||9999) <= 920; }
 }
 function syncMobileViewAttr(){
   try{
-    if(!isMobileWidth()){ document.body.removeAttribute('data-mview'); return; }
-    document.body.dataset.mview = (viewMode==='hoy') ? 'hoy' : (viewMode||'luna');
+    if(!isMobileWidth() || !mobileSec){ document.body.removeAttribute('data-mview'); return; }
+    document.body.dataset.mview = mobileSec;
   }catch(e){}
 }
 function paintMobileDock(){
-  const map = { hoy:'dockHoy', luna:'dockLuna', semana:'dockSemana', mes:'dockMes' };
+  const map = { hoy:'dockHoy', luna:'dockLuna' };
   Object.entries(map).forEach(([m,id])=>{
     const el = $(id); if(!el) return;
-    el.classList.toggle('active', viewMode===m);
+    el.classList.toggle('active', mobileSec===m);
   });
-  const mas = $('dockMas'); if(mas) mas.classList.remove('active');
+  const f = $('dockFull'); if(f) f.classList.toggle('active', mobileSec==='completa');
 }
-function showMobileView(m){
-  if(m==='hoy'){ viewMode='hoy'; renderCurrentView(); }
-  else if(m==='semanaLunar'){ viewMode='semanaLunar'; viewDateMs=Date.now(); renderCurrentView(); }
-  else if(m==='mes'){ viewMode='mes'; viewDateMs=Date.now(); renderCurrentView(); }
-  else if(m==='semana'){ viewMode='semana'; viewDateMs=Date.now(); renderCurrentView(); }
-  else if(m==='mas'){
-    const t = $('actions');
-    if(t) t.scrollIntoView({behavior:'smooth', block:'start'});
-    return;
-  }
-  else { viewMode='luna'; renderCurrentView(); }
+function scrollMobileTop(){
   try{
     const main = $('main');
-    if(main) main.scrollTo ? main.scrollTo({top:0}) : null;
+    if(main && main.scrollTo) main.scrollTo({top:0});
     window.scrollTo(0,0);
   }catch(e){}
 }
+function showMobileView(m){
+  if(m==='guia'){ try{ ($('btnHelp')||{}).click ? $('btnHelp').click() : $('helpDialog').showModal(); }catch(e){} return; }
+  if(m==='conf'){ try{ ($('btnConfig')||{}).click ? $('btnConfig').click() : $('configDialog').showModal(); }catch(e){} return; }
+  if(m==='hoy'){ mobileSec='hoy'; viewMode='hoy'; renderCurrentView(); scrollMobileTop(); return; }
+  if(m==='luna'){
+    mobileSec='luna';
+    if(viewMode==='hoy') viewMode='luna';
+    // asegurar que la luna visible sea la de hoy
+    try{
+      const inf = todayInfo();
+      if(inf && inf.luna!=='dft' && currentView && currentView.luna!==inf.luna){
+        if(String(inf.y)!==String(currentCycleYear())){ try{ selectCycle(inf.y, inf.luna); }catch(e){} }
+        else { selectMoon(inf.luna); mobileSec='luna'; syncMobileViewAttr(); paintMobileDock(); scrollMobileTop(); return; }
+      }
+    }catch(e){}
+    renderCurrentView(); scrollMobileTop(); return;
+  }
+  if(m==='completa'){
+    mobileSec='completa';
+    if(viewMode==='hoy') viewMode='luna';
+    renderCurrentView(); scrollMobileTop(); return;
+  }
+}
 function setupMobileDock(){
-  const bH=$('dockHoy'), bL=$('dockLuna'), bS=$('dockSemana'), bM=$('dockMes'), bX=$('dockMas');
+  const bH=$('dockHoy'), bL=$('dockLuna'), bG=$('dockGuia'), bC=$('dockConf'), bF=$('dockFull');
   if(bH) bH.onclick=()=>showMobileView('hoy');
   if(bL) bL.onclick=()=>showMobileView('luna');
-  if(bS) bS.onclick=()=>showMobileView('semana');
-  if(bM) bM.onclick=()=>showMobileView('mes');
-  if(bX) bX.onclick=()=>showMobileView('mas');
+  if(bG) bG.onclick=()=>showMobileView('guia');
+  if(bC) bC.onclick=()=>showMobileView('conf');
+  if(bF) bF.onclick=()=>showMobileView('completa');
 }
 function todayCellRef(){
   const info = todayInfo();
@@ -401,13 +417,28 @@ function renderTodayView(){
   const sug = cur || { e:'🙂', n:'¿Cómo estás hoy? Toca para elegir' };
   const wd = cal.weekdayName(noonMs);
   const fechaLarga = cal.fmtFull.format(new Date(noonMs));
-  const lunaLine = isDFT ? '✷ Día Fuera del Tiempo' : ('Luna '+lunaN+' · Día '+diaN+' de 28'+(meta?' · '+meta.nombre:''));
+  const efe = (typeof EFEMERIDES!=='undefined') ? (EFEMERIDES[key.slice(5)]||'') : '';
+  const lunaLine = isDFT ? '✷ Día Fuera del Tiempo' : ('Luna '+lunaN+' · Día '+diaN+' de 28');
+  const lunaSub = isDFT ? 'Cierre del ciclo · víspera del We Tripantu' : ((meta?meta.nombre+' — '+meta.traduccion:'')+(efe?' · 📅 '+efe:''));
+  // hábitos de hoy (igual que en el diálogo del día)
+  let habHTML='';
+  try{
+    const hd=getHabitData();
+    if(hd && hd.list && hd.list.length){
+      habHTML='<div class="habits-today-grid">'+hd.list.map(h=>{
+        const done=hd.entries[key] && hd.entries[key][h.id];
+        return '<label class="habit-today-item '+(done?'done':'')+'" style="border-color:'+h.color+'55"><input type="checkbox" data-id="'+h.id+'" '+(done?'checked':'')+'><span class="habit-icon" style="background:'+h.color+'22;color:'+h.color+'">'+escapeHtml(h.icono||'✓')+'</span><span>'+escapeHtml(h.nombre)+'</span></label>';
+      }).join('')+'</div>';
+    } else {
+      habHTML='<p class="muted" style="font-size:11px">Sin hábitos creados. Créalos en ✅ Hábitos (vista Completa).</p>';
+    }
+  }catch(e){ habHTML=''; }
   box.classList.remove('hidden');
   box.innerHTML =
     '<div class="today-hero">'
-    + '<div class="t-now">◉ HOY · '+escapeHtml(wd)+' '+escapeHtml(fechaLarga)+' · ahora <b>'+hh+'</b></div>'
+    + '<div class="t-now">◉ HOY · '+escapeHtml(wd)+' '+escapeHtml(fechaLarga)+' · ahora <b id="todayNowTime">'+hh+'</b></div>'
     + '<h2>'+escapeHtml(lunaLine)+'</h2>'
-    + '<div class="t-sub">'+escapeHtml(isDFT ? 'Cierre del ciclo · víspera del We Tripantu' : (meta ? meta.traduccion+' — '+meta.descripcion.slice(0,140)+'…' : ''))+'</div>'
+    + '<div class="t-sub">'+escapeHtml(lunaSub)+'</div>'
     + '</div>'
     + '<div class="today-card"><h3>💬 Frase del día</h3>'
     + (fr ? '<p class="today-quote">«'+escapeHtml(fr.t)+'»<span>— '+escapeHtml(fr.a)+'</span></p>' : '<p class="muted">Sin frase para hoy.</p>')
@@ -422,6 +453,7 @@ function renderTodayView(){
     + '<div class="today-card"><h3>😊 Estado de ánimo</h3>'
     + '<button type="button" id="todayMoodMain" class="today-mood-main"><span class="tm-ico">'+sug.e+'</span><span>'+(cur?escapeHtml(cur.n)+' · toca para cambiar':'Sugerencia: '+sug.e+' · '+escapeHtml(sug.n))+'</span></button>'
     + '<div id="todayMoodPicker" class="today-mood-picker hidden"></div></div>'
+    + '<div class="today-card"><h3>✅ Hábitos de hoy</h3><div id="todayHabitsBox">'+habHTML+'</div></div>'
     + '<div class="today-card"><h3>📝 Notas del día</h3>'
     + '<textarea id="todayNote" class="today-note" rows="3" placeholder="tareas, ánimo, sueños, registros...">'+escapeHtml(nota)+'</textarea></div>'
     + '<div class="today-card"><h3>🕐 Compromisos · '+agenda.length+'</h3>'
@@ -430,7 +462,11 @@ function renderTodayView(){
       ? '<p class="muted" style="font-size:11px">Los compromisos por hora viven en los días de luna. Este día es de cierre y reflexión.</p>'
       : '<div class="today-add"><input type="time" id="todayHourSel" value="'+hh+'" step="60" aria-label="Hora"><input type="text" id="todayHourText" placeholder="Compromiso..." maxlength="80"><label class="check-row" style="margin:0;white-space:nowrap"><input type="checkbox" id="todayHourNotify"> 🔔</label><button type="button" id="todayHourAdd" class="btn btn-accent" style="width:auto">+ Agregar</button></div>')
     + '<div style="height:8px"></div>'
-    + (isDFT ? '' : '<button type="button" id="todayOpenDay" class="btn" style="width:100%">Abrir día completo 📖</button>')
+    + '<div style="display:flex;gap:8px;flex-wrap:wrap">'
+    + (isDFT ? '' : '<button type="button" id="todayMensBtn" class="btn" style="flex:1;width:auto">🌸 Inicio ciclo</button>')
+    + (isDFT ? '' : '<button type="button" id="todayShareBtn" class="btn" style="flex:1;width:auto">📤 Compartir</button>')
+    + (isDFT ? '' : '<button type="button" id="todayOpenDay" class="btn" style="flex:1;width:auto">📖 Día completo</button>')
+    + '</div>'
     + '</div>';
   // --- ánimo: sugerencia + expandir opciones ---
   const main = $('todayMoodMain'), picker = $('todayMoodPicker');
@@ -534,6 +570,64 @@ function renderTodayView(){
       openDayDialog(lunaN, diaN);
     }catch(e){}
   };
+  // --- hábitos de hoy ---
+  try{
+    const hb=$('todayHabitsBox');
+    if(hb) hb.querySelectorAll('input[data-id]').forEach(cb=> cb.onchange=()=>{
+      try{ habitToggle(key, cb.dataset.id); }catch(e){}
+      scheduleSave();
+      const lab=cb.closest('label'); if(lab){ if(cb.checked) lab.classList.add('done'); else lab.classList.remove('done'); }
+    });
+  }catch(e){}
+  // --- marcar inicio de ciclo menstrual ---
+  try{
+    const mb=$('todayMensBtn');
+    if(mb){
+      const paintMens=()=>{
+        try{
+          const md=getMensData();
+          const is=md.history.includes(key);
+          mb.textContent = is ? '🌸 Quitar inicio' : '🌸 Inicio ciclo';
+          mb.classList.toggle('btn-accent', is);
+        }catch(e){}
+      };
+      paintMens();
+      mb.onclick=()=>{
+        try{
+          const md=getMensData();
+          if(md.history.includes(key)) md.history=md.history.filter(k=>k!==key);
+          else { md.history.push(key); md.history.sort(); }
+          scheduleSave('Guardado ✓'); paintMens();
+          try{ renderMensHistory(); renderMensPredictBox(); renderMensLunaBox(); }catch(e){}
+        }catch(e){}
+      };
+    }
+  }catch(e){}
+  // --- compartir día (imagen) ---
+  try{
+    const sb=$('todayShareBtn');
+    if(sb) sb.onclick=async()=>{
+      try{
+        const dataUrl=buildShareImage(lunaN, diaN);
+        const res=await window.api.imageSave(dataUrl, 'Luna '+lunaN+' · Día '+diaN+' de 28.png');
+        if($('statusMsg')){ $('statusMsg').textContent = res ? 'Imagen guardada ✓' : 'Cancelado'; setTimeout(()=>{$('statusMsg').textContent='';},2500); }
+      }catch(e){ alert('No se pudo compartir este día'); }
+    };
+  }catch(e){}
+  // --- hora viva en el encabezado ---
+  try{
+    const nt=$('todayNowTime');
+    if(nt){
+      const tick=()=>{
+        try{
+          const n=new Date();
+          const el=$('todayNowTime');
+          if(el) el.textContent=String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0');
+        }catch(e){}
+      };
+      setTimeout(tick, 20000);
+    }
+  }catch(e){}
 }
 function gregMonthLabel(ms){
   const d = new Date(ms);
@@ -8638,15 +8732,16 @@ if ($('btnTimer')) {
   } else {
     selectMoon(1);
   }
-  // Móvil: abrir directamente en Hoy (frase, sol/luna, notas, ánimo, compromisos + dock)
+  // Móvil: entrar directo a la vista del día (Hoy), sin sidebar
   try{
     if(isMobileWidth() && info){
       if(String(info.y)!==String(startY)){
         try{ selectCycle(info.y, info.luna==='dft'?'dft':info.luna); }catch(e){}
       }
+      mobileSec='hoy';
       viewMode='hoy';
       renderCurrentView();
-    } else { syncMobileViewAttr(); }
+    } else { mobileSec=null; syncMobileViewAttr(); }
   }catch(e){}
   $('cycleSel').value = String(startY);
   updateRemindBtn();
