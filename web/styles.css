@@ -716,11 +716,24 @@ body.large-text #lunaDesc, body.large-text .chip, body.large-text .btn { font-si
   #main { padding-bottom: 86px !important; }
 
   /* Contenedor Hoy */
+  /* HOY: solo el día, sin sidebar ni resto (entrada directa a la vista del día) */
   body[data-mview="hoy"] #todayView { display: flex; flex-direction: column; gap: 10px; }
+  body[data-mview="hoy"] #sidebar,
   body[data-mview="hoy"] #lunaHeader,
   body[data-mview="hoy"] #viewBar,
   body[data-mview="hoy"] #gridWrap,
-  body[data-mview="hoy"] #monthNoteWrap { display: none; }
+  body[data-mview="hoy"] #monthNoteWrap,
+  body[data-mview="hoy"] .actions-toolbar,
+  body[data-mview="hoy"] #actions,
+  body[data-mview="hoy"] #weatherPanel,
+  body[data-mview="hoy"] #tidesPanel { display: none; }
+  /* LUNA: vista mensual lunar (28 días) sin sidebar ni herramientas */
+  body[data-mview="luna"] #sidebar,
+  body[data-mview="luna"] .actions-toolbar,
+  body[data-mview="luna"] #actions,
+  body[data-mview="luna"] #weatherPanel,
+  body[data-mview="luna"] #tidesPanel { display: none; }
+  /* COMPLETA: todo visible como en PC */
   body:not([data-mview="hoy"]) #todayView { display: none; }
 
   .today-hero {
