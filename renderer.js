@@ -75,6 +75,8 @@ function applyTheme(theme) {
   }
   const sel = $('themeSel');
   if (sel && sel.value !== theme) sel.value = theme;
+  const cfg = $('cfgThemeSel');
+  if (cfg && cfg.value !== theme) cfg.value = theme;
 }
 function setupThemeSelector() {
   const sel = $('themeSel');
@@ -5245,20 +5247,20 @@ function showGuiaTab(which){
 setTimeout(setupHelpDialog, 850);
 
 // === CONFIGURACIÓN PERSONALIZABLE ===
-const ALL_BTNS = ["btnTides","btnFishing","btnBirds","btnIntermareal","btnBosque","btnWeather","btnSiembra","btnAstro","btnComuna","btnEkadashi","btnMenstrual","btnMedic","btnHabits","btnMeal","btnShopping","btnFinance","btnHomeTasks","btnDiscipline","btnDreams","btnBreath","btnGratitud","btnSchedule","btnGym","btnCircadian","btnGolden","btnEspiritual","btnCompost","btnRecicla","btnLawen","btnFirstAid","btnAnimalCare","btnViolence","btnEvac","btnConvert","btnEnergy","btnLena","btnTimer","btnRemind","btnBackup","btnRestore","btnShortcut","btnPdfLuna","btnPdfCiclo","btnDonate","btnHelp","btnStudy","btnTales","btnMemory","btnMapu","btnEnglish","btnGuitar"];
+const ALL_BTNS = ["btnTides","btnFishing","btnBirds","btnIntermareal","btnBosque","btnWeather","btnSiembra","btnAstro","btnComuna","btnEkadashi","btnMenstrual","btnMedic","btnHabits","btnMeal","btnShopping","btnFinance","btnHomeTasks","btnDiscipline","btnDreams","btnBreath","btnGratitud","btnSchedule","btnGym","btnCircadian","btnGolden","btnEspiritual","btnCompost","btnRecicla","btnLawen","btnFirstAid","btnAnimalCare","btnViolence","btnEvac","btnConvert","btnEnergy","btnLena","btnTimer","btnRemind","btnBackup","btnRestore","btnShortcut","btnPdfLuna","btnPdfCiclo","btnDonate","btnHelp","btnStudy","btnTales","btnMemory","btnMapu","btnEnglish","btnGuitar","btnPsico","btnMetodos"];
 const PRESETS = {
   todo: Object.fromEntries(ALL_BTNS.map(k=>[k,true])),
   esencial: {btnTides:true,btnWeather:true,btnSiembra:true,btnEkadashi:true,btnFirstAid:true,btnEvac:true,btnBackup:true,btnRestore:true,btnPdfLuna:true,btnPdfCiclo:true,btnHelp:true,btnDonate:true},
   infantil: {btnWeather:true,btnSiembra:true,btnHabits:true,btnDreams:true,btnBreath:true,btnSchedule:true,btnTales:true,btnMapu:true,btnEnglish:true,btnGuitar:true,btnHelp:true},
-  adolescente: {btnHabits:true,btnStudy:true,btnSchedule:true,btnDiscipline:true,btnDreams:true,btnBreath:true,btnMapu:true,btnEnglish:true,btnGuitar:true,btnConvert:true,btnTimer:true,btnHelp:true},
+  adolescente: {btnHabits:true,btnStudy:true,btnSchedule:true,btnDiscipline:true,btnDreams:true,btnBreath:true,btnMapu:true,btnEnglish:true,btnGuitar:true,btnConvert:true,btnTimer:true,btnPsico:true,btnMetodos:true,btnHelp:true},
   adulto: Object.fromEntries(ALL_BTNS.map(k=>[k,true])),
   mayor: {btnTides:true,btnWeather:true,btnSiembra:true,btnMenstrual:true,btnMedic:true,btnDreams:true,btnGratitud:true,btnBreath:true,btnLena:true,btnHelp:true,btnDonate:true},
   estudiante: {btnWeather:true,btnSiembra:true,btnHabits:true,btnStudy:true,btnSchedule:true,btnDiscipline:true,btnMapu:true,btnEnglish:true,btnGuitar:true,btnTales:true,btnConvert:true,btnTimer:true,btnHelp:true},
   agricultor: {btnTides:true,btnFishing:true,btnBirds:true,btnIntermareal:true,btnBosque:true,btnWeather:true,btnSiembra:true,btnCompost:true,btnLawen:true,btnRecicla:true,btnGolden:true,btnCircadian:true,btnHelp:true},
   pescador: {btnTides:true,btnFishing:true,btnBirds:true,btnIntermareal:true,btnBosque:true,btnWeather:true,btnSiembra:true,btnGolden:true,btnHelp:true},
-  salud: {btnMenstrual:true,btnMedic:true,btnLawen:true,btnHabits:true,btnGym:true,btnCircadian:true,btnDreams:true,btnGratitud:true,btnBreath:true,btnEspiritual:true,btnMeal:true,btnFirstAid:true,btnAnimalCare:true,btnEvac:true,btnHelp:true},
+  salud: {btnMenstrual:true,btnMedic:true,btnLawen:true,btnHabits:true,btnGym:true,btnCircadian:true,btnDreams:true,btnGratitud:true,btnBreath:true,btnEspiritual:true,btnPsico:true,btnMetodos:true,btnMeal:true,btnFirstAid:true,btnAnimalCare:true,btnEvac:true,btnHelp:true},
   deportista: {btnHabits:true,btnGym:true,btnMeal:true,btnShopping:true,btnFinance:true,btnCircadian:true,btnBreath:true,btnEspiritual:true,btnTimer:true,btnHelp:true},
-  docente: {btnSiembra:true,btnEkadashi:true,btnStudy:true,btnSchedule:true,btnHabits:true,btnDiscipline:true,btnMapu:true,btnEnglish:true,btnGuitar:true,btnTales:true,btnGratitud:true,btnRecicla:true,btnConvert:true,btnPdfCiclo:true,btnHelp:true}
+  docente: {btnSiembra:true,btnEkadashi:true,btnStudy:true,btnSchedule:true,btnHabits:true,btnDiscipline:true,btnMapu:true,btnEnglish:true,btnGuitar:true,btnTales:true,btnGratitud:true,btnPsico:true,btnMetodos:true,btnRecicla:true,btnConvert:true,btnPdfCiclo:true,btnHelp:true}
 };
 function getVisibleConfig(){
   const c = (DATA.config && DATA.config.visible) || {};
@@ -5287,15 +5289,97 @@ function updateGroupCounts(){
     g.style.display = hasVisible ? '' : 'none';
   });
 }
+function syncConfigMirrors(){
+  try{
+    const cu=$('cfgUserSel');
+    if(cu){
+      cu.innerHTML='';
+      (DATA.usuarios||[]).forEach(u=>{
+        const o=document.createElement('option');
+        o.value=u.id; o.textContent=u.nombre;
+        cu.appendChild(o);
+      });
+      cu.value=DATA.actual;
+    }
+    const cc=$('cfgCycleSel');
+    if(cc){
+      cc.innerHTML='';
+      (typeof CYCLE_YEARS!=='undefined'?CYCLE_YEARS:[]).forEach(y=>{
+        const o=document.createElement('option');
+        o.value=String(y); o.textContent=y+' → '+(y+1);
+        cc.appendChild(o);
+      });
+      try{ cc.value=String(currentCycleYear()); }catch(e){}
+    }
+    const ct2=$('cfgThemeSel');
+    if(ct2){
+      try{ ct2.value=getTheme(); }catch(e){}
+    }
+  }catch(e){}
+}
 function setupConfigDialog(){
   const btn=$('btnConfig'); if(btn) btn.onclick=()=>{
     const vis=getVisibleConfig();
     document.querySelectorAll('#configDialog input[data-btn]').forEach(cb=>{
       cb.checked = !!vis[cb.dataset.btn];
     });
+    syncConfigMirrors();
     $('configDialog').showModal();
   };
-  const ct=$('configCloseTop'), cb=$('configClose'); if(ct) ct.onclick=()=>$('configDialog').close(); if(cb) cb.onclick=()=>$('configDialog').close();
+  const ct=$('configCloseTop'), cb=$('configClose'), cts=$('configCloseTopSave');
+  if(ct) ct.onclick=()=>$('configDialog').close();
+  if(cb) cb.onclick=()=>$('configDialog').close();
+  if(cts) cts.onclick=()=>$('configDialog').close();
+  // Espejos: Usuario / Ciclo / Tema (para móvil sin sidebar)
+  const cu=$('cfgUserSel');
+  if(cu && !cu.dataset.bound){
+    cu.dataset.bound='1';
+    cu.onchange=()=>{
+      DATA.actual=cu.value;
+      scheduleSave();
+      try{
+        const us=$('userSel'); if(us) us.value=DATA.actual;
+        selectCycle(currentCycleYear(), currentView.tipo==='dft'?'dft':currentView.luna);
+      }catch(e){}
+    };
+  }
+  const ca=$('cfgAddUser');
+  if(ca && !ca.dataset.bound){ ca.dataset.bound='1'; ca.onclick=()=>{ try{ $('btnAddUser').click(); }catch(e){} setTimeout(syncConfigMirrors, 600); }; }
+  const cd=$('cfgDelUser');
+  if(cd && !cd.dataset.bound){ cd.dataset.bound='1'; cd.onclick=()=>{ try{ $('btnDelUser').click(); }catch(e){} setTimeout(syncConfigMirrors, 600); }; }
+  const cc=$('cfgCycleSel');
+  if(cc && !cc.dataset.bound){
+    cc.dataset.bound='1';
+    cc.onchange=()=>{
+      try{
+        const v=+cc.value;
+        const cs=$('cycleSel'); if(cs) cs.value=String(v);
+        selectCycle(v, currentView.luna);
+        setTimeout(syncConfigMirrors, 300);
+      }catch(e){}
+    };
+  }
+  const cth=$('cfgThemeSel');
+  if(cth && !cth.dataset.bound){
+    cth.dataset.bound='1';
+    cth.onchange=()=>{
+      const v=cth.value;
+      DATA.config=DATA.config||{};
+      DATA.config.theme=v;
+      scheduleSave();
+      try{ applyTheme(v); }catch(e){}
+      try{ const s=$('themeSel'); if(s) s.value=v; }catch(e){}
+    };
+  }
+  const dn=$('cfgDonateBtn');
+  if(dn && !dn.dataset.bound){
+    dn.dataset.bound='1';
+    dn.onclick=(e)=>{
+      e.preventDefault(); e.stopPropagation();
+      try{ $('configDialog').close(); }catch(err){}
+      setTimeout(()=>{ try{ $('btnDonate').click(); }catch(err2){ try{ $('donateDialog').showModal(); }catch(e){} } }, 120);
+    };
+  }
   document.querySelectorAll('#configDialog input[data-btn]').forEach(cb=>{
     cb.onchange=()=>{
       DATA.config=DATA.config||{}; DATA.config.visible=DATA.config.visible||{};
@@ -7884,6 +7968,144 @@ function setupGratitudDialog(){
   };
 }
 setTimeout(setupGratitudDialog, 893);
+
+// === PSICO & AUTOCONOCIMIENTO ===
+const PSICO_TOPICS = [
+  {id:'sombra', icon:'🌑', nombre:'Sombra (Jung)'},
+  {id:'tcc', icon:'🧠', nombre:'TCC'},
+  {id:'gestalt', icon:'🪑', nombre:'Gestalt'},
+  {id:'tipologias', icon:'🧬', nombre:'Tipologías'},
+  {id:'journaling', icon:'✍️', nombre:'Journaling'},
+  {id:'estoico', icon:'🏛️', nombre:'Examen estoico'},
+  {id:'mayeutica', icon:'❓', nombre:'Mayéutica'},
+  {id:'mindfulness', icon:'🧘', nombre:'Mindfulness'},
+  {id:'atmavichara', icon:'🪞', nombre:'Atma Vichara'},
+  {id:'vipassana', icon:'🌊', nombre:'Vipassana'},
+  {id:'corporal', icon:'🧍', nombre:'Conciencia corporal'},
+  {id:'arte', icon:'🎨', nombre:'Arte intuitivo'}
+];
+function psicoTopicName(id){ const t=PSICO_TOPICS.find(x=>x.id===id); return t? (t.icon+' '+t.nombre) : id; }
+function getPsicoData(){ try{ const u=userData(); if(!u.psico) u.psico={entries:{}}; if(!u.psico.entries) u.psico.entries={}; return u.psico; }catch{ return {entries:{}}; } }
+function psicoStreak(){
+  const e=getPsicoData().entries; let s=0; const d=new Date();
+  for(let i=0;i<365;i++){ const k=cal.fmtKey.format(d); const day=e[k]; const has=day && Object.values(day).some(v=>v&&v.trim()); if(has){ s++; d.setDate(d.getDate()-1); } else if(i===0){ d.setDate(d.getDate()-1); continue; } else break; }
+  return s;
+}
+function renderPsicoBox(){
+  const b=$('psicoStreakBox'); if(!b) return;
+  const e=getPsicoData().entries;
+  const n=Object.keys(e).filter(k=>{ const day=e[k]; return day && Object.values(day).some(v=>v&&v.trim()); }).length;
+  b.innerHTML=`<b>🪞 Racha:</b> ${psicoStreak()} días seguidos · <b>${n}</b> días con práctica <span class="muted" style="font-size:11px">— relee cada luna para ver patrones</span>`;
+}
+function renderPsicoLog(){
+  const box=$('psiLog'); if(!box) return;
+  const e=getPsicoData().entries;
+  const rows=[];
+  Object.keys(e).sort().reverse().forEach(k=>{ const day=e[k]||{}; Object.keys(day).forEach(t=>{ if(day[t]&&day[t].trim()) rows.push({k,t,v:day[t]}); }); });
+  const last=rows.slice(0,15);
+  box.innerHTML = last.length? last.map((r,i)=>`<div class="hora-item" style="align-items:flex-start"><span style="font-size:11px"><b>${escapeHtml(r.k)}</b> · ${escapeHtml(psicoTopicName(r.t))}<br>${escapeHtml(r.v)}</span><button type="button" class="btn btn-icon psi-del" data-k="${escapeHtml(r.k)}" data-t="${escapeHtml(r.t)}">✕</button></div>`).join('')
+    : '<p class="muted" style="font-size:11px;text-align:center">Sin registros. Elige un tema y escribe tu ejercicio de hoy.</p>';
+  box.querySelectorAll('.psi-del').forEach(x=> x.onclick=()=>{ const gd=getPsicoData(); if(gd.entries[x.dataset.k]){ delete gd.entries[x.dataset.k][x.dataset.t]; if(!Object.keys(gd.entries[x.dataset.k]).length) delete gd.entries[x.dataset.k]; } scheduleSave(); renderPsicoBox(); renderPsicoLog(); });
+  const st=$('psiStats'); if(st) st.textContent = rows.length? `${rows.length} prácticas guardadas` : '';
+}
+function setupPsicoDialog(){
+  const btn=$('btnPsico'); if(btn) btn.onclick=()=>{
+    const t=cal.fmtKey.format(new Date()); const d=$('psiDate'); if(d && !d.value) d.value=t;
+    renderPsicoBox(); renderPsicoLog(); $('psicoDialog').showModal();
+  };
+  const ct=$('psicoCloseTop'), cb=$('psicoClose'); if(ct) ct.onclick=()=>$('psicoDialog').close(); if(cb) cb.onclick=()=>$('psicoDialog').close();
+  const tabs=[['tabPsi1','psicoPanel1'],['tabPsi2','psicoPanel2'],['tabPsi3','psicoPanel3'],['tabPsi4','psicoPanel4']];
+  const show=i=>{ tabs.forEach(([tid,pid],j)=>{ const p=$(pid); if(p) p.classList.toggle('hidden', j!==i); const t=$(tid); if(t) t.classList.toggle('btn-accent', j===i); }); };
+  tabs.forEach(([tid],i)=>{ const t=$(tid); if(t) t.onclick=()=>show(i); });
+  const sv=$('psiSave'); if(sv) sv.onclick=()=>{
+    const k=($('psiDate')&&$('psiDate').value)||cal.fmtKey.format(new Date());
+    const topic=($('psiTopic')&&$('psiTopic').value)||'journaling';
+    const txt=sanitizeText((($('psiText')||{}).value||'').trim(),500);
+    if(!txt) return alert('Escribe tu ejercicio primero');
+    const gd=getPsicoData(); if(!gd.entries[k]) gd.entries[k]={};
+    gd.entries[k][topic]=((gd.entries[k][topic]? gd.entries[k][topic]+'\n' : '')+txt).slice(-1500);
+    scheduleSave('Guardado ✓'); $('psiText').value=''; renderPsicoBox(); renderPsicoLog();
+  };
+  const toNote=$('psiToNote'); if(toNote) toNote.onclick=()=>{
+    const topic=($('psiTopic')&&$('psiTopic').value)||'journaling';
+    const txt=(($('psiText')||{}).value||'').trim() || (()=>{
+      const k=($('psiDate')&&$('psiDate').value)||cal.fmtKey.format(new Date());
+      const gd=getPsicoData(); return (gd.entries[k]&&gd.entries[k][topic])||'';
+    })();
+    if(!txt) return alert('Escribe o guarda tu ejercicio primero');
+    const info=todayInfo(); if(!info) return alert('No se pudo ubicar hoy');
+    const note='🪞 '+psicoTopicName(topic)+': '+txt;
+    if(info.luna==='dft'){ const c=cyc(currentCycleYear()); c.dft.nota=(c.dft.nota? c.dft.nota+'\n':'')+note; }
+    else { const cell=dayCell(info.luna, info.diaN); cell.nota=(cell.nota? cell.nota+'\n':'')+note; }
+    scheduleSave(); if(currentView.tipo==='luna') renderLuna(); else renderDFT();
+    alert('Llevado a la nota de hoy ✓');
+  };
+  const sh=$('psiShare'); if(sh) sh.onclick=async()=>{
+    const e=getPsicoData().entries; const keys=Object.keys(e).sort().reverse().slice(0,7);
+    const t=keys.length? '🪞 Mis prácticas (últimos días)\n'+keys.map(k=>{ const day=e[k]; return '• '+k+'\n'+Object.keys(day).map(topic=>'  '+psicoTopicName(topic)+': '+day[topic]).join('\n'); }).join('\n') : '🪞 Sin prácticas aún';
+    await shareText('Mis prácticas', t, null);
+  };
+  const cl=$('psiClear'); if(cl) cl.onclick=()=>{ if(!confirm('¿Borrar todo tu registro de autoconocimiento?')) return; getPsicoData().entries={}; scheduleSave(); renderPsicoBox(); renderPsicoLog(); };
+}
+setTimeout(setupPsicoDialog, 895);
+
+// === MÉTODOS & VISIONES ===
+const METODOS_TOPICS = [
+  {id:'estoicismo', icon:'🏛️', nombre:'Estoicismo'},
+  {id:'jung', icon:'🌑', nombre:'Jung'},
+  {id:'freud', icon:'🛋️', nombre:'Freud'},
+  {id:'frankl', icon:'🔥', nombre:'Frankl'},
+  {id:'tao', icon:'☯️', nombre:'Tao'},
+  {id:'budismo', icon:'☸️', nombre:'Budismo'},
+  {id:'yogananda', icon:'🕉️', nombre:'Yogananda'},
+  {id:'zen', icon:'🎋', nombre:'Zen'},
+  {id:'patanjali', icon:'🧘', nombre:'Patanjali'},
+  {id:'toltecas', icon:'🌵', nombre:'Toltecas'},
+  {id:'gurdjieff', icon:'👁️', nombre:'Gurdjieff'},
+  {id:'grinberg', icon:'🧠', nombre:'Grinberg'},
+  {id:'grof', icon:'🌊', nombre:'Grof'},
+  {id:'hermetismo', icon:'⚗️', nombre:'Hermetismo'},
+  {id:'kimun', icon:'🌿', nombre:'Kimün mapuche'}
+];
+function metodosTopicName(id){ const t=METODOS_TOPICS.find(x=>x.id===id); return t? (t.icon+' '+t.nombre) : id; }
+function getMetodosData(){ try{ const u=userData(); if(!u.metodos) u.metodos={entries:{}}; if(!u.metodos.entries) u.metodos.entries={}; return u.metodos; }catch{ return {entries:{}}; } }
+function renderMetodosLog(){
+  const box=$('metLog'); if(!box) return;
+  const e=getMetodosData().entries;
+  const rows=[];
+  Object.keys(e).sort().reverse().forEach(k=>{ const day=e[k]||{}; Object.keys(day).forEach(t=>{ if(day[t]&&day[t].trim()) rows.push({k,t,v:day[t]}); }); });
+  const last=rows.slice(0,15);
+  box.innerHTML = last.length? last.map(r=>`<div class="hora-item" style="align-items:flex-start"><span style="font-size:11px"><b>${escapeHtml(r.k)}</b> · ${escapeHtml(metodosTopicName(r.t))}<br>${escapeHtml(r.v)}</span><button type="button" class="btn btn-icon met-del" data-k="${escapeHtml(r.k)}" data-t="${escapeHtml(r.t)}">✕</button></div>`).join('')
+    : '<p class="muted" style="font-size:11px;text-align:center">Sin registros. Elige una visión y anota tu práctica de hoy.</p>';
+  box.querySelectorAll('.met-del').forEach(x=> x.onclick=()=>{ const gd=getMetodosData(); if(gd.entries[x.dataset.k]){ delete gd.entries[x.dataset.k][x.dataset.t]; if(!Object.keys(gd.entries[x.dataset.k]).length) delete gd.entries[x.dataset.k]; } scheduleSave(); renderMetodosLog(); });
+  const st=$('metStats'); if(st) st.textContent = rows.length? `${rows.length} prácticas guardadas` : '';
+}
+function setupMetodosDialog(){
+  const btn=$('btnMetodos'); if(btn) btn.onclick=()=>{
+    const t=cal.fmtKey.format(new Date()); const d=$('metDate'); if(d && !d.value) d.value=t;
+    renderMetodosLog(); $('metodosDialog').showModal();
+  };
+  const ct=$('metodosCloseTop'), cb=$('metodosClose'); if(ct) ct.onclick=()=>$('metodosDialog').close(); if(cb) cb.onclick=()=>$('metodosDialog').close();
+  const tabs=[['tabMet1','metodosPanel1'],['tabMet2','metodosPanel2'],['tabMet3','metodosPanel3']];
+  const show=i=>{ tabs.forEach(([tid,pid],j)=>{ const p=$(pid); if(p) p.classList.toggle('hidden', j!==i); const t=$(tid); if(t) t.classList.toggle('btn-accent', j===i); }); };
+  tabs.forEach(([tid],i)=>{ const t=$(tid); if(t) t.onclick=()=>show(i); });
+  const sv=$('metSave'); if(sv) sv.onclick=()=>{
+    const k=($('metDate')&&$('metDate').value)||cal.fmtKey.format(new Date());
+    const topic=($('metTopic')&&$('metTopic').value)||'estoicismo';
+    const txt=sanitizeText((($('metText')||{}).value||'').trim(),500);
+    if(!txt) return alert('Escribe tu práctica primero');
+    const gd=getMetodosData(); if(!gd.entries[k]) gd.entries[k]={};
+    gd.entries[k][topic]=((gd.entries[k][topic]? gd.entries[k][topic]+'\n' : '')+txt).slice(-1500);
+    scheduleSave('Guardado ✓'); $('metText').value=''; renderMetodosLog();
+  };
+  const sh=$('metShare'); if(sh) sh.onclick=async()=>{
+    const e=getMetodosData().entries; const keys=Object.keys(e).sort().reverse().slice(0,7);
+    const t=keys.length? '📿 Mi camino (últimos días)\n'+keys.map(k=>{ const day=e[k]; return '• '+k+'\n'+Object.keys(day).map(topic=>'  '+metodosTopicName(topic)+': '+day[topic]).join('\n'); }).join('\n') : '📿 Sin prácticas aún';
+    await shareText('Mi camino', t, null);
+  };
+  const cl=$('metClear'); if(cl) cl.onclick=()=>{ if(!confirm('¿Borrar todo tu registro de métodos?')) return; getMetodosData().entries={}; scheduleSave(); renderMetodosLog(); };
+}
+setTimeout(setupMetodosDialog, 896);
 
 // === LEÑA & PELLET ===
 function setupLenaDialog(){
