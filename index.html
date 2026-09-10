@@ -1786,6 +1786,36 @@
         <button type="button" id="helpCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
       </div>
       <p class="muted" style="line-height:1.5"><b>Mari Küla Küyen — 13 lunas × 28 días + Día Fuera del Tiempo.</b> Un calendario territorial de Penco, inspirado en el tiempo mapuche y lunar. Todo queda <b>privado y local</b> en tu dispositivo, por usuario. Elige tu ciclo (We Tripantu 21 junio), toca un día para registrar y explora los grupos de herramientas.</p>
+      <div class="timer-tabs" style="margin-bottom:10px" role="tablist" aria-label="Nivel de guía">
+        <button type="button" id="tabGuiaBasica" class="btn btn-accent" style="width:auto" role="tab" aria-selected="true">🌱 Guía Básica</button>
+        <button type="button" id="tabGuiaDetallada" class="btn" style="width:auto" role="tab" aria-selected="false">📚 Guía Detallada</button>
+      </div>
+      <div id="guiaBasicaPanel">
+        <div class="help-grid" style="margin-bottom:12px">
+          <div class="help-card" style="grid-column:1/-1;border-color:var(--gold);background:linear-gradient(135deg,var(--panel),var(--card))">
+            <h4>🌱 Empieza en 5 pasos</h4>
+            <p><b>1 · Mira hoy:</b> pulsa <b>◉ Ir a hoy</b> en el lateral. Verás tu luna actual (ej: Luna 3) con sus 28 días, el sol de Penco y la fase lunar de cada tarjeta.</p>
+            <p><b>2 · Toca un día:</b> elige tu <b>ánimo</b> 😊, escribe en <b>📝 Notas</b> lo importante y agrega <b>🕐 Compromisos</b> con hora (ej: 08:30 médico). Marca <b>🔔</b> si quieres aviso a esa hora. Pulsa <b>Guardar día</b>.</p>
+            <p><b>3 · Cambia de vista:</b> arriba del calendario tienes <b>🌙 Luna</b> (28 días, la vista principal) · <b>🌗 Semana lunar</b> (bloques 01-07, 08-14, 15-21, 22-28) · <b>📅 Mes</b> y <b>🗓️ Semana</b> gregorianos. Usa ◀ ▶ para moverte y <b>◉ Hoy</b> para volver.</p>
+            <p><b>4 · Usa 3 herramientas:</b> empieza con <b>🌤️ Clima</b> (qué ponerte hoy), <b>🌱 Siembra lunar</b> (qué plantar según la luna) y <b>✅ Hábitos</b> (marca 1 hábito diario, ej: caminar). Todo se guarda solo en tu dispositivo.</p>
+            <p><b>5 · Personaliza:</b> con <b>⚙️ Personalizar</b> elige un perfil (Esencial, Adulto, Agricultor…) o tilda solo lo que uses. Con <b>🔍 Buscar función (Ctrl+K)</b> encuentra todo (“mareas”, “siembra”, “sueño”). ¿Quieres el detalle de cada botón? Abre la <b>📚 Guía Detallada</b> aquí arriba.</p>
+            <p style="text-align:center;color:var(--gold);margin-top:6px"><b>13 lunas × 28 días = 364 + 1 Día Fuera del Tiempo (20 jun) · Tiempo circular, observable y reparador 🌙</b></p>
+          </div>
+          <div class="help-card">
+            <h4>🗺️ Mapa rápido</h4>
+            <p><b>🌊 Territorio:</b> Mareas, Pesca, Aves, Clima (+Aire), Siembra, Astro, Penco, Ekadashi, Hora Dorada, Circadiano, Intermareal, Bosque, Compost, Reciclaje.</p>
+            <p><b>🌸 Cuerpo:</b> Ciclo, Medicina, Entrenamientos, Respiración, Sueños, Lawen, Prácticas Espirituales.</p>
+            <p><b>🧠 Mente:</b> Hábitos, Disciplina, Estudio, Horario, Cuentos, Memoria, Kimün, Inglés, Gratitud, Guitarra.</p>
+            <p><b>🍽️ Vida + 🚨 Emergencias + 🛠️ Herramientas:</b> Comidas, Compras, Finanzas, Tareas Hogar · Primeros Auxilios, Cuidado Animal, Violencia, Evacuación Tsunami · Conversión, Electricidad, Leña, Tiempo, Recordatorios, Respaldo, PDF.</p>
+          </div>
+          <div class="help-card" style="border-color:var(--gold)">
+            <h4>💡 Trucos básicos</h4>
+            <p>• <b>Todo es privado y local</b> por usuario (lateral → Usuario +/🗑). • <b>💾 Respaldo</b> descarga tu memoria en JSON; guárdalo. • <b>🎨 Tema</b> en Auto sigue a la luna; cámbialo si quieres. • Escribe <b>“Sueño:”</b> en tu nota para buscar sueños después. • Funciona <b>offline</b> salvo Clima/Mareas en vivo.</p>
+            <p>• <b>Móvil:</b> desliza las lunas horizontal · usa el dock inferior (❓ Guía siempre a mano).</p>
+          </div>
+        </div>
+      </div>
+      <div id="guiaDetalladaPanel" class="hidden">
       <!-- GUÍA: Qué es + Visión -->
       <div class="help-grid" style="margin-bottom:12px">
         <div class="help-card" id="helpGuiaQueEs" style="grid-column:1/-1;border-color:var(--gold);background:linear-gradient(135deg,var(--panel),var(--card))">
@@ -1812,6 +1842,7 @@
             <h4>🌙 Navegación</h4>
             <p><b>Lateral:</b> Usuario (+/🗑), Ciclo 13 lunas, selector 🎨 Tema (Auto/Noche/Claro/Bosque/Océano/Atardecer/Medianoche), <b>◉ Ir a hoy</b> y fila <b>⚙️ Personalizar · 🔗 Compartir · ❓ Guía</b> (los tres arriba). <b>🔗 Compartir</b> copia https://calendario-13-lunas.pages.dev/</p>
             <p><b>Arriba:</b> título, rango fechas, descripción Penco, chip estación (PUKEM/PEWU/WALUNG/RIMU) + chips de fases lunares intercambiados (creciente ↔ menguante corregido). <b>Calendario:</b> 28 tarjetas con sol, fase, ánimo y puntitos de hábitos/gym/aves/pesca/astro/finanzas/🏠/✨/🎉 + resumen de notas/compromisos.</p>
+            <p><b>Vistas (barra sobre el calendario):</b> <b>🌙 Luna</b> = 28 días de la luna actual (vista principal) · <b>🌗 Semana lunar</b> = bloques 01-07, 08-14, 15-21 y 22-28 con fase e iluminación · <b>📅 Mes</b> = mes gregoriano · <b>🗓️ Semana</b> = semana lun-dom con nº ISO. Navega con <b>◀ ▶</b> y vuelve con <b>◉ Hoy</b>; la etiqueta muestra el rango (ej: “Luna 3 · días 08-14”).</p>
             <p><b>🔍 Buscar funciones</b> (Ctrl+K) filtra botones por palabra clave — ej: “mareas”, “siembra”. <b>⚙️ Personalizar</b> oculta/muestra grupos y hace que <b>🌸 Marcar inicio ciclo</b> dentro del día desaparezca si 🌸 Ciclo está oculto.</p>
           </div>
           <div class="help-card" style="border-color:var(--gold)">
@@ -1824,10 +1855,11 @@
          <div class="help-card">
            <h4>🌊 Territorio — Penco · Bío-Bío</h4>
            <p><b>🌊 Mareas:</b> tabla 3 días SHOA con pleamar/bajamar por hora. <b>🎣 Pesca:</b> rating lunar (tithi), mejores días de la luna, 8 especies locales con talla/veda/carnada + <b>bitácora privada</b> por usuario (fecha/lugar/especie/kg/marea) y 📤 Compartir. <b>🦅 Aves:</b> catálogo 16 aves Rocuant, actividad por luna + <b>bitácora</b> (fecha/hora/cantidad/actividad) y export.</p>
-            <p><b>🌤️ Clima:</b> Open-Meteo 7 días + 48h por hora (America/Santiago). <b>🌱 Siembra:</b> 13 lunas con directa/almácigos/cosecha/tareas — pestañas <b>Siembra / Cosecha & Plagas / 🤝 Asociaciones</b> (23 cultivos, Tres Hermanas maíz-poroto-zapallo) <b>/ 🧪 Preparados</b> (10 recetas orgánicas: purín, bordelés, neem…) <b>/ 🌰 Mis Semillas</b> (tu inventario: agrega variedad y cantidad, descuenta − al sembrar, suma + al guardar).</p>
+            <p><b>🌤️ Clima:</b> Open-Meteo 7 días + 48h por hora (America/Santiago) con pestañas Pronóstico / Guía offline / <b>🌬️ Aire</b> (PM2.5 + humo leña) / Sol-UV. <b>🌱 Siembra:</b> 13 lunas con directa/almácigos/cosecha/tareas — pestañas <b>Siembra / Cosecha & Plagas / 🤝 Asociaciones</b> (23 cultivos, Tres Hermanas maíz-poroto-zapallo) <b>/ 🧪 Preparados</b> (10 recetas orgánicas: purín, bordelés, neem…) <b>/ 🌰 Mis Semillas</b> (tu inventario: agrega variedad y cantidad, descuenta − al sembrar, suma + al guardar).</p>
             <p><b>🔭 Astro:</b> eclipses/superlunas/lluvias 2026-27 (⏳ Próximos ordenados, 🌕 Mes lunar con iluminación día por día y sus eventos, 📅 Año por tipo). Las fases se ven directo en el calendario. <b>🎉 Penco:</b> 14 eventos anuales + tus eventos anuales editables (aparecen como 🎉 en el calendario). <b>📿 Ekadashi:</b> cálculo tithi con 3 lunas, ayuno shukla/krishna.</p>
             <p><b>📸 Hora Dorada:</b> salida/puesta Penco + ventana dorada/azul. <b>🌞 Circadiano:</b> gráfico 24h, fase actual, 6 bloques con qué hacer.</p>
-            <p><b>🪱 Compost:</b> pila/vermi/bocashi con registro de volteos ligados a la menguante. <b>♻️ Reciclaje:</b> buscador “¿dónde va?” (punto limpio/feria/compost/basura/peligroso) + ferias Penco mié/sáb. <b>🌬️ Aire:</b> PM2.5 en vivo + guía de leña y ventilación en Pukem.</p>
+            <p><b>🦀 Intermareal:</b> roqueríos de Lirquén y Playa Negra — catálogo (cochayuyo, luche, lapa, chorito, jaiba…), ventana de bajamar &lt;0,6m según luna nueva/llena + <b>bitácora privada</b> de salidas (fecha/hora/lugar/especie/kg/marea) con consejos de cosecha sostenible y marea roja. <b>🌳 Bosque Nativo:</b> esclerófilo costero (canelo, boldo, peumo, arrayán, quillay, maqui…) con luna y estación óptima + <b>bitácora</b> (observación/plantación/semillas/frutos/hongos/limpieza).</p>
+            <p><b>🪱 Compost & Suelo:</b> pestañas Mi pila (pila/vermi/bocashi) / Suelo Penco (arcilla) / Calendario lunar — voltea en <b>menguante</b>, registro de volteos guardado. <b>♻️ Reciclaje & Ferias:</b> buscador “¿dónde va?” (punto limpio/feria/compost/basura/peligroso) + recolección Penco y ferias centro mié/sáb, Lirquén sáb. <b>🌬️ Aire Penco (dentro de 🌤️ Clima):</b> PM2.5 en vivo Open-Meteo + guía offline de humo de leña y ventilación en Pukem — se abre desde Clima → 🌬️ Aire.</p>
          </div>
          <div class="help-card">
            <h4>🌸 Cuerpo & Salud</h4>
@@ -1835,14 +1867,16 @@
             <p><b>🌿 Medicina:</b> 2 pestañas — <b>💊 Farmacología</b> y <b>🌱 Natural</b>, ambas con <i>frecuencia/hora/desde/hasta/notas</i> + próximas tomas y notificaciones. Sugerencias 10 hierbas (Matico, Boldo…) cargables. <b>💪 Entrenamientos:</b> 4 categorías — 🏋️ Gym, 🩹 Terapia física, 🤸 Calistenia, 🌿 Prácticas varias — con sugerencias por categoría, agrega al calendario semanal con día/hora/color y marca ✓ hecho (puntitos 💪 en calendario).</p>
             <p><b>🌬️ Respiración:</b> 10 técnicas (4-7-8, caja 4-4-4-4, 5-5, 6-6…) con guía visual y cronómetro. <b>💭 Sueños:</b> 8 prácticas (intención, diario, inmóvil 60s, 3 palabras) — guarda “Sueño:” en la nota de hoy.</p>
             <p><b>🌿 Lawen:</b> herbario de 20 plantas del Bío-Bío (matico, boldo, maqui…) con uso, preparación, luna óptima y advertencias — buscable por síntoma — <b>más tus propias fichas</b> (➕ Agregar mi lawen, quedan guardadas). Educativo, no receta médica.</p>
+            <p><b>🕉️ Prácticas Espirituales:</b> 8 prácticas (sol amanecer/atardecer, agua solarizada, ducha fría, grounding, respiración al sol, luna, silencio) con <b>⏱ temporizador</b>, 🎒 kit (botella vidrio, ampolleta roja, checklist copiable) y <b>📓 registro con racha</b> — conecta con Circadiano, Hora Dorada y Respiración.</p>
            <p><b>✅ Hábitos:</b> icono (46 opciones) + color + frecuencia, racha, % mensual/por luna → puntitos de color en el día.</p>
          </div>
          <div class="help-card">
            <h4>🧠 Mente & Estudio</h4>
            <p><b>🎯 Disciplina:</b> 8 técnicas (Pomodoro 25/5, 2 min, Sapo, Time Blocking, 5 seg, WOOP, Apilar, Ambiente) + MIT del día y Si-Entonces → inicia ⏱ Pomodoro automático.</p>
            <p><b>🧠 Estudio:</b> pestañas <b>Generales</b> (recuperación, espaciada, Feynman…), <b>Mnemotecnias</b> (acrónimo/historia/palacio) con generador y <b>Lectura veloz</b> (RSVP tester ppm).</p>
-            <p><b>📚 Horario:</b> bloques semanales por día/hora/color/lugar + vista “Hoy”. <b>📖 Cuentos:</b> 13 cuentos lunares (uno por luna) — toca para leer y <b>✏️ Editar</b> tu versión privada. <b>🧩 Memoria:</b> Palacio Loci + juego Pares 8×2.</p>
-            <p><b>🗣️ Kimün:</b> palabra del día, números, frases intermedias y avanzadas + las 13 lunas (🔇 audio nativo en grabación) + quiz con racha. <b>📓 Gratitud:</b> 3 líneas diarias, racha y días ✨ en el calendario.</p>
+             <p><b>📚 Horario:</b> bloques semanales por día/hora/color/lugar + vista “Hoy”. <b>📖 Cuentos:</b> 13 cuentos lunares (uno por luna) — toca para leer y <b>✏️ Editar</b> tu versión privada. <b>🧩 Memoria:</b> Palacio Loci + juego Pares 8×2, secuencia, simon, palabras/números y atención (Schulte) — entrena foco y retención.</p>
+             <p><b>🗣️ Kimün Mapuzugun:</b> 6 pestañas — palabra del día, números & saludos, intermedio, avanzado, lunas kimün y <b>quiz con racha</b> (grafemario Azümchefe, 🔇 audio nativo en grabación, verifica con kimeltuchefe). <b>Ingles:</b> espejo del Kimün por niveles <b>A1→C1</b> (word of the day + gramática + quiz) con 🔊 voz del dispositivo. <b>📓 Gratitud Diaria:</b> 3 líneas diarias, racha y días ✨ en el calendario.</p>
+             <p><b>🎸 Guitarra:</b> 3 niveles (🌱 Principiante: postura + 5 acordes Em-Am-C-G-D + rasgueo · 🌿 Intermedio: cejilla F/Bm, power chords, fingerpicking, pentatónica · 🌳 Avanzado: jazz/CAGED/tapping/fingerstyle) + <b>🛠️ Práctica:</b> afinador de referencia E-A-D-G-B-e (A440/432), metrónomo 40-208 bpm, biblioteca de acordes y <b>bitácora</b> (minutos + racha + nivel).</p>
          </div>
            <div class="help-card">
              <h4>🍽️ Vida diaria</h4>
@@ -1870,17 +1904,18 @@
          </div>
          <div class="help-card" style="border-color:var(--gold);background:linear-gradient(135deg,var(--panel),var(--card))">
            <h4>💡 Tips & Novedades 2026</h4>
-            <p>• <b>Nuevo sep 2026:</b> 🌊🚨 Evacuación Tsunami · 🗣️ Kimün Mapuzugun · 🌿 Lawen Herbario (20) · 🪱 Compost & Suelo · ♻️ Reciclaje & Ferias · 🌬️ Aire Penco · 📓 Gratitud Diaria (✨) · 🪵 Leña & Pellet · 🌰 Mis Semillas (inventario dentro de 🌱 Siembra).</p>
-            <p>• <b>Antes:</b> 🤝 Asociaciones (23 cultivos) y 🧪 Preparados (10) en 🌱 Siembra · bitácoras privadas 🎣 Pesca y 🦅 Aves · 🏠 Tareas Hogar. • <b>Fix:</b> ❤ Aporte links externos. • Chip estación = paleta de color. • Móvil: desliza lunas horizontal.</p>
+             <p>• <b>Nuevo sep 2026:</b> 🦀 Intermareal + 🌳 Bosque Nativo (bitácoras) · 🕉️ Prácticas Espirituales (temporizador + registro) · Ingles A1-C1 · 🎸 Guitarra (afinador + metrónomo + bitácora) · 🧩 Memoria ampliada · 🌊🚨 Evacuación Tsunami · 🗣️ Kimün · 🌿 Lawen (20) · 🪱 Compost · ♻️ Reciclaje · 🌬️ Aire (en Clima) · 📓 Gratitud (✨) · 🪵 Leña & Pellet · 🌰 Mis Semillas · <b>4 vistas</b> 🌙/🌗/📅/🗓️ · <b>Guía Básica/Detallada</b>.</p>
+             <p>• <b>Antes:</b> 🤝 Asociaciones (23 cultivos) y 🧪 Preparados (10) en 🌱 Siembra · bitácoras 🎣 Pesca y 🦅 Aves · 🏠 Tareas Hogar · 📖 Cuentos editables. • <b>Fix:</b> ❤ Aporte links externos. • Chip estación = paleta de color. • Móvil: desliza lunas horizontal + dock inferior.</p>
            <p>• Escribe “Sueño:” en nota para buscar sueños. • Todo offline salvo clima/mareas. • Ctrl+K para filtrar funciones.</p>
-           <p style="text-align:center;margin-top:6px;color:var(--gold)"><b>¡Que tu ciclo florezca con la luna! — Küme mañum · Penco 2026</b></p>
-         </div>
-       </div>
-      <div class="dlg-actions"><button type="button" id="helpClose" class="btn">Cerrar</button></div>
-    </form>
-  </dialog>
+            <p style="text-align:center;margin-top:6px;color:var(--gold)"><b>¡Que tu ciclo florezca con la luna! — Küme mañum · Penco 2026</b></p>
+          </div>
+        </div>
+      </div>
+       <div class="dlg-actions"><button type="button" id="helpClose" class="btn">Cerrar</button></div>
+     </form>
+   </dialog>
 
-  <dialog id="circadianDialog">
+   <dialog id="circadianDialog">
     <form method="dialog">
       <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
         <h3 style="margin:0;color:var(--accent)">🌞 Ciclo Circadiano — Penco</h3>
@@ -2904,6 +2939,7 @@
   <nav id="mobileDock" aria-label="Navegación móvil">
     <button type="button" id="dockHoy" class="dock-btn" title="Día de hoy">◉<small>Hoy</small></button>
     <button type="button" id="dockLuna" class="dock-btn" title="Vista mensual lunar (28 días)">🌙<small>Luna</small></button>
+    <button type="button" id="dockTools" class="dock-btn" title="Herramientas">🧰<small>Herram.</small></button>
     <button type="button" id="dockGuia" class="dock-btn" title="Guía">❓<small>Guía</small></button>
     <button type="button" id="dockConf" class="dock-btn" title="Personalizar">⚙️<small>Ajustes</small></button>
     <button type="button" id="dockFull" class="dock-btn" title="Vista completa">🖥️<small>Completa</small></button>

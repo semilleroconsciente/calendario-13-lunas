@@ -302,7 +302,7 @@ function renderCurrentView(){
 
 // === VISTA HOY (solo móvil) + dock inferior persistente ===
 // PC queda igual: todo este bloque solo se activa con matchMedia max-width 920px.
-// mobileSec: 'hoy' (día directo) | 'luna' (mensual lunar 28 días) | 'completa' (todo)
+// mobileSec: 'hoy' (día directo) | 'luna' (mensual lunar 28 días) | 'tools' (herramientas) | 'completa' (todo)
 // Guía y Ajustes abren sus diálogos sin cambiar de sección.
 let mobileSec = null;
 function isMobileWidth(){
@@ -322,6 +322,7 @@ function paintMobileDock(){
     el.classList.toggle('active', mobileSec===m);
   });
   const f = $('dockFull'); if(f) f.classList.toggle('active', mobileSec==='completa');
+  const t = $('dockTools'); if(t) t.classList.toggle('active', mobileSec==='tools');
 }
 function scrollMobileTop(){
   try{
@@ -352,11 +353,23 @@ function showMobileView(m){
     if(viewMode==='hoy') viewMode='luna';
     renderCurrentView(); scrollMobileTop(); return;
   }
+  if(m==='tools'){
+    mobileSec='tools';
+    if(viewMode==='hoy') viewMode='luna';
+    renderCurrentView();
+    try{
+      const a=$('actions');
+      if(a) a.scrollIntoView({behavior:'smooth', block:'start'});
+      else scrollMobileTop();
+    }catch(e){}
+    return;
+  }
 }
 function setupMobileDock(){
-  const bH=$('dockHoy'), bL=$('dockLuna'), bG=$('dockGuia'), bC=$('dockConf'), bF=$('dockFull');
+  const bH=$('dockHoy'), bL=$('dockLuna'), bT=$('dockTools'), bG=$('dockGuia'), bC=$('dockConf'), bF=$('dockFull');
   if(bH) bH.onclick=()=>showMobileView('hoy');
   if(bL) bL.onclick=()=>showMobileView('luna');
+  if(bT) bT.onclick=()=>showMobileView('tools');
   if(bG) bG.onclick=()=>showMobileView('guia');
   if(bC) bC.onclick=()=>showMobileView('conf');
   if(bF) bF.onclick=()=>showMobileView('completa');
@@ -5214,8 +5227,20 @@ setTimeout(setupDonateDialog, 800);
 
 // === CÓMO USAR ===
 function setupHelpDialog(){
-  const btn=$('btnHelp'); if(btn) btn.onclick=()=> $('helpDialog').showModal();
+  const btn=$('btnHelp'); if(btn) btn.onclick=()=>{ $('helpDialog').showModal(); if(typeof showGuiaTab==='function') showGuiaTab('basica'); };
   const ct=$('helpCloseTop'), cb=$('helpClose'); if(ct) ct.onclick=()=>$('helpDialog').close(); if(cb) cb.onclick=()=>$('helpDialog').close();
+  const tb=$('tabGuiaBasica'), td=$('tabGuiaDetallada');
+  if(tb) tb.onclick=()=>showGuiaTab('basica');
+  if(td) td.onclick=()=>showGuiaTab('detallada');
+}
+function showGuiaTab(which){
+  const basica = which!=='detallada';
+  const pb=$('guiaBasicaPanel'), pd=$('guiaDetalladaPanel');
+  const tb=$('tabGuiaBasica'), td=$('tabGuiaDetallada');
+  if(pb) pb.classList.toggle('hidden', !basica);
+  if(pd) pd.classList.toggle('hidden', basica);
+  if(tb){ tb.classList.toggle('btn-accent', basica); tb.setAttribute('aria-selected', basica?'true':'false'); }
+  if(td){ td.classList.toggle('btn-accent', !basica); td.setAttribute('aria-selected', !basica?'true':'false'); }
 }
 setTimeout(setupHelpDialog, 850);
 
