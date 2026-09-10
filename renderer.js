@@ -276,8 +276,10 @@ function updateViewButtons(){
   const nav = $('viewNav');
   if(nav) nav.classList.toggle('hidden', viewMode==='luna' && currentView.tipo!=='dft' ? true : false);
   // En vista luna pura ocultamos nav de mes/semana/día; en DFT también oculto
-  if(nav && (viewMode==='luna')) nav.classList.add('hidden');
+  if(nav && (viewMode==='luna' || viewMode==='hoy')) nav.classList.add('hidden');
   else if(nav) nav.classList.remove('hidden');
+  try{ paintMobileDock(); }catch(e){}
+  try{ syncMobileViewAttr(); }catch(e){}
 }
 function setViewMode(m){
   viewMode = m;
@@ -287,6 +289,7 @@ function setViewMode(m){
 }
 function renderCurrentView(){
   updateViewButtons();
+  if(viewMode==='hoy'){ renderTodayView(); return; }
   if(viewMode==='semanaLunar') renderSemanaLunarView();
   else if(viewMode==='mes') renderMesView();
   else if(viewMode==='semana') renderSemanaView();
@@ -294,6 +297,243 @@ function renderCurrentView(){
     if(currentView.tipo==='dft') renderDFT();
     else renderLuna();
   }
+  try{ syncMobileViewAttr(); }catch(e){}
+}
+
+// === VISTA HOY (solo móvil) + dock inferior persistente ===
+// PC queda igual: todo este bloque solo se activa con matchMedia max-width 920px.
+function isMobileWidth(){
+  try{ return window.matchMedia('(max-width: 920px)').matches; }
+  catch(e){ return (window.innerWidth||9999) <= 920; }
+}
+function syncMobileViewAttr(){
+  try{
+    if(!isMobileWidth()){ document.body.removeAttribute('data-mview'); return; }
+    document.body.dataset.mview = (viewMode==='hoy') ? 'hoy' : (viewMode||'luna');
+  }catch(e){}
+}
+function paintMobileDock(){
+  const map = { hoy:'dockHoy', luna:'dockLuna', semana:'dockSemana', mes:'dockMes' };
+  Object.entries(map).forEach(([m,id])=>{
+    const el = $(id); if(!el) return;
+    el.classList.toggle('active', viewMode===m);
+  });
+  const mas = $('dockMas'); if(mas) mas.classList.remove('active');
+}
+function showMobileView(m){
+  if(m==='hoy'){ viewMode='hoy'; renderCurrentView(); }
+  else if(m==='semanaLunar'){ viewMode='semanaLunar'; viewDateMs=Date.now(); renderCurrentView(); }
+  else if(m==='mes'){ viewMode='mes'; viewDateMs=Date.now(); renderCurrentView(); }
+  else if(m==='semana'){ viewMode='semana'; viewDateMs=Date.now(); renderCurrentView(); }
+  else if(m==='mas'){
+    const t = $('actions');
+    if(t) t.scrollIntoView({behavior:'smooth', block:'start'});
+    return;
+  }
+  else { viewMode='luna'; renderCurrentView(); }
+  try{
+    const main = $('main');
+    if(main) main.scrollTo ? main.scrollTo({top:0}) : null;
+    window.scrollTo(0,0);
+  }catch(e){}
+}
+function setupMobileDock(){
+  const bH=$('dockHoy'), bL=$('dockLuna'), bS=$('dockSemana'), bM=$('dockMes'), bX=$('dockMas');
+  if(bH) bH.onclick=()=>showMobileView('hoy');
+  if(bL) bL.onclick=()=>showMobileView('luna');
+  if(bS) bS.onclick=()=>showMobileView('semana');
+  if(bM) bM.onclick=()=>showMobileView('mes');
+  if(bX) bX.onclick=()=>showMobileView('mas');
+}
+function todayCellRef(){
+  const info = todayInfo();
+  if(!info) return null;
+  return info;
+}
+function renderTodayView(){
+  const box = $('todayView');
+  if(!box) return;
+  syncMobileViewAttr();
+  paintMobileDock();
+  try{ if($('monthNoteWrap')) $('monthNoteWrap').style.display=''; }catch(e){}
+  const info = todayCellRef();
+  const now = new Date();
+  const nowKey = cal.fmtKey.format(now);
+  const hh = String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
+  if(!info){
+    box.classList.remove('hidden');
+    box.innerHTML = '<div class="today-card"><h3>◉ Hoy</h3><p class="muted">No se encontró el día de hoy en el ciclo.</p></div>';
+    return;
+  }
+  const isDFT = info.luna==='dft';
+  let cell=null, nota='', agenda=[], animo=-1, key=nowKey, noonMs=info.noonMs;
+  let lunaN=null, diaN=null, meta=null, fr=null, sun={rise:null,set:null}, evs=[];
+  if(isDFT){
+    try{
+      const c = cyc(info.y);
+      nota = (c.dft && c.dft.nota) || '';
+      key = cal.fmtKey.format(new Date(info.noonMs));
+      sun = cal.sunForDay(info.noonMs);
+      fr = window.fraseDFT || (window.frases ? window.frases[364] : null);
+      evs = (typeof phaseMap!=='undefined' && phaseMap[key]) ? phaseMap[key] : [];
+    }catch(e){}
+  } else {
+    lunaN = info.luna; diaN = info.diaN;
+    try{ cell = dayCell(lunaN, diaN); }catch(e){ cell=null; }
+    nota = (cell && cell.nota) || '';
+    agenda = (cell && Array.isArray(cell.agenda)) ? [...cell.agenda].sort((a,b)=> getAgendaTime(a).localeCompare(getAgendaTime(b))) : [];
+    animo = (cell && typeof cell.animo==='number') ? cell.animo : -1;
+    key = cal.fmtKey.format(new Date(info.noonMs));
+    meta = MOONS[lunaN-1];
+    const idx = (lunaN-1)*28+(diaN-1);
+    fr = window.frases ? window.frases[idx] : null;
+    try{ sun = cal.sunForDay(info.noonMs); }catch(e){}
+    try{ evs = (typeof phaseMap!=='undefined' && phaseMap[key]) ? phaseMap[key] : []; }catch(e){}
+  }
+  let moonIcon='🌙', illum=null;
+  try{
+    moonIcon = window.astro.moonIcon(noonMs) || '🌙';
+    const mi = window.astro.moonInfo(noonMs);
+    illum = Math.round((mi.fraction||0)*100);
+  }catch(e){}
+  const faseTxt = evs.length ? evs.map(e=>e.simbolo+' '+e.tipo.replace('-',' ')).join(' · ') : 'Sin fase exacta hoy';
+  const cur = (animo>=0 && MOODS[animo]) ? MOODS[animo] : null;
+  const sug = cur || { e:'🙂', n:'¿Cómo estás hoy? Toca para elegir' };
+  const wd = cal.weekdayName(noonMs);
+  const fechaLarga = cal.fmtFull.format(new Date(noonMs));
+  const lunaLine = isDFT ? '✷ Día Fuera del Tiempo' : ('Luna '+lunaN+' · Día '+diaN+' de 28'+(meta?' · '+meta.nombre:''));
+  box.classList.remove('hidden');
+  box.innerHTML =
+    '<div class="today-hero">'
+    + '<div class="t-now">◉ HOY · '+escapeHtml(wd)+' '+escapeHtml(fechaLarga)+' · ahora <b>'+hh+'</b></div>'
+    + '<h2>'+escapeHtml(lunaLine)+'</h2>'
+    + '<div class="t-sub">'+escapeHtml(isDFT ? 'Cierre del ciclo · víspera del We Tripantu' : (meta ? meta.traduccion+' — '+meta.descripcion.slice(0,140)+'…' : ''))+'</div>'
+    + '</div>'
+    + '<div class="today-card"><h3>💬 Frase del día</h3>'
+    + (fr ? '<p class="today-quote">«'+escapeHtml(fr.t)+'»<span>— '+escapeHtml(fr.a)+'</span></p>' : '<p class="muted">Sin frase para hoy.</p>')
+    + '</div>'
+    + '<div class="today-card"><h3>☀️🌙 Sol y luna de hoy</h3>'
+    + '<div class="today-sun"><span class="chip">☀️ Amanecer <b>'+(sun.rise?cal.fmtTime.format(new Date(sun.rise)):'--')+'</b></span>'
+    + '<span class="chip">🌇 Atardecer <b>'+(sun.set?cal.fmtTime.format(new Date(sun.set)):'--')+'</b></span></div>'
+    + '<div style="height:8px"></div>'
+    + '<div class="today-sun"><span class="chip">'+moonIcon+' Fase <b>'+escapeHtml(faseTxt)+'</b></span>'
+    + (illum!==null?'<span class="chip">💡 Iluminación <b>'+illum+'%</b></span>':'')
+    + '</div></div>'
+    + '<div class="today-card"><h3>😊 Estado de ánimo</h3>'
+    + '<button type="button" id="todayMoodMain" class="today-mood-main"><span class="tm-ico">'+sug.e+'</span><span>'+(cur?escapeHtml(cur.n)+' · toca para cambiar':'Sugerencia: '+sug.e+' · '+escapeHtml(sug.n))+'</span></button>'
+    + '<div id="todayMoodPicker" class="today-mood-picker hidden"></div></div>'
+    + '<div class="today-card"><h3>📝 Notas del día</h3>'
+    + '<textarea id="todayNote" class="today-note" rows="3" placeholder="tareas, ánimo, sueños, registros...">'+escapeHtml(nota)+'</textarea></div>'
+    + '<div class="today-card"><h3>🕐 Compromisos · '+agenda.length+'</h3>'
+    + '<div id="todayAgendaList" class="today-agenda-list"></div>'
+    + (isDFT
+      ? '<p class="muted" style="font-size:11px">Los compromisos por hora viven en los días de luna. Este día es de cierre y reflexión.</p>'
+      : '<div class="today-add"><input type="time" id="todayHourSel" value="'+hh+'" step="60" aria-label="Hora"><input type="text" id="todayHourText" placeholder="Compromiso..." maxlength="80"><label class="check-row" style="margin:0;white-space:nowrap"><input type="checkbox" id="todayHourNotify"> 🔔</label><button type="button" id="todayHourAdd" class="btn btn-accent" style="width:auto">+ Agregar</button></div>')
+    + '<div style="height:8px"></div>'
+    + (isDFT ? '' : '<button type="button" id="todayOpenDay" class="btn" style="width:100%">Abrir día completo 📖</button>')
+    + '</div>';
+  // --- ánimo: sugerencia + expandir opciones ---
+  const main = $('todayMoodMain'), picker = $('todayMoodPicker');
+  const paintPicker = ()=>{
+    if(!picker) return;
+    picker.innerHTML='';
+    MOODS.forEach((m,i)=>{
+      const b=document.createElement('button');
+      b.type='button';
+      b.className='mood-btn'+(i===animo?' sel':'');
+      b.title=m.n; b.textContent=m.e;
+      b.onclick=()=>{
+        animo = (animo===i) ? -1 : i;
+        try{
+          if(!isDFT){ const c=dayCell(lunaN,diaN); c.animo=animo; scheduleSave('Guardado ✓'); }
+        }catch(e){}
+        renderTodayView();
+      };
+      picker.appendChild(b);
+    });
+  };
+  if(main && picker){
+    main.onclick=()=>{ picker.classList.toggle('hidden'); if(!picker.classList.contains('hidden') && !picker.innerHTML) paintPicker(); };
+  }
+  // --- notas ---
+  const noteEl = $('todayNote');
+  if(noteEl){
+    noteEl.addEventListener('input', ()=>{
+      try{
+        if(isDFT){ cyc(info.y).dft.nota = sanitizeText(noteEl.value, 2000); }
+        else { dayCell(lunaN,diaN).nota = sanitizeText(noteEl.value, 2000); }
+        scheduleSave();
+      }catch(e){}
+    });
+  }
+  // --- agenda ---
+  const paintAgenda = ()=>{
+    const list = $('todayAgendaList');
+    if(!list) return;
+    let cur2=[];
+    try{ cur2 = isDFT? [] : [...dayCell(lunaN,diaN).agenda].sort((a,b)=> getAgendaTime(a).localeCompare(getAgendaTime(b))); }catch(e){ cur2=[]; }
+    if(!cur2.length){ list.innerHTML='<p class="muted" style="font-size:11px">Sin compromisos aún. Agrega uno con su hora abajo (ej 08:37).</p>'; return; }
+    list.innerHTML='';
+    cur2.forEach(it=>{
+      const row=document.createElement('div');
+      row.className='today-agenda-item';
+      const t=getAgendaTime(it);
+      row.innerHTML='<span class="hh">'+escapeHtml(t)+'</span><span class="tx">'+escapeHtml(it.text)+'</span>';
+      const nb=document.createElement('button');
+      nb.type='button'; nb.className='btn btn-icon'; nb.title='Notificación'; nb.textContent=it.notify?'🔔':'🔕';
+      nb.onclick=async()=>{
+        if(!it.notify){ try{ if(typeof Notification!=='undefined'&&Notification.permission!=='granted'&&Notification.requestPermission) await Notification.requestPermission(); }catch(e){} }
+        it.notify=!it.notify; it.notified=false; scheduleSave(); paintAgenda();
+      };
+      const db=document.createElement('button');
+      db.type='button'; db.className='btn btn-icon'; db.title='Eliminar'; db.textContent='✕';
+      db.onclick=()=>{
+        try{
+          const c=dayCell(lunaN,diaN);
+          c.agenda=c.agenda.filter(x=>x.id!==it.id);
+          scheduleSave(); paintAgenda();
+        }catch(e){}
+      };
+      const wrap=document.createElement('span');
+      wrap.style.cssText='display:flex;gap:6px;flex:0 0 auto';
+      wrap.appendChild(nb); wrap.appendChild(db);
+      row.appendChild(wrap);
+      list.appendChild(row);
+    });
+  };
+  paintAgenda();
+  const addBtn = $('todayHourAdd');
+  if(addBtn){
+    addBtn.onclick=async()=>{
+      const sel=$('todayHourSel'), tx=$('todayHourText'), ch=$('todayHourNotify');
+      const raw=((sel&&sel.value)||'').trim();
+      if(!/^\d{1,2}:\d{2}/.test(raw)) return alert('Elige una hora válida (ej 08:37)');
+      const parts=raw.split(':').map(Number);
+      if(parts[0]<0||parts[0]>23||parts[1]<0||parts[1]>59) return alert('Hora inválida (00:00 a 23:59)');
+      const text=sanitizeText(((tx&&tx.value)||'').trim(),80);
+      if(!text) return;
+      const notify=!!(ch&&ch.checked);
+      if(notify){ try{ if(typeof Notification!=='undefined'&&Notification.permission!=='granted'&&Notification.requestPermission) await Notification.requestPermission(); }catch(e){} }
+      try{
+        const c=dayCell(lunaN,diaN);
+        if(!Array.isArray(c.agenda)) c.agenda=[];
+        const ts=String(parts[0]).padStart(2,'0')+':'+String(parts[1]).padStart(2,'0');
+        c.agenda.push({id:'a'+Date.now()+Math.random().toString(36).slice(2,4), hour:parts[0], minute:parts[1], time:ts, text, notify, notified:false});
+        scheduleSave('Guardado ✓');
+        if(tx) tx.value=''; if(ch) ch.checked=false;
+        paintAgenda();
+      }catch(e){}
+    };
+    const tx2=$('todayHourText');
+    if(tx2) tx2.addEventListener('keydown',e=>{ if(e.key==='Enter'){ e.preventDefault(); addBtn.click(); } });
+  }
+  const openBtn = $('todayOpenDay');
+  if(openBtn) openBtn.onclick=()=>{
+    try{
+      if(String(info.y)!==String(currentCycleYear())) selectCycle(info.y, lunaN);
+      openDayDialog(lunaN, diaN);
+    }catch(e){}
+  };
 }
 function gregMonthLabel(ms){
   const d = new Date(ms);
@@ -1063,6 +1303,7 @@ $('dlgSave').onclick = () => {
   // agenda ya se guarda al agregar/eliminar; solo persistir estado actual
   $('dayDialog').close();
   scheduleSave();
+  try{ if(viewMode==='hoy'){ renderTodayView(); return; } }catch(e){}
   if (currentView.tipo === 'luna') renderLuna();
 };
 
@@ -2847,6 +3088,7 @@ $('btnPdfLuna').onclick = () => exportPDF(false);
 $('btnPdfCiclo').onclick = () => exportPDF(true);
 
 $('btnToday').onclick = () => {
+  try{ if(isMobileWidth()){ showMobileView('hoy'); return; } }catch(e){}
   const info = todayInfo();
   if (!info) return;
   if (String(info.y) !== $('cycleSel').value) {
@@ -8388,6 +8630,7 @@ if ($('btnTimer')) {
 
   rebuildLunaByKey();
   setupViewBar();
+  try{ setupMobileDock(); }catch(e){}
   updateViewButtons();
   buildSidebar();
   if (info) {
@@ -8395,6 +8638,16 @@ if ($('btnTimer')) {
   } else {
     selectMoon(1);
   }
+  // Móvil: abrir directamente en Hoy (frase, sol/luna, notas, ánimo, compromisos + dock)
+  try{
+    if(isMobileWidth() && info){
+      if(String(info.y)!==String(startY)){
+        try{ selectCycle(info.y, info.luna==='dft'?'dft':info.luna); }catch(e){}
+      }
+      viewMode='hoy';
+      renderCurrentView();
+    } else { syncMobileViewAttr(); }
+  }catch(e){}
   $('cycleSel').value = String(startY);
   updateRemindBtn();
   const savedTheme = getTheme();

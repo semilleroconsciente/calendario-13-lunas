@@ -686,6 +686,82 @@ body.large-text #lunaDesc, body.large-text .chip, body.large-text .btn { font-si
   .schedule-week { grid-template-columns: 1fr; }
   .fishing-grid { grid-template-columns: 1fr; }
 }
+/* === Vista HOY + dock inferior — SOLO móvil. PC queda intacto === */
+#todayView, #mobileDock { display: none; }
+
+@media (max-width: 920px) {
+  /* Dock inferior persistente */
+  #mobileDock {
+    display: flex;
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    z-index: 900;
+    background: rgba(10, 14, 32, 0.96);
+    border-top: 1px solid var(--line);
+    padding: 6px 4px calc(6px + env(safe-area-inset-bottom));
+    gap: 2px;
+    backdrop-filter: blur(8px);
+  }
+  body[data-theme="claro"] #mobileDock { background: rgba(255,251,240,0.96); }
+  .dock-btn {
+    flex: 1;
+    display: flex; flex-direction: column; align-items: center; gap: 1px;
+    background: transparent; border: 1px solid transparent; border-radius: 10px;
+    color: var(--text); font-size: 20px; padding: 6px 2px 4px; cursor: pointer;
+  }
+  .dock-btn small { font-size: 10px; color: var(--muted); letter-spacing: .3px; }
+  .dock-btn.active { background: var(--card-hover); border-color: var(--gold); }
+  .dock-btn.active small { color: var(--gold); }
+  /* Espacio para que el dock no tape contenido */
+  #main { padding-bottom: 86px !important; }
+
+  /* Contenedor Hoy */
+  body[data-mview="hoy"] #todayView { display: flex; flex-direction: column; gap: 10px; }
+  body[data-mview="hoy"] #lunaHeader,
+  body[data-mview="hoy"] #viewBar,
+  body[data-mview="hoy"] #gridWrap,
+  body[data-mview="hoy"] #monthNoteWrap { display: none; }
+  body:not([data-mview="hoy"]) #todayView { display: none; }
+
+  .today-hero {
+    background: linear-gradient(135deg, var(--panel), var(--card));
+    border: 1px solid var(--gold); border-radius: 14px; padding: 14px;
+  }
+  .today-hero .t-now { font-size: 12px; color: var(--muted); }
+  .today-hero .t-now b { color: var(--gold); font-size: 15px; font-variant-numeric: tabular-nums; }
+  .today-hero h2 { font-size: 20px; color: var(--accent); margin: 2px 0; }
+  .today-hero .t-sub { font-size: 12.5px; color: var(--muted); line-height: 1.5; }
+  .today-card {
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: 12px; padding: 12px;
+  }
+  .today-card h3 { font-size: 13px; color: var(--gold); margin-bottom: 8px; letter-spacing: .4px; }
+  .today-quote { font-style: italic; color: #ecd9a8; font-size: 13.5px; line-height: 1.55; }
+  .today-quote span { display: block; margin-top: 4px; font-style: normal; font-size: 11.5px; color: var(--muted); }
+  .today-sun { display: flex; gap: 8px; flex-wrap: wrap; }
+  .today-mood-main {
+    display: flex; align-items: center; gap: 10px; width: 100%;
+    background: var(--panel); border: 1px solid var(--gold); border-radius: 12px;
+    padding: 10px 12px; cursor: pointer; color: var(--text); font-size: 14px; text-align: left;
+  }
+  .today-mood-main .tm-ico {
+    width: 44px; height: 44px; flex: 0 0 auto; display: flex; align-items: center; justify-content: center;
+    font-size: 26px; background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+  }
+  .today-mood-picker { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  .today-note { min-height: 76px; }
+  .today-agenda-list { display: flex; flex-direction: column; gap: 6px; margin-bottom: 8px; }
+  .today-agenda-item {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--panel); border: 1px solid var(--line); border-radius: 8px;
+    padding: 8px 10px; font-size: 13px;
+  }
+  .today-agenda-item .hh { color: var(--gold); font-weight: 700; font-variant-numeric: tabular-nums; }
+  .today-agenda-item .tx { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .today-add { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+  .today-add input[type="time"] { max-width: 104px; }
+  .today-add input[type="text"] { flex: 1; min-width: 120px; }
+}
 /* Semana / Semana lunar en celular: lista vertical con el día arriba de cada tarjeta */
 @media (max-width: 920px) {
   .dow-row.dow-week { display: none; }
