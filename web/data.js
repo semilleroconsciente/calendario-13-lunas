@@ -95,7 +95,15 @@ const MOODS = [
   { e: '😢', c: '#8a6fd8', n: 'Triste' },
   { e: '😤', c: '#e0913f', n: 'Tenso' },
   { e: '💪', c: '#d4a947', n: 'Productivo' },
-  { e: '🌟', c: '#c96fb1', n: 'Especial' }
+  { e: '🌟', c: '#c96fb1', n: 'Especial' },
+  { e: '😌', c: '#8fd694', n: 'Relajado' },
+  { e: '🤩', c: '#f0d488', n: 'Inspirado' },
+  { e: '🙏', c: '#d8a0ff', n: 'Agradecido' },
+  { e: '😎', c: '#7ab8ff', n: 'Motivado' },
+  { e: '🥰', c: '#f08ab0', n: 'Cariñoso' },
+  { e: '😠', c: '#e76e5a', n: 'Enojado' },
+  { e: '😰', c: '#6aa8d8', n: 'Ansioso' },
+  { e: '🤒', c: '#9aa3c7', n: 'Enfermo' }
 ];
 
 const EFEMERIDES = {
