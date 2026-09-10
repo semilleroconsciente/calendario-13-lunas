@@ -123,6 +123,7 @@ body {
 .day-card .dc-phases { flex: 1 1 auto; text-align: center; min-width: 0; white-space: nowrap; overflow: hidden; }
 .day-card .dc-date { font-size: 12px; color: var(--muted); flex: 0 0 auto; margin-left: auto; }
 .day-card .dc-sun { font-size: 11.5px; color: #ffd98a; margin-top: 4px; white-space: nowrap; }
+.day-card .dc-moon { font-size: 11.5px; color: #c9b8f0; margin-top: 2px; white-space: nowrap; }
 .day-card .dc-tide { font-size: 11.5px; color: #8fc7e8; margin-top: 2px; }
 .day-card .dc-note { font-size: 11px; color: var(--muted); margin-top: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .day-card.today { outline: 2px solid var(--gold); }
@@ -678,6 +679,7 @@ body.large-text #lunaDesc, body.large-text .chip, body.large-text .btn { font-si
   .day-card .dc-phases { font-size: 10px; }
   .dc-phase { font-size: 10px; filter: none; }
   .day-card .dc-sun { font-size: 8px; margin-top: 2px; letter-spacing: -0.3px; }
+  .day-card .dc-moon { font-size: 8px; margin-top: 1px; letter-spacing: -0.3px; }
   .day-card .dc-mood { font-size: 9px; }
   .dow-row div { font-size: 7.5px; letter-spacing: 0.3px; }
   #actions { gap: 5px; }
@@ -807,6 +809,7 @@ body.large-text #lunaDesc, body.large-text .chip, body.large-text .btn { font-si
   .week-grid .day-card .dc-phases { font-size: 13px; text-align: left; }
   .week-grid .day-card .dc-date { font-size: 11px; }
   .week-grid .day-card .dc-sun { font-size: 12px; margin-top: 3px; }
+  .week-grid .day-card .dc-moon { font-size: 12px; margin-top: 2px; }
   .week-grid .day-card .dc-clima,
   .week-grid .day-card .dc-note { font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .week-grid .day-card .dc-note:empty,

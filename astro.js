@@ -170,6 +170,29 @@ function tithi(ms) {
   return Math.floor(elong / 12) + 1;
 }
 
+function siderealTime(d, lw) { return RAD * (280.16 + 360.9856235 * d) - lw; }
+
+function astroRefraction(h) {
+  if (h < 0) h = 0;
+  return 0.0002967 / Math.tan(h + 0.00312536 / (h + 0.08901179));
+}
+
+// Posición topocéntrica aproximada de la luna (estilo SunCalc, misma precisión que moonCoords).
+// Devuelve { altitude, azimuth } en radianes. Suficiente para salida/puesta con ±10-15 min.
+function moonPosition(ms, lat, lng) {
+  const lw = RAD * -lng;
+  const phi = RAD * lat;
+  const d = toDays(ms);
+  const c = moonCoords(d);
+  let H = siderealTime(d, lw) - c.ra;
+  // normalizar H a [-PI, PI] para estabilidad
+  H = Math.atan2(Math.sin(H), Math.cos(H));
+  let h = Math.asin(Math.sin(phi) * Math.sin(c.dec) + Math.cos(phi) * Math.cos(c.dec) * Math.cos(H));
+  h += astroRefraction(h);
+  const az = Math.atan2(Math.sin(H), Math.cos(H) * Math.sin(phi) - Math.tan(c.dec) * Math.cos(phi));
+  return { altitude: h, azimuth: az + Math.PI, ra: c.ra, dec: c.dec, dist: c.dist };
+}
+
 function tithiPrecise(ms) {
   const d = toDays(ms);
   const M = solarMeanAnomaly(d);
@@ -186,4 +209,4 @@ function tithiPrecise(ms) {
   return Math.floor(elong / 12) + 1;
 }
 
-window.astro = { sunTimes, moonPhaseEvents, moonInfo, moonIcon, tithi: tithiPrecise };
+window.astro = { sunTimes, moonPhaseEvents, moonInfo, moonIcon, moonPosition, tithi: tithiPrecise };

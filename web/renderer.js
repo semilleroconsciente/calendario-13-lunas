@@ -398,13 +398,14 @@ function renderTodayView(){
   }
   const isDFT = info.luna==='dft';
   let cell=null, nota='', agenda=[], animo=-1, key=nowKey, noonMs=info.noonMs;
-  let lunaN=null, diaN=null, meta=null, fr=null, sun={rise:null,set:null}, evs=[];
+  let lunaN=null, diaN=null, meta=null, fr=null, sun={rise:null,set:null}, moon={rise:null,set:null}, evs=[];
   if(isDFT){
     try{
       const c = cyc(info.y);
       nota = (c.dft && c.dft.nota) || '';
       key = cal.fmtKey.format(new Date(info.noonMs));
       sun = cal.sunForDay(info.noonMs);
+      try{ moon = cal.moonForDay(info.noonMs); }catch(e){}
       fr = window.fraseDFT || (window.frases ? window.frases[364] : null);
       evs = (typeof phaseMap!=='undefined' && phaseMap[key]) ? phaseMap[key] : [];
     }catch(e){}
@@ -419,6 +420,7 @@ function renderTodayView(){
     const idx = (lunaN-1)*28+(diaN-1);
     fr = window.frases ? window.frases[idx] : null;
     try{ sun = cal.sunForDay(info.noonMs); }catch(e){}
+    try{ moon = cal.moonForDay(info.noonMs); }catch(e){}
     try{ evs = (typeof phaseMap!=='undefined' && phaseMap[key]) ? phaseMap[key] : []; }catch(e){}
   }
   let moonIcon='🌙', illum=null, aproxFase='';
@@ -467,6 +469,10 @@ function renderTodayView(){
     + '<div class="today-card"><h3>☀️🌙 Sol y luna de hoy</h3>'
     + '<div class="today-sun"><span class="chip">☀️ Amanecer <b>'+(sun.rise?cal.fmtTime.format(new Date(sun.rise)):'--')+'</b></span>'
     + '<span class="chip">🌇 Atardecer <b>'+(sun.set?cal.fmtTime.format(new Date(sun.set)):'--')+'</b></span></div>'
+    + '<div style="height:8px"></div>'
+    + '<div class="today-sun"><span class="chip">🌙 Sale <b>'+(moon.rise?cal.fmtTime.format(new Date(moon.rise)):'--')+'</b></span>'
+    + '<span class="chip">🌘 Se pone <b>'+(moon.set?cal.fmtTime.format(new Date(moon.set)):'--')+'</b></span></div>'
+    + '<p class="muted" style="font-size:10px;margin:6px 0 0">Luna en Penco · hora local · aprox. ±15 min (horizonte sin cerros).</p>'
     + '<div style="height:8px"></div>'
     + '<div class="today-sun"><span class="chip">'+moonIcon+' Fase <b>'+escapeHtml(faseTxt)+'</b></span>'
     + (illum!==null?'<span class="chip">💡 Iluminación <b>'+illum+'%</b></span>':'')
@@ -1011,6 +1017,12 @@ function renderLuna() {
     const key = cal.fmtKey.format(new Date(d.noonMs));
     const cell = dayCell(meta.n, d.diaN);
     const sun = cal.sunForDay(d.noonMs);
+    let moonRiseTxt='--', moonSetTxt='--';
+    try{
+      const mn = cal.moonForDay(d.noonMs);
+      if(mn.rise) moonRiseTxt = cal.fmtTime.format(new Date(mn.rise));
+      if(mn.set) moonSetTxt = cal.fmtTime.format(new Date(mn.set));
+    }catch(e){}
     const evs = phaseMap[key] || [];
     const efe = EFEMERIDES[key.slice(5)];
     const mood = cell.animo >= 0 ? MOODS[cell.animo] : null;
@@ -1101,6 +1113,7 @@ function renderLuna() {
     card.innerHTML = `
       <div class="dc-head"><span class="dc-n">${String(d.diaN).padStart(2, '0')}</span><span class="dc-phases">${evs.map(e => `<span class="dc-phase" title="${e.tipo} ${cal.fmtTime.format(new Date(e.utcMs))}">${e.simbolo}</span>`).join('')}</span><span class="dc-date">${cal.fmtDate.format(new Date(d.noonMs))}</span></div>
       <div class="dc-sun">☀ ${sun.rise ? cal.fmtTime.format(new Date(sun.rise)) : '--'} – ${sun.set ? cal.fmtTime.format(new Date(sun.set)) : '--'}</div>
+      <div class="dc-moon" title="Salida y puesta de la luna en Penco (aprox.)">🌙 ${moonRiseTxt} – ${moonSetTxt}</div>
       ${mensType ? `<div class="dc-mens ${mensType}">${mensLabel}</div>` : ''}
       ${habitIcons ? `<div class="dc-habits">${habitIcons}</div>` : ''}
       ${gymIcons ? `<div class="dc-habits">${gymIcons}</div>` : ''}
@@ -1148,6 +1161,12 @@ function renderDFT() {
   $('phaseChips').innerHTML = '';
 
   const sun = cal.sunForDay(dftDay.noonMs);
+  let dftMoonRise='--', dftMoonSet='--';
+  try{
+    const dftMoon = cal.moonForDay(dftDay.noonMs);
+    if(dftMoon.rise) dftMoonRise = cal.fmtTime.format(new Date(dftMoon.rise));
+    if(dftMoon.set) dftMoonSet = cal.fmtTime.format(new Date(dftMoon.set));
+  }catch(e){}
   const grid = $('grid');
   grid.style.display = 'block';
   $('dowRow').classList.remove('dow-week');
@@ -1159,6 +1178,7 @@ function renderDFT() {
     <div class="day-card today" style="max-width:520px">
       <div class="dc-head"><span class="dc-n">365</span><span class="dc-date">${cal.fmtDate.format(new Date(dftDay.noonMs))}</span></div>
       <div class="dc-sun">☀ ${sun.rise ? cal.fmtTime.format(new Date(sun.rise)) : '--'} – ${sun.set ? cal.fmtTime.format(new Date(sun.set)) : '--'}</div>
+      <div class="dc-moon" title="Salida y puesta de la luna en Penco (aprox.)">🌙 ${dftMoonRise} – ${dftMoonSet}</div>
       ${frDft ? `<blockquote class="dlg-quote">«${frDft.t}»<span class="q-a">— ${frDft.a}</span></blockquote>` : ''}
       <div style="margin-top:10px;line-height:1.6;font-size:13px;color:#cdd3ee">${DFT.texto1}</div>
       <p style="margin-top:10px;color:var(--accent);font-size:14px"><b>${DFT.sub2}</b></p>
@@ -6418,7 +6438,16 @@ function renderAstroDialog(tab){
     const todayEvents=astroVisibleForDate(todayKey);
     const phases=phaseMap[todayKey]||[];
     const phaseTxt=phases.length? phases.map(p=> p.simbolo+' '+p.tipo.replace('-',' ')).join(' · ') : 'Sin fase exacta hoy';
-    todayBox.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center"><span><b>🔭 Hoy — ${cal.weekdayName(mensKeyToMs(todayKey))} ${cal.fmtFull.format(new Date(mensKeyToMs(todayKey)))}</b></span><span class="chip">${phaseTxt}</span></div>` + (todayEvents.length? todayEvents.map(e=> `<div class="chip" style="display:block;margin-top:6px;border-color:var(--gold)">${e.icon} <b>${escapeHtml(e.nombre)}</b> — ${escapeHtml(e.desc)}</div>`).join('') : '<p class="muted" style="font-size:11px;margin-top:6px">Hoy sin eclipse/lluvia destacada. Revisa fases arriba.</p>') + `<p class="muted" style="font-size:11px;margin-top:6px">Penco: lat ${PENCO.lat}, lng ${PENCO.lng}. Cielo ideal: humedal Rocuant sin luces.</p>`;
+    let moonRiseTxt='--', moonSetTxt='--';
+    try{
+      const mnToday = cal.moonForDay(Date.now());
+      if(mnToday.rise) moonRiseTxt = cal.fmtTime.format(new Date(mnToday.rise));
+      if(mnToday.set) moonSetTxt = cal.fmtTime.format(new Date(mnToday.set));
+    }catch(e){}
+    todayBox.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center"><span><b>🔭 Hoy — ${cal.weekdayName(mensKeyToMs(todayKey))} ${cal.fmtFull.format(new Date(mensKeyToMs(todayKey)))}</b></span><span class="chip">${phaseTxt}</span></div>`
+    + `<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px"><span class="chip">🌙 Sale <b>${moonRiseTxt}</b></span><span class="chip">🌘 Se pone <b>${moonSetTxt}</b></span></div>`
+    + `<p class="muted" style="font-size:10px;margin:4px 0 0">Luna en Penco · hora local · aprox. ±15 min (horizonte sin cerros).</p>`
+    + (todayEvents.length? todayEvents.map(e=> `<div class="chip" style="display:block;margin-top:6px;border-color:var(--gold)">${e.icon} <b>${escapeHtml(e.nombre)}</b> — ${escapeHtml(e.desc)}</div>`).join('') : '<p class="muted" style="font-size:11px;margin-top:6px">Hoy sin eclipse/lluvia destacada. Revisa fases arriba.</p>') + `<p class="muted" style="font-size:11px;margin-top:6px">Penco: lat ${PENCO.lat}, lng ${PENCO.lng}. Cielo ideal: humedal Rocuant sin luces.</p>`;
   }
   const list=$('astroList'); if(!list) return;
   let events=[];
