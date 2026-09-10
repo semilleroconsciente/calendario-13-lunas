@@ -1016,13 +1016,6 @@ function renderLuna() {
   for (const d of lunaDays) {
     const key = cal.fmtKey.format(new Date(d.noonMs));
     const cell = dayCell(meta.n, d.diaN);
-    const sun = cal.sunForDay(d.noonMs);
-    let moonRiseTxt='--', moonSetTxt='--';
-    try{
-      const mn = cal.moonForDay(d.noonMs);
-      if(mn.rise) moonRiseTxt = cal.fmtTime.format(new Date(mn.rise));
-      if(mn.set) moonSetTxt = cal.fmtTime.format(new Date(mn.set));
-    }catch(e){}
     const evs = phaseMap[key] || [];
     const efe = EFEMERIDES[key.slice(5)];
     const mood = cell.animo >= 0 ? MOODS[cell.animo] : null;
@@ -1112,8 +1105,6 @@ function renderLuna() {
     card.dataset.dia = d.diaN;
     card.innerHTML = `
       <div class="dc-head"><span class="dc-n">${String(d.diaN).padStart(2, '0')}</span><span class="dc-phases">${evs.map(e => `<span class="dc-phase" title="${e.tipo} ${cal.fmtTime.format(new Date(e.utcMs))}">${e.simbolo}</span>`).join('')}</span><span class="dc-date">${cal.fmtDate.format(new Date(d.noonMs))}</span></div>
-      <div class="dc-sun">☀ ${sun.rise ? cal.fmtTime.format(new Date(sun.rise)) : '--'} – ${sun.set ? cal.fmtTime.format(new Date(sun.set)) : '--'}</div>
-      <div class="dc-moon" title="Salida y puesta de la luna en Penco (aprox.)">🌙 ${moonRiseTxt} – ${moonSetTxt}</div>
       ${mensType ? `<div class="dc-mens ${mensType}">${mensLabel}</div>` : ''}
       ${habitIcons ? `<div class="dc-habits">${habitIcons}</div>` : ''}
       ${gymIcons ? `<div class="dc-habits">${gymIcons}</div>` : ''}
@@ -1376,6 +1367,39 @@ function openDayDialog(lunaN, diaN) {
   $('dlgTitle').textContent = `Luna ${lunaN} · Día ${diaN} de 28`;
   $('dlgDate').textContent = `${meta.nombre} — ${cal.weekdayName(d.noonMs)} ${cal.fmtFull.format(new Date(d.noonMs))}${efe ? ' · 📅 ' + efe : ''}`;
 
+  // === ☀️🌙 Sol y luna del día (mismo orden y datos que la vista Hoy en celular) ===
+  try{
+    const dlgKey = cal.fmtKey.format(new Date(d.noonMs));
+    let sun = { rise: null, set: null }, moon = { rise: null, set: null };
+    try{ sun = cal.sunForDay(d.noonMs) || sun; }catch(e){}
+    try{ moon = cal.moonForDay(d.noonMs) || moon; }catch(e){}
+    let moonIcon = '🌙', illum = null, aproxFase = '';
+    try{
+      moonIcon = window.astro.moonIcon(d.noonMs) || '🌙';
+      const mi = window.astro.moonInfo(d.noonMs);
+      illum = Math.round((mi.fraction || 0) * 100);
+      const nombres = ['Luna nueva','Luna creciente','Cuarto creciente','Creciente gibosa','Luna llena','Menguante gibosa','Cuarto menguante','Luna menguante'];
+      aproxFase = nombres[Math.round((mi.phase || 0) * 8) % 8] || '';
+    }catch(e){}
+    let evs = [];
+    try{ evs = (typeof phaseMap !== 'undefined' && phaseMap[dlgKey]) ? phaseMap[dlgKey] : []; }catch(e){}
+    const faseBase = evs.length
+      ? evs.map(e => e.simbolo + ' ' + String(e.tipo || '').replace('-', ' ')).join(' · ')
+      : (aproxFase || 'Fase lunar');
+    const faseTxt = faseBase + (illum !== null ? ' · ' + illum + '% iluminada' : '');
+    const box = $('dlgSunMoon');
+    if(box){
+      box.innerHTML =
+        '<label class="dlg-horas-label">☀️🌙 Sol y luna</label>'
+        + '<div class="dlg-sun-row"><span class="chip">☀️ Amanecer <b>' + (sun.rise ? cal.fmtTime.format(new Date(sun.rise)) : '--') + '</b></span>'
+        + '<span class="chip">🌇 Atardecer <b>' + (sun.set ? cal.fmtTime.format(new Date(sun.set)) : '--') + '</b></span></div>'
+        + '<div class="dlg-sun-row"><span class="chip">🌙 Sale <b>' + (moon.rise ? cal.fmtTime.format(new Date(moon.rise)) : '--') + '</b></span>'
+        + '<span class="chip">🌘 Se pone <b>' + (moon.set ? cal.fmtTime.format(new Date(moon.set)) : '--') + '</b></span></div>'
+        + '<div class="dlg-sun-row"><span class="chip">' + moonIcon + ' Fase <b>' + escapeHtml(faseTxt) + '</b></span></div>'
+        + '<p class="muted" style="font-size:10px;margin:6px 0 0">Penco · hora local · aprox. ±15 min según lugar de observación.</p>';
+    }
+  }catch(e){}
+
   pendingMood = cell.animo;
   const moodBox = $('dlgMood');
   moodBox.innerHTML = '';
@@ -1403,6 +1427,7 @@ function openDayDialog(lunaN, diaN) {
   $('dlgHourText').value = '';
   $('dlgHourNotify').checked = false;
   renderDlgHoras();
+  try{ renderDlgHabits(); }catch(e){}
   // botón menstrual en dialog día — ocultar si opción está desactivada en Personalizar
   const mensBtn = $('dlgMenstrual');
   if (mensBtn) {

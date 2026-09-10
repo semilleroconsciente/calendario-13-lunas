@@ -528,6 +528,11 @@ body[data-theme="medianoche"] { --bg:#050508; --bg2:#0a0a10; --panel:#141418; --
 .dlg-habits:empty { display: none; }
 .dlg-horas-box { margin: 10px 0; background: var(--panel); border:1px solid var(--line); border-radius:10px; padding:12px; }
 .dlg-horas-label { font-size:13px; color:var(--accent); font-weight:700; display:block; margin-bottom:2px; }
+/* ☀️🌙 Sol y luna dentro del día — mismo orden y aspecto que la vista Hoy del celular */
+.dlg-sunmoon { margin: 10px 0; background: var(--panel); border:1px solid var(--line); border-radius:10px; padding:12px; }
+.dlg-sunmoon:empty { display: none; }
+.dlg-sun-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+.dlg-sun-row:first-of-type { margin-top: 6px; }
 .dlg-horas-grid { display:flex; flex-direction:column; gap:8px; max-height:260px; overflow-y:auto; margin-bottom:10px; }
 .hora-block { background:var(--card); border:1px solid var(--line); border-radius:8px; padding:8px 10px; }
 .hora-label { font-size:12px; color:var(--gold); font-weight:700; margin-bottom:6px; }
