@@ -542,6 +542,9 @@ body[data-theme="medianoche"] { --bg:#050508; --bg2:#0a0a10; --panel:#141418; --
 .frase-edit-btns { display: flex; gap: 8px; flex: 0 0 auto; }
 .frase-badge { display: inline-block; font-size: 11px; font-weight: 700; color: var(--gold); background: rgba(232,197,106,.1); border: 1px solid rgba(232,197,106,.4); border-radius: 999px; padding: 2px 10px; margin-bottom: 8px; }
 .frase-badge.hidden { display: none; }
+/* Tu frase agregada: siempre debajo de la predeterminada */
+.dlg-quote.dlg-custom { border-left-color: var(--accent); background: rgba(255,255,255,0.03); margin-top: 8px; }
+.today-quote-custom { margin-top: 8px; border-top: 1px dashed var(--line); padding-top: 8px; }
 .dlg-horas-grid { display:flex; flex-direction:column; gap:8px; max-height:260px; overflow-y:auto; margin-bottom:10px; }
 .hora-block { background:var(--card); border:1px solid var(--line); border-radius:8px; padding:8px 10px; }
 .hora-label { font-size:12px; color:var(--gold); font-weight:700; margin-bottom:6px; }
