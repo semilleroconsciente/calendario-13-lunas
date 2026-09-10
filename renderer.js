@@ -437,12 +437,14 @@ function renderTodayView(){
       habHTML='<p class="muted" style="font-size:11px">Sin hábitos creados. Créalos en ✅ Hábitos (vista Completa).</p>';
     }
   }catch(e){ habHTML=''; }
+  const hhss = hh+':'+String(now.getSeconds()).padStart(2,'0');
   box.classList.remove('hidden');
   box.innerHTML =
     '<div class="today-hero">'
-    + '<div class="t-now">◉ HOY · '+escapeHtml(wd)+' '+escapeHtml(fechaLarga)+' · ahora <b id="todayNowTime">'+hh+'</b></div>'
+    + '<div class="t-now">◉ HOY · '+escapeHtml(wd)+' '+escapeHtml(fechaLarga)+' · ahora <b id="todayNowTime">'+hhss+'</b></div>'
     + '<h2>'+escapeHtml(lunaLine)+'</h2>'
     + '<div class="t-sub">'+escapeHtml(lunaSub)+'</div>'
+    + '<div><span class="t-penco">📍 Penco · Bío-Bío · Chile</span></div>'
     + '</div>'
     + '<div class="today-card"><h3>💬 Frase del día</h3>'
     + (fr ? '<p class="today-quote">«'+escapeHtml(fr.t)+'»<span>— '+escapeHtml(fr.a)+'</span></p>' : '<p class="muted">Sin frase para hoy.</p>')
@@ -618,19 +620,19 @@ function renderTodayView(){
       }catch(e){ alert('No se pudo compartir este día'); }
     };
   }catch(e){}
-  // --- hora viva en el encabezado ---
+  // --- reloj vivo con segundos en el encabezado ---
   try{
-    const nt=$('todayNowTime');
-    if(nt){
-      const tick=()=>{
-        try{
-          const n=new Date();
-          const el=$('todayNowTime');
-          if(el) el.textContent=String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0');
-        }catch(e){}
-      };
-      setTimeout(tick, 20000);
-    }
+    if(window._todayClockInt) clearInterval(window._todayClockInt);
+    const pad2=n=>String(n).padStart(2,'0');
+    window._todayClockInt=setInterval(()=>{
+      try{
+        const el=$('todayNowTime');
+        if(!el){ clearInterval(window._todayClockInt); window._todayClockInt=null; return; }
+        if(!isMobileWidth() || mobileSec!=='hoy'){ return; }
+        const n=new Date();
+        el.textContent=pad2(n.getHours())+':'+pad2(n.getMinutes())+':'+pad2(n.getSeconds());
+      }catch(e){}
+    }, 1000);
   }catch(e){}
 }
 function gregMonthLabel(ms){
