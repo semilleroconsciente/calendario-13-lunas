@@ -5229,7 +5229,7 @@ setTimeout(setupDonateDialog, 800);
 
 // === CÓMO USAR ===
 function setupHelpDialog(){
-  const btn=$('btnHelp'); if(btn) btn.onclick=()=>{ $('helpDialog').showModal(); if(typeof showGuiaTab==='function') showGuiaTab('basica'); };
+  const btn=$('btnHelp'); if(btn) btn.onclick=()=>{ $('helpDialog').showModal(); if(typeof showGuiaTab==='function') showGuiaTab('detallada'); };
   const ct=$('helpCloseTop'), cb=$('helpClose'); if(ct) ct.onclick=()=>$('helpDialog').close(); if(cb) cb.onclick=()=>$('helpDialog').close();
   const tb=$('tabGuiaBasica'), td=$('tabGuiaDetallada');
   if(tb) tb.onclick=()=>showGuiaTab('basica');
