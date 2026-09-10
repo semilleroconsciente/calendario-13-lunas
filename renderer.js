@@ -472,7 +472,6 @@ function renderTodayView(){
     + '<label>Tu frase para hoy <input type="text" id="todayFraseText" placeholder="Escribe tu frase..." maxlength="300" autocomplete="off"></label>'
     + '<div class="frase-edit-row"><label>Autor <input type="text" id="todayFraseAuthor" placeholder="Autor (opcional)" maxlength="60" autocomplete="off"></label>'
     + '<span class="frase-edit-btns"><button type="button" id="todayFraseSave" class="btn btn-accent" style="width:auto">💾 Guardar frase</button>'
-    + (fr&&fr.custom?'<button type="button" id="todayFraseReset" class="btn" style="width:auto">↩ Original</button>':'')
     + '</span></div></div>'
     + '</div>'
     + '<div class="today-card"><h3>☀️🌙 Sol y luna de hoy</h3>'
@@ -535,14 +534,6 @@ function renderTodayView(){
       try{
         if(isDFT) writeCustomFraseDFT(info.y, t, a);
         else writeCustomFrase(lunaN, diaN, info.y, t, a);
-      }catch(e){}
-      renderTodayView();
-    };
-    const fReset = $('todayFraseReset');
-    if(fReset) fReset.onclick = ()=>{
-      try{
-        if(isDFT) writeCustomFraseDFT(info.y, '', '');
-        else writeCustomFrase(lunaN, diaN, info.y, '', '');
       }catch(e){}
       renderTodayView();
     };
@@ -1472,8 +1463,6 @@ function openDayDialog(lunaN, diaN) {
       if(custom){ badge.textContent = '✨ Tu frase agregada debajo'; badge.classList.remove('hidden'); }
       else { badge.textContent = ''; badge.classList.add('hidden'); }
     }
-    const reset = $('dlgFraseReset');
-    if(reset) reset.classList.toggle('hidden', !custom);
   };
   paintDlgFrase();
   const ft = $('dlgFraseText'), fa = $('dlgFraseAuthor');
@@ -1485,11 +1474,6 @@ function openDayDialog(lunaN, diaN) {
     if(!String(t || '').trim()){ alert('Escribe tu frase primero'); return; }
     writeCustomFrase(lunaN, diaN, currentCycleYear(), t, a);
     if(ft) ft.value = ''; if(fa) fa.value = '';
-    paintDlgFrase();
-  };
-  const frReset = $('dlgFraseReset');
-  if(frReset) frReset.onclick = ()=>{
-    writeCustomFrase(lunaN, diaN, currentCycleYear(), '', '');
     paintDlgFrase();
   };
   const efe = EFEMERIDES[cal.fmtKey.format(new Date(d.noonMs)).slice(5)];
