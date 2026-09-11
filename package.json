@@ -24,6 +24,7 @@
       "renderer.js",
       "astro.js",
       "cal.js",
+      "nuevos-modulos.js",
       "data.js",
       "frases.js",
       "donate.json",

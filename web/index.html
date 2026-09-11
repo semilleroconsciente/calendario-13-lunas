@@ -109,7 +109,6 @@
           <button id="btnIntermareal" class="btn" data-keywords="intermareal roquerio poza marea baja cochayuyo luche lapa chorito jaiba algas mariscos cosecha sostenible">🦀 Intermareal</button>
           <button id="btnBosque" class="btn" data-keywords="bosque nativo arbol canelo boldo peumo arrayan quillay maiten avellano reforestacion semilla hongo maqui trihue laurelia naranjillo citronella keule gomortega">🌳 Bosque Nativo</button>
           <button id="btnCompost" class="btn" data-keywords="compost suelo humus vermicompostera bocashi tierra ph arcilla abono menguante">🪱 Compost & Suelo</button>
-          <button id="btnRecicla" class="btn" data-keywords="reciclaje punto limpio feria basura residuo plastico vidrio papel miercoles sabado lirquen">♻️ Reciclaje & Ferias</button>
         </div>
       </details>
       <details class="action-group" open data-group="cuerpo">
@@ -1656,25 +1655,7 @@
     </form>
   </dialog>
 
-  <dialog id="reciclaDialog">
-    <form method="dialog">
-      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
-        <h3 style="margin:0;color:var(--accent)">♻️ Reciclaje & Ferias — Penco</h3>
-        <button type="button" id="reciclaCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
-      </div>
-      <p class="muted" style="line-height:1.5">Guía <b>offline y orientativa</b>: verifica horarios en munipenco.cl porque cambian. Ferias: <b>Penco centro mié/sáb mañana · Lirquén sáb</b>. Punto Limpio y recolección abajo.</p>
-      <div class="conv-row" style="align-items:center">
-        <label style="flex:2">🔍 ¿Dónde va? <input type="text" id="reciclaSearch" placeholder="ej: botella, pila, aceite, ropa"></label>
-        <label>Filtrar <select id="reciclaFilter"><option value="">Todo</option><option value="Punto limpio">Punto limpio</option><option value="Feria">Feria / Reutiliza</option><option value="Compost">Compost</option><option value="Basura">Basura / Aseo</option><option value="Peligroso">Peligroso</option></select></label>
-      </div>
-      <div id="reciclaList" style="margin-top:10px"></div>
-      <div class="help-grid" style="margin-top:10px">
-        <div class="help-card"><h4>🗓️ Recolección Penco</h4><p style="font-size:11px;line-height:1.5">Domiciliaria 2-3x/semana según sector (consulta tu calle en Aseo y Ornato 41 226 1033). Saca la noche anterior, no con viento sur fuerte. Voluminosos: operativos municipales por junta de vecinos.</p></div>
-        <div class="help-card"><h4>🥬 Ferias libres</h4><p style="font-size:11px;line-height:1.5"><b>Penco centro:</b> mié y sáb 8:30-14:00 · <b>Lirquén:</b> sáb mañana. Lleva bolsa reutilizable, compra temporada (ver 🌱 Siembra) y conversa trueque (ver 🌱 Banco Semillas).</p></div>
-      </div>
-      <div class="dlg-actions"><button type="button" id="reciclaClose" class="btn">Cerrar</button></div>
-    </form>
-  </dialog>
+  
 
   <dialog id="aireDialog">
     <form method="dialog">
@@ -3118,6 +3099,7 @@
   <script src="frases.js?v=8"></script>
   <script src="cal.js?v=8"></script>
   <script src="renderer.js?v=8"></script>
+  <script src="nuevos-modulos.js?v=8"></script>
   <script>
     if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
   </script>
