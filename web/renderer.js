@@ -5359,7 +5359,7 @@ function showGuiaTab(which){
 setTimeout(setupHelpDialog, 850);
 
 // === CONFIGURACIÓN PERSONALIZABLE ===
-const ALL_BTNS = ["btnTides","btnFishing","btnBirds","btnIntermareal","btnBosque","btnWeather","btnSiembra","btnAstro","btnComuna","btnEkadashi","btnMenstrual","btnMedic","btnHabits","btnMeal","btnShopping","btnFinance","btnHomeTasks","btnDiscipline","btnDreams","btnBreath","btnGratitud","btnSchedule","btnGym","btnCircadian","btnGolden","btnEspiritual","btnCompost","btnRecicla","btnLawen","btnFirstAid","btnAnimalCare","btnViolence","btnEvac","btnConvert","btnEnergy","btnLena","btnTimer","btnRemind","btnBackup","btnRestore","btnShortcut","btnPdfLuna","btnPdfCiclo","btnDonate","btnHelp","btnStudy","btnTales","btnMemory","btnMapu","btnEnglish","btnGuitar","btnPsico","btnMetodos"];
+const ALL_BTNS = ["btnTides","btnFishing","btnBirds","btnIntermareal","btnBosque","btnWeather","btnSiembra","btnAstro","btnComuna","btnEkadashi","btnMenstrual","btnMedic","btnHabits","btnMeal","btnShopping","btnFinance","btnHomeTasks","btnDiscipline","btnDreams","btnBreath","btnGratitud","btnSchedule","btnGym","btnCircadian","btnGolden","btnEspiritual","btnCompost","btnLawen","btnFirstAid","btnAnimalCare","btnViolence","btnEvac","btnConvert","btnEnergy","btnLena","btnTimer","btnRemind","btnBackup","btnRestore","btnShortcut","btnPdfLuna","btnPdfCiclo","btnDonate","btnHelp","btnStudy","btnTales","btnMemory","btnMapu","btnEnglish","btnGuitar","btnPsico","btnMetodos"];
 const PRESETS = {
   todo: Object.fromEntries(ALL_BTNS.map(k=>[k,true])),
   esencial: {btnTides:true,btnWeather:true,btnSiembra:true,btnEkadashi:true,btnFirstAid:true,btnEvac:true,btnBackup:true,btnRestore:true,btnPdfLuna:true,btnPdfCiclo:true,btnHelp:true,btnDonate:true},
@@ -5368,11 +5368,11 @@ const PRESETS = {
   adulto: Object.fromEntries(ALL_BTNS.map(k=>[k,true])),
   mayor: {btnTides:true,btnWeather:true,btnSiembra:true,btnMenstrual:true,btnMedic:true,btnDreams:true,btnGratitud:true,btnBreath:true,btnLena:true,btnHelp:true,btnDonate:true},
   estudiante: {btnWeather:true,btnSiembra:true,btnHabits:true,btnStudy:true,btnSchedule:true,btnDiscipline:true,btnMapu:true,btnEnglish:true,btnGuitar:true,btnTales:true,btnConvert:true,btnTimer:true,btnHelp:true},
-  agricultor: {btnTides:true,btnFishing:true,btnBirds:true,btnIntermareal:true,btnBosque:true,btnWeather:true,btnSiembra:true,btnCompost:true,btnLawen:true,btnRecicla:true,btnGolden:true,btnCircadian:true,btnHelp:true},
+  agricultor: {btnTides:true,btnFishing:true,btnBirds:true,btnIntermareal:true,btnBosque:true,btnWeather:true,btnSiembra:true,btnCompost:true,btnLawen:true,btnGolden:true,btnCircadian:true,btnHelp:true},
   pescador: {btnTides:true,btnFishing:true,btnBirds:true,btnIntermareal:true,btnBosque:true,btnWeather:true,btnSiembra:true,btnGolden:true,btnHelp:true},
   salud: {btnMenstrual:true,btnMedic:true,btnLawen:true,btnHabits:true,btnGym:true,btnCircadian:true,btnDreams:true,btnGratitud:true,btnBreath:true,btnEspiritual:true,btnPsico:true,btnMetodos:true,btnMeal:true,btnFirstAid:true,btnAnimalCare:true,btnEvac:true,btnHelp:true},
   deportista: {btnHabits:true,btnGym:true,btnMeal:true,btnShopping:true,btnFinance:true,btnCircadian:true,btnBreath:true,btnEspiritual:true,btnTimer:true,btnHelp:true},
-  docente: {btnSiembra:true,btnEkadashi:true,btnStudy:true,btnSchedule:true,btnHabits:true,btnDiscipline:true,btnMapu:true,btnEnglish:true,btnGuitar:true,btnTales:true,btnGratitud:true,btnPsico:true,btnMetodos:true,btnRecicla:true,btnConvert:true,btnPdfCiclo:true,btnHelp:true}
+  docente: {btnSiembra:true,btnEkadashi:true,btnStudy:true,btnSchedule:true,btnHabits:true,btnDiscipline:true,btnMapu:true,btnEnglish:true,btnGuitar:true,btnTales:true,btnGratitud:true,btnPsico:true,btnMetodos:true,btnConvert:true,btnPdfCiclo:true,btnHelp:true}
 };
 function getVisibleConfig(){
   const c = (DATA.config && DATA.config.visible) || {};

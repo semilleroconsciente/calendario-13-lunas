@@ -832,3 +832,8 @@ body.large-text #lunaDesc, body.large-text .chip, body.large-text .btn { font-si
   .week-grid .day-card .dc-note:empty,
   .week-grid .day-card .dc-clima:empty { display: none; }
 }
+/* === Nuevos modulos (14 secciones) === */
+#forrajeDialog, #bodegaDialog, #trafDialog, #aguaDialog, #nudosDialog, #tallerDialog, #truequeDialog, #mingaDialog, #cieloDialog, #epewDialog, #rutinaDialog, #fertiDialog { width: 680px; max-width: 96vw; max-height: 88vh; overflow-y: auto; }
+#forrajeFichas .lawen-card, #nudosList .si-card { margin: 0; }
+.esp-steps { margin: 0; padding-left: 18px; font-size: 12px; line-height: 1.55; color: #cdd3ee; }
+.esp-steps li { margin-bottom: 3px; padding: 2px 4px; border-radius: 6px; }
