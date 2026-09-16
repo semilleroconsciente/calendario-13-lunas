@@ -391,8 +391,32 @@ body[data-theme="medianoche"] { --bg:#050508; --bg2:#0a0a10; --panel:#141418; --
 .chrono-laps { margin-top: 10px; max-height: 140px; overflow-y: auto; display: flex; flex-direction: column; gap: 4px; }
 .chrono-lap { background: var(--card); border: 1px solid var(--line); border-radius: 6px; padding: 6px 10px; font-size: 12px; color: var(--text); }
 
-#convertDialog, #timerDialog, #ekadashiDialog, #siembraDialog, #menstrualDialog, #medicDialog, #habitsDialog, #donateDialog, #helpDialog, #circadianDialog, #goldenDialog, #disciplineDialog, #dreamsDialog, #mealDialog, #shoppingDialog, #financeDialog, #energyDialog, #breathDialog, #scheduleDialog, #fishingDialog, #gymDialog, #birdsDialog, #intermarealDialog, #bosqueDialog, #astroDialog, #comunaDialog, #firstAidDialog, #animalCareDialog, #violenceDialog, #homeTasksDialog, #espiritualDialog, #psicoDialog, #metodosDialog { width: 520px; max-width: 96vw; max-height: 88vh; overflow-y: auto; }
-#helpDialog, #disciplineDialog, #dreamsDialog, #breathDialog, #scheduleDialog, #fishingDialog, #birdsDialog, #intermarealDialog, #bosqueDialog, #astroDialog, #comunaDialog, #studyDialog, #firstAidDialog, #animalCareDialog, #violenceDialog, #homeTasksDialog, #espiritualDialog, #psicoDialog, #metodosDialog { width: 680px; }
+#convertDialog, #timerDialog, #ekadashiDialog, #siembraDialog, #menstrualDialog, #medicDialog, #habitsDialog, #donateDialog, #helpDialog, #circadianDialog, #goldenDialog, #disciplineDialog, #dreamsDialog, #mealDialog, #shoppingDialog, #financeDialog, #energyDialog, #breathDialog, #scheduleDialog, #fishingDialog, #gymDialog, #birdsDialog, #intermarealDialog, #bosqueDialog, #astroDialog, #comunaDialog, #firstAidDialog, #animalCareDialog, #violenceDialog, #homeTasksDialog, #espiritualDialog, #psicoDialog, #metodosDialog, #ajedrezDialog { width: 520px; max-width: 96vw; max-height: 88vh; overflow-y: auto; }
+#helpDialog, #disciplineDialog, #dreamsDialog, #breathDialog, #scheduleDialog, #fishingDialog, #birdsDialog, #intermarealDialog, #bosqueDialog, #astroDialog, #comunaDialog, #studyDialog, #firstAidDialog, #animalCareDialog, #violenceDialog, #homeTasksDialog, #espiritualDialog, #psicoDialog, #metodosDialog, #vozDialog, #ajedrezDialog { width: 680px; }
+/* ♟️ Ajedrez */
+.aj-wrap { max-width: 440px; margin: 0 auto; }
+.aj-board { display: grid; grid-template-columns: repeat(8, 1fr); gap: 0; border: 3px solid var(--gold); border-radius: 10px; overflow: hidden; }
+.aj-sq { aspect-ratio: 1; border: 0; padding: 0; cursor: pointer; position: relative; display: flex; align-items: center; justify-content: center; }
+.aj-light { background: #ecdcb9; }
+.aj-dark { background: #a5714f; }
+.aj-p { font-size: clamp(20px, 5.2vw, 32px); line-height: 1; user-select: none; }
+.aj-w { color: #fafafa; text-shadow: 0 0 2px #000, 0 0 3px #000, 1px 1px 0 #000; }
+.aj-b { color: #1a1a1a; text-shadow: 0 0 2px #fff8, 1px 1px 0 #fff6; }
+.aj-sel { outline: 3px solid var(--gold); outline-offset: -3px; }
+.aj-last { box-shadow: inset 0 0 0 3px #e8c56a99; }
+.aj-check { box-shadow: inset 0 0 0 4px #e74c3c; background-blend-mode: multiply; }
+.aj-dest::after { content: ''; position: absolute; width: 26%; height: 26%; border-radius: 50%; background: #2e7d32cc; }
+.aj-cap::after { content: ''; position: absolute; inset: 4%; border: 3px solid #2e7d32dd; border-radius: 50%; pointer-events: none; }
+.aj-coord { position: absolute; font-size: 8px; font-weight: 700; opacity: .75; pointer-events: none; }
+.aj-rank { top: 1px; left: 2px; color: #5a4632; }
+.aj-file { bottom: 1px; right: 3px; color: #5a4632; }
+.aj-mini { max-width: 340px; margin: 0 auto; }
+.aj-mini .aj-p { font-size: clamp(17px, 4.4vw, 26px); }
+.aj-moves { display: flex; flex-wrap: wrap; gap: 4px; max-height: 110px; overflow-y: auto; margin-top: 6px; }
+.aj-mv { font-size: 11.5px; background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 3px 7px; }
+/* Voz de los Abuelos — desbloqueo lunar y voces */
+#vozDialog audio { border-radius:8px; background:var(--panel); }
+#vozDiaBox { line-height:1.5; }
 /* Prácticas Espirituales — fichas */
 .esp-card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; margin-bottom: 10px; }
 .esp-card-head { display: flex; gap: 10px; align-items: center; padding: 10px 12px; background: rgba(232,197,106,0.06); border-bottom: 1px solid var(--line); flex-wrap: wrap; }
@@ -639,6 +663,26 @@ body[data-theme="medianoche"] { --bg:#050508; --bg2:#0a0a10; --panel:#141418; --
 .astro-luna-cell.today { border-color:var(--gold); outline:1px solid var(--gold); }
 .astro-bar { display:block; width:100%; height:4px; background:var(--panel); border-radius:3px; overflow:hidden; }
 .astro-bar i { display:block; height:100%; background:linear-gradient(90deg,#7ab8ff,#e8c56a); }
+/* Carta Natal — rueda + tablas */
+.ca-hero h4 { color:var(--gold); }
+.ca-big { font-size:14px; font-weight:700; }
+.ca-wheel-wrap { flex:0 0 300px; max-width:320px; margin:0 auto; }
+.carta-wheel { width:100%; height:auto; display:block; }
+.carta-wheel .cw-outer { fill:var(--panel); stroke:var(--gold); stroke-width:1.5; }
+.carta-wheel .cw-mid { fill:none; stroke:var(--line); stroke-width:1; }
+.carta-wheel .cw-inner { fill:var(--card); stroke:var(--line); stroke-width:1; }
+.carta-wheel .cw-sign { fill:none; stroke:var(--line); stroke-width:.7; }
+.carta-wheel .cw-sign-g { font-size:13px; fill:var(--text); }
+.carta-wheel .cw-house { stroke:var(--gold); stroke-width:.8; opacity:.7; }
+.carta-wheel .cw-house-n { font-size:8px; fill:var(--muted); }
+.carta-wheel .cw-pl { font-size:12px; font-weight:700; }
+.carta-wheel .cw-title { font-size:13px; font-weight:700; fill:var(--gold); }
+.carta-wheel .cw-sub { font-size:8px; fill:var(--muted); }
+.ca-table { display:flex; flex-direction:column; gap:4px; margin-top:6px; }
+.ca-row { display:flex; gap:8px; align-items:center; justify-content:space-between; flex-wrap:wrap; background:var(--card); border:1px solid var(--line); border-radius:8px; padding:6px 10px; font-size:12px; }
+.ca-row .ca-pl { font-weight:700; }
+.ca-legend { font-size:10px; margin-top:6px; }
+@media (max-width:920px){ .ca-wheel-wrap { flex-basis:100%; max-width:340px; } }
 /* Memoria — gimnasio mental */
 .mem-grid { display:grid; gap:6px; justify-content:center; margin:8px auto; max-width:420px; }
 .mem-card { min-width:52px; min-height:52px; display:flex; align-items:center; justify-content:center; font-size:22px; border:1px solid var(--line); border-radius:10px; background:var(--bg2); cursor:pointer; transition:transform .12s, background .12s, border-color .12s; user-select:none; padding:8px; }
@@ -662,9 +706,30 @@ body[data-theme="medianoche"] { --bg:#050508; --bg2:#0a0a10; --panel:#141418; --
 
 /* Accesibilidad */
 :focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+/* Tamaños de letra (Ajustes → 🔠): parte en Normal y sube */
+body[data-font="m"] { font-size: 16px; }
+body[data-font="l"] { font-size: 17px; }
+body[data-font="xl"] { font-size: 18px; }
+body[data-font="xxl"] { font-size: 19px; }
+body[data-font="3xl"] { font-size: 20px; }
+body[data-font="4xl"] { font-size: 21px; }
 body.large-text { font-size: 17px; }
 body.large-text .day-card { min-height: 124px; }
 body.large-text #lunaDesc, body.large-text .chip, body.large-text .btn { font-size: 15px; }
+body[data-font="xl"] .day-card { min-height: 118px; }
+body[data-font="xxl"] .day-card { min-height: 132px; }
+body[data-font="3xl"] .day-card { min-height: 142px; }
+body[data-font="4xl"] .day-card { min-height: 152px; }
+body[data-font="xl"] #lunaDesc, body[data-font="xl"] .chip, body[data-font="xl"] .btn,
+body[data-font="xxl"] #lunaDesc, body[data-font="xxl"] .chip, body[data-font="xxl"] .btn,
+body[data-font="3xl"] #lunaDesc, body[data-font="3xl"] .chip, body[data-font="3xl"] .btn,
+body[data-font="4xl"] #lunaDesc, body[data-font="4xl"] .chip, body[data-font="4xl"] .btn { font-size: 1.02em; }
+.font-pills { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.font-pill { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 4px; }
+.font-pill .fp-a { font-weight: 700; color: var(--accent); line-height: 1; }
+.font-pill small { font-size: 10px; color: var(--muted); }
+.font-pill[aria-pressed="true"] { border-color: var(--gold); background: linear-gradient(135deg, var(--panel), var(--card)); box-shadow: 0 0 0 1px #e8c56a44; }
+.font-pill[aria-pressed="true"] small { color: var(--gold); }
 .skip-link { position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); clip-path:inset(50%); white-space:nowrap; background:var(--gold); color:#10142c; padding:6px 10px; border-radius:8px; text-decoration:none; }
 .skip-link:focus { left:10px; top:10px; width:auto; height:auto; overflow:visible; clip:auto; clip-path:none; white-space:normal; z-index:9999; }
 

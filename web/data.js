@@ -202,7 +202,17 @@ const AVES_PENCO = [
   { nombre: "Bandurria", cient: "Theristicus melanopis", hab: "Pradera, humedal", icon: "🦩", epoca: "Todo el año" },
   { nombre: "Queltrehue / Treile", cient: "Vanellus chilensis", hab: "Pastizal, cancha", icon: "🐦", epoca: "Todo el año" },
   { nombre: "Picaflor chico", cient: "Sephanoides sephaniodes", hab: "Jardín, bosque", icon: "🐝", epoca: "Sep – Abr" },
-  { nombre: "Concón", cient: "Strix rufipes", hab: "Bosque nativo", icon: "🦉", epoca: "Todo el año – nocturna" }
+  { nombre: "Concón", cient: "Strix rufipes", hab: "Bosque nativo", icon: "🦉", epoca: "Todo el año – nocturna" },
+  { nombre: "Tenca", cient: "Mimus thenca", hab: "Matorral, bosque esclerófilo, jardín", icon: "🐦", epoca: "Todo el año – canto primavera" },
+  { nombre: "Diuca", cient: "Diuca diuca", hab: "Pradera, borde bosque, cerco", icon: "🐦", epoca: "Todo el año" },
+  { nombre: "Chucao", cient: "Scelorchilus rubecula", hab: "Sotobosque húmedo, quebrada, quila", icon: "🐦", epoca: "Todo el año – canto lluvia" },
+  { nombre: "Chercán", cient: "Troglodytes aedon", hab: "Jardín, sotobosque, cerco vivo", icon: "🐦", epoca: "Todo el año" },
+  { nombre: "Rayadito", cient: "Aphrastura spinicauda", hab: "Bosque nativo, canelo-arrayán", icon: "🐦", epoca: "Todo el año" },
+  { nombre: "Cachudito", cient: "Anairetes parulus", hab: "Matorral, bosque bajo, maqui", icon: "🐦", epoca: "Todo el año" },
+  { nombre: "Torcaza", cient: "Patagioenas araucana", hab: "Bosque nativo, peumo-boldo", icon: "🕊️", epoca: "Todo el año – bandadas otoño" },
+  { nombre: "Carpintero chico", cient: "Veniliornis lignarius", hab: "Bosque nativo, troncos viejos", icon: "🐦", epoca: "Todo el año" },
+  { nombre: "Cometocino", cient: "Phrygilus patagonicus", hab: "Sotobosque, borde bosque", icon: "🐦", epoca: "Otoño-invierno" },
+  { nombre: "Jilguero", cient: "Spinus barbatus", hab: "Bosque, pradera, quillay-maitén", icon: "🐦", epoca: "Todo el año" }
 ];
 
 const EVENTOS_ASTRONOMICOS = [
