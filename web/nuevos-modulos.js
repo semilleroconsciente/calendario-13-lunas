@@ -193,12 +193,13 @@ var KIMUN = [
 var NUEVOS_BTNS = [
   { id: 'btnAgua', txt: '💧 Agua', kw: 'agua lluvia estanque pozo milimetros reserva litros sequia corte rio rios medicion nivel ph', grupo: 'territorio' },
   { id: 'btnBodega', txt: '🍯 La Bodega', kw: 'bodega conservas fermentos mermelada chucrut kombucha deshidratado frasco caducidad maduracion lunar', grupo: 'vida' },
+  { id: 'btnCrianza', txt: '🧒 Crianza', kw: 'crianza infantil niños niñas hijos pedagogia montessori waldorf pikler reggio disciplina positiva juego infancia educacion', grupo: 'vida' },
   { id: 'btnNudos', txt: '🪢 Nudos y Redes', kw: 'nudos amarras redes pesca ballestrinque as de guia pescador kayak camping entutorado tejer reparar', grupo: 'herramientas' },
   { id: 'btnTaller', txt: '🔧 Bitácora Taller', kw: 'taller reparacion mantenimiento herramienta bote bicicleta aceite afilado bomba alerta luna', grupo: 'herramientas' },
   { id: 'btnTrueque', txt: '🔄 Trueque y Feria', kw: 'trueque feria local economia circular intercambio vecino feria libre penco gastos cuenta reciclaje punto limpio basura residuo botella pila aceite ropa recoleccion aseo', grupo: 'emergencia' },
   { id: 'btnMinga', txt: '🤝 Minga · Red de Apoyo', kw: 'minga red apoyo comunidad ayuda techo cosecha tormenta llamado offline bluetooth vecino', grupo: 'emergencia' },
   { id: 'btnRutina', txt: '🧘 Rutinas Circadianas', kw: 'rutina circadiano hora dorada cortisol planificador habito sueño energia creatividad descanso', grupo: 'cuerpo' },
-  { id: 'btnFerti', txt: '🤰 Fertilidad Natural', kw: 'fertilidad ciclo sintotermico temperatura basal moco cervical planificacion familiar natural privado', grupo: 'cuerpo' },
+  { id: 'btnFerti', txt: '🤰 Fertilidad Natural', kw: 'fertilidad ciclo sintotermico temperatura basal moco cervical ovulacion test lh buscar evitar embarazo parto puerperio lactancia bebe guagua hitos 1000 dias fur fpp vacunas controles crecimiento planificacion familiar natural privado', grupo: 'cuerpo' },
   { id: 'btnDerechos', txt: '⚖️ Derechos y Deberes', kw: 'derechos deberes constitucion ciudadano reclamo denuncia sernac trabajo salud educacion consumidor carabineros pdi juzgado municipalidad', grupo: 'emergencia' },
 ];
 function cleanupEpewSeparado() {
@@ -251,6 +252,7 @@ function cleanupCieloSeparado() {
 }
 function injectButtons() {
   try { cleanupEpewSeparado(); } catch (e) {}
+  try { cleanupCocrea(); } catch (e) {}
   try { cleanupForrajeSeparado(); } catch (e) {}
   try { cleanupTrafSeparado(); } catch (e) {}
   try { cleanupCieloSeparado(); } catch (e) {}
@@ -1416,41 +1418,125 @@ function setupRutina() {
 }
 
 /* ============================================================
-   14) FERTILIDAD SINTOTERMICA (privada)
+   14) FERTILIDAD SINTOTERMICA + 1000 DIAS (privado)
+   Pestañas: Registro diario · Ventana fértil · 1000 días
+   (embarazo, bebé, crecimiento, vacunas, hitos, acompañamiento).
+   Todo local y privado por usuario (store + save). Educativo, no médico.
    ============================================================ */
 function getFerti() { var a = store('fertiLog', []); return Array.isArray(a) ? a : []; }
+function getFertiMeta() { var o = store('fertiMeta', { intencion: 'registrar' }); if (typeof o !== 'object' || !o) return { intencion: 'registrar' }; return o; }
+function fertiNum(t) { var n = parseFloat(String(t == null ? '' : t).replace(',', '.')); return isFinite(n) ? n : null; }
+function fertiStarts(s) {
+  // inicios de ciclo: primer día de cada racha de sangrado
+  var starts = [];
+  for (var i = 0; i < s.length; i++) {
+    if (s[i].moco === 'sangrado' && (i === 0 || s[i - 1].moco !== 'sangrado' || diffDays(s[i - 1].fecha, s[i].fecha) > 2)) starts.push(s[i].fecha);
+  }
+  return starts;
+}
+function diffDays(a, b) { return Math.round((new Date(b + 'T12:00:00') - new Date(a + 'T12:00:00')) / 86400000); }
 function renderFerti() {
   var box = $('fertiList'); if (!box) return;
+  var meta = getFertiMeta();
+  if ($('ferInt') && document.activeElement !== $('ferInt')) $('ferInt').value = meta.intencion || 'registrar';
   var data = getFerti();
-  if (!data.length) { box.innerHTML = '<p class="muted">Sin registros. Todo queda solo en este dispositivo.</p>'; $('fertiInfo').innerHTML = ''; return; }
-  var s = data.slice().sort(function (a, b) { return a.fecha.localeCompare(b.fecha); });
-  var ult = s[s.length - 1];
-  var pico = null;
-  for (var i = s.length - 1; i >= 0; i--) { if (s[i].moco === 'clara elástica') { pico = s[i]; break; } }
-  var info = '📅 Último registro: <b>' + ult.fecha + '</b> · temp ' + (ult.temp || '—') + '°C · moco: ' + (ult.moco || '—');
-  if (pico) info += '<br>💧 Pico de moco fértil: <b>' + pico.fecha + '</b> → ventana fértil aprox pico ±5 días (referencial).';
-  info += '<br><span class="muted">Confirma con 3 temps altas seguidas + pico de moco. No es método anticonceptivo seguro por sí solo: fórmate con profesional/matrona.</span>';
-  $('fertiInfo').innerHTML = info;
-  box.innerHTML = s.slice().reverse().slice(0, 40).map(function (r) {
-    return '<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center"><span><b>' + r.fecha + '</b> · 🌡️ ' + esc(r.temp || '—') + '°C · 💧 ' + esc(r.moco || '—') + '<br><span class="muted" style="font-size:11px">🤍 cérvix: ' + esc(r.cervix || '—') + (r.rel ? ' · 💞 relaciones' : '') + (r.nota ? ' · ' + esc(r.nota) : '') + '</span></span><button class="btn" style="width:auto;font-size:11px;color:#e76e8a" data-del="' + r.id + '">✕</button></div>';
-  }).join('');
-  box.querySelectorAll('[data-del]').forEach(function (b) { b.onclick = function () { if (!confirm('¿Borrar registro íntimo?')) return; var d = getFerti(); var i = d.findIndex(function (x) { return x.id === b.getAttribute('data-del'); }); if (i >= 0) d.splice(i, 1); save(); renderFerti(); }; });
+  if (!data.length) { box.innerHTML = '<p class="muted">Sin registros. Marca cada mañana tu temp + moco y la ventana fértil se estimará sola. Todo queda solo en este dispositivo.</p>'; if ($('fertiInfo')) $('fertiInfo').innerHTML = ''; }
+  else {
+    var s = data.slice().sort(function (a, b) { return a.fecha.localeCompare(b.fecha); });
+    var ult = s[s.length - 1];
+    var pico = null;
+    for (var i = s.length - 1; i >= 0; i--) { if (s[i].moco === 'clara elástica') { pico = s[i]; break; } }
+    var lh = null;
+    for (var j = s.length - 1; j >= 0; j--) { if (s[j].lh === 'positivo') { lh = s[j]; break; } }
+    var info = '📅 Último registro: <b>' + ult.fecha + '</b> · temp ' + (ult.temp || '—') + '°C · moco: ' + (ult.moco || '—') + (ult.lh && ult.lh !== '—' ? ' · LH: ' + ult.lh : '');
+    if (pico) info += '<br>💧 Pico de moco fértil: <b>' + pico.fecha + '</b> → ventana aprox pico ±5 días (referencial).';
+    if (lh) info += '<br>🧪 Último LH positivo: <b>' + lh.fecha + '</b> → ovulación probable en 24-36 h.';
+    var inten = meta.intencion === 'buscar' ? '🤍 Intención: <b>buscar embarazo</b> — enfoca el registro en la ventana fértil.' : (meta.intencion === 'evitar' ? '🛡️ Intención: <b>evitar embarazo</b> — este registro solo NO basta como anticonceptivo: usa método seguro + guía de matrona.' : '📝 Intención: <b>solo registrar y conocerme</b>.');
+    info += '<br>' + inten;
+    info += '<br><span class="muted">Regla sintotérmica: 3 temps altas seguidas sobre la línea base + pico de moco confirman ovulación pasada. No es método anticonceptivo seguro por sí solo: fórmate con profesional/matrona.</span>';
+    $('fertiInfo').innerHTML = info;
+    box.innerHTML = s.slice().reverse().slice(0, 60).map(function (r) {
+      return '<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center"><span><b>' + r.fecha + '</b> · 🌡️ ' + esc(r.temp || '—') + '°C · 💧 ' + esc(r.moco || '—') + (r.lh && r.lh !== '—' ? ' · 🧪LH ' + esc(r.lh) : '') + '<br><span class="muted" style="font-size:11px">🤍 cérvix: ' + esc(r.cervix || '—') + (r.rel ? ' · 💞 relaciones' : '') + (r.nota ? ' · ' + esc(r.nota) : '') + '</span></span><button class="btn" style="width:auto;font-size:11px;color:#e76e8a" data-del="' + r.id + '">✕</button></div>';
+    }).join('');
+    box.querySelectorAll('[data-del]').forEach(function (b) { b.onclick = function () { if (!confirm('¿Borrar registro íntimo?')) return; var d = getFerti(); var i = d.findIndex(function (x) { return x.id === b.getAttribute('data-del'); }); if (i >= 0) d.splice(i, 1); save(); renderFerti(); renderFerVent(); }; });
+  }
+  try { renderFerVent(); } catch (e) {}
+}
+function renderFerVent() {
+  var box = $('ferVenBox'); if (!box) return;
+  var hoy = todayKey();
+  var s = getFerti().slice().sort(function (a, b) { return a.fecha.localeCompare(b.fecha); });
+  if (!s.length) { box.innerHTML = '<p class="muted">Aún sin datos. Con 1 ciclo de sangrados + temps + moco verás aquí tu ventana estimada, tu día del ciclo y el estado de hoy.</p>'; return; }
+  var starts = fertiStarts(s);
+  var lastStart = starts.length ? starts[starts.length - 1] : null;
+  var lens = [];
+  for (var i = 1; i < starts.length; i++) { var L = diffDays(starts[i - 1], starts[i]); if (L >= 20 && L <= 45) lens.push(L); }
+  lens = lens.slice(-3);
+  var avgLen = lens.length ? Math.round(lens.reduce(function (a, b) { return a + b; }, 0) / lens.length) : 28;
+  var diaCiclo = lastStart ? diffDays(lastStart, hoy) + 1 : null;
+  var ovu = lastStart ? addDaysKey(lastStart, avgLen - 14) : null;
+  var fIni = ovu ? addDaysKey(ovu, -5) : null, fFin = ovu ? addDaysKey(ovu, 1) : null;
+  var enVentana = (ovu && hoy >= fIni && hoy <= fFin);
+  // alza térmica: últimas 3 temps sobre el máx de las 6 previas (+0.15)
+  var temps = s.map(function (r) { return { f: r.fecha, t: fertiNum(r.temp) }; }).filter(function (x) { return x.t !== null; });
+  var alza = false, base = null;
+  if (temps.length >= 9) {
+    var prev = temps.slice(-9, -3).map(function (x) { return x.t; });
+    var ult3 = temps.slice(-3).map(function (x) { return x.t; });
+    base = Math.max.apply(null, prev);
+    alza = ult3.every(function (t) { return t > base + 0.15; });
+  }
+  var meta = getFertiMeta();
+  var html = '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🌿 Hoy: ' + hoy + '</h4>';
+  if (diaCiclo !== null && diaCiclo >= 1 && diaCiclo <= avgLen + 5) html += '<p style="font-size:13px">📍 Día <b>' + diaCiclo + '</b> del ciclo (ciclo ref ~' + avgLen + ' días' + (lens.length ? ' · promedio de ' + lens.length + ' ciclos' : ' · supuesto 28, registra sangrados para afinar') + ').</p>';
+  else html += '<p style="font-size:13px">📍 Sin inicio de ciclo claro: marca <b>sangrado</b> en moco cuando menstrúes.</p>';
+  if (ovu) html += '<p style="font-size:13px">✨ Ovulación estimada: <b>' + ovu + '</b><br>💧 Ventana fértil aprox: <b>' + fIni + ' → ' + fFin + '</b> ' + (enVentana ? '<span class="chip" style="background:#8fd69433;color:#8fd694;border-color:#8fd69466">HOY en ventana</span>' : '<span class="muted">(hoy fuera de ventana)</span>') + '</p>';
+  html += '<p style="font-size:12px">🌡️ Alza térmica sostenida: <b>' + (alza ? 'SÍ — probable post-ovulación (base ' + base.toFixed(2) + '°C)' : 'no detectada aún') + '</b></p>';
+  if (meta.intencion === 'buscar') html += '<p style="font-size:12px">🤍 Buscar: relaciones días alternos en ' + (ovu ? '<b>' + fIni + ' → ' + fFin + '</b>' : 'la ventana') + ' + ácido fólico diario + control preconcepcional con matrona.</p>';
+  else if (meta.intencion === 'evitar') html += '<p style="font-size:12px">🛡️ Evitar: este calendario <b>no protege solo</b>. En ventana fértil usa preservativo u otro método seguro. Ante duda o atraso, test + matrona.</p>';
+  html += '<p class="muted" style="font-size:11px">Estimación educativa con tus datos locales. Se afina con cada ciclo registrado. Cruza con 🌸 Ciclo del calendario.</p>';
+  html += '<div style="display:flex;gap:6px;flex-wrap:wrap"><button type="button" id="ferVerCiclo" class="btn" style="width:auto">🌸 Ver mi Ciclo</button></div></div>';
+  box.innerHTML = html;
+  if ($('ferVerCiclo')) $('ferVerCiclo').onclick = function () { try { var b = $('btnMenstrual'); if (b) b.click(); } catch (e2) {} };
+}
+function switchFerTab(t) {
+  [['Reg', 'ferRegPanel'], ['Ven', 'ferVenPanel'], ['Mil', 'ferMilPanel']].forEach(function (x) {
+    var p = $(x[1]); if (p) p.classList.toggle('hidden', x[0] !== t);
+    var b = $('tabFer' + x[0]); if (b) b.classList.toggle('btn-accent', x[0] === t);
+  });
 }
 function setupFerti() {
-  makeDialog('fertiDialog', '🤰 Fertilidad y planificación familiar natural',
-    '<b>Privado y local:</b> nada sale de este dispositivo. Método sintotérmico: temperatura basal + moco cervical (+ cérvix opcional). <b>Educativo, no médico.</b>',
+  addKw('btnFerti', 'embarazo parto puerperio bebe guagua lactancia hitos 1000 dias fur fpp semana gestacion ovulacion test lh buscar evitar');
+  makeDialog('fertiDialog', '🤰 Fertilidad Natural + 1000 días',
+    '<b>Privado y local:</b> nada sale de este dispositivo. Método sintotérmico (temperatura basal + moco cervical + test LH opcional) y acompañamiento de los 1000 días. <b>Educativo, no médico.</b>',
+    '<div class="timer-tabs" style="flex-wrap:wrap;margin-bottom:10px">' +
+    '<button type="button" id="tabFerReg" class="btn btn-accent" style="width:auto">📝 Registro</button>' +
+    '<button type="button" id="tabFerVen" class="btn" style="width:auto">🌿 Ventana fértil</button>' +
+    '<button type="button" id="tabFerMil" class="btn" style="width:auto">🤱 1000 días</button></div>' +
+    '<div id="ferRegPanel">' +
     '<div class="menstrual-card" style="border-color:var(--gold)"><h4>➕ Registro diario (al despertar, antes de levantarte)</h4>' +
-    '<div class="conv-row"><label>Fecha <input type="date" id="ferFecha"></label><label>Temp basal °C <input type="number" id="ferTemp" min="35" max="38" step="0.05" placeholder="36.60"></label></div>' +
-    '<div class="conv-row"><label>Moco cervical <select id="ferMoco"><option value="">—</option><option>seca</option><option>pegajosa</option><option>cremosa</option><option>clara elástica</option><option>sangrado</option></select></label><label>Cérvix <select id="ferCerv"><option value="">—</option><option>bajo/duro/cerrado</option><option>alto/blando/abierto</option></select></label><label class="check-row" style="align-self:flex-end"><input type="checkbox" id="ferRel"> 💞 relaciones</label></div>' +
-    '<label>Notas <input type="text" id="ferNota" placeholder="enferma, trasnoche, alcohol..." maxlength="60"></label>' +
+    '<div class="conv-row"><label>Intención <select id="ferInt"><option value="registrar">📝 Solo registrarme</option><option value="buscar">🤍 Buscar embarazo</option><option value="evitar">🛡️ Evitar embarazo</option></select></label><label>Fecha <input type="date" id="ferFecha"></label><label>Temp basal °C <input type="number" id="ferTemp" min="35" max="38" step="0.05" placeholder="36.60"></label></div>' +
+    '<div class="conv-row"><label>Moco cervical <select id="ferMoco"><option value="">—</option><option>seca</option><option>pegajosa</option><option>cremosa</option><option>clara elástica</option><option>sangrado</option></select></label><label>Test LH <select id="ferLH"><option value="—">—</option><option>negativo</option><option>positivo</option></select></label><label>Cérvix <select id="ferCerv"><option value="">—</option><option>bajo/duro/cerrado</option><option>alto/blando/abierto</option></select></label><label class="check-row" style="align-self:flex-end"><input type="checkbox" id="ferRel"> 💞 relaciones</label></div>' +
+    '<label>Notas <input type="text" id="ferNota" placeholder="enferma, trasnoche, alcohol, test..." maxlength="80"></label>' +
     '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="ferAdd" class="btn btn-accent" style="width:auto">+ Guardar</button></div></div>' +
     '<div id="fertiInfo" class="chip" style="display:block;white-space:normal;margin-top:10px"></div>' +
-    '<div id="fertiList" class="habits-list" style="margin-top:10px;max-height:260px"></div>');
-  var b = $('btnFerti'); if (b) b.onclick = function () { if (!$('ferFecha').value) $('ferFecha').value = todayKey(); renderFerti(); openDlg('fertiDialog'); };
+    '<div id="fertiList" class="habits-list" style="margin-top:10px;max-height:260px"></div></div>' +
+    '<div id="ferVenPanel" class="hidden"><div id="ferVenBox"></div></div>' +
+    '<div id="ferMilPanel" class="hidden"><div id="milSection"></div></div>');
+  var b = $('btnFerti'); if (b) b.onclick = function () {
+    if (!$('ferFecha').value) $('ferFecha').value = todayKey();
+    switchFerTab('Reg'); renderFerti();
+    try { renderMilDias(); } catch (e) {}
+    openDlg('fertiDialog');
+  };
+  if ($('tabFerReg')) $('tabFerReg').onclick = function () { switchFerTab('Reg'); };
+  if ($('tabFerVen')) $('tabFerVen').onclick = function () { switchFerTab('Ven'); renderFerVent(); };
+  if ($('tabFerMil')) $('tabFerMil').onclick = function () { switchFerTab('Mil'); try { renderMilDias(); } catch (e) {} };
+  if ($('ferInt')) $('ferInt').onchange = function () { try { userData().fertiMeta = { intencion: $('ferInt').value }; } catch (e) {} save('Intención guardada 🤍'); renderFerti(); };
   $('ferAdd').onclick = function () {
     var f = $('ferFecha').value || todayKey();
     var d = getFerti().filter(function (x) { return x.fecha !== f; });
-    d.push({ id: uid('fe'), fecha: f, temp: $('ferTemp').value, moco: $('ferMoco').value, cervix: $('ferCerv').value, rel: $('ferRel').checked, nota: clean($('ferNota').value, 60) });
+    d.push({ id: uid('fe'), fecha: f, temp: $('ferTemp').value, moco: $('ferMoco').value, lh: $('ferLH').value, cervix: $('ferCerv').value, rel: $('ferRel').checked, nota: clean($('ferNota').value, 80) });
     try { userData().fertiLog = d; } catch (e) {}
     save('Guardado íntimo ✓'); $('ferTemp').value = ''; $('ferNota').value = ''; renderFerti();
   };
@@ -1574,6 +1660,1162 @@ function setupDerechos() {
   if ($('derShareAll')) $('derShareAll').onclick = function () { var d = getDerechosLog(); if (!d.length) return alert('Sin casos'); share('⚖️ Mis casos (resumen)', d.map(function (r) { return '· ' + r.fecha + ' — ' + r.tema + ' [' + r.estado + '] ' + (r.lugar || '') + (r.folio ? ' folio ' + r.folio : ''); }).join('\n')); };
 }
 
+/* ============================================================
+   FASE A — Cuerpo & Salud (sin botones ni grupos nuevos)
+   A1 Ventana 1000 días → pestaña 🤱 en #fertiDialog (btnFerti): embarazo,
+   bebé, crecimiento, vacunas, hitos y acompañamiento
+   A2 Duelo y memoria viva → pestaña en #espiritualDialog
+   A3 Sueños + arquetipos/patrones → fusión en #dreamsDialog
+   A4 Bitácora meditación + racha → fusión en #breathDialog
+   Todo local y privado por usuario (store + save).
+   ============================================================ */
+var MILDIAS_HITOS = ['Primera sonrisa', 'Sostiene la cabeza', 'Se sienta solo', 'Primer diente', 'Gateo', 'Primera palabra', 'Primeros pasos', 'Primera comida', 'Cumple 1 año', 'Cumple 2 años', 'Destete', 'Otro hito'];
+var SUENOS_ARQ = ['🌊 Agua / mar', '🌙 Luna', '🕊️ Vuelo', '🏠 Casa / hogar', '🐾 Animal guía', '👵 Ancestro / abuela', '🌑 Sombra / noche', '☀️ Luz / amanecer', '🔥 Fuego', '🌳 Bosque / árbol'];
+var SUENOS_EMO = ['calma', 'alegría', 'miedo', 'tristeza', 'rabia', 'amor', 'confusión', 'poder', 'gratitud'];
+var SUENOS_STOP = ['para', 'pero', 'como', 'esta', 'esto', 'estaba', 'porque', 'donde', 'cuando', 'mucho', 'tenia', 'habia', 'despues', 'sueño', 'sone', 'soñe'];
+var MEDITA_TRAD = ['Zen (zazen)', 'Vipassana', 'Llellipun mapuche', 'Respiración consciente', 'Contemplación lunar', 'Silencio / quietud'];
+function addKw(id, extra) {
+  try { var b = $(id); if (b && b.dataset && b.dataset.keywords && b.dataset.keywords.indexOf(extra.split(' ')[0]) < 0) b.dataset.keywords += ' ' + extra; } catch (e) {}
+}
+/* ---------- A1: 1000 días (embarazo + primera infancia) ---------- */
+var MILDIAS_HITOS = ['Primera sonrisa', 'Sostiene la mirada', 'Sostiene la cabeza', 'Balbuceo', 'Se sienta con apoyo', 'Se sienta solo', 'Primer diente', 'Pinza con dedos', 'Gateo', 'Primera palabra (mamá/papá)', 'Se pone de pie', 'Primeros pasos', 'Camina con apoyo', 'Primera comida', 'Apila cubos', 'Garabatea', 'Corre', 'Cumple 1 año', 'Control de esfínteres', 'Cumple 2 años', 'Destete', 'Cumple 3 años', 'Otro hito'];
+var MIL_CTRL_EMB = [
+  { k: 'c1', t: '1er control < 12 semanas', d: 'Ingresa al CESFAM/SAR con tu FUR. Lleva carnet y exámenes previos.' },
+  { k: 'c2', t: 'Ecografía 11–14 semanas', d: 'Tamizaje + fecha bien la edad gestacional.' },
+  { k: 'c3', t: 'Ecografía 20–24 semanas', d: 'Anatómica: revisa órganos y crecimiento.' },
+  { k: 'c4', t: 'Exámenes: VIH, VDRL, TSH, glicemia', d: 'Pídelos en el control; la TTOG suele ir ~24–28 sem.' },
+  { k: 'c5', t: 'Hierro + ácido fólico diarios', d: 'Según indicación de tu matrona. No los suspendas por tu cuenta.' },
+  { k: 'c6', t: 'Vacunas del embarazo', d: 'Influenza, Tdap (tos convulsiva) y las que indique tu matrona.' },
+  { k: 'c7', t: 'Curso prenatal / taller', d: 'Pregunta en tu CESFAM por talleres de preparto y lactancia.' },
+  { k: 'c8', t: 'Plan de parto + mochila', d: 'Acompañante, lugar, ruta y mochila lista desde la semana 36.' }
+];
+var MIL_VACUNAS = [
+  { k: 'vbcg', e: 'Recién nacido', t: 'BCG (tuberculosis)' },
+  { k: 'v2m', e: '2 meses', t: 'Pentavalente + Polio + Neumocócica + Rotavirus' },
+  { k: 'v4m', e: '4 meses', t: 'Pentavalente + Polio + Neumocócica' },
+  { k: 'v6m', e: '6 meses', t: 'Pentavalente + Polio + Influenza' },
+  { k: 'v12m', e: '12 meses', t: 'Tres vírica + Meningocócica + Neumocócica refuerzo' },
+  { k: 'v18m', e: '18 meses', t: 'DTP + Polio + Hepatitis A + Varicela' },
+  { k: 'v4a', e: '4 años', t: 'DTP + Polio refuerzo (ingreso escolar)' }
+];
+var MIL_ACOMP_AREAS = ['Puerperio', 'Lactancia', 'Sueño', 'Vínculo y apego', 'Salud y consultas', 'Otro'];
+function getMilHitos() { var a = store('milDiasHitos', []); return Array.isArray(a) ? a : []; }
+function getMilCrec() { var a = store('milCrec', []); return Array.isArray(a) ? a : []; }
+function getMilAcomp() { var a = store('milAcomp', []); return Array.isArray(a) ? a : []; }
+function getMilBebe() { var o = store('milBebe', {}); return (o && typeof o === 'object') ? o : {}; }
+function milSemana(fur) {
+  var d = Math.floor((Date.now() - new Date(fur + 'T12:00:00').getTime()) / 86400000);
+  if (d < 0) return { sem: 0, dias: d, txt: 'fecha futura' };
+  return { sem: Math.min(42, Math.floor(d / 7) + 1), dias: d, txt: 'semana ' + Math.min(42, Math.floor(d / 7) + 1) + ' · día ' + d + ' (~' + Math.floor(d / 28) + ' lunas)' };
+}
+function milEdad(nac) {
+  var d = Math.floor((Date.now() - new Date(nac + 'T12:00:00').getTime()) / 86400000);
+  if (d < 0) return { txt: 'fecha futura' };
+  var m = Math.floor(d / 30.4);
+  var txt = d + ' días';
+  if (m >= 1) txt += ' (~' + m + (m === 1 ? ' mes' : ' meses') + ')';
+  txt += ' · ~' + Math.floor(d / 28) + ' lunas 🌙';
+  return { dias: d, meses: m, txt: txt };
+}
+function milChecklist(boxId, items, storeKey, suffix) {
+  var box = $(boxId); if (!box) return;
+  var done = store(storeKey, {});
+  var n = items.filter(function (x) { return done[x.k]; }).length;
+  box.innerHTML = '<p class="muted" style="font-size:11px">✅ ' + n + ' / ' + items.length + (suffix || '') + '</p>' +
+    '<div class="dio-compact">' + items.map(function (x) {
+      var c = done[x.k] ? ' done' : '';
+      var head = x.e ? '<b>' + esc(x.e) + ' — ' + esc(x.t) + '</b>' : '<b>' + esc(x.t) + '</b>';
+      return '<label class="dio-item' + c + '"><input type="checkbox" data-milk="' + x.k + '"' + (done[x.k] ? ' checked' : '') + '><span class="dio-txt">' + head + (x.d ? '<small>' + esc(x.d) + '</small>' : '') + '</span><span class="dio-check">' + (done[x.k] ? '✓ listo' : 'marcar') + '</span></label>';
+    }).join('') + '</div>';
+  box.querySelectorAll('[data-milk]').forEach(function (c) {
+    c.onchange = function () { var d = store(storeKey, {}); d[c.getAttribute('data-milk')] = c.checked; save(c.checked ? 'Anotado ✓' : 'Guardado'); renderMilDias(); };
+  });
+}
+function renderMilDias() {
+  if (!$('milFUR')) return;
+  var fur = store('milDiasFUR', '');
+  if (document.activeElement !== $('milFUR')) $('milFUR').value = fur || '';
+  var box = $('milInfo');
+  if (fur) {
+    var fpp = addDaysKey(fur, 280);
+    var s = milSemana(fur);
+    var tri = s.sem <= 13 ? '1er trimestre 🌱' : (s.sem <= 27 ? '2do trimestre 🌸' : '3er trimestre 🌕');
+    box.innerHTML = '🤰 FUR <b>' + fur + '</b> → FPP aprox <b>' + fpp + '</b> (40 sem ≈ 10 lunas)<br>📍 Hoy: <b>' + s.txt + '</b> · ' + tri +
+      '<br><span class="muted">Chile: 1er control &lt;12 sem · ecografías 11-14 y 20-24 sem · TSH/glicemia según matrona. No es consejo médico.</span>';
+  } else box.innerHTML = '<span class="muted">Fija la FUR para ver semana, lunas y FPP. O baja directo al bebé y sus hitos.</span>';
+  // bebé
+  var bb = getMilBebe();
+  if (document.activeElement !== $('milBebeNombre')) $('milBebeNombre').value = bb.nombre || '';
+  if (document.activeElement !== $('milBebeSexo')) $('milBebeSexo').value = bb.sexo || '';
+  if (document.activeElement !== $('milBebePeso')) $('milBebePeso').value = bb.peso || '';
+  if (document.activeElement !== $('milBebeTalla')) $('milBebeTalla').value = bb.talla || '';
+  if (!$('milNac').value) $('milNac').value = store('milDiasNac', '') || '';
+  var nac = store('milDiasNac', '');
+  $('milBebeInfo').innerHTML = nac ? ('👶 ' + (bb.nombre ? '<b>' + esc(bb.nombre) + '</b> · ' : '') + nac + ' → <b>' + milEdad(nac).txt + '</b>' + (bb.peso || bb.talla ? '<br><span class="muted">Al nacer: ' + esc(bb.peso || '—') + ' kg · ' + esc(bb.talla || '—') + ' cm</span>' : '')) : '<span class="muted">Registra el nacimiento para ver la edad en días, meses y lunas.</span>';
+  // crecimiento
+  var cr = getMilCrec().slice().sort(function (a, b) { return a.fecha.localeCompare(b.fecha); });
+  var last = cr.length ? cr[cr.length - 1] : null;
+  $('milCrecInfo').innerHTML = last ? ('📏 Último control: <b>' + last.fecha + '</b> · ' + esc(last.peso || '—') + ' kg · ' + esc(last.talla || '—') + ' cm' + (last.pc ? ' · PC ' + esc(last.pc) + ' cm' : '') + ' <span class="muted">(' + cr.length + ' controles)</span>') : '<span class="muted">Sin controles de crecimiento. Anota peso/talla de cada control sano.</span>';
+  $('milCrecList').innerHTML = cr.length ? cr.slice().reverse().slice(0, 20).map(function (r) {
+    return '<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center"><span><b>' + r.fecha + '</b> · ' + esc(r.peso || '—') + ' kg · ' + esc(r.talla || '—') + ' cm' + (r.pc ? ' · PC ' + esc(r.pc) : '') + (r.nota ? '<br><span class="muted" style="font-size:11px">' + esc(r.nota) + '</span>' : '') + '</span><button class="btn" style="width:auto;font-size:11px;color:#e76e8a" data-del="' + r.id + '">✕</button></div>';
+  }).join('') : '';
+  $('milCrecList').querySelectorAll('[data-del]').forEach(function (b) { b.onclick = function () { if (!confirm('¿Borrar control?')) return; var d = getMilCrec(); var i = d.findIndex(function (x) { return x.id === b.getAttribute('data-del'); }); if (i >= 0) d.splice(i, 1); save(); renderMilDias(); }; });
+  // hitos
+  var h = getMilHitos().slice().sort(function (a, b) { return a.fecha.localeCompare(b.fecha); });
+  $('milHitosList').innerHTML = h.length ? h.map(function (r) {
+    return '<div class="habit-item" style="display:flex;justify-content:space-between;gap:8px;align-items:center"><span>🌙 <b>' + esc(r.hito) + '</b> · ' + r.fecha + '<br><span class="muted" style="font-size:11px">' + esc(lunaTxt(r.fecha)) + (r.nota ? ' · ' + esc(r.nota) : '') + '</span></span><button class="btn" style="width:auto;font-size:11px;color:#e76e8a" data-del="' + r.id + '">✕</button></div>';
+  }).join('') : '<p class="muted">Sin hitos aún. El gateo (~7-10 m), primera palabra (~12 m) y pasos (~12-15 m) son rangos: cada bebé tiene su luna.</p>';
+  $('milHitosList').querySelectorAll('[data-del]').forEach(function (b) { b.onclick = function () { if (!confirm('¿Borrar hito?')) return; var d = getMilHitos(); var i = d.findIndex(function (x) { return x.id === b.getAttribute('data-del'); }); if (i >= 0) d.splice(i, 1); save(); renderMilDias(); }; });
+  // checklists
+  milChecklist('milCtrlBox', MIL_CTRL_EMB, 'milCtrlCheck', ' controles de embarazo');
+  milChecklist('milVacBox', MIL_VACUNAS, 'milVacCheck', ' vacunas (orientativo: manda tu carnet del CESFAM)');
+  // acompañamiento
+  var ac = getMilAcomp().slice().sort(function (a, b) { return b.fecha.localeCompare(a.fecha); });
+  $('milAcompList').innerHTML = ac.length ? ac.slice(0, 30).map(function (r) {
+    return '<div class="habit-item"><b>' + esc(r.area) + '</b> · <span class="muted" style="font-size:11px">' + r.fecha + '</span><p style="font-size:12px">' + esc(r.texto) + '</p><button class="btn" style="width:auto;font-size:11px;color:#e76e8a" data-del="' + r.id + '">✕ Borrar</button></div>';
+  }).join('') : '<p class="muted">Sin notas aún. Puerperio, lactancia, sueño, vínculo… escribirlo también es cuidar.</p>';
+  $('milAcompList').querySelectorAll('[data-del]').forEach(function (b) { b.onclick = function () { if (!confirm('¿Borrar nota?')) return; var d = getMilAcomp(); var i = d.findIndex(function (x) { return x.id === b.getAttribute('data-del'); }); if (i >= 0) d.splice(i, 1); save(); renderMilDias(); }; });
+  var st = $('milStats'); if (st) st.textContent = h.length + ' hitos · ' + cr.length + ' controles · ' + ac.length + ' notas · ' + (fur ? milSemana(fur).txt : (nac ? milEdad(nac).txt : 'sin FUR ni nacimiento'));
+}
+function setupMilDias() {
+  var dlg = $('fertiDialog'); if (!dlg) { setTimeout(setupMilDias, 800); return; }
+  var sec = $('milSection'); if (!sec) { setTimeout(setupMilDias, 800); return; }
+  addKw('btnFerti', 'embarazo parto puerperio bebe guagua lactancia hitos 1000 dias fur fpp semana gestacion vacunas controles crecimiento acompanamiento');
+  var b = $('btnFerti');
+  if (b && !b.dataset.milWrapped) {
+    b.dataset.milWrapped = '1';
+    b.addEventListener('click', function () { setTimeout(function () { try { renderMilDias(); } catch (e) {} }, 60); });
+  }
+  if ($('milFUR')) { try { renderMilDias(); } catch (e) {} return; }
+  sec.innerHTML =
+    '<div class="menstrual-card" style="margin-top:10px;border-color:var(--gold)"><h4>🤰 Embarazo <span class="muted" style="font-weight:normal">· 40 semanas ≈ 10 lunas</span></h4>' +
+    '<p class="muted" style="font-size:11px">Fija la FUR (fecha última regla) para ver semana, lunas y FPP. Marca los controles a tu ritmo.</p>' +
+    '<div class="conv-row"><label>Última regla (FUR) <input type="date" id="milFUR"></label></div>' +
+    '<div id="milInfo" class="chip" style="display:block;white-space:normal;margin-top:6px"></div>' +
+    '<div id="milCtrlBox" style="margin-top:8px"></div></div>' +
+    '<div class="menstrual-card" style="margin-top:10px"><h4>👶 Mi bebé <span class="muted" style="font-weight:normal">· la personita que llega</span></h4>' +
+    '<div class="conv-row"><label style="flex:2">Nombre <input type="text" id="milBebeNombre" placeholder="ej: Rayén" maxlength="30"></label><label>Sexo <select id="milBebeSexo"><option value="">—</option><option>Niña</option><option>Niño</option><option>Intersex</option></select></label></div>' +
+    '<div class="conv-row"><label>Nacimiento <input type="date" id="milNac"></label><label>Peso al nacer (kg) <input type="number" id="milBebePeso" min="0.5" max="7" step="0.01" placeholder="3.40"></label><label>Talla al nacer (cm) <input type="number" id="milBebeTalla" min="30" max="60" step="0.5" placeholder="50"></label></div>' +
+    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="milBebeSave" class="btn" style="width:auto">💾 Guardar bebé</button></div>' +
+    '<div id="milBebeInfo" class="chip" style="display:block;white-space:normal;margin-top:6px"></div></div>' +
+    '<div class="menstrual-card" style="margin-top:10px"><h4>📏 Crecimiento <span class="muted" style="font-weight:normal">· controles de niño sano</span></h4>' +
+    '<div id="milCrecInfo" class="chip" style="display:block;white-space:normal"></div>' +
+    '<div class="conv-row" style="margin-top:8px"><label>Fecha <input type="date" id="milCrecFecha"></label><label>Peso (kg) <input type="number" id="milCrecPeso" min="0.5" max="40" step="0.01" placeholder="4.20"></label><label>Talla (cm) <input type="number" id="milCrecTalla" min="30" max="130" step="0.5" placeholder="55"></label><label>PC (cm) <input type="number" id="milCrecPC" min="20" max="60" step="0.5" placeholder="40"></label></div>' +
+    '<label>Nota <input type="text" id="milCrecNota" placeholder="ej: control 2 meses, todo bien" maxlength="80"></label>' +
+    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="milCrecAdd" class="btn btn-accent" style="width:auto">+ Guardar control</button><button type="button" id="milCrecShare" class="btn" style="width:auto">📤 Compartir</button></div>' +
+    '<div id="milCrecList" class="habits-list" style="margin-top:8px;max-height:220px"></div></div>' +
+    '<div class="menstrual-card" style="margin-top:10px"><h4>🌙 Hitos lunares</h4>' +
+    '<div class="conv-row" style="margin-top:8px"><label style="flex:2">Hito <select id="milHito">' + MILDIAS_HITOS.map(function (h) { return '<option>' + h + '</option>'; }).join('') + '</select></label><label>Fecha <input type="date" id="milFecha"></label></div>' +
+    '<label>Nota <input type="text" id="milNota" placeholder="ej: dos dientecitos abajo, dijo agua" maxlength="80"></label>' +
+    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="milAdd" class="btn btn-accent" style="width:auto">+ Guardar hito</button><button type="button" id="milShare" class="btn" style="width:auto">📤 Compartir</button></div>' +
+    '<div id="milHitosList" class="habits-list" style="margin-top:8px;max-height:220px"></div></div>' +
+    '<div class="menstrual-card" style="margin-top:10px"><h4>💉 Vacunas <span class="muted" style="font-weight:normal">· calendario Chile (orientativo)</span></h4>' +
+    '<p class="muted" style="font-size:11px">Referencia general: siempre manda tu carnet de vacunas del CESFAM.</p>' +
+    '<div id="milVacBox" style="margin-top:6px"></div></div>' +
+    '<div class="menstrual-card" style="margin-top:10px"><h4>🤍 Acompañamiento <span class="muted" style="font-weight:normal">· puerperio, lactancia y vínculo</span></h4>' +
+    '<div class="conv-row"><label>Fecha <input type="date" id="milAcompFecha"></label><label style="flex:2">Área <select id="milAcompArea">' + MIL_ACOMP_AREAS.map(function (a) { return '<option>' + a + '</option>'; }).join('') + '</select></label></div>' +
+    '<label>Nota <textarea id="milAcompTexto" rows="2" placeholder="cómo estás, cómo va la lactancia, el sueño, lo que necesites soltar..." maxlength="400"></textarea></label>' +
+    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="milAcompAdd" class="btn btn-accent" style="width:auto">+ Guardar nota</button></div>' +
+    '<div id="milAcompList" class="habits-list" style="margin-top:8px;max-height:220px"></div>' +
+    '<p class="muted" style="font-size:11px;margin-top:6px">📖 Lee un cuento por luna en 📖 Cuentos. Si hay tristeza profunda o malestar que no pasa, pide apoyo en tu CESFAM o llama <b>Salud Responde 600 360 7777</b>.</p></div>' +
+    '<span id="milStats" class="muted" style="font-size:11px"></span>';
+  $('milFUR').onchange = function () { try { userData().milDiasFUR = $('milFUR').value; } catch (e) {} save('FUR guardada 🤱'); renderMilDias(); };
+  $('milNac').onchange = function () { try { userData().milDiasNac = $('milNac').value; } catch (e) {} save('Guardado ✓'); renderMilDias(); };
+  $('milBebeSave').onclick = function () {
+    try { userData().milBebe = { nombre: clean($('milBebeNombre').value, 30), sexo: $('milBebeSexo').value, peso: $('milBebePeso').value, talla: $('milBebeTalla').value }; } catch (e) {}
+    save('Bebé guardado 👶'); renderMilDias();
+  };
+  $('milCrecAdd').onclick = function () {
+    var f = $('milCrecFecha').value || todayKey();
+    getMilCrec().push({ id: uid('mc'), fecha: f, peso: $('milCrecPeso').value, talla: $('milCrecTalla').value, pc: $('milCrecPC').value, nota: clean($('milCrecNota').value, 80) });
+    save('Control guardado 📏'); $('milCrecNota').value = ''; renderMilDias();
+  };
+  $('milCrecShare').onclick = function () { var d = getMilCrec(); if (!d.length) return alert('Sin controles'); share('📏 Crecimiento de ' + (getMilBebe().nombre || 'mi bebé'), d.map(function (r) { return '· ' + r.fecha + ' — ' + (r.peso || '?') + ' kg · ' + (r.talla || '?') + ' cm' + (r.pc ? ' · PC ' + r.pc : ''); }).join('\n')); };
+  $('milAdd').onclick = function () {
+    var f = $('milFecha').value || todayKey();
+    getMilHitos().push({ id: uid('mh'), fecha: f, hito: $('milHito').value, nota: clean($('milNota').value, 80) });
+    save('Hito guardado 🌙'); $('milNota').value = ''; renderMilDias();
+  };
+  $('milShare').onclick = function () { var d = getMilHitos(); if (!d.length) return alert('Sin hitos'); share('🌙 Hitos lunares de ' + (getMilBebe().nombre || 'mi bebé'), d.map(function (r) { return '· ' + r.fecha + ' — ' + r.hito + ' (' + lunaTxt(r.fecha) + ')'; }).join('\n')); };
+  $('milAcompAdd').onclick = function () {
+    var t = clean($('milAcompTexto').value, 400); if (!t) return alert('Escribe la nota');
+    getMilAcomp().push({ id: uid('ma'), fecha: $('milAcompFecha').value || todayKey(), area: $('milAcompArea').value, texto: t });
+    save('Nota guardada 🤍'); $('milAcompTexto').value = ''; renderMilDias();
+  };
+  try { renderMilDias(); } catch (e) {}
+}
+/* ---------- A2: duelo ---------- */
+function getDueloMem() { var a = store('dueloMemorias', []); return Array.isArray(a) ? a : []; }
+function dueloRituales(fecha) {
+  return [
+    { n: '1 luna · 28 días', f: addDaysKey(fecha, 28), txt: '🕯️ Encender vela + contar una historia en voz alta' },
+    { n: '3 lunas · 84 días', f: addDaysKey(fecha, 84), txt: '🍲 Cocinar su receta + invitar a alguien que lo quiso' },
+    { n: '1 año · 365 días', f: addDaysKey(fecha, 365), txt: '🌳 Plantar / visitar + leer las memorias guardadas' }
+  ];
+}
+function renderDuelo() {
+  if (!$('dueFecha')) return;
+  var f = store('dueloFecha', '');
+  if (document.activeElement !== $('dueFecha')) $('dueFecha').value = f || '';
+  var hoy = todayKey(), box = $('dueRituales');
+  if (!f) box.innerHTML = '<p class="muted">Fija la fecha de partida para ver el calendario de memoria (1 luna · 3 lunas · 1 año).</p>';
+  else box.innerHTML = dueloRituales(f).map(function (r) {
+    var est = hoy === r.f ? '🕯️ <b>HOY</b>' : (hoy < r.f ? 'en ' + Math.round((new Date(r.f + 'T12:00:00') - new Date(hoy + 'T12:00:00')) / 86400000) + ' días' : 'vivido ✓');
+    return '<div class="si-card"><h4>' + esc(r.n) + ' → ' + r.f + ' <span class="chip" style="font-size:10px">' + est + '</span></h4><p>' + esc(r.txt) + ' <span class="muted">(' + esc(lunaTxt(r.f) || 'luna fuera de rango del calendario') + ')</span></p></div>';
+  }).join('');
+  var m = getDueloMem().slice().sort(function (a, b) { return b.fecha.localeCompare(a.fecha); });
+  $('dueList').innerHTML = m.length ? m.map(function (r) {
+    return '<div class="habit-item"><b>' + esc(r.icon || '🕊️') + ' ' + esc(r.titulo) + '</b> <span class="chip" style="font-size:10px">' + esc(r.tipo) + '</span><br><span class="muted" style="font-size:11px">' + r.fecha + ' · ' + esc(lunaTxt(r.fecha)) + '</span><p style="font-size:12px;white-space:pre-wrap">' + esc(r.texto) + '</p><div style="display:flex;gap:6px"><button class="btn" style="width:auto;font-size:11px" data-share="' + r.id + '">📤</button><button class="btn" style="width:auto;font-size:11px;color:#e76e8a" data-del="' + r.id + '">✕</button></div></div>';
+  }).join('') : '<p class="muted">Vacío. Guarda su receta, su canción, su dicho, una carta que no alcanzaste a darle.</p>';
+  $('dueList').querySelectorAll('[data-del]').forEach(function (b) { b.onclick = function () { if (!confirm('¿Borrar memoria?')) return; var d = getDueloMem(); var i = d.findIndex(function (x) { return x.id === b.getAttribute('data-del'); }); if (i >= 0) d.splice(i, 1); save(); renderDuelo(); }; });
+  $('dueList').querySelectorAll('[data-share]').forEach(function (b) { b.onclick = function () { var d = getDueloMem(); var r = d.find(function (x) { return x.id === b.getAttribute('data-share'); }); if (r) share('🕊️ Memoria viva: ' + r.titulo, r.texto); }; });
+  var st = $('dueStats'); if (st) st.textContent = m.length + ' memorias guardadas · privadas en este dispositivo';
+}
+/* ---------- A2: duelo (RETIRADO de Practicas Espirituales: vive en su seccion completa 🕊️ Duelo) ---------- */
+function setupDuelo() {
+  try {
+    var tb = $('espTabDuelo');
+    if (tb && tb.parentNode) tb.parentNode.removeChild(tb);
+    var pn = $('espDueloPanel');
+    if (pn && pn.parentNode) pn.parentNode.removeChild(pn);
+    var b = $('btnEspiritual');
+    if (b && b.dataset && b.dataset.keywords) {
+      var kw = ' ' + b.dataset.keywords + ' ';
+      ['duelo', 'difunto', 'despedida', 'luto', 'aniversario'].forEach(function (w) {
+        kw = kw.split(' ' + w + ' ').join(' ');
+      });
+      b.dataset.keywords = kw.replace(/\s+/g, ' ').replace(/^ | $/g, '');
+    }
+  } catch (e) {}
+}
+/* ---------- A3: sueños + ---------- */
+function getSuenos() { var a = store('suenosLog', []); return Array.isArray(a) ? a : []; }
+function renderSuenosPlus() {
+  var box = $('suePlusPatrones'); if (!box) return;
+  var d = getSuenos();
+  if (!d.length) { box.innerHTML = '<span class="muted">Sin sueños en el diario aún. Al guardar, quedan aquí con luna y arquetipo para ver patrones.</span>'; return; }
+  var arq = {};
+  d.forEach(function (r) { arq[r.arq || '?'] = (arq[r.arq || '?'] || 0) + 1; });
+  var topA = Object.keys(arq).sort(function (a, b) { return arq[b] - arq[a]; }).slice(0, 3).map(function (k) { return k + ' ×' + arq[k]; }).join(' · ');
+  var freq = {};
+  d.forEach(function (r) { (r.texto || '').toLowerCase().replace(/[^\p{L}\s]/gu, ' ').split(/\s+/).forEach(function (w) { w = w.trim(); if (w.length >= 4 && SUENOS_STOP.indexOf(w) < 0) freq[w] = (freq[w] || 0) + 1; }); });
+  var topW = Object.keys(freq).filter(function (w) { return freq[w] >= 2; }).sort(function (a, b) { return freq[b] - freq[a]; }).slice(0, 6).map(function (w) { return w + ' ×' + freq[w]; }).join(' · ') || '— (se revelan al repetirse palabras)';
+  var llenas = d.filter(function (r) { var l = null; try { var m = mensLunaForKey(r.fecha); if (m) l = m.dia; } catch (e) {} return l >= 13 && l <= 16; }).length;
+  box.innerHTML = '📊 <b>' + d.length + '</b> sueños · arquetipos: ' + esc(topA || '—') + '<br>🔁 Palabras que vuelven: ' + esc(topW) + '<br>🌕 En luna llena aprox: <b>' + llenas + '</b>';
+  var list = $('suePlusList');
+  if (list) list.innerHTML = d.slice().sort(function (a, b) { return b.fecha.localeCompare(a.fecha); }).slice(0, 30).map(function (r) {
+    return '<div class="habit-item"><b>' + r.fecha + '</b> · ' + esc(r.arq || '') + ' · ' + esc(r.emo || '') + (r.luc ? ' · 👁️ lúcido' : '') + '<br><span class="muted" style="font-size:11px">' + esc(lunaTxt(r.fecha)) + '</span><p style="font-size:12px">' + esc((r.texto || '').slice(0, 220)) + '</p><button class="btn" style="width:auto;font-size:11px;color:#e76e8a" data-del="' + r.id + '">✕</button></div>';
+  }).join('');
+  if (list) list.querySelectorAll('[data-del]').forEach(function (b) { b.onclick = function () { if (!confirm('¿Borrar sueño del diario? (la nota del día se mantiene)')) return; var dd = getSuenos(); var i = dd.findIndex(function (x) { return x.id === b.getAttribute('data-del'); }); if (i >= 0) dd.splice(i, 1); save(); renderSuenosPlus(); }; });
+}
+function setupSuenos() {
+  var dlg = $('dreamsDialog'); if (!dlg || !$('dreamSave')) { setTimeout(setupSuenos, 800); return; }
+  addKw('btnDreams', 'arquetipo sincronicidad patron lucido luna jung sombra');
+  var b = $('btnDreams');
+  if (b && !b.dataset.sueWrapped) {
+    b.dataset.sueWrapped = '1';
+    b.addEventListener('click', function () { setTimeout(function () { try { renderSuenosPlus(); } catch (e) {} }, 60); });
+  }
+  var saveBtn = $('dreamSave');
+  if (saveBtn && !saveBtn.dataset.suePlusWrapped) {
+    saveBtn.dataset.suePlusWrapped = '1';
+    saveBtn.addEventListener('click', function () {
+      var txt = ($('dreamText').value || '').trim();
+      if (!txt) return;
+      try {
+        getSuenos().push({ id: uid('su'), fecha: todayKey(), texto: clean(txt, 600), arq: $('suePlusArq') ? $('suePlusArq').value : '', emo: $('suePlusEmo') ? $('suePlusEmo').value : '', luc: $('suePlusLuc') ? $('suePlusLuc').checked : false });
+        save();
+        if ($('suePlusLuc')) $('suePlusLuc').checked = false;
+      } catch (e) {}
+      setTimeout(function () { try { renderSuenosPlus(); } catch (e) {} }, 60);
+    });
+  }
+  if ($('suePlusArq')) { try { renderSuenosPlus(); } catch (e) {} return; }
+  var form = dlg.querySelector('form') || dlg;
+  var sec = document.createElement('div');
+  sec.innerHTML =
+    '<div class="menstrual-card" style="margin-top:10px;border-color:var(--gold)"><h4>🔍 Diario de sueños y sincronicidades</h4>' +
+    '<p class="muted" style="font-size:11px">Al guardar, el sueño queda en la nota del día <b>y</b> en este diario con arquetipo lunar para detectar patrones. Conecta con 🪞 Autoconocimiento (Jung) y 🌸 Ciclo.</p>' +
+    '<div class="conv-row"><label>Arquetipo <select id="suePlusArq">' + SUENOS_ARQ.map(function (a) { return '<option>' + a + '</option>'; }).join('') + '</select></label><label>Emoción <select id="suePlusEmo">' + SUENOS_EMO.map(function (a) { return '<option>' + a + '</option>'; }).join('') + '</select></label><label class="check-row" style="align-self:flex-end"><input type="checkbox" id="suePlusLuc"> 👁️ lúcido</label></div>' +
+    '<div id="suePlusPatrones" class="chip" style="display:block;white-space:normal;margin-top:6px"></div>' +
+    '<div id="suePlusList" class="habits-list" style="margin-top:8px;max-height:240px"></div></div>';
+  var closeRow = form.querySelector('.dlg-actions:last-child');
+  if (closeRow) form.insertBefore(sec, closeRow); else form.appendChild(sec);
+  try { renderSuenosPlus(); } catch (e) {}
+}
+/* ---------- A4: meditación ---------- */
+function getMedita() { var a = store('meditaLog', []); return Array.isArray(a) ? a : []; }
+function meditaRacha() {
+  var set = {};
+  getMedita().forEach(function (r) { set[r.fecha] = true; });
+  var s = 0, cur = new Date(todayKey() + 'T12:00:00');
+  if (!set[todayKey()]) cur = new Date(cur.getTime() - 86400000);
+  for (var i = 0; i < 365; i++) {
+    var k = cur.getFullYear() + '-' + String(cur.getMonth() + 1).padStart(2, '0') + '-' + String(cur.getDate()).padStart(2, '0');
+    if (set[k]) s++; else break;
+    cur = new Date(cur.getTime() - 86400000);
+  }
+  return s;
+}
+function renderMedita() {
+  var box = $('medStats'); if (!box) return;
+  var d = getMedita();
+  var me = null; try { me = mensLunaForKey(todayKey()); } catch (e) {}
+  var enLuna = me ? d.filter(function (r) { try { var m = mensLunaForKey(r.fecha); return m && m.luna === me.luna; } catch (e) { return false; } }) : [];
+  var minLuna = enLuna.reduce(function (a, r) { return a + (+r.min || 0); }, 0);
+  box.innerHTML = '🔥 Racha: <b>' + meditaRacha() + ' días</b> · 🌙 Esta luna: <b>' + enLuna.length + '</b> sesiones · <b>' + minLuna + '</b> min · total: ' + d.length + ' sesiones';
+  var list = $('medList');
+  if (list) list.innerHTML = d.length ? d.slice().sort(function (a, b) { return b.fecha.localeCompare(a.fecha); }).slice(0, 20).map(function (r) {
+    return '<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center"><span>🧘 <b>' + r.fecha + '</b> · ' + (+r.min || 0) + ' min · ' + esc(r.trad || '') + '<br><span class="muted" style="font-size:11px">' + esc(r.tec || '') + ' · ' + esc(lunaTxt(r.fecha)) + '</span></span><button class="btn" style="width:auto;font-size:11px;color:#e76e8a" data-del="' + r.id + '">✕</button></div>';
+  }).join('') : '<p class="muted">Sin sesiones aún. Usa el temporizador arriba y guarda al terminar.</p>';
+  if (list) list.querySelectorAll('[data-del]').forEach(function (b) { b.onclick = function () { var dd = getMedita(); var i = dd.findIndex(function (x) { return x.id === b.getAttribute('data-del'); }); if (i >= 0) dd.splice(i, 1); save(); renderMedita(); }; });
+}
+function setupMedita() {
+  var dlg = $('breathDialog'); if (!dlg) { setTimeout(setupMedita, 800); return; }
+  addKw('btnBreath', 'meditacion vipassana zen zazen llellipun racha bitacora mindfulness');
+  var b = $('btnBreath');
+  if (b && !b.dataset.medWrapped) {
+    b.dataset.medWrapped = '1';
+    b.addEventListener('click', function () { setTimeout(function () { try { renderMedita(); } catch (e) {} }, 60); });
+  }
+  if ($('medTrad')) { try { renderMedita(); } catch (e) {} return; }
+  var form = dlg.querySelector('form') || dlg;
+  var sec = document.createElement('div');
+  sec.innerHTML =
+    '<div class="menstrual-card" style="margin-top:10px;border-color:var(--gold);text-align:left"><h4 style="text-align:center">🧘 Bitácora de meditación y respiración</h4>' +
+    '<p class="muted" style="font-size:11px">Guarda cada práctica con su tradición. Racha por luna. Conecta con 📿 Métodos y ⏱ Tiempo.</p>' +
+    '<div class="conv-row"><label>Tradición <select id="medTrad">' + MEDITA_TRAD.map(function (t) { return '<option>' + t + '</option>'; }).join('') + '</select></label><label>Minutos <input type="number" id="medMin" min="1" max="180" value="10" style="width:80px"></label></div>' +
+    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="medAdd" class="btn btn-accent" style="width:auto">+ Guardar práctica de hoy</button></div>' +
+    '<div id="medStats" class="chip" style="display:block;white-space:normal;margin-top:6px"></div>' +
+    '<div id="medList" class="habits-list" style="margin-top:8px;max-height:220px"></div></div>';
+  var closeRow = form.querySelector('.dlg-actions:last-child');
+  if (closeRow) form.insertBefore(sec, closeRow); else form.appendChild(sec);
+  $('medAdd').onclick = function () {
+    var tec = ''; try { tec = ($('breathTitle') || {}).textContent || ''; } catch (e) {}
+    getMedita().push({ id: uid('me'), fecha: todayKey(), trad: $('medTrad').value, min: Math.max(1, +$('medMin').value || 10), tec: clean(tec, 40) });
+    save('Práctica guardada 🧘'); renderMedita();
+  };
+  try { renderMedita(); } catch (e) {}
+}
+
+/* ============================================================
+   FASE B — Legado y puente generacional (Mente & Estudio)
+   B1 Cuaderno de Transición → fusión en #psicoDialog
+   B2 Voz de los Abuelos (grabador) → fusión en #talesDialog
+   B3 Árbol genealógico lunar → pestaña en #memoryDialog
+   B4 Mapa de mi año interior → fusión en #habitsDialog
+   Todo local y privado por usuario (store + save).
+   ============================================================ */
+var TRANS_TIPOS = ['💌 Mensaje a un ser querido', '📖 Historia que quiero que recuerdes', '🕯️ Deseo de despedida', '🙏 Perdón y gratitud'];
+var VOZ_TIPOS = ['🍲 Receta familiar', '🏔️ Historia del territorio', '💡 Consejo de vida', '📖 Cuento para desbloquear'];
+var ARBOL_VINC = ['madre', 'padre', 'abuela', 'abuelo', 'bisabuela/o', 'tía/o', 'hermana/o', 'hija/o', 'nieta/o', 'otro'];
+function getTrans() { var a = store('transicionLog', []); return Array.isArray(a) ? a : []; }
+/* ---------- B1: cuaderno de transición ---------- */
+function renderTrans() {
+  if (!$('trTipo')) return;
+  var d = getTrans().slice().sort(function (a, b) { return b.fecha.localeCompare(a.fecha); });
+  $('trList').innerHTML = d.length ? d.map(function (r) {
+    return '<div class="habit-item"><b>' + esc(r.tipo) + '</b> → ' + esc(r.para || 'quien lo lea') + ' <span class="muted" style="font-size:11px">· ' + r.fecha + ' · ' + esc(lunaTxt(r.fecha)) + '</span><p style="font-size:12px;white-space:pre-wrap">' + esc(r.texto) + '</p><div style="display:flex;gap:6px"><button class="btn" style="width:auto;font-size:11px" data-share="' + r.id + '">📤</button><button class="btn" style="width:auto;font-size:11px;color:#e76e8a" data-del="' + r.id + '">✕</button></div></div>';
+  }).join('') : '<p class="muted">Vacío. Este cuaderno es solemne y privado: mensajes, historias que quieres que recuerden, deseos de despedida. Conecta con 📖 Epew y 🧩 Memoria.</p>';
+  $('trList').querySelectorAll('[data-del]').forEach(function (b) { b.onclick = function () { if (!confirm('¿Borrar esta página del cuaderno?')) return; var dd = getTrans(); var i = dd.findIndex(function (x) { return x.id === b.getAttribute('data-del'); }); if (i >= 0) dd.splice(i, 1); save(); renderTrans(); }; });
+  $('trList').querySelectorAll('[data-share]').forEach(function (b) { b.onclick = function () { var dd = getTrans(); var r = dd.find(function (x) { return x.id === b.getAttribute('data-share'); }); if (r) share('🪶 ' + r.tipo + ' → ' + (r.para || ''), r.texto); }; });
+  var st = $('trStats'); if (st) st.textContent = d.length + ' páginas · solo en este dispositivo';
+}
+function setupTrans() {
+  var dlg = $('psicoDialog'); if (!dlg) { setTimeout(setupTrans, 800); return; }
+  addKw('btnPsico', 'transicion legado despedida mensaje historia voluntad final duelo');
+  var b = $('btnPsico');
+  if (b && !b.dataset.trWrapped) { b.dataset.trWrapped = '1'; b.addEventListener('click', function () { setTimeout(function () { try { renderTrans(); } catch (e) {} }, 60); }); }
+  if ($('trTipo')) { try { renderTrans(); } catch (e) {} return; }
+  var form = dlg.querySelector('form') || dlg;
+  var sec = document.createElement('div');
+  sec.innerHTML =
+    '<div class="menstrual-card" style="margin-top:10px;border-color:var(--gold)"><h4>🪶 Cuaderno de Transición <span class="muted" style="font-weight:normal">· legado consciente</span></h4>' +
+    '<p class="muted" style="font-size:11px">Espacio solemne y privado para dejar mensajes, historias y deseos de despedida (no solo médicos). <b>Nada sale de este dispositivo.</b> Si estás en crisis, pide ayuda: <b>*4141</b> (Chile, 24h).</p>' +
+    '<div class="conv-row"><label style="flex:2">Tipo <select id="trTipo">' + TRANS_TIPOS.map(function (t) { return '<option>' + t + '</option>'; }).join('') + '</select></label><label>Para <input type="text" id="trPara" placeholder="ej: mi hija Millaray" maxlength="40"></label></div>' +
+    '<label>Texto <textarea id="trTexto" rows="4" placeholder="Lo que quiero que recuerdes..." maxlength="1500"></textarea></label>' +
+    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="trAdd" class="btn btn-accent" style="width:auto">+ Guardar página</button></div>' +
+    '<div id="trList" class="habits-list" style="margin-top:8px;max-height:240px"></div>' +
+    '<span id="trStats" class="muted" style="font-size:11px"></span></div>';
+  var closeRow = form.querySelector('.dlg-actions:last-child');
+  if (closeRow) form.insertBefore(sec, closeRow); else form.appendChild(sec);
+  $('trAdd').onclick = function () {
+    var x = clean($('trTexto').value, 1500); if (!x) return alert('Escribe la página primero');
+    getTrans().push({ id: uid('tr'), fecha: todayKey(), tipo: $('trTipo').value, para: clean($('trPara').value, 40), texto: x });
+    save('Página guardada 🪶'); $('trTexto').value = ''; $('trPara').value = ''; renderTrans();
+  };
+  try { renderTrans(); } catch (e) {}
+}
+/* ---------- B2: voz de los abuelos ---------- */
+function getVoz() { var a = store('vozAbuelos', []); return Array.isArray(a) ? a : []; }
+function vozBytes() { var n = 0; getVoz().forEach(function (r) { n += (r.dataUrl || '').length; }); return n; }
+function vozLunaActual() { try { var m = mensLunaForKey(todayKey()); if (m) return m.luna; } catch (e) {} return 1; }
+function renderVoz() {
+  if (!$('vozList')) return;
+  var sup = (typeof MediaRecorder !== 'undefined' && navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
+  var w = $('vozWarn'); if (w) w.innerHTML = sup ? '' : '⚠️ Este dispositivo no permite grabar audio aquí; igual puedes guardar el texto/transcripción abajo.';
+  var hoy = vozLunaActual();
+  var d = getVoz().slice().sort(function (a, b) { return b.fecha.localeCompare(a.fecha); });
+  var kb = Math.round(vozBytes() / 1024);
+  var st = $('vozStats'); if (st) st.textContent = d.length + ' grabaciones · ~' + kb + ' KB en este dispositivo (límite sugerido 4 MB)';
+  if (!d.length) { $('vozList').innerHTML = '<p class="muted">Sin voces aún. Graba una receta, una historia de Penco o un consejo. Los niños desbloquean un cuento por luna.</p>'; return; }
+  $('vozList').innerHTML = d.map(function (r) {
+    var disp = (+r.desbloqueo || 1) <= hoy;
+    return '<div class="habit-item" style="' + (disp ? 'border-color:var(--gold)' : '') + '"><b>' + esc(r.icon || '🎙️') + ' ' + esc(r.titulo) + '</b> <span class="chip" style="font-size:10px">' + esc(r.tipo) + '</span> ' +
+      '<span class="chip" style="font-size:10px">' + (disp ? '🌕 desbloqueado (Luna ' + r.desbloqueo + ')' : '🔒 se desbloquea Luna ' + r.desbloqueo) + '</span><br>' +
+      '<span class="muted" style="font-size:11px">🎙️ ' + esc(r.quien || 'abuelo/a') + ' · ' + r.fecha + (r.dur ? ' · ' + r.dur + 's' : '') + '</span>' +
+      (r.dataUrl ? '<br><audio controls preload="none" src="' + r.dataUrl + '" style="width:100%;margin-top:6px"></audio>' : '') +
+      (r.texto ? '<p style="font-size:12px;white-space:pre-wrap">' + esc(r.texto) + '</p>' : '') +
+      '<div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap"><button class="btn" style="width:auto;font-size:11px" data-share="' + r.id + '">📤 Compartir texto</button><button class="btn" style="width:auto;font-size:11px;color:#e76e8a" data-del="' + r.id + '">✕ Borrar</button></div></div>';
+  }).join('');
+  $('vozList').querySelectorAll('[data-del]').forEach(function (bb) { bb.onclick = function () { if (!confirm('¿Borrar esta grabación?')) return; var dd = getVoz(); var i = dd.findIndex(function (x) { return x.id === bb.getAttribute('data-del'); }); if (i >= 0) dd.splice(i, 1); save(); renderVoz(); }; });
+  $('vozList').querySelectorAll('[data-share]').forEach(function (bb) { bb.onclick = function () { var dd = getVoz(); var r = dd.find(function (x) { return x.id === bb.getAttribute('data-share'); }); if (r) share('🗣️ ' + r.titulo + ' (' + (r.quien || '') + ')', (r.texto || '(solo audio, privado en el dispositivo)') + '\n— ' + r.tipo); }; });
+}
+var vozRec = null, vozChunks = [], vozStart = 0;
+function setupVoz() {
+  var dlg = $('talesDialog'); if (!dlg) { setTimeout(setupVoz, 800); return; }
+  addKw('btnTales', 'abuelo abuela voz grabar receta historia consejo transmitir oral desbloquear');
+  var b = $('btnTales');
+  if (b && !b.dataset.vozWrapped) { b.dataset.vozWrapped = '1'; b.addEventListener('click', function () { setTimeout(function () { try { renderVoz(); } catch (e) {} }, 60); }); }
+  if ($('vozTitulo')) { try { renderVoz(); } catch (e) {} return; }
+  var form = dlg.querySelector('form') || dlg;
+  var sec = document.createElement('div');
+  sec.innerHTML =
+    '<div class="menstrual-card" style="margin-top:10px;border-color:var(--gold)"><h4>🗣️ La Voz de los Abuelos <span class="muted" style="font-weight:normal">· transmisión oral</span></h4>' +
+    '<p class="muted" style="font-size:11px">Graba recetas, historias del territorio y consejos. Cada grabación se <b>desbloquea en una luna</b>: los niños descubren un cuento por luna. Privado y local. Conecta con 📖 Epew y Cuentos.</p>' +
+    '<div id="vozWarn" class="chip" style="display:block;white-space:normal"></div>' +
+    '<div class="conv-row"><label style="flex:2">Título <input type="text" id="vozTitulo" placeholder="ej: Cómo era Penco antes" maxlength="60"></label><label>Quién <input type="text" id="vozQuien" placeholder="ej: abuela Rosa" maxlength="30"></label></div>' +
+    '<div class="conv-row"><label>Tipo <select id="vozTipo">' + VOZ_TIPOS.map(function (t) { return '<option>' + t + '</option>'; }).join('') + '</select></label><label>Desbloqueo <select id="vozLuna">' + Array.from({ length: 13 }, function (_, i) { return '<option value="' + (i + 1) + '">Luna ' + (i + 1) + '</option>'; }).join('') + '</select></label></div>' +
+    '<label>Texto / transcripción (opcional) <textarea id="vozTexto" rows="2" placeholder="resumen o transcripción..." maxlength="800"></textarea></label>' +
+    '<div class="dlg-actions" style="justify-content:flex-start;align-items:center"><button type="button" id="vozRec" class="btn btn-accent" style="width:auto">⏺️ Grabar</button><button type="button" id="vozStop" class="btn hidden" style="width:auto">⏹️ Detener</button><span id="vozTimer" class="chip">00:00</span></div>' +
+    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="vozAdd" class="btn" style="width:auto">+ Guardar solo texto</button></div>' +
+    '<div id="vozList" class="habits-list" style="margin-top:8px;max-height:280px"></div>' +
+    '<span id="vozStats" class="muted" style="font-size:11px"></span></div>';
+  var closeRow = form.querySelector('.dlg-actions:last-child');
+  if (closeRow) form.insertBefore(sec, closeRow); else form.appendChild(sec);
+  try { $('vozLuna').value = String(vozLunaActual()); } catch (e) {}
+  var timerInt = null;
+  function paintT() { var s = Math.floor((Date.now() - vozStart) / 1000); $('vozTimer').textContent = String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0'); if (s >= 180) stopRec(); }
+  function stopRec() {
+    clearInterval(timerInt); timerInt = null;
+    $('vozRec').classList.remove('hidden'); $('vozStop').classList.add('hidden');
+    if (vozRec && vozRec.state !== 'inactive') { try { vozRec.stop(); } catch (e) {} }
+  }
+  $('vozRec').onclick = function () {
+    if (!(window.MediaRecorder && navigator.mediaDevices && navigator.mediaDevices.getUserMedia)) return alert('Grabación no disponible; guarda el texto.');
+    navigator.mediaDevices.getUserMedia({ audio: true }).then(function (stream) {
+      vozChunks = [];
+      var mime = ''; try { if (MediaRecorder.isTypeSupported('audio/webm')) mime = 'audio/webm'; } catch (e) {}
+      vozRec = mime ? new MediaRecorder(stream, { mimeType: mime }) : new MediaRecorder(stream);
+      vozRec.ondataavailable = function (e) { if (e.data && e.data.size) vozChunks.push(e.data); };
+      vozRec.onstop = function () {
+        try { stream.getTracks().forEach(function (t) { t.stop(); }); } catch (e) {}
+        var dur = Math.floor((Date.now() - vozStart) / 1000);
+        var blob = new Blob(vozChunks, { type: (vozRec && vozRec.mimeType) || 'audio/webm' });
+        var rd = new FileReader();
+        rd.onload = function () {
+          var url = String(rd.result || '');
+          if (vozBytes() + url.length > 4 * 1024 * 1024) return alert('Muy pesado para el almacenamiento local: prueba más corto (<60s) o guarda texto.');
+          var icons = { '🍲 Receta familiar': '🍲', '🏔️ Historia del territorio': '🏔️', '💡 Consejo de vida': '💡', '📖 Cuento para desbloquear': '📖' };
+          getVoz().push({ id: uid('vz'), fecha: todayKey(), tipo: $('vozTipo').value, titulo: clean($('vozTitulo').value, 60) || 'Sin título', quien: clean($('vozQuien').value, 30), desbloqueo: +$('vozLuna').value || 1, texto: clean($('vozTexto').value, 800), dur: dur, dataUrl: url, icon: icons[$('vozTipo').value] || '🎙️' });
+          save('Voz guardada 🗣️'); $('vozTitulo').value = ''; $('vozTexto').value = ''; renderVoz();
+        };
+        rd.readAsDataURL(blob);
+      };
+      vozRec.start(); vozStart = Date.now();
+      $('vozRec').classList.add('hidden'); $('vozStop').classList.remove('hidden');
+      timerInt = setInterval(paintT, 500); paintT();
+    }).catch(function () { alert('Sin permiso de micrófono. Revisa el permiso del sistema.'); });
+  };
+  $('vozStop').onclick = stopRec;
+  if (!dlg.dataset.vozCloseWrapped) {
+    dlg.dataset.vozCloseWrapped = '1';
+    dlg.addEventListener('close', function () {
+      try { if (vozRec && vozRec.state && vozRec.state !== 'inactive') { try { vozRec.stop(); } catch (e) {} } } catch (e) {}
+      try { clearInterval(timerInt); } catch (e) {} timerInt = null;
+      var rb = $('vozRec'), sb = $('vozStop');
+      if (rb) rb.classList.remove('hidden'); if (sb) sb.classList.add('hidden');
+    });
+  }
+  $('vozAdd').onclick = function () {
+    var t = clean($('vozTitulo').value, 60); if (!t) return alert('Ponle título');
+    var icons = { '🍲 Receta familiar': '🍲', '🏔️ Historia del territorio': '🏔️', '💡 Consejo de vida': '💡', '📖 Cuento para desbloquear': '📖' };
+    getVoz().push({ id: uid('vz'), fecha: todayKey(), tipo: $('vozTipo').value, titulo: t, quien: clean($('vozQuien').value, 30), desbloqueo: +$('vozLuna').value || 1, texto: clean($('vozTexto').value, 800), dur: 0, dataUrl: '', icon: icons[$('vozTipo').value] || '🎙️' });
+    save('Guardado 🗣️'); $('vozTitulo').value = ''; $('vozTexto').value = ''; renderVoz();
+  };
+  try { renderVoz(); } catch (e) {}
+}
+/* ---------- B3: árbol genealógico lunar ---------- */
+function getArbol() { var a = store('arbolLunar', []); return Array.isArray(a) ? a : []; }
+function renderArbol() {
+  if (!$('arbList')) return;
+  var d = getArbol();
+  var porLuna = {};
+  d.forEach(function (r) { (porLuna[r.luna] = porLuna[r.luna] || []).push(r); });
+  $('arbCircle').innerHTML = Array.from({ length: 13 }, function (_, i) {
+    var n = i + 1, names = (porLuna[n] || []).map(function (r) { return esc(r.nombre) + (r.partio ? ' 🕊️' : ''); }).join('<br>');
+    return '<div class="chip" style="font-size:10px;text-align:center;min-width:88px;' + (names ? 'border-color:var(--gold)' : '') + '">🌙 L' + n + (names ? '<br><b>' + names + '</b>' : '<br><span class="muted">—</span>') + '</div>';
+  }).join('');
+  $('arbList').innerHTML = d.length ? d.slice().sort(function (a, b) { return a.luna - b.luna; }).map(function (r) {
+    return '<div class="habit-item" style="display:flex;justify-content:space-between;gap:8px;align-items:center"><span>🌙 L' + r.luna + ' · <b>' + esc(r.nombre) + '</b> (' + esc(r.vinc) + ')' + (r.partio ? ' 🕊️' : ' 🌱') + (r.nota ? '<br><span class="muted" style="font-size:11px">' + esc(r.nota) + '</span>' : '') + '</span><span style="display:flex;gap:6px;flex:0 0 auto"><button class="btn" style="width:auto;font-size:11px" data-hon="' + r.id + '" title="Alternar honra">🕯️</button><button class="btn" style="width:auto;font-size:11px;color:#e76e8a" data-del="' + r.id + '">✕</button></span></div>';
+  }).join('') : '<p class="muted">Vacío. Registra a cada ancestro en su luna de nacimiento: un círculo, no una línea. Honra a quienes partieron 🕊️.</p>';
+  $('arbList').querySelectorAll('[data-del]').forEach(function (b) { b.onclick = function () { if (!confirm('¿Borrar del árbol?')) return; var dd = getArbol(); var i = dd.findIndex(function (x) { return x.id === b.getAttribute('data-del'); }); if (i >= 0) dd.splice(i, 1); save(); renderArbol(); }; });
+  $('arbList').querySelectorAll('[data-hon]').forEach(function (b) { b.onclick = function () { var dd = getArbol(); var r = dd.find(function (x) { return x.id === b.getAttribute('data-hon'); }); if (r) r.partio = !r.partio; save('Guardado 🕯️'); renderArbol(); }; });
+  var st = $('arbStats'); if (st) st.textContent = d.length + ' ancestros · ' + d.filter(function (r) { return r.partio; }).length + ' honrados 🕊️';
+}
+function setupArbol() {
+  var dlg = $('memoryDialog'); if (!dlg) { setTimeout(setupArbol, 800); return; }
+  addKw('btnMemory', 'arbol genealógico ancestro familia honrar abuelo luna nacimiento');
+  var b = $('btnMemory');
+  if (b && !b.dataset.arbWrapped) { b.dataset.arbWrapped = '1'; b.addEventListener('click', function () { setTimeout(function () { try { renderArbol(); } catch (e) {} }, 60); }); }
+  ['tabMemoryLoci', 'tabMemoryPairs', 'tabMemorySeq', 'tabMemoryWords', 'tabMemoryAtt', 'tabMemoryProg'].forEach(function (id) {
+    var t = $(id);
+    if (t && !t.dataset.arbWrapped) { t.dataset.arbWrapped = '1'; t.addEventListener('click', function () { var p = $('memoryArbolPanel'); if (p) p.classList.add('hidden'); var tb = $('tabMemoryArbol'); if (tb) tb.classList.remove('btn-accent'); }); }
+  });
+  if ($('tabMemoryArbol')) { try { renderArbol(); } catch (e) {} return; }
+  var ref = $('tabMemoryProg');
+  var tabBtn = document.createElement('button');
+  tabBtn.type = 'button'; tabBtn.id = 'tabMemoryArbol'; tabBtn.className = 'btn'; tabBtn.style.width = 'auto';
+  tabBtn.textContent = '🌳 Árbol';
+  if (ref && ref.parentNode) ref.parentNode.appendChild(tabBtn);
+  var refP = $('memoryProgPanel');
+  var panel = document.createElement('div');
+  panel.id = 'memoryArbolPanel'; panel.className = 'hidden';
+  panel.innerHTML =
+    '<div class="menstrual-card"><h4>🌳 Árbol genealógico lunar</h4>' +
+    '<p class="muted" style="font-size:11px">Registro circular: cada ancestro en su <b>luna de nacimiento</b>. 🕯️ honra a quienes partieron. Conecta con 🏔️ Territorio y 🪶 Legado. Privado y local.</p>' +
+    '<div id="arbCircle" style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:8px 0"></div>' +
+    '<div class="conv-row"><label style="flex:2">Nombre <input type="text" id="arbNombre" placeholder="ej: Abuela Rosa" maxlength="40"></label><label>Vínculo <select id="arbVinc">' + ARBOL_VINC.map(function (v) { return '<option>' + v + '</option>'; }).join('') + '</select></label></div>' +
+    '<div class="conv-row"><label>Luna nacimiento <select id="arbLuna">' + Array.from({ length: 13 }, function (_, i) { return '<option value="' + (i + 1) + '">Luna ' + (i + 1) + '</option>'; }).join('') + '</select></label><label class="check-row" style="align-self:flex-end"><input type="checkbox" id="arbPartio"> 🕊️ ya partió</label></div>' +
+    '<label>Nota / honra <input type="text" id="arbNota" placeholder="ej: me enseñó el charquicán" maxlength="80"></label>' +
+    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="arbAdd" class="btn btn-accent" style="width:auto">+ Agregar al círculo</button></div>' +
+    '<div id="arbList" class="habits-list" style="margin-top:8px;max-height:220px"></div>' +
+    '<span id="arbStats" class="muted" style="font-size:11px"></span></div>';
+  if (refP && refP.parentNode) refP.parentNode.appendChild(panel);
+  tabBtn.onclick = function () {
+    ['memoryLociPanel', 'memoryPairsPanel', 'memorySeqPanel', 'memoryWordsPanel', 'memoryAttPanel', 'memoryProgPanel'].forEach(function (pid) { var p = $(pid); if (p) p.classList.add('hidden'); });
+    ['tabMemoryLoci', 'tabMemoryPairs', 'tabMemorySeq', 'tabMemoryWords', 'tabMemoryAtt', 'tabMemoryProg'].forEach(function (tid) { var t = $(tid); if (t) t.classList.remove('btn-accent'); });
+    panel.classList.remove('hidden'); tabBtn.classList.add('btn-accent'); renderArbol();
+  };
+  $('arbAdd').onclick = function () {
+    var n = clean($('arbNombre').value, 40); if (!n) return alert('Escribe el nombre');
+    getArbol().push({ id: uid('ab'), nombre: n, vinc: $('arbVinc').value, luna: +$('arbLuna').value || 1, partio: $('arbPartio').checked, nota: clean($('arbNota').value, 80) });
+    save('Ancestro al círculo 🌳'); $('arbNombre').value = ''; $('arbNota').value = ''; $('arbPartio').checked = false; renderArbol();
+  };
+  try { renderArbol(); } catch (e) {}
+}
+/* ---------- B4: mapa de mi año interior ---------- */
+function getMapaTxt() { var a = store('mapaAnioTxt', {}); return (a && typeof a === 'object') ? a : {}; }
+function mapaYear() { try { if (typeof currentCycleYear === 'function') return currentCycleYear(); } catch (e) {} return new Date().getFullYear(); }
+function mapaStats() {
+  var per = {};
+  for (var i = 1; i <= 13; i++) per[i] = { hab: 0, gra: 0, psi: 0, sue: 0, med: 0 };
+  var memo = {};
+  function mluna(k) { if (memo[k] === undefined) { try { memo[k] = mensLunaForKey(k); } catch (e) { memo[k] = null; } } return memo[k]; }
+  try {
+    var h = getHabitData(); Object.keys(h.entries || {}).forEach(function (k) {
+      try { var m = mluna(k); if (m && per[m.luna]) per[m.luna].hab += Object.keys(h.entries[k]).length; } catch (e) {}
+    });
+  } catch (e) {}
+  try {
+    var g = getGratitudData(); Object.keys(g.entries || {}).forEach(function (k) {
+      try { var m = mluna(k); if (m && per[m.luna]) per[m.luna].gra++; } catch (e) {}
+    });
+  } catch (e) {}
+  try {
+    var p = getPsicoData(); Object.keys((p && p.entries) || {}).forEach(function (k) {
+      try { var m = mluna(k); if (m && per[m.luna]) per[m.luna].psi += Object.keys(p.entries[k]).length; } catch (e) {}
+    });
+  } catch (e) {}
+  try {
+    getSuenos().forEach(function (r) { try { var m = mluna(r.fecha); if (m && per[m.luna]) per[m.luna].sue++; } catch (e) {} });
+    getMedita().forEach(function (r) { try { var m = mluna(r.fecha); if (m && per[m.luna]) per[m.luna].med++; } catch (e) {} });
+  } catch (e) {}
+  return per;
+}
+function renderMapa() {
+  if (!$('mapaBars')) return;
+  var per = mapaStats(), y = mapaYear(), txt = getMapaTxt();
+  var max = 1; for (var i = 1; i <= 13; i++) max = Math.max(max, per[i].hab + per[i].gra + per[i].psi + per[i].sue + per[i].med);
+  $('mapaBars').innerHTML = Array.from({ length: 13 }, function (_, k) {
+    var n = k + 1, p = per[n], tot = p.hab + p.gra + p.psi + p.sue + p.med;
+    var key = y + '-L' + n, aprend = txt[key] || '';
+    return '<div class="si-card"><h4>🌙 Luna ' + n + ' <span class="chip" style="font-size:10px">' + tot + ' huellas</span></h4>' +
+      '<div style="background:var(--panel);border-radius:6px;height:10px;overflow:hidden"><div style="width:' + Math.round(tot / max * 100) + '%;height:100%;background:linear-gradient(90deg,#7ab8ff,#e8c56a,#a9d18e)"></div></div>' +
+      '<p class="muted" style="font-size:11px;margin-top:4px">✅ ' + p.hab + ' · 🙏 ' + p.gra + ' · 🪞 ' + p.psi + ' · 💭 ' + p.sue + ' · 🧘 ' + p.med + '</p>' +
+      '<label style="font-size:11px">Aprendizaje <input type="text" data-mapakey="' + key + '" value="' + esc(aprend) + '" placeholder="una frase de esta luna..." maxlength="120"></label></div>';
+  }).join('');
+  $('mapaBars').querySelectorAll('[data-mapakey]').forEach(function (inp) {
+    inp.onchange = function () { var t = getMapaTxt(); t[inp.getAttribute('data-mapakey')] = clean(inp.value, 120); try { userData().mapaAnioTxt = t; } catch (e) {} save('Mapa guardado 📊'); };
+  });
+  var totTxt = Object.keys(txt).filter(function (k) { return String(k).indexOf(y + '-L') === 0 && txt[k]; }).length;
+  var st = $('mapaStats'); if (st) st.textContent = 'Ciclo ' + y + ' · ' + totTxt + '/13 lunas con aprendizaje · resumen de tu viaje (hábitos, gratitud, psico, sueños, meditación)';
+}
+function setupMapa() {
+  var dlg = $('habitsDialog'); if (!dlg) { setTimeout(setupMapa, 800); return; }
+  addKw('btnHabits', 'mapa año interior resumen anual viaje emociones hitos aprendizajes ciclo');
+  var b = $('btnHabits');
+  if (b && !b.dataset.mapaWrapped) { b.dataset.mapaWrapped = '1'; b.addEventListener('click', function () { setTimeout(function () { try { renderMapa(); } catch (e) {} }, 60); }); }
+  if ($('mapaBars')) { try { renderMapa(); } catch (e) {} return; }
+  var form = dlg.querySelector('form') || dlg;
+  var sec = document.createElement('div');
+  sec.innerHTML =
+    '<div class="menstrual-card" style="margin-top:10px;border-color:var(--gold)"><h4>📊 Mapa de mi año interior <span class="muted" style="font-weight:normal">· tu viaje en 13 lunas</span></h4>' +
+    '<p class="muted" style="font-size:11px">Visualización anual: huellas por luna (hábitos, gratitud, autoconocimiento, sueños, meditación) + tu aprendizaje. Al cerrar el ciclo, léelo como resumen del viaje. Conecta con ✅ Hábitos y 📓 Gratitud.</p>' +
+    '<span id="mapaStats" class="muted" style="font-size:11px"></span>' +
+    '<div id="mapaBars" style="margin-top:8px;display:flex;flex-direction:column;gap:8px;max-height:340px;overflow-y:auto"></div>' +
+    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="mapaShare" class="btn" style="width:auto">📤 Compartir resumen</button></div></div>';
+  var closeRow = form.querySelector('.dlg-actions:last-child');
+  if (closeRow) form.insertBefore(sec, closeRow); else form.appendChild(sec);
+  $('mapaShare').onclick = function () {
+    var per = mapaStats(), y = mapaYear(), txt = getMapaTxt();
+    share('📊 Mi año interior · ciclo ' + y, Array.from({ length: 13 }, function (_, k) {
+      var n = k + 1, p = per[n];
+      return 'Luna ' + n + ': ✅' + p.hab + ' 🙏' + p.gra + ' 🪞' + p.psi + ' 💭' + p.sue + ' 🧘' + p.med + (txt[y + '-L' + n] ? ' — “' + txt[y + '-L' + n] + '”' : '');
+    }).join('\n'));
+  };
+  try { renderMapa(); } catch (e) {}
+}
+
+/* ============================================================
+   FASE D — Comunidad (Emergencias & Comunidad, sin grupos nuevos)
+   D1 Directivas anticipadas Ley 21.331 → pestaña en #derechosDialog
+   D2 Círculo de Saberes (wiki) → sección en #mingaDialog
+   D3 Círculos de presencia → sección en #mingaDialog
+   ============================================================ */
+function getVolunt() { var a = store('voluntades', null); return (a && typeof a === 'object') ? a : {}; }
+function renderVolunt() {
+  if (!$('volQuiero')) return;
+  var v = getVolunt();
+  if (document.activeElement !== $('volQuiero')) $('volQuiero').value = v.quiero || '';
+  if (document.activeElement !== $('volNoQuiero')) $('volNoQuiero').value = v.noquiero || '';
+  if (document.activeElement !== $('volRepre')) $('volRepre').value = v.repre || '';
+  if ($('volFecha') && !v.fecha) { try { if (!$('volFecha').value) $('volFecha').value = todayKey(); } catch (e) {} }
+  if ($('volFecha') && v.fecha && document.activeElement !== $('volFecha') && !$('volFecha').value) $('volFecha').value = v.fecha;
+  var st = $('volStats');
+  if (st) st.textContent = (v.quiero || v.noquiero) ? ('Plantilla guardada (' + (v.fecha || 'sin fecha') + ') · privada en este dispositivo · revísala cada luna') : 'Plantilla vacía: escríbela con calma, conversada en familia.';
+}
+function setupVoluntades() {
+  var dlg = $('derechosDialog'); if (!dlg || !$('tabDerLog')) { setTimeout(setupVoluntades, 800); return; }
+  addKw('btnDerechos', 'voluntad anticipada ley 21331 fin vida cuidados paliativos representante reanimacion');
+  if ($('tabDerVol')) { try { renderVolunt(); } catch (e) {} return; }
+  var tabBtn = document.createElement('button');
+  tabBtn.type = 'button'; tabBtn.id = 'tabDerVol'; tabBtn.className = 'btn'; tabBtn.style.width = 'auto';
+  tabBtn.textContent = '📜 Voluntades';
+  $('tabDerLog').parentNode.appendChild(tabBtn);
+  var logPanel = $('logPanel');
+  var panel = document.createElement('div');
+  panel.id = 'volPanel'; panel.className = 'hidden';
+  panel.innerHTML =
+    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>📜 Guía local · Ley 21.331 de voluntades anticipadas</h4>' +
+    '<p style="font-size:12px;line-height:1.6">Puedes dejar por escrito <b>qué cuidados aceptas y cuáles no</b> si algún día no puedes decidir (accidente, enfermedad grave). <b>Requisitos:</b> ser mayor de edad, documento escrito y firmado (ideal ante notario o en tu CESFAM/hospital, que lo archiva en tu ficha). <b>Es revocable</b> cuando quieras. <b>No reemplaza testamento</b> (eso es bienes, esto es cuidados). <b>Informativo, no asesoría legal:</b> confirma en chileatiende.cl y con tu matrona/médico. Conecta con ⚖️ Derechos y 🪶 Transición.</p></div>' +
+    '<div class="menstrual-card" style="margin-top:10px"><h4>✍️ Mi plantilla (privada)</h4>' +
+    '<div class="conv-row"><label>Representante <input type="text" id="volRepre" placeholder="ej: mi hermana Ana · +56 9..." maxlength="60"></label><label>Fecha <input type="date" id="volFecha"></label></div>' +
+    '<label>✅ Lo que QUIERO <textarea id="volQuiero" rows="3" placeholder="ej: estar en casa si es posible · acompañamiento de mi familia · mis ritos (vela, canto, epew) · alivio del dolor siempre..." maxlength="600"></textarea></label>' +
+    '<label>🚫 Lo que NO quiero <textarea id="volNoQuiero" rows="3" placeholder="ej: reanimación si no hay posibilidad de recuperarme · hospitalización prolongada sin sentido · ..." maxlength="600"></textarea></label>' +
+    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="volSave" class="btn btn-accent" style="width:auto">💾 Guardar plantilla</button><button type="button" id="volShare" class="btn" style="width:auto">📤 Compartir</button></div>' +
+    '<span id="volStats" class="muted" style="font-size:11px"></span></div>';
+  logPanel.parentNode.appendChild(panel);
+  tabBtn.onclick = function () { try { switchDerTab('Vol'); } catch (e) {} };
+  if (typeof switchDerTab === 'function' && !switchDerTab._volWrapped) {
+    var orig = switchDerTab;
+    switchDerTab = function (t) {
+      var pp = $('volPanel'), tb = $('tabDerVol');
+      if (t === 'Vol') {
+        ['derPanel', 'debPanel', 'recPanel', 'logPanel'].forEach(function (pid) { var p = $(pid); if (p) p.classList.add('hidden'); });
+        if (pp) pp.classList.remove('hidden');
+        ['tabDerDer', 'tabDerDeb', 'tabDerRec', 'tabDerLog'].forEach(function (id) { var x = $(id); if (x) x.classList.remove('btn-accent'); });
+        if (tb) tb.classList.add('btn-accent'); renderVolunt(); return;
+      }
+      orig(t);
+      if (pp) pp.classList.add('hidden'); if (tb) tb.classList.remove('btn-accent');
+    };
+    switchDerTab._volWrapped = true;
+  }
+  $('volSave').onclick = function () {
+    try {
+      userData().voluntades = { quiero: clean($('volQuiero').value, 600), noquiero: clean($('volNoQuiero').value, 600), repre: clean($('volRepre').value, 60), fecha: $('volFecha').value || todayKey() };
+    } catch (e) {}
+    save('Voluntades guardadas 📜'); renderVolunt();
+  };
+  $('volShare').onclick = function () {
+    var v = getVolunt();
+    if (!v.quiero && !v.noquiero) return alert('Plantilla vacía');
+    share('📜 Mis voluntades anticipadas (' + (v.fecha || '') + ')', 'Representante: ' + (v.repre || '—') + '\n\n✅ QUIERO:\n' + (v.quiero || '—') + '\n\n🚫 NO QUIERO:\n' + (v.noquiero || '—'));
+  };
+  var b = $('btnDerechos');
+  if (b && !b.dataset.volWrapped) { b.dataset.volWrapped = '1'; b.addEventListener('click', function () { setTimeout(function () { try { renderVolunt(); } catch (e) {} }, 60); }); }
+  try { renderVolunt(); } catch (e) {}
+}
+/* ---------- D2+D3: saberes + círculos en Minga ---------- */
+var SAB_CAT = ['🌿 Salud / lawen', '🍲 Cocina', '🌊 Territorio / mar', '🛠️ Oficio', '📖 Historia local', '🗣️ Mapuzugun'];
+function getSaberes() { var a = store('saberes', []); return Array.isArray(a) ? a : []; }
+function getCirculos() { var a = store('circulos', []); return Array.isArray(a) ? a : []; }
+function renderSaberes() {
+  if (!$('sabList')) return;
+  var q = (($('sabQ') || {}).value || '').toLowerCase();
+  var cat = ($('sabCatF') || {}).value || 'todas';
+  var d = getSaberes().slice().sort(function (a, b) { return (b.val || 0) - (a.val || 0) || b.fecha.localeCompare(a.fecha); })
+    .filter(function (r) { if (cat !== 'todas' && r.cat !== cat) return false; if (q && (r.titulo + ' ' + r.texto + ' ' + (r.autor || '')).toLowerCase().indexOf(q) < 0) return false; return true; });
+  $('sabList').innerHTML = d.length ? d.map(function (r) {
+    return '<div class="si-card"><h4>' + esc(r.cat || '🌿') + ' ' + esc(r.titulo) + '</h4><p>' + esc(r.texto) + '</p><p class="muted" style="font-size:11px">— ' + esc(r.autor || 'vecina/o') + ' · ' + r.fecha + ' · 👍 ' + (r.val || 0) + '</p>' +
+      '<div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn" style="width:auto;font-size:11px" data-val="' + r.id + '">👍 Me sirve</button><button class="btn" style="width:auto;font-size:11px" data-share="' + r.id + '">📤</button><button class="btn" style="width:auto;font-size:11px;color:#e76e8a" data-del="' + r.id + '">✕</button></div></div>';
+  }).join('') : '<p class="muted">Sin saberes aún. Ej: “Mi abuela curaba el empacho con...”, “En mi calle se juntaban a...”. Se modera en comunidad.</p>';
+  $('sabList').querySelectorAll('[data-val]').forEach(function (x) { x.onclick = function () { var dd = getSaberes(); var r = dd.find(function (z) { return z.id === x.getAttribute('data-val'); }); if (r) { r.val = (r.val || 0) + 1; save('¡Chaltu! 👍'); renderSaberes(); } }; });
+  $('sabList').querySelectorAll('[data-del]').forEach(function (x) { x.onclick = function () { if (!confirm('¿Borrar aporte?')) return; var dd = getSaberes(); var i = dd.findIndex(function (z) { return z.id === x.getAttribute('data-del'); }); if (i >= 0) dd.splice(i, 1); save(); renderSaberes(); }; });
+  $('sabList').querySelectorAll('[data-share]').forEach(function (x) { x.onclick = function () { var dd = getSaberes(); var r = dd.find(function (z) { return z.id === x.getAttribute('data-share'); }); if (r) share('🌿 ' + r.titulo, r.texto + '\n— ' + (r.autor || '')); }; });
+  var st = $('sabStats'); if (st) st.textContent = getSaberes().length + ' saberes compartidos';
+}
+function renderCirculos() {
+  if (!$('cirList')) return;
+  var hoy = todayKey();
+  var d = getCirculos().slice().sort(function (a, b) { return a.fecha.localeCompare(b.fecha); });
+  $('cirList').innerHTML = d.length ? d.map(function (r) {
+    var est = r.fecha === hoy ? '🕯️ <b>HOY</b>' : (r.fecha > hoy ? 'próximo' : 'realizado');
+    return '<div class="habit-item"><b>🕯️ ' + esc(r.nombre) + '</b> <span class="chip" style="font-size:10px">' + esc(r.tipo) + '</span> <span class="chip" style="font-size:10px">' + est + '</span><br>' +
+      '<span class="muted" style="font-size:11px">📅 ' + r.fecha + ' ' + esc(r.hora || '') + ' · 📍 ' + esc(r.lugar || '') + (r.cupo ? ' · cupo ' + esc(r.cupo) : '') + ' · ✅ voy: ' + (r.voy ? 'sí' : '—') + (r.extras ? ' +' + r.extras : '') + '</span>' +
+      '<div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap"><button class="btn" style="width:auto;font-size:11px" data-voy="' + r.id + '">' + (r.voy ? '✓ Voy' : '👋 Anotarme') + '</button><button class="btn" style="width:auto;font-size:11px" data-share="' + r.id + '">📤 Invitar</button><button class="btn" style="width:auto;font-size:11px;color:#e76e8a" data-del="' + r.id + '">✕</button></div></div>';
+  }).join('') : '<p class="muted">Sin círculos. Convoca meditación, tejido, siembra o canto en Penco/Bío-Bío, ideal en luna nueva o llena.</p>';
+  $('cirList').querySelectorAll('[data-voy]').forEach(function (x) { x.onclick = function () { var dd = getCirculos(); var r = dd.find(function (z) { return z.id === x.getAttribute('data-voy'); }); if (r) { r.voy = !r.voy; save(r.voy ? 'Anotado 🕯️' : 'Guardado'); renderCirculos(); } }; });
+  $('cirList').querySelectorAll('[data-del]').forEach(function (x) { x.onclick = function () { if (!confirm('¿Borrar círculo?')) return; var dd = getCirculos(); var i = dd.findIndex(function (z) { return z.id === x.getAttribute('data-del'); }); if (i >= 0) dd.splice(i, 1); save(); renderCirculos(); }; });
+  $('cirList').querySelectorAll('[data-share]').forEach(function (x) { x.onclick = function () { var dd = getCirculos(); var r = dd.find(function (z) { return z.id === x.getAttribute('data-share'); }); if (r) share('🕯️ Círculo: ' + r.nombre, '📅 ' + r.fecha + ' ' + (r.hora || '') + '\n📍 ' + (r.lugar || '') + '\n' + r.tipo); }; });
+}
+function setupSaberesCirculos() {
+  var dlg = $('mingaDialog'); if (!dlg) { setTimeout(setupSaberesCirculos, 800); return; }
+  addKw('btnMinga', 'saberes wiki conocimiento local circulo encuentro presencial meditar tejer sembrar canto comunidad');
+  var b = $('btnMinga');
+  if (b && !b.dataset.sabWrapped) { b.dataset.sabWrapped = '1'; b.addEventListener('click', function () { setTimeout(function () { try { renderSaberes(); renderCirculos(); } catch (e) {} }, 60); }); }
+  if ($('sabTitulo')) { try { renderSaberes(); renderCirculos(); } catch (e) {} return; }
+  var form = dlg.querySelector('form') || dlg;
+  var sec = document.createElement('div');
+  sec.innerHTML =
+    '<div class="menstrual-card" style="margin-top:10px;border-color:var(--gold)"><h4>🌿 Círculo de Saberes <span class="muted" style="font-weight:normal">· wiki comunitaria</span></h4>' +
+    '<p class="muted" style="font-size:11px">Conocimiento local open source (“mi abuela curaba...”, “en mi calle...”). La comunidad valida con 👍. Conecta con 🌿 Lawen y Kimün.</p>' +
+    '<div class="conv-row"><label style="flex:2">🔍 Buscar <input type="text" id="sabQ" placeholder="empacho, cochayuyo..." autocomplete="off"></label><label>Categoría <select id="sabCatF"><option value="todas">Todas</option>' + SAB_CAT.map(function (c) { return '<option>' + c + '</option>'; }).join('') + '</select></label></div>' +
+    '<div class="conv-row"><label style="flex:2">Título <input type="text" id="sabTitulo" placeholder="ej: Empacho de mi abuela" maxlength="60"></label><label>Tipo <select id="sabCat">' + SAB_CAT.map(function (c) { return '<option>' + c + '</option>'; }).join('') + '</select></label></div>' +
+    '<label>Saber <textarea id="sabTexto" rows="2" placeholder="cuéntalo como lo contarías en la cocina..." maxlength="500"></textarea></label>' +
+    '<label>Autor/a (opcional) <input type="text" id="sabAutor" placeholder="ej: Rosa de Lirquén" maxlength="40"></label>' +
+    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="sabAdd" class="btn btn-accent" style="width:auto">+ Aportar saber</button></div>' +
+    '<div id="sabList" style="margin-top:8px;display:flex;flex-direction:column;gap:8px;max-height:300px;overflow-y:auto"></div>' +
+    '<span id="sabStats" class="muted" style="font-size:11px"></span></div>' +
+    '<div class="menstrual-card" style="margin-top:10px"><h4>🕯️ Círculos de presencia <span class="muted" style="font-weight:normal">· encuentros en Penco/Bío-Bío</span></h4>' +
+    '<div class="conv-row"><label style="flex:2">Nombre <input type="text" id="cirNombre" placeholder="ej: Tejido de luna llena" maxlength="60"></label><label>Tipo <select id="cirTipo"><option>meditación</option><option>tejido</option><option>siembra</option><option>canto</option><option>minga lunar</option></select></label></div>' +
+    '<div class="conv-row"><label>Fecha <input type="date" id="cirFecha"></label><label>Hora <input type="time" id="cirHora" value="18:00"></label><label>Lugar <input type="text" id="cirLugar" placeholder="ej: Playa Negra" maxlength="40"></label><label>Cupo <input type="text" id="cirCupo" placeholder="ej: 12" maxlength="6" style="width:70px"></label></div>' +
+    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="cirAdd" class="btn btn-accent" style="width:auto">+ Convocar círculo</button></div>' +
+    '<div id="cirList" class="habits-list" style="margin-top:8px;max-height:240px"></div></div>';
+  var closeRow = form.querySelector('.dlg-actions:last-child');
+  if (closeRow) form.insertBefore(sec, closeRow); else form.appendChild(sec);
+  $('sabQ').oninput = renderSaberes; $('sabCatF').onchange = renderSaberes;
+  $('sabAdd').onclick = function () {
+    var t = clean($('sabTitulo').value, 60); if (!t) return alert('Ponle título al saber');
+    var x = clean($('sabTexto').value, 500); if (!x) return alert('Cuenta el saber');
+    getSaberes().push({ id: uid('sb'), fecha: todayKey(), titulo: t, cat: $('sabCat').value, texto: x, autor: clean($('sabAutor').value, 40), val: 0 });
+    save('Saber aportado 🌿'); $('sabTitulo').value = ''; $('sabTexto').value = ''; renderSaberes();
+  };
+  $('cirAdd').onclick = function () {
+    var t = clean($('cirNombre').value, 60); if (!t) return alert('Nombra el círculo');
+    if (!$('cirFecha').value) return alert('Elige fecha');
+    getCirculos().push({ id: uid('ci'), nombre: t, tipo: $('cirTipo').value, fecha: $('cirFecha').value, hora: $('cirHora').value, lugar: clean($('cirLugar').value, 40), cupo: clean($('cirCupo').value, 6), voy: true, extras: 0 });
+    save('Círculo convocado 🕯️'); $('cirNombre').value = ''; renderCirculos();
+  };
+  try { renderSaberes(); renderCirculos(); } catch (e) {}
+}
+
+/* ============================================================
+   FASE C — Hogar vivo (Vida diaria, sin grupos nuevos)
+   C2 Caja de Tesoros → sección en #bodegaDialog
+   C3+C4 Roles + Acuerdos → pestaña única en #homeTasksDialog
+   ============================================================ */
+var ROLES_HOGAR = ['🍳 Cocina y compras', '👕 Ropa y lavandería', '🚿 Baños y limpieza', '🌿 Patio y plantas', '🛠️ Reparaciones y mantención', '🧹 Orden general y basura'];
+function getRoles() { var a = store('rolesHogar', {}); return (a && typeof a === 'object') ? a : {}; }
+function getAcuerdos() {
+  var a = store('acuerdosFam', null);
+  if (Array.isArray(a)) return a;
+  var old = store('ritualesFam', []);
+  return Array.isArray(old) ? old : [];
+}
+function saveAcuerdos(dd) { try { userData().acuerdosFam = dd; } catch (e) {} }
+function renderRoles() {
+  if (!$('rolGrid')) return;
+  var as = getRoles(), l = null;
+  try { var m = mensLunaForKey(todayKey()); if (m) l = 'Luna ' + m.luna; } catch (e) {}
+  $('rolLuna').textContent = l ? ('Rotación de ' + l + ' · rota cada luna') : 'Rotación mensual por luna';
+  $('rolGrid').innerHTML = ROLES_HOGAR.map(function (rol) {
+    return '<label style="font-size:12px">' + esc(rol) + ' <input type="text" data-rol="' + esc(rol) + '" value="' + esc(as[rol] || '') + '" placeholder="¿quién? ej: mamá, papá, hijos" maxlength="30"></label>';
+  }).join('');
+  $('rolGrid').querySelectorAll('[data-rol]').forEach(function (inp) {
+    inp.onchange = function () { var a = getRoles(); a[inp.getAttribute('data-rol')] = clean(inp.value, 30); try { userData().rolesHogar = a; } catch (e) {} save('Rol asignado 🗝️'); };
+  });
+}
+function renderAcuerdos() {
+  if (!$('acuList')) return;
+  var hoy = todayKey();
+  var d = getAcuerdos().slice().sort(function (a, b) { return a.prox.localeCompare(b.prox); });
+  $('acuList').innerHTML = d.length ? d.map(function (r) {
+    var est = r.prox === hoy ? '🤝 <b>HOY</b>' : (r.prox > hoy ? r.prox : 'pendiente');
+    return '<div class="habit-item"><b>🤝 ' + esc(r.nombre) + '</b> <span class="chip" style="font-size:10px">' + esc(r.momento) + '</span> <span class="chip" style="font-size:10px">' + est + '</span><p class="muted" style="font-size:11px">' + esc(r.desc || '') + (r.ult ? ' · último: ' + r.ult : '') + '</p>' +
+      '<div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn" style="width:auto;font-size:11px" data-done="' + r.id + '">✅ Cumplido</button><button class="btn" style="width:auto;font-size:11px" data-share="' + r.id + '">📤</button><button class="btn" style="width:auto;font-size:11px;color:#e76e8a" data-del="' + r.id + '">✕</button></div></div>';
+  }).join('') : '<p class="muted">Sin acuerdos. Ej: sin pantallas en la comida, ordenar piezas antes de dormir, turnos de cocina.</p>';
+  $('acuList').querySelectorAll('[data-del]').forEach(function (b) { b.onclick = function () { if (!confirm('¿Borrar acuerdo?')) return; var dd = getAcuerdos(); var i = dd.findIndex(function (x) { return x.id === b.getAttribute('data-del'); }); if (i >= 0) { dd.splice(i, 1); saveAcuerdos(dd); } save(); renderAcuerdos(); }; });
+  $('acuList').querySelectorAll('[data-done]').forEach(function (b) { b.onclick = function () { var dd = getAcuerdos(); var r = dd.find(function (x) { return x.id === b.getAttribute('data-done'); }); if (!r) return; r.ult = hoy; if (r.momento === 'cada luna' || r.momento === 'semanal') r.prox = addDaysKey(hoy, r.momento === 'semanal' ? 7 : 28); saveAcuerdos(dd); save('Acuerdo cumplido 🤝'); renderAcuerdos(); }; });
+  $('acuList').querySelectorAll('[data-share]').forEach(function (b) { b.onclick = function () { var dd = getAcuerdos(); var r = dd.find(function (x) { return x.id === b.getAttribute('data-share'); }); if (r) share('🤝 Nuestro acuerdo: ' + r.nombre, (r.desc || '') + '\n' + r.momento + ' · próximo: ' + r.prox); }; });
+}
+function setupHogar() {
+  var dlg = $('homeTasksDialog'); if (!dlg || typeof renderHomeTasksTab !== 'function') { setTimeout(setupHogar, 800); return; }
+  addKw('btnHomeTasks', 'roles acuerdo familia luna convivencia tareas reparto');
+  ['tabHomeCrianza', 'tabHomeRoles', 'tabHomeRituales'].forEach(function (tid) { var x = $(tid); if (x) x.remove(); });
+  ['homeCrianzaPanel', 'homeRolesPanel', 'homeRitualesPanel'].forEach(function (pid) { var p = $(pid); if (p) p.remove(); });
+  var b = $('btnHomeTasks');
+  if (b && !b.dataset.hogarWrapped) { b.dataset.hogarWrapped = '1'; b.addEventListener('click', function () { setTimeout(function () { try { renderRoles(); renderAcuerdos(); } catch (e) {} }, 80); }); }
+  ['tabHomeTareas', 'tabHomeSemana', 'tabHomePlantillas', 'tabHomeStats', 'tabHomeDiogenes'].forEach(function (id) {
+    var t = $(id);
+    if (t && !t.dataset.hogarWrapped) { t.dataset.hogarWrapped = '1'; t.addEventListener('click', function () { var p = $('homeAcuerdosPanel'); if (p) p.classList.add('hidden'); var tb = $('tabHomeAcuerdos'); if (tb) tb.classList.remove('btn-accent'); }); }
+  });
+  if ($('tabHomeAcuerdos')) { try { renderRoles(); renderAcuerdos(); } catch (e) {} return; }
+  function mkTab(id, label, refId) {
+    var t = document.createElement('button');
+    t.type = 'button'; t.id = id; t.className = 'btn'; t.style.width = 'auto'; t.textContent = label;
+    var ref = $(refId); if (ref && ref.parentNode) ref.parentNode.appendChild(t);
+    return t;
+  }
+  var tA = mkTab('tabHomeAcuerdos', '🤝 Acuerdos', 'tabHomeDiogenes');
+  var anchor = $('homeTasksDiogenesPanel');
+  function mkPanel(id) { var p = document.createElement('div'); p.id = id; p.className = 'hidden'; if (anchor && anchor.parentNode) anchor.parentNode.appendChild(p); return p; }
+  var pA = mkPanel('homeAcuerdosPanel');
+  pA.innerHTML = '<div class="menstrual-card"><h4>🗝️ Roles del hogar <span class="muted" style="font-weight:normal">· distribución consciente</span></h4>' +
+    '<p class="muted" style="font-size:11px" id="rolLuna"></p><div id="rolGrid" class="conv-row" style="flex-wrap:wrap"></div>' +
+    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="rolRotar" class="btn" style="width:auto">🔄 Rotar roles</button><button type="button" id="rolClear" class="btn" style="width:auto">🧹 Limpiar</button></div></div>' +
+    '<div class="menstrual-card" style="margin-top:10px"><h4>🤝 Acuerdos familiares</h4>' +
+    '<div class="conv-row"><label style="flex:2">Acuerdo <input type="text" id="acuNombre" placeholder="ej: Sin pantallas en la comida" maxlength="60"></label><label>Frecuencia <select id="acuMomento"><option>diario</option><option>semanal</option><option>cada luna</option><option>fecha libre</option></select></label><label>Próximo <input type="date" id="acuProx"></label></div>' +
+    '<label>Cómo lo cumplimos <input type="text" id="acuDesc" placeholder="ej: dejamos el celular y conversamos todos" maxlength="120"></label>' +
+    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="acuAdd" class="btn btn-accent" style="width:auto">+ Crear acuerdo</button></div>' +
+    '<div id="acuList" class="habits-list" style="margin-top:8px;max-height:240px"></div></div>';
+  function show(panel, btn) {
+    ['homeTasksTareasPanel', 'homeTasksSemanaPanel', 'homeTasksPlantillasPanel', 'homeTasksStatsPanel', 'homeTasksDiogenesPanel', 'homeAcuerdosPanel'].forEach(function (pid) { var p = $(pid); if (p) p.classList.add('hidden'); });
+    ['tabHomeTareas', 'tabHomeSemana', 'tabHomePlantillas', 'tabHomeStats', 'tabHomeDiogenes', 'tabHomeAcuerdos'].forEach(function (tid) { var x = $(tid); if (x) x.classList.remove('btn-accent'); });
+    try { homeTasksCurrentTab = 'hogar'; } catch (e) {}
+    panel.classList.remove('hidden'); btn.classList.add('btn-accent');
+  }
+  tA.onclick = function () { show(pA, tA); renderRoles(); renderAcuerdos(); };
+  if (!window._hogarTabWrapped && typeof renderHomeTasksTab === 'function') {
+    window._hogarTabWrapped = true;
+    var origHome = renderHomeTasksTab;
+    renderHomeTasksTab = function (tab) {
+      origHome(tab);
+      if (tab !== 'acuerdos') {
+        var p = $('homeAcuerdosPanel'); if (p) p.classList.add('hidden');
+        var tb = $('tabHomeAcuerdos'); if (tb) tb.classList.remove('btn-accent');
+      }
+    };
+  }
+  $('rolRotar').onclick = function () {
+    var a = getRoles(), names = ROLES_HOGAR.map(function (r) { return a[r] || ''; });
+    names.unshift(names.pop());
+    ROLES_HOGAR.forEach(function (r, i) { a[r] = names[i]; });
+    try { userData().rolesHogar = a; } catch (e) {}
+    save('Roles rotados 🔄'); renderRoles();
+  };
+  $('rolClear').onclick = function () { if (!confirm('¿Limpiar roles?')) return; try { userData().rolesHogar = {}; } catch (e) {} save(); renderRoles(); };
+  $('acuAdd').onclick = function () {
+    var n = clean($('acuNombre').value, 60); if (!n) return alert('Nombra el acuerdo');
+    var dd = getAcuerdos();
+    dd.push({ id: uid('ac'), nombre: n, momento: $('acuMomento').value, prox: $('acuProx').value || todayKey(), desc: clean($('acuDesc').value, 120), ult: '' });
+    saveAcuerdos(dd);
+    save('Acuerdo creado 🤝'); $('acuNombre').value = ''; $('acuDesc').value = ''; renderAcuerdos();
+  };
+  try { renderRoles(); renderAcuerdos(); } catch (e) {}
+}
+
+/* ---------- C2: caja de tesoros en Bodega ---------- */
+var TES_TIPOS = ['📖 Libro', '🌱 Semillas', '🛠️ Herramienta', '🧵 Tejido / textil', '🍯 Receta / cuaderno', '🖼️ Foto / objeto', '🌳 Árbol plantado', 'otro'];
+function getTesoros() { var a = store('tesoros', []); return Array.isArray(a) ? a : []; }
+function renderTesoros() {
+  if (!$('tesList')) return;
+  var d = getTesoros().slice().sort(function (a, b) { return (a.estado === b.estado) ? a.fecha.localeCompare(b.fecha) : (a.estado === 'guardado' ? -1 : 1); });
+  $('tesList').innerHTML = d.length ? d.map(function (r) {
+    return '<div class="habit-item"><b>' + esc(r.tipo) + ' ' + esc(r.objeto) + '</b> <span class="chip" style="font-size:10px">' + esc(r.estado) + '</span><br>' +
+      '<span class="muted" style="font-size:11px">de ' + esc(r.de || '?') + ' → para ' + esc(r.para || '?') + ' · ' + r.fecha + ' (' + esc(lunaTxt(r.fecha)) + ')' + (r.nota ? ' · ' + esc(r.nota) : '') + '</span>' +
+      '<div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap"><button class="btn" style="width:auto;font-size:11px" data-ok="' + r.id + '">' + (r.estado === 'guardado' ? '🎁 Entregar' : '↩ Guardar') + '</button><button class="btn" style="width:auto;font-size:11px;color:#e76e8a" data-del="' + r.id + '">✕</button></div></div>';
+  }).join('') : '<p class="muted">Vacía. Planifica qué objetos, libros, semillas o herramientas pasan de generación en generación. Conecta con 🍯 Bodega y 🌱 Siembra.</p>';
+  $('tesList').querySelectorAll('[data-del]').forEach(function (b) { b.onclick = function () { if (!confirm('¿Sacar de la caja?')) return; var dd = getTesoros(); var i = dd.findIndex(function (x) { return x.id === b.getAttribute('data-del'); }); if (i >= 0) dd.splice(i, 1); save(); renderTesoros(); }; });
+  $('tesList').querySelectorAll('[data-ok]').forEach(function (b) { b.onclick = function () { var dd = getTesoros(); var r = dd.find(function (x) { return x.id === b.getAttribute('data-ok'); }); if (r) { r.estado = r.estado === 'guardado' ? 'entregado ✓' : 'guardado'; save('Guardado 🎁'); renderTesoros(); } }; });
+  var st = $('tesStats'); if (st) st.textContent = d.length + ' tesoros · ' + d.filter(function (r) { return r.estado === 'guardado'; }).length + ' por entregar';
+}
+function setupTesoros() {
+  var dlg = $('bodegaDialog'); if (!dlg) { setTimeout(setupTesoros, 800); return; }
+  addKw('btnBodega', 'tesoro legado herencia objeto semilla libro herramienta generacion');
+  var b = $('btnBodega');
+  if (b && !b.dataset.tesWrapped) { b.dataset.tesWrapped = '1'; b.addEventListener('click', function () { setTimeout(function () { try { renderTesoros(); } catch (e) {} }, 60); }); }
+  if ($('tesObjeto')) { try { renderTesoros(); } catch (e) {} return; }
+  var form = dlg.querySelector('form') || dlg;
+  var sec = document.createElement('div');
+  sec.innerHTML =
+    '<div class="menstrual-card" style="margin-top:10px;border-color:var(--gold)"><h4>🎁 La Caja de los Tesoros <span class="muted" style="font-weight:normal">· legado material y simbólico</span></h4>' +
+    '<div class="conv-row"><label style="flex:2">Objeto <input type="text" id="tesObjeto" placeholder="ej: semillas de poroto de la abuela" maxlength="60"></label><label>Tipo <select id="tesTipo">' + TES_TIPOS.map(function (t) { return '<option>' + t + '</option>'; }).join('') + '</select></label></div>' +
+    '<div class="conv-row"><label>De <input type="text" id="tesDe" placeholder="ej: abuela Rosa" maxlength="30"></label><label>Para <input type="text" id="tesPara" placeholder="ej: Millaray" maxlength="30"></label><label>Entregar (luna/fecha) <input type="text" id="tesFecha" placeholder="ej: Luna 4 o 2026-09-13" maxlength="20"></label></div>' +
+    '<label>Historia del objeto <input type="text" id="tesNota" placeholder="ej: las trajo del campo en los 80..." maxlength="100"></label>' +
+    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="tesAdd" class="btn btn-accent" style="width:auto">+ Guardar tesoro</button></div>' +
+    '<div id="tesList" class="habits-list" style="margin-top:8px;max-height:240px"></div>' +
+    '<span id="tesStats" class="muted" style="font-size:11px"></span></div>';
+  var closeRow = form.querySelector('.dlg-actions:last-child');
+  if (closeRow) form.insertBefore(sec, closeRow); else form.appendChild(sec);
+  $('tesAdd').onclick = function () {
+    var o = clean($('tesObjeto').value, 60); if (!o) return alert('Describe el tesoro');
+    var f = $('tesFecha').value.trim() || todayKey();
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(f)) f = todayKey();
+    getTesoros().push({ id: uid('tz'), objeto: o, tipo: $('tesTipo').value, de: clean($('tesDe').value, 30), para: clean($('tesPara').value, 30), fecha: f, nota: clean($('tesNota').value, 100), estado: 'guardado' });
+    save('Tesoro guardado 🎁'); $('tesObjeto').value = ''; $('tesNota').value = ''; renderTesoros();
+  };
+  try { renderTesoros(); } catch (e) {}
+}
+
+/* ============================================================
+   FASE E — Puente inicio + open source (sin grupos nuevos)
+   E1 Ritual bienvenida / Nombre lunar → sección en #talesDialog
+   E2 Taller de Co-creación → botón en Herramientas + diálogo
+   ============================================================ */
+function getNombres() { var a = store('nombresLunares', []); return Array.isArray(a) ? a : []; }
+function renderNombres() {
+  if (!$('nomList')) return;
+  var d = getNombres().slice().sort(function (a, b) { return b.fecha.localeCompare(a.fecha); });
+  $('nomList').innerHTML = d.length ? d.map(function (r) {
+    var luna = null; try { var m = mensLunaForKey(r.fecha); if (m) luna = m; } catch (e) {}
+    var energia = '';
+    try { var M = (window.pencoData || {}).MOONS; if (M && luna) energia = M[luna.luna - 1].nombre + ' · ' + M[luna.luna - 1].traduccion; } catch (e) {}
+    return '<div class="habit-item"><b>🌙 ' + esc(r.nombre) + '</b>' + (r.signif ? ' — <i>' + esc(r.signif) + '</i>' : '') + '<br>' +
+      '<span class="muted" style="font-size:11px">nació ' + r.fecha + (luna ? ' · Luna ' + luna.luna + ' día ' + luna.dia : ' · <i>luna fuera de rango</i>') + (energia ? ' · ' + esc(energia) : '') + (r.cerem ? ' · ceremonia: ' + esc(r.cerem) : '') + '</span>' +
+      '<div style="display:flex;gap:6px;margin-top:6px"><button class="btn" style="width:auto;font-size:11px" data-share="' + r.id + '">📤 Compartir</button><button class="btn" style="width:auto;font-size:11px;color:#e76e8a" data-del="' + r.id + '">✕</button></div></div>';
+  }).join('') : '<p class="muted">Vacío. Registra cada nacimiento con su luna, no solo la fecha gregoriana, y su ceremonia de bienvenida al territorio.</p>';
+  $('nomList').querySelectorAll('[data-del]').forEach(function (b) { b.onclick = function () { if (!confirm('¿Borrar registro?')) return; var dd = getNombres(); var i = dd.findIndex(function (x) { return x.id === b.getAttribute('data-del'); }); if (i >= 0) dd.splice(i, 1); save(); renderNombres(); }; });
+  $('nomList').querySelectorAll('[data-share]').forEach(function (b) { b.onclick = function () { var dd = getNombres(); var r = dd.find(function (x) { return x.id === b.getAttribute('data-share'); }); if (r) share('🌙 Nombre lunar: ' + r.nombre, 'Nació ' + r.fecha + ' (' + lunaTxt(r.fecha) + ')' + (r.signif ? '\nSignifica: ' + r.signif : '')); }; });
+}
+function setupNombreLunar() {
+  var dlg = $('talesDialog'); if (!dlg) { setTimeout(setupNombreLunar, 800); return; }
+  addKw('btnTales', 'nacimiento nombre lunar bienvenida lakutun ceremonia territorio bebe');
+  var b = $('btnTales');
+  if (b && !b.dataset.nomWrapped) { b.dataset.nomWrapped = '1'; b.addEventListener('click', function () { setTimeout(function () { try { renderNombres(); } catch (e) {} }, 60); }); }
+  if ($('nomNombre')) { try { renderNombres(); } catch (e) {} return; }
+  var form = dlg.querySelector('form') || dlg;
+  var sec = document.createElement('div');
+  sec.innerHTML =
+    '<div class="menstrual-card" style="margin-top:10px;border-color:var(--gold)"><h4>👶 Ritual de bienvenida / Nombre lunar</h4>' +
+    '<p class="muted" style="font-size:11px">El nacimiento según la <b>energía de la luna</b>. Guía de bienvenida al territorio (inspirada en el <i>lakutun</i> mapuche: presentar al bebé a la comunidad y a la tierra con respeto). Conecta con 🏔️ Territorio y 📖 Epew.</p>' +
+    '<div class="conv-row"><label style="flex:2">Nombre <input type="text" id="nomNombre" placeholder="ej: Millaray" maxlength="40"></label><label>Significado <input type="text" id="nomSignif" placeholder="ej: flor de oro" maxlength="60"></label><label>Nacimiento <input type="date" id="nomFecha"></label></div>' +
+    '<div id="nomEnergia" class="chip" style="display:block;white-space:normal"></div>' +
+    '<label>Ceremonia <select id="nomCerem"><option>presentación al territorio (río/mar)</option><option>lakutun familiar (presentar a la comunidad)</option><option>plantar su árbol</option><option>canto de bienvenida</option><option>otra</option></select></label>' +
+    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="nomAdd" class="btn btn-accent" style="width:auto">+ Registrar bienvenida</button></div>' +
+    '<div id="nomList" class="habits-list" style="margin-top:8px;max-height:220px"></div></div>';
+  var closeRow = form.querySelector('.dlg-actions:last-child');
+  if (closeRow) form.insertBefore(sec, closeRow); else form.appendChild(sec);
+  function paintEnergia() {
+    var f = $('nomFecha').value, box = $('nomEnergia');
+    if (!f) { box.innerHTML = '<span class="muted">Elige la fecha para ver su luna y energía.</span>'; return; }
+    var t = lunaTxt(f), en = '';
+    try { var m = mensLunaForKey(f); var M = (window.pencoData || {}).MOONS; if (m && M && M[m.luna - 1]) en = M[m.luna - 1].nombre + ' · ' + M[m.luna - 1].traduccion; } catch (e) {}
+    if (!t && !en) { box.innerHTML = '<span class="muted">🌙 Fecha fuera del rango del calendario (cubre ±2/4 años desde hoy): se guarda igual, sin energía lunar.</span>'; return; }
+    box.innerHTML = '🌙 ' + esc(t) + (en ? ' · <b>' + esc(en) + '</b>' : '');
+  }
+  $('nomFecha').onchange = paintEnergia;
+  paintEnergia();
+  $('nomAdd').onclick = function () {
+    var n = clean($('nomNombre').value, 40); if (!n) return alert('Escribe el nombre');
+    if (!$('nomFecha').value) return alert('Elige la fecha de nacimiento');
+    getNombres().push({ id: uid('nl'), nombre: n, signif: clean($('nomSignif').value, 60), fecha: $('nomFecha').value, cerem: $('nomCerem').value });
+    save('Bienvenida registrada 👶'); $('nomNombre').value = ''; $('nomSignif').value = ''; renderNombres();
+  };
+  try { renderNombres(); } catch (e) {}
+}
+/* ---------- E2: taller de co-creación (ELIMINADO) ---------- */
+function cleanupCocrea() {
+  try {
+    var oldBtn = $('btnCocrear');
+    if (oldBtn && oldBtn.parentNode) oldBtn.parentNode.removeChild(oldBtn);
+    var oldDlg = $('cocreaDialog');
+    if (oldDlg && oldDlg.parentNode) oldDlg.parentNode.removeChild(oldDlg);
+    if (typeof ALL_BTNS !== 'undefined' && ALL_BTNS.indexOf) {
+      var i = ALL_BTNS.indexOf('btnCocrear');
+      if (i >= 0) ALL_BTNS.splice(i, 1);
+    }
+  } catch (e) {}
+}
+
+/* ============================================================
+   CRIANZA INFANTIL — pedagogías vivas para acompañar
+   Métodos: Montessori · Waldorf · Pedagogía 3000 · Pikler ·
+   Reggio Emilia · Crianza respetuosa. Guía por edades, ambiente
+   preparado y bitácora. Todo local y privado por usuario.
+   Conecta con 🤱 1000 días, 📖 Cuentos y ✅ Hábitos.
+   ============================================================ */
+var CRIANZA_METODOS = [
+  { id: 'montessori', icon: '🧩', t: 'Montessori', aut: 'María Montessori · Italia',
+    idea: 'El niño aprende solo con las manos en un ambiente preparado. El adulto observa y no interrumpe la concentración.',
+    princ: ['Ambiente preparado: todo a su altura, orden y belleza', 'Autonomía: "ayúdame a hacerlo solo"', 'Periodos sensibles: orden, lenguaje, movimiento, sentidos', 'Material concreto antes que abstracto', 'Sin premios ni castigos: el error enseña'],
+    amb: 'Estante bajo con 4-6 actividades · silla y mesa a su medida · cama baja · utensilios reales de su tamaño · rincón de naturaleza.',
+    rol: 'Observa en silencio, presenta lento y con pocas palabras, retira lo que ya domina.',
+    act: 'Trasvasar agua/semillas · abrochar y abotonar · clasificar porotos por color · regar plantas · barrer su espacio.',
+    edad: 'Brilla 1–6 años; el ambiente ordenado sirve a todas las edades.' },
+  { id: 'waldorf', icon: '🌈', t: 'Waldorf', aut: 'Rudolf Steiner · Alemania',
+    idea: 'Educar cabeza, corazón y manos por septenios: 0-7 hacer (imitar), 7-14 sentir (imaginar), 14-21 pensar (juzgar).',
+    princ: ['Ritmo diario y semanal: respirar entre expansión y recogimiento', 'Juego libre con materiales nobles (madera, lana, tela)', 'Cuentos, epew, canciones y rondas antes que letras', 'Pantallas fuera en la primera infancia', 'Arte cada día: acuarela, cera, pan, huerta'],
+    amb: 'Canasto de tesoros naturales · telas de colores · mesa de estación según la luna · rincón de cuentos con vela.',
+    rol: 'Sé digno de imitar: haz tu oficio con calma y alegría frente a ellos.',
+    act: 'Amasar pan · caminata del tesoro (piedra, hoja, piña) · ronda con canto · mesa de estación de la luna · títeres de cuentos.',
+    edad: '0–7 imitación y ritmo; 7–14 arte e imaginación.' },
+  { id: 'p3000', icon: '🌟', t: 'Pedagogía 3000', aut: 'Noemí Paymal · Latinoamérica',
+    idea: 'Los niños de hoy traen otra conciencia: educación integral que une cuerpo, emoción, mente y espíritu, en vínculo con la Tierra.',
+    princ: ['Integral: físico + emocional + cognitivo + espiritual a la vez', 'Herramientas bio-inteligentes: respiración, mandalas, silencio, juego cooperativo', 'Multiculturalidad: mapuzugun, epew y saberes del territorio', 'Co-educación familia-escuela-comunidad', 'La naturaleza como maestra (huerta, mar, bosque)'],
+    amb: 'Círculo de inicio del día · altar/mesa viva con elementos del territorio · espacios de silencio y de movimiento.',
+    rol: 'Acompaña sin imponer: pregunta, propone y aprende con ellos.',
+    act: 'Minuto de silencio mirando el mar · mandala con semillas · saludo al sol/mapu · mingas familiares · diario de gratitud.',
+    edad: 'Todas; ideal para mezclar con las demás pedagogías.' },
+  { id: 'pikler', icon: '🐣', t: 'Pikler', aut: 'Emmi Pikler · Hungría',
+    idea: 'Movimiento libre y cuidado como vínculo: el bebé llega solo a cada postura si nadie lo fuerza ni lo apura.',
+    princ: ['No sentar, parar ni caminar al bebé: cada hito a su tiempo', 'Juego autónomo en suelo firme desde el inicio', 'Cuidados lentos (muda, baño, comida) avisando cada paso', 'Vínculo estable con pocos cuidadores', 'Ropa cómoda que deje moverse'],
+    amb: 'Suelo firme y tibio · pocos objetos a su alcance · sin andadores ni saltarinas.',
+    rol: 'En los cuidados ve despacio y conversando; en el juego, presente pero sin dirigir.',
+    act: 'Tiempo boca abajo libre · canasto del tesoro (objetos seguros variados) · muda cantada y avisada.',
+    edad: 'Esencial 0–2 años; el respeto al ritmo sirve siempre.' },
+  { id: 'reggio', icon: '🎨', t: 'Reggio Emilia', aut: 'Loris Malaguzzi · Italia',
+    idea: 'El niño tiene cien lenguajes: dibuja, construye, canta y pregunta. El adulto documenta y proyecta con ellos.',
+    princ: ['Niño protagonista e investigador', 'Los cien lenguajes: arte, barro, luz, palabra, cuerpo', 'Documentar: fotos y frases para volver a mirar', 'Ambiente tercer maestro: bello, ordenado, con luz natural', 'Proyectos que nacen de sus preguntas'],
+    amb: 'Atelier con barro, papeles y lápices · mesa de luz o ventana · muro para exponer sus obras.',
+    rol: 'Escucha de verdad, anota sus frases y devuelve preguntas: "¿cómo lo descubriste?".',
+    act: 'Proyecto de una pregunta ("¿a dónde va la luna?") · dibujar el mismo árbol cada luna · barro del humedal · exposición familiar.',
+    edad: 'Brilla 2–8 años; documentar sirve a todas.' },
+  { id: 'respetuosa', icon: '🤍', t: 'Crianza respetuosa + Disciplina positiva', aut: 'J. Bowlby · A. Adler / J. Nelsen',
+    idea: 'Límites firmes con empatía: el niño coopera cuando se siente vinculado. Sin gritos, sin golpes, sin humillación.',
+    princ: ['Vínculo primero, corrección después', 'Límites pocos, claros y sostenidos', 'Consecuencias lógicas, no castigos', 'Rutinas que anticipan (tabla visual)', 'Reparar: pedir perdón y arreglar lo roto'],
+    amb: 'Tabla visual de rutinas · rincón de calma (no de castigo) · acuerdos familiares visibles.',
+    rol: 'Calma tu tormenta primero; nombra su emoción ("veo rabia") y ofrece opciones.',
+    act: 'Rincón de calma con cojín y cuentos · reuniones familiares cortas · "¿qué necesitas?" antes del reto · reparar juntos.',
+    edad: 'Todas; clave en rabietas 1–5 años y límites 6–12.' }
+];
+var CRIANZA_ETAPAS = [
+  { e: '0–12 meses', n: '🌱 Nido', nec: 'Brazo, pecho, sueño y calma. Vínculo seguro ante todo.',
+    ofr: 'Pikler + pecho a demanda · porteo · cantos y epew · paseos diarios · misa/mesa familiar.',
+    evi: 'Pantallas · andador · apurar hitos · sobre-estimular con juguetes sonoros.',
+    luna: 'Un cuento por luna en 📖 Cuentos; registra hitos en 🤱 1000 días.' },
+  { e: '1–3 años', n: '🐾 Explorador', nec: 'Moverse, tocarlo todo y decir ¡no! para ser alguien.',
+    ofr: 'Montessori (trasvasar, vestirse solo) · juego libre en tierra y agua · rutinas visuales.',
+    evi: 'Castigos y gritos · pantallas como niñera · demasiadas opciones a la vez.',
+    luna: 'Rincón de calma + mesa de estación Waldorf según la luna.' },
+  { e: '3–6 años', n: '🔥 Creador', nec: 'Jugar, imaginar y pertenecer. Pregunta "¿por qué?" sin fin.',
+    ofr: 'Waldorf (cuentos, rondas, pan) · Reggio (proyectos, barro) · huerta propia · responsabilidades reales.',
+    evi: 'Alfabetizar a la fuerza · sobre-agenda de talleres · comparar con otros niños.',
+    luna: 'Proyecto de una pregunta por luna; dibuja el árbol de la luna.' },
+  { e: '6–9 años', n: '🌊 Navegante', nec: 'Amigos, reglas justas y sentirse capaz.',
+    ofr: 'Pedagogía 3000 (círculos, mingas) · oficios (cocinar, tejer, sembrar) · deporte y mar con cuidado.',
+    evi: 'Humillar por notas · quitar el juego como castigo · pantallas sin límite.',
+    luna: 'Bitácora de gratitud + un oficio nuevo por luna.' },
+  { e: '9–12 años', n: '🌙 Pensador', nec: 'Opinar, decidir y encontrar su lugar en el grupo.',
+    ofr: 'Proyectos con propósito (huerto, trueque, radio) · acuerdos familiares · mapuzugun e historia del territorio.',
+    evi: 'Control total o abandono total · exponerlo en redes · decidir todo por él.',
+    luna: 'Reunión familiar cada luna: logros, roces y acuerdos.' }
+];
+var CRIANZA_AMBIENTE = [
+  { k: 'a1', t: 'Todo a su altura', d: 'Percha, vaso, estante y cama que alcance sin pedir ayuda.' },
+  { k: 'a2', t: 'Pocas cosas, ordenadas', d: '4-6 actividades visibles; el resto guardado y rotando por luna.' },
+  { k: 'a3', t: 'Materiales nobles', d: 'Madera, tela, barro, semillas: nada que haga todo solo (pilas).' },
+  { k: 'a4', t: 'Rincón de calma', d: 'Cojín, mantas y 2 cuentos. Nunca como castigo.' },
+  { k: 'a5', t: 'Mesa de la luna', d: 'Piedra, hoja o dibujo de la luna actual: marca el ritmo del mes.' },
+  { k: 'a6', t: 'Rutinas visibles', d: 'Tabla con dibujos: despertar, comida, juego, cuento, dormir.' },
+  { k: 'a7', t: 'Naturaleza diaria', d: 'Tierra, agua o caminata todos los días, con lluvia también.' },
+  { k: 'a8', t: 'Cero pantallas al comer y dormir', d: 'Acuerdo familiar: mesa y pieza libres de pantalla.' }
+];
+var CRIANZA_AREAS = ['Juego y aprendizaje', 'Límites y emociones', 'Salud y sueño', 'Vínculo y familia', 'Escuela / jardín', 'Otro'];
+function getCrianza() { var a = store('crianzaLog', []); return Array.isArray(a) ? a : []; }
+function switchCriaTab(t) {
+  [['Met', 'criaMetPanel'], ['Eda', 'criaEdaPanel'], ['Amb', 'criaAmbPanel'], ['Bit', 'criaBitPanel']].forEach(function (x) {
+    var p = $(x[1]); if (p) p.classList.toggle('hidden', x[0] !== t);
+    var b = $('tabCria' + x[0]); if (b) b.classList.toggle('btn-accent', x[0] === t);
+  });
+}
+function renderCriaMet(f) {
+  var box = $('criaMetList'); if (!box) return;
+  var q = ((f === undefined ? (($('criaQ') || {}).value || '') : f) + '').toLowerCase();
+  var list = CRIANZA_METODOS.filter(function (m) { return !q || (m.t + ' ' + m.aut + ' ' + m.idea + ' ' + m.princ.join(' ')).toLowerCase().indexOf(q) >= 0; });
+  box.innerHTML = list.length ? list.map(function (m, i) {
+    return '<details class="menstrual-card" style="margin-top:8px"' + (i === 0 && q ? ' open' : '') + '><summary style="cursor:pointer;font-size:13px"><b>' + m.icon + ' ' + esc(m.t) + '</b> <span class="muted" style="font-size:11px">· ' + esc(m.aut) + '</span></summary>' +
+      '<p style="font-size:12px;margin:8px 0"><b>Idea:</b> ' + esc(m.idea) + '</p>' +
+      '<p style="font-size:12px;margin:4px 0"><b>🧭 Principios</b></p><ul style="font-size:12px;margin:4px 0 4px 18px;line-height:1.6">' + m.princ.map(function (p) { return '<li>' + esc(p) + '</li>'; }).join('') + '</ul>' +
+      '<p style="font-size:12px"><b>🏠 Ambiente:</b> ' + esc(m.amb) + '</p>' +
+      '<p style="font-size:12px"><b>🧑‍🌾 Tu rol:</b> ' + esc(m.rol) + '</p>' +
+      '<p style="font-size:12px"><b>🎲 Prueba hoy:</b> ' + esc(m.act) + '</p>' +
+      '<p class="muted" style="font-size:11px"><b>Edades:</b> ' + esc(m.edad) + '</p></details>';
+  }).join('') : '<p class="muted">Sin resultados. Prueba con "juego", "límite" o "naturaleza".</p>';
+}
+function renderCriaEda() {
+  var box = $('criaEdaList'); if (!box) return;
+  box.innerHTML = CRIANZA_ETAPAS.map(function (e) {
+    return '<div class="si-card"><h4>' + esc(e.n) + ' · ' + esc(e.e) + '</h4><p><b>Necesita:</b> ' + esc(e.nec) + '<br><b>Ofrece:</b> ' + esc(e.ofr) + '<br><b>Evita:</b> ' + esc(e.evi) + '<br><span class="muted">🌙 ' + esc(e.luna) + '</span></p></div>';
+  }).join('');
+}
+function renderCriaAmb() {
+  var box = $('criaAmbBox'); if (!box) return;
+  var done = store('crianzaAmb', {});
+  var n = CRIANZA_AMBIENTE.filter(function (x) { return done[x.k]; }).length;
+  box.innerHTML = '<p class="muted" style="font-size:11px">✅ Ambiente preparado: <b>' + n + ' / ' + CRIANZA_AMBIENTE.length + '</b>. Avanza a tu ritmo, una por luna si quieres.</p>' +
+    '<div class="dio-compact">' + CRIANZA_AMBIENTE.map(function (x) {
+      var c = done[x.k] ? ' done' : '';
+      return '<label class="dio-item' + c + '"><input type="checkbox" data-criaamb="' + x.k + '"' + (done[x.k] ? ' checked' : '') + '><span class="dio-txt"><b>' + esc(x.t) + '</b><small>' + esc(x.d) + '</small></span><span class="dio-check">' + (done[x.k] ? '✓ listo' : 'marcar') + '</span></label>';
+    }).join('') + '</div>';
+  box.querySelectorAll('[data-criaamb]').forEach(function (c) {
+    c.onchange = function () { var d = store('crianzaAmb', {}); d[c.getAttribute('data-criaamb')] = c.checked; save(c.checked ? 'Ambiente avanza 🏠' : 'Guardado'); renderCriaAmb(); };
+  });
+}
+function renderCrianza() {
+  renderCriaMet(); renderCriaEda(); renderCriaAmb();
+  var box = $('criaList'); if (!box) return;
+  var d = getCrianza().slice().sort(function (a, b) { return b.fecha.localeCompare(a.fecha); });
+  box.innerHTML = d.length ? d.slice(0, 40).map(function (r) {
+    return '<div class="habit-item"><b>' + esc(r.area) + '</b> <span class="chip" style="font-size:10px">' + esc(r.metodo) + '</span><br>' +
+      '<span class="muted" style="font-size:11px">📅 ' + r.fecha + (r.hijo ? ' · 👶 ' + esc(r.hijo) : '') + '</span><p style="font-size:12px">' + esc(r.texto) + '</p>' +
+      '<div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn" style="width:auto;font-size:11px" data-share="' + r.id + '">📤 Compartir</button><button class="btn" style="width:auto;font-size:11px;color:#e76e8a" data-del="' + r.id + '">✕</button></div></div>';
+  }).join('') : '<p class="muted">Sin notas aún. Anota qué probaste, cómo respondió y qué ajustarás: criar también se aprende.</p>';
+  box.querySelectorAll('[data-del]').forEach(function (b) { b.onclick = function () { if (!confirm('¿Borrar nota?')) return; var dd = getCrianza(); var i = dd.findIndex(function (x) { return x.id === b.getAttribute('data-del'); }); if (i >= 0) dd.splice(i, 1); save(); renderCrianza(); }; });
+  box.querySelectorAll('[data-share]').forEach(function (b) { b.onclick = function () { var dd = getCrianza(); var r = dd.find(function (x) { return x.id === b.getAttribute('data-share'); }); if (!r) return; share('🧒 Crianza: ' + r.area, '📅 ' + r.fecha + ' · ' + r.metodo + '\n' + r.texto); }; });
+  var st = $('criaStats'); if (st) st.textContent = d.length + ' notas de crianza';
+}
+function setupCrianza() {
+  addKw('btnCrianza', 'montessori waldorf pedagogia 3000 pikler reggio emilia disciplina positiva limites rabietas juego autonomia etapas ambiente preparado');
+  makeDialog('crianzaDialog', '🧒 Crianza infantil — pedagogías vivas',
+    'Seis caminos para acompañar a tus niños y niñas: <b>Montessori, Waldorf, Pedagogía 3000, Pikler, Reggio Emilia y Crianza respetuosa</b>. Mézclalos a tu manera: ningún método puro cría solo. Todo registro queda <b>privado y local</b>.',
+    '<div class="timer-tabs" style="flex-wrap:wrap;margin-bottom:10px">' +
+    '<button type="button" id="tabCriaMet" class="btn btn-accent" style="width:auto">🌱 Métodos</button>' +
+    '<button type="button" id="tabCriaEda" class="btn" style="width:auto">🎂 Por edad</button>' +
+    '<button type="button" id="tabCriaAmb" class="btn" style="width:auto">🏠 Ambiente</button>' +
+    '<button type="button" id="tabCriaBit" class="btn" style="width:auto">📓 Bitácora</button></div>' +
+    '<div id="criaMetPanel"><div class="conv-row"><label style="flex:2">🔍 Buscar en métodos <input type="text" id="criaQ" placeholder="ej: juego, límites, pantallas..." autocomplete="off"></label></div><div id="criaMetList"></div></div>' +
+    '<div id="criaEdaPanel" class="hidden"><p class="muted" style="font-size:11px">Cada etapa trae lo que necesita, lo que puedes ofrecer, lo que conviene evitar y un ritmo lunar.</p><div id="criaEdaList" style="display:flex;flex-direction:column;gap:8px"></div></div>' +
+    '<div id="criaAmbPanel" class="hidden"><div id="criaAmbBox"></div></div>' +
+    '<div id="criaBitPanel" class="hidden"><div class="menstrual-card" style="border-color:var(--gold)"><h4>➕ Nota de crianza (privada)</h4>' +
+    '<div class="conv-row"><label>Fecha <input type="date" id="criaFecha"></label><label style="flex:2">Área <select id="criaArea">' + CRIANZA_AREAS.map(function (a) { return '<option>' + a + '</option>'; }).join('') + '</select></label></div>' +
+    '<div class="conv-row"><label>Método que probé <select id="criaMetodo"><option>Ninguno aún</option><option>Montessori</option><option>Waldorf</option><option>Pedagogía 3000</option><option>Pikler</option><option>Reggio Emilia</option><option>Crianza respetuosa</option><option>Mezcla propia</option></select></label><label style="flex:2">Niño/a (opcional) <input type="text" id="criaHijo" placeholder="ej: León" maxlength="20"></label></div>' +
+    '<label>Qué pasó / qué probé <textarea id="criaTexto" rows="2" placeholder="ej: probé rincón de calma en la rabieta, funcionó a los 5 min..." maxlength="400"></textarea></label>' +
+    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="criaAdd" class="btn btn-accent" style="width:auto">+ Guardar nota</button></div></div>' +
+    '<div id="criaList" class="habits-list" style="margin-top:10px;max-height:260px"></div>' +
+    '<div class="dlg-actions" style="justify-content:space-between;margin-top:8px"><span id="criaStats" class="muted" style="font-size:11px"></span><button type="button" id="criaShareAll" class="btn" style="width:auto">📤 Compartir resumen</button></div></div>' +
+    '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px"><button type="button" id="criaGoCuentos" class="btn" style="width:auto">📖 Cuentos</button>' +
+    '<button type="button" id="criaGoMil" class="btn" style="width:auto">🤱 1000 días</button>' +
+    '<button type="button" id="criaGoHabitos" class="btn" style="width:auto">✅ Hábitos</button></div>');
+  var b = $('btnCrianza');
+  if (b) b.onclick = function () { if (!$('criaFecha').value) $('criaFecha').value = todayKey(); switchCriaTab('Met'); renderCrianza(); openDlg('crianzaDialog'); };
+  if ($('tabCriaMet')) $('tabCriaMet').onclick = function () { switchCriaTab('Met'); };
+  if ($('tabCriaEda')) $('tabCriaEda').onclick = function () { switchCriaTab('Eda'); renderCriaEda(); };
+  if ($('tabCriaAmb')) $('tabCriaAmb').onclick = function () { switchCriaTab('Amb'); renderCriaAmb(); };
+  if ($('tabCriaBit')) $('tabCriaBit').onclick = function () { switchCriaTab('Bit'); };
+  if ($('criaQ')) $('criaQ').oninput = function () { renderCriaMet($('criaQ').value); };
+  if ($('criaAdd')) $('criaAdd').onclick = function () {
+    var t = clean($('criaTexto').value, 400); if (!t) return alert('Escribe la nota');
+    getCrianza().push({ id: uid('cr'), fecha: $('criaFecha').value || todayKey(), area: $('criaArea').value, metodo: $('criaMetodo').value, hijo: clean($('criaHijo').value, 20), texto: t });
+    save('Nota guardada 🧒'); $('criaTexto').value = ''; $('criaHijo').value = ''; renderCrianza();
+  };
+  if ($('criaShareAll')) $('criaShareAll').onclick = function () { var d = getCrianza(); if (!d.length) return alert('Sin notas'); share('🧒 Bitácora de crianza (resumen)', d.map(function (r) { return '· ' + r.fecha + ' — ' + r.area + ' [' + r.metodo + ']\n' + r.texto; }).join('\n\n')); };
+  if ($('criaGoCuentos')) $('criaGoCuentos').onclick = function () { try { var x = $('btnTales'); if (x) x.click(); } catch (e) {} };
+  if ($('criaGoMil')) $('criaGoMil').onclick = function () { try { var x = $('btnFerti'); if (x) x.click(); setTimeout(function () { try { switchFerTab('Mil'); } catch (e) {} }, 150); } catch (e2) {} };
+  if ($('criaGoHabitos')) $('criaGoHabitos').onclick = function () { try { var x = $('btnHabits'); if (x) x.click(); } catch (e) {} };
+}
+
 /* ---------- init ---------- */
 var _initTries = 0;
 /* ---------- Clima y Mareas en ventana emergente (dialog) como el resto ---------- */
@@ -1680,6 +2922,21 @@ function init() {
   try { setupRutina(); } catch (e) {}
   try { setupFerti(); } catch (e) {}
   try { setupDerechos(); } catch (e) {}
+  try { setupMilDias(); } catch (e) {}
+  try { setupDuelo(); } catch (e) {}
+  try { setupSuenos(); } catch (e) {}
+  try { setupMedita(); } catch (e) {}
+  try { setupTrans(); } catch (e) {}
+  try { setupVoz(); } catch (e) {}
+  try { setupArbol(); } catch (e) {}
+  try { setupMapa(); } catch (e) {}
+  try { setupVoluntades(); } catch (e) {}
+  try { setupSaberesCirculos(); } catch (e) {}
+  try { setupHogar(); } catch (e) {}
+  try { setupTesoros(); } catch (e) {}
+  try { setupNombreLunar(); } catch (e) {}
+  try { setupCrianza(); } catch (e) {}
+  try { cleanupCocrea(); } catch (e) {}
   try { if (typeof updateGroupCounts === 'function') updateGroupCounts(); } catch (e) {}
 }
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function () { setTimeout(init, 800); });
