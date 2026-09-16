@@ -191,7 +191,7 @@ var KIMUN = [
 
 /* ---------- inyeccion de botones en grupos existentes ---------- */
 var NUEVOS_BTNS = [
-  { id: 'btnAgua', txt: '💧 Agua · Lluvia y Estanque', kw: 'agua lluvia estanque pozo milimetros reserva litros sequia corte', grupo: 'territorio' },
+  { id: 'btnAgua', txt: '💧 Agua', kw: 'agua lluvia estanque pozo milimetros reserva litros sequia corte rio rios medicion nivel ph', grupo: 'territorio' },
   { id: 'btnBodega', txt: '🍯 La Bodega', kw: 'bodega conservas fermentos mermelada chucrut kombucha deshidratado frasco caducidad maduracion lunar', grupo: 'vida' },
   { id: 'btnNudos', txt: '🪢 Nudos y Redes', kw: 'nudos amarras redes pesca ballestrinque as de guia pescador kayak camping entutorado tejer reparar', grupo: 'herramientas' },
   { id: 'btnTaller', txt: '🔧 Bitácora Taller', kw: 'taller reparacion mantenimiento herramienta bote bicicleta aceite afilado bomba alerta luna', grupo: 'herramientas' },
@@ -265,9 +265,16 @@ function injectButtons() {
     btn.setAttribute('data-keywords', b.kw);
     var ref = g.querySelector('#btnDonate');
     if (b.grupo === 'herramientas' && ref) g.insertBefore(btn, ref);
+    else if (b.id === 'btnAgua') {
+      var refCompost = g.querySelector('#btnCompost');
+      if (refCompost && refCompost.nextSibling) g.insertBefore(btn, refCompost.nextSibling);
+      else if (refCompost) g.appendChild(btn);
+      else g.appendChild(btn);
+    }
     else g.appendChild(btn);
     added++;
   });
+  try { ordenarTerritorio(); } catch (e) {}
   try {
     if (typeof ALL_BTNS !== 'undefined' && ALL_BTNS.push) {
       NUEVOS_BTNS.forEach(function (b) { if (ALL_BTNS.indexOf(b.id) < 0) ALL_BTNS.push(b.id); });
@@ -276,6 +283,21 @@ function injectButtons() {
   try { if (typeof updateGroupCounts === 'function') updateGroupCounts(); } catch (e) {}
   try { if (typeof applyVisibility === 'function') applyVisibility(); } catch (e) {}
   return added;
+}
+
+/* ---------- orden Territorio: Clima, Mareas, Astro, Intermareal, Pesca, Aves, Siembra, Bosque, Compost, Agua, Penco, Circadiano, Hora Dorada, Ekadashi ---------- */
+var ORDEN_TERRITORIO = ['btnWeather','btnTides','btnAstro','btnIntermareal','btnFishing','btnBirds','btnSiembra','btnBosque','btnCompost','btnAgua','btnComuna','btnCircadian','btnGolden','btnEkadashi'];
+function ordenarTerritorio() {
+  var g = document.querySelector('.action-group[data-group="territorio"] .group-btns');
+  if (!g) return;
+  // Si btnAgua aun no existe, igual ordena el resto; cuando se inyecte se vuelve a ordenar
+  var byId = {};
+  Array.prototype.forEach.call(g.querySelectorAll('button[id]'), function (b) { byId[b.id] = b; });
+  ORDEN_TERRITORIO.forEach(function (id) {
+    var b = byId[id] || $(id);
+    if (b && b.parentNode !== g) { try { g.appendChild(b); } catch (e) {} byId[id] = b; }
+    else if (b) { try { g.appendChild(b); } catch (e) {} }
+  });
 }
 
 /* ---------- fabrica de dialogs ---------- */
@@ -764,6 +786,18 @@ function setupTrafFusion() {
    ============================================================ */
 function getAguaCfg() { var o = store('aguaCfg', { cap: 1000, nivel: 500, consumo: 60 }); if (typeof o !== 'object') return { cap: 1000, nivel: 500, consumo: 60 }; return o; }
 function getLluvia() { var a = store('lluviaLog', []); return Array.isArray(a) ? a : []; }
+function getRios() { var a = store('riosLog', []); return Array.isArray(a) ? a : []; }
+function renderRios() {
+  var box = $('riosList'); if (!box) return;
+  var data = getRios().slice().sort(function (a, b) { return b.fecha.localeCompare(a.fecha); }).slice(0, 40);
+  if (!data.length) { box.innerHTML = '<p class="muted">Sin mediciones. Registra tu primera medición del río.</p>'; return; }
+  box.innerHTML = data.map(function (r) {
+    return '<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center"><span>🌊 <b>' + esc(r.rio) + '</b> · ' + r.fecha +
+      ' · nivel ' + esc(r.nivel) + ' cm' + (r.ph ? ' · pH ' + esc(r.ph) : '') + (r.nota ? ' <span class="muted">· ' + esc(r.nota) + '</span>' : '') +
+      '</span><button class="btn" style="width:auto;font-size:11px;color:#e76e8a" data-del="' + r.id + '">✕</button></div>';
+  }).join('');
+  box.querySelectorAll('[data-del]').forEach(function (b) { b.onclick = function () { var d = getRios(); var i = d.findIndex(function (x) { return x.id === b.getAttribute('data-del'); }); if (i >= 0) d.splice(i, 1); save(); renderRios(); }; });
+}
 function renderAgua() {
   var cfg = getAguaCfg(), data = getLluvia();
   var mes = data.filter(function (r) { return r.fecha.slice(0, 7) === todayKey().slice(0, 7); }).reduce(function (a, r) { return a + (parseFloat(r.mm) || 0); }, 0);
@@ -779,9 +813,10 @@ function renderAgua() {
     return '<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center"><span>🌧️ <b>' + r.mm + ' mm</b> · ' + r.fecha + (r.nota ? ' <span class="muted">· ' + esc(r.nota) + '</span>' : '') + '</span><button class="btn" style="width:auto;font-size:11px;color:#e76e8a" data-del="' + r.id + '">✕</button></div>';
   }).join('');
   box.querySelectorAll('[data-del]').forEach(function (b) { b.onclick = function () { var d = getLluvia(); var i = d.findIndex(function (x) { return x.id === b.getAttribute('data-del'); }); if (i >= 0) d.splice(i, 1); save(); renderAgua(); }; });
+  try { renderRios(); } catch (e) {} // rios
 }
 function setupAgua() {
-  makeDialog('aguaDialog', '💧 Gestión del Agua · lluvia y estanques',
+  makeDialog('aguaDialog', '💧 Agua',
     'Para Penco y zonas rurales con cortes o agua de pozo/lluvia. Registra milímetros y estima cuántos litros quedan.',
     '<div id="aguaResumen" class="menstrual-card" style="border-color:var(--gold)"></div>' +
     '<div class="menstrual-card" style="margin-top:10px"><h4>⚙️ Mi estanque</h4><div class="conv-row"><label>Capacidad (L) <input type="number" id="aguaCap" min="0" step="50"></label><label>Nivel actual (L) <input type="number" id="aguaNivel" min="0" step="10"></label><label>Consumo día (L) <input type="number" id="aguaCons" min="0" step="5"></label></div>' +
@@ -790,8 +825,21 @@ function setupAgua() {
     '<div class="menstrual-card" style="margin-top:10px"><h4>🌧️ Registrar lluvia</h4><div class="conv-row"><label>Fecha <input type="date" id="lluFecha"></label><label>mm <input type="number" id="lluMm" min="0" step="0.5" placeholder="ej: 12.5"></label><label>m² techo (opcional) <input type="number" id="lluTecho" min="0" step="1" placeholder="40"></label></div>' +
     '<label>Nota <input type="text" id="lluNota" placeholder="temporal sur, granizo..." maxlength="60"></label>' +
     '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="lluAdd" class="btn btn-accent" style="width:auto">+ Guardar lluvia</button></div>' +
-    '<div id="lluviaList" class="habits-list" style="margin-top:10px;max-height:220px"></div></div>');
-  var b = $('btnAgua'); if (b) b.onclick = function () { var c = getAguaCfg(); $('aguaCap').value = c.cap; $('aguaNivel').value = c.nivel; $('aguaCons').value = c.consumo; if (!$('lluFecha').value) $('lluFecha').value = todayKey(); renderAgua(); openDlg('aguaDialog'); };
+    '<div id="lluviaList" class="habits-list" style="margin-top:10px;max-height:220px"></div></div>' +
+    '<div class="menstrual-card" style="margin-top:10px"><h4>🌊 Bitácora de ríos</h4><div class="conv-row"><label>Río <select id="rioNombre"><option>Estero Penco</option><option>Río Lirquén</option><option>Río Andalién</option><option>Otro</option></select></label><label>Fecha <input type="date" id="rioFecha"></label><label>Nivel (cm) <input type="number" id="rioNivel" min="0" step="1" placeholder="ej: 45"></label><label>pH (opcional) <input type="number" id="rioPh" min="0" max="14" step="0.1" placeholder="7.0"></label></div>' +
+    '<label>Nota <input type="text" id="rioNota" placeholder="ej: agua clara, subió tras lluvia..." maxlength="60"></label>' +
+    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="rioAdd" class="btn btn-accent" style="width:auto">+ Guardar medición</button></div>' +
+    '<div id="riosList" class="habits-list" style="margin-top:10px;max-height:220px"></div></div>');
+  var b = $('btnAgua'); if (b) { try { b.textContent = '💧 Agua'; } catch (e) {} b.onclick = function () { var c = getAguaCfg(); $('aguaCap').value = c.cap; $('aguaNivel').value = c.nivel; $('aguaCons').value = c.consumo; if (!$('lluFecha').value) $('lluFecha').value = todayKey(); if ($('rioFecha') && !$('rioFecha').value) $('rioFecha').value = todayKey(); renderAgua(); try { renderRios(); } catch (e) {} openDlg('aguaDialog'); }; }
+  if ($('rioAdd') && !$('rioAdd').dataset.wired) { $('rioAdd').dataset.wired = '1'; $('rioAdd').onclick = function () {
+    var rio = $('rioNombre') ? $('rioNombre').value : 'Río';
+    var f = ($('rioFecha') && $('rioFecha').value) || todayKey();
+    var niv = $('rioNivel') ? String($('rioNivel').value || '').trim() : '';
+    if (!niv) return alert('Escribe el nivel en cm');
+    var ph = $('rioPh') ? String($('rioPh').value || '').trim() : '';
+    getRios().push({ id: uid('rio'), rio: rio, fecha: f, nivel: niv, ph: ph, nota: clean(($('rioNota') || { value: '' }).value, 60) });
+    save('Medición guardada 🌊'); if ($('rioNivel')) $('rioNivel').value = ''; if ($('rioPh')) $('rioPh').value = ''; if ($('rioNota')) $('rioNota').value = ''; renderRios();
+  }; }
   $('aguaSave').onclick = function () { var c = getAguaCfg(); c.cap = +$('aguaCap').value || 0; c.nivel = +$('aguaNivel').value || 0; c.consumo = +$('aguaCons').value || 0; save(); renderAgua(); };
   $('lluAdd').onclick = function () {
     var f = $('lluFecha').value || todayKey(), mm = parseFloat($('lluMm').value);
@@ -1528,10 +1576,95 @@ function setupDerechos() {
 
 /* ---------- init ---------- */
 var _initTries = 0;
+/* ---------- Clima y Mareas en ventana emergente (dialog) como el resto ---------- */
+function setupClimaMareasDialog() {
+  function ensureStyle() {
+    if ($('climaMareasDlgStyle')) return;
+    var st = document.createElement('style');
+    st.id = 'climaMareasDlgStyle';
+    st.textContent = '#weatherDialog,#tidesDialog{width:680px;max-width:96vw;max-height:88vh;overflow-y:auto;}' +
+      '#weatherDialog #weatherPanel,#tidesDialog #tidesPanel{display:block!important;margin-top:0;max-width:none;background:transparent;border:none;border-radius:0;padding:0;}' +
+      '#weatherDialog #weatherPanel.hidden,#tidesDialog #tidesPanel.hidden{display:block!important;}';
+    document.head.appendChild(st);
+  }
+  function ensureDialog(id, title) {
+    var d = $(id);
+    if (d) return d;
+    d = document.createElement('dialog');
+    d.id = id;
+    d.innerHTML = '<form method="dialog">' +
+      '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
+      '<h3 style="margin:0;color:var(--accent)">' + title + '</h3>' +
+      '<button type="button" class="btn btn-icon" data-close="' + id + '" title="Cerrar">✕</button></div>' +
+      '<div data-body="' + id + '"></div>' +
+      '<div class="dlg-actions" style="margin-top:10px"><button type="button" class="btn" data-close="' + id + '">Cerrar</button></div>' +
+      '</form>';
+    document.body.appendChild(d);
+    d.querySelectorAll('[data-close]').forEach(function (b) {
+      b.onclick = function () { try { d.close(); } catch (e) {} };
+    });
+    return d;
+  }
+  function openDlg(id) {
+    var d = $(id);
+    if (!d) return;
+    try { if (!d.open) d.showModal(); } catch (e) { try { d.showModal(); } catch (e2) {} }
+  }
+  ensureStyle();
+  var wDlg = ensureDialog('weatherDialog', '🌤️ Clima — Penco');
+  var tDlg = ensureDialog('tidesDialog', '🌊 Mareas — Penco');
+  // Mover los paneles inline dentro de los dialogs (una sola vez)
+  try {
+    var wp = $('weatherPanel');
+    var wb = wDlg.querySelector('[data-body="weatherDialog"]');
+    if (wp && wb && wp.parentNode !== wb) wb.appendChild(wp);
+  } catch (e) {}
+  try {
+    var tp = $('tidesPanel');
+    var tb = tDlg.querySelector('[data-body="tidesDialog"]');
+    if (tp && tb && tp.parentNode !== tb) tb.appendChild(tp);
+  } catch (e) {}
+  try { addKw('btnWeather', 'clima dialogo ventana pronostico'); } catch (e) {}
+  try { addKw('btnTides', 'mareas dialogo ventana shoa'); } catch (e) {}
+  var bW = $('btnWeather');
+  if (bW && !bW.dataset.dlgWrapped) {
+    bW.dataset.dlgWrapped = '1';
+    bW.onclick = function () {
+      try {
+        var wp2 = $('weatherPanel'); if (wp2) wp2.classList.remove('hidden');
+        var tp2 = $('tidesPanel'); if (tp2) tp2.classList.add('hidden');
+      } catch (e) {}
+      openDlg('weatherDialog');
+      try {
+        if (typeof fetchWeather === 'function') fetchWeather();
+        else if (typeof renderWeatherPanel === 'function') renderWeatherPanel();
+      } catch (e) {}
+      try {
+        var wp3 = $('weatherPanel'); if (wp3) wp3.classList.remove('hidden');
+      } catch (e) {}
+    };
+  }
+  var bT = $('btnTides');
+  if (bT && !bT.dataset.dlgWrapped) {
+    bT.dataset.dlgWrapped = '1';
+    bT.onclick = function () {
+      try {
+        var tp2 = $('tidesPanel'); if (tp2) tp2.classList.remove('hidden');
+      } catch (e) {}
+      openDlg('tidesDialog');
+      try { if (typeof renderTidesPanel3 === 'function') renderTidesPanel3(); } catch (e) {}
+      try {
+        var tp3 = $('tidesPanel'); if (tp3) tp3.classList.remove('hidden');
+      } catch (e) {}
+    };
+  }
+}
+
 function init() {
   _initTries++;
   if (!document.querySelector('.action-group[data-group]')) { if (_initTries < 40) setTimeout(init, 500); return; }
   try { injectButtons(); } catch (e) {}
+  try { setupClimaMareasDialog(); } catch (e) {}
   try { setupForraje(); } catch (e) {}
   try { setupBodega(); } catch (e) {}
   try { setupTrafFusion(); } catch (e) {}

@@ -609,13 +609,13 @@ body[data-theme="medianoche"] { --bg:#050508; --bg2:#0a0a10; --panel:#141418; --
 .shop-name { flex: 1; font-size: 13px; }
 /* Diógenes — checklist compacto con scroll */
 .dio-compact { display: flex; flex-direction: column; gap: 4px; max-height: 220px; overflow-y: auto; padding-right: 2px; }
-.dio-item { display: flex; align-items: center; gap: 8px; padding: 4px 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); cursor: pointer; }
+.dio-item { display: flex; align-items: flex-start; gap: 8px; padding: 6px 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); cursor: pointer; }
 .dio-item.done { opacity: 0.6; }
 .dio-item.done .dio-txt b { text-decoration: line-through; }
-.dio-item input { width: 14px; height: 14px; flex: 0 0 auto; margin: 0; accent-color: var(--gold); }
+.dio-item input { width: 14px; height: 14px; flex: 0 0 auto; margin: 2px 0 0; accent-color: var(--gold); }
 .dio-txt { flex: 1; line-height: 1.25; min-width: 0; }
 .dio-txt b { font-size: 12px; font-weight: 600; }
-.dio-txt small { display: block; color: var(--muted); font-size: 10.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dio-txt small { display: block; color: var(--muted); font-size: 11px; line-height: 1.5; white-space: normal; overflow: visible; }
 .dio-check { font-size: 10px; color: var(--muted); border: 1px solid var(--line); border-radius: 20px; padding: 1px 7px; flex: 0 0 auto; }
 .dio-item.done .dio-check { color: #a9d18e; border-color: #a9d18e55; }
 /* Astro — próximos ordenados + mes lunar */

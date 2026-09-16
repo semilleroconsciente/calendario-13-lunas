@@ -16,6 +16,8 @@ const CORE = [
   './cal.js?v=8',
   './renderer.js',
   './renderer.js?v=8',
+  './eneagrama-modulo.js',
+  './eneagrama-modulo.js?v=1',
   './manifest.json',
   './icon-192.png',
   './icon-512.png',
