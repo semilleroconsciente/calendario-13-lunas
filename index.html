@@ -17,26 +17,6 @@
       <p class="brand-sub">Calendario de las 13 Lunas<br>Penco · Bío-Bío · Chile</p>
     </div>
     <div id="liveClock" class="live-clock" title="Hora de Penco · America/Santiago">--:--:--</div>
-    <label class="cycle-label" for="userSel">Usuario</label>
-    <div class="user-row">
-      <select id="userSel"></select>
-      <button id="btnAddUser" class="btn btn-icon" title="Agregar usuario">➕</button>
-      <button id="btnDelUser" class="btn btn-icon" title="Eliminar usuario actual">🗑</button>
-    </div>
-    <label class="cycle-label" for="searchBox">Buscar en notas</label>
-    <input type="text" id="searchBox" placeholder="palabra o frase..." autocomplete="off">
-    <label class="cycle-label" for="cycleSel">Ciclo (We Tripantu)</label>
-    <select id="cycleSel"></select>
-    <label class="cycle-label" for="themeSel">🎨 Tema de colores</label>
-    <select id="themeSel">
-      <option value="auto">Auto — según luna</option>
-      <option value="noche">Noche — azul profundo</option>
-      <option value="claro">Claro — día luminoso</option>
-      <option value="bosque">Bosque — verde pewü</option>
-      <option value="oceano">Océano — celeste pukem</option>
-      <option value="atardecer">Atardecer — cálido rimü</option>
-      <option value="medianoche">Medianoche — negro</option>
-    </select>
     <button id="btnToday" class="btn btn-accent">◉ Ir a hoy</button>
     <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap">
       <button id="btnConfig" class="btn" style="flex:1">⚙️ Personalizar</button>
@@ -98,14 +78,14 @@
         <div class="group-btns">
           <button id="btnWeather" class="btn" data-keywords="clima tiempo viento lluvia temperatura aire calidad humo ventilacion sol uv radiacion playa exposicion">🌤️ Clima</button>
           <button id="btnTides" class="btn" data-keywords="mareas shoa talcahuano pleamar bajamar">🌊 Mareas</button>
-          <button id="btnAstro" class="btn" data-keywords="astro astronomia eclipse meteoros superluna">🔭 Astro</button>
+          <button id="btnAstro" class="btn" data-keywords="astro astronomia eclipse meteoros superluna carta natal astral zodiaco horoscopo signo ascendente">🔭 Astro</button>
           <button id="btnIntermareal" class="btn" data-keywords="intermareal roquerio poza marea baja cochayuyo luche lapa chorito jaiba algas mariscos cosecha sostenible">🦀 Intermareal</button>
-          <button id="btnFishing" class="btn" data-keywords="pesca peces artesanal lirquen golfo arauco">🎣 Pesca</button>
-          <button id="btnBirds" class="btn" data-keywords="aves pajaro observacion humedal rocuant">🦅 Aves</button>
-          <button id="btnSiembra" class="btn" data-keywords="siembra cosecha huerta semilla semillas inventario recuento stock luna">🌱 Siembra lunar</button>
-          <button id="btnBosque" class="btn" data-keywords="bosque nativo arbol canelo boldo peumo arrayan quillay maiten avellano reforestacion semilla hongo maqui trihue laurelia naranjillo citronella keule gomortega">🌳 Bosque Nativo</button>
+          <button id="btnFishing" class="btn" data-keywords="pesca peces artesanal lirquen golfo arauco historia caleta san pedro wampo veda">🎣 Pesca</button>
+          <button id="btnBirds" class="btn" data-keywords="aves pajaro observacion humedal rocuant bosque nativo chucao tenca diuca historia avistadas">🦅 Aves</button>
+          <button id="btnSiembra" class="btn" data-keywords="siembra cosecha huerta semilla semillas semillero inventario recuento stock luna banco estratificacion multiplicacion esqueje almácigo trafkintu">🌱 Siembra lunar</button>
+          <button id="btnBosque" class="btn" data-keywords="bosque nativo arbol canelo boldo peumo arrayan quillay maiten avellano reforestacion semilla hongo maqui trihue laurelia naranjillo citronella keule gomortega historia acompanantes micorriza sotobosque picaflor dispersor quintral quila diguene changle loyo polinizador ecosistema animales insectos mamifero chingue zorro abejorro mariposa">🌳 Bosque Nativo</button>
           <button id="btnCompost" class="btn" data-keywords="compost suelo humus vermicompostera bocashi tierra ph arcilla abono menguante">🪱 Compost & Suelo</button>
-          <button id="btnComuna" class="btn" data-keywords="penco comuna fiesta evento aniversario">🎉 Penco</button>
+          <button id="btnComuna" class="btn" data-keywords="penco comuna fiesta evento aniversario guia historia sectores lirquen cosmito cerro verde primer agua">🎉 Penco</button>
           <button id="btnCircadian" class="btn" data-keywords="circadiano sueño melatonina cortisol ciclo">🌞 Circadiano</button>
           <button id="btnGolden" class="btn" data-keywords="hora dorada fotografia sol salida puesta">📸 Hora Dorada</button>
           <button id="btnEkadashi" class="btn" data-keywords="ekadashi ayuno lunar tithi">📿 Ekadashi</button>
@@ -132,13 +112,14 @@
           <button id="btnStudy" class="btn" data-keywords="estudio mnemotecnia lectura feynman">🧠 Estudio</button>
           <button id="btnSchedule" class="btn" data-keywords="horario clases estudio semana">📚 Horario</button>
           <button id="btnTales" class="btn" data-keywords="cuentos infantil niños luna historia">📖 Cuentos</button>
+          <button id="btnVozAbuelos" class="btn" data-keywords="voz abuelos abuela abuelo sabiduria receta historia consejo grabar audio testimonio legado familia territorio cuento transmitir oral">🗣️ Voz de los Abuelos</button>
           <button id="btnMemory" class="btn" data-keywords="memoria pares loci atencion secuencia simon palabras numeros schulte distinto">🧩 Memoria</button>
           <button id="btnMapu" class="btn" data-keywords="mapuzugun mapuche kimun kimün palabra idioma numero saludo quiz luna intermedio avanzado frases verbos gramatica">🗣️ Kimün Mapuzugun</button>
           <button id="btnEnglish" class="btn" data-keywords="ingles english idioma levels a1 a2 b1 b2 c1 basic intermediate advanced quiz vocabulary grammar frases verbos">Ingles</button>
           <button id="btnGratitud" class="btn" data-keywords="gratitud diario gracias wenu bienestar animo positivo racha">📓 Gratitud Diaria</button>
           <button id="btnGuitar" class="btn" data-keywords="guitarra acordes principiante intermedio avanzado practica afinador metronomo cejilla fingerpicking escalas canciones ritmo rasgueo">🎸 Guitarra</button>
           <button id="btnPsico" class="btn" data-keywords="psicoanalisis autoconocimiento sombra jung inconsciente sueños terapia cognitivo conductual tcc gestalt silla vacia eneagrama mbti big five journaling diario estoico senecca marco aurelio mayeutica socrates mindfulness vipassana atma vichara quien soy bioenergetica feldenkrais cuerpo arte escritura salud mental">🪞 Autoconocimiento</button>
-          <button id="btnMetodos" class="btn" data-keywords="metodos visiones estoicismo tao tolteca budismo yogananda gurdjieff grinberg jung freud psicoanalisis frankl logoterapia sentido zen zazen patanjali ashtanga grof transpersonal hermetismo kybalion cuatro acuerdos wu wei kriya cuarto camino sintergia arquetipos filosofia espiritualidad conny mendez metafisica decreto ikigai proposito gnosis interior">📿 Métodos</button>
+          <button id="btnMetodos" class="btn" data-keywords="metodos visiones estoicismo tao tolteca budismo yogananda gurdjieff grinberg jung freud psicoanalisis frankl logoterapia sentido zen zazen patanjali ashtanga grof transpersonal hermetismo kybalion cuatro acuerdos wu wei kriya cuarto camino sintergia arquetipos filosofia espiritualidad conny mendez metafisica decreto ikigai proposito gnosis interior reiki usui energia manos gokai hoponopono ho'oponopono hawaii perdon gracias te amo limpieza">📿 Métodos</button>
           <button id="btnArbolFull" class="btn" data-keywords="arbol genealogico familia ancestro linaje kupalme bisabuelo abuelo padre madre hijo honra generacion memoria">🌳 Árbol Genealógico</button>
           <button id="btnRecap" class="btn" data-keywords="recapitulacion recapitular tolteca castaneda repaso vida perdon soltar energia ensueño acecho inventario liberacion">🔁 Recapitulación</button>
           <button id="btnEneagrama" class="btn" data-keywords="eneagrama eneatipo personalidad test autoconocimiento reformador ayudador triunfador artista investigador leal entusiasta desafiador pacificador alas flechas subtipo instinto virtud pasion">🔺 Eneagrama</button>
@@ -236,13 +217,13 @@
         <h3 style="margin:0">🌱 Siembra &amp; Cosecha — Penco</h3>
         <button type="button" id="siembraCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
       </div>
-        <p class="muted">Guía por lunas: <b>luna actual + 2 siguientes</b> con siembra, cosecha y plagas. <span style="color:var(--gold)">Nuevo: 🤝 Asociaciones · 🧪 Preparados · 🌰 Mis Semillas</span></p>
+        <p class="muted">Guía por lunas: <b>luna actual + 2 siguientes</b> con siembra, cosecha y plagas. <span style="color:var(--gold)">Nuevo: 🤝 Asociaciones · 🧪 Preparados · 🌱 Semillero</span></p>
          <div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">
             <button type="button" id="tabSiembra" class="btn btn-accent" style="width:auto">🌱 Siembra</button>
             <button type="button" id="tabCosecha" class="btn" style="width:auto">🌾 Cosecha &amp; Plagas</button>
             <button type="button" id="tabAsociaciones" class="btn" style="width:auto">🤝 Asociaciones</button>
             <button type="button" id="tabPreparados" class="btn" style="width:auto">🧪 Preparados</button>
-            <button type="button" id="tabSemillas" class="btn" style="width:auto">🌰 Mis Semillas</button>
+            <button type="button" id="tabSemillas" class="btn" style="width:auto">🌱 Semillero</button>
           </div>
           <div id="siembraTresBox" class="hidden" style="display:none"></div>
          <div id="siembraContent"></div>
@@ -261,6 +242,11 @@
         <button type="button" id="fishingCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
       </div>
       <p class="muted" style="line-height:1.5">Pesca artesanal de caletas Lirquén, Penco y Talcahuano. Datos para orilla, kayak y bote. <b>Respeta vedas y tallas</b> — pesca es sustento, no depredación.</p>
+      <div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">
+        <button type="button" id="tabPescaHoy" class="btn btn-accent" style="width:auto">🎣 Pesca hoy</button>
+        <button type="button" id="tabPescaHistoria" class="btn" style="width:auto">📜 Historia</button>
+      </div>
+      <div id="pescaHoyPanel">
       <div id="fishingTodayBox" class="menstrual-card" style="border-color:var(--gold)"></div>
       <div id="fishingLunaBox" class="menstrual-card" style="margin-top:10px"></div>
       <div class="fishing-grid" style="margin-top:10px">
@@ -308,6 +294,8 @@
           </span>
         </div>
       </div>
+      </div>
+      <div id="pescaHistoriaPanel" class="hidden" style="margin-top:10px"></div>
       <div class="dlg-actions"><button type="button" id="fishingClose" class="btn">Cerrar</button></div>
     </form>
   </dialog>
@@ -318,7 +306,14 @@
         <h3 style="margin:0;color:var(--accent)">🦅 Observación de aves — Penco · Rocuant · Bío-Bío</h3>
         <button type="button" id="birdsCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
       </div>
-      <p class="muted" style="line-height:1.5">Bitácora de aves del humedal y costa pencona. Registra <b>privado y local</b> por usuario. Observa sin molestar: distancia, silencio y binoculares.</p>
+      <p class="muted" style="line-height:1.5">Bitácora de aves del humedal, costa y <b>bosque nativo</b> penqueño. Registra <b>privado y local</b> por usuario. Observa sin molestar: distancia, silencio y binoculares.</p>
+      <div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">
+        <button type="button" id="tabAvesHoy" class="btn btn-accent" style="width:auto">🦅 Aves hoy</button>
+        <button type="button" id="tabAvesBosque" class="btn" style="width:auto">🌳 Bosque Nativo</button>
+        <button type="button" id="tabAvesAvistadas" class="btn" style="width:auto">📊 Especies avistadas</button>
+        <button type="button" id="tabAvesHistoria" class="btn" style="width:auto">📜 Historia</button>
+      </div>
+      <div id="avesHoyPanel">
       <div id="birdsTodayBox" class="menstrual-card" style="border-color:var(--gold)"></div>
       <div class="fishing-grid" style="margin-top:10px">
         <div class="menstrual-card">
@@ -367,6 +362,10 @@
           </span>
         </div>
       </div>
+      </div>
+      <div id="avesBosquePanel" class="hidden" style="margin-top:10px"></div>
+      <div id="avesAvistadasPanel" class="hidden" style="margin-top:10px"></div>
+      <div id="avesHistoriaPanel" class="hidden" style="margin-top:10px"></div>
       <div class="dlg-actions"><button type="button" id="birdsClose" class="btn">Cerrar</button></div>
     </form>
   </dialog>
@@ -434,6 +433,13 @@
         <button type="button" id="bosqueCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
       </div>
       <p class="muted" style="line-height:1.5">Bosque esclerófilo y laurifolio costero de Penco. <b>Observa, restaura y cosecha con respeto</b> — no talas, no arranques. Registra <b>privado y local</b> por usuario.</p>
+      <div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">
+        <button type="button" id="tabBosqueActual" class="btn btn-accent" style="width:auto">🌿 Bosque hoy</button>
+        <button type="button" id="tabBosqueHistoria" class="btn" style="width:auto">📜 Historia del bosque</button>
+        <button type="button" id="tabBosqueAcompan" class="btn" style="width:auto">🌱 Ecosistema</button>
+        <button type="button" id="tabBosqueSemillero" class="btn" style="width:auto">🌰 Semillero nativo</button>
+      </div>
+      <div id="bosqueActualPanel">
       <div id="bosqueTodayBox" class="menstrual-card" style="border-color:var(--gold)"></div>
       <div class="fishing-grid" style="margin-top:10px">
         <div class="menstrual-card">
@@ -483,6 +489,10 @@
           </span>
         </div>
       </div>
+      </div>
+      <div id="bosqueHistoriaPanel" class="hidden" style="margin-top:10px"></div>
+      <div id="bosqueAcompanPanel" class="hidden" style="margin-top:10px"></div>
+      <div id="bosqueSemilleroPanel" class="hidden" style="margin-top:10px"></div>
       <div class="dlg-actions"><button type="button" id="bosqueClose" class="btn">Cerrar</button></div>
     </form>
   </dialog>
@@ -1826,6 +1836,7 @@
           <p><b>13 × 28 + 1:</b> Luna 1 We Tripantü Küyen (21 jun – 18 jul) hasta Luna 13 Mawün Kürüf (23 may – 19 jun) y luego <b>Día Fuera del Tiempo 20 jun</b> — día de cierre, memoria y baño al mar. Cada luna = 28 tarjetas (4 semanas × 7).</p>
           <p><b>Tarjeta del día:</b> fecha gregoriana, sol (salida/puesta Penco), fases lunares exactas ({{simbolo}}), efeméride, ánimo, puntitos de hábitos/gym/aves/pesca/finanzas/🏠/✨/🎉 y resumen de notas/compromisos. Clic para entrar.</p>
           <p><b>Grupos:</b> 🌊 Territorio · 🌸 Cuerpo & Salud · 🧠 Mente & Estudio · 🍽️ Vida diaria · 🚨 Emergencias & Comunidad · 🛠️ Herramientas — filtrables con <b>🔍 Buscar función (Ctrl+K)</b> y personalizables por perfil (⚙️ Personalizar).</p>
+          <p><b>🔠 Accesibilidad:</b> en ⚙️ Ajustes elige el <b>tamaño de letra</b> en 6 niveles hacia arriba (Normal → Colosal); se guarda por usuario.</p>
         </div>
       </div>
              <div class="help-grid">
@@ -1846,10 +1857,10 @@
          <div class="help-card">
            <h4>🌊 Territorio — Penco · Bío-Bío</h4>
            <p><b>🌊 Mareas:</b> tabla 3 días SHOA con pleamar/bajamar por hora. <b>🎣 Pesca:</b> rating lunar (tithi), mejores días de la luna, 8 especies locales con talla/veda/carnada + <b>bitácora privada</b> por usuario (fecha/lugar/especie/kg/marea) y 📤 Compartir. <b>🦅 Aves:</b> catálogo 16 aves Rocuant, actividad por luna + <b>bitácora</b> (fecha/hora/cantidad/actividad) y export.</p>
-            <p><b>🌤️ Clima:</b> Open-Meteo 7 días + 48h por hora (America/Santiago) con pestañas Pronóstico / Guía offline / <b>🌬️ Aire</b> (PM2.5 + humo leña) / Sol-UV. <b>🌱 Siembra:</b> 13 lunas con directa/almácigos/cosecha/tareas — pestañas <b>Siembra / Cosecha & Plagas / 🤝 Asociaciones</b> (23 cultivos, Tres Hermanas maíz-poroto-zapallo) <b>/ 🧪 Preparados</b> (10 recetas orgánicas: purín, bordelés, neem…) <b>/ 🌰 Mis Semillas</b> (tu inventario: agrega variedad y cantidad, descuenta − al sembrar, suma + al guardar).</p>
-            <p><b>🔭 Astro:</b> eclipses/superlunas/lluvias 2026-27 (⏳ Próximos ordenados, 🌕 Mes lunar con iluminación día por día y sus eventos, 📅 Año por tipo). Las fases se ven directo en el calendario. <b>🎉 Penco:</b> 14 eventos anuales + tus eventos anuales editables (aparecen como 🎉 en el calendario). <b>📿 Ekadashi:</b> cálculo tithi con 3 lunas, ayuno shukla/krishna.</p>
+            <p><b>🌤️ Clima:</b> Open-Meteo 7 días + 48h por hora (America/Santiago) con pestañas Pronóstico / Guía offline / <b>🌬️ Aire</b> (PM2.5 + humo leña) / Sol-UV. <b>🌱 Siembra:</b> 13 lunas con directa/almácigos/cosecha/tareas — pestañas <b>Siembra / Cosecha & Plagas / 🤝 Asociaciones</b> (23 cultivos, Tres Hermanas maíz-poroto-zapallo) <b>/ 🧪 Preparados</b> (10 recetas orgánicas: purín, bordelés, neem…) <b>/ 🌱 Semillero</b> (tu banco de semillas: inventario, trafkintu, técnicas de multiplicación, estratificación y guías).</p>
+            <p><b>🔭 Astro:</b> eclipses/superlunas/lluvias 2026-27 (⏳ Próximos ordenados, 🌕 Mes lunar con iluminación día por día y sus eventos, 📅 Año por tipo, ✨ Cielo Mapuche y <b>✨ Carta Natal</b>: Sol, Luna, Ascendente, planetas, casas iguales, aspectos, rueda y perfiles guardados). Las fases se ven directo en el calendario. <b>🎉 Penco:</b> 14 eventos anuales + tus eventos anuales editables (aparecen como 🎉 en el calendario) + <b>📖 Guía de Penco</b> (historia, límites, lugares de interés y sectores: Lirquén, Cosmito, centro, Cerro Verde, zona rural). <b>📿 Ekadashi:</b> cálculo tithi con 3 lunas, ayuno shukla/krishna.</p>
             <p><b>📸 Hora Dorada:</b> salida/puesta Penco + ventana dorada/azul. <b>🌞 Circadiano:</b> gráfico 24h, fase actual, 6 bloques con qué hacer.</p>
-            <p><b>🦀 Intermareal:</b> roqueríos de Lirquén y Playa Negra — catálogo (cochayuyo, luche, lapa, chorito, jaiba…), ventana de bajamar &lt;0,6m según luna nueva/llena + <b>bitácora privada</b> de salidas (fecha/hora/lugar/especie/kg/marea) con consejos de cosecha sostenible y marea roja. <b>🌳 Bosque Nativo:</b> esclerófilo costero (canelo, boldo, peumo, arrayán, quillay, maqui…) con luna y estación óptima + <b>bitácora</b> (observación/plantación/semillas/frutos/hongos/limpieza).</p>
+            <p><b>🦀 Intermareal:</b> roqueríos de Lirquén y Playa Negra — catálogo (cochayuyo, luche, lapa, chorito, jaiba…), ventana de bajamar &lt;0,6m según luna nueva/llena + <b>bitácora privada</b> de salidas (fecha/hora/lugar/especie/kg/marea) con consejos de cosecha sostenible y marea roja. <b>🌳 Bosque Nativo:</b> esclerófilo costero (canelo, boldo, peumo, arrayán, quillay, maqui…) con luna y estación óptima + <b>bitácora</b> (observación/plantación/semillas/frutos/hongos/limpieza) + <b>📜 Historia del bosque</b> (especies a lo largo del tiempo) y <b>🌱 Ecosistema</b> (hongos, aves, sotobosque, polinizadores, animales e insectos — cada grupo con opción de agregar tus especies). La pestaña <b>Bosque hoy</b> trae resumen de tu bitácora, destacados de temporada y filtro del catálogo.</p>
             <p><b>🪱 Compost & Suelo:</b> pestañas Mi pila (pila/vermi/bocashi) / Suelo Penco (arcilla) / Calendario lunar — voltea en <b>menguante</b>, registro de volteos guardado. <b>♻️ Reciclaje & Ferias:</b> buscador “¿dónde va?” (punto limpio/feria/compost/basura/peligroso) + recolección Penco y ferias centro mié/sáb, Lirquén sáb. <b>🌬️ Aire Penco (dentro de 🌤️ Clima):</b> PM2.5 en vivo Open-Meteo + guía offline de humo de leña y ventilación en Pukem — se abre desde Clima → 🌬️ Aire.</p>
          </div>
          <div class="help-card">
@@ -1865,7 +1876,7 @@
            <h4>🧠 Mente & Estudio</h4>
            <p><b>🎯 Disciplina:</b> 8 técnicas (Pomodoro 25/5, 2 min, Sapo, Time Blocking, 5 seg, WOOP, Apilar, Ambiente) + MIT del día y Si-Entonces → inicia ⏱ Pomodoro automático.</p>
            <p><b>🧠 Estudio:</b> pestañas <b>Generales</b> (recuperación, espaciada, Feynman…), <b>Mnemotecnias</b> (acrónimo/historia/palacio) con generador y <b>Lectura veloz</b> (RSVP tester ppm).</p>
-             <p><b>📚 Horario:</b> bloques semanales por día/hora/color/lugar + vista “Hoy”. <b>📖 Cuentos:</b> 13 cuentos lunares (uno por luna) — toca para leer y <b>✏️ Editar</b> tu versión privada. <b>🧩 Memoria:</b> Palacio Loci + juego Pares 8×2, secuencia, simon, palabras/números y atención (Schulte) — entrena foco y retención.</p>
+             <p><b>📚 Horario:</b> bloques semanales por día/hora/color/lugar + vista “Hoy”. <b>📖 Cuentos:</b> 13 cuentos lunares (uno por luna) — toca para leer y <b>✏️ Editar</b> tu versión privada. <b>🧩 Memoria:</b> Palacio Loci + juego Pares 8×2, secuencia, simon, palabras/números y atención (Schulte) — entrena foco y retención. <b>🗣️ Voz de los Abuelos:</b> grabador de recetas, historias del territorio y consejos (audio + texto) con <b>desbloqueo por luna</b>, buscador y Voz del día — puente con 📖 Cuentos y 🌳 Árbol.</p>
              <p><b>🗣️ Kimün Mapuzugun:</b> 6 pestañas — palabra del día, números & saludos, intermedio, avanzado, lunas kimün y <b>quiz con racha</b> (grafemario Azümchefe, 🔇 audio nativo en grabación, verifica con kimeltuchefe). <b>Ingles:</b> espejo del Kimün por niveles <b>A1→C1</b> (word of the day + gramática + quiz) con 🔊 voz del dispositivo. <b>📓 Gratitud Diaria:</b> 3 líneas diarias, racha y días ✨ en el calendario.</p>
              <p><b>🎸 Guitarra:</b> 3 niveles (🌱 Principiante: postura + 5 acordes Em-Am-C-G-D + rasgueo · 🌿 Intermedio: cejilla F/Bm, power chords, fingerpicking, pentatónica · 🌳 Avanzado: jazz/CAGED/tapping/fingerstyle) + <b>🛠️ Práctica:</b> afinador de referencia E-A-D-G-B-e (A440/432), metrónomo 40-208 bpm, biblioteca de acordes y <b>bitácora</b> (minutos + racha + nivel).</p>
          </div>
@@ -1875,7 +1886,7 @@
               <p><b>✍️ Escritura & Filosofía:</b> Journaling (5' sin censura, relee cada luna) · Examen estoico nocturno (bien/mal/¿dependía de mí?) · Mayéutica (cuestiona un “debo” con 3 porqués).</p>
               <p><b>🧘 Contemplación:</b> Mindfulness 3' (etiqueta y vuelve) · Atma Vichara (“¿a quién le ocurre? ¿quién soy yo?”) · Vipassana (barrido corporal, todo pasa). <b>🧍 Cuerpo & Expresión:</b> mapa de tensión 0-10 + soltar · arte/escritura intuitiva sin borrar.</p>
               <p><b>📓 Registro:</b> elige tema, escribe tu ejercicio, guarda por fecha (racha + historial + 📤 compartir + 📝 llevar a nota de hoy). Educativo: <b>no reemplaza terapia</b> — crisis: <b>*4141</b> (Chile, 24h).</p>
-              <p><b>📿 Métodos:</b> 18 fichas básicas — 🏛️ Estoicismo, 🌑 Jung, 🛋️ Freud y 🔥 Frankl (occidente) · ☯️ Tao, ☸️ Budismo, 🕉️ Yogananda, 🎋 Zen, 🧘 Patanjali y 🌸 Ikigai (oriente) · 🌵 Toltecas, 👁️ Gurdjieff, 🧠 Grinberg, 🌊 Grof, ⚗️ Hermetismo, 💫 Conny Méndez, 🔮 Gnosis y 🌿 Kimün mapuche (despertar) — cada una con idea central + práctica de 5' + registro “Mi camino”.</p>
+              <p><b>📿 Métodos:</b> 20 fichas básicas — 🏛️ Estoicismo, 🌑 Jung, 🛋️ Freud y 🔥 Frankl (occidente) · ☯️ Tao, ☸️ Budismo, 🕉️ Yogananda, 🎋 Zen, 🧘 Patanjali, 🌸 Ikigai y 🤲 Reiki (oriente) · 🌵 Toltecas, 👁️ Gurdjieff, 🧠 Grinberg, 🌊 Grof, ⚗️ Hermetismo, 💫 Conny Méndez, 🔮 Gnosis, 🌿 Kimün mapuche y 🌺 Ho'oponopono (despertar) — cada una con idea central + práctica de 5' + registro “Mi camino”.</p>
             </div>
           <div class="help-card">
               <h4>🍽️ Vida diaria</h4>
@@ -1903,7 +1914,7 @@
          </div>
          <div class="help-card" style="border-color:var(--gold);background:linear-gradient(135deg,var(--panel),var(--card))">
            <h4>💡 Tips & Novedades 2026</h4>
-                                                       <p>• <b>Nuevo sep 2026:</b> 📿 Métodos (estoicismo, jung, freud, frankl, tao, budismo, yogananda, zen, patanjali, ikigai, toltecas, gurdjieff, grinberg, grof, hermetismo, conny méndez, gnosis, kimün) · 🪞 Autoconocimiento (12 guías: sombra, TCC, Gestalt, tipologías, journaling, estoico, mayéutica, mindfulness, atma vichara, vipassana, cuerpo, arte + registro) · 🦀 Intermareal + 🌳 Bosque Nativo (bitácoras) · 🕉️ Prácticas Espirituales (temporizador + registro) · Ingles A1-C1 · 🎸 Guitarra (afinador + metrónomo + bitácora) · 🧩 Memoria ampliada · 🌊🚨 Evacuación Tsunami · 🗣️ Kimün · 🌿 Lawen (20) · 🪱 Compost · ♻️ Reciclaje · 🌬️ Aire (en Clima) · 📓 Gratitud (✨) · 🪵 Leña & Pellet · 🌰 Mis Semillas · <b>4 vistas</b> 🌙/🌗/📅/🗓️ · <b>Guía Básica/Detallada</b>.</p>
+                                                       <p>• <b>Nuevo sep 2026:</b> 📿 Métodos (estoicismo, jung, freud, frankl, tao, budismo, yogananda, zen, patanjali, ikigai, toltecas, gurdjieff, grinberg, grof, hermetismo, conny méndez, gnosis, kimün) · 🪞 Autoconocimiento (12 guías: sombra, TCC, Gestalt, tipologías, journaling, estoico, mayéutica, mindfulness, atma vichara, vipassana, cuerpo, arte + registro) · 🦀 Intermareal + 🌳 Bosque Nativo (bitácoras) · 🕉️ Prácticas Espirituales (temporizador + registro) · Ingles A1-C1 · 🎸 Guitarra (afinador + metrónomo + bitácora) · 🧩 Memoria ampliada · 🌊🚨 Evacuación Tsunami · 🗣️ Kimün · 🌿 Lawen (20) · 🪱 Compost · ♻️ Reciclaje · 🌬️ Aire (en Clima) · 📓 Gratitud (✨) · 🪵 Leña & Pellet · 🌱 Semillero · <b>4 vistas</b> 🌙/🌗/📅/🗓️ · <b>Guía Básica/Detallada</b>.</p>
              <p>• <b>Antes:</b> 🤝 Asociaciones (23 cultivos) y 🧪 Preparados (10) en 🌱 Siembra · bitácoras 🎣 Pesca y 🦅 Aves · 🏠 Tareas Hogar · 📖 Cuentos editables. • <b>Fix:</b> ❤ Aporte links externos. • Chip estación = paleta de color. • Móvil: desliza lunas horizontal + dock inferior.</p>
            <p>• Escribe “Sueño:” en nota para buscar sueños. • Todo offline salvo clima/mareas. • Ctrl+K para filtrar funciones.</p>
             <p style="text-align:center;margin-top:6px;color:var(--gold)"><b>¡Que tu ciclo florezca con la luna! — Küme mañum · Penco 2026</b></p>
@@ -2635,6 +2646,7 @@
           <div class="discipline-card"><h4>🎋 Zen (zazen · koan)</h4><p><b>Idea:</b> despertar directo, más allá de las palabras: sentarse, respirar, ver. La iluminación no se piensa, se practica.</p><p><b>Práctica:</b> 1) siéntate 5', espalda recta, mirada baja. 2) cuenta respiraciones del 1 al 10; al perderte, vuelve al 1. 3) koan opcional: “¿cuál es el sonido de una sola mano?”.</p><p class="muted">✏️ 5': un zazen hoy. Distraerte y volver <i>es</i> la meditación. Conecta con 🪞 Mindfulness.</p></div>
           <div class="discipline-card"><h4>🧘 Patanjali (8 pasos del yoga)</h4><p><b>Idea:</b> el yoga es calmar las fluctuaciones de la mente (<i>Yoga Sutras</i>): yama, niyama, asana, pranayama, pratyahara, dharana, dhyana, samadhi.</p><p><b>Práctica:</b> 1) elige 1 yama (ej: no-violencia) y 1 niyama (ej: orden) para vivir hoy. 2) 3' de respiración 4-4. 3) 2' de atención en un solo punto.</p><p class="muted">✏️ 5': “hoy practico ___ y ___; en la noche reviso si los viví”. Conecta con 🌬️ Respiración.</p></div>
           <div class="discipline-card"><h4>🌸 Ikigai (propósito de vida)</h4><p><b>Idea:</b> tu razón de ser está donde se cruzan 4 círculos: lo que amas, lo que haces bien, lo que el mundo necesita y por lo que te pueden pagar.</p><p><b>Práctica:</b> 1) dibuja 4 círculos y escribe 3 cosas en cada uno. 2) marca dónde se repiten. 3) elige 1 micro-acción de tu cruce para hoy.</p><p class="muted">✏️ 5': “mi ikigai de hoy es ___ porque amo ___, sirvo en ___ y avanzo en ___”.</p></div>
+          <div class="discipline-card"><h4>🤲 Reiki (Usui · sanación por manos)</h4><p><b>Idea:</b> técnica japonesa de Mikao Usui: canalizar energía vital por imposición de manos. El practicante es canal, no fuente. Se sostiene en 5 principios (Gokai): solo por hoy, no me enojo, no me preocupo, agradezco, cumplo mis deberes, soy amable.</p><p><b>Práctica:</b> 1) recita el Gokai en voz baja. 2) autotratamiento 5': una mano al corazón y otra al vientre, respira lento y siente el calor. 3) cierra agradeciendo.</p><p class="muted">✏️ 5': el autotratamiento de arriba. Los símbolos y niveles se aprenden con maestra/o iniciada/o; esto es solo base. No reemplaza tratamiento médico.</p></div>
         </div>
       </div>
       <div id="metodosPanel3" class="hidden">
@@ -2647,6 +2659,7 @@
           <div class="discipline-card"><h4>⚗️ Hermetismo (Kybalión · 7 principios)</h4><p><b>Idea:</b> siete leyes para leer la vida: mentalismo, correspondencia (“como arriba, abajo”), vibración, polaridad, ritmo, causa-efecto y género.</p><p><b>Práctica:</b> 1) toma un problema actual. 2) míralo con 2 principios: ¿qué polo falta? ¿en qué ritmo estoy? 3) actúa el polo complementario.</p><p class="muted">✏️ 5': “mi afuera ___ refleja mi adentro ___; el polo que falta es ___”. Úsalo como lente, no como dogma.</p></div>
           <div class="discipline-card"><h4>💫 Conny Méndez: metafísica</h4><p><b>Idea:</b> lo que piensas y decretas moldea tu vida: el pensamiento sostenido con sentimiento y palabra crea realidad (<i>Metafísica 4 en 1</i>).</p><p><b>Práctica:</b> 1) detecta un pensamiento negativo de hoy. 2) reformúlalo en presente y positivo (“yo soy ___”). 3) decrétalo 3 veces en voz alta y actúa 1 gesto coherente.</p><p class="muted">✏️ 5': “cancelo ___ y decreto ___”. Sin culpa: úsalo como reprogramación amable, no como exigencia.</p></div>
           <div class="discipline-card"><h4>🔮 Gnosis (autoconocimiento interior)</h4><p><b>Idea:</b> el despertar es conocerse a sí mismo: observar el ego en la vida diaria y aprender a estar presente aquí y ahora.</p><p><b>Práctica:</b> 1) elige 1 defecto de hoy (impaciencia, miedo, orgullo). 2) obsérvalo sin justificarte: ¿cuándo apareció? 3) respira y actúa al revés una vez.</p><p class="muted">✏️ 5': “hoy mi ego ___ apareció cuando ___; lo observé y elegí ___”.</p></div>
+          <div class="discipline-card"><h4>🌺 Ho'oponopono (Hawái · perdón y limpieza)</h4><p><b>Idea:</b> práctica hawaiana de reconciliación (Morrnah Simeona · Ihaleakalá Hew Len): lo que te afecta es memoria que puedes limpiar asumiendo 100% responsabilidad, sin culpa. Se resume en 4 frases: <i>“Lo siento · Perdóname · Gracias · Te amo”</i>.</p><p><b>Práctica:</b> 1) trae a la mente una molestia o conflicto (empieza por uno pequeño). 2) repite las 4 frases por dentro 3', dirigiéndolas a la persona, la situación y a ti. 3) suelta y nota qué cambia en el cuerpo.</p><p class="muted">✏️ 5': una ronda completa con algo de hoy. Limpia tu interior; cuando corresponda, igual pide perdón de verdad cara a cara.</p></div>
         </div>
       </div>
       <div class="menstrual-card" style="margin-top:10px">
@@ -2666,6 +2679,7 @@
               <option value="zen">🎋 Zen</option>
               <option value="patanjali">🧘 Patanjali</option>
               <option value="ikigai">🌸 Ikigai</option>
+              <option value="reiki">🤲 Reiki</option>
               <option value="toltecas">🌵 Toltecas</option>
               <option value="gurdjieff">👁️ Gurdjieff</option>
               <option value="grinberg">🧠 Grinberg</option>
@@ -2674,6 +2688,7 @@
               <option value="conny">💫 Conny Méndez</option>
               <option value="gnosis">🔮 Gnosis</option>
               <option value="kimun">🌿 Kimün mapuche</option>
+              <option value="hoponopono">🌺 Ho'oponopono</option>
             </select>
           </label>
         </div>
@@ -2703,23 +2718,27 @@
           <button type="button" id="configCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
         </span>
       </div>
-      <p class="muted" style="line-height:1.5">En el celular el menú lateral queda oculto, así que aquí tienes lo esencial. Se guarda automáticamente por usuario.</p>
+      <p class="muted" style="line-height:1.5">Todo lo esencial en un solo lugar: usuario, búsqueda, ciclo, tema y letra. Se guarda automáticamente por usuario.</p>
       <div class="config-mobile">
         <div class="config-group">
           <h5>👤 Usuario</h5>
           <div class="user-row">
-            <select id="cfgUserSel" aria-label="Usuario"></select>
-            <button type="button" id="cfgAddUser" class="btn btn-icon" title="Agregar usuario">➕</button>
-            <button type="button" id="cfgDelUser" class="btn btn-icon" title="Eliminar usuario actual">🗑</button>
+            <select id="userSel" aria-label="Usuario"></select>
+            <button type="button" id="btnAddUser" class="btn btn-icon" title="Agregar usuario">➕</button>
+            <button type="button" id="btnDelUser" class="btn btn-icon" title="Eliminar usuario actual">🗑</button>
           </div>
         </div>
         <div class="config-group">
-          <h5>📅 Ciclo</h5>
-          <select id="cfgCycleSel" aria-label="Ciclo (We Tripantu)"></select>
+          <h5>🔍 Buscar en notas</h5>
+          <input type="text" id="searchBox" placeholder="palabra o frase... (Enter para buscar)" autocomplete="off" aria-label="Buscar en notas">
+        </div>
+        <div class="config-group">
+          <h5>📅 Ciclo (We Tripantu)</h5>
+          <select id="cycleSel" aria-label="Ciclo (We Tripantu)"></select>
         </div>
         <div class="config-group">
           <h5>🎨 Tema de colores</h5>
-          <select id="cfgThemeSel" aria-label="Tema de colores">
+          <select id="themeSel" aria-label="Tema de colores">
             <option value="auto">Auto — según luna</option>
             <option value="noche">Noche — azul profundo</option>
             <option value="claro">Claro — día luminoso</option>
@@ -2728,6 +2747,23 @@
             <option value="atardecer">Atardecer — cálido rimü</option>
             <option value="medianoche">Medianoche — negro</option>
           </select>
+        </div>
+        <div class="config-group">
+          <h5>📌 Acceso directo</h5>
+          <p class="muted" style="font-size:11px;margin-bottom:8px">Crea el ícono del calendario en el escritorio (solo versión de escritorio PC).</p>
+          <button type="button" id="cfgShortcutBtn" class="btn" style="width:100%">📌 Crear acceso directo en el escritorio</button>
+        </div>
+        <div class="config-group config-font-group">
+          <h5>🔠 Tamaño de letra</h5>
+          <p class="muted" style="font-size:11px;margin-bottom:8px">Se aplica a todo el calendario y se guarda por usuario:</p>
+          <div class="font-pills" role="group" aria-label="Tamaño de letra">
+            <button type="button" class="btn font-pill" data-font="m" aria-pressed="true"><span class="fp-a" style="font-size:15px">A</span><small>Normal</small></button>
+            <button type="button" class="btn font-pill" data-font="l" aria-pressed="false"><span class="fp-a" style="font-size:17px">A</span><small>Grande</small></button>
+            <button type="button" class="btn font-pill" data-font="xl" aria-pressed="false"><span class="fp-a" style="font-size:19px">A</span><small>Muy grande</small></button>
+            <button type="button" class="btn font-pill" data-font="xxl" aria-pressed="false"><span class="fp-a" style="font-size:21px">A</span><small>Enorme</small></button>
+            <button type="button" class="btn font-pill" data-font="3xl" aria-pressed="false"><span class="fp-a" style="font-size:23px">A</span><small>Gigante</small></button>
+            <button type="button" class="btn font-pill" data-font="4xl" aria-pressed="false"><span class="fp-a" style="font-size:25px">A</span><small>Colosal</small></button>
+          </div>
         </div>
         <div class="config-group">
           <h5>👥 Perfiles</h5>
@@ -2788,7 +2824,9 @@
             <label class="check-row"><input type="checkbox" data-btn="btnStudy"> 🧠 Estudio</label>
             <label class="check-row"><input type="checkbox" data-btn="btnSchedule"> 📚 Horario</label>
             <label class="check-row"><input type="checkbox" data-btn="btnTales"> 📖 Cuentos</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnVozAbuelos"> 🗣️ Voz de los Abuelos</label>
             <label class="check-row"><input type="checkbox" data-btn="btnMemory"> 🧩 Memoria</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnAjedrez"> ♟️ Ajedrez</label>
             <label class="check-row"><input type="checkbox" data-btn="btnMapu"> 🗣️ Kimün Mapuzugun</label>
             <label class="check-row"><input type="checkbox" data-btn="btnEnglish"> 🔤 Inglés</label>
             <label class="check-row"><input type="checkbox" data-btn="btnGratitud"> 📓 Gratitud Diaria</label>
@@ -2869,6 +2907,75 @@
         <p class="muted" style="font-size:11px;margin-top:6px">Se guarda solo para tu usuario actual. Usa “Restaurar” para volver al original.</p>
       </div>
       <div class="dlg-actions"><button type="button" id="talesClose" class="btn">Cerrar</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="vozDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">🗣️ La Voz de los Abuelos — transmisión oral</h3>
+        <button type="button" id="vozCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
+      </div>
+      <p class="muted" style="line-height:1.5">Recetas, historias del territorio y consejos de quienes nos criaron. Cada voz se <b>desbloquea en una luna</b>: los niños descubren un relato por luna. Todo queda <b>privado y local</b> por usuario. Conecta con 📖 Cuentos y 🌳 Árbol Genealógico.</p>
+      <div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">
+        <button type="button" id="tabVozVoces" class="btn btn-accent" style="width:auto">🎙️ Voces</button>
+        <button type="button" id="tabVozLunas" class="btn" style="width:auto">🌕 Desbloqueo lunar</button>
+        <button type="button" id="tabVozSaberes" class="btn" style="width:auto">📚 Saberes</button>
+      </div>
+      <div id="vozDiaBox" class="menstrual-card" style="border-color:var(--gold)"></div>
+      <div id="vozVocesPanel" style="margin-top:10px">
+        <div class="menstrual-card" style="border-color:var(--gold)">
+          <h4>⏺️ Grabar una voz</h4>
+          <div id="vozWarn" class="chip" style="display:block;white-space:normal"></div>
+          <div class="conv-row">
+            <label style="flex:2">Título <input type="text" id="vozTitulo" placeholder="ej: Cómo era Penco antes" maxlength="60"></label>
+            <label>Quién <input type="text" id="vozQuien" placeholder="ej: abuela Rosa" maxlength="30"></label>
+          </div>
+          <div class="conv-row">
+            <label>Tipo <select id="vozTipo"><option>🍲 Receta familiar</option><option>🏔️ Historia del territorio</option><option>💡 Consejo de vida</option><option>📖 Cuento para desbloquear</option></select></label>
+            <label>Desbloqueo <select id="vozLuna"><option value="1">Luna 1</option><option value="2">Luna 2</option><option value="3">Luna 3</option><option value="4">Luna 4</option><option value="5">Luna 5</option><option value="6">Luna 6</option><option value="7">Luna 7</option><option value="8">Luna 8</option><option value="9">Luna 9</option><option value="10">Luna 10</option><option value="11">Luna 11</option><option value="12">Luna 12</option><option value="13">Luna 13</option></select></label>
+          </div>
+          <label>Texto / transcripción (opcional) <textarea id="vozTexto" rows="2" placeholder="resumen o transcripción..." maxlength="800"></textarea></label>
+          <div class="dlg-actions" style="justify-content:flex-start;align-items:center">
+            <button type="button" id="vozRec" class="btn btn-accent" style="width:auto">⏺️ Grabar</button>
+            <button type="button" id="vozStop" class="btn hidden" style="width:auto">⏹️ Detener</button>
+            <span id="vozTimer" class="chip">00:00</span>
+          </div>
+          <div class="dlg-actions" style="justify-content:flex-start">
+            <button type="button" id="vozAddText" class="btn" style="width:auto">+ Guardar solo texto</button>
+            <button type="button" id="vozCancelEdit" class="btn hidden" style="width:auto">Cancelar</button>
+          </div>
+        </div>
+        <div class="menstrual-card" style="margin-top:10px">
+          <h4>🔍 Mis voces</h4>
+          <div class="conv-row">
+            <label style="flex:2">Buscar <input type="text" id="vozSearch" placeholder="título, quién, palabra..." maxlength="60" autocomplete="off"></label>
+            <label>Tipo <select id="vozFilter"><option value="todas">Todas</option><option>🍲 Receta familiar</option><option>🏔️ Historia del territorio</option><option>💡 Consejo de vida</option><option>📖 Cuento para desbloquear</option></select></label>
+          </div>
+          <div id="vozList" class="habits-list" style="margin-top:8px;max-height:300px"></div>
+        </div>
+      </div>
+      <div id="vozLunasPanel" class="hidden" style="margin-top:10px">
+        <div id="vozLunasBox"></div>
+      </div>
+      <div id="vozSaberesPanel" class="hidden" style="margin-top:10px">
+        <div id="vozSaberesBox"></div>
+      </div>
+      <div class="menstrual-card" style="margin-top:10px">
+        <h4>🧭 Puentes</h4>
+        <div class="dlg-actions" style="justify-content:flex-start">
+          <button type="button" id="vozGoCuentos" class="btn" style="width:auto">📖 Ir a Cuentos</button>
+          <button type="button" id="vozGoArbol" class="btn" style="width:auto">🌳 Ir al Árbol</button>
+          <button type="button" id="vozExport" class="btn" style="width:auto">📤 Exportar saberes</button>
+        </div>
+      </div>
+      <div class="dlg-actions" style="justify-content:space-between;align-items:center">
+        <span id="vozStats" class="muted" style="font-size:11px"></span>
+        <span style="display:flex;gap:8px">
+          <button type="button" id="vozClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar todo</button>
+          <button type="button" id="vozClose" class="btn">Cerrar</button>
+        </span>
+      </div>
     </form>
   </dialog>
 
@@ -3116,6 +3223,11 @@
         <button type="button" id="comunaCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
       </div>
       <p class="muted" style="line-height:1.5">Fiestas y efemérides penconas. Los <b>anuales</b> se repiten cada año y aparecen en el calendario. Puedes <b>agregar los tuyos</b> (junta de vecinos, feria, aniversario). Queda <b>privado y local</b> por usuario.</p>
+      <div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">
+        <button type="button" id="tabComunaEventos" class="btn btn-accent" style="width:auto">🎉 Eventos</button>
+        <button type="button" id="tabComunaGuia" class="btn" style="width:auto">📖 Guía de Penco</button>
+      </div>
+      <div id="comunaEventosPanel">
       <label class="check-row" style="margin:8px 0"><input type="checkbox" id="comunaShowCal"> Mostrar eventos de Penco en el calendario (iconos 🎉 por día)</label>
       <div id="comunaTodayBox" class="menstrual-card" style="border-color:var(--gold)"></div>
       <div id="comunaLunaBox" class="menstrual-card" style="margin-top:10px"></div>
@@ -3148,6 +3260,8 @@
         <div id="comunaList" class="habits-list" style="max-height:260px"></div>
         <p class="muted" style="font-size:10px;margin-top:6px">Toca el lápiz para editar o la X para borrar solo tus eventos. Los oficiales no se borran.</p>
       </div>
+      </div>
+      <div id="comunaGuiaPanel" class="hidden" style="margin-top:10px"></div>
       <div class="dlg-actions"><button type="button" id="comunaClose" class="btn">Cerrar</button></div>
     </form>
   </dialog>
@@ -3184,6 +3298,15 @@
   <script src="nuevos-modulos.js?v=8"></script>
   <script src="linaje-modulos.js?v=1"></script>
   <script src="eneagrama-modulo.js?v=1"></script>
+  <script src="carta-astral.js?v=1"></script>
+  <script src="voz-abuelos.js?v=1"></script>
+  <script src="penco-guia.js?v=1"></script>
+  <script src="bosque-historia.js?v=1"></script>
+  <script src="bosque-semillero.js?v=1"></script>
+  <script src="aves-historia.js?v=1"></script>
+  <script src="pesca-historia.js?v=1"></script>
+  <script src="semillero-guias.js?v=1"></script>
+  <script src="ajedrez-modulo.js?v=1"></script>
   <script>
     if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
   </script>

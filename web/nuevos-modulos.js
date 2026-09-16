@@ -2073,6 +2073,8 @@ function renderVoz() {
 }
 var vozRec = null, vozChunks = [], vozStart = 0;
 function setupVoz() {
+  /* La Voz de los Abuelos ahora es seccion completa (vozDialog): no inyectar el panel antiguo en Cuentos. */
+  if ($('vozDialog')) return;
   var dlg = $('talesDialog'); if (!dlg) { setTimeout(setupVoz, 800); return; }
   addKw('btnTales', 'abuelo abuela voz grabar receta historia consejo transmitir oral desbloquear');
   var b = $('btnTales');

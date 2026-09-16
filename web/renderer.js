@@ -5362,20 +5362,20 @@ setTimeout(setupHelpDialog, 850);
 // Incluye botones base + los inyectados por nuevos-modulos.js (Agua, Bodega, Nudos,
 // Taller, Trueque, Minga, Rutinas, Fertilidad, Derechos). NUEVOS_BTNS los re-agrega
 // con push si faltan (no-op si ya están), así los perfiles siempre los conocen.
-const ALL_BTNS = ["btnTides","btnFishing","btnBirds","btnIntermareal","btnBosque","btnWeather","btnSiembra","btnAstro","btnComuna","btnEkadashi","btnMenstrual","btnMedic","btnHabits","btnMeal","btnShopping","btnFinance","btnHomeTasks","btnDiscipline","btnDreams","btnBreath","btnGratitud","btnSchedule","btnGym","btnCircadian","btnGolden","btnEspiritual","btnCompost","btnLawen","btnFirstAid","btnAnimalCare","btnViolence","btnEvac","btnConvert","btnEnergy","btnLena","btnTimer","btnRemind","btnBackup","btnRestore","btnShortcut","btnPdfLuna","btnPdfCiclo","btnDonate","btnHelp","btnStudy","btnTales","btnMemory","btnMapu","btnEnglish","btnGuitar","btnPsico","btnMetodos","btnAgua","btnBodega","btnNudos","btnTaller","btnTrueque","btnMinga","btnRutina","btnFerti","btnDerechos","btnCrianza","btnArbolFull","btnRecap","btnDueloFull","btnEneagrama"];
+const ALL_BTNS = ["btnTides","btnFishing","btnBirds","btnIntermareal","btnBosque","btnWeather","btnSiembra","btnAstro","btnComuna","btnEkadashi","btnMenstrual","btnMedic","btnHabits","btnMeal","btnShopping","btnFinance","btnHomeTasks","btnDiscipline","btnDreams","btnBreath","btnGratitud","btnSchedule","btnGym","btnCircadian","btnGolden","btnEspiritual","btnCompost","btnLawen","btnFirstAid","btnAnimalCare","btnViolence","btnEvac","btnConvert","btnEnergy","btnLena","btnTimer","btnRemind","btnBackup","btnRestore","btnShortcut","btnPdfLuna","btnPdfCiclo","btnDonate","btnHelp","btnStudy","btnTales","btnVozAbuelos","btnMemory","btnMapu","btnEnglish","btnGuitar","btnPsico","btnMetodos","btnAgua","btnBodega","btnNudos","btnTaller","btnTrueque","btnMinga","btnRutina","btnFerti","btnDerechos","btnCrianza","btnArbolFull","btnRecap","btnDueloFull","btnEneagrama","btnAjedrez"];
 const PRESETS = {
   todo: Object.fromEntries(ALL_BTNS.map(k=>[k,true])),
   esencial: {btnWeather:true,btnTides:true,btnAstro:true,btnSiembra:true,btnEkadashi:true,btnCircadian:true,btnHabits:true,btnBreath:true,btnDreams:true,btnGratitud:true,btnMeal:true,btnShopping:true,btnFinance:true,btnHomeTasks:true,btnCrianza:true,btnFirstAid:true,btnEvac:true,btnTimer:true,btnRemind:true,btnBackup:true,btnRestore:true,btnShortcut:true,btnPdfLuna:true,btnPdfCiclo:true,btnHelp:true,btnDonate:true},
-  infantil: {btnWeather:true,btnAstro:true,btnBirds:true,btnBosque:true,btnSiembra:true,btnCompost:true,btnHabits:true,btnDreams:true,btnBreath:true,btnGratitud:true,btnSchedule:true,btnTales:true,btnMemory:true,btnMapu:true,btnEnglish:true,btnGuitar:true,btnMeal:true,btnCrianza:true,btnHelp:true,btnDonate:true},
-  adolescente: {btnHabits:true,btnDiscipline:true,btnStudy:true,btnSchedule:true,btnMemory:true,btnMapu:true,btnEnglish:true,btnGuitar:true,btnTales:true,btnDreams:true,btnBreath:true,btnGratitud:true,btnPsico:true,btnMetodos:true,btnRecap:true,btnDueloFull:true,btnEneagrama:true,btnGym:true,btnCircadian:true,btnMeal:true,btnFinance:true,btnConvert:true,btnTimer:true,btnRemind:true,btnFirstAid:true,btnViolence:true,btnCrianza:true,btnHelp:true,btnDonate:true},
+  infantil: {btnWeather:true,btnAstro:true,btnBirds:true,btnBosque:true,btnSiembra:true,btnCompost:true,btnHabits:true,btnDreams:true,btnBreath:true,btnGratitud:true,btnSchedule:true,btnTales:true,btnVozAbuelos:true,btnMemory:true,btnAjedrez:true,btnMapu:true,btnEnglish:true,btnGuitar:true,btnMeal:true,btnCrianza:true,btnHelp:true,btnDonate:true},
+  adolescente: {btnHabits:true,btnDiscipline:true,btnStudy:true,btnSchedule:true,btnMemory:true,btnAjedrez:true,btnMapu:true,btnEnglish:true,btnGuitar:true,btnTales:true,btnVozAbuelos:true,btnDreams:true,btnBreath:true,btnGratitud:true,btnPsico:true,btnMetodos:true,btnRecap:true,btnDueloFull:true,btnEneagrama:true,btnGym:true,btnCircadian:true,btnMeal:true,btnFinance:true,btnConvert:true,btnTimer:true,btnRemind:true,btnFirstAid:true,btnViolence:true,btnCrianza:true,btnHelp:true,btnDonate:true},
   adulto: Object.fromEntries(ALL_BTNS.map(k=>[k,true])),
-  mayor: {btnWeather:true,btnTides:true,btnAstro:true,btnSiembra:true,btnEkadashi:true,btnMedic:true,btnLawen:true,btnHabits:true,btnBreath:true,btnDreams:true,btnGratitud:true,btnMemory:true,btnTales:true,btnArbolFull:true,btnRecap:true,btnDueloFull:true,btnGym:true,btnCircadian:true,btnRutina:true,btnEspiritual:true,btnMeal:true,btnShopping:true,btnHomeTasks:true,btnFirstAid:true,btnAnimalCare:true,btnViolence:true,btnEvac:true,btnRemind:true,btnTimer:true,btnEnergy:true,btnLena:true,btnPdfLuna:true,btnHelp:true,btnDonate:true},
-  estudiante: {btnWeather:true,btnSiembra:true,btnAstro:true,btnHabits:true,btnDiscipline:true,btnStudy:true,btnSchedule:true,btnMemory:true,btnMapu:true,btnEnglish:true,btnGuitar:true,btnTales:true,btnPsico:true,btnMetodos:true,btnEneagrama:true,btnDreams:true,btnBreath:true,btnGratitud:true,btnConvert:true,btnTimer:true,btnRemind:true,btnPdfLuna:true,btnPdfCiclo:true,btnBackup:true,btnHelp:true,btnDonate:true},
+  mayor: {btnWeather:true,btnTides:true,btnAstro:true,btnSiembra:true,btnEkadashi:true,btnMedic:true,btnLawen:true,btnHabits:true,btnBreath:true,btnDreams:true,btnGratitud:true,btnMemory:true,btnTales:true,btnVozAbuelos:true,btnArbolFull:true,btnRecap:true,btnDueloFull:true,btnGym:true,btnCircadian:true,btnRutina:true,btnEspiritual:true,btnMeal:true,btnShopping:true,btnHomeTasks:true,btnFirstAid:true,btnAnimalCare:true,btnViolence:true,btnEvac:true,btnRemind:true,btnTimer:true,btnEnergy:true,btnLena:true,btnPdfLuna:true,btnHelp:true,btnDonate:true},
+  estudiante: {btnWeather:true,btnSiembra:true,btnAstro:true,btnHabits:true,btnDiscipline:true,btnStudy:true,btnSchedule:true,btnMemory:true,btnAjedrez:true,btnMapu:true,btnEnglish:true,btnGuitar:true,btnTales:true,btnVozAbuelos:true,btnPsico:true,btnMetodos:true,btnEneagrama:true,btnDreams:true,btnBreath:true,btnGratitud:true,btnConvert:true,btnTimer:true,btnRemind:true,btnPdfLuna:true,btnPdfCiclo:true,btnBackup:true,btnHelp:true,btnDonate:true},
   agricultor: {btnWeather:true,btnTides:true,btnAstro:true,btnBirds:true,btnSiembra:true,btnBosque:true,btnCompost:true,btnAgua:true,btnBodega:true,btnLawen:true,btnGolden:true,btnCircadian:true,btnEkadashi:true,btnIntermareal:true,btnComuna:true,btnTrueque:true,btnMinga:true,btnTaller:true,btnNudos:true,btnMeal:true,btnShopping:true,btnFinance:true,btnRemind:true,btnTimer:true,btnPdfLuna:true,btnPdfCiclo:true,btnBackup:true,btnHelp:true,btnDonate:true},
   pescador: {btnWeather:true,btnTides:true,btnAstro:true,btnIntermareal:true,btnFishing:true,btnBirds:true,btnSiembra:true,btnBosque:true,btnAgua:true,btnGolden:true,btnCircadian:true,btnComuna:true,btnNudos:true,btnTaller:true,btnTrueque:true,btnMinga:true,btnFirstAid:true,btnEvac:true,btnMeal:true,btnRemind:true,btnTimer:true,btnHelp:true,btnDonate:true},
-  salud: {btnMenstrual:true,btnMedic:true,btnLawen:true,btnFerti:true,btnRutina:true,btnHabits:true,btnGym:true,btnCircadian:true,btnBreath:true,btnDreams:true,btnGratitud:true,btnEspiritual:true,btnDueloFull:true,btnRecap:true,btnPsico:true,btnMetodos:true,btnEneagrama:true,btnEkadashi:true,btnCompost:true,btnMeal:true,btnShopping:true,btnSchedule:true,btnCrianza:true,btnFirstAid:true,btnAnimalCare:true,btnViolence:true,btnEvac:true,btnRemind:true,btnTimer:true,btnHelp:true,btnDonate:true},
+  salud: {btnMenstrual:true,btnMedic:true,btnLawen:true,btnFerti:true,btnRutina:true,btnHabits:true,btnGym:true,btnCircadian:true,btnBreath:true,btnDreams:true,btnGratitud:true,btnEspiritual:true,btnDueloFull:true,btnRecap:true,btnPsico:true,btnMetodos:true,btnEneagrama:true,btnEkadashi:true,btnCompost:true,btnMeal:true,btnShopping:true,btnSchedule:true,btnCrianza:true,btnVozAbuelos:true,btnFirstAid:true,btnAnimalCare:true,btnViolence:true,btnEvac:true,btnRemind:true,btnTimer:true,btnHelp:true,btnDonate:true},
   deportista: {btnWeather:true,btnTides:true,btnHabits:true,btnGym:true,btnRutina:true,btnCircadian:true,btnBreath:true,btnEspiritual:true,btnDreams:true,btnGratitud:true,btnMeal:true,btnShopping:true,btnFinance:true,btnTimer:true,btnRemind:true,btnEnergy:true,btnConvert:true,btnFirstAid:true,btnHelp:true,btnDonate:true},
-  docente: {btnWeather:true,btnSiembra:true,btnBosque:true,btnBirds:true,btnCompost:true,btnEkadashi:true,btnHabits:true,btnDiscipline:true,btnStudy:true,btnSchedule:true,btnMemory:true,btnArbolFull:true,btnRecap:true,btnMapu:true,btnEnglish:true,btnGuitar:true,btnTales:true,btnCrianza:true,btnGratitud:true,btnPsico:true,btnMetodos:true,btnEneagrama:true,btnConvert:true,btnTimer:true,btnRemind:true,btnPdfLuna:true,btnPdfCiclo:true,btnBackup:true,btnHelp:true,btnDonate:true}
+  docente: {btnWeather:true,btnSiembra:true,btnBosque:true,btnBirds:true,btnCompost:true,btnEkadashi:true,btnHabits:true,btnDiscipline:true,btnStudy:true,btnSchedule:true,btnMemory:true,btnAjedrez:true,btnArbolFull:true,btnRecap:true,btnMapu:true,btnEnglish:true,btnGuitar:true,btnTales:true,btnVozAbuelos:true,btnCrianza:true,btnGratitud:true,btnPsico:true,btnMetodos:true,btnEneagrama:true,btnConvert:true,btnTimer:true,btnRemind:true,btnPdfLuna:true,btnPdfCiclo:true,btnBackup:true,btnHelp:true,btnDonate:true}
 };
 function getVisibleConfig(){
   const c = (DATA.config && DATA.config.visible) || {};
@@ -5389,9 +5389,25 @@ function applyVisibility(){
     if(el) el.classList.toggle('hidden-by-config', !vis[id]);
   });
   updateGroupCounts();
-  const large = (DATA.config && DATA.config.largeText);
-  document.body.classList.toggle('large-text', !!large);
-  const cb=document.getElementById('cfgLargeText'); if(cb) cb.checked=!!large;
+  try{ applyFontSize(); }catch(e){}
+}
+// === TAMAÑO DE LETRA (Ajustes → 🔠): 6 tamaños, se guarda por usuario ===
+const FONT_SIZES=['m','l','xl','xxl','3xl','4xl'];
+function getFontSize(){
+  try{
+    const f=DATA.config&&DATA.config.fontSize;
+    if(FONT_SIZES.indexOf(f)>=0) return f;
+    if(DATA.config&&DATA.config.largeText) return 'l'; // compat: ajuste grande antiguo
+  }catch(e){}
+  return 'm';
+}
+function applyFontSize(){
+  const f=getFontSize();
+  document.body.dataset.font=f;
+  // large-text mantiene las reglas de escala existentes (todo sobre Normal)
+  document.body.classList.toggle('large-text', f!=='m');
+  document.querySelectorAll('.font-pill').forEach(b=> b.setAttribute('aria-pressed', b.dataset.font===f?'true':'false'));
+  const cb=document.getElementById('cfgLargeText'); if(cb) cb.checked=(f!=='m');
 }
 function updateGroupCounts(){
   document.querySelectorAll('.action-group').forEach(g=>{
@@ -5516,6 +5532,14 @@ function setupConfigDialog(){
     };
   });
   const largeCb=$('cfgLargeText'); if(largeCb) largeCb.onchange=()=>{ DATA.config=DATA.config||{}; DATA.config.largeText=largeCb.checked; scheduleSave(); applyVisibility(); };
+  document.querySelectorAll('.font-pill').forEach(b=>{
+    b.onclick=()=>{
+      DATA.config=DATA.config||{};
+      DATA.config.fontSize=b.dataset.font;
+      DATA.config.largeText=(b.dataset.font!=='m');
+      scheduleSave(); applyFontSize();
+    };
+  });
   const reset=$('configReset'); if(reset) reset.onclick=()=>{
     DATA.config=DATA.config||{}; DATA.config.visible=Object.fromEntries(ALL_BTNS.map(k=>[k,true]));
     scheduleSave();
@@ -8008,7 +8032,7 @@ function renderSiembraSemillas(){
   const a=getSemillasInvData();
   const totalSobres=a.reduce((s,e)=> s+(parseInt(e.qty)||0), 0);
   box.innerHTML = `<div class="menstrual-card" style="border-color:var(--gold);background:linear-gradient(135deg,var(--panel),var(--card))">
-    <h4 style="color:var(--gold)">🌰 Mis semillas — recuento (${a.length} variedades · ${totalSobres} sobres/semillas)</h4>
+    <h4 style="color:var(--gold)">🏺 Banco de semillas — recuento (${a.length} variedades · ${totalSobres} sobres/semillas)</h4>
     <p class="muted" style="font-size:11px">Tu stock personal, <b>local por usuario</b>. Descuenta al sembrar (−) y suma al cosechar semilla (+). Úsalo con la guía de arriba.</p>
     <div style="font-size:11px;margin-top:6px;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px"><b>🏺 Cómo almacenar tus semillas:</b><ul style="margin:4px 0 0 16px;padding:0" class="muted"><li>Seca bien a la sombra, lugar ventilado, 7–14 días antes de guardar.</li><li>Guarda en <b>sobre de papel</b>, no plástico (respira y evita hongos).</li><li>Frasco hermético en lugar <b>fresco, seco y oscuro</b> (ideal &lt;20 °C).</li><li>Etiqueta siempre: variedad + <b>fecha de recolección</b> + origen.</li><li>Revisa cada luna: descarta las húmedas o con moho.</li></ul></div>
     <div class="conv-row" style="margin-top:8px">
@@ -8050,7 +8074,7 @@ function renderSiembraSemillas(){
     setSemillasInvData(arr); scheduleSave('Guardado ✓');
     $('semInvName').value=''; $('semInvQty').value='1'; if($('semInvHarvest')) $('semInvHarvest').value=''; $('semInvNote').value=''; paint();
   };
-  const sh=$('semInvShare'); if(sh) sh.onclick=async()=>{ const arr=getSemillasInvData(); const t=arr.length? '🌰 Mis semillas\n'+arr.map(e=>`• ${e.name}: ${e.qty}${e.harvest?' (recol. '+e.harvest+')':''}${e.note?' '+e.note:''}`).join('\n') : 'Mis semillas — sin stock aún'; await shareText('Mis semillas', t, null); };
+  const sh=$('semInvShare'); if(sh) sh.onclick=async()=>{ const arr=getSemillasInvData(); const t=arr.length? '🌱 Semillero · banco\n'+arr.map(e=>`• ${e.name}: ${e.qty}${e.harvest?' (recol. '+e.harvest+')':''}${e.note?' '+e.note:''}`).join('\n') : 'Semillero — sin stock aún'; await shareText('Semillero · banco', t, null); };
   const cl=$('semInvClear'); if(cl) cl.onclick=()=>{ if(!confirm('¿Vaciar todo el inventario?')) return; setSemillasInvData([]); scheduleSave(); paint(); };
 }
 
@@ -8192,6 +8216,7 @@ const METODOS_TOPICS = [
   {id:'zen', icon:'🎋', nombre:'Zen'},
   {id:'patanjali', icon:'🧘', nombre:'Patanjali'},
   {id:'ikigai', icon:'🌸', nombre:'Ikigai'},
+  {id:'reiki', icon:'🤲', nombre:'Reiki'},
   {id:'toltecas', icon:'🌵', nombre:'Toltecas'},
   {id:'gurdjieff', icon:'👁️', nombre:'Gurdjieff'},
   {id:'grinberg', icon:'🧠', nombre:'Grinberg'},
@@ -8199,7 +8224,8 @@ const METODOS_TOPICS = [
   {id:'hermetismo', icon:'⚗️', nombre:'Hermetismo'},
   {id:'conny', icon:'💫', nombre:'Conny Méndez'},
   {id:'gnosis', icon:'🔮', nombre:'Gnosis'},
-  {id:'kimun', icon:'🌿', nombre:'Kimün mapuche'}
+  {id:'kimun', icon:'🌿', nombre:'Kimün mapuche'},
+  {id:'hoponopono', icon:'🌺', nombre:"Ho'oponopono"}
 ];
 function metodosTopicName(id){ const t=METODOS_TOPICS.find(x=>x.id===id); return t? (t.icon+' '+t.nombre) : id; }
 function getMetodosData(){ try{ const u=userData(); if(!u.metodos) u.metodos={entries:{}}; if(!u.metodos.entries) u.metodos.entries={}; return u.metodos; }catch{ return {entries:{}}; } }

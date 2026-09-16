@@ -1,4 +1,4 @@
-const CACHE = 'cal13-v9-notify-sound';
+const CACHE = 'cal13-v14-semilleros';
 const CORE = [
   './',
   './index.html',
@@ -18,6 +18,22 @@ const CORE = [
   './renderer.js?v=8',
   './eneagrama-modulo.js',
   './eneagrama-modulo.js?v=1',
+  './carta-astral.js',
+  './carta-astral.js?v=1',
+  './voz-abuelos.js',
+  './voz-abuelos.js?v=1',
+  './penco-guia.js',
+  './penco-guia.js?v=1',
+  './bosque-historia.js',
+  './bosque-historia.js?v=1',
+  './bosque-semillero.js',
+  './bosque-semillero.js?v=1',
+  './aves-historia.js',
+  './aves-historia.js?v=1',
+  './pesca-historia.js',
+  './pesca-historia.js?v=1',
+  './semillero-guias.js',
+  './semillero-guias.js?v=1',
   './manifest.json',
   './icon-192.png',
   './icon-512.png',
