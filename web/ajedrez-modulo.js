@@ -1,11 +1,13 @@
 /* ============================================================
    AJEDREZ — Calendario 13 Lunas (Penco · Bio-Bio)
    Seccion completa en Mente & Estudio (btnAjedrez):
-   - Tablero libre jugable (2 jugadores o vs novato automatico),
+   - Tablero libre jugable (2 jugadores o vs rival automático
+     con 4 niveles: 🌱 Novato, 🧩 Aprendiz, ⚔️ Rival, 👑 Maestro),
      con reglas completas: enroque, peon al paso, promocion,
      jaque, mate y ahogado.
    - Aprender: piezas, valores, reglas especiales y notacion.
-   - Tactica: 8 motivos + 4 puzzles de mate en 1 interactivos.
+   - Tactica: 8 motivos + 8 puzzles de mate en 1 interactivos
+     (Fácil/Media/Difícil con filtro y progreso).
    - Aperturas: 6 aperturas clasicas con planes.
    - Mis partidas: bitacora privada y local por usuario.
    - Consejo lunar para entrenar la mente segun la fase.
@@ -333,6 +335,139 @@ function sanFor(st, m) {
   return s;
 }
 
+/* ================= MOTOR DEL RIVAL (4 niveles) =================
+   N0 dos jugadores · N1 Novato (casi azar) · N2 Aprendiz (voraz
+   material 1-ply) · N3 Rival (minimax prof.2) · N4 Maestro
+   (minimax prof.3 con tablas de posición). El rival juega negras. */
+var AJ_NIVELES = [
+  { id: 0, n: '👥 Dos jugadores', d: 'Juega con alguien al lado, pasando el dispositivo.' },
+  { id: 1, n: '🌱 Novato', d: 'Juega casi al azar, a veces captura. Ideal para tu primera victoria.' },
+  { id: 2, n: '🧩 Aprendiz', d: 'Siempre toma lo que brilla: gana material cuando puede. Castiga piezas colgadas.' },
+  { id: 3, n: '⚔️ Rival', d: 'Piensa 2 jugadas adelante: ataca y defiende. Te exige cuidar cada pieza.' },
+  { id: 4, n: '👑 Maestro', d: 'Piensa 3 jugadas con posición: centro, desarrollo y rey seguro. Un verdadero examen.' }
+];
+var AJ_VAL = { p: 100, n: 320, b: 330, r: 500, q: 900, k: 0 };
+// Bonus chico por centralizar (perspectiva blancas; se espeja para negras)
+function ajPst(t, s) {
+  var r = s >> 3, f = s & 7;
+  var c = Math.min(f, 7 - f) + Math.min(r, 7 - r); // 0 borde .. 6 centro
+  if (t === 'n' || t === 'b') return (c - 2) * 4;
+  if (t === 'p') return (t && r >= 2 && r <= 5 && f >= 2 && f <= 5) ? 8 : 0;
+  if (t === 'q' || t === 'r') return (r <= 1 || r >= 6) ? 0 : 4;
+  return 0;
+}
+function ajEval(st) {
+  // + a favor blancas, - a favor negras
+  var s = 0, i, p;
+  for (i = 0; i < 64; i++) {
+    p = st.b[i];
+    if (!p) continue;
+    var v = AJ_VAL[p.t] + ajPst(p.t, i);
+    s += (p.c === 'w' ? v : -v);
+  }
+  return s;
+}
+function ajOrder(moves, st) {
+  var scored = moves.map(function (m) {
+    var v = 0;
+    var tgt = st.b[m.to];
+    if (tgt) v += 10 * AJ_VAL[tgt.t] - AJ_VAL[(st.b[m.from] || {}).t || 'p'];
+    if (m.promo) v += 800;
+    if (m.castle) v += 30;
+    return { m: m, v: v };
+  });
+  scored.sort(function (a, b) { return b.v - a.v; });
+  return scored.map(function (x) { return x.m; });
+}
+function ajSearch(st, depth, alpha, beta) {
+  var gs = gameStatus(st);
+  if (gs.over) {
+    if (gs.result === '1-0') return 100000 + depth;
+    if (gs.result === '0-1') return -100000 - depth;
+    return 0;
+  }
+  if (depth <= 0) return ajEval(st);
+  var moves = ajOrder(allLegal(st, st.turn), st);
+  if (!moves.length) return ajEval(st);
+  var i, sc;
+  if (st.turn === 'w') {
+    var best = -Infinity;
+    for (i = 0; i < moves.length; i++) {
+      var u = doMove(st, moves[i]);
+      sc = ajSearch(st, depth - 1, alpha, beta);
+      undoMove(st, moves[i], u);
+      if (sc > best) best = sc;
+      if (best > alpha) alpha = best;
+      if (alpha >= beta) break;
+    }
+    return best;
+  } else {
+    var bestB = Infinity;
+    for (i = 0; i < moves.length; i++) {
+      var u2 = doMove(st, moves[i]);
+      sc = ajSearch(st, depth - 1, alpha, beta);
+      undoMove(st, moves[i], u2);
+      if (sc < bestB) bestB = sc;
+      if (bestB < beta) beta = bestB;
+      if (alpha >= beta) break;
+    }
+    return bestB;
+  }
+}
+function ajBestMove(st, depth) {
+  var moves = ajOrder(allLegal(st, st.turn), st);
+  if (!moves.length) return null;
+  var black = st.turn === 'b';
+  var best = null, bestSc = black ? Infinity : -Infinity;
+  var scored = [];
+  for (var i = 0; i < moves.length; i++) {
+    var u = doMove(st, moves[i]);
+    var sc = ajSearch(st, depth - 1, -Infinity, Infinity);
+    undoMove(st, moves[i], u);
+    scored.push({ m: moves[i], sc: sc });
+    if (black ? sc < bestSc : sc > bestSc) { bestSc = sc; best = moves[i]; }
+  }
+  return { best: best, scored: scored, score: bestSc };
+}
+function ajPickMove(st, nivel) {
+  var all = allLegal(st, st.turn);
+  if (!all.length) return null;
+  function promoQ(m) {
+    if (!m.promo || m.promo === 'q') return m;
+    for (var i = 0; i < all.length; i++) {
+      if (all[i].from === m.from && all[i].to === m.to && all[i].promo === 'q') return all[i];
+    }
+    return m;
+  }
+  if (nivel <= 1) {
+    // Novato: prefiere capturas (70%), si no al azar
+    var caps = all.filter(function (x) { return st.b[x.to] || x.ep; });
+    var pick = caps.length && Math.random() < 0.7 ? caps[Math.floor(Math.random() * caps.length)] : all[Math.floor(Math.random() * all.length)];
+    return promoQ(pick);
+  }
+  if (nivel === 2) {
+    // Aprendiz: voraz 1-ply (mejor evaluación tras mover), 15% despiste
+    if (Math.random() < 0.15) return promoQ(all[Math.floor(Math.random() * all.length)]);
+    var r = ajBestMove(st, 1);
+    if (r && r.best) return promoQ(r.best);
+    return promoQ(all[0]);
+  }
+  var depth = nivel === 3 ? 2 : 3;
+  var res = ajBestMove(st, depth);
+  if (!res || !res.best) return promoQ(all[0]);
+  if (nivel === 3 && res.scored.length > 1 && Math.random() < 0.12) {
+    // Rival: a veces elige entre las 3 mejores para no ser predecible
+    var black = st.turn === 'b';
+    var s = res.scored.slice().sort(function (a, b2) { return black ? a.sc - b2.sc : b2.sc - a.sc; }).slice(0, 3);
+    return promoQ(s[Math.floor(Math.random() * s.length)].m);
+  }
+  return promoQ(res.best);
+}
+function ajNivelNombre(id) {
+  for (var i = 0; i < AJ_NIVELES.length; i++) if (AJ_NIVELES[i].id === id) return AJ_NIVELES[i].n;
+  return '👥 Dos jugadores';
+}
+
 /* ================= CONTENIDO ================= */
 var PIEZAS = [
   { g: '♟', n: 'Peón', v: '1 punto', m: 'Avanza 1 (2 desde inicio), captura en diagonal. Al llegar al final promociona: casi siempre Dama.', t: 'El alma del ajedrez. Los peones sanos ganan finales.' },
@@ -368,37 +503,72 @@ function sqList(arr) {
 }
 var PUZZLES = [
   {
-    id: 'pasillo', n: '1 · El pasillo mortal', tema: 'Mate del pasillo',
+    id: 'pasillo', n: '1 · El pasillo mortal', tema: 'Mate del pasillo', dif: 'Fácil ⭐',
     d: 'Las negras se encerraron con sus peones. Una torre manda. Juegan blancas.',
     piezas: [['g8', 'b', 'k'], ['f7', 'b', 'p'], ['g7', 'b', 'p'], ['h7', 'b', 'p'], ['g1', 'w', 'k'], ['e1', 'w', 'r']],
     turn: 'w', sol: { from: 'e1', to: 'e8' }, pista: 'La última fila negra está cerrada… busca Te8.'
   },
   {
-    id: 'pastor', n: '2 · El pastor ataca', tema: 'Mate pastor',
+    id: 'pastor', n: '2 · El pastor ataca', tema: 'Mate pastor', dif: 'Fácil ⭐',
     d: 'Posición real de apertura. Las negras jugaron …Cf6?? El punto f7 está débil. Juegan blancas.',
     piezas: [['e1', 'w', 'k'], ['h5', 'w', 'q'], ['c4', 'w', 'b'], ['a2', 'w', 'p'], ['b2', 'w', 'p'], ['c2', 'w', 'p'], ['d2', 'w', 'p'], ['e4', 'w', 'p'], ['f2', 'w', 'p'], ['g2', 'w', 'p'], ['h2', 'w', 'p'], ['e8', 'b', 'k'], ['d8', 'b', 'q'], ['c6', 'b', 'n'], ['a7', 'b', 'p'], ['b7', 'b', 'p'], ['c7', 'b', 'p'], ['d7', 'b', 'p'], ['e5', 'b', 'p'], ['f7', 'b', 'p'], ['g7', 'b', 'p'], ['h7', 'b', 'p']],
     turn: 'w', sol: { from: 'h5', to: 'f7' }, pista: 'Dama x peón de f7: el rey no tiene escape.'
   },
   {
-    id: 'arabe', n: '3 · Mate árabe', tema: 'Torre + caballo',
+    id: 'dama-apoyo', n: '3 · La dama se apoya', tema: 'Dama + rey', dif: 'Fácil ⭐',
+    d: 'Tu rey está cerca y cuida. Acerca la dama con apoyo y es mate. Juegan blancas.',
+    piezas: [['d6', 'w', 'k'], ['e5', 'w', 'q'], ['e8', 'b', 'k']],
+    turn: 'w', sol: { from: 'e5', to: 'e7' }, pista: 'De5-e7: el rey defiende la dama y no hay escape.'
+  },
+  {
+    id: 'arabe', n: '4 · Mate árabe', tema: 'Torre + caballo', dif: 'Media ⭐⭐',
     d: 'El caballo quita el escape g8. La torre remata por la columna h. Juegan blancas.',
     piezas: [['e1', 'w', 'k'], ['h1', 'w', 'r'], ['f6', 'w', 'n'], ['h8', 'b', 'k'], ['g7', 'b', 'p'], ['a7', 'b', 'p'], ['b7', 'b', 'p']],
     turn: 'w', sol: { from: 'h1', to: 'h7' }, pista: 'Th7: el rey no puede capturar por el caballo.'
   },
   {
-    id: 'corona', n: '4 · Coronación mortal', tema: 'Promoción',
+    id: 'corona', n: '5 · Coronación mortal', tema: 'Promoción', dif: 'Media ⭐⭐',
     d: 'Un peón a punto de coronar, con el rey apoyando. Solo una promoción da mate. Juegan blancas.',
     piezas: [['f7', 'w', 'k'], ['g7', 'w', 'p'], ['h8', 'b', 'k']],
     turn: 'w', sol: { from: 'g7', to: 'g8', promo: 'q' }, pista: 'Corona dama: cubre h7 y g7 a la vez.'
+  },
+  {
+    id: 'sacro-h7', n: '6 · Sacrificio en h7', tema: 'Dama + alfil', dif: 'Media ⭐⭐',
+    d: 'El alfil apunta a h7 desde lejos. La dama se sacrifica donde el alfil muerde. Juegan blancas.',
+    piezas: [['g1', 'w', 'k'], ['h5', 'w', 'q'], ['c2', 'w', 'b'], ['g8', 'b', 'k'], ['f8', 'b', 'r'], ['f7', 'b', 'p'], ['g7', 'b', 'p'], ['h7', 'b', 'p']],
+    turn: 'w', sol: { from: 'h5', to: 'h7' }, pista: 'Dxh7: la torre de f8 le quita el escape y el alfil defiende.'
+  },
+  {
+    id: 'coz', n: '7 · La coz del caballo', tema: 'Mate de la coz', dif: 'Difícil ⭐⭐⭐',
+    d: 'El rey negro se ahoga entre sus propias piezas. Un salto lo remata. Juegan blancas.',
+    piezas: [['e1', 'w', 'k'], ['d6', 'w', 'n'], ['h8', 'b', 'k'], ['g8', 'b', 'r'], ['g7', 'b', 'p'], ['h7', 'b', 'p']],
+    turn: 'w', sol: { from: 'd6', to: 'f7' }, pista: 'Cf7: el rey no tiene casilla entre los suyos.'
+  },
+  {
+    id: 'red-dama', n: '8 · La red de la dama', tema: 'Dama + alfil', dif: 'Difícil ⭐⭐⭐',
+    d: 'La dama cruza el tablero y el alfil la sostiene. Teje la red completa. Juegan blancas.',
+    piezas: [['g1', 'w', 'k'], ['h5', 'w', 'q'], ['c6', 'w', 'b'], ['g8', 'b', 'k'], ['g7', 'b', 'p'], ['h7', 'b', 'p']],
+    turn: 'w', sol: { from: 'h5', to: 'e8' }, pista: 'De8: el alfil cuida desde c6 y no hay escape.'
   }
 ];
 var APERTURAS = [
-  { n: '🇮🇹 Apertura Italiana', mov: '1. e4 e5 2. Cf3 Cc6 3. Ac4', idea: 'Control del centro + ataque rápido a f7. Ideal para aprender: desarrollo natural y enroque corto.', nivel: 'Principiante ⭐', plan: 'Enroca, juega d3 o d4, y presiona f7 con Dama + alfil si se descuida.' },
-  { n: '🇪🇸 Apertura Española (Ruy López)', mov: '1. e4 e5 2. Cf3 Cc6 3. Ab5', idea: 'Presión sobre el caballo que defiende e5. La más jugada de la historia: paciencia y ventaja duradera.', nivel: 'Intermedio ⭐⭐', plan: 'O-O, Te1, c3 y d4: el “martillo español” en el centro.' },
-  { n: '🛡️ Defensa Siciliana', mov: '1. e4 c5', idea: 'Las negras pelean el centro sin copiar. Partidas filosas y contrajuego. La favorita de campeones mundiales.', nivel: 'Intermedio ⭐⭐', plan: 'Blancas: d4 y ataque. Negras: …d6, …Cf6 y contraataque en el flanco dama.' },
-  { n: '🇫🇷 Defensa Francesa', mov: '1. e4 e6 2. d4 d5', idea: 'Muro sólido y contraataque con …c5. Estructura clara: aprende planes, no solo jugadas.', nivel: 'Intermedio ⭐⭐', plan: 'Negras: presiona d4 con c5 + Cc6. Blancas: cuida tu alfil “malo” de c1.' },
-  { n: '🌆 Sistema Londres', mov: '1. d4 d5 2. Af4 Cf6 3. e3 e6 4. Cf3', idea: 'Esquema fijo y sólido con blancas: alfil fuera antes de e3. Perfecto para no memorizar toneladas.', nivel: 'Principiante ⭐', plan: 'C3, Ad3, O-O y ataque al flanco rey con Dama + torres.' },
-  { n: '👑 Gambito de Dama', mov: '1. d4 d5 2. c4', idea: 'Sacrificas un peón lateral por centro total. Si aceptan (dxc4), desarrollas rápido y lo recuperas.', nivel: 'Avanzado ⭐⭐⭐', plan: 'e3, Axc4, Cf3, O-O: desarrollo relámpago y presión en c7.' }
+  { n: '🇮🇹 Apertura Italiana', mov: '1. e4 e5 2. Cf3 Cc6 3. Ac4', seq: [['e2', 'e4'], ['e7', 'e5'], ['g1', 'f3'], ['b8', 'c6'], ['f1', 'c4']], idea: 'Control del centro + ataque rápido a f7. Ideal para aprender: desarrollo natural y enroque corto.', nivel: 'Principiante ⭐', plan: 'Enroca, juega d3 o d4, y presiona f7 con Dama + alfil si se descuida.' },
+  { n: '🇪🇸 Apertura Española (Ruy López)', mov: '1. e4 e5 2. Cf3 Cc6 3. Ab5', seq: [['e2', 'e4'], ['e7', 'e5'], ['g1', 'f3'], ['b8', 'c6'], ['f1', 'b5']], idea: 'Presión sobre el caballo que defiende e5. La más jugada de la historia: paciencia y ventaja duradera.', nivel: 'Intermedio ⭐⭐', plan: 'O-O, Te1, c3 y d4: el “martillo español” en el centro.' },
+  { n: '🛡️ Defensa Siciliana', mov: '1. e4 c5', seq: [['e2', 'e4'], ['c7', 'c5']], idea: 'Las negras pelean el centro sin copiar. Partidas filosas y contrajuego. La favorita de campeones mundiales.', nivel: 'Intermedio ⭐⭐', plan: 'Blancas: d4 y ataque. Negras: …d6, …Cf6 y contraataque en el flanco dama.' },
+  { n: '🇫🇷 Defensa Francesa', mov: '1. e4 e6 2. d4 d5', seq: [['e2', 'e4'], ['e7', 'e6'], ['d2', 'd4'], ['d7', 'd5']], idea: 'Muro sólido y contraataque con …c5. Estructura clara: aprende planes, no solo jugadas.', nivel: 'Intermedio ⭐⭐', plan: 'Negras: presiona d4 con c5 + Cc6. Blancas: cuida tu alfil “malo” de c1.' },
+  { n: '🌆 Sistema Londres', mov: '1. d4 d5 2. Af4 Cf6 3. e3 e6 4. Cf3', seq: [['d2', 'd4'], ['d7', 'd5'], ['c1', 'f4'], ['g8', 'f6'], ['e2', 'e3'], ['e7', 'e6'], ['g1', 'f3']], idea: 'Esquema fijo y sólido con blancas: alfil fuera antes de e3. Perfecto para no memorizar toneladas.', nivel: 'Principiante ⭐', plan: 'C3, Ad3, O-O y ataque al flanco rey con Dama + torres.' },
+  { n: '👑 Gambito de Dama', mov: '1. d4 d5 2. c4', seq: [['d2', 'd4'], ['d7', 'd5'], ['c2', 'c4']], idea: 'Sacrificas un peón lateral por centro total. Si aceptan (dxc4), desarrollas rápido y lo recuperas.', nivel: 'Avanzado ⭐⭐⭐', plan: 'e3, Axc4, Cf3, O-O: desarrollo relámpago y presión en c7.' }
+];
+/* Tableros demo de motivos (mismo orden que MOTIVOS): posición + jugada que la muestra */
+var AJ_DEMOS = [
+  { piezas: [['e1', 'w', 'k'], ['c1', 'w', 'b'], ['a2', 'w', 'p'], ['b2', 'w', 'p'], ['c2', 'w', 'p'], ['e4', 'w', 'p'], ['f2', 'w', 'p'], ['g2', 'w', 'p'], ['h2', 'w', 'p'], ['e8', 'b', 'k'], ['d8', 'b', 'q'], ['f6', 'b', 'n'], ['a7', 'b', 'p'], ['b7', 'b', 'p'], ['c7', 'b', 'p'], ['d7', 'b', 'p'], ['e7', 'b', 'p'], ['f7', 'b', 'p'], ['g7', 'b', 'p'], ['h7', 'b', 'p']], turn: 'w', from: 'c1', to: 'g5', jugada: 'Ag5', nota: 'El alfil clava el caballo a la dama: si el caballo se mueve, cae la dama.' },
+  { piezas: [['e1', 'w', 'k'], ['e4', 'w', 'n'], ['a2', 'w', 'p'], ['b2', 'w', 'p'], ['c2', 'w', 'p'], ['d2', 'w', 'p'], ['f2', 'w', 'p'], ['g2', 'w', 'p'], ['h2', 'w', 'p'], ['e8', 'b', 'k'], ['f7', 'b', 'q'], ['a7', 'b', 'p'], ['b7', 'b', 'p'], ['c7', 'b', 'p'], ['d7', 'b', 'p'], ['e7', 'b', 'p'], ['g7', 'b', 'p'], ['h7', 'b', 'p']], turn: 'w', from: 'e4', to: 'd6', jugada: 'Cd6+', nota: '¡Horquilla de caballo con jaque! Ataca rey y dama a la vez: una se salva, la otra cae.' },
+  { piezas: [['g1', 'w', 'k'], ['e1', 'w', 'r'], ['f5', 'w', 'n'], ['a2', 'w', 'p'], ['b2', 'w', 'p'], ['c2', 'w', 'p'], ['d2', 'w', 'p'], ['f2', 'w', 'p'], ['g2', 'w', 'p'], ['h2', 'w', 'p'], ['e8', 'b', 'k'], ['e7', 'b', 'q'], ['a7', 'b', 'p'], ['b7', 'b', 'p'], ['c7', 'b', 'p'], ['d7', 'b', 'p'], ['f7', 'b', 'p'], ['g7', 'b', 'p'], ['h7', 'b', 'p']], turn: 'w', from: 'e1', to: 'e7', jugada: 'Txe7+', nota: 'Rayos X: la torre mira al rey A TRAVÉS de la dama y la gana (el caballo la defiende).' },
+  { piezas: [['g1', 'w', 'k'], ['h5', 'w', 'q'], ['a2', 'w', 'p'], ['b2', 'w', 'p'], ['c2', 'w', 'p'], ['d2', 'w', 'p'], ['e2', 'w', 'p'], ['f2', 'w', 'p'], ['g2', 'w', 'p'], ['h2', 'w', 'p'], ['g8', 'b', 'k'], ['f5', 'b', 'b'], ['a7', 'b', 'p'], ['b7', 'b', 'p'], ['c7', 'b', 'p'], ['d7', 'b', 'p'], ['e7', 'b', 'p'], ['f7', 'b', 'p'], ['g7', 'b', 'p'], ['h7', 'b', 'p']], turn: 'w', from: 'g2', to: 'g4', jugada: 'g4', nota: 'Desviación: el peón ataca al alfil que cuida h7. Si se va, cae el mate en h7.' },
+  { piezas: [['g1', 'w', 'k'], ['h5', 'w', 'q'], ['a2', 'w', 'p'], ['b2', 'w', 'p'], ['c2', 'w', 'p'], ['d2', 'w', 'p'], ['e2', 'w', 'p'], ['f2', 'w', 'p'], ['g2', 'w', 'p'], ['h2', 'w', 'p'], ['h8', 'b', 'k'], ['a7', 'b', 'p'], ['b7', 'b', 'p'], ['c7', 'b', 'p'], ['d7', 'b', 'p'], ['e7', 'b', 'p'], ['f7', 'b', 'p'], ['g7', 'b', 'p'], ['h7', 'b', 'p']], turn: 'w', from: 'h5', to: 'h7', jugada: 'Dxh7+', nota: 'Atracción: la dama se sacrifica y el rey DEBE capturar… quedando al descubierto.' },
+  { piezas: [['g1', 'w', 'k'], ['e1', 'w', 'r'], ['g8', 'b', 'k'], ['f7', 'b', 'p'], ['g7', 'b', 'p'], ['h7', 'b', 'p']], turn: 'w', from: 'e1', to: 'e8', jugada: 'Te8#', nota: 'Mate del pasillo: la última fila está cerrada por sus propios peones.' },
+  { piezas: [['e1', 'w', 'k'], ['h5', 'w', 'q'], ['c4', 'w', 'b'], ['e8', 'b', 'k'], ['d8', 'b', 'q'], ['a7', 'b', 'p'], ['b7', 'b', 'p'], ['c7', 'b', 'p'], ['d7', 'b', 'p'], ['e7', 'b', 'p'], ['f7', 'b', 'p'], ['g7', 'b', 'p'], ['h7', 'b', 'p']], turn: 'w', from: 'h5', to: 'f7', jugada: 'Dxf7#', nota: 'Mate pastor: dama + alfil sobre f7, el punto más débil al inicio.' },
+  { piezas: [['e1', 'w', 'k'], ['h1', 'w', 'r'], ['f6', 'w', 'n'], ['h8', 'b', 'k'], ['g7', 'b', 'p'], ['a7', 'b', 'p'], ['b7', 'b', 'p']], turn: 'w', from: 'h1', to: 'h7', jugada: 'Th7#', nota: 'Mate árabe: la torre remata y el caballo quita el escape.' }
 ];
 var LUNA_TIPS = [
   { f: '🌑 Luna nueva', t: 'Tiempo de estudiar: memoriza 1 apertura y 1 motivo táctico. Sin apuro, como sembrar.' },
@@ -426,10 +596,15 @@ function lunaFaseAprox() {
 var TAB = 'jugar';
 var G = null;            // estado partida libre
 var Ghist = [];          // {move, san, undo}
-var Gsel = -1, Gmoves = [], Glast = null, Gflip = false, Gauto = false, Gpromo = null;
+var Gsel = -1, Gmoves = [], Glast = null, Gflip = false, Gpromo = null;
+var Gnivel = 0;          // 0 dos jugadores · 1 novato · 2 aprendiz · 3 rival · 4 maestro
+var Gauto = false;       // compat: true si Gnivel > 0 (rival automático con negras)
+var Gpensando = false;   // el motor está calculando
 var PZ = null;           // estado puzzle actual
 var PZsel = -1, PZmoves = [], PZidx = 0, PZdone = false;
+var PZfiltro = 'Todos';
 var MOTIVO_POS = -1;
+function ajEsAuto() { return Gnivel > 0; }
 
 function newFreeGame() {
   G = initialState();
@@ -532,7 +707,9 @@ function renderFree() {
   if (info) {
     var t = '<div class="chip" style="display:block;white-space:normal;line-height:1.6">';
     t += (G.turn === 'w' ? '⚪ Juegan <b>blancas</b>' : '⚫ Juegan <b>negras</b>');
-    if (st.over) t += ' · <b>' + esc(st.reason) + '</b> (' + esc(st.result) + ')';
+    t += ' · <span class="muted" style="font-size:11px">' + esc(ajNivelNombre(Gnivel)) + '</span>';
+    if (Gpensando) t += ' · <b>🤔 pensando…</b>';
+    else if (st.over) t += ' · <b>' + esc(st.reason) + '</b> (' + esc(st.result) + ')';
     else if (st.check) t += ' · <b style="color:#ff9a9a">¡Jaque al rey!</b>';
     t += '<br><span class="muted" style="font-size:11px">' + esc(materialDiff(G)) + ' · Jugada ' + G.full + '</span>';
     var cap = capturedLists(G);
@@ -558,7 +735,7 @@ function renderFree() {
   if (fl) fl.textContent = Gflip ? '🔄 Ver desde blancas' : '🔄 Ver desde negras';
 }
 function pickFree(s) {
-  if (!G || Gpromo) return;
+  if (!G || Gpromo || Gpensando) return;
   var st = gameStatus(G);
   if (st.over) return;
   var p = G.b[s];
@@ -574,7 +751,7 @@ function pickFree(s) {
     }
   }
   if (p && p.c === G.turn) {
-    if (Gauto && G.turn === 'b') return; // turno del autómata
+    if (ajEsAuto() && G.turn === 'b') return; // turno del autómata
     Gsel = s;
     Gmoves = legalMoves(G, s);
     if (!Gmoves.length) { try { if (navigator.vibrate) navigator.vibrate(40); } catch (e) {} }
@@ -598,28 +775,31 @@ function playMove(m) {
   renderFree();
   var gs = gameStatus(G);
   if (gs.over) { save('Partida terminada: ' + gs.result); return; }
-  if (Gauto && G.turn === 'b') {
+  if (ajEsAuto() && G.turn === 'b') {
+    Gpensando = true; renderFree();
+    var niv = Gnivel;
+    var delay = niv >= 4 ? 600 : 450;
     setTimeout(function () {
+      Gpensando = false;
       if (!G || $('ajedrezDialog') && !$('ajedrezDialog').open) return;
-      var all = allLegal(G, 'b');
-      if (!all.length) { renderFree(); return; }
-      // novato: prefiere capturas y jaques, si no al azar
-      var caps = all.filter(function (x) { return G.b[x.to] || x.ep; });
-      var pick = caps.length && Math.random() < 0.7 ? caps[Math.floor(Math.random() * caps.length)] : all[Math.floor(Math.random() * all.length)];
-      // promociones del autómata: siempre dama
-      if (pick.promo && pick.promo !== 'q') {
-        var q = all.filter(function (x) { return x.from === pick.from && x.to === pick.to && x.promo === 'q'; });
-        if (q.length) pick = q[0];
+      if (gameStatus(G).over) { renderFree(); return; }
+      var pick = null;
+      try { pick = ajPickMove(G, niv); } catch (e) { pick = null; }
+      if (!pick) {
+        var all = allLegal(G, 'b');
+        if (!all.length) { renderFree(); return; }
+        pick = all[Math.floor(Math.random() * all.length)];
       }
       playMove(pick);
-    }, 450);
+    }, delay);
   }
 }
 function undoFree() {
+  if (Gpensando) return;
   var h = Ghist.pop();
   if (!h) return;
   undoMove(G, h.move, h.undo);
-  if (Gauto && Ghist.length) { var h2 = Ghist.pop(); undoMove(G, h2.move, h2.undo); }
+  if (ajEsAuto() && Ghist.length) { var h2 = Ghist.pop(); undoMove(G, h2.move, h2.undo); }
   Glast = Ghist.length ? { from: Ghist[Ghist.length - 1].move.from, to: Ghist[Ghist.length - 1].move.to } : null;
   Gsel = -1; Gmoves = []; Gpromo = null;
   renderFree();
@@ -644,7 +824,7 @@ function renderPuzzle() {
   if (info) {
     var st = getStats();
     var ok = st.puzzles[P.id] ? ' ✅ resuelto' : '';
-    info.innerHTML = '<div class="si-card" style="border-color:var(--gold)"><h4>' + esc(P.n) + ok + '</h4>' +
+    info.innerHTML = '<div class="si-card" style="border-color:var(--gold)"><h4>' + esc(P.n) + ok + ' <span class="chip" style="font-size:10px">' + esc(P.dif || 'Fácil ⭐') + '</span></h4>' +
       '<p>' + esc(P.d) + '</p>' +
       '<p class="muted" style="font-size:11px">Tema: ' + esc(P.tema) + ' · Juegan ' + (P.turn === 'w' ? 'blancas' : 'negras') + '</p>' +
       '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">' +
@@ -658,10 +838,21 @@ function renderPuzzle() {
   }
   var nav = $('ajPuzNav');
   if (nav) {
-    nav.innerHTML = PUZZLES.map(function (q, i) {
-      var st2 = getStats();
-      return '<button type="button" class="btn' + (i === PZidx ? ' btn-accent' : '') + '" data-pz="' + i + '" style="width:auto;font-size:11px">' + (st2.puzzles[q.id] ? '✅ ' : '') + esc(q.n) + '</button>';
+    var st0 = getStats();
+    var nOk = PUZZLES.filter(function (q) { return st0.puzzles[q.id]; }).length;
+    var fBtns = ['Todos', 'Fácil ⭐', 'Media ⭐⭐', 'Difícil ⭐⭐⭐'].map(function (f) {
+      return '<button type="button" class="btn' + (PZfiltro === f ? ' btn-accent' : '') + '" data-pzf="' + f + '" style="width:auto;font-size:10px">' + f + '</button>';
     }).join('');
+    var list = PUZZLES.map(function (q, i) { return { q: q, i: i }; }).filter(function (x) {
+      return PZfiltro === 'Todos' || (x.q.dif || '') === PZfiltro;
+    });
+    nav.innerHTML = '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px;align-items:center"><span class="muted" style="font-size:10px">🎯 ' + nOk + '/' + PUZZLES.length + ' · ver:</span>' + fBtns + '</div>' +
+      '<div style="display:flex;gap:6px;flex-wrap:wrap">' + list.map(function (x) {
+        return '<button type="button" class="btn' + (x.i === PZidx ? ' btn-accent' : '') + '" data-pz="' + x.i + '" style="width:auto;font-size:11px">' + (st0.puzzles[x.q.id] ? '✅ ' : '') + esc(x.q.n) + '</button>';
+      }).join('') + '</div>';
+    nav.querySelectorAll('[data-pzf]').forEach(function (b) {
+      b.onclick = function () { PZfiltro = b.getAttribute('data-pzf'); renderPuzzle(); };
+    });
     nav.querySelectorAll('[data-pz]').forEach(function (b) {
       b.onclick = function () { loadPuzzle(parseInt(b.getAttribute('data-pz'), 10)); };
     });
@@ -708,9 +899,10 @@ function switchTab(t) {
     if (p) p.classList.toggle('hidden', k !== t);
   });
   if (t === 'jugar') renderFree();
-  if (t === 'tactica') renderPuzzle();
+  if (t === 'tactica') { renderDemoTactica(); renderPuzzle(); }
+  if (t === 'aprender') { renderLuna(); renderDemoAprender(); }
+  if (t === 'aperturas') renderDemoAperturas();
   if (t === 'partidas') renderPartidas();
-  if (t === 'aprender') renderLuna();
 }
 function renderLuna() {
   var box = $('ajLunaBox');
@@ -745,6 +937,182 @@ function renderAperturas() {
     return '<div class="si-card"><h4>' + esc(a.n) + ' <span class="chip" style="font-size:10px">' + esc(a.nivel) + '</span></h4>' +
       '<p><b>' + esc(a.mov) + '</b></p><p>' + esc(a.idea) + '</p><p class="muted" style="font-size:11px">📋 Plan: ' + esc(a.plan) + '</p></div>';
   }).join('');
+}
+
+/* ============ DEMO 1 · APRENDER: explorador de movimientos ============ */
+var DAst = null, DAsel = -1, DAmoves = [], DAlast = null, DAplies = 0;
+function demoAInit() { DAst = initialState(); DAsel = -1; DAmoves = []; DAlast = null; DAplies = 0; }
+function renderDemoAprender() {
+  var box = $('ajDemoABoard');
+  if (!box) return;
+  if (!DAst) demoAInit();
+  var chk = inCheck(DAst, DAst.turn) ? kingSq(DAst.b, DAst.turn) : -1;
+  box.innerHTML = boardHTML(DAst, { sel: DAsel, moves: DAmoves, last: DAlast, checkSq: chk, flip: false, mini: true });
+  bindBoard('ajDemoABoard', pickDemoA);
+  var info = $('ajDemoAInfo');
+  if (info) {
+    var selTxt;
+    if (DAsel >= 0 && DAst.b[DAsel]) {
+      var p = DAst.b[DAsel];
+      selTxt = '👆 <b>' + esc(PIEZA_NOMBRE[p.t]) + ' en ' + alg(DAsel) + '</b> → ' + DAmoves.length + ' destino' + (DAmoves.length === 1 ? '' : 's') + ' marcado' + (DAmoves.length === 1 ? '' : 's') + '. Toca un destino para mover.';
+    } else {
+      selTxt = '👆 Toca <b>cualquier pieza</b> (blanca o negra) y se iluminan sus jugadas legales. Toca un destino para moverla.';
+    }
+    info.innerHTML = '<div class="chip" style="display:block;white-space:normal;line-height:1.6">' + selTxt +
+      '<br><span class="muted" style="font-size:11px">Jugadas hechas: ' + DAplies + ' · Turno: ' + (DAst.turn === 'w' ? '⚪ blancas' : '⚫ negras') + '</span></div>';
+  }
+}
+function pickDemoA(s) {
+  if (!DAst) demoAInit();
+  if (DAsel >= 0) {
+    var cands = DAmoves.filter(function (m) { return m.to === s; });
+    if (cands.length) {
+      var mv = cands[0];
+      if (mv.promo) {
+        var q = cands.filter(function (m) { return m.promo === 'q'; });
+        if (q.length) mv = q[0];
+      }
+      doMove(DAst, mv);
+      DAlast = { from: mv.from, to: mv.to };
+      DAplies++;
+      DAsel = -1; DAmoves = [];
+      renderDemoAprender();
+      return;
+    }
+  }
+  var p = DAst.b[s];
+  if (p) { DAst.turn = p.c; DAsel = s; DAmoves = legalMoves(DAst, s); }
+  else { DAsel = -1; DAmoves = []; }
+  renderDemoAprender();
+}
+
+/* ============ DEMO 2 · TÁCTICA: un motivo, una jugada ============ */
+var MOidx = 0, MOst = null, MOshown = false, MOsan = '', MOsol = null, MOsel = -1, MOselMoves = [];
+function demoTInit(i) {
+  MOidx = (i == null ? MOidx : i);
+  var D = AJ_DEMOS[MOidx];
+  MOst = posFromList(D.piezas, D.turn);
+  MOshown = false; MOsan = ''; MOsol = null; MOsel = -1; MOselMoves = [];
+}
+function renderDemoTactica() {
+  var box = $('ajDemoTBoard');
+  if (!box) return;
+  if (!MOst) demoTInit(0);
+  var D = AJ_DEMOS[MOidx], M = MOTIVOS[MOidx];
+  var chk = inCheck(MOst, MOst.turn) ? kingSq(MOst.b, MOst.turn) : -1;
+  box.innerHTML = boardHTML(MOst, { sel: MOsel, moves: MOselMoves, last: MOsol, checkSq: chk, flip: false, mini: true });
+  bindBoard('ajDemoTBoard', pickDemoT);
+  var btns = $('ajDemoTBtns');
+  if (btns) {
+    btns.innerHTML = MOTIVOS.map(function (m, i) {
+      return '<button type="button" class="btn' + (i === MOidx ? ' btn-accent' : '') + '" data-mot="' + i + '" style="width:auto;font-size:10px">' + esc(m.n) + '</button>';
+    }).join('');
+    btns.querySelectorAll('[data-mot]').forEach(function (b) {
+      b.onclick = function () { demoTInit(parseInt(b.getAttribute('data-mot'), 10)); renderDemoTactica(); };
+    });
+  }
+  var info = $('ajDemoTInfo');
+  if (info) {
+    info.innerHTML = '<div class="si-card" style="border-color:var(--gold)"><h4>' + esc(M.n) + '</h4><p>' + esc(M.d) + '</p>' +
+      (MOshown
+        ? '<p>▶ Jugada: <b>' + esc(MOsan || D.jugada) + '</b> — ' + esc(D.nota) + '</p>'
+        : '<p class="muted" style="font-size:11px">Mira la posición, intenta adivinar la jugada… y luego tócala en el tablero o pulsa ▶.</p>') +
+      '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">' +
+      '<button type="button" class="btn btn-accent" id="ajDemoTShow" style="width:auto;font-size:11px">▶ Ver la jugada' + (MOshown ? ' ✓' : '') + '</button>' +
+      '<button type="button" class="btn" id="ajDemoTReset" style="width:auto;font-size:11px">🔁 Reiniciar</button></div></div>';
+    var sh = $('ajDemoTShow');
+    if (sh) sh.onclick = function () { demoTPlay(); };
+    var rs = $('ajDemoTReset');
+    if (rs) rs.onclick = function () { demoTInit(MOidx); renderDemoTactica(); };
+  }
+}
+function demoTPlay() {
+  if (!MOst || MOshown) { renderDemoTactica(); return; }
+  var D = AJ_DEMOS[MOidx];
+  var from = parseAlg(D.from), to = parseAlg(D.to);
+  MOst.turn = D.turn;
+  var cands = legalMoves(MOst, from).filter(function (m) { return m.to === to; });
+  if (!cands.length) { MOsan = ''; MOshown = true; renderDemoTactica(); return; }
+  var mv = cands[0];
+  MOsan = sanFor(MOst, mv) + ' (' + D.jugada + ')';
+  doMove(MOst, mv);
+  MOsol = { from: mv.from, to: mv.to };
+  MOshown = true; MOsel = -1; MOselMoves = [];
+  renderDemoTactica();
+}
+function pickDemoT(s) {
+  if (!MOst || MOshown) return;
+  var D = AJ_DEMOS[MOidx];
+  if (MOsel >= 0) {
+    var cands = MOselMoves.filter(function (m) { return m.to === s; });
+    if (cands.length) {
+      var solFrom = parseAlg(D.from), solTo = parseAlg(D.to);
+      var good = cands.filter(function (m) { return m.from === solFrom && m.to === solTo; });
+      if (good.length) { demoTPlay(); return; }
+      MOsel = -1; MOselMoves = [];
+      renderDemoTactica();
+      return;
+    }
+  }
+  var p = MOst.b[s];
+  if (p && p.c === MOst.turn) { MOst.turn = p.c; MOsel = s; MOselMoves = legalMoves(MOst, s); }
+  else { MOsel = -1; MOselMoves = []; }
+  renderDemoTactica();
+}
+
+/* ============ DEMO 3 · APERTURAS: paso a paso ============ */
+var APidx = 0, APply = 0;
+function demoApPos() {
+  var st = initialState();
+  var sans = [];
+  var seq = APERTURAS[APidx].seq || [];
+  for (var i = 0; i < Math.min(APply, seq.length); i++) {
+    var from = parseAlg(seq[i][0]), to = parseAlg(seq[i][1]);
+    var cands = legalMoves(st, from).filter(function (m) { return m.to === to; });
+    if (!cands.length) break;
+    var mv = cands[0];
+    if (mv.promo) { var q = cands.filter(function (m) { return m.promo === 'q'; }); if (q.length) mv = q[0]; }
+    sans.push(sanFor(st, mv));
+    doMove(st, mv);
+  }
+  return { st: st, sans: sans };
+}
+function renderDemoAperturas() {
+  var box = $('ajDemoApBoard');
+  if (!box) return;
+  var A = APERTURAS[APidx];
+  var seq = A.seq || [];
+  if (APply < 0) APply = 0;
+  if (APply > seq.length) APply = seq.length;
+  var r = demoApPos();
+  var chk = inCheck(r.st, r.st.turn) ? kingSq(r.st.b, r.st.turn) : -1;
+  var last = null;
+  if (APply > 0) {
+    var prev = seq[APply - 1];
+    last = { from: parseAlg(prev[0]), to: parseAlg(prev[1]) };
+  }
+  box.innerHTML = boardHTML(r.st, { sel: -1, moves: [], last: last, checkSq: chk, flip: false, mini: true });
+  var sel = $('ajDemoApSel');
+  if (sel && !sel.options.length) {
+    sel.innerHTML = APERTURAS.map(function (a, i) { return '<option value="' + i + '">' + esc(a.n) + '</option>'; }).join('');
+    sel.value = String(APidx);
+    sel.onchange = function () { APidx = parseInt(sel.value, 10) || 0; APply = 0; renderDemoAperturas(); };
+  }
+  if (sel && sel.value !== String(APidx)) sel.value = String(APidx);
+  var info = $('ajDemoApInfo');
+  if (info) {
+    var txt = r.sans.length ? r.sans.map(function (s2, i) {
+      return (i % 2 === 0 ? Math.floor(i / 2 + 1) + '. ' : '') + s2;
+    }).join(' ') : 'Posición inicial.';
+    info.innerHTML = '<div class="chip" style="display:block;white-space:normal;line-height:1.6"><b>' + esc(A.n) + '</b> · jugada ' + APply + '/' + seq.length +
+      '<br>' + esc(txt) +
+      '<br><span class="muted" style="font-size:11px">' + esc(A.plan) + '</span></div>';
+  }
+  function go(n) { APply = Math.max(0, Math.min(seq.length, n)); renderDemoAperturas(); }
+  var bS = $('ajDemoApStart'); if (bS) bS.onclick = function () { go(0); };
+  var bP = $('ajDemoApPrev'); if (bP) bP.onclick = function () { go(APply - 1); };
+  var bN = $('ajDemoApNext'); if (bN) bN.onclick = function () { go(APply + 1); };
+  var bE = $('ajDemoApEnd'); if (bE) bE.onclick = function () { go(seq.length); };
 }
 
 /* ---- bitácora ---- */
@@ -883,23 +1251,47 @@ function buildDialog() {
     '<button type="button" id="ajUndoBtn" class="btn" style="width:auto;font-size:11px">↩ Deshacer</button>' +
     '<button type="button" id="ajNewBtn" class="btn" style="width:auto;font-size:11px">🔀 Nueva partida</button>' +
     '<button type="button" id="ajFlipBtn" class="btn" style="width:auto;font-size:11px">🔄 Ver desde negras</button>' +
-    '<label class="check-row" style="margin:0;font-size:11px;white-space:nowrap"><input type="checkbox" id="ajAuto"> 🤖 rival novato</label>' +
+    '<label style="margin:0;font-size:11px;display:flex;gap:6px;align-items:center">🤖 Rival <select id="ajNivel" style="max-width:150px">' +
+    AJ_NIVELES.map(function (x) { return '<option value="' + x.id + '">' + x.n + '</option>'; }).join('') + '</select></label>' +
     '</div>' +
+    '<p id="ajNivelHint" class="muted" style="font-size:10px;margin:6px 0 0"></p>' +
     '<div class="menstrual-card" style="margin-top:8px"><h4>📝 Jugadas</h4><div id="ajMovesBox" class="aj-moves"></div>' +
     '<p class="muted" style="font-size:10px;margin:6px 0 0">Copia esta notación a tu bitácora. Consejo: si pierdes una pieza sin compensación, respira y busca contrajuego.</p></div>' +
     '</div>' +
     '<div id="ajPanelAprender" class="hidden">' +
+    '<div class="menstrual-card" style="border-color:var(--gold);margin-bottom:10px"><h4>♟️ Tablero: toca una pieza y ve a dónde puede ir</h4>' +
+    '<p class="muted" style="font-size:11px">Explorador libre desde la posición inicial: toca <b>cualquier pieza</b> para iluminar sus jugadas legales y muévela. Vale para blancas y negras.</p>' +
+    '<div id="ajDemoABoard" class="aj-wrap"></div>' +
+    '<div id="ajDemoAInfo" style="margin-top:8px"></div>' +
+    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="ajDemoAReset" class="btn" style="width:auto;font-size:11px">🔁 Reiniciar tablero</button></div></div>' +
     '<div id="ajPiezasBox"></div>' +
     '</div>' +
     '<div id="ajPanelTactica" class="hidden">' +
+    '<div class="menstrual-card" style="border-color:var(--gold);margin-bottom:10px"><h4>👁️ Tablero: mira el motivo en acción</h4>' +
+    '<p class="muted" style="font-size:11px">Elige un motivo, estudia la posición e intenta la jugada en el tablero. Si no la ves, pulsa ▶.</p>' +
+    '<div id="ajDemoTBtns" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px"></div>' +
+    '<div id="ajDemoTBoard" class="aj-wrap"></div>' +
+    '<div id="ajDemoTInfo" style="margin-top:8px"></div></div>' +
     '<div class="menstrual-card" style="border-color:var(--gold)"><h4>⚔️ Motivos que ganan partidas</h4><p class="muted" style="font-size:11px">La táctica es el 90% de las partidas entre principiantes: quien ve 1 jugada más, gana pieza y suele ganar.</p></div>' +
     '<div id="ajMotivosBox" style="margin-top:8px"></div>' +
     '<div class="menstrual-card" style="margin-top:10px"><h4>🧩 Mate en 1 — calcula y toca</h4>' +
+    '<p class="muted" style="font-size:11px">8 puzzles por dificultad: 3 fáciles ⭐ · 3 medios ⭐⭐ · 2 difíciles ⭐⭐⭐. Filtra arriba y completa tu marcador.</p>' +
     '<div id="ajPuzNav" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px"></div>' +
     '<div id="ajPuzBoard" class="aj-wrap"></div>' +
     '<div id="ajPuzInfo" style="margin-top:8px"></div></div>' +
     '</div>' +
-    '<div id="ajPanelAperturas" class="hidden"><div id="ajAperturasBox"></div>' +
+    '<div id="ajPanelAperturas" class="hidden">' +
+    '<div class="menstrual-card" style="border-color:var(--gold);margin-bottom:10px"><h4>♞ Tablero: recorre la apertura paso a paso</h4>' +
+    '<p class="muted" style="font-size:11px">Elige una apertura y avanza jugada por jugada con ◀ ▶. Fíjate dónde queda cada pieza.</p>' +
+    '<div class="conv-row"><label style="flex:2">Apertura <select id="ajDemoApSel"></select></label></div>' +
+    '<div id="ajDemoApBoard" class="aj-wrap" style="margin-top:8px"></div>' +
+    '<div id="ajDemoApInfo" style="margin-top:8px"></div>' +
+    '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">' +
+    '<button type="button" id="ajDemoApStart" class="btn" style="width:auto;font-size:11px">⏮ Inicio</button>' +
+    '<button type="button" id="ajDemoApPrev" class="btn" style="width:auto;font-size:11px">◀ Atrás</button>' +
+    '<button type="button" id="ajDemoApNext" class="btn btn-accent" style="width:auto;font-size:11px">Adelante ▶</button>' +
+    '<button type="button" id="ajDemoApEnd" class="btn" style="width:auto;font-size:11px">Final ⏭</button></div></div>' +
+    '<div id="ajAperturasBox"></div>' +
     '<div class="si-card"><h4>🧭 ¿Por dónde empiezo?</h4><p class="muted" style="font-size:11px">Elige 1 apertura con blancas (Italiana o Londres) y 1 defensa con negras (Francesa o Siciliana). Repite sus primeras 6 jugadas hasta soñarlas. Después, táctica todos los días.</p></div></div>' +
     '<div id="ajPanelPartidas" class="hidden">' +
     '<div class="menstrual-card"><h4>📓 Anotar partida</h4>' +
@@ -928,7 +1320,40 @@ function buildDialog() {
   $('ajUndoBtn').onclick = undoFree;
   $('ajNewBtn').onclick = function () { newFreeGame(); renderFree(); };
   $('ajFlipBtn').onclick = function () { Gflip = !Gflip; renderFree(); };
-  $('ajAuto').onchange = function () { Gauto = $('ajAuto').checked; if (Gauto && G && G.turn === 'b') { renderFree(); var all = allLegal(G, 'b'); if (all.length) playMove(all[Math.floor(Math.random() * all.length)]); } };
+  if ($('ajDemoAReset')) $('ajDemoAReset').onclick = function () { demoAInit(); renderDemoAprender(); };
+  var _ajSyncHint = function () {
+    var h = $('ajNivelHint');
+    if (h) {
+      var lv = AJ_NIVELES[Gnivel] || AJ_NIVELES[0];
+      h.textContent = lv.d + (Gnivel > 0 ? ' Tú eres blancas, el rival mueve negras.' : '');
+    }
+    var sel = $('ajNivel');
+    if (sel && String(Gnivel) !== sel.value) sel.value = String(Gnivel);
+  };
+  var _ajSel = $('ajNivel');
+  if (_ajSel) {
+    _ajSel.value = String(Gnivel || 0);
+    _ajSel.onchange = function () {
+      Gnivel = parseInt(_ajSel.value, 10) || 0;
+      Gauto = Gnivel > 0;
+      try { var st = getStats(); st.nivel = Gnivel; var u = userData(); u.ajedrezStats = st; save(); } catch (e) {}
+      _ajSyncHint(); renderFree();
+      if (Gnivel > 0 && G && G.turn === 'b' && !gameStatus(G).over) {
+        Gpensando = true; renderFree();
+        (function (niv) {
+          setTimeout(function () {
+            Gpensando = false;
+            if (!G) return;
+            var pick = null;
+            try { pick = ajPickMove(G, niv); } catch (e2) { pick = null; }
+            if (pick) playMove(pick); else renderFree();
+          }, 450);
+        })(Gnivel);
+      }
+    };
+  }
+  _ajSyncHint();
+  try { var _st = getStats(); if (_st && _st.nivel >= 0 && _st.nivel <= 4) { Gnivel = _st.nivel; Gauto = Gnivel > 0; _ajSyncHint(); } } catch (e) {}
   return d;
 }
 
@@ -964,6 +1389,9 @@ function injectConfig() {
 function openAjedrez() {
   var d = buildDialog();
   renderLuna(); renderAprender(); renderMotivos(); renderAperturas();
+  try { demoAInit(); renderDemoAprender(); } catch (e) {}
+  try { demoTInit(MOidx || 0); renderDemoTactica(); } catch (e) {}
+  try { renderDemoAperturas(); } catch (e) {}
   if (!G) newFreeGame();
   setupLog();
   switchTab(TAB || 'jugar');
@@ -993,7 +1421,8 @@ window.Ajedrez = {
   open: openAjedrez, newGame: function () { newFreeGame(); renderFree(); },
   sanFor: sanFor, initialState: initialState, legalMoves: legalMoves,
   doMove: doMove, gameStatus: gameStatus, allLegal: allLegal,
-  parseAlg: parseAlg, alg: alg, puzzles: PUZZLES, posFromList: posFromList
+  parseAlg: parseAlg, alg: alg, puzzles: PUZZLES, posFromList: posFromList,
+  niveles: AJ_NIVELES, evaluar: ajEval, mejorJugada: ajBestMove
 };
 setTimeout(setup, 600);
 

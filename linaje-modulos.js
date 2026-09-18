@@ -109,15 +109,16 @@ function switchTab(prefix, name, tabs) {
 /* ============================================================
    1) ARBOL GENEALOGICO COMPLETO
    ============================================================ */
-var ARB_VINCULOS = ['yo', 'madre', 'padre', 'abuela materna', 'abuelo materno', 'abuela paterna', 'abuelo paterno', 'bisabuela/o', 'tía/o', 'hermana/o', 'pareja', 'hija/o', 'nieta/o', 'madrina/padrino', 'otro'];
+var ARB_VINCULOS = ['yo', 'madre', 'padre', 'abuela materna', 'abuelo materno', 'abuela paterna', 'abuelo paterno', 'bisabuela/o', 'tía/o', 'hermana/o', 'pareja', 'hija/o', 'sobrina/o', 'nieta/o', 'madrina/padrino', 'otro'];
 var ARB_RAMAS = ['tronco (yo)', 'rama materna', 'rama paterna', 'rama de pareja', 'otra'];
 function getArbolFull() {
-  var a = store('arbolFull', null);
-  if (Array.isArray(a) && a.length) return a;
+  var cur = null;
+  try { cur = userData().arbolFull; } catch (e) { cur = null; }
+  if (Array.isArray(cur) && cur.length) return cur;
   // migracion desde pestana antigua 'arbolLunar'
   try {
     var old = store('arbolLunar', []);
-    if (Array.isArray(old) && old.length && (!a || !a.length)) {
+    if (Array.isArray(old) && old.length && (!cur || !cur.length)) {
       var mig = old.map(function (r) {
         return { id: r.id || uid('ab'), nombre: r.nombre || 'Sin nombre', vinc: r.vinc || 'otro', rama: 'otra', nac: '', luna: +r.luna || 1, lugar: '', nota: r.nota || '', partio: !!r.partio };
       });
@@ -126,13 +127,39 @@ function getArbolFull() {
       return mig;
     }
   } catch (e) {}
-  var b = store('arbolFull', []);
-  return Array.isArray(b) ? b : [];
+  if (Array.isArray(cur)) return cur;
+  var fresh = [];
+  try { userData().arbolFull = fresh; } catch (e) {}
+  return fresh;
 }
 function getArbolCartas() { var a = store('arbolCartas', []); return Array.isArray(a) ? a : []; }
 function getArbolVelas() { var a = store('arbolVelas', []); return Array.isArray(a) ? a : []; }
 var arbolEditId = null;
-function switchArbolTab(t) { switchTab('arbF', t, ['Guia', 'Fam', 'Cir', 'Hon']); }
+function switchArbolTab(t) { switchTab('arbF', t, ['Guia', 'Fam', 'Arb', 'Cir', 'Hon']); }
+function arbRamaAuto(vinc) {
+  if (vinc === 'madre' || vinc === 'abuela materna' || vinc === 'abuelo materno') return 'rama materna';
+  if (vinc === 'padre' || vinc === 'abuela paterna' || vinc === 'abuelo paterno') return 'rama paterna';
+  if (vinc === 'pareja') return 'rama de pareja';
+  if (vinc === 'yo') return 'tronco (yo)';
+  return 'otra';
+}
+function arbGoAgregar(vinc) {
+  switchArbolTab('Fam'); try { renderArbolFam(); } catch (e) {}
+  var vs = $('arbFVinc'); if (vs) vs.value = vinc || 'otro';
+  var rs = $('arbFRama'); if (rs) rs.value = arbRamaAuto(vinc || 'otro');
+  try { $('arbFNombre').focus(); $('arbFNombre').scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {}
+}
+function arbEditarPersona(id) {
+  var dd = getArbolFull(); var r = null;
+  for (var i = 0; i < dd.length; i++) if (dd[i].id === id) r = dd[i];
+  if (!r) return;
+  arbolEditId = r.id;
+  switchArbolTab('Fam'); try { renderArbolFam(); } catch (e) {}
+  $('arbFNombre').value = r.nombre || ''; $('arbFVinc').value = r.vinc || 'otro'; $('arbFRama').value = r.rama || 'otra';
+  $('arbFNac').value = r.nac || ''; $('arbFLuna').value = String(r.luna || 1); $('arbFLugar').value = r.lugar || ''; $('arbFNota').value = r.nota || ''; $('arbFPartio').checked = !!r.partio;
+  $('arbFAdd').textContent = '↻ Actualizar persona'; $('arbFCancelEdit').classList.remove('hidden');
+  try { $('arbFNombre').scrollIntoView({ behavior: 'smooth', block: 'center' }); $('arbFNombre').focus(); } catch (e) {}
+}
 
 function renderArbolFam() {
   var box = $('arbFFamList'); if (!box) return;
@@ -162,14 +189,67 @@ function renderArbolFam() {
   }
   var tot = d.length, hon = d.filter(function (r) { return r.partio; }).length;
   if (st) st.textContent = tot + ' personas · ' + hon + ' honradas 🕊️ · mostrando ' + fil.length;
-  box.querySelectorAll('[data-del]').forEach(function (b) { b.onclick = function () { if (!confirm('¿Borrar a esta persona del árbol?')) return; var dd = getArbolFull(); var i = dd.findIndex(function (x) { return x.id === b.getAttribute('data-del'); }); if (i >= 0) dd.splice(i, 1); save(); renderArbolFam(); renderArbolCir(); }; });
-  box.querySelectorAll('[data-hon]').forEach(function (b) { b.onclick = function () { var dd = getArbolFull(); var r = dd.find(function (x) { return x.id === b.getAttribute('data-hon'); }); if (r) r.partio = !r.partio; save('Guardado 🕯️'); renderArbolFam(); renderArbolCir(); }; });
+  box.querySelectorAll('[data-del]').forEach(function (b) { b.onclick = function () { if (!confirm('¿Borrar a esta persona del árbol?')) return; var dd = getArbolFull(); var i = dd.findIndex(function (x) { return x.id === b.getAttribute('data-del'); }); if (i >= 0) dd.splice(i, 1); save(); renderArbolFam(); renderArbolTree(); renderArbolCir(); }; });
+  box.querySelectorAll('[data-hon]').forEach(function (b) { b.onclick = function () { var dd = getArbolFull(); var r = dd.find(function (x) { return x.id === b.getAttribute('data-hon'); }); if (r) r.partio = !r.partio; save('Guardado 🕯️'); renderArbolFam(); renderArbolTree(); renderArbolCir(); }; });
   box.querySelectorAll('[data-edit]').forEach(function (b) { b.onclick = function () { var dd = getArbolFull(); var r = dd.find(function (x) { return x.id === b.getAttribute('data-edit'); }); if (!r) return; arbolEditId = r.id;
     $('arbFNombre').value = r.nombre || ''; $('arbFVinc').value = r.vinc || 'otro'; $('arbFRama').value = r.rama || 'otra';
     $('arbFNac').value = r.nac || ''; $('arbFLuna').value = String(r.luna || 1); $('arbFLugar').value = r.lugar || ''; $('arbFNota').value = r.nota || ''; $('arbFPartio').checked = !!r.partio;
     $('arbFAdd').textContent = '↻ Actualizar persona'; $('arbFCancelEdit').classList.remove('hidden');
     $('arbFNombre').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }; });
+}
+function arbTreeNodeHTML(r) {
+  var col = r.partio ? '#c9a9c9' : '#8fd694';
+  var estado = r.partio ? '🕊️' : '🌱';
+  var vincIcon = ({ 'yo': '🙋', 'madre': '🤱', 'padre': '🧔', 'abuela materna': '👵', 'abuelo materno': '👴', 'abuela paterna': '👵', 'abuelo paterno': '👴', 'bisabuela/o': '✨', 'tía/o': '🧑‍🤝‍🧑', 'hermana/o': '🧒', 'pareja': '💞', 'hija/o': '👶', 'sobrina/o': '👧', 'nieta/o': '🌰', 'madrina/padrino': '🤝' })[r.vinc] || '🌳';
+  return '<div class="arb-node" style="border-color:' + col + '66">' +
+    '<div class="arb-nombre">' + estado + ' ' + esc(r.nombre) + '</div>' +
+    '<div class="arb-vinc">' + vincIcon + ' ' + esc(r.vinc || '') + ' · 🌙 L' + (r.luna || '?') + '</div>' +
+    (r.lugar ? '<div class="arb-lugar">📍 ' + esc(r.lugar) + '</div>' : '') +
+    (r.nota ? '<div class="arb-nota">💬 ' + esc(String(r.nota).slice(0, 60)) + '</div>' : '') +
+    '<div class="arb-btns"><button type="button" class="btn" style="width:auto;font-size:10px;padding:2px 8px" data-tedit="' + r.id + '">✏️</button>' +
+    '<button type="button" class="btn" style="width:auto;font-size:10px;padding:2px 8px" data-thon="' + r.id + '" title="Honrar">🕯️</button></div></div>';
+}
+var ARB_NIVELES = [
+  { t: '✨ Bisabuelos', v: ['bisabuela/o'] },
+  { t: '🌳 Abuelos', v: ['abuela materna', 'abuelo materno', 'abuela paterna', 'abuelo paterno'] },
+  { t: '🌿 Padres y tíos', v: ['madre', 'padre', 'tía/o', 'madrina/padrino'] },
+  { t: '🌱 Mi generación', v: ['yo', 'hermana/o', 'pareja'] },
+  { t: '🌸 Hijos y sobrinos', v: ['hija/o', 'sobrina/o'] },
+  { t: '🌰 Nietos', v: ['nieta/o'] },
+  { t: '🧺 Otros', v: ['otro'] }
+];
+var ARB_SUGERIDOS = ['yo', 'madre', 'padre', 'abuela materna', 'abuelo materno', 'abuela paterna', 'abuelo paterno'];
+function renderArbolTree() {
+  var box = $('arbFTree'); if (!box) return;
+  var d = getArbolFull();
+  if (!d.length) { box.innerHTML = '<p class="muted">Tu árbol está vacío. Agrega a 3 personas en 👨‍👩‍👧 Familia y aquí las verás como árbol.</p>'; var s0 = $('arbFTreeStats'); if (s0) s0.textContent = '0 personas'; return; }
+  var porVinc = {};
+  d.forEach(function (r) { (porVinc[r.vinc || 'otro'] = porVinc[r.vinc || 'otro'] || []).push(r); });
+  Object.keys(porVinc).forEach(function (k) { porVinc[k].sort(function (a, b) { return (a.nombre || '').localeCompare(b.nombre || ''); }); });
+  var html = '<div class="arb-tree">';
+  ARB_NIVELES.forEach(function (niv) {
+    var miembros = [];
+    niv.v.forEach(function (v) { (porVinc[v] || []).forEach(function (r) { miembros.push(r); }); });
+    var faltan = [];
+    if (niv.t !== '🧺 Otros') {
+      niv.v.forEach(function (v) {
+        if (ARB_SUGERIDOS.indexOf(v) >= 0 && !(porVinc[v] && porVinc[v].length)) faltan.push(v);
+      });
+    }
+    if (!miembros.length && !faltan.length) return;
+    html += '<div class="arb-level"><div class="arb-level-t">' + esc(niv.t) + '</div><div class="arb-row">';
+    html += miembros.map(arbTreeNodeHTML).join('');
+    html += faltan.map(function (v) { return '<button type="button" class="arb-add" data-tadd="' + esc(v) + '">+ ' + esc(v) + '</button>'; }).join('');
+    html += '</div></div>';
+  });
+  html += '</div>';
+  box.innerHTML = html;
+  var st = $('arbFTreeStats');
+  if (st) st.textContent = '🌳 ' + d.length + ' personas · ' + d.filter(function (r) { return r.partio; }).length + ' honradas 🕊️ · toca ✏️ para editar';
+  box.querySelectorAll('[data-tedit]').forEach(function (b) { b.onclick = function (e) { try { e.stopPropagation(); } catch (x) {} arbEditarPersona(b.getAttribute('data-tedit')); }; });
+  box.querySelectorAll('[data-thon]').forEach(function (b) { b.onclick = function (e) { try { e.stopPropagation(); } catch (x) {} var dd = getArbolFull(); var r = null; for (var i = 0; i < dd.length; i++) if (dd[i].id === b.getAttribute('data-thon')) r = dd[i]; if (r) r.partio = !r.partio; save('Guardado 🕯️'); renderArbolFam(); renderArbolTree(); renderArbolCir(); }; });
+  box.querySelectorAll('[data-tadd]').forEach(function (b) { b.onclick = function () { arbGoAgregar(b.getAttribute('data-tadd')); }; });
 }
 function renderArbolCir() {
   var box = $('arbFCircle'); if (!box) return;
@@ -202,14 +282,32 @@ function renderArbolHon() {
     vb.querySelectorAll('[data-del]').forEach(function (b) { b.onclick = function () { var dd = getArbolVelas(); var i = dd.findIndex(function (x) { return x.id === b.getAttribute('data-del'); }); if (i >= 0) dd.splice(i, 1); save(); renderArbolHon(); }; });
   }
 }
-function renderArbolAll() { try { renderArbolFam(); } catch (e) {} try { renderArbolCir(); } catch (e) {} try { renderArbolHon(); } catch (e) {} }
+function renderArbolAll() { try { renderArbolFam(); } catch (e) {} try { renderArbolTree(); } catch (e) {} try { renderArbolCir(); } catch (e) {} try { renderArbolHon(); } catch (e) {} }
 
 function setupArbolFull() {
+  try {
+    if (!$('arbTreeCss')) {
+      var st = document.createElement('style'); st.id = 'arbTreeCss';
+      st.textContent = '.arb-tree{display:flex;flex-direction:column;gap:10px;margin-top:8px}' +
+        '.arb-level{background:rgba(255,255,255,.02);border:1px solid rgba(232,197,106,.25);border-radius:10px;padding:8px}' +
+        '.arb-level-t{font-size:11px;opacity:.85;margin-bottom:6px;font-weight:700}' +
+        '.arb-row{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;position:relative}' +
+        '.arb-node{min-width:130px;max-width:170px;flex:1 1 130px;background:var(--panel);border:1px solid;border-radius:10px;padding:8px;text-align:center}' +
+        '.arb-nombre{font-weight:700;font-size:12px}' +
+        '.arb-vinc{font-size:10px;opacity:.9;margin-top:2px}' +
+        '.arb-lugar,.arb-nota{font-size:10px;opacity:.8;margin-top:2px}' +
+        '.arb-btns{display:flex;gap:6px;justify-content:center;margin-top:6px}' +
+        '.arb-add{border:1px dashed rgba(232,197,106,.6);background:transparent;color:var(--gold,#e8c56a);border-radius:10px;padding:8px 10px;font-size:11px;cursor:pointer;min-width:120px}' +
+        '.arb-add:hover{background:rgba(232,197,106,.12)}';
+      document.head.appendChild(st);
+    }
+  } catch (e) {}
   makeDialog('arbolFullDialog', '🌳 Árbol Genealógico — mi linaje en 13 lunas',
     'Tu familia como <b>círculo, no como línea</b>: cada persona en su luna de nacimiento, con su historia y su honra. Empieza con 3 nombres y crece por lunas. Todo queda <b>privado y local</b> por usuario.',
     '<div class="timer-tabs" style="flex-wrap:wrap;margin-bottom:10px">' +
     '<button type="button" id="tabArbFGuia" class="btn btn-accent" style="width:auto">📖 Guía</button>' +
     '<button type="button" id="tabArbFFam" class="btn" style="width:auto">👨‍👩‍👧 Familia</button>' +
+    '<button type="button" id="tabArbFArb" class="btn" style="width:auto">🌳 Árbol</button>' +
     '<button type="button" id="tabArbFCir" class="btn" style="width:auto">🌙 Círculo lunar</button>' +
     '<button type="button" id="tabArbFHon" class="btn" style="width:auto">🕯️ Honrar</button></div>' +
     '<div id="arbFGuia">' +
@@ -232,6 +330,11 @@ function setupArbolFull() {
       '<div id="arbFFamList" class="habits-list" style="margin-top:8px;max-height:300px"></div>' +
       '<div class="dlg-actions" style="justify-content:space-between;margin-top:8px"><span id="arbFFamStats" class="muted" style="font-size:11px"></span><span style="display:flex;gap:8px"><button type="button" id="arbFShare" class="btn" style="width:auto">📤 Compartir</button><button type="button" id="arbFClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar todo</button></span></div>' +
     '</div>' +
+    '<div id="arbFArb" class="hidden">' +
+      '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🌳 Mi árbol</h4><p class="muted" style="font-size:11px">De arriba (ancestros) hacia abajo (descendencia). Toca <b>+ vínculo</b> para agregar a quien falta, ✏️ para editar o 🕯️ para honrar.</p>' +
+      '<div id="arbFTree"></div>' +
+      '<div class="dlg-actions" style="justify-content:space-between;margin-top:8px"><span id="arbFTreeStats" class="muted" style="font-size:11px"></span><button type="button" id="arbFGoAdd" class="btn" style="width:auto">➕ Agregar persona</button></div></div>' +
+    '</div>' +
     '<div id="arbFCir" class="hidden">' +
       '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🌙 Círculo de las 13 lunas</h4><p class="muted" style="font-size:11px">Cada luna agrupa a quienes nacieron en ella. Un círculo lleno = linaje presente; un vacío = historia por preguntar.</p>' +
       '<div id="arbFCircle" style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:8px 0"></div>' +
@@ -252,9 +355,12 @@ function setupArbolFull() {
   if (b) b.onclick = function () { switchArbolTab('Guia'); renderArbolAll(); openDlg('arbolFullDialog'); };
   if ($('tabArbFGuia')) $('tabArbFGuia').onclick = function () { switchArbolTab('Guia'); };
   if ($('tabArbFFam')) $('tabArbFFam').onclick = function () { switchArbolTab('Fam'); renderArbolFam(); };
+  if ($('tabArbFArb')) $('tabArbFArb').onclick = function () { switchArbolTab('Arb'); renderArbolTree(); };
   if ($('tabArbFCir')) $('tabArbFCir').onclick = function () { switchArbolTab('Cir'); renderArbolCir(); };
   if ($('tabArbFHon')) $('tabArbFHon').onclick = function () { switchArbolTab('Hon'); renderArbolHon(); };
   if ($('arbFGoFam')) $('arbFGoFam').onclick = function () { switchArbolTab('Fam'); renderArbolFam(); };
+  if ($('arbFGoAdd')) $('arbFGoAdd').onclick = function () { arbGoAgregar('otro'); };
+  if ($('arbFVinc')) $('arbFVinc').onchange = function () { var rs = $('arbFRama'); if (rs && !$('arbFNac').value && !arbolEditId) rs.value = arbRamaAuto($('arbFVinc').value); };
   if ($('arbFNac')) $('arbFNac').onchange = function () { var l = lunaDeNac($('arbFNac').value); if (l && $('arbFLuna')) $('arbFLuna').value = String(l); };
   if ($('arbFQ')) $('arbFQ').oninput = function () { renderArbolFam(); };
   if ($('arbFRamaF')) $('arbFRamaF').onchange = function () { renderArbolFam(); };
@@ -268,11 +374,11 @@ function setupArbolFull() {
     else dd.push(rec);
     save('Persona guardada 🌳');
     $('arbFNombre').value = ''; $('arbFNac').value = ''; $('arbFLugar').value = ''; $('arbFNota').value = ''; $('arbFPartio').checked = false;
-    renderArbolFam(); renderArbolCir();
+    renderArbolFam(); renderArbolTree(); renderArbolCir();
   };
   if ($('arbFCancelEdit')) $('arbFCancelEdit').onclick = function () { arbolEditId = null; $('arbFAdd').textContent = '+ Agregar al árbol'; $('arbFCancelEdit').classList.add('hidden'); ['arbFNombre', 'arbFLugar', 'arbFNota'].forEach(function (id) { var el = $(id); if (el) el.value = ''; }); var c = $('arbFPartio'); if (c) c.checked = false; };
   if ($('arbFShare')) $('arbFShare').onclick = function () { var dd = getArbolFull(); if (!dd.length) return alert('Árbol vacío'); share('🌳 Mi árbol genealógico (' + dd.length + ' personas)', dd.map(function (r) { return '· ' + r.nombre + ' (' + r.vinc + ' · ' + r.rama + ') — Luna ' + r.luna + (r.partio ? ' 🕊️' : ''); }).join('\n')); };
-  if ($('arbFClear')) $('arbFClear').onclick = function () { if (!confirm('¿Borrar todo el árbol? (las cartas y velas se mantienen)')) return; try { userData().arbolFull = []; } catch (e) {} save(); renderArbolFam(); renderArbolCir(); };
+  if ($('arbFClear')) $('arbFClear').onclick = function () { if (!confirm('¿Borrar todo el árbol? (las cartas y velas se mantienen)')) return; try { userData().arbolFull = []; } catch (e) {} save(); renderArbolFam(); renderArbolTree(); renderArbolCir(); };
   if ($('arbFCartaAdd')) $('arbFCartaAdd').onclick = function () {
     var p = clean($('arbFCartaPara').value, 30); if (!p) return alert('¿Para quién es la carta?');
     var x = clean($('arbFCartaTexto').value, 800); if (!x) return alert('Escribe la carta');

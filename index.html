@@ -602,7 +602,21 @@
       <div id="habitsList" class="habits-list"></div>
       <div id="habitsTodayBox" class="menstrual-card" style="margin-top:10px"></div>
       <div id="habitsStatsBox" class="menstrual-card" style="margin-top:10px"></div>
+      <div id="habitsTrackerBox" class="menstrual-card" style="margin-top:10px"></div>
       <div id="habitsLunaBox" class="menstrual-card" style="margin-top:10px"></div>
+      <details class="menstrual-card" style="margin-top:10px" open>
+        <summary style="cursor:pointer;font-weight:700;color:var(--gold);font-size:13px">📚 Guía: consejos, métodos y estrategias</summary>
+        <div style="margin-top:8px;display:flex;flex-direction:column;gap:8px">
+          <div class="si-card"><h4>🌱 Empieza ridículamente pequeño — Regla de los 2 minutos</h4><p>Todo hábito debe tardar &lt;2 min al empezar: “meditar 10 min” → “sentarme en el cojín”. <b>Consejo:</b> si cuesta, córtalo a la mitad hasta que sea imposible fallar. La constancia crea la identidad (“soy alguien que medita”).</p></div>
+          <div class="si-card"><h4>🔗 Apilamiento (habit stacking)</h4><p>Fórmula: <b>“Después de [hábito actual], haré [hábito nuevo]”</b>. Ej: después de hervir el agua → 5 respiraciones; después de lavarme los dientes → anotar gratitud. Engancha lo nuevo a lo automático.</p></div>
+          <div class="si-card"><h4>📝 Intención de implementación (si–entonces)</h4><p>Escribe <b>dónde, cuándo y cómo</b>: “Si son las 07:30 y estoy en la cocina, entonces camino 15 min”. Los planes concretos duplican la adherencia. Anótalo en 📝 Notas del día.</p></div>
+          <div class="si-card"><h4>⛓️ No rompas la cadena (Seinfeld)</h4><p>Marca cada día en el gráfico de abajo. <b>Estrategia de rescate:</b> nunca falles 2 veces seguidas. Si fallaste ayer, hoy haz la versión mínima (2 min). La racha 🔥 se recupera así.</p></div>
+          <div class="si-card"><h4>🏠 Diseña tu entorno</h4><p>Haz lo bueno <b>obvio y fácil</b> (botella de agua visible, zapatillas junto a la cama, libro en la almohada) y lo malo <b>invisible y difícil</b> (celular fuera del dormitorio, galletas en caja alta). No dependas de la fuerza de voluntad.</p></div>
+          <div class="si-card"><h4>📈 1% mejor + recompensa inmediata</h4><p>Sube de a poco (5 → 7 → 10 min). Celebra al terminar: ✅ márcalo aquí, respira hondo, di “bien hecho”. El cerebro repite lo que se siente bien. Revisa el % mensual: apunta a <b>80%, no a 100%</b> perfecto.</p></div>
+          <div class="si-card"><h4>🌙 Estrategia lunar (13 × 28)</h4><p><b>Nueva:</b> siembra 1 hábito nuevo pequeño. <b>Creciente:</b> suma minutos y construye. <b>Llena:</b> celebra la racha y comparte. <b>Menguante:</b> simplifica, suelta el hábito que no funcionó sin culpa. Revisa cada luna: ¿qué sumo, qué suelto?</p></div>
+          <div class="si-card"><h4>🚀 Pack inicial sugerido</h4><p class="muted" style="font-size:11px">Toca para agregarlos de a uno (si no los tienes):</p><div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px"><button type="button" class="btn habit-starter" data-name="Tomar agua al despertar" data-icon="💧" data-color="#7ab8ff" style="width:auto;font-size:11px">💧 Agua</button><button type="button" class="btn habit-starter" data-name="Caminar 15 min" data-icon="🚶" data-color="#8fd694" style="width:auto;font-size:11px">🚶 Caminar</button><button type="button" class="btn habit-starter" data-name="Meditar 5 min" data-icon="🧘" data-color="#c9a7eb" style="width:auto;font-size:11px">🧘 Meditar</button><button type="button" class="btn habit-starter" data-name="Leer 10 min" data-icon="📚" data-color="#e8c56a" style="width:auto;font-size:11px">📚 Leer</button><button type="button" class="btn habit-starter" data-name="Dormir antes de las 23:30" data-icon="😴" data-color="#7ab8ff" style="width:auto;font-size:11px">😴 Dormir</button><button type="button" class="btn habit-starter" data-name="Gratitud: 3 cosas" data-icon="🙏" data-color="#f4a7c3" style="width:auto;font-size:11px">🙏 Gratitud</button></div></div>
+        </div>
+      </details>
       <div class="dlg-actions" style="justify-content:space-between;align-items:center">
         <button type="button" id="habitsClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar todo</button>
         <button type="button" id="habitsClose" class="btn">Cerrar</button>
@@ -2749,6 +2763,28 @@
           </select>
         </div>
         <div class="config-group">
+          <h5>🏠 Pantalla de inicio</h5>
+          <p class="muted" style="font-size:11px;margin-bottom:8px">Elige qué vista se abre al iniciar y qué información muestra la vista ◉ Hoy. Se guarda por usuario.</p>
+          <label class="muted" style="font-size:11px;display:block;margin-bottom:4px">Vista inicial al abrir
+            <select id="cfgHomeView" aria-label="Vista inicial al abrir" style="margin-top:4px">
+              <option value="auto">Automática — Hoy en celular, Luna en PC</option>
+              <option value="hoy">◉ Hoy — día actual</option>
+              <option value="luna">🌙 Luna actual (28 días)</option>
+              <option value="semanaLunar">🌗 Semana lunar</option>
+              <option value="mes">📅 Mes gregoriano</option>
+              <option value="semana">🗓️ Semana (lun–dom)</option>
+            </select>
+          </label>
+          <p class="muted" style="font-size:11px;margin:8px 0 4px">Información visible en ◉ Hoy (marca lo que quieras ver):</p>
+          <label class="check-row"><input type="checkbox" data-home="frase" checked> 💬 Frase del día</label>
+          <label class="check-row"><input type="checkbox" data-home="solLuna" checked> ☀️🌙 Sol y luna de hoy</label>
+          <label class="check-row"><input type="checkbox" data-home="notas" checked> 📝 Notas del día</label>
+          <label class="check-row"><input type="checkbox" data-home="agenda" checked> 🕐 Compromisos</label>
+          <label class="check-row"><input type="checkbox" data-home="habitos" checked> ✅ Hábitos de hoy</label>
+          <label class="check-row"><input type="checkbox" data-home="animo" checked> 😊 Estado de ánimo</label>
+          <button type="button" id="cfgHomeReset" class="btn" style="width:100%;margin-top:8px">↺ Mostrar toda la información</button>
+        </div>
+        <div class="config-group">
           <h5>📌 Acceso directo</h5>
           <p class="muted" style="font-size:11px;margin-bottom:8px">Crea el ícono del calendario en el escritorio (solo versión de escritorio PC).</p>
           <button type="button" id="cfgShortcutBtn" class="btn" style="width:100%">📌 Crear acceso directo en el escritorio</button>
@@ -3307,6 +3343,7 @@
   <script src="pesca-historia.js?v=1"></script>
   <script src="semillero-guias.js?v=1"></script>
   <script src="ajedrez-modulo.js?v=1"></script>
+  <script src="info-clave.js?v=1"></script>
   <script>
     if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
   </script>

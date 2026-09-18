@@ -11,8 +11,9 @@
      📚 Guias del semillero nativo
    La version de Siembra lunar (semillero-guias.js) queda enfocada
    en comestibles de huerta; ambas se enlazan entre si.
-   Todo local, sin red. Envuelve switchBosqueTab y
-   renderBosqueDialog sin tocar renderer.js ni bosque-historia.js.
+   Todo local, sin red. Usa window.BosqueHistoria.tab como cambio
+   original (switchBosqueTab es local al IIFE de bosque-historia.js),
+   publica window.switchBosqueTab global y recablea las 4 pestanas.
    ============================================================ */
 (function () {
 'use strict';
@@ -270,34 +271,62 @@ function renderBosqueSemillero() {
   switchBsemSub(bsemSub);
 }
 
-/* ---------- Setup: cablea 4ta pestana ---------- */
+/* ---------- Setup: cablea 4ta pestana ----------
+   OJO: switchBosqueTab vive DENTRO del IIFE de bosque-historia.js
+   (no es global). Se usa window.BosqueHistoria.tab como original,
+   se publica window.switchBosqueTab global para las llamadas de
+   este modulo y se recablean los 3 botones originales para que
+   tambien oculten el panel del semillero. */
+var _origBosqueTab = null;
+function mySwitchBosqueTab(t) {
+  var r;
+  try {
+    if (_origBosqueTab) r = _origBosqueTab(t);
+    else if (window.BosqueHistoria && typeof window.BosqueHistoria.tab === 'function') r = window.BosqueHistoria.tab(t);
+  } catch (e) {}
+  try {
+    var b = $('tabBosqueSemillero'), p = $('bosqueSemilleroPanel');
+    if (b) b.classList.toggle('btn-accent', t === 'semillero');
+    if (p) p.classList.toggle('hidden', t !== 'semillero');
+    if (t === 'semillero') renderBosqueSemillero();
+  } catch (e2) {}
+  return r;
+}
+function wireBosqueTabs() {
+  var map = { actual: 'tabBosqueActual', historia: 'tabBosqueHistoria', acompan: 'tabBosqueAcompan', semillero: 'tabBosqueSemillero' };
+  Object.keys(map).forEach(function (t) {
+    var b = $(map[t]);
+    if (b) {
+      b.dataset.w = '1'; /* evita que el setup de bosque-historia la pise si llega tarde */
+      b.onclick = (function (tt) { return function () { mySwitchBosqueTab(tt); }; })(t);
+    }
+  });
+}
 function setupBosqueSemillero() {
-  if (typeof switchBosqueTab !== 'function' || !$('bosqueDialog') || !$('tabBosqueSemillero')) {
+  var hasOrig = !!(window.BosqueHistoria && typeof window.BosqueHistoria.tab === 'function');
+  if (!hasOrig || !$('bosqueDialog') || !$('tabBosqueSemillero')) {
     window._bqsemRetry = (window._bqsemRetry || 0) + 1;
     if (window._bqsemRetry < 60) setTimeout(setupBosqueSemillero, 500);
     return;
   }
+  if (!_origBosqueTab) {
+    try { _origBosqueTab = window.BosqueHistoria.tab; } catch (e) {}
+  }
+  /* publica el cambio global (lo usan wireNativeChips, wireBsemBtns, go) */
+  try {
+    window.switchBosqueTab = mySwitchBosqueTab;
+    window.BosqueHistoria.tab = mySwitchBosqueTab;
+  } catch (e) {}
   try {
     var btn = $('btnBosque');
     if (btn && btn.dataset && btn.dataset.keywords && btn.dataset.keywords.indexOf('semillero') < 0)
       btn.dataset.keywords += ' semillero nativo banco semillas recolecta estratificacion multiplicacion esqueje recalcitrante vivero';
-  } catch (e) {}
-  var tS = $('tabBosqueSemillero');
-  if (tS && !tS.dataset.w) { tS.dataset.w = '1'; tS.onclick = function () { switchBosqueTab('semillero'); }; }
-  /* envuelve el cambio de pestana para manejar la 4ta */
-  if (!window._bqsemTabWrapped) {
-    window._bqsemTabWrapped = true;
-    var origTab = switchBosqueTab;
-    switchBosqueTab = function (t) {
-      var r = origTab.apply(this, arguments);
-      try {
-        var b = $('tabBosqueSemillero'), p = $('bosqueSemilleroPanel');
-        if (b) b.classList.toggle('btn-accent', t === 'semillero');
-        if (p) p.classList.toggle('hidden', t !== 'semillero');
-        if (t === 'semillero') renderBosqueSemillero();
-      } catch (e) {}
-      return r;
-    };
+  } catch (e2) {}
+  wireBosqueTabs();
+  /* seguro tardío: si otro setup recableó después, se repone */
+  if (!window._bqsemRewire) {
+    window._bqsemRewire = true;
+    setTimeout(function () { try { wireBosqueTabs(); } catch (e) {} }, 2500);
   }
   /* refresca el banco si cambia la bitacora */
   if (typeof renderBosqueDialog === 'function' && !window._bqsemDlgWrapped) {

@@ -550,6 +550,24 @@ body[data-theme="medianoche"] { --bg:#050508; --bg2:#0a0a10; --panel:#141418; --
 .dc-habit { font-size: 10px; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; border-radius: 50%; border: 1px solid; font-weight: 600; }
 .dlg-habits { margin: 10px 0; padding: 8px; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; }
 .dlg-habits:empty { display: none; }
+/* ✅ Rastreador de hábitos — gráfico heatmap + barras */
+#habitsTrackerBox:empty { display: none; }
+.habit-range-btns { display: flex; gap: 6px; flex-wrap: wrap; }
+.habit-range-btns .btn.on { border-color: var(--gold); color: var(--gold); }
+.habit-bars { display: flex; align-items: flex-end; gap: 4px; height: 92px; padding: 8px 6px 2px; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; margin-top: 8px; overflow-x: auto; }
+.habit-bar-col { flex: 1 0 22px; min-width: 22px; display: flex; flex-direction: column; align-items: center; gap: 3px; }
+.habit-bar-track { width: 100%; max-width: 26px; height: 56px; background: var(--bg2); border: 1px solid var(--line); border-radius: 6px; display: flex; align-items: flex-end; overflow: hidden; }
+.habit-bar-fill { width: 100%; border-radius: 0 0 5px 5px; transition: height .3s; }
+.habit-bar-day { font-size: 9px; color: var(--muted); line-height: 1.1; text-align: center; }
+.habit-bar-pct { font-size: 9px; color: var(--text); font-weight: 700; }
+.habit-heat { overflow-x: auto; margin-top: 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); }
+.habit-heat table { border-collapse: collapse; width: 100%; min-width: 420px; font-size: 11px; }
+.habit-heat th, .habit-heat td { padding: 4px; text-align: center; border-bottom: 1px solid var(--line); }
+.habit-heat th { color: var(--muted); font-weight: 600; font-size: 10px; }
+.habit-heat td.hname { text-align: left; white-space: nowrap; max-width: 130px; overflow: hidden; text-overflow: ellipsis; color: var(--text); }
+.habit-cell { width: 26px; height: 26px; border-radius: 7px; border: 1px solid var(--line); background: var(--bg2); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; font-size: 13px; transition: transform .1s; padding: 0; color: var(--muted); }
+.habit-cell:hover { transform: scale(1.12); }
+.habit-cell.today { outline: 2px solid var(--gold); }
 .dlg-horas-box { margin: 10px 0; background: var(--panel); border:1px solid var(--line); border-radius:10px; padding:12px; }
 .dlg-horas-label { font-size:13px; color:var(--accent); font-weight:700; display:block; margin-bottom:2px; }
 /* ☀️🌙 Sol y luna dentro del día — mismo orden y aspecto que la vista Hoy del celular */
@@ -897,6 +915,59 @@ body[data-font="4xl"] #lunaDesc, body[data-font="4xl"] .chip, body[data-font="4x
   .week-grid .day-card .dc-note:empty,
   .week-grid .day-card .dc-clima:empty { display: none; }
 }
+/* === 🏠 Pantalla de inicio: vista Hoy también disponible en PC si se elige como inicial === */
+body[data-mview="hoy"] #todayView { display: flex; flex-direction: column; gap: 10px; }
+body[data-mview="hoy"] #lunaHeader,
+body[data-mview="hoy"] #viewBar,
+body[data-mview="hoy"] #gridWrap,
+body[data-mview="hoy"] #monthNoteWrap,
+body[data-mview="hoy"] .actions-toolbar,
+body[data-mview="hoy"] #actions,
+body[data-mview="hoy"] #weatherPanel,
+body[data-mview="hoy"] #tidesPanel { display: none; }
+#todayView .today-hero {
+  background: linear-gradient(135deg, var(--panel), var(--card));
+  border: 1px solid var(--gold); border-radius: 14px; padding: 14px;
+}
+#todayView .today-hero .t-now { font-size: 12px; color: var(--muted); }
+#todayView .today-hero .t-now b { color: var(--gold); font-size: 16px; font-variant-numeric: tabular-nums; letter-spacing: 1px; }
+#todayView .today-hero .t-penco {
+  display: inline-block; margin-top: 8px; font-size: 11.5px; font-weight: 700; letter-spacing: .6px;
+  color: var(--gold); border: 1px solid var(--gold); border-radius: 999px;
+  padding: 3px 12px; background: rgba(232,197,106,.08);
+}
+#todayView .today-hero h2 { font-size: 20px; color: var(--accent); margin: 2px 0; }
+#todayView .today-hero .t-sub { font-size: 12.5px; color: var(--muted); line-height: 1.5; }
+#todayView .today-card {
+  background: var(--card); border: 1px solid var(--line);
+  border-radius: 12px; padding: 12px;
+}
+#todayView .today-card h3 { font-size: 13px; color: var(--gold); margin-bottom: 8px; letter-spacing: .4px; }
+#todayView .today-quote { font-style: italic; color: #ecd9a8; font-size: 13.5px; line-height: 1.55; }
+#todayView .today-quote span { display: block; margin-top: 4px; font-style: normal; font-size: 11.5px; color: var(--muted); }
+#todayView .today-sun { display: flex; gap: 8px; flex-wrap: wrap; }
+#todayView .today-mood-main {
+  display: flex; align-items: center; gap: 10px; width: 100%;
+  background: var(--panel); border: 1px solid var(--gold); border-radius: 12px;
+  padding: 10px 12px; cursor: pointer; color: var(--text); font-size: 14px; text-align: left;
+}
+#todayView .today-mood-main .tm-ico {
+  width: 44px; height: 44px; flex: 0 0 auto; display: flex; align-items: center; justify-content: center;
+  font-size: 26px; background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+}
+#todayView .today-mood-picker { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+#todayView .today-note { min-height: 150px; font-size: 14px; line-height: 1.6; }
+#todayView .today-agenda-list { display: flex; flex-direction: column; gap: 6px; margin-bottom: 8px; }
+#todayView .today-agenda-item {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 8px;
+  padding: 8px 10px; font-size: 13px;
+}
+#todayView .today-agenda-item .hh { color: var(--gold); font-weight: 700; font-variant-numeric: tabular-nums; }
+#todayView .today-agenda-item .tx { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#todayView .today-add { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+#todayView .today-add input[type="time"] { max-width: 104px; }
+#todayView .today-add input[type="text"] { flex: 1; min-width: 120px; }
 /* === Nuevos modulos (14 secciones) === */
 #forrajeDialog, #bodegaDialog, #trafDialog, #aguaDialog, #nudosDialog, #tallerDialog, #truequeDialog, #mingaDialog, #cieloDialog, #epewDialog, #rutinaDialog, #fertiDialog { width: 680px; max-width: 96vw; max-height: 88vh; overflow-y: auto; }
 #forrajeFichas .lawen-card, #nudosList .si-card { margin: 0; }
