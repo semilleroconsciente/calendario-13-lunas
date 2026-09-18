@@ -2008,7 +2008,7 @@ function setupMedita() {
    ============================================================ */
 var TRANS_TIPOS = ['💌 Mensaje a un ser querido', '📖 Historia que quiero que recuerdes', '🕯️ Deseo de despedida', '🙏 Perdón y gratitud'];
 var VOZ_TIPOS = ['🍲 Receta familiar', '🏔️ Historia del territorio', '💡 Consejo de vida', '📖 Cuento para desbloquear'];
-var ARBOL_VINC = ['madre', 'padre', 'abuela', 'abuelo', 'bisabuela/o', 'tía/o', 'hermana/o', 'hija/o', 'nieta/o', 'otro'];
+var ARBOL_VINC = ['madre', 'padre', 'abuela', 'abuelo', 'bisabuela/o', 'tía/o', 'hermana/o', 'hija/o', 'sobrina/o', 'nieta/o', 'otro'];
 function getTrans() { var a = store('transicionLog', []); return Array.isArray(a) ? a : []; }
 /* ---------- B1: cuaderno de transición ---------- */
 function renderTrans() {

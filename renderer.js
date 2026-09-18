@@ -91,6 +91,87 @@ function setupThemeSelector() {
   };
 }
 
+// === 🏠 PANTALLA DE INICIO PERSONALIZABLE (⚙️ Personalizar) ===
+// Guarda por usuario en DATA.config.home = { startView, blocks:{frase,solLuna,notas,agenda,habitos,animo} }
+const HOME_BLOCKS_DEFAULT = { frase: true, solLuna: true, notas: true, agenda: true, habitos: true, animo: true };
+const HOME_VIEWS = ['auto', 'hoy', 'luna', 'semanaLunar', 'mes', 'semana'];
+function getHomeConfig() {
+  const d = (DATA.config && DATA.config.home) || {};
+  const blocks = Object.assign({}, HOME_BLOCKS_DEFAULT, d.blocks || {});
+  const startView = HOME_VIEWS.includes(d.startView) ? d.startView : 'auto';
+  return { startView, blocks };
+}
+function syncHomeConfigUI() {
+  try {
+    const home = getHomeConfig();
+    const sel = $('cfgHomeView');
+    if (sel) sel.value = home.startView;
+    document.querySelectorAll('#configDialog input[data-home]').forEach(cb => {
+      cb.checked = home.blocks[cb.dataset.home] !== false;
+    });
+  } catch (e) {}
+}
+function setupHomeConfig() {
+  const sel = $('cfgHomeView');
+  if (sel && !sel.dataset.bound) {
+    sel.dataset.bound = '1';
+    sel.onchange = () => {
+      DATA.config = DATA.config || {};
+      DATA.config.home = DATA.config.home || {};
+      DATA.config.home.startView = HOME_VIEWS.includes(sel.value) ? sel.value : 'auto';
+      scheduleSave('Pantalla de inicio guardada ✓');
+    };
+  }
+  document.querySelectorAll('#configDialog input[data-home]').forEach(cb => {
+    if (cb.dataset.homeBound) return;
+    cb.dataset.homeBound = '1';
+    cb.onchange = () => {
+      DATA.config = DATA.config || {};
+      DATA.config.home = DATA.config.home || {};
+      DATA.config.home.blocks = DATA.config.home.blocks || {};
+      DATA.config.home.blocks[cb.dataset.home] = cb.checked;
+      scheduleSave('Pantalla de inicio guardada ✓');
+      try { if (viewMode === 'hoy') renderTodayView(); } catch (e) {}
+    };
+  });
+  const reset = $('cfgHomeReset');
+  if (reset && !reset.dataset.bound) {
+    reset.dataset.bound = '1';
+    reset.onclick = (e) => {
+      e.preventDefault(); e.stopPropagation();
+      DATA.config = DATA.config || {};
+      DATA.config.home = DATA.config.home || {};
+      DATA.config.home.blocks = Object.assign({}, HOME_BLOCKS_DEFAULT);
+      scheduleSave('Pantalla de inicio guardada ✓');
+      syncHomeConfigUI();
+      try { if (viewMode === 'hoy') renderTodayView(); } catch (e2) {}
+    };
+  }
+}
+// Aplica la vista inicial elegida por el usuario al abrir la app.
+// 'auto' = Hoy en celular, Luna actual en PC. En PC la vista Hoy también se muestra si se elige.
+function applyStartView(info) {
+  const home = getHomeConfig();
+  let target = home.startView;
+  if (target === 'auto') target = isMobileWidth() ? 'hoy' : 'luna';
+  if (target === 'hoy') {
+    mobileSec = 'hoy'; viewMode = 'hoy'; renderCurrentView(); return true;
+  }
+  if (target === 'luna') {
+    mobileSec = isMobileWidth() ? 'luna' : null;
+    if (info && info.luna !== 'dft' && String(info.y) !== String(currentCycleYear())) {
+      try { selectCycle(info.y, info.luna); } catch (e) { selectMoon(info.luna); }
+    } else if (info && info.luna !== 'dft') { selectMoon(info.luna); }
+    else if (currentView && currentView.tipo === 'luna') { renderCurrentView(); }
+    syncMobileViewAttr(); paintMobileDock(); return true;
+  }
+  if (target === 'semanaLunar' || target === 'mes' || target === 'semana') {
+    mobileSec = isMobileWidth() ? 'completa' : null;
+    viewMode = target; viewDateMs = Date.now(); renderCurrentView(); return true;
+  }
+  return false;
+}
+
 function defaultCycle() {
   return {
     moons: Object.fromEntries(Array.from({ length: 13 }, (_, i) => [String(i + 1), { monthNote: '', days: {} }])),
@@ -457,6 +538,8 @@ function renderTodayView(){
   }catch(e){ habHTML=''; }
   const hhss = hh+':'+String(now.getSeconds()).padStart(2,'0');
   box.classList.remove('hidden');
+  const home = getHomeConfig();
+  const hb = home.blocks || {};
   box.innerHTML =
     '<div class="today-hero">'
     + '<div class="t-now">◉ HOY · '+escapeHtml(wd)+' '+escapeHtml(fechaLarga)+' · ahora <b id="todayNowTime">'+hhss+'</b></div>'
@@ -464,10 +547,10 @@ function renderTodayView(){
     + '<div class="t-sub">'+escapeHtml(lunaSub)+'</div>'
     + '<div><span class="t-penco">📍 Penco · Bío-Bío · Chile</span></div>'
     + '</div>'
-    + '<div class="today-card"><h3>💬 Frase del día</h3>'
+    + (hb.frase === false ? '' : '<div class="today-card"><h3>💬 Frase del día</h3>'
     + (function(){ const b = fr ? (fr.base || (fr.t ? fr : null)) : null; return b ? '<p class="today-quote">«'+escapeHtml(b.t)+'»<span>— '+escapeHtml(b.a||'Anónimo')+'</span></p>' : '<p class="muted">Sin frase para hoy.</p>'; })()
-    + '</div>'
-    + '<div class="today-card"><h3>☀️🌙 Sol y luna de hoy</h3>'
+    + '</div>')
+    + (hb.solLuna === false ? '' : '<div class="today-card"><h3>☀️🌙 Sol y luna de hoy</h3>'
     + '<div class="today-sun"><span class="chip">☀️ Amanecer <b>'+(sun.rise?cal.fmtTime.format(new Date(sun.rise)):'--')+'</b></span>'
     + '<span class="chip">🌇 Atardecer <b>'+(sun.set?cal.fmtTime.format(new Date(sun.set)):'--')+'</b></span></div>'
     + '<div style="height:8px"></div>'
@@ -476,10 +559,10 @@ function renderTodayView(){
     + '<p class="muted" style="font-size:10px;margin:6px 0 0">Luna en Penco · hora local · aprox. ±15 min según lugar de observación.</p>'
     + '<div style="height:8px"></div>'
     + '<div class="today-sun"><span class="chip">'+moonIcon+' Fase <b>'+escapeHtml(faseTxt)+'</b></span>'
-    + '</div></div>'
-    + '<div class="today-card"><h3>📝 Notas del día</h3>'
-    + '<textarea id="todayNote" class="today-note" rows="6" placeholder="tareas, ánimo, sueños, registros...">'+escapeHtml(nota)+'</textarea></div>'
-    + '<div class="today-card"><h3>🕐 Compromisos · '+agenda.length+'</h3>'
+    + '</div></div>')
+    + (hb.notas === false ? '' : '<div class="today-card"><h3>📝 Notas del día</h3>'
+    + '<textarea id="todayNote" class="today-note" rows="6" placeholder="tareas, ánimo, sueños, registros...">'+escapeHtml(nota)+'</textarea></div>')
+    + (hb.agenda === false ? '' : '<div class="today-card"><h3>🕐 Compromisos · '+agenda.length+'</h3>'
     + '<div id="todayAgendaList" class="today-agenda-list"></div>'
     + (isDFT
       ? '<p class="muted" style="font-size:11px">Los compromisos por hora viven en los días de luna. Este día es de cierre y reflexión.</p>'
@@ -490,11 +573,11 @@ function renderTodayView(){
     + (isDFT ? '' : '<button type="button" id="todayShareBtn" class="btn" style="flex:1;width:auto">📤 Compartir</button>')
     + (isDFT ? '' : '<button type="button" id="todayOpenDay" class="btn" style="flex:1;width:auto">📖 Día completo</button>')
     + '</div>'
-    + '</div>'
-    + '<div class="today-card"><h3>✅ Hábitos de hoy</h3><div id="todayHabitsBox">'+habHTML+'</div></div>'
-    + '<div class="today-card"><h3>😊 Estado de ánimo</h3>'
+    + '</div>')
+    + (hb.habitos === false ? '' : '<div class="today-card"><h3>✅ Hábitos de hoy</h3><div id="todayHabitsBox">'+habHTML+'</div></div>')
+    + (hb.animo === false ? '' : '<div class="today-card"><h3>😊 Estado de ánimo</h3>'
     + '<button type="button" id="todayMoodMain" class="today-mood-main"><span class="tm-ico">'+sug.e+'</span><span>'+(cur?escapeHtml(cur.n)+' · toca para cambiar':'Sugerencia: '+sug.e+' · '+escapeHtml(sug.n))+'</span></button>'
-    + '<div id="todayMoodPicker" class="today-mood-picker hidden"></div></div>';
+    + '<div id="todayMoodPicker" class="today-mood-picker hidden"></div></div>');
   // --- ánimo: sugerencia + expandir opciones ---
   const main = $('todayMoodMain'), picker = $('todayMoodPicker');
   const paintPicker = ()=>{
@@ -3044,7 +3127,7 @@ function renderTidesPanel3() {
     if (idx >= cycle.days.length) break;
     dias.push(cycle.days[idx]);
   }
-  let html = '<div class="tp-head"><b>🌊 Mareas — día y noche</b><span class="muted">Pronóstico SHOA · Talcahuano (válido para Penco) · 3 días · horas locales Biobío</span></div>';
+  let html = '<div class="tp-head"><b>🌊 Mareas — día y noche</b><span class="muted">Pronóstico SHOA · Talcahuano (válido para Penco) · 3 días · horas locales Biobío</span><button type="button" id="tidesToDayBtn" class="btn btn-accent" style="width:auto;white-space:nowrap" title="Agregar la marea actual y las 2 siguientes a la pantalla del día de hoy">📌 Al día: actual + 2 siguientes</button></div>';
   html += '<div class="tides-3col">';
   for (const dd of dias) {
     const key = cal.fmtKey.format(new Date(dd.noonMs));
@@ -3072,6 +3155,46 @@ function renderTidesPanel3() {
   }
   html += '</div><p class="muted" style="font-size:11.5px;margin-top:10px">Fuente: pronóstico de mareas SHOA · Talcahuano (15 km de Penco). Para navegación consulta siempre la tabla oficial en shoa.cl.</p>';
   panel.innerHTML = html;
+  try {
+    const toDayBtn = $('tidesToDayBtn');
+    if (toDayBtn) toDayBtn.onclick = () => enviarMareasAlDia();
+  } catch (e) {}
+}
+
+// Guarda la marea actual + las 2 siguientes en la pantalla del día de hoy.
+function enviarMareasAlDia() {
+  try {
+    const todayKey = cal.fmtKey.format(new Date());
+    const ahoraHM = cal.fmtTime.format(new Date());
+    const now = new Date();
+    const keyOf = (diff) => { const d = new Date(now.getTime()); d.setDate(d.getDate() + diff); return cal.fmtKey.format(d); };
+    const hoy = (getTidesForKey(todayKey.slice(5)).tides) || [];
+    const ayer = (getTidesForKey(keyOf(-1).slice(5)).tides) || [];
+    const man = (getTidesForKey(keyOf(1).slice(5)).tides) || [];
+    let res = { actual: null, siguientes: [] };
+    if (window.InfoClave && typeof window.InfoClave.mareasActuales === 'function') {
+      res = window.InfoClave.mareasActuales(ahoraHM, hoy, ayer, man);
+    } else {
+      res.siguientes = hoy.slice(0, 3).map(t => ({ h: t.h, a: t.a, t: t.t, dia: 0 }));
+    }
+    if (!res.actual && !res.siguientes.length) { alert('Sin pronóstico de mareas para hoy.'); return; }
+    const fmt = (window.InfoClave && window.InfoClave.textoMarea) || ((mm) => (mm.t === 'pleamar' ? '⬆️' : '⬇️') + ' ' + mm.t + ' ' + mm.h + (mm.a ? ' · ' + mm.a : ''));
+    const fechaCorta = cal.fmtDate.format(new Date());
+    let texto = '🌊 Mareas Talcahuano ' + fechaCorta + ': ';
+    texto += res.actual ? 'actual ' + fmt(res.actual) : 'sin marea actual aún';
+    res.siguientes.forEach((s) => { texto += ' → ' + fmt(s); });
+    if (window.InfoClave && typeof window.InfoClave.guardarEnDia === 'function') {
+      window.InfoClave.guardarEnDia('Mareas', texto, todayKey, 'nota');
+    } else {
+      const ref = lunaMapForKey(todayKey);
+      if (!ref || ref.luna === 'dft') { alert('Hoy es DFT: las mareas no aplican igual.'); return; }
+      const cell = dayCell(ref.luna, ref.diaN);
+      const linea = '[Mareas] ' + texto;
+      cell.nota = cell.nota ? cell.nota + '\n' + linea : linea;
+      scheduleSave('Agregado al día ✓');
+      renderCurrentView();
+    }
+  } catch (e) { try { alert('No se pudo agregar la marea al día.'); } catch (e2) {} }
 }
 
 $('btnEkadashi').onclick = () => { renderEkadashi(); $('ekadashiDialog').showModal(); };
@@ -3958,7 +4081,7 @@ function renderHabitsList(){
   box.querySelectorAll('.habit-toggle-today').forEach(b=> b.onclick=()=>{
     const today=cal.fmtKey.format(new Date());
     habitToggle(today,b.dataset.id);
-    renderHabitsList(); renderHabitsTodayBox(); renderHabitsStatsBox(); renderHabitsLunaBox(); renderDlgHabits(); if(getMensData().showCal||true) renderLuna();
+    habitRefreshAll();
   });
   box.querySelectorAll('.habit-edit').forEach(b=> b.onclick=()=>{
     const h=data.list.find(x=>x.id===b.dataset.id); if(!h) return;
@@ -3969,7 +4092,7 @@ function renderHabitsList(){
     if(!confirm('¿Eliminar hábito y su historial?')) return;
     const id=b.dataset.id; data.list=data.list.filter(x=>x.id!==id);
     Object.keys(data.entries).forEach(k=>{ if(data.entries[k][id]) delete data.entries[k][id]; if(Object.keys(data.entries[k]||{}).length===0) delete data.entries[k]; });
-    scheduleSave(); renderHabitsList(); renderHabitsTodayBox(); renderHabitsStatsBox(); renderHabitsLunaBox(); renderDlgHabits(); renderLuna();
+    scheduleSave(); habitRefreshAll();
   });
 }
 function renderHabitsTodayBox(){
@@ -3983,7 +4106,7 @@ function renderHabitsTodayBox(){
   }).join('')+'</div>';
   box.querySelectorAll('input[type="checkbox"]').forEach(cb=> cb.onchange=()=>{
     habitToggle(today, cb.dataset.id);
-    renderHabitsList(); renderHabitsStatsBox(); renderHabitsLunaBox(); renderDlgHabits(); renderLuna();
+    habitRefreshAll();
   });
 }
 function renderHabitsStatsBox(){
@@ -4011,6 +4134,71 @@ function renderHabitsLunaBox(){
   const lunaName = currentView.tipo==='dft'? 'Día Fuera del Tiempo': 'Luna '+currentView.luna;
   box.innerHTML=`<h4 style="color:var(--accent)">🌙 ${lunaName} — hábitos</h4><p class="muted" style="font-size:12px">${doneInLuna} checks de ${totalPossible} posibles (${pct}%)</p><div style="margin-top:6px;background:var(--panel);border-radius:6px;height:10px;overflow:hidden"><div style="width:${pct}%;height:100%;background:linear-gradient(90deg,#7ab8ff,#e8c56a);transition:width .3s"></div></div>`;
 }
+let habitTrackerRange=14;
+function habitRefreshAll(){
+  try{ renderHabitsList(); }catch(e){}
+  try{ renderHabitsTodayBox(); }catch(e){}
+  try{ renderHabitsStatsBox(); }catch(e){}
+  try{ renderHabitsTracker(); }catch(e){}
+  try{ renderHabitsLunaBox(); }catch(e){}
+  try{ renderDlgHabits(); }catch(e){}
+  try{ renderLuna(); }catch(e){}
+}
+function renderHabitsTracker(){
+  const box=$('habitsTrackerBox'); if(!box) return;
+  const data=getHabitData();
+  if(!data.list.length){ box.innerHTML='<h4 style="color:var(--accent)">📊 Rastreador de hábitos</h4><p class="muted" style="font-size:12px">Agrega tu primer hábito arriba y aquí verás el gráfico de los últimos días. Toca las celdas para marcar días pasados.</p>'; return; }
+  const range=[7,14,28].includes(habitTrackerRange)? habitTrackerRange:14;
+  const todayKey=cal.fmtKey.format(new Date());
+  let baseMs; try{ baseMs=mensKeyToMs(todayKey); }catch(e){ baseMs=Date.now(); }
+  const WD=['D','L','M','M','J','V','S'];
+  const days=[];
+  for(let i=range-1;i>=0;i--){
+    const ms=baseMs - i*86400000;
+    const key=mensMsToKey(ms);
+    const dt=new Date(ms);
+    days.push({ ms, key, num:dt.getUTCDate(), wd:WD[dt.getUTCDay()], isToday:i===0 });
+  }
+  const n=data.list.length;
+  let totalChecks=0, bestDay=0;
+  const perDay=days.map(d=>{
+    const e=data.entries[d.key]||{};
+    const c=data.list.filter(h=>e[h.id]).length;
+    totalChecks+=c; if(c>bestDay) bestDay=c;
+    return { ...d, done:c, pct:n? Math.round(c/n*100):0 };
+  });
+  const avg=n&&range? Math.round(totalChecks/(n*range)*100):0;
+  const bars=perDay.map(d=>{
+    const col=d.pct===100?'linear-gradient(180deg,#8fd694,#5aa469)':d.pct>=50?'linear-gradient(180deg,#e8c56a,#b98a2e)':d.pct>0?'linear-gradient(180deg,#7ab8ff,#4a6fa5)':'transparent';
+    return `<div class="habit-bar-col" title="${d.key}: ${d.done}/${n} (${d.pct}%)"><span class="habit-bar-pct">${d.pct>0?d.pct+'%':''}</span><div class="habit-bar-track"><div class="habit-bar-fill" style="height:${d.pct}%;background:${col}"></div></div><span class="habit-bar-day">${d.wd}<br><b>${d.num}</b></span></div>`;
+  }).join('');
+  const head=`<tr><th style="text-align:left">Hábito</th>`+perDay.map(d=>`<th class="${d.isToday?'':''}" title="${d.key}">${d.isToday?'◉':d.wd}<br>${d.num}</th>`).join('')+`<th>🔥</th></tr>`;
+  const rows=data.list.map(h=>{
+    const st=habitStreak(h.id);
+    const cells=perDay.map(d=>{
+      const done=data.entries[d.key] && data.entries[d.key][h.id];
+      const style=done? `background:${h.color}33;border-color:${h.color};color:${h.color}`:'';
+      return `<td><button type="button" class="habit-cell ${d.isToday?'today':''}" data-key="${d.key}" data-id="${h.id}" style="${style}" title="${escapeHtml(h.nombre)} · ${d.key}${done?' ✓':''}">${done? escapeHtml(h.icono||'✓'):'·'}</button></td>`;
+    }).join('');
+    return `<tr><td class="hname"><span class="habit-icon" style="display:inline-flex;width:20px;height:20px;font-size:11px;vertical-align:-4px;background:${h.color}22;color:${h.color};border:1px solid ${h.color}55;border-radius:50%;align-items:center;justify-content:center">${escapeHtml(h.icono||'✓')}</span> ${escapeHtml(h.nombre.length>16? h.nombre.slice(0,16)+'…':h.nombre)}</td>${cells}<td style="white-space:nowrap">🔥${st}</td></tr>`;
+  }).join('');
+  box.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><h4 style="color:var(--accent);margin:0">📊 Rastreador — últimos ${range} días</h4><div class="habit-range-btns"><button type="button" class="btn habit-range ${range===7?'on':''}" data-range="7" style="width:auto;font-size:11px">7d</button><button type="button" class="btn habit-range ${range===14?'on':''}" data-range="14" style="width:auto;font-size:11px">14d</button><button type="button" class="btn habit-range ${range===28?'on':''}" data-range="28" style="width:auto;font-size:11px">28d</button></div></div>`
+    +`<p class="muted" style="font-size:11px;margin:4px 0 0">${totalChecks} checks · promedio <b>${avg}%</b> · mejor día ${bestDay}/${n} · toca una celda para marcar/desmarcar ese día</p>`
+    +`<div class="habit-bars">${bars}</div>`
+    +`<div class="habit-heat"><table>${head}${rows}</table></div>`
+    +`<div class="dlg-actions" style="justify-content:flex-start;margin-top:8px"><button type="button" id="habitTrackerShare" class="btn" style="width:auto;font-size:11px">📤 Compartir avance</button><span class="muted" style="font-size:10px">💡 Consejo: si un día quedó vacío, márcalo hoy en versión mínima (2 min) y sigue la cadena.</span></div>`;
+  box.querySelectorAll('.habit-range').forEach(b=> b.onclick=()=>{ habitTrackerRange=+b.dataset.range; renderHabitsTracker(); });
+  box.querySelectorAll('.habit-cell').forEach(c=> c.onclick=()=>{ habitToggle(c.dataset.key, c.dataset.id); habitRefreshAll(); });
+  const sh=$('habitTrackerShare');
+  if(sh) sh.onclick=async ()=>{
+    const lines=data.list.map(h=>{
+      const st=habitStreak(h.id); const s=habitStats(h.id);
+      return `${h.icono||'✓'} ${h.nombre}: racha ${st}d · mes ${s.pct}% (${s.doneThisMonth}/${s.daysInMonth})`;
+    });
+    const txt=`✅ Mis hábitos — últimos ${range} días: ${totalChecks} checks, promedio ${avg}%\n`+lines.join('\n');
+    try{ await shareText('✅ Mi avance de hábitos', txt); }catch(e){}
+  };
+}
 function renderDlgHabits(){
   const box=$('dlgHabits'); if(!box) return;
   const data=getHabitData();
@@ -4025,7 +4213,7 @@ function renderDlgHabits(){
   }).join('')+'</div>';
   box.querySelectorAll('input').forEach(cb=> cb.onchange=()=>{
     habitToggle(key, cb.dataset.id);
-    renderHabitsList(); renderHabitsTodayBox(); renderHabitsStatsBox(); renderHabitsLunaBox(); renderLuna();
+    habitRefreshAll();
     // mantener estado visual
     const lab=cb.closest('label'); if(cb.checked) lab.classList.add('done'); else lab.classList.remove('done');
   });
@@ -4050,7 +4238,7 @@ function renderHabitIconPicker(selected){
 }
 let habitEditingId=null;
 function setupHabitsDialog(){
-  const btn=$('btnHabits'); if(btn) btn.onclick=()=>{ renderHabitIconPicker($('habitIcon').value||'✓'); renderHabitsList(); renderHabitsTodayBox(); renderHabitsStatsBox(); renderHabitsLunaBox(); $('habitsDialog').showModal(); };
+  const btn=$('btnHabits'); if(btn) btn.onclick=()=>{ renderHabitIconPicker($('habitIcon').value||'✓'); renderHabitsList(); renderHabitsTodayBox(); renderHabitsStatsBox(); renderHabitsTracker(); renderHabitsLunaBox(); $('habitsDialog').showModal(); };
   const ct=$('habitsCloseTop'), cb=$('habitsClose'); if(ct) ct.onclick=()=>$('habitsDialog').close(); if(cb) cb.onclick=()=>$('habitsDialog').close();
   renderHabitIconPicker('✓');
   const iconInput=$('habitIcon');
@@ -4061,18 +4249,30 @@ function setupHabitsDialog(){
   const add=$('habitAdd'); if(add) add.onclick=()=>{
     const nombre=$('habitName').value.trim(); if(!nombre) return alert('Ingresa nombre del hábito');
     const h={ id:'h'+Date.now(), nombre, icono:($('habitIcon').value.trim()||'✓'), color:$('habitColor').value, freq:$('habitFreq').value };
-    getHabitData().list.push(h); scheduleSave(); $('habitName').value=''; $('habitIcon').value=''; renderHabitIconPicker('✓'); renderHabitsList(); renderHabitsTodayBox(); renderHabitsStatsBox(); renderHabitsLunaBox(); renderDlgHabits(); renderLuna();
+    getHabitData().list.push(h); scheduleSave(); $('habitName').value=''; $('habitIcon').value=''; renderHabitIconPicker('✓'); habitRefreshAll();
   };
   const upd=$('habitUpdate'); if(upd) upd.onclick=()=>{
     const h=getHabitData().list.find(x=>x.id===habitEditingId); if(!h) return;
     h.nombre=$('habitName').value.trim(); h.icono=$('habitIcon').value.trim()||'✓'; h.color=$('habitColor').value; h.freq=$('habitFreq').value;
-    scheduleSave(); habitEditingId=null; $('habitAdd').classList.remove('hidden'); upd.classList.add('hidden'); $('habitCancelEdit').classList.add('hidden'); $('habitName').value=''; $('habitIcon').value=''; renderHabitIconPicker('✓'); renderHabitsList(); renderHabitsTodayBox(); renderLuna();
+    scheduleSave(); habitEditingId=null; $('habitAdd').classList.remove('hidden'); upd.classList.add('hidden'); $('habitCancelEdit').classList.add('hidden'); $('habitName').value=''; $('habitIcon').value=''; renderHabitIconPicker('✓'); habitRefreshAll();
   };
   const cancel=$('habitCancelEdit'); if(cancel) cancel.onclick=()=>{ habitEditingId=null; $('habitAdd').classList.remove('hidden'); $('habitUpdate').classList.add('hidden'); cancel.classList.add('hidden'); $('habitName').value=''; $('habitIcon').value=''; renderHabitIconPicker('✓'); };
   const clear=$('habitsClear'); if(clear) clear.onclick=()=>{
     if(!confirm('¿Borrar todos los hábitos y registros de esta usuaria?')) return;
-    const d=getHabitData(); d.list=[]; d.entries={}; scheduleSave(); renderHabitsList(); renderHabitsTodayBox(); renderHabitsStatsBox(); renderHabitsLunaBox(); renderDlgHabits(); renderLuna();
+    const d=getHabitData(); d.list=[]; d.entries={}; scheduleSave(); habitRefreshAll();
   };
+  // pack inicial sugerido (botones .habit-starter en la guía)
+  document.addEventListener('click', (e)=>{
+    const st=e.target.closest('.habit-starter');
+    if(st){
+      const nm=st.dataset.name; const ic=st.dataset.icon||'✓'; const col=st.dataset.color||'#e8c56a';
+      const dd=getHabitData();
+      if(dd.list.some(x=>x.nombre===nm)){ alert('Ya tienes “'+nm+'”'); return; }
+      dd.list.push({ id:'h'+Date.now(), nombre:nm, icono:ic, color:col, freq:'diaria' });
+      scheduleSave(); habitRefreshAll();
+      if($('statusMsg')){ $('statusMsg').textContent='Hábito agregado: '+nm+' ✓'; setTimeout(()=>{$('statusMsg').textContent='';},2500); }
+    }
+  });
   // al editar, preseleccionar icono
   const origRenderHabitsList = renderHabitsList;
   // envolver para que al hacer click en editar también actualice picker
@@ -5464,8 +5664,10 @@ function setupConfigDialog(){
       cb.checked = !!vis[cb.dataset.btn];
     });
     syncConfigMirrors();
+    try { syncHomeConfigUI(); setupHomeConfig(); } catch (e) {}
     $('configDialog').showModal();
   };
+  try { setupHomeConfig(); syncHomeConfigUI(); } catch (e) {}
   const ct=$('configCloseTop'), cb=$('configClose'), cts=$('configCloseTopSave');
   if(ct) ct.onclick=()=>$('configDialog').close();
   if(cb) cb.onclick=()=>$('configDialog').close();
@@ -9154,16 +9356,20 @@ if ($('btnTimer')) {
   } else {
     selectMoon(1);
   }
-  // Móvil: entrar directo a la vista del día (Hoy), sin sidebar
+  // Entrada: respeta 🏠 Pantalla de inicio (vista inicial elegida en Personalizar)
   try{
-    if(isMobileWidth() && info){
-      if(String(info.y)!==String(startY)){
-        try{ selectCycle(info.y, info.luna==='dft'?'dft':info.luna); }catch(e){}
-      }
-      mobileSec='hoy';
-      viewMode='hoy';
-      renderCurrentView();
-    } else { mobileSec=null; syncMobileViewAttr(); }
+    let applied = false;
+    try { applied = applyStartView(info); } catch (e) { applied = false; }
+    if(!applied){
+      if(isMobileWidth() && info){
+        if(String(info.y)!==String(startY)){
+          try{ selectCycle(info.y, info.luna==='dft'?'dft':info.luna); }catch(e){}
+        }
+        mobileSec='hoy';
+        viewMode='hoy';
+        renderCurrentView();
+      } else { mobileSec=null; syncMobileViewAttr(); }
+    }
   }catch(e){}
   $('cycleSel').value = String(startY);
   updateRemindBtn();
