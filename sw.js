@@ -1,8 +1,7 @@
 // Service Worker — Calendario 13 Lunas (offline-first, tolerante a versiones ?v=)
-// v17: CORE sincronizado con index.html raíz (incluye web-api.js, info-clave.js,
-// manifest e iconos). install tolerante + fallback de navegación con reintento.
+// v19: + psicologia-modulo.js
 
-const CACHE = 'cal13-v17-offline';
+const CACHE = 'cal13-v19-offline';
 
 // Lista completa de archivos que usa index.html (bare + con ?v=).
 // Si se agrega un JS nuevo en index.html, agregarlo aquí también (bare y ?v=).
@@ -47,8 +46,12 @@ const CORE = [
   './semillero-guias.js?v=1',
   './ajedrez-modulo.js',
   './ajedrez-modulo.js?v=1',
+  './sudoku-modulo.js',
+  './sudoku-modulo.js?v=1',
   './info-clave.js',
   './info-clave.js?v=1',
+  './psicologia-modulo.js',
+  './psicologia-modulo.js?v=1',
   './web-api.js',
   './web-api.js?v=8',
   './donate.json',

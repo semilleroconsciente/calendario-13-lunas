@@ -36,6 +36,7 @@
       "pesca-historia.js",
       "semillero-guias.js",
       "ajedrez-modulo.js",
+      "sudoku-modulo.js",
       "data.js",
       "frases.js",
       "donate.json",
