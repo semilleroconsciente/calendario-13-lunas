@@ -594,7 +594,7 @@ function renderTodayView(){
     + '<div style="display:flex;gap:8px;margin-top:8px"><button type="button" id="todayDiscSave" class="btn btn-accent" style="flex:1;width:auto">💾 Guardar MIT</button><button type="button" id="todayDiscOpen" class="btn" style="flex:1;width:auto">🎯 Abrir Disciplina</button></div></div>')
     + (hb.respiracion === false ? '' : '<div class="today-card"><h3>🌬️ Respiración</h3><p class="muted" style="font-size:11px">Pausa de 1 minuto: 4-7-8 para calmar, caja 4-4-4-4 para enfocar.</p><div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" id="todayBreathOpen" class="btn btn-accent" style="flex:1;width:auto">🌬️ Respirar ahora</button></div></div>')
     + (hb.ciclo === false ? '' : '<div class="today-card"><h3>🌸 Ciclo</h3><div id="todayCicloBox"></div><div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap"><button type="button" id="todayCicloMark" class="btn" style="flex:1;width:auto">🌸 Marcar inicio hoy</button><button type="button" id="todayCicloOpen" class="btn" style="flex:1;width:auto">🌸 Abrir Ciclo</button></div></div>')
-    + (hb.clima === false ? '' : '<div class="today-card"><h3>🌤️ Clima · próximas 8 horas</h3><div id="todayClimaBox"><p class="muted" style="font-size:11px">Cargando pronóstico de Penco...</p></div><div style="height:10px"></div><h3>🌊 Mareas · actual + 2 siguientes</h3><div id="todayTideBox"><p class="muted" style="font-size:11px">Calculando mareas...</p></div><p class="muted" style="font-size:10px;margin:6px 0 0">Fuentes: Open-Meteo · Penco / SHOA Talcahuano. Solo información.</p></div>');
+    + (hb.clima === false ? '' : '<div class="today-card"><h3>🌤️ Clima · próximas 10 horas</h3><div id="todayClimaBox"><p class="muted" style="font-size:11px">Cargando pronóstico de Penco...</p></div><div style="height:10px"></div><h3>🌊 Mareas</h3><div id="todayTideBox"><p class="muted" style="font-size:11px">Calculando mareas...</p></div><p class="muted" style="font-size:10px;margin:6px 0 0">Fuentes: Open-Meteo · Penco / SHOA Talcahuano. Solo información.</p></div>');
   // --- ánimo: sugerencia + expandir opciones ---
   const main = $('todayMoodMain'), picker = $('todayMoodPicker');
   const paintPicker = ()=>{
@@ -846,7 +846,7 @@ function renderTodayView(){
     paintCiclo();
     const cm=$('todayCicloMark');
     if(cm) cm.onclick=()=>{ try{ const md=getMensData(); if(md.history.includes(key)) md.history=md.history.filter(k=>k!==key); else { md.history.push(key); md.history.sort(); } scheduleSave('Guardado ✓'); paintCiclo(); }catch(e){} };
-    // --- 🌊 MAREAS: actual + 2 siguientes (offline, tabla SHOA precargada) ---
+    // --- 🌊 MAREAS: actual + 3 siguientes (offline, tabla SHOA precargada) ---
     try{
       const tbx=$('todayTideBox');
       if(tbx){
@@ -861,7 +861,17 @@ function renderTodayView(){
           const man=(typeof getTidesForKey==='function'?getTidesForKey(manK.slice(5)).tides:[])||[];
           let res={actual:null,siguientes:[]};
           if(window.InfoClave&&typeof window.InfoClave.mareasActuales==='function'){ res=window.InfoClave.mareasActuales(ahoraHM,hoy,ayer,man); }
-          else { let i=-1; hoy.forEach((t,k)=>{ if(t.h<=ahoraHM) i=k; }); if(i>=0) res.actual=Object.assign({dia:0},hoy[i]); res.siguientes=hoy.slice(i+1,i+3).map(t=>Object.assign({dia:0},t)); }
+          else { let i=-1; hoy.forEach((t,k)=>{ if(t.h<=ahoraHM) i=k; }); if(i>=0) res.actual=Object.assign({dia:0},hoy[i]); res.siguientes=hoy.slice(i+1,i+4).map(t=>Object.assign({dia:0},t)); }
+          // completar hasta 3 siguientes (ayer+hoy+mañana en orden)
+          try{
+            const all=[].concat(ayer.map(t=>Object.assign({dia:-1},t)),hoy.map(t=>Object.assign({dia:0},t)),man.map(t=>Object.assign({dia:1},t)));
+            let pos=-1;
+            if(res.actual){ pos=all.findIndex(t=>t.h===res.actual.h&&t.t===res.actual.t&&t.dia===(res.actual.dia||0)); }
+            else if(res.siguientes.length){ const f=res.siguientes[0]; pos=all.findIndex(t=>t.h===f.h&&t.t===f.t&&t.dia===(f.dia||0))-1; }
+            if(pos>=0){ res.siguientes=all.slice(pos+1,pos+4); }
+            else if(!res.siguientes.length){ res.siguientes=all.filter(t=>t.dia>=0).slice(0,3); }
+            else { res.siguientes=res.siguientes.slice(0,3); }
+          }catch(e){ res.siguientes=(res.siguientes||[]).slice(0,3); }
           const fmtM=(typeof window.InfoClave!=='undefined'&&window.InfoClave.textoMarea)||((mm)=>(mm.t==='pleamar'?'⬆️':'⬇️')+' '+mm.t+' '+mm.h+(mm.a?' · '+mm.a:'')+(mm.dia===-1?' (ayer)':mm.dia===1?' (mañana)':''));
           if(res.actual||res.siguientes.length){
             html+='<div class="today-sun" style="align-items:stretch">';
@@ -873,7 +883,7 @@ function renderTodayView(){
         tbx.innerHTML=html;
       }
     }catch(e){}
-    // --- 🌤️ CLIMA: próximas 8 horas desde ahora (online Open-Meteo, fallback offline) ---
+    // --- 🌤️ CLIMA: próximas 10 horas desde ahora (online Open-Meteo, fallback offline) ---
     try{
       const cbx=$('todayClimaBox');
       if(cbx){
@@ -895,7 +905,7 @@ function renderTodayView(){
             const cw=(typeof wmo==='function'?wmo(cur.weather_code,cur.is_day):{desc:'',ico:'🌤️'});
             const wdir=(typeof dirName==='function'&&cur.wind_direction_10m!=null?dirName(cur.wind_direction_10m):'');
             let html='<div class="today-sun"><span class="chip">'+cw.ico+' Ahora <b>'+Math.round(cur.temperature_2m)+'°</b> · '+escapeHtml(cw.desc)+'</span><span class="chip">💨 <b>'+Math.round(cur.wind_speed_10m)+' km/h '+escapeHtml(wdir)+'</b></span></div><div style="height:8px"></div><div class="wp-hrow" style="flex-wrap:wrap">';
-            for(let k=idx;k<Math.min(idx+8,times.length);k++){
+            for(let k=idx;k<Math.min(idx+10,times.length);k++){
               const t=times[k];
               const isD=(j.hourly.is_day&&j.hourly.is_day[k]!==undefined)?j.hourly.is_day[k]:1;
               const hw=(typeof wmo==='function'?wmo(j.hourly.weather_code[k],isD):{desc:'',ico:'🌤️'});
