@@ -1,0 +1,81 @@
+// Bridge web/localStorage — SOLO si Electron (preload.js) no definió window.api.
+// En Electron window.api viene del preload (IPC a archivos). Este shim es para
+// abrir index.html por http(s) o file:// sin preload: guarda en localStorage.
+(function () {
+  if (window.api) return;
+  window.api = {
+    openExternal: async (url) => { try { window.open(url, '_blank', 'noopener,noreferrer'); return true; } catch { window.location.href = url; return false; } },
+    loadData: async () => {
+      try { return localStorage.getItem('cal13-data') || '{}'; } catch { return '{}'; }
+    },
+    saveData: async (json) => {
+      try { localStorage.setItem('cal13-data', json); return true; } catch { return false; }
+    },
+    dataPath: async () => 'Guardado en este navegador (almacenamiento local)',
+    exportPDF: async (html) => {
+      const w = window.open('', '_blank');
+      if (!w) return null;
+      w.document.open();
+      w.document.write(html);
+      w.document.close();
+      setTimeout(() => { try { w.focus(); w.print(); } catch {} }, 900);
+      return 'impresion';
+    },
+    createShortcut: async () => {
+      const url = window.location.href.split('#')[0];
+      const content = "[InternetShortcut]\r\nURL=" + url + "\r\n";
+      const blob = new Blob([content], { type: "application/octet-stream" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "Calendario 13 Lunas.url";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+      return { ok: true, path: "Descargado: Calendario 13 Lunas.url (arrástralo al escritorio)" };
+    },
+    backupSave: async (json) => {
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(new Blob([json], { type: 'application/json' }));
+      a.download = 'respaldo-calendario-13-lunas.json';
+      a.click();
+      return 'descargado';
+    },
+    backupOpen: () => new Promise(res => {
+      const i = document.createElement('input');
+      i.type = 'file';
+      i.accept = '.json,application/json';
+      i.onchange = () => {
+        const f = i.files[0];
+        if (!f) return res(null);
+        const r = new FileReader();
+        r.onload = () => res(r.result);
+        r.readAsText(f);
+      };
+      i.click();
+    }),
+    imageSave: async (dataUrl, suggestedName) => {
+      const fileName = suggestedName || 'calendario-13-lunas.png';
+      try {
+        const blob = await (await fetch(dataUrl)).blob();
+        const file = new File([blob], fileName, { type: 'image/png' });
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+          await navigator.share({ files: [file], title: fileName.replace(/\.png$/i, '') });
+          return 'compartido';
+        }
+      } catch {}
+      const a = document.createElement('a');
+      a.href = dataUrl;
+      a.download = fileName;
+      a.click();
+      return 'descargado';
+    },
+    loadDonate: async () => {
+      try {
+        const r = await fetch('donate.json', { cache: 'no-store' });
+        if (r && r.ok) return await r.text();
+      } catch {}
+      return null;
+    }
+  };
+})();

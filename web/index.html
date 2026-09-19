@@ -2798,6 +2798,15 @@
           <label class="check-row"><input type="checkbox" data-home="agenda" checked> 🕐 Compromisos</label>
           <label class="check-row"><input type="checkbox" data-home="habitos" checked> ✅ Hábitos de hoy</label>
           <label class="check-row"><input type="checkbox" data-home="animo" checked> 😊 Estado de ánimo</label>
+          <label class="check-row"><input type="checkbox" data-home="suenos" checked> 💭 Sueños</label>
+          <label class="check-row"><input type="checkbox" data-home="comidas" checked> 🥗 Comidas de hoy</label>
+          <label class="check-row"><input type="checkbox" data-home="tareas" checked> 🏠 Tareas hogar de hoy</label>
+          <label class="check-row"><input type="checkbox" data-home="compras" checked> 🛒 Compras pendientes</label>
+          <label class="check-row"><input type="checkbox" data-home="finanzas" checked> 💰 Finanzas del día</label>
+          <label class="check-row"><input type="checkbox" data-home="disciplina" checked> 🎯 Disciplina / intención</label>
+          <label class="check-row"><input type="checkbox" data-home="respiracion" checked> 🌬️ Respiración</label>
+          <label class="check-row"><input type="checkbox" data-home="ciclo" checked> 🌸 Ciclo</label>
+          <label class="check-row"><input type="checkbox" data-home="clima" checked> 🌤️ Clima y mareas</label>
           <button type="button" id="cfgHomeReset" class="btn" style="width:100%;margin-top:8px">↺ Mostrar toda la información</button>
         </div>
         <div class="config-group config-font-group">
@@ -3273,6 +3282,7 @@
       <div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">
         <button type="button" id="tabComunaEventos" class="btn btn-accent" style="width:auto">🎉 Eventos</button>
         <button type="button" id="tabComunaGuia" class="btn" style="width:auto">📖 Guía de Penco</button>
+        <button type="button" id="tabComunaHistoria" class="btn" style="width:auto">📜 Historia</button>
       </div>
       <div id="comunaEventosPanel">
       <label class="check-row" style="margin:8px 0"><input type="checkbox" id="comunaShowCal"> Mostrar eventos de Penco en el calendario (iconos 🎉 por día)</label>
@@ -3309,6 +3319,7 @@
       </div>
       </div>
       <div id="comunaGuiaPanel" class="hidden" style="margin-top:10px"></div>
+      <div id="comunaHistoriaPanel" class="hidden" style="margin-top:10px"></div>
       <div class="dlg-actions"><button type="button" id="comunaClose" class="btn">Cerrar</button></div>
     </form>
   </dialog>
@@ -3356,7 +3367,35 @@
   <script src="ajedrez-modulo.js?v=1"></script>
   <script src="info-clave.js?v=1"></script>
   <script>
-    if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+    // SW offline: registra, busca actualización al volver online y aplica la
+    // nueva versión sin dejar la pantalla sin estilos.
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js', { scope: './' }).then((reg) => {
+          try { reg.update(); } catch (_) {}
+          if (reg.waiting) reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+          reg.addEventListener('updatefound', () => {
+            const nw = reg.installing;
+            if (!nw) return;
+            nw.addEventListener('statechange', () => {
+              if (nw.state === 'installed' && navigator.serviceWorker.controller) {
+                // Nueva versión lista: se aplicará al recargar (una vez online).
+                try { (window.toast || console.log).call(window, 'Actualización lista: recarga para modo offline ✔'); } catch (_) {}
+              }
+            });
+          });
+        }).catch(() => {});
+      });
+      let _swReloaded = false;
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (_swReloaded) return; _swReloaded = true;
+        try { window.location.reload(); } catch (_) {}
+      });
+      // Al recuperar internet, avisa al SW para que revalide la caché.
+      window.addEventListener('online', () => {
+        try { navigator.serviceWorker.ready.then((reg) => reg.update()).catch(() => {}); } catch (_) {}
+      });
+    }
   </script>
 </body>
 </html>

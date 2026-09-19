@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, dialog, shell } = require('electron');
+const { app, BrowserWindow, ipcMain, dialog, shell, session } = require('electron');
 const path = require('path');
 const fs = require('fs');
 const { spawnSync } = require('child_process');
@@ -47,7 +47,16 @@ function createWindow() {
   win.loadFile('index.html');
 }
 
-app.whenReady().then(createWindow);
+app.whenReady().then(async () => {
+  // Limpieza crítica: versiones anteriores registraron un Service Worker sobre
+  // file:// que intercepta index.html y devuelve la pantalla "Sin conexión".
+  // La app de escritorio es 100% local y no usa SW: se eliminan registros y
+  // cachés para que siempre cargue el calendario real. (No toca calendario-data.json)
+  try {
+    await session.defaultSession.clearStorageData({ storages: ['serviceworkers', 'cachestorage'] });
+  } catch {}
+  createWindow();
+});
 app.on('window-all-closed', () => app.quit());
 
 const dataFile = () => path.join(app.getPath('userData'), 'calendario-data.json');

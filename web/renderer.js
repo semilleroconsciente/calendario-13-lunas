@@ -92,8 +92,8 @@ function setupThemeSelector() {
 }
 
 // === 🏠 PANTALLA DE INICIO PERSONALIZABLE (⚙️ Personalizar) ===
-// Guarda por usuario en DATA.config.home = { startView, blocks:{frase,solLuna,notas,agenda,habitos,animo} }
-const HOME_BLOCKS_DEFAULT = { frase: true, solLuna: true, notas: true, agenda: true, habitos: true, animo: true };
+// Guarda por usuario en DATA.config.home = { startView, blocks:{frase,solLuna,notas,agenda,habitos,animo,suenos,comidas,tareas,compras,finanzas,disciplina,respiracion,ciclo,clima} }
+const HOME_BLOCKS_DEFAULT = { frase: true, solLuna: true, notas: true, agenda: true, habitos: true, animo: true, suenos: true, comidas: true, tareas: true, compras: true, finanzas: true, disciplina: true, respiracion: true, ciclo: true, clima: true };
 const HOME_VIEWS = ['auto', 'hoy', 'luna', 'semanaLunar', 'mes', 'semana'];
 function getHomeConfig() {
   const d = (DATA.config && DATA.config.home) || {};
@@ -577,7 +577,24 @@ function renderTodayView(){
     + (hb.habitos === false ? '' : '<div class="today-card"><h3>✅ Hábitos de hoy</h3><div id="todayHabitsBox">'+habHTML+'</div></div>')
     + (hb.animo === false ? '' : '<div class="today-card"><h3>😊 Estado de ánimo</h3>'
     + '<button type="button" id="todayMoodMain" class="today-mood-main"><span class="tm-ico">'+sug.e+'</span><span>'+(cur?escapeHtml(cur.n)+' · toca para cambiar':'Sugerencia: '+sug.e+' · '+escapeHtml(sug.n))+'</span></button>'
-    + '<div id="todayMoodPicker" class="today-mood-picker hidden"></div></div>');
+    + '<div id="todayMoodPicker" class="today-mood-picker hidden"></div></div>')
+    + (hb.suenos === false ? '' : '<div class="today-card"><h3>💭 Sueños</h3>'
+    + (function(){ try{ const lines=(nota||'').split('\n').filter(l=>l.trim().toLowerCase().indexOf('sueño')===0||l.trim().toLowerCase().indexOf('sueno')===0); return lines.length? '<p class="muted" style="font-size:11px">'+lines.length+' sueño(s) en la nota de hoy · último: «'+escapeHtml(lines[lines.length-1].slice(0,120))+'»</p>' : '<p class="muted" style="font-size:11px">Sin sueños registrados hoy. Anota aunque sea una palabra.</p>'; }catch(e){ return ''; } })()
+    + '<textarea id="todayDreamText" class="today-note" rows="2" placeholder="Anoche soñé..."></textarea>'
+    + '<div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap"><button type="button" id="todayDreamSave" class="btn btn-accent" style="flex:1;width:auto">💾 Guardar en nota</button><button type="button" id="todayDreamOpen" class="btn" style="flex:1;width:auto">💭 Abrir Sueños</button></div></div>')
+    + (hb.comidas === false ? '' : '<div class="today-card"><h3>🥗 Comidas de hoy</h3>'
+    + (function(){ try{ const e=(typeof getMealData==='function'?getMealData().entries[key]:null)||{}; const parts=[e.breakfast?('🌅 '+e.breakfast):'',e.lunch?('☀️ '+e.lunch):'',e.dinner?('🌙 '+e.dinner):''].filter(Boolean); return parts.length? '<p style="font-size:12px">'+escapeHtml(parts.join(' · ')).replace(/&quot;/g,'"')+'</p>' : '<p class="muted" style="font-size:11px">Sin plan de comidas hoy.</p>'; }catch(e){ return ''; } })()
+    + '<div class="today-add" style="flex-direction:column;align-items:stretch"><input type="text" id="todayMealB" placeholder="🌅 Desayuno..." maxlength="80"><input type="text" id="todayMealL" placeholder="☀️ Almuerzo..." maxlength="80"><input type="text" id="todayMealD" placeholder="🌙 Cena..." maxlength="80"><div style="display:flex;gap:8px"><button type="button" id="todayMealSave" class="btn btn-accent" style="flex:1;width:auto">💾 Guardar</button><button type="button" id="todayMealOpen" class="btn" style="flex:1;width:auto">🥗 Abrir Comidas</button></div></div></div>')
+    + (hb.tareas === false ? '' : '<div class="today-card"><h3>🏠 Tareas hogar de hoy</h3><div id="todayHomeTasksBox"></div><div style="margin-top:8px"><button type="button" id="todayHomeTasksOpen" class="btn" style="width:100%">🏠 Abrir Tareas Hogar</button></div></div>')
+    + (hb.compras === false ? '' : '<div class="today-card"><h3>🛒 Compras pendientes</h3><div id="todayShopBox"></div><div class="today-add"><input type="text" id="todayShopText" placeholder="Agregar (ej: pan)..." maxlength="60"><button type="button" id="todayShopAdd" class="btn btn-accent" style="width:auto">+ Agregar</button></div><div style="margin-top:8px"><button type="button" id="todayShopOpen" class="btn" style="width:100%">🛒 Abrir Compras</button></div></div>')
+    + (hb.finanzas === false ? '' : '<div class="today-card"><h3>💰 Finanzas del día</h3><div id="todayFinanceBox"></div><div class="today-add"><select id="todayFinTipo" style="width:auto"><option value="gasto">Gasto</option><option value="ingreso">Ingreso</option></select><input type="number" id="todayFinMonto" placeholder="$ monto" min="0" style="max-width:110px"><input type="text" id="todayFinDesc" placeholder="detalle..." maxlength="60"></div><div style="display:flex;gap:8px;margin-top:8px"><button type="button" id="todayFinAdd" class="btn btn-accent" style="flex:1;width:auto">+ Agregar</button><button type="button" id="todayFinOpen" class="btn" style="flex:1;width:auto">💰 Abrir Finanzas</button></div></div>')
+    + (hb.disciplina === false ? '' : '<div class="today-card"><h3>🎯 Disciplina / intención</h3>'
+    + (function(){ try{ const d=(typeof getDisciplineData==='function'?getDisciplineData():null)||{}; return d.mit? '<p style="font-size:12px">🎯 MIT: <b>'+escapeHtml(d.mit)+'</b></p>' : '<p class="muted" style="font-size:11px">Define tu tarea más importante (MIT) de hoy.</p>'; }catch(e){ return ''; } })()
+    + '<input type="text" id="todayDiscMIT" class="today-note" style="min-height:0" placeholder="🎯 MIT de hoy..." maxlength="120">'
+    + '<div style="display:flex;gap:8px;margin-top:8px"><button type="button" id="todayDiscSave" class="btn btn-accent" style="flex:1;width:auto">💾 Guardar MIT</button><button type="button" id="todayDiscOpen" class="btn" style="flex:1;width:auto">🎯 Abrir Disciplina</button></div></div>')
+    + (hb.respiracion === false ? '' : '<div class="today-card"><h3>🌬️ Respiración</h3><p class="muted" style="font-size:11px">Pausa de 1 minuto: 4-7-8 para calmar, caja 4-4-4-4 para enfocar.</p><div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" id="todayBreathOpen" class="btn btn-accent" style="flex:1;width:auto">🌬️ Respirar ahora</button></div></div>')
+    + (hb.ciclo === false ? '' : '<div class="today-card"><h3>🌸 Ciclo</h3><div id="todayCicloBox"></div><div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap"><button type="button" id="todayCicloMark" class="btn" style="flex:1;width:auto">🌸 Marcar inicio hoy</button><button type="button" id="todayCicloOpen" class="btn" style="flex:1;width:auto">🌸 Abrir Ciclo</button></div></div>')
+    + (hb.clima === false ? '' : '<div class="today-card"><h3>🌤️ Clima y mareas</h3><p class="muted" style="font-size:11px">Pronóstico de Penco y tabla de mareas (requiere internet).</p><div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" id="todayWeatherOpen" class="btn" style="flex:1;width:auto">🌤️ Ver Clima</button><button type="button" id="todayTidesOpen" class="btn" style="flex:1;width:auto">🌊 Ver Mareas</button></div></div>');
   // --- ánimo: sugerencia + expandir opciones ---
   const main = $('todayMoodMain'), picker = $('todayMoodPicker');
   const paintPicker = ()=>{
@@ -723,6 +740,114 @@ function renderTodayView(){
         if($('statusMsg')){ $('statusMsg').textContent = res ? 'Imagen guardada ✓' : 'Cancelado'; setTimeout(()=>{$('statusMsg').textContent='';},2500); }
       }catch(e){ alert('No se pudo compartir este día'); }
     };
+  }catch(e){}
+  // --- 💭 SUEÑOS ---
+  try{
+    const ds=$('todayDreamSave');
+    if(ds) ds.onclick=()=>{
+      try{
+        const t=(($('todayDreamText')||{}).value||'').trim();
+        if(!t) return alert('Escribe tu sueño primero');
+        const txt=sanitizeText(t,500);
+        if(isDFT){ const c=cyc(info.y); c.dft.nota=(c.dft.nota?c.dft.nota+'\n':'')+'Sueño: '+txt; }
+        else { const c=dayCell(lunaN,diaN); c.nota=(c.nota?c.nota+'\n':'')+'Sueño: '+txt; }
+        scheduleSave('Sueño guardado ✓'); renderTodayView();
+      }catch(e){}
+    };
+    const dop=$('todayDreamOpen');
+    if(dop) dop.onclick=()=>{ try{ $('btnDreams').click(); }catch(e){} };
+  }catch(e){}
+  // --- 🥗 COMIDAS ---
+  try{
+    const mb2=$('todayMealB'), ml=$('todayMealL'), md2=$('todayMealD');
+    try{ const e=(typeof getMealData==='function'?getMealData().entries[key]:null)||{}; if(mb2&&!mb2.value) mb2.value=e.breakfast||''; if(ml&&!ml.value) ml.value=e.lunch||''; if(md2&&!md2.value) md2.value=e.dinner||''; }catch(e){}
+    const ms=$('todayMealSave');
+    if(ms) ms.onclick=()=>{ try{ const d=getMealData(); const e=d.entries[key]||(d.entries[key]={}); e.breakfast=sanitizeText((mb2.value||'').trim(),120); e.lunch=sanitizeText((ml.value||'').trim(),120); e.dinner=sanitizeText((md2.value||'').trim(),120); scheduleSave('Comidas guardadas ✓'); renderTodayView(); }catch(e){} };
+    const mop=$('todayMealOpen');
+    if(mop) mop.onclick=()=>{ try{ $('btnMeal').click(); }catch(e){} };
+  }catch(e){}
+  // --- 🏠 TAREAS HOGAR ---
+  try{
+    const tb=$('todayHomeTasksBox');
+    const paintTodayTasks=()=>{
+      if(!tb) return;
+      try{
+        const list=(typeof homeTasksForDate==='function'?homeTasksForDate(key):[]);
+        const ht=getHomeTasksData(); const comp=(ht.completions[key]||{});
+        if(!list.length){ tb.innerHTML='<p class="muted" style="font-size:11px">Sin tareas para hoy.</p>'; return; }
+        tb.innerHTML='<div class="habits-today-grid">'+list.map(t=>{ const done=!!comp[t.id]; return '<label class="habit-today-item '+(done?'done':'')+'"><input type="checkbox" data-tid="'+t.id+'" '+(done?'checked':'')+'><span>'+escapeHtml(t.name)+'</span><span class="muted" style="font-size:10px"> · '+escapeHtml(t.time)+'′</span></label>'; }).join('')+'</div>';
+        tb.querySelectorAll('input[data-tid]').forEach(cb=> cb.onchange=()=>{ try{ const h=getHomeTasksData(); if(!h.completions[key]) h.completions[key]={}; if(cb.checked) h.completions[key][cb.dataset.tid]=true; else delete h.completions[key][cb.dataset.tid]; scheduleSave(); const lab=cb.closest('label'); if(lab){ if(cb.checked) lab.classList.add('done'); else lab.classList.remove('done'); } }catch(e){} });
+      }catch(e){}
+    };
+    paintTodayTasks();
+    const top2=$('todayHomeTasksOpen');
+    if(top2) top2.onclick=()=>{ try{ $('btnHomeTasks').click(); }catch(e){} };
+  }catch(e){}
+  // --- 🛒 COMPRAS ---
+  try{
+    const sb2=$('todayShopBox');
+    const paintTodayShop=()=>{
+      if(!sb2) return;
+      try{
+        const items=getShoppingData().items;
+        const pend=items.filter(x=>!x.done);
+        if(!items.length){ sb2.innerHTML='<p class="muted" style="font-size:11px">Lista vacía.</p>'; return; }
+        sb2.innerHTML='<p class="muted" style="font-size:11px">'+pend.length+' pendientes / '+items.length+' total</p><div class="habits-today-grid">'+pend.slice(0,6).map(it=>'<label class="habit-today-item"><input type="checkbox" data-sid="'+it.id+'"><span>'+escapeHtml(it.name)+'</span><span class="muted" style="font-size:10px"> · '+escapeHtml(it.qty||'')+'</span></label>').join('')+'</div>';
+        sb2.querySelectorAll('input[data-sid]').forEach(cb=> cb.onchange=()=>{ try{ const it=getShoppingData().items.find(x=>x.id===cb.dataset.sid); if(it) it.done=cb.checked; scheduleSave(); paintTodayShop(); }catch(e){} });
+      }catch(e){}
+    };
+    paintTodayShop();
+    const sa=$('todayShopAdd');
+    if(sa) sa.onclick=()=>{ try{ const v=(($('todayShopText')||{}).value||'').trim(); if(!v) return; getShoppingData().items.push({id:'s'+Date.now(),name:sanitizeText(v,60),qty:'',cat:'General',done:false}); scheduleSave('Agregado ✓'); $('todayShopText').value=''; paintTodayShop(); }catch(e){} };
+    const sop=$('todayShopOpen');
+    if(sop) sop.onclick=()=>{ try{ $('btnShopping').click(); }catch(e){} };
+  }catch(e){}
+  // --- 💰 FINANZAS ---
+  try{
+    const fb=$('todayFinanceBox');
+    const paintTodayFin=()=>{
+      if(!fb) return;
+      try{
+        const list=getFinanceData().entries.filter(e=>e.date===key);
+        let g=0,i=0; list.forEach(e=>{ const v=parseInt(e.monto)||0; if(e.tipo==='gasto') g+=v; else i+=v; });
+        fb.innerHTML='<div class="today-sun"><span class="chip">💸 Gastos <b>'+formatCLP(g)+'</b></span><span class="chip">💵 Ingresos <b>'+formatCLP(i)+'</b></span><span class="chip">🧾 '+list.length+' mov.</span></div>'
+          + (list.length? '<div style="margin-top:6px">'+list.slice(-4).reverse().map(e=>'<div class="hora-item"><span style="font-size:11px">'+(e.tipo==='gasto'?'💸':'💵')+' '+escapeHtml(e.desc||e.categoria||'')+' · <b>'+formatCLP(e.monto)+'</b></span></div>').join('')+'</div>' : '<p class="muted" style="font-size:11px;margin-top:6px">Sin movimientos hoy.</p>');
+      }catch(e){}
+    };
+    paintTodayFin();
+    const fa=$('todayFinAdd');
+    if(fa) fa.onclick=()=>{ try{ const m=parseInt(($('todayFinMonto')||{}).value)||0; if(!m) return alert('Ingresa un monto'); const d=(($('todayFinDesc')||{}).value||'').trim()||'Movimiento'; const t=($('todayFinTipo')||{}).value||'gasto'; getFinanceData().entries.push({id:'f'+Date.now(),date:key,tipo:t,monto:m,desc:sanitizeText(d,60),categoria:t==='gasto'?'Otros':'Otros'}); scheduleSave('Guardado ✓'); paintTodayFin(); $('todayFinMonto').value=''; $('todayFinDesc').value=''; }catch(e){} };
+    const fop=$('todayFinOpen');
+    if(fop) fop.onclick=()=>{ try{ $('btnFinance').click(); }catch(e){} };
+  }catch(e){}
+  // --- 🎯 DISCIPLINA ---
+  try{
+    const dm=$('todayDiscMIT');
+    try{ const d=getDisciplineData(); if(dm&&!dm.value) dm.value=d.mit||''; }catch(e){}
+    const dsv=$('todayDiscSave');
+    if(dsv) dsv.onclick=()=>{ try{ getDisciplineData().mit=sanitizeText((dm.value||'').trim(),120); scheduleSave('MIT guardado ✓'); renderTodayView(); }catch(e){} };
+    const dop2=$('todayDiscOpen');
+    if(dop2) dop2.onclick=()=>{ try{ $('btnDiscipline').click(); }catch(e){} };
+  }catch(e){}
+  // --- 🌬️ RESPIRACIÓN / 🌤️ CLIMA / 🌸 CICLO accesos ---
+  try{
+    const br=$('todayBreathOpen'); if(br) br.onclick=()=>{ try{ $('btnBreath').click(); }catch(e){} };
+    const wo=$('todayWeatherOpen'); if(wo) wo.onclick=()=>{ try{ $('btnWeather').click(); }catch(e){} };
+    const to2=$('todayTidesOpen'); if(to2) to2.onclick=()=>{ try{ $('btnTides').click(); }catch(e){} };
+    const co=$('todayCicloOpen'); if(co) co.onclick=()=>{ try{ $('btnMenstrual').click(); }catch(e){} };
+    const cb2=$('todayCicloBox');
+    const paintCiclo=()=>{
+      if(!cb2) return;
+      try{
+        const md=getMensData(); const is=md.history.includes(key);
+        let txt='';
+        try{ const p=(typeof getMensPredictions==='function'?getMensPredictions():null); if(p&&p.nextPeriodMs){ const tKey=mensMsToKey(p.nextPeriodMs); const days=Math.round((mensKeyToMs(tKey)-mensKeyToMs(key))/86400000); txt = days===0? 'Predicción: periodo <b>hoy</b>' : days===1? 'Predicción: periodo <b>mañana</b>' : 'Predicción: periodo en <b>'+days+' días</b> ('+escapeHtml(tKey)+')'; } else txt='Sin predicción: registra tu último inicio.'; }catch(e){ txt=''; }
+        cb2.innerHTML='<p style="font-size:12px">'+txt+'</p><p class="muted" style="font-size:11px">Hoy: '+(is?'<b style="color:var(--gold)">● inicio marcado</b>':'sin marca')+'</p>';
+      }catch(e){}
+    };
+    paintCiclo();
+    const cm=$('todayCicloMark');
+    if(cm) cm.onclick=()=>{ try{ const md=getMensData(); if(md.history.includes(key)) md.history=md.history.filter(k=>k!==key); else { md.history.push(key); md.history.sort(); } scheduleSave('Guardado ✓'); paintCiclo(); }catch(e){} };
   }catch(e){}
   // --- reloj vivo con segundos en el encabezado ---
   try{
@@ -9370,7 +9495,11 @@ if ($('btnTimer')) {
   applyVisibility();
   setTimeout(checkReminders, 3000);
   setTimeout(()=>{ try{ mensCheckNotify(); }catch{} }, 4500);
-  window.api.dataPath().then(p => {
-    $('dataInfo').textContent = 'Tus notas se guardan en: ' + p;
-  });
+  try {
+    if (window.api && window.api.dataPath) {
+      window.api.dataPath().then(p => {
+        if ($('dataInfo')) $('dataInfo').textContent = 'Tus notas se guardan en: ' + p;
+      }).catch(() => {});
+    }
+  } catch {}
 })();
