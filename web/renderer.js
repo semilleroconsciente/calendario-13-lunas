@@ -93,7 +93,7 @@ function setupThemeSelector() {
 
 // === 🏠 PANTALLA DE INICIO PERSONALIZABLE (⚙️ Personalizar) ===
 // Guarda por usuario en DATA.config.home = { startView, blocks:{frase,solLuna,notas,agenda,habitos,animo,suenos,comidas,tareas,compras,finanzas,disciplina,respiracion,ciclo,clima} }
-const HOME_BLOCKS_DEFAULT = { frase: true, solLuna: true, notas: true, agenda: true, habitos: true, animo: true, suenos: true, comidas: true, tareas: true, compras: true, finanzas: true, disciplina: true, respiracion: true, ciclo: true, clima: true };
+const HOME_BLOCKS_DEFAULT = { frase: true, solLuna: true, notas: true, agenda: true, habitos: true, animo: true, suenos: true, comidas: true, tareas: true, compras: true, finanzas: true, disciplina: true, respiracion: true, ciclo: true, clima: true, mareas: true };
 const HOME_VIEWS = ['auto', 'hoy', 'luna', 'semanaLunar', 'mes', 'semana'];
 function getHomeConfig() {
   const d = (DATA.config && DATA.config.home) || {};
@@ -594,7 +594,8 @@ function renderTodayView(){
     + '<div style="display:flex;gap:8px;margin-top:8px"><button type="button" id="todayDiscSave" class="btn btn-accent" style="flex:1;width:auto">💾 Guardar MIT</button><button type="button" id="todayDiscOpen" class="btn" style="flex:1;width:auto">🎯 Abrir Disciplina</button></div></div>')
     + (hb.respiracion === false ? '' : '<div class="today-card"><h3>🌬️ Respiración</h3><p class="muted" style="font-size:11px">Pausa de 1 minuto: 4-7-8 para calmar, caja 4-4-4-4 para enfocar.</p><div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" id="todayBreathOpen" class="btn btn-accent" style="flex:1;width:auto">🌬️ Respirar ahora</button></div></div>')
     + (hb.ciclo === false ? '' : '<div class="today-card"><h3>🌸 Ciclo</h3><div id="todayCicloBox"></div><div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap"><button type="button" id="todayCicloMark" class="btn" style="flex:1;width:auto">🌸 Marcar inicio hoy</button><button type="button" id="todayCicloOpen" class="btn" style="flex:1;width:auto">🌸 Abrir Ciclo</button></div></div>')
-    + (hb.clima === false ? '' : '<div class="today-card"><h3>🌤️ Clima · próximas 10 horas</h3><div id="todayClimaBox"><p class="muted" style="font-size:11px">Cargando pronóstico de Penco...</p></div><div style="height:10px"></div><h3>🌊 Mareas</h3><div id="todayTideBox"><p class="muted" style="font-size:11px">Calculando mareas...</p></div><p class="muted" style="font-size:10px;margin:6px 0 0">Fuentes: Open-Meteo · Penco / SHOA Talcahuano. Solo información.</p></div>');
+    + (hb.clima === false ? '' : '<div class="today-card"><h3>🌤️ Clima · próximas 10 horas</h3><div id="todayClimaBox"><p class="muted" style="font-size:11px">Cargando pronóstico de Penco...</p></div><p class="muted" style="font-size:10px;margin:6px 0 0">Fuente: Open-Meteo · Penco. Solo información.</p></div>')
+    + (hb.mareas === false ? '' : '<div class="today-card"><h3>🌊 Mareas</h3><div id="todayTideBox"><p class="muted" style="font-size:11px">Calculando mareas...</p></div><p class="muted" style="font-size:10px;margin:6px 0 0">Fuente: SHOA Talcahuano. Solo información.</p></div>');
   // --- ánimo: sugerencia + expandir opciones ---
   const main = $('todayMoodMain'), picker = $('todayMoodPicker');
   const paintPicker = ()=>{
@@ -846,7 +847,7 @@ function renderTodayView(){
     paintCiclo();
     const cm=$('todayCicloMark');
     if(cm) cm.onclick=()=>{ try{ const md=getMensData(); if(md.history.includes(key)) md.history=md.history.filter(k=>k!==key); else { md.history.push(key); md.history.sort(); } scheduleSave('Guardado ✓'); paintCiclo(); }catch(e){} };
-    // --- 🌊 MAREAS: actual + 3 siguientes (offline, tabla SHOA precargada) ---
+    // --- 🌊 MAREAS: actual + 2 siguientes (offline, tabla SHOA precargada) ---
     try{
       const tbx=$('todayTideBox');
       if(tbx){
@@ -861,17 +862,17 @@ function renderTodayView(){
           const man=(typeof getTidesForKey==='function'?getTidesForKey(manK.slice(5)).tides:[])||[];
           let res={actual:null,siguientes:[]};
           if(window.InfoClave&&typeof window.InfoClave.mareasActuales==='function'){ res=window.InfoClave.mareasActuales(ahoraHM,hoy,ayer,man); }
-          else { let i=-1; hoy.forEach((t,k)=>{ if(t.h<=ahoraHM) i=k; }); if(i>=0) res.actual=Object.assign({dia:0},hoy[i]); res.siguientes=hoy.slice(i+1,i+4).map(t=>Object.assign({dia:0},t)); }
-          // completar hasta 3 siguientes (ayer+hoy+mañana en orden)
+          else { let i=-1; hoy.forEach((t,k)=>{ if(t.h<=ahoraHM) i=k; }); if(i>=0) res.actual=Object.assign({dia:0},hoy[i]); res.siguientes=hoy.slice(i+1,i+3).map(t=>Object.assign({dia:0},t)); }
+          // completar hasta 2 siguientes (ayer+hoy+mañana en orden)
           try{
             const all=[].concat(ayer.map(t=>Object.assign({dia:-1},t)),hoy.map(t=>Object.assign({dia:0},t)),man.map(t=>Object.assign({dia:1},t)));
             let pos=-1;
             if(res.actual){ pos=all.findIndex(t=>t.h===res.actual.h&&t.t===res.actual.t&&t.dia===(res.actual.dia||0)); }
             else if(res.siguientes.length){ const f=res.siguientes[0]; pos=all.findIndex(t=>t.h===f.h&&t.t===f.t&&t.dia===(f.dia||0))-1; }
-            if(pos>=0){ res.siguientes=all.slice(pos+1,pos+4); }
-            else if(!res.siguientes.length){ res.siguientes=all.filter(t=>t.dia>=0).slice(0,3); }
-            else { res.siguientes=res.siguientes.slice(0,3); }
-          }catch(e){ res.siguientes=(res.siguientes||[]).slice(0,3); }
+            if(pos>=0){ res.siguientes=all.slice(pos+1,pos+3); }
+            else if(!res.siguientes.length){ res.siguientes=all.filter(t=>t.dia>=0).slice(0,2); }
+            else { res.siguientes=res.siguientes.slice(0,2); }
+          }catch(e){ res.siguientes=(res.siguientes||[]).slice(0,2); }
           const fmtM=(typeof window.InfoClave!=='undefined'&&window.InfoClave.textoMarea)||((mm)=>(mm.t==='pleamar'?'⬆️':'⬇️')+' '+mm.t+' '+mm.h+(mm.a?' · '+mm.a:'')+(mm.dia===-1?' (ayer)':mm.dia===1?' (mañana)':''));
           if(res.actual||res.siguientes.length){
             html+='<div class="today-sun" style="align-items:stretch">';
