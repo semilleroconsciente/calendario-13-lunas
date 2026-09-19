@@ -1,3 +1,5 @@
+(function () {
+if (window.api) return;
 window.api = {
   openExternal: async (url) => { try { window.open(url, '_blank', 'noopener,noreferrer'); return true; } catch { window.location.href = url; return false; } },
   loadData: async () => {
@@ -64,5 +66,13 @@ window.api = {
     a.download = fileName;
     a.click();
     return 'descargado';
+  },
+  loadDonate: async () => {
+    try {
+      const r = await fetch('donate.json', { cache: 'no-store' });
+      if (r && r.ok) return await r.text();
+    } catch {}
+    return null;
   }
 };
+})();
