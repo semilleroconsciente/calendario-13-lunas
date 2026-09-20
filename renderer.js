@@ -4163,22 +4163,42 @@ function medicCheckNotify(){
   nat.list.forEach(med=> medicNextDoses(med, now-60000, 2).forEach(t=> all.push({t,med, tipo:'🌿'})));
   all.forEach(o=>{ const diff=o.t-now; if(diff>=-60000 && diff<=60000){ const key='medic-last-'+o.med.id+'-'+o.t; if(localStorage.getItem(key)) return; try{ playNotifySound(); new Notification((o.tipo==='🌿'?'🌿 Natural':'💊 Medicamento'), {body:`${o.med.name} — ${o.med.dose||o.med.notes||''} · ${cal.fmtTime.format(new Date(o.t))}`, silent:false}); localStorage.setItem(key,'1'); }catch{} } });
 }
+function medicSwitchTab(which){
+  const panels={ farma:'medicFarmaPanel', natural:'medicNaturalPanel', basica:'medicBasicaPanel', historia:'medicHistoriaPanel', seguridad:'medicSeguridadPanel' };
+  const tabs={ farma:'tabMedicFarma', natural:'tabMedicNatural', basica:'tabMedicBasica', historia:'tabMedicHistoria', seguridad:'tabMedicSeguridad' };
+  Object.entries(panels).forEach(([k,id])=>{ const el=$(id); if(el) el.classList.toggle('hidden', k!==which); });
+  Object.entries(tabs).forEach(([k,id])=>{ const el=$(id); if(el) el.classList.toggle('btn-accent', k===which); });
+  try{
+    if(which==='basica'){ renderMedicBasica(); renderMedicBotiquin(); loadMedicExtra(); }
+    if(which==='historia'){ renderMedicHistoria(); }
+    if(which==='seguridad'){ renderMedicSeguridad(); }
+  }catch(e){}
+}
 function setupMedicDialog(){
   const btn=$('btnMedic'); if(btn) btn.onclick=()=>{
     renderMedicList(); renderNaturalList(); renderNaturalUserList(); renderMedicNextBox();
+    renderMedicBasica(); renderMedicBotiquin(); loadMedicExtra(); renderMedicHistoria(); renderMedicSeguridad();
     const c=$('medicNotify'); if(c) c.checked=getMedicData().notify;
     const mf=$('medicFrom'); if(mf && !mf.value) mf.value=cal.fmtKey.format(new Date());
     const nf=$('naturalFrom'); if(nf && !nf.value) nf.value=cal.fmtKey.format(new Date());
     // tabs default
-    const farPanel=$('medicFarmaPanel'), natPanel=$('medicNaturalPanel'), tF=$('tabMedicFarma'), tN=$('tabMedicNatural');
-    if(farPanel && natPanel){ farPanel.classList.remove('hidden'); natPanel.classList.add('hidden'); if(tF) tF.classList.add('btn-accent'); if(tN) tN.classList.remove('btn-accent'); }
+    medicSwitchTab('farma');
     $('medicDialog').showModal();
   };
   const cTop=$('medicCloseTop'), cBot=$('medicClose'); if(cTop) cTop.onclick=()=>$('medicDialog').close(); if(cBot) cBot.onclick=()=>$('medicDialog').close();
   // tabs
-  const tF=$('tabMedicFarma'), tN=$('tabMedicNatural');
-  if(tF) tF.onclick=()=>{ $('medicFarmaPanel').classList.remove('hidden'); $('medicNaturalPanel').classList.add('hidden'); tF.classList.add('btn-accent'); tN.classList.remove('btn-accent'); };
-  if(tN) tN.onclick=()=>{ $('medicNaturalPanel').classList.remove('hidden'); $('medicFarmaPanel').classList.add('hidden'); tN.classList.add('btn-accent'); tF.classList.remove('btn-accent'); };
+  const tF=$('tabMedicFarma'), tN=$('tabMedicNatural'), tB=$('tabMedicBasica'), tH=$('tabMedicHistoria'), tS=$('tabMedicSeguridad');
+  if(tF) tF.onclick=()=>medicSwitchTab('farma');
+  if(tN) tN.onclick=()=>medicSwitchTab('natural');
+  if(tB) tB.onclick=()=>medicSwitchTab('basica');
+  if(tH) tH.onclick=()=>medicSwitchTab('historia');
+  if(tS) tS.onclick=()=>medicSwitchTab('seguridad');
+  const goFA=$('medicGoFirstAid'); if(goFA) goFA.onclick=()=>{ try{$('medicDialog').close();}catch{} try{ renderFirstAidPanel('actuar'); $('firstAidDialog').showModal(); }catch{} };
+  const goLaw=$('medicGoLawen'); if(goLaw) goLaw.onclick=()=>{ try{$('medicDialog').close();}catch{} const b=$('btnLawen'); if(b) b.click(); };
+  const hs=$('medicHistSearch'); if(hs) hs.oninput=()=>renderMedicHistoria();
+  const hf=$('medicHistFilter'); if(hf) hf.onchange=()=>renderMedicHistoria();
+  const exS=$('medicExtraSave'); if(exS) exS.onclick=saveMedicExtra;
+  const bqR=$('medicBotiquinReset'); if(bqR) bqR.onclick=()=>{ const d=getMedicExtraData(); d.botiquin={}; scheduleSave(); renderMedicBotiquin(); };
   const freq=$('medicFreq'), daysRow=$('medicDaysRow'); if(freq) freq.onchange=()=>{ daysRow.style.display= freq.value==='personalizada'?'flex':'none'; };
   const nFreq=$('naturalFreq'), nDaysRow=$('naturalDaysRow'); if(nFreq) nFreq.onchange=()=>{ nDaysRow.style.display= nFreq.value==='personalizada'?'flex':'none'; };
   const add=$('medicAdd'); if(add) add.onclick=()=>{
@@ -4562,6 +4582,100 @@ function renderNaturalUserList(){
     if(!confirm('¿Eliminar este preparado natural?')) return;
     d.list=d.list.filter(x=>x.id!==b.dataset.id); scheduleSave(); renderNaturalUserList(); renderMedicNextBox();
   });
+}
+
+// === MEDICINA: BÁSICA / HISTORIA / SEGURIDAD ===
+function getMedicExtraData(){
+  const u=userData();
+  if(!u.medicinaExtra) u.medicinaExtra={ botiquin:{}, alergias:'', grupo:'', contacto:'' };
+  if(!u.medicinaExtra.botiquin || typeof u.medicinaExtra.botiquin!=='object') u.medicinaExtra.botiquin={};
+  return u.medicinaExtra;
+}
+const MEDIC_BASICA_CARDS=[
+  { t:'🌡️ Signos vitales normales (adultos)', d:'<b>Temperatura:</b> 36,1–37,2 °C · <b>Presión:</b> ideal &lt;120/80 mmHg (consulta si ≥140/90 repetido) · <b>Pulso en reposo:</b> 60–100 lpm · <b>Respiración:</b> 12–20/min · <b>SpO₂:</b> 95–100%. Mide en reposo 5 min, sin café ni cigarro 30 min antes. Anota fecha/hora y lleva el registro al CESFAM.' },
+  { t:'💧 Fiebre, hidratación y reposo', d:'<b>Fiebre:</b> ≥38 °C. Hidrata con agua y sales orales si hay vómitos/diarrea, ropa ligera, paños tibios (no hielo). <b>Consulta si:</b> fiebre &gt;3 días, &gt;39,5 °C que no baja, rigidez de cuello, manchas, dificultad respirar, deshidratación (poca orina, mareo al pararse), bebé &lt;3 meses con fiebre.' },
+  { t:'🤧 Resfrío, gripe y dolor común', d:'Descanso, agua, miel tibia (solo &gt;1 año), lavado nasal con suero. Paracetamol o ibuprofeno <b>solo</b> según prospecto y sin alergia. <b>No</b> antibióticos para virus. <b>Ve a SAR:</b> falta de aire, dolor pecho, fiebre alta 3+ días, oído con dolor intenso, síntomas que empeoran al día 7–10.' },
+  { t:'🩸 Crónicos: presión, diabetes, tiroides', d:'Toma a la <b>misma hora</b>, no saltes dosis aunque te sientas bien. Lleva lista con nombres + dosis a cada control. <b>Hipertensión:</b> menos sal, camina 30 min, mide 2 veces/semana. <b>Diabetes:</b> cuida pies a diario, no suspendas metformina/insulina sin médico. Si olvidas una dosis, <b>no dupliques</b>: sigue la siguiente y anótalo.' },
+  { t:'🤰 Embarazo, lactancia, niños y mayores', d:'<b>Embarazo/lactancia:</b> evita automedicarte (incluso hierbas como boldo, ruda, ajenjo). Consulta matrona/CESFAM antes de todo, incluido “natural”. <b>Niños:</b> dosis por peso, nunca aspirina en niños, guarda todo bajo llave y en alto. <b>Mayores:</b> pastillero semanal, revisa duplicados y caídas por mareos; lista visible en el refrigerador.' },
+  { t:'🧠 Adherencia: no olvidar tomas', d:'Alarma del calendario + pastillero + registro diario. Si tomas 3+ fármacos, pide en farmacia/CESFAM una <b>revisión de polifarmacia</b> una vez al año. Lleva siempre: carnet, previsión, lista de medicamentos y alergias. Activa ☑️ Notificaciones en 💊 Farmacología.' }
+];
+const MEDIC_BOTIQUIN_ITEMS=[
+  ['termometro','🌡️ Termómetro'],['tensiometro','💓 Tensiómetro (si hay hipertensión)'],['suero','💧 Suero fisiológico 0,9%'],['gasas','🩹 Gasas + apósitos + curitas'],['venda','🌀 Venda elástica + tela adhesiva'],['tijera','✂️ Tijera punta roma + pinza'],['guantes','🧤 Guantes desechables'],['sro','🧂 Sales rehidratación oral'],['paracetamol','💊 Paracetamol (según indicación)'],['antihist','🤧 Antihistamínico (según indicación)'],['linterna','🔦 Linterna + pilas'],['ficha','📄 Ficha alergias + contactos']
+];
+function renderMedicBasica(){
+  const box=$('medicBasicaBox'); if(!box) return;
+  box.innerHTML='<div class="help-grid">'+MEDIC_BASICA_CARDS.map(c=>`<div class="help-card"><h4>${c.t}</h4><p style="font-size:11px;line-height:1.5">${c.d}</p></div>`).join('')+'</div>'
+  +'<div class="menstrual-card" style="margin-top:10px;background:var(--panel)"><h4>🚦 ¿CESFAM/SAR, Salud Responde o SAMU 131?</h4><p class="muted" style="font-size:11px;line-height:1.5"><b>SAMU 131:</b> no respira, inconsciente, dolor pecho &gt;5 min, ACV, hemorragia masiva, convulsión &gt;5 min. <b>SAR Penco 41 272 6350 / CESFAM:</b> fiebre 2+ días, corte que necesita puntos, esguince, vómitos con deshidratación, quemadura leve, picadura infectada. <b>Salud Responde 600 360 7777:</b> dudas 24 h (dosis olvidada, mezcla, cuidado en casa). Lleva lista de medicamentos + alergias.</p></div>';
+}
+function renderMedicBotiquin(){
+  const box=$('medicBotiquinBox'); if(!box) return;
+  const d=getMedicExtraData();
+  box.innerHTML='';
+  MEDIC_BOTIQUIN_ITEMS.forEach(([id,label])=>{
+    const on=!!d.botiquin[id];
+    const lab=document.createElement('label');
+    lab.className='habit-today-item'+(on?' done':'');
+    lab.innerHTML=`<input type="checkbox" data-id="${id}" ${on?'checked':''}><span>${label}</span>`;
+    box.appendChild(lab);
+  });
+  box.querySelectorAll('input').forEach(cb=> cb.onchange=()=>{ const dd=getMedicExtraData(); if(cb.checked) dd.botiquin[cb.dataset.id]=true; else delete dd.botiquin[cb.dataset.id]; scheduleSave(); renderMedicBotiquin(); });
+  const st=$('medicBotiquinStats');
+  if(st){ const n=Object.keys(d.botiquin).length; const pct=Math.round(n/MEDIC_BOTIQUIN_ITEMS.length*100); st.textContent=`${n}/${MEDIC_BOTIQUIN_ITEMS.length} listos (${pct}%)`; }
+}
+function loadMedicExtra(){
+  const d=getMedicExtraData();
+  const a=$('medicAlergias'); if(a && document.activeElement!==a) a.value=d.alergias||'';
+  const g=$('medicGrupo'); if(g) g.value=d.grupo||'';
+  const c=$('medicContacto'); if(c && document.activeElement!==c) c.value=d.contacto||'';
+}
+function saveMedicExtra(){
+  const d=getMedicExtraData();
+  const a=$('medicAlergias'), g=$('medicGrupo'), c=$('medicContacto');
+  if(a) d.alergias=a.value.trim(); if(g) d.grupo=g.value; if(c) d.contacto=c.value.trim();
+  scheduleSave(); const s=$('medicExtraStatus'); if(s){ s.textContent='Guardado ✓'; setTimeout(()=>{s.textContent='';},2000); }
+}
+const MEDIC_HISTORIA=[
+  { era:'universal', anio:'~400 a.C.', t:'Hipócrates — medicina racional', d:'En Grecia se pasa del mito a la observación: historia clínica, dieta, reposo e higiene. Juramento hipocrático: “no dañar”.' },
+  { era:'universal', anio:'~150 d.C.', t:'Galeno — anatomía y farmacia', d:'Médico romano que describe anatomía, pulso y prepara ungüentos y píldoras. Sus textos se usan por 1.300 años.' },
+  { era:'universal', anio:'~1025', t:'Avicena — Canon de la medicina', d:'Persa que ordena diagnóstico, cuarentena y farmacopea. Base de hospitales y escuelas médicas medievales.' },
+  { era:'universal', anio:'1543', t:'Vesalio — cuerpo humano real', d:'“De humani corporis fabrica” corrige errores antiguos con disecciones. Nace la anatomía moderna.' },
+  { era:'mapuche', anio:'Pre-1550', t:'Lawen y machi — salud mapuche', d:'La <b>machi</b> sana cuerpo y espíritu con <b>lawen</b> (remedio de hierbas), pewma (sueño), machitún y diálogo con la naturaleza. El <b>lawentuchefe</b> conoce cada planta: canelo (foye, sagrado), matico, boldo, bailahuén, maqui. Se pide permiso (<b>llellipun</b>) al cortar y se devuelve con gratitud. La salud es <b>küme mongen</b> (buen vivir en equilibrio).' },
+  { era:'universal', anio:'1796', t:'Jenner — primera vacuna', d:'Vacuna contra viruela con virus vacuno. Inicio de la inmunización: millones de vidas salvadas.' },
+  { era:'universal', anio:'1847', t:'Semmelweis — lavarse las manos', d:'Descubre que lavarse las manos baja la fiebre puerperal. Base de la higiene hospitalaria.' },
+  { era:'chile', anio:'1550–1800', t:'Hospitales coloniales en Chile', d:'Hospitales de caridad (San Juan de Dios) atienden con botica de hierbas europeas + lawen local. Barberos y curanderas hacen de médicos en pueblos como Penco, refundado tras terremotos.' },
+  { era:'universal', anio:'1860', t:'Nightingale — enfermería moderna', d:'Enfermería profesional, estadísticas sanitarias y hospitales ventilados e higiénicos.' },
+  { era:'universal', anio:'1928', t:'Fleming — penicilina', d:'Descubre el primer antibiótico. Desde 1940 salva de neumonías e infecciones antes mortales. Hoy: úsalo solo con receta (resistencia).' },
+  { era:'chile', anio:'1952', t:'Servicio Nacional de Salud (Chile)', d:'Se crea el SNS: consultorios y hospitales públicos en todo Chile. Vacunación masiva baja mortalidad infantil.' },
+  { era:'mapuche', anio:'Siglo XX', t:'Meica, hierbatera y partera', d:'En campos y caletas de Penco-Lirquén, <b>meicas y parteras</b> guardan recetas: matico para heridas, manzanilla para estómago, eucalipto en vahos, boldo corto para hígado. Transmisión oral de abuela a nieta.' },
+  { era:'chile', anio:'1980–2000', t:'CESFAM y salud familiar', d:'Modelo de salud familiar: CESFAM Penco y Lirquén con controles, vacunas, salud mental y visitas domiciliarias. Nace Salud Responde (600 360 7777).' },
+  { era:'penco', anio:'Hoy', t:'Hospital Penco-Lirquén + SAR', d:'Hospital Penco-Lirquén (Av. Pedro Aguirre Cerda 1400 · 41 272 6300), CESFAM Penco/Lirquén y SAR 24 h (41 272 6350). Conviven farmacia moderna + Lawen Herbario del calendario: registra tus fármacos en 💊 y tus hierbas en 🌱, y estudia historia aquí en 📜.' }
+];
+const MEDIC_HIST_ERA={ universal:'🌍 Universal', chile:'🇨🇱 Chile', mapuche:'🌿 Mapuche / Lawen', penco:'⚓ Penco' };
+function renderMedicHistoria(){
+  const box=$('medicHistoriaBox'); if(!box) return;
+  const q=(($('medicHistSearch')||{}).value||'').toLowerCase().trim();
+  const f=(($('medicHistFilter')||{}).value||'todas');
+  const list=MEDIC_HISTORIA.filter(h=>{
+    if(f!=='todas' && h.era!==f) return false;
+    if(q && !(h.t+' '+h.d+' '+h.anio).toLowerCase().includes(q)) return false;
+    return true;
+  });
+  if(!list.length){ box.innerHTML='<p class="muted">Sin resultados. Prueba con “vacuna”, “machi”, “hospital”...</p>'; return; }
+  box.innerHTML='<div class="mens-history">'+list.map(h=>`<div class="mens-hist-item" style="align-items:flex-start"><span><b>${escapeHtml(h.anio)}</b> · <span class="chip" style="font-size:10px">${MEDIC_HIST_ERA[h.era]||h.era}</span><br><b>${escapeHtml(h.t)}</b><br><span class="muted" style="font-size:11px;line-height:1.5">${h.d}</span></span></div>`).join('')+'</div>'
+  +'<div class="menstrual-card" style="margin-top:10px;background:var(--panel)"><h4>🙏 Nota intercultural</h4><p class="muted" style="font-size:11px;line-height:1.5">El lawen mapuche es conocimiento vivo (<b>kimün</b>). Úsalo con respeto: aprende con machi/lawentuchefe, no extraigas en exceso, no mezcles hierbas fuertes con fármacos sin consultar, y cita la fuente cuando compartas. Ver 🌿 Lawen Herbario y Voz de los Abuelos.</p></div>';
+}
+const MEDIC_SEGURIDAD=[
+  { t:'🚫 No te automediques con…', d:'<b>Antibióticos, corticoides, ansiolíticos, warfarina, insulina, antihipertensivos, anticonvulsivantes:</b> siempre con receta y control. Nunca uses receta ajena ni partas comprimidos de liberación prolongada.' },
+  { t:'🔀 Mezclas peligrosas frecuentes', d:'<b>Alcohol +</b> paracetamol, ibuprofeno, ansiolíticos o antihistamínicos = daño hígado/somnolencia grave. <b>Ibuprofeno + presión/diuréticos</b> = sube presión y daña riñón. <b>Antiácidos + hierro/tiroides</b> = separa 2–4 h. <b>Pomelo +</b> varios fármacos = altera efecto. <b>Hierba de San Juan +</b> antidepresivos/anticonceptivos = corta efecto. Consulta siempre.' },
+  { t:'🌿 “Natural” también tiene riesgo', d:'Boldo &gt;7 días daña hígado · Ruda y ajenjo abortivos · Eucalipto concentrado tóxico en niños · Matico externo no en herida profunda · Ortiga fresca quema (cócela). No combines hierbas sedantes (melisa, valeriana) con ansiolíticos/alcohol. Embarazo/lactancia: pregunta antes.' },
+  { t:'🧊 Cómo guardar y cuándo botar', d:'Lugar fresco, seco, oscuro, alto y bajo llave para niños. <b>No</b> en baño (humedad) ni sobre cocina. Revisa vencimiento cada luna: vencidos a <b>punto limpio/farmacia</b>, nunca al WC ni a la basura suelta. Jarabes abiertos: fecha de apertura + 30–90 días según prospecto. Si cambia color/olor, bótalo.' },
+  { t:'📝 Lleva tu ficha siempre', d:'En 🩺 Básica guarda alergias + contacto. Además anota: fármaco, dosis, hora, con/sin comida, fecha inicio/fin. Si vas a urgencias lleva la caja o foto del prospecto. Ante ronchas, hinchazón de labios, silbido al respirar → <b>SAMU 131</b> (posible anafilaxia).' }
+];
+function renderMedicSeguridad(){
+  const box=$('medicSeguridadBox'); if(!box) return;
+  const extra=getMedicExtraData();
+  const aviso=(extra.alergias||extra.grupo)? `<div class="menstrual-card" style="border-color:var(--gold)"><h4 style="color:var(--gold)">📋 Tu aviso registrado</h4><p class="muted" style="font-size:11px">Alergias: <b>${escapeHtml(extra.alergias||'—')}</b> · Grupo: <b>${escapeHtml(extra.grupo||'—')}</b> · Contacto: <b>${escapeHtml(extra.contacto||'—')}</b><br>Muestra esto en CESFAM/SAR/farmacia. Edítalo en 🩺 Básica.</p></div>`:'<p class="muted" style="font-size:11px;margin-bottom:8px">💡 Registra tus alergias en 🩺 Básica y aparecerán aquí como recordatorio.</p>';
+  box.innerHTML=aviso+'<div class="help-grid">'+MEDIC_SEGURIDAD.map(c=>`<div class="help-card" style="border-color:#ff6b6b55"><h4>${c.t}</h4><p style="font-size:11px;line-height:1.5">${c.d}</p></div>`).join('')+'</div>';
 }
 
 // === PLANIFICADOR DE COMIDAS ===
@@ -5773,19 +5887,113 @@ setTimeout(setupHelpDialog, 850);
 // Incluye botones base + los inyectados por nuevos-modulos.js (Agua, Bodega, Nudos,
 // Taller, Trueque, Minga, Rutinas, Fertilidad, Derechos). NUEVOS_BTNS los re-agrega
 // con push si faltan (no-op si ya están), así los perfiles siempre los conocen.
-const ALL_BTNS = ["btnTides","btnFishing","btnBirds","btnIntermareal","btnBosque","btnWeather","btnSiembra","btnAstro","btnComuna","btnEkadashi","btnMenstrual","btnMedic","btnHabits","btnMeal","btnShopping","btnFinance","btnHomeTasks","btnDiscipline","btnDreams","btnBreath","btnGratitud","btnSchedule","btnGym","btnCircadian","btnGolden","btnEspiritual","btnCompost","btnLawen","btnFirstAid","btnAnimalCare","btnViolence","btnEvac","btnConvert","btnEnergy","btnLena","btnTimer","btnRemind","btnBackup","btnRestore","btnShortcut","btnPdfLuna","btnPdfCiclo","btnDonate","btnHelp","btnStudy","btnTales","btnVozAbuelos","btnMemory","btnMapu","btnEnglish","btnGuitar","btnPsico","btnMetodos","btnAgua","btnBodega","btnNudos","btnTaller","btnTrueque","btnMinga","btnRutina","btnFerti","btnDerechos","btnCrianza","btnArbolFull","btnRecap","btnDueloFull","btnEneagrama","btnAjedrez","btnSudoku"];
+const ALL_BTNS = ["btnTides","btnFishing","btnBirds","btnIntermareal","btnBosque","btnWeather","btnSiembra","btnAstro","btnComuna","btnEkadashi","btnMenstrual","btnMedic","btnHabits","btnMeal","btnShopping","btnFinance","btnHomeTasks","btnDiscipline","btnDreams","btnBreath","btnGratitud","btnSchedule","btnGym","btnCircadian","btnGolden","btnEspiritual","btnCompost","btnLawen","btnFirstAid","btnAnimalCare","btnViolence","btnEvac","btnConvert","btnEnergy","btnLena","btnTimer","btnRemind","btnBackup","btnRestore","btnShortcut","btnPdfLuna","btnPdfCiclo","btnDonate","btnHelp","btnStudy","btnTales","btnVozAbuelos","btnMemory","btnMapu","btnEnglish","btnGuitar","btnPsico","btnMetodos","btnAgua","btnBodega","btnNudos","btnTaller","btnTrueque","btnMinga","btnFerti","btnDerechos","btnCrianza","btnArbolFull","btnRecap","btnDueloFull","btnEneagrama","btnAjedrez","btnSudoku","btnFlora","btnPsicologia","btnAdolescencia","btnJuventud","btnAdultez","btnClimaterio","btnVejez","btnElectrocultura"];
+// === REORGANIZACIÓN 7 GRUPOS (2026-09): grupo + subgrupo destino de cada botón ===
+// Dinámicos que aún no existen en el DOM se mueven cuando se inyectan.
+const BTN_HOME = {
+  btnHabits:['dia','organizar'],btnDiscipline:['dia','organizar'],btnSchedule:['dia','organizar'],btnTimer:['dia','organizar'],btnRemind:['dia','organizar'],
+  btnGratitud:['dia','registrar'],btnDreams:['dia','registrar'],btnBreath:['dia','registrar'],
+  btnTides:['territorio','mar'],btnFishing:['territorio','mar'],btnIntermareal:['territorio','mar'],btnNudos:['territorio','mar'],
+  btnSiembra:['territorio','tierra'],btnCompost:['territorio','tierra'],btnAgua:['territorio','tierra'],btnBosque:['territorio','tierra'],btnFlora:['territorio','tierra'],btnBirds:['territorio','tierra'],btnLawen:['territorio','tierra'],btnElectrocultura:['territorio','tierra'],
+  btnWeather:['territorio','cielo'],btnAstro:['territorio','cielo'],btnGolden:['territorio','cielo'],btnCircadian:['territorio','cielo'],btnEkadashi:['territorio','cielo'],
+  btnComuna:['territorio','penco'],
+  btnMenstrual:['cuerpo','ciclos'],btnFerti:['cuerpo','ciclos'],btnJuventud:['cuerpo','ciclos'],btnClimaterio:['cuerpo','ciclos'],
+  btnMedic:['cuerpo','cuidado'],btnGym:['cuerpo','cuidado'],
+  btnStudy:['aprender','estudio'],btnMemory:['aprender','estudio'],btnMapu:['aprender','estudio'],btnEnglish:['aprender','estudio'],btnGuitar:['aprender','estudio'],
+  btnAjedrez:['aprender','juegos'],btnSudoku:['aprender','juegos'],
+  btnTales:['aprender','infancias'],btnCrianza:['aprender','infancias'],btnAdolescencia:['aprender','infancias'],
+  btnPsico:['linaje','interior'],btnPsicologia:['linaje','interior'],btnEneagrama:['linaje','interior'],btnMetodos:['linaje','interior'],btnRecap:['linaje','interior'],btnEspiritual:['linaje','interior'],btnDueloFull:['linaje','interior'],
+  btnArbolFull:['linaje','familia'],btnVozAbuelos:['linaje','familia'],btnAdultez:['linaje','familia'],btnVejez:['linaje','familia'],
+  btnMeal:['hogar','casa'],btnShopping:['hogar','casa'],btnFinance:['hogar','casa'],btnHomeTasks:['hogar','casa'],btnBodega:['hogar','casa'],
+  btnEnergy:['hogar','energia'],btnLena:['hogar','energia'],btnTaller:['hogar','energia'],btnConvert:['hogar','energia'],
+  btnTrueque:['comunidad','red'],btnMinga:['comunidad','red'],btnDerechos:['comunidad','red'],btnAnimalCare:['comunidad','red'],
+  btnFirstAid:['comunidad','emergencia'],btnViolence:['comunidad','emergencia'],btnEvac:['comunidad','emergencia'],
+  btnBackup:['comunidad','app'],btnRestore:['comunidad','app'],btnShortcut:['comunidad','app'],btnPdfLuna:['comunidad','app'],btnPdfCiclo:['comunidad','app'],btnDonate:['comunidad','app']
+};
+// Orden de botones dentro de cada subgrupo (los no listados van al final en orden de llegada)
+const BTN_ORDER = {
+  'dia|organizar':['btnHabits','btnDiscipline','btnSchedule','btnTimer','btnRemind'],
+  'dia|registrar':['btnGratitud','btnDreams','btnBreath'],
+  'territorio|mar':['btnTides','btnFishing','btnIntermareal','btnNudos'],
+  'territorio|tierra':['btnSiembra','btnCompost','btnAgua','btnBosque','btnFlora','btnBirds','btnLawen','btnElectrocultura'],
+  'territorio|cielo':['btnWeather','btnAstro','btnGolden','btnCircadian','btnEkadashi'],
+  'territorio|penco':['btnComuna'],
+  'cuerpo|ciclos':['btnMenstrual','btnFerti','btnJuventud','btnClimaterio'],
+  'cuerpo|cuidado':['btnMedic','btnGym'],
+  'aprender|estudio':['btnStudy','btnMemory','btnMapu','btnEnglish','btnGuitar'],
+  'aprender|juegos':['btnAjedrez','btnSudoku'],
+  'aprender|infancias':['btnTales','btnCrianza','btnAdolescencia'],
+  'linaje|interior':['btnPsico','btnPsicologia','btnEneagrama','btnMetodos','btnRecap','btnEspiritual','btnDueloFull'],
+  'linaje|familia':['btnArbolFull','btnVozAbuelos','btnAdultez','btnVejez'],
+  'hogar|casa':['btnMeal','btnShopping','btnFinance','btnHomeTasks','btnBodega'],
+  'hogar|energia':['btnEnergy','btnLena','btnTaller','btnConvert'],
+  'comunidad|red':['btnTrueque','btnMinga','btnDerechos','btnAnimalCare'],
+  'comunidad|emergencia':['btnFirstAid','btnViolence','btnEvac'],
+  'comunidad|app':['btnBackup','btnRestore','btnShortcut','btnPdfLuna','btnPdfCiclo','btnDonate']
+};
+function reordenarAcciones(){
+  try{
+    Object.keys(BTN_HOME).forEach(function(id){
+      var el = document.getElementById(id);
+      if(!el) return;
+      var dest = BTN_HOME[id];
+      var g = document.querySelector('.action-group[data-group="'+dest[0]+'"] .group-btns');
+      if(!g) return;
+      if(el.parentNode !== g) g.appendChild(el);
+      try{ el.dataset.sub = dest[1]; }catch(e){}
+    });
+    // ordenar dentro de cada grupo por subgrupo
+    document.querySelectorAll('.action-group').forEach(function(gr){
+      var gname = gr.getAttribute('data-group');
+      var box = gr.querySelector('.group-btns');
+      if(!box) return;
+      var labels = Array.prototype.slice.call(box.querySelectorAll('.sub-label'));
+      var btns = Array.prototype.slice.call(box.querySelectorAll('.btn'));
+      // Agrupar botones por sub
+      var bySub = {};
+      btns.forEach(function(b){
+        var s = (b.dataset && b.dataset.sub) || '__none__';
+        // si el botón no tiene sub pero BTN_HOME lo define, usarlo
+        if((s==='__none__'||!s) && BTN_HOME[b.id]) s = BTN_HOME[b.id][1];
+        (bySub[s] = bySub[s] || []).push(b);
+      });
+      Object.keys(bySub).forEach(function(s){
+        var key = gname+'|'+s;
+        var order = BTN_ORDER[key];
+        if(order){
+          bySub[s].sort(function(a,b){ return order.indexOf(a.id)-order.indexOf(b.id); });
+        }
+      });
+      // Reconstruir: por cada sub-label existente en orden DOM, luego su sub; subs sin label al final
+      var seen = {};
+      labels.forEach(function(lab){
+        box.appendChild(lab);
+        var s = lab.getAttribute('data-sub');
+        seen[s] = true;
+        (bySub[s]||[]).forEach(function(b){ box.appendChild(b); });
+      });
+      Object.keys(bySub).forEach(function(s){
+        if(seen[s] || s==='__none__') return;
+        (bySub[s]||[]).forEach(function(b){ box.appendChild(b); });
+      });
+      // botones sin sub declarado (legacy) quedan al final
+      (bySub['__none__']||[]).forEach(function(b){ box.appendChild(b); });
+    });
+    try{ if(typeof updateGroupCounts==='function') updateGroupCounts(); }catch(e){}
+  }catch(e){}
+}
 const PRESETS = {
   todo: Object.fromEntries(ALL_BTNS.map(k=>[k,true])),
   esencial: {btnWeather:true,btnTides:true,btnAstro:true,btnSiembra:true,btnEkadashi:true,btnCircadian:true,btnHabits:true,btnBreath:true,btnDreams:true,btnGratitud:true,btnMeal:true,btnShopping:true,btnFinance:true,btnHomeTasks:true,btnCrianza:true,btnFirstAid:true,btnEvac:true,btnTimer:true,btnRemind:true,btnBackup:true,btnRestore:true,btnShortcut:true,btnPdfLuna:true,btnPdfCiclo:true,btnHelp:true,btnDonate:true},
   infantil: {btnWeather:true,btnAstro:true,btnBirds:true,btnBosque:true,btnSiembra:true,btnCompost:true,btnHabits:true,btnDreams:true,btnBreath:true,btnGratitud:true,btnSchedule:true,btnTales:true,btnVozAbuelos:true,btnMemory:true,btnAjedrez:true,btnSudoku:true,btnMapu:true,btnEnglish:true,btnGuitar:true,btnMeal:true,btnCrianza:true,btnHelp:true,btnDonate:true},
   adolescente: {btnHabits:true,btnDiscipline:true,btnStudy:true,btnSchedule:true,btnMemory:true,btnAjedrez:true,btnSudoku:true,btnMapu:true,btnEnglish:true,btnGuitar:true,btnTales:true,btnVozAbuelos:true,btnDreams:true,btnBreath:true,btnGratitud:true,btnPsico:true,btnMetodos:true,btnRecap:true,btnDueloFull:true,btnEneagrama:true,btnGym:true,btnCircadian:true,btnMeal:true,btnFinance:true,btnConvert:true,btnTimer:true,btnRemind:true,btnFirstAid:true,btnViolence:true,btnCrianza:true,btnHelp:true,btnDonate:true},
   adulto: Object.fromEntries(ALL_BTNS.map(k=>[k,true])),
-  mayor: {btnWeather:true,btnTides:true,btnAstro:true,btnSiembra:true,btnEkadashi:true,btnMedic:true,btnLawen:true,btnHabits:true,btnBreath:true,btnDreams:true,btnGratitud:true,btnMemory:true,btnSudoku:true,btnTales:true,btnVozAbuelos:true,btnArbolFull:true,btnRecap:true,btnDueloFull:true,btnGym:true,btnCircadian:true,btnRutina:true,btnEspiritual:true,btnMeal:true,btnShopping:true,btnHomeTasks:true,btnFirstAid:true,btnAnimalCare:true,btnViolence:true,btnEvac:true,btnRemind:true,btnTimer:true,btnEnergy:true,btnLena:true,btnPdfLuna:true,btnHelp:true,btnDonate:true},
+  mayor: {btnWeather:true,btnTides:true,btnAstro:true,btnSiembra:true,btnEkadashi:true,btnMedic:true,btnLawen:true,btnHabits:true,btnBreath:true,btnDreams:true,btnGratitud:true,btnMemory:true,btnSudoku:true,btnTales:true,btnVozAbuelos:true,btnArbolFull:true,btnRecap:true,btnDueloFull:true,btnGym:true,btnCircadian:true,btnEspiritual:true,btnMeal:true,btnShopping:true,btnHomeTasks:true,btnFirstAid:true,btnAnimalCare:true,btnViolence:true,btnEvac:true,btnRemind:true,btnTimer:true,btnEnergy:true,btnLena:true,btnPdfLuna:true,btnHelp:true,btnDonate:true},
   estudiante: {btnWeather:true,btnSiembra:true,btnAstro:true,btnHabits:true,btnDiscipline:true,btnStudy:true,btnSchedule:true,btnMemory:true,btnAjedrez:true,btnSudoku:true,btnMapu:true,btnEnglish:true,btnGuitar:true,btnTales:true,btnVozAbuelos:true,btnPsico:true,btnMetodos:true,btnEneagrama:true,btnDreams:true,btnBreath:true,btnGratitud:true,btnConvert:true,btnTimer:true,btnRemind:true,btnPdfLuna:true,btnPdfCiclo:true,btnBackup:true,btnHelp:true,btnDonate:true},
   agricultor: {btnWeather:true,btnTides:true,btnAstro:true,btnBirds:true,btnSiembra:true,btnBosque:true,btnCompost:true,btnAgua:true,btnBodega:true,btnLawen:true,btnGolden:true,btnCircadian:true,btnEkadashi:true,btnIntermareal:true,btnComuna:true,btnTrueque:true,btnMinga:true,btnTaller:true,btnNudos:true,btnMeal:true,btnShopping:true,btnFinance:true,btnRemind:true,btnTimer:true,btnPdfLuna:true,btnPdfCiclo:true,btnBackup:true,btnHelp:true,btnDonate:true},
   pescador: {btnWeather:true,btnTides:true,btnAstro:true,btnIntermareal:true,btnFishing:true,btnBirds:true,btnSiembra:true,btnBosque:true,btnAgua:true,btnGolden:true,btnCircadian:true,btnComuna:true,btnNudos:true,btnTaller:true,btnTrueque:true,btnMinga:true,btnFirstAid:true,btnEvac:true,btnMeal:true,btnRemind:true,btnTimer:true,btnHelp:true,btnDonate:true},
-  salud: {btnMenstrual:true,btnMedic:true,btnLawen:true,btnFerti:true,btnRutina:true,btnHabits:true,btnGym:true,btnCircadian:true,btnBreath:true,btnDreams:true,btnGratitud:true,btnEspiritual:true,btnDueloFull:true,btnRecap:true,btnPsico:true,btnMetodos:true,btnEneagrama:true,btnEkadashi:true,btnCompost:true,btnMeal:true,btnShopping:true,btnSchedule:true,btnCrianza:true,btnVozAbuelos:true,btnFirstAid:true,btnAnimalCare:true,btnViolence:true,btnEvac:true,btnRemind:true,btnTimer:true,btnHelp:true,btnDonate:true},
-  deportista: {btnWeather:true,btnTides:true,btnHabits:true,btnGym:true,btnRutina:true,btnCircadian:true,btnBreath:true,btnEspiritual:true,btnDreams:true,btnGratitud:true,btnMeal:true,btnShopping:true,btnFinance:true,btnTimer:true,btnRemind:true,btnEnergy:true,btnConvert:true,btnFirstAid:true,btnHelp:true,btnDonate:true},
+  salud: {btnMenstrual:true,btnMedic:true,btnLawen:true,btnFerti:true,btnHabits:true,btnGym:true,btnCircadian:true,btnBreath:true,btnDreams:true,btnGratitud:true,btnEspiritual:true,btnDueloFull:true,btnRecap:true,btnPsico:true,btnMetodos:true,btnEneagrama:true,btnEkadashi:true,btnCompost:true,btnMeal:true,btnShopping:true,btnSchedule:true,btnCrianza:true,btnVozAbuelos:true,btnFirstAid:true,btnAnimalCare:true,btnViolence:true,btnEvac:true,btnRemind:true,btnTimer:true,btnHelp:true,btnDonate:true},
+  deportista: {btnWeather:true,btnTides:true,btnHabits:true,btnGym:true,btnCircadian:true,btnBreath:true,btnEspiritual:true,btnDreams:true,btnGratitud:true,btnMeal:true,btnShopping:true,btnFinance:true,btnTimer:true,btnRemind:true,btnEnergy:true,btnConvert:true,btnFirstAid:true,btnHelp:true,btnDonate:true},
   docente: {btnWeather:true,btnSiembra:true,btnBosque:true,btnBirds:true,btnCompost:true,btnEkadashi:true,btnHabits:true,btnDiscipline:true,btnStudy:true,btnSchedule:true,btnMemory:true,btnAjedrez:true,btnSudoku:true,btnArbolFull:true,btnRecap:true,btnMapu:true,btnEnglish:true,btnGuitar:true,btnTales:true,btnVozAbuelos:true,btnCrianza:true,btnGratitud:true,btnPsico:true,btnMetodos:true,btnEneagrama:true,btnConvert:true,btnTimer:true,btnRemind:true,btnPdfLuna:true,btnPdfCiclo:true,btnBackup:true,btnHelp:true,btnDonate:true}
 };
 function getVisibleConfig(){
@@ -5829,8 +6037,133 @@ function updateGroupCounts(){
     // ocultar grupo vacío por config (no por búsqueda)
     const hasVisible = g.querySelectorAll('.group-btns .btn:not(.hidden-by-config)').length > 0;
     g.style.display = hasVisible ? '' : 'none';
+    // ocultar sub-etiquetas sin botones visibles por config
+    try{
+      const box = g.querySelector('.group-btns');
+      if(box){
+        const kids = Array.prototype.slice.call(box.children);
+        let cur = null, curVisible = 0;
+        const flush = ()=>{ if(cur) cur.style.display = curVisible===0 ? 'none' : ''; };
+        kids.forEach(el=>{
+          if(el.classList && el.classList.contains('sub-label')){ flush(); cur = el; curVisible = 0; }
+          else if(el.classList && el.classList.contains('btn')){
+            if(!el.classList.contains('hidden-by-config')) curVisible++;
+          }
+        });
+        flush();
+      }
+    }catch(e){}
   });
+  try{ if(typeof refreshSubLabels==='function') refreshSubLabels(); }catch(e){}
 }
+// === SUBSECCIONES DESPLEGABLES (igual que secciones principales) ===
+function getSubCollapsedMap(){
+  try{
+    const raw = localStorage.getItem('subCollapsedV1');
+    return raw ? (JSON.parse(raw)||{}) : {};
+  }catch(e){ return {}; }
+}
+function subCollapseKey(group, sub){ return (group||'')+'|'+(sub||''); }
+function isSubCollapsed(group, sub){
+  try{ return !!getSubCollapsedMap()[subCollapseKey(group, sub)]; }catch(e){ return false; }
+}
+function setSubCollapsed(group, sub, collapsed){
+  try{
+    const m = getSubCollapsedMap();
+    const k = subCollapseKey(group, sub);
+    if(collapsed) m[k]=true; else delete m[k];
+    localStorage.setItem('subCollapsedV1', JSON.stringify(m));
+  }catch(e){}
+}
+function getSubButtons(labelEl){
+  const out=[];
+  try{
+    let n = labelEl ? labelEl.nextElementSibling : null;
+    while(n){
+      if(n.classList && n.classList.contains('sub-label')) break;
+      if(n.classList && n.classList.contains('btn')) out.push(n);
+      n = n.nextElementSibling;
+    }
+  }catch(e){}
+  return out;
+}
+function applySubLabel(labelEl){
+  try{
+    if(!labelEl) return;
+    const box = labelEl.parentElement;
+    const group = (labelEl.closest && labelEl.closest('.action-group') || {}).getAttribute
+      ? labelEl.closest('.action-group').getAttribute('data-group') : '';
+    const sub = labelEl.getAttribute ? (labelEl.getAttribute('data-sub')||'') : '';
+    // accesibilidad + pista visual (solo una vez)
+    if(!labelEl.hasAttribute('tabindex')) labelEl.setAttribute('tabindex','0');
+    if(!labelEl.hasAttribute('role')) labelEl.setAttribute('role','button');
+    if(!labelEl.title) labelEl.title = 'Toca para desplegar / ocultar';
+    // contador (visible/total) como en secciones principales
+    let cnt = labelEl.querySelector ? labelEl.querySelector('.sub-count') : null;
+    if(!cnt){
+      cnt = document.createElement('span');
+      cnt.className = 'sub-count';
+      labelEl.appendChild(cnt);
+    }
+    const btns = getSubButtons(labelEl);
+    const total = btns.length;
+    const visConf = btns.filter(b=>!b.classList.contains('hidden-by-config') && !b.classList.contains('hidden-by-search')).length;
+    if(cnt) cnt.textContent = total ? `(${visConf}/${total})` : '';
+    // estado colapsado (persistido). Durante búsqueda se suspende para mostrar coincidencias.
+    const searching = !!(window.__subSearchActive);
+    let collapsed = isSubCollapsed(group, sub);
+    if(searching){
+      // si hay coincidencias en esta sub, mostrar expandida temporalmente
+      if(visConf>0){ labelEl.classList.remove('collapsed'); }
+      btns.forEach(b=> b.classList.remove('hidden-by-sub'));
+      return;
+    }
+    labelEl.classList.toggle('collapsed', !!collapsed);
+    labelEl.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+    btns.forEach(b=> b.classList.toggle('hidden-by-sub', !!collapsed));
+  }catch(e){}
+}
+function refreshSubLabels(){
+  try{
+    document.querySelectorAll('#actions .sub-label').forEach(applySubLabel);
+  }catch(e){}
+}
+function toggleSubLabel(labelEl){
+  try{
+    if(!labelEl) return;
+    const g = labelEl.closest ? labelEl.closest('.action-group') : null;
+    const group = g ? g.getAttribute('data-group') : '';
+    const sub = labelEl.getAttribute ? (labelEl.getAttribute('data-sub')||'') : '';
+    const next = !labelEl.classList.contains('collapsed');
+    setSubCollapsed(group, sub, next);
+    applySubLabel(labelEl);
+  }catch(e){}
+}
+function setupSubToggle(){
+  try{
+    // delegación: cubre sub-labels actuales y los inyectados por módulos
+    if(!window.__subToggleBound){
+      window.__subToggleBound = true;
+      document.addEventListener('click', function(e){
+        const lab = e.target && e.target.closest ? e.target.closest('#actions .sub-label') : null;
+        if(lab){ toggleSubLabel(lab); }
+      });
+      document.addEventListener('keydown', function(e){
+        const lab = e.target && e.target.closest ? e.target.closest('#actions .sub-label') : null;
+        if(lab && (e.key==='Enter' || e.key===' ')){
+          e.preventDefault();
+          toggleSubLabel(lab);
+        }
+      });
+    }
+    refreshSubLabels();
+  }catch(e){}
+}
+setTimeout(function(){ try{ setupSubToggle(); }catch(e){} }, 880);
+setTimeout(function(){ try{ refreshSubLabels(); }catch(e){} }, 1300);
+setTimeout(function(){ try{ refreshSubLabels(); }catch(e){} }, 2600);
+setTimeout(function(){ try{ reordenarAcciones(); }catch(e){} }, 1200);
+setTimeout(function(){ try{ reordenarAcciones(); }catch(e){} }, 2500);
 function syncConfigMirrors(){
   try{
     const cu=$('cfgUserSel');
@@ -5969,10 +6302,13 @@ function setupActionSearch(){
   if(!input) return;
   function filter(q){
     const needle = (q||'').toLowerCase().trim();
+    try{ window.__subSearchActive = !!needle; }catch(e){}
     document.querySelectorAll('#actions .group-btns .btn').forEach(btn=>{
       const txt = (btn.textContent + ' ' + (btn.dataset.keywords||'')).toLowerCase();
       const match = !needle || txt.includes(needle);
       btn.classList.toggle('hidden-by-search', !match);
+      // al buscar, suspender el colapso para que se vean las coincidencias
+      if(needle && match) btn.classList.remove('hidden-by-sub');
     });
     // abrir grupos que tienen coincidencias, cerrar los que no
     document.querySelectorAll('.action-group').forEach(g=>{
@@ -5986,6 +6322,23 @@ function setupActionSearch(){
         g.style.display = hasVisibleConfig ? '' : 'none';
         // no forzar open, dejar como estaba
       }
+    });
+    // ocultar sub-etiquetas sin botones visibles (búsqueda o config)
+    document.querySelectorAll('.action-group').forEach(g=>{
+      const box = g.querySelector('.group-btns');
+      if(!box) return;
+      const kids = Array.prototype.slice.call(box.children);
+      let cur = null, curVisible = 0;
+      const flush = ()=>{
+        if(cur) cur.classList.toggle('hidden-by-search', curVisible===0);
+      };
+      kids.forEach(el=>{
+        if(el.classList && el.classList.contains('sub-label')){ flush(); cur = el; curVisible = 0; }
+        else if(el.classList && el.classList.contains('btn')){
+          if(!el.classList.contains('hidden-by-search') && !el.classList.contains('hidden-by-config')) curVisible++;
+        }
+      });
+      flush();
     });
     updateGroupCounts();
   }
@@ -6178,30 +6531,72 @@ const TRAINING_CATS = {
   calistenia: { label:'Calistenia', icon:'🤸', color:'#a9d18e' },
   varias: { label:'Prácticas varias', icon:'🌿', color:'#e8c56a' }
 };
+const TRAINING_AGE_GROUPS = {
+  todos: { label:'Todas', icon:'👥' },
+  nino: { label:'6-12 años', icon:'🧒' },
+  joven: { label:'13-17 años', icon:'🙋' },
+  adulto: { label:'18-59 años', icon:'🧑' },
+  mayor: { label:'60+ años', icon:'👴' }
+};
 const TRAINING_SUGGESTIONS = {
   gym: [
-    { name:'Push — Pecho/Hombro/Tríceps', exercises:'Press banca 4x8 60kg 90s\nFondos paralelas 3x12 45s\nPress hombro 3x10 30kg 60s\nPlancha 3x45s', place:'Gimnasio Penco', color:'#e76e8a' },
-    { name:'Pull — Espalda/Bíceps', exercises:'Dominadas 4x6\nRemo barra 4x8 50kg\nCurl bíceps 3x12 15kg\nFace pull 3x15', place:'Gimnasio Penco', color:'#e76e8a' },
-    { name:'Piernas — Cuádriceps/Glúteo', exercises:'Sentadilla 4x8 70kg\nPeso muerto 3x8 80kg\nPrensa 3x12\nGemelos 3x15', place:'Gimnasio Penco', color:'#e76e8a' },
-    { name:'Cardio HIIT 20′', exercises:'Calentamiento 5′\n8x (30s sprint / 90s trote)\nEnfriamiento 5′ + estiramiento', place:'Costanera Penco', color:'#ff9a76' }
+    { name:'Push — Pecho/Hombro/Tríceps', exercises:'Press banca 4x8 60kg 90s\nFondos paralelas 3x12 45s\nPress hombro 3x10 30kg 60s\nPlancha 3x45s', place:'Gimnasio Penco', color:'#e76e8a', edad:'adulto' },
+    { name:'Pull — Espalda/Bíceps', exercises:'Dominadas 4x6\nRemo barra 4x8 50kg\nCurl bíceps 3x12 15kg\nFace pull 3x15', place:'Gimnasio Penco', color:'#e76e8a', edad:'adulto' },
+    { name:'Piernas — Cuádriceps/Glúteo', exercises:'Sentadilla 4x8 70kg\nPeso muerto 3x8 80kg\nPrensa 3x12\nGemelos 3x15', place:'Gimnasio Penco', color:'#e76e8a', edad:'adulto' },
+    { name:'Cardio HIIT 20′', exercises:'Calentamiento 5′\n8x (30s sprint / 90s trote)\nEnfriamiento 5′ + estiramiento', place:'Costanera Penco', color:'#ff9a76', edad:'adulto' },
+    { name:'🧒 Circuito mini-atletas 6-12', exercises:'Juego calentar 5′ (pilla-pilla)\nSentadilla sin peso 2x12\nFlexiones pared 2x10\nSalto estrella 2x10\nPlancha 2x15s + elongar jugando', place:'Casa / Plaza', color:'#f2a5b8', edad:'nino' },
+    { name:'🧒 Fuerza lúdica con bandas 6-12', exercises:'Banda remo 2x12\nBanda press pecho 2x12\nPuente glúteo 2x12\nEquilibrio 1 pierna 2x20s lado\n⚠️ Sin pesas pesadas, siempre con adulto', place:'Casa', color:'#f2a5b8', edad:'nino' },
+    { name:'🙋 Intro gym 13-17 (técnica)', exercises:'Goblet sentadilla liviana 3x10\nPress mancuernas 3x10\nRemo polea 3x12\nPlancha 3x30s\n⚠️ Peso que permita 10 reps perfectas, 2x/sem máx', place:'Gimnasio / Casa', color:'#e88aa0', edad:'joven' },
+    { name:'🙋 Fullbody joven 3x/sem', exercises:'Sentadilla 3x12\nFlexiones 3x10\nRemo mochila 3x12\nZancadas 2x10 lado\nBici/trote 15′', place:'Gimnasio Penco', color:'#e88aa0', edad:'joven' },
+    { name:'🧑 Fuerza 5x5 adulto', exercises:'Sentadilla 5x5\nPress banca 5x5\nRemo barra 5x5\n+ 10′ core\nDescanso 2-3′ entre series', place:'Gimnasio Penco', color:'#e76e8a', edad:'adulto' },
+    { name:'🧑 Funcional kettlebell 30′', exercises:'Swing 4x15\nGoblet squat 3x12\nPress 1 brazo 3x8 lado\nPeso muerto rumano 3x10\nRemate 5′ movilidad', place:'Box / Casa', color:'#ff9a76', edad:'adulto' },
+    { name:'👴 Gym máquinas suave 60+', exercises:'Bici 10′ suave\nPrensa liviana 2x12\nPolea pecho 2x12\nRemo sentado 2x12\nGemelos sentado 2x15\n⚠️ Sin contener respiración, avisa mareo', place:'Gimnasio / CESFAM', color:'#d9a0ff', edad:'mayor' },
+    { name:'👴 Fuerza huesos 60+', exercises:'Sentadilla silla 2x10\nBanda remo 2x12\nElevación talones 2x12\nMarcha talón-punta 2x10m\nSol mañana 15′ (vit D) + calcio', place:'Casa', color:'#d9a0ff', edad:'mayor' }
   ],
   fisio: [
-    { name:'Movilidad hombro', exercises:'Círculos hombro 3x15\nBanda rotación externa 3x12\nEstiramiento pectoral 3x30s\nPéndulo Codman 2x1′', place:'Casa / Kine', color:'#7ab8ff' },
-    { name:'Rodilla — rehab suave', exercises:'Cuádriceps isométrico 3x15s\nPuente glúteo 3x12\nSentadilla parcial 3x10\nHielo 10′ final', place:'Casa', color:'#7ab8ff' },
-    { name:'Espalda baja — core', exercises:'Bird-dog 3x10 lado\nPlancha 3x30s\nPuente 3x12\nEstiramiento gato-camello 3x8', place:'Casa', color:'#7ab8ff' },
-    { name:'Respiración + diafragma', exercises:'Respiración diafragmática 5′\n4-7-8 x4 ciclos\nMovilidad costal con banda 3x10', place:'Casa', color:'#8fd9d6' }
+    { name:'Movilidad hombro', exercises:'Círculos hombro 3x15\nBanda rotación externa 3x12\nEstiramiento pectoral 3x30s\nPéndulo Codman 2x1′', place:'Casa / Kine', color:'#7ab8ff', edad:'todos' },
+    { name:'Rodilla — rehab suave', exercises:'Cuádriceps isométrico 3x15s\nPuente glúteo 3x12\nSentadilla parcial 3x10\nHielo 10′ final', place:'Casa', color:'#7ab8ff', edad:'todos' },
+    { name:'Espalda baja — core', exercises:'Bird-dog 3x10 lado\nPlancha 3x30s\nPuente 3x12\nEstiramiento gato-camello 3x8', place:'Casa', color:'#7ab8ff', edad:'todos' },
+    { name:'Respiración + diafragma', exercises:'Respiración diafragmática 5′\n4-7-8 x4 ciclos\nMovilidad costal con banda 3x10', place:'Casa', color:'#8fd9d6', edad:'todos' },
+    { name:'🧒 Postura mochila 6-12', exercises:'Ángel pared 2x10\nEstirar pectoral puerta 2x20s\nSuperman 2x10\nMochila <10% peso + 2 correas', place:'Casa', color:'#9ecfff', edad:'nino' },
+    { name:'🧒 Coordinación + pie 6-12', exercises:'Caminar punta-talón 2x10m\nSaltos 1 pie 2x8 lado\nRecoger toalla con dedos 2x10\nJuego equilibrio 5′', place:'Casa / Patio', color:'#9ecfff', edad:'nino' },
+    { name:'🙋 Postura gamer/celu 13-17', exercises:'Chin-tuck 3x10\nÁngel pared 3x10\nEstirar cuello/trapecio 2x30s lado\nRegla 30-30: cada 30′ muévete 30s', place:'Casa', color:'#7ab8ff', edad:'joven' },
+    { name:'🙋 Rodilla deportista escolar', exercises:'Puente 3x12\nSentadilla parcial 3x10\nEstirar cuádriceps/isquios 2x30s\nHielo 10′ si duele — si cojeas, kine/CESFAM', place:'Casa / Kine', color:'#7ab8ff', edad:'joven' },
+    { name:'🧑 Lumbar oficina', exercises:'Gato-camello 3x8\nBird-dog 3x8 lado\nPuente 3x12\nCaminata 10′ c/hora sentado', place:'Casa / Oficina', color:'#7ab8ff', edad:'adulto' },
+    { name:'🧑 Hombro manguito rotador', exercises:'Rotación externa banda 3x12\nRotación interna 3x12\nPéndulo 2x1′\nEstiramiento posterior 2x30s\n⚠️ Dolor nocturno >2 sem → kine', place:'Casa / Kine', color:'#7ab8ff', edad:'adulto' },
+    { name:'👴 Equilibrio anti-caídas 60+', exercises:'Apoyo silla: talón-punta 2x10\n1 pierna con apoyo 2x20s lado\nMarcha lateral 2x8 pasos\nSentarse/pararse silla 2x8\nQuita alfombras sueltas + buena luz', place:'Casa', color:'#a8c8ff', edad:'mayor' },
+    { name:'👴 Artrosis rodilla/cadera suave', exercises:'Bici sin carga 10′\nCuádriceps isométrico 3x10s\nAducción cojín 3x10\nHielo/calor 10′ según indique kine\nPeso sano cuida más que pastilla', place:'Casa / CESFAM', color:'#a8c8ff', edad:'mayor' },
+    { name:'Codo — movilidad y descarga', exercises:'Flexo-extensión suave 3x10\nProno-supinación con palo liviano 3x10\nEstirar antebrazo arriba/abajo 2x30s lado\nHielo 10′ si hay dolor — sin cargar peso', place:'Casa / Kine', color:'#7ab8ff', edad:'todos' },
+    { name:'🧑 Codo tenista / golfista', exercises:'Estirar extensores 2x30s (palma abajo)\nEstirar flexores 2x30s (palma arriba)\nExcéntrico muñeca botella 3x12 lento\nApretar pelota blanda 3x10\n⚠️ Dolor >2 sem, hormigueo o pérdida fuerza → kine/CESFAM', place:'Casa / Kine', color:'#7ab8ff', edad:'adulto' },
+    { name:'👴 Codo rígido / artrosis 60+ suave', exercises:'Movilidad asistida con otra mano 2x10\nIsométrico bíceps/tríceps pared 3x10s\nCírculos muñeca 2x10 lado\nCalor suave 10′ antes + hielo 10′ si duele después', place:'Casa / CESFAM', color:'#a8c8ff', edad:'mayor' }
   ],
   calistenia: [
-    { name:'Push calistenia', exercises:'Flexiones 4x12\nFondos paralelas 3x10\nPike push-ups 3x8\nPlancha 3x45s', place:'Plaza Penco / Casa', color:'#a9d18e' },
-    { name:'Pull calistenia', exercises:'Dominadas 4x6\nAustralian pull-ups 3x12\nColgado pasivo 3x30s\nCurl toalla 3x10', place:'Parque / Casa', color:'#a9d18e' },
-    { name:'Core + piernas', exercises:'Sentadilla 4x20\nZancadas 3x10 lado\nPlancha lateral 3x30s lado\nHollow hold 3x20s', place:'Casa', color:'#a9d18e' },
-    { name:'Fullbody principiantes', exercises:'Flexiones rodillas 3x8\nSentadilla 3x15\nRemo mochila 3x12\nPlancha 3x20s', place:'Casa', color:'#c3e0ab' }
+    { name:'Push calistenia', exercises:'Flexiones 4x12\nFondos paralelas 3x10\nPike push-ups 3x8\nPlancha 3x45s', place:'Plaza Penco / Casa', color:'#a9d18e', edad:'adulto' },
+    { name:'Pull calistenia', exercises:'Dominadas 4x6\nAustralian pull-ups 3x12\nColgado pasivo 3x30s\nCurl toalla 3x10', place:'Parque / Casa', color:'#a9d18e', edad:'adulto' },
+    { name:'Core + piernas', exercises:'Sentadilla 4x20\nZancadas 3x10 lado\nPlancha lateral 3x30s lado\nHollow hold 3x20s', place:'Casa', color:'#a9d18e', edad:'todos' },
+    { name:'Fullbody principiantes', exercises:'Flexiones rodillas 3x8\nSentadilla 3x15\nRemo mochila 3x12\nPlancha 3x20s', place:'Casa', color:'#c3e0ab', edad:'todos' },
+    { name:'🧒 Monitos: trepar y jugar 6-12', exercises:'Colgarse barra baja 3x15s\nTrepar juego 5′\nSalto rana 2x8\nCarrera gateo oso 2x10m\nSiempre colchoneta + adulto cerca', place:'Plaza / Patio', color:'#cfe8a8', edad:'nino' },
+    { name:'🧒 Animal flow kids 6-12', exercises:'Cangrejo 2x10m\nRana 2x8\nOso 2x10m\nCongelar-estatua equilibrio 5′ juego', place:'Casa / Plaza', color:'#cfe8a8', edad:'nino' },
+    { name:'🙋 Primera dominada 13-17', exercises:'Colgado 3x20s\nAustralian 3x10\nNegativas 3x5 (baja lento 5s)\nRemo mochila 3x12\n3x/sem, come proteína + duerme 8h', place:'Parque / Casa', color:'#a9d18e', edad:'joven' },
+    { name:'🙋 Parque intermedio 13-17', exercises:'Flexiones 3x12\nFondos banco 3x10\nSentadilla salto 3x8\nPlancha 3x40s\nSkate/bici 15′ final', place:'Plaza Penco', color:'#a9d18e', edad:'joven' },
+    { name:'🧑 Street full avanzado', exercises:'Muscle-up progresión 5x3\nFront lever tuck 4x15s\nFondos lastrados 4x8\nPistol asistida 3x5 lado', place:'Parque calistenia', color:'#8fc178', edad:'adulto' },
+    { name:'🧑 Core 10′ + piernas', exercises:'Hollow 3x20s\nPlancha lateral 3x30s\nSentadilla búlgara 3x10 lado\nPuente 1 pierna 3x8 lado', place:'Casa', color:'#a9d18e', edad:'adulto' },
+    { name:'👴 Calistenia en silla 60+', exercises:'Sentarse/pararse 2x8\nFlexiones pared 2x10\nRemo toalla puerta firme 2x8\nMarcha sentada 2x20\nSilla firme contra pared, nada inestable', place:'Casa', color:'#d6e8b8', edad:'mayor' },
+    { name:'👴 Pared + apoyo seguro 60+', exercises:'Flexiones pared 2x12\nPantorrilla pared 2x12\nPlancha pared 2x20s\nRespiración 4-4 5′ final', place:'Casa', color:'#d6e8b8', edad:'mayor' }
   ],
   varias: [
-    { name:'Yoga suave 30′', exercises:'Saludo al sol 5x\nGuerrero II 3x30s lado\nTriángulo 3x30s\nSavasana 3′ + 4-7-8', place:'Casa', color:'#e8c56a' },
-    { name:'Caminata Playa Penco 45′', exercises:'Caminata ritmo medio 40′\n5′ movilidad tobillo/cadera\nRespiración 5-5 al final', place:'Playa Penco', color:'#e8c56a' },
-    { name:'Estiramientos full 15′', exercises:'Cuello/hombros 3′\nIsquios 2x30s lado\nCuádriceps 2x30s\nEspalda gato-camello 3x8', place:'Casa', color:'#f0d488' },
-    { name:'Práctica respiración + movilidad 20′', exercises:'Respiración caja 4-4-4-4 5′\nMovilidad cadera 5′\nPlancha 3x30s\nEstiramiento global 5′', place:'Casa', color:'#f0d488' }
+    { name:'Yoga suave 30′', exercises:'Saludo al sol 5x\nGuerrero II 3x30s lado\nTriángulo 3x30s\nSavasana 3′ + 4-7-8', place:'Casa', color:'#e8c56a', edad:'todos' },
+    { name:'Caminata Playa Penco 45′', exercises:'Caminata ritmo medio 40′\n5′ movilidad tobillo/cadera\nRespiración 5-5 al final', place:'Playa Penco', color:'#e8c56a', edad:'todos' },
+    { name:'Estiramientos full 15′', exercises:'Cuello/hombros 3′\nIsquios 2x30s lado\nCuádriceps 2x30s\nEspalda gato-camello 3x8', place:'Casa', color:'#f0d488', edad:'todos' },
+    { name:'Práctica respiración + movilidad 20′', exercises:'Respiración caja 4-4-4-4 5′\nMovilidad cadera 5′\nPlancha 3x30s\nEstiramiento global 5′', place:'Casa', color:'#f0d488', edad:'todos' },
+    { name:'🧒 Yoga cuento 15′ 6-12', exercises:'Árbol 2x20s lado\nCobra 3x15s\nPerro boca abajo 3x20s\nAvión-guerrero 2x20s\nCuento + respirar como león 5x', place:'Casa', color:'#f5d97a', edad:'nino' },
+    { name:'🧒 Baile + juego 20′ 6-12', exercises:'Calentar bailando 5′\nCongelados 3 rondas\nSaltos estrella 2x10\nEstirar jugando 5′ + agua', place:'Casa / Patio', color:'#f5d97a', edad:'nino' },
+    { name:'🙋 Yoga dinámico + bici 13-17', exercises:'Saludo sol 5x\nGuerrero I-II 2x30s\nBici/skate 20′\n5′ respiración 4-6 anti-estrés prueba', place:'Casa / Costanera', color:'#e8c56a', edad:'joven' },
+    { name:'🙋 Respiración examen + stretch', exercises:'Caja 4-4-4-4 5′\nCuello/hombros 5′\nIsquios 2x30s\nCaminata 10′ sin pantalla', place:'Casa', color:'#f0d488', edad:'joven' },
+    { name:'🧑 Pilates core 25′', exercises:'Hundred 1x100\nRoll-up 3x8\nSingle leg stretch 3x10 lado\nPuente 3x12\nTeaser progresión 3x5', place:'Casa / Mat', color:'#e8c56a', edad:'adulto' },
+    { name:'🧑 Nado / bici suave 40′', exercises:'Nado o bici 30′ ritmo que permite hablar\nMovilidad hombro/cadera 5′\nRespiración 5-5 5′', place:'Piscina / Costanera', color:'#e8c56a', edad:'adulto' },
+    { name:'👴 Tai chi / chi kung 20′', exercises:'Abrir-cerrar 5′\nNube manos 3x8 lado\nGruya-pájaro suave 5′\nRespiración 4-6 5′\nApoyo silla si hay mareo', place:'Casa / Plaza', color:'#f0d488', edad:'mayor' },
+    { name:'👴 Caminata + elongación 30′', exercises:'Caminata 20′ ritmo cómodo + bastón si hace falta\nTobillo/cadera 5′\nRespiración + sol mañana\nLleva agua + celu + avisa ruta', place:'Barrio / Playa', color:'#f0d488', edad:'mayor' }
   ]
 };
 function getGymData(){
@@ -6215,11 +6610,16 @@ function getGymData(){
 }
 let gymEditingId=null;
 let gymCurrentTab='gym';
-function renderGymSuggestions(cat){
+let gymCurrentAge='todos';
+function renderGymSuggestions(cat, age){
   const box=$('gymSuggestionsBox'); if(!box) return;
-  const list=TRAINING_SUGGESTIONS[cat]||[];
+  const ageF=age||gymCurrentAge||'todos';
+  const all=TRAINING_SUGGESTIONS[cat]||[];
+  const list= ageF==='todos' ? all : all.filter(s=> (s.edad||'todos')===ageF || (s.edad||'todos')==='todos');
   const catInfo=TRAINING_CATS[cat];
-  box.innerHTML=`<h4 style="color:var(--gold)">${catInfo.icon} ${catInfo.label} — sugerencias (toca para cargar)</h4>` + list.map(s=>`<div class="habit-item" style="cursor:pointer;border-left:3px solid ${s.color}" data-sug="${escapeHtml(s.name)}" data-cat="${cat}"><b>${escapeHtml(s.name)}</b> <span class="muted" style="font-size:10px">${escapeHtml(s.place)}</span><br><span class="muted" style="font-size:11px;white-space:pre-wrap">${escapeHtml(s.exercises)}</span><br><span class="chip" style="font-size:10px;margin-top:4px">+ Agregar al calendario</span></div>`).join('') + `<p class="muted" style="font-size:10px;margin-top:6px">Toca una tarjeta para cargar nombre/lugar/ejercicios/color y luego elige día/hora y pulsa “Agregar al calendario”.</p>`;
+  const ageInfo=(typeof TRAINING_AGE_GROUPS!=='undefined' && TRAINING_AGE_GROUPS[ageF]) ? TRAINING_AGE_GROUPS[ageF] : { label:'Todas', icon:'👥' };
+  const ageChip = ageF==='todos' ? '' : ` · ${ageInfo.icon} ${ageInfo.label}`;
+  box.innerHTML=`<h4 style="color:var(--gold)">${catInfo.icon} ${catInfo.label}${ageChip} — ${list.length} sugerencias (toca para cargar)</h4>` + list.map(s=>{ const ed=(s.edad&&s.edad!=='todos'&&(typeof TRAINING_AGE_GROUPS!=='undefined'&&TRAINING_AGE_GROUPS[s.edad]))?` <span class="chip" style="font-size:9px">${TRAINING_AGE_GROUPS[s.edad].icon} ${TRAINING_AGE_GROUPS[s.edad].label}</span>`:''; return `<div class="habit-item" style="cursor:pointer;border-left:3px solid ${s.color}" data-sug="${escapeHtml(s.name)}" data-cat="${cat}"><b>${escapeHtml(s.name)}</b>${ed} <span class="muted" style="font-size:10px">${escapeHtml(s.place)}</span><br><span class="muted" style="font-size:11px;white-space:pre-wrap">${escapeHtml(s.exercises)}</span><br><span class="chip" style="font-size:10px;margin-top:4px">+ Agregar al calendario</span></div>`; }).join('') + `<p class="muted" style="font-size:10px;margin-top:6px">Toca una tarjeta para cargar nombre/lugar/ejercicios/color y luego elige día/hora y pulsa “Agregar al calendario”. Filtra por edad arriba: 🧒 6-12 · 🙋 13-17 · 🧑 18-59 · 👴 60+.</p>`;
   box.querySelectorAll('[data-sug]').forEach(el=> el.onclick=()=>{
     const cat2=el.dataset.cat; const s=TRAINING_SUGGESTIONS[cat2].find(x=>x.name===el.dataset.sug); if(!s) return;
     $('gymName').value=s.name; $('gymCategory').value=cat2; $('gymPlace').value=s.place; $('gymExercises').value=s.exercises; $('gymColor').value=s.color;
@@ -6295,15 +6695,25 @@ function renderGymStatsBox(){
   box.innerHTML='<h4 style="color:var(--accent)">📊 Progreso</h4><div class="habit-stats"><span>Hoy: '+todayDone+' completadas</span><span>Esta semana: '+weekDone+' días</span><span>Total: '+d.items.length+' ('+catTxt+')</span></div>';
 }
 function setupGymDialog(){
-  const btn=$('btnGym'); if(btn) btn.onclick=()=>{ renderGymSuggestions(gymCurrentTab); renderGymTodayBox(); renderGymWeekGrid(); renderGymList(); renderGymStatsBox(); $('gymDialog').showModal(); };
+  const btn=$('btnGym'); if(btn) btn.onclick=()=>{ renderGymSuggestions(gymCurrentTab, gymCurrentAge); syncGymAgeUI(); renderGymTodayBox(); renderGymWeekGrid(); renderGymList(); renderGymStatsBox(); $('gymDialog').showModal(); };
   const ct=$('gymCloseTop'), cb=$('gymClose'); if(ct) ct.onclick=()=>$('gymDialog').close(); if(cb) cb.onclick=()=>$('gymDialog').close();
   // tabs
   const tabs={ gym:$('tabGymGym'), fisio:$('tabGymFisio'), calistenia:$('tabGymCalis'), varias:$('tabGymVarias') };
   Object.entries(tabs).forEach(([cat,el])=>{
     if(!el) return;
-    el.onclick=()=>{ gymCurrentTab=cat; Object.entries(tabs).forEach(([c,e])=> e && e.classList.toggle('btn-accent', c===cat)); renderGymSuggestions(cat); const sel=$('gymCategory'); if(sel) sel.value=cat; };
+    el.onclick=()=>{ gymCurrentTab=cat; Object.entries(tabs).forEach(([c,e])=> e && e.classList.toggle('btn-accent', c===cat)); renderGymSuggestions(cat, gymCurrentAge); const sel=$('gymCategory'); if(sel) sel.value=cat; };
   });
-  const catSel=$('gymCategory'); if(catSel) catSel.onchange=()=>{ const v=catSel.value; if(TRAINING_CATS[v]){ gymCurrentTab=v; Object.entries(tabs).forEach(([c,e])=> e && e.classList.toggle('btn-accent', c===v)); renderGymSuggestions(v); } };
+  const catSel=$('gymCategory'); if(catSel) catSel.onchange=()=>{ const v=catSel.value; if(TRAINING_CATS[v]){ gymCurrentTab=v; Object.entries(tabs).forEach(([c,e])=> e && e.classList.toggle('btn-accent', c===v)); renderGymSuggestions(v, gymCurrentAge); } };
+  // filtro por edad (chips + select)
+  const ageBtns={ todos:$('tabGymAgeTodos'), nino:$('tabGymAgeNino'), joven:$('tabGymAgeJoven'), adulto:$('tabGymAgeAdulto'), mayor:$('tabGymAgeMayor') };
+  const ageSel=$('gymAge');
+  window.syncGymAgeUI=function(){
+    Object.entries(ageBtns).forEach(([a,e])=> e && e.classList.toggle('btn-accent', a===gymCurrentAge));
+    if(ageSel) ageSel.value=gymCurrentAge;
+  };
+  function setAge(a){ if(!TRAINING_AGE_GROUPS[a]) a='todos'; gymCurrentAge=a; syncGymAgeUI(); renderGymSuggestions(gymCurrentTab, gymCurrentAge); }
+  Object.entries(ageBtns).forEach(([a,el])=>{ if(el) el.onclick=()=> setAge(a); });
+  if(ageSel) ageSel.onchange=()=> setAge(ageSel.value);
   const add=$('gymAdd'); if(add) add.onclick=()=>{
     const name=$('gymName').value.trim(); if(!name) return alert('Escribe nombre de rutina');
     const it={ id:'gym'+Date.now(), name, cat:$('gymCategory').value||'gym', day:$('gymDay').value, start:$('gymStart').value, end:$('gymEnd').value, color:$('gymColor').value, place:$('gymPlace').value.trim(), exercises:$('gymExercises').value.trim() };
@@ -7941,30 +8351,6 @@ function setupEnglishDialog(){
 setTimeout(setupEnglishDialog, 888);
 
 // === GUITARRA — Principiante / Intermedio / Avanzado (offline, local por usuario) ===
-const GUITAR_CHORDS = [
-  { n:'Em', f:'022000', niv:'principiante', k:'mi menor facil primero 2 dedos', tip:'El más fácil: dedos 2 y 3 en 5ta y 4ta cuerda, traste 2. Todas las cuerdas suenan.' },
-  { n:'Am', f:'x02210', niv:'principiante', k:'la menor facil', tip:'Dedos 2-3-1 en 4ta/3ra/2da cuerda. No toques la 6ta (x). Puerta a F.' },
-  { n:'C', f:'x32010', niv:'principiante', k:'do mayor facil cambio pivote', tip:'Dedo 1 en 2da cuerda traste 1. Deja dedo 1 pivote para pasar a Am rápido.' },
-  { n:'G', f:'320003', niv:'principiante', k:'sol mayor 4 dedos', tip:'Versión 4 dedos. Alternativa fácil G7 simplificado 320001 si te cuesta estirar.' },
-  { n:'D', f:'xx0232', niv:'principiante', k:'re mayor triángulo', tip:'Forma triángulo con dedos 1-2-3. Toca solo cuerdas 4-1 (las graves en x no van).' },
-  { n:'A', f:'x02220', niv:'principiante', k:'la mayor', tip:'3 dedos juntos en 2do traste. Si se chocan, prueba dedos 1-2-3 en diagonal.' },
-  { n:'E', f:'022100', niv:'principiante', k:'mi mayor', tip:'Base del rock. Practica E→Am: solo mueves 1 dedo. Rasgueo abajo firme.' },
-  { n:'Dm', f:'xx0231', niv:'principiante', k:'re menor triste', tip:'Como D pero dedo 1 en 1ra cuerda traste 1. Suena melancólico, ideal arpegios.' },
-  { n:'F simplificado', f:'xx3211', niv:'intermedio', k:'fa facil sin cejilla puente', tip:'Puente a la cejilla: mini-cejilla dedo 1 en cuerdas 1-2, traste 1. Cuando salga limpio, agrega cejilla completa.' },
-  { n:'F (cejilla)', f:'133211', niv:'intermedio', k:'fa cejilla barra dolor', tip:'Dedo 1 recto pegado al traste 1, codo abajo, peso del brazo. 2 min/día aprieta-suelta. Sale en 2-4 semanas.' },
-  { n:'Bm', f:'x24432', niv:'intermedio', k:'si menor cejilla', tip:'Cejilla en traste 2 + forma Am desplazada. Si zumba, sube el dedo 1 justo tras el traste.' },
-  { n:'A7', f:'x02020', niv:'intermedio', k:'la séptima blues', tip:'Quita un dedo de A y suena blues. Puerta a progresión A7-D7-E7 de 12 compases.' },
-  { n:'E7', f:'020100', niv:'intermedio', k:'mi séptima blues', tip:'Blues clásico. Alterna E-E7 con el meñique entrando/saliendo (truco rockabilly).' },
-  { n:'Dsus4', f:'xx0233',niv:'intermedio', k:'re suspendido color', tip:'D + meñique en 1ra cuerda traste 3. Juega D-Dsus4-D para dar movimiento (Wish You Were Here).' },
-  { n:'Cadd9', f:'x32033', niv:'intermedio', k:'do agregado novena wonderwall', tip:'C + meñique y anular en traste 3 (1ra y 2da). Sonido pop (Wonderwall, Zombie).' },
-  { n:'Am7', f:'x02010', niv:'intermedio', k:'la menor séptima suave', tip:'Am sin un dedo: más aire. Ideal fingerpicking y bossa suave.' },
-  { n:'Cmaj7', f:'x32000', niv:'avanzado', k:'do maj7 jazz bossa', tip:'C sin dedo 1: suena jazzy/bossa. Base II-V-I en C: Dm7-G7-Cmaj7.' },
-  { n:'Dm7', f:'xx0211', niv:'avanzado', k:'re menor séptima jazz', tip:'Mini-cejilla dedo 1 en trastes 1 (1ra y 2da). Imprescindible en bossa y funk.' },
-  { n:'G7', f:'320001', niv:'avanzado', k:'sol séptima blues jazz', tip:'G + dedo 1 en 1ra cuerda traste 1. Dominante que pide resolver a C.' },
-  { n:'B7', f:'x21202', niv:'avanzado', k:'si séptima blues', tip:'Forma incómoda pero clave en blues en E (E-A-B7). Practica E→B7 lento.' },
-  { n:'Fmaj7', f:'xx3211', niv:'avanzado', k:'fa maj7 sin cejilla suave', tip:'Igual que F simplificado: el aire de la 6ta cuerda en x lo hace suave. Úsalo en vez de F cuando duela la mano.' },
-  { n:'Dm9', f:'xx0210', niv:'avanzado', k:'re menor novena jazz neo soul', tip:'Dm7 moviendo un dedo: color neo-soul. Arpegia cuerda por cuerda para oír cada nota.' },
-];
 function getGuitarData(){
   const u = userData();
   if(!u.guitar) u.guitar = { level:'principiante', log:[], tuneRef:440 };
@@ -7994,31 +8380,19 @@ function renderGuitarStreak(){
   const s = guitarStats();
   chip.textContent = `🔥 ${s.streak} día${s.streak===1?'':'s'} · ${s.totalMin} min total · ${s.total} prácticas`;
 }
-function renderGuitarChords(filter){
-  const grid = $('guitarChordGrid'); if(!grid) return;
-  const q = (filter||'').toLowerCase().trim();
-  const list = GUITAR_CHORDS.filter(c=>{
-    if(!q) return true;
-    return (c.n+' '+c.f+' '+c.niv+' '+c.k+' '+c.tip).toLowerCase().includes(q);
-  });
-  if(!list.length){ grid.innerHTML = '<p class="muted">Sin resultados. Prueba “cejilla”, “menor”, “jazz”, “F”…</p>'; return; }
-  const colors = { principiante:'#8fd694', intermedio:'#e8c56a', avanzado:'#e76e8a' };
-  grid.innerHTML = list.map((c,i)=>`<button type="button" class="fishing-species-item guitar-chord-btn" data-ch="${escapeHtml(c.n)}" style="cursor:pointer;border-left:3px solid ${colors[c.niv]||'#888'}"><b>🎸 ${escapeHtml(c.n)}</b> <span class="chip" style="font-size:10px">${escapeHtml(c.f)}</span><br><span style="font-size:10px" class="muted">${c.niv==='principiante'?'🌱':c.niv==='intermedio'?'🌿':'🌳'} ${escapeHtml(c.niv)}</span></button>`).join('');
-  grid.querySelectorAll('.guitar-chord-btn').forEach(el=> el.onclick=()=>{
-    const c = GUITAR_CHORDS.find(x=>x.n===el.dataset.ch); if(!c) return;
-    const det = $('guitarChordDetail');
-    if(det) det.innerHTML = `<b>🎸 ${escapeHtml(c.n)} <span class="chip">${escapeHtml(c.f)}</span></b> <span class="muted" style="font-size:11px">6ta→1ra · x=no tocar · 0=al aire</span><br>💡 ${escapeHtml(c.tip)}`;
-  });
-}
 function renderGuitarLog(){
   const box = $('pracList'); if(!box) return;
   const data = getGuitarData().log;
   const stats = $('pracStats');
   if(!data.length){ box.innerHTML = '<p class="muted">Sin prácticas. Registra tus primeros 15 min arriba 👆</p>'; if(stats) stats.textContent = '0 prácticas'; renderGuitarStreak(); return; }
   const sorted = [...data].sort((a,b)=> (b.date||'').localeCompare(a.date||''));
+  const INST_ICON = { guitarra:'🎸', ukelele:'🎸', flauta:'🪈', teclado:'🎹', cajon:'🥁', canto:'🎤' };
+  const INST_NAME = { guitarra:'Guitarra', ukelele:'Ukelele', flauta:'Flauta/Quena', teclado:'Teclado', cajon:'Cajón', canto:'Canto' };
   box.innerHTML = sorted.slice(0,60).map(it=>{
     const lv = it.level==='avanzado'?'🌳':it.level==='intermedio'?'🌿':'🌱';
-    return `<div class="habit-row"><span style="flex:1">📅 <b>${escapeHtml(it.date||'')}</b> · ${lv} ${escapeHtml(it.level||'')} · <b>${escapeHtml(String(it.min||0))} min</b><br><span class="muted" style="font-size:11px">${escapeHtml(it.detail||'')}</span></span><span style="display:flex;gap:4px"><button type="button" class="btn btn-icon prac-edit" data-id="${it.id}" title="Editar" style="width:28px;height:28px">✏️</button><button type="button" class="btn btn-icon prac-del" data-id="${it.id}" title="Borrar" style="width:28px;height:28px">✕</button></span></div>`;
+    const ii = INST_ICON[it.inst||'guitarra']||'🎸';
+    const nn = INST_NAME[it.inst||'guitarra']||'Guitarra';
+    return `<div class="habit-row"><span style="flex:1">📅 <b>${escapeHtml(it.date||'')}</b> · ${ii} ${nn} · ${lv} ${escapeHtml(it.level||'')} · <b>${escapeHtml(String(it.min||0))} min</b><br><span class="muted" style="font-size:11px">${escapeHtml(it.detail||'')}</span></span><span style="display:flex;gap:4px"><button type="button" class="btn btn-icon prac-edit" data-id="${it.id}" title="Editar" style="width:28px;height:28px">✏️</button><button type="button" class="btn btn-icon prac-del" data-id="${it.id}" title="Borrar" style="width:28px;height:28px">✕</button></span></div>`;
   }).join('');
   const s = guitarStats();
   if(stats) stats.textContent = `${s.total} prácticas · ${s.days} días distintos · ${s.totalMin} min · racha ${s.streak} 🔥`;
@@ -8030,6 +8404,7 @@ function renderGuitarLog(){
     const d = getGuitarData(); const it = d.log.find(x=>String(x.id)===String(b.dataset.id)); if(!it) return;
     guitarEditingId = it.id;
     $('pracDate').value = it.date||''; $('pracMinutes').value = it.min||15; $('pracLevel').value = it.level||'principiante'; $('pracDetail').value = it.detail||'';
+    const pi = $('pracInst'); if(pi) pi.value = it.inst||'guitarra';
     $('pracAdd').textContent = '↻ Actualizar'; $('pracCancelEdit').classList.remove('hidden');
   });
   renderGuitarStreak();
@@ -8135,21 +8510,39 @@ function setupGuitarDialog(){
     renderGuitarTuneLabels();
     const pd = $('pracDate'); if(pd && !pd.value){ try{ pd.value = cal.fmtKey.format(new Date()); }catch{ pd.valueAsDate = new Date(); } }
     const pl = $('pracLevel'); if(pl) pl.value = g.level||'principiante';
-    renderGuitarStreak(); renderGuitarChords(''); renderGuitarLog();
-    showGuitarTab('b');
+    renderGuitarStreak(); renderGuitarLog();
+    showGuitarTab(g.level==='intermedio'?'i':g.level==='avanzado'?'a':'b');
     $('guitarDialog').showModal();
   };
   const ct=$('guitarCloseTop'), cb=$('guitarClose'); if(ct) ct.onclick=()=>{ metroStopFn(); stopGuitarTone(true); $('guitarDialog').close(); }; if(cb) cb.onclick=()=>{ metroStopFn(); stopGuitarTone(true); $('guitarDialog').close(); };
   function showGuitarTab(t){
-    const tabs={ b:['tabGuiB','guitarBegPanel'], i:['tabGuiI','guitarIntPanel'], a:['tabGuiA','guitarAdvPanel'], p:['tabGuiP','guitarPracPanel'] };
+    const tabs={ b:['tabGuiB','guitarBegPanel'], i:['tabGuiI','guitarIntPanel'], a:['tabGuiA','guitarAdvPanel'], u:['tabGuiU','guitarUkePanel'], f:['tabGuiF','guitarFlautaPanel'], t:['tabGuiT','guitarTeclaPanel'], c:['tabGuiC','guitarCajonPanel'], v:['tabGuiV','guitarCantoPanel'], p:['tabGuiP','guitarPracPanel'] };
     Object.values(tabs).forEach(([bid,pid])=>{ const b=$(bid), p=$(pid); if(b) b.classList.remove('btn-accent'); if(p) p.classList.add('hidden'); });
     const cur=tabs[t]; if(cur){ const b=$(cur[0]), p=$(cur[1]); if(b) b.classList.add('btn-accent'); if(p) p.classList.remove('hidden'); }
+    // Sincroniza selector cuando se navega a un nivel de Guitarra (evita doble fuente confusa)
+    const lvlSel=$('guitarLevelSel');
+    if(lvlSel){
+      if(t==='b') lvlSel.value='principiante';
+      else if(t==='i') lvlSel.value='intermedio';
+      else if(t==='a') lvlSel.value='avanzado';
+    }
+    try{ window._guiTab=t; }catch{}
   }
   window.showGuitarTab = showGuitarTab;
   const tB=$('tabGuiB'), tI=$('tabGuiI'), tA=$('tabGuiA'), tP=$('tabGuiP');
-  if(tB) tB.onclick=()=>showGuitarTab('b'); if(tI) tI.onclick=()=>showGuitarTab('i');
-  if(tA) tA.onclick=()=>showGuitarTab('a'); if(tP) tP.onclick=()=>showGuitarTab('p');
-  const lvl=$('guitarLevelSel'); if(lvl) lvl.onchange=()=>{ const g=getGuitarData(); g.level=lvl.value; const pl=$('pracLevel'); if(pl) pl.value=lvl.value; scheduleSave(); showGuitarTab(lvl.value==='principiante'?'b':lvl.value==='intermedio'?'i':'a'); };
+  const tU=$('tabGuiU'), tF=$('tabGuiF'), tT=$('tabGuiT'), tC=$('tabGuiC'), tV=$('tabGuiV');
+  function setGuitarLevel(lv, fromTab){
+    const g=getGuitarData(); g.level=lv;
+    const lvl=$('guitarLevelSel'); if(lvl) lvl.value=lv;
+    const pl=$('pracLevel'); if(pl && (fromTab || window._guiTab==='b' || window._guiTab==='i' || window._guiTab==='a' || !window._guiTab)) pl.value=lv;
+    scheduleSave();
+  }
+  if(tB) tB.onclick=()=>{ setGuitarLevel('principiante', true); showGuitarTab('b'); }; if(tI) tI.onclick=()=>{ setGuitarLevel('intermedio', true); showGuitarTab('i'); };
+  if(tA) tA.onclick=()=>{ setGuitarLevel('avanzado', true); showGuitarTab('a'); }; if(tP) tP.onclick=()=>showGuitarTab('p');
+  if(tU) tU.onclick=()=>showGuitarTab('u'); if(tF) tF.onclick=()=>showGuitarTab('f');
+  if(tT) tT.onclick=()=>showGuitarTab('t'); if(tC) tC.onclick=()=>showGuitarTab('c');
+  if(tV) tV.onclick=()=>showGuitarTab('v');
+  const lvl=$('guitarLevelSel'); if(lvl) lvl.onchange=()=>{ const v=lvl.value||'principiante'; setGuitarLevel(v, false); const cur=window._guiTab||'b'; if(cur==='b'||cur==='i'||cur==='a'||!cur) showGuitarTab(v==='principiante'?'b':v==='intermedio'?'i':'a'); };
   // Afinador
   document.querySelectorAll('.guitar-tune').forEach(b=> b.onclick=()=>{
     const base=parseFloat(b.dataset.f), n=b.dataset.n||'';
@@ -8174,31 +8567,31 @@ function setupGuitarDialog(){
     tick(); metroTimer=setInterval(tick, 60000/v);
   };
   const mStop=$('metroStop'); if(mStop) mStop.onclick=metroStopFn;
-  // Biblioteca
-  const search=$('guitarChordSearch'); if(search) search.oninput=()=>renderGuitarChords(search.value);
   // Bitácora
   const add=$('pracAdd'); if(add) add.onclick=()=>{
     const date=$('pracDate').value||(()=>{ try{ return cal.fmtKey.format(new Date()); }catch{ return new Date().toISOString().slice(0,10); } })();
     const min=Math.max(1, Math.min(480, parseInt($('pracMinutes').value)||15));
     const level=$('pracLevel').value||'principiante';
+    const inst=(($('pracInst')&&$('pracInst').value)||'guitarra');
     const detail=$('pracDetail').value.trim();
     if(!detail) return alert('Cuéntanos qué practicaste (ej: cambios C-G 70bpm)');
     const d=getGuitarData();
     if(guitarEditingId){
       const idx=d.log.findIndex(x=>String(x.id)===String(guitarEditingId));
-      if(idx>=0) d.log[idx]={...d.log[idx], date, min, level, detail};
+      if(idx>=0) d.log[idx]={...d.log[idx], date, min, level, inst, detail};
       guitarEditingId=null; add.textContent='+ Guardar práctica'; $('pracCancelEdit').classList.add('hidden');
-    } else d.log.push({ id: Date.now()+''+Math.floor(Math.random()*999), date, min, level, detail });
+    } else d.log.push({ id: Date.now()+''+Math.floor(Math.random()*999), date, min, level, inst, detail });
     scheduleSave(); $('pracDetail').value='';
     renderGuitarLog();
   };
   const cancel=$('pracCancelEdit'); if(cancel) cancel.onclick=()=>{ guitarEditingId=null; $('pracAdd').textContent='+ Guardar práctica'; cancel.classList.add('hidden'); $('pracDetail').value=''; };
-  const clear=$('pracClear'); if(clear) clear.onclick=()=>{ if(!confirm('¿Borrar toda la bitácora de guitarra?')) return; getGuitarData().log=[]; scheduleSave(); renderGuitarLog(); };
+  const clear=$('pracClear'); if(clear) clear.onclick=()=>{ if(!confirm('¿Borrar toda la bitácora de instrumentos?')) return; getGuitarData().log=[]; scheduleSave(); renderGuitarLog(); };
   const share=$('pracShare'); if(share) share.onclick=async()=>{
     const d=getGuitarData().log; if(!d.length) return alert('Sin prácticas para compartir');
     const s=guitarStats();
-    const lines=[...d].sort((a,b)=>(b.date||'').localeCompare(a.date||'')).slice(0,20).map(x=>`· ${x.date} — ${x.level} ${x.min}min: ${x.detail}`);
-    await shareText('🎸 Mi práctica de guitarra', `🎸 Guitarra — ${s.total} prácticas · ${s.totalMin} min · racha ${s.streak} días 🔥\nNivel actual: ${getGuitarData().level}\n\n`+lines.join('\n'));
+    const INST_NAME2 = { guitarra:'Guitarra', ukelele:'Ukelele', flauta:'Flauta/Quena', teclado:'Teclado', cajon:'Cajón', canto:'Canto' };
+    const lines=[...d].sort((a,b)=>(b.date||'').localeCompare(a.date||'')).slice(0,20).map(x=>`· ${x.date} — ${INST_NAME2[x.inst||'guitarra']||x.inst||'Guitarra'} ${x.level} ${x.min}min: ${x.detail}`);
+    await shareText('🎶 Mi práctica de instrumentos', `🎶 Instrumentos — ${s.total} prácticas · ${s.totalMin} min · racha ${s.streak} días 🔥\nNivel guitarra: ${getGuitarData().level}\n\n`+lines.join('\n'));
   };
   showGuitarTab('b');
 }
@@ -8760,9 +9153,32 @@ function renderCircadianDialog(){
   }
   renderCircadianChart(idx);
 }
+function ritmoTab(t){
+  const plan=(t==='plan');
+  const pa=$('ritmoAhoraPanel'), pp=$('ritmoPlanPanel');
+  if(pa) pa.classList.toggle('hidden',plan);
+  if(pp) pp.classList.toggle('hidden',!plan);
+  const ta=$('tabRitmoAhora'), tp=$('tabRitmoPlan');
+  if(ta) ta.classList.toggle('btn-accent',!plan);
+  if(tp) tp.classList.toggle('btn-accent',plan);
+  if(!plan){ renderCircadianDialog(); setTimeout(()=> renderCircadianChart(getCircadianPhase((()=>{ const d=new Date().toLocaleString('en-GB',{timeZone:'America/Santiago',hour:'2-digit',minute:'2-digit',hour12:false}); const [hh,mm]=d.split(':').map(Number); return hh+mm/60; })())),100); }
+}
 function setupCircadianDialog(){
-  const btn=$('btnCircadian'); if(btn) btn.onclick=()=>{ renderCircadianDialog(); $('circadianDialog').showModal(); setTimeout(()=> renderCircadianChart(getCircadianPhase((()=>{ const d=new Date().toLocaleString('en-GB',{timeZone:'America/Santiago',hour:'2-digit',minute:'2-digit',hour12:false}); const [hh,mm]=d.split(':').map(Number); return hh+mm/60; })())),100); };
+  const btn=$('btnCircadian'); if(btn) btn.onclick=()=>{ ritmoTab('ahora'); renderCircadianDialog(); $('circadianDialog').showModal(); setTimeout(()=> renderCircadianChart(getCircadianPhase((()=>{ const d=new Date().toLocaleString('en-GB',{timeZone:'America/Santiago',hour:'2-digit',minute:'2-digit',hour12:false}); const [hh,mm]=d.split(':').map(Number); return hh+mm/60; })())),100); };
+  const ta=$('tabRitmoAhora'), tp=$('tabRitmoPlan');
+  if(ta && !ta.dataset.bound){ ta.dataset.bound='1'; ta.addEventListener('click',()=>ritmoTab('ahora')); }
+  if(tp && !tp.dataset.bound){ tp.dataset.bound='1'; tp.addEventListener('click',()=>ritmoTab('plan')); }
   const ct=$('circadianCloseTop'), cb=$('circadianClose'); if(ct) ct.onclick=()=>$('circadianDialog').close(); if(cb) cb.onclick=()=>$('circadianDialog').close();
+  // API global: abrirRitmoCircadiano('ahora'|'plan') — usada por puentes (adolescencia, etapas)
+  try{
+    window.abrirRitmoCircadiano=function(t){
+      ritmoTab(t||'ahora');
+      renderCircadianDialog();
+      const d=$('circadianDialog');
+      try{ if(d && !d.open) d.showModal(); }catch(e){ try{ d.showModal(); }catch(e2){} }
+      if((t||'ahora')==='plan'){ const r=$('tabRitmoPlan'); if(r) r.click(); }
+    };
+  }catch(e){}
 }
 setTimeout(setupCircadianDialog, 860);
 

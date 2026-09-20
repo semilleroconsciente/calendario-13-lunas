@@ -17,26 +17,6 @@
       <p class="brand-sub">Calendario de las 13 Lunas<br>Penco · Bío-Bío · Chile</p>
     </div>
     <div id="liveClock" class="live-clock" title="Hora de Penco · America/Santiago">--:--:--</div>
-    <label class="cycle-label" for="userSel">Usuario</label>
-    <div class="user-row">
-      <select id="userSel"></select>
-      <button id="btnAddUser" class="btn btn-icon" title="Agregar usuario">➕</button>
-      <button id="btnDelUser" class="btn btn-icon" title="Eliminar usuario actual">🗑</button>
-    </div>
-    <label class="cycle-label" for="searchBox">Buscar en notas</label>
-    <input type="text" id="searchBox" placeholder="palabra o frase..." autocomplete="off">
-    <label class="cycle-label" for="cycleSel">Ciclo (We Tripantu)</label>
-    <select id="cycleSel"></select>
-    <label class="cycle-label" for="themeSel">🎨 Tema de colores</label>
-    <select id="themeSel">
-      <option value="auto">Auto — según luna</option>
-      <option value="noche">Noche — azul profundo</option>
-      <option value="claro">Claro — día luminoso</option>
-      <option value="bosque">Bosque — verde pewü</option>
-      <option value="oceano">Océano — celeste pukem</option>
-      <option value="atardecer">Atardecer — cálido rimü</option>
-      <option value="medianoche">Medianoche — negro</option>
-    </select>
     <button id="btnToday" class="btn btn-accent">◉ Ir a hoy</button>
     <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap">
       <button id="btnConfig" class="btn" style="flex:1">⚙️ Personalizar</button>
@@ -93,90 +73,112 @@
       <span id="statusMsg"></span>
     </div>
     <footer id="actions">
-      <details class="action-group" open data-group="territorio">
-        <summary>🌊 Territorio <span class="ag-count"></span></summary>
+      <details class="action-group" open data-group="dia">
+        <summary>📅 Mi Día <span class="ag-count"></span></summary>
         <div class="group-btns">
-          <button id="btnWeather" class="btn" data-keywords="clima tiempo viento lluvia temperatura aire calidad humo ventilacion sol uv radiacion playa exposicion">🌤️ Clima</button>
-          <button id="btnTides" class="btn" data-keywords="mareas shoa talcahuano pleamar bajamar">🌊 Mareas</button>
-          <button id="btnAstro" class="btn" data-keywords="astro astronomia eclipse meteoros superluna carta natal astral zodiaco horoscopo signo ascendente">🔭 Astro</button>
-          <button id="btnIntermareal" class="btn" data-keywords="intermareal roquerio poza marea baja cochayuyo luche lapa chorito jaiba algas mariscos cosecha sostenible">🦀 Intermareal</button>
-          <button id="btnFishing" class="btn" data-keywords="pesca peces artesanal lirquen golfo arauco historia caleta san pedro wampo veda">🎣 Pesca</button>
-          <button id="btnBirds" class="btn" data-keywords="aves pajaro observacion humedal rocuant bosque nativo chucao tenca diuca historia avistadas">🦅 Aves</button>
-          <button id="btnSiembra" class="btn" data-keywords="siembra cosecha huerta semilla semillas semillero inventario recuento stock luna banco estratificacion multiplicacion esqueje almácigo trafkintu">🌱 Siembra lunar</button>
-          <button id="btnBosque" class="btn" data-keywords="bosque nativo arbol canelo boldo peumo arrayan quillay maiten avellano reforestacion semilla hongo maqui trihue laurelia naranjillo citronella keule gomortega historia acompanantes micorriza sotobosque picaflor dispersor quintral quila diguene changle loyo polinizador ecosistema animales insectos mamifero chingue zorro abejorro mariposa">🌳 Bosque Nativo</button>
-          <button id="btnCompost" class="btn" data-keywords="compost suelo humus vermicompostera bocashi tierra ph arcilla abono menguante">🪱 Compost & Suelo</button>
-          <button id="btnComuna" class="btn" data-keywords="penco comuna fiesta evento aniversario guia historia sectores lirquen cosmito cerro verde primer agua">🎉 Penco</button>
-          <button id="btnCircadian" class="btn" data-keywords="circadiano sueño melatonina cortisol ciclo">🌞 Circadiano</button>
-          <button id="btnGolden" class="btn" data-keywords="hora dorada fotografia sol salida puesta">📸 Hora Dorada</button>
-          <button id="btnEkadashi" class="btn" data-keywords="ekadashi ayuno lunar tithi">📿 Ekadashi</button>
+          <span class="sub-label" data-sub="organizar">🗂️ Organizar hoy</span>
+          <button id="btnHabits" class="btn" data-sub="organizar" data-keywords="habitos rutina racha disciplina">✅ Hábitos</button>
+          <button id="btnDiscipline" class="btn" data-sub="organizar" data-keywords="disciplina pomodoro procrastinar foco">🎯 Disciplina</button>
+          <button id="btnSchedule" class="btn" data-sub="organizar" data-keywords="horario clases estudio semana">📚 Horario</button>
+          <button id="btnTimer" class="btn" data-sub="organizar" data-keywords="tiempo timer cronometro pomodoro">⏱ Tiempo</button>
+          <button id="btnRemind" class="btn" data-sub="organizar" data-keywords="recordatorio notificacion luna fase">🔔 Recordatorios</button>
+          <span class="sub-label" data-sub="registrar">✍️ Registrar hoy</span>
+          <button id="btnGratitud" class="btn" data-sub="registrar" data-keywords="gratitud diario gracias wenu bienestar animo positivo racha">📓 Gratitud Diaria</button>
+          <button id="btnDreams" class="btn" data-sub="registrar" data-keywords="sueños diario onirico rem dormir">💭 Sueños</button>
+          <button id="btnBreath" class="btn" data-sub="registrar" data-keywords="respiracion 478 caja cuadrada ansiedad">🌬️ Respiración</button>
+        </div>
+      </details>
+      <details class="action-group" open data-group="territorio">
+        <summary>🌊 Territorio Penco <span class="ag-count"></span></summary>
+        <div class="group-btns">
+          <span class="sub-label" data-sub="mar">⚓ Costa y Mar</span>
+          <button id="btnTides" class="btn" data-sub="mar" data-keywords="mareas shoa talcahuano pleamar bajamar">🌊 Mareas</button>
+          <button id="btnFishing" class="btn" data-sub="mar" data-keywords="pesca peces artesanal lirquen golfo arauco historia caleta san pedro wampo veda">🎣 Pesca</button>
+          <button id="btnIntermareal" class="btn" data-sub="mar" data-keywords="intermareal roquerio poza marea baja cochayuyo luche lapa chorito jaiba algas mariscos cosecha sostenible">🦀 Intermareal</button>
+          <span class="sub-label" data-sub="tierra">🌱 Tierra y Monte</span>
+          <button id="btnSiembra" class="btn" data-sub="tierra" data-keywords="siembra cosecha huerta semilla semillas semillero inventario recuento stock luna banco estratificacion multiplicacion esqueje almácigo trafkintu">🌱 Siembra lunar</button>
+          <button id="btnCompost" class="btn" data-sub="tierra" data-keywords="compost suelo humus vermicompostera bocashi tierra ph arcilla abono menguante">🪱 Compost & Suelo</button>
+          <button id="btnBosque" class="btn" data-sub="tierra" data-keywords="bosque nativo arbol canelo boldo peumo arrayan quillay maiten avellano reforestacion semilla hongo maqui trihue laurelia naranjillo citronella keule gomortega historia acompanantes micorriza sotobosque picaflor dispersor quintral quila diguene changle loyo polinizador ecosistema animales insectos mamifero chingue zorro abejorro mariposa">🌳 Bosque Nativo</button>
+          <button id="btnBirds" class="btn" data-sub="tierra" data-keywords="aves pajaro observacion humedal rocuant bosque nativo chucao tenca diuca historia avistadas">🦅 Aves</button>
+          <button id="btnLawen" class="btn" data-sub="tierra" data-keywords="lawen herbario hierba matico boldo maqui canelo bailahuen manzanilla medicina natural remedio planta">🌿 Lawen Herbario</button>
+          <span class="sub-label" data-sub="cielo">🌙 Cielo y Ritmo</span>
+          <button id="btnWeather" class="btn" data-sub="cielo" data-keywords="clima tiempo viento lluvia temperatura aire calidad humo ventilacion sol uv radiacion playa exposicion">🌤️ Clima</button>
+          <button id="btnAstro" class="btn" data-sub="cielo" data-keywords="astro astronomia eclipse meteoros superluna carta natal astral zodiaco horoscopo signo ascendente">🔭 Astro</button>
+          <button id="btnGolden" class="btn" data-sub="cielo" data-keywords="hora dorada fotografia sol salida puesta">📸 Hora Dorada</button>
+          <button id="btnCircadian" class="btn" data-sub="cielo" data-keywords="circadiano ritmo rutina plan mi plan hora despertar sueño melatonina cortisol ciclo energia descanso">🌞 Ritmo Circadiano</button>
+          <button id="btnEkadashi" class="btn" data-sub="cielo" data-keywords="ekadashi ayuno lunar tithi">📿 Ekadashi</button>
+          <span class="sub-label" data-sub="penco">🎉 Penco</span>
+          <button id="btnComuna" class="btn" data-sub="penco" data-keywords="penco comuna fiesta evento aniversario guia historia sectores lirquen cosmito cerro verde primer agua">🎉 Penco</button>
         </div>
       </details>
       <details class="action-group" open data-group="cuerpo">
-        <summary>🌸 Cuerpo &amp; Salud <span class="ag-count"></span></summary>
+        <summary>💚 Cuerpo &amp; Salud <span class="ag-count"></span></summary>
         <div class="group-btns">
-          <button id="btnMenstrual" class="btn" data-keywords="ciclo menstrual periodo fertil ovulacion mujer">🌸 Ciclo</button>
-          <button id="btnMedic" class="btn" data-keywords="medicina medicamento hierba matico natural">🌿 Medicina</button>
-          <button id="btnGym" class="btn" data-keywords="entrenamientos gym gimnasio terapia fisica fisioterapia calistenia practicas varias rutina ejercicio movilidad kine">💪 Entrenamientos</button>
-          <button id="btnBreath" class="btn" data-keywords="respiracion 478 caja cuadrada ansiedad">🌬️ Respiración</button>
-          <button id="btnDreams" class="btn" data-keywords="sueños diario onirico rem dormir">💭 Sueños</button>
-          <button id="btnLawen" class="btn" data-keywords="lawen herbario hierba matico boldo maqui canelo bailahuen manzanilla medicina natural remedio planta">🌿 Lawen Herbario</button>
-          <button id="btnEspiritual" class="btn" data-keywords="practicas espirituales sol amanecer atardecer agua solarizada ducha fria grounding earthing luz roja noche ritual meditacion sungazing">🕉️ Prácticas Espirituales</button>
-          <button id="btnDueloFull" class="btn" data-keywords="duelo luto perdida partida difunto despedida ritual memoria consuelo tristeza acompañamiento guia etapas">🕊️ Duelo</button>
+          <span class="sub-label" data-sub="ciclos">🌸 Ciclos</span>
+          <button id="btnMenstrual" class="btn" data-sub="ciclos" data-keywords="ciclo menstrual periodo fertil ovulacion mujer">🌸 Ciclo</button>
+          <span class="sub-label" data-sub="cuidado">🛟 Cuidado</span>
+          <button id="btnMedic" class="btn" data-sub="cuidado" data-keywords="medicina medicamento hierba matico natural basica botiquin historia seguridad alergia dosis">🌿 Medicina</button>
+          <button id="btnGym" class="btn" data-sub="cuidado" data-keywords="entrenamientos gym gimnasio terapia fisica fisioterapia calistenia practicas varias rutina ejercicio movilidad kine">💪 Entrenamientos</button>
         </div>
       </details>
-      <details class="action-group" open data-group="mente">
-        <summary>🧠 Mente &amp; Estudio <span class="ag-count"></span></summary>
+      <details class="action-group" data-group="aprender">
+        <summary>🧠 Aprender, Crear y Jugar <span class="ag-count"></span></summary>
         <div class="group-btns">
-          <button id="btnHabits" class="btn" data-keywords="habitos rutina racha disciplina">✅ Hábitos</button>
-          <button id="btnDiscipline" class="btn" data-keywords="disciplina pomodoro procrastinar foco">🎯 Disciplina</button>
-          <button id="btnStudy" class="btn" data-keywords="estudio mnemotecnia lectura feynman">🧠 Estudio</button>
-          <button id="btnSchedule" class="btn" data-keywords="horario clases estudio semana">📚 Horario</button>
-          <button id="btnTales" class="btn" data-keywords="cuentos infantil niños luna historia">📖 Cuentos</button>
-          <button id="btnVozAbuelos" class="btn" data-keywords="voz abuelos abuela abuelo sabiduria receta historia consejo grabar audio testimonio legado familia territorio cuento transmitir oral">🗣️ Voz de los Abuelos</button>
-          <button id="btnMemory" class="btn" data-keywords="memoria pares loci atencion secuencia simon palabras numeros schulte distinto">🧩 Memoria</button>
-          <button id="btnMapu" class="btn" data-keywords="mapuzugun mapuche kimun kimün palabra idioma numero saludo quiz luna intermedio avanzado frases verbos gramatica">🗣️ Kimün Mapuzugun</button>
-          <button id="btnEnglish" class="btn" data-keywords="ingles english idioma levels a1 a2 b1 b2 c1 basic intermediate advanced quiz vocabulary grammar frases verbos">Ingles</button>
-          <button id="btnGratitud" class="btn" data-keywords="gratitud diario gracias wenu bienestar animo positivo racha">📓 Gratitud Diaria</button>
-          <button id="btnGuitar" class="btn" data-keywords="guitarra acordes principiante intermedio avanzado practica afinador metronomo cejilla fingerpicking escalas canciones ritmo rasgueo">🎸 Guitarra</button>
-          <button id="btnPsico" class="btn" data-keywords="psicoanalisis autoconocimiento sombra jung inconsciente sueños terapia cognitivo conductual tcc gestalt silla vacia eneagrama mbti big five journaling diario estoico senecca marco aurelio mayeutica socrates mindfulness vipassana atma vichara quien soy bioenergetica feldenkrais cuerpo arte escritura salud mental">🪞 Autoconocimiento</button>
-          <button id="btnMetodos" class="btn" data-keywords="metodos visiones estoicismo tao tolteca budismo yogananda gurdjieff grinberg jung freud psicoanalisis frankl logoterapia sentido zen zazen patanjali ashtanga grof transpersonal hermetismo kybalion cuatro acuerdos wu wei kriya cuarto camino sintergia arquetipos filosofia espiritualidad conny mendez metafisica decreto ikigai proposito gnosis interior reiki usui energia manos gokai hoponopono ho'oponopono hawaii perdon gracias te amo limpieza">📿 Métodos</button>
-          <button id="btnArbolFull" class="btn" data-keywords="arbol genealogico familia ancestro linaje kupalme bisabuelo abuelo padre madre hijo honra generacion memoria">🌳 Árbol Genealógico</button>
-          <button id="btnRecap" class="btn" data-keywords="recapitulacion recapitular tolteca castaneda repaso vida perdon soltar energia ensueño acecho inventario liberacion">🔁 Recapitulación</button>
-          <button id="btnEneagrama" class="btn" data-keywords="eneagrama eneatipo personalidad test autoconocimiento reformador ayudador triunfador artista investigador leal entusiasta desafiador pacificador alas flechas subtipo instinto virtud pasion">🔺 Eneagrama</button>
+          <span class="sub-label" data-sub="estudio">📚 Estudio e Idiomas</span>
+          <button id="btnStudy" class="btn" data-sub="estudio" data-keywords="estudio mnemotecnia lectura feynman">🧠 Estudio</button>
+          <button id="btnMemory" class="btn" data-sub="estudio" data-keywords="memoria pares loci atencion secuencia simon palabras numeros schulte distinto">🧩 Memoria</button>
+          <button id="btnMapu" class="btn" data-sub="estudio" data-keywords="mapuzugun mapuche kimun kimün palabra idioma numero saludo quiz luna intermedio avanzado frases verbos gramatica">🗣️ Kimün Mapuzugun</button>
+          <button id="btnEnglish" class="btn" data-sub="estudio" data-keywords="ingles english idioma levels a1 a2 b1 b2 c1 basic intermediate advanced quiz vocabulary grammar frases verbos">Ingles</button>
+          <button id="btnGuitar" class="btn" data-sub="estudio" data-keywords="instrumentos musica guitarra ukelele flauta quena teclado piano cajon percusion canto voz acordes principiante intermedio avanzado practica afinador metronomo cejilla fingerpicking escalas canciones ritmo rasgueo">🎶 Instrumentos</button>
+          <span class="sub-label" data-sub="infancias">🧒 Infancias</span>
+          <button id="btnTales" class="btn" data-sub="infancias" data-keywords="cuentos infantil niños luna historia epew">📖 Cuentos</button>
         </div>
       </details>
-      <details class="action-group" open data-group="vida">
-        <summary>🍽️ Vida diaria <span class="ag-count"></span></summary>
+      <details class="action-group" data-group="linaje">
+        <summary>🪞 Interior, Linaje y Memoria <span class="ag-count"></span></summary>
         <div class="group-btns">
-          <button id="btnMeal" class="btn" data-keywords="comida meal plan cena almuerzo">🥗 Comidas</button>
-          <button id="btnShopping" class="btn" data-keywords="compras lista supermercado verduras">🛒 Compras</button>
-          <button id="btnFinance" class="btn" data-keywords="finanzas gastos dinero presupuesto ahorro deuda ingreso egreso plata billetera">💰 Finanzas</button>
-          <button id="btnHomeTasks" class="btn" data-keywords="tareas hogar limpieza casa organizacion quehaceres rutina habitaciones baño cocina ropa mantenimiento orden diogenes acumulacion acumulador desorden tirar botar soltar apego">🏠 Tareas Hogar</button>
+          <span class="sub-label" data-sub="interior">🔥 Interior</span>
+          <button id="btnPsico" class="btn" data-sub="interior" data-keywords="psicoanalisis autoconocimiento sombra jung inconsciente sueños terapia cognitivo conductual tcc gestalt silla vacia eneagrama mbti big five journaling diario estoico senecca marco aurelio mayeutica socrates mindfulness vipassana atma vichara quien soy bioenergetica feldenkrais cuerpo arte escritura salud mental">🪞 Autoconocimiento</button>
+          <button id="btnMetodos" class="btn" data-sub="interior" data-keywords="metodos visiones estoicismo tao tolteca budismo yogananda gurdjieff grinberg jung freud psicoanalisis frankl logoterapia sentido zen zazen patanjali ashtanga grof transpersonal hermetismo kybalion cuatro acuerdos wu wei kriya cuarto camino sintergia arquetipos filosofia espiritualidad conny mendez metafisica decreto ikigai proposito gnosis interior reiki usui energia manos gokai hoponopono ho'oponopono hawaii perdon gracias te amo limpieza">📿 Métodos</button>
+          <button id="btnRecap" class="btn" data-sub="interior" data-keywords="recapitulacion recapitular tolteca castaneda repaso vida perdon soltar energia ensueño acecho inventario liberacion">🔁 Recapitulación</button>
+          <button id="btnEneagrama" class="btn" data-sub="interior" data-keywords="eneagrama eneatipo personalidad test autoconocimiento reformador ayudador triunfador artista investigador leal entusiasta desafiador pacificador alas flechas subtipo instinto virtud pasion">🔺 Eneagrama</button>
+          <button id="btnEspiritual" class="btn" data-sub="interior" data-keywords="practicas espirituales sol amanecer atardecer agua solarizada ducha fria grounding earthing luz roja noche ritual meditacion sungazing">🕉️ Prácticas Espirituales</button>
+          <button id="btnDueloFull" class="btn" data-sub="interior" data-keywords="duelo luto perdida partida difunto despedida ritual memoria consuelo tristeza acompañamiento guia etapas">🕊️ Duelo</button>
+          <span class="sub-label" data-sub="familia">🌳 Familia</span>
+          <button id="btnArbolFull" class="btn" data-sub="familia" data-keywords="arbol genealogico familia ancestro linaje kupalme bisabuelo abuelo padre madre hijo honra generacion memoria">🌳 Árbol Genealógico</button>
+          <button id="btnVozAbuelos" class="btn" data-sub="familia" data-keywords="voz abuelos abuela abuelo sabiduria receta historia consejo grabar audio testimonio legado familia territorio cuento transmitir oral">🗣️ Voz de los Abuelos</button>
         </div>
       </details>
-      <details class="action-group" open data-group="emergencia">
-        <summary>🚨 Emergencias & Comunidad <span class="ag-count"></span></summary>
+      <details class="action-group" data-group="hogar">
+        <summary>🏡 Hogar y Vida Práctica <span class="ag-count"></span></summary>
         <div class="group-btns">
-          <button id="btnFirstAid" class="btn" data-keywords="primeros auxilios emergencia salud rcp hemorragia quemadura fractura atragantamiento heimlich botiquin samu bomberos carabineros">🩹 Primeros Auxilios</button>
-          <button id="btnAnimalCare" class="btn" data-keywords="cuidado animal veterinaria mascota perro gato tenencia responsable esterilizacion vacuna antirrabica comuna animal perdido maltrato">🐾 Cuidado Animal</button>
-          <button id="btnViolence" class="btn" data-keywords="violencia domestica intrafamiliar vif violencia genero mujer pareja fisica psicologica sexual economica vicaria digital denuncia 149 1455 sernameg carabineros">🟣 Violencia Doméstica</button>
-          <button id="btnEvac" class="btn" data-keywords="evacuacion tsunami sismo terremoto cerro mochila plan familiar senapred shoa armada cota inundacion punto encuentro">🌊🚨 Evacuación Tsunami</button>
+          <span class="sub-label" data-sub="casa">🍽️ Casa</span>
+          <button id="btnMeal" class="btn" data-sub="casa" data-keywords="comida meal plan cena almuerzo">🥗 Comidas</button>
+          <button id="btnShopping" class="btn" data-sub="casa" data-keywords="compras lista supermercado verduras">🛒 Compras</button>
+          <button id="btnFinance" class="btn" data-sub="casa" data-keywords="finanzas gastos dinero presupuesto ahorro deuda ingreso egreso plata billetera">💰 Finanzas</button>
+          <button id="btnHomeTasks" class="btn" data-sub="casa" data-keywords="tareas hogar limpieza casa organizacion quehaceres rutina habitaciones baño cocina ropa mantenimiento orden diogenes acumulacion acumulador desorden tirar botar soltar apego">🏠 Tareas Hogar</button>
+          <span class="sub-label" data-sub="energia">🔧 Energía y Taller</span>
+          <button id="btnEnergy" class="btn" data-sub="energia" data-keywords="energia consumo electrico luz kwh watts tarifa electrodomestico ohm ley ohm potencia voltaje corriente resistencia calculadora electrica solar fotovoltaica panel">⚡ Consumo eléctrico</button>
+          <button id="btnLena" class="btn" data-sub="energia" data-keywords="leña pellet calefaccion estufa bosca invierno kwh humedad eucalipto pino calculadora termica">🪵 Leña & Pellet</button>
+          <button id="btnConvert" class="btn" data-sub="energia" data-keywords="conversion unidades peso longitud tiempo velocidad energia potencia presion datos angulo">📏 Conversión</button>
         </div>
       </details>
-      <details class="action-group" data-group="herramientas">
-        <summary>🛠️ Herramientas <span class="ag-count"></span></summary>
+      <details class="action-group" data-group="comunidad">
+        <summary>🤝 Comunidad, Emergencia y Sistema <span class="ag-count"></span></summary>
         <div class="group-btns">
-          <button id="btnConvert" class="btn" data-keywords="conversion unidades peso longitud tiempo velocidad energia potencia presion datos angulo">📏 Conversión</button>
-          <button id="btnEnergy" class="btn" data-keywords="energia consumo electrico luz kwh watts tarifa electrodomestico ohm ley ohm potencia voltaje corriente resistencia calculadora electrica solar fotovoltaica panel">⚡ Consumo eléctrico</button>
-          <button id="btnTimer" class="btn" data-keywords="tiempo timer cronometro pomodoro">⏱ Tiempo</button>
-          <button id="btnRemind" class="btn" data-keywords="recordatorio notificacion luna fase">🔔 Recordatorios</button>
-          <button id="btnBackup" class="btn" data-keywords="respaldo backup guardar exportar">💾 Respaldo</button>
-          <button id="btnRestore" class="btn" data-keywords="restaurar importar backup json">📥 Restaurar</button>
-          <button id="btnShortcut" class="btn" data-keywords="acceso directo escritorio pwa instalar">📌 Acceso directo</button>
-          <button id="btnPdfLuna" class="btn" data-keywords="pdf luna imprimir exportar">📄 PDF luna</button>
-          <button id="btnPdfCiclo" class="btn" data-keywords="pdf ciclo completo imprimir">📚 PDF ciclo</button>
-          <button id="btnLena" class="btn" data-keywords="leña pellet calefaccion estufa bosca invierno kwh humedad eucalipto pino calculadora termica">🪵 Leña & Pellet</button>
-          <button id="btnDonate" class="btn btn-accent" style="width:auto" data-keywords="aporte donar mercadopago paypal personalizado organizacion encargo medida territorio">❤ Aporte voluntario</button>
+          <span class="sub-label" data-sub="red">🤝 Red Penco</span>
+          <button id="btnAnimalCare" class="btn" data-sub="red" data-keywords="cuidado animal veterinaria mascota perro gato tenencia responsable esterilizacion vacuna antirrabica comuna animal perdido maltrato">🐾 Cuidado Animal</button>
+          <span class="sub-label" data-sub="emergencia">🚨 Emergencia</span>
+          <button id="btnFirstAid" class="btn" data-sub="emergencia" data-keywords="primeros auxilios emergencia salud rcp hemorragia quemadura fractura atragantamiento heimlich botiquin samu bomberos carabineros">🩹 Primeros Auxilios</button>
+          <button id="btnViolence" class="btn" data-sub="emergencia" data-keywords="violencia domestica intrafamiliar vif violencia genero mujer pareja fisica psicologica sexual economica vicaria digital denuncia 149 1455 sernameg carabineros">🟣 Violencia Doméstica</button>
+          <button id="btnEvac" class="btn" data-sub="emergencia" data-keywords="evacuacion tsunami sismo terremoto cerro mochila plan familiar senapred shoa armada cota inundacion punto encuentro">🌊🚨 Evacuación Tsunami</button>
+          <span class="sub-label" data-sub="app">⚙️ App</span>
+          <button id="btnBackup" class="btn" data-sub="app" data-keywords="respaldo backup guardar exportar">💾 Respaldo</button>
+          <button id="btnRestore" class="btn" data-sub="app" data-keywords="restaurar importar backup json">📥 Restaurar</button>
+          <button id="btnShortcut" class="btn" data-sub="app" data-keywords="acceso directo escritorio pwa instalar">📌 Acceso directo</button>
+          <button id="btnPdfLuna" class="btn" data-sub="app" data-keywords="pdf luna imprimir exportar">📄 PDF luna</button>
+          <button id="btnPdfCiclo" class="btn" data-sub="app" data-keywords="pdf ciclo completo imprimir">📚 PDF ciclo</button>
+          <button id="btnDonate" class="btn btn-accent" data-sub="app" style="width:auto" data-keywords="aporte donar mercadopago paypal personalizado organizacion encargo medida territorio">❤ Aporte voluntario</button>
         </div>
       </details>
     </footer>
@@ -650,10 +652,13 @@
         <h3 style="margin:0;color:var(--accent)">🌿 Medicina — farmacológica y natural</h3>
         <button type="button" id="medicCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
       </div>
-      <p class="muted" style="line-height:1.5">Registra <b>privado y local</b> qué tomar y cuándo. Te avisa con notificación suave si das permiso. No reemplaza indicación médica.</p>
-      <div class="timer-tabs" style="margin-bottom:10px">
+      <p class="muted" style="line-height:1.5">Registra <b>privado y local</b> qué tomar y cuándo. Te avisa con notificación suave si das permiso. No reemplaza indicación médica. Complementa con 🩹 <b>Primeros Auxilios</b> (emergencias) y 🌿 <b>Lawen Herbario</b> (plantas de Penco).</p>
+      <div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">
         <button type="button" id="tabMedicFarma" class="btn btn-accent" style="width:auto">💊 Farmacología</button>
         <button type="button" id="tabMedicNatural" class="btn" style="width:auto">🌱 Natural</button>
+        <button type="button" id="tabMedicBasica" class="btn" style="width:auto">🩺 Básica</button>
+        <button type="button" id="tabMedicHistoria" class="btn" style="width:auto">📜 Historia</button>
+        <button type="button" id="tabMedicSeguridad" class="btn" style="width:auto">⚠️ Seguridad</button>
       </div>
       <div id="medicFarmaPanel">
         <div class="medic-grid">
@@ -727,6 +732,53 @@
             <div id="naturalUserList" class="medic-list" style="max-height:260px;margin-top:8px"></div>
           </div>
         </div>
+      </div>
+      <div id="medicBasicaPanel" class="hidden">
+        <div class="menstrual-card" style="border-color:var(--gold);background:linear-gradient(135deg,var(--panel),var(--card))">
+          <h4 style="color:var(--gold)">🩺 Medicina básica — lo esencial en casa</h4>
+          <p class="muted" style="font-size:11px;line-height:1.5">Guía educativa. No diagnostica ni reemplaza al CESFAM/SAR/Hospital. Si dudas, llama <b>Salud Responde 600 360 7777</b> o <b>SAMU 131</b> si es grave. Marca tu botiquín abajo: queda guardado por usuaria.</p>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
+            <button type="button" id="medicGoFirstAid" class="btn" style="width:auto;font-size:11px">🩹 Ir a Primeros Auxilios</button>
+            <button type="button" id="medicGoLawen" class="btn" style="width:auto;font-size:11px">🌿 Ir a Lawen Herbario</button>
+          </div>
+        </div>
+        <div id="medicBasicaBox" style="margin-top:10px"></div>
+        <div class="menstrual-card" style="margin-top:10px">
+          <h4 style="color:var(--accent)">🎒 Mi botiquín básico (toca para marcar ✓)</h4>
+          <p class="muted" style="font-size:11px">Revisa cada luna. Toca cada ítem para marcarlo como listo.</p>
+          <div id="medicBotiquinBox" class="habits-today-grid" style="margin-top:8px"></div>
+          <div class="dlg-actions" style="justify-content:space-between;margin-top:8px">
+            <span id="medicBotiquinStats" class="muted" style="font-size:11px"></span>
+            <button type="button" id="medicBotiquinReset" class="btn" style="width:auto;font-size:11px">↺ Reiniciar</button>
+          </div>
+        </div>
+        <div class="menstrual-card" style="margin-top:10px">
+          <h4 style="color:var(--accent)">📋 Mis alergias y avisos (privado y local)</h4>
+          <div class="conv-row">
+            <label style="flex:2">Alergias <input type="text" id="medicAlergias" placeholder="ej: Penicilina, maní, látex" maxlength="80"></label>
+            <label>Grupo <select id="medicGrupo"><option value="">—</option><option value="embarazo">Embarazo</option><option value="lactancia">Lactancia</option><option value="nino">Niño/a a cargo</option><option value="mayor">Adulto mayor</option><option value="cronico">Enfermedad crónica</option></select></label>
+          </div>
+          <label>Contacto emergencia <input type="text" id="medicContacto" placeholder="ej: María 9 1234 5678" maxlength="60"></label>
+          <div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="medicExtraSave" class="btn btn-accent" style="width:auto">💾 Guardar avisos</button><span id="medicExtraStatus" class="muted" style="font-size:11px;align-self:center"></span></div>
+        </div>
+      </div>
+      <div id="medicHistoriaPanel" class="hidden">
+        <div class="menstrual-card" style="border-color:var(--gold);background:linear-gradient(135deg,var(--panel),var(--card))">
+          <h4 style="color:var(--gold)">📜 Historia de la medicina — de Hipócrates al lawen</h4>
+          <p class="muted" style="font-size:11px;line-height:1.5">Línea de tiempo educativa: medicina universal, chilena y mapuche. El <b>kimün mapuche</b> se presenta con respeto, sin apropiación: si usas lawen, aprende con cultores y pide permiso.</p>
+          <div class="conv-row" style="margin-top:8px">
+            <label style="flex:2">🔎 Buscar <input type="text" id="medicHistSearch" placeholder="ej: vacuna, machi, penicilina, hospital..." maxlength="40"></label>
+            <label>Era <select id="medicHistFilter"><option value="todas">Todas</option><option value="universal">Universal</option><option value="chile">Chile</option><option value="mapuche">Mapuche / Lawen</option><option value="penco">Penco</option></select></label>
+          </div>
+        </div>
+        <div id="medicHistoriaBox" style="margin-top:10px"></div>
+      </div>
+      <div id="medicSeguridadPanel" class="hidden">
+        <div class="menstrual-card" style="border-color:#ff6b6b;background:linear-gradient(135deg,#2a1a20,var(--card))">
+          <h4 style="color:#ff6b6b">⚠️ Uso seguro — lee antes de tomar algo</h4>
+          <p class="muted" style="font-size:11px;line-height:1.5">5 reglas de oro: <b>1)</b> Persona correcta <b>2)</b> Medicamento correcto <b>3)</b> Dosis correcta <b>4)</b> Hora correcta <b>5)</b> Vía correcta. Guarda prospectos y anota alergias arriba en 🩺 Básica.</p>
+        </div>
+        <div id="medicSeguridadBox" style="margin-top:10px"></div>
       </div>
       <div id="medicNextBox" class="menstrual-card" style="margin-top:10px"></div>
       <div class="dlg-actions" style="justify-content:space-between;align-items:center">
@@ -1837,9 +1889,9 @@
           </div>
           <div class="help-card">
             <h4>🗺️ Mapa rápido</h4>
-            <p><b>🌊 Territorio:</b> Mareas, Pesca, Aves, Clima (+Aire), Siembra, Astro, Penco, Ekadashi, Hora Dorada, Circadiano, Intermareal, Bosque, Compost, Reciclaje.</p>
+            <p><b>🌊 Territorio:</b> Mareas, Pesca, Aves, Clima (+Aire), Siembra, Astro, Penco, Ekadashi, Hora Dorada, Ritmo Circadiano, Intermareal, Bosque, Compost, Reciclaje.</p>
             <p><b>🌸 Cuerpo:</b> Ciclo, Medicina, Entrenamientos, Respiración, Sueños, Lawen, Prácticas Espirituales.</p>
-            <p><b>🧠 Mente:</b> Hábitos, Disciplina, Estudio, Horario, Cuentos, Memoria, Kimün, Inglés, Gratitud, Guitarra, Autoconocimiento y <b>Métodos</b>.</p>
+            <p><b>🧠 Mente:</b> Hábitos, Disciplina, Estudio, Horario, Cuentos, Memoria, Kimün, Inglés, Gratitud, Instrumentos, Autoconocimiento y <b>Métodos</b>.</p>
             <p><b>🪞 Autoconocimiento:</b> Sombra (Jung), TCC, Gestalt, Tipologías, Journaling, Examen estoico, Mayéutica, Mindfulness, Atma Vichara, Vipassana, Cuerpo y Arte — cada una con guía básica de 5' + registro privado.</p>
             <p><b>🍽️ Vida + 🚨 Emergencias + 🛠️ Herramientas:</b> Comidas, Compras, Finanzas, Tareas Hogar · Primeros Auxilios, Cuidado Animal, Violencia, Evacuación Tsunami · Conversión, Electricidad, Leña, Tiempo, Recordatorios, Respaldo, PDF.</p>
           </div>
@@ -1869,7 +1921,7 @@
           <h4>📖 Cómo está organizado</h4>
           <p><b>13 × 28 + 1:</b> Luna 1 We Tripantü Küyen (21 jun – 18 jul) hasta Luna 13 Mawün Kürüf (23 may – 19 jun) y luego <b>Día Fuera del Tiempo 20 jun</b> — día de cierre, memoria y baño al mar. Cada luna = 28 tarjetas (4 semanas × 7).</p>
           <p><b>Tarjeta del día:</b> fecha gregoriana, sol (salida/puesta Penco), fases lunares exactas ({{simbolo}}), efeméride, ánimo, puntitos de hábitos/gym/aves/pesca/finanzas/🏠/✨/🎉 y resumen de notas/compromisos. Clic para entrar.</p>
-          <p><b>Grupos:</b> 🌊 Territorio · 🌸 Cuerpo & Salud · 🧠 Mente & Estudio · 🍽️ Vida diaria · 🚨 Emergencias & Comunidad · 🛠️ Herramientas — filtrables con <b>🔍 Buscar función (Ctrl+K)</b> y personalizables por perfil (⚙️ Personalizar).</p>
+          <p><b>Grupos (7):</b> 📅 Mi Día · 🌊 Territorio Penco · 💚 Cuerpo & Salud · 🧠 Aprender, Crear y Jugar · 🪞 Interior, Linaje y Memoria · 🏡 Hogar y Vida Práctica · 🤝 Comunidad, Emergencia y Sistema — con subgrupos dentro de cada uno, filtrables con <b>🔍 Buscar función (Ctrl+K)</b> y personalizables por perfil (⚙️ Personalizar).</p>
           <p><b>🔠 Accesibilidad:</b> en ⚙️ Ajustes elige el <b>tamaño de letra</b> en 6 niveles hacia arriba (Normal → Colosal); se guarda por usuario.</p>
         </div>
       </div>
@@ -1893,26 +1945,23 @@
            <p><b>🌊 Mareas:</b> tabla 3 días SHOA con pleamar/bajamar por hora. <b>🎣 Pesca:</b> rating lunar (tithi), mejores días de la luna, 8 especies locales con talla/veda/carnada + <b>bitácora privada</b> por usuario (fecha/lugar/especie/kg/marea) y 📤 Compartir. <b>🦅 Aves:</b> catálogo 16 aves Rocuant, actividad por luna + <b>bitácora</b> (fecha/hora/cantidad/actividad) y export.</p>
             <p><b>🌤️ Clima:</b> Open-Meteo 7 días + 48h por hora (America/Santiago) con pestañas Pronóstico / Guía offline / <b>🌬️ Aire</b> (PM2.5 + humo leña) / Sol-UV. <b>🌱 Siembra:</b> 13 lunas con directa/almácigos/cosecha/tareas — pestañas <b>Siembra / Cosecha & Plagas / 🤝 Asociaciones</b> (23 cultivos, Tres Hermanas maíz-poroto-zapallo) <b>/ 🧪 Preparados</b> (10 recetas orgánicas: purín, bordelés, neem…) <b>/ 🌱 Semillero</b> (tu banco de semillas: inventario, trafkintu, técnicas de multiplicación, estratificación y guías).</p>
             <p><b>🔭 Astro:</b> eclipses/superlunas/lluvias 2026-27 (⏳ Próximos ordenados, 🌕 Mes lunar con iluminación día por día y sus eventos, 📅 Año por tipo, ✨ Cielo Mapuche y <b>✨ Carta Natal</b>: Sol, Luna, Ascendente, planetas, casas iguales, aspectos, rueda y perfiles guardados). Las fases se ven directo en el calendario. <b>🎉 Penco:</b> 14 eventos anuales + tus eventos anuales editables (aparecen como 🎉 en el calendario) + <b>📖 Guía de Penco</b> (historia, límites, lugares de interés y sectores: Lirquén, Cosmito, centro, Cerro Verde, zona rural). <b>📿 Ekadashi:</b> cálculo tithi con 3 lunas, ayuno shukla/krishna.</p>
-            <p><b>📸 Hora Dorada:</b> salida/puesta Penco + ventana dorada/azul. <b>🌞 Circadiano:</b> gráfico 24h, fase actual, 6 bloques con qué hacer.</p>
+            <p><b>📸 Hora Dorada:</b> salida/puesta Penco + ventana dorada/azul. <b>🌞 Ritmo Circadiano:</b> pestaña Ahora (gráfico 24h, fase actual, 6 bloques con qué hacer) + pestaña Mi plan (tu horario personal según tu hora de despertar, con salida/puesta real de Penco).</p>
             <p><b>🦀 Intermareal:</b> roqueríos de Lirquén y Playa Negra — catálogo (cochayuyo, luche, lapa, chorito, jaiba…), ventana de bajamar &lt;0,6m según luna nueva/llena + <b>bitácora privada</b> de salidas (fecha/hora/lugar/especie/kg/marea) con consejos de cosecha sostenible y marea roja. <b>🌳 Bosque Nativo:</b> esclerófilo costero (canelo, boldo, peumo, arrayán, quillay, maqui…) con luna y estación óptima + <b>bitácora</b> (observación/plantación/semillas/frutos/hongos/limpieza) + <b>📜 Historia del bosque</b> (especies a lo largo del tiempo) y <b>🌱 Ecosistema</b> (hongos, aves, sotobosque, polinizadores, animales e insectos — cada grupo con opción de agregar tus especies). La pestaña <b>Bosque hoy</b> trae resumen de tu bitácora, destacados de temporada y filtro del catálogo.</p>
             <p><b>🪱 Compost & Suelo:</b> pestañas Mi pila (pila/vermi/bocashi) / Suelo Penco (arcilla) / Calendario lunar — voltea en <b>menguante</b>, registro de volteos guardado. <b>♻️ Reciclaje & Ferias:</b> buscador “¿dónde va?” (punto limpio/feria/compost/basura/peligroso) + recolección Penco y ferias centro mié/sáb, Lirquén sáb. <b>🌬️ Aire Penco (dentro de 🌤️ Clima):</b> PM2.5 en vivo Open-Meteo + guía offline de humo de leña y ventilación en Pukem — se abre desde Clima → 🌬️ Aire.</p>
          </div>
          <div class="help-card">
-           <h4>🌸 Cuerpo & Salud</h4>
-           <p><b>🌸 Ciclo:</b> registro de inicios, predicción período/fértil/ovulación (opcional en calendario), historial + <b>🧬 Diagrama hormonal</b> 28 días (Estrógeno/Progesterona/LH/FSH) con slider, alimentos/entreno/prácticas por día y 4 fases explicadas.</p>
-            <p><b>🌿 Medicina:</b> 2 pestañas — <b>💊 Farmacología</b> y <b>🌱 Natural</b>, ambas con <i>frecuencia/hora/desde/hasta/notas</i> + próximas tomas y notificaciones. Sugerencias 10 hierbas (Matico, Boldo…) cargables. <b>💪 Entrenamientos:</b> 4 categorías — 🏋️ Gym, 🩹 Terapia física, 🤸 Calistenia, 🌿 Prácticas varias — con sugerencias por categoría, agrega al calendario semanal con día/hora/color y marca ✓ hecho (puntitos 💪 en calendario).</p>
-            <p><b>🌬️ Respiración:</b> 10 técnicas (4-7-8, caja 4-4-4-4, 5-5, 6-6…) con guía visual y cronómetro. <b>💭 Sueños:</b> 8 prácticas (intención, diario, inmóvil 60s, 3 palabras) — guarda “Sueño:” en la nota de hoy.</p>
-            <p><b>🌿 Lawen:</b> herbario de 20 plantas del Bío-Bío (matico, boldo, maqui…) con uso, preparación, luna óptima y advertencias — buscable por síntoma — <b>más tus propias fichas</b> (➕ Agregar mi lawen, quedan guardadas). Educativo, no receta médica.</p>
-            <p><b>🕉️ Prácticas Espirituales:</b> 8 prácticas (sol amanecer/atardecer, agua solarizada, ducha fría, grounding, respiración al sol, luna, silencio) con <b>⏱ temporizador</b>, 🎒 kit (botella vidrio, ampolleta roja, checklist copiable) y <b>📓 registro con racha</b> — conecta con Circadiano, Hora Dorada y Respiración.</p>
-           <p><b>✅ Hábitos:</b> icono (46 opciones) + color + frecuencia, racha, % mensual/por luna → puntitos de color en el día.</p>
+           <h4>📅 Mi Día · 💚 Cuerpo & Salud</h4>
+           <p><b>📅 Mi Día — Organizar:</b> ✅ Hábitos (icono + color + racha → puntitos en el día), 🎯 Disciplina (Pomodoro 25/5, 2 min, Sapo, Time Blocking + MIT del día), 📚 Horario (bloques semanales + vista “Hoy”), ⏱ Tiempo (cronómetro + temporizador), 🔔 Recordatorios (fases lunares y avisos suaves).</p>
+           <p><b>📅 Mi Día — Registrar:</b> 📓 Gratitud Diaria (3 líneas, racha, días ✨), 💭 Sueños (intención, diario, “Sueño:” en nota), 🌬️ Respiración (10 técnicas 4-7-8, caja… con cronómetro).</p>
+           <p><b>💚 Ciclos:</b> 🌸 Ciclo (registro, predicción período/fértil, historial + 🧬 diagrama hormonal 28 días con slider), 🤰 Fertilidad Natural, 🌅 Juventud, 🔥 Climaterio.</p>
+             <p><b>💚 Cuidado:</b> 🌿 Medicina (💊 Farmacología + 🌱 Natural con horarios y notificaciones + 🩺 Básica con botiquín y alergias + 📜 Historia + ⚠️ Seguridad) · 💪 Entrenamientos (Gym, Terapia física, Calistenia, Prácticas varias → puntitos 💪).</p>
+            <p><b>🌊 Territorio — Tierra:</b> 🌿 Lawen (herbario 20 plantas Bío-Bío + tus fichas, buscable por síntoma — educativo).</p>
          </div>
          <div class="help-card">
-           <h4>🧠 Mente & Estudio</h4>
-           <p><b>🎯 Disciplina:</b> 8 técnicas (Pomodoro 25/5, 2 min, Sapo, Time Blocking, 5 seg, WOOP, Apilar, Ambiente) + MIT del día y Si-Entonces → inicia ⏱ Pomodoro automático.</p>
-           <p><b>🧠 Estudio:</b> pestañas <b>Generales</b> (recuperación, espaciada, Feynman…), <b>Mnemotecnias</b> (acrónimo/historia/palacio) con generador y <b>Lectura veloz</b> (RSVP tester ppm).</p>
-             <p><b>📚 Horario:</b> bloques semanales por día/hora/color/lugar + vista “Hoy”. <b>📖 Cuentos:</b> 13 cuentos lunares (uno por luna) — toca para leer y <b>✏️ Editar</b> tu versión privada. <b>🧩 Memoria:</b> Palacio Loci + juego Pares 8×2, secuencia, simon, palabras/números y atención (Schulte) — entrena foco y retención. <b>🗣️ Voz de los Abuelos:</b> grabador de recetas, historias del territorio y consejos (audio + texto) con <b>desbloqueo por luna</b>, buscador y Voz del día — puente con 📖 Cuentos y 🌳 Árbol.</p>
-             <p><b>🗣️ Kimün Mapuzugun:</b> 6 pestañas — palabra del día, números & saludos, intermedio, avanzado, lunas kimün y <b>quiz con racha</b> (grafemario Azümchefe, 🔇 audio nativo en grabación, verifica con kimeltuchefe). <b>Ingles:</b> espejo del Kimün por niveles <b>A1→C1</b> (word of the day + gramática + quiz) con 🔊 voz del dispositivo. <b>📓 Gratitud Diaria:</b> 3 líneas diarias, racha y días ✨ en el calendario.</p>
-             <p><b>🎸 Guitarra:</b> 3 niveles (🌱 Principiante: postura + 5 acordes Em-Am-C-G-D + rasgueo · 🌿 Intermedio: cejilla F/Bm, power chords, fingerpicking, pentatónica · 🌳 Avanzado: jazz/CAGED/tapping/fingerstyle) + <b>🛠️ Práctica:</b> afinador de referencia E-A-D-G-B-e (A440/432), metrónomo 40-208 bpm, biblioteca de acordes y <b>bitácora</b> (minutos + racha + nivel).</p>
+           <h4>🧠 Aprender, Crear y Jugar · 🪞 Interior y Linaje</h4>
+              <p><b>🧠 Estudio e Idiomas:</b> 🧠 Estudio (recuperación, espaciada, Feynman, mnemotecnias + lectura veloz) · 🧩 Memoria (Palacio Loci, Pares, secuencia, simon, Schulte) · 🗣️ Kimün Mapuzugun (palabra del día, números, quiz con racha) · Ingles A1→C1 · 🎶 Instrumentos (guitarra 3 niveles + ukelele, flauta/quena, teclado, cajón, canto + afinador, metrónomo, bitácora).</p>
+             <p><b>🧠 Juegos:</b> ♟️ Ajedrez + 🔢 Sudoku. <b>🧒 Infancias:</b> 📖 Cuentos (13 lunares, editables) · 🧒 Crianza · 🌱 Adolescencia.</p>
+             <p><b>🪞 Interior:</b> 🪞 Autoconocimiento (12 guías) · 🧠 Psicología · 🔺 Eneagrama · 📿 Métodos (20 fichas) · 🔁 Recapitulación · 🕉️ Prácticas Espirituales (temporizador + registro) · 🕊️ Duelo. <b>🌳 Familia:</b> 🌳 Árbol Genealógico · 🗣️ Voz de los Abuelos (grabador + desbloqueo por luna) · 🏠 Adultez · 🦉 Vejez Sabia.</p>
          </div>
           <div class="help-card" style="border-color:var(--gold)">
               <h4>🪞 Autoconocimiento — 12 guías básicas</h4>
@@ -1923,21 +1972,11 @@
               <p><b>📿 Métodos:</b> 20 fichas básicas — 🏛️ Estoicismo, 🌑 Jung, 🛋️ Freud y 🔥 Frankl (occidente) · ☯️ Tao, ☸️ Budismo, 🕉️ Yogananda, 🎋 Zen, 🧘 Patanjali, 🌸 Ikigai y 🤲 Reiki (oriente) · 🌵 Toltecas, 👁️ Gurdjieff, 🧠 Grinberg, 🌊 Grof, ⚗️ Hermetismo, 💫 Conny Méndez, 🔮 Gnosis, 🌿 Kimün mapuche y 🌺 Ho'oponopono (despertar) — cada una con idea central + práctica de 5' + registro “Mi camino”.</p>
             </div>
           <div class="help-card">
-              <h4>🍽️ Vida diaria</h4>
-             <p><b>🥗 Comidas:</b> plan por fecha (desayuno/almuerzo/cena/snack/notas), guarda por día, genera <b>🛒 Compras</b> automático, ve semana/luna. Pestaña <b>🧮 Calculadora</b>: edad/peso/altura/actividad → TMB/TDEE, meta kcal, macros (prot/carb/grasa), IMC y agua, con gráfico 50/30/20. Pestaña <b>🍽️ Menús sugeridos</b>: 5 plantillas Penco (Económico 1850, Equilibrado 2100, Activo 2500, Ligero 1650, Vegetariano 2050) ordenadas por tu meta; carga al plan de hoy y compara plan vs meta.</p>
-             <p><b>🛒 Compras:</b> lista por categorías (Verduras/Frutas/Abarrotes/Proteínas/Lácteos/Panadería/Otros), cantidad, tacha ✓ comprados, limpia comprados o vacía.</p>
-              <p><b>💰 Finanzas:</b> registra gastos e ingresos por día (categoría, monto $CLP, método), ve balance total/mensual/por luna, presupuesto y barra de avance, gráfico por categoría, proyección 13 lunas. Consejos: 50/30/20, gastos hormiga, sobres, fondo emergencia. Exporta CSV y comparte resumen. Días con 💰 en calendario.</p>
-              <p><b>🏠 Tareas Hogar:</b> tareas por habitación con rutina y checklist por fecha (🏠 en el día, 🏠✓ si están todas hechas).</p>
-           </div>
-           <div class="help-card" style="border-color:#ff6b6b">
-             <h4>🚨 Emergencias & Comunidad</h4>
-             <p><b>🩹 Primeros Auxilios:</b> guía básica (RCP, heridas, quemaduras, trauma) + botiquín y números 131/132/133. <b>🐾 Cuidado Animal:</b> tenencia Ley Cholito, auxilios, vacunas y humedal Rocuant. <b>🟣 Violencia Doméstica:</b> tipos, señales, qué hacer, plan de seguridad y redes 149/1455 — con ⚡ salida rápida.</p>
-             <p><b>🌊🚨 Evacuación Tsunami:</b> rutas a pie a cota alta por sector (centro/Lirquén/Rocuant), <b>🎒 mochila 72h</b> con checklist 9 ítems que se guarda, plan familiar y qué hacer en el sismo. Orientativo: verifica tu ruta en la carta SHOA.</p>
-           </div>
-           <div class="help-card">
-             <h4>🛠️ Herramientas & Personalización</h4>
-             <p><b>📏 Conversión:</b> 12 categorías — longitud, peso, volumen, temperatura, superficie, tiempo, velocidad, energía, potencia, presión, datos, ángulo — con tabla dinámica e intercambio. <b>⚡ Consumo eléctrico:</b> lista artefactos (W, h/día, días/mes, cantidad), presets chilenos, total kWh y $CLP con tarifa editable, ranking y proyección luna.</p>
-             <p><b>🪵 Leña & Pellet:</b> calculadora $/kWh por combustible (eucalipto/pino/húmeda/pellet/parafina) + equivalencia en días de calefacción y tips de leña seca. <b>⏱ Tiempo:</b> Cronómetro (vueltas) + Temporizador h/m/s con sonido/vibración. <b>🔔 Recordatorios:</b> fases lunares y notificaciones suaves (ciclo/medicina). <b>⚙️ Personalizar:</b> elige qué botones ver + texto grande.</p>
+              <h4>🏡 Hogar y Vida Práctica · 🤝 Comunidad y Sistema</h4>
+             <p><b>🏡 Casa:</b> 🥗 Comidas (plan + calculadora TMB/TDEE + menús Penco) · 🛒 Compras · 💰 Finanzas (balance, presupuesto, proyección 13 lunas) · 🏠 Tareas Hogar · 🍯 La Bodega (conservas y fermentos).</p>
+             <p><b>🔧 Energía y Taller:</b> ⚡ Consumo eléctrico · 🪵 Leña & Pellet ($/kWh) · 🔧 Bitácora Taller · 📏 Conversión (12 categorías).</p>
+             <p><b>🤝 Red Penco:</b> 🔄 Trueque y Feria · 🤝 Minga · ⚖️ Derechos y Deberes · 🐾 Cuidado Animal. <b>🚨 Emergencia:</b> 🩹 Primeros Auxilios · 🟣 Violencia (149/1455, salida rápida) · 🌊🚨 Evacuación Tsunami (rutas + mochila 72h).</p>
+             <p><b>⚙️ App:</b> 💾 Respaldo / 📥 Restaurar (JSON por usuario) · 📌 Acceso directo · 📄 PDF luna / 📚 PDF ciclo · ❤ Aporte voluntario.</p>
             <p><b>🎨 Tema + 🕰 Reloj</b> America/Santiago en sidebar.</p>
           </div>
          <div class="help-card">
@@ -1948,7 +1987,7 @@
          </div>
          <div class="help-card" style="border-color:var(--gold);background:linear-gradient(135deg,var(--panel),var(--card))">
            <h4>💡 Tips & Novedades 2026</h4>
-                                                       <p>• <b>Nuevo sep 2026:</b> 📿 Métodos (estoicismo, jung, freud, frankl, tao, budismo, yogananda, zen, patanjali, ikigai, toltecas, gurdjieff, grinberg, grof, hermetismo, conny méndez, gnosis, kimün) · 🪞 Autoconocimiento (12 guías: sombra, TCC, Gestalt, tipologías, journaling, estoico, mayéutica, mindfulness, atma vichara, vipassana, cuerpo, arte + registro) · 🦀 Intermareal + 🌳 Bosque Nativo (bitácoras) · 🕉️ Prácticas Espirituales (temporizador + registro) · Ingles A1-C1 · 🎸 Guitarra (afinador + metrónomo + bitácora) · 🧩 Memoria ampliada · 🌊🚨 Evacuación Tsunami · 🗣️ Kimün · 🌿 Lawen (20) · 🪱 Compost · ♻️ Reciclaje · 🌬️ Aire (en Clima) · 📓 Gratitud (✨) · 🪵 Leña & Pellet · 🌱 Semillero · <b>4 vistas</b> 🌙/🌗/📅/🗓️ · <b>Guía Básica/Detallada</b>.</p>
+                                                        <p>• <b>Nuevo sep 2026:</b> 📿 Métodos (estoicismo, jung, freud, frankl, tao, budismo, yogananda, zen, patanjali, ikigai, toltecas, gurdjieff, grinberg, grof, hermetismo, conny méndez, gnosis, kimün) · 🪞 Autoconocimiento (12 guías: sombra, TCC, Gestalt, tipologías, journaling, estoico, mayéutica, mindfulness, atma vichara, vipassana, cuerpo, arte + registro) · 🦀 Intermareal + 🌳 Bosque Nativo (bitácoras) · 🕉️ Prácticas Espirituales (temporizador + registro) · Ingles A1-C1 · 🎶 Instrumentos (guitarra + ukelele, flauta/quena, teclado, cajón, canto + afinador + metrónomo + bitácora) · 🧩 Memoria ampliada · 🌊🚨 Evacuación Tsunami · 🗣️ Kimün · 🌿 Lawen (20) · 🪱 Compost · ♻️ Reciclaje · 🌬️ Aire (en Clima) · 📓 Gratitud (✨) · 🪵 Leña & Pellet · 🌱 Semillero · <b>4 vistas</b> 🌙/🌗/📅/🗓️ · <b>Guía Básica/Detallada</b>.</p>
              <p>• <b>Antes:</b> 🤝 Asociaciones (23 cultivos) y 🧪 Preparados (10) en 🌱 Siembra · bitácoras 🎣 Pesca y 🦅 Aves · 🏠 Tareas Hogar · 📖 Cuentos editables. • <b>Fix:</b> ❤ Aporte links externos. • Chip estación = paleta de color. • Móvil: desliza lunas horizontal + dock inferior.</p>
            <p>• Escribe “Sueño:” en nota para buscar sueños. • Todo offline salvo clima/mareas. • Ctrl+K para filtrar funciones.</p>
             <p style="text-align:center;margin-top:6px;color:var(--gold)"><b>¡Que tu ciclo florezca con la luna! — Küme mañum · Penco 2026</b></p>
@@ -1962,12 +2001,17 @@
    <dialog id="circadianDialog">
     <form method="dialog">
       <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
-        <h3 style="margin:0;color:var(--accent)">🌞 Ciclo Circadiano — Penco</h3>
+        <h3 style="margin:0;color:var(--accent)">🌞 Ritmo Circadiano — Penco</h3>
         <button type="button" id="circadianCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
       </div>
+      <div class="timer-tabs" style="margin-bottom:10px">
+        <button type="button" id="tabRitmoAhora" class="btn btn-accent" style="width:auto">🌞 Ahora</button>
+        <button type="button" id="tabRitmoPlan" class="btn" style="width:auto">🧘 Mi plan</button>
+      </div>
+      <div id="ritmoAhoraPanel">
       <div style="background:linear-gradient(135deg,var(--panel),var(--card));border:1px solid var(--gold);border-radius:10px;padding:12px;margin-bottom:10px">
         <p style="margin:0;font-size:13px;line-height:1.55"><b>¿Qué es?</b> Tu reloj interno de ~24h en el núcleo supraquiasmático. Regula <b>cortisol</b> (energía mañana) y <b>melatonina</b> (sueño noche). Se ajusta con <b>luz, comida y movimiento</b> en Penco (America/Santiago).</p>
-        <p class="muted" style="font-size:11px;margin-top:6px"><b>Cómo usar:</b> 1) Mira <b>Ahora</b> → tu fase actual. 2) Observa el <b>gráfico 24h</b> (amarillo pico, azul noche). 3) Toca una fase abajo para ver qué hacer. No es diagnóstico.</p>
+        <p class="muted" style="font-size:11px;margin-top:6px"><b>Cómo usar:</b> 1) Mira <b>Ahora</b> → tu fase actual. 2) Observa el <b>gráfico 24h</b> (amarillo pico, azul noche). 3) Toca una fase abajo para ver qué hacer. 4) En <b>Mi plan</b> genera tu horario personal según tu hora de despertar. No es diagnóstico.</p>
       </div>
       <div id="circadianNowBox" class="menstrual-card" style="border-color:var(--gold)"></div>
       <div style="position:relative;margin-top:10px">
@@ -1985,9 +2029,15 @@
       <details class="menstrual-details" style="margin-top:8px"><summary>🔧 Si estás desfasado</summary>
         <p class="muted" style="font-size:11px">Jet lag o pantallas tarde desajustan el reloj. Re-sincroniza 3 noches: 1) luz mañana 15 min, 2) come a horas fijas, 3) atenúa luz 2h antes de dormir.</p>
       </details>
+      </div>
+      <div id="ritmoPlanPanel" class="hidden" style="margin-top:10px">
+        <p class="muted" style="line-height:1.5">Convierte tu <b>Hora Dorada</b> y tu <b>ritmo circadiano</b> en un plan diario: tareas pesadas con el pico de cortisol matutino, creatividad en la tarde y descanso al atardecer.</p>
+        <div class="conv-row"><label>Me despierto <input type="time" id="rutHora" value="07:00"></label><button type="button" id="rutGen" class="btn btn-accent" style="width:auto;align-self:flex-end">☀️ Generar mi plan de hoy</button></div>
+        <div id="rutPlan" style="margin-top:10px"></div>
+      </div>
       <div class="dlg-actions"><button type="button" id="circadianClose" class="btn">Cerrar</button></div>
     </form>
-  </dialog>
+   </dialog>
 
   <dialog id="goldenDialog">
     <form method="dialog">
@@ -2084,6 +2134,34 @@
         <button type="button" id="dreamsCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
       </div>
       <p class="muted" style="line-height:1.5">Entrena tu memoria onírica. La luna y el descanso profundo se nutren mutuamente. Elige 2 prácticas y hazlas 7 noches seguidas.</p>
+      <div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">
+        <button type="button" id="tabSueAnotar" class="btn btn-accent" style="width:auto">✍️ Anotar</button>
+        <button type="button" id="tabSuePracticas" class="btn" style="width:auto">🌙 Prácticas</button>
+        <button type="button" id="tabSueGuia" class="btn" style="width:auto">🗂️ Guía</button>
+        <button type="button" id="tabSueDicc" class="btn" style="width:auto">📖 Símbolos</button>
+        <button type="button" id="tabSueDiario" class="btn" style="width:auto">🔍 Diario</button>
+      </div>
+      <div id="sueTabAnotar">
+      <div class="menstrual-card" style="margin-top:2px">
+        <h4>✍️ Herramienta — esta noche</h4>
+        <label>Intención para esta noche <input type="text" id="dreamIntention" placeholder="ej: Recordaré y agradeceré mi sueño"></label>
+        <label>Título del sueño <input type="text" id="suePlusTitulo" placeholder="ej: El río que crece" maxlength="60"></label>
+        <label>Sueño de esta mañana (se guardará en la nota del día con “Sueño:”) <textarea id="dreamText" rows="3" placeholder="Escribe lo que recuerdas, aunque sea fragmento..."></textarea></label>
+        <div class="conv-row"><label style="flex:2">Tipo <select id="suePlusTipo"><option>🌊 Común</option><option>👁️ Lúcido</option><option>😱 Pesadilla</option><option>🔁 Recurrente</option><option>👵 Visita / ancestro</option><option>✨ Sincronía / aviso</option></select></label><label>Arquetipo <select id="suePlusArq"><option>🌊 Agua / mar / río</option><option>🌙 Luna / noche</option><option>🕊️ Vuelo</option><option>🏠 Casa / hogar</option><option>🐾 Animal guía</option><option>👵 Ancestro / abuela</option><option>🌑 Sombra / persecución</option><option>☀️ Luz / amanecer</option><option>🔥 Fuego</option><option>🌳 Bosque / árbol</option><option>🌧️ Lluvia / tormenta</option><option>🛤️ Camino / viaje</option></select></label></div>
+        <div class="conv-row"><label>Emoción <select id="suePlusEmo"><option>calma</option><option>alegría</option><option>miedo</option><option>tristeza</option><option>rabia</option><option>amor</option><option>confusión</option><option>poder</option><option>gratitud</option><option>vergüenza</option><option>culpa</option><option>asombro</option></select></label><label>Viveza (1–5) <input type="number" id="suePlusViv" min="1" max="5" value="3" style="width:70px"></label><label class="check-row" style="align-self:flex-end"><input type="checkbox" id="suePlusLuc"> 👁️ lúcido</label></div>
+        <label>👉 Mi sueño me pide… (1 acto concreto) <input type="text" id="suePlusMsg" placeholder="ej: llamar a mi mamá, ordenar mi pieza" maxlength="140"></label>
+        <div class="dlg-actions" style="justify-content:flex-start">
+          <button type="button" id="dreamSave" class="btn btn-accent" style="width:auto">💾 Guardar sueño de hoy</button>
+          <button type="button" id="dreamSetIntention" class="btn" style="width:auto">🌙 Fijar intención</button>
+        </div>
+        <p id="dreamStatus" class="muted" style="font-size:11px;margin-top:6px"></p>
+      </div>
+      <div class="menstrual-card" style="margin-top:10px">
+        <h4>📏 Reglas de oro</h4>
+        <p class="muted" style="font-size:12px">• Sin juicio: sueño raro = mensaje útil. • 5 min cada mañana > 1 hora un día. • Si no recuerdas, escribe “no recuerdo” y sigue. La constancia crea recuerdo.</p>
+      </div>
+      </div>
+      <div id="sueTabPracticas" class="hidden">
       <div class="discipline-grid">
         <div class="discipline-card">
           <h4>🌙 1. Intención nocturna</h4>
@@ -2126,19 +2204,53 @@
           <p class="muted">Usa la nota del día con prefijo <b>Sueño:</b> para buscarlos luego.</p>
         </div>
       </div>
-      <div class="menstrual-card" style="margin-top:12px">
-        <h4>✍️ Herramienta — esta noche</h4>
-        <label>Intención para esta noche <input type="text" id="dreamIntention" placeholder="ej: Recordaré y agradeceré mi sueño"></label>
-        <label>Sueño de esta mañana (se guardará en la nota del día con “Sueño:”) <textarea id="dreamText" rows="3" placeholder="Escribe lo que recuerdas, aunque sea fragmento..."></textarea></label>
-        <div class="dlg-actions" style="justify-content:flex-start">
-          <button type="button" id="dreamSave" class="btn btn-accent" style="width:auto">💾 Guardar sueño de hoy</button>
-          <button type="button" id="dreamSetIntention" class="btn" style="width:auto">🌙 Fijar intención</button>
+      </div>
+      <div id="sueTabGuia" class="hidden">
+      <div class="menstrual-card" style="margin-top:2px">
+        <h4>🗂️ Tipos de sueños — ¿qué soñaste?</h4>
+        <p class="muted" style="font-size:11px">Marcar el tipo ayuda a entender el mensaje. Elige uno al guardar en ✍️ Anotar.</p>
+        <div class="discipline-grid">
+          <div class="discipline-card"><h4>🌊 Común</h4><p>Escenas de la vida diaria con mezclas raras. Procesa lo del día.</p><p class="muted">Pregunta: ¿qué del ayer sigue dando vueltas?</p></div>
+          <div class="discipline-card"><h4>👁️ Lúcido</h4><p>Sabes que sueñas y puedes decidir. Se entrena con chequeos de realidad.</p><p class="muted">Marca 👁️ lúcido al anotar.</p></div>
+          <div class="discipline-card"><h4>😱 Pesadilla</h4><p>Despiertas con miedo o pena. No es castigo: es aviso.</p><p class="muted">Usa el protocolo de abajo, no la guardes solo como “mala”.</p></div>
+          <div class="discipline-card"><h4>🔁 Recurrente</h4><p>Se repite igual o con variantes (persecución, caída, examen).</p><p class="muted">Pide acción: ¿qué evitas en vigilia?</p></div>
+          <div class="discipline-card"><h4>👵 Visita / ancestro</h4><p>Abuela, abuelo u otro ser querido presente, claro y cálido.</p><p class="muted">Anota su frase o gesto y agradécelo al despertar.</p></div>
+          <div class="discipline-card"><h4>✨ Sincronía / aviso</h4><p>Lo soñado aparece al día siguiente (persona, lugar, noticia).</p><p class="muted">Anota fecha y hecho: el diario valida la sincronicidad.</p></div>
         </div>
-        <p id="dreamStatus" class="muted" style="font-size:11px;margin-top:6px"></p>
       </div>
       <div class="menstrual-card" style="margin-top:10px">
-        <h4>📏 Reglas de oro</h4>
-        <p class="muted" style="font-size:12px">• Sin juicio: sueño raro = mensaje útil. • 5 min cada mañana > 1 hora un día. • Si no recuerdas, escribe “no recuerdo” y sigue. La constancia crea recuerdo.</p>
+        <h4>🔍 Cómo interpretar tu sueño en 4 pasos</h4>
+        <p class="muted" style="font-size:11px">Sin diccionarios rígidos: el símbolo es tuyo. Método breve (Jung + Gestalt + mapuche: el pewma se conversa).</p>
+        <p style="font-size:12px;line-height:1.7"><b>1 · Relata en presente:</b> “estoy en el bosque, corro…” y ponle título (“El río que crece”).<br><b>2 · Emoción y cuerpo:</b> ¿qué sentí (miedo, calma, rabia)? ¿dónde lo siento ahora?<br><b>3 · Asocia 3 palabras:</b> por cada imagen (ej: casa → infancia / refugio / mamá). Pregunta: “¿dónde vivo esto despierta/o?”<br><b>4 · Mensaje + acto:</b> cierra con “mi sueño me pide ___” y un gesto chico hoy (llamar, ordenar, perdonar, sembrar).</p>
+        <p class="muted" style="font-size:11px">💡 Si el sueño habla en primera persona (“yo corro”), prueba hablar como el otro (“yo, río, te digo…”). Ahí suele estar la llave.</p>
+      </div>
+      <div class="discipline-grid" style="margin-top:10px">
+        <div class="discipline-card">
+          <h4>👁️ 5 chequeos de realidad (sueño lúcido)</h4>
+          <p style="font-size:12px">Haz 3–5 al día; en el sueño fallan y despiertas dentro del sueño:<br>1) <b>Manos:</b> míralas 2 veces — en el sueño se deforman.<br>2) <b>Nariz tapada:</b> tápala e intenta respirar — en el sueño sí puedes.<br>3) <b>Texto:</b> lee, aparta la vista, relee — en el sueño cambia.<br>4) <b>Luz:</b> prende/apaga — en el sueño no obedece.<br>5) <b>Salto:</b> salta suave con intención de flotar.</p>
+          <p class="muted">Al acostarte (MILD): repasa el último sueño y repite “la próxima vez que sueñe X, sabré que sueño”. WBTB suave: despierta 30 min antes, lee tu diario 10 min y vuelve con esa frase.</p>
+        </div>
+        <div class="discipline-card">
+          <h4>😱 Pesadillas: protocolo + reescritura</h4>
+          <p style="font-size:12px"><b>De noche:</b> 1) luz tenue, pies al suelo, nombra 5 cosas que ves. 2) Respira 4-7-8 × 3. 3) Di: “fue un sueño, estoy en mi pieza, estoy a salvo”. No pelees con la imagen hasta calmarte.<br><b>De día (reescritura):</b> escribe la escena en 5 líneas, cambia el final a uno amable (llega ayuda, pones límite, te transformas) y <b>visualízalo 5 min</b> por 7 días. Baja la frecuencia.</p>
+          <p class="muted">Si la pesadilla se repite semanas, te quita el sueño o viene de violencia vivida: pide apoyo en CESFAM / Salud Responde 600 360 7777. No es debilidad.</p>
+        </div>
+      </div>
+      <div class="menstrual-card" style="margin-top:10px">
+        <h4>🌙 Tu noche por dentro: ciclos y luna</h4>
+        <p style="font-size:12px;line-height:1.7">Dormimos en ciclos de ~90 min: al final de cada uno hay <b>REM</b> (sueño vívido). Despertar natural al cierre del ciclo = recuerdo claro; con alarma brusca en sueño profundo = amnesia. 7–9 h ≈ 5 ciclos.<br>🌕 <b>Lunas llenas:</b> varios estudios y diarios muestran sueños más intensos y dormir ~20 min menos. Si te pasa, adelanta 30 min la acostada esa semana y anota “llena” en el diario para comparar.<br>🚫 Alcohol y pantallas tardías roban REM: el sueño se vuelve plano y se olvida.</p>
+      </div>
+      </div>
+      <div id="sueTabDicc" class="hidden">
+      <div class="menstrual-card" style="margin-top:2px">
+        <h4>📖 Diccionario vivo de símbolos</h4>
+        <p class="muted" style="font-size:11px">Guía, no sentencia: lo que <i>tú</i> sientes manda. Busca abajo.</p>
+        <label>Buscar símbolo <input type="text" id="sueDiccQ" placeholder="ej: agua, volar, casa, dientes..." maxlength="30"></label>
+        <div id="sueDiccGrid" class="discipline-grid" style="margin-top:8px"></div>
+      </div>
+      </div>
+      <div id="sueTabDiario" class="hidden">
+        <div id="suePlusMount"></div>
       </div>
       <div class="dlg-actions"><button type="button" id="dreamsClose" class="btn">Cerrar</button></div>
     </form>
@@ -2215,9 +2327,9 @@
         <div id="espiritualCards"></div>
         <div class="menstrual-card" style="margin-top:10px">
           <h4>🔗 Conecta con el calendario</h4>
-          <p class="muted" style="font-size:12px">🌞 <b>Circadiano</b> explica tu cortisol/melatonina · 📸 <b>Hora Dorada</b> da salida/puesta exacta · 🌬️ <b>Respiración</b> guía 4-7-8 y caja · 💭 <b>Sueños</b> para diario onírico · ✅ <b>Hábitos</b> para racha larga.</p>
+          <p class="muted" style="font-size:12px">🌞 <b>Ritmo Circadiano</b> explica tu cortisol/melatonina y genera tu plan diario · 📸 <b>Hora Dorada</b> da salida/puesta exacta · 🌬️ <b>Respiración</b> guía 4-7-8 y caja · 💭 <b>Sueños</b> para diario onírico · ✅ <b>Hábitos</b> para racha larga.</p>
           <div class="dlg-actions" style="justify-content:flex-start">
-            <button type="button" id="espGoCircadian" class="btn" style="width:auto">🌞 Circadiano</button>
+            <button type="button" id="espGoCircadian" class="btn" style="width:auto">🌞 Ritmo Circadiano</button>
             <button type="button" id="espGoGolden" class="btn" style="width:auto">📸 Hora Dorada</button>
             <button type="button" id="espGoBreath" class="btn" style="width:auto">🌬️ Respiración</button>
           </div>
@@ -2299,14 +2411,23 @@
         <h3 style="margin:0;color:var(--accent)">💪 Entrenamientos</h3>
         <button type="button" id="gymCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
       </div>
-      <p class="muted" style="line-height:1.5">Planifica <b>Gym, Terapia física, Calistenia y Prácticas varias</b>. Todo queda <b>privado y local</b> por usuario. Toca una sugerencia para cargarla y agrégala al calendario semanal.</p>
-      <div class="timer-tabs" style="margin-bottom:10px">
+      <p class="muted" style="line-height:1.5">Planifica <b>Gym, Terapia física, Calistenia y Prácticas varias</b> con <b>sugerencias según edad</b>. Todo queda <b>privado y local</b> por usuario. Toca una sugerencia para cargarla y agrégala al calendario semanal.</p>
+      <div class="timer-tabs" style="margin-bottom:8px">
         <button type="button" id="tabGymGym" class="btn btn-accent" style="width:auto">🏋️ Gym</button>
         <button type="button" id="tabGymFisio" class="btn" style="width:auto">🩹 Terapia</button>
         <button type="button" id="tabGymCalis" class="btn" style="width:auto">🤸 Calistenia</button>
         <button type="button" id="tabGymVarias" class="btn" style="width:auto">🌿 Prácticas</button>
       </div>
-      <div id="gymSuggestionsBox" class="menstrual-card" style="max-height:220px;overflow-y:auto"></div>
+      <div class="timer-tabs" style="margin-bottom:10px" title="Filtrar sugerencias por edad">
+        <span class="muted" style="font-size:11px;align-self:center">Edad:</span>
+        <button type="button" id="tabGymAgeTodos" class="btn btn-accent" style="width:auto;font-size:11px">👥 Todas</button>
+        <button type="button" id="tabGymAgeNino" class="btn" style="width:auto;font-size:11px">🧒 6-12</button>
+        <button type="button" id="tabGymAgeJoven" class="btn" style="width:auto;font-size:11px">🙋 13-17</button>
+        <button type="button" id="tabGymAgeAdulto" class="btn" style="width:auto;font-size:11px">🧑 18-59</button>
+        <button type="button" id="tabGymAgeMayor" class="btn" style="width:auto;font-size:11px">👴 60+</button>
+        <label class="muted" style="font-size:11px;display:flex;gap:4px;align-items:center">Ver <select id="gymAge" style="width:auto;font-size:11px;padding:2px 6px"><option value="todos">👥 Todas</option><option value="nino">🧒 6-12 años</option><option value="joven">🙋 13-17 años</option><option value="adulto">🧑 18-59 años</option><option value="mayor">👴 60+ años</option></select></label>
+      </div>
+      <div id="gymSuggestionsBox" class="menstrual-card" style="max-height:240px;overflow-y:auto"></div>
       <div class="conv-row" style="margin-top:10px">
         <label style="flex:2">Rutina <input type="text" id="gymName" placeholder="ej: Push - Pecho/Hombro/Tríceps, Movilidad hombro, Yoga suave" maxlength="50"></label>
         <label>Tipo
@@ -2419,25 +2540,42 @@
   <dialog id="guitarDialog">
     <form method="dialog">
       <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
-        <h3 style="margin:0;color:var(--accent)">🎸 Guitarra — Principiante · Intermedio · Avanzado</h3>
+        <h3 style="margin:0;color:var(--accent)">🎶 Instrumentos — Guitarra · Ukelele · Flauta · Teclado · Cajón · Canto</h3>
         <button type="button" id="guitarCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
       </div>
-      <p class="muted" style="line-height:1.5">Aprende y practica guitarra por <b>niveles, 100% offline</b>. Elige tu nivel, sigue la rutina de 15 min, afina con el afinador de referencia y mantén tu racha. Todo tu progreso queda <b>local y privado</b> por usuario.</p>
-      <div class="conv-row" style="align-items:center">
-        <label style="flex:1">🎚️ Mi nivel
-          <select id="guitarLevelSel">
-            <option value="principiante">🌱 Principiante — 0 a 3 meses</option>
-            <option value="intermedio">🌿 Intermedio — 3 a 18 meses</option>
-            <option value="avanzado">🌳 Avanzado — 18+ meses</option>
-          </select>
-        </label>
-        <span id="guitarStreakChip" class="chip" style="align-self:flex-end">🔥 0 días · 0 min total</span>
+      <p class="muted" style="line-height:1.5">Elige <b>1 instrumento</b> 👇 Si tocas <b>Guitarra</b>, además elige tu <b>nivel</b>. Los demás instrumentos traen guía base + rutina de 15 min. Todo 100% offline. Tu progreso queda <b>local y privado</b> por usuario.</p>
+      <div class="menstrual-card" style="border-color:var(--accent)">
+        <div class="conv-row" style="align-items:flex-end">
+          <label style="flex:1">🎚️ Nivel de Guitarra <span class="muted" style="font-size:11px">(solo afecta a Guitarra)</span>
+            <select id="guitarLevelSel">
+              <option value="principiante">🌱 Principiante — 0 a 3 meses</option>
+              <option value="intermedio">🌿 Intermedio — 3 a 18 meses</option>
+              <option value="avanzado">🌳 Avanzado — 18+ meses</option>
+            </select>
+          </label>
+          <div style="text-align:right">
+            <span id="guitarStreakChip" class="chip" title="Tu racha y avance total">🔥 0 días · 0 min total · 0 prácticas</span>
+            <div class="muted" style="font-size:10px;margin-top:2px">racha · minutos · prácticas</div>
+          </div>
+        </div>
       </div>
-      <div class="timer-tabs" style="margin:12px 0 10px;flex-wrap:wrap">
-        <button type="button" id="tabGuiB" class="btn btn-accent" style="width:auto">🌱 Principiante</button>
-        <button type="button" id="tabGuiI" class="btn" style="width:auto">🌿 Intermedio</button>
-        <button type="button" id="tabGuiA" class="btn" style="width:auto">🌳 Avanzado</button>
-        <button type="button" id="tabGuiP" class="btn" style="width:auto">🛠️ Práctica & Herramientas</button>
+      <p class="muted" style="font-size:11px;font-weight:700;letter-spacing:.4px;margin:12px 0 6px;color:var(--accent)">🎸 GUITARRA — ELIGE TU NIVEL</p>
+      <div class="timer-tabs" style="margin:0 0 4px;flex-wrap:wrap">
+        <button type="button" id="tabGuiB" class="btn btn-accent" style="width:auto">🎸 🌱 Principiante</button>
+        <button type="button" id="tabGuiI" class="btn" style="width:auto">🎸 🌿 Intermedio</button>
+        <button type="button" id="tabGuiA" class="btn" style="width:auto">🎸 🌳 Avanzado</button>
+      </div>
+      <p class="muted" style="font-size:11px;font-weight:700;letter-spacing:.4px;margin:10px 0 6px;color:var(--accent)">🎶 OTROS INSTRUMENTOS — GUÍA BASE (nivel único)</p>
+      <div class="timer-tabs" style="margin:0 0 4px;flex-wrap:wrap">
+        <button type="button" id="tabGuiU" class="btn" style="width:auto">🪕 Ukelele</button>
+        <button type="button" id="tabGuiF" class="btn" style="width:auto">🪈 Flauta/Quena</button>
+        <button type="button" id="tabGuiT" class="btn" style="width:auto">🎹 Teclado</button>
+        <button type="button" id="tabGuiC" class="btn" style="width:auto">🥁 Cajón</button>
+        <button type="button" id="tabGuiV" class="btn" style="width:auto">🎤 Canto</button>
+      </div>
+      <p class="muted" style="font-size:11px;font-weight:700;letter-spacing:.4px;margin:10px 0 6px;color:var(--gold,#e8b34b)">🛠️ HERRAMIENTAS PARA PRACTICAR</p>
+      <div class="timer-tabs" style="margin:0 0 10px;flex-wrap:wrap">
+        <button type="button" id="tabGuiP" class="btn btn-accent" style="width:auto;border-color:var(--gold,#e8b34b)">🛠️ Práctica · Afinador · Metrónomo · Bitácora</button>
       </div>
       <div id="guitarBegPanel">
         <div class="discipline-grid">
@@ -2481,6 +2619,76 @@
           <p class="muted" style="font-size:11px;line-height:1.6">1) CAGED 5 min · 2) II-V-I o modos 8 min · 3) Técnica (hybrid/tapping) 7 min · 4) Repertorio/composición 10 min. Toca con otros 1×/mes — nada reemplaza el ensamble.</p>
         </div>
       </div>
+      <div id="guitarUkePanel" class="hidden">
+        <div class="discipline-grid">
+          <div class="discipline-card"><h4>🎸 Afinación y postura</h4><p><b>G-C-E-A</b> (sol-do-mi-la, 4ta a 1ra). Sujeta contra el pecho, codo derecho suelto, pulgar izquierdo detrás del mástil.</p><p class="muted">Afinación estándar con cejilla en traste 0: usa afinador online primero, luego de oído con 🛠️ Práctica.</p></div>
+          <div class="discipline-card"><h4>🎵 Primeros 4 acordes</h4><p><b>C (0003) · Am (2000) · F (2010) · G (0232).</b> Un dedo para C y Am: ideal para partir.</p><p class="muted">Meta semana 1-2: C→Am→F→G sin parar, 60 bpm.</p></div>
+          <div class="discipline-card"><h4>👇 Rasgueos base</h4><p><b>D-D-U-U-D-U</b> con uña del índice. Prueba también <b>isla (D-D-U-U-D-D-U)</b> para folklore.</p><p class="muted">Mutea con palma 5 min para soltar muñeca antes de canciones.</p></div>
+          <div class="discipline-card"><h4>🎶 3 canciones fáciles</h4><p><b>Riptide</b> (Am-G-C) · <b>Somewhere Over the Rainbow</b> (C-G-Am-F) · <b>Cueca simple</b> (A-E adaptado).</p><p class="muted">Canta aunque sea bajito: el ukelele es para acompañar la voz.</p></div>
+          <div class="discipline-card"><h4>⚠️ Errores típicos</h4><p>1) Apretar cuerdas de nylon de más. 2) Rasguear desde el codo. 3) No afinar (se desafina fácil).</p><p class="muted">Regla: 15 min diarios. Revisa afinación cada vez.</p></div>
+          <div class="discipline-card"><h4>🚀 Siguiente paso</h4><p>Bm y E con cejilla parcial, fingerpicking P-I-M-A, y transporte de canciones de guitarra (mismos nombres, otra forma).</p><p class="muted">Cuando domines 5 canciones, prueba nivel Intermedio de Guitarra para cejilla.</p></div>
+        </div>
+        <div class="menstrual-card" style="margin-top:10px">
+          <h4>✅ Rutina ukelele — 15 min</h4>
+          <p class="muted" style="font-size:11px;line-height:1.6">1) Afinar 2 min · 2) Cambios C-Am-F-G 5 min (metrónomo 60) · 3) Rasgueo isla 4 min · 4) Canción favorita 4 min. Marca tu práctica en 🛠️ Práctica (instrumento: Ukelele).</p>
+        </div>
+      </div>
+      <div id="guitarFlautaPanel" class="hidden">
+        <div class="discipline-grid">
+          <div class="discipline-card"><h4>🪈 Postura y respiración</h4><p><b>Cómo:</b> espalda recta, flauta/quena a 45°, aire diafragmático (la guata se infla, no el pecho).</p><p class="muted">Sopla suave y constante: si suena chillón, baja la presión y tapa bien los hoyos.</p></div>
+          <div class="discipline-card"><h4>🎵 Primeras 5 notas (flauta dulce alemana)</h4><p><b>SI-LA-SOL (mano izquierda) + FA-MI (mano derecha).</b> Pulgar izquierdo tapa atrás, hoyos bien sellados.</p><p class="muted">Meta semana 1-2: escala descendente MI→SI limpia, sin “gallos”.</p></div>
+          <div class="discipline-card"><h4>🎶 Quena: embocadura</h4><p>Bisel al filo del labio inferior, abre una rendija de 2 mm, sopla al filo. Prueba en espejo.</p><p class="muted">Quena en Sol: SOL-LA-SI-DO-RE-MI con 6 hoyos tapados → abiertos progresivos.</p></div>
+          <div class="discipline-card"><h4>🎼 3 melodías fáciles</h4><p><b>Estrellita</b> (SOL-SOL-LA-LA-SI-SI-LA) · <b>Himno a la alegría</b> · <b>El cóndor pasa</b> (fragmento quena).</p><p class="muted">Toca lento con metrónomo 60 y sube +5 bpm cuando salga limpio 3 veces.</p></div>
+          <div class="discipline-card"><h4>⚠️ Errores típicos</h4><p>1) Soplar muy fuerte en graves. 2) Dedos a medias (fugas de aire). 3) No limpiar la humedad.</p><p class="muted">Limpia con paño/varilla tras tocar. 15 min diarios &gt; 2 h un día.</p></div>
+          <div class="discipline-card"><h4>🚀 Siguiente paso</h4><p>Articulación TU-DU, trinos, segunda octava (más aire + hoyo pulgar entreabierto) y vibrato suave.</p><p class="muted">Grábate 30s/semana: el oído avanza más rápido que los dedos.</p></div>
+        </div>
+        <div class="menstrual-card" style="margin-top:10px">
+          <h4>✅ Rutina flauta/quena — 15 min</h4>
+          <p class="muted" style="font-size:11px;line-height:1.6">1) Respiración 2 min · 2) Notas largas SI-LA-SOL-FA-MI 5 min · 3) Escala + articulación TU 4 min · 4) Melodía favorita 4 min. Marca tu práctica en 🛠️ Práctica (instrumento: Flauta/Quena).</p>
+        </div>
+      </div>
+      <div id="guitarTeclaPanel" class="hidden">
+        <div class="discipline-grid">
+          <div class="discipline-card"><h4>🎹 Postura y manos</h4><p><b>Cómo:</b> codo a 90°, muñeca recta, dedos curvos (como si tomaras una naranja). DO central frente a ti.</p><p class="muted">Numeración: pulgar 1 → meñique 5 en ambas manos. Relaja hombros cada 5 min.</p></div>
+          <div class="discipline-card"><h4>🎵 Primeros 5 acordes</h4><p><b>C (do-mi-sol) · G · Am · F · Dm.</b> Mano derecha tríadas, mano izquierda bajo (do, sol, la, fa, re).</p><p class="muted">Meta semana 1-2: rueda C→G→Am→F con metrónomo 60, sin mirar todo el rato.</p></div>
+          <div class="discipline-card"><h4>🖐️ Escala de DO + ritmo</h4><p>DO-RE-MI-FA-SOL-LA-SI-DO mano derecha (1-2-3-1-2-3-4-5). Izquierda acordes en redondas.</p><p class="muted">Practica legato (unido) y staccato (picado) 2 min cada uno.</p></div>
+          <div class="discipline-card"><h4>🎶 3 canciones fáciles</h4><p><b>Himno a la alegría</b> · <b>Imagine</b> (C-F) · <b>Gracias a la vida</b> (fragmento).</p><p class="muted">Primero mano derecha sola, luego suma bajo de izquierda en cada cambio.</p></div>
+          <div class="discipline-card"><h4>⚠️ Errores típicos</h4><p>1) Muñeca caída. 2) Tocar solo con índice. 3) Pedal pisado todo el rato (embarra).</p><p class="muted">Pedal: cambia en cada acorde, no antes. 15 min diarios.</p></div>
+          <div class="discipline-card"><h4>🚀 Siguiente paso</h4><p>Inversiones (C/E, C/G), bajo Alberti, lectura en clave de sol + fa y blues de 12 compases.</p><p class="muted">Cuando salgan 5 canciones, suma pentatónica para improvisar.</p></div>
+        </div>
+        <div class="menstrual-card" style="margin-top:10px">
+          <h4>✅ Rutina teclado — 15 min</h4>
+          <p class="muted" style="font-size:11px;line-height:1.6">1) Escala DO 3 min · 2) Acordes C-G-Am-F 5 min (metrónomo 60) · 3) Mano junta lenta 3 min · 4) Canción favorita 4 min. Marca tu práctica en 🛠️ Práctica (instrumento: Teclado).</p>
+        </div>
+      </div>
+      <div id="guitarCajonPanel" class="hidden">
+        <div class="discipline-grid">
+          <div class="discipline-card"><h4>🥁 Postura y sonidos</h4><p>Siéntate al centro, espalda recta, manos relajadas. <b>Grave (centro, palma plena) · Agudo (borde, dedos) · Muteado (mano apoyada).</b></p><p class="muted">No pegues con fuerza: el sonido sale de la soltura, no del golpe.</p></div>
+          <div class="discipline-card"><h4>🎵 Ritmos base</h4><p><b>Cueca (6/8):</b> grave-agudo-agudo / grave-agudo-agudo. <b>Vals:</b> grave-agudo-agudo. <b>Rock/pop:</b> grave-mute-agudo-mute.</p><p class="muted">Cuenta en voz alta primero, luego toca a 60-70 bpm.</p></div>
+          <div class="discipline-card"><h4>🤲 Técnica sana</h4><p>Calienta muñecas 1 min, alterna manos, uñas cortas. Para 5 min si arde la muñeca.</p><p class="muted">Toca sobre cajón estable; alfombra antideslizante si se mueve.</p></div>
+          <div class="discipline-card"><h4>🎶 Para acompañar</h4><p>Sigue el bajo/bombo con graves y la caja con agudos. Empieza simple: solo graves 4 compases, luego suma agudos.</p><p class="muted">Grábate con el celular con una canción y escucha si vas parejo.</p></div>
+          <div class="discipline-card"><h4>⚠️ Errores típicos</h4><p>1) Acelerar (usa metrónomo). 2) Solo una mano. 3) Golpear tornillos/bordes duros.</p><p class="muted">Regla: parejo y suave &gt; fuerte y desordenado.</p></div>
+          <div class="discipline-card"><h4>🚀 Siguiente paso</h4><p>Fills (remates), escobillas, cajón flamenco con pedal, y tocar con guitarra/ukelele 1×/semana.</p><p class="muted">Meta: 3 ritmos completos de memoria a 90 bpm.</p></div>
+        </div>
+        <div class="menstrual-card" style="margin-top:10px">
+          <h4>✅ Rutina cajón — 15 min</h4>
+          <p class="muted" style="font-size:11px;line-height:1.6">1) Calentamiento + sonidos 3 min · 2) Ritmo base 6 min (metrónomo 70) · 3) Cambios/fills 3 min · 4) Acompaña una canción 3 min. Marca tu práctica en 🛠️ Práctica (instrumento: Cajón).</p>
+        </div>
+      </div>
+      <div id="guitarCantoPanel" class="hidden">
+        <div class="discipline-grid">
+          <div class="discipline-card"><h4>🎤 Respiración y postura</h4><p>Pies firmes, pecho abierto, aire a la guata (no subir hombros). Exhala en “SSS” parejo 15s.</p><p class="muted">Si te mareas, para y respira normal: el apoyo se entrena de a poco.</p></div>
+          <div class="discipline-card"><h4>🎵 Vocalización base</h4><p><b>Sirena (ng) DO→SOL→DO · Lip trill (brr) escala · MA-ME-MI-MO-MU</b> 5 min, volumen medio.</p><p class="muted">Sin dolor: picor leve es normal, carraspera no. Toma agua, evita gritar antes.</p></div>
+          <div class="discipline-card"><h4>🎯 Afinación</h4><p>Canta con referencia (teclado/guitarra). Graba escala DO-RE-MI y escucha: ¿llegas al centro de la nota?</p><p class="muted">Empieza en tu rango cómodo (hablar-cantar), no imites voces extremas aún.</p></div>
+          <div class="discipline-card"><h4>🎶 3 canciones fáciles</h4><p><b>Gracias a la vida</b> · <b>Imagine</b> · <b>Cueca lenta</b>. Canta una estrofa lenta, respira en las comas.</p><p class="muted">Aprende letra de memoria: la expresión sale cuando no lees.</p></div>
+          <div class="discipline-card"><h4>⚠️ Errores típicos</h4><p>1) Cantar muy fuerte para “llegar”. 2) Aire de golpe (gallo). 3) No calentar.</p><p class="muted">Calienta 5 min siempre. Si duele la garganta, descansa voz 24 h.</p></div>
+          <div class="discipline-card"><h4>🚀 Siguiente paso</h4><p>Registro pecho/cabeza, melismas simples, armonías (terceras) y cantar con ukelele/guitarra a la vez.</p><p class="muted">Canta con otros 1×/mes: afina y proyecta mucho más rápido.</p></div>
+        </div>
+        <div class="menstrual-card" style="margin-top:10px">
+          <h4>✅ Rutina canto — 15 min</h4>
+          <p class="muted" style="font-size:11px;line-height:1.6">1) Respiración + SSS 3 min · 2) Sirena + lip trill 4 min · 3) Escala afinada 4 min · 4) Canción favorita 4 min. Marca tu práctica en 🛠️ Práctica (instrumento: Canto).</p>
+        </div>
+      </div>
       <div id="guitarPracPanel" class="hidden">
         <div class="menstrual-card">
           <h4>🎚️ Afinador de referencia (E-A-D-G-B-e)</h4>
@@ -2517,11 +2725,8 @@
           <p class="muted" style="font-size:11px">Principiante 60-80 · Intermedio 80-110 · Avanzado 110+. Sube +5 bpm cuando toques limpio 3 veces seguidas.</p>
         </div>
         <div class="menstrual-card" style="margin-top:10px">
-          <h4>📚 Biblioteca de acordes</h4>
-          <label>🔍 Buscar <input type="text" id="guitarChordSearch" placeholder="ej: F, cejilla, do, menor, 7" autocomplete="off"></label>
-          <div id="guitarChordGrid" class="fishing-species" style="margin-top:8px"></div>
-          <p class="muted" style="font-size:10px;margin-top:6px">Toca un acorde para ver digitación y consejo. Formato: 6ta→1ra, x=mute, 0=al aire.</p>
-          <div id="guitarChordDetail" class="chip" style="display:block;margin-top:8px;white-space:normal;line-height:1.6"></div>
+          <h4>🎶 Referencias rápidas — otros instrumentos</h4>
+          <p class="muted" style="font-size:11px;line-height:1.6"><b>Ukelele:</b> C 0003 · Am 2000 · F 2010 · G 0232 · afinación G-C-E-A.<br><b>Flauta dulce:</b> SI ●○○ ○○○ · LA ●●○ ○○○ · SOL ●●● ○○○ · FA ●●● ●○○ · MI ●●● ●●○ (●=tapado).<br><b>Teclado:</b> C do-mi-sol · G sol-si-re · Am la-do-mi · F fa-la-do.<br><b>Cajón:</b> grave = centro · agudo = borde · cueca 6/8: G-A-A / G-A-A.<br><b>Canto:</b> calienta con sirena + brr 5 min, canta en tu rango cómodo.</p>
         </div>
         <div class="menstrual-card" style="margin-top:10px">
           <h4>📓 Bitácora de práctica — registro personal</h4>
@@ -2529,6 +2734,16 @@
           <div class="conv-row">
             <label>Fecha <input type="date" id="pracDate"></label>
             <label>Minutos <input type="number" id="pracMinutes" min="1" max="480" value="15" style="width:90px"></label>
+            <label>Instrumento
+              <select id="pracInst">
+                <option value="guitarra">🎸 Guitarra</option>
+                <option value="ukelele">🎸 Ukelele</option>
+                <option value="flauta">🪈 Flauta/Quena</option>
+                <option value="teclado">🎹 Teclado</option>
+                <option value="cajon">🥁 Cajón</option>
+                <option value="canto">🎤 Canto</option>
+              </select>
+            </label>
             <label>Nivel
               <select id="pracLevel">
                 <option value="principiante">🌱 Principiante</option>
@@ -2752,23 +2967,27 @@
           <button type="button" id="configCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
         </span>
       </div>
-      <p class="muted" style="line-height:1.5">En el celular el menú lateral queda oculto, así que aquí tienes lo esencial. Se guarda automáticamente por usuario.</p>
+      <p class="muted" style="line-height:1.5">Todo lo esencial en un solo lugar: usuario, búsqueda, ciclo, tema y letra. Se guarda automáticamente por usuario.</p>
       <div class="config-mobile">
         <div class="config-group">
           <h5>👤 Usuario</h5>
           <div class="user-row">
-            <select id="cfgUserSel" aria-label="Usuario"></select>
-            <button type="button" id="cfgAddUser" class="btn btn-icon" title="Agregar usuario">➕</button>
-            <button type="button" id="cfgDelUser" class="btn btn-icon" title="Eliminar usuario actual">🗑</button>
+            <select id="userSel" aria-label="Usuario"></select>
+            <button type="button" id="btnAddUser" class="btn btn-icon" title="Agregar usuario">➕</button>
+            <button type="button" id="btnDelUser" class="btn btn-icon" title="Eliminar usuario actual">🗑</button>
           </div>
         </div>
         <div class="config-group">
-          <h5>📅 Ciclo</h5>
-          <select id="cfgCycleSel" aria-label="Ciclo (We Tripantu)"></select>
+          <h5>🔍 Buscar en notas</h5>
+          <input type="text" id="searchBox" placeholder="palabra o frase... (Enter para buscar)" autocomplete="off" aria-label="Buscar en notas">
+        </div>
+        <div class="config-group">
+          <h5>📅 Ciclo (We Tripantu)</h5>
+          <select id="cycleSel" aria-label="Ciclo (We Tripantu)"></select>
         </div>
         <div class="config-group">
           <h5>🎨 Tema de colores</h5>
-          <select id="cfgThemeSel" aria-label="Tema de colores">
+          <select id="themeSel" aria-label="Tema de colores">
             <option value="auto">Auto — según luna</option>
             <option value="noche">Noche — azul profundo</option>
             <option value="claro">Claro — día luminoso</option>
@@ -2810,6 +3029,11 @@
           <label class="check-row"><input type="checkbox" data-home="mareas" checked> 🌊 Mareas</label>
           <button type="button" id="cfgHomeReset" class="btn" style="width:100%;margin-top:8px">↺ Mostrar toda la información</button>
         </div>
+        <div class="config-group">
+          <h5>📌 Acceso directo</h5>
+          <p class="muted" style="font-size:11px;margin-bottom:8px">Crea el ícono del calendario en el escritorio (solo versión de escritorio PC).</p>
+          <button type="button" id="cfgShortcutBtn" class="btn" style="width:100%">📌 Crear acceso directo en el escritorio</button>
+        </div>
         <div class="config-group config-font-group">
           <h5>🔠 Tamaño de letra</h5>
           <p class="muted" style="font-size:11px;margin-bottom:8px">Se aplica a todo el calendario y se guarda por usuario:</p>
@@ -2845,88 +3069,99 @@
         <summary class="muted">Secciones visibles (avanzado)</summary>
         <div class="config-grid">
           <div class="config-group">
-            <h5>🌊 Territorio</h5>
-            <label class="check-row"><input type="checkbox" data-btn="btnWeather"> 🌤️ Clima</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnTides"> 🌊 Mareas</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnAstro"> 🔭 Astro</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnIntermareal"> 🦀 Intermareal</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnFishing"> 🎣 Pesca</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnBirds"> 🦅 Aves</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnSiembra"> 🌱 Siembra lunar</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnBosque"> 🌳 Bosque Nativo</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnCompost"> 🪱 Compost & Suelo</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnAgua"> 💧 Agua</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnComuna"> 🎉 Penco</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnCircadian"> 🌞 Circadiano</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnGolden"> 📸 Hora Dorada</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnEkadashi"> 📿 Ekadashi</label>
-          </div>
-          <div class="config-group">
-            <h5>🌸 Cuerpo & Salud</h5>
-            <label class="check-row"><input type="checkbox" data-btn="btnMenstrual"> 🌸 Ciclo</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnMedic"> 🌿 Medicina</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnGym"> 💪 Entrenamientos</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnBreath"> 🌬️ Respiración</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnDreams"> 💭 Sueños</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnLawen"> 🌿 Lawen Herbario</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnEspiritual"> 🕉️ Prácticas Espirituales</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnDueloFull"> 🕊️ Duelo</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnFerti"> 🤰 Fertilidad Natural</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnRutina"> 🧘 Rutinas Circadianas</label>
-          </div>
-          <div class="config-group">
-            <h5>🧠 Mente & Estudio</h5>
+            <h5>📅 Mi Día</h5>
             <label class="check-row"><input type="checkbox" data-btn="btnHabits"> ✅ Hábitos</label>
             <label class="check-row"><input type="checkbox" data-btn="btnDiscipline"> 🎯 Disciplina</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnStudy"> 🧠 Estudio</label>
             <label class="check-row"><input type="checkbox" data-btn="btnSchedule"> 📚 Horario</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnTales"> 📖 Cuentos</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnVozAbuelos"> 🗣️ Voz de los Abuelos</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnMemory"> 🧩 Memoria</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnAjedrez"> ♟️ Ajedrez</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnMapu"> 🗣️ Kimün Mapuzugun</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnEnglish"> 🔤 Inglés</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnTimer"> ⏱ Tiempo</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnRemind"> 🔔 Recordatorios</label>
             <label class="check-row"><input type="checkbox" data-btn="btnGratitud"> 📓 Gratitud Diaria</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnGuitar"> 🎸 Guitarra</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnPsico"> 🪞 Autoconocimiento</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnMetodos"> 📿 Métodos</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnArbolFull"> 🌳 Árbol Genealógico</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnRecap"> 🔁 Recapitulación</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnEneagrama"> 🔺 Eneagrama</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnDreams"> 💭 Sueños</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnBreath"> 🌬️ Respiración</label>
           </div>
           <div class="config-group">
-            <h5>🍽️ Vida diaria</h5>
+            <h5>🌊 Territorio Penco</h5>
+            <label class="check-row"><input type="checkbox" data-btn="btnTides"> 🌊 Mareas</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnFishing"> 🎣 Pesca</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnIntermareal"> 🦀 Intermareal</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnNudos"> 🪢 Nudos y Redes</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnSiembra"> 🌱 Siembra lunar</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnCompost"> 🪱 Compost & Suelo</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnAgua"> 💧 Agua</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnBosque"> 🌳 Bosque Nativo</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnFlora"> 🌸 Flora</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnBirds"> 🦅 Aves</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnLawen"> 🌿 Lawen Herbario</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnElectrocultura"> ⚡ Electrocultura</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnWeather"> 🌤️ Clima</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnAstro"> 🔭 Astro</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnGolden"> 📸 Hora Dorada</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnCircadian"> 🌞 Ritmo Circadiano</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnEkadashi"> 📿 Ekadashi</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnComuna"> 🎉 Penco</label>
+          </div>
+          <div class="config-group">
+            <h5>💚 Cuerpo & Salud</h5>
+            <label class="check-row"><input type="checkbox" data-btn="btnMenstrual"> 🌸 Ciclo</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnFerti"> 🤰 Fertilidad Natural</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnJuventud"> 🌅 Juventud</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnClimaterio"> 🔥 Climaterio</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnMedic"> 🌿 Medicina</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnGym"> 💪 Entrenamientos</label>
+          </div>
+          <div class="config-group">
+            <h5>🧠 Aprender, Crear y Jugar</h5>
+            <label class="check-row"><input type="checkbox" data-btn="btnStudy"> 🧠 Estudio</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnMemory"> 🧩 Memoria</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnMapu"> 🗣️ Kimün Mapuzugun</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnEnglish"> 🔤 Inglés</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnGuitar"> 🎶 Instrumentos</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnAjedrez"> ♟️ Ajedrez</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnSudoku"> 🔢 Sudoku</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnTales"> 📖 Cuentos</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnCrianza"> 🧒 Crianza</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnAdolescencia"> 🌱 Adolescencia</label>
+          </div>
+          <div class="config-group">
+            <h5>🪞 Interior, Linaje y Memoria</h5>
+            <label class="check-row"><input type="checkbox" data-btn="btnPsico"> 🪞 Autoconocimiento</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnPsicologia"> 🧠 Psicología</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnEneagrama"> 🔺 Eneagrama</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnMetodos"> 📿 Métodos</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnRecap"> 🔁 Recapitulación</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnEspiritual"> 🕉️ Prácticas Espirituales</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnDueloFull"> 🕊️ Duelo</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnArbolFull"> 🌳 Árbol Genealógico</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnVozAbuelos"> 🗣️ Voz de los Abuelos</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnAdultez"> 🏠 Adultez</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnVejez"> 🦉 Vejez Sabia</label>
+          </div>
+          <div class="config-group">
+            <h5>🏡 Hogar y Vida Práctica</h5>
             <label class="check-row"><input type="checkbox" data-btn="btnMeal"> 🥗 Comidas</label>
             <label class="check-row"><input type="checkbox" data-btn="btnShopping"> 🛒 Compras</label>
             <label class="check-row"><input type="checkbox" data-btn="btnFinance"> 💰 Finanzas</label>
             <label class="check-row"><input type="checkbox" data-btn="btnHomeTasks"> 🏠 Tareas Hogar</label>
             <label class="check-row"><input type="checkbox" data-btn="btnBodega"> 🍯 La Bodega</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnCrianza"> 🧒 Crianza</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnEnergy"> ⚡ Consumo eléctrico</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnLena"> 🪵 Leña & Pellet</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnTaller"> 🔧 Bitácora Taller</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnConvert"> 📏 Conversión</label>
           </div>
           <div class="config-group">
-            <h5>🚨 Emergencias & Comunidad</h5>
-            <label class="check-row"><input type="checkbox" data-btn="btnFirstAid"> 🩹 Primeros Auxilios</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnAnimalCare"> 🐾 Cuidado Animal</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnViolence"> 🟣 Violencia Doméstica</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnEvac"> 🌊🚨 Evacuación Tsunami</label>
+            <h5>🤝 Comunidad, Emergencia y Sistema</h5>
             <label class="check-row"><input type="checkbox" data-btn="btnTrueque"> 🔄 Trueque y Feria</label>
             <label class="check-row"><input type="checkbox" data-btn="btnMinga"> 🤝 Minga · Red de Apoyo</label>
             <label class="check-row"><input type="checkbox" data-btn="btnDerechos"> ⚖️ Derechos y Deberes</label>
-          </div>
-          <div class="config-group">
-            <h5>🛠️ Herramientas</h5>
-            <label class="check-row"><input type="checkbox" data-btn="btnConvert"> 📏 Conversión</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnEnergy"> ⚡ Consumo eléctrico</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnLena"> 🪵 Leña & Pellet</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnTimer"> ⏱ Tiempo</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnRemind"> 🔔 Recordatorios</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnAnimalCare"> 🐾 Cuidado Animal</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnFirstAid"> 🩹 Primeros Auxilios</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnViolence"> 🟣 Violencia Doméstica</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnEvac"> 🌊🚨 Evacuación Tsunami</label>
             <label class="check-row"><input type="checkbox" data-btn="btnBackup"> 💾 Respaldo</label>
             <label class="check-row"><input type="checkbox" data-btn="btnRestore"> 📥 Restaurar</label>
             <label class="check-row"><input type="checkbox" data-btn="btnShortcut"> 📌 Acceso directo</label>
             <label class="check-row"><input type="checkbox" data-btn="btnPdfLuna"> 📄 PDF luna</label>
             <label class="check-row"><input type="checkbox" data-btn="btnPdfCiclo"> 📚 PDF ciclo</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnNudos"> 🪢 Nudos y Redes</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnTaller"> 🔧 Bitácora Taller</label>
             <label class="check-row"><input type="checkbox" data-btn="btnHelp"> ❓ Guía</label>
             <label class="check-row"><input type="checkbox" data-btn="btnDonate"> ❤ Aporte voluntario</label>
           </div>
@@ -3283,6 +3518,7 @@
       <div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">
         <button type="button" id="tabComunaEventos" class="btn btn-accent" style="width:auto">🎉 Eventos</button>
         <button type="button" id="tabComunaGuia" class="btn" style="width:auto">📖 Guía de Penco</button>
+        <button type="button" id="tabComunaSectores" class="btn" style="width:auto">🏘️ Sectores</button>
         <button type="button" id="tabComunaHistoria" class="btn" style="width:auto">📜 Historia</button>
       </div>
       <div id="comunaEventosPanel">
@@ -3320,6 +3556,7 @@
       </div>
       </div>
       <div id="comunaGuiaPanel" class="hidden" style="margin-top:10px"></div>
+      <div id="comunaSectoresPanel" class="hidden" style="margin-top:10px"></div>
       <div id="comunaHistoriaPanel" class="hidden" style="margin-top:10px"></div>
       <div class="dlg-actions"><button type="button" id="comunaClose" class="btn">Cerrar</button></div>
     </form>
@@ -3370,35 +3607,44 @@
   <script src="sudoku-modulo.js?v=1"></script>
   <script src="info-clave.js?v=1"></script>
   <script src="psicologia-modulo.js?v=1"></script>
+  <script src="adolescencia-modulo.js?v=1"></script>
+  <script src="etapas-vida-modulo.js?v=1"></script>
+  <script src="electrocultura-modulo.js?v=1"></script>
+  <script src="red-comunitaria-modulo.js?v=1"></script>
+  <script src="hidroponia-modulo.js?v=2"></script>
+  <script src="huerta-modulo.js?v=1"></script>
   <script>
-    // SW offline: registra, busca actualización al volver online y aplica la
-    // nueva versión sin dejar la pantalla sin estilos.
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('sw.js', { scope: './' }).then((reg) => {
-          try { reg.update(); } catch (_) {}
-          if (reg.waiting) reg.waiting.postMessage({ type: 'SKIP_WAITING' });
-          reg.addEventListener('updatefound', () => {
-            const nw = reg.installing;
-            if (!nw) return;
-            nw.addEventListener('statechange', () => {
-              if (nw.state === 'installed' && navigator.serviceWorker.controller) {
-                // Nueva versión lista: se aplicará al recargar (una vez online).
-                try { (window.toast || console.log).call(window, 'Actualización lista: recarga para modo offline ✔'); } catch (_) {}
-              }
-            });
-          });
-        }).catch(() => {});
-      });
-      let _swReloaded = false;
-      navigator.serviceWorker.addEventListener('controllerchange', () => {
-        if (_swReloaded) return; _swReloaded = true;
-        try { window.location.reload(); } catch (_) {}
-      });
-      // Al recuperar internet, avisa al SW para que revalide la caché.
-      window.addEventListener('online', () => {
-        try { navigator.serviceWorker.ready.then((reg) => reg.update()).catch(() => {}); } catch (_) {}
-      });
+    // Limpieza file:// (cinturón y tirantes): si un SW de una versión anterior
+    // quedó registrado, desregistrarlo y borrar cachés cal13, luego recargar.
+    // La limpieza principal la hace main.js antes de abrir la ventana.
+    try {
+      if (location.protocol === 'file:' && 'serviceWorker' in navigator) {
+        var __swClean = function () {
+          try {
+            navigator.serviceWorker.getRegistrations().then(function (regs) {
+              var controlled = !!navigator.serviceWorker.controller;
+              if (!regs.length && !controlled) return;
+              var ps = regs.map(function (r) { try { return r.unregister(); } catch (e) { return null; } });
+              var cs = null;
+              try {
+                cs = caches.keys().then(function (keys) {
+                  return Promise.all(keys.filter(function (k) { return k.indexOf('cal13-') === 0; }).map(function (k) { return caches.delete(k); }));
+                });
+              } catch (e) { cs = null; }
+              Promise.all(ps.concat([cs])).then(function () {
+                try { if (navigator.serviceWorker.controller) location.reload(); } catch (e) {}
+              }).catch(function () {});
+            }).catch(function () {});
+          } catch (e) {}
+        };
+        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', __swClean);
+        else __swClean();
+      }
+    } catch (e) {}
+    // Service Worker solo en web http(s). En Electron (file://) se omite:
+    // el calendario abre local sin depender de caché ni internet.
+    if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
+      window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
     }
   </script>
 </body>

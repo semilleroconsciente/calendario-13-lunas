@@ -391,6 +391,7 @@ function ensureFloraButton() {
   var b = document.createElement('button');
   b.id = 'btnFlora';
   b.className = 'btn';
+  b.setAttribute('data-sub', 'tierra');
   b.setAttribute('data-keywords', 'flora plantas flor flores herbario estero penco cuenca zenodo avilez lista registro fotografico ribera quebrada totora nalca chilco helecho nativa observacion links interes');
   b.textContent = '🌸 Flora';
   var ref = $('btnBosque');
@@ -435,6 +436,7 @@ function wireFlora() {
     }
   } catch (e) {}
   try { if (typeof ordenarTerritorio === 'function') ordenarTerritorio(); } catch (e) {}
+  try { if (typeof reordenarAcciones === 'function') reordenarAcciones(); } catch (e) {}
   var btn = $('btnFlora');
   if (btn && !btn.dataset.floraW) {
     btn.dataset.floraW = '1';

@@ -320,19 +320,28 @@ function calcTest(def) {
 
 /* ---------------- SETUP ---------------- */
 function setup() {
-  /* 1) inyectar boton */
+  /* 1) inyectar boton en Linaje > Interior */
   try {
     if (!$('btnPsicologia')) {
-      var g = document.querySelector('.action-group[data-group="mente"] .group-btns');
+      var g = document.querySelector('.action-group[data-group="linaje"] .group-btns');
       if (g) {
         var btn = document.createElement('button');
         btn.id = 'btnPsicologia'; btn.className = 'btn'; btn.type = 'button';
         btn.textContent = '🧠 Psicología';
+        try { btn.setAttribute('data-sub', 'interior'); } catch (eS) {}
         btn.setAttribute('data-keywords', 'psicologia mente ansiedad depresion estres autoestima test phq apego vinculo emociones tcc act dbt terapia trauma duelo autoayuda salud mental *4141');
-        var ref = g.querySelector('#btnPsico');
-        if (ref && ref.nextSibling) g.insertBefore(btn, ref.nextSibling);
-        else g.appendChild(btn);
+        g.appendChild(btn);
       }
+    } else {
+      try {
+        var curP = $('btnPsicologia');
+        var curGP = curP.closest ? curP.closest('.action-group') : null;
+        var curNP = curGP && curGP.getAttribute ? curGP.getAttribute('data-group') : null;
+        if (curNP && curNP !== 'linaje') {
+          var gdP = document.querySelector('.action-group[data-group="linaje"] .group-btns');
+          if (gdP) { gdP.appendChild(curP); try { curP.setAttribute('data-sub', 'interior'); } catch (eS) {} }
+        }
+      } catch (eM) {}
     }
   } catch (e) {}
   /* 2) registrar en ALL_BTNS + PRESETS + visibilidad */
@@ -346,13 +355,14 @@ function setup() {
   } catch (e) {}
   try { if (typeof updateGroupCounts === 'function') updateGroupCounts(); } catch (e) {}
   try { if (typeof applyVisibility === 'function') applyVisibility(); } catch (e) {}
-  /* 3) checkbox en configDialog (grupo Mente) */
+  try { if (typeof reordenarAcciones === 'function') reordenarAcciones(); } catch (e) {}
+  /* 3) checkbox en configDialog (grupo Linaje) */
   try {
     if (!document.querySelector('#configDialog input[data-btn="btnPsicologia"]')) {
       var groups = document.querySelectorAll('#configDialog .config-group');
       groups.forEach(function (gr) {
         var h = gr.querySelector('h5');
-        if (h && h.textContent.indexOf('Mente') >= 0) {
+        if (h && h.textContent.indexOf('Linaje') >= 0) {
           var lab = document.createElement('label');
           lab.className = 'check-row';
           lab.innerHTML = '<input type="checkbox" data-btn="btnPsicologia"> 🧠 Psicología';
