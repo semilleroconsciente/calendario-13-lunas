@@ -152,6 +152,14 @@ textarea {
 .action-group summary::after { content:'▸'; color:var(--muted); transition:transform .15s; }
 .action-group[open] summary::after { transform:rotate(90deg); }
 .group-btns { display:flex; flex-wrap:wrap; gap:8px; padding:0 14px 14px; }
+.sub-label { flex:1 1 100%; font-size:11px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; color:var(--muted); margin:8px 0 -2px; padding-top:8px; border-top:1px dashed var(--line); cursor:pointer; display:flex; justify-content:space-between; align-items:center; gap:8px; user-select:none; }
+.sub-label:first-child { margin-top:0; padding-top:0; border-top:none; }
+.sub-label:hover { color:var(--accent); }
+.sub-label::after { content:'▾'; color:var(--muted); font-size:11px; transition:transform .15s; }
+.sub-label.collapsed::after { content:'▸'; }
+.sub-label .sub-count { font-weight:400; font-size:10px; color:var(--muted); letter-spacing:0; }
+.sub-label.hidden-by-search { display:none !important; }
+.btn.hidden-by-sub { display:none !important; }
 .ag-count { font-weight:400; color:var(--muted); font-size:11px; }
 #statusMsg { color: #8fd694; font-size: 13px; margin-left: 4px; }
 .btn.hidden-by-search, .btn.hidden-by-config { display:none !important; }

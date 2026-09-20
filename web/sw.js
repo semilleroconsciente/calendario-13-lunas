@@ -1,7 +1,7 @@
 // Service Worker — Calendario 13 Lunas (offline-first, tolerante a versiones ?v=)
-// v19: + psicologia-modulo.js
+// v24: fix hidroponia-modulo.js (mats string -> array, v=2)
 
-const CACHE = 'cal13-v19-offline';
+const CACHE = 'cal13-v24-offline';
 
 // Lista completa de archivos que usa index.html (bare + con ?v=).
 // Si se agrega un JS nuevo en index.html, agregarlo aquí también (bare y ?v=).
@@ -52,6 +52,20 @@ const CORE = [
   './info-clave.js?v=1',
   './psicologia-modulo.js',
   './psicologia-modulo.js?v=1',
+  './adolescencia-modulo.js',
+  './adolescencia-modulo.js?v=1',
+  './etapas-vida-modulo.js',
+  './etapas-vida-modulo.js?v=1',
+  './electrocultura-modulo.js',
+  './electrocultura-modulo.js?v=1',
+  './red-comunitaria-modulo.js',
+  './red-comunitaria-modulo.js?v=1',
+  './hidroponia-modulo.js',
+  './hidroponia-modulo.js?v=2',
+  './huerta-modulo.js',
+  './huerta-modulo.js?v=1',
+  './web-api.js',
+  './web-api.js?v=8',
   './donate.json',
   './manifest.json',
   './icon-192.png',

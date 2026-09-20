@@ -7,7 +7,7 @@
    - Herramientas/Oficios: Nudos y Redes, Bitacora Taller, Gestion Invernal
    - Emergencias & Comunidad: Trueque y Feria, Minga
    - Mente & Estudio: Epew (+ Territorial dentro de Mapuzugun)
-   - Cuerpo & Salud: Rutinas Circadianas, Fertilidad Sintotermica
+   - Cuerpo & Salud: Fertilidad Sintotermica (Ritmo Circadiano vive fusionado en Circadiano)
    Todo queda local y privado por usuario (DATA + scheduleSave).
    ============================================================ */
 (function () {
@@ -191,16 +191,15 @@ var KIMUN = [
 
 /* ---------- inyeccion de botones en grupos existentes ---------- */
 var NUEVOS_BTNS = [
-  { id: 'btnAgua', txt: '💧 Agua', kw: 'agua lluvia estanque pozo milimetros reserva litros sequia corte rio rios medicion nivel ph', grupo: 'territorio' },
-  { id: 'btnBodega', txt: '🍯 La Bodega', kw: 'bodega conservas fermentos mermelada chucrut kombucha deshidratado frasco caducidad maduracion lunar', grupo: 'vida' },
-  { id: 'btnCrianza', txt: '🧒 Crianza', kw: 'crianza infantil niños niñas hijos pedagogia montessori waldorf pikler reggio disciplina positiva juego infancia educacion', grupo: 'vida' },
-  { id: 'btnNudos', txt: '🪢 Nudos y Redes', kw: 'nudos amarras redes pesca ballestrinque as de guia pescador kayak camping entutorado tejer reparar', grupo: 'herramientas' },
-  { id: 'btnTaller', txt: '🔧 Bitácora Taller', kw: 'taller reparacion mantenimiento herramienta bote bicicleta aceite afilado bomba alerta luna', grupo: 'herramientas' },
-  { id: 'btnTrueque', txt: '🔄 Trueque y Feria', kw: 'trueque feria local economia circular intercambio vecino feria libre penco gastos cuenta reciclaje punto limpio basura residuo botella pila aceite ropa recoleccion aseo', grupo: 'emergencia' },
-  { id: 'btnMinga', txt: '🤝 Minga · Red de Apoyo', kw: 'minga red apoyo comunidad ayuda techo cosecha tormenta llamado offline bluetooth vecino', grupo: 'emergencia' },
-  { id: 'btnRutina', txt: '🧘 Rutinas Circadianas', kw: 'rutina circadiano hora dorada cortisol planificador habito sueño energia creatividad descanso', grupo: 'cuerpo' },
-  { id: 'btnFerti', txt: '🤰 Fertilidad Natural', kw: 'fertilidad ciclo sintotermico temperatura basal moco cervical ovulacion test lh buscar evitar embarazo parto puerperio lactancia bebe guagua hitos 1000 dias fur fpp vacunas controles crecimiento planificacion familiar natural privado', grupo: 'cuerpo' },
-  { id: 'btnDerechos', txt: '⚖️ Derechos y Deberes', kw: 'derechos deberes constitucion ciudadano reclamo denuncia sernac trabajo salud educacion consumidor carabineros pdi juzgado municipalidad', grupo: 'emergencia' },
+  { id: 'btnAgua', txt: '💧 Agua', kw: 'agua lluvia estanque pozo milimetros reserva litros sequia corte rio rios medicion nivel ph', grupo: 'territorio', sub: 'tierra' },
+  { id: 'btnBodega', txt: '🍯 La Bodega', kw: 'bodega conservas fermentos mermelada chucrut kombucha deshidratado frasco caducidad maduracion lunar', grupo: 'hogar', sub: 'casa' },
+  { id: 'btnCrianza', txt: '🧒 Crianza', kw: 'crianza infantil niños niñas hijos pedagogia montessori waldorf pikler reggio disciplina positiva juego infancia educacion', grupo: 'aprender', sub: 'infancias' },
+  { id: 'btnNudos', txt: '🪢 Nudos y Redes', kw: 'nudos amarras redes pesca ballestrinque as de guia pescador kayak camping entutorado tejer reparar', grupo: 'territorio', sub: 'mar' },
+  { id: 'btnTaller', txt: '🔧 Bitácora Taller', kw: 'taller reparacion mantenimiento herramienta bote bicicleta aceite afilado bomba alerta luna', grupo: 'hogar', sub: 'energia' },
+  { id: 'btnTrueque', txt: '🔄 Trueque y Feria', kw: 'trueque feria local economia circular intercambio vecino feria libre penco gastos cuenta reciclaje punto limpio basura residuo botella pila aceite ropa recoleccion aseo', grupo: 'comunidad', sub: 'red' },
+  { id: 'btnMinga', txt: '🤝 Minga · Red de Apoyo', kw: 'minga red apoyo comunidad ayuda techo cosecha tormenta llamado offline bluetooth vecino', grupo: 'comunidad', sub: 'red' },
+  { id: 'btnFerti', txt: '🤰 Fertilidad Natural', kw: 'fertilidad ciclo sintotermico temperatura basal moco cervical ovulacion test lh buscar evitar embarazo parto puerperio lactancia bebe guagua hitos 1000 dias fur fpp vacunas controles crecimiento planificacion familiar natural privado', grupo: 'cuerpo', sub: 'ciclos' },
+  { id: 'btnDerechos', txt: '⚖️ Derechos y Deberes', kw: 'derechos deberes constitucion ciudadano reclamo denuncia sernac trabajo salud educacion consumidor carabineros pdi juzgado municipalidad', grupo: 'comunidad', sub: 'red' },
 ];
 function cleanupEpewSeparado() {
   try {
@@ -265,6 +264,7 @@ function injectButtons() {
     btn.id = b.id; btn.className = 'btn'; btn.type = 'button';
     btn.textContent = b.txt;
     btn.setAttribute('data-keywords', b.kw);
+    try { if (b.sub) btn.setAttribute('data-sub', b.sub); } catch (e2) {}
     var ref = g.querySelector('#btnDonate');
     if (b.grupo === 'herramientas' && ref) g.insertBefore(btn, ref);
     else if (b.id === 'btnAgua') {
@@ -284,11 +284,12 @@ function injectButtons() {
   } catch (e) {}
   try { if (typeof updateGroupCounts === 'function') updateGroupCounts(); } catch (e) {}
   try { if (typeof applyVisibility === 'function') applyVisibility(); } catch (e) {}
+  try { if (typeof reordenarAcciones === 'function') reordenarAcciones(); } catch (e) {}
   return added;
 }
 
-/* ---------- orden Territorio: Clima, Mareas, Astro, Intermareal, Pesca, Aves, Siembra, Bosque, Flora, Compost, Agua, Penco, Circadiano, Hora Dorada, Ekadashi ---------- */
-var ORDEN_TERRITORIO = ['btnWeather','btnTides','btnAstro','btnIntermareal','btnFishing','btnBirds','btnSiembra','btnBosque','btnFlora','btnCompost','btnAgua','btnComuna','btnCircadian','btnGolden','btnEkadashi'];
+/* ---------- orden Territorio: Mareas, Pesca, Intermareal, Nudos, Siembra, Compost, Agua, Bosque, Flora, Aves, Lawen, Electrocultura, Clima, Astro, Hora Dorada, Ritmo Circadiano, Ekadashi, Penco ---------- */
+var ORDEN_TERRITORIO = ['btnTides','btnFishing','btnIntermareal','btnNudos','btnSiembra','btnCompost','btnAgua','btnBosque','btnFlora','btnBirds','btnLawen','btnElectrocultura','btnWeather','btnAstro','btnGolden','btnCircadian','btnEkadashi','btnComuna'];
 function ordenarTerritorio() {
   var g = document.querySelector('.action-group[data-group="territorio"] .group-btns');
   if (!g) return;
@@ -1387,15 +1388,31 @@ function setupKimun() {
 }
 
 /* ============================================================
-   13) RUTINAS CIRCADIANAS + HORA DORADA
+   13) MI PLAN CIRCADIANO (pestaña dentro de 🌞 Ritmo Circadiano)
+   Fusionado sep 2026: antes botón propio btnRutina + rutinaDialog.
+   Ahora vive en circadianDialog > ritmoPlanPanel (HTML estático).
+   Datos preservados en la misma clave 'rutinaCfg'.
    ============================================================ */
 function getRutina() { return store('rutinaCfg', { despierta: '07:00' }); }
 function setupRutina() {
-  makeDialog('rutinaDialog', '🧘 Rutinas circadianas y hora dorada',
-    'Convierte tu <b>Hora Dorada</b> y <b>Circadiano</b> en un plan diario: tareas pesadas con el pico de cortisol matutino, creatividad en la tarde y descanso al atardecer.',
-    '<div class="conv-row"><label>Me despierto <input type="time" id="rutHora" value="07:00"></label><button type="button" id="rutGen" class="btn btn-accent" style="width:auto;align-self:flex-end">☀️ Generar mi plan de hoy</button></div>' +
-    '<div id="rutPlan" style="margin-top:10px"></div>');
-  var b = $('btnRutina'); if (b) b.onclick = function () { try { $('rutHora').value = getRutina().despierta || '07:00'; } catch (e) {} openDlg('rutinaDialog'); };
+  // limpieza de la versión anterior (botón y diálogo propios)
+  try { var rb = $('btnRutina'); if (rb && rb.parentNode) rb.parentNode.removeChild(rb); } catch (e0) {}
+  try { var rd = $('rutinaDialog'); if (rd && rd.parentNode) rd.parentNode.removeChild(rd); } catch (e0) {}
+  try {
+    if (typeof ALL_BTNS !== 'undefined' && ALL_BTNS.indexOf) {
+      var ri = ALL_BTNS.indexOf('btnRutina');
+      if (ri >= 0) ALL_BTNS.splice(ri, 1);
+    }
+  } catch (e0) {}
+  // precargar hora guardada al abrir la pestaña Mi plan
+  try {
+    var tp = $('tabRitmoPlan');
+    if (tp && !tp.dataset.rutB) {
+      tp.dataset.rutB = '1';
+      tp.addEventListener('click', function () { try { $('rutHora').value = getRutina().despierta || '07:00'; } catch (e) {} });
+    }
+  } catch (e0) {}
+  if (!$('rutGen') || !$('rutHora') || !$('rutPlan')) return;
   $('rutGen').onclick = function () {
     var h = $('rutHora').value || '07:00';
     try { getRutina().despierta = h; save(); } catch (e) {}
@@ -1670,8 +1687,27 @@ function setupDerechos() {
    Todo local y privado por usuario (store + save).
    ============================================================ */
 var MILDIAS_HITOS = ['Primera sonrisa', 'Sostiene la cabeza', 'Se sienta solo', 'Primer diente', 'Gateo', 'Primera palabra', 'Primeros pasos', 'Primera comida', 'Cumple 1 año', 'Cumple 2 años', 'Destete', 'Otro hito'];
-var SUENOS_ARQ = ['🌊 Agua / mar', '🌙 Luna', '🕊️ Vuelo', '🏠 Casa / hogar', '🐾 Animal guía', '👵 Ancestro / abuela', '🌑 Sombra / noche', '☀️ Luz / amanecer', '🔥 Fuego', '🌳 Bosque / árbol'];
-var SUENOS_EMO = ['calma', 'alegría', 'miedo', 'tristeza', 'rabia', 'amor', 'confusión', 'poder', 'gratitud'];
+var SUENOS_ARQ = ['🌊 Agua / mar / río', '🌙 Luna / noche', '🕊️ Vuelo', '🏠 Casa / hogar', '🐾 Animal guía', '👵 Ancestro / abuela', '🌑 Sombra / persecución', '☀️ Luz / amanecer', '🔥 Fuego', '🌳 Bosque / árbol', '🌧️ Lluvia / tormenta', '🛤️ Camino / viaje'];
+var SUENOS_EMO = ['calma', 'alegría', 'miedo', 'tristeza', 'rabia', 'amor', 'confusión', 'poder', 'gratitud', 'vergüenza', 'culpa', 'asombro'];
+var SUENOS_TIPOS = ['🌊 Común', '👁️ Lúcido', '😱 Pesadilla', '🔁 Recurrente', '👵 Visita / ancestro', '✨ Sincronía / aviso'];
+var SUENOS_DICC = [
+  { n: '🌊 Agua / mar / río', k: ['agua', 'mar', 'rio', 'río', 'ola', 'playa', 'orilla', 'lago'], s: 'Emociones y memoria. Agua clara = calma; turbia o crecida = algo pide cauce.', p: '¿Qué emoción crece en mí como este agua?' },
+  { n: '🕊️ Volar', k: ['vuel', 'volar', 'alas', 'pluma'], s: 'Deseo de libertad o perspectiva. Vuelo libre = poder; vuelo que cae = exigencia que pesa.', p: '¿De qué necesito tomar altura?' },
+  { n: '🏠 Casa / hogar', k: ['casa', 'hogar', 'pieza', 'cocina', 'puerta', 'ventana'], s: 'Tu psique: cada pieza es una parte tuya. Casa en ruina = descuido; casa luminosa = orden interno.', p: '¿Qué pieza de mi vida pide limpieza?' },
+  { n: '🌳 Bosque / árbol', k: ['bosque', 'arbol', 'árbol', 'hoja'], s: 'Crecimiento y raíces. Bosque oscuro = inconsciente fértil; árbol firme = sostén.', p: '¿Qué estoy echando a brotar?' },
+  { n: '👵 Ancestro / abuela', k: ['abuela', 'abuelo', 'ancestro', 'mama vieja', 'difunto'], s: 'Pewma de consejo: guía y memoria del linaje. Suele traer frase o gesto.', p: '¿Qué me vino a recordar?' },
+  { n: '🔥 Fuego', k: ['fuego', 'llama', 'incendio', 'fogon', 'fogón', 'brasa'], s: 'Energía que transforma. Fuego cuidado = pasión; incendio = rabia o apuro.', p: '¿Qué fuego debo cuidar y cuál apagar?' },
+  { n: '🌙 Luna / noche', k: ['luna', 'noche', 'estrella', 'cielo'], s: 'Ciclos, intuición y lo femenino. Luna llena = revelación; noche cerrada = duelo o espera.', p: '¿Qué ciclo mío está cambiando?' },
+  { n: '🌑 Sombra / persecución', k: ['perseg', 'corre', 'huyo', 'huir', 'sombra', 'monstruo', 'ladron', 'ladrón'], s: 'Lo que evitas te persigue hasta que lo miras. No es enemigo: es parte exiliada.', p: '¿Qué evito enfrentar despierta/o?' },
+  { n: '🐾 Animal guía', k: ['perro', 'gato', 'zorzal', 'pajaro', 'pájaro', 'caballo', 'culebra', 'pez', 'ave', 'animal'], s: 'Instinto y cualidad del animal (lealtad, vuelo, sigilo). Fíjate qué hace.', p: '¿Qué cualidad de este animal me falta o me sobra?' },
+  { n: '🌧️ Lluvia / tormenta', k: ['lluvia', 'tormenta', 'trueno', 'relampago', 'relámpago', 'granizo'], s: 'Limpieza o tensión acumulada. Lluvia suave = alivio; tormenta = conflicto que estalla.', p: '¿Qué necesita llover (soltarse) en mí?' },
+  { n: '🛤️ Camino / viaje', k: ['camino', 'viaje', 'sendero', 'ruta', 'bus', 'micro', 'auto', 'tren'], s: 'Tu dirección vital. Camino claro = rumbo; perdido o roto = decisión pendiente.', p: '¿Hacia dónde voy realmente?' },
+  { n: '😬 Caída / dientes', k: ['caer', 'caida', 'caída', 'diente', 'muelas', 'abismo'], s: 'Clásicos de inseguridad o cambio: miedo a perder control, imagen o sostén.', p: '¿Qué temo perder si todo cambia?' },
+  { n: '🤰 Bebé / embarazo', k: ['bebe', 'bebé', 'guagua', 'embarazo', 'embarazada', 'hijo'], s: 'Proyecto nuevo naciendo (no siempre hijo): idea, casa, oficio que pide cuidado.', p: '¿Qué proyecto estoy gestando?' },
+  { n: '☀️ Luz / amanecer', k: ['luz', 'sol', 'amanecer', 'alba', 'brillo'], s: 'Conciencia y esperanza. Amanecer tras noche difícil = salida cercana.', p: '¿Qué se está aclarando en mi vida?' },
+  { n: '🕊️ Muerte / despedida', k: ['muerte', 'muerto', 'funeral', 'velorio', 'despedida', 'entierro'], s: 'Casi nunca es literal: es cierre de etapa. Despedir para hacer espacio.', p: '¿Qué etapa debo dejar ir con gratitud?' },
+  { n: '🌍 Terremoto / temblor', k: ['terremoto', 'temblor', 'sismo'], s: 'En Chile, sacudón real o interno: bases que se mueven (casa, pega, vínculo).', p: '¿Qué base mía tiembla y cómo la afirmo?' }
+];
 var SUENOS_STOP = ['para', 'pero', 'como', 'esta', 'esto', 'estaba', 'porque', 'donde', 'cuando', 'mucho', 'tenia', 'habia', 'despues', 'sueño', 'sone', 'soñe'];
 var MEDITA_TRAD = ['Zen (zazen)', 'Vipassana', 'Llellipun mapuche', 'Respiración consciente', 'Contemplación lunar', 'Silencio / quietud'];
 function addKw(id, extra) {
@@ -1890,31 +1926,113 @@ function setupDuelo() {
 }
 /* ---------- A3: sueños + ---------- */
 function getSuenos() { var a = store('suenosLog', []); return Array.isArray(a) ? a : []; }
+function suenosRacha() {
+  var set = {};
+  getSuenos().forEach(function (r) { set[r.fecha] = true; });
+  var s = 0, cur = new Date(todayKey() + 'T12:00:00');
+  if (!set[todayKey()]) cur = new Date(cur.getTime() - 86400000);
+  for (var i = 0; i < 365; i++) {
+    var k = cur.getFullYear() + '-' + String(cur.getMonth() + 1).padStart(2, '0') + '-' + String(cur.getDate()).padStart(2, '0');
+    if (set[k]) s++; else break;
+    cur = new Date(cur.getTime() - 86400000);
+  }
+  return s;
+}
+function suenosPista(texto) {
+  var t = ' ' + String(texto || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '') + ' ';
+  for (var i = 0; i < SUENOS_DICC.length; i++) {
+    var e = SUENOS_DICC[i];
+    for (var j = 0; j < e.k.length; j++) {
+      if (t.indexOf(e.k[j]) >= 0) return e;
+    }
+  }
+  return null;
+}
+function renderSueDicc() {
+  var grid = $('sueDiccGrid'); if (!grid) return;
+  var q = '';
+  try { q = ($('sueDiccQ').value || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim(); } catch (e) {}
+  var list = SUENOS_DICC.filter(function (e) {
+    if (!q) return true;
+    return (e.n + ' ' + e.s + ' ' + e.p + ' ' + e.k.join(' ')).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').indexOf(q) >= 0;
+  });
+  grid.innerHTML = list.length ? list.map(function (e) {
+    return '<div class="discipline-card" style="text-align:left"><h4>' + esc(e.n) + '</h4><p style="font-size:12px">' + esc(e.s) + '</p><p class="muted" style="font-size:11px">💬 ' + esc(e.p) + '</p></div>';
+  }).join('') : '<p class="muted">Sin coincidencia. Prueba con agua, casa, volar, dientes, camino...</p>';
+}
 function renderSuenosPlus() {
+  try { renderSueDicc(); } catch (e) {}
   var box = $('suePlusPatrones'); if (!box) return;
   var d = getSuenos();
-  if (!d.length) { box.innerHTML = '<span class="muted">Sin sueños en el diario aún. Al guardar, quedan aquí con luna y arquetipo para ver patrones.</span>'; return; }
-  var arq = {};
-  d.forEach(function (r) { arq[r.arq || '?'] = (arq[r.arq || '?'] || 0) + 1; });
-  var topA = Object.keys(arq).sort(function (a, b) { return arq[b] - arq[a]; }).slice(0, 3).map(function (k) { return k + ' ×' + arq[k]; }).join(' · ');
-  var freq = {};
-  d.forEach(function (r) { (r.texto || '').toLowerCase().replace(/[^\p{L}\s]/gu, ' ').split(/\s+/).forEach(function (w) { w = w.trim(); if (w.length >= 4 && SUENOS_STOP.indexOf(w) < 0) freq[w] = (freq[w] || 0) + 1; }); });
-  var topW = Object.keys(freq).filter(function (w) { return freq[w] >= 2; }).sort(function (a, b) { return freq[b] - freq[a]; }).slice(0, 6).map(function (w) { return w + ' ×' + freq[w]; }).join(' · ') || '— (se revelan al repetirse palabras)';
-  var llenas = d.filter(function (r) { var l = null; try { var m = mensLunaForKey(r.fecha); if (m) l = m.dia; } catch (e) {} return l >= 13 && l <= 16; }).length;
-  box.innerHTML = '📊 <b>' + d.length + '</b> sueños · arquetipos: ' + esc(topA || '—') + '<br>🔁 Palabras que vuelven: ' + esc(topW) + '<br>🌕 En luna llena aprox: <b>' + llenas + '</b>';
+  if (!d.length) { box.innerHTML = '<span class="muted">Sin sueños en el diario aún. Al guardar, quedan aquí con luna, tipo y arquetipo para ver patrones.</span>'; }
+  else {
+    var arq = {}, emo = {}, tip = {}, luc = 0, vivSum = 0, vivN = 0;
+    d.forEach(function (r) {
+      arq[r.arq || '?'] = (arq[r.arq || '?'] || 0) + 1;
+      emo[r.emo || '?'] = (emo[r.emo || '?'] || 0) + 1;
+      tip[r.tipo || '?'] = (tip[r.tipo || '?'] || 0) + 1;
+      if (r.luc) luc++;
+      if (+r.viv) { vivSum += (+r.viv); vivN++; }
+    });
+    var top = function (o) { return Object.keys(o).sort(function (a, b) { return o[b] - o[a]; }).slice(0, 2).map(function (k) { return k + ' ×' + o[k]; }).join(' · ') || '—'; };
+    var freq = {};
+    d.forEach(function (r) { (r.texto || '').toLowerCase().replace(/[^\p{L}\s]/gu, ' ').split(/\s+/).forEach(function (w) { w = w.trim(); if (w.length >= 4 && SUENOS_STOP.indexOf(w) < 0) freq[w] = (freq[w] || 0) + 1; }); });
+    var topW = Object.keys(freq).filter(function (w) { return freq[w] >= 2; }).sort(function (a, b) { return freq[b] - freq[a]; }).slice(0, 6).map(function (w) { return w + ' ×' + freq[w]; }).join(' · ') || '— (aparecen al repetirse palabras)';
+    var llenas = d.filter(function (r) { var l = null; try { var m = mensLunaForKey(r.fecha); if (m) l = m.dia; } catch (e) {} return l >= 13 && l <= 16; }).length;
+    box.innerHTML = '📊 <b>' + d.length + '</b> sueños · 🔥 racha <b>' + suenosRacha() + ' días</b> · 👁️ lúcidos <b>' + luc + '</b>' + (vivN ? ' · ✨ viveza prom <b>' + (vivSum / vivN).toFixed(1) + '/5</b>' : '') +
+      '<br>🗂️ Tipos: ' + esc(top(tip)) + '<br>🏷️ Arquetipos: ' + esc(top(arq)) + ' · 💛 Emoción top: ' + esc(top(emo)) +
+      '<br>🔁 Palabras que vuelven: ' + esc(topW) + '<br>🌕 En luna llena aprox: <b>' + llenas + '</b>';
+  }
+  var q = '';
+  try { q = ($('suePlusQ').value || '').toLowerCase().trim(); } catch (e) {}
   var list = $('suePlusList');
-  if (list) list.innerHTML = d.slice().sort(function (a, b) { return b.fecha.localeCompare(a.fecha); }).slice(0, 30).map(function (r) {
-    return '<div class="habit-item"><b>' + r.fecha + '</b> · ' + esc(r.arq || '') + ' · ' + esc(r.emo || '') + (r.luc ? ' · 👁️ lúcido' : '') + '<br><span class="muted" style="font-size:11px">' + esc(lunaTxt(r.fecha)) + '</span><p style="font-size:12px">' + esc((r.texto || '').slice(0, 220)) + '</p><button class="btn" style="width:auto;font-size:11px;color:#e76e8a" data-del="' + r.id + '">✕</button></div>';
-  }).join('');
-  if (list) list.querySelectorAll('[data-del]').forEach(function (b) { b.onclick = function () { if (!confirm('¿Borrar sueño del diario? (la nota del día se mantiene)')) return; var dd = getSuenos(); var i = dd.findIndex(function (x) { return x.id === b.getAttribute('data-del'); }); if (i >= 0) dd.splice(i, 1); save(); renderSuenosPlus(); }; });
+  if (!list) return;
+  var items = d.slice().sort(function (a, b) { return b.fecha.localeCompare(a.fecha); });
+  if (q) items = items.filter(function (r) { return ((r.titulo || '') + ' ' + (r.texto || '') + ' ' + (r.msg || '') + ' ' + (r.arq || '') + ' ' + (r.emo || '') + ' ' + (r.tipo || '')).toLowerCase().indexOf(q) >= 0; });
+  list.innerHTML = items.length ? items.slice(0, 30).map(function (r) {
+    var pista = suenosPista((r.titulo || '') + ' ' + (r.texto || ''));
+    var viv = +r.viv ? (' · ' + '★'.repeat(Math.min(5, +r.viv)) + '☆'.repeat(Math.max(0, 5 - (+r.viv)))) : '';
+    return '<div class="habit-item" style="align-items:flex-start"><div style="flex:1"><b>' + esc(r.titulo || 'Sueño') + '</b> <span class="chip" style="font-size:10px">' + esc(r.tipo || '🌊 Común') + '</span><br>' +
+      '<span class="muted" style="font-size:11px">' + r.fecha + ' · ' + esc(lunaTxt(r.fecha)) + ' · ' + esc(r.arq || '') + ' · ' + esc(r.emo || '') + esc(viv) + (r.luc ? ' · 👁️ lúcido' : '') + '</span>' +
+      '<p style="font-size:12px;white-space:pre-wrap;margin:4px 0">' + esc((r.texto || '').slice(0, 400)) + '</p>' +
+      (r.msg ? '<p style="font-size:11px">👉 <b>Me pide:</b> ' + esc(r.msg) + '</p>' : '') +
+      (pista ? '<p class="muted" style="font-size:11px">📖 ' + esc(pista.n) + ': ' + esc(pista.p) + '</p>' : '') +
+      '<div style="display:flex;gap:6px;margin-top:4px"><button class="btn" style="width:auto;font-size:11px" data-share="' + r.id + '">📤</button><button class="btn" style="width:auto;font-size:11px;color:#e76e8a" data-del="' + r.id + '">✕</button></div></div></div>';
+  }).join('') + (d.length > 30 ? '<p class="muted" style="font-size:11px">Mostrando 30 de ' + d.length + '. Usa el buscador para filtrar.</p>' : '') : (d.length ? '<p class="muted">Sin resultados para esa búsqueda.</p>' : '');
+  list.querySelectorAll('[data-del]').forEach(function (b) { b.onclick = function () { if (!confirm('¿Borrar sueño del diario? (la nota del día se mantiene)')) return; var dd = getSuenos(); var i = dd.findIndex(function (x) { return x.id === b.getAttribute('data-del'); }); if (i >= 0) dd.splice(i, 1); save(); renderSuenosPlus(); }; });
+  list.querySelectorAll('[data-share]').forEach(function (b) { b.onclick = function () { var dd = getSuenos(); var r = dd.find(function (x) { return x.id === b.getAttribute('data-share'); }); if (r) share('💭 ' + (r.titulo || 'Mi sueño') + ' (' + r.fecha + ')', (r.texto || '') + (r.msg ? '\n👉 Me pide: ' + r.msg : '')); }; });
+}
+var SUE_TABS = ['Anotar', 'Practicas', 'Guia', 'Dicc', 'Diario'];
+function switchSueTab(t) {
+  SUE_TABS.forEach(function (x) {
+    var p = $('sueTab' + x), b = $('tabSue' + x);
+    if (p) p.classList.toggle('hidden', x !== t);
+    if (b) b.classList.toggle('btn-accent', x === t);
+  });
+  try { if (t === 'Diario' || t === 'Dicc') renderSuenosPlus(); } catch (e) {}
 }
 function setupSuenos() {
   var dlg = $('dreamsDialog'); if (!dlg || !$('dreamSave')) { setTimeout(setupSuenos, 800); return; }
-  addKw('btnDreams', 'arquetipo sincronicidad patron lucido luna jung sombra');
+  addKw('btnDreams', 'arquetipo sincronicidad patron lucido luna jung sombra diccionario pesadilla recurrente visita interpretacion viveza');
+  // pestañas (una sola vez)
+  SUE_TABS.forEach(function (t) {
+    var tb = $('tabSue' + t);
+    if (tb && !tb.dataset.w) { tb.dataset.w = '1'; tb.addEventListener('click', function () { switchSueTab(t); }); }
+  });
   var b = $('btnDreams');
   if (b && !b.dataset.sueWrapped) {
     b.dataset.sueWrapped = '1';
-    b.addEventListener('click', function () { setTimeout(function () { try { renderSuenosPlus(); } catch (e) {} }, 60); });
+    b.addEventListener('click', function () { setTimeout(function () { try { switchSueTab('Anotar'); renderSuenosPlus(); } catch (e) {} }, 60); });
+  }
+  // los selects de Anotar viven en el HTML: si están vacíos, se rellenan desde las listas
+  try {
+    var fill = function (id, arr) { var s = $(id); if (s && s.options && s.options.length < 2 && arr) s.innerHTML = arr.map(function (a) { return '<option>' + a + '</option>'; }).join(''); };
+    fill('suePlusTipo', SUENOS_TIPOS); fill('suePlusArq', SUENOS_ARQ); fill('suePlusEmo', SUENOS_EMO);
+  } catch (e) {}
+  var dq = $('sueDiccQ');
+  if (dq && !dq.dataset.sueBound) {
+    dq.dataset.sueBound = '1';
+    dq.addEventListener('input', function () { try { renderSueDicc(); } catch (e) {} });
   }
   var saveBtn = $('dreamSave');
   if (saveBtn && !saveBtn.dataset.suePlusWrapped) {
@@ -1923,24 +2041,45 @@ function setupSuenos() {
       var txt = ($('dreamText').value || '').trim();
       if (!txt) return;
       try {
-        getSuenos().push({ id: uid('su'), fecha: todayKey(), texto: clean(txt, 600), arq: $('suePlusArq') ? $('suePlusArq').value : '', emo: $('suePlusEmo') ? $('suePlusEmo').value : '', luc: $('suePlusLuc') ? $('suePlusLuc').checked : false });
+        var tipo = $('suePlusTipo') ? $('suePlusTipo').value : '🌊 Común';
+        var isLuc = ($('suePlusLuc') ? $('suePlusLuc').checked : false) || (tipo.indexOf('Lúcido') >= 0);
+        getSuenos().push({
+          id: uid('su'), fecha: todayKey(),
+          titulo: clean($('suePlusTitulo') ? $('suePlusTitulo').value : '', 60) || txt.split(/\n|。|\./)[0].slice(0, 60) || 'Sueño',
+          tipo: tipo, texto: clean(txt, 800),
+          arq: $('suePlusArq') ? $('suePlusArq').value : '',
+          emo: $('suePlusEmo') ? $('suePlusEmo').value : '',
+          viv: $('suePlusViv') ? +$('suePlusViv').value : 0,
+          msg: clean($('suePlusMsg') ? $('suePlusMsg').value : '', 140),
+          luc: isLuc
+        });
         save();
+        if ($('suePlusTitulo')) $('suePlusTitulo').value = '';
+        if ($('suePlusMsg')) $('suePlusMsg').value = '';
         if ($('suePlusLuc')) $('suePlusLuc').checked = false;
       } catch (e) {}
       setTimeout(function () { try { renderSuenosPlus(); } catch (e) {} }, 60);
     });
   }
-  if ($('suePlusArq')) { try { renderSuenosPlus(); } catch (e) {} return; }
+  if ($('suePlusList')) { try { switchSueTab('Anotar'); renderSuenosPlus(); } catch (e) {} return; }
+  var mount = $('suePlusMount');
   var form = dlg.querySelector('form') || dlg;
   var sec = document.createElement('div');
   sec.innerHTML =
-    '<div class="menstrual-card" style="margin-top:10px;border-color:var(--gold)"><h4>🔍 Diario de sueños y sincronicidades</h4>' +
-    '<p class="muted" style="font-size:11px">Al guardar, el sueño queda en la nota del día <b>y</b> en este diario con arquetipo lunar para detectar patrones. Conecta con 🪞 Autoconocimiento (Jung) y 🌸 Ciclo.</p>' +
-    '<div class="conv-row"><label>Arquetipo <select id="suePlusArq">' + SUENOS_ARQ.map(function (a) { return '<option>' + a + '</option>'; }).join('') + '</select></label><label>Emoción <select id="suePlusEmo">' + SUENOS_EMO.map(function (a) { return '<option>' + a + '</option>'; }).join('') + '</select></label><label class="check-row" style="align-self:flex-end"><input type="checkbox" id="suePlusLuc"> 👁️ lúcido</label></div>' +
+    '<div class="menstrual-card" style="margin-top:2px;border-color:var(--gold)"><h4>🔍 Diario de sueños y sincronicidades</h4>' +
+    '<p class="muted" style="font-size:11px">Lo que anotas en ✍️ Anotar queda aquí con tipo, arquetipo y luna para detectar patrones. Conecta con 🪞 Autoconocimiento (Jung) y 🌸 Ciclo.</p>' +
     '<div id="suePlusPatrones" class="chip" style="display:block;white-space:normal;margin-top:6px"></div>' +
-    '<div id="suePlusList" class="habits-list" style="margin-top:8px;max-height:240px"></div></div>';
-  var closeRow = form.querySelector('.dlg-actions:last-child');
-  if (closeRow) form.insertBefore(sec, closeRow); else form.appendChild(sec);
+    '<div class="conv-row" style="margin-top:8px"><label style="flex:2">🔎 Buscar en mi diario <input type="text" id="suePlusQ" placeholder="ej: río, abuela, miedo..." maxlength="30"></label></div>' +
+    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="suePlusShare" class="btn" style="width:auto">📤 Compartir diario</button></div>' +
+    '<div id="suePlusList" class="habits-list" style="margin-top:8px;max-height:260px"></div></div>';
+  if (mount) mount.appendChild(sec);
+  else { var closeRow = form.querySelector('.dlg-actions:last-child'); if (closeRow) form.insertBefore(sec, closeRow); else form.appendChild(sec); }
+  if ($('suePlusQ')) $('suePlusQ').addEventListener('input', function () { try { renderSuenosPlus(); } catch (e) {} });
+  if ($('suePlusShare')) $('suePlusShare').onclick = function () {
+    var dd = getSuenos();
+    if (!dd.length) return alert('Sin sueños aún');
+    share('💭 Mi diario de sueños (' + dd.length + ')', dd.slice().sort(function (a, b) { return a.fecha.localeCompare(b.fecha); }).map(function (r) { return '· ' + r.fecha + ' — ' + (r.titulo || 'Sueño') + ' [' + (r.tipo || '') + ' · ' + (r.emo || '') + '] ' + (r.texto || '').slice(0, 120); }).join('\n'));
+  };
   try { renderSuenosPlus(); } catch (e) {}
 }
 /* ---------- A4: meditación ---------- */

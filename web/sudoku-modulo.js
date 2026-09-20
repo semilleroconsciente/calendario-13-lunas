@@ -718,25 +718,35 @@ function openSudoku() {
 
 /* ================= SETUP ================= */
 function injectButton() {
-  var g = document.querySelector('.action-group[data-group="mente"] .group-btns');
-  if (!g || $('btnSudoku')) return;
+  var g = document.querySelector('.action-group[data-group="aprender"] .group-btns');
+  if (!g) g = document.querySelector('.action-group[data-group="linaje"] .group-btns');
+  if (!g) return;
+  if ($('btnSudoku')) {
+    try {
+      var cur = $('btnSudoku');
+      if (cur.parentNode !== g) g.appendChild(cur);
+      try { cur.setAttribute('data-sub', 'juegos'); } catch (eS) {}
+      if (typeof reordenarAcciones === 'function') reordenarAcciones();
+    } catch (eM) {}
+    return;
+  }
   var btn = document.createElement('button');
   btn.id = 'btnSudoku'; btn.className = 'btn'; btn.type = 'button';
   btn.textContent = '🔢 Sudoku';
+  try { btn.setAttribute('data-sub', 'juegos'); } catch (eS) {}
   btn.setAttribute('data-keywords', 'sudoku puzzle numeros logica concentracion memoria calculo pasatiempo juego mente 9x9');
-  var ref = $('btnAjedrez') || $('btnMemory');
-  if (ref && ref.parentNode === g && ref.nextSibling) g.insertBefore(btn, ref.nextSibling);
-  else g.appendChild(btn);
+  g.appendChild(btn);
   try {
     if (typeof ALL_BTNS !== 'undefined' && ALL_BTNS.push && ALL_BTNS.indexOf('btnSudoku') < 0) ALL_BTNS.push('btnSudoku');
   } catch (e) {}
   try { if (typeof updateGroupCounts === 'function') updateGroupCounts(); } catch (e) {}
   try { if (typeof applyVisibility === 'function') applyVisibility(); } catch (e) {}
+  try { if (typeof reordenarAcciones === 'function') reordenarAcciones(); } catch (e) {}
 }
 function injectConfig() {
   var groups = document.querySelectorAll('#configDialog .config-group h5');
   for (var i = 0; i < groups.length; i++) {
-    if (/Mente/.test(groups[i].textContent) && !groups[i].parentNode.querySelector('[data-btn="btnSudoku"]')) {
+    if (/Aprender/.test(groups[i].textContent) && !groups[i].parentNode.querySelector('[data-btn="btnSudoku"]')) {
       var lab = document.createElement('label');
       lab.className = 'check-row';
       lab.innerHTML = '<input type="checkbox" data-btn="btnSudoku" checked> 🔢 Sudoku';
