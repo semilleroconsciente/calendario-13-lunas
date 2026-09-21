@@ -1,7 +1,7 @@
 // Service Worker — Calendario 13 Lunas (offline-first, tolerante a versiones ?v=)
-// v24: fix hidroponia-modulo.js (mats string -> array, v=2)
+// v27: + talleres-penco.js (Talleres y Actividades Penco en Territorio)
 
-const CACHE = 'cal13-v24-offline';
+const CACHE = 'cal13-v27-offline';
 
 // Lista completa de archivos que usa index.html (bare + con ?v=).
 // Si se agrega un JS nuevo en index.html, agregarlo aquí también (bare y ?v=).
@@ -52,6 +52,8 @@ const CORE = [
   './info-clave.js?v=1',
   './psicologia-modulo.js',
   './psicologia-modulo.js?v=1',
+  './neurodiversidad-modulo.js',
+  './neurodiversidad-modulo.js?v=1',
   './adolescencia-modulo.js',
   './adolescencia-modulo.js?v=1',
   './etapas-vida-modulo.js',
@@ -64,6 +66,12 @@ const CORE = [
   './hidroponia-modulo.js?v=2',
   './huerta-modulo.js',
   './huerta-modulo.js?v=1',
+  './mecanica-modulo.js',
+  './mecanica-modulo.js?v=1',
+  './plantas-modulo.js',
+  './plantas-modulo.js?v=1',
+  './talleres-penco.js',
+  './talleres-penco.js?v=1',
   './web-api.js',
   './web-api.js?v=8',
   './donate.json',

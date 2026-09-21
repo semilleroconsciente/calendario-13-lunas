@@ -191,7 +191,7 @@ var KIMUN = [
 
 /* ---------- inyeccion de botones en grupos existentes ---------- */
 var NUEVOS_BTNS = [
-  { id: 'btnAgua', txt: '💧 Agua', kw: 'agua lluvia estanque pozo milimetros reserva litros sequia corte rio rios medicion nivel ph', grupo: 'territorio', sub: 'tierra' },
+  { id: 'btnAgua', txt: '💧 Agua', kw: 'agua lluvia estanque pozo milimetros reserva litros sequia corte rio rios medicion nivel ph riego goteo mulch cosecha techo potabilizar cloro filtro aguas grises ahorro consumo medidor essbio emergencia', grupo: 'territorio', sub: 'tierra' },
   { id: 'btnBodega', txt: '🍯 La Bodega', kw: 'bodega conservas fermentos mermelada chucrut kombucha deshidratado frasco caducidad maduracion lunar', grupo: 'hogar', sub: 'casa' },
   { id: 'btnCrianza', txt: '🧒 Crianza', kw: 'crianza infantil niños niñas hijos pedagogia montessori waldorf pikler reggio disciplina positiva juego infancia educacion', grupo: 'aprender', sub: 'infancias' },
   { id: 'btnNudos', txt: '🪢 Nudos y Redes', kw: 'nudos amarras redes pesca ballestrinque as de guia pescador kayak camping entutorado tejer reparar', grupo: 'territorio', sub: 'mar' },
@@ -785,73 +785,336 @@ function setupTrafFusion() {
 }
 
 /* ============================================================
-   4) AGUA (lluvia y estanques)
+   4) AGUA — lluvia, estanque, riego, casa, calidad y emergencia
+   Penco: cortes ESSBIO, pozos y lluvia Pukem + sequía Walüng.
+   Todo local y privado por usuario.
    ============================================================ */
-function getAguaCfg() { var o = store('aguaCfg', { cap: 1000, nivel: 500, consumo: 60 }); if (typeof o !== 'object') return { cap: 1000, nivel: 500, consumo: 60 }; return o; }
+var AGUA_RIEGO_GUIA = [
+  { n: 'Horario pencono', ico: '🌅', txt: 'Verano (Walüng): riega 06–09h profundo, nunca de noche encharcado (babosas y hongos). Invierno (Pukem): solo si pasan 7 días sin lluvia. Con viento sur fuerte no riegues por aspersión: se evapora la mitad.' },
+  { n: 'Cuánto por cultivo', ico: '🥬', txt: 'Hoja (lechuga, acelga): 4–6 L/m²/día en verano, 2–3 en primavera. Tomate/zapallo con fruto: 6–8 L/planta/día en Walüng con mulch. Hierbas y nativo establecido: 1–2 riegos/semana. Maceta al sol: revisa con dedo a 3 cm, si sale seco riega.' },
+  { n: 'Mulch: 1 riego de cada 3 ahorrado', ico: '🍂', txt: 'Capa 5–7 cm de paja, hojas de boldo, viruta o cartón picado. Baja evaporación, frena maleza y alimenta lombriz. No pegues el mulch al tallo (pudre): deja 3 cm libres.' },
+  { n: 'Goteo casero', ico: '💧', txt: 'Botella 2 L enterrada con 2 hoyitos = 1 día para 1 tomate. Línea con goteros 2–4 L/h, 30–60 min en verano. Un tambor en altura (1 m) da presión para 10 m de cinta sin bomba.' },
+  { n: 'Riego y luna', ico: '🌙', txt: 'Creciente–llena: la savia sube, almácigos y trasplantes piden agua pareja. Menguante: riega menos, es tiempo de podar, desmalezar y limpiar estanques. Nueva: revisa canales y repara fugas.' },
+  { n: 'Suelo Penco', ico: '🪱', txt: 'Arcilla de Penco se encharca: riega menos veces pero profundo + compost para drenar. Arena de Lirquén–Playa Negra se seca: riega más seguido + mulch grueso. Prueba del puño: bola que se desarma = punto justo.' }
+];
+var AGUA_CASA_TIPS = [
+  { n: 'Ducha', ico: '🚿', txt: 'Ducha 5 min ≈ 45 L (con cabezal eficiente 9 L/min). Cierra mientras enjabonas: ahorras 20 L. Un balde en la ducha junta 8–10 L para el WC o riego.' },
+  { n: 'WC', ico: '🚽', txt: 'Estanque clásico 10–12 L por descarga. Botella de 1 L dentro del estanque ahorra 1 L por descarga sin perder fuerza. Doble descarga o descarga corta cuando se pueda.' },
+  { n: 'Lavadora y loza', ico: '👕', txt: 'Carga llena: 50–70 L por lavado. Reutiliza el agua del enjuague para patio (sin cloro fuerte). Lava loza con tina, no con chorro: 40 L vs 80 L.' },
+  { n: 'Fugas: el enemigo invisible', ico: '🔍', txt: 'Goteo 1 gota/seg = 2.500 L/mes. Revisa: medidor girando con todo cerrado = fuga. Estanque WC con colorante: si tiñe la taza sin descargar, cambia el flotador ($3 mil).' },
+  { n: 'Aguas grises', ico: '♻️', txt: 'Ducha + lavamanos + lavadora (sin cloro ni pañales) sirven para frutales y ornamentales con filtro de malla + trampa de grasa. NO a hortalizas de hoja cruda ni a pozos. Jabón popeye/biodegradable sí, suavizante no.' },
+  { n: 'Meta familiar', ico: '🎯', txt: 'Chile urbano ≈ 130–170 L/persona/día. Meta Penco resiliente: 80–100 L/persona/día sin sufrir. 4 personas × 90 L = 360 L/día = 10.800 L/mes.' }
+];
+var AGUA_CALIDAD_GUIA = [
+  { n: '¿Es segura mi agua?', ico: '🔬', txt: 'Clara + sin olor + pH 6.5–8.5 = buen indicio (no garantía). Turbia, color té, olor a huevo podrido o sabor metálico = no tomar sin tratar. Pozo nuevo o tras temporal: hervir o clorar 1 semana.' },
+  { n: 'Hervir (lo más seguro)', ico: '♨️', txt: 'Ebullición franca 3 min (Penco está a nivel del mar: 1 min basta, 3 min da margen). Guarda en bidón limpio tapado máx 3 días. Para guaguas y enfermos: siempre hervida.' },
+  { n: 'Cloración de emergencia', ico: '🧪', txt: 'Cloro doméstico SIN aroma (4–6%): 2 gotas por litro de agua clara, 4 si está turbia (filtrar primero con paño). Agita, espera 30 min. Debe oler leve a cloro; si no, repite dosis. 1 tapa (≈5 ml) por 20 L aprox.' },
+  { n: 'Filtro casero + sol (SODIS)', ico: '☀️', txt: 'Filtra con paño → botella PET clara 2 L al sol 6 h (2 días si nublado). Mata virus y bacterias, no químicos. Primer agua del techo tras sequía: descarta (first flush 20 L con desviador o balde).' },
+  { n: 'Estanque sano', ico: '🛢️', txt: 'Tapa oscura siempre (sin luz = sin algas). Limpieza 2×/año (Menguante Pukem): vacía, escobilla con cloro 100 ml/10 L, enjuaga. Malla en entrada + rebalse con trampa de bichos.' }
+];
+function getAguaCfg() {
+  var d = { cap: 1000, nivel: 500, consumo: 60, techo: 40, personas: 4, meta: 100, riegoM2: 10 };
+  var o = store('aguaCfg', d);
+  if (typeof o !== 'object' || !o) return { cap: 1000, nivel: 500, consumo: 60, techo: 40, personas: 4, meta: 100, riegoM2: 10 };
+  ['cap', 'nivel', 'consumo', 'techo', 'personas', 'meta', 'riegoM2'].forEach(function (k) { if (typeof o[k] !== 'number') o[k] = d[k]; });
+  return o;
+}
 function getLluvia() { var a = store('lluviaLog', []); return Array.isArray(a) ? a : []; }
 function getRios() { var a = store('riosLog', []); return Array.isArray(a) ? a : []; }
+function getAguaRiego() { var a = store('aguaRiegoLog', []); return Array.isArray(a) ? a : []; }
+function getAguaCasa() { var a = store('aguaCasaLog', []); return Array.isArray(a) ? a : []; }
+function getAguaCal() { var a = store('aguaCalLog', []); return Array.isArray(a) ? a : []; }
+function aguaCosechaL(mm, m2) { return Math.round((parseFloat(mm) || 0) * (parseFloat(m2) || 0) * 0.8); }
+function aguaMesMM(list, ym) { return list.filter(function (r) { return (r.fecha || '').slice(0, 7) === ym; }).reduce(function (a, r) { return a + (parseFloat(r.mm) || 0); }, 0); }
+function switchAguaTab(t) {
+  [['Hoy', 'aguaHoyPanel'], ['Estanque', 'aguaEstPanel'], ['Lluvia', 'aguaLluPanel'], ['Riego', 'aguaRiePanel'], ['Casa', 'aguaCasaPanel'], ['Calidad', 'aguaCalPanel']].forEach(function (x) {
+    var p = $(x[1]); if (p) p.classList.toggle('hidden', x[0] !== t);
+    var b = $('tabAgua' + x[0]); if (b) b.classList.toggle('btn-accent', x[0] === t);
+  });
+}
+function renderAguaHoy() {
+  var box = $('aguaHoyBox'); if (!box) return;
+  var cfg = getAguaCfg(), data = getLluvia();
+  var ym = todayKey().slice(0, 7);
+  var mesMM = aguaMesMM(data, ym);
+  var anioMM = data.filter(function (r) { return (r.fecha || '').slice(0, 4) === ym.slice(0, 4); }).reduce(function (a, r) { return a + (parseFloat(r.mm) || 0); }, 0);
+  var dias = cfg.consumo > 0 ? Math.floor(cfg.nivel / cfg.consumo) : 0;
+  var pct = cfg.cap > 0 ? Math.min(100, Math.round(cfg.nivel / cfg.cap * 100)) : 0;
+  var cosechaMes = aguaCosechaL(mesMM, cfg.techo);
+  var l = null; try { l = lunaDeFecha(todayKey()); } catch (e) {}
+  var consejoLuna = !l ? 'Mide tu estanque 1 vez por semana.' : l.luna <= 3 ? 'Pukem: limpia canaletas y estanque en menguante. Cada 10 mm sobre tu techo de ' + cfg.techo + ' m² ≈ ' + aguaCosechaL(10, cfg.techo) + ' L cosechables.' : l.luna <= 6 ? 'Pewü: riega almácigos parejo en creciente. Revisa goteros antes del calor.' : l.luna <= 9 ? 'Walüng: sombrea el estanque y riega 06–09h. Si tu autonomía < 7 días, prioriza goteo + mulch.' : 'Rimü: últimas lluvias para llenar. Repara fugas y guarda agua para el verano.';
+  var alerta = dias < 3 ? '<p style="font-size:12px;color:#ff9a9a">🔴 Reserva crítica (' + dias + ' días): solo consumo humano + animales. Corta riego ornamental.</p>'
+    : dias < 7 ? '<p style="font-size:12px;color:#e8c56a">🟡 Reserva baja (' + dias + ' días): goteo + reutiliza ducha/WC. Revisa fugas hoy.</p>'
+    : '<p style="font-size:12px;color:#8fd694">🟢 Reserva sana: ' + dias + ' días de autonomía.</p>';
+  box.innerHTML = '<h4>💧 Hoy · ' + pct + '% (' + cfg.nivel + ' / ' + cfg.cap + ' L)</h4>' +
+    '<div class="astro-bar" style="height:10px;margin:6px 0"><i style="width:' + pct + '%"></i></div>' +
+    '<p class="muted" style="font-size:12px">🚰 Consumo ~' + cfg.consumo + ' L/día → <b>' + dias + ' días</b> · 🌧️ Este mes <b>' + mesMM.toFixed(1) + ' mm</b> (≈' + cosechaMes + ' L en tu techo) · Año <b>' + anioMM.toFixed(1) + ' mm</b></p>' +
+    '<p class="muted" style="font-size:12px">🌙 ' + esc(lunaTxt(todayKey()) || 'Luna actual') + ' — ' + esc(consejoLuna) + '</p>' + alerta;
+}
 function renderRios() {
   var box = $('riosList'); if (!box) return;
-  var data = getRios().slice().sort(function (a, b) { return b.fecha.localeCompare(a.fecha); }).slice(0, 40);
-  if (!data.length) { box.innerHTML = '<p class="muted">Sin mediciones. Registra tu primera medición del río.</p>'; return; }
+  var data = getRios().slice().sort(function (a, b) { return (b.fecha || '').localeCompare(a.fecha || ''); }).slice(0, 40);
+  if (!data.length) { box.innerHTML = '<p class="muted">Sin mediciones. Registra tu primera medición del estero/río.</p>'; return; }
   box.innerHTML = data.map(function (r) {
-    return '<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center"><span>🌊 <b>' + esc(r.rio) + '</b> · ' + r.fecha +
-      ' · nivel ' + esc(r.nivel) + ' cm' + (r.ph ? ' · pH ' + esc(r.ph) : '') + (r.nota ? ' <span class="muted">· ' + esc(r.nota) + '</span>' : '') +
+    return '<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center"><span>🌊 <b>' + esc(r.rio) + '</b> · ' + esc(r.fecha || '') +
+      ' · nivel ' + esc(r.nivel) + ' cm' + (r.ph ? ' · pH ' + esc(r.ph) : '') + (r.turb ? ' · ' + esc(r.turb) : '') + (r.nota ? ' <span class="muted">· ' + esc(r.nota) + '</span>' : '') +
       '</span><button class="btn" style="width:auto;font-size:11px;color:#e76e8a" data-del="' + r.id + '">✕</button></div>';
   }).join('');
   box.querySelectorAll('[data-del]').forEach(function (b) { b.onclick = function () { var d = getRios(); var i = d.findIndex(function (x) { return x.id === b.getAttribute('data-del'); }); if (i >= 0) d.splice(i, 1); save(); renderRios(); }; });
 }
 function renderAgua() {
-  var cfg = getAguaCfg(), data = getLluvia();
-  var mes = data.filter(function (r) { return r.fecha.slice(0, 7) === todayKey().slice(0, 7); }).reduce(function (a, r) { return a + (parseFloat(r.mm) || 0); }, 0);
-  var dias = cfg.consumo > 0 ? Math.floor(cfg.nivel / cfg.consumo) : 0;
-  var pct = cfg.cap > 0 ? Math.min(100, Math.round(cfg.nivel / cfg.cap * 100)) : 0;
-  $('aguaResumen').innerHTML = '<h4>💧 Reserva · ' + pct + '%</h4>' +
-    '<div class="astro-bar" style="height:10px;margin:6px 0"><i style="width:' + pct + '%"></i></div>' +
-    '<p class="muted" style="font-size:12px">🚰 ' + cfg.nivel + ' / ' + cfg.cap + ' L · consumo ~' + cfg.consumo + ' L/día → <b>' + dias + ' días de autonomía</b><br>🌧️ Lluvia este mes: <b>' + mes.toFixed(1) + ' mm</b> (' + data.length + ' registros)</p>' +
-    (dias < 7 ? '<p style="font-size:12px;color:#ff9a9a">⚠️ Reserva baja: prioriza riego por goteo y reutiliza aguas grises.</p>' : '<p style="font-size:12px;color:#8fd694">✓ Reserva sana para Penco y cortes puntuales.</p>');
-  var box = $('lluviaList');
-  if (!data.length) box.innerHTML = '<p class="muted">Sin lluvias registradas.</p>';
-  else box.innerHTML = data.slice().sort(function (a, b) { return b.fecha.localeCompare(a.fecha); }).slice(0, 40).map(function (r) {
-    return '<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center"><span>🌧️ <b>' + r.mm + ' mm</b> · ' + r.fecha + (r.nota ? ' <span class="muted">· ' + esc(r.nota) + '</span>' : '') + '</span><button class="btn" style="width:auto;font-size:11px;color:#e76e8a" data-del="' + r.id + '">✕</button></div>';
+  try { renderAguaHoy(); } catch (e) {}
+  // --- Lluvia: lista + resumen 6 meses ---
+  try {
+    var data = getLluvia();
+    var box = $('lluviaList');
+    if (box) {
+      if (!data.length) box.innerHTML = '<p class="muted">Sin lluvias registradas.</p>';
+      else box.innerHTML = data.slice().sort(function (a, b) { return (b.fecha || '').localeCompare(a.fecha || ''); }).slice(0, 40).map(function (r) {
+        var lit = r.techo ? ' → ~' + aguaCosechaL(r.mm, r.techo) + ' L' : '';
+        return '<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center"><span>🌧️ <b>' + esc(String(r.mm)) + ' mm</b> · ' + esc(r.fecha || '') + lit + (r.nota ? ' <span class="muted">· ' + esc(r.nota) + '</span>' : '') + '</span><button class="btn" style="width:auto;font-size:11px;color:#e76e8a" data-del="' + r.id + '">✕</button></div>';
+      }).join('');
+      box.querySelectorAll('[data-del]').forEach(function (b) { b.onclick = function () { var d = getLluvia(); var i = d.findIndex(function (x) { return x.id === b.getAttribute('data-del'); }); if (i >= 0) d.splice(i, 1); save(); renderAgua(); }; });
+    }
+    var st = $('lluviaStats');
+    if (st) {
+      var out = [], d0 = new Date(todayKey() + 'T12:00:00');
+      for (var i = 5; i >= 0; i--) {
+        var dd = new Date(d0); dd.setMonth(dd.getMonth() - i);
+        var ym = dd.getFullYear() + '-' + String(dd.getMonth() + 1).padStart(2, '0');
+        out.push(ym.slice(5) + ': <b>' + aguaMesMM(data, ym).toFixed(0) + ' mm</b>');
+      }
+      var totAnio = data.filter(function (r) { return (r.fecha || '').slice(0, 4) === todayKey().slice(0, 4); }).reduce(function (a, r) { return a + (parseFloat(r.mm) || 0); }, 0);
+      st.innerHTML = 'Últimos 6 meses — ' + out.join(' · ') + '<br>Total ' + todayKey().slice(0, 4) + ': <b>' + totAnio.toFixed(1) + ' mm</b> en ' + data.length + ' registros. Penco: ~1.000–1.300 mm/año, 80% en Pukem (may–ago).';
+    }
+  } catch (e) {}
+  try { renderRios(); } catch (e) {}
+  try { renderAguaRiego(); } catch (e) {}
+  try { renderAguaCasa(); } catch (e) {}
+  try { renderAguaCal(); } catch (e) {}
+}
+function renderAguaRiego() {
+  var box = $('riegoList'); if (!box) return;
+  var data = getAguaRiego().slice().sort(function (a, b) { return (b.fecha || '').localeCompare(a.fecha || ''); }).slice(0, 30);
+  var tot7 = getAguaRiego().filter(function (r) {
+    try { return (Date.now() - new Date(r.fecha + 'T12:00:00').getTime()) < 7 * 864e5; } catch (e) { return false; }
+  }).reduce(function (a, r) { return a + (parseFloat(r.litros) || 0); }, 0);
+  var st = $('riegoStats');
+  if (st) st.textContent = data.length + ' riegos · ~' + Math.round(tot7) + ' L últimos 7 días' + (tot7 > 500 ? ' — revisa mulch/goteo si sube en Walüng' : '');
+  if (!data.length) { box.innerHTML = '<p class="muted">Sin riegos anotados. Registra el primero arriba.</p>'; return; }
+  box.innerHTML = data.map(function (r) {
+    return '<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center"><span>💧 <b>' + esc(String(r.litros || '?')) + ' L</b> · ' + esc(r.fecha || '') + ' · ' + esc(r.sector || 'huerta') + ' <span class="muted">· ' + esc(r.sistema || '') + (r.nota ? ' · ' + esc(r.nota) : '') + '</span></span><button class="btn" style="width:auto;font-size:11px;color:#e76e8a" data-del="' + r.id + '">✕</button></div>';
   }).join('');
-  box.querySelectorAll('[data-del]').forEach(function (b) { b.onclick = function () { var d = getLluvia(); var i = d.findIndex(function (x) { return x.id === b.getAttribute('data-del'); }); if (i >= 0) d.splice(i, 1); save(); renderAgua(); }; });
-  try { renderRios(); } catch (e) {} // rios
+  box.querySelectorAll('[data-del]').forEach(function (b) { b.onclick = function () { var d = getAguaRiego(); var i = d.findIndex(function (x) { return x.id === b.getAttribute('data-del'); }); if (i >= 0) d.splice(i, 1); save(); renderAguaRiego(); try { renderAguaHoy(); } catch (e) {} }; });
+}
+function renderAguaCasa() {
+  var box = $('casaList'); if (!box) return;
+  var data = getAguaCasa().slice().sort(function (a, b) { return (b.fecha || '').localeCompare(a.fecha || ''); });
+  var st = $('casaStats');
+  var cfg = getAguaCfg();
+  if (data.length >= 2) {
+    var a = data[data.length - 2], b = data[data.length - 1];
+    try {
+      var d1 = new Date(a.fecha + 'T12:00:00').getTime(), d2 = new Date(b.fecha + 'T12:00:00').getTime();
+      var dias = Math.max(1, Math.round((d2 - d1) / 864e5));
+      var m3 = (parseFloat(b.m3) || 0) - (parseFloat(a.m3) || 0);
+      var lpd = m3 > 0 ? Math.round(m3 * 1000 / dias / (cfg.personas || 1)) : 0;
+      if (st) st.innerHTML = 'Entre ' + esc(a.fecha) + ' y ' + esc(b.fecha) + ': <b>' + Math.round(m3 * 1000) + ' L</b> en ' + dias + ' días → <b>' + lpd + ' L/persona/día</b> (meta ' + cfg.meta + ')' + (lpd > cfg.meta ? ' ⚠️ sobre la meta: revisa fugas y ducha.' : ' ✓ dentro de la meta.');
+    } catch (e) { if (st) st.textContent = data.length + ' lecturas.'; }
+  } else if (st) st.textContent = data.length ? '1 lectura: agrega una segunda para calcular L/persona/día.' : 'Sin lecturas. Anota tu medidor 1 vez por semana.';
+  if (!data.length) { box.innerHTML = '<p class="muted">Sin lecturas de medidor.</p>'; return; }
+  box.innerHTML = data.slice(-12).reverse().map(function (r) {
+    return '<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center"><span>🧾 <b>' + esc(String(r.m3)) + ' m³</b> · ' + esc(r.fecha || '') + (r.nota ? ' <span class="muted">· ' + esc(r.nota) + '</span>' : '') + '</span><button class="btn" style="width:auto;font-size:11px;color:#e76e8a" data-del="' + r.id + '">✕</button></div>';
+  }).join('');
+  box.querySelectorAll('[data-del]').forEach(function (b) { b.onclick = function () { var d = getAguaCasa(); var i = d.findIndex(function (x) { return x.id === b.getAttribute('data-del'); }); if (i >= 0) d.splice(i, 1); save(); renderAguaCasa(); }; });
+}
+function renderAguaCal() {
+  var box = $('calList'); if (!box) return;
+  var data = getAguaCal().slice().sort(function (a, b) { return (b.fecha || '').localeCompare(a.fecha || ''); }).slice(0, 30);
+  var st = $('calStats');
+  if (st) {
+    var malas = data.filter(function (r) { var ph = parseFloat(r.ph); return (r.turb && /turbia|muy turbia/i.test(r.turb)) || (!isNaN(ph) && (ph < 6.5 || ph > 8.5)); }).length;
+    st.textContent = data.length ? (data.length + ' controles' + (malas ? ' · ' + malas + ' con turbidez/pH fuera de rango ⚠️' : ' · todos en rango ✓')) : 'Sin controles. Parte con 1 por origen (pozo, estanque, río).';
+  }
+  if (!data.length) { box.innerHTML = '<p class="muted">Sin controles de calidad.</p>'; return; }
+  box.innerHTML = data.map(function (r) {
+    return '<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center"><span>🔬 <b>' + esc(r.origen || 'agua') + '</b> · ' + esc(r.fecha || '') + (r.ph ? ' · pH ' + esc(r.ph) : '') + (r.turb ? ' · ' + esc(r.turb) : '') + (r.cloro ? ' · cloro ' + esc(r.cloro) : '') + (r.nota ? ' <span class="muted">· ' + esc(r.nota) + '</span>' : '') + '</span><button class="btn" style="width:auto;font-size:11px;color:#e76e8a" data-del="' + r.id + '">✕</button></div>';
+  }).join('');
+  box.querySelectorAll('[data-del]').forEach(function (b) { b.onclick = function () { var d = getAguaCal(); var i = d.findIndex(function (x) { return x.id === b.getAttribute('data-del'); }); if (i >= 0) d.splice(i, 1); save(); renderAguaCal(); }; });
+}
+function paintAguaGuias() {
+  var b1 = $('aguaRiegoGuia');
+  if (b1 && !b1.dataset.done) {
+    b1.dataset.done = '1';
+    b1.innerHTML = AGUA_RIEGO_GUIA.map(function (g) {
+      return '<div class="si-card"><h4>' + g.ico + ' ' + esc(g.n) + '</h4><p>' + esc(g.txt) + '</p></div>';
+    }).join('');
+  }
+  var b2 = $('aguaCasaGuia');
+  if (b2 && !b2.dataset.done) {
+    b2.dataset.done = '1';
+    b2.innerHTML = AGUA_CASA_TIPS.map(function (g) {
+      return '<div class="si-card"><h4>' + g.ico + ' ' + esc(g.n) + '</h4><p>' + esc(g.txt) + '</p></div>';
+    }).join('');
+  }
+  var b3 = $('aguaCalGuia');
+  if (b3 && !b3.dataset.done) {
+    b3.dataset.done = '1';
+    b3.innerHTML = AGUA_CALIDAD_GUIA.map(function (g) {
+      return '<div class="si-card"><h4>' + g.ico + ' ' + esc(g.n) + '</h4><p>' + esc(g.txt) + '</p></div>';
+    }).join('');
+  }
 }
 function setupAgua() {
-  makeDialog('aguaDialog', '💧 Agua',
-    'Para Penco y zonas rurales con cortes o agua de pozo/lluvia. Registra milímetros y estima cuántos litros quedan.',
-    '<div id="aguaResumen" class="menstrual-card" style="border-color:var(--gold)"></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>⚙️ Mi estanque</h4><div class="conv-row"><label>Capacidad (L) <input type="number" id="aguaCap" min="0" step="50"></label><label>Nivel actual (L) <input type="number" id="aguaNivel" min="0" step="10"></label><label>Consumo día (L) <input type="number" id="aguaCons" min="0" step="5"></label></div>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="aguaSave" class="btn btn-accent" style="width:auto">💾 Guardar estanque</button></div>' +
-    '<p class="muted" style="font-size:10px">Tip: 1 mm de lluvia sobre 1 m² de techo ≈ 1 litro cosechable (descuenta 20% por pérdidas).</p></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>🌧️ Registrar lluvia</h4><div class="conv-row"><label>Fecha <input type="date" id="lluFecha"></label><label>mm <input type="number" id="lluMm" min="0" step="0.5" placeholder="ej: 12.5"></label><label>m² techo (opcional) <input type="number" id="lluTecho" min="0" step="1" placeholder="40"></label></div>' +
+  makeDialog('aguaDialog', '💧 Agua · estanque, lluvia, riego y casa',
+    'Para Penco con cortes, pozo o lluvia: reserva, cosecha del techo, riego de huerta, ahorro en casa y agua segura. Todo <b>privado y local</b>.',
+    '<div class="timer-tabs" style="flex-wrap:wrap;margin-bottom:10px">' +
+    '<button type="button" id="tabAguaHoy" class="btn btn-accent" style="width:auto">🌙 Hoy</button>' +
+    '<button type="button" id="tabAguaEstanque" class="btn" style="width:auto">🛢️ Estanque</button>' +
+    '<button type="button" id="tabAguaLluvia" class="btn" style="width:auto">🌧️ Lluvia</button>' +
+    '<button type="button" id="tabAguaRiego" class="btn" style="width:auto">💧 Riego</button>' +
+    '<button type="button" id="tabAguaCasa" class="btn" style="width:auto">🏠 Casa</button>' +
+    '<button type="button" id="tabAguaCalidad" class="btn" style="width:auto">🔬 Calidad y Ríos</button></div>' +
+    '<div id="aguaHoyPanel"><div id="aguaHoyBox" class="menstrual-card" style="border-color:var(--gold)"></div>' +
+    '<div class="menstrual-card" style="margin-top:10px;border-color:#e76e8a55"><h4>🚨 Corte de agua — kit 72 h (Penco)</h4>' +
+    '<p class="muted" style="font-size:12px;line-height:1.6">Guarda <b>15 L/persona/día × 3 días</b> (toma + cocina + higiene mínima). Familia de 4 = <b>180 L</b> en bidones tapados, rotados cada 6 meses.<br>' +
+    '1) Llena ahora botellas + tambor si anuncian corte. 2) WC: balde + agua de riego/lluvia. 3) Avisa a vecinos mayores. 4) Reclamo ESSBIO 600 331 1000 / *3311 · Superintendencia SISS www.siss.cl · Municipalidad Penco 41 226 1033.<br>' +
+    '<span style="font-size:11px">Tras el corte: deja correr 2 min antes de tomar (barro en cañería) y hierve 3 min el primer día.</span></p></div>' +
+    '<div class="si-card" style="margin-top:10px"><h4>🌊 Penco en 1 minuto</h4><p>Pukem (may–ago) trae 80% de la lluvia: llena y limpia. Walüng (dic–feb) seca pozos y sube cortes: mulch + goteo + aguas grises. 1 mm sobre 1 m² de techo ≈ 1 L; con pérdidas ≈ 0.8 L.</p></div></div>' +
+    '<div id="aguaEstPanel" class="hidden"><div class="menstrual-card"><h4>⚙️ Mi estanque y casa</h4>' +
+    '<div class="conv-row"><label>Capacidad (L) <input type="number" id="aguaCap" min="0" step="50"></label><label>Nivel actual (L) <input type="number" id="aguaNivel" min="0" step="10"></label><label>Consumo día (L) <input type="number" id="aguaCons" min="0" step="5"></label></div>' +
+    '<div class="conv-row"><label>m² techo <input type="number" id="aguaTecho" min="0" step="1"></label><label>Personas <input type="number" id="aguaPers" min="1" max="20" step="1"></label><label>Meta L/pers/día <input type="number" id="aguaMeta" min="20" max="300" step="5"></label></div>' +
+    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="aguaSave" class="btn btn-accent" style="width:auto">💾 Guardar</button></div></div>' +
+    '<div class="menstrual-card" style="margin-top:10px"><h4>🧮 Cosecha del techo</h4><div class="conv-row"><label>Lluvia (mm) <input type="number" id="cosMm" min="0" step="0.5" placeholder="ej: 20"></label><label>Techo (m²) <input type="number" id="cosTecho" min="0" step="1" placeholder="40"></label></div>' +
+    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="cosCalc" class="btn" style="width:auto">Calcular</button></div>' +
+    '<div id="cosOut" class="chip" style="margin-top:6px;display:block;white-space:normal">—</div>' +
+    '<p class="muted" style="font-size:10px">Fórmula: mm × m² × 0.8 (20% pérdidas en canaleta/first flush). Ej: 20 mm × 40 m² ≈ 640 L.</p></div></div>' +
+    '<div id="aguaLluPanel" class="hidden"><div class="menstrual-card"><h4>🌧️ Registrar lluvia</h4><div class="conv-row"><label>Fecha <input type="date" id="lluFecha"></label><label>mm <input type="number" id="lluMm" min="0" step="0.5" placeholder="ej: 12.5"></label><label>m² techo (opcional) <input type="number" id="lluTecho" min="0" step="1" placeholder="40"></label></div>' +
     '<label>Nota <input type="text" id="lluNota" placeholder="temporal sur, granizo..." maxlength="60"></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="lluAdd" class="btn btn-accent" style="width:auto">+ Guardar lluvia</button></div>' +
-    '<div id="lluviaList" class="habits-list" style="margin-top:10px;max-height:220px"></div></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>🌊 Bitácora de ríos</h4><div class="conv-row"><label>Río <select id="rioNombre"><option>Estero Penco</option><option>Río Lirquén</option><option>Río Andalién</option><option>Otro</option></select></label><label>Fecha <input type="date" id="rioFecha"></label><label>Nivel (cm) <input type="number" id="rioNivel" min="0" step="1" placeholder="ej: 45"></label><label>pH (opcional) <input type="number" id="rioPh" min="0" max="14" step="0.1" placeholder="7.0"></label></div>' +
+    '<div class="dlg-actions" style="justify-content:flex-start;flex-wrap:wrap"><button type="button" id="lluAdd" class="btn btn-accent" style="width:auto">+ Guardar lluvia</button><button type="button" id="lluShare" class="btn" style="width:auto">📤 Compartir</button><button type="button" id="lluClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar</button></div>' +
+    '<div id="lluviaStats" class="chip" style="margin-top:8px;display:block;white-space:normal"></div>' +
+    '<div id="lluviaList" class="habits-list" style="margin-top:10px;max-height:220px"></div></div></div>' +
+    '<div id="aguaRiePanel" class="hidden"><div class="menstrual-card"><h4>💧 Registrar riego</h4><div class="conv-row"><label>Fecha <input type="date" id="rieFecha"></label><label>Litros <input type="number" id="rieLitros" min="0" step="1" placeholder="ej: 40"></label><label>Sector <input type="text" id="rieSector" placeholder="bancal 1 / tomates" maxlength="30"></label></div>' +
+    '<div class="conv-row"><label>Sistema <select id="rieSis"><option>Goteo</option><option>Manguera / regadera</option><option>Botella enterrada</option><option>Aspersión</option><option>Surco</option></select></label><label>Nota <input type="text" id="rieNota" placeholder="mulch, 06:30, viento sur..." maxlength="60"></label></div>' +
+    '<div class="dlg-actions" style="justify-content:flex-start;flex-wrap:wrap"><button type="button" id="rieAdd" class="btn btn-accent" style="width:auto">+ Guardar riego</button><button type="button" id="rieShare" class="btn" style="width:auto">📤 Compartir</button></div>' +
+    '<div id="riegoStats" class="chip" style="margin-top:8px;display:block;white-space:normal"></div>' +
+    '<div id="riegoList" class="habits-list" style="margin-top:10px;max-height:220px"></div></div>' +
+    '<div class="menstrual-card" style="margin-top:10px"><h4>🧮 ¿Cuánto regar hoy?</h4><div class="conv-row"><label>m² <input type="number" id="rieM2" min="0" step="1" placeholder="10"></label><label>Temporada <select id="rieTemp"><option value="6">Verano Walüng (6 L/m²)</option><option value="4">Primavera Pewü (4 L/m²)</option><option value="2">Otoño Rimü (2 L/m²)</option><option value="0.5">Invierno Pukem (0.5 L/m²)</option></select></label></div>' +
+    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="rieCalc" class="btn" style="width:auto">Calcular</button></div>' +
+    '<div id="rieOut" class="chip" style="margin-top:6px;display:block;white-space:normal">—</div></div>' +
+    '<div id="aguaRiegoGuia" style="display:flex;flex-direction:column;gap:8px;margin-top:10px"></div></div>' +
+    '<div id="aguaCasaPanel" class="hidden"><div class="menstrual-card"><h4>🧾 Lectura del medidor</h4><div class="conv-row"><label>Fecha <input type="date" id="casaFecha"></label><label>Lectura (m³) <input type="number" id="casaM3" min="0" step="0.1" placeholder="ej: 123.5"></label><label>Nota <input type="text" id="casaNota" placeholder="mensual / semanal" maxlength="40"></label></div>' +
+    '<div class="dlg-actions" style="justify-content:flex-start;flex-wrap:wrap"><button type="button" id="casaAdd" class="btn btn-accent" style="width:auto">+ Guardar lectura</button><button type="button" id="casaShare" class="btn" style="width:auto">📤 Compartir</button><button type="button" id="casaClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar</button></div>' +
+    '<div id="casaStats" class="chip" style="margin-top:8px;display:block;white-space:normal"></div>' +
+    '<div id="casaList" class="habits-list" style="margin-top:10px;max-height:200px"></div></div>' +
+    '<div id="aguaCasaGuia" style="display:flex;flex-direction:column;gap:8px;margin-top:10px"></div></div>' +
+    '<div id="aguaCalPanel" class="hidden"><div class="menstrual-card"><h4>🔬 Control de calidad</h4><div class="conv-row"><label>Fecha <input type="date" id="calFecha"></label><label>Origen <select id="calOrigen"><option>Pozo</option><option>Estanque lluvia</option><option>Red ESSBIO</option><option>Estero / río</option><option>Otro</option></select></label></div>' +
+    '<div class="conv-row"><label>pH <input type="number" id="calPh" min="0" max="14" step="0.1" placeholder="7.0"></label><label>Aspecto <select id="calTurb"><option>Clara</option><option>Leve turbia</option><option>Turbia</option><option>Muy turbia / color</option></select></label><label>Cloro <select id="calCloro"><option>—</option><option>Sin olor</option><option>Leve olor ✓</option><option>Fuerte olor</option></select></label></div>' +
+    '<label>Nota <input type="text" id="calNota" placeholder="tras lluvia, hervida, filtrada..." maxlength="60"></label>' +
+    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="calAdd" class="btn btn-accent" style="width:auto">+ Guardar control</button></div>' +
+    '<div id="calStats" class="chip" style="margin-top:8px;display:block;white-space:normal"></div>' +
+    '<div id="calList" class="habits-list" style="margin-top:10px;max-height:200px"></div></div>' +
+    '<div id="aguaCalGuia" style="display:flex;flex-direction:column;gap:8px;margin-top:10px"></div>' +
+    '<div class="menstrual-card" style="margin-top:10px"><h4>🌊 Bitácora de ríos y esteros</h4><div class="conv-row"><label>Río <select id="rioNombre"><option>Estero Penco</option><option>Río Lirquén</option><option>Río Andalién</option><option>Otro</option></select></label><label>Fecha <input type="date" id="rioFecha"></label><label>Nivel (cm) <input type="number" id="rioNivel" min="0" step="1" placeholder="ej: 45"></label></div>' +
+    '<div class="conv-row"><label>pH (opcional) <input type="number" id="rioPh" min="0" max="14" step="0.1" placeholder="7.0"></label><label>Aspecto <select id="rioTurb"><option>Clara</option><option>Leve turbia</option><option>Turbia tras lluvia</option><option>Muy turbia / espuma</option></select></label></div>' +
     '<label>Nota <input type="text" id="rioNota" placeholder="ej: agua clara, subió tras lluvia..." maxlength="60"></label>' +
     '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="rioAdd" class="btn btn-accent" style="width:auto">+ Guardar medición</button></div>' +
-    '<div id="riosList" class="habits-list" style="margin-top:10px;max-height:220px"></div></div>');
-  var b = $('btnAgua'); if (b) { try { b.textContent = '💧 Agua'; } catch (e) {} b.onclick = function () { var c = getAguaCfg(); $('aguaCap').value = c.cap; $('aguaNivel').value = c.nivel; $('aguaCons').value = c.consumo; if (!$('lluFecha').value) $('lluFecha').value = todayKey(); if ($('rioFecha') && !$('rioFecha').value) $('rioFecha').value = todayKey(); renderAgua(); try { renderRios(); } catch (e) {} openDlg('aguaDialog'); }; }
-  if ($('rioAdd') && !$('rioAdd').dataset.wired) { $('rioAdd').dataset.wired = '1'; $('rioAdd').onclick = function () {
-    var rio = $('rioNombre') ? $('rioNombre').value : 'Río';
-    var f = ($('rioFecha') && $('rioFecha').value) || todayKey();
-    var niv = $('rioNivel') ? String($('rioNivel').value || '').trim() : '';
-    if (!niv) return alert('Escribe el nivel en cm');
-    var ph = $('rioPh') ? String($('rioPh').value || '').trim() : '';
-    getRios().push({ id: uid('rio'), rio: rio, fecha: f, nivel: niv, ph: ph, nota: clean(($('rioNota') || { value: '' }).value, 60) });
-    save('Medición guardada 🌊'); if ($('rioNivel')) $('rioNivel').value = ''; if ($('rioPh')) $('rioPh').value = ''; if ($('rioNota')) $('rioNota').value = ''; renderRios();
-  }; }
-  $('aguaSave').onclick = function () { var c = getAguaCfg(); c.cap = +$('aguaCap').value || 0; c.nivel = +$('aguaNivel').value || 0; c.consumo = +$('aguaCons').value || 0; save(); renderAgua(); };
-  $('lluAdd').onclick = function () {
+    '<div id="riosList" class="habits-list" style="margin-top:10px;max-height:220px"></div>' +
+    '<p class="muted" style="font-size:10px">No tomes directo del estero sin hervir/clorar. Si ves espuma, mortandad o color raro avisa a Municipalidad / SISS. Nguruvilu enseña: el agua se cuida en su casa.</p></div></div>');
+  ['Hoy', 'Estanque', 'Lluvia', 'Riego', 'Casa', 'Calidad'].forEach(function (t) {
+    var btn = $('tabAgua' + t);
+    if (btn) btn.onclick = function () { switchAguaTab(t); };
+  });
+  var b = $('btnAgua');
+  if (b) {
+    try { b.textContent = '💧 Agua'; } catch (e) {}
+    b.onclick = function () {
+      var c = getAguaCfg();
+      if ($('aguaCap')) $('aguaCap').value = c.cap;
+      if ($('aguaNivel')) $('aguaNivel').value = c.nivel;
+      if ($('aguaCons')) $('aguaCons').value = c.consumo;
+      if ($('aguaTecho')) $('aguaTecho').value = c.techo;
+      if ($('aguaPers')) $('aguaPers').value = c.personas;
+      if ($('aguaMeta')) $('aguaMeta').value = c.meta;
+      if (!$('lluFecha').value) $('lluFecha').value = todayKey();
+      if ($('rioFecha') && !$('rioFecha').value) $('rioFecha').value = todayKey();
+      if ($('rieFecha') && !$('rieFecha').value) $('rieFecha').value = todayKey();
+      if ($('casaFecha') && !$('casaFecha').value) $('casaFecha').value = todayKey();
+      if ($('calFecha') && !$('calFecha').value) $('calFecha').value = todayKey();
+      try { paintAguaGuias(); } catch (e) {}
+      switchAguaTab('Hoy');
+      renderAgua();
+      openDlg('aguaDialog');
+    };
+  }
+  if ($('aguaSave')) $('aguaSave').onclick = function () {
+    var c = getAguaCfg();
+    c.cap = +$('aguaCap').value || 0; c.nivel = Math.min(c.cap || Infinity, +$('aguaNivel').value || 0); c.consumo = +$('aguaCons').value || 0;
+    c.techo = +$('aguaTecho').value || 0; c.personas = +$('aguaPers').value || 1; c.meta = +$('aguaMeta').value || 100;
+    save('Estanque guardado 🛢️'); renderAgua();
+  };
+  if ($('cosCalc')) $('cosCalc').onclick = function () {
+    var mm = parseFloat($('cosMm').value) || 0, t = parseFloat($('cosTecho').value) || getAguaCfg().techo || 0;
+    $('cosOut').innerHTML = mm <= 0 || t <= 0 ? 'Escribe mm y m².' : '🌧️ ' + mm + ' mm × ' + t + ' m² ≈ <b>' + aguaCosechaL(mm, t) + ' L</b> cosechables (ya descontado 20%).';
+  };
+  if ($('lluAdd')) $('lluAdd').onclick = function () {
     var f = $('lluFecha').value || todayKey(), mm = parseFloat($('lluMm').value);
     if (!(mm >= 0)) return alert('Escribe los mm');
     var techo = parseFloat($('lluTecho').value) || 0;
-    getLluvia().push({ id: uid('ll'), fecha: f, mm: mm, nota: clean($('lluNota').value, 60) });
-    if (techo > 0) { var c = getAguaCfg(); c.nivel = Math.min(c.cap, Math.round(c.nivel + mm * techo * 0.8)); }
-    save('Lluvia guardada 🌧️'); $('lluMm').value = ''; $('lluNota').value = ''; $('aguaNivel').value = getAguaCfg().nivel; renderAgua();
+    getLluvia().push({ id: uid('ll'), fecha: f, mm: mm, techo: techo || undefined, nota: clean($('lluNota').value, 60) });
+    if (techo > 0) { var c = getAguaCfg(); c.nivel = Math.min(c.cap, Math.round(c.nivel + mm * techo * 0.8)); if ($('aguaNivel')) $('aguaNivel').value = c.nivel; }
+    save('Lluvia guardada 🌧️'); $('lluMm').value = ''; $('lluNota').value = ''; renderAgua();
   };
+  if ($('lluShare')) $('lluShare').onclick = function () {
+    var d = getLluvia(); if (!d.length) return alert('Sin lluvias');
+    share('🌧️ Mis lluvias', d.slice(-12).map(function (r) { return '· ' + r.fecha + ': ' + r.mm + ' mm' + (r.nota ? ' (' + r.nota + ')' : ''); }).join('\n'));
+  };
+  if ($('lluClear')) $('lluClear').onclick = function () { if (!confirm('¿Borrar todas las lluvias?')) return; store('lluviaLog', []); try { userData().lluviaLog = []; } catch (e) {} save(); renderAgua(); };
+  if ($('rieAdd')) $('rieAdd').onclick = function () {
+    var f = ($('rieFecha') || {}).value || todayKey(), li = parseFloat(($('rieLitros') || {}).value);
+    if (!(li >= 0)) return alert('Escribe los litros');
+    getAguaRiego().push({ id: uid('rg'), fecha: f, litros: li, sector: clean(($('rieSector') || {}).value || 'huerta', 30), sistema: ($('rieSis') || {}).value || 'Goteo', nota: clean(($('rieNota') || {}).value, 60) });
+    save('Riego guardado 💧'); if ($('rieLitros')) $('rieLitros').value = ''; if ($('rieNota')) $('rieNota').value = ''; renderAguaRiego(); try { renderAguaHoy(); } catch (e) {}
+  };
+  if ($('rieShare')) $('rieShare').onclick = function () {
+    var d = getAguaRiego(); if (!d.length) return alert('Sin riegos');
+    share('💧 Mis riegos', d.slice(-12).map(function (r) { return '· ' + r.fecha + ': ' + r.litros + ' L · ' + r.sector + ' (' + r.sistema + ')'; }).join('\n'));
+  };
+  if ($('rieCalc')) $('rieCalc').onclick = function () {
+    var m2 = parseFloat(($('rieM2') || {}).value) || getAguaCfg().riegoM2 || 0, t = parseFloat(($('rieTemp') || {}).value) || 4;
+    if (!(m2 > 0)) { $('rieOut').textContent = 'Escribe los m².'; return; }
+    var tot = Math.round(m2 * t);
+    $('rieOut').innerHTML = '💧 ' + m2 + ' m² ≈ <b>' + tot + ' L/día</b> en esta temporada. Con goteo 2 L/h: ' + Math.round(tot / 2) + ' gotero-horas (ej: 10 goteros × ' + Math.round(tot / 2 / 10 * 60) + ' min). Con mulch resta 1/3: ~' + Math.round(tot * 0.66) + ' L.';
+  };
+  if ($('casaAdd')) $('casaAdd').onclick = function () {
+    var f = ($('casaFecha') || {}).value || todayKey(), m = parseFloat(($('casaM3') || {}).value);
+    if (!(m >= 0)) return alert('Escribe la lectura en m³');
+    getAguaCasa().push({ id: uid('cs'), fecha: f, m3: m, nota: clean(($('casaNota') || {}).value, 40) });
+    save('Lectura guardada 🧾'); if ($('casaM3')) $('casaM3').value = ''; renderAguaCasa();
+  };
+  if ($('casaShare')) $('casaShare').onclick = function () {
+    var d = getAguaCasa(); if (!d.length) return alert('Sin lecturas');
+    share('🧾 Mi consumo de agua', d.slice(-12).map(function (r) { return '· ' + r.fecha + ': ' + r.m3 + ' m³'; }).join('\n'));
+  };
+  if ($('casaClear')) $('casaClear').onclick = function () { if (!confirm('¿Borrar lecturas del medidor?')) return; try { userData().aguaCasaLog = []; } catch (e) {} save(); renderAguaCasa(); };
+  if ($('calAdd')) $('calAdd').onclick = function () {
+    var f = ($('calFecha') || {}).value || todayKey();
+    getAguaCal().push({ id: uid('cal'), fecha: f, origen: ($('calOrigen') || {}).value || 'Pozo', ph: clean(($('calPh') || {}).value || '', 6), turb: ($('calTurb') || {}).value || 'Clara', cloro: ($('calCloro') || {}).value || '—', nota: clean(($('calNota') || {}).value, 60) });
+    save('Control guardado 🔬'); if ($('calPh')) $('calPh').value = ''; if ($('calNota')) $('calNota').value = ''; renderAguaCal();
+  };
+  if ($('rioAdd') && !$('rioAdd').dataset.wired) {
+    $('rioAdd').dataset.wired = '1';
+    $('rioAdd').onclick = function () {
+      var rio = $('rioNombre') ? $('rioNombre').value : 'Río';
+      var f = ($('rioFecha') && $('rioFecha').value) || todayKey();
+      var niv = $('rioNivel') ? String($('rioNivel').value || '').trim() : '';
+      if (!niv) return alert('Escribe el nivel en cm');
+      var ph = $('rioPh') ? String($('rioPh').value || '').trim() : '';
+      var turb = $('rioTurb') ? $('rioTurb').value : '';
+      getRios().push({ id: uid('rio'), rio: rio, fecha: f, nivel: niv, ph: ph, turb: turb, nota: clean(($('rioNota') || { value: '' }).value, 60) });
+      save('Medición guardada 🌊'); if ($('rioNivel')) $('rioNivel').value = ''; if ($('rioPh')) $('rioPh').value = ''; if ($('rioNota')) $('rioNota').value = ''; renderRios();
+    };
+  }
 }
 
 /* ============================================================

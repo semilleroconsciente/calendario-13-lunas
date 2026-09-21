@@ -10,6 +10,8 @@
      5) Mi proceso (chequeo diario animo/energia, diario, racha)
    - Todo local y privado por usuario: userData().psicologia
      { checks:{}, tests:[], tcc:[] }
+   - Nota: Neurodiversidad vive en su propio modulo
+     (neurodiversidad-modulo.js, boton junto a este).
    - Educativo: NO diagnostica, NO reemplaza terapia.
    - Sin dependencias externas. 100% offline.
    ============================================================ */
@@ -231,8 +233,9 @@ function buildDialog() {
     '<button type="button" id="psiClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar</button></span></div></div>' +
     '</div>';
 
+
   makeDialog('psicologiaDialog', '🧠 Psicología',
-    'Ciencia de la mente en fichas + herramientas + tests breves + diario. Elige pestaña y practica 5 minutos. Todo queda <b>privado y local</b>. <b>Educativo: no diagnostica ni reemplaza terapia.</b> Crisis: <b>*4141</b> (24h Chile).',
+    'Ciencia de la mente en fichas + herramientas + tests breves + diario. Elige pestaña y practica 5 minutos. Todo queda <b>privado y local</b>. <b>Educativo: no diagnostica ni reemplaza terapia.</b> Crisis: <b>*4141</b> (24h Chile). <b>Ver también: 🌈 Neurodiversidad</b> (botón junto a este).',
     body);
 }
 

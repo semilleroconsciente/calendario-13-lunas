@@ -34,37 +34,66 @@ function wireFishChips(scope) {
   });
 }
 
-/* ---------- HISTORIA DE LA PESCA ---------- */
+/* ---------- HISTORIA DE LA PESCA ----------
+   Estructura espejo de HISTORIA_PENCO (penco-guia.js):
+   intro + eras[{t, cuando, d}] + sp (chips tocables) + fuentes.
+   Mismo render: tarjeta por periodo, fecha muted, descripción,
+   chips que cargan la bitácora. */
 var HISTORIA_PESCA = {
-  intro: 'La pesca de Penco —orilla, roquerío y golfo— en <b>5 tiempos</b>: de los corrales lafkenche a la caleta artesanal de hoy. Toca una especie para cargarla en tu bitácora.',
+  intro: 'La pesca de Penco —<b>orilla, roquerío y golfo</b>— del <b>mar cretácico</b> a la <b>caleta artesanal de hoy</b>, en <b>10 periodos</b>. La historia completa vive aquí; toca una especie para cargarla en tu bitácora.',
   eras: [
     {
-      t: '🌊 Tiempo originario: pesca lafkenche', cuando: 'Antes de 1550 · Arcaico Tardío – Pitrén / El Vergel',
-      d: 'La bahía lleva <b>miles de años habitada</b>: conchales con pesca de orilla, recolección de mariscos y caza de lobo marino. Se pescaba con <b>corrales de piedra, anzuelo de hueso y red</b>, y se salía en <b>wampo</b> (canoa). <b>Corvina, robalo y pejerrey</b> en la orilla; <b>cochayuyo, luche y chorito</b> en el roquerío. Pesca de sustento, con respeto estacional.',
+      t: '🪨 Tiempo profundo: basamento de Gondwana', cuando: 'Paleozoico (~300 Ma) · zócalo de la bahía',
+      d: 'Antes de ser bahía, Penco era <b>fondo y borde de Gondwana</b>: filitas y granitoides que hoy forman los <b>roqueríos de Playa Negra, La Cata y Tumbes</b>. Sin mar interior todavía, pero ya está el piso rocoso donde después se afirmarán <b>corrales de piedra, varaderos y caletas</b>.',
+      sp: ['Robalo', 'Lapa']
+    },
+    {
+      t: '🦕 Mar de Quiriquina: el golfo originario', cuando: 'Cretácico Superior · Maastrichtiano (72–66 Ma)',
+      d: 'Hace 70 millones de años <b>todo esto era mar profundo</b> (Formación Quiriquina: La Cata, Quiriquina). Nadaban el plesiosaurio <b>Aristonectes quiriquinensis (9 m)</b>, <b>mosasaurios</b>, tortugas <b>Osteopygis y Euclastes</b> y el ave <b>Neogaeornis wetzeli</b>, con <b>amonites gigantes y Neilo pencana —que lleva el nombre de Penco—</b>. El Golfo de Arauco de hoy es el nieto pequeño de ese mar.',
+      sp: ['Congrio', 'Corvina', 'Jurel']
+    },
+    {
+      t: '🌿 Selvas del carbón: delta sin bahía', cuando: 'Paleoceno–Eoceno (~60–40 Ma) · Formación Cosmito',
+      d: 'El mar se retira y la costa es <b>delta pantanoso</b> (arenas y carbones de <b>Cosmito</b>). Ríos trenzados traen nutrientes al futuro golfo: se prepara la <b>despensa</b> que alimentará sardinas, jureles y merluzas millones de años después. El <b>primer carbón de la cuenca</b> duerme aquí.',
+      sp: ['Pejerrey', 'Robalo']
+    },
+    {
+      t: '❄️ Hielos y nacimiento de la bahía', cuando: 'Pleistoceno – Holoceno Medio (~2 Ma – 6.000 a.p.)',
+      d: 'El <b>río Biobío desembocaba dentro de la Bahía de Concepción</b> y la transgresión Flandriana la inunda: se forman las <b>terrazas de 5 m y 2 m</b>, limos del Andalién y dunas. <b>Hualpén y Tumbes eran islas</b>, Quiriquina estaba antepuesta: un <b>mar interior abrigado</b>, ideal para aprender a navegar y calar redes. Nace el escenario de toda la pesca penqueña.',
+      sp: ['Corvina', 'Lenguado', 'Pejerrey', 'Cochayuyo', 'Chorito']
+    },
+    {
+      t: '🛶 Primeros navegantes: Complejo Talcahuano', cuando: 'Arcaico Medio–Tardío (7.000–2.000 a.p.) · 4.580 a.p. – 130 d.C.',
+      d: 'Más de <b>30 conchales</b> rodean la bahía: <b>Bellavista 1 (>3.000 m²), Talcahuano 1, Playa Negra 9 aquí en Penco sur</b>. Pescadores <b>sedentarios</b> con <b>pesas de red acinturadas, anzuelo, corrales de piedra</b> y navegación a Quiriquina. Pesca de <b>jurel, sierra, merluza y róbalo</b>, caza de <b>lobo marino</b>, marisqueo de ostión, choro zapato, loco y lapa. Fechas: <b>La Trila 4.580, Bellavista 3.880–3.330 a.p.</b>',
+      sp: ['Jurel', 'Sierra', 'Merluza común', 'Robalo', 'Corvina', 'Chorito', 'Lapa']
+    },
+    {
+      t: '🏺 Pesca lafkenche: corrales y wampo', cuando: '130 d.C. – 1550 · Pitrén / El Vergel',
+      d: 'Con la cerámica y la horticultura (<b>quinoa, papa, maíz</b>), la pesca se ordena por luna y estación: <b>corrales de piedra, anzuelo de hueso y red</b>, salida en <b>wampo</b> (canoa). <b>Corvina, robalo y pejerrey</b> en la orilla; <b>cochayuyo, luche y chorito</b> en el roquerío. Pesca de sustento con respeto estacional y trueque con el interior. Territorio <b>ayllarewe lafkenche</b> —gente del mar—.',
       sp: ['Corvina', 'Robalo', 'Pejerrey', 'Cochayuyo', 'Chorito', 'Lapa']
     },
     {
-      t: '⛵ Colonia: caleta y vigía', cuando: '1550–1800',
-      d: 'Fundación de Concepción en Penco (1550): la bahía se vuelve <b>puerto y despensa</b>. La pesca sigue siendo de orilla y bote pequeño para consumo local, y aparece la <b>fiesta patronal</b> como marca de identidad pesquera. Se suma el trueque con el interior: pescado seco por trigo y papas.',
+      t: '⛵ Colonia: puerto y despensa', cuando: '1550–1800 · Concepción en Penco + traslado 1751',
+      d: 'Fundación de <b>Concepción en Penco (1550)</b>: la bahía se vuelve <b>puerto y despensa</b>. Pesca de orilla y bote pequeño para consumo local, pescado seco por trigo y papas con el interior. Aparece la <b>fiesta patronal</b> como marca pesquera. El <b>terremoto-maremoto de 1751</b> y el traslado al Valle de la Mocha vacían Penco por ~90 años: la pesca vuelve a ser solo de las <b>51 familias</b> que resisten.',
       sp: ['Corvina', 'Congrio', 'Sierra', 'Pejerrey', 'Jaiba mora']
     },
     {
-      t: '⛏️ Siglo XIX: carbón, cobre y ballena', cuando: '1800–1900',
-      d: 'Minas de carbón (1843–1958) y fundición de cobre de Lirquén traen <b>más bocas y más botes</b>: la pesca crece para alimentar a mineros y fundidores. En el Golfo faenan también <b>balleneros</b>. Nacen las caletas como las conocemos: <b>Lirquén, Penco, Talcahuano</b>, con chalupas a remo y vela, espinel y trasmallo.',
+      t: '⛏️ Siglo XIX: carbón, cobre y ballena', cuando: '1800–1900 · Minas 1843–1958 + ferrocarril 1889/1914',
+      d: 'Minas de carbón y <b>fundición de cobre de Lirquén</b> traen <b>más bocas y más botes</b>: la pesca crece para alimentar a mineros y fundidores. En el Golfo faenan <b>balleneros</b>. Nacen las caletas como las conocemos: <b>Lirquén (~1850, pescadores y alfareros), Penco, Talcahuano</b>, con chalupas a remo y vela, espinel y trasmallo. El riel acelera el hielo y la salida.',
       sp: ['Sierra', 'Congrio', 'Jurel', 'Corvina', 'Lenguado', 'Erizo']
     },
     {
-      t: '🏭 Siglo XX: puerto, industria y vedas', cuando: '1900–2000',
-      d: 'Lirquén se vuelve <b>puerto mayor</b> y la pesca industrial (jurel, merluza, sardina) cambia la escala del Golfo. La artesanal resiste con <b>bote a motor, red de cerco chica y buceo apnea</b> (piure, erizo, lapa). Llegan las primeras <b>vedas y tallas mínimas</b> (Sernapesca): merluza en septiembre, congrio en invierno, marea roja vigilada. En 1996 la <b>Ley de Caza/Pesca protege</b> además lobos y aves del borde.',
+      t: '🏭 Siglo XX: puerto mayor, industria y vedas', cuando: '1900–2000 · Vipla, puerto Lirquén, Sernapesca',
+      d: '<b>Lirquén puerto mayor</b> y la pesca industrial (jurel, merluza, sardina) cambian la escala del Golfo. La artesanal resiste con <b>bote a motor, cerco chico y buceo apnea</b> (piure, erizo, lapa). Llegan <b>vedas y tallas mínimas</b> (Sernapesca): merluza en septiembre, congrio en invierno, marea roja vigilada. En 1996 la <b>Ley de Caza protege</b> lobos y aves del borde. <b>Terremotos de 1939, 1960</b> golpean caletas y obligan a reconstruir.',
       sp: ['Jurel', 'Merluza común', 'Sierra', 'Congrio', 'Piure', 'Erizo', 'Chorito']
     },
     {
-      t: '⚓ Hoy: caleta viva y pesca con medida', cuando: '2000 – actualidad',
-      d: 'La pesca artesanal de <b>Lirquén–Penco</b> es patrimonio vivo: <b>amanecer y pleamar mandan</b>, la luna ordena la marea y el pique. Cada 29 de junio la <b>Fiesta de San Pedro</b> bendice los botes. El desafío es pescar <b>lo justo</b>: respetar vedas y tallas, devolver hembras con huevos, no sacar más de lo que se come y cuidar el roquerío. Tu bitácora ayuda: anota marea, luna y carnada que funcionó.',
+      t: '⚓ Hoy: caleta viva y pesca con medida', cuando: '2000 – actualidad · DP World + 27F + San Pedro 29-jun',
+      d: 'La pesca artesanal de <b>Lirquén–Penco (caletas El Refugio y La Cata)</b> es patrimonio vivo: <b>amanecer y pleamar mandan</b>, la luna ordena la marea y el pique. Cada 29 de junio la <b>Fiesta de San Pedro</b> bendice los botes. El <b>27F (2010)</b> dañó caletas y borde y obligó a reconstruir. El desafío es pescar <b>lo justo</b>: respetar vedas y tallas, devolver hembras con huevos y cuidar el roquerío. Tu bitácora ayuda: anota marea, luna y carnada que funcionó.',
       sp: ['Corvina', 'Lenguado', 'Pejerrey', 'Robalo', 'Sierra', 'Jurel', 'Congrio', 'Merluza común']
     }
   ],
-  fuentes: 'Fuentes: conchales Bahía de Concepción (Arcaico Tardío) · Fiesta de San Pedro 29-jun · Sernapesca vedas y tallas · SHOA mareas · saberes caleta Lirquén · catálogo de Pesca e Intermareal de esta app.'
+  fuentes: 'Fuentes: HISTORIA_PENCO (Quiriquina, bahía, conchales, caletas) · Bustos y Vergara 2004 (30 conchales) · Torres et al. 2007 (Playa Negra 9) · Fiesta de San Pedro 29-jun · Sernapesca vedas y tallas · SHOA mareas · saberes caleta Lirquén · catálogo Pesca e Intermareal de esta app.'
 };
 
 /* ---------- RENDER: HISTORIA ---------- */

@@ -80,12 +80,12 @@
           <button id="btnHabits" class="btn" data-sub="organizar" data-keywords="habitos rutina racha disciplina">✅ Hábitos</button>
           <button id="btnDiscipline" class="btn" data-sub="organizar" data-keywords="disciplina pomodoro procrastinar foco">🎯 Disciplina</button>
           <button id="btnSchedule" class="btn" data-sub="organizar" data-keywords="horario clases estudio semana">📚 Horario</button>
-          <button id="btnTimer" class="btn" data-sub="organizar" data-keywords="tiempo timer cronometro pomodoro">⏱ Tiempo</button>
+          <button id="btnTimer" class="btn" data-sub="organizar" data-keywords="tiempo timer cronometro pomodoro reloj hora mundial paises huso horario temporizador guia zonas horarias utc jet lag">⏱ Tiempo</button>
           <button id="btnRemind" class="btn" data-sub="organizar" data-keywords="recordatorio notificacion luna fase">🔔 Recordatorios</button>
           <span class="sub-label" data-sub="registrar">✍️ Registrar hoy</span>
           <button id="btnGratitud" class="btn" data-sub="registrar" data-keywords="gratitud diario gracias wenu bienestar animo positivo racha">📓 Gratitud Diaria</button>
           <button id="btnDreams" class="btn" data-sub="registrar" data-keywords="sueños diario onirico rem dormir">💭 Sueños</button>
-          <button id="btnBreath" class="btn" data-sub="registrar" data-keywords="respiracion 478 caja cuadrada ansiedad">🌬️ Respiración</button>
+          <button id="btnBreath" class="btn" data-sub="registrar" data-keywords="respiracion 478 caja cuadrada ansiedad calma sueño foco energia coherente suspiro diafragma">🌬️ Respiración</button>
         </div>
       </details>
       <details class="action-group" open data-group="territorio">
@@ -108,7 +108,7 @@
           <button id="btnCircadian" class="btn" data-sub="cielo" data-keywords="circadiano ritmo rutina plan mi plan hora despertar sueño melatonina cortisol ciclo energia descanso">🌞 Ritmo Circadiano</button>
           <button id="btnEkadashi" class="btn" data-sub="cielo" data-keywords="ekadashi ayuno lunar tithi">📿 Ekadashi</button>
           <span class="sub-label" data-sub="penco">🎉 Penco</span>
-          <button id="btnComuna" class="btn" data-sub="penco" data-keywords="penco comuna fiesta evento aniversario guia historia sectores lirquen cosmito cerro verde primer agua">🎉 Penco</button>
+          <button id="btnComuna" class="btn" data-sub="penco" data-keywords="penco comuna fiesta evento aniversario talleres actividades curso taller inscripcion calendario guia historia sectores lirquen cosmito cerro verde primer agua casa cultura dideco cesfam biblioteca deporte futbol yoga cueca guitarra huerta manualidades digital mapuzugun cocina oficio">🎉 Penco</button>
         </div>
       </details>
       <details class="action-group" open data-group="cuerpo">
@@ -118,7 +118,7 @@
           <button id="btnMenstrual" class="btn" data-sub="ciclos" data-keywords="ciclo menstrual periodo fertil ovulacion mujer">🌸 Ciclo</button>
           <span class="sub-label" data-sub="cuidado">🛟 Cuidado</span>
           <button id="btnMedic" class="btn" data-sub="cuidado" data-keywords="medicina medicamento hierba matico natural basica botiquin historia seguridad alergia dosis">🌿 Medicina</button>
-          <button id="btnGym" class="btn" data-sub="cuidado" data-keywords="entrenamientos gym gimnasio terapia fisica fisioterapia calistenia practicas varias rutina ejercicio movilidad kine">💪 Entrenamientos</button>
+          <button id="btnGym" class="btn" data-sub="cuidado" data-keywords="entrenamientos gym gimnasio terapia fisica fisioterapia calistenia practicas varias rutina ejercicio movilidad kine casa playa bosque multicancha plaza parque costanera piscina lugar">💪 Entrenamientos</button>
         </div>
       </details>
       <details class="action-group" data-group="aprender">
@@ -1436,14 +1436,44 @@
   <dialog id="timerDialog">
     <form method="dialog">
       <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
-        <h3 style="margin:0;color:var(--accent)">⏱ Cronómetro y Temporizador</h3>
+        <h3 style="margin:0;color:var(--accent)">⏱ Tiempo — Reloj, Hora mundial y Temporizadores</h3>
         <button type="button" id="timerCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
       </div>
-      <div class="timer-tabs">
-        <button type="button" id="tabChrono" class="btn btn-accent" style="width:auto">Cronómetro</button>
+      <div class="timer-tabs" style="flex-wrap:wrap">
+        <button type="button" id="tabClock" class="btn btn-accent" style="width:auto">🕐 Reloj</button>
+        <button type="button" id="tabWorld" class="btn" style="width:auto">🌍 Hora mundial</button>
+        <button type="button" id="tabChrono" class="btn" style="width:auto">Cronómetro</button>
         <button type="button" id="tabCount" class="btn" style="width:auto">Temporizador</button>
+        <button type="button" id="tabGuide" class="btn" style="width:auto">📖 Guía</button>
       </div>
-      <div id="chronoPanel">
+      <div id="clockPanel">
+        <div id="localClockDisplay" class="timer-display">--:--:--</div>
+        <p id="localClockDate" style="text-align:center;margin:8px 0 2px;font-weight:700">—</p>
+        <p id="localClockZone" class="muted" style="text-align:center;margin:0 0 8px">—</p>
+        <div class="preset-row" style="justify-content:center">
+          <span class="chip" id="localUtcChip">UTC —</span>
+          <span class="chip" id="localUnixChip">—</span>
+        </div>
+        <p class="muted" style="text-align:center;margin-top:8px">Hora del dispositivo. Si viajas, verifica la zona horaria del sistema.</p>
+      </div>
+      <div id="worldPanel" class="hidden">
+        <div class="conv-row" style="justify-content:center;flex-wrap:wrap">
+          <label>Añadir país/ciudad <select id="worldAddSelect" style="max-width:230px"></select></label>
+          <button type="button" id="worldAddBtn" class="btn btn-accent" style="width:auto">＋ Añadir</button>
+          <button type="button" id="worldResetBtn" class="btn" style="width:auto" title="Volver a la lista por defecto">↺ Por defecto</button>
+        </div>
+        <div id="worldList" class="world-grid"></div>
+        <h4 style="margin:12px 0 6px;color:var(--gold)">🔁 Conversor de hora</h4>
+        <div class="conv-row" style="flex-wrap:wrap;justify-content:center">
+          <label>Hora <input type="time" id="convTime" value="12:00" style="width:110px"></label>
+          <label>Desde <select id="convFrom" style="max-width:170px"></select></label>
+          <label>Hacia <select id="convTo" style="max-width:170px"></select></label>
+          <button type="button" id="convCalcBtn" class="btn btn-accent" style="width:auto">Convertir</button>
+        </div>
+        <div id="convResult" class="world-conv-result">Elige hora y zonas para convertir.</div>
+        <p class="muted" style="text-align:center;margin-top:8px">Funciona sin internet: usa la hora de tu dispositivo y zonas IANA.</p>
+      </div>
+      <div id="chronoPanel" class="hidden">
         <div id="chronoDisplay" class="timer-display">00:00:00.0</div>
         <div class="dlg-actions" style="justify-content:center">
           <button type="button" id="chronoStart" class="btn btn-accent" style="width:auto">▶ Iniciar</button>
@@ -1458,6 +1488,15 @@
           <label>Minutos <input type="number" id="countM" min="0" max="59" value="5" style="width:70px"></label>
           <label>Segundos <input type="number" id="countS" min="0" max="59" value="0" style="width:70px"></label>
         </div>
+        <div class="preset-row" style="justify-content:center">
+          <button type="button" class="btn" style="width:auto" data-count-preset="1">1 min</button>
+          <button type="button" class="btn" style="width:auto" data-count-preset="5">5 min</button>
+          <button type="button" class="btn" style="width:auto" data-count-preset="10">10 min</button>
+          <button type="button" class="btn" style="width:auto" data-count-preset="15">15 min</button>
+          <button type="button" class="btn" style="width:auto" data-count-preset="25">🍅 25</button>
+          <button type="button" class="btn" style="width:auto" data-count-preset="30">30 min</button>
+          <button type="button" class="btn" style="width:auto" data-count-preset="60">1 h</button>
+        </div>
         <div id="countDisplay" class="timer-display">00:05:00</div>
         <div class="dlg-actions" style="justify-content:center">
           <button type="button" id="countStart" class="btn btn-accent" style="width:auto">▶ Iniciar</button>
@@ -1465,6 +1504,101 @@
           <button type="button" id="countReset" class="btn" style="width:auto">↺ Reiniciar</button>
         </div>
         <p class="muted" style="text-align:center;margin-top:8px">Sonará y vibrará al terminar. Mantén la ventana abierta.</p>
+      </div>
+      <div id="guidePanel" class="hidden">
+        <div class="tz-hero">
+          <div class="tz-hero-ico">🌐</div>
+          <div>
+            <b>Zonas horarias sin enredos</b>
+            <span>Guía completa y offline · lee las tarjetas, convierte horas y coordina con otros países</span>
+          </div>
+        </div>
+        <div class="tz-chips">
+          <span class="chip">🕰️ 24 husos · UTC−12 a +14</span>
+          <span class="chip">🇨🇱 Chile: 3 horas oficiales</span>
+          <span class="chip">📵 Funciona sin internet</span>
+        </div>
+        <details class="tz-item" open>
+          <summary><span class="tz-num">1</span><span class="tz-ico">🌍</span><span class="tz-title">¿Qué es una zona horaria?</span></summary>
+          <div class="tz-body">
+            <p>La Tierra gira 360° en 24 h → cada 15° de longitud es ≈ <b>1 hora</b>. Para ordenar la vida civil se crearon las <b>zonas horarias</b>: franjas que comparten la misma hora oficial.</p>
+            <div class="tz-callout gold"><b>UTC</b> es el punto cero (antes <b>GMT</b>, Greenwich). Todo se expresa como <b>UTC±horas</b>. Ejemplo: <b>Santiago en invierno es UTC−4</b> y en verano <b>UTC−3</b>.</div>
+            <p class="muted">El calendario usa nombres estándar <b>IANA</b> (ej: <i>America/Santiago</i>, <i>Pacific/Easter</i>, <i>Europe/Madrid</i>): el nombre trae la regla y tu dispositivo calcula solo el desfase y el horario de verano.</p>
+          </div>
+        </details>
+        <details class="tz-item">
+          <summary><span class="tz-num">2</span><span class="tz-ico">🃏</span><span class="tz-title">Cómo leer las tarjetas de Hora mundial</span></summary>
+          <div class="tz-body">
+            <p>Cada tarjeta muestra <b>☀️/🌙</b> (día o noche allá), <b>hora con segundos</b>, <b>fecha corta</b> y la <b>diferencia vs tu hora</b>:</p>
+            <div class="tz-diff-grid">
+              <div><b>"misma hora"</b><span>mismo huso ahora mismo</span></div>
+              <div><b>"+2 h"</b><span>allá van adelante · 12:00 → 14:00</span></div>
+              <div><b>"−3 h"</b><span>allá van atrás · 12:00 → 09:00</span></div>
+              <div><b>(+1 día)</b><span>allá ya es mañana · (−1 día) = ayer</span></div>
+            </div>
+            <div class="tz-callout warn">⚠️ La diferencia <b>cambia en el año</b>: cada país entra/sale del horario de verano en fechas distintas. Lo que ves aquí ya incluye el ajuste de <b>hoy</b>.</div>
+          </div>
+        </details>
+        <details class="tz-item">
+          <summary><span class="tz-num">3</span><span class="tz-ico">🇨🇱</span><span class="tz-title">Chile: 3 horas oficiales</span></summary>
+          <div class="tz-body">
+            <div class="tz-chile">
+              <div><b>🏙️ Continental</b><span>Santiago · Penco</span><em>UTC−4 inv. / UTC−3 ver.</em></div>
+              <div><b>🗿 Rapa Nui</b><span>Isla de Pascua</span><em>UTC−6 / UTC−5 · −2 h vs Stgo.</em></div>
+              <div><b>🧊 Magallanes</b><span>Antártica chilena</span><em>UTC−3 fijo todo el año</em></div>
+            </div>
+            <p class="muted">Cambio típico: 1er sábado de abril (→ invierno) y 1er sábado de septiembre (→ verano). Por eso <b>Santiago</b> y <b>Rapa Nui</b> van por separado en esta app.</p>
+          </div>
+        </details>
+        <details class="tz-item">
+          <summary><span class="tz-num">4</span><span class="tz-ico">📊</span><span class="tz-title">Tabla rápida desde Chile continental</span></summary>
+          <div class="tz-body">
+            <p class="muted" style="margin-top:0">Desfases <b>habituales</b> (pueden variar ±1 h por horario de verano):</p>
+            <div class="tz-table-wrap"><table class="tz-table">
+              <tr><th>Destino</th><th>Dif.</th><th>Si en Penco son 12:00…</th></tr>
+              <tr><td>🇦🇷 Buenos Aires</td><td>0 a +1 h</td><td>12:00 – 13:00</td></tr>
+              <tr><td>🇵🇪 Lima / 🇨🇴 Bogotá</td><td>−1 a 0 h</td><td>11:00 – 12:00</td></tr>
+              <tr><td>🇲🇽 CDMX</td><td>−2 a −3 h</td><td>09:00 – 10:00</td></tr>
+              <tr><td>🇺🇸 Nueva York</td><td>−1 a +1 h</td><td>11:00 – 13:00</td></tr>
+              <tr><td>🇺🇸 California (SF/LA)</td><td>−3 a −5 h</td><td>07:00 – 09:00</td></tr>
+              <tr><td>🇺🇸 Honolulu</td><td>−6 a −7 h</td><td>05:00 – 06:00</td></tr>
+              <tr><td>🇪🇸 Madrid</td><td class="pos">+5 a +6 h</td><td>17:00 – 18:00</td></tr>
+              <tr><td>🇬🇧 Londres</td><td class="pos">+4 a +5 h</td><td>16:00 – 17:00</td></tr>
+              <tr class="next-day"><td>🇯🇵 Tokio</td><td class="pos">+12 a +13 h</td><td>00:00 – 01:00 (+1 día)</td></tr>
+              <tr class="next-day"><td>🇦🇺 Sídney</td><td class="pos">+13 a +14 h</td><td>01:00 – 02:00 (+1 día)</td></tr>
+            </table></div>
+            <p class="muted">Invierno chileno (UTC−4) vs verano (UTC−3): en verano resta 1 h a la diferencia con el hemisferio norte.</p>
+          </div>
+        </details>
+        <details class="tz-item">
+          <summary><span class="tz-num">5</span><span class="tz-ico">📅</span><span class="tz-title">Línea de fecha: "días distintos"</span></summary>
+          <div class="tz-body">
+            <p>Cerca del Pacífico (línea ≈ 180°) la fecha salta un día: hacia el oeste <b>sumas un día</b>, hacia el este <b>restas un día</b>. Con <b>Tokio, Sídney o Auckland</b> casi siempre hay <b>+1 día</b>: lunes 12:00 en Penco = martes 01:00 allá.</p>
+            <div class="tz-example">🧭 Regla práctica: primero convierte la <b>hora</b> y después pregunta <b>"¿qué día es allá?"</b> → el conversor te responde <i>mismo día / +1 día / −1 día</i>.</div>
+          </div>
+        </details>
+        <details class="tz-item">
+          <summary><span class="tz-num">6</span><span class="tz-ico">🔁</span><span class="tz-title">Conversor paso a paso + horario de verano</span></summary>
+          <div class="tz-body">
+            <div class="tz-steps">
+              <div><b>1</b> Pon tu hora en <b>Hora</b></div>
+              <div><b>2</b> Tu ciudad en <b>Desde</b></div>
+              <div><b>3</b> La otra ciudad en <b>Hacia</b></div>
+              <div><b>4</b> Pulsa <b>Convertir</b> ✨</div>
+            </div>
+            <p>Prueba 2–3 horarios y elige el que deje a ambos entre las <b>09:00 y 20:00</b>. Ideal para videollamadas familiares.</p>
+            <div class="tz-callout warn">☀️ <b>DST (horario de verano):</b> Chile, EE.UU. y Europa lo usan en meses opuestos, por eso la diferencia con Madrid o Nueva York <b>no es fija</b>. Si agendaste hace meses, <b>reconvierte la misma semana</b>.</div>
+          </div>
+        </details>
+        <details class="tz-item">
+          <summary><span class="tz-num">7</span><span class="tz-ico">☀️</span><span class="tz-title">Hora solar, hora dorada y jet lag</span></summary>
+          <div class="tz-body">
+            <p><b>Hora civil</b> = la del reloj. <b>Hora solar</b> = la del sol real: el <b>mediodía solar</b> es cuando está más alto (en Penco cae 30–60 min después de las 12:00). La <b>hora dorada</b> (≈ 1 h tras amanecer y antes del atardecer) es la mejor luz para fotos y caminatas 📸.</p>
+            <div class="tz-callout tip">✈️ <b>Jet lag:</b> ir al este cuesta más que al oeste. 2–3 días antes múevete 1 h hacia el horario destino, toma sol de mañana (viaje al este) o de tarde (al oeste), evita siesta larga el día 1 e hidrátate. Se recupera ≈ <b>1 huso por día</b>.</div>
+            <p class="muted"><b>Tiempo Unix</b> (chip ⏱ del Reloj): segundos desde 1970-01-01 00:00 UTC. Si dos personas comparan su Unix y coinciden, hablan del <b>mismo instante</b> aunque sus relojes marquen distinto.</p>
+          </div>
+        </details>
+        <div class="tz-callout tip" style="text-align:center">💡 Tip: deja fijas tus 4–6 ciudades frecuentes con <b>＋ Añadir</b>; quedan guardadas en el dispositivo.</div>
       </div>
       <div class="dlg-actions"><button type="button" id="timerClose" class="btn">Cerrar</button></div>
     </form>
@@ -1743,12 +1877,14 @@
         <h3 style="margin:0;color:var(--accent)">🪱 Compost & Suelo — arcilla de Penco</h3>
         <button type="button" id="compostCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
       </div>
-      <p class="muted" style="line-height:1.5">Suelo arcilloso + lluvia Pukem = se aprieta. El compost lo esponja. <b>Cierra el ciclo:</b> 🌱 Siembra → 🍂 restos → 🪱 compost → 🌱 tierra nueva. Todo local y offline, ligado a la <b>luna menguante</b> para voltear.</p>
+      <p class="muted" style="line-height:1.5">Suelo arcilloso + lluvia Pukem = se aprieta. El compost lo esponja. <b>Cierra el ciclo:</b> 🌱 Siembra → 🍂 restos → 🪱 compost → 🌱 tierra nueva. Todo local y offline: testea tu suelo, arma tu pila, resuelve problemas y voltea en <b>luna menguante</b>.</p>
       <div id="compostStatusBox" class="menstrual-card" style="border-color:var(--gold)"></div>
       <div class="timer-tabs" style="margin:12px 0 10px;flex-wrap:wrap">
         <button type="button" id="tabCP1" class="btn btn-accent" style="width:auto">🪱 Mi pila</button>
         <button type="button" id="tabCP2" class="btn" style="width:auto">🧪 Suelo Penco</button>
-        <button type="button" id="tabCP3" class="btn" style="width:auto">📅 Calendario lunar</button>
+        <button type="button" id="tabCP4" class="btn" style="width:auto">📖 Recetas</button>
+        <button type="button" id="tabCP5" class="btn" style="width:auto">🆘 Problemas</button>
+        <button type="button" id="tabCP3" class="btn" style="width:auto">📅 Luna</button>
       </div>
       <div id="compostPanel"></div>
       <div class="dlg-actions"><button type="button" id="compostClose" class="btn">Cerrar</button></div>
@@ -1952,9 +2088,9 @@
          <div class="help-card">
            <h4>📅 Mi Día · 💚 Cuerpo & Salud</h4>
            <p><b>📅 Mi Día — Organizar:</b> ✅ Hábitos (icono + color + racha → puntitos en el día), 🎯 Disciplina (Pomodoro 25/5, 2 min, Sapo, Time Blocking + MIT del día), 📚 Horario (bloques semanales + vista “Hoy”), ⏱ Tiempo (cronómetro + temporizador), 🔔 Recordatorios (fases lunares y avisos suaves).</p>
-           <p><b>📅 Mi Día — Registrar:</b> 📓 Gratitud Diaria (3 líneas, racha, días ✨), 💭 Sueños (intención, diario, “Sueño:” en nota), 🌬️ Respiración (10 técnicas 4-7-8, caja… con cronómetro).</p>
+           <p><b>📅 Mi Día — Registrar:</b> 📓 Gratitud Diaria (3 líneas, racha, días ✨), 💭 Sueños (intención, diario, “Sueño:” en nota), 🌬️ Respiración (14 técnicas por objetivo, guía visual con sonido, ciclos y registro).</p>
            <p><b>💚 Ciclos:</b> 🌸 Ciclo (registro, predicción período/fértil, historial + 🧬 diagrama hormonal 28 días con slider), 🤰 Fertilidad Natural, 🌅 Juventud, 🔥 Climaterio.</p>
-             <p><b>💚 Cuidado:</b> 🌿 Medicina (💊 Farmacología + 🌱 Natural con horarios y notificaciones + 🩺 Básica con botiquín y alergias + 📜 Historia + ⚠️ Seguridad) · 💪 Entrenamientos (Gym, Terapia física, Calistenia, Prácticas varias → puntitos 💪).</p>
+              <p><b>💚 Cuidado:</b> 🌿 Medicina (💊 Farmacología + 🌱 Natural con horarios y notificaciones + 🩺 Básica con botiquín y alergias + 📜 Historia + ⚠️ Seguridad) · 💪 Entrenamientos (Gym, Terapia física, Calistenia, Prácticas varias + filtro por lugar: Casa, Gimnasio, Playa, Bosque, Multicancha → puntitos 💪).</p>
             <p><b>🌊 Territorio — Tierra:</b> 🌿 Lawen (herbario 20 plantas Bío-Bío + tus fichas, buscable por síntoma — educativo).</p>
          </div>
          <div class="help-card">
@@ -1974,7 +2110,7 @@
           <div class="help-card">
               <h4>🏡 Hogar y Vida Práctica · 🤝 Comunidad y Sistema</h4>
              <p><b>🏡 Casa:</b> 🥗 Comidas (plan + calculadora TMB/TDEE + menús Penco) · 🛒 Compras · 💰 Finanzas (balance, presupuesto, proyección 13 lunas) · 🏠 Tareas Hogar · 🍯 La Bodega (conservas y fermentos).</p>
-             <p><b>🔧 Energía y Taller:</b> ⚡ Consumo eléctrico · 🪵 Leña & Pellet ($/kWh) · 🔧 Bitácora Taller · 📏 Conversión (12 categorías).</p>
+             <p><b>🔧 Energía y Taller:</b> ⚡ Consumo eléctrico · 🪵 Leña & Pellet ($/kWh) · 🔧 Bitácora Taller · 🔧 Mecánica (bici/moto/auto/motores + bitácora) · 📏 Conversión (12 categorías).</p>
              <p><b>🤝 Red Penco:</b> 🔄 Trueque y Feria · 🤝 Minga · ⚖️ Derechos y Deberes · 🐾 Cuidado Animal. <b>🚨 Emergencia:</b> 🩹 Primeros Auxilios · 🟣 Violencia (149/1455, salida rápida) · 🌊🚨 Evacuación Tsunami (rutas + mochila 72h).</p>
              <p><b>⚙️ App:</b> 💾 Respaldo / 📥 Restaurar (JSON por usuario) · 📌 Acceso directo · 📄 PDF luna / 📚 PDF ciclo · ❤ Aporte voluntario.</p>
             <p><b>🎨 Tema + 🕰 Reloj</b> America/Santiago en sidebar.</p>
@@ -2062,7 +2198,55 @@
         <h3 style="margin:0;color:var(--accent)">🎯 Disciplina sin procrastinar</h3>
         <button type="button" id="disciplineCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
       </div>
-      <p class="muted" style="line-height:1.5">No es falta de ganas, es falta de <b>sistema</b>. Elige 1-2 técnicas, pruébalas 7 días y ajusta. La luna enseña ciclos, no perfección.</p>
+      <p class="muted" style="line-height:1.5">No es falta de ganas, es falta de <b>sistema</b>. Define tu MIT, suma Pomodoros y vacía tu mente. La luna enseña ciclos, no perfección.</p>
+      <div id="discStats" class="disc-stats"></div>
+      <div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">
+        <button type="button" id="tabDiscHoy" class="btn btn-accent" style="width:auto">✍️ Hoy</button>
+        <button type="button" id="tabDiscTec" class="btn" style="width:auto">🧰 Técnicas</button>
+        <button type="button" id="tabDiscHist" class="btn" style="width:auto">📊 Historial</button>
+      </div>
+      <div id="discTabHoy">
+      <div class="menstrual-card" style="margin-top:2px">
+        <h4>🎯 MIT de hoy — 1 tarea importante</h4>
+        <label>Mi MIT de hoy <input type="text" id="disciplineMIT" placeholder="ej: Escribir 500 palabras Luna 4" maxlength="120"></label>
+        <label class="check-row"><input type="checkbox" id="disciplineDone"> ✅ MIT cumplido hoy</label>
+        <label class="check-row"><input type="checkbox" id="disciplineFrog"> 🐸 Sapo primero (MIT antes de redes/correo)</label>
+        <div class="disc-pomo-row">
+          <div><b id="discPomoCount">🍅 0</b><span class="muted" style="font-size:11px"> pomodoros hoy</span></div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <button type="button" id="discPomoPlus" class="btn" style="width:auto">+1 🍅</button>
+            <button type="button" id="discPomoMinus" class="btn" style="width:auto">−1</button>
+            <button type="button" id="disciplineStartPomodoro" class="btn" style="width:auto">⏱ Iniciar 25′</button>
+          </div>
+        </div>
+        <p id="discPomoDots" class="disc-dots"></p>
+      </div>
+      <div class="menstrual-card" style="margin-top:10px">
+        <h4>⚡ Regla 2 minutos — vacía micro-pendientes</h4>
+        <div class="today-add"><input type="text" id="discQuickInput" placeholder="ej: lavar taza, responder wsp..." maxlength="80"><button type="button" id="discQuickAdd" class="btn btn-accent" style="width:auto">+ Agregar</button></div>
+        <div id="discQuickList" class="dio-compact" style="margin-top:8px"></div>
+      </div>
+      <div class="menstrual-card" style="margin-top:10px">
+        <h4>📥 Cajón de distracciones</h4>
+        <p class="muted" style="font-size:11px">Si aparece una distracción en foco, anótala aquí y sigue. La revisas en la pausa.</p>
+        <div class="today-add"><input type="text" id="discDistInput" placeholder="ej: revisar Instagram..." maxlength="80"><button type="button" id="discDistAdd" class="btn" style="width:auto">📥 Anotar</button></div>
+        <div id="discDistList" class="dio-compact" style="margin-top:8px"></div>
+      </div>
+      <div class="menstrual-card" style="margin-top:10px">
+        <h4>🗺️ WOOP + Time Blocking</h4>
+        <div class="conv-row">
+          <label>Si <input type="text" id="disciplineIf" placeholder="ej: son las 08:00 y estoy en escritorio"></label>
+          <label>entonces <input type="text" id="disciplineThen" placeholder="ej: abro documento y escribo 10 min"></label>
+        </div>
+        <label>Bloque de hoy (hora + tarea) <input type="text" id="discBlock" placeholder='ej: 09:00-10:00 escribir Luna 4' maxlength="80"></label>
+        <div class="dlg-actions" style="justify-content:flex-start">
+          <button type="button" id="disciplineSave" class="btn btn-accent" style="width:auto">💾 Guardar día</button>
+          <button type="button" id="discToSchedule" class="btn" style="width:auto">📚 Ver Horario</button>
+        </div>
+        <p id="disciplineStatus" class="muted" style="font-size:11px;margin-top:6px"></p>
+      </div>
+      </div>
+      <div id="discTabTec" class="hidden">
       <div class="discipline-grid">
         <div class="discipline-card">
           <h4>🍅 Pomodoro — 25/5</h4>
@@ -2073,12 +2257,12 @@
         <div class="discipline-card">
           <h4>⚡ Regla 2 minutos</h4>
           <p><b>Cómo:</b> Si toma &lt;2 min, hazlo ahora.</p>
-          <p class="muted">Evita acumular micro-pendientes (responder, lavar taza, agendar).</p>
+          <p class="muted">Evita acumular micro-pendientes (responder, lavar taza, agendar). Úsala arriba 👆.</p>
         </div>
         <div class="discipline-card">
           <h4>🐸 Cómete el sapo</h4>
           <p><b>Cómo:</b> Haz primero la tarea más difícil/importante del día.</p>
-          <p class="muted">Tu MIT (Most Important Task) antes de redes o correo.</p>
+          <p class="muted">Tu MIT antes de redes o correo. Marca 🐸 arriba cuando lo hagas.</p>
         </div>
         <div class="discipline-card">
           <h4>📅 Time Blocking</h4>
@@ -2093,7 +2277,7 @@
         <div class="discipline-card">
           <h4>🗺️ WOOP</h4>
           <p><b>Deseo</b> → <b>Resultado</b> → <b>Obstáculo</b> → <b>Plan</b>. Ej: “Si son las 19:00 y estoy en casa, entonces camino 20 min”.</p>
-          <p class="muted">Une motivación con obstáculo real.</p>
+          <p class="muted">Une motivación con obstáculo real. Guárdalo arriba 👆.</p>
         </div>
         <div class="discipline-card">
           <h4>🔗 Apilar hábitos</h4>
@@ -2106,22 +2290,16 @@
           <p class="muted">Disciplina = ambiente que te ayuda, no fuerza de voluntad infinita.</p>
         </div>
       </div>
-      <div class="menstrual-card" style="margin-top:12px">
-        <h4>✍️ Herramienta rápida — hoy</h4>
-        <label>Mi MIT de hoy (1 tarea importante) <input type="text" id="disciplineMIT" placeholder="ej: Escribir 500 palabras Luna 4"></label>
-        <div class="conv-row">
-          <label>Si <input type="text" id="disciplineIf" placeholder="ej: son las 08:00 y estoy en escritorio"></label>
-          <label>entonces <input type="text" id="disciplineThen" placeholder="ej: abro documento y escribo 10 min"></label>
-        </div>
-        <div class="dlg-actions" style="justify-content:flex-start">
-          <button type="button" id="disciplineSave" class="btn btn-accent" style="width:auto">💾 Guardar intención</button>
-          <button type="button" id="disciplineStartPomodoro" class="btn" style="width:auto">🍅 Pomodoro 25′</button>
-        </div>
-        <p id="disciplineStatus" class="muted" style="font-size:11px;margin-top:6px"></p>
+      </div>
+      <div id="discTabHist" class="hidden">
+      <div class="menstrual-card" style="margin-top:2px">
+        <h4>📊 Últimos 7 días</h4>
+        <div id="discHistory"></div>
       </div>
       <div class="menstrual-card" style="margin-top:10px">
         <h4>📏 Reglas de oro</h4>
         <p class="muted" style="font-size:12px">• Sistema &gt; motivación. • 2 min para empezar, no para terminar. • Hecho 70% &gt; perfecto 0%. • Mide racha, no culpa — usa ✅ Hábitos para ver tu %.</p>
+      </div>
       </div>
       <div class="dlg-actions"><button type="button" id="disciplineClose" class="btn">Cerrar</button></div>
     </form>
@@ -2259,22 +2437,83 @@
   <dialog id="breathDialog">
     <form method="dialog">
       <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
-        <h3 style="margin:0;color:var(--accent)">🌬️ Técnicas de Respiración</h3>
+        <h3 style="margin:0;color:var(--accent)">🌬️ Respiración — calma, foco y sueño</h3>
         <button type="button" id="breathCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
       </div>
-      <p class="muted" style="line-height:1.5">Respiraciones simples. Mente en calma. Tú en equilibrio. Elige una técnica de la imagen y practica con guía visual.</p>
-      <div class="breath-grid" id="breathGrid"></div>
-      <div class="menstrual-card" style="margin-top:10px;text-align:center">
-        <h4 id="breathTitle" style="color:var(--gold)">4-7-8 Respiración</h4>
-        <p id="breathDesc" class="muted" style="font-size:12px">Ideal para el sueño y la ansiedad. Calma profunda.</p>
-        <div id="breathCircle" class="breath-circle"><span id="breathPhase">Listo</span><span id="breathCount">—</span></div>
-        <p id="breathPattern" class="chip" style="display:inline-block;margin-top:8px">Inhala 4 → Retén 7 → Exhala 8</p>
-        <div class="dlg-actions" style="justify-content:center;margin-top:10px">
-          <button type="button" id="breathStart" class="btn btn-accent" style="width:auto">▶ Iniciar</button>
-          <button type="button" id="breathPause" class="btn" style="width:auto">⏸ Pausa</button>
-          <button type="button" id="breathReset" class="btn" style="width:auto">↺ Reiniciar</button>
+      <p class="muted" style="line-height:1.5">Respirar bien es gratis y cambia tu día. Elige por <b>objetivo</b>, sigue la guía visual con sonido y completa ciclos. Todo queda en <b>Mi registro</b>.</p>
+      <div class="timer-tabs" style="margin:10px 0;flex-wrap:wrap">
+        <button type="button" id="breathTabPractice" class="btn btn-accent" style="width:auto">🌬️ Practicar</button>
+        <button type="button" id="breathTabLearn" class="btn" style="width:auto">📖 Aprender</button>
+        <button type="button" id="breathTabLog" class="btn" style="width:auto">📓 Mi registro</button>
+      </div>
+      <div id="breathPracticePanel">
+        <div class="menstrual-card" style="border-color:var(--gold);margin-bottom:10px">
+          <h4>🚀 Empieza en 60 segundos</h4>
+          <p class="muted" style="font-size:12px;line-height:1.6">1) Siéntate recto, pies en tierra, hombros sueltos. 2) Mano al vientre: debe inflarse al inhalar. 3) Inhala por <b>nariz</b>, exhala por <b>nariz o boca lenta</b>. 4) Si eres nuevo: parte con <b>🌱 2-4</b> o <b>🍃 4-6</b>.</p>
         </div>
-        <p class="muted" style="font-size:11px;margin-top:6px">Siéntate con espalda recta. 4 ciclos. Si mareas, vuelve a 4-6.</p>
+        <div class="conv-row" style="align-items:flex-end">
+          <label style="flex:2">Objetivo
+            <select id="breathFilter">
+              <option value="todos">🌬️ Todas</option>
+              <option value="inicio">🌱 Inicio</option>
+              <option value="calma">🍃 Calma / ansiedad</option>
+              <option value="sueno">🌙 Sueño</option>
+              <option value="foco">🎯 Foco</option>
+              <option value="energia">⚡ Energía</option>
+            </select>
+          </label>
+          <label style="flex:1">Ciclos
+            <select id="breathCycles">
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4" selected>4</option>
+              <option value="6">6</option>
+              <option value="8">8</option>
+            </select>
+          </label>
+          <label class="check-row" style="flex:1;white-space:nowrap"><input type="checkbox" id="breathSound" checked> 🔊 Sonido</label>
+        </div>
+        <div class="breath-grid" id="breathGrid" style="margin-top:10px"></div>
+        <div class="menstrual-card" style="margin-top:10px;text-align:center">
+          <h4 id="breathTitle" style="color:var(--gold)">4-7-8 Respiración</h4>
+          <p id="breathBadges" style="margin:4px 0"></p>
+          <p id="breathDesc" class="muted" style="font-size:12px">Ideal para el sueño y la ansiedad. Calma profunda.</p>
+          <div id="breathCircle" class="breath-circle"><span id="breathPhase">Listo</span><span id="breathCount">—</span></div>
+          <p id="breathCycleLabel" class="muted" style="font-size:12px;margin:4px 0">0/4 ciclos</p>
+          <div class="breath-progress"><div id="breathProgress"></div></div>
+          <p id="breathPattern" class="chip" style="display:inline-block;margin-top:8px">Inhala 4 → Retén 7 → Exhala 8</p>
+          <p id="breathTimeEst" class="muted" style="font-size:11px;margin-top:4px"></p>
+          <div class="dlg-actions" style="justify-content:center;margin-top:10px;flex-wrap:wrap">
+            <button type="button" id="breathStart" class="btn btn-accent" style="width:auto">▶ Iniciar</button>
+            <button type="button" id="breathPause" class="btn" style="width:auto">⏸ Pausa</button>
+            <button type="button" id="breathReset" class="btn" style="width:auto">↺ Reiniciar</button>
+            <button type="button" id="breathDone" class="btn" style="width:auto" title="Guardar la sesión en tu registro">✅ Marcar hecha</button>
+          </div>
+          <div style="text-align:left;margin-top:10px">
+            <h4 style="color:var(--gold);font-size:12px;margin-bottom:4px">📝 Paso a paso</h4>
+            <ol id="breathSteps" class="muted" style="font-size:12px;line-height:1.6;margin:0;padding-left:18px"></ol>
+            <p id="breathWhen" class="muted" style="font-size:12px;margin-top:6px"></p>
+          </div>
+          <p class="muted" style="font-size:11px;margin-top:8px">⚠️ Si te mareas, duele el pecho o te falta el aire: para, respira normal y prueba una más suave (2-4 / 4-6). No practiques conteniendo mucho aire en agua, manejando ni con embarazo/hipertensión descompensada sin guía.</p>
+        </div>
+      </div>
+      <div id="breathLearnPanel" class="hidden">
+        <div class="si-card"><h4>🫁 Base diafragmática (2 min)</h4><p>Mano derecha al pecho, izquierda al vientre. Al inhalar solo se mueve la izquierda. Prueba: 10 respiraciones 4-6 solo con guata. Si suben hombros, vas rápido: baja ritmo. Esto solo ya baja el estrés.</p></div>
+        <div class="si-card"><h4>🧭 Elige por momento</h4><p><b>Nervios/enojo:</b> 4-6, 3-3-6 o suspiro · <b>No duermo:</b> 4-7-8 o 7-11 acostado · <b>Estudiar/trabajar:</b> caja 4-4-4-4 o alterna · <b>Bajón/mañana:</b> 3-1-3 energía + luz + agua · <b>Siempre:</b> nariz > boca, lento > fuerte.</p></div>
+        <div class="si-card"><h4>❌ Errores comunes</h4><p>1) Respirar al pecho y subir hombros. 2) Forzar retención hasta marearse. 3) Hacer técnicas de energía de noche. 4) 1 ciclo y rendirse: mínimo 4 ciclos (2 min) para notar efecto.</p></div>
+        <div class="si-card"><h4>🛟 Cuidados</h4><p>No reemplaza tratamiento. Si tienes asma, EPOC, corazón, hipertensión, embarazo, pánico frecuente o apnea: usa solo niveles Suave y consulta CESFAM. Niños: solo 2-4 / 4-4 jugando (“oler flor / soplar vela”).</p></div>
+        <div class="menstrual-card" style="margin-top:10px"><h4>🔗 Conecta</h4><p class="muted" style="font-size:12px">🌬️ + ✅ Hábitos (racha 2 min/día) · 🌬️ + 💭 Sueños (4-7-8 antes de dormir) · 🌬️ + 🕉️ Prácticas (respiración al sol) · 🌬️ + 🪞 Autoconocimiento (STOP + 3 respiraciones).</p><div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="breathGoHabits" class="btn" style="width:auto">✅ Ir a Hábitos</button></div></div>
+      </div>
+      <div id="breathLogPanel" class="hidden">
+        <div id="breathStatsBox"><div id="breathStats"></div></div>
+        <div id="breathLogBox" class="habits-list" style="margin-top:10px;max-height:240px"></div>
+        <div class="dlg-actions" style="justify-content:space-between;align-items:center;margin-top:8px;flex-wrap:wrap">
+          <span style="display:flex;gap:8px;flex-wrap:wrap">
+            <button type="button" id="breathAgendar" class="btn" style="width:auto">🕐 Agendar hoy</button>
+            <button type="button" id="breathShare" class="btn" style="width:auto">📤 Compartir semana</button>
+            <button type="button" id="breathClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar</button>
+          </span>
+        </div>
       </div>
       <div class="dlg-actions"><button type="button" id="breathClose" class="btn">Cerrar</button></div>
     </form>
@@ -2411,12 +2650,26 @@
         <h3 style="margin:0;color:var(--accent)">💪 Entrenamientos</h3>
         <button type="button" id="gymCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
       </div>
-      <p class="muted" style="line-height:1.5">Planifica <b>Gym, Terapia física, Calistenia y Prácticas varias</b> con <b>sugerencias según edad</b>. Todo queda <b>privado y local</b> por usuario. Toca una sugerencia para cargarla y agrégala al calendario semanal.</p>
-      <div class="timer-tabs" style="margin-bottom:8px">
+      <p class="muted" style="line-height:1.5">Planifica <b>Gym, Terapia física, Calistenia y Prácticas varias</b> con <b>sugerencias según edad</b> y ahora también <b>por lugar</b>: 🏠 Casa, 🏋️ Gimnasio, 🏖️ Playa, 🌲 Bosque, 🏟️ Multicancha, 🌳 Plaza/Parque, 🚴 Costanera y más. Todo queda <b>privado y local</b> por usuario. Toca una sugerencia para cargarla y agrégala al calendario semanal.</p>
+      <div class="timer-tabs" style="margin-bottom:8px" title="Filtrar por tipo de entrenamiento">
+        <span class="muted" style="font-size:11px;align-self:center">Tipo:</span>
         <button type="button" id="tabGymGym" class="btn btn-accent" style="width:auto">🏋️ Gym</button>
         <button type="button" id="tabGymFisio" class="btn" style="width:auto">🩹 Terapia</button>
         <button type="button" id="tabGymCalis" class="btn" style="width:auto">🤸 Calistenia</button>
         <button type="button" id="tabGymVarias" class="btn" style="width:auto">🌿 Prácticas</button>
+      </div>
+      <div class="timer-tabs" style="margin-bottom:8px" title="Filtrar por lugar de entrenamiento">
+        <span class="muted" style="font-size:11px;align-self:center">Lugar:</span>
+        <button type="button" id="tabGymPlaceTodos" class="btn btn-accent" style="width:auto;font-size:11px">📍 Todos</button>
+        <button type="button" id="tabGymPlaceCasa" class="btn" style="width:auto;font-size:11px">🏠 Casa</button>
+        <button type="button" id="tabGymPlaceGimnasio" class="btn" style="width:auto;font-size:11px">🏋️ Gimnasio</button>
+        <button type="button" id="tabGymPlacePlaya" class="btn" style="width:auto;font-size:11px">🏖️ Playa</button>
+        <button type="button" id="tabGymPlaceBosque" class="btn" style="width:auto;font-size:11px">🌲 Bosque</button>
+        <button type="button" id="tabGymPlaceMulticancha" class="btn" style="width:auto;font-size:11px">🏟️ Multicancha</button>
+        <button type="button" id="tabGymPlacePlaza" class="btn" style="width:auto;font-size:11px">🌳 Plaza</button>
+        <button type="button" id="tabGymPlaceCostanera" class="btn" style="width:auto;font-size:11px">🚴 Costanera</button>
+        <button type="button" id="tabGymPlacePiscina" class="btn" style="width:auto;font-size:11px">🏊 Piscina</button>
+        <label class="muted" style="font-size:11px;display:flex;gap:4px;align-items:center">Ver <select id="gymPlaceFilter" style="width:auto;font-size:11px;padding:2px 6px"><option value="todos">📍 Todos</option><option value="casa">🏠 Casa</option><option value="gimnasio">🏋️ Gimnasio</option><option value="playa">🏖️ Playa</option><option value="bosque">🌲 Bosque</option><option value="multicancha">🏟️ Multicancha</option><option value="plaza">🌳 Plaza/Parque</option><option value="costanera">🚴 Costanera</option><option value="piscina">🏊 Piscina</option><option value="otro">📌 Otro</option></select></label>
       </div>
       <div class="timer-tabs" style="margin-bottom:10px" title="Filtrar sugerencias por edad">
         <span class="muted" style="font-size:11px;align-self:center">Edad:</span>
@@ -2451,12 +2704,14 @@
       </div>
       <label>Ejercicios / Detalle (series x reps - peso / descanso) <textarea id="gymExercises" rows="3" placeholder="ej:&#10;Press banca 4x8 60kg 90s&#10;Fondos 3x12 45s&#10;Plancha 3x45s"></textarea></label>
       <div class="conv-row">
-        <label>Lugar <input type="text" id="gymPlace" placeholder="ej: Gimnasio Penco, Casa, Box, Playa" maxlength="30"></label>
+        <label style="flex:2">Lugar <input type="text" id="gymPlace" list="gymPlaceList" placeholder="ej: Casa, Gimnasio, Playa, Bosque, Multicancha" maxlength="40"></label>
+        <datalist id="gymPlaceList"><option value="Casa"></option><option value="Gimnasio Penco"></option><option value="Playa Penco"></option><option value="Bosque"></option><option value="Multicancha"></option><option value="Plaza / Parque"></option><option value="Costanera"></option><option value="Piscina"></option><option value="Casa / Patio"></option><option value="Box"></option></datalist>
         <button type="button" id="gymAdd" class="btn btn-accent" style="width:auto;align-self:flex-end">+ Agregar al calendario</button>
         <button type="button" id="gymUpdate" class="btn hidden" style="width:auto;align-self:flex-end">↻ Actualizar</button>
         <button type="button" id="gymCancel" class="btn hidden" style="width:auto;align-self:flex-end">Cancelar</button>
       </div>
       <div id="gymTodayBox" class="menstrual-card" style="margin-top:10px"></div>
+      <div id="gymPlacesBox" class="menstrual-card" style="margin-top:10px"></div>
       <div id="gymWeekGrid" class="schedule-week"></div>
       <div id="gymList" class="habits-list" style="margin-top:10px"></div>
       <div id="gymStatsBox" class="menstrual-card" style="margin-top:10px"></div>
@@ -3008,6 +3263,7 @@
               <option value="semanaLunar">🌗 Semana lunar</option>
               <option value="mes">📅 Mes gregoriano</option>
               <option value="semana">🗓️ Semana (lun–dom)</option>
+              <option value="completa">📋 Vista completa</option>
             </select>
           </label>
           <p class="muted" style="font-size:11px;margin:8px 0 4px">Información visible en ◉ Hoy (marca lo que quieras ver):</p>
@@ -3027,6 +3283,14 @@
           <label class="check-row"><input type="checkbox" data-home="ciclo" checked> 🌸 Ciclo</label>
           <label class="check-row"><input type="checkbox" data-home="clima" checked> 🌤️ Clima</label>
           <label class="check-row"><input type="checkbox" data-home="mareas" checked> 🌊 Mareas</label>
+          <label class="check-row"><input type="checkbox" data-home="gratitud" checked> 📓 Gratitud diaria</label>
+          <label class="check-row"><input type="checkbox" data-home="horario" checked> 📚 Horario de hoy</label>
+          <label class="check-row"><input type="checkbox" data-home="entreno" checked> 💪 Entrenamiento de hoy</label>
+          <label class="check-row"><input type="checkbox" data-home="medicina" checked> 💊 Medicina de hoy</label>
+          <label class="check-row"><input type="checkbox" data-home="siembra" checked> 🌱 Consejo siembra lunar</label>
+          <label class="check-row"><input type="checkbox" data-home="espiritual" checked> 🕉️ Práctica espiritual</label>
+          <label class="check-row"><input type="checkbox" data-home="ritmo" checked> 🌞 Ritmo + hora dorada</label>
+          <label class="check-row"><input type="checkbox" data-home="ekadashi" checked> 📿 Ekadashi / ayuno</label>
           <button type="button" id="cfgHomeReset" class="btn" style="width:100%;margin-top:8px">↺ Mostrar toda la información</button>
         </div>
         <div class="config-group">
@@ -3146,6 +3410,7 @@
             <label class="check-row"><input type="checkbox" data-btn="btnEnergy"> ⚡ Consumo eléctrico</label>
             <label class="check-row"><input type="checkbox" data-btn="btnLena"> 🪵 Leña & Pellet</label>
             <label class="check-row"><input type="checkbox" data-btn="btnTaller"> 🔧 Bitácora Taller</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnMecanica"> 🔧 Mecánica</label>
             <label class="check-row"><input type="checkbox" data-btn="btnConvert"> 📏 Conversión</label>
           </div>
           <div class="config-group">
@@ -3514,12 +3779,13 @@
         <h3 style="margin:0;color:var(--accent)">🎉 Eventos Anuales — Comuna de Penco</h3>
         <button type="button" id="comunaCloseTop" class="btn btn-icon" title="Cerrar">✕</button>
       </div>
-      <p class="muted" style="line-height:1.5">Fiestas y efemérides penconas. Los <b>anuales</b> se repiten cada año y aparecen en el calendario. Puedes <b>agregar los tuyos</b> (junta de vecinos, feria, aniversario). Queda <b>privado y local</b> por usuario.</p>
+      <p class="muted" style="line-height:1.5">Fiestas y efemérides penconas. Los <b>anuales</b> se repiten cada año y aparecen en el calendario. Puedes <b>agregar los tuyos</b> (junta de vecinos, feria, aniversario). En la pestaña <b>🎨 Talleres</b> están los talleres y actividades de la comuna con opción de agregarlos al calendario. Queda <b>privado y local</b> por usuario.</p>
       <div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">
         <button type="button" id="tabComunaEventos" class="btn btn-accent" style="width:auto">🎉 Eventos</button>
         <button type="button" id="tabComunaGuia" class="btn" style="width:auto">📖 Guía de Penco</button>
         <button type="button" id="tabComunaSectores" class="btn" style="width:auto">🏘️ Sectores</button>
         <button type="button" id="tabComunaHistoria" class="btn" style="width:auto">📜 Historia</button>
+        <button type="button" id="tabComunaTalleres" class="btn" style="width:auto">🎨 Talleres</button>
       </div>
       <div id="comunaEventosPanel">
       <label class="check-row" style="margin:8px 0"><input type="checkbox" id="comunaShowCal"> Mostrar eventos de Penco en el calendario (iconos 🎉 por día)</label>
@@ -3558,6 +3824,7 @@
       <div id="comunaGuiaPanel" class="hidden" style="margin-top:10px"></div>
       <div id="comunaSectoresPanel" class="hidden" style="margin-top:10px"></div>
       <div id="comunaHistoriaPanel" class="hidden" style="margin-top:10px"></div>
+      <div id="comunaTalleresPanel" class="hidden" style="margin-top:10px"></div>
       <div class="dlg-actions"><button type="button" id="comunaClose" class="btn">Cerrar</button></div>
     </form>
   </dialog>
@@ -3607,12 +3874,16 @@
   <script src="sudoku-modulo.js?v=1"></script>
   <script src="info-clave.js?v=1"></script>
   <script src="psicologia-modulo.js?v=1"></script>
+  <script src="neurodiversidad-modulo.js?v=1"></script>
   <script src="adolescencia-modulo.js?v=1"></script>
   <script src="etapas-vida-modulo.js?v=1"></script>
   <script src="electrocultura-modulo.js?v=1"></script>
   <script src="red-comunitaria-modulo.js?v=1"></script>
   <script src="hidroponia-modulo.js?v=2"></script>
   <script src="huerta-modulo.js?v=1"></script>
+  <script src="mecanica-modulo.js?v=1"></script>
+  <script src="plantas-modulo.js?v=1"></script>
+  <script src="talleres-penco.js?v=1"></script>
   <script>
     // Limpieza file:// (cinturón y tirantes): si un SW de una versión anterior
     // quedó registrado, desregistrarlo y borrar cachés cal13, luego recargar.

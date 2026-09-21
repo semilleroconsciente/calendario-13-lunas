@@ -112,36 +112,65 @@ var AVES_BOSQUE = {
   cierre: 'Plantar nativo es plantar aves: un peumo o un maqui nuevo es comedero y casa por 50 años.'
 };
 
+/* Estructura espejo de HISTORIA_PENCO (penco-guia.js):
+   intro + eras[{t, cuando, d}] + sp (chips tocables) + fuentes.
+   Mismo render: tarjeta por periodo, fecha muted, descripción,
+   chips que cargan la bitácora. */
 var HISTORIA_AVES = {
-  intro: 'Las aves de Penco —humedal Rocuant, costa y bosque costero— en <b>5 tiempos</b>: de las bandadas originarias al retorno actual. Toca una especie para cargarla en tu bitácora.',
+  intro: 'Las aves de Penco —<b>humedal Rocuant, costa y bosque costero</b>— del <b>mar cretácico</b> al <b>retorno actual</b>, en <b>10 periodos</b>. La historia completa vive aquí; toca una especie para cargarla en tu bitácora.',
   eras: [
     {
-      t: '🌊 Tiempo originario: humedal y bosque intactos', cuando: 'Antes de 1550 · lafkenche',
-      d: 'Humedal Rocuant pleno y bosque esclerófilo-laurifolio continuo hasta el mar. <b>Bandadas de torcaza y choroy</b> movían semillas entre quebradas; <b>chucao, rayadito y concón</b> habitaban el sotobosque; <b>cisnes, garzas y zarapitos</b> llenaban el humedal. Las comunidades lafkenche cazaban con respeto estacional y el <b>picaflor</b> era mensajero en relatos.',
+      t: '🪨 Tiempo profundo: basamento de Gondwana', cuando: 'Paleozoico (~300 Ma) · cerros que serán miradores',
+      d: 'Aún sin bahía ni humedal: el <b>zócalo paleozoico</b> forma los cerros (Verde, Bellavista, Tumbes) que millones de años después serán <b>miradores de aves</b> y refugio de bosque. El escenario se levanta antes que las actoras.',
+      sp: ['Jilguero', 'Loica']
+    },
+    {
+      t: '🦕 Mar de Quiriquina: la primera ave', cuando: 'Cretácico Superior · Maastrichtiano (72–66 Ma)',
+      d: 'Sobre el mar que cubría Penco voló y pescó <b>Neogaeornis wetzeli, la primera ave mesozoica descrita de Sudamérica</b>, junto a plesiosaurios, mosasaurios y tortugas. En <b>La Cata</b> quedan amonites y tortugas fósiles. Toda ave actual de Rocuant desciende de linajes que sobrevivieron a la extinción K/Pg que mató a esos reptiles.',
+      sp: ['Yeco / Cormorán', 'Gaviota dominicana', 'Pilpilén']
+    },
+    {
+      t: '🌿 Selvas del carbón: origen del bosque-casa', cuando: 'Paleoceno–Eoceno (~60–40 Ma) · Formación Cosmito',
+      d: 'Deltas pantanosos de <b>Cosmito</b> con paleoflora mixta: nace el tipo de bosque (laurifolio, Nothofagus, Proteaceae) que dará <b>fruto, semilla e insectos</b> a las aves del futuro. Sin humedal todavía, pero ya hay <b>selva que cantará</b>.',
+      sp: ['Torcaza', 'Zorzal', 'Fío-fío']
+    },
+    {
+      t: '❄️ Hielos, refugio y nacimiento del humedal', cuando: 'Pleistoceno – Holoceno Medio (~2 Ma – 6.000 a.p.)',
+      d: 'La <b>Cordillera de la Costa no se glacia</b> y se vuelve <b>refugio</b> (Nothofagus, keule, olivillo). La transgresión forma la <b>bahía, las terrazas de 5 m y 2 m, marismas del Andalién e isla Rocuant</b>: nace el humedal. <b>Hualpén y Tumbes eran islas</b>: costa recortada ideal para aves marinas y playeras. Bosque de <b>boldo y arrayán extensos</b> hasta el mar.',
+      sp: ['Zarapito', 'Garza cuca', 'Cisne coscoroba', 'Chucao', 'Rayadito', 'Zorzal']
+    },
+    {
+      t: '🛶 Primeros navegantes: caza y pluma', cuando: 'Arcaico Medio–Tardío (7.000–2.000 a.p.) · Bellavista 1, Playa Negra 9',
+      d: 'Conchales con <b>caza de lobo marino</b> y marisqueo (Bellavista 1, Playa Negra 9, Talcahuano 1). Las aves se cazan con respeto estacional y se usan <b>plumas y huesos</b>; ya se navega a Quiriquina entre bandadas. Humedal pleno y bosque continuo: <b>torcazas, choroy, chucao y garzas</b> en abundancia.',
+      sp: ['Torcaza', 'Chucao', 'Garza cuca', 'Cisne coscoroba', 'Zarapito', 'Pato jergón']
+    },
+    {
+      t: '🏺 Mundo lafkenche: mensajeras y cantoras', cuando: '130 d.C. – 1550 · Pitrén / El Vergel',
+      d: 'Humedal Rocuant pleno y bosque continuo. <b>Bandadas de torcaza y choroy</b> siembran el cerro; <b>chucao, rayadito y concón</b> en el sotobosque; <b>cisnes, garzas y zarapitos</b> en el humedal. Caza estacional y el <b>picaflor como mensajero</b> en relatos. El bosque da <b>maqui, arrayán, avellana y copihue</b>: comedero permanente.',
       sp: ['Torcaza', 'Chucao', 'Concón', 'Picaflor chico', 'Zarapito', 'Garza cuca', 'Cisne coscoroba', 'Rayadito', 'Zorzal']
     },
     {
-      t: '⛏️ Colonia y carbón: presión sobre el monte', cuando: '1550–1958',
-      d: 'Tala para leña de fundiciones y entibado de minas de carbón (Lirquén–Penco) <b>fragmentó el bosque</b>: las aves de interior (concón, chucao, carpintero) se replegaron a quebradas. En el humedal, caza y desecación parcial redujeron cisnes y patos. La <b>loica y el queltrehue</b>, de pradera abierta, se adaptaron a los faldeos despejados.',
+      t: '⛪ Colonia: vigías y gallinas', cuando: '1550–1800 · Concepción en Penco + traslado 1751',
+      d: 'Fundación de 1550: la bahía se llena de <b>velas y vigías</b>, el bosque se abre para fuertes e iglesias. Llega la <b>gallina (ya presente en Arauco prehispánico por ADN, se masifica ahora)</b> a corrales. Con el <b>traslado de 1751</b> y 90 años de silencio, el monte y el humedal respiran: vuelven bandadas donde hubo ciudad.',
+      sp: ['Torcaza', 'Concón', 'Chucao', 'Loica', 'Queltrehue / Treile']
+    },
+    {
+      t: '⛏️ Carbón y cobre: presión sobre el monte', cuando: '1800–1958 · Minas Lirquén–Cerro Verde + riel 1889/1914',
+      d: 'Tala para leña de fundiciones y <b>entibado de minas</b> fragmenta el bosque: <b>concón, chucao y carpintero</b> se repliegan a quebradas. En el humedal, caza y desecación parcial reducen cisnes y patos. La <b>loica y el queltrehue</b>, de pradera abierta, se adaptan a faldeos despejados. El ferrocarril trae ruido y humo al borde.',
       sp: ['Concón', 'Chucao', 'Carpintero chico', 'Loica', 'Queltrehue / Treile', 'Pato jergón', 'Cisne coscoroba']
     },
     {
-      t: '🌲 Siglo XX: pinos, ciudad y humedal herido', cuando: '1900–2000',
-      d: 'Plantaciones de <b>pino y eucalipto</b> cubrieron la Cordillera de la Costa: monocultivo silencioso donde casi no canta el bosque. El crecimiento urbano y rellenos presionaron <b>Rocuant</b>. Resistieron las generalistas (<b>zorzal, diuca, chercán, gaviota</b>) y el humedal siguió recibiendo <b>migratorias (zarapito, fío-fío)</b> cada primavera.',
-      sp: ['Zorzal', 'Diuca', 'Chercán', 'Gaviota dominicana', 'Zarapito', 'Fío-fío', 'Yeco / Cormorán']
+      t: '🌲 Siglo XX: pinos, ciudad y protección', cuando: '1900–2010 · Pino/eucalipto + Ley Caza 1996 + Ley Bosque 2008',
+      d: 'Plantaciones de <b>pino y eucalipto</b>: monocultivo silencioso donde casi no canta el bosque. Rellenos presionan <b>Rocuant</b>. Resisten generalistas (<b>zorzal, diuca, chercán, gaviota</b>) y el humedal sigue recibiendo <b>migratorias (zarapito, fío-fío)</b>. Giro: la <b>Ley de Caza (19.473, 1996)</b> protege a casi todas las nativas, el <b>copihue</b> protege a su polinizador, Rocuant se reconoce como <b>sitio clave de playeras migratorias</b> (zarapito, chorlo nevado) y la <b>Ley de Bosque Nativo (20.283, 2008)</b> frena la pérdida de casa.',
+      sp: ['Zorzal', 'Diuca', 'Chercán', 'Gaviota dominicana', 'Zarapito', 'Fío-fío', 'Yeco / Cormorán', 'Chorlo nevado', 'Pilpilén', 'Bandurria', 'Picaflor chico']
     },
     {
-      t: '🛡️ Protección: vedas y santuarios', cuando: '1970–2010',
-      d: 'La <b>Ley de Caza (19.473, 1996)</b> protege a casi todas las nativas; el <b>copihue</b> ya estaba protegido y con él su polinizador. Rocuant empieza a mirarse como <b>sitio clave para aves playeras migratorias</b> (zarapito, chorlo nevado). La <b>Ley de Bosque Nativo (20.283, 2008)</b> frena en algo la pérdida de casa para concón, chucao y torcaza.',
-      sp: ['Chorlo nevado', 'Zarapito', 'Picaflor chico', 'Torcaza', 'Chucao', 'Pilpilén', 'Bandurria']
-    },
-    {
-      t: '🔭 Hoy: observar para cuidar', cuando: '2010 – actualidad',
-      d: 'Rocuant es aula viva: <b>pleamar concentra limícolas</b>, el amanecer levanta el canto del bosque (tenca, zorzal, chercán) y la noche es del <b>concón</b>. Tu bitácora suma: cada avistamiento con fecha, lugar y luna ayuda a saber <b>qué vuelve y qué falta</b>. Si plantas nativo, vuelven las dispersoras.',
+      t: '🔭 Hoy: observar para cuidar', cuando: '2010 – actualidad · Rocuant aula viva + 27F',
+      d: 'Rocuant es aula viva: <b>pleamar concentra limícolas</b>, el amanecer levanta el canto (tenca, zorzal, chercán) y la noche es del <b>concón</b>. El <b>27F</b> remodeló bordes y recordó vivir con el mar. Tu bitácora suma: cada avistamiento con fecha, lugar y luna ayuda a saber <b>qué vuelve y qué falta</b>. Si plantas nativo (peumo, maqui, arrayán), <b>vuelven las dispersoras</b>.',
       sp: ['Zorzal', 'Tenca', 'Chercán', 'Concón', 'Chucao', 'Picaflor chico', 'Zarapito', 'Loica', 'Cachudito', 'Jilguero', 'Torcaza', 'Rayadito']
     }
   ],
-  fuentes: 'Fuentes: Ley de Caza 19.473 · Ley Bosque Nativo 20.283 · eBird / ROC humedal Rocuant-Andalién · catálogo AVES_PENCO y BOSQUE_NATIVO_PENCO de esta app.'
+  fuentes: 'Fuentes: HISTORIA_PENCO (Quiriquina-Neogaeornis, refugio, conchales, humedal) · Biró 1982 / Stinnesbeck (Quiriquina) · Bustos y Vergara 2004 · Ley de Caza 19.473 · Ley Bosque Nativo 20.283 · eBird / ROC humedal Rocuant-Andalién · catálogo AVES_PENCO y BOSQUE_NATIVO_PENCO de esta app.'
 };
 
 /* ---------- RENDER: BOSQUE NATIVO ---------- */
