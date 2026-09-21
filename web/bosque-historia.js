@@ -19,43 +19,91 @@ function esc(s) {
   });
 }
 
-/* cat: true = existe en el catálogo BOSQUE_NATIVO_PENCO (tocable) */
+/* cat: true = existe en el catálogo BOSQUE_NATIVO_PENCO (tocable)
+   Estructura espejo de HISTORIA_PENCO (penco-guia.js):
+   intro + eras[{t, cuando, d}] + sp/hoy temáticos + fuentes.
+   Mismo render: tarjeta por periodo, fecha muted, descripción,
+   chips tocables y nota 🔎. */
 var HISTORIA_BOSQUE = {
-  intro: 'El bosque de Penco —esclerófilo en laderas y laurifolio en quebradas— es un <b>relicto de millones de años</b> en la Cordillera de la Costa. Esta es su historia en 5 tiempos, con las especies que estuvieron (y están) presentes.',
+  intro: 'El bosque de Penco —<b>esclerófilo en laderas y laurifolio en quebradas</b>— es un <b>relicto de millones de años</b> en la Cordillera de la Costa. Del <b>basamento gondwánico</b> al <b>relicto que hoy restauramos</b>, en <b>10 periodos</b>, con las especies que estuvieron (y están) presentes. La historia completa vive aquí.',
   eras: [
     {
-      t: '🌋 Tiempo profundo: herencia de Gondwana', cuando: 'Hace millones de años · glaciaciones del Pleistoceno',
-      d: 'Muchas especies del bosque penqueño pertenecen a <b>linajes gondwánicos</b>, del antiguo supercontinente austral. Cuando los hielos avanzaron, la <b>Cordillera de la Costa</b> —con su clima oceánico moderado— funcionó como <b>refugio</b> donde estos árboles sobrevivieron (confirmado por estudios genéticos en Nothofagus y Proteaceae). El Ministerio del Medio Ambiente describe aquí el ecosistema <b>“Bosque caducifolio costero de Nothofagus obliqua – Gomortega keule”</b>, hoy fragmentado.',
+      t: '🪨 Tiempo profundo: basamento de Gondwana', cuando: 'Paleozoico (~300 Ma) · Series metamórficas + Granitoides de Concepción',
+      d: 'Antes de ser bosque, Penco era <b>fondo y borde de Gondwana</b>. Bajo tus pies está el <b>zócalo paleozoico</b>: filitas, esquistos y metarenitas intruidas por los <b>Granitoides de Concepción</b>. Ese basamento forma los <b>cerros de la Cordillera de la Costa</b> (Cerro Verde, Bellavista) y es el piso donde, millones de años después, echará raíz el bosque. Aquí nacen los <b>linajes gondwánicos</b> que aún te rodean.',
+      sp: [
+        { n: 'Keule', cat: true }, { n: 'Avellano', cat: true }, { n: 'Lingue', cat: true },
+        { n: 'Roble / Hualo (Nothofagus)', cat: false }, { n: 'Olivillo', cat: false }
+      ],
+      hoy: 'Mira el suelo: donde hay <b>granito y quebrada húmeda</b>, el bosque antiguo resiste mejor.'
+    },
+    {
+      t: '🦕 Mar de Quiriquina: aún sin bosque', cuando: 'Cretácico Superior · Maastrichtiano (72–66 Ma)',
+      d: 'Hace 70 millones de años <b>todo esto era mar</b> (Formación Quiriquina: La Cata, Punta de Parra). No había bosque penqueño todavía, pero sí <b>maderas flotantes con perforaciones de Teredolites</b>: los árboles del continente ya llegaban al mar. Nadaban <b>plesiosaurios y mosasaurios</b> donde hoy caminas entre boldos. El bosque estaba tierra adentro, esperando que el mar se retirara.',
+      sp: [
+        { n: 'Madera fósil (Teredolites)', cat: false }
+      ],
+      hoy: 'En <b>La Cata</b> aún aflora ese mar: arenisca con <b>amonites y madera fósil</b>.'
+    },
+    {
+      t: '🌿 Selvas del carbón: Cosmito', cuando: 'Paleoceno–Eoceno (~60–40 Ma) · Formaciones Cosmito / Curanilahue / Cerro Alto',
+      d: 'El mar se retira y la costa se vuelve <b>delta pantanoso de selvas</b>. La <b>Formación Cosmito —descrita en tu sector Cosmito—</b> guarda <b>areniscas, lutitas y mantos de carbón</b> con <b>paleoflora mixta</b> (afinidades antárticas y tropicales). Esos pantanos son el <b>antecedente profundo del carbón de Lirquén y Cerro Verde</b> que, 50 millones después, pedirá leña al bosque para entibar minas.',
+      sp: [
+        { n: 'Peumo', cat: true }, { n: 'Boldo', cat: true }, { n: 'Lingue', cat: true },
+        { n: 'Roble / Hualo (Nothofagus)', cat: false }
+      ],
+      hoy: 'El carbón que quemó Penco nació de un bosque pantanoso como este.'
+    },
+    {
+      t: '❄️ Hielos, refugio y terrazas', cuando: 'Pleistoceno – Holoceno Medio (~2 Ma – 6.000 a.p.)',
+      d: 'Vienen los hielos, pero la <b>Cordillera de la Costa no se glacia</b>: con lluvias del Pacífico se vuelve <b>refugio glacial</b> (genética en <b>Nothofagus y Proteaceae, Premoli et al. 2019</b>; polen de Villagrán). Sobreviven <b>keule, olivillo, lingue, avellano y robles</b>. Se forman las <b>terrazas de 5 m y 2 m</b>, limos del Andalién y dunas: el piso donde el bosque y el hombre se encontrarán. El MMA describe aquí el ecosistema <b>“Bosque caducifolio costero de Nothofagus obliqua – Gomortega keule”</b>.',
       sp: [
         { n: 'Keule', cat: true }, { n: 'Canelo', cat: true }, { n: 'Avellano', cat: true },
         { n: 'Lingue', cat: true }, { n: 'Arrayán', cat: true }, { n: 'Peumo', cat: true },
         { n: 'Roble / Hualo (Nothofagus)', cat: false }, { n: 'Olivillo', cat: false }
       ],
-      hoy: 'El <b>keule</b> es único en su género y familia (endémico Maule–Biobío). El sitio prioritario <b>“Queule del Estero Bellavista”</b> recuerda que estos linajes viven —o vivieron— en Penco.'
+      hoy: 'El <b>keule</b> es único en su género y familia (endémico Maule–Biobío). El sitio <b>“Queule del Estero Bellavista”</b> recuerda que estos linajes viven —o vivieron— en Penco.'
     },
     {
-      t: '🏹 Antes de 1550: el bosque lafkenche', cuando: 'Período alfarero · Pitrén y El Vergel (300–1.500 d.C.)',
-      d: 'Las comunidades <b>lafkenche</b> habitaron este bosque sin talarlo a gran escala: alimento, medicina, madera y ritual. El <b>canelo (foye)</b> era árbol sagrado; la <b>trihue/laurel</b> y el <b>lingue</b> daban madera noble; <b>avellano (ngefu), maqui, peumo y boldo</b> daban fruto y remedio; con troncos ahuecados se hacían <b>wampo</b> (canoas). Ver 📖 Guía de Penco → Antes de 1550.',
+      t: '🛶 Primeros navegantes: leña del conchal', cuando: 'Arcaico Medio–Tardío (7.000–2.000 a.p.) · Bellavista 1, Playa Negra 9',
+      d: 'Los cazadores-pescadores del <b>Complejo Talcahuano</b> (Bellavista 1, Playa Negra 9) ya usan el bosque: <b>leña para fogones, mangos de chuzo mariscador, morteros y wampo</b> en sus 2,5 m de conchal. Pesca de <b>jurel, sierra y róbalo</b> con red y anzuelo. Uso intenso pero local: el bosque sigue continuo del cerro al mar, con <b>boldo y arrayán extensos</b>.',
+      sp: [
+        { n: 'Peumo', cat: true }, { n: 'Boldo', cat: true }, { n: 'Arrayán', cat: true },
+        { n: 'Maitén', cat: true }, { n: 'Quillay', cat: true }
+      ],
+      hoy: 'En la terraza de 5 m (Playa Negra–Bellavista) pisas fogones de 4.000 años bajo boldos actuales.'
+    },
+    {
+      t: '🏺 Antes de 1550: el bosque lafkenche', cuando: '130 d.C. – 1550 · Pitrén (300–500) / El Vergel (1.000–1.550)',
+      d: 'Las comunidades <b>lafkenche</b> habitan este bosque sin talarlo a gran escala: alimento, medicina, madera y ritual. El <b>canelo (foye)</b> es árbol sagrado; <b>trihue/laurel y lingue</b> dan madera noble; <b>avellano (ngefu), maqui, peumo y boldo</b> dan fruto y remedio; con troncos ahuecados se hacen <b>wampo</b> (canoas). Horticultura de <b>quinoa, papa y maíz</b> en claros. Ver 📖 Guía de Penco → Historia y 🗣️ Voz de los Abuelos.',
       sp: [
         { n: 'Canelo', cat: true }, { n: 'Trihue / Laurel', cat: true }, { n: 'Lingue', cat: true },
         { n: 'Avellano', cat: true }, { n: 'Maqui', cat: true }, { n: 'Peumo', cat: true },
         { n: 'Boldo', cat: true }, { n: 'Arrayán', cat: true }, { n: 'Copihue', cat: true }, { n: 'Quillay', cat: true }
       ],
-      hoy: 'Casi todas estas especies siguen presentes en quebradas y cerros: son el corazón del catálogo actual.'
+      hoy: 'Casi todas estas especies siguen en quebradas y cerros: son el corazón del catálogo actual.'
     },
     {
-      t: '⛏️ Colonia y siglo XIX: la gran presión', cuando: '1550–1900',
-      d: 'La fundación de Concepción en Penco (1550), la construcción colonial y luego la <b>fundición de cobre de Lirquén</b> y las <b>minas de carbón (1843–1958)</b> demandaron enormes volúmenes de <b>leña, carbón vegetal y madera</b> (entibado de minas, hornos, construcción). <b>Lingue, roble, laurel y arrayán</b> —maderas nobles— fueron los más cortados; los faldeos se abrieron a praderas y cultivos.',
+      t: '⛪ Colonia: fuerte, iglesia y leña', cuando: '1550–1751 · Concepción en Penco + traslado de 1751',
+      d: 'La fundación de <b>Concepción en Penco (1550)</b>, sus refundaciones y terremotos (<b>1570, 1657, 1687, 1730</b>) piden <b>vigas, tejas, leña y carbón vegetal</b> una y otra vez. El <b>Fuerte La Planchada (1687)</b> se levanta con madera local. El bosque de faldeo se abre, pero las <b>quebradas laurifolias</b> (canelo, lingue, trihue) resisten por húmedas y empinadas. Tras el <b>terremoto-maremoto de 1751</b> y la prohibición de habitar, el bosque recupera parte de lo perdido.',
+      sp: [
+        { n: 'Lingue', cat: true }, { n: 'Trihue / Laurel', cat: true }, { n: 'Arrayán', cat: true },
+        { n: 'Roble / Hualo (Nothofagus)', cat: false }, { n: 'Canelo', cat: true }
+      ],
+      hoy: 'Cada terremoto colonial fue también una tala: reconstruir quemaba bosque.'
+    },
+    {
+      t: '⛏️ Siglo XIX: carbón, cobre y rieles', cuando: '1843–1900 · Minas Lirquén–Cerro Verde + ferrocarril 1889/1914',
+      d: 'La <b>fundición de cobre de Lirquén</b> y las <b>minas de carbón (1843–1958)</b> demandan enormes volúmenes de <b>leña, carbón vegetal y entibado</b> (hornos, piques, construcción). <b>Lingue, roble, laurel y arrayán</b> —maderas nobles— son los más cortados; los faldeos se abren a praderas y cultivos. El <b>ferrocarril a Penco (1889)</b> y a <b>Lirquén (1914)</b> acelera la salida de madera. Nace además la <b>Refinería de Azúcar (1886, luego CRAV)</b> y la <b>Loza (1898)</b>.',
       sp: [
         { n: 'Lingue', cat: true }, { n: 'Trihue / Laurel', cat: true }, { n: 'Arrayán', cat: true },
         { n: 'Roble / Hualo (Nothofagus)', cat: false }, { n: 'Peumo', cat: true },
         { n: 'Boldo', cat: true }, { n: 'Maitén', cat: true }
       ],
-      hoy: 'El <b>lingue</b> quedó en categoría <b>vulnerable</b>: hoy solo se observa y protege, no se corta.'
+      hoy: 'El <b>lingue</b> quedó <b>vulnerable</b>: hoy solo se observa y protege, no se corta.'
     },
     {
-      t: '🌲 Siglo XX: pinos, eucaliptos y fragmentos', cuando: '1900–2000',
-      d: 'Las <b>plantaciones de pino radiata y eucalipto</b> cubrieron gran parte de la Cordillera de la Costa, <b>fragmentando y reemplazando</b> al bosque nativo (lo documenta el MMA para este ecosistema). El nativo resistió en <b>quebradas húmedas</b> (canelo, lingue, trihue, arrayán, copihue) y <b>laderas</b> (boldo, peumo, quillay, maitén). En 2008 la <b>Ley de Bosque Nativo (20.283)</b> dio por primera vez un marco legal para su manejo y protección.',
+      t: '🌲 Siglo XX: pinos, eucaliptos y fragmentos', cuando: '1900–2000 · CRAV, Fanaloza, Vipla + Ley 20.283 (2008)',
+      d: 'Las <b>plantaciones de pino radiata y eucalipto</b> cubren la Cordillera de la Costa, <b>fragmentando y reemplazando</b> al nativo (MMA). El auge fabril (<b>CRAV, Fanaloza, COSAF, Vidrios Lirquén</b>) mantiene la presión por madera y suelo. El nativo resiste en <b>quebradas húmedas</b> (canelo, lingue, trihue, arrayán, copihue) y <b>laderas</b> (boldo, peumo, quillay, maitén). En 2008 la <b>Ley de Bosque Nativo (20.283)</b> da por primera vez un marco legal para su manejo y protección.',
       sp: [
         { n: 'Canelo', cat: true }, { n: 'Lingue', cat: true }, { n: 'Trihue / Laurel', cat: true },
         { n: 'Arrayán', cat: true }, { n: 'Copihue', cat: true }, { n: 'Boldo', cat: true },
@@ -65,8 +113,8 @@ var HISTORIA_BOSQUE = {
       hoy: 'Si ves <b>zarza, pino o eucalipto invasor</b>, anótalo en la bitácora para jornada de control.'
     },
     {
-      t: '🌱 Hoy: relictos y restauración', cuando: '2000 – actualidad',
-      d: 'Quedan <b>relictos</b> que piden cuidado urgente: <b>keule en peligro</b> (Monumento Natural desde 1995), <b>lingue y naranjillo vulnerables</b>, <b>trihue muy escaso</b> en Penco y <b>copihue protegido por ley</b>. Restaurar es posible: planta <b>peumo, quillay, boldo, canelo, arrayán, maitén y avellano</b> en Pukem con lluvia, y en otoño disfruta los <b>hongos</b> (loyo, changle) sin arrancar el micelio.',
+      t: '🌱 Hoy: relictos y restauración', cuando: '2000 – actualidad · 27F, humedal Rocuant, semillero',
+      d: 'Quedan <b>relictos</b> que piden cuidado urgente: <b>keule en peligro</b> (Monumento Natural desde 1995), <b>lingue y naranjillo vulnerables</b>, <b>trihue muy escaso</b> en Penco y <b>copihue protegido por ley</b>. El <b>27F (2010)</b> recordó que el bosque de quebrada también afirma laderas. Restaurar es posible: planta <b>peumo, quillay, boldo, canelo, arrayán, maitén y avellano</b> en Pukem con lluvia, guarda semilla <b>con medida</b>, y en otoño disfruta los <b>hongos</b> (loyo, changle) sin arrancar el micelio.',
       sp: [
         { n: 'Keule', cat: true }, { n: 'Lingue', cat: true }, { n: 'Naranjillo', cat: true },
         { n: 'Trihue / Laurel', cat: true }, { n: 'Copihue', cat: true }, { n: 'Peumo', cat: true },
@@ -77,7 +125,7 @@ var HISTORIA_BOSQUE = {
       hoy: 'Toca una especie del catálogo para cargarla en tu bitácora: observa, planta o recolecta semilla <b>con medida</b>.'
     }
   ],
-  fuentes: 'Fuentes: Premoli et al. 2019 (refugios Cordillera de la Costa) · MMA-SIMBIO (ecosistema N. obliqua–G. keule; ficha Queule En Peligro) · Ley 20.283 Bosque Nativo · catálogo BOSQUE_NATIVO_PENCO de esta app.'
+  fuentes: 'Fuentes: HISTORIA_PENCO (basamento, Quiriquina, Cosmito, refugio) · Premoli et al. 2019 (refugios Costa) · MMA-SIMBIO (N. obliqua–G. keule; Queule En Peligro) · Bustos y Vergara 2004 (conchales) · Ley 20.283 Bosque Nativo · catálogo BOSQUE_NATIVO_PENCO de esta app.'
 };
 
 function chip(sp) {

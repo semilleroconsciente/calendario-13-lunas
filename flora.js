@@ -1,15 +1,20 @@
 /* ============================================================
-   FLORA — Calendario 13 Lunas (Penco · Bio-Bío)
+   FLORA NATIVA Y ORNAMENTAL — Calendario 13 Lunas (Penco · Bio-Bío)
    Apartado: Territorio > Flora (btnFlora -> floraDialog),
    pestañas: Flora hoy | Bitácora | Links de interés.
-   - Flora hoy: intro cuenca estero Penco + catálogo base tocable
-     (carga la especie en la bitácora) + especies propias.
-   - Bitácora: registros privados y locales por usuario
-     (fecha, lugar, especie, tipo, cantidad, notas + luna auto).
-   - Links de interés: enlace Zenodo solicitado + accesos internos
-     + enlaces propios del usuario (privados y locales).
+   Enfoque:
+     🌱 Nativas silvestres de la cuenca del estero Penco
+        (ribera, quebradas, laderas: el piso vivo bajo el bosque).
+     🏵️ Ornamentales nativas: las mismas u otras nativas con
+        ficha de jardín (sol, riego, multiplicación) para patios,
+        cercos y plazas de Penco. Se prefiere plantar nativo
+        antes que exótico.
+     ⚠️ Introducidas: solo como advertencia (invasoras o de
+        cuidado). No se promueven.
+   Relación con Bosque Nativo: el Bosque guarda lo leñoso
+   (árboles/arbustos del catálogo BOSQUE_NATIVO_PENCO);
+   Flora guarda lo herbáceo + el jardín nativo.
    Todo local, sin red obligatoria. Se edita aquí mismo.
-   Conecta con Bosque Nativo, Lawen Herbario y Aves.
    ============================================================ */
 (function () {
 'use strict';
@@ -59,21 +64,41 @@ async function share(title, text) {
 }
 
 /* ---------- datos base ---------- */
-var FLORA_INTRO = 'Flora de la <b>cuenca del estero Penco</b>: ribera, quebradas y laderas que alimentan el humedal y la bahía. ' +
-  'Hierbas, flores, juncos y arbustos —el piso vivo bajo el bosque nativo—. <b>Observa sin arrancar</b>: foto, lugar y fecha valen más que una muestra. ' +
-  'Compara lo que veas con la lista publicada de la cuenca (pestaña 🔗 Links).';
+var FLORA_INTRO = 'Flora <b>nativa de la cuenca del estero Penco</b> + <b>jardín con nativas</b>. ' +
+  '🌱 <b>Nativas silvestres</b>: ribera, quebradas y laderas —se <b>observan sin arrancar</b> (foto + lugar + fecha). ' +
+  '🏵️ <b>Ornamentales nativas</b>: las marcadas con 🏵️ sirven para patio, cerco o plaza penca: piden poca agua y alimentan picaflores y abejas. ' +
+  '⚠️ Las <b>introducidas</b> van aparte y solo como advertencia (algunas son invasoras). ' +
+  'Lo leñoso (peumo, canelo, arrayán…) vive en 🌳 Bosque Nativo; aquí va lo herbáceo y el jardín.';
 
+function isOrn(f) { return !!(f && f.orn); }
+function isNat(f) { return !f || f.origen !== 'introducida'; }
+
+/* origen: 'nativa' | 'endemica' | 'introducida' · orn: true = sirve como ornamental */
 var FLORA_BASE = [
-  { nombre: 'Totora', cient: 'Schoenoplectus californicus', tipo: 'Junco ribereño', hab: 'Orilla del estero, pozas', epoca: 'Todo el año', nota: 'Filtra el agua y refugia aves. No cortes matas completas.' },
-  { nombre: 'Junco', cient: 'Juncus spp.', tipo: 'Junco', hab: 'Vegas y bordes húmedos', epoca: 'Todo el año', nota: 'Indica agua casi permanente. Buen punto para volver a observar.' },
-  { nombre: 'Nalca / Pangue', cient: 'Gunnera tinctoria', tipo: 'Hierba gigante', hab: 'Vegas y estero sombreado', epoca: 'Pewü (primavera)', nota: 'Peciolo comestible (nalca); hoja solo ornamental. Cosecha 1 peciolo por planta.' },
-  { nombre: 'Chilco', cient: 'Fuchsia magellanica', tipo: 'Arbusto flor', hab: 'Quebradas húmedas', epoca: 'Pewü–Walüng', nota: 'Flor colgante favorita del picaflor. No cortes flores.' },
-  { nombre: 'Helecho costilla de vaca', cient: 'Blechnum chilense', tipo: 'Helecho', hab: 'Quebrada sombreada', epoca: 'Todo el año', nota: 'Alfombra lo sombrío e indica aire y suelo sanos. Solo foto.' },
-  { nombre: 'Maqui', cient: 'Aristotelia chilensis', tipo: 'Arbusto fruto', hab: 'Borde de bosque y estero', epoca: 'Walüng (verano)', nota: 'Baya negra en racimo. Cosecha 30%, deja 70% a aves y suelo.' },
-  { nombre: 'Mora / Murra', cient: 'Rubus spp.', tipo: 'Arbusto fruto', hab: 'Cercos y quebradas bajas', epoca: 'Walüng', nota: 'Negra brillante = madura. Lavar por polvo de camino.' },
-  { nombre: 'Llantén', cient: 'Plantago major', tipo: 'Hierba lawen', hab: 'Bordes de sendero húmedo', epoca: 'Pewü–Walüng', nota: 'Hoja en roseta con nervios paralelos. Uso externo tradicional.' },
-  { nombre: 'Menta / Poleo', cient: 'Mentha spp.', tipo: 'Hierba aromática', hab: 'Acequias y vegas', epoca: 'Pewü–Walüng', nota: 'Tallo cuadrado y olor fresco. Corta puntas, no arranques raíz.' },
-  { nombre: 'Cortadera / Cola de zorro', cient: 'Cortaderia spp.', tipo: 'Pasto penacho', hab: 'Laderas y bordes del estero', epoca: 'Rimü (otoño)', nota: 'Penacho plateado otoñal. Hojas cortan: observar de lejos.' }
+  /* ---- 🌱 Nativas silvestres de ribera y quebrada (varias también ornamentales) ---- */
+  { nombre: 'Totora', cient: 'Schoenoplectus californicus', tipo: 'Junco ribereño', hab: 'Orilla del estero, pozas', epoca: 'Todo el año', nota: 'Filtra el agua y refugia aves. No cortes matas completas.', origen: 'nativa', orn: true, luz: 'Pleno sol', riego: 'Anclada al agua', multi: 'División de mata en otoño', jardin: 'Para estanque o borde húmedo: maceta sin hoyo, siempre con agua.' },
+  { nombre: 'Junco chileno', cient: 'Juncus procerus', tipo: 'Junco', hab: 'Vegas y bordes húmedos', epoca: 'Todo el año', nota: 'Indica agua casi permanente. Buen punto para volver a observar.', origen: 'nativa', orn: true, luz: 'Sol / semisombra', riego: 'Suelo siempre húmedo', multi: 'División de mata', jardin: 'Borde de acequia o maceta húmeda; frena erosión.' },
+  { nombre: 'Nalca / Pangue', cient: 'Gunnera tinctoria', tipo: 'Hierba gigante', hab: 'Vegas y estero sombreado', epoca: 'Pewü (primavera)', nota: 'Peciolo comestible (nalca); hoja solo ornamental. Cosecha 1 peciolo por planta.', origen: 'nativa', orn: true, luz: 'Semisombra húmeda', riego: 'Abundante, sin encharcar hojas', multi: 'Semilla fresca o división', jardin: 'Planta estrella de patio sombreado: 1 m² por mata, lejos de muros.' },
+  { nombre: 'Chilco', cient: 'Fuchsia magellanica', tipo: 'Arbusto flor 🏵️', hab: 'Quebradas húmedas', epoca: 'Pewü–Walüng', nota: 'Flor colgante favorita del picaflor. No cortes flores.', origen: 'nativa', orn: true, luz: 'Semisombra', riego: 'Regular en verano', multi: 'Esqueje semileñoso en Pewü', jardin: 'El ornamental nativo por excelencia: seto o maceta grande, poda suave en Pukem.' },
+  { nombre: 'Helecho costilla de vaca', cient: 'Blechnum chilense', tipo: 'Helecho', hab: 'Quebrada sombreada', epoca: 'Todo el año', nota: 'Alfombra lo sombrío e indica aire y suelo sanos. Solo foto.', origen: 'nativa', orn: true, luz: 'Sombra', riego: 'Húmedo constante', multi: 'División de rizoma en otoño', jardin: 'Macizo de sombra bajo canelo o muro norte; no tolera sol directo.' },
+  { nombre: 'Culantrillo', cient: 'Adiantum chilense', tipo: 'Helecho fino 🏵️', hab: 'Paredones húmedos, vertientes', epoca: 'Todo el año', nota: 'Fronda delicada de peciolo negro. Muy sensible al pisoteo: solo foto.', origen: 'nativa', orn: true, luz: 'Sombra total', riego: 'Neblina/humedad alta', multi: 'División cuidadosa (mejor comprar de vivero)', jardin: 'Maceta a la sombra con plato húmedo; interior luminoso sin sol.' },
+  { nombre: 'Maqui', cient: 'Aristotelia chilensis', tipo: 'Arbusto fruto 🏵️', hab: 'Borde de bosque y estero', epoca: 'Walüng (verano)', nota: 'Baya negra en racimo. Cosecha 30%, deja 70% a aves y suelo.', origen: 'nativa', orn: true, luz: 'Sol / semisombra', riego: 'Poco una vez afirmado', multi: 'Semilla con frío 30 días o esqueje', jardin: 'Cerco vivo comestible: 2 m entre plantas, poda de formación en Pukem.' },
+  { nombre: 'Cortadera chilena', cient: 'Cortaderia araucana', tipo: 'Pasto penacho 🏵️', hab: 'Laderas y bordes del estero', epoca: 'Rimü (otoño)', nota: 'Penacho plateado otoñal. Hojas cortan: observar de lejos. Prefiere la chilena a la selloana de viveros.', origen: 'endemica', orn: true, luz: 'Pleno sol', riego: 'Casi nada (tolera sequía)', multi: 'División de mata en otoño', jardin: 'Foco de jardín seco: 1,5 m de diámetro, guantes para podar.' },
+  /* ---- 🏵️ Ornamentales nativas de ladera y secano (para jardín penca) ---- */
+  { nombre: 'Calle-calle', cient: 'Libertia chilensis', tipo: 'Hierba flor 🏵️', hab: 'Bordes húmedos, pradera costera', epoca: 'Pewü: flor blanca', nota: 'Mata de hojas duras con vara de flores blancas. Muy rústica.', origen: 'nativa', orn: true, luz: 'Sol / semisombra', riego: 'Moderado', multi: 'División de mata en Rimü', jardin: 'Borde de camino o jardinera: florece sin pedir nada.' },
+  { nombre: 'Azulillo', cient: 'Pasithea coerulea', tipo: 'Hierba flor 🏵️', hab: 'Laderas asoleadas, cerros Penco', epoca: 'Pewü: flor azul', nota: 'Flor azul de 6 puntas. Bulbo delicado: no extraer del cerro, compra de vivero.', origen: 'endemica', orn: true, luz: 'Pleno sol', riego: 'Poco; duerme en verano', multi: 'Semilla o bulbo de vivero (no extraer)', jardin: 'Jardín seco con sol: combina con añañuca y huilmo.' },
+  { nombre: 'Añañuca', cient: 'Zephyranthes splendens', tipo: 'Bulbo flor 🏵️', hab: 'Laderas y planicies costeras', epoca: 'Walüng: flor rosada', nota: 'Bulbo que florece tras el calor. No saques bulbos del cerro.', origen: 'endemica', orn: true, luz: 'Pleno sol', riego: 'Casi nada en verano', multi: 'Bulbillos de vivero en otoño', jardin: 'Maceta o borde soleado: flor espectacular con riego mínimo.' },
+  { nombre: 'Tabaco del diablo', cient: 'Lobelia tupa', tipo: 'Hierba gigante 🏵️', hab: 'Quebradas abiertas, bordes', epoca: 'Walüng: vara roja', nota: 'Vara de 2 m con flores rojo fuego para picaflores. Savía irritante: solo mirar.', origen: 'endemica', orn: true, luz: 'Sol / semisombra', riego: 'Moderado', multi: 'Semilla superficial en primavera', jardin: 'Fondo de jardín para picaflores; 1 m entre matas.' },
+  { nombre: 'Soldadito', cient: 'Tropaeolum tricolor', tipo: 'Enredadera 🏵️', hab: 'Matorral y cerco, trepa sobre arbustos', epoca: 'Pukem–Pewü: farolitos', nota: 'Enredadera fina de flores tricolor. Papita frágil: no desenterrar.', origen: 'endemica', orn: true, luz: 'Semisombra con sol de mañana', riego: 'Moderado en brote, seco en dormancia', multi: 'Semilla o papa de vivero', jardin: 'Reja o espaldera con tutor fino; se pierde en verano y rebrota.' },
+  { nombre: 'Liuto / Amancay', cient: 'Alstroemeria ligtu', tipo: 'Hierba flor 🏵️', hab: 'Laderas y claros del cerro', epoca: 'Pewü: ramillete rosado', nota: 'Pariente silvestre de la astromelia. No arranques varas con papa.', origen: 'endemica', orn: true, luz: 'Sol de mañana', riego: 'Moderado, buen drenaje', multi: 'Semilla o división de vivero', jardin: 'Macizo de corte: flor de larga vara, deja follaje tras florar.' },
+  { nombre: 'Chagual', cient: 'Puya chilensis', tipo: 'Roseta gigante 🏵️', hab: 'Roqueríos y cerros costeros', epoca: 'Pewü–Walüng: vara turquesa', nota: 'Roseta de 2 m con vara espectacular para picaflor gigante. Espinas bravas.', origen: 'endemica', orn: true, luz: 'Pleno sol', riego: 'Nulo (solo lluvia)', multi: 'Semilla o hijo de vivero', jardin: 'Solo jardines grandes y lejos del paso; una sola mata basta.' },
+  { nombre: 'Huilmo', cient: 'Sisyrinchium striatum', tipo: 'Hierba flor 🏵️', hab: 'Praderas y bordes húmedos', epoca: 'Pewü: vara amarilla', nota: 'Mata firme de flor amarilla pálida. Muy noble y fácil.', origen: 'nativa', orn: true, luz: 'Sol / semisombra', riego: 'Moderado', multi: 'División de mata o semilla', jardin: 'Primera nativa para empezar: jardinera o borde, casi sin cuidado.' },
+  { nombre: 'Orquídea de campo', cient: 'Chloraea gavilu', tipo: 'Orquídea', hab: 'Praderas costeras abiertas', epoca: 'Pewü: flor blanca-verde', nota: 'Orquídea terrestre escasa. Solo observar y fotografiar, jamás trasplantar.', origen: 'nativa', orn: true, luz: 'Sol filtrado', riego: 'De la lluvia (no regar en campo)', multi: 'No se multiplica en casa: proteger en sitio', jardin: 'No llevar a casa: su jardín es el cerro. Marca el punto y vuelve cada Pewü.' },
+  /* ---- ⚠️ Introducidas: advertencia, no promover ---- */
+  { nombre: 'Mora / Murra', cient: 'Rubus ulmifolius', tipo: 'Arbusto fruto ⚠️', hab: 'Cercos y quebradas bajas', epoca: 'Walüng', nota: 'Introducida e invasora: tapa quebradas. Come el fruto, pero arranca renuevos y no la plantes.', origen: 'introducida', orn: false, luz: '', riego: '', multi: '', jardin: '' },
+  { nombre: 'Dedal de oro', cient: 'Eschscholzia californica', tipo: 'Flor anual ⚠️', hab: 'Orillas de camino, taludes', epoca: 'Pewü–Walüng', nota: 'Introducida naturalizada. Linda pero se auto-siembra: no la siembres junto al estero.', origen: 'introducida', orn: false, luz: '', riego: '', multi: '', jardin: '' },
+  { nombre: 'Llantén', cient: 'Plantago major', tipo: 'Hierba ⚠️', hab: 'Bordes de sendero húmedo', epoca: 'Pewü–Walüng', nota: 'Introducida de uso tradicional. No la fomentes en la vega nativa.', origen: 'introducida', orn: false, luz: '', riego: '', multi: '', jardin: '' },
+  { nombre: 'Menta / Poleo', cient: 'Mentha spp.', tipo: 'Hierba aromática ⚠️', hab: 'Acequias y vegas', epoca: 'Pewü–Walüng', nota: 'Introducida muy invasora por estolones: solo en maceta, nunca al borde del estero.', origen: 'introducida', orn: false, luz: '', riego: '', multi: '', jardin: '' }
 ];
 
 /* Links de interés (base, no se borran) */
@@ -83,6 +108,18 @@ var FLORA_LINKS_BASE = [
     autor: 'Avilez Soto, Bruno',
     url: 'https://zenodo.org/records/21269869',
     nota: 'Zenodo · registro abierto: fotos + lista de plantas de la cuenca. Úsalo para comparar lo que observes en terreno.'
+  },
+  {
+    titulo: 'Chileflora — flora nativa de Chile (fichas + fotos)',
+    autor: 'Chileflora.com',
+    url: 'https://www.chileflora.com/',
+    nota: 'Busca cada especie por nombre científico: foto, distribución y consejos de cultivo de nativas.'
+  },
+  {
+    titulo: 'SIMBIO — Sistema de Información y Monitoreo de Biodiversidad (MMA)',
+    autor: 'Ministerio del Medio Ambiente',
+    url: 'https://simbio.mma.gob.cl/',
+    nota: 'Mapas y fichas oficiales: revisa distribución y estado de conservación antes de recolectar.'
   }
 ];
 
@@ -102,6 +139,7 @@ function getFloraLinks() {
 }
 var floraEditingId = null;
 var floraCatQ = '';
+var floraFiltro = 'todas'; /* todas | nativas | orn | intro */
 
 /* ---------- pestañas ---------- */
 var floraTab = 'hoy';
@@ -121,11 +159,56 @@ function switchFloraTab(t) {
 }
 
 /* ---------- Flora hoy: intro + hoy + catálogo ---------- */
+function normFlora(f, mine) {
+  var c = {};
+  for (var k in f) { if (Object.prototype.hasOwnProperty.call(f, k)) c[k] = f[k]; }
+  c.mine = !!mine;
+  if (!c.origen) c.origen = 'nativa';
+  if (c.orn === undefined) c.orn = false;
+  return c;
+}
 function allFloraSpecies() {
-  return FLORA_BASE.map(function (f) { f.mine = false; return f; })
-    .concat(getFloraCustom().map(function (f) { f.mine = true; return f; }));
+  return FLORA_BASE.map(function (f) { return normFlora(f, false); })
+    .concat(getFloraCustom().map(function (f) { return normFlora(f, true); }));
+}
+function origenChip(f) {
+  if (f.origen === 'endemica') return '<span class="chip" style="font-size:9px;background:#e8c56a22;color:var(--gold);border-color:#e8c56a55">🌿 Endémica</span>';
+  if (f.origen === 'introducida') return '<span class="chip" style="font-size:9px;background:#e76e8a22;color:#e76e8a;border-color:#e76e8a55">⚠️ Introducida</span>';
+  return '<span class="chip" style="font-size:9px;background:#a9d18e22;color:#a9d18e;border-color:#a9d18e55">🌱 Nativa</span>';
+}
+function matchFiltro(f) {
+  if (floraFiltro === 'nativas') return f.origen !== 'introducida';
+  if (floraFiltro === 'orn') return !!f.orn && f.origen !== 'introducida';
+  if (floraFiltro === 'intro') return f.origen === 'introducida';
+  return true;
+}
+/* CSS propio: ensancha el diálogo en PC y evita tarjetas apretadas */
+function ensureFloraCss() {
+  if (document.getElementById('floraFixCss')) return;
+  var st = document.createElement('style');
+  st.id = 'floraFixCss';
+  st.textContent =
+    '#floraDialog{width:820px;max-width:96vw;}' +
+    '#floraDialog .fishing-grid{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:12px;align-items:start;}' +
+    '#floraDialog .menstrual-card{min-width:0;max-width:100%;}' +
+    '#floraDialog .fl-filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;}' +
+    '#floraDialog .fl-filters .btn{flex:1 1 auto;min-width:105px;}' +
+    '#floraDialog #floraCatFilter{width:100%;box-sizing:border-box;}' +
+    '#floraDialog .fishing-species{max-height:440px;min-width:0;}' +
+    '#floraDialog .fl-card{min-width:0;max-width:100%;overflow-wrap:break-word;word-break:break-word;}' +
+    '#floraDialog .fl-head{display:flex;justify-content:space-between;align-items:flex-start;gap:6px;flex-wrap:wrap;}' +
+    '#floraDialog .fl-name{font-size:12.5px;min-width:0;}' +
+    '#floraDialog .fl-sci{font-size:10px;color:var(--muted);font-style:italic;overflow-wrap:anywhere;margin-top:1px;}' +
+    '#floraDialog .fl-chips{display:flex;flex-wrap:wrap;gap:4px;margin:5px 0 2px;}' +
+    '#floraDialog .fl-chips .chip{font-size:9px;white-space:normal;line-height:1.5;}' +
+    '#floraDialog .fl-hab{font-size:11px;margin-top:2px;}' +
+    '#floraDialog .fl-nota{font-size:10.5px;color:var(--muted);margin-top:2px;line-height:1.5;}' +
+    '#floraDialog .fl-jar{margin-top:6px;background:rgba(232,197,106,.07);border:1px solid rgba(232,197,106,.28);border-radius:8px;padding:6px 8px;font-size:10.5px;line-height:1.5;}' +
+    '@media (max-width:720px){#floraDialog{width:94vw;}#floraDialog .fishing-grid{grid-template-columns:1fr;}}';
+  document.head.appendChild(st);
 }
 function renderFloraHoy() {
+  try { ensureFloraCss(); } catch (e) {}
   var todayBox = $('floraTodayBox');
   if (todayBox) {
     var k = todayKey();
@@ -134,10 +217,17 @@ function renderFloraHoy() {
     var spp = {};
     entries.forEach(function (x) { var s = String(x.species || '').trim().toLowerCase(); if (s) spp[s] = 1; });
     var hoy = entries.filter(function (x) { return x.date === k; }).length;
+    var nNat = FLORA_BASE.filter(function (f) { return f.origen !== 'introducida'; }).length;
+    var nOrn = FLORA_BASE.filter(function (f) { return f.orn && f.origen !== 'introducida'; }).length;
+    var nInt = FLORA_BASE.filter(function (f) { return f.origen === 'introducida'; }).length;
     todayBox.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">' +
       '<span style="font-size:14px"><b>🌸 Hoy — ' + esc(k) + '</b></span>' +
       '<span class="chip" style="background:var(--gold);color:#10142c">' + hoy + ' hoy · ' + entries.length + ' total · ' + Object.keys(spp).length + ' especies</span></div>' +
-      '<p class="muted" style="font-size:11px;margin-top:6px">' + FLORA_INTRO + '</p>';
+      '<p class="muted" style="font-size:11px;margin-top:6px">' + FLORA_INTRO + '</p>' +
+      '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">' +
+      '<span class="chip">🌱 ' + nNat + ' nativas</span>' +
+      '<span class="chip">🏵️ ' + nOrn + ' ornamentales</span>' +
+      '<span class="chip">⚠️ ' + nInt + ' introducidas (cuidado)</span></div>';
   }
   var moonBox = $('floraMoonBox');
   if (moonBox) {
@@ -145,7 +235,7 @@ function renderFloraHoy() {
     var fase = '';
     try {
       var tithi = (window.astro && window.astro.tithi) ? window.astro.tithi(new Date(k2 + 'T12:00:00').getTime()) : 0;
-      fase = tithi < 7 ? 'Creciente — flores y brotes (foto, no corte)' : tithi < 14 ? 'Llena — máxima savia, mejor para observar y oler' : tithi < 21 ? 'Menguante — semilla madura, guarda en papel' : 'Nueva — descanso, ordena fotos y notas';
+      fase = tithi < 7 ? 'Creciente — flores y brotes (foto, no corte)' : tithi < 14 ? 'Llena — máxima savia, mejor para observar y oler' : tithi < 21 ? 'Menguante — semilla madura, guarda en papel; divide matas' : 'Nueva — descanso, ordena fotos y planifica el jardín nativo';
       moonBox.innerHTML = '<b>' + esc(fase) + '</b> (tithi ' + tithi + ') · ' + esc(lunaTxt(k2));
     } catch (e) { moonBox.innerHTML = esc(lunaTxt(k2)); }
   }
@@ -153,34 +243,57 @@ function renderFloraHoy() {
   if (!catBox) return;
   var q = (floraCatQ || '').toLowerCase();
   var list = allFloraSpecies().filter(function (f) {
+    if (!matchFiltro(f)) return false;
     if (!q) return true;
-    return ((f.nombre || '') + ' ' + (f.cient || '') + ' ' + (f.tipo || '') + ' ' + (f.hab || '')).toLowerCase().indexOf(q) >= 0;
+    return ((f.nombre || '') + ' ' + (f.cient || '') + ' ' + (f.tipo || '') + ' ' + (f.hab || '') + ' ' + (f.jardin || '')).toLowerCase().indexOf(q) >= 0;
   });
   var nMine = getFloraCustom().length;
-  var html = '<input type="text" id="floraCatFilter" placeholder="🔍 Filtrar... (ej: ribera, flor, helecho)" autocomplete="off" value="' + esc(floraCatQ) + '" style="margin-bottom:6px">';
+  var fBtn = function (id, label) {
+    var on = floraFiltro === id;
+    return '<button type="button" data-flf="' + id + '" class="btn' + (on ? ' btn-accent' : '') + '" style="width:auto;font-size:11px">' + label + '</button>';
+  };
+  var html = '<div class="fl-filters">' +
+    fBtn('todas', '🌸 Todas') + fBtn('nativas', '🌱 Nativas') + fBtn('orn', '🏵️ Ornamentales') + fBtn('intro', '⚠️ Introducidas') + '</div>';
+  html += '<input type="text" id="floraCatFilter" placeholder="🔍 Filtrar... (ej: sol, sombra, picaflor, maceta)" autocomplete="off" value="' + esc(floraCatQ) + '" style="margin-bottom:6px">';
   html += '<p class="muted" style="font-size:10px;margin:2px 0 6px">' + FLORA_BASE.length + ' base' + (nMine ? ' + <b>' + nMine + ' mías</b>' : '') + ' · mostrando ' + list.length + ' · toca una para cargarla en la bitácora.</p>';
-  if (!list.length) html += '<p class="muted">Sin resultados. Prueba con "estero", "flor" o "quebrada" — o agrégala abajo.</p>';
+  if (!list.length) html += '<p class="muted">Sin resultados. Prueba con "sol", "sombra", "picaflor" o "maceta" — o agrégala abajo.</p>';
   html += '<div class="fishing-species">' + list.map(function (f) {
-    var mineChip = f.mine ? ' <span class="chip" style="font-size:9px;background:#a9d18e22;color:#a9d18e;border-color:#a9d18e55">mía</span>' : '';
-    return '<div class="fishing-species-item" style="cursor:pointer' + (f.mine ? ';border-color:#a9d18e55' : '') + '" data-flora="' + esc(f.nombre) + '"><b>🌸 ' + esc(f.nombre) + '</b>' + mineChip +
-      ' — <span class="muted" style="font-size:10px">' + esc(f.cient || '') + '</span> <span class="chip" style="font-size:9px;margin-left:6px">' + esc(f.tipo || '') + '</span><br>' +
-      '<span style="font-size:11px">' + esc(f.hab || '') + ' · ' + esc(f.epoca || '') + '</span><br>' +
-      '<span class="muted" style="font-size:10px">' + esc(f.nota || '') + '</span></div>';
+    var mineChip = f.mine ? '<span class="chip" style="font-size:9px;background:#a9d18e22;color:#a9d18e;border-color:#a9d18e55">mía</span>' : '';
+    var ornChip = (f.orn && f.origen !== 'introducida') ? '<span class="chip" style="font-size:9px;background:#e8c56a22;color:var(--gold);border-color:#e8c56a55">🏵️ Ornamental</span>' : '';
+    var border = f.origen === 'introducida' ? ';border-color:#e76e8a44;opacity:.92' : (f.mine ? ';border-color:#a9d18e55' : (f.orn ? ';border-color:#e8c56a55' : ''));
+    var card = '<div class="fishing-species-item fl-card" style="cursor:pointer' + border + '" data-flora="' + esc(f.nombre) + '">' +
+      '<div class="fl-head"><b class="fl-name">' + (f.origen === 'introducida' ? '⚠️ ' : '🌸 ') + esc(f.nombre) + '</b>' + mineChip + '</div>' +
+      (f.cient ? '<div class="fl-sci">' + esc(f.cient) + '</div>' : '') +
+      '<div class="fl-chips">' + origenChip(f) + ornChip + (f.tipo ? '<span class="chip" style="font-size:9px">' + esc(f.tipo) + '</span>' : '') + '</div>' +
+      ((f.hab || f.epoca) ? '<div class="fl-hab">' + esc([f.hab, f.epoca].filter(Boolean).join(' · ')) + '</div>' : '') +
+      (f.nota ? '<div class="fl-nota">' + esc(f.nota) + '</div>' : '');
+    if (f.orn && f.origen !== 'introducida' && (f.luz || f.riego || f.multi || f.jardin)) {
+      card += '<div class="fl-jar">🏵️ <b>Jardín:</b> ' + esc([f.luz, f.riego].filter(Boolean).join(' · ')) + (f.multi ? ' · ' + esc(f.multi) : '') +
+        (f.jardin ? '<br>👉 ' + esc(f.jardin) : '') + '</div>';
+    }
+    return card + '</div>';
   }).join('') + '</div>';
   html += '<details style="border:1px dashed var(--gold);border-radius:10px;padding:8px 10px;margin-top:6px"><summary style="cursor:pointer;font-size:12px;color:var(--gold)"><b>➕ Agregar especie</b></summary>' +
-    '<div class="conv-row" style="margin-top:8px"><label style="flex:2">Especie * <input type="text" id="floraSpName" placeholder="ej: Dedal de oro, Tabaco del diablo" maxlength="30"></label></div>' +
-    '<div class="conv-row"><label style="flex:2">Nombre científico <input type="text" id="floraSpCient" placeholder="ej: Eschscholzia californica" maxlength="40"></label><label>Tipo <input type="text" id="floraSpTipo" placeholder="ej: Flor, Hierba, Arbusto" maxlength="20"></label></div>' +
+    '<div class="conv-row" style="margin-top:8px"><label style="flex:2">Especie * <input type="text" id="floraSpName" placeholder="ej: Huilmo, Calle-calle" maxlength="30"></label></div>' +
+    '<div class="conv-row"><label style="flex:2">Nombre científico <input type="text" id="floraSpCient" placeholder="ej: Sisyrinchium striatum" maxlength="40"></label><label>Tipo <input type="text" id="floraSpTipo" placeholder="ej: Hierba flor" maxlength="24"></label></div>' +
+    '<div class="conv-row"><label>Origen <select id="floraSpOrigen"><option value="nativa">🌱 Nativa</option><option value="endemica">🌿 Endémica</option><option value="introducida">⚠️ Introducida</option></select></label>' +
+    '<label style="justify-content:flex-end">🏵️ Ornamental <input type="checkbox" id="floraSpOrn" checked style="width:auto"></label></div>' +
     '<div class="conv-row"><label style="flex:2">Dónde la viste <input type="text" id="floraSpHab" placeholder="ej: Borde estero Penco" maxlength="50"></label><label>Época <input type="text" id="floraSpEpoca" placeholder="ej: Pewü" maxlength="25"></label></div>' +
-    '<label>Nota <input type="text" id="floraSpNota" placeholder="ej: Solo foto, no cortar" maxlength="80"></label>' +
+    '<label>Nota / jardín <input type="text" id="floraSpNota" placeholder="ej: Sol, poco riego, división en otoño" maxlength="100"></label>' +
     '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="floraSpAdd" class="btn btn-accent" style="width:auto">+ Guardar especie</button></div></details>';
   catBox.innerHTML = html;
+  catBox.querySelectorAll('[data-flf]').forEach(function (b) {
+    b.onclick = function () { floraFiltro = b.getAttribute('data-flf'); renderFloraHoy(); };
+  });
   var filt = $('floraCatFilter');
-  if (filt) filt.oninput = function () {
-    floraCatQ = filt.value || '';
-    var items = catBox.querySelectorAll('[data-flora]');
-    var q2 = floraCatQ.toLowerCase();
-    items.forEach(function (it) { it.style.display = (!q2 || it.textContent.toLowerCase().indexOf(q2) >= 0) ? '' : 'none'; });
-  };
+  if (filt) {
+    filt.oninput = function () {
+      floraCatQ = filt.value || '';
+      var items = catBox.querySelectorAll('[data-flora]');
+      var q2 = floraCatQ.toLowerCase();
+      items.forEach(function (it) { it.style.display = (!q2 || it.textContent.toLowerCase().indexOf(q2) >= 0) ? '' : 'none'; });
+    };
+  }
   catBox.querySelectorAll('[data-flora]').forEach(function (el) {
     el.onclick = function () {
       switchFloraTab('bit');
@@ -201,10 +314,12 @@ function renderFloraHoy() {
     arr.push({
       nombre: n,
       cient: clean(($('floraSpCient') || {}).value || '', 40),
-      tipo: clean(($('floraSpTipo') || {}).value || '', 20) || 'Flora',
+      tipo: clean(($('floraSpTipo') || {}).value || '', 24) || 'Flora',
       hab: clean(($('floraSpHab') || {}).value || '', 50) || 'Cuenca estero Penco',
       epoca: clean(($('floraSpEpoca') || {}).value || '', 25) || 'Todo el año',
-      nota: clean(($('floraSpNota') || {}).value || '', 80)
+      nota: clean(($('floraSpNota') || {}).value || '', 100),
+      origen: (($('floraSpOrigen') || {}).value || 'nativa'),
+      orn: !!($('floraSpOrn') || {}).checked
     });
     save('Especie guardada 🌸');
     renderFloraHoy();
@@ -214,8 +329,8 @@ function renderFloraHoy() {
 /* ---------- Bitácora ---------- */
 function buildFloraShareText(entryOrAll) {
   if (Array.isArray(entryOrAll)) {
-    if (!entryOrAll.length) return 'Bitácora flora — cuenca estero Penco · sin registros aún';
-    var t = '🌸 Bitácora flora — cuenca estero Penco\n' + entryOrAll.length + ' registros\n\n';
+    if (!entryOrAll.length) return 'Bitácora flora nativa y ornamental — cuenca estero Penco · sin registros aún';
+    var t = '🌸 Bitácora flora nativa y ornamental — cuenca estero Penco\n' + entryOrAll.length + ' registros\n\n';
     entryOrAll.slice().sort(function (a, b) { return (a.date + (a.time || '')).localeCompare(b.date + (b.time || '')); }).forEach(function (e) {
       t += '• ' + e.date + ' ' + (e.time || '') + ' · ' + e.species + ' (' + (e.kind || '—') + ')' + (e.qty ? ' · ' + e.qty : '') + ' · ' + (e.place || '—');
       if (e.notes) t += ' — ' + e.notes;
@@ -234,7 +349,7 @@ function renderFloraLog() {
   var data = [];
   try { data = getFloraData().entries || []; } catch (e) {}
   var stats = $('floraStats');
-  if (!data.length) { box.innerHTML = '<p class="muted">Sin registros. Observa una planta del estero o quebrada y anótala: fecha, lugar y foto valen ciencia.</p>'; if (stats) stats.textContent = '0 registros'; return; }
+  if (!data.length) { box.innerHTML = '<p class="muted">Sin registros. Observa una nativa del estero o planta una ornamental en tu patio y anótala: fecha, lugar y foto valen ciencia.</p>'; if (stats) stats.textContent = '0 registros'; return; }
   var sorted = data.slice().sort(function (a, b) { return (b.date + (b.time || '')).localeCompare(a.date + (a.time || '')); });
   box.innerHTML = sorted.slice(0, 80).map(function (it) {
     return '<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center"><span><b>' + esc(it.species) + '</b> · <span class="chip" style="font-size:10px">' + esc(it.kind || 'observación') + '</span>' + (it.qty ? ' · ' + esc(it.qty) : '') + ' — ' + esc(it.place || '—') +
@@ -279,13 +394,14 @@ function renderFloraLinks() {
   if (!box) return;
   var mine = [];
   try { mine = getFloraLinks() || []; } catch (e) {}
-  var html = '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🔗 Links de interés — flora cuenca estero Penco</h4>' +
-    '<p class="muted" style="font-size:11px">Referencias abiertas para comparar tus observaciones. El primero es el registro publicado de la cuenca.</p>';
-  html += FLORA_LINKS_BASE.map(function (l) {
+  var html = '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🔗 Links de interés — flora nativa cuenca estero Penco</h4>' +
+    '<p class="muted" style="font-size:11px">Referencias abiertas para comparar tus observaciones y elegir nativas para el jardín. El primero es el registro publicado de la cuenca.</p>';
+  html += FLORA_LINKS_BASE.map(function (l, i) {
+    var btn = i === 0 ? '🔗 Abrir registro (Zenodo)' : '🔗 Abrir';
     return '<div class="si-card" style="padding:8px 10px"><h4 style="font-size:12px">📚 ' + esc(l.titulo) + '</h4>' +
       '<p class="muted" style="font-size:11px">👤 ' + esc(l.autor) + '</p>' +
       '<p style="font-size:11px">' + esc(l.nota) + '</p>' +
-      '<div class="dlg-actions" style="justify-content:flex-start;margin-top:6px"><a class="btn btn-accent" style="width:auto;text-decoration:none" href="' + esc(l.url) + '" target="_blank" rel="noopener">🔗 Abrir registro (Zenodo)</a>' +
+      '<div class="dlg-actions" style="justify-content:flex-start;margin-top:6px"><a class="btn btn-accent" style="width:auto;text-decoration:none" href="' + esc(l.url) + '" target="_blank" rel="noopener">' + btn + '</a>' +
       '<button type="button" class="btn" style="width:auto" data-copy="' + esc(l.url) + '">📋 Copiar enlace</button></div>' +
       '<p class="muted" style="font-size:10px;margin-top:4px;word-break:break-all">' + esc(l.url) + '</p></div>';
   }).join('');
@@ -353,25 +469,26 @@ function ensureFloraDialog() {
   d.innerHTML =
     '<form method="dialog">' +
     '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
-    '<h3 style="margin:0;color:var(--accent)">🌸 Flora — cuenca estero Penco</h3>' +
+    '<h3 style="margin:0;color:var(--accent)">🌸 Flora nativa y ornamental — estero Penco</h3>' +
     '<button type="button" id="floraCloseTop" class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    '<p class="muted" style="line-height:1.5">Plantas de la cuenca del estero Penco (Biobío, Chile): ribera, quebradas y laderas. Registra <b>privado y local</b> por usuario. Observa sin arrancar.</p>' +
+    '<p class="muted" style="line-height:1.5">Nativas de la cuenca del estero Penco (Biobío, Chile) + jardín con ornamentales nativas. Registro <b>privado y local</b> por usuario. En el cerro observa sin arrancar; en casa prefiere nativas.</p>' +
     '<div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">' +
     '<button type="button" id="tabFloraHoy" class="btn btn-accent" style="width:auto">🌸 Flora hoy</button>' +
     '<button type="button" id="tabFloraBit" class="btn" style="width:auto">📓 Bitácora</button>' +
     '<button type="button" id="tabFloraLinks" class="btn" style="width:auto">🔗 Links de interés</button></div>' +
     '<div id="floraHoyPanel"><div id="floraTodayBox" class="menstrual-card" style="border-color:var(--gold)"></div>' +
-    '<div class="fishing-grid" style="margin-top:10px"><div class="menstrual-card"><h4>🌸 Especies de la cuenca</h4><div id="floraCatalogBox" class="fishing-species"></div></div>' +
-    '<div class="menstrual-card"><h4>🌙 Luna & observación</h4><p class="muted" style="font-size:11px">Llena: mejor luz y aroma para identificar flores. Menguante: semilla madura para guardar en papel. Nueva: ordena fotos y compara con la lista Zenodo.</p>' +
+    '<div class="fishing-grid" style="margin-top:10px"><div class="menstrual-card"><h4>🌱 Especies nativas + 🏵️ ornamentales</h4><div id="floraCatalogBox" class="fishing-species"></div></div>' +
+    '<div class="menstrual-card"><h4>🌙 Luna, observación y jardín</h4><p class="muted" style="font-size:11px">Llena: mejor luz y aroma para identificar flores. Menguante: semilla madura en papel + división de matas. Nueva: ordena fotos y planifica qué nativa plantar en Pukem.</p>' +
     '<div id="floraMoonBox" class="chip" style="display:block;white-space:normal"></div>' +
-    '<div class="menstrual-card" style="margin-top:8px;background:var(--panel)"><h4 style="font-size:11px">⚠️ Buen vivir</h4><p class="muted" style="font-size:11px">• Foto antes que muestra. • No arranques raíz ni cortes matas. • Anota lugar + fecha + luna. • Lava calzado si vienes de otro estero (evita dispersar plagas).</p></div></div></div></div>' +
-    '<div id="floraBitPanel" class="hidden"><div class="menstrual-card" style="margin-top:10px"><h4>📓 Bitácora — salidas a flora</h4>' +
+    '<div class="menstrual-card" style="margin-top:8px;background:var(--panel)"><h4 style="font-size:11px">🏵️ Jardín nativo en Penco</h4><p class="muted" style="font-size:11px">• Sol y sequía: azulillo, añañuca, chagual, cortadera. • Sombra húmeda: chilco, nalca, helechos, culantrillo. • Picaflores: chilco + tabaco del diablo. • Compra en vivero nativo, no extraigas del cerro ni del estero.</p></div>' +
+    '<div class="menstrual-card" style="margin-top:8px;background:var(--panel)"><h4 style="font-size:11px">⚠️ Buen vivir</h4><p class="muted" style="font-size:11px">• Foto antes que muestra. • No arranques raíz ni cortes matas. • Menta y mora solo en maceta o plato: son invasoras del estero. • Lava calzado si vienes de otro estero.</p></div></div></div></div>' +
+    '<div id="floraBitPanel" class="hidden"><div class="menstrual-card" style="margin-top:10px"><h4>📓 Bitácora — salidas y jardín</h4>' +
     '<div class="conv-row"><label>Fecha <input type="date" id="floraDate"></label><label>Hora <input type="time" id="floraTime" value="09:00"></label>' +
-    '<label>Lugar <input type="text" id="floraPlace" placeholder="ej: Estero Penco, Quebrada Honda" maxlength="30"></label></div>' +
-    '<div class="conv-row"><label>Especie <input type="text" id="floraSpecies" placeholder="ej: Totora, Nalca, Chilco" maxlength="30"></label>' +
-    '<label>Tipo <select id="floraKind"><option value="observación">Observación</option><option value="floración">Floración</option><option value="fruto/semilla">Fruto / semilla</option><option value="recolección">Recolección</option><option value="plantación">Plantación</option><option value="foto">Solo foto</option></select></label>' +
-    '<label>Cantidad <input type="text" id="floraQty" placeholder="ej: 1 mata, 5 fotos" maxlength="20"></label></div>' +
-    '<label>Notas <input type="text" id="floraNotes" placeholder="ej: ribera norte, suelo húmedo, con picaflor" maxlength="80"></label>' +
+    '<label>Lugar <input type="text" id="floraPlace" placeholder="ej: Estero Penco, Quebrada Honda, mi patio" maxlength="30"></label></div>' +
+    '<div class="conv-row"><label>Especie <input type="text" id="floraSpecies" placeholder="ej: Chilco, Azulillo, Calle-calle" maxlength="30"></label>' +
+    '<label>Tipo <select id="floraKind"><option value="observación">Observación</option><option value="floración">Floración</option><option value="fruto/semilla">Fruto / semilla</option><option value="plantación ornamental">Plantación ornamental</option><option value="riego/poda/cuidado">Riego / poda / cuidado</option><option value="recolección">Recolección (con medida)</option><option value="foto">Solo foto</option></select></label>' +
+    '<label>Cantidad <input type="text" id="floraQty" placeholder="ej: 1 mata, 5 fotos, 3 plantines" maxlength="20"></label></div>' +
+    '<label>Notas <input type="text" id="floraNotes" placeholder="ej: patio norte, semisombra, llegó picaflor" maxlength="80"></label>' +
     '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="floraAdd" class="btn btn-accent" style="width:auto">+ Guardar registro</button>' +
     '<button type="button" id="floraCancelEdit" class="btn hidden" style="width:auto">Cancelar</button></div>' +
     '<div id="floraLogBox" class="habits-list" style="margin-top:10px;max-height:240px"></div>' +
@@ -392,7 +509,7 @@ function ensureFloraButton() {
   b.id = 'btnFlora';
   b.className = 'btn';
   b.setAttribute('data-sub', 'tierra');
-  b.setAttribute('data-keywords', 'flora plantas flor flores herbario estero penco cuenca zenodo avilez lista registro fotografico ribera quebrada totora nalca chilco helecho nativa observacion links interes');
+  b.setAttribute('data-keywords', 'flora plantas flor flores nativa nativas endemica ornamental ornamentales jardin patio picaflor herbario estero penco cuenca zenodo avilez lista registro fotografico ribera quebrada totora nalca chilco helecho azulillo ananuca calle tabacom diablo soldadito liuto chagual huilmo observacion links interes');
   b.textContent = '🌸 Flora';
   var ref = $('btnBosque');
   if (ref && ref.parentNode === g) {
@@ -510,7 +627,7 @@ function wireFlora() {
       var d = [];
       try { d = getFloraData().entries || []; } catch (e) {}
       if (!d.length) { alert('Sin registros'); return; }
-      share('🌸 Mi bitácora flora — estero Penco', buildFloraShareText(d));
+      share('🌸 Mi bitácora flora nativa — estero Penco', buildFloraShareText(d));
     };
   }
   var ex = $('floraExport');
@@ -523,7 +640,7 @@ function wireFlora() {
       var blob = new Blob([buildFloraShareText(d)], { type: 'text/plain;charset=utf-8' });
       var a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
-      a.download = 'flora-estero-penco.txt';
+      a.download = 'flora-nativa-estero-penco.txt';
       document.body.appendChild(a); a.click();
       setTimeout(function () { try { URL.revokeObjectURL(a.href); a.remove(); } catch (e) {} }, 800);
     };

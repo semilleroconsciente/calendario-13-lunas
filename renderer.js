@@ -92,9 +92,9 @@ function setupThemeSelector() {
 }
 
 // === 🏠 PANTALLA DE INICIO PERSONALIZABLE (⚙️ Personalizar) ===
-// Guarda por usuario en DATA.config.home = { startView, blocks:{frase,solLuna,notas,agenda,habitos,animo,suenos,comidas,tareas,compras,finanzas,disciplina,respiracion,ciclo,clima} }
-const HOME_BLOCKS_DEFAULT = { frase: true, solLuna: true, notas: true, agenda: true, habitos: true, animo: true, suenos: true, comidas: true, tareas: true, compras: true, finanzas: true, disciplina: true, respiracion: true, ciclo: true, clima: true, mareas: true };
-const HOME_VIEWS = ['auto', 'hoy', 'luna', 'semanaLunar', 'mes', 'semana'];
+// Guarda por usuario en DATA.config.home = { startView, blocks:{frase,solLuna,notas,agenda,habitos,animo,suenos,comidas,tareas,compras,finanzas,disciplina,respiracion,ciclo,clima,mareas,gratitud,horario,entreno,medicina,siembra,espiritual,ritmo,ekadashi} }
+const HOME_BLOCKS_DEFAULT = { frase: true, solLuna: true, notas: true, agenda: true, habitos: true, animo: true, suenos: true, comidas: true, tareas: true, compras: true, finanzas: true, disciplina: true, respiracion: true, ciclo: true, clima: true, mareas: true, gratitud: true, horario: true, entreno: true, medicina: true, siembra: true, espiritual: true, ritmo: true, ekadashi: true };
+const HOME_VIEWS = ['auto', 'hoy', 'luna', 'semanaLunar', 'mes', 'semana', 'completa'];
 function getHomeConfig() {
   const d = (DATA.config && DATA.config.home) || {};
   const blocks = Object.assign({}, HOME_BLOCKS_DEFAULT, d.blocks || {});
@@ -168,6 +168,13 @@ function applyStartView(info) {
   if (target === 'semanaLunar' || target === 'mes' || target === 'semana') {
     mobileSec = isMobileWidth() ? 'completa' : null;
     viewMode = target; viewDateMs = Date.now(); renderCurrentView(); return true;
+  }
+  if (target === 'completa') {
+    mobileSec = isMobileWidth() ? 'completa' : null;
+    viewMode = 'luna';
+    try { if (info && info.luna !== 'dft') selectMoon(info.luna); } catch (e) {}
+    syncMobileViewAttr(); paintMobileDock();
+    renderCurrentView(); return true;
   }
   return false;
 }
@@ -589,13 +596,37 @@ function renderTodayView(){
     + (hb.compras === false ? '' : '<div class="today-card"><h3>🛒 Compras pendientes</h3><div id="todayShopBox"></div><div class="today-add"><input type="text" id="todayShopText" placeholder="Agregar (ej: pan)..." maxlength="60"><button type="button" id="todayShopAdd" class="btn btn-accent" style="width:auto">+ Agregar</button></div><div style="margin-top:8px"><button type="button" id="todayShopOpen" class="btn" style="width:100%">🛒 Abrir Compras</button></div></div>')
     + (hb.finanzas === false ? '' : '<div class="today-card"><h3>💰 Finanzas del día</h3><div id="todayFinanceBox"></div><div class="today-add"><select id="todayFinTipo" style="width:auto"><option value="gasto">Gasto</option><option value="ingreso">Ingreso</option></select><input type="number" id="todayFinMonto" placeholder="$ monto" min="0" style="max-width:110px"><input type="text" id="todayFinDesc" placeholder="detalle..." maxlength="60"></div><div style="display:flex;gap:8px;margin-top:8px"><button type="button" id="todayFinAdd" class="btn btn-accent" style="flex:1;width:auto">+ Agregar</button><button type="button" id="todayFinOpen" class="btn" style="flex:1;width:auto">💰 Abrir Finanzas</button></div></div>')
     + (hb.disciplina === false ? '' : '<div class="today-card"><h3>🎯 Disciplina / intención</h3>'
-    + (function(){ try{ const d=(typeof getDisciplineData==='function'?getDisciplineData():null)||{}; return d.mit? '<p style="font-size:12px">🎯 MIT: <b>'+escapeHtml(d.mit)+'</b></p>' : '<p class="muted" style="font-size:11px">Define tu tarea más importante (MIT) de hoy.</p>'; }catch(e){ return ''; } })()
+    + (function(){ try{ const t=(typeof discGetToday==='function'?discGetToday():null); const s=(typeof discCalcStats==='function'?discCalcStats():null); if(!t) return ''; if(t.mit) return '<p style="font-size:12px">'+(t.done?'✅':'🎯')+' MIT: <b>'+escapeHtml(t.mit)+'</b></p><p class="muted" style="font-size:11px;margin:2px 0 0">🍅 '+((+t.pomodoros||0))+' hoy · 🔥 racha '+(s?s.racha:0)+'</p>'; return '<p class="muted" style="font-size:11px">Define tu tarea más importante (MIT) de hoy.</p>'; }catch(e){ return ''; } })()
     + '<input type="text" id="todayDiscMIT" class="today-note" style="min-height:0" placeholder="🎯 MIT de hoy..." maxlength="120">'
-    + '<div style="display:flex;gap:8px;margin-top:8px"><button type="button" id="todayDiscSave" class="btn btn-accent" style="flex:1;width:auto">💾 Guardar MIT</button><button type="button" id="todayDiscOpen" class="btn" style="flex:1;width:auto">🎯 Abrir Disciplina</button></div></div>')
+    + '<div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap"><button type="button" id="todayDiscSave" class="btn btn-accent" style="flex:1;width:auto">💾 Guardar MIT</button><button type="button" id="todayDiscDone" class="btn" style="flex:1;width:auto">✅ Hecho</button><button type="button" id="todayDiscOpen" class="btn" style="flex:1;width:auto">🎯 Abrir</button></div></div>')
     + (hb.respiracion === false ? '' : '<div class="today-card"><h3>🌬️ Respiración</h3><p class="muted" style="font-size:11px">Pausa de 1 minuto: 4-7-8 para calmar, caja 4-4-4-4 para enfocar.</p><div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" id="todayBreathOpen" class="btn btn-accent" style="flex:1;width:auto">🌬️ Respirar ahora</button></div></div>')
     + (hb.ciclo === false ? '' : '<div class="today-card"><h3>🌸 Ciclo</h3><div id="todayCicloBox"></div><div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap"><button type="button" id="todayCicloMark" class="btn" style="flex:1;width:auto">🌸 Marcar inicio hoy</button><button type="button" id="todayCicloOpen" class="btn" style="flex:1;width:auto">🌸 Abrir Ciclo</button></div></div>')
     + (hb.clima === false ? '' : '<div class="today-card"><h3>🌤️ Clima · próximas 10 horas</h3><div id="todayClimaBox"><p class="muted" style="font-size:11px">Cargando pronóstico de Penco...</p></div><p class="muted" style="font-size:10px;margin:6px 0 0">Fuente: Open-Meteo · Penco. Solo información.</p></div>')
-    + (hb.mareas === false ? '' : '<div class="today-card"><h3>🌊 Mareas</h3><div id="todayTideBox"><p class="muted" style="font-size:11px">Calculando mareas...</p></div><p class="muted" style="font-size:10px;margin:6px 0 0">Fuente: SHOA Talcahuano. Solo información.</p></div>');
+    + (hb.mareas === false ? '' : '<div class="today-card"><h3>🌊 Mareas</h3><div id="todayTideBox"><p class="muted" style="font-size:11px">Calculando mareas...</p></div><p class="muted" style="font-size:10px;margin:6px 0 0">Fuente: SHOA Talcahuano. Solo información.</p></div>')
+    + (hb.gratitud === false ? '' : '<div class="today-card"><h3>📓 Gratitud diaria</h3><div id="todayGratBox">'
+    + (function(){ try{ const e=(typeof getGratitudData==='function'?getGratitudData().entries[key]:null)||{}; const parts=[e.t1,e.t2,e.t3].filter(Boolean); if(!parts.length) return '<p class="muted" style="font-size:11px">Aún no registras gratitud hoy. Escribe una abajo.</p>'; return '<p style="font-size:12px">✨ '+parts.map(function(p){return escapeHtml(p);}).join('<br>✨ ')+'</p>'; }catch(e){ return ''; } })()
+    + '</div><div class="today-add"><input type="text" id="todayGratInput" placeholder="Agradezco por..." maxlength="120"><button type="button" id="todayGratSave" class="btn btn-accent" style="width:auto">+ Guardar</button></div><div style="margin-top:8px"><button type="button" id="todayGratOpen" class="btn" style="width:100%">📓 Abrir Gratitud</button></div></div>')
+    + (hb.horario === false ? '' : '<div class="today-card"><h3>📚 Horario de hoy</h3><div id="todaySchedBox">'
+    + (function(){ try{ const d=(typeof getScheduleData==='function'?getScheduleData():null); if(!d||!d.items||!d.items.length) return '<p class="muted" style="font-size:11px">Sin horario creado.</p>'; const wd=new Date().getDay(); const t=d.items.filter(function(x){return parseInt(x.day)===wd;}).sort(function(a,b){return String(a.start).localeCompare(String(b.start));}); if(!t.length) return '<p class="muted" style="font-size:11px">Hoy no tienes clases. ¡Aprovecha la luna!</p>'; return t.map(function(it){return '<div class="hora-item"><span style="font-size:11px"><b>'+escapeHtml(it.subject)+'</b> '+escapeHtml(it.start)+'–'+escapeHtml(it.end)+(it.place?' · '+escapeHtml(it.place):'')+'</span></div>';}).join(''); }catch(e){ return ''; } })()
+    + '</div><div style="margin-top:8px"><button type="button" id="todaySchedOpen" class="btn" style="width:100%">📚 Abrir Horario</button></div></div>')
+    + (hb.entreno === false ? '' : '<div class="today-card"><h3>💪 Entrenamiento de hoy</h3><div id="todayGymBox">'
+    + (function(){ try{ const d=(typeof getGymData==='function'?getGymData():null); if(!d||!d.items||!d.items.length) return '<p class="muted" style="font-size:11px">Sin entrenamientos creados.</p>'; const wd=new Date().getDay(); const t=d.items.filter(function(x){return parseInt(x.day)===wd;}).sort(function(a,b){return String(a.start).localeCompare(String(b.start));}); if(!t.length) return '<p class="muted" style="font-size:11px">Hoy no tienes entrenamientos programados.</p>'; const comp=(d.completions&&d.completions[key])||{}; return '<div class="habits-today-grid">'+t.map(function(it){ const done=!!comp[it.id]; return '<label class="habit-today-item '+(done?'done':'')+'"><input type="checkbox" data-gid="'+it.id+'" '+(done?'checked':'')+'><span>'+escapeHtml(it.name)+'</span><span class="muted" style="font-size:10px"> · '+escapeHtml(it.start||'')+(it.place?' · '+escapeHtml(it.place):'')+'</span></label>'; }).join('')+'</div>'; }catch(e){ return ''; } })()
+    + '</div><div style="margin-top:8px"><button type="button" id="todayGymOpen" class="btn" style="width:100%">💪 Abrir Entrenamientos</button></div></div>')
+    + (hb.medicina === false ? '' : '<div class="today-card"><h3>💊 Medicina de hoy</h3><div id="todayMedicBox">'
+    + (function(){ try{ const d=(typeof getMedicData==='function'?getMedicData():null); if(!d||!d.list||!d.list.length) return '<p class="muted" style="font-size:11px">Sin medicamentos registrados.</p>'; return d.list.slice(0,4).map(function(m){return '<div class="hora-item"><span style="font-size:11px">💊 <b>'+escapeHtml(m.name)+'</b> '+(m.dose?'· '+escapeHtml(m.dose):'')+' · ⏰ '+escapeHtml(m.time||'')+'</span></div>';}).join('')+(d.list.length>4?'<p class="muted" style="font-size:10px">+'+(d.list.length-4)+' más...</p>':''); }catch(e){ return ''; } })()
+    + '</div><div style="margin-top:8px"><button type="button" id="todayMedicOpen" class="btn" style="width:100%">💊 Abrir Medicina</button></div></div>')
+    + (hb.siembra === false ? '' : '<div class="today-card"><h3>🌱 Consejo siembra lunar</h3>'
+    + (function(){ try{ if(isDFT) return '<p style="font-size:12px">✷ Día Fuera del Tiempo: no siembres. Compost, ordena semillas y planifica.</p>'; const il=(typeof illum==='number'?illum:null); let txt=''; if(il===null) txt='Observa la luna esta noche y decide: ¿crece o mengua?'; else if(il<10) txt='🌑 Luna nueva: descanso. Haz compost, prepara suelo, ordena el semillero.'; else if(il<45) txt='🌒 Creciente: siembra hojas y frutos (lechuga, acelga, tomate). Buen trasplante.'; else if(il<55) txt='🌓 Cuarto creciente: pico de siembra. Riega moderado, asocia y aporca.'; else if(il<90) txt='🌔 Gibosa: cuida y deshierba. No podes fuerte; vigila plagas.'; else txt='🌕 Luna llena: cosecha hojas y semillas. Evita podar y trasplantar.'; return '<p style="font-size:12px">'+txt+'</p>'+(lunaN&&diaN?'<p class="muted" style="font-size:11px">Luna '+lunaN+' · día '+diaN+'/28'+(illum!==null?' · '+illum+'% iluminada':'')+'</p>':''); }catch(e){ return ''; } })()
+    + '<div style="margin-top:8px"><button type="button" id="todaySiembraOpen" class="btn" style="width:100%">🌱 Abrir Siembra lunar</button></div></div>')
+    + (hb.espiritual === false ? '' : '<div class="today-card"><h3>🕉️ Práctica espiritual</h3><div id="todayEspBox">'
+    + (function(){ try{ const k2=(typeof espTodayKey==='function'?espTodayKey():key); const d=(typeof getEspiritualData==='function'?getEspiritualData():null); const n=(d&&d.done&&d.done[k2]&&typeof d.done[k2]==='object')?Object.keys(d.done[k2]).filter(function(pid){return d.done[k2][pid];}).length:0; return '<p style="font-size:12px">Hoy llevas <b>'+n+'/9</b> prácticas.</p>'+(n?'':'<p class="muted" style="font-size:11px">Parte con 1: sol de mañana, grounding o respiración.</p>'); }catch(e){ return ''; } })()
+    + '</div><div style="margin-top:8px"><button type="button" id="todayEspOpen" class="btn" style="width:100%">🕉️ Abrir Prácticas</button></div></div>')
+    + (hb.ritmo === false ? '' : '<div class="today-card"><h3>🌞 Ritmo + hora dorada</h3><div id="todayRitmoBox">'
+    + (function(){ try{ let fase=''; try{ const hr=now.getHours()+now.getMinutes()/60; const idx=(typeof getCircadianPhase==='function'?getCircadianPhase(hr):-1); const p=(typeof CIRCADIAN_PHASES!=='undefined'&&idx>=0?CIRCADIAN_PHASES[idx]:null); if(p) fase=p.icon+' <b>'+escapeHtml(p.label)+'</b> · '+escapeHtml(p.desc||''); }catch(e){} let dor=''; try{ const g=(typeof getGoldenForDay==='function'?getGoldenForDay(noonMs):null); if(g){ const f=function(ms){ try{ return new Intl.DateTimeFormat('es-CL',{timeZone:'America/Santiago',hour:'2-digit',minute:'2-digit',hour12:false}).format(new Date(ms)); }catch(e){ return '--'; } }; dor='<br>📸 Dorada AM <b>'+f(g.goldenAM[0])+'–'+f(g.goldenAM[1])+'</b> · PM <b>'+f(g.goldenPM[0])+'–'+f(g.goldenPM[1])+'</b>'; } }catch(e){} if(!fase&&!dor) return '<p class="muted" style="font-size:11px">Sin datos de ritmo.</p>'; return '<p style="font-size:12px">'+fase+dor+'</p>'; }catch(e){ return ''; } })()
+    + '</div><div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap"><button type="button" id="todayRitmoOpen" class="btn" style="flex:1;width:auto">🌞 Abrir Ritmo</button><button type="button" id="todayGoldenOpen" class="btn" style="flex:1;width:auto">📸 Hora Dorada</button></div></div>')
+    + (hb.ekadashi === false ? '' : '<div class="today-card"><h3>📿 Ekadashi / ayuno</h3>'
+    + (function(){ try{ let t=null; try{ t=(window.astro&&typeof window.astro.tithi==='function'?window.astro.tithi(noonMs):null); }catch(e){} if(t===11) return '<p style="font-size:12px">🌙 <b>Hoy es Ekadashi Shukla</b> (tithi 11). Día de aligerar: fruta, agua, calma.</p>'; if(t===26) return '<p style="font-size:12px">🌙 <b>Hoy es Ekadashi Krishna</b> (tithi 26). Día de aligerar: fruta, agua, calma.</p>'; if(typeof t==='number') return '<p class="muted" style="font-size:11px">Hoy tithi '+t+'. Ekadashi cae en tithi 11 y 26 — el próximo se marca en 📿 Ekadashi.</p>'; return '<p class="muted" style="font-size:11px">Revisa en 📿 Ekadashi si hoy toca ayuno suave.</p>'; }catch(e){ return ''; } })()
+    + '<div style="margin-top:8px"><button type="button" id="todayEkaOpen" class="btn" style="width:100%">📿 Abrir Ekadashi</button></div></div>');
   // --- ánimo: sugerencia + expandir opciones ---
   const main = $('todayMoodMain'), picker = $('todayMoodPicker');
   const paintPicker = ()=>{
@@ -824,9 +855,11 @@ function renderTodayView(){
   // --- 🎯 DISCIPLINA ---
   try{
     const dm=$('todayDiscMIT');
-    try{ const d=getDisciplineData(); if(dm&&!dm.value) dm.value=d.mit||''; }catch(e){}
+    try{ const t=discGetToday(); if(dm&&!dm.value) dm.value=t.mit||''; }catch(e){}
     const dsv=$('todayDiscSave');
-    if(dsv) dsv.onclick=()=>{ try{ getDisciplineData().mit=sanitizeText((dm.value||'').trim(),120); scheduleSave('MIT guardado ✓'); renderTodayView(); }catch(e){} };
+    if(dsv) dsv.onclick=()=>{ try{ const t=discGetToday(); t.mit=sanitizeText((dm.value||'').trim(),120); getDisciplineData().mit=t.mit; scheduleSave('MIT guardado ✓'); renderTodayView(); }catch(e){} };
+    const ddone=$('todayDiscDone');
+    if(ddone) ddone.onclick=()=>{ try{ const t=discGetToday(); if(dm&&dm.value.trim()){ t.mit=sanitizeText(dm.value.trim(),120); getDisciplineData().mit=t.mit; } t.done=true; scheduleSave('MIT cumplido 🔥'); renderTodayView(); }catch(e){} };
     const dop2=$('todayDiscOpen');
     if(dop2) dop2.onclick=()=>{ try{ $('btnDiscipline').click(); }catch(e){} };
   }catch(e){}
@@ -924,6 +957,40 @@ function renderTodayView(){
           }
         })();
       }
+    }catch(e){}
+  }catch(e){}
+  // --- 8 NUEVOS BLOQUES HOY: accesos + acciones mínimas ---
+  try{
+    const go=function(id,btn){ const b=$(id); if(b) b.onclick=function(){ try{ $(btn).click(); }catch(e){} }; };
+    go('todayGratOpen','btnGratitud'); go('todaySchedOpen','btnSchedule'); go('todayGymOpen','btnGym');
+    go('todayMedicOpen','btnMedic'); go('todaySiembraOpen','btnSiembra'); go('todayEspOpen','btnEspiritual');
+    go('todayRitmoOpen','btnCircadian'); go('todayGoldenOpen','btnGolden'); go('todayEkaOpen','btnEkadashi');
+    const gs=$('todayGratSave');
+    if(gs) gs.onclick=function(){
+      try{
+        const v=((($('todayGratInput')||{}).value)||'').trim();
+        if(!v) return alert('Escribe tu gratitud primero');
+        const gd=getGratitudData(); const e=gd.entries[key]||(gd.entries[key]={});
+        const txt=sanitizeText(v,120);
+        if(!e.t1) e.t1=txt; else if(!e.t2) e.t2=txt; else if(!e.t3) e.t3=txt; else e.t3=(e.t3+' · '+txt).slice(0,120);
+        scheduleSave('Gratitud guardada ✨'); renderTodayView();
+      }catch(e){}
+    };
+    const gi=$('todayGratInput');
+    if(gi) gi.addEventListener('keydown',function(e){ if(e.key==='Enter'){ e.preventDefault(); const b=$('todayGratSave'); if(b) b.click(); } });
+    try{
+      const gb=$('todayGymBox');
+      if(gb) gb.querySelectorAll('input[data-gid]').forEach(function(cb){
+        cb.onchange=function(){
+          try{
+            const gd=getGymData();
+            if(!gd.completions[key]) gd.completions[key]={};
+            if(cb.checked) gd.completions[key][cb.dataset.gid]=true;
+            else { delete gd.completions[key][cb.dataset.gid]; if(!Object.keys(gd.completions[key]).length) delete gd.completions[key]; }
+            scheduleSave(); const lab=cb.closest('label'); if(lab){ if(cb.checked) lab.classList.add('done'); else lab.classList.remove('done'); }
+          }catch(e){}
+        };
+      });
     }catch(e){}
   }catch(e){}
   // --- reloj vivo con segundos en el encabezado ---
@@ -1321,7 +1388,7 @@ function renderLuna() {
     try{
       const gymDataForCard = getGymData();
       const gymForDay = gymDataForCard.items.filter(it=> parseInt(it.day)===new Date(d.noonMs).getDay());
-      gymIcons = gymForDay.map(it=> `<span class="dc-habit" style="background:${it.color}22;color:${it.color};border-color:${it.color}55" title="${escapeHtml(it.name)} ${it.start}-${it.end}">🏋️</span>`).join('');
+      gymIcons = gymForDay.map(it=> `<span class="dc-habit" style="background:${it.color}22;color:${it.color};border-color:${it.color}55" title="${escapeHtml(it.name)} ${it.start}-${it.end}${it.place?' · '+escapeHtml(it.place):''}">🏋️</span>`).join('');
       hasGym = gymForDay.length ? ' has-gym' : '';
     }catch(e){}
     let birdIcons='', fishIcons='', interIcons='', bosqueIcons='', astroIcons='', comunaIcons='', financeIcons='', homeIcons='';
@@ -5887,7 +5954,7 @@ setTimeout(setupHelpDialog, 850);
 // Incluye botones base + los inyectados por nuevos-modulos.js (Agua, Bodega, Nudos,
 // Taller, Trueque, Minga, Rutinas, Fertilidad, Derechos). NUEVOS_BTNS los re-agrega
 // con push si faltan (no-op si ya están), así los perfiles siempre los conocen.
-const ALL_BTNS = ["btnTides","btnFishing","btnBirds","btnIntermareal","btnBosque","btnWeather","btnSiembra","btnAstro","btnComuna","btnEkadashi","btnMenstrual","btnMedic","btnHabits","btnMeal","btnShopping","btnFinance","btnHomeTasks","btnDiscipline","btnDreams","btnBreath","btnGratitud","btnSchedule","btnGym","btnCircadian","btnGolden","btnEspiritual","btnCompost","btnLawen","btnFirstAid","btnAnimalCare","btnViolence","btnEvac","btnConvert","btnEnergy","btnLena","btnTimer","btnRemind","btnBackup","btnRestore","btnShortcut","btnPdfLuna","btnPdfCiclo","btnDonate","btnHelp","btnStudy","btnTales","btnVozAbuelos","btnMemory","btnMapu","btnEnglish","btnGuitar","btnPsico","btnMetodos","btnAgua","btnBodega","btnNudos","btnTaller","btnTrueque","btnMinga","btnFerti","btnDerechos","btnCrianza","btnArbolFull","btnRecap","btnDueloFull","btnEneagrama","btnAjedrez","btnSudoku","btnFlora","btnPsicologia","btnAdolescencia","btnJuventud","btnAdultez","btnClimaterio","btnVejez","btnElectrocultura"];
+const ALL_BTNS = ["btnTides","btnFishing","btnBirds","btnIntermareal","btnBosque","btnWeather","btnSiembra","btnAstro","btnComuna","btnEkadashi","btnMenstrual","btnMedic","btnHabits","btnMeal","btnShopping","btnFinance","btnHomeTasks","btnDiscipline","btnDreams","btnBreath","btnGratitud","btnSchedule","btnGym","btnCircadian","btnGolden","btnEspiritual","btnCompost","btnLawen","btnFirstAid","btnAnimalCare","btnViolence","btnEvac","btnConvert","btnEnergy","btnLena","btnTimer","btnRemind","btnBackup","btnRestore","btnShortcut","btnPdfLuna","btnPdfCiclo","btnDonate","btnHelp","btnStudy","btnTales","btnVozAbuelos","btnMemory","btnMapu","btnEnglish","btnGuitar","btnPsico","btnMetodos","btnAgua","btnBodega","btnNudos","btnTaller","btnTrueque","btnMinga","btnFerti","btnDerechos","btnCrianza","btnArbolFull","btnRecap","btnDueloFull","btnEneagrama","btnAjedrez","btnSudoku","btnFlora","btnPsicologia","btnAdolescencia","btnJuventud","btnAdultez","btnClimaterio","btnVejez","btnElectrocultura","btnMecanica"];
 // === REORGANIZACIÓN 7 GRUPOS (2026-09): grupo + subgrupo destino de cada botón ===
 // Dinámicos que aún no existen en el DOM se mueven cuando se inyectan.
 const BTN_HOME = {
@@ -5905,7 +5972,7 @@ const BTN_HOME = {
   btnPsico:['linaje','interior'],btnPsicologia:['linaje','interior'],btnEneagrama:['linaje','interior'],btnMetodos:['linaje','interior'],btnRecap:['linaje','interior'],btnEspiritual:['linaje','interior'],btnDueloFull:['linaje','interior'],
   btnArbolFull:['linaje','familia'],btnVozAbuelos:['linaje','familia'],btnAdultez:['linaje','familia'],btnVejez:['linaje','familia'],
   btnMeal:['hogar','casa'],btnShopping:['hogar','casa'],btnFinance:['hogar','casa'],btnHomeTasks:['hogar','casa'],btnBodega:['hogar','casa'],
-  btnEnergy:['hogar','energia'],btnLena:['hogar','energia'],btnTaller:['hogar','energia'],btnConvert:['hogar','energia'],
+  btnEnergy:['hogar','energia'],btnLena:['hogar','energia'],btnTaller:['hogar','energia'],btnMecanica:['hogar','energia'],btnConvert:['hogar','energia'],
   btnTrueque:['comunidad','red'],btnMinga:['comunidad','red'],btnDerechos:['comunidad','red'],btnAnimalCare:['comunidad','red'],
   btnFirstAid:['comunidad','emergencia'],btnViolence:['comunidad','emergencia'],btnEvac:['comunidad','emergencia'],
   btnBackup:['comunidad','app'],btnRestore:['comunidad','app'],btnShortcut:['comunidad','app'],btnPdfLuna:['comunidad','app'],btnPdfCiclo:['comunidad','app'],btnDonate:['comunidad','app']
@@ -5926,7 +5993,7 @@ const BTN_ORDER = {
   'linaje|interior':['btnPsico','btnPsicologia','btnEneagrama','btnMetodos','btnRecap','btnEspiritual','btnDueloFull'],
   'linaje|familia':['btnArbolFull','btnVozAbuelos','btnAdultez','btnVejez'],
   'hogar|casa':['btnMeal','btnShopping','btnFinance','btnHomeTasks','btnBodega'],
-  'hogar|energia':['btnEnergy','btnLena','btnTaller','btnConvert'],
+  'hogar|energia':['btnEnergy','btnLena','btnTaller','btnMecanica','btnConvert'],
   'comunidad|red':['btnTrueque','btnMinga','btnDerechos','btnAnimalCare'],
   'comunidad|emergencia':['btnFirstAid','btnViolence','btnEvac'],
   'comunidad|app':['btnBackup','btnRestore','btnShortcut','btnPdfLuna','btnPdfCiclo','btnDonate']
@@ -6362,103 +6429,360 @@ function setupActionSearch(){
 }
 setTimeout(setupActionSearch, 880);
 
-// === DISCIPLINA ===
+// === DISCIPLINA v2 — sistema funcional diario ===
+function discTodayKey(){
+  try{ if(window.cal && window.cal.fmtKey) return window.cal.fmtKey.format(new Date()); }catch(e){}
+  const d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+}
 function getDisciplineData(){
   const u=userData();
-  if(!u.discipline) u.discipline={ mit:"", if:"", then:"" };
-  return u.discipline;
+  if(!u.discipline || typeof u.discipline!=='object') u.discipline={ mit:"", if:"", then:"" };
+  const d=u.discipline;
+  if(typeof d.mit!=='string') d.mit="";
+  if(typeof d.if!=='string') d.if="";
+  if(typeof d.then!=='string') d.then="";
+  if(!d.log || typeof d.log!=='object') d.log={};
+  return d;
+}
+function discGetToday(){
+  const d=getDisciplineData();
+  const k=discTodayKey();
+  if(!d.log[k] || typeof d.log[k]!=='object') d.log[k]={ mit:d.mit||"", done:false, frog:false, pomodoros:0, quick:[], dist:[], block:"" };
+  const t=d.log[k];
+  // migrar intención global a hoy si hoy está vacío
+  if(!t.mit && d.mit) t.mit=d.mit;
+  if(!Array.isArray(t.quick)) t.quick=[];
+  if(!Array.isArray(t.dist)) t.dist=[];
+  if(typeof t.pomodoros!=='number') t.pomodoros=0;
+  return t;
+}
+function discShiftKey(baseKey, delta){
+  try{
+    const dt=new Date(baseKey+'T12:00:00');
+    dt.setDate(dt.getDate()+delta);
+    return dt.getFullYear()+'-'+String(dt.getMonth()+1).padStart(2,'0')+'-'+String(dt.getDate()).padStart(2,'0');
+  }catch(e){ return baseKey; }
+}
+function discCalcStats(){
+  const d=getDisciplineData();
+  const today=discTodayKey();
+  let racha=0;
+  for(let i=0;i<60;i++){
+    const k=discShiftKey(today, -i);
+    // el día 0 puede estar en curso: solo cuenta si done; si hoy no done, empieza desde ayer
+    const e=d.log[k];
+    if(i===0 && !(e && e.done)){ continue; }
+    if(e && e.done) racha++;
+    else if(i===0) continue;
+    else break;
+    if(i===0 && e && e.done) continue; // seguirá contando ayer en i=1
+  }
+  // corrección: si hoy hecho, racha incluye hoy + consecutivos previos
+  if(d.log[today] && d.log[today].done){
+    racha=1;
+    for(let i=1;i<60;i++){ const e=d.log[discShiftKey(today,-i)]; if(e&&e.done) racha++; else break; }
+  } else {
+    racha=0;
+    for(let i=1;i<60;i++){ const e=d.log[discShiftKey(today,-i)]; if(e&&e.done) racha++; else break; }
+  }
+  let pomo7=0, mit7=0;
+  for(let i=0;i<7;i++){
+    const e=d.log[discShiftKey(today,-i)];
+    if(e){ pomo7+=(+e.pomodoros||0); if(e.done) mit7++; }
+  }
+  const t=discGetToday();
+  return { racha, pomo7, mit7, pomoHoy:(+t.pomodoros||0), doneHoy:!!t.done };
+}
+function renderDiscipline(){
+  try{
+    const d=getDisciplineData(), t=discGetToday(), s=discCalcStats();
+    const st=$('discStats');
+    if(st) st.innerHTML='<div class="disc-stat">🔥 <b>'+s.racha+'</b><span>racha MIT</span></div>'
+      +'<div class="disc-stat">🍅 <b>'+s.pomoHoy+'</b><span>hoy</span></div>'
+      +'<div class="disc-stat">📊 <b>'+s.pomo7+'</b><span>7 días</span></div>'
+      +'<div class="disc-stat">✅ <b>'+s.mit7+'/7</b><span>MIT semana</span></div>';
+    const mit=$('disciplineMIT'); if(mit && document.activeElement!==mit) mit.value=t.mit||d.mit||"";
+    const iff=$('disciplineIf'), thn=$('disciplineThen');
+    if(iff && document.activeElement!==iff) iff.value=d.if||"";
+    if(thn && document.activeElement!==thn) thn.value=d.then||"";
+    const dn=$('disciplineDone'); if(dn) dn.checked=!!t.done;
+    const fr=$('disciplineFrog'); if(fr) fr.checked=!!t.frog;
+    const bl=$('discBlock'); if(bl && document.activeElement!==bl) bl.value=t.block||"";
+    const pc=$('discPomoCount'); if(pc) pc.textContent='🍅 '+s.pomoHoy;
+    const dots=$('discPomoDots');
+    if(dots) dots.textContent = s.pomoHoy<=0 ? 'Toca +1 cada vez que completes 25 min de foco.' : ('● '.repeat(Math.min(s.pomoHoy,12)).trim() + (s.pomoHoy>=4 ? ' — ¡pausa larga 15-30 min! 🎉' : ' — ¡sigue! 💪'));
+    // 2-min
+    const ql=$('discQuickList');
+    if(ql){
+      ql.innerHTML = t.quick.length ? t.quick.map((q,i)=>'<label class="dio-item'+(q.done?' done':'')+'"><input type="checkbox" data-dq="'+i+'"'+(q.done?' checked':'')+'><span class="dio-txt"><b>'+escapeHtml(q.txt)+'</b></span><span class="dio-check">'+(q.done?'✓':'2′')+'</span></label>').join('') : '<p class="muted" style="font-size:11px">Vacío. Agrega tu primer micro-pendiente 👆.</p>';
+      ql.querySelectorAll('[data-dq]').forEach(cb=> cb.onchange=()=>{ t.quick[+cb.dataset.dq].done=cb.checked; d.mit=(t.mit||""); scheduleSave(cb.checked?'2-min hecho ✓':'Guardado ✓'); renderDiscipline(); });
+    }
+    // distracciones
+    const dl=$('discDistList');
+    if(dl){
+      dl.innerHTML = t.dist.length ? t.dist.map((x,i)=>'<div class="dio-item"><span class="dio-txt"><b>'+escapeHtml(x)+'</b></span><button type="button" class="btn btn-icon" data-dd="'+i+'" title="Quitar">✕</button></div>').join('') : '<p class="muted" style="font-size:11px">Sin distracciones. Mente despejada 🌙.</p>';
+      dl.querySelectorAll('[data-dd]').forEach(b=> b.onclick=()=>{ t.dist.splice(+b.dataset.dd,1); scheduleSave(); renderDiscipline(); });
+    }
+    // historial
+    const h=$('discHistory');
+    if(h){
+      const today=discTodayKey();
+      let rows=[];
+      for(let i=0;i<7;i++){
+        const k=discShiftKey(today,-i);
+        const e=d.log[k];
+        const label = i===0 ? 'Hoy' : i===1 ? 'Ayer' : k.slice(5);
+        rows.push('<div class="hora-item"><span class="hora-text">'+(e&&e.done?'✅':'⬜')+' <b>'+label+'</b> · '+(e&&e.mit?escapeHtml((e.mit||'').slice(0,48)):'<span style="color:var(--muted)">sin MIT</span>')+'</span><span class="muted" style="font-size:11px">🍅 '+(e?(+e.pomodoros||0):0)+'</span></div>');
+      }
+      h.innerHTML=rows.join('');
+    }
+  }catch(e){}
 }
 function setupDisciplineDialog(){
   const btn=$('btnDiscipline'); if(btn) btn.onclick=()=>{
-    const d=getDisciplineData();
-    const mit=$('disciplineMIT'), iff=$('disciplineIf'), thn=$('disciplineThen');
-    if(mit) mit.value=d.mit||"";
-    if(iff) iff.value=d.if||"";
-    if(thn) thn.value=d.then||"";
+    renderDiscipline();
     const st=$('disciplineStatus'); if(st) st.textContent="";
+    switchDiscTab('Hoy');
     $('disciplineDialog').showModal();
   };
   const ct=$('disciplineCloseTop'), cb=$('disciplineClose'); if(ct) ct.onclick=()=>$('disciplineDialog').close(); if(cb) cb.onclick=()=>$('disciplineDialog').close();
+  const tabs=[['tabDiscHoy','Hoy'],['tabDiscTec','Tec'],['tabDiscHist','Hist']];
+  tabs.forEach(([id])=>{ const b=$(id); if(b) b.onclick=()=>switchDiscTab(id.replace('tabDisc','')); });
   const save=$('disciplineSave'); if(save) save.onclick=()=>{
-    const d=getDisciplineData();
-    d.mit=$('disciplineMIT').value.trim();
-    d.if=$('disciplineIf').value.trim();
-    d.then=$('disciplineThen').value.trim();
-    scheduleSave();
-    const st=$('disciplineStatus'); if(st) st.textContent="Intención guardada ✓ — se mantiene para mañana.";
-    setTimeout(()=>{ if(st) st.textContent=""; },2500);
+    const d=getDisciplineData(), t=discGetToday();
+    t.mit=sanitizeText(($('disciplineMIT').value||'').trim(),120);
+    d.mit=t.mit; d.if=sanitizeText(($('disciplineIf').value||'').trim(),120); d.then=sanitizeText(($('disciplineThen').value||'').trim(),120);
+    t.done=!!($('disciplineDone')&&$('disciplineDone').checked);
+    t.frog=!!($('disciplineFrog')&&$('disciplineFrog').checked);
+    t.block=sanitizeText(($('discBlock').value||'').trim(),80);
+    scheduleSave('Día guardado ✓');
+    const st=$('disciplineStatus'); if(st) st.textContent = t.done ? "MIT cumplido 🔥 ¡racha "+discCalcStats().racha+"!" : "Día guardado ✓ — vuelve tras tu primer Pomodoro 🍅.";
+    setTimeout(()=>{ if(st) st.textContent=""; },2800);
+    renderDiscipline();
+    try{ renderTodayView(); }catch(e){}
   };
+  const dn=$('disciplineDone'); if(dn) dn.onchange=()=>{ discGetToday().done=dn.checked; scheduleSave(dn.checked?'MIT cumplido 🔥':'Guardado ✓'); renderDiscipline(); };
+  const fr=$('disciplineFrog'); if(fr) fr.onchange=()=>{ discGetToday().frog=fr.checked; scheduleSave(); renderDiscipline(); };
+  const pp=$('discPomoPlus'); if(pp) pp.onclick=()=>{ const t=discGetToday(); t.pomodoros=Math.min(24,(+t.pomodoros||0)+1); scheduleSave('🍅 '+t.pomodoros); renderDiscipline(); };
+  const pm=$('discPomoMinus'); if(pm) pm.onclick=()=>{ const t=discGetToday(); t.pomodoros=Math.max(0,(+t.pomodoros||0)-1); scheduleSave(); renderDiscipline(); };
+  const qa=$('discQuickAdd');
+  const addQuick=()=>{ const inp=$('discQuickInput'); if(!inp) return; const v=sanitizeText((inp.value||'').trim(),80); if(!v) return; discGetToday().quick.push({txt:v,done:false}); inp.value=''; scheduleSave('Agregado ✓'); renderDiscipline(); };
+  if(qa) qa.onclick=addQuick;
+  const qi=$('discQuickInput'); if(qi) qi.onkeydown=(e)=>{ if(e.key==='Enter'){ e.preventDefault(); addQuick(); } };
+  const da=$('discDistAdd');
+  const addDist=()=>{ const inp=$('discDistInput'); if(!inp) return; const v=sanitizeText((inp.value||'').trim(),80); if(!v) return; discGetToday().dist.push(v); inp.value=''; scheduleSave('Anotado 📥 sigue en foco'); renderDiscipline(); };
+  if(da) da.onclick=addDist;
+  const di=$('discDistInput'); if(di) di.onkeydown=(e)=>{ if(e.key==='Enter'){ e.preventDefault(); addDist(); } };
+  const ts=$('discToSchedule'); if(ts) ts.onclick=()=>{ try{ $('disciplineDialog').close(); $('btnSchedule').click(); }catch(e){} };
   const pomo=$('disciplineStartPomodoro'); if(pomo) pomo.onclick=()=>{
+    try{ discGetToday(); scheduleSave(); }catch(e){}
     $('disciplineDialog').close();
-    const h=$('countH'), m=$('countM'), s=$('countS');
-    if(h&&m&&s){ h.value=0; m.value=25; s.value=0; const ev=new Event('input',{bubbles:true}); h.dispatchEvent(ev); m.dispatchEvent(ev); }
+    const h=$('countH'), m=$('countM'), s2=$('countS');
+    if(h&&m&&s2){ h.value=0; m.value=25; s2.value=0; const ev=new Event('input',{bubbles:true}); h.dispatchEvent(ev); m.dispatchEvent(ev); }
     setTimeout(()=>{ setupTimerDialog(); $('timerDialog').showModal(); const cs=$('countStart'); if(cs) cs.click(); },200);
   };
   document.querySelectorAll('.discipline-try').forEach(b=>{
     b.onclick=()=>{
       $('disciplineDialog').close();
-      const h=$('countH'), m=$('countM'), s=$('countS');
-      if(h&&m&&s){ h.value=0; m.value=25; s.value=0; }
+      const h=$('countH'), m=$('countM'), s2=$('countS');
+      if(h&&m&&s2){ h.value=0; m.value=25; s2.value=0; }
       setTimeout(()=>{ setupTimerDialog(); $('timerDialog').showModal(); const cs=$('countStart'); if(cs) cs.click(); },200);
     };
   });
 }
-setTimeout(setupDisciplineDialog, 855);
+function switchDiscTab(which){
+  const map={ Hoy:['tabDiscHoy','discTabHoy'], Tec:['tabDiscTec','discTabTec'], Hist:['tabDiscHist','discTabHist'] };
+  Object.values(map).forEach(([bid,did])=>{ const b=$(bid), dv=$(did); if(b) b.classList.remove('btn-accent'); if(dv) dv.classList.add('hidden'); });
+  const cur=map[which]||map.Hoy;
+  const b=$(cur[0]), dv=$(cur[1]); if(b) b.classList.add('btn-accent'); if(dv) dv.classList.remove('hidden');
+  if(which==='Hist'||which==='Hoy') renderDiscipline();
+}
 setTimeout(setupDisciplineDialog, 855);
 
-// === RESPIRACIÓN ===
+// === RESPIRACIÓN (completa) ===
 const BREATH_TECHNIQUES = [
-  { id:'4-7-8', name:'4-7-8', pattern:[{l:'Inhala',d:4},{l:'Retén',d:7},{l:'Exhala',d:8}], desc:'Ideal para el sueño y la ansiedad. Calma profunda.', benefit:'Sueño/ansiedad' },
-  { id:'4-4-4-4', name:'4-4-4-4 (Caja)', pattern:[{l:'Inhala',d:4},{l:'Retén',d:4},{l:'Exhala',d:4},{l:'Retén',d:4}], desc:'Útil para enfoque y control del estrés.', benefit:'Foco' },
-  { id:'5-5', name:'5-5', pattern:[{l:'Inhala',d:5},{l:'Exhala',d:5}], desc:'Equilibra el sistema nervioso, muy relajante.', benefit:'Equilibrio' },
-  { id:'5-5-5-5', name:'5-5-5-5', pattern:[{l:'Inhala',d:5},{l:'Retén',d:5},{l:'Exhala',d:5},{l:'Retén',d:5}], desc:'Versión más lenta de la respiración caja', benefit:'Lenta' },
-  { id:'6-3-6-3', name:'6-3-6-3', pattern:[{l:'Inhala',d:6},{l:'Retén',d:3},{l:'Exhala',d:6},{l:'Retén',d:3}], desc:'Mejora el equilibrio entre relajación y control', benefit:'Equilibrio' },
-  { id:'6-6', name:'6-6', pattern:[{l:'Inhala',d:6},{l:'Exhala',d:6}], desc:'Relajación profunda, reduce la frecuencia cardíaca', benefit:'Cardíaco' },
-  { id:'3-3-6', name:'3-3-6', pattern:[{l:'Inhala',d:3},{l:'Retén',d:3},{l:'Exhala',d:6}], desc:'Exhalación más larga para calmar la ansiedad', benefit:'Ansiedad' },
-  { id:'4-6', name:'4-6', pattern:[{l:'Inhala',d:4},{l:'Exhala',d:6}], desc:'Simple y efectiva para relajarte', benefit:'Simple' },
-  { id:'7-11', name:'7-11', pattern:[{l:'Inhala',d:7},{l:'Exhala',d:11}], desc:'Técnica poderosa para la relajación profunda', benefit:'Profunda' },
-  { id:'2-4', name:'2-4', pattern:[{l:'Inhala',d:2},{l:'Exhala',d:4}], desc:'Método calmante para principiantes', benefit:'Principiantes' }
+  { id:'2-4', ico:'🌱', name:'2-4 Base', cat:'inicio', nivel:'Suave', ciclos:6, pattern:[{l:'Inhala',d:2},{l:'Exhala',d:4}], desc:'Puerta de entrada. Exhalación doble para avisar al cuerpo que no hay peligro.', benefit:'Principiantes', usar:'Primera vez, crisis leve, volver al cuerpo en 1 min.', pasos:['Siéntate recto, hombros sueltos.','Inhala por nariz 2 seg (guata se infla).','Exhala por boca 4 seg como soplando vela lento.','Repite sin pausas bruscas.'] },
+  { id:'4-6', ico:'🍃', name:'4-6 Calma', cat:'calma', nivel:'Suave', ciclos:6, pattern:[{l:'Inhala',d:4},{l:'Exhala',d:6}], desc:'Simple y efectiva. La exhalación larga baja pulso y ansiedad en minutos.', benefit:'Ansiedad', usar:'Antes de prueba, discusión, micro-pausa de trabajo.', pasos:['Inhala nariz 4 seg.','Exhala boca entreabierta 6 seg.','Mantén ritmo parejo, sin aguantar aire.','6 ciclos ≈ 1 min.'] },
+  { id:'3-3-6', ico:'🫧', name:'3-3-6 Ansiedad', cat:'calma', nivel:'Suave', ciclos:5, pattern:[{l:'Inhala',d:3},{l:'Retén',d:3},{l:'Exhala',d:6}], desc:'Retención corta + exhalación larga: corta el bucle mental.', benefit:'Ansiedad', usar:'Mente acelerada, angustia, pre-pánico.', pasos:['Inhala 3, retén 3 sin apretar.','Exhala 6 lento y completo.','Si mareas, vuelve a 4-6.'] },
+  { id:'coherente', ico:'💗', name:'5.5 Coherente', cat:'calma', nivel:'Suave', ciclos:6, pattern:[{l:'Inhala',d:5},{l:'Exhala',d:5}], desc:'~6 respiraciones/min. Sincroniza corazón y cerebro. Base de coherencia cardíaca.', benefit:'Equilibrio', usar:'Estrés diario, hipertensión leve, 5 min mañana/tarde.', pasos:['Inhala 5 / exhala 5 por nariz.','Relaja mandíbula y vientre.','5 min seguidos = efecto real.'] },
+  { id:'4-4-4-4', ico:'🟦', name:'4-4-4-4 Caja', cat:'foco', nivel:'Intermedio', ciclos:4, pattern:[{l:'Inhala',d:4},{l:'Retén',d:4},{l:'Exhala',d:4},{l:'Retén',d:4}], desc:'La de pilotos y Navy SEALs. Cuatro lados iguales para enfocar y estabilizar.', benefit:'Foco', usar:'Antes de competir, exponer, estudiar, manejar.', pasos:['Inhala 4 → retén 4 → exhala 4 → retén 4.','Visualiza un cuadrado.','4 vueltas ≈ 1 min.'] },
+  { id:'5-5-5-5', ico:'🟨', name:'5-5-5-5 Caja lenta', cat:'foco', nivel:'Intermedio', ciclos:4, pattern:[{l:'Inhala',d:5},{l:'Retén',d:5},{l:'Exhala',d:5},{l:'Retén',d:5}], desc:'Versión lenta de la caja. Más control sin agitar.', benefit:'Foco lento', usar:'Estudio profundo, previo a reunión difícil.', pasos:['Igual que caja pero en 5.','Si cuesta retener, baja a 4-4-4-4.'] },
+  { id:'6-3-6-3', ico:'⚖️', name:'6-3-6-3 Equilibrio', cat:'foco', nivel:'Intermedio', ciclos:4, pattern:[{l:'Inhala',d:6},{l:'Retén',d:3},{l:'Exhala',d:6},{l:'Retén',d:3}], desc:'Inhalación profunda con pausa corta: energía tranquila.', benefit:'Equilibrio', usar:'Media tarde, cambio de tarea, meditar.', pasos:['Inhala amplio 6, retén 3.','Exhala 6, vacío 3.','Aire a la guata, no a hombros.'] },
+  { id:'4-4', ico:'🌊', name:'4-4 Pareja', cat:'inicio', nivel:'Suave', ciclos:6, pattern:[{l:'Inhala',d:4},{l:'Exhala',d:4}], desc:'Ritmo parejo para practicar en pareja o caminando.', benefit:'Regular', usar:'Caminata, acostado, con niños.', pasos:['Inhala 4 / exhala 4 por nariz.','Coordina con pasos si caminas.'] },
+  { id:'4-7-8', ico:'🌙', name:'4-7-8 Sueño', cat:'sueno', nivel:'Intermedio', ciclos:4, pattern:[{l:'Inhala',d:4},{l:'Retén',d:7},{l:'Exhala',d:8}], desc:'La clásica de Weil para dormir. Retención larga + exhalación completa.', benefit:'Sueño/ansiedad', usar:'Acostado, luz apagada, 4 ciclos antes de dormir.', pasos:['Punta lengua tras dientes.','Inhala nariz 4.','Retén 7 sin tensión.','Exhala boca 8 con “shhh”.'] },
+  { id:'7-11', ico:'🌌', name:'7-11 Profunda', cat:'sueno', nivel:'Avanzado', ciclos:4, pattern:[{l:'Inhala',d:7},{l:'Exhala',d:11}], desc:'Exhalación muy larga. Poderosa para soltar el día y bajar revoluciones.', benefit:'Profunda', usar:'Insomnio, noche ansiosa. Acostado.', pasos:['Inhala 7 amplio.','Exhala 11 vaciando todo.','Si mareas, baja a 4-6.'] },
+  { id:'6-6', ico:'❤️', name:'6-6 Cardíaca', cat:'calma', nivel:'Intermedio', ciclos:6, pattern:[{l:'Inhala',d:6},{l:'Exhala',d:6}], desc:'Baja frecuencia cardíaca. Ideal con mano al pecho/vientre.', benefit:'Cardíaco', usar:'Palpitaciones por estrés, post-ejercicio.', pasos:['Inhala 6 / exhala 6 nasal.','Siente el pulso bajar.'] },
+  { id:'suspiro', ico:'😮‍💨', name:'Suspiro fisiológico', cat:'calma', nivel:'Suave', ciclos:3, pattern:[{l:'Inhala',d:2},{l:'Inhala+',d:1},{l:'Exhala',d:6}], desc:'Doble inhalación corta + exhalación larga. Reset más rápido del sistema (Huberman).', benefit:'Reset 1 min', usar:'Llanto contenido, susto, tensión aguda.', pasos:['Inhala corto + otro “sorbo” de aire.','Exhala 6 lento todo.','1-3 veces basta.'] },
+  { id:'alternada', ico:'👃', name:'Alterna (Nadi)', cat:'foco', nivel:'Intermedio', ciclos:6, pattern:[{l:'Izq inhala',d:4},{l:'Retén',d:4},{l:'Der exhala',d:4},{l:'Der inhala',d:4},{l:'Retén',d:4},{l:'Izq exhala',d:4}], desc:'Respiración yóguica por fosas alternas. Aclara y centra.', benefit:'Claridad', usar:'Niebla mental, antes de crear/estudiar.', pasos:['Tapa fosa derecha, inhala izq 4.','Tapa ambas, retén 4.','Suelta derecha, exhala 4. Inhala derecha 4, retén, exhala izq. Eso es 1 ciclo.'] },
+  { id:'energia', ico:'⚡', name:'3-1-3 Energía', cat:'energia', nivel:'Intermedio', ciclos:6, pattern:[{l:'Inhala',d:3},{l:'Retén',d:1},{l:'Exhala',d:3}], desc:'Ritmo corto y rítmico sentado erguido para despertar sin café.', benefit:'Despertar', usar:'Mañana, bajón 15:00. No de noche.', pasos:['Sentado erguido. Inhala 3 enérgico.','Exhala 3 activo.','6 ciclos + estirar.'] }
 ];
+const BREATH_CATS = { todos:'🌬️ Todas', inicio:'🌱 Inicio', calma:'🍃 Calma', sueno:'🌙 Sueño', foco:'🎯 Foco', energia:'⚡ Energía' };
 let breathSelected = BREATH_TECHNIQUES[0];
 let breathTimer=null, breathPhaseIdx=0, breathSecLeft=0, breathRunning=false;
+let breathFilter='todos', breathTargetCycles=4, breathDoneCycles=0, breathElapsed=0, breathSoundOn=true, breathSessionStart=null;
+function breathCycleSeconds(t){ return t.pattern.reduce((a,p)=>a+p.d,0); }
+function breathBeep(freq, dur){
+  if(!breathSoundOn) return;
+  try{
+    const Ctx=window.AudioContext||window.webkitAudioContext; if(!Ctx) return;
+    const ctx=new Ctx(); const o=ctx.createOscillator(); const g=ctx.createGain();
+    o.connect(g); g.connect(ctx.destination); o.frequency.value=freq||440; o.type='sine';
+    g.gain.setValueAtTime(0.0001, ctx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.25, ctx.currentTime+0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime+(dur||0.18));
+    o.start(); o.stop(ctx.currentTime+(dur||0.18)+0.02);
+    setTimeout(()=>{ try{ctx.close();}catch(e){} }, 600);
+  }catch(e){}
+}
+function getBreathLog(){ try{ const u=(typeof userData==='function')? userData():null; if(u){ if(!Array.isArray(u.breathLog)) u.breathLog=[]; return u.breathLog; } }catch(e){} try{ const r=localStorage.getItem('cal13-breathLogV1'); return r? JSON.parse(r):[]; }catch(e){ return []; } }
+function saveBreathLog(){ try{ if(typeof scheduleSave==='function') scheduleSave('Respiración guardada ✓'); else localStorage.setItem('cal13-breathLogV1', JSON.stringify(getBreathLog())); }catch(e){} }
+function breathTodayKey(d){ d=d||new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
 function renderBreathGrid(){
   const g=$('breathGrid'); if(!g) return;
-  g.innerHTML=BREATH_TECHNIQUES.map(t=>`<div class="breath-card ${t.id===breathSelected.id?'sel':''}" data-id="${t.id}"><b>${t.name}</b><br><span class="muted" style="font-size:10px">${t.pattern.map(p=>p.l+' '+p.d).join(' → ')}</span><br><span class="muted" style="font-size:11px">${t.desc}</span></div>`).join('');
-  g.querySelectorAll('.breath-card').forEach(el=> el.onclick=()=>{ breathSelected=BREATH_TECHNIQUES.find(x=>x.id===el.dataset.id); renderBreathGrid(); updateBreathHeader(); });
+  const list=BREATH_TECHNIQUES.filter(t=> breathFilter==='todos' || t.cat===breathFilter);
+  if(!list.length){ g.innerHTML='<p class="muted">Sin técnicas en este filtro.</p>'; return; }
+  g.innerHTML=list.map(t=>`<div class="breath-card ${t.id===breathSelected.id?'sel':''}" data-id="${t.id}" role="button" tabindex="0"><b>${t.ico||''} ${escapeHtml(t.name)}</b><br><span class="muted" style="font-size:10px">${t.pattern.map(p=>p.l+' '+p.d).join(' → ')}</span><br><span class="chip" style="font-size:10px;margin:4px 0;display:inline-block">${BREATH_CATS[t.cat]||t.cat} · ${escapeHtml(t.nivel||'')}</span><br><span class="muted" style="font-size:11px">${escapeHtml(t.desc)}</span></div>`).join('');
+  g.querySelectorAll('.breath-card').forEach(el=>{
+    const pick=()=>{ breathStop(true); breathSelected=BREATH_TECHNIQUES.find(x=>x.id===el.dataset.id)||breathSelected; breathTargetCycles=breathSelected.ciclos||4; const cs=$('breathCycles'); if(cs) cs.value=String(breathTargetCycles); renderBreathGrid(); updateBreathHeader(); };
+    el.onclick=pick; el.onkeydown=(e)=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); pick(); } };
+  });
 }
 function updateBreathHeader(){
-  const t=breathSelected;
-  $('breathTitle').textContent=t.name+' Respiración';
+  const t=breathSelected; if(!t || !$('breathTitle')) return;
+  $('breathTitle').textContent=(t.ico? t.ico+' ':'')+t.name+' · Respiración';
   $('breathDesc').textContent=t.desc+' — '+t.benefit;
   $('breathPattern').textContent=t.pattern.map(p=>p.l+' '+p.d).join(' → ');
+  const badge=$('breathBadges'); if(badge) badge.innerHTML=`<span class="chip">${BREATH_CATS[t.cat]||t.cat}</span> <span class="chip">Nivel ${escapeHtml(t.nivel||'—')}</span> <span class="chip">~${breathCycleSeconds(t)}s/ciclo</span>`;
+  const st=$('breathSteps'); if(st) st.innerHTML=(t.pasos||[]).map((p,i)=>`<li><b>${i+1}.</b> ${escapeHtml(p)}</li>`).join('');
+  const wn=$('breathWhen'); if(wn) wn.textContent='👉 Cuándo: '+t.usar;
+  const te=$('breathTimeEst'); if(te) te.textContent='⏱ '+breathTargetCycles+' ciclos ≈ '+Math.round(breathCycleSeconds(t)*breathTargetCycles/60*10)/10+' min';
+  const cl=$('breathCycleLabel'); if(cl) cl.textContent=breathRunning? ('Ciclo '+(Math.min(breathDoneCycles+1,breathTargetCycles))+'/'+breathTargetCycles) : ('0/'+breathTargetCycles+' ciclos');
+  const pb=$('breathProgress'); if(pb) pb.style.width=(breathTargetCycles? Math.round(breathDoneCycles/breathTargetCycles*100):0)+'%';
 }
-function breathTick(){
-  const phase=breathSelected.pattern[breathPhaseIdx];
+function breathPaint(){
+  const phase=breathSelected.pattern[breathPhaseIdx]; if(!phase) return;
   $('breathPhase').textContent=phase.l;
   $('breathCount').textContent=breathSecLeft;
   const circle=$('breathCircle');
   if(circle){
-    circle.className='breath-circle '+(phase.l==='Inhala'?'inhale': phase.l==='Exhala'?'exhale':'');
-  }
-  breathSecLeft--;
-  if(breathSecLeft<=0){
-    breathPhaseIdx=(breathPhaseIdx+1)%breathSelected.pattern.length;
-    breathSecLeft=breathSelected.pattern[breathPhaseIdx].d;
+    circle.className='breath-circle '+((phase.l||'').toLowerCase().indexOf('inhala')===0||phase.l==='Inhala+'?'inhale': (phase.l||'').toLowerCase().indexOf('exhala')===0?'exhale':'hold');
+    circle.style.transitionDuration=Math.max(0.4,Math.min(6,breathSecLeft))+ 's';
   }
 }
+function breathTick(){
+  breathPaint();
+  breathElapsed++;
+  breathSecLeft--;
+  if(breathSecLeft<=0){
+    const wasLast=breathPhaseIdx===breathSelected.pattern.length-1;
+    breathPhaseIdx=(breathPhaseIdx+1)%breathSelected.pattern.length;
+    breathSecLeft=breathSelected.pattern[breathPhaseIdx].d;
+    breathBeep(breathPhaseIdx===0? 660: 440, 0.15);
+    if(breathPhaseIdx===0 && wasLast){
+      breathDoneCycles++;
+      const cl=$('breathCycleLabel'); if(cl) cl.textContent='Ciclo '+Math.min(breathDoneCycles,breathTargetCycles)+'/'+breathTargetCycles;
+      const pb=$('breathProgress'); if(pb) pb.style.width=Math.round(Math.min(breathDoneCycles,breathTargetCycles)/breathTargetCycles*100)+'%';
+      if(breathDoneCycles>=breathTargetCycles){ breathCompleteSession(); return; }
+    }
+  }
+}
+function breathStart(){
+  if(breathRunning) return;
+  breathRunning=true; breathPhaseIdx=0; breathSecLeft=breathSelected.pattern[0].d; breathDoneCycles=0; breathElapsed=0; breathSessionStart=Date.now();
+  updateBreathHeader(); breathPaint(); breathBeep(520,0.2);
+  clearInterval(breathTimer); breathTimer=setInterval(breathTick,1000);
+  const s=$('breathStart'); if(s) s.classList.add('btn-accent');
+}
+function breathStop(silent){
+  breathRunning=false; clearInterval(breathTimer); breathTimer=null;
+  const s=$('breathStart'); if(s) s.classList.remove('btn-accent');
+  if(!silent){ if($('breathPhase')) $('breathPhase').textContent='Pausa'; }
+}
+function breathReset(){
+  breathStop(true); breathPhaseIdx=0; breathSecLeft=0; breathDoneCycles=0; breathElapsed=0;
+  if($('breathPhase')) $('breathPhase').textContent='Listo';
+  if($('breathCount')) $('breathCount').textContent='—';
+  const c=$('breathCircle'); if(c){ c.className='breath-circle'; c.style.transitionDuration='1s'; }
+  updateBreathHeader();
+}
+function breathCompleteSession(auto){
+  breathStop(true);
+  if($('breathPhase')) $('breathPhase').textContent='¡Bien! ✓';
+  try{ breathBeep(880,0.35); setTimeout(()=>breathBeep(660,0.35),220); if(navigator.vibrate) navigator.vibrate([200,100,200]); }catch(e){}
+  try{
+    const log=getBreathLog();
+    log.push({ ts:Date.now(), tech:breathSelected.id, name:breathSelected.name, cycles:breathTargetCycles, secs:breathElapsed||breathCycleSeconds(breathSelected)*breathTargetCycles });
+    while(log.length>300) log.shift();
+    saveBreathLog();
+  }catch(e){}
+  renderBreathStats(); renderBreathLog();
+  const cl=$('breathCycleLabel'); if(cl) cl.textContent=breathTargetCycles+'/'+breathTargetCycles+' ciclos ✓';
+  const pb=$('breathProgress'); if(pb) pb.style.width='100%';
+  if(auto!==false){ setTimeout(()=>{ try{ alert('🌬️ Sesión completa: '+breathSelected.name+' × '+breathTargetCycles+' ciclos. Quedó en tu registro.'); }catch(e){} },250); }
+}
+function renderBreathStats(){
+  const box=$('breathStats'); if(!box) return;
+  const log=getBreathLog(); const today=breathTodayKey();
+  const d=new Date(); const weekAgo=Date.now()-7*864e5;
+  const tToday=log.filter(x=>breathTodayKey(new Date(x.ts))===today);
+  const tWeek=log.filter(x=>x.ts>=weekAgo);
+  let streak=0; const days=new Set(log.map(x=>breathTodayKey(new Date(x.ts))));
+  const cur=new Date();
+  for(let i=0;i<60;i++){ const k=breathTodayKey(cur); if(days.has(k)){ streak++; cur.setDate(cur.getDate()-1); } else if(i===0){ cur.setDate(cur.getDate()-1); continue; } else break; }
+  const mins=Math.round(log.reduce((a,x)=>a+(x.secs||0),0)/60);
+  box.innerHTML=`<div class="si-grid"><div class="si-card"><h4>📅 Hoy</h4><p><b>${tToday.length}</b> sesiones · ${tToday.reduce((a,x)=>a+(x.cycles||0),0)} ciclos</p></div><div class="si-card"><h4>📈 7 días</h4><p><b>${tWeek.length}</b> sesiones</p></div><div class="si-card"><h4>🔥 Racha</h4><p><b>${streak}</b> día(s)</p></div><div class="si-card"><h4>⏱ Total</h4><p><b>${log.length}</b> sesiones · ${mins} min</p></div></div>`;
+}
+function renderBreathLog(){
+  const box=$('breathLogBox'); if(!box) return;
+  const log=[...getBreathLog()].reverse().slice(0,20);
+  if(!log.length){ box.innerHTML='<p class="muted">Sin sesiones aún. Completa tu primera arriba y vuelve aquí 🌬️</p>'; return; }
+  box.innerHTML=log.map(x=>{
+    const t=BREATH_TECHNIQUES.find(t=>t.id===x.tech);
+    const f=new Date(x.ts);
+    return `<div class="habit-item"><div class="habit-head"><b style="color:var(--gold)">${escapeHtml(t? (t.ico+' '+t.name):(x.name||x.tech))}</b><span class="muted" style="font-size:11px">${f.toLocaleString('es-CL',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}</span></div><div style="font-size:12px;color:#cdd3ee">${x.cycles} ciclos · ~${Math.round((x.secs||0)/60*10)/10} min</div></div>`;
+  }).join('');
+}
+function breathTab(which){
+  const p=$('breathPracticePanel'), l=$('breathLearnPanel'), r=$('breathLogPanel');
+  const tp=$('breathTabPractice'), tl=$('breathTabLearn'), tr=$('breathTabLog');
+  if(!p) return;
+  p.classList.toggle('hidden', which!=='p'); l.classList.toggle('hidden', which!=='l'); r.classList.toggle('hidden', which!=='r');
+  if(tp) tp.classList.toggle('btn-accent', which==='p');
+  if(tl) tl.classList.toggle('btn-accent', which==='l');
+  if(tr) tr.classList.toggle('btn-accent', which==='r');
+  if(which==='r'){ renderBreathStats(); renderBreathLog(); }
+}
 function setupBreathDialog(){
-  const btn=$('btnBreath'); if(btn) btn.onclick=()=>{ renderBreathGrid(); updateBreathHeader(); $('breathDialog').showModal(); };
-  const ct=$('breathCloseTop'), cb=$('breathClose'); if(ct) ct.onclick=()=>$('breathDialog').close(); if(cb) cb.onclick=()=>$('breathDialog').close();
+  const btn=$('btnBreath'); if(btn) btn.onclick=()=>{ renderBreathGrid(); updateBreathHeader(); renderBreathStats(); renderBreathLog(); breathTab('p'); try{ $('breathDialog').showModal(); }catch(e){} };
+  const ct=$('breathCloseTop'), cb=$('breathClose'); if(ct) ct.onclick=()=>{ breathStop(true); $('breathDialog').close(); }; if(cb) cb.onclick=()=>{ breathStop(true); $('breathDialog').close(); };
+  const tp=$('breathTabPractice'), tl=$('breathTabLearn'), tr=$('breathTabLog');
+  if(tp) tp.onclick=()=>breathTab('p'); if(tl) tl.onclick=()=>breathTab('l'); if(tr) tr.onclick=()=>breathTab('r');
+  const f=$('breathFilter'); if(f) f.onchange=()=>{ breathFilter=f.value; renderBreathGrid(); };
+  const cs=$('breathCycles'); if(cs) cs.onchange=()=>{ breathTargetCycles=parseInt(cs.value,10)||4; breathReset(); };
+  const sn=$('breathSound'); if(sn) sn.onchange=()=>{ breathSoundOn=sn.checked; };
   renderBreathGrid(); updateBreathHeader();
   const start=$('breathStart'), pause=$('breathPause'), reset=$('breathReset');
-  if(start) start.onclick=()=>{
-    if(breathRunning) return;
-    breathRunning=true; breathPhaseIdx=0; breathSecLeft=breathSelected.pattern[0].d;
-    breathTick();
-    breathTimer=setInterval(breathTick,1000);
+  if(start) start.onclick=()=>breathStart();
+  if(pause) pause.onclick=()=>breathStop();
+  if(reset) reset.onclick=()=>breathReset();
+  const done=$('breathDone'); if(done) done.onclick=()=>{ if(breathDoneCycles>0||breathElapsed>10){ breathCompleteSession(); breathReset(); } else { try{ const log=getBreathLog(); log.push({ ts:Date.now(), tech:breathSelected.id, name:breathSelected.name, cycles:breathTargetCycles, secs:breathCycleSeconds(breathSelected)*breathTargetCycles }); saveBreathLog(); renderBreathStats(); renderBreathLog(); alert('🌬️ Marcada como hecha ✓'); }catch(e){} } };
+  const ag=$('breathAgendar'); if(ag) ag.onclick=()=>{
+    try{
+      const k=(typeof cal!=='undefined' && cal.fmtKey)? cal.fmtKey.format(new Date()) : breathTodayKey();
+      let ref=null; try{ ref=(typeof lunaMapForKey==='function')? lunaMapForKey(k):null; }catch(e){}
+      if(!ref||ref.luna==='dft'){ alert('Hoy está fuera del ciclo visible; practica igual con el temporizador.'); return; }
+      const cell=dayCell(ref.luna, ref.diaN); if(!Array.isArray(cell.agenda)) cell.agenda=[];
+      cell.agenda.push({ id:'br'+Date.now(), hour:8, minute:0, time:'08:00', text:'🌬️ Respiración '+breathSelected.name+' × '+breathTargetCycles, notify:false, notified:false });
+      scheduleSave('Agendado ✓'); alert('Agendado hoy 08:00 🌬️ (puedes cambiar la hora en el día)');
+    }catch(e){ alert('No se pudo agendar'); }
   };
-  if(pause) pause.onclick=()=>{ breathRunning=false; clearInterval(breathTimer); $('breathPhase').textContent='Pausa'; };
-  if(reset) reset.onclick=()=>{ breathRunning=false; clearInterval(breathTimer); breathPhaseIdx=0; breathSecLeft=0; $('breathPhase').textContent='Listo'; $('breathCount').textContent='—'; const c=$('breathCircle'); if(c) c.className='breath-circle'; };
+  const sh=$('breathShare'); if(sh) sh.onclick=async()=>{
+    const log=getBreathLog(); const week=log.filter(x=>x.ts>=Date.now()-7*864e5);
+    const txt='🌬️ Mi respiración (7 días)\nSesiones: '+week.length+'\n'+week.slice(-7).map(x=>{ const d=new Date(x.ts); return '· '+d.toLocaleDateString('es-CL',{day:'2-digit',month:'2-digit'})+' '+(x.name||x.tech)+' × '+x.cycles; }).join('\n');
+    await shareText('Mi respiración', txt);
+  };
+  const cl=$('breathClear'); if(cl) cl.onclick=()=>{ if(!confirm('¿Borrar tu registro de respiración?')) return; try{ const u=userData(); u.breathLog=[]; scheduleSave(); }catch(e){ try{localStorage.removeItem('cal13-breathLogV1');}catch(_){} } renderBreathStats(); renderBreathLog(); };
+  const goH=$('breathGoHabits'); if(goH) goH.onclick=()=>{ try{ $('breathDialog').close(); }catch(e){} setTimeout(()=>{ const b=$('btnHabits')||$('btnHabitos'); if(b) b.click(); },150); };
 }
 
 // === HORARIO CLASES ===
@@ -6538,6 +6862,34 @@ const TRAINING_AGE_GROUPS = {
   adulto: { label:'18-59 años', icon:'🧑' },
   mayor: { label:'60+ años', icon:'👴' }
 };
+// === ENTRENAMIENTOS POR LUGAR (mantiene tipos actuales + filtro por lugar) ===
+const TRAINING_PLACES = {
+  todos: { label:'Todos', icon:'📍', keys:[] },
+  casa: { label:'Casa', icon:'🏠', keys:['casa','hogar','depto','departamento','living','pieza','patio casa','dormitorio','cocina'] },
+  gimnasio: { label:'Gimnasio', icon:'🏋️', keys:['gimnasio','gym','box','pesas','maquina','máquina','polea','mancuerna','barra','kine','cesfam'] },
+  playa: { label:'Playa', icon:'🏖️', keys:['playa','mar','arena','orilla','penco playa'] },
+  bosque: { label:'Bosque', icon:'🌲', keys:['bosque','cerro','sendero','nativo','montaña','montana','trekking','mirador'] },
+  multicancha: { label:'Multicancha', icon:'🏟️', keys:['multicancha','cancha','estadio','futbol','fútbol','baby','basquet','voley','tenis'] },
+  plaza: { label:'Plaza/Parque', icon:'🌳', keys:['plaza','parque','calistenia','patio','juego','plaza penco'] },
+  costanera: { label:'Costanera', icon:'🚴', keys:['costanera','bici','ciclovia','ciclovía','trote','running','skate','lirquen','lirquén'] },
+  piscina: { label:'Piscina', icon:'🏊', keys:['piscina','pileta','nado','nadar','agua'] },
+  otro: { label:'Otro', icon:'📌', keys:[] }
+};
+function gymNorm(s){ return (s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,''); }
+function gymPlaceKey(placeStr){
+  const n=gymNorm(placeStr);
+  if(!n.trim()) return 'otro';
+  for(const k of Object.keys(TRAINING_PLACES)){
+    if(k==='todos'||k==='otro') continue;
+    if((TRAINING_PLACES[k].keys||[]).some(kw=> n.includes(gymNorm(kw)))) return k;
+  }
+  return 'otro';
+}
+function gymPlaceBadge(placeStr){
+  const k=gymPlaceKey(placeStr);
+  const p=TRAINING_PLACES[k]||TRAINING_PLACES.otro;
+  return p.icon+' '+escapeHtml(placeStr||p.label);
+}
 const TRAINING_SUGGESTIONS = {
   gym: [
     { name:'Push — Pecho/Hombro/Tríceps', exercises:'Press banca 4x8 60kg 90s\nFondos paralelas 3x12 45s\nPress hombro 3x10 30kg 60s\nPlancha 3x45s', place:'Gimnasio Penco', color:'#e76e8a', edad:'adulto' },
@@ -6582,7 +6934,9 @@ const TRAINING_SUGGESTIONS = {
     { name:'🧑 Street full avanzado', exercises:'Muscle-up progresión 5x3\nFront lever tuck 4x15s\nFondos lastrados 4x8\nPistol asistida 3x5 lado', place:'Parque calistenia', color:'#8fc178', edad:'adulto' },
     { name:'🧑 Core 10′ + piernas', exercises:'Hollow 3x20s\nPlancha lateral 3x30s\nSentadilla búlgara 3x10 lado\nPuente 1 pierna 3x8 lado', place:'Casa', color:'#a9d18e', edad:'adulto' },
     { name:'👴 Calistenia en silla 60+', exercises:'Sentarse/pararse 2x8\nFlexiones pared 2x10\nRemo toalla puerta firme 2x8\nMarcha sentada 2x20\nSilla firme contra pared, nada inestable', place:'Casa', color:'#d6e8b8', edad:'mayor' },
-    { name:'👴 Pared + apoyo seguro 60+', exercises:'Flexiones pared 2x12\nPantorrilla pared 2x12\nPlancha pared 2x20s\nRespiración 4-4 5′ final', place:'Casa', color:'#d6e8b8', edad:'mayor' }
+    { name:'👴 Pared + apoyo seguro 60+', exercises:'Flexiones pared 2x12\nPantorrilla pared 2x12\nPlancha pared 2x20s\nRespiración 4-4 5′ final', place:'Casa', color:'#d6e8b8', edad:'mayor' },
+    { name:'🏟️ Multicancha barras + fondo 25′', exercises:'Dominadas o australian 4x8\nFondos 3x10\nSentadilla 3x15\nPiques 4x30m en la cancha', place:'Multicancha', color:'#8fc178', edad:'adulto' },
+    { name:'🌲 Bosque barras rústicas 20′', exercises:'Colgado 3x20s\nAustralian en rama firme 3x8\nFondos en tronco 3x10\nCaminata 10′ — revisa que esté firme y seco', place:'Bosque', color:'#a9d18e', edad:'adulto' }
   ],
   varias: [
     { name:'Yoga suave 30′', exercises:'Saludo al sol 5x\nGuerrero II 3x30s lado\nTriángulo 3x30s\nSavasana 3′ + 4-7-8', place:'Casa', color:'#e8c56a', edad:'todos' },
@@ -6596,7 +6950,13 @@ const TRAINING_SUGGESTIONS = {
     { name:'🧑 Pilates core 25′', exercises:'Hundred 1x100\nRoll-up 3x8\nSingle leg stretch 3x10 lado\nPuente 3x12\nTeaser progresión 3x5', place:'Casa / Mat', color:'#e8c56a', edad:'adulto' },
     { name:'🧑 Nado / bici suave 40′', exercises:'Nado o bici 30′ ritmo que permite hablar\nMovilidad hombro/cadera 5′\nRespiración 5-5 5′', place:'Piscina / Costanera', color:'#e8c56a', edad:'adulto' },
     { name:'👴 Tai chi / chi kung 20′', exercises:'Abrir-cerrar 5′\nNube manos 3x8 lado\nGruya-pájaro suave 5′\nRespiración 4-6 5′\nApoyo silla si hay mareo', place:'Casa / Plaza', color:'#f0d488', edad:'mayor' },
-    { name:'👴 Caminata + elongación 30′', exercises:'Caminata 20′ ritmo cómodo + bastón si hace falta\nTobillo/cadera 5′\nRespiración + sol mañana\nLleva agua + celu + avisa ruta', place:'Barrio / Playa', color:'#f0d488', edad:'mayor' }
+    { name:'👴 Caminata + elongación 30′', exercises:'Caminata 20′ ritmo cómodo + bastón si hace falta\nTobillo/cadera 5′\nRespiración + sol mañana\nLleva agua + celu + avisa ruta', place:'Barrio / Playa', color:'#f0d488', edad:'mayor' },
+    { name:'🏠 Casa exprés 15′ sin material', exercises:'Sentadilla 3x15\nFlexiones rodillas 3x10\nPuente glúteo 3x12\nPlancha 3x20s\nEstiramiento 3′ final — ideal lluvia/frío', place:'Casa', color:'#e8c56a', edad:'todos' },
+    { name:'🏖️ Playa HIIT + core 25′', exercises:'Trote suave arena 5′\n4 rondas: sentadilla salto x10 + flexiones x8 + skipping 30s\nPlancha 3x30s + elongar mirando el mar\nLleva agua + bloqueador', place:'Playa Penco', color:'#e8c56a', edad:'adulto' },
+    { name:'🌲 Bosque senderismo 60′', exercises:'Caminata sendero 45′ ritmo que permite hablar\nCuesta suave 5′ + pausa mirador\nMovilidad tobillo/cadera 5′\nRespiración 5-5 5′ — zapatillas con agarre', place:'Bosque', color:'#a9d18e', edad:'todos' },
+    { name:'🌲 Bosque fuerza con tronco 30′', exercises:'Sentadilla 3x15\nFondos en banca/borde 3x10\nStep-up en tronco 3x10 lado\nPlancha 3x30s\nNo romper ramas vivas, deja sin rastro', place:'Bosque', color:'#a9d18e', edad:'adulto' },
+    { name:'🏟️ Multicancha fútbol + vueltas 50′', exercises:'Trote vuelta cancha 8′\nPiques 6x40m\nFútbol/partido 30′\nElongar cuádriceps/isquios 5′ — lleva balón + agua', place:'Multicancha', color:'#a9d18e', edad:'todos' },
+    { name:'🏟️ Multicancha funcional 30′', exercises:'Vuelta trote 5′\nCircuito 4 rondas: 10 sentadillas + 8 flexiones + 10 zancadas + 20 skipping\nPlancha 3x30s', place:'Multicancha', color:'#8fc178', edad:'joven' }
   ]
 };
 function getGymData(){
@@ -6611,15 +6971,28 @@ function getGymData(){
 let gymEditingId=null;
 let gymCurrentTab='gym';
 let gymCurrentAge='todos';
-function renderGymSuggestions(cat, age){
+let gymCurrentPlace='todos';
+function gymMatchesPlace(placeStr, placeF){
+  if(!placeF||placeF==='todos') return true;
+  return gymPlaceKey(placeStr)===placeF;
+}
+function renderGymSuggestions(cat, age, place){
   const box=$('gymSuggestionsBox'); if(!box) return;
   const ageF=age||gymCurrentAge||'todos';
+  const placeF=place||gymCurrentPlace||'todos';
   const all=TRAINING_SUGGESTIONS[cat]||[];
-  const list= ageF==='todos' ? all : all.filter(s=> (s.edad||'todos')===ageF || (s.edad||'todos')==='todos');
+  let list= ageF==='todos' ? all.slice() : all.filter(s=> (s.edad||'todos')===ageF || (s.edad||'todos')==='todos');
+  if(placeF!=='todos') list=list.filter(s=> gymPlaceKey(s.place)===placeF);
   const catInfo=TRAINING_CATS[cat];
   const ageInfo=(typeof TRAINING_AGE_GROUPS!=='undefined' && TRAINING_AGE_GROUPS[ageF]) ? TRAINING_AGE_GROUPS[ageF] : { label:'Todas', icon:'👥' };
+  const placeInfo=(typeof TRAINING_PLACES!=='undefined' && TRAINING_PLACES[placeF]) ? TRAINING_PLACES[placeF] : TRAINING_PLACES.todos;
   const ageChip = ageF==='todos' ? '' : ` · ${ageInfo.icon} ${ageInfo.label}`;
-  box.innerHTML=`<h4 style="color:var(--gold)">${catInfo.icon} ${catInfo.label}${ageChip} — ${list.length} sugerencias (toca para cargar)</h4>` + list.map(s=>{ const ed=(s.edad&&s.edad!=='todos'&&(typeof TRAINING_AGE_GROUPS!=='undefined'&&TRAINING_AGE_GROUPS[s.edad]))?` <span class="chip" style="font-size:9px">${TRAINING_AGE_GROUPS[s.edad].icon} ${TRAINING_AGE_GROUPS[s.edad].label}</span>`:''; return `<div class="habit-item" style="cursor:pointer;border-left:3px solid ${s.color}" data-sug="${escapeHtml(s.name)}" data-cat="${cat}"><b>${escapeHtml(s.name)}</b>${ed} <span class="muted" style="font-size:10px">${escapeHtml(s.place)}</span><br><span class="muted" style="font-size:11px;white-space:pre-wrap">${escapeHtml(s.exercises)}</span><br><span class="chip" style="font-size:10px;margin-top:4px">+ Agregar al calendario</span></div>`; }).join('') + `<p class="muted" style="font-size:10px;margin-top:6px">Toca una tarjeta para cargar nombre/lugar/ejercicios/color y luego elige día/hora y pulsa “Agregar al calendario”. Filtra por edad arriba: 🧒 6-12 · 🙋 13-17 · 🧑 18-59 · 👴 60+.</p>`;
+  const placeChip = placeF==='todos' ? '' : ` · ${placeInfo.icon} ${placeInfo.label}`;
+  if(!list.length){
+    box.innerHTML=`<h4 style="color:var(--gold)">${catInfo.icon} ${catInfo.label}${ageChip}${placeChip} — 0 sugerencias</h4><p class="muted">No hay sugerencias para ${catInfo.label} en ${placeInfo.icon} ${placeInfo.label} con este filtro de edad. Prueba con 📍 Todos o 👥 Todas, o crea tu rutina abajo con ese lugar.</p>`;
+    return;
+  }
+  box.innerHTML=`<h4 style="color:var(--gold)">${catInfo.icon} ${catInfo.label}${ageChip}${placeChip} — ${list.length} sugerencias (toca para cargar)</h4>` + list.map(s=>{ const ed=(s.edad&&s.edad!=='todos'&&(typeof TRAINING_AGE_GROUPS!=='undefined'&&TRAINING_AGE_GROUPS[s.edad]))?` <span class="chip" style="font-size:9px">${TRAINING_AGE_GROUPS[s.edad].icon} ${TRAINING_AGE_GROUPS[s.edad].label}</span>`:''; const pk=gymPlaceKey(s.place); const pl=TRAINING_PLACES[pk]||TRAINING_PLACES.otro; return `<div class="habit-item" style="cursor:pointer;border-left:3px solid ${s.color}" data-sug="${escapeHtml(s.name)}" data-cat="${cat}"><b>${escapeHtml(s.name)}</b>${ed} <span class="chip" style="font-size:9px">${pl.icon} ${escapeHtml(s.place)}</span><br><span class="muted" style="font-size:11px;white-space:pre-wrap">${escapeHtml(s.exercises)}</span><br><span class="chip" style="font-size:10px;margin-top:4px">+ Agregar al calendario</span></div>`; }).join('') + `<p class="muted" style="font-size:10px;margin-top:6px">Toca una tarjeta para cargar nombre/lugar/ejercicios/color y luego elige día/hora y pulsa “Agregar al calendario”. Filtros: tipo + edad + lugar.</p>`;
   box.querySelectorAll('[data-sug]').forEach(el=> el.onclick=()=>{
     const cat2=el.dataset.cat; const s=TRAINING_SUGGESTIONS[cat2].find(x=>x.name===el.dataset.sug); if(!s) return;
     $('gymName').value=s.name; $('gymCategory').value=cat2; $('gymPlace').value=s.place; $('gymExercises').value=s.exercises; $('gymColor').value=s.color;
@@ -6636,7 +7009,8 @@ function renderGymTodayBox(){
   else box.innerHTML='<h4 style="color:var(--gold)">Hoy — '+['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'][today]+'</h4>' + todays.map(it=>{
     const done = d.completions[todayKey] && d.completions[todayKey][it.id];
     const cat=TRAINING_CATS[it.cat]||TRAINING_CATS.gym;
-    return `<div class="mens-hist-item" style="border-left:3px solid ${it.color}"><span><b>${cat.icon} ${escapeHtml(it.name)}</b> <span class="chip" style="font-size:10px">${cat.label}</span> ${it.start}–${it.end} · ${escapeHtml(it.place||'')} ${done?'<span class="chip" style="background:var(--gold);color:#10142c;margin-left:6px">✓ hecho</span>':''}</span><label class="check-row" style="margin:0"><input type="checkbox" data-id="${it.id}" ${done?'checked':''}> Hecho</label></div>`;
+    const pk=gymPlaceKey(it.place); const pl=TRAINING_PLACES[pk]||TRAINING_PLACES.otro;
+    return `<div class="mens-hist-item" style="border-left:3px solid ${it.color}"><span><b>${cat.icon} ${escapeHtml(it.name)}</b> <span class="chip" style="font-size:10px">${cat.label}</span> <span class="chip" style="font-size:10px">${pl.icon} ${escapeHtml(it.place||pl.label)}</span> ${it.start}–${it.end} ${done?'<span class="chip" style="background:var(--gold);color:#10142c;margin-left:6px">✓ hecho</span>':''}</span><label class="check-row" style="margin:0"><input type="checkbox" data-id="${it.id}" ${done?'checked':''}> Hecho</label></div>`;
   }).join('') + '<p class="muted" style="font-size:10px;margin-top:6px">Marca como hecho para racha.</p>';
   box.querySelectorAll('input[type="checkbox"]').forEach(cb=> cb.onchange=()=>{
     const id=cb.dataset.id; const key=cal.fmtKey.format(new Date());
@@ -6644,8 +7018,18 @@ function renderGymTodayBox(){
     if(!gd.completions[key]) gd.completions[key]={};
     if(cb.checked) gd.completions[key][id]=true;
     else { delete gd.completions[key][id]; if(Object.keys(gd.completions[key]).length===0) delete gd.completions[key]; }
-    scheduleSave(); renderGymTodayBox(); renderGymStatsBox(); renderGymWeekGrid(); renderLuna();
+    scheduleSave(); renderGymTodayBox(); renderGymStatsBox(); renderGymPlacesBox(); renderGymWeekGrid(); renderLuna();
   });
+}
+function renderGymPlacesBox(){
+  const box=$('gymPlacesBox'); if(!box) return;
+  const d=getGymData();
+  const counts={}; d.items.forEach(it=>{ const k=gymPlaceKey(it.place); counts[k]=(counts[k]||0)+1; });
+  const order=['casa','gimnasio','playa','bosque','multicancha','plaza','costanera','piscina','otro'];
+  box.innerHTML='<h4 style="color:var(--gold)">📍 Entrenamientos por lugar</h4><div class="timer-tabs" style="margin-bottom:6px">'
+    + order.map(k=>{ const p=TRAINING_PLACES[k]; const c=counts[k]||0; const active=(gymCurrentPlace===k)?' btn-accent':''; return `<button type="button" data-place="${k}" class="btn${active}" style="width:auto;font-size:11px">${p.icon} ${p.label} (${c})</button>`; }).join('')
+    + `</div><p class="muted" style="font-size:10px;margin:0">Filtra sugerencias y “Mis rutinas” por lugar. Tus lugares se detectan solos desde el texto (ej: “Playa Penco” → 🏖️ Playa). ${d.items.length? 'Toca un lugar para ver solo esas rutinas abajo.' : 'Agrega tu primera rutina con lugar: Casa, Gimnasio, Playa, Bosque, Multicancha…'}</p>`;
+  box.querySelectorAll('[data-place]').forEach(b=> b.onclick=()=>{ setGymPlace(b.dataset.place); });
 }
 function renderGymWeekGrid(){
   const box=$('gymWeekGrid'); if(!box) return;
@@ -6657,7 +7041,9 @@ function renderGymWeekGrid(){
     const isToday=new Date().getDay()===idx;
     html+=`<div class="schedule-day ${isToday?'schedule-today':''}"><b>${name}</b>${items.length? items.map(it=>{
       const cat=TRAINING_CATS[it.cat]||TRAINING_CATS.gym;
-      return `<div class="schedule-block" style="background:${it.color};border:1px solid ${it.color}">${cat.icon} ${escapeHtml(it.name)}<br><span style="font-size:10px">${it.start}–${it.end}</span></div>`;
+      const pk=gymPlaceKey(it.place); const pl=TRAINING_PLACES[pk]||TRAINING_PLACES.otro;
+      const dimmed=(gymCurrentPlace!=='todos' && pk!==gymCurrentPlace);
+      return `<div class="schedule-block" style="background:${it.color};border:1px solid ${it.color}${dimmed?';opacity:.35':''}">${cat.icon} ${escapeHtml(it.name)}<br><span style="font-size:10px">${it.start}–${it.end} · ${pl.icon}</span></div>`;
     }).join('') : '<p class="muted" style="font-size:10px">—</p>'}</div>`;
   });
   box.innerHTML=html;
@@ -6666,10 +7052,15 @@ function renderGymList(){
   const box=$('gymList'); if(!box) return;
   const d=getGymData();
   if(!d.items.length){ box.innerHTML='<p class="muted">Sin entrenamientos aún. Toca una sugerencia arriba o crea uno.</p>'; return; }
-  const sorted=[...d.items].sort((a,b)=> parseInt(a.day)-parseInt(b.day) || a.start.localeCompare(b.start));
-  box.innerHTML=sorted.map(it=>{
+  const placeF=gymCurrentPlace||'todos';
+  const filtered=d.items.filter(it=> gymMatchesPlace(it.place, placeF));
+  const title= placeF==='todos' ? 'Mis rutinas' : `${TRAINING_PLACES[placeF].icon} Mis rutinas en ${TRAINING_PLACES[placeF].label}`;
+  if(!filtered.length){ box.innerHTML=`<h4 style="color:var(--gold)">${title} — 0</h4><p class="muted">No tienes rutinas en ${TRAINING_PLACES[placeF].icon} ${TRAINING_PLACES[placeF].label}. Cambia el filtro a 📍 Todos o crea una con ese lugar.</p>`; return; }
+  const sorted=[...filtered].sort((a,b)=> parseInt(a.day)-parseInt(b.day) || a.start.localeCompare(b.start));
+  box.innerHTML=`<h4 style="color:var(--gold)">${title} — ${sorted.length}</h4>`+sorted.map(it=>{
     const cat=TRAINING_CATS[it.cat]||TRAINING_CATS.gym;
-    return `<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center"><span><b style="color:${it.color}">${cat.icon}</b> <span class="chip" style="font-size:10px;background:${cat.color};color:#10142c">${cat.label}</span> <b>${escapeHtml(it.name)}</b> — ${['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'][it.day]} ${it.start}–${it.end} ${it.place? '· '+escapeHtml(it.place):''}<br><span class="muted" style="font-size:11px">${escapeHtml((it.exercises||'').split('\n')[0]||'')}</span></span><span style="display:flex;gap:6px"><button data-id="${it.id}" class="btn gym-edit" style="width:auto;font-size:11px">✏️</button><button data-id="${it.id}" class="btn gym-del" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕</button></span></div>`;
+    const pk=gymPlaceKey(it.place); const pl=TRAINING_PLACES[pk]||TRAINING_PLACES.otro;
+    return `<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center"><span><b style="color:${it.color}">${cat.icon}</b> <span class="chip" style="font-size:10px;background:${cat.color};color:#10142c">${cat.label}</span> <span class="chip" style="font-size:10px">${pl.icon} ${pl.label}</span> <b>${escapeHtml(it.name)}</b> — ${['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'][it.day]} ${it.start}–${it.end} ${it.place? '· '+escapeHtml(it.place):''}<br><span class="muted" style="font-size:11px">${escapeHtml((it.exercises||'').split('\n')[0]||'')}</span></span><span style="display:flex;gap:6px"><button data-id="${it.id}" class="btn gym-edit" style="width:auto;font-size:11px">✏️</button><button data-id="${it.id}" class="btn gym-del" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕</button></span></div>`;
   }).join('');
   box.querySelectorAll('.gym-edit').forEach(b=> b.onclick=()=>{
     const it=d.items.find(x=>x.id===b.dataset.id); if(!it) return;
@@ -6681,7 +7072,7 @@ function renderGymList(){
     if(!confirm('¿Eliminar rutina?')) return;
     const id=b.dataset.id; const dd=getGymData(); dd.items=dd.items.filter(x=>x.id!==id);
     Object.keys(dd.completions).forEach(k=>{ if(dd.completions[k][id]) delete dd.completions[k][id]; if(Object.keys(dd.completions[k]).length===0) delete dd.completions[k]; });
-    scheduleSave(); renderGymList(); renderGymWeekGrid(); renderGymTodayBox(); renderGymStatsBox(); renderLuna();
+    scheduleSave(); renderGymList(); renderGymWeekGrid(); renderGymTodayBox(); renderGymStatsBox(); renderGymPlacesBox(); renderLuna();
   });
 }
 function renderGymStatsBox(){
@@ -6691,41 +7082,53 @@ function renderGymStatsBox(){
   const todayDone = d.completions[todayKey] ? Object.keys(d.completions[todayKey]).length : 0;
   const weekDone = Object.keys(d.completions).filter(k=>{ const ms=mensKeyToMs(k); return Math.abs(ms - Date.now()) < 7*86400000; }).length;
   const byCat={}; d.items.forEach(it=>{ byCat[it.cat]=(byCat[it.cat]||0)+1; });
-  const catTxt=Object.entries(byCat).map(([k,c])=>`${TRAINING_CATS[k].icon} ${c}`).join(' · ') || '0';
-  box.innerHTML='<h4 style="color:var(--accent)">📊 Progreso</h4><div class="habit-stats"><span>Hoy: '+todayDone+' completadas</span><span>Esta semana: '+weekDone+' días</span><span>Total: '+d.items.length+' ('+catTxt+')</span></div>';
+  const catTxt=Object.entries(byCat).map(([k,c])=>`${(TRAINING_CATS[k]||TRAINING_CATS.gym).icon} ${c}`).join(' · ') || '0';
+  const byPlace={}; d.items.forEach(it=>{ const k=gymPlaceKey(it.place); byPlace[k]=(byPlace[k]||0)+1; });
+  const placeTxt=Object.entries(byPlace).map(([k,c])=>`${(TRAINING_PLACES[k]||TRAINING_PLACES.otro).icon} ${c}`).join(' · ') || '0';
+  box.innerHTML='<h4 style="color:var(--accent)">📊 Progreso</h4><div class="habit-stats"><span>Hoy: '+todayDone+' completadas</span><span>Esta semana: '+weekDone+' días</span><span>Total: '+d.items.length+' ('+catTxt+')</span><span>Por lugar: '+placeTxt+'</span></div>';
 }
 function setupGymDialog(){
-  const btn=$('btnGym'); if(btn) btn.onclick=()=>{ renderGymSuggestions(gymCurrentTab, gymCurrentAge); syncGymAgeUI(); renderGymTodayBox(); renderGymWeekGrid(); renderGymList(); renderGymStatsBox(); $('gymDialog').showModal(); };
+  const btn=$('btnGym'); if(btn) btn.onclick=()=>{ renderGymSuggestions(gymCurrentTab, gymCurrentAge, gymCurrentPlace); syncGymAgeUI(); syncGymPlaceUI(); renderGymTodayBox(); renderGymPlacesBox(); renderGymWeekGrid(); renderGymList(); renderGymStatsBox(); $('gymDialog').showModal(); };
   const ct=$('gymCloseTop'), cb=$('gymClose'); if(ct) ct.onclick=()=>$('gymDialog').close(); if(cb) cb.onclick=()=>$('gymDialog').close();
-  // tabs
+  // tabs tipo (se mantiene lo actual)
   const tabs={ gym:$('tabGymGym'), fisio:$('tabGymFisio'), calistenia:$('tabGymCalis'), varias:$('tabGymVarias') };
   Object.entries(tabs).forEach(([cat,el])=>{
     if(!el) return;
-    el.onclick=()=>{ gymCurrentTab=cat; Object.entries(tabs).forEach(([c,e])=> e && e.classList.toggle('btn-accent', c===cat)); renderGymSuggestions(cat, gymCurrentAge); const sel=$('gymCategory'); if(sel) sel.value=cat; };
+    el.onclick=()=>{ gymCurrentTab=cat; Object.entries(tabs).forEach(([c,e])=> e && e.classList.toggle('btn-accent', c===cat)); renderGymSuggestions(cat, gymCurrentAge, gymCurrentPlace); const sel=$('gymCategory'); if(sel) sel.value=cat; };
   });
-  const catSel=$('gymCategory'); if(catSel) catSel.onchange=()=>{ const v=catSel.value; if(TRAINING_CATS[v]){ gymCurrentTab=v; Object.entries(tabs).forEach(([c,e])=> e && e.classList.toggle('btn-accent', c===v)); renderGymSuggestions(v, gymCurrentAge); } };
-  // filtro por edad (chips + select)
+  const catSel=$('gymCategory'); if(catSel) catSel.onchange=()=>{ const v=catSel.value; if(TRAINING_CATS[v]){ gymCurrentTab=v; Object.entries(tabs).forEach(([c,e])=> e && e.classList.toggle('btn-accent', c===v)); renderGymSuggestions(v, gymCurrentAge, gymCurrentPlace); } };
+  // filtro por edad (chips + select) — se mantiene
   const ageBtns={ todos:$('tabGymAgeTodos'), nino:$('tabGymAgeNino'), joven:$('tabGymAgeJoven'), adulto:$('tabGymAgeAdulto'), mayor:$('tabGymAgeMayor') };
   const ageSel=$('gymAge');
   window.syncGymAgeUI=function(){
     Object.entries(ageBtns).forEach(([a,e])=> e && e.classList.toggle('btn-accent', a===gymCurrentAge));
     if(ageSel) ageSel.value=gymCurrentAge;
   };
-  function setAge(a){ if(!TRAINING_AGE_GROUPS[a]) a='todos'; gymCurrentAge=a; syncGymAgeUI(); renderGymSuggestions(gymCurrentTab, gymCurrentAge); }
+  function setAge(a){ if(!TRAINING_AGE_GROUPS[a]) a='todos'; gymCurrentAge=a; syncGymAgeUI(); renderGymSuggestions(gymCurrentTab, gymCurrentAge, gymCurrentPlace); }
   Object.entries(ageBtns).forEach(([a,el])=>{ if(el) el.onclick=()=> setAge(a); });
   if(ageSel) ageSel.onchange=()=> setAge(ageSel.value);
+  // filtro por lugar (nuevo — no rompe lo anterior)
+  const placeBtns={ todos:$('tabGymPlaceTodos'), casa:$('tabGymPlaceCasa'), gimnasio:$('tabGymPlaceGimnasio'), playa:$('tabGymPlacePlaya'), bosque:$('tabGymPlaceBosque'), multicancha:$('tabGymPlaceMulticancha'), plaza:$('tabGymPlacePlaza'), costanera:$('tabGymPlaceCostanera'), piscina:$('tabGymPlacePiscina') };
+  const placeSel=$('gymPlaceFilter');
+  window.syncGymPlaceUI=function(){
+    Object.entries(placeBtns).forEach(([p,e])=> e && e.classList.toggle('btn-accent', p===gymCurrentPlace));
+    if(placeSel) placeSel.value=gymCurrentPlace;
+  };
+  window.setGymPlace=function(p){ if(!TRAINING_PLACES[p]) p='todos'; gymCurrentPlace=p; syncGymPlaceUI(); renderGymSuggestions(gymCurrentTab, gymCurrentAge, gymCurrentPlace); renderGymPlacesBox(); renderGymWeekGrid(); renderGymList(); };
+  Object.entries(placeBtns).forEach(([p,el])=>{ if(el) el.onclick=()=> setGymPlace(p); });
+  if(placeSel) placeSel.onchange=()=> setGymPlace(placeSel.value);
   const add=$('gymAdd'); if(add) add.onclick=()=>{
     const name=$('gymName').value.trim(); if(!name) return alert('Escribe nombre de rutina');
     const it={ id:'gym'+Date.now(), name, cat:$('gymCategory').value||'gym', day:$('gymDay').value, start:$('gymStart').value, end:$('gymEnd').value, color:$('gymColor').value, place:$('gymPlace').value.trim(), exercises:$('gymExercises').value.trim() };
     if(it.start>=it.end) return alert('Hora inicio debe ser antes que fin');
     if(!TRAINING_CATS[it.cat]) it.cat='gym';
-    getGymData().items.push(it); scheduleSave(); $('gymName').value=''; $('gymExercises').value=''; renderGymList(); renderGymWeekGrid(); renderGymTodayBox(); renderGymStatsBox(); renderLuna();
+    getGymData().items.push(it); scheduleSave(); $('gymName').value=''; $('gymExercises').value=''; renderGymList(); renderGymWeekGrid(); renderGymTodayBox(); renderGymStatsBox(); renderGymPlacesBox(); renderLuna();
   };
   const upd=$('gymUpdate'); if(upd) upd.onclick=()=>{
     const it=getGymData().items.find(x=>x.id===gymEditingId); if(!it) return;
     it.name=$('gymName').value.trim(); it.cat=$('gymCategory').value||it.cat; it.day=$('gymDay').value; it.start=$('gymStart').value; it.end=$('gymEnd').value; it.color=$('gymColor').value; it.place=$('gymPlace').value.trim(); it.exercises=$('gymExercises').value.trim();
     if(!TRAINING_CATS[it.cat]) it.cat='gym';
-    scheduleSave(); gymEditingId=null; $('gymAdd').classList.remove('hidden'); upd.classList.add('hidden'); $('gymCancel').classList.add('hidden'); $('gymName').value=''; $('gymExercises').value=''; renderGymList(); renderGymWeekGrid(); renderGymTodayBox(); renderGymStatsBox(); renderLuna();
+    scheduleSave(); gymEditingId=null; $('gymAdd').classList.remove('hidden'); upd.classList.add('hidden'); $('gymCancel').classList.add('hidden'); $('gymName').value=''; $('gymExercises').value=''; renderGymList(); renderGymWeekGrid(); renderGymTodayBox(); renderGymStatsBox(); renderGymPlacesBox(); renderLuna();
   };
   const cancel=$('gymCancel'); if(cancel) cancel.onclick=()=>{ gymEditingId=null; $('gymAdd').classList.remove('hidden'); $('gymUpdate').classList.add('hidden'); cancel.classList.add('hidden'); $('gymName').value=''; $('gymExercises').value=''; };
 }
@@ -8687,9 +9090,18 @@ function setupLawenDialog(){
 }
 setTimeout(setupLawenDialog, 888);
 
-// === COMPOST & SUELO — PILA + LUNA ===
+// === COMPOST & SUELO — PILA + SUELO + RECETAS + PROBLEMAS + LUNA ===
 let compostTab='pila';
-function getCompostData(){ try{ const u=userData(); if(!u.compost) u.compost={type:'pila',start:'',turns:[],note:''}; if(!Array.isArray(u.compost.turns)) u.compost.turns=[]; return u.compost; }catch{ return {type:'pila',start:'',turns:[],note:''}; } }
+const COMPOST_META={pila:90,vermi:90,bocashi:14};
+const COMPOST_NOMBRES={pila:'🪱 Pila caliente',vermi:'🪱 Vermicompostera',bocashi:'♻️ Bocashi'};
+function getCompostData(){ try{ const u=userData(); if(!u.compost) u.compost={type:'pila',start:'',turns:[],note:''}; if(!Array.isArray(u.compost.turns)) u.compost.turns=[]; if(!u.compost.type) u.compost.type='pila'; return u.compost; }catch{ return {type:'pila',start:'',turns:[],note:''}; } }
+function compostDias(c){
+  try{
+    if(!c.start) return 0;
+    const a=new Date(c.start+'T12:00:00'); if(isNaN(a)) return 0;
+    return Math.max(0, Math.floor((Date.now()-a.getTime())/86400000));
+  }catch{ return 0; }
+}
 function compostNextMenguantes(){
   try{
     const out=[];
@@ -8702,57 +9114,135 @@ function compostNextMenguantes(){
     return out.filter(o=> o.key>=today).slice(0,4);
   }catch{ return []; }
 }
+function compostEtapa(c, dias){
+  const meta=COMPOST_META[c.type]||90;
+  if(!c.start) return 'Pon fecha de inicio para estimar madurez.';
+  if(dias>=meta) return '✅ Listo probable: color oscuro, olor a tierra de bosque, no se reconoce nada. Haz prueba de puño + siembra de prueba (lechuga 5 días).';
+  if(c.type==='bocashi'){
+    if(dias<3) return '🔥 Días 1-3: fermentando, debe oler a chicha/levadura y estar tibio. Voltea 2× día.';
+    return '⏳ Días 4-14: enfriando. Cuando está seco, gris y sin calor → listo. Guarda en saco a la sombra.';
+  }
+  if(dias<14) return '🔥 Fase caliente: debe estar tibio-caliente al meter la mano. Voltea en cada menguante, mantén húmedo como esponja estrujada.';
+  if(dias<meta*0.66) return '⏳ Fase enfriamiento: baja el calor, aparecen hongos blancos y lombrices. Agrega más seco si está pegajoso.';
+  return '🌱 Fase maduración: casi tierra. No agregues restos frescos; deja reposar 2-3 semanas antes de usar.';
+}
 function renderCompostStatus(){
   const b=$('compostStatusBox'); if(!b) return;
   const c=getCompostData();
   const n=c.turns.length;
   const last=c.turns.slice().sort().pop()||'—';
-  const tipo=c.type==='vermi'?'🪱 Vermicompostera':c.type==='bocashi'?'♻️ Bocashi':'🪱 Pila caliente';
-  b.innerHTML=`<b>${tipo}</b> · inicio ${escapeHtml(c.start||'—')} · volteos <b>${n}</b> · último ${escapeHtml(last)} <span class="muted" style="font-size:11px">— voltea en menguante, se guarda local</span>`;
+  const tipo=COMPOST_NOMBRES[c.type]||COMPOST_NOMBRES.pila;
+  const dias=compostDias(c);
+  const meta=COMPOST_META[c.type]||90;
+  const pct=c.start?Math.min(100,Math.round(dias/meta*100)):0;
+  const ms=compostNextMenguantes();
+  const prox=ms.length?ms[0].key:'—';
+  b.innerHTML=`<div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:center"><b>${tipo}</b><span class="muted" style="font-size:11px">inicio ${escapeHtml(c.start||'—')} · día ${dias}/${meta} · volteos <b>${n}</b> · último ${escapeHtml(last)}</span></div>
+  <div style="height:8px;border-radius:99px;background:#ffffff18;margin-top:8px;overflow:hidden"><div style="height:100%;width:${pct}%;border-radius:99px;background:linear-gradient(90deg,#c9a86a,#a9d18e)"></div></div>
+  <div class="muted" style="font-size:11px;margin-top:6px">${pct}% madurez estimada · próximo menguante para voltear: <b>${escapeHtml(prox)}</b> — se guarda local</div>`;
+}
+function compostDiagnostico(olor, hum, temp){
+  if(olor==='podrido'||hum==='chorrea') return '<b>💧 Exceso de verde / agua (anaerobio).</b> Agrega 3 puñados de seco (hojas, cartón picado, paja), voltea entero y tapa con nylon con un palo para que respire. No riegues 3-4 días. En Pukem pon la pila bajo techo o con lona.';
+  if(olor==='amoniaco') return '<b>🟡 Mucho nitrógeno (pasto/guano fresco).</b> Agrega seco + un puñado de tierra de hoja o compost viejo para inocular. Voltea. No agregues más guano hasta que baje el olor.';
+  if(hum==='seco'||temp==='frio-seco') return '<b>🏜️ Falta agua y/o verde.</b> Riega en forma de lluvia hasta “esponja estrujada”, agrega restos de cocina y tapa. Si no calienta en 3 días, reinicia con 1 balde de guano fresco + agua con chancaca.';
+  if(olor==='vinagre') return '<b>🍎 Fermentación ácida (mucha fruta junta).</b> Agrega ceniza de leña (1 taza/m², no más), cartón picado y voltea. No pongas más fruta por 1 semana.';
+  if(temp==='caliente') return '<b>🔥 Vas bien: fase caliente.</b> Mantén humedad, voltea en menguante y no agregues carne/lácteos. Cuando baje el calor solo, pasa a maduración.';
+  return '<b>🌱 Equilibrio bueno.</b> Sigue 3 secos × 1 verde, volteo en menguante y tapa en lluvia. Cosecha cuando huela a tierra y no reconozcas nada.';
 }
 function renderCompostPanel(tab){
   compostTab=tab||compostTab;
-  const ids={pila:'tabCP1',suelo:'tabCP2',luna:'tabCP3'};
+  const ids={pila:'tabCP1',suelo:'tabCP2',recetas:'tabCP4',problemas:'tabCP5',luna:'tabCP3'};
   Object.entries(ids).forEach(([k,id])=>{ const el=$(id); if(el) el.classList.toggle('btn-accent', k===compostTab); });
   renderCompostStatus();
   const box=$('compostPanel'); if(!box) return;
   let html='';
   if(compostTab==='pila'){
     const c=getCompostData();
+    const dias=compostDias(c);
+    const meta=COMPOST_META[c.type]||90;
+    const pct=c.start?Math.min(100,Math.round(dias/meta*100)):0;
     html+=`<div class="menstrual-card" style="border-color:var(--gold)"><h4 style="color:var(--gold)">🪱 Mi pila — registro</h4>
-      <div class="conv-row"><label>Tipo <select id="cpType"><option value="pila" ${c.type==='pila'?'selected':''}>Pila caliente</option><option value="vermi" ${c.type==='vermi'?'selected':''}>Vermicompostera</option><option value="bocashi" ${c.type==='bocashi'?'selected':''}>Bocashi</option></select></label>
+      <div class="conv-row"><label>Tipo <select id="cpType"><option value="pila" ${c.type==='pila'?'selected':''}>Pila caliente (patio)</option><option value="vermi" ${c.type==='vermi'?'selected':''}>Vermicompostera (depto/balcón)</option><option value="bocashi" ${c.type==='bocashi'?'selected':''}>Bocashi (fermentado 14 días)</option></select></label>
       <label>Inicio <input type="date" id="cpStart" value="${escapeHtml(c.start||'')}"></label>
       <button type="button" id="cpToday" class="btn" style="width:auto;align-self:flex-end">◉ Hoy volteé</button></div>
       <label>Nota <input type="text" id="cpNote" placeholder="olor, humedad, temperatura, qué agregué" maxlength="80" value="${escapeHtml(c.note||'')}"></label>
-      <div id="cpTurns" class="habits-list" style="margin-top:8px;max-height:160px">`+
-      (c.turns.slice().sort().reverse().map(t=>`<div class="hora-item"><span>🪱 ${escapeHtml(t)}</span><button type="button" class="btn btn-icon cp-del" data-t="${escapeHtml(t)}">✕</button></div>`).join('')||'<p class="muted" style="font-size:11px">Sin volteos aún. Marca “Hoy volteé”.</p>')+`</div></div>
+      <p class="muted" style="font-size:11px;margin:8px 0 0">Día ${dias}/${meta} (${pct}%) · ${escapeHtml(compostEtapa(c,dias))}</p>
+      <div id="cpTurns" class="habits-list" style="margin-top:8px;max-height:150px">`+
+      (c.turns.slice().sort().reverse().map(t=>`<div class="hora-item"><span>🪱 ${escapeHtml(t)}</span><button type="button" class="btn btn-icon cp-del" data-t="${escapeHtml(t)}">✕</button></div>`).join('')||'<p class="muted" style="font-size:11px">Sin volteos aún. Marca “Hoy volteé” o marca un menguante en 📅 Luna.</p>')+`</div></div>
+      <div class="menstrual-card" style="margin-top:10px;border-color:#a9d18e"><h4 style="color:#a9d18e">🔍 Diagnóstico rápido — ¿cómo está hoy?</h4>
+      <div class="conv-row"><label>Olor <select id="cpOlor"><option value="tierra">Tierra / bosque</option><option value="podrido">Podrido / huevo</option><option value="amoniaco">Amoníaco / pipí fuerte</option><option value="vinagre">Vinagre / chicha ácida</option><option value="nada">Sin olor</option></select></label>
+      <label>Humedad (puño) <select id="cpHum"><option value="esponja">Esponja estrujada ✓</option><option value="chorrea">Chorrea agua</option><option value="seco">Seco / polvo</option></select></label>
+      <label>Temperatura <select id="cpTemp"><option value="caliente">Tibio-caliente</option><option value="tibio">Tibio leve</option><option value="frio-seco">Frío + seco</option><option value="frio-mojado">Frío + mojado</option></select></label></div>
+      <button type="button" id="cpDiagBtn" class="btn" style="width:auto;margin-top:8px">Diagnosticar</button>
+      <div id="cpDiagOut" class="muted" style="font-size:12px;line-height:1.5;margin-top:8px">Elige las 3 y presiona Diagnosticar.</div></div>
       <div class="help-grid" style="margin-top:10px">
-        <div class="help-card"><h4>🟤 Receta base Penco</h4><p style="font-size:11px">3 secos (hojas, cartón, paja) x 1 verde (restos cocina, pasto). Puño húmedo, no chorreo. Tapa con nylon en Pukem.</p></div>
-        <div class="help-card"><h4>🚫 No va</h4><p style="font-size:11px">Carne, lácteos, aceite, fecas perro/gato, ceniza con carbón pintado, maleza con semilla.</p></div>
+        <div class="help-card"><h4>🟤 Receta base 3×1 Penco</h4><p style="font-size:11px;line-height:1.5"><b>3 secos (carbono):</b> hojas secas, cartón picado sin tinta, paja, viruta, hojas de boldo/peumo.<br><b>1 verde (nitrógeno):</b> restos cocina, pasto fresco, guano, café/yerma mate.<br>Capas de 5-10 cm, puño húmedo. Tapa con nylon en Pukem, con rama para que respire.</p></div>
+        <div class="help-card"><h4>🚫 No va nunca</h4><p style="font-size:11px;line-height:1.5">Carne, pescado, lácteos, aceite, fecas perro/gato, pañales, ceniza con carbón pintado o parafina, maleza con semilla (chufa, vinagrillo), tierra con herbicida.</p></div>
+        <div class="help-card"><h4>✅ Sí va (poco)</h4><p style="font-size:11px;line-height:1.5">Cáscara huevo molida, ceniza de leña pura (1 taza/m² max), pelo, cartón huevo, podas trituradas, algas enjuagadas de Lirquén, ortiga (activa).</p></div>
+        <div class="help-card"><h4>📏 Tamaño ideal</h4><p style="font-size:11px;line-height:1.5">Mínimo 1 m³ (1×1×1 m) para que caliente. Menos que eso = vermi o bocashi mejor. Palet + malla + lona arriba funciona perfecto en patio Penco.</p></div>
       </div>`;
   } else if(compostTab==='suelo'){
     html+=`<div class="help-grid">
-      <div class="help-card"><h4>🧪 Suelo Penco arcilloso</h4><p style="font-size:11px;line-height:1.5">Prueba puño: bola que no se desarma = arcilla. Mejora con <b>compost 3-5 cm + mulch hojas</b>, nunca arena sola (hace ladrillo). pH típico 5,5-6,5: cal agrícola solo si mediste ácido.</p></div>
-      <div class="help-card"><h4>🪱 Vermi vs Pila vs Bocashi</h4><p style="font-size:11px;line-height:1.5"><b>Vermi:</b> ideal depto, lombriz roja, cosecha 3 meses.<br><b>Pila:</b> patio, volteo menguante, 2-3 meses.<br><b>Bocashi:</b> fermentado 14 días, ver 🌱→🧪 receta.</p></div>
-      <div class="help-card"><h4>💧 Riego arcilla</h4><p style="font-size:11px">Riego profundo y espaciado, no diario superficial. Mulch 5 cm guarda humedad Walüng.</p></div>
-      <div class="help-card"><h4>🌱 Conexión Siembra</h4><p style="font-size:11px">Aplica compost maduro (olor tierra, no se reconoce) 7 días antes de siembra. Ver 🌱 Siembra lunar.</p></div>
-    </div>`;
+      <div class="help-card"><h4>🗺️ Tu suelo según sector Penco</h4><p style="font-size:11px;line-height:1.5"><b>Penco Alto / greda roja:</b> arcilla pesada, se aprieta en Pukem y se parte en Walüng → bancal alto + yeso + mulch grueso.<br><b>Centro / relleno:</b> franco con escombro → saca piedras, 5 cm compost, mulch.<br><b>Lirquén–Playa Negra / costa:</b> arena que no retiene → mucho compost + mulch + riego corto frecuente.<br><b>Vega / humedal:</b> negro que se encharca → camas altas 30 cm + zanja drenaje, nunca pises mojado.</p></div>
+      <div class="help-card"><h4>✊ Test 1 · Puño (textura)</h4><p style="font-size:11px;line-height:1.5">Moja un puñado y aprieta:<br>• Se desarma = <b>arenoso</b> → compost + mulch.<br>• Bola que se marca pero se quiebra = <b>franco ideal</b>.<br>• Bola plástica / cinta &gt;3 cm = <b>arcilla</b> → nunca arena sola (hace ladrillo): compost 3-5 cm + yeso agrícola 200 g/m².</p></div>
+      <div class="help-card"><h4>🫙 Test 2 · Frasco (% real)</h4><p style="font-size:11px;line-height:1.5">1 taza tierra + agua + 1 cdta sal en frasco, agita y deja 24 h. Arena abajo, limo medio, arcilla arriba. Ideal huerta: ~40% arena / 40% limo / 20% arcilla. Si &gt;50% arcilla → plan arcilla Penco.</p></div>
+      <div class="help-card"><h4>🕳️ Test 3 · Infiltración (drenaje)</h4><p style="font-size:11px;line-height:1.5">Hoyo 30×30 cm, llena de agua 2 veces. 2ª vez: mide cuánto baja en 1 h.<br>• &lt;2 cm/h = <b>encharca</b> → cama alta + drenaje.<br>• 2-8 cm/h = <b>ideal</b>.<br>• &gt;15 cm/h = <b>arena</b> → mulch 8 cm + compost + riego corto.</p></div>
+      <div class="help-card"><h4>🧪 Test 4 · pH casero</h4><p style="font-size:11px;line-height:1.5"><b>Vinagre:</b> efervesce = alcalino (&gt;7,5). <b>Bicarbonato + agua:</b> efervesce = ácido (&lt;5,5). Penco típico 5,5-6,5 (levemente ácido, bien para casi todo). Solo encalan si mediste &lt;5,5: cal agrícola 200-300 g/m² en otoño, nunca junto a guano fresco.</p></div>
+      <div class="help-card"><h4>🛠️ Plan arcilla Penco (otoño→primavera)</h4><p style="font-size:11px;line-height:1.5">1) No pises mojado. 2) Levanta bancal 20-30 cm. 3) 3-5 cm compost maduro + yeso 200 g/m² (no cambia pH, abre). 4) Mulch hojas/paja 5-8 cm. 5) Siembra abono verde avena+vicia en Rimü y córtalo antes de semillar. Repite cada año: la arcilla se doma en 2-3 ciclos.</p></div>
+      <div class="help-card"><h4>🍂 Mulch correcto</h4><p style="font-size:11px;line-height:1.5">5-8 cm hojas secas/paja. Guarda humedad de Walüng, evita barro y sopa de babosas en Pukem. Deja 3 cm libres alrededor del tallo. Renueva cuando se vea la tierra.</p></div>
+      <div class="help-card"><h4>🌱 Abono verde (el mejor secreto)</h4><p style="font-size:11px;line-height:1.5">Siembra en Rimü (mar-may): avena + vicia o mostaza. Corta en flor (ago), deja 2 semanas sobre el suelo y planta encima. Raíces rompen arcilla gratis + fijan nitrógeno. Dosis: 30 g/m².</p></div>
+    </div>
+    <div class="menstrual-card" style="margin-top:10px"><h4>⚗️ Enmiendas: dosis sin pasarse</h4><p class="muted" style="font-size:11px;line-height:1.6"><b>Compost maduro:</b> 3-5 cm/año (≈30 L/m²) 7 días antes de siembra. <b>Humus vermi:</b> 1-2 L/m² o 100 g/planta. <b>Ceniza leña pura:</b> máx 100 g/m²/año, nunca sobre plantín. <b>Yeso agrícola:</b> 200 g/m² para arcilla. <b>Cal:</b> solo con pH medido &lt;5,5. <b>Bocashi:</b> 500 g/m² 7 días antes (nunca fresco). Exceso quema más que la falta.</p></div>`;
+  } else if(compostTab==='recetas'){
+    html+=`<div class="help-grid">
+      <div class="help-card"><h4>🪱 Vermicompostera (depto)</h4><p style="font-size:11px;line-height:1.5"><b>Caja:</b> 2 cajas apiladas con hoyos + bandeja jugo (lixiviado). <b>Lombriz:</b> roja californiana, 200-500 inicio. <b>Comida:</b> restos picados 300 g/semana, siempre tapados con seco. <b>Cosecha:</b> 3 meses, luz encima y migran solas. <b>Lixiviado:</b> 1:10 riego. Luna: instalar en nueva. Ojo: sin sol directo, sin cítricos/cebolla en exceso.</p></div>
+      <div class="help-card"><h4>♻️ Bocashi 14 días (fermentado)</h4><p style="font-size:11px;line-height:1.5"><b>Mezcla seca:</b> 10 kg guano seco + 10 kg tierra + 5 kg afrechillo + 1 kg carbón molido. <b>Agua:</b> 5 L tibia + 10 g levadura + 200 g chancaca. Humedad “puño” (gotea 1 gota). Pila 50 cm, voltea 2× día hasta que enfríe. <b>Uso:</b> 500 g/m² 7 días antes de siembra. Nunca fresco (quema).</p></div>
+      <div class="help-card"><h4>🫖 Té de compost (biofertilizante)</h4><p style="font-size:11px;line-height:1.5">1 kg compost maduro en bolsa de tela + 10 L agua + 20 g azúcar. Airea 24-36 h (o revuelve 3× día). Filtra y usa en 24 h. <b>Riego:</b> puro o 1:3. <b>Foliar:</b> 1:10 cada 14 días en creciente. Activa microvida en arcilla Penco. Sin olor feo = bien hecho.</p></div>
+      <div class="help-card"><h4>🍂 Tierra de hojas otoñal (Rimü)</h4><p style="font-size:11px;line-height:1.5">Junta hojas de peumo/boldo/maqui (no eucalipto/pino solo). Malla o saco con hoyos, moja y guarda a la sombra. Voltea 1× mes. En 6-9 meses tienes tierra esponjosa para almácigos. Mezcla ideal almácigo: 2 tierra hoja + 1 compost + 1 arena gruesa.</p></div>
+      <div class="help-card"><h4>🌿 Purín de ortiga / diente de león</h4><p style="font-size:11px;line-height:1.5">1 kg planta fresca + 10 L agua, tapa con respiración, revuelve diario 7-14 días (espuma = listo). Filtra. <b>Riego:</b> 1:10. <b>Foliar:</b> 1:20. Huele fuerte = normal. Aporta nitrógeno + hierro. No en floración avanzada ni a 1 semana de cosecha.</p></div>
+      <div class="help-card"><h4>⬛ Carbón + ceniza (bien usados)</h4><p style="font-size:11px;line-height:1.5"><b>Biochar casero:</b> carbón leña molido + “cargado” 1 semana en té compost antes de enterrar (si no, roba nutrientes). 200 g/m². <b>Ceniza:</b> solo leña pura, 100 g/m² max, nunca con semilla recién puesta ni sobre lombrices. Guarda seca: mojada pierde potasio.</p></div>
+    </div>
+    <div class="menstrual-card" style="margin-top:10px;border-color:var(--gold)"><h4 style="color:var(--gold)">📅 ¿Cuándo aplicar? regla 7 días</h4><p class="muted" style="font-size:11px;line-height:1.5">Compost/bocashi/humus siempre <b>7 días antes de sembrar/trasplantar</b>, no el mismo día. Té foliar en <b>creciente</b> al atardecer. Cal/yeso en <b>otoño (Rimü)</b>. Abono verde se corta <b>2 semanas antes</b> de plantar. Así la microvida se instala y no “quema” raíces.</p></div>`;
+  } else if(compostTab==='problemas'){
+    html+=`<div class="help-grid">
+      <div class="help-card"><h4>🤢 Huele a podrido / huevo</h4><p style="font-size:11px;line-height:1.5"><b>Causa:</b> sin aire + mucha agua/verde. <b>Arreglo:</b> voltea entero, mete 3 puñados seco, haz chimenea con palo. Tapa con lona que respire. En 2 días debe bajar.</p></div>
+      <div class="help-card"><h4>🪰 Nube de mosquitas</h4><p style="font-size:11px;line-height:1.5"><b>Causa:</b> resto fresco expuesto. <b>Arreglo:</b> entierra 10 cm, tapa siempre con seco/cartón, pon malla. Trampa: vinagre + gota lavalozas al lado. Menguante hay menos.</p></div>
+      <div class="help-card"><h4>🏜️ No calienta / seco</h4><p style="font-size:11px;line-height:1.5"><b>Causa:</b> puro seco o pila chica. <b>Arreglo:</b> riega lluvia + 1 balde verde/guano + agua con chancaca. Junta mínimo 1 m³. Tapa negro al sol en Pewü.</p></div>
+      <div class="help-card"><h4>🌊 Barro / chorrea (Pukem)</h4><p style="font-size:11px;line-height:1.5"><b>Causa:</b> lluvia directa + poco techo. <b>Arreglo:</b> lona con caída, zanja alrededor, agrega cartón/paja seca. Pon pallet abajo para que drene. No voltees con lluvia torrencial.</p></div>
+      <div class="help-card"><h4>🐜 Hormigas en la pila/vermi</h4><p style="font-size:11px;line-height:1.5"><b>Causa:</b> muy seco + dulce. <b>Arreglo:</b> moja bien, entierra fruta, banda de ceniza afuera (no adentro). En vermi: revisa drenaje y baja cítricos.</p></div>
+      <div class="help-card"><h4>🧱 Suelo ladrillo imposible</h4><p style="font-size:11px;line-height:1.5"><b>Causa:</b> arcilla + pisoteo + arena sola. <b>Arreglo:</b> no piques seco (rompes estructura). Moja profundo, espera 2 días, incorpora compost + yeso 200 g/m² + mulch 8 cm. Bancal alto desde ahora.</p></div>
+      <div class="help-card"><h4>🐌 Babosas tras el mulch</h4><p style="font-size:11px;line-height:1.5"><b>Causa:</b> mulch pegado al tallo + riego noche. <b>Arreglo:</b> 3 cm libres al tallo, riega mañana, trampa cerveza + anillo ceniza seca. Patos/gallinas 1 h al atardecer = control total.</p></div>
+      <div class="help-card"><h4>🌱 “Quemé” plantas con abono</h4><p style="font-size:11px;line-height:1.5"><b>Causa:</b> bocashi/guano fresco directo. <b>Arreglo:</b> riega abundante 3 días, sombrea, poda hojas quemadas. Regla: fresco nunca toca raíz; espera 7 días siempre.</p></div>
+    </div>
+    <div class="menstrual-card" style="margin-top:10px"><h4>❄️ Invierno Pukem: no abandones la pila</h4><p class="muted" style="font-size:11px;line-height:1.5">La lluvia enfría y lava nutrientes. Tapa con lona, reduce verdes acuosos (sandía, tomate), suma hojas secas guardadas en Rimü. Voltea solo en pausa de lluvia y en menguante. La vermi entra bajo techo (garaJe/balcón tapado): lombriz muere bajo 5°C.</p></div>`;
   } else if(compostTab==='luna'){
     const ms=compostNextMenguantes();
     html+=`<div class="menstrual-card" style="border-color:#a9d18e"><h4 style="color:#a9d18e">📅 Voltea en menguante — próximos</h4>`+
     (ms.length? `<div style="display:flex;flex-direction:column;gap:6px;margin-top:8px">`+ms.map(o=>`<div class="hora-item"><span>🌓 ${escapeHtml(o.key)} · ${escapeHtml((o.e.tipo||'menguante').replace(/-/g,' '))} ${o.e.simbolo||''}</span><button type="button" class="btn cp-go" data-k="${escapeHtml(o.key)}" style="width:auto;font-size:11px">Marcar volteo</button></div>`).join('')+`</div>`
     : '<p class="muted" style="font-size:11px">Cambia de luna en el calendario para cargar fases.</p>')+
-    `<p class="muted" style="font-size:11px;margin-top:6px">Menguante = energía a raíces + menos moscas. Airea, ajusta humedad y agrega seco.</p></div>`;
+    `<p class="muted" style="font-size:11px;margin-top:6px">Menguante = energía a raíces + menos moscas. Airea, ajusta humedad y agrega seco.</p></div>
+    <div class="help-grid" style="margin-top:10px">
+      <div class="help-card"><h4>🌑 Nueva — planifica</h4><p style="font-size:11px">Descansa la pila. Instala vermi nueva, arma cajón, junta secos, anota qué sembrarás. Sin volteo.</p></div>
+      <div class="help-card"><h4>🌒 Creciente — alimenta hoja</h4><p style="font-size:11px">Té de compost foliar 1:10 + riego. Siembra hoja y trasplanta sobre compost de hace 7 días.</p></div>
+      <div class="help-card"><h4>🌕 Llena — observa</h4><p style="font-size:11px">No voltees fuerte. Cosecha compost maduro si está listo, pesa y anota. Revisa humedad con puño.</p></div>
+      <div class="help-card"><h4>🌖 Menguante — voltea y abona</h4><p style="font-size:11px">Volteo completo + seco + ajuste agua. Aplica bocashi/compost a raíz (zanahoria, ajo, betarraga). Controla moscas y repara lona Pukem.</p></div>
+    </div>`;
   }
   box.innerHTML=html;
   if(compostTab==='pila'){
     const c=getCompostData();
     const t=$('cpType'), s=$('cpStart'), n=$('cpNote');
-    if(t) t.onchange=()=>{ c.type=t.value; scheduleSave(); renderCompostStatus(); };
-    if(s) s.onchange=()=>{ c.start=s.value; scheduleSave(); renderCompostStatus(); };
+    if(t) t.onchange=()=>{ c.type=t.value; scheduleSave(); renderCompostStatus(); renderCompostPanel('pila'); };
+    if(s) s.onchange=()=>{ c.start=s.value; scheduleSave(); renderCompostStatus(); renderCompostPanel('pila'); };
     if(n) n.oninput=()=>{ c.note=n.value.slice(0,80); scheduleSave(); };
     const b=$('cpToday'); if(b) b.onclick=()=>{ const k=cal.fmtKey.format(new Date()); if(!c.turns.includes(k)) c.turns.push(k); scheduleSave('Guardado ✓'); renderCompostPanel('pila'); };
     box.querySelectorAll('.cp-del').forEach(x=> x.onclick=()=>{ const cc=getCompostData(); cc.turns=cc.turns.filter(t=>t!==x.dataset.t); scheduleSave(); renderCompostPanel('pila'); });
+    const db=$('cpDiagBtn'); if(db) db.onclick=()=>{
+      const o=$('cpOlor')?$('cpOlor').value:'tierra';
+      const h=$('cpHum')?$('cpHum').value:'esponja';
+      const tp=$('cpTemp')?$('cpTemp').value:'tibio';
+      const out=$('cpDiagOut'); if(out) out.innerHTML=compostDiagnostico(o,h,tp);
+    };
   }
   if(compostTab==='luna'){
     box.querySelectorAll('.cp-go').forEach(b=> b.onclick=()=>{ const c=getCompostData(); if(!c.turns.includes(b.dataset.k)) c.turns.push(b.dataset.k); scheduleSave('Guardado ✓'); renderCompostPanel('luna'); });
@@ -8761,9 +9251,10 @@ function renderCompostPanel(tab){
 function setupCompostDialog(){
   const btn=$('btnCompost'); if(btn) btn.onclick=()=>{ renderCompostPanel('pila'); $('compostDialog').showModal(); };
   const ct=$('compostCloseTop'), cb=$('compostClose'); if(ct) ct.onclick=()=>$('compostDialog').close(); if(cb) cb.onclick=()=>$('compostDialog').close();
-  ['tabCP1','tabCP2','tabCP3'].forEach(id=>{ const el=$(id); if(!el) return; el.onclick=()=>{ const map={tabCP1:'pila',tabCP2:'suelo',tabCP3:'luna'}; renderCompostPanel(map[id]); }; });
+  ['tabCP1','tabCP2','tabCP3','tabCP4','tabCP5'].forEach(id=>{ const el=$(id); if(!el) return; el.onclick=()=>{ const map={tabCP1:'pila',tabCP2:'suelo',tabCP3:'luna',tabCP4:'recetas',tabCP5:'problemas'}; renderCompostPanel(map[id]); }; });
 }
 setTimeout(setupCompostDialog, 889);
+
 
 // === RECICLAJE & FERIAS ===
 const RECICLA_ITEMS = [
@@ -9904,36 +10395,224 @@ function chronoFmt(ms) {
 }
 function chronoTick() { const now = Date.now(); const el = $('chronoDisplay'); if (el) el.textContent = chronoFmt(chronoElapsed + (chronoRunning ? now - chronoStartAt : 0)); }
 function setupTimerDialog() {
-  const tabC = $('tabChrono'), tabT = $('tabCount'), pC = $('chronoPanel'), pT = $('countPanel');
-  if (!tabC) return;
-  tabC.onclick = () => { tabC.classList.add('btn-accent'); tabT.classList.remove('btn-accent'); pC.classList.remove('hidden'); pT.classList.add('hidden'); };
-  tabT.onclick = () => { tabT.classList.add('btn-accent'); tabC.classList.remove('btn-accent'); pT.classList.remove('hidden'); pC.classList.add('hidden'); };
-  $('chronoStart').onclick = () => {
+  const tabs = [['tabClock','clockPanel'],['tabWorld','worldPanel'],['tabChrono','chronoPanel'],['tabCount','countPanel'],['tabGuide','guidePanel']];
+  if (!$('tabClock') && !$('tabChrono')) return;
+  function showTab(id) {
+    tabs.forEach(([t,p]) => {
+      const b = $(t), pn = $(p);
+      if (!b || !pn) return;
+      const on = (t === id);
+      b.classList.toggle('btn-accent', on);
+      pn.classList.toggle('hidden', !on);
+    });
+  }
+  tabs.forEach(([t]) => { const b = $(t); if (b) b.onclick = () => showTab(t); });
+  if ($('chronoStart')) $('chronoStart').onclick = () => {
     if (!chronoRunning) { chronoRunning = true; chronoStartAt = Date.now(); chronoInt = setInterval(chronoTick, 80); $('chronoStart').textContent = '⏸ Pausa'; }
     else { chronoRunning = false; chronoElapsed += Date.now() - chronoStartAt; clearInterval(chronoInt); $('chronoStart').textContent = '▶ Reanudar'; }
   };
-  $('chronoLap').onclick = () => {
+  if ($('chronoLap')) $('chronoLap').onclick = () => {
     const ms = chronoElapsed + (chronoRunning ? Date.now() - chronoStartAt : 0);
     const div = document.createElement('div'); div.className = 'chrono-lap'; div.textContent = `Vuelta ${$('chronoLaps').children.length+1} — ${chronoFmt(ms)}`;
     $('chronoLaps').prepend(div);
   };
-  $('chronoReset').onclick = () => { clearInterval(chronoInt); chronoRunning=false; chronoElapsed=0; chronoStartAt=0; chronoTick(); $('chronoStart').textContent='▶ Iniciar'; $('chronoLaps').innerHTML=''; };
+  if ($('chronoReset')) $('chronoReset').onclick = () => { clearInterval(chronoInt); chronoRunning=false; chronoElapsed=0; chronoStartAt=0; chronoTick(); $('chronoStart').textContent='▶ Iniciar'; $('chronoLaps').innerHTML=''; };
   // countdown
   let countInt=null, countRem=0, countRunning=false;
   function countFmt(s) { const h=Math.floor(s/3600), m=Math.floor(s%3600/60), sec=s%60; return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`; }
   function countShow() { const el=$('countDisplay'); if(el) el.textContent = countFmt(countRem); }
-  function countTick() { if(countRem<=0){ clearInterval(countInt); countRunning=false; $('countStart').textContent='▶ Iniciar'; countShow(); try{ playNotifySound(); }catch{}; try{ new Notification('⏱ Temporizador', {body:'¡Tiempo cumplido!', silent:false});}catch{}; return; } countRem--; countShow(); }
-  $('countStart').onclick = () => {
+  function countTick() { if(countRem<=0){ clearInterval(countInt); countRunning=false; const cs=$('countStart'); if(cs) cs.textContent='▶ Iniciar'; countShow(); try{ playNotifySound(); }catch{}; try{ if(navigator && navigator.vibrate) navigator.vibrate(300); }catch{}; try{ new Notification('⏱ Temporizador', {body:'¡Tiempo cumplido!', silent:false});}catch{}; return; } countRem--; countShow(); }
+  if ($('countStart')) $('countStart').onclick = () => {
     if (!countRunning) {
       if (countRem<=0) { const h=+$('countH').value||0, m=+$('countM').value||0, s=+$('countS').value||0; countRem = h*3600+m*60+s; if(countRem<=0) return; }
-      countRunning=true; $('countStart').textContent='⏸ Pausa'; countInt=setInterval(countTick,1000); countShow();
+      countRunning=true; $('countStart').textContent='⏸ Pausa'; clearInterval(countInt); countInt=setInterval(countTick,1000); countShow();
       try{ if(Notification&&Notification.requestPermission) Notification.requestPermission(); }catch{}
     } else { clearInterval(countInt); countRunning=false; $('countStart').textContent='▶ Reanudar'; }
   };
-  $('countPause').onclick = () => { clearInterval(countInt); countRunning=false; $('countStart').textContent='▶ Reanudar'; };
-  $('countReset').onclick = () => { clearInterval(countInt); countRunning=false; countRem=0; $('countStart').textContent='▶ Iniciar'; countShow(); };
-  ['countH','countM','countS'].forEach(id=>{ const el=$(id); if(el) el.oninput=()=>{ if(!countRunning){ const h=+$('countH').value||0, m=+$('countM').value||0, s=+$('countS').value||0; countRem=h*3600+m*60+s; countShow(); } }; });
-  countShow(); chronoTick();
+  if ($('countPause')) $('countPause').onclick = () => { clearInterval(countInt); countRunning=false; const cs=$('countStart'); if(cs) cs.textContent='▶ Reanudar'; };
+  if ($('countReset')) $('countReset').onclick = () => { clearInterval(countInt); countRunning=false; countRem=0; const cs=$('countStart'); if(cs) cs.textContent='▶ Iniciar'; countShow(); };
+  ['countH','countM','countS'].forEach(id=>{ const el=$(id); if(el && !el.dataset.bound) { el.dataset.bound='1'; el.oninput=()=>{ if(!countRunning){ const h=+$('countH').value||0, m=+$('countM').value||0, s=+$('countS').value||0; countRem=h*3600+m*60+s; countShow(); } }; } });
+  document.querySelectorAll('[data-count-preset]').forEach(b => {
+    if (b.dataset.bound) return; b.dataset.bound = '1';
+    b.onclick = (e) => {
+      e.preventDefault();
+      const mins = parseInt(b.dataset.countPreset, 10) || 0;
+      const h = Math.floor(mins / 60), m = mins % 60;
+      if ($('countH')) $('countH').value = h;
+      if ($('countM')) $('countM').value = m;
+      if ($('countS')) $('countS').value = 0;
+      clearInterval(countInt); countRunning = false;
+      countRem = mins * 60; countShow();
+      const cs = $('countStart'); if (cs) cs.textContent = '▶ Iniciar';
+      showTab('tabCount');
+    };
+  });
+  // === RELOJ LOCAL ===
+  function paintLocalClock() {
+    const now = new Date();
+    const d = $('localClockDisplay');
+    if (d) d.textContent = now.toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+    const df = $('localClockDate');
+    if (df) { try { let s = new Intl.DateTimeFormat('es-CL', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).format(now); df.textContent = s.charAt(0).toUpperCase() + s.slice(1); } catch {} }
+    const z = $('localClockZone');
+    if (z) { try { z.textContent = Intl.DateTimeFormat().resolvedOptions().timeZone + ' · ' + now.toLocaleTimeString('es-CL', { timeZoneName: 'short' }).split(' ').pop(); } catch { z.textContent = ''; } }
+    const utc = $('localUtcChip');
+    if (utc) { const off = -now.getTimezoneOffset() / 60; utc.textContent = 'UTC' + (off >= 0 ? '+' + off : off); }
+    const ux = $('localUnixChip');
+    if (ux) ux.textContent = '⏱ ' + Math.floor(now.getTime() / 1000) + ' s Unix';
+  }
+  // === HORA MUNDIAL ===
+  const WORLD_ZONES = [
+    { id: 'santiago', tz: 'America/Santiago', label: 'Santiago · Chile', flag: '🇨🇱' },
+    { id: 'easter', tz: 'Pacific/Easter', label: 'Rapa Nui · Chile', flag: '🗿' },
+    { id: 'ba', tz: 'America/Argentina/Buenos_Aires', label: 'Buenos Aires · Argentina', flag: '🇦🇷' },
+    { id: 'lima', tz: 'America/Lima', label: 'Lima · Perú', flag: '🇵🇪' },
+    { id: 'bogota', tz: 'America/Bogota', label: 'Bogotá · Colombia', flag: '🇨🇴' },
+    { id: 'cdmx', tz: 'America/Mexico_City', label: 'Ciudad de México · México', flag: '🇲🇽' },
+    { id: 'ny', tz: 'America/New_York', label: 'Nueva York · EE.UU.', flag: '🇺🇸' },
+    { id: 'la', tz: 'America/Los_Angeles', label: 'Los Ángeles · EE.UU.', flag: '🌴' },
+    { id: 'sf', tz: 'America/Los_Angeles', label: 'San Francisco · EE.UU.', flag: '🌉' },
+    { id: 'honolulu', tz: 'Pacific/Honolulu', label: 'Honolulu · EE.UU.', flag: '🌺' },
+    { id: 'azores', tz: 'Atlantic/Azores', label: 'Azores · Portugal', flag: '🇵🇹' },
+    { id: 'madrid', tz: 'Europe/Madrid', label: 'Madrid · España', flag: '🇪🇸' },
+    { id: 'london', tz: 'Europe/London', label: 'Londres · Reino Unido', flag: '🇬🇧' },
+    { id: 'berlin', tz: 'Europe/Berlin', label: 'Berlín · Alemania', flag: '🇩🇪' },
+    { id: 'joburg', tz: 'Africa/Johannesburg', label: 'Johannesburgo · Sudáfrica', flag: '🇿🇦' },
+    { id: 'dubai', tz: 'Asia/Dubai', label: 'Dubái · EAU', flag: '🇦🇪' },
+    { id: 'delhi', tz: 'Asia/Kolkata', label: 'Nueva Delhi · India', flag: '🇮🇳' },
+    { id: 'beijing', tz: 'Asia/Shanghai', label: 'Pekín · China', flag: '🇨🇳' },
+    { id: 'tokyo', tz: 'Asia/Tokyo', label: 'Tokio · Japón', flag: '🇯🇵' },
+    { id: 'sydney', tz: 'Australia/Sydney', label: 'Sídney · Australia', flag: '🇦🇺' },
+    { id: 'auckland', tz: 'Pacific/Auckland', label: 'Auckland · N. Zelanda', flag: '🇳🇿' }
+  ];
+  const LS_KEY = 't13_worldClocks_v1';
+  function tzOffsetMin(date, tz) {
+    try {
+      const dtf = new Intl.DateTimeFormat('en-US', { timeZone: tz, hour12: false, year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      const p = Object.fromEntries(dtf.formatToParts(date).map(x => [x.type, x.value]));
+      const asUTC = Date.UTC(+p.year, +p.month - 1, +p.day, (+p.hour) % 24, +p.minute, +p.second);
+      return Math.round((asUTC - date.getTime()) / 60000);
+    } catch { return 0; }
+  }
+  function fmtInZone(date, tz, opts) { try { return new Intl.DateTimeFormat('es-CL', Object.assign({ timeZone: tz }, opts)).format(date); } catch { return '—'; } }
+  function zoneById(key) { return WORLD_ZONES.find(z => z.id === key) || null; }
+  function resolveTZ(key) { const z = zoneById(key); if (z) return z.tz; const byTz = WORLD_ZONES.find(z => z.tz === key); if (byTz) return byTz.tz; return key; }
+  function zoneMeta(key) {
+    const z = zoneById(key);
+    if (z) return z;
+    const byTz = WORLD_ZONES.find(x => x.tz === key);
+    if (byTz) return byTz;
+    return { id: key, tz: key, label: String(key).replace(/_/g, ' '), flag: '🌍' };
+  }
+  function normWorldKey(k) {
+    if (typeof k !== 'string') return null;
+    if (zoneById(k)) return k;
+    const byTz = WORLD_ZONES.find(z => z.tz === k);
+    if (byTz) return byTz.id;
+    return k;
+  }
+  function getWorldList() {
+    try {
+      const raw = localStorage.getItem(LS_KEY);
+      if (raw) {
+        const arr = JSON.parse(raw);
+        if (Array.isArray(arr) && arr.length) {
+          const norm = arr.map(normWorldKey).filter(Boolean);
+          if (norm.length) return [...new Set(norm)];
+        }
+      }
+    } catch {}
+    return ['santiago', 'easter', 'ba', 'cdmx', 'bogota', 'madrid', 'ny', 'tokyo'];
+  }
+  function setWorldList(arr) { try { localStorage.setItem(LS_KEY, JSON.stringify(arr)); } catch {} }
+  function paintWorld() {
+    const box = $('worldList'); if (!box) return;
+    const now = new Date();
+    const localOff = -now.getTimezoneOffset();
+    const list = getWorldList();
+    box.innerHTML = '';
+    list.forEach(key => {
+      const meta = zoneMeta(key);
+      const tz = meta.tz || key;
+      const time = fmtInZone(now, tz, { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+      const fecha = fmtInZone(now, tz, { weekday: 'short', day: '2-digit', month: '2-digit' });
+      const off = tzOffsetMin(now, tz);
+      const diffH = (off - localOff) / 60;
+      const diffTxt = diffH === 0 ? 'misma hora' : ((diffH > 0 ? '+' : '') + (Number.isInteger(diffH) ? diffH : diffH.toFixed(1)) + ' h');
+      let hour = 12; try { hour = +fmtInZone(now, tz, { hour: 'numeric', hour12: false }); } catch {}
+      const icon = (hour >= 7 && hour < 19) ? '☀️' : '🌙';
+      const card = document.createElement('div'); card.className = 'world-card';
+      const top = document.createElement('div'); top.className = 'wc-top';
+      const nm = document.createElement('div'); nm.className = 'wc-name'; nm.textContent = meta.flag + ' ' + meta.label;
+      const del = document.createElement('button'); del.type = 'button'; del.className = 'wc-del'; del.title = 'Quitar'; del.textContent = '✕';
+      del.onclick = (e) => { e.preventDefault(); setWorldList(getWorldList().filter(x => x !== key)); paintWorld(); };
+      top.appendChild(nm); top.appendChild(del);
+      const tm = document.createElement('div'); tm.className = 'wc-time'; tm.textContent = icon + ' ' + time;
+      const sb = document.createElement('div'); sb.className = 'wc-sub'; sb.textContent = fecha + ' · ' + diffTxt + ' vs tu hora';
+      card.appendChild(top); card.appendChild(tm); card.appendChild(sb);
+      box.appendChild(card);
+    });
+  }
+  function fillZoneSelects() {
+    const sel = $('worldAddSelect'), cf = $('convFrom'), ct = $('convTo');
+    const localTZ = (() => { try { return Intl.DateTimeFormat().resolvedOptions().timeZone; } catch { return 'America/Santiago'; } })();
+    [sel, cf, ct].forEach(s => {
+      if (!s || s.dataset.filled) return; s.dataset.filled = '1'; s.innerHTML = '';
+      WORLD_ZONES.forEach(z => {
+        const o = document.createElement('option'); o.value = z.id; o.textContent = z.flag + ' ' + z.label;
+        s.appendChild(o);
+      });
+      if (!WORLD_ZONES.some(z => z.tz === localTZ)) { const o = document.createElement('option'); o.value = localTZ; o.textContent = '📍 ' + localTZ; s.appendChild(o); }
+    });
+    if (cf && !cf.dataset.def) { cf.dataset.def = '1'; const loc = WORLD_ZONES.find(z => z.tz === localTZ); cf.value = loc ? loc.id : localTZ; }
+    if (ct && !ct.dataset.def) { ct.dataset.def = '1'; ct.value = 'madrid'; }
+  }
+  if ($('worldAddBtn') && !$('worldAddBtn').dataset.bound) {
+    $('worldAddBtn').dataset.bound = '1';
+    $('worldAddBtn').onclick = (e) => {
+      e.preventDefault();
+      const v = $('worldAddSelect') ? $('worldAddSelect').value : null;
+      if (!v) return;
+      const cur = getWorldList();
+      if (!cur.includes(v)) { cur.push(v); setWorldList(cur); }
+      paintWorld();
+    };
+  }
+  if ($('worldResetBtn') && !$('worldResetBtn').dataset.bound) {
+    $('worldResetBtn').dataset.bound = '1';
+    $('worldResetBtn').onclick = (e) => { e.preventDefault(); try { localStorage.removeItem(LS_KEY); } catch {} paintWorld(); };
+  }
+  function wallToUTC(y, mo, d, H, Mi, tz) {
+    let guess = Date.UTC(y, mo, d, H, Mi);
+    for (let i = 0; i < 2; i++) { const off = tzOffsetMin(new Date(guess), tz); guess = Date.UTC(y, mo, d, H, Mi) - off * 60000; }
+    return guess;
+  }
+  function doConvert() {
+    const box = $('convResult'); if (!box) return;
+    const tv = $('convTime') ? $('convTime').value : '';
+    const from = $('convFrom') ? $('convFrom').value : '';
+    const to = $('convTo') ? $('convTo').value : '';
+    if (!tv || !from || !to) { box.textContent = 'Elige hora y zonas para convertir.'; return; }
+    const [H, Mi] = tv.split(':').map(Number);
+    const now = new Date();
+    const fromTZ = resolveTZ(from), toTZ = resolveTZ(to);
+    const utc = wallToUTC(now.getFullYear(), now.getMonth(), now.getDate(), H, Mi, fromTZ);
+    const offTo = tzOffsetMin(new Date(utc), toTZ);
+    const tgt = new Date(utc + offTo * 60000);
+    const hh = String(tgt.getUTCHours()).padStart(2, '0'), mm = String(tgt.getUTCMinutes()).padStart(2, '0');
+    const dayDiff = Math.round((Date.UTC(tgt.getUTCFullYear(), tgt.getUTCMonth(), tgt.getUTCDate()) - Date.UTC(now.getFullYear(), now.getMonth(), now.getDate())) / 86400000);
+    const dd = dayDiff === 0 ? 'mismo día' : (dayDiff > 0 ? '+' + dayDiff + ' día' : dayDiff + ' día');
+    const mf = zoneMeta(from), mt = zoneMeta(to);
+    box.innerHTML = `<b>${String(H).padStart(2, '0')}:${String(Mi).padStart(2, '0')}</b> en ${mf.flag} ${mf.label} = <b>${hh}:${mm}</b> en ${mt.flag} ${mt.label} <span class="muted">(${dd})</span>`;
+  }
+  if ($('convCalcBtn') && !$('convCalcBtn').dataset.bound) { $('convCalcBtn').dataset.bound = '1'; $('convCalcBtn').onclick = (e) => { e.preventDefault(); doConvert(); }; }
+  if (window._t13clockInt) { try { clearInterval(window._t13clockInt); } catch {} }
+  fillZoneSelects(); paintLocalClock(); paintWorld();
+  window._t13clockInt = setInterval(() => {
+    const dlg = $('timerDialog');
+    if (dlg && dlg.open) { paintLocalClock(); paintWorld(); }
+  }, 1000);
+  countShow(); chronoTick(); showTab('tabClock');
 }
 if ($('btnTimer')) {
   $('btnTimer').onclick = () => { setupTimerDialog(); $('timerDialog').showModal(); };

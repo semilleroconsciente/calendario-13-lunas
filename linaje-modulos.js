@@ -401,7 +401,7 @@ var RECAP_TEC = ['respiración de barrido', 'escritura libre', 'carta no enviada
 function getRecapInv() { var a = store('recapInventario', []); return Array.isArray(a) ? a : []; }
 function getRecapSes() { var a = store('recapSesiones', []); return Array.isArray(a) ? a : []; }
 var recapEditId = null;
-function switchRecapTab(t) { switchTab('rec', t, ['Guia', 'Inv', 'Ses', 'Ava']); }
+function switchRecapTab(t) { switchTab('rec', t, ['Guia', 'Inv', 'Ses', 'Ava', 'Vida']); }
 function recapRacha() {
   var set = {};
   getRecapSes().forEach(function (r) { set[r.fecha] = true; });
@@ -463,13 +463,70 @@ function renderRecapAva() {
     '<p class="muted" style="font-size:11px;margin-top:6px">🧘 ' + ses.length + ' sesiones · ⏱ ' + mins + ' min · 🔥 racha ' + recapRacha() + ' días</p>' +
     '<p class="muted" style="font-size:11px">Ritmo sugerido: 1 evento por sesión, 2–3 sesiones por luna. Lo liberado se celebra; lo pendiente se respeta.</p>';
 }
-function renderRecapAll() { try { renderRecapInv(); } catch (e) {} try { renderRecapSes(); } catch (e) {} try { renderRecapAva(); } catch (e) {} }
+function renderRecapAll() { try { renderRecapInv(); } catch (e) {} try { renderRecapSes(); } catch (e) {} try { renderRecapAva(); } catch (e) {} try { renderRecapVida(); } catch (e) {} }
+
+/* ---------- LINEA DE VIDA: mi historia por etapas ---------- */
+var RECAP_VIDA_ETAPAS = ['infancia (0-11)', 'adolescencia (12-19)', 'juventud (20-35)', 'adultez (36-59)', 'vejez sabia (60+)', 'otra época'];
+function getRecapVida() { var a = store('recapLineaVida', []); return Array.isArray(a) ? a : []; }
+var recapVidaEditId = null;
+function renderRecapVida() {
+  var box = $('recVidaList'); if (!box) return;
+  var q = (($('recVidaQ') || {}).value || '').toLowerCase();
+  var f = ($('recVidaF') || {}).value || 'todas';
+  var d = getRecapVida().slice();
+  d.sort(function (a, b) {
+    var fa = a.fecha || '', fb = b.fecha || '';
+    if (fa && fb) return fa.localeCompare(fb);
+    if (fa && !fb) return -1;
+    if (!fa && fb) return 1;
+    return 0;
+  });
+  var fil = d.filter(function (r) {
+    if (f !== 'todas' && r.etapa !== f) return false;
+    if (q && ((r.titulo || '') + ' ' + (r.historia || '') + ' ' + (r.aprendizaje || '')).toLowerCase().indexOf(q) < 0) return false;
+    return true;
+  });
+  if (!fil.length) {
+    box.innerHTML = '<p class="muted">Tu línea de vida está en blanco. Agrega arriba tu primer recuerdo: de dónde vienes, qué te marcó, qué te hizo fuerte.</p>';
+  } else {
+    box.innerHTML = '<div style="position:relative;padding-left:22px">' +
+      '<div style="position:absolute;left:7px;top:6px;bottom:6px;width:2px;background:linear-gradient(#7ab8ff,#e8c56a,#8fd694);border-radius:2px"></div>' +
+      fil.map(function (r) {
+        var luna = r.fecha ? lunaTxt(r.fecha) : '';
+        return '<div style="position:relative;margin:0 0 10px 0">' +
+          '<div style="position:absolute;left:-19px;top:14px;width:10px;height:10px;border-radius:50%;background:var(--gold,#e8c56a);box-shadow:0 0 0 3px rgba(232,197,106,.2)"></div>' +
+          '<div class="habit-item" style="margin:0"><div style="display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap"><span><b>' + esc(r.titulo || 'Sin título') + '</b></span><span class="chip" style="font-size:10px">' + esc(r.etapa || '') + '</span></div>' +
+          '<div class="muted" style="font-size:11px;margin-top:4px">' + (r.fecha ? '📅 ' + esc(r.fecha) + (luna ? ' · ' + esc(luna) : '') + ' · ' : '') + (r.edad ? '⏳ ' + esc(r.edad) : '') + '</div>' +
+          (r.historia ? '<p style="font-size:12px;white-space:pre-wrap;margin:6px 0 0 0">' + esc(r.historia) + '</p>' : '') +
+          (r.aprendizaje ? '<p style="font-size:12px;margin:6px 0 0 0">🌱 <i>' + esc(r.aprendizaje) + '</i></p>' : '') +
+          '<div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap"><button class="btn" style="width:auto;font-size:11px" data-edit="' + r.id + '">✏️ Editar</button><button class="btn" style="width:auto;font-size:11px" data-inv="' + r.id + '" title="Llevar al inventario para trabajarlo">🔁 Al inventario</button><button class="btn" style="width:auto;font-size:11px" data-share="' + r.id + '">📤</button><button class="btn" style="width:auto;font-size:11px;color:#e76e8a" data-del="' + r.id + '">✕</button></div></div></div>';
+      }).join('') + '</div>';
+  }
+  var st = $('recVidaStats');
+  if (st) {
+    var etapas = {};
+    d.forEach(function (r) { if (r.etapa) etapas[r.etapa] = (etapas[r.etapa] || 0) + 1; });
+    st.textContent = d.length ? (d.length + ' momentos en tu línea de vida · ' + Object.keys(etapas).length + ' etapas tocadas') : '0 momentos';
+  }
+  box.querySelectorAll('[data-del]').forEach(function (b) { b.onclick = function () { if (!confirm('¿Borrar este momento de tu línea de vida?')) return; var dd = getRecapVida(); var i = dd.findIndex(function (x) { return x.id === b.getAttribute('data-del'); }); if (i >= 0) dd.splice(i, 1); save(); renderRecapVida(); }; });
+  box.querySelectorAll('[data-share]').forEach(function (b) { b.onclick = function () { var dd = getRecapVida(); var r = dd.find(function (x) { return x.id === b.getAttribute('data-share'); }); if (r) share('🌿 Mi historia: ' + (r.titulo || ''), (r.fecha ? r.fecha + ' · ' : '') + (r.etapa || '') + '\n' + (r.historia || '') + (r.aprendizaje ? '\n🌱 ' + r.aprendizaje : '')); }; });
+  box.querySelectorAll('[data-edit]').forEach(function (b) { b.onclick = function () { var dd = getRecapVida(); var r = dd.find(function (x) { return x.id === b.getAttribute('data-edit'); }); if (!r) return; recapVidaEditId = r.id;
+    if ($('recVidaTitulo')) $('recVidaTitulo').value = r.titulo || ''; if ($('recVidaFecha')) $('recVidaFecha').value = r.fecha || ''; if ($('recVidaEdad')) $('recVidaEdad').value = r.edad || ''; if ($('recVidaEtapa')) $('recVidaEtapa').value = r.etapa || RECAP_VIDA_ETAPAS[0]; if ($('recVidaHistoria')) $('recVidaHistoria').value = r.historia || ''; if ($('recVidaAprend')) $('recVidaAprend').value = r.aprendizaje || '';
+    if ($('recVidaAdd')) $('recVidaAdd').textContent = '↻ Actualizar'; if ($('recVidaCancel')) $('recVidaCancel').classList.remove('hidden');
+    try { $('recVidaTitulo').scrollIntoView({ behavior: 'smooth', block: 'nearest' }); } catch (e) {}
+  }; });
+  box.querySelectorAll('[data-inv]').forEach(function (b) { b.onclick = function () { var dd = getRecapVida(); var r = dd.find(function (x) { return x.id === b.getAttribute('data-inv'); }); if (!r) return;
+    getRecapInv().push({ id: uid('ri'), titulo: r.titulo || 'momento de mi historia', persona: '', edad: r.edad || r.fecha || '', emo: RECAP_EMO[0], inten: 5, estado: 'pendiente', nota: (r.historia || '').slice(0, 120) });
+    save('Llevado al inventario 🔁'); try { renderRecapInv(); renderRecapAva(); } catch (e) {} switchRecapTab('Inv'); try { renderRecapInv(); } catch (e2) {}
+  }; });
+}
 
 function setupRecap() {
   makeDialog('recapDialog', '🔁 Recapitulación — repasar para liberar',
     'Práctica tolteca y psicológica de <b>repasar tu vida para recuperar energía</b>: nombras, respiras, comprendes y sueltas. Un evento a la vez. Todo queda <b>privado y local</b>.',
     '<div class="timer-tabs" style="flex-wrap:wrap;margin-bottom:10px">' +
     '<button type="button" id="tabRecGuia" class="btn btn-accent" style="width:auto">📖 Guía</button>' +
+    '<button type="button" id="tabRecVida" class="btn" style="width:auto">🌿 Línea de vida</button>' +
     '<button type="button" id="tabRecInv" class="btn" style="width:auto">📋 Inventario</button>' +
     '<button type="button" id="tabRecSes" class="btn" style="width:auto">🧘 Sesiones</button>' +
     '<button type="button" id="tabRecAva" class="btn" style="width:auto">📊 Mi avance</button></div>' +
@@ -480,7 +537,20 @@ function setupRecap() {
       '<div class="si-card"><h4>🌬️ La respiración de barrido (corazón de la práctica)</h4><p>Inhala girando suavemente la cabeza a la <b>derecha</b> recogiendo la escena; exhala girando a la <b>izquierda</b> soltándola. 10–20 ciclos por recuerdo, sin forzar. Si te mareas, vuelve a respiración normal. Cierra con 3 respiraciones al centro agradeciendo el aprendizaje.</p></div>' +
       '<div class="si-card"><h4>📝 Sesión tipo (10–20 min)</h4><p><b>1)</b> Nombra: ¿qué pasó, con quién, a qué edad?<br><b>2)</b> Siente: ¿dónde lo siento en el cuerpo? ¿del 0 al 10?<br><b>3)</b> Barre con la respiración 10–20 ciclos.<br><b>4)</b> Comprende: ¿qué necesitaba yo entonces? ¿qué necesita hoy?<br><b>5)</b> Repara o perdona (a veces basta una frase; otras pide un acto real).<br><b>6)</b> Anota 1 insight y marca intensidad final.<br><b>7)</b> Cierra: agua, caminar, anotar. No encadenes 3 eventos fuertes seguidos.</p></div>' +
       '<div class="si-card"><h4>⚠️ Cuidados</h4><p>Una sesión = un evento. Si la intensidad sube a 9–10 y no baja, cierra con respiración normal y retoma otro día o con apoyo. No uses alcohol/drogas para “recordar mejor”. Lo liberado se marca 🔓; lo que vuelve se trabaja de nuevo sin culpa: las capas se sueltan por lunas.</p></div>' +
-      '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="recGoInv" class="btn btn-accent" style="width:auto">📋 Hacer mi inventario →</button></div>' +
+      '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="recGoInv" class="btn btn-accent" style="width:auto">📋 Hacer mi inventario →</button> <button type="button" id="recGoVida" class="btn" style="width:auto">🌿 Ir a mi línea de vida →</button></div>' +
+    '</div>' +
+    '<div id="recVida" class="hidden">' +
+      '<div class="si-card"><h4>🌿 Tu línea de vida</h4><p>Aquí vas <b>agregando tu historia por orden</b>: infancia, adolescencia, juventud, adultez... Cada momento es un punto en tu línea. Después, si alguno pesa, lo llevas con 🔁 al inventario para trabajarlo. Todo queda <b>privado en este dispositivo</b>.</p></div>' +
+      '<div class="menstrual-card" style="border-color:var(--gold)"><h4>➕ Agregar momento de mi historia</h4>' +
+      '<label>Momento / título * <input type="text" id="recVidaTitulo" placeholder="ej: cuando nací, mi primer colegio, el viaje a..." maxlength="60"></label>' +
+      '<div class="conv-row"><label>Fecha (si la recuerdas) <input type="date" id="recVidaFecha"></label><label>Edad / época <input type="text" id="recVidaEdad" placeholder="ej: 8 años, 1998" maxlength="20"></label></div>' +
+      '<label>Etapa <select id="recVidaEtapa">' + RECAP_VIDA_ETAPAS.map(function (e) { return '<option>' + e + '</option>'; }).join('') + '</select></label>' +
+      '<label>Mi historia <textarea id="recVidaHistoria" rows="3" placeholder="cuéntala como la recuerdas: dónde estabas, quiénes estaban, qué pasó..." maxlength="1200"></textarea></label>' +
+      '<label>🌱 ¿Qué aprendí / qué me dejó? <input type="text" id="recVidaAprend" placeholder="ej: aprendí a ser fuerte, a pedir ayuda..." maxlength="140"></label>' +
+      '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="recVidaAdd" class="btn btn-accent" style="width:auto">+ Guardar en mi línea</button><button type="button" id="recVidaCancel" class="btn hidden" style="width:auto">Cancelar</button></div></div>' +
+      '<div class="conv-row" style="margin-top:10px"><label style="flex:2">🔍 Buscar <input type="text" id="recVidaQ" placeholder="título, palabra..." autocomplete="off"></label><label>Etapa <select id="recVidaF"><option value="todas">Todas</option>' + RECAP_VIDA_ETAPAS.map(function (e) { return '<option>' + e + '</option>'; }).join('') + '</select></label></div>' +
+      '<div id="recVidaList" style="margin-top:8px;max-height:340px;overflow-y:auto"></div>' +
+      '<div class="dlg-actions" style="justify-content:space-between;margin-top:8px"><span id="recVidaStats" class="muted" style="font-size:11px"></span><button type="button" id="recVidaShare" class="btn" style="width:auto">📤 Compartir mi historia</button></div>' +
     '</div>' +
     '<div id="recInv" class="hidden">' +
       '<div class="menstrual-card" style="border-color:var(--gold)"><h4>➕ Evento al inventario</h4>' +
@@ -507,10 +577,25 @@ function setupRecap() {
   var b = $('btnRecap');
   if (b) b.onclick = function () { if ($('recSesFecha') && !$('recSesFecha').value) $('recSesFecha').value = todayKey(); switchRecapTab('Guia'); renderRecapAll(); openDlg('recapDialog'); };
   if ($('tabRecGuia')) $('tabRecGuia').onclick = function () { switchRecapTab('Guia'); };
+  if ($('tabRecVida')) $('tabRecVida').onclick = function () { switchRecapTab('Vida'); renderRecapVida(); };
   if ($('tabRecInv')) $('tabRecInv').onclick = function () { switchRecapTab('Inv'); renderRecapInv(); };
   if ($('tabRecSes')) $('tabRecSes').onclick = function () { switchRecapTab('Ses'); renderRecapSes(); };
   if ($('tabRecAva')) $('tabRecAva').onclick = function () { switchRecapTab('Ava'); renderRecapAva(); };
   if ($('recGoInv')) $('recGoInv').onclick = function () { switchRecapTab('Inv'); renderRecapInv(); };
+  if ($('recGoVida')) $('recGoVida').onclick = function () { switchRecapTab('Vida'); renderRecapVida(); };
+  if ($('recVidaQ')) $('recVidaQ').oninput = function () { renderRecapVida(); };
+  if ($('recVidaF')) $('recVidaF').onchange = function () { renderRecapVida(); };
+  if ($('recVidaAdd')) $('recVidaAdd').onclick = function () {
+    var t = clean($('recVidaTitulo').value, 60); if (!t) return alert('Ponle un título a este momento');
+    var h = clean($('recVidaHistoria').value, 1200); if (!h) return alert('Cuenta tu historia en unas líneas');
+    var rec = { id: recapVidaEditId || uid('rv'), titulo: t, fecha: ($('recVidaFecha') || {}).value || '', edad: clean($('recVidaEdad').value, 20), etapa: ($('recVidaEtapa') || {}).value || RECAP_VIDA_ETAPAS[0], historia: h, aprendizaje: clean($('recVidaAprend').value, 140) };
+    var dd = getRecapVida();
+    if (recapVidaEditId) { var i = dd.findIndex(function (x) { return x.id === recapVidaEditId; }); if (i >= 0) dd[i] = rec; recapVidaEditId = null; $('recVidaAdd').textContent = '+ Guardar en mi línea'; $('recVidaCancel').classList.add('hidden'); }
+    else dd.push(rec);
+    save('Momento guardado 🌿'); $('recVidaTitulo').value = ''; $('recVidaHistoria').value = ''; $('recVidaAprend').value = ''; renderRecapVida();
+  };
+  if ($('recVidaCancel')) $('recVidaCancel').onclick = function () { recapVidaEditId = null; $('recVidaAdd').textContent = '+ Guardar en mi línea'; $('recVidaCancel').classList.add('hidden'); if ($('recVidaTitulo')) $('recVidaTitulo').value = ''; if ($('recVidaHistoria')) $('recVidaHistoria').value = ''; };
+  if ($('recVidaShare')) $('recVidaShare').onclick = function () { var dd = getRecapVida(); if (!dd.length) return alert('Línea de vida vacía'); share('🌿 Mi línea de vida (' + dd.length + ' momentos)', dd.map(function (r) { return '· ' + (r.fecha ? r.fecha + ' · ' : '') + r.titulo + ' (' + (r.etapa || '') + ')' + (r.aprendizaje ? ' 🌱 ' + r.aprendizaje : ''); }).join('\n')); };
   if ($('recInvQ')) $('recInvQ').oninput = function () { renderRecapInv(); };
   if ($('recInvF')) $('recInvF').onchange = function () { renderRecapInv(); };
   if ($('recInvAdd')) $('recInvAdd').onclick = function () {
