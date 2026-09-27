@@ -109,6 +109,8 @@
           <button id="btnEkadashi" class="btn" data-sub="cielo" data-keywords="ekadashi ayuno lunar tithi">📿 Ekadashi</button>
           <span class="sub-label" data-sub="penco">🎉 Penco</span>
           <button id="btnComuna" class="btn" data-sub="penco" data-keywords="penco comuna fiesta evento aniversario talleres actividades curso taller inscripcion calendario guia historia sectores lirquen cosmito cerro verde primer agua casa cultura dideco cesfam biblioteca deporte futbol yoga cueca guitarra huerta manualidades digital mapuzugun cocina oficio">🎉 Penco</button>
+          <button id="btnMuni" class="btn" data-sub="penco" data-keywords="municipalidad muni alcalde concejo dideco transito licencia permiso circulacion patente oirs tramite cesfam cecosf hospital farmacia veterinario emergencia 4157 samu bomberos carabineros secplan dom obras finanzas control juridica juzgado policia local omil rsh registro social tolva aseo fondeve beca historia municipal villa ciudad comuna autonoma">🏛️ Municipalidad</button>
+          <button id="btnBomberos" class="btn" data-sub="penco" data-keywords="bomberos 132 incendio fuego emergencia primera segunda tercera cuarta compañia cuartel lirquen cosmito voluntario brigada detector extintor deshollinar plan escape forestal grifo historia 1927">🚒 Bomberos</button>
         </div>
       </details>
       <details class="action-group" open data-group="cuerpo">
@@ -172,6 +174,7 @@
           <button id="btnFirstAid" class="btn" data-sub="emergencia" data-keywords="primeros auxilios emergencia salud rcp hemorragia quemadura fractura atragantamiento heimlich botiquin samu bomberos carabineros">🩹 Primeros Auxilios</button>
           <button id="btnViolence" class="btn" data-sub="emergencia" data-keywords="violencia domestica intrafamiliar vif violencia genero mujer pareja fisica psicologica sexual economica vicaria digital denuncia 149 1455 sernameg carabineros">🟣 Violencia Doméstica</button>
           <button id="btnEvac" class="btn" data-sub="emergencia" data-keywords="evacuacion tsunami sismo terremoto cerro mochila plan familiar senapred shoa armada cota inundacion punto encuentro">🌊🚨 Evacuación Tsunami</button>
+          <button id="btnApoyo" class="btn" data-sub="emergencia" data-keywords="apoyo damnificado emergencia incendio fibe catastro albergue beneficio reconstruccion subsidio costo cero dideco oirs contencion duelo mochila plan ayuda social senapred chileatiende">🆘 Apoyo Emergencia</button>
           <span class="sub-label" data-sub="app">⚙️ App</span>
           <button id="btnBackup" class="btn" data-sub="app" data-keywords="respaldo backup guardar exportar">💾 Respaldo</button>
           <button id="btnRestore" class="btn" data-sub="app" data-keywords="restaurar importar backup json">📥 Restaurar</button>
@@ -3388,6 +3391,8 @@
             <label class="check-row"><input type="checkbox" data-btn="btnCircadian"> 🌞 Ritmo Circadiano</label>
             <label class="check-row"><input type="checkbox" data-btn="btnEkadashi"> 📿 Ekadashi</label>
             <label class="check-row"><input type="checkbox" data-btn="btnComuna"> 🎉 Penco</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnMuni"> 🏛️ Municipalidad</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnBomberos"> 🚒 Bomberos</label>
           </div>
           <div class="config-group">
             <h5>💚 Cuerpo & Salud</h5>
@@ -3432,9 +3437,12 @@
             <label class="check-row"><input type="checkbox" data-btn="btnFinance"> 💰 Finanzas</label>
             <label class="check-row"><input type="checkbox" data-btn="btnHomeTasks"> 🏠 Tareas Hogar</label>
             <label class="check-row"><input type="checkbox" data-btn="btnBodega"> 🍯 La Bodega</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnDespensa"> 🥫 Mi Despensa</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnCloset"> 👗 Mi Clóset</label>
             <label class="check-row"><input type="checkbox" data-btn="btnEnergy"> ⚡ Consumo eléctrico</label>
             <label class="check-row"><input type="checkbox" data-btn="btnLena"> 🪵 Leña & Pellet</label>
             <label class="check-row"><input type="checkbox" data-btn="btnTaller"> 🔧 Bitácora Taller</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnHerramientas"> 🧰 Mis Herramientas</label>
             <label class="check-row"><input type="checkbox" data-btn="btnMecanica"> 🔧 Mecánica</label>
             <label class="check-row"><input type="checkbox" data-btn="btnConvert"> 📏 Conversión</label>
           </div>
@@ -3447,6 +3455,7 @@
             <label class="check-row"><input type="checkbox" data-btn="btnFirstAid"> 🩹 Primeros Auxilios</label>
             <label class="check-row"><input type="checkbox" data-btn="btnViolence"> 🟣 Violencia Doméstica</label>
             <label class="check-row"><input type="checkbox" data-btn="btnEvac"> 🌊🚨 Evacuación Tsunami</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnApoyo"> 🆘 Apoyo Emergencia</label>
             <label class="check-row"><input type="checkbox" data-btn="btnBackup"> 💾 Respaldo</label>
             <label class="check-row"><input type="checkbox" data-btn="btnRestore"> 📥 Restaurar</label>
             <label class="check-row"><input type="checkbox" data-btn="btnShortcut"> 📌 Acceso directo</label>
@@ -3854,6 +3863,42 @@
     </form>
   </dialog>
 
+  <dialog id="muniDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">🏛️ Municipalidad de Penco</h3>
+        <button type="button" id="muniCloseTop" class="btn btn-icon" title="Cerrar" aria-label="Cerrar">✕</button>
+      </div>
+      <p class="muted" style="line-height:1.5">Sede, direcciones, trámites, salud, emergencias e historia de la municipalidad. Lleva vencimientos al calendario con <b>📌</b> y marca tu avance en <b>⭐ Mis trámites</b>. Queda <b>privado y local</b> por usuario.</p>
+      <div id="muniPanel" style="margin-top:10px"></div>
+      <div class="dlg-actions"><button type="button" id="muniClose" class="btn">Cerrar</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="bomberosDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">🚒 Bomberos de Penco</h3>
+        <button type="button" id="bomberosCloseTop" class="btn btn-icon" title="Cerrar" aria-label="Cerrar">✕</button>
+      </div>
+      <p class="muted" style="line-height:1.5">Emergencia <b>132</b>, 4 compañías, historia desde 1927 y prevención en casa. Agenda mantenciones con <b>📌</b> y marca tu avance en <b>⭐ Mi hogar</b>. Queda <b>privado y local</b> por usuario.</p>
+      <div id="bomberosPanel" style="margin-top:10px"></div>
+      <div class="dlg-actions"><button type="button" id="bomberosClose" class="btn">Cerrar</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="apoyoDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">🆘 Apoyo en Emergencias — Penco</h3>
+        <button type="button" id="apoyoCloseTop" class="btn btn-icon" title="Cerrar" aria-label="Cerrar">✕</button>
+      </div>
+      <p class="muted" style="line-height:1.5">Ante cualquier emergencia: primeras horas, catastro y beneficios, contención y reconstrucción. Marca tu avance con <b>☑️</b> y agenda plazos con <b>📌</b>. Queda <b>privado y local</b> por usuario.</p>
+      <div id="apoyoPanel" style="margin-top:10px"></div>
+      <div class="dlg-actions"><button type="button" id="apoyoClose" class="btn">Cerrar</button></div>
+    </form>
+  </dialog>
+
   <dialog id="userDialog">
     <form method="dialog">
       <h3>Nuevo usuario</h3>
@@ -3909,7 +3954,12 @@
   <script src="huerta-modulo.js?v=1"></script>
   <script src="mecanica-modulo.js?v=1"></script>
   <script src="plantas-modulo.js?v=1"></script>
+  <script src="hogar-despensa-closet-modulo.js?v=1"></script>
+  <script src="hogar-herramientas-modulo.js?v=1"></script>
   <script src="talleres-penco.js?v=1"></script>
+  <script src="municipalidad-penco.js?v=1"></script>
+  <script src="bomberos-penco.js?v=1"></script>
+  <script src="apoyo-emergencia.js?v=1"></script>
   <script>
     // Limpieza file:// (cinturón y tirantes): si un SW de una versión anterior
     // quedó registrado, desregistrarlo y borrar cachés cal13, luego recargar.

@@ -33,6 +33,9 @@
       "asociaciones": "cultivos/asociaciones.json",
       "preparados": "cultivos/preparados.json"
     },
-    "talleres": "talleres.json"
+    "talleres": "talleres.json",
+    "municipalidad": "municipalidad.json",
+    "bomberos": "bomberos.json",
+    "apoyo": "apoyo-emergencia.json"
   }
 }

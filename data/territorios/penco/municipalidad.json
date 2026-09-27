@@ -1,0 +1,93 @@
+{
+  "sede": {
+    "nombre": "Ilustre Municipalidad de Penco",
+    "rut": "69.150.500-6",
+    "direccion": "O'Higgins 500, Penco",
+    "fono": "+56 41 226 1471",
+    "oirs": "oirs@penco.cl",
+    "web": "https://penco.cl",
+    "horario": "Lun a Vie 08:30 a 14:00 hrs atención público (verificar en penco.cl)",
+    "nota": "Desde celular o red fija a anexos: marcar 41-226 + anexo. OIRS anexo 1346."
+  },
+  "autoridades": {
+    "alcalde": { "nombre": "Rodrigo Vera Riquelme", "periodo": "2024–2028", "correo": "alcaldia@penco.cl", "oficina": "O'Higgins 500 · anexo 1452" },
+    "concejo": [
+      { "nombre": "Héctor Peñailillo Núñez", "pacto": "IND (UDI)" },
+      { "nombre": "Leonardo Jara Jara", "pacto": "FREVS" },
+      { "nombre": "María Carolina Inostroza Verdugo", "pacto": "PDC" },
+      { "nombre": "Juan Manuel Viveros Esparza", "pacto": "UDI" },
+      { "nombre": "Fernando Torres Rubio", "pacto": "IND – PSC" },
+      { "nombre": "Leslie Valenzuela Muñoz", "pacto": "UDI" }
+    ],
+    "notaConcejo": "Concejo 2024–2028. Sesiones ordinarias abiertas; actas y sesiones en penco.cl > Municipalidad > Concejo Municipal."
+  },
+  "direcciones": [
+    { "id": "alcaldia", "icon": "🏛️", "nombre": "Alcaldía", "director": "Rodrigo Vera Riquelme", "contacto": "alcaldia@penco.cl · 41-2261452", "direccion": "O'Higgins 500", "funcion": "Dirección superior y administración comunal. Preside el Concejo.", "unidades": ["Gabinete (41-2261447)", "Delegación Municipal Lirquén — Susana Villa (41-2261550)", "Comunicaciones — Mauricio Fernández (41-2261447)"] },
+    { "id": "adm-municipal", "icon": "🗂️", "nombre": "Administración Municipal", "director": "Neil Palma Cartes", "contacto": "41-2261455", "direccion": "O'Higgins 500", "funcion": "Coordina y gestiona todas las unidades municipales por delegación del Alcalde.", "unidades": ["Informática (41-2261428)", "Alumbrado Público (41-2261428)", "Mantenimiento", "Consultorio Veterinario (+56 9 4401 1613)"] },
+    { "id": "secretaria-municipal", "icon": "📝", "nombre": "Secretaría Municipal", "director": "Pablo Sobarzo Osorio", "contacto": "41-2261456", "direccion": "O'Higgins 500", "funcion": "Ministro de fe, Concejo, JJVV y organizaciones (Ley 19.418 / 20.500).", "unidades": ["Oficina de Partes y OIRS — Carolina Lagos (41-2261430 / 41-2261423 · oirs@penco.cl)"] },
+    { "id": "dideco", "icon": "🤝", "nombre": "DIDECO — Desarrollo Comunitario", "director": "Bernardino Parizot Riveros", "contacto": "41-2261432", "direccion": "O'Higgins 500", "funcion": "Apoyo social, organizaciones, empleo, cultura, deporte y familia.", "unidades": ["Área Social", "Registro Social de Hogares (41-2261413)", "OMIL — Luis Hernández (41-2261347)", "Fomento Productivo (41-2261408)", "Casa Adulto Mayor y OOCC (41-2261522)", "Discapacidad (41-2261537)", "Mujer / Jefas de Hogar (41-2261472)", "Deportes — Adolfo Pedreros (41-2261402)", "Cultura — Pablo Peñailillo", "Turismo — Andrea Mardones (41-2261529)", "Biblioteca — Guillermo Manríquez", "Museo — Leonardo Gotelli", "Protección Civil (41-2261305)", "Asuntos Religiosos (41-2261519)", "SENDA Previene (41-2261520)", "EGIS Municipal (41-2261536)"] },
+    { "id": "obras", "icon": "🏗️", "nombre": "Obras Municipales (DOM)", "director": "Pablo Aguayo Herane", "contacto": "41-2261437", "direccion": "O'Higgins 500", "funcion": "Permisos de edificación, urbanización, recepciones y Plan Regulador.", "unidades": ["Edificación y permisos", "Inspección de obras", "Catastro y Plan Regulador"] },
+    { "id": "secplan", "icon": "📐", "nombre": "SECPLAN — Planificación", "director": "Romina Pampaloni Pedreros", "contacto": "41-2261418", "direccion": "Maipú 209", "funcion": "Estrategia comunal, PLADECO, presupuesto y proyectos de inversión.", "unidades": ["Formulación de proyectos", "Licitaciones y concursos públicos"] },
+    { "id": "transito", "icon": "🚗", "nombre": "Tránsito y Transporte Público", "director": "Nicolás Espinosa (s)", "contacto": "41-2261326", "direccion": "Freire 510", "funcion": "Licencias de conducir, permisos de circulación, señalización.", "unidades": ["Licencias — Jacqueline Bustos (41-2261324)", "Permisos Circulación — Claudia Avello (41-2261328)"] },
+    { "id": "medioambiente", "icon": "🌱", "nombre": "Medio Ambiente, Aseo y Ornato", "director": "Camila Riquelme (s)", "contacto": "41-2261301", "direccion": "Talcahuano 131", "funcion": "Aseo, recolección, áreas verdes, reciclaje y tolvas comunitarias.", "unidades": ["Recolección domiciliaria", "Reciclaje y puntos limpios", "Tolvas comunitarias", "Tenencia responsable / Veterinario"] },
+    { "id": "finanzas", "icon": "💰", "nombre": "Administración y Finanzas", "director": "Sergio Valenzuela (s)", "contacto": "41-2261464", "direccion": "O'Higgins 500", "funcion": "Tesorería, rentas, patentes, contabilidad y personal.", "unidades": ["Tesorería — Loreto Mellado (41-2261424)", "Contabilidad (41-2261465)", "Adquisiciones (41-2261468)", "RRHH (41-2261451)", "Patentes Comerciales — Karen Fernández", "Inspección Municipal — Miguel Durán (41-2261477)"] },
+    { "id": "juridica", "icon": "⚖️", "nombre": "Dirección Jurídica", "director": "Winston Carrasco", "contacto": "41-2261342", "direccion": "O'Higgins 500", "funcion": "Asesoría legal al Alcalde, Concejo y unidades.", "unidades": [] },
+    { "id": "control", "icon": "🔍", "nombre": "Dirección de Control", "director": "Valentina Escalona Rivas", "contacto": "41-2261341", "direccion": "Maipú 209", "funcion": "Auditoría interna y control presupuestario. Transparencia activa.", "unidades": ["Portal Transparencia (MU210)", "Ley de Lobby (MU210)"] },
+    { "id": "seguridad", "icon": "🛡️", "nombre": "Seguridad Pública", "director": "Matías Aguayo", "contacto": "*4157 emergencias y denuncias · 41-2261362", "direccion": "Penco–Lirquén", "funcion": "Prevención, patrullaje e inspección en coordinación con Carabineros.", "unidades": ["Inspección Municipal — Miguel Durán (41-2261477)"] },
+    { "id": "jpl", "icon": "👩‍⚖️", "nombre": "Juzgado de Policía Local", "director": "Sergio Muñoz Cartes", "contacto": "41-2261320", "direccion": "O'Higgins 654", "funcion": "Infracciones de tránsito, ordenanzas, rentas, alcoholes y consumidor.", "unidades": [] },
+    { "id": "salud", "icon": "🏥", "nombre": "Salud Municipal (DAS)", "director": "Gerald Puchi Bizama", "contacto": "41-2261359 · oirs@saludpenco.cl", "direccion": "O'Higgins 654", "funcion": "Administra CESFAM, CECOSF y farmacia. Ver pestaña Salud.", "unidades": ["CESFAM Penco — Maipú 573 (41-2723960)", "CESFAM Lirquén — Ruta 150 s/n (41-2688321)", "CECOSF Ríos de Chile", "CECOSF Forjadores — Diego Portales 169 (41-2726262)", "Hospital Penco-Lirquén — Camino a Tomé (41-2724800)", "Farmacia Municipal"] },
+    { "id": "educacion", "icon": "📚", "nombre": "Educación Municipal (DEM / DAEM)", "director": "Andrea Navarrete (s)", "contacto": "41-2261308 · educapenco.cl", "direccion": "Los Carrera 230", "funcion": "Escuelas y liceos municipales, preuniversitario y becas.", "unidades": ["Liceo Pencopolitano — San Vicente 51", "Escuela Los Conquistadores", "Preuniversitario Municipal", "Becas Educación Superior (100 MM, FONDEVE)"] }
+  ],
+  "tramites": [
+    { "id": "permiso-circulacion", "icon": "🚗", "nombre": "Permiso de circulación", "donde": "Dirección de Tránsito · Freire 510 / pagos online penco.cl", "cuando": "Marzo (autos) · Mayo (taxis) · Sept–Oct (carga). Renueva o traslada a Penco y apoyas a la comuna.", "requisitos": ["Permiso anterior", "Revisión técnica y gases al día", "SOAP vigente", "Sin multas impagas"], "costo": "Según tasación SII", "tip": "Trasladar tu permiso a Penco deja recursos en la comuna." },
+    { "id": "licencia-conducir", "icon": "🪪", "nombre": "Licencia de conducir (obtener / renovar)", "donde": "Tránsito · Freire 510 · Licencias 41-2261324", "cuando": "Lun–Vie mañana. Pedir hora primero.", "requisitos": ["Cédula vigente", "Certificado estudios (primera vez)", "Examen médico, teórico y práctico", "Domicilio en Penco (o acreditar)"], "costo": "Arancel municipal (consultar)", "tip": "Lleva lentes si los usas y llega 15 min antes." },
+    { "id": "patente-comercial", "icon": "🏪", "nombre": "Patente comercial / microempresa", "donde": "Finanzas · Patentes · O'Higgins 500", "cuando": "Todo el año. Pago semestral ene/jul.", "requisitos": ["Inicio actividades SII", "Recepción / informe DOM según giro", "Resolución sanitaria (alimentos)", "Contrato arriendo o dominio"], "costo": "Según capital y giro", "tip": "Pregunta por Microempresa Familiar si trabajas en tu casa." },
+    { "id": "permiso-edificacion", "icon": "🏗️", "nombre": "Permiso de edificación / recepción", "donde": "DOM · O'Higgins 500 · 41-2261437", "cuando": "Todo el año.", "requisitos": ["Planos y EETT firmados", "Certificado informaciones previas", "Título dominio", "Patente profesional"], "costo": "Derechos según m²", "tip": "Pide primero el Certificado de Informaciones Previas." },
+    { "id": "rsh", "icon": "📋", "nombre": "Registro Social de Hogares", "donde": "DIDECO · O'Higgins 500 · 41-2261413 / registrosocial.gob.cl", "cuando": "Todo el año.", "requisitos": ["Cédula de integrantes", "Comprobante domicilio", "Clave Única"], "costo": "Gratuito", "tip": "Mantén tu cartola actualizada: abre becas y subsidios." },
+    { "id": "oirs-reclamo", "icon": "📮", "nombre": "OIRS: reclamo, sugerencia o solicitud", "donde": "Oficina de Partes · O'Higgins 500 · oirs@penco.cl · 41-2261430", "cuando": "Lun–Vie 08:30–14:00.", "requisitos": ["Nombre, RUT y contacto", "Descripción clara + fotos si aplica", "Dirección del hecho"], "costo": "Gratuito", "tip": "Pide número de folio para hacer seguimiento." },
+    { "id": "omil-empleo", "icon": "💼", "nombre": "OMIL — empleo e intermediación", "donde": "DIDECO · OMIL · 41-2261347", "cuando": "Lun–Vie. Talleres y ofertas semanales.", "requisitos": ["CV actualizado", "Cédula", "Inscripción Bolsa Nacional de Empleo"], "costo": "Gratuito", "tip": "Deja tu CV y revisa las ofertas cada lunes." },
+    { "id": "aseo-tolva", "icon": "🧹", "nombre": "Aseo, tolvas y retiro voluminoso", "donde": "Medio Ambiente · Talcahuano 131 · 41-2261301", "cuando": "Recolección semanal + tolvas por sector (ver penco.cl).", "requisitos": ["Sacar basura en horario del sector", "Voluminosos solo en operativo tolva"], "costo": "Incluido (derecho de aseo según caso)", "tip": "Separa reciclables y lleva cachureos a la tolva, no a quebradas." },
+    { "id": "jjvv-personalidad", "icon": "🏘️", "nombre": "JJVV y organizaciones: personalidad jurídica", "donde": "Secretaría Municipal · 41-2261456", "cuando": "Todo el año. FONDEVE postula en 2º semestre.", "requisitos": ["15+ socios, asamblea constitutiva", "Estatutos Ley 19.418", "Ministro de fe municipal"], "costo": "Gratuito", "tip": "Con personalidad vigente postulas a FONDEVE y FNDR." },
+    { "id": "beca-superior", "icon": "🎓", "nombre": "Beca Educación Superior Municipal", "donde": "DIDECO / DEM · penco.cl", "cuando": "Postulación anual 1er trimestre (~1000 becas).", "requisitos": ["Residencia en Penco", "Matrícula ESUP", "RSH y notas"], "costo": " Beneficio", "tip": "Junta certificado de matrícula apenas lo tengas." },
+    { "id": "farmacia-municipal", "icon": "💊", "nombre": "Farmacia Municipal", "donde": "Red salud municipal · penco.cl > Farmacia", "cuando": "Lun–Vie horario salud.", "requisitos": ["Receta vigente", "Inscripción CESFAM"], "costo": "Precio costo", "tip": "Cotiza ahí tus crónicos: suele ser lo más barato." },
+    { "id": "veterinario", "icon": "🐾", "nombre": "Consultorio Veterinario Municipal", "donde": "+56 9 4401 1613", "cuando": "Con hora. Operativos de esterilización por junta.", "requisitos": ["Residencia Penco", "Carnet mascota si tiene"], "costo": "Bajo costo / gratuito según operativo", "tip": "Esterilizar evita camadas y multas." }
+  ],
+  "salud": [
+    { "nombre": "CESFAM Penco", "dir": "Maipú 573", "fono": "41-2723960", "horario": "Lu–Ju 08:00–17:00 · Vi 08:00–16:00" },
+    { "nombre": "CESFAM Lirquén", "dir": "Ruta 150 Camino a Tomé s/n", "fono": "41-2688321", "horario": "Lu–Ju 08:00–17:00 · Vi 08:00–16:00 · Extensión Lu–Vi hasta 20:00 · Sáb 08:00–14:00" },
+    { "nombre": "CECOSF Ríos de Chile (Lirquén)", "dir": "Lirquén", "fono": "Consultar DAS 41-2261359", "horario": "Lu–Ju 08:00–17:00 · Vi 08:00–16:00" },
+    { "nombre": "CECOSF Forjadores", "dir": "Diego Portales 169", "fono": "41-2726262", "horario": "Lu–Ju 08:00–17:00 · Vi 08:00–16:00" },
+    { "nombre": "Hospital Penco-Lirquén", "dir": "Camino a Tomé", "fono": "41-2724800", "horario": "Urgencia 24 h" },
+    { "nombre": "Farmacia CESFAM Lirquén", "dir": "CESFAM Lirquén", "fono": "41-2688321", "horario": "Lu–Vi 08:00–20:00 · Sáb 09:00–14:00" }
+  ],
+  "emergencias": [
+    { "nombre": "Seguridad Penco (denuncias y patrullaje)", "numero": "*4157", "nota": "Línea comunal directa" },
+    { "nombre": "SAMU ambulancia", "numero": "131", "nota": "Urgencia salud 24 h" },
+    { "nombre": "Bomberos Penco", "numero": "132", "nota": "Incendios y rescate (cuartel Penco + Lirquén)" },
+    { "nombre": "Carabineros", "numero": "133", "nota": "Tenencia Penco / Retén Lirquén" },
+    { "nombre": "Inspección Municipal", "numero": "41-2261477", "nota": "Ruidos, comercio irregular, microbasurales" },
+    { "nombre": "Alumbrado Público", "numero": "41-2261428", "nota": "Poste apagado o cable caído (sin tocar)" },
+    { "nombre": "Protección Civil comunal", "numero": "41-2261305", "nota": "Marejadas, remociones, puntos de encuentro tsunami" }
+  ],
+  "historia": {
+    "intro": "La Municipalidad de Penco nace con la República: de Villa (1843) a Comuna Autónoma (1891) y Ciudad (1898), hasta el municipio ciudadano de hoy en O'Higgins 500 con Delegación en Lirquén.",
+    "eras": [
+      { "t": "🏡 Villa de Penco", "cuando": "29 de marzo de 1843 · Pdte. Manuel Bulnes", "d": "Tras el traslado a Concepción (1751) y 90 años de prohibición, Bulnes otorga el título de Villa. Primer subdelegado: Manuel Esteban Gajardo. Penco depende de Coelemu y luego de Concepción. Al norte crece la caleta de Lirquén (hacia 1850)." },
+      { "t": "🏛️ Comuna Autónoma", "cuando": "1891 · Ley de Comuna Autónoma", "d": "Nace la Municipalidad de Penco con sede en Penco: administra la 8.ª subdelegación Palomares y la 9.ª Penco. Autogobierno local electivo por primera vez." },
+      { "t": "🌆 Ciudad", "cuando": "25 de abril de 1898 · Pdte. Federico Errázuriz", "d": "Decreto Supremo otorga el título de Ciudad. El damero y la Plaza heredan el plano colonial de 1550." },
+      { "t": "🏭 Municipio fabril", "cuando": "1886–1950 · CRAV, Loza, COSAF", "d": "Refinería de Azúcar (1886, luego CRAV), Fábrica de Loza (1898, luego Fanaloza), COSAF y Granja Cosmito. El municipio cobra patentes, regula el ferrocarril (1889, a Lirquén 1914) y apoya a Bomberos (1927) tras grandes incendios." },
+      { "t": "🏗️ Expansión urbana", "cuando": "1950–1973", "d": "Vidrios Planos de Lirquén (Vipla), fosfatos y calzado. Poblaciones obreras y conurbación Penco–Cerro Verde–Lirquén. Terremotos de 1939 y 1960 obligan a reconstruir." },
+      { "t": "🌑 Dictadura", "cuando": "1973–1990 · Alcaldes designados", "d": "Agustín Campos (1973), Beatriz Altamirano (1974), Alfonso Díaz (1976), Enrique Contreras (1977), Rodrigo Menéndez (1979–1987), Jorge Rivas (1987), Iván Norambuena (1988), Guillermo Cáceres (1989–1992). Declive fabril y cesantía; resisten puerto, pesca y organización vecinal." },
+      { "t": "🗳️ Democracia", "cuando": "1992–hoy", "d": "Ramón Fuentealba (1992–2004), Guillermo Cáceres (2004–2012), Víctor Hugo Figueroa (2012–2024; renuncia nov 2024), Leonardo Jara (interino 09/11–05/12/2024 elegido por el Concejo) y Rodrigo Vera Riquelme (2024–2028). Lirquén se vuelve puerto mayor (DP World), se crean DAS y DEM, CESFAM Penco y Lirquén, CECOSF, Farmacia Municipal y Seguridad *4157. El 27F de 2010 obliga a reconstruir el borde." }
+    ],
+    "alcaldes": ["Carlos Coddou (~1898)", "Francisco Coddou (~1905–1930)", "Armando Jofré Suazo (1939–1941)", "Héctor Navarro (1944–1947)", "Juan Pérez Flores (1956–1958)", "Ramón Fuentealba (1992–2004)", "Guillermo Cáceres (2004–2012)", "Víctor Hugo Figueroa (2012–2024)", "Leonardo Jara (interino 2024)", "Rodrigo Vera Riquelme (2024–2028)"],
+    "sede": "Casa consistorial: O'Higgins 500. DEM en Los Carrera 230, Tránsito en Freire 510, Medio Ambiente en Talcahuano 131, JPL y DAS en O'Higgins 654, SECPLAN y Control en Maipú 209, Delegación Municipal en Lirquén."
+  },
+  "participacion": {
+    "concejo": "Sesiones ordinarias del Concejo; tabla y actas en penco.cl > Concejo Municipal > Sesiones.",
+    "fondos": ["FONDEVE (vecinal, 2º semestre)", "Becas ESUP (1er trimestre)", "Presupuesto participativo / tolvas por sector"],
+    "consejo": "Pide tabla del Concejo por OIRS y asiste: es abierta."
+  },
+  "fuentes": "penco.cl (Direcciones y Unidades, Concejo Municipal, Directorio Telefónico) · SINIM ficha Penco · saludpenco.cl · cesfamlirquen.cl · educapenco.cl. Verifica vigencia en penco.cl y OIRS; teléfonos con anexo 41-226XXXX.",
+  "actualizado": "2026-09"
+}

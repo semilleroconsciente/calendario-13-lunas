@@ -12,8 +12,9 @@
      historia/historia.json | sectores.json | guia.json
      historia/historia-bosque.json | companeros-bosque.json
      historia/aves-bosque.json | historia-aves.json | historia-pesca.json
-     eventos.json | cultivos/asociaciones.json | cultivos/preparados.json
-     talleres.json | consejos-bosque.json
+      eventos.json | cultivos/asociaciones.json | cultivos/preparados.json
+      talleres.json | consejos-bosque.json | municipalidad.json
+      bomberos.json | apoyo-emergencia.json
 
    Para replicar en otro territorio:
      1. Duplica data/territorios/penco -> data/territorios/<nuevo-id>
@@ -144,6 +145,9 @@ async function cargarTerritorio(id) {
   var asoc = await opt('cultivos/asociaciones.json');
   var prep = await opt('cultivos/preparados.json');
   var talleres = await opt('talleres.json');
+  var muni = await opt('municipalidad.json');
+  var bomb = await opt('bomberos.json');
+  var apoyo = await opt('apoyo-emergencia.json');
   var consBosque = await opt('consejos-bosque.json');
 
   // 3) normalizar con fallback a data.js
@@ -212,6 +216,9 @@ async function cargarTerritorio(id) {
     asociaciones: ASOC,
     preparados: PREP,
     talleres: talleres || { talleresBase: [], actividadesBase: [] },
+    municipalidad: muni || null,
+    bomberos: bomb || null,
+    apoyo: apoyo || null,
     donate: fb.DONATE
   };
 
@@ -310,6 +317,9 @@ api.listo = cargarTerritorio(idInicial).then(function (T) {
       asociaciones: fb.ASOCIACIONES_CULTIVOS,
       preparados: fb.PREPARADOS_ORGANICOS,
       talleres: { talleresBase: [], actividadesBase: [] },
+      municipalidad: null,
+      bomberos: null,
+      apoyo: null,
       donate: fb.DONATE
     };
   } catch (e2) {}

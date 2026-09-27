@@ -1052,7 +1052,7 @@ body[data-mview="hoy"] #tidesPanel { display: none; }
 #todayView .today-add input[type="time"] { max-width: 104px; }
 #todayView .today-add input[type="text"] { flex: 1; min-width: 120px; }
 /* === Nuevos modulos (14 secciones) === */
-#forrajeDialog, #bodegaDialog, #trafDialog, #aguaDialog, #nudosDialog, #tallerDialog, #mecanicaDialog, #truequeDialog, #mingaDialog, #cieloDialog, #epewDialog, #rutinaDialog, #fertiDialog { width: 680px; max-width: 96vw; max-height: 88vh; overflow-y: auto; }
+#forrajeDialog, #bodegaDialog, #despensaDialog, #closetDialog, #herramientasDialog, #plantasDialog, #trafDialog, #aguaDialog, #nudosDialog, #tallerDialog, #mecanicaDialog, #truequeDialog, #mingaDialog, #cieloDialog, #epewDialog, #rutinaDialog, #fertiDialog { width: 680px; max-width: 96vw; max-height: 88vh; overflow-y: auto; }
 #forrajeFichas .lawen-card, #nudosList .si-card { margin: 0; }
 .esp-steps { margin: 0; padding-left: 18px; font-size: 12px; line-height: 1.55; color: #cdd3ee; }
 .esp-steps li { margin-bottom: 3px; padding: 2px 4px; border-radius: 6px; }

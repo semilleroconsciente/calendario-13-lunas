@@ -1,0 +1,53 @@
+{
+  "cuerpo": {
+    "nombre": "Cuerpo de Bomberos de Penco",
+    "fundacion": "30 de noviembre de 1927 (Bomba Refinería)",
+    "origen": "Operarios de la Refinería de Azúcar fundan la Bomba Refinería tras voraces incendios fabriles.",
+    "emergencias": "132",
+    "companias": 4,
+    "voluntarios": "Más de un centenar en 4 compañías + brigada (urbano y rural)",
+    "superintendente2023": "César Jara Torres",
+    "libro": "Bomberos de Penco 1927–2023. Llamado al deber — Boris Márquez Ochoa",
+    "aniversario": "Fundación 30 de noviembre; la comuna celebra el aniversario con desfile en octubre (verificar fecha del año)"
+  },
+  "companias": [
+    { "id": "primera", "icon": "🚒", "nombre": "Primera Compañía — Bomba Refinería", "sector": "Penco centro", "lema": "La fundadora (1927)", "d": "Nace en la Refinería de Azúcar con una treintena de operarios-voluntarios. Primera bomba y primer cuartel de la ciudad.", "notas": ["Fundación: 30-11-1927", "Origen fabril CRAV", "Primer cuartel: Aníbal Pinto esq. O'Higgins"] },
+    { "id": "segunda", "icon": "🪜", "nombre": "Segunda Compañía — “Trabajo y Constancia”", "sector": "Penco", "lema": "Trabajo y Constancia", "d": "La del estandarte regalado, la cotona azul y el primer carro portaescala de Penco. Tradición de mujeres bomberas segundinas.", "notas": ["Uniforme: cotona azul", "Primer portaescala de Penco", "Mujeres bomberas, tradición segundina"] },
+    { "id": "tercera", "icon": "⚓", "nombre": "Tercera Compañía — Lirquén", "sector": "Lirquén", "lema": "Nuestro único enemigo es el fuego", "d": "La compañía del puerto: largo camino por un cuartel propio y guardias históricas en faenas de petróleo. Primera en responder a emergencias portuarias y forestales del norte comunal.", "notas": ["Sector portuario e industrial", "Guardias en faenas de petróleo", "Material mayor de última generación"] },
+    { "id": "cuarta", "icon": "⛰️", "nombre": "Cuarta Compañía — Cosmito", "sector": "Cosmito / Ruta 150", "lema": "Unión y Lealtad", "d": "Obra de bien vecinal: el sacrificado camino de un cuartel en Cosmito, puerta sur de la comuna y zona de interfaz forestal.", "notas": ["Sector sur / interfaz forestal", "Cuartel levantado por vecinos y voluntarios"] }
+  ],
+  "historia": {
+    "intro": "De la Bomba Refinería de 1927 al Cuerpo de 4 compañías que cubre Penco, Lirquén, Cosmito y el campo: casi un siglo de voluntariado.",
+    "eras": [
+      { "t": "🔥 Bomba Refinería", "cuando": "30 de noviembre de 1927", "d": "Voraces incendios en la zona fabril obligan a los operarios a organizarse: nace la Bomba Refinería con una treintena de fundadores. Es la efeméride madre del Cuerpo." },
+      { "t": "🚒 Segunda y expansión", "cuando": "1928–1960", "d": "Se suman compañías (Segunda “Trabajo y Constancia”), llega el primer carro portaescala, se consiguen cuarteles (el primero en Aníbal Pinto esq. O'Higgins) y nace la romería y el funeral nocturno, usanza centenaria que honra a los caídos." },
+      { "t": "🏭 Terremotos y temporales", "cuando": "1939 · 1945 · 1960", "d": "Chillán 1939, el temporal de 1945 que destruye el muelle refinero y Valdivia 1960: los bomberos penqueños sostienen rescate, escombros e incendios en cada catástrofe." },
+      { "t": "⚓ Tercera de Lirquén", "cuando": "Siglo XX", "d": "El puerto exige su compañía: guardias en faenas de petróleo, emergencias portuarias y el largo camino por un cuartel propio en Lirquén." },
+      { "t": "⛰️ Cuarta de Cosmito", "cuando": "Siglo XX–XXI", "d": "Los vecinos del acceso sur levantan la Cuarta “Unión y Lealtad”, clave en incendios de interfaz forestal de la Ruta 150." },
+      { "t": "🌊 27F", "cuando": "27 de febrero de 2010", "d": "Terremoto y tsunami: rescate en el borde costero, caletas y poblaciones, y reconstrucción de cuarteles." },
+      { "t": "📖 Llamado al deber", "cuando": "2023", "d": "El Cuerpo publica su historia (1927–2023) con Boris Márquez Ochoa: hitos, nóminas, material mayor y entrevistas a las cuatro compañías." },
+      { "t": "🌲 Incendios forestales", "cuando": "Enero 2026", "d": "Los incendios de Biobío y Ñuble alcanzan Penco y Lirquén con daño mayor en la localidad. Bomberos de todo Chile apoyan; la prevención de interfaz pasa a ser prioridad comunal N°1." }
+    ]
+  },
+  "llamar132": {
+    "titulo": "Cómo pedir ayuda al 132",
+    "pasos": ["1. Marca 132 (gratis, sin saldo). Si no hay respuesta, 131 SAMU o *4157 Seguridad Penco.", "2. Di: comuna PENCO, calle y número, intersección y referencia (CESFAM, playa, cerro).", "3. Di qué se quema (casa, pastizal, auto, poste) y si hay personas o mascotas atrapadas.", "4. No cuelgues primero. Deja a alguien en la esquina esperando el carro.", "5. Abre el portón, corta el gas si puedes sin riesgo y saca autos del pasaje."],
+    "noHacer": ["No vuelvas a entrar por documentos o mascotas: avisa a bomberos dónde están.", "No mojes un incendio eléctrico o de aceite con agua.", "No tapes la pasada con autos mirones: los carros necesitan 3,5 m libres."]
+  },
+  "prevencion": [
+    { "id": "detector-humo", "icon": "🚨", "nombre": "Detector de humo por piso", "donde": "Pasillo de dormitorios + living", "cuando": "Probar 1 vez al mes · cambio pila anual", "requisitos": ["1 detector por piso (ideal interconectados)", "Probar botón el día 1 de cada mes", "Cambiar pila 1 vez al año"], "costo": "Desde ~$8.000 c/u", "tip": "El humo mata durmiendo: el detector despierta antes que el fuego bloquee la salida." },
+    { "id": "extintor-cocina", "icon": "🧯", "nombre": "Extintor vigente en cocina", "donde": "Cocina, cerca de la salida (no sobre la cocina)", "cuando": "Revisar manómetro cada 6 meses · recarga anual/vencimiento", "requisitos": ["PQS 5–6 kg multipropósito (ABC)", "Manómetro en verde, sello y manguera sanos", "Toda la familia sabe usarlo: P.A.S.S."], "costo": "Recarga ~$15.000–25.000", "tip": "P.A.S.S.: Pasador, Apunta a la base, Suelta, barre de lado a lado." },
+    { "id": "red-gas", "icon": "🔥", "nombre": "Cocina, gas y estufa a leña", "donde": "Cocina y living", "cuando": "Revisión antes de cada invierno", "requisitos": ["Flexible de gas sin grietas + abrazaderas", "Cañón de estufa limpio (deshollinar anual)", "Nada combustible a 1 m de la estufa", "Nunca secar ropa sobre la estufa"], "costo": "Deshollinado ~$30.000–50.000", "tip": "El hollín del cañón es la causa N°1 de incendios de invierno en el sur." },
+    { "id": "red-electrica", "icon": "🔌", "nombre": "Red eléctrica sin sobrecarga", "donde": "Toda la casa", "cuando": "Revisión anual + cada vez que salta el automático", "requisitos": ["Sin zapatillas en cadena ni alargadores enrollados", "Cargadores originales, no de noche en la cama", "Tablero con automáticos y diferencial"], "costo": "Revisión eléctrico autorizado", "tip": "Si un enchufe calienta o huele a quemado, corta ese circuito y llama a un eléctrico." },
+    { "id": "plan-escape", "icon": "🚪", "nombre": "Plan de escape familiar", "donde": "Toda la casa", "cuando": "Practicar 2 veces al año con toda la familia", "requisitos": ["2 salidas por pieza (puerta + ventana)", "Punto de encuentro fuera (ej: poste, reja vecina)", "Niños saben abrir seguros y llamar 132"], "costo": "Gratuito", "tip": "Practíquenlo de noche: los incendios graves ocurren durmiendo." },
+    { "id": "interfaz-forestal", "icon": "🌲", "nombre": "Casa en interfaz forestal (cerros, Cosmito, rural)", "donde": "Perímetro de la casa (30 m)", "cuando": "Limpieza antes de cada verano (oct–nov)", "requisitos": ["Techo y canaletas sin hojas ni pinocha", "Pila de leña a 10+ m de la casa", "Corta pastizal y matorral pegado a muros", "Manguera de 20+ m siempre conectada"], "costo": "Solo trabajo", "tip": "Enero 2026 lo demostró: la casa defendible se salva, la con pastizal pegado no." },
+    { "id": "grifo-libre", "icon": "🚰", "nombre": "Grifo y pasada libres", "donde": "Tu cuadra", "cuando": "Ojo permanente", "requisitos": ["No estacionar sobre ni frente al grifo", "Pasajes con 3,5 m libres para el carro", "Reportar grifo malo a Essbio / *4157"], "costo": "Gratuito", "tip": "Un auto frente al grifo puede costar una casa." }
+  ],
+  "voluntariado": {
+    "titulo": "¿Quieres ser bombero/a?",
+    "texto": "Bomberos de Chile es 100% voluntario. Acércate al cuartel de tu sector (Penco, Lirquén o Cosmito), pregunta por la Brigada Juvenil o el proceso de postulación de la compañía. Requisito base: vivir o trabajar en la comuna y aprobar la formación inicial.",
+    "aporte": "Si no puedes ser voluntario: coopera en colectas, cuida grifos y pasadas, y dona sangre cuando la compañía la pida."
+  },
+  "fuentes": "Bomberos de Penco 1927–2023. Llamado al deber (Boris Márquez Ochoa, Archivo Histórico de Concepción) · eventos comunales · memoria Cuarta/Cosmito y Tercera/Lirquén. Verifica cuarteles y fechas en el Cuerpo y en penco.cl.",
+  "actualizado": "2026-09"
+}

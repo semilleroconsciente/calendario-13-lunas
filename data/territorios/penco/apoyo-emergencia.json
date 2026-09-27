@@ -1,0 +1,108 @@
+{
+  "intro": {
+    "nombre": "Apoyo en Emergencias — Penco",
+    "texto": "Si el fuego, el terremoto, el tsunami o la inundación te golpeó: aquí está el camino paso a paso. Qué hacer las primeras horas, cómo quedar en el catastro (FIBE), qué beneficios pedir, dónde contenerte y cómo levantarte. Para los incendios de enero 2026 y para cualquier emergencia que venga.",
+    "nota": "Las ayudas cambian con cada emergencia: verifica siempre vigencia en DIDECO (O'Higgins 500) y en penco.cl. Nada de lo anotado aquí sale de tu dispositivo."
+  },
+  "primerasHoras": [
+    { "id": "personas-salvo", "icon": "🧍", "nombre": "Personas y mascotas a salvo", "detalle": "Punto de encuentro familiar acordado. No vuelvas a entrar a la casa en llamas o inestable: avisa a bomberos si alguien o una mascota quedó dentro.", "donde": "Punto de encuentro + 132" },
+    { "id": "pedir-ayuda", "icon": "📢", "nombre": "Pedir ayuda: 132 · 131 · *4157", "detalle": "132 bomberos (fuego), 131 SAMU (heridos), *4157 Seguridad Penco (patrullaje y derivación municipal). Di comuna PENCO, calle, referencia.", "donde": "132 / 131 / *4157" },
+    { "id": "no-remover", "icon": "📸", "nombre": "Fotografía todo antes de remover", "detalle": "Foto y video de cada pieza, techo, muros y pertenencias dañadas ANTES de limpiar o botar. Es tu prueba para el catastro, seguros y beneficios.", "donde": "Tu casa (cuando sea seguro entrar)" },
+    { "id": "albergue", "icon": "🏕️", "nombre": "Albergue o techo temporal", "detalle": "El municipio habilita albergues en cada emergencia (escuelas, gimnasios). Si te quedas con familiares, avísalo igual a DIDECO para quedar en el catastro.", "donde": "Albergue municipal / DIDECO 41-2261432" },
+    { "id": "fibe", "icon": "📋", "nombre": "Pedir la FIBE", "detalle": "La Ficha Básica de Emergencia la aplica el municipio en terreno o en DIDECO. Es la puerta de entrada a casi todas las ayudas del Estado: pídela aunque creas que tu daño es menor.", "donde": "DIDECO · O'Higgins 500 · 41-2261432" },
+    { "id": "documentos", "icon": "🪪", "nombre": "Documentos: reponer lo quemado", "detalle": "Cédula en Registro Civil (reposición por catástrofe suele ser gratuita), escrituras en Conservador, cuentas y claves. Guarda todo en una carpeta o en el celular.", "donde": "Registro Civil + DIDECO" },
+    { "id": "agua-abrigo", "icon": "🧥", "nombre": "Agua, abrigo y alimento", "detalle": "Puntos de acopio oficiales del municipio y JJVV. Dona y recibe solo por canales oficiales para que la ayuda llegue.", "donde": "Puntos de acopio (penco.cl / JJVV)" },
+    { "id": "mascotas", "icon": "🐾", "nombre": "Mascotas afectadas", "detalle": "Agua, alimento y revisión veterinaria. El Consultorio Veterinario Municipal (+56 9 4401 1613) hace operativos en emergencias.", "donde": "Veterinario Municipal" }
+  ],
+  "catastro": {
+    "intro": "Quedar catastrado es lo que abre las ayudas. Hazlo aunque el daño parezca poco: los daños se agravan con la lluvia y los listados se cierran.",
+    "pasos": [
+      { "id": "fibe-detalle", "icon": "📋", "nombre": "FIBE — Ficha Básica de Emergencia", "donde": "DIDECO · O'Higgins 500 · en terreno tras la emergencia", "cuando": "Lo antes posible (los catastros tienen plazo)", "requisitos": ["Cédula (o reposición)", "Dirección exacta del domicilio afectado", "Fotos/videos del daño", "Relato de pérdidas"], "costo": "Gratuito", "tip": "Si el encuestador no pasó por tu casa, ve tú a DIDECO: nadie queda fuera por no haber estado." },
+      { "id": "rsh-emergencia", "icon": "📊", "nombre": "Registro Social de Hogares al día", "donde": "DIDECO 41-2261413 / registrosocial.gob.cl", "cuando": "Todo el año; urgente tras la emergencia", "requisitos": ["Cédula de integrantes", "Comprobante de domicilio (o declaración)", "Clave Única"], "costo": "Gratuito", "tip": "Casi todo beneficio cruza tu RSH: actualízalo primero." },
+      { "id": "costo-cero", "icon": "💸", "nombre": "Plan Costo Cero (familias afectadas)", "donde": "Municipalidad · O'Higgins 500 · OIRS", "cuando": "Activado tras los incendios de enero 2026 (verificar vigencia)", "requisitos": ["Estar en catastro/FIBE", "Cédula", "Consultar trámites incluidos en OIRS"], "costo": "Gratuidad en trámites municipales", "tip": "Pregunta en OIRS qué trámites cubre hoy: se activa por emergencia." },
+      { "id": "vivienda", "icon": "🏠", "nombre": "Reconstrucción de vivienda (MINVU/SERVIU)", "donde": "EGIS Municipal 41-2261536 · DIDECO", "cuando": "Postulación por llamados post-emergencia", "requisitos": ["FIBE aplicada", "RSH", "Acreditar dominio o tenencia del terreno", "No tener otra vivienda (según llamado)"], "costo": "Subsidio (según tramo)", "tip": "La EGIS municipal postula por ti: no firmes con nadie sin pasar por ella." },
+      { "id": "omil-emergencia", "icon": "💼", "nombre": "Empleo de emergencia y OMIL", "donde": "OMIL 41-2261347 · DIDECO", "cuando": "Programas de empleo post-emergencia + bolsa permanente", "requisitos": ["CV", "Cédula", "Inscripción Bolsa Nacional de Empleo"], "costo": "Gratuito", "tip": "Si perdiste herramientas o tu lugar de trabajo, dilo en OMIL y Fomento Productivo (41-2261408)." },
+      { "id": "becas-emergencia", "icon": "🎓", "nombre": "Becas y apoyo escolar", "donde": "DEM Los Carrera 230 · 41-2261308", "cuando": "Año escolar; ayudas especiales post-emergencia", "requisitos": ["Matrícula", "Catastro/FIBE", "RSH"], "costo": "Beneficio", "tip": "Útiles, uniforme y transporte: pidelos en la escuela y en DIDECO." },
+      { "id": "salud-emergencia", "icon": "🏥", "nombre": "Salud: crónicos y recetas perdidas", "donde": "CESFAM Penco 41-2723960 · CESFAM Lirquén 41-2688321", "cuando": "De inmediato: no interrumpas tratamientos", "requisitos": ["Acudir al SOME aunque perdieras el carnet", "Relatar medicamentos que tomabas"], "costo": "Gratuito (FONASA)", "tip": "Diabetes, presión, salud mental: retoma tus controles la primera semana." }
+    ]
+  },
+  "contencion": {
+    "intro": "El impacto emocional de una emergencia dura mucho más que el evento mismo. Miedo, pena, rabia, culpa o no poder dormir son reacciones normales ante algo anormal. Pedir ayuda psicológica también es reconstruir: calmar el cuerpo, ordenar los días y apoyarse en otros.",
+    "reacciones": [
+      "Miedo, alerta constante o sobresaltos ante ruidos, olores o sirenas",
+      "Pena, llanto fácil, rabia o irritabilidad sin causa clara",
+      "Culpa por lo que se hizo o no se alcanzó a hacer",
+      "Dificultad para dormir, pesadillas, cansancio durante el día",
+      "Desconcentración, olvidos, sensación de irrealidad o embotamiento",
+      "Dolores de cuerpo (cabeza, espalda, estómago) sin causa médica clara",
+      "En niños y niñas: aferrarse, miedo a separarse, retrocesos como mojar la cama"
+    ],
+    "calma": [
+      { "nombre": "Respiración 4-4-6", "detalle": "Inhala en 4 tiempos, sostén en 4, bota en 6. Repite 4 veces. Hazlo antes de decidir o llamar." },
+      { "nombre": "Técnica 5-4-3-2-1", "detalle": "Nombra 5 cosas que ves, 4 que puedes tocar, 3 que escuchas, 2 que hueles y 1 que saboreas. Te devuelve al presente." },
+      { "nombre": "Agua, pies y pausa", "detalle": "Lávate cara y manos con agua fría, toma agua despacio, planta bien los pies. Si puedes, sal a tomar aire." },
+      { "nombre": "Rutina mínima", "detalle": "Horarios de comida, sueño y abrigo aunque sean simples. La rutina calma, sobre todo a niños y mayores." },
+      { "nombre": "Descarga sin daño", "detalle": "Caminar, respirar, escribir lo que sientes o hablar con alguien de confianza. Evita alcohol, drogas o automedicarte para calmarte." }
+    ],
+    "queHacer": [
+      "Escucha sin interrumpir y cree lo que te cuentan",
+      "Valida: 'tiene sentido que te sientas así'",
+      "Pregunta '¿qué necesitas ahora?' en vez de suponer",
+      "Ayuda con algo concreto: cuidar niños, hacer una fila, cocinar, cargar, prestar el celular",
+      "Respeta silencios y tiempos; vuelve a preguntar otro día",
+      "Incluye a niños, personas mayores, personas con discapacidad y mascotas en el cuidado"
+    ],
+    "queEvitar": [
+      "Decir 'tienes que ser fuerte', 'no llores' o 'ya pasó, olvídalo'",
+      "Obligar a contar los detalles una y otra vez",
+      "Comparar dolores ('otros están peor')",
+      "Prometer lo que no puedes cumplir ('te van a dar casa pronto')",
+      "Aislarse por vergüenza: pedir ayuda es parte de salir adelante"
+    ],
+    "grupos": [
+      { "nombre": "Niñas y niños", "dato": "Rutina, escuela y juego lo antes posible", "nota": "Verdad en palabras simples, horarios, abrazos. Pide apoyo en la escuela y el CESFAM si deja de comer, dormir o jugar por varios días." },
+      { "nombre": "Adolescentes", "dato": "Escucha sin sermón, mantén horarios y dales un rol", "nota": "Pueden ayudar en tareas concretas. Atento a encierro total, consumo o conductas de riesgo." },
+      { "nombre": "Personas mayores", "dato": "No las dejes solas en la toma de decisiones", "nota": "Acompaña trámites, remedios y controles. El desarraigo les pega fuerte: visitas y rutina diaria ayudan." },
+      { "nombre": "Personas neurodivergentes o con discapacidad", "dato": "Mantén objetos, rutinas y apoyos habituales", "nota": "Anticipa cambios con calma, reduce ruidos y espera. Coordina apoyos con CESFAM y escuela." },
+      { "nombre": "Duelo por pérdidas", "dato": "Sección 🕊️ Duelo de esta misma app", "nota": "Personas, mascotas y la casa también se duelan. Date permiso y date tiempo." }
+    ],
+    "senales": [
+      "Pensamientos de hacerte daño o de no querer seguir viviendo: pide ayuda hoy mismo (*4141 o 600 360 7777)",
+      "No duermes ni comes por días, no logras levantarte o funcionar",
+      "Crisis de pánico frecuentes o aumento del consumo de alcohol o medicamentos",
+      "La tensión en casa escala a gritos, amenazas o golpes",
+      "Los síntomas no bajan tras un mes o empeoran con el tiempo",
+      "Un niño o niña deja de hablar, comer o jugar por varios días"
+    ],
+    "recursos": [
+      { "nombre": "Dupla psicosocial / Salud mental CESFAM", "dato": "Pide hora en SOME de tu CESFAM (Penco 41-2723960 · Lirquén 41-2688321)", "nota": "Atención gratuita; derivan a terapia si la necesitas. Retoma controles de salud mental la primera semana." },
+      { "nombre": "Salud Responde", "dato": "600 360 7777 (24 h, gratis)", "nota": "Orientación de salud y contención telefónica para ti o para ayudar a otro." },
+      { "nombre": "Prevención del suicidio *4141", "dato": "*4141 desde celular (24 h, gratis)", "nota": "Si tú o alguien cercano lo está pasando mal: llama ahora, no esperes." },
+      { "nombre": "Fono Niños y Adolescentes", "dato": "147 de Carabineros (24 h)", "nota": "Orientación para niños, adolescentes y adultos que los cuidan." },
+      { "nombre": "Fono Familia", "dato": "149 de Carabineros (24 h)", "nota": "Violencia dentro de la familia: orientación y derivación." },
+      { "nombre": "Violencia contra la mujer", "dato": "1455 de SernamEG (24 h)", "nota": "Orientación confidencial. El estrés post-desastre puede aumentar la violencia: habla a tiempo." },
+      { "nombre": "Apoyo municipal y comunitario", "dato": "DIDECO 41-2261432 · tu JJVV y escuela", "nota": "Dupla psicosocial en terreno tras emergencias, ollas comunes, redes vecinales. No enfrentes todo en soledad." },
+      { "nombre": "Duelo por pérdidas", "dato": "Sección 🕊️ Duelo de esta misma app", "nota": "Personas, mascotas y la casa también se duelan. Date permiso." },
+      { "nombre": "Quien cuida también se cuida", "dato": "Túrnate, duerme, come y pide relevo", "nota": "No puedes sostener a otros con el cuerpo vacío. Descansa sin culpa." }
+    ],
+    "cierre": "Cuidar la mente es tan urgente como el techo y la comida. Si hoy solo alcanzas una cosa, que sea dormir, comer, respirar o hablar con alguien. Y si los síntomas no ceden, pide hora en tu CESFAM o llama al 600 360 7777."
+  },
+  "dondeIr": [
+    { "nombre": "DIDECO — Área Social", "dato": "O'Higgins 500 · 41-2261432", "nota": "FIBE, ayudas sociales, derivaciones. Tu primera puerta." },
+    { "nombre": "OIRS / Oficina de Partes", "dato": "oirs@penco.cl · 41-2261430", "nota": "Solicitudes, seguimiento con número de folio." },
+    { "nombre": "Delegación Municipal Lirquén", "dato": "41-2261550", "nota": "Trámites sin viajar a Penco centro." },
+    { "nombre": "Seguridad Penco", "dato": "*4157", "nota": "Patrullaje, denuncias, derivación en emergencia." },
+    { "nombre": "EGIS Municipal", "dato": "41-2261536", "nota": "Vivienda y reconstrucción." },
+    { "nombre": "OMIL", "dato": "41-2261347", "nota": "Empleo y programas de emergencia." },
+    { "nombre": "CESFAM Penco / Lirquén", "dato": "41-2723960 / 41-2688321", "nota": "Salud física y mental, recetas, SOME." },
+    { "nombre": "ChileAtiende", "dato": "101 · chileatiende.cl", "nota": "Bonos y beneficios del Estado con tu RUT." },
+    { "nombre": "SENAPRED", "dato": "senapred.cl", "nota": "Alertas oficiales y recomendaciones por tipo de amenaza." }
+  ],
+  "mochila": {
+    "intro": "La mochila de 72 horas se prepara ANTES. Una por familia, junto a la puerta.",
+    "items": ["Agua (2 L por persona) + alimento no perecible", "Documentos en bolsa hermética (o fotos en el celular)", "Remedios de uso diario + receta", "Linterna + radio a pilas + pilas", "Abrigo, muda y zapatos cerrados", "Cargador y batería externa", "Útiles de aseo + pañales si hay bebés", "Correa y alimento de mascotas", "Dinero en efectivo (poco)", "Copia de llaves y números escritos en papel"],
+    "tip": "Revísala cada cambio de estación con toda la familia (lleva la fecha al calendario con 📌)."
+  },
+  "fuentes": "DIDECO Penco · penco.cl (Plan Costo Cero, feb 2026) · SENAPRED · ChileAtiende · CESFAM Penco/Lirquén. Verifica vigencia de cada ayuda en DIDECO y OIRS.",
+  "actualizado": "2026-09"
+}
