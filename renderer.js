@@ -5081,13 +5081,178 @@ function renderMealMenus(){
     setTimeout(()=> $('statusMsg').textContent='',1500);
   });
 }
+// === RECETAS (Comidas > pestaña 🍳) ===
+const RECETAS_BASE = [
+  { id:'r1', nombre:'Lentejas guisadas Penco', cat:'Almuerzo', tiempo:35, dif:'Fácil', costo:'$', kcal:520, porc:'4 platos', tags:'lentejas legumbre hierro economico invierno guiso sin carne',
+    ing:['2 tazas lentejas (remojadas 4h o noche anterior)','1 cebolla picada','1 zanahoria rallada','1 diente ajo','1 cda aceite','1/2 pimentón picado','Sal, orégano, laurel','Arroz para acompañar (opcional)'],
+    pasos:['Enjuaga y cose las lentejas en 6 tazas de agua con laurel 20 min.','Aparte sofríe cebolla, ajo, pimentón y zanahoria 5 min.','Junta sofrito con lentejas, sazona y cocina 10 min más.','Sirve con arroz o pan. Guarda resto para mañana.'] },
+  { id:'r2', nombre:'Porotos con riendas', cat:'Almuerzo', tiempo:50, dif:'Media', costo:'$', kcal:640, porc:'5 platos', tags:'porotos fideos tallarines chilena invierno energia',
+    ing:['2 tazas porotos (remojados noche anterior)','120g tallarines o espagueti trozados','1 cebolla','1 zanahoria','1 trozo zapallo 200g','Ajo, ají de color, orégano, sal'],
+    pasos:['Cose porotos en agua con sal 35 min (olla común) u 20 min (presión).','Agrega zapallo en cubos y cocina 10 min.','Sofríe cebolla + zanahoria + ají de color y añade.','Agrega fideos trozados y cocina 8-10 min. Sirve caliente.'] },
+  { id:'r3', nombre:'Charquicán criollo', cat:'Almuerzo', tiempo:40, dif:'Fácil', costo:'$', kcal:480, porc:'4 platos', tags:'papa zapallo choclo carne molida charquican chilena',
+    ing:['4 papas medianas en cubos','200g zapallo en cubos','1 choclo desgranado o 1 taza congelado','1 zanahoria picada','150g carne molida o cochayuyo cocido','1 cebolla, ajo, ají de color, sal'],
+    pasos:['Cose papas + zapallo + zanahoria en agua con sal 20 min.','Sofríe carne con cebolla y aliños.','Mezcla todo, muele a medias con cuchara de palo.','Agrega choclo 5 min. Sirve con huevo frito opcional.'] },
+  { id:'r4', nombre:'Cazuela de pollo de campo', cat:'Almuerzo', tiempo:55, dif:'Media', costo:'$$', kcal:560, porc:'4 platos', tags:'pollo cazuela papa choclo zapallo chilena invierno consome',
+    ing:['4 trutros de pollo','4 papas','4 trozos zapallo','2 trozos choclo','1 zanahoria en bastones','1/2 cebolla, ajo, orégano, sal, arroz 4 cdas'],
+    pasos:['Sella pollo en olla, agrega 2L agua caliente + aliños.','Añade papas, zapallo, zanahoria y arroz; cocina 25 min.','Agrega choclo y cocina 10 min más.','Ajusta sal y sirve con cilantro.'] },
+  { id:'r5', nombre:'Tortilla de espinaca + ensalada', cat:'Cena', tiempo:25, dif:'Fácil', costo:'$', kcal:320, porc:'2-3 porciones', tags:'huevo espinaca tortilla cena liviana vegetariano hierro',
+    ing:['5 huevos','1 atado espinaca lavada y picada','1/2 cebolla picada fina','Sal, pimienta','Ensalada: tomate + lechuga + limón'],
+    pasos:['Saltea cebolla 3 min, agrega espinaca 2 min y enfría un poco.','Bate huevos, mezcla con verduras y sazona.','Cocina en sartén tapada 8-10 min a fuego bajo, voltea.','Sirve con ensalada y pan integral.'] },
+  { id:'r6', nombre:'Pescado al horno con quinoa (jurel/merluza)', cat:'Almuerzo', tiempo:30, dif:'Fácil', costo:'$$', kcal:510, porc:'2 porciones', tags:'pescado jurel merluza quinoa omega costa saludable',
+    ing:['2 filetes jurel o merluza 150g c/u','1 taza quinoa','Limón, ajo, orégano, aceite','1 taza brócoli','Sal'],
+    pasos:['Enjuaga quinoa y cose 1:2 agua 15 min.','Aliña pescado con limón, ajo y orégano 10 min.','Hornea 180°C 12-15 min + brócoli al vapor.','Sirve pescado sobre quinoa con verduras.'] },
+  { id:'r7', nombre:'Avena overnight con manzana', cat:'Desayuno', tiempo:10, dif:'Fácil', costo:'$', kcal:340, porc:'1 frasco', tags:'avena desayuno frio manzana fibra rapido sin cocinar',
+    ing:['1/2 taza avena','3/4 taza leche o yogur','1/2 manzana rallada','1 cdta miel','Canela','5 almendras picadas'],
+    pasos:['Mezcla todo en frasco, tapa y refrigera noche anterior (6h+).','En la mañana revuelve y agrega fruta.','Lleva al trabajo/liceo. Dura 2 días refrigerada.'] },
+  { id:'r8', nombre:'Pan con huevo y palta (desayuno power)', cat:'Desayuno', tiempo:12, dif:'Fácil', costo:'$', kcal:420, porc:'1 persona', tags:'desayuno huevo palta pan energia proteina',
+    ing:['2 rebanadas pan integral o marraqueta','2 huevos','1/2 palta','Sal, merken o pimienta','Tomate en rodajas (opcional)'],
+    pasos:['Tuesta pan.','Cocina huevos revueltos o a la plancha 4 min.','Arma: pan + palta molida + huevo + aliño.','Acompaña con té o leche.'] },
+  { id:'r9', nombre:'Ensalada fría de lentejas', cat:'Cena', tiempo:20, dif:'Fácil', costo:'$', kcal:380, porc:'2 porciones', tags:'ensalada lentejas fria verano fibra vegetariano',
+    ing:['1 1/2 taza lentejas cocidas frías','1 tomate picado','1/2 pepino picado','1/4 cebolla morada','Limón, aceite, sal, cilantro','Queso fresco 40g (opcional)'],
+    pasos:['Mezcla lentejas frías con verduras picadas.','Aliña con limón + aceite + sal.','Reposa 5 min y sirve con queso encima.'] },
+  { id:'r10', nombre:'Sopa de verduras con huevo', cat:'Cena', tiempo:25, dif:'Fácil', costo:'$', kcal:280, porc:'3 platos', tags:'sopa verduras huevo liviana noche invierno economico',
+    ing:['2 papas','2 zanahorias','1 taza zapallo','1 puñado espinaca o acelga','2 huevos','Caldo o agua + sal, orégano'],
+    pasos:['Hierve verduras picadas 18 min.','Bate huevos y agrégalos en hilo revolviendo.','Añade espinaca 2 min. Sirve con pan tostado.'] },
+  { id:'r11', nombre:'Cochayuyo con papas doradas', cat:'Almuerzo', tiempo:45, dif:'Media', costo:'$', kcal:450, porc:'3 platos', tags:'cochayuyo alga costa yodo hierro chilena mar',
+    ing:['1 atado cochayuyo remojado noche anterior','3 papas cocidas','1 cebolla','Ajo, ají de color, sal, limón','Cilantro'],
+    pasos:['Cose cochayuyo 25-30 min hasta blando, pica.','Sofríe cebolla + aliños, agrega cochayuyo 5 min.','Dora papas cocidas en sartén.','Sirve cochayuyo sobre papas con limón.'] },
+  { id:'r12', nombre:'Pebre + huevito y ensalada chilena', cat:'Snack', tiempo:15, dif:'Fácil', costo:'$', kcal:150, porc:'1 bowl', tags:'pebre tomate cebolla cilantro snack acompañamiento asado',
+    ing:['2 tomates picados fino','1/2 cebolla picada fina','1 puñado cilantro','1 cda aceite, limón, sal','Ají o merken a gusto'],
+    pasos:['Pica todo fino y mezcla.','Aliña y deja reposar 10 min.','Sirve con pan, huevito duro o ensalada chilena.'] },
+  { id:'r13', nombre:'Yogur con avena y berries', cat:'Snack', tiempo:5, dif:'Fácil', costo:'$', kcal:250, porc:'1 vaso', tags:'yogur avena snack colacion proteina berries rapido',
+    ing:['1 yogur natural 200g','3 cdas avena','1/2 taza berries o fruta picada','1 cdta miel (opcional)'],
+    pasos:['Mezcla yogur + avena, deja 3 min.','Corona con fruta y miel.','Ideal post-entreno o colación liceo.'] },
+  { id:'r14', nombre:'Manzanas asadas con avena (postre sano)', cat:'Postre', tiempo:25, dif:'Fácil', costo:'$', kcal:220, porc:'2 porciones', tags:'postre manzana avena canela horno dulce sano',
+    ing:['2 manzanas','4 cdas avena','1 cda miel','Canela','Nueces picadas (opcional)'],
+    pasos:['Ahueca manzanas un poco, rellena con avena + miel + canela.','Hornea 180°C 18-20 min.','Sirve tibio con yogur.'] }
+];
+function getRecetasData(){
+  const u=userData();
+  if(!u.recetas) u.recetas={ propias:[], favs:[] };
+  if(!Array.isArray(u.recetas.propias)) u.recetas.propias=[];
+  if(!Array.isArray(u.recetas.favs)) u.recetas.favs=[];
+  return u.recetas;
+}
+function getTodasRecetas(){
+  const d=getRecetasData();
+  const mias=(d.propias||[]).map(r=> ({...r, mia:true}));
+  return [...mias, ...RECETAS_BASE];
+}
+function recetasFiltradas(){
+  const q=($('recSearch')?.value||'').trim().toLowerCase();
+  const cat=$('recCat')?.value||'';
+  const tMax=parseInt($('recTiempo')?.value||'')||0;
+  const costo=$('recCosto')?.value||'';
+  const soloFav=$('recSoloFav')?.checked;
+  const soloMias=$('recSoloMias')?.checked;
+  const favs=getRecetasData().favs||[];
+  return getTodasRecetas().filter(r=>{
+    if(cat && r.cat!==cat) return false;
+    if(tMax && (r.tiempo||999)>tMax) return false;
+    if(costo && r.costo!==costo) return false;
+    if(soloFav && favs.indexOf(r.id)<0) return false;
+    if(soloMias && !r.mia) return false;
+    if(q){
+      const hay=(r.nombre+' '+r.cat+' '+(r.tags||'')+' '+(r.ing||[]).join(' ')).toLowerCase();
+      if(hay.indexOf(q)<0) return false;
+    }
+    return true;
+  });
+}
+function renderMealRecetas(){
+  const lista=$('recetasLista'); if(!lista) return;
+  const cnt=$('recCount');
+  const data=getRecetasData();
+  const favs=data.favs||[];
+  const rs=recetasFiltradas();
+  if(cnt) cnt.textContent=rs.length+' receta(s) · '+favs.length+' favorita(s) · '+RECETAS_BASE.length+' base + '+(data.propias||[]).length+' mías';
+  if(!rs.length){ lista.innerHTML='<p class="muted">Sin resultados. Prueba otra búsqueda o crea tu receta abajo.</p>'; return; }
+  lista.innerHTML=rs.map(r=>{
+    const esFav=favs.indexOf(r.id)>=0;
+    return `<div class="si-card" style="border-left:3px solid ${r.mia?'#7ab8ff':'var(--gold)'}">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+        <h4 style="margin:0">${escapeHtml(r.nombre)} ${r.mia?'<span class="chip">mía</span>':''}</h4>
+        <button data-fav="${r.id}" class="btn btn-icon" style="padding:4px 8px" title="Favorita">${esFav?'⭐':'☆'}</button>
+      </div>
+      <p class="muted" style="font-size:11px;margin:4px 0">${escapeHtml(r.cat||'')} · ⏱ ${r.tiempo||'—'} min · ${escapeHtml(r.dif||'Fácil')} · ${escapeHtml(r.costo||'$')} · ~${r.kcal||'—'} kcal · ${escapeHtml(r.porc||'')}</p>
+      <div id="recDet_${r.id}" class="hidden" style="font-size:11.5px;color:#cdd3ee;line-height:1.55;margin-top:6px">
+        <b>Ingredientes:</b><ul style="margin:4px 0 4px 18px">${(r.ing||[]).map(i=>'<li>'+escapeHtml(i)+'</li>').join('')}</ul>
+        <b>Pasos:</b><ol style="margin:4px 0 4px 18px">${(r.pasos||[]).map(p=>'<li>'+escapeHtml(p)+'</li>').join('')}</ol>
+      </div>
+      <div class="dlg-actions" style="justify-content:flex-start;margin-top:8px;flex-wrap:wrap">
+        <button data-ver="${r.id}" class="btn" style="width:auto">👁️ Ver</button>
+        <button data-plan="${r.id}" class="btn btn-accent" style="width:auto">🥗 Al plan</button>
+        <button data-lista="${r.id}" class="btn" style="width:auto">🛒 A lista</button>
+        ${r.mia?`<button data-del="${r.id}" class="btn" style="width:auto">🗑️ Borrar</button>`:''}
+      </div>
+    </div>`;
+  }).join('');
+  lista.querySelectorAll('[data-ver]').forEach(b=> b.onclick=()=>{
+    const d=$('recDet_'+b.dataset.ver); if(d) d.classList.toggle('hidden');
+  });
+  lista.querySelectorAll('[data-fav]').forEach(b=> b.onclick=()=>{
+    const id=b.dataset.fav; const dd=getRecetasData();
+    const i=dd.favs.indexOf(id);
+    if(i>=0) dd.favs.splice(i,1); else dd.favs.push(id);
+    scheduleSave(); renderMealRecetas();
+  });
+  lista.querySelectorAll('[data-plan]').forEach(b=> b.onclick=()=>{
+    const r=getTodasRecetas().find(x=>x.id===b.dataset.plan); if(!r) return;
+    const txt=r.nombre+' ('+(r.ing||[]).slice(0,4).join(', ')+')';
+    if(r.cat==='Desayuno' && $('mealBreakfast')) $('mealBreakfast').value=txt.slice(0,80);
+    else if(r.cat==='Almuerzo' && $('mealLunch')) $('mealLunch').value=txt.slice(0,80);
+    else if(r.cat==='Cena' && $('mealDinner')) $('mealDinner').value=txt.slice(0,80);
+    else if($('mealSnack')) $('mealSnack').value=txt.slice(0,80);
+    if($('mealNotes')) $('mealNotes').value='Receta: '+r.nombre;
+    showMealTab('plan');
+    setTimeout(()=>{ try{ renderMealNutritionBox(); renderMealSuggestionsBox(); renderMealCompareBox(); }catch(e){} },80);
+    if($('statusMsg')){ $('statusMsg').textContent='Receta cargada — pulsa Guardar día'; setTimeout(()=>$('statusMsg').textContent='',2000); }
+  });
+  lista.querySelectorAll('[data-lista]').forEach(b=> b.onclick=()=>{
+    const r=getTodasRecetas().find(x=>x.id===b.dataset.lista); if(!r) return;
+    const shop=getShoppingData();
+    (r.ing||[]).slice(0,12).forEach(ing=>{
+      const name=ing.split(',')[0].slice(0,40);
+      if(name) shop.items.push({ id:'s'+Date.now()+Math.random().toString(36).slice(2,5), name:name, qty:'', cat:'Otros', done:false });
+    });
+    scheduleSave(); try{ renderShoppingList(); }catch(e){}
+    if($('statusMsg')){ $('statusMsg').textContent='Ingredientes a 🛒 ('+r.nombre.slice(0,24)+')'; setTimeout(()=>$('statusMsg').textContent='',1800); }
+  });
+  lista.querySelectorAll('[data-del]').forEach(b=> b.onclick=()=>{
+    if(!confirm('¿Borrar tu receta?')) return;
+    const dd=getRecetasData();
+    dd.propias=dd.propias.filter(x=>x.id!==b.dataset.del);
+    dd.favs=dd.favs.filter(x=>x!==b.dataset.del);
+    scheduleSave(); renderMealRecetas();
+  });
+}
+function setupRecetasTab(){
+  const bind=(id, ev)=>{ const el=$(id); if(el) el[ev==='input'?'oninput':'onchange']=()=>{ try{ renderMealRecetas(); }catch(e){} }; };
+  bind('recSearch','input'); bind('recCat','change'); bind('recTiempo','change'); bind('recCosto','change'); bind('recSoloFav','change'); bind('recSoloMias','change');
+  const g=$('recGuardar'); if(g) g.onclick=()=>{
+    const nombre=($('recNombre').value||'').trim();
+    const ing=($('recIng').value||'').split('\n').map(s=>s.trim()).filter(Boolean);
+    const pasos=($('recPasos').value||'').split('\n').map(s=>s.trim()).filter(Boolean);
+    if(!nombre || !ing.length || !pasos.length){ if($('recStatus')){ $('recStatus').textContent='Completa nombre, ingredientes y pasos'; setTimeout(()=>$('recStatus').textContent='',1800); } return; }
+    const cat=$('recNuevaCat').value||'Almuerzo';
+    const tiempo=parseInt($('recTiempoN').value)||30;
+    const d=getRecetasData();
+    d.propias.push({ id:'m'+Date.now(), nombre:nombre.slice(0,60), cat, tiempo, dif:'Casera', costo:'$', kcal:'—', porc:'', tags:nombre.toLowerCase(), ing:ing.slice(0,20), pasos:pasos.slice(0,20) });
+    scheduleSave();
+    $('recNombre').value=''; $('recIng').value=''; $('recPasos').value='';
+    if($('recStatus')){ $('recStatus').textContent='Receta guardada ✓'; setTimeout(()=>$('recStatus').textContent='',1800); }
+    renderMealRecetas();
+  };
+  const l=$('recLimpiar'); if(l) l.onclick=()=>{ ['recNombre','recIng','recPasos','recTiempoN'].forEach(id=>{ const e=$(id); if(e) e.value=''; }); };
+}
 function showMealTab(tab){
-  const pPlan=$('mealPlanPanel'), pCalc=$('mealCalcPanel'), pMenus=$('mealMenusPanel');
-  const tPlan=$('tabMealPlan'), tCalc=$('tabMealCalc'), tMenus=$('tabMealMenus');
-  [tPlan,tCalc,tMenus].forEach(b=> b&&b.classList.remove('btn-accent'));
-  [pPlan,pCalc,pMenus].forEach(p=> p&&p.classList.add('hidden'));
+  const pPlan=$('mealPlanPanel'), pCalc=$('mealCalcPanel'), pMenus=$('mealMenusPanel'), pRec=$('mealRecetasPanel');
+  const tPlan=$('tabMealPlan'), tCalc=$('tabMealCalc'), tMenus=$('tabMealMenus'), tRec=$('tabMealRecetas');
+  [tPlan,tCalc,tMenus,tRec].forEach(b=> b&&b.classList.remove('btn-accent'));
+  [pPlan,pCalc,pMenus,pRec].forEach(p=> p&&p.classList.add('hidden'));
   if(tab==='plan'){ tPlan&&tPlan.classList.add('btn-accent'); pPlan&&pPlan.classList.remove('hidden'); }
   else if(tab==='calc'){ tCalc&&tCalc.classList.add('btn-accent'); pCalc&&pCalc.classList.remove('hidden'); }
+  else if(tab==='recetas'){ tRec&&tRec.classList.add('btn-accent'); pRec&&pRec.classList.remove('hidden'); try{ renderMealRecetas(); }catch(e){} }
   else { tMenus&&tMenus.classList.add('btn-accent'); pMenus&&pMenus.classList.remove('hidden'); }
 }
 function loadMealDate(k){
@@ -5136,10 +5301,12 @@ function setupMealDialog(){
     alert('Añadido a 🛒 Compras');
   };
   // tabs meal
-  const tPlan=$('tabMealPlan'), tCalc=$('tabMealCalc'), tMenus=$('tabMealMenus');
+  const tPlan=$('tabMealPlan'), tCalc=$('tabMealCalc'), tMenus=$('tabMealMenus'), tRec=$('tabMealRecetas');
   if(tPlan) tPlan.onclick=()=> showMealTab('plan');
   if(tCalc) tCalc.onclick=()=> { const prof=getNutritionProfile(); if($('calcSexo')) $('calcSexo').value=prof.sexo; renderCalcResultado(); showMealTab('calc'); };
   if(tMenus) tMenus.onclick=()=> { renderMealMenus(); showMealTab('menus'); };
+  if(tRec) tRec.onclick=()=> showMealTab('recetas');
+  try{ setupRecetasTab(); }catch(e){}
   const calcBtn=$('calcCalcular'); if(calcBtn) calcBtn.onclick=()=>{
     const prof=getNutritionProfile();
     prof.sexo=$('calcSexo').value; prof.edad=parseInt($('calcEdad').value)||0; prof.peso=parseFloat($('calcPeso').value)||0; prof.altura=parseInt($('calcAltura').value)||0; prof.actividad=$('calcActividad').value; prof.objetivo=$('calcObjetivo').value; prof.prote=$('calcProte').value;
@@ -5984,7 +6151,7 @@ const BTN_HOME = {
   btnStudy:['aprender','estudio'],btnMemory:['aprender','estudio'],btnMapu:['aprender','estudio'],btnEnglish:['aprender','estudio'],btnGuitar:['aprender','estudio'],
   btnAjedrez:['aprender','juegos'],btnSudoku:['aprender','juegos'],
   btnTales:['aprender','infancias'],btnCrianza:['aprender','infancias'],btnAdolescencia:['aprender','infancias'],
-  btnPsico:['linaje','interior'],btnPsicologia:['linaje','interior'],btnEneagrama:['linaje','interior'],btnMetodos:['linaje','interior'],btnRecap:['linaje','interior'],btnEspiritual:['linaje','interior'],btnDueloFull:['linaje','interior'],
+  btnPsico:['linaje','interior'],btnPsicologia:['linaje','interior'],btnEneagrama:['linaje','interior'],btnMetodos:['linaje','interior'],btnNeurodiversidad:['linaje','interior'],btnRecap:['linaje','interior'],btnEspiritual:['linaje','interior'],btnDueloFull:['linaje','interior'],
   btnArbolFull:['linaje','familia'],btnVozAbuelos:['linaje','familia'],btnAdultez:['linaje','familia'],btnVejez:['linaje','familia'],
   btnMeal:['hogar','casa'],btnShopping:['hogar','casa'],btnFinance:['hogar','casa'],btnHomeTasks:['hogar','casa'],btnBodega:['hogar','casa'],btnDespensa:['hogar','casa'],btnCloset:['hogar','casa'],
   btnEnergy:['hogar','energia'],btnLena:['hogar','energia'],btnTaller:['hogar','energia'],btnHerramientas:['hogar','energia'],btnMecanica:['hogar','energia'],btnConvert:['hogar','energia'],
@@ -6005,7 +6172,7 @@ const BTN_ORDER = {
   'aprender|estudio':['btnStudy','btnMemory','btnMapu','btnEnglish','btnGuitar'],
   'aprender|juegos':['btnAjedrez','btnSudoku'],
   'aprender|infancias':['btnTales','btnCrianza','btnAdolescencia'],
-  'linaje|interior':['btnPsico','btnPsicologia','btnEneagrama','btnMetodos','btnRecap','btnEspiritual','btnDueloFull'],
+  'linaje|interior':['btnPsico','btnPsicologia','btnEneagrama','btnMetodos','btnNeurodiversidad','btnRecap','btnEspiritual','btnDueloFull'],
   'linaje|familia':['btnArbolFull','btnVozAbuelos','btnAdultez','btnVejez'],
   'hogar|casa':['btnMeal','btnShopping','btnFinance','btnHomeTasks','btnBodega','btnDespensa','btnCloset'],
   'hogar|energia':['btnEnergy','btnLena','btnTaller','btnHerramientas','btnMecanica','btnConvert'],

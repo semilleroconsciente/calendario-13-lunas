@@ -1,7 +1,7 @@
 // Service Worker — Calendario 13 Lunas (offline-first, tolerante a versiones ?v=)
-// v28: + territorio.js + data/territorios/** (datos por territorio) + flora.js
+// v29: + Recetas en Comidas (renderer.js?v=9)
 
-const CACHE = 'cal13-v28-offline';
+const CACHE = 'cal13-v29-offline';
 
 // Lista completa de archivos que usa index.html (bare + con ?v=).
 // Si se agrega un JS nuevo en index.html, agregarlo aquí también (bare y ?v=).
@@ -46,6 +46,7 @@ const CORE = [
   './cal.js?v=8',
   './renderer.js',
   './renderer.js?v=8',
+  './renderer.js?v=9',
   './nuevos-modulos.js',
   './nuevos-modulos.js?v=8',
   './linaje-modulos.js',

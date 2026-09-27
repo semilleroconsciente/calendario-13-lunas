@@ -329,14 +329,14 @@ function ndRefresh() { renderNdTop(); renderNdHist(); renderNdPlan(); }
 /* ---------------- SETUP ---------------- */
 function placeButton(btn) {
   try {
-    var ref = $('btnPsicologia');
+    var ref = $('btnMetodos') || $('btnEneagrama') || $('btnPsicologia') || $('btnPsico');
     if (ref && ref.parentNode) { ref.parentNode.insertBefore(btn, ref.nextSibling); return; }
     var g = document.querySelector('.action-group[data-group="linaje"] .group-btns');
     if (g) g.appendChild(btn);
   } catch (e) {}
 }
 function setup() {
-  /* 1) boton al lado de Psicologia (Linaje > Interior) */
+  /* 1) boton despues de Metodos (Linaje > Interior) */
   try {
     if (!$('btnNeurodiversidad')) {
       var btn = document.createElement('button');

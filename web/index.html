@@ -141,9 +141,9 @@
         <div class="group-btns">
           <span class="sub-label" data-sub="interior">🔥 Interior</span>
           <button id="btnPsico" class="btn" data-sub="interior" data-keywords="psicoanalisis autoconocimiento sombra jung inconsciente sueños terapia cognitivo conductual tcc gestalt silla vacia eneagrama mbti big five journaling diario estoico senecca marco aurelio mayeutica socrates mindfulness vipassana atma vichara quien soy bioenergetica feldenkrais cuerpo arte escritura salud mental">🪞 Autoconocimiento</button>
+          <button id="btnEneagrama" class="btn" data-sub="interior" data-keywords="eneagrama eneatipo personalidad test autoconocimiento reformador ayudador triunfador artista investigador leal entusiasta desafiador pacificador alas flechas subtipo instinto virtud pasion">🔺 Eneagrama</button>
           <button id="btnMetodos" class="btn" data-sub="interior" data-keywords="metodos visiones estoicismo tao tolteca budismo yogananda gurdjieff grinberg jung freud psicoanalisis frankl logoterapia sentido zen zazen patanjali ashtanga grof transpersonal hermetismo kybalion cuatro acuerdos wu wei kriya cuarto camino sintergia arquetipos filosofia espiritualidad conny mendez metafisica decreto ikigai proposito gnosis interior reiki usui energia manos gokai hoponopono ho'oponopono hawaii perdon gracias te amo limpieza">📿 Métodos</button>
           <button id="btnRecap" class="btn" data-sub="interior" data-keywords="recapitulacion recapitular tolteca castaneda repaso vida perdon soltar energia ensueño acecho inventario liberacion">🔁 Recapitulación</button>
-          <button id="btnEneagrama" class="btn" data-sub="interior" data-keywords="eneagrama eneatipo personalidad test autoconocimiento reformador ayudador triunfador artista investigador leal entusiasta desafiador pacificador alas flechas subtipo instinto virtud pasion">🔺 Eneagrama</button>
           <button id="btnEspiritual" class="btn" data-sub="interior" data-keywords="practicas espirituales sol amanecer atardecer agua solarizada ducha fria grounding earthing luz roja noche ritual meditacion sungazing">🕉️ Prácticas Espirituales</button>
           <button id="btnDueloFull" class="btn" data-sub="interior" data-keywords="duelo luto perdida partida difunto despedida ritual memoria consuelo tristeza acompañamiento guia etapas">🕊️ Duelo</button>
           <span class="sub-label" data-sub="familia">🌳 Familia</span>
@@ -814,6 +814,7 @@
         <button type="button" id="tabMealPlan" class="btn btn-accent" style="width:auto">🥗 Plan</button>
         <button type="button" id="tabMealCalc" class="btn" style="width:auto">🧮 Calculadora</button>
         <button type="button" id="tabMealMenus" class="btn" style="width:auto">🍽️ Menús sugeridos</button>
+        <button type="button" id="tabMealRecetas" class="btn" style="width:auto">🍳 Recetas</button>
       </div>
       <div id="mealPlanPanel">
         <div class="conv-row">
@@ -903,6 +904,70 @@
           <h4>🔄 Cómo usar</h4>
           <p class="muted" style="font-size:11px;line-height:1.5">1) Calcula tu meta en 🧮 Calculadora y guarda. 2) Aquí ves menús que se acercan a tu meta (ej. 1800-2600 kcal) con ingredientes de feria Penco. 3) Toca <b>“Cargar en plan de hoy”</b> y se copia a 🥗 Plan. Luego ajusta porciones y guarda.</p>
           <p class="muted" style="font-size:10px">Menús son plantillas; adapta alergias, presupuesto y temporada. Si tienes condición médica, consulta profesional.</p>
+        </div>
+      </div>
+      <div id="mealRecetasPanel" class="hidden">
+        <div class="menstrual-card" style="border-color:var(--gold)">
+          <h4 style="color:var(--gold)">🍳 Recetas — cocina Penco y saludable</h4>
+          <p class="muted" style="font-size:11px">Base chilena económica + saludables. Guarda favoritas ⭐, crea las tuyas, cárgalas al plan 🥗 o mándalas a 🛒.</p>
+          <div class="conv-row">
+            <label style="flex:2">Buscar <input type="text" id="recSearch" placeholder="ej: lentejas, avena, sin carne..." maxlength="60"></label>
+            <label>Categoría
+              <select id="recCat">
+                <option value="">Todas</option>
+                <option value="Desayuno">Desayuno</option>
+                <option value="Almuerzo">Almuerzo</option>
+                <option value="Cena">Cena</option>
+                <option value="Snack">Snack / Colación</option>
+                <option value="Postre">Postre</option>
+              </select>
+            </label>
+            <label>Tiempo
+              <select id="recTiempo">
+                <option value="">Cualquiera</option>
+                <option value="15">≤15 min</option>
+                <option value="30">≤30 min</option>
+                <option value="60">≤60 min</option>
+              </select>
+            </label>
+          </div>
+          <div class="conv-row">
+            <label>Costo
+              <select id="recCosto">
+                <option value="">Cualquiera</option>
+                <option value="$">$ económico</option>
+                <option value="$$">$$ medio</option>
+              </select>
+            </label>
+            <label style="align-self:flex-end;flex-direction:row;align-items:center;gap:6px"><input type="checkbox" id="recSoloFav" style="width:auto"> ⭐ Solo favoritas</label>
+            <label style="align-self:flex-end;flex-direction:row;align-items:center;gap:6px"><input type="checkbox" id="recSoloMias" style="width:auto"> 📝 Solo mías</label>
+          </div>
+          <p class="muted" id="recCount" style="font-size:11px;margin:6px 0 0"></p>
+        </div>
+        <div id="recetasLista" style="margin-top:10px"></div>
+        <div class="menstrual-card" style="margin-top:10px">
+          <h4>📝 Mi receta</h4>
+          <div class="conv-row">
+            <label style="flex:2">Nombre <input type="text" id="recNombre" placeholder="ej: Charquicán de la abuela" maxlength="60"></label>
+            <label>Categoría
+              <select id="recNuevaCat">
+                <option value="Almuerzo">Almuerzo</option>
+                <option value="Desayuno">Desayuno</option>
+                <option value="Cena">Cena</option>
+                <option value="Snack">Snack / Colación</option>
+                <option value="Postre">Postre</option>
+              </select>
+            </label>
+            <label>Tiempo min <input type="number" id="recTiempoN" min="5" max="240" step="5" placeholder="30" style="width:80px"></label>
+          </div>
+          <label>Ingredientes (uno por línea) <textarea id="recIng" rows="3" placeholder="2 tazas de lentejas&#10;1 cebolla picada&#10;1 zanahoria rallada"></textarea></label>
+          <div style="height:6px"></div>
+          <label>Pasos (uno por línea) <textarea id="recPasos" rows="3" placeholder="1. Remoja lentejas 4h&#10;2. Sofríe cebolla y zanahoria&#10;3. Cocina 25 min y sirve"></textarea></label>
+          <div class="dlg-actions" style="justify-content:flex-start;margin-top:8px">
+            <button type="button" id="recGuardar" class="btn btn-accent" style="width:auto">💾 Guardar mi receta</button>
+            <button type="button" id="recLimpiar" class="btn" style="width:auto">Limpiar</button>
+            <span id="recStatus" class="muted" style="font-size:11px;align-self:center"></span>
+          </div>
         </div>
       </div>
       <div class="dlg-actions"><button type="button" id="mealClose" class="btn">Cerrar</button></div>
@@ -2112,7 +2177,7 @@
            <h4>🧠 Aprender, Crear y Jugar · 🪞 Interior y Linaje</h4>
               <p><b>🧠 Estudio e Idiomas:</b> 🧠 Estudio (recuperación, espaciada, Feynman, mnemotecnias + lectura veloz) · 🧩 Memoria (Palacio Loci, Pares, secuencia, simon, Schulte) · 🗣️ Kimün Mapuzugun (palabra del día, números, quiz con racha) · Ingles A1→C1 · 🎶 Instrumentos (guitarra 3 niveles + ukelele, flauta/quena, teclado, cajón, canto + afinador, metrónomo, bitácora).</p>
               <p><b>🧠 Juegos:</b> ♟️ Ajedrez + 🔢 Sudoku. <b>🧒 Infancias y juventudes:</b> 📖 Cuentos (13 lunares, editables) · 🧒 Crianza (0-12) · 🌱 Adolescencia (10-19: cuerpo, mente, estudio+Holland, seguridad, mi espacio).</p>
-              <p><b>🪞 Interior:</b> 🪞 Autoconocimiento (12 guías) · 🧠 Psicología · 🧠 Neurodiversidad (guía, 8 perfiles, 8 apoyos, tests AQ-10/ASRS-6, tarjeta de acceso — educativo, no diagnostica) · 🔺 Eneagrama · 📿 Métodos (20 fichas) · 🔁 Recapitulación · 🕉️ Prácticas Espirituales (temporizador + registro) · 🕊️ Duelo. <b>🌳 Familia:</b> 🌳 Árbol Genealógico · 🗣️ Voz de los Abuelos (grabador + desbloqueo por luna) · 🏠 Adultez · 🦉 Vejez Sabia.</p>
+              <p><b>🪞 Interior:</b> 🪞 Autoconocimiento (12 guías) · 🧠 Psicología · 🔺 Eneagrama · 📿 Métodos (20 fichas) · 🌈 Neurodiversidad (guía, 8 perfiles, 8 apoyos, tests AQ-10/ASRS-6, tarjeta de acceso — educativo, no diagnostica) · 🔁 Recapitulación · 🕉️ Prácticas Espirituales (temporizador + registro) · 🕊️ Duelo. <b>🌳 Familia:</b> 🌳 Árbol Genealógico · 🗣️ Voz de los Abuelos (grabador + desbloqueo por luna) · 🏠 Adultez · 🦉 Vejez Sabia.</p>
          </div>
           <div class="help-card" style="border-color:var(--gold)">
               <h4>🪞 Autoconocimiento — 12 guías básicas</h4>
@@ -3422,6 +3487,7 @@
             <label class="check-row"><input type="checkbox" data-btn="btnPsicologia"> 🧠 Psicología</label>
             <label class="check-row"><input type="checkbox" data-btn="btnEneagrama"> 🔺 Eneagrama</label>
             <label class="check-row"><input type="checkbox" data-btn="btnMetodos"> 📿 Métodos</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnNeurodiversidad"> 🌈 Neurodiversidad</label>
             <label class="check-row"><input type="checkbox" data-btn="btnRecap"> 🔁 Recapitulación</label>
             <label class="check-row"><input type="checkbox" data-btn="btnEspiritual"> 🕉️ Prácticas Espirituales</label>
             <label class="check-row"><input type="checkbox" data-btn="btnDueloFull"> 🕊️ Duelo</label>
@@ -3928,7 +3994,7 @@
   <script src="territorio.js?v=1"></script>
   <script src="frases.js?v=8"></script>
   <script src="cal.js?v=8"></script>
-  <script src="renderer.js?v=8"></script>
+  <script src="renderer.js?v=9"></script>
   <script src="nuevos-modulos.js?v=8"></script>
   <script src="linaje-modulos.js?v=1"></script>
   <script src="eneagrama-modulo.js?v=1"></script>
