@@ -60,6 +60,7 @@
       "municipalidad-penco.js",
       "bomberos-penco.js",
       "apoyo-emergencia.js",
+      "actores-territorio.js",
       "sw.js",
       "manifest.json",
       "donate.json",

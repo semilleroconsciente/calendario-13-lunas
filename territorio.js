@@ -14,7 +14,7 @@
      historia/aves-bosque.json | historia-aves.json | historia-pesca.json
       eventos.json | cultivos/asociaciones.json | cultivos/preparados.json
       talleres.json | consejos-bosque.json | municipalidad.json
-      bomberos.json | apoyo-emergencia.json
+      bomberos.json | apoyo-emergencia.json | actores.json
 
    Para replicar en otro territorio:
      1. Duplica data/territorios/penco -> data/territorios/<nuevo-id>
@@ -149,6 +149,7 @@ async function cargarTerritorio(id) {
   var bomb = await opt('bomberos.json');
   var apoyo = await opt('apoyo-emergencia.json');
   var consBosque = await opt('consejos-bosque.json');
+  var actores = await opt('actores.json');
 
   // 3) normalizar con fallback a data.js
   function conOrigen(clave, valJson, valFb) {
@@ -219,6 +220,7 @@ async function cargarTerritorio(id) {
     municipalidad: muni || null,
     bomberos: bomb || null,
     apoyo: apoyo || null,
+    actores: actores || null,
     donate: fb.DONATE
   };
 
@@ -320,6 +322,7 @@ api.listo = cargarTerritorio(idInicial).then(function (T) {
       municipalidad: null,
       bomberos: null,
       apoyo: null,
+      actores: null,
       donate: fb.DONATE
     };
   } catch (e2) {}

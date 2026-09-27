@@ -181,6 +181,24 @@ textarea {
 .tide-mini td { border-top: 1px solid var(--line); padding: 5px 6px; }
 .tide-mini td:first-child { color: #ffd98a; font-weight: 600; }
 @media (max-width: 920px) { .tides-3col { grid-template-columns: 1fr; } }
+.tide-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+@media (max-width: 920px) { .tide-grid2 { grid-template-columns: 1fr; } }
+.tide-card.tide-now { border-color: var(--gold); }
+.tide-prog { height: 8px; background: var(--bg2); border: 1px solid var(--line); border-radius: 99px; overflow: hidden; margin-top: 8px; }
+.tide-prog-fill { height: 100%; background: linear-gradient(90deg,#8fd694,#4da3ff); }
+.tide-daynav { display: flex; gap: 6px; flex-wrap: wrap; margin: 10px 0; }
+.tide-daybtn { width: auto; font-size: 12px; padding: 6px 10px; }
+.tide-sel { margin-top: 2px; border-color: var(--gold); }
+.tide-selgrid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 12px; margin-top: 8px; }
+@media (max-width: 920px) { .tide-selgrid { grid-template-columns: 1fr; } }
+.tide-ventana { font-size: 11px; color: var(--muted); }
+.tide-curve { width: 100%; height: auto; background: var(--bg2); border: 1px solid var(--line); border-radius: 8px; padding: 4px; }
+.tide-best { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; margin-top: 8px; }
+.tide-list { margin: 8px 0 0 18px; font-size: 12px; color: #cdd3ee; line-height: 1.55; }
+.tide-list li { margin-bottom: 4px; }
+.tide-acts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
+@media (max-width: 920px) { .tide-acts { grid-template-columns: 1fr; } }
+.tide-acts > div { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; font-size: 12px; line-height: 1.5; }
 
 #weatherPanel {
   margin-top: 14px; max-width: 980px; background: var(--panel);
@@ -276,6 +294,9 @@ input::placeholder, textarea::placeholder { color: var(--muted); opacity: 1; }
 .ek-badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; margin-left: 6px; }
 .ek-badge.shukla { background: #d4a947; color: #10142c; }
 .ek-badge.krishna { background: #5d5486; color: #e8eaf6; }
+.eka-tabs { gap: 6px; }
+.eka-tabs .eka-tab { font-size: 12px; padding: 6px 10px; white-space: nowrap; }
+@media (max-width:600px){ .eka-tabs .eka-tab{ flex:1 1 45%; } }
 
 #siembraContent .si-card, #siembraHarvestBox .si-card {
   background: var(--card); border: 1px solid var(--line); border-radius: 10px;
@@ -458,8 +479,8 @@ body[data-theme="medianoche"] { --bg:#050508; --bg2:#0a0a10; --panel:#141418; --
 .tz-table tr.next-day td { background: #8fb8ff0d; }
 @media (max-width: 560px) { .tz-chile { grid-template-columns: 1fr; } .tz-diff-grid, .tz-steps { grid-template-columns: 1fr; } .tz-body { padding-left: 12px; } }
 
-#convertDialog, #timerDialog, #ekadashiDialog, #siembraDialog, #menstrualDialog, #medicDialog, #habitsDialog, #donateDialog, #helpDialog, #circadianDialog, #goldenDialog, #disciplineDialog, #dreamsDialog, #mealDialog, #shoppingDialog, #financeDialog, #energyDialog, #breathDialog, #scheduleDialog, #fishingDialog, #gymDialog, #birdsDialog, #intermarealDialog, #bosqueDialog, #floraDialog, #astroDialog, #comunaDialog, #talleresPencoDialog, #firstAidDialog, #animalCareDialog, #violenceDialog, #homeTasksDialog, #espiritualDialog, #psicoDialog, #metodosDialog, #ajedrezDialog { width: 520px; max-width: 96vw; max-height: 88vh; overflow-y: auto; }
-#helpDialog, #disciplineDialog, #dreamsDialog, #breathDialog, #scheduleDialog, #fishingDialog, #birdsDialog, #intermarealDialog, #bosqueDialog, #floraDialog, #astroDialog, #comunaDialog, #talleresPencoDialog, #studyDialog, #firstAidDialog, #animalCareDialog, #violenceDialog, #homeTasksDialog, #espiritualDialog, #psicoDialog, #metodosDialog, #vozDialog, #ajedrezDialog { width: 680px; }
+#convertDialog, #timerDialog, #ekadashiDialog, #siembraDialog, #menstrualDialog, #medicDialog, #nutriDialog, #habitsDialog, #donateDialog, #helpDialog, #circadianDialog, #goldenDialog, #disciplineDialog, #dreamsDialog, #mealDialog, #shoppingDialog, #financeDialog, #energyDialog, #breathDialog, #scheduleDialog, #fishingDialog, #gymDialog, #birdsDialog, #intermarealDialog, #bosqueDialog, #floraDialog, #astroDialog, #comunaDialog, #talleresPencoDialog, #firstAidDialog, #animalCareDialog, #violenceDialog, #homeTasksDialog, #espiritualDialog, #psicoDialog, #metodosDialog, #ajedrezDialog, #actoresDialog { width: 520px; max-width: 96vw; max-height: 88vh; overflow-y: auto; }
+#helpDialog, #disciplineDialog, #dreamsDialog, #breathDialog, #scheduleDialog, #fishingDialog, #birdsDialog, #intermarealDialog, #bosqueDialog, #floraDialog, #astroDialog, #comunaDialog, #talleresPencoDialog, #studyDialog, #firstAidDialog, #animalCareDialog, #violenceDialog, #homeTasksDialog, #espiritualDialog, #psicoDialog, #metodosDialog, #vozDialog, #ajedrezDialog, #actoresDialog { width: 680px; }
 /* ♟️ Ajedrez */
 .aj-wrap { max-width: 440px; margin: 0 auto; }
 .aj-board { display: grid; grid-template-columns: repeat(8, 1fr); gap: 0; border: 3px solid var(--gold); border-radius: 10px; overflow: hidden; }

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#0b1026">
   <title>Calendario de las 13 Lunas</title>
-  <link rel="stylesheet" href="styles.css?v=9">
+  <link rel="stylesheet" href="styles.css?v=10">
   <link rel="manifest" href="manifest.json">
 </head>
 <body>
@@ -121,6 +121,7 @@
           <span class="sub-label" data-sub="cuidado">🛟 Cuidado</span>
           <button id="btnMedic" class="btn" data-sub="cuidado" data-keywords="medicina medicamento hierba matico natural basica botiquin historia seguridad alergia dosis">🌿 Medicina</button>
           <button id="btnGym" class="btn" data-sub="cuidado" data-keywords="entrenamientos gym gimnasio terapia fisica fisioterapia calistenia practicas varias rutina ejercicio movilidad kine casa playa bosque multicancha plaza parque costanera piscina lugar">💪 Entrenamientos</button>
+          <button id="btnNutri" class="btn" data-sub="cuidado" data-keywords="nutricion nutrición comer sano plato saludable dieta vitaminas minerales proteinas fibra agua sellos menu alimentacion">🥗 Nutrición</button>
         </div>
       </details>
       <details class="action-group" data-group="aprender">
@@ -798,6 +799,27 @@
       <div class="dlg-actions" style="justify-content:space-between;align-items:center">
         <label class="check-row" style="margin:0"><input type="checkbox" id="medicNotify"> Notificaciones de medicamentos</label>
         <button type="button" id="medicClose" class="btn">Cerrar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="nutriDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">🥗 Nutrición — comer bien en Penco</h3>
+        <button type="button" id="nutriCloseTop" class="btn btn-icon" title="Cerrar" aria-label="Cerrar">✕</button>
+      </div>
+      <p class="muted" style="line-height:1.5">Guía educativa basada en las Guías Alimentarias de Chile (MINSAL). No es diagnóstico: si tienes diabetes, hipertensión, embarazo o desnutrición, pide hora con nutricionista en tu CESFAM.</p>
+      <div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">
+        <button type="button" data-nutri-tab="quees" class="btn btn-accent" style="width:auto;font-size:11px">📖 Qué es</button>
+        <button type="button" data-nutri-tab="guia" class="btn" style="width:auto;font-size:11px">🍽️ Guía básica</button>
+        <button type="button" data-nutri-tab="historia" class="btn" style="width:auto;font-size:11px">📜 Historia</button>
+        <button type="button" data-nutri-tab="penco" class="btn" style="width:auto;font-size:11px">🧺 En Penco</button>
+        <button type="button" data-nutri-tab="semana" class="btn" style="width:auto;font-size:11px">✅ Mi semana</button>
+      </div>
+      <div id="nutriBox"></div>
+      <div class="dlg-actions" style="justify-content:flex-end;margin-top:10px">
+        <button type="button" id="nutriClose" class="btn">Cerrar</button>
       </div>
     </form>
   </dialog>
@@ -2031,7 +2053,13 @@
         <h3 style="margin:0;color:var(--accent)">❤ Aporte voluntario — Mari Küla Küyen</h3>
         <button type="button" id="donateCloseTop" class="btn btn-icon" title="Cerrar" aria-label="Cerrar">✕</button>
       </div>
-      <p class="muted" style="line-height:1.55">Este calendario es gratuito y sin publicidad. Si te sirve para tu vida en Penco, tus rituales o tu huerta, tu aporte ayuda a mantenerlo, mejorar la app y sostener el trabajo. <b>Todo aporte es voluntario</b> — gracias desde la Bahía de Concepción.</p>
+      <p class="muted" style="line-height:1.55">Esta herramienta es gratuita, de código abierto y sin publicidad. Nació en Penco para acompañar tu vida entre lunas, mareas y bosque, y hoy también cuida tu bienestar interior, tu estudio y tu conexión con el territorio. Si te sirve en tu huerta, en la caleta, en tu proceso personal o en tu aula, tu aporte voluntario ayuda a:</p>
+      <ul class="muted" style="line-height:1.6;font-size:13px;margin:0 0 6px 18px">
+        <li>Mantener el servidor y los dominios activos.</li>
+        <li>Seguir mejorando la app (nuevos módulos, más territorios, sincronización segura).</li>
+        <li>Sostener este trabajo independiente y artesanal.</li>
+      </ul>
+      <p class="muted" style="line-height:1.55"><b>Todo aporte es voluntario y profundamente agradecido.</b><br>¡Küme mañum — muchas gracias desde la Bahía de Concepción! 🌙</p>
       <div class="donate-grid">
         <div class="donate-card">
           <h4>🛒 Mercado Pago</h4>
@@ -2104,11 +2132,11 @@
           </div>
           <div class="help-card">
             <h4>🗺️ Mapa rápido</h4>
-            <p><b>🌊 Territorio:</b> Mareas, Pesca, Aves, Clima (+Aire), Siembra (+Semillero), Astro, Penco (+Talleres), Ekadashi, Hora Dorada, Ritmo Circadiano, Intermareal, Bosque, Compost, Reciclaje, Flora, Huerta, Hidroponía.</p>
+            <p><b>🌊 Territorio:</b> Mareas, Pesca, Aves, Clima (+Aire), Siembra (+Semillero), Mi Huerta (+Electrocultura), Astro, Penco (+Talleres), Ekadashi, Hora Dorada, Ritmo Circadiano, Intermareal, Bosque, Compost, Reciclaje, Flora, Hidroponía.</p>
             <p><b>🌸 Cuerpo:</b> Ciclo, Fertilidad, Juventud, Climaterio, Medicina, Entrenamientos, Respiración, Sueños, Lawen, Prácticas Espirituales, Plantas.</p>
             <p><b>🧠 Mente:</b> Hábitos, Disciplina, Estudio, Horario, Cuentos, Crianza, Adolescencia, Memoria, Kimün, Inglés, Gratitud, Instrumentos, Autoconocimiento, Psicología, Neurodiversidad, Eneagrama y <b>Métodos</b>.</p>
             <p><b>🪞 Autoconocimiento:</b> Sombra (Jung), TCC, Gestalt, Tipologías, Journaling, Examen estoico, Mayéutica, Mindfulness, Atma Vichara, Vipassana, Cuerpo y Arte — cada una con guía básica de 5' + registro privado. Más Psicología, Neurodiversidad (AQ-10/ASRS-6, plan de acceso) y Etapas: Adultez, Vejez Sabia.</p>
-            <p><b>🍽️ Vida + 🚨 Emergencias + 🛠️ Herramientas:</b> Comidas, Compras, Finanzas, Tareas Hogar, Plantas, Bodega · Primeros Auxilios, Cuidado Animal, Violencia, Evacuación Tsunami, Red Comunitaria (Meshtastic/radio) · Conversión, Electricidad, Leña, Mecánica, Electrocultura, Tiempo, Recordatorios, Respaldo, PDF.</p>
+            <p><b>🍽️ Vida + 🚨 Emergencias + 🛠️ Herramientas:</b> Comidas, Compras, Finanzas, Tareas Hogar, Plantas, Bodega · Primeros Auxilios, Cuidado Animal, Violencia, Evacuación Tsunami, Red Comunitaria (Meshtastic/radio) · Conversión, Electricidad, Leña, Mecánica, Tiempo, Recordatorios, Respaldo, PDF.</p>
           </div>
           <div class="help-card" style="border-color:var(--gold)">
             <h4>💡 Trucos básicos</h4>
@@ -2170,7 +2198,7 @@
            <p><b>📅 Mi Día — Organizar:</b> ✅ Hábitos (icono + color + racha → puntitos en el día), 🎯 Disciplina (Pomodoro 25/5, 2 min, Sapo, Time Blocking + MIT del día), 📚 Horario (bloques semanales + vista “Hoy”), ⏱ Tiempo (cronómetro + temporizador), 🔔 Recordatorios (fases lunares y avisos suaves).</p>
            <p><b>📅 Mi Día — Registrar:</b> 📓 Gratitud Diaria (3 líneas, racha, días ✨), 💭 Sueños (intención, diario, “Sueño:” en nota), 🌬️ Respiración (14 técnicas por objetivo, guía visual con sonido, ciclos y registro).</p>
             <p><b>💚 Ciclos y Etapas:</b> 🌸 Ciclo (registro, predicción período/fértil, historial + 🧬 diagrama hormonal 28 días con slider), 🤰 Fertilidad Natural, 🌅 Juventud (20-39), 🏠 Adultez (35-59), 🔥 Climaterio (45-64), 🦉 Vejez Sabia (60+) — cada etapa con Guía / Cuerpo / Mente / Vida práctica / Mi espacio (chequeo + metas por luna + diario privado).</p>
-               <p><b>💚 Cuidado:</b> 🌿 Medicina (💊 Farmacología + 🌱 Natural con horarios y notificaciones + 🩺 Básica con botiquín y alergias + 📜 Historia + ⚠️ Seguridad) · 💪 Entrenamientos (Gym, Terapia física, Calistenia, Prácticas varias + filtro por lugar: Casa, Gimnasio, Playa, Bosque, Multicancha → puntitos 💪) · 🪴 Mis Plantas (inventario, riego automático cada N días, 💧 Regar hoy, guía de sustrato/luz/luna).</p>
+               <p><b>💚 Cuidado:</b> 🌿 Medicina (💊 Farmacología + 🌱 Natural con horarios y notificaciones + 🩺 Básica con botiquín y alergias + 📜 Historia + ⚠️ Seguridad) · 💪 Entrenamientos (Gym, Terapia física, Calistenia, Prácticas varias + filtro por lugar: Casa, Gimnasio, Playa, Bosque, Multicancha → puntitos 💪) · 🥗 Nutrición (qué es, guía básica, historia, menú Penco, sellos, mi semana) · 🪴 Mis Plantas (inventario, riego automático cada N días, 💧 Regar hoy, guía de sustrato/luz/luna).</p>
             <p><b>🌊 Territorio — Tierra:</b> 🌿 Lawen (herbario 20 plantas Bío-Bío + tus fichas, buscable por síntoma — educativo).</p>
          </div>
          <div class="help-card">
@@ -2190,7 +2218,7 @@
           <div class="help-card">
               <h4>🏡 Hogar y Vida Práctica · 🤝 Comunidad y Sistema</h4>
               <p><b>🏡 Casa:</b> 🥗 Comidas (plan + calculadora TMB/TDEE + menús Penco) · 🛒 Compras · 💰 Finanzas (balance, presupuesto, proyección 13 lunas) · 🏠 Tareas Hogar · 🪴 Mis Plantas (riegos, cuidados, guía) · 🍯 La Bodega (conservas y fermentos).</p>
-              <p><b>🔧 Energía y Taller:</b> ⚡ Consumo eléctrico · 🪵 Leña & Pellet ($/kWh) · 🔧 Bitácora Taller · 🔧 Mecánica (guías bici/moto/auto/motores 2T-4T-diésel-eléctrico + bitácora por vehículo) · ⚡ Electrocultura (antenas, proyectos, bitácora) · 📏 Conversión (12 categorías).</p>
+              <p><b>🔧 Energía y Taller:</b> ⚡ Consumo eléctrico · 🪵 Leña & Pellet ($/kWh) · 🔧 Bitácora Taller · 🔧 Mecánica (guías bici/moto/auto/motores 2T-4T-diésel-eléctrico + bitácora por vehículo) · 📏 Conversión (12 categorías).</p>
               <p><b>🤝 Red Penco:</b> 🔄 Trueque y Feria · 🤝 Minga · ⚖️ Derechos y Deberes · 🐾 Cuidado Animal · 📡 Red Comunitaria (guía, Meshtastic, diagnóstico SNR/RSSI, radioaficionado SUBTEL, mis nodos). <b>🚨 Emergencia:</b> 🩹 Primeros Auxilios · 🟣 Violencia (149/1455, salida rápida) · 🌊🚨 Evacuación Tsunami (rutas + mochila 72h).</p>
              <p><b>⚙️ App:</b> 💾 Respaldo / 📥 Restaurar (JSON por usuario) · 📌 Acceso directo · 📄 PDF luna / 📚 PDF ciclo · ❤ Aporte voluntario.</p>
             <p><b>🎨 Tema + 🕰 Reloj</b> America/Santiago en sidebar.</p>
@@ -3467,6 +3495,7 @@
             <label class="check-row"><input type="checkbox" data-btn="btnClimaterio"> 🔥 Climaterio</label>
             <label class="check-row"><input type="checkbox" data-btn="btnMedic"> 🌿 Medicina</label>
             <label class="check-row"><input type="checkbox" data-btn="btnGym"> 💪 Entrenamientos</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnNutri"> 🥗 Nutrición</label>
           </div>
           <div class="config-group">
             <h5>🧠 Aprender, Crear y Jugar</h5>
@@ -3994,8 +4023,8 @@
   <script src="territorio.js?v=1"></script>
   <script src="frases.js?v=8"></script>
   <script src="cal.js?v=8"></script>
-  <script src="renderer.js?v=9"></script>
-  <script src="nuevos-modulos.js?v=8"></script>
+  <script src="renderer.js?v=11"></script>
+  <script src="nuevos-modulos.js?v=9"></script>
   <script src="linaje-modulos.js?v=1"></script>
   <script src="eneagrama-modulo.js?v=1"></script>
   <script src="carta-astral.js?v=1"></script>
@@ -4026,6 +4055,7 @@
   <script src="municipalidad-penco.js?v=1"></script>
   <script src="bomberos-penco.js?v=1"></script>
   <script src="apoyo-emergencia.js?v=1"></script>
+  <script src="actores-territorio.js?v=1"></script>
   <script>
     // Limpieza file:// (cinturón y tirantes): si un SW de una versión anterior
     // quedó registrado, desregistrarlo y borrar cachés cal13, luego recargar.

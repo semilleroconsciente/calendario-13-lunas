@@ -1,7 +1,7 @@
 /* ============================================================
    ELECTROCULTURA — Calendario 13 Lunas (Penco · Bío-Bío)
    Sección completa e independiente:
-   - Botón btnElectrocultura (grupo Herramientas, inyectado)
+   - Botón btnElectrocultura (Territorio > Tierra, junto a 🏡 Mi Huerta, inyectado)
    - Diálogo electroDialog con 5 pestañas:
      1) Guía (qué es, historia, cómo funciona, qué dice la ciencia)
      2) Antenas (8 fichas: Christofleau, espiral, Lakhovsky, basalto...)
@@ -247,9 +247,26 @@ function paintHoy() {
 
 /* ---------------- SETUP ---------------- */
 function gotoBtn(id) { try { var x = $(id); if (x) x.click(); } catch (e) {} }
+function insertElecAfterHuerta(g, btn) {
+  try {
+    var refH = g.querySelector('#btnHuerta');
+    if (refH) {
+      if (refH.nextSibling) g.insertBefore(btn, refH.nextSibling);
+      else g.appendChild(btn);
+      return;
+    }
+    var refS = g.querySelector('#btnSiembra');
+    if (refS) {
+      if (refS.nextSibling) g.insertBefore(btn, refS.nextSibling);
+      else g.appendChild(btn);
+      return;
+    }
+  } catch (eI) {}
+  try { g.appendChild(btn); } catch (eA) {}
+}
 
 function setup() {
-  /* 1) inyectar botón en Territorio > Tierra (migra desde Herramientas si existía) */
+  /* 1) inyectar botón en Territorio > Tierra, junto a Mi Huerta (migra desde Herramientas o Lawen si existía) */
   try {
     var existing = $('btnElectrocultura');
     if (existing) {
@@ -264,11 +281,15 @@ function setup() {
         btn.id = 'btnElectrocultura'; btn.className = 'btn'; btn.type = 'button';
         btn.textContent = '⚡ Electrocultura';
         try { btn.setAttribute('data-sub', 'tierra'); } catch (eS) {}
-        btn.setAttribute('data-keywords', 'electrocultura electrocultura antena cobre espiral lakhovsky christofleau basalto paramagnetismo energia atmosfera magnetismo cosecha huerta tutor piramide anillo agua dinamizada galvanizado norte sur');
-        var ref = g.querySelector('#btnLawen');
-        if (ref && ref.nextSibling) g.insertBefore(btn, ref.nextSibling);
-        else g.appendChild(btn);
+        btn.setAttribute('data-keywords', 'electrocultura electrocultura antena cobre espiral lakhovsky christofleau basalto paramagnetismo energia atmosfera magnetismo cosecha huerta mi huerta tutor piramide anillo agua dinamizada galvanizado norte sur');
+        insertElecAfterHuerta(g, btn);
       }
+    } else {
+      // Reposicionar el existente junto a Mi Huerta aunque ya esté en Territorio
+      try {
+        var g2 = document.querySelector('.action-group[data-group="territorio"] .group-btns');
+        if (g2) insertElecAfterHuerta(g2, existing);
+      } catch (eR) {}
     }
   } catch (e) {}
   /* 2) registrar en ALL_BTNS + visibilidad */

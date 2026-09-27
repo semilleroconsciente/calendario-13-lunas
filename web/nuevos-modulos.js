@@ -288,8 +288,8 @@ function injectButtons() {
   return added;
 }
 
-/* ---------- orden Territorio: Mareas, Pesca, Intermareal, Nudos, Siembra, Compost, Agua, Bosque, Flora, Aves, Lawen, Electrocultura, Clima, Astro, Hora Dorada, Ritmo Circadiano, Ekadashi, Penco ---------- */
-var ORDEN_TERRITORIO = ['btnTides','btnFishing','btnIntermareal','btnNudos','btnSiembra','btnCompost','btnAgua','btnBosque','btnFlora','btnBirds','btnLawen','btnElectrocultura','btnWeather','btnAstro','btnGolden','btnCircadian','btnEkadashi','btnComuna'];
+/* ---------- orden Territorio: Mareas, Pesca, Intermareal, Nudos, Mi Huerta, Siembra, Bosque, Aves, Compost, Agua, Flora, Lawen, Electrocultura, Clima, Astro, Hora Dorada, Ritmo Circadiano, Ekadashi, Penco ---------- */
+var ORDEN_TERRITORIO = ['btnTides','btnFishing','btnIntermareal','btnNudos','btnHuerta','btnSiembra','btnBosque','btnBirds','btnCompost','btnAgua','btnFlora','btnLawen','btnElectrocultura','btnWeather','btnAstro','btnGolden','btnCircadian','btnEkadashi','btnComuna'];
 function ordenarTerritorio() {
   var g = document.querySelector('.action-group[data-group="territorio"] .group-btns');
   if (!g) return;

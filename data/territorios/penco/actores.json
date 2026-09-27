@@ -1,0 +1,111 @@
+{
+  "actualizado": "2026-09",
+  "nota": "Base inicial verificable con prensa 2021-2026. Redes verificadas en buscador 2026-09; si una org no trae redes es porque no se encontró canal público verificable (súmala como Mi actor si la conoces). Verifica vigencia en terreno antes de contactar. Tus agregados quedan solo en tu dispositivo.",
+  "actores": [
+    {
+      "id": "konintu-lafkenmapu",
+      "nombre": "Asociación Indígena Koñintu Lafken Mapu (Penco)",
+      "tipo": "Comunidad indígena",
+      "frentes": ["GNL", "lafken", "consulta indígena"],
+      "lucha": "Exigió consulta indígena extraordinaria (Convenio 169 OIT) ante modificaciones del GNL Penco-Lirquén. Defensa del lafken y la bahía.",
+      "sumarse": "Acompañar con respeto al protocolo comunitario; no suplantar vocerías.",
+      "fuente": "Resumen.cl 2021",
+      "fuenteUrl": "https://resumen.cl/articulos/comunidades-logran-elevar-sus-reclamos-contra-proyecto-terminal-gnl-penco-lirquen"
+    },
+    {
+      "id": "parque-para-penco",
+      "nombre": "Corporación Parque para Penco",
+      "tipo": "Corporación / parque urbano",
+      "frentes": ["bosque nativo", "queule", "patrimonio ancestral", "agua"],
+      "lucha": "Impulsa el primer parque urbano de Penco en Fundo Coihueco (sendero Los Queules): protege queule, naranjillo y pitao, más pudú, güiña y monito del monte. Rescata sitio ancestral mapuche de ceremonias. Primera etapa inaugurada 2025 junto a municipio y Forestal Arauco; buscan zona protegida en el Plan Regulador.",
+      "sumarse": "Voluntariados, caminatas, talleres de formación ambiental; cuidar senderos (acceso gratuito).",
+      "redes": [
+        { "label": "Instagram", "url": "https://www.instagram.com/parqueparapenco" },
+        { "label": "Facebook", "url": "https://www.facebook.com/ParqueParaPenco" }
+      ],
+      "fuente": "Radio UdeC 2025",
+      "fuenteUrl": "https://www.radioudec.cl/penco-inaugura-la-primera-etapa-de-su-primer-parque-urbano-con-acceso-gratuito-a-la-comunidad"
+    },
+    {
+      "id": "corredor-biocultural-tome-lirquen",
+      "nombre": "Corredor Biocultural Lirquén - Tomé",
+      "tipo": "Corredor biocultural",
+      "frentes": ["corredor biocultural", "bosque nativo", "bahía"],
+      "lucha": "Articulación territorial entre Tomé y Lirquén por la continuidad ecológica y cultural del borde costero (quebradas, bosque y bahía).",
+      "sumarse": "Sigue su Instagram, participa en recorridos y jornadas.",
+      "redes": [
+        { "label": "Instagram", "url": "https://www.instagram.com/corredor_biocultural/" }
+      ],
+      "fuente": "Instagram del colectivo",
+      "fuenteUrl": "https://www.instagram.com/corredor_biocultural/"
+    },
+    {
+      "id": "keule-resiste",
+      "nombre": "Keule Resiste",
+      "tipo": "Colectivo",
+      "frentes": ["queule", "bosque nativo", "minería tierras raras"],
+      "lucha": "Defensa del keule (Gomortega keule, Monumento Natural en peligro) y del bosque nativo frente a la presión minera y forestal en Penco y alrededores.",
+      "sumarse": "Sigue su Instagram, difunde, participa en acciones por el bosque.",
+      "redes": [
+        { "label": "Instagram", "url": "https://www.instagram.com/keuleresiste/" }
+      ],
+      "fuente": "Instagram del colectivo",
+      "fuenteUrl": "https://www.instagram.com/keuleresiste/"
+    },
+    {
+      "id": "penco-lirquen-libre-mineras",
+      "nombre": "Campaña Penco-Lirquén Libre de Mineras",
+      "tipo": "Campaña / articulación",
+      "frentes": ["minería tierras raras", "agua", "bosque"],
+      "lucha": "Articula orgs, gastronomía, turismo, JJVV y campesinado contra el proyecto de tierras raras de Aclara Resources (ex Biolantánidos). Impulsó consulta ciudadana 2022 (~99% rechazo) y marcha Penco→Lirquén.",
+      "sumarse": "Marchas, difusión, apoyo a comercio local, seguimiento SEA y Tribunal Ambiental.",
+      "redes": [
+        { "label": "Instagram", "url": "https://www.instagram.com/pencosinminera" }
+      ],
+      "fuente": "OLCA / Radio U. de Chile 2026",
+      "fuenteUrl": "https://olca.cl/articulo/nota.php?id=111582"
+    },
+    {
+      "id": "ong-defensa-ambiental",
+      "nombre": "ONG Defensa Ambiental / Red de Humedales del Biobío",
+      "tipo": "ONG / red",
+      "frentes": ["humedal Rocuant-Andalién", "rellenos", "monitoreo"],
+      "lucha": "Denuncia rellenos, desecación y escombreras en Rocuant-Andalién; monitoreo y educación ambiental. Parte del Comité Técnico Local GEF Humedales.",
+      "sumarse": "Monitoreos ciudadanos, limpiezas, denuncia con foto+fecha ante SMA.",
+      "redes": [
+        { "label": "Facebook ONG", "url": "https://www.facebook.com/ONGDefensaAmbiental" },
+        { "label": "Instagram Red Humedales", "url": "https://www.instagram.com/redhumedalesbiobio" }
+      ],
+      "fuente": "Ladera Sur",
+      "fuenteUrl": "https://laderasur.com/articulo/la-cruzada-para-recuperar-al-humedal-rocuant-andalien-el-guardian-de-la-bahia-de-concepcion-que-es-asfixiado-por-la-ciudad"
+    },
+    {
+      "id": "fundacion-bandada",
+      "nombre": "Fundación Bandada",
+      "tipo": "Fundación",
+      "frentes": ["humedal Rocuant-Andalién", "aves", "litigio"],
+      "lucha": "Defensa del humedal urbano Rocuant-Andalién (1.377 ha, 2026) ante 8 reclamaciones en Tribunal Ambiental. Llama a academia y ciudadanía a defender la protección.",
+      "sumarse": "Voluntariado de monitoreo, firma y apoyo técnico-legal.",
+      "redes": [
+        { "label": "Instagram", "url": "https://www.instagram.com/fundacionbandada" }
+      ],
+      "fuente": "TVU / MMA 2026",
+      "fuenteUrl": "https://www.tvu.cl/prensa/2026/05/01/fundacion-bandada-critica-rol-de-actores-publicos-en-impugnaciones-a-humedal-urbano-rocuant-andalien.html"
+    },
+    {
+      "id": "olca",
+      "nombre": "OLCA — Observatorio Latinoamericano de Conflictos Ambientales",
+      "tipo": "Acompañamiento técnico",
+      "frentes": ["acompañamiento", "legal", "formación"],
+      "lucha": "Acompaña a comunidades del Biobío en conflictos GNL y tierras raras: documentación, vocerías y estrategia legal.",
+      "sumarse": "Escuela de formación, documentación del conflicto.",
+      "redes": [
+        { "label": "Instagram", "url": "https://www.instagram.com/olca_chile/" },
+        { "label": "Facebook", "url": "https://www.facebook.com/olca.chile" },
+        { "label": "Sitio", "url": "https://olca.cl" }
+      ],
+      "fuente": "OLCA",
+      "fuenteUrl": "https://olca.cl/articulo/nota.php?id=111577"
+    }
+  ]
+}

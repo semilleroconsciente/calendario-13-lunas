@@ -3409,52 +3409,257 @@ $('btnTides').onclick = () => {
   }
 };
 
+function tideNum(hm){ const p=String(hm||'').split(':'); return (+p[0])*60+(+p[1]||0); }
+function tideAltNum(a){ const v=parseFloat(String(a||'').replace('m','').replace(',','.')); return isFinite(v)?v:NaN; }
+function tideFmtCountdown(mins){ mins=Math.max(0,Math.round(mins)); const h=Math.floor(mins/60), m=mins%60; if(h<=0) return 'en '+m+' min'; if(h<24) return 'en '+h+'h '+(m<10?'0':'')+m+'m'; const d=Math.floor(h/24); return 'en '+d+'d '+(h%24)+'h'; }
+function tideTipoLunar(noonMs){
+  try{
+    let illum=null, tithi=0;
+    try{ const mi=window.astro.moonInfo(noonMs); illum=Math.round((mi.fraction||0)*100); }catch(e){}
+    try{ tithi=window.astro.tithi(noonMs); }catch(e){}
+    if([1,2,15,16,29,30].indexOf(tithi)>=0 || (illum!=null && (illum>=82 || illum<=12))) return { clave:'viva', label:'🌊 Marea viva', desc:'Luna nueva/llena → mayor amplitud. Bajamares más bajas (buenas para roquerío) y pleamares más altas. Corrientes más fuertes.', tithi, illum };
+    if([7,8,9,22,23,24].indexOf(tithi)>=0 || (illum!=null && illum>=38 && illum<=62)) return { clave:'muerta', label:'🦐 Marea muerta', desc:'Cuartos lunares → menor amplitud. Poca diferencia entre alta y baja. Mar más calmo, ventana intermareal corta.', tithi, illum };
+    return { clave:'intermedia', label:'🌗 Marea intermedia', desc:'Entre viva y muerta. Amplitud media, buena para pesca y paseo costero.', tithi, illum };
+  }catch(e){ return { clave:'intermedia', label:'🌗 Marea intermedia', desc:'', tithi:0, illum:null }; }
+}
+function tideCoef(tides){
+  try{
+    const alts=tides.map(t=>tideAltNum(t.a)).filter(v=>isFinite(v));
+    if(!alts.length) return null;
+    const amp=Math.max.apply(null,alts)-Math.min.apply(null,alts);
+    const coef=Math.max(20,Math.min(120,Math.round(amp/1.55*100)));
+    const rango=amp>=1.05?'amplia':amp>=0.6?'media':'corta';
+    return { amp, coef, rango };
+  }catch(e){ return null; }
+}
+function tideCurvaSVG(tides, ahoraHM){
+  try{
+    const W=320, H=84, P=10;
+    const alts=tides.map(t=>tideAltNum(t.a));
+    let mn=Math.min.apply(null,alts.concat([0.2])), mx=Math.max.apply(null,alts.concat([1.8]));
+    if(!(mx>mn)){ mn=0; mx=2; }
+    const X=h=>P+(tideNum(h)/1440)*(W-2*P);
+    const Y=a=>H-P-((a-mn)/(mx-mn))*(H-2*P);
+    let pts=tides.map(t=>X(t.h).toFixed(1)+','+Y(tideAltNum(t.a)).toFixed(1)).join(' ');
+    let dots=tides.map(t=>{
+      const isP=t.t==='pleamar';
+      return '<circle cx="'+X(t.h).toFixed(1)+'" cy="'+Y(tideAltNum(t.a)).toFixed(1)+'" r="4.5" fill="'+(isP?'#4da3ff':'#e8c56a')+'"><title>'+t.h+' · '+t.a+' · '+t.t+'</title></circle>'
+        +'<text x="'+X(t.h).toFixed(1)+'" y="'+(Y(tideAltNum(t.a))-8).toFixed(1)+'" text-anchor="middle" font-size="9" fill="#cdd3ee">'+t.h+'</text>';
+    }).join('');
+    let nowDot='';
+    if(ahoraHM){
+      const nx=X(ahoraHM).toFixed(1);
+      nowDot='<line x1="'+nx+'" y1="4" x2="'+nx+'" y2="'+(H-4)+'" stroke="#8fd694" stroke-width="1.2" stroke-dasharray="3 3"/><circle cx="'+nx+'" cy="8" r="3.5" fill="#8fd694"><title>Ahora '+ahoraHM+'</title></circle>';
+    }
+    return '<svg viewBox="0 0 '+W+' '+H+'" class="tide-curve" role="img" aria-label="Curva de marea del día"><polyline points="'+pts+'" fill="none" stroke="#7a6fa5" stroke-width="2"/><polygon points="'+P+','+(H-P)+' '+pts+' '+(W-P)+','+(H-P)+'" fill="rgba(122,111,165,.18)" stroke="none"/>'+dots+nowDot+'</svg>';
+  }catch(e){ return ''; }
+}
+function tideVentana(t){
+  if(t.t==='pleamar') return '🎣 ±2h pique · 🚣 bote/kayak · 🏊 baño subiendo';
+  const v=tideAltNum(t.a);
+  if(isFinite(v) && v<0.6) return '🦀 roquerío ±1h · 🚶 caminata · 📷 pozas';
+  return '🚶 paseo · 🦅 aves · 🎣 orilla';
+}
 function renderTidesPanel3() {
   const panel = $('tidesPanel');
-  const todayKey = cal.fmtKey.format(new Date());
+  if(!panel) return;
+  const now = new Date();
+  const todayKey = cal.fmtKey.format(now);
+  const ahoraHM = cal.fmtTime.format(now).slice(0,5);
   let startIdx = cycle.days.findIndex(d => cal.fmtKey.format(new Date(d.noonMs)) === todayKey);
   if (startIdx < 0) {
     if (currentView.tipo === 'luna') startIdx = (currentView.luna - 1) * 28;
     else startIdx = 0;
   }
+  if(typeof window._tideSelOffset==='undefined' || window._tideSelOffset===null) window._tideSelOffset=0;
+  window._tideSelOffset=Math.max(0,Math.min(6,window._tideSelOffset|0));
+  const NDIAS=7;
   const dias = [];
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < NDIAS; i++) {
     const idx = startIdx + i;
     if (idx >= cycle.days.length) break;
     dias.push(cycle.days[idx]);
   }
-  let html = '<div class="tp-head"><b>🌊 Mareas — día y noche</b><span class="muted">Pronóstico SHOA · Talcahuano (válido para Penco) · 3 días · horas locales Biobío</span><button type="button" id="tidesToDayBtn" class="btn btn-accent" style="width:auto;white-space:nowrap" title="Agregar la marea actual y las 2 siguientes a la pantalla del día de hoy">📌 Al día: actual + 2 siguientes</button></div>';
-  html += '<div class="tides-3col">';
-  for (const dd of dias) {
-    const key = cal.fmtKey.format(new Date(dd.noonMs));
-    const md = key.slice(5);
-    const labelLuna = dd.luna === 'dft' ? 'Día Fuera del Tiempo' : `Luna ${dd.luna} · Día ${dd.diaN} · ${MOONS[dd.luna - 1].nombre}`;
-    const tideRes = getTidesForKey(md);
-    const tides = tideRes.tides;
-    const isEstimated = tideRes.estimated;
-    const isToday = key === todayKey;
-    html += `<div class="tide-card${isToday ? ' today' : ''}"><div class="tide-head"><b>${cal.weekdayName(dd.noonMs)} ${cal.fmtDate.format(new Date(dd.noonMs))}</b><span>${labelLuna}${isToday ? ' · hoy' : ''}</span></div>`;
-    if (tides.length) {
-      html += '<table class="tide-mini"><thead><tr><th>Hora</th><th>Altura</th><th>Tipo</th>' + (isEstimated ? '<th style="font-size:9px">Est.</th>' : '') + '</tr></thead><tbody>';
-      for (const t of tides) {
-        const icon = t.t === 'pleamar' ? '⬆️' : '⬇️';
-        html += `<tr><td>${t.h}</td><td>${t.a}</td><td>${icon} ${t.t}</td></tr>`;
-      }
-      html += '</tbody></table>';
-    } else {
-      const cell = dd.luna === 'dft' ? null : dayCell(dd.luna, dd.diaN);
-      const alta = cell ? (cell.alta || '—') : '—';
-      const baja = cell ? (cell.baja || '—') : '—';
-      html += `<table class="tide-mini"><tbody><tr><td>🌊 Alta</td><td>${alta}</td></tr><tr><td>🌊 Baja</td><td>${baja}</td></tr></tbody></table><p class="muted" style="font-size:12px;margin-top:6px">Sin pronóstico SHOA precargado para este día.</p>`;
+  const selDia = dias[Math.min(window._tideSelOffset, dias.length-1)] || dias[0];
+  // estado actual (ayer/hoy/mañana reales)
+  let res={actual:null,siguientes:[]};
+  try{
+    const keyOf=(diff)=>{ const d=new Date(now.getTime()); d.setDate(d.getDate()+diff); return cal.fmtKey.format(d); };
+    const hoyK=keyOf(0), ayerK=keyOf(-1), manK=keyOf(1);
+    const hoy=(typeof getTidesForKey==='function'?getTidesForKey(hoyK.slice(5)).tides:[])||[];
+    const ayer=(typeof getTidesForKey==='function'?getTidesForKey(ayerK.slice(5)).tides:[])||[];
+    const man=(typeof getTidesForKey==='function'?getTidesForKey(manK.slice(5)).tides:[])||[];
+    if(window.InfoClave&&typeof window.InfoClave.mareasActuales==='function'){ res=window.InfoClave.mareasActuales(ahoraHM,hoy,ayer,man); }
+    const all=[].concat(ayer.map(t=>Object.assign({dia:-1},t)),hoy.map(t=>Object.assign({dia:0},t)),man.map(t=>Object.assign({dia:1},t)));
+    if(res.actual){
+      const pos=all.findIndex(t=>t.h===res.actual.h&&t.t===res.actual.t&&t.dia===(res.actual.dia||0));
+      if(pos>=0) res.siguientes=all.slice(pos+1,pos+3);
+    } else if(res.siguientes.length){
+      const f=res.siguientes[0]; const pos=all.findIndex(t=>t.h===f.h&&t.t===f.t&&t.dia===(f.dia||0))-1;
+      if(pos>=0) res.siguientes=all.slice(pos+1,pos+3);
+    } else { res.siguientes=all.filter(t=>t.dia>=0).slice(0,2); }
+    res._all=all;
+  }catch(e){}
+  const fmtM=(window.InfoClave&&window.InfoClave.textoMarea)||((mm)=>(mm.t==='pleamar'?'⬆️':'⬇️')+' '+mm.t+' '+mm.h+(mm.a?' · '+mm.a:''));
+  // dirección: ¿subiendo o bajando?
+  let dirTxt='—', nextTxt='—', progPct=null;
+  try{
+    if(res.actual && res.siguientes.length){
+      const a=res.actual, nx=res.siguientes[0];
+      const sube=(nx.t==='pleamar');
+      let mins=(tideNum(nx.h)-tideNum(ahoraHM));
+      if(nx.dia===1) mins+=1440; if(nx.dia===-1) mins-=1440; if(a.dia===-1&&nx.dia===0&&mins<0) mins+=1440;
+      if(mins<0) mins+=1440;
+      dirTxt=sube?'📈 Subiendo hacia pleamar':'📉 Bajando hacia bajamar';
+      nextTxt='Próxima: <b>'+escapeHtml(fmtM(nx))+'</b> '+tideFmtCountdown(mins);
+      const tot=(tideNum(nx.h)-tideNum(a.h)+1440)%1440 || 1;
+      let done=(tideNum(ahoraHM)-tideNum(a.h)+1440)%1440;
+      if(nx.dia!==a.dia) done=(tideNum(ahoraHM)-tideNum(a.h)+1440)%1440;
+      progPct=Math.max(2,Math.min(100,Math.round(done/tot*100)));
     }
-    html += '</div>';
+  }catch(e){}
+  // luna hoy + coef hoy
+  let lunaHoy={clave:'intermedia',label:'🌗 Marea intermedia',desc:'',tithi:0,illum:null}, coefHoy=null, hoyTides=[];
+  try{
+    hoyTides=(typeof getTidesForKey==='function'?getTidesForKey(todayKey.slice(5)).tides:[])||[];
+    lunaHoy=tideTipoLunar(now.getTime());
+    coefHoy=tideCoef(hoyTides);
+  }catch(e){}
+  const moonIc=(function(){ try{ return window.astro.moonIcon(now.getTime())||'🌙'; }catch(e){ return '🌙'; } })();
+
+  let html = '<div class="tp-head"><b>🌊 Mareas — Penco · Bahía de Concepción</b><span class="muted">SHOA · Talcahuano (15 km, misma bahía) · 7 días · hora local America/Santiago</span>'
+    +'<span style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" id="tidesToDayBtn" class="btn btn-accent" style="width:auto;white-space:nowrap" title="Agregar la marea actual y las 2 siguientes a la pantalla del día de hoy">📌 Al día: actual + 2</button>'
+    +'<a class="btn" style="width:auto;text-decoration:none" href="https://www.shoa.cl/php/mareas.php" target="_blank" rel="noopener" title="Tabla oficial SHOA">🌐 SHOA oficial</a></span></div>';
+
+  // 1) AHORA
+  html += '<div class="tide-grid2">'
+    +'<div class="tide-card tide-now"><div class="tide-head"><b>'+dirTxt+'</b><span>Ahora '+escapeHtml(ahoraHM)+' · Talcahuano/Penco</span></div>'
+    +'<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">'
+    +(res.actual?'<span class="chip" style="border-color:var(--gold)">Última: <b>'+escapeHtml(fmtM(res.actual))+'</b></span>':'<span class="chip">Sin marea previa hoy</span>')
+    +res.siguientes.map((s,ix)=>'<span class="chip">Sig '+(ix+1)+': <b>'+escapeHtml(fmtM(s))+'</b></span>').join('')
+    +'</div>'
+    +'<p class="muted" style="font-size:12px;margin:8px 0 0">'+nextTxt+'</p>'
+    +(progPct!=null?'<div class="tide-prog"><div class="tide-prog-fill" style="width:'+progPct+'%"></div></div><p class="muted" style="font-size:10px;margin:4px 0 0">'+progPct+'% del tramo entre mareas · el cambio es gradual, no de golpe</p>':'')
+    +'<p class="muted" style="font-size:10.5px;margin:6px 0 0">⚠️ Horas de referencia para caleta, orilla y roquerío. Para navegar usa siempre la tabla oficial SHOA del día.</p></div>'
+    // 2) LUNA
+    +'<div class="tide-card"><div class="tide-head"><b>'+moonIc+' Luna y tipo de marea</b><span>'+escapeHtml(cal.fmtDate.format(now))+' · tithi '+lunaHoy.tithi+(lunaHoy.illum!=null?' · '+lunaHoy.illum+'% iluminada':'')+'</span></div>'
+    +'<p style="font-size:13px;margin:8px 0 4px"><b>'+escapeHtml(lunaHoy.label)+'</b>'+(coefHoy?' · coef. <b>'+coefHoy.coef+'</b> · amplitud <b>'+coefHoy.amp.toFixed(2)+'m</b> ('+coefHoy.rango+')':'')+'</p>'
+    +'<p class="muted" style="font-size:11.5px;margin:0;line-height:1.5">'+escapeHtml(lunaHoy.desc)+'</p>'
+    +'<p class="muted" style="font-size:11px;margin:6px 0 0;line-height:1.5">🌑🌕 nueva/llena → <b>vivas</b> (bajamar muy baja, ideal luche/cochayuyo con cuidado). 🌓🌗 cuartos → <b>muertas</b> (poco movimiento, mar calmo). La pleamar/bajamar se atrasa ~50 min cada día.</p></div>'
+    +'</div>';
+
+  // 3) NAV 7 días
+  html += '<div class="tide-daynav">';
+  dias.forEach((dd,i)=>{
+    const key = cal.fmtKey.format(new Date(dd.noonMs));
+    const isToday = key===todayKey;
+    const wd=cal.weekdayName(dd.noonMs).slice(0,3);
+    const fe=cal.fmtDate.format(new Date(dd.noonMs));
+    html+='<button type="button" data-tide-day="'+i+'" class="btn tide-daybtn'+(i===window._tideSelOffset?' btn-accent':'')+'">'+wd+' '+fe+(isToday?' ·hoy':'')+'</button>';
+  });
+  html += '</div>';
+
+  // 4) DETALLE DÍA SELECCIONADO
+  if(selDia){
+    const skey = cal.fmtKey.format(new Date(selDia.noonMs));
+    const md = skey.slice(5);
+    const labelLuna = selDia.luna === 'dft' ? '✷ Día Fuera del Tiempo' : ('Luna '+selDia.luna+' · Día '+selDia.diaN+' · '+MOONS[selDia.luna - 1].nombre);
+    const tideRes = getTidesForKey(md);
+    const tides = tideRes.tides||[];
+    const isEstimated = tideRes.estimated;
+    const isToday = skey===todayKey;
+    const coef=tideCoef(tides);
+    const tl=tideTipoLunar(selDia.noonMs);
+    const pleamares=tides.filter(t=>t.t==='pleamar'), bajamares=tides.filter(t=>t.t==='bajamar');
+    const mejorPesca=pleamares.map(t=>t.h).join(' y ');
+    const bajaMin=bajamares.length?bajamares.slice().sort((a,b)=>tideAltNum(a.a)-tideAltNum(b.a))[0]:null;
+    html+='<div class="tide-card tide-sel"><div class="tide-head"><b>'+escapeHtml(cal.weekdayName(selDia.noonMs)+' '+cal.fmtDate.format(new Date(selDia.noonMs)))+(isToday?' · hoy':'')+(isEstimated?' · *est.':'')+'</b><span>'+escapeHtml(labelLuna)+' · '+escapeHtml(tl.label)+(coef?' · coef '+coef.coef+' · ampl. '+coef.amp.toFixed(2)+'m':'')+'</span></div>';
+    html+='<div class="tide-selgrid"><div>';
+    if(tides.length){
+      html+='<table class="tide-mini"><thead><tr><th>Hora</th><th>Altura</th><th>Tipo</th><th>Ventana</th></tr></thead><tbody>';
+      for(const t of tides){
+        const icon=t.t==='pleamar'?'⬆️':'⬇️';
+        const hl=(isToday&&res.siguientes.length&&res.siguientes[0].h===t.h&&res.siguientes[0].t===t.t)?' style="background:rgba(143,214,148,.12)"':'';
+        html+='<tr'+hl+'><td>'+t.h+'</td><td>'+t.a+'</td><td>'+icon+' '+t.t+'</td><td class="tide-ventana">'+tideVentana(t)+'</td></tr>';
+      }
+      html+='</tbody></table>';
+      if(isEstimated) html+='<p class="muted" style="font-size:10.5px;margin:6px 0 0">* Estimada por ciclo lunar (~50 min/día desde tabla SHOA 19–28 ago). Contrasta con <a href="https://www.shoa.cl/php/mareas.php" target="_blank" rel="noopener">shoa.cl</a> antes de navegar o bajar a roquerío.</p>';
+    }
+    html+='<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">'
+      +'<button type="button" class="btn" style="width:auto" data-tide-send-day="'+skey+'">📌 Llevar este día al calendario</button>'
+      +'<button type="button" class="btn" style="width:auto" data-tide-copy="'+skey+'">📋 Copiar</button></div>';
+    html+='</div><div><div class="muted" style="font-size:11px;margin-bottom:4px">Curva del día (altura vs hora · línea verde = ahora)</div>'
+      +tideCurvaSVG(tides, isToday?ahoraHM:null)
+      +'<div class="tide-best"><p style="font-size:12px;margin:6px 0">🎣 <b>Pesca orilla:</b> 2h antes/después de pleamar '+(mejorPesca?'('+escapeHtml(mejorPesca)+')':'')+'</p>'
+      +'<p style="font-size:12px;margin:6px 0">🦀 <b>Roquerío Lirquén/Playa Negra:</b> '+(bajaMin?('entra 1h antes de la bajamar '+bajaMin.h+' ('+bajaMin.a+') y sal 1h después'+(tideAltNum(bajaMin.a)<0.6?' · ✅ apta (<0.6m)':' · ⚠️ alta para cosecha, mejor observar')):'solo con bajamar <0.6m y sin alerta SHOA')+'</p>'
+      +'<p class="muted" style="font-size:11px;margin:6px 0">🚣 Bote/kayak: evita salir en bajamar mínima con viento sur. 🏊 Baño: solo con pleamar subiendo y playa apta, nunca con marejada.</p></div>'
+      +'</div></div></div>';
   }
-  html += '</div><p class="muted" style="font-size:11.5px;margin-top:10px">Fuente: pronóstico de mareas SHOA · Talcahuano (15 km de Penco). Para navegación consulta siempre la tabla oficial en shoa.cl.</p>';
+
+  // 5) GUÍA PENCO
+  html+='<div class="tide-grid2" style="margin-top:10px">'
+    +'<div class="tide-card"><div class="tide-head"><b>📖 Cómo leer la tabla</b><span>Glosario mínimo</span></div>'
+    +'<ul class="tide-list"><li><b>⬆️ Pleamar</b> = marea alta (mar lleno). <b>⬇️ Bajamar</b> = marea baja.</li>'
+    +'<li><b>Altura (m):</b> metros sobre el nivel medio. Ej 1.70m = llena grande; 0.30m = vacía grande.</li>'
+    +'<li><b>Ciclo semidiurno:</b> Penco tiene 2 altas + 2 bajas al día, cada ~12h 25min. Todo se corre ~50 min diarios.</li>'
+    +'<li><b>Coef./amplitud:</b> diferencia entre la más alta y la más baja del día. Más amplitud = más corriente.</li>'
+    +'<li><b>Talcahuano ≈ Penco:</b> mismo borde de bahía (15 km). Sirve para caleta, orilla y roquerío; no para navegación fina.</li></ul></div>'
+    +'<div class="tide-card"><div class="tide-head"><b>🦺 Seguridad costera</b><span>Lee esto antes de bajar</span></div>'
+    +'<ul class="tide-list"><li>🌊 <b>Marejada:</b> si hay aviso Directemar/SHOA, no bajes a roquerío ni paseo rompiente.</li>'
+    +'<li>🚨 <b>Terremoto largo o mar extraño:</b> evacúa a cota alta a pie, sin esperar alarma. Ver 🌊🚨 Evacuación Tsunami.</li>'
+    +'<li>☠️ <b>Marea roja:</b> con alerta Sernapesca no coseches ni consumas mariscos (sernapesca.cl).</li>'
+    +'<li>🥾 <b>Nunca solo:</b> calzado que agarre, malla no plástico, cuerda, linterna roja de noche, avisa tu ruta y hora.</li>'
+    +'<li>🦀 <b>Cosecha medida:</b> talla mínima, deja reproductores y 30% en la roca. Ver 🦀 Intermareal.</li></ul></div>'
+    +'</div>';
+
+  html+='<div class="tide-card" style="margin-top:10px"><div class="tide-head"><b>🎯 Ventanas por actividad — Penco</b><span>Regla de bolsillo</span></div>'
+    +'<div class="tide-acts">'
+    +'<div><b>🎣 Pesca orilla</b><br><span class="muted">2h antes/después de pleamar + amanecer/atardecer. Con luna clara usa señuelo oscuro; con oscura, claro.</span></div>'
+    +'<div><b>🦀 Roquerío</b><br><span class="muted">±1h de bajamar &lt;0.6m, de día y sin marejada. Corta fronda, no arranques disco.</span></div>'
+    +'<div><b>🚣 Kayak/bote</b><br><span class="muted">Prefiere pleamar y viento calmo. Revisa viento + marejada; lleva chaleco y VHF/celular seco.</span></div>'
+    +'<div><b>🦅 Aves Rocuant</b><br><span class="muted">Pleamar concentra limícolas; amanecer = canto. Ver 🦅 Aves.</span></div>'
+    +'</div></div>';
+
+  html+='<p class="muted" style="font-size:11px;margin-top:10px;line-height:1.6">Fuente: tabla SHOA Talcahuano precargada 19–28 ago + estimación lunar el resto del año (*est.). Para navegación, buceo o faena: confirma siempre en <a href="https://www.shoa.cl/php/mareas.php" target="_blank" rel="noopener">shoa.cl → Mareas</a> · Avisos de marejada: <a href="https://www.directemar.cl/" target="_blank" rel="noopener">Directemar</a> · Marea roja/vedas: <a href="https://www.sernapesca.cl/" target="_blank" rel="noopener">sernapesca.cl</a> · Emergencia: <a href="https://www.senapred.cl/" target="_blank" rel="noopener">Senapred</a> 137 Armada.</p>';
   panel.innerHTML = html;
   try {
     const toDayBtn = $('tidesToDayBtn');
     if (toDayBtn) toDayBtn.onclick = () => enviarMareasAlDia();
   } catch (e) {}
+  try{
+    panel.querySelectorAll('[data-tide-day]').forEach(b=>{
+      b.onclick=()=>{ window._tideSelOffset=+b.getAttribute('data-tide-day'); try{ renderTidesPanel3(); }catch(e){} };
+    });
+  }catch(e){}
+  try{
+    panel.querySelectorAll('[data-tide-send-day]').forEach(b=>{
+      b.onclick=()=>{
+        try{
+          const k=b.getAttribute('data-tide-send-day');
+          const md=k.slice(5);
+          const r=(typeof getTidesForKey==='function'?getTidesForKey(md):null);
+          const arr=r?r.tides:[];
+          const txt='🌊 Mareas '+k+': '+arr.map(t=>(t.t==='pleamar'?'⬆️':'⬇️')+' '+t.t+' '+t.h+' · '+t.a).join(' → ')+(r&&r.estimated?' (*est.)':'');
+          if(window.InfoClave&&typeof window.InfoClave.guardarEnDia==='function') window.InfoClave.guardarEnDia('Mareas',txt,k,'nota');
+        }catch(e){ try{alert('No se pudo agregar al día.');}catch(e2){} }
+      };
+    });
+  }catch(e){}
+  try{
+    panel.querySelectorAll('[data-tide-copy]').forEach(b=>{
+      b.onclick=()=>{
+        try{
+          const k=b.getAttribute('data-tide-copy');
+          const md=k.slice(5);
+          const r=(typeof getTidesForKey==='function'?getTidesForKey(md):null);
+          const arr=r?r.tides:[];
+          const txt='🌊 Mareas '+k+': '+arr.map(t=>(t.t==='pleamar'?'⬆️':'⬇️')+' '+t.t+' '+t.h+' · '+t.a).join(' → ');
+          if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(()=>{ try{const s=$('statusMsg'); if(s){s.textContent='Copiado ✓'; setTimeout(()=>{s.textContent='';},2000);} }catch(e){} });
+          else prompt('Copia las mareas:',txt);
+        }catch(e){}
+      };
+    });
+  }catch(e){}
 }
 
 // Guarda la marea actual + las 2 siguientes en la pantalla del día de hoy.
@@ -3519,26 +3724,95 @@ function getEkadashiVisibleKeys() {
 function renderEkadashi() {
   const intro = $('ekadashiIntro');
   intro.innerHTML = `
-    <div style="background:linear-gradient(135deg,var(--panel),var(--card));border:1px solid var(--gold);border-radius:10px;padding:12px;margin-bottom:10px">
-      <p style="margin:0;font-size:13px;line-height:1.55"><b>📿 ¿Qué es Ekadashi?</b> En sánscrito <i>eka-dasha</i> = once. Es el <b>día 11</b> de cada quincena lunar. Como la luna tarda ~29.5 días, hay <b>2 Ekadashis por mes</b>: <b style="color:#d4a947">Shukla</b> (luna creciente, 11 días después de luna nueva) y <b style="color:#7a6fa5">Krishna</b> (luna menguante, 11 días después de luna llena).</p>
-      <p class="muted" style="font-size:11px;margin-top:6px">En Penco lo calculamos astronómicamente: elongación Sol-Luna /12° = tithi. Aquí mostramos el día que ese tithi 11 ó 26 cae al amanecer en America/Santiago.</p>
+    <div class="eka-tabs" style="position:sticky;top:-6px;z-index:2;display:flex;gap:6px;flex-wrap:wrap;background:var(--bg,#0e1120);padding:6px 0;margin-bottom:8px">
+      <button type="button" data-eka-tab="resumen" class="btn eka-tab" style="border-color:var(--gold);background:var(--gold);color:#10142c;font-weight:700">📖 Resumen</button>
+      <button type="button" data-eka-tab="ayuno" class="btn eka-tab">🍵 Ayuno</button>
+      <button type="button" data-eka-tab="historia" class="btn eka-tab">📜 Historia</button>
+      <button type="button" data-eka-tab="fechas" class="btn eka-tab">📅 Fechas ↓</button>
     </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
-      <div style="background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px"><b style="color:var(--gold)">🌙 ¿Por qué importa?</b><p class="muted" style="font-size:11px;margin:4px 0 0">La luna mueve mareas y tu agua interna (~60% del cuerpo). Ekadashi es un <b>recordatorio</b> para aligerar digestión y mente cuando la luna está en punto de cambio.</p></div>
-      <div style="background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px"><b style="color:var(--gold)">✨ Beneficios reportados</b><p class="muted" style="font-size:11px;margin:4px 0 0">Claridad, descanso digestivo, disciplina suave, introspección. No es dieta extrema ni obligación religiosa.</p></div>
+    <div data-eka-panel="resumen">
+      <div style="background:linear-gradient(135deg,var(--panel),var(--card));border:1px solid var(--gold);border-radius:10px;padding:10px;margin-bottom:8px">
+        <p style="margin:0;font-size:13px;line-height:1.55"><b>📿 ¿Qué es Ekadashi?</b> En sánscrito <i>eka-dasha</i> = once. Es el <b>día 11</b> de cada quincena lunar: <b style="color:#d4a947">Shukla</b> (creciente) y <b style="color:#7a6fa5">Krishna</b> (menguante).</p>
+        <p class="muted" style="font-size:11px;margin-top:6px">Cálculo astronómico: elongación Sol-Luna /12° = tithi. Mostramos el día que el tithi 11 ó 26 cae al amanecer en America/Santiago.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+        <div style="background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px"><b style="color:var(--gold)">🌙 ¿Por qué importa?</b><p class="muted" style="font-size:11px;margin:4px 0 0">La luna mueve mareas y tu agua interna. Ekadashi es un <b>recordatorio</b> para aligerar digestión y mente. <a href="#" data-eka-goto="ayuno" style="color:var(--accent)">Ver guía de ayuno →</a></p></div>
+        <div style="background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px"><b style="color:var(--gold)">📜 ¿De dónde viene?</b><p class="muted" style="font-size:11px;margin:4px 0 0">Día querido por Vishnu, diosa que vence al demonio Murdanava, Krishna lo explica a Yudhishthira. <a href="#" data-eka-goto="historia" style="color:var(--accent)">Leer historia →</a></p></div>
+      </div>
+      <details style="background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px;margin-bottom:8px"><summary style="cursor:pointer;color:var(--accent);font-weight:600">🥗 Práctica en 4 pasos (resumen)</summary>
+        <ol style="margin:6px 0 0 18px;font-size:12px;color:#cdd3ee;line-height:1.5">
+          <li><b>Víspera (Dashami):</b> cena liviana antes de las 20:00.</li>
+          <li><b>Ekadashi:</b> sin granos/legumbres/carnes/alcohol. Fruta, verdura, agua, infusiones.</li>
+          <li><b>Actitud:</b> calma, caminata, meditar 10 min.</li>
+          <li><b>Parana (Dwadashi):</b> rompe tras el amanecer con agua + fruta.</li>
+        </ol>
+      </details>
+      <details style="background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px;margin-bottom:8px"><summary style="cursor:pointer;color:var(--accent);font-weight:600">⚠️ Precauciones</summary>
+        <p class="muted" style="font-size:11px;margin:6px 0 0">Sin ayuno total si hay embarazo, lactancia, diabetes insulino-dependiente, TCA o medicación con comida. Adapta o consulta. Precisión ±1 día según linaje.</p>
+      </details>
     </div>
-    <details open style="background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px;margin-bottom:8px"><summary style="cursor:pointer;color:var(--accent);font-weight:600">🥗 Cómo practicar (paso a paso)</summary>
-      <ol style="margin:6px 0 0 18px;font-size:12px;color:#cdd3ee;line-height:1.5">
-        <li><b>La tarde anterior:</b> cena ligera, hidrátate.</li>
-        <li><b>Día Ekadashi:</b> evita <b>granos, legumbres, carnes pesadas, alcohol</b>. Prioriza fruta, verdura, agua, infusiones, frutos secos pequeños. Si no puedes ayunar completo, haz <b>ayuno parcial</b> (ej: solo fruta hasta mediodía).</li>
-        <li><b>Actitud:</b> medita 10 min, lee, camina, evita discusiones y pantallas en exceso. Es día de <b>vaciar</b>, no de exigirse.</li>
-        <li><b>Romper ayuno (parana):</b> al día siguiente <b>después del amanecer</b>, con agua tibia + fruta. No rompas de noche.</li>
+    <div data-eka-panel="ayuno" style="display:none">
+      <div style="background:linear-gradient(135deg,#2a2410,#1d1a12);border:1px solid var(--gold);border-radius:8px;padding:10px;margin-bottom:8px">
+      <p style="font-size:12px;color:#cdd3ee;margin:0 0 8px"><b>🍵 El ayuno no es castigo, es descanso.</b> Elige tu nivel sin culpa:</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+        <div style="background:rgba(0,0,0,.25);border:1px solid var(--line);border-radius:8px;padding:8px"><b style="color:#8ee6a0;font-size:12px">🌱 Nivel 1 — Suave</b><p class="muted" style="font-size:11px;margin:4px 0 0">Sin carnes, alcohol ni ultraprocesados. Fruta + verdura cocida + frutos secos. Ideal si trabajas o cuidas a otros.</p></div>
+        <div style="background:rgba(0,0,0,.25);border:1px solid var(--line);border-radius:8px;padding:8px"><b style="color:#d4a947;font-size:12px">🍎 Nivel 2 — Phalahara</b><p class="muted" style="font-size:11px;margin:4px 0 0">Solo fruta, frutos secos, leche/yogur si toleras, agua e infusiones. Sin arroz, pan, fideos, porotos, lentejas, avena ni mote.</p></div>
+        <div style="background:rgba(0,0,0,.25);border:1px solid var(--line);border-radius:8px;padding:8px"><b style="color:#7ab8ff;font-size:12px">💧 Nivel 3 — Líquidos</b><p class="muted" style="font-size:11px;margin:4px 0 0">Agua, limón/miel, manzanilla, boldo, matico, jugos colados. Solo con experiencia y sin trabajo físico exigente.</p></div>
+        <div style="background:rgba(0,0,0,.25);border:1px solid var(--line);border-radius:8px;padding:8px"><b style="color:#e08a8a;font-size:12px">🌑 Nivel 4 — Nirjala</b><p class="muted" style="font-size:11px;margin:4px 0 0">Sin agua ni comida de amanecer a amanecer. <b>Solo con guía</b> (1 vez/año). No lo intentes sin preparación.</p></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+        <div style="background:#10240f;border:1px solid #2c5a2e;border-radius:8px;padding:8px"><b style="color:#8ee6a0;font-size:12px">✅ SÍ</b><ul style="margin:4px 0 0 16px;font-size:11px;color:#cdd3ee;line-height:1.5"><li>Frutas, papas, camote, zapallo, zanahoria</li><li>Maní, nuez, almendra, leche, yogur</li><li>Miel, agua, limonada, infusiones</li></ul></div>
+        <div style="background:#2a1212;border:1px solid #6b2a2a;border-radius:8px;padding:8px"><b style="color:#e08a8a;font-size:12px">🚫 NO</b><ul style="margin:4px 0 0 16px;font-size:11px;color:#cdd3ee;line-height:1.5"><li>Arroz, pan, fideos, avena, mote, quinoa</li><li>Porotos, lentejas, garbanzos, soya</li><li>Carnes, embutidos, huevo, alcohol, frituras</li></ul></div>
+      </div>
+      <b style="color:var(--gold);font-size:12px">🕰️ Horario (America/Santiago)</b>
+      <ol style="margin:6px 0 8px 18px;font-size:12px;color:#cdd3ee;line-height:1.55">
+        <li><b>Dashami:</b> cena liviana antes de las 20:00 (sopa + fruta).</li>
+        <li><b>Ekadashi:</b> agua tibia + limón al amanecer, medita 10–20 min, come ligero solo con hambre real.</li>
+        <li><b>Dwadashi (parana):</b> rompe 2–3 h tras el amanecer con agua + fruta + cocido suave.</li>
       </ol>
-    </details>
-    <details style="background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px;margin-bottom:8px"><summary style="cursor:pointer;color:var(--accent);font-weight:600">⚠️ Precauciones</summary>
-      <p class="muted" style="font-size:11px;margin:6px 0 0">No hagas ayuno total si estás embarazada, amamantando, con diabetes insulino-dependiente, trastorno alimentario o medicación que exige comida. Adapta o consulta a tu profesional. Si tu tradición observa el día anterior/siguiente por inicio de tithi, sigue tu linaje — precisión ±1 día.</p>
-    </details>
+      <b style="color:var(--gold);font-size:12px">🧺 Ejemplo Penco</b>
+      <p class="muted" style="font-size:11px;margin:4px 0 0;line-height:1.5">Mañana: agua tibia + manzana + nueces · Mediodía: papas con zapallo + manzanilla · Tarde: plátano + yogur · Noche: sopa colada o boldo/matico.</p>
+      </div>
+    </div>
+    <div data-eka-panel="historia" style="display:none">
+      <div style="background:linear-gradient(135deg,#1a1430,#12101f);border:1px solid #7a6fa5;border-radius:8px;padding:10px;margin-bottom:8px">
+      <p style="font-size:12px;color:#cdd3ee;line-height:1.6;margin:0 0 8px"><b>📜 Origen.</b> <i>Eka+dasha</i> = once. Puranas (Padma, Garuda, Skanda) lo llaman el día querido por <b>Vishnu</b>.</p>
+      <p style="font-size:12px;color:#cdd3ee;line-height:1.6;margin:0 0 8px"><b>La diosa Ekadashi.</b> El demonio Murdanava no podía ser vencido. Vishnu descansó en una cueva; Murdanava entró a matarlo y de la respiración de Vishnu nació una joven luminosa que lo derrotó. Vishnu la nombró <b>Ekadashi</b>: quien ayune en su día hallará claridad.</p>
+      <p style="font-size:12px;color:#cdd3ee;line-height:1.6;margin:0 0 8px"><b>Krishna y Yudhishthira</b> (Mahabharata) narran cada Ekadashi con su nombre y fruto — origen de la lista actual.</p>
+      <b style="color:#b8aef0;font-size:12px">🌙 Los 24 del año</b>
+      <div style="font-size:11px;color:#cdd3ee;line-height:1.6;background:rgba(0,0,0,.25);border:1px solid var(--line);border-radius:8px;padding:8px;margin:6px 0">
+        <b>Ene–Feb:</b> Putrada · Shat-tila · Jaya · Vijaya<br>
+        <b>Mar–Abr:</b> Amalaki · Papmochani · Kamada · Varuthini<br>
+        <b>May–Jun:</b> Mohini · Apara · ⭐ <b>Nirjala</b> · Yogini<br>
+        <b>Jul–Ago:</b> ⭐ <b>Devshayani</b> (Vishnu duerme) · Kamika · Pavitropana · Aja<br>
+        <b>Sep–Oct:</b> Parivartini · Indira · Papankusha · Rama<br>
+        <b>Nov–Dic:</b> ⭐ <b>Devutthana</b> (Vishnu despierta) · Utpanna · Mokshada · Saphala
+      </div>
+      <p style="font-size:11px;color:#cdd3ee;line-height:1.6;margin:0 0 6px"><b>Símbolo:</b> 5 sentidos + 5 acciones + mente = 11. Ekadashi = gobernar los once.</p>
+      <p class="muted" style="font-size:11px;margin:0">Chaitanya (s. XVI) y Gandhi lo practicaron. Aquí lo unimos a las 13 lunas y la marea. 📚 Padma Purana, Garuda Purana, Ekadashi Mahatmya.</p>
+      </div>
+    </div>
     <div style="background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin-top:8px;font-size:12px;color:var(--gold)">Mostrando solo <b>3 lunas</b> contando la actual: <span id="ekadashiScope"></span> · <a href="#" id="ekadashiShowAll" style="color:var(--accent)">ver ciclo completo</a></div>`;
+  (function wireEkaTabs(){
+    const tabs = intro.querySelectorAll('[data-eka-tab]');
+    const panels = intro.querySelectorAll('[data-eka-panel]');
+    function paint(active){
+      tabs.forEach(b=>{
+        const on = b.getAttribute('data-eka-tab')===active;
+        b.style.borderColor = on ? 'var(--gold)' : '';
+        b.style.background = on ? 'var(--gold)' : '';
+        b.style.color = on ? '#10142c' : '';
+        b.style.fontWeight = on ? '700' : '';
+      });
+      panels.forEach(p=>{ p.style.display = p.getAttribute('data-eka-panel')===active ? '' : 'none'; });
+    }
+    function gotoTab(name){
+      if(name==='fechas'){ paint('resumen'); const lst=$('ekadashiList'); if(lst){ lst.scrollIntoView({behavior:'smooth',block:'start'}); } return; }
+      paint(name);
+    }
+    tabs.forEach(b=>{ b.onclick=(e)=>{ e.preventDefault(); gotoTab(b.getAttribute('data-eka-tab')); }; });
+    intro.querySelectorAll('[data-eka-goto]').forEach(a=>{ a.onclick=(e)=>{ e.preventDefault(); gotoTab(a.getAttribute('data-eka-goto')); }; });
+  })();
   const list = ekadashiListForCycle();
   const byLuna = {};
   for (const item of list) {
@@ -4693,8 +4967,9 @@ function renderNaturalUserList(){
 // === MEDICINA: BÁSICA / HISTORIA / SEGURIDAD ===
 function getMedicExtraData(){
   const u=userData();
-  if(!u.medicinaExtra) u.medicinaExtra={ botiquin:{}, alergias:'', grupo:'', contacto:'' };
+  if(!u.medicinaExtra) u.medicinaExtra={ botiquin:{}, alergias:'', grupo:'', contacto:'', nutri:{} };
   if(!u.medicinaExtra.botiquin || typeof u.medicinaExtra.botiquin!=='object') u.medicinaExtra.botiquin={};
+  if(!u.medicinaExtra.nutri || typeof u.medicinaExtra.nutri!=='object') u.medicinaExtra.nutri={};
   return u.medicinaExtra;
 }
 const MEDIC_BASICA_CARDS=[
@@ -4783,6 +5058,140 @@ function renderMedicSeguridad(){
   const aviso=(extra.alergias||extra.grupo)? `<div class="menstrual-card" style="border-color:var(--gold)"><h4 style="color:var(--gold)">📋 Tu aviso registrado</h4><p class="muted" style="font-size:11px">Alergias: <b>${escapeHtml(extra.alergias||'—')}</b> · Grupo: <b>${escapeHtml(extra.grupo||'—')}</b> · Contacto: <b>${escapeHtml(extra.contacto||'—')}</b><br>Muestra esto en CESFAM/SAR/farmacia. Edítalo en 🩺 Básica.</p></div>`:'<p class="muted" style="font-size:11px;margin-bottom:8px">💡 Registra tus alergias en 🩺 Básica y aparecerán aquí como recordatorio.</p>';
   box.innerHTML=aviso+'<div class="help-grid">'+MEDIC_SEGURIDAD.map(c=>`<div class="help-card" style="border-color:#ff6b6b55"><h4>${c.t}</h4><p style="font-size:11px;line-height:1.5">${c.d}</p></div>`).join('')+'</div>';
 }
+
+// === NUTRICIÓN (sección propia en Cuidado, junto a Entrenamientos) ===
+let nutriTab='quees';
+const MEDIC_NUTRI_CHECKS=[
+  ['agua','💧 Tomé 6–8 vasos de agua'],
+  ['verduras','🥬 Medio plato de verduras'],
+  ['fruta','🍎 2–3 frutas del día'],
+  ['legumbres','🫘 Legumbres esta semana (2+ veces)'],
+  ['pescado','🐟 Pescado/caleta 2 veces/semana'],
+  ['integral','🌾 Grano integral (avena, mote, integral)'],
+  ['sellos','🏷️ Evité productos CON sellos hoy'],
+  ['horario','🕰️ Comí a horas regulares, sin saltarme']
+];
+function getMedicNutriData(){
+  const d=getMedicExtraData();
+  if(!d.nutri || typeof d.nutri!=='object') d.nutri={};
+  return d.nutri;
+}
+function nutriSwitchTab(w){
+  nutriTab=w;
+  document.querySelectorAll('#nutriDialog [data-nutri-tab]').forEach(b=> b.classList.toggle('btn-accent', b.getAttribute('data-nutri-tab')===w));
+  renderNutri();
+}
+function nutriQueesHTML(){
+  return `<div class="menstrual-card" style="border-color:var(--gold);background:linear-gradient(135deg,var(--panel),var(--card))"><h4 style="color:var(--gold)">📖 ¿Qué es la nutrición?</h4><p class="muted" style="font-size:11px;line-height:1.6"><b>Alimentación</b> es lo que eliges y comes (acto voluntario y cultural). <b>Nutrición</b> es lo que tu cuerpo hace con eso: digerir, absorber y usar <b>nutrientes</b> para energía, construcción y defensa. comes 3 veces al día; te nutres las 24 h. Por eso no existen “alimentos prohibidos”, sino <b>patrones</b>: lo que repites cada semana manda.</p></div>
+  <div class="help-grid" style="margin-top:10px">
+    <div class="help-card"><h4>⚡ Macros (energía)</h4><p style="font-size:11px;line-height:1.5"><b>Carbohidratos</b> (4 kcal/g): pan, arroz, papas, mote, avena, legumbres → combustible diario. <b>Proteínas</b> (4 kcal/g): legumbres, huevo, pescado, pollo, lácteos → músculos y defensas. <b>Grasas</b> (9 kcal/g): aceite crudo, palta, frutos secos → energía de reserva y hormonas. Faltan o sobran cuando el plato se desbalancea, no por un alimento solo.</p></div>
+    <div class="help-card"><h4>🛡️ Micros (regulan)</h4><p style="font-size:11px;line-height:1.5"><b>Vitaminas y minerales</b> en pequeñas dosis mandan mucho: hierro (sangre), calcio + vitamina D (huesos), B12 (nervios), vitamina C (absorber hierro y defender), yodo y zinc. Se obtienen comiendo <b>variado y de colores</b>; ningún suplemento reemplaza el plato.</p></div>
+    <div class="help-card"><h4>💧 Agua + fibra (olvidadas)</h4><p style="font-size:11px;line-height:1.5"><b>Agua:</b> 6–8 vasos/día, más con calor o faena física. <b>Fibra:</b> 25 g/día (legumbres, avena, verduras, fruta con cáscara): alimenta tu microbiota, regula azúcar y tránsito. Si tomas hierro, sepáralo del té/café 2 h y acompáñalo con vitamina C.</p></div>
+    <div class="help-card"><h4>🍽️ El plato chileno (MINSAL)</h4><p style="font-size:11px;line-height:1.5"><b>½ verduras</b> + <b>¼ proteína</b> (legumbres, huevo, pescado, pollo) + <b>¼ grano integral</b> (arroz integral, mote, avena, papa con cáscara) + <b>agua</b>. Aceite crudo 1–2 cdtas, fruta de postre. <b>Mano-medida:</b> verduras 2 puños, grano 1 puño, proteína 1 palma, aceite punta del pulgar.</p></div>
+  </div>`;
+}
+function nutriGuiaHTML(){
+  return `<div class="help-grid">
+    <div class="help-card"><h4>🦴 Lo que más falta en Chile</h4><p style="font-size:11px;line-height:1.5"><b>Vitamina D:</b> sol 15 min + fortificados. <b>Calcio:</b> 3 lácteos/día. <b>Hierro:</b> legumbres + vitamina C; carne 1–2/sem basta. <b>B12:</b> si comes poco animal, consulta suplemento. <b>Omega-3:</b> pescado 2/sem (jurel, sardina, merluza).</p></div>
+    <div class="help-card"><h4>🤰 Etapas</h4><p style="font-size:11px;line-height:1.5"><b>Embarazo/lactancia:</b> +1 lácteo, hierro + fólico con matrona, cero alcohol y cero dietas. <b>Niños:</b> 3 comidas + 2 colaciones, lácteos diario. <b>Mayores:</b> proteína en cada comida + caminar. <b>Diabetes/presión:</b> plan CESFAM; base: menos sal/azúcar, más legumbre y verdura.</p></div>
+    <div class="help-card"><h4>💊 Comida + remedios</h4><p style="font-size:11px;line-height:1.5">Levotiroxina en ayunas lejos de calcio/hierro 4 h · Hierro lejos de té/lácteos · Metformina con comida. Anota con/sin comida en 💊 y pregunta en farmacia.</p></div>
+    <div class="help-card"><h4>🏷️ Sellos ALTO EN (Ley 20.606)</h4><p style="font-size:11px;line-height:1.5">Prefiere el de <b>menos sellos</b>. Lee en 30 seg: sellos → por 100 g → ingredientes (si azúcar/sal/aceite van primeros, devuélvelo). Cambios: bebida→agua, galleta con sellos→fruta+maní, jugo en caja→fruta entera. Sal &lt;5 g y azúcar &lt;25 g/día.</p></div>
+    <div class="help-card"><h4>🚫 Mitos</h4><p style="font-size:11px;line-height:1.5">“El pan engorda” → engorda el exceso. “Cenar engorda” → importa el total del día. “Detox con jugos” → tu hígado ya lo hace. “Quema-grasa” → ninguno reemplaza plato + movimiento.</p></div>
+    <div class="help-card"><h4>🚦 Pedir ayuda</h4><p style="font-size:11px;line-height:1.5">Nutricionista/médico CESFAM si hay cambios bruscos de peso, sed excesiva, presión o colesterol altos. <b>SAMU 131</b> urgencias · <b>Salud Responde 600 360 7777</b> dudas.</p></div>
+  </div>
+  <div class="menstrual-card" style="margin-top:10px;background:var(--panel)"><h4>🔗 Conecta</h4><p class="muted" style="font-size:11px;line-height:1.5">Arma el día en 🥗 <b>Comidas</b>, trae ingredientes con 🛒 <b>Compras</b>, calcula tu meta en 🧮 <b>Calculadora</b> y cosecha de 🌿 <b>Huerta/Siembra</b>.</p></div>`;
+}
+const NUTRI_HISTORIA=[
+  { anio:'~400 a.C.', t:'Hipócrates — “el alimento, medicina”', d:'Dieta, reposo e higiene como tratamiento. La idea de que comer ordena la salud nace aquí.' },
+  { anio:'~1025', t:'Avicena — dietética', d:'El Canon dedica capítulos a alimentos por temperamento y edad: nace la dietética como rama médica.' },
+  { anio:'1753', t:'Lind — escorbuto y cítricos', d:'El cirujano naval prueba limones contra el escorbuto: primera prueba clínica nutricional. Nace la vitamina C (aunque tardó 150 años en aislarse).' },
+  { anio:'~1780', t:'Lavoisier — calorimetría', d:'Mide que el cuerpo “quema” alimentos como una máquina: origen de las calorías y el metabolismo.' },
+  { anio:'1912', t:'Funk — “vitaminas”', d:'Bautiza las aminas vitales. En 20 años se descubren A, B, C, D, E y K y se erradican cegueras, raquitismos y beriberis por dieta.' },
+  { anio:'1921', t:'Insulina y diabetes', d:'Banting y Best aíslan la insulina: la nutrición y las hormonas se entienden juntas. La dieta del diabético se vuelve ciencia.' },
+  { anio:'1970–2000', t:'Chile — desnutrición a obesidad', d:'JUNAEB y PNAC vencen la desnutrición infantil; luego sube la obesidad. El país pasa de “comer poco” a “comer mucho ultraprocesado”.' },
+  { anio:'2016', t:'Ley 20.606 — sellos ALTO EN', d:'Chile, pionero mundial: sellos negros, no más publicidad infantil chatarra ni venta en colegios. Varios países copian el modelo.' },
+  { anio:'Hoy', t:'NOVA + microbiota + guías MINSAL', d:'Ultraprocesados (NOVA), fibra y microbiota al centro. Guías Alimentarias 2022: más legumbres, pescado, agua y cocina casera; menos sellos. Esta sección las resume para Penco.' }
+];
+function nutriHistoriaHTML(){
+  return `<div class="menstrual-card" style="border-color:var(--gold);background:linear-gradient(135deg,var(--panel),var(--card))"><h4 style="color:var(--gold)">📜 Historia de la nutrición — del mito al sello</h4><p class="muted" style="font-size:11px;line-height:1.5">Cómo pasamos de “come esto porque sí” a calorías, vitaminas y sellos negros. La nutrición como ciencia tiene apenas ~100 años.</p></div>`
+  +'<div class="mens-history" style="margin-top:10px">'+NUTRI_HISTORIA.map(h=>`<div class="mens-hist-item" style="align-items:flex-start"><span><b>${escapeHtml(h.anio)}</b><br><b>${escapeHtml(h.t)}</b><br><span class="muted" style="font-size:11px;line-height:1.5">${h.d}</span></span></div>`).join('')+'</div>'
+  +'<div class="menstrual-card" style="margin-top:10px;background:var(--panel)"><h4>📚 Para seguir</h4><p class="muted" style="font-size:11px;line-height:1.5">Guías Alimentarias para Chile (MINSAL) · Ley 20.606 · Clasificación NOVA · Tu nutricionista CESFAM. Si estudias el tema, anótalo en 🧠 Estudio.</p></div>';
+}
+function nutriPencoHTML(){
+  return `<div class="menstrual-card" style="border-color:var(--gold);background:linear-gradient(135deg,var(--panel),var(--card))"><h4 style="color:var(--gold)">🧺 Comer bien en Penco (feria + caleta + huerta)</h4><p class="muted" style="font-size:11px;line-height:1.5">Base semanal: <b>legumbres 2–3 veces</b>, <b>pescado 2 veces</b> (jurel, merluza, sardina), huevo 3–4/sem, verduras de estación, papa/mote/avena. Despliega cada tema ⬇️ — el menú de ejemplo va primero.</p></div>
+  <div class="help-grid" style="margin-top:10px">
+    <div class="help-card"><h4>Lunes — Lentejas</h4><p style="font-size:11px">Lentejas con zapallo + repollo-limón + manzana. Hierro + fibra por poca plata.</p></div>
+    <div class="help-card"><h4>Martes — Jurel</h4><p style="font-size:11px">Jurel al horno + papas con cáscara + pebre + naranja (la vit C ayuda a absorber el hierro).</p></div>
+    <div class="help-card"><h4>Miércoles — Tortilla</h4><p style="font-size:11px">Tortilla de verduras + arroz integral + yogur natural. Buena para llevar al trabajo.</p></div>
+    <div class="help-card"><h4>Jueves — Porotos</h4><p style="font-size:11px">Porotos con mote + ensalada + kiwi. Cocina olla grande y guarda porción para el sábado.</p></div>
+    <div class="help-card"><h4>Viernes — Merluza</h4><p style="font-size:11px">Merluza a la plancha + puré + brócoli + limonada sin azúcar. Cierre liviano de semana.</p></div>
+    <div class="help-card"><h4>Fin de semana</h4><p style="font-size:11px">Sábado: cazuela liviana (aprovecha el caldo de los porotos). Domingo: sobras ordenadas + fruta. Colaciones: fruta, maní sin sal, yogur, avena.</p></div>
+  </div>
+  <details style="background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px;margin-top:10px"><summary style="cursor:pointer;color:var(--accent);font-weight:600">🗓️ Qué trae cada estación (feria)</summary>
+    <ul style="margin:6px 0 0 18px;font-size:11px;color:#cdd3ee;line-height:1.6">
+      <li><b>Otoño:</b> manzana, pera, membrillo, zapallo, repollo, espinaca, nueces y avellanas. Momento de guisos y sopas.</li>
+      <li><b>Invierno:</b> cítricos (naranja, limón, mandarina), kiwi, coliflor, brócoli, zanahoria, betarraga. Vit C contra resfríos.</li>
+      <li><b>Primavera:</b> habas, arvejas, lechugas, acelga, frutillas, cerezas. Ensaladas vuelven a la mesa.</li>
+      <li><b>Verano:</b> tomate, choclo, porotos granados, durazno, sandía, arándanos, albahaca. Hidrata con fruta + agua.</li>
+    </ul>
+    <p class="muted" style="font-size:11px;margin:6px 0 0">Regla feria: lo de estación es más barato, más fresco y con menos viaje. Si está caro, cambia el ingrediente, no la receta.</p>
+  </details>
+  <details style="background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px;margin-top:8px"><summary style="cursor:pointer;color:var(--accent);font-weight:600">🐟 Caleta: fresco, barato y seguro</summary>
+    <ul style="margin:6px 0 0 18px;font-size:11px;color:#cdd3ee;line-height:1.6">
+      <li><b>De Penco:</b> merluza, jurel, sardina, reineta según temporada; choritos, almejas y piures. El jurel es el campeón calidad-precio (omega-3 + hierro).</li>
+      <li><b>Ojo fresco:</b> ojos brillantes, agallas rojas, olor a mar (no a amoníaco), carne firme que vuelve al presionar. Marisco: concha cerrada o que se cierra al tocar.</li>
+      <li><b>En casa:</b> pescado a 0–4 °C y úsalo en 24 h; si no, porciónalo y congela con fecha (dura 2–3 meses). Descongela en el refrigerador, nunca a temperatura ambiente.</li>
+      <li><b>Mariscos:</b> hiérvelos bien (que abran todos), bota los cerrados. Con marea roja o veda, respeta el aviso de la autoridad: no hay plato que valga una intoxicación.</li>
+    </ul>
+  </details>
+  <details style="background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px;margin-top:8px"><summary style="cursor:pointer;color:var(--accent);font-weight:600">🫙 Olla grande + despensa (cocina una vez, come tres)</summary>
+    <ul style="margin:6px 0 0 18px;font-size:11px;color:#cdd3ee;line-height:1.6">
+      <li><b>Batch del domingo:</b> 1 olla de legumbres + 1 de grano (arroz/mote) + verduras al horno. Porciona en potes con fecha: 3 días refrigerado, 3 meses congelado.</li>
+      <li><b>Despensa base:</b> lentejas, porotos, garbanzos, arroz, avena, mote, harina integral, aceite, sal de mar, orégano, comino, ají, té, leche en polvo o larga vida, atún/jurel en tarro para emergencias.</li>
+      <li><b>Remojo:</b> legumbres 8–12 h con agua + limón/vinagre, bota esa agua y cocina con agua nueva: menos gases, mejor digestión.</li>
+      <li><b>Rotula todo:</b> nombre + fecha con masking tape. Lo que no se ve, se pierde al fondo del freezer.</li>
+    </ul>
+  </details>
+  <details style="background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px;margin-top:8px"><summary style="cursor:pointer;color:var(--accent);font-weight:600">🌱 De tu huerta y la luna</summary>
+    <p class="muted" style="font-size:11px;line-height:1.6;margin:6px 0 0">Cilantro, perejil, lechuga, acelga, zanahoria y habas se dan bien en Penco y abaratan la ensalada. Cosecha en la mañana (más turgente) y lava con agua segura. Cruza con 🌿 <b>Huerta/Siembra</b> del calendario: siembra hoja en creciente, raíz en menguante, y programa tus almácigos por luna.</p>
+  </details>
+  <details style="background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px;margin-top:8px"><summary style="cursor:pointer;color:var(--accent);font-weight:600">💧 Agua y colaciones que salvan</summary>
+    <ul style="margin:6px 0 0 18px;font-size:11px;color:#cdd3ee;line-height:1.6">
+      <li><b>Agua:</b> 6–8 vasos; lleva botella a la pega, la caleta y la multicancha. Agua con rodaja de limón o pepino reemplaza la bebida.</li>
+      <li><b>Colación mochila:</b> fruta + maní sin sal, yogur, huevo duro, avena con leche. Evita el kiosco con sellos a las 11:00.</li>
+      <li><b>Once chilena sana:</b> pan integral + palta/huevo/quesillo + tomate, té o leche. La once no es enemiga: manda la porción.</li>
+    </ul>
+  </details>
+  <div class="menstrual-card" style="margin-top:10px"><h4>💰 Ahorro feria</h4><p class="muted" style="font-size:11px;line-height:1.5">Compra lo de estación con lista (🛒 <b>Compras</b>), anda a última hora por ofertas, prefiere feria/caleta sobre mall, congela pan y pescado porcionado y usa tu huerta. Menos sellos = menos plata y más salud. Anota el menú en 🥗 <b>Comidas</b> para verlo en la luna.</p></div>`;
+}
+function nutriSemanaHTML(){
+  const d=getMedicNutriData();
+  const n=MEDIC_NUTRI_CHECKS.filter(([id])=>d[id]).length;
+  const pct=Math.round(n/MEDIC_NUTRI_CHECKS.length*100);
+  return `<div class="menstrual-card"><h4 style="color:var(--accent)">✅ Mi semana nutricional (${n}/${MEDIC_NUTRI_CHECKS.length} · ${pct}%)</h4><p class="muted" style="font-size:11px">Toca para marcar. Privado y local por usuario. Apunta a 6/8 sin culpa.</p><div id="nutriChecks" class="habits-today-grid" style="margin-top:8px">`
+    +MEDIC_NUTRI_CHECKS.map(([id,label])=>`<label class="habit-today-item${d[id]?' done':''}"><input type="checkbox" data-id="${id}" ${d[id]?'checked':''}><span>${label}</span></label>`).join('')
+    +`</div><div class="dlg-actions" style="justify-content:space-between;margin-top:8px"><span class="muted" style="font-size:11px">${pct>=75?'🌟 ¡Semana equilibrada!':pct>=50?'💪 Vas bien, suma agua y verduras':'🌱 Empieza por agua + 1 verdura hoy'}</span><button type="button" id="nutriReset" class="btn" style="width:auto;font-size:11px">↺ Reiniciar</button></div></div>
+    <div class="menstrual-card" style="margin-top:10px;background:var(--panel)"><h4>📝 Meta de esta luna</h4><p class="muted" style="font-size:11px;line-height:1.5">Elige UNA sola (ej: “legumbres martes y jueves”). Anótala en 🥗 Comidas y revísala cada luna.</p></div>`;
+}
+function renderNutri(){
+  const box=$('nutriBox'); if(!box) return;
+  let html='';
+  if(nutriTab==='guia') html=nutriGuiaHTML();
+  else if(nutriTab==='historia') html=nutriHistoriaHTML();
+  else if(nutriTab==='penco') html=nutriPencoHTML();
+  else if(nutriTab==='semana') html=nutriSemanaHTML();
+  else html=nutriQueesHTML();
+  box.innerHTML=html;
+  const checks=box.querySelectorAll('#nutriChecks input');
+  checks.forEach(cb=> cb.onchange=()=>{ const dd=getMedicNutriData(); if(cb.checked) dd[cb.dataset.id]=true; else delete dd[cb.dataset.id]; scheduleSave(); renderNutri(); });
+  const rs=$('nutriReset'); if(rs) rs.onclick=()=>{ const dd=getMedicExtraData(); dd.nutri={}; scheduleSave(); renderNutri(); };
+}
+function setupNutriDialog(){
+  const btn=$('btnNutri'); if(btn) btn.onclick=()=>{ nutriSwitchTab('quees'); $('nutriDialog').showModal(); };
+  const ct=$('nutriCloseTop'), cb=$('nutriClose'); if(ct) ct.onclick=()=>$('nutriDialog').close(); if(cb) cb.onclick=()=>$('nutriDialog').close();
+  document.querySelectorAll('#nutriDialog [data-nutri-tab]').forEach(b=>{ b.onclick=()=>nutriSwitchTab(b.getAttribute('data-nutri-tab')); });
+}
+setTimeout(setupNutriDialog, 600);
 
 // === PLANIFICADOR DE COMIDAS ===
 function getMealData(){
@@ -5047,8 +5456,8 @@ function renderMealMenus(){
         <b>Snack:</b> ${escapeHtml(m.snack)}
       </div>
       <div class="dlg-actions" style="justify-content:flex-start;margin-top:8px">
-        <button data-id="${m.id}" class="btn btn-accent menu-load" style="width:auto">📥 Cargar en plan de hoy</button>
-        <button data-id="${m.id}" class="btn menu-shop" style="width:auto">🛒 A lista</button>
+        <button type="button" data-id="${m.id}" class="btn btn-accent menu-load" style="width:auto">📥 Cargar en plan de hoy</button>
+        <button type="button" data-id="${m.id}" class="btn menu-shop" style="width:auto">🛒 A lista</button>
       </div>
     </div>`;
   }).join('');
@@ -5172,7 +5581,7 @@ function renderMealRecetas(){
     return `<div class="si-card" style="border-left:3px solid ${r.mia?'#7ab8ff':'var(--gold)'}">
       <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
         <h4 style="margin:0">${escapeHtml(r.nombre)} ${r.mia?'<span class="chip">mía</span>':''}</h4>
-        <button data-fav="${r.id}" class="btn btn-icon" style="padding:4px 8px" title="Favorita">${esFav?'⭐':'☆'}</button>
+        <button type="button" data-fav="${r.id}" class="btn btn-icon" style="padding:4px 8px" title="Favorita">${esFav?'⭐':'☆'}</button>
       </div>
       <p class="muted" style="font-size:11px;margin:4px 0">${escapeHtml(r.cat||'')} · ⏱ ${r.tiempo||'—'} min · ${escapeHtml(r.dif||'Fácil')} · ${escapeHtml(r.costo||'$')} · ~${r.kcal||'—'} kcal · ${escapeHtml(r.porc||'')}</p>
       <div id="recDet_${r.id}" class="hidden" style="font-size:11.5px;color:#cdd3ee;line-height:1.55;margin-top:6px">
@@ -5180,10 +5589,10 @@ function renderMealRecetas(){
         <b>Pasos:</b><ol style="margin:4px 0 4px 18px">${(r.pasos||[]).map(p=>'<li>'+escapeHtml(p)+'</li>').join('')}</ol>
       </div>
       <div class="dlg-actions" style="justify-content:flex-start;margin-top:8px;flex-wrap:wrap">
-        <button data-ver="${r.id}" class="btn" style="width:auto">👁️ Ver</button>
-        <button data-plan="${r.id}" class="btn btn-accent" style="width:auto">🥗 Al plan</button>
-        <button data-lista="${r.id}" class="btn" style="width:auto">🛒 A lista</button>
-        ${r.mia?`<button data-del="${r.id}" class="btn" style="width:auto">🗑️ Borrar</button>`:''}
+        <button type="button" data-ver="${r.id}" class="btn" style="width:auto">👁️ Ver</button>
+        <button type="button" data-plan="${r.id}" class="btn btn-accent" style="width:auto">🥗 Al plan</button>
+        <button type="button" data-lista="${r.id}" class="btn" style="width:auto">🛒 A lista</button>
+        ${r.mia?`<button type="button" data-del="${r.id}" class="btn" style="width:auto">🗑️ Borrar</button>`:''}
       </div>
     </div>`;
   }).join('');
@@ -6136,18 +6545,18 @@ setTimeout(setupHelpDialog, 850);
 // Incluye botones base + los inyectados por nuevos-modulos.js (Agua, Bodega, Nudos,
 // Taller, Trueque, Minga, Rutinas, Fertilidad, Derechos). NUEVOS_BTNS los re-agrega
 // con push si faltan (no-op si ya están), así los perfiles siempre los conocen.
-const ALL_BTNS = ["btnTides","btnFishing","btnBirds","btnIntermareal","btnBosque","btnWeather","btnSiembra","btnAstro","btnComuna","btnEkadashi","btnMenstrual","btnMedic","btnHabits","btnMeal","btnShopping","btnFinance","btnHomeTasks","btnDiscipline","btnDreams","btnBreath","btnGratitud","btnSchedule","btnGym","btnCircadian","btnGolden","btnEspiritual","btnCompost","btnLawen","btnFirstAid","btnAnimalCare","btnViolence","btnEvac","btnConvert","btnEnergy","btnLena","btnTimer","btnRemind","btnBackup","btnRestore","btnShortcut","btnPdfLuna","btnPdfCiclo","btnDonate","btnHelp","btnStudy","btnTales","btnVozAbuelos","btnMemory","btnMapu","btnEnglish","btnGuitar","btnPsico","btnMetodos","btnAgua","btnBodega","btnNudos","btnTaller","btnTrueque","btnMinga","btnFerti","btnDerechos","btnCrianza","btnArbolFull","btnRecap","btnDueloFull","btnEneagrama","btnAjedrez","btnSudoku","btnFlora","btnPsicologia","btnAdolescencia","btnJuventud","btnAdultez","btnClimaterio","btnVejez","btnElectrocultura","btnMecanica","btnDespensa","btnCloset","btnHerramientas"];
+const ALL_BTNS = ["btnTides","btnFishing","btnBirds","btnIntermareal","btnBosque","btnWeather","btnSiembra","btnAstro","btnComuna","btnEkadashi","btnMenstrual","btnMedic","btnNutri","btnHabits","btnMeal","btnShopping","btnFinance","btnHomeTasks","btnDiscipline","btnDreams","btnBreath","btnGratitud","btnSchedule","btnGym","btnCircadian","btnGolden","btnEspiritual","btnCompost","btnLawen","btnFirstAid","btnAnimalCare","btnViolence","btnEvac","btnConvert","btnEnergy","btnLena","btnTimer","btnRemind","btnBackup","btnRestore","btnShortcut","btnPdfLuna","btnPdfCiclo","btnDonate","btnHelp","btnStudy","btnTales","btnVozAbuelos","btnMemory","btnMapu","btnEnglish","btnGuitar","btnPsico","btnMetodos","btnAgua","btnBodega","btnNudos","btnTaller","btnTrueque","btnMinga","btnFerti","btnDerechos","btnCrianza","btnArbolFull","btnRecap","btnDueloFull","btnEneagrama","btnAjedrez","btnSudoku","btnFlora","btnPsicologia","btnAdolescencia","btnJuventud","btnAdultez","btnClimaterio","btnVejez","btnElectrocultura","btnMecanica","btnDespensa","btnCloset","btnHerramientas"];
 // === REORGANIZACIÓN 7 GRUPOS (2026-09): grupo + subgrupo destino de cada botón ===
 // Dinámicos que aún no existen en el DOM se mueven cuando se inyectan.
 const BTN_HOME = {
   btnHabits:['dia','organizar'],btnDiscipline:['dia','organizar'],btnSchedule:['dia','organizar'],btnTimer:['dia','organizar'],btnRemind:['dia','organizar'],
   btnGratitud:['dia','registrar'],btnDreams:['dia','registrar'],btnBreath:['dia','registrar'],
   btnTides:['territorio','mar'],btnFishing:['territorio','mar'],btnIntermareal:['territorio','mar'],btnNudos:['territorio','mar'],
-  btnSiembra:['territorio','tierra'],btnCompost:['territorio','tierra'],btnAgua:['territorio','tierra'],btnBosque:['territorio','tierra'],btnFlora:['territorio','tierra'],btnBirds:['territorio','tierra'],btnLawen:['territorio','tierra'],btnElectrocultura:['territorio','tierra'],
+  btnSiembra:['territorio','tierra'],btnHuerta:['territorio','tierra'],btnElectrocultura:['territorio','tierra'],btnCompost:['territorio','tierra'],btnAgua:['territorio','tierra'],btnBosque:['territorio','tierra'],btnFlora:['territorio','tierra'],btnBirds:['territorio','tierra'],btnLawen:['territorio','tierra'],
   btnWeather:['territorio','cielo'],btnAstro:['territorio','cielo'],btnGolden:['territorio','cielo'],btnCircadian:['territorio','cielo'],btnEkadashi:['territorio','cielo'],
   btnComuna:['territorio','penco'],
   btnMenstrual:['cuerpo','ciclos'],btnFerti:['cuerpo','ciclos'],btnJuventud:['cuerpo','ciclos'],btnClimaterio:['cuerpo','ciclos'],
-  btnMedic:['cuerpo','cuidado'],btnGym:['cuerpo','cuidado'],
+  btnMedic:['cuerpo','cuidado'],btnNutri:['cuerpo','cuidado'],btnGym:['cuerpo','cuidado'],
   btnStudy:['aprender','estudio'],btnMemory:['aprender','estudio'],btnMapu:['aprender','estudio'],btnEnglish:['aprender','estudio'],btnGuitar:['aprender','estudio'],
   btnAjedrez:['aprender','juegos'],btnSudoku:['aprender','juegos'],
   btnTales:['aprender','infancias'],btnCrianza:['aprender','infancias'],btnAdolescencia:['aprender','infancias'],
@@ -6164,11 +6573,11 @@ const BTN_ORDER = {
   'dia|organizar':['btnHabits','btnDiscipline','btnSchedule','btnTimer','btnRemind'],
   'dia|registrar':['btnGratitud','btnDreams','btnBreath'],
   'territorio|mar':['btnTides','btnFishing','btnIntermareal','btnNudos'],
-  'territorio|tierra':['btnSiembra','btnCompost','btnAgua','btnBosque','btnFlora','btnBirds','btnLawen','btnElectrocultura'],
+  'territorio|tierra':['btnHuerta','btnSiembra','btnBosque','btnBirds','btnCompost','btnAgua','btnFlora','btnLawen','btnElectrocultura'],
   'territorio|cielo':['btnWeather','btnAstro','btnGolden','btnCircadian','btnEkadashi'],
-  'territorio|penco':['btnComuna'],
+  'territorio|penco':['btnComuna','btnMuni','btnBomberos','btnActores'],
   'cuerpo|ciclos':['btnMenstrual','btnFerti','btnJuventud','btnClimaterio'],
-  'cuerpo|cuidado':['btnMedic','btnGym'],
+  'cuerpo|cuidado':['btnMedic','btnNutri','btnGym'],
   'aprender|estudio':['btnStudy','btnMemory','btnMapu','btnEnglish','btnGuitar'],
   'aprender|juegos':['btnAjedrez','btnSudoku'],
   'aprender|infancias':['btnTales','btnCrianza','btnAdolescencia'],
@@ -6237,12 +6646,12 @@ const PRESETS = {
   infantil: {btnWeather:true,btnAstro:true,btnBirds:true,btnBosque:true,btnSiembra:true,btnCompost:true,btnHabits:true,btnDreams:true,btnBreath:true,btnGratitud:true,btnSchedule:true,btnTales:true,btnVozAbuelos:true,btnMemory:true,btnAjedrez:true,btnSudoku:true,btnMapu:true,btnEnglish:true,btnGuitar:true,btnMeal:true,btnCrianza:true,btnHelp:true,btnDonate:true},
   adolescente: {btnHabits:true,btnDiscipline:true,btnStudy:true,btnSchedule:true,btnMemory:true,btnAjedrez:true,btnSudoku:true,btnMapu:true,btnEnglish:true,btnGuitar:true,btnTales:true,btnVozAbuelos:true,btnDreams:true,btnBreath:true,btnGratitud:true,btnPsico:true,btnMetodos:true,btnRecap:true,btnDueloFull:true,btnEneagrama:true,btnGym:true,btnCircadian:true,btnMeal:true,btnFinance:true,btnConvert:true,btnTimer:true,btnRemind:true,btnFirstAid:true,btnViolence:true,btnCrianza:true,btnHelp:true,btnDonate:true},
   adulto: Object.fromEntries(ALL_BTNS.map(k=>[k,true])),
-  mayor: {btnWeather:true,btnTides:true,btnAstro:true,btnSiembra:true,btnEkadashi:true,btnMedic:true,btnLawen:true,btnHabits:true,btnBreath:true,btnDreams:true,btnGratitud:true,btnMemory:true,btnSudoku:true,btnTales:true,btnVozAbuelos:true,btnArbolFull:true,btnRecap:true,btnDueloFull:true,btnGym:true,btnCircadian:true,btnEspiritual:true,btnMeal:true,btnShopping:true,btnHomeTasks:true,btnFirstAid:true,btnAnimalCare:true,btnViolence:true,btnEvac:true,btnRemind:true,btnTimer:true,btnEnergy:true,btnLena:true,btnPdfLuna:true,btnHelp:true,btnDonate:true},
+  mayor: {btnWeather:true,btnTides:true,btnAstro:true,btnSiembra:true,btnEkadashi:true,btnMedic:true,btnNutri:true,btnLawen:true,btnHabits:true,btnBreath:true,btnDreams:true,btnGratitud:true,btnMemory:true,btnSudoku:true,btnTales:true,btnVozAbuelos:true,btnArbolFull:true,btnRecap:true,btnDueloFull:true,btnGym:true,btnCircadian:true,btnEspiritual:true,btnMeal:true,btnShopping:true,btnHomeTasks:true,btnFirstAid:true,btnAnimalCare:true,btnViolence:true,btnEvac:true,btnRemind:true,btnTimer:true,btnEnergy:true,btnLena:true,btnPdfLuna:true,btnHelp:true,btnDonate:true},
   estudiante: {btnWeather:true,btnSiembra:true,btnAstro:true,btnHabits:true,btnDiscipline:true,btnStudy:true,btnSchedule:true,btnMemory:true,btnAjedrez:true,btnSudoku:true,btnMapu:true,btnEnglish:true,btnGuitar:true,btnTales:true,btnVozAbuelos:true,btnPsico:true,btnMetodos:true,btnEneagrama:true,btnDreams:true,btnBreath:true,btnGratitud:true,btnConvert:true,btnTimer:true,btnRemind:true,btnPdfLuna:true,btnPdfCiclo:true,btnBackup:true,btnHelp:true,btnDonate:true},
   agricultor: {btnWeather:true,btnTides:true,btnAstro:true,btnBirds:true,btnSiembra:true,btnBosque:true,btnCompost:true,btnAgua:true,btnBodega:true,btnLawen:true,btnGolden:true,btnCircadian:true,btnEkadashi:true,btnIntermareal:true,btnComuna:true,btnTrueque:true,btnMinga:true,btnTaller:true,btnNudos:true,btnMeal:true,btnShopping:true,btnFinance:true,btnRemind:true,btnTimer:true,btnPdfLuna:true,btnPdfCiclo:true,btnBackup:true,btnHelp:true,btnDonate:true},
   pescador: {btnWeather:true,btnTides:true,btnAstro:true,btnIntermareal:true,btnFishing:true,btnBirds:true,btnSiembra:true,btnBosque:true,btnAgua:true,btnGolden:true,btnCircadian:true,btnComuna:true,btnNudos:true,btnTaller:true,btnTrueque:true,btnMinga:true,btnFirstAid:true,btnEvac:true,btnMeal:true,btnRemind:true,btnTimer:true,btnHelp:true,btnDonate:true},
-  salud: {btnMenstrual:true,btnMedic:true,btnLawen:true,btnFerti:true,btnHabits:true,btnGym:true,btnCircadian:true,btnBreath:true,btnDreams:true,btnGratitud:true,btnEspiritual:true,btnDueloFull:true,btnRecap:true,btnPsico:true,btnMetodos:true,btnEneagrama:true,btnEkadashi:true,btnCompost:true,btnMeal:true,btnShopping:true,btnSchedule:true,btnCrianza:true,btnVozAbuelos:true,btnFirstAid:true,btnAnimalCare:true,btnViolence:true,btnEvac:true,btnRemind:true,btnTimer:true,btnHelp:true,btnDonate:true},
-  deportista: {btnWeather:true,btnTides:true,btnHabits:true,btnGym:true,btnCircadian:true,btnBreath:true,btnEspiritual:true,btnDreams:true,btnGratitud:true,btnMeal:true,btnShopping:true,btnFinance:true,btnTimer:true,btnRemind:true,btnEnergy:true,btnConvert:true,btnFirstAid:true,btnHelp:true,btnDonate:true},
+  salud: {btnMenstrual:true,btnMedic:true,btnNutri:true,btnLawen:true,btnFerti:true,btnHabits:true,btnGym:true,btnCircadian:true,btnBreath:true,btnDreams:true,btnGratitud:true,btnEspiritual:true,btnDueloFull:true,btnRecap:true,btnPsico:true,btnMetodos:true,btnEneagrama:true,btnEkadashi:true,btnCompost:true,btnMeal:true,btnShopping:true,btnSchedule:true,btnCrianza:true,btnVozAbuelos:true,btnFirstAid:true,btnAnimalCare:true,btnViolence:true,btnEvac:true,btnRemind:true,btnTimer:true,btnHelp:true,btnDonate:true},
+  deportista: {btnWeather:true,btnTides:true,btnHabits:true,btnGym:true,btnNutri:true,btnCircadian:true,btnBreath:true,btnEspiritual:true,btnDreams:true,btnGratitud:true,btnMeal:true,btnShopping:true,btnFinance:true,btnTimer:true,btnRemind:true,btnEnergy:true,btnConvert:true,btnFirstAid:true,btnHelp:true,btnDonate:true},
   docente: {btnWeather:true,btnSiembra:true,btnBosque:true,btnBirds:true,btnCompost:true,btnEkadashi:true,btnHabits:true,btnDiscipline:true,btnStudy:true,btnSchedule:true,btnMemory:true,btnAjedrez:true,btnSudoku:true,btnArbolFull:true,btnRecap:true,btnMapu:true,btnEnglish:true,btnGuitar:true,btnTales:true,btnVozAbuelos:true,btnCrianza:true,btnGratitud:true,btnPsico:true,btnMetodos:true,btnEneagrama:true,btnConvert:true,btnTimer:true,btnRemind:true,btnPdfLuna:true,btnPdfCiclo:true,btnBackup:true,btnHelp:true,btnDonate:true}
 };
 function getVisibleConfig(){

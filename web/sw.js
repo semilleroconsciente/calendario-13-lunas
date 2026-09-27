@@ -1,7 +1,6 @@
 // Service Worker — Calendario 13 Lunas (offline-first, tolerante a versiones ?v=)
-// v29: + Recetas en Comidas (renderer.js?v=9)
-
-const CACHE = 'cal13-v29-offline';
+// v32: orden Tierra y monte (Huerta, Siembra, Bosque…), orden Penco, sección Nutrición propia
+const CACHE = 'cal13-v32-offline';
 
 // Lista completa de archivos que usa index.html (bare + con ?v=).
 // Si se agrega un JS nuevo en index.html, agregarlo aquí también (bare y ?v=).
@@ -10,6 +9,7 @@ const CORE = [
   './index.html',
   './styles.css',
   './styles.css?v=9',
+  './styles.css?v=10',
   './web-api.js',
   './web-api.js?v=8',
   './astro.js',
@@ -38,6 +38,7 @@ const CORE = [
   './data/territorios/penco/historia/historia-pesca.json',
   './data/territorios/penco/cultivos/asociaciones.json',
   './data/territorios/penco/cultivos/preparados.json',
+  './data/territorios/penco/actores.json',
   './frases.js',
   './frases.js?v=8',
   './flora.js',
@@ -47,8 +48,11 @@ const CORE = [
   './renderer.js',
   './renderer.js?v=8',
   './renderer.js?v=9',
+  './renderer.js?v=10',
+  './renderer.js?v=11',
   './nuevos-modulos.js',
   './nuevos-modulos.js?v=8',
+  './nuevos-modulos.js?v=9',
   './linaje-modulos.js',
   './linaje-modulos.js?v=1',
   './eneagrama-modulo.js',
@@ -101,6 +105,8 @@ const CORE = [
   './hogar-herramientas-modulo.js?v=1',
   './talleres-penco.js',
   './talleres-penco.js?v=1',
+  './actores-territorio.js',
+  './actores-territorio.js?v=1',
   './web-api.js',
   './web-api.js?v=8',
   './donate.json',
