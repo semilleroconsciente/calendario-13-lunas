@@ -240,6 +240,8 @@ dialog input, dialog textarea {
   border: 1px solid var(--line); color: var(--text); border-radius: 6px; padding: 7px;
   font-family: inherit;
 }
+/* Accesibilidad: placeholder con contraste AA en ambos temas (usa --muted a opacidad plena) */
+input::placeholder, textarea::placeholder { color: var(--muted); opacity: 1; }
 .dlg-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 6px; }
 
 #searchBox {
@@ -273,7 +275,7 @@ dialog input, dialog textarea {
 #ekadashiIntro li { margin-bottom: 4px; }
 .ek-badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; margin-left: 6px; }
 .ek-badge.shukla { background: #d4a947; color: #10142c; }
-.ek-badge.krishna { background: #7a6fa5; color: #e8eaf6; }
+.ek-badge.krishna { background: #5d5486; color: #e8eaf6; }
 
 #siembraContent .si-card, #siembraHarvestBox .si-card {
   background: var(--card); border: 1px solid var(--line); border-radius: 10px;
@@ -359,9 +361,9 @@ body[data-tema="RIMU"] { --gold: #e8a06a; --accent: #f2bc8f; background: radial-
 
 /* Temas manuales - tienen prioridad sobre data-tema */
 body[data-theme="noche"] { --bg:#0b1026; --bg2:#111834; --panel:#161e3f; --card:#1b2447; --card-hover:#232d58; --line:#2a3565; --text:#e8eaf6; --muted:#9aa3c7; --gold:#e8c56a; --accent:#f0d488; background: radial-gradient(ellipse at 70% -10%, #1a2450 0%, #0b1026 55%) !important; }
-body[data-theme="claro"] { --bg:#f4f1e8; --bg2:#ffffff; --panel:#e8e5dc; --card:#ffffff; --card-hover:#f0ece0; --line:#d5cfc0; --text:#2b2418; --muted:#7a6e5a; --gold:#9a7b2f; --accent:#b8963a; background: radial-gradient(ellipse at 70% -10%, #fffaf0 0%, #f4f1e8 55%) !important; }
+body[data-theme="claro"] { --bg:#f4f1e8; --bg2:#ffffff; --panel:#e8e5dc; --card:#ffffff; --card-hover:#f0ece0; --line:#d5cfc0; --text:#2b2418; --muted:#7a6e5a; --gold:#7d6220; --accent:#8a6d24; background: radial-gradient(ellipse at 70% -10%, #fffaf0 0%, #f4f1e8 55%) !important; }
 body[data-theme="claro"] #sidebar { background: rgba(255,251,240,0.92); }
-body[data-theme="claro"] .day-card.today { outline-color: #b8963a; }
+body[data-theme="claro"] .day-card.today { outline-color: #8a6d24; }
 body[data-theme="bosque"] { --bg:#0e1a12; --bg2:#16261c; --panel:#1e3526; --card:#243d2e; --card-hover:#2e4d3a; --line:#3a5a44; --text:#e0f0e6; --muted:#8fb8a0; --gold:#a9d18e; --accent:#c3e0ab; background: radial-gradient(ellipse at 70% -10%, #1c3a2a 0%, #0e1a12 55%) !important; }
 body[data-theme="oceano"] { --bg:#0a1a2a; --bg2:#102338; --panel:#14304d; --card:#183a5c; --card-hover:#1e4a75; --line:#2a5a8a; --text:#dff0ff; --muted:#8fb8dd; --gold:#7ac8e6; --accent:#a0ddf0; background: radial-gradient(ellipse at 70% -10%, #14304d 0%, #0a1a2a 55%) !important; }
 body[data-theme="atardecer"] { --bg:#1a120e; --bg2:#2a1c16; --panel:#3a2418; --card:#4a3020; --card-hover:#5a3d28; --line:#7a4d30; --text:#fde8d0; --muted:#c9a48a; --gold:#f0a060; --accent:#f7c08a; background: radial-gradient(ellipse at 70% -10%, #4a3020 0%, #1a120e 55%) !important; }

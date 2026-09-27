@@ -1,0 +1,7 @@
+{
+  "default": "penco",
+  "disponibles": [
+    "penco"
+  ],
+  "nota": "Para replicar en otro territorio: duplica data/territorios/penco como data/territorios/<nuevo-id>, edita territorio.json y los JSON, y agrega el id a esta lista. Ver data/territorios/_plantilla/LEEME.md"
+}

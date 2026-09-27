@@ -63,7 +63,10 @@ async function share(title, text) {
   } catch (e) { try { alert(text); } catch (e2) {} }
 }
 
-/* ---------- datos base ---------- */
+/* ---------- datos base (fallback Penco; preferir data/territorios/<id>/especies/flora.json) ---------- */
+function dynFloraIntro() { try { var d = window.Territorio && window.Territorio.datos && window.Territorio.datos.flora; if (d && d.intro) return d.intro; } catch (e) {} return FLORA_INTRO; }
+function dynFloraBase() { try { var d = window.Territorio && window.Territorio.datos && window.Territorio.datos.flora; if (d && Array.isArray(d.especies) && d.especies.length) return d.especies; } catch (e) {} return FLORA_BASE; }
+function dynFloraLinks() { try { var d = window.Territorio && window.Territorio.datos && window.Territorio.datos.flora; if (d && Array.isArray(d.links)) return d.links; } catch (e) {} return FLORA_LINKS_BASE; }
 var FLORA_INTRO = 'Flora <b>nativa de la cuenca del estero Penco</b> + <b>jardín con nativas</b>. ' +
   '🌱 <b>Nativas silvestres</b>: ribera, quebradas y laderas —se <b>observan sin arrancar</b> (foto + lugar + fecha). ' +
   '🏵️ <b>Ornamentales nativas</b>: las marcadas con 🏵️ sirven para patio, cerco o plaza pencona: piden poca agua y alimentan picaflores y abejas. ' +
@@ -168,7 +171,7 @@ function normFlora(f, mine) {
   return c;
 }
 function allFloraSpecies() {
-  return FLORA_BASE.map(function (f) { return normFlora(f, false); })
+  return dynFloraBase().map(function (f) { return normFlora(f, false); })
     .concat(getFloraCustom().map(function (f) { return normFlora(f, true); }));
 }
 function origenChip(f) {
@@ -217,13 +220,14 @@ function renderFloraHoy() {
     var spp = {};
     entries.forEach(function (x) { var s = String(x.species || '').trim().toLowerCase(); if (s) spp[s] = 1; });
     var hoy = entries.filter(function (x) { return x.date === k; }).length;
-    var nNat = FLORA_BASE.filter(function (f) { return f.origen !== 'introducida'; }).length;
-    var nOrn = FLORA_BASE.filter(function (f) { return f.orn && f.origen !== 'introducida'; }).length;
-    var nInt = FLORA_BASE.filter(function (f) { return f.origen === 'introducida'; }).length;
+    var FB = dynFloraBase();
+    var nNat = FB.filter(function (f) { return f.origen !== 'introducida'; }).length;
+    var nOrn = FB.filter(function (f) { return f.orn && f.origen !== 'introducida'; }).length;
+    var nInt = FB.filter(function (f) { return f.origen === 'introducida'; }).length;
     todayBox.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">' +
       '<span style="font-size:14px"><b>🌸 Hoy — ' + esc(k) + '</b></span>' +
       '<span class="chip" style="background:var(--gold);color:#10142c">' + hoy + ' hoy · ' + entries.length + ' total · ' + Object.keys(spp).length + ' especies</span></div>' +
-      '<p class="muted" style="font-size:11px;margin-top:6px">' + FLORA_INTRO + '</p>' +
+      '<p class="muted" style="font-size:11px;margin-top:6px">' + dynFloraIntro() + '</p>' +
       '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">' +
       '<span class="chip">🌱 ' + nNat + ' nativas</span>' +
       '<span class="chip">🏵️ ' + nOrn + ' ornamentales</span>' +
@@ -255,7 +259,7 @@ function renderFloraHoy() {
   var html = '<div class="fl-filters">' +
     fBtn('todas', '🌸 Todas') + fBtn('nativas', '🌱 Nativas') + fBtn('orn', '🏵️ Ornamentales') + fBtn('intro', '⚠️ Introducidas') + '</div>';
   html += '<input type="text" id="floraCatFilter" placeholder="🔍 Filtrar... (ej: sol, sombra, picaflor, maceta)" autocomplete="off" value="' + esc(floraCatQ) + '" style="margin-bottom:6px">';
-  html += '<p class="muted" style="font-size:10px;margin:2px 0 6px">' + FLORA_BASE.length + ' base' + (nMine ? ' + <b>' + nMine + ' mías</b>' : '') + ' · mostrando ' + list.length + ' · toca una para cargarla en la bitácora.</p>';
+  html += '<p class="muted" style="font-size:10px;margin:2px 0 6px">' + dynFloraBase().length + ' base' + (nMine ? ' + <b>' + nMine + ' mías</b>' : '') + ' · mostrando ' + list.length + ' · toca una para cargarla en la bitácora.</p>';
   if (!list.length) html += '<p class="muted">Sin resultados. Prueba con "sol", "sombra", "picaflor" o "maceta" — o agrégala abajo.</p>';
   html += '<div class="fishing-species">' + list.map(function (f) {
     var mineChip = f.mine ? '<span class="chip" style="font-size:9px;background:#a9d18e22;color:#a9d18e;border-color:#a9d18e55">mía</span>' : '';
@@ -308,7 +312,7 @@ function renderFloraHoy() {
     var n = clean(($('floraSpName') || {}).value || '', 30).trim();
     if (!n) { alert('Pon el nombre de la especie'); return; }
     var arr = getFloraCustom();
-    var exists = FLORA_BASE.some(function (x) { return x.nombre.toLowerCase() === n.toLowerCase(); }) ||
+    var exists = dynFloraBase().some(function (x) { return x.nombre.toLowerCase() === n.toLowerCase(); }) ||
       arr.some(function (x) { return String(x.nombre || '').toLowerCase() === n.toLowerCase(); });
     if (exists) { alert('Esa especie ya existe'); return; }
     arr.push({
@@ -396,7 +400,7 @@ function renderFloraLinks() {
   try { mine = getFloraLinks() || []; } catch (e) {}
   var html = '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🔗 Links de interés — flora nativa cuenca estero Penco</h4>' +
     '<p class="muted" style="font-size:11px">Referencias abiertas para comparar tus observaciones y elegir nativas para el jardín. El primero es el registro publicado de la cuenca.</p>';
-  html += FLORA_LINKS_BASE.map(function (l, i) {
+  html += dynFloraLinks().map(function (l, i) {
     var btn = i === 0 ? '🔗 Abrir registro (Zenodo)' : '🔗 Abrir';
     return '<div class="si-card" style="padding:8px 10px"><h4 style="font-size:12px">📚 ' + esc(l.titulo) + '</h4>' +
       '<p class="muted" style="font-size:11px">👤 ' + esc(l.autor) + '</p>' +
@@ -651,9 +655,17 @@ function wireFlora() {
 
 window.FloraPenco = {
   tab: switchFloraTab, renderHoy: renderFloraHoy, renderLog: renderFloraLog,
-  renderLinks: renderFloraLinks, base: FLORA_BASE, linksBase: FLORA_LINKS_BASE,
+  renderLinks: renderFloraLinks,
   list: getFloraData, customs: getFloraCustom, links: getFloraLinks
 };
+try {
+  Object.defineProperties(window.FloraPenco, {
+    base: { get: dynFloraBase },
+    linksBase: { get: dynFloraLinks },
+    intro: { get: dynFloraIntro }
+  });
+} catch (e) { window.FloraPenco.base = FLORA_BASE; window.FloraPenco.linksBase = FLORA_LINKS_BASE; }
+try { document.addEventListener('territorio:listo', function () { try { renderFloraHoy(); } catch (e) {} }); } catch (e2) {}
 
 var _floraRetry = 0;
 function setupFlora() {

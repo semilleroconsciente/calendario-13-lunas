@@ -1,0 +1,18 @@
+{
+  "PUKEM": {
+    "titulo": "Pukem — Invierno: lluvia y suelo",
+    "texto": "Suelo blando: planta nativo (peumo, quillay, canelo) esta luna. No entres con suelo barroso profundo (compactas). Junta semillas caídas y guárdalas en papel, no plástico."
+  },
+  "PEWU": {
+    "titulo": "Pewü — Primavera: brotes y flores",
+    "texto": "Floración de boldo/canelo. No cortes flores. Cámara y libreta. Es momento de esquejes semileñosos y de eliminar eucalipto/pino invasor en día menguante."
+  },
+  "WALUNG": {
+    "titulo": "Walüng — Verano: fruto y sombra",
+    "texto": "Cosecha maqui, avellana, arrayán. Solo fruto maduro caído o con tijera. Lleva agua, no hagas fuego. Observa aves que dispersan semillas."
+  },
+  "RIMU": {
+    "titulo": "Rimü — Otoño: siembra y hongos",
+    "texto": "Mejor siembra directa de nativo (peumo, avellano) ni bien cae semilla. Hongos: cesta aireada, corta pie con cuchillo, deja micelio. No arranques todo."
+  }
+}

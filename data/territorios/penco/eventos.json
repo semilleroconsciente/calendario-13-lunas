@@ -1,0 +1,237 @@
+{
+  "comuna": [
+    {
+      "md": "02-12",
+      "nombre": "Aniversario fundación de Penco",
+      "icon": "🏛️",
+      "desc": "1550 fundación de Concepción en Penco. Actos municipales, desfile",
+      "cat": "municipal"
+    },
+    {
+      "md": "02-14",
+      "nombre": "Carnaval de Penco — Playa",
+      "icon": "🎭",
+      "desc": "Música, comparsas en costanera. Fecha móvil feb",
+      "cat": "fiesta"
+    },
+    {
+      "md": "03-08",
+      "nombre": "Día de la Mujer — Feria Rocuant",
+      "icon": "💜",
+      "desc": "Feria de emprendedoras, humedal",
+      "cat": "cultura"
+    },
+    {
+      "md": "05-21",
+      "nombre": "Glorias Navales — desfile",
+      "icon": "⚓",
+      "desc": "Escuelas y Armada en plaza",
+      "cat": "municipal"
+    },
+    {
+      "md": "06-21",
+      "nombre": "We Tripantu comunal",
+      "icon": "🌿",
+      "desc": "Rogativa al amanecer en playa/borde río",
+      "cat": "cultura"
+    },
+    {
+      "md": "06-29",
+      "nombre": "Fiesta de San Pedro — Caleta Lirquén",
+      "icon": "🐟",
+      "desc": "Patrono pescadores. Misa, procesión a mar",
+      "cat": "religioso"
+    },
+    {
+      "md": "07-26",
+      "nombre": "Santa Ana — patrona Penco",
+      "icon": "⛪",
+      "desc": "Fiesta religiosa local, feria",
+      "cat": "religioso"
+    },
+    {
+      "md": "08-15",
+      "nombre": "Feria costumbrista invierno",
+      "icon": "🥘",
+      "desc": "Gastronomía, chupalla, artesanía",
+      "cat": "feria"
+    },
+    {
+      "md": "09-18",
+      "nombre": "Fiestas Patrias — ramadas Penco",
+      "icon": "🇨🇱",
+      "desc": "18-19 ramadas en estadio/costanera",
+      "cat": "fiesta"
+    },
+    {
+      "md": "10-12",
+      "nombre": "Aniversario Cuerpo Bomberos Penco",
+      "icon": "🚒",
+      "desc": "Desfile, ejercicio",
+      "cat": "municipal"
+    },
+    {
+      "md": "11-01",
+      "nombre": "Noche de las velas — cementerio",
+      "icon": "🕯️",
+      "desc": "Tradición familiar",
+      "cat": "cultura"
+    },
+    {
+      "md": "12-08",
+      "nombre": "Virgen de la Candelaria — Lirquén",
+      "icon": "🙏",
+      "desc": "Procesión",
+      "cat": "religioso"
+    },
+    {
+      "md": "12-31",
+      "nombre": "Año Nuevo en playa — show pirotecnia",
+      "icon": "🎆",
+      "desc": "Costanera Penco, música",
+      "cat": "fiesta"
+    },
+    {
+      "md": "01-01",
+      "nombre": "Año Nuevo — feria amanecida",
+      "icon": "🎉",
+      "desc": "Feria madrugada 1 ene",
+      "cat": "feria"
+    }
+  ],
+  "astronomicos": [
+    {
+      "date": "2026-02-17",
+      "tipo": "eclipse",
+      "icon": "🌘",
+      "nombre": "Eclipse anular de Sol",
+      "desc": "Antártida / sur. Desde Penco parcial muy bajo. No mirar directo."
+    },
+    {
+      "date": "2026-03-03",
+      "tipo": "eclipse",
+      "icon": "🌕",
+      "nombre": "Eclipse total de Luna",
+      "desc": "Visible en Chile madrugada. Luna roja ~3:00–4:30 CL."
+    },
+    {
+      "date": "2026-03-20",
+      "tipo": "equinoccio",
+      "icon": "🍂",
+      "nombre": "Equinoccio de otoño",
+      "desc": "Inicio otoño sur. Sol cruza ecuador."
+    },
+    {
+      "date": "2026-06-21",
+      "tipo": "solsticio",
+      "icon": "❄️",
+      "nombre": "Solsticio de invierno + We Tripantu",
+      "desc": "Día más corto. Año nuevo mapuche."
+    },
+    {
+      "date": "2026-08-12",
+      "tipo": "eclipse",
+      "icon": "🌘",
+      "nombre": "Eclipse total de Sol (Ártico/Europa)",
+      "desc": "No visible en Chile. Lo listamos para referencia."
+    },
+    {
+      "date": "2026-08-28",
+      "tipo": "eclipse",
+      "icon": "🌕",
+      "nombre": "Eclipse parcial de Luna",
+      "desc": "Visible en Chile al amanecer. Parte norte."
+    },
+    {
+      "date": "2026-09-22",
+      "tipo": "equinoccio",
+      "icon": "🌸",
+      "nombre": "Equinoccio de primavera",
+      "desc": "Inicio primavera sur."
+    },
+    {
+      "date": "2026-12-21",
+      "tipo": "solsticio",
+      "icon": "☀️",
+      "nombre": "Solsticio de verano",
+      "desc": "Día más largo."
+    },
+    {
+      "date": "2026-11-24",
+      "tipo": "superluna",
+      "icon": "🌕",
+      "nombre": "Superluna (perigeo)",
+      "desc": "Luna llena más grande. Marea más alta."
+    },
+    {
+      "date": "2026-12-24",
+      "tipo": "superluna",
+      "icon": "🌕",
+      "nombre": "Superluna fría",
+      "desc": "Última llena del año, perigeo."
+    },
+    {
+      "date": "2026-01-03",
+      "tipo": "lluvia",
+      "icon": "☄️",
+      "nombre": "Cuadrántidas (pico)",
+      "desc": "Hasta 40 met/h. Mejor 03:00-06:00."
+    },
+    {
+      "date": "2026-04-22",
+      "tipo": "lluvia",
+      "icon": "☄️",
+      "nombre": "Líridas (pico)",
+      "desc": "10-15 met/h. Madrugada."
+    },
+    {
+      "date": "2026-05-06",
+      "tipo": "lluvia",
+      "icon": "☄️",
+      "nombre": "Eta Acuáridas (pico)",
+      "desc": "Restos cometa Halley. Sur ideal 30 met/h."
+    },
+    {
+      "date": "2026-08-12",
+      "tipo": "lluvia",
+      "icon": "☄️",
+      "nombre": "Perseidas (pico)",
+      "desc": "50 met/h. Mejor norte, pero visible."
+    },
+    {
+      "date": "2026-10-21",
+      "tipo": "lluvia",
+      "icon": "☄️",
+      "nombre": "Oriónidas (pico)",
+      "desc": "Halley otra vez. 15 met/h."
+    },
+    {
+      "date": "2026-11-17",
+      "tipo": "lluvia",
+      "icon": "☄️",
+      "nombre": "Leónidas (pico)",
+      "desc": "10 met/h, bólidos."
+    },
+    {
+      "date": "2026-12-14",
+      "tipo": "lluvia",
+      "icon": "☄️",
+      "nombre": "Gemínidas (pico)",
+      "desc": "Mejor del año 120 met/h. Madrugada."
+    },
+    {
+      "date": "2027-02-06",
+      "tipo": "eclipse",
+      "icon": "🌘",
+      "nombre": "Eclipse anular de Sol",
+      "desc": "África/Sur América. Parcial en sur Chile tarde."
+    },
+    {
+      "date": "2027-08-02",
+      "tipo": "eclipse",
+      "icon": "🌘",
+      "nombre": "Eclipse total de Sol",
+      "desc": "Norte África/España. No visible Chile."
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 // Service Worker — Calendario 13 Lunas (offline-first, tolerante a versiones ?v=)
-// v27: + talleres-penco.js (Talleres y Actividades Penco en Territorio)
+// v28: + territorio.js + data/territorios/** (datos por territorio) + flora.js
 
-const CACHE = 'cal13-v27-offline';
+const CACHE = 'cal13-v28-offline';
 
 // Lista completa de archivos que usa index.html (bare + con ?v=).
 // Si se agrega un JS nuevo en index.html, agregarlo aquí también (bare y ?v=).
@@ -16,8 +16,32 @@ const CORE = [
   './astro.js?v=8',
   './data.js',
   './data.js?v=8',
+  './territorio.js',
+  './territorio.js?v=1',
+  './data/territorios/index.json',
+  './data/territorios/penco/territorio.json',
+  './data/territorios/penco/lunas.json',
+  './data/territorios/penco/eventos.json',
+  './data/territorios/penco/talleres.json',
+  './data/territorios/penco/consejos-bosque.json',
+  './data/territorios/penco/especies/aves.json',
+  './data/territorios/penco/especies/bosque.json',
+  './data/territorios/penco/especies/intermareal.json',
+  './data/territorios/penco/especies/flora.json',
+  './data/territorios/penco/historia/historia.json',
+  './data/territorios/penco/historia/sectores.json',
+  './data/territorios/penco/historia/guia.json',
+  './data/territorios/penco/historia/historia-bosque.json',
+  './data/territorios/penco/historia/companeros-bosque.json',
+  './data/territorios/penco/historia/aves-bosque.json',
+  './data/territorios/penco/historia/historia-aves.json',
+  './data/territorios/penco/historia/historia-pesca.json',
+  './data/territorios/penco/cultivos/asociaciones.json',
+  './data/territorios/penco/cultivos/preparados.json',
   './frases.js',
   './frases.js?v=8',
+  './flora.js',
+  './flora.js?v=1',
   './cal.js',
   './cal.js?v=8',
   './renderer.js',

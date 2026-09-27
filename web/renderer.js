@@ -44,6 +44,32 @@ try{
   document.addEventListener('touchstart', unlock, {once:true});
 }catch(e){}
 
+// === ACCESIBILIDAD: texto alternativo en botones solo-icono ===
+// Los botones que solo muestran un icono (✕, ✏️, 📤…) traen title;
+// aquí se refleja como aria-label para lector de pantalla,
+// incluyendo los que cada diálogo crea dinámicamente.
+function a11yPatchIconButtons(scope){
+  try{
+    const root=scope||document;
+    root.querySelectorAll('button[title]:not([aria-label])').forEach(b=>{ b.setAttribute('aria-label', b.getAttribute('title')); });
+  }catch(e){}
+}
+try{
+  a11yPatchIconButtons(document);
+  const _a11yObs=new MutationObserver(muts=>{
+    muts.forEach(m=>{
+      m.addedNodes.forEach(n=>{
+        if(!n||n.nodeType!==1) return;
+        try{
+          if(n.matches&&n.matches('button[title]:not([aria-label])')) n.setAttribute('aria-label', n.getAttribute('title'));
+          if(n.querySelectorAll) n.querySelectorAll('button[title]:not([aria-label])').forEach(b=>{ b.setAttribute('aria-label', b.getAttribute('title')); });
+        }catch(e2){}
+      });
+    });
+  });
+  _a11yObs.observe(document.body,{childList:true,subtree:true});
+}catch(e){}
+
 // === TEMAS DE COLORES ===
 const THEMES = {
   auto: { label: 'Auto — según luna' },
@@ -5890,18 +5916,6 @@ function setupDonateDialog(){
     let d = await loadDonateConfig();
     d = d || (typeof DONATE!=='undefined'? DONATE : (window.pencoData&&window.pencoData.DONATE)) || {};
     const set = (id,val)=>{ const el=$(id); if(el) el.textContent = val||'— por definir —'; };
-    set('donateBanco', d.banco||'BancoEstado');
-    set('donateTipo', d.tipo||'CuentaRUT');
-    set('donateCuenta', d.cuenta||'ELIMINADO');
-    set('donateRut', d.rut||'ELIMINADO');
-    set('donateTitular', d.titular||'ELIMINADO');
-    set('donateCorreo', d.correo||'semilleroconsciente@gmail.com');
-    set('donateMachBanco', d.machBanco||'BCI/MACHBANK');
-    set('donateMachTipo', d.machTipo||'Cuenta Vista');
-    set('donateMachCuenta', d.machCuenta||'ELIMINADO');
-    set('donateMachRut', d.machRut||'ELIMINADO');
-    set('donateMachTitular', d.machTitular||'ELIMINADO');
-    set('donateMachCorreo', d.machCorreo||'semilleroconsciente@gmail.com');
     const mp=$('donateMPLink'), pp=$('donatePaypalLink');
     const fallbackMP='https://link.mercadopago.cl/semilleroconsciente';
     const fallbackPP='https://www.paypal.com/donate?business=semilleroconsciente@gmail.com';
@@ -5929,18 +5943,6 @@ function setupDonateDialog(){
     $('donateDialog').showModal();
   };
   const ct=$('donateCloseTop'), cb=$('donateClose'); if(ct) ct.onclick=()=>$('donateDialog').close(); if(cb) cb.onclick=()=>$('donateDialog').close();
-  const copyBtn=$('btnCopyBank'); if(copyBtn) copyBtn.onclick= async ()=>{
-    let d = await loadDonateConfig();
-    d = d || (typeof DONATE!=='undefined'? DONATE : {});
-    const txt = `Cuenta RUT — BancoEstado\nBanco: ${d.banco||'BancoEstado'}\nTipo: ${d.tipo||'CuentaRUT'}\nCuenta: ${d.cuenta||'ELIMINADO'}\nRUT: ${d.rut||'ELIMINADO'}\nTitular: ${d.titular||'ELIMINADO'}\nCorreo: ${d.correo||'semilleroconsciente@gmail.com'}`.trim();
-    try{ await navigator.clipboard.writeText(txt); $('statusMsg').textContent='Datos Cuenta RUT copiados ✓'; setTimeout(()=>$('statusMsg').textContent='',2000); }catch{ prompt('Copia estos datos:', txt); }
-  };
-  const copyMach=$('btnCopyMach'); if(copyMach) copyMach.onclick= async ()=>{
-    let d = await loadDonateConfig();
-    d = d || {};
-    const txt = `MACH — BCI\nBanco: ${d.machBanco||'BCI/MACHBANK'}\nTipo: ${d.machTipo||'Cuenta Vista'}\nCuenta: ${d.machCuenta||'ELIMINADO'}\nRUT: ${d.machRut||'ELIMINADO'}\nTitular: ${d.machTitular||'ELIMINADO'}\nCorreo: ${d.machCorreo||'semilleroconsciente@gmail.com'}`.trim();
-    try{ await navigator.clipboard.writeText(txt); $('statusMsg').textContent='Datos MACH copiados ✓'; setTimeout(()=>$('statusMsg').textContent='',2000); }catch{ prompt('Copia estos datos:', txt); }
-  };
 }
 setTimeout(setupDonateDialog, 800);
 
@@ -7039,10 +7041,9 @@ function renderGymPlacesBox(){
   const d=getGymData();
   const counts={}; d.items.forEach(it=>{ const k=gymPlaceKey(it.place); counts[k]=(counts[k]||0)+1; });
   const order=['casa','gimnasio','playa','bosque','multicancha','plaza','costanera','piscina','otro'];
-  box.innerHTML='<h4 style="color:var(--gold)">📍 Entrenamientos por lugar</h4><div class="timer-tabs" style="margin-bottom:6px">'
-    + order.map(k=>{ const p=TRAINING_PLACES[k]; const c=counts[k]||0; const active=(gymCurrentPlace===k)?' btn-accent':''; return `<button type="button" data-place="${k}" class="btn${active}" style="width:auto;font-size:11px">${p.icon} ${p.label} (${c})</button>`; }).join('')
-    + `</div><p class="muted" style="font-size:10px;margin:0">Filtra sugerencias y “Mis rutinas” por lugar. Tus lugares se detectan solos desde el texto (ej: “Playa Penco” → 🏖️ Playa). ${d.items.length? 'Toca un lugar para ver solo esas rutinas abajo.' : 'Agrega tu primera rutina con lugar: Casa, Gimnasio, Playa, Bosque, Multicancha…'}</p>`;
-  box.querySelectorAll('[data-place]').forEach(b=> b.onclick=()=>{ setGymPlace(b.dataset.place); });
+  box.innerHTML='<h4 style="color:var(--gold)">📍 Entrenamientos por lugar</h4><div style="display:flex;gap:6px;flex-wrap:wrap">'
+    + order.map(k=>{ const p=TRAINING_PLACES[k]; const c=counts[k]||0; return `<span class="chip" style="font-size:11px">${p.icon} ${p.label} (${c})</span>`; }).join('')
+    + `</div><p class="muted" style="font-size:10px;margin:6px 0 0">Usa el filtro <b>Lugar</b> de arriba para ver solo esas rutinas. Tus lugares se detectan solos desde el texto (ej: “Playa Penco” → 🏖️ Playa).</p>`;
 }
 function renderGymWeekGrid(){
   const box=$('gymWeekGrid'); if(!box) return;
@@ -7121,7 +7122,7 @@ function setupGymDialog(){
   Object.entries(ageBtns).forEach(([a,el])=>{ if(el) el.onclick=()=> setAge(a); });
   if(ageSel) ageSel.onchange=()=> setAge(ageSel.value);
   // filtro por lugar (nuevo — no rompe lo anterior)
-  const placeBtns={ todos:$('tabGymPlaceTodos'), casa:$('tabGymPlaceCasa'), gimnasio:$('tabGymPlaceGimnasio'), playa:$('tabGymPlacePlaya'), bosque:$('tabGymPlaceBosque'), multicancha:$('tabGymPlaceMulticancha'), plaza:$('tabGymPlacePlaza'), costanera:$('tabGymPlaceCostanera'), piscina:$('tabGymPlacePiscina') };
+  const placeBtns={ todos:$('tabGymPlaceTodos'), casa:$('tabGymPlaceCasa'), gimnasio:$('tabGymPlaceGimnasio'), playa:$('tabGymPlacePlaya'), bosque:$('tabGymPlaceBosque'), multicancha:$('tabGymPlaceMulticancha'), plaza:$('tabGymPlacePlaza'), costanera:$('tabGymPlaceCostanera'), piscina:$('tabGymPlacePiscina'), otro:$('tabGymPlaceOtro') };
   const placeSel=$('gymPlaceFilter');
   window.syncGymPlaceUI=function(){
     Object.entries(placeBtns).forEach(([p,e])=> e && e.classList.toggle('btn-accent', p===gymCurrentPlace));
@@ -9760,10 +9761,33 @@ const ESP_PRACTICES = [
 ];
 function getEspiritualData(){
   const u=userData();
-  if(!u.espiritual) u.espiritual={ done:{}, notes:{} };
+  if(!u.espiritual) u.espiritual={ done:{}, notes:{}, custom:[] };
   if(!u.espiritual.done) u.espiritual.done={};
   if(!u.espiritual.notes) u.espiritual.notes={};
+  if(!Array.isArray(u.espiritual.custom)) u.espiritual.custom=[];
   return u.espiritual;
+}
+function getAllEspPractices(){
+  try{ return ESP_PRACTICES.concat(getEspiritualData().custom||[]); }catch(e){ return ESP_PRACTICES; }
+}
+function renderEspTimerOptions(){
+  const sel=$('espTimerPractice'); if(!sel) return;
+  const cur=sel.value;
+  const all=getAllEspPractices();
+  sel.innerHTML=all.map(p=>`<option value="${p.id}">${p.icon} ${escapeHtml(p.nombre)}</option>`).join('');
+  if(all.some(p=>p.id===cur)) sel.value=cur;
+  const mm=$('espTimerMinutes');
+  const f=all.find(x=>x.id===sel.value);
+  if(f&&mm){ mm.value=String(f.mins||5); }
+}
+function espCustomDel(pid){
+  try{
+    const d=getEspiritualData();
+    d.custom=(d.custom||[]).filter(x=>x.id!==pid);
+    Object.keys(d.done||{}).forEach(k=>{ if(d.done[k]&&d.done[k][pid]) delete d.done[k][pid]; });
+    scheduleSave('Práctica borrada');
+    renderEspTimerOptions(); renderEspiritualTodayBox(); renderEspiritualCards(); renderEspTodayChecks(); renderEspStats(); renderEspLog();
+  }catch(e){}
 }
 function espTodayKey(){ try{ return cal.fmtKey.format(new Date()); }catch(e){ const d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); } }
 function espSunToday(){
@@ -9782,15 +9806,17 @@ function renderEspiritualTodayBox(){
   const k=espTodayKey();
   const d=getEspiritualData();
   const doneToday=(d.done[k]&&typeof d.done[k]==='object')? Object.keys(d.done[k]).filter(pid=>d.done[k][pid]).length : 0;
+  const totalP=getAllEspPractices().length||9;
   const nowStr=new Intl.DateTimeFormat('es-CL',{timeZone:'America/Santiago',hour:'2-digit',minute:'2-digit'}).format(new Date());
-  box.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><span style="font-size:15px"><b>☀️ Hoy Penco</b> · salida <b>${s.riseT}</b> · puesta <b>${s.setT}</b></span><span class="chip">${nowStr} · ${doneToday}/9 hoy</span></div>
+  box.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><span style="font-size:15px"><b>☀️ Hoy Penco</b> · salida <b>${s.riseT}</b> · puesta <b>${s.setT}</b></span><span class="chip">${nowStr} · ${doneToday}/${totalP} hoy</span></div>
   <p class="muted" style="margin-top:6px">🌅 Amanecer ideal: <b>${s.riseT} → +60 min</b> · 🌇 Atardecer ideal: <b>−60 min → ${s.setT}</b> · 💧 Agua: 10:00–14:00 · 🔴 Roja desde 20:30. <span style="color:var(--gold)">Marca abajo cada práctica hecha.</span></p>`;
 }
 function renderEspiritualCards(){
   const box=$('espiritualCards'); if(!box) return;
   const s=espSunToday();
   const horaTxt={ amanecer:`${s.riseT} → +60 min`, atardecer:`−60 min → ${s.setT}`, agua:'10:00–14:00', ducha:'mañana', grounding:'mañana/tarde', luzroja:'20:30 → dormir', respiracion:`con amanecer ${s.riseT}`, luna:'noche', silencio:'amanecer/noche' };
-  box.innerHTML=ESP_PRACTICES.map(p=>`
+  const all=getAllEspPractices();
+  box.innerHTML=all.map(p=>`
     <div class="esp-card">
       <div class="esp-card-head"><span class="esp-icon">${p.icon}</span>
         <div class="esp-titles"><div class="esp-name">${escapeHtml(p.nombre)}</div><div class="esp-sub">${escapeHtml(p.sub)}</div></div>
@@ -9798,12 +9824,13 @@ function renderEspiritualCards(){
       </div>
       <div class="esp-body">
         <div class="esp-meta"><span class="esp-pill gold">⏱ ${escapeHtml(p.tiempo)}</span><span class="esp-pill green">🕐 ${escapeHtml(horaTxt[p.id]||p.horario)}</span><span class="esp-pill">🎒 ${escapeHtml(p.mats)}</span></div>
-        <ol class="esp-steps">${p.pasos.map(st=>`<li>${escapeHtml(st)}</li>`).join('')}</ol>
+        <ol class="esp-steps">${(p.pasos||[]).map(st=>`<li>${escapeHtml(st)}</li>`).join('')}</ol>
         <p class="esp-pill red" style="margin:0">⚠️ ${escapeHtml(p.cuidado)}</p>
         <div class="esp-actions">
           <button type="button" class="btn btn-accent esp-done" data-id="${p.id}" style="width:auto;font-size:11px">✅ Hice esta hoy</button>
           <button type="button" class="btn esp-timer" data-id="${p.id}" data-mins="${p.mins}" style="width:auto;font-size:11px">⏱ ${p.mins} min</button>
           <button type="button" class="btn esp-agendar" data-id="${p.id}" style="width:auto;font-size:11px">🕐 Agendar</button>
+          ${p.custom?`<button type="button" class="btn esp-del" data-id="${p.id}" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕ Borrar</button>`:''}
         </div>
       </div>
     </div>`).join('');
@@ -9815,6 +9842,7 @@ function renderEspiritualCards(){
     document.getElementById('espTimerDisplay').scrollIntoView({behavior:'smooth', block:'center'});
   });
   box.querySelectorAll('.esp-agendar').forEach(b=> b.onclick=()=> espAgendar(b.dataset.id));
+  box.querySelectorAll('.esp-del').forEach(b=> b.onclick=()=>{ if(!confirm('¿Borrar tu práctica?')) return; espCustomDel(b.dataset.id); });
 }
 function espMarkDone(pid, val){
   const k=espTodayKey(); const d=getEspiritualData();
@@ -9830,7 +9858,7 @@ function renderEspTodayChecks(){
   const cur=(d.done[k]&&typeof d.done[k]==='object')? d.done[k] : {};
   const note=(d.notes[k]&&d.notes[k].t)||'';
   box.innerHTML=`<h4>✅ Hoy ${k} — toca para marcar</h4>
-    <div class="esp-check-grid">${ESP_PRACTICES.map(p=>`<label class="esp-check ${cur[p.id]?'done':''}"><input type="checkbox" data-id="${p.id}" ${cur[p.id]?'checked':''}> ${p.icon} ${escapeHtml(p.nombre)}</label>`).join('')}</div>
+    <div class="esp-check-grid">${getAllEspPractices().map(p=>`<label class="esp-check ${cur[p.id]?'done':''}"><input type="checkbox" data-id="${p.id}" ${cur[p.id]?'checked':''}> ${p.icon} ${escapeHtml(p.nombre)}</label>`).join('')}</div>
     ${note?`<p class="muted" style="font-size:11px;margin-top:6px">📝 ${escapeHtml(note)}</p>`:''}`;
   box.querySelectorAll('input[type=checkbox]').forEach(cb=> cb.onchange=()=> espMarkDone(cb.dataset.id, cb.checked));
   const ni=$('espNoteInput'); if(ni && !ni.dataset.bound){ ni.dataset.bound='1'; }
@@ -9854,7 +9882,7 @@ function renderEspStats(){
   const keys=Object.keys(d.done).sort().slice(-7);
   let totalWeek=0;
   keys.forEach(k=>{ const o=d.done[k]; if(o&&typeof o==='object') totalWeek+=Object.values(o).filter(Boolean).length; });
-  const rows=ESP_PRACTICES.map(p=>{
+  const rows=getAllEspPractices().map(p=>{
     let c7=0; keys.forEach(k=>{ if(d.done[k]&&d.done[k][p.id]) c7++; });
     return `<span class="esp-pill ${c7>0?'gold':''}">${p.icon} ${escapeHtml(p.nombre)}: <b>${c7}/7</b></span>`;
   }).join('');
@@ -9868,14 +9896,15 @@ function renderEspLog(){
   if(!keys.length){ box.innerHTML='<p class="muted" style="font-size:11px">Sin registros aún. Marca tu primera práctica arriba ⬆️</p>'; return; }
   box.innerHTML=keys.map(k=>{
     const o=d.done[k]||{};
-    const names=ESP_PRACTICES.filter(p=>o[p.id]).map(p=>p.icon+' '+p.nombre).join(' · ')||'—';
+    const all=getAllEspPractices();
+    const names=all.filter(p=>o[p.id]).map(p=>p.icon+' '+p.nombre).join(' · ')||'—';
     const n=(d.notes[k]&&d.notes[k].t)? ' · 📝 '+d.notes[k].t : '';
     return `<div class="habit-item"><div class="habit-head"><b style="color:var(--gold)">${k}</b><span class="muted" style="font-size:11px">${Object.values(o).filter(Boolean).length} prácticas</span></div><div style="font-size:12px;color:#cdd3ee">${escapeHtml(names)}${escapeHtml(n)}</div></div>`;
   }).join('');
 }
 function espAgendar(pid){
   try{
-    const p=ESP_PRACTICES.find(x=>x.id===pid);
+    const p=getAllEspPractices().find(x=>x.id===pid);
     const label=p? p.icon+' '+p.nombre : pid;
     const k=espTodayKey();
     const ref=(typeof lunaMapForKey==='function')? lunaMapForKey(k) : null;
@@ -9913,7 +9942,7 @@ function espTimerStart(){
       alert('⏱ Práctica terminada. ¡Bien! Quedó marcada ✅'); }
   },1000);
 }
-function renderEspiritualAll(){ renderEspiritualTodayBox(); renderEspiritualCards(); renderEspTodayChecks(); renderEspStats(); renderEspLog(); espTimerPaint(); }
+function renderEspiritualAll(){ renderEspTimerOptions(); renderEspiritualTodayBox(); renderEspiritualCards(); renderEspTodayChecks(); renderEspStats(); renderEspLog(); espTimerPaint(); }
 function setupEspiritualDialog(){
   const btn=$('btnEspiritual'); if(btn) btn.onclick=()=>{ renderEspiritualAll(); $('espiritualDialog').showModal(); };
   const ct=$('espiritualCloseTop'), cb=$('espiritualClose'); if(ct) ct.onclick=()=>$('espiritualDialog').close(); if(cb) cb.onclick=()=>$('espiritualDialog').close();
@@ -9927,7 +9956,7 @@ function setupEspiritualDialog(){
   }
   if(tP) tP.onclick=()=>tab('p'); if(tK) tK.onclick=()=>tab('k'); if(tR) tR.onclick=()=>tab('r');
   const mm=$('espTimerMinutes'); if(mm) mm.onchange=()=>espTimerReset();
-  const pr=$('espTimerPractice'); if(pr) pr.onchange=()=>{ const f=ESP_PRACTICES.find(x=>x.id===pr.value); if(f&&mm){ mm.value=String(f.mins); espTimerReset(); } };
+  const pr=$('espTimerPractice'); if(pr) pr.onchange=()=>{ const f=getAllEspPractices().find(x=>x.id===pr.value); if(f&&mm){ mm.value=String(f.mins); espTimerReset(); } };
   const bS=$('espTimerStart'); if(bS) bS.onclick=()=>espTimerStart();
   const bP=$('espTimerPause'); if(bP) bP.onclick=()=>{ clearInterval(espTimerInt); espTimerInt=null; };
   const bR=$('espTimerReset'); if(bR) bR.onclick=()=>espTimerReset();
@@ -9943,6 +9972,18 @@ function setupEspiritualDialog(){
     await shareText('Prácticas Espirituales', txt);
   };
   const cl=$('espClear'); if(cl) cl.onclick=()=>{ if(!confirm('¿Borrar todo tu registro de prácticas?')) return; const d=getEspiritualData(); d.done={}; d.notes={}; scheduleSave(); renderEspiritualAll(); };
+  const cAdd=$('espCustomAdd'); if(cAdd) cAdd.onclick=()=>{
+    const nombre=sanitizeText(($('espCustomName')||{}).value||'',40).trim(); if(!nombre) return alert('Ponle nombre a tu práctica');
+    if(getAllEspPractices().some(x=>x.nombre.toLowerCase()===nombre.toLowerCase())) return alert('Ya existe una práctica con ese nombre');
+    const mins=Math.max(1, Math.min(120, parseInt(($('espCustomMins')||{}).value||'5',10)||5));
+    const icon=(($('espCustomIcon')||{}).value||'').trim()||'🕯️';
+    const desc=sanitizeText(($('espCustomDesc')||{}).value||'',80).trim()||'Mi práctica personal';
+    const d=getEspiritualData();
+    d.custom.push({ id:'c'+Date.now(), icon, nombre, sub:desc, nivel:'Mía', tiempo:mins+' min', horario:'a tu hora', mats:'lo que tengas', cuidado:'A tu ritmo, sin forzar. Si hay mareo o malestar, pausa.', pasos:['Prepara tu espacio: '+desc+'.','Pon el temporizador en '+mins+' min y empieza.','Hazla 7 días seguidos y marca ✅ cada día.'], mins, custom:true });
+    scheduleSave('Práctica guardada 🕉️');
+    $('espCustomName').value=''; $('espCustomDesc').value='';
+    renderEspTimerOptions(); renderEspiritualTodayBox(); renderEspiritualCards(); renderEspTodayChecks(); renderEspStats();
+  };
   const ck=$('espCopyKit'); if(ck) ck.onclick=async()=>{ try{ await navigator.clipboard.writeText(espKitText()); $('espKitStatus').textContent='Copiado ✓ pégalo donde quieras'; }catch(e){ $('espKitStatus').textContent='No se pudo copiar'; } setTimeout(()=>{ $('espKitStatus').textContent=''; },2000); };
   const sk=$('espShareKit'); if(sk) sk.onclick=async()=>{ await shareText('Kit Espiritual', espKitText()); };
   const g1=$('espGoCircadian'); if(g1) g1.onclick=()=>{ try{ $('espiritualDialog').close(); }catch(e){} setTimeout(()=>{ const b=$('btnCircadian'); if(b) b.click(); },150); };

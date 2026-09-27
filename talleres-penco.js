@@ -62,6 +62,19 @@ function refrescarCal() {
 var TALLERES_BASE = [];
 var ACTIVIDADES_BASE = [];
 
+/* Base dinamica por territorio: data/territorios/<id>/talleres.json (ver territorio.js) */
+function dynTalleresBase() {
+  try {
+    var d = window.Territorio && window.Territorio.datos && window.Territorio.datos.talleres;
+    if (d) {
+      var tb = Array.isArray(d.talleresBase) ? d.talleresBase : (Array.isArray(d) ? d.filter(function (x) { return (x.tipo || 'taller') !== 'actividad'; }) : []);
+      var ab = Array.isArray(d.actividadesBase) ? d.actividadesBase : (Array.isArray(d) ? d.filter(function (x) { return x.tipo === 'actividad'; }) : []);
+      if (tb.length || ab.length || TALLERES_BASE.length === 0) return tb.concat(ab);
+    }
+  } catch (e) {}
+  return TALLERES_BASE.concat(ACTIVIDADES_BASE);
+}
+
 var CATS = {
   cultura: '🎭 Cultura', deporte: '🏅 Deporte', oficio: '🔧 Oficio',
   salud: '💚 Salud', educacion: '📚 Educación', medioambiente: '🌱 Medioambiente',
@@ -76,7 +89,7 @@ var filtroGratis = false;
 /* ---------- datos combinados ---------- */
 function todos() {
   var r = store();
-  var base = TALLERES_BASE.concat(ACTIVIDADES_BASE).map(function (t) { t.oficial = true; return t; });
+  var base = dynTalleresBase().map(function (t) { t.oficial = true; return t; });
   var mios = r.mios.map(function (t) { t.oficial = false; return t; });
   return base.concat(mios);
 }

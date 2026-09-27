@@ -1,0 +1,243 @@
+{
+  "intro": "Un árbol nativo nunca está solo: bajo sus raíces trabajan <b>hongos</b>, en sus ramas comen y siembran <b>aves</b>, a sus pies crece el <b>sotobosque</b> y sus flores alimentan <b>polinizadores</b>. Esta es la compañía del bosque penqueño.",
+  "grupos": [
+    {
+      "clave": "hongos",
+      "t": "🍄 Hongos compañeros",
+      "d": "Reciclan la hojarasca y, como <b>micorrizas</b>, conectan sus hilos a las raíces de peumo, boldo y roble: intercambian agua y nutrientes por azúcares. Sin hongos, el bosque se empobrece.",
+      "items": [
+        {
+          "n": "Digüeñe (Cyttaria espinosae)",
+          "r": "Crece sobre robles y hualos; fruto otoñal comestible muy querido.",
+          "con": [
+            "Roble / Hualo (Nothofagus)"
+          ]
+        },
+        {
+          "n": "Changle (Ramaria)",
+          "r": "Ramitas doradas del suelo otoñal; vive asociado al bosque nativo.",
+          "con": [
+            "Roble / Hualo (Nothofagus)",
+            "Avellano"
+          ]
+        },
+        {
+          "n": "Loyo (Boletus loyo)",
+          "r": "Grande y carnoso, micorrícico de Nothofagus. Solo si 100% seguro.",
+          "con": [
+            "Roble / Hualo (Nothofagus)"
+          ]
+        },
+        {
+          "n": "Ostra (Pleurotus ostreatus)",
+          "r": "En troncos caídos: recicladora que ablanda la madera muerta.",
+          "con": [
+            "Árboles caídos"
+          ]
+        }
+      ],
+      "nota": "Regla de oro: <b>cosecha con tijera o cuchillo, deja el micelio</b> y lleva canasto aireado. Si dudas, foto y bitácora."
+    },
+    {
+      "clave": "aves",
+      "t": "🐦 Aves que siembran y polinizan",
+      "d": "Las aves son las grandes <b>sembradoras</b> del bosque: comen fruto y devuelven semilla lejos, lista para germinar. El <b>picaflor chico</b> poliniza las flores colgantes.",
+      "items": [
+        {
+          "n": "Zorzal",
+          "r": "Dispersa maqui, arrayán y quillay por todo el cerro.",
+          "con": [
+            "Maqui",
+            "Arrayán",
+            "Quillay"
+          ]
+        },
+        {
+          "n": "Tenca",
+          "r": "Imitadora; come frutos y mueve semillas entre quebradas.",
+          "con": [
+            "Maqui",
+            "Maitén"
+          ]
+        },
+        {
+          "n": "Fío-Fío",
+          "r": "Migrador que reparte semillas de mirtáceas en primavera.",
+          "con": [
+            "Arrayán"
+          ]
+        },
+        {
+          "n": "Chucao (Scelorchilus rubecula)",
+          "r": "Dueño del canto del sotobosque húmedo: su “chu-ca-o” fuerte anuncia la lluvia. Escarba la hojarasca buscando insectos y es gran noticia verlo.",
+          "con": [
+            "Quebradas húmedas",
+            "Quila",
+            "Hojarasca"
+          ]
+        },
+        {
+          "n": "Picaflor chico (Sephanoides sephaniodes)",
+          "r": "Poliniza copihue y quintral flor por flor.",
+          "con": [
+            "Copihue"
+          ]
+        }
+      ],
+      "nota": "¿Viste quién comió qué? Anótalo en 🦅 Aves y en la bitácora del bosque: es ciencia ciudadana."
+    },
+    {
+      "clave": "sotobosque",
+      "t": "🌿 Sotobosque que acompaña",
+      "d": "Bajo el dosel vive otra selva en miniatura: da <b>refugio</b>, guarda la <b>humedad</b> y afirma el suelo.",
+      "items": [
+        {
+          "n": "Quila / Colihue (Chusquea quila)",
+          "r": "Bambú nativo: refugio de aves y brotes comestibles en primavera.",
+          "con": [
+            "Quebradas húmedas"
+          ]
+        },
+        {
+          "n": "Helechos",
+          "r": "Alfombran lo sombrío e indican aire y suelo sanos.",
+          "con": [
+            "Canelo",
+            "Arrayán"
+          ]
+        },
+        {
+          "n": "Michay (Berberis spp.)",
+          "r": "Arbusto espinudo de flor amarilla y baya ácida para aves.",
+          "con": [
+            "Boldo",
+            "Peumo"
+          ]
+        },
+        {
+          "n": "Quintral (Tristerix corymbosus)",
+          "r": "Hemiparásito de flores rojas que el picaflor adora; en el bosque templado lo siembra el monito del monte en las ramas.",
+          "con": [
+            "Maitén",
+            "Árboles altos"
+          ]
+        }
+      ],
+      "nota": "No limpies el sotobosque “para ordenar”: es la despensa y la cuna del bosque."
+    },
+    {
+      "clave": "polinizadores",
+      "t": "🐝 Polinizadores",
+      "d": "Sin ellos no hay fruto ni semilla. Las flores de <b>boldo, quillay, canelo y arrayán</b> son melíferas y los llaman cada primavera.",
+      "items": [
+        {
+          "n": "Abejas nativas (ej. Caupolicana)",
+          "r": "Endémicas de Chile; visitan las flores del esclerófilo.",
+          "con": [
+            "Quillay",
+            "Boldo"
+          ]
+        },
+        {
+          "n": "Abejorros y moscas florícolas",
+          "r": "Polinizan en días fríos cuando las abejas salen poco.",
+          "con": [
+            "Canelo",
+            "Arrayán"
+          ]
+        },
+        {
+          "n": "Mariposas nocturnas",
+          "r": "Visitan las flores blancas y perfumadas de la noche.",
+          "con": [
+            "Trihue / Laurel"
+          ]
+        }
+      ],
+      "nota": "Si plantas nativo, planta también su compañía: flores escalonadas de invierno a verano."
+    },
+    {
+      "clave": "animales",
+      "t": "🦊 Animales del bosque",
+      "d": "Los que caminan de noche y al atardecer: <b>remueven el suelo, controlan roedores e insectos</b> y siembran a su paso. Son esquivos: si ves uno, anótalo, es gran noticia.",
+      "items": [
+        {
+          "n": "Chingue (Conepatus chinga)",
+          "r": "Zorrillo común que remueve el suelo buscando insectos y dispersa semillas.",
+          "con": [
+            "Sotobosque",
+            "Quebradas"
+          ]
+        },
+        {
+          "n": "Zorro chilla / culpeo (Lycalopex)",
+          "r": "Visita los bordes del bosque y controla ratones y conejos.",
+          "con": [
+            "Praderas y bordes"
+          ]
+        },
+        {
+          "n": "Monito del monte (Dromiciops gliroides)",
+          "r": "Marsupial nocturno de los bosques templados más conservados; siembra el quintral en las ramas.",
+          "con": [
+            "Quintral (Tristerix corymbosus)"
+          ]
+        },
+        {
+          "n": "Lagartijas y culebra de cola larga",
+          "r": "Controlan insectos entre rocas y claros. Se observan de lejos, sin molestar.",
+          "con": [
+            "Roqueríos y claros"
+          ]
+        }
+      ],
+      "nota": "Mira huellas, fecas y senderos: el bosque se lee también sin ver al animal."
+    },
+    {
+      "clave": "insectos",
+      "t": "🐛 Insectos e invertebrados",
+      "d": "Los más pequeños y los más trabajadores: <b>polinizan, reciclan y alimentan</b> a todo el resto de la red.",
+      "items": [
+        {
+          "n": "Abejorro chileno (Bombus dahlbomii)",
+          "r": "Polinizador grande y peludo, en retroceso: si lo ves, no lo molestes.",
+          "con": [
+            "Quillay",
+            "Boldo",
+            "Canelo"
+          ]
+        },
+        {
+          "n": "Mariposas diurnas",
+          "r": "Sus orugas comen hojas nativas y las adultas polinizan flores.",
+          "con": [
+            "Flores del sotobosque"
+          ]
+        },
+        {
+          "n": "Chinitas (Eriopis spp.)",
+          "r": "Devoran pulgones que atacan los brotes nuevos.",
+          "con": [
+            "Brotes y renovales"
+          ]
+        },
+        {
+          "n": "Caracol negro",
+          "r": "Reciclador nocturno de la hojarasca húmeda.",
+          "con": [
+            "Hojarasca y troncos"
+          ]
+        },
+        {
+          "n": "Libélulas",
+          "r": "Patrullan esteros y quebradas comiendo zancudos.",
+          "con": [
+            "Esteros y vertientes"
+          ]
+        }
+      ],
+      "nota": "Una quebrada con libélulas y abejorros es una quebrada sana."
+    }
+  ],
+  "cierre": "Todo esto cabe en tu bitácora: hongos, aves, flores y frutos tienen tipo de registro. <b>Observar la red completa es cuidar el bosque completo.</b>"
+}

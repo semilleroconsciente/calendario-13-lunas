@@ -1,0 +1,35 @@
+{
+  "id": "CAMBIAR-ID",
+  "nombre": "Nombre del territorio",
+  "subtitulo": "Mari Küla Küyen · Calendario de las 13 Lunas",
+  "region": "Provincia / Región, País",
+  "coordenadas": { "lat": 0.0, "lng": 0.0 },
+  "lugar": "Texto corto que aparece en la portada (ej: Valle del Maule · Chile)",
+  "intro": {
+    "titulo": "CALENDARIO DE LAS 13 LUNAS",
+    "subtitulo": "Mari Küla Küyen",
+    "lugar": "Texto corto del lugar"
+  },
+  "descripcion": "Una frase sobre el territorio.",
+  "archivos": {
+    "lunas": "lunas.json",
+    "estaciones": "lunas.json",
+    "especies": {
+      "aves": "especies/aves.json",
+      "bosque": "especies/bosque.json",
+      "intermareal": "especies/intermareal.json",
+      "flora": "especies/flora.json"
+    },
+    "historia": {
+      "historia": "historia/historia.json",
+      "sectores": "historia/sectores.json",
+      "guia": "historia/guia.json"
+    },
+    "eventos": "eventos.json",
+    "cultivos": {
+      "asociaciones": "cultivos/asociaciones.json",
+      "preparados": "cultivos/preparados.json"
+    },
+    "talleres": "talleres.json"
+  }
+}

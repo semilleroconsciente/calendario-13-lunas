@@ -1,6 +1,12 @@
 # Guía de Cambios Manuales — Calendario 13 Lunas / Web
 
 > Carpeta: `calendario-13-lunas/web` · Todo se edita con un editor de texto (VS Code, Notepad++, Bloc de notas). No necesitas compilar.
+>
+> **Datos por territorio (nuevo):** la información de Penco (especies, historia,
+> mareas/intermareal, eventos, siembra) vive en `data/territorios/penco/*.json`
+> y la app la lee con `territorio.js`. Para cambiar datos edita esos JSON
+> (no `data.js`, que es solo fallback). Para otro territorio ver
+> `data/territorios/_plantilla/LEEME.md` y abrir con `?territorio=<id>`.
 
 ## 0. Antes de tocar nada
 

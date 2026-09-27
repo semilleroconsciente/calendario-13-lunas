@@ -11,6 +11,10 @@
 (function () {
 'use strict';
 
+/* Datos dinamicos por territorio: data/territorios/<id>/historia/*.json (ver territorio.js) */
+function dynHistBosque() { try { var d = window.Territorio && window.Territorio.datos && window.Territorio.datos.historiaBosque; if (d) return d; } catch (e) {} return HISTORIA_BOSQUE; }
+function dynAcompan() { try { var d = window.Territorio && window.Territorio.datos && window.Territorio.datos.companerosBosque; if (d) return d; } catch (e) {} return ACOMPANANTES; }
+
 var $ = function (id) { return document.getElementById(id); };
 function esc(s) {
   if (typeof escapeHtml === 'function') return escapeHtml(s);
@@ -263,7 +267,7 @@ var bosqueCatQ = '';
 function renderBosqueHistoria() {
   var box = $('bosqueHistoriaPanel');
   if (!box) return;
-  var g = HISTORIA_BOSQUE;
+  var g = dynHistBosque();
   var html = '<p class="muted" style="font-size:11px;line-height:1.55">' + g.intro + '</p>';
   html += g.eras.map(function (e, i) {
     return '<div class="menstrual-card" style="margin-top:10px' + (i === 0 ? ';border-color:var(--gold)' : '') + '">' +
@@ -305,7 +309,7 @@ function ecoAddForm(clave) {
 function renderAcompan() {
   var box = $('bosqueAcompanPanel');
   if (!box) return;
-  var g = ACOMPANANTES;
+  var g = dynAcompan();
   var customs = getEcoCustom();
   var html = '<p class="muted" style="font-size:11px;line-height:1.55">' + g.intro + '</p>';
   html += g.grupos.map(function (gr) {
@@ -488,7 +492,14 @@ function setupBosqueHistoria() {
   try { renderBosqueHistoria(); } catch (e) {}
 }
 
-window.BosqueHistoria = { render: renderBosqueHistoria, renderAcompan: renderAcompan, data: HISTORIA_BOSQUE, acompan: ACOMPANANTES, tab: switchBosqueTab, ecoAdd: ecoAddRecord, ecoDel: ecoDelRecord, ecoList: getEcoCustom };
+window.BosqueHistoria = { render: renderBosqueHistoria, renderAcompan: renderAcompan, tab: switchBosqueTab, ecoAdd: ecoAddRecord, ecoDel: ecoDelRecord, ecoList: getEcoCustom };
+try {
+  Object.defineProperties(window.BosqueHistoria, {
+    data: { get: dynHistBosque },
+    acompan: { get: dynAcompan }
+  });
+} catch (e) { window.BosqueHistoria.data = HISTORIA_BOSQUE; window.BosqueHistoria.acompan = ACOMPANANTES; }
+try { document.addEventListener('territorio:listo', function () { try { renderBosqueHistoria(); } catch (e) {} }); } catch (e2) {}
 setTimeout(setupBosqueHistoria, 600);
 
 })();

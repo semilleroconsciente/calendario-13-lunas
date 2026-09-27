@@ -1,0 +1,152 @@
+[
+  {
+    "nombre": "Canelo",
+    "cient": "Drimys winteri",
+    "hab": "Quebradas húmedas, borde estero",
+    "icon": "🌳",
+    "epoca": "Flor Aug–Oct",
+    "tipo": "Árbol sagrado",
+    "semillas": "Dic–Feb",
+    "nota": "Árbol sagrado mapuche (foye). Corteza pimienta. No talar: esqueje en menguante otoñal. Semilla en baya negra; recolecta fruto maduro Dic–Feb y siembra inmediato (recalcitrante, no guardar seca)."
+  },
+  {
+    "nombre": "Boldo",
+    "cient": "Peumus boldus",
+    "hab": "Ladera, bosque esclerófilo",
+    "icon": "🍃",
+    "epoca": "Flor Jul–Sep · Fruto Ene",
+    "tipo": "Árbol medicinal",
+    "semillas": "Ene–Feb",
+    "nota": "Hoja digestiva. Recolecta 3–4 hojas por rama, nunca defoliar. Semilla en drupa: cosecha fruto maduro Ene–Feb, limpia pulpa y siembra otoño temprano."
+  },
+  {
+    "nombre": "Peumo",
+    "cient": "Cryptocarya alba",
+    "hab": "Bosque costero, cerros Penco",
+    "icon": "🔴",
+    "epoca": "Fruto Mar–May",
+    "tipo": "Árbol",
+    "semillas": "Mar–May",
+    "nota": "Fruto rojo comestible cocido. Recalcitrante: recolecta caído Mar–May y siembra directo en bolsa profunda sin demora (no deshidratar)."
+  },
+  {
+    "nombre": "Arrayán",
+    "cient": "Luma apiculata",
+    "hab": "Estero, humedal borde",
+    "icon": "🟠",
+    "epoca": "Flor Dic–Ene · Fruto Feb",
+    "tipo": "Árbol",
+    "semillas": "Feb–Abr",
+    "nota": "Corteza canela. Madera dura. Flor melífera. Baya negra Feb–Abr: macera y siembra primavera, sombra parcial."
+  },
+  {
+    "nombre": "Quillay",
+    "cient": "Quillaja saponaria",
+    "hab": "Ladera asoleada",
+    "icon": "🌿",
+    "epoca": "Flor Nov–Ene",
+    "tipo": "Árbol",
+    "semillas": "Dic–Feb",
+    "nota": "Corteza con saponina. Melífero clave. Cápsula estrellada seca Dic–Feb: recoge antes que abra, guarda en papel y siembra primavera (previo remojo 24h)."
+  },
+  {
+    "nombre": "Maitén",
+    "cient": "Maytenus boaria",
+    "hab": "Pradera, cerco vivo",
+    "icon": "🌲",
+    "epoca": "Todo el año",
+    "tipo": "Árbol",
+    "semillas": "Ene–Mar",
+    "nota": "Forraje, cerco. Crece rápido. Cápsula con arilo rojo Ene–Mar: recolecta y siembra en almácigo otoñal."
+  },
+  {
+    "nombre": "Avellano",
+    "cient": "Gevuina avellana",
+    "hab": "Bosque templado, vega",
+    "icon": "🌰",
+    "epoca": "Flor Nov–Ene · Avellana Mar–May",
+    "tipo": "Árbol",
+    "semillas": "Mar–May",
+    "nota": "Nuez nativa. Cosecha avellana caída Mar–May, no vareo: siembra directa a 3 cm, estrato húmedo. Tostar solo las de consumo."
+  },
+  {
+    "nombre": "Lingue",
+    "cient": "Persea lingue",
+    "hab": "Quebrada, bosque laurifolio",
+    "icon": "🌳",
+    "epoca": "Vulnerable",
+    "tipo": "Árbol",
+    "semillas": "Feb–Abr",
+    "nota": "Madera valiosa en categoría vulnerable. Solo observar y proteger, no cortar. Baya Feb–Abr: si logras recolectar, siembra inmediata (muy recalcitrante)."
+  },
+  {
+    "nombre": "Copihue",
+    "cient": "Lapageria rosea",
+    "hab": "Quebrada sombría, quila",
+    "icon": "🌺",
+    "epoca": "Flor Feb–Jul",
+    "tipo": "Enredadera nacional",
+    "semillas": "Sep–Nov",
+    "nota": "Flor nacional. Protegida por ley. No cortar. Baya Sep–Nov: solo observar. Reproducción por semilla fresca en laboratorio, no extraer del bosque."
+  },
+  {
+    "nombre": "Chupalla",
+    "cient": "Eryngium paniculatum",
+    "hab": "Roquerío, cerro costero",
+    "icon": "🌵",
+    "epoca": "Flor Dic–Mar",
+    "tipo": "Hierba",
+    "semillas": "Feb–Abr",
+    "nota": "Fibra para artesanía. Solo hojas externas, deja roseta. Semilla seca Feb–Abr: cosecha cabezuela marrón, trilla suave."
+  },
+  {
+    "nombre": "Lloyin / Hongos",
+    "cient": "Ramaria, Amanita, Boletus",
+    "hab": "Suelo bosque otoñal",
+    "icon": "🍄",
+    "epoca": "Abr–Jun",
+    "tipo": "Hongo",
+    "semillas": "No aplica (esporas Abr–Jun)",
+    "nota": "Solo recolecta si 100% seguro (loyo, changle). Lleva canasto aireado. Deja micelio. Propaga por esporas, no semillas."
+  },
+  {
+    "nombre": "Maqui",
+    "cient": "Aristotelia chilensis",
+    "hab": "Borde bosque, quebrada",
+    "icon": "🫐",
+    "epoca": "Fruto Dic–Ene",
+    "tipo": "Arbusto",
+    "semillas": "Dic–Ene",
+    "nota": "Superfruto. Cosecha con tijera Dic–Ene, deja 30% para aves. Extrae semilla lavando pulpa; siembra primavera con estratificación fría 30 días."
+  },
+  {
+    "nombre": "Trihue / Laurel",
+    "cient": "Laurelia sempervirens",
+    "hab": "Quebrada húmeda, bosque laurifolio costero",
+    "icon": "🌿",
+    "epoca": "Flor Nov–Dic",
+    "tipo": "Árbol laurifolio",
+    "semillas": "Ene–Mar",
+    "nota": "Laurel chileno aromático (trihue). Muy escaso en Penco: solo observar y proteger. Aquenio plumoso Ene–Mar: colecta con malla antes que vuele, siembra inmediata (viabilidad corta)."
+  },
+  {
+    "nombre": "Naranjillo",
+    "cient": "Citronella mucronata",
+    "hab": "Ladera sombría, bosque esclerófilo húmedo",
+    "icon": "🍋",
+    "epoca": "Flor Nov–Dic · Fruto Feb–Mar",
+    "tipo": "Árbol nativo",
+    "semillas": "Feb–Abr",
+    "nota": "Endémico vulnerable. Drupa negra Feb–Abr para aves. Recolecta caída, despulpa y siembra otoño en sombra húmeda (recalcitrante)."
+  },
+  {
+    "nombre": "Keule",
+    "cient": "Gomortega keule",
+    "hab": "Quebrada costera, bosque relicto Bío-Bío",
+    "icon": "🌰",
+    "epoca": "Fruto Mar–May · En Peligro",
+    "tipo": "Árbol endémico",
+    "semillas": "Mar–May (con permiso CONAF)",
+    "nota": "Endémico Bío-Bío–Maule, en peligro crítico Monumento Natural. Fruto amarillo Mar–May. Protegido: solo observar/fotografiar. No recolectar sin autorización; siembra de hueso inmediata tras despulpado."
+  }
+]

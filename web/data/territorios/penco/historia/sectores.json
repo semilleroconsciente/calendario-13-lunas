@@ -1,0 +1,257 @@
+[
+  {
+    "id": "sur-ruta150",
+    "n": "🛣️ Sector Sur / Eje Ruta 150 — Cosmito, La Greda, El Boldo",
+    "barrios": [
+      "Cosmito (incluye Villa Cosmito)",
+      "La Greda",
+      "Nueva La Greda",
+      "El Boldo",
+      "Villa San Jorge",
+      "Villa Santa Rosa (“14-R Santa Rosa”)"
+    ],
+    "historia": "Puerta de entrada a Penco desde Concepción. Aquí la geología le puso el nombre al barrio: la <b>Formación Cosmito (Paleoceno–Eoceno)</b> se describió en la <b>Estación de Ferrocarril de Cosmito</b>, con sus mantos de carbón. En el siglo XX fue campo lechero (<b>Granja Cosmito</b>: leche, aves, hortalizas de CRAV-COSAF) y luego corredor obrero junto a la vía: <b>ferrocarril a Penco (1889)</b>, poblaciones ferroviarias y villas. El estero y los faldeos guardan boldo y bosque relicto.",
+    "hitos": [
+      {
+        "f": "~60–40 Ma",
+        "t": "Se depositan las arenas y carbones de la Formación Cosmito"
+      },
+      {
+        "f": "1889",
+        "t": "Llega el ferrocarril: Estación Cosmito conecta Penco–Concepción"
+      },
+      {
+        "f": "1900–1950",
+        "t": "Granja Cosmito abastece de leche y verduras a la zona fabril"
+      },
+      {
+        "f": "1990–hoy",
+        "t": "Eje Ruta 150: villas y corredor residencial-industrial"
+      }
+    ]
+  },
+  {
+    "id": "centro",
+    "n": "🏛️ Penco Centro y Casco Histórico — Carapenco, damero, CRAV",
+    "barrios": [
+      "Barrio Ex CRAV",
+      "Penco Norte",
+      "Penco Chico",
+      "Carlos Condell",
+      "Ignacio Carrera Pinto",
+      "Lomas de Penco",
+      "Juan Pérez Flores",
+      "Nueva Baquedano",
+      "Villa Jazmín",
+      "Alto Cementerio",
+      "Bellavista Sur",
+      "Lautaro Penco Centro",
+      "Desiderio Guzmán",
+      "Héctor Navarro",
+      "Armando Jofré Suazo",
+      "Hipocampo",
+      "Forjadores de Chile",
+      "Villarrica",
+      "Villa Las Américas",
+      "Villa Los Radales",
+      "Lord Cochrane",
+      "Gabriela Mistral"
+    ],
+    "historia": "El corazón de 500 años. Aquí estaba el <b>asentamiento de Carapenco</b>, entre los esteros Penco y Landa, donde Valdivia trazó en <b>1550 La Concepción del Nuevo Extremo</b> (fuerte en Altos de Playa Negra, solares 3 de marzo, fundación 5 de octubre). Fue <b>capital del sur, obispado y Universidad Pencopolitana</b> hasta el <b>terremoto-maremoto del 25 de mayo de 1751</b> que obligó el traslado al Valle de la Mocha y prohibió habitar por ~90 años (en 1822 solo 51 familias piden a O’Higgins quedarse). Renace como <b>Villa (1843, Bulnes), Municipalidad (1891) y ciudad (1898)</b>. El damero y la Plaza heredan el plano colonial. Aquí levantaron la <b>Refinería de Azúcar (1886, luego CRAV)</b> con su muelle gigante, la <b>Fábrica de Loza (1898, luego Fanaloza/Lozapenco)</b> y la COSAF: nace el <b>Penco obrero</b> (Bomberos 1927, sindicatos, clubes, Observatorio Elke). El <b>Barrio Ex CRAV</b> es hoy zona patrimonial.",
+    "hitos": [
+      {
+        "f": "1550",
+        "t": "Batalla de Andalién (22 feb) + fundación de Concepción en Penco (5 oct)"
+      },
+      {
+        "f": "1554",
+        "t": "Lautaro destruye la ciudad; refundaciones sucesivas"
+      },
+      {
+        "f": "1687",
+        "t": "Fuerte La Planchada: único vestigio colonial en pie"
+      },
+      {
+        "f": "1570–1730",
+        "t": "Terremotos que la tumban una y otra vez"
+      },
+      {
+        "f": "1751",
+        "t": "Terremoto-maremoto final: traslado y prohibición de habitar"
+      },
+      {
+        "f": "1843 / 1891 / 1898",
+        "t": "Villa, Municipalidad y ciudad: refundación republicana"
+      },
+      {
+        "f": "1886 / 1898",
+        "t": "Refinería de Azúcar (CRAV) y Fábrica de Loza"
+      },
+      {
+        "f": "1927",
+        "t": "Bomberos de Penco tras grandes incendios"
+      },
+      {
+        "f": "1939 / 1960 / 2010",
+        "t": "Terremotos que golpean el casco y obligan a reconstruir"
+      }
+    ]
+  },
+  {
+    "id": "playa-negra",
+    "n": "🌊 Playa Negra y Borde Costero Centro — conchal, fuerte y balneario",
+    "barrios": [
+      "Playa Negra Norte",
+      "Bahía Azul",
+      "Bloques Vista al Mar",
+      "Corhabit"
+    ],
+    "historia": "La primera y la última orilla. Sobre su terraza de 5 m está el conchal <b>Playa Negra 9</b> (Arcaico, pescadores con pesas de red, caza de lobo marino) y muy cerca <b>Bellavista 1</b> (3.000 m², 4.580–3.330 a.p.): cuando se ocuparon, el mar llegaba kilómetros adentro. En <b>1550 el primer fuerte español se alzó en Altos de Playa Negra</b>. Tres siglos después se vuelve <b>balneario popular</b> (1950–60) de roqueríos, pozas y atardeceres. Los temporales de <b>1945</b> destruyeron el muelle refinero de CRAV. Hoy es aula viva: revisa 🌊 Mareas y 🦀 Intermareal antes de bajar.",
+    "hitos": [
+      {
+        "f": "~4.500 a.p.",
+        "t": "Conchales Playa Negra 9 y Bellavista 1: pesca y marisqueo"
+      },
+      {
+        "f": "1550",
+        "t": "Fuerte inicial en Altos de Playa Negra"
+      },
+      {
+        "f": "1945",
+        "t": "Temporal destruye el muelle refinero de CRAV"
+      },
+      {
+        "f": "1950–60",
+        "t": "Playa Negra, balneario popular del Gran Concepción"
+      },
+      {
+        "f": "2010",
+        "t": "27F golpea el borde: reconstrucción de defensas y paseo"
+      }
+    ]
+  },
+  {
+    "id": "cerro-verde",
+    "n": "⛰️ Cerro Verde Alto y Bajo — carbón, toma y mirador",
+    "barrios": [
+      "Cerro Verde Alto",
+      "Cerro Verde Bajo",
+      "Víctor Ortal",
+      "Mejoreros",
+      "Bosques del Sur",
+      "Condominio Social Los Altos de Maitén",
+      "Agua de Peumo II B",
+      "Villa Montahue"
+    ],
+    "historia": "El cerro que cose Penco con Lirquén. Su nombre minero lo dice: aquí hubo <b>minas de carbón (Lirquén–Cerro Verde, 1850–1950s)</b> que pidieron leña y entibado al bosque (lingue, roble, laurel). Con el ferrocarril y las fábricas llegaron familias de Ñuble; el sector creció como <b>población obrera y luego como toma/mejora (“Mejoreros”, Víctor Ortal)</b>. En los <b>70–80 se conurba con Lirquén</b> en un solo aglomerado. Es también basamento gondwánico y mirador de la bahía: entre casas aún asoman quebradas con peumo, boldo y arrayán.",
+    "hitos": [
+      {
+        "f": "1850–1950s",
+        "t": "Minas de carbón de Cerro Verde–Lirquén"
+      },
+      {
+        "f": "1889–1914",
+        "t": "Riel Penco–Lirquén: el cerro se vuelve corredor"
+      },
+      {
+        "f": "1970–80",
+        "t": "Cerro Verde une Penco y Lirquén; crecen poblaciones"
+      },
+      {
+        "f": "hoy",
+        "t": "Miradores y quebradas: bosque relicto entre villas"
+      }
+    ]
+  },
+  {
+    "id": "lirquen",
+    "n": "⚓ Lirquén — caleta, cobre, carbón, vidrio y puerto mayor",
+    "barrios": [
+      "Lirquén Centro y Borde Costero (Playa Lirquén, Caleta El Refugio, La Cata)",
+      "Villa El Rosal",
+      "Ríos de Chile",
+      "Población Bellavista (Lirquén)",
+      "La Cantera",
+      "Las Pataguas"
+    ],
+    "historia": "Pueblo dentro del pueblo (12.000–14.000 hab.). Caleta de <b>pescadores y alfareros hacia 1850</b>, con navegación antigua a Quiriquina. Encendió la economía con la <b>fundición de cobre</b> y las <b>minas de carbón</b>, cal, tejas y molinos. El <b>ferrocarril llegó en 1914</b> (ramal a Tomé–Coelemu–Chillán). En el siglo XX sumó la <b>Fábrica de Vidrios Planos (FNVP/Vipla, luego Vidrios Lirquén)</b>, fosfatos y calzado. Sus rocas guardan el mar cretácico: en <b>La Cata hay tortugas marinas fósiles y amonites de la Formación Quiriquina</b>. Sus caletas <b>El Refugio y La Cata</b> mantienen pesca artesanal y fiesta patronal; el <b>Puerto Lirquén (hoy DP World)</b> es puerto mayor. El 27F golpeó caletas y borde.",
+    "hitos": [
+      {
+        "f": "72–66 Ma",
+        "t": "Fósiles marinos en La Cata (Quiriquina): tortugas, amonites"
+      },
+      {
+        "f": "~1850",
+        "t": "Caleta de pescadores y alfareros"
+      },
+      {
+        "f": "1850–1900",
+        "t": "Fundición de cobre + minas de carbón"
+      },
+      {
+        "f": "1914",
+        "t": "Ferrocarril a Lirquén"
+      },
+      {
+        "f": "1950–70",
+        "t": "Vidrios Planos (Vipla), fosfatos: polo industrial"
+      },
+      {
+        "f": "1990–hoy",
+        "t": "Puerto Lirquén / DP World: puerto mayor"
+      },
+      {
+        "f": "2010",
+        "t": "27F: daño y reconstrucción de caletas"
+      }
+    ]
+  },
+  {
+    "id": "rocuant",
+    "n": "🦅 Humedal Rocuant, Andalién y Cerro Bellavista — agua y aves",
+    "barrios": [
+      "Desembocadura río Andalién",
+      "Isla Rocuant y marismas",
+      "Cerro Bellavista (límite Talcahuano)"
+    ],
+    "historia": "El límite vivo del suroeste. <b>Marismas del Andalién e isla Rocuant</b>: humedal costero de aves migratorias y residentes (ver 🦅 Aves). A orillas de la antigua desembocadura está el conchal <b>Bellavista 1</b>, con 2,5 m de basura de 4.000 años: ostiones, choro zapato, peces y lobos marinos. Los limos de inundación del Andalién y las dunas modelaron la llanura. El <b>Cerro Bellavista</b> es hito y mirador de la bahía. Proteger el humedal es el desafío actual: vivir con el mar y el río.",
+    "hitos": [
+      {
+        "f": "~4.000 a.p.",
+        "t": "Bellavista 1: aldea pescadora junto al Andalién antiguo"
+      },
+      {
+        "f": "Holoceno",
+        "t": "Transgresiones forman marismas y terraza de 5 m"
+      },
+      {
+        "f": "hoy",
+        "t": "Humedal Rocuant: observación de aves y restauración"
+      }
+    ]
+  },
+  {
+    "id": "rural-este",
+    "n": "🌾 Zona Rural Este — Primer Agua, Roa y Florida (36 km)",
+    "barrios": [
+      "Primer Agua",
+      "Quebrada de las Ulloa",
+      "Fundo Coihueco / Huinquén"
+    ],
+    "historia": "El campo penqueño hacia Florida. Ruta de <b>agua y bosque</b>: vertientes (Primer Agua), quebradas con canelo, lingue, trihue y copihue, y fundos (Coihueco/Huinquén) de agricultura y forraje. Camino histórico a Florida (36 km por Roa). Aquí el bosque esclerófilo-laurifolio resiste mejor: queule relicto en la cuenca, boldo-peumo-quillay en laderas. Guarda memoria campesina y de arrieros que aún falta recoger.",
+    "hitos": [
+      {
+        "f": "prehispánico",
+        "t": "Bosque lafkenche: remedio, fruto y wampo"
+      },
+      {
+        "f": "colonial–XIX",
+        "t": "Leña y carbón vegetal para minas y hornos"
+      },
+      {
+        "f": "hoy",
+        "t": "Ruta Penco–Primer Agua–Roa–Florida: agua, campo y semillero"
+      }
+    ]
+  }
+]

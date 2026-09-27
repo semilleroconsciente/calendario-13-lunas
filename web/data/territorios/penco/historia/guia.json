@@ -1,0 +1,145 @@
+{
+  "marco": "Ubicación: <b>Provincia de Concepción, Región del Biobío</b>, integrada al área metropolitana del <b>Gran Concepción</b>. Población comunal aproximada: <b>47.000 a 50.000 habitantes</b>.",
+  "limites": [
+    {
+      "p": "Norte",
+      "v": "Tomé (hacia Punta de Parra y Quebrada Honda)"
+    },
+    {
+      "p": "Sur",
+      "v": "Concepción (eje Ruta 150 / Chillancito)"
+    },
+    {
+      "p": "Oeste / Noroeste",
+      "v": "Océano Pacífico (Bahía de Concepción)"
+    },
+    {
+      "p": "Suroeste",
+      "v": "Talcahuano (marismas del río Andalién e Isla Rocuant)"
+    },
+    {
+      "p": "Este",
+      "v": "Florida (cordillera de la Costa / sector rural)"
+    }
+  ],
+  "limitesNota": "Penco se integra al área metropolitana del <b>Gran Concepción</b>. El límite con Talcahuano, hacia el suroeste, está marcado por las <b>marismas del río Andalién</b> y la <b>isla Rocuant</b>, cerca de su desembocadura.",
+  "lugares": [
+    {
+      "n": "Plaza Los Conquistadores y casco en damero",
+      "d": "Centro histórico, comercio y servicios. Punto de partida para recorrer el Penco antiguo y el Barrio Patrimonial Ex CRAV."
+    },
+    {
+      "n": "Fuerte La Planchada",
+      "d": "Fuerte de 1687 en el borde costero: único vestigio de la ciudad colonial de Concepción en Penco. Tres cañones, paseo y gastronomía."
+    },
+    {
+      "n": "Barrio Patrimonial Ex CRAV",
+      "d": "Sector de valor patrimonial del centro penqueño, ligado a la antigua refinería de azúcar."
+    },
+    {
+      "n": "Playa Negra",
+      "d": "Borde costero del centro: roqueríos, pozas intermareales y atardeceres. Revisa 🌊 Mareas y 🦀 Intermareal antes de ir."
+    },
+    {
+      "n": "Lirquén: caletas y puerto",
+      "d": "Playa Lirquén, Caleta El Refugio y La Cata; Puerto Lirquén (DP World) y memoria minera del carbón y el vidrio plano. Población aproximada: 12.000 a 14.000 habitantes."
+    },
+    {
+      "n": "Humedal e isla Rocuant",
+      "d": "Humedal costero del límite suroeste: observación de aves (ver 🦅 Aves). Marismas y desembocadura del río Andalién."
+    },
+    {
+      "n": "Cerro Bellavista",
+      "d": "Hito natural del límite con Talcahuano, con vista a la Bahía de Concepción."
+    },
+    {
+      "n": "Cerro Verde",
+      "d": "Sector residencial en altura, subdividido entre zonas altas y bajas."
+    },
+    {
+      "n": "Camino rural a Florida",
+      "d": "Ruta Penco – Primer Agua – Roa – Florida (36 km): campo, agua y bosque hacia el límite este."
+    }
+  ],
+  "sectores": [
+    {
+      "n": "🛣️ Sector Sur / Eje Ruta 150 (Conexión Penco–Concepción)",
+      "d": "Corredor residencial e industrial en el acceso sur de la comuna.",
+      "items": [
+        "Cosmito (incluye Villa Cosmito)",
+        "La Greda",
+        "Nueva La Greda",
+        "El Boldo",
+        "Villa San Jorge",
+        "Villa Santa Rosa (“14-R Santa Rosa”)"
+      ]
+    },
+    {
+      "n": "🏛️ Penco Centro y Borde Costero (Casco Histórico)",
+      "d": "Asentamiento original de Concepción (1550). Poblaciones y villas tradicionales del sector:",
+      "items": [
+        "Barrio Ex CRAV",
+        "Penco Norte",
+        "Penco Chico",
+        "Carlos Condell",
+        "Ignacio Carrera Pinto",
+        "Lomas de Penco",
+        "Juan Pérez Flores",
+        "Nueva Baquedano",
+        "Villa Jazmín",
+        "Alto Cementerio",
+        "Bellavista Sur",
+        "Playa Negra Norte",
+        "Bahía Azul",
+        "Bloques Vista al Mar",
+        "Corhabit",
+        "Lautaro Penco Centro",
+        "Desiderio Guzmán",
+        "Héctor Navarro",
+        "Armando Jofré Suazo",
+        "Hipocampo",
+        "Forjadores de Chile",
+        "Villarrica",
+        "Villa Las Américas",
+        "Villa Los Radales",
+        "Lord Cochrane",
+        "Gabriela Mistral"
+      ]
+    },
+    {
+      "n": "⛰️ Cerro Verde",
+      "d": "Sector residencial en altura, subdividido funcionalmente entre zonas altas y bajas.",
+      "items": [
+        "Cerro Verde Alto",
+        "Cerro Verde Bajo",
+        "Víctor Ortal",
+        "Mejoreros",
+        "Bosques del Sur",
+        "Condominio Social Los Altos de Maitén",
+        "Agua de Peumo II B",
+        "Villa Montahue"
+      ]
+    },
+    {
+      "n": "⚓ Lirquén (Sector Norte)",
+      "d": "Localidad portuaria y pesquera costera (est. 1850). Barrios y poblaciones destacadas:",
+      "items": [
+        "Lirquén Centro y Borde Costero (Playa Lirquén, Caleta El Refugio, La Cata)",
+        "Villa El Rosal",
+        "Ríos de Chile",
+        "Población Bellavista (Lirquén)",
+        "La Cantera",
+        "Las Pataguas"
+      ]
+    },
+    {
+      "n": "🌾 Zona Rural Este (Límite con Florida)",
+      "d": "Conectada por la ruta Penco – Primer Agua – Roa – Florida (36 km).",
+      "items": [
+        "Primer Agua",
+        "Quebrada de las Ulloa",
+        "Fundo Coihueco / Huinquén"
+      ]
+    }
+  ]
+}

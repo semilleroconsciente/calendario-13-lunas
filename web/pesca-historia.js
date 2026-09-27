@@ -11,6 +11,9 @@
 (function () {
 'use strict';
 
+/* Datos dinamicos por territorio: data/territorios/<id>/historia/historia-pesca.json (ver territorio.js) */
+function dynHistPesca() { try { var d = window.Territorio && window.Territorio.datos && window.Territorio.datos.historiaPesca; if (d) return d; } catch (e) {} return HISTORIA_PESCA; }
+
 var $ = function (id) { return document.getElementById(id); };
 function esc(s) {
   if (typeof escapeHtml === 'function') return escapeHtml(s);
@@ -100,7 +103,7 @@ var HISTORIA_PESCA = {
 function renderPescaHistoria() {
   var box = $('pescaHistoriaPanel');
   if (!box) return;
-  var g = HISTORIA_PESCA;
+  var g = dynHistPesca();
   var html = '<p class="muted" style="font-size:11px;line-height:1.55">' + g.intro + '</p>';
   html += g.eras.map(function (e, i) {
     return '<div class="menstrual-card" style="margin-top:10px' + (i === 0 ? ';border-color:var(--gold)' : '') + '">' +
@@ -175,7 +178,10 @@ function setupPescaHistoria() {
   try { renderPescaHistoria(); } catch (e) {}
 }
 
-window.PescaHistoria = { historia: HISTORIA_PESCA, tab: switchPescaTab, renderHistoria: renderPescaHistoria };
+window.PescaHistoria = { tab: switchPescaTab, renderHistoria: renderPescaHistoria };
+try { Object.defineProperties(window.PescaHistoria, { historia: { get: dynHistPesca } }); }
+catch (e) { window.PescaHistoria.historia = HISTORIA_PESCA; }
+try { document.addEventListener('territorio:listo', function () { try { renderPescaHistoria(); } catch (e) {} }); } catch (e2) {}
 setTimeout(setupPescaHistoria, 600);
 
 })();

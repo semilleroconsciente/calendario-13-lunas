@@ -1,3 +1,6 @@
+/* FALLBACK EMBEBIDO — fuente oficial: data/territorios/<id>/*.json (ver territorio.js).
+   Para cambiar datos de Penco edita data/territorios/penco/*.json;
+   este archivo solo garantiza que la app abra aunque fetch falle. */
 const PENCO = { lat: -36.73194, lng: -72.9925 };
 
 const ESTACIONES = {
@@ -167,23 +170,12 @@ const INTRO = {
   lugar: 'Golfo de Arauco · Penco, Bío-Bío, Chile'
 };
 
+/* Solo links de pago en linea (ver donate.json). Sin datos bancarios. */
 const DONATE = {
-  banco: 'BancoEstado',
-  tipo: 'CuentaRUT',
-  cuenta: '', // privado: ver donate.json
-  rut: '', // privado
-  titular: '', // privado
-  correo: '', // privado
   flow: '',
-  mercadopago: '', // privado: ver donate.json
-  paypal: '', // privado
-  kofi: '',
-  machBanco: 'BCI/MACHBANK',
-  machTipo: 'Cuenta Vista',
-  machCuenta: '', // privado
-  machRut: '', // privado
-  machTitular: '', // privado
-  machCorreo: '' // privado
+  mercadopago: '',
+  paypal: '',
+  kofi: ''
 };
 
 const AVES_PENCO = [

@@ -14,6 +14,10 @@
 (function () {
 'use strict';
 
+/* Datos dinamicos por territorio: data/territorios/<id>/historia/*.json (ver territorio.js) */
+function dynAvesBosque() { try { var d = window.Territorio && window.Territorio.datos && window.Territorio.datos.avesBosque; if (d) return d; } catch (e) {} return AVES_BOSQUE; }
+function dynHistAves() { try { var d = window.Territorio && window.Territorio.datos && window.Territorio.datos.historiaAves; if (d) return d; } catch (e) {} return HISTORIA_AVES; }
+
 var $ = function (id) { return document.getElementById(id); };
 function esc(s) {
   if (typeof escapeHtml === 'function') return escapeHtml(s);
@@ -226,7 +230,7 @@ function avesBosqueAddForm(clave) {
 function renderAvesBosque() {
   var box = $('avesBosquePanel');
   if (!box) return;
-  var g = AVES_BOSQUE;
+  var g = dynAvesBosque();
   var html = '<p class="muted" style="font-size:11px;line-height:1.55">' + g.intro + '</p>';
   var customs = getAvesBosqueCustom();
   html += g.grupos.map(function (gr) {
@@ -351,7 +355,7 @@ function renderAvesAvistadas() {
 function renderAvesHistoria() {
   var box = $('avesHistoriaPanel');
   if (!box) return;
-  var g = HISTORIA_AVES;
+  var g = dynHistAves();
   var html = '<p class="muted" style="font-size:11px;line-height:1.55">' + g.intro + '</p>';
   html += g.eras.map(function (e, i) {
     return '<div class="menstrual-card" style="margin-top:10px' + (i === 0 ? ';border-color:var(--gold)' : '') + '">' +
@@ -450,7 +454,14 @@ function setupAvesHistoria() {
   try { renderAvesHistoria(); } catch (e) {}
 }
 
-window.AvesHistoria = { bosque: AVES_BOSQUE, historia: HISTORIA_AVES, tab: switchAvesTab, renderBosque: renderAvesBosque, renderAvistadas: renderAvesAvistadas, renderHistoria: renderAvesHistoria, bosqueAdd: avesBosqueAddRecord, bosqueDel: avesBosqueDelRecord, bosqueList: getAvesBosqueCustom };
+window.AvesHistoria = { tab: switchAvesTab, renderBosque: renderAvesBosque, renderAvistadas: renderAvesAvistadas, renderHistoria: renderAvesHistoria, bosqueAdd: avesBosqueAddRecord, bosqueDel: avesBosqueDelRecord, bosqueList: getAvesBosqueCustom };
+try {
+  Object.defineProperties(window.AvesHistoria, {
+    bosque: { get: dynAvesBosque },
+    historia: { get: dynHistAves }
+  });
+} catch (e) { window.AvesHistoria.bosque = AVES_BOSQUE; window.AvesHistoria.historia = HISTORIA_AVES; }
+try { document.addEventListener('territorio:listo', function () { try { renderAvesBosque(); } catch (e) {} try { renderAvesHistoria(); } catch (e2) {} }); } catch (e3) {}
 setTimeout(setupAvesHistoria, 600);
 
 })();

@@ -25,6 +25,8 @@
       "astro.js",
       "cal.js",
       "data.js",
+      "territorio.js",
+      "data/territorios/**/*",
       "frases.js",
       "renderer.js",
       "nuevos-modulos.js",

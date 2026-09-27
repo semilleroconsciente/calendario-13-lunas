@@ -1,0 +1,161 @@
+{
+  "intro": "El bosque nativo de Penco —boldo, peumo, quillay, canelo, arrayán, maitén, avellano, maqui— no estaría en pie sin sus aves: <b>polinizan, dispersan semilla y controlan insectos</b>. Estas son las vecinas del bosque. Toca una para registrarla en tu bitácora.",
+  "grupos": [
+    {
+      "clave": "polinizadoras",
+      "t": "🐝 Polinizadoras: las que abren la flor",
+      "d": "Sin ellas no hay fruto. Visitan copihue, quintral y flores melíferas de boldo, quillay y arrayán.",
+      "items": [
+        {
+          "n": "Picaflor chico",
+          "rol": "Poliniza copihue y quintral flor por flor, de Sep a Abr.",
+          "arboles": [
+            "Copihue",
+            "Maqui",
+            "Arrayán"
+          ]
+        },
+        {
+          "n": "Fío-fío",
+          "rol": "Migrador Sep–Mar: come insectos y reparte semillas de mirtáceas.",
+          "arboles": [
+            "Arrayán",
+            "Maitén"
+          ]
+        }
+      ]
+    },
+    {
+      "clave": "dispersoras",
+      "t": "🫐 Dispersoras: las que siembran el cerro",
+      "d": "Comen fruto y devuelven la semilla lejos, lista para germinar. El bosque futuro viaja en su guata.",
+      "items": [
+        {
+          "n": "Zorzal",
+          "rol": "El gran sembrador: maqui, arrayán y quillay por todo el cerro. Canta en invierno.",
+          "arboles": [
+            "Maqui",
+            "Arrayán",
+            "Quillay"
+          ]
+        },
+        {
+          "n": "Tenca",
+          "rol": "Imitadora de canto; mueve semillas entre quebradas y jardines.",
+          "arboles": [
+            "Maqui",
+            "Maitén"
+          ]
+        },
+        {
+          "n": "Torcaza",
+          "rol": "Paloma del bosque: bandadas otoñales sobre peumo y boldo.",
+          "arboles": [
+            "Peumo",
+            "Boldo",
+            "Avellano"
+          ]
+        },
+        {
+          "n": "Diuca",
+          "rol": "De borde y cerco: come semillas y avisa con su canto corto.",
+          "arboles": [
+            "Quillay",
+            "Maitén"
+          ]
+        },
+        {
+          "n": "Jilguero",
+          "rol": "Semillero amarillo que recorre quillay y maitén en bandadas.",
+          "arboles": [
+            "Quillay",
+            "Maitén"
+          ]
+        },
+        {
+          "n": "Cometocino",
+          "rol": "Visita el sotobosque en otoño-invierno buscando semillas.",
+          "arboles": [
+            "Peumo",
+            "Boldo"
+          ]
+        }
+      ]
+    },
+    {
+      "clave": "sotobosque",
+      "t": "🌿 Sotobosque: las que viven abajo",
+      "d": "Entre quila, helechos y hojarasca: insectívoras que airean el suelo y anuncian la lluvia.",
+      "items": [
+        {
+          "n": "Chucao",
+          "rol": "Dueño del canto del sotobosque húmedo: su “chu-ca-o” anuncia lluvia. Escarba hojarasca.",
+          "arboles": [
+            "Canelo",
+            "Arrayán",
+            "Quila / Colihue (Chusquea quila)"
+          ]
+        },
+        {
+          "n": "Chercán",
+          "rol": "Chiquito y bullicioso de cercos y jardines; come pulgones y arañas.",
+          "arboles": [
+            "Maitén",
+            "Maqui"
+          ]
+        },
+        {
+          "n": "Rayadito",
+          "rol": "Trepa troncos de canelo y arrayán buscando larvas bajo la corteza.",
+          "arboles": [
+            "Canelo",
+            "Arrayán"
+          ]
+        },
+        {
+          "n": "Cachudito",
+          "rol": "Copete simpático del matorral bajo y maqui; caza mosquitos al vuelo.",
+          "arboles": [
+            "Maqui",
+            "Boldo"
+          ]
+        },
+        {
+          "n": "Loica",
+          "rol": "De pradera y borde de cerro: pecho rojo visible, canto de primavera.",
+          "arboles": [
+            "Quillay",
+            "Praderas y bordes"
+          ]
+        }
+      ]
+    },
+    {
+      "clave": "nocturnas",
+      "t": "🦉 Nocturnas y carpinteras: las que cuidan de noche y de tronco",
+      "d": "Controlan ratones e insectos taladro. Si las ves, es señal de bosque sano.",
+      "items": [
+        {
+          "n": "Concón",
+          "rol": "Lechuza del bosque nativo; caza ratones de noche sin hacer ruido.",
+          "arboles": [
+            "Canelo",
+            "Lingue",
+            "Trihue / Laurel"
+          ]
+        },
+        {
+          "n": "Carpintero chico",
+          "rol": "Tamborilea troncos viejos y abre huecos que luego usan otras aves.",
+          "arboles": [
+            "Quillay",
+            "Peumo",
+            "Árboles caídos"
+          ]
+        }
+      ]
+    }
+  ],
+  "nota": "¿Viste quién comió qué fruto? Anótalo también en 🌳 Bosque Nativo → bitácora: es ciencia ciudadana del territorio.",
+  "cierre": "Plantar nativo es plantar aves: un peumo o un maqui nuevo es comedero y casa por 50 años."
+}

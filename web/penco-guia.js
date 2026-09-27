@@ -39,6 +39,14 @@ function store(key, def) {
   } catch (e) { return def; }
 }
 
+/* ---------- DATOS DINAMICOS POR TERRITORIO ----------
+   Fuente preferida: data/territorios/<id>/historia/*.json
+   via window.Territorio (ver territorio.js). Fallback: los
+   valores embebidos abajo (Penco) si el JSON aun no cargo. */
+function dynGuia() { try { var d = window.Territorio && window.Territorio.datos && window.Territorio.datos.guia; if (d) return d; } catch (e) {} return GUIA_PENCO; }
+function dynSectores() { try { var d = window.Territorio && window.Territorio.datos && window.Territorio.datos.sectores; if (d) return d; } catch (e) {} return HISTORIA_SECTORES; }
+function dynHistoria() { try { var d = window.Territorio && window.Territorio.datos && window.Territorio.datos.historia; if (d) return d; } catch (e) {} return HISTORIA_PENCO; }
+
 /* ---------- GUIA (sin historia) ---------- */
 var GUIA_PENCO = {
   marco: 'Ubicación: <b>Provincia de Concepción, Región del Biobío</b>, integrada al área metropolitana del <b>Gran Concepción</b>. Población comunal aproximada: <b>47.000 a 50.000 habitantes</b>.',
@@ -254,7 +262,7 @@ function chip(t) { return '<span class="chip" style="font-size:10px">' + esc(t) 
 function renderGuiaPenco() {
   var box = $('comunaGuiaPanel');
   if (!box) return;
-  var g = GUIA_PENCO;
+  var g = dynGuia();
   var html = '';
   html += '<p class="muted" style="font-size:11px;line-height:1.55">' + g.marco + '</p>';
   html += '<div class="menstrual-card" style="border-color:var(--gold)"><h4>📜 La historia tiene su propia sección</h4>' +
@@ -289,7 +297,7 @@ function renderGuiaPenco() {
 function renderHistoriaPenco() {
   var box = $('comunaHistoriaPanel');
   if (!box) return;
-  var h = HISTORIA_PENCO;
+  var h = dynHistoria();
   var html = '<p class="muted" style="font-size:11px;line-height:1.55">' + h.intro + '</p>';
   html += h.eras.map(function (e, i) {
     return '<div class="menstrual-card" style="margin-top:10px' + (i === 0 ? ';border-color:var(--gold)' : '') + '">' +
@@ -308,7 +316,8 @@ var sectorFiltro = 'todos';
 var sectorQuery = '';
 function getSectorRelatos() { var a = store('pencoSectorRelatos', []); return Array.isArray(a) ? a : []; }
 function sectorNombre(id) {
-  var s = HISTORIA_SECTORES.filter(function (x) { return x.id === id; })[0];
+  var arr = dynSectores();
+  var s = arr.filter(function (x) { return x.id === id; })[0];
   return s ? s.n : id;
 }
 function shareTxt(t, x) {
@@ -361,18 +370,19 @@ function bindRelatos(scope) {
 function renderSectores() {
   var box = $('comunaSectoresPanel');
   if (!box) return;
+  var SECT = dynSectores();
   var todos = getSectorRelatos();
   var q = (sectorQuery || '').toLowerCase();
-  var html = '<p class="muted" style="font-size:11px;line-height:1.55">Todos los sectores en <b>' + HISTORIA_SECTORES.length + ' fichas</b>: lo que se sabe + lo que tú sabes. Agrega <b>relatos, historias, hitos, oficios y fiestas</b> de tu barrio: quedan <b>privados en tu dispositivo</b>.</p>';
+  var html = '<p class="muted" style="font-size:11px;line-height:1.55">Todos los sectores en <b>' + SECT.length + ' fichas</b>: lo que se sabe + lo que tú sabes. Agrega <b>relatos, historias, hitos, oficios y fiestas</b> de tu barrio: quedan <b>privados en tu dispositivo</b>.</p>';
   /* buscador + filtro */
   html += '<div class="menstrual-card"><h4>🔍 Buscar en sectores</h4><div class="conv-row"><label style="flex:2">Buscar <input type="text" id="secSearch" placeholder="ej: CRAV, carbón, caleta, 1960..." maxlength="60" autocomplete="off" value="' + esc(sectorQuery) + '"></label>' +
     '<label>Ver <select id="secFilter"><option value="todos">Todos</option>' +
-    HISTORIA_SECTORES.map(function (s) { return '<option value="' + s.id + '"' + (sectorFiltro === s.id ? ' selected' : '') + '>' + esc(s.n) + '</option>'; }).join('') +
+    SECT.map(function (s) { return '<option value="' + s.id + '"' + (sectorFiltro === s.id ? ' selected' : '') + '>' + esc(s.n) + '</option>'; }).join('') +
     '<option value="mios"' + (sectorFiltro === 'mios' ? ' selected' : '') + '>⭐ Solo mis relatos (' + todos.length + ')</option></select></label></div></div>';
   /* formulario */
   html += '<div class="menstrual-card" style="margin-top:10px;border-color:var(--gold)"><h4>➕ Agregar relato, historia o hito del sector</h4>' +
     '<div class="conv-row"><label style="flex:2">Sector * <select id="secSector">' +
-    HISTORIA_SECTORES.map(function (s) { return '<option value="' + s.id + '">' + esc(s.n) + '</option>'; }).join('') + '</select></label>' +
+    SECT.map(function (s) { return '<option value="' + s.id + '">' + esc(s.n) + '</option>'; }).join('') + '</select></label>' +
     '<label>Tipo <select id="secTipo">' + SECTOR_TIPOS.map(function (t) { return '<option>' + esc(t) + '</option>'; }).join('') + '</select></label></div>' +
     '<label>Título * <input type="text" id="secTitulo" placeholder="ej: La panadería de mi abuelo en Penco Chico" maxlength="70"></label>' +
     '<label>Relato / historia / hito <textarea id="secTexto" rows="3" placeholder="¿Qué pasó? ¿Quiénes? ¿Cuándo? Nombres, calles, años, olores, sonidos..." maxlength="1000"></textarea></label>' +
@@ -383,7 +393,7 @@ function renderSectores() {
     '<button type="button" id="secExportBtn" class="btn" style="width:auto">📤 Exportar mis relatos</button></div>' +
     '<p class="muted" style="font-size:10px">Se guarda solo en tu usuario. “Hito” = fecha/lugar verificable; “Relato” = memoria viva aunque no tenga fecha exacta.</p></div>';
   /* fichas */
-  HISTORIA_SECTORES.forEach(function (s) {
+  SECT.forEach(function (s) {
     if (sectorFiltro !== 'todos' && sectorFiltro !== 'mios' && sectorFiltro !== s.id) return;
     var mios = todos.filter(function (r) { return r.sector === s.id; }).sort(function (a, b) { return String(b.fecha).localeCompare(String(a.fecha)); });
     if (sectorFiltro === 'mios' && !mios.length) return;
@@ -502,7 +512,17 @@ function setupGuiaPenco() {
   try { renderHistoriaPenco(); } catch (e2) {}
 }
 
-window.PencoGuia = { render: renderGuiaPenco, renderHistoria: renderHistoriaPenco, renderSectores: renderSectores, data: GUIA_PENCO, sectores: HISTORIA_SECTORES, historia: HISTORIA_PENCO, tab: switchGuiaTab, sectorRelatos: getSectorRelatos };
+window.PencoGuia = { render: renderGuiaPenco, renderHistoria: renderHistoriaPenco, renderSectores: renderSectores, tab: switchGuiaTab, sectorRelatos: getSectorRelatos };
+/* Lectura dinamica: PencoGuia.data/.sectores/.historia reflejan el territorio activo */
+try {
+  Object.defineProperties(window.PencoGuia, {
+    data: { get: dynGuia },
+    sectores: { get: dynSectores },
+    historia: { get: dynHistoria }
+  });
+} catch (e) { window.PencoGuia.data = GUIA_PENCO; window.PencoGuia.sectores = HISTORIA_SECTORES; window.PencoGuia.historia = HISTORIA_PENCO; }
+/* Re-render cuando el territorio JSON termina de cargar */
+try { document.addEventListener('territorio:listo', function () { try { renderGuiaPenco(); } catch (e) {} try { renderSectores(); } catch (e2) {} try { renderHistoriaPenco(); } catch (e3) {} }); } catch (e4) {}
 setTimeout(setupGuiaPenco, 600);
 
 })();
