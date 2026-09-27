@@ -2891,7 +2891,7 @@ function renderBirdsDialog(){
   if(catBox){
     const mineB=getBirdsCustom();
     catBox.innerHTML='<div class="fishing-species">'
-      +BIRDS_CATALOG.map(b=>`<div class="fishing-species-item" style="cursor:pointer" data-bird="${escapeHtml(b.nombre)}"><b>${escapeHtml(b.icon||'🐦')} ${escapeHtml(b.nombre)}</b> — <span class="muted" style="font-size:10px">${escapeHtml(b.cient||'')}</span><br><span style="font-size:11px">${escapeHtml(b.hab||'')} · ${escapeHtml(b.epoca||'')}</span></div>`).join('')
+      +BIRDS_CATALOG.map(b=>`<div class="fishing-species-item" style="cursor:pointer" data-bird="${escapeHtml(b.nombre)}"><b>${escapeHtml(b.icon||'🐦')} ${escapeHtml(b.nombre)}</b> — <span class="muted" style="font-size:10px">${escapeHtml(b.cient||'')}</span><br><span style="font-size:11px">${escapeHtml(b.hab||'')} · ${escapeHtml(b.epoca||'')}</span>${b.nombre==='Chucao'?'<br><button type="button" class="btn btn-chucao-sound" style="width:auto;font-size:11px;margin-top:4px">🔊 Escuchar canto</button>':''}</div>`).join('')
       +mineB.map((b,i)=>`<div class="fishing-species-item" style="cursor:pointer;border-color:#a9d18e55" data-bird="${escapeHtml(b.nombre)}"><div style="display:flex;justify-content:space-between;align-items:center;gap:6px"><span><b>${escapeHtml(b.icon||'🐦')} ${escapeHtml(b.nombre)}</b> <span class="chip" style="font-size:9px;background:#a9d18e22;color:#a9d18e;border-color:#a9d18e55">mía</span></span><button type="button" class="btn btn-icon birdsp-del" data-i="${i}" title="Borrar mi especie" style="width:24px;height:24px;font-size:11px;flex:none">✕</button></div><span class="muted" style="font-size:10px">${escapeHtml(b.cient||'')}</span><br><span style="font-size:11px">${escapeHtml(b.hab||'')} · ${escapeHtml(b.epoca||'')}</span></div>`).join('')
       +'</div>'
       +'<p class="muted" style="font-size:10px;margin:6px 0">Toca una especie para cargarla en el formulario. '+BIRDS_CATALOG.length+' base'+(mineB.length? ' + <b>'+mineB.length+' mías</b>':'')+'.</p>'
@@ -2900,7 +2900,8 @@ function renderBirdsDialog(){
       +'<div class="conv-row"><label style="flex:2">Nombre científico <input type="text" id="birdSpCient" placeholder="ej: Diuca diuca" maxlength="40"></label><label>Época <input type="text" id="birdSpEpoca" placeholder="ej: Sep-Mar" maxlength="20"></label></div>'
       +'<label>Hábitat / lugar <input type="text" id="birdSpHab" placeholder="ej: Humedal Rocuant, cerro" maxlength="50"></label>'
       +'<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="birdSpAdd" class="btn btn-accent" style="width:auto">+ Guardar especie</button></div></details>';
-    catBox.querySelectorAll('[data-bird]').forEach(el=> el.onclick=(e)=>{ if(e.target && e.target.classList && e.target.classList.contains('birdsp-del')) return; const inp=$('birdSpecies'); if(inp){ inp.value=el.dataset.bird; inp.focus(); } });
+    catBox.querySelectorAll('[data-bird]').forEach(el=> el.onclick=(e)=>{ if(e.target && e.target.closest && e.target.closest('.btn-chucao-sound')){ e.stopPropagation(); try{ playNotifySound(); }catch{} return; } if(e.target && e.target.classList && e.target.classList.contains('birdsp-del')) return; const inp=$('birdSpecies'); if(inp){ inp.value=el.dataset.bird; inp.focus(); } });
+    catBox.querySelectorAll('.btn-chucao-sound').forEach(b=> b.onclick=(e)=>{ e.stopPropagation(); try{ playNotifySound(); }catch{} });
     catBox.querySelectorAll('.birdsp-del').forEach(b=> b.onclick=(e)=>{ e.stopPropagation(); const arr=getBirdsCustom(); arr.splice(parseInt(b.dataset.i,10),1); scheduleSave('Guardado ✓'); renderBirdsDialog(); });
     const birdSpAdd=$('birdSpAdd');
     if(birdSpAdd) birdSpAdd.onclick=()=>{
@@ -4526,9 +4527,21 @@ function renderHabitIconPicker(selected){
   }
 }
 let habitEditingId=null;
+function habitsSwitchTab(which){
+  const panels={ list:'habitsList', today:'habitsTodayBox', resume:'habitsResumePanel', tracker:'habitsTrackerBox', guide:'habitsGuidePanel' };
+  const tabs={ list:'tabHabitsList', today:'tabHabitsToday', resume:'tabHabitsResume', tracker:'tabHabitsTracker', guide:'tabHabitsGuide' };
+  Object.entries(panels).forEach(([k,id])=>{ const el=$(id); if(el) el.classList.toggle('hidden', k!==which); });
+  Object.entries(tabs).forEach(([k,id])=>{ const el=$(id); if(el) el.classList.toggle('btn-accent', k===which); });
+}
 function setupHabitsDialog(){
-  const btn=$('btnHabits'); if(btn) btn.onclick=()=>{ renderHabitIconPicker($('habitIcon').value||'✓'); renderHabitsList(); renderHabitsTodayBox(); renderHabitsStatsBox(); renderHabitsTracker(); renderHabitsLunaBox(); $('habitsDialog').showModal(); };
+  const btn=$('btnHabits'); if(btn) btn.onclick=()=>{ renderHabitIconPicker($('habitIcon').value||'✓'); renderHabitsList(); renderHabitsTodayBox(); renderHabitsStatsBox(); renderHabitsTracker(); renderHabitsLunaBox(); habitsSwitchTab('today'); $('habitsDialog').showModal(); };
   const ct=$('habitsCloseTop'), cb=$('habitsClose'); if(ct) ct.onclick=()=>$('habitsDialog').close(); if(cb) cb.onclick=()=>$('habitsDialog').close();
+  const tL=$('tabHabitsList'), tT=$('tabHabitsToday'), tR=$('tabHabitsResume'), tK=$('tabHabitsTracker'), tG=$('tabHabitsGuide');
+  if(tL) tL.onclick=()=>habitsSwitchTab('list');
+  if(tT) tT.onclick=()=>habitsSwitchTab('today');
+  if(tR) tR.onclick=()=>habitsSwitchTab('resume');
+  if(tK) tK.onclick=()=>habitsSwitchTab('tracker');
+  if(tG) tG.onclick=()=>habitsSwitchTab('guide');
   renderHabitIconPicker('✓');
   const iconInput=$('habitIcon');
   if(iconInput){
@@ -4538,12 +4551,12 @@ function setupHabitsDialog(){
   const add=$('habitAdd'); if(add) add.onclick=()=>{
     const nombre=$('habitName').value.trim(); if(!nombre) return alert('Ingresa nombre del hábito');
     const h={ id:'h'+Date.now(), nombre, icono:($('habitIcon').value.trim()||'✓'), color:$('habitColor').value, freq:$('habitFreq').value };
-    getHabitData().list.push(h); scheduleSave(); $('habitName').value=''; $('habitIcon').value=''; renderHabitIconPicker('✓'); habitRefreshAll();
+    getHabitData().list.push(h); scheduleSave(); $('habitName').value=''; $('habitIcon').value=''; renderHabitIconPicker('✓'); habitRefreshAll(); try{ habitsSwitchTab('list'); }catch(e){}
   };
   const upd=$('habitUpdate'); if(upd) upd.onclick=()=>{
     const h=getHabitData().list.find(x=>x.id===habitEditingId); if(!h) return;
     h.nombre=$('habitName').value.trim(); h.icono=$('habitIcon').value.trim()||'✓'; h.color=$('habitColor').value; h.freq=$('habitFreq').value;
-    scheduleSave(); habitEditingId=null; $('habitAdd').classList.remove('hidden'); upd.classList.add('hidden'); $('habitCancelEdit').classList.add('hidden'); $('habitName').value=''; $('habitIcon').value=''; renderHabitIconPicker('✓'); habitRefreshAll();
+    scheduleSave(); habitEditingId=null; $('habitAdd').classList.remove('hidden'); upd.classList.add('hidden'); $('habitCancelEdit').classList.add('hidden'); $('habitName').value=''; $('habitIcon').value=''; renderHabitIconPicker('✓'); habitRefreshAll(); try{ habitsSwitchTab('list'); }catch(e){}
   };
   const cancel=$('habitCancelEdit'); if(cancel) cancel.onclick=()=>{ habitEditingId=null; $('habitAdd').classList.remove('hidden'); $('habitUpdate').classList.add('hidden'); cancel.classList.add('hidden'); $('habitName').value=''; $('habitIcon').value=''; renderHabitIconPicker('✓'); };
   const clear=$('habitsClear'); if(clear) clear.onclick=()=>{
@@ -7529,7 +7542,6 @@ function memSeqFlash(i,cb){
   const g=$('memorySeqGrid'); if(!g){ if(cb)cb(); return; }
   const btn=g.children[i]; if(!btn){ if(cb)cb(); return; }
   btn.classList.add('lit');
-  try{ playNotifySound(); }catch{}
   setTimeout(()=>{ btn.classList.remove('lit'); setTimeout(()=>{ if(cb)cb(); },120); },memSeqSpeed*0.6);
 }
 function memSeqPlay(){

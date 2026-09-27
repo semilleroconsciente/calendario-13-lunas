@@ -621,12 +621,22 @@
           <button type="button" id="habitCancelEdit" class="btn hidden" style="width:auto;align-self:flex-end">Cancelar</button>
         </div>
       </div>
+      <div class="timer-tabs" style="margin:10px 0;flex-wrap:wrap">
+        <button type="button" id="tabHabitsList" class="btn" style="width:auto">📝 Mis hábitos</button>
+        <button type="button" id="tabHabitsToday" class="btn btn-accent" style="width:auto">◉ Hoy</button>
+        <button type="button" id="tabHabitsResume" class="btn" style="width:auto">📈 Resumen</button>
+        <button type="button" id="tabHabitsTracker" class="btn" style="width:auto">📊 Rastreador</button>
+        <button type="button" id="tabHabitsGuide" class="btn" style="width:auto">📚 Guía</button>
+      </div>
       <div id="habitsList" class="habits-list"></div>
       <div id="habitsTodayBox" class="menstrual-card" style="margin-top:10px"></div>
-      <div id="habitsStatsBox" class="menstrual-card" style="margin-top:10px"></div>
+      <div id="habitsResumePanel" style="margin-top:10px">
+        <div id="habitsStatsBox" class="menstrual-card"></div>
+        <div id="habitsLunaBox" class="menstrual-card" style="margin-top:10px"></div>
+      </div>
       <div id="habitsTrackerBox" class="menstrual-card" style="margin-top:10px"></div>
-      <div id="habitsLunaBox" class="menstrual-card" style="margin-top:10px"></div>
-      <details class="menstrual-card" style="margin-top:10px" open>
+      <div id="habitsGuidePanel" style="margin-top:10px">
+      <details class="menstrual-card" style="margin-top:0" open>
         <summary style="cursor:pointer;font-weight:700;color:var(--gold);font-size:13px">📚 Guía: consejos, métodos y estrategias</summary>
         <div style="margin-top:8px;display:flex;flex-direction:column;gap:8px">
           <div class="si-card"><h4>🌱 Empieza ridículamente pequeño — Regla de los 2 minutos</h4><p>Todo hábito debe tardar &lt;2 min al empezar: “meditar 10 min” → “sentarme en el cojín”. <b>Consejo:</b> si cuesta, córtalo a la mitad hasta que sea imposible fallar. La constancia crea la identidad (“soy alguien que medita”).</p></div>
@@ -639,6 +649,7 @@
           <div class="si-card"><h4>🚀 Pack inicial sugerido</h4><p class="muted" style="font-size:11px">Toca para agregarlos de a uno (si no los tienes):</p><div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px"><button type="button" class="btn habit-starter" data-name="Tomar agua al despertar" data-icon="💧" data-color="#7ab8ff" style="width:auto;font-size:11px">💧 Agua</button><button type="button" class="btn habit-starter" data-name="Caminar 15 min" data-icon="🚶" data-color="#8fd694" style="width:auto;font-size:11px">🚶 Caminar</button><button type="button" class="btn habit-starter" data-name="Meditar 5 min" data-icon="🧘" data-color="#c9a7eb" style="width:auto;font-size:11px">🧘 Meditar</button><button type="button" class="btn habit-starter" data-name="Leer 10 min" data-icon="📚" data-color="#e8c56a" style="width:auto;font-size:11px">📚 Leer</button><button type="button" class="btn habit-starter" data-name="Dormir antes de las 23:30" data-icon="😴" data-color="#7ab8ff" style="width:auto;font-size:11px">😴 Dormir</button><button type="button" class="btn habit-starter" data-name="Gratitud: 3 cosas" data-icon="🙏" data-color="#f4a7c3" style="width:auto;font-size:11px">🙏 Gratitud</button></div></div>
         </div>
       </details>
+      </div>
       <div class="dlg-actions" style="justify-content:space-between;align-items:center">
         <button type="button" id="habitsClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar todo</button>
         <button type="button" id="habitsClose" class="btn">Cerrar</button>
@@ -2025,11 +2036,11 @@
           </div>
           <div class="help-card">
             <h4>🗺️ Mapa rápido</h4>
-            <p><b>🌊 Territorio:</b> Mareas, Pesca, Aves, Clima (+Aire), Siembra, Astro, Penco, Ekadashi, Hora Dorada, Ritmo Circadiano, Intermareal, Bosque, Compost, Reciclaje.</p>
-            <p><b>🌸 Cuerpo:</b> Ciclo, Medicina, Entrenamientos, Respiración, Sueños, Lawen, Prácticas Espirituales.</p>
-            <p><b>🧠 Mente:</b> Hábitos, Disciplina, Estudio, Horario, Cuentos, Memoria, Kimün, Inglés, Gratitud, Instrumentos, Autoconocimiento y <b>Métodos</b>.</p>
-            <p><b>🪞 Autoconocimiento:</b> Sombra (Jung), TCC, Gestalt, Tipologías, Journaling, Examen estoico, Mayéutica, Mindfulness, Atma Vichara, Vipassana, Cuerpo y Arte — cada una con guía básica de 5' + registro privado.</p>
-            <p><b>🍽️ Vida + 🚨 Emergencias + 🛠️ Herramientas:</b> Comidas, Compras, Finanzas, Tareas Hogar · Primeros Auxilios, Cuidado Animal, Violencia, Evacuación Tsunami · Conversión, Electricidad, Leña, Tiempo, Recordatorios, Respaldo, PDF.</p>
+            <p><b>🌊 Territorio:</b> Mareas, Pesca, Aves, Clima (+Aire), Siembra (+Semillero), Astro, Penco (+Talleres), Ekadashi, Hora Dorada, Ritmo Circadiano, Intermareal, Bosque, Compost, Reciclaje, Flora, Huerta, Hidroponía.</p>
+            <p><b>🌸 Cuerpo:</b> Ciclo, Fertilidad, Juventud, Climaterio, Medicina, Entrenamientos, Respiración, Sueños, Lawen, Prácticas Espirituales, Plantas.</p>
+            <p><b>🧠 Mente:</b> Hábitos, Disciplina, Estudio, Horario, Cuentos, Crianza, Adolescencia, Memoria, Kimün, Inglés, Gratitud, Instrumentos, Autoconocimiento, Psicología, Neurodiversidad, Eneagrama y <b>Métodos</b>.</p>
+            <p><b>🪞 Autoconocimiento:</b> Sombra (Jung), TCC, Gestalt, Tipologías, Journaling, Examen estoico, Mayéutica, Mindfulness, Atma Vichara, Vipassana, Cuerpo y Arte — cada una con guía básica de 5' + registro privado. Más Psicología, Neurodiversidad (AQ-10/ASRS-6, plan de acceso) y Etapas: Adultez, Vejez Sabia.</p>
+            <p><b>🍽️ Vida + 🚨 Emergencias + 🛠️ Herramientas:</b> Comidas, Compras, Finanzas, Tareas Hogar, Plantas, Bodega · Primeros Auxilios, Cuidado Animal, Violencia, Evacuación Tsunami, Red Comunitaria (Meshtastic/radio) · Conversión, Electricidad, Leña, Mecánica, Electrocultura, Tiempo, Recordatorios, Respaldo, PDF.</p>
           </div>
           <div class="help-card" style="border-color:var(--gold)">
             <h4>💡 Trucos básicos</h4>
@@ -2084,20 +2095,21 @@
             <p><b>📸 Hora Dorada:</b> salida/puesta Penco + ventana dorada/azul. <b>🌞 Ritmo Circadiano:</b> pestaña Ahora (gráfico 24h, fase actual, 6 bloques con qué hacer) + pestaña Mi plan (tu horario personal según tu hora de despertar, con salida/puesta real de Penco).</p>
             <p><b>🦀 Intermareal:</b> roqueríos de Lirquén y Playa Negra — catálogo (cochayuyo, luche, lapa, chorito, jaiba…), ventana de bajamar &lt;0,6m según luna nueva/llena + <b>bitácora privada</b> de salidas (fecha/hora/lugar/especie/kg/marea) con consejos de cosecha sostenible y marea roja. <b>🌳 Bosque Nativo:</b> esclerófilo costero (canelo, boldo, peumo, arrayán, quillay, maqui…) con luna y estación óptima + <b>bitácora</b> (observación/plantación/semillas/frutos/hongos/limpieza) + <b>📜 Historia del bosque</b> (especies a lo largo del tiempo) y <b>🌱 Ecosistema</b> (hongos, aves, sotobosque, polinizadores, animales e insectos — cada grupo con opción de agregar tus especies). La pestaña <b>Bosque hoy</b> trae resumen de tu bitácora, destacados de temporada y filtro del catálogo.</p>
             <p><b>🪱 Compost & Suelo:</b> pestañas Mi pila (pila/vermi/bocashi) / Suelo Penco (arcilla) / Calendario lunar — voltea en <b>menguante</b>, registro de volteos guardado. <b>♻️ Reciclaje & Ferias:</b> buscador “¿dónde va?” (punto limpio/feria/compost/basura/peligroso) + recolección Penco y ferias centro mié/sáb, Lirquén sáb. <b>🌬️ Aire Penco (dentro de 🌤️ Clima):</b> PM2.5 en vivo Open-Meteo + guía offline de humo de leña y ventilación en Pukem — se abre desde Clima → 🌬️ Aire.</p>
+            <p><b>🥬 Mi Huerta · 💧 Hidroponía · ⚡ Electrocultura · 🌿 Flora · 🎨 Talleres:</b> <b>Huerta</b> (bancales, cultivos con cosecha estimada, tareas, cosechas en kg, guía de rotación y asociaciones) · <b>Hidroponía</b> (6 sistemas, 14 cultivos con pH/EC/luna, calculadora de solución, bitácora pH/EC) · <b>Electrocultura</b> (8 antenas, 4 proyectos de ferretería, bitácora tratado vs control — sin 220V) · <b>Flora</b> (nativas de la cuenca del estero Penco + ornamentales nativas para patios; invasoras solo como advertencia) · <b>Talleres Penco</b> (pestaña dentro de 🎉 Penco: agrega fichas verificadas, 📌 crea compromiso en el día y ⭐ registra tus inscritos). Todo privado y offline.</p>
          </div>
          <div class="help-card">
            <h4>📅 Mi Día · 💚 Cuerpo & Salud</h4>
            <p><b>📅 Mi Día — Organizar:</b> ✅ Hábitos (icono + color + racha → puntitos en el día), 🎯 Disciplina (Pomodoro 25/5, 2 min, Sapo, Time Blocking + MIT del día), 📚 Horario (bloques semanales + vista “Hoy”), ⏱ Tiempo (cronómetro + temporizador), 🔔 Recordatorios (fases lunares y avisos suaves).</p>
            <p><b>📅 Mi Día — Registrar:</b> 📓 Gratitud Diaria (3 líneas, racha, días ✨), 💭 Sueños (intención, diario, “Sueño:” en nota), 🌬️ Respiración (14 técnicas por objetivo, guía visual con sonido, ciclos y registro).</p>
-           <p><b>💚 Ciclos:</b> 🌸 Ciclo (registro, predicción período/fértil, historial + 🧬 diagrama hormonal 28 días con slider), 🤰 Fertilidad Natural, 🌅 Juventud, 🔥 Climaterio.</p>
-              <p><b>💚 Cuidado:</b> 🌿 Medicina (💊 Farmacología + 🌱 Natural con horarios y notificaciones + 🩺 Básica con botiquín y alergias + 📜 Historia + ⚠️ Seguridad) · 💪 Entrenamientos (Gym, Terapia física, Calistenia, Prácticas varias + filtro por lugar: Casa, Gimnasio, Playa, Bosque, Multicancha → puntitos 💪).</p>
+            <p><b>💚 Ciclos y Etapas:</b> 🌸 Ciclo (registro, predicción período/fértil, historial + 🧬 diagrama hormonal 28 días con slider), 🤰 Fertilidad Natural, 🌅 Juventud (20-39), 🏠 Adultez (35-59), 🔥 Climaterio (45-64), 🦉 Vejez Sabia (60+) — cada etapa con Guía / Cuerpo / Mente / Vida práctica / Mi espacio (chequeo + metas por luna + diario privado).</p>
+               <p><b>💚 Cuidado:</b> 🌿 Medicina (💊 Farmacología + 🌱 Natural con horarios y notificaciones + 🩺 Básica con botiquín y alergias + 📜 Historia + ⚠️ Seguridad) · 💪 Entrenamientos (Gym, Terapia física, Calistenia, Prácticas varias + filtro por lugar: Casa, Gimnasio, Playa, Bosque, Multicancha → puntitos 💪) · 🪴 Mis Plantas (inventario, riego automático cada N días, 💧 Regar hoy, guía de sustrato/luz/luna).</p>
             <p><b>🌊 Territorio — Tierra:</b> 🌿 Lawen (herbario 20 plantas Bío-Bío + tus fichas, buscable por síntoma — educativo).</p>
          </div>
          <div class="help-card">
            <h4>🧠 Aprender, Crear y Jugar · 🪞 Interior y Linaje</h4>
               <p><b>🧠 Estudio e Idiomas:</b> 🧠 Estudio (recuperación, espaciada, Feynman, mnemotecnias + lectura veloz) · 🧩 Memoria (Palacio Loci, Pares, secuencia, simon, Schulte) · 🗣️ Kimün Mapuzugun (palabra del día, números, quiz con racha) · Ingles A1→C1 · 🎶 Instrumentos (guitarra 3 niveles + ukelele, flauta/quena, teclado, cajón, canto + afinador, metrónomo, bitácora).</p>
-             <p><b>🧠 Juegos:</b> ♟️ Ajedrez + 🔢 Sudoku. <b>🧒 Infancias:</b> 📖 Cuentos (13 lunares, editables) · 🧒 Crianza · 🌱 Adolescencia.</p>
-             <p><b>🪞 Interior:</b> 🪞 Autoconocimiento (12 guías) · 🧠 Psicología · 🔺 Eneagrama · 📿 Métodos (20 fichas) · 🔁 Recapitulación · 🕉️ Prácticas Espirituales (temporizador + registro) · 🕊️ Duelo. <b>🌳 Familia:</b> 🌳 Árbol Genealógico · 🗣️ Voz de los Abuelos (grabador + desbloqueo por luna) · 🏠 Adultez · 🦉 Vejez Sabia.</p>
+              <p><b>🧠 Juegos:</b> ♟️ Ajedrez + 🔢 Sudoku. <b>🧒 Infancias y juventudes:</b> 📖 Cuentos (13 lunares, editables) · 🧒 Crianza (0-12) · 🌱 Adolescencia (10-19: cuerpo, mente, estudio+Holland, seguridad, mi espacio).</p>
+              <p><b>🪞 Interior:</b> 🪞 Autoconocimiento (12 guías) · 🧠 Psicología · 🧠 Neurodiversidad (guía, 8 perfiles, 8 apoyos, tests AQ-10/ASRS-6, tarjeta de acceso — educativo, no diagnostica) · 🔺 Eneagrama · 📿 Métodos (20 fichas) · 🔁 Recapitulación · 🕉️ Prácticas Espirituales (temporizador + registro) · 🕊️ Duelo. <b>🌳 Familia:</b> 🌳 Árbol Genealógico · 🗣️ Voz de los Abuelos (grabador + desbloqueo por luna) · 🏠 Adultez · 🦉 Vejez Sabia.</p>
          </div>
           <div class="help-card" style="border-color:var(--gold)">
               <h4>🪞 Autoconocimiento — 12 guías básicas</h4>
@@ -2109,9 +2121,9 @@
             </div>
           <div class="help-card">
               <h4>🏡 Hogar y Vida Práctica · 🤝 Comunidad y Sistema</h4>
-             <p><b>🏡 Casa:</b> 🥗 Comidas (plan + calculadora TMB/TDEE + menús Penco) · 🛒 Compras · 💰 Finanzas (balance, presupuesto, proyección 13 lunas) · 🏠 Tareas Hogar · 🍯 La Bodega (conservas y fermentos).</p>
-             <p><b>🔧 Energía y Taller:</b> ⚡ Consumo eléctrico · 🪵 Leña & Pellet ($/kWh) · 🔧 Bitácora Taller · 🔧 Mecánica (bici/moto/auto/motores + bitácora) · 📏 Conversión (12 categorías).</p>
-             <p><b>🤝 Red Penco:</b> 🔄 Trueque y Feria · 🤝 Minga · ⚖️ Derechos y Deberes · 🐾 Cuidado Animal. <b>🚨 Emergencia:</b> 🩹 Primeros Auxilios · 🟣 Violencia (149/1455, salida rápida) · 🌊🚨 Evacuación Tsunami (rutas + mochila 72h).</p>
+              <p><b>🏡 Casa:</b> 🥗 Comidas (plan + calculadora TMB/TDEE + menús Penco) · 🛒 Compras · 💰 Finanzas (balance, presupuesto, proyección 13 lunas) · 🏠 Tareas Hogar · 🪴 Mis Plantas (riegos, cuidados, guía) · 🍯 La Bodega (conservas y fermentos).</p>
+              <p><b>🔧 Energía y Taller:</b> ⚡ Consumo eléctrico · 🪵 Leña & Pellet ($/kWh) · 🔧 Bitácora Taller · 🔧 Mecánica (guías bici/moto/auto/motores 2T-4T-diésel-eléctrico + bitácora por vehículo) · ⚡ Electrocultura (antenas, proyectos, bitácora) · 📏 Conversión (12 categorías).</p>
+              <p><b>🤝 Red Penco:</b> 🔄 Trueque y Feria · 🤝 Minga · ⚖️ Derechos y Deberes · 🐾 Cuidado Animal · 📡 Red Comunitaria (guía, Meshtastic, diagnóstico SNR/RSSI, radioaficionado SUBTEL, mis nodos). <b>🚨 Emergencia:</b> 🩹 Primeros Auxilios · 🟣 Violencia (149/1455, salida rápida) · 🌊🚨 Evacuación Tsunami (rutas + mochila 72h).</p>
              <p><b>⚙️ App:</b> 💾 Respaldo / 📥 Restaurar (JSON por usuario) · 📌 Acceso directo · 📄 PDF luna / 📚 PDF ciclo · ❤ Aporte voluntario.</p>
             <p><b>🎨 Tema + 🕰 Reloj</b> America/Santiago en sidebar.</p>
           </div>
@@ -2123,8 +2135,9 @@
          </div>
          <div class="help-card" style="border-color:var(--gold);background:linear-gradient(135deg,var(--panel),var(--card))">
            <h4>💡 Tips & Novedades 2026</h4>
-                                                        <p>• <b>Nuevo sep 2026:</b> 📿 Métodos (estoicismo, jung, freud, frankl, tao, budismo, yogananda, zen, patanjali, ikigai, toltecas, gurdjieff, grinberg, grof, hermetismo, conny méndez, gnosis, kimün) · 🪞 Autoconocimiento (12 guías: sombra, TCC, Gestalt, tipologías, journaling, estoico, mayéutica, mindfulness, atma vichara, vipassana, cuerpo, arte + registro) · 🦀 Intermareal + 🌳 Bosque Nativo (bitácoras) · 🕉️ Prácticas Espirituales (temporizador + registro) · Ingles A1-C1 · 🎶 Instrumentos (guitarra + ukelele, flauta/quena, teclado, cajón, canto + afinador + metrónomo + bitácora) · 🧩 Memoria ampliada · 🌊🚨 Evacuación Tsunami · 🗣️ Kimün · 🌿 Lawen (20) · 🪱 Compost · ♻️ Reciclaje · 🌬️ Aire (en Clima) · 📓 Gratitud (✨) · 🪵 Leña & Pellet · 🌱 Semillero · <b>4 vistas</b> 🌙/🌗/📅/🗓️ · <b>Guía Básica/Detallada</b>.</p>
-             <p>• <b>Antes:</b> 🤝 Asociaciones (23 cultivos) y 🧪 Preparados (10) en 🌱 Siembra · bitácoras 🎣 Pesca y 🦅 Aves · 🏠 Tareas Hogar · 📖 Cuentos editables. • <b>Fix:</b> ❤ Aporte links externos. • Chip estación = paleta de color. • Móvil: desliza lunas horizontal + dock inferior.</p>
+                                                         <p>• <b>Nuevo 20–21 sep 2026:</b> 🥬 Mi Huerta (bancales/cultivos/cosechas) · 💧 Hidroponía (6 sistemas, 14 cultivos pH/EC) · ⚡ Electrocultura (8 antenas, 4 proyectos) · 🪴 Mis Plantas (riegos + cuidados) · 🔧 Mecánica (bici/moto/auto/motores + bitácora) · 🎨 Talleres Penco (fichas + 📌 al calendario) · 🌿 Flora nativa cuenca Penco · 🌱 Adolescencia · 🌅 Juventud · 🏠 Adultez · 🦉 Vejez Sabia · 🧠 Neurodiversidad (AQ-10/ASRS-6 + plan de acceso) · 📡 Red Comunitaria (Meshtastic/radio).</p>
+              <p>• <b>Nuevo inicio sep 2026:</b> 📿 Métodos · 🪞 Autoconocimiento (12 guías + registro) · 🦀 Intermareal + 🌳 Bosque Nativo (bitácoras) · 🕉️ Prácticas Espirituales · Ingles A1-C1 · 🎶 Instrumentos · 🧩 Memoria ampliada · 🌊🚨 Evacuación Tsunami · 🗣️ Kimün · 🌿 Lawen (20) · 🪱 Compost · ♻️ Reciclaje · 🌬️ Aire (en Clima) · 📓 Gratitud (✨) · 🪵 Leña & Pellet · 🌱 Semillero · <b>4 vistas</b> 🌙/🌗/📅/🗓️ · <b>Guía Básica/Detallada</b>.</p>
+              <p>• <b>Antes:</b> 🤝 Asociaciones (23 cultivos) y 🧪 Preparados (10) en 🌱 Siembra · bitácoras 🎣 Pesca y 🦅 Aves · 🏠 Tareas Hogar · 📖 Cuentos editables. • <b>Fix:</b> ❤ Aporte links externos. • Chip estación = paleta de color. • Móvil: desliza lunas horizontal + dock inferior.</p>
            <p>• Escribe “Sueño:” en nota para buscar sueños. • Todo offline salvo clima/mareas. • Ctrl+K para filtrar funciones.</p>
             <p style="text-align:center;margin-top:6px;color:var(--gold)"><b>¡Que tu ciclo florezca con la luna! — Küme mañum · Penco 2026</b></p>
           </div>
@@ -3834,7 +3847,7 @@
       <h3>Nuevo usuario</h3>
       <p class="muted">Cada usuario tiene sus propias notas, mareas y reflexiones.</p>
       <label>Nombre
-        <input type="text" id="fUserName" maxlength="30" placeholder="ej: Esteban, Mamá, Papá...">
+        <input type="text" id="fUserName" maxlength="30" placeholder="ej: Mamá, Papá...">
       </label>
       <div class="dlg-actions">
         <button type="button" id="userCancel" class="btn">Cancelar</button>

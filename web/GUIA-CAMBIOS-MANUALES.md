@@ -26,6 +26,18 @@
 | `server.js` | Servidor local Node (puerto 8137) | Cambiar puerto |
 | `Servir Web.bat` | Doble clic para levantar servidor local | Raramente se toca |
 | `sw.js` / `web-api.js` / `astro.js` | Service worker, bridge Electron, astronomía | No tocar salvo que sepas JS |
+| `penco-guia.js` + `talleres-penco.js` | 🎉 Penco: eventos, guía comunal, sectores, historia + pestaña 🎨 Talleres (fichas propias, 📌 al calendario, ⭐ inscritos) | Agregar talleres verificados / eventos anuales |
+| `flora.js` | 🌿 Flora: nativas cuenca estero Penco + ornamentales nativas + advertencia invasoras | Agregar fichas de jardín nativo |
+| `huerta-modulo.js` | 🥬 Mi Huerta: bancales, cultivos, tareas, cosechas, guía rotación/asociaciones | Crear bancales y cultivos |
+| `hidroponia-modulo.js` | 💧 Hidroponía: 6 sistemas, 14 cultivos pH/EC, calculadora solución, bitácora | Ajustar cultivos y nutrientes |
+| `electrocultura-modulo.js` | ⚡ Electrocultura: 8 antenas, 4 proyectos ferretería, bitácora tratado vs control | Agregar antenas/proyectos |
+| `plantas-modulo.js` | 🪴 Mis Plantas: inventario, riegos, cuidados, guía sustrato/luz/luna | Registrar plantas de casa |
+| `mecanica-modulo.js` | 🔧 Mecánica: bici/moto/auto/motores + bitácora por vehículo | Agregar guías de taller |
+| `adolescencia-modulo.js` | 🌱 Adolescencia 10-19: cuerpo, mente, estudio+Holland, seguridad, mi espacio | Ajustar recursos Chile |
+| `etapas-vida-modulo.js` | 🌅 Juventud · 🏠 Adultez · 🔥 Climaterio · 🦉 Vejez (5 pestañas c/u) | Ajustar chequeos y metas |
+| `neurodiversidad-modulo.js` | 🧠 Neurodiversidad: guía, 8 perfiles, 8 apoyos, AQ-10/ASRS-6, plan acceso | No diagnostica; solo textos |
+| `red-comunitaria-modulo.js` | 📡 Red Comunitaria: guía, Meshtastic, diagnóstico, radioaficionado, mis nodos | Verificar norma SUBTEL vigente |
+| `psicologia-modulo.js` | 🪞 Psicología (comparte datos con neurodiversidad) | Solo textos guía |
 
 ---
 
@@ -45,7 +57,7 @@ Cambia el texto entre etiquetas y guarda. Ejemplo:
 <h1>Mi Calendario Lunar</h1>
 ```
 
-Botones del footer `index.html:80-155` (~46 botones en 6 grupos: Territorio · Cuerpo & Salud · Mente & Estudio · Vida diaria · Emergencias & Comunidad · Herramientas) — cada uno es:
+Botones del footer `index.html:80-181` (~60 botones estáticos en 7 grupos: 📅 Mi Día · 🌊 Territorio Penco · 💚 Cuerpo & Salud · 🧠 Aprender/Crear/Jugar · 🪞 Interior-Linaje-Memoria · 🏡 Hogar y Vida Práctica · 🤝 Comunidad/Emergencia/Sistema — más ~15 botones inyectados por JS: 🥬 Huerta, 💧 Hidroponía, ⚡ Electrocultura, 🪴 Plantas, 🔧 Mecánica, 🌱 Adolescencia, 🌅 Juventud, 🏠 Adultez, 🔥 Climaterio, 🦉 Vejez, 🧠 Neurodiversidad, 📡 Red ×5, ♟️ Ajedrez, 🔢 Sudoku) — cada uno es:
 
 ```html
 <button id="btnTides" class="btn" data-keywords="mareas shoa talcahuano pleamar bajamar">🌊 Mareas</button>
@@ -202,7 +214,7 @@ Para agregar efeméride nueva, solo agrega línea:
 '07-15': 'Fiesta local de ...',
 ```
 
-> Nota: los datos de las herramientas agregadas en sep 2026 **no viven en `data.js`** sino en `renderer.js` (listas `const` junto a su `render...`). Ver §14.
+> Nota: los datos de las herramientas agregadas en sep 2026 **no viven en `data.js`** sino en `renderer.js` (listas `const` junto a su `render...`) o en su `*-modulo.js` / `talleres-penco.js` propio (ver cabecera de cada archivo: botón, diálogo, pestañas y clave `userData()`). Ver §14 y §15.
 
 ---
 
@@ -321,7 +333,7 @@ Ver `LEEME.txt:16-25`:
 
 ---
 
-## 14. Herramientas agregadas sep 2026 (dónde está cada una)
+## 14. Herramientas agregadas sep 2026 · primera oleada (dónde está cada una)
 
 Todo 100% offline salvo 🌬️ Aire (vivo opcional). Datos personales en `DATA` por usuario (ver `userData()` en `renderer.js:62`).
 
@@ -340,9 +352,35 @@ Todo 100% offline salvo 🌬️ Aire (vivo opcional). Datos personales en `DATA`
 
 Notas:
 - El botón standalone 🌱 Banco Semillas se eliminó; su reemplazo es 🌰 Mis Semillas dentro de 🌱 Siembra. Quedó `DATA.semillas` huérfano (sin uso) por si hay que migrar avisos viejos.
-- La ❓ Guía in-app (`helpDialog` en `index.html:~1552-1641`) documenta todas las herramientas por grupo + “Tips & Novedades”.
+- La ❓ Guía in-app (`helpDialog` en `index.html:~2004-2135`) documenta todas las herramientas por grupo + “Tips & Novedades”.
 - `ALL_BTNS` + `PRESETS` (`renderer.js:~3669-3682`): agricultor trae compost/lawen/recicla/aire; salud trae lawen/gratitud/aire/evac; mayor trae gratitud/aire/leña; docente trae mapu/gratitud/recicla.
 
 ---
 
-*Última actualización: 2026-09-05 — Mantener esta guía junto a `LEEME.txt`.*
+## 15. Herramientas agregadas 20–21 sep 2026 · segunda oleada (módulos propios)
+
+Cada módulo es un archivo `*-modulo.js` auto-instalable: inyecta su botón, crea su `<dialog>` y guarda en `userData().<clave>`. Patrón de edición: abre la cabecera del archivo (primeras 20 líneas) — ahí están botón, diálogo, pestañas y clave de datos. Todo 100% offline.
+
+| Herramienta | Archivo | Botón (inyectado) | Diálogo / pestañas | Datos (`userData()`) |
+|---|---|---|---|---|
+| 🥬 Mi Huerta | `huerta-modulo.js` | `btnHuerta` (Territorio > Tierra, junto a Siembra) | `huertaDialog` — Resumen / Bancales / Cultivos / Tareas / Cosechas / Guía (rotación 4 años, asociaciones, luna, suelo Penco) | `huerta { bancales, cultivos, tareas, cosechas }` |
+| 💧 Hidroponía | `hidroponia-modulo.js` | `btnHidroponia` (Territorio > Tierra) | `hidroDialog` — Guía / Sistemas (6: Kratky, balsa, mecha, NFT, goteo, torre) / Cultivos (14 con pH/EC/luna) / Solución (calculadora) / Luna & Clima / Mi cultivo (pH/EC/temp) | `hidroponia { logs, hechos }` |
+| ⚡ Electrocultura | `electrocultura-modulo.js` | `btnElectrocultura` (Herramientas) | `electroDialog` — Guía / Antenas (8) / Proyectos (4 ferretería Penco) / Luna & Medir / Mi experimento (tratado vs control) | `electrocultura { logs, hechos }` |
+| 🪴 Mis Plantas | `plantas-modulo.js` | `btnPlantas` (Hogar > Casa, junto a Tareas Hogar) | `plantasDialog` — Resumen / Mis Plantas (CRUD + riego auto) / Cuidados (💧 Regar hoy) / Guía (sustrato Penco, luz, luna, toxicidad) | `plantas { items, cuidados }` |
+| 🔧 Mecánica | `mecanica-modulo.js` | `btnMecanica` (Hogar > Energía y Taller) | `mecanicaDialog` — Guías básicas / Bici / Moto / Auto / Motores (2T/4T/diésel/eléctrico/bote) / Mi taller (bitácora por vehículo) | `mecanica { logs, checks }` |
+| 🎨 Talleres Penco | `talleres-penco.js` | pestaña en `comunaDialog` (Territorio > Penco) | `tabComunaTalleres` — fichas propias verificadas, 📌 crea 🕐 compromiso en el día, ⭐ Mis inscritos | `talleresPenco { mios, inscripciones }` |
+| 🌿 Flora ampliada | `flora.js` | `btnFlora` (Territorio) | `floraDialog` — Flora hoy / Bitácora / Links. Nativas cuenca estero Penco + ornamentales nativas; invasoras solo advertencia | `DATA` flora + bitácora |
+| 🌱 Adolescencia 10-19 | `adolescencia-modulo.js` | `btnAdolescencia` (Mente & Estudio) | `adolescenciaDialog` — Guía / Cuerpo / Mente / Estudio+Holland / Social & Seguridad / Mi espacio (chequeo+metas+diario) | `adolescencia { checks, tests, metas }` |
+| 🌅 Juventud · 🏠 Adultez · 🔥 Climaterio · 🦉 Vejez | `etapas-vida-modulo.js` | `btnJuventud btnAdultez btnClimaterio btnVejez` | `juventudDialog adultezDialog climaterioDialog vejezDialog` — 5 pestañas c/u: Guía / Cuerpo & Salud / Mente & Vínculos / Vida práctica / Mi espacio | `etapasVida { juv, adu, cli, vej }` |
+| 🧠 Neurodiversidad | `neurodiversidad-modulo.js` | `btnNeurodiversidad` (junto a Psicología) | `neurodiversidadDialog` — Guía / Perfiles (8) / Apoyos (8) / Tests AQ-10+ASRS-6 / Mi plan (tarjeta acceso). Educativo, no diagnostica | comparte `psicologia { tests, neuro }` (migra auto) |
+| 📡 Red Comunitaria | `red-comunitaria-modulo.js` | `btnRedGuia btnRedMeshtastic btnRedDiagnostico btnRedRadio btnRedNodos` | `redComunitariaDialog` — Guía / Meshtastic (frecuencia Chile) / Diagnóstico (SNR/RSSI) / Radioaficionado (SUBTEL+plan 4 sem) / Mis Nodos | `redcomunitaria { nodos, diags, hechos }` |
+
+Notas segunda oleada:
+- ❓ Guía in-app actualizada 2026-09-21: tarjetas Territorio (huerta/hidroponía/electrocultura/flora/talleres), Cuerpo (plantas), Mente (adolescencia/neurodiversidad), Hogar (mecánica/plantas) y “Tips & Novedades”.
+- `sw.js` sube de caché en cada oleada (`cal13-v27-offline` incluye `talleres-penco.js`; si agregas un `*-modulo.js` nuevo, súbelo a `CACHE` + lista `ASSETS` y sube versión).
+- `package.json → build.files` debe incluir cada `*-modulo.js` nuevo o el `.exe` portable sale sin esa herramienta. Ya incluidos hasta `talleres-penco.js` en v1.2.0; al agregar otro, añádelo ahí + `<script src>` en `index.html` y espejo en `web/`.
+- `index.html` + `renderer.js` de raíz y `web/` son espejos: edita en raíz, prueba con `npm start`, y copia ambos a `web/` antes de publicar o compilar el `.exe`.
+
+---
+
+*Última actualización: 2026-09-21 — Mantener esta guía junto a `LEEME.txt`.*

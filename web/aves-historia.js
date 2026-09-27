@@ -233,6 +233,7 @@ function renderAvesBosque() {
     var items = gr.items.map(function (it) {
       return '<div class="si-card" style="padding:8px 10px"><h4 style="font-size:12px">' + birdChip(it.n) + '</h4>' +
         '<p style="font-size:11px;margin:4px 0">' + esc(it.rol) + '</p>' +
+        (it.n === 'Chucao' ? '<div style="margin:4px 0"><button type="button" class="btn btn-chucao-sound" style="width:auto;font-size:11px">🔊 Escuchar canto</button></div>' : '') +
         '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px"><span class="muted" style="font-size:10px">Vive de:</span>' +
         it.arboles.map(bosqueChip).join('') + '</div></div>';
     }).join('');
@@ -247,6 +248,12 @@ function renderAvesBosque() {
     '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="avesGoBosque" class="btn" style="width:auto">🌳 Ir a Bosque Nativo</button></div></div>';
   box.innerHTML = html;
   wireBirdChips(box);
+  box.querySelectorAll('.btn-chucao-sound').forEach(function (btn) {
+    btn.onclick = function (e) {
+      try { if (e && e.stopPropagation) e.stopPropagation(); } catch (err) {}
+      try { if (typeof playNotifySound === 'function') playNotifySound(); } catch (err2) {}
+    };
+  });
   box.querySelectorAll('[data-avesbadd]').forEach(function (btn) {
     btn.onclick = function () {
       var k = btn.getAttribute('data-avesbadd');

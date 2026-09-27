@@ -66,7 +66,7 @@ async function share(title, text) {
 /* ---------- datos base ---------- */
 var FLORA_INTRO = 'Flora <b>nativa de la cuenca del estero Penco</b> + <b>jardín con nativas</b>. ' +
   '🌱 <b>Nativas silvestres</b>: ribera, quebradas y laderas —se <b>observan sin arrancar</b> (foto + lugar + fecha). ' +
-  '🏵️ <b>Ornamentales nativas</b>: las marcadas con 🏵️ sirven para patio, cerco o plaza penca: piden poca agua y alimentan picaflores y abejas. ' +
+  '🏵️ <b>Ornamentales nativas</b>: las marcadas con 🏵️ sirven para patio, cerco o plaza pencona: piden poca agua y alimentan picaflores y abejas. ' +
   '⚠️ Las <b>introducidas</b> van aparte y solo como advertencia (algunas son invasoras). ' +
   'Lo leñoso (peumo, canelo, arrayán…) vive en 🌳 Bosque Nativo; aquí va lo herbáceo y el jardín.';
 
