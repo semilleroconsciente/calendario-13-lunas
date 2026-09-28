@@ -828,24 +828,28 @@ body[data-theme="medianoche"] { --bg:#050508; --bg2:#0a0a10; --panel:#141418; --
 
 /* Accesibilidad */
 :focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
-/* Tamaños de letra (Ajustes → 🔠): parte en Normal y sube */
-body[data-font="m"] { font-size: 16px; }
-body[data-font="l"] { font-size: 17px; }
-body[data-font="xl"] { font-size: 18px; }
-body[data-font="xxl"] { font-size: 19px; }
-body[data-font="3xl"] { font-size: 20px; }
-body[data-font="4xl"] { font-size: 21px; }
+/* Tamaños de letra (Ajustes → 🔠): parte en Normal y sube.
+   zoom escala TODO incluido texto con px fijo e inline (ej. 11px de diálogos),
+   que body{font-size} por sí solo no mueve. font-size queda como respaldo
+   para navegadores sin zoom. Cada nivel es visiblemente mayor al anterior. */
+body[data-font="m"] { font-size: 16px; zoom: 1; }
+body[data-font="l"] { font-size: 17px; zoom: 1.08; }
+body[data-font="xl"] { font-size: 18px; zoom: 1.16; }
+body[data-font="xxl"] { font-size: 19px; zoom: 1.26; }
+body[data-font="3xl"] { font-size: 20px; zoom: 1.36; }
+body[data-font="4xl"] { font-size: 21px; zoom: 1.48; }
 body.large-text { font-size: 17px; }
 body.large-text .day-card { min-height: 124px; }
 body.large-text #lunaDesc, body.large-text .chip, body.large-text .btn { font-size: 15px; }
-body[data-font="xl"] .day-card { min-height: 118px; }
-body[data-font="xxl"] .day-card { min-height: 132px; }
-body[data-font="3xl"] .day-card { min-height: 142px; }
-body[data-font="4xl"] .day-card { min-height: 152px; }
-body[data-font="xl"] #lunaDesc, body[data-font="xl"] .chip, body[data-font="xl"] .btn,
-body[data-font="xxl"] #lunaDesc, body[data-font="xxl"] .chip, body[data-font="xxl"] .btn,
-body[data-font="3xl"] #lunaDesc, body[data-font="3xl"] .chip, body[data-font="3xl"] .btn,
-body[data-font="4xl"] #lunaDesc, body[data-font="4xl"] .chip, body[data-font="4xl"] .btn { font-size: 1.02em; }
+body[data-font="xl"] .day-card { min-height: 134px; }
+body[data-font="xxl"] .day-card { min-height: 144px; }
+body[data-font="3xl"] .day-card { min-height: 156px; }
+body[data-font="4xl"] .day-card { min-height: 168px; }
+body[data-font="l"] #lunaDesc, body[data-font="l"] .chip, body[data-font="l"] .btn { font-size: 1em; }
+body[data-font="xl"] #lunaDesc, body[data-font="xl"] .chip, body[data-font="xl"] .btn { font-size: 1.05em; }
+body[data-font="xxl"] #lunaDesc, body[data-font="xxl"] .chip, body[data-font="xxl"] .btn { font-size: 1.12em; }
+body[data-font="3xl"] #lunaDesc, body[data-font="3xl"] .chip, body[data-font="3xl"] .btn { font-size: 1.2em; }
+body[data-font="4xl"] #lunaDesc, body[data-font="4xl"] .chip, body[data-font="4xl"] .btn { font-size: 1.3em; }
 .font-pills { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
 .font-pill { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 4px; }
 .font-pill .fp-a { font-weight: 700; color: var(--accent); line-height: 1; }

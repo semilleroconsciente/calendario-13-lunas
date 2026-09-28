@@ -1,6 +1,6 @@
 // Service Worker — Calendario 13 Lunas (offline-first, tolerante a versiones ?v=)
-// v32: orden Tierra y monte (Huerta, Siembra, Bosque…), orden Penco, sección Nutrición propia
-const CACHE = 'cal13-v32-offline';
+// v34: escala real de letra (zoom por nivel 1→1.48); incluye styles.css?v=11
+const CACHE = 'cal13-v34-offline';
 
 // Lista completa de archivos que usa index.html (bare + con ?v=).
 // Si se agrega un JS nuevo en index.html, agregarlo aquí también (bare y ?v=).
@@ -10,6 +10,7 @@ const CORE = [
   './styles.css',
   './styles.css?v=9',
   './styles.css?v=10',
+  './styles.css?v=11',
   './web-api.js',
   './web-api.js?v=8',
   './astro.js',
@@ -105,10 +106,14 @@ const CORE = [
   './hogar-herramientas-modulo.js?v=1',
   './talleres-penco.js',
   './talleres-penco.js?v=1',
+  './municipalidad-penco.js',
+  './municipalidad-penco.js?v=1',
+  './bomberos-penco.js',
+  './bomberos-penco.js?v=1',
+  './apoyo-emergencia.js',
+  './apoyo-emergencia.js?v=1',
   './actores-territorio.js',
   './actores-territorio.js?v=1',
-  './web-api.js',
-  './web-api.js?v=8',
   './donate.json',
   './manifest.json',
   './icon-192.png',
