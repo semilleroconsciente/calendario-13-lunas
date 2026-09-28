@@ -6573,7 +6573,7 @@ const BTN_ORDER = {
   'dia|organizar':['btnHabits','btnDiscipline','btnSchedule','btnTimer','btnRemind'],
   'dia|registrar':['btnGratitud','btnDreams','btnBreath'],
   'territorio|mar':['btnTides','btnFishing','btnIntermareal','btnNudos'],
-  'territorio|tierra':['btnHuerta','btnSiembra','btnBosque','btnBirds','btnCompost','btnAgua','btnFlora','btnLawen','btnElectrocultura'],
+  'territorio|tierra':['btnHuerta','btnSiembra','btnBosque','btnBirds','btnFlora','btnLawen','btnCompost','btnAgua','btnElectrocultura'],
   'territorio|cielo':['btnWeather','btnAstro','btnGolden','btnCircadian','btnEkadashi'],
   'territorio|penco':['btnComuna','btnMuni','btnBomberos','btnActores'],
   'cuerpo|ciclos':['btnMenstrual','btnFerti','btnJuventud','btnClimaterio'],

@@ -1,13 +1,13 @@
 /* ============================================================
-   ACTORES DEL TERRITORIO — Calendario 13 Lunas (Penco · Bío-Bío)
+   GUARDIANES DEL TERRITORIO — Calendario 13 Lunas (Penco · Bío-Bío)
    Apartado: Territorio > Penco (btnActores -> actoresDialog)
    - Directorio de organizaciones que defienden activamente el
      territorio (base verificable 2021-2026 en
      data/territorios/penco/actores.json vía window.Territorio).
      Fallback embebido abajo para modo offline/file://.
    - Filtros por frente (minería, GNL, humedal, bahía...) + buscador.
-   - ⭐ Sigo / 📌 Llevar al calendario / 📤 Compartir por ficha.
-   - ➕ Mis actores: agrega tus propias orgs/colectivos/juntas
+    - ⭐ Sigo / 📌 Llevar al calendario / 📤 Compartir por ficha.
+    - ➕ Mis guardianes: agrega tus propias orgs/colectivos/juntas
      (privado y local por usuario: userData().actores {mios:[], siguiendo:{}}).
    100% offline. Sin dependencias externas. Verifica vigencia en
    terreno: las orgs cambian, se articulan y renacen.
@@ -111,7 +111,7 @@ function ensureDialog() {
   d.innerHTML =
     '<form method="dialog">' +
     '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
-    '<h3 style="margin:0;color:var(--accent)">🛡️ Actores del Territorio — Penco</h3>' +
+    '<h3 style="margin:0;color:var(--accent)">🛡️ Guardianes del Territorio — Penco</h3>' +
     '<button type="button" id="actoresCloseTop" class="btn btn-icon" title="Cerrar">✕</button></div>' +
     '<p class="muted" style="line-height:1.5">Quiénes defienden activamente el territorio: humedal, bahía, agua, bosque y economía local. Base verificable 2021–2026 — <b>verifica vigencia</b> antes de contactar. Tus agregados y ⭐ quedan <b>privados y locales</b>.</p>' +
     '<div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">' +
@@ -126,7 +126,7 @@ function ensureDialog() {
     '<div id="actList" style="margin-top:10px"></div>' +
     '<p class="muted" style="font-size:10px;margin-top:8px" id="actNota"></p></div>' +
     '<div id="actMiosPanel" class="hidden">' +
-    '<div class="menstrual-card"><h4>➕ Agregar mi actor (junta, colectivo, olla, brigada...)</h4>' +
+    '<div class="menstrual-card"><h4>➕ Agregar mi guardián (junta, colectivo, olla, brigada...)</h4>' +
     '<div class="conv-row"><label>Nombre * <input type="text" id="actMioNombre" placeholder="ej: Junta VV Ríos de Chile" maxlength="60"></label>' +
     '<label>Tipo <input type="text" id="actMioTipo" placeholder="ej: Junta / Colectivo / Brigada" maxlength="30"></label></div>' +
     '<div class="conv-row"><label>Frentes (coma) <input type="text" id="actMioFrentes" placeholder="ej: humedal, agua" maxlength="60"></label>' +
@@ -149,7 +149,7 @@ function actorCard(a) {
     (fr ? '<div style="display:flex;gap:6px;flex-wrap:wrap;margin:4px 0">' + fr + '</div>' : '') +
     '<p style="font-size:12px;line-height:1.55"><b>Defiende:</b> ' + esc(a.lucha || '') + '</p>' +
     (a.sumarse ? '<p class="muted" style="font-size:11px;line-height:1.5">🤝 <b>Sumarse:</b> ' + esc(a.sumarse) + '</p>' : '') +
-    (a.redes && a.redes.length ? '<div style="display:flex;gap:6px;flex-wrap:wrap;margin:4px 0">' + a.redes.map(function (r) { return '<a class="btn" style="width:auto;font-size:11px;text-decoration:none" href="' + esc(r.url) + '" target="_blank" rel="noopener">🔗 ' + esc(r.label) + '</a>'; }).join('') + '</div>' : '<p class="muted" style="font-size:10px">Sin red pública verificada — si la conoces, agrégala en ⭐ Mis actores.</p>') +
+    (a.redes && a.redes.length ? '<div style="display:flex;gap:6px;flex-wrap:wrap;margin:4px 0">' + a.redes.map(function (r) { return '<a class="btn" style="width:auto;font-size:11px;text-decoration:none" href="' + esc(r.url) + '" target="_blank" rel="noopener">🔗 ' + esc(r.label) + '</a>'; }).join('') + '</div>' : '<p class="muted" style="font-size:10px">Sin red pública verificada — si la conoces, agrégala en ⭐ Mis guardianes.</p>') +
     (a.fuente ? '<p class="muted" style="font-size:10px">📰 ' + esc(a.fuente) + (a.fuenteUrl ? ' · <a href="' + esc(a.fuenteUrl) + '" target="_blank" rel="noopener">ver fuente</a>' : '') + '</p>' : '') +
     '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">' +
     '<button type="button" class="btn" style="width:auto;font-size:11px" data-act-sig="' + esc(a.id) + '">' + (sig ? '★ Siguiendo' : '☆ Sigo') + '</button>' +
@@ -166,7 +166,7 @@ function renderDir() {
   var q = (actQuery || '').toLowerCase().trim();
   var list = data.filter(function (a) { return matchQ(a, q) && matchF(a, actFrente); });
   var ct = $('actCount');
-  if (ct) ct.textContent = list.length + ' / ' + data.length + ' actores' + (actFrente !== 'todos' ? ' · frente: ' + actFrente : '');
+  if (ct) ct.textContent = list.length + ' / ' + data.length + ' guardianes' + (actFrente !== 'todos' ? ' · frente: ' + actFrente : '');
   if (!list.length) { box.innerHTML = '<p class="muted">Sin resultados. Prueba “humedal”, “GNL”, “mujeres”, “pesca”... o agrega el tuyo en ⭐.</p>'; }
   else box.innerHTML = list.map(actorCard).join('');
   var nt = $('actNota');
@@ -186,7 +186,7 @@ function renderMios() {
       '<button type="button" class="btn btn-icon" data-act-unsig="' + esc(a.id) + '" title="Dejar de seguir">✕</button></span></div>';
   }).join('') : '<p class="muted" style="font-size:11px">Aún no sigues a nadie. Marca ☆ Sigo en el Directorio.</p>';
   html += '</div>';
-  html += '<div class="menstrual-card" style="margin-top:10px"><h4>📋 Mis actores agregados · ' + st.mios.length + '</h4><div id="actMiosInner">';
+  html += '<div class="menstrual-card" style="margin-top:10px"><h4>📋 Mis guardianes agregados · ' + st.mios.length + '</h4><div id="actMiosInner">';
   html += st.mios.length ? st.mios.map(function (m) {
     return '<div class="hora-item"><span style="font-size:12px"><b>' + esc(m.nombre) + '</b> <span class="muted">· ' + esc(m.tipo || '') + '</span><br><span class="muted" style="font-size:10px">' + esc(m.frentes || '') + (m.contacto ? ' · 📞 ' + esc(m.contacto) : '') + (m.nota ? '<br>' + esc(m.nota) : '') + '</span></span>' +
       '<span style="display:flex;gap:4px"><button type="button" class="btn btn-icon" data-mio-edit="' + esc(m.id) + '" title="Editar">✎</button>' +
@@ -219,8 +219,8 @@ function wireCards(scope) {
       if (!a) return;
       var txt = '🛡️ ' + a.nombre + ' (' + (a.tipo || '') + ') — ' + (a.lucha || '');
       try {
-        if (window.InfoClave && typeof window.InfoClave.abrir === 'function') window.InfoClave.abrir('Actores', txt, {});
-        else if (typeof abrirInfoClave === 'function') abrirInfoClave('Actores', txt, {});
+        if (window.InfoClave && typeof window.InfoClave.abrir === 'function') window.InfoClave.abrir('Guardianes', txt, {});
+        else if (typeof abrirInfoClave === 'function') abrirInfoClave('Guardianes', txt, {});
         else alert(txt);
       } catch (e) { try { alert(txt); } catch (e2) {} }
     };
@@ -236,7 +236,7 @@ function wireCards(scope) {
   });
   (scope || document).querySelectorAll('[data-mio-del]').forEach(function (b) {
     b.onclick = function () {
-      if (!confirm('¿Borrar este actor?')) return;
+      if (!confirm('¿Borrar este guardián?')) return;
       var id = b.getAttribute('data-mio-del');
       var st = store();
       st.mios = (st.mios || []).filter(function (m) { return m.id !== id; });
@@ -306,7 +306,7 @@ function wireOnce() {
   var add = $('actMioAdd');
   if (add) add.onclick = function () {
     var nom = clean((($('actMioNombre') || {}).value || '').trim(), 60);
-    if (!nom) { alert('Escribe el nombre del actor'); return; }
+      if (!nom) { alert('Escribe el nombre del guardián'); return; }
     var st = store();
     var obj = {
       id: actEditing || uid('am'),
@@ -322,7 +322,7 @@ function wireOnce() {
       $('actMioCancel').classList.add('hidden');
       add.textContent = '+ Guardar';
     } else st.mios.push(obj);
-    save('Actor guardado 🛡️');
+    save('Guardián guardado 🛡️');
     ['actMioNombre', 'actMioTipo', 'actMioFrentes', 'actMioContacto', 'actMioNota'].forEach(function (id) { var x = $(id); if (x) x.value = ''; });
     fillFrentes(); renderMios();
   };
@@ -345,8 +345,8 @@ function ensureButton() {
     b.className = 'btn';
     b.type = 'button';
     b.setAttribute('data-sub', 'penco');
-    b.setAttribute('data-keywords', 'actores territorio defensa organizaciones asamblea coordinadora humedal gnl minera tierras raras pesca lafken mujeres ong fundacion colectivo junta campana red apoyo sumarse contacto');
-    b.textContent = '🛡️ Actores';
+    b.setAttribute('data-keywords', 'guardianes defensores territorio defensa organizaciones asamblea coordinadora humedal gnl minera tierras raras pesca lafken mujeres ong fundacion colectivo junta campana red apoyo sumarse contacto actores');
+    b.textContent = '🛡️ Guardianes';
     var ref = $('btnBomberos');
     if (ref && ref.parentNode === g) {
       if (ref.nextSibling) g.insertBefore(b, ref.nextSibling);
@@ -364,7 +364,7 @@ function ensureCheckbox() {
   if (ref && ref.closest) {
     var lab = document.createElement('label');
     lab.className = 'check-row';
-    lab.innerHTML = '<input type="checkbox" data-btn="btnActores" checked> 🛡️ Actores';
+     lab.innerHTML = '<input type="checkbox" data-btn="btnActores" checked> 🛡️ Guardianes';
     try {
       ref.closest('label').parentNode.insertBefore(lab, ref.closest('label').nextSibling);
       if (typeof applyVisibility === 'function') {
