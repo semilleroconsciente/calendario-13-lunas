@@ -2,10 +2,15 @@
    ECONOMÍA LOCAL DE PENCO — Calendario 13 Lunas (Penco · Bío-Bío)
    Apartado: Territorio > Penco (btnNegocios -> negociosDialog)
    Sección completa: negocios, emprendimientos, artesanos,
-   oficios y cursos que hay en la comuna.
-   - Pestañas: Directorio | 🏪 Almacenes por sector | Artesanos y
-     Oficios | Cursos | ⭐ Favoritos y míos (+ ➕ Agregar integrado
-     y 🧭 Guía de rubros).
+   oficios, cursos y moneda social que hay en la comuna.
+    - Pestañas por tipo: Inicio | Negocios | Emprendimientos |
+      Artesanos | Oficios (incluye 💚 Salud y cuidado) | Cursos |
+      🪙 Moneda Social | Míos | Guía (+ ➕ Agregar global).
+      Cada tipo se abre en sus rubros (solo rubros con fichas).
+      🪙 Moneda Social es sección completa integrada: billetera
+      (resumen), ofertas/pedidos, últimas transacciones, fichas
+      que aceptan la moneda, guía mínima y accesos al módulo
+      completo window.MonedaSocial (fuente única, sin duplicar).
    - Base inicial verificada 2022–2026 (NEGOCIOS_BASE): polo
      gastronómico de Lirquén, caletas, ferias libres y de
      emprendimiento, mujeres campesinas, agrupaciones de artesanos,
@@ -325,7 +330,7 @@ var NEGOCIOS_BASE = [
     direccion: 'Penco (confirmar ubicación en su Instagram)', horario: 'Por confirmar', contacto: 'Por confirmar (escribir por Instagram)', redes: 'Instagram: @tejeryrebrotar.huertaspenco',
     desc: 'Huertas y tejido en Penco: rebrote, siembra y oficios textiles. (Cuenta aportada por la comunidad — verifica horarios y dirección en su Instagram)',
     precio: 'A convenir', moneda: false, trueque: true },
-  { id: 'u-naico', tipo: 'emprendimiento', icon: '📌', nombre: 'Naico — La Greda Penco', rubro: 'otro', sector: 'Cosmito / Ruta 150',
+  { id: 'u-naico', tipo: 'artesano', icon: '📌', nombre: 'Naico — La Greda Penco', rubro: 'otro', sector: 'Cosmito / Ruta 150',
     direccion: 'La Greda, Penco (confirmar en su Instagram)', horario: 'Por confirmar', contacto: 'Por confirmar (escribir por Instagram)', redes: 'Instagram: @naico_gredapenco',
     desc: 'Emprendimiento de La Greda. (Cuenta aportada por la comunidad — verifica rubro, horarios y dirección en su Instagram)',
     precio: 'A convenir', moneda: false, trueque: false },
@@ -337,6 +342,10 @@ var NEGOCIOS_BASE = [
     direccion: 'Penco (confirmar estudio en su Instagram)', horario: 'Con agenda (escribir por Instagram)', contacto: 'Por confirmar (escribir por Instagram)', redes: 'Instagram: @xarl_tattoos',
     desc: 'Tatuajes en Penco. (Cuenta aportada por la comunidad — verifica estilos y disponibilidad en su Instagram)',
     precio: 'Según diseño', moneda: false, trueque: false },
+  { id: 'u-tayul', tipo: 'artesano', icon: '🎨', nombre: 'Tayul Molina', rubro: 'arte', sector: 'Penco Centro',
+    direccion: 'Penco (confirmar en su Instagram)', horario: 'Encargos (escribir por Instagram)', contacto: 'Por confirmar (escribir por Instagram)', redes: 'Instagram: @tayul_molina',
+    desc: 'Artesanía penquina. (Cuenta aportada por la comunidad — verifica trabajos, encargos y valores en su Instagram)',
+    precio: 'A convenir', moneda: false, trueque: false },
   { id: 'u-trenzas', tipo: 'oficio', icon: '💇', nombre: 'Trenzas con Intención', rubro: 'belleza', sector: 'Penco Centro',
     direccion: 'Penco (confirmar en su Instagram)', horario: 'Con hora (escribir por Instagram)', contacto: 'Por confirmar (escribir por Instagram)', redes: 'Instagram: @trenzas_con_intencion',
     desc: 'Trenzado con intención en Penco. (Cuenta aportada por la comunidad — verifica estilos, valores y horas en su Instagram)',
@@ -353,7 +362,7 @@ var NEGOCIOS_BASE = [
     direccion: 'Penco (confirmar dirección en su Instagram)', horario: 'Por confirmar', contacto: 'Por confirmar (escribir por Instagram)', redes: 'Instagram: @_cafegaleria_',
     desc: 'Café con galería en Penco. (Cuenta aportada por la comunidad — verifica carta, horarios y dirección en su Instagram)',
     precio: 'Cafetería', moneda: false, trueque: false },
-  { id: 'u-nuxtram', tipo: 'emprendimiento', icon: '🏠', nombre: 'Espacio Ñuxtram (nütram: conversación)', rubro: 'otro', sector: 'Penco Centro',
+  { id: 'u-nuxtram', tipo: 'oficio', icon: '🏠', nombre: 'Espacio Ñuxtram (nütram: conversación)', rubro: 'salud', sector: 'Penco Centro',
     direccion: 'Penco (confirmar en su Instagram)', horario: 'Según actividades (ver historias)', contacto: 'Por confirmar (escribir por Instagram)', redes: 'Instagram: @espacio_nuxtram',
     desc: 'Espacio comunitario-cultural en Penco. (Cuenta aportada por la comunidad — verifica actividades y dirección en su Instagram)',
     precio: 'A convenir', moneda: false, trueque: true },
@@ -474,38 +483,43 @@ function llevarAlCalendario(t, fechaVal, horaVal, conAviso, motivo) {
    - Míos: favoritos + visitas + fichas propias (antes "Favoritos y míos").
    Compat: tabs viejos dir->inicio, almacenes->comprar, oficios->crear, cursos->aprender, favs->mios. */
 var ecoTab = 'inicio';
-var ecoQuery = '', ecoCat = 'todas', ecoSector = 'todos', ecoSoloMoneda = false, ecoSoloTrueque = false;
+var ecoQuery = '', ecoCat = 'todas', ecoSector = 'todos', ecoSoloMoneda = false, ecoSoloTrueque = false, ecoSoloAlmacen = false;
 var ecoEditId = null;
 /* Vistas distintas + paginación por páginas cortas */
 var ecoView = 'cards'; /* cards | list | sectors */
 var ecoPage = 1;
 var ECO_PAGE_SIZE = 6;
 var ecoExpanded = {};
-var ECO_TABS_LABEL = { inicio: '🏠 Inicio', comer: '🍽️ Comer', comprar: '🛒 Comprar', crear: '🎨 Crear', aprender: '📚 Aprender', mios: '⭐ Míos', guia: '🧭 Guía' };
+var ECO_TABS_LABEL = { inicio: '🏠 Inicio', negocios: '🏪 Negocios', emprendimientos: '🌱 Emprendimientos', artesanos: '🎨 Artesanos', oficios: '🔧 Oficios', cursos: '📚 Cursos', moneda: '🪙 Moneda Social', mios: '⭐ Míos', guia: '🧭 Guía' };
+/* Subcategoría = tipo; dentro de cada tipo, los rubros que correspondan (solo se muestran los que tienen fichas). */
+var TAB_TIPO = { negocios: 'negocio', emprendimientos: 'emprendimiento', artesanos: 'artesano', oficios: 'oficio', cursos: 'curso' };
+var RUBROS_POR_TIPO = {
+  negocio: ['alimentos', 'mar', 'hogar', 'reparacion', 'salud', 'belleza', 'ropa', 'transporte', 'tecnologia', 'campo', 'arte', 'musica', 'deporte', 'educacion', 'otro'],
+  emprendimiento: ['alimentos', 'mar', 'campo', 'arte', 'ropa', 'hogar', 'salud', 'belleza', 'deporte', 'musica', 'tecnologia', 'transporte', 'educacion', 'reparacion', 'otro'],
+  artesano: ['arte', 'ropa', 'hogar', 'musica', 'belleza', 'campo', 'mar', 'alimentos', 'salud', 'deporte', 'tecnologia', 'transporte', 'educacion', 'reparacion', 'otro'],
+  oficio: ['reparacion', 'hogar', 'mar', 'campo', 'transporte', 'salud', 'belleza', 'tecnologia', 'alimentos', 'ropa', 'arte', 'musica', 'deporte', 'educacion', 'otro'],
+  curso: ['educacion', 'deporte', 'arte', 'musica', 'campo', 'mar', 'alimentos', 'hogar', 'salud', 'tecnologia', 'ropa', 'belleza', 'transporte', 'reparacion', 'otro']
+};
 function ecoNormalizeTab(t) {
   if (!t) return 'inicio';
   if (t === 'dir') return 'inicio';
-  if (t === 'almacenes') return 'comprar';
-  if (t === 'oficios') return 'crear';
-  if (t === 'cursos') return 'aprender';
+  if (t === 'comer' || t === 'comprar' || t === 'almacenes') return 'negocios';
+  if (t === 'crear') return 'emprendimientos';
+  if (t === 'aprender') return 'cursos';
+  if (t === 'oficios') return 'oficios';
+  if (t === 'cursos') return 'cursos';
+  if (t === 'moneda' || t === 'moneda-social' || t === 'monedasocial') return 'moneda';
+  if (t === 'salud') return 'oficios';
   if (t === 'favs') return 'mios';
   if (ECO_TABS_LABEL[t]) return t;
   return 'inicio';
 }
 function ecoResetPage() { ecoPage = 1; ecoExpanded = {}; }
-function esFeriasAbasto(t) { return /feria libre/i.test(t.nombre || ''); }
-function subFiltro(tab) {
-  if (tab === 'comer') return function (t) { return (t.rubro === 'mar' || t.rubro === 'alimentos') && !t.almacen && !esFeriasAbasto(t); };
-  if (tab === 'comprar') return function (t) { return !!(t.almacen) || esFeriasAbasto(t); };
-  if (tab === 'crear') return function (t) { return t.tipo === 'emprendimiento' || t.tipo === 'artesano' || t.tipo === 'oficio'; };
-  if (tab === 'aprender') return function (t) { return t.tipo === 'curso'; };
-  return null;
-}
 
 function ensureDialog() {
   var d = $('negociosDialog');
   if (d) {
-    if (!$('tabNegComer') || !$('negViewCards') || !$('negHomeBox')) { try { d.remove(); } catch (e) {} d = null; _wired = false; }
+    if (!$('tabNegEmp') || !$('tabNegMoneda') || !$('negMonList') || !$('negViewCards') || !$('negHomeBox') || !$('negEmpList') || !$('negSoloAlmacen') || !$('negFilterCard')) { try { d.remove(); } catch (e) {} d = null; _wired = false; }
     else return d;
   }
   d = document.createElement('dialog');
@@ -515,35 +529,46 @@ function ensureDialog() {
     '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
     '<h3 style="margin:0;color:var(--accent)">🏪 Economía Local — Penco</h3>' +
     '<button type="button" id="negCloseTop" class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    '<p class="muted" style="line-height:1.5">Economía viva <b>de la comuna</b> en 5 subsecciones: 🍽️ Comer · 🛒 Comprar · 🎨 Crear · 📚 Aprender · ⭐ Míos. Parte en 🏠 Inicio y cambia de vista 📇/📋/🗂️ para explorar por partes. Agrega fichas con <b>datos verificados</b>; queda <b>privado y local</b>.</p>' +
+    '<p class="muted" style="line-height:1.5">Economía viva <b>de la comuna</b> en 6 subsecciones: 🏪 Negocios · 🌱 Emprendimientos · 🎨 Artesanos · 🔧 Oficios (incluye 💚 Salud) · 📚 Cursos · 🪙 Moneda Social. Parte en 🏠 Inicio y cambia de vista 📇/📋/🗂️ para explorar por partes. Agrega fichas con <b>datos verificados</b>; queda <b>privado y local</b>.</p>' +
     '<div id="negHoyBox" class="menstrual-card" style="border-color:var(--gold)"></div>' +
     '<div class="timer-tabs" style="margin:10px 0;flex-wrap:wrap">' +
     '<button type="button" id="tabNegDir" class="btn btn-accent" style="width:auto">🏠 Inicio</button>' +
-    '<button type="button" id="tabNegComer" class="btn" style="width:auto">🍽️ Comer</button>' +
-    '<button type="button" id="tabNegAlmacenes" class="btn" style="width:auto">🛒 Comprar</button>' +
-    '<button type="button" id="tabNegOficios" class="btn" style="width:auto">🎨 Crear</button>' +
-    '<button type="button" id="tabNegCursos" class="btn" style="width:auto">📚 Aprender</button>' +
+    '<button type="button" id="tabNegNeg" class="btn" style="width:auto">🏪 Negocios</button>' +
+    '<button type="button" id="tabNegEmp" class="btn" style="width:auto">🌱 Emprendimientos</button>' +
+    '<button type="button" id="tabNegArt" class="btn" style="width:auto">🎨 Artesanos</button>' +
+    '<button type="button" id="tabNegOficios" class="btn" style="width:auto">🔧 Oficios</button>' +
+    '<button type="button" id="tabNegCursos" class="btn" style="width:auto">📚 Cursos</button>' +
+    '<button type="button" id="tabNegMoneda" class="btn" style="width:auto">🪙 Moneda Social</button>' +
     '<button type="button" id="tabNegFavs" class="btn" style="width:auto">⭐ Míos</button>' +
     '<button type="button" id="tabNegGuia" class="btn" style="width:auto">🧭 Guía</button>' +
     '</div>' +
     '<div class="menstrual-card" style="margin-bottom:10px;padding:8px 10px"><div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">' +
     '<span class="muted" style="font-size:11px">Vista:</span>' +
-    '<button type="button" id="negViewCards" class="btn" style="width:auto;font-size:11px">📇 Tarjetas</button>' +
+    '<button type="button" id="negViewCards" class="btn" style="width:auto;font-size:11px">📇 Por rubro</button>' +
     '<button type="button" id="negViewList" class="btn" style="width:auto;font-size:11px">📋 Lista</button>' +
     '<button type="button" id="negViewSectors" class="btn" style="width:auto;font-size:11px">🗂️ Sectores</button>' +
     '<span class="muted" style="font-size:10px" id="negViewHint"></span></div></div>' +
-    '<div id="negDirPanel">' +
-    '<div id="negHomeBox"></div>' +
-    '<div class="menstrual-card"><h4>🔍 Buscar y filtrar</h4>' +
+    '<div id="negFilterCard" class="menstrual-card"><h4>🔍 Buscar y filtrar</h4>' +
     '<div class="conv-row"><label style="flex:2">Buscar <input type="text" id="negSearch" placeholder="ej: pan, costura, gasfiter, cueca, miel..." maxlength="60" autocomplete="off"></label>' +
     '<label>Rubro <select id="negCat"><option value="todas">Todos</option></select></label>' +
     '<label>Sector <select id="negSector"><option value="todos">Todos</option></select></label></div>' +
-    '<div class="conv-row" style="margin-top:6px"><label class="check-row" style="margin:0"><input type="checkbox" id="negSoloMoneda"> 🪙 Acepta moneda social</label>' +
-    '<label class="check-row" style="margin:0"><input type="checkbox" id="negSoloTrueque"> 🔄 Acepta trueque</label></div>' +
+    '<div class="conv-row" style="margin-top:6px"><label class="check-row" style="margin:0"><input type="checkbox" id="negSoloMoneda"> 🪙 Moneda social</label>' +
+    '<label class="check-row" style="margin:0"><input type="checkbox" id="negSoloTrueque"> 🔄 Trueque</label>' +
+    '<label class="check-row" style="margin:0"><input type="checkbox" id="negSoloAlmacen"> 🏪 Almacén</label></div>' +
     '<p class="muted" style="font-size:11px;margin:4px 0 0" id="negCount"></p></div>' +
+    '<div id="negDirPanel" style="margin-top:10px">' +
+    '<div id="negHomeBox"></div>' +
     '<div id="negList" style="margin-top:10px"></div>' +
+    '</div>' +
+    '<div id="negEmpPanel" class="hidden" style="margin-top:10px"><div id="negEmpList"></div></div>' +
+    '<div id="negArtPanel" class="hidden" style="margin-top:10px"><div id="negArtList"></div></div>' +
+    '<div id="negOficiosPanel" class="hidden" style="margin-top:10px"><div id="negOficiosList"></div></div>' +
+    '<div id="negCursosPanel" class="hidden" style="margin-top:10px"><div id="negCursosList"></div></div>' +
+    '<div id="negMonPanel" class="hidden" style="margin-top:10px"><div id="negMonList"></div></div>' +
+    '<div id="negFavsPanel" class="hidden" style="margin-top:10px"><div id="negFavsList"></div></div>' +
+    '<div id="negGuiaPanel" class="hidden" style="margin-top:10px"><div id="negGuiaList"></div></div>' +
     '<div class="menstrual-card" style="margin-top:10px;border-color:var(--gold)"><h4>➕ Agregar negocio / emprendimiento / artesano / oficio / curso</h4>' +
-    '<p class="muted" style="font-size:11px">Suma lo que existe hoy en Penco con datos verificados. Queda en tu dispositivo.</p>' +
+    '<p class="muted" style="font-size:11px">Suma lo que existe hoy en Penco con datos verificados. Elige el <b>tipo</b> y el <b>rubro</b> que corresponda: la ficha aparece en su subsección. Queda en tu dispositivo.</p>' +
     '<div class="conv-row"><label>Tipo * <select id="negFTipo"><option value="negocio">🏪 Negocio</option><option value="emprendimiento">🌱 Emprendimiento</option><option value="artesano">🎨 Artesano/a</option><option value="oficio">🔧 Oficio</option><option value="curso">📚 Curso / Formación</option></select></label>' +
     '<label>Rubro <select id="negFRubro"></select></label>' +
     '<label>Icono <input type="text" id="negFIcon" maxlength="4" style="width:70px;text-align:center" value="🏪"></label></div>' +
@@ -560,17 +585,6 @@ function ensureDialog() {
     '<label class="check-row" style="margin:0"><input type="checkbox" id="negFAlmacen"> 🏪 Es almacén / minimarket de barrio</label></div>' +
     '<div class="dlg-actions" style="justify-content:flex-start;margin-top:8px"><button type="button" id="negFSave" class="btn btn-accent" style="width:auto">+ Guardar</button>' +
     '<button type="button" id="negFCancel" class="btn hidden" style="width:auto">Cancelar</button></div></div>' +
-    '</div>' +
-    '<div id="negOficiosPanel" class="hidden"><div id="negOficiosList" style="margin-top:10px"></div></div>' +
-    '<div id="negAlmacenesPanel" class="hidden">' +
-    '<div class="menstrual-card"><h4>🔍 Buscar almacenes</h4>' +
-    '<div class="conv-row"><label style="flex:2">Buscar <input type="text" id="negAlmSearch" placeholder="ej: pan, minimarket, El Roble, Lirquén..." maxlength="60" autocomplete="off"></label>' +
-    '<label>Sector <select id="negAlmSector"><option value="todos">Todos los sectores</option></select></label></div>' +
-    '<p class="muted" style="font-size:11px;margin:4px 0 0" id="negAlmCount"></p></div>' +
-    '<div id="negAlmacenesList" style="margin-top:10px"></div></div>' +
-    '<div id="negCursosPanel" class="hidden"><div id="negCursosList" style="margin-top:10px"></div></div>' +
-    '<div id="negFavsPanel" class="hidden"><div id="negFavsList" style="margin-top:10px"></div></div>' +
-    '<div id="negGuiaPanel" class="hidden"><div id="negGuiaList" style="margin-top:10px"></div></div>' +
     '<div class="dlg-actions"><button type="button" id="negClose" class="btn">Cerrar</button></div></form>';
   document.body.appendChild(d);
   return d;
@@ -587,9 +601,45 @@ function ecoBadges(t) {
   if (t.almacen) b += ' <span class="chip" style="font-size:10px;color:#9fc2ee;border-color:#9fc2ee55">🏪</span>';
   return b;
 }
+/* Links operativos en 1 clic: urls, @instagram, emails, teléfonos chilenos y mapa.
+   Se aplica a contacto/redes/dirección: lo no publicado ("Por confirmar") queda como texto. */
+function linkify(s) {
+  var t = esc(s == null ? '' : s);
+  if (!t) return '';
+  var stash = [];
+  function keep(html) { stash.push(html); return '\\x01' + (stash.length - 1) + '\\x01'; }
+  t = t.replace(/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/g, function (m) {
+    return keep('<a href="mailto:' + m + '">' + m + '</a>');
+  });
+  t = t.replace(/(\+?\d[\d\s.\-()]{6,}\d)/g, function (m) {
+    var d = m.replace(/\D/g, '');
+    if (/^0\d{9}$/.test(d)) d = d.slice(1);
+    if (/^56\d{9}$/.test(d)) return keep('<a href="tel:+' + d + '">' + esc(m) + '</a>');
+    if (/^\d{9}$/.test(d)) return keep('<a href="tel:+56' + d + '">' + esc(m) + '</a>');
+    return m;
+  });
+  t = t.replace(/((?:https?:\/\/)?(?:[A-Za-z0-9-]+\.)+(?:cl|com|net|org|ee|es|dev|app|io|info|me)(?:\/[^\s<·,;()]*)?)/g, function (m) {
+    var href = /^https?:\/\//i.test(m) ? m : 'https://' + m;
+    var label = m.replace(/^https?:\/\//i, '');
+    if (label.length > 42) label = label.slice(0, 40) + '…';
+    return keep('<a href="' + href + '" target="_blank" rel="noopener">' + label + '</a>');
+  });
+  t = t.replace(/(^|[\s(:>])(@[A-Za-z0-9._]{2,30})/g, function (m, pre, h) {
+    var user = h.slice(1).replace(/\.+$/, '');
+    return pre + keep('<a href="https://instagram.com/' + user + '" target="_blank" rel="noopener">' + h + '</a>');
+  });
+  t = t.replace(/\\x01(\d+)\\x01/g, function (m, i) { return stash[+i]; });
+  return t;
+}
+function mapsLink(texto) {
+  var t = texto == null ? '' : String(texto);
+  if (!t || /confirmar/i.test(t) || /online \(penco\)/i.test(t)) return '📍 ' + esc(t || 'Por confirmar');
+  var q = encodeURIComponent(t + ', Penco, Chile');
+  return '<a href="https://www.google.com/maps/search/?api=1&query=' + q + '" target="_blank" rel="noopener">📍 ' + esc(t) + '</a>';
+}
 function cardDetailInner(t, fav, vis) {
   var html = (t.desc ? '<p style="font-size:12px;line-height:1.5">' + esc(t.desc) + '</p>' : '') +
-    '<p class="muted" style="font-size:11px;line-height:1.6">📍 ' + esc(t.direccion || t.sector || 'Por confirmar') + (t.horario ? '<br>🕐 ' + esc(t.horario) : '') + (t.precio ? '<br>💰 ' + esc(t.precio) : '') + (t.contacto ? '<br>📞 ' + esc(t.contacto) : '') + (t.redes ? '<br>🔗 ' + esc(t.redes) : '') + '</p>' +
+    '<p class="muted" style="font-size:11px;line-height:1.6">' + mapsLink(t.direccion || t.sector || 'Por confirmar') + (t.horario ? '<br>🕐 ' + esc(t.horario) : '') + (t.precio ? '<br>💰 ' + esc(t.precio) : '') + (t.contacto ? '<br>📞 ' + linkify(t.contacto) : '') + (t.redes ? '<br>🔗 ' + linkify(t.redes) : '') + '</p>' +
     '<div class="conv-row" style="align-items:flex-end">' +
     '<label>Fecha <input type="date" data-neg-fecha="' + t.id + '" value="' + esc(todayKey()) + '"></label>' +
     '<label>Hora <input type="time" data-neg-hora="' + t.id + '" value="10:00" style="max-width:110px"></label>' +
@@ -633,6 +683,7 @@ function pasaFiltros(t, q, soloTipos) {
   if (ecoSector !== 'todos' && t.sector !== ecoSector) return false;
   if (ecoSoloMoneda && !t.moneda) return false;
   if (ecoSoloTrueque && !t.trueque) return false;
+  if (ecoSoloAlmacen && !t.almacen) return false;
   if (q) {
     var txt = ((t.nombre || '') + ' ' + (t.desc || '') + ' ' + (t.direccion || '') + ' ' + (t.sector || '') + ' ' + (t.contacto || '') + ' ' + (t.horario || '')).toLowerCase();
     if (txt.indexOf(q) < 0) return false;
@@ -661,6 +712,13 @@ function bindToggle(scope) {
     b.onclick = function () {
       var p = parseInt(b.getAttribute('data-eco-page'), 10);
       if (!isNaN(p) && p >= 1) { ecoPage = p; render(); try { $('negociosDialog').scrollTop = 0; } catch (e) {} }
+    };
+  });
+  scope.querySelectorAll('[data-eco-more]').forEach(function (b) {
+    b.onclick = function () {
+      var k = b.getAttribute('data-eco-more');
+      ecoExpanded[k] = !ecoExpanded[k];
+      render();
     };
   });
 }
@@ -729,7 +787,6 @@ function bindCards(scope) {
       $('negFAlmacen').checked = !!t.almacen;
       $('negFSave').textContent = '↻ Actualizar';
       $('negFCancel').classList.remove('hidden');
-      switchTab('inicio');
       try { $('negFNombre').scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {}
     };
   });
@@ -758,21 +815,25 @@ function ecoGroupBySector(list) {
   Object.keys(g).forEach(function (s) { if (orden.indexOf(s) < 0) orden.push(s); });
   return orden.map(function (s) { return { sector: s, items: g[s] }; });
 }
-function renderListaInto(boxId, tipos, titulo, vacioBase, subTab) {
-  var box = $(boxId); if (!box) return;
+/* Subcategoría por tipo: agrupa las fichas del tipo en sus rubros (solo rubros con fichas). */
+function ecoFiltradasTipo(tipo) {
   var q = (ecoQuery || '').toLowerCase().trim();
-  var subFn = subTab ? subFiltro(subTab) : null;
-  var list = todos().filter(function (t) {
-    if (subFn && !subFn(t)) return false;
-    return pasaFiltros(t, q, tipos);
+  return todos().filter(function (t) {
+    if (t.tipo !== tipo) return false;
+    return pasaFiltros(t, q, null);
   });
+}
+function renderTipoInto(boxId, tipo, titulo, vacioBase) {
+  var box = $(boxId); if (!box) return;
+  var list = ecoFiltradasTipo(tipo);
   var total = todos().length;
-  var head = '<div class="menstrual-card"><h4>' + titulo + ' · ' + list.length + (tipos || subTab ? '' : ' / ' + total) + '</h4>' +
-    '<p class="muted" style="font-size:10px">Vista <b>' + esc(ecoView === 'list' ? '📋 Lista' : ecoView === 'sectors' ? '🗂️ Sectores' : '📇 Tarjetas') + '</b> · toca el título para abrir la ficha. Marca <b>☆</b> para tu lista corta.</p>';
+  var viewName = ecoView === 'list' ? '📋 Lista' : ecoView === 'sectors' ? '🗂️ Sectores' : '📇 Por rubro';
+  var head = '<div class="menstrual-card"><h4>' + titulo + ' · ' + list.length + '</h4>' +
+    '<p class="muted" style="font-size:10px">Vista <b>' + esc(viewName) + '</b> · cada rubro se abre aparte. Toca el título para abrir la ficha. Marca <b>☆</b> para tu lista corta.</p>';
   if (!list.length) {
     box.innerHTML = head + (total === 0
       ? '<p class="muted" style="font-size:11px;line-height:1.55">' + vacioBase + '</p>'
-      : '<p class="muted">Sin resultados. Prueba otra búsqueda o agrega la ficha abajo en ➕.</p>') + '</div>';
+      : '<p class="muted">Sin resultados. Prueba otra búsqueda o agrega la ficha abajo en ➕ eligiendo tipo <b>' + esc(tipoNombre(tipo)) + '</b>.</p>') + '</div>';
     bindCards(box);
     return;
   }
@@ -782,23 +843,52 @@ function renderListaInto(boxId, tipos, titulo, vacioBase, subTab) {
     body = groups.map(function (g) {
       var inner = ecoSlice(g.items).map(function (t) { return cardHTML(t, 'cards'); }).join('');
       return '<details class="menstrual-details"' + (groups.length === 1 ? ' open' : '') + '><summary>📍 ' + esc(g.sector) + ' · ' + g.items.length + '</summary>' + inner +
-        (g.items.length > ECO_PAGE_SIZE ? '<p class="muted" style="font-size:10px">Mostrando ' + ecoSlice(g.items).length + ' de ' + g.items.length + ' (paginación global abajo).</p>' : '') + '</details>';
+        (g.items.length > ECO_PAGE_SIZE ? '<p class="muted" style="font-size:10px">Mostrando ' + ecoSlice(g.items).length + ' de ' + g.items.length + '.</p>' : '') + '</details>';
     }).join('');
     body += ecoPagerHTML(list.length, 'fichas');
+  } else if (ecoView === 'list') {
+    body = ecoSlice(list).map(function (t) { return cardHTML(t, 'list'); }).join('') + ecoPagerHTML(list.length, 'fichas');
   } else {
-    body = ecoSlice(list).map(function (t) { return cardHTML(t); }).join('') + ecoPagerHTML(list.length, 'fichas');
+    /* 📇 Por rubro: una subsección colapsable por rubro, en el orden que corresponde al tipo */
+    var orden = RUBROS_POR_TIPO[tipo] || Object.keys(CATS);
+    var grupos = [];
+    orden.forEach(function (r) {
+      var items = list.filter(function (t) { return (t.rubro || 'otro') === r; });
+      if (items.length) grupos.push({ rubro: r, items: items });
+    });
+    /* rubros fuera de catálogo (por si acaso) al final */
+    list.forEach(function (t) {
+      var r = t.rubro || 'otro';
+      if (orden.indexOf(r) < 0 && !grupos.some(function (g) { return g.rubro === r; })) {
+        grupos.push({ rubro: r, items: list.filter(function (x) { return (x.rubro || 'otro') === r; }) });
+      }
+    });
+    body = grupos.map(function (g, i) {
+      var key = 'more_' + tipo + '_' + g.rubro;
+      var abierto = !!ecoExpanded[key];
+      var vis = abierto ? g.items : g.items.slice(0, ECO_PAGE_SIZE);
+      var nota = '';
+      if (g.rubro === 'alimentos' && ecoSector !== 'todos' && ALMACENES_NOTA[ecoSector]) {
+        nota = '<p class="muted" style="font-size:11px;line-height:1.55">' + esc(ALMACENES_NOTA[ecoSector]) + '</p>';
+      }
+      return '<details class="menstrual-details"' + (grupos.length === 1 || i === 0 ? ' open' : '') + '><summary>' + esc(catNombre(g.rubro)) + ' · ' + g.items.length + '</summary>' + nota +
+        vis.map(function (t) { return cardHTML(t, 'cards'); }).join('') +
+        (g.items.length > ECO_PAGE_SIZE ? '<button type="button" class="btn" data-eco-more="' + key + '" style="width:auto;font-size:11px;margin-top:6px">' + (abierto ? '▲ Mostrar menos' : '▼ Ver las ' + g.items.length + ' fichas') + '</button>' : '') + '</details>';
+    }).join('');
   }
   box.innerHTML = head + body + '</div>';
   bindCards(box);
 }
 function ecoCounts() {
   var all = todos();
-  function n(fn) { return all.filter(fn).length; }
+  function nTipo(t) { return all.filter(function (x) { return x.tipo === t; }).length; }
   return {
     total: all.length,
-    comer: n(subFiltro('comer')), comprar: n(subFiltro('comprar')),
-    crear: n(subFiltro('crear')), aprender: n(subFiltro('aprender')),
-    moneda: n(function (t) { return t.moneda; }), trueque: n(function (t) { return t.trueque; }),
+    negocio: nTipo('negocio'), emprendimiento: nTipo('emprendimiento'),
+    artesano: nTipo('artesano'), oficio: nTipo('oficio'), curso: nTipo('curso'),
+    moneda: all.filter(function (t) { return t.moneda; }).length,
+    trueque: all.filter(function (t) { return t.trueque; }).length,
+    almacen: all.filter(function (t) { return t.almacen; }).length,
     mios: store().mios.length, favs: Object.keys(store().favs || {}).filter(function (k) { return store().favs[k]; }).length
   };
 }
@@ -810,24 +900,150 @@ function renderHome() {
     return '<button type="button" data-eco-goto="' + tab + '" class="si-card" style="flex:1 1 140px;text-align:left;cursor:pointer">' +
       '<b style="font-size:12px">' + icon + ' ' + t + ' · ' + n + '</b><br><span class="muted" style="font-size:10px">' + d + '</span></button>';
   };
-  box.innerHTML = '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🏠 Economía Local por subsecciones · ' + c.total + ' fichas</h4>' +
-    '<p class="muted" style="font-size:11px;line-height:1.55">Elige por necesidad: cada subsección tiene su buscador, vista 📇/📋/🗂️ y páginas de ' + ECO_PAGE_SIZE + '. Todo sigue privado y offline.</p>' +
+  box.innerHTML = '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🏠 Economía Local por tipo · ' + c.total + ' fichas</h4>' +
+    '<p class="muted" style="font-size:11px;line-height:1.55">Cada tipo trae sus rubros adentro: abre la subsección y luego el rubro que buscas. Todo sigue privado y offline.</p>' +
     '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">' +
-    card('comer', '🍽️', 'Comer', 'Mar, restaurantes, cafés, pan', c.comer) +
-    card('comprar', '🛒', 'Comprar', 'Almacenes, ferias, abasto', c.comprar) +
-    card('crear', '🎨', 'Crear', 'Artesanos, oficios, empr.', c.crear) +
-    card('aprender', '📚', 'Aprender', 'Cursos y formación', c.aprender) +
+    card('negocios', '🏪', 'Negocios', 'Comer, abasto, servicios', c.negocio) +
+    card('emprendimientos', '🌱', 'Emprendimientos', 'Comida, campo, arte', c.emprendimiento) +
+    card('artesanos', '🎨', 'Artesanos', 'Arte, textil, madera', c.artesano) +
+    card('oficios', '🔧', 'Oficios', 'Reparación, salud, mar', c.oficio) +
+    card('cursos', '📚', 'Cursos', 'Formación y talleres', c.curso) +
+    card('moneda', '🪙', 'Moneda Social', 'Billetera, ofertas y red', '→') +
     card('mios', '⭐', 'Míos', c.favs + ' fav · ' + c.mios + ' propias', c.favs + c.mios) +
     card('guia', '🧭', 'Guía', 'Qué mapear por sector', '→') +
     '</div>' +
-    '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px"><span class="chip">🪙 ' + c.moneda + ' moneda social</span><span class="chip">🔄 ' + c.trueque + ' trueque</span></div></div>';
+    '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px"><span class="chip">🪙 ' + c.moneda + ' moneda social</span><span class="chip">🔄 ' + c.trueque + ' trueque</span><span class="chip">🏪 ' + c.almacen + ' almacenes</span></div></div>';
   bindToggle(box);
 }
 
-/* ---------- ALMACENES POR SECTOR ---------- */
-var almQuery = '', almSector = 'todos';
+/* ---------- SECCIÓN 🪙 MONEDA SOCIAL (dentro de Economía Local) ---------- */
+/* Sección completa integrada: usa window.MonedaSocial como fuente única
+   (sin duplicar datos). Muestra billetera, ofertas/pedidos, últimas
+   transacciones, negocios que aceptan la moneda y guía mínima. */
+function monData() {
+  try {
+    if (window.MonedaSocial && typeof window.MonedaSocial.store === 'function') {
+      var s = window.MonedaSocial.store() || {};
+      return {
+        ok: true,
+        cuenta: (typeof window.MonedaSocial.cuenta === 'function') ? window.MonedaSocial.cuenta() : (s.cuenta || {}),
+        balance: (typeof window.MonedaSocial.balance === 'function') ? window.MonedaSocial.balance() : 0,
+        unidad: (typeof window.MonedaSocial.unidad === 'function') ? window.MonedaSocial.unidad() : 'Lafken',
+        ofertas: Array.isArray(s.ofertas) ? s.ofertas : [],
+        txs: Array.isArray(s.txs) ? s.txs : [],
+        tratos: Array.isArray(s.tratos) ? s.tratos : [],
+        acuerdos: (s.acuerdos && typeof s.acuerdos === 'object') ? s.acuerdos : {}
+      };
+    }
+  } catch (e) {}
+  return { ok: false, cuenta: {}, balance: 0, unidad: 'Lafken', ofertas: [], txs: [], tratos: [], acuerdos: {} };
+}
+function monOpen(tab) {
+  try {
+    if (window.MonedaSocial && typeof window.MonedaSocial.open === 'function') { window.MonedaSocial.open(tab || 'guia'); return; }
+  } catch (e) {}
+  alert('La sección 🪙 Moneda Social aún se está cargando. Cierra y reabre en unos segundos.');
+}
+function renderMoneda() {
+  var box = $('negMonList'); if (!box) return;
+  if (ecoTab !== 'moneda') { box.innerHTML = ''; return; }
+  var m = monData();
+  var conMoneda = todos().filter(function (t) { return t.moneda; });
+  var c = m.cuenta || {};
+  var simb = c.simb || 'Lf';
+  var unidad = c.unidad || m.unidad || 'Lafken';
+  var bal = Number(m.balance) || 0;
+  var tope = (c.tope === undefined || c.tope === null) ? -50 : Number(c.tope);
+  var colBal = bal < tope ? '#e76e8a' : (bal < 0 ? '#e8c56a' : '#8fd694');
+  var html = '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🪙 Moneda Social — dentro de Economía Local</h4>' +
+    '<p class="muted" style="font-size:11px;line-height:1.55">Unidad de cuenta propia del territorio para intercambiar sin depender solo del peso. Los tratos se cierran <b>en persona</b>; aquí vive el registro <b>privado y local</b>. Esta sección es la puerta de entrada: el módulo completo vive en <b>🪙 Moneda Social</b>.</p>' +
+    '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">' +
+    '<button type="button" class="btn btn-accent" data-mon-open="guia" style="width:auto;font-size:11px">📖 Abrir guía</button>' +
+    '<button type="button" class="btn" data-mon-open="billetera" style="width:auto;font-size:11px">🪙 Mi Billetera</button>' +
+    '<button type="button" class="btn" data-mon-open="ofertas" style="width:auto;font-size:11px">📋 Ofertas</button>' +
+    '<button type="button" class="btn" data-mon-open="tx" style="width:auto;font-size:11px">💸 Transacciones</button>' +
+    '<button type="button" class="btn" data-mon-open="acuerdos" style="width:auto;font-size:11px">🤝 Acuerdos</button></div></div>';
+  /* 1. Mi billetera (resumen) */
+  if (!m.ok) {
+    html += '<div class="menstrual-card"><h4>🪙 Mi billetera</h4><p class="muted" style="font-size:11px">Módulo de moneda social cargando… Si no abre, recarga la app.</p>' +
+      '<button type="button" class="btn btn-accent" data-mon-open="billetera" style="width:auto;font-size:11px">🪙 Abrir Moneda Social</button></div>';
+  } else if (!c.nombre) {
+    html += '<div class="menstrual-card" style="border-color:#e8c56a88"><h4>🪙 Mi billetera — sin cuenta aún</h4>' +
+      '<p class="muted" style="font-size:11px;line-height:1.55">Aún no abres tu cuenta. Se abre en 1 minuto: nombre, moneda (ej: Lafken), símbolo y tope de confianza (sugerido −50 U).</p>' +
+      '<button type="button" class="btn btn-accent" data-mon-open="billetera" style="width:auto;font-size:11px">🪙 Crear mi cuenta</button></div>';
+  } else {
+    var entradas = m.txs.filter(function (t) { return Number(t.monto) > 0; }).reduce(function (a, t) { return a + Number(t.monto); }, 0);
+    var salidas = m.txs.filter(function (t) { return Number(t.monto) < 0; }).reduce(function (a, t) { return a + Math.abs(Number(t.monto)); }, 0);
+    html += '<div class="menstrual-card"><h4>🪙 Mi billetera · ' + esc(c.nombre) + '</h4>' +
+      '<p style="font-size:15px"><b style="color:' + colBal + '">' + esc(simb + ' ' + (Math.round(bal * 100) / 100)) + ' ' + esc(unidad) + '</b></p>' +
+      '<p class="muted" style="font-size:11px">Recibido +' + esc(String(Math.round(entradas * 100) / 100)) + ' · Entregado −' + esc(String(Math.round(salidas * 100) / 100)) + ' · Tope ' + esc(String(tope)) + ' · ' + m.ofertas.length + ' oferta(s) · ' + m.txs.length + ' transacción(es)</p>' +
+      '<div style="display:flex;gap:6px;flex-wrap:wrap"><button type="button" class="btn btn-accent" data-mon-open="billetera" style="width:auto;font-size:11px">🪙 Ver billetera</button>' +
+      '<button type="button" class="btn" data-mon-open="tx" style="width:auto;font-size:11px">💸 Registrar pago/cobro</button></div></div>';
+  }
+  /* 2. Ofertas y pedidos en moneda social */
+  html += '<details class="menstrual-details" open><summary>📋 Ofertas y pedidos en moneda · ' + m.ofertas.length + '</summary>';
+  if (!m.ok || !m.ofertas.length) {
+    html += '<p class="muted" style="font-size:11px;line-height:1.55">Aún no hay ofertas en moneda social. La semilla de la red es <b>1 oferta + 1 pedido por persona</b> (ej: pan amasado, clases, flete, cuidados).</p>' +
+      '<button type="button" class="btn btn-accent" data-mon-open="ofertas" style="width:auto;font-size:11px">➕ Publicar la primera</button>';
+  } else {
+    var of = m.ofertas.slice().sort(function (a, b) { return String(b.creado || '').localeCompare(String(a.creado || '')); }).slice(0, 6);
+    html += of.map(function (o) {
+      var chip = o.tipo === 'ofrezco' ? '🙌 Ofrezco' : '🙏 Necesito';
+      return '<div class="si-card" style="padding:8px 10px"><b style="font-size:12px">' + chip + ' · ' + esc(o.titulo || '') + '</b>' +
+        '<br><span class="muted" style="font-size:10px">' + esc(o.cat || '') + (o.precio ? ' · 💰 ' + esc(o.precio) + ' ' + esc(simb) : '') + (o.trueque ? ' · 🔄' : '') + (o.mixto ? ' · 💵 mixto' : '') + '</span>' +
+        (o.detalle ? '<br><span style="font-size:11px">' + esc(o.detalle) + '</span>' : '') + '</div>';
+    }).join('') +
+      (m.ofertas.length > 6 ? '<p class="muted" style="font-size:10px">Mostrando 6 de ' + m.ofertas.length + '.</p>' : '') +
+      '<button type="button" class="btn" data-mon-open="ofertas" style="width:auto;font-size:11px">📋 Ver todas / publicar</button>';
+  }
+  html += '</details>';
+  /* 3. Últimas transacciones */
+  html += '<details class="menstrual-details"><summary>💸 Últimas transacciones · ' + m.txs.length + '</summary>';
+  if (!m.txs.length) {
+    html += '<p class="muted" style="font-size:11px">Sin movimientos. Ej: recibí 10 por pan → +10; pagué 8 por corte → −8.</p>';
+  } else {
+    var txs = m.txs.slice().sort(function (a, b) { return String(b.fecha).localeCompare(String(a.fecha)); }).slice(0, 6);
+    html += txs.map(function (t) {
+      var n = Number(t.monto) || 0;
+      var col = n >= 0 ? '#8fd694' : '#e8a06a';
+      return '<div class="habit-item"><span><b style="color:' + col + '">' + (n >= 0 ? '+' : '') + esc(String(Math.round(n * 100) / 100)) + ' ' + esc(simb) + '</b> · ' + esc(t.concepto || '') +
+        '<br><span class="muted" style="font-size:10px">' + esc(t.fecha || '') + (t.contraparte ? ' · ' + esc(t.contraparte) : '') + '</span></span></div>';
+    }).join('') +
+      (m.txs.length > 6 ? '<p class="muted" style="font-size:10px">Mostrando 6 de ' + m.txs.length + '.</p>' : '');
+  }
+  html += '<div style="margin-top:6px"><button type="button" class="btn" data-mon-open="tx" style="width:auto;font-size:11px">💸 Abrir transacciones</button></div></details>';
+  /* 4. Negocios que aceptan moneda social */
+  html += '<details class="menstrual-details" open><summary>🏪 Aceptan 🪙 en Economía Local · ' + conMoneda.length + '</summary>' +
+    '<p class="muted" style="font-size:11px">Cuando una ficha acepta la moneda, se marca con 🪙 y aparece aquí y en el módulo de Moneda Social. Pregunta siempre en persona antes de pagar.</p>';
+  if (!conMoneda.length) {
+    html += '<p class="muted" style="font-size:11px">Aún no hay fichas con 🪙. Marca <b>“Acepta moneda social”</b> al agregar o editar una ficha (➕ de abajo) y aparecerá aquí.</p>';
+  } else {
+    html += ecoSlice(conMoneda).map(function (t) { return cardHTML(t, 'cards'); }).join('') + ecoPagerHTML(conMoneda.length, 'fichas con 🪙');
+  }
+  html += '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px"><button type="button" class="btn" data-mon-filter style="width:auto;font-size:11px">🔍 Ver solo 🪙 en Negocios</button></div></details>';
+  /* 5. Guía mínima + acuerdos */
+  var nAcu = Object.keys(m.acuerdos || {}).filter(function (k) { return m.acuerdos[k]; }).length;
+  html += '<details class="menstrual-details"><summary>📖 Guía mínima + acuerdos · ' + nAcu + '/5</summary>' +
+    '<div class="si-card"><h4>🪙 ¿Qué es?</h4><p>Unidad de cuenta propia del territorio para intercambiar bienes, saberes y cuidados sin depender solo del peso. Registro de quién dio y quién recibió, con reglas acordadas en persona.</p></div>' +
+    '<div class="si-card"><h4>🤝 Reglas base</h4><p>1) La moneda la sostiene la red · 2) Todo trato es voluntario y se anota · 3) Saldo puede ser negativo hasta el tope · 4) Precios justos, sin especulación · 5) Balances visibles en asamblea · 6) Se sale saldando o compensando.</p></div>' +
+    '<div class="si-card"><h4>⚖️ Equivalencia punto de partida</h4><p>1 hora de oficio o cuidado = <b>10 U</b> · docena de huevos = 4–6 U · pan amasado (6 un.) = 3–5 U · almuerzo = 8–12 U · corte de pelo = 8 U · flete corto = 10–15 U. La asamblea define las finales.</p></div>' +
+    '<div style="margin-top:6px;display:flex;gap:6px;flex-wrap:wrap"><button type="button" class="btn" data-mon-open="guia" style="width:auto;font-size:11px">📖 Guía completa</button>' +
+    '<button type="button" class="btn" data-mon-open="acuerdos" style="width:auto;font-size:11px">🤝 Ver acuerdos (' + nAcu + '/5)</button></div></details>';
+  box.innerHTML = html;
+  bindCards(box);
+  box.querySelectorAll('[data-mon-open]').forEach(function (b) {
+    b.onclick = function () { monOpen(b.getAttribute('data-mon-open')); };
+  });
+  var bf = box.querySelector('[data-mon-filter]');
+  if (bf) bf.onclick = function () {
+    ecoSoloMoneda = true; ecoResetPage();
+    switchTab('negocios');
+  };
+}
+
+/* ---------- NOTAS DE ABASTO POR SECTOR ---------- */
 /* Contexto por sector (verificado 2025–2026): orienta el mapeo sin
-   inventar nombres. Las fichas con nombre propio están en NEGOCIOS_BASE. */
+   inventar nombres. Se muestra en el rubro 🥘 Alimentos de Negocios y Emprendimientos. */
 var ALMACENES_NOTA = {
   'Penco Centro': 'Eje Freire–El Roble–Penco: aquí está el supermercado independiente más grande de la comuna (Don Gabito, Lun–Dom 09:00–medianoche) conviviendo con almacenes de barrio. Verifica horarios puerta a puerta.',
   'Lirquén': 'El incendio de enero 2026 quemó 4 locales del centro (pastelería, ferretería, clínica dental, restorán) y afectó al Barrio Chino: varios almacenes están reabriendo en 2026 con apoyo Walmart/Desafío Levantemos Chile. Compra aquí para levantarlos.',
@@ -838,53 +1054,6 @@ var ALMACENES_NOTA = {
   'Toda la comuna / a domicilio': 'Repartos a domicilio (ej: congelados Pen-co-frozen, gratis sobre $10.000 en Penco).',
   'Online (Penco)': 'Ventas por redes con entrega en la comuna: pide catálogo por mensaje.'
 };
-function esAlmacen(t) { return !!(t && t.almacen); }
-function renderAlmacenes() {
-  var box = $('negAlmacenesList'); if (!box) return;
-  if (ecoTab !== 'comprar') { box.innerHTML = ''; return; }
-  var sel = $('negAlmSector');
-  if (sel && sel.options.length <= 1) SECTORES.forEach(function (v) { var o = document.createElement('option'); o.value = v; o.textContent = v; sel.appendChild(o); });
-  if (sel && sel.value !== almSector) sel.value = almSector;
-  var q = (almQuery || '').toLowerCase().trim();
-  var all = todos().filter(function (t) { return esAlmacen(t) || esFeriasAbasto(t); });
-  var filtrados = all.filter(function (t) {
-    if (almSector !== 'todos' && t.sector !== almSector) return false;
-    if (q) {
-      var txt = ((t.nombre || '') + ' ' + (t.desc || '') + ' ' + (t.direccion || '') + ' ' + (t.sector || '') + ' ' + (t.horario || '')).toLowerCase();
-      if (txt.indexOf(q) < 0) return false;
-    }
-    return true;
-  });
-  var ct = $('negAlmCount');
-  if (ct) ct.textContent = filtrados.length + ' / ' + all.length + ' puntos de abasto' + (almSector !== 'todos' ? ' · ' + almSector : '') + ' · vista ' + ecoView;
-  if (!filtrados.length) {
-    box.innerHTML = '<div class="menstrual-card"><p class="muted" style="font-size:11px">Sin resultados. Prueba otra búsqueda o agrega el almacén en ➕ marcando <b>🏪 Es almacén / minimarket de barrio</b>.</p></div>';
-    return;
-  }
-  if (ecoView === 'list') {
-    box.innerHTML = '<div class="menstrual-card"><h4>🛒 Comprar · ' + filtrados.length + '</h4>' +
-      ecoSlice(filtrados).map(function (t) { return cardHTML(t, 'list'); }).join('') + ecoPagerHTML(filtrados.length, 'puntos') + '</div>';
-    bindCards(box);
-    return;
-  }
-  /* cards y sectors: grupos colapsables por sector, máx 1 abierto */
-  var porSector = {};
-  var pageItems = ecoView === 'sectors' ? filtrados : ecoSlice(filtrados);
-  pageItems.forEach(function (t) {
-    var s = t.sector || 'Penco Centro';
-    if (!porSector[s]) porSector[s] = [];
-    porSector[s].push(t);
-  });
-  var orden = SECTORES.filter(function (s) { return porSector[s]; });
-  Object.keys(porSector).forEach(function (s) { if (orden.indexOf(s) < 0) orden.push(s); });
-  box.innerHTML = orden.map(function (s, i) {
-    var nota = ALMACENES_NOTA[s] ? '<p class="muted" style="font-size:11px;line-height:1.55">' + esc(ALMACENES_NOTA[s]) + '</p>' : '';
-    return '<details class="menstrual-details"' + (orden.length === 1 || (ecoView === 'sectors' && i === 0) ? ' open' : '') + '><summary>🏪 ' + esc(s) + ' · ' + porSector[s].length + (ecoView !== 'sectors' ? ' (pág. ' + ecoPage + ')' : '') + '</summary>' + nota +
-      porSector[s].map(function (t) { return cardHTML(t, 'cards'); }).join('') + '</details>';
-  }).join('') + (ecoView !== 'sectors' ? ecoPagerHTML(filtrados.length, 'puntos') : '');
-  bindCards(box);
-}
-
 function renderFavs() {
   var box = $('negFavsList'); if (!box) return;
   if (ecoTab !== 'mios') { box.innerHTML = ''; return; }
@@ -899,7 +1068,7 @@ function renderFavs() {
     (vis.length ? vis.slice(0, 10).map(function (r) {
       return '<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center"><span><b>' + esc(r.nombre) + '</b> <span class="chip" style="font-size:10px">' + esc(r.motivo || 'visita') + '</span><br><span class="muted" style="font-size:11px">📅 ' + esc(r.fecha) + ' · 🕐 ' + esc(r.hora) + (r.notify ? ' · 🔔' : '') + '</span></span>' +
         '<button type="button" class="btn" data-visdel="' + r.id + '" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕</button></div>';
-    }).join('') + (vis.length > 10 ? '<p class="muted" style="font-size:10px">Mostrando 10 de ' + vis.length + ' (los próximos primero).</p>' : '') : '<p class="muted" style="font-size:11px">Sin visitas agendadas. Agenda una desde 🍽️/🛒/🎨.</p>') +
+    }).join('') + (vis.length > 10 ? '<p class="muted" style="font-size:10px">Mostrando 10 de ' + vis.length + ' (los próximos primero).</p>' : '') : '<p class="muted" style="font-size:11px">Sin visitas agendadas. Agenda una desde 🏪/🌱/🎨/🔧/📚.</p>') +
     (vis.length ? '<div class="dlg-actions" style="justify-content:space-between;margin-top:8px"><button type="button" id="negVisShare" class="btn" style="width:auto">📤 Compartir mi lista</button><button type="button" id="negVisClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar lista</button></div>' : '') + '</details>';
   html += '<details class="menstrual-details"><summary>📋 Mis fichas agregadas · ' + st.mios.length + '</summary>' +
     (st.mios.length ? st.mios.slice(0, ECO_PAGE_SIZE).map(function (t) { return cardHTML(t); }).join('') + '<p class="muted" style="font-size:10px">Mostrando hasta ' + ECO_PAGE_SIZE + ' fichas en esta vista.</p>' : '<p class="muted" style="font-size:11px">Aún no agregas fichas. Hazlo en ➕ de abajo.</p>') + '</details>';
@@ -941,24 +1110,32 @@ function paintViewBtns() {
   var m = { cards: $('negViewCards'), list: $('negViewList'), sectors: $('negViewSectors') };
   Object.keys(m).forEach(function (k) { if (m[k]) m[k].classList.toggle('btn-accent', ecoView === k); });
   var h = $('negViewHint');
-  if (h) h.textContent = ecoView === 'list' ? 'rápida para comparar' : ecoView === 'sectors' ? 'agrupada por barrio' : 'ficha colapsable + pág. ' + ECO_PAGE_SIZE;
+  if (h) h.textContent = ecoView === 'list' ? 'rápida para comparar' : ecoView === 'sectors' ? 'agrupada por barrio' : 'por rubro, un grupo abierto a la vez';
 }
 function switchTab(t) {
   ecoTab = ecoNormalizeTab(t);
   ecoResetPage();
-  var map = { inicio: ['negDirPanel', 'tabNegDir'], comer: ['negDirPanel', 'tabNegComer'], comprar: ['negAlmacenesPanel', 'tabNegAlmacenes'], crear: ['negOficiosPanel', 'tabNegOficios'], aprender: ['negCursosPanel', 'tabNegCursos'], mios: ['negFavsPanel', 'tabNegFavs'], guia: ['negGuiaPanel', 'tabNegGuia'] };
-  /* comer comparte negDirPanel con inicio pero con distinto título */
+  var map = {
+    inicio: ['negDirPanel', 'tabNegDir'],
+    negocios: ['negDirPanel', 'tabNegNeg'],
+    emprendimientos: ['negEmpPanel', 'tabNegEmp'],
+    artesanos: ['negArtPanel', 'tabNegArt'],
+    oficios: ['negOficiosPanel', 'tabNegOficios'],
+    cursos: ['negCursosPanel', 'tabNegCursos'],
+    moneda: ['negMonPanel', 'tabNegMoneda'],
+    mios: ['negFavsPanel', 'tabNegFavs'],
+    guia: ['negGuiaPanel', 'tabNegGuia']
+  };
+  /* inicio y negocios comparten negDirPanel (portada + lista) */
+  var showDir = (ecoTab === 'inicio' || ecoTab === 'negocios');
   Object.keys(map).forEach(function (k) {
     var p = $(map[k][0]), b = $(map[k][1]);
-    if (k === 'inicio' || k === 'comer') {
-      var showDir = (ecoTab === 'inicio' || ecoTab === 'comer');
-      if (p && map[k][0] === 'negDirPanel') p.classList.toggle('hidden', !showDir);
-    } else {
-      if (p) p.classList.toggle('hidden', k !== ecoTab);
-    }
+    if (map[k][0] === 'negDirPanel') { if (p) p.classList.toggle('hidden', !showDir); }
+    else if (p) p.classList.toggle('hidden', k !== ecoTab);
     if (b) b.classList.toggle('btn-accent', k === ecoTab);
   });
-  /* compat paneles viejos: dir==inicio */
+  var fc = $('negFilterCard');
+  if (fc) fc.classList.toggle('hidden', !(ecoTab === 'negocios' || ecoTab === 'emprendimientos' || ecoTab === 'artesanos' || ecoTab === 'oficios' || ecoTab === 'cursos' || ecoTab === 'moneda'));
   paintViewBtns();
   render();
 }
@@ -998,29 +1175,39 @@ function render() {
   var q = $('negSearch'); if (q && q.value !== ecoQuery && document.activeElement !== q) q.value = ecoQuery;
   var sm = $('negSoloMoneda'); if (sm) sm.checked = !!ecoSoloMoneda;
   var st2 = $('negSoloTrueque'); if (st2) st2.checked = !!ecoSoloTrueque;
+  var sa = $('negSoloAlmacen'); if (sa) sa.checked = !!ecoSoloAlmacen;
   renderHome();
-  if (ecoTab === 'inicio') {
-    renderListaInto('negList', null, '🏪 Todo Penco — explora y filtra',
-      'Sección recién abierta: aún no hay fichas. Suma la primera en el formulario ➕ con datos verificados (local, horario y contacto reales).', null);
-  } else if (ecoTab === 'comer') {
-    renderListaInto('negList', null, '🍽️ Comer en Penco — mar, cafés, pan',
-      'Sin fichas para comer con este filtro.', 'comer');
-  } else { $('negList').innerHTML = ''; }
-  renderListaInto('negOficiosList', null, '🎨 Crear — artesanos, oficios y emprendimientos',
-    'Aquí vivirán carpinteras, tejedoras, herreros, alfareras, costureras... Agrégalos en ➕ con tipo Artesano, Oficio o Emprendimiento.', 'crear');
-  renderListaInto('negCursosList', ['curso'], '📚 Aprender — cursos y formación',
-    'Cursos y talleres con inscripción: oficios, idiomas, música, cocina... Agrégalos en ➕ con tipo Curso. Para llevar una clase a tu día usa 📌 Calendario con motivo "clase".', 'aprender');
-  /* ocultar paneles que no tocan */
-  if ($('negOficiosList') && ecoTab !== 'crear') $('negOficiosList').innerHTML = '';
-  if ($('negCursosList') && ecoTab !== 'aprender') $('negCursosList').innerHTML = '';
-  renderAlmacenes();
+  /* subcategoría por tipo: cada tab muestra su tipo con sus rubros adentro */
+  if (ecoTab === 'negocios') {
+    renderTipoInto('negList', 'negocio', '🏪 Negocios',
+      'Aún no hay negocios. Suma el primero en ➕ con tipo Negocio y su rubro.');
+  } else if ($('negList')) $('negList').innerHTML = '';
+  if (ecoTab === 'emprendimientos') {
+    renderTipoInto('negEmpList', 'emprendimiento', '🌱 Emprendimientos',
+      'Aún no hay emprendimientos. Súmalos en ➕ con tipo Emprendimiento y su rubro.');
+  } else if ($('negEmpList')) $('negEmpList').innerHTML = '';
+  if (ecoTab === 'artesanos') {
+    renderTipoInto('negArtList', 'artesano', '🎨 Artesanos/as',
+      'Aquí vivirán quienes crean con las manos. Agrégalos en ➕ con tipo Artesano/a y su rubro.');
+  } else if ($('negArtList')) $('negArtList').innerHTML = '';
+  if (ecoTab === 'oficios') {
+    renderTipoInto('negOficiosList', 'oficio', '🔧 Oficios (incluye 💚 Salud)',
+      'Gasfitería, electricidad, pesca artesanal, costura, tattoo, salud y cuidado... Agrégalos en ➕ con tipo Oficio y su rubro.');
+  } else if ($('negOficiosList')) $('negOficiosList').innerHTML = '';
+  if (ecoTab === 'cursos') {
+    renderTipoInto('negCursosList', 'curso', '📚 Cursos y formación',
+      'Cursos y talleres con inscripción. Agrégalos en ➕ con tipo Curso y su rubro. Para llevar una clase a tu día usa 📌 Calendario con motivo "clase".');
+  } else if ($('negCursosList')) $('negCursosList').innerHTML = '';
   var ct = $('negCount');
   if (ct) {
-    var n = todos().length, nm = todos().filter(function (t) { return t.moneda; }).length, nt = todos().filter(function (t) { return t.trueque; }).length;
-    ct.textContent = n + ' fichas · 🪙 ' + nm + ' con moneda social · 🔄 ' + nt + ' con trueque';
+    var tt = TAB_TIPO[ecoTab];
+    var enVista = tt ? ecoFiltradasTipo(tt).length : todos().length;
+    var n = todos().length, nm = todos().filter(function (t) { return t.moneda; }).length, nt = todos().filter(function (t) { return t.trueque; }).length, na = todos().filter(function (t) { return t.almacen; }).length;
+    ct.textContent = enVista + ' en esta vista / ' + n + ' fichas · 🪙 ' + nm + ' · 🔄 ' + nt + ' · 🏪 ' + na + ' almacenes';
   }
   renderFavs();
   renderGuia();
+  renderMoneda();
 }
 
 function open(tab) {
@@ -1041,12 +1228,14 @@ function wireOnce() {
   var ct = $('negCloseTop'), cb = $('negClose');
   if (ct) ct.onclick = function () { try { $('negociosDialog').close(); } catch (e) {} };
   if (cb) cb.onclick = function () { try { $('negociosDialog').close(); } catch (e) {} };
-  var tD = $('tabNegDir'), tCo = $('tabNegComer'), tA = $('tabNegAlmacenes'), tO = $('tabNegOficios'), tC = $('tabNegCursos'), tF = $('tabNegFavs'), tG = $('tabNegGuia');
+  var tD = $('tabNegDir'), tN = $('tabNegNeg'), tE = $('tabNegEmp'), tAr = $('tabNegArt'), tO = $('tabNegOficios'), tC = $('tabNegCursos'), tM = $('tabNegMoneda'), tF = $('tabNegFavs'), tG = $('tabNegGuia');
   if (tD) tD.onclick = function () { switchTab('inicio'); };
-  if (tCo) tCo.onclick = function () { switchTab('comer'); };
-  if (tA) tA.onclick = function () { switchTab('comprar'); };
-  if (tO) tO.onclick = function () { switchTab('crear'); };
-  if (tC) tC.onclick = function () { switchTab('aprender'); };
+  if (tN) tN.onclick = function () { switchTab('negocios'); };
+  if (tE) tE.onclick = function () { switchTab('emprendimientos'); };
+  if (tAr) tAr.onclick = function () { switchTab('artesanos'); };
+  if (tO) tO.onclick = function () { switchTab('oficios'); };
+  if (tC) tC.onclick = function () { switchTab('cursos'); };
+  if (tM) tM.onclick = function () { switchTab('moneda'); };
   if (tF) tF.onclick = function () { switchTab('mios'); };
   if (tG) tG.onclick = function () { switchTab('guia'); };
   var vC = $('negViewCards'), vL = $('negViewList'), vS = $('negViewSectors');
@@ -1056,17 +1245,15 @@ function wireOnce() {
   var q = $('negSearch');
   if (q) q.addEventListener('input', function () { ecoQuery = q.value; ecoPage = 1; render(); });
   var c = $('negCat');
-  if (c) c.onchange = function () { ecoCat = c.value; render(); };
+  if (c) c.onchange = function () { ecoCat = c.value; ecoResetPage(); render(); };
   var s = $('negSector');
-  if (s) s.onchange = function () { ecoSector = s.value; render(); };
+  if (s) s.onchange = function () { ecoSector = s.value; ecoResetPage(); render(); };
   var sm = $('negSoloMoneda');
-  if (sm) sm.onchange = function () { ecoSoloMoneda = sm.checked; render(); };
+  if (sm) sm.onchange = function () { ecoSoloMoneda = sm.checked; ecoResetPage(); render(); };
   var stt = $('negSoloTrueque');
-  if (stt) stt.onchange = function () { ecoSoloTrueque = stt.checked; render(); };
-  var aq = $('negAlmSearch');
-  if (aq) aq.addEventListener('input', function () { almQuery = aq.value; ecoPage = 1; renderAlmacenes(); });
-  var as = $('negAlmSector');
-  if (as) as.onchange = function () { almSector = as.value; ecoPage = 1; renderAlmacenes(); };
+  if (stt) stt.onchange = function () { ecoSoloTrueque = stt.checked; ecoResetPage(); render(); };
+  var sal = $('negSoloAlmacen');
+  if (sal) sal.onchange = function () { ecoSoloAlmacen = sal.checked; ecoResetPage(); render(); };
   var sv = $('negFSave');
   if (sv) sv.onclick = function () {
     var nombre = clean(($('negFNombre') || {}).value, 60).trim();
@@ -1106,10 +1293,8 @@ function wireOnce() {
     var m = $('negFMoneda'); if (m) m.checked = false;
     var t2 = $('negFTrueque'); if (t2) t2.checked = false;
     var a2 = $('negFAlmacen'); if (a2) a2.checked = false;
-    if (rec.tipo === 'curso') switchTab('aprender');
-    else if (rec.tipo === 'artesano' || rec.tipo === 'oficio' || rec.tipo === 'emprendimiento') switchTab('crear');
-    else if (rec.almacen) switchTab('comprar');
-    else switchTab('inicio');
+    var _tabPorTipo = { negocio: 'negocios', emprendimiento: 'emprendimientos', artesano: 'artesanos', oficio: 'oficios', curso: 'cursos' };
+    switchTab(_tabPorTipo[rec.tipo] || 'inicio');
   };
   var cn = $('negFCancel');
   if (cn) cn.onclick = function () {
@@ -1213,7 +1398,7 @@ function setup() {
   try { if (typeof applyVisibility === 'function') applyVisibility(); } catch (e) {}
 }
 
-window.NegociosPenco = { open: open, tab: switchTab, list: todos, store: store, llevarAlCalendario: llevarAlCalendario };
+window.NegociosPenco = { open: open, tab: switchTab, list: todos, store: store, llevarAlCalendario: llevarAlCalendario, linkify: linkify, mapsLink: mapsLink };
 try { document.addEventListener('territorio:listo', function () { try { render(); } catch (e) {} }); } catch (e) {}
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function () { setTimeout(setup, 450); });
 else setTimeout(setup, 450);

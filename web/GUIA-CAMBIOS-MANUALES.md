@@ -44,6 +44,14 @@
 | `neurodiversidad-modulo.js` | 🧠 Neurodiversidad: guía, 8 perfiles, 8 apoyos, AQ-10/ASRS-6, plan acceso | No diagnostica; solo textos |
 | `red-comunitaria-modulo.js` | 📡 Red Comunitaria: guía, Meshtastic, diagnóstico, radioaficionado, mis nodos | Verificar norma SUBTEL vigente |
 | `psicologia-modulo.js` | 🪞 Psicología (comparte datos con neurodiversidad) | Solo textos guía |
+| `hogar-despensa-closet-modulo.js` | 🍯 Mi Despensa + 👕 Mi Closet: inventarios de casa | Agregar/quitar ítems propios |
+| `hogar-herramientas-modulo.js` | 🧰 Mis Herramientas: inventario del taller casero | Agregar herramientas propias |
+| `municipalidad-penco.js` | 🏛️ Municipalidad: trámites, salud, emergencias, historia | Actualizar teléfonos/horarios verificados |
+| `bomberos-penco.js` | 🚒 Bomberos: compañías, prevención, plan de escape | Verificar cuarteles y teléfonos |
+| `apoyo-emergencia.js` | 🆘 Apoyo Emergencia: red de ayuda vecinal | Actualizar puntos de ayuda |
+| `actores-territorio.js` | 🗺️ Actores del Territorio: organizaciones + fichas propias | Agregar organizaciones verificadas |
+| `negocios-penco.js` | 🏪 Economía Local (+ pestaña 🪙 Moneda Social): fichas por tipo/rubro/sector | Agregar fichas con datos verificados en terreno |
+| `moneda-social.js` | 🪙 Moneda Social: guía, billetera, ofertas, transacciones, acuerdos | No tocar lógica salvo que sepas JS (ver §16) |
 
 ---
 
@@ -389,4 +397,28 @@ Notas segunda oleada:
 
 ---
 
-*Última actualización: 2026-09-21 — Mantener esta guía junto a `LEEME.txt`.*
+## 16. Herramientas agregadas 22–28 sep 2026 · tercera oleada: Penco cívico + economía (v1.4.0)
+
+Mismo patrón §15: cada archivo auto-instalable inyecta su botón, crea su `<dialog>` y guarda en `userData().<clave>`. Cabecera de cada archivo = botón, diálogo, pestañas y clave de datos. Todo 100% offline. Los datos territoriales viven en `data/territorios/penco/*.json` (leídos con `territorio.js`).
+
+| Herramienta | Archivo | Botón | Diálogo / pestañas | Datos (`userData()`) |
+|---|---|---|---|---|
+| 🍯 Mi Despensa + 👕 Mi Closet | `hogar-despensa-closet-modulo.js` | Hogar > Casa (2 botones) | `despensaDialog` (Resumen/inventario) + `closetDialog` (Resumen/ropa) | `despensa { items }` + `closet { items }` |
+| 🧰 Mis Herramientas | `hogar-herramientas-modulo.js` | `btnHerramientas` (Hogar) | `herramientasDialog` — inventario de la casa | `herramientas { items }` |
+| 🏛️ Municipalidad Penco | `municipalidad-penco.js` | `btnMuni` (Territorio > Penco) | `muniDialog` — sede, trámites, salud, emergencias, historia + 📌 vencimientos al calendario | `muniPenco` |
+| 🚒 Bomberos Penco | `bomberos-penco.js` | `btnBomberos` (Territorio > Penco) | `bomberosDialog` — compañías, prevención, plan de escape | `bomberosPenco` |
+| 🆘 Apoyo Emergencia | `apoyo-emergencia.js` | Territorio > Penco | `apoyoDialog` — red de ayuda vecinal | `apoyoPenco` |
+| 🗺️ Actores del Territorio | `actores-territorio.js` | `btnActores` (Territorio > Penco) | `actoresDialog` — organizaciones + fichas propias y seguidos | `actores { mios, siguiendo }` |
+| 🏪 Economía Local | `negocios-penco.js` | `btnNegocios` (Territorio > Penco) | `negociosDialog` — Inicio / Negocios / Emprendimientos / Artesanos / Oficios / Cursos / 🪙 Moneda Social / Míos / Guía (vistas 📇/📋/🗂️, filtros, ➕ fichas propias, 📌 visitas al calendario) | `negociosPenco { mios, favs, visitas }` |
+| 🪙 Moneda Social | `moneda-social.js` | `btnMoneda` (Comunidad > Red Penco) + **pestaña `tabNegMoneda` dentro de Economía Local** (v1.4.0) | `monedaDialog` — Guía / Billetera (tope de confianza) / Ofertas y Pedidos / Transacciones / Acuerdos | `monedaSocial { cuenta, txs, ofertas, acuerdos, tratos }` |
+
+Notas tercera oleada:
+- ❓ Guía in-app actualizada 2026-09-28 (v1.4.0): mapa rápido (Municipalidad, Bomberos, Apoyo, Actores, Economía + Moneda), tarjeta Territorio (párrafo “Penco cívico · Economía”), tarjeta Hogar/Comunidad (Despensa & Closet, Herramientas, Moneda Social, Apoyo) y “Tips & Novedades v1.4.0”.
+- 🪙 Moneda Social vive en **dos puertas, una sola fuente**: módulo propio (`monedaDialog`) + sección completa dentro de Economía Local (`negMonPanel`: billetera, ofertas, transacciones, fichas con 🪙, guía mínima). Ambas leen `window.MonedaSocial.store()` — no duplicar datos.
+- `sw.js` → `cal13-v37-offline` (agrega `negocios-penco.js?v=2`); `index.html` sube `negocios-penco.js?v=1` → `?v=2`. `moneda-social.js` sin cambios: queda en `?v=1`.
+- `package.json` raíz → **1.4.0**; `web/package.json` → 1.4.0 + se agregan `negocios-penco.js` y `moneda-social.js` a `build.files` (faltaban).
+- Para recompilar el portable: `npm run build` (electron-builder --win portable) → sale `dist-empaquetado/Calendario 13 Lunas 1.4.0.exe`. Borra el `.exe` viejo 1.3.0 si no lo quieres duplicar.
+
+---
+
+*Última actualización: 2026-09-28 (v1.4.0) — Mantener esta guía junto a `LEEME.txt`.*

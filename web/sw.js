@@ -1,6 +1,6 @@
 // Service Worker — Calendario 13 Lunas (offline-first, tolerante a versiones ?v=)
-// v36: + negocios-penco.js + moneda-social.js (economía local y moneda social)
-const CACHE = 'cal13-v36-offline';
+// v37: negocios-penco.js?v=2 (sección 🪙 Moneda Social dentro de 🏪 Economía Local)
+const CACHE = 'cal13-v37-offline';
 
 // Lista completa de archivos que usa index.html (bare + con ?v=).
 // Si se agrega un JS nuevo en index.html, agregarlo aquí también (bare y ?v=).
@@ -118,6 +118,7 @@ const CORE = [
   './actores-territorio.js?v=1',
   './negocios-penco.js',
   './negocios-penco.js?v=1',
+  './negocios-penco.js?v=2',
   './moneda-social.js',
   './moneda-social.js?v=1',
   './donate.json',

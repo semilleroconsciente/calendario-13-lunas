@@ -1,6 +1,6 @@
 {
   "name": "calendario-13-lunas",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "Calendario de las 13 Lunas - Mari Küla Küyen - Penco, Bío-Bío, Chile",
   "main": "main.js",
   "scripts": {
@@ -61,6 +61,8 @@
       "bomberos-penco.js",
       "apoyo-emergencia.js",
       "actores-territorio.js",
+      "negocios-penco.js",
+      "moneda-social.js",
       "sw.js",
       "manifest.json",
       "donate.json",
