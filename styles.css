@@ -63,7 +63,7 @@ body {
 .moon-btn.dft .num { color: #c9a0dc; }
 .sidebar-foot { margin-top: 18px; font-size: 11px; color: var(--muted); word-break: break-all; }
 
-#main { flex: 1; overflow-y: auto; padding: 22px 28px 40px; }
+#main { flex: 1; min-width: 0; overflow-y: auto; padding: 22px 28px 40px; }
 
 #lunaHeader { margin-bottom: 18px; }
 .lh-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
@@ -73,7 +73,7 @@ body {
   padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600;
   white-space: nowrap; color: #10142c;
 }
-#lunaDesc { margin-top: 10px; max-width: 900px; line-height: 1.55; color: #cdd3ee; font-style: italic; }
+#lunaDesc { margin-top: 10px; max-width: 900px; line-height: 1.55; color: var(--text); font-style: italic; }
 
 #phaseChips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
 .chip {
@@ -194,7 +194,7 @@ textarea {
 .tide-ventana { font-size: 11px; color: var(--muted); }
 .tide-curve { width: 100%; height: auto; background: var(--bg2); border: 1px solid var(--line); border-radius: 8px; padding: 4px; }
 .tide-best { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; margin-top: 8px; }
-.tide-list { margin: 8px 0 0 18px; font-size: 12px; color: #cdd3ee; line-height: 1.55; }
+.tide-list { margin: 8px 0 0 18px; font-size: 12px; color: var(--text); line-height: 1.55; }
 .tide-list li { margin-bottom: 4px; }
 .tide-acts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
 @media (max-width: 920px) { .tide-acts { grid-template-columns: 1fr; } }
@@ -228,6 +228,7 @@ textarea {
 dialog {
   background: var(--bg2); color: var(--text); border: 1px solid var(--line);
   border-radius: 14px; padding: 22px 26px; width: 430px;
+  max-width: calc(100vw - 24px); max-height: 88vh; overflow-y: auto;
 }
 dialog::backdrop { background: rgba(4, 6, 16, 0.7); }
 dialog h3 { color: var(--accent); margin-bottom: 2px; }
@@ -303,7 +304,7 @@ input::placeholder, textarea::placeholder { color: var(--muted); opacity: 1; }
   padding: 10px 14px; margin-bottom: 10px;
 }
 #siembraContent .si-card h4, #siembraHarvestBox .si-card h4 { color: var(--accent); margin-bottom: 4px; }
-#siembraContent .si-card p, #siembraHarvestBox .si-card p { font-size: 13px; color: #cdd3ee; margin-bottom: 4px; }
+#siembraContent .si-card p, #siembraHarvestBox .si-card p { font-size: 13px; color: var(--text); margin-bottom: 4px; }
 #siembraContent .si-card .si-sem, #siembraHarvestBox .si-card .si-sem { color: #8fd694; }
 #siembraContent .si-card .si-tar, #siembraHarvestBox .si-card .si-tar { color: #8fc7e8; }
 #siembraContent .si-luna-card {
@@ -324,7 +325,7 @@ input::placeholder, textarea::placeholder { color: var(--muted); opacity: 1; }
 }
 .si-card:last-child { margin-bottom: 0; }
 .si-card h4 { color: var(--accent); margin-bottom: 6px; font-size: 13.5px; line-height: 1.4; }
-.si-card p { font-size: 12.5px; color: #cdd3ee; margin-bottom: 6px; line-height: 1.55; }
+.si-card p { font-size: 12.5px; color: var(--text); margin-bottom: 6px; line-height: 1.55; }
 .si-card p:last-child { margin-bottom: 0; }
 .si-card .si-sem { color: #8fd694; }
 .si-card .si-tar { color: #8fc7e8; }
@@ -342,7 +343,7 @@ input::placeholder, textarea::placeholder { color: var(--muted); opacity: 1; }
   font-size: 16px; background: var(--panel); border: 1px solid var(--line); border-radius: 9px;
 }
 .fin-tip-head h4 { margin: 0; flex: 1; min-width: 0; }
-.fin-tip-desc { font-size: 12.5px; color: #cdd3ee; line-height: 1.55; margin: 0 0 6px; }
+.fin-tip-desc { font-size: 12.5px; color: var(--text); line-height: 1.55; margin: 0 0 6px; }
 .fin-tip-ej { font-size: 11px; color: var(--muted); background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 6px 9px; margin: 0 0 6px; line-height: 1.5; }
 .fin-tip-tip { font-size: 11px; color: var(--gold); background: rgba(232,197,106,0.08); border: 1px dashed rgba(232,197,106,0.4); border-radius: 8px; padding: 6px 9px; margin: 0; line-height: 1.5; }
 
@@ -358,7 +359,7 @@ input::placeholder, textarea::placeholder { color: var(--muted); opacity: 1; }
 .lawen-grid { display: grid; grid-template-columns: 86px minmax(0,1fr); gap: 6px 10px; padding: 10px 12px; font-size: 11.5px; line-height: 1.55; align-items: start; }
 .lawen-label { font-weight: 700; font-size: 10.5px; letter-spacing: 0.6px; color: var(--gold); background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 2px 4px; text-align: center; white-space: nowrap; }
 .lawen-label.dim { color: var(--muted); }
-.lawen-val { min-width: 0; color: #cdd3ee; overflow-wrap: break-word; }
+.lawen-val { min-width: 0; color: var(--text); overflow-wrap: break-word; }
 .lawen-warn { margin: 0 12px 12px; background: rgba(231,110,138,0.08); border: 1px solid rgba(231,110,138,0.3); border-radius: 8px; padding: 7px 10px; font-size: 11px; line-height: 1.5; color: #ff9a9a; overflow-wrap: break-word; }
 
 /* Evita texto cortado dentro de dialogs en pantallas angostas */
@@ -371,7 +372,7 @@ dialog .si-card, dialog .menstrual-card, dialog .help-card { min-width: 0; max-w
 }
 .search-hit:hover { background: var(--card-hover); }
 .search-hit .sh-where { color: var(--gold); font-size: 12px; }
-.search-hit .sh-text { font-size: 13px; color: #cdd3ee; }
+.search-hit .sh-text { font-size: 13px; color: var(--text); }
 #searchResults { max-height: 50vh; overflow-y: auto; margin-bottom: 12px; }
 #searchDialog { width: 480px; }
 
@@ -385,6 +386,41 @@ body[data-theme="noche"] { --bg:#0b1026; --bg2:#111834; --panel:#161e3f; --card:
 body[data-theme="claro"] { --bg:#f4f1e8; --bg2:#ffffff; --panel:#e8e5dc; --card:#ffffff; --card-hover:#f0ece0; --line:#d5cfc0; --text:#2b2418; --muted:#7a6e5a; --gold:#7d6220; --accent:#8a6d24; background: radial-gradient(ellipse at 70% -10%, #fffaf0 0%, #f4f1e8 55%) !important; }
 body[data-theme="claro"] #sidebar { background: rgba(255,251,240,0.92); }
 body[data-theme="claro"] .day-card.today { outline-color: #8a6d24; }
+/* === Tema claro: contraste AA sobre fondo crema/blanco ===
+   Los acentos pastel del modo oscuro (#ffd98a, #c9b8f0, #8fc7e8, #ecd9a8...)
+   son ilegibles sobre blanco: aquí se oscurecen manteniendo su identidad. */
+body[data-theme="claro"] #lunaDesc { color: #4a4132; }
+body[data-theme="claro"] .dlg-quote,
+body[data-theme="claro"] #todayView .today-quote,
+body[data-theme="claro"] .today-quote { color: #6b5312; background: rgba(125,98,32,0.08); }
+body[data-theme="claro"] .day-card .dc-sun,
+body[data-theme="claro"] .tide-mini td:first-child { color: #8a5a00; }
+body[data-theme="claro"] .day-card .dc-moon { color: #5b4a9e; }
+body[data-theme="claro"] .day-card .dc-tide,
+body[data-theme="claro"] .wp-hour .hp,
+body[data-theme="claro"] .si-card .si-tar,
+body[data-theme="claro"] #siembraContent .si-card .si-tar,
+body[data-theme="claro"] #siembraHarvestBox .si-card .si-tar { color: #0f6a9e; }
+body[data-theme="claro"] .dc-clima { color: #4a5a8a; }
+body[data-theme="claro"] .si-card .si-sem,
+body[data-theme="claro"] #siembraContent .si-card .si-sem,
+body[data-theme="claro"] #siembraHarvestBox .si-card .si-sem { color: #1e7a34; }
+body[data-theme="claro"] .lawen-warn,
+body[data-theme="claro"] .prep-caution { color: #a83232; }
+body[data-theme="claro"] .asoc-legend-item.good,
+body[data-theme="claro"] .asoc-label.good,
+body[data-theme="claro"] .pill.good,
+body[data-theme="claro"] .prep-tipo.good { color: #1e7a34; background: #1e7a3414; border-color: #1e7a3455; }
+body[data-theme="claro"] .asoc-legend-item.bad,
+body[data-theme="claro"] .asoc-label.bad,
+body[data-theme="claro"] .pill.bad,
+body[data-theme="claro"] .prep-tipo.bad,
+body[data-theme="claro"] .asoc-legend-item.bad { color: #a83232; background: #a8323214; border-color: #a8323244; }
+body[data-theme="claro"] .prep-tipo.fungi { color: #0f5fc0; background: #0f5fc014; border-color: #0f5fc044; }
+body[data-theme="claro"] .mem-schulte-cell.done { background: #dcefe2; border-color: #1e7a34; color: #1e7a34; }
+body[data-theme="claro"] .dc-mens.fertile { color: #1e7a34; background: #1e7a3414; border-color: #1e7a3455; }
+body[data-theme="claro"] .mens-dot.fertile { background: #1e7a34; }
+body[data-theme="claro"] #statusMsg { color: #1e7a34; }
 body[data-theme="bosque"] { --bg:#0e1a12; --bg2:#16261c; --panel:#1e3526; --card:#243d2e; --card-hover:#2e4d3a; --line:#3a5a44; --text:#e0f0e6; --muted:#8fb8a0; --gold:#a9d18e; --accent:#c3e0ab; background: radial-gradient(ellipse at 70% -10%, #1c3a2a 0%, #0e1a12 55%) !important; }
 body[data-theme="oceano"] { --bg:#0a1a2a; --bg2:#102338; --panel:#14304d; --card:#183a5c; --card-hover:#1e4a75; --line:#2a5a8a; --text:#dff0ff; --muted:#8fb8dd; --gold:#7ac8e6; --accent:#a0ddf0; background: radial-gradient(ellipse at 70% -10%, #14304d 0%, #0a1a2a 55%) !important; }
 body[data-theme="atardecer"] { --bg:#1a120e; --bg2:#2a1c16; --panel:#3a2418; --card:#4a3020; --card-hover:#5a3d28; --line:#7a4d30; --text:#fde8d0; --muted:#c9a48a; --gold:#f0a060; --accent:#f7c08a; background: radial-gradient(ellipse at 70% -10%, #4a3020 0%, #1a120e 55%) !important; }
@@ -450,7 +486,7 @@ body[data-theme="medianoche"] { --bg:#050508; --bg2:#0a0a10; --panel:#141418; --
 .tz-num { flex: 0 0 auto; width: 24px; height: 24px; border-radius: 50%; background: var(--gold); color: #1a1a1a; font-weight: 800; font-size: 12px; display: flex; align-items: center; justify-content: center; }
 .tz-ico { font-size: 16px; }
 .tz-title { font-weight: 700; font-size: 13px; color: var(--text); }
-.tz-body { padding: 0 12px 12px 45px; font-size: 12px; line-height: 1.6; color: #cdd3ee; }
+.tz-body { padding: 0 12px 12px 45px; font-size: 12px; line-height: 1.6; color: var(--text); }
 .tz-body p { margin: 6px 0; }
 .tz-body .muted { font-size: 11px; }
 .tz-callout { border-radius: 9px; padding: 8px 10px; margin: 8px 0; font-size: 12px; line-height: 1.55; }
@@ -514,7 +550,7 @@ body[data-theme="medianoche"] { --bg:#050508; --bg2:#0a0a10; --panel:#141418; --
 .esp-sub { font-size: 11px; color: var(--gold); }
 .esp-level { font-size: 10px; white-space: nowrap; }
 .esp-body { padding: 10px 12px; display: flex; flex-direction: column; gap: 8px; }
-.esp-steps { margin: 0; padding-left: 18px; font-size: 12px; line-height: 1.55; color: #cdd3ee; }
+.esp-steps { margin: 0; padding-left: 18px; font-size: 12px; line-height: 1.55; color: var(--text); }
 .esp-steps li { margin-bottom: 3px; }
 .esp-meta { display: flex; flex-wrap: wrap; gap: 6px; }
 .esp-pill { font-size: 11px; padding: 3px 8px; border-radius: 999px; border: 1px solid var(--line); background: var(--panel); color: var(--muted); }
@@ -529,12 +565,12 @@ body[data-theme="medianoche"] { --bg:#050508; --bg2:#0a0a10; --panel:#141418; --
 .help-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .help-card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 12px; }
 .help-card h4 { color: var(--gold); margin-bottom: 6px; font-size: 13px; }
-.help-card p { font-size: 13px; color: #cdd3ee; margin-bottom: 6px; line-height: 1.45; }
+.help-card p { font-size: 13px; color: var(--text); margin-bottom: 6px; line-height: 1.45; }
 .discipline-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 @media (max-width:560px){ .discipline-grid{ grid-template-columns:1fr; } }
 .discipline-card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 12px; }
 .discipline-card h4 { color: var(--accent); margin-bottom: 6px; font-size: 13px; }
-.discipline-card p { font-size: 12px; color: #cdd3ee; margin-bottom: 4px; line-height: 1.45; }
+.discipline-card p { font-size: 12px; color: var(--text); margin-bottom: 4px; line-height: 1.45; }
 /* Disciplina v2 */
 .disc-stats { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin:10px 0; }
 @media (max-width:560px){ .disc-stats{ grid-template-columns:repeat(2,1fr); } }
@@ -617,7 +653,7 @@ body[data-theme="medianoche"] { --bg:#050508; --bg2:#0a0a10; --panel:#141418; --
 .hormonal-tooltip { position: absolute; background: var(--card); border: 1px solid var(--line); border-radius: 6px; padding: 4px 8px; font-size: 11px; color: var(--gold); pointer-events: none; transform: translateX(-50%); white-space: nowrap; }
 .hormonal-tooltip.hidden { display: none; }
 .horm-suggest-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
-.horm-suggest-card { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; font-size: 11.5px; line-height: 1.45; color: #cdd3ee; }
+.horm-suggest-card { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; font-size: 11.5px; line-height: 1.45; color: var(--text); }
 .medic-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .medic-form { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
 .medic-list { max-height: 360px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
@@ -746,7 +782,7 @@ body[data-theme="medianoche"] { --bg:#050508; --bg2:#0a0a10; --panel:#141418; --
 .prep-body{padding:10px 12px;display:flex;flex-direction:column;gap:8px}
 .prep-row{font-size:11px;line-height:1.5}
 .prep-label{font-size:11px;font-weight:700;color:var(--gold);display:block;margin-bottom:2px}
-.prep-row p{margin:0;color:#cdd3ee}
+.prep-row p{margin:0;color:var(--text)}
 .prep-caution{font-size:11px;color:#ff9a9a;background:#ff9a9a12;border:1px solid #ff9a9a33;border-radius:8px;padding:8px}
 .shop-cat { font-size: 11px; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; margin-top: 8px; }
 .shop-item { display: flex; align-items: center; gap: 8px; padding: 6px 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); }
@@ -772,7 +808,7 @@ body[data-theme="medianoche"] { --bg:#050508; --bg2:#0a0a10; --panel:#141418; --
 .astro-date b { display:block; font-size:20px; color:var(--gold); line-height:1; }
 .astro-date span { font-size:10px; color:var(--muted); text-transform:uppercase; }
 .astro-body { flex:1; min-width:0; }
-.astro-body p { margin:4px 0 0; color:#cdd3ee; line-height:1.45; }
+.astro-body p { margin:4px 0 0; color:var(--text); line-height:1.45; }
 .astro-top { display:flex; gap:8px; align-items:center; justify-content:space-between; flex-wrap:wrap; }
 .astro-name { font-weight:700; font-size:13px; color:var(--text); }
 .astro-cd { font-size:10px; white-space:nowrap; }
@@ -829,27 +865,58 @@ body[data-theme="medianoche"] { --bg:#050508; --bg2:#0a0a10; --panel:#141418; --
 /* Accesibilidad */
 :focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 /* Tamaños de letra (Ajustes → 🔠): parte en Normal y sube.
-   zoom escala TODO incluido texto con px fijo e inline (ej. 11px de diálogos),
-   que body{font-size} por sí solo no mueve. font-size queda como respaldo
+   El zoom va en <html> (= zoom de página): escala TODO incluido texto con
+   px fijo e inline, sin romper 100vh/vw/fixed/diálogos, porque el viewport
+   escala junto con el contenido. body{font-size} queda como respaldo
    para navegadores sin zoom. Cada nivel es visiblemente mayor al anterior. */
-body[data-font="m"] { font-size: 16px; zoom: 1; }
-body[data-font="l"] { font-size: 17px; zoom: 1.08; }
-body[data-font="xl"] { font-size: 18px; zoom: 1.16; }
-body[data-font="xxl"] { font-size: 19px; zoom: 1.26; }
-body[data-font="3xl"] { font-size: 20px; zoom: 1.36; }
-body[data-font="4xl"] { font-size: 21px; zoom: 1.48; }
+html[data-font="m"] { zoom: 1; }
+html[data-font="l"] { zoom: 1.08; }
+html[data-font="xl"] { zoom: 1.16; }
+html[data-font="xxl"] { zoom: 1.26; }
+html[data-font="3xl"] { zoom: 1.36; }
+html[data-font="4xl"] { zoom: 1.48; }
+body[data-font="m"] { font-size: 16px; }
+body[data-font="l"] { font-size: 17px; }
+body[data-font="xl"] { font-size: 18px; }
+body[data-font="xxl"] { font-size: 19px; }
+body[data-font="3xl"] { font-size: 20px; }
+body[data-font="4xl"] { font-size: 21px; }
 body.large-text { font-size: 17px; }
 body.large-text .day-card { min-height: 124px; }
-body.large-text #lunaDesc, body.large-text .chip, body.large-text .btn { font-size: 15px; }
 body[data-font="xl"] .day-card { min-height: 134px; }
 body[data-font="xxl"] .day-card { min-height: 144px; }
 body[data-font="3xl"] .day-card { min-height: 156px; }
 body[data-font="4xl"] .day-card { min-height: 168px; }
-body[data-font="l"] #lunaDesc, body[data-font="l"] .chip, body[data-font="l"] .btn { font-size: 1em; }
-body[data-font="xl"] #lunaDesc, body[data-font="xl"] .chip, body[data-font="xl"] .btn { font-size: 1.05em; }
-body[data-font="xxl"] #lunaDesc, body[data-font="xxl"] .chip, body[data-font="xxl"] .btn { font-size: 1.12em; }
-body[data-font="3xl"] #lunaDesc, body[data-font="3xl"] .chip, body[data-font="3xl"] .btn { font-size: 1.2em; }
-body[data-font="4xl"] #lunaDesc, body[data-font="4xl"] .chip, body[data-font="4xl"] .btn { font-size: 1.3em; }
+/* Guardas para que al agrandar nada quede oculto: envolver y desplazar */
+#gridWrap { overflow-x: auto; }
+.dlg-actions { flex-wrap: wrap; }
+body.large-text .lh-top { flex-wrap: wrap; }
+body.large-text #seasonChip { white-space: normal; }
+body.large-text .day-card .dc-phases,
+body.large-text .day-card .dc-sun,
+body.large-text .day-card .dc-moon,
+body.large-text .day-card .dc-tide { white-space: normal; }
+body.large-text .hora-text,
+body.large-text .today-agenda-item .tx { white-space: normal; }
+/* Compensación del zoom: zoom multiplica también vw/vh, así que los techos
+   en vw/vh se dividen por el mismo factor para que el encaje efectivo no cambie.
+   El !important vence las reglas por ID de cada diálogo; el contenido que sobre
+   se desplaza dentro del diálogo (overflow ya definido), nada queda oculto. */
+html[data-font="m"] dialog { max-width: calc(100vw - 24px); max-height: 88vh; max-height: 88dvh; }
+html[data-font="l"] dialog { max-width: calc((100vw - 24px) / 1.08) !important; max-height: 81.48vh !important; max-height: 81.48dvh !important; }
+html[data-font="xl"] dialog { max-width: calc((100vw - 24px) / 1.16) !important; max-height: 75.86vh !important; max-height: 75.86dvh !important; }
+html[data-font="xxl"] dialog { max-width: calc((100vw - 24px) / 1.26) !important; max-height: 69.84vh !important; max-height: 69.84dvh !important; }
+html[data-font="3xl"] dialog { max-width: calc((100vw - 24px) / 1.36) !important; max-height: 64.71vh !important; max-height: 64.71dvh !important; }
+html[data-font="4xl"] dialog { max-width: calc((100vw - 24px) / 1.48) !important; max-height: 59.46vh !important; max-height: 59.46dvh !important; }
+/* En PC el body mide 100vh: se compensa igual para no generar scroll de página.
+   En móvil el body ya es de alto automático y no necesita compensación. */
+@media (min-width: 921px) {
+  html[data-font="l"] body { height: 92.59vh; }
+  html[data-font="xl"] body { height: 86.21vh; }
+  html[data-font="xxl"] body { height: 79.37vh; }
+  html[data-font="3xl"] body { height: 73.53vh; }
+  html[data-font="4xl"] body { height: 67.57vh; }
+}
 .font-pills { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
 .font-pill { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 4px; }
 .font-pill .fp-a { font-weight: 700; color: var(--accent); line-height: 1; }
@@ -1079,5 +1146,5 @@ body[data-mview="hoy"] #tidesPanel { display: none; }
 /* === Nuevos modulos (14 secciones) === */
 #forrajeDialog, #bodegaDialog, #despensaDialog, #closetDialog, #herramientasDialog, #plantasDialog, #trafDialog, #aguaDialog, #nudosDialog, #tallerDialog, #mecanicaDialog, #truequeDialog, #mingaDialog, #cieloDialog, #epewDialog, #rutinaDialog, #fertiDialog { width: 680px; max-width: 96vw; max-height: 88vh; overflow-y: auto; }
 #forrajeFichas .lawen-card, #nudosList .si-card { margin: 0; }
-.esp-steps { margin: 0; padding-left: 18px; font-size: 12px; line-height: 1.55; color: #cdd3ee; }
+.esp-steps { margin: 0; padding-left: 18px; font-size: 12px; line-height: 1.55; color: var(--text); }
 .esp-steps li { margin-bottom: 3px; padding: 2px 4px; border-radius: 6px; }

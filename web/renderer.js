@@ -1549,14 +1549,14 @@ function renderDFT() {
       <div class="dc-sun">☀ ${sun.rise ? cal.fmtTime.format(new Date(sun.rise)) : '--'} – ${sun.set ? cal.fmtTime.format(new Date(sun.set)) : '--'}</div>
       <div class="dc-moon" title="Salida y puesta de la luna en Penco (aprox.)">🌙 ${dftMoonRise} – ${dftMoonSet}</div>
       ${frDft ? `<blockquote class="dlg-quote">«${escapeHtml(frDft.t)}»<span class="q-a">— ${escapeHtml(frDft.a || 'Anónimo')}</span></blockquote>` : ''}
-      <div style="margin-top:10px;line-height:1.6;font-size:13px;color:#cdd3ee">${DFT.texto1}</div>
+      <div style="margin-top:10px;line-height:1.6;font-size:13px;color:var(--text)">${DFT.texto1}</div>
       <p style="margin-top:10px;color:var(--accent);font-size:14px"><b>${DFT.sub2}</b></p>
-      <p style="margin-top:6px;line-height:1.55;font-size:13px;color:#cdd3ee">${DFT.texto2}</p>
-      <p style="margin-top:6px;line-height:1.55;font-size:13px;color:#cdd3ee">${DFT.texto3}</p>
+      <p style="margin-top:6px;line-height:1.55;font-size:13px;color:var(--text)">${DFT.texto2}</p>
+      <p style="margin-top:6px;line-height:1.55;font-size:13px;color:var(--text)">${DFT.texto3}</p>
       <p style="margin-top:10px;color:var(--accent);font-size:14px"><b>${DFT.sub3}</b></p>
-      <p style="margin-top:6px;line-height:1.55;font-size:13px;color:#cdd3ee">${DFT.texto4}</p>
-      <p style="line-height:1.55;font-size:13px;color:#cdd3ee">${DFT.texto5}</p>
-      <p style="margin-top:6px;line-height:1.55;font-size:13px;color:#cdd3ee">${DFT.texto6}</p>
+      <p style="margin-top:6px;line-height:1.55;font-size:13px;color:var(--text)">${DFT.texto4}</p>
+      <p style="line-height:1.55;font-size:13px;color:var(--text)">${DFT.texto5}</p>
+      <p style="margin-top:6px;line-height:1.55;font-size:13px;color:var(--text)">${DFT.texto6}</p>
       ${evs.map(e => `<div class="dc-tide" style="margin-top:8px">${e.simbolo} ${e.tipo.replace('-', ' ')} · ${cal.fmtTime.format(new Date(e.utcMs))}</div>`).join('')}
     </div>`;
 
@@ -2624,7 +2624,7 @@ function renderSiembraAsociaciones(filterText){
   html+='</div>';
   html+='</div>';
   // Bloque Tres Hermanas destacado ordenado
-  html+='<div class="si-card asoc-milpa" style="border-color:var(--gold);display:flex;gap:12px;align-items:flex-start"><span style="font-size:28px">🌽</span><div><h4>Las Tres Hermanas — milpa mapuche</h4><p style="font-size:12px;color:#cdd3ee">Técnica ancestral: <b>Maíz</b> es tutor del <b>Poroto</b> (fija nitrógeno) y <b>Zapallo</b> cubre suelo, guarda humedad y frena maleza. Juntas producen más que separadas.</p><p class="muted" style="font-size:11px">Espacio: maíz 40 cm, poroto al pie, zapallo 1,2 m entre mata. Siembra las 3 en la misma luna de Pewü.</p></div></div>';
+  html+='<div class="si-card asoc-milpa" style="border-color:var(--gold);display:flex;gap:12px;align-items:flex-start"><span style="font-size:28px">🌽</span><div><h4>Las Tres Hermanas — milpa mapuche</h4><p style="font-size:12px;color:var(--text)">Técnica ancestral: <b>Maíz</b> es tutor del <b>Poroto</b> (fija nitrógeno) y <b>Zapallo</b> cubre suelo, guarda humedad y frena maleza. Juntas producen más que separadas.</p><p class="muted" style="font-size:11px">Espacio: maíz 40 cm, poroto al pie, zapallo 1,2 m entre mata. Siembra las 3 en la misma luna de Pewü.</p></div></div>';
   if(!list.length){
     html+='<p class="muted" style="margin-top:14px;text-align:center">Sin resultados para “'+escapeHtml(ft)+'”'+(asocFamiliaFilter?' en '+escapeHtml(asocFamiliaFilter):'')+'. Prueba con otro término.</p>';
   } else {
@@ -2704,7 +2704,7 @@ function renderSiembraPreparados(){
     });
     html+='</div>';
   }
-  html+='<div class="si-card" style="border-color:var(--gold);margin-top:12px"><h4>📅 Calendario de preparados — por luna</h4><p style="font-size:11px;color:#cdd3ee"><b>Pukem (invierno):</b> cola de caballo + caldo bordelés preventivo. <b>Pewü:</b> ortiga + jabón potásico para brotes. <b>Walüng:</b> neem + ajo-ají para mosca blanca. <b>Rimü:</b> sulfocálcico + té de compost para guardar.</p><p class="muted" style="font-size:10px">Aplica siempre al atardecer, sin viento sur. Alterna preparados (no repitas cobre >3 veces). Lava hortalizas antes de consumir y respeta carencias.</p></div>';
+  html+='<div class="si-card" style="border-color:var(--gold);margin-top:12px"><h4>📅 Calendario de preparados — por luna</h4><p style="font-size:11px;color:var(--text)"><b>Pukem (invierno):</b> cola de caballo + caldo bordelés preventivo. <b>Pewü:</b> ortiga + jabón potásico para brotes. <b>Walüng:</b> neem + ajo-ají para mosca blanca. <b>Rimü:</b> sulfocálcico + té de compost para guardar.</p><p class="muted" style="font-size:10px">Aplica siempre al atardecer, sin viento sur. Alterna preparados (no repitas cobre >3 veces). Lava hortalizas antes de consumir y respeta carencias.</p></div>';
   pBox.innerHTML=html;
   const inp=$('prepSearch'); if(inp){ inp.oninput=()=>{ prepSearch=inp.value; renderSiembraPreparados(); inp.focus(); try{const v=inp.value; inp.setSelectionRange(v.length,v.length);}catch{} }; }
   const sel=$('prepTipo'); if(sel) sel.onchange=()=>{ prepFilterTipo=sel.value; renderSiembraPreparados(); };
@@ -3740,7 +3740,7 @@ function renderEkadashi() {
         <div style="background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px"><b style="color:var(--gold)">📜 ¿De dónde viene?</b><p class="muted" style="font-size:11px;margin:4px 0 0">Día querido por Vishnu, diosa que vence al demonio Murdanava, Krishna lo explica a Yudhishthira. <a href="#" data-eka-goto="historia" style="color:var(--accent)">Leer historia →</a></p></div>
       </div>
       <details style="background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px;margin-bottom:8px"><summary style="cursor:pointer;color:var(--accent);font-weight:600">🥗 Práctica en 4 pasos (resumen)</summary>
-        <ol style="margin:6px 0 0 18px;font-size:12px;color:#cdd3ee;line-height:1.5">
+        <ol style="margin:6px 0 0 18px;font-size:12px;color:var(--text);line-height:1.5">
           <li><b>Víspera (Dashami):</b> cena liviana antes de las 20:00.</li>
           <li><b>Ekadashi:</b> sin granos/legumbres/carnes/alcohol. Fruta, verdura, agua, infusiones.</li>
           <li><b>Actitud:</b> calma, caminata, meditar 10 min.</li>
@@ -3753,7 +3753,7 @@ function renderEkadashi() {
     </div>
     <div data-eka-panel="ayuno" style="display:none">
       <div style="background:linear-gradient(135deg,#2a2410,#1d1a12);border:1px solid var(--gold);border-radius:8px;padding:10px;margin-bottom:8px">
-      <p style="font-size:12px;color:#cdd3ee;margin:0 0 8px"><b>🍵 El ayuno no es castigo, es descanso.</b> Elige tu nivel sin culpa:</p>
+      <p style="font-size:12px;color:var(--text);margin:0 0 8px"><b>🍵 El ayuno no es castigo, es descanso.</b> Elige tu nivel sin culpa:</p>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
         <div style="background:rgba(0,0,0,.25);border:1px solid var(--line);border-radius:8px;padding:8px"><b style="color:#8ee6a0;font-size:12px">🌱 Nivel 1 — Suave</b><p class="muted" style="font-size:11px;margin:4px 0 0">Sin carnes, alcohol ni ultraprocesados. Fruta + verdura cocida + frutos secos. Ideal si trabajas o cuidas a otros.</p></div>
         <div style="background:rgba(0,0,0,.25);border:1px solid var(--line);border-radius:8px;padding:8px"><b style="color:#d4a947;font-size:12px">🍎 Nivel 2 — Phalahara</b><p class="muted" style="font-size:11px;margin:4px 0 0">Solo fruta, frutos secos, leche/yogur si toleras, agua e infusiones. Sin arroz, pan, fideos, porotos, lentejas, avena ni mote.</p></div>
@@ -3761,11 +3761,11 @@ function renderEkadashi() {
         <div style="background:rgba(0,0,0,.25);border:1px solid var(--line);border-radius:8px;padding:8px"><b style="color:#e08a8a;font-size:12px">🌑 Nivel 4 — Nirjala</b><p class="muted" style="font-size:11px;margin:4px 0 0">Sin agua ni comida de amanecer a amanecer. <b>Solo con guía</b> (1 vez/año). No lo intentes sin preparación.</p></div>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
-        <div style="background:#10240f;border:1px solid #2c5a2e;border-radius:8px;padding:8px"><b style="color:#8ee6a0;font-size:12px">✅ SÍ</b><ul style="margin:4px 0 0 16px;font-size:11px;color:#cdd3ee;line-height:1.5"><li>Frutas, papas, camote, zapallo, zanahoria</li><li>Maní, nuez, almendra, leche, yogur</li><li>Miel, agua, limonada, infusiones</li></ul></div>
-        <div style="background:#2a1212;border:1px solid #6b2a2a;border-radius:8px;padding:8px"><b style="color:#e08a8a;font-size:12px">🚫 NO</b><ul style="margin:4px 0 0 16px;font-size:11px;color:#cdd3ee;line-height:1.5"><li>Arroz, pan, fideos, avena, mote, quinoa</li><li>Porotos, lentejas, garbanzos, soya</li><li>Carnes, embutidos, huevo, alcohol, frituras</li></ul></div>
+        <div style="background:#10240f;border:1px solid #2c5a2e;border-radius:8px;padding:8px"><b style="color:#8ee6a0;font-size:12px">✅ SÍ</b><ul style="margin:4px 0 0 16px;font-size:11px;color:var(--text);line-height:1.5"><li>Frutas, papas, camote, zapallo, zanahoria</li><li>Maní, nuez, almendra, leche, yogur</li><li>Miel, agua, limonada, infusiones</li></ul></div>
+        <div style="background:#2a1212;border:1px solid #6b2a2a;border-radius:8px;padding:8px"><b style="color:#e08a8a;font-size:12px">🚫 NO</b><ul style="margin:4px 0 0 16px;font-size:11px;color:var(--text);line-height:1.5"><li>Arroz, pan, fideos, avena, mote, quinoa</li><li>Porotos, lentejas, garbanzos, soya</li><li>Carnes, embutidos, huevo, alcohol, frituras</li></ul></div>
       </div>
       <b style="color:var(--gold);font-size:12px">🕰️ Horario (America/Santiago)</b>
-      <ol style="margin:6px 0 8px 18px;font-size:12px;color:#cdd3ee;line-height:1.55">
+      <ol style="margin:6px 0 8px 18px;font-size:12px;color:var(--text);line-height:1.55">
         <li><b>Dashami:</b> cena liviana antes de las 20:00 (sopa + fruta).</li>
         <li><b>Ekadashi:</b> agua tibia + limón al amanecer, medita 10–20 min, come ligero solo con hambre real.</li>
         <li><b>Dwadashi (parana):</b> rompe 2–3 h tras el amanecer con agua + fruta + cocido suave.</li>
@@ -3776,11 +3776,11 @@ function renderEkadashi() {
     </div>
     <div data-eka-panel="historia" style="display:none">
       <div style="background:linear-gradient(135deg,#1a1430,#12101f);border:1px solid #7a6fa5;border-radius:8px;padding:10px;margin-bottom:8px">
-      <p style="font-size:12px;color:#cdd3ee;line-height:1.6;margin:0 0 8px"><b>📜 Origen.</b> <i>Eka+dasha</i> = once. Puranas (Padma, Garuda, Skanda) lo llaman el día querido por <b>Vishnu</b>.</p>
-      <p style="font-size:12px;color:#cdd3ee;line-height:1.6;margin:0 0 8px"><b>La diosa Ekadashi.</b> El demonio Murdanava no podía ser vencido. Vishnu descansó en una cueva; Murdanava entró a matarlo y de la respiración de Vishnu nació una joven luminosa que lo derrotó. Vishnu la nombró <b>Ekadashi</b>: quien ayune en su día hallará claridad.</p>
-      <p style="font-size:12px;color:#cdd3ee;line-height:1.6;margin:0 0 8px"><b>Krishna y Yudhishthira</b> (Mahabharata) narran cada Ekadashi con su nombre y fruto — origen de la lista actual.</p>
+      <p style="font-size:12px;color:var(--text);line-height:1.6;margin:0 0 8px"><b>📜 Origen.</b> <i>Eka+dasha</i> = once. Puranas (Padma, Garuda, Skanda) lo llaman el día querido por <b>Vishnu</b>.</p>
+      <p style="font-size:12px;color:var(--text);line-height:1.6;margin:0 0 8px"><b>La diosa Ekadashi.</b> El demonio Murdanava no podía ser vencido. Vishnu descansó en una cueva; Murdanava entró a matarlo y de la respiración de Vishnu nació una joven luminosa que lo derrotó. Vishnu la nombró <b>Ekadashi</b>: quien ayune en su día hallará claridad.</p>
+      <p style="font-size:12px;color:var(--text);line-height:1.6;margin:0 0 8px"><b>Krishna y Yudhishthira</b> (Mahabharata) narran cada Ekadashi con su nombre y fruto — origen de la lista actual.</p>
       <b style="color:#b8aef0;font-size:12px">🌙 Los 24 del año</b>
-      <div style="font-size:11px;color:#cdd3ee;line-height:1.6;background:rgba(0,0,0,.25);border:1px solid var(--line);border-radius:8px;padding:8px;margin:6px 0">
+      <div style="font-size:11px;color:var(--text);line-height:1.6;background:rgba(0,0,0,.25);border:1px solid var(--line);border-radius:8px;padding:8px;margin:6px 0">
         <b>Ene–Feb:</b> Putrada · Shat-tila · Jaya · Vijaya<br>
         <b>Mar–Abr:</b> Amalaki · Papmochani · Kamada · Varuthini<br>
         <b>May–Jun:</b> Mohini · Apara · ⭐ <b>Nirjala</b> · Yogini<br>
@@ -3788,7 +3788,7 @@ function renderEkadashi() {
         <b>Sep–Oct:</b> Parivartini · Indira · Papankusha · Rama<br>
         <b>Nov–Dic:</b> ⭐ <b>Devutthana</b> (Vishnu despierta) · Utpanna · Mokshada · Saphala
       </div>
-      <p style="font-size:11px;color:#cdd3ee;line-height:1.6;margin:0 0 6px"><b>Símbolo:</b> 5 sentidos + 5 acciones + mente = 11. Ekadashi = gobernar los once.</p>
+      <p style="font-size:11px;color:var(--text);line-height:1.6;margin:0 0 6px"><b>Símbolo:</b> 5 sentidos + 5 acciones + mente = 11. Ekadashi = gobernar los once.</p>
       <p class="muted" style="font-size:11px;margin:0">Chaitanya (s. XVI) y Gandhi lo practicaron. Aquí lo unimos a las 13 lunas y la marea. 📚 Padma Purana, Garuda Purana, Ekadashi Mahatmya.</p>
       </div>
     </div>
@@ -4260,7 +4260,7 @@ function renderMensLunaBox() {
   const info = mensLunaForKey(mensMsToKey(pred.nextPeriodMs));
   if (!info) { box.innerHTML=''; return;}
   const meta = info.luna==='dft'? null : MOONS[info.luna-1];
-  box.innerHTML = `<h4 style="color:var(--accent)">🌙 Tu próximo periodo y la luna</h4><p style="font-size:13px;color:#cdd3ee">Cae en <b>${info.luna==='dft'?'Día Fuera del Tiempo':`Luna ${info.luna} · ${meta.nombre}`}</b> (día ${info.dia} de 28). <i>${info.luna==='dft'?DFT.texto1.slice(0,140)+'…':meta.descripcion}</i></p><p class="muted" style="font-size:11px">En el calendario verás puntos 🌸 período · 🌿 fértil · ✨ ovulación. La luna perfecta no exige regularidad perfecta.</p>`;
+  box.innerHTML = `<h4 style="color:var(--accent)">🌙 Tu próximo periodo y la luna</h4><p style="font-size:13px;color:var(--text)">Cae en <b>${info.luna==='dft'?'Día Fuera del Tiempo':`Luna ${info.luna} · ${meta.nombre}`}</b> (día ${info.dia} de 28). <i>${info.luna==='dft'?DFT.texto1.slice(0,140)+'…':meta.descripcion}</i></p><p class="muted" style="font-size:11px">En el calendario verás puntos 🌸 período · 🌿 fértil · ✨ ovulación. La luna perfecta no exige regularidad perfecta.</p>`;
 }
 function renderMensHistory() {
   const box = $('mensHistoryBox'); if(!box) return;
@@ -5128,7 +5128,7 @@ function nutriPencoHTML(){
     <div class="help-card"><h4>Fin de semana</h4><p style="font-size:11px">Sábado: cazuela liviana (aprovecha el caldo de los porotos). Domingo: sobras ordenadas + fruta. Colaciones: fruta, maní sin sal, yogur, avena.</p></div>
   </div>
   <details style="background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px;margin-top:10px"><summary style="cursor:pointer;color:var(--accent);font-weight:600">🗓️ Qué trae cada estación (feria)</summary>
-    <ul style="margin:6px 0 0 18px;font-size:11px;color:#cdd3ee;line-height:1.6">
+    <ul style="margin:6px 0 0 18px;font-size:11px;color:var(--text);line-height:1.6">
       <li><b>Otoño:</b> manzana, pera, membrillo, zapallo, repollo, espinaca, nueces y avellanas. Momento de guisos y sopas.</li>
       <li><b>Invierno:</b> cítricos (naranja, limón, mandarina), kiwi, coliflor, brócoli, zanahoria, betarraga. Vit C contra resfríos.</li>
       <li><b>Primavera:</b> habas, arvejas, lechugas, acelga, frutillas, cerezas. Ensaladas vuelven a la mesa.</li>
@@ -5137,7 +5137,7 @@ function nutriPencoHTML(){
     <p class="muted" style="font-size:11px;margin:6px 0 0">Regla feria: lo de estación es más barato, más fresco y con menos viaje. Si está caro, cambia el ingrediente, no la receta.</p>
   </details>
   <details style="background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px;margin-top:8px"><summary style="cursor:pointer;color:var(--accent);font-weight:600">🐟 Caleta: fresco, barato y seguro</summary>
-    <ul style="margin:6px 0 0 18px;font-size:11px;color:#cdd3ee;line-height:1.6">
+    <ul style="margin:6px 0 0 18px;font-size:11px;color:var(--text);line-height:1.6">
       <li><b>De Penco:</b> merluza, jurel, sardina, reineta según temporada; choritos, almejas y piures. El jurel es el campeón calidad-precio (omega-3 + hierro).</li>
       <li><b>Ojo fresco:</b> ojos brillantes, agallas rojas, olor a mar (no a amoníaco), carne firme que vuelve al presionar. Marisco: concha cerrada o que se cierra al tocar.</li>
       <li><b>En casa:</b> pescado a 0–4 °C y úsalo en 24 h; si no, porciónalo y congela con fecha (dura 2–3 meses). Descongela en el refrigerador, nunca a temperatura ambiente.</li>
@@ -5145,7 +5145,7 @@ function nutriPencoHTML(){
     </ul>
   </details>
   <details style="background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px;margin-top:8px"><summary style="cursor:pointer;color:var(--accent);font-weight:600">🫙 Olla grande + despensa (cocina una vez, come tres)</summary>
-    <ul style="margin:6px 0 0 18px;font-size:11px;color:#cdd3ee;line-height:1.6">
+    <ul style="margin:6px 0 0 18px;font-size:11px;color:var(--text);line-height:1.6">
       <li><b>Batch del domingo:</b> 1 olla de legumbres + 1 de grano (arroz/mote) + verduras al horno. Porciona en potes con fecha: 3 días refrigerado, 3 meses congelado.</li>
       <li><b>Despensa base:</b> lentejas, porotos, garbanzos, arroz, avena, mote, harina integral, aceite, sal de mar, orégano, comino, ají, té, leche en polvo o larga vida, atún/jurel en tarro para emergencias.</li>
       <li><b>Remojo:</b> legumbres 8–12 h con agua + limón/vinagre, bota esa agua y cocina con agua nueva: menos gases, mejor digestión.</li>
@@ -5156,7 +5156,7 @@ function nutriPencoHTML(){
     <p class="muted" style="font-size:11px;line-height:1.6;margin:6px 0 0">Cilantro, perejil, lechuga, acelga, zanahoria y habas se dan bien en Penco y abaratan la ensalada. Cosecha en la mañana (más turgente) y lava con agua segura. Cruza con 🌿 <b>Huerta/Siembra</b> del calendario: siembra hoja en creciente, raíz en menguante, y programa tus almácigos por luna.</p>
   </details>
   <details style="background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px;margin-top:8px"><summary style="cursor:pointer;color:var(--accent);font-weight:600">💧 Agua y colaciones que salvan</summary>
-    <ul style="margin:6px 0 0 18px;font-size:11px;color:#cdd3ee;line-height:1.6">
+    <ul style="margin:6px 0 0 18px;font-size:11px;color:var(--text);line-height:1.6">
       <li><b>Agua:</b> 6–8 vasos; lleva botella a la pega, la caleta y la multicancha. Agua con rodaja de limón o pepino reemplaza la bebida.</li>
       <li><b>Colación mochila:</b> fruta + maní sin sal, yogur, huevo duro, avena con leche. Evita el kiosco con sellos a las 11:00.</li>
       <li><b>Once chilena sana:</b> pan integral + palta/huevo/quesillo + tomate, té o leche. La once no es enemiga: manda la porción.</li>
@@ -5449,7 +5449,7 @@ function renderMealMenus(){
     return `<div class="si-card" style="border-left:3px solid var(--gold)">
       <div style="display:flex;justify-content:space-between;align-items:center"><h4>${escapeHtml(m.nombre)} ${tag}</h4><span class="muted" style="font-size:11px">${m.precio}</span></div>
       <p class="muted" style="font-size:11px">${escapeHtml(m.desc)} — ${m.kcal} kcal · P ${m.prot}g · C ${m.carb}g · G ${m.fat}g</p>
-      <div style="font-size:11px;color:#cdd3ee;line-height:1.5;margin-top:4px">
+      <div style="font-size:11px;color:var(--text);line-height:1.5;margin-top:4px">
         <b>Desayuno:</b> ${escapeHtml(m.desayuno)}<br>
         <b>Almuerzo:</b> ${escapeHtml(m.almuerzo)}<br>
         <b>Cena:</b> ${escapeHtml(m.cena)}<br>
@@ -5584,7 +5584,7 @@ function renderMealRecetas(){
         <button type="button" data-fav="${r.id}" class="btn btn-icon" style="padding:4px 8px" title="Favorita">${esFav?'⭐':'☆'}</button>
       </div>
       <p class="muted" style="font-size:11px;margin:4px 0">${escapeHtml(r.cat||'')} · ⏱ ${r.tiempo||'—'} min · ${escapeHtml(r.dif||'Fácil')} · ${escapeHtml(r.costo||'$')} · ~${r.kcal||'—'} kcal · ${escapeHtml(r.porc||'')}</p>
-      <div id="recDet_${r.id}" class="hidden" style="font-size:11.5px;color:#cdd3ee;line-height:1.55;margin-top:6px">
+      <div id="recDet_${r.id}" class="hidden" style="font-size:11.5px;color:var(--text);line-height:1.55;margin-top:6px">
         <b>Ingredientes:</b><ul style="margin:4px 0 4px 18px">${(r.ing||[]).map(i=>'<li>'+escapeHtml(i)+'</li>').join('')}</ul>
         <b>Pasos:</b><ol style="margin:4px 0 4px 18px">${(r.pasos||[]).map(p=>'<li>'+escapeHtml(p)+'</li>').join('')}</ol>
       </div>
@@ -6681,6 +6681,8 @@ function getFontSize(){
 function applyFontSize(){
   const f=getFontSize();
   document.body.dataset.font=f;
+  // zoom de página va en <html> (ver styles.css): escala todo sin romper layout
+  try{ document.documentElement.dataset.font=f; }catch(e){}
   // large-text mantiene las reglas de escala existentes (todo sobre Normal)
   document.body.classList.toggle('large-text', f!=='m');
   document.querySelectorAll('.font-pill').forEach(b=> b.setAttribute('aria-pressed', b.dataset.font===f?'true':'false'));
@@ -7330,7 +7332,7 @@ function renderBreathLog(){
   box.innerHTML=log.map(x=>{
     const t=BREATH_TECHNIQUES.find(t=>t.id===x.tech);
     const f=new Date(x.ts);
-    return `<div class="habit-item"><div class="habit-head"><b style="color:var(--gold)">${escapeHtml(t? (t.ico+' '+t.name):(x.name||x.tech))}</b><span class="muted" style="font-size:11px">${f.toLocaleString('es-CL',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}</span></div><div style="font-size:12px;color:#cdd3ee">${x.cycles} ciclos · ~${Math.round((x.secs||0)/60*10)/10} min</div></div>`;
+    return `<div class="habit-item"><div class="habit-head"><b style="color:var(--gold)">${escapeHtml(t? (t.ico+' '+t.name):(x.name||x.tech))}</b><span class="muted" style="font-size:11px">${f.toLocaleString('es-CL',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}</span></div><div style="font-size:12px;color:var(--text)">${x.cycles} ciclos · ~${Math.round((x.secs||0)/60*10)/10} min</div></div>`;
   }).join('');
 }
 function breathTab(which){
@@ -7901,7 +7903,7 @@ function renderTalesGrid(){
     talesEditingN=t.n;
     const r=$('talesReader'); const eBox=$('talesEditBox');
     if(r){ r.classList.remove('hidden');
-      r.innerHTML='<h4 style="color:var(--gold)">🌙 Luna '+t.n+' — '+escapeHtml(t.titulo)+'</h4><p style="font-size:11px;color:var(--muted)">'+escapeHtml(t.nombre)+' · '+escapeHtml(MOONS[t.n-1].traduccion)+'</p><p style="font-size:13px;color:#cdd3ee;line-height:1.75;margin-top:8px;white-space:pre-wrap">'+escapeHtml(t.texto)+'</p><p style="font-size:12px;color:var(--gold);margin-top:10px"><b>Moraleja:</b> <i>'+escapeHtml(t.moral)+'</i></p><div class="dlg-actions" style="justify-content:flex-start;margin-top:10px"><button type="button" class="btn btn-accent tales-edit-btn" style="width:auto">✏️ Editar este cuento</button></div>';
+      r.innerHTML='<h4 style="color:var(--gold)">🌙 Luna '+t.n+' — '+escapeHtml(t.titulo)+'</h4><p style="font-size:11px;color:var(--muted)">'+escapeHtml(t.nombre)+' · '+escapeHtml(MOONS[t.n-1].traduccion)+'</p><p style="font-size:13px;color:var(--text);line-height:1.75;margin-top:8px;white-space:pre-wrap">'+escapeHtml(t.texto)+'</p><p style="font-size:12px;color:var(--gold);margin-top:10px"><b>Moraleja:</b> <i>'+escapeHtml(t.moral)+'</i></p><div class="dlg-actions" style="justify-content:flex-start;margin-top:10px"><button type="button" class="btn btn-accent tales-edit-btn" style="width:auto">✏️ Editar este cuento</button></div>';
       const eb=r.querySelector('.tales-edit-btn'); if(eb) eb.onclick=()=> openTalesEdit(t.n);
       r.scrollIntoView({behavior:'smooth',block:'nearest'});
     }
@@ -7931,7 +7933,7 @@ function setupTalesDialog(){
     scheduleSave();
     $('talesEditBox').classList.add('hidden');
     renderTalesGrid();
-    const r=$('talesReader'); if(r){ const t=getEffectiveTales().find(x=>x.n===n); r.classList.remove('hidden'); r.innerHTML='<h4 style="color:var(--gold)">🌙 Luna '+t.n+' — '+escapeHtml(t.titulo)+' <span class="chip" style="font-size:10px">guardado</span></h4><p style="font-size:13px;color:#cdd3ee;line-height:1.75;white-space:pre-wrap">'+escapeHtml(t.texto)+'</p><p style="font-size:12px;color:var(--gold)"><b>Moraleja:</b> <i>'+escapeHtml(t.moral)+'</i></p>'; }
+    const r=$('talesReader'); if(r){ const t=getEffectiveTales().find(x=>x.n===n); r.classList.remove('hidden'); r.innerHTML='<h4 style="color:var(--gold)">🌙 Luna '+t.n+' — '+escapeHtml(t.titulo)+' <span class="chip" style="font-size:10px">guardado</span></h4><p style="font-size:13px;color:var(--text);line-height:1.75;white-space:pre-wrap">'+escapeHtml(t.texto)+'</p><p style="font-size:12px;color:var(--gold)"><b>Moraleja:</b> <i>'+escapeHtml(t.moral)+'</i></p>'; }
   };
   const restore=$('talesRestore'); if(restore) restore.onclick=()=>{
     const n=talesEditingN; if(!n) return;
@@ -10475,7 +10477,7 @@ function renderEspLog(){
     const all=getAllEspPractices();
     const names=all.filter(p=>o[p.id]).map(p=>p.icon+' '+p.nombre).join(' · ')||'—';
     const n=(d.notes[k]&&d.notes[k].t)? ' · 📝 '+d.notes[k].t : '';
-    return `<div class="habit-item"><div class="habit-head"><b style="color:var(--gold)">${k}</b><span class="muted" style="font-size:11px">${Object.values(o).filter(Boolean).length} prácticas</span></div><div style="font-size:12px;color:#cdd3ee">${escapeHtml(names)}${escapeHtml(n)}</div></div>`;
+    return `<div class="habit-item"><div class="habit-head"><b style="color:var(--gold)">${k}</b><span class="muted" style="font-size:11px">${Object.values(o).filter(Boolean).length} prácticas</span></div><div style="font-size:12px;color:var(--text)">${escapeHtml(names)}${escapeHtml(n)}</div></div>`;
   }).join('');
 }
 function espAgendar(pid){

@@ -61,6 +61,8 @@
       "bomberos-penco.js",
       "apoyo-emergencia.js",
       "actores-territorio.js",
+      "negocios-penco.js",
+      "moneda-social.js",
       "sw.js",
       "manifest.json",
       "donate.json",

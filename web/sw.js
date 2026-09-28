@@ -1,6 +1,6 @@
 // Service Worker — Calendario 13 Lunas (offline-first, tolerante a versiones ?v=)
-// v34: escala real de letra (zoom por nivel 1→1.48); incluye styles.css?v=11
-const CACHE = 'cal13-v34-offline';
+// v36: + negocios-penco.js + moneda-social.js (economía local y moneda social)
+const CACHE = 'cal13-v36-offline';
 
 // Lista completa de archivos que usa index.html (bare + con ?v=).
 // Si se agrega un JS nuevo en index.html, agregarlo aquí también (bare y ?v=).
@@ -11,6 +11,7 @@ const CORE = [
   './styles.css?v=9',
   './styles.css?v=10',
   './styles.css?v=11',
+  './styles.css?v=12',
   './web-api.js',
   './web-api.js?v=8',
   './astro.js',
@@ -51,6 +52,7 @@ const CORE = [
   './renderer.js?v=9',
   './renderer.js?v=10',
   './renderer.js?v=11',
+  './renderer.js?v=12',
   './nuevos-modulos.js',
   './nuevos-modulos.js?v=8',
   './nuevos-modulos.js?v=9',
@@ -114,6 +116,10 @@ const CORE = [
   './apoyo-emergencia.js?v=1',
   './actores-territorio.js',
   './actores-territorio.js?v=1',
+  './negocios-penco.js',
+  './negocios-penco.js?v=1',
+  './moneda-social.js',
+  './moneda-social.js?v=1',
   './donate.json',
   './manifest.json',
   './icon-192.png',
