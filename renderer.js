@@ -396,6 +396,7 @@ function updateViewButtons(){
   else if(nav) nav.classList.remove('hidden');
   try{ paintMobileDock(); }catch(e){}
   try{ syncMobileViewAttr(); }catch(e){}
+  try{ paintLunaPager(); }catch(e){}
 }
 function setViewMode(m){
   viewMode = m;
@@ -1110,6 +1111,71 @@ function setupViewBar(){
   if(pv) pv.onclick=()=>shiftViewDate(-1);
   if(nx) nx.onclick=()=>shiftViewDate(1);
   if(td) td.onclick=()=>goViewToday();
+}
+// === Paginador entre lunas (vista Luna en celular) ===
+// La barra lateral con las 13 lunas queda oculta en móvil (data-mview=luna),
+// así que estos botones ◀ / ▶ + ◉ Hoy permiten desplazarse sin ella.
+// PC queda intacto: el CSS solo muestra #lunaPager en móvil.
+function shiftLuna(diff){
+  try{
+    const order = [1,2,3,4,5,6,7,8,9,10,11,12,13,'dft'];
+    const cur = (currentView && currentView.tipo==='dft') ? 'dft' : (currentView && currentView.luna) || 1;
+    let idx = order.indexOf(cur);
+    if(idx<0) idx = 0;
+    const next = order[(idx + diff + order.length) % order.length];
+    if(next==='dft'){ selectDFT(); }
+    else { selectMoon(next); }
+    try{ scrollMobileTop(); }catch(e){}
+  }catch(e){}
+}
+function goLunaToday(){
+  try{
+    const inf = todayInfo();
+    if(!inf) return;
+    if(String(inf.y)!==String(currentCycleYear())){ selectCycle(inf.y, inf.luna==='dft' ? 'dft' : inf.luna); }
+    else if(inf.luna==='dft'){ selectDFT(); }
+    else { selectMoon(inf.luna); }
+    try{ scrollMobileTop(); }catch(e){}
+  }catch(e){}
+}
+function paintLunaPager(){
+  const pager = $('lunaPager'), label = $('lunaPagerLabel');
+  if(!pager) return;
+  const show = (viewMode==='luna') && currentView && (currentView.tipo==='luna' || currentView.tipo==='dft');
+  pager.classList.toggle('hidden', !show);
+  if(!show || !label) return;
+  try{
+    if(currentView.tipo==='dft'){ label.textContent = '✷ DFT · Fuera del Tiempo'; }
+    else {
+      const n = currentView.luna;
+      const name = (typeof MOONS!=='undefined' && MOONS[n-1]) ? MOONS[n-1].nombre : '';
+      label.textContent = 'Luna ' + n + '/13' + (name ? ' · ' + name : '');
+    }
+  }catch(e){}
+}
+function setupLunaPager(){
+  const pv=$('lunaPrev'), nx=$('lunaNext'), td=$('lunaTodayBtn');
+  if(pv && !pv.dataset.bound){ pv.dataset.bound='1'; pv.onclick=()=>shiftLuna(-1); }
+  if(nx && !nx.dataset.bound){ nx.dataset.bound='1'; nx.onclick=()=>shiftLuna(1); }
+  if(td && !td.dataset.bound){ td.dataset.bound='1'; td.onclick=()=>goLunaToday(); }
+  // Deslizar ←/→ sobre el calendario también cambia de luna (solo móvil, vista Luna)
+  try{
+    const zone = $('gridWrap');
+    if(zone && !zone.dataset.lunaSwipe){
+      zone.dataset.lunaSwipe='1';
+      let sx=0, sy=0;
+      zone.addEventListener('touchstart', (e)=>{ try{ const t=e.touches[0]; sx=t.clientX; sy=t.clientY; }catch(_){} }, {passive:true});
+      zone.addEventListener('touchend', (e)=>{
+        try{
+          if(viewMode!=='luna') return;
+          if(!isMobileWidth()) return;
+          const t=e.changedTouches[0];
+          const dx=t.clientX-sx, dy=t.clientY-sy;
+          if(Math.abs(dx)>70 && Math.abs(dy)<60){ shiftLuna(dx<0?1:-1); }
+        }catch(_){}
+      }, {passive:true});
+    }
+  }catch(e){}
 }
 function miniDayCard(key, opts){
   opts = opts||{};
@@ -11364,6 +11430,7 @@ if ($('btnTimer')) {
   rebuildLunaByKey();
   setupViewBar();
   try{ setupMobileDock(); }catch(e){}
+  try{ setupLunaPager(); }catch(e){}
   updateViewButtons();
   buildSidebar();
   if (info) {

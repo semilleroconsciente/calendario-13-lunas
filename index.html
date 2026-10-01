@@ -43,6 +43,13 @@
       <div id="phaseChips"></div>
     </header>
 
+    <nav id="lunaPager" aria-label="Desplazarse entre lunas">
+      <button type="button" id="lunaPrev" class="btn btn-icon" aria-label="Luna anterior" title="Luna anterior">◀</button>
+      <span id="lunaPagerLabel" class="luna-pager-label" aria-live="polite">Luna 1/13</span>
+      <button type="button" id="lunaTodayBtn" class="btn" title="Volver a la luna de hoy">◉ Hoy</button>
+      <button type="button" id="lunaNext" class="btn btn-icon" aria-label="Luna siguiente" title="Luna siguiente">▶</button>
+    </nav>
+
     <section id="viewBar" aria-label="Cambiar vista del calendario">
       <div class="view-switch" role="tablist" aria-label="Vistas">
         <button type="button" id="viewLuna" class="btn btn-accent view-btn" role="tab" aria-selected="true" title="Vista por defecto: luna de 28 días (13 lunas)">🌙 Luna</button>

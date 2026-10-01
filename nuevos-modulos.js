@@ -1120,45 +1120,81 @@ function setupAgua() {
 /* ============================================================
    5) NUDOS, AMARRAS Y REDES
    ============================================================ */
-var nudoAnim = null;
+function getNudosMios() { var a = store('nudosMios', []); return Array.isArray(a) ? a : []; }
+/* Animaciones 3D (Knots3D): tienen derechos de autor y no se copian al proyecto; se enlazan (requieren internet, se abren en el navegador). */
+var NUDOS_LINKS = [
+  ['https://knots3d.com/es/as-de-gu%C3%ADa-nudo', 'https://www.animatedknots.com/bowline-knot'],
+  ['https://knots3d.com/es/ballestrinque-extremo-nudo'],
+  ['https://knots3d.com/es/nudo-de-pescador-doble'],
+  ['https://knots3d.com/es/nudo-en-ocho-con-gaza'],
+  ['https://knots3d.com/es/nudo-de-rizo'],
+  ['https://knots3d.com/es/vuelta-de-escota-nudo']
+];
+function openNudoAnim(idx, n) {
+  var l = NUDOS_LINKS[idx] || [];
+  var url = l[n] || l[0];
+  if (!url) return;
+  try { if (typeof openExternalLink === 'function') { openExternalLink(url); return; } } catch (e) {}
+  try { window.open(url, '_blank', 'noopener,noreferrer'); } catch (e2) {}
+}
 function renderNudos() {
   var box = $('nudosList'); if (!box) return;
-  box.innerHTML = NUDOS.map(function (k, i) {
+  var mios = getNudosMios();
+  var base = NUDOS.map(function (k, idx) {
+    var lis = k.pasos.map(function (p) { return '<li>' + esc(p) + '</li>'; }).join('');
+    var LK = NUDOS_LINKS[idx] || [];
+    var visor = LK.length ? '<div class="asguia-visor"><p class="fin-tip-desc">\uD83C\uDFAC Animaci\u00F3n 3D paso a paso (requiere internet):</p><div style="display:flex;gap:6px;flex-wrap:wrap">' + LK.map(function (u, n) { return '<button type="button" class="btn' + (n === 0 ? ' btn-accent' : '') + '" data-nudoanim="' + idx + ':' + n + '" style="width:auto;font-size:11px">\u25B6 ' + (n === 0 ? 'Ver en 3D' : 'Paso a paso') + '</button>'; }).join('') + '</div></div>' : '';
     return '<div class="si-card"><div class="fin-tip-head"><span class="fin-tip-ico">🪢</span><h4>' + esc(k.n) + '</h4></div>' +
-      '<p class="fin-tip-desc">🎯 ' + esc(k.uso) + '</p>' +
-      '<ol class="esp-steps">' + k.pasos.map(function (p, j) { return '<li data-n="' + i + '" data-s="' + j + '">' + esc(p) + '</li>'; }).join('') + '</ol>' +
-      '<p class="fin-tip-tip">💡 ' + esc(k.tip) + '</p>' +
-      '<div style="display:flex;gap:6px;margin-top:6px"><button class="btn" style="width:auto;font-size:11px" data-anim="' + i + '">▶ Animar paso a paso</button></div>' +
-      '<div class="chip hidden" style="margin-top:6px;white-space:normal" id="nudoMsg' + i + '"></div></div>';
-  }).join('') + '<div class="si-card" style="border-left:3px solid var(--gold)"><div class="fin-tip-head"><span class="fin-tip-ico">🎣</span><h4>Reparar y tejer redes de pesca</h4></div>' +
+      '<p class="fin-tip-desc">🎯 ' + esc(k.uso) + '</p>' + visor +
+      '<ol class="esp-steps">' + lis + '</ol>' +
+      '<p class="fin-tip-tip">💡 ' + esc(k.tip) + '</p></div>';
+  }).join("");
+  var mine = mios.map(function (k) {
+    return '<div class="si-card" style="border-left:3px solid #8fd694"><div class="fin-tip-head"><span class="fin-tip-ico">⭐</span><h4>' + esc(k.n) + '</h4></div>' +
+      '<p class="fin-tip-desc">🎯 ' + esc(k.uso || 'Nudo agregado por ti') + '</p>' +
+      '<ol class="esp-steps">' + (k.pasos || []).map(function (p) { return '<li>' + esc(p) + '</li>'; }).join('') + '</ol>' +
+      (k.tip ? '<p class="fin-tip-tip">💡 ' + esc(k.tip) + '</p>' : '') +
+      '<div style="display:flex;gap:6px;margin-top:6px"><button class="btn" style="width:auto;font-size:11px;color:#e76e8a" data-delnudo="' + k.id + '">✕ Eliminar</button></div></div>';
+  }).join("");
+  box.innerHTML = base + mine + '<div class="si-card" style="border-left:3px solid var(--gold)"><div class="fin-tip-head"><span class="fin-tip-ico">🎣</span><h4>Reparar y tejer redes de pesca</h4></div>' +
     '<ol class="esp-steps">' + REDES_GUIA.map(function (g) { return '<li>' + esc(g) + '</li>'; }).join('') + '</ol>' +
     '<p class="fin-tip-tip">🧵 Lleva siempre: aguja de red, tablilla medidora, hilo extra y tijera. Practica primero con red de huerta (entutorado).</p></div>';
-  box.querySelectorAll('[data-anim]').forEach(function (btn) {
-    btn.onclick = function () {
-      if (nudoAnim) { clearInterval(nudoAnim); nudoAnim = null; }
-      var i = +btn.getAttribute('data-anim'), steps = box.querySelectorAll('li[data-n="' + i + '"]');
-      var msg = $('nudoMsg' + i); if (msg) msg.classList.remove('hidden');
-      var s = 0;
-      steps.forEach(function (li) { li.style.background = ''; });
-      btn.textContent = '⏸ Animando... (toca para detener)';
-      nudoAnim = setInterval(function () {
-        steps.forEach(function (li) { li.style.background = ''; });
-        if (s >= steps.length) { clearInterval(nudoAnim); nudoAnim = null; btn.textContent = '▶ Animar paso a paso'; if (msg) msg.textContent = '✓ Nudo completo. Repítelo 3 veces sin mirar.'; return; }
-        steps[s].style.background = 'rgba(232,197,106,.15)';
-        if (msg) msg.textContent = 'Paso ' + (s + 1) + '/' + steps.length + ': ' + NUDOS[i].pasos[s];
-        s++;
-      }, 1400);
-      btn.onclick = function () { if (nudoAnim) { clearInterval(nudoAnim); nudoAnim = null; btn.textContent = '▶ Animar paso a paso'; } else renderNudos(); };
+  box.querySelectorAll('[data-delnudo]').forEach(function (b) {
+    b.onclick = function () {
+      if (!confirm('¿Eliminar este nudo?')) return;
+      var d = getNudosMios();
+      var ix = d.findIndex(function (x) { return x.id === b.getAttribute('data-delnudo'); });
+      if (ix >= 0) d.splice(ix, 1);
+      save(); renderNudos();
     };
+  });
+  box.querySelectorAll('[data-nudoanim]').forEach(function (btn) {
+    btn.onclick = function () { var q = (btn.getAttribute('data-nudoanim') || '0:0').split(':'); openNudoAnim(+q[0], +q[1]); };
   });
 }
 function setupNudos() {
   makeDialog('nudosDialog', '🪢 Nudos, amarras y redes',
-    'Biblioteca visual para pesca artesanal, kayak, camping y huerta (entutorado). Toca <b>Animar</b> y practica con una cuerda real.',
-    '<div id="nudosList" style="display:flex;flex-direction:column;gap:10px"></div>');
+    'Biblioteca para pesca artesanal, kayak, camping y huerta (entutorado). Practica con una cuerda real y guarda tus propios nudos abajo.',
+    '<div id="nudosList" style="display:flex;flex-direction:column;gap:10px;margin-top:10px"></div>' +
+    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>➕ Agregar nudo</h4>' +
+    '<label>Nombre <input type="text" id="nudNom" placeholder="ej: Nudo de mi abuelo" maxlength="40"></label>' +
+    '<label>Uso <input type="text" id="nudUso" placeholder="ej: Para amarrar el bote" maxlength="80"></label>' +
+    '<label>Pasos (uno por línea) <textarea id="nudPasos" rows="3" placeholder="Haz un seno..." style="width:100%;resize:vertical"></textarea></label>' +
+    '<label>Consejo (opcional) <input type="text" id="nudTip" placeholder="ej: Humedece antes de apretar" maxlength="120"></label>' +
+    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="nudAdd" class="btn btn-accent" style="width:auto">+ Guardar nudo</button></div></div>');
   var b = $('btnNudos'); if (b) b.onclick = function () { renderNudos(); openDlg('nudosDialog'); };
+  var add = $('nudAdd');
+  if (add) add.onclick = function () {
+    var n = clean($('nudNom').value, 40);
+    var pasos = String($('nudPasos').value || '').split('\n').map(function (x) { return x.trim(); }).filter(function (x) { return x; }).slice(0, 12);
+    if (!n) return alert('Ponle un nombre al nudo');
+    if (!pasos.length) return alert('Escribe al menos 1 paso (uno por línea)');
+    getNudosMios().push({ id: uid('nu'), n: n, uso: clean($('nudUso').value, 80), pasos: pasos.map(function (x) { return clean(x, 140); }), tip: clean($('nudTip').value, 120) });
+    save('Nudo guardado ✓');
+    $('nudNom').value = ''; $('nudUso').value = ''; $('nudPasos').value = ''; $('nudTip').value = '';
+    renderNudos();
+  };
 }
-
 /* ============================================================
    6) BITACORA DE TALLER
    ============================================================ */

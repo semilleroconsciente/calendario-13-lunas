@@ -92,6 +92,10 @@ body {
 .view-nav { display:flex; gap:6px; align-items:center; flex-wrap:wrap; }
 .view-nav.hidden { display:none !important; }
 #viewNavLabel { font-size:13px; }
+/* Paginador entre lunas (solo móvil, vista Luna): PC queda intacto (oculto) */
+#lunaPager { display:none; }
+#lunaPager.hidden { display:none !important; }
+.luna-pager-label { font-size:13px; color:var(--muted); font-weight:700; white-space:nowrap; }
 .day-view-card { max-width:720px; background:var(--card); border:1px solid var(--gold); border-radius:14px; padding:16px 18px; }
 .day-view-hours { display:flex; flex-direction:column; gap:6px; margin-top:10px; }
 .day-view-hour { display:flex; gap:8px; align-items:baseline; padding:6px 10px; background:var(--panel); border:1px solid var(--line); border-radius:8px; font-size:13px; }
@@ -1073,6 +1077,47 @@ html[data-font="4xl"] dialog { max-width: calc((100vw - 24px) / 1.48) !important
   .today-add input[type="time"] { max-width: 104px; }
   .today-add input[type="text"] { flex: 1; min-width: 120px; }
 }
+/* Paginador entre lunas: solo móvil en vista Luna / Completa (PC oculto) */
+@media (max-width: 920px) {
+  body[data-mview="luna"] #lunaPager,
+  body[data-mview="completa"] #lunaPager {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 6px;
+    margin-bottom: 10px;
+  }
+  body[data-mview="luna"] #lunaPager .btn,
+  body[data-mview="completa"] #lunaPager .btn {
+    min-height: 44px;
+    font-size: 15px;
+    padding: 8px 14px;
+  }
+  body[data-mview="luna"] #lunaPager #lunaPrev,
+  body[data-mview="luna"] #lunaPager #lunaNext,
+  body[data-mview="completa"] #lunaPager #lunaPrev,
+  body[data-mview="completa"] #lunaPager #lunaNext {
+    flex: 0 0 auto;
+    min-width: 52px;
+  }
+  body[data-mview="luna"] #lunaPager .luna-pager-label,
+  body[data-mview="completa"] #lunaPager .luna-pager-label {
+    flex: 1;
+    text-align: center;
+    font-size: 14px;
+  }
+  body[data-mview="luna"] #lunaPager.hidden,
+  body[data-mview="completa"] #lunaPager.hidden {
+    display: none !important;
+  }
+}
 /* Semana / Semana lunar en celular: lista vertical con el día arriba de cada tarjeta */
 @media (max-width: 920px) {
   .dow-row.dow-week { display: none; }
@@ -1148,6 +1193,11 @@ body[data-mview="hoy"] #tidesPanel { display: none; }
 #forrajeFichas .lawen-card, #nudosList .si-card { margin: 0; }
 .esp-steps { margin: 0; padding-left: 18px; font-size: 12px; line-height: 1.55; color: var(--text); }
 .esp-steps li { margin-bottom: 3px; padding: 2px 4px; border-radius: 6px; }
+/* Nudos: lista simple + nudos propios (sin animaciones) */
+#nudosList textarea { background: var(--panel); color: var(--text); border: 1px solid var(--line); border-radius: 8px; padding: 6px 8px; font-size: 12px; }
+/* As de guia: visor animado (dibujo propio) */
+.asguia-visor { background: rgba(0,0,0,.22); border: 1px solid var(--line); border-radius: 10px; padding: 8px; margin: 8px 0; }
+
 
 /* === 👁️ MODOS DE VISTA (⚙️ Personalizar) === */
 /* 📖 Lectura: texto aireado, ancho cómodo */
