@@ -1094,24 +1094,11 @@ html[data-font="4xl"] dialog { max-width: calc((100vw - 24px) / 1.48) !important
     padding: 6px;
     margin-bottom: 10px;
   }
-  body[data-mview="luna"] #lunaPager .btn,
-  body[data-mview="completa"] #lunaPager .btn {
-    min-height: 44px;
-    font-size: 15px;
-    padding: 8px 14px;
-  }
-  body[data-mview="luna"] #lunaPager #lunaPrev,
-  body[data-mview="luna"] #lunaPager #lunaNext,
-  body[data-mview="completa"] #lunaPager #lunaPrev,
-  body[data-mview="completa"] #lunaPager #lunaNext {
-    flex: 0 0 auto;
-    min-width: 52px;
-  }
   body[data-mview="luna"] #lunaPager .luna-pager-label,
   body[data-mview="completa"] #lunaPager .luna-pager-label {
     flex: 1;
     text-align: center;
-    font-size: 14px;
+    font-size: 13px;
   }
   body[data-mview="luna"] #lunaPager.hidden,
   body[data-mview="completa"] #lunaPager.hidden {
