@@ -1148,3 +1148,34 @@ body[data-mview="hoy"] #tidesPanel { display: none; }
 #forrajeFichas .lawen-card, #nudosList .si-card { margin: 0; }
 .esp-steps { margin: 0; padding-left: 18px; font-size: 12px; line-height: 1.55; color: var(--text); }
 .esp-steps li { margin-bottom: 3px; padding: 2px 4px; border-radius: 6px; }
+
+/* === 👁️ MODOS DE VISTA (⚙️ Personalizar) === */
+/* 📖 Lectura: texto aireado, ancho cómodo */
+body[data-modo-lectura="1"] #main p,
+body[data-modo-lectura="1"] #main li,
+body[data-modo-lectura="1"] dialog p,
+body[data-modo-lectura="1"] dialog li { line-height: 1.85 !important; }
+body[data-modo-lectura="1"] #main .menstrual-card,
+body[data-modo-lectura="1"] #main .today-card,
+body[data-modo-lectura="1"] #main .si-card,
+body[data-modo-lectura="1"] dialog .menstrual-card,
+body[data-modo-lectura="1"] dialog .si-card { font-size: 1.04em; }
+body[data-modo-lectura="1"] #main { max-width: 860px; margin-left: auto; margin-right: auto; }
+
+/* 🔆 Alto contraste: texto y bordes bien marcados */
+body[data-alto-contraste="1"] { --text: #ffffff; --muted: #d6dbee; --line: #8a93c9; --gold: #ffd75e; --accent: #ffe89a; }
+body[data-alto-contraste="1"][data-theme="claro"] { --text: #000000; --muted: #33302a; --line: #5a5348; --gold: #5a4300; --accent: #5a4300; }
+body[data-alto-contraste="1"] .btn,
+body[data-alto-contraste="1"] .chip,
+body[data-alto-contraste="1"] .menstrual-card,
+body[data-alto-contraste="1"] .si-card,
+body[data-alto-contraste="1"] .today-card { border-width: 2px; }
+
+/* Filtros nocturnos: capa fija que no bloquea toques */
+#filtroNocheOverlay { position: fixed; inset: 0; pointer-events: none; z-index: 9999; display: none; }
+body[data-modo-noche="1"] #filtroNocheOverlay { display: block; background: rgba(0, 0, 8, 0.28); }
+body[data-luz-suave="1"] #filtroNocheOverlay { display: block; background: rgba(255, 110, 20, 0.16); }
+body[data-modo-noche="1"][data-luz-suave="1"] #filtroNocheOverlay { display: block; background: linear-gradient(rgba(20, 8, 0, 0.42), rgba(255, 110, 20, 0.16)); }
+body[data-modo-noche="1"] { --bg: #050508; }
+body[data-modo-noche="1"] #sidebar,
+body[data-modo-noche="1"] dialog { filter: brightness(0.92); }

@@ -110,11 +110,23 @@ const MOODS = [
 ];
 
 const EFEMERIDES = {
+  '01-01': '🎉 Año Nuevo (feriado irrenunciable)',
   '03-20': 'Equinoccio de otoño',
-  '06-21': 'We Tripantu · Año Nuevo Mapuche y solsticio de invierno',
-  '06-29': 'San Pedro · fiesta de los pescadores en las caletas',
+  '05-01': '🎉 Día del Trabajo (feriado irrenunciable)',
+  '05-21': '🎉 Glorias Navales',
+  '06-21': 'We Tripantu · Año Nuevo Mapuche y solsticio de invierno + 🎉 Día Pueblos Indígenas',
+  '06-29': 'San Pedro · fiesta de los pescadores en las caletas + 🎉 San Pedro y San Pablo',
+  '07-16': '🎉 Virgen del Carmen',
+  '08-15': '🎉 Asunción de la Virgen',
+  '09-18': '🎉 Independencia Nacional (feriado irrenunciable)',
+  '09-19': '🎉 Glorias del Ejército (feriado irrenunciable)',
   '09-22': 'Equinoccio de primavera',
-  '12-21': 'Solsticio de verano'
+  '10-12': '🎉 Encuentro de Dos Mundos',
+  '10-31': '🎉 Iglesias Evangélicas y Protestantes',
+  '11-01': '🎉 Todos los Santos',
+  '12-08': '🎉 Inmaculada Concepción',
+  '12-21': 'Solsticio de verano',
+  '12-25': '🎉 Navidad (feriado irrenunciable)'
 };
 
 const SIEMBRA = {

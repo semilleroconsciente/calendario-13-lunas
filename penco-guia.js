@@ -67,7 +67,8 @@ var GUIA_PENCO = {
     { n: 'Humedal e isla Rocuant', d: 'Humedal costero del límite suroeste: observación de aves (ver 🦅 Aves). Marismas y desembocadura del río Andalién.' },
     { n: 'Cerro Bellavista', d: 'Hito natural del límite con Talcahuano, con vista a la Bahía de Concepción.' },
     { n: 'Cerro Verde', d: 'Sector residencial en altura, subdividido entre zonas altas y bajas.' },
-    { n: 'Camino rural a Florida', d: 'Ruta Penco – Primer Agua – Roa – Florida (36 km): campo, agua y bosque hacia el límite este.' }
+    { n: 'Camino rural a Florida', d: 'Ruta Penco – Primer Agua – Roa – Florida (36 km): campo, agua y bosque hacia el límite este.' },
+    { n: 'Fundo Coihueco (Tranque)', d: 'Sector rural este: tranque, sendero Los Queules y primer parque urbano de Penco. Queule, naranjillo y pitao, con pudú, güiña y monito del monte. Acceso gratuito.' }
   ],
   sectores: [
     {
@@ -265,9 +266,6 @@ function renderGuiaPenco() {
   var g = dynGuia();
   var html = '';
   html += '<p class="muted" style="font-size:11px;line-height:1.55">' + g.marco + '</p>';
-  html += '<div class="menstrual-card" style="border-color:var(--gold)"><h4>📜 La historia tiene su propia sección</h4>' +
-    '<p style="font-size:12px;line-height:1.55">Del mar cretácico y el Lafken originario al Penco de hoy en <b>16 periodos</b>: Quiriquina, Cosmito, navegantes arcaicos, Pitrén–El Vergel, fundación de 1550, traslado de 1751, villa de 1843, carbón y rieles, Penco obrero, 27F y presente. Y cada barrio tiene su ficha en <b>🏘️ Sectores</b>.</p>' +
-    '<div class="dlg-actions" style="justify-content:flex-start;margin-top:6px"><button type="button" id="guiaGoSect" class="btn" style="width:auto;font-size:11px">🏘️ Ver Sectores</button><button type="button" id="guiaGoHist" class="btn" style="width:auto;font-size:11px">📜 Ver Historia de Penco</button></div></div>';
   html += '<div class="menstrual-card" style="margin-top:10px"><h4>🧭 Límites comunales</h4>' +
     '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px">' +
     g.limites.map(function (l) { return '<span class="chip"><b>' + esc(l.p) + ':</b> ' + esc(l.v) + '</span>'; }).join('') + '</div>' +

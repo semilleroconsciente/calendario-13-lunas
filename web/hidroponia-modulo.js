@@ -381,6 +381,8 @@ function setup() {
   } catch (e) {}
   try { if (typeof updateGroupCounts === 'function') updateGroupCounts(); } catch (e) {}
   try { if (typeof applyVisibility === 'function') applyVisibility(); } catch (e) {}
+  try { if (typeof ordenarTerritorio === 'function') ordenarTerritorio(); } catch (e) {}
+  try { if (typeof reordenarAcciones === 'function') reordenarAcciones(); } catch (e) {}
   /* 3) checkbox en configDialog */
   try {
     if (!document.querySelector('#configDialog input[data-btn="btnHidroponia"]')) {

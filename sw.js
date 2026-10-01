@@ -1,6 +1,6 @@
-// Service Worker — Calendario 13 Lunas (offline-first, tolerante a versiones ?v=)
-// v37: negocios-penco.js?v=2 (sección 🪙 Moneda Social dentro de 🏪 Economía Local)
-const CACHE = 'cal13-v37-offline';
+﻿// Service Worker — Calendario 13 Lunas (offline-first, tolerante a versiones ?v=)
+// v41: crucigrama-modulo.js + sopa-letras-modulo.js (📝 Crucigrama + 🔎 Sopa de Letras)
+const CACHE = 'cal13-v41-offline';
 
 // Lista completa de archivos que usa index.html (bare + con ?v=).
 // Si se agrega un JS nuevo en index.html, agregarlo aquí también (bare y ?v=).
@@ -80,6 +80,10 @@ const CORE = [
   './ajedrez-modulo.js?v=1',
   './sudoku-modulo.js',
   './sudoku-modulo.js?v=1',
+  './crucigrama-modulo.js',
+  './crucigrama-modulo.js?v=1',
+  './sopa-letras-modulo.js',
+  './sopa-letras-modulo.js?v=1',
   './info-clave.js',
   './info-clave.js?v=1',
   './psicologia-modulo.js',
@@ -106,6 +110,10 @@ const CORE = [
   './hogar-despensa-closet-modulo.js?v=1',
   './hogar-herramientas-modulo.js',
   './hogar-herramientas-modulo.js?v=1',
+  './hogar-corral-movilidad-escolar-modulo.js',
+  './hogar-corral-movilidad-escolar-modulo.js?v=1',
+  './cuerpo-luna-rituales-fenologia-modulo.js',
+  './cuerpo-luna-rituales-fenologia-modulo.js?v=1',
   './talleres-penco.js',
   './talleres-penco.js?v=1',
   './municipalidad-penco.js',
@@ -121,6 +129,8 @@ const CORE = [
   './negocios-penco.js?v=2',
   './moneda-social.js',
   './moneda-social.js?v=1',
+  './territorio-fase2.js',
+  './territorio-fase2.js?v=1',
   './donate.json',
   './manifest.json',
   './icon-192.png',
