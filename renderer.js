@@ -1114,10 +1114,10 @@ function setupViewBar(){
   if(nx) nx.onclick=()=>shiftViewDate(1);
   if(td) td.onclick=()=>goViewToday();
 }
-// === Paginador entre lunas (vista Luna en celular) ===
+// === Paginador entre lunas (vista Luna, PC y celular) ===
 // La barra lateral con las 13 lunas queda oculta en móvil (data-mview=luna),
 // así que estos botones ◀ / ▶ + ◉ Hoy permiten desplazarse sin ella.
-// PC queda intacto: el CSS solo muestra #lunaPager en móvil.
+// En PC también se muestran sobre el calendario.
 function shiftLuna(diff){
   try{
     const order = [1,2,3,4,5,6,7,8,9,10,11,12,13,'dft'];

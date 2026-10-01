@@ -92,10 +92,10 @@ body {
 .view-nav { display:flex; gap:6px; align-items:center; flex-wrap:wrap; }
 .view-nav.hidden { display:none !important; }
 #viewNavLabel { font-size:13px; }
-/* Paginador entre lunas (solo móvil, vista Luna): PC queda intacto (oculto) */
-#lunaPager { display:none; }
+/* Paginador entre lunas (vista Luna, PC y móvil; se oculta solo fuera de vista Luna) */
+#lunaPager { display:flex; gap:6px; align-items:center; margin-bottom:10px; flex-wrap:wrap; }
 #lunaPager.hidden { display:none !important; }
-.luna-pager-label { font-size:13px; color:var(--muted); font-weight:700; white-space:nowrap; }
+.luna-pager-label { flex:1; text-align:center; font-size:13px; color:var(--muted); font-weight:700; white-space:nowrap; }
 .day-view-card { max-width:720px; background:var(--card); border:1px solid var(--gold); border-radius:14px; padding:16px 18px; }
 .day-view-hours { display:flex; flex-direction:column; gap:6px; margin-top:10px; }
 .day-view-hour { display:flex; gap:8px; align-items:baseline; padding:6px 10px; background:var(--panel); border:1px solid var(--line); border-radius:8px; font-size:13px; }
@@ -1017,6 +1017,7 @@ html[data-font="4xl"] dialog { max-width: calc((100vw - 24px) / 1.48) !important
   body[data-mview="hoy"] #todayView { display: flex; flex-direction: column; gap: 10px; }
   body[data-mview="hoy"] #sidebar,
   body[data-mview="hoy"] #lunaHeader,
+  body[data-mview="hoy"] #lunaPager,
   body[data-mview="hoy"] #viewBar,
   body[data-mview="hoy"] #gridWrap,
   body[data-mview="hoy"] #monthNoteWrap,
@@ -1077,7 +1078,7 @@ html[data-font="4xl"] dialog { max-width: calc((100vw - 24px) / 1.48) !important
   .today-add input[type="time"] { max-width: 104px; }
   .today-add input[type="text"] { flex: 1; min-width: 120px; }
 }
-/* Paginador entre lunas: solo móvil en vista Luna / Completa (PC oculto) */
+/* Paginador entre lunas en móvil: barra fija con fondo */
 @media (max-width: 920px) {
   body[data-mview="luna"] #lunaPager,
   body[data-mview="completa"] #lunaPager {
