@@ -2259,6 +2259,114 @@ function renderSueDicc() {
     return '<div class="discipline-card" style="text-align:left"><h4>' + esc(e.n) + '</h4><p style="font-size:12px">' + esc(e.s) + '</p><p class="muted" style="font-size:11px">💬 ' + esc(e.p) + '</p></div>';
   }).join('') : '<p class="muted">Sin coincidencia. Prueba con agua, casa, volar, dientes, camino...</p>';
 }
+var sueEditingId = null;
+function suenosClearForm() {
+  sueEditingId = null;
+  try {
+    if ($('dreamText')) $('dreamText').value = '';
+    if ($('suePlusTitulo')) $('suePlusTitulo').value = '';
+    if ($('suePlusMsg')) $('suePlusMsg').value = '';
+    if ($('suePlusLuc')) $('suePlusLuc').checked = false;
+    if ($('suePlusViv')) $('suePlusViv').value = '3';
+    if ($('suePlusFecha')) $('suePlusFecha').value = todayKey();
+    var sb = $('dreamSave'); if (sb) sb.textContent = '💾 Guardar en mi Diario';
+    var ce = $('dreamCancelEdit'); if (ce) ce.classList.add('hidden');
+  } catch (e) {}
+}
+function suenosLoadToForm(r) {
+  if (!r) return;
+  sueEditingId = r.id;
+  try {
+    if ($('dreamText')) $('dreamText').value = r.texto || '';
+    if ($('suePlusTitulo')) $('suePlusTitulo').value = r.titulo || '';
+    if ($('suePlusTipo')) $('suePlusTipo').value = r.tipo || '🌊 Común';
+    if ($('suePlusArq')) $('suePlusArq').value = r.arq || '';
+    if ($('suePlusEmo')) $('suePlusEmo').value = r.emo || '';
+    if ($('suePlusViv')) $('suePlusViv').value = r.viv || 3;
+    if ($('suePlusMsg')) $('suePlusMsg').value = r.msg || '';
+    if ($('suePlusLuc')) $('suePlusLuc').checked = !!r.luc;
+    if ($('suePlusFecha')) $('suePlusFecha').value = r.fecha || todayKey();
+    var sb = $('dreamSave'); if (sb) sb.textContent = '💾 Actualizar sueño';
+    var ce = $('dreamCancelEdit'); if (ce) ce.classList.remove('hidden');
+    switchSueTab('Anotar');
+    if ($('dreamText')) $('dreamText').focus();
+  } catch (e) {}
+}
+/* Importa líneas "Sueño: ..." que hayan quedado en notas del día al Diario aparte y las borra de las notas */
+function suenosImportFromNotes() {
+  try {
+    var u = (typeof userData === 'function') ? userData() : null;
+    if (!u || !u.cycles) return alert('Sin notas para revisar');
+    var imported = 0, cleaned = 0;
+    var existing = {};
+    getSuenos().forEach(function (r) { existing[(r.fecha || '') + '|' + (r.texto || '')] = true; });
+    var re = /^\s*sue[ñn]os?\s*(\d{4}-\d{2}-\d{2})?\s*:?\s*(.+)?$/i;
+    Object.keys(u.cycles).forEach(function (yKey) {
+      var keyByLuna = {};
+      try {
+        var cycBuilt = cal.buildCycle(parseInt(yKey, 10));
+        cycBuilt.days.forEach(function (d) {
+          if (d.luna === 'dft') return;
+          var k = cal.fmtKey.format(new Date(d.noonMs));
+          keyByLuna[d.luna + '-' + d.diaN] = k;
+        });
+      } catch (e) {}
+      var cycData = u.cycles[yKey];
+      if (!cycData || !cycData.moons) return;
+      Object.keys(cycData.moons).forEach(function (lunaK) {
+        var moon = cycData.moons[lunaK];
+        if (!moon || !moon.days) return;
+        Object.keys(moon.days).forEach(function (diaK) {
+          var cell = moon.days[diaK];
+          if (!cell || !cell.nota) return;
+          var lines = String(cell.nota).split('\n');
+          var keep = [];
+          var fecha = keyByLuna[lunaK + '-' + diaK] || todayKey();
+          lines.forEach(function (ln) {
+            var m = ln.match(re);
+            var low = ln.trim().toLowerCase();
+            var isSue = m || low.indexOf('sueño') === 0 || low.indexOf('sueno') === 0 || low.indexOf('sueño:') >= 0 && low.length < 300;
+            if (isSue) {
+              var txt = '';
+              if (m && m[2]) txt = m[2].trim();
+              else txt = ln.replace(/^\s*sue[ñn]os?\s*(\d{4}-\d{2}-\d{2})?\s*:?\s*/i, '').trim() || ln.trim();
+              if (m && m[1]) fecha = m[1];
+              txt = clean(txt, 800);
+              if (txt && !existing[fecha + '|' + txt]) {
+                getSuenos().push({ id: uid('su'), fecha: fecha, titulo: txt.split(/\n|。|\./)[0].slice(0, 60) || 'Sueño', tipo: '🌊 Común', texto: txt, arq: '', emo: '', viv: 0, msg: '', luc: false, importado: true });
+                existing[fecha + '|' + txt] = true;
+                imported++;
+              }
+              cleaned++;
+            } else keep.push(ln);
+          });
+          cell.nota = keep.join('\n').replace(/\n{3,}/g, '\n\n').trim();
+        });
+      });
+      // DFT
+      try {
+        if (cycData.dft && cycData.dft.nota) {
+          var lines = String(cycData.dft.nota).split('\n');
+          var keep = [];
+          lines.forEach(function (ln) {
+            var m = ln.match(re);
+            if (m) {
+              var txt = clean((m[2] || '').trim() || ln.trim(), 800);
+              var fecha = (m[1] || todayKey());
+              if (txt && !existing[fecha + '|' + txt]) { getSuenos().push({ id: uid('su'), fecha: fecha, titulo: txt.slice(0, 60) || 'Sueño', tipo: '🌊 Común', texto: txt, arq: '', emo: '', viv: 0, msg: '', luc: false, importado: true }); existing[fecha + '|' + txt] = true; imported++; }
+              cleaned++;
+            } else keep.push(ln);
+          });
+          cycData.dft.nota = keep.join('\n').trim();
+        }
+      } catch (e) {}
+    });
+    save();
+    try { renderSuenosPlus(); } catch (e) {}
+    try { if (typeof renderCurrentView === 'function') renderCurrentView(); } catch (e) {}
+    alert(imported ? ('🌙 Importados ' + imported + ' sueños al Diario y quitados de las notas ✓') : (cleaned ? 'Ya estaban en el Diario (se limpiaron duplicados de notas)' : 'No se encontraron líneas "Sueño:" en las notas'));
+  } catch (e) { alert('No se pudo importar'); }
+}
 function renderSuenosPlus() {
   try { renderSueDicc(); } catch (e) {}
   var box = $('suePlusPatrones'); if (!box) return;
@@ -2296,10 +2404,12 @@ function renderSuenosPlus() {
       '<p style="font-size:12px;white-space:pre-wrap;margin:4px 0">' + esc((r.texto || '').slice(0, 400)) + '</p>' +
       (r.msg ? '<p style="font-size:11px">👉 <b>Me pide:</b> ' + esc(r.msg) + '</p>' : '') +
       (pista ? '<p class="muted" style="font-size:11px">📖 ' + esc(pista.n) + ': ' + esc(pista.p) + '</p>' : '') +
-      '<div style="display:flex;gap:6px;margin-top:4px"><button class="btn" style="width:auto;font-size:11px" data-share="' + r.id + '">📤</button><button class="btn" style="width:auto;font-size:11px;color:#e76e8a" data-del="' + r.id + '">✕</button></div></div></div>';
+      '<div style="display:flex;gap:6px;margin-top:4px;flex-wrap:wrap"><button class="btn" style="width:auto;font-size:11px" data-edit="' + r.id + '">✏️ Editar</button><button class="btn" style="width:auto;font-size:11px" data-share="' + r.id + '">📤</button><button class="btn" style="width:auto;font-size:11px;color:#e76e8a" data-del="' + r.id + '">✕</button></div></div></div>';
   }).join('') + (d.length > 30 ? '<p class="muted" style="font-size:11px">Mostrando 30 de ' + d.length + '. Usa el buscador para filtrar.</p>' : '') : (d.length ? '<p class="muted">Sin resultados para esa búsqueda.</p>' : '');
-  list.querySelectorAll('[data-del]').forEach(function (b) { b.onclick = function () { if (!confirm('¿Borrar sueño del diario? (la nota del día se mantiene)')) return; var dd = getSuenos(); var i = dd.findIndex(function (x) { return x.id === b.getAttribute('data-del'); }); if (i >= 0) dd.splice(i, 1); save(); renderSuenosPlus(); }; });
+  try { var tabD = $('tabSueDiario'); if (tabD) tabD.textContent = '📓 Diario (' + d.length + ')'; } catch (e) {}
+  list.querySelectorAll('[data-del]').forEach(function (b) { b.onclick = function () { if (!confirm('¿Borrar este sueño de tu Diario?')) return; var dd = getSuenos(); var i = dd.findIndex(function (x) { return x.id === b.getAttribute('data-del'); }); if (i >= 0) dd.splice(i, 1); save(); renderSuenosPlus(); }; });
   list.querySelectorAll('[data-share]').forEach(function (b) { b.onclick = function () { var dd = getSuenos(); var r = dd.find(function (x) { return x.id === b.getAttribute('data-share'); }); if (r) share('💭 ' + (r.titulo || 'Mi sueño') + ' (' + r.fecha + ')', (r.texto || '') + (r.msg ? '\n👉 Me pide: ' + r.msg : '')); }; });
+  list.querySelectorAll('[data-edit]').forEach(function (b) { b.onclick = function () { var dd = getSuenos(); var r = dd.find(function (x) { return x.id === b.getAttribute('data-edit'); }); if (r) suenosLoadToForm(r); }; });
 }
 var SUE_TABS = ['Anotar', 'Practicas', 'Guia', 'Dicc', 'Diario'];
 function switchSueTab(t) {
@@ -2338,42 +2448,57 @@ function setupSuenos() {
     saveBtn.dataset.suePlusWrapped = '1';
     saveBtn.addEventListener('click', function () {
       var txt = ($('dreamText').value || '').trim();
-      if (!txt) return;
+      if (!txt) { alert('Escribe tu sueño, aunque sea una palabra.'); return; }
       try {
         var tipo = $('suePlusTipo') ? $('suePlusTipo').value : '🌊 Común';
         var isLuc = ($('suePlusLuc') ? $('suePlusLuc').checked : false) || (tipo.indexOf('Lúcido') >= 0);
-        getSuenos().push({
-          id: uid('su'), fecha: todayKey(),
+        var fecha = ($('suePlusFecha') && $('suePlusFecha').value) ? $('suePlusFecha').value : todayKey();
+        var data = {
           titulo: clean($('suePlusTitulo') ? $('suePlusTitulo').value : '', 60) || txt.split(/\n|。|\./)[0].slice(0, 60) || 'Sueño',
-          tipo: tipo, texto: clean(txt, 800),
+          tipo: tipo, texto: clean(txt, 2000),
           arq: $('suePlusArq') ? $('suePlusArq').value : '',
           emo: $('suePlusEmo') ? $('suePlusEmo').value : '',
           viv: $('suePlusViv') ? +$('suePlusViv').value : 0,
           msg: clean($('suePlusMsg') ? $('suePlusMsg').value : '', 140),
-          luc: isLuc
-        });
-        save();
-        if ($('suePlusTitulo')) $('suePlusTitulo').value = '';
-        if ($('suePlusMsg')) $('suePlusMsg').value = '';
-        if ($('suePlusLuc')) $('suePlusLuc').checked = false;
+          luc: isLuc, fecha: fecha
+        };
+        if (sueEditingId) {
+          var dd = getSuenos();
+          var ix = dd.findIndex(function (x) { return x.id === sueEditingId; });
+          if (ix >= 0) { Object.keys(data).forEach(function (k) { dd[ix][k] = data[k]; }); }
+          save('Sueño actualizado ✓');
+        } else {
+          data.id = uid('su');
+          getSuenos().push(data);
+          save('Sueño guardado en tu Diario ✓');
+        }
+        suenosClearForm();
+        var st = $('dreamStatus'); if (st) { st.textContent = 'Guardado en tu Diario ✓ (no queda en notas)'; setTimeout(function () { st.textContent = ''; }, 2500); }
       } catch (e) {}
-      setTimeout(function () { try { renderSuenosPlus(); } catch (e) {} }, 60);
+      setTimeout(function () { try { switchSueTab('Diario'); } catch (e) {} }, 60);
     });
   }
+  var cancelBtn = $('dreamCancelEdit');
+  if (cancelBtn && !cancelBtn.dataset.sueBound) {
+    cancelBtn.dataset.sueBound = '1';
+    cancelBtn.addEventListener('click', function () { suenosClearForm(); });
+  }
+  try { if ($('suePlusFecha') && !$('suePlusFecha').value) $('suePlusFecha').value = todayKey(); } catch (e) {}
   if ($('suePlusList')) { try { switchSueTab('Anotar'); renderSuenosPlus(); } catch (e) {} return; }
   var mount = $('suePlusMount');
   var form = dlg.querySelector('form') || dlg;
   var sec = document.createElement('div');
   sec.innerHTML =
-    '<div class="menstrual-card" style="margin-top:2px;border-color:var(--gold)"><h4>🔍 Diario de sueños y sincronicidades</h4>' +
-    '<p class="muted" style="font-size:11px">Lo que anotas en ✍️ Anotar queda aquí con tipo, arquetipo y luna para detectar patrones. Conecta con 🪞 Autoconocimiento (Jung) y 🌸 Ciclo.</p>' +
+    '<div class="menstrual-card" style="margin-top:2px;border-color:var(--gold)"><h4>📓 Mi Diario de sueños</h4>' +
+    '<p class="muted" style="font-size:11px">Sección aparte: lo que anotas en ✍️ Anotar queda solo aquí, con tipo, arquetipo y luna para detectar patrones. <b>No se mezcla con las notas del día.</b> Conecta con 🪞 Autoconocimiento (Jung) y 🌸 Ciclo.</p>' +
     '<div id="suePlusPatrones" class="chip" style="display:block;white-space:normal;margin-top:6px"></div>' +
     '<div class="conv-row" style="margin-top:8px"><label style="flex:2">🔎 Buscar en mi diario <input type="text" id="suePlusQ" placeholder="ej: río, abuela, miedo..." maxlength="30"></label></div>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="suePlusShare" class="btn" style="width:auto">📤 Compartir diario</button></div>' +
+    '<div class="dlg-actions" style="justify-content:flex-start;flex-wrap:wrap"><button type="button" id="suePlusShare" class="btn" style="width:auto">📤 Compartir diario</button><button type="button" id="suePlusImport" class="btn" style="width:auto" title="Busca líneas Sueño: en tus notas del día y las mueve al Diario">📥 Importar desde notas</button></div>' +
     '<div id="suePlusList" class="habits-list" style="margin-top:8px;max-height:260px"></div></div>';
   if (mount) mount.appendChild(sec);
   else { var closeRow = form.querySelector('.dlg-actions:last-child'); if (closeRow) form.insertBefore(sec, closeRow); else form.appendChild(sec); }
   if ($('suePlusQ')) $('suePlusQ').addEventListener('input', function () { try { renderSuenosPlus(); } catch (e) {} });
+  if ($('suePlusImport')) $('suePlusImport').onclick = function () { suenosImportFromNotes(); };
   if ($('suePlusShare')) $('suePlusShare').onclick = function () {
     var dd = getSuenos();
     if (!dd.length) return alert('Sin sueños aún');

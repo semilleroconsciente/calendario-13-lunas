@@ -612,10 +612,10 @@ function renderTodayView(){
     + (hb.animo === false ? '' : '<div class="today-card"><h3>😊 Estado de ánimo</h3>'
     + '<button type="button" id="todayMoodMain" class="today-mood-main"><span class="tm-ico">'+sug.e+'</span><span>'+(cur?escapeHtml(cur.n)+' · toca para cambiar':'Sugerencia: '+sug.e+' · '+escapeHtml(sug.n))+'</span></button>'
     + '<div id="todayMoodPicker" class="today-mood-picker hidden"></div></div>')
-    + (hb.suenos === false ? '' : '<div class="today-card"><h3>💭 Sueños</h3>'
-    + (function(){ try{ const lines=(nota||'').split('\n').filter(l=>l.trim().toLowerCase().indexOf('sueño')===0||l.trim().toLowerCase().indexOf('sueno')===0); return lines.length? '<p class="muted" style="font-size:11px">'+lines.length+' sueño(s) en la nota de hoy · último: «'+escapeHtml(lines[lines.length-1].slice(0,120))+'»</p>' : '<p class="muted" style="font-size:11px">Sin sueños registrados hoy. Anota aunque sea una palabra.</p>'; }catch(e){ return ''; } })()
-    + '<textarea id="todayDreamText" class="today-note" rows="2" placeholder="Anoche soñé..."></textarea>'
-    + '<div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap"><button type="button" id="todayDreamSave" class="btn btn-accent" style="flex:1;width:auto">💾 Guardar en nota</button><button type="button" id="todayDreamOpen" class="btn" style="flex:1;width:auto">💭 Abrir Sueños</button></div></div>')
+    + (hb.suenos === false ? '' : '<div class="today-card"><h3>💭 Diario de Sueños</h3>'
+    + (function(){ try{ const dd=(typeof getSuenos==='function'?getSuenos():[]).filter(function(r){return r.fecha===key;}); return dd.length? '<p class="muted" style="font-size:11px">'+dd.length+' sueño(s) hoy en tu Diario · último: «'+escapeHtml((dd[dd.length-1].titulo||dd[dd.length-1].texto||'').slice(0,120))+'»</p>' : '<p class="muted" style="font-size:11px">Sin sueños hoy en tu Diario. Anota aunque sea una palabra — queda aparte, no en notas.</p>'; }catch(e){ return ''; } })()
+    + '<textarea id="todayDreamText" class="today-note" rows="2" placeholder="Anoche soñé... (se guarda en tu Diario)"></textarea>'
+    + '<div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap"><button type="button" id="todayDreamSave" class="btn btn-accent" style="flex:1;width:auto">💾 Guardar en Diario</button><button type="button" id="todayDreamOpen" class="btn" style="flex:1;width:auto">📓 Abrir Diario</button></div></div>')
     + (hb.comidas === false ? '' : '<div class="today-card"><h3>🥗 Comidas de hoy</h3>'
     + (function(){ try{ const e=(typeof getMealData==='function'?getMealData().entries[key]:null)||{}; const parts=[e.breakfast?('🌅 '+e.breakfast):'',e.lunch?('☀️ '+e.lunch):'',e.dinner?('🌙 '+e.dinner):''].filter(Boolean); return parts.length? '<p style="font-size:12px">'+escapeHtml(parts.join(' · ')).replace(/&quot;/g,'"')+'</p>' : '<p class="muted" style="font-size:11px">Sin plan de comidas hoy.</p>'; }catch(e){ return ''; } })()
     + '<div class="today-add" style="flex-direction:column;align-items:stretch"><input type="text" id="todayMealB" placeholder="🌅 Desayuno..." maxlength="80"><input type="text" id="todayMealL" placeholder="☀️ Almuerzo..." maxlength="80"><input type="text" id="todayMealD" placeholder="🌙 Cena..." maxlength="80"><div style="display:flex;gap:8px"><button type="button" id="todayMealSave" class="btn btn-accent" style="flex:1;width:auto">💾 Guardar</button><button type="button" id="todayMealOpen" class="btn" style="flex:1;width:auto">🥗 Abrir Comidas</button></div></div></div>')
@@ -800,17 +800,19 @@ function renderTodayView(){
       }catch(e){ alert('No se pudo compartir este día'); }
     };
   }catch(e){}
-  // --- 💭 SUEÑOS ---
+  // --- 💭 SUEÑOS → Diario aparte (suenosLog), no a la nota ---
   try{
     const ds=$('todayDreamSave');
     if(ds) ds.onclick=()=>{
       try{
         const t=(($('todayDreamText')||{}).value||'').trim();
         if(!t) return alert('Escribe tu sueño primero');
-        const txt=sanitizeText(t,500);
-        if(isDFT){ const c=cyc(info.y); c.dft.nota=(c.dft.nota?c.dft.nota+'\n':'')+'Sueño: '+txt; }
-        else { const c=dayCell(lunaN,diaN); c.nota=(c.nota?c.nota+'\n':'')+'Sueño: '+txt; }
-        scheduleSave('Sueño guardado ✓'); renderTodayView();
+        const txt=sanitizeText(t,800);
+        if(typeof getSuenos==='function'){
+          getSuenos().push({ id:'su'+Date.now().toString(36)+Math.random().toString(36).slice(2,4), fecha:key, titulo:txt.split(/\n|。|\./)[0].slice(0,60)||'Sueño', tipo:'🌊 Común', texto:txt, arq:'', emo:'', viv:0, msg:'', luc:false });
+          scheduleSave('Sueño guardado en tu Diario ✓');
+        }
+        renderTodayView();
       }catch(e){}
     };
     const dop=$('todayDreamOpen');
@@ -7967,13 +7969,17 @@ function setupStudyDialog(){
 setTimeout(setupStudyDialog, 872);
 
 
-// === SUEÑOS ===
+// === SUEÑOS — Diario aparte (no se guardan en notas del día) ===
+// El guardado real vive en nuevos-modulos.js (setupSuenos → suenosLog).
+// Aquí solo abrimos el diálogo e intención; dreamSave lo maneja el Diario.
 function setupDreamsDialog(){
   const btn=$('btnDreams'); if(btn) btn.onclick=()=>{
     const d=userData();
-    $('dreamIntention').value=d.dreamIntention||"";
-    $('dreamText').value="";
-    const st=$('dreamStatus'); if(st) st.textContent="";
+    if($('dreamIntention')) $('dreamIntention').value=d.dreamIntention||"";
+    if($('dreamText')) $('dreamText').value="";
+    try{ if($('suePlusFecha') && !$('suePlusFecha').value) $('suePlusFecha').value = cal.fmtKey.format(new Date()); }catch(e){}
+    try{ if($('dreamCancelEdit')) $('dreamCancelEdit').classList.add('hidden'); }catch(e){}
+    try{ if(typeof renderSuenosPlus==='function') renderSuenosPlus(); }catch(e){}
     $('dreamsDialog').showModal();
   };
   const ct=$('dreamsCloseTop'), cb=$('dreamsClose'); if(ct) ct.onclick=()=>$('dreamsDialog').close(); if(cb) cb.onclick=()=>$('dreamsDialog').close();
@@ -7983,30 +7989,8 @@ function setupDreamsDialog(){
     const st=$('dreamStatus'); if(st) st.textContent=v?"Intención fijada ✓ — repítela al acostarte.":"Intención borrada.";
     setTimeout(()=>{ if(st) st.textContent=""; },2500);
   };
-  const save=$('dreamSave'); if(save) save.onclick=()=>{
-    const txt=$('dreamText').value.trim();
-    if(!txt) return alert('Escribe tu sueño, aunque sea una palabra.');
-    const info=todayInfo();
-    if(!info){ alert('No se pudo ubicar hoy en el calendario.'); return; }
-    const key = info.luna==='dft'? null : {luna:info.luna, dia:info.diaN};
-    let targetKey = cal.fmtKey.format(new Date());
-    // guardar en nota del día con prefijo Sueño:
-    if(info.luna==='dft'){
-      // guardar en nota del DFT
-      const c=cyc(currentCycleYear()); c.dft.nota = (c.dft.nota? c.dft.nota+"\n":"") + `Sueño ${targetKey}: ${txt}`;
-    } else {
-      const cell=dayCell(info.luna, info.diaN);
-      cell.nota = (cell.nota? cell.nota+"\n":"") + `Sueño: ${txt}`;
-      // también guardar intención si hay
-      const intention=$('dreamIntention').value.trim();
-      if(intention) cell.nota += ` [Intención: ${intention}]`;
-    }
-    scheduleSave();
-    if(currentView.tipo==='luna') renderLuna(); else renderDFT();
-    const st=$('dreamStatus'); if(st) st.textContent="Sueño guardado en la nota de hoy ✓";
-    $('dreamText').value="";
-    setTimeout(()=>{ if(st) st.textContent=""; },2500);
-  };
+  // NOTA: no se asigna $('dreamSave').onclick aquí a propósito.
+  // setupSuenos() guarda en el Diario aparte (suenosLog), separado de las notas.
 }
 setTimeout(setupDreamsDialog, 865);
 

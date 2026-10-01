@@ -91,7 +91,7 @@
           <button id="btnRemind" class="btn" data-sub="organizar" data-keywords="recordatorio notificacion luna fase">🔔 Recordatorios</button>
           <span class="sub-label" data-sub="registrar">✍️ Registrar hoy</span>
           <button id="btnGratitud" class="btn" data-sub="registrar" data-keywords="gratitud diario gracias wenu bienestar animo positivo racha">📓 Gratitud Diaria</button>
-          <button id="btnDreams" class="btn" data-sub="registrar" data-keywords="sueños diario onirico rem dormir">💭 Sueños</button>
+          <button id="btnDreams" class="btn" data-sub="registrar" data-keywords="sueños diario onirico rem dormir pewma">💭 Diario Sueños</button>
           <button id="btnBreath" class="btn" data-sub="registrar" data-keywords="respiracion 478 caja cuadrada ansiedad calma sueño foco energia coherente suspiro diafragma">🌬️ Respiración</button>
         </div>
       </details>
@@ -212,7 +212,7 @@
       <div id="dlgSunMoon" class="dlg-sunmoon"></div>
       <div id="dlgHorasBox" class="dlg-horas-box">
         <label class="dlg-horas-label" for="fNota">📝 Notas del día</label>
-        <textarea id="fNota" rows="4" placeholder="tareas, ánimo, sueños, registros..."></textarea>
+        <textarea id="fNota" rows="4" placeholder="tareas, ánimo, registros... (los sueños van en 💭 Diario Sueños)"></textarea>
         <div style="height:12px"></div>
         <label class="dlg-horas-label">🕐 Compromisos</label>
         <p class="muted" style="font-size:11px;margin:2px 0 8px">Agrega compromisos a cualquier hora exacta (ej 08:37, 14:05). Activa 🔔 para recibir notificación a esa hora y minuto.</p>
@@ -2149,7 +2149,7 @@
           </div>
           <div class="help-card" style="border-color:var(--gold)">
             <h4>💡 Trucos básicos</h4>
-            <p>• <b>Todo es privado y local</b> por usuario (lateral → Usuario +/🗑). • <b>💾 Respaldo</b> descarga tu memoria en JSON; guárdalo. • <b>🎨 Tema</b> en Auto sigue a la luna; cámbialo si quieres. • Escribe <b>“Sueño:”</b> en tu nota para buscar sueños después. • Funciona <b>offline</b> salvo Clima/Mareas en vivo.</p>
+            <p>• <b>Todo es privado y local</b> por usuario (lateral → Usuario +/🗑). • <b>💾 Respaldo</b> descarga tu memoria en JSON; guárdalo. • <b>🎨 Tema</b> en Auto sigue a la luna; cámbialo si quieres. • Tus sueños viven en <b>💭 Diario Sueños</b>, sección aparte (no en notas). • Funciona <b>offline</b> salvo Clima/Mareas en vivo.</p>
             <p>• <b>Móvil:</b> desliza las lunas horizontal · usa el dock inferior (❓ Guía siempre a mano).</p>
           </div>
         </div>
@@ -2187,7 +2187,7 @@
           </div>
           <div class="help-card" style="border-color:var(--gold)">
             <h4>📝 Día a día — notas + compromisos</h4>
-            <p>Clic en un día: elige <b>ánimo</b> (8 estados), escribe en <b>📝 Notas del día</b> (texto libre: tareas, ánimo, sueños — se busca con “Buscar en notas”) y aparte gestiona <b>🕐 Compromisos — por hora</b>.</p>
+            <p>Clic en un día: elige <b>ánimo</b> (8 estados), escribe en <b>📝 Notas del día</b> (texto libre: tareas, ánimo, registros — se busca con “Buscar en notas”; los sueños van en <b>💭 Diario Sueños</b>) y aparte gestiona <b>🕐 Compromisos — por hora</b>.</p>
             <p><b>Compromisos:</b> selecciona hora (00-23), escribe actividad (ej: “reunión centro Penco”) y marca <b>🔔</b> si quieres <b>notificación a esa hora</b> (usa Notificaciones del navegador — pide permiso la primera vez y suena a la hora exacta con vibración). Quedan listados agrupados por hora, puedes activar/desactivar 🔔 o eliminar con ✕. Se guardan junto a tu nota y aparecen como <code>🕐 2 compromisos</code> en la tarjeta del calendario.</p>
             <p><b>📤 Compartir</b> genera imagen PNG con fase, sol, frase y tus notas/compromisos. <b>🌸 Marcar inicio ciclo</b> (si está visible en ⚙️ Personalizar) enlaza con 🌸 Ciclo menstrual. Abajo, <b>✅ Hábitos</b> del día.</p>
             <p><b>Notas de la luna</b> (abajo del grid) = reflexión de 28 días. <b>DFT 20 jun</b> = reflexión del año completo.</p>
@@ -2206,7 +2206,7 @@
          <div class="help-card">
            <h4>📅 Mi Día · 💚 Cuerpo & Salud</h4>
            <p><b>📅 Mi Día — Organizar:</b> ✅ Hábitos (icono + color + racha → puntitos en el día), 🎯 Disciplina (Pomodoro 25/5, 2 min, Sapo, Time Blocking + MIT del día), 📚 Horario (bloques semanales + vista “Hoy”), ⏱ Tiempo (cronómetro + temporizador), 🔔 Recordatorios (fases lunares y avisos suaves).</p>
-           <p><b>📅 Mi Día — Registrar:</b> 📓 Gratitud Diaria (3 líneas, racha, días ✨), 💭 Sueños (intención, diario, “Sueño:” en nota), 🌬️ Respiración (14 técnicas por objetivo, guía visual con sonido, ciclos y registro).</p>
+            <p><b>📅 Mi Día — Registrar:</b> 📓 Gratitud Diaria (3 líneas, racha, días ✨), 💭 Diario Sueños (sección aparte con fecha, tipo, arquetipo y patrones — ya no usa las notas), 🌬️ Respiración (14 técnicas por objetivo, guía visual con sonido, ciclos y registro).</p>
             <p><b>💚 Ciclos y Etapas:</b> 🌸 Ciclo (registro, predicción período/fértil, historial + 🧬 diagrama hormonal 28 días con slider), 🤰 Fertilidad Natural, 🌅 Juventud (20-39), 🏠 Adultez (35-59), 🔥 Climaterio (45-64), 🦉 Vejez Sabia (60+) — cada etapa con Guía / Cuerpo / Mente / Vida práctica / Mi espacio (chequeo + metas por luna + diario privado).</p>
                <p><b>💚 Cuidado:</b> 🌿 Medicina (💊 Farmacología + 🌱 Natural con horarios y notificaciones + 🩺 Básica con botiquín y alergias + 📜 Historia + ⚠️ Seguridad) · 💪 Entrenamientos (Gym, Terapia física, Calistenia, Prácticas varias + filtro por lugar: Casa, Gimnasio, Playa, Bosque, Multicancha → puntitos 💪) · 🥗 Nutrición (qué es, guía básica, historia, menú Penco, sellos, mi semana) · 🪴 Mis Plantas (inventario, riego automático cada N días, 💧 Regar hoy, guía de sustrato/luz/luna) · 💇 Luna y Corte (calendario capilar por fase + 💇 en el calendario) · 🧂 Rituales Salud (ayuno suave por fases, detox liviano, pausa digital — opcional).</p>
             <p><b>🌊 Territorio — Tierra:</b> 🌿 Lawen (herbario 20 plantas Bío-Bío + tus fichas, buscable por síntoma — educativo).</p>
@@ -2245,7 +2245,7 @@
                                                           <p>• <b>Nuevo 20–21 sep 2026:</b> 🥬 Mi Huerta (bancales/cultivos/cosechas) · 💧 Hidroponía (6 sistemas, 14 cultivos pH/EC) · ⚡ Electrocultura (8 antenas, 4 proyectos) · 🪴 Mis Plantas (riegos + cuidados) · 🔧 Mecánica (bici/moto/auto/motores + bitácora) · 🎨 Talleres Penco (fichas + 📌 al calendario) · 🌿 Flora nativa cuenca Penco · 🌱 Adolescencia · 🌅 Juventud · 🏠 Adultez · 🦉 Vejez Sabia · 🧠 Neurodiversidad (AQ-10/ASRS-6 + plan de acceso) · 📡 Red Comunitaria (Meshtastic/radio).</p>
               <p>• <b>Nuevo inicio sep 2026:</b> 📿 Métodos · 🪞 Autoconocimiento (12 guías + registro) · 🦀 Intermareal + 🌳 Bosque Nativo (bitácoras) · 🕉️ Prácticas Espirituales · Ingles A1-C1 · 🎶 Instrumentos · 🧩 Memoria ampliada · 🌊🚨 Evacuación Tsunami · 🗣️ Kimün · 🌿 Lawen (20) · 🪱 Compost · ♻️ Reciclaje · 🌬️ Aire (en Clima) · 📓 Gratitud (✨) · 🪵 Leña & Pellet · 🌱 Semillero · <b>4 vistas</b> 🌙/🌗/📅/🗓️ · <b>Guía Básica/Detallada</b>.</p>
               <p>• <b>Antes:</b> 🤝 Asociaciones (23 cultivos) y 🧪 Preparados (10) en 🌱 Siembra · bitácoras 🎣 Pesca y 🦅 Aves · 🏠 Tareas Hogar · 📖 Cuentos editables. • <b>Fix:</b> ❤ Aporte links externos. • Chip estación = paleta de color. • Móvil: desliza lunas horizontal + dock inferior.</p>
-           <p>• Escribe “Sueño:” en nota para buscar sueños. • Todo offline salvo clima/mareas. • Ctrl+K para filtrar funciones.</p>
+           <p>• Tus sueños quedan en 💭 Diario Sueños, aparte de las notas. • Todo offline salvo clima/mareas. • Ctrl+K para filtrar funciones.</p>
             <p style="text-align:center;margin-top:6px;color:var(--gold)"><b>¡Que tu ciclo florezca con la luna! — Küme mañum · Penco 2026</b></p>
           </div>
         </div>
@@ -2428,28 +2428,29 @@
   <dialog id="dreamsDialog">
     <form method="dialog">
       <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
-        <h3 style="margin:0;color:var(--accent)">💭 Prácticas para recordar los sueños</h3>
+        <h3 style="margin:0;color:var(--accent)">💭 Diario de Sueños — Pewma</h3>
         <button type="button" id="dreamsCloseTop" class="btn btn-icon" title="Cerrar" aria-label="Cerrar">✕</button>
       </div>
-      <p class="muted" style="line-height:1.5">Entrena tu memoria onírica. La luna y el descanso profundo se nutren mutuamente. Elige 2 prácticas y hazlas 7 noches seguidas.</p>
+      <p class="muted" style="line-height:1.5">Tu diario onírico aparte: <b>nada queda en las notas del día</b>. Anota en ✍️ Anotar y revísalo en 📓 Diario. Elige 2 prácticas y hazlas 7 noches seguidas.</p>
       <div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">
         <button type="button" id="tabSueAnotar" class="btn btn-accent" style="width:auto">✍️ Anotar</button>
+        <button type="button" id="tabSueDiario" class="btn" style="width:auto">📓 Diario</button>
         <button type="button" id="tabSuePracticas" class="btn" style="width:auto">🌙 Prácticas</button>
         <button type="button" id="tabSueGuia" class="btn" style="width:auto">🗂️ Guía</button>
         <button type="button" id="tabSueDicc" class="btn" style="width:auto">📖 Símbolos</button>
-        <button type="button" id="tabSueDiario" class="btn" style="width:auto">🔍 Diario</button>
       </div>
       <div id="sueTabAnotar">
       <div class="menstrual-card" style="margin-top:2px">
         <h4>✍️ Herramienta — esta noche</h4>
         <label>Intención para esta noche <input type="text" id="dreamIntention" placeholder="ej: Recordaré y agradeceré mi sueño"></label>
-        <label>Título del sueño <input type="text" id="suePlusTitulo" placeholder="ej: El río que crece" maxlength="60"></label>
-        <label>Sueño de esta mañana (se guardará en la nota del día con “Sueño:”) <textarea id="dreamText" rows="3" placeholder="Escribe lo que recuerdas, aunque sea fragmento..."></textarea></label>
+        <div class="conv-row"><label>Fecha del sueño <input type="date" id="suePlusFecha"></label><label style="flex:2">Título del sueño <input type="text" id="suePlusTitulo" placeholder="ej: El río que crece" maxlength="60"></label></div>
+        <label>Sueño de esta mañana (se guarda solo en tu Diario, no en las notas del día) <textarea id="dreamText" rows="3" placeholder="Escribe lo que recuerdas, aunque sea fragmento..."></textarea></label>
         <div class="conv-row"><label style="flex:2">Tipo <select id="suePlusTipo"><option>🌊 Común</option><option>👁️ Lúcido</option><option>😱 Pesadilla</option><option>🔁 Recurrente</option><option>👵 Visita / ancestro</option><option>✨ Sincronía / aviso</option></select></label><label>Arquetipo <select id="suePlusArq"><option>🌊 Agua / mar / río</option><option>🌙 Luna / noche</option><option>🕊️ Vuelo</option><option>🏠 Casa / hogar</option><option>🐾 Animal guía</option><option>👵 Ancestro / abuela</option><option>🌑 Sombra / persecución</option><option>☀️ Luz / amanecer</option><option>🔥 Fuego</option><option>🌳 Bosque / árbol</option><option>🌧️ Lluvia / tormenta</option><option>🛤️ Camino / viaje</option></select></label></div>
         <div class="conv-row"><label>Emoción <select id="suePlusEmo"><option>calma</option><option>alegría</option><option>miedo</option><option>tristeza</option><option>rabia</option><option>amor</option><option>confusión</option><option>poder</option><option>gratitud</option><option>vergüenza</option><option>culpa</option><option>asombro</option></select></label><label>Viveza (1–5) <input type="number" id="suePlusViv" min="1" max="5" value="3" style="width:70px"></label><label class="check-row" style="align-self:flex-end"><input type="checkbox" id="suePlusLuc"> 👁️ lúcido</label></div>
         <label>👉 Mi sueño me pide… (1 acto concreto) <input type="text" id="suePlusMsg" placeholder="ej: llamar a mi mamá, ordenar mi pieza" maxlength="140"></label>
         <div class="dlg-actions" style="justify-content:flex-start">
-          <button type="button" id="dreamSave" class="btn btn-accent" style="width:auto">💾 Guardar sueño de hoy</button>
+          <button type="button" id="dreamSave" class="btn btn-accent" style="width:auto">💾 Guardar en mi Diario</button>
+          <button type="button" id="dreamCancelEdit" class="btn hidden" style="width:auto">Cancelar edición</button>
           <button type="button" id="dreamSetIntention" class="btn" style="width:auto">🌙 Fijar intención</button>
         </div>
         <p id="dreamStatus" class="muted" style="font-size:11px;margin-top:6px"></p>
@@ -2499,7 +2500,7 @@
         <div class="discipline-card">
           <h4>🌿 8. Revisión con luna</h4>
           <p>A la mañana, escribe y al anochecer relee bajo la luna del día. Busca patrones por fase (ej: lunas llenas sueños vívidos).</p>
-          <p class="muted">Usa la nota del día con prefijo <b>Sueño:</b> para buscarlos luego.</p>
+          <p class="muted">Todo queda en tu 📓 Diario de esta sección, separado de las notas del día.</p>
         </div>
       </div>
       </div>
