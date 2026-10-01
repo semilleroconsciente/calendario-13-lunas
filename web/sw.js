@@ -1,6 +1,6 @@
 ﻿// Service Worker — Calendario 13 Lunas (offline-first, tolerante a versiones ?v=)
-// v41: crucigrama-modulo.js + sopa-letras-modulo.js (📝 Crucigrama + 🔎 Sopa de Letras)
-const CACHE = 'cal13-v41-offline';
+// v42: natacion-modulo.js (Natación — Cuerpo & Salud > Cuidado)
+const CACHE = 'cal13-v42-offline';
 
 // Lista completa de archivos que usa index.html (bare + con ?v=).
 // Si se agrega un JS nuevo en index.html, agregarlo aquí también (bare y ?v=).
@@ -114,6 +114,8 @@ const CORE = [
   './hogar-corral-movilidad-escolar-modulo.js?v=1',
   './cuerpo-luna-rituales-fenologia-modulo.js',
   './cuerpo-luna-rituales-fenologia-modulo.js?v=1',
+  './natacion-modulo.js',
+  './natacion-modulo.js?v=1',
   './talleres-penco.js',
   './talleres-penco.js?v=1',
   './municipalidad-penco.js',
