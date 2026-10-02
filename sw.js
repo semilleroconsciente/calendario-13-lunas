@@ -118,6 +118,8 @@ const CORE = [
   './hogar-herramientas-modulo.js?v=1',
   './hogar-corral-movilidad-escolar-modulo.js',
   './hogar-corral-movilidad-escolar-modulo.js?v=1',
+  './hogar-biblioteca-modulo.js',
+  './hogar-biblioteca-modulo.js?v=1',
   './cuerpo-luna-rituales-fenologia-modulo.js',
   './cuerpo-luna-rituales-fenologia-modulo.js?v=1',
   './natacion-modulo.js',

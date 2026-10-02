@@ -1,9 +1,9 @@
-ï»¿// Service Worker â€” Calendario 13 Lunas (offline-first, tolerante a versiones ?v=)
-// v43: traspaso QR PCâ†”celular (qrcode-lib, jsqr-lib, qr-codec, qr-sync-modulo)
+// Service Worker — Calendario 13 Lunas (offline-first, tolerante a versiones ?v=)
+// v43: traspaso QR PC?celular (qrcode-lib, jsqr-lib, qr-codec, qr-sync-modulo)
 const CACHE = 'cal13-v43-offline';
 
 // Lista completa de archivos que usa index.html (bare + con ?v=).
-// Si se agrega un JS nuevo en index.html, agregarlo aquÃ­ tambiÃ©n (bare y ?v=).
+// Si se agrega un JS nuevo en index.html, agregarlo aquí también (bare y ?v=).
 const CORE = [
   './',
   './index.html',
@@ -118,6 +118,8 @@ const CORE = [
   './hogar-herramientas-modulo.js?v=1',
   './hogar-corral-movilidad-escolar-modulo.js',
   './hogar-corral-movilidad-escolar-modulo.js?v=1',
+  './hogar-biblioteca-modulo.js',
+  './hogar-biblioteca-modulo.js?v=1',
   './cuerpo-luna-rituales-fenologia-modulo.js',
   './cuerpo-luna-rituales-fenologia-modulo.js?v=1',
   './natacion-modulo.js',
@@ -155,7 +157,7 @@ const CORE = [
   './assets/notify.mp3'
 ];
 
-// Install tolerante: si un archivo falla (404/red), los demÃ¡s igual se cachean.
+// Install tolerante: si un archivo falla (404/red), los demás igual se cachean.
 // (El anterior usaba cache.addAll: si 1 fallaba, NO se instalaba nada.)
 self.addEventListener('install', (e) => {
   e.waitUntil(
@@ -167,7 +169,7 @@ self.addEventListener('install', (e) => {
             const r = await fetch(u, { cache: 'reload' });
             if (r && r.ok) await c.put(u, r.clone());
           } catch (_) {
-            // offline durante instalaciÃ³n: se omite, se intentarÃ¡ en uso
+            // offline durante instalación: se omite, se intentará en uso
           }
         })
       );
@@ -180,9 +182,9 @@ self.addEventListener('activate', (e) => {
   e.waitUntil(
     (async () => {
       const c = await caches.open(CACHE);
-      // Solo limpia cachÃ©s viejas (v15 y anteriores) si la nueva ya trae el
-      // index.html (instalaciÃ³n con internet OK). Si el SW se actualizÃ³ sin
-      // internet, la cachÃ© nueva viene vacÃ­a: se conserva la anterior para
+      // Solo limpia cachés viejas (v15 y anteriores) si la nueva ya trae el
+      // index.html (instalación con internet OK). Si el SW se actualizó sin
+      // internet, la caché nueva viene vacía: se conserva la anterior para
       // no romper el modo offline, y se hereda su index.html.
       const hasIndex =
         (await c.match('./index.html')) || (await c.match('./'));
@@ -232,11 +234,11 @@ self.addEventListener('fetch', (e) => {
   } catch (_) {
     return;
   }
-  // Solo mismo origen (las APIs open-meteo etc. las maneja la pÃ¡gina con su propio fallback offline)
+  // Solo mismo origen (las APIs open-meteo etc. las maneja la página con su propio fallback offline)
   if (url.origin !== location.origin) return;
 
-  // 1) Navegaciones (/, /index.html, ./): network-first con fallback a cachÃ©.
-  //    AsÃ­ la app abre offline aunque el HTML sea nuevo.
+  // 1) Navegaciones (/, /index.html, ./): network-first con fallback a caché.
+  //    Así la app abre offline aunque el HTML sea nuevo.
   if (req.mode === 'navigate') {
     e.respondWith(
       (async () => {
@@ -259,8 +261,8 @@ self.addEventListener('fetch', (e) => {
           (await caches.match('./')) ||
           (await caches.match(req, { ignoreSearch: true }));
         if (cached) return cached;
-        // Ãšltimo recurso: pÃ¡gina con reintento en vez de quedar en blanco
-        return new Response('<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><body style="background:#0b1026;color:#e8ecff;font-family:system-ui;padding:24px"><h3>Sin conexiÃ³n</h3><p>Abre la app una vez con internet para activar el modo offline.</p><button onclick="location.reload()" style="padding:10px 18px;border-radius:8px;border:0;background:#e8c56a;font-weight:700">Reintentar</button>', {
+        // Último recurso: página con reintento en vez de quedar en blanco
+        return new Response('<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><body style="background:#0b1026;color:#e8ecff;font-family:system-ui;padding:24px"><h3>Sin conexión</h3><p>Abre la app una vez con internet para activar el modo offline.</p><button onclick="location.reload()" style="padding:10px 18px;border-radius:8px;border:0;background:#e8c56a;font-weight:700">Reintentar</button>', {
           headers: { 'Content-Type': 'text/html; charset=utf-8' }
         });
       })()
@@ -269,8 +271,8 @@ self.addEventListener('fetch', (e) => {
   }
 
   // 2) CSS/JS/fuentes/datos locales: cache-first con tolerancia a ?v=
-  //    Clave del bug anterior: pedÃ­an styles.css?v=9 pero solo existÃ­a ?v=8 en
-  //    cachÃ© â†’ miss â†’ fetch offline falla â†’ devolvÃ­an index.html como CSS.
+  //    Clave del bug anterior: pedían styles.css?v=9 pero solo existía ?v=8 en
+  //    caché ? miss ? fetch offline falla ? devolvían index.html como CSS.
   if (isAssetRequest(url) || req.destination === 'style' || req.destination === 'script' || req.destination === 'worker') {
     e.respondWith(
       (async () => {
@@ -291,7 +293,7 @@ self.addEventListener('fetch', (e) => {
             .catch(() => {});
           return hit;
         }
-        // c) no estaba en cachÃ©: intenta red y la guarda
+        // c) no estaba en caché: intenta red y la guarda
         try {
           const net = await fetch(req);
           if (net && net.ok) {
@@ -301,20 +303,20 @@ self.addEventListener('fetch', (e) => {
           }
           return net;
         } catch (_) {
-          // d) offline y sin cachÃ©: NO devolver index.html (rompe MIME).
-          //    Devuelve error 504 para que la pÃ¡gina siga con lo que tenga,
-          //    salvo donate.json donde un {} evita que falle el diÃ¡logo.
+          // d) offline y sin caché: NO devolver index.html (rompe MIME).
+          //    Devuelve error 504 para que la página siga con lo que tenga,
+          //    salvo donate.json donde un {} evita que falle el diálogo.
           if (url.pathname.endsWith('donate.json')) {
             return new Response('{}', { headers: { 'Content-Type': 'application/json' } });
           }
-          return new Response('', { status: 504, statusText: 'Offline sin cachÃ©' });
+          return new Response('', { status: 504, statusText: 'Offline sin caché' });
         }
       })()
     );
     return;
   }
 
-  // 3) Resto (imÃ¡genes, prefetch): stale-while-revalidate genÃ©rico
+  // 3) Resto (imágenes, prefetch): stale-while-revalidate genérico
   e.respondWith(
     (async () => {
       const hit = await caches.match(req);
