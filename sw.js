@@ -1,6 +1,6 @@
 ﻿// Service Worker — Calendario 13 Lunas (offline-first, tolerante a versiones ?v=)
-// v42: natacion-modulo.js (🏊 Natación — Cuerpo & Salud > Cuidado)
-const CACHE = 'cal13-v42-offline';
+// v43: traspaso QR PC↔celular (qrcode-lib, jsqr-lib, qr-codec, qr-sync-modulo)
+const CACHE = 'cal13-v43-offline';
 
 // Lista completa de archivos que usa index.html (bare + con ?v=).
 // Si se agrega un JS nuevo en index.html, agregarlo aquí también (bare y ?v=).
@@ -88,8 +88,14 @@ const CORE = [
   './info-clave.js?v=1',
   './psicologia-modulo.js',
   './psicologia-modulo.js?v=1',
+  './adicciones-modulo.js',
+  './adicciones-modulo.js?v=1',
   './neurodiversidad-modulo.js',
   './neurodiversidad-modulo.js?v=1',
+  './kin-maya-modulo.js',
+  './kin-maya-modulo.js?v=1',
+  './kin-maya-modulo.js?v=2',
+  './kin-maya-modulo.js?v=3',
   './adolescencia-modulo.js',
   './adolescencia-modulo.js?v=1',
   './etapas-vida-modulo.js',
@@ -133,6 +139,14 @@ const CORE = [
   './moneda-social.js?v=1',
   './territorio-fase2.js',
   './territorio-fase2.js?v=1',
+  './qrcode-lib.js',
+  './qrcode-lib.js?v=1',
+  './jsqr-lib.js',
+  './jsqr-lib.js?v=1',
+  './qr-codec.js',
+  './qr-codec.js?v=1',
+  './qr-sync-modulo.js',
+  './qr-sync-modulo.js?v=1',
   './donate.json',
   './manifest.json',
   './icon-192.png',
