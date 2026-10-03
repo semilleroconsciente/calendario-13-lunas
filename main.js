@@ -31,6 +31,7 @@ function createWindow() {
     minWidth: 1100,
     minHeight: 700,
     backgroundColor: '#0b1026',
+    show: false,
     title: 'Calendario de las 13 Lunas · Mari Küla Küyen',
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
@@ -38,6 +39,8 @@ function createWindow() {
       nodeIntegration: false
     }
   });
+  // Muestra en cuanto hay algo que pintar (no espera a los 50+ scripts diferidos).
+  win.once('ready-to-show', () => { try { win.show(); } catch {} });
   win.setMenuBarVisibility(false);
   // Abrir links externos en navegador por defecto
   win.webContents.setWindowOpenHandler(({ url }) => { shell.openExternal(url); return { action: 'deny' }; });
@@ -47,15 +50,17 @@ function createWindow() {
   win.loadFile('index.html');
 }
 
-app.whenReady().then(async () => {
-  // Limpieza crítica: versiones anteriores registraron un Service Worker sobre
-  // file:// que intercepta index.html y devuelve la pantalla "Sin conexión".
-  // La app de escritorio es 100% local y no usa SW: se eliminan registros y
-  // cachés para que siempre cargue el calendario real. (No toca calendario-data.json)
-  try {
-    await session.defaultSession.clearStorageData({ storages: ['serviceworkers', 'cachestorage'] });
-  } catch {}
+app.whenReady().then(() => {
+  // Ventana primero: en PC con caché grande, clearStorageData demoraba
+  // segundos con pantalla vacía. Ahora abre de inmediato y la limpieza
+  // (versiones con SW sobre file:// que mostraban "Sin conexión") va en
+  // segundo plano. La app de escritorio es 100% local y no usa SW.
+  // (No toca calendario-data.json)
   createWindow();
+  try {
+    const p = session.defaultSession.clearStorageData({ storages: ['serviceworkers', 'cachestorage'] });
+    if (p && typeof p.catch === 'function') p.catch(() => {});
+  } catch {}
 });
 app.on('window-all-closed', () => app.quit());
 

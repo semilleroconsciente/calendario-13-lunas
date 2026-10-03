@@ -2,6 +2,8 @@
    GUIA + HISTORIA DE PENCO — Calendario 13 Lunas (Penco · Bio-Bio)
    Apartado: Territorio > Penco (btnComuna -> comunaDialog),
    pestanas: Eventos | Guia de Penco | Sectores | Historia | Talleres.
+   (⛪ Iglesias es ahora apartado propio: btnIglesias -> iglesiasDialog,
+    ver iglesias-penco.js — ya no es pestaña de comunaDialog.)
    - Guia de Penco: marco, limites, lugares de interes y
      sectores de la comuna (sin historia: ver pestanas Sectores/Historia).
    - Sectores: cada sector con su historia conocida + hitos, y

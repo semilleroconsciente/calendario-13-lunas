@@ -34,6 +34,7 @@
 | `sw.js` / `web-api.js` / `astro.js` | Service worker, bridge Electron, astronomía | No tocar salvo que sepas JS |
 | `penco-guia.js` + `talleres-penco.js` | 🎉 Penco: eventos, guía comunal, sectores, historia + pestaña 🎨 Talleres (fichas propias, 📌 al calendario, ⭐ inscritos) | Agregar talleres verificados / eventos anuales |
 | `flora.js` | 🌿 Flora: nativas cuenca estero Penco + ornamentales nativas + advertencia invasoras | Agregar fichas de jardín nativo |
+| `buen-vivir-modulo.js` | 🌎 Buen Vivir: visión, 7 pueblos (küme mongen, sumak kawsay, ñande reko, kolla, shiir waras, balu wala, suma qamaña) + práctica y compromisos | Ajustar textos y prácticas |
 | `huerta-modulo.js` | 🥬 Mi Huerta: bancales, cultivos, tareas, cosechas, guía rotación/asociaciones | Crear bancales y cultivos |
 | `hidroponia-modulo.js` | 💧 Hidroponía: 6 sistemas, 14 cultivos pH/EC, calculadora solución, bitácora | Ajustar cultivos y nutrientes |
 | `electrocultura-modulo.js` | ⚡ Electrocultura: 8 antenas, 4 proyectos ferretería, bitácora tratado vs control | Agregar antenas/proyectos |
@@ -360,6 +361,7 @@ Todo 100% offline salvo 🌬️ Aire (vivo opcional). Datos personales en `DATA`
 | ♻️ Reciclaje & Ferias | `btnRecicla` (Territorio) | `reciclaDialog` | `renderReciclaList` — buscador + filtro destino | `RECICLA_ITEMS` (14) |
 | 🌬️ Aire Penco | `btnAire` (Territorio) | `aireDialog` | `fetchAire` (Open-Meteo air-quality, con fallback offline) + `renderAireTips` | En vivo, sin guardar |
 | 📓 Gratitud Diaria | `btnGratitud` (Mente) | `gratitudDialog` | `renderGratitudBox` / `renderGratHistory` — racha + ✨ en calendario (`renderLuna`) | `DATA.gratitud.entries` |
+| 🌎 Buen Vivir | `btnBuenVivir` (Territorio) | `buenVivirDialog` | `switchBvTab` / `renderBvVision` / `renderBvPueblos` / `renderBvComp` — visión, pueblos, práctica + compromisos | `DATA.buenVivir.compromisos` |
 | 🪵 Leña & Pellet | `btnLena` (Herramientas) | `lenaDialog` | `renderLenaCalc` — $/kWh por combustible y unidad | Constantes `KWH`/`KG` en función |
 | 🌰 Mis Semillas | pestaña `tabSemillas` en `siembraDialog` | `siembraSemillasBox` | `renderSiembraSemillas` — inventario con −/+/✕, cableada en `renderSiembraContent` + tabs | `DATA.semillasInv` |
 | 🚨 Emergencias (grupo) | — | `helpDialog` | Tarjeta “🚨 Emergencias & Comunidad” agregada a la ❓ Guía in-app | — |

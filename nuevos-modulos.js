@@ -131,14 +131,68 @@ var BODEGA_TIPOS = {
   'Hierba seca / Lawen': { mad: 0, cad: 12, nota: 'Secar a la sombra ventilada. Frasco opaco; aroma = potencia.' }
 };
 var NUDOS = [
-  { n: 'As de guia', uso: 'Kayak, amarre seguro que no se aprieta. Presilla que salva vidas.', pasos: ['Haz un seno (lazo) con el chicote encima.', 'Pasa el chicote por el seno desde abajo (la "serpiente sale del lago").', 'Rodea el firme por detras (rodea el arbol).', 'Vuelve a entrar al seno por donde salio.', 'Ajusta: tira firme y seno a la vez.'], tip: 'Verificacion: cuenta 3 partes paralelas. Para kayak: une cabo de remolque.' },
-  { n: 'Ballestrinque', uso: 'Entutorado de huerta, amarrar a poste o vara. Rapido y ajustable.', pasos: ['Da una vuelta completa al poste.', 'Cruza el chicote sobre el firme formando una X.', 'Da segunda vuelta al poste.', 'Pasa el chicote bajo la X.', 'Tensa ambos lados.'], tip: 'Con carga constante aguanta; si vibra, remata con medio cote.' },
-  { n: 'Nudo de pescador (doble)', uso: 'Unir dos lineas de pesca o nylon del mismo grosor.', pasos: ['Superpon 10 cm de ambas lineas en sentidos opuestos.', 'Con una, haz 3 vueltas sobre la otra y pasa por el centro.', 'Repite con la otra linea.', 'Humedece y tira de los 4 cabos a la vez.', 'Corta sobrantes a 3 mm.'], tip: 'Humedece siempre antes de apretar nylon o se quema y pierde 50% fuerza.' },
-  { n: 'Ocho (doble ocho)', uso: 'Tope y presilla de seguridad. Base de escalada y kayak.', pasos: ['Haz un seno y cruza formando un 8.', 'Pasa el chicote por el primer ojo del 8.', 'Sigue el dibujo si es doble (para presilla).', 'Peina el nudo (acomoda cada vuelta).', 'Tensa. Deja 10 cm de cola.'], tip: 'El nudo rey: no se deshace solo y se desata facil tras carga.' },
-  { n: 'Rizo (llano)', uso: 'Atar fardos, cerrar sacos, unir cuerdas iguales sin carga critica.', pasos: ['Derecha sobre izquierda y pasa.', 'Izquierda sobre derecha y pasa.', 'Tensa parejo.', 'Verifica: dos senos simetricos.', 'NUNCA para vidas o cargas distintas.'], tip: 'Si las cuerdas son distintas o resbalan: usa vuelta de escota.' },
-  { n: 'Vuelta de escota', uso: 'Unir cuerda gruesa con delgada (red + cabo, carpa + viento).', pasos: ['Haz un seno con la gruesa.', 'Pasa la delgada por dentro del seno.', 'Rodea el seno completo por detras.', 'Pasa bajo su propio firme.', 'Tensa. Doble vuelta si resbala.'], tip: 'Clave para reparar redes: malla (delgada) a relinga (gruesa).' }
+  { n: 'As de guia', cat: 'Presilla', uso: 'Kayak, amarre seguro que no se aprieta. Presilla que salva vidas: remolque, rescate, amarra al bote.', pasos: ['Haz un seno (lazo) con el chicote encima.', 'Pasa el chicote por el seno desde abajo (la "serpiente sale del lago").', 'Rodea el firme por detras (rodea el arbol).', 'Vuelve a entrar al seno por donde salio.', 'Ajusta: tira firme y seno a la vez. Deja 10 cm de cola.'], tip: 'Verificacion: cuenta 3 partes paralelas. Para kayak: une cabo de remolque. NUNCA para escalar sin respaldo.' },
+  { n: 'Ballestrinque', cat: 'Amarre', uso: 'Entutorado de huerta, amarrar a poste o vara. Rapido y ajustable.', pasos: ['Da una vuelta completa al poste.', 'Cruza el chicote sobre el firme formando una X.', 'Da segunda vuelta al poste.', 'Pasa el chicote bajo la X.', 'Tensa ambos lados.'], tip: 'Con carga constante aguanta; si vibra o es para vidas, remata con medio cote.' },
+  { n: 'Nudo de pescador (doble)', cat: 'Union', uso: 'Unir dos lineas de pesca o nylon del mismo grosor. Empalmar roturas de red.', pasos: ['Superpon 10 cm de ambas lineas en sentidos opuestos.', 'Con una, haz 3 vueltas sobre la otra y pasa por el centro.', 'Repite con la otra linea (nudo doble = 2 nudos enfrentados).', 'Humedece y tira de los 4 cabos a la vez.', 'Corta sobrantes a 3 mm.'], tip: 'Humedece siempre antes de apretar nylon o se quema y pierde 50% fuerza.' },
+  { n: 'Ocho (simple + doble)', cat: 'Tope', uso: 'Tope y presilla de seguridad. Base de kayak, vela y rescate. No se deshace solo.', pasos: ['Haz un seno y cruza formando un 8.', 'Pasa el chicote por el primer ojo del 8.', 'Para presilla (doble): sigue el dibujo del 8 con el chicote duplicado.', 'Peina el nudo (acomoda cada vuelta, sin cruces).', 'Tensa. Deja 10 cm de cola.'], tip: 'El nudo rey: no se deshace solo y se desata facil tras carga. Ideal como tope al final de todo cabo.' },
+  { n: 'Rizo (llano)', cat: 'Union', uso: 'Atar fardos, cerrar sacos, unir cuerdas IGUALES sin carga critica.', pasos: ['Derecha sobre izquierda y pasa.', 'Izquierda sobre derecha y pasa.', 'Tensa parejo.', 'Verifica: dos senos simetricos.', 'NUNCA para vidas, cargas distintas o cuerdas mojadas.'], tip: 'Si las cuerdas son distintas o resbalan: usa vuelta de escota. Error mortal: usarlo como presilla.' },
+  { n: 'Vuelta de escota (simple + doble)', cat: 'Union', uso: 'Unir cuerda gruesa con delgada (red + cabo, carpa + viento). La reina de redes.', pasos: ['Haz un seno con la gruesa (relinga).', 'Pasa la delgada (malla) por dentro del seno.', 'Rodea el seno completo por detras.', 'Pasa bajo su propio firme.', 'Tensa. Doble vuelta (2 rodeos) si resbala o es nylon.'], tip: 'Clave para reparar redes: malla (delgada) a relinga (gruesa). Doble si hay tirones de mar.' },
+  { n: 'Medio cote + Cote doble', cat: 'Remate', uso: 'Rematar TODO: el seguro universal. Cerrar amarres, fijar carga, terminar ballestrinque.', pasos: ['Pasa el chicote alrededor del firme formando un seno.', 'Cruza el chicote por dentro del seno y tira (1 medio cote).', 'Repite pegado al anterior (cote doble = 2 medios cotes).', 'Ajusta cada cote por separado.', 'Deja cola + tope de ocho si es critico.'], tip: 'Regla de oro: todo amarre a poste se remata con 2 medios cotes. Barato y salva faenas.' },
+  { n: 'Palomar', cat: 'Pesca', uso: 'Atar anzuelo, emerillon o señuelo. El mas fuerte y facil con nylon/monofilamento.', pasos: ['Dobla 15 cm de linea y pasa el doblez por el ojo del anzuelo.', 'Haz un nudo simple flojo con el doblez (no apretar).', 'Pasa el anzuelo completo por el lazo del doblez.', 'Humedece bien.', 'Tira del firme y del chicote a la vez. Corta sobrante a 3 mm.'], tip: 'Conserva ~95% de resistencia (el mejor). No sirve para trenzado grueso sin humedecer doble.' },
+  { n: 'Clinch mejorado', cat: 'Pesca', uso: 'El clasico de anzuelos: rapido en el bote con dedos frios.', pasos: ['Pasa 10 cm por el ojo del anzuelo.', 'Da 5-7 vueltas sobre el firme (5 para grueso, 7 para fino).', 'Pasa el chicote por el primer ojito junto al ojo.', 'Devuelve el chicote por el lazo grande que se formo (paso "mejorado").', 'Humedece y tira del firme. Corta a 3 mm.'], tip: 'Menos de 5 vueltas se suelta; mas de 7 se enreda. Practica 10 veces en casa antes del bote.' },
+  { n: 'Vuelta de ancla (rezon)', cat: 'Amarre', uso: 'Amarrar bote/kayak al ancla, argolla o poste con tirones. No se atasca.', pasos: ['Da 2 vueltas completas al ancla/argolla (reparte la carga).', 'Pasa el chicote por el firme formando ballestrinque.', 'Remata con 2 medios cotes sobre el firme.', 'Tensa probando con el peso del cuerpo.', 'Revisa tras cada varada.'], tip: 'Las 2 vueltas iniciales absorben el tiron de la ola. Para fondeo nocturno agrega boya y cabo extra.' },
+  { n: 'Tensor de carpa (taut-line)', cat: 'Ajustable', uso: 'Vientos de carpa, toldo y lona. Se ajusta sin desatar, aguanta viento sur.', pasos: ['Rodea la estaca y sube el chicote al viento.', 'Da 2 vueltas ajustadas sobre el firme (hacia la carpa).', 'Da 1 vuelta por fuera (hacia la estaca).', 'Prueba: el nudo corre si lo empujas, pero fija con carga.', 'Desliza para tensar. Remata con medio cote si queda fijo dias.'], tip: 'El nudo del campamento: con lluvia todo se afloja, se re-tensa en 5 segundos sin linterna.' },
+  { n: 'Amarra cuadrada', cat: 'Construccion', uso: 'Unir 2 varas en cruz (entutorado alto, cabana, tendedero, jaula).', pasos: ['Parte con ballestrinque en la vara vertical.', 'Da 3-4 vueltas abrazando AMBAS varas (cuadro).', 'Da 2-3 vueltas de apriete (frapping) entre las varas.', 'Remata con 2 medios cotes.', 'Verifica: no debe girar. Moja el sisal: aprieta al secar.'], tip: 'Para varas en diagonal usa amarra diagonal (mismas vueltas en X). Ideal con vara de eucalipto + sisal.' },
+  { n: 'Margarita (acortador)', cat: 'Ajustable', uso: 'Acortar cuerda sin cortarla o aislar un tramo danado. Tender lienza.', pasos: ['Haz 3 senos seguidos como una "M" con la cuerda.', 'Enrosca el seno central 2-3 veces sobre si mismo.', 'Pasa los senos laterales por dentro del central.', 'Tensa de ambos firmes parejo.', 'NUNCA para vidas: solo carga liviana y tensa.'], tip: 'Perfecta para que el tendedero o la lienza no arrastre: acorta 1 m en 10 segundos.' },
+  { n: 'Presilla corrediza + Horca simple', cat: 'Presilla', uso: 'Lazo que aprieta: cerrar sacos, atar fardos de lena, lazo de huerta (uso suave).', pasos: ['Haz un seno y un ocho simple flojo en el firme.', 'Pasa el chicote por el ocho formando la presilla.', 'Ajusta el tamano del lazo.', 'Remata la cola con tope de ocho.', 'OJO: aprieta con carga: nunca al cuello, mano o pata de animal.'], tip: 'Para animales usa presilla fija (as de guia), nunca corrediza. Revisa que corra libre antes de cargar.' },
+  { n: 'Nudo de red (hoja de red / mesh)', cat: 'Redes', uso: 'Tejer malla rombo por rombo con aguja y tablilla. El nudo del paño.', pasos: ['Carga la aguja y fija el hilo al rombo superior con vuelta de escota.', 'Calza la tablilla (ancho de malla) bajo el hilo.', 'Laza por detras del rombo vecino y vuelve por el centro.', 'Tira hasta copiar el tamano de la tablilla.', 'Aprieta con nudo simple de pescador. Repite rombo a rombo.'], tip: 'Practica primero con red de huerta (entutorado de arvejas): mismo gesto, sin presion de pesca.' }
 ];
-var REDES_GUIA = ['Corta el pano danado en rectangulo limpio (no dejes picos).', 'Prepara aguja de red + hilo del mismo grosor (nylon pesca / sisal huerta).', 'Sujeta el pano tenso entre dos puntos (poste + peso).', 'Teje malla por malla con nudo de pescador simple en cada rombo, copiando el tamano con una tablilla.', 'Remata bordes con vuelta de escota a la relinga.', 'Revisa al sol: ningun rombo mayor ni menor. Prueba en agua antes de faena.'];
+var NUDOS_USO_RAPIDO = [
+  { s: 'Amarrar el bote / kayak al poste', n: 'Vuelta de ancla + 2 medios cotes (o As de guia si es presilla fija)' },
+  { s: 'Atar el anzuelo', n: 'Palomar (fuerza maxima) o Clinch mejorado (rapido en el bote)' },
+  { s: 'Unir nylon cortado', n: 'Pescador doble (mismo grosor) / Vuelta de escota doble (distinto grosor)' },
+  { s: 'Entutorar tomates / arvejas', n: 'Ballestrinque + remate; estructura con Amarra cuadrada' },
+  { s: 'Carpa o lona con viento sur', n: 'Tensor ajustable (taut-line) + Ocho de tope al final' },
+  { s: 'Cerrar saco / fardo / leña', n: 'Rizo (solo iguales y sin carga) o Presilla corrediza + remate' },
+  { s: 'Acortar cuerda sin cortar', n: 'Margarita' },
+  { s: 'Seguro universal de todo amarre', n: '2 medios cotes + tope de ocho en la cola' }
+];
+var CABOS_GUIA = [
+  'Nylon / poliester (pesca y mar): no se pudre, aguanta sol y agua. El de pesca SIEMPRE humedecido antes de apretar.',
+  'Sisal / yute (huerta): barato y compostable, ideal entutorado. Se pudre en 1 temporada: cambialo cada siembra.',
+  'Polipropileno flotante (kayak/bote): flota, bueno para remolque y boya. Se quema con el sol: guarda a la sombra.',
+  'Grosor guia: linea pesca 0,30-0,50 mm · red huerta 1-2 mm · vientos carpa 4-6 mm · amarra bote 8-12 mm.',
+  'Cuidado: lava sal con agua dulce, seca a la SOMBRA (nunca sol directo), guarda en aduja (rollo suelto) sin nudos.',
+  'Revision por luna: 1 vez por luna palpa todo el cabo buscando pelusas, zonas duras o decoloradas. Si ves alma (hilos internos), jubila ese tramo a la huerta.'
+];
+var NUDOS_ERRORES = [
+  'Rizo para vidas o cargas distintas: se vuelca y se suelta. Usa as de guia u ocho.',
+  'Nylon apretado en seco: se quema y pierde la mitad de la fuerza. Siempre humedece (saliva o agua).',
+  'Cola corta (<5 cm): con tirones se deshace. Deja 10 cm + tope de ocho en lo critico.',
+  'Prender equipo/ancla sin remate: todo ballestrinque con vibracion (motor, viento) lleva 2 medios cotes.',
+  'Cuerda quemada por sol o roce en roca: si esta peluda, rigida o blanca, no la uses para vidas ni bote.',
+  'Red fantasma: red rota abandonada sigue pescando y matando. Repara, reutiliza en huerta o entrega a punto limpio. Nunca al mar ni al humedal.'
+];
+var REDES_GUIA = [
+  'Diagnostico: extiende el paño a contraluz y marca cada roto con lana de color. Decide: parchar (rectangulo limpio) o retejer.',
+  'Corta el paño dañado en rectangulo limpio (no dejes picos que siguen rasgando).',
+  'Iguala materiales: aguja de red + hilo del MISMO grosor y material (nylon pesca / sisal huerta). Distinto grosor = se corta al lado.',
+  'Tensa el paño entre dos puntos (poste + peso o 2 sillas). Paño flojo = rombos disparejos.',
+  'Copia la medida: usa tablilla (paleta del ancho exacto de la malla). Cada rombo nuevo debe calzar con ella.',
+  'Teje rombo por rombo con nudo de hoja de red (vuelta de escota simple) o pescador simple en cada cruce.',
+  'Remata bordes a la relinga (cabo grueso superior/inferior) con vuelta de escota doble.',
+  'Relinga completa: arriba flotadores parejos, abajo plomos parejos. Si flota chueco, revisa reparto antes de culpar la malla.',
+  'Revisa al sol: ningun rombo mayor ni menor. Pasa la mano: no debe enganchar.',
+  'Prueba en agua calma antes de faena: 10 min colgada con peso. Ajusta tensores.',
+  'Lavado y guardado: agua dulce, sombra total, seca 100% antes de doblar. Nunca sol directo ni bolsa plastica humeda.',
+  'Red de huerta (entutorado): mismo gesto con sisal barato. Practica aqui primero: si te queda chueco, igual sirve para arvejas.'
+];
+var REDES_TIPOS = [
+  { n: 'Paño de enmalle (pesca orilla)', d: 'Malla segun especie y norma: respeta vedas y tamanos minimos (ver Mareas y Pesca). Repara con nylon igual.' },
+  { n: 'Tarraya / atarraya', d: 'Rueda con plomos: revisa plomos + jareta cada salida. Un plomo suelto abre la rueda y enreda.' },
+  { n: 'Red de huerta / pajarera', d: 'Sisal o malla plastica reutilizada para arvejas, porotos y frutales. La red vieja de pesca sirve 2-3 temporadas aqui.' },
+  { n: 'Malla sombra / lona', d: 'No es red de pesca: se fija con tensor ajustable, no con nudo fijo. Deja gotero (curva hacia abajo) para la lluvia.' }
+];
 var EPEW = [
   { t: 'El zorro y el puma (epew)', energia: 'Luna Creciente · aprendizaje', txt: 'El zorro (gürü) se creia el mas vivo del monte y se burlaba del puma (pangi) por cazar de frente. Una tarde de hambre, el zorro quiso robar la presa del puma y cayo en su propia trampa de lazos. El puma, en vez de castigarlo, le mostro como cazar limpio: "El vivo de verdad deja carne para manana". Desde entonces el zorro caza al amanecer y deja siempre un resto para el que viene detras.' },
   { t: 'La Pincoya del Golfo (mito local)', energia: 'Luna Llena · celebracion', txt: 'Dicen en Lirquen y Penco que cuando la Pincoya baila mirando al mar, la pesca sera abundante y alegre; si baila mirando la costa, hay que guardar las redes. Los antiguos la saludaban antes de zarpar con un poco de muday derramado al agua. Si la ves en luna llena, comparte tu primera captura: el mar devuelve el doble.' },
@@ -1128,8 +1182,10 @@ var NUDOS_LINKS = [
   ['https://knots3d.com/es/nudo-de-pescador-doble'],
   ['https://knots3d.com/es/nudo-en-ocho-con-gaza'],
   ['https://knots3d.com/es/nudo-de-rizo'],
-  ['https://knots3d.com/es/vuelta-de-escota-nudo']
+  ['https://knots3d.com/es/vuelta-de-escota-nudo'],
+  [], [], [], [], [], [], [], [], []
 ];
+function getNudosPract() { var a = store('nudosPract', {}); return (a && typeof a === 'object' && !Array.isArray(a)) ? a : {}; }
 function openNudoAnim(idx, n) {
   var l = NUDOS_LINKS[idx] || [];
   var url = l[n] || l[0];
@@ -1137,28 +1193,50 @@ function openNudoAnim(idx, n) {
   try { if (typeof openExternalLink === 'function') { openExternalLink(url); return; } } catch (e) {}
   try { window.open(url, '_blank', 'noopener,noreferrer'); } catch (e2) {}
 }
+function switchNudosTab(t) {
+  [['Nudos', 'nudosPanelNudos'], ['Redes', 'nudosPanelRedes'], ['Cabos', 'nudosPanelCabos'], ['Practica', 'nudosPanelPract']].forEach(function (x) {
+    var p = $(x[1]); if (p) p.classList.toggle('hidden', x[0] !== t);
+    var b = $('tabNud' + x[0]); if (b) b.classList.toggle('btn-accent', x[0] === t);
+  });
+}
+function nudoCardHTML(k, idx) {
+  var lis = (k.pasos || []).map(function (p) { return '<li>' + esc(p) + '</li>'; }).join('');
+  var LK = NUDOS_LINKS[idx] || [];
+  var visor = LK.length ? '<div class="asguia-visor"><p class="fin-tip-desc">Animacion 3D paso a paso (requiere internet):</p><div style="display:flex;gap:6px;flex-wrap:wrap">' + LK.map(function (u, n) { return '<button type="button" class="btn' + (n === 0 ? ' btn-accent' : '') + '" data-nudoanim="' + idx + ':' + n + '" style="width:auto;font-size:11px">Ver ' + (n === 0 ? 'en 3D' : 'paso a paso') + '</button>'; }).join('') + '</div></div>' : '';
+  var pract = getNudosPract();
+  var done = !!pract['k' + idx];
+  return '<div class="si-card"><div class="fin-tip-head"><span class="fin-tip-ico">Nudo</span><h4>' + esc(k.n) + '</h4></div>' +
+    '<p style="margin:2px 0"><span class="chip" style="font-size:10px">' + esc(k.cat || 'Nudo') + '</span> ' + (done ? '<span class="chip" style="font-size:10px;color:#8fd694;border-color:#8fd69455">practicado</span>' : '') + '</p>' +
+    '<p class="fin-tip-desc">' + esc(k.uso) + '</p>' + visor +
+    '<ol class="esp-steps">' + lis + '</ol>' +
+    '<p class="fin-tip-tip">' + esc(k.tip) + '</p>' +
+    '<div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap"><button type="button" class="btn" style="width:auto;font-size:11px" data-nudpract="' + idx + '">' + (done ? 'Practicado (tocar para quitar)' : 'Lo practique con cuerda real') + '</button><button type="button" class="btn" style="width:auto;font-size:11px" data-nudspeak="' + idx + '">Escuchar pasos</button></div></div>';
+}
 function renderNudos() {
   var box = $('nudosList'); if (!box) return;
+  var q = (($('nudSearch') && $('nudSearch').value) || '').toLowerCase();
+  var cf = ($('nudCatFilter') && $('nudCatFilter').value) || '';
   var mios = getNudosMios();
-  var base = NUDOS.map(function (k, idx) {
-    var lis = k.pasos.map(function (p) { return '<li>' + esc(p) + '</li>'; }).join('');
-    var LK = NUDOS_LINKS[idx] || [];
-    var visor = LK.length ? '<div class="asguia-visor"><p class="fin-tip-desc">\uD83C\uDFAC Animaci\u00F3n 3D paso a paso (requiere internet):</p><div style="display:flex;gap:6px;flex-wrap:wrap">' + LK.map(function (u, n) { return '<button type="button" class="btn' + (n === 0 ? ' btn-accent' : '') + '" data-nudoanim="' + idx + ':' + n + '" style="width:auto;font-size:11px">\u25B6 ' + (n === 0 ? 'Ver en 3D' : 'Paso a paso') + '</button>'; }).join('') + '</div></div>' : '';
-    return '<div class="si-card"><div class="fin-tip-head"><span class="fin-tip-ico">🪢</span><h4>' + esc(k.n) + '</h4></div>' +
-      '<p class="fin-tip-desc">🎯 ' + esc(k.uso) + '</p>' + visor +
-      '<ol class="esp-steps">' + lis + '</ol>' +
-      '<p class="fin-tip-tip">💡 ' + esc(k.tip) + '</p></div>';
-  }).join("");
+  var pract = getNudosPract();
+  var idxs = NUDOS.map(function (_, i) { return i; }).filter(function (i) {
+    var k = NUDOS[i];
+    if (cf && (k.cat || '') !== cf) return false;
+    if (q && ((k.n + ' ' + k.uso + ' ' + (k.cat || '') + ' ' + (k.pasos || []).join(' ')).toLowerCase().indexOf(q) < 0)) return false;
+    return true;
+  });
+  var base = idxs.map(function (idx) { return nudoCardHTML(NUDOS[idx], idx); }).join('');
+  if (!base) base = '<p class="muted" style="text-align:center">Sin resultados. Prueba "pesca", "bote", "carpa", "huerta".</p>';
   var mine = mios.map(function (k) {
-    return '<div class="si-card" style="border-left:3px solid #8fd694"><div class="fin-tip-head"><span class="fin-tip-ico">⭐</span><h4>' + esc(k.n) + '</h4></div>' +
-      '<p class="fin-tip-desc">🎯 ' + esc(k.uso || 'Nudo agregado por ti') + '</p>' +
+    return '<div class="si-card" style="border-left:3px solid #8fd694"><div class="fin-tip-head"><span class="fin-tip-ico">Mi nudo</span><h4>' + esc(k.n) + '</h4></div>' +
+      '<p class="fin-tip-desc">' + esc(k.uso || 'Nudo agregado por ti') + '</p>' +
       '<ol class="esp-steps">' + (k.pasos || []).map(function (p) { return '<li>' + esc(p) + '</li>'; }).join('') + '</ol>' +
-      (k.tip ? '<p class="fin-tip-tip">💡 ' + esc(k.tip) + '</p>' : '') +
-      '<div style="display:flex;gap:6px;margin-top:6px"><button class="btn" style="width:auto;font-size:11px;color:#e76e8a" data-delnudo="' + k.id + '">✕ Eliminar</button></div></div>';
+      (k.tip ? '<p class="fin-tip-tip">' + esc(k.tip) + '</p>' : '') +
+      '<div style="display:flex;gap:6px;margin-top:6px"><button class="btn" style="width:auto;font-size:11px;color:#e76e8a" data-delnudo="' + k.id + '">Eliminar</button></div></div>';
   }).join("");
-  box.innerHTML = base + mine + '<div class="si-card" style="border-left:3px solid var(--gold)"><div class="fin-tip-head"><span class="fin-tip-ico">🎣</span><h4>Reparar y tejer redes de pesca</h4></div>' +
-    '<ol class="esp-steps">' + REDES_GUIA.map(function (g) { return '<li>' + esc(g) + '</li>'; }).join('') + '</ol>' +
-    '<p class="fin-tip-tip">🧵 Lleva siempre: aguja de red, tablilla medidora, hilo extra y tijera. Practica primero con red de huerta (entutorado).</p></div>';
+  box.innerHTML = base + mine;
+  var hecha = Object.keys(pract).filter(function (k) { return pract[k]; }).length;
+  var st = $('nudStats');
+  if (st) st.textContent = NUDOS.length + ' nudos base · ' + hecha + ' practicados · ' + mios.length + ' propios';
   box.querySelectorAll('[data-delnudo]').forEach(function (b) {
     b.onclick = function () {
       if (!confirm('¿Eliminar este nudo?')) return;
@@ -1169,28 +1247,108 @@ function renderNudos() {
     };
   });
   box.querySelectorAll('[data-nudoanim]').forEach(function (btn) {
-    btn.onclick = function () { var q = (btn.getAttribute('data-nudoanim') || '0:0').split(':'); openNudoAnim(+q[0], +q[1]); };
+    btn.onclick = function () { var qq = (btn.getAttribute('data-nudoanim') || '0:0').split(':'); openNudoAnim(+qq[0], +qq[1]); };
   });
+  box.querySelectorAll('[data-nudpract]').forEach(function (btn) {
+    btn.onclick = function () {
+      var i = btn.getAttribute('data-nudpract');
+      var p = getNudosPract();
+      if (p['k' + i]) delete p['k' + i]; else p['k' + i] = todayKey();
+      save(p['k' + i] ? 'Nudo practicado: la mano ya recuerda' : 'Marcado como pendiente');
+      renderNudos();
+    };
+  });
+  box.querySelectorAll('[data-nudspeak]').forEach(function (btn) {
+    btn.onclick = function () {
+      var k = NUDOS[+btn.getAttribute('data-nudspeak')];
+      if (!k) return;
+      try { speak(k.n + '. ' + (k.pasos || []).join(' ')); } catch (e) {}
+    };
+  });
+  try { renderNudosRedes(); } catch (e) {}
+  try { renderNudosCabos(); } catch (e) {}
+  try { renderNudosPractPanel(); } catch (e) {}
+}
+function renderNudosRedes() {
+  var box = $('nudosRedesList'); if (!box) return;
+  var tipos = (typeof REDES_TIPOS !== 'undefined' ? REDES_TIPOS : []).map(function (t) {
+    return '<div class="si-card"><h4>' + esc(t.n) + '</h4><p class="fin-tip-desc">' + esc(t.d) + '</p></div>';
+  }).join('');
+  box.innerHTML = tipos +
+    '<div class="si-card" style="border-left:3px solid var(--gold)"><div class="fin-tip-head"><span class="fin-tip-ico">Red</span><h4>Reparar y tejer paso a paso (12 pasos)</h4></div>' +
+    '<ol class="esp-steps">' + REDES_GUIA.map(function (g) { return '<li>' + esc(g) + '</li>'; }).join('') + '</ol>' +
+    '<p class="fin-tip-tip">Kit minimo: aguja de red, tablilla medidora, hilo extra del mismo grosor, tijera y lana de color para marcar rotos. Practica primero con red de huerta (entutorado).</p></div>';
+}
+function renderNudosCabos() {
+  var box = $('nudosCabosList'); if (!box) return;
+  var cabos = (typeof CABOS_GUIA !== 'undefined' ? CABOS_GUIA : []).map(function (g) { return '<li>' + esc(g) + '</li>'; }).join('');
+  var err = (typeof NUDOS_ERRORES !== 'undefined' ? NUDOS_ERRORES : []).map(function (g) { return '<li>' + esc(g) + '</li>'; }).join('');
+  box.innerHTML = '<div class="si-card"><h4>Cabos: cual usar y como cuidarlo</h4><ol class="esp-steps">' + cabos + '</ol></div>' +
+    '<div class="si-card" style="border-left:3px solid #e76e8a"><h4>6 errores que rompen faenas</h4><ol class="esp-steps">' + err + '</ol><p class="fin-tip-tip">Revision por luna: 1 vez por luna palpa tus cabos de bote y kayak. 5 minutos salvan una salida.</p></div>';
+}
+function renderNudosPractPanel() {
+  var box = $('nudosPractList'); if (!box) return;
+  var p = getNudosPract();
+  var hecha = Object.keys(p).filter(function (k) { return p[k]; }).length;
+  var pct = Math.round(hecha / NUDOS.length * 100);
+  box.innerHTML = '<div class="menstrual-card" style="border-color:var(--gold)"><h4>Mi progreso: ' + hecha + '/' + NUDOS.length + ' (' + pct + '%)</h4>' +
+    '<p class="muted" style="font-size:11px">Practica con cuerda REAL (1 m de cordel basta). Marca cada nudo solo cuando te salga 3 veces seguidas sin mirar. Meta: 3 por luna.</p>' +
+    '<div style="background:var(--panel);border-radius:8px;height:10px;overflow:hidden;margin-top:6px"><div style="height:100%;width:' + pct + '%;background:var(--gold)"></div></div></div>' +
+    '<div style="display:flex;flex-direction:column;gap:6px;margin-top:8px">' + NUDOS.map(function (k, i) {
+      var d = p['k' + i];
+      return '<div class="hora-item" style="justify-content:flex-start;gap:8px"><span style="font-size:16px">' + (d ? 'OK' : '  ') + '</span><span style="font-size:12px"><b>' + esc(k.n) + '</b> <span class="chip" style="font-size:10px">' + esc(k.cat || '') + '</span>' + (d ? '<br><span class="muted" style="font-size:10px">practicado ' + esc(d) + '</span>' : '') + '</span></div>';
+    }).join('') + '</div>';
+  var sh = $('nudShare');
+  if (sh) sh.onclick = function () {
+    var pp = getNudosPract();
+    var listos = NUDOS.filter(function (_, i) { return pp['k' + i]; }).map(function (k) { return '- ' + k.n; });
+    var txt = 'Mis nudos (' + listos.length + '/' + NUDOS.length + ' practicados)\n' + (listos.join('\n') || 'Aun practicando los primeros...') + '\n\nRedes: domino ' + REDES_GUIA.length + ' pasos de reparacion.';
+    try { shareText('Mis nudos y redes', txt, null); } catch (e) { try { share('Mis nudos y redes', txt); } catch (e2) {} }
+  };
 }
 function setupNudos() {
   makeDialog('nudosDialog', '🪢 Nudos, amarras y redes',
-    'Biblioteca para pesca artesanal, kayak, camping y huerta (entutorado). Practica con una cuerda real y guarda tus propios nudos abajo.',
-    '<div id="nudosList" style="display:flex;flex-direction:column;gap:10px;margin-top:10px"></div>' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>➕ Agregar nudo</h4>' +
+    'Biblioteca para pesca artesanal, kayak, camping y huerta (entutorado). <b>15 nudos + redes + cabos + practica.</b> Practica con una cuerda real.',
+    '<div class="timer-tabs" style="flex-wrap:wrap;margin-bottom:10px">' +
+    '<button type="button" id="tabNudNudos" class="btn btn-accent" style="width:auto">Nudos</button>' +
+    '<button type="button" id="tabNudRedes" class="btn" style="width:auto">Redes</button>' +
+    '<button type="button" id="tabNudCabos" class="btn" style="width:auto">Cabos</button>' +
+    '<button type="button" id="tabNudPractica" class="btn" style="width:auto">Practica</button></div>' +
+    '<div id="nudosPanelNudos">' +
+    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>¿Que nudo uso?</h4><div id="nudosUsoRapido" style="font-size:12px;line-height:1.7"></div>' +
+    '<div class="conv-row" style="margin-top:8px"><label style="flex:2">Buscar <input type="text" id="nudSearch" placeholder="ej: anzuelo, bote, carpa, huerta..." autocomplete="off"></label>' +
+    '<label>Filtrar <select id="nudCatFilter"><option value="">Todas</option><option>Presilla</option><option>Union</option><option>Tope</option><option>Amarre</option><option>Pesca</option><option>Ajustable</option><option>Construccion</option><option>Remate</option><option>Redes</option></select></label></div>' +
+    '<div class="dlg-actions" style="justify-content:flex-start"><span id="nudStats" class="muted" style="font-size:11px"></span></div></div>' +
+    '<div id="nudosList" style="display:flex;flex-direction:column;gap:10px;margin-top:10px"></div></div>' +
+    '<div id="nudosPanelRedes" class="hidden"><div id="nudosRedesList" style="display:flex;flex-direction:column;gap:10px"></div></div>' +
+    '<div id="nudosPanelCabos" class="hidden"><div id="nudosCabosList" style="display:flex;flex-direction:column;gap:10px"></div></div>' +
+    '<div id="nudosPanelPract" class="hidden"><div id="nudosPractList"></div>' +
+    '<div class="menstrual-card" style="border-color:var(--gold);margin-top:10px"><h4>Agregar mi nudo</h4>' +
     '<label>Nombre <input type="text" id="nudNom" placeholder="ej: Nudo de mi abuelo" maxlength="40"></label>' +
     '<label>Uso <input type="text" id="nudUso" placeholder="ej: Para amarrar el bote" maxlength="80"></label>' +
-    '<label>Pasos (uno por línea) <textarea id="nudPasos" rows="3" placeholder="Haz un seno..." style="width:100%;resize:vertical"></textarea></label>' +
+    '<label>Pasos (uno por linea) <textarea id="nudPasos" rows="3" placeholder="Haz un seno..." style="width:100%;resize:vertical"></textarea></label>' +
     '<label>Consejo (opcional) <input type="text" id="nudTip" placeholder="ej: Humedece antes de apretar" maxlength="120"></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="nudAdd" class="btn btn-accent" style="width:auto">+ Guardar nudo</button></div></div>');
-  var b = $('btnNudos'); if (b) b.onclick = function () { renderNudos(); openDlg('nudosDialog'); };
+    '<div class="dlg-actions" style="justify-content:flex-start;gap:8px"><button type="button" id="nudAdd" class="btn btn-accent" style="width:auto">+ Guardar nudo</button><button type="button" id="nudShare" class="btn" style="width:auto">Compartir progreso</button></div></div></div>');
+  try {
+    var ur = $('nudosUsoRapido');
+    if (ur && typeof NUDOS_USO_RAPIDO !== 'undefined') ur.innerHTML = NUDOS_USO_RAPIDO.map(function (r) { return '· <b>' + esc(r.s) + ':</b> ' + esc(r.n); }).join('<br>');
+  } catch (e) {}
+  var b = $('btnNudos'); if (b) b.onclick = function () { switchNudosTab('Nudos'); renderNudos(); openDlg('nudosDialog'); };
+  ['Nudos', 'Redes', 'Cabos', 'Practica'].forEach(function (t) { var tb = $('tabNud' + t); if (tb) tb.onclick = function () { switchNudosTab(t); }; });
+  var qs = $('nudSearch'); if (qs) qs.oninput = renderNudos;
+  var cf2 = $('nudCatFilter'); if (cf2) cf2.onchange = renderNudos;
+  try {
+    var btn = $('btnNudos');
+    if (btn) { var kw = btn.getAttribute('data-keywords') || ''; if (kw.indexOf('palomar') < 0) btn.setAttribute('data-keywords', kw + ' palomar clinch ancla tensor carpa amarra cuadrada margarita cabo cuerda presilla remate practica red huerta'); }
+  } catch (e2) {}
   var add = $('nudAdd');
   if (add) add.onclick = function () {
     var n = clean($('nudNom').value, 40);
     var pasos = String($('nudPasos').value || '').split('\n').map(function (x) { return x.trim(); }).filter(function (x) { return x; }).slice(0, 12);
     if (!n) return alert('Ponle un nombre al nudo');
-    if (!pasos.length) return alert('Escribe al menos 1 paso (uno por línea)');
+    if (!pasos.length) return alert('Escribe al menos 1 paso (uno por linea)');
     getNudosMios().push({ id: uid('nu'), n: n, uso: clean($('nudUso').value, 80), pasos: pasos.map(function (x) { return clean(x, 140); }), tip: clean($('nudTip').value, 120) });
-    save('Nudo guardado ✓');
+    save('Nudo guardado');
     $('nudNom').value = ''; $('nudUso').value = ''; $('nudPasos').value = ''; $('nudTip').value = '';
     renderNudos();
   };
@@ -2784,7 +2942,7 @@ function mapaStats() {
   } catch (e) {}
   try {
     var g = getGratitudData(); Object.keys(g.entries || {}).forEach(function (k) {
-      try { var m = mluna(k); if (m && per[m.luna]) per[m.luna].gra++; } catch (e) {}
+      try { var m = mluna(k); if (m && per[m.luna]) { var gg = g.entries[k]; var hasG = (typeof gratTiene === 'function') ? gratTiene(gg) : (gg && (gg.t1 || gg.t2 || gg.t3)); if (hasG) per[m.luna].gra++; } } catch (e) {}
     });
   } catch (e) {}
   try {

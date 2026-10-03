@@ -284,7 +284,8 @@
       '<div class="si-card"><h4>Los 13 tonos galácticos</h4><p>Cada tono describe la forma en que se expresa el sello: el tono 1 es propósito puro, el tono 5 es radiación, el tono 13 es presencia. Juntos crean 260 combinaciones únicas.</p></div>' +
       '<div class="si-card"><h4>La onda encantada</h4><p>La <b>onda encantada</b> es un ciclo de 13 días (13 tonos) que se repite 20 veces en el Tzolkin. Cada onda tiene un tema y un propósito. Saber en qué onda estás ayuda a sintonizar con la energía del momento.</p></div>' +
       '<div class="si-card"><h4>El castillo</h4><p>El <b>castillo</b> es un ciclo de 52 días (4 ondas) que se repite 5 veces en el Tzolkin. Cada castillo tiene un tema mayor y representa una etapa de evolución.</p></div>' +
-      '<div class="si-card"><h4>Sincronización con las 13 lunas</h4><p>El calendario de 13 lunas (364 días) y el Tzolkin (260 días) son dos ciclos que se entrelazan. Cada luna tiene su propia energía, y cada día dentro de ella tiene su kin. Juntos crean una trama rica de sincronías para la vida cotidiana.</p></div>';
+      '<div class="si-card"><h4>Sincronización con las 13 lunas</h4><p>El calendario de 13 lunas (364 días) y el Tzolkin (260 días) son dos ciclos que se entrelazan. Cada luna tiene su propia energía, y cada día dentro de ella tiene su kin. Juntos crean una trama rica de sincronías para la vida cotidiana.</p></div>' +
+      '<div class="si-card" style="border-left:3px solid var(--gold)"><h4>🙏 Oración a las 7 direcciones</h4><p>Rezo diario de apertura (Este · Norte · Oeste · Sur · Arriba · Abajo · Centro) con cierre <b>¡Ah Yum Hunab K\u2019u Evam Maya E Ma Ho!</b> La tienes completa en la pestaña <b>🙏 Oración</b>: recítala al amanecer antes de ver tu kin del día.</p></div>';
   }
 
   function renderKinSellos() {
@@ -536,8 +537,73 @@
     box.innerHTML = html;
   }
 
+  // Oración a las 7 direcciones galácticas (tradición Dreamspell / Ley del Tiempo).
+  // Se recita al amanecer, orientando cuerpo y atención a cada dirección.
+  var ORACION_DIRECCIONES = [
+    { desde: 'Desde el Este', dir: 'Este', casa: 'Casa de la Luz', icon: '🌅', color: '#e53935', texto: 'Que la sabiduría se abra en aurora sobre nosotros, para que veamos las cosas con claridad.' },
+    { desde: 'Desde el Norte', dir: 'Norte', casa: 'Casa de la Noche', icon: '🌌', color: '#eceff1', texto: 'Que la sabiduría madure en nosotros, para que conozcamos todo desde adentro.' },
+    { desde: 'Desde el Oeste', dir: 'Oeste', casa: 'Casa de la Transformación', icon: '🌇', color: '#1e88e5', texto: 'Que la sabiduría se transforme en acción correcta, para que hagamos lo que debe ser hecho.' },
+    { desde: 'Desde el Sur', dir: 'Sur', casa: 'Casa del Sol Eterno', icon: '☀️', color: '#fdd835', texto: 'Que la acción correcta nos dé la cosecha, para que disfrutemos de los frutos del ser planetario.' },
+    { desde: 'Desde Arriba', dir: 'Arriba', casa: 'Casa del Cielo', icon: '✨', color: '#7ab8ff', texto: 'Donde la gente de las estrellas y los antepasados se reúnen, que sus bendiciones lleguen hasta nosotros ahora.' },
+    { desde: 'Desde Abajo', dir: 'Abajo', casa: 'Casa de la Tierra', icon: '🌎', color: '#8fd694', texto: 'Que el latido del corazón de cristal del planeta nos bendiga con sus armonías para que terminemos con toda guerra.' },
+    { desde: 'Desde el Centro', dir: 'Centro', casa: 'Fuente Galáctica', icon: '💛', color: '#e8c56a', texto: 'Que está en todas partes y al mismo tiempo, que todo se reconozca como luz de amor mutuo.' }
+  ];
+  var ORACION_CIERRE = '¡Ah Yum Hunab K\u2019u Evam Maya E Ma Ho!';
+  var ORACION_CIERRE_TRAD = '¡Sol Central de la Galaxia, bendice la armonía de la mente y la naturaleza!';
+
+  function textoOracionPlano() {
+    var t = 'Oración a las 7 direcciones galácticas\n\n';
+    ORACION_DIRECCIONES.forEach(function (d) {
+      t += d.desde + ', ' + d.casa + '\n' + d.texto + '\n\n';
+    });
+    t += 'Cierre tradicional:\n' + ORACION_CIERRE + '\n(«' + ORACION_CIERRE_TRAD + '»)';
+    return t;
+  }
+
+  function renderKinOracion() {
+    var box = $('kinOracionBox'); if (!box) return;
+    var html = '<div class="si-card"><h4>🙏 Oración a las 7 direcciones galácticas</h4>' +
+      '<p>Rezo de apertura del día en la tradición del sincronario de 13 lunas (Ley del Tiempo). Se recita al amanecer, de cara a cada dirección, para alinear mente y naturaleza antes de consultar tu kin del día.</p></div>';
+    html += ORACION_DIRECCIONES.map(function (d) {
+      return '<div class="si-card" style="border-left:3px solid ' + d.color + '">' +
+        '<h4 style="font-size:13px">' + d.icon + ' ' + esc(d.desde) + ', ' + esc(d.casa) + '</h4>' +
+        '<p style="font-size:12px"><i>' + esc(d.texto) + '</i></p></div>';
+    }).join('');
+    html += '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🌟 Cierre tradicional</h4>' +
+      '<p style="font-size:14px"><b>' + esc(ORACION_CIERRE) + '</b></p>' +
+      '<p class="muted" style="font-size:11px">«' + esc(ORACION_CIERRE_TRAD) + '»</p>' +
+      '<div class="dlg-actions" style="justify-content:flex-start;flex-wrap:wrap;gap:6px">' +
+      '<button type="button" id="ora7Share" class="btn btn-accent" style="width:auto">📤 Compartir</button>' +
+      '<button type="button" id="ora7Copy" class="btn" style="width:auto">📋 Copiar</button>' +
+      '<button type="button" id="ora7Llevar" class="btn" style="width:auto">📝 Llevar a nota de hoy</button></div></div>';
+    box.innerHTML = html;
+    var sh = $('ora7Share');
+    if (sh) sh.onclick = function () { share('Oración 7 direcciones', textoOracionPlano()); };
+    var cp = $('ora7Copy');
+    if (cp) cp.onclick = function () {
+      var t = textoOracionPlano();
+      try {
+        if (navigator.clipboard) navigator.clipboard.writeText(t).then(function () { alert('Oración copiada'); }, function () { alert(t); });
+        else alert(t);
+      } catch (e) { try { alert(t); } catch (e2) {} }
+    };
+    var lv = $('ora7Llevar');
+    if (lv) lv.onclick = function () {
+      try {
+        var info = (typeof todayInfo === 'function') ? todayInfo() : null;
+        if (!info) return alert('No se pudo ubicar hoy');
+        var note = ('🙏 Oración 7 direcciones:\n' + textoOracionPlano()).slice(0, 900);
+        if (info.luna === 'dft') { var c = cyc(currentCycleYear()); c.dft.nota = (c.dft.nota ? c.dft.nota + '\n' : '') + note; }
+        else { var cell = dayCell(info.luna, info.diaN); cell.nota = (cell.nota ? cell.nota + '\n' : '') + note; }
+        save(); if (typeof renderLuna === 'function' && currentView.tipo === 'luna') renderLuna();
+        alert('Oración llevada a la nota de hoy ✓');
+      } catch (e2) { alert('No se pudo llevar a la nota'); }
+    };
+  }
+
   function renderKinAll() {
     try { renderKinGuia(); } catch (e) {}
+    try { renderKinOracion(); } catch (e) {}
     try { renderKinSellos(); } catch (e) {}
     try { renderKinTonos(); } catch (e) {}
     try { renderKinFamilias(); } catch (e) {}
@@ -558,7 +624,8 @@
       '<button type="button" id="tabKinCastillo" class="btn" style="width:auto">Castillo</button>' +
       '<button type="button" id="tabKinCalculo" class="btn" style="width:auto">Mi kin</button>' +
       '<button type="button" id="tabKinOnda" class="btn" style="width:auto">Onda</button>' +
-      '<button type="button" id="tabKinLunas" class="btn" style="width:auto">Lunas</button></div>' +
+      '<button type="button" id="tabKinLunas" class="btn" style="width:auto">Lunas</button>' +
+      '<button type="button" id="tabKinOracion" class="btn" style="width:auto">🙏 Oración</button></div>' +
       '<div id="kinGuia"><div id="kinGuiaBox"></div></div>' +
       '<div id="kinSellos" class="hidden">' +
       '<div class="conv-row" style="margin-bottom:8px"><label style="flex:1">Buscar sello <input type="text" id="kinSellosQ" placeholder="nombre, cualidad, color..." autocomplete="off"></label></div>' +
@@ -568,11 +635,12 @@
       '<div id="kinCastillo" class="hidden"><div id="kinCastilloBox"></div></div>' +
       '<div id="kinCalculo" class="hidden"><div id="kinCalculoBox"></div></div>' +
       '<div id="kinOnda" class="hidden"><div id="kinOndaBox"></div></div>' +
-      '<div id="kinLunas" class="hidden"><div id="kinLunasBox"></div></div>');
+      '<div id="kinLunas" class="hidden"><div id="kinLunasBox"></div></div>' +
+      '<div id="kinOracion" class="hidden"><div id="kinOracionBox"></div></div>');
   }
 
   function switchKinTab(t) {
-    switchTab('kin', t, ['Guia', 'Sellos', 'Tonos', 'Familias', 'Castillo', 'Calculo', 'Onda', 'Lunas']);
+    switchTab('kin', t, ['Guia', 'Sellos', 'Tonos', 'Familias', 'Castillo', 'Calculo', 'Onda', 'Lunas', 'Oracion']);
   }
 
   function setup() {
@@ -642,6 +710,7 @@
       }
     } catch (e) {}
     try { addKw('btnPsico', 'kin maya tzolkin'); } catch (e2) {}
+    try { addKw('btnKinMaya', 'oracion siete 7 direcciones galacticas rezo amanecer hunab ku'); } catch (e3) {}
 
     buildDialog();
     renderKinAll();
@@ -649,7 +718,7 @@
     var b = $('btnKinMaya');
     if (b) b.onclick = function () { switchKinTab('Guia'); renderKinAll(); openDlg('kinMayaDialog'); };
 
-    ['Guia', 'Sellos', 'Tonos', 'Familias', 'Castillo', 'Calculo', 'Onda', 'Lunas'].forEach(function (t) {
+    ['Guia', 'Sellos', 'Tonos', 'Familias', 'Castillo', 'Calculo', 'Onda', 'Lunas', 'Oracion'].forEach(function (t) {
       var tb = $('tabKin' + t);
       if (tb) tb.onclick = function () { switchKinTab(t); };
     });

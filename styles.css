@@ -1017,7 +1017,6 @@ html[data-font="4xl"] dialog { max-width: calc((100vw - 24px) / 1.48) !important
   body[data-mview="hoy"] #todayView { display: flex; flex-direction: column; gap: 10px; }
   body[data-mview="hoy"] #sidebar,
   body[data-mview="hoy"] #lunaHeader,
-  body[data-mview="hoy"] #lunaPager,
   body[data-mview="hoy"] #viewBar,
   body[data-mview="hoy"] #gridWrap,
   body[data-mview="hoy"] #monthNoteWrap,

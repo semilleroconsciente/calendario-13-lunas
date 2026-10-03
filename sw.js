@@ -1,6 +1,6 @@
 ﻿// Service Worker — Calendario 13 Lunas (offline-first, tolerante a versiones ?v=)
-// v43: traspaso QR PC↔celular (qrcode-lib, jsqr-lib, qr-codec, qr-sync-modulo)
-const CACHE = 'cal13-v43-offline';
+// v46: Adicciones ampliada (plan, autoevaluación, 13 técnicas, gráfico 30 días, logros)
+const CACHE = 'cal13-v46-offline';
 
 // Lista completa de archivos que usa index.html (bare + con ?v=).
 // Si se agrega un JS nuevo en index.html, agregarlo aquí también (bare y ?v=).
@@ -45,14 +45,19 @@ const CORE = [
   './frases.js?v=8',
   './flora.js',
   './flora.js?v=1',
+  './buen-vivir-modulo.js',
+  './buen-vivir-modulo.js?v=1',
   './cal.js',
   './cal.js?v=8',
+  './cal.js?v=9',
   './renderer.js',
   './renderer.js?v=8',
   './renderer.js?v=9',
   './renderer.js?v=10',
   './renderer.js?v=11',
   './renderer.js?v=12',
+  './renderer.js?v=13',
+  './renderer.js?v=14',
   './nuevos-modulos.js',
   './nuevos-modulos.js?v=8',
   './nuevos-modulos.js?v=9',
@@ -90,12 +95,17 @@ const CORE = [
   './psicologia-modulo.js?v=1',
   './adicciones-modulo.js',
   './adicciones-modulo.js?v=1',
+  './adicciones-modulo.js?v=2',
   './neurodiversidad-modulo.js',
   './neurodiversidad-modulo.js?v=1',
   './kin-maya-modulo.js',
   './kin-maya-modulo.js?v=1',
   './kin-maya-modulo.js?v=2',
   './kin-maya-modulo.js?v=3',
+  './tarot-modulo.js',
+  './tarot-modulo.js?v=1',
+  './oraculo-modulo.js',
+  './oraculo-modulo.js?v=1',
   './adolescencia-modulo.js',
   './adolescencia-modulo.js?v=1',
   './etapas-vida-modulo.js',
@@ -104,6 +114,10 @@ const CORE = [
   './electrocultura-modulo.js?v=1',
   './red-comunitaria-modulo.js',
   './red-comunitaria-modulo.js?v=1',
+  './convivencia-vecinal-modulo.js',
+  './convivencia-vecinal-modulo.js?v=1',
+  './ciberseguridad-modulo.js',
+  './ciberseguridad-modulo.js?v=1',
   './hidroponia-modulo.js',
   './hidroponia-modulo.js?v=2',
   './huerta-modulo.js',
@@ -126,6 +140,8 @@ const CORE = [
   './natacion-modulo.js?v=1',
   './talleres-penco.js',
   './talleres-penco.js?v=1',
+  './iglesias-penco.js',
+  './iglesias-penco.js?v=1',
   './municipalidad-penco.js',
   './municipalidad-penco.js?v=1',
   './bomberos-penco.js',

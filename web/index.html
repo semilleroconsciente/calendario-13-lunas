@@ -67,7 +67,7 @@
 
     <section id="gridWrap">
       <div class="dow-row" id="dowRow"></div>
-      <div id="grid"></div>
+      <div id="grid"><p class="muted" style="padding:18px;text-align:center">🌙 Cargando calendario…</p></div>
     </section>
 
     <section id="monthNoteWrap">
@@ -116,6 +116,7 @@
           <button id="btnEkadashi" class="btn" data-sub="cielo" data-keywords="ekadashi ayuno lunar tithi">📿 Ekadashi</button>
           <span class="sub-label" data-sub="penco">🎉 Penco</span>
           <button id="btnComuna" class="btn" data-sub="penco" data-keywords="penco comuna fiesta evento aniversario talleres actividades curso taller inscripcion calendario guia historia sectores lirquen cosmito cerro verde primer agua casa cultura dideco cesfam biblioteca deporte futbol yoga cueca guitarra huerta manualidades digital mapuzugun cocina oficio">🎉 Penco</button>
+          <button id="btnIglesias" class="btn" data-sub="penco" data-keywords="iglesia iglesias parroquia capilla misa culto evangelica catolica carmen purisima redentor lirquen ovalle ohiggins penco fe culto">⛪ Iglesias</button>
           <button id="btnMuni" class="btn" data-sub="penco" data-keywords="municipalidad muni alcalde concejo dideco transito licencia permiso circulacion patente oirs tramite cesfam cecosf hospital farmacia veterinario emergencia 4157 samu bomberos carabineros secplan dom obras finanzas control juridica juzgado policia local omil rsh registro social tolva aseo fondeve beca historia municipal villa ciudad comuna autonoma">🏛️ Municipalidad</button>
           <button id="btnBomberos" class="btn" data-sub="penco" data-keywords="bomberos 132 incendio fuego emergencia primera segunda tercera cuarta compañia cuartel lirquen cosmito voluntario brigada detector extintor deshollinar plan escape forestal grifo historia 1927">🚒 Bomberos</button>
         </div>
@@ -152,10 +153,12 @@
           <span class="sub-label" data-sub="interior">🔥 Interior</span>
           <button id="btnPsico" class="btn" data-sub="interior" data-keywords="psicoanalisis autoconocimiento sombra jung inconsciente sueños terapia cognitivo conductual tcc gestalt silla vacia eneagrama mbti big five journaling diario estoico senecca marco aurelio mayeutica socrates mindfulness vipassana atma vichara quien soy bioenergetica feldenkrais cuerpo arte escritura salud mental">🪞 Autoconocimiento</button>
           <button id="btnEneagrama" class="btn" data-sub="interior" data-keywords="eneagrama eneatipo personalidad test autoconocimiento reformador ayudador triunfador artista investigador leal entusiasta desafiador pacificador alas flechas subtipo instinto virtud pasion">🔺 Eneagrama</button>
-          <button id="btnMetodos" class="btn" data-sub="interior" data-keywords="metodos visiones estoicismo tao tolteca budismo yogananda gurdjieff grinberg jung freud psicoanalisis frankl logoterapia sentido zen zazen patanjali ashtanga grof transpersonal hermetismo kybalion cuatro acuerdos wu wei kriya cuarto camino sintergia arquetipos filosofia espiritualidad conny mendez metafisica decreto ikigai proposito gnosis interior reiki usui energia manos gokai hoponopono ho'oponopono hawaii perdon gracias te amo limpieza">📿 Métodos</button>
+          <button id="btnMetodos" class="btn" data-sub="interior" data-keywords="metodos visiones estoicismo tao tolteca budismo yogananda gurdjieff grinberg jung freud psicoanalisis frankl logoterapia sentido zen zazen patanjali ashtanga grof transpersonal hermetismo kybalion cuatro acuerdos wu wei kriya cuarto camino sintergia arquetipos filosofia espiritualidad conny mendez metafisica decreto ikigai proposito gnosis interior reiki usui energia manos gokai hoponopono ho'oponopono hawaii perdon gracias te amo limpieza guerrero mito castaneda don juan ixtlan genaro camino guerrero hombre conocimiento modo guerrero">📿 Métodos</button>
           <button id="btnRecap" class="btn" data-sub="interior" data-keywords="recapitulacion recapitular tolteca castaneda repaso vida perdon soltar energia ensueño acecho inventario liberacion">🔁 Recapitulación</button>
           <button id="btnEspiritual" class="btn" data-sub="interior" data-keywords="practicas espirituales sol amanecer atardecer agua solarizada ducha fria grounding earthing luz roja noche ritual meditacion sungazing">🕉️ Prácticas Espirituales</button>
           <button id="btnKinMaya" class="btn" data-sub="interior" data-keywords="kin maya tzolkin sello solar tono galactico onda encantada 260 dias calendario sagrado sincronizacion">🌟 Kin Maya</button>
+          <button id="btnTarot" class="btn" data-sub="interior" data-keywords="tarot cartas arcanos mayores menores tirada lectura cruz consejo pasado presente futuro sino espejo rider waite">🔮 Tarot</button>
+          <button id="btnOraculo" class="btn" data-sub="interior" data-keywords="oraculo cartas mensaje territorio luna mar bosque ritual respuesta consejo cuerpo mente espiritu">🌬️ Oráculo</button>
           <button id="btnDueloFull" class="btn" data-sub="interior" data-keywords="duelo luto perdida partida difunto despedida ritual memoria consuelo tristeza acompañamiento guia etapas">🕊️ Duelo</button>
           <button id="btnAdicciones" class="btn" data-sub="interior" data-keywords="adicciones adiccion alcohol tabaco drogas recuperacion rehabilitacion senda abstinencia antojo recaida racha apoyo ayuda tratamiento *4141 juego apuestas pantallas comida compras">🌿 Adicciones</button>
           <span class="sub-label" data-sub="familia">🌳 Familia</span>
@@ -2024,14 +2027,22 @@
         <h3 style="margin:0;color:var(--accent)">📓 Gratitud Diaria — Wenu</h3>
         <button type="button" id="gratitudCloseTop" class="btn btn-icon" title="Cerrar" aria-label="Cerrar">✕</button>
       </div>
-      <p class="muted" style="line-height:1.5">3 líneas al día, 2 minutos. <b>Privado y local.</b> La racha cuenta días seguidos. Se refleja en el calendario con ✨.</p>
+      <p class="muted" style="line-height:1.5">3 gratitudes al día, 2 minutos. <b>Privado y local.</b> Marca tu ánimo, ponle ámbito a cada gratitud y, cuando quieras, escribe una carta. Se refleja en el calendario con ✨.</p>
+      <div id="gratFraseBox" class="menstrual-card" style="border-style:dashed"></div>
       <div id="gratitudStreakBox" class="menstrual-card" style="border-color:var(--gold)"></div>
+      <div id="gratMonthBox" class="menstrual-card"></div>
       <div class="conv-row" style="margin-top:8px"><label>Fecha <input type="date" id="gratDate"></label><button type="button" id="gratToday" class="btn" style="width:auto;align-self:flex-end">Hoy</button></div>
-      <label>1 · Agradezco <input type="text" id="grat1" placeholder="ej: el sol tras la lluvia" maxlength="120"></label>
-      <label>2 · Agradezco <input type="text" id="grat2" placeholder="ej: la sopa de mi mamá" maxlength="120"></label>
-      <label>3 · Agradezco <input type="text" id="grat3" placeholder="ej: caminar a la playa" maxlength="120"></label>
-      <div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="gratSave" class="btn btn-accent" style="width:auto">💾 Guardar día</button></div>
-      <div id="gratHistory" class="habits-list" style="margin-top:10px;max-height:200px"></div>
+      <div class="conv-row"><label>Ánimo del día <select id="gratAnimo"><option value="">—</option><option value="1">1 · 😞 bajo</option><option value="2">2 · 😕 desanimado</option><option value="3">3 · 😐 neutro</option><option value="4">4 · 🙂 bien</option><option value="5">5 · 😄 radiante</option></select></label><label style="flex:2">🎯 Intención del día <input type="text" id="gratIntencion" placeholder="ej: caminar sin apuro, llamar a mi mamá" maxlength="120"></label></div>
+      <div class="conv-row"><label style="flex:2">1 · Agradezco <input type="text" id="grat1" placeholder="ej: el sol tras la lluvia" maxlength="120"></label><label>Ámbito <select id="gratCat1"><option value="">—</option></select></label></div>
+      <div class="conv-row"><label style="flex:2">2 · Agradezco <input type="text" id="grat2" placeholder="ej: la sopa de mi mamá" maxlength="120"></label><label>Ámbito <select id="gratCat2"><option value="">—</option></select></label></div>
+      <div class="conv-row"><label style="flex:2">3 · Agradezco <input type="text" id="grat3" placeholder="ej: caminar a la playa" maxlength="120"></label><label>Ámbito <select id="gratCat3"><option value="">—</option></select></label></div>
+      <label>🤝 Agradezco especialmente a <input type="text" id="gratPara" placeholder="ej: mi vecina Rosa, que me regaló lechugas" maxlength="80"></label>
+      <details style="border:1px dashed var(--gold);border-radius:10px;padding:8px 10px;margin-top:6px"><summary style="cursor:pointer;font-size:12px;color:var(--gold)"><b>💌 Carta de gratitud (opcional)</b></summary>
+        <div class="conv-row" style="margin-top:8px"><label>Para <input type="text" id="gratCartaPara" placeholder="ej: mi abuela" maxlength="60"></label></div>
+        <label>Mensaje <textarea id="gratCarta" rows="3" style="width:100%;box-sizing:border-box" placeholder="Querida... gracias por..." maxlength="600"></textarea></label>
+        <p class="muted" style="font-size:10px">Léela en voz alta, entrégala o guárdala: escribirla ya hace bien.</p></details>
+      <div class="dlg-actions" style="justify-content:flex-start;flex-wrap:wrap"><button type="button" id="gratSave" class="btn btn-accent" style="width:auto">💾 Guardar día</button><button type="button" id="gratShare" class="btn" style="width:auto">📤 Compartir día</button><button type="button" id="gratExport" class="btn" style="width:auto">📥 Exportar todo</button><button type="button" id="gratClearDay" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar día</button></div>
+      <div id="gratHistory" class="habits-list" style="margin-top:10px;max-height:220px"></div>
       <div class="dlg-actions"><button type="button" id="gratitudClose" class="btn">Cerrar</button></div>
     </form>
   </dialog>
@@ -2208,7 +2219,7 @@
          <div class="help-card">
            <h4>📅 Mi Día · 💚 Cuerpo & Salud</h4>
            <p><b>📅 Mi Día — Organizar:</b> ✅ Hábitos (icono + color + racha → puntitos en el día), 🎯 Disciplina (Pomodoro 25/5, 2 min, Sapo, Time Blocking + MIT del día), 📚 Horario (bloques semanales + vista “Hoy”), ⏱ Tiempo (cronómetro + temporizador), 🔔 Recordatorios (fases lunares y avisos suaves).</p>
-            <p><b>📅 Mi Día — Registrar:</b> 📓 Gratitud Diaria (3 líneas, racha, días ✨), 💭 Diario Sueños (sección aparte con fecha, tipo, arquetipo y patrones — ya no usa las notas), 🌬️ Respiración (14 técnicas por objetivo, guía visual con sonido, ciclos y registro).</p>
+            <p><b>📅 Mi Día — Registrar:</b> 📓 Gratitud Diaria (3 gratitudes + ánimo, intención, carta, racha e hitos, días ✨), 💭 Diario Sueños (sección aparte con fecha, tipo, arquetipo y patrones — ya no usa las notas), 🌬️ Respiración (14 técnicas por objetivo, guía visual con sonido, ciclos y registro).</p>
             <p><b>💚 Ciclos y Etapas:</b> 🌸 Ciclo (registro, predicción período/fértil, historial + 🧬 diagrama hormonal 28 días con slider), 🤰 Fertilidad Natural, 🌅 Juventud (20-39), 🏠 Adultez (35-59), 🔥 Climaterio (45-64), 🦉 Vejez Sabia (60+) — cada etapa con Guía / Cuerpo / Mente / Vida práctica / Mi espacio (chequeo + metas por luna + diario privado).</p>
                <p><b>💚 Cuidado:</b> 🌿 Medicina (💊 Farmacología + 🌱 Natural con horarios y notificaciones + 🩺 Básica con botiquín y alergias + 📜 Historia + ⚠️ Seguridad) · 💪 Entrenamientos (Gym, Terapia física, Calistenia, Prácticas varias + filtro por lugar: Casa, Gimnasio, Playa, Bosque, Multicancha → puntitos 💪) · 🥗 Nutrición (qué es, guía básica, historia, menú Penco, sellos, mi semana) · 🪴 Mis Plantas (inventario, riego automático cada N días, 💧 Regar hoy, guía de sustrato/luz/luna) · 💇 Luna y Corte (calendario capilar por fase + 💇 en el calendario) · 🧂 Rituales Salud (ayuno suave por fases, detox liviano, pausa digital — opcional).</p>
             <p><b>🌊 Territorio — Tierra:</b> 🌿 Lawen (herbario 20 plantas Bío-Bío + tus fichas, buscable por síntoma — educativo).</p>
@@ -2225,7 +2236,7 @@
               <p><b>✍️ Escritura & Filosofía:</b> Journaling (5' sin censura, relee cada luna) · Examen estoico nocturno (bien/mal/¿dependía de mí?) · Mayéutica (cuestiona un “debo” con 3 porqués).</p>
               <p><b>🧘 Contemplación:</b> Mindfulness 3' (etiqueta y vuelve) · Atma Vichara (“¿a quién le ocurre? ¿quién soy yo?”) · Vipassana (barrido corporal, todo pasa). <b>🧍 Cuerpo & Expresión:</b> mapa de tensión 0-10 + soltar · arte/escritura intuitiva sin borrar.</p>
               <p><b>📓 Registro:</b> elige tema, escribe tu ejercicio, guarda por fecha (racha + historial + 📤 compartir + 📝 llevar a nota de hoy). Educativo: <b>no reemplaza terapia</b> — crisis: <b>*4141</b> (Chile, 24h).</p>
-              <p><b>📿 Métodos:</b> 20 fichas básicas — 🏛️ Estoicismo, 🌑 Jung, 🛋️ Freud y 🔥 Frankl (occidente) · ☯️ Tao, ☸️ Budismo, 🕉️ Yogananda, 🎋 Zen, 🧘 Patanjali, 🌸 Ikigai y 🤲 Reiki (oriente) · 🌵 Toltecas, 👁️ Gurdjieff, 🧠 Grinberg, 🌊 Grof, ⚗️ Hermetismo, 💫 Conny Méndez, 🔮 Gnosis, 🌿 Kimün mapuche y 🌺 Ho'oponopono (despertar) — cada una con idea central + práctica de 5' + registro “Mi camino”.</p>
+              <p><b>📿 Métodos:</b> 20 fichas básicas — 🏛️ Estoicismo, 🌑 Jung, 🛋️ Freud y 🔥 Frankl (occidente) · ☯️ Tao, ☸️ Budismo, 🕉️ Yogananda, 🎋 Zen, 🧘 Patanjali, 🌸 Ikigai y 🤲 Reiki (oriente) · 🌵 Toltecas (+ ⚔️ mito del Guerrero), 👁️ Gurdjieff, 🧠 Grinberg, 🌊 Grof, ⚗️ Hermetismo, 💫 Conny Méndez, 🔮 Gnosis, 🌿 Kimün mapuche y 🌺 Ho'oponopono (despertar) — cada una con idea central + práctica de 5' + registro “Mi camino”.</p>
             </div>
           <div class="help-card">
               <h4>🏡 Hogar y Vida Práctica · 🤝 Comunidad y Sistema</h4>
@@ -3290,7 +3301,7 @@
       </div>
       <div id="metodosPanel3" class="hidden">
         <div class="discipline-grid">
-          <div class="discipline-card"><h4>🌵 Toltecas (los 4 acuerdos · Ruiz)</h4><p><b>Idea:</b> el “sueño” colectivo nos domestica con acuerdos falsos; la libertad se recupera con 4 nuevos acuerdos.</p><p><b>Práctica:</b> 1) sé impecable con tus palabras (hoy, un cumplido honesto). 2) no te tomes nada personal (pregunta antes de suponer). 3) no supongas + haz siempre lo máximo (tu máximo de hoy, no el ideal).</p><p class="muted">✏️ 5': “¿qué acuerdo falso rompí hoy al ___?”. Libro: <i>Los cuatro acuerdos</i>.</p></div>
+          <div class="discipline-card"><h4>🌵 Toltecas (los 4 acuerdos · Ruiz)</h4><p><b>Idea:</b> el “sueño” colectivo nos domestica con acuerdos falsos; la libertad se recupera con 4 nuevos acuerdos.</p><p><b>Práctica:</b> 1) sé impecable con tus palabras (hoy, un cumplido honesto). 2) no te tomes nada personal (pregunta antes de suponer). 3) no supongas + haz siempre lo máximo (tu máximo de hoy, no el ideal).</p><p class="muted">✏️ 5': “¿qué acuerdo falso rompí hoy al ___?”. Libro: <i>Los cuatro acuerdos</i>.</p><details style="margin-top:6px;border-top:1px dashed var(--gold);padding-top:6px"><summary style="cursor:pointer;font-size:12px;color:var(--gold)"><b>⚔️ El mito del Guerrero — texto completo (Castaneda · don Juan)</b></summary><p style="font-size:11.5px;line-height:1.65">El «Guerrero» no existe, es un mito. Un bellísimo mito de nuestro tiempo, que al igual que todos los mitos, tiene la función de reflejar nuestras más nobles aspiraciones como mortales.</p><p style="font-size:11.5px;line-height:1.65">Es una invitación y una guía para el insólito proceso de convertirnos en seres mágicos mediante la encarnación del mito. Todos los pueblos de la tierra y en todos los tiempos han tenido mitos. Mitos acordes a su altura moral y a sus inclinaciones. Mitos que son de hecho uno de los mejores reflejos de los pueblos y los hombres y mujeres que lo componen.</p><p style="font-size:11.5px;line-height:1.65">Los mitos son en parte relatos. Relatos que la gente cuenta y que muchas veces se transmiten de generación en generación. Antropológicamente, resulta absurdo cuestionar si estos relatos son «reales» o «ficticios». Los mitos son reales en tanto que cumplen con una función real entre la gente.</p><p style="font-size:11.5px;line-height:1.65">Es en los mitos donde los pueblos encuentran un espejo para reflejar su mejor rostro y aún su rostro desconocido. Es un espejo en donde se refleja la cara del otro. Ese otro que soy y sin embargo no soy. De ese otro que no soy pero que sueño con ser. De ese otro que me refleja a mí mismo pero diferente; elevado, transfigurado y convertido en un ser con poder, con magia y sobre todo, libre.</p><p style="font-size:11.5px;line-height:1.65">El mito es la esperanza perenne del hombre que a pesar de todos sus tropiezos, sigue soñando íntimamente en la posibilidad de una vida libre de contradicciones, libre de la opresión, de la violencia y de la vorágine que compone buena parte de nuestra vida social.</p><p style="font-size:11.5px;line-height:1.65">El mito es a la sociedad lo que los sueños a los individuos; así, el mito es el sueño del Hombre, que nos susurra en el oído promesas de belleza y libertad.</p><p style="font-size:11.5px;line-height:1.65">Desde el mito de Cristo, que siendo un hombre y a través de una vida de purificación y de servicio, se transfigura y se convierte en Dios, hasta los mitos de Hércules, Quetzalcoatl, Wiracocha, Buda y muchos otros, los temas son siempre los mismos: el hombre de profundas aspiraciones viviendo en un mundo que siempre está muy por debajo de ellas. El conflicto entre la sociedad en la que vive y las aspiraciones de su espíritu. La lucha, las dudas y las pruebas por las que tiene que atravesar para finalmente lograr su sueño: trascender el caos y el aspecto miserable de la condición humana.</p><p style="font-size:11.5px;line-height:1.65">Por otra parte, los mitos son una guía para la acción. Un mapa de cómo llegar a las realidades mágicas que describen. Los mitos no existen para entretener, sino para promover formas de conducta y acciones concretas que permitan al hombre salir del caos en que suele vivir encerrado.</p><p style="font-size:11.5px;line-height:1.65">Cuando el hombre no se pone a la altura de sus mitos y no es capaz de actuar en consecuencia, entonces los convierte en dogma y funda una religión. Cuando esto sucede, el mito pierde su papel liberador y se convierte en instrumento de opresión. Yo diría que deja de ser mito. Mientras que el mito es algo para ser vivido, el dogma es algo para ser creído; el primero invita a la acción y el segundo a la sumisión.</p><p style="font-size:11.5px;line-height:1.65">Entre los pueblos mal llamados «primitivos» los mitos y los rituales están íntimamente ligados. El rito, la ceremonia, es el tiempo «fuera del tiempo». Es el espacio donde los seres humanos serán transfigurados y habrán de encarnar a los seres mágicos de que les hablan sus canciones y leyendas. Es el tiempo mágico en que los seres de poder, luz, amor y conocimiento vienen a la tierra y se igualan con los hombres, o dicho de otro modo, el tiempo en que los hombres se convierten en los seres mágicos que sueñan ser.</p><p style="font-size:11.5px;line-height:1.65">Del mismo modo, El Camino del Guerrero, donde los Guerreros son seres mágicos viviendo con alegría y poder en medio de la sociedad de todos los días, es un mito de nuestro tiempo. No porque los Guerreros o los Hombres de Conocimiento no tengan una existencia concreta —que sí la tienen—, sino porque tienen la misma función que los demás mitos: reflejar nuestras más caras y dignas aspiraciones como mortales e invitarnos a tornarlas realidad.</p><p style="font-size:11.5px;line-height:1.65">Don Juan le decía a Carlos Castaneda, que uno no es nunca un Hombre de Conocimiento. Del mismo modo, uno no es nunca un Guerrero —al menos no del todo— aunque estemos siempre luchando por llegar a serlo, siempre estamos en camino, como Genaro hacia Ixtlán. Para nosotros, el mito del guerrero es una maravillosa invitación a encarnarlo y de ese modo volverlo real en nuestra propia persona. Empieza por el trabajo de llevar un poco de ese tiempo mágico a nuestra vida de todos los días, cuando en lugar de comportarnos como máquinas que simplemente obedecen a una programación ajena, elegimos el acto a propósito y «el modo del Guerrero». Esos momentos de luz en que dirigimos nuestra vida y lo que nos sucede desde adentro, son como el tiempo mágico de una ceremonia, en que la vida nos habla personalmente y nosotros le entendemos, en que la vida se hace nuestra amiga y comprendemos lo que significa el poder y el conocimiento expresados no en la imaginación, sino en acontecimientos concretos. El reto para el que sigue el Camino del Guerrero, es trabajar duro para conseguir que esos momentos mágicos en que consigue encarnar el mito, sean cada vez más frecuentes y continuos, hasta que la magia predomine sobre la sumisión y la armonía sobre el caos. Hasta que su sueño de poder y libertad predomine sobre la realidad caótica de la gente de todos los días. Hasta que el sueño se torne realidad.</p><p class="muted" style="font-size:11px">⚔️ Léelo lento y elige hoy un acto a propósito en «modo del Guerrero». Conecta con 🔁 Recapitulación (recuperar energía) y 📓 Gratitud.</p></details></div>
           <div class="discipline-card"><h4>👁️ Gurdjieff: el Cuarto Camino</h4><p><b>Idea:</b> vivimos dormidos en automático; el despertar exige recuerdo de sí y trabajo sobre centros (intelectual, emocional, motor).</p><p><b>Práctica:</b> 1) 3 pausas al día: detente 1' y nota cuerpo + emoción + pensamiento a la vez. 2) observa un hábito mecánico sin cambiarlo. 3) registra en qué centro vives más.</p><p class="muted">✏️ 5': una pausa triple ahora: “mi cuerpo ___, siento ___, pienso ___”. Su eneagrama conecta con 🪞 Tipologías.</p></div>
           <div class="discipline-card"><h4>🧠 Jacobo Grinberg: teoría sintérgica</h4><p><b>Idea:</b> la realidad emerge de la interacción entre el cerebro (campo neuronal) y una matriz de información (lattice); la conciencia crea la experiencia.</p><p><b>Práctica:</b> 1) 5' de atención sostenida en un solo objeto, sin etiquetas. 2) nota cómo cambia tu percepción al calmar el diálogo interno. 3) escribe qué cambió.</p><p class="muted">✏️ 5': mira una vela o tu mano 5' en silencio y anota 3 cambios. Libro: <i>La teoría sintérgica</i>.</p></div>
           <div class="discipline-card"><h4>🌿 Kimün mapuche: az mapu · küme mongen</h4><p><b>Idea:</b> el buen vivir (<i>küme mongen</i>) es equilibrio con el territorio y la comunidad siguiendo el <i>az mapu</i> (orden de la tierra). Conocerse es ubicarse.</p><p><b>Práctica:</b> 1) saluda a tu entorno (sol, agua, árbol) reconociéndote parte. 2) pregúntate: ¿qué me pide mi territorio hoy? 3) devuelve algo (limpia, planta, agradece).</p><p class="muted">✏️ 5': camina lento observando 3 seres vivos y anota qué te enseñan. Conecta con 🗣️ Kimün y 🌱 Siembra.</p></div>
@@ -3545,6 +3556,8 @@
             <label class="check-row"><input type="checkbox" data-btn="btnRecap"> 🔁 Recapitulación</label>
             <label class="check-row"><input type="checkbox" data-btn="btnEspiritual"> 🕉️ Prácticas Espirituales</label>
             <label class="check-row"><input type="checkbox" data-btn="btnKinMaya"> 🌟 Kin Maya</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnTarot"> 🔮 Tarot</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnOraculo"> 🌬️ Oráculo</label>
             <label class="check-row"><input type="checkbox" data-btn="btnDueloFull"> 🕊️ Duelo</label>
             <label class="check-row"><input type="checkbox" data-btn="btnFenologia"> 📜 Fenología</label>
             <label class="check-row"><input type="checkbox" data-btn="btnArbolFull"> 🌳 Árbol Genealógico</label>
@@ -3945,6 +3958,7 @@
         <button type="button" id="tabComunaSectores" class="btn" style="width:auto">🏘️ Sectores</button>
         <button type="button" id="tabComunaHistoria" class="btn" style="width:auto">📜 Historia</button>
         <button type="button" id="tabComunaTalleres" class="btn" style="width:auto">🎨 Talleres</button>
+        <button type="button" id="tabComunaIglesias" class="btn" style="width:auto">⛪ Iglesias</button>
       </div>
       <div id="comunaEventosPanel">
       <label class="check-row" style="margin:8px 0"><input type="checkbox" id="comunaShowCal"> Mostrar eventos de Penco en el calendario (iconos 🎉 por día)</label>
@@ -3984,6 +3998,7 @@
       <div id="comunaSectoresPanel" class="hidden" style="margin-top:10px"></div>
       <div id="comunaHistoriaPanel" class="hidden" style="margin-top:10px"></div>
       <div id="comunaTalleresPanel" class="hidden" style="margin-top:10px"></div>
+      <div id="comunaIglesiasPanel" class="hidden" style="margin-top:10px"></div>
       <div class="dlg-actions"><button type="button" id="comunaClose" class="btn">Cerrar</button></div>
     </form>
   </dialog>
@@ -4047,61 +4062,66 @@
     <button type="button" id="dockFull" class="dock-btn" title="Vista completa">🖥️<small>Completa</small></button>
   </nav>
 
-  <script src="web-api.js?v=8"></script>
-  <script src="astro.js?v=8"></script>
-  <script src="data.js?v=8"></script>
-  <script src="territorio.js?v=1"></script>
-  <script src="frases.js?v=8"></script>
-  <script src="cal.js?v=8"></script>
-  <script src="renderer.js?v=12"></script>
-  <script src="nuevos-modulos.js?v=9"></script>
-  <script src="linaje-modulos.js?v=1"></script>
-  <script src="eneagrama-modulo.js?v=1"></script>
-  <script src="carta-astral.js?v=1"></script>
-  <script src="voz-abuelos.js?v=1"></script>
-  <script src="penco-guia.js?v=1"></script>
-  <script src="bosque-historia.js?v=1"></script>
-  <script src="bosque-semillero.js?v=1"></script>
-  <script src="aves-historia.js?v=1"></script>
-  <script src="pesca-historia.js?v=1"></script>
-  <script src="flora.js?v=1"></script>
-  <script src="semillero-guias.js?v=1"></script>
-  <script src="ajedrez-modulo.js?v=1"></script>
-  <script src="sudoku-modulo.js?v=1"></script>
-  <script src="crucigrama-modulo.js?v=1"></script>
-  <script src="sopa-letras-modulo.js?v=1"></script>
-  <script src="info-clave.js?v=1"></script>
-  <script src="psicologia-modulo.js?v=1"></script>
-  <script src="adicciones-modulo.js?v=1"></script>
-  <script src="neurodiversidad-modulo.js?v=1"></script>
-  <script src="kin-maya-modulo.js?v=3"></script>
-  <script src="adolescencia-modulo.js?v=1"></script>
-  <script src="etapas-vida-modulo.js?v=1"></script>
-  <script src="electrocultura-modulo.js?v=1"></script>
-  <script src="red-comunitaria-modulo.js?v=1"></script>
-  <script src="convivencia-vecinal-modulo.js?v=1"></script>
-  <script src="hidroponia-modulo.js?v=2"></script>
-  <script src="huerta-modulo.js?v=1"></script>
-  <script src="mecanica-modulo.js?v=1"></script>
-  <script src="plantas-modulo.js?v=1"></script>
-  <script src="hogar-despensa-closet-modulo.js?v=1"></script>
-  <script src="hogar-herramientas-modulo.js?v=1"></script>
-  <script src="hogar-corral-movilidad-escolar-modulo.js?v=1"></script>
-  <script src="hogar-biblioteca-modulo.js?v=1"></script>
-  <script src="cuerpo-luna-rituales-fenologia-modulo.js?v=1"></script>
-  <script src="natacion-modulo.js?v=1"></script>
-  <script src="talleres-penco.js?v=1"></script>
-  <script src="municipalidad-penco.js?v=1"></script>
-  <script src="bomberos-penco.js?v=1"></script>
-  <script src="apoyo-emergencia.js?v=1"></script>
-  <script src="actores-territorio.js?v=1"></script>
-  <script src="negocios-penco.js?v=2"></script>
-  <script src="moneda-social.js?v=1"></script>
-  <script src="territorio-fase2.js?v=1"></script>
-  <script src="qrcode-lib.js?v=1"></script>
-  <script src="jsqr-lib.js?v=1"></script>
-  <script src="qr-codec.js?v=1"></script>
-  <script src="qr-sync-modulo.js?v=1"></script>
+  <script defer src="web-api.js?v=8"></script>
+  <script defer src="astro.js?v=8"></script>
+  <script defer src="data.js?v=8"></script>
+  <script defer src="territorio.js?v=1"></script>
+  <script defer src="frases.js?v=8"></script>
+  <script defer src="cal.js?v=8"></script>
+  <script defer src="renderer.js?v=13"></script>
+  <script defer src="nuevos-modulos.js?v=9"></script>
+  <script defer src="linaje-modulos.js?v=1"></script>
+  <script defer src="eneagrama-modulo.js?v=1"></script>
+  <script defer src="carta-astral.js?v=1"></script>
+  <script defer src="voz-abuelos.js?v=1"></script>
+  <script defer src="penco-guia.js?v=1"></script>
+  <script defer src="bosque-historia.js?v=1"></script>
+  <script defer src="bosque-semillero.js?v=1"></script>
+  <script defer src="aves-historia.js?v=1"></script>
+  <script defer src="pesca-historia.js?v=1"></script>
+   <script defer src="flora.js?v=1"></script>
+   <script defer src="buen-vivir-modulo.js?v=1"></script>
+  <script defer src="semillero-guias.js?v=1"></script>
+  <script defer src="ajedrez-modulo.js?v=1"></script>
+  <script defer src="sudoku-modulo.js?v=1"></script>
+  <script defer src="crucigrama-modulo.js?v=1"></script>
+  <script defer src="sopa-letras-modulo.js?v=1"></script>
+  <script defer src="info-clave.js?v=1"></script>
+  <script defer src="psicologia-modulo.js?v=1"></script>
+  <script defer src="adicciones-modulo.js?v=2"></script>
+  <script defer src="neurodiversidad-modulo.js?v=1"></script>
+  <script defer src="kin-maya-modulo.js?v=3"></script>
+  <script defer src="tarot-modulo.js?v=1"></script>
+  <script defer src="oraculo-modulo.js?v=1"></script>
+  <script defer src="adolescencia-modulo.js?v=1"></script>
+  <script defer src="etapas-vida-modulo.js?v=1"></script>
+  <script defer src="electrocultura-modulo.js?v=1"></script>
+  <script defer src="red-comunitaria-modulo.js?v=1"></script>
+  <script defer src="convivencia-vecinal-modulo.js?v=1"></script>
+  <script defer src="ciberseguridad-modulo.js?v=1"></script>
+  <script defer src="hidroponia-modulo.js?v=2"></script>
+  <script defer src="huerta-modulo.js?v=1"></script>
+  <script defer src="mecanica-modulo.js?v=1"></script>
+  <script defer src="plantas-modulo.js?v=1"></script>
+  <script defer src="hogar-despensa-closet-modulo.js?v=1"></script>
+  <script defer src="hogar-herramientas-modulo.js?v=1"></script>
+  <script defer src="hogar-corral-movilidad-escolar-modulo.js?v=1"></script>
+  <script defer src="hogar-biblioteca-modulo.js?v=1"></script>
+  <script defer src="cuerpo-luna-rituales-fenologia-modulo.js?v=1"></script>
+  <script defer src="natacion-modulo.js?v=1"></script>
+  <script defer src="talleres-penco.js?v=1"></script>
+  <script defer src="iglesias-penco.js?v=1"></script>
+  <script defer src="municipalidad-penco.js?v=1"></script>
+  <script defer src="bomberos-penco.js?v=1"></script>
+  <script defer src="apoyo-emergencia.js?v=1"></script>
+  <script defer src="actores-territorio.js?v=1"></script>
+  <script defer src="negocios-penco.js?v=2"></script>
+  <script defer src="moneda-social.js?v=1"></script>
+  <script defer src="territorio-fase2.js?v=1"></script>
+  <script defer src="qrcode-lib.js?v=1"></script>
+  <script defer src="jsqr-lib.js?v=1"></script>
+  <script defer src="qr-codec.js?v=1"></script>
+  <script defer src="qr-sync-modulo.js?v=1"></script>
   <script>
     // Limpieza file:// (cinturón y tirantes): si un SW de una versión anterior
     // quedó registrado, desregistrarlo y borrar cachés cal13, luego recargar.

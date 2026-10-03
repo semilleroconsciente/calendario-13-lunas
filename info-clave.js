@@ -393,7 +393,16 @@
     },
     gratitudDialog: function () {
       var g = [val('grat1') || val('gratitud1'), val('grat2') || val('gratitud2'), val('grat3') || val('gratitud3')].filter(Boolean);
-      return { texto: g.length ? '🙏 Gratitud: ' + g.join(' · ') : textoVisible('gratitudList', 280) };
+      var t = g.length ? '🙏 Gratitud: ' + g.join(' · ') : '';
+      var inten = val('gratIntencion');
+      if (inten) t += (t ? ' · ' : '🙏 ') + '🎯 ' + inten;
+      var carta = val('gratCarta');
+      if (carta) t += (t ? ' · ' : '🙏 ') + '💌 ' + String(carta).slice(0, 80);
+      return { texto: t || textoVisible('gratitudList', 280) };
+    },
+    buenVivirDialog: function () {
+      var c = val('bvCompInput');
+      return { texto: c ? '🌎 Buen Vivir — compromiso: ' + c : textoVisible('bvCompList', 280) };
     }
   };
 
