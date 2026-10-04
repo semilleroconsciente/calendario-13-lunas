@@ -63,6 +63,8 @@ const CORE = [
   './linaje-modulos.js?v=1',
   './eneagrama-modulo.js',
   './eneagrama-modulo.js?v=1',
+  './ikigai-modulo.js',
+  './ikigai-modulo.js?v=1',
   './carta-astral.js',
   './carta-astral.js?v=1',
   './voz-abuelos.js',
