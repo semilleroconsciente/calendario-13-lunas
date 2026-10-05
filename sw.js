@@ -1,6 +1,6 @@
 ﻿// Service Worker — Calendario 13 Lunas (offline-first, tolerante a versiones ?v=)
-// v47: Cuarto Camino (Gurdjieff) — nueva sección Interior + guía, prácticas, test y diario
-const CACHE = 'cal13-v47-offline';
+// v50
+const CACHE = 'cal13-v50-offline';
 
 // Lista completa de archivos que usa index.html (bare + con ?v=).
 // Si se agrega un JS nuevo en index.html, agregarlo aquí también (bare y ?v=).
@@ -71,6 +71,8 @@ const CORE = [
   './ikigai-modulo.js?v=1',
   './cuarto-camino-modulo.js',
   './cuarto-camino-modulo.js?v=1',
+  './hooponopono-modulo.js',
+  './hooponopono-modulo.js?v=1',
   './carta-astral.js',
   './carta-astral.js?v=1',
   './voz-abuelos.js',
@@ -142,6 +144,8 @@ const CORE = [
   './hogar-corral-movilidad-escolar-modulo.js?v=1',
   './hogar-biblioteca-modulo.js',
   './hogar-biblioteca-modulo.js?v=1',
+  './feng-shui-modulo.js',
+  './feng-shui-modulo.js?v=1',
   './cuerpo-luna-rituales-fenologia-modulo.js',
   './cuerpo-luna-rituales-fenologia-modulo.js?v=1',
   './natacion-modulo.js',

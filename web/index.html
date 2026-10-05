@@ -157,6 +157,8 @@
           <button id="btnIkigai" class="btn" data-sub="interior" data-keywords="ikigai proposito sentido vida razon ser japones okinawa diagrama venn pasion mision vocacion profesion brujula amor talento mundo pago microaccion flujo moai pilares reglas">🌸 Ikigai</button>
           <button id="btnMetodos" class="btn" data-sub="interior" data-keywords="metodos visiones estoicismo tao tolteca budismo yogananda gurdjieff grinberg jung freud psicoanalisis frankl logoterapia sentido zen zazen patanjali ashtanga grof transpersonal hermetismo kybalion cuatro acuerdos wu wei kriya cuarto camino sintergia arquetipos filosofia espiritualidad conny mendez metafisica decreto ikigai proposito gnosis interior reiki usui energia manos gokai hoponopono ho'oponopono hawaii perdon gracias te amo limpieza guerrero mito castaneda don juan ixtlan genaro camino guerrero hombre conocimiento modo guerrero">📿 Métodos</button>
           <button id="btnCuartoCamino" class="btn" data-sub="interior" data-keywords="cuarto camino gurdjieff ouspensky recuerdo de si auto observacion identificacion consideracion amortiguadores ley de tres ley de siete octavas eneagrama stop despertar sueno esencia personalidad centros hombre numero 4 escuela presencia atencion">🛤️ Cuarto Camino</button>
+          <button id="btnHooponopono" class="btn" data-sub="interior" data-keywords="hooponopono ho'oponopono hoponopono hawaii perdon gracias te amo lo siento perdoname limpieza memorias morrnah hew len responsabilidad paz reconciliacion soltar rencor culpa miedo duelo">🌺 Ho'oponopono</button>
+          <button id="btnSilva" class="btn" data-sub="interior" data-keywords="silva metodo silva jose silva ultramind mind control alfa theta beta 321 pantalla mental espejo mente tres dedos vaso agua despertar laboratorio asesores programar visualizar concentracion memoria examen entrevista dormir suenos">🧠 Método Silva</button>
           <button id="btnRecap" class="btn" data-sub="interior" data-keywords="recapitulacion recapitular tolteca castaneda repaso vida perdon soltar energia ensueño acecho inventario liberacion">🔁 Recapitulación</button>
           <button id="btnEspiritual" class="btn" data-sub="interior" data-keywords="practicas espirituales sol amanecer atardecer agua solarizada ducha fria grounding earthing luz roja noche ritual meditacion sungazing">🕉️ Prácticas Espirituales</button>
           <button id="btnKinMaya" class="btn" data-sub="interior" data-keywords="kin maya tzolkin sello solar tono galactico onda encantada 260 dias calendario sagrado sincronizacion">🌟 Kin Maya</button>
@@ -637,6 +639,7 @@
               <option value="semanal">Semanal</option>
             </select>
           </label>
+          <label title="Meta de minutos por día (0 = solo marcar sin minutos)">⏱ Min/día <input type="number" id="habitGoal" min="0" max="1440" step="1" value="0" style="width:70px"></label>
           <button type="button" id="habitAdd" class="btn btn-accent" style="width:auto;align-self:flex-end">+ Agregar</button>
           <button type="button" id="habitUpdate" class="btn hidden" style="width:auto;align-self:flex-end">↻ Actualizar</button>
           <button type="button" id="habitCancelEdit" class="btn hidden" style="width:auto;align-self:flex-end">Cancelar</button>
@@ -667,7 +670,7 @@
           <div class="si-card"><h4>🏠 Diseña tu entorno</h4><p>Haz lo bueno <b>obvio y fácil</b> (botella de agua visible, zapatillas junto a la cama, libro en la almohada) y lo malo <b>invisible y difícil</b> (celular fuera del dormitorio, galletas en caja alta). No dependas de la fuerza de voluntad.</p></div>
           <div class="si-card"><h4>📈 1% mejor + recompensa inmediata</h4><p>Sube de a poco (5 → 7 → 10 min). Celebra al terminar: ✅ márcalo aquí, respira hondo, di “bien hecho”. El cerebro repite lo que se siente bien. Revisa el % mensual: apunta a <b>80%, no a 100%</b> perfecto.</p></div>
           <div class="si-card"><h4>🌙 Estrategia lunar (13 × 28)</h4><p><b>Nueva:</b> siembra 1 hábito nuevo pequeño. <b>Creciente:</b> suma minutos y construye. <b>Llena:</b> celebra la racha y comparte. <b>Menguante:</b> simplifica, suelta el hábito que no funcionó sin culpa. Revisa cada luna: ¿qué sumo, qué suelto?</p></div>
-          <div class="si-card"><h4>🚀 Pack inicial sugerido</h4><p class="muted" style="font-size:11px">Toca para agregarlos de a uno (si no los tienes):</p><div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px"><button type="button" class="btn habit-starter" data-name="Tomar agua al despertar" data-icon="💧" data-color="#7ab8ff" style="width:auto;font-size:11px">💧 Agua</button><button type="button" class="btn habit-starter" data-name="Caminar 15 min" data-icon="🚶" data-color="#8fd694" style="width:auto;font-size:11px">🚶 Caminar</button><button type="button" class="btn habit-starter" data-name="Meditar 5 min" data-icon="🧘" data-color="#c9a7eb" style="width:auto;font-size:11px">🧘 Meditar</button><button type="button" class="btn habit-starter" data-name="Leer 10 min" data-icon="📚" data-color="#e8c56a" style="width:auto;font-size:11px">📚 Leer</button><button type="button" class="btn habit-starter" data-name="Dormir antes de las 23:30" data-icon="😴" data-color="#7ab8ff" style="width:auto;font-size:11px">😴 Dormir</button><button type="button" class="btn habit-starter" data-name="Gratitud: 3 cosas" data-icon="🙏" data-color="#f4a7c3" style="width:auto;font-size:11px">🙏 Gratitud</button></div></div>
+          <div class="si-card"><h4>🚀 Pack inicial sugerido</h4><p class="muted" style="font-size:11px">Toca para agregarlos de a uno (si no los tienes):</p><div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px"><button type="button" class="btn habit-starter" data-name="Tomar agua al despertar" data-icon="💧" data-color="#7ab8ff" style="width:auto;font-size:11px">💧 Agua</button><button type="button" class="btn habit-starter" data-name="Caminar 15 min" data-icon="🚶" data-color="#8fd694" data-min="15" style="width:auto;font-size:11px">🚶 Caminar</button><button type="button" class="btn habit-starter" data-name="Meditar 5 min" data-icon="🧘" data-color="#c9a7eb" data-min="5" style="width:auto;font-size:11px">🧘 Meditar</button><button type="button" class="btn habit-starter" data-name="Leer 10 min" data-icon="📚" data-color="#e8c56a" data-min="10" style="width:auto;font-size:11px">📚 Leer</button><button type="button" class="btn habit-starter" data-name="Dormir antes de las 23:30" data-icon="😴" data-color="#7ab8ff" style="width:auto;font-size:11px">😴 Dormir</button><button type="button" class="btn habit-starter" data-name="Gratitud: 3 cosas" data-icon="🙏" data-color="#f4a7c3" style="width:auto;font-size:11px">🙏 Gratitud</button></div></div>
         </div>
       </details>
       </div>
@@ -4078,6 +4081,8 @@
   <script defer src="eneagrama-modulo.js?v=1"></script>
   <script defer src="ikigai-modulo.js?v=1"></script>
   <script defer src="cuarto-camino-modulo.js?v=1"></script>
+  <script defer src="hooponopono-modulo.js?v=1"></script>
+  <script defer src="metodo-silva-modulo.js?v=1"></script>
   <script defer src="carta-astral.js?v=1"></script>
   <script defer src="voz-abuelos.js?v=1"></script>
   <script defer src="penco-guia.js?v=1"></script>
@@ -4090,6 +4095,7 @@
   <script defer src="anfibios-modulo.js?v=1"></script>
   <script defer src="semillero-guias.js?v=1"></script>
   <script defer src="ajedrez-modulo.js?v=1"></script>
+  <script defer src="matematicas-modulo.js?v=1"></script>
   <script defer src="sudoku-modulo.js?v=1"></script>
   <script defer src="crucigrama-modulo.js?v=1"></script>
   <script defer src="sopa-letras-modulo.js?v=1"></script>
@@ -4115,6 +4121,7 @@
   <script defer src="hogar-herramientas-modulo.js?v=1"></script>
   <script defer src="hogar-corral-movilidad-escolar-modulo.js?v=1"></script>
   <script defer src="hogar-biblioteca-modulo.js?v=1"></script>
+  <script defer src="feng-shui-modulo.js?v=1"></script>
   <script defer src="cuerpo-luna-rituales-fenologia-modulo.js?v=1"></script>
   <script defer src="natacion-modulo.js?v=1"></script>
   <script defer src="talleres-penco.js?v=1"></script>

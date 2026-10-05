@@ -4736,10 +4736,36 @@ function habitToggle(dateKey, habitId){
   const d=getHabitData();
   if(!d.entries[dateKey]) d.entries[dateKey]={};
   if(d.entries[dateKey][habitId]) delete d.entries[dateKey][habitId];
-  else d.entries[dateKey][habitId]=true;
+  else {
+    const h=d.list.find(x=>x.id===habitId);
+    const meta=h && +h.metaMin>0 ? Math.min(1440, +h.metaMin) : 0;
+    d.entries[dateKey][habitId]= meta>0 ? meta : true;
+  }
   if(Object.keys(d.entries[dateKey]).length===0) delete d.entries[dateKey];
   scheduleSave();
 }
+// === MINUTOS POR HÁBITO (ej: Meditar 10 min) ===
+// entries[key][id] puede ser true (solo check, compat) o número (minutos del día)
+function habitMinutes(dateKey, habitId){
+  const d=getHabitData();
+  const v=d.entries[dateKey] && d.entries[dateKey][habitId];
+  return typeof v==='number' ? v : 0;
+}
+function habitIsDone(dateKey, habitId){
+  const d=getHabitData();
+  return !!(d.entries[dateKey] && d.entries[dateKey][habitId]);
+}
+function habitAddMinutes(dateKey, habitId, mins){
+  mins=Math.max(1, Math.min(1440, parseInt(mins)||0));
+  if(!mins) return;
+  const d=getHabitData();
+  if(!d.entries[dateKey]) d.entries[dateKey]={};
+  const cur=d.entries[dateKey][habitId];
+  const base= typeof cur==='number' ? cur : (cur===true ? 0 : 0);
+  d.entries[dateKey][habitId]=Math.min(1440, base+mins);
+  scheduleSave();
+}
+function habitMeta(h){ return h && +h.metaMin>0 ? +h.metaMin : 0; }
 function habitStreak(habitId){
   const d=getHabitData();
   const todayKey=cal.fmtKey.format(new Date());
@@ -4770,16 +4796,18 @@ function habitStats(habitId){
   const now=new Date();
   const y=now.getFullYear(), m=now.getMonth()+1;
   const daysInMonth=new Date(y,m,0).getDate();
-  let doneThisMonth=0;
+  let doneThisMonth=0, minThisMonth=0;
   for(let day=1;day<=daysInMonth;day++){
     const k=`${y}-${String(m).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
     // convertir a key Santiago (usar fmtKey noon) - aproximación: usar misma k
     const key=cal.fmtKey.format(new Date(Date.UTC(y,m-1,day,12)));
     if(d.entries[key] && d.entries[key][habitId]) doneThisMonth++;
+    if(typeof (d.entries[key] && d.entries[key][habitId])==='number') minThisMonth+=d.entries[key][habitId];
   }
   const pct = daysInMonth? Math.round(doneThisMonth/daysInMonth*100):0;
   const total=Object.keys(d.entries).filter(k=> d.entries[k][habitId]).length;
-  return { doneThisMonth, daysInMonth, pct, total };
+  let totalMin=0; Object.keys(d.entries).forEach(k=>{ if(typeof d.entries[k][habitId]==='number') totalMin+=d.entries[k][habitId]; });
+  return { doneThisMonth, daysInMonth, pct, total, minThisMonth, totalMin };
 }
 function renderHabitsList(){
   const box=$('habitsList'); if(!box) return;
@@ -4790,7 +4818,7 @@ function renderHabitsList(){
     const st=habitStreak(h.id);
     const stats=habitStats(h.id);
     const div=document.createElement('div'); div.className='habit-item';
-    div.innerHTML=`<div class="habit-head"><span class="habit-icon" style="background:${h.color}22;border-color:${h.color}55;color:${h.color}">${escapeHtml(h.icono||'✓')}</span><b>${escapeHtml(h.nombre)}</b><span class="muted" style="font-size:11px">${h.freq==='diaria'?'Diaria':'Semanal'}</span></div><div class="habit-stats"><span>🔥 Racha ${st} días</span><span>📊 ${stats.pct}% mes (${stats.doneThisMonth}/${stats.daysInMonth})</span><span>✅ Total ${stats.total}</span></div><div class="dlg-actions" style="justify-content:flex-end;margin-top:6px"><button data-id="${h.id}" class="btn habit-toggle-today" style="width:auto;font-size:11px">◉ Hoy</button><button data-id="${h.id}" class="btn habit-edit" style="width:auto;font-size:11px">✏️</button><button data-id="${h.id}" class="btn habit-del" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕</button></div>`;
+    div.innerHTML=`<div class="habit-head"><span class="habit-icon" style="background:${h.color}22;border-color:${h.color}55;color:${h.color}">${escapeHtml(h.icono||'✓')}</span><b>${escapeHtml(h.nombre)}</b><span class="muted" style="font-size:11px">${h.freq==='diaria'?'Diaria':'Semanal'}${habitMeta(h)?' · ⏱ '+habitMeta(h)+' min/día':''}</span></div><div class="habit-stats"><span>🔥 Racha ${st} días</span><span>📊 ${stats.pct}% mes (${stats.doneThisMonth}/${stats.daysInMonth})</span><span>✅ Total ${stats.total}</span>${habitMeta(h)?`<span>⏱ ${stats.minThisMonth} min este mes</span>`:''}</div><div class="dlg-actions" style="justify-content:flex-end;margin-top:6px"><button data-id="${h.id}" class="btn habit-toggle-today" style="width:auto;font-size:11px">◉ Hoy</button><button data-id="${h.id}" class="btn habit-edit" style="width:auto;font-size:11px">✏️</button><button data-id="${h.id}" class="btn habit-del" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕</button></div>`;
     box.appendChild(div);
   });
   box.querySelectorAll('.habit-toggle-today').forEach(b=> b.onclick=()=>{
@@ -4801,6 +4829,7 @@ function renderHabitsList(){
   box.querySelectorAll('.habit-edit').forEach(b=> b.onclick=()=>{
     const h=data.list.find(x=>x.id===b.dataset.id); if(!h) return;
     habitEditingId=h.id; $('habitName').value=h.nombre; $('habitIcon').value=h.icono; $('habitColor').value=h.color; $('habitFreq').value=h.freq;
+    if($('habitGoal')) $('habitGoal').value=habitMeta(h);
     $('habitAdd').classList.add('hidden'); $('habitUpdate').classList.remove('hidden'); $('habitCancelEdit').classList.remove('hidden');
   });
   box.querySelectorAll('.habit-del').forEach(b=> b.onclick=()=>{
@@ -4817,12 +4846,29 @@ function renderHabitsTodayBox(){
   if(!data.list.length){ box.innerHTML='<p class="muted">Crea hábitos para marcarlos cada día.</p>'; return; }
   box.innerHTML='<h4 style="color:var(--gold)">◉ Hoy — '+cal.weekdayName(Date.now())+' '+cal.fmtFull.format(new Date())+'</h4><div class="habits-today-grid">'+ data.list.map(h=>{
     const done = data.entries[today] && data.entries[today][h.id];
-    return `<label class="habit-today-item ${done?'done':''}" style="border-color:${h.color}55"><input type="checkbox" data-id="${h.id}" ${done?'checked':''}><span class="habit-icon" style="background:${h.color}22;color:${h.color}">${escapeHtml(h.icono||'✓')}</span><span>${escapeHtml(h.nombre)}</span></label>`;
+    const meta=habitMeta(h), mins=habitMinutes(today,h.id);
+    const minTag = meta? `<span class="muted" style="font-size:10px">⏱ ${mins}/${meta} min</span>` : (mins? `<span class="muted" style="font-size:10px">⏱ ${mins} min</span>`:'');
+    const minCtl = meta? `<span style="display:inline-flex;gap:4px;align-items:center;margin-top:4px"><input type="number" class="habit-min-input" data-id="${h.id}" min="1" max="300" value="${meta}" style="width:56px;font-size:11px" title="Minutos a sumar"><button type="button" class="btn habit-min-add" data-id="${h.id}" style="width:auto;font-size:11px;padding:2px 8px">+ min</button>${mins?`<button type="button" class="btn habit-min-clear" data-id="${h.id}" style="width:auto;font-size:11px;padding:2px 8px" title="Quitar minutos de hoy">✕</button>`:''}</span>`:'';
+    return `<label class="habit-today-item ${done?'done':''}" style="border-color:${h.color}55"><input type="checkbox" data-id="${h.id}" ${done?'checked':''}><span class="habit-icon" style="background:${h.color}22;color:${h.color}">${escapeHtml(h.icono||'✓')}</span><span>${escapeHtml(h.nombre)}<br>${minTag}${minCtl}</span></label>`;
   }).join('')+'</div>';
-  box.querySelectorAll('input[type="checkbox"]').forEach(cb=> cb.onchange=()=>{
+  box.querySelectorAll('input[type="checkbox"]').forEach(cb=> cb.onchange=(e)=>{
+    e.stopPropagation();
     habitToggle(today, cb.dataset.id);
     habitRefreshAll();
   });
+  box.querySelectorAll('.habit-min-add').forEach(b=> b.onclick=(e)=>{
+    e.preventDefault(); e.stopPropagation();
+    const inp=box.querySelector('.habit-min-input[data-id="'+b.dataset.id+'"]');
+    habitAddMinutes(today, b.dataset.id, inp? inp.value : 10);
+    habitRefreshAll();
+  });
+  box.querySelectorAll('.habit-min-clear').forEach(b=> b.onclick=(e)=>{
+    e.preventDefault(); e.stopPropagation();
+    const d=getHabitData();
+    if(d.entries[today]){ delete d.entries[today][b.dataset.id]; if(Object.keys(d.entries[today]).length===0) delete d.entries[today]; }
+    scheduleSave(); habitRefreshAll();
+  });
+  box.querySelectorAll('.habit-min-input').forEach(i=> i.onclick=(e)=> e.stopPropagation());
 }
 function renderHabitsStatsBox(){
   const box=$('habitsStatsBox'); if(!box) return;
@@ -4892,8 +4938,9 @@ function renderHabitsTracker(){
     const st=habitStreak(h.id);
     const cells=perDay.map(d=>{
       const done=data.entries[d.key] && data.entries[d.key][h.id];
+      const mins=habitMinutes(d.key,h.id);
       const style=done? `background:${h.color}33;border-color:${h.color};color:${h.color}`:'';
-      return `<td><button type="button" class="habit-cell ${d.isToday?'today':''}" data-key="${d.key}" data-id="${h.id}" style="${style}" title="${escapeHtml(h.nombre)} · ${d.key}${done?' ✓':''}">${done? escapeHtml(h.icono||'✓'):'·'}</button></td>`;
+      return `<td><button type="button" class="habit-cell ${d.isToday?'today':''}" data-key="${d.key}" data-id="${h.id}" style="${style}" title="${escapeHtml(h.nombre)} · ${d.key}${mins?' · '+mins+' min':done?' ✓':''}">${done? escapeHtml(mins? String(mins)+'′' : (h.icono||'✓')):'·'}</button></td>`;
     }).join('');
     return `<tr><td class="hname"><span class="habit-icon" style="display:inline-flex;width:20px;height:20px;font-size:11px;vertical-align:-4px;background:${h.color}22;color:${h.color};border:1px solid ${h.color}55;border-radius:50%;align-items:center;justify-content:center">${escapeHtml(h.icono||'✓')}</span> ${escapeHtml(h.nombre.length>16? h.nombre.slice(0,16)+'…':h.nombre)}</td>${cells}<td style="white-space:nowrap">🔥${st}</td></tr>`;
   }).join('');
@@ -4908,7 +4955,7 @@ function renderHabitsTracker(){
   if(sh) sh.onclick=async ()=>{
     const lines=data.list.map(h=>{
       const st=habitStreak(h.id); const s=habitStats(h.id);
-      return `${h.icono||'✓'} ${h.nombre}: racha ${st}d · mes ${s.pct}% (${s.doneThisMonth}/${s.daysInMonth})`;
+      return `${h.icono||'✓'} ${h.nombre}: racha ${st}d · mes ${s.pct}% (${s.doneThisMonth}/${s.daysInMonth})${habitMeta(h)?` · ⏱ ${s.minThisMonth} min/mes`:''}`;
     });
     const txt=`✅ Mis hábitos — últimos ${range} días: ${totalChecks} checks, promedio ${avg}%\n`+lines.join('\n');
     try{ await shareText('✅ Mi avance de hábitos', txt); }catch(e){}
@@ -4924,14 +4971,25 @@ function renderDlgHabits(){
   const key=cal.fmtKey.format(new Date(d.noonMs));
   box.innerHTML='<label style="font-size:12px;color:var(--muted);margin-bottom:4px;display:block">✅ Hábitos de este día</label><div class="habits-today-grid">'+ data.list.map(h=>{
     const done=data.entries[key] && data.entries[key][h.id];
-    return `<label class="habit-today-item ${done?'done':''}" style="border-color:${h.color}55"><input type="checkbox" data-id="${h.id}" ${done?'checked':''}><span class="habit-icon" style="background:${h.color}22;color:${h.color}">${escapeHtml(h.icono||'✓')}</span><span>${escapeHtml(h.nombre)}</span></label>`;
+    const meta=habitMeta(h), mins=habitMinutes(key,h.id);
+    const minTag = meta? `<span class="muted" style="font-size:10px">⏱ ${mins}/${meta} min</span>` : (mins? `<span class="muted" style="font-size:10px">⏱ ${mins} min</span>`:'');
+    const minCtl = meta? `<span style="display:inline-flex;gap:4px;align-items:center;margin-top:4px"><input type="number" class="habit-min-input" data-id="${h.id}" min="1" max="300" value="${meta}" style="width:56px;font-size:11px"><button type="button" class="btn habit-min-add" data-id="${h.id}" style="width:auto;font-size:11px;padding:2px 8px">+ min</button></span>`:'';
+    return `<label class="habit-today-item ${done?'done':''}" style="border-color:${h.color}55"><input type="checkbox" data-id="${h.id}" ${done?'checked':''}><span class="habit-icon" style="background:${h.color}22;color:${h.color}">${escapeHtml(h.icono||'✓')}</span><span>${escapeHtml(h.nombre)}<br>${minTag}${minCtl}</span></label>`;
   }).join('')+'</div>';
-  box.querySelectorAll('input').forEach(cb=> cb.onchange=()=>{
+  box.querySelectorAll('input[type="checkbox"]').forEach(cb=> cb.onchange=(e)=>{
+    e.stopPropagation();
     habitToggle(key, cb.dataset.id);
     habitRefreshAll();
     // mantener estado visual
     const lab=cb.closest('label'); if(cb.checked) lab.classList.add('done'); else lab.classList.remove('done');
   });
+  box.querySelectorAll('.habit-min-add').forEach(b=> b.onclick=(e)=>{
+    e.preventDefault(); e.stopPropagation();
+    const inp=box.querySelector('.habit-min-input[data-id="'+b.dataset.id+'"]');
+    habitAddMinutes(key, b.dataset.id, inp? inp.value : 10);
+    habitRefreshAll();
+  });
+  box.querySelectorAll('.habit-min-input').forEach(i=> i.onclick=(e)=> e.stopPropagation());
 }
 const HABIT_ICONS = ["✓","🧘","🏃","💧","📚","🌱","🧠","💪","🛌","🍎","🥗","😴","🎯","🧹","✍️","🎨","🎵","📝","🤝","🌙","☀️","🏋️","🚶","💻","🎧","🥤","🥦","🧼","🪴","🌿","🔥","💊","❤️","⭐","🌊","🧒","🌞","🍵","🧃","🚰","📖","✨","🌈","🌾","🥕"];
 function renderHabitIconPicker(selected){
@@ -4975,15 +5033,17 @@ function setupHabitsDialog(){
   }
   const add=$('habitAdd'); if(add) add.onclick=()=>{
     const nombre=$('habitName').value.trim(); if(!nombre) return alert('Ingresa nombre del hábito');
-    const h={ id:'h'+Date.now(), nombre, icono:($('habitIcon').value.trim()||'✓'), color:$('habitColor').value, freq:$('habitFreq').value };
-    getHabitData().list.push(h); scheduleSave(); $('habitName').value=''; $('habitIcon').value=''; renderHabitIconPicker('✓'); habitRefreshAll(); try{ habitsSwitchTab('list'); }catch(e){}
+    const metaMin=Math.max(0, Math.min(1440, parseInt(($('habitGoal')||{}).value)||0));
+    const h={ id:'h'+Date.now(), nombre, icono:($('habitIcon').value.trim()||'✓'), color:$('habitColor').value, freq:$('habitFreq').value, metaMin };
+    getHabitData().list.push(h); scheduleSave(); $('habitName').value=''; $('habitIcon').value=''; if($('habitGoal')) $('habitGoal').value=0; renderHabitIconPicker('✓'); habitRefreshAll(); try{ habitsSwitchTab('list'); }catch(e){}
   };
   const upd=$('habitUpdate'); if(upd) upd.onclick=()=>{
     const h=getHabitData().list.find(x=>x.id===habitEditingId); if(!h) return;
     h.nombre=$('habitName').value.trim(); h.icono=$('habitIcon').value.trim()||'✓'; h.color=$('habitColor').value; h.freq=$('habitFreq').value;
-    scheduleSave(); habitEditingId=null; $('habitAdd').classList.remove('hidden'); upd.classList.add('hidden'); $('habitCancelEdit').classList.add('hidden'); $('habitName').value=''; $('habitIcon').value=''; renderHabitIconPicker('✓'); habitRefreshAll(); try{ habitsSwitchTab('list'); }catch(e){}
+    h.metaMin=Math.max(0, Math.min(1440, parseInt(($('habitGoal')||{}).value)||0));
+    scheduleSave(); habitEditingId=null; $('habitAdd').classList.remove('hidden'); upd.classList.add('hidden'); $('habitCancelEdit').classList.add('hidden'); $('habitName').value=''; $('habitIcon').value=''; if($('habitGoal')) $('habitGoal').value=0; renderHabitIconPicker('✓'); habitRefreshAll(); try{ habitsSwitchTab('list'); }catch(e){}
   };
-  const cancel=$('habitCancelEdit'); if(cancel) cancel.onclick=()=>{ habitEditingId=null; $('habitAdd').classList.remove('hidden'); $('habitUpdate').classList.add('hidden'); cancel.classList.add('hidden'); $('habitName').value=''; $('habitIcon').value=''; renderHabitIconPicker('✓'); };
+  const cancel=$('habitCancelEdit'); if(cancel) cancel.onclick=()=>{ habitEditingId=null; $('habitAdd').classList.remove('hidden'); $('habitUpdate').classList.add('hidden'); cancel.classList.add('hidden'); $('habitName').value=''; $('habitIcon').value=''; if($('habitGoal')) $('habitGoal').value=0; renderHabitIconPicker('✓'); };
   const clear=$('habitsClear'); if(clear) clear.onclick=()=>{
     if(!confirm('¿Borrar todos los hábitos y registros de esta usuaria?')) return;
     const d=getHabitData(); d.list=[]; d.entries={}; scheduleSave(); habitRefreshAll();
@@ -4995,7 +5055,7 @@ function setupHabitsDialog(){
       const nm=st.dataset.name; const ic=st.dataset.icon||'✓'; const col=st.dataset.color||'#e8c56a';
       const dd=getHabitData();
       if(dd.list.some(x=>x.nombre===nm)){ alert('Ya tienes “'+nm+'”'); return; }
-      dd.list.push({ id:'h'+Date.now(), nombre:nm, icono:ic, color:col, freq:'diaria' });
+      dd.list.push({ id:'h'+Date.now(), nombre:nm, icono:ic, color:col, freq:'diaria', metaMin: Math.max(0, parseInt(st.dataset.min)||0) });
       scheduleSave(); habitRefreshAll();
       if($('statusMsg')){ $('statusMsg').textContent='Hábito agregado: '+nm+' ✓'; setTimeout(()=>{$('statusMsg').textContent='';},2500); }
     }
@@ -6670,7 +6730,7 @@ setTimeout(setupHelpDialog, 850);
 // Incluye botones base + los inyectados por nuevos-modulos.js (Agua, Bodega, Nudos,
 // Taller, Trueque, Minga, Rutinas, Fertilidad, Derechos). NUEVOS_BTNS los re-agrega
 // con push si faltan (no-op si ya están), así los perfiles siempre los conocen.
-const ALL_BTNS = ["btnTides","btnFishing","btnBirds","btnIntermareal","btnBosque","btnWeather","btnSiembra","btnAstro","btnComuna","btnIglesias","btnEkadashi","btnMenstrual","btnMedic","btnNutri","btnHabits","btnMeal","btnShopping","btnFinance","btnHomeTasks","btnDiscipline","btnDreams","btnBreath","btnGratitud","btnSchedule","btnGym","btnCircadian","btnGolden","btnEspiritual","btnCompost","btnLawen","btnFirstAid","btnAnimalCare","btnViolence","btnEvac","btnConvert","btnEnergy","btnLena","btnTimer","btnRemind","btnBackup","btnRestore","btnShortcut","btnPdfLuna","btnPdfCiclo","btnDonate","btnHelp","btnStudy","btnTales","btnVozAbuelos","btnMemory","btnMapu","btnEnglish","btnGuitar","btnPsico","btnMetodos","btnAgua","btnBodega","btnNudos","btnTaller","btnTrueque","btnMinga","btnFerti","btnDerechos","btnCrianza","btnArbolFull","btnRecap","btnDueloFull","btnEneagrama","btnCuartoCamino","btnAjedrez","btnSudoku","btnCrucigrama","btnSopaLetras","btnFlora","btnPsicologia","btnAdolescencia","btnJuventud","btnAdultez","btnClimaterio","btnVejez","btnElectrocultura","btnMecanica","btnDespensa","btnCloset","btnHerramientas","btnAdicciones","btnKinMaya","btnTarot","btnOraculo"];
+const ALL_BTNS = ["btnTides","btnFishing","btnBirds","btnIntermareal","btnBosque","btnWeather","btnSiembra","btnAstro","btnComuna","btnIglesias","btnEkadashi","btnMenstrual","btnMedic","btnNutri","btnHabits","btnMeal","btnShopping","btnFinance","btnHomeTasks","btnDiscipline","btnDreams","btnBreath","btnGratitud","btnSchedule","btnGym","btnCircadian","btnGolden","btnEspiritual","btnCompost","btnLawen","btnFirstAid","btnAnimalCare","btnViolence","btnEvac","btnConvert","btnEnergy","btnLena","btnTimer","btnRemind","btnBackup","btnRestore","btnShortcut","btnPdfLuna","btnPdfCiclo","btnDonate","btnHelp","btnStudy","btnTales","btnVozAbuelos","btnMemory","btnMapu","btnEnglish","btnGuitar","btnPsico","btnMetodos","btnAgua","btnBodega","btnNudos","btnTaller","btnTrueque","btnMinga","btnFerti","btnDerechos","btnCrianza","btnArbolFull","btnRecap","btnDueloFull","btnEneagrama","btnCuartoCamino","btnAjedrez","btnMatematicas","btnSudoku","btnCrucigrama","btnSopaLetras","btnFlora","btnPsicologia","btnAdolescencia","btnJuventud","btnAdultez","btnClimaterio","btnVejez","btnElectrocultura","btnMecanica","btnDespensa","btnCloset","btnHerramientas","btnAdicciones","btnKinMaya","btnTarot","btnOraculo"];
 // === REORGANIZACIÓN 7 GRUPOS (2026-09): grupo + subgrupo destino de cada botón ===
 // Dinámicos que aún no existen en el DOM se mueven cuando se inyectan.
 const BTN_HOME = {
@@ -6682,7 +6742,7 @@ const BTN_HOME = {
   btnComuna:['territorio','penco'],btnIglesias:['territorio','penco'],
   btnMenstrual:['cuerpo','ciclos'],btnFerti:['cuerpo','ciclos'],btnJuventud:['cuerpo','ciclos'],btnClimaterio:['cuerpo','ciclos'],
   btnMedic:['cuerpo','cuidado'],btnNutri:['cuerpo','cuidado'],btnGym:['cuerpo','cuidado'],
-  btnStudy:['aprender','estudio'],btnMemory:['aprender','estudio'],btnMapu:['aprender','estudio'],btnEnglish:['aprender','estudio'],btnGuitar:['aprender','estudio'],
+  btnStudy:['aprender','estudio'],btnMemory:['aprender','estudio'],btnMapu:['aprender','estudio'],btnEnglish:['aprender','estudio'],btnGuitar:['aprender','estudio'],btnMatematicas:['aprender','estudio'],
   btnAjedrez:['aprender','juegos'],btnSudoku:['aprender','juegos'],btnCrucigrama:['aprender','juegos'],btnSopa:['aprender','juegos'],
   btnTales:['aprender','infancias'],btnCrianza:['aprender','infancias'],btnAdolescencia:['aprender','infancias'],
   btnPsico:['linaje','interior'],btnPsicologia:['linaje','interior'],btnEneagrama:['linaje','interior'],btnMetodos:['linaje','interior'],btnCuartoCamino:['linaje','interior'],btnNeurodiversidad:['linaje','interior'],btnRecap:['linaje','interior'],btnEspiritual:['linaje','interior'],btnDueloFull:['linaje','interior'],btnAdicciones:['linaje','interior'],btnKinMaya:['linaje','interior'],btnTarot:['linaje','interior'],btnOraculo:['linaje','interior'],
@@ -6703,7 +6763,7 @@ const BTN_ORDER = {
   'territorio|penco':['btnComuna','btnIglesias','btnMuni','btnBomberos','btnActores'],
   'cuerpo|ciclos':['btnMenstrual','btnFerti','btnJuventud','btnClimaterio'],
   'cuerpo|cuidado':['btnMedic','btnNutri','btnGym'],
-  'aprender|estudio':['btnStudy','btnMemory','btnMapu','btnEnglish','btnGuitar'],
+  'aprender|estudio':['btnStudy','btnMemory','btnMapu','btnEnglish','btnGuitar','btnMatematicas'],
   'aprender|juegos':['btnAjedrez','btnSudoku','btnCrucigrama','btnSopa'],
   'aprender|infancias':['btnTales','btnCrianza','btnAdolescencia'],
   'linaje|interior':['btnPsico','btnPsicologia','btnEneagrama','btnMetodos','btnCuartoCamino','btnNeurodiversidad','btnRecap','btnEspiritual','btnDueloFull','btnAdicciones','btnKinMaya','btnTarot','btnOraculo'],
@@ -6774,16 +6834,16 @@ function reordenarAcciones(){
 const PRESETS = {
   todo: Object.fromEntries(ALL_BTNS.map(k=>[k,true])),
   esencial: {btnWeather:true,btnTides:true,btnAstro:true,btnSiembra:true,btnEkadashi:true,btnCircadian:true,btnHabits:true,btnBreath:true,btnDreams:true,btnGratitud:true,btnMeal:true,btnShopping:true,btnFinance:true,btnHomeTasks:true,btnCrianza:true,btnFirstAid:true,btnEvac:true,btnTimer:true,btnRemind:true,btnBackup:true,btnRestore:true,btnShortcut:true,btnPdfLuna:true,btnPdfCiclo:true,btnHelp:true,btnDonate:true},
-  infantil: {btnWeather:true,btnAstro:true,btnBirds:true,btnBosque:true,btnSiembra:true,btnCompost:true,btnHabits:true,btnDreams:true,btnBreath:true,btnGratitud:true,btnSchedule:true,btnTales:true,btnVozAbuelos:true,btnMemory:true,btnAjedrez:true,btnSudoku:true,btnCrucigrama:true,btnSopa:true,btnMapu:true,btnEnglish:true,btnGuitar:true,btnMeal:true,btnCrianza:true,btnHelp:true,btnDonate:true},
-  adolescente: {btnHabits:true,btnDiscipline:true,btnStudy:true,btnSchedule:true,btnMemory:true,btnAjedrez:true,btnSudoku:true,btnCrucigrama:true,btnSopa:true,btnMapu:true,btnEnglish:true,btnGuitar:true,btnTales:true,btnVozAbuelos:true,btnDreams:true,btnBreath:true,btnGratitud:true,btnPsico:true,btnMetodos:true,btnRecap:true,btnDueloFull:true,btnEneagrama:true,btnCuartoCamino:true,btnKinMaya:true,btnTarot:true,btnOraculo:true,btnGym:true,btnCircadian:true,btnMeal:true,btnFinance:true,btnConvert:true,btnTimer:true,btnRemind:true,btnFirstAid:true,btnViolence:true,btnCrianza:true,btnHelp:true,btnDonate:true},
+  infantil: {btnWeather:true,btnAstro:true,btnBirds:true,btnBosque:true,btnSiembra:true,btnCompost:true,btnHabits:true,btnDreams:true,btnBreath:true,btnGratitud:true,btnSchedule:true,btnTales:true,btnVozAbuelos:true,btnMemory:true,btnAjedrez:true,btnMatematicas:true,btnSudoku:true,btnCrucigrama:true,btnSopa:true,btnMapu:true,btnEnglish:true,btnGuitar:true,btnMeal:true,btnCrianza:true,btnHelp:true,btnDonate:true},
+  adolescente: {btnHabits:true,btnDiscipline:true,btnStudy:true,btnSchedule:true,btnMemory:true,btnAjedrez:true,btnMatematicas:true,btnSudoku:true,btnCrucigrama:true,btnSopa:true,btnMapu:true,btnEnglish:true,btnGuitar:true,btnTales:true,btnVozAbuelos:true,btnDreams:true,btnBreath:true,btnGratitud:true,btnPsico:true,btnMetodos:true,btnRecap:true,btnDueloFull:true,btnEneagrama:true,btnCuartoCamino:true,btnKinMaya:true,btnTarot:true,btnOraculo:true,btnGym:true,btnCircadian:true,btnMeal:true,btnFinance:true,btnConvert:true,btnTimer:true,btnRemind:true,btnFirstAid:true,btnViolence:true,btnCrianza:true,btnHelp:true,btnDonate:true},
   adulto: Object.fromEntries(ALL_BTNS.map(k=>[k,true])),
   mayor: {btnWeather:true,btnTides:true,btnAstro:true,btnSiembra:true,btnEkadashi:true,btnMedic:true,btnNutri:true,btnLawen:true,btnHabits:true,btnBreath:true,btnDreams:true,btnGratitud:true,btnMemory:true,btnSudoku:true,btnTales:true,btnVozAbuelos:true,btnArbolFull:true,btnRecap:true,btnDueloFull:true,btnGym:true,btnCircadian:true,btnEspiritual:true,btnCuartoCamino:true,btnKinMaya:true,btnTarot:true,btnOraculo:true,btnMeal:true,btnShopping:true,btnHomeTasks:true,btnFirstAid:true,btnAnimalCare:true,btnViolence:true,btnEvac:true,btnRemind:true,btnTimer:true,btnEnergy:true,btnLena:true,btnPdfLuna:true,btnHelp:true,btnDonate:true},
-  estudiante: {btnWeather:true,btnSiembra:true,btnAstro:true,btnHabits:true,btnDiscipline:true,btnStudy:true,btnSchedule:true,btnMemory:true,btnAjedrez:true,btnSudoku:true,btnCrucigrama:true,btnSopa:true,btnMapu:true,btnEnglish:true,btnGuitar:true,btnTales:true,btnVozAbuelos:true,btnPsico:true,btnMetodos:true,btnEneagrama:true,btnCuartoCamino:true,btnKinMaya:true,btnTarot:true,btnOraculo:true,btnDreams:true,btnBreath:true,btnGratitud:true,btnConvert:true,btnTimer:true,btnRemind:true,btnPdfLuna:true,btnPdfCiclo:true,btnBackup:true,btnHelp:true,btnDonate:true},
+  estudiante: {btnWeather:true,btnSiembra:true,btnAstro:true,btnHabits:true,btnDiscipline:true,btnStudy:true,btnSchedule:true,btnMemory:true,btnAjedrez:true,btnMatematicas:true,btnSudoku:true,btnCrucigrama:true,btnSopa:true,btnMapu:true,btnEnglish:true,btnGuitar:true,btnTales:true,btnVozAbuelos:true,btnPsico:true,btnMetodos:true,btnEneagrama:true,btnCuartoCamino:true,btnKinMaya:true,btnTarot:true,btnOraculo:true,btnDreams:true,btnBreath:true,btnGratitud:true,btnConvert:true,btnTimer:true,btnRemind:true,btnPdfLuna:true,btnPdfCiclo:true,btnBackup:true,btnHelp:true,btnDonate:true},
   agricultor: {btnWeather:true,btnTides:true,btnAstro:true,btnBirds:true,btnSiembra:true,btnBosque:true,btnCompost:true,btnAgua:true,btnBodega:true,btnLawen:true,btnGolden:true,btnCircadian:true,btnEkadashi:true,btnIntermareal:true,btnComuna:true,btnIglesias:true,btnTrueque:true,btnMinga:true,btnTaller:true,btnNudos:true,btnMeal:true,btnShopping:true,btnFinance:true,btnRemind:true,btnTimer:true,btnPdfLuna:true,btnPdfCiclo:true,btnBackup:true,btnHelp:true,btnDonate:true},
   pescador: {btnWeather:true,btnTides:true,btnAstro:true,btnIntermareal:true,btnFishing:true,btnBirds:true,btnSiembra:true,btnBosque:true,btnAgua:true,btnGolden:true,btnCircadian:true,btnComuna:true,btnIglesias:true,btnNudos:true,btnTaller:true,btnTrueque:true,btnMinga:true,btnFirstAid:true,btnEvac:true,btnMeal:true,btnRemind:true,btnTimer:true,btnHelp:true,btnDonate:true},
   salud: {btnMenstrual:true,btnMedic:true,btnNutri:true,btnLawen:true,btnFerti:true,btnHabits:true,btnGym:true,btnCircadian:true,btnBreath:true,btnDreams:true,btnGratitud:true,btnEspiritual:true,btnDueloFull:true,btnRecap:true,btnPsico:true,btnMetodos:true,btnEneagrama:true,btnCuartoCamino:true,btnKinMaya:true,btnTarot:true,btnOraculo:true,btnEkadashi:true,btnCompost:true,btnMeal:true,btnShopping:true,btnSchedule:true,btnCrianza:true,btnVozAbuelos:true,btnFirstAid:true,btnAnimalCare:true,btnViolence:true,btnEvac:true,btnRemind:true,btnTimer:true,btnHelp:true,btnDonate:true},
   deportista: {btnWeather:true,btnTides:true,btnHabits:true,btnGym:true,btnNutri:true,btnCircadian:true,btnBreath:true,btnEspiritual:true,btnDreams:true,btnGratitud:true,btnMeal:true,btnShopping:true,btnFinance:true,btnTimer:true,btnRemind:true,btnEnergy:true,btnConvert:true,btnFirstAid:true,btnHelp:true,btnDonate:true},
-  docente: {btnWeather:true,btnSiembra:true,btnBosque:true,btnBirds:true,btnCompost:true,btnEkadashi:true,btnHabits:true,btnDiscipline:true,btnStudy:true,btnSchedule:true,btnMemory:true,btnAjedrez:true,btnSudoku:true,btnCrucigrama:true,btnSopa:true,btnArbolFull:true,btnRecap:true,btnMapu:true,btnEnglish:true,btnGuitar:true,btnTales:true,btnVozAbuelos:true,btnCrianza:true,btnGratitud:true,btnPsico:true,btnMetodos:true,btnEneagrama:true,btnCuartoCamino:true,btnKinMaya:true,btnTarot:true,btnOraculo:true,btnConvert:true,btnTimer:true,btnRemind:true,btnPdfLuna:true,btnPdfCiclo:true,btnBackup:true,btnHelp:true,btnDonate:true}
+  docente: {btnWeather:true,btnSiembra:true,btnBosque:true,btnBirds:true,btnCompost:true,btnEkadashi:true,btnHabits:true,btnDiscipline:true,btnStudy:true,btnSchedule:true,btnMemory:true,btnAjedrez:true,btnMatematicas:true,btnSudoku:true,btnCrucigrama:true,btnSopa:true,btnArbolFull:true,btnRecap:true,btnMapu:true,btnEnglish:true,btnGuitar:true,btnTales:true,btnVozAbuelos:true,btnCrianza:true,btnGratitud:true,btnPsico:true,btnMetodos:true,btnEneagrama:true,btnCuartoCamino:true,btnKinMaya:true,btnTarot:true,btnOraculo:true,btnConvert:true,btnTimer:true,btnRemind:true,btnPdfLuna:true,btnPdfCiclo:true,btnBackup:true,btnHelp:true,btnDonate:true}
 };
 function getVisibleConfig(){
   const c = (DATA.config && DATA.config.visible) || {};

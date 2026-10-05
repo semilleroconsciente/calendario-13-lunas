@@ -1216,3 +1216,25 @@ body[data-modo-noche="1"][data-luz-suave="1"] #filtroNocheOverlay { display: blo
 body[data-modo-noche="1"] { --bg: #050508; }
 body[data-modo-noche="1"] #sidebar,
 body[data-modo-noche="1"] dialog { filter: brightness(0.92); }
+/* === 🧮 Calculadora de bolsillo — pad en grilla 4x5 pareja === */
+.mat-calc-pad { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin-top: 10px; }
+.mat-calc-pad .mat-pad-btn { width: 100% !important; min-width: 0 !important; min-height: 46px; margin: 0; font-size: 16px; font-weight: 700; padding: 10px 4px; line-height: 1; text-align: center; }
+.mat-calc-pad .mat-pad-btn.mat-op { border-color: var(--gold); color: var(--gold); background: var(--panel); }
+.mat-calc-pad .mat-pad-btn[data-pad="="] { font-size: 18px; }
+.mat-expr-label { display: block; }
+.mat-expr { font-family: ui-monospace, Consolas, monospace !important; font-size: 15px !important; text-align: right; }
+.mat-calc-res { display: block; white-space: normal; margin-top: 10px; font-size: 13px; line-height: 1.5; word-break: break-word; }
+.mat-calc-actions { justify-content: flex-start; gap: 8px; margin-top: 8px; }
+@media (max-width: 480px) { .mat-calc-pad { gap: 6px; } .mat-calc-pad .mat-pad-btn { min-height: 44px; font-size: 15px; } }
+/* === 🎚️ Niveles Matemáticas (5 niveles + XP) === */
+.mat-level-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; margin-top: 4px; }
+.mat-lvl-btn { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 4px !important; min-height: 68px; line-height: 1.25; text-align: center; }
+.mat-lvl-btn .ml-ico { font-size: 20px; }
+.mat-lvl-btn .ml-n { font-size: 11px; font-weight: 700; }
+.mat-lvl-btn .ml-s { font-size: 10px; color: var(--gold); letter-spacing: 1px; }
+.mat-lvl-btn.sel { outline: 2px solid var(--gold); background: var(--card-hover); }
+.mat-lvl-btn.locked { opacity: .6; }
+.mat-lvl-btn:disabled { cursor: not-allowed; }
+@media (max-width: 560px) { .mat-level-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .mat-lvl-btn:last-child { grid-column: 1 / -1; min-height: 56px; } }
+/* Práctica: opciones bloqueadas se ven apagadas */
+#matematicasDialog select option:disabled { color: var(--muted); }
