@@ -73,7 +73,16 @@ function injectCSS() {
     '.cr-key{border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:8px;padding:8px 0;font-size:14px;font-weight:800;cursor:pointer}',
     '.cr-key:active{transform:scale(.94)}',
     '.cr-tools{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}',
-    '.cr-cur{font-size:12px;line-height:1.5;margin-top:8px}'
+    '.cr-cur{font-size:12px;line-height:1.5;margin-top:8px}',
+    '.cr-difs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;align-items:center}',
+    '.cr-dif{font-size:11px;font-weight:800;border:1px solid var(--line);background:var(--panel);color:var(--text);border-radius:20px;padding:5px 12px;cursor:pointer}',
+    '.cr-dif.on{background:var(--gold);border-color:var(--gold);color:#222}',
+    '.cr-prog{height:8px;background:var(--panel);border:1px solid var(--line);border-radius:99px;overflow:hidden;margin:6px 0 8px}',
+    '.cr-prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),#8fd694);transition:width .35s ease}',
+    '.cr-live{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);margin-top:6px}',
+    '.cr-live input{accent-color:var(--gold);width:16px;height:16px}',
+    '.cr-win{text-align:center;padding:14px 10px}',
+    '.cr-win .big{font-size:44px}'
   ].join('\n');
   document.head.appendChild(st);
 }
@@ -161,6 +170,28 @@ function temaById(id) {
   for (var i = 0; i < TEMAS.length; i++) if (TEMAS[i].id === id) return TEMAS[i];
   return TEMAS[0];
 }
+var DIFS = [
+  { id: 'facil', n: '🌱 Fácil', size: 9, maxw: 6, desc: '9×9 · 6 palabras · ideal para empezar' },
+  { id: 'normal', n: '🌊 Normal', size: 11, maxw: 9, desc: '11×11 · 9 palabras' },
+  { id: 'experto', n: '🔥 Experto', size: 13, maxw: 12, desc: '13×13 · 12 palabras · reto lunar' }
+];
+function difById(id) {
+  for (var i = 0; i < DIFS.length; i++) if (DIFS[i].id === id) return DIFS[i];
+  return DIFS[1];
+}
+function beep(ok) {
+  try {
+    var C = window.AudioContext || window.webkitAudioContext;
+    if (!C) return;
+    var ctx = beep._c || (beep._c = new C());
+    var o = ctx.createOscillator(), g = ctx.createGain();
+    o.connect(g); g.connect(ctx.destination);
+    o.frequency.value = ok ? 660 : 220;
+    o.type = ok ? 'sine' : 'sawtooth';
+    g.gain.value = 0.07;
+    o.start(); o.stop(ctx.currentTime + 0.18);
+  } catch (e) {}
+}
 var LUNA_TIPS = [
   { f: '🌑 Luna nueva', t: 'Siembra palabras nuevas: arma 1 crucigrama fácil y aprende 3 pistas sin apuro.' },
   { f: '🌒 Creciente', t: 'La mente despierta: prueba un tema nuevo y usa el teclado con calma.' },
@@ -245,33 +276,28 @@ function doPlace(st, entry, r, c, dir) {
     if (dir === 'H') st.h[rr][cc] = true; else st.v[rr][cc] = true;
   }
 }
-function generatePuzzle(temaId) {
-  var tema = temaById(temaId);
-  var N = 11, MAXW = 9;
+function buildOnce(tema, N, MAXW) {
   var pool = shuffle(tema.words.slice());
-  // palabras largas primero para mejor encaje
   pool.sort(function (a, b) { return b.w.length - a.w.length; });
-  pool = shuffle(pool.slice(0, 12));
+  pool = shuffle(pool.slice(0, Math.min(pool.length, MAXW + 4)));
   var st = emptyGrid(N);
   var placements = [];
-  // 1ª palabra al centro horizontal
   var first = null;
   for (var i = 0; i < pool.length; i++) {
     if (pool[i].w.length <= N - 2) { first = pool[i]; pool.splice(i, 1); break; }
   }
   if (!first) first = pool.shift();
+  if (!first) return null;
   var fr = Math.floor(N / 2), fc = Math.floor((N - first.w.length) / 2);
   doPlace(st, first, fr, fc, 'H');
   placements.push({ w: first.w, c: first.c, r: fr, cc: fc, dir: 'H' });
   var used = {};
   used[first.w] = 1;
-  // resto: buscan cruce
   for (var wi = 0; wi < pool.length && placements.length < MAXW; wi++) {
     var e = pool[wi];
     if (used[e.w] || e.w.length > N - 1) continue;
     var best = null;
-    // recorre celdas con letra igual y prueba perpendicular
-    for (var r = 0; r < N && !best; r++) {
+    for (var r = 0; r < N; r++) {
       for (var c = 0; c < N; c++) {
         var cell = st.g[r][c];
         if (!cell) continue;
@@ -295,6 +321,7 @@ function generatePuzzle(temaId) {
         }
         if (best && best.cross >= 2) break;
       }
+      if (best && best.cross >= 2) break;
     }
     if (best) {
       doPlace(st, e, best.r, best.c, best.dir);
@@ -302,26 +329,60 @@ function generatePuzzle(temaId) {
       used[e.w] = 1;
     }
   }
-  // si quedaron muy pocas, reintenta una vez mezclando distinto
-  if (placements.length < 4) return generatePuzzleRetry(temaId, 1);
-  // recorta al área usada + número de pistas
-  numberPlacements(placements);
-  return { tema: tema.id, size: N, placements: placements, sol: st.g };
+  return { st: st, placements: placements };
+}
+function fallbackPuzzle(temaId, N) {
+  var st = emptyGrid(N);
+  var mid = Math.floor(N / 2);
+  var pls = [
+    { w: 'PENCO', c: 'Nuestra comuna junto al mar', r: mid, cc: mid - 2, dir: 'H' },
+    { w: 'PESCA', c: 'Sustento artesanal de Lirquén y Penco', r: mid, cc: mid - 2, dir: 'V' },
+    { w: 'KO', c: 'Agua en mapuzugun', r: mid + 2, cc: mid, dir: 'H' }
+  ];
+  // recorta palabras que no quepan en N pequeño
+  pls = pls.filter(function (p) { return p.w.length <= N - 1 && p.r >= 0 && p.r < N && p.cc >= 0 && (p.cc + p.w.length) <= N; });
+  pls.forEach(function (p) { doPlace(st, p, p.r, p.cc, p.dir); });
+  numberPlacements(pls);
+  return { tema: temaId, dif: difById(G && G.dif).id, size: N, placements: pls, sol: st.g };
+}
+function generatePuzzle(temaId, difId) {
+  var tema = temaById(temaId);
+  var dif = difById(difId || (G && G.dif) || 'normal');
+  var N = dif.size, MAXW = dif.maxw;
+  var minW = dif.id === 'facil' ? 3 : 4;
+  var best = null, bestScore = -1;
+  for (var att = 0; att < 25; att++) {
+    var res = buildOnce(tema, N, MAXW);
+    if (!res) continue;
+    var score = res.placements.length * 10;
+    // bonus por cruces (celdas compartidas)
+    var seen = {}, shared = 0;
+    res.placements.forEach(function (p) {
+      for (var k = 0; k < p.w.length; k++) {
+        var key = (p.dir === 'V' ? p.r + k : p.r) + ':' + (p.dir === 'H' ? p.cc + k : p.cc);
+        if (seen[key]) shared++;
+        seen[key] = 1;
+      }
+    });
+    score += shared;
+    if (res.placements.length >= minW && score > bestScore) {
+      bestScore = score;
+      best = res;
+      if (res.placements.length >= MAXW && shared >= MAXW) break;
+    }
+  }
+  if (!best || best.placements.length < minW) return fallbackPuzzle(tema.id, N);
+  numberPlacements(best.placements);
+  return { tema: tema.id, dif: dif.id, size: N, placements: best.placements, sol: best.st.g };
 }
 function generatePuzzleRetry(temaId, depth) {
-  if (depth > 3) {
-    // fallback mínimo garantizado: 3 palabras cruzadas fijas
-    var st = emptyGrid(11);
-    var pls = [
-      { w: 'PENCO', c: 'Nuestra comuna junto al mar', r: 5, cc: 3, dir: 'H' },
-      { w: 'PESCA', c: 'Sustento artesanal de Lirquén y Penco', r: 5, cc: 3, dir: 'V' },
-      { w: 'KO', c: 'Agua en mapuzugun', r: 7, cc: 5, dir: 'H' }
-    ];
-    pls.forEach(function (p) { doPlace(st, p, p.r, p.cc, p.dir); });
-    numberPlacements(pls);
-    return { tema: temaId, size: 11, placements: pls, sol: st.g };
+  // compat: redirige al generador nuevo sin recursión infinita
+  try {
+    var d = (G && G.dif) || 'normal';
+    return generatePuzzle(temaId, d);
+  } catch (e) {
+    return fallbackPuzzle(temaId, 11);
   }
-  return generatePuzzle(temaId);
 }
 function numberPlacements(pls) {
   var starts = {};
@@ -373,8 +434,8 @@ function persistCurrent() {
     if (!G) { u.cruciCurrent = null; }
     else {
       u.cruciCurrent = {
-        tema: G.tema, size: G.size, placements: G.placements, sol: G.sol,
-        fill: G.fill, selR: G.selR, selC: G.selC, dir: G.dir,
+        tema: G.tema, dif: G.dif, size: G.size, placements: G.placements, sol: G.sol,
+        fill: G.fill, selR: G.selR, selC: G.selC, dir: G.dir, live: G.live,
         hints: G.hints, seconds: G.seconds, won: G.won, conAyuda: G.conAyuda
       };
     }
@@ -400,25 +461,32 @@ function startTimer() {
 }
 function stopTimer() { if (timerInt) { try { clearInterval(timerInt); } catch (e) {} timerInt = null; } }
 
-function newGame(temaId) {
+function firstWhite(puz) {
+  var wc = whiteCells(puz);
+  var keys = Object.keys(wc).sort(function (a, b) {
+    var pa = a.split(':'), pb = b.split(':');
+    return (parseInt(pa[0], 10) - parseInt(pb[0], 10)) || (parseInt(pa[1], 10) - parseInt(pb[1], 10));
+  });
+  if (!keys.length) return [Math.floor(puz.size / 2), Math.floor(puz.size / 2)];
+  var p0 = keys[0].split(':');
+  return [parseInt(p0[0], 10), parseInt(p0[1], 10)];
+}
+function newGame(temaId, difId) {
   stopTimer();
+  var td = temaId || (G && G.tema) || 'mar';
+  var dd = difId || (G && G.dif) || 'normal';
   var puz;
-  try { puz = generatePuzzle(temaId || (G && G.tema) || 'mar'); }
-  catch (e) { puz = generatePuzzleRetry(temaId || 'mar', 9); }
+  try { puz = generatePuzzle(td, dd); }
+  catch (e) { puz = fallbackPuzzle(td, difById(dd).size); }
   var fill = [];
   for (var r = 0; r < puz.size; r++) { fill.push([]); for (var c = 0; c < puz.size; c++) fill[r].push(''); }
-  // primera celda blanca como selección
-  var wc = whiteCells(puz);
-  var keys = Object.keys(wc).sort();
-  var sr = 5, sc = 3;
-  if (keys.length) { var p0 = keys[0].split(':'); sr = parseInt(p0[0], 10); sc = parseInt(p0[1], 10); }
+  var init = firstWhite(puz);
   G = {
-    tema: puz.tema, size: puz.size, placements: puz.placements, sol: puz.sol,
-    fill: fill, selR: sr, selC: sc, dir: 'H',
+    tema: puz.tema, dif: puz.dif || dd, size: puz.size, placements: puz.placements, sol: puz.sol,
+    fill: fill, selR: init[0], selC: init[1], dir: 'H', live: (G && G.live) || false,
     hints: 3, seconds: 0, won: false, conAyuda: false, timerOn: true
   };
-  // si la celda inicial no tiene palabra en H, usa V
-  if (!activeWord() && wordAt(sr, sc, 'V')) G.dir = 'V';
+  if (!activeWord() && wordAt(init[0], init[1], 'V')) G.dir = 'V';
   try { var st = getStats(); st.jugadas++; var u = userData(); u.cruciStats = st; } catch (e) {}
   persistCurrent();
   startTimer();
@@ -426,10 +494,12 @@ function newGame(temaId) {
 }
 function restoreGame(sv) {
   stopTimer();
+  var dd = sv.dif || 'normal';
   G = {
-    tema: sv.tema || 'mar', size: sv.size || 11,
+    tema: sv.tema || 'mar', dif: dd, size: sv.size || difById(dd).size || 11,
     placements: sv.placements || [], sol: sv.sol,
     fill: sv.fill, selR: sv.selR || 0, selC: sv.selC || 0, dir: sv.dir || 'H',
+    live: !!sv.live,
     hints: (sv.hints == null ? 3 : sv.hints),
     seconds: sv.seconds || 0, won: !!sv.won, conAyuda: !!sv.conAyuda,
     timerOn: !sv.won
@@ -491,22 +561,48 @@ function renderTemas() {
       if (G && !G.won && progressPct() > 5) {
         if (!confirm('¿Empezar un crucigrama nuevo de ' + temaById(id).n + '? Se pierde el avance actual.')) return;
       }
-      newGame(id);
+      newGame(id, G.dif);
     };
   });
+  var db = $('crDifs');
+  if (db) {
+    db.innerHTML = '<span class="muted" style="font-size:11px">Dificultad:</span>' + DIFS.map(function (d) {
+      return '<button type="button" class="cr-dif' + (d.id === G.dif ? ' on' : '') + '" data-dif="' + d.id + '" title="' + esc(d.desc) + '">' + d.n + '</button>';
+    }).join('') + '<span class="muted" style="font-size:10px">' + esc(difById(G.dif).desc) + '</span>';
+    db.querySelectorAll('[data-dif]').forEach(function (b) {
+      b.onclick = function () {
+        var id = b.getAttribute('data-dif');
+        if (G.dif === id) return;
+        if (G && !G.won && progressPct() > 5) {
+          if (!confirm('¿Cambiar a ' + difById(id).n + '? Se genera un tablero nuevo.')) return;
+        }
+        newGame(G.tema, id);
+      };
+    });
+  }
+}
+function doneWords() {
+  if (!G) return 0;
+  return G.placements.filter(wordDone).length;
 }
 function renderTop() {
   var box = $('crTop');
   if (!box || !G) return;
   var t = temaById(G.tema);
+  var pct = progressPct();
   box.innerHTML =
     '<div class="cr-top">' +
     '<span class="cr-stat" id="crTime">⏱️ <b>' + fmtTime(G.seconds) + '</b></span>' +
     '<span class="cr-stat">💡 Pistas <b>' + G.hints + '</b></span>' +
-    '<span class="cr-stat">📊 <b>' + progressPct() + '%</b></span>' +
-    '<span class="cr-stat">📝 <b>' + G.placements.length + '</b> palabras</span>' +
+    '<span class="cr-stat">📊 <b>' + pct + '%</b></span>' +
+    '<span class="cr-stat">📝 <b>' + doneWords() + '/' + G.placements.length + '</b></span>' +
+    '<span class="cr-stat">' + difById(G.dif).n + '</span>' +
     '</div>' +
-    '<p class="muted" style="font-size:11px;margin:4px 0">' + esc(t.n) + ' — ' + esc(t.d) + '</p>';
+    '<div class="cr-prog" role="progressbar" aria-valuenow="' + pct + '" aria-valuemin="0" aria-valuemax="100"><i style="width:' + pct + '%"></i></div>' +
+    '<p class="muted" style="font-size:11px;margin:4px 0">' + esc(t.n) + ' — ' + esc(t.d) + '</p>' +
+    '<label class="cr-live"><input type="checkbox" id="crLiveCk"' + (G.live ? ' checked' : '') + '> Revisar en vivo (marca errores al escribir)</label>';
+  var ck = $('crLiveCk');
+  if (ck) ck.onchange = function () { G.live = !!ck.checked; errFlash = null; persistCurrent(); renderBoard(); };
 }
 function cellNum(r, c) {
   if (!G) return 0;
@@ -541,7 +637,8 @@ function renderBoard() {
       else if (inActiveWord(r, c)) cls += ' cr-word';
       var v = G.fill[r][c] || '';
       var bad = errFlash && errFlash[r + ':' + c];
-      if (bad) cls += ' cr-err';
+      var liveBad = G.live && v && v !== G.sol[r][c];
+      if (bad || liveBad) cls += ' cr-err';
       else if (v && v === G.sol[r][c]) cls += ' cr-ok';
       var num = cellNum(r, c);
       h += '<button type="button" class="' + cls + '" data-cr="' + r + ':' + c + '" role="gridcell" aria-label="Fila ' + (r + 1) + ' columna ' + (c + 1) + (v ? ' letra ' + v : ' vacía') + '">' +
@@ -558,8 +655,30 @@ function renderBoard() {
   var cur = $('crCur');
   if (cur) {
     var w = activeWord();
-    if (G.won) cur.innerHTML = '🏆 <b>¡Crucigrama completo!</b> ' + esc(temaById(G.tema).n) + ' en ' + fmtTime(G.seconds) + '.';
-    else if (w) cur.innerHTML = '<b>' + w.n + ' ' + (w.dir === 'H' ? '→' : '↓') + '</b> · ' + esc(w.c) + ' <span class="muted">(' + w.w.length + ' letras)</span><br><span class="muted" style="font-size:11px">Toca la celda activa para cambiar de dirección.</span>';
+    if (G.won) {
+      var stW = getStats();
+      var kW = G.tema + ':' + G.dif;
+      var bestW = stW.mejor && stW.mejor[kW] ? fmtTime(stW.mejor[kW]) : fmtTime(G.seconds);
+      cur.innerHTML = '<div class="cr-win"><div style="font-size:40px">🏆</div><b>¡Crucigrama completo!</b><br>' +
+        esc(temaById(G.tema).n) + ' · ' + difById(G.dif).n + ' · ⏱️ ' + fmtTime(G.seconds) + (G.conAyuda ? ' (con ayuda)' : ' (sin ayuda 🌟)') +
+        '<br><span class="muted">Mejor en este nivel: ' + bestW + '</span><br>' +
+        '<span style="display:flex;gap:6px;justify-content:center;margin-top:8px;flex-wrap:wrap">' +
+        '<button type="button" class="btn btn-accent" id="crWinNew" style="width:auto;font-size:12px">🎲 Nuevo</button>' +
+        '<button type="button" class="btn" id="crWinShare" style="width:auto;font-size:12px">📤 Compartir</button></span></div>';
+      var nwb = $('crWinNew'), swb = $('crWinShare');
+      if (nwb) nwb.onclick = function () { newGame(G.tema, G.dif); };
+      if (swb) swb.onclick = shareCruci;
+    }
+    else if (w) {
+      var fill = '';
+      for (var k = 0; k < w.w.length; k++) {
+        var rr = w.dir === 'V' ? w.r + k : w.r;
+        var cc = w.dir === 'H' ? w.cc + k : w.cc;
+        fill += (G.fill[rr][cc] || '·') + ' ';
+      }
+      cur.innerHTML = '<b>' + w.n + ' ' + (w.dir === 'H' ? '→' : '↓') + '</b> · ' + esc(w.c) + ' <span class="muted">(' + w.w.length + ' letras)</span><br>' +
+        '<span style="font-family:monospace;letter-spacing:2px;font-weight:800">' + esc(fill) + '</span><br><span class="muted" style="font-size:11px">Toca la celda activa para cambiar de dirección · ⌨️ escribe o usa el teclado.</span>';
+    }
     else cur.textContent = 'Toca una casilla blanca para empezar.';
   }
 }
@@ -608,21 +727,29 @@ function renderPad() {
     '<div class="cr-tools">' +
     '<button type="button" class="btn" id="crBack" style="width:auto;font-size:12px">⌫ Borrar</button>' +
     '<button type="button" class="btn" id="crCheck" style="width:auto;font-size:12px">✅ Comprobar</button>' +
+    '<button type="button" class="btn" id="crCheckWord" style="width:auto;font-size:12px">🔍 Palabra</button>' +
     '<button type="button" class="btn" id="crHint" style="width:auto;font-size:12px">💡 Pista (' + G.hints + ')</button>' +
     '</div>' +
     '<div class="cr-tools">' +
-    '<button type="button" class="btn" id="crWord" style="width:auto;font-size:12px">🔎 Revelar palabra</button>' +
+    '<button type="button" class="btn" id="crWord" style="width:auto;font-size:12px">🔎 Revelar</button>' +
+    '<button type="button" class="btn" id="crRetry" style="width:auto;font-size:12px" title="Vacía las letras y reintenta el mismo tablero">↺ Reintentar</button>' +
+    '<button type="button" class="btn" id="crClear" style="width:auto;font-size:12px">🧹 Limpiar</button>' +
     '<button type="button" class="btn" id="crNew" style="width:auto;font-size:12px">🎲 Nuevo</button>' +
-    '<button type="button" class="btn" id="crSolve" style="width:auto;font-size:12px" title="Muestra la solución (no cuenta como victoria)">👁️ Ver solución</button>' +
+    '<button type="button" class="btn" id="crShare" style="width:auto;font-size:12px">📤 Compartir</button>' +
+    '<button type="button" class="btn" id="crSolve" style="width:auto;font-size:12px" title="Muestra la solución (no cuenta como victoria)">👁️ Ver</button>' +
     '</div>';
   box.querySelectorAll('[data-k]').forEach(function (b) {
     b.onclick = function () { enterLetter(b.getAttribute('data-k')); };
   });
   $('crBack').onclick = eraseLetter;
   $('crCheck').onclick = checkBoard;
+  $('crCheckWord').onclick = checkWord;
   $('crHint').onclick = useHint;
   $('crWord').onclick = revealWord;
-  $('crNew').onclick = function () { newGame(G.tema); };
+  $('crRetry').onclick = retrySame;
+  $('crClear').onclick = clearBoard;
+  $('crShare').onclick = shareCruci;
+  $('crNew').onclick = function () { newGame(G.tema, G.dif); };
   $('crSolve').onclick = function () {
     if (!G || G.won) return;
     if (!confirm('¿Ver la solución? El tablero se completa pero no contará como victoria.')) return;
@@ -646,27 +773,31 @@ function renderAprender() {
   var box = $('crLearnBox');
   if (!box) return;
   box.innerHTML =
-    '<div class="si-card" style="border-left:3px solid var(--gold)"><h4>📝 ¿Qué es?</h4><p>Un crucigrama es una grilla donde las palabras se cruzan: cada letra compartida une una palabra horizontal con una vertical. Aquí todas las palabras hablan de Penco: el mar, el mapuzugun, el bosque y la luna.</p></div>' +
-    '<div class="si-card"><h4>👆 Cómo jugar</h4><p>1) Toca una casilla blanca y lee la pista. 2) Escribe con el teclado en pantalla o el físico. 3) Toca la casilla activa para cambiar entre → horizontal y ↓ vertical. 4) Las letras correctas se ponen verdes; ✅ Comprobar marca errores en rojo.</p></div>' +
-    '<div class="si-card"><h4>💡 Estrategia</h4><p>Parte por las palabras cortas y las letras que ya se cruzan. Si te trabas, usa 💡 Pista (revela 1 letra) o 🔎 Revelar palabra. Cada tablero es distinto: 🎲 Nuevo genera otro con el mismo tema.</p></div>' +
-    '<div class="si-card"><h4>⌨️ Teclado físico</h4><p>Letras A–Z y Ñ para escribir, Retroceso para borrar, Espacio para cambiar de dirección, flechas para moverte por la grilla.</p></div>';
+    '<div class="si-card" style="border-left:3px solid var(--gold)"><h4>📝 ¿Qué es?</h4><p>Palabras que se cruzan: cada letra compartida une una horizontal con una vertical. Todo de Penco. Dificultades: 🌱 9×9/6 palabras, 🌊 11×11/9, 🔥 13×13/12. Cada tablero es distinto.</p></div>' +
+    '<div class="si-card"><h4>👆 Cómo jugar</h4><p>1) Toca una casilla o una pista. 2) Escribe con el teclado en pantalla o el físico. 3) Toca la celda activa para cambiar →/↓. 4) Verde = correcta. ✅ Comprobar marca errores; 🔍 Palabra revisa solo la activa; ↺ Reintentar vacía el mismo tablero.</p></div>' +
+    '<div class="si-card"><h4>💡 Estrategia</h4><p>Parte por cortas y cruces. Activa “Revisar en vivo” para ver errores al escribir. 💡 Pista revela la letra más útil (cruces primero). 🔎 Revelar completa la palabra activa.</p></div>' +
+    '<div class="si-card"><h4>⌨️ Teclado físico</h4><p>Letras A–Z y Ñ, Retroceso/Supr para borrar, Espacio para cambiar de dirección, flechas para moverte (sin saltos raros), Enter para ir a la siguiente pista.</p></div>';
 }
 function renderHistPanel() {
   var box = $('crHistBox');
   if (!box) return;
   var st = getStats();
   var hist = getHistory().slice().sort(function (a, b) { return (b.ts || 0) - (a.ts || 0); }).slice(0, 20);
-  var mejor = TEMAS.map(function (t) {
-    var m = st.mejor && st.mejor[t.id];
-    return '<span class="chip" style="font-size:10px">' + t.n + ': ' + (m ? fmtTime(m) : '—') + '</span>';
-  }).join(' ');
+  var mejor = [];
+  TEMAS.forEach(function (t) {
+    DIFS.forEach(function (d) {
+      var m = st.mejor && (st.mejor[t.id + ':' + d.id] || (d.id === 'normal' && st.mejor[t.id]));
+      mejor.push('<span class="chip" style="font-size:10px">' + t.n + ' ' + d.n + ': ' + (m ? fmtTime(m) : '—') + '</span>');
+    });
+  });
+  mejor = mejor.join(' ');
   box.innerHTML =
     '<div class="menstrual-card"><h4>📊 Mis números</h4>' +
     '<p class="muted" style="font-size:12px">' + st.ganadas + ' completados de ' + st.jugadas + ' jugados · racha actual: ' + (st.racha || 0) + '</p>' +
     '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px"><span class="muted" style="font-size:11px">⏱️ Mejor tiempo:</span>' + mejor + '</div></div>' +
     '<div class="menstrual-card" style="margin-top:10px"><h4>🕘 Últimos crucigramas</h4>' +
     (hist.length ? '<div class="habits-list" style="margin-top:6px">' + hist.map(function (r) {
-      return '<div class="habit-item" style="font-size:12px">' + (r.won ? '🏆' : '👁️') + ' <b>' + esc(temaById(r.tema).n) + '</b> · ' + (r.palabras || 0) + ' palabras · ' + fmtTime(r.seconds) + ' · ' + esc(r.fecha || '') + '</div>';
+      return '<div class="habit-item" style="font-size:12px">' + (r.won ? '🏆' : '👁️') + ' <b>' + esc(temaById(r.tema).n) + '</b> · ' + esc(difById(r.dif || 'normal').n) + ' · ' + (r.palabras || 0) + ' palabras · ' + fmtTime(r.seconds) + ' · ' + esc(r.fecha || '') + '</div>';
     }).join('') + '</div>' : '<p class="muted" style="font-size:12px">Aún sin crucigramas terminados. ¡Completa el primero!</p>') +
     '<div class="dlg-actions" style="justify-content:space-between;margin-top:8px"><button type="button" class="btn" id="crHistShare" style="width:auto;font-size:11px">📤 Compartir</button>' +
     '<button type="button" class="btn" id="crHistClear" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar</button></div></div>';
@@ -686,6 +817,22 @@ function renderHistPanel() {
 }
 
 /* ================= JUGADAS ================= */
+function nextClue() {
+  if (!G || !G.placements.length) return;
+  var idx = -1;
+  var w = activeWord();
+  for (var i = 0; i < G.placements.length; i++) {
+    if (w && G.placements[i].n === w.n && G.placements[i].dir === w.dir) { idx = i; break; }
+  }
+  // siguiente incompleta, o siguiente en lista
+  for (var k = 1; k <= G.placements.length; k++) {
+    var p = G.placements[(idx + k) % G.placements.length];
+    if (!wordDone(p)) { G.dir = p.dir; G.selR = p.r; G.selC = p.cc; errFlash = null; renderBoard(); renderClues(); return; }
+  }
+  var p2 = G.placements[(idx + 1) % G.placements.length];
+  G.dir = p2.dir; G.selR = p2.r; G.selC = p2.cc; errFlash = null;
+  renderBoard(); renderClues();
+}
 function pickCell(r, c) {
   if (!G || G.won || !isWhite(r, c)) return;
   if (G.selR === r && G.selC === c) {
@@ -704,11 +851,16 @@ function pickCell(r, c) {
 }
 function moveSel(dr, dc) {
   if (!G) return;
-  var r = G.selR + dr, c = G.selC + dc, guard = 0;
-  while (guard++ < G.size * 2) {
-    if (r < 0) r = G.size - 1; if (r >= G.size) r = 0;
-    if (c < 0) c = G.size - 1; if (c >= G.size) c = 0;
-    if (isWhite(r, c)) { G.selR = r; G.selC = c; return; }
+  var r = G.selR + dr, c = G.selC + dc;
+  while (r >= 0 && r < G.size && c >= 0 && c < G.size) {
+    if (isWhite(r, c)) {
+      G.selR = r; G.selC = c;
+      if (!wordAt(r, c, G.dir)) {
+        var other = G.dir === 'H' ? 'V' : 'H';
+        if (wordAt(r, c, other)) G.dir = other;
+      }
+      return;
+    }
     r += dr; c += dc;
   }
 }
@@ -734,8 +886,38 @@ function enterLetter(L) {
   if (!G || G.won || !isWhite(G.selR, G.selC)) return;
   G.fill[G.selR][G.selC] = L;
   errFlash = null;
+  beep(!G.live || L === G.sol[G.selR][G.selC]);
   stepAlong();
   renderBoard(); renderClues(); renderTop(); persistCurrent(); checkWin();
+}
+function clearBoard() {
+  if (!G || G.won) return;
+  if (!confirm('¿Vaciar todas las letras escritas?')) return;
+  for (var r = 0; r < G.size; r++) for (var c = 0; c < G.size; c++) {
+    if (isWhite(r, c)) G.fill[r][c] = '';
+  }
+  errFlash = null;
+  renderAll(); persistCurrent();
+}
+function retrySame() {
+  if (!G) return;
+  if (!confirm('¿Reintentar este mismo tablero desde cero?')) return;
+  for (var r = 0; r < G.size; r++) for (var c = 0; c < G.size; c++) {
+    if (isWhite(r, c)) G.fill[r][c] = '';
+  }
+  G.won = false; G.timerOn = true; G.seconds = 0; G.hints = 3; G.conAyuda = false;
+  errFlash = null;
+  var init = firstWhite({ size: G.size, placements: G.placements, sol: G.sol });
+  G.selR = init[0]; G.selC = init[1]; G.dir = 'H';
+  if (!activeWord() && wordAt(init[0], init[1], 'V')) G.dir = 'V';
+  startTimer(); renderAll(); persistCurrent();
+}
+function shareCruci() {
+  if (!G) return;
+  var t = '📝 Crucigrama · ' + temaById(G.tema).n + ' (' + difById(G.dif).n + ')\n' +
+    '📊 ' + progressPct() + '% · ✅ ' + doneWords() + '/' + G.placements.length + ' palabras · ⏱️ ' + fmtTime(G.seconds) + '\n' +
+    G.placements.map(function (p) { return (wordDone(p) ? '✅ ' : '⬜ ') + p.n + (p.dir === 'H' ? '→' : '↓') + ' ' + p.c; }).join('\n');
+  share('📝 Mi Crucigrama', t);
 }
 function eraseLetter() {
   if (!G || G.won || !isWhite(G.selR, G.selC)) return;
@@ -764,6 +946,7 @@ function checkBoard() {
   });
   errFlash = bad;
   var n = Object.keys(bad).length;
+  beep(n === 0);
   renderBoard();
   if (!n) {
     var allFilled = Object.keys(wc).every(function (k) {
@@ -773,14 +956,49 @@ function checkBoard() {
     if (allFilled) checkWin();
     else save('Sin errores por ahora ✓');
   } else {
+    save('Hay ' + n + ' letra(s) por corregir ❌');
     try { if (navigator.vibrate) navigator.vibrate(60); } catch (e) {}
   }
-  setTimeout(function () { errFlash = null; if (G && !G.won) renderBoard(); }, 1400);
+  setTimeout(function () { errFlash = null; if (G && !G.won && !G.live) renderBoard(); }, 1600);
+}
+function checkWord() {
+  if (!G || G.won) return;
+  var w = activeWord();
+  if (!w) return save('Elige una palabra primero');
+  var bad = {}, n = 0;
+  for (var k = 0; k < w.w.length; k++) {
+    var rr = w.dir === 'V' ? w.r + k : w.r;
+    var cc = w.dir === 'H' ? w.cc + k : w.cc;
+    var v = G.fill[rr][cc] || '';
+    if (v && v !== w.w.charAt(k)) { bad[rr + ':' + cc] = 1; n++; }
+  }
+  errFlash = bad;
+  beep(n === 0);
+  renderBoard();
+  if (!n) {
+    if (wordDone(w)) save('¡Palabra ' + w.n + ' perfecta! ✅');
+    else save('Palabra ' + w.n + ' sin errores por ahora ✓');
+  } else {
+    save('Palabra ' + w.n + ': ' + n + ' letra(s) por corregir ❌');
+    try { if (navigator.vibrate) navigator.vibrate(60); } catch (e) {}
+  }
+  setTimeout(function () { errFlash = null; if (G && !G.won && !G.live) renderBoard(); }, 1600);
 }
 function useHint() {
   if (!G || G.won) return;
   if (G.hints <= 0) { alert('Sin pistas. Genera un tablero nuevo para recuperarlas.'); return; }
   var w = activeWord();
+  // prioriza la palabra activa menos completa; si está completa, busca otra incompleta
+  if (w && wordDone(w)) {
+    var inc = G.placements.filter(function (p) { return !wordDone(p); });
+    if (inc.length) {
+      inc.sort(function (a, b) {
+        function miss(p) { var m = 0; for (var k = 0; k < p.w.length; k++) { var rr = p.dir === 'V' ? p.r + k : p.r; var cc = p.dir === 'H' ? p.cc + k : p.cc; if ((G.fill[rr][cc] || '') !== p.w.charAt(k)) m++; } return m; }
+        return miss(a) - miss(b);
+      });
+      w = inc[0]; G.dir = w.dir; G.selR = w.r; G.selC = w.cc;
+    } else w = null;
+  }
   var cands = [];
   function pushCell(r, c) {
     if (isWhite(r, c) && (G.fill[r][c] || '') !== G.sol[r][c]) cands.push([r, c]);
@@ -796,10 +1014,16 @@ function useHint() {
     });
   }
   if (!cands.length) return;
-  var pick = cands[Math.floor(Math.random() * cands.length)];
+  // revela celda con más cruces primero (más útil): prioriza las que pertenecen a 2 palabras
+  cands.sort(function (a, b) {
+    function cruces(rc) { var n = 0; G.placements.forEach(function (p) { for (var k = 0; k < p.w.length; k++) { var rr = p.dir === 'V' ? p.r + k : p.r; var cc = p.dir === 'H' ? p.cc + k : p.cc; if (rr === rc[0] && cc === rc[1]) n++; } }); return n; }
+    return cruces(b) - cruces(a);
+  });
+  var pick = cands[0];
   G.fill[pick[0]][pick[1]] = G.sol[pick[0]][pick[1]];
   G.selR = pick[0]; G.selC = pick[1];
   G.hints--; G.conAyuda = true;
+  beep(true);
   renderAll(); persistCurrent(); checkWin();
 }
 function revealWord() {
@@ -824,7 +1048,8 @@ function checkWin() {
   recordResult(true);
   persistCurrent(); renderAll();
   save('¡Crucigrama completo! 🏆');
-  try { if (navigator.vibrate) navigator.vibrate([80, 40, 80]); } catch (e) {}
+  beep(true); setTimeout(function () { beep(true); }, 250);
+  try { if (navigator.vibrate) navigator.vibrate([80, 40, 80, 40, 120]); } catch (e) {}
 }
 function recordResult(won) {
   try {
@@ -833,7 +1058,9 @@ function recordResult(won) {
       st.ganadas++;
       st.racha = (st.racha || 0) + 1;
       if (!st.mejor) st.mejor = {};
-      if (!st.mejor[G.tema] || G.seconds < st.mejor[G.tema]) st.mejor[G.tema] = G.seconds;
+      var k = G.tema + ':' + (G.dif || 'normal');
+      if (st.mejor[G.tema] && !st.mejor[G.tema + ':normal']) st.mejor[G.tema + ':normal'] = st.mejor[G.tema];
+      if (!st.mejor[k] || G.seconds < st.mejor[k]) st.mejor[k] = G.seconds;
     } else {
       st.racha = 0;
     }
@@ -842,7 +1069,7 @@ function recordResult(won) {
     var h = getHistory();
     var d = new Date();
     var fecha = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
-    h.push({ ts: Date.now(), fecha: fecha, tema: G.tema, palabras: G.placements.length, seconds: G.seconds, won: won });
+    h.push({ ts: Date.now(), fecha: fecha, tema: G.tema, dif: G.dif, palabras: G.placements.length, seconds: G.seconds, won: won });
     u.cruciHistory = h.slice(-100);
     save();
   } catch (e) {}
@@ -879,7 +1106,7 @@ function buildDialog() {
     '<button type="button" id="tabCrAprender" class="btn" style="width:auto">📚 Aprender</button>' +
     '<button type="button" id="tabCrRegistros" class="btn" style="width:auto">🏆 Mis registros</button>' +
     '</div>' +
-    '<div id="crPanelJugar"><div class="cr-wrap"><div id="crTemas" class="cr-temas"></div><div id="crTop"></div><div id="crBoard"></div>' +
+    '<div id="crPanelJugar"><div class="cr-wrap"><div id="crTemas" class="cr-temas"></div><div id="crDifs" class="cr-difs"></div><div id="crTop"></div><div id="crBoard"></div>' +
     '<div id="crCur" class="chip cr-cur" style="display:block;white-space:normal"></div>' +
     '<div id="crClues"></div>' +
     '<div id="crPad"></div></div></div>' +
@@ -901,7 +1128,13 @@ function buildDialog() {
   $('tabCrRegistros').onclick = function () { switchTab('registros'); };
   d.addEventListener('keydown', function (ev) {
     if (!G || TAB !== 'jugar' || G.won) return;
-    if (ev.key === 'Backspace') { eraseLetter(); ev.preventDefault(); }
+    // no interferir con checkboxes/botones (espacio/enter en foco)
+    var tag = (ev.target && ev.target.tagName) || '';
+    if (tag === 'INPUT' && ev.key !== 'Escape') {
+      if (ev.key === ' ' || ev.key === 'Enter') return; // deja togglear el checkbox
+    }
+    if (ev.key === 'Backspace' || ev.key === 'Delete') { eraseLetter(); ev.preventDefault(); }
+    else if (ev.key === 'Enter') { nextClue(); ev.preventDefault(); }
     else if (ev.key === ' ' || ev.key === 'Spacebar') {
       var w = activeWord();
       if (w) {
@@ -915,6 +1148,7 @@ function buildDialog() {
       else if (ev.key === 'ArrowDown') moveSel(1, 0);
       else if (ev.key === 'ArrowLeft') moveSel(0, -1);
       else if (ev.key === 'ArrowRight') moveSel(0, 1);
+      errFlash = null;
       renderBoard(); renderClues();
       ev.preventDefault();
     }
@@ -999,7 +1233,7 @@ function setup() {
 
 window.Crucigrama = {
   open: openCruci, newGame: newGame,
-  generate: generatePuzzle, temas: TEMAS
+  generate: generatePuzzle, temas: TEMAS, dificultades: DIFS
 };
 setTimeout(setup, 600);
 

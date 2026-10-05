@@ -48,27 +48,53 @@ function injectCSS() {
   var st = document.createElement('style');
   st.id = 'sopaStyles';
   st.textContent = [
-    '.sp-wrap{max-width:520px;margin:0 auto}',
+    '.sp-wrap{max-width:560px;margin:0 auto}',
     '.sp-temas{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}',
-    '.sp-top{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:8px}',
+    '.sp-difs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;align-items:center}',
+    '.sp-dif{font-size:11px;font-weight:800;border:1px solid var(--line);background:var(--panel);color:var(--text);border-radius:20px;padding:5px 12px;cursor:pointer}',
+    '.sp-dif.on{background:var(--gold);border-color:var(--gold);color:#222}',
+    '.sp-top{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:6px}',
     '.sp-stat{font-size:11px;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:4px 9px;color:var(--text)}',
     '.sp-stat b{color:var(--gold)}',
-    '.sp-board{display:grid;gap:2px;justify-content:center;touch-action:manipulation;user-select:none;-webkit-user-select:none}',
-    '.sp-cell{aspect-ratio:1;border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:6px;font-weight:800;font-size:clamp(12px,3.2vw,17px);cursor:pointer;display:flex;align-items:center;justify-content:center;min-width:0;padding:0}',
-    '.sp-cell.sp-anchor{background:rgba(232,197,106,.5)!important;outline:2px solid var(--gold);outline-offset:-2px}',
-    '.sp-cell.sp-trail{background:rgba(232,197,106,.28)}',
-    '.sp-cell.sp-found{background:rgba(143,214,148,.4)!important;border-color:#8fd694;color:var(--text)}',
-    '.sp-cell.sp-hintflash{animation:spflash 1s ease 2}',
-    '@keyframes spflash{0%,100%{background:var(--card)}50%{background:rgba(143,214,148,.6)}}',
+    '.sp-prog{height:8px;background:var(--panel);border:1px solid var(--line);border-radius:99px;overflow:hidden;margin:6px 0 8px}',
+    '.sp-prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),#8fd694);transition:width .35s ease}',
+    '.sp-board{display:grid;gap:2px;justify-content:center;touch-action:none;user-select:none;-webkit-user-select:none}',
+    '.sp-cell{aspect-ratio:1;border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:6px;font-weight:800;font-size:clamp(11px,3vw,16px);cursor:pointer;display:flex;align-items:center;justify-content:center;min-width:0;padding:0;transition:background .12s,transform .12s}',
+    '.sp-cell.sp-anchor{background:rgba(232,197,106,.55)!important;outline:2px solid var(--gold);outline-offset:-2px;transform:scale(1.06)}',
+    '.sp-cell.sp-trail{background:rgba(232,197,106,.30)}',
+    '.sp-cell.sp-found{color:#10231a!important;font-weight:900}',
+    '.sp-cell.sp-hintflash{animation:spflash 1s ease 3}',
+    '@keyframes spflash{0%,100%{background:var(--card)}50%{background:rgba(143,214,148,.7);transform:scale(1.1)}}',
+    '@keyframes sppop{0%{transform:scale(.6)}60%{transform:scale(1.15)}100%{transform:scale(1)}}',
+    '.sp-cell.sp-pop{animation:sppop .35s ease}',
     '.sp-words{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}',
-    '.sp-word{font-size:12px;font-weight:700;background:var(--panel);border:1px solid var(--line);color:var(--text);border-radius:8px;padding:5px 10px;cursor:default}',
+    '.sp-word{font-size:12px;font-weight:700;background:var(--panel);border:1px solid var(--line);border-left-width:5px;color:var(--text);border-radius:8px;padding:5px 10px;cursor:default}',
     '.sp-word small{color:var(--muted);font-weight:400}',
-    '.sp-word.done{background:rgba(143,214,148,.22);border-color:#8fd694;text-decoration:line-through;opacity:.85}',
-    '.sp-word.hint{border-color:var(--gold)}',
+    '.sp-word.done{text-decoration:line-through;opacity:.92}',
+    '.sp-word.hint{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold)}',
     '.sp-tools{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}',
-    '.sp-msg{font-size:12px;line-height:1.5;margin-top:8px}'
+    '.sp-msg{font-size:12px;line-height:1.5;margin-top:8px}',
+    '.sp-win{text-align:center;padding:14px 10px}',
+    '.sp-win .big{font-size:44px}',
+    '.sp-confetti{font-size:20px;letter-spacing:2px;animation:sppop .5s ease}',
+    '.sp-live{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}'
   ].join('\n');
   document.head.appendChild(st);
+}
+var SP_COLORS = ['#8fd694','#e8c56a','#7ec8e3','#e39ec1','#b8a7e8','#f2a65a','#8ad8c8','#e07a5f','#a8d86b','#f4e285'];
+function spColor(i){ return SP_COLORS[i % SP_COLORS.length]; }
+function beep(ok){
+  try{
+    var C = window.AudioContext || window.webkitAudioContext;
+    if(!C) return;
+    var ctx = beep._c || (beep._c = new C());
+    var o = ctx.createOscillator(), g = ctx.createGain();
+    o.connect(g); g.connect(ctx.destination);
+    o.frequency.value = ok ? 660 : 220;
+    o.type = ok ? 'sine' : 'sawtooth';
+    g.gain.value = 0.08;
+    o.start(); o.stop(ctx.currentTime + (ok ? 0.18 : 0.22));
+  }catch(e){}
 }
 
 /* ================= DATOS ================= */
@@ -89,6 +115,20 @@ var TEMAS = [
 function temaById(id) {
   for (var i = 0; i < TEMAS.length; i++) if (TEMAS[i].id === id) return TEMAS[i];
   return TEMAS[0];
+}
+/* Dificultades: tamaño, nº palabras y direcciones permitidas */
+var DIFS = [
+  { id: 'facil', n: '🌱 Fácil', size: 8, nwords: 6, dirs: 'recto', desc: '8×8 · 6 palabras · solo → y ↓' },
+  { id: 'normal', n: '🌊 Normal', size: 12, nwords: 10, dirs: 'ocho', desc: '12×12 · 10 palabras · 8 direcciones' },
+  { id: 'experto', n: '🔥 Experto', size: 14, nwords: 13, dirs: 'ocho', desc: '14×14 · 13 palabras · 8 direcciones' }
+];
+function difById(id) {
+  for (var i = 0; i < DIFS.length; i++) if (DIFS[i].id === id) return DIFS[i];
+  return DIFS[1];
+}
+function dirsFor(difId) {
+  if (difId === 'facil') return [[0, 1], [1, 0]];
+  return DIRS;
 }
 var LUNA_TIPS = [
   { f: '🌑 Luna nueva', t: 'Siembra la vista: busca 1 palabra lenta, de izquierda a derecha.' },
@@ -125,42 +165,67 @@ function shuffle(a) {
   }
   return a;
 }
-function generateGrid(temaId, nWords) {
-  var tema = temaById(temaId);
-  var N = 12, NW = nWords || 10;
-  var pool = shuffle(tema.words.slice());
-  pool.sort(function (a, b) { return b.length - a.length; });
-  pool = shuffle(pool.slice(0, Math.min(pool.length, NW + 3))).slice(0, NW);
+function tryPlaceAll(tema, N, list, dirs) {
   var grid = [], r, c;
   for (r = 0; r < N; r++) { grid.push([]); for (c = 0; c < N; c++) grid[r].push(''); }
   var placed = [];
-  pool.forEach(function (w) {
-    var dirs = shuffle(DIRS.slice());
+  var okAll = true;
+  for (var wi = 0; wi < list.length; wi++) {
+    var w = list[wi];
+    if (w.length > N) { okAll = false; break; }
+    var dlist = shuffle(dirs.slice());
     var ok = false;
-    for (var t = 0; t < 220 && !ok; t++) {
-      var d = dirs[t % dirs.length];
+    for (var t = 0; t < 400 && !ok; t++) {
+      var d = dlist[t % dlist.length];
       var dr = d[0], dc = d[1];
       var r0 = Math.floor(Math.random() * N), c0 = Math.floor(Math.random() * N);
       var r1 = r0 + dr * (w.length - 1), c1 = c0 + dc * (w.length - 1);
       if (r1 < 0 || r1 >= N || c1 < 0 || c1 >= N) continue;
-      var good = true;
+      var good = true, cross = 0;
       for (var k = 0; k < w.length; k++) {
         var rr = r0 + dr * k, cc = c0 + dc * k;
-        if (grid[rr][cc] && grid[rr][cc] !== w.charAt(k)) { good = false; break; }
+        if (grid[rr][cc]) {
+          if (grid[rr][cc] !== w.charAt(k)) { good = false; break; }
+          cross++;
+        }
       }
       if (!good) continue;
-      for (var k2 = 0; k2 < w.length; k2++) {
-        grid[r0 + dr * k2][c0 + dc * k2] = w.charAt(k2);
-      }
+      // evita colocar 100% solapada sobre otra idéntica
+      if (cross === w.length && placed.length) continue;
+      for (var k2 = 0; k2 < w.length; k2++) grid[r0 + dr * k2][c0 + dc * k2] = w.charAt(k2);
       placed.push({ w: w, r0: r0, c0: c0, dr: dr, dc: dc });
       ok = true;
     }
-  });
-  // relleno aleatorio
-  for (r = 0; r < N; r++) for (c = 0; c < N; c++) {
+    if (!ok) { okAll = false; break; }
+  }
+  return { ok: okAll, grid: grid, placed: placed };
+}
+function generateGrid(temaId, nWords, difId) {
+  var tema = temaById(temaId);
+  var dif = difById(difId || (G && G.dif) || 'normal');
+  var N = dif.size, NW = nWords || dif.nwords;
+  var dirs = dirsFor(dif.id);
+  // candidatas: filtra por largo y prioriza largas pero con azar
+  var cands = tema.words.filter(function (w) { return w.length <= N; });
+  if (!cands.length) cands = tema.words.slice();
+  cands = shuffle(cands.slice());
+  cands.sort(function (a, b) { return (b.length - a.length) || (Math.random() - 0.5); });
+  var best = null;
+  for (var att = 0; att < 12; att++) {
+    var list = shuffle(cands.slice()).slice(0, Math.min(cands.length, NW + 2));
+    // ordena: intercala largas y cortas para mejor encaje
+    list.sort(function (a, b) { return b.length - a.length; });
+    list = list.slice(0, NW);
+    var res = tryPlaceAll(tema, N, list, dirs);
+    if (res.ok) { best = res; best.list = list; break; }
+    if (!best || res.placed.length > best.placed.length) { best = res; best.list = list; }
+  }
+  var grid = best.grid, placed = best.placed;
+  // relleno aleatorio evitando completar por azar palabras buscadas obvias: simple random está bien
+  for (var r = 0; r < N; r++) for (var c = 0; c < N; c++) {
     if (!grid[r][c]) grid[r][c] = ABC.charAt(Math.floor(Math.random() * ABC.length));
   }
-  return { tema: tema.id, size: N, grid: grid, placed: placed };
+  return { tema: tema.id, dif: dif.id, size: N, grid: grid, placed: placed };
 }
 
 /* ================= ESTADO ================= */
@@ -185,7 +250,7 @@ function persistCurrent() {
     if (!G) { u.sopaCurrent = null; }
     else {
       u.sopaCurrent = {
-        tema: G.tema, size: G.size, grid: G.grid,
+        tema: G.tema, dif: G.dif, size: G.size, grid: G.grid,
         words: G.words, anchor: G.anchor,
         seconds: G.seconds, hintsLeft: G.hintsLeft, won: G.won, conAyuda: G.conAyuda
       };
@@ -212,31 +277,42 @@ function startTimer() {
 }
 function stopTimer() { if (timerInt) { try { clearInterval(timerInt); } catch (e) {} timerInt = null; } }
 
-function newGame(temaId) {
+function newGame(temaId, difId) {
   stopTimer();
+  var td = temaId || (G && G.tema) || 'mar';
+  var dd = difId || (G && G.dif) || 'normal';
   var gen;
-  try { gen = generateGrid(temaId || (G && G.tema) || 'mar', 10); }
-  catch (e) { gen = generateGrid('mar', 10); }
+  try { gen = generateGrid(td, difById(dd).nwords, dd); }
+  catch (e) { gen = generateGrid('mar', 10, 'normal'); }
   G = {
-    tema: gen.tema, size: gen.size, grid: gen.grid,
-    words: gen.placed.map(function (p) { return { w: p.w, found: false, hint: false, r0: p.r0, c0: p.c0, dr: p.dr, dc: p.dc }; }),
-    anchor: null, seconds: 0, hintsLeft: 3, won: false, timerOn: true, conAyuda: false
+    tema: gen.tema, dif: gen.dif || dd, size: gen.size, grid: gen.grid,
+    words: gen.placed.map(function (p, i) { return { w: p.w, found: false, hint: false, r0: p.r0, c0: p.c0, dr: p.dr, dc: p.dc, color: spColor(i) }; }),
+    anchor: null, hover: null, seconds: 0, hintsLeft: 3, won: false, timerOn: true, conAyuda: false
   };
+  // partidas antiguas sin color: asigna
+  G.words.forEach(function (w, i) { if (!w.color) w.color = spColor(i); });
   try { var st = getStats(); st.jugadas++; var u = userData(); u.sopaStats = st; } catch (e) {}
   persistCurrent();
   startTimer();
   renderAll();
+  announce('Nueva sopa: ' + temaById(G.tema).n + ', dificultad ' + difById(G.dif).n);
 }
 function restoreGame(sv) {
   stopTimer();
+  var dd = sv.dif || 'normal';
   G = {
-    tema: sv.tema || 'mar', size: sv.size || 12, grid: sv.grid,
-    words: sv.words || [], anchor: null,
+    tema: sv.tema || 'mar', dif: dd, size: sv.size || difById(dd).size || 12, grid: sv.grid,
+    words: sv.words || [], anchor: null, hover: null,
     seconds: sv.seconds || 0, hintsLeft: (sv.hintsLeft == null ? 3 : sv.hintsLeft),
     won: !!sv.won, conAyuda: !!sv.conAyuda, timerOn: !sv.won
   };
+  G.words.forEach(function (w, i) { if (!w.color) w.color = spColor(i); });
   if (G.timerOn) startTimer();
   renderAll();
+}
+function announce(t) {
+  var el = $('spLive');
+  if (el) el.textContent = t;
 }
 function foundCount() {
   if (!G) return 0;
@@ -251,7 +327,7 @@ function foundCells() {
   var map = {};
   G.words.forEach(function (w) {
     if (!w.found) return;
-    cellsOf(w).forEach(function (rc) { map[rc[0] + ':' + rc[1]] = 1; });
+    cellsOf(w).forEach(function (rc) { map[rc[0] + ':' + rc[1]] = w.color || '#8fd694'; });
   });
   return map;
 }
@@ -289,21 +365,40 @@ function renderTemas() {
       if (G && !G.won && foundCount() > 0 && foundCount() < G.words.length) {
         if (!confirm('¿Empezar una sopa nueva de ' + temaById(id).n + '? Se pierde el avance actual.')) return;
       }
-      newGame(id);
+      newGame(id, G.dif);
     };
   });
+  var db = $('spDifs');
+  if (db) {
+    db.innerHTML = '<span class="muted" style="font-size:11px">Dificultad:</span>' + DIFS.map(function (d) {
+      return '<button type="button" class="sp-dif' + (d.id === G.dif ? ' on' : '') + '" data-dif="' + d.id + '" title="' + esc(d.desc) + '">' + d.n + '</button>';
+    }).join('') + '<span class="muted" style="font-size:10px">' + esc(difById(G.dif).desc) + '</span>';
+    db.querySelectorAll('[data-dif]').forEach(function (b) {
+      b.onclick = function () {
+        var id = b.getAttribute('data-dif');
+        if (G.dif === id) return;
+        if (G && !G.won && foundCount() > 0) {
+          if (!confirm('¿Cambiar a ' + difById(id).n + '? Se genera una sopa nueva.')) return;
+        }
+        newGame(G.tema, id);
+      };
+    });
+  }
 }
 function renderTop() {
   var box = $('spTop');
   if (!box || !G) return;
   var t = temaById(G.tema);
+  var pct = G.words.length ? Math.round(foundCount() / G.words.length * 100) : 0;
   box.innerHTML =
     '<div class="sp-top">' +
     '<span class="sp-stat" id="spTime">⏱️ <b>' + fmtTime(G.seconds) + '</b></span>' +
     '<span class="sp-stat">🔎 <b>' + foundCount() + '/' + G.words.length + '</b></span>' +
     '<span class="sp-stat">💡 Pistas <b>' + G.hintsLeft + '</b></span>' +
+    '<span class="sp-stat">' + difById(G.dif).n + '</span>' +
     '</div>' +
-    '<p class="muted" style="font-size:11px;margin:4px 0">' + esc(t.n) + ' — ' + esc(t.d) + '</p>';
+    '<div class="sp-prog" role="progressbar" aria-valuenow="' + pct + '" aria-valuemin="0" aria-valuemax="100"><i style="width:' + pct + '%"></i></div>' +
+    '<p class="muted" style="font-size:11px;margin:4px 0">' + esc(t.n) + ' — ' + esc(t.d) + ' · Arrastra el dedo o toca inicio y fin.</p>';
 }
 function renderBoard() {
   var box = $('spBoard');
@@ -314,35 +409,87 @@ function renderBoard() {
     var lc = lineCells(G.anchor[0], G.anchor[1], G.hover[0], G.hover[1]);
     if (lc) lc.forEach(function (rc) { trail[rc[0] + ':' + rc[1]] = 1; });
   }
-  var h = '<div class="sp-board" role="grid" aria-label="Sopa de letras" style="grid-template-columns:repeat(' + G.size + ',1fr)">';
+  var h = '<div class="sp-board" id="spGrid" role="grid" aria-label="Sopa de letras ' + G.size + ' por ' + G.size + '" style="grid-template-columns:repeat(' + G.size + ',1fr)">';
   for (var r = 0; r < G.size; r++) {
     for (var c = 0; c < G.size; c++) {
       var k = r + ':' + c;
       var cls = 'sp-cell';
-      if (fc[k]) cls += ' sp-found';
+      var style = '';
+      if (fc[k]) { cls += ' sp-found'; style = ' style="background:' + fc[k] + '55;border-color:' + fc[k] + '"'; }
       else if (G.anchor && G.anchor[0] === r && G.anchor[1] === c) cls += ' sp-anchor';
       else if (trail[k]) cls += ' sp-trail';
-      h += '<button type="button" class="' + cls + '" data-sp="' + k + '" role="gridcell" aria-label="Fila ' + (r + 1) + ' columna ' + (c + 1) + ' letra ' + G.grid[r][c] + '">' + G.grid[r][c] + '</button>';
+      h += '<button type="button" class="' + cls + '"' + style + ' data-sp="' + k + '" role="gridcell" aria-label="Fila ' + (r + 1) + ' columna ' + (c + 1) + ' letra ' + G.grid[r][c] + '">' + G.grid[r][c] + '</button>';
     }
   }
   box.innerHTML = h + '</div>';
+  var gridEl = $('spGrid');
+  var dragging = false;
+  function rcOf(el) {
+    var rc = el.getAttribute('data-sp').split(':');
+    return [parseInt(rc[0], 10), parseInt(rc[1], 10)];
+  }
+  function cellFromPoint(x, y) {
+    var el = document.elementFromPoint(x, y);
+    if (el && el.getAttribute) {
+      var v = el.getAttribute('data-sp');
+      if (v) return v.split(':').map(function (n) { return parseInt(n, 10); });
+    }
+    return null;
+  }
   box.querySelectorAll('[data-sp]').forEach(function (el) {
     el.onclick = function () {
-      var rc = el.getAttribute('data-sp').split(':');
-      tapCell(parseInt(rc[0], 10), parseInt(rc[1], 10));
+      if (G._dragged) { G._dragged = false; return; }
+      var rc = rcOf(el);
+      tapCell(rc[0], rc[1]);
     };
     el.onmouseenter = function () {
       if (!G || !G.anchor || G.won) return;
-      var rc = el.getAttribute('data-sp').split(':');
-      G.hover = [parseInt(rc[0], 10), parseInt(rc[1], 10)];
-      paintTrail();
+      if (dragging || G.anchor) {
+        var rc = rcOf(el);
+        G.hover = rc;
+        paintTrail();
+      }
     };
   });
+  if (gridEl) {
+    gridEl.onpointerdown = function (ev) {
+      if (!G || G.won) return;
+      var t = ev.target && ev.target.getAttribute ? ev.target.getAttribute('data-sp') : null;
+      if (!t) return;
+      try { gridEl.setPointerCapture(ev.pointerId); } catch (e) {}
+      var rc = t.split(':').map(function (n) { return parseInt(n, 10); });
+      G.anchor = rc; G.hover = rc; dragging = true; G._dragged = false;
+      renderBoard();
+      ev.preventDefault();
+    };
+    gridEl.onpointermove = function (ev) {
+      if (!dragging || !G || !G.anchor) return;
+      var rc = cellFromPoint(ev.clientX, ev.clientY);
+      if (rc) {
+        G.hover = rc; G._dragged = true;
+        paintTrail();
+      }
+    };
+    var endDrag = function (ev) {
+      if (!dragging) return;
+      dragging = false;
+      if (!G || !G.anchor || !G.hover) return;
+      var a = G.anchor, b = G.hover;
+      // toque simple sin mover = deja el anchor puesto (modo toca-toca)
+      if (a[0] === b[0] && a[1] === b[1]) { renderBoard(); return; }
+      G._dragged = true;
+      setTimeout(function () { if (G) G._dragged = false; }, 250);
+      resolveSelection(a[0], a[1], b[0], b[1]);
+    };
+    gridEl.onpointerup = endDrag;
+    gridEl.onpointercancel = function () { dragging = false; };
+  }
   var msg = $('spMsg');
   if (msg) {
-    if (G.won) msg.innerHTML = '🏆 <b>¡Sopa completa!</b> ' + esc(temaById(G.tema).n) + ' en ' + fmtTime(G.seconds) + '.';
-    else if (G.anchor) msg.innerHTML = '👆 Inicio marcado en fila ' + (G.anchor[0] + 1) + ', columna ' + (G.anchor[1] + 1) + ' (<b>' + G.grid[G.anchor[0]][G.anchor[1]] + '</b>). Toca la <b>última letra</b> de la palabra. Toca el inicio de nuevo para cancelar.';
-    else msg.innerHTML = '👆 Toca la <b>primera letra</b> de una palabra y luego su <b>última letra</b> (vale en 8 direcciones, también al revés).';
+    if (G.won) msg.innerHTML = '🏆 <b>¡Sopa completa!</b> ' + esc(temaById(G.tema).n) + ' (' + difById(G.dif).n + ') en ' + fmtTime(G.seconds) + '.';
+    else if (G.anchor) msg.innerHTML = '👆 Inicio marcado en fila ' + (G.anchor[0] + 1) + ', columna ' + (G.anchor[1] + 1) + ' (<b>' + G.grid[G.anchor[0]][G.anchor[1]] + '</b>). Arrastra o toca la <b>última letra</b>. Toca el inicio para cancelar.';
+    else if (G.dif === 'facil') msg.innerHTML = '👆 Toca la <b>primera letra</b> y luego la <b>última</b>. En fácil solo → horizontal y ↓ vertical.';
+    else msg.innerHTML = '👆 Toca la <b>primera letra</b> y luego su <b>última letra</b> (8 direcciones, también al revés) o arrastra el dedo.';
   }
 }
 function paintTrail() {
@@ -364,22 +511,27 @@ function renderWords() {
   var box = $('spWords');
   if (!box || !G) return;
   var tema = temaById(G.tema);
-  var h = '<div class="sp-words">';
+  var h = '<div class="sp-words" aria-live="polite">';
   G.words.forEach(function (w) {
     var pista = tema.hints && tema.hints[w.w] ? ' <small>· ' + esc(tema.hints[w.w]) + '</small>' : '';
-    h += '<span class="sp-word' + (w.found ? ' done' : '') + (w.hint && !w.found ? ' hint' : '') + '">' +
+    var st = w.found
+      ? ' style="border-left-color:' + w.color + ';background:' + w.color + '33;border-color:' + w.color + '"'
+      : (w.hint ? '' : ' style="border-left-color:var(--line)"');
+    h += '<span class="sp-word' + (w.found ? ' done' : '') + (w.hint && !w.found ? ' hint' : '') + '"' + st + '>' +
       (w.found ? '✅ ' : (w.hint ? '💡 ' : '')) + w.w + pista + '</span>';
   });
   box.innerHTML = h + '</div>' +
     '<div class="sp-tools">' +
     '<button type="button" class="btn" id="spHint" style="width:auto;font-size:12px">💡 Pista (' + G.hintsLeft + ')</button>' +
-    '<button type="button" class="btn" id="spCancel" style="width:auto;font-size:12px">✖️ Cancelar marca</button>' +
-    '<button type="button" class="btn" id="spNew" style="width:auto;font-size:12px">🎲 Nueva sopa</button>' +
-    '<button type="button" class="btn" id="spSolve" style="width:auto;font-size:12px" title="Muestra todas (no cuenta como victoria)">👁️ Ver todas</button>' +
+    '<button type="button" class="btn" id="spCancel" style="width:auto;font-size:12px">✖️ Cancelar</button>' +
+    '<button type="button" class="btn" id="spNew" style="width:auto;font-size:12px">🎲 Nueva</button>' +
+    '<button type="button" class="btn" id="spShare" style="width:auto;font-size:12px">📤 Compartir</button>' +
+    '<button type="button" class="btn" id="spSolve" style="width:auto;font-size:12px" title="Muestra todas (no cuenta como victoria)">👁️ Ver</button>' +
     '</div>';
   $('spHint').onclick = useHint;
   $('spCancel').onclick = function () { G.anchor = null; G.hover = null; renderBoard(); persistCurrent(); };
-  $('spNew').onclick = function () { newGame(G.tema); };
+  $('spNew').onclick = function () { newGame(G.tema, G.dif); };
+  $('spShare').onclick = shareResult;
   $('spSolve').onclick = function () {
     if (!G || G.won) return;
     if (!confirm('¿Mostrar todas las palabras? No contará como victoria.')) return;
@@ -388,6 +540,13 @@ function renderWords() {
     recordResult(false);
     persistCurrent(); renderAll();
   };
+}
+function shareResult() {
+  if (!G) return;
+  var t = '🔎 Sopa de Letras · ' + temaById(G.tema).n + ' (' + difById(G.dif).n + ')\n' +
+    '✅ ' + foundCount() + '/' + G.words.length + ' · ⏱️ ' + fmtTime(G.seconds) + '\n' +
+    G.words.map(function (w) { return (w.found ? '✅ ' : '⬜ ') + w.w; }).join('\n');
+  share('🔎 Mi Sopa de Letras', t);
 }
 function renderLuna() {
   var box = $('spLunaBox');
@@ -401,9 +560,9 @@ function renderAprender() {
   var box = $('spLearnBox');
   if (!box) return;
   box.innerHTML =
-    '<div class="si-card" style="border-left:3px solid var(--gold)"><h4>🔎 ¿Qué es?</h4><p>Una sopa de letras esconde palabras entre letras revueltas. Aquí se esconden 10 palabras de Penco en una grilla de 12×12, en 8 direcciones: horizontal, vertical y diagonal, al derecho y al revés.</p></div>' +
-    '<div class="si-card"><h4>👆 Cómo jugar</h4><p>1) Toca la primera letra de la palabra. 2) Toca la última letra en línea recta. Si es correcta, se pinta verde y se tacha de la lista. Cada palabra trae una <b>pista</b> al lado para ayudarte. Toca el inicio de nuevo para cancelar la marca.</p></div>' +
-    '<div class="si-card"><h4>💡 Estrategia</h4><p>Busca primero las letras raras (K, W, J, Ñ, X): delatan la palabra. Barre por filas, luego columnas y al final diagonales. Con 💡 Pista se ilumina una palabra escondida.</p></div>' +
+    '<div class="si-card" style="border-left:3px solid var(--gold)"><h4>🔎 ¿Qué es?</h4><p>Palabras escondidas entre letras revueltas. Según la dificultad: 🌱 8×8 con 6 palabras (→ ↓), 🌊 12×12 con 10 (8 direcciones), 🔥 14×14 con 13 (8 direcciones). Todo de Penco: mar, mapuzugun, bosque y luna.</p></div>' +
+    '<div class="si-card"><h4>👆 Cómo jugar</h4><p>1) <b>Arrastra</b> el dedo desde la primera a la última letra, o toca inicio y fin. 2) Si es correcta se pinta con su color y se tacha. 3) Toca el inicio de nuevo para cancelar. Cada palabra trae su <b>significado</b> al lado.</p></div>' +
+    '<div class="si-card"><h4>💡 Estrategia</h4><p>Busca letras raras (K, W, J, Ñ, X). Barre por filas → columnas → diagonales. La 💡 Pista te dice dirección (→ ↓ ↘) e ilumina las 2 primeras letras. En fácil solo hay 2 direcciones: ideal para niños.</p></div>' +
     '<div class="si-card"><h4>🌙 Dato lunar</h4><p>Las sopas entrenan atención y vocabulario: ideales para aprender mapuzugun jugando, en familia, una luna a la vez.</p></div>';
 }
 function renderHistPanel() {
@@ -411,18 +570,22 @@ function renderHistPanel() {
   if (!box) return;
   var st = getStats();
   var hist = getHistory().slice().sort(function (a, b) { return (b.ts || 0) - (a.ts || 0); }).slice(0, 20);
-  var mejor = TEMAS.map(function (t) {
-    var m = st.mejor && st.mejor[t.id];
-    return '<span class="chip" style="font-size:10px">' + t.n + ': ' + (m ? fmtTime(m) : '—') + '</span>';
-  }).join(' ');
+  var mejor = [];
+  TEMAS.forEach(function (t) {
+    DIFS.forEach(function (d) {
+      var m = st.mejor && (st.mejor[t.id + ':' + d.id] || (d.id === 'normal' && st.mejor[t.id]));
+      mejor.push('<span class="chip" style="font-size:10px">' + t.n + ' ' + d.n + ': ' + (m ? fmtTime(m) : '—') + '</span>');
+    });
+  });
+  mejor = mejor.join(' ');
   box.innerHTML =
     '<div class="menstrual-card"><h4>📊 Mis números</h4>' +
     '<p class="muted" style="font-size:12px">' + st.ganadas + ' completadas de ' + st.jugadas + ' jugadas · racha actual: ' + (st.racha || 0) + '</p>' +
     '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px"><span class="muted" style="font-size:11px">⏱️ Mejor tiempo:</span>' + mejor + '</div></div>' +
     '<div class="menstrual-card" style="margin-top:10px"><h4>🕘 Últimas sopas</h4>' +
     (hist.length ? '<div class="habits-list" style="margin-top:6px">' + hist.map(function (r) {
-      return '<div class="habit-item" style="font-size:12px">' + (r.won ? '🏆' : '👁️') + ' <b>' + esc(temaById(r.tema).n) + '</b> · ' + (r.halladas || 0) + '/' + (r.total || 0) + ' · ' + fmtTime(r.seconds) + ' · ' + esc(r.fecha || '') + '</div>';
-    }).join('') + '</div>' : '<p class="muted" style="font-size:12px">Aún sin sopas terminadas. ¡Encuentra tus primeras 10 palabras!</p>') +
+      return '<div class="habit-item" style="font-size:12px">' + (r.won ? '🏆' : '👁️') + ' <b>' + esc(temaById(r.tema).n) + '</b> · ' + esc(difById(r.dif || 'normal').n) + ' · ' + (r.halladas || 0) + '/' + (r.total || 0) + ' · ' + fmtTime(r.seconds) + ' · ' + esc(r.fecha || '') + '</div>';
+    }).join('') + '</div>' : '<p class="muted" style="font-size:12px">Aún sin sopas terminadas. ¡Encuentra tus primeras palabras!</p>') +
     '<div class="dlg-actions" style="justify-content:space-between;margin-top:8px"><button type="button" class="btn" id="spHistShare" style="width:auto;font-size:11px">📤 Compartir</button>' +
     '<button type="button" class="btn" id="spHistClear" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar</button></div></div>';
   var sh = $('spHistShare');
@@ -441,24 +604,11 @@ function renderHistPanel() {
 }
 
 /* ================= JUGADAS ================= */
-function tapCell(r, c) {
+function resolveSelection(r0, c0, r1, c1) {
   if (!G || G.won) return;
-  if (!G.anchor) {
-    G.anchor = [r, c]; G.hover = null;
-    try { if (navigator.vibrate) navigator.vibrate(20); } catch (e) {}
-    renderBoard();
-    return;
-  }
-  // tocar el mismo inicio = cancelar
-  if (G.anchor[0] === r && G.anchor[1] === c) {
-    G.anchor = null; G.hover = null;
-    renderBoard(); persistCurrent();
-    return;
-  }
-  var lc = lineCells(G.anchor[0], G.anchor[1], r, c);
+  var lc = lineCells(r0, c0, r1, c1);
   if (!lc) {
-    // no es línea recta: cambia el inicio a la nueva celda
-    G.anchor = [r, c]; G.hover = null;
+    G.anchor = [r1, c1]; G.hover = null;
     renderBoard();
     return;
   }
@@ -467,10 +617,8 @@ function tapCell(r, c) {
   for (var i = 0; i < G.words.length; i++) {
     var w = G.words[i];
     if (w.found) continue;
-    // la selección debe cubrir EXACTO la palabra (mismo largo y letras)
     if (lc.length !== w.w.length) continue;
     if (fwd === w.w || bwd === w.w) {
-      // además debe coincidir la posición (evita falsos primos con misma palabra)
       var cells = cellsOf(w);
       var setA = {}, k;
       for (k = 0; k < cells.length; k++) setA[cells[k][0] + ':' + cells[k][1]] = 1;
@@ -481,40 +629,69 @@ function tapCell(r, c) {
   if (hit) {
     hit.found = true;
     G.anchor = null; G.hover = null;
+    beep(true);
     try { if (navigator.vibrate) navigator.vibrate([40, 30, 40]); } catch (e) {}
+    announce('¡Encontrada: ' + hit.w + '! Llevas ' + foundCount() + ' de ' + G.words.length);
+    // pop visual en esas celdas
     renderTop(); renderBoard(); renderWords(); persistCurrent(); checkWin();
+    var box = $('spBoard');
+    if (box) {
+      cellsOf(hit).forEach(function (rc) {
+        var el = box.querySelector('[data-sp="' + rc[0] + ':' + rc[1] + '"]');
+        if (el) el.classList.add('sp-pop');
+      });
+    }
   } else {
+    beep(false);
     try { if (navigator.vibrate) navigator.vibrate(60); } catch (e) {}
-    // deja el final como nuevo inicio para seguir buscando fluido
-    G.anchor = [r, c]; G.hover = null;
+    G.anchor = [r1, c1]; G.hover = null;
     renderBoard();
     var msg = $('spMsg');
-    if (msg) msg.innerHTML = '❌ Esa selección (' + esc(fwd) + ') no es una palabra buscada. Nuevo inicio marcado: <b>' + G.grid[r][c] + '</b>.';
+    if (msg) msg.innerHTML = '❌ <b>' + esc(fwd) + '</b> no es una palabra buscada (largo ' + lc.length + '). Nuevo inicio: <b>' + G.grid[r1][c1] + '</b>. Revisa la lista: largos ' + G.words.filter(function (w) { return !w.found; }).map(function (w) { return w.w.length; }).join(', ') + '.';
   }
+}
+function tapCell(r, c) {
+  if (!G || G.won) return;
+  if (!G.anchor) {
+    G.anchor = [r, c]; G.hover = null;
+    try { if (navigator.vibrate) navigator.vibrate(20); } catch (e) {}
+    renderBoard();
+    return;
+  }
+  if (G.anchor[0] === r && G.anchor[1] === c) {
+    G.anchor = null; G.hover = null;
+    renderBoard(); persistCurrent();
+    return;
+  }
+  resolveSelection(G.anchor[0], G.anchor[1], r, c);
 }
 function useHint() {
   if (!G || G.won) return;
   if (G.hintsLeft <= 0) { alert('Sin pistas. Genera una sopa nueva para recuperarlas.'); return; }
   var rest = G.words.filter(function (w) { return !w.found; });
   if (!rest.length) return;
-  var pick = rest[Math.floor(Math.random() * rest.length)];
+  // prioriza palabras sin pista previa y más largas
+  rest.sort(function (a, b) { return ((b.hint ? 0 : 1) - (a.hint ? 0 : 1)) || (b.w.length - a.w.length); });
+  var pick = rest[0];
   pick.hint = true;
   G.hintsLeft--; G.conAyuda = true;
-  // ilumina su primera letra un momento
-  renderWords();
+  renderWords(); renderTop(); persistCurrent();
+  announce('Pista: busca ' + pick.w.charAt(0) + ' de ' + pick.w.length + ' letras');
   setTimeout(function () {
     var box = $('spBoard');
     if (!box) return;
-    var el = box.querySelector('[data-sp="' + pick.r0 + ':' + pick.c0 + '"]');
-    if (el) el.classList.add('sp-hintflash');
+    cellsOf(pick).forEach(function (rc, i) {
+      var el = box.querySelector('[data-sp="' + rc[0] + ':' + rc[1] + '"]');
+      if (el && i < 2) { el.classList.add('sp-hintflash'); setTimeout(function () { el.classList.remove('sp-hintflash'); }, 3200); }
+    });
   }, 30);
   var msg = $('spMsg');
   if (msg) {
     var tema = temaById(G.tema);
     var pista = (tema.hints && tema.hints[pick.w]) || '';
-    msg.innerHTML = '💡 Busca <b>' + pick.w.charAt(0) + '…</b> (' + pick.w.length + ' letras' + (pista ? ' · ' + esc(pista) : '') + '). Primera letra iluminada ✨';
+    var dirTxt = (pick.dr === 0) ? '→ horizontal' : (pick.dc === 0 ? '↓ vertical' : '↘ diagonal');
+    msg.innerHTML = '💡 Busca <b>' + pick.w.charAt(0) + '…</b> (' + pick.w.length + ' letras, ' + dirTxt + (pista ? ' · ' + esc(pista) : '') + '). Primeras 2 letras iluminadas ✨';
   }
-  renderTop(); renderWords(); persistCurrent();
 }
 function checkWin() {
   if (!G || G.won) return;
@@ -524,8 +701,30 @@ function checkWin() {
   recordResult(true);
   persistCurrent(); renderAll();
   save('¡Sopa completa! 🏆');
-  try { if (navigator.vibrate) navigator.vibrate([80, 40, 80]); } catch (e) {}
+  beep(true); setTimeout(function () { beep(true); }, 250);
+  try { if (navigator.vibrate) navigator.vibrate([80, 40, 80, 40, 120]); } catch (e) {}
+  announce('¡Sopa completa en ' + fmtTime(G.seconds) + '!');
+  setTimeout(showWin, 350);
 }
+function showWin() {
+  if (!G || !G.won) return;
+  var st = getStats();
+  var key = G.tema + ':' + G.dif;
+  var best = st.mejor && st.mejor[key] ? fmtTime(st.mejor[key]) : fmtTime(G.seconds);
+  var html = '<div class="sp-win"><div class="sp-confetti">🎉🏆🎉</div><div class="big">🏆</div>' +
+    '<h3 style="margin:6px 0;color:var(--accent)">¡Sopa completa!</h3>' +
+    '<p class="muted">' + esc(temaById(G.tema).n) + ' · ' + difById(G.dif).n + ' · ⏱️ ' + fmtTime(G.seconds) + (G.conAyuda ? ' (con ayuda)' : ' (sin ayuda 🌟)') + '<br>Mejor en este nivel: ' + best + ' · Racha: ' + (st.racha || 0) + '</p>' +
+    '<div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:10px">' +
+    '<button type="button" class="btn btn-accent" id="spWinNew" style="width:auto">🎲 Nueva sopa</button>' +
+    '<button type="button" class="btn" id="spWinShare" style="width:auto">📤 Compartir</button>' +
+    '</div></div>';
+  var msg = $('spMsg');
+  if (msg) msg.innerHTML = html;
+  var nb = $('spWinNew'), sb = $('spWinShare');
+  if (nb) nb.onclick = function () { newGame(G.tema, G.dif); };
+  if (sb) sb.onclick = shareResult;
+}
+function statKey() { return G.tema + ':' + (G.dif || 'normal'); }
 function recordResult(won) {
   try {
     var st = getStats();
@@ -533,7 +732,10 @@ function recordResult(won) {
       st.ganadas++;
       st.racha = (st.racha || 0) + 1;
       if (!st.mejor) st.mejor = {};
-      if (!st.mejor[G.tema] || G.seconds < st.mejor[G.tema]) st.mejor[G.tema] = G.seconds;
+      var k = statKey();
+      // compat: migra mejor antiguo por tema simple
+      if (st.mejor[G.tema] && !st.mejor[G.tema + ':normal']) st.mejor[G.tema + ':normal'] = st.mejor[G.tema];
+      if (!st.mejor[k] || G.seconds < st.mejor[k]) st.mejor[k] = G.seconds;
     } else {
       st.racha = 0;
     }
@@ -542,7 +744,7 @@ function recordResult(won) {
     var h = getHistory();
     var d = new Date();
     var fecha = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
-    h.push({ ts: Date.now(), fecha: fecha, tema: G.tema, halladas: foundCount(), total: G.words.length, seconds: G.seconds, won: won });
+    h.push({ ts: Date.now(), fecha: fecha, tema: G.tema, dif: G.dif, halladas: foundCount(), total: G.words.length, seconds: G.seconds, won: won });
     u.sopaHistory = h.slice(-100);
     save();
   } catch (e) {}
@@ -572,15 +774,15 @@ function buildDialog() {
     '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
     '<h3 style="margin:0;color:var(--accent)">🔎 Sopa de Letras</h3>' +
     '<button type="button" data-close class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    '<p class="muted" style="line-height:1.5">Encuentra 10 palabras escondidas de Penco en 8 direcciones. Toca inicio y fin. Todo queda <b>privado y local</b> en tu usuario.</p>' +
+    '<p class="muted" style="line-height:1.5">Encuentra las palabras escondidas de Penco. Arrastra o toca inicio y fin. 3 dificultades. Todo queda <b>privado y local</b> en tu usuario.</p>' +
     '<div id="spLunaBox" class="menstrual-card" style="border-color:var(--gold);margin-bottom:10px"></div>' +
     '<div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">' +
     '<button type="button" id="tabSpJugar" class="btn btn-accent" style="width:auto">🔎 Jugar</button>' +
     '<button type="button" id="tabSpAprender" class="btn" style="width:auto">📚 Aprender</button>' +
     '<button type="button" id="tabSpRegistros" class="btn" style="width:auto">🏆 Mis registros</button>' +
     '</div>' +
-    '<div id="spPanelJugar"><div class="sp-wrap"><div id="spTemas" class="sp-temas"></div><div id="spTop"></div><div id="spBoard"></div>' +
-    '<div id="spMsg" class="chip sp-msg" style="display:block;white-space:normal"></div>' +
+    '<div id="spPanelJugar"><div class="sp-wrap"><div id="spTemas" class="sp-temas"></div><div id="spDifs" class="sp-difs"></div><div id="spTop"></div><div id="spBoard"></div>' +
+    '<div id="spMsg" class="chip sp-msg" style="display:block;white-space:normal"></div><div id="spLive" class="sp-live" aria-live="polite"></div>' +
     '<div id="spWords"></div></div></div>' +
     '<div id="spPanelAprender" class="hidden"><div id="spLearnBox" style="display:flex;flex-direction:column;gap:8px"></div></div>' +
     '<div id="spPanelRegistros" class="hidden"><div id="spHistBox"></div></div>' +
@@ -677,7 +879,7 @@ function setup() {
 
 window.SopaLetras = {
   open: openSopa, newGame: newGame,
-  generate: generateGrid, temas: TEMAS
+  generate: generateGrid, temas: TEMAS, dificultades: DIFS
 };
 setTimeout(setup, 600);
 

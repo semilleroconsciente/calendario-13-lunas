@@ -1,6 +1,6 @@
 ﻿// Service Worker — Calendario 13 Lunas (offline-first, tolerante a versiones ?v=)
-// v50
-const CACHE = 'cal13-v50-offline';
+// v52
+const CACHE = 'cal13-v52-offline';
 
 // Lista completa de archivos que usa index.html (bare + con ?v=).
 // Si se agrega un JS nuevo en index.html, agregarlo aquí también (bare y ?v=).
@@ -69,10 +69,14 @@ const CORE = [
   './eneagrama-modulo.js?v=1',
   './ikigai-modulo.js',
   './ikigai-modulo.js?v=1',
+  './fortalezas-via-modulo.js',
+  './fortalezas-via-modulo.js?v=2',
   './cuarto-camino-modulo.js',
   './cuarto-camino-modulo.js?v=1',
   './hooponopono-modulo.js',
   './hooponopono-modulo.js?v=1',
+  './metodo-silva-modulo.js',
+  './metodo-silva-modulo.js?v=1',
   './carta-astral.js',
   './carta-astral.js?v=1',
   './voz-abuelos.js',
@@ -91,6 +95,8 @@ const CORE = [
   './semillero-guias.js?v=1',
   './ajedrez-modulo.js',
   './ajedrez-modulo.js?v=1',
+  './matematicas-modulo.js',
+  './matematicas-modulo.js?v=1',
   './sudoku-modulo.js',
   './sudoku-modulo.js?v=1',
   './crucigrama-modulo.js',
@@ -104,6 +110,8 @@ const CORE = [
   './adicciones-modulo.js',
   './adicciones-modulo.js?v=1',
   './adicciones-modulo.js?v=2',
+  './retos-21-modulo.js',
+  './retos-21-modulo.js?v=1',
   './neurodiversidad-modulo.js',
   './neurodiversidad-modulo.js?v=1',
   './kin-maya-modulo.js',
@@ -134,6 +142,8 @@ const CORE = [
   './mecanica-modulo.js?v=1',
   './domotica-modulo.js',
   './domotica-modulo.js?v=1',
+  './electronica-modulo.js',
+  './electronica-modulo.js?v=1',
   './plantas-modulo.js',
   './plantas-modulo.js?v=1',
   './hogar-despensa-closet-modulo.js',

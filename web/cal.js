@@ -5,12 +5,14 @@ const fmtDate = new Intl.DateTimeFormat('es-CL', { timeZone: TZ, day: 'numeric',
 const fmtFull = new Intl.DateTimeFormat('es-CL', { timeZone: TZ, day: 'numeric', month: 'long', year: 'numeric' });
 const fmtKey = new Intl.DateTimeFormat('en-CA', { timeZone: TZ, year: 'numeric', month: '2-digit', day: '2-digit' });
 
+// Un solo formateador reutilizado: crear uno nuevo por llamada (como antes)
+// era muy costoso porque santiagoParts se usa en cada celda del calendario.
+const _santiagoFmt = new Intl.DateTimeFormat('en-CA', {
+  timeZone: TZ, year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false
+});
 function santiagoParts(ms) {
   const p = {};
-  const fmt = new Intl.DateTimeFormat('en-CA', {
-    timeZone: TZ, year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false
-  });
-  for (const part of fmt.formatToParts(new Date(ms))) p[part.type] = part.value;
+  for (const part of _santiagoFmt.formatToParts(new Date(ms))) p[part.type] = part.value;
   return { y: +p.year, m: +p.month, d: +p.day, hh: p.hour === '24' ? '00' : p.hour };
 }
 

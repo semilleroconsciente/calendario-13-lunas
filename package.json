@@ -71,6 +71,7 @@
       "huerta-modulo.js",
       "mecanica-modulo.js",
       "domotica-modulo.js",
+      "electronica-modulo.js",
       "plantas-modulo.js",
       "hogar-despensa-closet-modulo.js",
       "hogar-herramientas-modulo.js",

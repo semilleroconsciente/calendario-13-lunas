@@ -7,8 +7,19 @@
   <title>Calendario de las 13 Lunas</title>
   <link rel="stylesheet" href="styles.css?v=12">
   <link rel="manifest" href="manifest.json">
+  <style>
+    /* Pantalla de carga: se pinta al instante, sin esperar los scripts. */
+    #bootSplash{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;background:#0b1026;transition:opacity .35s ease}
+    #bootSplash.done{opacity:0;pointer-events:none}
+    #bootSplash .boot-box{text-align:center;color:#e8ecff;font-family:system-ui,sans-serif}
+    #bootSplash .boot-spin{width:44px;height:44px;margin:0 auto 14px;border-radius:50%;border:4px solid #2a3358;border-top-color:#e8c56a;animation:bootSpin 0.9s linear infinite}
+    @keyframes bootSpin{to{transform:rotate(360deg)}}
+    #bootSplash .boot-title{font-size:17px;font-weight:700;margin-bottom:6px}
+    #bootSplash .boot-sub{font-size:12px;color:#9aa3c7}
+  </style>
 </head>
 <body>
+  <div id="bootSplash" aria-hidden="true"><div class="boot-box"><div class="boot-spin"></div><div class="boot-title">Calendario de las 13 Lunas</div><div class="boot-sub">Cargando calendario...</div></div></div>
   <a href="#main" class="skip-link">Saltar al contenido</a>
   <aside id="sidebar" aria-label="Navegación lateral">
     <div class="brand">
@@ -152,9 +163,10 @@
         <summary>🪞 Interior, Linaje y Memoria <span class="ag-count"></span></summary>
         <div class="group-btns">
           <span class="sub-label" data-sub="interior">🔥 Interior</span>
-          <button id="btnPsico" class="btn" data-sub="interior" data-keywords="psicoanalisis autoconocimiento sombra jung inconsciente sueños terapia cognitivo conductual tcc gestalt silla vacia eneagrama mbti big five journaling diario estoico senecca marco aurelio mayeutica socrates mindfulness vipassana atma vichara quien soy bioenergetica feldenkrais cuerpo arte escritura salud mental">🪞 Autoconocimiento</button>
-          <button id="btnEneagrama" class="btn" data-sub="interior" data-keywords="eneagrama eneatipo personalidad test autoconocimiento reformador ayudador triunfador artista investigador leal entusiasta desafiador pacificador alas flechas subtipo instinto virtud pasion">🔺 Eneagrama</button>
-          <button id="btnIkigai" class="btn" data-sub="interior" data-keywords="ikigai proposito sentido vida razon ser japones okinawa diagrama venn pasion mision vocacion profesion brujula amor talento mundo pago microaccion flujo moai pilares reglas">🌸 Ikigai</button>
+          <button id="btnPsico" class="btn" data-sub="interior" data-keywords="psicoanalisis autoconocimiento sombra jung inconsciente sueños terapia cognitivo conductual tcc gestalt silla vacia eneagrama mbti big five fortalezas via journaling diario estoico senecca marco aurelio mayeutica socrates mindfulness vipassana atma vichara quien soy bioenergetica feldenkrais cuerpo arte escritura salud mental">🪞 Autoconocimiento</button>
+          <button id="btnEneagrama" class="btn" data-sub="interior" data-keywords="eneagrama eneatipo personalidad test autoconocimiento fortalezas via firma reformador ayudador triunfador artista investigador leal entusiasta desafiador pacificador alas flechas subtipo instinto virtud pasion">🔺 Eneagrama</button>
+          <button id="btnIkigai" class="btn" data-sub="interior" data-keywords="ikigai proposito sentido vida razon ser japones okinawa diagrama venn pasion mision vocacion profesion brujula amor talento mundo pago microaccion flujo moai pilares reglas fortalezas via firma">🌸 Ikigai</button>
+          <button id="btnVIA" class="btn" data-sub="interior" data-keywords="fortalezas via virtudes caracter firma test valores accion peterson seligman sabiduria coraje humanidad justicia templanza trascendencia creatividad curiosidad juicio aprender perspectiva valentia perseverancia honestidad entusiasmo amor amabilidad inteligencia social equipo equidad liderazgo perdon humildad prudencia autorregulacion belleza gratitud esperanza humor espiritualidad bienestar florecer">🌟 Fortalezas VIA</button>
           <button id="btnMetodos" class="btn" data-sub="interior" data-keywords="metodos visiones estoicismo tao tolteca budismo yogananda gurdjieff grinberg jung freud psicoanalisis frankl logoterapia sentido zen zazen patanjali ashtanga grof transpersonal hermetismo kybalion cuatro acuerdos wu wei kriya cuarto camino sintergia arquetipos filosofia espiritualidad conny mendez metafisica decreto ikigai proposito gnosis interior reiki usui energia manos gokai hoponopono ho'oponopono hawaii perdon gracias te amo limpieza guerrero mito castaneda don juan ixtlan genaro camino guerrero hombre conocimiento modo guerrero">📿 Métodos</button>
           <button id="btnCuartoCamino" class="btn" data-sub="interior" data-keywords="cuarto camino gurdjieff ouspensky recuerdo de si auto observacion identificacion consideracion amortiguadores ley de tres ley de siete octavas eneagrama stop despertar sueno esencia personalidad centros hombre numero 4 escuela presencia atencion">🛤️ Cuarto Camino</button>
           <button id="btnHooponopono" class="btn" data-sub="interior" data-keywords="hooponopono ho'oponopono hoponopono hawaii perdon gracias te amo lo siento perdoname limpieza memorias morrnah hew len responsabilidad paz reconciliacion soltar rencor culpa miedo duelo">🌺 Ho'oponopono</button>
@@ -2162,7 +2174,7 @@
             <h4>🗺️ Mapa rápido</h4>
             <p><b>🌊 Territorio:</b> Mareas, Pesca, Aves, Clima (+Aire), Siembra (+Semillero), Mi Huerta (+Electrocultura), Astro, Penco (+Talleres), Municipalidad, Bomberos, Apoyo, Actores, 🏪 Economía Local (+🪙 Moneda Social), Ekadashi, Hora Dorada, Ritmo Circadiano, Intermareal, Bosque, Compost, Reciclaje, Flora, Hidroponía.</p>
             <p><b>🌸 Cuerpo:</b> Ciclo, Fertilidad, Juventud, Climaterio, Medicina, Entrenamientos, Respiración, Sueños, Lawen, Prácticas Espirituales, Plantas.</p>
-            <p><b>🧠 Mente:</b> Hábitos, Disciplina, Estudio, Horario, Cuentos, Crianza, Adolescencia, Memoria, Kimün, Inglés, Gratitud, Instrumentos, Autoconocimiento, Psicología, Neurodiversidad, Eneagrama y <b>Métodos</b>.</p>
+            <p><b>🧠 Mente:</b> Hábitos, Disciplina, Estudio, Horario, Cuentos, Crianza, Adolescencia, Memoria, Kimün, Inglés, Gratitud, Instrumentos, Autoconocimiento, Psicología, Neurodiversidad, Eneagrama, <b>🌟 Fortalezas VIA</b> y <b>Métodos</b>.</p>
             <p><b>🪞 Autoconocimiento:</b> Sombra (Jung), TCC, Gestalt, Tipologías, Journaling, Examen estoico, Mayéutica, Mindfulness, Atma Vichara, Vipassana, Cuerpo y Arte — cada una con guía básica de 5' + registro privado. Más Psicología, Neurodiversidad (AQ-10/ASRS-6, plan de acceso) y Etapas: Adultez, Vejez Sabia.</p>
             <p><b>🍽️ Vida + 🚨 Emergencias + 🛠️ Herramientas:</b> Comidas, Compras, Finanzas, Tareas Hogar, Plantas, Bodega · Primeros Auxilios, Cuidado Animal, Violencia, Evacuación Tsunami, Red Comunitaria (Meshtastic/radio) · Conversión, Electricidad, Leña, Mecánica, Tiempo, Recordatorios, Respaldo, PDF.</p>
           </div>
@@ -2234,7 +2246,7 @@
            <h4>🧠 Aprender, Crear y Jugar · 🪞 Interior y Linaje</h4>
               <p><b>🧠 Estudio e Idiomas:</b> 🧠 Estudio (recuperación, espaciada, Feynman, mnemotecnias + lectura veloz) · 🧩 Memoria (Palacio Loci, Pares, secuencia, simon, Schulte) · 🗣️ Kimün Mapuzugun (palabra del día, números, quiz con racha) · Ingles A1→C1 · 🎶 Instrumentos (guitarra 3 niveles + ukelele, flauta/quena, teclado, cajón, canto + afinador, metrónomo, bitácora).</p>
               <p><b>🧠 Juegos:</b> ♟️ Ajedrez + 🔢 Sudoku. <b>🧒 Infancias y juventudes:</b> 📖 Cuentos (13 lunares, editables) · 🧒 Crianza (0-12) · 🌱 Adolescencia (10-19: cuerpo, mente, estudio+Holland, seguridad, mi espacio).</p>
-              <p><b>🪞 Interior:</b> 🪞 Autoconocimiento (12 guías) · 🧠 Psicología · 🔺 Eneagrama · 📿 Métodos (20 fichas) · 🌈 Neurodiversidad (guía, 8 perfiles, 8 apoyos, tests AQ-10/ASRS-6, tarjeta de acceso — educativo, no diagnostica) · 🔁 Recapitulación · 🕉️ Prácticas Espirituales (temporizador + registro) · 🕊️ Duelo · 📜 Fenología (almanaque vivo de Penco + 📜 en el calendario). <b>🌳 Familia:</b> 🌳 Árbol Genealógico · 🗣️ Voz de los Abuelos (grabador + desbloqueo por luna) · 🏠 Adultez · 🦉 Vejez Sabia.</p>
+              <p><b>🪞 Interior:</b> 🪞 Autoconocimiento (12 guías) · 🧠 Psicología · 🔺 Eneagrama · 🌟 Fortalezas VIA (6 virtudes × 24 fortalezas + test + firma) · 🌸 Ikigai · 📿 Métodos (20 fichas) · 🌈 Neurodiversidad (guía, 8 perfiles, 8 apoyos, tests AQ-10/ASRS-6, tarjeta de acceso — educativo, no diagnostica) · 🔁 Recapitulación · 🕉️ Prácticas Espirituales (temporizador + registro) · 🕊️ Duelo · 📜 Fenología (almanaque vivo de Penco + 📜 en el calendario). <b>🌳 Familia:</b> 🌳 Árbol Genealógico · 🗣️ Voz de los Abuelos (grabador + desbloqueo por luna) · 🏠 Adultez · 🦉 Vejez Sabia.</p>
          </div>
           <div class="help-card" style="border-color:var(--gold)">
               <h4>🪞 Autoconocimiento — 12 guías básicas</h4>
@@ -3965,7 +3977,6 @@
         <button type="button" id="tabComunaSectores" class="btn" style="width:auto">🏘️ Sectores</button>
         <button type="button" id="tabComunaHistoria" class="btn" style="width:auto">📜 Historia</button>
         <button type="button" id="tabComunaTalleres" class="btn" style="width:auto">🎨 Talleres</button>
-        <button type="button" id="tabComunaIglesias" class="btn" style="width:auto">⛪ Iglesias</button>
       </div>
       <div id="comunaEventosPanel">
       <label class="check-row" style="margin:8px 0"><input type="checkbox" id="comunaShowCal"> Mostrar eventos de Penco en el calendario (iconos 🎉 por día)</label>
@@ -4005,7 +4016,6 @@
       <div id="comunaSectoresPanel" class="hidden" style="margin-top:10px"></div>
       <div id="comunaHistoriaPanel" class="hidden" style="margin-top:10px"></div>
       <div id="comunaTalleresPanel" class="hidden" style="margin-top:10px"></div>
-      <div id="comunaIglesiasPanel" class="hidden" style="margin-top:10px"></div>
       <div class="dlg-actions"><button type="button" id="comunaClose" class="btn">Cerrar</button></div>
     </form>
   </dialog>
@@ -4031,6 +4041,18 @@
       <p class="muted" style="line-height:1.5">Emergencia <b>132</b>, 4 compañías, historia desde 1927 y prevención en casa. Agenda mantenciones con <b>📌</b> y marca tu avance en <b>⭐ Mi hogar</b>. Queda <b>privado y local</b> por usuario.</p>
       <div id="bomberosPanel" style="margin-top:10px"></div>
       <div class="dlg-actions"><button type="button" id="bomberosClose" class="btn">Cerrar</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="iglesiasDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">⛪ Iglesias de Penco</h3>
+        <button type="button" id="iglesiasCloseTop" class="btn btn-icon" title="Cerrar" aria-label="Cerrar">✕</button>
+      </div>
+      <p class="muted" style="line-height:1.5">Parroquias, capillas, monasterio y red evangélica de Penco, con <b>📜 Historia de las iglesias</b>. Lleva misas y cultos al calendario con <b>📌</b>. Queda <b>privado y local</b> por usuario.</p>
+      <div id="iglesiasPanel" style="margin-top:10px"></div>
+      <div class="dlg-actions"><button type="button" id="iglesiasClose" class="btn">Cerrar</button></div>
     </form>
   </dialog>
 
@@ -4074,70 +4096,115 @@
   <script defer src="data.js?v=8"></script>
   <script defer src="territorio.js?v=1"></script>
   <script defer src="frases.js?v=8"></script>
-  <script defer src="cal.js?v=8"></script>
-  <script defer src="renderer.js?v=13"></script>
+  <script defer src="cal.js?v=9"></script>
+  <script defer src="renderer.js?v=14"></script>
   <script defer src="nuevos-modulos.js?v=9"></script>
-  <script defer src="linaje-modulos.js?v=1"></script>
-  <script defer src="eneagrama-modulo.js?v=1"></script>
-  <script defer src="ikigai-modulo.js?v=1"></script>
-  <script defer src="cuarto-camino-modulo.js?v=1"></script>
-  <script defer src="hooponopono-modulo.js?v=1"></script>
-  <script defer src="metodo-silva-modulo.js?v=1"></script>
-  <script defer src="carta-astral.js?v=1"></script>
-  <script defer src="voz-abuelos.js?v=1"></script>
-  <script defer src="penco-guia.js?v=1"></script>
-  <script defer src="bosque-historia.js?v=1"></script>
-  <script defer src="bosque-semillero.js?v=1"></script>
-  <script defer src="aves-historia.js?v=1"></script>
-  <script defer src="pesca-historia.js?v=1"></script>
-   <script defer src="flora.js?v=1"></script>
-   <script defer src="buen-vivir-modulo.js?v=1"></script>
-  <script defer src="anfibios-modulo.js?v=1"></script>
-  <script defer src="semillero-guias.js?v=1"></script>
-  <script defer src="ajedrez-modulo.js?v=1"></script>
-  <script defer src="matematicas-modulo.js?v=1"></script>
-  <script defer src="sudoku-modulo.js?v=1"></script>
-  <script defer src="crucigrama-modulo.js?v=1"></script>
-  <script defer src="sopa-letras-modulo.js?v=1"></script>
-  <script defer src="info-clave.js?v=1"></script>
-  <script defer src="psicologia-modulo.js?v=1"></script>
-  <script defer src="adicciones-modulo.js?v=2"></script>
-  <script defer src="retos-21-modulo.js?v=1"></script>
-  <script defer src="neurodiversidad-modulo.js?v=1"></script>
-  <script defer src="kin-maya-modulo.js?v=3"></script>
-  <script defer src="tarot-modulo.js?v=1"></script>
-  <script defer src="oraculo-modulo.js?v=1"></script>
-  <script defer src="adolescencia-modulo.js?v=1"></script>
-  <script defer src="etapas-vida-modulo.js?v=1"></script>
-  <script defer src="electrocultura-modulo.js?v=1"></script>
-  <script defer src="red-comunitaria-modulo.js?v=1"></script>
-  <script defer src="convivencia-vecinal-modulo.js?v=1"></script>
-  <script defer src="ciberseguridad-modulo.js?v=1"></script>
-  <script defer src="hidroponia-modulo.js?v=2"></script>
-  <script defer src="huerta-modulo.js?v=1"></script>
-  <script defer src="mecanica-modulo.js?v=1"></script>
-  <script defer src="domotica-modulo.js?v=1"></script>
-  <script defer src="plantas-modulo.js?v=1"></script>
-  <script defer src="hogar-despensa-closet-modulo.js?v=1"></script>
-  <script defer src="hogar-herramientas-modulo.js?v=1"></script>
-  <script defer src="hogar-corral-movilidad-escolar-modulo.js?v=1"></script>
-  <script defer src="hogar-biblioteca-modulo.js?v=1"></script>
-  <script defer src="feng-shui-modulo.js?v=1"></script>
-  <script defer src="cuerpo-luna-rituales-fenologia-modulo.js?v=1"></script>
-  <script defer src="natacion-modulo.js?v=1"></script>
-  <script defer src="talleres-penco.js?v=1"></script>
-  <script defer src="iglesias-penco.js?v=1"></script>
-  <script defer src="municipalidad-penco.js?v=1"></script>
-  <script defer src="bomberos-penco.js?v=1"></script>
-  <script defer src="apoyo-emergencia.js?v=1"></script>
-  <script defer src="actores-territorio.js?v=1"></script>
-  <script defer src="negocios-penco.js?v=2"></script>
-  <script defer src="moneda-social.js?v=1"></script>
-  <script defer src="territorio-fase2.js?v=1"></script>
-  <script defer src="qrcode-lib.js?v=1"></script>
-  <script defer src="jsqr-lib.js?v=1"></script>
-  <script defer src="qr-codec.js?v=1"></script>
-  <script defer src="qr-sync-modulo.js?v=1"></script>
+  <!-- Modulos no criticos: carga diferida tras la primera pintura.
+       El calendario abre solo con el nucleo (8 scripts); el resto (guias,
+       juegos, comunidad, QR...) se inyecta en segundo plano, en el mismo
+       orden, cuando el navegador esta desocupado. Recorta ~60% del JS inicial. -->
+  <script>
+    (function () {
+      var MODS = [
+        'linaje-modulos.js?v=1',
+        'eneagrama-modulo.js?v=1',
+        'ikigai-modulo.js?v=1',
+        'fortalezas-via-modulo.js?v=2',
+        'cuarto-camino-modulo.js?v=1',
+        'hooponopono-modulo.js?v=1',
+        'metodo-silva-modulo.js?v=1',
+        'carta-astral.js?v=1',
+        'voz-abuelos.js?v=1',
+        'penco-guia.js?v=1',
+        'bosque-historia.js?v=1',
+        'bosque-semillero.js?v=1',
+        'aves-historia.js?v=1',
+        'pesca-historia.js?v=1',
+        'flora.js?v=1',
+        'buen-vivir-modulo.js?v=1',
+        'anfibios-modulo.js?v=1',
+        'semillero-guias.js?v=1',
+        'ajedrez-modulo.js?v=1',
+        'matematicas-modulo.js?v=1',
+        'sudoku-modulo.js?v=1',
+        'crucigrama-modulo.js?v=1',
+        'sopa-letras-modulo.js?v=1',
+        'info-clave.js?v=1',
+        'psicologia-modulo.js?v=1',
+        'adicciones-modulo.js?v=2',
+        'retos-21-modulo.js?v=1',
+        'neurodiversidad-modulo.js?v=1',
+        'kin-maya-modulo.js?v=3',
+        'tarot-modulo.js?v=1',
+        'oraculo-modulo.js?v=1',
+        'adolescencia-modulo.js?v=1',
+        'etapas-vida-modulo.js?v=1',
+        'electrocultura-modulo.js?v=1',
+        'red-comunitaria-modulo.js?v=1',
+        'convivencia-vecinal-modulo.js?v=1',
+        'ciberseguridad-modulo.js?v=1',
+        'hidroponia-modulo.js?v=2',
+        'huerta-modulo.js?v=1',
+        'mecanica-modulo.js?v=1',
+        'domotica-modulo.js?v=1',
+        'electronica-modulo.js?v=1',
+        'plantas-modulo.js?v=1',
+        'hogar-despensa-closet-modulo.js?v=1',
+        'hogar-herramientas-modulo.js?v=1',
+        'hogar-corral-movilidad-escolar-modulo.js?v=1',
+        'hogar-biblioteca-modulo.js?v=1',
+        'feng-shui-modulo.js?v=1',
+        'cuerpo-luna-rituales-fenologia-modulo.js?v=1',
+        'natacion-modulo.js?v=1',
+        'talleres-penco.js?v=1',
+        'iglesias-penco.js?v=1',
+        'municipalidad-penco.js?v=1',
+        'bomberos-penco.js?v=1',
+        'apoyo-emergencia.js?v=1',
+        'actores-territorio.js?v=1',
+        'negocios-penco.js?v=2',
+        'moneda-social.js?v=1',
+        'territorio-fase2.js?v=1',
+        'qrcode-lib.js?v=1',
+        'jsqr-lib.js?v=1',
+        'qr-codec.js?v=1',
+        'qr-sync-modulo.js?v=1'
+      ];
+      var started = false;
+      function seq(i) {
+        if (i >= MODS.length) return;
+        var s = document.createElement('script');
+        s.src = MODS[i];
+        s.async = false;
+        s.onload = function () { seq(i + 1); };
+        s.onerror = function () { seq(i + 1); };
+        try { document.body.appendChild(s); }
+        catch (e) { setTimeout(function () { seq(i + 1); }, 300); }
+      }
+      function kick() { if (started) return; started = true; seq(0); }
+      try {
+        if ('requestIdleCallback' in window) requestIdleCallback(kick, { timeout: 2500 });
+        else if (document.readyState === 'complete') setTimeout(kick, 600);
+        else window.addEventListener('load', function () { setTimeout(kick, 600); });
+      } catch (e) {
+        window.addEventListener('load', function () { setTimeout(kick, 600); });
+      }
+      // Red de seguridad: si el nucleo pinto el calendario pero no oculto el
+      // aviso (falla parcial), no dejar el spinner eterno: a los 15s, si ya
+      // hay dias dibujados, se oculta igual.
+      setTimeout(function () {
+        try {
+          if (window.__calReady) return;
+          var g = document.getElementById('grid');
+          var sp = document.getElementById('bootSplash');
+          if (sp && g && g.children.length) {
+            sp.classList.add('done');
+            setTimeout(function () { try { sp.remove(); } catch (e2) {} }, 400);
+          }
+        } catch (e) {}
+      }, 15000);
+    })();
+  </script>
   <script>
     // Limpieza file:// (cinturón y tirantes): si un SW de una versión anterior
     // quedó registrado, desregistrarlo y borrar cachés cal13, luego recargar.

@@ -1,7 +1,9 @@
 /* ============================================================
    GUIA + HISTORIA DE PENCO — Calendario 13 Lunas (Penco · Bio-Bio)
    Apartado: Territorio > Penco (btnComuna -> comunaDialog),
-   pestanas: Eventos | Guia de Penco | Sectores | Historia | Talleres | Iglesias.
+   pestanas: Eventos | Guia de Penco | Sectores | Historia | Talleres.
+   (⛪ Iglesias es ahora apartado propio: btnIglesias -> iglesiasDialog,
+    ver iglesias-penco.js — ya no es pestaña de comunaDialog.)
    - Guia de Penco: marco, limites, lugares de interes y
      sectores de la comuna (sin historia: ver pestanas Sectores/Historia).
    - Sectores: cada sector con su historia conocida + hitos, y
@@ -464,25 +466,22 @@ function renderSectores() {
 var guiaTab = 'eventos';
 function switchGuiaTab(t) {
   guiaTab = t;
-  var tE = $('tabComunaEventos'), tG = $('tabComunaGuia'), tS = $('tabComunaSectores'), tH = $('tabComunaHistoria'), tT = $('tabComunaTalleres'), tI = $('tabComunaIglesias');
+  var tE = $('tabComunaEventos'), tG = $('tabComunaGuia'), tS = $('tabComunaSectores'), tH = $('tabComunaHistoria'), tT = $('tabComunaTalleres');
   if (tE) tE.classList.toggle('btn-accent', t === 'eventos');
   if (tG) tG.classList.toggle('btn-accent', t === 'guia');
   if (tS) tS.classList.toggle('btn-accent', t === 'sectores');
   if (tH) tH.classList.toggle('btn-accent', t === 'historia');
   if (tT) tT.classList.toggle('btn-accent', t === 'talleres');
-  if (tI) tI.classList.toggle('btn-accent', t === 'iglesias');
-  var pE = $('comunaEventosPanel'), pG = $('comunaGuiaPanel'), pS = $('comunaSectoresPanel'), pH = $('comunaHistoriaPanel'), pT = $('comunaTalleresPanel'), pI = $('comunaIglesiasPanel');
+  var pE = $('comunaEventosPanel'), pG = $('comunaGuiaPanel'), pS = $('comunaSectoresPanel'), pH = $('comunaHistoriaPanel'), pT = $('comunaTalleresPanel');
   if (pE) pE.classList.toggle('hidden', t !== 'eventos');
   if (pG) pG.classList.toggle('hidden', t !== 'guia');
   if (pS) pS.classList.toggle('hidden', t !== 'sectores');
   if (pH) pH.classList.toggle('hidden', t !== 'historia');
   if (pT) pT.classList.toggle('hidden', t !== 'talleres');
-  if (pI) pI.classList.toggle('hidden', t !== 'iglesias');
   if (t === 'guia') renderGuiaPenco();
   if (t === 'sectores') renderSectores();
   if (t === 'historia') renderHistoriaPenco();
   if (t === 'talleres' && window.TalleresPenco && typeof window.TalleresPenco.render === 'function') { try { window.TalleresPenco.render(); } catch (e) {} }
-  if (t === 'iglesias' && window.IglesiasPenco && typeof window.IglesiasPenco.render === 'function') { try { window.IglesiasPenco.render(); } catch (e2) {} }
 }
 
 function setupGuiaPenco() {
@@ -496,13 +495,12 @@ function setupGuiaPenco() {
     if (btn && btn.dataset && btn.dataset.keywords && btn.dataset.keywords.indexOf('historia') < 0)
       btn.dataset.keywords += ' historia guia sectores barrios lirquen cosmito cerro verde primer agua florida tome talcahuano concepcion limite barrio crav playa negra rocuant andalien damero fundacion valdivia fanaloza carbon ferrocarril 1751 1843 villa planchada lautaro quiriquina cretacico plesiosaurio mosasaurio amonite gondwana arcaico conchal bellavista pitren vergel lafkenche carapenco pencana relato hito memoria vecino fiche sector';
   } catch (e) {}
-  var tE = $('tabComunaEventos'), tG = $('tabComunaGuia'), tS = $('tabComunaSectores'), tH = $('tabComunaHistoria'), tT = $('tabComunaTalleres'), tI = $('tabComunaIglesias');
+  var tE = $('tabComunaEventos'), tG = $('tabComunaGuia'), tS = $('tabComunaSectores'), tH = $('tabComunaHistoria'), tT = $('tabComunaTalleres');
   if (tE && !tE.dataset.w) { tE.dataset.w = '1'; tE.onclick = function () { switchGuiaTab('eventos'); }; }
   if (tG && !tG.dataset.w) { tG.dataset.w = '1'; tG.onclick = function () { switchGuiaTab('guia'); }; }
   if (tS && !tS.dataset.w) { tS.dataset.w = '1'; tS.onclick = function () { switchGuiaTab('sectores'); }; }
   if (tH && !tH.dataset.w) { tH.dataset.w = '1'; tH.onclick = function () { switchGuiaTab('historia'); }; }
   if (tT && !tT.dataset.w) { tT.dataset.w = '1'; tT.onclick = function () { switchGuiaTab('talleres'); }; }
-  if (tI && !tI.dataset.w) { tI.dataset.w = '1'; tI.onclick = function () { switchGuiaTab('iglesias'); }; }
   /* al abrir, volver a la pestana de eventos (comportamiento original) */
   var b = $('btnComuna');
   if (b && !b.dataset.guiaW) {
@@ -524,7 +522,7 @@ try {
   });
 } catch (e) { window.PencoGuia.data = GUIA_PENCO; window.PencoGuia.sectores = HISTORIA_SECTORES; window.PencoGuia.historia = HISTORIA_PENCO; }
 /* Re-render cuando el territorio JSON termina de cargar */
-try { document.addEventListener('territorio:listo', function () { try { renderGuiaPenco(); } catch (e) {} try { renderSectores(); } catch (e2) {} try { renderHistoriaPenco(); } catch (e3) {} try { if (window.IglesiasPenco) window.IglesiasPenco.render(); } catch (e5) {} }); } catch (e4) {}
+try { document.addEventListener('territorio:listo', function () { try { renderGuiaPenco(); } catch (e) {} try { renderSectores(); } catch (e2) {} try { renderHistoriaPenco(); } catch (e3) {} }); } catch (e4) {}
 setTimeout(setupGuiaPenco, 600);
 
 })();

@@ -335,11 +335,13 @@ function renderContencion(d) {
   }
   var html = '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🧠 Contención · no estás solo/a</h4>' +
     '<p class="muted" style="font-size:11px">' + esc(c.intro || '') + '</p></div>';
-  if ((c.reacciones || []).length && !q) {
-    html += '<div class="menstrual-card"><h4>💛 Reacciones normales ante algo anormal</h4>' +
-      '<p class="muted" style="font-size:11px">Si sientes esto, no significa que estés mal: es tu cuerpo y tu mente procesando. Pasa con el tiempo y el apoyo.</p>' +
-      '<ul style="font-size:11px;margin:2px 0 6px 18px;line-height:1.55">' +
-      c.reacciones.map(function (r) { return '<li>' + esc(r) + '</li>'; }).join('') + '</ul></div>';
+  if (!q || (c.reacciones || []).join(' ').toLowerCase().indexOf(q || '') >= 0 || !q) {
+    if ((c.reacciones || []).length && !q) {
+      html += '<div class="menstrual-card"><h4>💛 Reacciones normales ante algo anormal</h4>' +
+        '<p class="muted" style="font-size:11px">Si sientes esto, no significa que estés mal: es tu cuerpo y tu mente procesando. Pasa con el tiempo y el apoyo.</p>' +
+        '<ul style="font-size:11px;margin:2px 0 6px 18px;line-height:1.55">' +
+        c.reacciones.map(function (r) { return '<li>' + esc(r) + '</li>'; }).join('') + '</ul></div>';
+    }
   }
   if (calma.length) {
     html += '<div class="menstrual-card"><h4>🌿 Para calmarte ahora mismo</h4>' +
