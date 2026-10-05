@@ -1,6 +1,6 @@
 // Service Worker � Calendario 13 Lunas (offline-first, tolerante a versiones ?v=)
 // v46: Adicciones ampliada (plan, autoevaluación, 13 técnicas, gráfico 30 días, logros)
-const CACHE = 'cal13-v46-offline';
+const CACHE = 'cal13-v47-offline';
 
 // Lista completa de archivos que usa index.html (bare + con ?v=).
 // Si se agrega un JS nuevo en index.html, agregarlo aqu� tambi�n (bare y ?v=).
@@ -47,6 +47,8 @@ const CORE = [
   './flora.js?v=1',
   './buen-vivir-modulo.js',
   './buen-vivir-modulo.js?v=1',
+  './anfibios-modulo.js',
+  './anfibios-modulo.js?v=1',
   './cal.js',
   './cal.js?v=8',
   './renderer.js',
@@ -65,6 +67,8 @@ const CORE = [
   './eneagrama-modulo.js?v=1',
   './ikigai-modulo.js',
   './ikigai-modulo.js?v=1',
+  './cuarto-camino-modulo.js',
+  './cuarto-camino-modulo.js?v=1',
   './carta-astral.js',
   './carta-astral.js?v=1',
   './voz-abuelos.js',
@@ -120,6 +124,8 @@ const CORE = [
   './huerta-modulo.js?v=1',
   './mecanica-modulo.js',
   './mecanica-modulo.js?v=1',
+  './domotica-modulo.js',
+  './domotica-modulo.js?v=1',
   './plantas-modulo.js',
   './plantas-modulo.js?v=1',
   './hogar-despensa-closet-modulo.js',

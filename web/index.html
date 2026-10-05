@@ -80,7 +80,7 @@
       <span id="statusMsg"></span>
     </div>
     <footer id="actions">
-      <details class="action-group" open data-group="dia">
+      <details class="action-group" data-group="dia">
         <summary>📅 Mi Día <span class="ag-count"></span></summary>
         <div class="group-btns">
           <span class="sub-label" data-sub="organizar">🗂️ Organizar hoy</span>
@@ -95,7 +95,7 @@
           <button id="btnBreath" class="btn" data-sub="registrar" data-keywords="respiracion 478 caja cuadrada ansiedad calma sueño foco energia coherente suspiro diafragma">🌬️ Respiración</button>
         </div>
       </details>
-      <details class="action-group" open data-group="territorio">
+      <details class="action-group" data-group="territorio">
         <summary>🌊 Territorio Penco <span class="ag-count"></span></summary>
         <div class="group-btns">
           <span class="sub-label" data-sub="mar">⚓ Costa y Mar</span>
@@ -108,6 +108,7 @@
           <button id="btnCompost" class="btn" data-sub="tierra" data-keywords="compost suelo humus vermicompostera bocashi tierra ph arcilla abono menguante">🪱 Compost & Suelo</button>
           <button id="btnLawen" class="btn" data-sub="tierra" data-keywords="lawen herbario hierba matico boldo maqui canelo bailahuen manzanilla medicina natural remedio planta">🌿 Lawen Herbario</button>
           <button id="btnBirds" class="btn" data-sub="tierra" data-keywords="aves pajaro observacion humedal rocuant bosque nativo chucao tenca diuca historia avistadas">🦅 Aves</button>
+          <button id="btnAnfibios" class="btn" data-sub="tierra" data-keywords="anfibios rana sapo ranita darwin cuatro ojos canto coro nocturno renacuajo humedal estero quebrada charco observacion rana chilena esmeralda invasora africana xenopus">🐸 Anfibios</button>
           <span class="sub-label" data-sub="cielo">🌙 Cielo y Ritmo</span>
           <button id="btnWeather" class="btn" data-sub="cielo" data-keywords="clima tiempo viento lluvia temperatura aire calidad humo ventilacion sol uv radiacion playa exposicion">🌤️ Clima</button>
           <button id="btnAstro" class="btn" data-sub="cielo" data-keywords="astro astronomia eclipse meteoros superluna carta natal astral zodiaco horoscopo signo ascendente">🔭 Astro</button>
@@ -121,7 +122,7 @@
           <button id="btnBomberos" class="btn" data-sub="penco" data-keywords="bomberos 132 incendio fuego emergencia primera segunda tercera cuarta compañia cuartel lirquen cosmito voluntario brigada detector extintor deshollinar plan escape forestal grifo historia 1927">🚒 Bomberos</button>
         </div>
       </details>
-      <details class="action-group" open data-group="cuerpo">
+      <details class="action-group" data-group="cuerpo">
         <summary>💚 Cuerpo &amp; Salud <span class="ag-count"></span></summary>
         <div class="group-btns">
           <span class="sub-label" data-sub="ciclos">🌸 Ciclos</span>
@@ -155,6 +156,7 @@
           <button id="btnEneagrama" class="btn" data-sub="interior" data-keywords="eneagrama eneatipo personalidad test autoconocimiento reformador ayudador triunfador artista investigador leal entusiasta desafiador pacificador alas flechas subtipo instinto virtud pasion">🔺 Eneagrama</button>
           <button id="btnIkigai" class="btn" data-sub="interior" data-keywords="ikigai proposito sentido vida razon ser japones okinawa diagrama venn pasion mision vocacion profesion brujula amor talento mundo pago microaccion flujo moai pilares reglas">🌸 Ikigai</button>
           <button id="btnMetodos" class="btn" data-sub="interior" data-keywords="metodos visiones estoicismo tao tolteca budismo yogananda gurdjieff grinberg jung freud psicoanalisis frankl logoterapia sentido zen zazen patanjali ashtanga grof transpersonal hermetismo kybalion cuatro acuerdos wu wei kriya cuarto camino sintergia arquetipos filosofia espiritualidad conny mendez metafisica decreto ikigai proposito gnosis interior reiki usui energia manos gokai hoponopono ho'oponopono hawaii perdon gracias te amo limpieza guerrero mito castaneda don juan ixtlan genaro camino guerrero hombre conocimiento modo guerrero">📿 Métodos</button>
+          <button id="btnCuartoCamino" class="btn" data-sub="interior" data-keywords="cuarto camino gurdjieff ouspensky recuerdo de si auto observacion identificacion consideracion amortiguadores ley de tres ley de siete octavas eneagrama stop despertar sueno esencia personalidad centros hombre numero 4 escuela presencia atencion">🛤️ Cuarto Camino</button>
           <button id="btnRecap" class="btn" data-sub="interior" data-keywords="recapitulacion recapitular tolteca castaneda repaso vida perdon soltar energia ensueño acecho inventario liberacion">🔁 Recapitulación</button>
           <button id="btnEspiritual" class="btn" data-sub="interior" data-keywords="practicas espirituales sol amanecer atardecer agua solarizada ducha fria grounding earthing luz roja noche ritual meditacion sungazing">🕉️ Prácticas Espirituales</button>
           <button id="btnKinMaya" class="btn" data-sub="interior" data-keywords="kin maya tzolkin sello solar tono galactico onda encantada 260 dias calendario sagrado sincronizacion">🌟 Kin Maya</button>
@@ -3510,6 +3512,7 @@
             <label class="check-row"><input type="checkbox" data-btn="btnBosque"> 🌳 Bosque Nativo</label>
             <label class="check-row"><input type="checkbox" data-btn="btnFlora"> 🌸 Flora</label>
             <label class="check-row"><input type="checkbox" data-btn="btnBirds"> 🦅 Aves</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnAnfibios"> 🐸 Anfibios</label>
             <label class="check-row"><input type="checkbox" data-btn="btnLawen"> 🌿 Lawen Herbario</label>
             <label class="check-row"><input type="checkbox" data-btn="btnElectrocultura"> ⚡ Electrocultura</label>
             <label class="check-row"><input type="checkbox" data-btn="btnWeather"> 🌤️ Clima</label>
@@ -4074,6 +4077,7 @@
   <script defer src="linaje-modulos.js?v=1"></script>
   <script defer src="eneagrama-modulo.js?v=1"></script>
   <script defer src="ikigai-modulo.js?v=1"></script>
+  <script defer src="cuarto-camino-modulo.js?v=1"></script>
   <script defer src="carta-astral.js?v=1"></script>
   <script defer src="voz-abuelos.js?v=1"></script>
   <script defer src="penco-guia.js?v=1"></script>
@@ -4083,6 +4087,7 @@
   <script defer src="pesca-historia.js?v=1"></script>
    <script defer src="flora.js?v=1"></script>
    <script defer src="buen-vivir-modulo.js?v=1"></script>
+  <script defer src="anfibios-modulo.js?v=1"></script>
   <script defer src="semillero-guias.js?v=1"></script>
   <script defer src="ajedrez-modulo.js?v=1"></script>
   <script defer src="sudoku-modulo.js?v=1"></script>
@@ -4104,6 +4109,7 @@
   <script defer src="hidroponia-modulo.js?v=2"></script>
   <script defer src="huerta-modulo.js?v=1"></script>
   <script defer src="mecanica-modulo.js?v=1"></script>
+  <script defer src="domotica-modulo.js?v=1"></script>
   <script defer src="plantas-modulo.js?v=1"></script>
   <script defer src="hogar-despensa-closet-modulo.js?v=1"></script>
   <script defer src="hogar-herramientas-modulo.js?v=1"></script>
