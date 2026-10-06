@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -173,7 +173,8 @@
           <button id="btnSilva" class="btn" data-sub="interior" data-keywords="silva metodo silva jose silva ultramind mind control alfa theta beta 321 pantalla mental espejo mente tres dedos vaso agua despertar laboratorio asesores programar visualizar concentracion memoria examen entrevista dormir suenos">🧠 Método Silva</button>
           <button id="btnGrabovoi" class="btn" data-sub="interior" data-keywords="grabovoi graboboi grigori gravoboi secuencias numericas pilotaje realidad esfera plateada concentracion numeros foco norma 741 dinero abundancia armonia meditacion">🌌 Grabovoi</button>
           <button id="btnRecap" class="btn" data-sub="interior" data-keywords="recapitulacion recapitular tolteca castaneda repaso vida perdon soltar energia ensueño acecho inventario liberacion">🔁 Recapitulación</button>
-          <button id="btnTolteca" class="btn" data-sub="interior" data-keywords="tolteca toltecas castaneda don juan cuatro acuerdos acecho ensueno intento recapitulacion guerrero">🦅 Prácticas Toltecas</button>
+          <button id="btnTolteca" class="btn" data-sub="interior" data-keywords="tolteca toltecas castaneda don juan ixtlan cuatro acuerdos ruiz acecho ensueno intento recapitulacion no hacer punto encaje tonal nagual dialogo interno silencio impecabilidad muerte consejera tirano guerrero">🦅 Prácticas Toltecas</button>
+          <button id="btnTao" class="btn" data-sub="interior" data-keywords="tao lao tse laozi zhuangzi tao te ching yin yang wu wei te pu tres tesoros agua bambu fluir soltar control respiracion 4-6 te consciente no hacer fama contento equilibrio">☯️ Tao · Fluir sin forzar</button>
           <button id="btnEspiritual" class="btn" data-sub="interior" data-keywords="practicas espirituales sol amanecer atardecer agua solarizada ducha fria grounding earthing luz roja noche ritual meditacion sungazing">🕉️ Prácticas Espirituales</button>
           <button id="btnKinMaya" class="btn" data-sub="interior" data-keywords="kin maya tzolkin sello solar tono galactico onda encantada 260 dias calendario sagrado sincronizacion">🌟 Kin Maya</button>
           <button id="btnTarot" class="btn" data-sub="interior" data-keywords="tarot cartas arcanos mayores menores tirada lectura cruz consejo pasado presente futuro sino espejo rider waite">🔮 Tarot</button>
@@ -183,6 +184,7 @@
           <span class="sub-label" data-sub="familia">🌳 Familia</span>
           <button id="btnArbolFull" class="btn" data-sub="familia" data-keywords="arbol genealogico familia ancestro linaje kupalme bisabuelo abuelo padre madre hijo honra generacion memoria">🌳 Árbol Genealógico</button>
           <button id="btnVozAbuelos" class="btn" data-sub="familia" data-keywords="voz abuelos abuela abuelo sabiduria receta historia consejo grabar audio testimonio legado familia territorio cuento transmitir oral">🗣️ Voz de los Abuelos</button>
+          <button id="btnConstelaciones" class="btn" data-sub="familia" data-keywords="constelaciones familiares hellinger sistema familiar ordenes amor pertenencia jerarquia equilibrio asentir genograma parentificacion lealtad honrar ancestros devolucion frase sanadora lugar hijo exclusion">🌳 Constelaciones Familiares</button>
         </div>
       </details>
       <details class="action-group" data-group="hogar">
@@ -575,58 +577,122 @@
   <dialog id="menstrualDialog">
     <form method="dialog">
       <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
-        <h3 style="margin:0;color:var(--accent)">🌸 Ciclo menstrual — 13 lunas x 28 días</h3>
+        <h3 style="margin:0;color:var(--accent)">🌸 Ciclo — cuerpo · luna · ritmo</h3>
         <button type="button" id="menstrualCloseTop" class="btn btn-icon" title="Cerrar" aria-label="Cerrar">✕</button>
       </div>
-      <p class="muted" style="line-height:1.5">El calendario de 13 lunas (364 días = 13 × 28) resuena con el ciclo promedio de 28 días. Esta sección honra el vínculo cuerpo–luna con registro <b>privado y local</b> — nada sale de este dispositivo. No es consejo médico; si tienes dudas consulta a tu matrona/profesional.</p>
-      <div class="menstrual-grid">
-        <div class="menstrual-card">
-          <h4>⚙️ Configuración</h4>
-          <div class="conv-row">
-            <label>Duración ciclo (días) <input type="number" id="mensCycleLen" min="20" max="45" value="28" style="width:90px"></label>
-            <label>Duración sangrado (días) <input type="number" id="mensPeriodLen" min="1" max="10" value="5" style="width:90px"></label>
+      <p class="muted" style="line-height:1.5">13 lunas × 28 días = 364 días. Tu ciclo promedio suele resonar con la luna. Registro <b>privado y local</b> — nada sale de este dispositivo. No es consejo médico; ante dudas consulta a tu matrona/profesional.</p>
+      <div id="mensTodayBanner" class="mens-today-banner"></div>
+      <div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">
+        <button type="button" id="tabMensResumen" class="btn btn-accent" style="width:auto">🌸 Resumen</button>
+        <button type="button" id="tabMensRegistro" class="btn" style="width:auto">📝 Registro</button>
+        <button type="button" id="tabMensHormonas" class="btn" style="width:auto">🧬 Hormonas</button>
+        <button type="button" id="tabMensHistorial" class="btn" style="width:auto">📜 Historial</button>
+        <button type="button" id="tabMensGuia" class="btn" style="width:auto">📚 Guía</button>
+      </div>
+      <div id="mensPanelResumen">
+        <div class="menstrual-grid">
+          <div class="menstrual-card">
+            <h4>⚙️ Tu ritmo</h4>
+            <div class="conv-row">
+              <label>Duración ciclo (días) <input type="number" id="mensCycleLen" min="20" max="45" value="28" style="width:90px"></label>
+              <label>Duración sangrado (días) <input type="number" id="mensPeriodLen" min="1" max="10" value="5" style="width:90px"></label>
+            </div>
+            <label class="check-row"><input type="checkbox" id="mensAutoLen" checked> Calcular promedio automático con mi historial</label>
+            <label class="check-row"><input type="checkbox" id="mensShowCal"> Mostrar predicción en calendario</label>
+            <label class="check-row"><input type="checkbox" id="mensNotify"> Avisar 1 día antes (notificación suave)</label>
+            <div id="mensStatsBox" class="mens-stats"></div>
           </div>
-          <label class="check-row"><input type="checkbox" id="mensShowCal"> Mostrar predicción en calendario</label>
-          <label class="check-row"><input type="checkbox" id="mensNotify"> Avisar 1 día antes (notificación suave)</label>
+          <div id="mensPredictBox" class="menstrual-card menstrual-predict"></div>
+        </div>
+        <div id="mensLunaBox" class="menstrual-card" style="margin-top:10px"></div>
+        <div id="mensPhaseBox" class="menstrual-card" style="margin-top:10px"></div>
+      </div>
+      <div id="mensPanelRegistro" class="hidden">
+        <div class="menstrual-card">
+          <h4>📝 Registrar inicio + cómo estoy</h4>
           <div class="conv-row" style="margin-top:8px">
-            <label>Último inicio <input type="date" id="mensLastDate"></label>
+            <label>Fecha inicio <input type="date" id="mensLastDate"></label>
             <button type="button" id="mensAddLast" class="btn" style="width:auto">+ Registrar fecha</button>
           </div>
           <div class="dlg-actions" style="justify-content:flex-start;margin-top:8px">
             <button type="button" id="mensAddToday" class="btn btn-accent" style="width:auto">◉ Registrar hoy como inicio</button>
           </div>
+          <div class="mens-sympt-grid">
+            <label>🩸 Flujo
+              <select id="mensFlow">
+                <option value="">—</option>
+                <option value="manchado">💧 Manchado</option>
+                <option value="ligero">🩸 Ligero</option>
+                <option value="moderado">🩸🩸 Moderado</option>
+                <option value="abundante">🩸🩸🩸 Abundante</option>
+              </select>
+            </label>
+            <label>😖 Dolor (0-10) <input type="number" id="mensPain" min="0" max="10" value="" placeholder="0-10" style="width:90px"></label>
+            <label>⚡ Energía
+              <select id="mensEnergy">
+                <option value="">—</option>
+                <option value="baja">🔋 Baja</option>
+                <option value="media">🔋🔋 Media</option>
+                <option value="alta">🔋🔋🔋 Alta</option>
+              </select>
+            </label>
+            <label>💗 Ánimo
+              <select id="mensMood">
+                <option value="">—</option>
+                <option value="sensible">🌧️ Sensible</option>
+                <option value="estable">🌤️ Estable</option>
+                <option value="creativa">✨ Creativa</option>
+                <option value="irritable">⛈️ Irritable</option>
+              </select>
+            </label>
+          </div>
+          <label style="margin-top:8px">Notas del día (calambres, antojos, sueño…) <input type="text" id="mensNote" maxlength="140" placeholder="ej: cólico leve, dormí 8h, antojo chocolate"></label>
+          <div class="dlg-actions" style="justify-content:flex-start">
+            <button type="button" id="mensSaveSympt" class="btn" style="width:auto">💾 Guardar cómo estoy hoy</button>
+          </div>
+          <p class="muted" style="font-size:11px;margin:6px 0 0">Los síntomas se guardan por fecha y aparecen en el Historial. Sirven para ver patrones (ej: dolor días 1-2, energía alta días 12-15).</p>
         </div>
-        <div id="mensPredictBox" class="menstrual-card menstrual-predict"></div>
+        <div id="mensSymptTodayBox" class="menstrual-card" style="margin-top:10px"></div>
       </div>
-      <div id="mensLunaBox" class="menstrual-card" style="margin-top:10px"></div>
-      <div class="menstrual-card" style="margin-top:10px">
-        <h4>🧬 Diagrama hormonal (28 días)</h4>
-        <p class="muted" style="font-size:11px">Curvas estimadas de Estrógeno, Progesterona, LH y FSH. Toca un día para ver detalle. No es medición real — solo educativo.</p>
-        <div style="position:relative">
-          <canvas id="hormonalChart" width="480" height="220" role="img" aria-label="Gráfico de energía y ánimo por fase del ciclo" style="width:100%;height:auto;background:var(--panel);border:1px solid var(--line);border-radius:8px"></canvas>
-          <div id="hormonalTooltip" class="hormonal-tooltip hidden"></div>
+      <div id="mensPanelHormonas" class="hidden">
+        <div class="menstrual-card" style="margin-top:0">
+          <h4>🧬 Diagrama hormonal (<span id="mensHormLen">28</span> días)</h4>
+          <p class="muted" style="font-size:11px">Curvas estimadas de Estrógeno, Progesterona, LH y FSH adaptadas a <b>tu duración</b>. Toca un día para ver detalle. No es medición real — solo educativo.</p>
+          <div style="position:relative">
+            <canvas id="hormonalChart" width="480" height="220" role="img" aria-label="Gráfico de energía y ánimo por fase del ciclo" style="width:100%;height:auto;background:var(--panel);border:1px solid var(--line);border-radius:8px"></canvas>
+            <div id="hormonalTooltip" class="hormonal-tooltip hidden"></div>
+          </div>
+          <div class="hormonal-legend">
+            <span><i class="horm-dot" style="background:#e76e8a"></i> Estrógeno</span>
+            <span><i class="horm-dot" style="background:#7ab8ff"></i> Progesterona</span>
+            <span><i class="horm-dot" style="background:#e8c56a"></i> LH (pico ovulatorio)</span>
+            <span><i class="horm-dot" style="background:#8fd694"></i> FSH</span>
+          </div>
+          <div class="conv-row" style="margin-top:8px;align-items:center">
+            <label style="flex:1">Día del ciclo <input type="range" id="hormDaySlider" min="1" max="28" value="1" style="width:100%"></label>
+            <span id="hormDayLabel" class="chip" style="min-width:70px;text-align:center">Día 1</span>
+          </div>
+          <div id="hormDayInfo" class="chip" style="margin-top:6px;display:block;white-space:normal;line-height:1.4"></div>
         </div>
-        <div class="hormonal-legend">
-          <span><i class="horm-dot" style="background:#e76e8a"></i> Estrógeno</span>
-          <span><i class="horm-dot" style="background:#7ab8ff"></i> Progesterona</span>
-          <span><i class="horm-dot" style="background:#e8c56a"></i> LH (pico ovulatorio)</span>
-          <span><i class="horm-dot" style="background:#8fd694"></i> FSH</span>
-        </div>
-        <div class="conv-row" style="margin-top:8px;align-items:center">
-          <label style="flex:1">Día del ciclo <input type="range" id="hormDaySlider" min="1" max="28" value="1" style="width:100%"></label>
-          <span id="hormDayLabel" class="chip" style="min-width:70px;text-align:center">Día 1</span>
-        </div>
-        <div id="hormDayInfo" class="chip" style="margin-top:6px;display:block;white-space:normal;line-height:1.4"></div>
       </div>
-      <details class="menstrual-details"><summary>📚 Las 4 fases — energía y autocuidado</summary>
-        <div class="si-card"><h4>1 · Menstrual (días 1-5) — Invierno interior · Pukem</h4><p>Energía baja, introspección. Descanso, calor, hierro, escritura. Como la luna nueva: vaciamiento.</p></div>
-        <div class="si-card"><h4>2 · Folicular (días 6-14) — Primavera · Pewü</h4><p>Energía ascendente, creatividad y planificación. Ideal para iniciar proyectos, como cuarto creciente.</p></div>
-        <div class="si-card"><h4>3 · Ovulatoria (días 14-16) — Verano · Walüng</h4><p>Pico de energía y comunicación. Ventana fértil. Como luna llena: plenitud y magnetismo.</p></div>
-        <div class="si-card"><h4>4 · Lútea (días 17-28) — Otoño · Rimü</h4><p>Energía hacia adentro, anidar y cerrar. Necesidad de límites. Como luna menguante: cosechar y soltar.</p></div>
-      </details>
-      <div id="mensHistoryBox" class="menstrual-card" style="margin-top:10px"></div>
-      <div class="dlg-actions" style="justify-content:space-between;align-items:center">
-        <button type="button" id="mensClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar historial</button>
+      <div id="mensPanelHistorial" class="hidden">
+        <div id="mensHistoryBox" class="menstrual-card" style="margin-top:0"></div>
+        <div class="dlg-actions" style="justify-content:space-between;align-items:center;margin-top:8px">
+          <button type="button" id="mensExport" class="btn" style="width:auto">📥 Exportar CSV</button>
+          <button type="button" id="mensClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar historial</button>
+        </div>
+      </div>
+      <div id="mensPanelGuia" class="hidden">
+        <details class="menstrual-details" open><summary>📚 Las 4 fases — energía y autocuidado</summary>
+          <div class="si-card"><h4>1 · Menstrual (días 1–sangrado) — Invierno interior · Pukem 🌧️</h4><p>Energía baja, introspección. Descanso, calor local, hierro (lentejas, betarraga, espinaca + vit C), escritura, decir que no. Como la luna nueva: vaciamiento.</p><p class="muted">Señal de consulta: empapas toalla/tampón en ≤1h por varias horas, coágulos &gt;2,5cm, dolor que te bota 2+ días.</p></div>
+          <div class="si-card"><h4>2 · Folicular (post-sangrado → ovulación) — Primavera · Pewü 🌱</h4><p>Energía ascendente, creatividad y planificación. Ideal para iniciar proyectos, fuerza progresiva, ordenar espacios. Como cuarto creciente.</p></div>
+          <div class="si-card"><h4>3 · Ovulatoria (~2 días antes → 1 después del pico) — Verano · Walüng ☀️</h4><p>Pico de energía y comunicación. Ventana fértil. Como luna llena: plenitud. Si buscas embarazo, este es el foco; si lo evitas, cuídate estos días.</p></div>
+          <div class="si-card"><h4>4 · Lútea (post-ovulación → próximo sangrado) — Otoño · Rimü 🍂</h4><p>Progesterona domina y luego cae. Anidar, bajar ritmo, límites, magnesio, dormir temprano. Como menguante: cosechar y soltar.</p><p class="muted">SPM fuerte (ánimo muy bajo, irritabilidad que impide tu vida 3+ ciclos): anótalo y consúltalo.</p></div>
+        </details>
+        <div class="si-card" style="margin-top:10px"><h4>⚠️ ¿Cuándo consultar?</h4><p>Ciclos &lt;21 o &gt;35 días de forma sostenida · ausencia 3+ meses (sin embarazo/lactancia) · sangrado entre periodos frecuente · dolor que no cede con calor/descanso · sangrado muy abundante. Lleva tu Historial + CSV a la consulta: ahorra tiempo y mejora el diagnóstico.</p></div>
+        <div class="si-card"><h4>🌙 Ritual luna-cuerpo (opcional)</h4><p>Luna nueva = intencionar descanso (fase menstrual). Creciente = sembrar proyecto (folicular). Llena = mostrar y celebrar (ovulatoria). Menguante = ordenar y soltar (lútea). No necesitas ser regular para usarlo como brújula.</p></div>
+      </div>
+      <div class="dlg-actions" style="justify-content:flex-end;align-items:center;margin-top:10px">
         <button type="button" id="menstrualClose" class="btn">Cerrar</button>
       </div>
     </form>
@@ -2679,8 +2745,13 @@
         <h3 style="margin:0;color:var(--accent)">🕉️ Prácticas Espirituales — luz, agua, tierra y noche</h3>
         <button type="button" id="espiritualCloseTop" class="btn btn-icon" title="Cerrar" aria-label="Cerrar">✕</button>
       </div>
-      <p class="muted" style="line-height:1.5">Rituales simples de <b>sol, agua, tierra y oscuridad</b> para ordenar energía y sueño en Penco. Elige 1–2, hazlas 7 días seguidos y registra tu racha. No es consejo médico: si tienes condición fotosensible, cardiovascular, embarazo o tomas remedios, consulta antes.</p>
+      <p class="muted" style="line-height:1.5">Rituales simples de <b>sol, agua, tierra, noche e interior</b> para ordenar energía y sueño en Penco. Elige 1–2, hazlas 7 días seguidos y registra tu racha 🔥. No es consejo médico: si tienes condición fotosensible, cardiovascular, embarazo o tomas remedios, consulta antes.</p>
       <div id="espiritualTodayBox" class="menstrual-card" style="border-color:var(--gold)"></div>
+      <div class="esp-filters">
+        <label style="flex:2">🔎 Buscar <input type="search" id="espSearch" placeholder="ej: dormir, gratitud, frío..." maxlength="40"></label>
+        <label>Categoría <select id="espFilterCat"><option value="todas">Todas</option><option value="luz">🌅 Luz</option><option value="agua">💧 Agua</option><option value="tierra">🦶 Tierra</option><option value="noche">🌙 Noche</option><option value="respiro">🌬️ Respiro</option><option value="interior">🕯️ Interior</option></select></label>
+        <label>Nivel <select id="espFilterNivel"><option value="todos">Todos</option><option value="Todos">Todos ★</option><option value="Principiante">Principiante</option><option value="Intermedio">Intermedio</option><option value="Mía">Mías</option></select></label>
+      </div>
       <div class="timer-tabs" style="margin:10px 0;flex-wrap:wrap">
         <button type="button" id="espTabPracticas" class="btn btn-accent" style="width:auto">🕉️ Prácticas</button>
         <button type="button" id="espTabKit" class="btn" style="width:auto">🎒 Kit &amp; Recursos</button>
@@ -2725,6 +2796,7 @@
             <label style="flex:2">Nombre * <input type="text" id="espCustomName" placeholder="ej: Oración de la mañana" maxlength="40"></label>
             <label>Icono <input type="text" id="espCustomIcon" placeholder="🕯️" maxlength="4" style="width:70px;text-align:center"></label>
             <label>Minutos <input type="number" id="espCustomMins" min="1" max="120" value="5" style="width:70px"></label>
+            <label>Categoría <select id="espCustomCat" style="width:110px"><option value="interior">🕯️ Interior</option><option value="luz">🌅 Luz</option><option value="agua">💧 Agua</option><option value="tierra">🦶 Tierra</option><option value="noche">🌙 Noche</option><option value="respiro">🌬️ Respiro</option></select></label>
           </div>
           <label>Descripción corta (opcional) <input type="text" id="espCustomDesc" placeholder="ej: 5 min de gratitud antes de salir" maxlength="80"></label>
           <div class="dlg-actions" style="justify-content:flex-start">
@@ -4115,6 +4187,8 @@
         'cuarto-camino-modulo.js?v=1',
         'hooponopono-modulo.js?v=1',
         'tolteca-modulo.js?v=1',
+        'tao-modulo.js?v=1',
+        'constelaciones-modulo.js?v=1',
         'metodo-silva-modulo.js?v=1',
         'grabovoi-modulo.js?v=1',
         'carta-astral.js?v=1',

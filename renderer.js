@@ -799,7 +799,7 @@ function renderTodayView(){
           if(md.history.includes(key)) md.history=md.history.filter(k=>k!==key);
           else { md.history.push(key); md.history.sort(); }
           scheduleSave('Guardado ✓'); paintMens();
-          try{ renderMensHistory(); renderMensPredictBox(); renderMensLunaBox(); }catch(e){}
+          try{ mensRefreshAll(); }catch(e){}
         }catch(e){}
       };
     }
@@ -917,8 +917,10 @@ function renderTodayView(){
       try{
         const md=getMensData(); const is=md.history.includes(key);
         let txt='';
-        try{ const p=(typeof getMensPredictions==='function'?getMensPredictions():null); if(p&&p.nextPeriodMs){ const tKey=mensMsToKey(p.nextPeriodMs); const days=Math.round((mensKeyToMs(tKey)-mensKeyToMs(key))/86400000); txt = days===0? 'Predicción: periodo <b>hoy</b>' : days===1? 'Predicción: periodo <b>mañana</b>' : 'Predicción: periodo en <b>'+days+' días</b> ('+escapeHtml(tKey)+')'; } else txt='Sin predicción: registra tu último inicio.'; }catch(e){ txt=''; }
-        cb2.innerHTML='<p style="font-size:12px">'+txt+'</p><p class="muted" style="font-size:11px">Hoy: '+(is?'<b style="color:var(--gold)">● inicio marcado</b>':'sin marca')+'</p>';
+        try{ const p=(typeof getMensPredictions==='function'?getMensPredictions():null); if(p&&p.nextPeriodMs){ const tKey=mensMsToKey(p.nextPeriodMs); const days=Math.round((mensKeyToMs(tKey)-mensKeyToMs(key))/86400000); txt = days===0? 'Predicción: periodo <b>hoy</b>' : days===1? 'Predicción: periodo <b>mañana</b>' : days<0? 'Periodo con <b>'+Math.abs(days)+' días de retraso</b> (promedio '+p.cycleLen+'d)' : 'Predicción: periodo en <b>'+days+' días</b> ('+escapeHtml(tKey)+')'; } else txt='Sin predicción: registra tu último inicio.'; }catch(e){ txt=''; }
+        let faseTxt='';
+        try{ const cur=(typeof mensCurrentDay==='function'?mensCurrentDay():null); if(cur){ const ph=mensPhaseForDay(cur.day, cur.avg, getMensData().periodLen); faseTxt=`<br>Día <b>${cur.day}/${cur.avg}</b> · ${ph.ico} ${ph.nombre}`; } }catch(e){}
+        cb2.innerHTML='<p style="font-size:12px">'+txt+faseTxt+'</p><p class="muted" style="font-size:11px">Hoy: '+(is?'<b style="color:var(--gold)">● inicio marcado</b>':'sin marca')+'</p>';
       }catch(e){}
     };
     paintCiclo();
@@ -2007,7 +2009,7 @@ function openDayDialog(lunaN, diaN) {
       scheduleSave();
       mensBtn.textContent = md2.history.includes(dlgKey) ? '🌸 Quitar inicio ciclo' : '🌸 Marcar inicio ciclo';
       mensBtn.classList.toggle('btn-accent', md2.history.includes(dlgKey));
-      renderMensHistory(); renderMensPredictBox(); renderMensLunaBox();
+      try{ mensRefreshAll(); }catch(e){}
       if (md2.showCal) renderLuna();
     };
   }
@@ -4283,52 +4285,96 @@ function checkReminders() {
 setInterval(checkReminders, 30 * 60 * 1000);
 
 // === CICLO MENSTRUAL ===
+// === CICLO MENSTRUAL v2 — promedio real, fases, síntomas, estadísticas ===
 function getMensData() {
   const u = userData();
-  if (!u.menstrual) u.menstrual = { cycleLen: 28, periodLen: 5, history: [], showCal: true, notify: false };
-  if (typeof u.menstrual.cycleLen !== 'number') u.menstrual.cycleLen = 28;
-  if (typeof u.menstrual.periodLen !== 'number') u.menstrual.periodLen = 5;
-  if (!Array.isArray(u.menstrual.history)) u.menstrual.history = [];
-  if (typeof u.menstrual.showCal !== 'boolean') u.menstrual.showCal = true;
-  if (typeof u.menstrual.notify !== 'boolean') u.menstrual.notify = false;
-  u.menstrual.history = [...new Set(u.menstrual.history)].sort();
-  return u.menstrual;
+  if (!u.menstrual) u.menstrual = { cycleLen: 28, periodLen: 5, history: [], showCal: true, notify: false, autoLen: true, symptoms: {} };
+  const m = u.menstrual;
+  if (typeof m.cycleLen !== 'number' || !(m.cycleLen >= 20 && m.cycleLen <= 45)) m.cycleLen = 28;
+  if (typeof m.periodLen !== 'number' || !(m.periodLen >= 1 && m.periodLen <= 10)) m.periodLen = 5;
+  if (!Array.isArray(m.history)) m.history = [];
+  if (typeof m.showCal !== 'boolean') m.showCal = true;
+  if (typeof m.notify !== 'boolean') m.notify = false;
+  if (typeof m.autoLen !== 'boolean') m.autoLen = true;
+  if (!m.symptoms || typeof m.symptoms !== 'object' || Array.isArray(m.symptoms)) m.symptoms = {};
+  m.history = [...new Set(m.history)].sort();
+  return m;
 }
 function mensKeyToMs(k) { const [y,m,d]=k.split('-').map(Number); return Date.UTC(y,m-1,d,12); }
 function mensMsToKey(ms) { return cal.fmtKey.format(new Date(ms)); }
+// Intervalos reales entre inicios (días), últimos 6
+function mensIntervals() {
+  const hist = getMensData().history.slice().sort();
+  const out = [];
+  for (let i = 1; i < hist.length; i++) {
+    const d = Math.round((mensKeyToMs(hist[i]) - mensKeyToMs(hist[i-1])) / 86400000);
+    if (d >= 15 && d <= 60) out.push(d);
+  }
+  return out.slice(-6);
+}
+function mensAvgLen() {
+  const md = getMensData();
+  const iv = mensIntervals();
+  if (md.autoLen && iv.length) {
+    const avg = Math.round(iv.reduce((a,b)=>a+b,0) / iv.length);
+    return Math.min(45, Math.max(20, avg));
+  }
+  return md.cycleLen;
+}
+function mensStats() {
+  const hist = getMensData().history.slice().sort();
+  const iv = mensIntervals();
+  if (!hist.length) return null;
+  const avg = mensAvgLen();
+  const min = iv.length ? Math.min(...iv) : null;
+  const max = iv.length ? Math.max(...iv) : null;
+  const spread = (min !== null && max !== null) ? (max - min) : 0;
+  const regular = iv.length >= 2 ? (spread <= 3 ? 'muy regular' : spread <= 7 ? 'regular' : 'irregular') : (hist.length >= 2 ? 'pocos datos' : 'primer registro');
+  return { n: hist.length, avg, min, max, spread, regular, last: hist[hist.length-1] };
+}
+// Fase actual según día del ciclo (1-indexed), adaptada a duración real
+function mensPhaseForDay(day, cycleLen, periodLen) {
+  const ov = cycleLen - 14; // día ovulación estimada
+  if (day <= periodLen) return { id:'menstrual', ico:'🌧️', nombre:'Menstrual · Invierno (Pukem)', consejo:'Descanso, calor local, hierro + vit C. Di que no sin culpa.' };
+  if (day < ov - 2) return { id:'folicular', ico:'🌱', nombre:'Folicular · Primavera (Pewü)', consejo:'Energía en subida: planifica, mueve el cuerpo, ordena espacios.' };
+  if (day <= ov + 1) return { id:'ovulatoria', ico:'☀️', nombre:'Ovulatoria · Verano (Walüng)', consejo:'Pico fértil y comunicativo: muestra, conversa, decide.' };
+  return { id:'lutea', ico:'🍂', nombre:'Lútea · Otoño (Rimü)', consejo:'Baja el ritmo, anida, límites claros, magnesio y dormir temprano.' };
+}
+function mensCurrentDay() {
+  try {
+    const hist = getMensData().history.slice().sort();
+    if (!hist.length) return null;
+    const todayKey = cal.fmtKey.format(new Date());
+    const last = hist[hist.length-1];
+    const diff = Math.floor((mensKeyToMs(todayKey) - mensKeyToMs(last)) / 86400000);
+    if (diff < 0) return null;
+    const avg = mensAvgLen();
+    return { day: (diff % avg) + 1, sinceLast: diff, last, avg };
+  } catch { return null; }
+}
 function getMensPredictions() {
   const md = getMensData();
   const hist = md.history.slice().sort();
   if (!hist.length) return null;
-  const last = hist[hist.length-1];
-  let lastMs = mensKeyToMs(last);
+  const cycleLen = mensAvgLen();
+  const periodLen = md.periodLen;
   const nowKey = cal.fmtKey.format(new Date());
   const nowMs = mensKeyToMs(nowKey);
-  // avanzar si último ya pasó + ciclo
-  while (lastMs + md.cycleLen*86400000 <= nowMs) lastMs += md.cycleLen*86400000;
-  // próximo periodo es el siguiente ciclo si hoy está después del último + ciclo? ajuste
-  let nextMs = lastMs;
-  if (nextMs < nowMs) nextMs += md.cycleLen*86400000;
-  // si hoy es el mismo día del último, next es ese mismo? mantener
-  if (hist.includes(nowKey) && mensKeyToMs(nowKey) === lastMs) nextMs = lastMs;
-  else if (nextMs <= nowMs && hist[hist.length-1] !== nowKey) { /* si ya pasó */ }
-  // corrección: si la última fecha es hace más de ciclo, next debe proyectarse
-  // recalcular correctamente: buscar next >= hoy
-  let probe = mensKeyToMs(hist[hist.length-1]);
+  const probe = mensKeyToMs(hist[hist.length-1]);
   let nextPeriodMs = probe;
-  while (nextPeriodMs < nowMs) nextPeriodMs += md.cycleLen*86400000;
-  // si hoy es exactamente un histórico, considerar ese como próximo
   if (hist.includes(nowKey)) nextPeriodMs = mensKeyToMs(nowKey);
-  const periodLen = md.periodLen;
-  const cycleLen = md.cycleLen;
+  else { while (nextPeriodMs < nowMs) nextPeriodMs += cycleLen*86400000; }
+  const st = mensStats();
+  const variability = st && st.spread ? Math.min(3, Math.ceil(st.spread / 2)) : 1;
+  const winStart = nextPeriodMs - variability*86400000;
+  const winEnd = nextPeriodMs + variability*86400000;
+  const periodEnd = nextPeriodMs + (periodLen-1)*86400000;
   const ovulationMs = nextPeriodMs + (cycleLen - 14)*86400000;
   const fertileStart = ovulationMs - 4*86400000;
   const fertileEnd = ovulationMs + 1*86400000;
-  const periodEnd = nextPeriodMs + (periodLen-1)*86400000;
-  // conjuntos para calendario (±90 días)
   const map = {};
   const pred = [];
-  for (let i=-1; i<4; i++) {
+  for (let i=-1; i<5; i++) {
     const pStart = nextPeriodMs + i*cycleLen*86400000;
     const pEnd = pStart + (periodLen-1)*86400000;
     const ov = pStart + (cycleLen-14)*86400000;
@@ -4336,14 +4382,13 @@ function getMensPredictions() {
     pred.push({ pStart, pEnd, ov, fS, fE });
     for (let d=pStart; d<=pEnd; d+=86400000) map[mensMsToKey(d)] = 'period';
     for (let d=fS; d<=fE; d+=86400000) if(!map[mensMsToKey(d)]) map[mensMsToKey(d)] = 'fertile';
-    if (!map[mensMsToKey(ov)]) map[mensMsToKey(ov)] = 'ovulation'; else map[mensMsToKey(ov)]='ovulation';
+    map[mensMsToKey(ov)]='ovulation';
   }
-  // históricos también marcar como period
   hist.forEach(k=>{
     const ms = mensKeyToMs(k);
     for(let d=ms; d<ms+periodLen*86400000; d+=86400000) map[mensMsToKey(d)]='period';
   });
-  return { md, hist, nextPeriodMs, periodEnd, ovulationMs, fertileStart, fertileEnd, map, pred };
+  return { md, hist, cycleLen, periodLen, nextPeriodMs, winStart, winEnd, variability, periodEnd, ovulationMs, fertileStart, fertileEnd, map, pred };
 }
 function mensLunaForKey(key) {
   const ms = mensKeyToMs(key);
@@ -4353,13 +4398,50 @@ function mensLunaForKey(key) {
   }
   return null;
 }
+function mensRefreshAll() {
+  try { renderMensTodayBanner(); } catch {}
+  try { renderMensStats(); } catch {}
+  try { renderMensPredictBox(); } catch {}
+  try { renderMensLunaBox(); } catch {}
+  try { renderMensPhaseBox(); } catch {}
+  try { renderMensHistory(); } catch {}
+  try { renderMensSymptToday(); } catch {}
+  try { if (getMensData().showCal && typeof renderLuna === 'function') renderLuna(); } catch {}
+}
+function renderMensTodayBanner() {
+  const box = $('mensTodayBanner'); if (!box) return;
+  const cur = mensCurrentDay();
+  const pred = getMensPredictions();
+  if (!cur) { box.innerHTML = '<span>🌸 Sin registros aún — marca tu último inicio en la pestaña <b>📝 Registro</b> y verás tu día, fase y predicción aquí.</span>'; return; }
+  const ph = mensPhaseForDay(cur.day, cur.avg, getMensData().periodLen);
+  const daysLeft = pred ? Math.round((pred.nextPeriodMs - mensKeyToMs(cal.fmtKey.format(new Date()))) / 86400000) : null;
+  const pct = Math.min(100, Math.round(cur.day / cur.avg * 100));
+  const leftTxt = daysLeft === null ? '' : daysLeft === 0 ? '· periodo <b>hoy</b>' : daysLeft === 1 ? '· periodo <b>mañana</b>' : `· próximo periodo en <b>${daysLeft} días</b>`;
+  box.innerHTML = `<div class="mens-banner-top"><span class="mens-banner-day">Día ${cur.day}/${cur.avg} ${ph.ico}</span><span class="mens-banner-phase">${ph.nombre}</span></div>`
+    + `<div class="mens-progress"><div class="mens-progress-fill" style="width:${pct}%"></div></div>`
+    + `<div class="mens-banner-sub">${ph.consejo} ${leftTxt}</div>`;
+}
+function renderMensStats() {
+  const box = $('mensStatsBox'); if (!box) return;
+  const st = mensStats();
+  if (!st) { box.innerHTML = '<p class="muted" style="font-size:11px;margin:6px 0 0">Con 2+ inicios calculo tu promedio real y regularidad.</p>'; return; }
+  const auto = getMensData().autoLen && st.n >= 2;
+  box.innerHTML = `<div class="mens-stat-grid">`
+    + `<div class="mens-stat"><b>${st.avg}d</b><span>promedio${auto?' ● auto':''}</span></div>`
+    + `<div class="mens-stat"><b>${st.n}</b><span>ciclos</span></div>`
+    + `<div class="mens-stat"><b>${st.min !== null ? st.min + '–' + st.max + 'd' : '—'}</b><span>rango</span></div>`
+    + `<div class="mens-stat"><b>${st.regular}</b><span>ritmo</span></div>`
+    + `</div>`
+    + (st.spread > 7 ? '<p class="mens-warn">⚠️ Variación &gt;7 días: tu ritmo es irregular — las fechas son orientativas. Si se mantiene, consúltalo con tu matrona.</p>' : '')
+    + (getMensData().periodLen >= 8 ? '<p class="mens-warn">⚠️ Sangrado de 8+ días registrado: si se repite, consúltalo.</p>' : '');
+}
 function renderMensPredictBox() {
   const box = $('mensPredictBox');
   if (!box) return;
   const pred = getMensPredictions();
   const md = getMensData();
   if (!pred) {
-    box.innerHTML = `<h4 style="color:var(--gold)">🔮 Predicción</h4><p class="muted">Aún sin registros. Agrega tu último inicio para ver predicción.</p><p class="muted" style="font-size:11px">13 lunas × 28 días = 364 días. Muchas personas notan sincronía cuerpo-luna en ciclos de 27-30 días — úsalo como ritual, no como diagnóstico.</p>`;
+    box.innerHTML = `<h4 style="color:var(--gold)">🔮 Predicción</h4><p class="muted">Aún sin registros. Agrega tu último inicio en <b>📝 Registro</b>.</p><p class="muted" style="font-size:11px">13 lunas × 28 días = 364 días. Muchas personas con ciclos de 27-30 días notan sincronía cuerpo-luna — úsalo como ritual, no como diagnóstico.</p>`;
     return;
   }
   const fmt = d=> cal.fmtFull.format(new Date(d));
@@ -4369,14 +4451,16 @@ function renderMensPredictBox() {
   const lunaTxt = lunaInfo ? `Luna ${lunaInfo.luna} · Día ${lunaInfo.dia} · ${lunaInfo.luna==='dft'?'Día Fuera del Tiempo':MOONS[lunaInfo.luna-1].nombre}` : '';
   const daysUntil = Math.round((pred.nextPeriodMs - mensKeyToMs(cal.fmtKey.format(new Date())))/86400000);
   const untilTxt = daysUntil===0? '¡hoy!': daysUntil===1? 'mañana': `en ${daysUntil} días`;
+  const rangeTxt = pred.variability > 0 ? `${mensMsToKey(pred.winStart)} → ${mensMsToKey(pred.winEnd)}` : nextKey;
+  const src = getMensData().autoLen && pred.hist.length >= 2 ? `promedio real ${pred.cycleLen}d (${pred.hist.length} ciclos)` : `ciclo ref ${pred.cycleLen}d`;
   box.innerHTML = `
-    <h4 style="color:var(--gold)">🔮 Predicción (ciclo ${md.cycleLen}d · sangrado ${md.periodLen}d)</h4>
+    <h4 style="color:var(--gold)">🔮 Predicción · ${src}</h4>
     <div class="mens-pred-grid">
-      <div class="mens-pred-item period"><span class="mens-dot period"></span><b>Próximo periodo</b><span>${wk(pred.nextPeriodMs)} ${fmt(pred.nextPeriodMs)} — ${untilTxt}</span><span style="font-size:11px;color:var(--muted)">${lunaTxt}</span><span style="font-size:11px">Hasta ${fmt(pred.periodEnd)}</span></div>
+      <div class="mens-pred-item period"><span class="mens-dot period"></span><b>Próximo periodo</b><span>${wk(pred.nextPeriodMs)} ${fmt(pred.nextPeriodMs)} — ${untilTxt}</span><span style="font-size:11px;color:var(--muted)">${lunaTxt}</span><span style="font-size:11px">Sangrado hasta ${fmt(pred.periodEnd)} · ventana ±${pred.variability}d: ${rangeTxt}</span></div>
       <div class="mens-pred-item fertile"><span class="mens-dot fertile"></span><b>Ventana fértil</b><span>${fmt(pred.fertileStart)} → ${fmt(pred.fertileEnd)}</span><span style="font-size:11px;color:var(--muted)">~ ovulación ${fmt(pred.ovulationMs)}</span></div>
-      <div class="mens-pred-item ovulation"><span class="mens-dot ovulation"></span><b>Ovulación estimada</b><span>${wk(pred.ovulationMs)} ${fmt(pred.ovulationMs)}</span><span style="font-size:11px;color:var(--muted)">ciclo día ${md.cycleLen-13} (ciclo-14)</span></div>
+      <div class="mens-pred-item ovulation"><span class="mens-dot ovulation"></span><b>Ovulación estimada</b><span>${wk(pred.ovulationMs)} ${fmt(pred.ovulationMs)}</span><span style="font-size:11px;color:var(--muted)">día ${pred.cycleLen-14} del ciclo (ciclo−14)</span></div>
     </div>
-    <p class="muted" style="font-size:11px;margin-top:8px">Próximos 3 periodos: ${pred.pred.slice(0,3).map(p=>mensMsToKey(p.pStart)).join(' · ')}. <br>Estimación estadística; tu cuerpo es soberano. Si hay irregularidad o preocupación, consulta profesional.</p>`;
+    <p class="muted" style="font-size:11px;margin-top:8px">Próximos 3: ${pred.pred.slice(0,3).map(p=>mensMsToKey(p.pStart)).join(' · ')}.<br>Estimación estadística; tu cuerpo es soberano. Si buscas o evitas embarazo, usa método adicional.</p>`;
 }
 function renderMensLunaBox() {
   const box = $('mensLunaBox'); if(!box) return;
@@ -4385,39 +4469,90 @@ function renderMensLunaBox() {
   const info = mensLunaForKey(mensMsToKey(pred.nextPeriodMs));
   if (!info) { box.innerHTML=''; return;}
   const meta = info.luna==='dft'? null : MOONS[info.luna-1];
-  box.innerHTML = `<h4 style="color:var(--accent)">🌙 Tu próximo periodo y la luna</h4><p style="font-size:13px;color:var(--text)">Cae en <b>${info.luna==='dft'?'Día Fuera del Tiempo':`Luna ${info.luna} · ${meta.nombre}`}</b> (día ${info.dia} de 28). <i>${info.luna==='dft'?DFT.texto1.slice(0,140)+'…':meta.descripcion}</i></p><p class="muted" style="font-size:11px">En el calendario verás puntos 🌸 período · 🌿 fértil · ✨ ovulación. La luna perfecta no exige regularidad perfecta.</p>`;
+  box.innerHTML = `<h4 style="color:var(--accent)">🌙 Tu próximo periodo y la luna</h4><p style="font-size:13px;color:var(--text)">Cae en <b>${info.luna==='dft'?'Día Fuera del Tiempo':`Luna ${info.luna} · ${meta.nombre}`}</b> (día ${info.dia} de 28). <i>${info.luna==='dft'?DFT.texto1.slice(0,140)+'…':meta.descripcion}</i></p><p class="muted" style="font-size:11px">En el calendario verás 🌸 período · 🌿 fértil · ✨ ovulación. La luna perfecta no exige regularidad perfecta.</p>`;
+}
+function renderMensPhaseBox() {
+  const box = $('mensPhaseBox'); if (!box) return;
+  const cur = mensCurrentDay();
+  if (!cur) { box.innerHTML = ''; return; }
+  const L = cur.avg;
+  const P = getMensData().periodLen;
+  const ov = L - 14;
+  const f = (a,b,label,ico) => { const on = cur.day >= a && cur.day <= b; return `<div class="mens-phase ${on?'on':''}"><span>${ico}</span><b>${label}</b><small>días ${a}–${b}</small></div>`; };
+  box.innerHTML = `<h4>🌀 Tu fase hoy — día ${cur.day}</h4><div class="mens-phase-row">`
+    + f(1, P, 'Menstrual', '🌧️') + f(P+1, ov-3, 'Folicular', '🌱') + f(Math.max(P+1,ov-2), ov+1, 'Ovulatoria', '☀️') + f(ov+2, L, 'Lútea', '🍂')
+    + `</div><p class="muted" style="font-size:11px;margin:6px 0 0">${mensPhaseForDay(cur.day, L, P).consejo} <button type="button" id="mensGoHorm" class="btn" style="width:auto;font-size:11px;padding:2px 8px">Ver en 🧬 Hormonas</button></p>`;
+  const b = $('mensGoHorm'); if (b) b.onclick = () => mensSwitchTab('Hormonas');
+}
+function mensSymptLabel(s) {
+  if (!s) return '';
+  const parts = [];
+  if (s.flow === 'manchado') parts.push('💧 manchado');
+  if (s.flow === 'ligero') parts.push('🩸 ligero');
+  if (s.flow === 'moderado') parts.push('🩸🩸 moderado');
+  if (s.flow === 'abundante') parts.push('🩸🩸🩸 abundante');
+  if (s.pain !== '' && s.pain !== undefined && s.pain !== null) parts.push(`dolor ${s.pain}/10`);
+  if (s.energy === 'baja') parts.push('🔋 baja');
+  if (s.energy === 'media') parts.push('🔋🔋 media');
+  if (s.energy === 'alta') parts.push('🔋🔋🔋 alta');
+  if (s.mood === 'sensible') parts.push('🌧️ sensible');
+  if (s.mood === 'estable') parts.push('🌤️ estable');
+  if (s.mood === 'creativa') parts.push('✨ creativa');
+  if (s.mood === 'irritable') parts.push('⛈️ irritable');
+  if (s.note) parts.push('“' + s.note + '”');
+  return parts.join(' · ');
+}
+function renderMensSymptToday() {
+  const box = $('mensSymptTodayBox'); if (!box) return;
+  const today = cal.fmtKey.format(new Date());
+  const s = getMensData().symptoms[today];
+  box.innerHTML = `<h4>💗 Hoy ${today}</h4>` + (s ? `<p style="font-size:12px">${escapeHtml(mensSymptLabel(s))}</p>` : '<p class="muted" style="font-size:11px">Aún no registras cómo estás hoy. Usa el formulario de arriba.</p>');
 }
 function renderMensHistory() {
   const box = $('mensHistoryBox'); if(!box) return;
   const md = getMensData();
-  if (!md.history.length) { box.innerHTML = '<h4>📜 Historial</h4><p class="muted">Sin registros aún. Usa “Registrar hoy” o el calendario (botón 🌸 en cada día).</p>'; return; }
-  const sorted = md.history.slice().sort().reverse().slice(0,18);
+  if (!md.history.length) { box.innerHTML = '<h4>📜 Historial</h4><p class="muted">Sin registros aún. Usa “Registrar hoy” o el botón 🌸 en cada día del calendario.</p>'; return; }
+  const sorted = md.history.slice().sort().reverse().slice(0,24);
+  const full = md.history.slice().sort();
   box.innerHTML = `<h4>📜 Historial — ${md.history.length} inicios</h4><div class="mens-history">`+ sorted.map(k=>{
     const ms = mensKeyToMs(k);
     const luna = mensLunaForKey(k);
     const lunaTxt = luna? `· Luna ${luna.luna} d${luna.dia}`: '';
+    const idx = full.indexOf(k);
+    const prev = idx > 0 ? full[idx-1] : null;
+    const gap = prev ? Math.round((mensKeyToMs(k)-mensKeyToMs(prev))/86400000) : null;
+    const gapTxt = gap ? ` · <span class="chip" style="font-size:10px">+${gap}d</span>` : ' · <span class="muted" style="font-size:10px">primero</span>';
     const isLast = k===md.history[md.history.length-1];
-    return `<div class="mens-hist-item"><span>${cal.weekdayName(ms)} ${cal.fmtFull.format(new Date(ms))} ${lunaTxt} ${isLast?'<span style="color:var(--gold)">· último</span>':''}</span><button data-k="${k}" class="btn btn-icon mens-del" title="Eliminar">✕</button></div>`;
-  }).join('') + `</div>`;
+    const sym = md.symptoms[k];
+    const symTxt = sym ? `<br><span class="muted" style="font-size:10px">${escapeHtml(mensSymptLabel(sym))}</span>` : '';
+    return `<div class="mens-hist-item"><span>${cal.weekdayName(ms)} ${cal.fmtFull.format(new Date(ms))} ${lunaTxt}${gapTxt} ${isLast?'<span style="color:var(--gold)">· último</span>':''}${symTxt}</span><button data-k="${k}" class="btn btn-icon mens-del" title="Eliminar">✕</button></div>`;
+  }).join('') + `</div><p class="muted" style="font-size:10px;margin-top:6px">+Nd = días desde el inicio anterior. Ideal 21–35. Toca ✕ para corregir un error.</p>`;
   box.querySelectorAll('.mens-del').forEach(b=> b.onclick=()=>{
     const k=b.dataset.k;
     const md2=getMensData();
     md2.history = md2.history.filter(x=>x!==k);
+    try { delete md2.symptoms[k]; } catch {}
     scheduleSave();
-    renderMensHistory(); renderMensPredictBox(); renderMensLunaBox();
-    if (md2.showCal) renderLuna();
+    mensRefreshAll();
   });
+}
+function mensSwitchTab(which) {
+  const panels = { Resumen:'mensPanelResumen', Registro:'mensPanelRegistro', Hormonas:'mensPanelHormonas', Historial:'mensPanelHistorial', Guia:'mensPanelGuia' };
+  Object.entries(panels).forEach(([k,id])=>{ const el=$(id); if(el) el.classList.toggle('hidden', k!==which); });
+  ['Resumen','Registro','Hormonas','Historial','Guia'].forEach(k=>{ const el=$('tabMens'+k); if(el) el.classList.toggle('btn-accent', k===which); });
+  if (which === 'Hormonas') setTimeout(setupHormonalChart, 60);
 }
 function openMensDialog() {
   const md = getMensData();
   $('mensCycleLen').value = md.cycleLen;
   $('mensPeriodLen').value = md.periodLen;
+  const au = $('mensAutoLen'); if (au) au.checked = md.autoLen !== false;
   $('mensShowCal').checked = md.showCal;
   $('mensNotify').checked = md.notify;
   $('mensLastDate').value = md.history.length? md.history[md.history.length-1]: '';
-  renderMensPredictBox(); renderMensLunaBox(); renderMensHistory();
-  $('menstrualDialog').showModal();
-  // check notif perm if needed
+  mensSwitchTab('Resumen');
+  mensRefreshAll();
+  try { $('menstrualDialog').showModal(); } catch {}
 }
 function mensCheckNotify() {
   const md = getMensData();
@@ -4438,71 +4573,130 @@ function setupMensDialogEvents() {
   const cTop = $('menstrualCloseTop'), cBot = $('menstrualClose');
   if (cTop) cTop.onclick = ()=> $('menstrualDialog').close();
   if (cBot) cBot.onclick = ()=> $('menstrualDialog').close();
-  const cycIn = $('mensCycleLen'), perIn = $('mensPeriodLen'), showIn = $('mensShowCal'), notIn = $('mensNotify');
-  if (cycIn) cycIn.onchange = ()=>{ const v=parseInt(cycIn.value)||28; getMensData().cycleLen=Math.min(45,Math.max(20,v)); cycIn.value=getMensData().cycleLen; scheduleSave(); renderMensPredictBox(); renderMensLunaBox(); if(getMensData().showCal) renderLuna(); };
-  if (perIn) perIn.onchange = ()=>{ const v=parseInt(perIn.value)||5; getMensData().periodLen=Math.min(10,Math.max(1,v)); perIn.value=getMensData().periodLen; scheduleSave(); renderMensPredictBox(); if(getMensData().showCal) renderLuna(); };
+  ['Resumen','Registro','Hormonas','Historial','Guia'].forEach(k=>{
+    const el = $('tabMens'+k); if (el) el.onclick = ()=> mensSwitchTab(k);
+  });
+  const cycIn = $('mensCycleLen'), perIn = $('mensPeriodLen'), showIn = $('mensShowCal'), notIn = $('mensNotify'), autoIn = $('mensAutoLen');
+  if (cycIn) cycIn.onchange = ()=>{ const v=parseInt(cycIn.value)||28; getMensData().cycleLen=Math.min(45,Math.max(20,v)); getMensData().autoLen=false; if(autoIn) autoIn.checked=false; cycIn.value=getMensData().cycleLen; scheduleSave(); mensRefreshAll(); };
+  if (autoIn) autoIn.onchange = ()=>{ getMensData().autoLen=autoIn.checked; if(autoIn.checked){ const a=mensAvgLen(); getMensData().cycleLen=a; if(cycIn) cycIn.value=a; } scheduleSave(); mensRefreshAll(); };
+  if (perIn) perIn.onchange = ()=>{ const v=parseInt(perIn.value)||5; getMensData().periodLen=Math.min(10,Math.max(1,v)); perIn.value=getMensData().periodLen; scheduleSave(); mensRefreshAll(); };
   if (showIn) showIn.onchange = ()=>{ getMensData().showCal=showIn.checked; scheduleSave(); renderLuna(); };
   if (notIn) notIn.onchange = async ()=>{ getMensData().notify=notIn.checked; scheduleSave(); if(notIn.checked) try{ if(Notification&&Notification.requestPermission) await Notification.requestPermission(); mensCheckNotify(); }catch{} };
   const addLast = $('mensAddLast'); if (addLast) addLast.onclick = ()=>{
-    const v=$('mensLastDate').value; if(!v) return;
+    const v=$('mensLastDate').value; if(!v) return alert('Elige una fecha primero');
     const md=getMensData();
     if(!md.history.includes(v)) md.history.push(v);
-    md.history.sort(); scheduleSave(); renderMensHistory(); renderMensPredictBox(); renderMensLunaBox(); if(md.showCal) renderLuna();
+    md.history.sort();
+    if (md.autoLen) { const a=mensAvgLen(); md.cycleLen=a; if(cycIn) cycIn.value=a; }
+    scheduleSave(); mensRefreshAll();
   };
   const addToday = $('mensAddToday'); if(addToday) addToday.onclick = ()=>{
     const today=cal.fmtKey.format(new Date());
     const md=getMensData();
     if(!md.history.includes(today)) md.history.push(today);
-    md.history.sort(); scheduleSave(); $('mensLastDate').value=today; renderMensHistory(); renderMensPredictBox(); renderMensLunaBox(); if(md.showCal) renderLuna();
+    md.history.sort();
+    if (md.autoLen) { const a=mensAvgLen(); md.cycleLen=a; if(cycIn) cycIn.value=a; }
+    scheduleSave(); $('mensLastDate').value=today; mensRefreshAll();
+  };
+  const saveS = $('mensSaveSympt'); if (saveS) saveS.onclick = ()=>{
+    const today=cal.fmtKey.format(new Date());
+    const md=getMensData();
+    const painRaw = ($('mensPain')||{}).value;
+    md.symptoms[today] = {
+      flow: ($('mensFlow')||{}).value || '',
+      pain: painRaw === '' ? '' : Math.min(10, Math.max(0, parseInt(painRaw)||0)),
+      energy: ($('mensEnergy')||{}).value || '',
+      mood: ($('mensMood')||{}).value || '',
+      note: ((($('mensNote')||{}).value||'').trim()).slice(0,140)
+    };
+    scheduleSave('Cómo estás guardado ✓'); mensRefreshAll();
+  };
+  const exp = $('mensExport'); if (exp) exp.onclick = ()=>{
+    try {
+      const md=getMensData();
+      let csv = 'fecha,dias_desde_anterior,luna,dia_luna,flujo,dolor,energia,animo,nota\n';
+      const full = md.history.slice().sort();
+      full.forEach((k,i)=>{
+        const prev = i>0? full[i-1]: null;
+        const gap = prev? Math.round((mensKeyToMs(k)-mensKeyToMs(prev))/86400000): '';
+        const l = mensLunaForKey(k);
+        const s = md.symptoms[k]||{};
+        const q = (v)=> '"' + String(v||'').replace(/"/g,'""') + '"';
+        csv += [k, gap, l?l.luna:'', l?l.dia:'', s.flow||'', s.pain===''?'':(s.pain||''), s.energy||'', s.mood||'', s.note||''].map(q).join(',') + '\n';
+      });
+      const blob = new Blob([csv], {type:'text/csv;charset=utf-8'});
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'mi-ciclo-' + cal.fmtKey.format(new Date()) + '.csv';
+      a.click();
+      setTimeout(()=> URL.revokeObjectURL(a.href), 4000);
+    } catch(e){ alert('No se pudo exportar'); }
   };
   const clearBtn=$('mensClear'); if(clearBtn) clearBtn.onclick = ()=>{
-    if(!confirm('¿Borrar todo el historial menstrual de esta usuaria?')) return;
-    getMensData().history=[]; scheduleSave(); renderMensHistory(); renderMensPredictBox(); renderMensLunaBox(); if(getMensData().showCal) renderLuna();
+    if(!confirm('¿Borrar todo el historial de ciclo de esta usuaria (inicios + síntomas)?')) return;
+    const md=getMensData(); md.history=[]; md.symptoms={}; scheduleSave(); mensRefreshAll();
   };
 }
 setTimeout(setupMensDialogEvents, 400);
 setInterval(()=>{ try{ mensCheckNotify(); }catch{} }, 60*60*1000);
 
-// === DIAGRAMA HORMONAL ===
+// === DIAGRAMA HORMONAL (adaptado a tu duración) ===
 const HORM = {
   estrogen:   [30,28,26,25,27,35,45,55,68,78,85,92,88,60,50,55,62,68,72,70,62,55,45,38,32,30,28,27],
   progesterone:[12,11,10,10,12,14,13,12,14,16,18,22,28,35,45,62,75,82,85,84,78,65,50,38,25,18,14,12],
   lh:         [18,16,15,14,15,16,18,20,22,28,38,55,92,95,35,20,18,16,15,14,13,13,12,12,11,12,14,16],
   fsh:        [42,44,45,43,38,32,28,24,20,18,16,15,18,28,32,28,24,20,18,16,15,14,14,15,16,20,28,35]
 };
-function hormDayInfoText(d) {
-  const e=HORM.estrogen[d-1], p=HORM.progesterone[d-1], l=HORM.lh[d-1], f=HORM.fsh[d-1];
+// Reescala un array de 28 a N días por interpolación lineal
+function hormScale(arr, N) {
+  if (N === 28) return arr.slice();
+  const out = [];
+  for (let i = 0; i < N; i++) {
+    const pos = i * 27 / (N - 1);
+    const i0 = Math.floor(pos), i1 = Math.min(27, i0 + 1), f = pos - i0;
+    out.push(Math.round(arr[i0] * (1-f) + arr[i1] * f));
+  }
+  return out;
+}
+function hormDayInfoText(d, cycleLen, periodLen) {
+  cycleLen = cycleLen || mensAvgLen() || 28;
+  periodLen = periodLen || getMensData().periodLen || 5;
+  const e=HORM.estrogen[Math.min(27, Math.round((d-1)*27/(cycleLen-1)))];
+  const p=HORM.progesterone[Math.min(27, Math.round((d-1)*27/(cycleLen-1)))];
+  const l=HORM.lh[Math.min(27, Math.round((d-1)*27/(cycleLen-1)))];
+  const f=HORM.fsh[Math.min(27, Math.round((d-1)*27/(cycleLen-1)))];
+  const ov = cycleLen - 14;
   let fase='', energia='', alimentos='', entreno='', practicas='', cuidados='';
-  if(d<=5){
-    fase='Menstrual · Invierno (Pukem) — días 1-5';
+  if(d<=periodLen){
+    fase=`Menstrual · Invierno (Pukem) — días 1-${periodLen}`;
     energia='Descanso e introspección. Estrógeno y progesterona en mínimo. Cuerpo pide vaciar.';
     alimentos='🥗 <b>Alimentos:</b> lentejas, espinaca, betarraga, carne roja magra/palta, frutos rojos, chocolate 80% + naranja (hierro+vit C), agua con pizca de sal, ortiga/manzanilla.';
     entreno='🏋️ <b>Entrenamiento:</b> muy suave — yoga restaurativo, estirar 15 min, caminar lento 20-30 min. Evita HIIT/fuerza pesada.';
     practicas='🧘 <b>Prácticas:</b> baño caliente, compresa tibia vientre, diario emocional, decir que no, respiración 4-7-8.';
     cuidados='🌿 <b>Cuidados:</b> prioriza 8h sueño, evita alcohol/cafeína, magnesio (cacao/almendras), calor local.';
-  } else if(d<=13){
-    fase='Folicular · Primavera (Pewü) — días 6-13';
+  } else if(d<ov-2){
+    fase=`Folicular · Primavera (Pewü) — días ${periodLen+1}-${ov-3}`;
     energia='Energía ascendente. Estrógeno sube, ánimo creativo y sociable.';
     alimentos='🥗 <b>Alimentos:</b> brotes, brócoli, zanahoria, quinoa, huevos, pollo/pescado blanco, semillas zapallo, yogur/kéfir.';
     entreno='🏋️ <b>Entrenamiento:</b> progresivo — fuerza, correr, bici, probar deporte nuevo. Buen momento para iniciar rutina.';
     practicas='🧘 <b>Prácticas:</b> planificar siembra/proyectos, brainstorming, ordenar espacios, socializar.';
     cuidados='🌿 <b>Cuidados:</b> zinc y probióticos, hidratación 1.5-2L, luz de mañana 15 min.';
-  } else if(d<=16){
-    fase='Ovulatoria · Verano (Walüng) — días 14-16';
+  } else if(d<=ov+1){
+    fase=`Ovulatoria · Verano (Walüng) — días ${Math.max(periodLen+1,ov-2)}-${ov+1} (ovulación ~día ${ov})`;
     energia='Pico LH/FSH. Fertilidad y magnetismo máximos. Energía plena.';
     alimentos='🥗 <b>Alimentos:</b> ligero y antioxidante — cítricos, pimentón, espárragos, berries, semillas sésamo/girasol, agua de coco.';
     entreno='🏋️ <b>Entrenamiento:</b> pico de rendimiento — HIIT, fuerza máxima, baile, deporte grupal.';
     practicas='🧘 <b>Prácticas:</b> comunicar, presentar, ritual luna llena, creatividad, intimidad consciente.';
     cuidados='🌿 <b>Cuidados:</b> apoya hígado (crucíferas, limón), evita ultraprocesados, hidrátate.';
   } else {
-    fase='Lútea · Otoño (Rimü) — días 17-28';
+    fase=`Lútea · Otoño (Rimü) — días ${ov+2}-${cycleLen}`;
     energia='Progesterona domina y luego cae. Necesidad de anidar, bajar ritmo y poner límites.';
     alimentos='🥗 <b>Alimentos:</b> complejos — avena, camote, arroz integral, plátano, cacao, almendras, sésamo, brócoli; más fibra, menos azúcar/sal/cafeína.';
-    entreno='🏋️ <b>Entrenamiento:</b> 17-22 moderado (pilates, nado, bici suave); 23-28 suave (yin yoga, caminar, estirar, esp. espalda baja).';
+    entreno=`🏋️ <b>Entrenamiento:</b> ${ov+2}-${Math.min(cycleLen,ov+8)} moderado (pilates, nado, bici suave); resto suave (yin yoga, caminar, estirar espalda baja).`;
     practicas='🧘 <b>Prácticas:</b> anidar/ordenar casa, listas, límites claros, meditación, masaje, escritura reflexiva.';
-    cuidados='🌿 <b>Cuidados:</b> magnesio+calcio para PMS, baños tibios, pasiflora/valeriana, dormir temprano, evita decisiones grandes días 26-28.';
+    cuidados='🌿 <b>Cuidados:</b> magnesio+calcio para SPM, baños tibios, pasiflora/valeriana, dormir temprano, evita decisiones grandes los últimos 3 días.';
   }
-  return `<b>Día ${d} — ${fase}</b><br><span style="color:#e76e8a">● Estrógeno ${e}</span> · <span style="color:#7ab8ff">● Progesterona ${p}</span> · <span style="color:#e8c56a">● LH ${l}</span> · <span style="color:#8fd694">● FSH ${f}</span><br><span style="color:var(--muted)">${energia}</span>
+  return `<b>Día ${d}/${cycleLen} — ${fase}</b><br><span style="color:#e76e8a">● Estrógeno ${e}</span> · <span style="color:#7ab8ff">● Progesterona ${p}</span> · <span style="color:#e8c56a">● LH ${l}</span> · <span style="color:#8fd694">● FSH ${f}</span><br><span style="color:var(--muted)">${energia}</span>
     <div class="horm-suggest-grid">
       <div class="horm-suggest-card">${alimentos}</div>
       <div class="horm-suggest-card">${entreno}</div>
@@ -4513,64 +4707,66 @@ function hormDayInfoText(d) {
 }
 function renderHormonalChart(highlightDay) {
   const canvas=$('hormonalChart'); if(!canvas) return;
+  const N = mensAvgLen() || 28;
+  const E = hormScale(HORM.estrogen, N), P = hormScale(HORM.progesterone, N), L = hormScale(HORM.lh, N), F = hormScale(HORM.fsh, N);
   const dpr = window.devicePixelRatio||1;
   const w=480, h=220; canvas.width=w*dpr; canvas.height=h*dpr; canvas.style.width='100%'; const ctx=canvas.getContext('2d'); ctx.setTransform(dpr,0,0,dpr,0,0);
   ctx.clearRect(0,0,w,h);
-  // fondo
   ctx.fillStyle='#161e3f'; ctx.fillRect(0,0,w,h);
   const pad={l:36,r:10,t:12,b:22};
   const plotW=w-pad.l-pad.r, plotH=h-pad.t-pad.b;
-  // grid
   ctx.strokeStyle='#2a3565'; ctx.lineWidth=0.6;
   for(let i=0;i<=4;i++){ const y=pad.t+plotH*i/4; ctx.beginPath(); ctx.moveTo(pad.l,y); ctx.lineTo(w-pad.r,y); ctx.stroke(); ctx.fillStyle='#9aa3c7'; ctx.font='9px sans-serif'; ctx.textAlign='right'; ctx.fillText(String(100-i*25), pad.l-6, y+3); }
-  for(let d=1;d<=28;d+=7){ const x=pad.l+plotW*(d-1)/27; ctx.beginPath(); ctx.moveTo(x,pad.t); ctx.lineTo(x,h-pad.b); ctx.stroke(); ctx.fillStyle='#9aa3c7'; ctx.font='9px sans-serif'; ctx.textAlign='center'; ctx.fillText('D'+d, x, h-6); }
+  const step = N > 35 ? 7 : 7;
+  for(let d=1;d<=N;d+=step){ const x=pad.l+plotW*(d-1)/(N-1); ctx.beginPath(); ctx.moveTo(x,pad.t); ctx.lineTo(x,h-pad.b); ctx.stroke(); ctx.fillStyle='#9aa3c7'; ctx.font='9px sans-serif'; ctx.textAlign='center'; ctx.fillText('D'+d, x, h-6); }
   const colors={estrogen:'#e76e8a',progesterone:'#7ab8ff',lh:'#e8c56a',fsh:'#8fd694'};
-  function drawLine(arr,color,lineW){ ctx.strokeStyle=color; ctx.lineWidth=lineW; ctx.beginPath(); arr.forEach((v,i)=>{ const x=pad.l+plotW*i/27, y=pad.t+plotH*(1-v/100); if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y); }); ctx.stroke(); }
-  drawLine(HORM.estrogen, colors.estrogen, 2);
-  drawLine(HORM.progesterone, colors.progesterone, 2);
-  drawLine(HORM.lh, colors.lh, 2);
-  drawLine(HORM.fsh, colors.fsh, 1.6);
-  // highlight
-  if(highlightDay>=1&&highlightDay<=28){
-    const x=pad.l+plotW*(highlightDay-1)/27;
+  function drawLine(arr,color,lineW){ ctx.strokeStyle=color; ctx.lineWidth=lineW; ctx.beginPath(); arr.forEach((v,i)=>{ const x=pad.l+plotW*i/(N-1), y=pad.t+plotH*(1-v/100); if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y); }); ctx.stroke(); }
+  drawLine(E, colors.estrogen, 2);
+  drawLine(P, colors.progesterone, 2);
+  drawLine(L, colors.lh, 2);
+  drawLine(F, colors.fsh, 1.6);
+  if(highlightDay>=1&&highlightDay<=N){
+    const x=pad.l+plotW*(highlightDay-1)/(N-1);
     ctx.strokeStyle='#ffffff55'; ctx.setLineDash([4,4]); ctx.beginPath(); ctx.moveTo(x,pad.t); ctx.lineTo(x,h-pad.b); ctx.stroke(); ctx.setLineDash([]);
-    // puntos
-    [['estrogen',colors.estrogen],['progesterone',colors.progesterone],['lh',colors.lh],['fsh',colors.fsh]].forEach(([k,c])=>{ const v=HORM[k][highlightDay-1]; const y=pad.t+plotH*(1-v/100); ctx.fillStyle=c; ctx.beginPath(); ctx.arc(x,y,4,0,Math.PI*2); ctx.fill(); ctx.strokeStyle='#fff'; ctx.lineWidth=1; ctx.stroke(); });
+    [['e',E,colors.estrogen],['p',P,colors.progesterone],['l',L,colors.lh],['f',F,colors.fsh]].forEach(([k,arr,c])=>{ const v=arr[highlightDay-1]; const y=pad.t+plotH*(1-v/100); ctx.fillStyle=c; ctx.beginPath(); ctx.arc(x,y,4,0,Math.PI*2); ctx.fill(); ctx.strokeStyle='#fff'; ctx.lineWidth=1; ctx.stroke(); });
   }
-  // leyenda fases fondo
   ctx.fillStyle='#ffffff0a';
-  const phases=[[1,5],[6,13],[14,16],[17,28]];
-  phases.forEach(([a,b])=>{ const x1=pad.l+plotW*(a-1)/27, x2=pad.l+plotW*(b-1)/27; ctx.fillRect(x1,pad.t,x2-x1,plotH); });
+  const P0 = getMensData().periodLen, OV = N - 14;
+  const phases=[[1,P0],[P0+1,Math.max(P0+1,OV-3)],[Math.max(P0+1,OV-2),OV+1],[OV+2,N]];
+  phases.forEach(([a,b])=>{ if(b<a) return; const x1=pad.l+plotW*(a-1)/(N-1), x2=pad.l+plotW*(b-1)/(N-1); ctx.fillRect(x1,pad.t,Math.max(2,x2-x1),plotH); });
 }
 function setupHormonalChart(){
   const canvas=$('hormonalChart'), slider=$('hormDaySlider'), label=$('hormDayLabel'), info=$('hormDayInfo'), tip=$('hormonalTooltip');
   if(!canvas||!slider) return;
+  const N = mensAvgLen() || 28;
+  const P = getMensData().periodLen || 5;
+  slider.max = N;
+  const lenEl = $('mensHormLen'); if (lenEl) lenEl.textContent = N;
   function update(d){
-    const day=Math.min(28,Math.max(1,parseInt(d)||1));
-    slider.value=day; if(label) label.textContent='Día '+day;
-    if(info) info.innerHTML=hormDayInfoText(day);
+    const day=Math.min(N,Math.max(1,parseInt(d)||1));
+    slider.value=day; if(label) label.textContent='Día '+day+'/'+N;
+    if(info) info.innerHTML=hormDayInfoText(day, N, P);
     renderHormonalChart(day);
   }
   slider.oninput=()=> update(slider.value);
   canvas.addEventListener('mousemove', e=>{
     const rect=canvas.getBoundingClientRect(); const x=e.clientX-rect.left; const plotW=rect.width-46; const padL=36*rect.width/480;
-    let day=Math.round((x-padL)/plotW*27)+1; day=Math.min(28,Math.max(1,day));
+    let day=Math.round((x-padL)/plotW*(N-1))+1; day=Math.min(N,Math.max(1,day));
     if(tip){ tip.textContent='Día '+day; tip.style.left=(e.clientX-rect.left)+'px'; tip.style.top='12px'; tip.classList.remove('hidden'); }
     update(day);
   });
   canvas.addEventListener('mouseleave', ()=>{ if(tip) tip.classList.add('hidden'); });
   canvas.addEventListener('click', e=>{
     const rect=canvas.getBoundingClientRect(); const x=e.clientX-rect.left; const plotW=rect.width-46; const padL=36*rect.width/480;
-    let day=Math.round((x-padL)/plotW*27)+1; day=Math.min(28,Math.max(1,day)); update(day);
+    let day=Math.round((x-padL)/plotW*(N-1))+1; day=Math.min(N,Math.max(1,day)); update(day);
   });
-  // inicial según día del ciclo si hay pred
   let initDay=1;
-  try{ const p=getMensPredictions(); if(p){ const todayKey=cal.fmtKey.format(new Date()); const hist=getMensData().history; // calcular día actual del ciclo
-    const last=hist.slice().sort().pop(); if(last){ const diff=Math.floor((mensKeyToMs(todayKey)-mensKeyToMs(last))/86400000); if(diff>=0) initDay=(diff%getMensData().cycleLen)+1; } } }catch{}
+  try{ const cur = mensCurrentDay(); if(cur) initDay = cur.day; }catch{}
   update(initDay);
 }
 const _origOpenMensDialog = openMensDialog;
 openMensDialog = function(){ _origOpenMensDialog(); setTimeout(setupHormonalChart,80); };
+
 
 // === MEDICAMENTOS ===
 function getMedicData(){
@@ -10769,27 +10965,37 @@ function setupGoldenDialog(){
 }
 setTimeout(setupGoldenDialog, 870);
 
-// === PRÁCTICAS ESPIRITUALES: sol, agua, tierra y noche ===
+// === PRÁCTICAS ESPIRITUALES: sol, agua, tierra, noche e interior ===
+const ESP_CATS = { luz:'🌅 Luz', agua:'💧 Agua', tierra:'🦶 Tierra', noche:'🌙 Noche', respiro:'🌬️ Respiro', interior:'🕯️ Interior' };
 const ESP_PRACTICES = [
-  { id:'amanecer', icon:'🌅', nombre:'Sol de amanecer', sub:'luz suave que despierta cortisol bueno', nivel:'Principiante', tiempo:'2–10 min', horario:'Salida del sol ±60 min', mats:'Solo tu cuerpo · opcional manta, cuaderno', cuidado:'Nunca mires fijo al sol. Mira al horizonte, parpadea normal. Si arde o mareas, cierra ojos y sombra.',
+  { id:'amanecer', cat:'luz', icon:'🌅', nombre:'Sol de amanecer', sub:'luz suave que despierta cortisol bueno', nivel:'Principiante', tiempo:'2–10 min', horario:'Salida del sol ±60 min', mats:'Solo tu cuerpo · opcional manta, cuaderno', cuidado:'Nunca mires fijo al sol. Mira al horizonte, parpadea normal. Si arde o mareas, cierra ojos y sombra.', benef:'Energía estable, ánimo y horario de sueño.',
     pasos:['Sal en los primeros 60 min tras la salida (ver hora de hoy arriba).','Párate o siéntate mirando al horizonte, no al disco directo.','Respira por nariz 4 tiempos inhala / 6 exhala, hombros sueltos.','Quédate 2 min (día 1–3), sube a 5–10 min en 2 semanas.','Termina con 3 respiraciones profundas + vaso de agua.'] , mins:5 },
-  { id:'atardecer', icon:'🌇', nombre:'Sol de atardecer', sub:'luz cálida que baja revoluciones', nivel:'Principiante', tiempo:'5–15 min', horario:'Puesta del sol −60 min', mats:'Manta o silla · cuaderno · ropa abrigada', cuidado:'Mismo que amanecer: sin fijar vista, sin lentes de sol oscuros puestos. Abrígate, Penco enfría rápido.',
+  { id:'atardecer', cat:'luz', icon:'🌇', nombre:'Sol de atardecer', sub:'luz cálida que baja revoluciones', nivel:'Principiante', tiempo:'5–15 min', horario:'Puesta del sol −60 min', mats:'Manta o silla · cuaderno · ropa abrigada', cuidado:'Mismo que amanecer: sin fijar vista, sin lentes de sol oscuros puestos. Abrígate, Penco enfría rápido.', benef:'Cierre del día, calma y gratitud.',
     pasos:['Sal 30–60 min antes de la puesta (ver hora de hoy).','Camina lento 5 min o siéntate orientado al oeste.','Suelta hombros, mandíbula y manos; mira el cielo/horizonte.','Agradece en voz baja 3 cosas del día.','Al ocultarse, quédate 2 min en silencio y entra a luz tenue.'], mins:10 },
-  { id:'agua', icon:'💧', nombre:'Agua cargada con sol', sub:'agua solarizada en vidrio', nivel:'Principiante', tiempo:'30 min – 4 h de sol + beber', horario:'10:00–14:00 para carga profunda', mats:'Botella vidrio transparente/azul 1L + tapa · agua potable', cuidado:'Vidrio sí, plástico al sol no. Lavar diario, beber en 24 h. No reemplaza potabilizar si el agua no es segura.',
+  { id:'agua', cat:'agua', icon:'💧', nombre:'Agua cargada con sol', sub:'agua solarizada en vidrio + pausa consciente', nivel:'Principiante', tiempo:'30 min – 4 h de sol + beber', horario:'10:00–14:00 para carga profunda', mats:'Botella vidrio transparente/azul 1L + tapa · agua potable', cuidado:'Vidrio sí, plástico al sol no. Lavar diario, beber en 24 h. No reemplaza potabilizar si el agua no es segura.', benef:'Hidratación con ritual, pausa a mediodía.',
     pasos:['Llena la botella de vidrio ¾ con agua potable.','Tapa sin apretar del todo.','Rápido: 30–60 min al sol de mañana. Profundo: 3–4 h (10–14h).','Entra la botella, deja entibiar a la sombra.','Bebe 1–2 vasos con pausa y respiración; resto en el día.'], mins:2 },
-  { id:'ducha', icon:'🧊', nombre:'Ducha fría consciente', sub:'cierre frío de 15 seg a 3 min', nivel:'Intermedio', tiempo:'15 seg – 3 min frío', horario:'Mañana (despierta) o post-ejercicio', mats:'Ducha · toalla a mano · pieza temperada', cuidado:'Evita si hipertensión descompensada, corazón, embarazo, fiebre o mareos. Nunca cabeza brusco al inicio ni apnea larga.',
+  { id:'ducha', cat:'agua', icon:'🧊', nombre:'Ducha fría consciente', sub:'cierre frío de 15 seg a 3 min', nivel:'Intermedio', tiempo:'15 seg – 3 min frío', horario:'Mañana (despierta) o post-ejercicio', mats:'Ducha · toalla a mano · pieza temperada', cuidado:'Evita si hipertensión descompensada, corazón, embarazo, fiebre o mareos. Nunca cabeza brusco al inicio ni apnea larga.', benef:'Despierta, voluntad y calor interno.',
     pasos:['Dúchate tibio normal primero.','Al final abre fría: piernas 15 seg → brazos 15 seg → pecho 15 seg.','Respira por nariz, exhala largo, no bloquees aire.','Semana 1: 15–30 seg. Suma 15 seg/semana hasta 1–3 min.','Seca enérgico, abrígate y mueve hombros 1 min.'], mins:2 },
-  { id:'grounding', icon:'🦶', nombre:'Grounding / Earthing', sub:'pies descalzos en tierra', nivel:'Principiante', tiempo:'10–20 min', horario:'Mañana o atardecer, tierra seca/sombra', mats:'Pies descalzos · toalla · bolsa basura (lleva tu basura)', cuidado:'Playa solo con bajamar y sin oleaje; roca resbalosa con zapatilla si dudas. Heridas en pies, vidrios o frío extremo: usa pasto limpio o pospón.',
+  { id:'grounding', cat:'tierra', icon:'🦶', nombre:'Grounding / Earthing', sub:'pies descalzos en tierra', nivel:'Principiante', tiempo:'10–20 min', horario:'Mañana o atardecer, tierra seca/sombra', mats:'Pies descalzos · toalla · bolsa basura (lleva tu basura)', cuidado:'Playa solo con bajamar y sin oleaje; roca resbalosa con zapatilla si dudas. Heridas en pies, vidrios o frío extremo: usa pasto limpio o pospón.', benef:'Enraizar, soltar mente acelerada.',
     pasos:['Elige arena húmeda, pasto, tierra de huerta o roca seca segura.','Sácate zapatos/calcetines, pisa 1 min sintiendo textura y temperatura.','Camina lento o párate 10–20 min respirando 4/6.','Si mente corre, nombra 5 cosas que sientes en pies.','Limpia pies, anota cómo quedó tu energía (1–10).'], mins:15 },
-  { id:'luzroja', icon:'🔴', nombre:'Luz roja de noche', sub:'higiene lumínica para melatonina', nivel:'Principiante', tiempo:'Toda la tarde-noche', horario:'Desde 20:30 hasta dormir', mats:'Ampolleta roja/ámbar E27 5–7W + velador · modo noche celu', cuidado:'La roja también se apaga al dormir: oscuridad total. Si trabajas de noche o usas pantallas, baja brillo al mínimo.',
+  { id:'luzroja', cat:'noche', icon:'🔴', nombre:'Luz roja de noche', sub:'higiene lumínica para melatonina', nivel:'Principiante', tiempo:'Toda la tarde-noche', horario:'Desde 20:30 hasta dormir', mats:'Ampolleta roja/ámbar E27 5–7W + velador · modo noche celu', cuidado:'La roja también se apaga al dormir: oscuridad total. Si trabajas de noche o usas pantallas, baja brillo al mínimo.', benef:'Sueño profundo, descanso real.',
     pasos:['Cambia el velador a ampolleta roja/ámbar 5–7W.','Desde las 20:30 apaga blancos/techo, deja solo roja.','Pon celu/PC en modo noche + brillo mínimo.','Cena liviana 2–3 h antes, lectura o ritual luna.','Al acostarte apaga todo: fresco, oscuro y silencioso.'], mins:5 },
-  { id:'respiracion', icon:'🌬️', nombre:'Respiración al sol', sub:'4/6 frente a la mañana', nivel:'Principiante', tiempo:'4 ciclos (3–5 min)', horario:'Junto al sol de amanecer', mats:'Nada · opcional usa 🌬️ Respiración guiada', cuidado:'Sentado si te mareas. Si hiperventilas, vuelve a respiración normal.',
+  { id:'respiracion', cat:'respiro', icon:'🌬️', nombre:'Respiración al sol', sub:'4/6 frente a la mañana', nivel:'Principiante', tiempo:'4 ciclos (3–5 min)', horario:'Junto al sol de amanecer', mats:'Nada · opcional usa 🌬️ Respiración guiada', cuidado:'Sentado si te mareas. Si hiperventilas, vuelve a respiración normal.', benef:'Calma inmediata, foco.',
     pasos:['Siéntate con espalda recta frente a la luz suave.','Inhala 4 tiempos por nariz.','Exhala 6 tiempos por boca entreabierta.','Repite 4 ciclos (puedes usar el temporizador 5 min).','Abre ojos lento, mira el horizonte 30 seg.'], mins:5 },
-  { id:'luna', icon:'🌙', nombre:'Contemplación lunar', sub:'cierre nocturno 5 min', nivel:'Principiante', tiempo:'3–5 min', horario:'Noche con luna visible', mats:'Manta · vela opcional · diario', cuidado:'Abrígate; no uses flash ni mires con prismáticos al sol de día. Solo contemplación.',
+  { id:'luna', cat:'noche', icon:'🌙', nombre:'Contemplación lunar', sub:'cierre nocturno 5 min', nivel:'Principiante', tiempo:'3–5 min', horario:'Noche con luna visible', mats:'Manta · vela opcional · diario', cuidado:'Abrígate; no uses flash ni mires con prismáticos al sol de día. Solo contemplación.', benef:'Soltar el día, gratitud, sueño.',
     pasos:['Sal o asómate donde veas la luna/cielo.','3 respiraciones 4/6 mirando la luna.','Relee tu nota del día en voz baja.','Escribe 1 línea: qué suelto / qué agradezco.','Apaga pantallas y entra a oscuridad.'], mins:5 },
-  { id:'silencio', icon:'🧘', nombre:'Silencio 5 min', sub:'meditación sin app', nivel:'Todos', tiempo:'5 min', horario:'Amanecer o antes de dormir', mats:'Cojín/manta · temporizador de aquí', cuidado:'Si ansiedad fuerte, abre ojos y mira un punto fijo. 5 min basta.',
-    pasos:['Siéntate cómodo, espalda recta, manos en piernas.','Pon el temporizador en 5 min y cierra ojos.','Cuenta exhalaciones 1–10 y vuelve a 1.','Si te pierdes, vuelve amable al conteo.','Al sonar, abre ojos lento + 3 respiraciones.'], mins:5 }
+  { id:'silencio', cat:'interior', icon:'🧘', nombre:'Silencio 5 min', sub:'meditación sin app', nivel:'Todos', tiempo:'5 min', horario:'Amanecer o antes de dormir', mats:'Cojín/manta · temporizador de aquí', cuidado:'Si ansiedad fuerte, abre ojos y mira un punto fijo. 5 min basta.', benef:'Mente quieta, presencia.',
+    pasos:['Siéntate cómodo, espalda recta, manos en piernas.','Pon el temporizador en 5 min y cierra ojos.','Cuenta exhalaciones 1–10 y vuelve a 1.','Si te pierdes, vuelve amable al conteo.','Al sonar, abre ojos lento + 3 respiraciones.'], mins:5 },
+  { id:'gratitud', cat:'interior', icon:'🙏', nombre:'Gratitud 3 líneas', sub:'cambia el foco en 3 min', nivel:'Todos', tiempo:'3 min', horario:'Mañana o noche', mats:'Cuaderno “sol/luna” + lápiz', cuidado:'Sin exigencia: si un día cuesta, escribe algo mínimo (agua, techo, respiro).', benef:'Ánimo, resiliencia y vínculo.',
+    pasos:['Abre tu cuaderno y fecha hoy.','Escribe 3 líneas: “Gracias por… porque…”.','Lee una en voz alta y pon mano en pecho 10 seg.','Si hay un día difícil, agrega: “hoy me sostuvo…”.','Guarda el cuaderno a la vista para mañana.'], mins:3 },
+  { id:'hoponopono', cat:'interior', icon:'🌺', nombre:'Ho’oponopono 2 min', sub:'lo siento · perdóname · gracias · te amo', nivel:'Todos', tiempo:'2–5 min', horario:'Cuando haya roce o culpa', mats:'Nada · opcional módulo 🌺 Ho’oponopono', cuidado:'No es terapia: si hay violencia o crisis, pide apoyo (ver Apoyo). Respira si se mueve emoción fuerte.', benef:'Perdón, soltar carga.',
+    pasos:['Piensa en la situación/persona sin engancharte.','Repite lento 4 frases: lo siento, perdóname, gracias, te amo (x3).','Respira 4/6 entre cada ronda.','Termina con: “suelto lo que no controlo”.','Marca ✅ y sigue tu día liviano.'], mins:2 },
+  { id:'intencion', cat:'interior', icon:'🕯️', nombre:'Oración / Intención', sub:'1 frase que ordena el día', nivel:'Todos', tiempo:'2 min', horario:'Al despertar o al encender vela', mats:'Vela opcional · tu fe o palabras propias', cuidado:'A tu manera: rezo, epew, misa, nguillatun o silencio. Sin dogma.', benef:'Sentido, protección, foco.',
+    pasos:['Párate frente a luz/ventana o enciende vela.','Di tu frase (ej: “hoy actúo con calma y coraje”).','Repite 3 veces lento, mano al corazón.','Pide por 1 persona que lo necesite.','Sopla/apaga y parte el día.'], mins:2 },
+  { id:'decreto', cat:'interior', icon:'✨', nombre:'Decreto y visualización', sub:'ordena mente + cuerpo', nivel:'Intermedio', tiempo:'5 min', horario:'Mañana con sol suave', mats:'Espejo o cuaderno · temporizador', cuidado:'Lenguaje en positivo y presente. Si afirmación te tensa, bájale: “avanzo un paso”.', benef:'Autoestima, dirección.',
+    pasos:['Elige 1 decreto (ej: “soy calma que actúa”).','Mírate o escríbelo 3 veces.','Visualiza 60 seg: tú haciendo eso hoy.','Respira 4/6 y sonríe leve 30 seg.','Cierra: “hecho está, actúo ahora”.'], mins:5 }
 ];
+let ESP_FILTER = { q:'', cat:'todas', nivel:'todos' };
 function getEspiritualData(){
   const u=userData();
   if(!u.espiritual) u.espiritual={ done:{}, notes:{}, custom:[] };
@@ -10831,41 +11037,90 @@ function espSunToday(){
     return { rise:sun.rise, set:sun.set, riseT:f(sun.rise), setT:f(sun.set) };
   }catch(e){ return { rise:null, set:null, riseT:'—', setT:'—' }; }
 }
+function espSuggestToday(){
+  try{
+    const h=new Date().getHours();
+    const k=espTodayKey(); const d=getEspiritualData();
+    const cur=(d.done[k]&&typeof d.done[k]==='object')? d.done[k] : {};
+    const all=getAllEspPractices();
+    let pool=[];
+    if(h<9) pool=['amanecer','respiracion','intencion','gratitud','ducha'];
+    else if(h<12) pool=['agua','grounding','respiracion','decreto'];
+    else if(h<18) pool=['agua','grounding','hoponopono','silencio'];
+    else if(h<20) pool=['atardecer','gratitud','hoponopono'];
+    else pool=['luna','luzroja','silencio','gratitud'];
+    pool=pool.filter(id=>!cur[id]);
+    if(!pool.length) pool=all.filter(p=>!cur[p.id]).map(p=>p.id);
+    if(!pool.length) pool=all.map(p=>p.id);
+    const pick=pool[Math.floor(Date.now()/86400000)%pool.length]||pool[0];
+    return all.find(p=>p.id===pick)||all[0];
+  }catch(e){ const a=getAllEspPractices(); return a[0]; }
+}
+function espFilteredPractices(){
+  const all=getAllEspPractices();
+  const q=(ESP_FILTER.q||'').toLowerCase().trim();
+  return all.filter(p=>{
+    if(ESP_FILTER.cat!=='todas' && (p.cat||'interior')!==ESP_FILTER.cat) return false;
+    if(ESP_FILTER.nivel!=='todos' && (p.nivel||'Todos')!==ESP_FILTER.nivel) return false;
+    if(!q) return true;
+    return ((p.nombre||'')+' '+(p.sub||'')+' '+(p.benef||'')+' '+(ESP_CATS[p.cat]||'')).toLowerCase().includes(q);
+  });
+}
 function renderEspiritualTodayBox(){
   const box=$('espiritualTodayBox'); if(!box) return;
   const s=espSunToday();
   const k=espTodayKey();
   const d=getEspiritualData();
   const doneToday=(d.done[k]&&typeof d.done[k]==='object')? Object.keys(d.done[k]).filter(pid=>d.done[k][pid]).length : 0;
-  const totalP=getAllEspPractices().length||9;
+  const totalP=getAllEspPractices().length||13;
+  const pct=Math.min(100, Math.round(doneToday/Math.max(1,totalP)*100));
+  const sug=espSuggestToday();
   const nowStr=new Intl.DateTimeFormat('es-CL',{timeZone:'America/Santiago',hour:'2-digit',minute:'2-digit'}).format(new Date());
   box.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><span style="font-size:15px"><b>☀️ Hoy Penco</b> · salida <b>${s.riseT}</b> · puesta <b>${s.setT}</b></span><span class="chip">${nowStr} · ${doneToday}/${totalP} hoy</span></div>
-  <p class="muted" style="margin-top:6px">🌅 Amanecer ideal: <b>${s.riseT} → +60 min</b> · 🌇 Atardecer ideal: <b>−60 min → ${s.setT}</b> · 💧 Agua: 10:00–14:00 · 🔴 Roja desde 20:30. <span style="color:var(--gold)">Marca abajo cada práctica hecha.</span></p>`;
+  <div class="esp-progress"><div class="esp-progress-fill" style="width:${pct}%"></div></div>
+  <p class="muted" style="margin-top:6px">🌅 Amanecer ideal: <b>${s.riseT} → +60 min</b> · 🌇 Atardecer ideal: <b>−60 min → ${s.setT}</b> · 💧 Agua: 10:00–14:00 · 🔴 Roja desde 20:30.</p>
+  ${sug?`<div class="esp-suggest">✨ <b>Sugerida ahora:</b> ${sug.icon} <b>${escapeHtml(sug.nombre)}</b> <span class="muted">· ${escapeHtml(sug.tiempo)}</span> <button type="button" class="btn btn-accent esp-suggest-go" data-id="${sug.id}" style="width:auto;font-size:11px;margin-left:6px">▶ Empezar ${sug.mins||5} min</button></div>`:''}`;
+  const go=box.querySelector('.esp-suggest-go');
+  if(go) go.onclick=()=>{
+    const sel=$('espTimerPractice'); if(sel) sel.value=go.dataset.id;
+    const f=getAllEspPractices().find(x=>x.id===go.dataset.id);
+    const mm=$('espTimerMinutes'); if(mm&&f) mm.value=String(f.mins||5);
+    espTimerReset(); espTimerStart();
+    const dd=$('espTimerDisplay'); if(dd) dd.scrollIntoView({behavior:'smooth', block:'center'});
+  };
 }
 function renderEspiritualCards(){
   const box=$('espiritualCards'); if(!box) return;
   const s=espSunToday();
-  const horaTxt={ amanecer:`${s.riseT} → +60 min`, atardecer:`−60 min → ${s.setT}`, agua:'10:00–14:00', ducha:'mañana', grounding:'mañana/tarde', luzroja:'20:30 → dormir', respiracion:`con amanecer ${s.riseT}`, luna:'noche', silencio:'amanecer/noche' };
-  const all=getAllEspPractices();
-  box.innerHTML=all.map(p=>`
-    <div class="esp-card">
-      <div class="esp-card-head"><span class="esp-icon">${p.icon}</span>
-        <div class="esp-titles"><div class="esp-name">${escapeHtml(p.nombre)}</div><div class="esp-sub">${escapeHtml(p.sub)}</div></div>
+  const k=espTodayKey(); const dd=getEspiritualData();
+  const curDone=(dd.done[k]&&typeof dd.done[k]==='object')? dd.done[k] : {};
+  const horaTxt={ amanecer:`${s.riseT} → +60 min`, atardecer:`−60 min → ${s.setT}`, agua:'10:00–14:00', ducha:'mañana', grounding:'mañana/tarde', luzroja:'20:30 → dormir', respiracion:`con amanecer ${s.riseT}`, luna:'noche', silencio:'amanecer/noche', gratitud:'mañana/noche 3 min', hoponopono:'cuando lo necesites', intencion:'al despertar', decreto:'mañana' };
+  const all=espFilteredPractices();
+  const totalAll=getAllEspPractices().length;
+  if(!all.length){ box.innerHTML='<p class="muted" style="font-size:12px;padding:8px">Sin resultados. Prueba otra palabra o limpia los filtros. <button type="button" class="btn" id="espClearF" style="width:auto;font-size:11px">Limpiar filtros</button></p>'; const cf=$('espClearF'); if(cf) cf.onclick=()=>{ ESP_FILTER={q:'',cat:'todas',nivel:'todos'}; renderEspFilters(); renderEspiritualCards(); }; return; }
+  box.innerHTML=`<p class="muted" style="font-size:11px;margin:4px 0 8px">Mostrando <b>${all.length}/${totalAll}</b> · toca el título para abrir/cerrar · 🔥 = racha de días seguidos</p>`+all.map(p=>{
+    const st=espStreak(p.id); const done=!!curDone[p.id];
+    const catLbl=ESP_CATS[p.cat]||'🕯️ Interior';
+    return `
+    <details class="esp-card" ${done?'':''}>
+      <summary class="esp-card-head"><span class="esp-icon">${p.icon}</span>
+        <div class="esp-titles"><div class="esp-name">${escapeHtml(p.nombre)} ${done?'<span class="chip" style="font-size:10px">✅ hoy</span>':''} ${st>1?`<span class="chip" style="font-size:10px;background:#ff9a3c22;color:#ff9a3c;border-color:#ff9a3c55">🔥${st}</span>`:''}</div><div class="esp-sub">${escapeHtml(p.sub)}</div><div class="esp-cat">${catLbl} · ${escapeHtml(p.nivel)} · ⏱ ${escapeHtml(p.tiempo)}</div></div>
         <span class="chip esp-level">${escapeHtml(p.nivel)}</span>
-      </div>
+      </summary>
       <div class="esp-body">
-        <div class="esp-meta"><span class="esp-pill gold">⏱ ${escapeHtml(p.tiempo)}</span><span class="esp-pill green">🕐 ${escapeHtml(horaTxt[p.id]||p.horario)}</span><span class="esp-pill">🎒 ${escapeHtml(p.mats)}</span></div>
-        <ol class="esp-steps">${(p.pasos||[]).map(st=>`<li>${escapeHtml(st)}</li>`).join('')}</ol>
+        <div class="esp-meta"><span class="esp-pill gold">⏱ ${escapeHtml(p.tiempo)}</span><span class="esp-pill green">🕐 ${escapeHtml(horaTxt[p.id]||p.horario)}</span><span class="esp-pill">🎒 ${escapeHtml(p.mats)}</span>${p.benef?`<span class="esp-pill" style="border-color:var(--gold);color:var(--gold)">💛 ${escapeHtml(p.benef)}</span>`:''}</div>
+        <ol class="esp-steps">${(p.pasos||[]).map(st2=>`<li>${escapeHtml(st2)}</li>`).join('')}</ol>
         <p class="esp-pill red" style="margin:0">⚠️ ${escapeHtml(p.cuidado)}</p>
         <div class="esp-actions">
-          <button type="button" class="btn btn-accent esp-done" data-id="${p.id}" style="width:auto;font-size:11px">✅ Hice esta hoy</button>
+          <button type="button" class="btn ${done?'':'btn-accent'} esp-done" data-id="${p.id}" style="width:auto;font-size:11px">${done?'✅ Hecha hoy (quitar)':'✅ Hice esta hoy'}</button>
           <button type="button" class="btn esp-timer" data-id="${p.id}" data-mins="${p.mins}" style="width:auto;font-size:11px">⏱ ${p.mins} min</button>
           <button type="button" class="btn esp-agendar" data-id="${p.id}" style="width:auto;font-size:11px">🕐 Agendar</button>
           ${p.custom?`<button type="button" class="btn esp-del" data-id="${p.id}" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕ Borrar</button>`:''}
         </div>
       </div>
-    </div>`).join('');
-  box.querySelectorAll('.esp-done').forEach(b=> b.onclick=()=>{ espMarkDone(b.dataset.id, true); });
+    </details>`;
+  }).join('');
+  box.querySelectorAll('.esp-done').forEach(b=> b.onclick=(ev)=>{ ev.preventDefault(); const id=b.dataset.id; const d2=getEspiritualData(); const kk=espTodayKey(); const isD=!!(d2.done[kk]&&d2.done[kk][id]); espMarkDone(id, !isD); });
   box.querySelectorAll('.esp-timer').forEach(b=> b.onclick=()=>{
     const sel=$('espTimerPractice'); if(sel) sel.value=b.dataset.id;
     const mm=$('espTimerMinutes'); if(mm) mm.value=String(b.dataset.mins);
@@ -10874,6 +11129,12 @@ function renderEspiritualCards(){
   });
   box.querySelectorAll('.esp-agendar').forEach(b=> b.onclick=()=> espAgendar(b.dataset.id));
   box.querySelectorAll('.esp-del').forEach(b=> b.onclick=()=>{ if(!confirm('¿Borrar tu práctica?')) return; espCustomDel(b.dataset.id); });
+}
+function renderEspFilters(){
+  const q=$('espSearch'), c=$('espFilterCat'), n=$('espFilterNivel');
+  if(q && q.value!==(ESP_FILTER.q||'')) q.value=ESP_FILTER.q||'';
+  if(c) c.value=ESP_FILTER.cat||'todas';
+  if(n) n.value=ESP_FILTER.nivel||'todos';
 }
 function espMarkDone(pid, val){
   const k=espTodayKey(); const d=getEspiritualData();
@@ -10913,12 +11174,20 @@ function renderEspStats(){
   const keys=Object.keys(d.done).sort().slice(-7);
   let totalWeek=0;
   keys.forEach(k=>{ const o=d.done[k]; if(o&&typeof o==='object') totalWeek+=Object.values(o).filter(Boolean).length; });
+  const maxDay=Math.max(1,...keys.map(k=>{ const o=d.done[k]; return o? Object.values(o).filter(Boolean).length:0; }));
+  const bars=keys.map(k=>{
+    const o=d.done[k]||{}; const n=Object.values(o).filter(Boolean).length;
+    const h=Math.round(n/maxDay*56)+4;
+    const lbl=(k||'').slice(5);
+    return `<div class="esp-bar-col" title="${k}: ${n}"><div class="esp-bar" style="height:${h}px"></div><span>${lbl}</span><b>${n}</b></div>`;
+  }).join('')||'<p class="muted" style="font-size:11px">Sin datos aún.</p>';
   const rows=getAllEspPractices().map(p=>{
     let c7=0; keys.forEach(k=>{ if(d.done[k]&&d.done[k][p.id]) c7++; });
-    return `<span class="esp-pill ${c7>0?'gold':''}">${p.icon} ${escapeHtml(p.nombre)}: <b>${c7}/7</b></span>`;
+    const st=espStreak(p.id);
+    return `<span class="esp-pill ${c7>0?'gold':''}">${p.icon} ${escapeHtml(p.nombre)}: <b>${c7}/7</b>${st>1?` · 🔥${st}`:''}</span>`;
   }).join('');
-  box.innerHTML=`<h4>📊 Últimos 7 días: <b>${totalWeek}</b> prácticas</h4><div class="esp-meta" style="margin-top:6px">${rows}</div>
-  <p class="muted" style="font-size:11px;margin-top:6px">Consejo: racha se construye con 1–2 prácticas diarias, no con las 9. Si fallas un día, retoma al siguiente sin culpa.</p>`;
+  box.innerHTML=`<h4>📊 Últimos 7 días: <b>${totalWeek}</b> prácticas</h4><div class="esp-bars">${bars}</div><div class="esp-meta" style="margin-top:8px">${rows}</div>
+  <p class="muted" style="font-size:11px;margin-top:6px">Consejo: la racha se construye con 1–2 prácticas diarias, no con las 13. Si fallas un día, retoma al siguiente sin culpa.</p>`;
 }
 function renderEspLog(){
   const box=$('espLogBox'); if(!box) return;
@@ -10973,7 +11242,7 @@ function espTimerStart(){
       alert('⏱ Práctica terminada. ¡Bien! Quedó marcada ✅'); }
   },1000);
 }
-function renderEspiritualAll(){ renderEspTimerOptions(); renderEspiritualTodayBox(); renderEspiritualCards(); renderEspTodayChecks(); renderEspStats(); renderEspLog(); espTimerPaint(); }
+function renderEspiritualAll(){ renderEspTimerOptions(); renderEspFilters(); renderEspiritualTodayBox(); renderEspiritualCards(); renderEspTodayChecks(); renderEspStats(); renderEspLog(); espTimerPaint(); }
 function setupEspiritualDialog(){
   const btn=$('btnEspiritual'); if(btn) btn.onclick=()=>{ renderEspiritualAll(); $('espiritualDialog').showModal(); };
   const ct=$('espiritualCloseTop'), cb=$('espiritualClose'); if(ct) ct.onclick=()=>$('espiritualDialog').close(); if(cb) cb.onclick=()=>$('espiritualDialog').close();
@@ -10986,6 +11255,9 @@ function setupEspiritualDialog(){
     if(which!=='p'&&which==='r'){ renderEspTodayChecks(); renderEspStats(); renderEspLog(); }
   }
   if(tP) tP.onclick=()=>tab('p'); if(tK) tK.onclick=()=>tab('k'); if(tR) tR.onclick=()=>tab('r');
+  const fQ=$('espSearch'); if(fQ) fQ.oninput=()=>{ ESP_FILTER.q=fQ.value||''; renderEspiritualCards(); };
+  const fC=$('espFilterCat'); if(fC) fC.onchange=()=>{ ESP_FILTER.cat=fC.value||'todas'; renderEspiritualCards(); };
+  const fN=$('espFilterNivel'); if(fN) fN.onchange=()=>{ ESP_FILTER.nivel=fN.value||'todos'; renderEspiritualCards(); };
   const mm=$('espTimerMinutes'); if(mm) mm.onchange=()=>espTimerReset();
   const pr=$('espTimerPractice'); if(pr) pr.onchange=()=>{ const f=getAllEspPractices().find(x=>x.id===pr.value); if(f&&mm){ mm.value=String(f.mins); espTimerReset(); } };
   const bS=$('espTimerStart'); if(bS) bS.onclick=()=>espTimerStart();
@@ -11010,7 +11282,8 @@ function setupEspiritualDialog(){
     const icon=(($('espCustomIcon')||{}).value||'').trim()||'🕯️';
     const desc=sanitizeText(($('espCustomDesc')||{}).value||'',80).trim()||'Mi práctica personal';
     const d=getEspiritualData();
-    d.custom.push({ id:'c'+Date.now(), icon, nombre, sub:desc, nivel:'Mía', tiempo:mins+' min', horario:'a tu hora', mats:'lo que tengas', cuidado:'A tu ritmo, sin forzar. Si hay mareo o malestar, pausa.', pasos:['Prepara tu espacio: '+desc+'.','Pon el temporizador en '+mins+' min y empieza.','Hazla 7 días seguidos y marca ✅ cada día.'], mins, custom:true });
+    const catSel=(($('espCustomCat')||{}).value||'interior');
+    d.custom.push({ id:'c'+Date.now(), cat:catSel, icon, nombre, sub:desc, nivel:'Mía', tiempo:mins+' min', horario:'a tu hora', mats:'lo que tengas', cuidado:'A tu ritmo, sin forzar. Si hay mareo o malestar, pausa.', benef:'Mi intención personal.', pasos:['Prepara tu espacio: '+desc+'.','Pon el temporizador en '+mins+' min y empieza.','Hazla 7 días seguidos y marca ✅ cada día.'], mins, custom:true });
     scheduleSave('Práctica guardada 🕉️');
     $('espCustomName').value=''; $('espCustomDesc').value='';
     renderEspTimerOptions(); renderEspiritualTodayBox(); renderEspiritualCards(); renderEspTodayChecks(); renderEspStats();

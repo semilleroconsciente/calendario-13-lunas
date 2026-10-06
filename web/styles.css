@@ -545,9 +545,23 @@ body[data-theme="medianoche"] { --bg:#050508; --bg2:#0a0a10; --panel:#141418; --
 /* Voz de los Abuelos — desbloqueo lunar y voces */
 #vozDialog audio { border-radius:8px; background:var(--panel); }
 #vozDiaBox { line-height:1.5; }
-/* Prácticas Espirituales — fichas */
+/* Prácticas Espirituales — fichas mejoradas */
+.esp-filters { display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; }
+.esp-filters label { display: flex; flex-direction: column; gap: 4px; font-size: 11px; color: var(--muted); flex: 1; min-width: 110px; }
+.esp-filters input, .esp-filters select { font-size: 13px; }
+.esp-progress { height: 8px; background: var(--panel); border: 1px solid var(--line); border-radius: 999px; overflow: hidden; margin-top: 8px; }
+.esp-progress-fill { height: 100%; background: linear-gradient(90deg, var(--gold), #ff9a3c); transition: width .3s; }
+.esp-suggest { margin-top: 8px; background: rgba(232,197,106,0.08); border: 1px dashed rgba(232,197,106,0.5); border-radius: 10px; padding: 8px 10px; font-size: 12px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.esp-bars { display: flex; gap: 8px; align-items: flex-end; margin-top: 8px; min-height: 80px; }
+.esp-bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 10px; color: var(--muted); }
+.esp-bar-col b { color: var(--gold); font-size: 11px; }
+.esp-bar { width: 100%; max-width: 34px; background: linear-gradient(180deg, var(--gold), #7a5c1e); border-radius: 6px 6px 2px 2px; min-height: 4px; }
+.esp-cat { font-size: 11px; color: var(--muted); }
 .esp-card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; margin-bottom: 10px; }
+.esp-card summary::-webkit-details-marker { display: none; }
+.esp-card summary { list-style: none; cursor: pointer; }
 .esp-card-head { display: flex; gap: 10px; align-items: center; padding: 10px 12px; background: rgba(232,197,106,0.06); border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+.esp-card[open] .esp-card-head { background: rgba(232,197,106,0.12); }
 .esp-icon { font-size: 24px; flex: 0 0 auto; }
 .esp-titles { flex: 1; min-width: 180px; }
 .esp-name { font-weight: 700; font-size: 14px; color: var(--text); }
@@ -651,6 +665,33 @@ body[data-theme="medianoche"] { --bg:#050508; --bg2:#0a0a10; --panel:#141418; --
 .menstrual-details { margin-top: 10px; background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; }
 .menstrual-details summary { cursor: pointer; color: var(--accent); font-weight: 600; font-size: 13px; }
 .menstrual-predict { background: linear-gradient(135deg, var(--panel), var(--card)); border-color: var(--gold); }
+.mens-today-banner { background: linear-gradient(135deg, #e76e8a22, var(--card)); border: 1px solid #e76e8a55; border-radius: 12px; padding: 10px 14px; margin-bottom: 10px; font-size: 13px; line-height: 1.5; }
+.mens-banner-top { display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+.mens-banner-day { font-weight: 800; color: var(--gold); font-size: 15px; }
+.mens-banner-phase { font-weight: 700; color: var(--text); font-size: 13px; }
+.mens-progress { height: 8px; background: var(--panel); border: 1px solid var(--line); border-radius: 99px; overflow: hidden; margin: 8px 0 6px; }
+.mens-progress-fill { height: 100%; background: linear-gradient(90deg, #e76e8a, var(--gold)); transition: width .3s; }
+.mens-banner-sub { font-size: 12px; color: var(--muted); }
+.mens-stats { margin-top: 8px; }
+.mens-stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 8px; }
+@media (max-width:560px){ .mens-stat-grid { grid-template-columns: repeat(2, 1fr); } }
+.mens-stat { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 6px 4px; text-align: center; font-size: 13px; }
+.mens-stat b { color: var(--gold); display: block; font-size: 14px; }
+.mens-stat span { display: block; font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .4px; }
+.mens-warn { background: #e8a06a14; border-left: 3px solid #e8a06a; border-radius: 6px; padding: 6px 8px; font-size: 11px; margin-top: 6px; line-height: 1.5; }
+.mens-phase-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 8px; }
+@media (max-width:560px){ .mens-phase-row { grid-template-columns: repeat(2, 1fr); } }
+.mens-phase { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 8px 6px; text-align: center; font-size: 11px; opacity: .55; display: flex; flex-direction: column; gap: 2px; }
+.mens-phase.on { opacity: 1; border-color: var(--gold); outline: 1.5px solid var(--gold); background: var(--card-hover); }
+.mens-phase span { font-size: 18px; }
+.mens-phase b { color: var(--text); font-size: 11px; }
+.mens-phase small { color: var(--muted); font-size: 10px; }
+.mens-sympt-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
+@media (max-width:560px){ .mens-sympt-grid { grid-template-columns: 1fr; } }
+.mens-sympt-grid label { display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: var(--muted); }
+.mens-sympt-grid select, .mens-sympt-grid input { font-size: 13px; padding: 7px; border-radius: 6px; border: 1px solid var(--line); background: var(--card); color: var(--text); }
+#menstrualDialog { width: 640px; }
+
 
 .hormonal-legend { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 8px; font-size: 11px; color: var(--muted); }
 .horm-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-right: 4px; vertical-align: middle; }
