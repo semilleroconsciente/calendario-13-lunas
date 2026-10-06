@@ -1,12 +1,14 @@
 {
   "name": "calendario-13-lunas",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "description": "Calendario de las 13 Lunas - Mari Küla Küyen - Penco, Bío-Bío, Chile",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
     "build:win": "electron-builder --win portable",
-    "build": "electron-builder --win portable"
+    "build": "electron-builder --win portable",
+    "movil:sync": "cap sync android",
+    "movil:apk": "cap sync android"
   },
   "license": "MIT",
   "type": "commonjs",
@@ -39,6 +41,8 @@
       "tolteca-modulo.js",
       "tao-modulo.js",
       "anastasia-modulo.js",
+      "ami-modulo.js",
+      "estoicismo-modulo.js",
       "constelaciones-modulo.js",
       "metodo-silva-modulo.js",
       "grabovoi-modulo.js",
@@ -65,6 +69,7 @@
       "neurodiversidad-modulo.js",
       "kin-maya-modulo.js",
       "tarot-modulo.js",
+      "numerologia-modulo.js",
       "oraculo-modulo.js",
       "adolescencia-modulo.js",
       "etapas-vida-modulo.js",
@@ -72,6 +77,7 @@
       "red-comunitaria-modulo.js",
       "convivencia-vecinal-modulo.js",
       "ciberseguridad-modulo.js",
+      "ia-modulo.js",
       "hidroponia-modulo.js",
       "huerta-modulo.js",
       "mecanica-modulo.js",
@@ -93,6 +99,7 @@
       "actores-territorio.js",
       "negocios-penco.js",
       "moneda-social.js",
+      "finanzas-negocio-modulo.js",
       "territorio-fase2.js",
       "qrcode-lib.js",
       "jsqr-lib.js",
@@ -110,12 +117,21 @@
       "assets/**/*"
     ],
     "win": {
-      "target": ["portable"],
+      "target": [
+        "portable"
+      ],
       "icon": "icon.ico"
     }
   },
   "devDependencies": {
+    "@capacitor/assets": "^3.0.5",
     "electron": "^43.4.1",
-    "electron-builder": "^26.x"
+    "electron-builder": "^26.x",
+    "typescript": "^7.0.2"
+  },
+  "dependencies": {
+    "@capacitor/android": "^6.2.2",
+    "@capacitor/cli": "^6.2.2",
+    "@capacitor/core": "^6.2.2"
   }
 }

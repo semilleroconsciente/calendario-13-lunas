@@ -672,7 +672,7 @@ function registerVisibility() {
   try {
     if (typeof PRESETS !== 'undefined') {
       Object.keys(PRESETS).forEach(function (p) {
-        if (PRESETS[p] && p !== 'esencial' && p !== 'infantil') PRESETS[p][BTN_ID] = true;
+        if (PRESETS[p] && p !== 'esencial') PRESETS[p][BTN_ID] = true;
       });
       if (PRESETS.esencial) PRESETS.esencial[BTN_ID] = true;
     }

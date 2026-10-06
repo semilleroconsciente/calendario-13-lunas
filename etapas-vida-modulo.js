@@ -666,7 +666,7 @@ function injectButtons() {
         Object.keys(PRESETS).forEach(function (pr) {
           if (!PRESETS[pr]) return;
           if (pr === 'todo' || pr === 'adulto') PRESETS[pr][cf.btn] = true;
-          else if (pr === 'infantil' || pr === 'adolescente' || pr === 'estudiante') PRESETS[pr][cf.btn] = (cf.key === 'juv' && pr === 'adolescente') ? true : false;
+          else if (pr === 'adolescente' || pr === 'estudiante') PRESETS[pr][cf.btn] = (cf.key === 'juv' && pr === 'adolescente') ? true : false;
           else if (pr === 'mayor') PRESETS[pr][cf.btn] = (cf.key !== 'juv');
           else if (pr === 'salud') PRESETS[pr][cf.btn] = (cf.key === 'adu' || cf.key === 'cli' || cf.key === 'vej');
           else if (pr === 'docente') PRESETS[pr][cf.btn] = false;

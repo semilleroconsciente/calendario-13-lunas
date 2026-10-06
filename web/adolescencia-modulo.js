@@ -408,7 +408,6 @@ function setup() {
       Object.keys(PRESETS).forEach(function (p) { if (PRESETS[p]) PRESETS[p].btnAdolescencia = true; });
       if (PRESETS.adolescente) PRESETS.adolescente.btnAdolescencia = true;
       if (PRESETS.estudiante) PRESETS.estudiante.btnAdolescencia = true;
-      if (PRESETS.infantil) PRESETS.infantil.btnAdolescencia = false;
     }
   } catch (e) {}
   try { if (typeof updateGroupCounts === 'function') updateGroupCounts(); } catch (e) {}

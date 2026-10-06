@@ -530,7 +530,7 @@ function registerVisibility() {
   try {
     if (typeof PRESETS !== 'undefined') {
       Object.keys(PRESETS).forEach(function (p) {
-        if (PRESETS[p] && p !== 'esencial' && p !== 'infantil') {
+        if (PRESETS[p] && p !== 'esencial') {
           BTNS.forEach(function (b) { PRESETS[p][b.id] = true; });
         }
       });

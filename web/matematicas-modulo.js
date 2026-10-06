@@ -987,7 +987,7 @@ function setup() {
   try {
     if (typeof PRESETS !== 'undefined') {
       Object.keys(PRESETS).forEach(function (p) {
-        if (PRESETS[p] && (p === 'todo' || p === 'adulto' || p === 'estudiante' || p === 'docente' || p === 'adolescente' || p === 'infantil')) PRESETS[p].btnMatematicas = true;
+        if (PRESETS[p] && (p === 'todo' || p === 'adulto' || p === 'estudiante' || p === 'docente' || p === 'adolescente')) PRESETS[p].btnMatematicas = true;
       });
     }
   } catch (e5) {}

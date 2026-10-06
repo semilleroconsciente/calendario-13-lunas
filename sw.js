@@ -1,6 +1,6 @@
 ﻿// Service Worker — Calendario 13 Lunas (offline-first, tolerante a versiones ?v=)
 // v54
-const CACHE = 'cal13-v56-offline';
+const CACHE = 'cal13-v57-offline';
 
 // Lista completa de archivos que usa index.html (bare + con ?v=).
 // Si se agrega un JS nuevo en index.html, agregarlo aquí también (bare y ?v=).
@@ -84,6 +84,8 @@ const CORE = [
   './tao-modulo.js?v=1',
   './anastasia-modulo.js',
   './anastasia-modulo.js?v=1',
+  './ami-modulo.js',
+  './ami-modulo.js?v=1',
   './estoicismo-modulo.js',
   './estoicismo-modulo.js?v=1',
   './constelaciones-modulo.js',
@@ -151,6 +153,9 @@ const CORE = [
   './convivencia-vecinal-modulo.js?v=1',
   './ciberseguridad-modulo.js',
   './ciberseguridad-modulo.js?v=1',
+  './ia-modulo.js',
+  './ia-modulo.js?v=1',
+  './ia-modulo.js?v=2',
   './hidroponia-modulo.js',
   './hidroponia-modulo.js?v=2',
   './huerta-modulo.js',
@@ -194,6 +199,8 @@ const CORE = [
   './negocios-penco.js?v=2',
   './moneda-social.js',
   './moneda-social.js?v=1',
+  './finanzas-negocio-modulo.js',
+  './finanzas-negocio-modulo.js?v=1',
   './territorio-fase2.js',
   './territorio-fase2.js?v=1',
   './qrcode-lib.js',

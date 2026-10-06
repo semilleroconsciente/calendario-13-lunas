@@ -118,9 +118,36 @@ function setupThemeSelector() {
 }
 
 // === 🏠 PANTALLA DE INICIO PERSONALIZABLE (⚙️ Personalizar) ===
-// Guarda por usuario en DATA.config.home = { startView, blocks:{frase,solLuna,notas,agenda,habitos,animo,suenos,comidas,tareas,compras,finanzas,disciplina,respiracion,ciclo,clima,mareas,gratitud,horario,entreno,medicina,siembra,espiritual,ritmo,ekadashi} }
-const HOME_BLOCKS_DEFAULT = { frase: true, solLuna: true, notas: true, agenda: true, habitos: true, animo: true, suenos: true, comidas: true, tareas: true, compras: true, finanzas: true, disciplina: true, respiracion: true, ciclo: true, clima: true, mareas: true, gratitud: true, horario: true, entreno: true, medicina: true, siembra: true, espiritual: true, ritmo: true, ekadashi: true };
+// Guarda por usuario en DATA.config.home = { startView, blocks:{...} }
+// v1.6.0: 34 bloques. Los 10 nuevos (pesca, bosque, aves, huerta, estudio,
+// cuentos, familia, emergencia, comunidad, energia) son tarjetas-resumen con
+// botón "Abrir" hacia su módulo. Cada perfil (👥 Perfiles) trae su propia
+// pantalla de inicio (HOME_PRESETS): al tocar un perfil se aplican secciones
+// visibles + vista inicial + bloques de ◉ Hoy. Luego puedes afinar a mano.
+const HOME_BLOCKS_DEFAULT = { frase: true, solLuna: true, notas: true, agenda: true, habitos: true, animo: true, suenos: true, comidas: true, tareas: true, compras: true, finanzas: true, disciplina: true, respiracion: true, ciclo: true, clima: true, mareas: true, gratitud: true, horario: true, entreno: true, medicina: true, siembra: true, espiritual: true, ritmo: true, ekadashi: true, pesca: true, bosque: true, aves: true, huerta: true, estudio: true, cuentos: true, familia: true, emergencia: true, comunidad: true, energia: true };
 const HOME_VIEWS = ['auto', 'hoy', 'luna', 'semanaLunar', 'mes', 'semana', 'completa'];
+// Pantalla de inicio sugerida por perfil (lista de bloques visibles + vista).
+// 'todo' y 'adulto' muestran todo. El resto muestra lo esencial de su rol.
+const HOME_PRESETS = {
+  todo: { startView: 'auto', show: Object.keys(HOME_BLOCKS_DEFAULT) },
+  esencial: { startView: 'hoy', show: ['frase','solLuna','notas','agenda','habitos','animo','clima','mareas','gratitud','disciplina','respiracion','emergencia','comunidad'] },
+  adolescente: { startView: 'hoy', show: ['frase','solLuna','notas','agenda','habitos','animo','suenos','estudio','cuentos','disciplina','respiracion','gratitud','horario','entreno','ciclo','clima','mareas','familia'] },
+  adulto: { startView: 'auto', show: Object.keys(HOME_BLOCKS_DEFAULT) },
+  mayor: { startView: 'hoy', show: ['frase','solLuna','notas','agenda','habitos','animo','suenos','comidas','medicina','ciclo','clima','mareas','gratitud','espiritual','ritmo','familia','emergencia','energia','cuentos'] },
+  estudiante: { startView: 'hoy', show: ['frase','solLuna','notas','agenda','habitos','animo','suenos','disciplina','horario','estudio','cuentos','gratitud','respiracion','finanzas','clima','energia'] },
+  agricultor: { startView: 'luna', show: ['frase','solLuna','notas','agenda','clima','mareas','siembra','huerta','bosque','aves','compras','finanzas','ritmo','ekadashi','comunidad','energia','tareas'] },
+  pescador: { startView: 'luna', show: ['frase','solLuna','notas','agenda','clima','mareas','pesca','bosque','aves','ritmo','ekadashi','emergencia','comunidad','tareas'] },
+  salud: { startView: 'hoy', show: ['frase','solLuna','notas','agenda','habitos','animo','suenos','comidas','disciplina','respiracion','ciclo','clima','gratitud','entreno','medicina','espiritual','ritmo','energia','emergencia'] },
+  deportista: { startView: 'hoy', show: ['frase','solLuna','notas','agenda','habitos','animo','comidas','disciplina','entreno','medicina','clima','mareas','ritmo','energia','respiracion'] },
+  docente: { startView: 'hoy', show: ['frase','solLuna','notas','agenda','habitos','animo','estudio','cuentos','horario','familia','gratitud','clima','comunidad','siembra','huerta'] }
+};
+function homeBlocksForPreset(name) {
+  const p = HOME_PRESETS[name];
+  if (!p) return null;
+  const out = {};
+  Object.keys(HOME_BLOCKS_DEFAULT).forEach(k => { out[k] = p.show.indexOf(k) >= 0; });
+  return { startView: HOME_VIEWS.includes(p.startView) ? p.startView : 'auto', blocks: out };
+}
 function getHomeConfig() {
   const d = (DATA.config && DATA.config.home) || {};
   const blocks = Object.assign({}, HOME_BLOCKS_DEFAULT, d.blocks || {});
@@ -668,7 +695,19 @@ function renderTodayView(){
     + '</div><div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap"><button type="button" id="todayRitmoOpen" class="btn" style="flex:1;width:auto">🌞 Abrir Ritmo</button><button type="button" id="todayGoldenOpen" class="btn" style="flex:1;width:auto">📸 Hora Dorada</button></div></div>')
     + (hb.ekadashi === false ? '' : '<div class="today-card"><h3>📿 Ekadashi / ayuno</h3>'
     + (function(){ try{ let t=null; try{ t=(window.astro&&typeof window.astro.tithi==='function'?window.astro.tithi(noonMs):null); }catch(e){} if(t===11) return '<p style="font-size:12px">🌙 <b>Hoy es Ekadashi Shukla</b> (tithi 11). Día de aligerar: fruta, agua, calma.</p>'; if(t===26) return '<p style="font-size:12px">🌙 <b>Hoy es Ekadashi Krishna</b> (tithi 26). Día de aligerar: fruta, agua, calma.</p>'; if(typeof t==='number') return '<p class="muted" style="font-size:11px">Hoy tithi '+t+'. Ekadashi cae en tithi 11 y 26 — el próximo se marca en 📿 Ekadashi.</p>'; return '<p class="muted" style="font-size:11px">Revisa en 📿 Ekadashi si hoy toca ayuno suave.</p>'; }catch(e){ return ''; } })()
-    + '<div style="margin-top:8px"><button type="button" id="todayEkaOpen" class="btn" style="width:100%">📿 Abrir Ekadashi</button></div></div>');
+    + '<div style="margin-top:8px"><button type="button" id="todayEkaOpen" class="btn" style="width:100%">📿 Abrir Ekadashi</button></div></div>')
+    + (hb.pesca === false ? '' : '<div class="today-card"><h3>🎣 Pesca hoy</h3><p class="muted" style="font-size:11px">Pique según luna y pleamar: amanecer y 2h alrededor de pleamar (ver 🌊 Mareas). Respeta vedas y tallas.</p><div style="margin-top:8px"><button type="button" data-go="btnFishing" class="btn" style="width:100%">🎣 Abrir Pesca</button></div></div>')
+    + (hb.bosque === false ? '' : '<div class="today-card"><h3>🌳 Bosque hoy</h3><p class="muted" style="font-size:11px">Menguante otoñal: plantar y podar. Creciente primavera: esquejes. Cosecha solo el 30%, deja el resto al bosque.</p><div style="margin-top:8px"><button type="button" data-go="btnBosque" class="btn" style="width:100%">🌳 Abrir Bosque Nativo</button></div></div>')
+    + (hb.aves === false ? '' : '<div class="today-card"><h3>🦅 Aves hoy</h3><p class="muted" style="font-size:11px">Amanecer y pleamar: mayor canto y movimiento en Rocuant y costa. Observa sin molestar.</p><div style="margin-top:8px"><button type="button" data-go="btnBirds" class="btn" style="width:100%">🦅 Abrir Aves</button></div></div>')
+    + (hb.huerta === false ? '' : '<div class="today-card"><h3>🥬 Huerta hoy</h3><p class="muted" style="font-size:11px">Riega temprano, deshierba en gibosa y siembra hojas en creciente. Revisa bancales y cosechas en kg.</p><div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap"><button type="button" data-go="btnHuerta" class="btn" style="flex:1;width:auto">🥬 Abrir Huerta</button><button type="button" data-go="btnCompost" class="btn" style="flex:1;width:auto">🪱 Compost</button></div></div>')
+    + (hb.estudio === false ? '' : '<div class="today-card"><h3>🧠 Estudio hoy</h3><p class="muted" style="font-size:11px">25 min de foco + 5 de pausa. Repasa con Feynman: explica en voz alta lo de hoy.</p><div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap"><button type="button" data-go="btnStudy" class="btn" style="flex:1;width:auto">🧠 Abrir Estudio</button><button type="button" data-go="btnMapu" class="btn" style="flex:1;width:auto">🗣️ Kimün</button></div></div>')
+    + (hb.cuentos === false ? '' : '<div class="today-card"><h3>📖 Cuento de la luna</h3>'
+    + (function(){ try{ if(isDFT) return '<p style="font-size:12px">✷ Día Fuera del Tiempo: lee el cuento de cierre y agradece el ciclo.</p>'; return '<p class="muted" style="font-size:11px">Luna '+(lunaN||'actual')+': un cuento por luna antes de dormir. También está 🧒 Crianza y 🗣️ Voz de los Abuelos.</p>'; }catch(e){ return ''; } })()
+    + '<div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap"><button type="button" data-go="btnTales" class="btn" style="flex:1;width:auto">📖 Abrir Cuentos</button><button type="button" data-go="btnVozAbuelos" class="btn" style="flex:1;width:auto">🗣️ Abuelos</button></div></div>')
+    + (hb.familia === false ? '' : '<div class="today-card"><h3>🌳 Familia y linaje</h3><p class="muted" style="font-size:11px">Honra una historia hoy: una voz, una foto o un nombre de tu árbol.</p><div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap"><button type="button" data-go="btnArbolFull" class="btn" style="flex:1;width:auto">🌳 Abrir Árbol</button><button type="button" data-go="btnDueloFull" class="btn" style="flex:1;width:auto">🕊️ Duelo</button></div></div>')
+    + (hb.emergencia === false ? '' : '<div class="today-card"><h3>🚨 Emergencia Penco</h3><p class="muted" style="font-size:11px">132 Bomberos · 133 Carabineros · 131 SAMU · *4141 crisis. Punto alto ante tsunami: sube al cerro.</p><div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap"><button type="button" data-go="btnEvac" class="btn" style="flex:1;width:auto">🌊▲ Evacuación</button><button type="button" data-go="btnFirstAid" class="btn" style="flex:1;width:auto">🩹 Auxilios</button></div></div>')
+    + (hb.comunidad === false ? '' : '<div class="today-card"><h3>🤝 Comunidad hoy</h3><p class="muted" style="font-size:11px">Minga, trueque y moneda social: ofrece una hora, pide una mano.</p><div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap"><button type="button" data-go="btnMinga" class="btn" style="flex:1;width:auto">🤝 Minga</button><button type="button" data-go="btnTrueque" class="btn" style="flex:1;width:auto">🔄 Trueque</button></div></div>')
+    + (hb.energia === false ? '' : '<div class="today-card"><h3>🔧 Energía y hogar</h3><p class="muted" style="font-size:11px">Leña seca (&lt;25% humedad) y consumo a la vista: anota kWh y compara por luna.</p><div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap"><button type="button" data-go="btnEnergy" class="btn" style="flex:1;width:auto">⚡ Consumo</button><button type="button" data-go="btnLena" class="btn" style="flex:1;width:auto">🪵 Leña</button></div></div>');
   // --- ánimo: sugerencia + expandir opciones ---
   const main = $('todayMoodMain'), picker = $('todayMoodPicker');
   const paintPicker = ()=>{
@@ -1005,12 +1044,26 @@ function renderTodayView(){
       }
     }catch(e){}
   }catch(e){}
-  // --- 8 NUEVOS BLOQUES HOY: accesos + acciones mínimas ---
+  // --- BLOQUES HOY: accesos + acciones mínimas (v1.6.0: incluye data-go genérico) ---
   try{
     const go=function(id,btn){ const b=$(id); if(b) b.onclick=function(){ try{ $(btn).click(); }catch(e){} }; };
     go('todayGratOpen','btnGratitud'); go('todaySchedOpen','btnSchedule'); go('todayGymOpen','btnGym');
     go('todayMedicOpen','btnMedic'); go('todaySiembraOpen','btnSiembra'); go('todayEspOpen','btnEspiritual');
     go('todayRitmoOpen','btnCircadian'); go('todayGoldenOpen','btnGolden'); go('todayEkaOpen','btnEkadashi');
+    // Botones de los 10 bloques nuevos: data-go="btnX" → clic seguro (si el módulo aún no inyectó el botón, avisa).
+    try{
+      const box=$('todayView');
+      if(box) box.querySelectorAll('button[data-go]').forEach(function(b){
+        if(b.dataset.goBound) return; b.dataset.goBound='1';
+        b.onclick=function(){
+          try{
+            const t=$(b.getAttribute('data-go'));
+            if(t && t.click){ t.click(); return; }
+            try{ if($('statusMsg')){ $('statusMsg').textContent='Activa esa sección en ⚙️ Personalizar'; setTimeout(function(){ $('statusMsg').textContent=''; },2200); } }catch(e){}
+          }catch(e){}
+        };
+      });
+    }catch(e){}
     const gs=$('todayGratSave');
     if(gs) gs.onclick=function(){
       try{
@@ -7084,17 +7137,16 @@ function reordenarAcciones(){
 }
 const PRESETS = {
   todo: Object.fromEntries(ALL_BTNS.map(k=>[k,true])),
-  esencial: {btnWeather:true,btnTides:true,btnAstro:true,btnSiembra:true,btnEkadashi:true,btnCircadian:true,btnHabits:true,btnBreath:true,btnDreams:true,btnGratitud:true,btnMeal:true,btnShopping:true,btnFinance:true,btnHomeTasks:true,btnCrianza:true,btnFirstAid:true,btnEvac:true,btnTimer:true,btnRemind:true,btnBackup:true,btnRestore:true,btnShortcut:true,btnPdfLuna:true,btnPdfCiclo:true,btnHelp:true,btnDonate:true},
-  infantil: {btnWeather:true,btnAstro:true,btnBirds:true,btnBosque:true,btnSiembra:true,btnCompost:true,btnHabits:true,btnDreams:true,btnBreath:true,btnGratitud:true,btnSchedule:true,btnTales:true,btnVozAbuelos:true,btnMemory:true,btnAjedrez:true,btnMatematicas:true,btnSudoku:true,btnCrucigrama:true,btnSopa:true,btnMapu:true,btnEnglish:true,btnGuitar:true,btnMeal:true,btnCrianza:true,btnHelp:true,btnDonate:true},
-  adolescente: {btnHabits:true,btnDiscipline:true,btnStudy:true,btnSchedule:true,btnMemory:true,btnAjedrez:true,btnMatematicas:true,btnSudoku:true,btnCrucigrama:true,btnSopa:true,btnMapu:true,btnEnglish:true,btnGuitar:true,btnTales:true,btnVozAbuelos:true,btnDreams:true,btnBreath:true,btnGratitud:true,btnPsico:true,btnMetodos:true,btnRecap:true,btnDueloFull:true,btnEneagrama:true,btnCuartoCamino:true,btnKinMaya:true,btnTarot:true,btnOraculo:true,btnGym:true,btnCircadian:true,btnMeal:true,btnFinance:true,btnConvert:true,btnTimer:true,btnRemind:true,btnFirstAid:true,btnViolence:true,btnCrianza:true,btnHelp:true,btnDonate:true},
+  esencial: {btnWeather:true,btnTides:true,btnAstro:true,btnSiembra:true,btnEkadashi:true,btnCircadian:true,btnGolden:true,btnHabits:true,btnBreath:true,btnDreams:true,btnGratitud:true,btnMeal:true,btnShopping:true,btnFinance:true,btnHomeTasks:true,btnCrianza:true,btnTales:true,btnFirstAid:true,btnEvac:true,btnApoyo:true,btnTimer:true,btnRemind:true,btnBackup:true,btnRestore:true,btnShortcut:true,btnPdfLuna:true,btnPdfCiclo:true,btnHelp:true,btnDonate:true},
+  adolescente: {btnHabits:true,btnDiscipline:true,btnStudy:true,btnSchedule:true,btnMemory:true,btnAjedrez:true,btnMatematicas:true,btnSudoku:true,btnCrucigrama:true,btnSopa:true,btnMapu:true,btnEnglish:true,btnGuitar:true,btnTales:true,btnCrianza:true,btnAdolescencia:true,btnJuventud:true,btnVozAbuelos:true,btnDreams:true,btnBreath:true,btnGratitud:true,btnPsico:true,btnPsicologia:true,btnMetodos:true,btnRecap:true,btnDueloFull:true,btnEneagrama:true,btnCuartoCamino:true,btnKinMaya:true,btnTarot:true,btnOraculo:true,btnGym:true,btnNatacion:true,btnNutri:true,btnCircadian:true,btnMeal:true,btnFinance:true,btnConvert:true,btnTimer:true,btnRemind:true,btnFirstAid:true,btnViolence:true,btnHelp:true,btnDonate:true},
   adulto: Object.fromEntries(ALL_BTNS.map(k=>[k,true])),
-  mayor: {btnWeather:true,btnTides:true,btnAstro:true,btnSiembra:true,btnEkadashi:true,btnMedic:true,btnNutri:true,btnLawen:true,btnHabits:true,btnBreath:true,btnDreams:true,btnGratitud:true,btnMemory:true,btnSudoku:true,btnTales:true,btnVozAbuelos:true,btnArbolFull:true,btnRecap:true,btnDueloFull:true,btnGym:true,btnCircadian:true,btnEspiritual:true,btnCuartoCamino:true,btnKinMaya:true,btnTarot:true,btnOraculo:true,btnMeal:true,btnShopping:true,btnHomeTasks:true,btnFirstAid:true,btnAnimalCare:true,btnViolence:true,btnEvac:true,btnRemind:true,btnTimer:true,btnEnergy:true,btnLena:true,btnPdfLuna:true,btnHelp:true,btnDonate:true},
-  estudiante: {btnWeather:true,btnSiembra:true,btnAstro:true,btnHabits:true,btnDiscipline:true,btnStudy:true,btnSchedule:true,btnMemory:true,btnAjedrez:true,btnMatematicas:true,btnSudoku:true,btnCrucigrama:true,btnSopa:true,btnMapu:true,btnEnglish:true,btnGuitar:true,btnTales:true,btnVozAbuelos:true,btnPsico:true,btnMetodos:true,btnEneagrama:true,btnCuartoCamino:true,btnKinMaya:true,btnTarot:true,btnOraculo:true,btnDreams:true,btnBreath:true,btnGratitud:true,btnConvert:true,btnTimer:true,btnRemind:true,btnPdfLuna:true,btnPdfCiclo:true,btnBackup:true,btnHelp:true,btnDonate:true},
-  agricultor: {btnWeather:true,btnTides:true,btnAstro:true,btnBirds:true,btnSiembra:true,btnBosque:true,btnCompost:true,btnAgua:true,btnBodega:true,btnLawen:true,btnGolden:true,btnCircadian:true,btnEkadashi:true,btnIntermareal:true,btnComuna:true,btnIglesias:true,btnTrueque:true,btnMinga:true,btnTaller:true,btnNudos:true,btnMeal:true,btnShopping:true,btnFinance:true,btnRemind:true,btnTimer:true,btnPdfLuna:true,btnPdfCiclo:true,btnBackup:true,btnHelp:true,btnDonate:true},
-  pescador: {btnWeather:true,btnTides:true,btnAstro:true,btnIntermareal:true,btnFishing:true,btnBirds:true,btnSiembra:true,btnBosque:true,btnAgua:true,btnGolden:true,btnCircadian:true,btnComuna:true,btnIglesias:true,btnNudos:true,btnTaller:true,btnTrueque:true,btnMinga:true,btnFirstAid:true,btnEvac:true,btnMeal:true,btnRemind:true,btnTimer:true,btnHelp:true,btnDonate:true},
-  salud: {btnMenstrual:true,btnMedic:true,btnNutri:true,btnLawen:true,btnFerti:true,btnHabits:true,btnGym:true,btnCircadian:true,btnBreath:true,btnDreams:true,btnGratitud:true,btnEspiritual:true,btnDueloFull:true,btnRecap:true,btnPsico:true,btnMetodos:true,btnEneagrama:true,btnCuartoCamino:true,btnKinMaya:true,btnTarot:true,btnOraculo:true,btnEkadashi:true,btnCompost:true,btnMeal:true,btnShopping:true,btnSchedule:true,btnCrianza:true,btnVozAbuelos:true,btnFirstAid:true,btnAnimalCare:true,btnViolence:true,btnEvac:true,btnRemind:true,btnTimer:true,btnHelp:true,btnDonate:true},
-  deportista: {btnWeather:true,btnTides:true,btnHabits:true,btnGym:true,btnNutri:true,btnCircadian:true,btnBreath:true,btnEspiritual:true,btnDreams:true,btnGratitud:true,btnMeal:true,btnShopping:true,btnFinance:true,btnTimer:true,btnRemind:true,btnEnergy:true,btnConvert:true,btnFirstAid:true,btnHelp:true,btnDonate:true},
-  docente: {btnWeather:true,btnSiembra:true,btnBosque:true,btnBirds:true,btnCompost:true,btnEkadashi:true,btnHabits:true,btnDiscipline:true,btnStudy:true,btnSchedule:true,btnMemory:true,btnAjedrez:true,btnMatematicas:true,btnSudoku:true,btnCrucigrama:true,btnSopa:true,btnArbolFull:true,btnRecap:true,btnMapu:true,btnEnglish:true,btnGuitar:true,btnTales:true,btnVozAbuelos:true,btnCrianza:true,btnGratitud:true,btnPsico:true,btnMetodos:true,btnEneagrama:true,btnCuartoCamino:true,btnKinMaya:true,btnTarot:true,btnOraculo:true,btnConvert:true,btnTimer:true,btnRemind:true,btnPdfLuna:true,btnPdfCiclo:true,btnBackup:true,btnHelp:true,btnDonate:true}
+  mayor: {btnWeather:true,btnTides:true,btnAstro:true,btnSiembra:true,btnEkadashi:true,btnMedic:true,btnNutri:true,btnLawen:true,btnHabits:true,btnBreath:true,btnDreams:true,btnGratitud:true,btnMemory:true,btnSudoku:true,btnTales:true,btnCrianza:true,btnVozAbuelos:true,btnArbolFull:true,btnConstelaciones:true,btnAdultez:true,btnVejez:true,btnClimaterio:true,btnRecap:true,btnDueloFull:true,btnAdicciones:true,btnGym:true,btnNatacion:true,btnCircadian:true,btnGolden:true,btnEspiritual:true,btnCuartoCamino:true,btnKinMaya:true,btnTarot:true,btnOraculo:true,btnMeal:true,btnShopping:true,btnHomeTasks:true,btnCorral:true,btnMovilidad:true,btnFirstAid:true,btnAnimalCare:true,btnViolence:true,btnEvac:true,btnApoyo:true,btnRemind:true,btnTimer:true,btnEnergy:true,btnLena:true,btnConvert:true,btnPdfLuna:true,btnPdfCiclo:true,btnBackup:true,btnHelp:true,btnDonate:true},
+  estudiante: {btnWeather:true,btnSiembra:true,btnAstro:true,btnHabits:true,btnDiscipline:true,btnStudy:true,btnSchedule:true,btnMemory:true,btnAjedrez:true,btnMatematicas:true,btnSudoku:true,btnCrucigrama:true,btnSopa:true,btnMapu:true,btnEnglish:true,btnGuitar:true,btnTales:true,btnVozAbuelos:true,btnAdolescencia:true,btnPsico:true,btnPsicologia:true,btnMetodos:true,btnEneagrama:true,btnCuartoCamino:true,btnKinMaya:true,btnTarot:true,btnOraculo:true,btnDreams:true,btnBreath:true,btnGratitud:true,btnConvert:true,btnTimer:true,btnRemind:true,btnPdfLuna:true,btnPdfCiclo:true,btnBackup:true,btnHelp:true,btnDonate:true},
+  agricultor: {btnWeather:true,btnTides:true,btnAstro:true,btnBirds:true,btnAnfibios:true,btnSiembra:true,btnHuerta:true,btnHidroponia:true,btnElectrocultura:true,btnBosque:true,btnCompost:true,btnAgua:true,btnFlora:true,btnBodega:true,btnLawen:true,btnGolden:true,btnCircadian:true,btnEkadashi:true,btnIntermareal:true,btnComuna:true,btnMuni:true,btnTrueque:true,btnMinga:true,btnTaller:true,btnHerramientas:true,btnNudos:true,btnCorral:true,btnMeal:true,btnShopping:true,btnFinance:true,btnRemind:true,btnTimer:true,btnPdfLuna:true,btnPdfCiclo:true,btnBackup:true,btnHelp:true,btnDonate:true},
+  pescador: {btnWeather:true,btnTides:true,btnAstro:true,btnIntermareal:true,btnFishing:true,btnBirds:true,btnAnfibios:true,btnSiembra:true,btnHuerta:true,btnBosque:true,btnAgua:true,btnGolden:true,btnCircadian:true,btnComuna:true,btnMuni:true,btnNudos:true,btnTaller:true,btnTrueque:true,btnMinga:true,btnFirstAid:true,btnEvac:true,btnApoyo:true,btnMeal:true,btnRemind:true,btnTimer:true,btnHelp:true,btnDonate:true},
+  salud: {btnMenstrual:true,btnMedic:true,btnNutri:true,btnLawen:true,btnFerti:true,btnJuventud:true,btnClimaterio:true,btnAdultez:true,btnVejez:true,btnHabits:true,btnGym:true,btnNatacion:true,btnCircadian:true,btnBreath:true,btnDreams:true,btnGratitud:true,btnEspiritual:true,btnDueloFull:true,btnAdicciones:true,btnRecap:true,btnPsico:true,btnPsicologia:true,btnNeurodiversidad:true,btnMetodos:true,btnEneagrama:true,btnCuartoCamino:true,btnKinMaya:true,btnTarot:true,btnOraculo:true,btnEkadashi:true,btnCompost:true,btnHuerta:true,btnMeal:true,btnShopping:true,btnSchedule:true,btnCrianza:true,btnVozAbuelos:true,btnFirstAid:true,btnAnimalCare:true,btnViolence:true,btnEvac:true,btnApoyo:true,btnRemind:true,btnTimer:true,btnHelp:true,btnDonate:true},
+  deportista: {btnWeather:true,btnTides:true,btnHabits:true,btnDiscipline:true,btnGym:true,btnNatacion:true,btnNutri:true,btnCircadian:true,btnBreath:true,btnEspiritual:true,btnDreams:true,btnGratitud:true,btnMeal:true,btnShopping:true,btnFinance:true,btnTimer:true,btnRemind:true,btnEnergy:true,btnConvert:true,btnFirstAid:true,btnEvac:true,btnHelp:true,btnDonate:true},
+  docente: {btnWeather:true,btnSiembra:true,btnHuerta:true,btnBosque:true,btnBirds:true,btnCompost:true,btnEkadashi:true,btnHabits:true,btnDiscipline:true,btnStudy:true,btnSchedule:true,btnMemory:true,btnAjedrez:true,btnMatematicas:true,btnSudoku:true,btnCrucigrama:true,btnSopa:true,btnArbolFull:true,btnRecap:true,btnMapu:true,btnEnglish:true,btnGuitar:true,btnTales:true,btnVozAbuelos:true,btnCrianza:true,btnAdolescencia:true,btnGratitud:true,btnPsico:true,btnPsicologia:true,btnMetodos:true,btnEneagrama:true,btnCuartoCamino:true,btnKinMaya:true,btnTarot:true,btnOraculo:true,btnConvert:true,btnTimer:true,btnRemind:true,btnPdfLuna:true,btnPdfCiclo:true,btnBackup:true,btnHelp:true,btnDonate:true}
 };
 function getVisibleConfig(){
   const c = (DATA.config && DATA.config.visible) || {};
@@ -7480,9 +7532,20 @@ function setupConfigDialog(){
       const vis={}; ALL_BTNS.forEach(k=> vis[k]= isAll ? true : (preset[k] ? true : false));
       // si preset no define, dejar false
       DATA.config.visible=vis;
-      scheduleSave();
+      // v1.6.0: el perfil también ajusta la pantalla de inicio (vista + bloques ◉ Hoy).
+      try{
+        const hp = (typeof homeBlocksForPreset==='function') ? homeBlocksForPreset(b.dataset.preset) : null;
+        if(hp){
+          DATA.config.home = DATA.config.home || {};
+          DATA.config.home.startView = hp.startView;
+          DATA.config.home.blocks = hp.blocks;
+          try{ syncHomeConfigUI(); }catch(e){}
+        }
+      }catch(e){}
+      scheduleSave('Perfil aplicado: secciones + inicio ✓');
       document.querySelectorAll('#configDialog input[data-btn]').forEach(cb=> cb.checked=!!vis[cb.dataset.btn]);
       applyVisibility();
+      try{ if (viewMode === 'hoy') renderTodayView(); }catch(e){}
     };
   });
   const largeCb=$('cfgLargeText'); if(largeCb) largeCb.onchange=()=>{ DATA.config=DATA.config||{}; DATA.config.largeText=largeCb.checked; scheduleSave(); applyVisibility(); };
