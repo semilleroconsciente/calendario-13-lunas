@@ -134,7 +134,7 @@ const CORE = [
   './tarot-modulo.js',
   './tarot-modulo.js?v=1',
   './numerologia-modulo.js',
-  './numerologia-modulo.js?v=1',
+  './numerologia-modulo.js?v=3',
   './oraculo-modulo.js',
   './oraculo-modulo.js?v=1',
   './adolescencia-modulo.js',

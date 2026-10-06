@@ -4,8 +4,11 @@
    - Boton btnNumerologia (grupo Linaje > Interior)
    - Dialogo numerologiaDialog con 6 pestanas:
      1) Guia (que es, reduccion, maestros, karmicos, tabla)
-     2) Camino de Vida (fecha nacimiento + numero + pinaculos
-        + desafios + madurez + energia del dia)
+     2) Camino de Vida (fecha + NOMBRE compartido con pestana Nombre:
+        ficha completa de la persona: camino, nacimiento, actitud,
+        destino, alma, personalidad, equilibrio, madurez, sintesis,
+        desafios, pinaculos + pinaculo actual, ciclos de hoy;
+        la FECHA se comparte con pestana Ciclos y queda pre-calculada)
      3) Nombre (destino/expresion, alma, personalidad,
         equilibrio, madurez por nombre, analisis letra x letra)
      4) Ciclos (ano personal, mes personal, dia personal,
@@ -184,6 +187,65 @@ function pinaculosDeFecha(key) {
   return [p1, p2, p3, p4];
 }
 function madurez(camino, destino) { return reducir((camino || 0) + (destino || 0), true).final; }
+/* Numeros derivados de la fecha: nacimiento (dia), actitud (dia+mes),
+   pinaculo actual segun edad. El nombre viaja solo entre pestanas:
+   numNacNombre <-> numNombreIn (ver syncNombre). */
+function rd1(n) { n = Math.abs(+n || 0); while (n > 9) { var s = 0; while (n > 0) { s += n % 10; n = Math.floor(n / 10); } n = s; } return n; }
+function numeroNacimiento(key) {
+  var p = String(key || '').split('-');
+  if (p.length < 3 || !+p[2]) return null;
+  return { dia: +p[2], red: reducir(+p[2], true) };
+}
+function numeroActitud(key) {
+  var p = String(key || '').split('-');
+  if (p.length < 3 || !+p[2] || !+p[1]) return null;
+  return reducir(rd1(+p[2]) + rd1(+p[1]), true);
+}
+function edadEn(keyNac, keyRef) {
+  try {
+    var a = new Date(String(keyNac) + 'T12:00:00'), b = new Date(String(keyRef || todayKey()) + 'T12:00:00');
+    var e = b.getFullYear() - a.getFullYear();
+    if (b.getMonth() < a.getMonth() || (b.getMonth() === a.getMonth() && b.getDate() < a.getDate())) e--;
+    return e;
+  } catch (e2) { return null; }
+}
+function pinaculoActual(keyNac, keyRef) {
+  var pin = pinaculosDeFecha(keyNac);
+  var edad = edadEn(keyNac, keyRef);
+  if (!pin || edad == null || edad < 0) return null;
+  var idx = edad < 27 ? 0 : (edad < 36 ? 1 : (edad < 45 ? 2 : 3));
+  // rangos clasicos aprox: 0-27 / 27-36 / 36-45 / 45+
+  return { idx: idx, num: pin[idx], edad: edad, todos: pin,
+    rango: ['0-27 anos', '27-36 anos', '36-45 anos', '45 anos en adelante'][idx] };
+}
+function sintesisTexto(camN, destN, almaN, persN) {
+  var c = numInfo(camN), d = destN != null ? numInfo(destN) : null,
+      a = almaN != null ? numInfo(almaN) : null, p = persN != null ? numInfo(persN) : null;
+  var t = 'Eres ' + c.nombre + ' en tu camino (' + camN + '): ' + c.luz;
+  if (d) t += ' Tu mision ' + d.nombre + ' (' + destN + ') te pide: ' + d.luz;
+  if (a) t += ' Tu corazon ' + a.nombre + ' (' + almaN + ') desea: ' + a.luz;
+  if (p) t += ' Y el mundo te ve como ' + p.nombre + ' (' + persN + ').';
+  if (camN === destN) t += ' Camino y Destino iguales: coherencia total, evita rigidez.';
+  return t;
+}
+/* El nombre es UNO solo: lo que escribes en Vida aparece en Nombre y viceversa.
+   La fecha de nacimiento tambien es UNA sola: Vida <-> Ciclos. */
+function syncNombre(from) {
+  try {
+    var vida = $('numNacNombre'), nom = $('numNombreIn');
+    if (!vida || !nom) return;
+    if (from === 'nombre') { if (vida.value !== nom.value) vida.value = nom.value; }
+    else { if (nom.value !== vida.value) nom.value = vida.value; }
+  } catch (e) {}
+}
+function syncFecha(from) {
+  try {
+    var vida = $('numNac'), cic = $('numCicloNac');
+    if (!vida || !cic) return;
+    if (from === 'ciclos') { if (vida.value !== cic.value && cic.value) vida.value = cic.value; }
+    else { if (cic.value !== vida.value && vida.value) cic.value = vida.value; }
+  } catch (eF) {}
+}
 function anoPersonal(keyNac, keyFecha) {
   var pn = String(keyNac || '').split('-'), pf = String(keyFecha || todayKey()).split('-');
   if (pn.length < 3 || pf.length < 3) return null;
@@ -306,9 +368,11 @@ function buildDialog() {
     /* VIDA */
     '<div id="numVida" class="hidden">' +
     '<div class="menstrual-card" style="border-color:var(--gold)"><h4 style="color:var(--gold)">\uD83C\uDF31 Tu Camino de Vida</h4>' +
+    '<p class="muted" style="font-size:11px">El <b>nombre queda guardado una sola vez</b>: lo que escribas aqu\u00ED aparece autom\u00E1ticamente en la pesta\u00F1a \uD83D\uDD24 Nombre (y viceversa). La <b>fecha de nacimiento tambi\u00E9n se comparte</b> con la pesta\u00F1a \uD83C\uDF19 Ciclos.</p>' +
     '<div class="conv-row"><label style="flex:1">Fecha de nacimiento <input type="date" id="numNac"></label>' +
-    '<label style="flex:2">Nombre (para Madurez) <input type="text" id="numNacNombre" placeholder="ej: Rosa Elena Parra" maxlength="80"></label></div>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="numCalcVida" class="btn btn-accent" style="width:auto">\u2728 Calcular mi mapa</button>' +
+    '<label style="flex:2">Nombre completo <input type="text" id="numNacNombre" placeholder="ej: Rosa Elena Parra" maxlength="80"></label></div>' +
+    '<div class="dlg-actions" style="justify-content:flex-start;flex-wrap:wrap"><button type="button" id="numCalcVida" class="btn btn-accent" style="width:auto">\u2728 Calcular mi mapa</button>' +
+    '<button type="button" id="numVidaToNombre" class="btn" style="width:auto">\uD83D\uDD24 Ver en Nombre</button>' +
     '<button type="button" id="numSavePerfil" class="btn" style="width:auto">\uD83D\uDCBE Guardar perfil</button></div>' +
     '<p class="muted" id="numVidaLuna" style="font-size:11px"></p></div>' +
     '<div id="numVidaOut" style="margin-top:10px"></div></div>' +
@@ -316,6 +380,7 @@ function buildDialog() {
     /* NOMBRE */
     '<div id="numNombre" class="hidden">' +
     '<div class="menstrual-card" style="border-color:var(--gold)"><h4 style="color:var(--gold)">\uD83D\uDD24 Poder de tu nombre</h4>' +
+    '<p class="muted" style="font-size:11px">Mismo nombre que en \uD83C\uDF31 Camino de Vida: si lo cambias aqu\u00ED, se actualiza all\u00E1. Si adem\u00E1s hay fecha en Camino de Vida, aqu\u00ED tambi\u00E9n ver\u00E1s tu Madurez.</p>' +
     '<label>Nombre completo (ideal: nacimiento) <input type="text" id="numNombreIn" placeholder="ej: Juan Pablo Sepulveda Rojas" maxlength="90"></label>' +
     '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="numCalcNombre" class="btn btn-accent" style="width:auto">\uD83D\uDD24 Analizar nombre</button>' +
     '<button type="button" id="numNombreToPerfil" class="btn" style="width:auto">\uD83D\uDCBE Guardar como perfil</button></div></div>' +
@@ -324,6 +389,7 @@ function buildDialog() {
     /* CICLOS */
     '<div id="numCiclos" class="hidden">' +
     '<div class="menstrual-card" style="border-color:var(--gold)"><h4 style="color:var(--gold)">\uD83C\uDF19 Tus ciclos personales</h4>' +
+    '<p class="muted" style="font-size:11px">El <b>nacimiento se comparte</b> con \uD83C\uDF31 Camino de Vida: si lo cambias aqu\u00ED, se actualiza all\u00E1 (y viceversa).</p>' +
     '<div class="conv-row"><label style="flex:1">Nacimiento <input type="date" id="numCicloNac"></label>' +
     '<label style="flex:1">Ver fecha <input type="date" id="numCicloFecha"></label></div>' +
     '<div class="dlg-actions" style="justify-content:flex-start;flex-wrap:wrap"><button type="button" id="numCalcCiclo" class="btn btn-accent" style="width:auto">\uD83C\uDF19 Ver mis ciclos</button>' +
@@ -381,29 +447,49 @@ function vidaHTML(key, nombre) {
   var cv = caminoDeVida(key);
   if (!cv) return '<p class="muted">Escribe una fecha v\u00E1lida.</p>';
   var r = cv.r;
-  var karm = karmicoAviso(cv.total) || karmicoAviso(cv.rd.final + 0 > 99 ? 0 : 0);
-  // karmicos tambien en sumandos: dia/mes/ano sin reducir
-  var k2 = karmicoAviso(cv.d) || karmicoAviso(cv.m) || karmicoAviso(cv.y) || karm;
+  var k2 = karmicoAviso(cv.total) || karmicoAviso(cv.d) || karmicoAviso(cv.m) || karmicoAviso(cv.y);
   var an = analizarNombre(nombre || '');
-  var destN = an.nLetras ? an.dest.final : null;
+  var tieneNombre = an.nLetras > 0;
+  var destN = tieneNombre ? an.dest.final : null;
   var mad = (destN != null) ? madurez(r.final, destN) : null;
   var des = desafioDeFecha(key);
-  var pin = pinaculosDeFecha(key);
-  var info = numInfo(r.final);
+  var pinA = pinaculoActual(key, todayKey());
+  var pin = pinA ? pinA.todos : pinaculosDeFecha(key);
+  var nac = numeroNacimiento(key), act = numeroActitud(key);
   var h = cardNum(r.final,
     '<p class="muted" style="font-size:11px">Suma: ' + cv.d + ' + ' + cv.m + ' + ' + cv.y +
-    ' \u2192 d\u00EDa ' + pasosTxt(cv.rd.pasos) + ' · mes ' + pasosTxt(cv.rm.pasos) + ' · a\u00F1o ' + pasosTxt(cv.ry.pasos) +
+    ' \u2192 d\u00EDa ' + pasosTxt(cv.rd.pasos) + ' \u00B7 mes ' + pasosTxt(cv.rm.pasos) + ' \u00B7 a\u00F1o ' + pasosTxt(cv.ry.pasos) +
     ' \u2192 total ' + cv.total + ' \u2192 <b>' + pasosTxt(r.pasos) + '</b> ' + lunaTxt(key) + '</p>');
   if (k2) h += '<div class="menstrual-card" style="border-color:#e8a56a"><h4>\u26A0\uFE0F N\u00FAmero k\u00E1rmico presente</h4><p class="muted" style="font-size:11px">' + esc(k2) + '</p></div>';
+  /* Ficha de fecha: nacimiento + actitud */
   h += '<div class="help-grid" style="margin-top:10px">' +
-    '<div class="help-card"><h4>\u26F0\uFE0F Desaf\u00EDos ' + des.d1 + ' · ' + des.d2 + ' · principal ' + des.principal + '</h4><p style="font-size:11px">' + esc(numInfo(des.principal === 0 ? r.final : (des.principal || r.final)).luz) + '<br><span class="muted">Tu “m\u00FAsculo” a entrenar: el desaf\u00EDo principal (' + des.principal + ') marca d\u00F3nde la vida te pide crecer.</span></p></div>' +
-    '<div class="help-card"><h4>\uD83C\uDFD4\uFE0F Pin\u00E1culos ' + pin.join(' · ') + '</h4><p style="font-size:11px">4 cimas de ~9 a\u00F1os: <b>' + pin[0] + '</b> (juventud) \u2192 <b>' + pin[1] + '</b> \u2192 <b>' + pin[2] + '</b> (cosecha mayor) \u2192 <b>' + pin[3] + '</b> (sabidur\u00EDa). Lee cada n\u00FAmero arriba como clima de esa etapa.</p></div></div>';
-  if (destN != null) {
+    '<div class="help-card"><h4>\uD83C\uDF82 Nacimiento ' + nac.red.final + ' · ' + esc(numInfo(nac.red.final).nombre) + '</h4><p style="font-size:11px">D\u00EDa ' + nac.dia + ' \u2192 <b>' + pasosTxt(nac.red.pasos) + '</b><br>' + esc(numInfo(nac.red.final).luz) + '<br><span class="muted">Tu don natural, lo que te sale f\u00E1cil.</span></p></div>' +
+    '<div class="help-card"><h4>\uD83E\uDDED Actitud ' + act.final + ' · ' + esc(numInfo(act.final).nombre) + '</h4><p style="font-size:11px">D\u00EDa + mes \u2192 <b>' + pasosTxt(act.pasos) + '</b><br>' + esc(numInfo(act.final).luz) + '<br><span class="muted">C\u00F3mo entras a los grupos y al d\u00EDa a d\u00EDa.</span></p></div></div>';
+  /* Ficha de nombre (reutiliza la pestana Nombre: mismo analisis, aqui resumido) */
+  if (tieneNombre) {
+    var det = an.letras.map(function (o) { return esc(o.l) + '=' + o.v; }).join(' \u00B7 ');
+    h += '<div class="menstrual-card" style="margin-top:10px;border-color:var(--gold)"><h4 style="color:var(--gold)">\uD83D\uDD24 Ficha del nombre — ' + esc(nombre) + '</h4>' +
+      '<p style="font-size:12px"><b>Destino ' + an.dest.final + '</b> (' + esc(numInfo(an.dest.final).nombre) + ') · ' +
+      '<b>Alma ' + an.alma.final + '</b> (' + esc(numInfo(an.alma.final).nombre) + ') · ' +
+      '<b>Personalidad ' + an.pers.final + '</b> (' + esc(numInfo(an.pers.final).nombre) + ') · ' +
+      '<b>Equilibrio ' + an.equil.final + '</b></p>' +
+      '<p style="font-size:11px;line-height:1.6"><b>Destino:</b> total ' + an.total + ' \u2192 ' + pasosTxt(an.dest.pasos) + ' — ' + esc(numInfo(an.dest.final).luz) +
+      '<br><b>Alma (vocales):</b> ' + pasosTxt(an.alma.pasos) + ' — ' + esc(numInfo(an.alma.final).luz) +
+      '<br><b>Personalidad (consonantes):</b> ' + pasosTxt(an.pers.pasos) + ' — ' + esc(numInfo(an.pers.final).luz) +
+      '<br><b>Equilibrio (iniciales):</b> ' + pasosTxt(an.equil.pasos) + ' — tu recurso bajo presi\u00F3n.' +
+      '<br><span class="muted">Letras: ' + det + '</span></p>' +
+      '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="numVidaVerNombre" class="btn" style="width:auto">\uD83D\uDD24 Abrir an\u00E1lisis completo en Nombre</button></div></div>';
     h += '<div class="menstrual-card" style="margin-top:10px"><h4>\uD83C\uDF1F Madurez: ' + mad + ' · ' + esc(numInfo(mad).nombre) + '</h4>' +
       '<p class="muted" style="font-size:11px">Camino ' + r.final + ' + Destino ' + destN + ' = ' + mad + '. Florece con los a\u00F1os: tu “segundo aire”.</p></div>';
+    h += '<div class="menstrual-card" style="margin-top:10px;background:var(--panel)"><h4>\u2728 S\u00EDntesis de ' + esc(String(nombre).split(' ')[0] || 'tu mapa') + '</h4>' +
+      '<p style="font-size:12px;line-height:1.6">' + esc(sintesisTexto(r.final, destN, an.alma.final, an.pers.final)) + '</p></div>';
   } else {
-    h += '<p class="muted" style="font-size:11px;margin-top:8px">Escribe tu nombre arriba para ver tambi\u00E9n tu <b>Madurez</b> (Camino + Destino).</p>';
+    h += '<p class="muted" style="font-size:11px;margin-top:8px">Escribe tu nombre arriba y recalcula: ver\u00E1s aqu\u00ED tu ficha completa (Destino, Alma, Personalidad, Equilibrio, Madurez y s\u00EDntesis). El nombre queda listo tambi\u00E9n en la pesta\u00F1a \uD83D\uDD24 Nombre.</p>';
   }
+  h += '<div class="help-grid" style="margin-top:10px">' +
+    '<div class="help-card"><h4>\u26F0\uFE0F Desaf\u00EDos ' + des.d1 + ' \u00B7 ' + des.d2 + ' \u00B7 principal ' + des.principal + '</h4><p style="font-size:11px">' + esc(numInfo(des.principal === 0 ? r.final : (des.principal || r.final)).luz) + '<br><span class="muted">Tu “m\u00FAsculo” a entrenar: el desaf\u00EDo principal (' + des.principal + ') marca d\u00F3nde la vida te pide crecer.</span></p></div>' +
+    '<div class="help-card"><h4>\uD83C\uDFD4\uFE0F Pin\u00E1culos ' + pin.join(' \u00B7 ') + '</h4><p style="font-size:11px">4 cimas: <b>' + pin[0] + '</b> (0-27) \u2192 <b>' + pin[1] + '</b> (27-36) \u2192 <b>' + pin[2] + '</b> (36-45) \u2192 <b>' + pin[3] + '</b> (45+).' +
+    (pinA ? '<br><b>Hoy (' + pinA.edad + ' a\u00F1os): pin\u00E1culo ' + pinA.num + ' · ' + esc(numInfo(pinA.num).nombre) + '</b> <span class="muted">(' + pinA.rango + ')</span>' : '') + '</p></div></div>';
   var ap = anoPersonal(key, todayKey()), mp = mesPersonal(ap, todayKey()), dp = diaPersonal(ap, mp, todayKey());
   h += '<div class="menstrual-card" style="margin-top:10px;background:var(--panel)"><h4>\uD83C\uDF19 Hoy para este mapa (' + esc(todayKey()) + ' ' + esc(lunaTxt(todayKey())) + ')</h4>' +
     '<p style="font-size:12px">A\u00F1o personal <b>' + ap + '</b> · Mes <b>' + mp + '</b> · D\u00EDa <b>' + dp + '</b> — ' + esc(CICLO_INFO[dp].t) + ': ' + esc(CICLO_INFO[dp].d) + '</p></div>';
@@ -415,11 +501,23 @@ function nombreHTML(nombre) {
   var det = an.letras.map(function (o) { return esc(o.l) + '=' + o.v; }).join(' · ');
   var h = cardNum(an.dest.final, '<p class="muted" style="font-size:11px">Destino / Expresi\u00F3n: total ' + an.total + ' \u2192 <b>' + pasosTxt(an.dest.pasos) + '</b></p>');
   h += '<div class="help-grid" style="margin-top:10px">' +
-    '<div class="help-card"><h4>\uD83D\uDC96 Alma ' + an.alma.final + ' · ' + esc(numInfo(an.alma.final).nombre) + '</h4><p style="font-size:11px">Vocales \u2192 <b>' + pasosTxt(an.alma.pasos) + '</b><br>' + esc(numInfo(an.alma.final).luz) + '</p></div>' +
-    '<div class="help-card"><h4>\uD83C\uDFAD Personalidad ' + an.pers.final + ' · ' + esc(numInfo(an.pers.final).nombre) + '</h4><p style="font-size:11px">Consonantes \u2192 <b>' + pasosTxt(an.pers.pasos) + '</b><br>' + esc(numInfo(an.pers.final).luz) + '</p></div>' +
+    '<div class="help-card"><h4>\uD83D\uDC96 Alma ' + an.alma.final + ' · ' + esc(numInfo(an.alma.final).nombre) + '</h4><p style="font-size:11px">Vocales \u2192 <b>' + pasosTxt(an.alma.pasos) + '</b><br>' + esc(numInfo(an.alma.final).luz) + '<br><span class="muted">Lo que tu coraz\u00F3n quiere en secreto.</span></p></div>' +
+    '<div class="help-card"><h4>\uD83C\uDFAD Personalidad ' + an.pers.final + ' · ' + esc(numInfo(an.pers.final).nombre) + '</h4><p style="font-size:11px">Consonantes \u2192 <b>' + pasosTxt(an.pers.pasos) + '</b><br>' + esc(numInfo(an.pers.final).luz) + '<br><span class="muted">Lo que otros ven primero en ti.</span></p></div>' +
     '<div class="help-card"><h4>\u2696\uFE0F Equilibrio ' + an.equil.final + '</h4><p style="font-size:11px">Iniciales \u2192 <b>' + pasosTxt(an.equil.pasos) + '</b><br><span class="muted">Tu recurso bajo presi\u00F3n. L\u00E9elo como n\u00FAmero gu\u00EDa arriba.</span></p></div>' +
     '<div class="help-card"><h4>\uD83D\uDD21 Primera letra: ' + esc(an.primeraLetra || '—') + '</h4><p style="font-size:11px"><span class="muted">Color de entrada: c\u00F3mo abres caminos. Letras: ' + an.nLetras + '.</span></p></div></div>' +
     '<div class="menstrual-card" style="margin-top:10px"><h4>\uD83D\uDD24 Letra por letra</h4><p class="muted" style="font-size:11px;line-height:1.8">' + det + '</p></div>';
+  /* Si hay fecha en Camino de Vida, completa con Madurez + sintesis */
+  try {
+    var key = ($('numNac') || {}).value || '';
+    var cv = key ? caminoDeVida(key) : null;
+    if (cv) {
+      var m = madurez(cv.r.final, an.dest.final);
+      h += '<div class="menstrual-card" style="margin-top:10px"><h4>\uD83C\uDF1F Madurez: ' + m + ' · ' + esc(numInfo(m).nombre) + '</h4>' +
+        '<p class="muted" style="font-size:11px">Camino ' + cv.r.final + ' + Destino ' + an.dest.final + ' = ' + m + ' (con fecha ' + esc(key) + ').</p></div>' +
+        '<div class="menstrual-card" style="margin-top:10px;background:var(--panel)"><h4>\u2728 S\u00EDntesis</h4>' +
+        '<p style="font-size:12px;line-height:1.6">' + esc(sintesisTexto(cv.r.final, an.dest.final, an.alma.final, an.pers.final)) + '</p></div>';
+    }
+  } catch (e) {}
   return h;
 }
 function cicloHTML(nac, ver) {
@@ -519,21 +617,42 @@ function calcVida() {
   var key = ($('numNac') && $('numNac').value) || '';
   var nom = ($('numNacNombre') && $('numNacNombre').value) || '';
   if (!key) { if ($('numVidaOut')) $('numVidaOut').innerHTML = '<p class="muted">Elige tu fecha de nacimiento para calcular.</p>'; return; }
+  /* el nombre escrito aqui alimenta a la pestana Nombre;
+     la fecha alimenta a la pestana Ciclos (queda pre-calculada) */
+  syncNombre('vida');
+  syncFecha('vida');
+  if (nom && $('numNombreOut')) { try { $('numNombreOut').innerHTML = nombreHTML(nom); } catch (e) {} }
+  try {
+    if ($('numCicloNac') && $('numCicloNac').value) {
+      if ($('numCicloOut')) $('numCicloOut').innerHTML = cicloHTML($('numCicloNac').value, ($('numCicloFecha') || {}).value || todayKey());
+      if ($('numCicloYear')) $('numCicloYear').innerHTML = cicloYearHTML($('numCicloNac').value, String((($('numCicloFecha') || {}).value) || todayKey()).split('-')[0]);
+    }
+  } catch (eC) {}
   var html = vidaHTML(key, nom);
-  if ($('numVidaOut')) $('numVidaOut').innerHTML = html;
+  if ($('numVidaOut')) {
+    $('numVidaOut').innerHTML = html;
+    var vb = $('numVidaVerNombre');
+    if (vb) vb.onclick = function () { syncNombre('vida'); calcNombre(); switchTab('Nombre'); };
+  }
   var cv = caminoDeVida(key);
-  if (cv) pushHist('Camino ' + cv.r.final + ' (' + key + (nom ? ' · ' + nom : '') + ')');
+  if (cv) {
+    var an = analizarNombre(nom);
+    var extra = (an.nLetras ? ' · Dest ' + an.dest.final + ' Alma ' + an.alma.final + ' Pers ' + an.pers.final : '');
+    pushHist('Mapa ' + key + ': Camino ' + cv.r.final + extra + (nom ? ' (' + nom.slice(0, 40) + ')' : ''));
+  }
   renderHist();
   if ($('numVidaLuna')) $('numVidaLuna').textContent = 'Hoy: ' + todayKey() + ' · ' + lunaTxt(todayKey());
 }
 function calcNombre() {
+  syncNombre('nombre');
   var nom = ($('numNombreIn') && $('numNombreIn').value) || '';
   if ($('numNombreOut')) $('numNombreOut').innerHTML = nombreHTML(nom);
   var an = analizarNombre(nom);
-  if (an.nLetras) pushHist('Nombre: Dest ' + an.dest.final + ' · Alma ' + an.alma.final + ' · Pers ' + an.pers.final + ' (' + nom.slice(0, 40) + ')');
+  if (an.nLetras) pushHist('Nombre: Dest ' + an.dest.final + ' · Alma ' + an.alma.final + ' · Pers ' + an.pers.final + ' · Equil ' + an.equil.final + ' (' + nom.slice(0, 40) + ')');
   renderHist();
 }
 function calcCiclo() {
+  syncFecha('ciclos');
   var nac = ($('numCicloNac') && $('numCicloNac').value) || '';
   var ver = ($('numCicloFecha') && $('numCicloFecha').value) || todayKey();
   if ($('numCicloOut')) $('numCicloOut').innerHTML = cicloHTML(nac, ver);
@@ -589,6 +708,18 @@ function setup() {
 
   var cv = $('numCalcVida'); if (cv) cv.onclick = calcVida;
   var cn = $('numCalcNombre'); if (cn) cn.onclick = calcNombre;
+  /* nombre unico: escribir en un lado lo refleja en el otro.
+     fecha unica: Vida <-> Ciclos. */
+  try {
+    var iv = $('numNacNombre'), inn = $('numNombreIn');
+    if (iv) iv.oninput = function () { syncNombre('vida'); };
+    if (inn) inn.oninput = function () { syncNombre('nombre'); };
+    var fv = $('numNac'), fc = $('numCicloNac');
+    if (fv) fv.oninput = function () { syncFecha('vida'); };
+    if (fc) fc.oninput = function () { syncFecha('ciclos'); };
+  } catch (eS) {}
+  var vtn = $('numVidaToNombre');
+  if (vtn) vtn.onclick = function () { syncNombre('vida'); calcNombre(); switchTab('Nombre'); };
   var cc = $('numCalcCiclo'); if (cc) cc.onclick = calcCiclo;
   var cx = $('numCalcCompat'); if (cx) cx.onclick = calcCompat;
   var ch = $('numCicloHoy');
