@@ -82,6 +82,8 @@ const CORE = [
   './tolteca-modulo.js?v=1',
   './tao-modulo.js',
   './tao-modulo.js?v=1',
+  './anastasia-modulo.js',
+  './anastasia-modulo.js?v=1',
   './estoicismo-modulo.js',
   './estoicismo-modulo.js?v=1',
   './constelaciones-modulo.js',
