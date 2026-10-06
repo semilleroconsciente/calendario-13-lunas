@@ -6,7 +6,7 @@ contextBridge.exposeInMainWorld('api', {
   dataPath: () => ipcRenderer.invoke('data:path'),
   exportPDF: (html) => ipcRenderer.invoke('export:pdf', html),
   createShortcut: (pngB64) => ipcRenderer.invoke('shortcut:create', pngB64),
-  backupSave: (json) => ipcRenderer.invoke('backup:save', json),
+  backupSave: (json, fileName) => ipcRenderer.invoke('backup:save', json, fileName),
   backupOpen: () => ipcRenderer.invoke('backup:open'),
   imageSave: (dataUrl, fileName) => ipcRenderer.invoke('image:save', dataUrl, fileName),
   loadDonate: () => ipcRenderer.invoke('donate:load'),

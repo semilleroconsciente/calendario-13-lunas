@@ -1,6 +1,6 @@
 ﻿// Service Worker — Calendario 13 Lunas (offline-first, tolerante a versiones ?v=)
-// v53
-const CACHE = 'cal13-v53-offline';
+// v54
+const CACHE = 'cal13-v55-offline';
 
 // Lista completa de archivos que usa index.html (bare + con ?v=).
 // Si se agrega un JS nuevo en index.html, agregarlo aquí también (bare y ?v=).
@@ -14,6 +14,7 @@ const CORE = [
   './styles.css?v=12',
   './web-api.js',
   './web-api.js?v=8',
+  './web-api.js?v=9',
   './astro.js',
   './astro.js?v=8',
   './data.js',
@@ -60,6 +61,8 @@ const CORE = [
   './renderer.js?v=12',
   './renderer.js?v=13',
   './renderer.js?v=14',
+  './renderer.js?v=15',
+  './renderer.js?v=16',
   './nuevos-modulos.js',
   './nuevos-modulos.js?v=8',
   './nuevos-modulos.js?v=9',
@@ -197,6 +200,8 @@ const CORE = [
   './qr-codec.js?v=1',
   './qr-sync-modulo.js',
   './qr-sync-modulo.js?v=1',
+  './bitacoras-respaldo-modulo.js',
+  './bitacoras-respaldo-modulo.js?v=1',
   './donate.json',
   './manifest.json',
   './icon-192.png',

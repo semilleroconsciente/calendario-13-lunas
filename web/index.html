@@ -176,6 +176,7 @@
           <button id="btnTolteca" class="btn" data-sub="interior" data-keywords="tolteca toltecas castaneda don juan ixtlan cuatro acuerdos ruiz acecho ensueno intento recapitulacion no hacer punto encaje tonal nagual dialogo interno silencio impecabilidad muerte consejera tirano guerrero">🦅 Prácticas Toltecas</button>
           <button id="btnTao" class="btn" data-sub="interior" data-keywords="tao lao tse laozi zhuangzi tao te ching yin yang wu wei te pu tres tesoros agua bambu fluir soltar control respiracion 4-6 te consciente no hacer fama contento equilibrio">☯️ Tao · Fluir sin forzar</button>
           <button id="btnVigyan" class="btn" data-sub="interior" data-keywords="vigyan bhairav tantra shiva devi parvati cachemira 112 sutras dharanas meditacion respiracion pausa mantra om silencio vacio energia luz oscuridad cuerpo sentidos sueño corazon asombro presencia">🕉️ Tantra · 112 meditaciones</button>
+          <button id="btnEstoicismo" class="btn" data-sub="interior" data-keywords="estoicismo estoico seneca epicteto marco aurelio zenon meditaciones manual cartas virtud sabiduria justicia coraje templanza control dicotomia obstaculo memento mori amor fati premeditacion examen ira tiempo deber suficiente calma caracter firmeza serenidad">🏛️ Estoicismo · Carácter firme</button>
           <button id="btnEspiritual" class="btn" data-sub="interior" data-keywords="practicas espirituales sol amanecer atardecer agua solarizada ducha fria grounding earthing luz roja noche ritual meditacion sungazing">🕉️ Prácticas Espirituales</button>
           <button id="btnKinMaya" class="btn" data-sub="interior" data-keywords="kin maya tzolkin sello solar tono galactico onda encantada 260 dias calendario sagrado sincronizacion">🌟 Kin Maya</button>
           <button id="btnTarot" class="btn" data-sub="interior" data-keywords="tarot cartas arcanos mayores menores tirada lectura cruz consejo pasado presente futuro sino espejo rider waite">🔮 Tarot</button>
@@ -4166,13 +4167,13 @@
     <button type="button" id="dockFull" class="dock-btn" title="Vista completa">🖥️<small>Completa</small></button>
   </nav>
 
-  <script defer src="web-api.js?v=8"></script>
+  <script defer src="web-api.js?v=9"></script>
   <script defer src="astro.js?v=8"></script>
   <script defer src="data.js?v=8"></script>
   <script defer src="territorio.js?v=1"></script>
   <script defer src="frases.js?v=8"></script>
   <script defer src="cal.js?v=9"></script>
-  <script defer src="renderer.js?v=14"></script>
+  <script defer src="renderer.js?v=16"></script>
   <script defer src="nuevos-modulos.js?v=9"></script>
   <!-- Modulos no criticos: carga diferida tras la primera pintura.
        El calendario abre solo con el nucleo (8 scripts); el resto (guias,
@@ -4190,6 +4191,7 @@
         'tolteca-modulo.js?v=1',
         'tao-modulo.js?v=1',
         'vigyan-bhairav-modulo.js?v=1',
+        'estoicismo-modulo.js?v=1',
         'constelaciones-modulo.js?v=1',
         'metodo-silva-modulo.js?v=1',
         'grabovoi-modulo.js?v=1',
@@ -4248,7 +4250,8 @@
         'qrcode-lib.js?v=1',
         'jsqr-lib.js?v=1',
         'qr-codec.js?v=1',
-        'qr-sync-modulo.js?v=1'
+        'qr-sync-modulo.js?v=1',
+        'bitacoras-respaldo-modulo.js?v=1'
       ];
       var started = false;
       function seq(i) {

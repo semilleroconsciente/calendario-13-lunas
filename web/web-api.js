@@ -34,10 +34,10 @@
       setTimeout(() => URL.revokeObjectURL(a.href), 2000);
       return { ok: true, path: "Descargado: Calendario 13 Lunas.url (arrástralo al escritorio)" };
     },
-    backupSave: async (json) => {
+    backupSave: async (json, fileName) => {
       const a = document.createElement('a');
       a.href = URL.createObjectURL(new Blob([json], { type: 'application/json' }));
-      a.download = 'respaldo-calendario-13-lunas.json';
+      a.download = (fileName || 'respaldo-calendario-13-lunas.json');
       a.click();
       return 'descargado';
     },

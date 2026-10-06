@@ -4202,10 +4202,34 @@ $('btnBackup').onclick = async () => {
 
 // Aplica un respaldo JSON (string) con la validación de siempre.
 // La usan 📥 Restaurar (archivo) y 📲 Traspaso QR (qr-sync-modulo.js).
+// Acepta 2 formatos:
+//  - Respaldo TOTAL {usuarios, notas}: reemplaza todo (como antes).
+//  - Bitácora INDIVIDUAL {tipo:'bitacora-individual', grupo, datos}:
+//    fusiona SOLO esa bitácora, el resto queda intacto.
 // Devuelve true si el respaldo se aplicó.
 async function applyBackupJSON(j) {
   try {
     const d = JSON.parse(j);
+    if (d && d.tipo === 'bitacora-individual' && d.datos && typeof d.datos === 'object') {
+      if (typeof window.applyBitacoraJSON === 'function') {
+        const ok = await window.applyBitacoraJSON(j);
+        if (ok) {
+          try { buildSidebar(); } catch {}
+          try { selectCycle(currentCycleYear(), currentView.tipo === 'dft' ? 'dft' : currentView.luna); } catch {}
+        }
+        return ok;
+      }
+      // Fallback si el módulo de bitácoras aún no cargó: fusión mínima
+      const u = userData();
+      const keys = Array.isArray(d.claves) && d.claves.length ? d.claves : Object.keys(d.datos);
+      keys.forEach(k => { if (d.datos[k] !== undefined) u[k] = d.datos[k]; });
+      await window.api.saveData(JSON.stringify(DATA));
+      buildSidebar();
+      selectCycle(currentCycleYear(), currentView.tipo === 'dft' ? 'dft' : currentView.luna);
+      $('statusMsg').textContent = 'Bitácora «' + (d.titulo || d.grupo || '') + '» restaurada ✓ (las demás intactas)';
+      setTimeout(() => { $('statusMsg').textContent = ''; }, 2500);
+      return true;
+    }
     if (!d.usuarios || !Array.isArray(d.usuarios) || !d.notas || typeof d.notas !== 'object') throw new Error('formato');
     if (d.usuarios.length === 0 || d.usuarios.length > 50) throw new Error('usuarios');
     // validación básica de estructura y tamaño (evita JSON malicioso gigante)
@@ -4236,6 +4260,7 @@ $('btnRestore').onclick = async () => {
   if (!j) return;
   await applyBackupJSON(j);
 };
+try { window.applyBackupJSON = applyBackupJSON; } catch {}
 
 function updateRemindBtn() {
   const on = !!(DATA.config && DATA.config.recordar);
@@ -6926,51 +6951,81 @@ setTimeout(setupHelpDialog, 850);
 // Incluye botones base + los inyectados por nuevos-modulos.js (Agua, Bodega, Nudos,
 // Taller, Trueque, Minga, Rutinas, Fertilidad, Derechos). NUEVOS_BTNS los re-agrega
 // con push si faltan (no-op si ya están), así los perfiles siempre los conocen.
-const ALL_BTNS = ["btnTides","btnFishing","btnBirds","btnIntermareal","btnBosque","btnWeather","btnSiembra","btnAstro","btnComuna","btnIglesias","btnEkadashi","btnMenstrual","btnMedic","btnNutri","btnHabits","btnMeal","btnShopping","btnFinance","btnHomeTasks","btnDiscipline","btnDreams","btnBreath","btnGratitud","btnSchedule","btnGym","btnCircadian","btnGolden","btnEspiritual","btnCompost","btnLawen","btnFirstAid","btnAnimalCare","btnViolence","btnEvac","btnConvert","btnEnergy","btnLena","btnTimer","btnRemind","btnBackup","btnRestore","btnShortcut","btnPdfLuna","btnPdfCiclo","btnDonate","btnHelp","btnStudy","btnTales","btnVozAbuelos","btnMemory","btnMapu","btnEnglish","btnGuitar","btnPsico","btnMetodos","btnAgua","btnBodega","btnNudos","btnTaller","btnTrueque","btnMinga","btnFerti","btnDerechos","btnCrianza","btnArbolFull","btnRecap","btnDueloFull","btnEneagrama","btnCuartoCamino","btnAjedrez","btnMatematicas","btnSudoku","btnCrucigrama","btnSopaLetras","btnFlora","btnPsicologia","btnAdolescencia","btnJuventud","btnAdultez","btnClimaterio","btnVejez","btnElectrocultura","btnMecanica","btnDespensa","btnCloset","btnHerramientas","btnAdicciones","btnKinMaya","btnTarot","btnOraculo"];
+const ALL_BTNS = ["btnTides","btnFishing","btnBirds","btnIntermareal","btnBosque","btnWeather","btnSiembra","btnAstro","btnComuna","btnIglesias","btnEkadashi","btnMenstrual","btnMedic","btnNutri","btnHabits","btnMeal","btnShopping","btnFinance","btnHomeTasks","btnDiscipline","btnDreams","btnBreath","btnGratitud","btnSchedule","btnGym","btnCircadian","btnGolden","btnEspiritual","btnCompost","btnLawen","btnFirstAid","btnAnimalCare","btnViolence","btnEvac","btnConvert","btnEnergy","btnLena","btnTimer","btnRemind","btnBackup","btnRestore","btnShortcut","btnPdfLuna","btnPdfCiclo","btnDonate","btnHelp","btnStudy","btnTales","btnVozAbuelos","btnMemory","btnMapu","btnEnglish","btnGuitar","btnPsico","btnMetodos","btnAgua","btnBodega","btnNudos","btnTaller","btnTrueque","btnMinga","btnFerti","btnDerechos","btnCrianza","btnArbolFull","btnRecap","btnDueloFull","btnEneagrama","btnCuartoCamino","btnAjedrez","btnMatematicas","btnSudoku","btnCrucigrama","btnSopa","btnFlora","btnPsicologia","btnAdolescencia","btnJuventud","btnAdultez","btnClimaterio","btnVejez","btnElectrocultura","btnMecanica","btnDespensa","btnCloset","btnHerramientas","btnAdicciones","btnKinMaya","btnTarot","btnOraculo","btnAnfibios","btnApoyo","btnMuni","btnBomberos","btnConstelaciones","btnIkigai","btnVIA","btnSilva","btnGrabovoi","btnEstoicismo","btnHooponopono","btnTao","btnTolteca","btnVigyan","btnNatacion","btnHuerta","btnHidroponia","btnKayak","btnBallenas","btnMeli","btnHongos","btnSenderos","btnFuego","btnDomotica","btnNeurodiversidad","btnPelo","btnRituales","btnFenologia","btnCorral","btnMovilidad","btnEscolar","btnQRSync","btnActores"];
 // === REORGANIZACIÓN 7 GRUPOS (2026-09): grupo + subgrupo destino de cada botón ===
 // Dinámicos que aún no existen en el DOM se mueven cuando se inyectan.
 const BTN_HOME = {
   btnHabits:['dia','organizar'],btnDiscipline:['dia','organizar'],btnSchedule:['dia','organizar'],btnTimer:['dia','organizar'],btnRemind:['dia','organizar'],
   btnGratitud:['dia','registrar'],btnDreams:['dia','registrar'],btnBreath:['dia','registrar'],
   btnTides:['territorio','mar'],btnFishing:['territorio','mar'],btnIntermareal:['territorio','mar'],btnNudos:['territorio','mar'],btnKayak:['territorio','mar'],btnBallenas:['territorio','mar'],
-  btnHuerta:['territorio','tierra'],btnSiembra:['territorio','tierra'],btnBosque:['territorio','tierra'],btnCompost:['territorio','tierra'],btnAgua:['territorio','tierra'],btnHidroponia:['territorio','tierra'],btnElectrocultura:['territorio','tierra'],btnFlora:['territorio','tierra'],btnLawen:['territorio','tierra'],btnBirds:['territorio','tierra'],btnMeli:['territorio','tierra'],btnHongos:['territorio','tierra'],btnSenderos:['territorio','tierra'],btnFuego:['territorio','tierra'],
+  btnHuerta:['territorio','tierra'],btnSiembra:['territorio','tierra'],btnBosque:['territorio','tierra'],btnCompost:['territorio','tierra'],btnAgua:['territorio','tierra'],btnHidroponia:['territorio','tierra'],btnElectrocultura:['territorio','tierra'],btnFlora:['territorio','tierra'],btnLawen:['territorio','tierra'],btnBirds:['territorio','tierra'],btnAnfibios:['territorio','tierra'],btnMeli:['territorio','tierra'],btnHongos:['territorio','tierra'],btnSenderos:['territorio','tierra'],btnFuego:['territorio','tierra'],
   btnWeather:['territorio','cielo'],btnAstro:['territorio','cielo'],btnGolden:['territorio','cielo'],btnCircadian:['territorio','cielo'],btnEkadashi:['territorio','cielo'],
-  btnComuna:['territorio','penco'],btnIglesias:['territorio','penco'],
+  btnComuna:['territorio','penco'],btnIglesias:['territorio','penco'],btnMuni:['territorio','penco'],btnBomberos:['territorio','penco'],btnActores:['territorio','penco'],
   btnMenstrual:['cuerpo','ciclos'],btnFerti:['cuerpo','ciclos'],btnJuventud:['cuerpo','ciclos'],btnClimaterio:['cuerpo','ciclos'],
-  btnMedic:['cuerpo','cuidado'],btnNutri:['cuerpo','cuidado'],btnGym:['cuerpo','cuidado'],
+  btnMedic:['cuerpo','cuidado'],btnNutri:['cuerpo','cuidado'],btnGym:['cuerpo','cuidado'],btnNatacion:['cuerpo','cuidado'],btnPelo:['cuerpo','cuidado'],btnRituales:['cuerpo','cuidado'],
   btnStudy:['aprender','estudio'],btnMemory:['aprender','estudio'],btnMapu:['aprender','estudio'],btnEnglish:['aprender','estudio'],btnGuitar:['aprender','estudio'],btnMatematicas:['aprender','estudio'],
   btnAjedrez:['aprender','juegos'],btnSudoku:['aprender','juegos'],btnCrucigrama:['aprender','juegos'],btnSopa:['aprender','juegos'],
   btnTales:['aprender','infancias'],btnCrianza:['aprender','infancias'],btnAdolescencia:['aprender','infancias'],
-  btnPsico:['linaje','interior'],btnPsicologia:['linaje','interior'],btnEneagrama:['linaje','interior'],btnMetodos:['linaje','interior'],btnCuartoCamino:['linaje','interior'],btnNeurodiversidad:['linaje','interior'],btnRecap:['linaje','interior'],btnEspiritual:['linaje','interior'],btnDueloFull:['linaje','interior'],btnAdicciones:['linaje','interior'],btnKinMaya:['linaje','interior'],btnTarot:['linaje','interior'],btnOraculo:['linaje','interior'],
-  btnArbolFull:['linaje','familia'],btnVozAbuelos:['linaje','familia'],btnAdultez:['linaje','familia'],btnVejez:['linaje','familia'],
-  btnMeal:['hogar','casa'],btnShopping:['hogar','casa'],btnFinance:['hogar','casa'],btnHomeTasks:['hogar','casa'],btnBodega:['hogar','casa'],btnDespensa:['hogar','casa'],btnCloset:['hogar','casa'],
+  btnPsico:['linaje','interior'],btnPsicologia:['linaje','interior'],btnEneagrama:['linaje','interior'],btnIkigai:['linaje','interior'],btnVIA:['linaje','interior'],btnMetodos:['linaje','interior'],btnCuartoCamino:['linaje','interior'],btnHooponopono:['linaje','interior'],btnSilva:['linaje','interior'],btnGrabovoi:['linaje','interior'],btnNeurodiversidad:['linaje','interior'],btnRecap:['linaje','interior'],btnTolteca:['linaje','interior'],btnTao:['linaje','interior'],btnVigyan:['linaje','interior'],btnEstoicismo:['linaje','interior'],btnEspiritual:['linaje','interior'],btnFenologia:['linaje','interior'],btnDueloFull:['linaje','interior'],btnAdicciones:['linaje','interior'],btnKinMaya:['linaje','interior'],btnTarot:['linaje','interior'],btnOraculo:['linaje','interior'],
+  btnArbolFull:['linaje','familia'],btnVozAbuelos:['linaje','familia'],btnConstelaciones:['linaje','familia'],btnAdultez:['linaje','familia'],btnVejez:['linaje','familia'],
+  btnMeal:['hogar','casa'],btnShopping:['hogar','casa'],btnFinance:['hogar','casa'],btnHomeTasks:['hogar','casa'],btnBodega:['hogar','casa'],btnDespensa:['hogar','casa'],btnCloset:['hogar','casa'],btnCorral:['hogar','casa'],btnMovilidad:['hogar','casa'],btnEscolar:['hogar','casa'],
   btnEnergy:['hogar','energia'],btnLena:['hogar','energia'],btnTaller:['hogar','energia'],btnHerramientas:['hogar','energia'],btnMecanica:['hogar','energia'],btnDomotica:['hogar','energia'],btnConvert:['hogar','energia'],
   btnTrueque:['comunidad','red'],btnMinga:['comunidad','red'],btnDerechos:['comunidad','red'],btnAnimalCare:['comunidad','red'],
-  btnFirstAid:['comunidad','emergencia'],btnViolence:['comunidad','emergencia'],btnEvac:['comunidad','emergencia'],
-  btnBackup:['comunidad','app'],btnRestore:['comunidad','app'],btnShortcut:['comunidad','app'],btnPdfLuna:['comunidad','app'],btnPdfCiclo:['comunidad','app'],btnDonate:['comunidad','app']
+  btnFirstAid:['comunidad','emergencia'],btnViolence:['comunidad','emergencia'],btnEvac:['comunidad','emergencia'],btnApoyo:['comunidad','emergencia'],
+  btnBackup:['comunidad','app'],btnRestore:['comunidad','app'],btnQRSync:['comunidad','app'],btnShortcut:['comunidad','app'],btnPdfLuna:['comunidad','app'],btnPdfCiclo:['comunidad','app'],btnDonate:['comunidad','app']
 };
 // Orden de botones dentro de cada subgrupo (los no listados van al final en orden de llegada)
 const BTN_ORDER = {
   'dia|organizar':['btnHabits','btnDiscipline','btnSchedule','btnTimer','btnRemind'],
   'dia|registrar':['btnGratitud','btnDreams','btnBreath'],
   'territorio|mar':['btnTides','btnFishing','btnIntermareal','btnNudos','btnKayak','btnBallenas'],
-  'territorio|tierra':['btnHuerta','btnSiembra','btnBosque','btnCompost','btnAgua','btnHidroponia','btnElectrocultura','btnFlora','btnLawen','btnBirds','btnMeli','btnHongos','btnSenderos','btnFuego'],
+  'territorio|tierra':['btnHuerta','btnSiembra','btnBosque','btnCompost','btnAgua','btnHidroponia','btnElectrocultura','btnFlora','btnLawen','btnBirds','btnAnfibios','btnMeli','btnHongos','btnSenderos','btnFuego'],
   'territorio|cielo':['btnWeather','btnAstro','btnGolden','btnCircadian','btnEkadashi'],
   'territorio|penco':['btnComuna','btnIglesias','btnMuni','btnBomberos','btnActores'],
   'cuerpo|ciclos':['btnMenstrual','btnFerti','btnJuventud','btnClimaterio'],
-  'cuerpo|cuidado':['btnMedic','btnNutri','btnGym'],
+  'cuerpo|cuidado':['btnMedic','btnNutri','btnGym','btnNatacion','btnPelo','btnRituales'],
   'aprender|estudio':['btnStudy','btnMemory','btnMapu','btnEnglish','btnGuitar','btnMatematicas'],
   'aprender|juegos':['btnAjedrez','btnSudoku','btnCrucigrama','btnSopa'],
   'aprender|infancias':['btnTales','btnCrianza','btnAdolescencia'],
-  'linaje|interior':['btnPsico','btnPsicologia','btnEneagrama','btnMetodos','btnCuartoCamino','btnNeurodiversidad','btnRecap','btnEspiritual','btnDueloFull','btnAdicciones','btnKinMaya','btnTarot','btnOraculo'],
-  'linaje|familia':['btnArbolFull','btnVozAbuelos','btnAdultez','btnVejez'],
-  'hogar|casa':['btnMeal','btnShopping','btnFinance','btnHomeTasks','btnBodega','btnDespensa','btnCloset'],
+  'linaje|interior':['btnPsico','btnPsicologia','btnEneagrama','btnIkigai','btnVIA','btnMetodos','btnCuartoCamino','btnHooponopono','btnSilva','btnGrabovoi','btnNeurodiversidad','btnRecap','btnTolteca','btnTao','btnVigyan','btnEstoicismo','btnEspiritual','btnFenologia','btnDueloFull','btnAdicciones','btnKinMaya','btnTarot','btnOraculo'],
+  'linaje|familia':['btnArbolFull','btnVozAbuelos','btnConstelaciones','btnAdultez','btnVejez'],
+  'hogar|casa':['btnMeal','btnShopping','btnFinance','btnHomeTasks','btnBodega','btnDespensa','btnCloset','btnCorral','btnMovilidad','btnEscolar'],
   'hogar|energia':['btnEnergy','btnLena','btnTaller','btnHerramientas','btnMecanica','btnDomotica','btnConvert'],
   'comunidad|red':['btnTrueque','btnMinga','btnDerechos','btnAnimalCare'],
-  'comunidad|emergencia':['btnFirstAid','btnViolence','btnEvac'],
+  'comunidad|emergencia':['btnFirstAid','btnViolence','btnEvac','btnApoyo'],
   'comunidad|app':['btnBackup','btnRestore','btnQRSync','btnShortcut','btnPdfLuna','btnPdfCiclo','btnDonate']
 };
+// Red de seguridad (2026-10): registra botones/checkboxes tardíos (módulos
+// diferidos) en ALL_BTNS + BTN_HOME + PRESETS.todo/adulto, para que
+// Personalizar, presets y applyVisibility los conozcan aunque lleguen tarde.
+function registerLateButtons(){
+  try{
+    var known={};
+    ALL_BTNS.forEach(function(k){ known[k]=1; });
+    var touched=false;
+    document.querySelectorAll('#actions .group-btns .btn[id]').forEach(function(b){
+      var id=b.id;
+      if(!id||known[id]) return;
+      ALL_BTNS.push(id); known[id]=1; touched=true;
+      try{
+        var g=b.closest?b.closest('.action-group'):null;
+        var gn=g?g.getAttribute('data-group'):null;
+        var sub=(b.dataset&&b.dataset.sub)||null;
+        if(gn&&typeof BTN_HOME!=='undefined'&&!BTN_HOME[id]) BTN_HOME[id]=[gn,sub||''];
+      }catch(e){}
+    });
+    document.querySelectorAll('#configDialog input[data-btn]').forEach(function(cb){
+      var id=cb.getAttribute&&cb.getAttribute('data-btn');
+      if(id&&!known[id]){ ALL_BTNS.push(id); known[id]=1; touched=true; }
+    });
+    if(touched&&typeof PRESETS!=='undefined'){
+      try{ if(PRESETS.todo) ALL_BTNS.forEach(function(k){ if(!(k in PRESETS.todo)) PRESETS.todo[k]=true; }); }catch(e){}
+      try{ if(PRESETS.adulto) ALL_BTNS.forEach(function(k){ if(!(k in PRESETS.adulto)) PRESETS.adulto[k]=true; }); }catch(e){}
+    }
+  }catch(e){}
+}
 function reordenarAcciones(){
+  try{ if(typeof registerLateButtons==='function') registerLateButtons(); }catch(e){}
   try{
     Object.keys(BTN_HOME).forEach(function(id){
       var el = document.getElementById(id);
@@ -7047,6 +7102,7 @@ function getVisibleConfig(){
   return out;
 }
 function applyVisibility(){
+  try{ if(typeof registerLateButtons==='function') registerLateButtons(); }catch(e){}
   const vis=getVisibleConfig();
   ALL_BTNS.forEach(id=>{
     const el=document.getElementById(id);
@@ -7420,7 +7476,8 @@ function setupConfigDialog(){
       const preset=PRESETS[b.dataset.preset];
       if(!preset) return;
       DATA.config=DATA.config||{};
-      const vis={}; ALL_BTNS.forEach(k=> vis[k]= preset[k] ? true : false);
+      const isAll=(b.dataset.preset==='todo'||b.dataset.preset==='adulto');
+      const vis={}; ALL_BTNS.forEach(k=> vis[k]= isAll ? true : (preset[k] ? true : false));
       // si preset no define, dejar false
       DATA.config.visible=vis;
       scheduleSave();

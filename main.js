@@ -122,10 +122,11 @@ ipcMain.handle('export:pdf', async (_e, html) => {
   return filePath;
 });
 
-ipcMain.handle('backup:save', async (_e, json) => {
+ipcMain.handle('backup:save', async (_e, json, fileName) => {
+  const safe = String(fileName || 'respaldo-calendario-13-lunas.json').replace(/[\\/:*?"<>|]/g, '-').slice(0, 120) || 'respaldo-calendario-13-lunas.json';
   const { canceled, filePath } = await dialog.showSaveDialog(win, {
     title: 'Guardar respaldo de notas',
-    defaultPath: path.join(app.getPath('documents'), 'respaldo-calendario-13-lunas.json'),
+    defaultPath: path.join(app.getPath('documents'), safe),
     filters: [{ name: 'JSON', extensions: ['json'] }]
   });
   if (canceled || !filePath) return null;
