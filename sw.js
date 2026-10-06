@@ -1,6 +1,6 @@
 ﻿// Service Worker — Calendario 13 Lunas (offline-first, tolerante a versiones ?v=)
 // v54
-const CACHE = 'cal13-v55-offline';
+const CACHE = 'cal13-v56-offline';
 
 // Lista completa de archivos que usa index.html (bare + con ?v=).
 // Si se agrega un JS nuevo en index.html, agregarlo aquí también (bare y ?v=).
@@ -133,6 +133,8 @@ const CORE = [
   './kin-maya-modulo.js?v=3',
   './tarot-modulo.js',
   './tarot-modulo.js?v=1',
+  './numerologia-modulo.js',
+  './numerologia-modulo.js?v=1',
   './oraculo-modulo.js',
   './oraculo-modulo.js?v=1',
   './adolescencia-modulo.js',
