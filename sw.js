@@ -77,6 +77,8 @@ const CORE = [
   './hooponopono-modulo.js?v=1',
   './metodo-silva-modulo.js',
   './metodo-silva-modulo.js?v=1',
+  './grabovoi-modulo.js',
+  './grabovoi-modulo.js?v=1',
   './carta-astral.js',
   './carta-astral.js?v=1',
   './voz-abuelos.js',
