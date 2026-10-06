@@ -98,6 +98,7 @@
       "qr-codec.js",
       "qr-sync-modulo.js",
       "bitacoras-respaldo-modulo.js",
+      "recetas-naturales-modulo.js",
       "sw.js",
       "manifest.json",
       "donate.json",
