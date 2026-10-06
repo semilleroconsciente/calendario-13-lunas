@@ -6,7 +6,9 @@
   "scripts": {
     "start": "electron .",
     "build:win": "electron-builder --win portable",
-    "build": "electron-builder --win portable"
+    "build": "electron-builder --win portable",
+    "movil:sync": "cap sync android",
+    "movil:apk": "cap sync android"
   },
   "license": "MIT",
   "type": "commonjs",
@@ -36,6 +38,7 @@
       "fortalezas-via-modulo.js",
       "cuarto-camino-modulo.js",
       "hooponopono-modulo.js",
+      "tolteca-modulo.js",
       "metodo-silva-modulo.js",
       "carta-astral.js",
       "voz-abuelos.js",
@@ -103,12 +106,21 @@
       "assets/**/*"
     ],
     "win": {
-      "target": ["portable"],
+      "target": [
+        "portable"
+      ],
       "icon": "icon.ico"
     }
   },
   "devDependencies": {
+    "@capacitor/assets": "^3.0.5",
     "electron": "^43.4.1",
-    "electron-builder": "^26.x"
+    "electron-builder": "^26.x",
+    "typescript": "^7.0.2"
+  },
+  "dependencies": {
+    "@capacitor/android": "^6.2.2",
+    "@capacitor/cli": "^6.2.2",
+    "@capacitor/core": "^6.2.2"
   }
 }

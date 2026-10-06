@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">13 Lunas</string>
+    <string name="title_activity_main">13 Lunas</string>
+    <string name="package_name">cl.penco.calendario13lunas</string>
+    <string name="custom_url_scheme">cl.penco.calendario13lunas</string>
+</resources>
