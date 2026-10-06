@@ -350,7 +350,7 @@ function buildDialog() {
     '<button type="button" id="estToNote" class="btn" style="width:auto">📝 Llevar a nota de hoy</button>' +
     '<button type="button" id="estClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar todo</button></span></div></div>';
 
-  makeDialog('estoicismoDialog', '🏛️ Estoicismo — carácter para la vida real',
+  makeDialog('estoicismoDialog', '🏛️ Estoicismo',
     'Dicotomía del control, 4 virtudes y examen diario para Penco: haz lo que depende de ti, suelta el resto y cumple tu deber. Todo <b>privado y local</b>.',
     body);
 }
@@ -611,7 +611,7 @@ function setup() {
       if (g) {
         var btn = document.createElement('button');
         btn.id = 'btnEstoicismo'; btn.className = 'btn'; btn.type = 'button';
-        btn.textContent = '🏛️ Estoicismo · Carácter firme';
+        btn.textContent = '🏛️ Estoicismo';
         try { btn.setAttribute('data-sub', 'interior'); } catch (eS) {}
         btn.setAttribute('data-keywords', 'estoicismo estoico seneca epicteto marco aurelio zenon meditaciones manual cartas virtud sabiduria justicia coraje templanza control dicotomia obstaculo memento mori amor fati premeditacion examen ira tiempo deber suficiente calma caracter firmeza serenidad');
         var ref = g.querySelector('#btnTao') || g.querySelector('#btnTolteca') || g.querySelector('#btnRecap');
@@ -663,7 +663,7 @@ function setup() {
         if (h && h.textContent.indexOf('Linaje') >= 0) {
           var lab = document.createElement('label');
           lab.className = 'check-row';
-          lab.innerHTML = '<input type="checkbox" data-btn="btnEstoicismo"> 🏛️ Estoicismo · Carácter firme';
+          lab.innerHTML = '<input type="checkbox" data-btn="btnEstoicismo"> 🏛️ Estoicismo';
           gr.appendChild(lab);
           try {
             var vis = (typeof getVisibleConfig === 'function') ? getVisibleConfig() : null;

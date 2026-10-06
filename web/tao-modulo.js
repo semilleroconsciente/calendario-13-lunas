@@ -349,7 +349,7 @@ function buildDialog() {
     '<button type="button" id="taoToNote" class="btn" style="width:auto">📝 Llevar a nota de hoy</button>' +
     '<button type="button" id="taoClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar todo</button></span></div></div>';
 
-  makeDialog('taoDialog', '☯️ Tao — el arte de fluir sin forzar',
+  makeDialog('taoDialog', '☯️ Tao',
     'Yin-yang, wu wei y simpleza para la vida común: suelta un control, haz lo mínimo eficaz y vuelve a tu raíz. En Penco, en tu casa, hoy. Todo <b>privado y local</b>.',
     body);
 }
@@ -610,7 +610,7 @@ function setup() {
       if (g) {
         var btn = document.createElement('button');
         btn.id = 'btnTao'; btn.className = 'btn'; btn.type = 'button';
-        btn.textContent = '☯️ Tao · Fluir sin forzar';
+        btn.textContent = '☯️ Tao';
         try { btn.setAttribute('data-sub', 'interior'); } catch (eS) {}
         btn.setAttribute('data-keywords', 'tao lao tse laozi zhuangzi chuang tzu tao te ching i ching yin yang wu wei te pu tres tesoros agua bambu fluir soltar control respiracion 4-6 te consciente caminata lenta no hacer fama contento impermanencia cambio equilibrio');
         var ref = g.querySelector('#btnTolteca') || g.querySelector('#btnRecap');
@@ -662,7 +662,7 @@ function setup() {
         if (h && h.textContent.indexOf('Linaje') >= 0) {
           var lab = document.createElement('label');
           lab.className = 'check-row';
-          lab.innerHTML = '<input type="checkbox" data-btn="btnTao"> ☯️ Tao · Fluir sin forzar';
+          lab.innerHTML = '<input type="checkbox" data-btn="btnTao"> ☯️ Tao';
           gr.appendChild(lab);
           try {
             var vis = (typeof getVisibleConfig === 'function') ? getVisibleConfig() : null;
