@@ -120,6 +120,7 @@ const CORE = [
   './crucigrama-modulo.js?v=1',
   './sopa-letras-modulo.js',
   './sopa-letras-modulo.js?v=1',
+  './sopa-letras-modulo.js?v=2',
   './info-clave.js',
   './info-clave.js?v=1',
   './psicologia-modulo.js',
