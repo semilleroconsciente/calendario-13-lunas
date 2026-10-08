@@ -3363,11 +3363,15 @@ function cleanupCocrea() {
 }
 
 /* ============================================================
-   CRIANZA INFANTIL — pedagogías vivas para acompañar
-   Métodos: Montessori · Waldorf · Pedagogía 3000 · Pikler ·
-   Reggio Emilia · Crianza respetuosa. Guía por edades, ambiente
-   preparado y bitácora. Todo local y privado por usuario.
-   Conecta con 🤱 1000 días, 📖 Cuentos y ✅ Hábitos.
+   CRIANZA INFANTIL — guía completa 0-12 para acompañar
+   Métodos (12): Montessori · Waldorf · Pedagogía 3000 · Pikler ·
+   Reggio Emilia · Crianza respetuosa + Apego/porteo · Kimün
+   mapuche · Bosque-escuela · CNV · Freinet · Hogar. Cada método
+   con ficha completa (pasos, ejemplos por edad, frases, errores,
+   cuándo elegir, con qué combinar) + comparativa + test + reto 7 días.
+   Etapas (gestación–12), salud, juego, límites/rabietas, ambiente y bitácora.
+   Todo local y privado por usuario.
+   Conecta con 🤱 1000 días, 📖 Cuentos, 🌱 Adolescencia y ✅ Hábitos.
    ============================================================ */
 var CRIANZA_METODOS = [
   { id: 'montessori', icon: '🧩', t: 'Montessori', aut: 'María Montessori · Italia',
@@ -3411,28 +3415,218 @@ var CRIANZA_METODOS = [
     amb: 'Tabla visual de rutinas · rincón de calma (no de castigo) · acuerdos familiares visibles.',
     rol: 'Calma tu tormenta primero; nombra su emoción ("veo rabia") y ofrece opciones.',
     act: 'Rincón de calma con cojín y cuentos · reuniones familiares cortas · "¿qué necesitas?" antes del reto · reparar juntos.',
-    edad: 'Todas; clave en rabietas 1–5 años y límites 6–12.' }
+    edad: 'Todas; clave en rabietas 1–5 años y límites 6–12.' },
+  { id: 'apego', icon: '🦘', t: 'Apego seguro + Porteo', aut: 'J. Bowlby · M. Ainsworth · C. Manning',
+    idea: 'El contacto corporal construye seguridad: brazos, porteo y colecho seguro regulan llanto, sueño y estrés del bebé y de quien cría.',
+    princ: ['Responder al llanto siempre: el llanto es comunicación, no manipulación', 'Mucho contacto piel con piel el primer año', 'Porteo ergonómico (rodillas en M, espalda en C) en vez de coche todo el día', 'Colecho seguro o cama cercana si se elige: superficie firme, sin almohadas ni alcohol/tabaco', 'Cuidadores estables y predecibles: pocos, siempre los mismos'],
+    amb: 'Fular o mochila ergonómica · muda y teta a mano · catre colecho o cuna pegada · hamaca baja solo para siesta corta vigilada.',
+    rol: 'Sé su refugio: acoge, calma y luego explora. Tu calma regula la suya.',
+    act: 'Porteo en caminata diaria · piel con piel 30 min · "te escucho, estoy aquí" ante cada llanto · turno de descanso para quien cría.',
+    edad: 'Esencial gestación–2 años; el vínculo seguro sostiene todo lo demás.' },
+  { id: 'kimun', icon: '🌿', t: 'Kimün mapuche · Crianza del territorio', aut: 'Saberes mapuche · Epew y Mapuzugun',
+    idea: 'Criar enraizado: el niño es parte del lof y del mapu. Se aprende mirando, haciendo y escuchando epew junto a mayores.',
+    princ: ['El niño aprende participando en la vida real (huerta, cocina, minga), no apartado', 'Epew (cuentos) y mapuzugun cada día: lengua e identidad', 'Respeto a toda vida: agua, bosque y animales no se dañan por juego', 'Los mayores enseñan con ejemplo y consejo, no con grito', 'Comunidad cría: tíos, abuelos y vecinos también acompañan'],
+    amb: 'Rincón del mapu: piedras, semillas, lana · canasto de epew y cantos · huerta o maceta propia · saludo al sol y a la luna.',
+    rol: 'Lleva al niño contigo a tu oficio y nombra el mundo en dos lenguas.',
+    act: 'Un epew por semana · 3 palabras en mapuzugun al día · minga familiar mensual · ofrenda de agua/semilla en cada luna.',
+    edad: 'Todas; raíz ideal 2–12 años.' },
+  { id: 'bosque', icon: '🌳', t: 'Bosque-escuela · Juego libre y riesgo medido', aut: 'P. Gray · Escuelas bosque (Dinamarca/Alemania)',
+    idea: 'Afuera se aprende mejor: barro, agua, palos y desnivel desarrollan cuerpo, criterio y creatividad más que cualquier juguete.',
+    princ: ['Juego libre no dirigido mínimo 1 h diaria afuera', 'Riesgo medido sí: trepar bajo, usar herramientas reales con guía, mojarse', 'Pocos juguetes, muchos elementos sueltos (palos, piedras, telas, barro)', 'Con cualquier clima: piloto y botas, no encierro', 'El adulto cuida el perímetro, no dirige la obra'],
+    amb: 'Cajón de barro y agua · palos, cuerdas y telas · cerco o perímetro claro · muda seca siempre lista.',
+    rol: 'Guardia del juego: mira de lejos, interviene solo ante peligro real.',
+    act: 'Tarde de barro semanal · caminata del tesoro en Penco/Lirquén · cabaña con palos · saltar charcos con lluvia.',
+    edad: 'Brilla 2–9 años; salir a diario sirve siempre.' },
+  { id: 'cnv', icon: '💬', t: 'Comunicación no violenta con niños', aut: 'M. Rosenberg adaptado a familia',
+    idea: 'Detrás de cada "mala conducta" hay una necesidad: hambre, sueño, juego, autonomía o conexión. Se pone en palabras sin culpar.',
+    princ: ['Observa sin juzgar: "veo bloques en el suelo" en vez de "eres desordenado"', 'Nombra sentimiento + necesidad: "estás frustrado, querías seguir jugando"', 'Pide en positivo y concreto: "guardemos 5 bloques juntos" en vez de "no seas así"', 'Escucha el no: ofrece 2 opciones aceptables', 'Límites con empatía: sostienes el límite y acoges el llanto que provoca'],
+    amb: 'Tarjetas de emociones a la vista · reloj visual para transiciones · frases-puente pegadas en el refri.',
+    rol: 'Traduce la conducta a necesidad y presta palabras al niño hasta que las tenga.',
+    act: 'Frase "veo/siento/necesito/pido" una vez al día · anticipar transiciones ("en 5 min guardamos") · reparar con abrazo y plan.',
+    edad: 'Todas; clave 2–8 años (rabietas y peleas entre hermanos).' },
+  { id: 'freinet', icon: '🖨️', t: 'Freinet · Pedagogía viva', aut: 'C. Freinet · Francia (escuela viva)',
+    idea: 'Se aprende haciendo y decidiendo: asamblea, proyectos reales y oficios en vez de fichas y dictados. El tanteo (probar y corregir) es el motor.',
+    princ: ['Asamblea semanal: proponen, votan y reparten tareas', 'Texto y proyecto libre: dibuja, dicta o escribe lo que le importa', 'Talleres y oficios reales: cocina, huerta, carpintería simple, radio', 'Cooperación en vez de competencia: ayuda al que va distinto', 'Salida al territorio: paseo-estudio y diario de campo'],
+    amb: 'Muro de acuerdos de la asamblea · caja de palabras/dibujos · taller con herramientas reales adaptadas · diario de campo.',
+    rol: 'Facilita, no dicta: propone el marco, ellos llenan el contenido.',
+    act: 'Asamblea familiar de 10 min cada domingo · paseo-estudio con libreta · taller de cocina o huerta semanal.',
+    edad: 'Brilla 3–12 años; la asamblea sirve desde los 3.' },
+  { id: 'hogar', icon: '🏡', t: 'Aprendizaje en familia (homeschool)', aut: 'J. Holt · I. Illich · familias educadoras Chile',
+    idea: 'La casa y el territorio también educan: rutina simple, lectura diaria y salidas, sin correr detrás del currículum completo cada día.',
+    princ: ['Rutina mínima viable: lectura + matemática viva + oficio/juego libre cada día', 'Aprender en la vida: feria (sumar), cocina (medir), mapa Penco (orientar)', 'Socializar en comunidad: taller, deporte, minga, primos y vecinos', 'Registro simple: foto + frase por semana (portafolio)', 'Red y derechos: en Chile se puede educar en casa y rendir exámenes libres (MINEDUC)'],
+    amb: 'Rincón de estudio ordenado · biblioteca viva (no solo textos) · calendario de salidas · portafolio (carpeta o cuaderno).',
+    rol: 'Guía y calendariza: 1 bloque foco en la mañana, tarde libre y territorio.',
+    act: 'Bloque 25 min lectura + 25 min matemática viva · salida pedagógica semanal (museo, humedal, feria) · portafolio dominical.',
+    edad: 'Ideal 4–12 años; lectura diaria sirve desde bebé.' }
 ];
+/* ---------- Fichas completas por método: cómo empezar, ejemplos por edad,
+   frases, errores, cuándo elegir y con qué combinar ---------- */
+var CRIANZA_MET_FICHA = {
+  montessori: { ed: ['1-3', '3-6', '6-12'],
+    pasos: ['Baja 1 estante a su altura con 4 actividades y retira el resto a una caja de rotación.', 'Presenta 1 actividad lento y en silencio: "mira, así se hace", sin corregir hablando encima.', 'Deja terminar y repetir: no interrumpas la concentración aunque "se demore".', 'Rota 1-2 actividades por luna según lo que domine o ignore.'],
+    ejemplos: ['0–2: trasvasar con esponja y jarra pequeña · abrir y cerrar potes · canasto de objetos reales.', '3–6: vestirse solo (cierres grandes) · clasificar porotos/semillas · regar y barrer su espacio · letras con lija antes que planas.', '6–12: cocinar recetas con medida · cuidar una planta/huerta propia · organizar su mochila y pieza por zonas.'],
+    frases: ['"¿Quieres hacerlo tú o lo hacemos juntos?"', '"Mira, yo lo hago así, ahora te toca."', '"Veo que te cuesta: ¿probamos más despacio?"', 'Evita: "así no, pásame, yo lo hago más rápido".'],
+    evita: ['Poner 20 juguetes a la vez: satura y no elige.', 'Corregir en caliente o con premio/castigo: mata la motivación interna.', 'Comprar todo "montessori" caro: lo casero y real funciona igual.'],
+    elige: 'Elígela si tu hijo/a se concentra con las manos, pide "yo solo" y la casa vive desordenada.',
+    combina: 'Combina con Pikler (0–2, ritmo), Waldorf (ritmo y cuentos) y CNV (palabras para la frustración).',
+    libro: 'M. Montessori, "El niño, el secreto de la infancia" · Chile Crece Contigo: guías de autonomía por edad.' },
+  waldorf: { ed: ['0-2', '1-3', '3-6', '6-12'],
+    pasos: ['Fija un ritmo diario visible: expansión (afuera) / recogimiento (cuento, pan, dibujo).', 'Crea la mesa de estación de la luna con 3 cosas del territorio.', 'Saca pantallas de la primera infancia y pon cuento + ronda diaria.', 'Suma 1 arte fijo por semana: pan, acuarela o cera.'],
+    ejemplos: ['0–2: rondas con canto · telas de colores · paseo diario con ritmo (misma hora).', '3–6: amasar pan · caminata del tesoro · títeres del cuento de la luna · acuarela 1 vez/semana.', '6–12: flauta o canto · huerta y oficios · epew y leyendas antes que resúmenes.'],
+    frases: ['"Ahora es tiempo de recoger, cantemos la canción."', '"Mira lo que hacen mis manos, hazlo conmigo."', '"Hoy la mesa cuenta que llegó la luna nueva."', 'Evita: "apúrate, ponte el video mientras cocino".'],
+    evita: ['Sobre-agendar talleres: Waldorf pide aire, no running infantil.', 'Alfabetizar antes de tiempo: primero cuerpo, ritmo e imagen.', 'Pantalla de niñera en la tarde: rompe el ritmo y el sueño.'],
+    elige: 'Elígela si hay pantallas de más, poco ritmo o un niño/a que imita todo y necesita calma.',
+    combina: 'Combina con Montessori (ambiente a su altura), Kimün (epew y territorio) y Bosque-escuela (afuera diario).',
+    libro: 'R. Steiner, conferencias de pedagogía Waldorf (resúmenes) · mesa de estación según la luna (pestaña Ambiente).' },
+  p3000: { ed: ['3-6', '6-12'],
+    pasos: ['Abre el día con círculo: 1 respiración + "¿cómo vengo hoy?" en 1 palabra.', 'Suma 1 herramienta bio-inteligente por semana: silencio, mandala, gratitud.', 'Lleva 1 saber del territorio al mes: mapuzugun, epew, mingas.', 'Cierra la luna con gratitud: 3 cosas que aprendimos juntos.'],
+    ejemplos: ['3–6: minuto de silencio mirando el mar · mandala con semillas · saludo al mapu.', '6–12: diario de gratitud · mingas familiares · círculo para resolver peleas.', 'En casa: co-educa con la escuela, no contra ella: 1 acuerdo común por luna.'],
+    frases: ['"Respiremos juntos y después hablamos."', '"¿Qué necesita tu cuerpo ahora: agua, aire o abrazo?"', '"Agradezcamos 1 cosa antes de comer."', 'Evita: "cálmate al tiro o te castigo".'],
+    evita: ['Querer hacerlo todo junto: elige 1 herramienta por luna.', 'Solo discurso "espiritual" sin cuerpo ni naturaleza.', 'Dejar sola a la escuela: pide 1 reunión para alinear.'],
+    elige: 'Elígela si quieres unir cuerpo, emoción y tierra sin fragmentar por materias.',
+    combina: 'Es pegamento: combina con cualquiera, en especial Kimün, Waldorf y Freinet.',
+    libro: 'N. Paymal, "Pedagooogía 3000" (libros gratis en el link de abajo) · epew y mapuzugun del territorio.' },
+  pikler: { ed: ['0-2'],
+    pasos: ['Pon suelo firme y tibio con 3 objetos: bebé boca arriba, tú cerca sin dirigir.', 'Haz cada muda/baño avisando y sin apuro: "te voy a levantar, ¿lista?"', 'Viste ropa cómoda que deje moverse; guarda el andador.', 'Observa 5 min al día sin intervenir: anota qué logró solo.'],
+    ejemplos: ['0–6 m: boca arriba en suelo · piel con piel · paseos mirando el mundo.', '6–12 m: alcanzar y girar solo · canasto del tesoro · comer con manos.', '12–24 m: trepar bajo · empujar y arrastrar · vestirse participando.'],
+    frases: ['"Te voy a mudar, te levanto despacio."', '"Te veo intentando girar, estoy aquí."', '"Lloras, te escucho: ¿teta, abrazo o sueño?"', 'Evita: "siéntate, párate, camina, ¡dale!".'],
+    evita: ['Sentar/parar/caminar al bebé antes de que llegue solo.', 'Saltarinas y andadores: deforman el patrón de movimiento.', 'Sobre-estimular con pantallas y juguetes sonoros.'],
+    elige: 'Elígela siempre con bebés: es la base del movimiento libre y el vínculo.',
+    combina: 'Combina con Apego y porteo (brazos + suelo) y Montessori (ambiente a su altura).',
+    libro: 'E. Pikler, "Moverse en libertad" · controles niño sano + Chile Crece Contigo.' },
+  reggio: { ed: ['1-3', '3-6', '6-12'],
+    pasos: ['Parte de 1 pregunta del niño: "¿a dónde va la luna?" y anótala tal cual.', 'Ofrece 3 lenguajes para responder: dibujo, barro y cuerpo/movimiento.', 'Documenta: foto + frase del niño en el muro de obras.', 'Cierra con exposición familiar: él/ella explica.'],
+    ejemplos: ['1–3: dibujar el mismo árbol cada luna · barro del humedal · luz y sombras con linterna.', '3–6: proyecto de 2 semanas sobre el mar/las aves · maqueta con reciclaje.', '6–12: investigación con salida a terreno + presentación a la familia.'],
+    frases: ['"¿Cómo lo descubriste? Cuéntame más."', '"Dibújalo como lo ves tú."', '"Guardemos tu frase para no olvidarla."', 'Evita: "eso está mal, la luna no es así".'],
+    evita: ['Dirigir el proyecto: el adulto propone marco, no resultado.', 'Pedir "bonito": valora el proceso y la idea.', 'No documentar: sin registro se pierde el aprendizaje.'],
+    elige: 'Elígela si pregunta "¿por qué?" sin fin y ama dibujar, construir y desarmar.',
+    combina: 'Combina con Bosque-escuela (material vivo), Freinet (proyecto real) y Montessori (orden del atelier).',
+    libro: 'L. Malaguzzi, "los cien lenguajes" · muro de obras (pestaña Ambiente).' },
+  respetuosa: { ed: ['0-2', '1-3', '3-6', '6-12'],
+    pasos: ['Acuerda 3 límites innegociables y escríbelos en visible (ej: no pegar, cinturón, horario sueño).', 'Arma el rincón de calma (no castigo) con 2 cuentos y 1 cojín.', 'Practica el guion: calma adulta → nombra emoción → límite + 2 opciones → repara.', 'Haz reunión familiar de 10 min cada luna: qué funcionó y qué ajustamos.'],
+    ejemplos: ['0–2: anticipar con palabras y rutina · sostener el llanto sin ceder el límite de seguridad.', '2–5: tabla visual de rutinas · reloj de arena para transiciones · reparar lo roto juntos.', '6–12: acuerdos escritos · consecuencias lógicas (si rompe, repara/paga) · mesada con reglas.'],
+    frases: ['"Veo rabia. El límite es no pegar: ¿cojín o ayuda?"', '"En 5 min guardamos: ¿ponemos el reloj?"', '"Me equivoqué al gritar, perdón. Reparo."', 'Evita: "eres malo/mañoso" o "si no, te dejo".'],
+    evita: ['Muchos límites: 3 firmes valen más que 20 blandos.', 'Castigos largos o quitar el juego por días.', 'Etiquetas y amenazas: frenan hoy, dañan mañana.'],
+    elige: 'Elígela si hay gritos, rabietas largas o peleas entre hermanos: es tu base de límites.',
+    combina: 'Combina con CNV (palabras exactas) y Waldorf (ritmo que previene). Pestaña Límites trae el protocolo.',
+    libro: 'J. Nelsen, "Disciplina positiva" · Fono Infancia 800 200 818 si necesitas apoyo.' },
+  apego: { ed: ['0-2'],
+    pasos: ['Responde al llanto siempre los primeros meses: brazos, teta, piel con piel.', 'Porta ergonómico 1 caminata diaria (rodillas en M, espalda en C, beso a mano).', 'Si colechas, hazlo seguro: firme, sin almohadas, sin alcohol/tabaco.', 'Organiza turnos de descanso: quien cría también duerme y come.'],
+    ejemplos: ['0–3 m: piel con piel 30 min · porteo corto · misma persona que calma.', '3–12 m: cuna pegada · ritual de sueño fijo · despedidas breves y siempre avisadas.', '1–2 a: "voy y vuelvo" con objeto de apego · vuelta celebrada.'],
+    frases: ['"Te escucho, estoy aquí, ya llegué."', '"Mamá/papá vuelve después de la feria."', '"¿Teta, abrazo o paseo?"', 'Evita: "déjalo llorar para que aprenda" en bebés.'],
+    evita: ['Dejar llorar solo para "acostumbrar" el primer año.', 'Muchos cuidadores rotando sin referente estable.', 'Colecho inseguro (sillón, alcohol, almohadas sueltas).'],
+    elige: 'Elígela con bebés, llanto alto o sueño liviano: el contacto regula.',
+    combina: 'Combina con Pikler (brazos + suelo libre) y tu autocuidado (pestaña Salud).',
+    libro: 'J. Bowlby / M. Ainsworth (apego seguro) · matrona y CESFAM: porteo y lactancia.' },
+  kimun: { ed: ['1-3', '3-6', '6-12'],
+    pasos: ['Suma 3 palabras en mapuzugun al día nombrando lo visible (ko, anümka, küyen).', 'Cuenta 1 epew por semana y conversa: "¿qué nos enseña?"', 'Da 1 responsabilidad real en la casa/huerta/minga.', 'Saluda al sol y la luna 1 vez por luna en familia.'],
+    ejemplos: ['1–3: cantos y epew cortos · tocar tierra y agua · ayudar a regar.', '3–6: huerta propia · 3 palabras diarias · minga familiar.', '6–12: historia del territorio · oficio con un mayor · cuidar a un menor.'],
+    frases: ['"El agua se cuida: ¿cómo la usamos bien?"', '"Escuchemos al epew y después conversamos."', '"Hoy ayudas como los grandes: ¿riegas tú?"', 'Evita burlarse del epew o usar el mapuzugun como castigo.'],
+    evita: ['Folclorizar 1 vez al año: kimün es diario, no disfraz.', 'Separar al niño de la vida real "para que no moleste".', 'Enseñar sin ejemplo adulto: el mayor muestra primero.'],
+    elige: 'Elígela si quieres raíz, lengua e identidad del Bío-Bío en la crianza diaria.',
+    combina: 'Combina con Bosque-escuela (mapu como aula), P3000 (círculo y gratitud) y Cuentos.',
+    libro: 'Epew y kimün del territorio · Mapuzugun con la familia y la escuela.' },
+  bosque: { ed: ['1-3', '3-6', '6-12'],
+    pasos: ['Agenda 1 h afuera diaria con piloto y botas (la lluvia no suspende).', 'Marca un perímetro claro y 1 lugar para trepar bajo.', 'Entrega elementos sueltos (palos, cuerdas, barro) en vez de juguete que hace todo.', 'Cierra con muda seca + algo tibio: el confort sostiene el hábito.'],
+    ejemplos: ['1–3: barro con manos · charcos con botas · caminar en desnivel suave.', '3–6: cabaña con palos · caminata del tesoro · herramientas reales con guía.', '6–12: bici y cerro · mar con cuidado · diario de naturaleza.'],
+    frases: ['"Revisa tu cuerpo: ¿está firme esa rama?"', '"Mójate, traje muda seca."', '"Dejamos el lugar mejor de lo que estaba."', 'Evita: "bájate, te vas a caer, no toques nada".'],
+    evita: ['Encierro por clima: equipa, no suspendas.', 'Dirigir el juego: cuida el perímetro, no la obra.', 'Llevarse seres vivos de pozas y bosque.'],
+    elige: 'Elígela si hay encierro, pantallas de más o cuerpo inquieto que necesita moverse.',
+    combina: 'Combina con Pikler (riesgo medido), Kimün (respeto al mapu) y Montessori (pocos elementos).',
+    libro: 'P. Gray ("juego libre") · escuelas bosque · bajamares y cerros de Penco (pestaña Juego).' },
+  cnv: { ed: ['1-3', '3-6', '6-12'],
+    pasos: ['Describe sin juzgar: "veo bloques en el suelo" (no "eres desordenado").', 'Nombra sentimiento + necesidad: "estás frustrado, querías seguir".', 'Pide en positivo: "guardemos 5 juntos" + ofrece 2 opciones.', 'Si hay no, acógelo y repara después con abrazo y plan.'],
+    ejemplos: ['2–4: anticipar transiciones con reloj visual · tarjetas de emociones.', '4–6: "veo/siento/necesito/pido" 1 vez al día · reparar lo roto.', '6–12: asamblea para peleas · acuerdos escritos · pedir perdón adulto también vale.'],
+    frases: ['"Veo bloques en el suelo. ¿Guardamos 5 juntos?"', '"Estás frustrado: querías seguir. Te ayudo a parar."', '"¿Agua, abrazo o un minuto?"', 'Evita: "porque lo digo yo" o "no llores por eso".'],
+    evita: ['Sermonear en plena tormenta: primero calma, después palabras.', 'Pedir en negativo ("no seas así"): el cerebro infantil no lo procesa.', 'Exigir perdón vacío: mejor reparar con acción.'],
+    elige: 'Elígela si las rabietas y peleas se repiten: pone palabras donde faltan.',
+    combina: 'Es el lenguaje de la Crianza respetuosa. Úsala con Límites (protocolo) y Freinet (asamblea).',
+    libro: 'M. Rosenberg, "Comunicación no violenta" (resúmenes) · frases-puente en el refri.' },
+  freinet: { ed: ['3-6', '6-12'],
+    pasos: ['Haz asamblea familiar de 10 min el domingo: proponen, votan, reparten.', 'Abre la caja de palabras: dibuja/dicta/escribe 1 texto libre por semana.', 'Agenda 1 taller real semanal: cocina, huerta, madera simple o radio.', 'Sal una vez al mes a estudiar el territorio con libreta (paseo-estudio).'],
+    ejemplos: ['3–6: asamblea con dibujos · taller de cocina · paseo con tesoro.', '6–12: diario de campo · proyecto con presentación · oficio con guía.', 'En casa: 1 acuerdo de asamblea vale más que 10 órdenes.'],
+    frases: ['"¿Qué propones para esta semana?"', '"Votemos: ¿huerta o cocina primero?"', '"Tu texto libre va al muro."', 'Evita: "eso no, haz la ficha".'],
+    evita: ['Convertir el taller en clase frontal.', 'Votar y no cumplir: la asamblea muere si no se ejecuta.', 'Comparar proyectos entre hermanos.'],
+    elige: 'Elígela si ama decidir, crear y salir: aprende haciendo, no repitiendo.',
+    combina: 'Combina con Reggio (proyecto), Bosque-escuela (salida) y Homeschool (portafolio).',
+    libro: 'C. Freinet, "técnicas de la escuela moderna" · diario de campo + muro de obras.' },
+  hogar: { ed: ['3-6', '6-12'],
+    pasos: ['Define la mínima viable: 25 min lectura + 25 min matemática viva + oficio/juego libre.', 'Enseña en la vida: feria (sumas), cocina (medidas), mapa (orientación).', 'Socializa en comunidad: 2 espacios semanales (taller, deporte, minga).', 'Registra 1 foto + 1 frase por semana en el portafolio.'],
+    ejemplos: ['4–6: lectura en voz alta 15 min · contar en la feria · huerta como ciencia.', '6–9: bloque foco en la mañana + tarde libre · biblioteca viva.', '9–12: proyecto con propósito + exámenes libres si corresponde (infórmate en MINEDUC).'],
+    frases: ['"Hoy toca bloque foco y después territorio."', '"¿Qué aprendiste? Anotémoslo al portafolio."', '"Preguntemos a la vecina sabia."', 'Evita: "8 horas de mesa copiando".'],
+    evita: ['Replicar la escuela completa en casa 8 h.', 'Aislar: socializar es parte del plan.', 'No registrar: sin portafolio no se ve el avance.'],
+    elige: 'Elígela si la escuela queda lejos, hay necesidades distintas o quieren ritmo familiar.',
+    combina: 'Usa Montessori (ambiente), Freinet (proyectos) y Bosque-escuela (salidas). Revisa derechos MINEDUC.',
+    libro: 'J. Holt ("aprender sin escuela") · MINEDUC exámenes libres · portafolio semanal.' }
+};
+var CRIANZA_MET_COMPARA = [
+  { m: '🧩 Montessori', foco: 'Autonomía con las manos', edad: '1–6', cuando: 'Pide "yo solo" y se dispersa con mucho estímulo' },
+  { m: '🌈 Waldorf', foco: 'Ritmo, cuento y arte', edad: '0–7', cuando: 'Muchas pantallas, poco ritmo, necesita calma' },
+  { m: '🌟 P. 3000', foco: 'Integral cuerpo-emoción-tierra', edad: '3–12', cuando: 'Quieres unir todo sin fragmentar' },
+  { m: '🐣 Pikler', foco: 'Movimiento libre bebé', edad: '0–2', cuando: 'Bebé en casa: suelo, no apuro' },
+  { m: '🎨 Reggio', foco: 'Proyectos e investigación', edad: '2–8', cuando: 'Pregunta todo y crea sin parar' },
+  { m: '🤍 Respetuosa', foco: 'Límites firmes sin grito', edad: 'Todas', cuando: 'Rabietas y peleas: base de límites' },
+  { m: '🦘 Apego', foco: 'Vínculo y contacto', edad: '0–2', cuando: 'Llanto alto, sueño liviano' },
+  { m: '🌿 Kimün', foco: 'Raíz y territorio', edad: '2–12', cuando: 'Quieres lengua e identidad diaria' },
+  { m: '🌳 Bosque', foco: 'Afuera y riesgo medido', edad: '2–9', cuando: 'Encierro y cuerpo inquieto' },
+  { m: '💬 CNV', foco: 'Palabras para emociones', edad: '2–8', cuando: 'Rabietas que se repiten' },
+  { m: '🖨️ Freinet', foco: 'Decidir y hacer', edad: '3–12', cuando: 'Ama decidir y salir a terreno' },
+  { m: '🏡 Hogar', foco: 'Rutina familiar simple', edad: '4–12', cuando: 'Educan en casa o refuerzan' }
+];
+var CRIANZA_MET_QUIZ = [
+  { k: 'q1', t: 'Se aburre rápido y necesita usar las manos', m: ['montessori', 'reggio', 'bosque', 'freinet'] },
+  { k: 'q2', t: 'Rabietas, gritos o peleas entre hermanos', m: ['respetuosa', 'cnv', 'waldorf'] },
+  { k: 'q3', t: 'Muchas pantallas / poco ritmo y sueño movido', m: ['waldorf', 'bosque', 'p3000'] },
+  { k: 'q4', t: 'Es bebé (0–2): movimiento y llanto', m: ['pikler', 'apego', 'montessori'] },
+  { k: 'q5', t: 'Pregunta todo, dibuja y crea proyectos', m: ['reggio', 'freinet', 'p3000', 'hogar'] },
+  { k: 'q6', t: 'Quiero raíz mapuche y territorio', m: ['kimun', 'bosque', 'p3000', 'waldorf'] },
+  { k: 'q7', t: 'Educamos en casa / reforzamos la escuela', m: ['hogar', 'montessori', 'freinet', 'reggio'] }
+];
+var CRIANZA_MEZCLA_TXT = 'Ningún método puro cría solo. Arma tu mezcla: 1 base de vínculo (Respetuosa/CNV/Apego) + 1 de ambiente (Montessori/Waldorf) + 1 de mundo (Kimün/Bosque/Freinet). Prueba 1 cambio por luna y anota en Bitácora.';
+/* ---------- Links oficiales por método (verificados, se abren fuera de la app) ---------- */
+var CRIANZA_MET_LINKS = {
+  montessori: { u: 'https://montessori-ami.org', t: 'AMI · Asociación Montessori Internacional' },
+  waldorf: { u: 'https://www.waldorfeducation.org', t: 'AWSNA · Educación Waldorf' },
+  p3000: { u: 'https://p3000.info/index.php/libros-3000/', t: 'P3000 · Libros gratis de Noemí Paymal' },
+  pikler: { u: 'https://pikler.org', t: 'Pikler® USA · Enfoque Pikler/Lóczy' },
+  reggio: { u: 'https://www.reggiochildren.it/en', t: 'Reggio Children · Reggio Emilia Approach' },
+  respetuosa: { u: 'https://www.positivediscipline.com', t: 'Disciplina Positiva · Jane Nelsen' },
+  apego: { u: 'https://www.crececontigo.gob.cl', t: 'Chile Crece Contigo · crianza y apego' },
+  kimun: { u: 'https://peib.mineduc.cl', t: 'PEIB MINEDUC · Educación Intercultural Bilingüe' },
+  bosque: { u: 'https://forestschoolassociation.org/what-is-forest-school', t: 'Forest School Association · qué es bosque-escuela' },
+  cnv: { u: 'https://www.cnvc.org', t: 'CNVC · Comunicación No Violenta' },
+  freinet: { u: 'https://www.fimem-freinet.org/en', t: 'FIMEM · Pedagogía Freinet internacional' },
+  hogar: { u: 'https://www.ayudamineduc.cl/ficha/examenes-libres-menores-de-18-anos-11', t: 'Ayuda MINEDUC · Exámenes libres' }
+};
+function criaMetLink(id) { try { return (typeof CRIANZA_MET_LINKS !== 'undefined' && CRIANZA_MET_LINKS[id]) || null; } catch (e) { return null; } }
 var CRIANZA_ETAPAS = [
+  { e: 'Gestación', n: '🤰 Semilla', nec: 'Calma, vínculo y cuidados de quien gesta. El bebé escucha y siente desde el vientre.',
+    ofr: 'Hablar y cantar a la guata · epew y mapuzugun · controles al día (CESFAM/matrona) · plan de parto conversado · red de apoyo postparto.',
+    evi: 'Alcohol, tabaco y automedicación · sobrecarga de trabajo sin descanso · enfrentar el parto sin información.',
+    luna: 'Una carta o canto por luna al bebé; prepara el nido (rincón, muda, red).' },
   { e: '0–12 meses', n: '🌱 Nido', nec: 'Brazo, pecho, sueño y calma. Vínculo seguro ante todo.',
-    ofr: 'Pikler + pecho a demanda · porteo · cantos y epew · paseos diarios · misa/mesa familiar.',
-    evi: 'Pantallas · andador · apurar hitos · sobre-estimular con juguetes sonoros.',
+    ofr: 'Pikler + pecho a demanda · porteo y piel con piel · cantos y epew · paseos diarios · controles niño sano + vacunas.',
+    evi: 'Pantallas · andador · apurar hitos (sentar/parar) · sobre-estimular con juguetes sonoros.',
     luna: 'Un cuento por luna en 📖 Cuentos; registra hitos en 🤱 1000 días.' },
-  { e: '1–3 años', n: '🐾 Explorador', nec: 'Moverse, tocarlo todo y decir ¡no! para ser alguien.',
-    ofr: 'Montessori (trasvasar, vestirse solo) · juego libre en tierra y agua · rutinas visuales.',
-    evi: 'Castigos y gritos · pantallas como niñera · demasiadas opciones a la vez.',
-    luna: 'Rincón de calma + mesa de estación Waldorf según la luna.' },
-  { e: '3–6 años', n: '🔥 Creador', nec: 'Jugar, imaginar y pertenecer. Pregunta "¿por qué?" sin fin.',
-    ofr: 'Waldorf (cuentos, rondas, pan) · Reggio (proyectos, barro) · huerta propia · responsabilidades reales.',
-    evi: 'Alfabetizar a la fuerza · sobre-agenda de talleres · comparar con otros niños.',
+  { e: '1–2 años', n: '🐾 Primeros pasos', nec: 'Moverse libre, ensuciarse y decir ¡no! Caminar, trepar y probar límites.',
+    ofr: 'Suelo firme para moverse · trasvasar y encajar Montessori · rutinas visuales · palabras para emociones ("rabia, pena").',
+    evi: 'Castigos y gritos · pantallas como niñera · zapatos rígidos todo el día · compararlo con otros.',
+    luna: 'Rincón de calma + muda cantada y avisada (Pikler).' },
+  { e: '2–4 años', n: '🌋 Volcán tierno', nec: 'Rabietas intensas y cortas: necesita límites firmes y brazos que sostengan.',
+    ofr: 'Protocolo rabieta (abajo, pestaña Límites) · juego simbólico (cocina, doctores) · mesa de estación Waldorf · turnos con reloj de arena.',
+    evi: 'Pegar/devolver el golpe · ceder todo por cansancio · etiquetar ("mañoso, terrible") · pantallas para calmar siempre.',
+    luna: 'Un cuento de emociones por luna; dibujo libre semanal.' },
+  { e: '4–6 años', n: '🔥 Creador', nec: 'Jugar, imaginar y pertenecer. Pregunta "¿por qué?" sin fin.',
+    ofr: 'Waldorf (cuentos, rondas, pan) · Reggio (proyectos, barro) · huerta propia · responsabilidades reales (regar, ordenar).',
+    evi: 'Alfabetizar a la fuerza · sobre-agenda de talleres · comparar con otros niños · burlarse de sus miedos.',
     luna: 'Proyecto de una pregunta por luna; dibuja el árbol de la luna.' },
-  { e: '6–9 años', n: '🌊 Navegante', nec: 'Amigos, reglas justas y sentirse capaz.',
-    ofr: 'Pedagogía 3000 (círculos, mingas) · oficios (cocinar, tejer, sembrar) · deporte y mar con cuidado.',
-    evi: 'Humillar por notas · quitar el juego como castigo · pantallas sin límite.',
+  { e: '6–9 años', n: '🌊 Navegante', nec: 'Amigos, reglas justas y sentirse capaz. Escuela y tareas entran fuerte.',
+    ofr: 'Pedagogía 3000 (círculos, mingas) · oficios (cocinar, tejer, sembrar) · deporte y mar con cuidado · lectura diaria 15 min.',
+    evi: 'Humillar por notas · quitar el juego como castigo · pantallas sin límite · hacerle sus tareas.',
     luna: 'Bitácora de gratitud + un oficio nuevo por luna.' },
-  { e: '9–12 años', n: '🌙 Pensador', nec: 'Opinar, decidir y encontrar su lugar en el grupo.',
-    ofr: 'Proyectos con propósito (huerto, trueque, radio) · acuerdos familiares · mapuzugun e historia del territorio.',
-    evi: 'Control total o abandono total · exponerlo en redes · decidir todo por él.',
+  { e: '9–12 años', n: '🌙 Pensador', nec: 'Opinar, decidir y encontrar su lugar en el grupo. Pre-adolescencia.',
+    ofr: 'Proyectos con propósito (huerto, trueque, radio) · acuerdos familiares · mapuzugun e historia del territorio · mesada con regla 50-30-20.',
+    evi: 'Control total o abandono total · exponerlo en redes · decidir todo por él · celular sin acuerdo.',
     luna: 'Reunión familiar cada luna: logros, roces y acuerdos.' }
 ];
 var CRIANZA_AMBIENTE = [
@@ -3443,35 +3637,156 @@ var CRIANZA_AMBIENTE = [
   { k: 'a5', t: 'Mesa de la luna', d: 'Piedra, hoja o dibujo de la luna actual: marca el ritmo del mes.' },
   { k: 'a6', t: 'Rutinas visibles', d: 'Tabla con dibujos: despertar, comida, juego, cuento, dormir.' },
   { k: 'a7', t: 'Naturaleza diaria', d: 'Tierra, agua o caminata todos los días, con lluvia también.' },
-  { k: 'a8', t: 'Cero pantallas al comer y dormir', d: 'Acuerdo familiar: mesa y pieza libres de pantalla.' }
+  { k: 'a8', t: 'Cero pantallas al comer y dormir', d: 'Acuerdo familiar: mesa y pieza libres de pantalla.' },
+  { k: 'a9', t: 'Rincón lector', d: 'Canasto con 5-8 libros/cuentos + luz cálida. 15 min diarios de lectura en voz alta.' },
+  { k: 'a10', t: 'Movimiento libre seguro', d: 'Suelo firme, perímetro claro y 1 lugar para trepar bajo. Sin andador.' },
+  { k: 'a11', t: 'Muro de sus obras', d: 'Cuerda + pinzas para exponer dibujos y barro. Se cambia cada luna (Reggio).' },
+  { k: 'a12', t: 'Pacto de pantallas familiar', d: 'Horarios, lugar de carga fuera de piezas y ejemplo adulto. Ver pestaña Salud.' }
 ];
-var CRIANZA_AREAS = ['Juego y aprendizaje', 'Límites y emociones', 'Salud y sueño', 'Vínculo y familia', 'Escuela / jardín', 'Otro'];
+var CRIANZA_SALUD = [
+  { n: '😴 Sueño por edad', ico: '🌙', txt: '0–3 m: 14–17 h · 4–11 m: 12–15 h · 1–2 a: 11–14 h (con siesta) · 3–5 a: 10–13 h · 6–12 a: 9–12 h. Misma hora ±30 min, ritual fijo (baño tibio, cuento, luz tenue), pieza oscura y fresca, sin pantalla 60 min antes. Si ronca fuerte, pausa la respiración o moja la cama a los 6+ seguido: consulta CESFAM.' },
+  { n: '🥗 Comida real', ico: '🍲', txt: 'Pecho exclusivo hasta 6 m, luego + comida (guías CESFAM/Chile Crece). Plato: mitad verduras, cuarto proteína (huevo, legumbres, pescado), cuarto cereal + agua. Sin jugos ni bebidas antes de 2 años; azúcar y ultraprocesados lo menos posible. Comer juntos, sin pantalla, dejando que toque y se ensucie: así aprende.' },
+  { n: '📱 Pantallas por edad (OMS)', ico: '📵', txt: '0–2 a: cero (solo videollamada con familia). 2–5 a: máx 1 h/día de contenido lento y acompañado, nunca antes de dormir ni comiendo. 6–12 a: con acuerdo familiar (horarios, lugares sin pantalla, contenido revisado). Señales de exceso: rabietas al apagar, menos juego libre, peor sueño. El ejemplo adulto manda.' },
+  { n: '🦷 Dientes y control sano', ico: '🪥', txt: 'Desde el primer diente: cepillo suave + pasta con flúor del porte de un grano de arroz (hasta 3 a) o arveja (3+), 2 veces/día con ayuda adulta hasta los 8. Control niño sano + vacunas al día en CESFAM. Chile Crece Contigo entrega apoyo y materiales gratis: pregunta en tu control.' },
+  { n: '☀️ Sol, aire y movimiento', ico: '🌳', txt: '1 h diaria afuera: plaza, playa, cerro o patio. Sol suave de mañana, gorro y agua. Descalzo en pasto/arena cuando se pueda. Movimiento libre > andador, saltarina o mucho coche: suelo firme y tiempo.' },
+  { n: '🛡️ Seguridad en casa (0–6)', ico: '🔌', txt: 'Tapa enchufes, fija muebles altos a la pared, reja en escaleras y cocina, remedios y cloro bajo llave y en alto, agua del calefón a temperatura segura, nunca solo en tina/piscina/mar. Cuchillos y herramientas reales solo con acompañamiento (bosque-escuela).' },
+  { n: '🤒 Fiebre y moquillos', ico: '🌿', txt: 'Observa al niño más que al termómetro: si juega, toma líquido y respira bien, suele ser cuadro viral. Signos de consulta pronto: menor de 3 m con fiebre, dificultad para respirar, decaimiento marcado, no toma líquido, fiebre + manchas que no se borran, golpe fuerte en cabeza. No automediques antibióticos. Lawen suave (tila, matico externo) no reemplaza control médico.' },
+  { n: '💉 Controles y vacunas Chile', ico: '📋', txt: 'Calendario PNI al día + control niño sano por edad. Lleva carnet de salud a cada control y anota dudas antes de ir. Si faltan vacunas, el CESFAM las pone al día sin costo. Anota hitos en 🤱 1000 días y avisa si algo te preocupa (ver Alertas en pestaña Límites).' }
+];
+var CRIANZA_JUEGOS = [
+  { e: '0–12 meses', ico: '🐣', juegos: 'Piel con piel y cantos · canasto del tesoro (cuchara madera, paño, limón, piña) · tiempo boca abajo · espejo irrompible · paseo nombrando el mundo.' },
+  { e: '1–2 años', ico: '🐾', juegos: 'Trasvasar agua/semillas/arena · encajar y apilar · empujar y arrastrar · esconder y encontrar · barro con manos · caminar en desnivel suave.' },
+  { e: '2–4 años', ico: '🌋', juegos: 'Juego simbólico (cocina, doctor, feria) · masa y barro · rondas y títeres · trasvasar con embudo · trepar bajo y saltar · regar la huerta.' },
+  { e: '4–6 años', ico: '🔥', juegos: 'Construir cabañas · amasar pan · mandalas con semillas · memoria de sonidos/olores · bici sin pedales · sembrar y cosechar su maceta.' },
+  { e: '6–9 años', ico: '🌊', juegos: 'Oficios reales (cocinar, tejer, clavar con guía) · ajedrez y juegos de mesa · bici, mar y cerro con cuidado · diario de naturaleza · trueque con amigos.' },
+  { e: '9–12 años', ico: '🌙', juegos: 'Proyectos con propósito (huerto, radio, video) · deporte en equipo · cocina completa · mapa del territorio en bici · mentor de un menor (enseñar afirma).' },
+  { e: 'Juego en Penco (todo el año)', ico: '🌊', juegos: 'Bajamares: mirar pozas sin llevarse nada vivo · Playa Negra/Lirquén: tesoro de piedras y deriva (no basura al mar) · cerro: caminata del epew · lluvia: saltar charcos con botas + chocolate después · minga: el mejor juego es trabajar juntos.' }
+];
+var CRIANZA_LIMITES = {
+  pasos: ['1 · Calma tu tormenta primero: respira 4-6, baja tu voz y tu cuerpo a su altura. Sin gritos ni golpes: tú eres su freno externo.', '2 · Conecta antes de corregir: "veo que estás con mucha rabia, estoy aquí". Contacto y mirada blanda.', '3 · Nombra y valida: "querías seguir jugando y te dio rabia parar". Presta palabras; no sermonees en plena tormenta.', '4 · Límite breve + opción: "no se pega. Puedes apretar el cojín o pedir ayuda". 1 límite claro, 2 opciones aceptables.', '5 · Repara y anticipa: abrazo, "¿cómo lo arreglamos?", y acuerdo para la próxima ("avisamos 5 min antes"). Lo que se rompe se arregla juntos.'],
+  frases: ['"Veo que estás frustrado/a. Estoy aquí."', '"El límite es no pegar. Te ayudo a parar."', '"¿Necesitas agua, abrazo o un minuto?"', '"Guardamos juntos 5 bloques y seguimos."', '"En 5 min guardamos: ¿ponemos el reloj?"', '"Tu rabia cabe aquí; los golpes no."', '"¿Qué necesitas: seguir, pausar o cambiar?"', '"Nos calmamos y después hablamos."', '"Me equivoqué al gritar, perdón. Reparo."', '"¿Cómo lo arreglamos juntos?"', '"Te amo siempre, incluso enojados."', '"Mañana lo intentamos de nuevo."'],
+  errores: ['Gritar, amenazar o humillar: frena en el minuto, daña en el tiempo.', 'Etiquetar ("mañoso, terrible"): describe la conducta, no al niño.', 'Ceder todo por cansancio: el límite intermitente genera más rabietas.', 'Castigos largos o quitar el juego días: no enseñan, solo alejan.', 'Pantalla para calmar siempre: tapa la emoción, no la procesa.', 'Pelear entre adultos frente a ellos sin reparar: si pasa, repara frente a ellos también.'],
+  alertas: ['No fija mirada ni responde a su nombre a los 12 m, no balbucea ni señala a los 12–15 m, no camina a los 18 m, pierde habilidades que ya tenía → consulta pronto (CESFAM / Chile Crece Contigo).', 'Rabietas +1 h diarias, se golpea fuerte, no duerme casi nada semanas, deja de comer/jugar días → pide apoyo (Fono Infancia 800 200 818, CESFAM).', 'Si hay gritos, golpes o miedo en casa: 149 Fono Familia · 133 emergencia · CESFAM. Pedir ayuda protege.', 'Si tú, criando, lloras a diario, no duermes o sientes que vas a explotar: Salud Responde 600 360 7777 · CESFAM · tu persona segura. Cuidarte también es criar.']
+};
+var CRIANZA_RITMO = 'Despertar misma hora + luz de mañana · juego afuera en la mañana · comida sin pantalla · siesta (hasta 4-5 a) · tarde de oficio/juego libre · cena temprano · ritual noche (baño tibio, cuento, gratitud) · dormir misma hora. Ritmo predecible = menos rabietas.';
+var CRIANZA_CHILE = 'Chile Crece Contigo (controles, materiales y apoyo gratuitos) · CESFAM Penco (niño sano, vacunas, matrona, psicólogo) · JUNJI/Integra (jardines) · Fono Infancia 800 200 818 · Salud Responde 600 360 7777 · 149 Fono Familia · 133 emergencia.';
+var CRIANZA_AREAS = ['Juego y aprendizaje', 'Límites y emociones', 'Rabieta que viví', 'Salud y sueño', 'Comida', 'Pantallas', 'Vínculo y familia', 'Escuela / jardín', 'Mi cuidado (quien cría)', 'Otro'];
 function getCrianza() { var a = store('crianzaLog', []); return Array.isArray(a) ? a : []; }
 function switchCriaTab(t) {
-  [['Met', 'criaMetPanel'], ['Eda', 'criaEdaPanel'], ['Amb', 'criaAmbPanel'], ['Bit', 'criaBitPanel']].forEach(function (x) {
+  [['Met', 'criaMetPanel'], ['Eda', 'criaEdaPanel'], ['Sal', 'criaSalPanel'], ['Jue', 'criaJuePanel'], ['Lim', 'criaLimPanel'], ['Amb', 'criaAmbPanel'], ['Bit', 'criaBitPanel']].forEach(function (x) {
     var p = $(x[1]); if (p) p.classList.toggle('hidden', x[0] !== t);
     var b = $('tabCria' + x[0]); if (b) b.classList.toggle('btn-accent', x[0] === t);
   });
 }
-function renderCriaMet(f) {
+function criaMetFicha(id) { try { return (typeof CRIANZA_MET_FICHA !== 'undefined' && CRIANZA_MET_FICHA[id]) || null; } catch (e) { return null; } }
+function renderCriaMet(f, edadF) {
   var box = $('criaMetList'); if (!box) return;
   var q = ((f === undefined ? (($('criaQ') || {}).value || '') : f) + '').toLowerCase();
-  var list = CRIANZA_METODOS.filter(function (m) { return !q || (m.t + ' ' + m.aut + ' ' + m.idea + ' ' + m.princ.join(' ')).toLowerCase().indexOf(q) >= 0; });
-  box.innerHTML = list.length ? list.map(function (m, i) {
+  var ef = edadF === undefined ? (($('criaEdadF') || {}).value || 'todas') : edadF;
+  var list = CRIANZA_METODOS.filter(function (m) {
+    var F = criaMetFicha(m.id);
+    var txt = (m.t + ' ' + m.aut + ' ' + m.idea + ' ' + m.princ.join(' ') + ' ' + m.act + ' ' +
+      (F ? (F.pasos.join(' ') + ' ' + F.ejemplos.join(' ') + ' ' + F.frases.join(' ') + ' ' + F.evita.join(' ') + ' ' + F.elige + ' ' + F.combina) : '')).toLowerCase();
+    var okQ = !q || txt.indexOf(q) >= 0;
+    var okE = !ef || ef === 'todas' || !F || !F.ed || F.ed.indexOf(ef) >= 0;
+    return okQ && okE;
+  });
+  var comp = '';
+  try {
+    if (typeof CRIANZA_MET_COMPARA !== 'undefined' && !q && (ef === 'todas')) {
+      comp = '<details class="menstrual-card" style="margin-top:8px"><summary style="cursor:pointer;font-size:12px"><b>⚖️ Comparativa rápida: ¿cuál para qué momento? (12 caminos)</b></summary>' +
+        '<div style="overflow-x:auto"><table style="font-size:11px;border-collapse:collapse;width:100%;margin-top:6px">' +
+        '<tr><th style="text-align:left;border-bottom:1px solid #ccc;padding:3px">Método</th><th style="text-align:left;border-bottom:1px solid #ccc;padding:3px">Foco</th><th style="text-align:left;border-bottom:1px solid #ccc;padding:3px">Edad ★</th><th style="text-align:left;border-bottom:1px solid #ccc;padding:3px">Úsalo cuando…</th></tr>' +
+        CRIANZA_MET_COMPARA.map(function (c) { return '<tr><td style="padding:3px"><b>' + esc(c.m) + '</b></td><td style="padding:3px">' + esc(c.foco) + '</td><td style="padding:3px">' + esc(c.edad) + '</td><td style="padding:3px">' + esc(c.cuando) + '</td></tr>'; }).join('') +
+        '</table></div><p class="muted" style="font-size:11px;margin-top:6px">' + esc(CRIANZA_MEZCLA_TXT) + '</p></details>';
+    }
+  } catch (e) {}
+  var quiz = '';
+  try {
+    if (typeof CRIANZA_MET_QUIZ !== 'undefined' && !q) {
+      quiz = '<details class="menstrual-card" style="margin-top:8px;border-color:var(--gold)"><summary style="cursor:pointer;font-size:12px"><b>🧭 Test: ¿qué camino te sirve hoy? (marca y ver)</b></summary>' +
+        '<div style="margin-top:6px">' + CRIANZA_MET_QUIZ.map(function (x) { return '<label class="check-row" style="font-size:12px;margin:4px 0"><input type="checkbox" class="cria-quiz" value="' + x.k + '"> ' + esc(x.t) + '</label>'; }).join('') + '</div>' +
+        '<div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap"><button type="button" id="criaQuizVer" class="btn btn-accent" style="width:auto">Ver recomendación</button>' +
+        '<button type="button" id="criaQuizLimpiar" class="btn" style="width:auto">Limpiar</button></div><div id="criaQuizRes" style="margin-top:8px"></div></details>';
+    }
+  } catch (e2) {}
+  box.innerHTML = comp + quiz + (list.length ? '<p class="muted" style="font-size:11px;margin:8px 0">' + list.length + ' caminos · toca cada uno para ver pasos, ejemplos por edad, frases y errores.</p>' + list.map(function (m, i) {
+    var F = criaMetFicha(m.id);
+    var pasosH = F ? '<p style="font-size:12px;margin:6px 0 2px"><b>👣 Empieza esta semana (4 pasos)</b></p><ol style="font-size:12px;margin:2px 0 4px 18px;line-height:1.6">' + F.pasos.map(function (p) { return '<li>' + esc(p) + '</li>'; }).join('') + '</ol>' : '';
+    var ejH = F ? '<p style="font-size:12px;margin:6px 0 2px"><b>🎯 Ejemplos por edad</b></p><ul style="font-size:12px;margin:2px 0 4px 18px;line-height:1.6">' + F.ejemplos.map(function (p) { return '<li>' + esc(p) + '</li>'; }).join('') + '</ul>' : '';
+    var frH = F ? '<p style="font-size:12px;margin:6px 0 2px"><b>💬 Frases que ayudan</b></p><p style="font-size:12px">' + F.frases.map(function (p) { return '• ' + esc(p); }).join('<br>') + '</p>' : '';
+    var evH = F ? '<p style="font-size:12px;margin:6px 0 2px"><b>🚫 Errores comunes</b></p><p style="font-size:12px">' + F.evita.map(function (p) { return '• ' + esc(p); }).join('<br>') + '</p>' : '';
+    var elH = F ? (function () {
+      var LK = criaMetLink(m.id);
+      var linkH = LK ? '<br>🔗 <a href="' + LK.u + '" target="_blank" rel="noopener">' + esc(LK.t) + ' ↗</a>' : '';
+      return '<p style="font-size:12px"><b>🧭 Elige si:</b> ' + esc(F.elige) + '<br><b>🔗 Combina:</b> ' + esc(F.combina) + '<br><span class="muted">📚 ' + esc(F.libro) + '</span>' + linkH + '</p>';
+    })() : '';
     return '<details class="menstrual-card" style="margin-top:8px"' + (i === 0 && q ? ' open' : '') + '><summary style="cursor:pointer;font-size:13px"><b>' + m.icon + ' ' + esc(m.t) + '</b> <span class="muted" style="font-size:11px">· ' + esc(m.aut) + '</span></summary>' +
       '<p style="font-size:12px;margin:8px 0"><b>Idea:</b> ' + esc(m.idea) + '</p>' +
       '<p style="font-size:12px;margin:4px 0"><b>🧭 Principios</b></p><ul style="font-size:12px;margin:4px 0 4px 18px;line-height:1.6">' + m.princ.map(function (p) { return '<li>' + esc(p) + '</li>'; }).join('') + '</ul>' +
+      pasosH + ejH + frH + evH +
       '<p style="font-size:12px"><b>🏠 Ambiente:</b> ' + esc(m.amb) + '</p>' +
       '<p style="font-size:12px"><b>🧑‍🌾 Tu rol:</b> ' + esc(m.rol) + '</p>' +
-      '<p style="font-size:12px"><b>🎲 Prueba hoy:</b> ' + esc(m.act) + '</p>' +
-      '<p class="muted" style="font-size:11px"><b>Edades:</b> ' + esc(m.edad) + '</p></details>';
-  }).join('') : '<p class="muted">Sin resultados. Prueba con "juego", "límite" o "naturaleza".</p>';
+      '<p style="font-size:12px"><b>🎲 Prueba hoy:</b> ' + esc(m.act) + '</p>' + elH +
+      '<p class="muted" style="font-size:11px"><b>Edades:</b> ' + esc(m.edad) + '</p>' +
+      '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px"><button type="button" class="btn btn-accent cria-reto" data-met="' + esc(m.t) + '" style="width:auto;font-size:11px">📓 Probar 7 días (anotar)</button></div></details>';
+  }).join('') : '<p class="muted">Sin resultados. Prueba con "juego", "límite", "rabieta", "porteo" o "mapuche".</p>');
+  try {
+    var qv = $('criaQuizVer');
+    if (qv) qv.onclick = function () {
+      var checked = Array.prototype.map.call(document.querySelectorAll('.cria-quiz:checked'), function (x) { return x.value; });
+      var res = $('criaQuizRes');
+      if (!checked.length) { if (res) res.innerHTML = '<p class="muted" style="font-size:12px">Marca 1 o 2 frases que vivan hoy para recomendarte.</p>'; return; }
+      var pts = {};
+      CRIANZA_MET_QUIZ.forEach(function (x) { if (checked.indexOf(x.k) >= 0) x.m.forEach(function (id) { pts[id] = (pts[id] || 0) + 1; }); });
+      var order = Object.keys(pts).sort(function (a, b) { return pts[b] - pts[a]; }).slice(0, 3);
+      var names = {};
+      CRIANZA_METODOS.forEach(function (m) { names[m.id] = m.icon + ' ' + m.t; });
+      if (res) res.innerHTML = '<div class="si-card" style="border-color:var(--gold)"><h4>Tu punto de partida esta luna</h4><p>' +
+        order.map(function (id, ix) { return '<b>' + (ix + 1) + '.</b> ' + esc(names[id] || id) + ' (' + pts[id] + ' coincidencia' + (pts[id] > 1 ? 's' : '') + ')'; }).join('<br>') +
+        '</p><p class="muted" style="font-size:11px">Abre sus fichas abajo, elige 1 y dale 7 días. Anota en 📓 Bitácora qué cambió. ' + esc(CRIANZA_MEZCLA_TXT) + '</p></div>';
+    };
+    var qc = $('criaQuizLimpiar');
+    if (qc) qc.onclick = function () { document.querySelectorAll('.cria-quiz').forEach(function (x) { x.checked = false; }); var r = $('criaQuizRes'); if (r) r.innerHTML = ''; };
+  } catch (e3) {}
+  box.querySelectorAll('.cria-reto').forEach(function (b) {
+    b.onclick = function () {
+      try {
+        var met = b.getAttribute('data-met') || 'Mezcla propia';
+        getCrianza().push({ id: uid('cr'), fecha: todayKey(), area: 'Juego y aprendizaje', metodo: met, hijo: '', texto: 'Reto 7 días con ' + met + ': 1 cambio pequeño diario. Día 1: ___. Observo: ___' });
+        save('Reto anotado 📓'); renderCrianza();
+        switchCriaTab('Bit');
+      } catch (e) { try { switchCriaTab('Bit'); } catch (e2) {} }
+    };
+  });
 }
 function renderCriaEda() {
   var box = $('criaEdaList'); if (!box) return;
   box.innerHTML = CRIANZA_ETAPAS.map(function (e) {
     return '<div class="si-card"><h4>' + esc(e.n) + ' · ' + esc(e.e) + '</h4><p><b>Necesita:</b> ' + esc(e.nec) + '<br><b>Ofrece:</b> ' + esc(e.ofr) + '<br><b>Evita:</b> ' + esc(e.evi) + '<br><span class="muted">🌙 ' + esc(e.luna) + '</span></p></div>';
+  }).join('') +
+  '<div class="si-card" style="border-left:3px solid var(--gold)"><h4>🔁 Ritmo diario que calma</h4><p>' + esc(CRIANZA_RITMO) + '</p><p class="muted" style="font-size:11px">🇨🇱 Apoyos: ' + esc(CRIANZA_CHILE) + '</p></div>';
+}
+function renderCriaSal() {
+  var box = $('criaSalList'); if (!box || typeof CRIANZA_SALUD === 'undefined') return;
+  box.innerHTML = CRIANZA_SALUD.map(function (c) {
+    return '<div class="si-card"><h4>' + c.ico + ' ' + esc(c.n) + '</h4><p>' + esc(c.txt) + '</p></div>';
   }).join('');
+}
+function renderCriaJue() {
+  var box = $('criaJueList'); if (!box || typeof CRIANZA_JUEGOS === 'undefined') return;
+  box.innerHTML = CRIANZA_JUEGOS.map(function (j) {
+    return '<div class="si-card"><h4>' + j.ico + ' ' + esc(j.e) + '</h4><p>' + esc(j.juegos) + '</p></div>';
+  }).join('');
+}
+function renderCriaLim() {
+  var box = $('criaLimBox'); if (!box || typeof CRIANZA_LIMITES === 'undefined') return;
+  var L = CRIANZA_LIMITES;
+  box.innerHTML =
+    '<div class="si-card" style="border-left:3px solid var(--gold)"><h4>🌋 Protocolo rabieta (5 pasos)</h4><ol style="font-size:12px;line-height:1.7;margin:4px 0 4px 18px">' + L.pasos.map(function (p) { return '<li>' + esc(p) + '</li>'; }).join('') + '</ol></div>' +
+    '<div class="discipline-grid"><div class="discipline-card"><h4>💬 12 frases que sí funcionan</h4><p>' + L.frases.map(function (f) { return '• ' + esc(f); }).join('<br>') + '</p></div>' +
+    '<div class="discipline-card"><h4>🚫 6 errores que agrandan la tormenta</h4><p>' + L.errores.map(function (f) { return '• ' + esc(f); }).join('<br>') + '</p></div></div>' +
+    '<div class="si-card" style="border-left:3px solid #e76e8a"><h4>🚨 ¿Cuándo pedir ayuda?</h4><p>' + L.alertas.map(function (f) { return '• ' + esc(f); }).join('<br>') + '</p></div>';
 }
 function renderCriaAmb() {
   var box = $('criaAmbBox'); if (!box) return;
@@ -3488,6 +3803,9 @@ function renderCriaAmb() {
 }
 function renderCrianza() {
   renderCriaMet(); renderCriaEda(); renderCriaAmb();
+  try { renderCriaSal(); } catch (e) {}
+  try { renderCriaJue(); } catch (e2) {}
+  try { renderCriaLim(); } catch (e3) {}
   var box = $('criaList'); if (!box) return;
   var d = getCrianza().slice().sort(function (a, b) { return b.fecha.localeCompare(a.fecha); });
   box.innerHTML = d.length ? d.slice(0, 40).map(function (r) {
@@ -3500,34 +3818,45 @@ function renderCrianza() {
   var st = $('criaStats'); if (st) st.textContent = d.length + ' notas de crianza';
 }
 function setupCrianza() {
-  addKw('btnCrianza', 'montessori waldorf pedagogia 3000 pikler reggio emilia disciplina positiva limites rabietas juego autonomia etapas ambiente preparado');
-  makeDialog('crianzaDialog', '🧒 Crianza infantil — pedagogías vivas',
-    'Seis caminos para acompañar a tus niños y niñas: <b>Montessori, Waldorf, Pedagogía 3000, Pikler, Reggio Emilia y Crianza respetuosa</b>. Mézclalos a tu manera: ningún método puro cría solo. Todo registro queda <b>privado y local</b>.',
+  addKw('btnCrianza', 'montessori waldorf pedagogia 3000 pikler reggio emilia disciplina positiva apego porteo kimun mapuche bosque escuela cnv freinet hogar homeschool limites rabietas juego autonomia etapas ambiente preparado sueno comida pantallas fiebre dientes ritmo alertas comparativa test mezcla frases errores chile crece contigo');
+  makeDialog('crianzaDialog', '🧒 Crianza infantil — guía completa 0-12',
+    'Doce caminos para acompañar: <b>Montessori, Waldorf, Pedagogía 3000, Pikler, Reggio, Crianza respetuosa + Apego y porteo, Kimün mapuche, Bosque-escuela, CNV, Freinet y Aprendizaje en familia</b>. Cada método trae <b>pasos, ejemplos por edad, frases, errores y con qué combinar</b>, más comparativa, test orientador y reto de 7 días. Mézclalos: ningún método puro cría solo. Todo <b>privado y local</b>.',
     '<div class="timer-tabs" style="flex-wrap:wrap;margin-bottom:10px">' +
     '<button type="button" id="tabCriaMet" class="btn btn-accent" style="width:auto">🌱 Métodos</button>' +
     '<button type="button" id="tabCriaEda" class="btn" style="width:auto">🎂 Por edad</button>' +
+    '<button type="button" id="tabCriaSal" class="btn" style="width:auto">🩺 Salud</button>' +
+    '<button type="button" id="tabCriaJue" class="btn" style="width:auto">🎲 Juego</button>' +
+    '<button type="button" id="tabCriaLim" class="btn" style="width:auto">🌋 Límites</button>' +
     '<button type="button" id="tabCriaAmb" class="btn" style="width:auto">🏠 Ambiente</button>' +
     '<button type="button" id="tabCriaBit" class="btn" style="width:auto">📓 Bitácora</button></div>' +
-    '<div id="criaMetPanel"><div class="conv-row"><label style="flex:2">🔍 Buscar en métodos <input type="text" id="criaQ" placeholder="ej: juego, límites, pantallas..." autocomplete="off"></label></div><div id="criaMetList"></div></div>' +
-    '<div id="criaEdaPanel" class="hidden"><p class="muted" style="font-size:11px">Cada etapa trae lo que necesita, lo que puedes ofrecer, lo que conviene evitar y un ritmo lunar.</p><div id="criaEdaList" style="display:flex;flex-direction:column;gap:8px"></div></div>' +
+    '<div id="criaMetPanel"><div class="conv-row"><label style="flex:2">🔍 Buscar en métodos <input type="text" id="criaQ" placeholder="ej: juego, rabieta, porteo, mapuche, frases..." autocomplete="off"></label><label>Edad <select id="criaEdadF"><option value="todas">Todas</option><option value="0-2">Bebé 0–2</option><option value="1-3">1–3 años</option><option value="3-6">3–6 años</option><option value="6-12">6–12 años</option></select></label></div><div id="criaMetList"></div></div>' +
+    '<div id="criaEdaPanel" class="hidden"><p class="muted" style="font-size:11px">Gestación + 6 etapas hasta los 12: lo que necesita, lo que puedes ofrecer, lo que conviene evitar y un ritmo lunar.</p><div id="criaEdaList" style="display:flex;flex-direction:column;gap:8px"></div></div>' +
+    '<div id="criaSalPanel" class="hidden"><p class="muted" style="font-size:11px">Sueño, comida, pantallas, dientes, seguridad y controles. Base OMS + CESFAM Chile.</p><div id="criaSalList" style="display:flex;flex-direction:column;gap:8px"></div></div>' +
+    '<div id="criaJuePanel" class="hidden"><p class="muted" style="font-size:11px">Qué jugar en cada edad con cosas simples + ideas para Penco con lluvia o sol.</p><div id="criaJueList" style="display:flex;flex-direction:column;gap:8px"></div></div>' +
+    '<div id="criaLimPanel" class="hidden"><div id="criaLimBox"></div></div>' +
     '<div id="criaAmbPanel" class="hidden"><div id="criaAmbBox"></div></div>' +
     '<div id="criaBitPanel" class="hidden"><div class="menstrual-card" style="border-color:var(--gold)"><h4>➕ Nota de crianza (privada)</h4>' +
     '<div class="conv-row"><label>Fecha <input type="date" id="criaFecha"></label><label style="flex:2">Área <select id="criaArea">' + CRIANZA_AREAS.map(function (a) { return '<option>' + a + '</option>'; }).join('') + '</select></label></div>' +
-    '<div class="conv-row"><label>Método que probé <select id="criaMetodo"><option>Ninguno aún</option><option>Montessori</option><option>Waldorf</option><option>Pedagogía 3000</option><option>Pikler</option><option>Reggio Emilia</option><option>Crianza respetuosa</option><option>Mezcla propia</option></select></label><label style="flex:2">Niño/a (opcional) <input type="text" id="criaHijo" placeholder="ej: León" maxlength="20"></label></div>' +
+    '<div class="conv-row"><label>Método que probé <select id="criaMetodo"><option>Ninguno aún</option><option>Montessori</option><option>Waldorf</option><option>Pedagogía 3000</option><option>Pikler</option><option>Reggio Emilia</option><option>Crianza respetuosa</option><option>Apego y porteo</option><option>Kimün mapuche</option><option>Bosque-escuela</option><option>Comunicación no violenta</option><option>Freinet</option><option>Aprendizaje en familia</option><option>Mezcla propia</option></select></label><label style="flex:2">Niño/a (opcional) <input type="text" id="criaHijo" placeholder="ej: León" maxlength="20"></label></div>' +
     '<label>Qué pasó / qué probé <textarea id="criaTexto" rows="2" placeholder="ej: probé rincón de calma en la rabieta, funcionó a los 5 min..." maxlength="400"></textarea></label>' +
     '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="criaAdd" class="btn btn-accent" style="width:auto">+ Guardar nota</button></div></div>' +
     '<div id="criaList" class="habits-list" style="margin-top:10px;max-height:260px"></div>' +
     '<div class="dlg-actions" style="justify-content:space-between;margin-top:8px"><span id="criaStats" class="muted" style="font-size:11px"></span><button type="button" id="criaShareAll" class="btn" style="width:auto">📤 Compartir resumen</button></div></div>' +
     '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px"><button type="button" id="criaGoCuentos" class="btn" style="width:auto">📖 Cuentos</button>' +
     '<button type="button" id="criaGoMil" class="btn" style="width:auto">🤱 1000 días</button>' +
+    '<button type="button" id="criaGoAdol" class="btn" style="width:auto">🌱 Adolescencia</button>' +
     '<button type="button" id="criaGoHabitos" class="btn" style="width:auto">✅ Hábitos</button></div>');
   var b = $('btnCrianza');
   if (b) b.onclick = function () { if (!$('criaFecha').value) $('criaFecha').value = todayKey(); switchCriaTab('Met'); renderCrianza(); openDlg('crianzaDialog'); };
   if ($('tabCriaMet')) $('tabCriaMet').onclick = function () { switchCriaTab('Met'); };
   if ($('tabCriaEda')) $('tabCriaEda').onclick = function () { switchCriaTab('Eda'); renderCriaEda(); };
+  if ($('tabCriaSal')) $('tabCriaSal').onclick = function () { switchCriaTab('Sal'); renderCriaSal(); };
+  if ($('tabCriaJue')) $('tabCriaJue').onclick = function () { switchCriaTab('Jue'); renderCriaJue(); };
+  if ($('tabCriaLim')) $('tabCriaLim').onclick = function () { switchCriaTab('Lim'); renderCriaLim(); };
   if ($('tabCriaAmb')) $('tabCriaAmb').onclick = function () { switchCriaTab('Amb'); renderCriaAmb(); };
   if ($('tabCriaBit')) $('tabCriaBit').onclick = function () { switchCriaTab('Bit'); };
   if ($('criaQ')) $('criaQ').oninput = function () { renderCriaMet($('criaQ').value); };
+  if ($('criaEdadF')) $('criaEdadF').onchange = function () { renderCriaMet(); };
   if ($('criaAdd')) $('criaAdd').onclick = function () {
     var t = clean($('criaTexto').value, 400); if (!t) return alert('Escribe la nota');
     getCrianza().push({ id: uid('cr'), fecha: $('criaFecha').value || todayKey(), area: $('criaArea').value, metodo: $('criaMetodo').value, hijo: clean($('criaHijo').value, 20), texto: t });
@@ -3536,6 +3865,7 @@ function setupCrianza() {
   if ($('criaShareAll')) $('criaShareAll').onclick = function () { var d = getCrianza(); if (!d.length) return alert('Sin notas'); share('🧒 Bitácora de crianza (resumen)', d.map(function (r) { return '· ' + r.fecha + ' — ' + r.area + ' [' + r.metodo + ']\n' + r.texto; }).join('\n\n')); };
   if ($('criaGoCuentos')) $('criaGoCuentos').onclick = function () { try { var x = $('btnTales'); if (x) x.click(); } catch (e) {} };
   if ($('criaGoMil')) $('criaGoMil').onclick = function () { try { var x = $('btnFerti'); if (x) x.click(); setTimeout(function () { try { switchFerTab('Mil'); } catch (e) {} }, 150); } catch (e2) {} };
+  if ($('criaGoAdol')) $('criaGoAdol').onclick = function () { try { var x = $('btnAdolescencia'); if (x) x.click(); } catch (e) {} };
   if ($('criaGoHabitos')) $('criaGoHabitos').onclick = function () { try { var x = $('btnHabits'); if (x) x.click(); } catch (e) {} };
 }
 

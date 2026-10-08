@@ -151,6 +151,8 @@ const CORE = [
   './convivencia-vecinal-modulo.js?v=1',
   './ciberseguridad-modulo.js',
   './ciberseguridad-modulo.js?v=1',
+  './open-source-modulo.js',
+  './open-source-modulo.js?v=1',
   './hidroponia-modulo.js',
   './hidroponia-modulo.js?v=2',
   './huerta-modulo.js',

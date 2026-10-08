@@ -2,17 +2,25 @@
    MATEMATICAS — Calendario 13 Lunas (Penco · Bío-Bío)
    Sección completa dentro de Aprender, Crear y Jugar > Estudio:
    - Botón btnMatematicas (inyectado en grupo aprender, sub estudio)
-   - Diálogo matematicasDialog con 6 pestañas:
-     1) 📖 Guía (método sin miedo + números mapuzugun + luna)
-     2) 🧮 Calculadora (expresión segura + % + regla de 3 +
-         fracciones + MCD/MCM + primos)
-     3) 🔢 Práctica (quiz configurable + tablas + adivinanza +
-         reto 13×28)
-     4) 📐 Geometría y medidas (áreas, volúmenes, Pitágoras,
-         terreno y pintura Penco)
-     5) 🏠 Mates del hogar (receta, descuento/IVA, interés
-         simple, cuentas y trueque)
-     6) 📓 Mi avance (racha, stats, bitácora privada, metas)
+    - Diálogo matematicasDialog con 9 pestañas:
+      1) 📖 Guía (método sin miedo + números mapuzugun + luna)
+      2) 🧮 Calculadora (expresión segura + % + regla de 3 +
+          fracciones + MCD/MCM + primos)
+      3) 🔢 Práctica (quiz 10 niveles + tablas + adivinanza +
+         reto 13×28: 1 Semilla · 2 Brote · 3 Árbol · 4 Luna ·
+         5 Kimche · 6 Lafken fracciones · 7 Pewen % ·
+         8 Kuyam geometría · 9 Wenu potencias · 10 Newen total)
+      4) 📐 Geometría y medidas (áreas, volúmenes, Pitágoras,
+          terreno y pintura Penco)
+      5) 🏠 Mates del hogar (receta, descuento/IVA, interés
+          simple, cuentas y trueque)
+      6) 📚 Básica (1°–8° Chile: números, 4 operaciones,
+          fracciones, decimales, %, geometría + quiz con XP)
+      7) 🎒 Media (I–IV: ecuaciones, funciones, potencias,
+          trigonometría, distancia/pendiente, prob + quiz XP)
+      8) 🎓 Superior (derivadas, integrales, matrices 2×2,
+          interés compuesto, estadística, lógica + quiz XP)
+      9) 📓 Mi avance (racha, stats, bitácora privada, metas)
    - Todo local y privado por usuario: userData().matematicas
      { stats:{played,best,streak,lastDay}, logs:[] }
    - 100% offline. Sin eval(): parser propio de expresiones.
@@ -81,7 +89,7 @@ function makeDialog(id, title, sub, bodyHTML) {
 }
 function openDlg(id) { var d = $(id); if (d && d.showModal) { try { if (!d.open) d.showModal(); } catch (e) { try { d.showModal(); } catch (e2) {} } } }
 function switchTab(t) {
-  ['Guia', 'Calc', 'Pract', 'Geo', 'Hogar', 'Ava'].forEach(function (x) {
+  ['Guia', 'Calc', 'Pract', 'Geo', 'Hogar', 'Bas', 'Med', 'Sup', 'Ava'].forEach(function (x) {
     var p = $('mat' + x), b = $('tabMat' + x);
     if (p) p.classList.toggle('hidden', x !== t);
     if (b) b.classList.toggle('btn-accent', x === t);
@@ -206,14 +214,20 @@ function esPrimo(n) {
 }
 
 /* ---------------- NIVELES + QUIZ / PRÁCTICA ----------------
-   5 niveles progresivos (XP + estrellas + desbloqueo):
-   1 🌱 Semilla · 2 🌿 Brote · 3 🌳 Árbol · 4 🌙 Luna · 5 ☀️ Kimche */
+   10 niveles progresivos (XP + estrellas + desbloqueo):
+   1 🌱 Semilla · 2 🌿 Brote · 3 🌳 Árbol · 4 🌙 Luna · 5 ☀️ Kimche ·
+   6 🌊 Lafken · 7 ⛰️ Pewen · 8 🦉 Kuyam · 9 🌌 Wenu · 10 🔥 Newen */
 var LEVELS = [
   { id: 1, ico: '🌱', nombre: 'Semilla', rango: '1–10', ops: ['+', '-'], max: 10, req: 0, tablas: null, advMax: 20, desc: 'Sumas y restas del 1 al 10, sin apuro. Para partir de cero y tomar confianza.' },
   { id: 2, ico: '🌿', nombre: 'Brote', rango: '1–20', ops: ['+', '-', '×'], max: 20, req: 60, tablas: [2, 3, 5], advMax: 50, desc: 'Sumas y restas hasta 20 + tablas del 2, 3 y 5. Como calcular la feria chica.' },
   { id: 3, ico: '🌳', nombre: 'Árbol', rango: '1–30', ops: ['+', '-', '×', '÷'], max: 30, req: 150, tablas: [2, 3, 4, 5, 6, 7, 8, 9], advMax: 100, desc: 'Multiplicación y división de verdad + todas las tablas. Las restas ya pueden dar negativo.' },
   { id: 4, ico: '🌙', nombre: 'Luna', rango: '1–50', ops: ['+', '-', '×', '÷'], max: 50, req: 300, tablas: null, advMax: 100, desc: 'Operaciones mixtas hasta 50. Puente a % y fracciones fáciles + regla de 3.' },
-  { id: 5, ico: '☀️', nombre: 'Kimche', rango: '1–100', ops: ['+', '-', '×', '÷'], max: 100, req: 500, tablas: null, advMax: 100, desc: 'Nivel sabio: todo mezclado hasta 100 + geometría, IVA, interés y reto 13 lunas.' }
+  { id: 5, ico: '☀️', nombre: 'Kimche', rango: '1–100', ops: ['+', '-', '×', '÷'], max: 100, req: 500, tablas: null, advMax: 100, desc: 'Nivel sabio base: todo mezclado hasta 100 + geometría, IVA, interés y reto 13 lunas.' },
+  { id: 6, ico: '🌊', nombre: 'Lafken', rango: 'fracciones', ops: ['+', '-', '×', '÷'], max: 100, req: 800, tablas: null, advMax: 200, modo: 'fraccion', desc: 'Mar de fracciones y decimales: 1/2 + 1/4, 3/4 de algo, 0,5 + 0,25. Ideal para recetas y repartos.' },
+  { id: 7, ico: '⛰️', nombre: 'Pewen', rango: '% y proporción', ops: ['+', '-', '×', '÷'], max: 200, req: 1200, tablas: null, advMax: 200, modo: 'porcentaje', desc: 'Montaña del porcentaje: 10%, 25%, 50% mentales + descuentos, IVA y regla de 3. Para feria y negocio.' },
+  { id: 8, ico: '🦉', nombre: 'Kuyam', rango: 'geometría', ops: ['+', '-', '×', '÷'], max: 200, req: 1700, tablas: null, advMax: 200, modo: 'geometria', desc: 'Ojo de búho que mide: áreas y perímetros mentales (cuadrado, rectángulo, triángulo, círculo) + volúmenes.' },
+  { id: 9, ico: '🌌', nombre: 'Wenu', rango: 'potencias', ops: ['+', '-', '×', '÷'], max: 200, req: 2300, tablas: null, advMax: 300, modo: 'potencia', desc: 'Cielo de potencias y raíces: cuadrados, cubos, √ exacta y ecuaciones tipo x + 7 = 15. Puerta al álgebra.' },
+  { id: 10, ico: '🔥', nombre: 'Newen', rango: '1–200 total', ops: ['+', '-', '×', '÷'], max: 200, req: 3000, tablas: null, advMax: 500, modo: 'mixto', desc: 'Fuerza total: TODO mezclado hasta 200 + fracciones, %, geometría y potencias. El desafío del sabio penquén.' }
 ];
 function lvlCfg(n) {
   var id = parseInt(n, 10);
@@ -221,7 +235,7 @@ function lvlCfg(n) {
     /* compatibilidad con Nivel antiguo: facil/medio/dificil */
     if (n === 'facil') id = 1; else if (n === 'medio') id = 2; else if (n === 'dificil') id = 4; else id = 1;
   }
-  if (id < 1) id = 1; if (id > 5) id = 5;
+  if (id < 1) id = 1; if (id > LEVELS.length) id = LEVELS.length;
   return LEVELS[id - 1];
 }
 function lvlUnlocked(id) {
@@ -264,7 +278,7 @@ function paintLevels() {
   var nextReq = null;
   for (var i = 0; i < LEVELS.length; i++) { if (LEVELS[i].req > xp) { nextReq = LEVELS[i].req; break; } }
   if (bar) bar.style.width = nextReq ? Math.min(100, Math.round(xp / nextReq * 100)) + '%' : '100%';
-  if (txt) txt.textContent = '✨ ' + xp + ' XP · nivel actual ' + lvlActual() + '/5' + (nextReq ? ' · te faltan ' + (nextReq - xp) + ' XP para el siguiente' : ' · ¡nivel máximo! 🎉');
+  if (txt) txt.textContent = '✨ ' + xp + ' XP · nivel actual ' + lvlActual() + '/' + LEVELS.length + (nextReq ? ' · te faltan ' + (nextReq - xp) + ' XP para el siguiente' : ' · ¡nivel máximo! 🎉');
   var desc = $('matLvlDesc');
   try {
     var c = lvlCfg(sel);
@@ -313,8 +327,77 @@ function paintLevels() {
     b.title = un ? base.desc : ('Desbloquea con ' + base.req + ' XP (llevas ' + xp + ')');
   });
 }
-var Q = { a: null, b: null, op: '+', ok: 0, total: 0, racha: 0, meta: 10, timer: null, seg: 0, tabla: 0, nivel: 1, asked: false };
+var Q = { a: null, b: null, op: '+', txt: '', ans: null, ok: 0, total: 0, racha: 0, meta: 10, timer: null, seg: 0, tabla: 0, nivel: 1, asked: false };
 function rnd(a, b) { return a + Math.floor(Math.random() * (b - a + 1)); }
+function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+/* --- Generadores especiales para niveles 6-10 (respuesta siempre exacta, sin decimales eternos) --- */
+function qEspecial(modo, cfg) {
+  var r;
+  if (modo === 'fraccion') {
+    var dens = [2, 3, 4, 5, 6, 8, 10];
+    var kind = pick(['suma', 'suma', 'resta', 'mitad', 'decimal']);
+    if (kind === 'decimal') {
+      var decs = [[0.5, '1/2'], [0.25, '1/4'], [0.75, '3/4'], [0.2, '1/5'], [0.1, '1/10']];
+      var d = pick(decs);
+      var e = pick(decs);
+      return { txt: d[0] + ' + ' + e[0] + ' <span class="muted">(piensa en ' + d[1] + ' + ' + e[1] + ')</span>', ans: Math.round((d[0] + e[0]) * 100) / 100 };
+    }
+    if (kind === 'mitad') {
+      var base = pick([10, 20, 50, 100, 200, 12, 24]);
+      var f = pick([['1/2', 2], ['1/4', 4], ['3/4', 4], ['1/3', 3]]);
+      while (base % f[1] !== 0) base = pick([12, 24, 20, 100, 200]);
+      return { txt: f[0] + ' de ' + base, ans: base / f[1] * parseInt(f[0].charAt(0), 10) };
+    }
+    var d1 = pick(dens), d2 = pick(dens);
+    var n1 = rnd(1, d1 - 1), n2 = rnd(1, d2 - 1);
+    if (kind === 'suma' && d1 !== d2 && Math.random() < 0.5) d2 = d1; /* mismo denominador = más amable */
+    var opF = (kind === 'resta') ? '−' : '+';
+    var num = (opF === '+') ? n1 * d2 + n2 * d1 : n1 * d2 - n2 * d1;
+    var den = d1 * d2;
+    var g = gcd(num, den) || 1;
+    var ns = num / g, ds = den / g;
+    r = { txt: n1 + '/' + d1 + ' ' + opF + ' ' + n2 + '/' + d2 + ' <span class="muted">(responde decimal, ej: ' + fmt(ns / ds, 2) + ' → escribe ' + fmt(ns / ds, 2) + ')</span>', ans: Math.round(ns / ds * 10000) / 10000 };
+    r.ansRaw = ns / ds;
+    return r;
+  }
+  if (modo === 'porcentaje') {
+    var k2 = pick(['pctFacil', 'pctFacil', 'descuento', 'regla3']);
+    if (k2 === 'regla3') {
+      var a3 = pick([2, 4, 5, 10]);
+      var b3 = pick([1000, 2000, 4000, 6000]);
+      var c3 = pick([6, 8, 7, 3]);
+      if (c3 === a3) c3 = a3 * 2;
+      return { txt: 'Si ' + a3 + ' kg cuestan $' + b3 + ' ¿cuánto cuestan ' + c3 + ' kg?', ans: Math.round(b3 * c3 / a3) };
+    }
+    if (k2 === 'descuento') {
+      var p = pick([10000, 15000, 20000, 30000]);
+      var dsc = pick([10, 15, 20, 25, 50]);
+      return { txt: '$' + p + ' con ' + dsc + '% dcto ¿cuánto pagas?', ans: Math.round(p * (1 - dsc / 100)) };
+    }
+    var baseP = pick([100, 200, 400, 1000, 2000, 150, 300, 600]);
+    var pct = pick([10, 20, 25, 50, 75, 5]);
+    return { txt: pct + '% de ' + baseP, ans: Math.round(baseP * pct / 100 * 100) / 100 };
+  }
+  if (modo === 'geometria') {
+    var k3 = pick(['cuad', 'rect', 'tri', 'perim']);
+    if (k3 === 'cuad') { var l = rnd(2, 12); return { txt: 'Área del cuadrado lado ' + l + ' (lado × lado)', ans: l * l }; }
+    if (k3 === 'rect') { var bR = rnd(2, 12), hR = rnd(2, 10); return { txt: 'Área rectángulo ' + bR + ' × ' + hR, ans: bR * hR }; }
+    if (k3 === 'tri') { var bT = pick([4, 6, 8, 10, 12]), hT = pick([2, 4, 5, 6, 10]); return { txt: 'Área triángulo base ' + bT + ' altura ' + hT + ' (base × altura ÷ 2)', ans: bT * hT / 2 }; }
+    var l2 = rnd(3, 15), a2 = rnd(3, 10);
+    return { txt: 'Perímetro terreno ' + l2 + ' × ' + a2 + ' (2 × (largo + ancho))', ans: 2 * (l2 + a2) };
+  }
+  if (modo === 'potencia') {
+    var k4 = pick(['cuad', 'cubo', 'raiz', 'ecu']);
+    if (k4 === 'cubo') { var c4 = rnd(2, 5); return { txt: c4 + '³ (= ' + c4 + ' × ' + c4 + ' × ' + c4 + ')', ans: c4 * c4 * c4 }; }
+    if (k4 === 'raiz') { var rq = pick([4, 9, 16, 25, 36, 49, 64, 81, 100]); return { txt: '√' + rq, ans: Math.sqrt(rq) }; }
+    if (k4 === 'ecu') { var x = rnd(2, 20), s = rnd(3, 15); return { txt: 'Si x + ' + s + ' = ' + (x + s) + ' ¿cuánto vale x?', ans: x }; }
+    var c5 = rnd(2, 12); return { txt: c5 + '² (= ' + c5 + ' × ' + c5 + ')', ans: c5 * c5 };
+  }
+  /* modo mixto (nivel 10): sortea entre todos los anteriores + operación dura */
+  var sub = pick(['basico', 'fraccion', 'porcentaje', 'geometria', 'potencia']);
+  if (sub === 'basico') return null;
+  return qEspecial(sub, cfg);
+}
 function qNew(op, nivel, tablaFija) {
   var cfg = lvlCfg(nivel);
   Q.nivel = cfg.id;
@@ -330,6 +413,18 @@ function qNew(op, nivel, tablaFija) {
     notice = 'Nivel 1 aún no usa tablas: practicamos sumas y restas. Las tablas parten en Nivel 2 🌿.';
     op = 'todo';
   }
+  /* Niveles 6-10: "Todas del nivel" mezcla operación base + reto especial del nivel */
+  var quiereEspecial = (op === 'todo') && cfg.modo && (cfg.id === 10 ? Math.random() < 0.6 : Math.random() < 0.5);
+  if (quiereEspecial) {
+    var esp = qEspecial(cfg.modo === 'mixto' ? 'mixto' : cfg.modo, cfg);
+    if (esp && (cfg.modo !== 'mixto' || esp.txt)) {
+      Q.a = null; Q.b = null; Q.op = '★'; Q.txt = esp.txt; Q.ans = esp.ans; Q.asked = true;
+      paintQ();
+      if (notice) { var fbNE = $('matQFb'); if (fbNE) { fbNE.textContent = notice; fbNE.style.color = ''; } }
+      return;
+    }
+    /* si modo mixto tocó "basico", sigue al flujo normal con max grande */
+  }
   var ops = op === 'todo' ? cfg.ops.slice() : [op];
   var o = ops[Math.floor(Math.random() * ops.length)];
   var useTablas = (op === 'tablas') || (o === '×' && cfg.tablas && op === 'todo' && Math.random() < 0.6);
@@ -340,8 +435,10 @@ function qNew(op, nivel, tablaFija) {
     a = t; b = 1 + Math.floor(Math.random() * 10); o = '×';
   } else if (o === '÷') {
     var bMax = cfg.id <= 2 ? 5 : cfg.id === 3 ? 9 : 12;
+    if (cfg.id >= 7) bMax = 15;
     b = 2 + Math.floor(Math.random() * (bMax - 1));
     var c = 1 + Math.floor(Math.random() * (cfg.id >= 4 ? 12 : 10));
+    if (cfg.id >= 10) c = 2 + Math.floor(Math.random() * 18);
     a = b * c;
     if (cfg.id === 1) { o = '+'; a = rnd(1, 10); b = rnd(1, 10); }
   } else if (o === '-') {
@@ -351,16 +448,19 @@ function qNew(op, nivel, tablaFija) {
   } else if (o === '+') {
     a = rnd(1, max);
     b = rnd(1, max);
+    if (cfg.id >= 10) { a = rnd(20, 200); b = rnd(20, 200); }
   } else if (o === '×') {
     var baseT = cfg.tablas || [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
     var f1 = cfg.id <= 2 ? baseT[Math.floor(Math.random() * baseT.length)] : rnd(2, cfg.id >= 4 ? 12 : 10);
+    if (cfg.id >= 7) f1 = rnd(3, 15);
     if (tablaFija && baseT.indexOf(tablaFija) >= 0) f1 = tablaFija;
     a = f1; b = rnd(1, cfg.id >= 4 ? 12 : 10);
+    if (cfg.id >= 9) b = rnd(2, 15);
   } else {
     a = rnd(1, max);
     b = rnd(1, max);
   }
-  Q.a = a; Q.b = b; Q.op = o; Q.asked = true;
+  Q.a = a; Q.b = b; Q.op = o; Q.txt = ''; Q.ans = null; Q.asked = true;
   paintQ();
   if (notice) {
     var fbN = $('matQFb');
@@ -368,11 +468,17 @@ function qNew(op, nivel, tablaFija) {
   }
 }
 function qResp() {
+  if (Q.ans != null) return Q.ans;
   if (Q.a == null || Q.b == null) return NaN;
   if (Q.op === '+') return Q.a + Q.b;
   if (Q.op === '-') return Q.a - Q.b;
   if (Q.op === '×') return Q.a * Q.b;
   return Q.b === 0 ? NaN : Q.a / Q.b;
+}
+function qEnunciado() {
+  if (Q.txt) return Q.txt;
+  if (Q.a == null) return '';
+  return Q.a + ' ' + Q.op + ' ' + Q.b;
 }
 function curQSel() {
   return {
@@ -384,8 +490,8 @@ function curQSel() {
 function paintQ() {
   var t = $('matQTxt');
   if (t) {
-    if (Q.a == null || Q.b == null) t.textContent = 'Elige nivel y toca “🎲 Nueva pregunta” para empezar. Con ⏎ compruebas sin usar el mouse.';
-    else t.innerHTML = '¿Cuánto es <b style="font-size:20px">' + Q.a + ' ' + Q.op + ' ' + Q.b + '</b>? (' + Q.ok + '/' + Q.meta + ')';
+    if (Q.a == null && !Q.txt) t.textContent = 'Elige nivel y toca “🎲 Nueva pregunta” para empezar. Con ⏎ compruebas sin usar el mouse.';
+    else t.innerHTML = '¿Cuánto es <b style="font-size:20px">' + qEnunciado() + '</b>? (' + Q.ok + '/' + Q.meta + ')';
   }
   var st = $('matQStats');
   if (st) {
@@ -398,17 +504,19 @@ function paintQ() {
 function qCheck() {
   var inp = $('matQResp');
   var fb = $('matQFb');
-  if (Q.a == null) { if (fb) fb.textContent = 'Primero toca “🎲 Nueva pregunta”.'; qNew(curQSel().op, curQSel().niv, curQSel().tabla); return; }
+  if (Q.a == null && Q.txt == null) { if (fb) fb.textContent = 'Primero toca “🎲 Nueva pregunta”.'; qNew(curQSel().op, curQSel().niv, curQSel().tabla); return; }
+  if (Q.a == null && !Q.txt) { if (fb) fb.textContent = 'Primero toca “🎲 Nueva pregunta”.'; qNew(curQSel().op, curQSel().niv, curQSel().tabla); return; }
   var v = num((inp || {}).value);
   if (!isFinite(v)) { if (fb) fb.textContent = 'Escribe tu respuesta con números 🙂'; return; }
   var r = qResp();
   Q.total++;
-  var bien = Math.abs(v - r) < 1e-9;
+  var tol = (Q.txt && Math.abs(r % 1) > 1e-9) ? 0.011 : 1e-9;
+  var bien = Math.abs(v - r) < tol;
   if (bien) {
     Q.ok++; Q.racha++;
-    var g = 10 + (Q.racha >= 3 ? 5 : 0) + ((Q.nivel || 1) >= 4 ? 5 : 0);
+    var g = 10 + (Q.racha >= 3 ? 5 : 0) + ((Q.nivel || 1) >= 4 ? 5 : 0) + ((Q.nivel || 1) >= 6 ? 5 : 0) + ((Q.nivel || 1) >= 9 ? 5 : 0) + (Q.txt ? 5 : 0);
     try { var m0 = store(); m0.stats.xp = (m0.stats.xp || 0) + g; save(); } catch (e) {}
-    if (fb) { fb.textContent = '¡Bien! 🎉 +' + g + ' XP · ' + Q.a + ' ' + Q.op + ' ' + Q.b + ' = ' + fmt(r, r % 1 ? 2 : 0); fb.style.color = '#8fd694'; }
+    if (fb) { fb.textContent = '¡Bien! 🎉 +' + g + ' XP · ' + qEnunciado() + ' = ' + fmt(r, r % 1 ? 2 : 0); fb.style.color = '#8fd694'; }
   } else {
     Q.racha = 0;
     if (fb) { fb.textContent = 'Casi… era ' + fmt(r, r % 1 ? 2 : 0) + '. Vamos con la siguiente 💪'; fb.style.color = '#e8c56a'; }
@@ -436,7 +544,7 @@ function qFinish() {
   var st = starsFor(Q.ok, Q.total);
   m.stats.stars = m.stats.stars || {};
   if (st > (m.stats.stars[lvlId] || 0)) m.stats.stars[lvlId] = st;
-  var bonus = 20;
+  var bonus = 20 + (lvlId >= 6 ? 10 : 0) + (lvlId >= 9 ? 10 : 0);
   m.stats.xp = (m.stats.xp || 0) + bonus;
   var cfg = lvlCfg(lvlId);
   m.logs.push({ id: uid('mt'), fecha: hoy, tipo: 'quiz', detalle: 'N' + lvlId + ' ' + cfg.nombre + ' · ' + Q.ok + '/' + Q.total + ' (' + (($('matQOp') || {}).value || 'todo') + ') · ' + '★'.repeat(st) + '☆'.repeat(3 - st) + ' · +' + bonus + ' XP bonus', ok: Q.ok, total: Q.total });
@@ -445,7 +553,7 @@ function qFinish() {
   renderAva();
   try { paintLevels(); } catch (eP) {}
   var fb = $('matQFb');
-  var nxt = LEVELS[lvlId] ? (' · siguiente: ' + LEVELS[lvlId].ico + ' ' + LEVELS[lvlId].nombre + ' (' + LEVELS[lvlId].req + ' XP)') : ' · ¡nivel máximo! ☀️';
+  var nxt = LEVELS[lvlId] ? (' · siguiente: ' + LEVELS[lvlId].ico + ' ' + LEVELS[lvlId].nombre + ' (' + LEVELS[lvlId].req + ' XP)') : ' · ¡nivel máximo! 🔥';
   if (fb) fb.textContent = '🏁 ¡Meta ' + Q.meta + ' cumplida! +' + bonus + ' XP bonus · ' + '★'.repeat(st) + '☆'.repeat(3 - st) + nxt;
   Q.ok = 0; Q.total = 0; Q.racha = 0;
   paintQ();
@@ -483,11 +591,12 @@ function renderAva() {
     return '<span title="' + esc(L.nombre) + ': ' + st + '/3"> ' + L.ico + ' ' + '★'.repeat(st) + '☆'.repeat(3 - st) + '</span>';
   }).join(' ');
   var logs = (m.logs || []).slice().sort(function (a, b) { return (b.fecha || '').localeCompare(a.fecha || ''); }).slice(0, 30);
-  box.innerHTML = '<p class="muted" style="font-size:11px">🎮 Partidas: <b>' + (s.played || 0) + '</b> · 🏆 mejor: <b>' + (s.best || 0) + '</b> · 🔥 racha días: <b>' + (s.streak || 0) + '</b> · ✨ XP: <b>' + xp + '</b> · 🎚️ nivel: <b>' + cur + '/5 ' + LEVELS[cur - 1].ico + ' ' + esc(LEVELS[cur - 1].nombre) + '</b></p>' +
+  box.innerHTML = '<p class="muted" style="font-size:11px">🎮 Partidas: <b>' + (s.played || 0) + '</b> · 🏆 mejor: <b>' + (s.best || 0) + '</b> · 🔥 racha días: <b>' + (s.streak || 0) + '</b> · ✨ XP: <b>' + xp + '</b> · 🎚️ nivel: <b>' + cur + '/' + LEVELS.length + ' ' + LEVELS[cur - 1].ico + ' ' + esc(LEVELS[cur - 1].nombre) + '</b></p>' +
     '<div style="background:var(--panel);border-radius:6px;height:10px;overflow:hidden"><div style="width:' + (nxt ? Math.min(100, Math.round(xp / nxt.req * 100)) : 100) + '%;height:100%;background:linear-gradient(90deg,#7ab8ff,#e8c56a,#8fd694)"></div></div>' +
     '<p class="muted" style="font-size:11px;margin-top:6px">' + starRow + (nxt ? ' · siguiente: ' + nxt.ico + ' ' + esc(nxt.nombre) + ' con ' + nxt.req + ' XP (faltan ' + (nxt.req - xp) + ')' : ' · ¡nivel máximo ☀️!') + '</p>' +
     (logs.length ? logs.map(function (r) {
-      return '<div class="habit-item" style="display:flex;justify-content:space-between;gap:8px;align-items:center"><span><b>' + esc(r.fecha || '') + '</b> · ' + esc(r.tipo === 'quiz' ? '🔢 Quiz' : r.tipo === 'adivinanza' ? '🎯 Adivinanza' : '📝 Práctica') + ' · ' + esc(r.detalle || '') + '</span><button class="btn" style="width:auto;font-size:11px;color:#e76e8a" data-del="' + r.id + '">✕</button></div>';
+      var tag = r.tipo === 'quiz' ? '🔢 Quiz' : r.tipo === 'adivinanza' ? '🎯 Adivinanza' : r.tipo === 'basica' ? '📚 Básica' : r.tipo === 'media' ? '🎒 Media' : r.tipo === 'superior' ? '🎓 Superior' : '📝 Práctica';
+      return '<div class="habit-item" style="display:flex;justify-content:space-between;gap:8px;align-items:center"><span><b>' + esc(r.fecha || '') + '</b> · ' + esc(tag) + ' · ' + esc(r.detalle || '') + '</span><button class="btn" style="width:auto;font-size:11px;color:#e76e8a" data-del="' + r.id + '">✕</button></div>';
     }).join('') : '<p class="muted">Sin registros aún. Juega una partida en 🔢 Práctica y aquí verás tu avance por lunas.</p>');
   box.querySelectorAll('[data-del]').forEach(function (b) {
     b.onclick = function () {
@@ -511,6 +620,9 @@ function buildDialog() {
     '<button type="button" id="tabMatPract" class="btn" style="width:auto">🔢 Práctica</button>' +
     '<button type="button" id="tabMatGeo" class="btn" style="width:auto">📐 Geometría</button>' +
     '<button type="button" id="tabMatHogar" class="btn" style="width:auto">🏠 Hogar</button>' +
+    '<button type="button" id="tabMatBas" class="btn" style="width:auto">📚 Básica</button>' +
+    '<button type="button" id="tabMatMed" class="btn" style="width:auto">🎒 Media</button>' +
+    '<button type="button" id="tabMatSup" class="btn" style="width:auto">🎓 Superior</button>' +
     '<button type="button" id="tabMatAva" class="btn" style="width:auto">📓 Mi avance</button></div>' +
 
     /* GUIA */
@@ -519,9 +631,10 @@ function buildDialog() {
     rowCard({ h: '🚶 Método sin miedo (15 min por día)', p: '<b>1)</b> Elige UN tema (ej: tablas del 7). <b>2)</b> Mira el ejemplo resuelto en cada pestaña. <b>3)</b> Haz 10 ejercicios en 🔢 Práctica. <b>4)</b> Anota 1 frase de lo aprendido en 📓 Mi avance. <b>5)</b> Repite mañana. La memoria ama lo poco y frecuente: mejor 15 min diarios que 3 horas un día.' }) +
     rowCard({ h: '🌙 Ritmo lunar sugerido', p: '<b>Creciente:</b> tema nuevo (tablas, fracciones). <b>Llena:</b> juega y celebra (quiz, adivinanza). <b>Menguante:</b> repasa lo difícil y ordena cuaderno. <b>Nueva:</b> descansa: la mente consolida durmiendo. El calendario de 13 lunas × 28 días = <b>364</b>: multiplica 13×28 en 🧮 para comprobarlo.' }) +
     rowCard({ h: '🗣️ Números que también son kimün', p: 'Mapuzugun del 1 al 13: <b>kiñe (1) · epu (2) · küla (3) · meli (4) · kechu (5) · kayu (6) · regle (7) · pura (8) · aylla (9) · mari (10) · mari kiñe (11) · mari epu (12) · mari küla (13)</b>. Mari küla küyen = 13 lunas. Contar también es pertenecer.' }) +
-    rowCard({ h: '🎚️ 5 niveles: avanza sin miedo', p: '<b>🌱 1 Semilla (1–10):</b> sumas y restas para partir. <b>🌿 2 Brote (1–20):</b> + tablas 2, 3 y 5. <b>🌳 3 Árbol (1–30):</b> × ÷ de verdad. <b>🌙 4 Luna (1–50):</b> mixto + % y fracciones. <b>☀️ 5 Kimche (1–100):</b> vida real (IVA, interés, geometría). Ganas <b>+10 XP por buena</b> (+5 racha ≥3), <b>+20 XP al cumplir la meta</b> y <b>★ hasta 3 por nivel</b>. Los niveles 2–5 se desbloquean con 60 · 150 · 300 · 500 XP.' }) +
+    rowCard({ h: '🎚️ 10 niveles: avanza sin miedo', p: '<b>🌱 1 Semilla (1–10):</b> sumas y restas para partir. <b>🌿 2 Brote (1–20):</b> + tablas 2, 3 y 5. <b>🌳 3 Árbol (1–30):</b> × ÷ de verdad. <b>🌙 4 Luna (1–50):</b> mixto + % y fracciones. <b>☀️ 5 Kimche (1–100):</b> vida real (IVA, interés, geometría).<br><b>🌊 6 Lafken:</b> fracciones y decimales (1/2 + 1/4, mitad de algo). <b>⛰️ 7 Pewen:</b> % mentales, descuentos y regla de 3. <b>🦉 8 Kuyam:</b> áreas y perímetros mentales. <b>🌌 9 Wenu:</b> potencias, √ exacta y ecuaciones x + a = b. <b>🔥 10 Newen:</b> TODO mezclado hasta 200, el desafío sabio.<br>Ganas <b>+10 XP por buena</b> (+5 racha ≥3, +5 desde N4, +5 desde N6, +5 desde N9, +5 extra en retos ★), <b>+20–40 XP al cumplir la meta</b> (más en niveles altos) y <b>★ hasta 3 por nivel</b>. Desbloqueos: 60 · 150 · 300 · 500 · 800 · 1200 · 1700 · 2300 · 3000 XP.' }) +
     rowCard({ h: '💡 Si te equivocas', p: 'El error es dato, no fracaso. En el quiz la respuesta correcta aparece al tiro para que aprendas. Si un tema te supera (divisiones largas, fracciones), baja un nivel y vuelve en 2 lunas. Y si quieres compañía: 🧠 Estudio y 🧩 Memoria del mismo grupo Aprender.' }) +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="matGoCalc" class="btn btn-accent" style="width:auto">🧮 Ir a la calculadora →</button> <button type="button" id="matGoPract" class="btn" style="width:auto">🔢 Practicar 10 min →</button></div>' +
+    rowCard({ h: '🎓 Ruta por etapa educativa', p: '<b>📚 Básica (1°–8°):</b> números, 4 operaciones, fracciones, decimales, % y geometría base. <b>🎒 Media (I–IV):</b> ecuaciones, funciones, trigonometría y probabilidad (puente PAES). <b>🎓 Superior:</b> derivadas, integrales, matrices, interés compuesto y estadística. Cada etapa trae <b>guía + herramientas + quiz con XP</b> que suma a tus mismos niveles y a 📓 Mi avance.' }) +
+    '<div class="dlg-actions" style="justify-content:flex-start;flex-wrap:wrap"><button type="button" id="matGoCalc" class="btn btn-accent" style="width:auto">🧮 Ir a la calculadora →</button> <button type="button" id="matGoPract" class="btn" style="width:auto">🔢 Practicar 10 min →</button> <button type="button" id="matGoBas" class="btn" style="width:auto">📚 Básica →</button> <button type="button" id="matGoMed" class="btn" style="width:auto">🎒 Media →</button> <button type="button" id="matGoSup" class="btn" style="width:auto">🎓 Superior →</button></div>' +
     '</div>' +
 
     /* CALC */
@@ -556,11 +669,16 @@ function buildDialog() {
     '<button type="button" class="btn mat-lvl-btn" data-lvl="3"></button>' +
     '<button type="button" class="btn mat-lvl-btn" data-lvl="4"></button>' +
     '<button type="button" class="btn mat-lvl-btn" data-lvl="5"></button>' +
+    '<button type="button" class="btn mat-lvl-btn" data-lvl="6"></button>' +
+    '<button type="button" class="btn mat-lvl-btn" data-lvl="7"></button>' +
+    '<button type="button" class="btn mat-lvl-btn" data-lvl="8"></button>' +
+    '<button type="button" class="btn mat-lvl-btn" data-lvl="9"></button>' +
+    '<button type="button" class="btn mat-lvl-btn" data-lvl="10"></button>' +
     '</div>' +
     '<div id="matLvlDesc" class="chip mat-calc-res" style="margin-top:8px"></div></div>' +
     '<div class="menstrual-card" style="margin-top:10px;border-color:var(--gold)"><h4>🔢 Quiz relámpago — cumple la meta y gana XP</h4>' +
     '<div class="conv-row"><label>Operación <select id="matQOp"><option value="todo">Todas del nivel</option><option value="+">Sumas</option><option value="-">Restas</option><option value="×">Multiplicación</option><option value="÷">División</option><option value="tablas">Tablas ×</option></select></label>' +
-    '<label>Nivel <select id="matQNivel"><option value="1">1 🌱 Semilla (1–10)</option><option value="2">2 🌿 Brote (1–20)</option><option value="3">3 🌳 Árbol (1–30)</option><option value="4">4 🌙 Luna (1–50)</option><option value="5">5 ☀️ Kimche (1–100)</option></select></label>' +
+    '<label>Nivel <select id="matQNivel"><option value="1">1 🌱 Semilla (1–10)</option><option value="2">2 🌿 Brote (1–20)</option><option value="3">3 🌳 Árbol (1–30)</option><option value="4">4 🌙 Luna (1–50)</option><option value="5">5 ☀️ Kimche (1–100)</option><option value="6">6 🌊 Lafken (fracciones)</option><option value="7">7 ⛰️ Pewen (% y proporción)</option><option value="8">8 🦉 Kuyam (geometría)</option><option value="9">9 🌌 Wenu (potencias)</option><option value="10">10 🔥 Newen (todo 1–200)</option></select></label>' +
     '<label>Tabla <select id="matQTabla"><option value="0">Al azar</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select></label></div>' +
     '<div class="conv-row"><label>Meta <select id="matQMeta"><option value="5">5 buenas</option><option value="10" selected>10 buenas</option><option value="20">20 buenas</option></select></label>' +
     '<label style="align-self:flex-end"><button type="button" id="matQNew" class="btn btn-accent" style="width:auto">🎲 Empezar / saltar</button></label></div>' +
@@ -615,6 +733,78 @@ function buildDialog() {
     '<p class="muted" style="font-size:11px;margin-top:8px">Puentes: 💰 Finanzas para tu presupuesto, 📏 Conversión para unidades y ⚡ Consumo eléctrico para kWh. Encuéntralos con 🔍 Buscar.</p></div>' +
     '</div>' +
 
+    /* BASICA 1-8 Chile */
+    '<div id="matBas" class="hidden">' +
+    rowCard({ h: '📚 Básica 1°–8° · mapa rápido (Chile)', p: '<b>1°–2°:</b> números hasta 1.000, suma y resta, mitades y dobles, medir con regla. <b>3°–4°:</b> tablas ×÷, fracciones 1/2 1/4 3/4, perímetro, gráficos de barras. <b>5°–6°:</b> decimales, % de 10/25/50, MCM/MCD, áreas de cuadrado y rectángulo. <b>7°–8°:</b> enteros (+/−), potencias, proporciones, álgebra intro (x + 5 = 12). Parte por tu ciclo y sube: todo suma XP igual que 🔢 Práctica.' }) +
+    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>✏️ Quiz Básica — gana XP (+15 por buena)</h4>' +
+    '<div class="conv-row"><label>Tema <select id="matEBTema"><option value="todo">Todo mezclado</option><option value="op">4 operaciones</option><option value="frac">Fracciones</option><option value="dec">Decimales</option><option value="pct">Porcentajes</option><option value="geo">Geometría base</option><option value="prob">Problemas (feria/hogar)</option></select></label>' +
+    '<label style="align-self:flex-end"><button type="button" id="matEBNew" class="btn btn-accent" style="width:auto">🎲 Nueva</button></label></div>' +
+    '<div id="matEBTxt" style="font-size:14px;margin:8px 0">Toca “🎲 Nueva” para partir.</div>' +
+    '<div class="conv-row" style="margin-top:8px"><label style="flex:2">Tu respuesta <input type="text" id="matEBResp" inputmode="decimal" placeholder="número" autocomplete="off"></label><label style="align-self:flex-end"><button type="button" id="matEBCheck" class="btn btn-accent" style="width:auto">Comprobar ⏎</button></label></div>' +
+    '<div id="matEBFb" class="muted" style="font-size:12px;min-height:20px"></div>' +
+    '<div id="matEBStats" class="muted" style="font-size:11px"></div></div>' +
+    '<div class="menstrual-card" style="margin-top:10px"><h4>🔢 Valor posicional (descomponer)</h4>' +
+    '<div class="conv-row"><label style="flex:2">Número <input type="text" id="matEBNum" inputmode="numeric" placeholder="ej: 3.457"></label><label style="align-self:flex-end"><button type="button" id="matEBGo" class="btn btn-accent" style="width:auto">Descomponer</button></label></div>' +
+    '<div id="matEBRes" class="chip" style="display:block;white-space:normal">Ej: 3.457 = 3UM + 4C + 5D + 7U.</div></div>' +
+    '<div class="menstrual-card" style="margin-top:10px"><h4>➗ División con resto + redondeo</h4>' +
+    '<div class="conv-row"><label>Dividendo <input type="number" id="matEBD1" placeholder="ej: 47"></label><label>Divisor <input type="number" id="matEBD2" placeholder="ej: 6"></label><label style="align-self:flex-end"><button type="button" id="matEBDGo" class="btn" style="width:auto">Dividir</button></label></div>' +
+    '<div id="matEBDRes" class="chip" style="display:block;white-space:normal">Te da cociente y resto (ej: 47 ÷ 6 = 7 resto 5).</div>' +
+    '<div class="conv-row" style="margin-top:8px"><label>Número <input type="text" id="matEBR1" placeholder="ej: 3,476"></label><label>Decimales <input type="number" id="matEBR2" value="2" min="0" max="4"></label><label style="align-self:flex-end"><button type="button" id="matEBRGo" class="btn" style="width:auto">Redondear</button></label></div>' +
+    '<div id="matEBRRes" class="chip" style="display:block;white-space:normal">Ej: 3,476 a 2 decimales → 3,48.</div></div>' +
+    '</div>' +
+
+    /* MEDIA I-IV Chile + PAES */
+    '<div id="matMed" class="hidden">' +
+    rowCard({ h: '🎒 Media I–IV · mapa rápido (Chile + PAES)', p: '<b>I°:</b> racionales, potencias y raíces, álgebra (factorizar, productos notables). <b>II°:</b> ecuación cuadrática, función lineal y afín, trigonometría en triángulo rectángulo. <b>III°:</b> probabilidad, estadística, geometría analítica (distancia/pendiente). <b>IV°:</b> funciones, repaso PAES: sin calculadora primero, luego verifica aquí. Todo con ejemplo resuelto en cada herramienta.' }) +
+    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>✏️ Quiz Media — gana XP (+20 por buena)</h4>' +
+    '<div class="conv-row"><label>Tema <select id="matEMTema"><option value="todo">Todo mezclado</option><option value="ecu1">Ecuación lineal</option><option value="ecu2">Ecuación cuadrática</option><option value="func">Función lineal</option><option value="pot">Potencias y raíces</option><option value="trig">Trigonometría exacta</option><option value="analit">Distancia y pendiente</option></select></label>' +
+    '<label style="align-self:flex-end"><button type="button" id="matEMNew" class="btn btn-accent" style="width:auto">🎲 Nueva</button></label></div>' +
+    '<div id="matEMTxt" style="font-size:14px;margin:8px 0">Toca “🎲 Nueva” para partir.</div>' +
+    '<div class="conv-row" style="margin-top:8px"><label style="flex:2">Tu respuesta <input type="text" id="matEMResp" inputmode="decimal" placeholder="número" autocomplete="off"></label><label style="align-self:flex-end"><button type="button" id="matEMCheck" class="btn btn-accent" style="width:auto">Comprobar ⏎</button></label></div>' +
+    '<div id="matEMFb" class="muted" style="font-size:12px;min-height:20px"></div>' +
+    '<div id="matEMStats" class="muted" style="font-size:11px"></div></div>' +
+    '<div class="menstrual-card" style="margin-top:10px"><h4>🟰 Ecuación lineal ax + b = 0 y cuadrática ax² + bx + c = 0</h4>' +
+    '<div class="conv-row"><label>a <input type="text" id="matEMa" placeholder="ej: 2"></label><label>b <input type="text" id="matEMb" placeholder="ej: -8"></label><label style="align-self:flex-end"><button type="button" id="matEMGo" class="btn btn-accent" style="width:auto">Resolver lineal</button></label></div>' +
+    '<div id="matEMRes" class="chip" style="display:block;white-space:normal">Ej: 2x − 8 = 0 → x = 4.</div>' +
+    '<div class="conv-row" style="margin-top:8px"><label>a <input type="text" id="matECa" placeholder="ej: 1"></label><label>b <input type="text" id="matECb" placeholder="ej: -5"></label><label>c <input type="text" id="matECc" placeholder="ej: 6"></label><label style="align-self:flex-end"><button type="button" id="matECGo" class="btn" style="width:auto">Resolver cuadrática</button></label></div>' +
+    '<div id="matECRes" class="chip" style="display:block;white-space:normal">Con discriminante Δ = b² − 4ac y raíces reales cuando Δ ≥ 0.</div></div>' +
+    '<div class="menstrual-card" style="margin-top:10px"><h4>📈 Función lineal f(x) = mx + n + trigonometría</h4>' +
+    '<div class="conv-row"><label>m <input type="text" id="matEMm" placeholder="ej: 3"></label><label>n <input type="text" id="matEMn" placeholder="ej: 2"></label><label>x <input type="text" id="matEMx" placeholder="ej: 4"></label><label style="align-self:flex-end"><button type="button" id="matEMfGo" class="btn" style="width:auto">Evaluar f(x)</button></label></div>' +
+    '<div id="matEMfRes" class="chip" style="display:block;white-space:normal">Ej: f(x)=3x+2 con x=4 → 14. Pendiente m = subida/avance.</div>' +
+    '<div class="conv-row" style="margin-top:8px"><label>Ángulo (°) <input type="number" id="matEMAng" placeholder="30 / 45 / 60"></label><label style="align-self:flex-end"><button type="button" id="matEMTrigGo" class="btn" style="width:auto">sen · cos · tan</button></label></div>' +
+    '<div id="matEMTrigRes" class="chip" style="display:block;white-space:normal">Exactos de memoria: sen30°=0,5 · cos60°=0,5 · tan45°=1.</div></div>' +
+    '<div class="menstrual-card" style="margin-top:10px"><h4>📍 Distancia y pendiente entre 2 puntos</h4>' +
+    '<div class="conv-row"><label>x1 <input type="text" id="matEMx1" placeholder="1"></label><label>y1 <input type="text" id="matEMy1" placeholder="2"></label><label>x2 <input type="text" id="matEMx2" placeholder="4"></label><label>y2 <input type="text" id="matEMy2" placeholder="6"></label><label style="align-self:flex-end"><button type="button" id="matEMDPGo" class="btn" style="width:auto">Calcular</button></label></div>' +
+    '<div id="matEMDPRes" class="chip" style="display:block;white-space:normal">d = √[(x2−x1)²+(y2−y1)²] · m = (y2−y1)/(x2−x1).</div></div>' +
+    '</div>' +
+
+    /* SUPERIOR */
+    '<div id="matSup" class="hidden">' +
+    rowCard({ h: '🎓 Superior · mapa rápido (técnica y universidad)', p: '<b>Cálculo:</b> derivada = ritmo de cambio, integral = área acumulada. <b>Álgebra lineal:</b> matrices 2×2 para sistemas y transformaciones. <b>Estadística:</b> media, mediana y desviación para leer datos reales. <b>Finanzas:</b> interés compuesto y anualidades (CAE, créditos). <b>Lógica:</b> ∧ ∨ ¬ para programar y argumentar. Todo offline y con pasos visibles.' }) +
+    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>✏️ Quiz Superior — gana XP (+25 por buena)</h4>' +
+    '<div class="conv-row"><label>Tema <select id="matSQTema"><option value="todo">Todo mezclado</option><option value="der">Derivadas</option><option value="int">Integrales</option><option value="mat">Matrices (det)</option><option value="fin">Interés compuesto</option><option value="est">Promedios</option><option value="log">Lógica (1=V,0=F)</option></select></label>' +
+    '<label style="align-self:flex-end"><button type="button" id="matSQNew" class="btn btn-accent" style="width:auto">🎲 Nueva</button></label></div>' +
+    '<div id="matSQTXT" style="font-size:14px;margin:8px 0">Toca “🎲 Nueva” para partir.</div>' +
+    '<div class="conv-row" style="margin-top:8px"><label style="flex:2">Tu respuesta <input type="text" id="matSQResp" inputmode="decimal" placeholder="número" autocomplete="off"></label><label style="align-self:flex-end"><button type="button" id="matSQCheck" class="btn btn-accent" style="width:auto">Comprobar ⏎</button></label></div>' +
+    '<div id="matSQFb" class="muted" style="font-size:12px;min-height:20px"></div>' +
+    '<div id="matSQStats" class="muted" style="font-size:11px"></div></div>' +
+    '<div class="menstrual-card" style="margin-top:10px"><h4>Δ Derivada de ax³ + bx² + cx + d (y valor en x₀)</h4>' +
+    '<div class="conv-row"><label>a <input type="text" id="matSUa" placeholder="ej: 2"></label><label>b <input type="text" id="matSUb" placeholder="ej: -3"></label><label>c <input type="text" id="matSUc" placeholder="ej: 4"></label><label>d <input type="text" id="matSUd" placeholder="ej: 1"></label><label>x₀ <input type="text" id="matSUx0" placeholder="ej: 2"></label><label style="align-self:flex-end"><button type="button" id="matSUDevGo" class="btn btn-accent" style="width:auto">Derivar</button></label></div>' +
+    '<div id="matSUDevRes" class="chip" style="display:block;white-space:normal">Ej: 2x³−3x²+4x+1 → f′ = 6x²−6x+4 · f′(2) = 16.</div></div>' +
+    '<div class="menstrual-card" style="margin-top:10px"><h4>∫ Integral definida de ax² + bx + c entre L1 y L2</h4>' +
+    '<div class="conv-row"><label>a <input type="text" id="matSUiA" placeholder="ej: 3"></label><label>b <input type="text" id="matSUiB" placeholder="ej: 2"></label><label>c <input type="text" id="matSUiC" placeholder="ej: 1"></label><label>L1 <input type="text" id="matSUiL1" placeholder="ej: 0"></label><label>L2 <input type="text" id="matSUiL2" placeholder="ej: 2"></label><label style="align-self:flex-end"><button type="button" id="matSUiGo" class="btn" style="width:auto">Integrar</button></label></div>' +
+    '<div id="matSUiRes" class="chip" style="display:block;white-space:normal">Antiderivada: (a/3)x³ + (b/2)x² + cx, evaluada L2 − L1.</div></div>' +
+    '<div class="menstrual-card" style="margin-top:10px"><h4>🔢 Matrices 2×2: suma, producto y determinantes</h4>' +
+    '<div class="conv-row"><label>A11 <input type="text" id="matSMa" placeholder="1"></label><label>A12 <input type="text" id="matSMb" placeholder="2"></label><label>A21 <input type="text" id="matSMc" placeholder="3"></label><label>A22 <input type="text" id="matSMd" placeholder="4"></label></div>' +
+    '<div class="conv-row"><label>B11 <input type="text" id="matSMe" placeholder="5"></label><label>B12 <input type="text" id="matSMf" placeholder="6"></label><label>B21 <input type="text" id="matSMg" placeholder="7"></label><label>B22 <input type="text" id="matSMh" placeholder="8"></label><label style="align-self:flex-end"><span style="display:flex;gap:6px;flex-wrap:wrap"><button type="button" id="matSMAdd" class="btn" style="width:auto">A+B</button><button type="button" id="matSMMul" class="btn" style="width:auto">A×B</button><button type="button" id="matSMDet" class="btn" style="width:auto">det A y det B</button></span></label></div>' +
+    '<div id="matSMRes" class="chip" style="display:block;white-space:normal">det = a·d − b·c. Si det ≠ 0 la matriz tiene inversa.</div></div>' +
+    '<div class="menstrual-card" style="margin-top:10px"><h4>💰 Interés compuesto + estadística de lista</h4>' +
+    '<div class="conv-row"><label>Capital $ <input type="number" id="matSUC" placeholder="ej: 100000"></label><label>Tasa % por período <input type="text" id="matSUT" placeholder="ej: 5"></label><label>Períodos <input type="number" id="matSUN" placeholder="ej: 3"></label><label style="align-self:flex-end"><button type="button" id="matSUIntGo" class="btn" style="width:auto">Monto</button></label></div>' +
+    '<div id="matSUIntRes" class="chip" style="display:block;white-space:normal">M = C·(1+i)ⁿ. Compara con interés simple de 🏠 Hogar.</div>' +
+    '<div class="conv-row" style="margin-top:8px"><label style="flex:2">Lista (separa con comas) <input type="text" id="matSUList" placeholder="ej: 4, 7, 7, 9, 13"></label><label style="align-self:flex-end"><button type="button" id="matSUStatGo" class="btn" style="width:auto">Analizar</button></label></div>' +
+    '<div id="matSUStatRes" class="chip" style="display:block;white-space:normal">Te da n, media, mediana, mín, máx y desviación.</div></div>' +
+    '</div>' +
+
     /* AVA */
     '<div id="matAva" class="hidden">' +
     '<div class="menstrual-card" style="border-color:var(--gold)"><h4>📓 Mi avance matemático</h4>' +
@@ -641,13 +831,179 @@ function parseFrac(t) {
   return { n: a, d: b };
 }
 
+/* ---------------- ETAPAS EDUCATIVAS: XP + QUIZ COMPARTIDO ----------------
+   📚 Básica (+15) · 🎒 Media (+20) · 🎓 Superior (+25).
+   Todo suma al mismo XP de niveles y queda en 📓 Mi avance. */
+function logEtapa(tipo, detalle, xp) {
+  try {
+    var m = store();
+    m.stats.xp = (m.stats.xp || 0) + xp;
+    if (m.stats.xp < 0) m.stats.xp = 0;
+    m.logs.push({ id: uid('mt'), fecha: todayKey(), tipo: tipo, detalle: detalle + ' · +' + xp + ' XP', ok: 1, total: 1 });
+    if (m.logs.length > 200) m.logs = m.logs.slice(-200);
+    save();
+  } catch (e) {}
+  try { paintLevels(); } catch (e2) {}
+  try { renderAva(); } catch (e3) {}
+}
+/* Quiz genérico de etapa: prefijos EB / EM / SQ con generador propio */
+function etapaQuiz(prefix, genFn, baseXP, label) {
+  var S = { txt: '', ans: null, ok: 0, total: 0, racha: 0, asked: false };
+  function paint() {
+    var t = $(prefix + 'Txt'), st = $(prefix + 'Stats');
+    if (t) {
+      if (!S.asked) t.textContent = 'Toca “🎲 Nueva” para partir.';
+      else t.innerHTML = '¿Cuánto es <b style="font-size:20px">' + S.txt + '</b>? (✅ ' + S.ok + '/' + S.total + ')';
+    }
+    if (st) st.textContent = '✅ ' + S.ok + '/' + S.total + ' · 🔥 racha ' + S.racha + ' · ' + label + ' · +' + baseXP + ' XP por buena';
+  }
+  function nuevo() {
+    try {
+      var tema = (($((prefix === 'matSQ') ? 'matSQTema' : prefix + 'Tema') || {}).value || 'todo');
+      var r = genFn(tema === 'todo' ? 'todo' : tema);
+      S.txt = r.txt; S.ans = r.ans; S.asked = true;
+    } catch (e) { S.txt = '2 + 3'; S.ans = 5; S.asked = true; }
+    paint();
+    var fb = $(prefix + 'Fb');
+    if (fb) { fb.textContent = ''; }
+  }
+  function check() {
+    var inp = $(prefix + 'Resp'), fb = $(prefix + 'Fb');
+    if (!S.asked) { if (fb) fb.textContent = 'Primero toca “🎲 Nueva”.'; nuevo(); return; }
+    var v = num((inp || {}).value);
+    if (!isFinite(v)) { if (fb) fb.textContent = 'Escribe tu respuesta con números 🙂'; return; }
+    S.total++;
+    var tol = (Math.abs(S.ans % 1) > 1e-9) ? 0.011 : 1e-9;
+    if (Math.abs(v - S.ans) < tol) {
+      S.ok++; S.racha++;
+      var g = baseXP + (S.racha >= 3 ? 5 : 0);
+      logEtapa(label === '📚 Básica' ? 'basica' : label === '🎒 Media' ? 'media' : 'superior', label + ' · ' + S.txt + ' = ' + fmt(S.ans, S.ans % 1 ? 2 : 0), g);
+      if (fb) { fb.textContent = '¡Bien! 🎉 +' + g + ' XP · ' + S.txt + ' = ' + fmt(S.ans, S.ans % 1 ? 2 : 0); fb.style.color = '#8fd694'; }
+    } else {
+      S.racha = 0;
+      if (fb) { fb.textContent = 'Casi… era ' + fmt(S.ans, S.ans % 1 ? 2 : 0) + '. Vamos con la siguiente 💪'; fb.style.color = '#e8c56a'; }
+    }
+    if (inp) inp.value = '';
+    try { inp.focus(); } catch (e) {}
+    paint();
+    nuevo();
+  }
+  return { S: S, paint: paint, nuevo: nuevo, check: check };
+}
+/* --- Generadores Básica 1°–8° (respuestas exactas) --- */
+function ebGen(tema) {
+  var t = tema;
+  if (t === 'todo') t = pick(['op', 'op', 'frac', 'dec', 'pct', 'geo', 'prob']);
+  if (t === 'frac') {
+    var d = pick([2, 4, 8]);
+    var n1 = rnd(1, d - 1), n2 = rnd(1, d - 1);
+    if (Math.random() < 0.5) return { txt: n1 + '/' + d + ' + ' + n2 + '/' + d, ans: Math.round((n1 + n2) / d * 10000) / 10000 };
+    var dd = pick([2, 4]);
+    var b = pick([10, 20, 100]);
+    return { txt: '1/' + dd + ' de ' + b, ans: b / dd };
+  }
+  if (t === 'dec') {
+    var x = pick([0.5, 0.25, 0.75, 1.5, 2.25]), y = pick([0.5, 0.25, 0.75, 1.25]);
+    return { txt: String(x).replace('.', ',') + ' + ' + String(y).replace('.', ','), ans: Math.round((x + y) * 100) / 100 };
+  }
+  if (t === 'pct') {
+    var base = pick([40, 80, 100, 200]), p = pick([10, 25, 50]);
+    return { txt: p + '% de ' + base, ans: base * p / 100 };
+  }
+  if (t === 'geo') {
+    if (Math.random() < 0.5) { var l = rnd(2, 12); return { txt: 'Área cuadrado lado ' + l, ans: l * l }; }
+    var w = rnd(2, 10), h = rnd(2, 9);
+    return { txt: 'Perímetro rectángulo ' + w + ' × ' + h, ans: 2 * (w + h) };
+  }
+  if (t === 'prob') {
+    var kg = rnd(2, 5), pk = pick([1000, 1500, 2000]);
+    return { txt: kg + ' kg a $' + pk + ' el kg ¿total?', ans: kg * pk };
+  }
+  var o = pick(['+', '-', '×', '÷']);
+  if (o === '+') { var a1 = rnd(3, 99), b1 = rnd(3, 99); return { txt: a1 + ' + ' + b1, ans: a1 + b1 }; }
+  if (o === '-') { var a2 = rnd(10, 99), b2 = rnd(1, a2); return { txt: a2 + ' − ' + b2, ans: a2 - b2 }; }
+  if (o === '÷') { var d3 = rnd(2, 9), c3 = rnd(2, 12); return { txt: (d3 * c3) + ' ÷ ' + d3, ans: c3 }; }
+  var t1 = rnd(2, 9), t2 = rnd(2, 9);
+  return { txt: t1 + ' × ' + t2, ans: t1 * t2 };
+}
+/* --- Generadores Media I–IV (respuestas exactas o tolerancia 0,01) --- */
+function emGen(tema) {
+  var t = tema;
+  if (t === 'todo') t = pick(['ecu1', 'ecu2', 'func', 'pot', 'trig', 'analit']);
+  if (t === 'ecu1') {
+    var x = rnd(2, 12), a = rnd(2, 6), c = a * x + rnd(1, 9);
+    return { txt: a + 'x + ' + (c - a * x) + ' = ' + c + ' → x', ans: x };
+  }
+  if (t === 'ecu2') {
+    if (Math.random() < 0.5) { var r = pick([3, 4, 5, 6, 7, 8, 9]); return { txt: 'x² = ' + (r * r) + ' → x positivo', ans: r }; }
+    var r1 = rnd(1, 6), r2 = rnd(1, 6);
+    var b = -(r1 + r2), cc = r1 * r2;
+    return { txt: 'x² ' + (b < 0 ? '− ' + Math.abs(b) : '+ ' + b) + 'x + ' + cc + ' = 0 → raíz mayor', ans: Math.max(r1, r2) };
+  }
+  if (t === 'func') {
+    var m = rnd(2, 6), n = rnd(1, 9), xv = rnd(1, 9);
+    return { txt: 'f(x) = ' + m + 'x + ' + n + ' · f(' + xv + ')', ans: m * xv + n };
+  }
+  if (t === 'pot') {
+    var k = pick(['cuad', 'cubo', 'raiz']);
+    if (k === 'cubo') { var cb = rnd(2, 4); return { txt: cb + '³', ans: cb * cb * cb }; }
+    if (k === 'raiz') { var rq = pick([16, 25, 36, 49, 81, 144]); return { txt: '√' + rq, ans: Math.sqrt(rq) }; }
+    var pb = rnd(2, 9), pe = rnd(2, 3);
+    return { txt: pb + '^' + pe, ans: Math.pow(pb, pe) };
+  }
+  if (t === 'trig') {
+    var tg = pick([['sen 30°', 0.5], ['cos 60°', 0.5], ['tan 45°', 1], ['sen 90°', 1], ['cos 0°', 1]]);
+    return { txt: tg[0], ans: tg[1] };
+  }
+  var x1 = rnd(0, 5), y1 = rnd(0, 5), x2 = x1 + rnd(1, 5), y2 = y1 + rnd(1, 5);
+  if (Math.random() < 0.5) return { txt: 'pendiente (P1=' + x1 + ',' + y1 + ' P2=' + x2 + ',' + y2 + ')', ans: Math.round((y2 - y1) / (x2 - x1) * 100) / 100 };
+  return { txt: 'distancia (P1=' + x1 + ',' + y1 + ' P2=' + x2 + ',' + y2 + ') ≈ 2 decimales', ans: Math.round(Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)) * 100) / 100 };
+}
+/* --- Generadores Superior (respuestas exactas o tolerancia 0,01) --- */
+function esGen(tema) {
+  var t = tema;
+  if (t === 'todo') t = pick(['der', 'int', 'mat', 'fin', 'est', 'log']);
+  if (t === 'der') {
+    var k = rnd(2, 4), x0 = rnd(1, 3);
+    return { txt: "f(x) = " + k + "x² · f′(" + x0 + ')', ans: 2 * k * x0 };
+  }
+  if (t === 'int') {
+    var kk = rnd(1, 4), L = 2;
+    return { txt: '∫₀..' + L + ' ' + kk + 'x dx', ans: kk * L * L / 2 };
+  }
+  if (t === 'mat') {
+    var a = rnd(1, 5), b = rnd(1, 5), c = rnd(1, 5), d = rnd(1, 5);
+    return { txt: 'det [' + a + ' ' + b + '; ' + c + ' ' + d + ']', ans: a * d - b * c };
+  }
+  if (t === 'fin') {
+    var C = pick([100000, 200000]), i = 5, n2 = 2;
+    return { txt: '$' + C + ' al 5% compuesto 2 períodos → monto', ans: Math.round(C * 1.05 * 1.05) };
+  }
+  if (t === 'est') {
+    var v1 = rnd(2, 9), v2 = rnd(2, 9), v3 = rnd(2, 9);
+    return { txt: 'promedio de ' + v1 + ', ' + v2 + ', ' + v3, ans: Math.round((v1 + v2 + v3) / 3 * 100) / 100 };
+  }
+  var lg = pick([['V ∧ F (1=V,0=F)', 0], ['V ∨ F (1=V,0=F)', 1], ['¬F (1=V,0=F)', 1], ['V ∧ V (1=V,0=F)', 1]]);
+  return { txt: lg[0], ans: lg[1] };
+}
+var EBQ = null, EMQ = null, ESQ = null;
+function etapaQuizzes() {
+  if (!EBQ) EBQ = etapaQuiz('matEB', ebGen, 15, '📚 Básica');
+  if (!EMQ) EMQ = etapaQuiz('matEM', emGen, 20, '🎒 Media');
+  if (!ESQ) ESQ = etapaQuiz('matSQ', esGen, 25, '🎓 Superior');
+  return { EBQ: EBQ, EMQ: EMQ, ESQ: ESQ };
+}
+
 /* ---------------- BINDINGS ---------------- */
 function bindAll() {
   var on = function (id, fn) { var el = $(id); if (el) el.onclick = fn; };
 
   on('matGoCalc', function () { switchTab('Calc'); });
   on('matGoPract', function () { switchTab('Pract'); try { paintLevels(); if (!Q.asked) { var s0 = curQSel(); qNew(s0.op, s0.niv, s0.tabla); } else paintQ(); } catch (eG) {} });
-  ['Guia', 'Calc', 'Pract', 'Geo', 'Hogar', 'Ava'].forEach(function (t) {
+  on('matGoBas', function () { switchTab('Bas'); try { var e1 = etapaQuizzes(); e1.EBQ.paint(); if (!e1.EBQ.S.asked) e1.EBQ.nuevo(); } catch (eG2) {} });
+  on('matGoMed', function () { switchTab('Med'); try { var e2 = etapaQuizzes(); e2.EMQ.paint(); if (!e2.EMQ.S.asked) e2.EMQ.nuevo(); } catch (eG3) {} });
+  on('matGoSup', function () { switchTab('Sup'); try { var e3 = etapaQuizzes(); e3.ESQ.paint(); if (!e3.ESQ.S.asked) e3.ESQ.nuevo(); } catch (eG4) {} });
+  ['Guia', 'Calc', 'Pract', 'Geo', 'Hogar', 'Bas', 'Med', 'Sup', 'Ava'].forEach(function (t) {
     on('tabMat' + t, function () {
       switchTab(t);
       if (t === 'Ava') renderAva();
@@ -921,6 +1277,165 @@ function bindAll() {
     if (box) box.textContent = '$' + fmt(t, 0) + ' entre ' + p + ' → $' + fmt(t / p, 0) + ' c/u. En trueque: equivale a ' + fmt(t / p, 0) + ' en productos por persona.';
   });
 
+  /* ---- ETAPAS: quizzes + herramientas ---- */
+  try {
+    var EZ = etapaQuizzes();
+    on('matEBNew', EZ.EBQ.nuevo);
+    on('matEBCheck', EZ.EBQ.check);
+    on('matEMNew', EZ.EMQ.nuevo);
+    on('matEMCheck', EZ.EMQ.check);
+    on('matSQNew', EZ.ESQ.nuevo);
+    on('matSQCheck', EZ.ESQ.check);
+    var ebi = $('matEBResp');
+    if (ebi && !ebi.dataset.enter) { ebi.dataset.enter = '1'; ebi.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); EZ.EBQ.check(); } }); }
+    var emi = $('matEMResp');
+    if (emi && !emi.dataset.enter) { emi.dataset.enter = '1'; emi.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); EZ.EMQ.check(); } }); }
+    var esi = $('matSQResp');
+    if (esi && !esi.dataset.enter) { esi.dataset.enter = '1'; esi.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); EZ.ESQ.check(); } }); }
+    EZ.EBQ.paint(); EZ.EMQ.paint(); EZ.ESQ.paint();
+  } catch (eEZ) {}
+
+  /* Básica: valor posicional */
+  on('matEBGo', function () {
+    var raw = String(($('matEBNum') || {}).value || '').replace(/\s|\./g, '').replace(',', '.');
+    var box = $('matEBRes');
+    var n = parseInt(raw, 10);
+    if (!isFinite(n) || n < 0 || n > 9999999) { if (box) box.textContent = '⚠️ Escribe un número entero entre 0 y 9.999.999.'; return; }
+    var um = Math.floor(n / 1000), resto = n % 1000;
+    var c = Math.floor(resto / 100); resto = resto % 100;
+    var d = Math.floor(resto / 10), u = resto % 10;
+    var partes = [];
+    if (um) partes.push(um + 'UM');
+    if (c) partes.push(c + 'C');
+    if (d) partes.push(d + 'D');
+    if (u || !partes.length) partes.push(u + 'U');
+    if (box) box.textContent = fmt(n, 0) + ' = ' + partes.join(' + ') + ' · (' + String(n).length + ' cifras)';
+  });
+  /* Básica: división con resto + redondeo */
+  on('matEBDGo', function () {
+    var a = num(($('matEBD1') || {}).value), b = num(($('matEBD2') || {}).value);
+    var box = $('matEBDRes');
+    a = Math.round(a); b = Math.round(b);
+    if (!isFinite(a) || !isFinite(b) || b === 0) { if (box) box.textContent = '⚠️ Escribe dividendo y divisor (divisor ≠ 0).'; return; }
+    var q = Math.trunc(a / b), r = a - q * b;
+    if (box) box.textContent = a + ' ÷ ' + b + ' = ' + q + ' resto ' + Math.abs(r) + (r === 0 ? ' (exacta ✅)' : ' · comprueba: ' + b + '×' + q + '+' + Math.abs(r) + '=' + a);
+  });
+  on('matEBRGo', function () {
+    var v = num(($('matEBR1') || {}).value), dec = parseInt(($('matEBR2') || {}).value, 10);
+    var box = $('matEBRRes');
+    if (!isFinite(v)) { if (box) box.textContent = '⚠️ Escribe el número a redondear.'; return; }
+    if (!isFinite(dec) || dec < 0 || dec > 4) dec = 2;
+    if (box) box.textContent = fmt(v, 4) + ' a ' + dec + ' decimales → ' + fmt(v, dec);
+  });
+  /* Media: lineal + cuadrática */
+  on('matEMGo', function () {
+    var a = num(($('matEMa') || {}).value), b = num(($('matEMb') || {}).value);
+    var box = $('matEMRes');
+    if (!isFinite(a) || !isFinite(b)) { if (box) box.textContent = '⚠️ Escribe a y b.'; return; }
+    if (a === 0) { if (box) box.textContent = b === 0 ? '∞ soluciones (0 = 0)' : 'Sin solución (' + b + ' ≠ 0)'; return; }
+    if (box) box.textContent = a + 'x + (' + b + ') = 0 → x = ' + fmt(-b / a, 4) + ' · verifica reemplazando.';
+  });
+  on('matECGo', function () {
+    var a = num(($('matECa') || {}).value), b = num(($('matECb') || {}).value), c = num(($('matECc') || {}).value);
+    var box = $('matECRes');
+    if (!isFinite(a) || !isFinite(b) || !isFinite(c) || a === 0) { if (box) box.textContent = '⚠️ Escribe a (≠0), b y c.'; return; }
+    var D = b * b - 4 * a * c;
+    if (D < 0) { if (box) box.textContent = 'Δ = ' + fmt(D, 2) + ' < 0 → sin raíces reales (dos complejas).'; return; }
+    var x1 = (-b + Math.sqrt(D)) / (2 * a), x2 = (-b - Math.sqrt(D)) / (2 * a);
+    if (box) box.textContent = 'Δ = ' + fmt(D, 2) + (D === 0 ? ' → raíz doble x = ' + fmt(x1, 4) : ' → x₁ = ' + fmt(x1, 4) + ' · x₂ = ' + fmt(x2, 4));
+  });
+  /* Media: función lineal + trigonometría */
+  on('matEMfGo', function () {
+    var m = num(($('matEMm') || {}).value), n = num(($('matEMn') || {}).value), x = num(($('matEMx') || {}).value);
+    var box = $('matEMfRes');
+    if (!isFinite(m) || !isFinite(n) || !isFinite(x)) { if (box) box.textContent = '⚠️ Escribe m, n y x.'; return; }
+    if (box) box.textContent = 'f(' + x + ') = ' + m + '·' + x + ' + ' + n + ' = ' + fmt(m * x + n, 4) + ' · raíz en x = ' + (m === 0 ? '—' : fmt(-n / m, 4));
+  });
+  on('matEMTrigGo', function () {
+    var g = num(($('matEMAng') || {}).value);
+    var box = $('matEMTrigRes');
+    if (!isFinite(g)) { if (box) box.textContent = '⚠️ Escribe el ángulo en grados.'; return; }
+    var r = g * Math.PI / 180;
+    var s = Math.sin(r), c2 = Math.cos(r);
+    var t2 = Math.abs(c2) < 1e-12 ? '∞ (no definida)' : fmt(s / c2, 4);
+    if (box) box.textContent = 'sen(' + g + '°)=' + fmt(s, 4) + ' · cos=' + fmt(c2, 4) + ' · tan=' + t2;
+  });
+  /* Media: distancia + pendiente */
+  on('matEMDPGo', function () {
+    var x1 = num(($('matEMx1') || {}).value), y1 = num(($('matEMy1') || {}).value);
+    var x2 = num(($('matEMx2') || {}).value), y2 = num(($('matEMy2') || {}).value);
+    var box = $('matEMDPRes');
+    if (!isFinite(x1) || !isFinite(y1) || !isFinite(x2) || !isFinite(y2)) { if (box) box.textContent = '⚠️ Escribe los 4 valores.'; return; }
+    var d = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
+    var t = 'd = ' + fmt(d, 4);
+    if (x2 !== x1) t += ' · pendiente m = ' + fmt((y2 - y1) / (x2 - x1), 4);
+    else t += ' · recta vertical (pendiente ∞)';
+    if (box) box.textContent = t;
+  });
+  /* Superior: derivada */
+  on('matSUDevGo', function () {
+    var a = num(($('matSUa') || {}).value) || 0, b = num(($('matSUb') || {}).value) || 0;
+    var c = num(($('matSUc') || {}).value) || 0, d = num(($('matSUd') || {}).value) || 0;
+    var x0 = num(($('matSUx0') || {}).value);
+    var box = $('matSUDevRes');
+    var d2 = 3 * a, d1 = 2 * b;
+    var t = 'f′ = ' + fmt(d2, 2) + 'x² + ' + fmt(d1, 2) + 'x + ' + fmt(c, 2);
+    if (isFinite(x0)) t += ' · f′(' + x0 + ') = ' + fmt(d2 * x0 * x0 + d1 * x0 + c, 4);
+    else t += ' (d constante = 0)';
+    if (box) box.textContent = t;
+  });
+  /* Superior: integral definida */
+  on('matSUiGo', function () {
+    var a = num(($('matSUiA') || {}).value) || 0, b = num(($('matSUiB') || {}).value) || 0, c = num(($('matSUiC') || {}).value) || 0;
+    var L1 = num(($('matSUiL1') || {}).value), L2 = num(($('matSUiL2') || {}).value);
+    var box = $('matSUiRes');
+    if (!isFinite(L1) || !isFinite(L2)) { if (box) box.textContent = '⚠️ Escribe los límites L1 y L2.'; return; }
+    var F = function (x) { return (a / 3) * x * x * x + (b / 2) * x * x + c * x; };
+    if (box) box.textContent = '∫(' + a + 'x²+' + b + 'x+' + c + ') de ' + L1 + ' a ' + L2 + ' = ' + fmt(F(L2) - F(L1), 4);
+  });
+  /* Superior: matrices 2x2 */
+  var matSUGet = function () {
+    return {
+      a: num(($('matSMa') || {}).value) || 0, b: num(($('matSMb') || {}).value) || 0,
+      c: num(($('matSMc') || {}).value) || 0, d: num(($('matSMd') || {}).value) || 0,
+      e: num(($('matSMe') || {}).value) || 0, f: num(($('matSMf') || {}).value) || 0,
+      g: num(($('matSMg') || {}).value) || 0, h: num(($('matSMh') || {}).value) || 0
+    };
+  };
+  var matSUOut = function (t) { var box = $('matSMRes'); if (box) box.textContent = t; };
+  on('matSMAdd', function () {
+    var m = matSUGet();
+    matSUOut('A+B = [' + fmt(m.a + m.e, 2) + ' ' + fmt(m.b + m.f, 2) + '; ' + fmt(m.c + m.g, 2) + ' ' + fmt(m.d + m.h, 2) + ']');
+  });
+  on('matSMMul', function () {
+    var m = matSUGet();
+    matSUOut('A×B = [' + fmt(m.a * m.e + m.b * m.g, 2) + ' ' + fmt(m.a * m.f + m.b * m.h, 2) + '; ' + fmt(m.c * m.e + m.d * m.g, 2) + ' ' + fmt(m.c * m.f + m.d * m.h, 2) + '] (no conmuta: A×B ≠ B×A)');
+  });
+  on('matSMDet', function () {
+    var m = matSUGet();
+    var da = m.a * m.d - m.b * m.c, db = m.e * m.h - m.f * m.g;
+    matSUOut('det A = ' + fmt(da, 2) + (da !== 0 ? ' (tiene inversa ✅)' : ' (singular, sin inversa)') + ' · det B = ' + fmt(db, 2) + (db !== 0 ? ' (tiene inversa ✅)' : ' (singular)'));
+  });
+  /* Superior: interés compuesto + estadística */
+  on('matSUIntGo', function () {
+    var C = num(($('matSUC') || {}).value), i = num(($('matSUT') || {}).value), n = num(($('matSUN') || {}).value);
+    var box = $('matSUIntRes');
+    if (!isFinite(C) || !isFinite(i) || !isFinite(n) || C <= 0 || n < 0) { if (box) box.textContent = '⚠️ Completa capital, tasa y períodos.'; return; }
+    var M = C * Math.pow(1 + i / 100, n);
+    if (box) box.textContent = 'M = ' + fmt(C, 0) + '·(1+' + i + '%)^' + n + ' = $' + fmt(M, 0) + ' · interés ganado $' + fmt(M - C, 0);
+  });
+  on('matSUStatGo', function () {
+    var raw = String(($('matSUList') || {}).value || '');
+    var box = $('matSUStatRes');
+    var vs = raw.split(/[,;\s]+/).map(function (x) { return num(x); }).filter(function (x) { return isFinite(x); });
+    if (vs.length < 2) { if (box) box.textContent = '⚠️ Escribe al menos 2 números separados por comas.'; return; }
+    vs.sort(function (x, y) { return x - y; });
+    var n = vs.length, s = vs.reduce(function (a, b) { return a + b; }, 0), me = s / n;
+    var med = (n % 2) ? vs[(n - 1) / 2] : (vs[n / 2 - 1] + vs[n / 2]) / 2;
+    var v = vs.reduce(function (a, b) { return a + (b - me) * (b - me); }, 0) / n;
+    if (box) box.textContent = 'n=' + n + ' · media=' + fmt(me, 2) + ' · mediana=' + fmt(med, 2) + ' · mín=' + fmt(vs[0], 2) + ' · máx=' + fmt(vs[n - 1], 2) + ' · DE=' + fmt(Math.sqrt(v), 2);
+  });
+
   /* avance */
   on('matLogAdd', function () {
     var t = clean((($('matLogTxt') || {}).value || '').trim(), 80);
@@ -934,13 +1449,13 @@ function bindAll() {
     var m = store();
     if (!m.logs.length && !(m.stats.played || 0)) return alert('Sin avance aún: juega una partida primero');
     var cur2 = lvlActual();
-    share('🔢 Mi avance matemático', 'Nivel ' + cur2 + '/5 ' + LEVELS[cur2 - 1].ico + ' ' + LEVELS[cur2 - 1].nombre + ' · XP ' + (m.stats.xp || 0) + ' · Partidas: ' + (m.stats.played || 0) + ' · Mejor: ' + (m.stats.best || 0) + ' · Racha: ' + (m.stats.streak || 0) + ' días\n' +
+    share('🔢 Mi avance matemático', 'Nivel ' + cur2 + '/' + LEVELS.length + ' ' + LEVELS[cur2 - 1].ico + ' ' + LEVELS[cur2 - 1].nombre + ' · XP ' + (m.stats.xp || 0) + ' · Partidas: ' + (m.stats.played || 0) + ' · Mejor: ' + (m.stats.best || 0) + ' · Racha: ' + (m.stats.streak || 0) + ' días\n' +
       m.logs.slice(-10).map(function (r) { return '• ' + r.fecha + ' · ' + r.detalle; }).join('\n'));
   });
   on('matAvaClear', function () {
     if (!confirm('¿Borrar tu bitácora matemática? (se mantienen guías)')) return;
     try { var u = userData(); if (u && u.matematicas) { u.matematicas.logs = []; u.matematicas.stats = { played: 0, best: 0, streak: 0, lastDay: '', xp: 0, stars: {}, nivel: 1 }; } } catch (e) {}
-    Q.ok = 0; Q.total = 0; Q.racha = 0; Q.a = null; Q.b = null; Q.asked = false;
+    Q.ok = 0; Q.total = 0; Q.racha = 0; Q.a = null; Q.b = null; Q.txt = ''; Q.ans = null; Q.asked = false;
     save(); renderAva(); paintQ();
     try { paintLevels(); advNuevo(); var sC = curQSel(); qNew(sC.op, '1', 0); if ($('matQFb')) $('matQFb').textContent = ''; } catch (eP) {}
   });
@@ -964,7 +1479,7 @@ function setup() {
         btn.id = 'btnMatematicas'; btn.className = 'btn'; btn.type = 'button';
         btn.textContent = '🔢 Matemáticas';
         try { btn.setAttribute('data-sub', 'estudio'); } catch (eS2) {}
-        btn.setAttribute('data-keywords', 'matematicas calculo calculadora porcentaje fraccion geometria area perimetro volumen pitagoras tablas multiplicar sumar restar dividir quiz practica numeros mapuzugun interes descuento iva receta escala terreno pintura');
+        btn.setAttribute('data-keywords', 'matematicas calculo calculadora porcentaje fraccion geometria area perimetro volumen pitagoras tablas multiplicar sumar restar dividir quiz practica numeros mapuzugun interes descuento iva receta escala terreno pintura basica media superior ecuacion funcion trigonometria derivada integral matriz paes lineal cuadratica estadistica');
         var ref = g.querySelector('#btnGuitar') || g.querySelector('#btnEnglish');
         if (ref && ref.nextSibling) g.insertBefore(btn, ref.nextSibling);
         else if (ref) g.appendChild(btn);
@@ -1051,10 +1566,10 @@ function setup() {
   }
   /* puentes de descubrimiento */
   try {
-    addKw('btnStudy', 'matematicas calculo geometria fracciones quiz');
-    addKw('btnMemory', 'matematicas numeros tablas calculo');
+    addKw('btnStudy', 'matematicas calculo geometria fracciones quiz basica media superior paes');
+    addKw('btnMemory', 'matematicas numeros tablas calculo basica');
     addKw('btnConvert', 'matematicas calculadora porcentaje regla3 geometria');
-    addKw('btnFinance', 'matematicas porcentaje iva descuento interes');
+    addKw('btnFinance', 'matematicas porcentaje iva descuento interes compuesto');
   } catch (e12) {}
 }
 

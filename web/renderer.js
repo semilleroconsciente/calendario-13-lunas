@@ -8345,27 +8345,27 @@ setTimeout(setupGymDialog, 870);
 function setupStudyDialog(){
   const btn=$('btnStudy'); if(btn) btn.onclick=()=>{ $('studyDialog').showModal(); };
   const ct=$('studyCloseTop'), cb=$('studyClose'); if(ct) ct.onclick=()=>$('studyDialog').close(); if(cb) cb.onclick=()=>$('studyDialog').close();
-  const tabG=$('tabStudyGeneral'), tabM=$('tabStudyMnemo'), tabS=$('tabStudySpeed');
-  const pG=$('studyGeneralPanel'), pM=$('studyMnemoPanel'), pS=$('studySpeedPanel');
+  const tabG=$('tabStudyGeneral'), tabM=$('tabStudyMnemo'), tabS=$('tabStudySpeed'), tabP=$('tabStudyPlan'), tabE=$('tabStudyExam'), tabF=$('tabStudyFocus');
+  const pG=$('studyGeneralPanel'), pM=$('studyMnemoPanel'), pS=$('studySpeedPanel'), pP=$('studyPlanPanel'), pE=$('studyExamPanel'), pF=$('studyFocusPanel');
   function show(tab){
-    [tabG,tabM,tabS].forEach(b=> b && b.classList.remove('btn-accent'));
-    [pG,pM,pS].forEach(p=> p && p.classList.add('hidden'));
+    [tabG,tabM,tabS,tabP,tabE,tabF].forEach(b=> b && b.classList.remove('btn-accent'));
+    [pG,pM,pS,pP,pE,pF].forEach(p=> p && p.classList.add('hidden'));
     if(tab==='g'){ tabG&&tabG.classList.add('btn-accent'); pG&&pG.classList.remove('hidden'); }
     if(tab==='m'){ tabM&&tabM.classList.add('btn-accent'); pM&&pM.classList.remove('hidden'); }
     if(tab==='s'){ tabS&&tabS.classList.add('btn-accent'); pS&&pS.classList.remove('hidden'); }
+    if(tab==='p'){ tabP&&tabP.classList.add('btn-accent'); pP&&pP.classList.remove('hidden'); }
+    if(tab==='e'){ tabE&&tabE.classList.add('btn-accent'); pE&&pE.classList.remove('hidden'); }
+    if(tab==='f'){ tabF&&tabF.classList.add('btn-accent'); pF&&pF.classList.remove('hidden'); if(typeof renderStudyLog==='function') renderStudyLog(); }
   }
   if(tabG) tabG.onclick=()=> show('g');
   if(tabM) tabM.onclick=()=> show('m');
   if(tabS) tabS.onclick=()=> show('s');
-  // Feynman save to today's note
-  const feySave=$('studyFeynmanSave');
-  if(feySave) feySave.onclick=()=>{
-    const topic=$('studyFeynmanTopic').value.trim();
-    const text=$('studyFeynmanText').value.trim();
-    if(!topic && !text) return alert('Escribe tema y explicación');
+  if(tabP) tabP.onclick=()=> show('p');
+  if(tabE) tabE.onclick=()=> show('e');
+  if(tabF) tabF.onclick=()=> show('f');
+  function saveStudyNote(note){
     const info=todayInfo();
-    if(!info) return alert('No se pudo ubicar hoy');
-    const note = (topic? 'Feynman - '+topic+': ':'') + text;
+    if(!info) { alert('No se pudo ubicar hoy'); return false; }
     if(info.luna==='dft'){
       const c=cyc(currentCycleYear()); c.dft.nota = (c.dft.nota? c.dft.nota+"\n":"") + note;
     } else {
@@ -8373,8 +8373,16 @@ function setupStudyDialog(){
       cell.nota = (cell.nota? cell.nota+"\n":"") + note;
     }
     scheduleSave(); if(currentView.tipo==='luna') renderLuna(); else renderDFT();
-    alert('Guardado en la nota de hoy ✓');
-    $('studyFeynmanTopic').value=''; $('studyFeynmanText').value='';
+    return true;
+  }
+  // Feynman save to today's note
+  const feySave=$('studyFeynmanSave');
+  if(feySave) feySave.onclick=()=>{
+    const topic=$('studyFeynmanTopic').value.trim();
+    const text=$('studyFeynmanText').value.trim();
+    if(!topic && !text) return alert('Escribe tema y explicación');
+    const note = (topic? 'Feynman - '+topic+': ':'') + text;
+    if(saveStudyNote(note)){ alert('Guardado en la nota de hoy ✓'); $('studyFeynmanTopic').value=''; $('studyFeynmanText').value=''; }
   };
   // Mnemo generators
   const mnemoIn=$('mnemoInput'), out=$('mnemoOutput');
@@ -8423,6 +8431,146 @@ function setupStudyDialog(){
     }, interval);
   };
   if(sStop) sStop.onclick=()=>{ clearInterval(speedTimer); if(speedDisp) speedDisp.textContent='—'; };
+  // Chunk trainer (2-4 palabras por fijación)
+  const chunkSize=$('chunkSize'), chunkRange=$('chunkRange'), chunkVal=$('chunkValue'), chunkDisp=$('chunkDisplay');
+  let chunkTimer=null, chunkIdx=0, chunks=[];
+  function updateChunkVal(){ if(chunkVal&&chunkRange) chunkVal.textContent=chunkRange.value+' ppm'; }
+  if(chunkRange) chunkRange.oninput=updateChunkVal;
+  try{ updateChunkVal(); }catch(e){}
+  const cStart=$('chunkStart'), cStop=$('chunkStop');
+  if(cStart) cStart.onclick=()=>{
+    const text=(speedText&&speedText.value||'').trim(); if(!text) return;
+    const words=text.split(/\s+/);
+    const n=Math.max(2, Math.min(4, parseInt((chunkSize&&chunkSize.value)||3)));
+    chunks=[]; for(let i=0;i<words.length;i+=n) chunks.push(words.slice(i,i+n).join(' '));
+    chunkIdx=0;
+    const ppm=parseInt((chunkRange&&chunkRange.value)||300);
+    const interval=(60000/ppm)*n;
+    clearInterval(chunkTimer);
+    chunkTimer=setInterval(()=>{
+      if(chunkIdx>=chunks.length){ clearInterval(chunkTimer); if(chunkDisp) chunkDisp.textContent='✓ ¡Bloque completo! Sube a '+(n<4?(n+1)+' palabras':'más ppm'); return; }
+      if(chunkDisp) chunkDisp.textContent=chunks[chunkIdx++];
+    }, interval);
+  };
+  if(cStop) cStop.onclick=()=>{ clearInterval(chunkTimer); if(chunkDisp) chunkDisp.textContent='—'; };
+  // Medición real + comprensión
+  let realStart=0, realElapsed=0, realTimer=null, realWords=0;
+  const realText=$('speedRealText'), realTimerEl=$('speedRealTimer'), realRes=$('speedRealResult');
+  const rStart=$('speedRealStart'), rStop=$('speedRealStop'), rCalc=$('speedRealCalc'), rSave=$('speedRealSave');
+  function realTick(){ if(realTimerEl&&realStart) realTimerEl.textContent=((Date.now()-realStart)/1000).toFixed(1)+'s'; }
+  if(rStart) rStart.onclick=()=>{
+    const t=(realText&&realText.value||'').trim(); if(!t) return alert('Pega un texto para medir');
+    realWords=t.split(/\s+/).length;
+    realStart=Date.now(); realElapsed=0; clearInterval(realTimer);
+    realTimer=setInterval(realTick,100);
+    if(realRes) realRes.textContent='Leyendo '+realWords+' palabras… cuando termines pulsa “Terminé” y escribe tus 3 ideas.';
+    try{ realText.readOnly=true; }catch(e){}
+  };
+  function calcReal(){
+    if(!realStart) return alert('Primero pulsa “Empezar a leer”');
+    clearInterval(realTimer);
+    realElapsed=(Date.now()-realStart)/1000;
+    if(realTimerEl) realTimerEl.textContent=realElapsed.toFixed(1)+'s';
+    try{ if(realText) realText.readOnly=false; }catch(e){}
+    const ppm=realElapsed>0? Math.round(realWords/(realElapsed/60)) : 0;
+    const recall=(($('speedRecall')||{}).value||'').trim();
+    const ideas=recall? recall.split(/[,;.\n]+/).map(s=>s.trim()).filter(s=>s.length>1).length : 0;
+    const comp=ideas>=3? 90 : ideas===2? 70 : ideas===1? 40 : 15;
+    let nivel= ppm<180? 'ritmo denso (normal en textos difíciles)' : ppm<280? 'promedio de estudio ✓' : ppm<400? 'fluido ✓' : 'repaso/skimming';
+    let consejo= comp>=70? (ppm>=450? 'Vas muy rápido pero comprendes: úsalo solo para repaso.' : 'Buen equilibrio. Prueba +20 ppm la próxima semana.') : 'Comprensión baja: baja 50 ppm, usa dedo-guía y pregunta antes de leer. La meta es 70%+.';
+    const txt='📊 '+realWords+' palabras en '+realElapsed.toFixed(1)+'s ≈ '+ppm+' ppm ('+nivel+')\n🧠 Recuerdo: '+(recall||'—')+' → ~'+comp+'% comprensión\n👉 '+consejo;
+    if(realRes) realRes.textContent=txt;
+    realStart=0;
+    return txt;
+  }
+  if(rStop) rStop.onclick=()=>{ if(realStart){ clearInterval(realTimer); realElapsed=(Date.now()-realStart)/1000; if(realTimerEl) realTimerEl.textContent=realElapsed.toFixed(1)+'s'; try{ if(realText) realText.readOnly=false; }catch(e){} if(realRes) realRes.textContent='⏱️ '+realElapsed.toFixed(1)+'s. Ahora escribe tus 3 ideas sin mirar y pulsa Calcular.'; } };
+  if(rCalc) rCalc.onclick=()=>{ if(realStart){ calcReal(); } else if(realElapsed>0){ const t=(realText&&realText.value||'').trim(); realWords=t? t.split(/\s+/).length: realWords; const keepStart=realStart; realStart=Date.now()-realElapsed*1000; const out=calcReal(); realStart=keepStart; } else return alert('Primero mide tu lectura'); };
+  if(rSave) rSave.onclick=()=>{
+    const txt=(realRes&&realRes.textContent||'').trim();
+    if(!txt || txt.indexOf('Aún sin medir')>=0) return alert('Primero calcula tu resultado');
+    if(saveStudyNote('Lectura veloz:\n'+txt)) alert('Guardado en nota de hoy ✓');
+  };
+  const spSave=$('speedPlanSave');
+  if(spSave) spSave.onclick=()=>{
+    if(saveStudyNote('Plan lectura 7 días: D1-2 RSVP 300 + 3 ideas · D3-4 bloques 2 + Z 5min · D5 bloques 3 a 320 sin regresiones · D6 medición real · D7 descanso. Regla: +20 ppm/semana si comprensión ≥70%.')) alert('Plan guardado ✓');
+  };
+  // Plan semanal generator
+  const planGen=$('studyPlanGen'), planOut=$('studyPlanOutput');
+  function getStudyPlanText(){
+    const raw=(($('studyPlanRamos')||{}).value||'').split(',').map(s=>s.trim()).filter(Boolean);
+    const ramos=raw.length?raw:['mate','lenguaje','inglés'];
+    const minDia=Math.max(15, Math.min(240, parseInt(($('studyPlanMin')||{}).value)||50));
+    const dias=Math.max(1, Math.min(7, parseInt(($('studyPlanDias')||{}).value)||5));
+    const bloques25=Math.max(1, Math.round(minDia/25));
+    const names=['lun','mar','mié','jue','vie','sáb','dom'];
+    let txt='Mi plan ('+minDia+' min × '+dias+' días = '+(minDia*dias)+' min/sem):\n';
+    for(let d=0; d<dias; d++){
+      const ramo=ramos[d%ramos.length];
+      txt+='• '+names[d]+': '+ramo+' '+bloques25+'×25min (';
+      txt+= (d%2===0? 'recuperación activa + Feynman':'intercalado + repaso 1-3-7') + ')\n';
+    }
+    txt+='Regla: difícil primero, 4 pomodoros = pausa larga. Repasa día 1-3-7-14.';
+    return txt;
+  }
+  if(planGen) planGen.onclick=()=>{ if(planOut) planOut.textContent=getStudyPlanText(); };
+  const planSave=$('studyPlanSave');
+  if(planSave) planSave.onclick=()=>{
+    const txt=(planOut&&planOut.textContent.trim())? planOut.textContent.trim() : getStudyPlanText();
+    if(planOut) planOut.textContent=txt;
+    if(saveStudyNote('Plan estudio:\n'+txt)) alert('Plan guardado en nota de hoy ✓');
+  };
+  // Checklist sesión
+  const ckSave=$('studyCkSave');
+  if(ckSave) ckSave.onclick=()=>{
+    const ids=['studyCkMeta','studyCkCelu','studyCkAgua','studyCkTimer'];
+    const ok=ids.filter(id=>{ const el=$(id); return el&&el.checked; }).length;
+    if(saveStudyNote('Sesión estudio checklist '+ok+'/4 ✓ (meta, celu lejos, agua, timer 25)')) alert(ok===4? '¡Sesión lista! Parte con 25 min ✓' : 'Guardado '+ok+'/4 — ideal 4/4 antes de partir');
+  };
+  // Simulacro 5 min
+  let simTimer=null, simLeft=300;
+  const simDisp=$('studySimDisplay');
+  function simPaint(){ if(simDisp) simDisp.textContent=Math.floor(simLeft/60)+':'+String(simLeft%60).padStart(2,'0'); }
+  const simStart=$('studySimStart'), simStop=$('studySimStop'), simSave=$('studySimSave');
+  if(simStart) simStart.onclick=()=>{
+    simLeft=300; simPaint(); clearInterval(simTimer);
+    simTimer=setInterval(()=>{ simLeft--; simPaint(); if(simLeft<=0){ clearInterval(simTimer); alert('¡Tiempo! Ahora corrige con tus apuntes y anota qué faltó.'); } },1000);
+  };
+  if(simStop) simStop.onclick=()=>{ clearInterval(simTimer); simLeft=300; simPaint(); };
+  if(simSave) simSave.onclick=()=>{
+    const q=($('studySimQ').value||'').trim(), a=($('studySimA').value||'').trim();
+    if(!q && !a) return alert('Escribe pregunta y respuesta');
+    if(saveStudyNote('Simulacro 5min — '+q+'\nR: '+a)){ alert('Simulacro guardado ✓'); $('studySimQ').value=''; $('studySimA').value=''; }
+  };
+  // Registro sesiones local por usuario
+  window.renderStudyLog=function(){
+    try{
+      const u=userData(); if(!u.studyLog) u.studyLog=[];
+      const list=$('studyLogList'), tot=$('studyLogTotal');
+      if(!list) return;
+      const items=u.studyLog.slice(-10).reverse();
+      list.innerHTML=items.length? items.map(function(s){ return '<div class="habit-row"><span>📚 '+String(s.t||'estudio').replace(/</g,'&lt;')+'</span><span class="chip">'+s.m+' min · '+s.f+'</span></div>'; }).join('') : '<p class="muted" style="font-size:11px">Sin sesiones aún. Suma tu primera de 25 min 👆</p>';
+      const weekAgo=Date.now()-7*864e5;
+      const weekMin=u.studyLog.filter(s=> (s.ts||0)>=weekAgo).reduce((a,s)=> a+(parseInt(s.m)||0),0);
+      if(tot) tot.textContent='Total últimos 7 días: '+weekMin+' min ('+(weekMin/25).toFixed(1)+' pomodoros) · Total histórico: '+u.studyLog.length+' sesiones';
+    }catch(e){}
+  };
+  const logAdd=$('studyLogAdd');
+  if(logAdd) logAdd.onclick=()=>{
+    const t=($('studyLogTema').value||'').trim()||'estudio';
+    const m=Math.max(5, Math.min(180, parseInt($('studyLogMin').value)||25));
+    const u=userData(); if(!u.studyLog) u.studyLog=[];
+    let f='hoy'; try{ f=cal.fmtKey.format(new Date()); }catch(e){}
+    u.studyLog.push({ t:t.slice(0,60), m:m, f:f, ts:Date.now() });
+    scheduleSave(); $('studyLogTema').value=''; renderStudyLog();
+  };
+  const logClear=$('studyLogClear');
+  if(logClear) logClear.onclick=()=>{
+    if(!confirm('¿Borrar sesiones de los últimos 7 días?')) return;
+    const u=userData(); const weekAgo=Date.now()-7*864e5;
+    u.studyLog=(u.studyLog||[]).filter(s=> (s.ts||0)<weekAgo);
+    scheduleSave(); renderStudyLog();
+  };
+  try{ renderStudyLog(); }catch(e){}
   show('g');
 }
 

@@ -149,7 +149,7 @@
         <summary>🧠 Aprender, Crear y Jugar <span class="ag-count"></span></summary>
         <div class="group-btns">
           <span class="sub-label" data-sub="estudio">📚 Estudio e Idiomas</span>
-          <button id="btnStudy" class="btn" data-sub="estudio" data-keywords="estudio mnemotecnia lectura feynman">🧠 Estudio</button>
+          <button id="btnStudy" class="btn" data-sub="estudio" data-keywords="estudio mnemotecnia lectura feynman cornell mapa mental blurting pomodoro plan semanal prueba examen vispera ansiedad foco memoria repeticion espaciada SQ3R">🧠 Estudio</button>
           <button id="btnMemory" class="btn" data-sub="estudio" data-keywords="memoria pares loci atencion secuencia simon palabras numeros schulte distinto">🧩 Memoria</button>
           <button id="btnMapu" class="btn" data-sub="estudio" data-keywords="mapuzugun mapuche kimun kimün palabra idioma numero saludo quiz luna intermedio avanzado frases verbos gramatica">🗣️ Kimün Mapuzugun</button>
           <button id="btnEnglish" class="btn" data-sub="estudio" data-keywords="ingles english idioma levels a1 a2 b1 b2 c1 basic intermediate advanced quiz vocabulary grammar frases verbos">Ingles</button>
@@ -2970,20 +2970,26 @@
         <h3 style="margin:0;color:var(--accent)">🧠 Técnicas de Estudio</h3>
         <button type="button" id="studyCloseTop" class="btn btn-icon" title="Cerrar" aria-label="Cerrar">✕</button>
       </div>
-      <p class="muted" style="line-height:1.5">Aprende mejor, no más horas. Elige 1 técnica de cada pestaña y pruébala 7 días con tu horario 📚 y hábitos ✅. Todo queda local.</p>
-      <div class="timer-tabs" style="margin-bottom:10px">
+      <p class="muted" style="line-height:1.5">Aprende mejor, no más horas. Elige 1 técnica de cada pestaña y pruébala 7 días con tu horario 📚 y hábitos ✅. Incluye plan semanal, pruebas y foco. Todo queda local.</p>
+      <div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">
         <button type="button" id="tabStudyGeneral" class="btn btn-accent" style="width:auto">📖 Generales</button>
         <button type="button" id="tabStudyMnemo" class="btn" style="width:auto">🧩 Mnemotecnias</button>
         <button type="button" id="tabStudySpeed" class="btn" style="width:auto">⚡ Lectura veloz</button>
+        <button type="button" id="tabStudyPlan" class="btn" style="width:auto">🗓️ Planifica</button>
+        <button type="button" id="tabStudyExam" class="btn" style="width:auto">📝 Pruebas</button>
+        <button type="button" id="tabStudyFocus" class="btn" style="width:auto">🧠 Foco y memoria</button>
       </div>
       <div id="studyGeneralPanel">
         <div class="discipline-grid">
-          <div class="discipline-card"><h4>🔁 Recuperación activa</h4><p><b>Cómo:</b> cierra apuntes y escribe todo lo que recuerdas. Luego corrige.</p><p class="muted">Es 2× más efectivo que releer. Hazlo al terminar cada bloque.</p></div>
-          <div class="discipline-card"><h4>📅 Repetición espaciada</h4><p><b>Cómo:</b> repasa día 1 → día 3 → día 7 → día 14 (Anki/Notion).</p><p class="muted">Vence la curva del olvido. Ideal para lunas.</p></div>
-          <div class="discipline-card"><h4>🧑‍🏫 Feynman</h4><p><b>Cómo:</b> explica el tema como a un niño de 10 años. Si te trabas, ahí está el hueco.</p><p class="muted">Usa la nota del día: “Hoy aprendí…”</p></div>
-          <div class="discipline-card"><h4>🔀 Intercalado</h4><p><b>Cómo:</b> mezcla ejercicios A-B-C en vez de A-A-A.</p><p class="muted">Más difícil al inicio, retienes más a largo plazo.</p></div>
-          <div class="discipline-card"><h4>❓ Elaboración</h4><p><b>Cómo:</b> pregúntate <i>¿por qué esto es así? ¿cómo se conecta con X?</i></p><p class="muted">Crea conexiones, no copias.</p></div>
-          <div class="discipline-card"><h4>🎯 Enfoque + descanso</h4><p><b>Cómo:</b> 25/5 Pomodoro (usa ⏱ Tiempo) + pausa real sin pantalla.</p><p class="muted">4 pomodoros = pausa larga 15-30 min.</p></div>
+          <div class="discipline-card"><h4>🔁 Recuperación activa</h4><p><b>Cómo:</b> cierra apuntes y escribe todo lo que recuerdas. Luego corrige con otro color.</p><p class="muted">Es 2× más efectivo que releer. Hazlo al terminar cada bloque. Ej: tras leer fotosíntesis, escribe 5 ideas sin mirar.</p></div>
+          <div class="discipline-card"><h4>📅 Repetición espaciada</h4><p><b>Cómo:</b> repasa día 1 → día 3 → día 7 → día 14 (Anki, cuaderno o notas del calendario).</p><p class="muted">Vence la curva del olvido. Ideal para lunas: 1 repaso por fase.</p></div>
+          <div class="discipline-card"><h4>🧑‍🏫 Feynman</h4><p><b>Cómo:</b> 1) Elige tema 2) Explícalo como a un niño de 10 años 3) Detecta el trabe 4) Simplifica y repite.</p><p class="muted">Usa la nota del día: “Hoy aprendí…”. Si no lo puedes simplificar, no lo dominas aún.</p></div>
+          <div class="discipline-card"><h4>🔀 Intercalado</h4><p><b>Cómo:</b> mezcla ejercicios A-B-C en vez de A-A-A (ej: 2 mate + 2 lenguaje + 2 inglés).</p><p class="muted">Más difícil al inicio, retienes más a largo plazo. No mezcles más de 3 ramos por bloque.</p></div>
+          <div class="discipline-card"><h4>❓ Elaboración</h4><p><b>Cómo:</b> pregúntate <i>¿por qué esto es así? ¿cómo se conecta con X? ¿dónde lo vi en Penco?</i></p><p class="muted">Crea conexiones, no copias. 3 “por qué” por tema bastan.</p></div>
+          <div class="discipline-card"><h4>🎯 Enfoque + descanso</h4><p><b>Cómo:</b> 25/5 Pomodoro (usa ⏱ Tiempo) + pausa real sin pantalla (agua, aire, estirar).</p><p class="muted">4 pomodoros = pausa larga 15-30 min. Protege el primer bloque de la mañana.</p></div>
+          <div class="discipline-card"><h4>📝 Cornell</h4><p><b>Cómo:</b> divide la hoja en 3: derecha = apuntes, izquierda = preguntas/palabras clave, abajo = resumen en 2 líneas.</p><p class="muted">Al repasar tapa la derecha y responde solo con la izquierda. Ideal para clases y videos.</p></div>
+          <div class="discipline-card"><h4>🗺️ Mapa mental</h4><p><b>Cómo:</b> tema al centro, ramas con colores + dibujitos + 1 palabra por rama.</p><p class="muted">Perfecto para ver el todo antes de la prueba. Hazlo de memoria la 2ª vez.</p></div>
+          <div class="discipline-card"><h4>📤 Blurting</h4><p><b>Cómo:</b> lee una vez, cierra todo y “vomita” en hoja todo lo que recuerdas, rápido y feo. Luego compara y completa.</p><p class="muted">Duele pero revela huecos en 5 min. Repite a los 2 días.</p></div>
         </div>
         <div class="menstrual-card" style="margin-top:10px">
           <h4>✍️ Mini Feynman — pruébalo</h4>
@@ -2994,12 +3000,15 @@
       </div>
       <div id="studyMnemoPanel" class="hidden">
         <div class="discipline-grid">
-          <div class="discipline-card"><h4>🔤 Acrónimos</h4><p>Crea sigla con iniciales: <b>M</b>ercurio <b>V</b>enus <b>T</b>ierra → <b>MVT</b>.</p><p class="muted">Para listas cortas.</p></div>
-          <div class="discipline-card"><h4>📜 Acrósticos</h4><p>Frase con iniciales: <b>Mi Vieja Tía Marta…</b> para planetas.</p><p class="muted">Más memorable que siglas sueltas.</p></div>
-          <div class="discipline-card"><h4>🏛️ Palacio de la memoria (Loci)</h4><p>Asocia cada dato a un lugar de tu casa. Recorre mentalmente.</p><p class="muted">Ideal para 10-20 ítems ordenados.</p></div>
-          <div class="discipline-card"><h4>📌 Perchas</h4><p>1=sol, 2=bici, 3=trébol. Cuelga dato en la percha.</p><p class="muted">Para listas numeradas.</p></div>
-          <div class="discipline-card"><h4>🔢 Sistema Mayor</h4><p>Convierte números en sonidos → palabras. Ej: 13 → T-M → “TéM”.</p><p class="muted">Para fechas y números largos.</p></div>
-          <div class="discipline-card"><h4>📖 Historia</h4><p>Une palabras en historia absurda y vívida. Cuanto más rara, mejor se recuerda.</p><p class="muted">Para vocabulario o conceptos.</p></div>
+          <div class="discipline-card"><h4>🔤 Acrónimos</h4><p>Crea sigla con iniciales: <b>M</b>ercurio <b>V</b>enus <b>T</b>ierra → <b>MVT</b>.</p><p class="muted">Para listas cortas (3-7 ítems). Dilo en voz alta 3 veces.</p></div>
+          <div class="discipline-card"><h4>📜 Acrósticos</h4><p>Frase con iniciales: <b>Mi Vieja Tía Marta…</b> para planetas.</p><p class="muted">Más memorable que siglas sueltas. Que sea chistosa y local.</p></div>
+          <div class="discipline-card"><h4>🏛️ Palacio de la memoria (Loci)</h4><p>Asocia cada dato a un lugar de tu casa en orden: puerta → living → cocina… Recorre mentalmente.</p><p class="muted">Ideal para 10-20 ítems ordenados (huesos, capitales, pasos).</p></div>
+          <div class="discipline-card"><h4>📌 Perchas</h4><p>1=sol, 2=bici, 3=trébol, 4=silla, 5=mano. Cuelga cada dato en su percha con imagen absurda.</p><p class="muted">Para listas numeradas y orden de pasos.</p></div>
+          <div class="discipline-card"><h4>🔢 Sistema Mayor</h4><p>Convierte números en sonidos → palabras. Ej: 13 → T-M → “TéM”, 1492 → T-R-P-N → “turupán”.</p><p class="muted">Para fechas y números largos. Arma 1 palabra por par de dígitos.</p></div>
+          <div class="discipline-card"><h4>📖 Historia</h4><p>Une palabras en historia absurda y vívida. Cuanto más rara, mejor se recuerda.</p><p class="muted">Para vocabulario o conceptos. Prueba con el generador de abajo.</p></div>
+          <div class="discipline-card"><h4>🧱 Chunking (trocear)</h4><p>Agrupa en bloques de 3-4: 98273465 → 98-27-34-65. Dale sentido a cada bloque.</p><p class="muted">La memoria ama paquetes chicos. Úsalo para RUT, fechas, fórmulas.</p></div>
+          <div class="discipline-card"><h4>🎵 Rima y ritmo</h4><p>Convierte la lista en copla o rap con palmas: “mitocondria genera energía todo el día”.</p><p class="muted">El cerebro retiene melodía + movimiento. Graba tu audio y escúchalo caminando.</p></div>
+          <div class="discipline-card"><h4>👁️ Visualización vívida</h4><p>Cierra los ojos 20s: ve, oye, huele y toca el dato (ej: ciclo del agua en la costanera de Penco).</p><p class="muted">Mientras más sentidos, más anclaje. Repasa la imagen antes de dormir.</p></div>
         </div>
         <div class="menstrual-card" style="margin-top:10px">
           <h4>🛠️ Generador — acrónimo / historia</h4>
@@ -3013,15 +3022,26 @@
       </div>
       <div id="studySpeedPanel" class="hidden">
         <div class="discipline-grid">
-          <div class="discipline-card"><h4>👁️ Previsualizar</h4><p>Mira títulos, subtítulos, negritas y diagramas 30s antes de leer.</p><p class="muted">Tu cerebro crea un mapa y lee 20% más rápido.</p></div>
-          <div class="discipline-card"><h4>👆 Guía con dedo/lápiz</h4><p>Desliza dedo bajo la línea a velocidad constante. Evita regresiones.</p><p class="muted">Base de la lectura veloz.</p></div>
-          <div class="discipline-card"><h4>🤫 Subvocalización</h4><p>Tararea “mmm” suave o cuenta 1-2-3 mientras lees para soltar la voz interna.</p><p class="muted">No eliminar, solo reducir.</p></div>
-          <div class="discipline-card"><h4>🔭 Visión periférica</h4><p>Lee en bloques de 2-3 palabras, no letra a letra. Amplía tu foco.</p><p class="muted">Entrena con columnas estrechas.</p></div>
-          <div class="discipline-card"><h4>📖 SQ3R</h4><p><b>Survey, Question, Read, Recite, Review.</b> Pregunta antes, recita después.</p><p class="muted">Para estudio profundo, no solo velocidad.</p></div>
-          <div class="discipline-card"><h4>⚡ RSVP</h4><p>Una palabra a la vez en el centro (como el tester abajo). Ideal para repaso rápido.</p><p class="muted">Usa para 300-500 ppm.</p></div>
+          <div class="discipline-card"><h4>👁️ Previsualizar</h4><p>Mira títulos, subtítulos, negritas y diagramas 30s antes de leer. Anota 3 preguntas que esperas responder.</p><p class="muted">Tu cerebro crea un mapa y lee 20% más rápido y con más sentido.</p></div>
+          <div class="discipline-card"><h4>👆 Guía con dedo/lápiz</h4><p>Desliza dedo bajo la línea a velocidad constante. Evita regresiones y relecturas.</p><p class="muted">Base de la lectura veloz. Sube 10% la velocidad cada 3 días.</p></div>
+          <div class="discipline-card"><h4>🤫 Subvocalización</h4><p>Tararea “mmm” suave o cuenta 1-2-3 mientras lees para soltar la voz interna en repasos fáciles.</p><p class="muted">No eliminar, solo reducir. En textos difíciles, vuelve a leer despacio.</p></div>
+          <div class="discipline-card"><h4>🔭 Visión periférica</h4><p>Lee en bloques de 2-3 palabras, no letra a letra. Amplía tu foco mirando el centro de la línea.</p><p class="muted">Entrena con columnas estrechas y el tester de abajo.</p></div>
+          <div class="discipline-card"><h4>📖 SQ3R</h4><p><b>Survey, Question, Read, Recite, Review:</b> 1) Hojea 2) Pregunta 3) Lee buscando 4) Recita sin mirar 5) Repasa a las 24h.</p><p class="muted">Para estudio profundo, no solo velocidad. 1 capítulo = 1 ciclo SQ3R.</p></div>
+          <div class="discipline-card"><h4>⚡ RSVP</h4><p>Una palabra a la vez en el centro (como el tester abajo). Ideal para repaso rápido.</p><p class="muted">Usa para 300-500 ppm solo en repasos, no en primera lectura.</p></div>
+          <div class="discipline-card"><h4>✍️ Subrayado inteligente</h4><p>1ª lectura sin rayar. 2ª: subraya solo ideas clave (máx 10 líneas/página) + escribe al margen con tus palabras.</p><p class="muted">Si todo está destacado, nada destaca. Menos es más.</p></div>
+          <div class="discipline-card"><h4>❓ Leer con pregunta</h4><p>Antes de cada sección escribe: “¿Qué? ¿Por qué? ¿Ejemplo?”. Lee para responder, no para terminar.</p><p class="muted">Convierte lectura pasiva en cacería activa. Anota la respuesta en 1 línea.</p></div>
+          <div class="discipline-card"><h4>🎚️ Las 3 velocidades</h4><p><b>Exploración (600+ ppm):</b> solo títulos y primeras líneas para decidir si vale la pena. <b>Estudio (200-300 ppm):</b> ritmo normal con preguntas y notas. <b>Repaso (400-500 ppm):</b> guía + subrayado previo, sin detenerte.</p><p class="muted">Error común: querer estudiar a velocidad de repaso. Elige velocidad según objetivo.</p></div>
+          <div class="discipline-card"><h4>🖖 Barrido en Z y en S</h4><p><b>Z:</b> mirada en zigzag por páginas densas (diarios, textos largos). <b>S:</b> curva suave línea por línea para no perderte. Usa dedo o lápiz como riel.</p><p class="muted">Practica 5 min/día con cualquier texto. Si te pierdes, vuelve a dedo lento.</p></div>
+          <div class="discipline-card"><h4>🛑 Corta las regresiones</h4><p>Tapa con tarjeta lo ya leído o avanza el dedo sin devolverte. Lo normal es releer 15% por costumbre, no por necesidad.</p><p class="muted">Regla: solo vuelve atrás al final de la página y si tu pregunta quedó sin respuesta.</p></div>
+          <div class="discipline-card"><h4>🧠 Lee por bloques</h4><p>En vez de palabra por palabra, captura 2-3 palabras por fijación: “la luna de Penco / refleja mareas / y siembras”. Mira el centro del bloque.</p><p class="muted">Empieza con 2 palabras, sube a 3-4 en 2 semanas. Prueba abajo con el entrenador.</p></div>
+          <div class="discipline-card"><h4>📏 Ritmo con metrónomo</h4><p>Pon el tester o un metrónomo a tu ppm +10% y obliga a la vista a seguirlo 3 min. Descansa 1 min. Repite ×3.</p><p class="muted">El ritmo externo rompe la subvocalización. Sube +10-20 ppm por semana, no más.</p></div>
+          <div class="discipline-card"><h4>🧪 Comprensión manda (70%)</h4><p>Tras leer, escribe 3 ideas sin mirar. Si recuerdas 2-3 (70%+), la velocidad sirve. Si 0-1, baja 50 ppm.</p><p class="muted">Velocidad sin recuerdo es pasar páginas, no estudiar. Mide siempre ambas.</p></div>
+          <div class="discipline-card"><h4>👓 Postura y luz</h4><p>Libro a 30-40 cm, luz sobre el hombro contrario a tu mano, espalda recta, sin leer acostado de lado.</p><p class="muted">Ojos cansados = relecturas. Regla 20-20-20: cada 20 min mira 20s a 6 metros.</p></div>
+          <div class="discipline-card"><h4>📊 Tus niveles (ppm)</h4><p>150 = denso/legal · 250 = promedio estudio · 350 = fluido · 450+ = repaso/skimming. Nadie estudia nuevo a 600 con 80% de comprensión.</p><p class="muted">Meta sana: +30-50 ppm por mes manteniendo 70% de comprensión.</p></div>
         </div>
         <div class="menstrual-card" style="margin-top:10px;text-align:center">
-          <h4>⏱️ Tester — palabras por minuto</h4>
+          <h4>⚡ Entrenador — palabra por palabra (RSVP)</h4>
+          <p class="muted" style="font-size:11px;text-align:left">Solo para repaso rápido, no para primera lectura. Empieza en 300 ppm y sube +20 cuando recuerdes 2 de 3 ideas.</p>
           <label style="text-align:left">Texto <textarea id="speedText" rows="2">La luna de Penco refleja mareas y siembras. Leer con ritmo y foco entrena tu mente como la huerta: poco cada día, mejor cada luna.</textarea></label>
           <div class="conv-row" style="justify-content:center;align-items:center">
             <label>PPM <input type="range" id="speedRange" min="150" max="700" value="300" style="width:140px"></label>
@@ -3031,6 +3051,132 @@
           </div>
           <div id="speedDisplay" class="timer-display" style="font-size:28px;min-height:56px;display:flex;align-items:center;justify-content:center">—</div>
           <p id="speedResult" class="muted" style="font-size:11px"></p>
+        </div>
+        <div class="menstrual-card" style="margin-top:10px;text-align:center">
+          <h4>🧠 Entrenador — por bloques (2-4 palabras)</h4>
+          <p class="muted" style="font-size:11px;text-align:left">Así se lee de verdad rápido: por fijaciones, no letra a letra. Elige bloque y velocidad, sigue con la vista.</p>
+          <div class="conv-row" style="justify-content:center;align-items:center">
+            <label>Bloque <select id="chunkSize"><option value="2">2 palabras</option><option value="3" selected>3 palabras</option><option value="4">4 palabras</option></select></label>
+            <label>PPM <input type="range" id="chunkRange" min="150" max="700" value="300" style="width:120px"></label>
+            <span id="chunkValue" class="chip">300 ppm</span>
+          </div>
+          <div class="dlg-actions" style="justify-content:center">
+            <button type="button" id="chunkStart" class="btn btn-accent" style="width:auto">▶ Entrenar</button>
+            <button type="button" id="chunkStop" class="btn" style="width:auto">⏹ Parar</button>
+          </div>
+          <div id="chunkDisplay" class="timer-display" style="font-size:24px;min-height:56px;display:flex;align-items:center;justify-content:center">—</div>
+          <p class="muted" style="font-size:11px">Si te cuesta, baja a 2 palabras o a 250 ppm. Sube primero el bloque, después la velocidad.</p>
+        </div>
+        <div class="menstrual-card" style="margin-top:10px">
+          <h4>📊 Mide tu velocidad real + comprensión</h4>
+          <p class="muted" style="font-size:11px">1) Lee el texto completo a tu ritmo normal 2) Para el cronómetro 3) Sin mirar, escribe cuántas ideas recuerdas (0-3). Te calcula ppm + comprensión + consejo.</p>
+          <label>Texto de prueba <textarea id="speedRealText" rows="4">En Penco la luna manda en la huerta y en el mar. En creciente se siembra lo de hoja, en menguante se poda y se ordena. Los pescadores miran la marea antes que el reloj: con pleamar entran los botes a Lirquén y con bajamar se recoge cochayuyo en la orilla. En la casa, estudiar sigue la misma regla: poco cada día, repaso cada luna. Veinticinco minutos de foco valen más que tres horas con el celular al lado. Quien riega su mente a diario, cosecha en la prueba.</textarea></label>
+          <div class="conv-row" style="align-items:center">
+            <button type="button" id="speedRealStart" class="btn btn-accent" style="width:auto">▶ Empezar a leer</button>
+            <button type="button" id="speedRealStop" class="btn" style="width:auto">⏹ Terminé</button>
+            <span id="speedRealTimer" class="chip">0.0s</span>
+          </div>
+          <div class="conv-row">
+            <label style="flex:2">Sin mirar: ¿qué 3 ideas recuerdas? <input type="text" id="speedRecall" placeholder="ej: creciente-siembra, marea-botes, 25 min foco" maxlength="120"></label>
+            <button type="button" id="speedRealCalc" class="btn" style="width:auto;align-self:flex-end">📊 Calcular</button>
+          </div>
+          <div id="speedRealResult" class="chip" style="display:block;margin-top:8px;white-space:pre-line;text-align:left">Aún sin medir. Lee y calcula 👆</div>
+          <div class="dlg-actions" style="justify-content:flex-start">
+            <button type="button" id="speedRealSave" class="btn" style="width:auto">💾 Guardar en nota de hoy</button>
+          </div>
+          <p class="muted" style="font-size:11px;text-align:left">⚠️ Velocidad sin comprensión no sirve: si recuerdas 0-1 ideas, baja 50 ppm y repite. Ideal: 70%+ de recuerdo.</p>
+        </div>
+        <div class="menstrual-card" style="margin-top:10px">
+          <h4>📅 Plan 7 días — sube sin perder comprensión</h4>
+          <p class="muted" style="font-size:11px;line-height:1.7;text-align:left">Día 1-2: 10 min RSVP 300 ppm + 3 ideas.<br>Día 3-4: bloques de 2 palabras a 300 ppm + barrido Z 5 min.<br>Día 5: bloques de 3 a 320 ppm + corta regresiones (tarjeta).<br>Día 6: medición real + comprensión (herramienta de arriba).<br>Día 7: descanso o repaso suave. Si comprensión ≥70%, la próxima semana parte +20 ppm.<br>Reglas: 1) Nunca subas velocidad y bloque a la vez 2) Texto difícil = -50 ppm 3) 10 min/día basta.</p>
+          <div class="dlg-actions" style="justify-content:flex-start">
+            <button type="button" id="speedPlanSave" class="btn" style="width:auto">💾 Guardar plan en nota de hoy</button>
+          </div>
+        </div>
+      </div>
+      <div id="studyPlanPanel" class="hidden">
+        <div class="discipline-grid">
+          <div class="discipline-card"><h4>🗓️ Plan semanal 3-2-1</h4><p><b>3</b> sesiones del ramo difícil, <b>2</b> del medio, <b>1</b> del fácil. 25-50 min cada una.</p><p class="muted">Ej: mate 3×, inglés 2×, arte 1×. Marca en 📚 Horario.</p></div>
+          <div class="discipline-card"><h4>🍅 Ciclo completo</h4><p>25 foco → 5 pausa → repite ×4 → pausa larga 20 min. 1 ciclo = ~2 h reales.</p><p class="muted">En pausa: agua, aire, estirar. Nada de reels.</p></div>
+          <div class="discipline-card"><h4>📵 Ambiente listo</h4><p>Mesa despejada + luz izquierda (si eres diestro) + celu en otra pieza + agua + meta escrita.</p><p class="muted">Checklist de 1 min que ahorra 30 min de distracción.</p></div>
+          <div class="discipline-card"><h4>✅ Empieza feo 2 min</h4><p>Di “solo 2 min”. Abre cuaderno y escribe lo primero. El 90% sigue solo.</p><p class="muted">El freno es partir, no estudiar. Baja la vara para arrancar.</p></div>
+          <div class="discipline-card"><h4>🌙 Estudia con tus lunas</h4><p><b>Creciente:</b> temas nuevos · <b>Llena:</b> exponer/repasar · <b>Menguante:</b> corregir errores · <b>Nueva:</b> planear.</p><p class="muted">1 repaso por fase = repetición espaciada sin agenda extra.</p></div>
+          <div class="discipline-card"><h4>📊 80/20 de la prueba</h4><p>El 80% de la nota viene del 20% clave: pregúntale al profe qué entra sí o sí y parte por ahí.</p><p class="muted">Lista “seguro / probable / extra” y estudia en ese orden.</p></div>
+        </div>
+        <div class="menstrual-card" style="margin-top:10px">
+          <h4>🛠️ Generador — mi semana</h4>
+          <div class="conv-row">
+            <label style="flex:2">Ramos (coma) <input type="text" id="studyPlanRamos" placeholder="ej: mate, lenguaje, inglés"></label>
+            <label>Min/día <input type="number" id="studyPlanMin" value="50" min="15" max="240" step="5"></label>
+            <label>Días <input type="number" id="studyPlanDias" value="5" min="1" max="7"></label>
+          </div>
+          <div class="dlg-actions" style="justify-content:flex-start">
+            <button type="button" id="studyPlanGen" class="btn btn-accent" style="width:auto">🗓️ Armar plan</button>
+            <button type="button" id="studyPlanSave" class="btn" style="width:auto">💾 Guardar en nota de hoy</button>
+          </div>
+          <div id="studyPlanOutput" class="chip" style="display:block;margin-top:8px;white-space:pre-line;text-align:left"></div>
+        </div>
+        <div class="menstrual-card" style="margin-top:10px">
+          <h4>✅ Checklist sesión — 1 min</h4>
+          <label class="check-row"><input type="checkbox" id="studyCkMeta"> 🎯 Tengo 1 meta escrita (“terminar pág 40-45”)</label>
+          <label class="check-row"><input type="checkbox" id="studyCkCelu"> 📵 Celu lejos / modo avión</label>
+          <label class="check-row"><input type="checkbox" id="studyCkAgua"> 💧 Agua + mesa despejada</label>
+          <label class="check-row"><input type="checkbox" id="studyCkTimer"> ⏱️ Timer 25 min listo (usa ⏱ Tiempo)</label>
+          <div class="dlg-actions" style="justify-content:flex-start">
+            <button type="button" id="studyCkSave" class="btn" style="width:auto">💾 Guardar sesión en nota</button>
+          </div>
+        </div>
+      </div>
+      <div id="studyExamPanel" class="hidden">
+        <div class="discipline-grid">
+          <div class="discipline-card"><h4>📅 Semana previa</h4><p>Plan inverso: día 7 = prueba completa sin mirar, día 1-6 = 1 tema/día + blurting diario.</p><p class="muted">Nada nuevo las últimas 24h, solo repaso liviano.</p></div>
+          <div class="discipline-card"><h4>🌙 Víspera</h4><p>Prepara mochila, duerme 7-9h, repaso de 30 min máx antes de las 20:00. Dormir rinde más que trasnochar.</p><p class="muted">Cena liviana, pantalla fuera 30 min antes.</p></div>
+          <div class="discipline-card"><h4>✍️ Durante la prueba</h4><p>1) Lee todo 2 min 2) Fácil primero 3) Reparte tiempo por puntaje 4) Deja 10 min para revisar.</p><p class="muted">Si te bloqueas: respira, salta y vuelve. Marca la duda con ★.</p></div>
+          <div class="discipline-card"><h4>😮‍💨 Anti-pánico 4-7-8</h4><p>Inhala 4s → aguanta 7s → bota 8s ×3. Suelta hombros, pies al suelo, “estoy aquí”.</p><p class="muted">Practícalo 3 veces en casa para que salga solo en la prueba.</p></div>
+          <div class="discipline-card"><h4>🔍 Según pregunta</h4><p><b>V/F:</b> busca el “siempre/nunca”. <b>Selección:</b> descarta 2 primero. <b>Desarrollo:</b> define + ejemplo + cierre. <b>Mate:</b> escribe datos y revisa unidades.</p><p class="muted">Lee 2 veces la instrucción antes de responder.</p></div>
+          <div class="discipline-card"><h4>🔁 Diario de errores</h4><p>Tras cada prueba anota: qué fallé / por qué / cómo lo evito. Repasa solo eso antes de la siguiente.</p><p class="muted">El error corregido vale doble. 5 líneas bastan.</p></div>
+        </div>
+        <div class="menstrual-card" style="margin-top:10px">
+          <h4>⏱️ Simulacro exprés — 5 min</h4>
+          <label>Pregunta a practicar <input type="text" id="studySimQ" placeholder="ej: explica fotosíntesis en 3 líneas"></label>
+          <div class="conv-row" style="align-items:center">
+            <button type="button" id="studySimStart" class="btn btn-accent" style="width:auto">▶ 5:00</button>
+            <button type="button" id="studySimStop" class="btn" style="width:auto">⏹ Parar</button>
+            <span id="studySimDisplay" class="chip">5:00</span>
+          </div>
+          <label>Tu respuesta (sin mirar) <textarea id="studySimA" rows="2" placeholder="Escribe de memoria..."></textarea></label>
+          <button type="button" id="studySimSave" class="btn" style="width:auto">💾 Guardar simulacro en nota</button>
+        </div>
+        <div class="menstrual-card" style="margin-top:10px">
+          <h4>🎒 Víspera lista</h4>
+          <label class="check-row"><input type="checkbox" class="studyEveCk"> Mochila + lápiz + carnet listos</label>
+          <label class="check-row"><input type="checkbox" class="studyEveCk"> Sé hora y sala de la prueba</label>
+          <label class="check-row"><input type="checkbox" class="studyEveCk"> Repaso corto hecho antes de las 20:00</label>
+          <label class="check-row"><input type="checkbox" class="studyEveCk"> Dormiré 7-9h (alarma puesta)</label>
+        </div>
+      </div>
+      <div id="studyFocusPanel" class="hidden">
+        <div class="discipline-grid">
+          <div class="discipline-card"><h4>😴 Sueño que fija</h4><p>Dormir 7-9h consolida memoria. Trasnochar borra lo estudiado. Siesta 20 min sí, 2h no.</p><p class="muted">Repaso suave antes de dormir + despertar repasando = doble fijo.</p></div>
+          <div class="discipline-card"><h4>🏃 Cuerpo despierto</h4><p>10 min de movida (caminar, trotar, bailar) antes de estudiar sube foco 1-2h.</p><p class="muted">Entre bloques: estira cuello-hombros y mira lejos 20s.</p></div>
+          <div class="discipline-card"><h4>💧 Base simple</h4><p>Agua a mano, luz natural o cálida, aire fresco, mesa solo con lo del ramo.</p><p class="muted">Guata muy llena = sueño. Come liviano antes de estudiar.</p></div>
+          <div class="discipline-card"><h4>📵 1 cosa a la vez</h4><p>Multitarea = cambiar y perder 15 min cada vez. 1 ramo, 1 hoja, 1 timer.</p><p class="muted">Música solo instrumental suave si te ayuda; con letra distrae.</p></div>
+          <div class="discipline-card"><h4>🔁 Curva del olvido</h4><p>Sin repaso olvidas 70% en 24h. Con repasos 1-3-7-14 retienes 80%+.</p><p class="muted">Agenda: hoy → en 3 días → en 7 → en 14. Marca en el calendario.</p></div>
+          <div class="discipline-card"><h4>🧘 Resetea en 1 min</h4><p>Ojos cerrados, 5 respiraciones lentas, suelta mandíbula y hombros, vuelve a tu meta.</p><p class="muted">Úsalo entre pomodoros o si la mente se va.</p></div>
+        </div>
+        <div class="menstrual-card" style="margin-top:10px">
+          <h4>📓 Mis sesiones (local)</h4>
+          <div class="conv-row">
+            <label style="flex:2">Qué estudié <input type="text" id="studyLogTema" placeholder="ej: mate guía 5 + Feynman" maxlength="60"></label>
+            <label>Min <input type="number" id="studyLogMin" value="25" min="5" max="180"></label>
+            <button type="button" id="studyLogAdd" class="btn btn-accent" style="width:auto;align-self:flex-end">+ Sumar</button>
+          </div>
+          <div id="studyLogList" class="habits-list" style="margin-top:8px"></div>
+          <p id="studyLogTotal" class="muted" style="font-size:11px"></p>
+          <div class="dlg-actions" style="justify-content:flex-start">
+            <button type="button" id="studyLogClear" class="btn" style="width:auto">🗑️ Borrar semana</button>
+          </div>
+          <p class="muted" style="font-size:11px">🚫 Mitos: “releer toda la noche sirve” (no, recitar sirve) · “subrayar todo = estudiar” (no) · “con música con letra me concentro mejor” (baja comprensión) · “soy visual/auditivo y solo así aprendo” (mezclar sirve más).</p>
         </div>
       </div>
       <div class="dlg-actions"><button type="button" id="studyClose" class="btn">Cerrar</button></div>
@@ -4242,6 +4388,7 @@
         'red-comunitaria-modulo.js?v=1',
         'convivencia-vecinal-modulo.js?v=1',
         'ciberseguridad-modulo.js?v=1',
+        'open-source-modulo.js?v=1',
         'ia-modulo.js?v=4',
         'hidroponia-modulo.js?v=2',
         'huerta-modulo.js?v=1',

@@ -94,6 +94,7 @@ var GROUPS = [
   { id: 'convivencia', titulo: '🏘️ Convivencia vecinal (bitácora privada)', keys: ['convivencia'] },
   { id: 'red', titulo: '🤝 Red comunitaria (mis nodos)', keys: ['redcomunitaria'] },
   { id: 'ciberseguridad', titulo: '🛡️ Ciberseguridad (bitácora privada)', keys: ['ciber'] },
+  { id: 'opensource', titulo: '🌐 Código abierto (chequeo y aportes)', keys: ['opensource'] },
   { id: 'crianza', titulo: '🧒 Bitácora de crianza', keys: ['crianzaLog', 'crianzaAmb', 'milDiasHitos', 'milCrec', 'milAcomp', 'milBebe', 'milDiasFUR', 'milDiasNac'] },
   { id: 'duelo', titulo: '🕯️ Duelo (memorias, velas, hitos)', keys: ['dueloPersonas', 'dueloFecha', 'dueloCheck', 'dueloMemorias', 'dueloVelas', 'dueloHitosDone', 'dueloRitComp'] },
   { id: 'linaje', titulo: '🌳 Linaje (árbol, cartas, recap)', keys: ['arbolFull', 'arbolLunar', 'arbolCartas', 'arbolVelas', 'recapInventario', 'recapSesiones', 'recapLineaVida'] },
