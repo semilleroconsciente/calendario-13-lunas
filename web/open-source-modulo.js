@@ -91,24 +91,24 @@ var LICENCIAS = [
 ];
 
 var PROGRAMAS = [
-  { cat: 'Sistema y PC viejo', n: 'Linux Mint / Ubuntu', ico: '🐧', para: 'Revive un PC lento de 10 años: rápido, sin virus típicos, con oficina incluida.', reemplaza: 'Windows + antivirus de pago', dato: 'Se instala desde un pendrive; pide ayuda en la pestaña Aportar si es tu primera vez.' },
-  { cat: 'Sistema y PC viejo', n: 'LibreOffice', ico: '📄', para: 'Cartas, planillas de gastos, presentaciones para la JJ.VV. Abre archivos de Word/Excel.', reemplaza: 'Microsoft 365 de pago', dato: 'Guarda en .odt propio o exporta a .pdf para imprimir.' },
-  { cat: 'Internet y privacidad', n: 'Firefox + uBlock Origin', ico: '🦊', para: 'Navegar con menos rastreo y sin avisos trampa. Base de la pestaña 🛡️ Ciberseguridad.', reemplaza: 'Navegadores con publicidad invasiva', dato: 'Activa “protección estricta” en Ajustes → Privacidad.' },
-  { cat: 'Internet y privacidad', n: 'Brave / Tor Browser', ico: '🧅', para: 'Brave bloquea rastreadores; Tor para casos sensibles (denuncias, violencia).', reemplaza: 'Modo incógnito (que no protege nada)', dato: 'Tor es lento: úsalo solo cuando necesites anonimato real.' },
-  { cat: 'Mapas y territorio', n: 'OpenStreetMap + Organic Maps', ico: '🗺️', para: 'Mapa offline del territorio, sin cuenta Google: senderos, puntos de encuentro, evacuación tsunami.', reemplaza: 'Google Maps (exige datos y cuenta)', dato: 'Descarga el mapa del Bío-Bío una vez y úsalo sin internet. ¡Puedes agregar tu sede!' },
-  { cat: 'Mapas y territorio', n: 'QGIS', ico: '🧭', para: 'Mapa serio: zonas de riesgo, huertas comunitarias, redes de agua. Lo usan municipalidades.', reemplaza: 'Software GIS de miles de dólares', dato: 'Nivel avanzado; parte con un taller (ver Proyectos en módulo IA).' },
-  { cat: 'Diseño y difusión', n: 'GIMP + Inkscape', ico: '🎨', para: 'Afiches de la fiesta, logos de emprendimientos, letreros de la feria.', reemplaza: 'Photoshop / Illustrator', dato: 'Inkscape = vectores (logos); GIMP = fotos. Exporta en .png y .pdf.' },
-  { cat: 'Diseño y difusión', n: 'Kdenlive / Shotcut', ico: '🎬', para: 'Editar videos del taller, la minga o el emprendimiento, en PC modesto.', reemplaza: 'Premiere / Filmora con marca de agua', dato: 'Corta, une y subtitula: suficiente para redes del territorio.' },
-  { cat: 'Audio y música', n: 'Audacity', ico: '🎙️', para: 'Grabar Voz de los Abuelos, podcast del barrio, limpiar audio de entrevistas.', reemplaza: 'Grabadoras con suscripción', dato: 'Graba en .wav, exporta en .mp3. Guarda siempre el original.' },
-  { cat: 'Oficio y negocio', n: 'Odoo Comunitario / Dolibarr', ico: '🧾', para: 'Boletas, stock del almacén, clientes del taller. Orden sin cuaderno perdido.', reemplaza: 'ERP de pago mensual', dato: 'Requiere alguien que lo instale; alternativa simple: planilla LibreOffice.' },
-  { cat: 'Comunicación libre', n: 'Signal', ico: '💬', para: 'Chat cifrado para coordinar cuadrillas, compras colectivas, emergencias.', reemplaza: 'Grupos expuestos sin cifrado', dato: 'Activa mensajes que desaparecen en temas sensibles.' },
-  { cat: 'Comunicación libre', n: 'Jitsi Meet', ico: '📹', para: 'Reunión por video sin instalar nada ni crear cuenta: link y listo.', reemplaza: 'Zoom con límite de 40 min', dato: 'Funciona en el navegador; con mala señal, apaguen cámaras.' },
-  { cat: 'Nube propia', n: 'Nextcloud / Syncthing', ico: '☁️', para: 'Carpeta compartida de la organización sin depender de una empresa extranjera.', reemplaza: 'Drive con tope y rastreo', dato: 'Syncthing = entre aparatos, sin servidor. Ideal para respaldo local.' },
-  { cat: 'Seguridad', n: 'Bitwarden / KeePassXC', ico: '🔑', para: 'Gestor de claves (conecta con 🛡️ Ciberseguridad): una maestra, resto automático.', reemplaza: 'Papelito + misma clave en todo', dato: 'KeePassXC es 100% local; Bitwarden se puede auto-hospedar.' },
-  { cat: 'Aprender y crear', n: 'Moodle / Kolibri', ico: '🏫', para: 'Aula offline: cursos del taller, Kimün Mapuzugun, manuales, sin internet.', reemplaza: 'Plataformas con suscripción', dato: 'Kolibri corre en un celu/PC viejo como “escuela de bolsillo”.' },
-  { cat: 'Aprender y crear', n: 'Blender', ico: '🧱', para: '3D, animación y hasta planos simples del invernadero o la sede.', reemplaza: 'Software 3D propietario', dato: 'Exige PC medio; hay miles de tutoriales en español.' },
-  { cat: 'Campo y datos', n: 'QField / ODK Collect', ico: '🌱', para: 'Ficha en terreno sin señal: árboles, pozos, daños tras temporal; luego se sincroniza.', reemplaza: 'Papel que se moja y se pierde', dato: 'Combina con OpenStreetMap y QGIS: catastro comunitario completo.' },
-  { cat: 'Este ecosistema', n: 'Este Calendario 13 Lunas (MIT)', ico: '🌙', para: 'Calendario lunar + 60 herramientas territoriales, offline y privado. El código ES la lección.', reemplaza: '5 apps sueltas con publicidad', dato: 'Ver pestaña “Este proyecto”: archicos .js por tema, datos en data/territorios/.' }
+  { cat: 'Sistema y PC viejo', n: 'Linux Mint / Ubuntu', ico: '🐧', para: 'Revive un PC lento de 10 años: rápido, sin virus típicos, con oficina incluida.', reemplaza: 'Windows + antivirus de pago', dato: 'Se instala desde un pendrive; pide ayuda en la pestaña Aportar si es tu primera vez.', links: [{ t: 'Linux Mint', u: 'https://linuxmint.com' }, { t: 'Ubuntu', u: 'https://ubuntu.com' }] },
+  { cat: 'Sistema y PC viejo', n: 'LibreOffice', ico: '📄', para: 'Cartas, planillas de gastos, presentaciones para la JJ.VV. Abre archivos de Word/Excel.', reemplaza: 'Microsoft 365 de pago', dato: 'Guarda en .odt propio o exporta a .pdf para imprimir.', links: [{ t: 'LibreOffice', u: 'https://www.libreoffice.org' }] },
+  { cat: 'Internet y privacidad', n: 'Firefox + uBlock Origin', ico: '🦊', para: 'Navegar con menos rastreo y sin avisos trampa. Base de la pestaña 🛡️ Ciberseguridad.', reemplaza: 'Navegadores con publicidad invasiva', dato: 'Activa “protección estricta” en Ajustes → Privacidad.', links: [{ t: 'Firefox', u: 'https://www.mozilla.org/firefox/' }, { t: 'uBlock Origin', u: 'https://github.com/gorhill/uBlock' }] },
+  { cat: 'Internet y privacidad', n: 'Brave / Tor Browser', ico: '🧅', para: 'Brave bloquea rastreadores; Tor para casos sensibles (denuncias, violencia).', reemplaza: 'Modo incógnito (que no protege nada)', dato: 'Tor es lento: úsalo solo cuando necesites anonimato real.', links: [{ t: 'Brave', u: 'https://brave.com' }, { t: 'Tor', u: 'https://www.torproject.org' }] },
+  { cat: 'Mapas y territorio', n: 'OpenStreetMap + Organic Maps', ico: '🗺️', para: 'Mapa offline del territorio, sin cuenta Google: senderos, puntos de encuentro, evacuación tsunami.', reemplaza: 'Google Maps (exige datos y cuenta)', dato: 'Descarga el mapa del Bío-Bío una vez y úsalo sin internet. ¡Puedes agregar tu sede!', links: [{ t: 'OpenStreetMap', u: 'https://www.openstreetmap.org' }, { t: 'Organic Maps', u: 'https://organicmaps.app' }] },
+  { cat: 'Mapas y territorio', n: 'QGIS', ico: '🧭', para: 'Mapa serio: zonas de riesgo, huertas comunitarias, redes de agua. Lo usan municipalidades.', reemplaza: 'Software GIS de miles de dólares', dato: 'Nivel avanzado; parte con un taller (ver Proyectos en módulo IA).', links: [{ t: 'QGIS', u: 'https://qgis.org' }] },
+  { cat: 'Diseño y difusión', n: 'GIMP + Inkscape', ico: '🎨', para: 'Afiches de la fiesta, logos de emprendimientos, letreros de la feria.', reemplaza: 'Photoshop / Illustrator', dato: 'Inkscape = vectores (logos); GIMP = fotos. Exporta en .png y .pdf.', links: [{ t: 'GIMP', u: 'https://www.gimp.org' }, { t: 'Inkscape', u: 'https://inkscape.org' }] },
+  { cat: 'Diseño y difusión', n: 'Kdenlive / Shotcut', ico: '🎬', para: 'Editar videos del taller, la minga o el emprendimiento, en PC modesto.', reemplaza: 'Premiere / Filmora con marca de agua', dato: 'Corta, une y subtitula: suficiente para redes del territorio.', links: [{ t: 'Kdenlive', u: 'https://kdenlive.org' }, { t: 'Shotcut', u: 'https://www.shotcut.org' }] },
+  { cat: 'Audio y música', n: 'Audacity', ico: '🎙️', para: 'Grabar Voz de los Abuelos, podcast del barrio, limpiar audio de entrevistas.', reemplaza: 'Grabadoras con suscripción', dato: 'Graba en .wav, exporta en .mp3. Guarda siempre el original.', links: [{ t: 'Audacity', u: 'https://www.audacityteam.org' }] },
+  { cat: 'Oficio y negocio', n: 'Odoo Comunitario / Dolibarr', ico: '🧾', para: 'Boletas, stock del almacén, clientes del taller. Orden sin cuaderno perdido.', reemplaza: 'ERP de pago mensual', dato: 'Requiere alguien que lo instale; alternativa simple: planilla LibreOffice.', links: [{ t: 'Odoo', u: 'https://www.odoo.com' }, { t: 'Dolibarr', u: 'https://www.dolibarr.org' }] },
+  { cat: 'Comunicación libre', n: 'Signal', ico: '💬', para: 'Chat cifrado para coordinar cuadrillas, compras colectivas, emergencias.', reemplaza: 'Grupos expuestos sin cifrado', dato: 'Activa mensajes que desaparecen en temas sensibles.', links: [{ t: 'Signal', u: 'https://signal.org' }] },
+  { cat: 'Comunicación libre', n: 'Jitsi Meet', ico: '📹', para: 'Reunión por video sin instalar nada ni crear cuenta: link y listo.', reemplaza: 'Zoom con límite de 40 min', dato: 'Funciona en el navegador; con mala señal, apaguen cámaras.', links: [{ t: 'Jitsi Meet', u: 'https://meet.jit.si' }] },
+  { cat: 'Nube propia', n: 'Nextcloud / Syncthing', ico: '☁️', para: 'Carpeta compartida de la organización sin depender de una empresa extranjera.', reemplaza: 'Drive con tope y rastreo', dato: 'Syncthing = entre aparatos, sin servidor. Ideal para respaldo local.', links: [{ t: 'Nextcloud', u: 'https://nextcloud.com' }, { t: 'Syncthing', u: 'https://syncthing.net' }] },
+  { cat: 'Seguridad', n: 'Bitwarden / KeePassXC', ico: '🔑', para: 'Gestor de claves (conecta con 🛡️ Ciberseguridad): una maestra, resto automático.', reemplaza: 'Papelito + misma clave en todo', dato: 'KeePassXC es 100% local; Bitwarden se puede auto-hospedar.', links: [{ t: 'Bitwarden', u: 'https://bitwarden.com' }, { t: 'KeePassXC', u: 'https://keepassxc.org' }] },
+  { cat: 'Aprender y crear', n: 'Moodle / Kolibri', ico: '🏫', para: 'Aula offline: cursos del taller, Kimün Mapuzugun, manuales, sin internet.', reemplaza: 'Plataformas con suscripción', dato: 'Kolibri corre en un celu/PC viejo como “escuela de bolsillo”.', links: [{ t: 'Moodle', u: 'https://moodle.org' }, { t: 'Kolibri', u: 'https://learningequality.org/kolibri/' }] },
+  { cat: 'Aprender y crear', n: 'Blender', ico: '🧱', para: '3D, animación y hasta planos simples del invernadero o la sede.', reemplaza: 'Software 3D propietario', dato: 'Exige PC medio; hay miles de tutoriales en español.', links: [{ t: 'Blender', u: 'https://www.blender.org' }] },
+  { cat: 'Campo y datos', n: 'QField / ODK Collect', ico: '🌱', para: 'Ficha en terreno sin señal: árboles, pozos, daños tras temporal; luego se sincroniza.', reemplaza: 'Papel que se moja y se pierde', dato: 'Combina con OpenStreetMap y QGIS: catastro comunitario completo.', links: [{ t: 'QField', u: 'https://qfield.org' }, { t: 'ODK', u: 'https://getodk.org' }] },
+  { cat: 'Este ecosistema', n: 'Este Calendario 13 Lunas (MIT)', ico: '🌙', para: 'Calendario lunar + 60 herramientas territoriales, offline y privado. El código ES la lección.', reemplaza: '5 apps sueltas con publicidad', dato: 'Ver pestaña “Este proyecto”: archicos .js por tema, datos en data/territorios/.', links: [] }
 ];
 
 var ARQUITECTURA = [
@@ -287,24 +287,40 @@ function renderProgramas() {
   var box = $('osProgramas'); if (!box) return;
   var cats = ['todas'];
   PROGRAMAS.forEach(function (p) { if (cats.indexOf(p.cat) < 0) cats.push(p.cat); });
+  function progLinks(p) {
+    var out = '';
+    try {
+      (p.links || []).forEach(function (l) {
+        if (l && l.u) out += '<a href="' + esc(l.u) + '" target="_blank" rel="noopener" class="btn" style="width:auto;text-decoration:none;font-size:11px">🌐 ' + esc(l.t || 'Sitio oficial') + '</a>';
+      });
+    } catch (e) {}
+    return out;
+  }
+  function progHay(p) {
+    var names = '';
+    try { names = ' ' + (p.links || []).map(function (l) { return l.t || ''; }).join(' '); } catch (e) {}
+    return (p.n + ' ' + p.para + ' ' + p.reemplaza + ' ' + p.cat + names);
+  }
   var q = (progQ || '').toLowerCase();
   var list = PROGRAMAS.filter(function (p) {
     var okC = (progCat === 'todas' || p.cat === progCat);
-    var okQ = (!q || (p.n + ' ' + p.para + ' ' + p.reemplaza + ' ' + p.cat).toLowerCase().indexOf(q) >= 0);
+    var okQ = (!q || progHay(p).toLowerCase().indexOf(q) >= 0);
     return okC && okQ;
   });
   box.innerHTML =
-    '<div class="si-card"><h4>🧰 Botiquín libre para la casa y la organización</h4><p>Todo aquí es <b>legal, gratuito y auditable</b>. Busca por necesidad (“mapa sin internet”, “oficina”, “video”) o filtra por grupo. Instalación típica: descargar del sitio oficial → instalar → usar offline.</p>' +
+    '<div class="si-card"><h4>🧰 Botiquín libre para la casa y la organización</h4><p>Todo aquí es <b>legal, gratuito y auditable</b>. Busca por necesidad (“mapa sin internet”, “oficina”, “video”) o filtra por grupo. El botón <b>🌐 abre el sitio oficial</b> (solo necesitas internet para descargar; después todo funciona offline).</p>' +
     '<div class="conv-row"><label style="flex:2">Buscar <input type="text" id="osProgQ" placeholder="ej: mapa sin internet, oficina, claves, video..." maxlength="60" value="' + esc(progQ) + '"></label>' +
     '<label>Grupo <select id="osProgCat">' + cats.map(function (c) { return '<option value="' + esc(c) + '"' + (c === progCat ? ' selected' : '') + '>' + esc(c) + '</option>'; }).join('') + '</select></label></div>' +
     '<p class="muted" style="font-size:11px">' + list.length + ' programas · toca el que te sirva y márcalo como “ya lo probé”.</p></div>' +
     (list.length ? list.map(function (p, i) {
       var seen = false;
       try { seen = !!store().exploradas['prog-' + p.n]; } catch (e) {}
+      var lk = progLinks(p);
       return '<div class="si-card"><h4>' + p.ico + ' ' + esc(p.n) + ' ' + (seen ? '<span class="chip">✅ probado</span>' : '') + '</h4>' +
         '<p><b>¿Para qué?</b> ' + p.para + '</p>' +
         '<p><b>Reemplaza a:</b> ' + esc(p.reemplaza) + ' · <span class="muted">' + esc(p.cat) + '</span></p>' +
         '<p class="muted" style="font-size:11px">💡 ' + esc(p.dato) + '</p>' +
+        (lk ? '<div class="dlg-actions" style="justify-content:flex-start;flex-wrap:wrap">' + lk + '</div>' : '') +
         '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" data-prog="' + esc(p.n) + '" class="btn" style="width:auto">' + (seen ? '↩️ Marcar por probar' : '✅ Ya lo probé') + '</button></div></div>';
     }).join('') : '<p class="muted">Sin resultados. Prueba “mapa”, “oficina”, “video”, “claves”…</p>');
   var qi = $('osProgQ'), cs = $('osProgCat');

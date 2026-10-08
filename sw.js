@@ -156,6 +156,7 @@ const CORE = [
   './ciberseguridad-modulo.js?v=1',
   './open-source-modulo.js',
   './open-source-modulo.js?v=1',
+  './open-source-modulo.js?v=2',
   './ia-modulo.js',
   './ia-modulo.js?v=1',
   './ia-modulo.js?v=2',

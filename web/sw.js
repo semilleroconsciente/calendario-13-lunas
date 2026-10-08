@@ -153,6 +153,7 @@ const CORE = [
   './ciberseguridad-modulo.js?v=1',
   './open-source-modulo.js',
   './open-source-modulo.js?v=1',
+  './open-source-modulo.js?v=2',
   './hidroponia-modulo.js',
   './hidroponia-modulo.js?v=2',
   './huerta-modulo.js',
