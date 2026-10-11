@@ -1,27 +1,36 @@
-# Arquitectura — plan de partición (mejoras #1, #2, #20)
+# Arquitectura — partición del monolito (mejoras #1, #2, #20)
 
-Estado: `renderer.js` ≈ 990 KB / 12.575 líneas, `nuevos-modulos.js` ≈ 374 KB,
-`index.html` ≈ 4670 líneas. Todo funciona, pero cada cambio toca un monolito.
+Estado v1.8: `renderer.js` 990 KB/12.576 → **~830 KB/~10.200 líneas** tras
+extraer 7 módulos. `index.html` 421 → 29 KB (diálogos a `templates/`).
 
-## Partición objetivo (sin romper IIFE ni `btn*`)
+## Lo extraído (scope top-level DESNUDO, sin IIFE)
+Sin IIFE a propósito: los archivos comparten scope global con el remanente,
+igual que cuando eran secciones del monolito. Orden defer en index.html.
 
 ```
-renderer.js  →  js/core/
-  core/bootstrap.js    (DATA, CYCLE_YEARS, cycle, currentView, $, saveTimer)
-  core/audio.js        (getNotifyAudio, playNotifySound, unlock)
-  core/a11y.js         (a11yPatchIconButtons + observer) — ya delegado a accesibilidad-modulo.js
-  core/themes.js       (THEMES + aplicación)
-  core/calendario.js   (vistas luna/semana/mes + grid + pager)
-  core/dialogo-dia.js  (dayDialog: notas, compromisos, ánimo)
-  core/storage.js      (scheduleSave + window.api) — borde IDB en storage-idb.js
-nuevos-modulos.js  →  un archivo por módulo (ya son IIFE; solo separar)
-index.html diálogos  →  templates/xxx.html cargados con fetch + <template>
+core-bootstrap.js    (DATA, CYCLE_YEARS, cycle, currentView, $, hideBootSplash)
+core-audio.js        (getNotifyAudio, playNotifySound, unlock)
+core-themes.js       (THEMES + aplicación/selector)
+core-storage.js      (scheduleSave)
+core-calendario.js   (vistas luna/semana/mes + grid + pager + mobile)
+core-dialogo-dia.js  (dayDialog: notas, compromisos, ánimo, compartir)
+core-clima.js        (WMO, offline, panel open-meteo, aire/UV)
 ```
 
-## Reglas
+`core/a11y.js` no se extrajo: ese código sigue en renderer.js (accesibilidad-
+modulo.js lo complementa con observer, no lo reemplaza).
 
-1. Cada módulo sigue IIFE, sin top-level nuevo (lo verifica `check:syntax` + test de colisiones).
-2. `scripts/check-size.cjs` fija techos; si un archivo lo supera, se parte (no se sube el techo).
-3. `storage-idb.js` + `accesibilidad-modulo.js` + `onboarding-modulo.js` +
-   `auto-backup-modulo.js` son los primeros 4 extraídos con este patrón.
-4. Deuda pendiente: minificación en build (terser/esbuild) y namespaces por grupo.
+## Reglas (vigentes, verificadas por CI + smoke Electron)
+1. Cortes solo en líneas en blanco; el slice debe pasar `node --check`
+   aislado y no duplicar declaraciones (`nodup`: 0 duplicados).
+2. Sin ejecuciones load-time que llamen a código del remanente (solo
+   declaraciones + wiring autocontenido con `$`/DOM estático).
+3. `scripts/check-size.cjs` fija techos; si un archivo lo supera, se parte
+   (no se sube el techo). renderer techo 1150 KB.
+4. Cada extracción: minify + sync-web + build-sw + manifest + `npm test` +
+   `smoke-electron.cjs` (TDZ/orden solo se ven en runtime).
+
+## Candidatos siguientes (cuando renderer vuelva al techo)
+`core-hogar.js` (pantalla inicio), `core-siembra.js`, `core-mareas.js`,
+diálogos territorio (pesca/aves/intermareal/bosque), `core-salud.js`
+(menstrual/medic), `core-respaldo.js` (search/backup/restore).

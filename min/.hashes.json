@@ -73,7 +73,7 @@
  "qrcode-lib.js": "4c79be1679603ef9691b98a90617aa1e534e93ef",
  "recetas-naturales-modulo.js": "1b3ae974c36bde6538ee91e54dfc99642546fc63",
  "red-comunitaria-modulo.js": "f01398d008b78cf1089a555bd461dd02bbe9a44f",
- "renderer.js": "5bc78755b74b630533907e67b057d917c7fb245b",
+ "renderer.js": "f5a815e6678b23ff4c97494d32f72be62efea1f1",
  "retos-21-modulo.js": "c3c1973de8c81f58e5b36e238c10671b073cb403",
  "semillero-guias.js": "d77ae8e7ba14fdb3f800bbba65bca1ce0861b183",
  "sopa-letras-modulo.js": "06e518c813692d20bccad8c6c44b771f39e701cf",
@@ -91,5 +91,12 @@
  "voz-abuelos.js": "14a3a3c825f8db01302bbf6d3983853f982dd5fb",
  "web-api.js": "04e41f9a90fd34a371704b738c7ba0f68a222a12",
  "templates-bundled.js": "ad03778f2b1bd451ea14a6165ee9ef47a5d67996",
- "pwa-install.js": "12dda4ac5b614a54116fa99c8df53b73ae132404"
+ "pwa-install.js": "12dda4ac5b614a54116fa99c8df53b73ae132404",
+ "core-audio.js": "27eaf5020dff98d80141991ebef2ff67a67c3bc2",
+ "core-bootstrap.js": "b90389337c7c9ab2db10246bbe3ed7866b9528f2",
+ "core-calendario.js": "63a9b6d0b72036a40280b7dda07a04e78d203ef6",
+ "core-dialogo-dia.js": "4f842546d50872da0267354d870e396a22f3f82a",
+ "core-storage.js": "3c506c602bea673b81497c42fc3c78b4dcf6e302",
+ "core-themes.js": "c3e647385cc6cddb1c4cb8bf5c5cd3d839f08fb4",
+ "core-clima.js": "c93e79453c396c0e36cf9775d18d86933540f148"
 }
