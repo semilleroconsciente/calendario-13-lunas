@@ -90,5 +90,6 @@
  "vigyan-bhairav-modulo.js": "f1ff6debc715cec71fa7439d7f884c8e80c5cb1b",
  "voz-abuelos.js": "14a3a3c825f8db01302bbf6d3983853f982dd5fb",
  "web-api.js": "04e41f9a90fd34a371704b738c7ba0f68a222a12",
- "templates-bundled.js": "ad03778f2b1bd451ea14a6165ee9ef47a5d67996"
+ "templates-bundled.js": "ad03778f2b1bd451ea14a6165ee9ef47a5d67996",
+ "pwa-install.js": "12dda4ac5b614a54116fa99c8df53b73ae132404"
 }

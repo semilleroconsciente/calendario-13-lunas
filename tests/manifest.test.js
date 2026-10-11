@@ -59,7 +59,7 @@ describe('manifest + cableado', () => {
     for (const f of ['storage-idb.js', 'accesibilidad-modulo.js', 'onboarding-modulo.js', 'auto-backup-modulo.js', '_headers', 'boot-modulos.js', 'sw-registro.js', 'splash.css', 'min/**/*', 'templates-bundled.js', 'templates/*.html']) {
       assert.ok((pkg.build.files || []).includes(f), 'build.files sin ' + f);
     }
-    for (const s of ['build:sw', 'check:sw', 'check:donate', 'movil:build', 'check:size', 'build:min', 'check:min', 'build:tpl', 'check:tpl']) {
+    for (const s of ['build:sw', 'check:sw', 'check:donate', 'movil:build', 'check:size', 'build:min', 'check:min', 'build:tpl', 'check:tpl', 'check:perf']) {
       assert.ok(pkg.scripts[s], 'script ausente: ' + s);
     }
     assert.ok((pkg.devDependencies || {}).esbuild, 'falta devDep esbuild (minificación)');
@@ -84,6 +84,33 @@ describe('manifest + cableado', () => {
       assert.ok(h.includes('microphone=(self)'), f + ' sin micrófono en self (Voz Abuelos)');
       assert.ok(h.includes('camera=(self)'), f + ' sin cámara en self (QR-sync)');
     }
+  });
+
+  it('manifest.json: screenshots reales (no iconos)', () => {
+    const m = JSON.parse(read('manifest.json'));
+    assert.ok(Array.isArray(m.screenshots) && m.screenshots.length >= 2, 'se esperaban 2+ screenshots');
+    const pngMagic = Buffer.from([0x89, 0x50, 0x4e, 0x47]);
+    let wide = 0;
+    for (const s of m.screenshots) {
+      assert.ok(!/icon-512/.test(s.src), 'screenshot sigue siendo icon-512: ' + s.src);
+      const p = path.join(ROOT, s.src);
+      assert.ok(fs.existsSync(p), 'screenshot ausente: ' + s.src);
+      const b = fs.readFileSync(p);
+      assert.ok(b.subarray(0, 4).equals(pngMagic), s.src + ' no es PNG');
+      const w = b.readUInt32BE(16), h = b.readUInt32BE(20);
+      assert.equal(`${w}x${h}`, s.sizes, `${s.src}: PNG real ${w}x${h} ≠ manifest ${s.sizes}`);
+      if (s.form_factor === 'wide') wide++;
+    }
+    assert.ok(wide >= 1, 'falta screenshot wide (desktop)');
+  });
+
+  it('pwa-install: botón + módulo cableado', () => {
+    const html = read('index.html');
+    assert.ok(html.includes('id="btnInstall"'), 'falta #btnInstall en sidebar');
+    assert.ok(html.includes('pwa-install'), 'pwa-install no cableado en index.html');
+    const mod = read(fs.existsSync(path.join(ROOT, 'min/pwa-install.min.js')) ? 'min/pwa-install.min.js' : 'pwa-install.js');
+    assert.ok(mod.includes('beforeinstallprompt'), 'pwa-install sin beforeinstallprompt');
+    assert.ok(mod.includes('cal13pwa'), 'pwa-install sin window.cal13pwa');
   });
 
   it('donate: example con las 4 claves del renderer', () => {

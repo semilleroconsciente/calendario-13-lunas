@@ -19,13 +19,14 @@
     "check:min": "node scripts/minify.cjs --check",
     "build:tpl": "node scripts/build-templates.cjs --fix",
     "check:tpl": "node scripts/build-templates.cjs --check",
+    "check:perf": "node scripts/perf-budget.cjs",
     "check:donate": "node scripts/check-donate.cjs",
     "check:web": "node scripts/sync-web.cjs",
     "sync:web": "node scripts/sync-web.cjs --fix",
     "check:syntax": "node scripts/check-syntax.cjs",
     "check:size": "node scripts/check-size.cjs",
     "lint:commits": "node scripts/lint-commits.cjs",
-    "test": "npm run build:tpl && npm run build:min && node --test \"tests/*.test.js\" && npm run check:tpl && npm run check:min && npm run check:manifest && npm run check:sw && npm run check:web && npm run check:donate && npm run check:syntax"
+    "test": "npm run build:tpl && npm run build:min && node --test \"tests/*.test.js\" && npm run check:tpl && npm run check:min && npm run check:perf && npm run check:manifest && npm run check:sw && npm run check:web && npm run check:donate && npm run check:syntax"
   },
   "license": "MIT",
   "type": "commonjs",
@@ -45,6 +46,7 @@
       "storage-idb.js",
       "boot-modulos.js",
       "sw-registro.js",
+      "pwa-install.js",
       "accesibilidad-modulo.js",
       "onboarding-modulo.js",
       "auto-backup-modulo.js",
@@ -143,6 +145,7 @@
       "icon-512-maskable.png",
       "templates-bundled.js",
       "templates/*.html",
+      "screenshots/*.png",
       "min/**/*",
       "assets/**/*"
     ],

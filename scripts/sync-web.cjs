@@ -63,6 +63,8 @@ const needInWeb = rootOnly.filter((f) => {
   // templates/*.html: fuentes de diálogos; el bundle las embebe, pero el
   // fetch de respaldo de cal13tpl.asegurar() las necesita en web/.
   if (f.startsWith('templates/') && f.endsWith('.html')) return true;
+  // screenshots/*.png del manifest (capturas reales, ver captura-screenshots).
+  if (f.startsWith('screenshots/') && f.endsWith('.png')) return true;
   if (f.includes('/')) return false;
   return WEB_EXT.includes(path.extname(f));
 });

@@ -28,6 +28,7 @@
       <button id="btnSharePage" class="btn" style="flex:1" title="Copiar enlace https://calendario-13-lunas.pages.dev/">🔗 Compartir</button>
       <button id="btnHelp" class="btn" style="flex:1" data-keywords="ayuda como usar guia instrucciones vision que es calendario">❓ Guía</button>
     </div>
+    <button id="btnInstall" class="btn btn-accent" hidden style="width:100%;margin-top:8px" title="Instalar como app (sin tienda)">📲 Instalar app</button>
     <nav id="moonNav"></nav>
     <div class="sidebar-foot">
       <span id="dataInfo"></span>
@@ -362,6 +363,7 @@
   <!-- Modulos no criticos: carga diferida tras la primera pintura (CSP fase 1: archivos externos). -->
   <script defer src="boot-modulos.js?v=1"></script>
   <script defer src="sw-registro.js?v=1"></script>
+  <script defer src="min/pwa-install.min.js?v=1"></script>
   <!-- Diálogos: inyectados por templates-bundled.js (templates/*.html). Ver scripts/build-templates.cjs -->
   <div id="dlgHost" aria-hidden="false"></div>
 </body>
