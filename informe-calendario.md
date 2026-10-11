@@ -128,3 +128,35 @@ Agregar los 3 módulos al CORE (bare + `?v=1`), eliminar duplicados, subir la ca
 ## 8. Conclusión
 
 El proyecto es funcionalmente rico y técnicamente coherente: arquitectura de módulos IIFE simple y robusta, offline-first bien pensado y datos territoriales verificables. El único defecto real y accionable es la caché del service worker incompleta (3 módulos), de corrección trivial y con impacto directo en la experiencia offline. La deuda principal es de escala: el monolito `renderer.js` y el versionado manual de caché merecerían automatización a medida que crece la cantidad de módulos.
+
+---
+
+## 9. Addendum — 10 de octubre de 2026
+
+- **Hallazgo §6.1 (3 módulos fuera del SW) verificado como ya corregido** en `sw.js` (`municipalidad-penco.js`, `bomberos-penco.js`, `apoyo-emergencia.js` presentes en el CORE).
+- **Nueva deriva del mismo tipo, corregida:** `ia-modulo.js?v=4`, `recetas-naturales-modulo.js` (bare + `?v=1`) y `vigyan-bhairav-modulo.js` (bare + `?v=1`) estaban en `index.html` pero no en el CORE de `sw.js` ni `web/sw.js`. Agregadas; caché subida a `cal13-v58-offline`.
+- **`web/sw.js` estaba desactualizado** (caché `v55` vs `v57` en raíz). Sincronizado desde la raíz.
+- **`vigyan-bhairav-modulo.js` faltaba en `build.files` de `package.json`** → el portable de Windows no lo incluía. Agregado.
+- **Anti-deriva:** nuevo `scripts/sync-manifest.cjs` (`npm run check:manifest` / `npm run sync:manifest --fix`) que verifica la sincronía entre `index.html`, `sw.js`, `web/sw.js` y `package.json`. Verificado con `node --check` y casos de prueba aislados (detección con exit 1, reparación + bump de CACHE, re-verificación OK).
+
+### Tanda 2 — mismo día
+- **Seguridad `main.js`:** `openExternal` solo permite `http(s)` (bloquea `file:`, `javascript:`, `data:`); `shortcut:create` envía el script PowerShell por `-EncodedCommand` Base64 (sin interpolación en línea de comandos); `data:save` con escritura atómica (tmp + rename) + copia `.bak` del último guardado bueno.
+- **Datos versionados sin tocar el renderer:** `web-api.js` y `main.js` envuelven al guardar (`{app:'cal13', v:1, savedAt, data}`) y desenvuelven al cargar; legado pasa tal cual; `scheduleSave` ahora muestra "⚠ No se pudo guardar" si el borde rechaza (antes mentía "Guardado ✓").
+- **Sincronía `web/`:** nuevo `scripts/sync-web.cjs` (`npm run check:web` / `sync:web`, dirección única raíz→web, nunca borra solo-web ni toca `donate.json`). Detectó y reparó deriva real: `sopa-letras-modulo.js` (raíz 06-10 con mejoras táctiles vs web 05-10), `data/territorios/index.json` (formato) y `package.json` desactualizado en `web/`.
+- **Tests:** `tests/astro.test.js` (20 aserciones: sol/luna Penco + 8 fases documentadas) y `tests/storage.test.js` (5: sobre versionado, legado, idempotencia, corrupto, vacío). `npm test` = unit + manifest + web + sintaxis (98 archivos). Todo en verde (25/25).
+- **`index.html`:** loader de módulos con reintento + reporte visible en `#statusMsg` (antes los fallos eran silenciosos); aviso "Nueva versión disponible" con `SKIP_WAITING` + recarga; `preconnect` a ambas APIs open-meteo.
+- **Headers web:** `_headers` suma `nosniff`, `Referrer-Policy`, `SAMEORIGIN` y `Permissions-Policy` con `(self)` para mic/cámara (los usan Voz de los Abuelos y QR-sync; la primera versión los bloqueaba y se corrigió antes de publicar). Igual corrección en `web/server.js`.
+- **`donate.example.json`** con las 4 claves que lee el renderer (`mercadopago`, `paypal`, `flow`, `kofi`); `donate.json` real sigue gitignorado.
+- **No se movieron** `fuente_docx.txt` ni `test-astro.js`: ninguno se referencia desde código ni se empaqueta; moverlos no cambia el producto y `test-astro.js` queda como script manual de referencia para `tests/astro.test.js`.
+- **Diferido a propósito (requiere decisión de producto o refactor mayor):** partir `renderer.js` (990 KB), migrar a IndexedDB, CSP estricta (hay scripts inline), onboarding, screenshots reales del manifest, target NSIS/auto-update, poda de `?v` viejos del CORE.
+
+### Tanda 3 — lista de 20 mejoras (mismo día)
+- **SW generado, no manual (#3, #15):** nuevo `scripts/build-sw.cjs` (`npm run build:sw` / `check:sw`) que genera el CORE desde `index.html` (bare + `?v` vigente). Podó 232→213 entradas y subió CACHE. `sync-manifest` sigue como verificador.
+- **`sync-web` propagaba deriva pero no archivos nuevos (#16):** corregido — ahora copia también `.js/.css/_headers` solo-raíz a `web/` (detectó que `numerologia-modulo.js` faltaba en `web/`). `_headers` raíz creado (no existía).
+- **Manifest (#9):** verificado UTF-8 correcto en disco — el mojibake era artefacto de la consola Windows (PowerShell sin UTF-8), no del archivo. Screenshots siguen siendo iconos (requiere diseño, no código).
+- **Nuevos módulos:** `storage-idb.js` (IndexedDB + fallback localStorage, #5; `web-api.js` lo usa primero), `onboarding-modulo.js` (tour 4 pasos + botón 🧭, #10), `auto-backup-modulo.js` (aviso si >30 días sin respaldo, #11), `accesibilidad-modulo.js` (`aria-expanded`, trampa de foco, `prefers-reduced-motion`, #19). Cableados en MODS + `build.files` + SW.
+- **CSP transicional (#7):** meta en `index.html` + `_headers` (raíz y web) + `web/server.js`. Permite `'unsafe-inline'` porque quedan 2 `<script>` inline + `<style>` del splash (extraerlos es el paso a CSP estricta). `connect-src` limitado a open-meteo.
+- **Ventana Electron (#8):** `minWidth 1100→380`, `minHeight 700→640` (tablets/netbooks).
+- **Higiene (#13, #14, #17, #18):** `fuente_docx.txt`→`docs/`, `test-astro.js`→`scripts/manual/` (+ comentario en test); `scripts/check-donate.cjs`, `scripts/check-size.cjs` (techos: renderer 1150, nuevos 450, index 450, css 150 KB), `scripts/lint-commits.cjs` (avisa, no bloquea); `docs/arquitectura.md` con plan de partición; `movil:build` documenta el APK (sync+gradle); `build:win-nsis` como alternativa al portable.
+- **Contraste (#19):** `--muted #9aa3c7→#b9c1e4` (raíz + tema noche) + `:focus-visible` dorado + `skip-link` visible al enfocar.
+- **Tests (#6):** `manifest.test.js` (6), `territorio.test.js` (2), `idb-fallback.test.js` (1). `npm test` = unit + manifest + sw + web + donate + sintaxis (105 archivos). Todo en verde (34/34).

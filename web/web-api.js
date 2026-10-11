@@ -3,13 +3,43 @@
 // abrir index.html por http(s) o file:// sin preload: guarda en localStorage.
 (function () {
   if (window.api) return;
+  // Sobre versionado: {app:'cal13', v:1, savedAt, data:{...}}.
+  // La app (renderer) sigue viendo solo el JSON de DATA: este borde envuelve
+  // al guardar y desenvuelve al cargar. Legado (sin sobre) pasa tal cual.
+  // Misma convencion en main.js (data:load/data:save) para Electron.
+  var isEnvelope = function (o) {
+    return o && typeof o === 'object' && o.app === 'cal13' && typeof o.v === 'number' && ('data' in o);
+  };
+  var wrapData = function (json) {
+    try {
+      var o = JSON.parse(json);
+      if (isEnvelope(o)) return json;
+      return JSON.stringify({ app: 'cal13', v: 1, savedAt: new Date().toISOString(), data: o });
+    } catch (e) { return json; }
+  };
+  var unwrapData = function (stored) {
+    if (!stored) return '{}';
+    try {
+      var o = JSON.parse(stored);
+      if (isEnvelope(o)) return JSON.stringify(o.data === undefined ? {} : o.data);
+      return stored;
+    } catch (e) { return stored; }
+  };
   window.api = {
     openExternal: async (url) => { try { window.open(url, '_blank', 'noopener,noreferrer'); return true; } catch { window.location.href = url; return false; } },
     loadData: async () => {
-      try { return localStorage.getItem('cal13-data') || '{}'; } catch { return '{}'; }
+      // IndexedDB primero (cuota amplia, asíncrono); localStorage como fallback.
+      try {
+        if (window.cal13idb) return unwrapData(await window.cal13idb.get('cal13-data') || '{}');
+      } catch {}
+      try { return unwrapData(localStorage.getItem('cal13-data') || '{}'); } catch { return '{}'; }
     },
     saveData: async (json) => {
-      try { localStorage.setItem('cal13-data', json); return true; } catch { return false; }
+      var wrapped = wrapData(json);
+      try {
+        if (window.cal13idb) { await window.cal13idb.set('cal13-data', wrapped); return true; }
+      } catch {}
+      try { localStorage.setItem('cal13-data', wrapped); return true; } catch { return false; }
     },
     dataPath: async () => 'Guardado en este navegador (almacenamiento local)',
     exportPDF: async (html) => {

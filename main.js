@@ -28,8 +28,8 @@ function createWindow() {
   win = new BrowserWindow({
     width: 1360,
     height: 900,
-    minWidth: 1100,
-    minHeight: 700,
+    minWidth: 380,
+    minHeight: 640,
     backgroundColor: '#0b1026',
     show: false,
     title: 'Calendario de las 13 Lunas · Mari Küla Küyen',
@@ -66,17 +66,41 @@ app.on('window-all-closed', () => app.quit());
 
 const dataFile = () => path.join(app.getPath('userData'), 'calendario-data.json');
 
+function isEnvelope(o) {
+  return o && typeof o === 'object' && o.app === 'cal13' && typeof o.v === 'number' && ('data' in o);
+}
+
 ipcMain.handle('data:load', async () => {
+  // Desenvuelve el sobre versionado (ver web-api.js); legado pasa tal cual.
   try {
-    return fs.readFileSync(dataFile(), 'utf8');
+    const raw = fs.readFileSync(dataFile(), 'utf8');
+    try {
+      const o = JSON.parse(raw);
+      if (isEnvelope(o)) return JSON.stringify(o.data === undefined ? {} : o.data);
+    } catch {}
+    return raw;
   } catch {
     return '{}';
   }
 });
 
 ipcMain.handle('data:save', async (_e, json) => {
+  // Escritura atomica: tmp + rename, conservando una copia .bak del ultimo
+  // guardado bueno. Si el JSON es un sobre versionado (ver web-api.js),
+  // se valida antes de tocar el archivo estable.
   try {
-    fs.writeFileSync(dataFile(), json, 'utf8');
+    const str = String(json);
+    try {
+      const o = JSON.parse(str);
+      if (o && typeof o === 'object' && o.app === 'cal13' && !('data' in o)) return false;
+    } catch {}
+    const file = dataFile();
+    const tmp = file + '.tmp';
+    fs.writeFileSync(tmp, str, 'utf8');
+    try {
+      if (fs.existsSync(file)) fs.copyFileSync(file, file + '.bak');
+    } catch {}
+    fs.renameSync(tmp, file);
     return true;
   } catch {
     return false;
@@ -97,7 +121,18 @@ ipcMain.handle('donate:load', async () => {
   }
 });
 
+function isHttpUrl(u) {
+  try {
+    const p = new URL(String(u)).protocol;
+    return p === 'http:' || p === 'https:';
+  } catch {
+    return false;
+  }
+}
+
 ipcMain.handle('openExternal', async (_e, url) => {
+  // Lista blanca: solo http(s). Bloquea file:, javascript:, data:, etc.
+  if (!isHttpUrl(url)) return false;
   try { await shell.openExternal(url); return true; } catch { return false; }
 });
 
@@ -176,7 +211,10 @@ ipcMain.handle('shortcut:create', async (_e, pngB64) => {
       `$s.Description='Calendario de las 13 Lunas - Mari Kula Kuyen'`,
       '$s.Save()'
     ].join('; ');
-    const r = spawnSync('powershell.exe', ['-NoProfile', '-ExecutionPolicy', 'Bypass', '-Command', ps], { windowsHide: true });
+    // Sin interpolacion en la linea de comandos: el script viaja en Base64
+    // (UTF-16LE, -EncodedCommand), asi ninguna ruta puede romper el quoting.
+    const encoded = Buffer.from(ps, 'utf16le').toString('base64');
+    const r = spawnSync('powershell.exe', ['-NoProfile', '-ExecutionPolicy', 'Bypass', '-EncodedCommand', encoded], { windowsHide: true });
     if (r.status !== 0 || !fs.existsSync(lnk)) {
       return { ok: false, error: (r.stderr || '').toString().slice(0, 300) || 'No se pudo crear el acceso directo' };
     }

@@ -4,9 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#0b1026">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; font-src 'self'; connect-src 'self' https://api.open-meteo.com https://air-quality-api.open-meteo.com; object-src 'none'; base-uri 'self'; form-action 'self'">
   <title>Calendario de las 13 Lunas</title>
   <link rel="stylesheet" href="styles.css?v=12">
   <link rel="manifest" href="manifest.json">
+  <link rel="preconnect" href="https://api.open-meteo.com">
+  <link rel="preconnect" href="https://air-quality-api.open-meteo.com">
   <style>
     /* Pantalla de carga: se pinta al instante, sin esperar los scripts. */
     #bootSplash{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;background:#0b1026;transition:opacity .35s ease}
@@ -140,7 +143,7 @@
           <button id="btnMenstrual" class="btn" data-sub="ciclos" data-keywords="ciclo menstrual periodo fertil ovulacion mujer">🌸 Ciclo</button>
           <span class="sub-label" data-sub="cuidado">🛟 Cuidado</span>
           <button id="btnMedic" class="btn" data-sub="cuidado" data-keywords="medicina medicamento hierba matico natural basica botiquin historia seguridad alergia dosis">🌿 Medicina</button>
-          <button id="btnGym" class="btn" data-sub="cuidado" data-keywords="entrenamientos gym gimnasio terapia fisica fisioterapia calistenia practicas varias rutina ejercicio movilidad kine casa playa bosque multicancha plaza parque costanera piscina lugar">💪 Entrenamientos</button>
+          <button id="btnGym" class="btn" data-sub="cuidado" data-keywords="entrenamientos gym gimnasio terapia fisica fisioterapia calistenia practicas varias rutina ejercicio movilidad kine casa playa bosque multicancha plaza parque costanera lugar">💪 Entrenamientos</button>
           <button id="btnNutri" class="btn" data-sub="cuidado" data-keywords="nutricion nutrición comer sano plato saludable dieta vitaminas minerales proteinas fibra agua sellos menu alimentacion">🥗 Nutrición</button>
           <button id="btnNatacion" class="btn" data-sub="cuidado" data-keywords="natacion nadar nado piscina pileta mar playa flotar flotacion respiracion crol espalda pecho mariposa corriente retorno ahogamiento seguridad agua traje boya aprender clases calambre hipotermia">🏊 Natación</button>
         </div>
@@ -2896,36 +2899,139 @@
         <h3 style="margin:0;color:var(--accent)">💪 Entrenamientos</h3>
         <button type="button" id="gymCloseTop" class="btn btn-icon" title="Cerrar" aria-label="Cerrar">✕</button>
       </div>
-      <p class="muted" style="line-height:1.5">Planifica <b>Gym, Terapia física, Calistenia y Prácticas varias</b> con <b>sugerencias según edad</b> y ahora también <b>por lugar</b>: 🏠 Casa, 🏋️ Gimnasio, 🏖️ Playa, 🌲 Bosque, 🏟️ Multicancha, 🌳 Plaza/Parque, 🚴 Costanera y más. Todo queda <b>privado y local</b> por usuario. Toca una sugerencia para cargarla y agrégala al calendario semanal.</p>
+      <p class="muted" style="line-height:1.5">Elige cómo empezar: <b>1) crea tu plan</b> ✨, <b>2) prueba una idea</b> 🔍 o <b>3) anota tu rutina</b> ➕. Todo queda <b>privado y local</b> por usuario.</p>
       <div class="timer-tabs" style="margin-bottom:8px;flex-wrap:wrap" title="Filtrar por tipo de entrenamiento">
-        <span class="muted" style="font-size:11px;align-self:center">Tipo:</span>
+        <span class="muted" style="font-size:11px;align-self:center">Tipo de idea:</span>
         <button type="button" id="tabGymGym" class="btn btn-accent" style="width:auto">🏋️ Gym</button>
         <button type="button" id="tabGymFisio" class="btn" style="width:auto">🩹 Terapia</button>
         <button type="button" id="tabGymCalis" class="btn" style="width:auto">🤸 Calistenia</button>
         <button type="button" id="tabGymVarias" class="btn" style="width:auto">🌿 Prácticas</button>
       </div>
-      <div class="timer-tabs" style="margin-bottom:8px;flex-wrap:wrap" title="Filtrar por lugar de entrenamiento">
-        <span class="muted" style="font-size:11px;align-self:center">Lugar:</span>
-        <button type="button" id="tabGymPlaceTodos" class="btn btn-accent" style="width:auto;font-size:11px">📍 Todos</button>
-        <button type="button" id="tabGymPlaceCasa" class="btn" style="width:auto;font-size:11px">🏠 Casa</button>
-        <button type="button" id="tabGymPlaceGimnasio" class="btn" style="width:auto;font-size:11px">🏋️ Gimnasio</button>
-        <button type="button" id="tabGymPlacePlaya" class="btn" style="width:auto;font-size:11px">🏖️ Playa</button>
-        <button type="button" id="tabGymPlaceBosque" class="btn" style="width:auto;font-size:11px">🌲 Bosque</button>
-        <button type="button" id="tabGymPlaceMulticancha" class="btn" style="width:auto;font-size:11px">🏟️ Multicancha</button>
-        <button type="button" id="tabGymPlacePlaza" class="btn" style="width:auto;font-size:11px">🌳 Plaza</button>
-        <button type="button" id="tabGymPlaceCostanera" class="btn" style="width:auto;font-size:11px">🚴 Costanera</button>
-        <button type="button" id="tabGymPlacePiscina" class="btn" style="width:auto;font-size:11px">🏊 Piscina</button>
-        <button type="button" id="tabGymPlaceOtro" class="btn" style="width:auto;font-size:11px">📌 Otro</button>
+      <!-- Filtros de lugar y edad: ahora en 2 selects compactos junto a las ideas (PASO 2), sin opción de piscina -->
+      <div class="menstrual-card" style="margin-bottom:10px;border-color:#e8c56a88">
+        <h4 style="color:var(--gold);margin:0 0 4px">✨ PASO 1 — Tu plan en 1 minuto: quién eres y tu objetivo</h4>
+        <p class="muted" style="font-size:11px;line-height:1.5;margin:0 0 8px">Elige <b>quién eres</b>, tu <b>nivel</b> y tu <b>objetivo</b>: te armamos un plan de 1 a 8 semanas con calentamiento, parte principal, cierre y progresión, según tu lugar. 100% local, sin cuentas.</p>
+        <div class="conv-row">
+          <label style="flex:1">Soy
+            <select id="gymPlanAge">
+              <option value="nino69">🧒 6-9 años</option>
+              <option value="nino1012">🧒 10-12 años</option>
+              <option value="nino">🧒 6-12 años</option>
+              <option value="joven1315">🙋 13-15 años</option>
+              <option value="joven1617">🙋 16-17 años</option>
+              <option value="joven">🙋 13-17 años</option>
+              <option value="adulto1829">🧑 18-29 años</option>
+              <option value="adulto3044" selected>🧑 30-44 años</option>
+              <option value="adulto4559">🧑 45-59 años</option>
+              <option value="adulto">🧑 18-59 años</option>
+              <option value="mayor6074">👴 60-74 años</option>
+              <option value="mayor75">👴 75+ años</option>
+              <option value="mayor">👴 60+ años</option>
+            </select>
+          </label>
+          <label style="flex:1">Nivel
+            <select id="gymPlanLevel">
+              <option value="principiante" selected>🌱 Principiante</option>
+              <option value="intermedio">⚡ Intermedio</option>
+              <option value="avanzado">🔥 Avanzado</option>
+            </select>
+          </label>
+          <label style="flex:1">Objetivo
+            <select id="gymPlanGoal">
+              <option value="bajar_peso" selected>🔥 Bajar peso / moverme más</option>
+              <option value="musculo">💪 Ganar músculo / fuerza</option>
+              <option value="movilidad">🤸 Movilidad y salud</option>
+              <option value="calma">🌿 Calma y energía (estrés)</option>
+              <option value="rendimiento">🏃 Rendimiento / deporte</option>
+              <option value="rehab">🩹 Rehab suave (kine)</option>
+            </select>
+          </label>
+        </div>
+        <div class="conv-row">
+          <label style="flex:1">Lugar disponible
+            <select id="gymPlanPlace">
+              <option value="casa" selected>🏠 Casa</option>
+              <option value="gimnasio">🏋️ Gimnasio</option>
+              <option value="playa">🏖️ Playa</option>
+              <option value="bosque">🌲 Bosque</option>
+              <option value="multicancha">🏟️ Multicancha</option>
+              <option value="plaza">🌳 Plaza / Parque</option>
+              <option value="costanera">🚴 Costanera</option>
+              <option value="otro">📌 Otro / mixto</option>
+            </select>
+          </label>
+          <label>Días/sem
+            <select id="gymPlanDays">
+              <option value="2">2 días</option>
+              <option value="3" selected>3 días</option>
+              <option value="4">4 días</option>
+              <option value="5">5 días</option>
+            </select>
+          </label>
+          <label>Min/sesión
+            <select id="gymPlanMins">
+              <option value="15">15′</option>
+              <option value="20">20′</option>
+              <option value="30" selected>30′</option>
+              <option value="45">45′</option>
+              <option value="60">60′</option>
+            </select>
+          </label>
+          <label>Plan para
+            <select id="gymPlanWeeks">
+              <option value="1">1 semana</option>
+              <option value="2">2 semanas</option>
+              <option value="4" selected>4 semanas</option>
+              <option value="8">8 semanas</option>
+            </select>
+          </label>
+          <label>Hora <input type="time" id="gymPlanHour" value="18:00"></label>
+        </div>
+        <div class="dlg-actions" style="justify-content:flex-start;margin:6px 0">
+          <button type="button" id="gymPlanGen" class="btn btn-accent" style="width:auto">✨ Generar mi plan</button>
+          <button type="button" id="gymPlanAdd" class="btn hidden" style="width:auto">📅 Agregar plan a mi calendario</button>
+        </div>
+        <div id="gymPlanOut" class="chip" style="display:block;white-space:normal;font-size:11px;line-height:1.6">Ejemplo: 🧑 30-44 · 🌱 principiante · 🔥 bajar peso · 🏠 casa · 3×30′ · 4 sem → Fullbody + Cardio + Core, con calentamiento, cierre y progresión. Pulsa “Generar mi plan”.</div>
       </div>
-      <div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap" title="Filtrar sugerencias por edad">
-        <span class="muted" style="font-size:11px;align-self:center">Edad:</span>
-        <button type="button" id="tabGymAgeTodos" class="btn btn-accent" style="width:auto;font-size:11px">👥 Todas</button>
-        <button type="button" id="tabGymAgeNino" class="btn" style="width:auto;font-size:11px">🧒 6-12</button>
-        <button type="button" id="tabGymAgeJoven" class="btn" style="width:auto;font-size:11px">🙋 13-17</button>
-        <button type="button" id="tabGymAgeAdulto" class="btn" style="width:auto;font-size:11px">🧑 18-59</button>
-        <button type="button" id="tabGymAgeMayor" class="btn" style="width:auto;font-size:11px">👴 60+</button>
+      <h4 style="color:var(--gold);margin:12px 0 4px">🔍 PASO 2 — Ideas para probar: filtra y toca una tarjeta</h4>
+      <p class="muted" style="font-size:11px;margin:0 0 6px">Arriba elige el <b>tipo</b> (Gym, Terapia, Calistenia, Prácticas). Aquí filtra por <b>lugar</b> y <b>edad</b>. Tocar una tarjeta la carga en el formulario del PASO 3.</p>
+      <div class="conv-row" style="margin-bottom:8px">
+        <label style="flex:1">📍 Lugar
+          <select id="gymPlaceFilter">
+            <option value="todos">📍 Todos</option>
+            <option value="casa">🏠 Casa</option>
+            <option value="gimnasio">🏋️ Gimnasio</option>
+            <option value="playa">🏖️ Playa</option>
+            <option value="bosque">🌲 Bosque</option>
+            <option value="multicancha">🏟️ Multicancha</option>
+            <option value="plaza">🌳 Plaza / Parque</option>
+            <option value="costanera">🚴 Costanera</option>
+            <option value="otro">📌 Otro</option>
+          </select>
+        </label>
+        <label style="flex:1">👥 Edad
+          <select id="gymAge">
+            <option value="todos">👥 Todas</option>
+            <option value="nino69">🧒 6-9</option>
+            <option value="nino1012">🧒 10-12</option>
+            <option value="nino">🧒 6-12</option>
+            <option value="joven1315">🙋 13-15</option>
+            <option value="joven1617">🙋 16-17</option>
+            <option value="joven">🙋 13-17</option>
+            <option value="adulto1829">🧑 18-29</option>
+            <option value="adulto3044">🧑 30-44</option>
+            <option value="adulto4559">🧑 45-59</option>
+            <option value="adulto">🧑 18-59</option>
+            <option value="mayor6074">👴 60-74</option>
+            <option value="mayor75">👴 75+</option>
+            <option value="mayor">👴 60+</option>
+          </select>
+        </label>
       </div>
       <div id="gymSuggestionsBox" class="menstrual-card" style="max-height:240px;overflow-y:auto"></div>
+      <details style="margin-top:10px">
+        <summary style="cursor:pointer;color:var(--gold);font-weight:bold;font-size:13px">➕ PASO 3 — Agregar rutina manual (opcional)</summary>
+        <p class="muted" style="font-size:11px;margin:6px 0">Solo si quieres crear una rutina a mano. Si tocaste una idea arriba, sus datos ya están cargados: elige día/hora y pulsa agregar.</p>
       <div class="conv-row" style="margin-top:10px">
         <label style="flex:2">Rutina <input type="text" id="gymName" placeholder="ej: Push - Pecho/Hombro/Tríceps, Movilidad hombro, Yoga suave" maxlength="50"></label>
         <label>Tipo
@@ -2950,15 +3056,19 @@
       <label>Ejercicios / Detalle (series x reps - peso / descanso) <textarea id="gymExercises" rows="3" placeholder="ej:&#10;Press banca 4x8 60kg 90s&#10;Fondos 3x12 45s&#10;Plancha 3x45s"></textarea></label>
       <div class="conv-row">
         <label style="flex:2">Lugar <input type="text" id="gymPlace" list="gymPlaceList" placeholder="ej: Casa, Gimnasio, Playa, Bosque, Multicancha" maxlength="40"></label>
-        <datalist id="gymPlaceList"><option value="Casa"></option><option value="Gimnasio Penco"></option><option value="Playa Penco"></option><option value="Bosque"></option><option value="Multicancha"></option><option value="Plaza / Parque"></option><option value="Costanera"></option><option value="Piscina"></option><option value="Casa / Patio"></option><option value="Box"></option></datalist>
+        <datalist id="gymPlaceList"><option value="Casa"></option><option value="Gimnasio Penco"></option><option value="Playa Penco"></option><option value="Bosque"></option><option value="Multicancha"></option><option value="Plaza / Parque"></option><option value="Costanera"></option><option value="Casa / Patio"></option><option value="Box"></option></datalist>
         <button type="button" id="gymAdd" class="btn btn-accent" style="width:auto;align-self:flex-end">+ Agregar al calendario</button>
         <button type="button" id="gymUpdate" class="btn hidden" style="width:auto;align-self:flex-end">↻ Actualizar</button>
         <button type="button" id="gymCancel" class="btn hidden" style="width:auto;align-self:flex-end">Cancelar</button>
       </div>
+      <p class="muted" style="font-size:10px;margin:4px 0 0">En Penco no hay piscina pública: usa Casa, Gimnasio, Playa, Bosque, Multicancha, Plaza o Costanera.</p>
+      </details>
+      <h4 style="color:var(--gold);margin:12px 0 4px">📅 Mi semana — hoy y calendario</h4>
       <div id="gymTodayBox" class="menstrual-card" style="margin-top:10px"></div>
-      <div id="gymPlacesBox" class="menstrual-card" style="margin-top:10px"></div>
       <div id="gymWeekGrid" class="schedule-week"></div>
+      <h4 style="color:var(--gold);margin:12px 0 4px">📋 Mis rutinas y progreso</h4>
       <div id="gymList" class="habits-list" style="margin-top:10px"></div>
+      <div id="gymPlacesBox" class="menstrual-card" style="margin-top:10px"></div>
       <div id="gymStatsBox" class="menstrual-card" style="margin-top:10px"></div>
       <div class="dlg-actions"><button type="button" id="gymClose" class="btn">Cerrar</button></div>
     </form>
@@ -4328,6 +4438,7 @@
   </nav>
 
   <script defer src="web-api.js?v=9"></script>
+  <script defer src="storage-idb.js?v=1"></script>
   <script defer src="astro.js?v=8"></script>
   <script defer src="data.js?v=8"></script>
   <script defer src="territorio.js?v=1"></script>
@@ -4418,18 +4529,58 @@
         'qr-codec.js?v=1',
         'qr-sync-modulo.js?v=1',
         'bitacoras-respaldo-modulo.js?v=1',
-        'recetas-naturales-modulo.js?v=1'
+        'recetas-naturales-modulo.js?v=1',
+        'accesibilidad-modulo.js?v=1',
+        'onboarding-modulo.js?v=1',
+        'auto-backup-modulo.js?v=1'
       ];
       var started = false;
-      function seq(i) {
-        if (i >= MODS.length) return;
+      var failedMods = [];
+      function loadOne(src, cb) {
         var s = document.createElement('script');
-        s.src = MODS[i];
+        s.src = src;
         s.async = false;
-        s.onload = function () { seq(i + 1); };
-        s.onerror = function () { seq(i + 1); };
+        s.onload = function () { cb(true); };
+        s.onerror = function () { cb(false); };
         try { document.body.appendChild(s); }
-        catch (e) { setTimeout(function () { seq(i + 1); }, 300); }
+        catch (e) { cb(false); }
+      }
+      // Secuencial a proposito: los modulos se ejecutan en el mismo orden
+      // en que aparecen en MODS (igual que antes). La mejora: un reintento
+      // por modulo ante red inestable y reporte visible de los que fallen.
+      function seq(i) {
+        if (i >= MODS.length) { reportMods(); return; }
+        loadOne(MODS[i], function (ok) {
+          if (ok) { seq(i + 1); return; }
+          setTimeout(function () {
+            loadOne(MODS[i], function (ok2) {
+              if (!ok2) failedMods.push(MODS[i]);
+              seq(i + 1);
+            });
+          }, 1000);
+        });
+      }
+      function reportMods() {
+        try {
+          if (!failedMods.length) return;
+          var el = document.getElementById('statusMsg');
+          if (!el) return;
+          el.innerHTML = '';
+          var t = document.createElement('span');
+          t.textContent = '⚠ ' + failedMods.length + ' módulo(s) no cargaron (' +
+            failedMods.map(function (m) { return m.split('?')[0]; }).join(', ') + '). ';
+          var b = document.createElement('button');
+          b.className = 'btn'; b.style.width = 'auto'; b.textContent = '↻ Reintentar';
+          b.onclick = function () {
+            var retry = failedMods.slice(); failedMods = [];
+            el.textContent = 'Reintentando módulos…';
+            (function next(k) {
+              if (k >= retry.length) { reportMods(); return; }
+              loadOne(retry[k], function (ok) { if (!ok) failedMods.push(retry[k]); next(k + 1); });
+            })(0);
+          };
+          el.appendChild(t); el.appendChild(b);
+        } catch (e) {}
       }
       function kick() { if (started) return; started = true; seq(0); }
       try {
@@ -4485,8 +4636,39 @@
     } catch (e) {}
     // Service Worker solo en web http(s). En Electron (file://) se omite:
     // el calendario abre local sin depender de caché ni internet.
+    // Si hay una version nueva del SW, se avisa con boton (el SW ya atiende SKIP_WAITING).
     if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
-      window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').then((reg) => {
+          try {
+            reg.addEventListener('updatefound', () => {
+              const nw = reg.installing;
+              if (!nw) return;
+              nw.addEventListener('statechange', () => {
+                try {
+                  if (nw.state === 'installed' && navigator.serviceWorker.controller) {
+                    const el = document.getElementById('statusMsg');
+                    if (!el || document.getElementById('swUpdateBtn')) return;
+                    const b = document.createElement('button');
+                    b.id = 'swUpdateBtn';
+                    b.className = 'btn btn-accent'; b.style.width = 'auto';
+                    b.textContent = '⬆ Nueva versión disponible — actualizar';
+                    b.onclick = () => { try { nw.postMessage({ type: 'SKIP_WAITING' }); } catch (e) {} };
+                    el.appendChild(b);
+                  }
+                } catch (e) {}
+              });
+            });
+          } catch (e) {}
+        }).catch(() => {});
+        try {
+          let reloaded = false;
+          navigator.serviceWorker.addEventListener('controllerchange', () => {
+            if (reloaded) return; reloaded = true;
+            window.location.reload();
+          });
+        } catch (e) {}
+      });
     }
   </script>
 </body>

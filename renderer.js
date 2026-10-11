@@ -274,9 +274,12 @@ function currentCycleYear() { return cycle.year; }
 function scheduleSave(msg) {
   clearTimeout(saveTimer);
   saveTimer = setTimeout(async () => {
-    await window.api.saveData(JSON.stringify(DATA));
-    $('statusMsg').textContent = msg || 'Guardado ✓';
-    setTimeout(() => { $('statusMsg').textContent = ''; }, 1800);
+    let ok = false;
+    try { ok = await window.api.saveData(JSON.stringify(DATA)); } catch (e) { ok = false; }
+    // ok===false: el borde rechazo el guardado (disco lleno, dato malformado).
+    // No decir "Guardado" en ese caso: el archivo anterior sigue intacto.
+    $('statusMsg').textContent = ok ? (msg || 'Guardado ✓') : '⚠ No se pudo guardar (reintenta; tus datos anteriores siguen intactos)';
+    setTimeout(() => { $('statusMsg').textContent = ''; }, ok ? 1800 : 5000);
   }, 400);
 }
 
@@ -8064,13 +8067,24 @@ const TRAINING_CATS = {
   varias: { label:'Prácticas varias', icon:'🌿', color:'#e8c56a' }
 };
 const TRAINING_AGE_GROUPS = {
-  todos: { label:'Todas', icon:'👥' },
-  nino: { label:'6-12 años', icon:'🧒' },
-  joven: { label:'13-17 años', icon:'🙋' },
-  adulto: { label:'18-59 años', icon:'🧑' },
-  mayor: { label:'60+ años', icon:'👴' }
+  todos: { label:'Todas', icon:'👥', fam:'todos' },
+  nino69: { label:'6-9 años', icon:'🧒', fam:'nino' },
+  nino1012: { label:'10-12 años', icon:'🧒', fam:'nino' },
+  nino: { label:'6-12 años', icon:'🧒', fam:'nino' },
+  joven1315: { label:'13-15 años', icon:'🙋', fam:'joven' },
+  joven1617: { label:'16-17 años', icon:'🙋', fam:'joven' },
+  joven: { label:'13-17 años', icon:'🙋', fam:'joven' },
+  adulto1829: { label:'18-29 años', icon:'🧑', fam:'adulto' },
+  adulto3044: { label:'30-44 años', icon:'🧑', fam:'adulto' },
+  adulto4559: { label:'45-59 años', icon:'🧑', fam:'adulto' },
+  adulto: { label:'18-59 años', icon:'🧑', fam:'adulto' },
+  mayor6074: { label:'60-74 años', icon:'👴', fam:'mayor' },
+  mayor75: { label:'75+ años', icon:'👴', fam:'mayor' },
+  mayor: { label:'60+ años', icon:'👴', fam:'mayor' }
 };
-// === ENTRENAMIENTOS POR LUGAR (mantiene tipos actuales + filtro por lugar) ===
+// Familia de edad: los grupos finos heredan las sugerencias de su familia (nino/joven/adulto/mayor).
+function gymAgeFam(tag){ const g=TRAINING_AGE_GROUPS[tag||'todos']; return (g&&g.fam)||tag||'todos'; }
+// === ENTRENAMIENTOS POR LUGAR (sin piscina: en Penco no hay piscina pública) ===
 const TRAINING_PLACES = {
   todos: { label:'Todos', icon:'📍', keys:[] },
   casa: { label:'Casa', icon:'🏠', keys:['casa','hogar','depto','departamento','living','pieza','patio casa','dormitorio','cocina'] },
@@ -8080,7 +8094,6 @@ const TRAINING_PLACES = {
   multicancha: { label:'Multicancha', icon:'🏟️', keys:['multicancha','cancha','estadio','futbol','fútbol','baby','basquet','voley','tenis'] },
   plaza: { label:'Plaza/Parque', icon:'🌳', keys:['plaza','parque','calistenia','patio','juego','plaza penco'] },
   costanera: { label:'Costanera', icon:'🚴', keys:['costanera','bici','ciclovia','ciclovía','trote','running','skate','lirquen','lirquén'] },
-  piscina: { label:'Piscina', icon:'🏊', keys:['piscina','pileta','nado','nadar','agua'] },
   otro: { label:'Otro', icon:'📌', keys:[] }
 };
 function gymNorm(s){ return (s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,''); }
@@ -8156,7 +8169,7 @@ const TRAINING_SUGGESTIONS = {
     { name:'🙋 Yoga dinámico + bici 13-17', exercises:'Saludo sol 5x\nGuerrero I-II 2x30s\nBici/skate 20′\n5′ respiración 4-6 anti-estrés prueba', place:'Casa / Costanera', color:'#e8c56a', edad:'joven' },
     { name:'🙋 Respiración examen + stretch', exercises:'Caja 4-4-4-4 5′\nCuello/hombros 5′\nIsquios 2x30s\nCaminata 10′ sin pantalla', place:'Casa', color:'#f0d488', edad:'joven' },
     { name:'🧑 Pilates core 25′', exercises:'Hundred 1x100\nRoll-up 3x8\nSingle leg stretch 3x10 lado\nPuente 3x12\nTeaser progresión 3x5', place:'Casa / Mat', color:'#e8c56a', edad:'adulto' },
-    { name:'🧑 Nado / bici suave 40′', exercises:'Nado o bici 30′ ritmo que permite hablar\nMovilidad hombro/cadera 5′\nRespiración 5-5 5′', place:'Piscina / Costanera', color:'#e8c56a', edad:'adulto' },
+    { name:'🧑 Nado / bici suave 40′', exercises:'Bici 30′ ritmo que permite hablar (o nado si viajas fuera de Penco)\nMovilidad hombro/cadera 5′\nRespiración 5-5 5′', place:'Costanera', color:'#e8c56a', edad:'adulto' },
     { name:'👴 Tai chi / chi kung 20′', exercises:'Abrir-cerrar 5′\nNube manos 3x8 lado\nGruya-pájaro suave 5′\nRespiración 4-6 5′\nApoyo silla si hay mareo', place:'Casa / Plaza', color:'#f0d488', edad:'mayor' },
     { name:'👴 Caminata + elongación 30′', exercises:'Caminata 20′ ritmo cómodo + bastón si hace falta\nTobillo/cadera 5′\nRespiración + sol mañana\nLleva agua + celu + avisa ruta', place:'Barrio / Playa', color:'#f0d488', edad:'mayor' },
     { name:'🏠 Casa exprés 15′ sin material', exercises:'Sentadilla 3x15\nFlexiones rodillas 3x10\nPuente glúteo 3x12\nPlancha 3x20s\nEstiramiento 3′ final — ideal lluvia/frío', place:'Casa', color:'#e8c56a', edad:'todos' },
@@ -8174,6 +8187,9 @@ function getGymData(){
   if(typeof u.gym.completions!=='object' || Array.isArray(u.gym.completions)) u.gym.completions={};
   // migrar cat faltante
   u.gym.items.forEach(it=>{ if(!it.cat) it.cat='gym'; if(!TRAINING_CATS[it.cat]) it.cat='gym'; });
+  // migración: entrenamientos antiguos en piscina (Penco no tiene) → se conservan como 📌 Otro con su texto original
+  u.gym.items.forEach(it=>{ if(/piscin|pileta/i.test(it.place||'')) it._legacyPool=true; });
+  if(u.gymPlanProfile && u.gymPlanProfile.place==='piscina') u.gymPlanProfile.place='casa';
   return u.gym;
 }
 let gymEditingId=null;
@@ -8189,7 +8205,8 @@ function renderGymSuggestions(cat, age, place){
   const ageF=age||gymCurrentAge||'todos';
   const placeF=place||gymCurrentPlace||'todos';
   const all=TRAINING_SUGGESTIONS[cat]||[];
-  let list= ageF==='todos' ? all.slice() : all.filter(s=> (s.edad||'todos')===ageF || (s.edad||'todos')==='todos');
+  const famF=gymAgeFam(ageF);
+  let list= (ageF==='todos'||famF==='todos') ? all.slice() : all.filter(s=>{ const f=gymAgeFam(s.edad||'todos'); return f===famF || f==='todos'; });
   if(placeF!=='todos') list=list.filter(s=> gymPlaceKey(s.place)===placeF);
   const catInfo=TRAINING_CATS[cat];
   const ageInfo=(typeof TRAINING_AGE_GROUPS!=='undefined' && TRAINING_AGE_GROUPS[ageF]) ? TRAINING_AGE_GROUPS[ageF] : { label:'Todas', icon:'👥' };
@@ -8233,7 +8250,7 @@ function renderGymPlacesBox(){
   const box=$('gymPlacesBox'); if(!box) return;
   const d=getGymData();
   const counts={}; d.items.forEach(it=>{ const k=gymPlaceKey(it.place); counts[k]=(counts[k]||0)+1; });
-  const order=['casa','gimnasio','playa','bosque','multicancha','plaza','costanera','piscina','otro'];
+  const order=['casa','gimnasio','playa','bosque','multicancha','plaza','costanera','otro'];
   box.innerHTML='<h4 style="color:var(--gold)">📍 Entrenamientos por lugar</h4><div style="display:flex;gap:6px;flex-wrap:wrap">'
     + order.map(k=>{ const p=TRAINING_PLACES[k]; const c=counts[k]||0; return `<span class="chip" style="font-size:11px">${p.icon} ${p.label} (${c})</span>`; }).join('')
     + `</div><p class="muted" style="font-size:10px;margin:6px 0 0">Usa el filtro <b>Lugar</b> de arriba para ver solo esas rutinas. Tus lugares se detectan solos desde el texto (ej: “Playa Penco” → 🏖️ Playa).</p>`;
@@ -8267,7 +8284,7 @@ function renderGymList(){
   box.innerHTML=`<h4 style="color:var(--gold)">${title} — ${sorted.length}</h4>`+sorted.map(it=>{
     const cat=TRAINING_CATS[it.cat]||TRAINING_CATS.gym;
     const pk=gymPlaceKey(it.place); const pl=TRAINING_PLACES[pk]||TRAINING_PLACES.otro;
-    return `<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center"><span><b style="color:${it.color}">${cat.icon}</b> <span class="chip" style="font-size:10px;background:${cat.color};color:#10142c">${cat.label}</span> <span class="chip" style="font-size:10px">${pl.icon} ${pl.label}</span> <b>${escapeHtml(it.name)}</b> — ${['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'][it.day]} ${it.start}–${it.end} ${it.place? '· '+escapeHtml(it.place):''}<br><span class="muted" style="font-size:11px">${escapeHtml((it.exercises||'').split('\n')[0]||'')}</span></span><span style="display:flex;gap:6px"><button data-id="${it.id}" class="btn gym-edit" style="width:auto;font-size:11px">✏️</button><button data-id="${it.id}" class="btn gym-del" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕</button></span></div>`;
+    return `<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center"><span><b style="color:${it.color}">${cat.icon}</b> <span class="chip" style="font-size:10px;background:${cat.color};color:#10142c">${cat.label}</span> <span class="chip" style="font-size:10px">${pl.icon} ${pl.label}</span> <b>${escapeHtml(it.name)}</b> — ${['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'][it.day]} ${it.start}–${it.end} ${it.place? '· '+escapeHtml(it.place):''}${it._legacyPool?'<br><span class="muted" style="font-size:10px">🏊 Antes era piscina (en Penco no hay): edítala y cámbiale el lugar</span>':''}<br><span class="muted" style="font-size:11px">${escapeHtml((it.exercises||'').split('\n')[0]||'')}</span></span><span style="display:flex;gap:6px"><button data-id="${it.id}" class="btn gym-edit" style="width:auto;font-size:11px">✏️</button><button data-id="${it.id}" class="btn gym-del" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕</button></span></div>`;
   }).join('');
   box.querySelectorAll('.gym-edit').forEach(b=> b.onclick=()=>{
     const it=d.items.find(x=>x.id===b.dataset.id); if(!it) return;
@@ -8294,6 +8311,233 @@ function renderGymStatsBox(){
   const placeTxt=Object.entries(byPlace).map(([k,c])=>`${(TRAINING_PLACES[k]||TRAINING_PLACES.otro).icon} ${c}`).join(' · ') || '0';
   box.innerHTML='<h4 style="color:var(--accent)">📊 Progreso</h4><div class="habit-stats"><span>Hoy: '+todayDone+' completadas</span><span>Esta semana: '+weekDone+' días</span><span>Total: '+d.items.length+' ('+catTxt+')</span><span>Por lugar: '+placeTxt+'</span></div>';
 }
+// === PLAN DE ENTRENAMIENTO SEGÚN QUIÉN ERES + OBJETIVO (local, sin cuentas) ===
+const GYM_PLAN_GOALS = {
+  bajar_peso: { label:'Bajar peso / moverme más', icon:'🔥' },
+  musculo: { label:'Ganar músculo / fuerza', icon:'💪' },
+  movilidad: { label:'Movilidad y salud', icon:'🤸' },
+  calma: { label:'Calma y energía', icon:'🌿' },
+  rendimiento: { label:'Rendimiento / deporte', icon:'🏃' },
+  rehab: { label:'Rehab suave', icon:'🩹' }
+};
+const GYM_PLAN_PLACE_NAME = { casa:'Casa', gimnasio:'Gimnasio Penco', playa:'Playa Penco', bosque:'Bosque', multicancha:'Multicancha', plaza:'Plaza / Parque', costanera:'Costanera', otro:'Casa' };
+const GYM_PLAN_LEVELS = { principiante:'🌱 Principiante', intermedio:'⚡ Intermedio', avanzado:'🔥 Avanzado' };
+function gymPlanDaySet(n){
+  n=parseInt(n)||3;
+  if(n<=2) return [1,4];
+  if(n===3) return [1,3,5];
+  if(n===4) return [1,2,4,5];
+  return [1,2,3,4,5];
+}
+function gymPlanAddMin(t, mins){
+  try{ const [h,m]=String(t||'18:00').split(':').map(Number); const d=new Date(2000,0,1,h||18,m||0); d.setMinutes(d.getMinutes()+(parseInt(mins)||30)); return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'); }catch(e){ return t||'18:30'; }
+}
+function gymPlanBaseSessions(goal, age){
+  // Sesiones base (ritmo intermedio ~30'). Se adaptan por nivel/minutos/edad/lugar abajo.
+  // Base OMS/ACSM: cada sesión trae calentamiento + parte principal + vuelta a la calma.
+  const fam=gymAgeFam(age);
+  if(fam==='nino'){
+    const k=[
+      { name:'🧒 Juego + fuerza mini-atletas', cat:'calistenia', color:'#a9d18e', ex:'Pilla-pilla 5′\nSentadilla sin peso 2x12\nFlexiones pared 2x10\nSalto estrella 2x10\nEquilibrio 1 pie 2x20s lado' },
+      { name:'🧒 Baile + coordinación', cat:'varias', color:'#e8c56a', ex:'Bailar 5′\nCongelados 3 rondas\nCangrejo 2x10m\nOso 2x10m\nRespirar como león 5x' },
+      { name:'🧒 Postura + core jugando', cat:'fisio', color:'#7ab8ff', ex:'Ángel pared 2x10\nSuperman 2x10\nPlancha 2x15s\nMarcha punta-talón 2x10m\nElongar jugando 5′' },
+      { name:'🧒 Parque + trepar seguro', cat:'calistenia', color:'#a9d18e', ex:'Colgado barra baja 3x15s\nSalto rana 2x8\nGateo oso 2x10m\nTrote juego 5′' },
+      { name:'🧒 Yoga cuento + calma', cat:'varias', color:'#e8c56a', ex:'Árbol 2x20s lado\nCobra 3x15s\nPerro boca abajo 3x20s\nAvión-guerrero 2x20s\nCuento + respiración 5′' }
+    ];
+    if(goal==='musculo') return [k[0],k[3],k[2],k[1],k[4]];
+    if(goal==='rehab'||goal==='movilidad') return [k[2],k[4],k[1],k[0],k[3]];
+    if(goal==='calma') return [k[4],k[1],k[2],k[0],k[3]];
+    if(goal==='rendimiento') return [k[3],k[0],k[1],k[2],k[4]];
+    return [k[0],k[1],k[2],k[3],k[4]];
+  }
+  if(fam==='mayor'){
+    const m=[
+      { name:'👴 Fuerza huesos + silla', cat:'gym', color:'#d9a0ff', ex:'Sentarse/pararse silla 2x8\nFlexiones pared 2x10\nElevación talones 2x12\nMarcha talón-punta 2x10m' },
+      { name:'👴 Caminata + elongación', cat:'varias', color:'#f0d488', ex:'Caminata 20′ ritmo cómodo\nTobillo/cadera 5′\nRespiración 4-6 5′\nLleva agua + avisa ruta' },
+      { name:'👴 Equilibrio anti-caídas', cat:'fisio', color:'#a8c8ff', ex:'Apoyo silla: talón-punta 2x10\n1 pierna con apoyo 2x20s lado\nMarcha lateral 2x8\nSentarse/pararse 2x8' },
+      { name:'👴 Tai chi suave', cat:'varias', color:'#f0d488', ex:'Abrir-cerrar 5′\nNube manos 3x8 lado\nMovimiento grulla suave 5′\nRespiración 4-6 5′' },
+      { name:'👴 Articulaciones suaves', cat:'fisio', color:'#a8c8ff', ex:'Bici sin carga 10′\nCuádriceps isométrico 3x10s\nCírculos muñeca/hombro 2x10\nCalor suave 10′ antes si indica kine' }
+    ];
+    if(goal==='musculo') return [m[0],m[2],m[4],m[1],m[3]];
+    if(goal==='bajar_peso') return [m[1],m[0],m[3],m[2],m[4]];
+    if(goal==='rendimiento') return [m[1],m[0],m[2],m[3],m[4]];
+    if(goal==='calma') return [m[3],m[1],m[4],m[2],m[0]];
+    if(goal==='rehab') return [m[4],m[2],m[3],m[0],m[1]];
+    return [m[2],m[0],m[1],m[3],m[4]];
+  }
+  if(goal==='musculo') return [
+    { name:'Push — Pecho/Hombro/Tríceps', cat:'gym', color:'#e76e8a', ex:'Press banca o flexiones 4x8\nFondos 3x10\nPress hombro 3x10\nPlancha 3x40s · descanso 90s' },
+    { name:'Pull — Espalda/Bíceps', cat:'gym', color:'#e76e8a', ex:'Dominadas o remo mochila 4x8\nRemo barra/polea 4x8\nCurl 3x12\nFace pull o banda 3x15' },
+    { name:'Piernas — Cuádriceps/Glúteo', cat:'gym', color:'#e76e8a', ex:'Sentadilla 4x10\nPeso muerto rumano 3x10\nZancadas 3x10 lado\nGemelos 3x15' },
+    { name:'Fullbody + Core', cat:'calistenia', color:'#a9d18e', ex:'Sentadilla 3x15\nFlexiones 3x10\nRemo 3x12\nPlancha lateral 3x30s lado' },
+    { name:'Funcional + Movilidad', cat:'varias', color:'#e8c56a', ex:'Swing o puente 4x15\nGoblet 3x12\nPress 1 brazo 3x8 lado\nMovilidad cadera 5′' }
+  ];
+  if(goal==='movilidad') return [
+    { name:'Movilidad total 30′', cat:'fisio', color:'#7ab8ff', ex:'Gato-camello 3x8\nÁngel pared 3x10\nCadera 90/90 2x8 lado\nTobillo contra pared 2x10 lado' },
+    { name:'Yoga suave', cat:'varias', color:'#e8c56a', ex:'Saludo al sol 5x\nGuerrero II 3x30s lado\nTriángulo 3x30s\nSavasana 3′ + respiración 4-6' },
+    { name:'Core suave + Caminata', cat:'fisio', color:'#7ab8ff', ex:'Bird-dog 3x8 lado\nPuente 3x12\nPlancha 3x25s\nCaminata 15′ ritmo que permite hablar' },
+    { name:'Hombro + Cadera', cat:'fisio', color:'#7ab8ff', ex:'Rotación externa banda 3x12\nPéndulo 2x1′\nPuente 1 pierna 3x8 lado\nEstiramiento pectoral 2x30s' },
+    { name:'Caminata + Elongación', cat:'varias', color:'#e8c56a', ex:'Caminata 25′\nIsquios 2x30s lado\nCuádriceps 2x30s\nRespiración 5-5 5′' }
+  ];
+  if(goal==='calma') return [
+    { name:'Respiración + Movilidad', cat:'varias', color:'#f0d488', ex:'Respiración caja 4-4-4-4 5′\nMovilidad cuello/hombros 5′\nGato-camello 3x8\nCaminata 10′ sin pantalla' },
+    { name:'Yoga suave anti-estrés', cat:'varias', color:'#e8c56a', ex:'Saludo sol 4x lento\nPostura niño 3x1′\nPiernas en pared 3′\nRespiración 4-7-8 x4' },
+    { name:'Caminata consciente', cat:'varias', color:'#e8c56a', ex:'Caminata 25′ (3 pasos inhala / 4 exhala)\nPausa mirador 3′\nElongación suave 5′' },
+    { name:'Tai chi / Chi kung', cat:'varias', color:'#f0d488', ex:'Abrir-cerrar 5′\nNube manos 3x8 lado\nBalanceo suave 5′\nRespiración 4-6 5′' },
+    { name:'Estiramiento full + Core suave', cat:'fisio', color:'#7ab8ff', ex:'Cuello/hombros 3′\nIsquios 2x30s\nPuente 2x12\nPlancha 2x25s + respiración 5′' }
+  ];
+  if(goal==='rendimiento') return [
+    { name:'Fuerza street', cat:'calistenia', color:'#8fc178', ex:'Dominadas o australian 4x8\nFondos 4x10\nSentadilla salto 3x8\nHollow 3x20s' },
+    { name:'HIIT 25′', cat:'gym', color:'#ff9a76', ex:'Calentar 5′\n6x (30s fuerte / 90s trote)\nPlancha 3x30s + elongar 5′' },
+    { name:'Core + Piernas potencia', cat:'calistenia', color:'#a9d18e', ex:'Búlgara 3x10 lado\nPuente 1 pierna 3x8 lado\nPlancha lateral 3x30s\nSkipping 4x30s' },
+    { name:'Funcional 30′', cat:'gym', color:'#ff9a76', ex:'Circuito 4 rondas: 10 sentadillas + 8 flexiones + 10 zancadas + 20 skipping\nDescanso 90s entre rondas' },
+    { name:'Fondo aeróbico', cat:'varias', color:'#e8c56a', ex:'Trote/bici 30′ ritmo que permite hablar\nMovilidad cadera 5′\nRespiración 5-5 5′' }
+  ];
+  if(goal==='rehab') return [
+    { name:'Movilidad suave general', cat:'fisio', color:'#7ab8ff', ex:'Círculos hombro 2x10\nFlexo-extensión codo suave 2x10\nGato-camello 2x8\nRespiración diafragmática 5′ · SIN dolor' },
+    { name:'Lumbar + Core suave', cat:'fisio', color:'#7ab8ff', ex:'Bird-dog 2x8 lado\nPuente 2x10\nPlancha pared 2x20s\nCaminata 10′ · para si hay dolor agudo' },
+    { name:'Equilibrio + Marcha', cat:'fisio', color:'#a8c8ff', ex:'Apoyo silla: 1 pierna 2x15s lado\nMarcha talón-punta 2x8m\nSentarse/pararse 2x6\nRespiración 4-6 3′' },
+    { name:'Cuello + Hombro descarga', cat:'fisio', color:'#7ab8ff', ex:'Chin-tuck 2x8\nEstirar trapecio 2x20s lado\nPéndulo 2x1′\nHielo 10′ si hay molestia (según kine)' },
+    { name:'Caminata + Elongación suave', cat:'varias', color:'#f0d488', ex:'Caminata 15′ suave\nIsquios/cuádriceps 2x20s sin rebotes\nRespiración 5-5 5′' }
+  ];
+  // bajar_peso (defecto)
+  return [
+    { name:'Fullbody quema (sin impacto)', cat:'calistenia', color:'#a9d18e', ex:'Sentadilla 3x15\nFlexiones rodillas 3x10\nRemo mochila 3x12\nPuente 3x12 · descanso 45s' },
+    { name:'Cardio suave + Core', cat:'varias', color:'#e8c56a', ex:'Caminata/trote 20′ (puedes hablar)\nPlancha 3x30s\nHollow 3x20s\nElongación 5′' },
+    { name:'Tren inferior + Glúteo', cat:'calistenia', color:'#a9d18e', ex:'Sentadilla 3x15\nZancadas 3x10 lado\nPuente 1 pierna 3x8 lado\nGemelos 3x15' },
+    { name:'Intervalos 20′', cat:'gym', color:'#ff9a76', ex:'Calentar 5′\n6x (30s rápido / 90s suave)\nEnfriar 5′ + estiramiento' },
+    { name:'Movilidad + Caminata recovery', cat:'fisio', color:'#7ab8ff', ex:'Gato-camello 3x8\nBird-dog 3x8 lado\nCaminata 20′ suave\nRespiración 4-6 5′' }
+  ];
+}
+// === Bloque de LUGAR (Penco real): cada sesión suma calentamiento, extra y cierre propios del lugar ===
+const GYM_PLACE_TIP = {
+  casa: { cal:'Marcha en el lugar 2′ + círculos de hombros, cadera y tobillos', extra:'Si tienes banda o mochila con peso, úsala en 1 ejercicio', cierre:'Elonga 5′ + ventila la pieza', log:'Silla firme cerca + botella de agua' },
+  gimnasio: { cal:'Bici o caminadora 5′ suave + movilidad articular', extra:'Si hay máquina libre, haz 1 ejercicio en máquina en vez de peso corporal', cierre:'Elonga 5′ + anota pesos y series', log:'Pide inducción si es tu primera vez + toalla' },
+  playa: { cal:'Camina descalzo 3′ probando la arena + movilidad de tobillos', extra:'Trote en arena firme 5-10′ (la mitad si es arena blanda)', cierre:'Elonga mirando el mar + sacúdete la arena', log:'Bloqueador + agua + bandera verde + avisa a alguien' },
+  bosque: { cal:'Caminata 5′ + tobillos y cadera', extra:'Cuesta suave 5′ o step-up en tronco firme 3x10 lado', cierre:'Respiración 5-5 5′ + deja todo sin rastro', log:'Zapatillas con agarre + agua + celu con carga + avisa tu ruta' },
+  multicancha: { cal:'Trote dando la vuelta a la cancha 5′', extra:'Piques 4x30m o juego (fútbol/básquet) 10′', cierre:'Elonga cuádriceps e isquios 5′', log:'Balón + agua + cuida a otros jugadores' },
+  plaza: { cal:'Caminata 5′ + movilidad de hombros y cadera', extra:'En barras: colgado 3x20s o australian 3x8 (solo si están firmes)', cierre:'Elonga 5′ + respiración', log:'Revisa que fierros y bancas estén firmes y secos' },
+  costanera: { cal:'Trote o bici 5′ suave', extra:'Intervalos 4x (1′ rápido / 2′ suave)', cierre:'Elonga + respiración 5-5', log:'Luz o chaleco si es de noche + agua' },
+  otro: { cal:'Marcha suave 3′ + movilidad articular', extra:'Suma 5′ de caminata a buen paso', cierre:'Elonga 5′ + respiración', log:'Agua + avisa dónde entrenas' }
+};
+// === Guía semanal por OBJETIVO (base: OMS 2020 + ACSM) ===
+const GYM_GOAL_GUIDE = {
+  bajar_peso: 'Meta OMS: 150-300′ aeróbico/sem + fuerza 2 días. Este plan combina ambos; la baja de peso real viene de constancia + comida de verdad + dormir 7-8h.',
+  musculo: 'ACSM fuerza: novato 2-3 días/sem, intermedio 3-4. 8-12 reps por serie (10-15 si eres mayor). Sube peso solo 2-10% cuando completes todas las reps con buena técnica.',
+  movilidad: 'Movilidad rinde a diario en dosis cortas: repite el cierre de cada sesión los días libres. Sin rebotes, sin dolor agudo.',
+  calma: 'Calma = sistema nervioso: respira por la nariz, termina siempre con 5′ lentos y evita pantallas 30′ después. 3-4 días/sem bastan.',
+  rendimiento: 'Rinde con 1 día fuerte + 1 día suave alternados y 1 día de descanso total. Primero suma minutos (duración) y después velocidad (intensidad).',
+  rehab: 'Rehab: suave y sin dolor, 2-3 días/sem con descanso entre medio. Esto NO reemplaza kine: si duele >2 días, cojeas o hay hormigueo → CESFAM/kine.'
+};
+function gymPlanPhases(weeks){
+  weeks=[1,2,4,8].includes(parseInt(weeks))? parseInt(weeks) : 4;
+  if(weeks===1) return [{ n:1, t:'Semana única · Base: aprende la técnica y crea el hábito, sin apuro' }];
+  if(weeks===2) return [{ n:1, t:'S1 · Base: haz lo indicado, técnica perfecta' },{ n:2, t:'S2 · Suma: +1 serie por ejercicio o +5′ de aeróbico' }];
+  if(weeks===4) return [{ n:1, t:'S1 · Adapta: la mitad de series si vienes de cero' },{ n:2, t:'S2 · Construye: haz el plan completo' },{ n:3, t:'S3 · Sube: +1 serie o +10% tiempo' },{ n:4, t:'S4 · Descarga: baja 30% y duerme bien' }];
+  return [{ n:1, t:'S1 · Adapta: la mitad de series' },{ n:2, t:'S2 · Construye: plan completo' },{ n:3, t:'S3 · Sube: +1 serie' },{ n:4, t:'S4 · Descarga: baja 30%' },{ n:5, t:'S5 · Construye+: repite S2 con un poco más' },{ n:6, t:'S6 · Sube+: +1 serie o +10% tiempo' },{ n:7, t:'S7 · Pico: tu mejor semana' },{ n:8, t:'S8 · Descarga: baja 40%, celebra y mide tu avance' }];
+}
+function gymPlanAdaptEx(ex, level, mins, placeKey){
+  const tip=GYM_PLACE_TIP[placeKey]||GYM_PLACE_TIP.casa;
+  let main=String(ex||'');
+  if(level==='principiante'){ main=main.replace(/4x/g,'2x'); main+='\nDescansa 60-90s entre series. Para si hay dolor agudo.'; }
+  else if(level==='avanzado'){ main+='\n+ Extra: repite el bloque principal 1x.'; }
+  mins=parseInt(mins)||30;
+  let vol='';
+  if(mins<=20) vol='⏱️ Exprés ('+mins+'′): 1-2 rondas con buena técnica.';
+  else if(mins>=45) vol='⏱️ Sesión larga ('+mins+'′): repite el bloque principal 2x + 10′ caminata.';
+  let t='① Calentar: '+tip.cal+'\n② Principal:\n'+main+'\n+Bloque del lugar: '+tip.extra+'\n③ Cierre: '+tip.cierre+'\n💧 Agua antes-durante-después · 🎒 '+tip.log;
+  if(vol) t+='\n'+vol;
+  return t;
+}
+function buildGymPlan(o){
+  const age=(o.age in TRAINING_AGE_GROUPS)? o.age : 'adulto';
+  const fam=gymAgeFam(age);
+  const goal=(o.goal in GYM_PLAN_GOALS)? o.goal : 'bajar_peso';
+  const level=['principiante','intermedio','avanzado'].includes(o.level)? o.level : 'principiante';
+  const placeKey=(o.place in TRAINING_PLACES && o.place!=='todos')? o.place : 'casa';
+  const placeName=GYM_PLAN_PLACE_NAME[placeKey]||'Casa';
+  const mins=Math.max(10,Math.min(90,parseInt(o.mins)||30));
+  const weeks=[1,2,4,8].includes(parseInt(o.weeks))? parseInt(o.weeks) : 4;
+  const days=gymPlanDaySet(o.days);
+  const hour=String(o.hour||'18:00');
+  const end=gymPlanAddMin(hour, mins);
+  const base=gymPlanBaseSessions(goal, age);
+  const names=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+  const phases=gymPlanPhases(weeks);
+  const phaseTxt='📈 Progresión '+weeks+' sem: '+phases.map(p=>'S'+p.n+'='+(p.t.split('·')[1]||p.t).trim()).join(' · ');
+  const sessions=days.map((d,i)=>{
+    const s=base[i%base.length];
+    return { day:d, dayName:names[d]||'', name:s.name, cat:s.cat, color:s.color, place:placeName, start:hour, end:end, exercises:gymPlanAdaptEx(s.ex, level, mins, placeKey)+'\n'+phaseTxt };
+  });
+  let warn='';
+  if(fam==='nino') warn+='🧒 6-12 (OMS: 60′ de juego activo al día + fuerza/hueso 3 días/sem): siempre con adulto, sin pesas pesadas, juego antes que carga. 6-9: solo juego y técnica; 10-12: puede sumar bandas livianas. ';
+  if(age==='joven1315') warn+='🙋 13-15: sin cargas máximas ni suplementos; técnica + deporte escolar. ';
+  if(age==='joven1617'&&(goal==='musculo'||goal==='rendimiento')&&level!=='principiante') warn+='🙋 16-17: progresa de a poco, 3x/sem máx por grupo muscular, duerme 8-9h. ';
+  if(age==='joven'&&(goal==='musculo'||goal==='rendimiento')&&level==='avanzado') warn+='🙋 13-17: sin cargas máximas; técnica perfecta primero. ';
+  if(age==='adulto4559') warn+='🧑 45-59: calienta el doble (10′) y cuida rodillas/hombros: prefiere técnica y rango completo sin dolor. ';
+  if(fam==='mayor') warn+='👴 60+ (OMS: equilibrio + fuerza 3+ días/sem contra caídas): silla firme cerca, buena luz, avisa tu ruta; ante mareo/dolor detente y consulta CESFAM/kine. ';
+  if(age==='mayor75') warn+='75+: sesiones cortas (15-20′), siempre con apoyo y compañía si es posible. ';
+  if(goal==='rehab') warn+='🩹 Rehab suave: esto NO reemplaza kine. Suave, sin dolor; si duele >2 días, cojeas o hay hormigueo/pérdida de fuerza → CESFAM/kine. ';
+  if(goal==='bajar_peso') warn+='💧 Agua + dormir 7-8h + comida de verdad rinden más que matarse 1 día. ';
+  const g=GYM_PLAN_GOALS[goal], a=TRAINING_AGE_GROUPS[age], p=TRAINING_PLACES[placeKey]||TRAINING_PLACES.casa;
+  const title=a.icon+' '+a.label+' · '+GYM_PLAN_LEVELS[level]+' · '+g.icon+' '+g.label+' · '+p.icon+' '+p.label+' · '+days.length+'×'+mins+'′ · '+weeks+' sem';
+  return { title:title, warn:warn.trim(), guide:GYM_GOAL_GUIDE[goal]||'', phases:phases, sessions:sessions, meta:{age:age,goal:goal,level:level,placeKey:placeKey,mins:mins,hour:hour,weeks:weeks} };
+}
+let gymLastPlan=null;
+function renderGymPlanPreview(plan){
+  const box=$('gymPlanOut'); if(!box) return;
+  if(!plan){ box.textContent='Pulsa “Generar mi plan”.'; return; }
+  const names=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+  let html='<b style="color:var(--gold)">'+escapeHtml(plan.title)+'</b><br>';
+  if(plan.guide) html+='<p class="muted" style="font-size:10px;margin:4px 0">📚 '+escapeHtml(plan.guide)+'</p>';
+  if(plan.phases&&plan.phases.length>1) html+='<p class="muted" style="font-size:10px;margin:4px 0">🗓️ '+plan.phases.map(p=>'S'+p.n+': '+escapeHtml((p.t.split('·')[1]||p.t).trim())).join(' → ')+'</p>';
+  plan.sessions.forEach((s,i)=>{
+    const cat=TRAINING_CATS[s.cat]||TRAINING_CATS.varias;
+    html+='<div class="habit-item" style="margin-top:6px;border-left:3px solid '+s.color+'"><b>'+(i+1)+'. '+names[s.day]+' '+s.start+'–'+s.end+' · '+cat.icon+' '+escapeHtml(s.name)+'</b> <span class="chip" style="font-size:9px">'+escapeHtml(s.place)+'</span><br><span class="muted" style="font-size:11px;white-space:pre-wrap">'+escapeHtml(s.exercises)+'</span></div>';
+  });
+  if(plan.warn) html+='<p class="muted" style="font-size:10px;margin:6px 0 0">⚠️ '+escapeHtml(plan.warn)+'</p>';
+  html+='<p class="muted" style="font-size:10px;margin:6px 0 0">✅ Checklist integral: 💧 agua · 😴 7-8h · 🍲 comida de verdad · 📓 anota cómo te sentiste · 🧘 1 día de descanso total/sem</p>';
+  box.innerHTML=html;
+  const add=$('gymPlanAdd'); if(add) add.classList.remove('hidden');
+}
+function setupGymPlan(){
+  const gen=$('gymPlanGen'); if(!gen) return;
+  // Prefill edad/lugar desde filtros actuales al abrir
+  try{
+    const btn=$('btnGym');
+    if(btn) btn.addEventListener('click', ()=>{
+      setTimeout(()=>{
+        try{
+          const a=$('gymPlanAge'), p=$('gymPlanPlace');
+          if(a && typeof gymCurrentAge!=='undefined' && gymCurrentAge!=='todos' && TRAINING_AGE_GROUPS[gymCurrentAge]) a.value=gymCurrentAge;
+          if(p && typeof gymCurrentPlace!=='undefined' && gymCurrentPlace!=='todos') p.value=gymCurrentPlace;
+          // recupera último perfil guardado
+          try{ const u=(typeof userData==='function'?userData():null); const pr=u&&u.gymPlanProfile; if(pr){ if(a&&pr.age&&TRAINING_AGE_GROUPS[pr.age]) a.value=pr.age; const l=$('gymPlanLevel'); if(l&&pr.level) l.value=pr.level; const g=$('gymPlanGoal'); if(g&&pr.goal) g.value=pr.goal; if(p&&pr.place&&TRAINING_PLACES[pr.place]&&pr.place!=='todos') p.value=pr.place; const d=$('gymPlanDays'); if(d&&pr.days) d.value=String(pr.days); const m=$('gymPlanMins'); if(m&&pr.mins) m.value=String(pr.mins); const h=$('gymPlanHour'); if(h&&pr.hour) h.value=pr.hour; const w=$('gymPlanWeeks'); if(w&&pr.weeks) w.value=String(pr.weeks); } }catch(e){}
+        }catch(e){}
+      },50);
+    });
+  }catch(e){}
+  gen.onclick=()=>{
+    const wEl=$('gymPlanWeeks');
+    const o={ age:$('gymPlanAge').value, level:$('gymPlanLevel').value, goal:$('gymPlanGoal').value, place:$('gymPlanPlace').value, days:$('gymPlanDays').value, mins:$('gymPlanMins').value, hour:$('gymPlanHour').value||'18:00', weeks:wEl?wEl.value:'4' };
+    gymLastPlan=buildGymPlan(o);
+    try{ const u=userData(); u.gymPlanProfile={ age:o.age, level:o.level, goal:o.goal, place:o.place, days:o.days, mins:o.mins, hour:o.hour, weeks:o.weeks }; scheduleSave(); }catch(e){}
+    renderGymPlanPreview(gymLastPlan);
+  };
+  const add=$('gymPlanAdd'); if(add) add.onclick=()=>{
+    if(!gymLastPlan||!gymLastPlan.sessions.length) return alert('Primero genera tu plan ✨');
+    const d=getGymData();
+    const base=Date.now();
+    const wk=(gymLastPlan.meta&&gymLastPlan.meta.weeks)||4;
+    gymLastPlan.sessions.forEach((s,i)=>{
+      d.items.push({ id:'gym'+base+'_'+i, name:s.name+(wk>1?' ('+wk+' sem)':''), cat:s.cat, day:String(s.day), start:s.start, end:s.end, color:s.color, place:s.place, exercises:s.exercises });
+    });
+    scheduleSave(); renderGymList(); renderGymWeekGrid(); renderGymTodayBox(); renderGymStatsBox(); renderGymPlacesBox(); try{ renderLuna(); }catch(e){}
+    add.textContent='✓ Plan agregado ('+gymLastPlan.sessions.length+' rutinas × '+wk+' sem)';
+    setTimeout(()=>{ add.textContent='📅 Agregar plan a mi calendario'; },3000);
+  };
+}
+setTimeout(setupGymPlan, 875);
 function setupGymDialog(){
   const btn=$('btnGym'); if(btn) btn.onclick=()=>{ renderGymSuggestions(gymCurrentTab, gymCurrentAge, gymCurrentPlace); syncGymAgeUI(); syncGymPlaceUI(); renderGymTodayBox(); renderGymPlacesBox(); renderGymWeekGrid(); renderGymList(); renderGymStatsBox(); $('gymDialog').showModal(); };
   const ct=$('gymCloseTop'), cb=$('gymClose'); if(ct) ct.onclick=()=>$('gymDialog').close(); if(cb) cb.onclick=()=>$('gymDialog').close();
@@ -8315,7 +8559,7 @@ function setupGymDialog(){
   Object.entries(ageBtns).forEach(([a,el])=>{ if(el) el.onclick=()=> setAge(a); });
   if(ageSel) ageSel.onchange=()=> setAge(ageSel.value);
   // filtro por lugar (nuevo — no rompe lo anterior)
-  const placeBtns={ todos:$('tabGymPlaceTodos'), casa:$('tabGymPlaceCasa'), gimnasio:$('tabGymPlaceGimnasio'), playa:$('tabGymPlacePlaya'), bosque:$('tabGymPlaceBosque'), multicancha:$('tabGymPlaceMulticancha'), plaza:$('tabGymPlacePlaza'), costanera:$('tabGymPlaceCostanera'), piscina:$('tabGymPlacePiscina'), otro:$('tabGymPlaceOtro') };
+  const placeBtns={ todos:$('tabGymPlaceTodos'), casa:$('tabGymPlaceCasa'), gimnasio:$('tabGymPlaceGimnasio'), playa:$('tabGymPlacePlaya'), bosque:$('tabGymPlaceBosque'), multicancha:$('tabGymPlaceMulticancha'), plaza:$('tabGymPlacePlaza'), costanera:$('tabGymPlaceCostanera'), otro:$('tabGymPlaceOtro') };
   const placeSel=$('gymPlaceFilter');
   window.syncGymPlaceUI=function(){
     Object.entries(placeBtns).forEach(([p,e])=> e && e.classList.toggle('btn-accent', p===gymCurrentPlace));
@@ -8324,16 +8568,26 @@ function setupGymDialog(){
   window.setGymPlace=function(p){ if(!TRAINING_PLACES[p]) p='todos'; gymCurrentPlace=p; syncGymPlaceUI(); renderGymSuggestions(gymCurrentTab, gymCurrentAge, gymCurrentPlace); renderGymPlacesBox(); renderGymWeekGrid(); renderGymList(); };
   Object.entries(placeBtns).forEach(([p,el])=>{ if(el) el.onclick=()=> setGymPlace(p); });
   if(placeSel) placeSel.onchange=()=> setGymPlace(placeSel.value);
+  function gymCheckPool(placeStr){
+    if(/piscin|pileta/i.test(placeStr||'')){
+      return confirm('En Penco no hay piscina pública 🏊‍♂️❌\n¿Igual quieres guardar con ese lugar? (Aceptar = guardar, Cancelar = cámbialo a Casa, Costanera, Playa…)');
+    }
+    return true;
+  }
   const add=$('gymAdd'); if(add) add.onclick=()=>{
     const name=$('gymName').value.trim(); if(!name) return alert('Escribe nombre de rutina');
     const it={ id:'gym'+Date.now(), name, cat:$('gymCategory').value||'gym', day:$('gymDay').value, start:$('gymStart').value, end:$('gymEnd').value, color:$('gymColor').value, place:$('gymPlace').value.trim(), exercises:$('gymExercises').value.trim() };
     if(it.start>=it.end) return alert('Hora inicio debe ser antes que fin');
+    if(!gymCheckPool(it.place)) return;
     if(!TRAINING_CATS[it.cat]) it.cat='gym';
     getGymData().items.push(it); scheduleSave(); $('gymName').value=''; $('gymExercises').value=''; renderGymList(); renderGymWeekGrid(); renderGymTodayBox(); renderGymStatsBox(); renderGymPlacesBox(); renderLuna();
   };
   const upd=$('gymUpdate'); if(upd) upd.onclick=()=>{
     const it=getGymData().items.find(x=>x.id===gymEditingId); if(!it) return;
-    it.name=$('gymName').value.trim(); it.cat=$('gymCategory').value||it.cat; it.day=$('gymDay').value; it.start=$('gymStart').value; it.end=$('gymEnd').value; it.color=$('gymColor').value; it.place=$('gymPlace').value.trim(); it.exercises=$('gymExercises').value.trim();
+    const newPlace=$('gymPlace').value.trim();
+    if(!gymCheckPool(newPlace)) return;
+    it.name=$('gymName').value.trim(); it.cat=$('gymCategory').value||it.cat; it.day=$('gymDay').value; it.start=$('gymStart').value; it.end=$('gymEnd').value; it.color=$('gymColor').value; it.place=newPlace; it.exercises=$('gymExercises').value.trim();
+    delete it._legacyPool;
     if(!TRAINING_CATS[it.cat]) it.cat='gym';
     scheduleSave(); gymEditingId=null; $('gymAdd').classList.remove('hidden'); upd.classList.add('hidden'); $('gymCancel').classList.add('hidden'); $('gymName').value=''; $('gymExercises').value=''; renderGymList(); renderGymWeekGrid(); renderGymTodayBox(); renderGymStatsBox(); renderGymPlacesBox(); renderLuna();
   };

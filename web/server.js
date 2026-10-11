@@ -23,11 +23,18 @@ function isSafe(p) {
 
 http.createServer((req, res) => {
   // headers de seguridad
+  // CSP transicional: la app aún usa 3 <script> inline (splash, MODS-loader,
+  // registro SW) y el <style> del splash — por eso 'unsafe-inline' en
+  // script/style. Endurecer a nonces/hashes requiere extraer esos bloques
+  // (ver mejora #7). connect-src limita la red a open-meteo.
+  const CSP = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; font-src 'self'; connect-src 'self' https://api.open-meteo.com https://air-quality-api.open-meteo.com; object-src 'none'; base-uri 'self'; form-action 'self'";
   const sec = {
     'X-Content-Type-Options': 'nosniff',
     'X-Frame-Options': 'DENY',
     'Referrer-Policy': 'strict-origin-when-cross-origin',
-    'Permissions-Policy': 'geolocation=(), microphone=(), camera=()'
+    'Content-Security-Policy': CSP,
+    // microfono/camara en (self): los usan Voz de los Abuelos (audio) y QR-sync (video).
+    'Permissions-Policy': 'geolocation=(), microphone=(self), camera=(self)'
   };
   if (req.method !== 'GET' && req.method !== 'HEAD') {
     res.writeHead(405, sec); return res.end('Method Not Allowed');

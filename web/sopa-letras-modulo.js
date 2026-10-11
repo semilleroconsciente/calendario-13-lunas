@@ -438,7 +438,9 @@ function renderBoard() {
   }
   box.querySelectorAll('[data-sp]').forEach(function (el) {
     el.onclick = function () {
-      if (G._dragged) { G._dragged = false; return; }
+      if (!G || G.won) return;
+      // si el gesto ya se manejo por pointer (tap), no duplicar
+      if (G._supClick && Date.now() - G._supClick < 600) return;
       var rc = rcOf(el);
       tapCell(rc[0], rc[1]);
     };
@@ -458,15 +460,23 @@ function renderBoard() {
       if (!t) return;
       try { gridEl.setPointerCapture(ev.pointerId); } catch (e) {}
       var rc = t.split(':').map(function (n) { return parseInt(n, 10); });
-      G.anchor = rc; G.hover = rc; dragging = true; G._dragged = false;
-      renderBoard();
-      ev.preventDefault();
+      G._hadAnchor = !!G.anchor;
+      if (!G.anchor) { G.anchor = rc; G._pend = null; }
+      else if (G.anchor[0] === rc[0] && G.anchor[1] === rc[1]) { G._pend = 'same'; }
+      else { G._pend = rc; } // 2do toque: no borra el inicio, previsualiza A->X
+      G.hover = rc; dragging = true;
+      // OJO: no reconstruir el tablero aqui (rompia el gesto y el click):
+      // solo pinta inicio + rastro en vivo.
+      paintAnchor();
+      var msg = $('spMsg');
+      if (msg) msg.innerHTML = '👆 Inicio marcado en fila ' + (G.anchor[0] + 1) + ', columna ' + (G.anchor[1] + 1) + ' (<b>' + G.grid[G.anchor[0]][G.anchor[1]] + '</b>). Arrastra o toca la <b>última letra</b>. Toca el inicio para cancelar.';
+      try { ev.preventDefault(); } catch (eP) {}
     };
     gridEl.onpointermove = function (ev) {
       if (!dragging || !G || !G.anchor) return;
       var rc = cellFromPoint(ev.clientX, ev.clientY);
       if (rc) {
-        G.hover = rc; G._dragged = true;
+        G.hover = rc;
         paintTrail();
       }
     };
@@ -474,11 +484,25 @@ function renderBoard() {
       if (!dragging) return;
       dragging = false;
       if (!G || !G.anchor || !G.hover) return;
-      var a = G.anchor, b = G.hover;
-      // toque simple sin mover = deja el anchor puesto (modo toca-toca)
-      if (a[0] === b[0] && a[1] === b[1]) { renderBoard(); return; }
-      G._dragged = true;
-      setTimeout(function () { if (G) G._dragged = false; }, 250);
+      // suprime el click sintetizado que sigue al pointer (evita doble jugada)
+      G._supClick = Date.now();
+      setTimeout(function () { if (G && Date.now() - G._supClick > 650) G._supClick = 0; }, 700);
+      var a = G.anchor, b = G.hover, pend = G._pend;
+      G._pend = null;
+      // 2do toque limpio sobre otra celda = valida A->X
+      if (pend && pend !== 'same') {
+        if (b[0] === pend[0] && b[1] === pend[1]) { resolveSelection(a[0], a[1], pend[0], pend[1]); return; }
+        // se movio tras el 2do toque: arrastre nuevo X->Y
+        if (pend[0] === b[0] && pend[1] === b[1]) { G.anchor = pend; paintAnchor(); persistCurrent(); return; }
+        G.anchor = pend;
+        resolveSelection(pend[0], pend[1], b[0], b[1]);
+        return;
+      }
+      // mismo punto: 1er toque = fija inicio; re-toque del inicio = cancela
+      if (a[0] === b[0] && a[1] === b[1]) {
+        if (pend === 'same' && G._hadAnchor) { G.anchor = null; G.hover = null; G._hadAnchor = false; renderBoard(); persistCurrent(); return; }
+        paintAnchor(); persistCurrent(); return;
+      }
       resolveSelection(a[0], a[1], b[0], b[1]);
     };
     gridEl.onpointerup = endDrag;
@@ -491,6 +515,17 @@ function renderBoard() {
     else if (G.dif === 'facil') msg.innerHTML = '👆 Toca la <b>primera letra</b> y luego la <b>última</b>. En fácil solo → horizontal y ↓ vertical.';
     else msg.innerHTML = '👆 Toca la <b>primera letra</b> y luego su <b>última letra</b> (8 direcciones, también al revés) o arrastra el dedo.';
   }
+}
+function paintAnchor() {
+  // repintado liviano del inicio + rastro sin reconstruir listeners
+  var box = $('spBoard');
+  if (!box || !G) return;
+  box.querySelectorAll('[data-sp]').forEach(function (el) {
+    var k = el.getAttribute('data-sp');
+    var isA = !!(G.anchor && k === G.anchor[0] + ':' + G.anchor[1]);
+    el.classList.toggle('sp-anchor', isA);
+  });
+  paintTrail();
 }
 function paintTrail() {
   // repintado liviano del rastro sin reconstruir listeners
