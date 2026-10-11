@@ -62,13 +62,46 @@ async function cargarJSON(url) {
   return await r.json();
 }
 
+/* Resuelve un global const de data.js sin eval() (CSP fase 1).
+   Esta funcion vive en scope top-level, donde los const de data.js
+   (script clasico anterior) son visibles como identificadores.
+   No mover dentro de cargarTerritorio: alli las `var` locales los
+   sombrean y typeof devolveria el valor nuevo, no el global. */
+function refDataJs(nombre) {
+  try {
+    switch (nombre) {
+      case 'PENCO': return typeof PENCO !== 'undefined' ? PENCO : undefined;
+      case 'ESTACIONES': return typeof ESTACIONES !== 'undefined' ? ESTACIONES : undefined;
+      case 'MOONS': return typeof MOONS !== 'undefined' ? MOONS : undefined;
+      case 'DFT': return typeof DFT !== 'undefined' ? DFT : undefined;
+      case 'INTRO': return typeof INTRO !== 'undefined' ? INTRO : undefined;
+      case 'MOODS': return typeof MOODS !== 'undefined' ? MOODS : undefined;
+      case 'EFEMERIDES': return typeof EFEMERIDES !== 'undefined' ? EFEMERIDES : undefined;
+      case 'SIEMBRA': return typeof SIEMBRA !== 'undefined' ? SIEMBRA : undefined;
+      case 'SIEMBRA_LUNAS': return typeof SIEMBRA_LUNAS !== 'undefined' ? SIEMBRA_LUNAS : undefined;
+      case 'DONATE': return typeof DONATE !== 'undefined' ? DONATE : undefined;
+      case 'AVES_PENCO': return typeof AVES_PENCO !== 'undefined' ? AVES_PENCO : undefined;
+      case 'EVENTOS_ASTRONOMICOS': return typeof EVENTOS_ASTRONOMICOS !== 'undefined' ? EVENTOS_ASTRONOMICOS : undefined;
+      case 'EVENTOS_COMUNA_PENCO': return typeof EVENTOS_COMUNA_PENCO !== 'undefined' ? EVENTOS_COMUNA_PENCO : undefined;
+      case 'ASOCIACIONES_CULTIVOS': return typeof ASOCIACIONES_CULTIVOS !== 'undefined' ? ASOCIACIONES_CULTIVOS : undefined;
+      case 'PREPARADOS_ORGANICOS': return typeof PREPARADOS_ORGANICOS !== 'undefined' ? PREPARADOS_ORGANICOS : undefined;
+      case 'INTERMAREAL_PENCO': return typeof INTERMAREAL_PENCO !== 'undefined' ? INTERMAREAL_PENCO : undefined;
+      case 'BOSQUE_NATIVO_PENCO': return typeof BOSQUE_NATIVO_PENCO !== 'undefined' ? BOSQUE_NATIVO_PENCO : undefined;
+      case 'CONSEJOS_INTERMAREAL': return typeof CONSEJOS_INTERMAREAL !== 'undefined' ? CONSEJOS_INTERMAREAL : undefined;
+      case 'CONSEJOS_BOSQUE': return typeof CONSEJOS_BOSQUE !== 'undefined' ? CONSEJOS_BOSQUE : undefined;
+      default: return undefined;
+    }
+  } catch (e) { return undefined; }
+}
+
 /* Mutar globales const de data.js en el lugar (const no se puede
-   reasignar, pero si se puede vaciar/rellenar el mismo objeto). */
+   reasignar, pero si se puede vaciar/rellenar el mismo objeto).
+   CSP fase 1: sin eval() — la referencia se resuelve via refDataJs(). */
 function mutarEnElLugar(nombre, valor) {
   if (valor === undefined) return false;
   try {
-    var ref;
-    try { ref = eval(nombre); } catch (e) { ref = window[nombre]; }
+    var ref = refDataJs(nombre);
+    if (ref === undefined) ref = window[nombre];
     if (Array.isArray(valor) && Array.isArray(ref)) {
       ref.length = 0;
       valor.forEach(function (v) { ref.push(v); });
@@ -87,20 +120,28 @@ function mutarEnElLugar(nombre, valor) {
 
 function snapshotFallback() {
   // Foto de los datos embebidos (data.js) por si fetch falla.
-  function g(n) { try { return eval(n); } catch (e) { return window[n]; } }
+  // Sin eval (CSP): typeof es seguro ante identificadores no declarados.
+  // (Scope top-level: sin sombreado local, ver refDataJs.)
   return {
-    PENCO: g('PENCO'), ESTACIONES: g('ESTACIONES'), MOONS: g('MOONS'),
-    DFT: g('DFT'), INTRO: g('INTRO'), MOODS: g('MOODS'),
-    EFEMERIDES: g('EFEMERIDES'), SIEMBRA: g('SIEMBRA'),
-    SIEMBRA_LUNAS: g('SIEMBRA_LUNAS'), DONATE: g('DONATE'),
-    AVES_PENCO: g('AVES_PENCO'), EVENTOS_ASTRONOMICOS: g('EVENTOS_ASTRONOMICOS'),
-    EVENTOS_COMUNA_PENCO: g('EVENTOS_COMUNA_PENCO'),
-    ASOCIACIONES_CULTIVOS: g('ASOCIACIONES_CULTIVOS'),
-    PREPARADOS_ORGANICOS: g('PREPARADOS_ORGANICOS'),
-    INTERMAREAL_PENCO: g('INTERMAREAL_PENCO'),
-    BOSQUE_NATIVO_PENCO: g('BOSQUE_NATIVO_PENCO'),
-    CONSEJOS_INTERMAREAL: g('CONSEJOS_INTERMAREAL'),
-    CONSEJOS_BOSQUE: g('CONSEJOS_BOSQUE')
+    PENCO: typeof PENCO !== 'undefined' ? PENCO : window.PENCO,
+    ESTACIONES: typeof ESTACIONES !== 'undefined' ? ESTACIONES : window.ESTACIONES,
+    MOONS: typeof MOONS !== 'undefined' ? MOONS : window.MOONS,
+    DFT: typeof DFT !== 'undefined' ? DFT : window.DFT,
+    INTRO: typeof INTRO !== 'undefined' ? INTRO : window.INTRO,
+    MOODS: typeof MOODS !== 'undefined' ? MOODS : window.MOODS,
+    EFEMERIDES: typeof EFEMERIDES !== 'undefined' ? EFEMERIDES : window.EFEMERIDES,
+    SIEMBRA: typeof SIEMBRA !== 'undefined' ? SIEMBRA : window.SIEMBRA,
+    SIEMBRA_LUNAS: typeof SIEMBRA_LUNAS !== 'undefined' ? SIEMBRA_LUNAS : window.SIEMBRA_LUNAS,
+    DONATE: typeof DONATE !== 'undefined' ? DONATE : window.DONATE,
+    AVES_PENCO: typeof AVES_PENCO !== 'undefined' ? AVES_PENCO : window.AVES_PENCO,
+    EVENTOS_ASTRONOMICOS: typeof EVENTOS_ASTRONOMICOS !== 'undefined' ? EVENTOS_ASTRONOMICOS : window.EVENTOS_ASTRONOMICOS,
+    EVENTOS_COMUNA_PENCO: typeof EVENTOS_COMUNA_PENCO !== 'undefined' ? EVENTOS_COMUNA_PENCO : window.EVENTOS_COMUNA_PENCO,
+    ASOCIACIONES_CULTIVOS: typeof ASOCIACIONES_CULTIVOS !== 'undefined' ? ASOCIACIONES_CULTIVOS : window.ASOCIACIONES_CULTIVOS,
+    PREPARADOS_ORGANICOS: typeof PREPARADOS_ORGANICOS !== 'undefined' ? PREPARADOS_ORGANICOS : window.PREPARADOS_ORGANICOS,
+    INTERMAREAL_PENCO: typeof INTERMAREAL_PENCO !== 'undefined' ? INTERMAREAL_PENCO : window.INTERMAREAL_PENCO,
+    BOSQUE_NATIVO_PENCO: typeof BOSQUE_NATIVO_PENCO !== 'undefined' ? BOSQUE_NATIVO_PENCO : window.BOSQUE_NATIVO_PENCO,
+    CONSEJOS_INTERMAREAL: typeof CONSEJOS_INTERMAREAL !== 'undefined' ? CONSEJOS_INTERMAREAL : window.CONSEJOS_INTERMAREAL,
+    CONSEJOS_BOSQUE: typeof CONSEJOS_BOSQUE !== 'undefined' ? CONSEJOS_BOSQUE : window.CONSEJOS_BOSQUE
   };
 }
 

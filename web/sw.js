@@ -1,6 +1,6 @@
 ﻿// Service Worker — Calendario 13 Lunas (offline-first, tolerante a versiones ?v=)
 // v55
-const CACHE = 'cal13-v60-offline';
+const CACHE = 'cal13-v61-offline';
 
 // Lista completa de archivos que usa index.html (bare + con ?v=).
 // Si se agrega un JS nuevo en index.html, agregarlo aquí también (bare y ?v=).
@@ -66,6 +66,8 @@ const CORE = [
   './bitacoras-respaldo-modulo.js?v=1',
   './bomberos-penco.js',
   './bomberos-penco.js?v=1',
+  './boot-modulos.js',
+  './boot-modulos.js?v=1',
   './bosque-historia.js',
   './bosque-historia.js?v=1',
   './bosque-semillero.js',
@@ -194,12 +196,16 @@ const CORE = [
   './semillero-guias.js?v=1',
   './sopa-letras-modulo.js',
   './sopa-letras-modulo.js?v=2',
+  './splash.css',
+  './splash.css?v=1',
   './storage-idb.js',
   './storage-idb.js?v=1',
   './styles.css',
   './styles.css?v=12',
   './sudoku-modulo.js',
   './sudoku-modulo.js?v=1',
+  './sw-registro.js',
+  './sw-registro.js?v=1',
   './talleres-penco.js',
   './talleres-penco.js?v=1',
   './tao-modulo.js',

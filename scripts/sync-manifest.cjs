@@ -61,7 +61,10 @@ try { swWeb = read('web/sw.js'); } catch { warn('No se pudo leer web/sw.js (se o
 try { pkg = JSON.parse(read('package.json')); } catch { fail('package.json invalido'); process.exit(2); }
 
 // 1. Cobertura del CORE en ambos SW.
-const refs = versionedRefs(indexHtml);
+// refs = index.html + boot-modulos.js (CSP fase 1: MODS vive en archivo).
+let refsHtml = indexHtml;
+try { refsHtml += '\n' + read('boot-modulos.js'); } catch { warn('boot-modulos.js no leido para refs (se usa solo index.html)'); }
+const refs = versionedRefs(refsHtml);
 const required = new Map(); // entrada CORE -> archivo base (para mensaje)
 for (const [name, vers] of refs) {
   required.set(name, name); // bare
@@ -90,12 +93,21 @@ for (const f of pkgFiles) {
   }
 }
 
-// 3. Divergencia web/index.html.
+// 3. Divergencia web/: boot-modulos.js (MODS) debe ser identico en raiz y web/.
+//    (CSP fase 1: el bloque MODS salio de index.html a boot-modulos.js.)
 if (webIndex) {
   const a = modsBlock(indexHtml);
   const b = modsBlock(webIndex);
   if (a && b && a !== b) fail('El bloque MODS de web/index.html diverge del de index.html (sincronizar)');
-  else if (!a || !b) warn('No se pudo comparar el bloque MODS (patron no encontrado)');
+  else if ((a && !b) || (!a && b)) warn('Bloque MODS solo en uno de index.html / web/index.html (migracion CSP: verificar boot-modulos.js)');
+  try {
+    const bootRoot = read('boot-modulos.js');
+    const bootWeb = read('web/boot-modulos.js');
+    const ma = bootRoot.match(/var MODS = \[[\s\S]*?\];/);
+    const mb = bootWeb.match(/var MODS = \[[\s\S]*?\];/);
+    if (ma && mb && ma[0] !== mb[0]) fail('El bloque MODS de web/boot-modulos.js diverge del de boot-modulos.js (npm run sync:web --fix)');
+    else if (!ma || !mb) warn('No se pudo comparar el bloque MODS de boot-modulos.js');
+  } catch { warn('boot-modulos.js ausente en raiz o web/ (sincronizar con sync:web --fix)'); }
 }
 
 if (warnings.length) {

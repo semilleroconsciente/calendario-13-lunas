@@ -22,18 +22,25 @@ describe('manifest + cableado', () => {
     }
   });
 
-  it('index.html: CSP meta + storage-idb + 3 módulos nuevos en MODS', () => {
+  it('index.html: CSP meta dura + storage-idb + 3 módulos nuevos en MODS', () => {
     const html = read('index.html');
     assert.ok(html.includes('Content-Security-Policy'), 'falta CSP meta');
+    // CSP fase 1: script-src 'self' SIN 'unsafe-inline' (inline extraido a archivos).
+    assert.ok(!html.includes("script-src 'self' 'unsafe-inline'"), 'CSP aun permite unsafe-inline en scripts');
     assert.ok(html.includes('storage-idb.js?v=1'), 'falta storage-idb diferido');
+    assert.ok(html.includes('boot-modulos.js?v=1'), 'falta boot-modulos diferido (CSP fase 1)');
+    assert.ok(html.includes('sw-registro.js?v=1'), 'falta sw-registro diferido (CSP fase 1)');
+    assert.ok(!/<script(?![^>]*src)/.test(html), 'queda <script> inline en index.html');
+    // MODS vive en boot-modulos.js desde la CSP fase 1 (no en index.html).
+    const boot = read('boot-modulos.js');
     for (const mod of ['accesibilidad-modulo.js?v=1', 'onboarding-modulo.js?v=1', 'auto-backup-modulo.js?v=1']) {
-      assert.ok(html.includes(`'${mod}'`), 'MODS sin ' + mod);
+      assert.ok(boot.includes(`'${mod}'`), 'MODS sin ' + mod);
     }
   });
 
   it('package.json: nuevos archivos en build.files + scripts', () => {
     const pkg = JSON.parse(read('package.json'));
-    for (const f of ['storage-idb.js', 'accesibilidad-modulo.js', 'onboarding-modulo.js', 'auto-backup-modulo.js', '_headers']) {
+    for (const f of ['storage-idb.js', 'accesibilidad-modulo.js', 'onboarding-modulo.js', 'auto-backup-modulo.js', '_headers', 'boot-modulos.js', 'sw-registro.js', 'splash.css']) {
       assert.ok((pkg.build.files || []).includes(f), 'build.files sin ' + f);
     }
     for (const s of ['build:sw', 'check:sw', 'check:donate', 'movil:build', 'check:size']) {

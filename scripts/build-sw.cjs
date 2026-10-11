@@ -1,6 +1,7 @@
 // build-sw.cjs — genera el CORE de sw.js desde index.html (fin del versionado manual).
 //
-// Fuente de verdad: index.html (scripts defer + bloque MODS + <link rel=stylesheet>).
+// Fuente de verdad: index.html (scripts defer + <link rel=stylesheet>)
+// + boot-modulos.js (bloque MODS, CSP fase 1).
 // Genera CORE con solo 2 entradas por asset: bare + version vigente (?v=N).
 // Poda el historial (?v=8...?v=16) que inflaba la caché y causaba derivas.
 //
@@ -27,16 +28,28 @@ function parseAssets(html) {
       out.set(name, v);
     }
   }
-  // 2) Bloque MODS = ['x.js?v=N', ...]
-  const mods = html.match(/var MODS = \[([\s\S]*?)\];/);
-  if (mods) {
+  // 2) Bloque MODS: vive en index.html (legacy) o en boot-modulos.js
+  //    (CSP fase 1: el inline se extrajo a archivo). Se parsean ambos.
+  const modsSrc = [];
+  const modsHtml = html.match(/var MODS = \[([\s\S]*?)\];/);
+  if (modsHtml) modsSrc.push(modsHtml[1]);
+  try {
+    const boot = fs.readFileSync(path.join(ROOT, 'boot-modulos.js'), 'utf8');
+    const modsBoot = boot.match(/var MODS = \[([\s\S]*?)\];/);
+    if (modsBoot) modsSrc.push(modsBoot[1]);
+  } catch {}
+  {
     const re = /'([^']+\.(?:js|css))(?:\?v=(\d+))?'/g;
-    while ((m = re.exec(mods[1]))) {
-      const name = m[1];
-      const v = m[2] || null;
-      if (!out.has(name) || (v && (!out.get(name) || Number(v) > Number(out.get(name))))) {
-        out.set(name, v);
+    for (const src of modsSrc) {
+      let m;
+      while ((m = re.exec(src))) {
+        const name = m[1];
+        const v = m[2] || null;
+        if (!out.has(name) || (v && (!out.get(name) || Number(v) > Number(out.get(name))))) {
+          out.set(name, v);
+        }
       }
+      re.lastIndex = 0;
     }
   }
   return out;
