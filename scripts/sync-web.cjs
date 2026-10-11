@@ -60,6 +60,9 @@ const needInWeb = rootOnly.filter((f) => {
   if (f === '_headers' || f === 'manifest.json') return true;
   // min/ (salida de build:min) sí se despliega en web/ para PWA y Android.
   if (f.startsWith('min/')) return WEB_EXT.includes(path.extname(f)) || f.endsWith('.hashes.json');
+  // templates/*.html: fuentes de diálogos; el bundle las embebe, pero el
+  // fetch de respaldo de cal13tpl.asegurar() las necesita en web/.
+  if (f.startsWith('templates/') && f.endsWith('.html')) return true;
   if (f.includes('/')) return false;
   return WEB_EXT.includes(path.extname(f));
 });

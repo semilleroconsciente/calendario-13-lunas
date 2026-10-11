@@ -1,0 +1,36 @@
+<dialog id="evacDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">🌊🚨 Evacuación Tsunami — Penco</h3>
+        <button type="button" id="evacCloseTop" class="btn btn-icon" title="Cerrar" aria-label="Cerrar">✕</button>
+      </div>
+      <p class="muted" style="line-height:1.5"><b>Penco es borde costero bajo.</b> Si el sismo te bota o no te puedes mantener en pie, no esperes alerta: evacúa a pie a cota alta. Guía <b>orientativa y offline</b> — verifica tu ruta real en carta SHOA y web municipal munipenco.cl.</p>
+
+      <div id="evacEmergencyCard" class="menstrual-card" style="border-color:#ff6b6b;background:linear-gradient(135deg,#2a1a20,var(--card))">
+        <h4 style="color:#ff6b6b">🚨 Alertas y números — tsunami / sismo</h4>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">
+          <a href="tel:137" class="btn" style="text-decoration:none;text-align:center;background:#c0392b;color:#fff;border-color:#e74c3c">⚓ Armada 137</a>
+          <a href="tel:132" class="btn" style="text-decoration:none;text-align:center;background:#e67e22;color:#fff;border-color:#f39c12">🚒 Bomberos 132</a>
+          <a href="tel:133" class="btn" style="text-decoration:none;text-align:center;background:#2980b9;color:#fff;border-color:#3498db">🚓 Carabineros 133</a>
+          <a href="tel:131" class="btn" style="text-decoration:none;text-align:center;background:#7f8c8d;color:#fff;border-color:#95a5a6">🚑 SAMU 131</a>
+        </div>
+        <p class="muted" style="font-size:11px;line-height:1.5;margin-top:8px"><b>Regla de oro:</b> sismo largo (&gt;1 min) o que impide caminar en costa = tsunami posible. Evacúa <b>a pie, sin auto</b>, a <b>+30 msnm o 1 km tierra adentro</b>. Sigue sirena/alerta SAE y radio. No vuelvas por cosas. No vayas a la playa a mirar.</p>
+      </div>
+
+      <div class="timer-tabs" style="margin:12px 0 10px;flex-wrap:wrap">
+        <button type="button" id="tabEV1" class="btn btn-accent" style="width:auto">🗺️ Rutas Penco</button>
+        <button type="button" id="tabEV2" class="btn" style="width:auto">🎒 Mochila 72h</button>
+        <button type="button" id="tabEV3" class="btn" style="width:auto">👨‍👩‍👧 Plan Familiar</button>
+        <button type="button" id="tabEV4" class="btn" style="width:auto">🏚️ Sismo</button>
+      </div>
+
+      <div id="evacPanel"></div>
+
+      <div class="menstrual-card" style="margin-top:10px;background:var(--panel)">
+        <h4>📍 Verifica tu cota y punto de encuentro</h4>
+        <p class="muted" style="font-size:11px;line-height:1.5">1) Busca tu calle en la <b>carta de inundación SHOA</b> (shoa.cl → tsunami → cartas). 2) Camina tu ruta de día y de noche, cronometra. 3) Fija <b>2 puntos de encuentro</b>: uno en cerro y uno fuera de Penco. 4) Repasa cada <b>Luna 4</b> con tu familia. Si arriendas o recibes visitas, pega la ruta en el refrigerador.</p>
+      </div>
+
+      <div class="dlg-actions"><button type="button" id="evacClose" class="btn">Cerrar</button></div>
+    </form>
+  </dialog>

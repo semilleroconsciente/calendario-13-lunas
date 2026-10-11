@@ -87,6 +87,9 @@ function cubiertoPorFiles(name) {
   if (pkgFiles.has(name)) return true;
   for (const g of pkgFiles) {
     if (g.endsWith('/**/*') && name.startsWith(g.slice(0, -5))) return true;
+    // Glob simple dir/*.ext (p.ej. templates/*.html).
+    const m = g.match(/^([^*]+)\*(\.[A-Za-z0-9]+)$/);
+    if (m && name.startsWith(m[1]) && name.endsWith(m[2]) && !name.slice(m[1].length).includes('/')) return true;
   }
   return false;
 }

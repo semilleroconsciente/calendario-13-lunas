@@ -1,0 +1,68 @@
+<dialog id="vozDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">🗣️ La Voz de los Abuelos — transmisión oral</h3>
+        <button type="button" id="vozCloseTop" class="btn btn-icon" title="Cerrar" aria-label="Cerrar">✕</button>
+      </div>
+      <p class="muted" style="line-height:1.5">Recetas, historias del territorio y consejos de quienes nos criaron. Cada voz se <b>desbloquea en una luna</b>: los niños descubren un relato por luna. Todo queda <b>privado y local</b> por usuario. Conecta con 📖 Cuentos y 🌳 Árbol Genealógico.</p>
+      <div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">
+        <button type="button" id="tabVozVoces" class="btn btn-accent" style="width:auto">🎙️ Voces</button>
+        <button type="button" id="tabVozLunas" class="btn" style="width:auto">🌕 Desbloqueo lunar</button>
+        <button type="button" id="tabVozSaberes" class="btn" style="width:auto">📚 Saberes</button>
+      </div>
+      <div id="vozDiaBox" class="menstrual-card" style="border-color:var(--gold)"></div>
+      <div id="vozVocesPanel" style="margin-top:10px">
+        <div class="menstrual-card" style="border-color:var(--gold)">
+          <h4>⏺️ Grabar una voz</h4>
+          <div id="vozWarn" class="chip" style="display:block;white-space:normal"></div>
+          <div class="conv-row">
+            <label style="flex:2">Título <input type="text" id="vozTitulo" placeholder="ej: Cómo era Penco antes" maxlength="60"></label>
+            <label>Quién <input type="text" id="vozQuien" placeholder="ej: abuela Rosa" maxlength="30"></label>
+          </div>
+          <div class="conv-row">
+            <label>Tipo <select id="vozTipo"><option>🍲 Receta familiar</option><option>🏔️ Historia del territorio</option><option>💡 Consejo de vida</option><option>📖 Cuento para desbloquear</option></select></label>
+            <label>Desbloqueo <select id="vozLuna"><option value="1">Luna 1</option><option value="2">Luna 2</option><option value="3">Luna 3</option><option value="4">Luna 4</option><option value="5">Luna 5</option><option value="6">Luna 6</option><option value="7">Luna 7</option><option value="8">Luna 8</option><option value="9">Luna 9</option><option value="10">Luna 10</option><option value="11">Luna 11</option><option value="12">Luna 12</option><option value="13">Luna 13</option></select></label>
+          </div>
+          <label>Texto / transcripción (opcional) <textarea id="vozTexto" rows="2" placeholder="resumen o transcripción..." maxlength="800"></textarea></label>
+          <div class="dlg-actions" style="justify-content:flex-start;align-items:center">
+            <button type="button" id="vozRec" class="btn btn-accent" style="width:auto">⏺️ Grabar</button>
+            <button type="button" id="vozStop" class="btn hidden" style="width:auto">⏹️ Detener</button>
+            <span id="vozTimer" class="chip">00:00</span>
+          </div>
+          <div class="dlg-actions" style="justify-content:flex-start">
+            <button type="button" id="vozAddText" class="btn" style="width:auto">+ Guardar solo texto</button>
+            <button type="button" id="vozCancelEdit" class="btn hidden" style="width:auto">Cancelar</button>
+          </div>
+        </div>
+        <div class="menstrual-card" style="margin-top:10px">
+          <h4>🔍 Mis voces</h4>
+          <div class="conv-row">
+            <label style="flex:2">Buscar <input type="text" id="vozSearch" placeholder="título, quién, palabra..." maxlength="60" autocomplete="off"></label>
+            <label>Tipo <select id="vozFilter"><option value="todas">Todas</option><option>🍲 Receta familiar</option><option>🏔️ Historia del territorio</option><option>💡 Consejo de vida</option><option>📖 Cuento para desbloquear</option></select></label>
+          </div>
+          <div id="vozList" class="habits-list" style="margin-top:8px;max-height:300px"></div>
+        </div>
+      </div>
+      <div id="vozLunasPanel" class="hidden" style="margin-top:10px">
+        <div id="vozLunasBox"></div>
+      </div>
+      <div id="vozSaberesPanel" class="hidden" style="margin-top:10px">
+        <div id="vozSaberesBox"></div>
+      </div>
+      <div class="menstrual-card" style="margin-top:10px">
+        <h4>🧭 Puentes</h4>
+        <div class="dlg-actions" style="justify-content:flex-start">
+          <button type="button" id="vozGoCuentos" class="btn" style="width:auto">📖 Ir a Cuentos</button>
+          <button type="button" id="vozGoArbol" class="btn" style="width:auto">🌳 Ir al Árbol</button>
+          <button type="button" id="vozExport" class="btn" style="width:auto">📤 Exportar saberes</button>
+        </div>
+      </div>
+      <div class="dlg-actions" style="justify-content:space-between;align-items:center">
+        <span id="vozStats" class="muted" style="font-size:11px"></span>
+        <span style="display:flex;gap:8px">
+          <button type="button" id="vozClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar todo</button>
+          <button type="button" id="vozClose" class="btn">Cerrar</button>
+        </span>
+      </div>
+    </form>
+  </dialog>

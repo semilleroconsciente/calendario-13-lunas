@@ -1,0 +1,69 @@
+<dialog id="birdsDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">🦅 Observación de aves — Penco · Rocuant · Bío-Bío</h3>
+        <button type="button" id="birdsCloseTop" class="btn btn-icon" title="Cerrar" aria-label="Cerrar">✕</button>
+      </div>
+      <p class="muted" style="line-height:1.5">Bitácora de aves del humedal, costa y <b>bosque nativo</b> penqueño. Registra <b>privado y local</b> por usuario. Observa sin molestar: distancia, silencio y binoculares.</p>
+      <div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">
+        <button type="button" id="tabAvesHoy" class="btn btn-accent" style="width:auto">🦅 Aves hoy</button>
+        <button type="button" id="tabAvesBosque" class="btn" style="width:auto">🌳 Bosque Nativo</button>
+        <button type="button" id="tabAvesAvistadas" class="btn" style="width:auto">📊 Especies avistadas</button>
+        <button type="button" id="tabAvesHistoria" class="btn" style="width:auto">📜 Historia</button>
+      </div>
+      <div id="avesHoyPanel">
+      <div id="birdsTodayBox" class="menstrual-card" style="border-color:var(--gold)"></div>
+      <div class="fishing-grid" style="margin-top:10px">
+        <div class="menstrual-card">
+          <h4>🦩 Aves frecuentes</h4>
+          <div id="birdsCatalogBox" class="fishing-species"></div>
+          <p class="muted" style="font-size:10px;margin-top:6px">Toca una especie para cargarla en el formulario.</p>
+        </div>
+        <div class="menstrual-card">
+          <h4>🌙 Luna y actividad</h4>
+          <p class="muted" style="font-size:11px">Migratorias más activas en pleamar y amanecer. Luna llena: mejor visibilidad nocturna para aves de borde.</p>
+          <div id="birdsMoonBox" class="chip" style="display:block;white-space:normal"></div>
+          <div class="menstrual-card" style="margin-top:8px;background:var(--panel)">
+            <h4 style="font-size:11px">🌿 Tips observación</h4>
+            <p class="muted" style="font-size:11px">• Amanecer y atardecer = mayor canto. • Viento sur fuerte espanta aves. • No des nidos ni uses flash. • Lleva libreta y anota comportamiento.</p>
+          </div>
+        </div>
+      </div>
+      <div class="menstrual-card" style="margin-top:10px">
+        <h4>📓 Bitácora — avistamientos</h4>
+        <div class="conv-row">
+          <label>Fecha <input type="date" id="birdDate"></label>
+          <label>Hora <input type="time" id="birdTime" value="07:00"></label>
+          <label>Lugar <input type="text" id="birdPlace" placeholder="ej: Humedal Rocuant" maxlength="30"></label>
+        </div>
+        <div class="conv-row">
+          <label>Especie <input type="text" id="birdSpecies" placeholder="ej: Loica" maxlength="30"></label>
+          <label>Cantidad <input type="number" id="birdCount" min="1" value="1" style="width:80px"></label>
+          <label>Actividad
+            <select id="birdActivity">
+              <option value="posada">Posada</option><option value="vuelo">Vuelo</option><option value="canto">Canto</option><option value="alimentándose">Alimentándose</option><option value="nido">Nido/cría</option>
+            </select>
+          </label>
+        </div>
+        <label>Notas <input type="text" id="birdNotes" placeholder="ej: junto a totora, juvenil, foto tomada" maxlength="80"></label>
+        <div class="dlg-actions" style="justify-content:flex-start">
+          <button type="button" id="birdAdd" class="btn btn-accent" style="width:auto">+ Guardar avistamiento</button>
+          <button type="button" id="birdCancelEdit" class="btn hidden" style="width:auto">Cancelar</button>
+        </div>
+        <div id="birdsLogBox" class="habits-list" style="margin-top:10px;max-height:240px"></div>
+        <div class="dlg-actions" style="justify-content:space-between;align-items:center;margin-top:8px">
+          <span id="birdsStats" class="muted" style="font-size:11px"></span>
+          <span style="display:flex;gap:8px">
+            <button type="button" id="birdsShare" class="btn" style="width:auto">📤 Compartir</button>
+            <button type="button" id="birdsExport" class="btn" style="width:auto">📥 Exportar</button>
+            <button type="button" id="birdsClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar</button>
+          </span>
+        </div>
+      </div>
+      </div>
+      <div id="avesBosquePanel" class="hidden" style="margin-top:10px"></div>
+      <div id="avesAvistadasPanel" class="hidden" style="margin-top:10px"></div>
+      <div id="avesHistoriaPanel" class="hidden" style="margin-top:10px"></div>
+      <div class="dlg-actions"><button type="button" id="birdsClose" class="btn">Cerrar</button></div>
+    </form>
+  </dialog>

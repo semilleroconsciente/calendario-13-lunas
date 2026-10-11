@@ -1,0 +1,55 @@
+<dialog id="comunaDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">🎉 Eventos Anuales — Comuna de Penco</h3>
+        <button type="button" id="comunaCloseTop" class="btn btn-icon" title="Cerrar" aria-label="Cerrar">✕</button>
+      </div>
+      <p class="muted" style="line-height:1.5">Fiestas y efemérides penconas. Los <b>anuales</b> se repiten cada año y aparecen en el calendario. Puedes <b>agregar los tuyos</b> (junta de vecinos, feria, aniversario). En la pestaña <b>🎨 Talleres</b> están los talleres y actividades de la comuna con opción de agregarlos al calendario. Queda <b>privado y local</b> por usuario.</p>
+      <div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">
+        <button type="button" id="tabComunaEventos" class="btn btn-accent" style="width:auto">🎉 Eventos</button>
+        <button type="button" id="tabComunaGuia" class="btn" style="width:auto">📖 Guía de Penco</button>
+        <button type="button" id="tabComunaSectores" class="btn" style="width:auto">🏘️ Sectores</button>
+        <button type="button" id="tabComunaHistoria" class="btn" style="width:auto">📜 Historia</button>
+        <button type="button" id="tabComunaTalleres" class="btn" style="width:auto">🎨 Talleres</button>
+      </div>
+      <div id="comunaEventosPanel">
+      <label class="check-row" style="margin:8px 0"><input type="checkbox" id="comunaShowCal"> Mostrar eventos de Penco en el calendario (iconos 🎉 por día)</label>
+      <div id="comunaTodayBox" class="menstrual-card" style="border-color:var(--gold)"></div>
+      <div id="comunaLunaBox" class="menstrual-card" style="margin-top:10px"></div>
+      <div class="menstrual-card" style="margin-top:10px">
+        <h4>📅 Eventos de esta luna (28 días)</h4>
+        <div id="comunaLunaList" class="habits-list"></div>
+      </div>
+      <div class="menstrual-card" style="margin-top:10px">
+        <h4>➕ Agregar evento anual</h4>
+        <div class="conv-row">
+          <label>Fecha anual <input type="date" id="comunaDate" value=""></label>
+          <label>Hora (opcional) <input type="time" id="comunaTime"></label>
+        </div>
+        <label>Nombre <input type="text" id="comunaName" placeholder="ej: Aniversario Penco, Feria Rocuant" maxlength="50"></label>
+        <label>Descripción <input type="text" id="comunaDesc" placeholder="lugar, qué se celebra" maxlength="80"></label>
+        <div class="conv-row">
+          <label>Icono <input type="text" id="comunaIcon" placeholder="🎉" maxlength="4" style="width:80px;text-align:center"></label>
+          <label>Categoría
+            <select id="comunaCat">
+              <option value="fiesta">Fiesta</option><option value="cultura">Cultura</option><option value="deporte">Deporte</option><option value="feria">Feria</option><option value="religioso">Religioso</option><option value="municipal">Municipal</option><option value="otro">Otro</option>
+            </select>
+          </label>
+          <button type="button" id="comunaAdd" class="btn btn-accent" style="width:auto;align-self:flex-end">+ Agregar</button>
+          <button type="button" id="comunaUpdate" class="btn hidden" style="width:auto;align-self:flex-end">↻ Actualizar</button>
+          <button type="button" id="comunaCancel" class="btn hidden" style="width:auto;align-self:flex-end">Cancelar</button>
+        </div>
+      </div>
+      <div class="menstrual-card" style="margin-top:10px">
+        <h4>📋 Todos los eventos (oficiales + tus anuales)</h4>
+        <div id="comunaList" class="habits-list" style="max-height:260px"></div>
+        <p class="muted" style="font-size:10px;margin-top:6px">Toca el lápiz para editar o la X para borrar solo tus eventos. Los oficiales no se borran.</p>
+      </div>
+      </div>
+      <div id="comunaGuiaPanel" class="hidden" style="margin-top:10px"></div>
+      <div id="comunaSectoresPanel" class="hidden" style="margin-top:10px"></div>
+      <div id="comunaHistoriaPanel" class="hidden" style="margin-top:10px"></div>
+      <div id="comunaTalleresPanel" class="hidden" style="margin-top:10px"></div>
+      <div class="dlg-actions"><button type="button" id="comunaClose" class="btn">Cerrar</button></div>
+    </form>
+  </dialog>

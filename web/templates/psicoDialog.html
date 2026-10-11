@@ -1,0 +1,95 @@
+<dialog id="psicoDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">🪞 Autoconocimiento</h3>
+        <button type="button" id="psicoCloseTop" class="btn btn-icon" title="Cerrar" aria-label="Cerrar">✕</button>
+      </div>
+      <p class="muted" style="line-height:1.5">19 guías básicas para mirarte por dentro: profundidad, escritura, contemplación y cuerpo. Elige una pestaña, lee la ficha y haz el ejercicio de 5 minutos. Todo queda <b>privado y local</b> por usuario. <b>No reemplaza terapia psicológica ni psiquiátrica.</b> Si estás en crisis, pide ayuda: <b>*4141</b> (prevención del suicidio, Chile, 24h) o tu CESFAM.</p>
+      <div id="psicoStreakBox" class="menstrual-card" style="border-color:var(--gold)"></div>
+      <div class="timer-tabs" style="margin:12px 0 10px;flex-wrap:wrap">
+        <button type="button" id="tabPsi1" class="btn btn-accent" style="width:auto">🌑 Profundidad</button>
+        <button type="button" id="tabPsi2" class="btn" style="width:auto">✍️ Escritura & Filosofía</button>
+        <button type="button" id="tabPsi3" class="btn" style="width:auto">🧘 Contemplación</button>
+        <button type="button" id="tabPsi4" class="btn" style="width:auto">🧍 Cuerpo & Expresión</button>
+      </div>
+      <div id="psicoPanel1">
+        <div class="discipline-grid">
+          <div class="discipline-card"><h4>🌑 Sombra e integración (Jung)</h4><p><b>Qué es:</b> lo que reprimes (rabia, envidia, deseo) y proyectas en otros. Integrar es reconocerlo, no obedecerlo.</p><p><b>Pasos:</b> 1) nombra qué te irrita de alguien. 2) pregúntate “¿dónde hago yo eso, aunque sea en chico?”. 3) escribe qué necesita esa parte tuya.</p><p class="muted">✏️ 5': “Me molesta que otros sean ___ porque yo no me permito ser ___”. Revisa sueños y actos fallidos: también hablan.</p></div>
+          <div class="discipline-card"><h4>🧠 TCC y reestructuración</h4><p><b>Qué es:</b> tus emociones siguen a tus pensamientos automáticos. Ante un detonante, detecta la distorsión y reescribe.</p><p><b>Pasos:</b> 1) registra situación → pensamiento → emoción (0-100). 2) detecta: todo/nada, catastrofismo, lectura mental, “debo”. 3) escribe un pensamiento alternativo realista.</p><p class="muted">✏️ 5': haz la tabla de 3 columnas con algo de hoy. Mide la emoción antes y después.</p></div>
+          <div class="discipline-card"><h4>🪑 Gestalt: aquí y ahora</h4><p><b>Qué es:</b> conciencia del presente, del cuerpo y de los asuntos pendientes, con técnicas vivenciales.</p><p><b>Pasos:</b> 1) describe qué sientes ahora en el cuerpo. 2) silla vacía: 2' hablas tú, 2' respondes como la otra parte. 3) cierra con tu necesidad en una frase.</p><p class="muted">✏️ 5': “Ahora mismo noto ___ en mi ___ y necesito ___”. Sin analizar, solo notando.</p></div>
+          <div class="discipline-card"><h4>🧬 Tipologías: Big Five · Eneagrama · MBTI</h4><p><b>Qué es:</b> mapas de tendencias (fortalezas y sesgos). Son brújula, no jaula ni excusa.</p><p><b>Pasos:</b> 1) responde un test breve una sola vez. 2) anota 2 fortalezas + 1 sesgo. 3) diseña 1 hábito que use tu fortaleza y compense tu sesgo.</p><p class="muted">✏️ 5': “Mi fortaleza ___ la uso para ___. Mi sesgo ___ lo compenso con ___”.</p></div>
+        </div>
+      </div>
+      <div id="psicoPanel2" class="hidden">
+        <div class="discipline-grid">
+          <div class="discipline-card"><h4>✍️ Diario reflexivo (Journaling)</h4><p><b>Qué es:</b> registro estructurado de pensamientos, emociones y decisiones para ver patrones en el tiempo.</p><p><b>Pasos:</b> 1) escribe 5' sin censura ni borrador. 2) subraya 1 emoción + 1 decisión. 3) relee cada luna y marca lo que se repite.</p><p class="muted">✏️ 5': “Hoy pensé ___, sentí ___, decidí ___”. Lo que se repite 3 lunas es tu patrón.</p></div>
+          <div class="discipline-card"><h4>🏛️ Examen estoico (Séneca · Marco Aurelio)</h4><p><b>Qué es:</b> revisión nocturna: qué hiciste bien, qué evitaste, y qué dependía de ti.</p><p><b>Pasos:</b> 1) ¿qué hice bien hoy? 2) ¿qué hice mal o evité? 3) separa: ¿dependía de mí o no? (dicotomía del control).</p><p class="muted">✏️ 5' antes de dormir: 3 líneas, sin látigo. Corrige mañana una sola cosa.</p></div>
+          <div class="discipline-card"><h4>❓ Mayéutica: parir tus ideas</h4><p><b>Qué es:</b> cuestionar tus certezas con preguntas hasta encontrar lo que realmente crees (Sócrates).</p><p><b>Pasos:</b> 1) elige un “debo / tengo que ___”. 2) ¿de dónde viene? ¿de quién lo heredé? ¿qué prueba tengo? 3) reformúlalo con tus palabras.</p><p class="muted">✏️ 5': cuestiona un solo “debo” hoy. Si sobrevive a 3 porqués, es tuyo.</p></div>
+          <div class="discipline-card"><h4>💌 Cartas no enviadas</h4><p><b>Qué es:</b> escribir a quien te marcó — vivo, partido o tu yo del pasado — sin enviarla. Lo no dicho pesa; escrito se ordena.</p><p><b>Pasos:</b> 1) elige destinatario. 2) escribe todo sin filtro ni buena letra. 3) cierra con lo que necesitas hoy: agradecer, perdonar o soltar.</p><p class="muted">✏️ 5': “Querida/o ___: lo que nunca te dije es ___”. Conecta con 🕊️ Duelo y 🔁 Recapitulación.</p></div>
+          <div class="discipline-card"><h4>🌅 Páginas matutinas (Julia Cameron)</h4><p><b>Qué es:</b> 3 planas a mano al despertar, sin releer ni corregir. Vacía el ruido mental antes de que maneje tu día.</p><p><b>Pasos:</b> 1) cuaderno solo para esto. 2) escribe sin parar, aunque sea “no sé qué escribir”. 3) no releas en semanas: es drenaje, no literatura.</p><p class="muted">✏️ 5': versión breve de 10 líneas hoy, apenas despiertes.</p></div>
+          <div class="discipline-card"><h4>🪶 Haiku y poesía breve</h4><p><b>Qué es:</b> decir mucho en 3 versos (5-7-5). La brevedad obliga a mirar de verdad: un olor, una luz, una pena.</p><p><b>Pasos:</b> 1) elige algo visto hoy. 2) 3 versos cortos, sin rigidez de sílabas. 3) léelo en voz alta y quédate con la imagen.</p><p class="muted">✏️ 5': un haiku de tu día, aunque sea imperfecto.</p></div>
+          <div class="discipline-card"><h4>🪦 Memento mori: tu epitafio (estoicos)</h4><p><b>Qué es:</b> recordar la finitud para ordenar prioridades. Marco Aurelio se lo repetía cada mañana: puedes partir hoy.</p><p><b>Pasos:</b> 1) escribe tu epitafio en 1 línea. 2) ¿tu día de hoy lo honra? 3) ajusta una sola cosa mañana.</p><p class="muted">✏️ 5': “Aquí yace ___, que ___”. Si incomoda, es que funciona.</p></div>
+          <div class="discipline-card"><h4>📖 Cuaderno de citas (commonplace book)</h4><p><b>Qué es:</b> copiar frases que te golpean y responderles por escrito. Así leían y pensaban Séneca y Marco Aurelio.</p><p><b>Pasos:</b> 1) copia 1 cita al día. 2) escribe por qué te eligió a ti. 3) relee tu cuaderno cada luna.</p><p class="muted">✏️ 5': la cita de hoy + 2 líneas tuyas debajo.</p></div>
+          <div class="discipline-card"><h4>🔄 Reescritura narrativa</h4><p><b>Qué es:</b> contar un mal recuerdo desde otro rol — testigo amable, yo futuro, amiga/o querido. Cambia el relato, cambia el peso.</p><p><b>Pasos:</b> 1) el hecho en 3 líneas. 2) reescríbelo como testigo compasivo. 3) anota qué cambió al leerlo.</p><p class="muted">✏️ 5': “Si lo contara mi yo de 80 años, diría ___”. Conecta con 🔁 Recapitulación.</p></div>
+          <div class="discipline-card"><h4>💭 Diálogo de voces</h4><p><b>Qué es:</b> dos partes tuyas conversan por escrito: miedo y coraje, exigente y amable, herida y cuidadora. Todo adentro tiene algo que decir.</p><p><b>Pasos:</b> 1) nombra las 2 voces. 2) 3 turnos cada una, sin censurar. 3) cierra con un acuerdo concreto entre ellas.</p><p class="muted">✏️ 5': “Mi miedo dice ___. Mi coraje responde ___”. Conecta con 🪑 Gestalt.</p></div>
+        </div>
+      </div>
+      <div id="psicoPanel3" class="hidden">
+        <div class="discipline-grid">
+          <div class="discipline-card"><h4>🧘 Mindfulness: atención plena</h4><p><b>Qué es:</b> observar sin juicio el flujo de pensamientos y sensaciones, en tiempo real.</p><p><b>Pasos:</b> 1) 3' con la respiración como ancla. 2) etiqueta lo que aparezca (“pensando”, “tensión”) y vuelve. 3) cierra notando el cuerpo.</p><p class="muted">✏️ 5': usa ⏱ Tiempo con 3 minutos. Distraerse y volver <i>es</i> el ejercicio.</p></div>
+          <div class="discipline-card"><h4>🪞 Atma Vichara: ¿quién soy yo?</h4><p><b>Qué es:</b> indagación no-dual (Ramana Maharshi): rastrear el “yo” hasta su fuente.</p><p><b>Pasos:</b> 1) siéntate en silencio. 2) ante cada pensamiento: “¿a quién le ocurre? A mí. ¿Quién soy yo?”. 3) quédate en el silencio previo a la respuesta, sin forzarla.</p><p class="muted">✏️ 5' al día. No busques frases: busca el silencio entre pensamientos.</p></div>
+          <div class="discipline-card"><h4>🌊 Vipassana: ver lo transitorio</h4><p><b>Qué es:</b> barrido sistemático del cuerpo notando sensaciones sutiles sin reaccionar: todo cambia.</p><p><b>Pasos:</b> 1) recorre de pies a cabeza, zona por zona. 2) nota cada sensación (calor, pulso, tensión) sin cambiarla. 3) recuerda: aparece y pasa (anicca).</p><p class="muted">✏️ 5': un barrido hoy. Si algo duele fuerte o te angustia, detente y respira normal.</p></div>
+        </div>
+      </div>
+      <div id="psicoPanel4" class="hidden">
+        <div class="discipline-grid">
+          <div class="discipline-card"><h4>🧍 Conciencia corporal (Bioenergética · Feldenkrais)</h4><p><b>Qué es:</b> tensiones crónicas (mandíbula, hombros, diafragma) que guardan emociones no procesadas.</p><p><b>Pasos:</b> 1) escanea tu cuerpo y puntúa tensión 0-10 por zona. 2) suelta 2' (hombros, mandíbula, respiración). 3) anota qué emoción apareció al soltar.</p><p class="muted">✏️ 5': tu mapa de tensión de hoy: “mandíbula 7, hombros 6, guata 4 → apareció ___”.</p></div>
+          <div class="discipline-card"><h4>🎨 Arte y escritura intuitiva</h4><p><b>Qué es:</b> pintar, modelar o escribir sin censura para sacar lo que la lógica bloquea.</p><p><b>Pasos:</b> 1) 5' de trazo o escritura continua, sin borrar ni juzgar. 2) míralo como si fuera de otra persona: ¿qué ves? 3) escribe 1 frase que la obra te diga.</p><p class="muted">✏️ 5': “hice ___ y me dice ___”. Feo vale: lo importante es que salió.</p></div>
+        </div>
+      </div>
+      <div class="menstrual-card" style="margin-top:10px">
+        <h4>📓 Mi práctica de hoy — registro personal</h4>
+        <p class="muted" style="font-size:11px">Queda <b>privado y local</b> por usuario. Elige el tema, escribe tu ejercicio y guarda. Sirve como journaling: relee cada luna.</p>
+        <div class="conv-row">
+          <label>Fecha <input type="date" id="psiDate"></label>
+          <label style="flex:2">Tema
+            <select id="psiTopic">
+              <option value="sombra">🌑 Sombra (Jung)</option>
+              <option value="tcc">🧠 TCC</option>
+              <option value="gestalt">🪑 Gestalt</option>
+              <option value="tipologias">🧬 Tipologías</option>
+              <option value="journaling">✍️ Journaling</option>
+              <option value="estoico">🏛️ Examen estoico</option>
+              <option value="mayeutica">❓ Mayéutica</option>
+              <option value="cartas">💌 Cartas no enviadas</option>
+              <option value="paginas">🌅 Páginas matutinas</option>
+              <option value="haiku">🪶 Haiku y poesía</option>
+              <option value="epitafio">🪦 Memento mori / epitafio</option>
+              <option value="citas">📖 Cuaderno de citas</option>
+              <option value="reescritura">🔄 Reescritura narrativa</option>
+              <option value="dialogo">💭 Diálogo de voces</option>
+              <option value="mindfulness">🧘 Mindfulness</option>
+              <option value="atmavichara">🪞 Atma Vichara</option>
+              <option value="vipassana">🌊 Vipassana</option>
+              <option value="corporal">🧍 Conciencia corporal</option>
+              <option value="arte">🎨 Arte intuitivo</option>
+            </select>
+          </label>
+        </div>
+        <label>Mi ejercicio <textarea id="psiText" rows="3" placeholder="ej: Me molesta que otros sean impuntuales porque yo no me permito descansar..." maxlength="500"></textarea></label>
+        <div class="dlg-actions" style="justify-content:flex-start">
+          <button type="button" id="psiSave" class="btn btn-accent" style="width:auto">💾 Guardar práctica</button>
+          <button type="button" id="psiToNote" class="btn" style="width:auto" title="Copiar a la nota del día actual">📝 Llevar a nota de hoy</button>
+        </div>
+        <div id="psiLog" class="habits-list" style="margin-top:10px;max-height:220px"></div>
+        <div class="dlg-actions" style="justify-content:space-between;align-items:center;margin-top:8px">
+          <span id="psiStats" class="muted" style="font-size:11px"></span>
+          <span style="display:flex;gap:8px">
+            <button type="button" id="psiShare" class="btn" style="width:auto">📤 Compartir</button>
+            <button type="button" id="psiClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar</button>
+          </span>
+        </div>
+      </div>
+      <div class="dlg-actions"><button type="button" id="psicoClose" class="btn">Cerrar</button></div>
+    </form>
+  </dialog>

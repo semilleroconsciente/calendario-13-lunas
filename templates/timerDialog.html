@@ -1,0 +1,170 @@
+<dialog id="timerDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">⏱ Tiempo — Reloj, Hora mundial y Temporizadores</h3>
+        <button type="button" id="timerCloseTop" class="btn btn-icon" title="Cerrar" aria-label="Cerrar">✕</button>
+      </div>
+      <div class="timer-tabs" style="flex-wrap:wrap">
+        <button type="button" id="tabClock" class="btn btn-accent" style="width:auto">🕐 Reloj</button>
+        <button type="button" id="tabWorld" class="btn" style="width:auto">🌍 Hora mundial</button>
+        <button type="button" id="tabChrono" class="btn" style="width:auto">Cronómetro</button>
+        <button type="button" id="tabCount" class="btn" style="width:auto">Temporizador</button>
+        <button type="button" id="tabGuide" class="btn" style="width:auto">📖 Guía</button>
+      </div>
+      <div id="clockPanel">
+        <div id="localClockDisplay" class="timer-display">--:--:--</div>
+        <p id="localClockDate" style="text-align:center;margin:8px 0 2px;font-weight:700">—</p>
+        <p id="localClockZone" class="muted" style="text-align:center;margin:0 0 8px">—</p>
+        <div class="preset-row" style="justify-content:center">
+          <span class="chip" id="localUtcChip">UTC —</span>
+          <span class="chip" id="localUnixChip">—</span>
+        </div>
+        <p class="muted" style="text-align:center;margin-top:8px">Hora del dispositivo. Si viajas, verifica la zona horaria del sistema.</p>
+      </div>
+      <div id="worldPanel" class="hidden">
+        <div class="conv-row" style="justify-content:center;flex-wrap:wrap">
+          <label>Añadir país/ciudad <select id="worldAddSelect" style="max-width:230px"></select></label>
+          <button type="button" id="worldAddBtn" class="btn btn-accent" style="width:auto">＋ Añadir</button>
+          <button type="button" id="worldResetBtn" class="btn" style="width:auto" title="Volver a la lista por defecto">↺ Por defecto</button>
+        </div>
+        <div id="worldList" class="world-grid"></div>
+        <h4 style="margin:12px 0 6px;color:var(--gold)">🔁 Conversor de hora</h4>
+        <div class="conv-row" style="flex-wrap:wrap;justify-content:center">
+          <label>Hora <input type="time" id="convTime" value="12:00" style="width:110px"></label>
+          <label>Desde <select id="convFrom" style="max-width:170px"></select></label>
+          <label>Hacia <select id="convTo" style="max-width:170px"></select></label>
+          <button type="button" id="convCalcBtn" class="btn btn-accent" style="width:auto">Convertir</button>
+        </div>
+        <div id="convResult" class="world-conv-result">Elige hora y zonas para convertir.</div>
+        <p class="muted" style="text-align:center;margin-top:8px">Funciona sin internet: usa la hora de tu dispositivo y zonas IANA.</p>
+      </div>
+      <div id="chronoPanel" class="hidden">
+        <div id="chronoDisplay" class="timer-display">00:00:00.0</div>
+        <div class="dlg-actions" style="justify-content:center">
+          <button type="button" id="chronoStart" class="btn btn-accent" style="width:auto">▶ Iniciar</button>
+          <button type="button" id="chronoLap" class="btn" style="width:auto">◉ Vuelta</button>
+          <button type="button" id="chronoReset" class="btn" style="width:auto">↺ Reiniciar</button>
+        </div>
+        <div id="chronoLaps" class="chrono-laps"></div>
+      </div>
+      <div id="countPanel" class="hidden">
+        <div class="conv-row" style="justify-content:center">
+          <label>Horas <input type="number" id="countH" min="0" max="99" value="0" style="width:70px"></label>
+          <label>Minutos <input type="number" id="countM" min="0" max="59" value="5" style="width:70px"></label>
+          <label>Segundos <input type="number" id="countS" min="0" max="59" value="0" style="width:70px"></label>
+        </div>
+        <div class="preset-row" style="justify-content:center">
+          <button type="button" class="btn" style="width:auto" data-count-preset="1">1 min</button>
+          <button type="button" class="btn" style="width:auto" data-count-preset="5">5 min</button>
+          <button type="button" class="btn" style="width:auto" data-count-preset="10">10 min</button>
+          <button type="button" class="btn" style="width:auto" data-count-preset="15">15 min</button>
+          <button type="button" class="btn" style="width:auto" data-count-preset="25">🍅 25</button>
+          <button type="button" class="btn" style="width:auto" data-count-preset="30">30 min</button>
+          <button type="button" class="btn" style="width:auto" data-count-preset="60">1 h</button>
+        </div>
+        <div id="countDisplay" class="timer-display">00:05:00</div>
+        <div class="dlg-actions" style="justify-content:center">
+          <button type="button" id="countStart" class="btn btn-accent" style="width:auto">▶ Iniciar</button>
+          <button type="button" id="countPause" class="btn" style="width:auto">⏸ Pausa</button>
+          <button type="button" id="countReset" class="btn" style="width:auto">↺ Reiniciar</button>
+        </div>
+        <p class="muted" style="text-align:center;margin-top:8px">Sonará y vibrará al terminar. Mantén la ventana abierta.</p>
+      </div>
+      <div id="guidePanel" class="hidden">
+        <div class="tz-hero">
+          <div class="tz-hero-ico">🌐</div>
+          <div>
+            <b>Zonas horarias sin enredos</b>
+            <span>Guía completa y offline · lee las tarjetas, convierte horas y coordina con otros países</span>
+          </div>
+        </div>
+        <div class="tz-chips">
+          <span class="chip">🕰️ 24 husos · UTC−12 a +14</span>
+          <span class="chip">🇨🇱 Chile: 3 horas oficiales</span>
+          <span class="chip">📵 Funciona sin internet</span>
+        </div>
+        <details class="tz-item" open>
+          <summary><span class="tz-num">1</span><span class="tz-ico">🌍</span><span class="tz-title">¿Qué es una zona horaria?</span></summary>
+          <div class="tz-body">
+            <p>La Tierra gira 360° en 24 h → cada 15° de longitud es ≈ <b>1 hora</b>. Para ordenar la vida civil se crearon las <b>zonas horarias</b>: franjas que comparten la misma hora oficial.</p>
+            <div class="tz-callout gold"><b>UTC</b> es el punto cero (antes <b>GMT</b>, Greenwich). Todo se expresa como <b>UTC±horas</b>. Ejemplo: <b>Santiago en invierno es UTC−4</b> y en verano <b>UTC−3</b>.</div>
+            <p class="muted">El calendario usa nombres estándar <b>IANA</b> (ej: <i>America/Santiago</i>, <i>Pacific/Easter</i>, <i>Europe/Madrid</i>): el nombre trae la regla y tu dispositivo calcula solo el desfase y el horario de verano.</p>
+          </div>
+        </details>
+        <details class="tz-item">
+          <summary><span class="tz-num">2</span><span class="tz-ico">🃏</span><span class="tz-title">Cómo leer las tarjetas de Hora mundial</span></summary>
+          <div class="tz-body">
+            <p>Cada tarjeta muestra <b>☀️/🌙</b> (día o noche allá), <b>hora con segundos</b>, <b>fecha corta</b> y la <b>diferencia vs tu hora</b>:</p>
+            <div class="tz-diff-grid">
+              <div><b>"misma hora"</b><span>mismo huso ahora mismo</span></div>
+              <div><b>"+2 h"</b><span>allá van adelante · 12:00 → 14:00</span></div>
+              <div><b>"−3 h"</b><span>allá van atrás · 12:00 → 09:00</span></div>
+              <div><b>(+1 día)</b><span>allá ya es mañana · (−1 día) = ayer</span></div>
+            </div>
+            <div class="tz-callout warn">⚠️ La diferencia <b>cambia en el año</b>: cada país entra/sale del horario de verano en fechas distintas. Lo que ves aquí ya incluye el ajuste de <b>hoy</b>.</div>
+          </div>
+        </details>
+        <details class="tz-item">
+          <summary><span class="tz-num">3</span><span class="tz-ico">🇨🇱</span><span class="tz-title">Chile: 3 horas oficiales</span></summary>
+          <div class="tz-body">
+            <div class="tz-chile">
+              <div><b>🏙️ Continental</b><span>Santiago · Penco</span><em>UTC−4 inv. / UTC−3 ver.</em></div>
+              <div><b>🗿 Rapa Nui</b><span>Isla de Pascua</span><em>UTC−6 / UTC−5 · −2 h vs Stgo.</em></div>
+              <div><b>🧊 Magallanes</b><span>Antártica chilena</span><em>UTC−3 fijo todo el año</em></div>
+            </div>
+            <p class="muted">Cambio típico: 1er sábado de abril (→ invierno) y 1er sábado de septiembre (→ verano). Por eso <b>Santiago</b> y <b>Rapa Nui</b> van por separado en esta app.</p>
+          </div>
+        </details>
+        <details class="tz-item">
+          <summary><span class="tz-num">4</span><span class="tz-ico">📊</span><span class="tz-title">Tabla rápida desde Chile continental</span></summary>
+          <div class="tz-body">
+            <p class="muted" style="margin-top:0">Desfases <b>habituales</b> (pueden variar ±1 h por horario de verano):</p>
+            <div class="tz-table-wrap"><table class="tz-table">
+              <tr><th>Destino</th><th>Dif.</th><th>Si en Penco son 12:00…</th></tr>
+              <tr><td>🇦🇷 Buenos Aires</td><td>0 a +1 h</td><td>12:00 – 13:00</td></tr>
+              <tr><td>🇵🇪 Lima / 🇨🇴 Bogotá</td><td>−1 a 0 h</td><td>11:00 – 12:00</td></tr>
+              <tr><td>🇲🇽 CDMX</td><td>−2 a −3 h</td><td>09:00 – 10:00</td></tr>
+              <tr><td>🇺🇸 Nueva York</td><td>−1 a +1 h</td><td>11:00 – 13:00</td></tr>
+              <tr><td>🇺🇸 California (SF/LA)</td><td>−3 a −5 h</td><td>07:00 – 09:00</td></tr>
+              <tr><td>🇺🇸 Honolulu</td><td>−6 a −7 h</td><td>05:00 – 06:00</td></tr>
+              <tr><td>🇪🇸 Madrid</td><td class="pos">+5 a +6 h</td><td>17:00 – 18:00</td></tr>
+              <tr><td>🇬🇧 Londres</td><td class="pos">+4 a +5 h</td><td>16:00 – 17:00</td></tr>
+              <tr class="next-day"><td>🇯🇵 Tokio</td><td class="pos">+12 a +13 h</td><td>00:00 – 01:00 (+1 día)</td></tr>
+              <tr class="next-day"><td>🇦🇺 Sídney</td><td class="pos">+13 a +14 h</td><td>01:00 – 02:00 (+1 día)</td></tr>
+            </table></div>
+            <p class="muted">Invierno chileno (UTC−4) vs verano (UTC−3): en verano resta 1 h a la diferencia con el hemisferio norte.</p>
+          </div>
+        </details>
+        <details class="tz-item">
+          <summary><span class="tz-num">5</span><span class="tz-ico">📅</span><span class="tz-title">Línea de fecha: "días distintos"</span></summary>
+          <div class="tz-body">
+            <p>Cerca del Pacífico (línea ≈ 180°) la fecha salta un día: hacia el oeste <b>sumas un día</b>, hacia el este <b>restas un día</b>. Con <b>Tokio, Sídney o Auckland</b> casi siempre hay <b>+1 día</b>: lunes 12:00 en Penco = martes 01:00 allá.</p>
+            <div class="tz-example">🧭 Regla práctica: primero convierte la <b>hora</b> y después pregunta <b>"¿qué día es allá?"</b> → el conversor te responde <i>mismo día / +1 día / −1 día</i>.</div>
+          </div>
+        </details>
+        <details class="tz-item">
+          <summary><span class="tz-num">6</span><span class="tz-ico">🔁</span><span class="tz-title">Conversor paso a paso + horario de verano</span></summary>
+          <div class="tz-body">
+            <div class="tz-steps">
+              <div><b>1</b> Pon tu hora en <b>Hora</b></div>
+              <div><b>2</b> Tu ciudad en <b>Desde</b></div>
+              <div><b>3</b> La otra ciudad en <b>Hacia</b></div>
+              <div><b>4</b> Pulsa <b>Convertir</b> ✨</div>
+            </div>
+            <p>Prueba 2–3 horarios y elige el que deje a ambos entre las <b>09:00 y 20:00</b>. Ideal para videollamadas familiares.</p>
+            <div class="tz-callout warn">☀️ <b>DST (horario de verano):</b> Chile, EE.UU. y Europa lo usan en meses opuestos, por eso la diferencia con Madrid o Nueva York <b>no es fija</b>. Si agendaste hace meses, <b>reconvierte la misma semana</b>.</div>
+          </div>
+        </details>
+        <details class="tz-item">
+          <summary><span class="tz-num">7</span><span class="tz-ico">☀️</span><span class="tz-title">Hora solar, hora dorada y jet lag</span></summary>
+          <div class="tz-body">
+            <p><b>Hora civil</b> = la del reloj. <b>Hora solar</b> = la del sol real: el <b>mediodía solar</b> es cuando está más alto (en Penco cae 30–60 min después de las 12:00). La <b>hora dorada</b> (≈ 1 h tras amanecer y antes del atardecer) es la mejor luz para fotos y caminatas 📸.</p>
+            <div class="tz-callout tip">✈️ <b>Jet lag:</b> ir al este cuesta más que al oeste. 2–3 días antes múevete 1 h hacia el horario destino, toma sol de mañana (viaje al este) o de tarde (al oeste), evita siesta larga el día 1 e hidrátate. Se recupera ≈ <b>1 huso por día</b>.</div>
+            <p class="muted"><b>Tiempo Unix</b> (chip ⏱ del Reloj): segundos desde 1970-01-01 00:00 UTC. Si dos personas comparan su Unix y coinciden, hablan del <b>mismo instante</b> aunque sus relojes marquen distinto.</p>
+          </div>
+        </details>
+        <div class="tz-callout tip" style="text-align:center">💡 Tip: deja fijas tus 4–6 ciudades frecuentes con <b>＋ Añadir</b>; quedan guardadas en el dispositivo.</div>
+      </div>
+      <div class="dlg-actions"><button type="button" id="timerClose" class="btn">Cerrar</button></div>
+    </form>
+  </dialog>

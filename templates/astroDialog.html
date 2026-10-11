@@ -1,0 +1,18 @@
+<dialog id="astroDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">🔭 Eventos Astronómicos — Penco</h3>
+        <button type="button" id="astroCloseTop" class="btn btn-icon" title="Cerrar" aria-label="Cerrar">✕</button>
+      </div>
+      <p class="muted" style="line-height:1.5">Cielo del Bío-Bío. Horas en <b>America/Santiago</b>. Arriba: salida y puesta de la luna en Penco (aprox.); fases en el calendario; aquí: eclipses, superlunas y lluvias de meteoros visibles desde Penco.</p>
+      <div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">
+        <button type="button" id="tabAstroUpcoming" class="btn btn-accent" style="width:auto">⏳ Próximos</button>
+        <button type="button" id="tabAstroMesLunar" class="btn" style="width:auto">🌕 Mes lunar</button>
+        <button type="button" id="tabAstroYear" class="btn" style="width:auto">📅 Año</button>
+      </div>
+      <div id="astroTodayBox" class="menstrual-card" style="border-color:var(--gold)"></div>
+      <div id="astroList"></div>
+      <p class="muted" style="font-size:10px;margin-top:8px">Fuentes: NASA/IMCCE efemérides. Lluvias: mejor madrugada, cielo oscuro, lejos de luces de Concepción. Eclipses: confirma visibilidad local.</p>
+      <div class="dlg-actions"><button type="button" id="astroClose" class="btn">Cerrar</button></div>
+    </form>
+  </dialog>

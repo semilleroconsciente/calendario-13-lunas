@@ -39,12 +39,27 @@ describe('manifest + cableado', () => {
     }
   });
 
+  it('diálogos: fuera de index.html, en templates/ + bundle', () => {
+    const html = read('index.html');
+    assert.ok(!/<dialog[\s>]/.test(html), 'index.html aún trae <dialog> inline');
+    assert.ok(html.includes('min/templates-bundled.min.js?v=1'), 'falta templates-bundled minificado');
+    assert.ok(html.includes('id="dlgHost"'), 'falta #dlgHost para inyección');
+    const dir = fs.readdirSync(path.join(ROOT, 'templates')).filter((f) => f.endsWith('.html'));
+    assert.ok(dir.length >= 50, 'se esperaban 50+ templates, hay ' + dir.length);
+    const bundle = read('templates-bundled.js');
+    assert.ok(bundle.includes('window.cal13tpl'), 'bundle sin window.cal13tpl');
+    for (const f of dir) {
+      const id = f.replace(/\.html$/, '');
+      assert.ok(bundle.includes(JSON.stringify(id) + ':'), 'bundle sin diálogo ' + id);
+    }
+  });
+
   it('package.json: nuevos archivos en build.files + scripts', () => {
     const pkg = JSON.parse(read('package.json'));
-    for (const f of ['storage-idb.js', 'accesibilidad-modulo.js', 'onboarding-modulo.js', 'auto-backup-modulo.js', '_headers', 'boot-modulos.js', 'sw-registro.js', 'splash.css', 'min/**/*']) {
+    for (const f of ['storage-idb.js', 'accesibilidad-modulo.js', 'onboarding-modulo.js', 'auto-backup-modulo.js', '_headers', 'boot-modulos.js', 'sw-registro.js', 'splash.css', 'min/**/*', 'templates-bundled.js', 'templates/*.html']) {
       assert.ok((pkg.build.files || []).includes(f), 'build.files sin ' + f);
     }
-    for (const s of ['build:sw', 'check:sw', 'check:donate', 'movil:build', 'check:size', 'build:min', 'check:min']) {
+    for (const s of ['build:sw', 'check:sw', 'check:donate', 'movil:build', 'check:size', 'build:min', 'check:min', 'build:tpl', 'check:tpl']) {
       assert.ok(pkg.scripts[s], 'script ausente: ' + s);
     }
     assert.ok((pkg.devDependencies || {}).esbuild, 'falta devDep esbuild (minificación)');
@@ -55,6 +70,8 @@ describe('manifest + cableado', () => {
       const sw = read(f);
       assert.ok(sw.includes("'./min/storage-idb.min.js?v=1'"), f + ' sin storage-idb minificado');
       assert.ok(sw.includes("'./min/onboarding-modulo.min.js?v=1'"), f + ' sin onboarding minificado');
+      assert.ok(sw.includes("'./min/templates-bundled.min.js?v=1'"), f + ' sin bundle de diálogos minificado');
+      assert.ok(sw.includes("'./templates/configDialog.html'"), f + ' sin templates sueltos (respaldo fetch)');
       // Poda: no debe quedar historial viejo del núcleo
       assert.ok(!sw.includes('renderer.js?v=8'), f + ' aún arrastra historial ?v= viejo');
     }

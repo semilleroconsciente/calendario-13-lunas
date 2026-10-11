@@ -1,0 +1,70 @@
+<dialog id="bosqueDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">🌳 Bosque Nativo — Penco · Cordillera de la Costa</h3>
+        <button type="button" id="bosqueCloseTop" class="btn btn-icon" title="Cerrar" aria-label="Cerrar">✕</button>
+      </div>
+      <p class="muted" style="line-height:1.5">Bosque esclerófilo y laurifolio costero de Penco. <b>Observa, restaura y cosecha con respeto</b> — no talas, no arranques. Registra <b>privado y local</b> por usuario.</p>
+      <div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">
+        <button type="button" id="tabBosqueActual" class="btn btn-accent" style="width:auto">🌿 Bosque hoy</button>
+        <button type="button" id="tabBosqueHistoria" class="btn" style="width:auto">📜 Historia del bosque</button>
+        <button type="button" id="tabBosqueAcompan" class="btn" style="width:auto">🌱 Ecosistema</button>
+        <button type="button" id="tabBosqueSemillero" class="btn" style="width:auto">🌰 Semillero nativo</button>
+      </div>
+      <div id="bosqueActualPanel">
+      <div id="bosqueTodayBox" class="menstrual-card" style="border-color:var(--gold)"></div>
+      <div class="fishing-grid" style="margin-top:10px">
+        <div class="menstrual-card">
+          <h4>🌿 Especies nativas</h4>
+          <div id="bosqueCatalogBox" class="fishing-species"></div>
+          <p class="muted" style="font-size:10px;margin-top:6px">Toca una especie para cargarla en el formulario.</p>
+        </div>
+        <div class="menstrual-card">
+          <h4>🌙 Luna & estación</h4>
+          <p class="muted" style="font-size:11px">Menguante otoñal → mejor para plantar y podar. Creciente primavera → esquejes. Frutos otoñales se siembran inmediato.</p>
+          <div id="bosqueMoonBox" class="chip" style="display:block;white-space:normal"></div>
+          <div id="bosqueConsejoBox" class="menstrual-card" style="margin-top:8px;background:var(--panel)"></div>
+        </div>
+      </div>
+      <div class="menstrual-card" style="margin-top:10px">
+        <h4>⚠️ Consejos — buen vivir en el bosque</h4>
+        <p class="muted" style="font-size:11px;line-height:1.5">• No hagas fuego en bosque (ordenanza CONAF). • Lleva bastón, agua y vuelve con tu basura. • Cosecha 30% del fruto, deja 70% para aves y suelo. • Si ves zarza/eucalipto invasor, anótalo para jornada de control. • Planta nativo en Pukem con lluvia, hoyo 40×40 + compost.</p>
+      </div>
+      <div class="menstrual-card" style="margin-top:10px">
+        <h4>📓 Bitácora — salidas al bosque</h4>
+        <div class="conv-row">
+          <label>Fecha <input type="date" id="bosqueDate"></label>
+          <label>Hora <input type="time" id="bosqueTime" value="09:00"></label>
+          <label>Lugar / sendero <input type="text" id="bosquePlace" placeholder="ej: Cerro Penco, Quebrada Honda" maxlength="30"></label>
+        </div>
+        <div class="conv-row">
+          <label>Especie / acción <input type="text" id="bosqueSpecies" placeholder="ej: Peumo — planté 5, Boldo — observé flor" maxlength="30"></label>
+          <label>Tipo
+            <select id="bosqueAction">
+              <option value="observación">Observación</option><option value="plantación">Plantación</option><option value="recolección semillas">Recolección semillas</option><option value="recolección frutos">Recolección frutos</option><option value="hongos">Hongos</option><option value="limpieza">Limpieza / control invasoras</option>
+            </select>
+          </label>
+          <label>Cantidad <input type="text" id="bosqueQty" placeholder="ej: 5 plantines / 2 kg" maxlength="20"></label>
+        </div>
+        <label>Notas <input type="text" id="bosqueNotes" placeholder="ej: suelo húmedo, sembré inmediato, aves dispersoras" maxlength="80"></label>
+        <div class="dlg-actions" style="justify-content:flex-start">
+          <button type="button" id="bosqueAdd" class="btn btn-accent" style="width:auto">+ Guardar registro</button>
+          <button type="button" id="bosqueCancelEdit" class="btn hidden" style="width:auto">Cancelar</button>
+        </div>
+        <div id="bosqueLogBox" class="habits-list" style="margin-top:10px;max-height:240px"></div>
+        <div class="dlg-actions" style="justify-content:space-between;align-items:center;margin-top:8px">
+          <span id="bosqueStats" class="muted" style="font-size:11px"></span>
+          <span style="display:flex;gap:8px">
+            <button type="button" id="bosqueShare" class="btn" style="width:auto">📤 Compartir</button>
+            <button type="button" id="bosqueExport" class="btn" style="width:auto">📥 Exportar</button>
+            <button type="button" id="bosqueClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar</button>
+          </span>
+        </div>
+      </div>
+      </div>
+      <div id="bosqueHistoriaPanel" class="hidden" style="margin-top:10px"></div>
+      <div id="bosqueAcompanPanel" class="hidden" style="margin-top:10px"></div>
+      <div id="bosqueSemilleroPanel" class="hidden" style="margin-top:10px"></div>
+      <div class="dlg-actions"><button type="button" id="bosqueClose" class="btn">Cerrar</button></div>
+    </form>
+  </dialog>

@@ -1,0 +1,19 @@
+<dialog id="compostDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">🪱 Compost & Suelo — arcilla de Penco</h3>
+        <button type="button" id="compostCloseTop" class="btn btn-icon" title="Cerrar" aria-label="Cerrar">✕</button>
+      </div>
+      <p class="muted" style="line-height:1.5">Suelo arcilloso + lluvia Pukem = se aprieta. El compost lo esponja. <b>Cierra el ciclo:</b> 🌱 Siembra → 🍂 restos → 🪱 compost → 🌱 tierra nueva. Todo local y offline: testea tu suelo, arma tu pila, resuelve problemas y voltea en <b>luna menguante</b>.</p>
+      <div id="compostStatusBox" class="menstrual-card" style="border-color:var(--gold)"></div>
+      <div class="timer-tabs" style="margin:12px 0 10px;flex-wrap:wrap">
+        <button type="button" id="tabCP1" class="btn btn-accent" style="width:auto">🪱 Mi pila</button>
+        <button type="button" id="tabCP2" class="btn" style="width:auto">🧪 Suelo Penco</button>
+        <button type="button" id="tabCP4" class="btn" style="width:auto">📖 Recetas</button>
+        <button type="button" id="tabCP5" class="btn" style="width:auto">🆘 Problemas</button>
+        <button type="button" id="tabCP3" class="btn" style="width:auto">📅 Luna</button>
+      </div>
+      <div id="compostPanel"></div>
+      <div class="dlg-actions"><button type="button" id="compostClose" class="btn">Cerrar</button></div>
+    </form>
+  </dialog>

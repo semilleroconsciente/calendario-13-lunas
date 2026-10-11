@@ -1,0 +1,84 @@
+<dialog id="breathDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">🌬️ Respiración — calma, foco y sueño</h3>
+        <button type="button" id="breathCloseTop" class="btn btn-icon" title="Cerrar" aria-label="Cerrar">✕</button>
+      </div>
+      <p class="muted" style="line-height:1.5">Respirar bien es gratis y cambia tu día. Elige por <b>objetivo</b>, sigue la guía visual con sonido y completa ciclos. Todo queda en <b>Mi registro</b>.</p>
+      <div class="timer-tabs" style="margin:10px 0;flex-wrap:wrap">
+        <button type="button" id="breathTabPractice" class="btn btn-accent" style="width:auto">🌬️ Practicar</button>
+        <button type="button" id="breathTabLearn" class="btn" style="width:auto">📖 Aprender</button>
+        <button type="button" id="breathTabLog" class="btn" style="width:auto">📓 Mi registro</button>
+      </div>
+      <div id="breathPracticePanel">
+        <div class="menstrual-card" style="border-color:var(--gold);margin-bottom:10px">
+          <h4>🚀 Empieza en 60 segundos</h4>
+          <p class="muted" style="font-size:12px;line-height:1.6">1) Siéntate recto, pies en tierra, hombros sueltos. 2) Mano al vientre: debe inflarse al inhalar. 3) Inhala por <b>nariz</b>, exhala por <b>nariz o boca lenta</b>. 4) Si eres nuevo: parte con <b>🌱 2-4</b> o <b>🍃 4-6</b>.</p>
+        </div>
+        <div class="conv-row" style="align-items:flex-end">
+          <label style="flex:2">Objetivo
+            <select id="breathFilter">
+              <option value="todos">🌬️ Todas</option>
+              <option value="inicio">🌱 Inicio</option>
+              <option value="calma">🍃 Calma / ansiedad</option>
+              <option value="sueno">🌙 Sueño</option>
+              <option value="foco">🎯 Foco</option>
+              <option value="energia">⚡ Energía</option>
+            </select>
+          </label>
+          <label style="flex:1">Ciclos
+            <select id="breathCycles">
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4" selected>4</option>
+              <option value="6">6</option>
+              <option value="8">8</option>
+            </select>
+          </label>
+          <label class="check-row" style="flex:1;white-space:nowrap"><input type="checkbox" id="breathSound" checked> 🔊 Sonido</label>
+        </div>
+        <div class="breath-grid" id="breathGrid" style="margin-top:10px"></div>
+        <div class="menstrual-card" style="margin-top:10px;text-align:center">
+          <h4 id="breathTitle" style="color:var(--gold)">4-7-8 Respiración</h4>
+          <p id="breathBadges" style="margin:4px 0"></p>
+          <p id="breathDesc" class="muted" style="font-size:12px">Ideal para el sueño y la ansiedad. Calma profunda.</p>
+          <div id="breathCircle" class="breath-circle"><span id="breathPhase">Listo</span><span id="breathCount">—</span></div>
+          <p id="breathCycleLabel" class="muted" style="font-size:12px;margin:4px 0">0/4 ciclos</p>
+          <div class="breath-progress"><div id="breathProgress"></div></div>
+          <p id="breathPattern" class="chip" style="display:inline-block;margin-top:8px">Inhala 4 → Retén 7 → Exhala 8</p>
+          <p id="breathTimeEst" class="muted" style="font-size:11px;margin-top:4px"></p>
+          <div class="dlg-actions" style="justify-content:center;margin-top:10px;flex-wrap:wrap">
+            <button type="button" id="breathStart" class="btn btn-accent" style="width:auto">▶ Iniciar</button>
+            <button type="button" id="breathPause" class="btn" style="width:auto">⏸ Pausa</button>
+            <button type="button" id="breathReset" class="btn" style="width:auto">↺ Reiniciar</button>
+            <button type="button" id="breathDone" class="btn" style="width:auto" title="Guardar la sesión en tu registro">✅ Marcar hecha</button>
+          </div>
+          <div style="text-align:left;margin-top:10px">
+            <h4 style="color:var(--gold);font-size:12px;margin-bottom:4px">📝 Paso a paso</h4>
+            <ol id="breathSteps" class="muted" style="font-size:12px;line-height:1.6;margin:0;padding-left:18px"></ol>
+            <p id="breathWhen" class="muted" style="font-size:12px;margin-top:6px"></p>
+          </div>
+          <p class="muted" style="font-size:11px;margin-top:8px">⚠️ Si te mareas, duele el pecho o te falta el aire: para, respira normal y prueba una más suave (2-4 / 4-6). No practiques conteniendo mucho aire en agua, manejando ni con embarazo/hipertensión descompensada sin guía.</p>
+        </div>
+      </div>
+      <div id="breathLearnPanel" class="hidden">
+        <div class="si-card"><h4>🫁 Base diafragmática (2 min)</h4><p>Mano derecha al pecho, izquierda al vientre. Al inhalar solo se mueve la izquierda. Prueba: 10 respiraciones 4-6 solo con guata. Si suben hombros, vas rápido: baja ritmo. Esto solo ya baja el estrés.</p></div>
+        <div class="si-card"><h4>🧭 Elige por momento</h4><p><b>Nervios/enojo:</b> 4-6, 3-3-6 o suspiro · <b>No duermo:</b> 4-7-8 o 7-11 acostado · <b>Estudiar/trabajar:</b> caja 4-4-4-4 o alterna · <b>Bajón/mañana:</b> 3-1-3 energía + luz + agua · <b>Siempre:</b> nariz > boca, lento > fuerte.</p></div>
+        <div class="si-card"><h4>❌ Errores comunes</h4><p>1) Respirar al pecho y subir hombros. 2) Forzar retención hasta marearse. 3) Hacer técnicas de energía de noche. 4) 1 ciclo y rendirse: mínimo 4 ciclos (2 min) para notar efecto.</p></div>
+        <div class="si-card"><h4>🛟 Cuidados</h4><p>No reemplaza tratamiento. Si tienes asma, EPOC, corazón, hipertensión, embarazo, pánico frecuente o apnea: usa solo niveles Suave y consulta CESFAM. Niños: solo 2-4 / 4-4 jugando (“oler flor / soplar vela”).</p></div>
+        <div class="menstrual-card" style="margin-top:10px"><h4>🔗 Conecta</h4><p class="muted" style="font-size:12px">🌬️ + ✅ Hábitos (racha 2 min/día) · 🌬️ + 💭 Sueños (4-7-8 antes de dormir) · 🌬️ + 🕉️ Prácticas (respiración al sol) · 🌬️ + 🪞 Autoconocimiento (STOP + 3 respiraciones).</p><div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="breathGoHabits" class="btn" style="width:auto">✅ Ir a Hábitos</button></div></div>
+      </div>
+      <div id="breathLogPanel" class="hidden">
+        <div id="breathStatsBox"><div id="breathStats"></div></div>
+        <div id="breathLogBox" class="habits-list" style="margin-top:10px;max-height:240px"></div>
+        <div class="dlg-actions" style="justify-content:space-between;align-items:center;margin-top:8px;flex-wrap:wrap">
+          <span style="display:flex;gap:8px;flex-wrap:wrap">
+            <button type="button" id="breathAgendar" class="btn" style="width:auto">🕐 Agendar hoy</button>
+            <button type="button" id="breathShare" class="btn" style="width:auto">📤 Compartir semana</button>
+            <button type="button" id="breathClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar</button>
+          </span>
+        </div>
+      </div>
+      <div class="dlg-actions"><button type="button" id="breathClose" class="btn">Cerrar</button></div>
+    </form>
+  </dialog>

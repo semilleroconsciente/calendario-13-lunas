@@ -78,6 +78,13 @@ function staticEntries() {
     };
     walk(path.join(ROOT, 'data/territorios'), '');
   } catch {}
+  // Diálogos sueltos: respaldo fetch de cal13tpl.asegurar() (el bundle
+  // embebido es lo primario; estos solo se tocan si un id falta en él).
+  try {
+    for (const e of fs.readdirSync(path.join(ROOT, 'templates'))) {
+      if (e.endsWith('.html')) files.push('./templates/' + e);
+    }
+  } catch {}
   return [...new Set(files)];
 }
 

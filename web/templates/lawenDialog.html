@@ -1,0 +1,31 @@
+<dialog id="lawenDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">🌿 Lawen — Herbario Bío-Bío</h3>
+        <button type="button" id="lawenCloseTop" class="btn btn-icon" title="Cerrar" aria-label="Cerrar">✕</button>
+      </div>
+      <p class="muted" style="line-height:1.5">Fichas base de Penco · Bío-Bío <b>más tus propias plantas</b>. <b>Información educativa, no receta médica.</b> Si estás embarazada, das lactancia, tomas medicamentos crónicos o es para niños, consulta CESFAM/matrona. Parte con dosis baja y 1 planta a la vez.</p>
+      <div class="conv-row" style="align-items:center">
+        <label style="flex:2">🔍 Buscar <input type="text" id="lawenSearch" placeholder="ej: matico, tos, herida, luna llena"></label>
+        <label>Luna <select id="lawenMoonFilter"><option value="">Todas</option><option value="Nueva">🌑 Nueva</option><option value="Creciente">🌗 Creciente</option><option value="Llena">🌕 Llena</option><option value="Menguante">🌓 Menguante</option></select></label>
+      </div>
+      <details id="lawenAddBox" style="margin-top:8px;border:1px dashed var(--gold);border-radius:10px;padding:8px 10px">
+        <summary style="cursor:pointer;font-size:12px;color:var(--gold)"><b>➕ Agregar mi lawen (si no está en la lista)</b></summary>
+        <div class="conv-row" style="margin-top:8px">
+          <label style="flex:2">Nombre * <input type="text" id="lawenName" placeholder="ej: Palo negro, Hierba del paño" maxlength="40"></label>
+          <label>Luna <select id="lawenLuna"><option value="Cualquiera">Cualquiera</option><option value="Nueva">🌑 Nueva</option><option value="Creciente">🌗 Creciente</option><option value="Llena">🌕 Llena</option><option value="Menguante">🌓 Menguante</option></select></label>
+        </div>
+        <label>¿Para qué sirve? * <input type="text" id="lawenUso" placeholder="ej: Tos seca, dolor de guata" maxlength="80"></label>
+        <label>Preparación <input type="text" id="lawenPrep" placeholder="ej: 1 cdta / taza, 5 min" maxlength="80"></label>
+        <label>Recolecta <input type="text" id="lawenRec" placeholder="ej: Pewü, mañana seca" maxlength="60"></label>
+        <label>⚠️ Advertencia <input type="text" id="lawenCui" placeholder="ej: No en embarazo" maxlength="80"></label>
+        <div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="lawenAdd" class="btn btn-accent" style="width:auto">+ Guardar mi lawen</button></div>
+      </details>
+      <div id="lawenList" style="margin-top:10px"></div>
+      <div class="menstrual-card" style="margin-top:10px;background:var(--panel)">
+        <h4>⚠️ Reglas lawen seguro</h4>
+        <p class="muted" style="font-size:11px;line-height:1.5">1) Identifica 100% la planta (foto + olor + lugar). 2) No recolectes junto a camino/microbasural ni en humedal protegido. 3) Máx 1-2 tazas/día, 7 días, descansa. 4) Suspende si hay alergia, palpitaciones o malestar. 5) Boldo, ruda y paico tienen límites estrictos — lee su ficha.</p>
+      </div>
+      <div class="dlg-actions"><button type="button" id="lawenClose" class="btn">Cerrar</button></div>
+    </form>
+  </dialog>

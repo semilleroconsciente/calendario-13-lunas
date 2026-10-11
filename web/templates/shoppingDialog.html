@@ -1,0 +1,34 @@
+<dialog id="shoppingDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">🛒 Lista de compras</h3>
+        <button type="button" id="shoppingCloseTop" class="btn btn-icon" title="Cerrar" aria-label="Cerrar">✕</button>
+      </div>
+      <p class="muted" style="line-height:1.5">Organiza por categorías. Todo <b>local</b> por usuario. Se puede generar desde 🥗 Comidas.</p>
+      <div class="conv-row">
+        <label style="flex:2">Producto <input type="text" id="shopName" placeholder="ej: Tomates, Pan, Avena" maxlength="40"></label>
+        <label>Cant. <input type="text" id="shopQty" placeholder="1 kg" maxlength="20" style="width:90px"></label>
+        <label>Categoría
+          <select id="shopCat">
+            <option value="Verduras">Verduras</option>
+            <option value="Frutas">Frutas</option>
+            <option value="Abarrotes">Abarrotes</option>
+            <option value="Proteínas">Proteínas</option>
+            <option value="Lácteos">Lácteos</option>
+            <option value="Panadería">Panadería</option>
+            <option value="Otros">Otros</option>
+          </select>
+        </label>
+        <button type="button" id="shopAdd" class="btn btn-accent" style="width:auto;align-self:flex-end">+ Agregar</button>
+      </div>
+      <div id="shoppingListBox" class="shopping-list"></div>
+      <div class="dlg-actions" style="justify-content:space-between;align-items:center">
+        <span id="shoppingStats" class="muted" style="font-size:12px"></span>
+        <span style="display:flex;gap:8px">
+          <button type="button" id="shoppingClearDone" class="btn" style="width:auto">✓ Limpiar comprados</button>
+          <button type="button" id="shoppingClearAll" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Vaciar</button>
+        </span>
+      </div>
+      <div class="dlg-actions"><button type="button" id="shoppingClose" class="btn">Cerrar</button></div>
+    </form>
+  </dialog>

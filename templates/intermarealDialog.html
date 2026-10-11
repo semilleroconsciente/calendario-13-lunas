@@ -1,0 +1,55 @@
+<dialog id="intermarealDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">🦀 Intermareal — Penco · Rocas de Lirquén & Playa Negra</h3>
+        <button type="button" id="intermarealCloseTop" class="btn btn-icon" title="Cerrar" aria-label="Cerrar">✕</button>
+      </div>
+      <p class="muted" style="line-height:1.5">Zona entre mareas: pozas, roqueríos y algas del borde costero penqueño. <b>Observa y cosecha con medida</b> — respeta vedas, tallas mínimas y marea roja. Todo queda <b>privado y local</b> por usuario.</p>
+      <div id="interTodayBox" class="menstrual-card" style="border-color:var(--gold)"></div>
+      <div class="fishing-grid" style="margin-top:10px">
+        <div class="menstrual-card">
+          <h4>🌿 Especies intermareales</h4>
+          <div id="interCatalogBox" class="fishing-species"></div>
+          <p class="muted" style="font-size:10px;margin-top:6px">Toca una especie para cargarla en el formulario.</p>
+        </div>
+        <div class="menstrual-card">
+          <h4>🌙 Luna & mareas</h4>
+          <p class="muted" style="font-size:11px">Luna nueva/llena → bajamares más bajas (mejor ventana). Rocas resbalosas: usa zapatilla con agarre y nunca vayas solo.</p>
+          <div id="interMoonBox" class="chip" style="display:block;white-space:normal"></div>
+          <div id="interConsejoBox" class="menstrual-card" style="margin-top:8px;background:var(--panel)"></div>
+        </div>
+      </div>
+      <div class="menstrual-card" style="margin-top:10px">
+        <h4>⚠️ Consejos — seguridad & cosecha sostenible</h4>
+        <p class="muted" style="font-size:11px;line-height:1.5">• Solo entra 1h antes a 1h después de bajamar &lt;0.6m y sin alerta SHOA. • No extraigas raíz de cochayuyo/huiro — corta fronda. • Chorito/lapa &gt;5–6 cm, deja chicos y hembras con huevos. • En <b>marea roja</b> no coseches ni consumas (sernapesca.cl). • Lleva malla, no plástico; pesa y anota; deja 30% en la roca.</p>
+      </div>
+      <div class="menstrual-card" style="margin-top:10px">
+        <h4>📓 Bitácora intermareal — salidas a roquerío</h4>
+        <div class="conv-row">
+          <label>Fecha <input type="date" id="interDate"></label>
+          <label>Hora <input type="time" id="interTime" value="08:00"></label>
+          <label>Lugar <input type="text" id="interPlace" placeholder="ej: Playa Negra, Cueva Lirquén" maxlength="30"></label>
+        </div>
+        <div class="conv-row">
+          <label>Especie / hallazgo <input type="text" id="interSpecies" placeholder="ej: Cochayuyo, Lapa, Poza con estrellas" maxlength="30"></label>
+          <label>Cantidad / kg <input type="text" id="interQty" placeholder="ej: 1.5 kg / 3 lapas" maxlength="20"></label>
+          <label>Marea / altura <input type="text" id="interTide" placeholder="ej: bajamar 0.45m 08:20" maxlength="30"></label>
+        </div>
+        <label>Notas <input type="text" id="interNotes" placeholder="ej: corte limpio, dejé raíz, poza con 5 estrellas" maxlength="80"></label>
+        <div class="dlg-actions" style="justify-content:flex-start">
+          <button type="button" id="interAdd" class="btn btn-accent" style="width:auto">+ Guardar salida</button>
+          <button type="button" id="interCancelEdit" class="btn hidden" style="width:auto">Cancelar</button>
+        </div>
+        <div id="interLogBox" class="habits-list" style="margin-top:10px;max-height:240px"></div>
+        <div class="dlg-actions" style="justify-content:space-between;align-items:center;margin-top:8px">
+          <span id="interStats" class="muted" style="font-size:11px"></span>
+          <span style="display:flex;gap:8px">
+            <button type="button" id="interShare" class="btn" style="width:auto">📤 Compartir</button>
+            <button type="button" id="interExport" class="btn" style="width:auto">📥 Exportar</button>
+            <button type="button" id="interClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar</button>
+          </span>
+        </div>
+      </div>
+      <div class="dlg-actions"><button type="button" id="intermarealClose" class="btn">Cerrar</button></div>
+    </form>
+  </dialog>

@@ -1,0 +1,112 @@
+<dialog id="disciplineDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">🎯 Disciplina sin procrastinar</h3>
+        <button type="button" id="disciplineCloseTop" class="btn btn-icon" title="Cerrar" aria-label="Cerrar">✕</button>
+      </div>
+      <p class="muted" style="line-height:1.5">No es falta de ganas, es falta de <b>sistema</b>. Define tu MIT, suma Pomodoros y vacía tu mente. La luna enseña ciclos, no perfección.</p>
+      <div id="discStats" class="disc-stats"></div>
+      <div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">
+        <button type="button" id="tabDiscHoy" class="btn btn-accent" style="width:auto">✍️ Hoy</button>
+        <button type="button" id="tabDiscTec" class="btn" style="width:auto">🧰 Técnicas</button>
+        <button type="button" id="tabDiscHist" class="btn" style="width:auto">📊 Historial</button>
+      </div>
+      <div id="discTabHoy">
+      <div class="menstrual-card" style="margin-top:2px">
+        <h4>🎯 MIT de hoy — 1 tarea importante</h4>
+        <label>Mi MIT de hoy <input type="text" id="disciplineMIT" placeholder="ej: Escribir 500 palabras Luna 4" maxlength="120"></label>
+        <label class="check-row"><input type="checkbox" id="disciplineDone"> ✅ MIT cumplido hoy</label>
+        <label class="check-row"><input type="checkbox" id="disciplineFrog"> 🐸 Sapo primero (MIT antes de redes/correo)</label>
+        <div class="disc-pomo-row">
+          <div><b id="discPomoCount">🍅 0</b><span class="muted" style="font-size:11px"> pomodoros hoy</span></div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <button type="button" id="discPomoPlus" class="btn" style="width:auto">+1 🍅</button>
+            <button type="button" id="discPomoMinus" class="btn" style="width:auto">−1</button>
+            <button type="button" id="disciplineStartPomodoro" class="btn" style="width:auto">⏱ Iniciar 25′</button>
+          </div>
+        </div>
+        <p id="discPomoDots" class="disc-dots"></p>
+      </div>
+      <div class="menstrual-card" style="margin-top:10px">
+        <h4>⚡ Regla 2 minutos — vacía micro-pendientes</h4>
+        <div class="today-add"><input type="text" id="discQuickInput" placeholder="ej: lavar taza, responder wsp..." maxlength="80"><button type="button" id="discQuickAdd" class="btn btn-accent" style="width:auto">+ Agregar</button></div>
+        <div id="discQuickList" class="dio-compact" style="margin-top:8px"></div>
+      </div>
+      <div class="menstrual-card" style="margin-top:10px">
+        <h4>📥 Cajón de distracciones</h4>
+        <p class="muted" style="font-size:11px">Si aparece una distracción en foco, anótala aquí y sigue. La revisas en la pausa.</p>
+        <div class="today-add"><input type="text" id="discDistInput" placeholder="ej: revisar Instagram..." maxlength="80"><button type="button" id="discDistAdd" class="btn" style="width:auto">📥 Anotar</button></div>
+        <div id="discDistList" class="dio-compact" style="margin-top:8px"></div>
+      </div>
+      <div class="menstrual-card" style="margin-top:10px">
+        <h4>🗺️ WOOP + Time Blocking</h4>
+        <div class="conv-row">
+          <label>Si <input type="text" id="disciplineIf" placeholder="ej: son las 08:00 y estoy en escritorio"></label>
+          <label>entonces <input type="text" id="disciplineThen" placeholder="ej: abro documento y escribo 10 min"></label>
+        </div>
+        <label>Bloque de hoy (hora + tarea) <input type="text" id="discBlock" placeholder='ej: 09:00-10:00 escribir Luna 4' maxlength="80"></label>
+        <div class="dlg-actions" style="justify-content:flex-start">
+          <button type="button" id="disciplineSave" class="btn btn-accent" style="width:auto">💾 Guardar día</button>
+          <button type="button" id="discToSchedule" class="btn" style="width:auto">📚 Ver Horario</button>
+        </div>
+        <p id="disciplineStatus" class="muted" style="font-size:11px;margin-top:6px"></p>
+      </div>
+      </div>
+      <div id="discTabTec" class="hidden">
+      <div class="discipline-grid">
+        <div class="discipline-card">
+          <h4>🍅 Pomodoro — 25/5</h4>
+          <p><b>Cómo:</b> 25 min foco total + 5 min pausa. Tras 4, pausa larga 15-30 min.</p>
+          <p class="muted">Ideal para tareas que postergas. Si aparece distracción, anótala y sigue.</p>
+          <button type="button" class="btn discipline-try" data-try="Pomodoro 25/5" style="width:auto;font-size:11px">Probar con ⏱</button>
+        </div>
+        <div class="discipline-card">
+          <h4>⚡ Regla 2 minutos</h4>
+          <p><b>Cómo:</b> Si toma &lt;2 min, hazlo ahora.</p>
+          <p class="muted">Evita acumular micro-pendientes (responder, lavar taza, agendar). Úsala arriba 👆.</p>
+        </div>
+        <div class="discipline-card">
+          <h4>🐸 Cómete el sapo</h4>
+          <p><b>Cómo:</b> Haz primero la tarea más difícil/importante del día.</p>
+          <p class="muted">Tu MIT antes de redes o correo. Marca 🐸 arriba cuando lo hagas.</p>
+        </div>
+        <div class="discipline-card">
+          <h4>📅 Time Blocking</h4>
+          <p><b>Cómo:</b> Bloquea en el calendario horas con nombre: “Luna 3 — escribir 09:00-10:00”.</p>
+          <p class="muted">Trata el bloque como cita médica. Si fallas, re-agenda, no abandones.</p>
+        </div>
+        <div class="discipline-card">
+          <h4>5️⃣ Regla 5 segundos</h4>
+          <p><b>Cómo:</b> Cuenta 5-4-3-2-1 y muévete antes que el cerebro ponga excusas.</p>
+          <p class="muted">Para levantarte, empezar ejercicio, abrir documento.</p>
+        </div>
+        <div class="discipline-card">
+          <h4>🗺️ WOOP</h4>
+          <p><b>Deseo</b> → <b>Resultado</b> → <b>Obstáculo</b> → <b>Plan</b>. Ej: “Si son las 19:00 y estoy en casa, entonces camino 20 min”.</p>
+          <p class="muted">Une motivación con obstáculo real. Guárdalo arriba 👆.</p>
+        </div>
+        <div class="discipline-card">
+          <h4>🔗 Apilar hábitos</h4>
+          <p><b>Cómo:</b> “Después de [hábito actual], haré [nuevo]”. Ej: Después de hervir agua, medito 2 min.</p>
+          <p class="muted">Aprovecha tu rutina + calendario de hábitos ✅.</p>
+        </div>
+        <div class="discipline-card">
+          <h4>🧱 Diseña tu ambiente</h4>
+          <p><b>Cómo:</b> Sube fricción a distracciones, baja a lo que quieres. Ej: móvil en otra pieza, ropa deporte lista.</p>
+          <p class="muted">Disciplina = ambiente que te ayuda, no fuerza de voluntad infinita.</p>
+        </div>
+      </div>
+      </div>
+      <div id="discTabHist" class="hidden">
+      <div class="menstrual-card" style="margin-top:2px">
+        <h4>📊 Últimos 7 días</h4>
+        <div id="discHistory"></div>
+      </div>
+      <div class="menstrual-card" style="margin-top:10px">
+        <h4>📏 Reglas de oro</h4>
+        <p class="muted" style="font-size:12px">• Sistema &gt; motivación. • 2 min para empezar, no para terminar. • Hecho 70% &gt; perfecto 0%. • Mide racha, no culpa — usa ✅ Hábitos para ver tu %.</p>
+      </div>
+      </div>
+      <div class="dlg-actions"><button type="button" id="disciplineClose" class="btn">Cerrar</button></div>
+    </form>
+  </dialog>

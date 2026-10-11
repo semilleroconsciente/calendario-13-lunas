@@ -1,0 +1,85 @@
+<dialog id="financeDialog">
+    <form method="dialog">
+      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0;color:var(--accent)">💰 Finanzas personales</h3>
+        <button type="button" id="financeCloseTop" class="btn btn-icon" title="Cerrar" aria-label="Cerrar">✕</button>
+      </div>
+      <p class="muted" style="line-height:1.5">Registra <b>gastos e ingresos</b> por día. Todo queda <b>privado y local</b> por usuario. Ve balance por luna, mes gregoriano y consejos. Los días con movimiento aparecen con 💰 en el calendario.</p>
+      <div class="timer-tabs" style="margin-bottom:10px">
+        <button type="button" id="tabFinanceReg" class="btn btn-accent" style="width:auto">💸 Registro</button>
+        <button type="button" id="tabFinanceTips" class="btn" style="width:auto">💡 Consejos</button>
+      </div>
+      <div id="financeRegPanel">
+        <div id="financeResumen" class="menstrual-card" style="border-color:var(--gold);background:linear-gradient(135deg,var(--panel),var(--card))"></div>
+        <div class="menstrual-card" style="margin-top:10px">
+          <h4>➕ Nuevo movimiento</h4>
+          <div class="conv-row">
+            <label>Fecha <input type="date" id="finDate"></label>
+            <label>Tipo
+              <select id="finTipo">
+                <option value="gasto">💸 Gasto</option>
+                <option value="ingreso">💰 Ingreso</option>
+              </select>
+            </label>
+            <label>Categoría
+              <select id="finCat"></select>
+            </label>
+          </div>
+          <div class="conv-row">
+            <label style="flex:1">Monto CLP $ <input type="number" id="finMonto" placeholder="ej: 15000" min="0" step="100" inputmode="numeric"></label>
+            <label>Método
+              <select id="finMetodo">
+                <option value="Efectivo">Efectivo</option>
+                <option value="Transferencia">Transferencia</option>
+                <option value="Tarjeta débito">Tarjeta débito</option>
+                <option value="Tarjeta crédito">Tarjeta crédito</option>
+                <option value="Otro">Otro</option>
+              </select>
+            </label>
+          </div>
+          <label>Descripción <input type="text" id="finDesc" placeholder="ej: Feria Penco, sueldo, bencina, luz" maxlength="60"></label>
+          <div class="dlg-actions" style="justify-content:flex-start">
+            <button type="button" id="finAdd" class="btn btn-accent" style="width:auto">+ Guardar</button>
+            <button type="button" id="finUpdate" class="btn hidden" style="width:auto">↻ Actualizar</button>
+            <button type="button" id="finCancelEdit" class="btn hidden" style="width:auto">Cancelar</button>
+          </div>
+        </div>
+        <div class="conv-row" style="margin-top:10px;align-items:center">
+          <label style="flex:1">🔍 Filtrar <input type="text" id="finFilter" placeholder="buscar por descripción o categoría"></label>
+          <label>Mes <input type="month" id="finMonthFilter"></label>
+        </div>
+        <div class="conv-row" style="margin-top:6px">
+          <label style="flex:1">Presupuesto mensual $ <input type="number" id="finPresupuesto" placeholder="ej: 500000" min="0" step="1000"></label>
+          <button type="button" id="finSavePresupuesto" class="btn" style="width:auto;align-self:flex-end">💾 Guardar presupuesto</button>
+        </div>
+        <div id="financeListBox" class="habits-list" style="margin-top:10px;max-height:300px"></div>
+        <div class="dlg-actions" style="justify-content:space-between;align-items:center;margin-top:8px">
+          <span id="financeStats" class="muted" style="font-size:11px"></span>
+          <span style="display:flex;gap:8px">
+            <button type="button" id="financeExport" class="btn" style="width:auto">📥 Exportar CSV</button>
+            <button type="button" id="financeShare" class="btn" style="width:auto">📤 Compartir resumen</button>
+            <button type="button" id="financeClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar mes</button>
+          </span>
+        </div>
+        <div id="financeLunaBox" class="menstrual-card" style="margin-top:10px"></div>
+        <div id="financeCatBox" class="menstrual-card" style="margin-top:10px"></div>
+      </div>
+      <div id="financeTipsPanel" class="hidden">
+        <div class="menstrual-card" style="background:linear-gradient(135deg,var(--panel),var(--card));border-color:var(--gold)">
+          <h4 style="color:var(--gold)">💡 Finanzas personales — consejos prácticos para Penco</h4>
+          <p class="muted" style="font-size:11px">No es asesoría profesional, son hábitos simples. Adapta a tu realidad. Revisa cada luna: pequeño avance sostenido vale más que perfección de un día.</p>
+        </div>
+        <div id="financeTipsBox" style="margin-top:10px"></div>
+        <div class="menstrual-card" style="margin-top:10px">
+          <h4>🧮 Reglas rápidas</h4>
+          <div id="financeRulesBox" class="help-grid" style="margin-top:6px"></div>
+          <p class="muted" style="font-size:10px;margin-top:8px">Ejemplo 50/30/20 con $500.000: $250.000 necesidades · $150.000 gustos · $100.000 ahorro/deuda. Ajusta a tu ingreso real.</p>
+        </div>
+        <div class="menstrual-card" style="margin-top:10px">
+          <h4>📅 Ritual de luna — revisión en 5 min</h4>
+          <p class="muted" style="font-size:11px;line-height:1.5">1) Mira balance de la luna (¿gastaste más que la anterior?). 2) Anota <b>3 gastos hormiga</b> a recortar la próxima luna. 3) Destina aunque sea $5.000 a ahorro. 4) Paga deuda más cara primero. 5) Agradece lo que sí alcanzaste.</p>
+        </div>
+      </div>
+      <div class="dlg-actions"><button type="button" id="financeClose" class="btn">Cerrar</button></div>
+    </form>
+  </dialog>
