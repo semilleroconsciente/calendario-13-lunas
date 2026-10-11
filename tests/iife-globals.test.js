@@ -36,6 +36,10 @@ const CONOCIDAS = {
 
 function ordenCarga() {
   // Mismo orden que el navegador: defer de index.html + MODS de boot.
+  // SOLO lo cableado (con build:min son los .min): las fuentes originales
+  // no se cargan en runtime y no deben mezclarse aquí (sus const top-level
+  // colisionarían con sus gemelos .min). Las fuentes se revisan igual en
+  // fase A (contexto fresco por archivo: fugados + núcleo roto).
   const html = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
   const orden = [];
   const re = /<script[^>]+src="([^"]+\.js)(?:\?v=\d+)?"/g;
@@ -52,11 +56,13 @@ function ordenCarga() {
       }
     }
   } catch {}
-  // Cola: resto de .js raíz no cableados (igual se revisan).
-  for (const f of fs.readdirSync(ROOT)) {
-    if (f.endsWith('.js') && !orden.includes(f) && !EXCLUIR.has(f)) orden.push(f);
-  }
   return orden.filter((f) => !EXCLUIR.has(f) && fs.existsSync(path.join(ROOT, f)));
+}
+
+// Núcleo (nombre base: vale fuente o gemelo .min).
+function esNucleo(f) {
+  const base = f.replace(/^min\//, '').replace(/\.min\.js$/, '.js');
+  return NUCLEO.has(base);
 }
 
 function memoriaStore() {
@@ -189,15 +195,44 @@ function windowAssigns(codigo) {
 
 describe('colisiones IIFE (vm)', () => {
   it('ningún archivo agrega globales que choquen con otro módulo', () => {
-    const archivos = ordenCarga();
-    assert.ok(archivos.length > 80, 'se esperaban 80+ .js raíz, fueron ' + archivos.length);
-    const sb = makeSandbox();
-    vm.createContext(sb);
-    const define = new Map(); // global -> [archivos que lo agregaron]
+    const cableados = ordenCarga();
+    assert.ok(cableados.length > 80, 'se esperaban 80+ .js cableados, fueron ' + cableados.length);
+    // Fuentes en el mismo orden relativo que los cableados (gemelo .min →
+    // fuente). Las fuentes nunca se mezclan con sus gemelos en un mismo
+    // contexto: sus const top-level colisionarían entre sí (falso positivo).
+    const aFuente = (f) => f.replace(/^min\//, '').replace(/\.min\.js$/, '.js');
+    const fuentes = [];
+    for (const f of cableados) {
+      const s = aFuente(f);
+      if (s !== f && fs.existsSync(path.join(ROOT, s)) && !fuentes.includes(s)) fuentes.push(s);
+    }
+    for (const f of fs.readdirSync(ROOT)) {
+      if (f.endsWith('.js') && !EXCLUIR.has(f) && !fuentes.includes(f) && !cableados.includes(f)) fuentes.push(f);
+    }
+    // Rechazos asíncronos de los stubs (fetch stub, inits diferidos): se
+    // capturan para informar, sin tumbar el runner por unhandledRejection.
+    // (En el navegador esos globals sí existen por el orden de carga.)
+    const asyncErrs = new Set();
+    const asyncH = (e) => asyncErrs.add(String((e && e.message) || e).split('\n')[0]);
+    process.on('unhandledRejection', asyncH);
     const fugados = [];
     const rotosNucleo = [];
     const avisos = [];
-    for (const f of archivos) {
+    const define = new Map(); // global -> [archivos que lo agregaron]
+    try {
+      // Fase A: fuentes en contexto compartido (orden de carga real).
+      const sbA = makeSandbox();
+      vm.createContext(sbA);
+      for (const f of fuentes) correrEn(sbA, f, fugados, rotosNucleo, avisos, define);
+      // Fase B: cableados (.min) en contexto compartido, orden de carga →
+      // colisiones reales (el último en cargar gana, igual que en el navegador).
+      const sbB = makeSandbox();
+      vm.createContext(sbB);
+      for (const f of cableados) correrEn(sbB, f, fugados, rotosNucleo, avisos, define);
+    } finally {
+      process.removeListener('unhandledRejection', asyncH);
+    }
+    function correrEn(sb, f, fugados, rotosNucleo, avisos, define) {
       const antes = new Set(globalesDe(sb));
       const codigo = fs.readFileSync(path.join(ROOT, f), 'utf8');
       try {
@@ -207,7 +242,7 @@ describe('colisiones IIFE (vm)', () => {
         const msg = e && e.message ? String(e.message) : String(e);
         // Firma del top-level fugado en IIFE estricta: ReferenceError.
         if (/is not defined/.test(msg)) fugados.push(`${f}: posible global fugado → ${msg.split('\n')[0]}`);
-        else if (NUCLEO.has(f)) rotosNucleo.push(`${f}: ${msg.split('\n')[0]}`);
+        else if (esNucleo(f)) rotosNucleo.push(`${f}: ${msg.split('\n')[0]}`);
         else avisos.push(`${f}: ${msg.split('\n')[0]}`);
         const redecl = msg.match(/Identifier '([^']+)' has already been declared/);
         if (redecl) {
@@ -215,7 +250,7 @@ describe('colisiones IIFE (vm)', () => {
           if (!define.has(g)) define.set(g, []);
           define.get(g).push(f + ' (redeclara)');
         }
-        continue;
+        return;
       }
       for (const g of globalesDe(sb)) {
         if (antes.has(g)) continue;
@@ -230,21 +265,23 @@ describe('colisiones IIFE (vm)', () => {
         if (arr[arr.length - 1] !== f) arr.push(f);
       }
     }
-    const colisiones = [...define.entries()].filter(([, fs2]) => {
-      const reales = fs2.filter((x) => !x.includes('(redeclara)'));
-      return reales.length > 1 || fs2.some((x) => x.includes('(redeclara)'));
-    });
+    // Fuente y gemelo .min definen lo mismo en contextos distintos: se
+    // normaliza por archivo base; colisión = >1 archivo base distinto.
+    const base = (x) => x.replace(' (redeclara)', '').replace(/^min\//, '').replace(/\.min\.js$/, '.js');
+    const colisiones = [...define.entries()]
+      .map(([g, fs2]) => [g, [...new Set(fs2.map(base))]])
+      .filter(([, bases]) => bases.length > 1);
     const inesperadas = [];
-    for (const [g, fs2] of colisiones) {
+    for (const [g, lista] of colisiones) {
       const esperados = CONOCIDAS[g];
-      const lista = fs2.map((x) => x.replace(' (redeclara)', ''));
-      if (!esperados || esperados.slice().sort().join() !== [...new Set(lista)].slice().sort().join()) {
-        inesperadas.push(`${g}: ${[...new Set(lista)].join(' ↔ ')}`);
+      if (!esperados || esperados.slice().sort().join() !== lista.slice().sort().join()) {
+        inesperadas.push(`${g}: ${lista.join(' ↔ ')}`);
       }
     }
     if (fugados.length) console.log('  ~ posibles fugados:\n    ' + fugados.join('\n    '));
     if (avisos.length) console.log(`  ~ ${avisos.length} módulo(s) no cargan en stub (API real ausente, se revisan igual):\n    ` + avisos.join('\n    '));
-    console.log(`  i globals rastreados: ${define.size} en ${archivos.length} archivos`);
+    console.log(`  i globals rastreados: ${define.size} en ${fuentes.length} fuentes + ${cableados.length} cableados`);
+    if (asyncErrs.size) console.log('  ~ rechazos async en stub (orden de carga los evita en navegador):\n    ' + [...asyncErrs].join('\n    '));
     assert.deepEqual(fugados, [], 'top-level fugados (ReferenceError en carga)');
     assert.deepEqual(rotosNucleo, [], 'archivos del núcleo que no cargan en el sandbox');
     assert.deepEqual(inesperadas, [], 'colisiones de globales entre módulos');

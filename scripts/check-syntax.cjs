@@ -13,6 +13,12 @@ for (const e of fs.readdirSync(ROOT, { withFileTypes: true })) {
 for (const e of fs.readdirSync(path.join(ROOT, 'scripts'))) {
   if (e.endsWith('.cjs')) files.push('scripts/' + e);
 }
+// Salida de build:min (si existe): el bundle minificado también debe parsear.
+try {
+  for (const e of fs.readdirSync(path.join(ROOT, 'min'))) {
+    if (e.endsWith('.min.js')) files.push('min/' + e);
+  }
+} catch {}
 
 let bad = 0;
 for (const f of files.sort()) {

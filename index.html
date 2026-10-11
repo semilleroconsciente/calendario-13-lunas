@@ -6,8 +6,8 @@
   <meta name="theme-color" content="#0b1026">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; font-src 'self'; connect-src 'self' https://api.open-meteo.com https://air-quality-api.open-meteo.com; object-src 'none'; base-uri 'self'; form-action 'self'">
   <title>Calendario de las 13 Lunas</title>
-  <link rel="stylesheet" href="styles.css?v=12">
-  <link rel="stylesheet" href="splash.css?v=1">
+  <link rel="stylesheet" href="min/styles.min.css?v=12">
+  <link rel="stylesheet" href="min/splash.min.css?v=1">
   <link rel="manifest" href="manifest.json">
   <link rel="preconnect" href="https://api.open-meteo.com">
   <link rel="preconnect" href="https://air-quality-api.open-meteo.com">
@@ -4428,15 +4428,15 @@
     <button type="button" id="dockFull" class="dock-btn" title="Vista completa">🖥️<small>Completa</small></button>
   </nav>
 
-  <script defer src="web-api.js?v=9"></script>
-  <script defer src="storage-idb.js?v=1"></script>
-  <script defer src="astro.js?v=8"></script>
-  <script defer src="data.js?v=8"></script>
-  <script defer src="territorio.js?v=1"></script>
-  <script defer src="frases.js?v=8"></script>
-  <script defer src="cal.js?v=9"></script>
-  <script defer src="renderer.js?v=16"></script>
-  <script defer src="nuevos-modulos.js?v=9"></script>
+  <script defer src="min/web-api.min.js?v=9"></script>
+  <script defer src="min/storage-idb.min.js?v=1"></script>
+  <script defer src="min/astro.min.js?v=8"></script>
+  <script defer src="min/data.min.js?v=8"></script>
+  <script defer src="min/territorio.min.js?v=1"></script>
+  <script defer src="min/frases.min.js?v=8"></script>
+  <script defer src="min/cal.min.js?v=9"></script>
+  <script defer src="min/renderer.min.js?v=16"></script>
+  <script defer src="min/nuevos-modulos.min.js?v=9"></script>
   <!-- Modulos no criticos: carga diferida tras la primera pintura (CSP fase 1: archivos externos). -->
   <script defer src="boot-modulos.js?v=1"></script>
   <script defer src="sw-registro.js?v=1"></script>

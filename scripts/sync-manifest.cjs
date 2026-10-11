@@ -22,9 +22,10 @@ const read = (f) => fs.readFileSync(path.join(ROOT, f), 'utf8');
 const FIX = process.argv.includes('--fix');
 
 function versionedRefs(html) {
-  // Captura nombre + version de src="x.js?v=N" y de 'x.js?v=N' (bloque MODS).
+  // Captura nombre + version de src="x.js?v=N", min/x.min.js?v=N y
+  // 'x.js?v=N' (bloque MODS en boot-modulos.js).
   const out = new Map(); // nombre -> Set(versiones)
-  const re = /([A-Za-z0-9_.\-]+\.(?:js|css))\?v=(\d+)/g;
+  const re = /([A-Za-z0-9_.\-/]+\.(?:js|css))\?v=(\d+)/g;
   let m;
   while ((m = re.exec(html))) {
     if (!out.has(m[1])) out.set(m[1], new Set());
@@ -81,14 +82,27 @@ for (const [label] of swFiles) {
 
 // 2. Archivos en disco + package.json build.files.
 const pkgFiles = new Set((pkg.build && pkg.build.files) || []);
+// build.files admite globs (p.ej. "min/**/*", "assets/**/*").
+function cubiertoPorFiles(name) {
+  if (pkgFiles.has(name)) return true;
+  for (const g of pkgFiles) {
+    if (g.endsWith('/**/*') && name.startsWith(g.slice(0, -5))) return true;
+  }
+  return false;
+}
 const CORE_PAGE_FILES = new Set(['main.js', 'preload.js', 'sw.js']); // van en files pero no en index.html
 for (const [name] of refs) {
   if (!name.endsWith('.js') && !name.endsWith('.css')) continue;
   if (!fs.existsSync(path.join(ROOT, name))) fail(`index.html referencia ${name} pero no existe en disco`);
-  else if (!pkgFiles.has(name)) fail(`${name} usado en index.html pero ausente en build.files de package.json (el portable no lo incluira)`);
+  else if (!cubiertoPorFiles(name)) fail(`${name} usado en index.html pero ausente en build.files de package.json (el portable no lo incluira)`);
 }
 for (const f of pkgFiles) {
   if (f.endsWith('.js') && !refs.has(f) && !CORE_PAGE_FILES.has(f)) {
+    // build:min: la fuente X.js está "usada" si index carga min/X.min.js.
+    const minGemelo = 'min/' + f.replace(/\.js$/, '.min.js');
+    if (refs.has(minGemelo)) continue;
+    // Y viceversa: un .min.js en files sin ref directa es normal si la
+    // fuente aún se carga sin minificar (transición).
     warn(`package.json incluye ${f} pero index.html no lo carga (posible huerfano)`);
   }
 }

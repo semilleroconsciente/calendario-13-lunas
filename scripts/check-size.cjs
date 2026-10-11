@@ -25,3 +25,15 @@ if (fail) {
   process.exit(1);
 }
 console.log('OK: tamaños bajo techo.');
+// Reporte min/: peso del bundle que realmente viaja (build:min + esbuild).
+try {
+  const minDir = path.join(ROOT, 'min');
+  let raw = 0, n = 0;
+  for (const e of fs.readdirSync(minDir)) {
+    if (e.endsWith('.min.js') || e.endsWith('.min.css')) {
+      raw += fs.statSync(path.join(minDir, e)).size;
+      n++;
+    }
+  }
+  console.log(`  i min/: ${n} archivos, ${Math.round(raw / 1024)} KB minificados (fuente: npm run build:min).`);
+} catch { console.log('  ~ min/: sin construir (npm run build:min).'); }
