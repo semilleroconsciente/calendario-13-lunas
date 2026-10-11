@@ -257,6 +257,69 @@ async function downloadJSON(obj, fileName) {
   } catch (e) { return false; }
 }
 
+/* ---------- CIFRADO OPCIONAL (WebCrypto, sin dependencias) ----------
+   Las bitácoras contienen datos sensibles (salud, duelo, finanzas).
+   Exportar puede cifrar con contraseña (PBKDF2-SHA256 200k + AES-GCM-256).
+   El sobre cifrado se importa igual: pide la clave y sigue el flujo normal.
+   Nulidad segura: sin WebCrypto disponible, avisa y exporta en claro. */
+var CIFRADO_TIPO = 'bitacora-individual-cifrada';
+function hayCrypto() {
+  try {
+    return !!(window.crypto && window.crypto.subtle && window.TextEncoder);
+  } catch (e) { return false; }
+}
+function pedirClave(confirmar) {
+  try {
+    var c1 = prompt('Contraseña para ' + (confirmar ? 'cifrar el respaldo' : 'descifrar el respaldo') + ' (mín. 8 caracteres):');
+    if (c1 == null || c1 === '') return null;
+    if (c1.length < 8) { alert('Mínimo 8 caracteres.'); return null; }
+    if (confirmar) {
+      var c2 = prompt('Repite la contraseña:');
+      if (c2 !== c1) { alert('No coinciden.'); return null; }
+    }
+    return c1;
+  } catch (e) { return null; }
+}
+function b64deBytes(bytes) {
+  var s = '';
+  for (var i = 0; i < bytes.length; i++) s += String.fromCharCode(bytes[i]);
+  return btoa(s);
+}
+function bytesDeB64(b64) {
+  var s = atob(b64);
+  var out = new Uint8Array(s.length);
+  for (var i = 0; i < s.length; i++) out[i] = s.charCodeAt(i);
+  return out;
+}
+async function cifrarPayload(payload, clave) {
+  var tec = new TextEncoder();
+  var salt = window.crypto.getRandomValues(new Uint8Array(16));
+  var iv = window.crypto.getRandomValues(new Uint8Array(12));
+  var base = await window.crypto.subtle.importKey('raw', tec.encode(clave), 'PBKDF2', false, ['deriveKey']);
+  var aes = await window.crypto.subtle.deriveKey(
+    { name: 'PBKDF2', salt: salt, iterations: 200000, hash: 'SHA-256' },
+    base, { name: 'AES-GCM', length: 256 }, false, ['encrypt']);
+  var ct = await window.crypto.subtle.encrypt({ name: 'AES-GCM', iv: iv }, aes, tec.encode(JSON.stringify(payload)));
+  return {
+    app: 'calendario-13-lunas', tipo: CIFRADO_TIPO, version: 1,
+    grupo: payload.grupo, titulo: payload.titulo, claves: payload.claves,
+    usuario: payload.usuario, fecha: payload.fecha,
+    kdf: { nombre: 'PBKDF2-SHA256', iteraciones: 200000 }, cifrado: 'AES-GCM-256',
+    salt: b64deBytes(salt), iv: b64deBytes(iv), datos: b64deBytes(new Uint8Array(ct))
+  };
+}
+async function descifrarPayload(env, clave) {
+  var tec = new TextEncoder();
+  var dec = new TextDecoder();
+  var salt = bytesDeB64(env.salt), iv = bytesDeB64(env.iv);
+  var base = await window.crypto.subtle.importKey('raw', tec.encode(clave), 'PBKDF2', false, ['deriveKey']);
+  var aes = await window.crypto.subtle.deriveKey(
+    { name: 'PBKDF2', salt: salt, iterations: (env.kdf && env.kdf.iteraciones) || 200000, hash: 'SHA-256' },
+    base, { name: 'AES-GCM', length: 256 }, false, ['decrypt']);
+  var pt = await window.crypto.subtle.decrypt({ name: 'AES-GCM', iv: iv }, aes, bytesDeB64(env.datos));
+  return JSON.parse(dec.decode(pt));
+}
+
 async function exportGroup(id) {
   var g = findGroup(id);
   if (!g) { alert('Bitácora no encontrada'); return false; }
@@ -265,7 +328,20 @@ async function exportGroup(id) {
   if (!Object.keys(p.datos).length || n === 0) {
     if (!confirm('«' + g.titulo + '» está vacía. ¿Exportar igual (archivo vacío)?')) return false;
   }
-  var ok = await downloadJSON(p, fileNameFor(g));
+  // Cifrado opcional con contraseña (datos sensibles).
+  var nombre = fileNameFor(g);
+  if (confirm('¿Cifrar «' + g.titulo + '» con contraseña?\nAceptar = cifrada (recomendado) · Cancelar = en claro.')) {
+    if (!hayCrypto()) { alert('Este navegador no soporta WebCrypto: se exporta en claro.'); }
+    else {
+      var clave = pedirClave(true);
+      if (!clave) return false;
+      try {
+        p = await cifrarPayload(p, clave);
+        nombre = nombre.replace(/\.json$/, '.cifrada.json');
+      } catch (e) { alert('No se pudo cifrar: se exporta en claro.'); }
+    }
+  }
+  var ok = await downloadJSON(p, nombre);
   try {
     var st = $('bitStatus');
     if (st) {
@@ -332,6 +408,14 @@ async function importGroup(id) {
   if (!j) return false;
   try {
     var d = JSON.parse(j);
+    /* Respaldo cifrado: pide clave y continúa con el flujo normal. */
+    if (d && d.tipo === CIFRADO_TIPO) {
+      if (!hayCrypto()) { alert('Este respaldo está cifrado y el navegador no soporta WebCrypto.'); return false; }
+      var clave = pedirClave(false);
+      if (!clave) return false;
+      try { d = await descifrarPayload(d, clave); }
+      catch (e) { alert('Contraseña incorrecta o archivo dañado.'); return false; }
+    }
     /* Acepta también respaldo TOTAL antiguo: extrae solo este grupo */
     if (d && d.tipo !== 'bitacora-individual' && d.usuarios && d.notas) {
       var uid = curUserMeta().id;

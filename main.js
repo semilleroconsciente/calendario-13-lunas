@@ -61,6 +61,32 @@ app.whenReady().then(() => {
     const p = session.defaultSession.clearStorageData({ storages: ['serviceworkers', 'cachestorage'] });
     if (p && typeof p.catch === 'function') p.catch(() => {});
   } catch {}
+  // Auto-update (solo instalador NSIS empaquetado, no portable ni dev):
+  // electron-updater no soporta portable; sin feed publicado es no-op
+  // silencioso. Publicar un Release en GitHub + `publish` en package.json
+  // lo activa (la PWA ya avisa vía SW en web).
+  try {
+    if (app.isPackaged && !process.env.PORTABLE_EXECUTABLE_DIR) {
+      const { autoUpdater } = require('electron-updater');
+      autoUpdater.autoDownload = false;
+      autoUpdater.on('update-available', () => {
+        try { autoUpdater.downloadUpdate(); } catch {}
+      });
+      autoUpdater.on('update-downloaded', () => {
+        try {
+          dialog.showMessageBox(win, {
+            type: 'info',
+            buttons: ['Reiniciar y actualizar', 'Después'],
+            defaultId: 0,
+            message: 'Hay una versión nueva del Calendario 13 Lunas.',
+            detail: 'Se instalará al reiniciar la app.'
+          }).then((r) => { try { if (r.response === 0) autoUpdater.quitAndInstall(); } catch {} });
+        } catch {}
+      });
+      autoUpdater.on('error', () => {});
+      setTimeout(() => { try { autoUpdater.checkForUpdatesAndNotify(); } catch {} }, 20000);
+    }
+  } catch {}
 });
 app.on('window-all-closed', () => app.quit());
 
