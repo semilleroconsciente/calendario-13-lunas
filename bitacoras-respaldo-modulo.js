@@ -636,6 +636,13 @@ function init() {
   injectBtn();
   injectConfigChk();
   registerBtn();
+  // Migración IDB: publica GROUPS para que web-api parta/superponga las
+  // bitácoras en el store propio (sin duplicar la lista aquí y allá).
+  try {
+    if (window.cal13idb && window.cal13idb.registrarGrupos && typeof GROUPS !== 'undefined') {
+      window.cal13idb.registrarGrupos(GROUPS).catch(function () {});
+    }
+  } catch (e) {}
 }
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
 else init();

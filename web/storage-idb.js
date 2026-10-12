@@ -21,6 +21,7 @@
   'use strict';
   var DB = 'cal13', V = 2, KV = 'kv', BIT = 'bitacoras';
   var BIT_PREFIJO = 'cal13-bit:';
+  var FLAG_GRUPOS = 'cal13-idb-grupos'; // kv: {v, at, grupos:[{id,keys}]}
   var mem = {}; // último recurso (navegación privada sin localStorage)
 
   function lsGet(k) { try { return localStorage.getItem(k); } catch (e) { return (k in mem) ? mem[k] : null; } }
@@ -124,6 +125,9 @@
       });
     },
     // --- Bitácoras en store propio (un registro por grupo) ---
+    // id namespaced por usuario ('uid:grupo') porque el DB es compartido.
+    // Doble copia: IDB + espejo localStorage (igual que kv). Al leer, si el
+    // registro IDB falta pero hay espejo, se usa el espejo (DB borrada a mano).
     bitacoraGuardar: function (id, registro) {
       var rec = {
         id: String(id),
@@ -132,26 +136,25 @@
         rev: (registro && registro.rev) || 1,
         updatedAt: ahoraIso()
       };
+      lsSet(BIT_PREFIJO + rec.id, JSON.stringify(rec));
       return enStore(BIT, 'readwrite', function (s, res, rej) {
         var r = s.put(rec);
         r.onsuccess = function () { res(true); };
         r.onerror = function () { rej(r.error); };
-      }).catch(function () {
-        lsSet(BIT_PREFIJO + rec.id, JSON.stringify(rec));
-        return true;
-      });
+      }).catch(function () { return true; });
     },
     bitacoraLeer: function (id) {
-      return enStore(BIT, 'readonly', function (s, res, rej) {
-        var r = s.get(String(id));
-        r.onsuccess = function () { res(r.result || null); };
-        r.onerror = function () { rej(r.error); };
-      }).catch(function () {
+      function espejo() {
         try {
           var raw = lsGet(BIT_PREFIJO + id);
           return raw ? JSON.parse(raw) : null;
         } catch (e) { return null; }
-      });
+      }
+      return enStore(BIT, 'readonly', function (s, res, rej) {
+        var r = s.get(String(id));
+        r.onsuccess = function () { res(r.result || espejo()); };
+        r.onerror = function () { rej(r.error); };
+      }).catch(espejo);
     },
     bitacoraBorrar: function (id) {
       lsDel(BIT_PREFIJO + id);
@@ -189,7 +192,26 @@
       var self = this;
       return self.bitacorasListar().then(function (l) { return l.length; });
     },
-    // Migración opt-in: parte userData() según GROUPS [{id,titulo,keys[]}]
+    // Registro de grupos (lo llama bitacoras-respaldo-modulo con GROUPS al
+    // cargarse; web-api lo lee para partir/superponer sin duplicar la lista).
+    registrarGrupos: function (grupos) {
+      var lista = (Array.isArray(grupos) ? grupos : [])
+        .filter(function (g) { return g && g.id && Array.isArray(g.keys); })
+        .map(function (g) { return { id: String(g.id), keys: g.keys.map(String) }; });
+      if (!lista.length) return Promise.resolve(0);
+      var self = this;
+      return self.set(FLAG_GRUPOS, JSON.stringify({ v: 1, at: ahoraIso(), grupos: lista }))
+        .then(function () { return lista.length; });
+    },
+    gruposRegistrados: function () {
+      return this.get(FLAG_GRUPOS).then(function (raw) {
+        try {
+          var o = raw ? JSON.parse(raw) : null;
+          if (o && Array.isArray(o.grupos)) return o.grupos;
+        } catch (e) {}
+        return [];
+      });
+    },
     // y guarda cada grupo en el store propio. No borra el origen (el boot
     // sigue leyendo el blob hasta que la app adopte el store como primario).
     // Devuelve {migrados, claves, bytes}.

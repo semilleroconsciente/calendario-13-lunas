@@ -25,19 +25,89 @@
       return stored;
     } catch (e) { return stored; }
   };
+  // Migración total a IndexedDB (v1.8): las bitácoras (grupos registrados por
+  // bitacoras-respaldo-modulo vía cal13idb.registrarGrupos) viven en el store
+  // propio 'bitacoras' con id 'uid:grupo' y DOBLE copia (IDB + espejo LS).
+  // - partirGruposAlStore: al guardar, saca esas claves del blob (el blob se
+  //   adelgaza; el store es la fuente primaria de esas claves).
+  // - overlayGruposDesdeStore: al cargar, las reinyecta en DATA.notas[uid].
+  // Sin grupos registrados o sin IDB: comportamiento legado (blob completo).
+  // Si el store no trae un grupo, se conservan las claves del blob (sin pérdida).
+  async function gruposActivos() {
+    try {
+      if (window.cal13idb && window.cal13idb.gruposRegistrados) {
+        return await window.cal13idb.gruposRegistrados();
+      }
+    } catch {}
+    return [];
+  }
+  async function partirGruposAlStore(wrapped) {
+    try {
+      const grupos = await gruposActivos();
+      if (!grupos.length) return wrapped;
+      const env = JSON.parse(wrapped);
+      const data = (env && env.data) || env;
+      if (!data || !data.notas) return wrapped;
+      for (const uid of Object.keys(data.notas)) {
+        const u = data.notas[uid];
+        if (!u) continue;
+        for (const g of grupos) {
+          const keys = {};
+          let n = 0;
+          for (const k of (g.keys || [])) {
+            if (u && Object.prototype.hasOwnProperty.call(u, k)) { keys[k] = u[k]; n++; }
+          }
+          if (!n) continue;
+          await window.cal13idb.bitacoraGuardar(uid + ':' + g.id, { titulo: g.id, keys });
+          for (const k of Object.keys(keys)) { try { delete u[k]; } catch {} }
+        }
+      }
+      return JSON.stringify(env.data !== undefined ? { ...env, data } : data);
+    } catch { return wrapped; }
+  }
+  async function overlayGruposDesdeStore(blobJson) {
+    try {
+      const grupos = await gruposActivos();
+      if (!grupos.length) return blobJson;
+      const o = JSON.parse(blobJson);
+      if (!o || !o.notas) return blobJson;
+      for (const uid of Object.keys(o.notas)) {
+        const u = o.notas[uid];
+        if (!u) continue;
+        for (const g of grupos) {
+          try {
+            const rec = await window.cal13idb.bitacoraLeer(uid + ':' + g.id);
+            if (rec && rec.keys) {
+              for (const k of (g.keys || [])) {
+                if (rec.keys[k] !== undefined) u[k] = rec.keys[k];
+              }
+            }
+          } catch {}
+        }
+      }
+      return JSON.stringify(o);
+    } catch { return blobJson; }
+  }
   window.api = {
     openExternal: async (url) => { try { window.open(url, '_blank', 'noopener,noreferrer'); return true; } catch { window.location.href = url; return false; } },
     loadData: async () => {
       // IndexedDB primero (cuota amplia, asíncrono); localStorage como fallback.
       try {
-        if (window.cal13idb) return unwrapData(await window.cal13idb.get('cal13-data') || '{}');
+        if (window.cal13idb) {
+          const blob = unwrapData(await window.cal13idb.get('cal13-data') || '{}');
+          return await overlayGruposDesdeStore(blob);
+        }
       } catch {}
       try { return unwrapData(localStorage.getItem('cal13-data') || '{}'); } catch { return '{}'; }
     },
     saveData: async (json) => {
       var wrapped = wrapData(json);
       try {
-        if (window.cal13idb) { await window.cal13idb.set('cal13-data', wrapped); return true; }
+        if (window.cal13idb) {
+          const slim = await partirGruposAlStore(wrapped);
+          await window.cal13idb.set('cal13-data', slim);
+          return true;
+        }
       } catch {}
       try { localStorage.setItem('cal13-data', wrapped); return true; } catch { return false; }
     },
