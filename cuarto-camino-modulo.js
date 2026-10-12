@@ -5,16 +5,18 @@
      estatico en index.html tras btnMetodos)
    - Dialogo cuartoCaminoDialog con 5 pestanas:
      1) Guia (que es, Gurdjieff en 1 min, 3 caminos vs 4to,
-        ideas-mapa, como practicar sin escuela, cuidados)
-     2) Ideas (14 fichas + buscador + detalle + favorito +
+        ideas-mapa, programa de 1 luna, como practicar sin
+        escuela, cuidados)
+     2) Ideas (21 fichas + buscador + detalle + favorito +
         "esta soy yo hoy")
-     3) Practicas (8 practicas + STOP interactivo 1 min +
-        registro de recuerdo de si)
-     4) Test (21 preguntas: que centro te domina + cuanto sueno)
-     5) Mi trabajo (mi centro, diario, stops, historial,
-        racha, compartir, llevar a nota, borrar)
+     3) Practicas (12 practicas + STOP interactivo 1 min +
+        registro de recuerdo de si + conecta con Eneagrama,
+        Espiritu y Recapitulacion)
+     4) Test (29 preguntas: que centro te domina + cuanto sueno)
+     5) Mi trabajo (mi centro, diario, stops, caza de yoes,
+        historial, racha, compartir, llevar a nota, borrar)
    - Todo local y privado por usuario: userData().cuartoCamino
-     { tests:[], miCentro:'', stops:[], diario:{}, favs:[] }
+     { tests:[], miCentro:'', stops:[], yoes:[], diario:{}, favs:[] }
    - Puentes: Eneagrama (Gurdjieff es su raiz), Metodos (ficha
      "Cuarto camino" -> boton "Abrir mi Cuarto Camino"),
      Psicologia (auto-observacion) y Recapitulacion (repaso).
@@ -40,7 +42,7 @@ function todayKey() {
   var d = new Date();
   return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
 }
-function blank() { return { tests: [], miCentro: '', stops: [], diario: {}, favs: [] }; }
+function blank() { return { tests: [], miCentro: '', stops: [], yoes: [], diario: {}, favs: [] }; }
 function store() {
   try {
     var u = (typeof userData === 'function') ? userData() : null;
@@ -49,6 +51,7 @@ function store() {
     var e = u.cuartoCamino;
     if (!Array.isArray(e.tests)) e.tests = [];
     if (!Array.isArray(e.stops)) e.stops = [];
+    if (!Array.isArray(e.yoes)) e.yoes = [];
     if (!e.diario) e.diario = {};
     if (!Array.isArray(e.favs)) e.favs = [];
     if (typeof e.miCentro !== 'string') e.miCentro = '';
@@ -93,7 +96,7 @@ function switchTab(name) {
 }
 
 /* ============================================================
-   DATOS — 14 ideas del Cuarto Camino (lenguaje simple)
+   DATOS — 21 ideas del Cuarto Camino (lenguaje simple)
    ============================================================ */
 var CC_IDEAS = [
   { id: 'sueno', n: 'El hombre dormido', ico: '😴', tag: 'sueno despertar piloto automatico',
@@ -114,6 +117,12 @@ var CC_IDEAS = [
     practica: 'Hoy observa cada 3 horas: ¿que centro manda? Anotalo con I / E / M en tu diario.',
     trampa: 'Decir "soy emocional" como etiqueta fija. Los centros rotan: hoy manda uno, manana otro.',
     pregunta: '¿Quien habla ahora en mi: mi cabeza, mi corazon o mi cuerpo?' },
+  { id: 'carruaje', n: 'El carruaje, el caballo y el cochero', ico: '🐴', tag: 'carruaje caballo cochero amo carro metafora cuerpo emocion mente conciencia',
+    idea: 'La imagen madre de Gurdjieff: eres un carruaje (cuerpo) tirado por un caballo (emociones), manejado por un cochero (mente) que deberia llevar a un amo (tu conciencia, tu "yo" real). El problema: el cochero anda curado de charla, el caballo mal comido, el carro sin engrasar... y el amo ni va arriba: no hay nadie al mando.',
+    sirve: 'Entender de un golpe por que cabeza, corazon y cuerpo tiran para lados distintos cada dia.',
+    practica: 'Revision del carruaje cada noche, 4 lineas: ¿carro (dormi, comi, me movi)? ¿caballo (que emocion mando)? ¿cochero (charla o atencion)? ¿amo (estuve yo presente)?',
+    trampa: 'Quedarse con la poesia y no engrasar nada. La metafora es manual de taller, no postal.',
+    pregunta: '¿Quien lleva hoy mi carruaje?' },
   { id: 'recuerdo', n: 'Recuerdo de si', ico: '🪞', tag: 'recuerdo de si presencia atencion dividida aqui',
     idea: 'La practica madre: dividirse entre lo que hago y el que lo hace. Ejemplo: lavo platos Y me doy cuenta de que yo lavo platos. No es pensar en ti: es sentirte presente.',
     sirve: 'Base de todo el trabajo. Sin esto, lo demas es teoria.',
@@ -179,7 +188,43 @@ var CC_IDEAS = [
     sirve: 'Puente perfecto: si te gusto el Eneagrama de tipos, aqui esta su raiz de procesos.',
     practica: 'Abre 🔺 Eneagrama y tu idea favorita de aqui al mismo tiempo: ¿como tu eneatipo usa (o evita) el recuerdo de si?',
     trampa: 'Quedarse solo en el test de personalidad y perderse el trabajo diario.',
-    pregunta: '¿Mi tipo me ayuda a despertar o me da una excusa nueva?' }
+    pregunta: '¿Mi tipo me ayuda a despertar o me da una excusa nueva?' },
+  { id: 'yoes', n: 'Los muchos yoes (no hay unidad)', ico: '👥', tag: 'yoes muchos unidad yo soy contradictorio voces',
+    idea: 'No tienes UN yo: tienes cientas de voces que se turnan (el apurado, la victima, el simpaticos, el juez). Cada uno promete ("manana dieta") y otro lo rompe. Por eso "quiero y no quiero" a la vez. Verlos es el primer paso a una unidad real.',
+    sirve: 'Propositos que duran 3 dias, cambios de opinion segun con quien estes, "no se quien soy".',
+    practica: 'Caza de yoes: anota 3 yoes de hoy con nombre chistoso ("el apurado de la micro", "la ofendida"). Reirse de ellos ya es despegarse.',
+    trampa: 'Creer que eres "el observador" siempre. El observador tambien se duerme: hay que invocarlo.',
+    pregunta: '¿Cual de mis yoes esta hablando ahora?' },
+  { id: 'maquina', n: 'La maquina: todo me sucede', ico: '🤖', tag: 'maquina sucede mecanico habito todo me pasa responsabilidad',
+    idea: 'Idea dura y liberadora: nada "haces", todo "te sucede" (el enojo te toma, el antojo te gana, la hora se te pasa). La maquina reacciona a botones: hambre, miedo, halago, apuro. El trabajo empieza cuando ves la mecanicidad en vez de justificarla.',
+    sirve: 'Repetir lo mismo esperando otro resultado. Culpar al entorno de todo.',
+    practica: 'Elige 1 reaccion tipica tuya (gritar, comprar, scrollear) y describela como programa: "si pasa X, mi maquina hace Y". Solo eso, 7 dias.',
+    trampa: 'Usarlo de excusa ("soy maquina, no puedo"). Ver la maquina es para dirigirla, no para rendirse.',
+    pregunta: '¿Esto lo elegi yo o lo disparo un boton?' },
+  { id: 'charla', n: 'Charla interior (el parloteo)', ico: '💭', tag: 'charla interior parloteo dialogo interno ruido mente silencio',
+    idea: 'Ese locutor que no se calla (repite, imagina peleas, ensaya frases) gasta tu energia y te roba el presente. Gurdjieff pedia ayunar de el: no es dejar la mente en blanco, es negarse a seguirle la cuerda 5 minutos.',
+    sirve: 'Insomnio de vueltas, ensayar discusiones que nunca pasan, no escuchar a nadie.',
+    practica: 'Ayuno de charla: 5 min al dia con una tarea manual simple (lavar, ordenar, caminar). Cada vez que el locutor arranque, vuelve a las manos.',
+    trampa: 'Pelear con la mente ("callate!"). No se pelea: se deja hablando solo y se atiende otra cosa.',
+    pregunta: '¿Hace cuanto que no escucho el silencio?' },
+  { id: 'atencion', n: 'Niveles de atencion', ico: '🔦', tag: 'atencion niveles dividida dirigida dispersa foco presencia',
+    idea: 'La atencion tiene niveles: 0) dispersa (todo y nada), 1) atraida (el celu te chupa), 2) dirigida (estudias a proposito), 3) dividida (hago Y me siento). Solo el nivel 3 despierta: incluye al que atiende dentro de lo atendido.',
+    sirve: 'Leer una pagina 3 veces sin entender, manejar sin recordar el camino, "estar" sin estar.',
+    practica: 'Hoy sube 3 veces de nivel a proposito: nota en que nivel estas y lleva 1 cosa al nivel 3 (siente tus manos mientras lo haces).',
+    trampa: 'Forzar la atencion hasta doler la cabeza. Se invita, no se aprieta: 30 seg bastan.',
+    pregunta: '¿En que nivel esta mi atencion ahora?' },
+  { id: 'friccion', n: 'Friccion voluntaria (esfuerzo consciente)', ico: '⛰️', tag: 'friccion esfuerzo voluntario incomodidad sacrificio consciente choque',
+    idea: 'La presencia crece con roces elegidos: hacer lo incomodo pequeno a proposito (agua fria 30 seg, tender la cama odiada, decir lo pendiente con respeto). Sin queja y sin publico. La friccion mecanica (tacos, jefes) te duerme; la voluntaria te despierta.',
+    sirve: 'Vida demasiado comoda y dormida, o puro sufrimiento inutil que no ensena nada.',
+    practica: '1 friccion al dia, chica y secreta: elige en la manana, hazla sin contarlo, anotala de noche con ✓.',
+    trampa: 'Elegir fricciones heroicas y abandonar al dia 2. Chica y diaria le gana a grande y unica.',
+    pregunta: '¿Que incomodidad pequena elijo hoy?' },
+  { id: 'delegado', n: 'El delegado interior (mayordomo)', ico: '🧭', tag: 'delegado mayordomo steward proposito continuidad proposito guardian',
+    idea: 'Entre tus muchos yoes puedes nombrar un delegado: un yo-administrador que recuerda el proposito ("hoy practico") y llama a los otros al orden. No es otro jefe interno: es tu compromiso con voz. Se entrena cumpliendo lo pequeno.',
+    sirve: 'Empezar y abandonar, depender del animo del dia, necesitar que otro te arriree.',
+    practica: 'Dale nombre a tu delegado ("la guardiana", "el puntual"). Cada manana dicta 1 orden del dia; cada noche le rinde cuentas en 2 lineas.',
+    trampa: 'Convertirlo en juez cruel que insulta a los otros yoes. El delegado ordena con calma, no con latigo.',
+    pregunta: '¿Que me ordeno hoy mi delegado?' }
 ];
 function ccIdea(id) { for (var i = 0; i < CC_IDEAS.length; i++) if (CC_IDEAS[i].id === id) return CC_IDEAS[i]; return null; }
 
@@ -207,7 +252,19 @@ var CC_PRACTICAS = [
     tip: 'Es la recapitulacion tolteca en miniatura: si la haces 13 lunas seguidas, te conoces entera/o.' },
   { id: 'choque', n: 'Choque a mi octava caída', ico: '🥁', tiempo: '15 min por semana',
     pasos: 'Elige 1 meta desviada. Detecta en que intervalo cayo (primer bajon o segundo). Agenda 1 choque: ayuda, plazo, lugar o companero.',
-    tip: 'Las octavas se salvan con choques externos agendados, no con culpa interna.' }
+    tip: 'Las octavas se salvan con choques externos agendados, no con culpa interna.' },
+  { id: 'cazayoes', n: 'Caza de yoes del día', ico: '👥', tiempo: '5 min en la noche',
+    pasos: 'Revisa tu dia y bautiza 3 yoes que aparecieron ("el apurado", "la ofendida", "el flojo simpatico"). Anota que queria cada uno y quien gano. Usa el registro de abajo: con risa, sin juicio.',
+    tip: 'A los 7 dias veras tu elenco estable: esos 4-5 yoes son tu maquina. Ahi empieza el trabajo de verdad.' },
+  { id: 'ayunocharla', n: 'Ayuno de charla interior', ico: '🤫', tiempo: '5 min al dia',
+    pasos: 'Tarea manual simple + oidos al mundo (sonidos, pasos, agua). Cada vez que el locutor arranque una pelicula, suelta y vuelve a los sonidos. Cuenta cuantas vueltas diste: ese numero es tu parloteo.',
+    tip: 'Ideal con audifonos... quitados. El silencio se escucha mejor lavando loza o caminando.' },
+  { id: 'fricciondia', n: 'Fricción elegida del día', ico: '⛰️', tiempo: '5-10 min',
+    pasos: 'En la manana tu delegado elige 1 incomodidad chica (frio 30 seg, llamada pendiente, pieza ordenada, cama tendida). Hazla sin contarlo a nadie. De noche marca ✓ y 1 linea de como te dejo.',
+    tip: 'Secreta y chica: si la publicas, la energia se va al aplauso en vez de a la presencia.' },
+  { id: 'escucha', n: 'Escucha total (1 conversación)', ico: '👂', tiempo: '10 min, 1 vez al dia',
+    pasos: 'Elige 1 conversacion y escucha sin preparar tu respuesta: mira, asiente, siente tus pies. Cuando notes que te fuiste a tu charla, vuelve. Al final resume lo que el otro dijo antes de opinar.',
+    tip: 'Es consideracion externa en vivo: el otro lo nota al tiro y la pelea baja sola.' }
 ];
 
 var CC_TEST = [
@@ -231,7 +288,15 @@ var CC_TEST = [
   { c: 'S', txt: 'Me quejo o critico varias veces al dia.' },
   { c: 'S', txt: 'Reacciono igual ante lo mismo (siempre el mismo enojo, mismo apuro).' },
   { c: 'S', txt: 'Me cuesta escuchar sin preparar mi respuesta.' },
-  { c: 'S', txt: 'Al final del dia no recuerdo momentos concretos, solo cansancio.' }
+  { c: 'S', txt: 'Al final del dia no recuerdo momentos concretos, solo cansancio.' },
+  { c: 'I', txt: 'Antes de decidir investigo y comparo tanto que la oportunidad ya paso.' },
+  { c: 'I', txt: 'Cuando algo me duele lo analizo tanto que termino sin sentirlo.' },
+  { c: 'E', txt: 'Si alguien que quiero esta mal, yo tambien me hundo aunque no sea mi problema.' },
+  { c: 'E', txt: 'Busco halagos o likes para saber si lo hice bien.' },
+  { c: 'M', txt: 'Hablo rapidisimo o interrumpo, como si todo fuera apuro.' },
+  { c: 'M', txt: 'Acumulo tension en el cuerpo (cuello, mandibula, guata) sin notarlo hasta que duele.' },
+  { c: 'S', txt: 'Paso el dia reaccionando a pantallas y avisos, sin un momento elegido por mi.' },
+  { c: 'S', txt: 'Prometo cambios que mi yo de la noche ya sabe que no voy a cumplir.' }
 ];
 var CC_LIKERT = [
   { v: 0, t: 'Nunca' }, { v: 1, t: 'A veces' }, { v: 2, t: 'A menudo' }, { v: 3, t: 'Muy cierto' }
@@ -246,10 +311,10 @@ var CC_CENTROS = {
 };
 
 var CC_LUNAS = [
-  'Lunas 1-3 (Pukem · invierno): mirar adentro. Auto-observacion + revision nocturna. Pregunta: ¿que programa me maneja?',
-  'Lunas 4-6 (Pewu · primavera): sembrar recuerdo de si x3 + 1 acto de consideracion externa por semana.',
-  'Lunas 7-9 (Walung · verano): probarse con gente. Reto 🤐 + pedir 1 espejo (escuela). El roce muestra lo que el cojin esconde.',
-  'Lunas 10-13 (Rimu · otono): cosechar. Releer diario, marcar octavas salvadas y elegir 1 practica madre para el proximo ciclo.'
+  'Lunas 1-3 (Pukem · invierno): mirar adentro. Auto-observacion + revision nocturna + ayuno de charla. Pregunta: ¿que programa me maneja y que locutor me habla?',
+  'Lunas 4-6 (Pewu · primavera): sembrar recuerdo de si x3 + caza de yoes 👥 + 1 acto de consideracion externa por semana. Nombra tu elenco y tu delegado.',
+  'Lunas 7-9 (Walung · verano): probarse con gente. Reto 🤐 + 1 friccion elegida ⛰️ al dia + pedir 1 espejo (escuela). El roce muestra lo que el cojin esconde.',
+  'Lunas 10-13 (Rimu · otono): cosechar. Repetir el test, releer diario y yoes, marcar octavas salvadas y elegir 1 practica madre para el proximo ciclo.'
 ];
 
 /* ============================================================
@@ -281,7 +346,7 @@ function buildDialog() {
   var body =
     '<div class="timer-tabs su-4dca21">' +
     '<button type="button" id="tabCcGuia" class="btn btn-accent su-30e741">📖 Guía</button>' +
-    '<button type="button" id="tabCcIdeas" class="btn su-30e741">💡 14 Ideas</button>' +
+    '<button type="button" id="tabCcIdeas" class="btn su-30e741">💡 21 Ideas</button>' +
     '<button type="button" id="tabCcPract" class="btn su-30e741">🛠️ Prácticas</button>' +
     '<button type="button" id="tabCcTest" class="btn su-30e741">📝 Test centros</button>' +
     '<button type="button" id="tabCcTrabajo" class="btn su-30e741">🌱 Mi trabajo</button></div>' +
@@ -291,10 +356,12 @@ function buildDialog() {
     '<p class="muted su-616df7">Es la vía de <b>despertar en medio de la vida común</b>, enseñada por <b>G. I. Gurdjieff</b> (Armenia/Grecia, ~1866-1949) y ordenada por su alumno <b>P. D. Ouspensky</b> en <i>Fragmentos de una enseñanza desconocida</i>. Hay 3 caminos clásicos: el del <b>faquir</b> (cuerpo y aguante), el del <b>monje</b> (fe y emoción) y el del <b>yogui</b> (mente y saber). El <b>Cuarto</b> no se retira al monasterio ni al Himalaya: <b>usa tu casa, tu pega y tu familia como escuela</b>, trabajando los 3 centros a la vez.</p>' +
     '<p class="muted su-616df7">Idea de una línea: <b>estás dormido creyendo que estás despierto</b>. Hablas dormido, te enojas dormido, decides dormido. Despertar = <b>recordarte a ti mismo</b> varias veces al día, observar tu máquina sin mentirte y soltar lo que te tiene pegado.</p></div>' +
     '<div class="fishing-grid su-d2c171">' +
-    '<div class="menstrual-card"><h4>🧭 El mapa en 6 piezas</h4>' +
-    '<p class="muted su-6cb285"><b>1) Sueño:</b> piloto automático. <b>2) 3 centros:</b> cabeza, corazón, cuerpo (uno manda). <b>3) Identificación:</b> te pegas a todo. <b>4) Consideración interna:</b> ruido del "qué dirán". <b>5) Amortiguadores:</b> excusas que tapan contradicciones. <b>6) Leyes 3 y 7:</b> por qué todo se traba y se desvía.</p></div>' +
+    '<div class="menstrual-card"><h4>🧭 El mapa en 10 piezas</h4>' +
+    '<p class="muted su-6cb285"><b>1) Sueño:</b> piloto automático. <b>2) 3 centros:</b> cabeza, corazón, cuerpo (uno manda). <b>3) El carruaje 🐴:</b> carro, caballo, cochero y un amo ausente. <b>4) Muchos yoes:</b> no hay unidad, hay elenco. <b>5) La máquina:</b> todo te sucede. <b>6) Identificación:</b> te pegas a todo. <b>7) Charla interior:</b> el locutor que no calla. <b>8) Consideración interna:</b> ruido del "qué dirán". <b>9) Amortiguadores:</b> excusas que tapan contradicciones. <b>10) Leyes 3 y 7:</b> por qué todo se traba y se desvía. La <b>fricción voluntaria</b> y el <b>delegado</b> son tus herramientas para trabajarlas.</p></div>' +
     '<div class="menstrual-card"><h4>🙋 Gurdjieff en 1 minuto</h4>' +
     '<p class="muted su-6cb285">Buscador de escuelas olvidadas (sufíes, monte Athos, Asia central). En Moscú (1915) enseña a Ouspensky; tras la revolución huye al <b>Instituto del Prieuré</b> (Francia). Métodos famosos: <b>STOP</b>, danzas sagradas, trabajo en grupos, el <b>Eneagrama de procesos</b>. Murió en 1949 dejando alumnos (Ouspensky, Nicoll, Rodney Collin) que escribieron todo.</p></div></div>' +
+    '<details class="menstrual-details"><summary>🗓️ Programa de 1 luna (28 días, sin escuela)</summary>' +
+    '<p class="muted su-6cb285"><b>Días 1-7 (cimientos):</b> STOP 🛑 1 vez al día + recuerdo de sí x3 atado a hábitos + revisión nocturna de 4 preguntas. Marca todo en 🛠️ Prácticas.<br><b>Días 8-14 (el elenco):</b> suma la caza de yoes 👥 (3 por noche) + ayuno de charla 🤫 5 min. Al final nombra tus 4-5 yoes estables.<br><b>Días 15-21 (el roce):</b> suma reto 🤐 24 h sin derramar + 1 acto de consideración externa 💛 + 1 fricción elegida ⛰️ al día. Pide 1 espejo (escuela 🏫).<br><b>Días 22-28 (cosecha):</b> repite el test 📝 y compara con el primero, relee tu diario y tus yoes, rescata 1 octava caída 🥁 con un choque agendado y elige tu práctica madre para la próxima luna.</p></details>' +
     '<details class="menstrual-details"><summary>🚶 ¿Cómo se practica sin escuela? (rutina mínima)</summary>' +
     '<p class="muted su-6cb285"><b>Manana:</b> 1 STOP + intencion ("hoy me observo en ___"). <b>Día:</b> recuerdo de si x3 atado a hábitos + 1 no-queja escrita. <b>Noche:</b> revision 5 min (¿presente? ¿pegado? ¿qué centro mandó?). <b>Por luna:</b> 1 reto 🤐 de 24 h + 1 espejo (pedir senalamiento) + releer diario. 15 min diarios bastan; la constancia hace el camino.</p></details>' +
     '<details class="menstrual-details"><summary>⚠️ Cuidados (léeme)</summary>' +
@@ -304,7 +371,7 @@ function buildDialog() {
     '</div>' +
 
     '<div id="ccIdeas" class="hidden">' +
-    '<div class="conv-row"><label class="su-4b3de7">Buscar <input type="text" id="ccQ" placeholder="ej: sueño, identificación, ley de tres, eneagrama..." maxlength="40"></label></div>' +
+    '<div class="conv-row"><label class="su-4b3de7">Buscar <input type="text" id="ccQ" placeholder="ej: carruaje, sueño, yoes, fricción, charla, ley de tres..." maxlength="40"></label></div>' +
     '<div id="ccIdeasGrid" class="su-1e9d45">' + ideasGrid + '</div>' +
     '<div id="ccDetalle" class="menstrual-card su-51d56a"><p class="muted">Toca una idea para ver su ficha completa 👆</p></div></div>' +
 
@@ -316,11 +383,16 @@ function buildDialog() {
     '<div class="conv-row su-8a77e5"><label>Recuerdo de sí hoy (0-3) <select id="ccRecSel"><option value="0">0 · dormido total</option><option value="1">1 · un momento</option><option value="2">2 · dos momentos</option><option value="3">3 · mañana + tarde + noche</option></select></label>' +
     '<label>Centro que mandó hoy <select id="ccCentroHoy"><option value="">—</option><option value="I">🧠 Intelectual</option><option value="E">💗 Emocional</option><option value="M">🏃 Motor-instintivo</option></select></label></div>' +
     '<div class="dlg-actions su-59a5a8"><button type="button" id="ccPractSave" class="btn btn-accent su-30e741">💾 Guardar práctica de hoy</button></div></div>' +
-    practHTML + '</div>' +
+    practHTML +
+    '<div class="menstrual-card su-d2c171"><h4>🔗 Conecta tu trabajo</h4>' +
+    '<p class="muted su-11a508">El Cuarto Camino no camina solo: mírate en estos espejos.</p>' +
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="ccGoEneagrama" class="btn su-30e741">🔺 Eneagrama</button>' +
+    '<button type="button" id="ccGoEspiritu" class="btn su-30e741">✨ Espíritu</button>' +
+    '<button type="button" id="ccGoRecap" class="btn su-30e741">🔁 Recapitulación</button></div></div></div>' +
 
     '<div id="ccTest" class="hidden">' +
-    '<div class="menstrual-card su-68a1a9"><h4>📝 Test: ¿qué centro te domina? (21 afirmaciones)</h4>' +
-    '<p class="muted su-6cb285">Responde según <b>cómo eres casi siempre</b>. Escala: Nunca (0) · A veces (1) · A menudo (2) · Muy cierto (3). ~5 minutos. Incluye 6 preguntas de <b>nivel de sueño</b> (S). <b>No es diagnóstico</b>: es un espejo para elegir por dónde empezar.</p>' +
+    '<div class="menstrual-card su-68a1a9"><h4>📝 Test: ¿qué centro te domina? (29 afirmaciones)</h4>' +
+    '<p class="muted su-6cb285">Responde según <b>cómo eres casi siempre</b>. Escala: Nunca (0) · A veces (1) · A menudo (2) · Muy cierto (3). ~7 minutos. Incluye 8 preguntas de <b>nivel de sueño</b> (S). <b>No es diagnóstico</b>: es un espejo para elegir por dónde empezar.</p>' +
     '<div class="su-3de8f9"><button type="button" id="ccTestReset" class="btn su-30e741">↺ Limpiar</button>' +
     '<button type="button" id="ccTestCalc" class="btn btn-accent su-30e741">📊 Ver mi resultado</button></div>' +
     '<div id="ccProgreso" class="muted su-e13d76"></div></div>' +
@@ -337,6 +409,11 @@ function buildDialog() {
     '<div class="dlg-actions su-59a5a8"><button type="button" id="ccDiaAdd" class="btn btn-accent su-30e741">+ Guardar hoy</button></div>' +
     '<div id="ccDiaList" class="habits-list su-ebf445"></div></div></div>' +
     '<div class="menstrual-card su-d2c171"><h4>🛑 Mis STOPs (racha de presencia)</h4><div id="ccStopsBox"></div></div>' +
+    '<div class="menstrual-card su-d2c171"><h4>👥 Mis yoes cazados</h4>' +
+    '<p class="muted su-11a508">Tu elenco estable: bautízalos con humor, sin juicio. Verlos es despegarte.</p>' +
+    '<div class="conv-row"><label>Yo de hoy <input type="text" id="ccYoTxt" placeholder="ej: el apurado de la micro" maxlength="60"></label></div>' +
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="ccYoAdd" class="btn btn-accent su-30e741">+ Cazar yo</button></div>' +
+    '<div id="ccYoesBox"></div></div>' +
     '<div class="menstrual-card su-d2c171"><h4>🕘 Historial de tests</h4><div id="ccHistBox"></div></div>' +
     '<div class="dlg-actions su-a1935c">' +
     '<span id="ccStats" class="muted su-11a508"></span>' +
@@ -418,10 +495,10 @@ function showResultado(sc, saved) {
   var max = Math.max(arr[0].p, 1);
   var dom = arr[0].k;
   var sueno = sc.S;
-  var suenoTxt = sueno <= 6 ? 'Liviano: hay presencia. Sostén con recuerdo x3.' : sueno <= 11 ? 'Medio: piloto automático frecuente. STOP diario te cambia la luna.' : 'Denso: andas muy en máquina. Parte por 1 STOP + revisión nocturna, sin exigirte todo.';
+  var suenoTxt = sueno <= 8 ? 'Liviano: hay presencia. Sostén con recuerdo x3.' : sueno <= 15 ? 'Medio: piloto automático frecuente. STOP diario te cambia la luna.' : 'Denso: andas muy en máquina. Parte por 1 STOP + revisión nocturna, sin exigirte todo.';
   box.classList.remove('hidden');
   box.innerHTML = '<h4>📊 Tu espejo ' + (saved ? '(guardado ✓)' : '(sin guardar)') + '</h4>' +
-    '<p class="muted su-11a508">Máximo por centro: 21 (7 preguntas × 3). Sueño (S): máximo 18.</p>' +
+    '<p class="muted su-11a508">Máximo por centro: 21 (7 preguntas × 3). Sueño (S): máximo 24.</p>' +
     arr.map(function (a) {
       var c = CC_CENTROS[a.k];
       var pct = Math.round(a.p / max * 100);
@@ -434,7 +511,7 @@ function showResultado(sc, saved) {
     }).join('') +
     '<div class="si-card su-8a77e5"><h4>' + CC_CENTROS[dom].ico + ' Tu centro dominante: ' + esc(CC_CENTROS[dom].nombre) + '</h4>' +
     '<p>' + esc(CC_CENTROS[dom].desc) + '</p><p><b>Entrena así:</b> ' + esc(CC_CENTROS[dom].entrena) + '</p>' +
-    '<p class="muted">😴 Nivel de sueño: <b>' + sueno + '/18</b> — ' + esc(suenoTxt) + '</p></div>' +
+    '<p class="muted">😴 Nivel de sueño: <b>' + sueno + '/24</b> — ' + esc(suenoTxt) + '</p></div>' +
     '<div class="su-ac5453"><button type="button" class="btn btn-accent su-30e741" id="ccSaveTest">💾 Guardar este test</button>' +
     '<button type="button" class="btn su-30e741" id="ccSetCentro">✓ Soy ' + esc(CC_CENTROS[dom].nombre) + '</button>' +
     '<button type="button" class="btn su-30e741" id="ccReadIdea">📖 Leer idea que me sirve</button></div>';
@@ -495,6 +572,22 @@ function renderStops() {
     x.onclick = function () { var e = store(); e.stops = e.stops.filter(function (r) { return r.id !== x.dataset.id; }); save(); renderStops(); renderStats(); };
   });
 }
+function renderYoes() {
+  var box = $('ccYoesBox'); if (!box) return;
+  var d = store().yoes || [];
+  var ult10 = d.slice().sort(function (a, b) { return b.fecha.localeCompare(a.fecha); }).slice(0, 10);
+  var counts = {};
+  d.forEach(function (r) { var k = (r.txt || '').toLowerCase(); counts[k] = (counts[k] || 0) + 1; });
+  var elenco = Object.keys(counts).sort(function (a, b) { return counts[b] - counts[a]; }).slice(0, 5);
+  box.innerHTML = '<p class="muted su-11a508">👥 ' + d.length + ' yo(es) cazados' + (elenco.length ? ' · elenco estable: <b>' + esc(elenco.join(' · ')) + '</b>' : '') + '</p>' +
+    (ult10.length ? ult10.map(function (r) {
+      return '<div class="hora-item"><span class="su-11a508">👥 <b>' + esc(r.txt) + '</b> · ' + esc(r.fecha) + '</span>' +
+        '<button type="button" class="btn btn-icon cc-yo-del" data-id="' + r.id + '">✕</button></div>';
+    }).join('') : '<p class="muted su-e201a8">Sin yoes aún. Caza 3 esta noche con risa 👆.</p>');
+  box.querySelectorAll('.cc-yo-del').forEach(function (x) {
+    x.onclick = function () { var e = store(); e.yoes = e.yoes.filter(function (r) { return r.id !== x.dataset.id; }); save(); renderYoes(); renderStats(); };
+  });
+}
 function renderDiario() {
   var box = $('ccDiaList'); if (!box) return;
   var d = store().diario || {};
@@ -513,7 +606,7 @@ function renderHist() {
   var t = (store().tests || []).slice().reverse().slice(0, 10);
   if (!t.length) { box.innerHTML = '<p class="muted su-11a508">Sin tests guardados. Responde y pulsa “💾 Guardar este test”.</p>'; return; }
   box.innerHTML = t.map(function (r) {
-    return '<div class="hora-item"><span class="su-11a508"><b>' + esc(r.fecha) + '</b> · 🧠' + r.I + ' 💗' + r.E + ' 🏃' + r.M + ' · domina <b>' + esc(r.dom || '') + '</b> · sueño ' + esc(String(r.S)) + '/18</span>' +
+    return '<div class="hora-item"><span class="su-11a508"><b>' + esc(r.fecha) + '</b> · 🧠' + r.I + ' 💗' + r.E + ' 🏃' + r.M + ' · domina <b>' + esc(r.dom || '') + '</b> · sueño ' + esc(String(r.S)) + '/24</span>' +
       '<button type="button" class="btn btn-icon cc-hist-del" data-id="' + r.id + '">✕</button></div>';
   }).join('');
   box.querySelectorAll('.cc-hist-del').forEach(function (x) {
@@ -524,8 +617,9 @@ function renderStats() {
   var st = $('ccStats'); if (!st) return;
   var e = store();
   var nd = Object.keys(e.diario || {}).length;
+  var ny = (e.yoes || []).length;
   var c = e.miCentro ? CC_CENTROS[e.miCentro].nombre : 'sin centro';
-  st.textContent = (e.tests.length ? e.tests.length + ' test(s)' : 'sin tests') + ' · ' + nd + ' día(s) diario · ' + e.stops.length + ' práctica(s) · ' + c;
+  st.textContent = (e.tests.length ? e.tests.length + ' test(s)' : 'sin tests') + ' · ' + nd + ' día(s) diario · ' + e.stops.length + ' práctica(s) · ' + ny + ' yo(es) · ' + c;
 }
 
 /* STOP timer 60s */
@@ -594,7 +688,7 @@ function puenteMetodos() {
 function openCuartoCamino() {
   try {
     if ($('ccDiaFecha') && !$('ccDiaFecha').value) $('ccDiaFecha').value = todayKey();
-    syncMiCentro(); renderMiCentroBox(); renderDiario(); renderHist(); renderStops(); renderStats(); updateProgreso();
+    syncMiCentro(); renderMiCentroBox(); renderDiario(); renderHist(); renderStops(); renderYoes(); renderStats(); updateProgreso();
   } catch (e) {}
   openDlg('cuartoCaminoDialog');
 }
@@ -685,6 +779,8 @@ function setup() {
   try { addKw('btnMetodos', 'cuarto camino gurdjieff despertar recuerdo'); } catch (e2) {}
   try { addKw('btnEneagrama', 'gurdjieff cuarto camino origen procesos'); } catch (e3) {}
   try { addKw('btnPsico', 'gurdjieff auto observacion cuarto camino'); } catch (e4) {}
+  try { addKw('btnEspiritu', 'cuarto camino gurdjieff recuerdo presencia atencion'); } catch (e5) {}
+  try { addKw('btnRecap', 'cuarto camino gurdjieff revision observacion'); } catch (e6) {}
 
   /* 4) dialogo */
   buildDialog();
@@ -694,6 +790,7 @@ function setup() {
   renderDiario();
   renderHist();
   renderStops();
+  renderYoes();
   renderStats();
 
   var b = $('btnCuartoCamino');
@@ -710,6 +807,12 @@ function setup() {
   });
 
   var sb = $('ccStopBtn'); if (sb) sb.onclick = runStop;
+  var ge = $('ccGoEneagrama');
+  if (ge) ge.onclick = function () { try { var r = $('btnEneagrama'); if (r) r.click(); else alert('Abre 🔺 Eneagrama desde Interior'); } catch (e) {} };
+  var gs = $('ccGoEspiritu');
+  if (gs) gs.onclick = function () { try { var r = $('btnEspiritu'); if (r) r.click(); else alert('Abre ✨ Espíritu desde Interior'); } catch (e) {} };
+  var gr = $('ccGoRecap');
+  if (gr) gr.onclick = function () { try { var r = $('btnRecap'); if (r) r.click(); else alert('Abre 🔁 Recapitulación desde Interior'); } catch (e) {} };
   var ps = $('ccPractSave');
   if (ps) ps.onclick = function () {
     var rec = +(($('ccRecSel') || {}).value || 0);
@@ -746,6 +849,16 @@ function setup() {
     };
   });
 
+  var ya = $('ccYoAdd');
+  if (ya) ya.onclick = function () {
+    var t = clean((($('ccYoTxt') || {}).value || '').trim(), 60);
+    if (!t) return alert('Bautiza tu yo primero (ej: el apurado de la micro) 👥');
+    var e = store();
+    e.yoes.push({ id: uid('y'), fecha: todayKey(), txt: t });
+    save('Yo cazado ✓'); $('ccYoTxt').value = '';
+    renderYoes(); renderStats();
+  };
+
   var mt = $('ccMiCentro');
   if (mt) mt.onchange = function () { var e = store(); e.miCentro = mt.value || ''; save('Tu centro guardado ✓'); renderMiCentroBox(); renderStats(); };
 
@@ -765,8 +878,8 @@ function setup() {
     var e = store();
     var c = e.miCentro && CC_CENTROS[e.miCentro] ? CC_CENTROS[e.miCentro].nombre : 'sin definir';
     var last = (e.tests || []).slice(-1)[0];
-    var txt = '🛤️ Mi Cuarto Camino\nCentro dominante: ' + c + '\nRacha STOP: ' + rachaStops() + ' días\n' +
-      (last ? ('Último espejo (' + last.fecha + '): 🧠' + last.I + ' 💗' + last.E + ' 🏃' + last.M + ' · sueño ' + last.S + '/18') : 'Sin test aún: el espejo parte con 21 preguntas.');
+    var txt = '🛤️ Mi Cuarto Camino\nCentro dominante: ' + c + '\nRacha STOP: ' + rachaStops() + ' días\nYoes cazados: ' + (e.yoes || []).length + '\n' +
+      (last ? ('Último espejo (' + last.fecha + '): 🧠' + last.I + ' 💗' + last.E + ' 🏃' + last.M + ' · sueño ' + last.S + '/24') : 'Sin test aún: el espejo parte con 29 preguntas.');
     await share('Mi Cuarto Camino', txt);
   };
   var tn = $('ccToNote');
@@ -786,9 +899,9 @@ function setup() {
   };
   var cl = $('ccClear');
   if (cl) cl.onclick = function () {
-    if (!confirm('¿Borrar todo tu registro del Cuarto Camino (tests, centro, prácticas, diario)?')) return;
+    if (!confirm('¿Borrar todo tu registro del Cuarto Camino (tests, centro, prácticas, yoes, diario)?')) return;
     try { var u = userData(); u.cuartoCamino = blank(); } catch (e) {}
-    save(); syncMiCentro(); renderMiCentroBox(); renderDiario(); renderHist(); renderStops(); renderStats();
+    save(); syncMiCentro(); renderMiCentroBox(); renderDiario(); renderHist(); renderStops(); renderYoes(); renderStats();
   };
 
   /* 5) puente Metodos */

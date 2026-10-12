@@ -423,4 +423,93 @@ Notas tercera oleada:
 
 ---
 
-*Última actualización: 2026-09-28 (v1.4.0) — Mantener esta guía junto a `LEEME.txt`.*
+## 17. Herramientas agregadas 3–6 oct 2026 · cuarta oleada: interior y oráculos (v1.5.0)
+
+Mismo patrón §15: cada archivo auto-instalable inyecta su botón, crea su `<dialog>` y guarda en `userData().<clave>`. Cabecera de cada archivo = botón, diálogo, pestañas y clave de datos. Todo 100% offline.
+
+| Herramienta | Archivo | Botón | Diálogo / contenido | Datos (`userData()`) |
+|---|---|---|---|---|
+| 🧭 Ikigai | `ikigai-modulo.js` | Interior | `ikigaiDialog` — propósito (lo que amas / sabes / necesita el mundo / te pagan) | `ikigai` |
+| 🔥 Retos 21 días | `retos-21-modulo.js` | Mi Día | `retos21Dialog` — retos de 21 días con fases siembra/brote/floración | propio |
+| 💎 Fortalezas VIA | `fortalezas-via-modulo.js` | Interior | `viaDialog` — 6 virtudes, 24 fortalezas + test + firma (puente con Hábitos) | `via` |
+| ☯️ Tao | `tao-modulo.js` | Interior | `taoDialog` — práctica y textos | `tao` |
+| 🦅 Toltecas | `tolteca-modulo.js` | Interior | `toltecaDialog` — acuerdos y prácticas | `tolteca` |
+| 🏛️ Estoicismo | `estoicismo-modulo.js` | Interior | `estoicismoDialog` — examen estoico, control/dicotomía | `estoicismo` |
+| 🌺 Ho'oponopono | `hooponopono-modulo.js` | Interior | `hooponoponoDialog` — práctica de perdón y limpieza | `hooponopono` |
+| 🔢 Grabovoi | `grabovoi-modulo.js` | Interior | `grabovoiDialog` — secuencias numéricas | `grabovoi` |
+| 🧠 Método Silva | `metodo-silva-modulo.js` | Interior | `silvaDialog` — control mental, alfa, visualización | `silva` |
+| 🌊 Vigyan Bhairav (Tantra) | `vigyan-bhairav-modulo.js` | Interior | `vigyanDialog` — 112 meditaciones | `vigyan` |
+| 🔮 Numerología | `numerologia-modulo.js` | Oráculos | `numerologiaDialog` — número de vida, año personal | `numerologia` |
+| 🌀 Kin Maya (ampliado) | `kin-maya-modulo.js` | Oráculos | `kinMayaDialog` — sello, tono, onda encantada | `kinMayaData` |
+| 🎴 Tarot | `tarot-modulo.js` | Oráculos | `tarotDialog` — tiradas y significados | `tarot` |
+| 🔯 Oráculo | `oraculo-modulo.js` | Oráculos | `oraculoDialog` — pregunta/respuesta | `oraculo` |
+| 🔢 Matemáticas | `matematicas-modulo.js` | Aprender | `matematicasDialog` — práctica y desafíos (+ crucigrama/sopa ampliados) | `matematicas` |
+| 🔌 Electrónica | `electronica-modulo.js` | Hogar/Taller | `electronicaDialog` — guías básicas | `electronica` |
+| 🏠 Domótica | `domotica-modulo.js` | Hogar/Taller | `domoticaDialog` — casa inteligente de bajo costo | `domotica` |
+| 🧭 Feng Shui | `feng-shui-modulo.js` | Hogar | `fengShuiDialog` — mapa bagua por habitación (% hábitos) | `fengshui` |
+| 🌿 Recetas Naturales | `recetas-naturales-modulo.js` | Cuerpo | `recetasDialog` — preparados y remedios caseros | `recetas` |
+| 🛤️ Cuarto Camino | `cuarto-camino-modulo.js` | Interior | `cuartoCaminoDialog` — ideas, prácticas, test, trabajo | `cuartoCamino` |
+| ⛪ Iglesias Penco | `iglesias-penco.js` | Territorio > Penco | `iglesiasDialog` — templos e historia local | — |
+
+Notas cuarta oleada:
+- ❓ Guía in-app actualizada: tarjetas Mente (Métodos con 20 fichas, Oráculos, Tradiciones) y “Tips & Novedades”.
+- `package.json` raíz → **1.5.0** (+ espejo `web/package.json`); `sw.js` sube caché con cada módulo nuevo.
+- `package.json → build.files` debe incluir cada `*-modulo.js` nuevo o el `.exe` portable sale sin esa herramienta.
+
+---
+
+## 18. Novedades 6–8 oct 2026 · quinta oleada + perfiles (v1.6.0)
+
+| Herramienta | Archivo | Botón | Diálogo / contenido | Datos (`userData()`) |
+|---|---|---|---|---|
+| 👼 Ami | `ami-modulo.js` | Interior | `amiDialog` — escucha, verdad, miedo, ritos (puente con 🌬️ Respiración) | `ami` |
+| 💰 Finanzas-Negocio | `finanzas-negocio-modulo.js` | Hogar | `finanzasNegocioDialog` — hábitos de dinero, SII/DIDECO Penco | `finanzasNegocio` |
+| 🤖 IA | `ia-modulo.js` | Aprender | `iaDialog` — guía de uso (salud/cuerpo, interior/memoria) sin diagnósticos | `iaUso` |
+| 📜 Código Abierto | `open-source-modulo.js` | Comunidad | `openSourceDialog` — licencias GPLv3 + CC BY-NC-SA | — |
+
+Notas v1.6.0:
+- 👥 Perfiles actualizados y **sin opción Infantil** (11 perfiles: Todo, Esencial, Adolescente, Adulto, Mayor, Estudiante, Agricultor, Pescador, Salud, Deportista, Docente).
+- 🏠 Pantalla de inicio ampliada de 24 a **34 bloques** (🎣 Pesca, 🌳 Bosque, 🦅 Aves, 🥬 Huerta, 🧠 Estudio, 📖 Cuentos, 🌳 Familia, 🚨 Emergencia, 🤝 Comunidad, 🔧 Energía); cada perfil ajusta su inicio (vista + bloques ◉ Hoy).
+- APK de referencia: `dist-empaquetado/13-Lunas-offline-1.6.0.apk` (debug).
+- `package.json` raíz y `web/package.json` → **1.6.0**.
+
+---
+
+## 19. Base técnica 11 oct 2026 · rendimiento y pipeline (v1.7.0)
+
+Sin herramientas nuevas visibles: puro cimiento para que la app vuele y se publique sola.
+
+- ⚡ **Minificado esbuild** (`scripts/minify.cjs`): sidecars `min/*.min.js(css)`; `index.html` + `boot-modulos.js` apuntan a `.min` (deploy slim: las fuentes `.js/.css` ya no viajan en `web/` ni en el portable).
+- 🧩 **Diálogos a plantillas** (`scripts/build-templates.cjs`): `templates/*.html` + `templates-bundled.js` con inyección eager; `index.html` adelgaza ~380 KB.
+- 🛡️ **CSP fase 1 + 2**: sin `unsafe-inline` en scripts; ~9.700 estilos estáticos migrados a utilidades `styles-csp.css` (`scripts/csp-fase2.cjs`).
+- 💾 **Bitácoras a IndexedDB** (`storage-idb.js`): store propio primario + cuota + cifrado; respaldo/restaurar por usuario.
+- 🧱 **`renderer.js` partido en 7 `core-*`**: calendario, clima, diálogo-día, storage, temas, bootstrap, audio (990 → 830 KB).
+- 📲 **PWA instalable**: prompt de instalación, screenshots reales, `manifest.json` con capturas.
+- ✅ **CI + calidad**: workflow GitHub (`test` + `lighthouse`), presupuesto de performance (`scripts/perf-budget.cjs`), checks de sintaxis/tamaño/manifiesto/SW/web/donate; `npm test` lo corre todo.
+- 🔄 **Auto-update + release**: `electron-updater` en `main.js` (feed GitHub); al pushear tag `v*`, CI compila el **NSIS** y lo publica en Releases.
+- `package.json` raíz y `web/package.json` → **1.7.0**.
+
+Comandos clave: `npm test` (todo) · `npm run build:min` · `npm run build:tpl` · `npm run sync:web -- --fix` · `npm run build` (portable) · `npm run build:win-nsis` (instalador).
+
+---
+
+## 20. Novedades 12 oct 2026 · conexión y pulido diario (v1.8.0)
+
+| Novedad | Dónde | Detalle |
+|---|---|---|
+| 📅 ICS importar/exportar | `ics-modulo.js` · Mi Día > Organizar | Lleva compromisos a Google/Outlook/Apple (luna, ciclo o todo; notas privadas NO salen) y trae `.ics` externos (recurrentes DAILY/WEEKLY) sin duplicar. RFC 5545, tope 2 MB. 100% local. |
+| ⚡ Energía y Descanso | `energia-descanso-modulo.js` · Cuerpo | Registro opcional diario: horas de sueño, calidad, energía, ánimo + nota → marca 💤 en el calendario; vista por lunas + guía. No diagnostica: espejo personal. `userData().energiaDescanso`. |
+| ✨ Espíritu en navegación | `espiritu-modulo.js` + `renderer.js`/`index.html` | Botón `✨ Espíritu` cableado en grupo prácticas, `ALL_BTNS`, perfiles (Mayor/Salud/Deportista) y respaldo (clave `espiritu`); keywords de búsqueda. |
+| 🛤️ Cuarto Camino ampliado | `cuarto-camino-modulo.js` | 14 → **21 ideas**, 8 → **12 prácticas** (+ STOP 1 min, recuerdo de sí, puentes con Eneagrama). |
+| ✅ Hábitos: iconos por categoría | `renderer.js` + `habitsDialog` | 45 → **~125 iconos** en 8 categorías (Esenciales, Movimiento, Mente, Comida, Hogar, Naturaleza, Calma, Familia) + **botón desplegable** (colapsado muestra 14) + campo Icono editable para pegar cualquier emoji. |
+| 🌬️ Respiración: práctica arriba | `breathDialog` + `renderer.js` | El reproductor (círculo + ▶ Iniciar) va **antes de la grilla**; intro colapsable; al elegir técnica sube solo a la práctica; al abrir entra con scroll arriba. |
+
+Notas v1.8.0:
+- `package.json` raíz y `web/package.json` → **1.8.0**; `android/app/build.gradle` → `versionName "1.8.0"` (+ `versionCode`).
+- `sw.js` → `cal13-v77-offline` (incluye `espiritu-modulo`; poda de historial `?v=`).
+- Artefactos: `dist-empaquetado/Calendario 13 Lunas 1.8.0.exe` (portable) + instalador NSIS `...Setup 1.8.0.exe` + `dist-empaquetado/13-Lunas-offline-1.8.0.apk` (debug).
+- ❓ Guía in-app actualizada: textos de Hábitos/Respiración + “Tips & Novedades v1.8.0” (también se agregaron las entradas v1.5.0 y v1.7.0 que faltaban).
+
+---
+
+*Última actualización: 2026-10-12 (v1.8.0) — Mantener esta guía junto a `LEEME.txt`.*

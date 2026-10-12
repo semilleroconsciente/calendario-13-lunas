@@ -11,10 +11,10 @@
         <button type="button" id="breathTabLog" class="btn su-30e741">📓 Mi registro</button>
       </div>
       <div id="breathPracticePanel">
-        <div class="menstrual-card su-39553d">
-          <h4>🚀 Empieza en 60 segundos</h4>
+        <details class="menstrual-card su-39553d">
+          <summary class="su-8121e6">🚀 Empieza en 60 segundos</summary>
           <p class="muted su-616df7">1) Siéntate recto, pies en tierra, hombros sueltos. 2) Mano al vientre: debe inflarse al inhalar. 3) Inhala por <b>nariz</b>, exhala por <b>nariz o boca lenta</b>. 4) Si eres nuevo: parte con <b>🌱 2-4</b> o <b>🍃 4-6</b>.</p>
-        </div>
+        </details>
         <div class="conv-row su-7fed8e">
           <label class="su-4b3de7">Objetivo
             <select id="breathFilter">
@@ -37,8 +37,7 @@
           </label>
           <label class="check-row su-f1cc53"><input type="checkbox" id="breathSound" checked> 🔊 Sonido</label>
         </div>
-        <div class="breath-grid su-d2c171" id="breathGrid"></div>
-        <div class="menstrual-card su-24ea0a">
+        <div class="menstrual-card su-24ea0a" id="breathPlayer">
           <h4 id="breathTitle" class="su-e39eba">4-7-8 Respiración</h4>
           <p id="breathBadges" class="su-557d84"></p>
           <p id="breathDesc" class="muted su-6cb285">Ideal para el sueño y la ansiedad. Calma profunda.</p>
@@ -60,6 +59,8 @@
           </div>
           <p class="muted su-e6fe60">⚠️ Si te mareas, duele el pecho o te falta el aire: para, respira normal y prueba una más suave (2-4 / 4-6). No practiques conteniendo mucho aire en agua, manejando ni con embarazo/hipertensión descompensada sin guía.</p>
         </div>
+        <h4 class="su-5309c0">🧘 Elige tu técnica</h4>
+        <div class="breath-grid su-d2c171" id="breathGrid"></div>
       </div>
       <div id="breathLearnPanel" class="hidden">
         <div class="si-card"><h4>🫁 Base diafragmática (2 min)</h4><p>Mano derecha al pecho, izquierda al vientre. Al inhalar solo se mueve la izquierda. Prueba: 10 respiraciones 4-6 solo con guata. Si suben hombros, vas rápido: baja ritmo. Esto solo ya baja el estrés.</p></div>

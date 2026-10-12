@@ -787,7 +787,13 @@ body[data-theme="medianoche"] { --bg:#050508; --bg2:#0a0a10; --panel:#141418; --
 .golden-table th { background: var(--panel); color: var(--gold); font-size: 11px; }
 .golden-today { background: linear-gradient(135deg, var(--panel), var(--card)); border-color: var(--gold); }
 .habits-form { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 12px; display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
-.habit-icon-picker { display: flex; flex-wrap: wrap; gap: 6px; margin: 2px 0 6px; padding: 6px; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; max-height: 110px; overflow-y: auto; }
+.habit-icon-picker { display: flex; flex-direction: column; gap: 6px; margin: 2px 0 6px; padding: 8px; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; }
+.habit-picker-bar { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.habit-cat-select { flex: 1 1 160px; min-width: 140px; background: var(--bg2); border: 1px solid var(--line); color: var(--text); border-radius: 8px; padding: 6px 8px; font-size: 12px; }
+.habit-picker-count { font-size: 11px; flex: 1 1 100%; }
+.habit-toggle-icons { white-space: nowrap; font-size: 12px; }
+.habit-icon-grid { display: flex; flex-wrap: wrap; gap: 6px; max-height: 96px; overflow: hidden; }
+.habit-icon-picker.expanded .habit-icon-grid { max-height: 220px; overflow-y: auto; }
 .habit-icon-opt { width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; font-size: 18px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg2); cursor: pointer; transition: transform .1s, background .1s, border-color .1s; user-select: none; }
 .habit-icon-opt:hover { background: var(--card-hover); transform: translateY(-1px); }
 .habit-icon-opt.sel { background: var(--card-hover); border-color: var(--gold); outline: 2px solid var(--gold); }

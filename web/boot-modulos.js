@@ -21,6 +21,7 @@
     'min/ami-modulo.min.js?v=1',
     'min/vigyan-bhairav-modulo.min.js?v=1',
     'min/estoicismo-modulo.min.js?v=1',
+    'min/espiritu-modulo.min.js?v=1',
     'min/constelaciones-modulo.min.js?v=1',
     'min/metodo-silva-modulo.min.js?v=1',
     'min/grabovoi-modulo.min.js?v=1',

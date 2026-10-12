@@ -103,7 +103,7 @@ var GROUPS = [
   { id: 'adicciones', titulo: '🌱 Adicciones (seguimiento)', keys: ['adicciones'] },
   { id: 'adolescencia', titulo: '🌱 Adolescencia / Etapas de vida', keys: ['adolescencia', 'etapasVida'] },
   { id: 'eneagrama', titulo: '🔷 Eneagrama / Cuarto camino / VIA', keys: ['eneagrama', 'cuartoCamino', 'via'] },
-  { id: 'espiritual', titulo: '✨ Prácticas (ikigai, tao, tolteca, estoicismo...)', keys: ['ikigai', 'tao', 'tolteca', 'estoicismo', 'hooponopono', 'silva', 'grabovoi', 'vigyan', 'constel', 'kinMayaData', 'tarot', 'oraculo', 'matematicas'] },
+  { id: 'espiritual', titulo: '✨ Prácticas (ikigai, tao, tolteca, estoicismo...)', keys: ['ikigai', 'tao', 'tolteca', 'estoicismo', 'espiritu', 'hooponopono', 'silva', 'grabovoi', 'vigyan', 'constel', 'kinMayaData', 'tarot', 'oraculo', 'matematicas'] },
   { id: 'juegos', titulo: '♟️ Juegos (ajedrez, sudoku, crucigrama, sopa)', keys: ['ajedrezPartidas', 'ajedrezStats', 'sudokuHistory', 'sudokuCurrent', 'sudokuStats', 'cruciHistory', 'cruciCurrent', 'cruciStats', 'sopaHistory', 'sopaCurrent', 'sopaStats'] },
   { id: 'territorio', titulo: '🗺️ Territorio Penco (relatos, sectores, trueque...)', keys: ['pencoSectorRelatos', 'truequeLog', 'mingaLog', 'nudosMios', 'nudosPract', 'epewMios', 'fertiLog', 'fertiMeta', 'derechosLog', 'deberesCheck', 'rolesHogar', 'acuerdosFam', 'ritualesFam', 'voluntades', 'mapaAnioTxt', 'saberes', 'circulos', 'tesoros', 'nombresLunares', 'vozAbuelos', 'buenVivir', 'rutinaCfg'] },
   { id: 'penco-servicios', titulo: '🏛️ Penco servicios (muni, bomberos, iglesias...)', keys: ['muniPenco', 'bomberosPenco', 'iglesiasPenco', 'apoyoPenco', 'actores', 'negociosPenco', 'monedaSocial', 'talleresPenco'] }

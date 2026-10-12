@@ -154,7 +154,7 @@ function enSwitch(t) {
 }
 function barra(v, max, color) {
   var pc = Math.max(0, Math.min(100, (v / max) * 100));
-  return '<div style="background:var(--line,#333);border-radius:6px;height:8px;overflow:hidden" title="' + esc(String(v)) + '">' +
+  return '<div class="su-41190d" title="' + esc(String(v)) + '">' +
     '<div style="width:' + pc.toFixed(0) + '%;height:100%;background:' + color + '"></div></div>';
 }
 function enRender() {
@@ -267,7 +267,7 @@ function enRenderLunas() {
   });
   var tira = ult28.length
     ? '<div class="menstrual-card"><h4>📅 Últimos 28 días (' + ult28.length + ')</h4><p class="muted su-11a508">Cada bloque = 1 día (altura = energía 1–5 · color = ánimo).</p>' +
-      '<div style="display:flex;gap:3px;align-items:flex-end;flex-wrap:wrap">' +
+      '<div class="su-443263">' +
       ult28.map(function (r) {
         var h = 8 + (+r.energia || 3) * 7;
         var col = (+r.animo || 3) >= 4 ? '#a9d18e' : ((+r.animo || 3) <= 2 ? '#e76e8a' : '#ffd98a');

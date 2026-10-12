@@ -2,7 +2,7 @@
 // Copyright (C) 2026 Semillero Consciente. Licencia: GNU GPLv3 o posterior (ver COPYING).
 // SPDX-License-Identifier: GPL-3.0-or-later
 // v55
-const CACHE = 'cal13-v75-offline';
+const CACHE = 'cal13-v77-offline';
 
 // Lista completa de archivos que usa index.html (bare + con ?v=).
 // Si se agrega un JS nuevo en index.html, agregarlo aquí también (bare y ?v=).
@@ -183,6 +183,8 @@ const CORE = [
   './min/eneagrama-modulo.min.js?v=1',
   './min/energia-descanso-modulo.min.js',
   './min/energia-descanso-modulo.min.js?v=1',
+  './min/espiritu-modulo.min.js',
+  './min/espiritu-modulo.min.js?v=1',
   './min/estoicismo-modulo.min.js',
   './min/estoicismo-modulo.min.js?v=1',
   './min/etapas-vida-modulo.min.js',
