@@ -35,6 +35,7 @@
     'min/flora.min.js?v=1',
     'min/buen-vivir-modulo.min.js?v=1',
     'min/anfibios-modulo.min.js?v=1',
+    'min/fauna-marina-modulo.min.js?v=1',
     'min/semillero-guias.min.js?v=1',
     'min/ajedrez-modulo.min.js?v=1',
     'min/matematicas-modulo.min.js?v=1',

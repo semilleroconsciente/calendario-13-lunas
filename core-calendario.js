@@ -85,8 +85,45 @@ function renderCurrentView(){
 // Guía y Ajustes abren sus diálogos sin cambiar de sección.
 let mobileSec = null;
 function isMobileWidth(){
-  try{ return window.matchMedia('(max-width: 920px)').matches; }
-  catch(e){ return (window.innerWidth||9999) <= 920; }
+  try{
+    if(document.body && document.body.dataset.forceMobile==="1") return true;
+    return window.matchMedia('(max-width: 920px)').matches;
+  } catch(e){ return (window.innerWidth||9999) <= 920; }
+}
+function isForceMobile(){ try{ return document.body.dataset.forceMobile==="1"; }catch(e){ return false; } }
+function updateVistaCelularBtn(){
+  const b=$('btnVistaCelular');
+  if(!b) return;
+  const on=isForceMobile();
+  b.textContent = on ? '🖥️ Vista PC' : '📱 Vista celular';
+  b.title = on ? 'Volver a vista normal de PC' : 'Activar vista de celular en PC — emula pantalla de 390px en el centro';
+  b.classList.toggle('btn-accent', on);
+}
+function toggleForceMobile(){
+  const on=isForceMobile();
+  if(on){
+    document.body.removeAttribute('data-force-mobile');
+    try{ localStorage.setItem('cal13-forceMobile','0'); }catch(e){}
+    // al salir, si estábamos en vista móvil, volver a completa (todo visible)
+    try{ if(mobileSec){ mobileSec=null; viewMode='luna'; } }catch(e){}
+  } else {
+    document.body.dataset.forceMobile="1";
+    try{ localStorage.setItem('cal13-forceMobile','1'); }catch(e){}
+    try{ if(!mobileSec){ mobileSec='hoy'; viewMode='hoy'; } }catch(e){}
+  }
+  updateVistaCelularBtn();
+  try{ syncMobileViewAttr(); }catch(e){}
+  try{ paintMobileDock(); }catch(e){}
+  try{ renderCurrentView(); }catch(e){}
+}
+function setupVistaCelularBtn(){
+  const b=$('btnVistaCelular');
+  if(!b || b.dataset.bound) return;
+  b.dataset.bound="1";
+  b.onclick=toggleForceMobile;
+  try{ if(localStorage.getItem('cal13-forceMobile')==="1") document.body.dataset.forceMobile="1"; }catch(e){}
+  updateVistaCelularBtn();
+  try{ if(isForceMobile() && !mobileSec){ mobileSec='hoy'; viewMode='hoy'; } }catch(e){}
 }
 function syncMobileViewAttr(){
   try{
@@ -152,6 +189,14 @@ function setupMobileDock(){
   if(bG) bG.onclick=()=>showMobileView('guia');
   if(bC) bC.onclick=()=>showMobileView('conf');
   if(bF) bF.onclick=()=>showMobileView('completa');
+  try{ setupVistaCelularBtn(); }catch(e){}
+  // re-aplicar vista si venía forzada de sesión anterior
+  try{
+    if(isForceMobile()){
+      syncMobileViewAttr();
+      paintMobileDock();
+    }
+  }catch(e){}
 }
 function todayCellRef(){
   const info = todayInfo();

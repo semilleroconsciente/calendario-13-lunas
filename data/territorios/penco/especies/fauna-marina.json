@@ -1,0 +1,343 @@
+{
+  "intro": "La fauna marina de Penco —<b>bahía, roquerío y golfo</b>— se mira desde la orilla: ballenas de paso, delfines tras el cardumen, lobos en La Cata, chungungo escondido, pingüinos ocasionales y el vecindario de peces y pulpos. <b>Toca una especie para cargarla en tu bitácora.</b>",
+  "grupos": [
+    {
+      "clave": "cetaceos",
+      "ico": "🐋",
+      "t": "Cetáceos: ballenas y delfines",
+      "d": "De julio a noviembre mira soplos desde altura. El resto del año, delfines anuncian el pique.",
+      "items": [
+        {
+          "n": "Ballena franca austral",
+          "cient": "Eubalaena australis",
+          "ico": "🐋",
+          "temp": "Jul–Nov (pico ago–oct)",
+          "hab": "Golfo y boca de la bahía",
+          "estado": "Preocupación menor",
+          "nota": "Lomo negro sin aleta dorsal, callosidades blancas, soplo en V. La más vista desde costa. Anota hora, rumbo y si hay cría."
+        },
+        {
+          "n": "Ballena jorobada",
+          "cient": "Megaptera novaeangliae",
+          "ico": "🐋",
+          "temp": "Paso ocasional (verano–otoño)",
+          "hab": "Mar abierto del Golfo",
+          "estado": "Preocupación menor",
+          "nota": "Salto y cola blanca por debajo: la foto de cola es su huella. Registro escaso pero posible."
+        },
+        {
+          "n": "Calderón / Ballena piloto",
+          "cient": "Globicephala melas",
+          "ico": "🐋",
+          "temp": "Otoño–primavera (grupos)",
+          "hab": "Borde costero y bahía",
+          "estado": "Preocupación menor",
+          "nota": "Grupos grandes de aleta curva que siguen al jurel. Nunca rodear con kayak o bote."
+        },
+        {
+          "n": "Delfín austral",
+          "cient": "Lagenorhynchus australis",
+          "ico": "🐬",
+          "temp": "Todo el año",
+          "hab": "Bahía Concepción",
+          "estado": "Preocupación menor",
+          "nota": "Grupos chicos y veloces tras cardúmenes. Si los ves, avisa a 🎣 Pesca: hay pique."
+        },
+        {
+          "n": "Delfín chileno / Tonina",
+          "cient": "Cephalorhynchus eutropia",
+          "ico": "🐬",
+          "temp": "Todo el año",
+          "hab": "Orilla y desembocaduras",
+          "estado": "Casi amenazado",
+          "nota": "Endémico de Chile, chico y de aleta redonda. Vive pegado a la costa: botes despacio donde ande."
+        },
+        {
+          "n": "Marsopa espinosa",
+          "cient": "Phocoena spinipinnis",
+          "ico": "🐬",
+          "temp": "Todo el año (difícil)",
+          "hab": "Aguas costeras turbias",
+          "estado": "Casi amenazado",
+          "nota": "Chica, oscura y tímida: apenas un lomo que rueda. Verla bien es premio de mar calmo."
+        },
+        {
+          "n": "Orca",
+          "cient": "Orcinus orca",
+          "ico": "🐋",
+          "temp": "Ocasional",
+          "hab": "Golfo abierto",
+          "estado": "Datos insuficientes",
+          "nota": "Aleta alta y mancha blanca. Paso raro frente a Tumbes–Quiriquina. Distancia máxima y sin perseguir."
+        }
+      ]
+    },
+    {
+      "clave": "lobos",
+      "ico": "🦭",
+      "t": "Lobos y chungungo: los de la roca",
+      "d": "Se miran con binoculares desde arriba. Nunca en medio de la lobería.",
+      "items": [
+        {
+          "n": "Lobo marino común",
+          "cient": "Otaria flavescens",
+          "ico": "🦭",
+          "temp": "Todo el año",
+          "hab": "Rocas La Cata, Tumbes, Quiriquina",
+          "estado": "Preocupación menor",
+          "nota": "Macho de melena hasta 300 kg. No alimentar ni acercarse a crías. Herido o enredado: Sernapesca 800 320 032."
+        },
+        {
+          "n": "Lobo fino austral",
+          "cient": "Arctocephalus australis",
+          "ico": "🦭",
+          "temp": "Otoño–invierno",
+          "hab": "Roqueríos expuestos",
+          "estado": "Preocupación menor",
+          "nota": "Más chico y peludo, hocico corto. Descansa entre cochayuyo: si duerme, no lo despiertes por la foto."
+        },
+        {
+          "n": "Chungungo",
+          "cient": "Lontra felina",
+          "ico": "🦦",
+          "temp": "Todo el año (amanecer)",
+          "hab": "Roquerío Playa Negra–La Cata",
+          "estado": "En Peligro",
+          "nota": "La nutria marina más pequeña del mundo vive aquí. Solitario, come jaibas y piure entre olas. Perros con correa: un ataque lo mata."
+        }
+      ]
+    },
+    {
+      "clave": "avesmar",
+      "ico": "🐧",
+      "t": "Pingüinos y aves marinas",
+      "d": "Puente con 🦅 Aves: las de mar abierto se anotan aquí y allá.",
+      "items": [
+        {
+          "n": "Pingüino de Humboldt",
+          "cient": "Spheniscus humboldti",
+          "ico": "🐧",
+          "temp": "Invierno–primavera",
+          "hab": "Golfo, Playa Negra, Lirquén",
+          "estado": "Vulnerable",
+          "nota": "Ocasional. En playa: 50 m de distancia, perros lejos, avisa a SAG/Sernapesca. No lo devuelvas al agua tú."
+        },
+        {
+          "n": "Pingüino de Magallanes",
+          "cient": "Spheniscus magellanicus",
+          "ico": "🐧",
+          "temp": "Paso austral (otoño)",
+          "hab": "Mar abierto y bahía",
+          "estado": "Casi amenazado",
+          "nota": "De paso migratorio. Igual protocolo que Humboldt: mirar, anotar, avisar."
+        },
+        {
+          "n": "Yeco / Cormorán",
+          "cient": "Phalacrocorax spp.",
+          "ico": "🐦",
+          "temp": "Todo el año",
+          "hab": "Roqueríos y boyas",
+          "estado": "Común",
+          "nota": "Seca las alas abierto al viento. Pesca donde él pesca (pero a tu escala y con medida)."
+        },
+        {
+          "n": "Piquero",
+          "cient": "Sula variegata",
+          "ico": "🐦",
+          "temp": "Primavera–verano",
+          "hab": "Puntas y mar abierto",
+          "estado": "Preocupación menor",
+          "nota": "Clavado vertical tras anchoveta. Lluvia de piqueros = cardumen abajo = delfines cerca."
+        },
+        {
+          "n": "Pelícano",
+          "cient": "Pelecanus thagus",
+          "ico": "🐦",
+          "temp": "Todo el año",
+          "hab": "Caletas y orilla",
+          "estado": "Casi amenazado",
+          "nota": "Patrullero de caleta. No le des restos de carnada con anzuelos: lo enredan."
+        }
+      ]
+    },
+    {
+      "clave": "tortugas",
+      "ico": "🐢",
+      "t": "Tortugas y visitantes cálidos",
+      "d": "Llegan con aguas cálidas o corrientes. Todo encuentro se avisa.",
+      "items": [
+        {
+          "n": "Tortuga verde",
+          "cient": "Chelonia mydas",
+          "ico": "🐢",
+          "temp": "Ocasional (aguas cálidas)",
+          "hab": "Bahía y golfo",
+          "estado": "En Peligro",
+          "nota": "Si la ves flotando o varada: no la toques, foto a distancia y avisa a Sernapesca/SAG. Anota punto exacto."
+        },
+        {
+          "n": "Tortuga olivácea",
+          "cient": "Lepidochelys olivacea",
+          "ico": "🐢",
+          "temp": "Ocasional",
+          "hab": "Mar abierto",
+          "estado": "Vulnerable",
+          "nota": "Más chica y de paso. Mismo protocolo: distancia + aviso. Nunca “devolverla” sin indicación oficial."
+        },
+        {
+          "n": "Pez luna",
+          "cient": "Mola mola",
+          "ico": "🐟",
+          "temp": "Ocasional (verano)",
+          "hab": "Mar abierto",
+          "estado": "Vulnerable",
+          "nota": "Rueda gigante tomando sol de lado. Parece varado pero suele estar sano: observa y anota."
+        }
+      ]
+    },
+    {
+      "clave": "peces",
+      "ico": "🐟",
+      "t": "Peces de orilla y roca",
+      "d": "Puente con 🎣 Pesca: aquí se observan, allá se registran las capturas con veda y talla.",
+      "items": [
+        {
+          "n": "Corvina",
+          "cient": "Cilus gilberti",
+          "ico": "🐟",
+          "temp": "Primavera–verano",
+          "hab": "Orilla arenosa",
+          "estado": "Vulnerable",
+          "nota": "La reina de la orilla. Talla mínima y veda: verifica en Sernapesca antes de pescar."
+        },
+        {
+          "n": "Robalo",
+          "cient": "Eleginops maclovinus",
+          "ico": "🐟",
+          "temp": "Todo el año",
+          "hab": "Desembocaduras y estero",
+          "estado": "Común",
+          "nota": "Entra al estero Penco con la pleamar. El de orilla se devuelve chico."
+        },
+        {
+          "n": "Pejerrey de mar",
+          "cient": "Odontesthes regia",
+          "ico": "🐟",
+          "temp": "Primavera–otoño",
+          "hab": "Orilla y muelles",
+          "estado": "Común",
+          "nota": "Cardumen de amanecer. Buen indicador: donde come pejerrey, caza el róbalo."
+        },
+        {
+          "n": "Congrio colorado",
+          "cient": "Genypterus chilensis",
+          "ico": "🐟",
+          "temp": "Otoño–invierno",
+          "hab": "Fondos rocosos",
+          "estado": "Vulnerable",
+          "nota": "De cueva y noche. Veda de invierno: respétala, es su reproducción."
+        },
+        {
+          "n": "Jurel",
+          "cient": "Trachurus murphyi",
+          "ico": "🐟",
+          "temp": "Primavera–verano",
+          "hab": "Bahía y golfo",
+          "estado": "Común",
+          "nota": "Cardumen que mueve a delfines, piqueros y caletas. Lleva solo lo justo."
+        },
+        {
+          "n": "Sierra",
+          "cient": "Thyrsites atun",
+          "ico": "🐟",
+          "temp": "Verano–otoño",
+          "hab": "Golfo",
+          "estado": "Común",
+          "nota": "Rápida y dentada. De cuchara desde orilla al atardecer."
+        },
+        {
+          "n": "Lenguado",
+          "cient": "Paralichthys spp.",
+          "ico": "🐟",
+          "temp": "Primavera–verano",
+          "hab": "Fondos arenosos",
+          "estado": "Común",
+          "nota": "Plano y maestro del camuflaje. Pejerrey vivo o señuelo lento sobre arena."
+        },
+        {
+          "n": "Pejesapo / Chalaco",
+          "cient": "Gobiesox marmoratus",
+          "ico": "🐟",
+          "temp": "Todo el año",
+          "hab": "Pozas intermareales",
+          "estado": "Común",
+          "nota": "El cabezón de la poza que se pega a la roca. Solo foto: vuelve a su poza."
+        }
+      ]
+    },
+    {
+      "clave": "invertebrados",
+      "ico": "🐙",
+      "t": "Invertebrados emblema",
+      "d": "Puente con 🦀 Intermareal: aquí el encuentro, allá la cosecha con medida.",
+      "items": [
+        {
+          "n": "Pulpo del sur",
+          "cient": "Enteroctopus megalocyathus",
+          "ico": "🐙",
+          "temp": "Todo el año",
+          "hab": "Cuevas y grietas",
+          "estado": "Común",
+          "nota": "Nocturno e inteligente. Si lo ves de día en poza, déjalo: está descansando. Nunca sacarlo de su cueva."
+        },
+        {
+          "n": "Jibia",
+          "cient": "Dosidicus gigas",
+          "ico": "🦑",
+          "temp": "Verano–otoño",
+          "hab": "Mar abierto y orilla",
+          "estado": "Común",
+          "nota": "Varazones ocasionales. No consumir varadas sin aviso sanitario (marea roja / contaminación)."
+        },
+        {
+          "n": "Jaiba mora",
+          "cient": "Homalaspis plana",
+          "ico": "🦀",
+          "temp": "Sep–Mar",
+          "hab": "Pozas, bajo piedras",
+          "estado": "Común",
+          "nota": "Hembras con huevos no se toman. Talla 12 cm. Devuelve chicas y deja la piedra igual."
+        },
+        {
+          "n": "Loco",
+          "cient": "Concholepas concholepas",
+          "ico": "🐚",
+          "temp": "Veda / AMERB",
+          "hab": "Roquerío bajo",
+          "estado": "Vulnerable",
+          "nota": "Solo en áreas de manejo y con autorización. En poza común: foto y registro, no extracción."
+        },
+        {
+          "n": "Erizo rojo",
+          "cient": "Loxechinus albus",
+          "ico": "🟣",
+          "temp": "Veda variable",
+          "hab": "Roquerío bajo",
+          "estado": "Vulnerable",
+          "nota": "Veda frecuente: consulta Sernapesca antes. No en luna llena (desove)."
+        },
+        {
+          "n": "Estrella de mar",
+          "cient": "Stichaster striatus",
+          "ico": "⭐",
+          "temp": "Todo el año",
+          "hab": "Pozas, rocas bajas",
+          "estado": "Común",
+          "nota": "No tocar ni sacar del agua. Indicadora de poza sana: cuéntalas, no las lleves."
+        }
+      ]
+    }
+  ],
+  "nota": "¿Viste conteo, rumbo o conducta? Anótalo en 📓 Bitácora con mar y viento: es ciencia ciudadana del golfo.",
+  "cierre": "Mirar sin perseguir es cuidar: 100 m a ballenas, 50 m a pingüinos, fuera de la lobería y perros con correa."
+}

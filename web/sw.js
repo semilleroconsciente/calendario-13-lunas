@@ -2,7 +2,7 @@
 // Copyright (C) 2026 Semillero Consciente. Licencia: GNU GPLv3 o posterior (ver COPYING).
 // SPDX-License-Identifier: GPL-3.0-or-later
 // v55
-const CACHE = 'cal13-v77-offline';
+const CACHE = 'cal13-v78-offline';
 
 // Lista completa de archivos que usa index.html (bare + con ?v=).
 // Si se agrega un JS nuevo en index.html, agregarlo aquí también (bare y ?v=).
@@ -27,6 +27,7 @@ const CORE = [
   './data/territorios/penco/cultivos/preparados.json',
   './data/territorios/penco/especies/aves.json',
   './data/territorios/penco/especies/bosque.json',
+  './data/territorios/penco/especies/fauna-marina.json',
   './data/territorios/penco/especies/flora.json',
   './data/territorios/penco/especies/intermareal.json',
   './data/territorios/penco/eventos.json',
@@ -35,6 +36,7 @@ const CORE = [
   './data/territorios/penco/historia/guia.json',
   './data/territorios/penco/historia/historia-aves.json',
   './data/territorios/penco/historia/historia-bosque.json',
+  './data/territorios/penco/historia/historia-fauna-marina.json',
   './data/territorios/penco/historia/historia-pesca.json',
   './data/territorios/penco/historia/historia.json',
   './data/territorios/penco/historia/sectores.json',
@@ -189,6 +191,8 @@ const CORE = [
   './min/estoicismo-modulo.min.js?v=1',
   './min/etapas-vida-modulo.min.js',
   './min/etapas-vida-modulo.min.js?v=1',
+  './min/fauna-marina-modulo.min.js',
+  './min/fauna-marina-modulo.min.js?v=1',
   './min/feng-shui-modulo.min.js',
   './min/feng-shui-modulo.min.js?v=1',
   './min/finanzas-negocio-modulo.min.js',

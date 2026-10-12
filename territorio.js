@@ -11,7 +11,8 @@
      especies/aves.json | bosque.json | intermareal.json | flora.json
      historia/historia.json | sectores.json | guia.json
      historia/historia-bosque.json | companeros-bosque.json
-     historia/aves-bosque.json | historia-aves.json | historia-pesca.json
+      historia/aves-bosque.json | historia-aves.json | historia-pesca.json
+       historia/historia-fauna-marina.json | especies/fauna-marina.json
       eventos.json | cultivos/asociaciones.json | cultivos/preparados.json
       talleres.json | consejos-bosque.json | municipalidad.json
       bomberos.json | apoyo-emergencia.json | actores.json
@@ -182,6 +183,8 @@ async function cargarTerritorio(id) {
   var avesBosque = await opt('historia/aves-bosque.json');
   var histAves = await opt('historia/historia-aves.json');
   var histPesca = await opt('historia/historia-pesca.json');
+  var faunaMarina = await opt('especies/fauna-marina.json');
+  var histFauna = await opt('historia/historia-fauna-marina.json');
   var eventos = await opt('eventos.json');
   var asoc = await opt('cultivos/asociaciones.json');
   var prep = await opt('cultivos/preparados.json');
@@ -253,6 +256,8 @@ async function cargarTerritorio(id) {
     avesBosque: avesBosque || null,
     historiaAves: histAves || null,
     historiaPesca: histPesca || null,
+    faunaMarina: faunaMarina || null,
+    historiaFaunaMarina: histFauna || null,
     eventosComuna: EVENTOS_COMUNA,
     eventosAstronomicos: EVENTOS_ASTRO,
     asociaciones: ASOC,
@@ -354,7 +359,10 @@ api.listo = cargarTerritorio(idInicial).then(function (T) {
       consejosBosque: fb.CONSEJOS_BOSQUE,
       flora: null, guia: null, sectores: null, historia: null,
       historiaBosque: null, companerosBosque: null, avesBosque: null,
-      historiaAves: null, historiaPesca: null,
+      historiaAves: null,
+      historiaPesca: null,
+      faunaMarina: null,
+      historiaFaunaMarina: null,
       eventosComuna: fb.EVENTOS_COMUNA_PENCO,
       eventosAstronomicos: fb.EVENTOS_ASTRONOMICOS,
       asociaciones: fb.ASOCIACIONES_CULTIVOS,

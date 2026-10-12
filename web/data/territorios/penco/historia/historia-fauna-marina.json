@@ -1,0 +1,120 @@
+{
+  "intro": "La fauna marina de Penco —del <b>mar cretácico de Quiriquina</b> al <b>golfo vivo de hoy</b>— en <b>10 periodos</b>. La historia completa vive aquí; toca una especie para cargarla en tu bitácora.",
+  "eras": [
+    {
+      "t": "🦕 Mar de Quiriquina: el golfo originario",
+      "cuando": "Cretácico Superior (72–66 Ma) · Formación Quiriquina",
+      "d": "Todo Penco era <b>mar profundo</b>: el plesiosaurio <b>Aristonectes quiriquinensis (9 m)</b>, <b>mosasaurios</b>, tortugas <b>Osteopygis y Euclastes</b> y el ave <b>Neogaeornis</b>, con <b>amonites gigantes y Neilo pencana</b>. El golfo de hoy es el nieto de ese mar.",
+      "sp": [
+        "Ballena franca austral",
+        "Congrio colorado",
+        "Jurel"
+      ]
+    },
+    {
+      "t": "🌿 Delta sin bahía: se cocina la despensa",
+      "cuando": "Paleoceno–Eoceno (~60–40 Ma) · Formación Cosmito",
+      "d": "El mar se retira y la costa es <b>delta pantanoso</b>: ríos trenzados llevan nutrientes al futuro golfo. Se prepara la <b>despensa</b> (sardina, anchoveta, jurel) que alimentará a ballenas, delfines y lobos millones de años después.",
+      "sp": [
+        "Pejerrey de mar",
+        "Robalo",
+        "Delfín austral"
+      ]
+    },
+    {
+      "t": "❄️ Nace la bahía: mar interior abrigado",
+      "cuando": "Pleistoceno – Holoceno Medio (~2 Ma – 6.000 a.p.)",
+      "d": "El <b>río Biobío desembocaba dentro de la bahía</b> y la transgresión la inunda: terrazas, marismas e <b>isla Rocuant</b>. <b>Hualpén y Tumbes eran islas</b>: costa recortada ideal para <b>lobos, chungungos y delfines costeros</b>. Nace el escenario de toda la fauna penqueña.",
+      "sp": [
+        "Lobo marino común",
+        "Chungungo",
+        "Delfín chileno / Tonina",
+        "Pelícano"
+      ]
+    },
+    {
+      "t": "🛶 Primeros navegantes: caza con medida",
+      "cuando": "Arcaico (7.000–2.000 a.p.) · Bellavista 1, Playa Negra 9",
+      "d": "Más de <b>30 conchales</b> rodean la bahía. Pescadores sedentarios con <b>corrales de piedra y navegación a Quiriquina</b>: pesca de <b>jurel, sierra, merluza y róbalo</b>, caza de <b>lobo marino</b> y marisqueo de loco, lapa y choro. Uso estacional, sin arrasar.",
+      "sp": [
+        "Lobo marino común",
+        "Jurel",
+        "Sierra",
+        "Loco",
+        "Erizo rojo"
+      ]
+    },
+    {
+      "t": "🏺 Mundo lafkenche: gente del mar",
+      "cuando": "130 d.C. – 1550 · Pitrén / El Vergel",
+      "d": "Territorio <b>ayllarewe lafkenche</b>: la fauna se ordena por <b>luna y estación</b>. <b>Corvina y robalo</b> en orilla, <b>cochayuyo y chorito</b> en roquerío, <b>lobo</b> cazado con respeto y trueque con el interior. El mar es pariente, no bodega.",
+      "sp": [
+        "Corvina",
+        "Robalo",
+        "Lobo marino común",
+        "Chungungo"
+      ]
+    },
+    {
+      "t": "⛵ Colonia: puerto y despensa",
+      "cuando": "1550–1800 · Concepción en Penco + traslado 1751",
+      "d": "La bahía se vuelve <b>puerto y despensa</b> de Concepción. Pesca de orilla para consumo, pescado seco por trigo. El <b>terremoto-maremoto de 1751</b> vacía Penco 90 años: lobos y aves recuperan borde donde hubo ciudad.",
+      "sp": [
+        "Corvina",
+        "Congrio colorado",
+        "Sierra",
+        "Yeco / Cormorán"
+      ]
+    },
+    {
+      "t": "🐋 Siglo XIX: balleneros en el Golfo",
+      "cuando": "1800–1900 · carbón, cobre y vela",
+      "d": "En el <b>Golfo de Arauco faenan balleneros</b> (franca y jorobada en su ruta). Caletas a remo y vela (<b>Lirquén ~1850</b>), espinel y trasmallo. Minas y fundición traen más bocas: la presión sobre orilla y roquerío crece por primera vez.",
+      "sp": [
+        "Ballena franca austral",
+        "Ballena jorobada",
+        "Sierra",
+        "Congrio colorado",
+        "Lenguado"
+      ]
+    },
+    {
+      "t": "🏭 Siglo XX: industria, vedas y protección",
+      "cuando": "1900–2000 · puerto, motor y Sernapesca",
+      "d": "Pesca industrial (jurel, merluza, sardina) cambia la escala. La artesanal resiste con <b>bote a motor y buceo apnea</b>. Llegan <b>vedas y tallas</b>, vigilancia de <b>marea roja</b> y en 1996 la <b>Ley de Caza protege</b> lobos, chungungo y aves marinas. Terremotos del 39 y 60 golpean caletas.",
+      "sp": [
+        "Jurel",
+        "Lobo marino común",
+        "Chungungo",
+        "Pingüino de Humboldt",
+        "Erizo rojo",
+        "Loco"
+      ]
+    },
+    {
+      "t": "⚓ Hoy: golfo vivo y observar para cuidar",
+      "cuando": "2000 – actualidad · 27F + San Pedro 29-jun",
+      "d": "La <b>franca austral vuelve a mostrarse (jul–nov)</b>, delfines siguen cardúmenes a la bahía y el <b>chungungo resiste en Playa Negra–La Cata</b>. El <b>27F (2010)</b> remodeló el borde. El desafío: <b>mirar sin perseguir</b>, respetar vedas y avisar varamientos. Tu bitácora suma: fecha, lugar, mar y conducta.",
+      "sp": [
+        "Ballena franca austral",
+        "Delfín austral",
+        "Chungungo",
+        "Pingüino de Humboldt",
+        "Pulpo del sur",
+        "Corvina"
+      ]
+    },
+    {
+      "t": "🌙 Mañana: el golfo que queremos",
+      "cuando": "Próximas lunas · compromiso",
+      "d": "Un golfo con <b>ballenas de paso, lobos en su roca, chungungo sin perros sueltos y pozas con estrellas</b> depende de lo que hagamos en cada salida: basura de vuelta, nada de “recuerdos vivos”, denuncias a Sernapesca y caleta viva. <b>Cada avistamiento anotado es un voto por ese golfo.</b>",
+      "sp": [
+        "Ballena franca austral",
+        "Chungungo",
+        "Estrella de mar",
+        "Lobo fino austral"
+      ]
+    }
+  ],
+  "fuentes": "Fuentes: HISTORIA_PENCO (Quiriquina-Neogaeornis, bahía, conchales, caletas) · Bustos y Vergara 2004 · Fiesta de San Pedro 29-jun · Sernapesca vedas/tallas/marea roja · SHOA mareas · Ley de Caza 19.473 · saberes caleta Lirquén · catálogos Pesca, Intermareal, Aves y Ballenas de esta app."
+}

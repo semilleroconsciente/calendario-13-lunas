@@ -59,13 +59,13 @@ var HISTORIA_BOSQUE = {
     },
     {
       t: '❄️ Hielos, refugio y terrazas', cuando: 'Pleistoceno – Holoceno Medio (~2 Ma – 6.000 a.p.)',
-      d: 'Vienen los hielos, pero la <b>Cordillera de la Costa no se glacia</b>: con lluvias del Pacífico se vuelve <b>refugio glacial</b> (genética en <b>Nothofagus y Proteaceae, Premoli et al. 2019</b>; polen de Villagrán). Sobreviven <b>keule, olivillo, lingue, avellano y robles</b>. Se forman las <b>terrazas de 5 m y 2 m</b>, limos del Andalién y dunas: el piso donde el bosque y el hombre se encontrarán. El MMA describe aquí el ecosistema <b>“Bosque caducifolio costero de Nothofagus obliqua – Gomortega keule”</b>.',
+      d: 'Vienen los hielos, pero la <b>Cordillera de la Costa no se glacia</b>: con lluvias del Pacífico se vuelve <b>refugio glacial</b> (genética en <b>Nothofagus y Proteaceae, Premoli et al. 2019</b>; polen de Villagrán). Sobreviven <b>keule, olivillo, lingue, avellano y robles</b>. Su fruto —<b>drupa amarilla de 3,5–5 cm y 20–40 g, con cuesco leñoso durísimo</b>— es un <b>fruto megafaunal anacrónico Tipo 1</b> (Muñoz-Concha et al. 2020, <i>Plants</i>): evolucionó para ser tragado entero y dispersado a kilómetros por la <b>megafauna del Pleistoceno — gonfoterios (<i>Notiomastodon/Stegomastodon platensis</i>), caballos nativos (<i>Equidae</i>) y perezosos terrestres gigantes (<i>Mylodontidae</i>)</b> y cérvidos grandes. Extintos hace ~11–12 mil años, hoy el fruto cae y se pudre al pie del árbol. Se forman las <b>terrazas de 5 m y 2 m</b>, limos del Andalién y dunas: el piso donde el bosque y el hombre se encontrarán. El MMA describe aquí el ecosistema <b>“Bosque caducifolio costero de Nothofagus obliqua – Gomortega keule”</b>.',
       sp: [
         { n: 'Keule', cat: true }, { n: 'Canelo', cat: true }, { n: 'Avellano', cat: true },
         { n: 'Lingue', cat: true }, { n: 'Arrayán', cat: true }, { n: 'Peumo', cat: true },
         { n: 'Roble / Hualo (Nothofagus)', cat: false }, { n: 'Olivillo', cat: false }
       ],
-      hoy: 'El <b>keule</b> es único en su género y familia (endémico Maule–Biobío). El sitio <b>“Queule del Estero Bellavista”</b> recuerda que estos linajes viven —o vivieron— en Penco.'
+      hoy: 'El <b>keule</b> es único en su género y familia (endémico Maule–Biobío). Sin sus dispersores originales sufre <b>anacronismo de dispersión</b>: el <b>pudú (<i>Pudu puda</i>, 8–10 kg) solo mordisquea la pulpa sin tragar el cuesco</b>, roedores nativos no lo mueven a distancia y la <b>rata negra (<i>Rattus rattus</i>)</b> lo depreda (Barceló & Simonetti 2020). Eso explica su <b>alta diferenciación genética entre poblaciones a pocos km</b> y su persistencia por <b>rebrote vegetativo de raíz</b> (Lander et al. 2019). El sitio <b>“Queule del Estero Bellavista”</b> recuerda que estos linajes viven —o vivieron— en Penco.'
     },
     {
       t: '🛶 Primeros navegantes: leña del conchal', cuando: 'Arcaico Medio–Tardío (7.000–2.000 a.p.) · Bellavista 1, Playa Negra 9',
@@ -118,7 +118,7 @@ var HISTORIA_BOSQUE = {
     },
     {
       t: '🌱 Hoy: relictos y restauración', cuando: '2000 – actualidad · 27F, humedal Rocuant, semillero',
-      d: 'Quedan <b>relictos</b> que piden cuidado urgente: <b>keule en peligro</b> (Monumento Natural desde 1995), <b>lingue y naranjillo vulnerables</b>, <b>trihue muy escaso</b> en Penco y <b>copihue protegido por ley</b>. El <b>27F (2010)</b> recordó que el bosque de quebrada también afirma laderas. Restaurar es posible: planta <b>peumo, quillay, boldo, canelo, arrayán, maitén y avellano</b> en Pukem con lluvia, guarda semilla <b>con medida</b>, y en otoño disfruta los <b>hongos</b> (loyo, changle) sin arrancar el micelio.',
+      d: 'Quedan <b>relictos</b> que piden cuidado urgente: <b>keule en peligro</b> (Monumento Natural desde 1995), <b>lingue y naranjillo vulnerables</b>, <b>trihue muy escaso</b> en Penco y <b>copihue protegido por ley</b>. El <b>27F (2010)</b> recordó que el bosque de quebrada también afirma laderas. El keule es el caso emblemático de <b>fruto huérfano</b>: sin gonfoterios ni caballos nativos que lo dispersaran, hoy su drupa cae bajo el árbol y se pudre; el ganado (vaca/cerdo/caballo) a veces lo traga pero suele <b>dañar el cuesco al masticar y baja la germinación</b> —no reemplaza al dispersor extinto (Muñoz-Concha et al. 2020)— por lo que casi no hay plántulas y persiste por <b>rebrote</b> (Lander et al. 2019). Restaurar es posible: planta <b>peumo, quillay, boldo, canelo, arrayán, maitén y avellano</b> en Pukem con lluvia, guarda semilla <b>con medida</b>, y en otoño disfruta los <b>hongos</b> (loyo, changle) sin arrancar el micelio. Observa keule, no recolectes sin permiso CONAF.',
       sp: [
         { n: 'Keule', cat: true }, { n: 'Lingue', cat: true }, { n: 'Naranjillo', cat: true },
         { n: 'Trihue / Laurel', cat: true }, { n: 'Copihue', cat: true }, { n: 'Peumo', cat: true },
@@ -126,10 +126,10 @@ var HISTORIA_BOSQUE = {
         { n: 'Arrayán', cat: true }, { n: 'Avellano', cat: true }, { n: 'Maitén', cat: true },
         { n: 'Maqui', cat: true }, { n: 'Lloyin / Hongos', cat: true }, { n: 'Chupalla', cat: true }
       ],
-      hoy: 'Toca una especie del catálogo para cargarla en tu bitácora: observa, planta o recolecta semilla <b>con medida</b>.'
+      hoy: 'Sin megafauna, el keule no viaja: si ves fruto en el suelo, foto y bitácora, <b>no te lleves el cuesco</b> (Monumento Natural). Toca una especie del catálogo para cargarla en tu bitácora.'
     }
   ],
-  fuentes: 'Fuentes: HISTORIA_PENCO (basamento, Quiriquina, Cosmito, refugio) · Premoli et al. 2019 (refugios Costa) · MMA-SIMBIO (N. obliqua–G. keule; Queule En Peligro) · Bustos y Vergara 2004 (conchales) · Ley 20.283 Bosque Nativo · catálogo BOSQUE_NATIVO_PENCO de esta app.'
+  fuentes: 'Fuentes: HISTORIA_PENCO (basamento, Quiriquina, Cosmito, refugio) · Premoli et al. 2019 (refugios Costa) · Muñoz-Concha et al. 2020 <i>Plants</i> 9:1492 (fruto megafaunal anacrónico, gonfoterio/equidos/milodóntidos) · Lander et al. 2019 (clones y dispersión) · Barceló & Simonetti 2020 NZ J. Bot. (Rattus rattus depredador) · MMA-SIMBIO (N. obliqua–G. keule; Queule En Peligro) · Bustos y Vergara 2004 (conchales) · Ley 20.283 Bosque Nativo · catálogo BOSQUE_NATIVO_PENCO de esta app.'
 };
 
 function chip(sp) {

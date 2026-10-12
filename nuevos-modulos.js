@@ -343,7 +343,7 @@ function injectButtons() {
 }
 
 /* ---------- orden Territorio: Costa y mar, Huerta/tierra/bosque (+Fenología), Cielo y ritmo natural, Comuna y servicios ---------- */
-var ORDEN_TERRITORIO = ['btnTides','btnFishing','btnIntermareal','btnNudos','btnKayak','btnBallenas','btnHuerta','btnSiembra','btnBosque','btnCompost','btnAgua','btnHidroponia','btnElectrocultura','btnFlora','btnLawen','btnBirds','btnAnfibios','btnMeli','btnHongos','btnSenderos','btnFuego','btnFenologia','btnWeather','btnAstro','btnGolden','btnCircadian','btnEkadashi','btnComuna'];
+var ORDEN_TERRITORIO = ['btnTides','btnFishing','btnIntermareal','btnNudos','btnKayak','btnBallenas','btnFaunaMarina','btnHuerta','btnSiembra','btnBosque','btnCompost','btnAgua','btnHidroponia','btnElectrocultura','btnFlora','btnLawen','btnBirds','btnAnfibios','btnMeli','btnHongos','btnSenderos','btnFuego','btnFenologia','btnWeather','btnAstro','btnGolden','btnCircadian','btnEkadashi','btnComuna'];
 function ordenarTerritorio() {
   var g = document.querySelector('.action-group[data-group="territorio"] .group-btns');
   if (!g) return;
