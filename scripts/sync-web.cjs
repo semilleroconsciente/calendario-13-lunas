@@ -20,6 +20,29 @@ const FIX = process.argv.includes('--fix');
 const SKIP_DIRS = new Set(['.git', 'node_modules', 'dist-empaquetado', 'android', '.vscode']);
 const SKIP_FILES = new Set(['donate.json']);
 
+// Deploy slim: un .js raíz con gemelo min/ REFERENCIADO (solo vía min/) no se
+// despliega en web/ ni va en build.files (ver scripts/slim-files.cjs para
+// package.json). Ahorra ~5 MB en portable/APK. Sin fallback: un .min ausente
+// rompe igual que un .js ausente (lo cubren check:min + smoke + manifest).
+function refsUsanMin() {
+  try {
+    const idx = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
+    const boot = fs.readFileSync(path.join(ROOT, 'boot-modulos.js'), 'utf8');
+    return idx + '\n' + boot;
+  } catch { return ''; }
+}
+const REFS = refsUsanMin();
+function esSlim(f) {
+  if (f.includes('/')) return false;
+  const m = f.match(/\.(js|css)$/);
+  if (!m) return false;
+  const gemelo = 'min/' + f.replace(/\.(js|css)$/, '.min.$1');
+  if (!fs.existsSync(path.join(ROOT, gemelo))) return false;
+  // Bare referenciado (src="F.js / 'F.js / href="F.css)? Entonces NO es slim.
+  const base = f.replace(/\./g, '\\.');
+  return !new RegExp(`["']${base}\\?v=\\d`).test(REFS);
+}
+
 function walk(dir, base) {
   const out = [];
   for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
@@ -66,11 +89,33 @@ const needInWeb = rootOnly.filter((f) => {
   // screenshots/*.png del manifest (capturas reales, ver captura-screenshots).
   if (f.startsWith('screenshots/') && f.endsWith('.png')) return true;
   if (f.includes('/')) return false;
+  // Slim: fuente con gemelo min/ referenciado no viaja a web/.
+  if (esSlim(f)) return false;
   return WEB_EXT.includes(path.extname(f));
 });
 
+// Poda slim: espejos web/* (js/css raíz) cuya fuente ya viaja solo como .min.
+// Va DESPUÉS de copiar (la lista drift se calculó con la foto previa).
+function podarSlim() {
+  const podar = [];
+  for (const f of fs.readdirSync(WEB)) {
+    if (/\.(js|css)$/.test(f) && esSlim(f)) {
+      try {
+        fs.rmSync(path.join(WEB, f));
+        podar.push(f);
+      } catch {}
+    }
+  }
+  if (podar.length) console.log(`  - slim: ${podar.length} fuentes podadas de web/ (viajan como min/): ${podar.slice(0, 6).join(', ')}${podar.length > 6 ? ` ...(+${podar.length - 6})` : ''}`);
+  return podar;
+}
+
 if (!drift.length && !needInWeb.length) {
-  console.log('OK: web/ esta en sincronia con la raiz.');
+  const podados = FIX ? podarSlim() : [];
+  if (!podados.length) {
+    console.log('OK: web/ esta en sincronia con la raiz.');
+    process.exit(0);
+  }
   process.exit(0);
 }
 
@@ -94,3 +139,4 @@ if (needInWeb.length) {
   }
   console.log(`  + ${needInWeb.length} archivos nuevos propagados a web/: ${needInWeb.join(', ')}`);
 }
+if (FIX) podarSlim();

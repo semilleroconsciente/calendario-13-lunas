@@ -54,10 +54,14 @@ describe('manifest + cableado', () => {
     }
   });
 
-  it('package.json: nuevos archivos en build.files + scripts', () => {
+  it('package.json: nuevos archivos en build.files + scripts (slim)', () => {
     const pkg = JSON.parse(read('package.json'));
-    for (const f of ['storage-idb.js', 'accesibilidad-modulo.js', 'onboarding-modulo.js', 'auto-backup-modulo.js', '_headers', 'boot-modulos.js', 'sw-registro.js', 'splash.css', 'min/**/*', 'templates-bundled.js', 'templates/*.html']) {
+    // Deploy slim: las fuentes .js/.css viajan como min/* (no van en files).
+    for (const f of ['main.js', 'preload.js', 'index.html', 'boot-modulos.js', 'sw-registro.js', 'sw.js', 'manifest.json', '_headers', 'templates/*.html', 'screenshots/*.png', 'min/**/*', 'assets/**/*', 'data/territorios/**/*']) {
       assert.ok((pkg.build.files || []).includes(f), 'build.files sin ' + f);
+    }
+    for (const f of ['storage-idb.js', 'renderer.js', 'nuevos-modulos.js', 'styles.css']) {
+      assert.ok(!(pkg.build.files || []).includes(f), 'build.files aún lleva fuente slimmeada: ' + f);
     }
     for (const s of ['build:sw', 'check:sw', 'check:donate', 'movil:build', 'check:size', 'build:min', 'check:min', 'build:tpl', 'check:tpl', 'check:perf', 'csp:fase2', 'check:csp2']) {
       assert.ok(pkg.scripts[s], 'script ausente: ' + s);
@@ -102,6 +106,17 @@ describe('manifest + cableado', () => {
       if (s.form_factor === 'wide') wide++;
     }
     assert.ok(wide >= 1, 'falta screenshot wide (desktop)');
+  });
+
+  it('deploy slim: todo .js/.css cableado viaja como min/ (salvo loaders)', () => {
+    const PERMITIDOS = new Set(['boot-modulos.js', 'sw-registro.js']);
+    const html = read('index.html');
+    const boot = read('boot-modulos.js');
+    const refs = new Set();
+    for (const m of html.matchAll(/(?:src|href)="([^"]+\.(?:js|css))(?:\?v=\d+)?"/g)) refs.add(m[1]);
+    for (const m of boot.matchAll(/'([^']+\.js)(?:\?v=\d+)?'/g)) refs.add(m[1].split('?')[0]);
+    const directos = [...refs].filter((r) => !r.startsWith('min/') && !PERMITIDOS.has(r));
+    assert.deepEqual(directos, [], 'refs sin minificar (deploy no-slim): ' + directos.join(', '));
   });
 
   it('pwa-install: botón + módulo cableado', () => {
