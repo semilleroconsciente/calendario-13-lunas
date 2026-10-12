@@ -2,7 +2,7 @@
 // Copyright (C) 2026 Semillero Consciente. Licencia: GNU GPLv3 o posterior (ver COPYING).
 // SPDX-License-Identifier: GPL-3.0-or-later
 // v55
-const CACHE = 'cal13-v73-offline';
+const CACHE = 'cal13-v75-offline';
 
 // Lista completa de archivos que usa index.html (bare + con ?v=).
 // Si se agrega un JS nuevo en index.html, agregarlo aquí también (bare y ?v=).
@@ -90,6 +90,7 @@ const CORE = [
   './templates/muniDialog.html',
   './templates/nutriDialog.html',
   './templates/psicoDialog.html',
+  './templates/rutinasDialog.html',
   './templates/scheduleDialog.html',
   './templates/searchDialog.html',
   './templates/shoppingDialog.html',
@@ -180,6 +181,8 @@ const CORE = [
   './min/electronica-modulo.min.js?v=1',
   './min/eneagrama-modulo.min.js',
   './min/eneagrama-modulo.min.js?v=1',
+  './min/energia-descanso-modulo.min.js',
+  './min/energia-descanso-modulo.min.js?v=1',
   './min/estoicismo-modulo.min.js',
   './min/estoicismo-modulo.min.js?v=1',
   './min/etapas-vida-modulo.min.js',
@@ -212,6 +215,8 @@ const CORE = [
   './min/huerta-modulo.min.js?v=1',
   './min/ia-modulo.min.js',
   './min/ia-modulo.min.js?v=4',
+  './min/ics-modulo.min.js',
+  './min/ics-modulo.min.js?v=1',
   './min/iglesias-penco.min.js',
   './min/iglesias-penco.min.js?v=1',
   './min/ikigai-modulo.min.js',

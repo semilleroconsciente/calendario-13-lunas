@@ -154,11 +154,11 @@ textarea {
 #actionSearch { flex:1; max-width:420px; padding:8px 12px; border-radius:10px; border:1px solid var(--line); background:var(--panel); color:var(--text); font-size:13px; }
 #actionSearch:focus { outline:2px solid var(--gold); border-color:var(--gold); }
 #actions { margin-top:12px; display:flex; flex-direction:column; gap:10px; max-width:1100px; }
-.donate-cta { margin:18px 0 6px; max-width:1100px; border-radius:16px; padding:2px; background:linear-gradient(135deg,#e8c56a,#ff9a3c,#c9a0dc,#4da3ff); }
-.donate-cta .btn { width:100%; font-size:15px; line-height:1.4; padding:12px; border:none; border-radius:14px; background:linear-gradient(135deg,#f0d488,#e8c56a 55%,#d4a947); color:#241a05; font-weight:800; letter-spacing:.3px; cursor:pointer; transition:transform .15s, box-shadow .15s, filter .15s; box-shadow:0 4px 18px #00000055; text-align:center; }
-.donate-cta .btn:hover { transform:translateY(-1px); box-shadow:0 8px 26px #e8c56a55; filter:brightness(1.05); }
-.donate-cta .btn .donate-heart { display:inline-block; animation:donateBeat 1.6s ease-in-out infinite; margin-right:6px; }
-.donate-cta-sub { display:block; font-size:11px; font-weight:600; color:#5a4a1a; margin-top:3px; letter-spacing:.2px; }
+.donate-cta { margin:14px auto 6px; max-width:360px; border-radius:14px; padding:2px; background:linear-gradient(135deg,#e8c56a,#ff9a3c,#c9a0dc,#4da3ff); }
+.donate-cta .btn { width:100%; font-size:12.5px; line-height:1.35; padding:8px 10px; border:none; border-radius:12px; background:linear-gradient(135deg,#f0d488,#e8c56a 55%,#d4a947); color:#241a05; font-weight:700; letter-spacing:.2px; cursor:pointer; transition:transform .15s, box-shadow .15s, filter .15s; box-shadow:0 2px 10px #00000044; text-align:center; }
+.donate-cta .btn:hover { transform:translateY(-1px); box-shadow:0 6px 18px #e8c56a55; filter:brightness(1.05); }
+.donate-cta .btn .donate-heart { display:inline-block; animation:donateBeat 1.6s ease-in-out infinite; margin-right:5px; }
+.donate-cta-sub { display:block; font-size:10px; font-weight:600; color:#5a4a1a; margin-top:2px; letter-spacing:.2px; }
 @keyframes donateBeat { 0%,100%{transform:scale(1);} 12%{transform:scale(1.25);} 24%{transform:scale(1);} 36%{transform:scale(1.18);} 48%{transform:scale(1);} }
 .action-group { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:0; overflow:hidden; }
 .action-group[open] { background:var(--card); }
@@ -1380,3 +1380,17 @@ body[data-modo-noche="1"] dialog { filter: brightness(0.92); }
   .dlg-resize-handle:hover { background: var(--card-hover); opacity: 1; }
   body.dlg-resizing, body.dlg-resizing * { cursor: nwse-resize !important; user-select: none !important; }
 }
+
+/* === Mi Dia — Rutinas por horario (manana/tarde/noche) === */
+.rutina-slot { border: 1px solid var(--line); border-radius: 12px; padding: 10px; margin: 10px 0; background: var(--panel); }
+.rutina-slot.done { border-color: var(--gold); background: var(--card-hover); }
+.rutina-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+.rutina-title { font-weight: 700; font-size: 14px; }
+.rutina-done { font-size: 12px; white-space: nowrap; }
+.rutina-text { width: 100%; }
+.rutina-sec { margin-top: 8px; display: flex; flex-direction: column; gap: 6px; }
+.rutina-hablist { display: flex; flex-direction: column; gap: 6px; }
+.habit-today-item.mini { font-size: 12px; padding: 6px 8px; }
+.rutina-unlink { margin-left: auto; }
+.rutina-complist { display: flex; flex-direction: column; gap: 4px; }
+@media (min-width: 720px) { .rutina-hablist { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); } }

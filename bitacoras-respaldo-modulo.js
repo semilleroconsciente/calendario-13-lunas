@@ -90,6 +90,7 @@ var GROUPS = [
   { id: 'biblioteca', titulo: '📚 Biblioteca hogar', keys: ['biblioteca'] },
   { id: 'fengshui', titulo: '☯️ Feng Shui hogar', keys: ['fengShui'] },
   { id: 'cuerpo-luna', titulo: '🌙 Cuerpo y luna (pelo, rituales, fenología)', keys: ['peloLunar', 'ritualesSalud', 'fenologia'] },
+  { id: 'energia-descanso', titulo: '⚡ Energía y descanso (sueño, ánimo, energía)', keys: ['energiaDescanso'] },
   { id: 'natacion', titulo: '🏊 Natación (mi bitácora)', keys: ['natacion'] },
   { id: 'convivencia', titulo: '🏘️ Convivencia vecinal (bitácora privada)', keys: ['convivencia'] },
   { id: 'red', titulo: '🤝 Red comunitaria (mis nodos)', keys: ['redcomunitaria'] },

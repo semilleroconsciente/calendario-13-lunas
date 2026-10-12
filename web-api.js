@@ -154,6 +154,28 @@
       };
       i.click();
     }),
+    // .ics (compromisos): mismo patrón que backup, con tipo text/calendar.
+    // Lo usa ics-modulo.js; en Electron (preload) va con diálogo nativo.
+    icsSave: async (text, fileName) => {
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(new Blob([text], { type: 'text/calendar;charset=utf-8' }));
+      a.download = (fileName || 'compromisos-13-lunas.ics');
+      a.click();
+      return 'descargado';
+    },
+    icsOpen: () => new Promise(res => {
+      const i = document.createElement('input');
+      i.type = 'file';
+      i.accept = '.ics,text/calendar';
+      i.onchange = () => {
+        const f = i.files[0];
+        if (!f) return res(null);
+        const r = new FileReader();
+        r.onload = () => res(r.result);
+        r.readAsText(f);
+      };
+      i.click();
+    }),
     imageSave: async (dataUrl, suggestedName) => {
       const fileName = suggestedName || 'calendario-13-lunas.png';
       try {

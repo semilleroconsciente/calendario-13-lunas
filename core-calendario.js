@@ -271,6 +271,10 @@ function renderTodayView(){
     + '</div>'
     + '</div>')
     + (hb.habitos === false ? '' : '<div class="today-card"><h3>✅ Hábitos de hoy</h3><div id="todayHabitsBox">'+habHTML+'</div></div>')
+    + (hb.rutinas === false ? '' : '<div class="today-card" id="todayRutinasCard"><h3>🌅 Mi Día — Rutinas por horario</h3>'
+    + '<p class="muted su-11a508">3 bloques editables: <b>mañana · tarde · noche</b>. Escribe tu plan, vincula hábitos ✅ y ve tus compromisos 🕐 de cada horario. Todo queda guardado por día.</p>'
+    + '<div id="todayRutinaProg"></div><div id="todayRutinaBox"></div>'
+    + '<div class="su-8a77e5"><button type="button" id="todayRutinaPlantilla" class="btn su-046678">💾 Guardar hoy como plantilla</button><button type="button" id="todayRutinaLimpiar" class="btn su-046678">🧹 Limpiar hoy</button></div></div>')
     + (hb.animo === false ? '' : '<div class="today-card"><h3>😊 Estado de ánimo</h3>'
     + '<button type="button" id="todayMoodMain" class="today-mood-main"><span class="tm-ico">'+sug.e+'</span><span>'+(cur?escapeHtml(cur.n)+' · toca para cambiar':'Sugerencia: '+sug.e+' · '+escapeHtml(sug.n))+'</span></button>'
     + '<div id="todayMoodPicker" class="today-mood-picker hidden"></div></div>')
@@ -437,7 +441,152 @@ function renderTodayView(){
       try{ habitToggle(key, cb.dataset.id); }catch(e){}
       scheduleSave();
       const lab=cb.closest('label'); if(lab){ if(cb.checked) lab.classList.add('done'); else lab.classList.remove('done'); }
+      try{ if($('todayRutinaBox')) paintTodayRutinas(); }catch(e2){}
     });
+  }catch(e){}
+  // --- 🌅 RUTINAS POR HORARIO (mañana / tarde / noche) ---
+  function paintTodayRutinas(){
+    const box=$('todayRutinaBox');
+    if(!box) return;
+    let dia=null, habs=[], agenda=[], sched=[], wd=new Date().getDay();
+    try{ dia=getRutinaDia(key); }catch(e){ return; }
+    try{ const hd=getHabitData(); habs=(hd&&hd.list)||[]; }catch(e){ habs=[]; }
+    try{ agenda=isDFT?[]:[...dayCell(lunaN,diaN).agenda]; }catch(e){ agenda=[]; }
+    try{ const sd=getScheduleData(); sched=(sd&&sd.items)||[]; }catch(e){ sched=[]; }
+    try{
+      const prog=rutinaProgresoDia(key);
+      const pb=$('todayRutinaProg');
+      if(pb) pb.innerHTML='<p class="muted su-11a508">✅ '+prog.done+'/'+prog.total+' bloques completados hoy</p>';
+    }catch(e){}
+    box.innerHTML='';
+    RUTINA_SLOTS.forEach(function(slot){
+      const st=dia[slot.id]||{ texto:'', habitos:[], done:false };
+      const habVinculados=(st.habitos||[]).map(function(id){ return habs.find(function(h){return h.id===id;}); }).filter(Boolean);
+      const habHechos=habVinculados.filter(function(h){ try{ return habitIsDone(key,h.id); }catch(e){ return !!(getHabitData().entries[key]&&getHabitData().entries[key][h.id]); } }).length;
+      const compSlot=rutinaCompromisosPorSlot(agenda, slot.id);
+      const horSlot=rutinaHorarioPorSlot(sched, wd, slot.id);
+      const wrap=document.createElement('div');
+      wrap.className='rutina-slot'+(st.done?' done':'');
+      let plantillaTxt='';
+      try{ plantillaTxt=(getRutinaData().plantilla[slot.id]||''); }catch(e){}
+      const noVinculados=habs.filter(function(h){ return (st.habitos||[]).indexOf(h.id)<0; });
+      wrap.innerHTML=
+        '<div class="rutina-head"><span class="rutina-title">'+slot.ico+' '+slot.nombre+' <span class="muted su-0d5be0">'+slot.rango+'</span></span>'
+        +'<label class="check-row rutina-done"><input type="checkbox" data-rutdone="'+slot.id+'" '+(st.done?'checked':'')+'> Hecho</label></div>'
+        +'<textarea class="today-note rutina-text" data-ruttexto="'+slot.id+'" rows="2" maxlength="500" placeholder="'+escapeHtml((plantillaTxt||slot.ejemplo||'').slice(0,80))+'"></textarea>'
+        +'<div class="rutina-sec"><b>✅ Hábitos vinculados ('+habHechos+'/'+habVinculados.length+')</b>'
+        +'<div class="rutina-hablist">'
+        +(habVinculados.length? habVinculados.map(function(h){
+            let done=false; try{ done=habitIsDone(key,h.id); }catch(e){ done=false; }
+            return '<label class="habit-today-item mini '+(done?'done':'')+'" style="border-color:'+h.color+'55"><input type="checkbox" data-ruthab="'+slot.id+'|'+h.id+'" '+(done?'checked':'')+'><span class="habit-icon" style="background:'+h.color+'22;color:'+h.color+'">'+escapeHtml(h.icono||'✓')+'</span><span>'+escapeHtml(h.nombre)+'</span><button type="button" class="btn btn-icon rutina-unlink" data-rutunlink="'+slot.id+'|'+h.id+'" title="Desvincular">✕</button></label>';
+          }).join('') : '<span class="muted su-0d5be0">Sin hábitos vinculados. Agrega uno abajo 👇</span>')
+        +'</div>'
+        +(noVinculados.length? '<div class="today-add"><select data-rutaddsel="'+slot.id+'" aria-label="Hábito a vincular">'+noVinculados.map(function(h){return '<option value="'+h.id+'">'+escapeHtml((h.icono||'✓')+' '+h.nombre)+'</option>';}).join('')+'</select><button type="button" class="btn su-30e741" data-rutadd="'+slot.id+'">+ Vincular</button></div>' : (habs.length? '<p class="muted su-0d5be0">Todos tus hábitos ya están vinculados aquí.</p>' : '<p class="muted su-0d5be0">Crea hábitos en ✅ Hábitos para vincularlos.</p>'))
+        +'</div>'
+        +'<div class="rutina-sec"><b>🕐 Compromisos '+slot.nombre.toLowerCase()+' ('+compSlot.length+(horSlot.length?' + 📚 '+horSlot.length:'')+')</b>'
+        +'<div class="rutina-complist">'
+        +((compSlot.length||horSlot.length)? ''
+          + compSlot.map(function(a){ const t=(a.time|| (String(a.hour||0).padStart(2,'0')+':'+String(a.minute||0).padStart(2,'0'))); return '<div class="hora-item"><span class="su-11a508">🕐 <b>'+escapeHtml(t)+'</b> '+escapeHtml(a.text||'')+'</span></div>'; }).join('')
+          + horSlot.map(function(it){ return '<div class="hora-item"><span class="su-11a508">📚 <b>'+escapeHtml(it.subject)+'</b> '+escapeHtml(it.start)+'–'+escapeHtml(it.end)+(it.place?' · '+escapeHtml(it.place):'')+'</span></div>'; }).join('')
+          : '<span class="muted su-0d5be0">Sin compromisos en este horario.</span>')
+        +'</div>'
+        +'<button type="button" class="btn su-30e741" data-rutcomp="'+slot.id+'">+ Compromiso a las '+slot.horaSugerida+'</button></div>';
+      const ta=wrap.querySelector('[data-ruttexto]');
+      if(ta){
+        ta.value=st.texto||'';
+        ta.addEventListener('input', function(){
+          try{ getRutinaDia(key)[slot.id].texto=sanitizeText(ta.value,500); scheduleSave(); }catch(e){}
+        });
+      }
+      box.appendChild(wrap);
+    });
+    // eventos (delegados por re-pintado)
+    box.querySelectorAll('[data-rutdone]').forEach(function(cb){
+      cb.onchange=function(){
+        try{ getRutinaDia(key)[cb.dataset.rutdone].done=cb.checked; scheduleSave(cb.checked?'Bloque completado ✓':'Guardado ✓'); }catch(e){}
+        const w=cb.closest('.rutina-slot'); if(w){ if(cb.checked) w.classList.add('done'); else w.classList.remove('done'); }
+        try{ const prog=rutinaProgresoDia(key); const pb=$('todayRutinaProg'); if(pb) pb.innerHTML='<p class="muted su-11a508">✅ '+prog.done+'/'+prog.total+' bloques completados hoy</p>'; }catch(e){}
+      };
+    });
+    box.querySelectorAll('[data-ruthab]').forEach(function(cb){
+      cb.onchange=function(){
+        try{
+          const parts=String(cb.dataset.ruthab).split('|'); const hid=parts[1];
+          habitToggle(key, hid); scheduleSave();
+        }catch(e){}
+        paintTodayRutinas();
+        try{ renderHabitsTodayBox(); }catch(e){}
+        try{
+          const hb2=$('todayHabitsBox');
+          if(hb2) hb2.querySelectorAll('input[data-id]').forEach(function(c2){ c2.onchange=function(){ try{ habitToggle(key, c2.dataset.id); }catch(e){} scheduleSave(); paintTodayRutinas(); }; });
+        }catch(e){}
+      };
+    });
+    box.querySelectorAll('[data-rutunlink]').forEach(function(btn){
+      btn.onclick=function(ev){
+        ev.preventDefault(); ev.stopPropagation();
+        try{
+          const parts=String(btn.dataset.rutunlink).split('|');
+          const arr=getRutinaDia(key)[parts[0]].habitos;
+          getRutinaDia(key)[parts[0]].habitos=arr.filter(function(id){return id!==parts[1];});
+          scheduleSave('Hábito desvinculado ✓');
+        }catch(e){}
+        paintTodayRutinas();
+      };
+    });
+    box.querySelectorAll('[data-rutadd]').forEach(function(btn){
+      btn.onclick=function(){
+        try{
+          const sid=btn.dataset.rutadd;
+          const sel=box.querySelector('[data-rutaddsel="'+sid+'"]');
+          const hid=sel&&sel.value;
+          if(!hid) return;
+          const arr=getRutinaDia(key)[sid].habitos;
+          if(arr.indexOf(hid)<0) arr.push(hid);
+          scheduleSave('Hábito vinculado ✓');
+        }catch(e){}
+        paintTodayRutinas();
+      };
+    });
+    box.querySelectorAll('[data-rutcomp]').forEach(function(btn){
+      btn.onclick=function(){
+        try{
+          const sid=btn.dataset.rutcomp;
+          const slot=RUTINA_SLOTS.find(function(s){return s.id===sid;});
+          const hs=$('todayHourSel');
+          if(hs && slot) hs.value=slot.horaSugerida;
+          const ht=$('todayHourText');
+          const card=$('todayRutinasCard');
+          try{
+            const agendaCard=hs? hs.closest('.today-card'):null;
+            if(agendaCard){ agendaCard.scrollIntoView({behavior:'smooth', block:'center'}); }
+            else if(card){ card.scrollIntoView({behavior:'smooth', block:'start'}); }
+          }catch(e){}
+          if(ht) setTimeout(function(){ try{ ht.focus(); }catch(e){} }, 400);
+        }catch(e){}
+      };
+    });
+  }
+  try{ paintTodayRutinas(); }catch(e){}
+  try{
+    const tpl=$('todayRutinaPlantilla');
+    if(tpl) tpl.onclick=function(){
+      try{
+        const r=getRutinaData(); const d=getRutinaDia(key);
+        RUTINA_SLOTS.forEach(function(s){ r.plantilla[s.id]=sanitizeText((d[s.id].texto||''),500); });
+        scheduleSave('Plantilla guardada ✓ — se sugiere como ejemplo cada día');
+      }catch(e){}
+    };
+    const clr=$('todayRutinaLimpiar');
+    if(clr) clr.onclick=function(){
+      if(!confirm('¿Limpiar textos y vínculos de hoy? (tu plantilla se conserva)')) return;
+      try{
+        const d=getRutinaDia(key);
+        RUTINA_SLOTS.forEach(function(s){ d[s.id]={ texto:'', habitos:[], done:false }; });
+        scheduleSave('Rutinas de hoy limpias ✓');
+      }catch(e){}
+      try{ paintTodayRutinas(); }catch(e){}
+    };
   }catch(e){}
   // --- marcar inicio de ciclo menstrual ---
   try{
@@ -1265,6 +1414,12 @@ function renderLuna() {
       const ft=fz.filter(x=>x.fecha===key);
       if(ft.length) fenoIcons=ft.map(o=> `<span class="dc-habit su-ae6395" title="Fenología: ${escapeHtml(o.primera?'🌟 Primera del año · ':'')}${escapeHtml(o.ev==='libre'?(o.libre||'Otra'):o.ev)}${o.lugar?' · '+escapeHtml(o.lugar):''}">📜</span>`).join('');
     }catch(e){}
+    let energiaIcons='';
+    try{
+      const er=(udCache.energiaDescanso&&udCache.energiaDescanso.regs)||[];
+      const et=er.filter(x=>x.fecha===key);
+      if(et.length) energiaIcons=et.map(o=> `<span class="dc-habit su-460df3" title="Descanso: 😴${escapeHtml(String(o.sueno))}h · ⚡${escapeHtml(String(o.energia))}/5 · 💚${escapeHtml(String(o.animo))}/5 — ver ⚡ Energía y descanso">💤</span>`).join('');
+    }catch(e){}
     const card = document.createElement('div');
     card.className = 'day-card' + (key === todayKey ? ' today' : '') + (mensType ? ' mens-'+mensType : '') + hasHabits + hasGym;
     card.dataset.luna = meta.n;
@@ -1286,6 +1441,7 @@ function renderLuna() {
       ${espIcons ? `<div class="dc-habits">${espIcons}</div>` : ''}
       ${peloIcons ? `<div class="dc-habits">${peloIcons}</div>` : ''}
       ${fenoIcons ? `<div class="dc-habits">${fenoIcons}</div>` : ''}
+      ${energiaIcons ? `<div class="dc-habits">${energiaIcons}</div>` : ''}
       ${efe ? `<div class="dc-efe" title="${escapeHtml(efe)}">📅 ${escapeHtml(efe)}</div>` : ''}
       ${mood ? `<div class="dc-clima">Ánimo: ${escapeHtml(mood.e)} ${escapeHtml(mood.n)}</div>` : ''}
       ${Array.isArray(cell.agenda)&&cell.agenda.length ? `<div class="dc-clima" title="${escapeHtml(cell.agenda.map(a=>getAgendaTime(a)+' '+a.text + (a.notify?' 🔔':'')).join(' · '))}">🕐 ${cell.agenda.length} compromiso${cell.agenda.length>1?'s':''} · ${escapeHtml(cell.agenda.slice(0,2).map(a=>getAgendaTime(a)+' '+a.text).join(' · '))}${cell.agenda.length>2?' …':''}</div>` : ''}

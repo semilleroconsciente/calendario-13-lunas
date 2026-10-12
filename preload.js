@@ -11,6 +11,8 @@ contextBridge.exposeInMainWorld('api', {
   createShortcut: (pngB64) => ipcRenderer.invoke('shortcut:create', pngB64),
   backupSave: (json, fileName) => ipcRenderer.invoke('backup:save', json, fileName),
   backupOpen: () => ipcRenderer.invoke('backup:open'),
+  icsSave: (text, fileName) => ipcRenderer.invoke('ics:save', text, fileName),
+  icsOpen: () => ipcRenderer.invoke('ics:open'),
   imageSave: (dataUrl, fileName) => ipcRenderer.invoke('image:save', dataUrl, fileName),
   loadDonate: () => ipcRenderer.invoke('donate:load'),
   openExternal: (url) => ipcRenderer.invoke('openExternal', url)

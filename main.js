@@ -208,6 +208,29 @@ ipcMain.handle('backup:open', async () => {
   return fs.readFileSync(filePaths[0], 'utf8');
 });
 
+// .ics (compromisos de ics-modulo.js): diálogo nativo con filtro de calendario.
+ipcMain.handle('ics:save', async (_e, text, fileName) => {
+  const safe = String(fileName || 'compromisos-13-lunas.ics').replace(/[\\/:*?"<>|]/g, '-').slice(0, 120) || 'compromisos-13-lunas.ics';
+  const { canceled, filePath } = await dialog.showSaveDialog(win, {
+    title: 'Exportar compromisos (.ics)',
+    defaultPath: path.join(app.getPath('documents'), safe),
+    filters: [{ name: 'Calendario', extensions: ['ics'] }]
+  });
+  if (canceled || !filePath) return null;
+  fs.writeFileSync(filePath, String(text), 'utf8');
+  return filePath;
+});
+
+ipcMain.handle('ics:open', async () => {
+  const { canceled, filePaths } = await dialog.showOpenDialog(win, {
+    title: 'Importar compromisos (.ics)',
+    filters: [{ name: 'Calendario', extensions: ['ics'] }],
+    properties: ['openFile']
+  });
+  if (canceled || !filePaths[0]) return null;
+  return fs.readFileSync(filePaths[0], 'utf8');
+});
+
 ipcMain.handle('image:save', async (_e, dataUrl, suggestedName) => {
   const safeName = suggestedName || 'calendario-13-lunas.png';
   const { canceled, filePath } = await dialog.showSaveDialog(win, {
