@@ -87,10 +87,10 @@ function makeDialog(id, title, sub, bodyHTML) {
   var d = document.createElement('dialog');
   d.id = id;
   d.innerHTML = '<form method="dialog">' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
-    '<h3 style="margin:0;color:var(--accent)">' + title + '</h3>' +
+    '<div class="dlg-actions su-d2d053">' +
+    '<h3 class="su-ee0cfe">' + title + '</h3>' +
     '<button type="button" data-close class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    (sub ? '<p class="muted" style="line-height:1.5">' + sub + '</p>' : '') +
+    (sub ? '<p class="muted su-77e2fe">' + sub + '</p>' : '') +
     bodyHTML +
     '<div class="dlg-actions"><button type="button" data-close class="btn">Cerrar</button></div></form>';
   document.body.appendChild(d);
@@ -177,14 +177,14 @@ function renderArbolFam() {
     box.innerHTML = fil.map(function (r) {
       var chip = r.partio ? '🕊️ partió' : '🌱 vive';
       var col = r.partio ? '#c9a9c9' : '#8fd694';
-      return '<div class="habit-item"><div style="display:flex;justify-content:space-between;gap:8px;align-items:center"><span><b>' + esc(r.nombre) + '</b> <span class="chip" style="font-size:10px">' + esc(r.vinc || '') + '</span> ' +
-        '<span class="chip" style="font-size:10px">' + esc(r.rama || '') + '</span></span>' +
+      return '<div class="habit-item"><div class="su-6bf84b"><span><b>' + esc(r.nombre) + '</b> <span class="chip su-0d5be0">' + esc(r.vinc || '') + '</span> ' +
+        '<span class="chip su-0d5be0">' + esc(r.rama || '') + '</span></span>' +
         '<span class="chip" style="font-size:10px;border-color:' + col + '55;color:' + col + '">' + chip + '</span></div>' +
-        '<div class="muted" style="font-size:11px;margin-top:4px">🌙 Luna ' + (r.luna || '?') + (r.nac ? ' · nació ' + r.nac + ' (' + esc(lunaTxt(r.nac) || 'fuera de rango') + ')' : ' · sin fecha (luna manual)') +
+        '<div class="muted su-cdff1d">🌙 Luna ' + (r.luna || '?') + (r.nac ? ' · nació ' + r.nac + ' (' + esc(lunaTxt(r.nac) || 'fuera de rango') + ')' : ' · sin fecha (luna manual)') +
         (r.lugar ? ' · 📍 ' + esc(r.lugar) : '') + (r.nota ? '<br>💬 ' + esc(r.nota) : '') + '</div>' +
-        '<div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap"><button class="btn" style="width:auto;font-size:11px" data-edit="' + r.id + '">✏️ Editar</button>' +
-        '<button class="btn" style="width:auto;font-size:11px" data-hon="' + r.id + '" title="Alternar honra">🕯️ Honrar</button>' +
-        '<button class="btn" style="width:auto;font-size:11px;color:#e76e8a" data-del="' + r.id + '">✕</button></div></div>';
+        '<div class="su-faf7a9"><button class="btn su-337714" data-edit="' + r.id + '">✏️ Editar</button>' +
+        '<button class="btn su-337714" data-hon="' + r.id + '" title="Alternar honra">🕯️ Honrar</button>' +
+        '<button class="btn su-9b8fb7" data-del="' + r.id + '">✕</button></div></div>';
     }).join('');
   }
   var tot = d.length, hon = d.filter(function (r) { return r.partio; }).length;
@@ -207,8 +207,8 @@ function arbTreeNodeHTML(r) {
     '<div class="arb-vinc">' + vincIcon + ' ' + esc(r.vinc || '') + ' · 🌙 L' + (r.luna || '?') + '</div>' +
     (r.lugar ? '<div class="arb-lugar">📍 ' + esc(r.lugar) + '</div>' : '') +
     (r.nota ? '<div class="arb-nota">💬 ' + esc(String(r.nota).slice(0, 60)) + '</div>' : '') +
-    '<div class="arb-btns"><button type="button" class="btn" style="width:auto;font-size:10px;padding:2px 8px" data-tedit="' + r.id + '">✏️</button>' +
-    '<button type="button" class="btn" style="width:auto;font-size:10px;padding:2px 8px" data-thon="' + r.id + '" title="Honrar">🕯️</button></div></div>';
+    '<div class="arb-btns"><button type="button" class="btn su-9f0529" data-tedit="' + r.id + '">✏️</button>' +
+    '<button type="button" class="btn su-9f0529" data-thon="' + r.id + '" title="Honrar">🕯️</button></div></div>';
 }
 var ARB_NIVELES = [
   { t: '✨ Bisabuelos', v: ['bisabuela/o'] },
@@ -269,7 +269,7 @@ function renderArbolHon() {
   var cb = $('arbFCartas'); if (!cb) return;
   var cartas = getArbolCartas().slice().sort(function (a, b) { return b.fecha.localeCompare(a.fecha); });
   cb.innerHTML = cartas.length ? cartas.map(function (r) {
-    return '<div class="habit-item"><b>💌 Para ' + esc(r.para) + '</b> <span class="muted" style="font-size:11px">· ' + r.fecha + ' · ' + esc(lunaTxt(r.fecha)) + '</span><p style="font-size:12px;white-space:pre-wrap">' + esc(r.texto) + '</p><div style="display:flex;gap:6px"><button class="btn" style="width:auto;font-size:11px" data-share="' + r.id + '">📤</button><button class="btn" style="width:auto;font-size:11px;color:#e76e8a" data-del="' + r.id + '">✕</button></div></div>';
+    return '<div class="habit-item"><b>💌 Para ' + esc(r.para) + '</b> <span class="muted su-11a508">· ' + r.fecha + ' · ' + esc(lunaTxt(r.fecha)) + '</span><p class="su-85c73c">' + esc(r.texto) + '</p><div class="su-49cd09"><button class="btn su-337714" data-share="' + r.id + '">📤</button><button class="btn su-9b8fb7" data-del="' + r.id + '">✕</button></div></div>';
   }).join('') : '<p class="muted">Vacío. Escribe una carta de honra: lo que heredaste, lo que agradeces, lo que sueltas.</p>';
   cb.querySelectorAll('[data-del]').forEach(function (b) { b.onclick = function () { if (!confirm('¿Borrar carta?')) return; var dd = getArbolCartas(); var i = dd.findIndex(function (x) { return x.id === b.getAttribute('data-del'); }); if (i >= 0) dd.splice(i, 1); save(); renderArbolHon(); }; });
   cb.querySelectorAll('[data-share]').forEach(function (b) { b.onclick = function () { var dd = getArbolCartas(); var r = dd.find(function (x) { return x.id === b.getAttribute('data-share'); }); if (r) share('💌 Carta de honra para ' + r.para, r.texto); }; });
@@ -277,7 +277,7 @@ function renderArbolHon() {
   if (vb) {
     var velas = getArbolVelas().slice().sort(function (a, b) { return b.fecha.localeCompare(a.fecha); }).slice(0, 20);
     vb.innerHTML = velas.length ? velas.map(function (r) {
-      return '<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center"><span>🕯️ <b>' + esc(r.para) + '</b><br><span class="muted" style="font-size:11px">' + r.fecha + ' · ' + esc(r.intencion || '') + '</span></span><button class="btn" style="width:auto;font-size:11px;color:#e76e8a" data-del="' + r.id + '">✕</button></div>';
+      return '<div class="habit-item su-13313b"><span>🕯️ <b>' + esc(r.para) + '</b><br><span class="muted su-11a508">' + r.fecha + ' · ' + esc(r.intencion || '') + '</span></span><button class="btn su-9b8fb7" data-del="' + r.id + '">✕</button></div>';
     }).join('') : '<p class="muted">Sin velas encendidas. Enciende una por quien honres hoy.</p>';
     vb.querySelectorAll('[data-del]').forEach(function (b) { b.onclick = function () { var dd = getArbolVelas(); var i = dd.findIndex(function (x) { return x.id === b.getAttribute('data-del'); }); if (i >= 0) dd.splice(i, 1); save(); renderArbolHon(); }; });
   }
@@ -304,52 +304,52 @@ function setupArbolFull() {
   } catch (e) {}
   makeDialog('arbolFullDialog', '🌳 Árbol Genealógico — mi linaje en 13 lunas',
     'Tu familia como <b>círculo, no como línea</b>: cada persona en su luna de nacimiento, con su historia y su honra. Empieza con 3 nombres y crece por lunas. Todo queda <b>privado y local</b> por usuario.',
-    '<div class="timer-tabs" style="flex-wrap:wrap;margin-bottom:10px">' +
-    '<button type="button" id="tabArbFGuia" class="btn btn-accent" style="width:auto">📖 Guía</button>' +
-    '<button type="button" id="tabArbFFam" class="btn" style="width:auto">👨‍👩‍👧 Familia</button>' +
-    '<button type="button" id="tabArbFArb" class="btn" style="width:auto">🌳 Árbol</button>' +
-    '<button type="button" id="tabArbFCir" class="btn" style="width:auto">🌙 Círculo lunar</button>' +
-    '<button type="button" id="tabArbFHon" class="btn" style="width:auto">🕯️ Honrar</button></div>' +
+    '<div class="timer-tabs su-dd1da5">' +
+    '<button type="button" id="tabArbFGuia" class="btn btn-accent su-30e741">📖 Guía</button>' +
+    '<button type="button" id="tabArbFFam" class="btn su-30e741">👨‍👩‍👧 Familia</button>' +
+    '<button type="button" id="tabArbFArb" class="btn su-30e741">🌳 Árbol</button>' +
+    '<button type="button" id="tabArbFCir" class="btn su-30e741">🌙 Círculo lunar</button>' +
+    '<button type="button" id="tabArbFHon" class="btn su-30e741">🕯️ Honrar</button></div>' +
     '<div id="arbFGuia">' +
       '<div class="si-card"><h4>🌳 ¿Qué es el árbol genealógico lunar?</h4><p>Es el mapa de tu <b>kupalme</b> (linaje): de dónde vienes, qué dones y heridas heredaste y a quién honras. Aquí cada persona se ubica en su <b>luna de nacimiento (1–13)</b>: el círculo muestra de un vistazo qué lunas traen tu fuerza. No es terapia ni documento legal: es memoria viva para conversar en familia.</p></div>' +
       '<div class="si-card"><h4>🚶 Paso a paso (una luna a la vez)</h4><p><b>1)</b> Parte con 3: madre, padre y una abuela/o. Solo nombre + vínculo + luna.<br><b>2)</b> Pregunta en casa: ¿dónde nació? ¿qué le gustaba cocinar/cantar? ¿qué me enseñó?<br><b>3)</b> Ubica la rama: materna, paterna o de pareja. Marca 🕊️ si ya partió.<br><b>4)</b> Cada luna agrega 1–2 personas o 1 historia. En un ciclo (13 lunas) tendrás tu círculo base.</p></div>' +
       '<div class="si-card"><h4>💬 Preguntas que abren memoria</h4><p>¿Qué olor/receta me recuerda a esta persona? · ¿Qué dicho repetía? · ¿Qué superó en su vida? · ¿Qué quiero heredar y qué elijo soltar? · ¿Qué le agradecería hoy en voz alta? Anota lo que salga en “historia/honra”.</p></div>' +
       '<div class="si-card"><h4>🌙 Las lunas de nacimiento</h4><p>Si tienes la fecha, la luna se calcula sola. Si no la tienes (abuelos antiguos), elige la luna manual que te diga la familia o deja la que sientas: lo importante es que esté en el círculo. Los cumpleaños del año se ven con su luna en “Círculo lunar”.</p></div>' +
       '<div class="si-card"><h4>🤝 Cuidado y respeto</h4><p>Hay historias dolorosas (ausencias, violencia, secretos). No fuerces: anota solo lo que puedas sostener. Si algo te remueve fuerte, apóyate en 🪞 Autoconocimiento, 🔁 Recapitulación o tu red/CESFAM. Los datos quedan solo en este dispositivo: comparte únicamente lo que decidas.</p></div>' +
-      '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="arbFGoFam" class="btn btn-accent" style="width:auto">👨‍👩‍👧 Empezar mi familia →</button></div>' +
+      '<div class="dlg-actions su-59a5a8"><button type="button" id="arbFGoFam" class="btn btn-accent su-30e741">👨‍👩‍👧 Empezar mi familia →</button></div>' +
     '</div>' +
     '<div id="arbFFam" class="hidden">' +
-      '<div class="menstrual-card" style="border-color:var(--gold)"><h4>➕ Agregar persona</h4>' +
-      '<div class="conv-row"><label style="flex:2">Nombre * <input type="text" id="arbFNombre" placeholder="ej: Abuela Rosa" maxlength="40"></label><label>Vínculo <select id="arbFVinc">' + ARB_VINCULOS.map(function (v) { return '<option>' + v + '</option>'; }).join('') + '</select></label></div>' +
+      '<div class="menstrual-card su-68a1a9"><h4>➕ Agregar persona</h4>' +
+      '<div class="conv-row"><label class="su-4b3de7">Nombre * <input type="text" id="arbFNombre" placeholder="ej: Abuela Rosa" maxlength="40"></label><label>Vínculo <select id="arbFVinc">' + ARB_VINCULOS.map(function (v) { return '<option>' + v + '</option>'; }).join('') + '</select></label></div>' +
       '<div class="conv-row"><label>Rama <select id="arbFRama">' + ARB_RAMAS.map(function (v) { return '<option>' + v + '</option>'; }).join('') + '</select></label><label>Nacimiento <input type="date" id="arbFNac"></label><label>Luna <select id="arbFLuna">' + Array.from({ length: 13 }, function (_, i) { return '<option value="' + (i + 1) + '">Luna ' + (i + 1) + '</option>'; }).join('') + '</select></label></div>' +
-      '<div class="conv-row"><label style="flex:2">Lugar / territorio <input type="text" id="arbFLugar" placeholder="ej: Lirquén, Penco" maxlength="40"></label><label class="check-row" style="align-self:flex-end"><input type="checkbox" id="arbFPartio"> 🕊️ ya partió</label></div>' +
+      '<div class="conv-row"><label class="su-4b3de7">Lugar / territorio <input type="text" id="arbFLugar" placeholder="ej: Lirquén, Penco" maxlength="40"></label><label class="check-row su-ffd20f"><input type="checkbox" id="arbFPartio"> 🕊️ ya partió</label></div>' +
       '<label>Historia / honra <input type="text" id="arbFNota" placeholder="ej: me enseñó el charquicán y a saludar al mar" maxlength="120"></label>' +
-      '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="arbFAdd" class="btn btn-accent" style="width:auto">+ Agregar al árbol</button><button type="button" id="arbFCancelEdit" class="btn hidden" style="width:auto">Cancelar</button></div>' +
-      '<p class="muted" style="font-size:11px">Si pones fecha de nacimiento, la luna se autocompleta. Si no la sabes, elige la luna manual.</p></div>' +
-      '<div class="conv-row" style="margin-top:10px"><label style="flex:2">🔍 Buscar <input type="text" id="arbFQ" placeholder="nombre, vínculo, lugar..." autocomplete="off"></label><label>Rama <select id="arbFRamaF"><option value="todas">Todas</option>' + ARB_RAMAS.map(function (v) { return '<option>' + v + '</option>'; }).join('') + '</select></label></div>' +
-      '<div id="arbFFamList" class="habits-list" style="margin-top:8px;max-height:300px"></div>' +
-      '<div class="dlg-actions" style="justify-content:space-between;margin-top:8px"><span id="arbFFamStats" class="muted" style="font-size:11px"></span><span style="display:flex;gap:8px"><button type="button" id="arbFShare" class="btn" style="width:auto">📤 Compartir</button><button type="button" id="arbFClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar todo</button></span></div>' +
+      '<div class="dlg-actions su-59a5a8"><button type="button" id="arbFAdd" class="btn btn-accent su-30e741">+ Agregar al árbol</button><button type="button" id="arbFCancelEdit" class="btn hidden su-30e741">Cancelar</button></div>' +
+      '<p class="muted su-11a508">Si pones fecha de nacimiento, la luna se autocompleta. Si no la sabes, elige la luna manual.</p></div>' +
+      '<div class="conv-row su-d2c171"><label class="su-4b3de7">🔍 Buscar <input type="text" id="arbFQ" placeholder="nombre, vínculo, lugar..." autocomplete="off"></label><label>Rama <select id="arbFRamaF"><option value="todas">Todas</option>' + ARB_RAMAS.map(function (v) { return '<option>' + v + '</option>'; }).join('') + '</select></label></div>' +
+      '<div id="arbFFamList" class="habits-list su-8c96f6"></div>' +
+      '<div class="dlg-actions su-efea1d"><span id="arbFFamStats" class="muted su-11a508"></span><span class="su-a76d59"><button type="button" id="arbFShare" class="btn su-30e741">📤 Compartir</button><button type="button" id="arbFClear" class="btn su-214f75">🗑 Borrar todo</button></span></div>' +
     '</div>' +
     '<div id="arbFArb" class="hidden">' +
-      '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🌳 Mi árbol</h4><p class="muted" style="font-size:11px">De arriba (ancestros) hacia abajo (descendencia). Toca <b>+ vínculo</b> para agregar a quien falta, ✏️ para editar o 🕯️ para honrar.</p>' +
+      '<div class="menstrual-card su-68a1a9"><h4>🌳 Mi árbol</h4><p class="muted su-11a508">De arriba (ancestros) hacia abajo (descendencia). Toca <b>+ vínculo</b> para agregar a quien falta, ✏️ para editar o 🕯️ para honrar.</p>' +
       '<div id="arbFTree"></div>' +
-      '<div class="dlg-actions" style="justify-content:space-between;margin-top:8px"><span id="arbFTreeStats" class="muted" style="font-size:11px"></span><button type="button" id="arbFGoAdd" class="btn" style="width:auto">➕ Agregar persona</button></div></div>' +
+      '<div class="dlg-actions su-efea1d"><span id="arbFTreeStats" class="muted su-11a508"></span><button type="button" id="arbFGoAdd" class="btn su-30e741">➕ Agregar persona</button></div></div>' +
     '</div>' +
     '<div id="arbFCir" class="hidden">' +
-      '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🌙 Círculo de las 13 lunas</h4><p class="muted" style="font-size:11px">Cada luna agrupa a quienes nacieron en ella. Un círculo lleno = linaje presente; un vacío = historia por preguntar.</p>' +
-      '<div id="arbFCircle" style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:8px 0"></div>' +
-      '<span id="arbFCirStats" class="muted" style="font-size:11px"></span></div>' +
+      '<div class="menstrual-card su-68a1a9"><h4>🌙 Círculo de las 13 lunas</h4><p class="muted su-11a508">Cada luna agrupa a quienes nacieron en ella. Un círculo lleno = linaje presente; un vacío = historia por preguntar.</p>' +
+      '<div id="arbFCircle" class="su-fdf328"></div>' +
+      '<span id="arbFCirStats" class="muted su-11a508"></span></div>' +
     '</div>' +
     '<div id="arbFHon" class="hidden">' +
-      '<div class="menstrual-card" style="border-color:var(--gold)"><h4>💌 Carta de honra</h4>' +
+      '<div class="menstrual-card su-68a1a9"><h4>💌 Carta de honra</h4>' +
       '<div class="conv-row"><label>Para <input type="text" id="arbFCartaPara" placeholder="ej: mi mamá" maxlength="30"></label><label>Fecha <input type="date" id="arbFCartaFecha"></label></div>' +
       '<label>Carta <textarea id="arbFCartaTexto" rows="3" placeholder="Lo que heredé de ti... lo que te agradezco... lo que suelto..." maxlength="800"></textarea></label>' +
-      '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="arbFCartaAdd" class="btn btn-accent" style="width:auto">+ Guardar carta</button></div>' +
-      '<div id="arbFCartas" class="habits-list" style="margin-top:8px;max-height:220px"></div></div>' +
-      '<div class="menstrual-card" style="margin-top:10px"><h4>🕯️ Encender una vela</h4>' +
-      '<div class="conv-row"><label style="flex:2">Por quién <input type="text" id="arbFVelaPara" placeholder="ej: abuelo Manuel" maxlength="30"></label><label style="flex:2">Intención <input type="text" id="arbFVelaInt" placeholder="ej: gracias por el oficio" maxlength="60"></label></div>' +
-      '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="arbFVelaAdd" class="btn" style="width:auto">🕯️ Encender hoy</button></div>' +
-      '<div id="arbFVelas" class="habits-list" style="margin-top:8px;max-height:200px"></div></div>' +
+      '<div class="dlg-actions su-59a5a8"><button type="button" id="arbFCartaAdd" class="btn btn-accent su-30e741">+ Guardar carta</button></div>' +
+      '<div id="arbFCartas" class="habits-list su-ebf445"></div></div>' +
+      '<div class="menstrual-card su-d2c171"><h4>🕯️ Encender una vela</h4>' +
+      '<div class="conv-row"><label class="su-4b3de7">Por quién <input type="text" id="arbFVelaPara" placeholder="ej: abuelo Manuel" maxlength="30"></label><label class="su-4b3de7">Intención <input type="text" id="arbFVelaInt" placeholder="ej: gracias por el oficio" maxlength="60"></label></div>' +
+      '<div class="dlg-actions su-59a5a8"><button type="button" id="arbFVelaAdd" class="btn su-30e741">🕯️ Encender hoy</button></div>' +
+      '<div id="arbFVelas" class="habits-list su-3f7611"></div></div>' +
     '</div>');
   var b = $('btnArbolFull');
   if (b) b.onclick = function () { switchArbolTab('Guia'); renderArbolAll(); openDlg('arbolFullDialog'); };
@@ -426,9 +426,9 @@ function renderRecapInv() {
   });
   box.innerHTML = fil.length ? fil.map(function (r) {
     var col = r.estado === 'liberado' ? '#8fd694' : (r.estado === 'en proceso' ? '#e8c56a' : '#c9a9c9');
-    return '<div class="habit-item"><div style="display:flex;justify-content:space-between;gap:8px;align-items:center"><span><b>' + esc(r.titulo) + '</b></span><span class="chip" style="font-size:10px;border-color:' + col + '55;color:' + col + '">' + esc(r.estado || 'pendiente') + '</span></div>' +
-      '<div class="muted" style="font-size:11px;margin-top:4px">' + (r.persona ? '👤 ' + esc(r.persona) + ' · ' : '') + (r.edad ? '⏳ ' + esc(r.edad) + ' · ' : '') + (r.emo ? '💧 ' + esc(r.emo) : '') + ' · intensidad ' + (r.inten || 0) + '/10' + (r.nota ? '<br>📝 ' + esc(r.nota) : '') + '</div>' +
-      '<div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap"><button class="btn" style="width:auto;font-size:11px" data-edit="' + r.id + '">✏️</button><button class="btn" style="width:auto;font-size:11px" data-next="' + r.id + '" title="Avanzar estado">⏭ ' + (r.estado === 'pendiente' ? 'en proceso' : 'liberado') + '</button><button class="btn" style="width:auto;font-size:11px" data-ses="' + r.id + '" title="Llevar a sesión">🧘 Sesión</button><button class="btn" style="width:auto;font-size:11px;color:#e76e8a" data-del="' + r.id + '">✕</button></div></div>';
+    return '<div class="habit-item"><div class="su-6bf84b"><span><b>' + esc(r.titulo) + '</b></span><span class="chip" style="font-size:10px;border-color:' + col + '55;color:' + col + '">' + esc(r.estado || 'pendiente') + '</span></div>' +
+      '<div class="muted su-cdff1d">' + (r.persona ? '👤 ' + esc(r.persona) + ' · ' : '') + (r.edad ? '⏳ ' + esc(r.edad) + ' · ' : '') + (r.emo ? '💧 ' + esc(r.emo) : '') + ' · intensidad ' + (r.inten || 0) + '/10' + (r.nota ? '<br>📝 ' + esc(r.nota) : '') + '</div>' +
+      '<div class="su-faf7a9"><button class="btn su-337714" data-edit="' + r.id + '">✏️</button><button class="btn su-337714" data-next="' + r.id + '" title="Avanzar estado">⏭ ' + (r.estado === 'pendiente' ? 'en proceso' : 'liberado') + '</button><button class="btn su-337714" data-ses="' + r.id + '" title="Llevar a sesión">🧘 Sesión</button><button class="btn su-9b8fb7" data-del="' + r.id + '">✕</button></div></div>';
   }).join('') : '<p class="muted">Inventario vacío. Anota 1 evento pendiente arriba: lo que se nombra, se puede soltar.</p>';
   var st = $('recInvStats');
   if (st) st.textContent = d.length + ' eventos · ' + d.filter(function (r) { return r.estado === 'liberado'; }).length + ' liberados · ' + d.filter(function (r) { return r.estado === 'en proceso'; }).length + ' en proceso';
@@ -444,8 +444,8 @@ function renderRecapSes() {
   var box = $('recSesList'); if (!box) return;
   var d = getRecapSes().slice().sort(function (a, b) { return b.fecha.localeCompare(a.fecha); });
   box.innerHTML = d.length ? d.slice(0, 40).map(function (r) {
-    return '<div class="habit-item"><b>🧘 ' + r.fecha + '</b> · ' + (+r.min || 0) + ' min · ' + esc(r.tec || '') + '<br><span class="muted" style="font-size:11px">📌 ' + esc(r.evento || 'libre') + ' · ' + (r.antes !== '' ? r.antes + '→' + r.despues + '/10' : '') + ' · ' + esc(lunaTxt(r.fecha)) + '</span>' + (r.insight ? '<p style="font-size:12px">💡 ' + esc(r.insight) + '</p>' : '') +
-      '<div style="display:flex;gap:6px"><button class="btn" style="width:auto;font-size:11px" data-share="' + r.id + '">📤</button><button class="btn" style="width:auto;font-size:11px;color:#e76e8a" data-del="' + r.id + '">✕</button></div></div>';
+    return '<div class="habit-item"><b>🧘 ' + r.fecha + '</b> · ' + (+r.min || 0) + ' min · ' + esc(r.tec || '') + '<br><span class="muted su-11a508">📌 ' + esc(r.evento || 'libre') + ' · ' + (r.antes !== '' ? r.antes + '→' + r.despues + '/10' : '') + ' · ' + esc(lunaTxt(r.fecha)) + '</span>' + (r.insight ? '<p class="su-6cb285">💡 ' + esc(r.insight) + '</p>' : '') +
+      '<div class="su-49cd09"><button class="btn su-337714" data-share="' + r.id + '">📤</button><button class="btn su-9b8fb7" data-del="' + r.id + '">✕</button></div></div>';
   }).join('') : '<p class="muted">Sin sesiones aún. Agenda 10 minutos hoy: un evento, una respiración, una frase de cierre.</p>';
   box.querySelectorAll('[data-del]').forEach(function (b) { b.onclick = function () { if (!confirm('¿Borrar sesión?')) return; var dd = getRecapSes(); var i = dd.findIndex(function (x) { return x.id === b.getAttribute('data-del'); }); if (i >= 0) dd.splice(i, 1); save(); renderRecapSes(); renderRecapAva(); }; });
   box.querySelectorAll('[data-share]').forEach(function (b) { b.onclick = function () { var dd = getRecapSes(); var r = dd.find(function (x) { return x.id === b.getAttribute('data-share'); }); if (r) share('🔁 Sesión de recapitulación ' + r.fecha, '📌 ' + (r.evento || '') + '\n' + r.tec + ' · ' + r.min + ' min\n💡 ' + (r.insight || '')); }; });
@@ -458,10 +458,10 @@ function renderRecapAva() {
   var lib = inv.filter(function (r) { return r.estado === 'liberado'; }).length;
   var pct = inv.length ? Math.round(lib / inv.length * 100) : 0;
   var mins = ses.reduce(function (a, r) { return a + (+r.min || 0); }, 0);
-  box.innerHTML = '<p class="muted" style="font-size:11px">🔓 Liberados: <b>' + lib + '/' + inv.length + '</b> (' + pct + '%)</p>' +
-    '<div style="background:var(--panel);border-radius:6px;height:10px;overflow:hidden"><div style="width:' + pct + '%;height:100%;background:linear-gradient(90deg,#7ab8ff,#e8c56a,#8fd694)"></div></div>' +
-    '<p class="muted" style="font-size:11px;margin-top:6px">🧘 ' + ses.length + ' sesiones · ⏱ ' + mins + ' min · 🔥 racha ' + recapRacha() + ' días</p>' +
-    '<p class="muted" style="font-size:11px">Ritmo sugerido: 1 evento por sesión, 2–3 sesiones por luna. Lo liberado se celebra; lo pendiente se respeta.</p>';
+  box.innerHTML = '<p class="muted su-11a508">🔓 Liberados: <b>' + lib + '/' + inv.length + '</b> (' + pct + '%)</p>' +
+    '<div class="su-ab9537"><div style="width:' + pct + '%;height:100%;background:linear-gradient(90deg,#7ab8ff,#e8c56a,#8fd694)"></div></div>' +
+    '<p class="muted su-e13d76">🧘 ' + ses.length + ' sesiones · ⏱ ' + mins + ' min · 🔥 racha ' + recapRacha() + ' días</p>' +
+    '<p class="muted su-11a508">Ritmo sugerido: 1 evento por sesión, 2–3 sesiones por luna. Lo liberado se celebra; lo pendiente se respeta.</p>';
 }
 function renderRecapAll() { try { renderRecapInv(); } catch (e) {} try { renderRecapSes(); } catch (e) {} try { renderRecapAva(); } catch (e) {} try { renderRecapVida(); } catch (e) {} }
 
@@ -489,17 +489,17 @@ function renderRecapVida() {
   if (!fil.length) {
     box.innerHTML = '<p class="muted">Tu línea de vida está en blanco. Agrega arriba tu primer recuerdo: de dónde vienes, qué te marcó, qué te hizo fuerte.</p>';
   } else {
-    box.innerHTML = '<div style="position:relative;padding-left:22px">' +
-      '<div style="position:absolute;left:7px;top:6px;bottom:6px;width:2px;background:linear-gradient(#7ab8ff,#e8c56a,#8fd694);border-radius:2px"></div>' +
+    box.innerHTML = '<div class="su-339c8e">' +
+      '<div class="su-8b89a7"></div>' +
       fil.map(function (r) {
         var luna = r.fecha ? lunaTxt(r.fecha) : '';
-        return '<div style="position:relative;margin:0 0 10px 0">' +
-          '<div style="position:absolute;left:-19px;top:14px;width:10px;height:10px;border-radius:50%;background:var(--gold,#e8c56a);box-shadow:0 0 0 3px rgba(232,197,106,.2)"></div>' +
-          '<div class="habit-item" style="margin:0"><div style="display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap"><span><b>' + esc(r.titulo || 'Sin título') + '</b></span><span class="chip" style="font-size:10px">' + esc(r.etapa || '') + '</span></div>' +
-          '<div class="muted" style="font-size:11px;margin-top:4px">' + (r.fecha ? '📅 ' + esc(r.fecha) + (luna ? ' · ' + esc(luna) : '') + ' · ' : '') + (r.edad ? '⏳ ' + esc(r.edad) : '') + '</div>' +
-          (r.historia ? '<p style="font-size:12px;white-space:pre-wrap;margin:6px 0 0 0">' + esc(r.historia) + '</p>' : '') +
-          (r.aprendizaje ? '<p style="font-size:12px;margin:6px 0 0 0">🌱 <i>' + esc(r.aprendizaje) + '</i></p>' : '') +
-          '<div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap"><button class="btn" style="width:auto;font-size:11px" data-edit="' + r.id + '">✏️ Editar</button><button class="btn" style="width:auto;font-size:11px" data-inv="' + r.id + '" title="Llevar al inventario para trabajarlo">🔁 Al inventario</button><button class="btn" style="width:auto;font-size:11px" data-share="' + r.id + '">📤</button><button class="btn" style="width:auto;font-size:11px;color:#e76e8a" data-del="' + r.id + '">✕</button></div></div></div>';
+        return '<div class="su-984467">' +
+          '<div class="su-dd2536"></div>' +
+          '<div class="habit-item su-116966"><div class="su-34136d"><span><b>' + esc(r.titulo || 'Sin título') + '</b></span><span class="chip su-0d5be0">' + esc(r.etapa || '') + '</span></div>' +
+          '<div class="muted su-cdff1d">' + (r.fecha ? '📅 ' + esc(r.fecha) + (luna ? ' · ' + esc(luna) : '') + ' · ' : '') + (r.edad ? '⏳ ' + esc(r.edad) : '') + '</div>' +
+          (r.historia ? '<p class="su-e02c38">' + esc(r.historia) + '</p>' : '') +
+          (r.aprendizaje ? '<p class="su-4da69d">🌱 <i>' + esc(r.aprendizaje) + '</i></p>' : '') +
+          '<div class="su-39c4d3"><button class="btn su-337714" data-edit="' + r.id + '">✏️ Editar</button><button class="btn su-337714" data-inv="' + r.id + '" title="Llevar al inventario para trabajarlo">🔁 Al inventario</button><button class="btn su-337714" data-share="' + r.id + '">📤</button><button class="btn su-9b8fb7" data-del="' + r.id + '">✕</button></div></div></div>';
       }).join('') + '</div>';
   }
   var st = $('recVidaStats');
@@ -524,12 +524,12 @@ function renderRecapVida() {
 function setupRecap() {
   makeDialog('recapDialog', '🔁 Recapitulación — repasar para liberar',
     'Práctica tolteca y psicológica de <b>repasar tu vida para recuperar energía</b>: nombras, respiras, comprendes y sueltas. Un evento a la vez. Todo queda <b>privado y local</b>.',
-    '<div class="timer-tabs" style="flex-wrap:wrap;margin-bottom:10px">' +
-    '<button type="button" id="tabRecGuia" class="btn btn-accent" style="width:auto">📖 Guía</button>' +
-    '<button type="button" id="tabRecVida" class="btn" style="width:auto">🌿 Línea de vida</button>' +
-    '<button type="button" id="tabRecInv" class="btn" style="width:auto">📋 Inventario</button>' +
-    '<button type="button" id="tabRecSes" class="btn" style="width:auto">🧘 Sesiones</button>' +
-    '<button type="button" id="tabRecAva" class="btn" style="width:auto">📊 Mi avance</button></div>' +
+    '<div class="timer-tabs su-dd1da5">' +
+    '<button type="button" id="tabRecGuia" class="btn btn-accent su-30e741">📖 Guía</button>' +
+    '<button type="button" id="tabRecVida" class="btn su-30e741">🌿 Línea de vida</button>' +
+    '<button type="button" id="tabRecInv" class="btn su-30e741">📋 Inventario</button>' +
+    '<button type="button" id="tabRecSes" class="btn su-30e741">🧘 Sesiones</button>' +
+    '<button type="button" id="tabRecAva" class="btn su-30e741">📊 Mi avance</button></div>' +
     '<div id="recGuia">' +
       '<div class="si-card"><h4>🔁 ¿Qué es recapitular?</h4><p>Es <b>volver a pasar por tu historia con conciencia</b>: recuerdas un evento con el cuerpo (dónde estabas, qué sentiste), respiras para soltar la carga y rescatas el aprendizaje. Los toltecas (Castaneda) la usan para recuperar energía atrapada en el pasado; la psicología la reconoce como exposición + reprocesamiento + perdón. No cambias lo que pasó: <b>cambias lo que pesa</b>.</p></div>' +
       '<div class="si-card"><h4>🧭 ¿Para qué sirve y para qué no?</h4><p><b>Sirve para:</b> rencores viejos, vergüenzas, duelos atorados, patrones que se repiten, miedo que ya no corresponde.<br><b>No es para:</b> borrar culpas sin reparar, apurar un duelo fresco ni revivir trauma grave a solas. Si un recuerdo te desborda (llanto incontrolable, disociación, ideas de daño), <b>detente y pide apoyo</b>: *4141 (Chile, 24h), tu CESFAM o terapeuta. Con trauma grave, hazla acompañada.</p></div>' +
@@ -537,43 +537,43 @@ function setupRecap() {
       '<div class="si-card"><h4>🌬️ La respiración de barrido (corazón de la práctica)</h4><p>Inhala girando suavemente la cabeza a la <b>derecha</b> recogiendo la escena; exhala girando a la <b>izquierda</b> soltándola. 10–20 ciclos por recuerdo, sin forzar. Si te mareas, vuelve a respiración normal. Cierra con 3 respiraciones al centro agradeciendo el aprendizaje.</p></div>' +
       '<div class="si-card"><h4>📝 Sesión tipo (10–20 min)</h4><p><b>1)</b> Nombra: ¿qué pasó, con quién, a qué edad?<br><b>2)</b> Siente: ¿dónde lo siento en el cuerpo? ¿del 0 al 10?<br><b>3)</b> Barre con la respiración 10–20 ciclos.<br><b>4)</b> Comprende: ¿qué necesitaba yo entonces? ¿qué necesita hoy?<br><b>5)</b> Repara o perdona (a veces basta una frase; otras pide un acto real).<br><b>6)</b> Anota 1 insight y marca intensidad final.<br><b>7)</b> Cierra: agua, caminar, anotar. No encadenes 3 eventos fuertes seguidos.</p></div>' +
       '<div class="si-card"><h4>⚠️ Cuidados</h4><p>Una sesión = un evento. Si la intensidad sube a 9–10 y no baja, cierra con respiración normal y retoma otro día o con apoyo. No uses alcohol/drogas para “recordar mejor”. Lo liberado se marca 🔓; lo que vuelve se trabaja de nuevo sin culpa: las capas se sueltan por lunas.</p></div>' +
-      '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="recGoInv" class="btn btn-accent" style="width:auto">📋 Hacer mi inventario →</button> <button type="button" id="recGoVida" class="btn" style="width:auto">🌿 Ir a mi línea de vida →</button></div>' +
+      '<div class="dlg-actions su-59a5a8"><button type="button" id="recGoInv" class="btn btn-accent su-30e741">📋 Hacer mi inventario →</button> <button type="button" id="recGoVida" class="btn su-30e741">🌿 Ir a mi línea de vida →</button></div>' +
     '</div>' +
     '<div id="recVida" class="hidden">' +
       '<div class="si-card"><h4>🌿 Tu línea de vida</h4><p>Aquí vas <b>agregando tu historia por orden</b>: infancia, adolescencia, juventud, adultez... Cada momento es un punto en tu línea. Después, si alguno pesa, lo llevas con 🔁 al inventario para trabajarlo. Todo queda <b>privado en este dispositivo</b>.</p></div>' +
-      '<div class="menstrual-card" style="border-color:var(--gold)"><h4>➕ Agregar momento de mi historia</h4>' +
+      '<div class="menstrual-card su-68a1a9"><h4>➕ Agregar momento de mi historia</h4>' +
       '<label>Momento / título * <input type="text" id="recVidaTitulo" placeholder="ej: cuando nací, mi primer colegio, el viaje a..." maxlength="60"></label>' +
       '<div class="conv-row"><label>Fecha (si la recuerdas) <input type="date" id="recVidaFecha"></label><label>Edad / época <input type="text" id="recVidaEdad" placeholder="ej: 8 años, 1998" maxlength="20"></label></div>' +
       '<label>Etapa <select id="recVidaEtapa">' + RECAP_VIDA_ETAPAS.map(function (e) { return '<option>' + e + '</option>'; }).join('') + '</select></label>' +
       '<label>Mi historia <textarea id="recVidaHistoria" rows="3" placeholder="cuéntala como la recuerdas: dónde estabas, quiénes estaban, qué pasó..." maxlength="1200"></textarea></label>' +
       '<label>🌱 ¿Qué aprendí / qué me dejó? <input type="text" id="recVidaAprend" placeholder="ej: aprendí a ser fuerte, a pedir ayuda..." maxlength="140"></label>' +
-      '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="recVidaAdd" class="btn btn-accent" style="width:auto">+ Guardar en mi línea</button><button type="button" id="recVidaCancel" class="btn hidden" style="width:auto">Cancelar</button></div></div>' +
-      '<div class="conv-row" style="margin-top:10px"><label style="flex:2">🔍 Buscar <input type="text" id="recVidaQ" placeholder="título, palabra..." autocomplete="off"></label><label>Etapa <select id="recVidaF"><option value="todas">Todas</option>' + RECAP_VIDA_ETAPAS.map(function (e) { return '<option>' + e + '</option>'; }).join('') + '</select></label></div>' +
-      '<div id="recVidaList" style="margin-top:8px;max-height:340px;overflow-y:auto"></div>' +
-      '<div class="dlg-actions" style="justify-content:space-between;margin-top:8px"><span id="recVidaStats" class="muted" style="font-size:11px"></span><button type="button" id="recVidaShare" class="btn" style="width:auto">📤 Compartir mi historia</button></div>' +
+      '<div class="dlg-actions su-59a5a8"><button type="button" id="recVidaAdd" class="btn btn-accent su-30e741">+ Guardar en mi línea</button><button type="button" id="recVidaCancel" class="btn hidden su-30e741">Cancelar</button></div></div>' +
+      '<div class="conv-row su-d2c171"><label class="su-4b3de7">🔍 Buscar <input type="text" id="recVidaQ" placeholder="título, palabra..." autocomplete="off"></label><label>Etapa <select id="recVidaF"><option value="todas">Todas</option>' + RECAP_VIDA_ETAPAS.map(function (e) { return '<option>' + e + '</option>'; }).join('') + '</select></label></div>' +
+      '<div id="recVidaList" class="su-8be9b1"></div>' +
+      '<div class="dlg-actions su-efea1d"><span id="recVidaStats" class="muted su-11a508"></span><button type="button" id="recVidaShare" class="btn su-30e741">📤 Compartir mi historia</button></div>' +
     '</div>' +
     '<div id="recInv" class="hidden">' +
-      '<div class="menstrual-card" style="border-color:var(--gold)"><h4>➕ Evento al inventario</h4>' +
+      '<div class="menstrual-card su-68a1a9"><h4>➕ Evento al inventario</h4>' +
       '<label>Evento * <input type="text" id="recInvTitulo" placeholder="ej: pelea con mi hermano en el 2010" maxlength="60"></label>' +
-      '<div class="conv-row"><label style="flex:2">Persona relacionada <input type="text" id="recInvPersona" placeholder="ej: mi hermano" maxlength="30"></label><label>Edad / época <input type="text" id="recInvEdad" placeholder="ej: 15 años" maxlength="20"></label></div>' +
-      '<div class="conv-row"><label>Emoción <select id="recInvEmo">' + RECAP_EMO.map(function (e) { return '<option>' + e + '</option>'; }).join('') + '</select></label><label>Intensidad (0-10) <input type="number" id="recInvInten" min="0" max="10" value="5" style="width:80px"></label><label>Estado <select id="recInvEstado"><option value="pendiente">pendiente</option><option value="en proceso">en proceso</option><option value="liberado">liberado</option></select></label></div>' +
+      '<div class="conv-row"><label class="su-4b3de7">Persona relacionada <input type="text" id="recInvPersona" placeholder="ej: mi hermano" maxlength="30"></label><label>Edad / época <input type="text" id="recInvEdad" placeholder="ej: 15 años" maxlength="20"></label></div>' +
+      '<div class="conv-row"><label>Emoción <select id="recInvEmo">' + RECAP_EMO.map(function (e) { return '<option>' + e + '</option>'; }).join('') + '</select></label><label>Intensidad (0-10) <input type="number" id="recInvInten" min="0" max="10" value="5" class="su-8573ba"></label><label>Estado <select id="recInvEstado"><option value="pendiente">pendiente</option><option value="en proceso">en proceso</option><option value="liberado">liberado</option></select></label></div>' +
       '<label>Nota <input type="text" id="recInvNota" placeholder="lo que pesa en una frase..." maxlength="120"></label>' +
-      '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="recInvAdd" class="btn btn-accent" style="width:auto">+ Guardar</button><button type="button" id="recInvCancel" class="btn hidden" style="width:auto">Cancelar</button></div></div>' +
-      '<div class="conv-row" style="margin-top:10px"><label style="flex:2">🔍 Buscar <input type="text" id="recInvQ" placeholder="evento, persona..." autocomplete="off"></label><label>Estado <select id="recInvF"><option value="todos">Todos</option><option value="pendiente">pendiente</option><option value="en proceso">en proceso</option><option value="liberado">liberado</option></select></label></div>' +
-      '<div id="recInvList" class="habits-list" style="margin-top:8px;max-height:300px"></div>' +
-      '<div class="dlg-actions" style="justify-content:space-between;margin-top:8px"><span id="recInvStats" class="muted" style="font-size:11px"></span><button type="button" id="recInvShare" class="btn" style="width:auto">📤 Compartir resumen</button></div>' +
+      '<div class="dlg-actions su-59a5a8"><button type="button" id="recInvAdd" class="btn btn-accent su-30e741">+ Guardar</button><button type="button" id="recInvCancel" class="btn hidden su-30e741">Cancelar</button></div></div>' +
+      '<div class="conv-row su-d2c171"><label class="su-4b3de7">🔍 Buscar <input type="text" id="recInvQ" placeholder="evento, persona..." autocomplete="off"></label><label>Estado <select id="recInvF"><option value="todos">Todos</option><option value="pendiente">pendiente</option><option value="en proceso">en proceso</option><option value="liberado">liberado</option></select></label></div>' +
+      '<div id="recInvList" class="habits-list su-8c96f6"></div>' +
+      '<div class="dlg-actions su-efea1d"><span id="recInvStats" class="muted su-11a508"></span><button type="button" id="recInvShare" class="btn su-30e741">📤 Compartir resumen</button></div>' +
     '</div>' +
     '<div id="recSes" class="hidden">' +
-      '<div class="menstrual-card" style="border-color:var(--gold)"><h4>➕ Registrar sesión</h4>' +
-      '<div class="conv-row"><label>Fecha <input type="date" id="recSesFecha"></label><label>Minutos <input type="number" id="recSesMin" min="1" max="120" value="15" style="width:80px"></label></div>' +
+      '<div class="menstrual-card su-68a1a9"><h4>➕ Registrar sesión</h4>' +
+      '<div class="conv-row"><label>Fecha <input type="date" id="recSesFecha"></label><label>Minutos <input type="number" id="recSesMin" min="1" max="120" value="15" class="su-8573ba"></label></div>' +
       '<label>Evento trabajado <input type="text" id="recSesEvento" placeholder="elige del inventario o escribe libre" maxlength="60"></label>' +
-      '<div class="conv-row"><label style="flex:2">Técnica <select id="recSesTec">' + RECAP_TEC.map(function (e) { return '<option>' + e + '</option>'; }).join('') + '</select></label><label>Antes (0-10) <input type="number" id="recSesAntes" min="0" max="10" value="6" style="width:80px"></label><label>Después (0-10) <input type="number" id="recSesDespues" min="0" max="10" value="4" style="width:80px"></label></div>' +
+      '<div class="conv-row"><label class="su-4b3de7">Técnica <select id="recSesTec">' + RECAP_TEC.map(function (e) { return '<option>' + e + '</option>'; }).join('') + '</select></label><label>Antes (0-10) <input type="number" id="recSesAntes" min="0" max="10" value="6" class="su-8573ba"></label><label>Después (0-10) <input type="number" id="recSesDespues" min="0" max="10" value="4" class="su-8573ba"></label></div>' +
       '<label>💡 Insight / aprendizaje <input type="text" id="recSesInsight" placeholder="ej: necesitaba que me escucharan, hoy me escucho yo" maxlength="140"></label>' +
-      '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="recSesAdd" class="btn btn-accent" style="width:auto">+ Guardar sesión</button></div></div>' +
-      '<div id="recSesList" class="habits-list" style="margin-top:10px;max-height:300px"></div>' +
-      '<span id="recSesStats" class="muted" style="font-size:11px"></span>' +
+      '<div class="dlg-actions su-59a5a8"><button type="button" id="recSesAdd" class="btn btn-accent su-30e741">+ Guardar sesión</button></div></div>' +
+      '<div id="recSesList" class="habits-list su-e50587"></div>' +
+      '<span id="recSesStats" class="muted su-11a508"></span>' +
     '</div>' +
-    '<div id="recAva" class="hidden"><div id="recAvaBox" class="menstrual-card" style="border-color:var(--gold)"></div></div>');
+    '<div id="recAva" class="hidden"><div id="recAvaBox" class="menstrual-card su-68a1a9"></div></div>');
   var b = $('btnRecap');
   if (b) b.onclick = function () { if ($('recSesFecha') && !$('recSesFecha').value) $('recSesFecha').value = todayKey(); switchRecapTab('Guia'); renderRecapAll(); openDlg('recapDialog'); };
   if ($('tabRecGuia')) $('tabRecGuia').onclick = function () { switchRecapTab('Guia'); };
@@ -723,8 +723,8 @@ function renderDueloProc() {
   var box = $('dueFProcList'); if (!box) return;
   var d = getDueloCheck().slice().sort(function (a, b) { return b.fecha.localeCompare(a.fecha); });
   box.innerHTML = d.length ? d.slice(0, 30).map(function (r) {
-    return '<div class="habit-item"><b>' + r.fecha + '</b> · ' + esc(r.etapa || '') + ' · intensidad ' + (r.inten || 0) + '/10<br><span class="muted" style="font-size:11px">Necesito: ' + esc(r.neces || '') + ' · ' + esc(lunaTxt(r.fecha)) + '</span>' + (r.nota ? '<p style="font-size:12px">' + esc(r.nota) + '</p>' : '') +
-      '<button class="btn" style="width:auto;font-size:11px;color:#e76e8a" data-del="' + r.id + '">✕</button></div>';
+    return '<div class="habit-item"><b>' + r.fecha + '</b> · ' + esc(r.etapa || '') + ' · intensidad ' + (r.inten || 0) + '/10<br><span class="muted su-11a508">Necesito: ' + esc(r.neces || '') + ' · ' + esc(lunaTxt(r.fecha)) + '</span>' + (r.nota ? '<p class="su-6cb285">' + esc(r.nota) + '</p>' : '') +
+      '<button class="btn su-9b8fb7" data-del="' + r.id + '">✕</button></div>';
   }).join('') : '<p class="muted">Sin registros. Marca cómo estás hoy: ponerle nombre al dolor también es acompañarlo.</p>';
   box.querySelectorAll('[data-del]').forEach(function (b) { b.onclick = function () { if (!confirm('¿Borrar registro?')) return; var dd = getDueloCheck(); var i = dd.findIndex(function (x) { return x.id === b.getAttribute('data-del'); }); if (i >= 0) dd.splice(i, 1); save(); renderDueloProc(); }; });
   var st = $('dueFProcStats');
@@ -765,7 +765,7 @@ function renderDueloCal() {
     if (prox) {
       var dias = Math.round((new Date(prox.f + 'T12:00:00') - new Date(hoy + 'T12:00:00')) / 86400000);
       nextBox.innerHTML = '🔔 Próximo para <b>' + esc(p.nombre || '') + '</b>: <b>' + esc(prox.n) + '</b> → ' + prox.f +
-        (dias === 0 ? ' <span class="chip" style="font-size:10px">🕯️ HOY</span>' : ' <span class="chip" style="font-size:10px">en ' + dias + ' días</span>') +
+        (dias === 0 ? ' <span class="chip su-0d5be0">🕯️ HOY</span>' : ' <span class="chip su-0d5be0">en ' + dias + ' días</span>') +
         '<br><span class="muted">' + esc(lunaTxt(prox.f) || '') + ' · ' + esc(prox.txt) + '</span>';
     } else {
       nextBox.innerHTML = '✅ <b>' + esc(p.nombre || '') + '</b> al día: todos sus hitos honrados. La memoria sigue viva en 📓 Memoria viva.';
@@ -776,8 +776,8 @@ function renderDueloCal() {
     var isDone = !!done[key];
     var diff = Math.round((new Date(h.f + 'T12:00:00') - new Date(hoy + 'T12:00:00')) / 86400000);
     var est = h.f === hoy ? '🕯️ <b>HOY</b>' : (h.f < hoy ? (isDone ? 'honrado ✓' : 'pasó · márcalo si lo viviste') : 'en ' + diff + ' días');
-    return '<div class="si-card"' + (isDone ? ' style="opacity:.8;border-color:rgba(143,214,148,.45)"' : '') + '><h4>' + esc(h.n) + ' → ' + h.f + ' <span class="chip" style="font-size:10px">' + est + '</span>' + (h.tag ? ' <span class="chip" style="font-size:10px">' + esc(h.tag) + '</span>' : '') + '</h4><p>' + esc(h.txt) + ' <span class="muted">(' + esc(lunaTxt(h.f) || 'luna fuera de rango') + ')</span></p>' +
-      '<div style="display:flex;gap:6px"><button type="button" class="btn" style="width:auto;font-size:11px" data-hito="' + esc(key) + '">' + (isDone ? '↩ Desmarcar' : '✅ Marcar honrado') + '</button></div></div>';
+    return '<div class="si-card"' + (isDone ? ' class="su-48798b"' : '') + '><h4>' + esc(h.n) + ' → ' + h.f + ' <span class="chip su-0d5be0">' + est + '</span>' + (h.tag ? ' <span class="chip su-0d5be0">' + esc(h.tag) + '</span>' : '') + '</h4><p>' + esc(h.txt) + ' <span class="muted">(' + esc(lunaTxt(h.f) || 'luna fuera de rango') + ')</span></p>' +
+      '<div class="su-49cd09"><button type="button" class="btn su-337714" data-hito="' + esc(key) + '">' + (isDone ? '↩ Desmarcar' : '✅ Marcar honrado') + '</button></div></div>';
   }).join('');
   calBox.querySelectorAll('[data-hito]').forEach(function (b) {
     b.onclick = function () {
@@ -814,7 +814,7 @@ function renderDueloMem() {
   var mall = getDueloMem().slice().sort(function (a, b) { return b.fecha.localeCompare(a.fecha); });
   var m = mall.filter(function (r) { return fval === 'todas' || (r.para || '') === fval; });
   box.innerHTML = m.length ? m.map(function (r) {
-    return '<div class="habit-item"><b>' + esc(r.icon || '🕊️') + ' ' + esc(r.titulo) + '</b> <span class="chip" style="font-size:10px">' + esc(r.tipo) + '</span>' + (r.para ? ' <span class="chip" style="font-size:10px">para ' + esc(r.para) + '</span>' : '') + '<br><span class="muted" style="font-size:11px">' + r.fecha + ' · ' + esc(lunaTxt(r.fecha)) + '</span><p style="font-size:12px;white-space:pre-wrap">' + esc(r.texto) + '</p><div style="display:flex;gap:6px"><button class="btn" style="width:auto;font-size:11px" data-share="' + r.id + '">📤</button><button class="btn" style="width:auto;font-size:11px;color:#e76e8a" data-del="' + r.id + '">✕</button></div></div>';
+    return '<div class="habit-item"><b>' + esc(r.icon || '🕊️') + ' ' + esc(r.titulo) + '</b> <span class="chip su-0d5be0">' + esc(r.tipo) + '</span>' + (r.para ? ' <span class="chip su-0d5be0">para ' + esc(r.para) + '</span>' : '') + '<br><span class="muted su-11a508">' + r.fecha + ' · ' + esc(lunaTxt(r.fecha)) + '</span><p class="su-85c73c">' + esc(r.texto) + '</p><div class="su-49cd09"><button class="btn su-337714" data-share="' + r.id + '">📤</button><button class="btn su-9b8fb7" data-del="' + r.id + '">✕</button></div></div>';
   }).join('') : '<p class="muted">Vacío' + (fval === 'todas' ? '. Guarda su receta, su canción, su dicho, una carta que no alcanzaste a darle.' : ' para ' + esc(fval) + '. Guarda arriba la primera memoria para esta persona.') + '</p>';
   box.querySelectorAll('[data-del]').forEach(function (b) { b.onclick = function () { if (!confirm('¿Borrar memoria?')) return; var dd = getDueloMem(); var i = dd.findIndex(function (x) { return x.id === b.getAttribute('data-del'); }); if (i >= 0) dd.splice(i, 1); save(); renderDueloMem(); }; });
   box.querySelectorAll('[data-share]').forEach(function (b) { b.onclick = function () { var dd = getDueloMem(); var r = dd.find(function (x) { return x.id === b.getAttribute('data-share'); }); if (r) share('🕊️ Memoria viva: ' + r.titulo, r.texto); }; });
@@ -852,8 +852,8 @@ function renderDueloRitIdeas() {
     r._i = idx; return true;
   });
   box.innerHTML = list.length ? list.map(function (r) {
-    return '<div class="si-card"><h4>' + esc(r.n) + ' <span class="chip" style="font-size:10px">' + esc(r.mom) + '</span></h4><p>' + esc(r.txt) + '</p>' +
-      '<div style="display:flex;gap:6px"><button type="button" class="btn" style="width:auto;font-size:11px" data-tomar="' + r._i + '">＋ Tomar como compromiso (' + esc(r.frec) + ')</button></div></div>';
+    return '<div class="si-card"><h4>' + esc(r.n) + ' <span class="chip su-0d5be0">' + esc(r.mom) + '</span></h4><p>' + esc(r.txt) + '</p>' +
+      '<div class="su-49cd09"><button type="button" class="btn su-337714" data-tomar="' + r._i + '">＋ Tomar como compromiso (' + esc(r.frec) + ')</button></div></div>';
   }).join('') : '<p class="muted">Sin ideas con ese filtro. Prueba con “vela”, “carta” o “planta”.</p>';
   box.querySelectorAll('[data-tomar]').forEach(function (b) {
     b.onclick = function () {
@@ -874,9 +874,9 @@ function renderDueloRitComp() {
     var done = r.estado === 'cumplido';
     var diff = r.prox ? Math.round((new Date(r.prox + 'T12:00:00') - new Date(hoy + 'T12:00:00')) / 86400000) : null;
     var est = done ? 'cumplido ✓' : (!r.prox ? 'sin fecha' : (diff === 0 ? '🕯️ HOY' : (diff < 0 ? 'atrasado ' + (-diff) + ' días' : 'en ' + diff + ' días')));
-    return '<div class="habit-item"' + (done ? ' style="opacity:.75"' : '') + '><div style="display:flex;justify-content:space-between;gap:8px;align-items:center"><span><b>' + esc(r.nombre) + '</b></span><span class="chip" style="font-size:10px">' + esc(r.frec || '') + ' · ' + est + '</span></div>' +
-      '<div class="muted" style="font-size:11px;margin-top:4px">' + (r.prox ? '📅 próximo: ' + r.prox + ' · ' : '') + '✅ ' + (+r.veces || 0) + ' veces' + (r.ultima ? ' · último: ' + r.ultima : '') + '</div>' +
-      '<div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap">' + (done ? '' : '<button class="btn btn-accent" style="width:auto;font-size:11px" data-hecho="' + r.id + '">✅ Hecho hoy</button>') + '<button class="btn" style="width:auto;font-size:11px" data-edit="' + r.id + '">✏️</button><button class="btn" style="width:auto;font-size:11px;color:#e76e8a" data-del="' + r.id + '">✕</button></div></div>';
+    return '<div class="habit-item"' + (done ? ' class="su-df4d14"' : '') + '><div class="su-6bf84b"><span><b>' + esc(r.nombre) + '</b></span><span class="chip su-0d5be0">' + esc(r.frec || '') + ' · ' + est + '</span></div>' +
+      '<div class="muted su-cdff1d">' + (r.prox ? '📅 próximo: ' + r.prox + ' · ' : '') + '✅ ' + (+r.veces || 0) + ' veces' + (r.ultima ? ' · último: ' + r.ultima : '') + '</div>' +
+      '<div class="su-faf7a9">' + (done ? '' : '<button class="btn btn-accent su-337714" data-hecho="' + r.id + '">✅ Hecho hoy</button>') + '<button class="btn su-337714" data-edit="' + r.id + '">✏️</button><button class="btn su-9b8fb7" data-del="' + r.id + '">✕</button></div></div>';
   }).join('') : '<p class="muted">Sin compromisos. Toma una idea de arriba ☝️ o escribe la tuya abajo: un ritual chico y repetido sostiene más que uno grande y único.</p>';
   box.querySelectorAll('[data-hecho]').forEach(function (b) {
     b.onclick = function () {
@@ -928,7 +928,7 @@ function renderDueloRit() {
   var box = $('dueFVelas'); if (!box) return;
   var d = getDueloVelas().slice().sort(function (a, b) { return b.fecha.localeCompare(a.fecha); }).slice(0, 20);
   box.innerHTML = d.length ? d.map(function (r) {
-    return '<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center"><span>🕯️ <b>' + esc(r.para) + '</b><br><span class="muted" style="font-size:11px">' + r.fecha + ' · ' + esc(r.acto || '') + '</span></span><button class="btn" style="width:auto;font-size:11px;color:#e76e8a" data-del="' + r.id + '">✕</button></div>';
+    return '<div class="habit-item su-13313b"><span>🕯️ <b>' + esc(r.para) + '</b><br><span class="muted su-11a508">' + r.fecha + ' · ' + esc(r.acto || '') + '</span></span><button class="btn su-9b8fb7" data-del="' + r.id + '">✕</button></div>';
   }).join('') : '<p class="muted">Sin rituales aún. Un ritual chico y repetido sostiene más que uno grande y único.</p>';
   box.querySelectorAll('[data-del]').forEach(function (b) { b.onclick = function () { var dd = getDueloVelas(); var i = dd.findIndex(function (x) { return x.id === b.getAttribute('data-del'); }); if (i >= 0) dd.splice(i, 1); save(); renderDueloRit(); }; });
 }
@@ -937,69 +937,69 @@ function renderDueloAll() { try { renderDueloProc(); } catch (e) {} try { render
 function setupDueloFull() {
   makeDialog('dueloFullDialog', '🕊️ Duelo — guía y compañía para esta etapa',
     'Si estás viviendo una pérdida, esta sección <b>empieza por la guía</b>: léela primero, sin prisa. Luego registra tu proceso y guarda su memoria. Todo queda <b>privado y local</b>. No reemplaza acompañamiento profesional.',
-    '<div class="timer-tabs" style="flex-wrap:wrap;margin-bottom:10px">' +
-    '<button type="button" id="tabDueFGuia" class="btn btn-accent" style="width:auto">📖 Guía primero</button>' +
-    '<button type="button" id="tabDueFProc" class="btn" style="width:auto">💧 Mi proceso</button>' +
-    '<button type="button" id="tabDueFMem" class="btn" style="width:auto">📓 Memoria viva</button>' +
-    '<button type="button" id="tabDueFRit" class="btn" style="width:auto">🕯️ Rituales</button>' +
-    '<button type="button" id="tabDueFApo" class="btn" style="width:auto">🤝 Apoyo</button></div>' +
+    '<div class="timer-tabs su-dd1da5">' +
+    '<button type="button" id="tabDueFGuia" class="btn btn-accent su-30e741">📖 Guía primero</button>' +
+    '<button type="button" id="tabDueFProc" class="btn su-30e741">💧 Mi proceso</button>' +
+    '<button type="button" id="tabDueFMem" class="btn su-30e741">📓 Memoria viva</button>' +
+    '<button type="button" id="tabDueFRit" class="btn su-30e741">🕯️ Rituales</button>' +
+    '<button type="button" id="tabDueFApo" class="btn su-30e741">🤝 Apoyo</button></div>' +
     '<div id="dueFGuia">' +
-      '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🕊️ Primero: respira. El duelo no es un problema a resolver</h4><p style="font-size:12px;line-height:1.6">Es el <b>amor que sigue buscando a quién abrazar</b>. No es lineal: viene en oleaje — un día “bien” y al otro el llanto vuelve con un olor, una canción, una fecha. Eso es normal. No hay plazo correcto. Esta guía te ordena las primeras lunas para que no camines a ciegas.</p></div>' +
+      '<div class="menstrual-card su-68a1a9"><h4>🕊️ Primero: respira. El duelo no es un problema a resolver</h4><p class="su-616df7">Es el <b>amor que sigue buscando a quién abrazar</b>. No es lineal: viene en oleaje — un día “bien” y al otro el llanto vuelve con un olor, una canción, una fecha. Eso es normal. No hay plazo correcto. Esta guía te ordena las primeras lunas para que no camines a ciegas.</p></div>' +
       '<div class="si-card"><h4>🌊 Las etapas (pueden ir y volver)</h4><p><b>1) Shock / negación:</b> “no puede ser”. El cuerpo se enfría, cuesta comer/dormir.<br><b>2) Ira:</b> rabia con la vida, con otros, con quien partió, con una misma/o.<br><b>3) Negociación:</b> “y si hubiera...”. Culpa que busca control.<br><b>4) Tristeza profunda:</b> vacío, llanto, cansancio. El corazón entiende de a poco.<br><b>5) Integración:</b> el dolor no desaparece: cambia de lugar. Vuelven la risa y los proyectos, con su ausencia incluida.<br><span class="muted">En kimün mapuche el viaje se acompaña: las ballenas (trempulcahue) llevan a los justos al poniente; por eso se agradece y se despide con respeto, canto y memoria.</span></p></div>' +
       '<div class="si-card"><h4>📅 Qué esperar en el tiempo</h4><p><b>Primeras 72 h:</b> trámites, visitas, poco sueño. Come liviano, toma agua, acepta ayuda concreta (“te traigo comida”, “te acompaño al trámite”).<br><b>9 días (novenario):</b> en Chile se acompaña 9 noches con rezo, canto o círculo íntimo; el cierre ordena la despedida.<br><b>40 días:</b> misa o ritual de cuarentena, se ordenan sus cosas con calma.<br><b>Primera luna (28 días):</b> baja la visita y sube el vacío. Marca 1 ritual chico por semana.<br><b>3 lunas y 6 meses:</b> aparece el cansancio real. Ordena papeles/objetos sin apuro, por partes.<br><b>1 año y aniversarios:</b> primer ciclo de fechas sin su cuerpo (cumpleaños, fiestas, Todos los Santos). Planifícalas con compañía.<br>El 🕯️ <b>calendario de memoria</b> calcula todas estas fechas por ti y te avisa la próxima.</p></div>' +
       '<div class="si-card"><h4>✅ Qué ayuda · 🚫 qué evitar</h4><p><b>Ayuda:</b> dormir y comer a horas, caminar 10–20 min, escribirle cartas, cocinar su receta, pedir abrazos, decir su nombre, llorar cuando venga, mantener 1 hábito base.<br><b>Evita:</b> decidir grandes cambios el primer mes, aislarte por semanas, alcohol/drogas para dormir, frases que te exigen (“sé fuerte”, “ya supéralo”). A quien acompaña: mejor “estoy aquí, ¿te traigo algo?” que “llámame si necesitas”.</p></div>' +
       '<div class="si-card"><h4>🧒 Si hay niños</h4><p>Diles la verdad simple: “murió, su cuerpo dejó de funcionar y no va a volver. Te seguiremos cuidando”. Deja que pregunten muchas veces. Mantén rutinas, dibujo y cuentos (📖 Cuentos + 🗣️ Voz de los Abuelos). Si dejan de comer/jugar semanas o retroceden mucho, consulta en CESFAM.</p></div>' +
-      '<div class="si-card" style="border-color:#e76e8a"><h4>🚨 Cuándo pedir ayuda profesional</h4><p>Si por semanas no puedes comer/dormir/funcionar, si el dolor no te deja levantarte, si aparecen ideas de hacerte daño o de “irte con él/ella”, o si usas alcohol/pastillas para aguantar: <b>pide ayuda hoy</b>. Chile: <b>*4141</b> (prevención del suicidio, 24h), tu <b>CESFAM/SAR</b>, <b>Salud Responde 600 360 7777</b>. Pedir ayuda es cuidar a los que quedan, incluido tú.</p></div>' +
-      '<div class="dlg-actions" style="justify-content:flex-start;flex-wrap:wrap"><button type="button" id="dueFGoProc" class="btn btn-accent" style="width:auto">💧 Registrar cómo estoy →</button><button type="button" id="dueFGoMem" class="btn" style="width:auto">📓 Guardar su memoria →</button></div>' +
+      '<div class="si-card su-006fa0"><h4>🚨 Cuándo pedir ayuda profesional</h4><p>Si por semanas no puedes comer/dormir/funcionar, si el dolor no te deja levantarte, si aparecen ideas de hacerte daño o de “irte con él/ella”, o si usas alcohol/pastillas para aguantar: <b>pide ayuda hoy</b>. Chile: <b>*4141</b> (prevención del suicidio, 24h), tu <b>CESFAM/SAR</b>, <b>Salud Responde 600 360 7777</b>. Pedir ayuda es cuidar a los que quedan, incluido tú.</p></div>' +
+      '<div class="dlg-actions su-117179"><button type="button" id="dueFGoProc" class="btn btn-accent su-30e741">💧 Registrar cómo estoy →</button><button type="button" id="dueFGoMem" class="btn su-30e741">📓 Guardar su memoria →</button></div>' +
     '</div>' +
     '<div id="dueFProc" class="hidden">' +
-      '<div class="menstrual-card" style="border-color:var(--gold)"><h4>💧 ¿Cómo estoy hoy?</h4>' +
-      '<div class="conv-row"><label>Fecha <input type="date" id="dueFProcFecha"></label><label style="flex:2">Etapa que siento <select id="dueFProcEtapa">' + DUE_ETAPAS.map(function (e) { return '<option>' + e + '</option>'; }).join('') + '</select></label></div>' +
-      '<div class="conv-row"><label>Intensidad (0-10) <input type="number" id="dueFProcInten" min="0" max="10" value="6" style="width:80px"></label><label style="flex:2">Hoy necesito <select id="dueFProcNeces">' + DUE_NECES.map(function (e) { return '<option>' + e + '</option>'; }).join('') + '</select></label></div>' +
+      '<div class="menstrual-card su-68a1a9"><h4>💧 ¿Cómo estoy hoy?</h4>' +
+      '<div class="conv-row"><label>Fecha <input type="date" id="dueFProcFecha"></label><label class="su-4b3de7">Etapa que siento <select id="dueFProcEtapa">' + DUE_ETAPAS.map(function (e) { return '<option>' + e + '</option>'; }).join('') + '</select></label></div>' +
+      '<div class="conv-row"><label>Intensidad (0-10) <input type="number" id="dueFProcInten" min="0" max="10" value="6" class="su-8573ba"></label><label class="su-4b3de7">Hoy necesito <select id="dueFProcNeces">' + DUE_NECES.map(function (e) { return '<option>' + e + '</option>'; }).join('') + '</select></label></div>' +
       '<label>Nota <input type="text" id="dueFProcNota" placeholder="ej: soñé con ella, desperté llorando pero tranquila" maxlength="140"></label>' +
-      '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="dueFProcAdd" class="btn btn-accent" style="width:auto">+ Guardar hoy</button></div></div>' +
-      '<div id="dueFProcList" class="habits-list" style="margin-top:10px;max-height:280px"></div>' +
-      '<span id="dueFProcStats" class="muted" style="font-size:11px"></span>' +
+      '<div class="dlg-actions su-59a5a8"><button type="button" id="dueFProcAdd" class="btn btn-accent su-30e741">+ Guardar hoy</button></div></div>' +
+      '<div id="dueFProcList" class="habits-list su-8d891d"></div>' +
+      '<span id="dueFProcStats" class="muted su-11a508"></span>' +
     '</div>' +
     '<div id="dueFMem" class="hidden">' +
-      '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🕯️ Calendario de memoria</h4>' +
-      '<p class="muted" style="font-size:11px">Lleva el calendario de <b>varias personas</b>: 3 y 9 días, novenario, 40 días, lunas, 6 meses, aniversarios, su cumpleaños y Todos los Santos. Marca ✅ cada hito que honres.</p>' +
-      '<div class="conv-row"><label style="flex:2">Persona <select id="dueFPersSel"></select></label></div>' +
-      '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px"><button type="button" id="dueFPersEdit" class="btn" style="width:auto;font-size:11px">✏️ Editar persona</button><button type="button" id="dueFPersDel" class="btn" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar</button></div>' +
-      '<div class="menstrual-card" style="margin-top:8px"><h4 style="font-size:12px">➕ Agregar persona al calendario</h4>' +
-      '<div class="conv-row"><label style="flex:2">Nombre * <input type="text" id="dueFPersNombre" placeholder="ej: mi mamá Elena" maxlength="40"></label></div>' +
+      '<div class="menstrual-card su-68a1a9"><h4>🕯️ Calendario de memoria</h4>' +
+      '<p class="muted su-11a508">Lleva el calendario de <b>varias personas</b>: 3 y 9 días, novenario, 40 días, lunas, 6 meses, aniversarios, su cumpleaños y Todos los Santos. Marca ✅ cada hito que honres.</p>' +
+      '<div class="conv-row"><label class="su-4b3de7">Persona <select id="dueFPersSel"></select></label></div>' +
+      '<div class="su-c158a9"><button type="button" id="dueFPersEdit" class="btn su-337714">✏️ Editar persona</button><button type="button" id="dueFPersDel" class="btn su-fd834a">🗑 Borrar</button></div>' +
+      '<div class="menstrual-card su-8a77e5"><h4 class="su-6cb285">➕ Agregar persona al calendario</h4>' +
+      '<div class="conv-row"><label class="su-4b3de7">Nombre * <input type="text" id="dueFPersNombre" placeholder="ej: mi mamá Elena" maxlength="40"></label></div>' +
       '<div class="conv-row"><label>Fecha de partida * <input type="date" id="dueFPersFecha"></label><label>Cumpleaños (opcional) <input type="date" id="dueFPersCumple"></label></div>' +
-      '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="dueFPersAdd" class="btn btn-accent" style="width:auto">+ Guardar persona</button><button type="button" id="dueFPersCancel" class="btn hidden" style="width:auto">Cancelar</button></div></div>' +
-      '<div id="dueFNext" class="chip" style="display:block;white-space:normal;margin-top:8px"></div>' +
-      '<div id="dueFRituales" style="margin-top:8px;display:flex;flex-direction:column;gap:8px"></div>' +
-      '<div class="dlg-actions" style="justify-content:space-between;align-items:center;margin-top:8px"><span id="dueFCalStats" class="muted" style="font-size:11px"></span><button type="button" id="dueFCalShare" class="btn" style="width:auto">📤 Compartir calendario</button></div></div>' +
-      '<div class="menstrual-card" style="margin-top:10px"><h4>📓 Memoria viva</h4>' +
-      '<div class="conv-row"><label>Tipo <select id="dueFTipo">' + DUE_TIPOS.map(function (e) { return '<option>' + e + '</option>'; }).join('') + '</select></label><label style="flex:2">Título <input type="text" id="dueFTitulo" placeholder="ej: El charquicán de mi mamá" maxlength="50"></label></div>' +
-      '<div class="conv-row"><label style="flex:2">Para quién <input type="text" id="dueFPara" list="dueFParaList" placeholder="ej: mi mamá Elena" maxlength="40" autocomplete="off"></label><datalist id="dueFParaList"></datalist><label>Ver <select id="dueFMemFiltro"><option value="todas">Todas</option></select></label></div>' +
+      '<div class="dlg-actions su-59a5a8"><button type="button" id="dueFPersAdd" class="btn btn-accent su-30e741">+ Guardar persona</button><button type="button" id="dueFPersCancel" class="btn hidden su-30e741">Cancelar</button></div></div>' +
+      '<div id="dueFNext" class="chip su-7600c4"></div>' +
+      '<div id="dueFRituales" class="su-bf3828"></div>' +
+      '<div class="dlg-actions su-cc4a4c"><span id="dueFCalStats" class="muted su-11a508"></span><button type="button" id="dueFCalShare" class="btn su-30e741">📤 Compartir calendario</button></div></div>' +
+      '<div class="menstrual-card su-d2c171"><h4>📓 Memoria viva</h4>' +
+      '<div class="conv-row"><label>Tipo <select id="dueFTipo">' + DUE_TIPOS.map(function (e) { return '<option>' + e + '</option>'; }).join('') + '</select></label><label class="su-4b3de7">Título <input type="text" id="dueFTitulo" placeholder="ej: El charquicán de mi mamá" maxlength="50"></label></div>' +
+      '<div class="conv-row"><label class="su-4b3de7">Para quién <input type="text" id="dueFPara" list="dueFParaList" placeholder="ej: mi mamá Elena" maxlength="40" autocomplete="off"></label><datalist id="dueFParaList"></datalist><label>Ver <select id="dueFMemFiltro"><option value="todas">Todas</option></select></label></div>' +
       '<label>Texto <textarea id="dueFTexto" rows="3" placeholder="escríbela tal como la recuerdas..." maxlength="800"></textarea></label>' +
-      '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="dueFAdd" class="btn btn-accent" style="width:auto">+ Guardar memoria</button></div>' +
-      '<div id="dueFMemList" class="habits-list" style="margin-top:8px;max-height:260px"></div>' +
-      '<span id="dueFMemStats" class="muted" style="font-size:11px"></span></div>' +
+      '<div class="dlg-actions su-59a5a8"><button type="button" id="dueFAdd" class="btn btn-accent su-30e741">+ Guardar memoria</button></div>' +
+      '<div id="dueFMemList" class="habits-list su-57635e"></div>' +
+      '<span id="dueFMemStats" class="muted su-11a508"></span></div>' +
     '</div>' +
     '<div id="dueFRit" class="hidden">' +
       '<div class="si-card"><h4>🕯️ Rituales que sostienen</h4><p>Un ritual chico y repetido sostiene más que uno grande y único. Abajo tienes <b>ideas por momento</b> (despedida, primeras semanas, cada luna, aniversarios, cotidiano): toma una como <b>compromiso</b> con fecha, márcala cada vez que la honres y mira tu constancia. Y si un día solo te sale encender una vela, anótala igual: también cuenta.</p></div>' +
-      '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🌿 Ideas de rituales por momento</h4>' +
-      '<div class="conv-row"><label style="flex:2">🔍 Buscar <input type="text" id="dueFRitQ" placeholder="vela, carta, plantar..." autocomplete="off"></label><label>Momento <select id="dueFRitFiltro"><option value="todos">Todos</option><option value="despedida">despedida</option><option value="primeras semanas">primeras semanas</option><option value="cada luna">cada luna</option><option value="aniversarios">aniversarios</option><option value="cotidiano">cotidiano</option></select></label></div>' +
-      '<div id="dueFRitIdeas" style="margin-top:8px;display:flex;flex-direction:column;gap:8px;max-height:320px;overflow-y:auto"></div></div>' +
-      '<div class="menstrual-card" style="margin-top:10px"><h4>🤝 Mis rituales comprometidos</h4>' +
+      '<div class="menstrual-card su-68a1a9"><h4>🌿 Ideas de rituales por momento</h4>' +
+      '<div class="conv-row"><label class="su-4b3de7">🔍 Buscar <input type="text" id="dueFRitQ" placeholder="vela, carta, plantar..." autocomplete="off"></label><label>Momento <select id="dueFRitFiltro"><option value="todos">Todos</option><option value="despedida">despedida</option><option value="primeras semanas">primeras semanas</option><option value="cada luna">cada luna</option><option value="aniversarios">aniversarios</option><option value="cotidiano">cotidiano</option></select></label></div>' +
+      '<div id="dueFRitIdeas" class="su-6d6e4d"></div></div>' +
+      '<div class="menstrual-card su-d2c171"><h4>🤝 Mis rituales comprometidos</h4>' +
       '<label>Ritual * <input type="text" id="dueFRitCompNombre" placeholder="ej: Vela de los viernes para mi mamá" maxlength="60"></label>' +
       '<div class="conv-row"><label>Frecuencia <select id="dueFRitCompFrec"><option>cada semana</option><option>cada luna</option><option>una sola vez</option></select></label><label>Próxima fecha <input type="date" id="dueFRitCompProx"></label></div>' +
-      '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="dueFRitCompAdd" class="btn btn-accent" style="width:auto">+ Comprometer ritual</button><button type="button" id="dueFRitCompCancel" class="btn hidden" style="width:auto">Cancelar</button></div>' +
-      '<div id="dueFRitCompList" class="habits-list" style="margin-top:8px;max-height:260px"></div>' +
-      '<div class="dlg-actions" style="justify-content:space-between;margin-top:8px"><span id="dueFRitCompStats" class="muted" style="font-size:11px"></span><button type="button" id="dueFRitCompShare" class="btn" style="width:auto">📤 Compartir</button></div></div>' +
-      '<div class="menstrual-card" style="margin-top:10px"><h4>➕ Vela / acto espontáneo</h4>' +
-      '<div class="conv-row"><label style="flex:2">Por quién <input type="text" id="dueFRitPara" placeholder="ej: mi papá" maxlength="30"></label><label style="flex:2">Acto <input type="text" id="dueFRitActo" placeholder="ej: vela + su canción" maxlength="60"></label></div>' +
-      '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="dueFRitAdd" class="btn btn-accent" style="width:auto">🕯️ Encender hoy</button></div>' +
-      '<div id="dueFVelas" class="habits-list" style="margin-top:8px;max-height:240px"></div></div>' +
+      '<div class="dlg-actions su-59a5a8"><button type="button" id="dueFRitCompAdd" class="btn btn-accent su-30e741">+ Comprometer ritual</button><button type="button" id="dueFRitCompCancel" class="btn hidden su-30e741">Cancelar</button></div>' +
+      '<div id="dueFRitCompList" class="habits-list su-57635e"></div>' +
+      '<div class="dlg-actions su-efea1d"><span id="dueFRitCompStats" class="muted su-11a508"></span><button type="button" id="dueFRitCompShare" class="btn su-30e741">📤 Compartir</button></div></div>' +
+      '<div class="menstrual-card su-d2c171"><h4>➕ Vela / acto espontáneo</h4>' +
+      '<div class="conv-row"><label class="su-4b3de7">Por quién <input type="text" id="dueFRitPara" placeholder="ej: mi papá" maxlength="30"></label><label class="su-4b3de7">Acto <input type="text" id="dueFRitActo" placeholder="ej: vela + su canción" maxlength="60"></label></div>' +
+      '<div class="dlg-actions su-59a5a8"><button type="button" id="dueFRitAdd" class="btn btn-accent su-30e741">🕯️ Encender hoy</button></div>' +
+      '<div id="dueFVelas" class="habits-list su-614525"></div></div>' +
     '</div>' +
     '<div id="dueFApo" class="hidden">' +
-      '<div class="menstrual-card" style="border-color:#e76e8a"><h4>🚨 Si duele demasiado hoy</h4><p style="font-size:12px">No lo pases sola/o: llama a alguien de confianza ahora. Chile 24h: <b>*4141</b> · <b>Salud Responde 600 360 7777</b> · tu CESFAM/SAR. Si hay ideas de daño, pide compañía presencial hoy.</p></div>' +
-      '<div class="si-card"><h4>🤝 Mi red (escríbela)</h4><p>Llena en 💧 “hoy necesito” y avisa: 1 persona para hablar · 1 para trámites/comida · 1 para noches difíciles. Pedir concreto ayuda más que “apóyenme”.</p><div class="dlg-actions" style="justify-content:flex-start;flex-wrap:wrap"><button type="button" id="dueFGoBreath" class="btn" style="width:auto">🌬️ Respiración</button><button type="button" id="dueFGoPsi" class="btn" style="width:auto">🪞 Autoconocimiento</button><button type="button" id="dueFGoEsp" class="btn" style="width:auto">🕉️ Prácticas</button><button type="button" id="dueFGoHabits" class="btn" style="width:auto">✅ Hábitos</button></div></div>' +
+      '<div class="menstrual-card su-006fa0"><h4>🚨 Si duele demasiado hoy</h4><p class="su-6cb285">No lo pases sola/o: llama a alguien de confianza ahora. Chile 24h: <b>*4141</b> · <b>Salud Responde 600 360 7777</b> · tu CESFAM/SAR. Si hay ideas de daño, pide compañía presencial hoy.</p></div>' +
+      '<div class="si-card"><h4>🤝 Mi red (escríbela)</h4><p>Llena en 💧 “hoy necesito” y avisa: 1 persona para hablar · 1 para trámites/comida · 1 para noches difíciles. Pedir concreto ayuda más que “apóyenme”.</p><div class="dlg-actions su-117179"><button type="button" id="dueFGoBreath" class="btn su-30e741">🌬️ Respiración</button><button type="button" id="dueFGoPsi" class="btn su-30e741">🪞 Autoconocimiento</button><button type="button" id="dueFGoEsp" class="btn su-30e741">🕉️ Prácticas</button><button type="button" id="dueFGoHabits" class="btn su-30e741">✅ Hábitos</button></div></div>' +
     '</div>');
   var b = $('btnDueloFull');
   if (b) b.onclick = function () {

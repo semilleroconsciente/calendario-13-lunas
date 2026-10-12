@@ -22,7 +22,7 @@ function esc(s) {
   });
 }
 function fishChip(nombre) {
-  return '<span class="chip" data-pez="' + esc(nombre) + '" style="cursor:pointer" title="Toca para cargarla en la bitácora">🎣 ' + esc(nombre) + '</span>';
+  return '<span class="chip su-3b6a3a" data-pez="' + esc(nombre) + '" title="Toca para cargarla en la bitácora">🎣 ' + esc(nombre) + '</span>';
 }
 function wireFishChips(scope) {
   if (!scope || !scope.querySelectorAll) return;
@@ -104,15 +104,15 @@ function renderPescaHistoria() {
   var box = $('pescaHistoriaPanel');
   if (!box) return;
   var g = dynHistPesca();
-  var html = '<p class="muted" style="font-size:11px;line-height:1.55">' + g.intro + '</p>';
+  var html = '<p class="muted su-b6db47">' + g.intro + '</p>';
   html += g.eras.map(function (e, i) {
     return '<div class="menstrual-card" style="margin-top:10px' + (i === 0 ? ';border-color:var(--gold)' : '') + '">' +
       '<h4>' + esc(e.t) + '</h4>' +
-      '<p class="muted" style="font-size:10px;margin:2px 0 6px">' + esc(e.cuando) + '</p>' +
-      '<p style="font-size:12px;line-height:1.55">' + e.d + '</p>' +
-      '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">' + e.sp.map(fishChip).join('') + '</div></div>';
+      '<p class="muted su-2c4c6c">' + esc(e.cuando) + '</p>' +
+      '<p class="su-afb724">' + e.d + '</p>' +
+      '<div class="su-c158a9">' + e.sp.map(fishChip).join('') + '</div></div>';
   }).join('');
-  html += '<p class="muted" style="font-size:10px;margin-top:8px">' + esc(g.fuentes) + '</p>';
+  html += '<p class="muted su-a953a7">' + esc(g.fuentes) + '</p>';
   box.innerHTML = html;
   wireFishChips(box);
 }
@@ -134,9 +134,9 @@ function mejorarPescaHoy() {
   if (todayBox && !$('pescaHoyPlus')) {
     var div = document.createElement('div');
     div.id = 'pescaHoyPlus';
-    div.innerHTML = '<div class="dlg-actions" style="justify-content:flex-start;margin-top:8px">' +
-      '<button type="button" id="phoyGoHist" class="btn" style="width:auto;font-size:11px">📜 Ver historia</button>' +
-      '<button type="button" id="phoyGoForm" class="btn" style="width:auto;font-size:11px">📓 Ir a la bitácora</button></div>';
+    div.innerHTML = '<div class="dlg-actions su-8f9e27">' +
+      '<button type="button" id="phoyGoHist" class="btn su-337714">📜 Ver historia</button>' +
+      '<button type="button" id="phoyGoForm" class="btn su-337714">📓 Ir a la bitácora</button></div>';
     todayBox.appendChild(div);
     var gh = $('phoyGoHist'); if (gh) gh.onclick = function () { switchPescaTab('historia'); };
     var gf = $('phoyGoForm');

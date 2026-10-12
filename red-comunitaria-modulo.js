@@ -136,11 +136,11 @@ function buildDialog() {
     return '<div class="si-card"><h4>' + c.ico + ' ' + esc(c.n) + '</h4><p>' + c.txt + '</p></div>';
   }).join('');
   var meshEq = MESH_EQUIPOS.map(function (c) {
-    return '<div class="si-card"><h4>' + c.ico + ' ' + esc(c.n) + '</h4><p><span class="chip" style="font-size:10px">' + esc(c.tag) + '</span></p><p><b>Para:</b> ' + esc(c.para) + '</p><p><b>Lleva:</b> ' + esc(c.mat) + '</p><p class="muted">' + esc(c.nota) + '</p></div>';
+    return '<div class="si-card"><h4>' + c.ico + ' ' + esc(c.n) + '</h4><p><span class="chip su-0d5be0">' + esc(c.tag) + '</span></p><p><b>Para:</b> ' + esc(c.para) + '</p><p><b>Lleva:</b> ' + esc(c.mat) + '</p><p class="muted">' + esc(c.nota) + '</p></div>';
   }).join('');
   var meshPasos = MESH_PASOS.map(function (p, i) { return '<div class="si-card"><h4>Paso ' + (i + 1) + '</h4><p>' + p + '</p></div>'; }).join('');
   var diagHTML = DIAG_CHECKS.map(function (c) {
-    return '<label class="check-row" style="align-items:flex-start"><input type="checkbox" data-diag="' + c.id + '"> <span><b>' + esc(c.n) + '</b><br><span class="muted" style="font-size:11px">' + esc(c.d) + '</span></span></label>';
+    return '<label class="check-row su-0486f7"><input type="checkbox" data-diag="' + c.id + '"> <span><b>' + esc(c.n) + '</b><br><span class="muted su-11a508">' + esc(c.d) + '</span></span></label>';
   }).join('');
   var radioCl = RADIO_CLASES.map(function (c) {
     return '<div class="si-card"><h4>' + c.ico + ' ' + esc(c.n) + '</h4><p>' + esc(c.txt) + '</p></div>';
@@ -154,23 +154,23 @@ function buildDialog() {
 
   d.innerHTML =
     '<form method="dialog">' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
-      '<h3 style="margin:0;color:var(--accent)">📡 Red Comunitaria — Penco</h3>' +
+    '<div class="dlg-actions su-d2d053">' +
+      '<h3 class="su-ee0cfe">📡 Red Comunitaria — Penco</h3>' +
       '<button type="button" data-close class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    '<p class="muted" style="line-height:1.5">Internet se cae, la malla queda. Guía + Meshtastic + diagnóstico + radioafición con licencia, todo para el territorio. Funciona <b>offline</b>; tu bitácora queda <b>privada y local</b>.</p>' +
-    '<div id="redHoyBox" class="menstrual-card" style="border-color:var(--gold)"></div>' +
-    '<div class="timer-tabs" style="margin:10px 0;flex-wrap:wrap">' +
-      '<button type="button" id="tabRedGuia" class="btn btn-accent" style="width:auto">📖 Guía</button>' +
-      '<button type="button" id="tabRedMesh" class="btn" style="width:auto">📡 Meshtastic</button>' +
-      '<button type="button" id="tabRedDiag" class="btn" style="width:auto">🩺 Diagnóstico</button>' +
-      '<button type="button" id="tabRedRadio" class="btn" style="width:auto">🎙️ Curso / Licencia</button>' +
-      '<button type="button" id="tabRedNodos" class="btn" style="width:auto">📓 Mis Nodos</button>' +
+    '<p class="muted su-77e2fe">Internet se cae, la malla queda. Guía + Meshtastic + diagnóstico + radioafición con licencia, todo para el territorio. Funciona <b>offline</b>; tu bitácora queda <b>privada y local</b>.</p>' +
+    '<div id="redHoyBox" class="menstrual-card su-68a1a9"></div>' +
+    '<div class="timer-tabs su-ca7e11">' +
+      '<button type="button" id="tabRedGuia" class="btn btn-accent su-30e741">📖 Guía</button>' +
+      '<button type="button" id="tabRedMesh" class="btn su-30e741">📡 Meshtastic</button>' +
+      '<button type="button" id="tabRedDiag" class="btn su-30e741">🩺 Diagnóstico</button>' +
+      '<button type="button" id="tabRedRadio" class="btn su-30e741">🎙️ Curso / Licencia</button>' +
+      '<button type="button" id="tabRedNodos" class="btn su-30e741">📓 Mis Nodos</button>' +
     '</div>' +
 
     '<div id="redPanelGuia">' +
       '<div class="discipline-grid">' + guiaHTML + '</div>' +
-      '<div class="menstrual-card" style="margin-top:10px"><h4>✅ Mi compromiso con la red</h4>' +
-        '<p class="muted" style="font-size:11px">Marca lo que ya hiciste. Se guarda por usuario.</p>' +
+      '<div class="menstrual-card su-d2c171"><h4>✅ Mi compromiso con la red</h4>' +
+        '<p class="muted su-11a508">Marca lo que ya hiciste. Se guarda por usuario.</p>' +
         '<div id="redGuiaChecks">' +
           '<label class="check-row"><input type="checkbox" data-guia="hable"> Hablé con 1 vecino/a de la red</label>' +
           '<label class="check-row"><input type="checkbox" data-guia="canal"> Acordamos canal + clave en persona</label>' +
@@ -178,42 +178,42 @@ function buildDialog() {
           '<label class="check-row"><input type="checkbox" data-guia="altura"> Subimos 1 antena sobre 3 m</label>' +
           '<label class="check-row"><input type="checkbox" data-guia="simulacro"> Hicimos 1 simulacro mensual</label>' +
         '</div>' +
-        '<div class="dlg-actions" style="justify-content:flex-start;margin-top:8px"><span id="redGuiaStats" class="muted" style="font-size:11px"></span></div>' +
+        '<div class="dlg-actions su-8f9e27"><span id="redGuiaStats" class="muted su-11a508"></span></div>' +
       '</div>' +
     '</div>' +
 
     '<div id="redPanelMesh" class="hidden">' +
-      '<div class="menstrual-card"><h4>📡 Meshtastic en 1 minuto</h4><p class="muted" style="font-size:12px;line-height:1.55">Radios LoRa de bolsillo que forman una <b>malla</b>: cada equipo repite el mensaje. Sin chip, sin cuenta, sin internet. Alcance real en Penco: 500 m–3 km entre casas, 5–15 km con altura y vista (cerro–costa). Batería: 1–3 días; con panel chico: semanas. App gratis + mapa de nodos escuchados.</p>' +
-      '<p class="muted" style="font-size:11px">🇨🇱 Chile: banda libre <b>915–928 MHz</b> (elige preset LongFast + región 915 MHz). Clave del canal se acuerda <b>en persona</b>. Verifica siempre la norma vigente en subtel.cl y meshtastic.org.</p></div>' +
-      '<h4 style="margin:10px 0 6px;color:var(--gold)">🧰 Equipos (compra en dupla)</h4>' +
+      '<div class="menstrual-card"><h4>📡 Meshtastic en 1 minuto</h4><p class="muted su-afb724">Radios LoRa de bolsillo que forman una <b>malla</b>: cada equipo repite el mensaje. Sin chip, sin cuenta, sin internet. Alcance real en Penco: 500 m–3 km entre casas, 5–15 km con altura y vista (cerro–costa). Batería: 1–3 días; con panel chico: semanas. App gratis + mapa de nodos escuchados.</p>' +
+      '<p class="muted su-11a508">🇨🇱 Chile: banda libre <b>915–928 MHz</b> (elige preset LongFast + región 915 MHz). Clave del canal se acuerda <b>en persona</b>. Verifica siempre la norma vigente en subtel.cl y meshtastic.org.</p></div>' +
+      '<h4 class="su-121e69">🧰 Equipos (compra en dupla)</h4>' +
       '<div class="discipline-grid">' + meshEq + '</div>' +
-      '<h4 style="margin:10px 0 6px;color:var(--gold)">🔧 Configuración paso a paso</h4>' +
+      '<h4 class="su-121e69">🔧 Configuración paso a paso</h4>' +
       '<div class="discipline-grid">' + meshPasos + '</div>' +
-      '<div class="menstrual-card" style="margin-top:10px"><h4>📻 Canales sugeridos Penco</h4><p style="font-size:12px;line-height:1.6"><b>Canal 0 · LONGFAST (clave):</b> solo emergencia + pruebas. Silencio el resto del día.<br><b>Canal 1 · CONVERSA:</b> coordina minga, pesca, avisos.<br><b>Canal 2 · HUERTA/BOSQUE:</b> trueque, semillas, riego.<br>MQTT: apagado. Solo 1 nodo con internet lo prende si la red lo acuerda.</p></div>' +
+      '<div class="menstrual-card su-d2c171"><h4>📻 Canales sugeridos Penco</h4><p class="su-616df7"><b>Canal 0 · LONGFAST (clave):</b> solo emergencia + pruebas. Silencio el resto del día.<br><b>Canal 1 · CONVERSA:</b> coordina minga, pesca, avisos.<br><b>Canal 2 · HUERTA/BOSQUE:</b> trueque, semillas, riego.<br>MQTT: apagado. Solo 1 nodo con internet lo prende si la red lo acuerda.</p></div>' +
     '</div>' +
 
     '<div id="redPanelDiag" class="hidden">' +
-      '<div class="menstrual-card"><h4>🩺 Chequeo rápido del nodo (5 min)</h4><div id="redDiagChecks" style="display:flex;flex-direction:column;gap:8px;margin-top:8px">' + diagHTML + '</div>' +
-      '<div class="dlg-actions" style="justify-content:flex-start;margin-top:8px"><span id="redDiagStats" class="muted" style="font-size:11px"></span></div></div>' +
-      '<div class="menstrual-card" style="margin-top:10px"><h4>📏 Test de alcance (10 min, en dupla)</h4><p class="muted" style="font-size:11px;line-height:1.5">1) Uno se queda en el nodo alto. 2) El otro camina a 200 / 500 / 1000 m y manda <i>"PRUEBA + lugar + hora"</i>. 3) Anotan si llegó + SNR/RSSI que muestra la app. 4) Repiten subiendo 2 m la antena. Lo que más mejora: altura, no potencia.</p>' +
+      '<div class="menstrual-card"><h4>🩺 Chequeo rápido del nodo (5 min)</h4><div id="redDiagChecks" class="su-a22da5">' + diagHTML + '</div>' +
+      '<div class="dlg-actions su-8f9e27"><span id="redDiagStats" class="muted su-11a508"></span></div></div>' +
+      '<div class="menstrual-card su-d2c171"><h4>📏 Test de alcance (10 min, en dupla)</h4><p class="muted su-a6c665">1) Uno se queda en el nodo alto. 2) El otro camina a 200 / 500 / 1000 m y manda <i>"PRUEBA + lugar + hora"</i>. 3) Anotan si llegó + SNR/RSSI que muestra la app. 4) Repiten subiendo 2 m la antena. Lo que más mejora: altura, no potencia.</p>' +
       '<div class="conv-row"><label>SNR <input type="text" id="redDiagSnr" placeholder="ej: -4.5" maxlength="10"></label><label>RSSI <input type="text" id="redDiagRssi" placeholder="ej: -87" maxlength="10"></label><label>Distancia <input type="text" id="redDiagDist" placeholder="ej: 800 m" maxlength="15"></label></div>' +
       '<div class="conv-row"><label>Lugar <input type="text" id="redDiagLugar" placeholder="ej: Cerro Verde → Lirquén" maxlength="40"></label><label>Resultado <select id="redDiagRes"><option value="llego">✅ Llegó claro</option><option value="cortado">🟡 Llegó cortado</option><option value="nada">🔴 No llegó</option></select></label></div>' +
       '<label>Notas <input type="text" id="redDiagNota" placeholder="ej: con lluvia, antena a 4 m" maxlength="80"></label>' +
-      '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="redDiagAdd" class="btn btn-accent" style="width:auto">+ Guardar medición</button></div>' +
-      '<div id="redDiagLog" class="habits-list" style="margin-top:10px;max-height:220px"></div>' +
-      '<div class="dlg-actions" style="justify-content:space-between;align-items:center;margin-top:8px"><span id="redDiagCount" class="muted" style="font-size:11px"></span><span style="display:flex;gap:8px"><button type="button" id="redDiagShare" class="btn" style="width:auto">📤 Compartir</button><button type="button" id="redDiagClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar</button></span></div></div>' +
+      '<div class="dlg-actions su-59a5a8"><button type="button" id="redDiagAdd" class="btn btn-accent su-30e741">+ Guardar medición</button></div>' +
+      '<div id="redDiagLog" class="habits-list su-90a939"></div>' +
+      '<div class="dlg-actions su-cc4a4c"><span id="redDiagCount" class="muted su-11a508"></span><span class="su-a76d59"><button type="button" id="redDiagShare" class="btn su-30e741">📤 Compartir</button><button type="button" id="redDiagClear" class="btn su-214f75">🗑 Borrar</button></span></div></div>' +
     '</div>' +
 
     '<div id="redPanelRadio" class="hidden">' +
-      '<div class="menstrual-card"><h4>🎙️ Ser radioaficionada/o en Chile (SUBTEL)</h4><p class="muted" style="font-size:12px;line-height:1.55">Meshtastic es libre y de baja potencia. Si quieres handy VHF/UHF con más potencia, repetidoras y HF, necesitas <b>licencia SUBTEL</b>: das un examen (40 preguntas, ~70% para aprobar), recibes tu <b>distintivo (CA/CE…)</b> y quedas habilitada/o por 5 años. Trámite con cédula en SUBTEL / ChileAtiende. <b>Verifica la norma vigente en subtel.cl</b>: categorías y temarios se actualizan.</p></div>' +
-      '<h4 style="margin:10px 0 6px;color:var(--gold)">🪜 Clases de licencia</h4>' +
+      '<div class="menstrual-card"><h4>🎙️ Ser radioaficionada/o en Chile (SUBTEL)</h4><p class="muted su-afb724">Meshtastic es libre y de baja potencia. Si quieres handy VHF/UHF con más potencia, repetidoras y HF, necesitas <b>licencia SUBTEL</b>: das un examen (40 preguntas, ~70% para aprobar), recibes tu <b>distintivo (CA/CE…)</b> y quedas habilitada/o por 5 años. Trámite con cédula en SUBTEL / ChileAtiende. <b>Verifica la norma vigente en subtel.cl</b>: categorías y temarios se actualizan.</p></div>' +
+      '<h4 class="su-121e69">🪜 Clases de licencia</h4>' +
       '<div class="discipline-grid">' + radioCl + '</div>' +
-      '<h4 style="margin:10px 0 6px;color:var(--gold)">📚 Lo que entra en el examen</h4>' +
+      '<h4 class="su-121e69">📚 Lo que entra en el examen</h4>' +
       '<div class="discipline-grid">' + radioTe + '</div>' +
-      '<h4 style="margin:10px 0 6px;color:var(--gold)">🗓️ Plan de estudio 4 semanas (30 min/día)</h4>' +
+      '<h4 class="su-121e69">🗓️ Plan de estudio 4 semanas (30 min/día)</h4>' +
       '<div class="discipline-grid">' + radioPl + '</div>' +
-      '<div class="menstrual-card" style="margin-top:10px"><h4>📡 Tu primer handy (2m/70cm)</h4><p class="muted" style="font-size:11px;line-height:1.55">• Handy doble banda VHF/UHF + antena mejorada (la de fábrica es corta). • Aprende repetidoras del Bío-Bío con tu radioclub (ej: Radio Club Concepción / Talcahuano: ellos toman exámenes y enseñan). • Libro de guardia desde el día 1: fecha, hora, con quién, frecuencia, reporte. • En emergencia real: escucha, sé breve, prioriza vida. Únete a un radioclub: el examen y la práctica se hacen en comunidad, no solo.</p>' +
-      '<div id="redRadioChecks" style="display:flex;flex-direction:column;gap:6px;margin-top:8px">' +
+      '<div class="menstrual-card su-d2c171"><h4>📡 Tu primer handy (2m/70cm)</h4><p class="muted su-b6db47">• Handy doble banda VHF/UHF + antena mejorada (la de fábrica es corta). • Aprende repetidoras del Bío-Bío con tu radioclub (ej: Radio Club Concepción / Talcahuano: ellos toman exámenes y enseñan). • Libro de guardia desde el día 1: fecha, hora, con quién, frecuencia, reporte. • En emergencia real: escucha, sé breve, prioriza vida. Únete a un radioclub: el examen y la práctica se hacen en comunidad, no solo.</p>' +
+      '<div id="redRadioChecks" class="su-5e3875">' +
         '<label class="check-row"><input type="checkbox" data-radio="fonetico"> Domino el alfabeto fonético</label>' +
         '<label class="check-row"><input type="checkbox" data-radio="q"> Uso código Q básico (QTH, QRM, QSL)</label>' +
         '<label class="check-row"><input type="checkbox" data-radio="dipolo"> Calculé y armé un dipolo 2m</label>' +
@@ -221,18 +221,18 @@ function buildDialog() {
         '<label class="check-row"><input type="checkbox" data-radio="ensayo"> Aprobé 2 ensayos 70%+</label>' +
         '<label class="check-row"><input type="checkbox" data-radio="inscrito"> Me inscribí al examen SUBTEL</label>' +
       '</div>' +
-      '<div class="dlg-actions" style="justify-content:flex-start;margin-top:8px"><span id="redRadioStats" class="muted" style="font-size:11px"></span></div></div>' +
+      '<div class="dlg-actions su-8f9e27"><span id="redRadioStats" class="muted su-11a508"></span></div></div>' +
     '</div>' +
 
     '<div id="redPanelNodos" class="hidden">' +
-      '<div class="menstrual-card"><h4>📓 Mis nodos — bitácora privada</h4><p class="muted" style="font-size:11px">Tus equipos + los de tu sector. Queda solo en este dispositivo.</p>' +
+      '<div class="menstrual-card"><h4>📓 Mis nodos — bitácora privada</h4><p class="muted su-11a508">Tus equipos + los de tu sector. Queda solo en este dispositivo.</p>' +
       '<div class="conv-row"><label>Nombre <input type="text" id="redNodoNombre" placeholder="ej: PENCO-01 cerro" maxlength="30"></label><label>ID corto <input type="text" id="redNodoId" placeholder="ej: !a1b2c3d4 / PL01" maxlength="15"></label></div>' +
       '<div class="conv-row"><label>Lugar <input type="text" id="redNodoLugar" placeholder="ej: Cerro Verde, techo" maxlength="40"></label><label>Rol <select id="redNodoRol"><option value="hogar">🏠 Hogar</option><option value="semilla">🌱 Semilla (alto)</option><option value="movil">🎒 Móvil</option><option value="solar">☀️ Solar / cerro</option></select></label></div>' +
       '<div class="conv-row"><label>Equipo <input type="text" id="redNodoEquipo" placeholder="ej: Heltec V3 + 5 dBi" maxlength="40"></label><label>Estado <select id="redNodoEstado"><option value="ok">✅ Activo</option><option value="prueba">🟡 En prueba</option><option value="caido">🔴 Caído / sin batería</option></select></label></div>' +
-      '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="redNodoAdd" class="btn btn-accent" style="width:auto">+ Guardar nodo</button><button type="button" id="redNodoCancel" class="btn hidden" style="width:auto">Cancelar</button></div>' +
-      '<div id="redNodoLog" class="habits-list" style="margin-top:10px;max-height:240px"></div>' +
-      '<div class="dlg-actions" style="justify-content:space-between;align-items:center;margin-top:8px"><span id="redNodoStats" class="muted" style="font-size:11px"></span><span style="display:flex;gap:8px"><button type="button" id="redNodoShare" class="btn" style="width:auto">📤 Compartir</button><button type="button" id="redNodoClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar</button></span></div></div>' +
-      '<div class="menstrual-card" style="margin-top:10px"><h4>🚨 Protocolo sin internet (1 tarjeta por casa)</h4><p style="font-size:12px;line-height:1.6">1) <b>Escucha</b> canal 0 por 5 min. 2) <b>Reporta:</b> SECTOR + ESTADO + NECESIDAD + HORA (<i>"COSMITO bien, 2 familias, falta agua 14:20"</i>). 3) <b>Repite</b> 3× cada 5 min, no en loop. 4) <b>Confirma</b> lo que escuches (<i>"RECIBIDO CENTRO 14:22"</i>). 5) Punto de encuentro acordado de antemano (no lo mandes al aire la primera vez).</p></div>' +
+      '<div class="dlg-actions su-59a5a8"><button type="button" id="redNodoAdd" class="btn btn-accent su-30e741">+ Guardar nodo</button><button type="button" id="redNodoCancel" class="btn hidden su-30e741">Cancelar</button></div>' +
+      '<div id="redNodoLog" class="habits-list su-62f8f6"></div>' +
+      '<div class="dlg-actions su-cc4a4c"><span id="redNodoStats" class="muted su-11a508"></span><span class="su-a76d59"><button type="button" id="redNodoShare" class="btn su-30e741">📤 Compartir</button><button type="button" id="redNodoClear" class="btn su-214f75">🗑 Borrar</button></span></div></div>' +
+      '<div class="menstrual-card su-d2c171"><h4>🚨 Protocolo sin internet (1 tarjeta por casa)</h4><p class="su-616df7">1) <b>Escucha</b> canal 0 por 5 min. 2) <b>Reporta:</b> SECTOR + ESTADO + NECESIDAD + HORA (<i>"COSMITO bien, 2 familias, falta agua 14:20"</i>). 3) <b>Repite</b> 3× cada 5 min, no en loop. 4) <b>Confirma</b> lo que escuches (<i>"RECIBIDO CENTRO 14:22"</i>). 5) Punto de encuentro acordado de antemano (no lo mandes al aire la primera vez).</p></div>' +
     '</div>' +
 
     '<div class="dlg-actions"><button type="button" data-close class="btn">Cerrar</button></div></form>';
@@ -262,7 +262,7 @@ function paintHoy() {
     : l.luna <= 6 ? 'Pewü (primavera): instala nodos nuevos y haz la minga de encendido.'
     : l.luna <= 9 ? 'Walüng (verano): test de alcance con calor y turismo (más ruido). Paneles al norte.'
     : 'Rimü (otoño): simulacro mensual antes del viento sur fuerte. Aprieta antenas.';
-  b.innerHTML = '<h4>🌙 ' + esc(txt) + '</h4><p class="muted" style="font-size:12px">' + esc(rec) + '</p>';
+  b.innerHTML = '<h4>🌙 ' + esc(txt) + '</h4><p class="muted su-6cb285">' + esc(rec) + '</p>';
 }
 
 /* ---------------- CHECKS (guía / diag / radio) ---------------- */
@@ -298,17 +298,17 @@ function renderDiag() {
   var data = s.diags || [];
   var ct = $('redDiagCount');
   if (!data.length) {
-    box.innerHTML = '<p class="muted" style="font-size:11px;text-align:center">Sin mediciones. Guarda la primera arriba después de tu test de alcance.</p>';
+    box.innerHTML = '<p class="muted su-e201a8">Sin mediciones. Guarda la primera arriba después de tu test de alcance.</p>';
     if (ct) ct.textContent = '';
     return;
   }
   var arr = data.slice().sort(function (a, b) { return (b.fecha || '').localeCompare(a.fecha || ''); });
   box.innerHTML = arr.map(function (r) {
-    var chip = r.res === 'llego' ? '<span class="chip" style="font-size:10px;color:#8fd694;border-color:#8fd69455">✅ llegó</span>'
-      : r.res === 'cortado' ? '<span class="chip" style="font-size:10px;color:#e8c56a;border-color:#e8c56a55">🟡 cortado</span>'
-      : '<span class="chip" style="font-size:10px;color:#e76e8a;border-color:#e76e8a55">🔴 nada</span>';
-    return '<div class="hora-item"><span style="font-size:12px"><b>' + esc(r.lugar || 'Test') + '</b> ' + chip +
-      '<br><span class="muted" style="font-size:10px">' + esc(r.fecha || '') + ' · SNR ' + esc(r.snr || '–') + ' · RSSI ' + esc(r.rssi || '–') + ' · ' + esc(r.dist || '–') + (r.nota ? ' · ' + esc(r.nota) : '') + '</span></span>' +
+    var chip = r.res === 'llego' ? '<span class="chip su-b143aa">✅ llegó</span>'
+      : r.res === 'cortado' ? '<span class="chip su-8d684a">🟡 cortado</span>'
+      : '<span class="chip su-b0ce0c">🔴 nada</span>';
+    return '<div class="hora-item"><span class="su-6cb285"><b>' + esc(r.lugar || 'Test') + '</b> ' + chip +
+      '<br><span class="muted su-0d5be0">' + esc(r.fecha || '') + ' · SNR ' + esc(r.snr || '–') + ' · RSSI ' + esc(r.rssi || '–') + ' · ' + esc(r.dist || '–') + (r.nota ? ' · ' + esc(r.nota) : '') + '</span></span>' +
       '<button type="button" class="btn btn-icon red-diag-del" data-k="' + esc(r.id) + '">✕</button></div>';
   }).join('');
   box.querySelectorAll('.red-diag-del').forEach(function (x) {
@@ -329,16 +329,16 @@ function renderNodos() {
   var data = s.nodos || [];
   var st = $('redNodoStats');
   if (!data.length) {
-    box.innerHTML = '<p class="muted" style="font-size:11px;text-align:center">Sin nodos aún. Guarda el primero: tu equipo + 1 vecino.</p>';
+    box.innerHTML = '<p class="muted su-e201a8">Sin nodos aún. Guarda el primero: tu equipo + 1 vecino.</p>';
     if (st) st.textContent = '';
     return;
   }
   var rolName = { hogar: '🏠 Hogar', semilla: '🌱 Semilla', movil: '🎒 Móvil', solar: '☀️ Solar' };
   var estChip = { ok: '✅', prueba: '🟡', caido: '🔴' };
   box.innerHTML = data.map(function (r) {
-    return '<div class="hora-item"><span style="font-size:12px"><b>' + esc(r.nombre || 'Nodo') + '</b> <span class="muted">' + esc(r.nid || '') + '</span> ' + (estChip[r.estado] || '') +
-      '<br><span class="muted" style="font-size:10px">' + esc(rolName[r.rol] || r.rol || '') + ' · ' + esc(r.lugar || '') + ' · ' + esc(r.equipo || '') + '</span></span>' +
-      '<span style="display:flex;gap:4px"><button type="button" class="btn btn-icon red-nodo-edit" data-k="' + esc(r.id) + '" title="Editar">✎</button>' +
+    return '<div class="hora-item"><span class="su-6cb285"><b>' + esc(r.nombre || 'Nodo') + '</b> <span class="muted">' + esc(r.nid || '') + '</span> ' + (estChip[r.estado] || '') +
+      '<br><span class="muted su-0d5be0">' + esc(rolName[r.rol] || r.rol || '') + ' · ' + esc(r.lugar || '') + ' · ' + esc(r.equipo || '') + '</span></span>' +
+      '<span class="su-74cac9"><button type="button" class="btn btn-icon red-nodo-edit" data-k="' + esc(r.id) + '" title="Editar">✎</button>' +
       '<button type="button" class="btn btn-icon red-nodo-del" data-k="' + esc(r.id) + '" title="Borrar">✕</button></span></div>';
   }).join('');
   box.querySelectorAll('.red-nodo-del').forEach(function (x) {

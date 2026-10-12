@@ -1,16 +1,16 @@
 <dialog id="psicoDialog">
     <form method="dialog">
-      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
-        <h3 style="margin:0;color:var(--accent)">🪞 Autoconocimiento</h3>
+      <div class="dlg-actions su-d2d053">
+        <h3 class="su-ee0cfe">🪞 Autoconocimiento</h3>
         <button type="button" id="psicoCloseTop" class="btn btn-icon" title="Cerrar" aria-label="Cerrar">✕</button>
       </div>
-      <p class="muted" style="line-height:1.5">19 guías básicas para mirarte por dentro: profundidad, escritura, contemplación y cuerpo. Elige una pestaña, lee la ficha y haz el ejercicio de 5 minutos. Todo queda <b>privado y local</b> por usuario. <b>No reemplaza terapia psicológica ni psiquiátrica.</b> Si estás en crisis, pide ayuda: <b>*4141</b> (prevención del suicidio, Chile, 24h) o tu CESFAM.</p>
-      <div id="psicoStreakBox" class="menstrual-card" style="border-color:var(--gold)"></div>
-      <div class="timer-tabs" style="margin:12px 0 10px;flex-wrap:wrap">
-        <button type="button" id="tabPsi1" class="btn btn-accent" style="width:auto">🌑 Profundidad</button>
-        <button type="button" id="tabPsi2" class="btn" style="width:auto">✍️ Escritura & Filosofía</button>
-        <button type="button" id="tabPsi3" class="btn" style="width:auto">🧘 Contemplación</button>
-        <button type="button" id="tabPsi4" class="btn" style="width:auto">🧍 Cuerpo & Expresión</button>
+      <p class="muted su-77e2fe">19 guías básicas para mirarte por dentro: profundidad, escritura, contemplación y cuerpo. Elige una pestaña, lee la ficha y haz el ejercicio de 5 minutos. Todo queda <b>privado y local</b> por usuario. <b>No reemplaza terapia psicológica ni psiquiátrica.</b> Si estás en crisis, pide ayuda: <b>*4141</b> (prevención del suicidio, Chile, 24h) o tu CESFAM.</p>
+      <div id="psicoStreakBox" class="menstrual-card su-68a1a9"></div>
+      <div class="timer-tabs su-f7ad78">
+        <button type="button" id="tabPsi1" class="btn btn-accent su-30e741">🌑 Profundidad</button>
+        <button type="button" id="tabPsi2" class="btn su-30e741">✍️ Escritura & Filosofía</button>
+        <button type="button" id="tabPsi3" class="btn su-30e741">🧘 Contemplación</button>
+        <button type="button" id="tabPsi4" class="btn su-30e741">🧍 Cuerpo & Expresión</button>
       </div>
       <div id="psicoPanel1">
         <div class="discipline-grid">
@@ -47,12 +47,12 @@
           <div class="discipline-card"><h4>🎨 Arte y escritura intuitiva</h4><p><b>Qué es:</b> pintar, modelar o escribir sin censura para sacar lo que la lógica bloquea.</p><p><b>Pasos:</b> 1) 5' de trazo o escritura continua, sin borrar ni juzgar. 2) míralo como si fuera de otra persona: ¿qué ves? 3) escribe 1 frase que la obra te diga.</p><p class="muted">✏️ 5': “hice ___ y me dice ___”. Feo vale: lo importante es que salió.</p></div>
         </div>
       </div>
-      <div class="menstrual-card" style="margin-top:10px">
+      <div class="menstrual-card su-d2c171">
         <h4>📓 Mi práctica de hoy — registro personal</h4>
-        <p class="muted" style="font-size:11px">Queda <b>privado y local</b> por usuario. Elige el tema, escribe tu ejercicio y guarda. Sirve como journaling: relee cada luna.</p>
+        <p class="muted su-11a508">Queda <b>privado y local</b> por usuario. Elige el tema, escribe tu ejercicio y guarda. Sirve como journaling: relee cada luna.</p>
         <div class="conv-row">
           <label>Fecha <input type="date" id="psiDate"></label>
-          <label style="flex:2">Tema
+          <label class="su-4b3de7">Tema
             <select id="psiTopic">
               <option value="sombra">🌑 Sombra (Jung)</option>
               <option value="tcc">🧠 TCC</option>
@@ -77,16 +77,16 @@
           </label>
         </div>
         <label>Mi ejercicio <textarea id="psiText" rows="3" placeholder="ej: Me molesta que otros sean impuntuales porque yo no me permito descansar..." maxlength="500"></textarea></label>
-        <div class="dlg-actions" style="justify-content:flex-start">
-          <button type="button" id="psiSave" class="btn btn-accent" style="width:auto">💾 Guardar práctica</button>
-          <button type="button" id="psiToNote" class="btn" style="width:auto" title="Copiar a la nota del día actual">📝 Llevar a nota de hoy</button>
+        <div class="dlg-actions su-59a5a8">
+          <button type="button" id="psiSave" class="btn btn-accent su-30e741">💾 Guardar práctica</button>
+          <button type="button" id="psiToNote" class="btn su-30e741" title="Copiar a la nota del día actual">📝 Llevar a nota de hoy</button>
         </div>
-        <div id="psiLog" class="habits-list" style="margin-top:10px;max-height:220px"></div>
-        <div class="dlg-actions" style="justify-content:space-between;align-items:center;margin-top:8px">
-          <span id="psiStats" class="muted" style="font-size:11px"></span>
-          <span style="display:flex;gap:8px">
-            <button type="button" id="psiShare" class="btn" style="width:auto">📤 Compartir</button>
-            <button type="button" id="psiClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar</button>
+        <div id="psiLog" class="habits-list su-90a939"></div>
+        <div class="dlg-actions su-cc4a4c">
+          <span id="psiStats" class="muted su-11a508"></span>
+          <span class="su-a76d59">
+            <button type="button" id="psiShare" class="btn su-30e741">📤 Compartir</button>
+            <button type="button" id="psiClear" class="btn su-214f75">🗑 Borrar</button>
           </span>
         </div>
       </div>

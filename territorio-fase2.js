@@ -180,44 +180,44 @@ function renderMeliHoy() {
       : fase === 'llena' ? '🌕 <b>Llena: observa, no abras al mediodía</b> — mira piquera y anota floración.'
       : fase === 'nueva' ? '🌑 <b>Nueva: taller</b> — repara cajones, funde cera, arma marcos.'
       : 'Mira la luna de hoy y elige: creciente = abrir, menguante = cosechar.';
-    box.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">' +
-      '<span style="font-size:14px"><b>🐝 Hoy — ' + esc(k) + '</b></span>' +
-      '<span class="chip" style="background:var(--gold);color:#10142c">' + hoy + ' hoy · ' + data.length + ' total · ' + kg.toFixed(1) + ' kg miel</span></div>' +
-      '<p class="muted" style="font-size:11px;margin-top:6px">Cosecha en <b>menguante</b> · inspección en <b>creciente</b>. Al <b>chito no se le cosecha</b>: se protege. ' + esc(lunaTxt(k)) + (t >= 0 ? ' (tithi ' + t + ')' : '') + '</p>' +
-      '<div class="chip" style="display:block;white-space:normal;margin-top:6px">' + consejo + '</div>';
+    box.innerHTML = '<div class="su-24ce67">' +
+      '<span class="su-433de3"><b>🐝 Hoy — ' + esc(k) + '</b></span>' +
+      '<span class="chip su-e4aba6">' + hoy + ' hoy · ' + data.length + ' total · ' + kg.toFixed(1) + ' kg miel</span></div>' +
+      '<p class="muted su-e13d76">Cosecha en <b>menguante</b> · inspección en <b>creciente</b>. Al <b>chito no se le cosecha</b>: se protege. ' + esc(lunaTxt(k)) + (t >= 0 ? ' (tithi ' + t + ')' : '') + '</p>' +
+      '<div class="chip su-e75717">' + consejo + '</div>';
   }
   var lb = $('meliLunaBox');
   if (lb) {
     lb.innerHTML = MELI_LUNA.map(function (m) {
-      return '<div class="si-card" style="padding:8px 10px"><h4 style="font-size:12px">' + esc(m.f) + ' — ' + esc(m.t) + '</h4><p style="font-size:11px">' + esc(m.d) + '</p></div>';
+      return '<div class="si-card su-cfa1ec"><h4 class="su-6cb285">' + esc(m.f) + ' — ' + esc(m.t) + '</h4><p class="su-11a508">' + esc(m.d) + '</p></div>';
     }).join('');
   }
   var cb = $('meliCatalogBox');
   if (cb) {
     var meliList = allMeliSpecies();
     var meliMine = getMeliCustom().length;
-    cb.innerHTML = '<p class="muted" style="font-size:10px;margin:2px 0 6px">' + MELI_ESPECIES.length + ' base' + (meliMine ? ' + <b>' + meliMine + ' mías</b>' : '') + ' · toca una para cargarla en la bitácora.</p>' +
+    cb.innerHTML = '<p class="muted su-2c4c6c">' + MELI_ESPECIES.length + ' base' + (meliMine ? ' + <b>' + meliMine + ' mías</b>' : '') + ' · toca una para cargarla en la bitácora.</p>' +
       '<div class="fishing-species">' + meliList.map(function (f) {
       var inv = /Introducido|invasor/i.test(f.rol || '');
       var border = inv ? ';border-color:#e76e8a44' : (f.mine ? ';border-color:#a9d18e55' : '');
       return '<div class="fishing-species-item" style="cursor:pointer' + border + '" data-meli="' + esc(f.nombre) + '">' +
-        '<b style="font-size:12px">🐝 ' + esc(f.nombre) + '</b>' + (f.mine ? ' <span class="chip" style="font-size:9px;background:#a9d18e22;color:#a9d18e;border-color:#a9d18e55">mía</span>' : '') +
-        '<div style="font-size:10px;color:var(--muted);font-style:italic">' + esc(f.cient || '') + '</div>' +
-        '<div style="margin:4px 0"><span class="chip" style="font-size:9px">' + esc(f.rol || '') + '</span></div>' +
-        '<div style="font-size:11px">🌸 ' + esc(f.flor || '') + '</div>' +
-        '<div class="muted" style="font-size:10.5px;margin-top:2px">' + esc(f.nota || '') + '</div>' +
-        (f.orn ? '<div style="font-size:10.5px;margin-top:4px;background:rgba(232,197,106,.07);border:1px solid rgba(232,197,106,.28);border-radius:8px;padding:6px 8px">👉 ' + esc(f.orn) + '</div>' : '') +
-        (f.mine && f.id ? '<div style="margin-top:6px"><button type="button" class="btn" data-melidel="' + f.id + '" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕ Borrar mi especie</button></div>' : '') + '</div>';
+        '<b class="su-6cb285">🐝 ' + esc(f.nombre) + '</b>' + (f.mine ? ' <span class="chip su-421073">mía</span>' : '') +
+        '<div class="su-8d47b6">' + esc(f.cient || '') + '</div>' +
+        '<div class="su-557d84"><span class="chip su-fb2957">' + esc(f.rol || '') + '</span></div>' +
+        '<div class="su-11a508">🌸 ' + esc(f.flor || '') + '</div>' +
+        '<div class="muted su-3ba0db">' + esc(f.nota || '') + '</div>' +
+        (f.orn ? '<div class="su-6338e4">👉 ' + esc(f.orn) + '</div>' : '') +
+        (f.mine && f.id ? '<div class="su-fe7b49"><button type="button" class="btn su-fd834a" data-melidel="' + f.id + '">✕ Borrar mi especie</button></div>' : '') + '</div>';
     }).join('') + '</div>' +
-    '<details style="border:1px dashed var(--gold);border-radius:10px;padding:8px 10px;margin-top:6px"><summary style="cursor:pointer;font-size:12px;color:var(--gold)"><b>➕ Agregar especie</b></summary>' +
-    '<div class="conv-row" style="margin-top:8px"><label style="flex:2">Especie * <input type="text" id="meliSpName" placeholder="ej: Abeja verde metálica" maxlength="40"></label></div>' +
-    '<div class="conv-row"><label style="flex:2">Nombre científico <input type="text" id="meliSpCient" placeholder="ej: Augochlora sp." maxlength="50"></label>' +
+    '<details class="su-9cf9f9"><summary class="su-d9db22"><b>➕ Agregar especie</b></summary>' +
+    '<div class="conv-row su-8a77e5"><label class="su-4b3de7">Especie * <input type="text" id="meliSpName" placeholder="ej: Abeja verde metálica" maxlength="40"></label></div>' +
+    '<div class="conv-row"><label class="su-4b3de7">Nombre científico <input type="text" id="meliSpCient" placeholder="ej: Augochlora sp." maxlength="50"></label>' +
     '<label>Rol <select id="meliSpRol"><option>🌿 Nativa solitaria</option><option>🌿 Nativa protegida (NO cosechar)</option><option>🍯 Productiva (introducida)</option><option>⚠️ Introducido invasor</option><option>🌿 Nativas solitarias</option></select></label></div>' +
     '<label>Flores que visita <input type="text" id="meliSpFlor" placeholder="ej: Pewü–Walüng (chilco, quillay)" maxlength="80"></label>' +
     '<label>Nota <input type="text" id="meliSpNota" placeholder="ej: Pequeña, anida en suelo, gran polinizadora" maxlength="120"></label>' +
     '<label>Manejo / orn <input type="text" id="meliSpOrn" placeholder="ej: Deja parche de suelo sin mulch para nidos" maxlength="120"></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="meliSpAdd" class="btn btn-accent" style="width:auto">+ Guardar especie</button></div></details>' +
-    '<p class="muted" style="font-size:10px;margin-top:6px">Toca una especie para cargarla en la bitácora.</p>';
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="meliSpAdd" class="btn btn-accent su-30e741">+ Guardar especie</button></div></details>' +
+    '<p class="muted su-d47a97">Toca una especie para cargarla en la bitácora.</p>';
     cb.querySelectorAll('[data-meli]').forEach(function (el) {
       el.onclick = function (e) {
         try { if (e && e.target && e.target.getAttribute && e.target.getAttribute('data-melidel')) return; } catch (e2) {}
@@ -273,9 +273,9 @@ function meliShareText(arr) {
 function renderMeliLog() {
   var data = getMeli();
   logListRender('meliLogBox', 'meliStats', data, function (it) {
-    return '<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center"><span><b>' + esc(it.species) + '</b> · <span class="chip" style="font-size:10px">' + esc(it.action || '—') + '</span>' + (it.kg ? ' · 🍯 ' + esc(it.kg) + ' kg' : '') + ' — ' + esc(it.hive || '—') +
-      '<br><span class="muted" style="font-size:11px">' + esc(it.date) + ' ' + esc(it.time || '') + ' · ' + esc(lunaTxt(it.date)) + '</span><br><span class="muted" style="font-size:11px">' + esc(it.notes || '') + '</span></span>' +
-      '<span style="display:flex;gap:6px;flex:0 0 auto"><button data-id="' + it.id + '" class="btn meli-share" style="width:auto;font-size:11px">📤</button><button data-id="' + it.id + '" class="btn meli-edit" style="width:auto;font-size:11px">✏️</button><button data-id="' + it.id + '" class="btn meli-del" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕</button></span></div>';
+    return '<div class="habit-item su-13313b"><span><b>' + esc(it.species) + '</b> · <span class="chip su-0d5be0">' + esc(it.action || '—') + '</span>' + (it.kg ? ' · 🍯 ' + esc(it.kg) + ' kg' : '') + ' — ' + esc(it.hive || '—') +
+      '<br><span class="muted su-11a508">' + esc(it.date) + ' ' + esc(it.time || '') + ' · ' + esc(lunaTxt(it.date)) + '</span><br><span class="muted su-11a508">' + esc(it.notes || '') + '</span></span>' +
+      '<span class="su-0c0cb1"><button data-id="' + it.id + '" class="btn meli-share su-337714">📤</button><button data-id="' + it.id + '" class="btn meli-edit su-337714">✏️</button><button data-id="' + it.id + '" class="btn meli-del su-fd834a">✕</button></span></div>';
   }, 'Sin registros. Anota tu primera inspección o un avistamiento de chito: fecha, colmena/flor y luna valen manejo.');
   var box = $('meliLogBox');
   if (!box || !data.length) return;
@@ -315,36 +315,36 @@ function ensureMeliDialog() {
   d.id = 'meliDialog';
   d.innerHTML =
     '<form method="dialog">' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
-    '<h3 style="margin:0;color:var(--accent)">🐝 Apicultura lunar — Penco</h3>' +
+    '<div class="dlg-actions su-d2d053">' +
+    '<h3 class="su-ee0cfe">🐝 Apicultura lunar — Penco</h3>' +
     '<button type="button" id="meliCloseTop" class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    '<p class="muted" style="line-height:1.5">Cosecha en <b>menguante</b>, inspección en <b>creciente</b>. Protege al <b>chito</b> (no se cosecha). Registro <b>privado y local</b>.</p>' +
-    '<div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">' +
-    '<button type="button" id="tabMeliHoy" class="btn btn-accent" style="width:auto">🐝 Hoy lunar</button>' +
-    '<button type="button" id="tabMeliEsp" class="btn" style="width:auto">🐝 Especies</button>' +
-    '<button type="button" id="tabMeliBit" class="btn" style="width:auto">📓 Bitácora colmenas</button></div>' +
-    '<div id="meliHoyPanel"><div id="meliTodayBox" class="menstrual-card" style="border-color:var(--gold)"></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>🌙 Calendario de manejo por luna</h4><div id="meliLunaBox" style="display:flex;flex-direction:column;gap:8px"></div></div></div>' +
+    '<p class="muted su-77e2fe">Cosecha en <b>menguante</b>, inspección en <b>creciente</b>. Protege al <b>chito</b> (no se cosecha). Registro <b>privado y local</b>.</p>' +
+    '<div class="timer-tabs su-4dca21">' +
+    '<button type="button" id="tabMeliHoy" class="btn btn-accent su-30e741">🐝 Hoy lunar</button>' +
+    '<button type="button" id="tabMeliEsp" class="btn su-30e741">🐝 Especies</button>' +
+    '<button type="button" id="tabMeliBit" class="btn su-30e741">📓 Bitácora colmenas</button></div>' +
+    '<div id="meliHoyPanel"><div id="meliTodayBox" class="menstrual-card su-68a1a9"></div>' +
+    '<div class="menstrual-card su-d2c171"><h4>🌙 Calendario de manejo por luna</h4><div id="meliLunaBox" class="su-be2653"></div></div></div>' +
     '<div id="meliEspPanel" class="hidden"><div class="menstrual-card"><h4>🐝 Catálogo local — productivas y nativas</h4><div id="meliCatalogBox"></div>' +
-    '<p class="muted" style="font-size:10px;margin-top:6px">⚠️ Si eres alérgico/a lleva adrenalina y avisa a tu red. Humo suave, traje claro, nunca abras con tormenta ni de noche.</p></div></div>' +
-    '<div id="meliBitPanel" class="hidden"><div class="menstrual-card" style="margin-top:10px"><h4>📓 Bitácora de colmenas</h4>' +
+    '<p class="muted su-d47a97">⚠️ Si eres alérgico/a lleva adrenalina y avisa a tu red. Humo suave, traje claro, nunca abras con tormenta ni de noche.</p></div></div>' +
+    '<div id="meliBitPanel" class="hidden"><div class="menstrual-card su-d2c171"><h4>📓 Bitácora de colmenas</h4>' +
     '<div class="conv-row"><label>Fecha <input type="date" id="meliDate"></label><label>Hora <input type="time" id="meliTime" value="10:00"></label>' +
     '<label>Colmena / nido <input type="text" id="meliHive" placeholder="ej: Cajón 1, Nido chito quebrada" maxlength="30"></label></div>' +
     '<div class="conv-row"><label>Especie <input type="text" id="meliSpecies" placeholder="ej: Melífera, Chito" maxlength="30"></label>' +
     '<label>Acción <select id="meliAction"><option>inspección</option><option>cosecha</option><option>alimentación</option><option>control varroa</option><option>división / núcleo</option><option>avistamiento chito</option><option>reparación material</option></select></label>' +
     '<label>Miel kg <input type="text" id="meliKg" placeholder="ej: 4.5" maxlength="10"></label></div>' +
     '<label>Notas <input type="text" id="meliNotes" placeholder="ej: 8 marcos llenos, puse alza, polen naranjo" maxlength="80"></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="meliAdd" class="btn btn-accent" style="width:auto">+ Guardar</button>' +
-    '<button type="button" id="meliCancelEdit" class="btn hidden" style="width:auto">Cancelar</button></div>' +
-    '<div id="meliLogBox" class="habits-list" style="margin-top:10px;max-height:240px"></div>' +
-    '<div class="dlg-actions" style="justify-content:space-between;align-items:center;margin-top:8px"><span id="meliStats" class="muted" style="font-size:11px"></span>' +
-    '<span style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" id="meliShare" class="btn" style="width:auto">📤 Compartir</button>' +
-    '<button type="button" id="meliExport" class="btn" style="width:auto">📥 Exportar</button>' +
-    '<button type="button" id="meliClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar</button></span></div></div>' +
-    '<div class="dlg-actions" style="justify-content:flex-start;flex-wrap:wrap">' +
-    '<button type="button" id="meliGoFlora" class="btn" style="width:auto;font-size:11px">🌸 Ir a Flora</button>' +
-    '<button type="button" id="meliGoBosque" class="btn" style="width:auto;font-size:11px">🌳 Ir a Bosque</button>' +
-    '<button type="button" id="meliGoSiembra" class="btn" style="width:auto;font-size:11px">🌱 Ir a Siembra</button></div></div>' +
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="meliAdd" class="btn btn-accent su-30e741">+ Guardar</button>' +
+    '<button type="button" id="meliCancelEdit" class="btn hidden su-30e741">Cancelar</button></div>' +
+    '<div id="meliLogBox" class="habits-list su-62f8f6"></div>' +
+    '<div class="dlg-actions su-cc4a4c"><span id="meliStats" class="muted su-11a508"></span>' +
+    '<span class="su-3de8f9"><button type="button" id="meliShare" class="btn su-30e741">📤 Compartir</button>' +
+    '<button type="button" id="meliExport" class="btn su-30e741">📥 Exportar</button>' +
+    '<button type="button" id="meliClear" class="btn su-214f75">🗑 Borrar</button></span></div></div>' +
+    '<div class="dlg-actions su-117179">' +
+    '<button type="button" id="meliGoFlora" class="btn su-337714">🌸 Ir a Flora</button>' +
+    '<button type="button" id="meliGoBosque" class="btn su-337714">🌳 Ir a Bosque</button>' +
+    '<button type="button" id="meliGoSiembra" class="btn su-337714">🌱 Ir a Siembra</button></div></div>' +
     '<div class="dlg-actions"><button type="button" id="meliClose" class="btn">Cerrar</button></div></form>';
   document.body.appendChild(d);
   return d;
@@ -486,24 +486,24 @@ function renderBalHoy() {
     var k = todayKey(), data = getBallenas();
     var hoy = data.filter(function (x) { return x.date === k; }).length;
     var enT = enTemporada();
-    box.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">' +
-      '<span style="font-size:14px"><b>🐋 Hoy — ' + esc(k) + '</b></span>' +
+    box.innerHTML = '<div class="su-24ce67">' +
+      '<span class="su-433de3"><b>🐋 Hoy — ' + esc(k) + '</b></span>' +
       '<span class="chip" style="background:' + (enT ? 'var(--gold);color:#10142c' : 'var(--panel)') + '">' + (enT ? '🐋 EN TEMPORADA (jul–nov)' : '🌊 fuera de pico · delfines y lobos todo el año') + '</span></div>' +
-      '<p class="muted" style="font-size:11px;margin-top:6px">Trempülcahue: la ballena que lleva a los que parten. Observar es honrar: <b>distancia, silencio y sin perseguir</b>. ' + hoy + ' hoy · ' + data.length + ' total · ' + esc(lunaTxt(k)) + '</p>' +
-      '<p class="muted" style="font-size:11px">🌙 Luna llena + pleamar + amanecer = mejor visibilidad. Con luna oscura los soplos se oyen más que se ven.</p>';
+      '<p class="muted su-e13d76">Trempülcahue: la ballena que lleva a los que parten. Observar es honrar: <b>distancia, silencio y sin perseguir</b>. ' + hoy + ' hoy · ' + data.length + ' total · ' + esc(lunaTxt(k)) + '</p>' +
+      '<p class="muted su-11a508">🌙 Luna llena + pleamar + amanecer = mejor visibilidad. Con luna oscura los soplos se oyen más que se ven.</p>';
   }
   var cb = $('balCatalogBox');
   if (cb) {
     cb.innerHTML = '<div class="fishing-species">' + BALLENA_ESPECIES.map(function (f) {
-      return '<div class="fishing-species-item" style="cursor:pointer" data-bal="' + esc(f.nombre) + '">' +
-        '<b style="font-size:12px">' + esc(f.nombre) + '</b><div style="font-size:10px;color:var(--muted);font-style:italic">' + esc(f.cient) + '</div>' +
-        '<div style="margin:4px 0"><span class="chip" style="font-size:9px">' + esc(f.temp) + '</span></div>' +
-        '<div class="muted" style="font-size:10.5px">' + esc(f.nota) + '</div>' +
-        '<div style="font-size:10.5px;margin-top:4px">📍 ' + esc(f.punto) + '</div></div>';
-    }).join('') + '</div><p class="muted" style="font-size:10px;margin-top:6px">Toca una especie para cargarla en la bitácora.</p>' +
-    '<div class="menstrual-card" style="margin-top:8px;background:var(--panel)"><h4 style="font-size:11px">📍 Puntos desde Penco / Lirquén</h4>' +
-    BALLENA_PUNTOS.map(function (p) { return '<p style="font-size:11px"><b>' + esc(p.n) + ':</b> ' + esc(p.d) + '</p>'; }).join('') +
-    '<p class="muted" style="font-size:10px">⚠️ 100 m mínimo a ballenas · motor en neutro · nunca entre madre y cría · basura de vuelta.</p></div>';
+      return '<div class="fishing-species-item su-3b6a3a" data-bal="' + esc(f.nombre) + '">' +
+        '<b class="su-6cb285">' + esc(f.nombre) + '</b><div class="su-8d47b6">' + esc(f.cient) + '</div>' +
+        '<div class="su-557d84"><span class="chip su-fb2957">' + esc(f.temp) + '</span></div>' +
+        '<div class="muted su-4adef8">' + esc(f.nota) + '</div>' +
+        '<div class="su-88855c">📍 ' + esc(f.punto) + '</div></div>';
+    }).join('') + '</div><p class="muted su-d47a97">Toca una especie para cargarla en la bitácora.</p>' +
+    '<div class="menstrual-card su-afef99"><h4 class="su-11a508">📍 Puntos desde Penco / Lirquén</h4>' +
+    BALLENA_PUNTOS.map(function (p) { return '<p class="su-11a508"><b>' + esc(p.n) + ':</b> ' + esc(p.d) + '</p>'; }).join('') +
+    '<p class="muted su-0d5be0">⚠️ 100 m mínimo a ballenas · motor en neutro · nunca entre madre y cría · basura de vuelta.</p></div>';
     cb.querySelectorAll('[data-bal]').forEach(function (el) {
       el.onclick = function () {
         switchBalTab('bit');
@@ -528,9 +528,9 @@ function balShareText(arr) {
 function renderBalLog() {
   var data = getBallenas();
   logListRender('balLogBox', 'balStats', data, function (it) {
-    return '<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center"><span><b>' + esc(it.species) + '</b> ×' + esc(it.count || '1') + ' — ' + esc(it.place || '—') +
-      '<br><span class="muted" style="font-size:11px">' + esc(it.date) + ' ' + esc(it.time || '') + ' · ' + esc(lunaTxt(it.date)) + '</span><br><span class="muted" style="font-size:11px">' + esc(it.notes || '') + '</span></span>' +
-      '<span style="display:flex;gap:6px;flex:0 0 auto"><button data-id="' + it.id + '" class="btn bal-del" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕</button></span></div>';
+    return '<div class="habit-item su-13313b"><span><b>' + esc(it.species) + '</b> ×' + esc(it.count || '1') + ' — ' + esc(it.place || '—') +
+      '<br><span class="muted su-11a508">' + esc(it.date) + ' ' + esc(it.time || '') + ' · ' + esc(lunaTxt(it.date)) + '</span><br><span class="muted su-11a508">' + esc(it.notes || '') + '</span></span>' +
+      '<span class="su-0c0cb1"><button data-id="' + it.id + '" class="btn bal-del su-fd834a">✕</button></span></div>';
   }, 'Sin avistamientos. Sube al mirador en temporada (jul–nov) 08–11h y anota soplo, rumbo y cantidad.');
   var box = $('balLogBox');
   if (!box || !data.length) return;
@@ -556,31 +556,31 @@ function ensureBalDialog() {
   d.id = 'balDialog';
   d.innerHTML =
     '<form method="dialog">' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
-    '<h3 style="margin:0;color:var(--accent)">🐋 Ballenas y fauna marina — Golfo de Arauco</h3>' +
+    '<div class="dlg-actions su-d2d053">' +
+    '<h3 class="su-ee0cfe">🐋 Ballenas y fauna marina — Golfo de Arauco</h3>' +
     '<button type="button" id="balCloseTop" class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    '<p class="muted" style="line-height:1.5">Trempülcahue en temporada <b>jul–nov</b>. Observa desde costa con respeto. Registro <b>privado y local</b>.</p>' +
-    '<div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">' +
-    '<button type="button" id="tabBalHoy" class="btn btn-accent" style="width:auto">🐋 Temporada hoy</button>' +
-    '<button type="button" id="tabBalBit" class="btn" style="width:auto">📓 Bitácora avistamientos</button></div>' +
-    '<div id="balHoyPanel"><div id="balTodayBox" class="menstrual-card" style="border-color:var(--gold)"></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>🐋 Especies + 📍 puntos</h4><div id="balCatalogBox"></div></div></div>' +
-    '<div id="balBitPanel" class="hidden"><div class="menstrual-card" style="margin-top:10px"><h4>📓 Bitácora — avistamientos</h4>' +
+    '<p class="muted su-77e2fe">Trempülcahue en temporada <b>jul–nov</b>. Observa desde costa con respeto. Registro <b>privado y local</b>.</p>' +
+    '<div class="timer-tabs su-4dca21">' +
+    '<button type="button" id="tabBalHoy" class="btn btn-accent su-30e741">🐋 Temporada hoy</button>' +
+    '<button type="button" id="tabBalBit" class="btn su-30e741">📓 Bitácora avistamientos</button></div>' +
+    '<div id="balHoyPanel"><div id="balTodayBox" class="menstrual-card su-68a1a9"></div>' +
+    '<div class="menstrual-card su-d2c171"><h4>🐋 Especies + 📍 puntos</h4><div id="balCatalogBox"></div></div></div>' +
+    '<div id="balBitPanel" class="hidden"><div class="menstrual-card su-d2c171"><h4>📓 Bitácora — avistamientos</h4>' +
     '<div class="conv-row"><label>Fecha <input type="date" id="balDate"></label><label>Hora <input type="time" id="balTime" value="09:00"></label>' +
     '<label>Lugar <input type="text" id="balPlace" placeholder="ej: Mirador Cerro Verde" maxlength="30"></label></div>' +
     '<div class="conv-row"><label>Especie <input type="text" id="balSpecies" placeholder="ej: Franca austral" maxlength="30"></label>' +
-    '<label>Cantidad <input type="number" id="balCount" min="1" value="1" style="width:80px"></label></div>' +
+    '<label>Cantidad <input type="number" id="balCount" min="1" value="1" class="su-8573ba"></label></div>' +
     '<label>Notas <input type="text" id="balNotes" placeholder="ej: 2 soplos rumbo norte, con cría, mar calmo" maxlength="80"></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="balAdd" class="btn btn-accent" style="width:auto">+ Guardar avistamiento</button></div>' +
-    '<div id="balLogBox" class="habits-list" style="margin-top:10px;max-height:240px"></div>' +
-    '<div class="dlg-actions" style="justify-content:space-between;align-items:center;margin-top:8px"><span id="balStats" class="muted" style="font-size:11px"></span>' +
-    '<span style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" id="balShare" class="btn" style="width:auto">📤 Compartir</button>' +
-    '<button type="button" id="balExport" class="btn" style="width:auto">📥 Exportar</button>' +
-    '<button type="button" id="balClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar</button></span></div></div>' +
-    '<div class="dlg-actions" style="justify-content:flex-start;flex-wrap:wrap">' +
-    '<button type="button" id="balGoFish" class="btn" style="width:auto;font-size:11px">🎣 Ir a Pesca</button>' +
-    '<button type="button" id="balGoTides" class="btn" style="width:auto;font-size:11px">🌊 Ir a Mareas</button>' +
-    '<button type="button" id="balGoDuelo" class="btn" style="width:auto;font-size:11px">🕊️ Trempülcahue en Duelo</button></div></div>' +
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="balAdd" class="btn btn-accent su-30e741">+ Guardar avistamiento</button></div>' +
+    '<div id="balLogBox" class="habits-list su-62f8f6"></div>' +
+    '<div class="dlg-actions su-cc4a4c"><span id="balStats" class="muted su-11a508"></span>' +
+    '<span class="su-3de8f9"><button type="button" id="balShare" class="btn su-30e741">📤 Compartir</button>' +
+    '<button type="button" id="balExport" class="btn su-30e741">📥 Exportar</button>' +
+    '<button type="button" id="balClear" class="btn su-214f75">🗑 Borrar</button></span></div></div>' +
+    '<div class="dlg-actions su-117179">' +
+    '<button type="button" id="balGoFish" class="btn su-337714">🎣 Ir a Pesca</button>' +
+    '<button type="button" id="balGoTides" class="btn su-337714">🌊 Ir a Mareas</button>' +
+    '<button type="button" id="balGoDuelo" class="btn su-337714">🕊️ Trempülcahue en Duelo</button></div></div>' +
     '<div class="dlg-actions"><button type="button" id="balClose" class="btn">Cerrar</button></div></form>';
   document.body.appendChild(d);
   return d;
@@ -718,26 +718,26 @@ function renderHonHoy() {
       : fase === 'llena' ? '🌕 <b>Llena: paseo nocturno NO</b> — mejor de día; la luz fuerte deshidrata setas. Anota puntos para la próxima lluvia.'
       : fase === 'nueva' ? '🌑 <b>Nueva: estudia en casa</b> — repasa fichas, seca tu cosecha anterior, afila cuchillo y prepara canasto.'
       : 'Tras lluvias de Rimü–Pukem + menguante = salida.';
-    box.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">' +
-      '<span style="font-size:14px"><b>🍄 Hoy — ' + esc(k) + '</b></span>' +
-      '<span class="chip" style="background:var(--gold);color:#10142c">' + hoy + ' hoy · ' + data.length + ' salidas</span></div>' +
-      '<p class="muted" style="font-size:11px;margin-top:6px">Temporada fuerte: <b>Rimü–Pukem (abr–ago)</b> tras lluvias. ' + esc(lunaTxt(k)) + '</p>' +
-      '<div class="chip" style="display:block;white-space:normal;margin-top:6px">' + consejo + '</div>' +
-      '<p style="font-size:11px;margin-top:6px;color:#e76e8a"><b>⚠️ Si no estás 100% seguro, NO lo comas.</b> Ningún hongo silvestre se come crudo.</p>';
+    box.innerHTML = '<div class="su-24ce67">' +
+      '<span class="su-433de3"><b>🍄 Hoy — ' + esc(k) + '</b></span>' +
+      '<span class="chip su-e4aba6">' + hoy + ' hoy · ' + data.length + ' salidas</span></div>' +
+      '<p class="muted su-e13d76">Temporada fuerte: <b>Rimü–Pukem (abr–ago)</b> tras lluvias. ' + esc(lunaTxt(k)) + '</p>' +
+      '<div class="chip su-e75717">' + consejo + '</div>' +
+      '<p class="su-7cfdcb"><b>⚠️ Si no estás 100% seguro, NO lo comas.</b> Ningún hongo silvestre se come crudo.</p>';
   }
   var cb = $('honCatalogBox');
   if (cb) {
     cb.innerHTML = '<div class="fishing-species">' + HONGO_ESPECIES.map(function (f) {
       var mal = /TÓXICA|MORTAL/i.test(f.com);
       return '<div class="fishing-species-item" style="cursor:pointer' + (mal ? ';border-color:#e76e8a66' : ';border-color:#8fd69444') + '" data-hon="' + esc(f.nombre) + '">' +
-        '<b style="font-size:12px">🍄 ' + esc(f.nombre) + '</b><div style="font-size:10px;color:var(--muted);font-style:italic">' + esc(f.cient) + '</div>' +
-        '<div style="margin:4px 0;display:flex;gap:4px;flex-wrap:wrap"><span class="chip" style="font-size:9px">' + esc(f.com) + '</span><span class="chip" style="font-size:9px">' + esc(f.epoca) + '</span></div>' +
-        '<div style="font-size:11px">📍 ' + esc(f.hab) + '</div>' +
-        '<div class="muted" style="font-size:10.5px;margin-top:2px">' + esc(f.nota) + '</div>' +
-        '<div style="font-size:10.5px;margin-top:4px;background:rgba(231,110,138,.08);border:1px solid rgba(231,110,138,.3);border-radius:8px;padding:6px 8px">⚠️ ' + esc(f.tox) + '</div></div>';
-    }).join('') + '</div><p class="muted" style="font-size:10px;margin-top:6px">Toca una especie para cargarla en la bitácora.</p>' +
-    '<div class="menstrual-card" style="margin-top:8px;background:var(--panel)"><h4 style="font-size:11px">📋 Guía de salida segura</h4>' +
-    HONGO_REGLAS.map(function (r) { return '<p style="font-size:11px">• ' + esc(r) + '</p>'; }).join('') + '</div>';
+        '<b class="su-6cb285">🍄 ' + esc(f.nombre) + '</b><div class="su-8d47b6">' + esc(f.cient) + '</div>' +
+        '<div class="su-ba21f6"><span class="chip su-fb2957">' + esc(f.com) + '</span><span class="chip su-fb2957">' + esc(f.epoca) + '</span></div>' +
+        '<div class="su-11a508">📍 ' + esc(f.hab) + '</div>' +
+        '<div class="muted su-3ba0db">' + esc(f.nota) + '</div>' +
+        '<div class="su-51fd79">⚠️ ' + esc(f.tox) + '</div></div>';
+    }).join('') + '</div><p class="muted su-d47a97">Toca una especie para cargarla en la bitácora.</p>' +
+    '<div class="menstrual-card su-afef99"><h4 class="su-11a508">📋 Guía de salida segura</h4>' +
+    HONGO_REGLAS.map(function (r) { return '<p class="su-11a508">• ' + esc(r) + '</p>'; }).join('') + '</div>';
     cb.querySelectorAll('[data-hon]').forEach(function (el) {
       el.onclick = function () {
         switchHonTab('bit');
@@ -762,9 +762,9 @@ function honShareText(arr) {
 function renderHonLog() {
   var data = getHongos();
   logListRender('honLogBox', 'honStats', data, function (it) {
-    return '<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center"><span><b>' + esc(it.species) + '</b> · ' + esc(it.qty || '?') + ' — ' + esc(it.place || '—') +
-      '<br><span class="muted" style="font-size:11px">' + esc(it.date) + ' ' + esc(it.time || '') + ' · ' + esc(lunaTxt(it.date)) + '</span><br><span class="muted" style="font-size:11px">' + esc(it.notes || '') + '</span></span>' +
-      '<span style="display:flex;gap:6px;flex:0 0 auto"><button data-id="' + it.id + '" class="btn hon-del" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕</button></span></div>';
+    return '<div class="habit-item su-13313b"><span><b>' + esc(it.species) + '</b> · ' + esc(it.qty || '?') + ' — ' + esc(it.place || '—') +
+      '<br><span class="muted su-11a508">' + esc(it.date) + ' ' + esc(it.time || '') + ' · ' + esc(lunaTxt(it.date)) + '</span><br><span class="muted su-11a508">' + esc(it.notes || '') + '</span></span>' +
+      '<span class="su-0c0cb1"><button data-id="' + it.id + '" class="btn hon-del su-fd834a">✕</button></span></div>';
   }, 'Sin salidas. Espera 3–5 días tras lluvia otoñal y sal en menguante con canasto, cuchillo y esta guía.');
   var box = $('honLogBox');
   if (!box || !data.length) return;
@@ -786,30 +786,30 @@ function ensureHonDialog() {
   d.id = 'honDialog';
   d.innerHTML =
     '<form method="dialog">' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
-    '<h3 style="margin:0;color:var(--accent)">🍄 Hongos del bosque — Penco</h3>' +
+    '<div class="dlg-actions su-d2d053">' +
+    '<h3 class="su-ee0cfe">🍄 Hongos del bosque — Penco</h3>' +
     '<button type="button" id="honCloseTop" class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    '<p class="muted" style="line-height:1.5">Esclerófilo costero en <b>Rimü–Pukem</b>. La luna ordena las salidas: <b>menguante tras lluvia</b>. <b style="color:#e76e8a">Si dudas, no lo comas.</b></p>' +
-    '<div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">' +
-    '<button type="button" id="tabHonHoy" class="btn btn-accent" style="width:auto">🍄 Hoy + guía</button>' +
-    '<button type="button" id="tabHonBit" class="btn" style="width:auto">📓 Bitácora salidas</button></div>' +
-    '<div id="honHoyPanel"><div id="honTodayBox" class="menstrual-card" style="border-color:var(--gold)"></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>🍄 Catálogo + seguridad</h4><div id="honCatalogBox"></div></div></div>' +
-    '<div id="honBitPanel" class="hidden"><div class="menstrual-card" style="margin-top:10px"><h4>📓 Bitácora — salidas</h4>' +
+    '<p class="muted su-77e2fe">Esclerófilo costero en <b>Rimü–Pukem</b>. La luna ordena las salidas: <b>menguante tras lluvia</b>. <b class="su-a861ba">Si dudas, no lo comas.</b></p>' +
+    '<div class="timer-tabs su-4dca21">' +
+    '<button type="button" id="tabHonHoy" class="btn btn-accent su-30e741">🍄 Hoy + guía</button>' +
+    '<button type="button" id="tabHonBit" class="btn su-30e741">📓 Bitácora salidas</button></div>' +
+    '<div id="honHoyPanel"><div id="honTodayBox" class="menstrual-card su-68a1a9"></div>' +
+    '<div class="menstrual-card su-d2c171"><h4>🍄 Catálogo + seguridad</h4><div id="honCatalogBox"></div></div></div>' +
+    '<div id="honBitPanel" class="hidden"><div class="menstrual-card su-d2c171"><h4>📓 Bitácora — salidas</h4>' +
     '<div class="conv-row"><label>Fecha <input type="date" id="honDate"></label><label>Hora <input type="time" id="honTime" value="09:00"></label>' +
     '<label>Lugar <input type="text" id="honPlace" placeholder="ej: Quebrada Honda, pinar" maxlength="30"></label></div>' +
     '<div class="conv-row"><label>Especie <input type="text" id="honSpecies" placeholder="ej: Changle, Loyo" maxlength="30"></label>' +
     '<label>Cantidad <input type="text" id="honQty" placeholder="ej: 1 canasto / 800 g" maxlength="20"></label></div>' +
     '<label>Notas <input type="text" id="honNotes" placeholder="ej: tras 4 días lluvia, jóvenes firmes, dejé 70%" maxlength="80"></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="honAdd" class="btn btn-accent" style="width:auto">+ Guardar salida</button></div>' +
-    '<div id="honLogBox" class="habits-list" style="margin-top:10px;max-height:240px"></div>' +
-    '<div class="dlg-actions" style="justify-content:space-between;align-items:center;margin-top:8px"><span id="honStats" class="muted" style="font-size:11px"></span>' +
-    '<span style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" id="honShare" class="btn" style="width:auto">📤 Compartir</button>' +
-    '<button type="button" id="honExport" class="btn" style="width:auto">📥 Exportar</button>' +
-    '<button type="button" id="honClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar</button></span></div></div>' +
-    '<div class="dlg-actions" style="justify-content:flex-start;flex-wrap:wrap">' +
-    '<button type="button" id="honGoBosque" class="btn" style="width:auto;font-size:11px">🌳 Ir a Bosque</button>' +
-    '<button type="button" id="honGoSenderos" class="btn" style="width:auto;font-size:11px">🚶 Ir a Senderos</button></div></div>' +
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="honAdd" class="btn btn-accent su-30e741">+ Guardar salida</button></div>' +
+    '<div id="honLogBox" class="habits-list su-62f8f6"></div>' +
+    '<div class="dlg-actions su-cc4a4c"><span id="honStats" class="muted su-11a508"></span>' +
+    '<span class="su-3de8f9"><button type="button" id="honShare" class="btn su-30e741">📤 Compartir</button>' +
+    '<button type="button" id="honExport" class="btn su-30e741">📥 Exportar</button>' +
+    '<button type="button" id="honClear" class="btn su-214f75">🗑 Borrar</button></span></div></div>' +
+    '<div class="dlg-actions su-117179">' +
+    '<button type="button" id="honGoBosque" class="btn su-337714">🌳 Ir a Bosque</button>' +
+    '<button type="button" id="honGoSenderos" class="btn su-337714">🚶 Ir a Senderos</button></div></div>' +
     '<div class="dlg-actions"><button type="button" id="honClose" class="btn">Cerrar</button></div></form>';
   document.body.appendChild(d);
   return d;
@@ -922,23 +922,23 @@ function renderSenHoy() {
     var k = todayKey(), data = getSenderos();
     var hoy = data.filter(function (x) { return x.date === k; }).length;
     var km = data.reduce(function (a, r) { return a + (parseFloat(r.km) || 0); }, 0);
-    box.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">' +
-      '<span style="font-size:14px"><b>🚶 Hoy — ' + esc(k) + '</b></span>' +
-      '<span class="chip" style="background:var(--gold);color:#10142c">' + hoy + ' hoy · ' + data.length + ' salidas · ' + km.toFixed(1) + ' km</span></div>' +
-      '<p class="muted" style="font-size:11px;margin-top:6px">Mejor hora = <b>hora dorada</b> para costa y mirador, <b>mañana</b> para roquerío en bajamar. Revisa 🌊 Mareas y 🌤️ Clima antes de salir. ' + esc(lunaTxt(k)) + '</p>';
+    box.innerHTML = '<div class="su-24ce67">' +
+      '<span class="su-433de3"><b>🚶 Hoy — ' + esc(k) + '</b></span>' +
+      '<span class="chip su-e4aba6">' + hoy + ' hoy · ' + data.length + ' salidas · ' + km.toFixed(1) + ' km</span></div>' +
+      '<p class="muted su-e13d76">Mejor hora = <b>hora dorada</b> para costa y mirador, <b>mañana</b> para roquerío en bajamar. Revisa 🌊 Mareas y 🌤️ Clima antes de salir. ' + esc(lunaTxt(k)) + '</p>';
   }
   var cb = $('senCatalogBox');
   if (cb) {
     cb.innerHTML = '<div class="fishing-species">' + SENDEROS.map(function (s) {
-      return '<div class="fishing-species-item" style="cursor:pointer" data-sen="' + esc(s.nombre) + '">' +
-        '<b style="font-size:12px">🚶 ' + esc(s.nombre) + '</b>' +
-        '<div style="margin:4px 0;display:flex;gap:4px;flex-wrap:wrap"><span class="chip" style="font-size:9px">📏 ' + esc(s.dist) + '</span><span class="chip" style="font-size:9px">⛰️ ' + esc(s.dif) + '</span><span class="chip" style="font-size:9px">⏱️ ' + esc(s.tiempo) + '</span></div>' +
-        '<div style="font-size:11px">' + esc(s.hora) + '</div>' +
-        '<div style="font-size:11px">📅 ' + esc(s.temp) + '</div>' +
-        '<div class="muted" style="font-size:10.5px;margin-top:2px">' + esc(s.nota) + '</div></div>';
-    }).join('') + '</div><p class="muted" style="font-size:10px;margin-top:6px">Toca una ruta para cargarla en la bitácora.</p>' +
-    '<div class="menstrual-card" style="margin-top:8px;background:var(--panel)"><h4 style="font-size:11px">🎒 Mínimo de salida</h4>' +
-    '<p class="muted" style="font-size:11px">Agua 1 L · bastón · cortaviento · linterna · celular cargado · aviso a alguien de tu ruta y hora. En roquerío: zapatilla con agarre + tabla de mareas. En cerro en Walüng: revisa 🔥 Incendios primero.</p></div>';
+      return '<div class="fishing-species-item su-3b6a3a" data-sen="' + esc(s.nombre) + '">' +
+        '<b class="su-6cb285">🚶 ' + esc(s.nombre) + '</b>' +
+        '<div class="su-ba21f6"><span class="chip su-fb2957">📏 ' + esc(s.dist) + '</span><span class="chip su-fb2957">⛰️ ' + esc(s.dif) + '</span><span class="chip su-fb2957">⏱️ ' + esc(s.tiempo) + '</span></div>' +
+        '<div class="su-11a508">' + esc(s.hora) + '</div>' +
+        '<div class="su-11a508">📅 ' + esc(s.temp) + '</div>' +
+        '<div class="muted su-3ba0db">' + esc(s.nota) + '</div></div>';
+    }).join('') + '</div><p class="muted su-d47a97">Toca una ruta para cargarla en la bitácora.</p>' +
+    '<div class="menstrual-card su-afef99"><h4 class="su-11a508">🎒 Mínimo de salida</h4>' +
+    '<p class="muted su-11a508">Agua 1 L · bastón · cortaviento · linterna · celular cargado · aviso a alguien de tu ruta y hora. En roquerío: zapatilla con agarre + tabla de mareas. En cerro en Walüng: revisa 🔥 Incendios primero.</p></div>';
     cb.querySelectorAll('[data-sen]').forEach(function (el) {
       el.onclick = function () {
         switchSenTab('bit');
@@ -963,9 +963,9 @@ function senShareText(arr) {
 function renderSenLog() {
   var data = getSenderos();
   logListRender('senLogBox', 'senStats', data, function (it) {
-    return '<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center"><span><b>' + esc(it.route) + '</b>' + (it.km ? ' · ' + esc(it.km) + ' km' : '') + ' — ' + esc(it.with || '—') +
-      '<br><span class="muted" style="font-size:11px">' + esc(it.date) + ' ' + esc(it.time || '') + ' · ' + esc(lunaTxt(it.date)) + '</span><br><span class="muted" style="font-size:11px">' + esc(it.notes || '') + '</span></span>' +
-      '<span style="display:flex;gap:6px;flex:0 0 auto"><button data-id="' + it.id + '" class="btn sen-del" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕</button></span></div>';
+    return '<div class="habit-item su-13313b"><span><b>' + esc(it.route) + '</b>' + (it.km ? ' · ' + esc(it.km) + ' km' : '') + ' — ' + esc(it.with || '—') +
+      '<br><span class="muted su-11a508">' + esc(it.date) + ' ' + esc(it.time || '') + ' · ' + esc(lunaTxt(it.date)) + '</span><br><span class="muted su-11a508">' + esc(it.notes || '') + '</span></span>' +
+      '<span class="su-0c0cb1"><button data-id="' + it.id + '" class="btn sen-del su-fd834a">✕</button></span></div>';
   }, 'Sin salidas. Parte por el borde costero en dorada y anota distancia y hora: así aprendes tu ritmo.');
   var box = $('senLogBox');
   if (!box || !data.length) return;
@@ -985,31 +985,31 @@ function ensureSenDialog() {
   d.id = 'senDialog';
   d.innerHTML =
     '<form method="dialog">' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
-    '<h3 style="margin:0;color:var(--accent)">🚶 Senderos de Penco</h3>' +
+    '<div class="dlg-actions su-d2d053">' +
+    '<h3 class="su-ee0cfe">🚶 Senderos de Penco</h3>' +
     '<button type="button" id="senCloseTop" class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    '<p class="muted" style="line-height:1.5">Distancia, dificultad, tiempo y mejor hora. Registro <b>privado y local</b>, enlazado con Bosque.</p>' +
-    '<div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">' +
-    '<button type="button" id="tabSenHoy" class="btn btn-accent" style="width:auto">🚶 Rutas hoy</button>' +
-    '<button type="button" id="tabSenBit" class="btn" style="width:auto">📓 Bitácora salidas</button></div>' +
-    '<div id="senHoyPanel"><div id="senTodayBox" class="menstrual-card" style="border-color:var(--gold)"></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>🚶 Rutas con datos</h4><div id="senCatalogBox"></div></div></div>' +
-    '<div id="senBitPanel" class="hidden"><div class="menstrual-card" style="margin-top:10px"><h4>📓 Bitácora — salidas</h4>' +
+    '<p class="muted su-77e2fe">Distancia, dificultad, tiempo y mejor hora. Registro <b>privado y local</b>, enlazado con Bosque.</p>' +
+    '<div class="timer-tabs su-4dca21">' +
+    '<button type="button" id="tabSenHoy" class="btn btn-accent su-30e741">🚶 Rutas hoy</button>' +
+    '<button type="button" id="tabSenBit" class="btn su-30e741">📓 Bitácora salidas</button></div>' +
+    '<div id="senHoyPanel"><div id="senTodayBox" class="menstrual-card su-68a1a9"></div>' +
+    '<div class="menstrual-card su-d2c171"><h4>🚶 Rutas con datos</h4><div id="senCatalogBox"></div></div></div>' +
+    '<div id="senBitPanel" class="hidden"><div class="menstrual-card su-d2c171"><h4>📓 Bitácora — salidas</h4>' +
     '<div class="conv-row"><label>Fecha <input type="date" id="senDate"></label><label>Hora <input type="time" id="senTime" value="09:00"></label>' +
     '<label>Ruta <input type="text" id="senRoute" placeholder="ej: Mirador Cerro Verde" maxlength="40"></label></div>' +
     '<div class="conv-row"><label>Km <input type="text" id="senKm" placeholder="ej: 2.4" maxlength="10"></label>' +
     '<label>Con quién / cómo <input type="text" id="senWith" placeholder="ej: sola, con hije, con bastón" maxlength="30"></label></div>' +
     '<label>Notas <input type="text" id="senNotes" placeholder="ej: barro en quebrada, vi chito, hora dorada perfecta" maxlength="80"></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="senAdd" class="btn btn-accent" style="width:auto">+ Guardar salida</button></div>' +
-    '<div id="senLogBox" class="habits-list" style="margin-top:10px;max-height:240px"></div>' +
-    '<div class="dlg-actions" style="justify-content:space-between;align-items:center;margin-top:8px"><span id="senStats" class="muted" style="font-size:11px"></span>' +
-    '<span style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" id="senShare" class="btn" style="width:auto">📤 Compartir</button>' +
-    '<button type="button" id="senExport" class="btn" style="width:auto">📥 Exportar</button>' +
-    '<button type="button" id="senClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar</button></span></div></div>' +
-    '<div class="dlg-actions" style="justify-content:flex-start;flex-wrap:wrap">' +
-    '<button type="button" id="senGoBosque" class="btn" style="width:auto;font-size:11px">🌳 Ir a Bosque</button>' +
-    '<button type="button" id="senGoGolden" class="btn" style="width:auto;font-size:11px">📸 Ir a Hora Dorada</button>' +
-    '<button type="button" id="senGoTides" class="btn" style="width:auto;font-size:11px">🌊 Ir a Mareas</button></div></div>' +
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="senAdd" class="btn btn-accent su-30e741">+ Guardar salida</button></div>' +
+    '<div id="senLogBox" class="habits-list su-62f8f6"></div>' +
+    '<div class="dlg-actions su-cc4a4c"><span id="senStats" class="muted su-11a508"></span>' +
+    '<span class="su-3de8f9"><button type="button" id="senShare" class="btn su-30e741">📤 Compartir</button>' +
+    '<button type="button" id="senExport" class="btn su-30e741">📥 Exportar</button>' +
+    '<button type="button" id="senClear" class="btn su-214f75">🗑 Borrar</button></span></div></div>' +
+    '<div class="dlg-actions su-117179">' +
+    '<button type="button" id="senGoBosque" class="btn su-337714">🌳 Ir a Bosque</button>' +
+    '<button type="button" id="senGoGolden" class="btn su-337714">📸 Ir a Hora Dorada</button>' +
+    '<button type="button" id="senGoTides" class="btn su-337714">🌊 Ir a Mareas</button></div></div>' +
     '<div class="dlg-actions"><button type="button" id="senClose" class="btn">Cerrar</button></div></form>';
   document.body.appendChild(d);
   return d;
@@ -1132,26 +1132,26 @@ function renderKayHoy() {
   if (box) {
     var k = todayKey(), data = getKayak();
     var hoy = data.filter(function (x) { return x.date === k; }).length;
-    box.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">' +
-      '<span style="font-size:14px"><b>🛶 Hoy — ' + esc(k) + '</b></span>' +
-      '<span class="chip" style="background:var(--gold);color:#10142c">' + hoy + ' hoy · ' + data.length + ' salidas</span></div>' +
-      '<p class="muted" style="font-size:11px;margin-top:6px">Ventana ideal: <b>2h antes/después de pleamar + amanecer + sin sur fuerte</b>. Revisa 🌊 Mareas y 🌤️ Clima ahora. ' + esc(lunaTxt(k)) + '</p>' +
-      '<p class="muted" style="font-size:11px">🌙 Luna nueva/llena = mareas vivas (más corriente): solo rutas protegidas y cortas.</p>';
+    box.innerHTML = '<div class="su-24ce67">' +
+      '<span class="su-433de3"><b>🛶 Hoy — ' + esc(k) + '</b></span>' +
+      '<span class="chip su-e4aba6">' + hoy + ' hoy · ' + data.length + ' salidas</span></div>' +
+      '<p class="muted su-e13d76">Ventana ideal: <b>2h antes/después de pleamar + amanecer + sin sur fuerte</b>. Revisa 🌊 Mareas y 🌤️ Clima ahora. ' + esc(lunaTxt(k)) + '</p>' +
+      '<p class="muted su-11a508">🌙 Luna nueva/llena = mareas vivas (más corriente): solo rutas protegidas y cortas.</p>';
   }
   var pb = $('kayPuntosBox');
   if (pb) {
     pb.innerHTML = KAYAK_PUNTOS.map(function (p) {
-      return '<div class="si-card" style="padding:8px 10px"><h4 style="font-size:12px">📍 ' + esc(p.nombre) + ' — ' + esc(p.uso) + '</h4><p style="font-size:11px">' + esc(p.nota) + '</p></div>';
+      return '<div class="si-card su-cfa1ec"><h4 class="su-6cb285">📍 ' + esc(p.nombre) + ' — ' + esc(p.uso) + '</h4><p class="su-11a508">' + esc(p.nota) + '</p></div>';
     }).join('');
   }
   var cb = $('kayCheckBox');
   if (cb) {
     var st = getKayakCheck();
     var done = KAYAK_CHECK.filter(function (c) { return st[c.id]; }).length;
-    cb.innerHTML = '<p class="muted" style="font-size:11px">✅ ' + done + '/' + KAYAK_CHECK.length + ' — todo marcado = puedes lanzar. Si falta 1, no sales.</p>' +
+    cb.innerHTML = '<p class="muted su-11a508">✅ ' + done + '/' + KAYAK_CHECK.length + ' — todo marcado = puedes lanzar. Si falta 1, no sales.</p>' +
       KAYAK_CHECK.map(function (c) {
         var on = !!st[c.id];
-        return '<label class="check-row" style="font-size:12px"><input type="checkbox" data-kay="' + c.id + '"' + (on ? ' checked' : '') + '> ' + esc(c.t) + '</label>';
+        return '<label class="check-row su-6cb285"><input type="checkbox" data-kay="' + c.id + '"' + (on ? ' checked' : '') + '> ' + esc(c.t) + '</label>';
       }).join('');
     cb.querySelectorAll('[data-kay]').forEach(function (inp) {
       inp.onchange = function () {
@@ -1176,9 +1176,9 @@ function kayShareText(arr) {
 function renderKayLog() {
   var data = getKayak();
   logListRender('kayLogBox', 'kayStats', data, function (it) {
-    return '<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center"><span><b>' + esc(it.route || 'Remada') + '</b> — ' + esc(it.cond || '—') +
-      '<br><span class="muted" style="font-size:11px">' + esc(it.date) + ' ' + esc(it.time || '') + ' · ' + esc(lunaTxt(it.date)) + '</span><br><span class="muted" style="font-size:11px">' + esc(it.notes || '') + '</span></span>' +
-      '<span style="display:flex;gap:6px;flex:0 0 auto"><button data-id="' + it.id + '" class="btn kay-del" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕</button></span></div>';
+    return '<div class="habit-item su-13313b"><span><b>' + esc(it.route || 'Remada') + '</b> — ' + esc(it.cond || '—') +
+      '<br><span class="muted su-11a508">' + esc(it.date) + ' ' + esc(it.time || '') + ' · ' + esc(lunaTxt(it.date)) + '</span><br><span class="muted su-11a508">' + esc(it.notes || '') + '</span></span>' +
+      '<span class="su-0c0cb1"><button data-id="' + it.id + '" class="btn kay-del su-fd834a">✕</button></span></div>';
   }, 'Sin salidas. Marca primero todo el checklist y anota tu primera remada corta con marea y viento.');
   var box = $('kayLogBox');
   if (!box || !data.length) return;
@@ -1198,33 +1198,33 @@ function ensureKayDialog() {
   d.id = 'kayDialog';
   d.innerHTML =
     '<form method="dialog">' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
-    '<h3 style="margin:0;color:var(--accent)">🛶 Kayak y remo — Penco / Lirquén</h3>' +
+    '<div class="dlg-actions su-d2d053">' +
+    '<h3 class="su-ee0cfe">🛶 Kayak y remo — Penco / Lirquén</h3>' +
     '<button type="button" id="kayCloseTop" class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    '<p class="muted" style="line-height:1.5">Ventanas por <b>marea + viento</b>, puntos de lanzamiento y checklist. Si el sur pega o hay marejada: <b>no se sale</b>.</p>' +
-    '<div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">' +
-    '<button type="button" id="tabKayHoy" class="btn btn-accent" style="width:auto">🛶 Hoy + checklist</button>' +
-    '<button type="button" id="tabKayBit" class="btn" style="width:auto">📓 Bitácora remadas</button></div>' +
-    '<div id="kayHoyPanel"><div id="kayTodayBox" class="menstrual-card" style="border-color:var(--gold)"></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>✅ Checklist — todo marcado o no sales</h4><div id="kayCheckBox"></div>' +
-    '<div class="dlg-actions" style="justify-content:flex-start;flex-wrap:wrap;margin-top:6px">' +
-    '<button type="button" id="kayGoTides" class="btn" style="width:auto;font-size:11px">🌊 Ver Mareas</button>' +
-    '<button type="button" id="kayGoWeather" class="btn" style="width:auto;font-size:11px">🌤️ Ver Clima</button></div></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>📍 Puntos de lanzamiento</h4><div id="kayPuntosBox" style="display:flex;flex-direction:column;gap:8px"></div></div></div>' +
-    '<div id="kayBitPanel" class="hidden"><div class="menstrual-card" style="margin-top:10px"><h4>📓 Bitácora — remadas</h4>' +
+    '<p class="muted su-77e2fe">Ventanas por <b>marea + viento</b>, puntos de lanzamiento y checklist. Si el sur pega o hay marejada: <b>no se sale</b>.</p>' +
+    '<div class="timer-tabs su-4dca21">' +
+    '<button type="button" id="tabKayHoy" class="btn btn-accent su-30e741">🛶 Hoy + checklist</button>' +
+    '<button type="button" id="tabKayBit" class="btn su-30e741">📓 Bitácora remadas</button></div>' +
+    '<div id="kayHoyPanel"><div id="kayTodayBox" class="menstrual-card su-68a1a9"></div>' +
+    '<div class="menstrual-card su-d2c171"><h4>✅ Checklist — todo marcado o no sales</h4><div id="kayCheckBox"></div>' +
+    '<div class="dlg-actions su-a6fc0a">' +
+    '<button type="button" id="kayGoTides" class="btn su-337714">🌊 Ver Mareas</button>' +
+    '<button type="button" id="kayGoWeather" class="btn su-337714">🌤️ Ver Clima</button></div></div>' +
+    '<div class="menstrual-card su-d2c171"><h4>📍 Puntos de lanzamiento</h4><div id="kayPuntosBox" class="su-be2653"></div></div></div>' +
+    '<div id="kayBitPanel" class="hidden"><div class="menstrual-card su-d2c171"><h4>📓 Bitácora — remadas</h4>' +
     '<div class="conv-row"><label>Fecha <input type="date" id="kayDate"></label><label>Hora <input type="time" id="kayTime" value="08:00"></label>' +
     '<label>Ruta <input type="text" id="kayRoute" placeholder="ej: Lirquén–Penco interior" maxlength="40"></label></div>' +
     '<div class="conv-row"><label>Marea / viento <input type="text" id="kayCond" placeholder="ej: pleamar 08:20, calma" maxlength="40"></label></div>' +
     '<label>Notas <input type="text" id="kayNotes" placeholder="ej: 1 h, delfines, vuelta antes del sur" maxlength="80"></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="kayAdd" class="btn btn-accent" style="width:auto">+ Guardar remada</button></div>' +
-    '<div id="kayLogBox" class="habits-list" style="margin-top:10px;max-height:240px"></div>' +
-    '<div class="dlg-actions" style="justify-content:space-between;align-items:center;margin-top:8px"><span id="kayStats" class="muted" style="font-size:11px"></span>' +
-    '<span style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" id="kayShare" class="btn" style="width:auto">📤 Compartir</button>' +
-    '<button type="button" id="kayExport" class="btn" style="width:auto">📥 Exportar</button>' +
-    '<button type="button" id="kayClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar</button></span></div></div>' +
-    '<div class="dlg-actions" style="justify-content:flex-start;flex-wrap:wrap">' +
-    '<button type="button" id="kayGoFish" class="btn" style="width:auto;font-size:11px">🎣 Ir a Pesca</button>' +
-    '<button type="button" id="kayGoBal" class="btn" style="width:auto;font-size:11px">🐋 Ir a Ballenas</button></div></div>' +
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="kayAdd" class="btn btn-accent su-30e741">+ Guardar remada</button></div>' +
+    '<div id="kayLogBox" class="habits-list su-62f8f6"></div>' +
+    '<div class="dlg-actions su-cc4a4c"><span id="kayStats" class="muted su-11a508"></span>' +
+    '<span class="su-3de8f9"><button type="button" id="kayShare" class="btn su-30e741">📤 Compartir</button>' +
+    '<button type="button" id="kayExport" class="btn su-30e741">📥 Exportar</button>' +
+    '<button type="button" id="kayClear" class="btn su-214f75">🗑 Borrar</button></span></div></div>' +
+    '<div class="dlg-actions su-117179">' +
+    '<button type="button" id="kayGoFish" class="btn su-337714">🎣 Ir a Pesca</button>' +
+    '<button type="button" id="kayGoBal" class="btn su-337714">🐋 Ir a Ballenas</button></div></div>' +
     '<div class="dlg-actions"><button type="button" id="kayClose" class="btn">Cerrar</button></div></form>';
   document.body.appendChild(d);
   return d;
@@ -1352,15 +1352,15 @@ function renderCapta() {
   var need = Math.round((c.riegoM2 || 0) * (c.dot || 0) * (c.dias || 0));
   var reco = need <= 500 ? '1 tambor 500 L' : need <= 1100 ? '1 estanque 1.100 L' : need <= 2200 ? '1 estanque 2.200 L o 2×1.100 L' : need <= 5400 ? '1 estanque 5.400 L' : '2 estanques (ej: 5.400 + 2.200 L) o piscina flexible';
   var filas = CAPTA_MESES.map(function (x) {
-    return '<div style="display:flex;justify-content:space-between;font-size:11px;padding:2px 0;border-bottom:1px dotted var(--line)"><span>' + x.m + ' · ' + x.mm + ' mm</span><b>' + captaLitros(x.mm, c.techo, c.coef).toLocaleString('es-CL') + ' L</b></div>';
+    return '<div class="su-d19c1b"><span>' + x.m + ' · ' + x.mm + ' mm</span><b>' + captaLitros(x.mm, c.techo, c.coef).toLocaleString('es-CL') + ' L</b></div>';
   }).join('');
   var out = $('captaOut');
   if (out) {
-    out.innerHTML = '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px"><span class="chip">🏠 ' + c.techo + ' m² × coef ' + c.coef + '</span>' +
-      '<span class="chip" style="background:var(--gold);color:#10142c">Año: ' + tot.toLocaleString('es-CL') + ' L</span>' +
+    out.innerHTML = '<div class="su-2c76a2"><span class="chip">🏠 ' + c.techo + ' m² × coef ' + c.coef + '</span>' +
+      '<span class="chip su-e4aba6">Año: ' + tot.toLocaleString('es-CL') + ' L</span>' +
       '<span class="chip">Pukem (may–ago): ' + pukem.toLocaleString('es-CL') + ' L</span></div>' + filas +
-      '<p class="muted" style="font-size:10px;margin-top:6px">Promedios referenciales Penco (~1.080 mm/año, 80% en Pukem). Compara con tus mm reales en la pestaña Lluvia.</p>' +
-      '<div class="chip" style="display:block;white-space:normal;margin-top:6px">🌱 Riego Walüng: ' + c.riegoM2 + ' m² × ' + c.dot + ' L/m²/día × ' + c.dias + ' días = <b>' + need.toLocaleString('es-CL') + ' L</b> → <b>' + reco + '</b>. Tip: con mulch ahorras 1 de cada 3 riegos.</div>';
+      '<p class="muted su-d47a97">Promedios referenciales Penco (~1.080 mm/año, 80% en Pukem). Compara con tus mm reales en la pestaña Lluvia.</p>' +
+      '<div class="chip su-e75717">🌱 Riego Walüng: ' + c.riegoM2 + ' m² × ' + c.dot + ' L/m²/día × ' + c.dias + ' días = <b>' + need.toLocaleString('es-CL') + ' L</b> → <b>' + reco + '</b>. Tip: con mulch ahorras 1 de cada 3 riegos.</div>';
   }
   var t1 = $('captaTecho'), t2 = $('captaCoef'), t3 = $('captaM2'), t4 = $('captaDot'), t5 = $('captaDias');
   if (t1 && String(t1.value || '') === '') t1.value = c.techo;
@@ -1413,16 +1413,16 @@ function mejorarAgua() {
     var p = document.createElement('div');
     p.id = 'aguaCaptaPanel';
     p.className = 'hidden';
-    p.innerHTML = '<div class="menstrual-card" style="border-color:var(--gold)"><h4>💧 Captación de lluvia — techo × lluvia = litros</h4>' +
-      '<p class="muted" style="font-size:11px">Fórmula: <b>mm × m² × 0,8</b> (20% se pierde en canaleta + first flush). Ej: 20 mm × 40 m² = <b>640 L</b>.</p>' +
+    p.innerHTML = '<div class="menstrual-card su-68a1a9"><h4>💧 Captación de lluvia — techo × lluvia = litros</h4>' +
+      '<p class="muted su-11a508">Fórmula: <b>mm × m² × 0,8</b> (20% se pierde en canaleta + first flush). Ej: 20 mm × 40 m² = <b>640 L</b>.</p>' +
       '<div class="conv-row"><label>Techo (m²) <input type="number" id="captaTecho" min="0" step="1"></label>' +
       '<label>Coef (0,8 zinc / 0,9 liso / 0,6 teja vieja) <input type="number" id="captaCoef" min="0.3" max="1" step="0.05"></label></div>' +
       '<div class="conv-row"><label>Riego Walüng (m²) <input type="number" id="captaM2" min="0" step="1"></label>' +
       '<label>L/m²/día <input type="number" id="captaDot" min="0" step="0.5"></label>' +
       '<label>Días sin lluvia <input type="number" id="captaDias" min="0" step="5"></label></div>' +
-      '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="captaCalc" class="btn btn-accent" style="width:auto">💧 Calcular</button></div>' +
-      '<div id="captaOut" class="chip" style="margin-top:8px;display:block;white-space:normal">…</div>' +
-      '<p class="muted" style="font-size:10px;margin-top:6px">First flush: descarta los primeros 20 L tras sequía. Tapa oscura + malla + limpieza en menguante de Pukem. Ante corte ESSBIO, esta agua sirve para WC y riego (para tomar: hervir/clorar + filtrar).</p></div>';
+      '<div class="dlg-actions su-59a5a8"><button type="button" id="captaCalc" class="btn btn-accent su-30e741">💧 Calcular</button></div>' +
+      '<div id="captaOut" class="chip su-661928">…</div>' +
+      '<p class="muted su-d47a97">First flush: descarta los primeros 20 L tras sequía. Tapa oscura + malla + limpieza en menguante de Pukem. Ante corte ESSBIO, esta agua sirve para WC y riego (para tomar: hervir/clorar + filtrar).</p></div>';
     anchor.parentNode.insertBefore(p, anchor.nextSibling);
     var calc = $('captaCalc');
     if (calc) calc.onclick = function () {
@@ -1498,30 +1498,30 @@ function renderFuego() {
     var st = getFuegoCheck();
     var done = FUEGO_CHECK.filter(function (c) { return st[c.id]; }).length;
     box.innerHTML = '<div class="chip" style="display:block;white-space:normal;background:' + f.c + '22;border-color:' + f.c + '66"><b>' + esc(f.t) + '</b></div>' +
-      '<p class="muted" style="font-size:11px;margin-top:6px">Penco arde en verano + viento sur. Tu casa se defiende en <b>oct–nov</b>, no en enero. Checklist: <b>' + done + '/' + FUEGO_CHECK.length + '</b>.</p>';
+      '<p class="muted su-e13d76">Penco arde en verano + viento sur. Tu casa se defiende en <b>oct–nov</b>, no en enero. Checklist: <b>' + done + '/' + FUEGO_CHECK.length + '</b>.</p>';
   }
   var db = $('fueDefBox');
   if (db) {
     db.innerHTML = FUEGO_DEFENSA.map(function (x) {
-      return '<div class="si-card" style="padding:8px 10px"><h4 style="font-size:12px">🏠 ' + esc(x.t) + '</h4><p style="font-size:11px">' + esc(x.d) + '</p></div>';
+      return '<div class="si-card su-cfa1ec"><h4 class="su-6cb285">🏠 ' + esc(x.t) + '</h4><p class="su-11a508">' + esc(x.d) + '</p></div>';
     }).join('');
   }
   var eb = $('fueEvacBox');
   if (eb) {
-    eb.innerHTML = FUEGO_EVAC.map(function (x) { return '<p style="font-size:11px">• ' + esc(x) + '</p>'; }).join('') +
-      '<div class="menstrual-card" style="margin-top:8px;background:var(--panel)"><h4 style="font-size:11px">🌳 Humedal y bosque en incendio</h4>' +
-      '<p class="muted" style="font-size:11px">• No entres al bosque con humo: caen ramas y el aire mata. • No abras portones al humedal para “que se queme solo”: avisa a CONAF/Bomberos. • Tras el fuego: no plantes exótico; en Pukem planta nativo (peumo, quillay) con la guía de 🌳 Bosque. • Si ves columna de humo: 130/132 con ubicación exacta, no subas a mirar.</p></div>';
+    eb.innerHTML = FUEGO_EVAC.map(function (x) { return '<p class="su-11a508">• ' + esc(x) + '</p>'; }).join('') +
+      '<div class="menstrual-card su-afef99"><h4 class="su-11a508">🌳 Humedal y bosque en incendio</h4>' +
+      '<p class="muted su-11a508">• No entres al bosque con humo: caen ramas y el aire mata. • No abras portones al humedal para “que se queme solo”: avisa a CONAF/Bomberos. • Tras el fuego: no plantes exótico; en Pukem planta nativo (peumo, quillay) con la guía de 🌳 Bosque. • Si ves columna de humo: 130/132 con ubicación exacta, no subas a mirar.</p></div>';
   }
   var cb = $('fueCheckBox');
   if (cb) {
     var s = getFuegoCheck();
     var d2 = FUEGO_CHECK.filter(function (c) { return s[c.id]; }).length;
-    cb.innerHTML = '<p class="muted" style="font-size:11px">✅ ' + d2 + '/' + FUEGO_CHECK.length + ' — complétalo en oct–nov. Marca y queda guardado.</p>' +
+    cb.innerHTML = '<p class="muted su-11a508">✅ ' + d2 + '/' + FUEGO_CHECK.length + ' — complétalo en oct–nov. Marca y queda guardado.</p>' +
       FUEGO_CHECK.map(function (c) {
-        return '<label class="check-row" style="font-size:12px"><input type="checkbox" data-fue="' + c.id + '"' + (s[c.id] ? ' checked' : '') + '> ' + esc(c.t) + '</label>';
+        return '<label class="check-row su-6cb285"><input type="checkbox" data-fue="' + c.id + '"' + (s[c.id] ? ' checked' : '') + '> ' + esc(c.t) + '</label>';
       }).join('') +
-      '<div class="dlg-actions" style="justify-content:flex-start;flex-wrap:wrap;margin-top:6px">' +
-      '<button type="button" id="fuePinOct" class="btn" style="width:auto;font-size:11px">📌 Me comprometo: checklist listo en noviembre</button></div>';
+      '<div class="dlg-actions su-a6fc0a">' +
+      '<button type="button" id="fuePinOct" class="btn su-337714">📌 Me comprometo: checklist listo en noviembre</button></div>';
     cb.querySelectorAll('[data-fue]').forEach(function (inp) {
       inp.onchange = function () {
         var o = getFuegoCheck();
@@ -1546,19 +1546,19 @@ function ensureFuegoDialog() {
   d.id = 'fueDialog';
   d.innerHTML =
     '<form method="dialog">' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
-    '<h3 style="margin:0;color:var(--accent)">🔥 Temporada de incendios — Walüng</h3>' +
+    '<div class="dlg-actions su-d2d053">' +
+    '<h3 class="su-ee0cfe">🔥 Temporada de incendios — Walüng</h3>' +
     '<button type="button" id="fueCloseTop" class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    '<p class="muted" style="line-height:1.5">Defensa de la vivienda, evacuación rural y bosque. Se prepara en <b>oct–nov</b>, se vive en <b>dic–feb</b>.</p>' +
-    '<div id="fueHoyBox" class="menstrual-card" style="border-color:var(--gold)"></div>' +
-    '<div class="fishing-grid" style="margin-top:10px"><div class="menstrual-card"><h4>🏠 Defensa de la vivienda</h4><div id="fueDefBox" style="display:flex;flex-direction:column;gap:8px"></div></div>' +
+    '<p class="muted su-77e2fe">Defensa de la vivienda, evacuación rural y bosque. Se prepara en <b>oct–nov</b>, se vive en <b>dic–feb</b>.</p>' +
+    '<div id="fueHoyBox" class="menstrual-card su-68a1a9"></div>' +
+    '<div class="fishing-grid su-d2c171"><div class="menstrual-card"><h4>🏠 Defensa de la vivienda</h4><div id="fueDefBox" class="su-be2653"></div></div>' +
     '<div class="menstrual-card"><h4>🏃 Plan de evacuación rural</h4><div id="fueEvacBox"></div></div></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>✅ Checklist pre-temporada (oct–nov)</h4><div id="fueCheckBox"></div>' +
-    '<div class="dlg-actions" style="justify-content:flex-start;flex-wrap:wrap;margin-top:8px">' +
-    '<button type="button" id="fueGoBomb" class="btn" style="width:auto;font-size:11px">🚒 Ir a Bomberos</button>' +
-    '<button type="button" id="fueGoEvac" class="btn" style="width:auto;font-size:11px">🌊🚨 Ir a Evacuación</button>' +
-    '<button type="button" id="fueGoAgua" class="btn" style="width:auto;font-size:11px">💧 Ir a Agua</button>' +
-    '<button type="button" id="fueGoBosque" class="btn" style="width:auto;font-size:11px">🌳 Ir a Bosque</button></div></div>' +
+    '<div class="menstrual-card su-d2c171"><h4>✅ Checklist pre-temporada (oct–nov)</h4><div id="fueCheckBox"></div>' +
+    '<div class="dlg-actions su-22aa2d">' +
+    '<button type="button" id="fueGoBomb" class="btn su-337714">🚒 Ir a Bomberos</button>' +
+    '<button type="button" id="fueGoEvac" class="btn su-337714">🌊🚨 Ir a Evacuación</button>' +
+    '<button type="button" id="fueGoAgua" class="btn su-337714">💧 Ir a Agua</button>' +
+    '<button type="button" id="fueGoBosque" class="btn su-337714">🌳 Ir a Bosque</button></div></div>' +
     '<div class="dlg-actions"><button type="button" id="fueClose" class="btn">Cerrar</button></div></form>';
   document.body.appendChild(d);
   return d;

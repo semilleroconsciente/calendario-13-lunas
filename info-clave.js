@@ -210,25 +210,25 @@
     dlg.setAttribute('aria-label', 'Agregar info clave al día');
     dlg.innerHTML =
       '<form method="dialog">' +
-      '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
-      '<h3 style="margin:0">📌 Info clave al día</h3>' +
+      '<div class="dlg-actions su-d2d053">' +
+      '<h3 class="su-116966">📌 Info clave al día</h3>' +
       '<button type="button" id="icCloseTop" class="btn btn-icon" title="Cerrar">✕</button>' +
       '</div>' +
-      '<p class="muted" style="line-height:1.5">Se guarda en la <b>pantalla del día</b> (notas o compromisos). Queda <b>local y privado</b>.</p>' +
-      '<div class="menstrual-card" style="border-color:var(--gold);margin-bottom:10px">' +
-      '<div style="font-size:12px;margin-bottom:8px">Desde: <b id="icOrigen">—</b></div>' +
+      '<p class="muted su-77e2fe">Se guarda en la <b>pantalla del día</b> (notas o compromisos). Queda <b>local y privado</b>.</p>' +
+      '<div class="menstrual-card su-39553d">' +
+      '<div class="su-8d2c70">Desde: <b id="icOrigen">—</b></div>' +
       '<div class="conv-row">' +
       '<label>Fecha <input type="date" id="icFecha"></label>' +
       '<label>Destino <select id="icDestino"><option value="nota">📝 Nota del día</option><option value="compromiso">🕐 Compromiso con hora</option></select></label>' +
-      '<label id="icHoraWrap" style="display:none">Hora <input type="time" id="icHora" value="08:00" step="60"></label>' +
+      '<label id="icHoraWrap" class="su-6b99de">Hora <input type="time" id="icHora" value="08:00" step="60"></label>' +
       '</div>' +
-      '<div id="icDestinoInfo" class="chip" style="display:block;white-space:normal;margin-top:6px">—</div>' +
+      '<div id="icDestinoInfo" class="chip su-e75717">—</div>' +
       '</div>' +
       '<label class="dlg-horas-label" for="icTexto">✏️ Info clave (edítala antes de guardar)</label>' +
       '<textarea id="icTexto" rows="4" maxlength="500" placeholder="ej: Pleamar 08:20 · 0.45m — salir a roquerío con malla"></textarea>' +
-      '<div class="dlg-actions" style="justify-content:space-between;margin-top:10px">' +
-      '<button type="button" id="icHoy" class="btn" style="width:auto">◉ Hoy</button>' +
-      '<span style="display:flex;gap:10px">' +
+      '<div class="dlg-actions su-3508f5">' +
+      '<button type="button" id="icHoy" class="btn su-30e741">◉ Hoy</button>' +
+      '<span class="su-3efc98">' +
       '<button type="button" id="icCancelar" class="btn">Cancelar</button>' +
       '<button type="button" id="icGuardar" class="btn btn-accent">📌 Guardar en el día</button>' +
       '</span></div>' +

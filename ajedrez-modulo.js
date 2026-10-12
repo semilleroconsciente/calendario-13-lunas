@@ -693,9 +693,9 @@ function renderFree() {
   if (pr) {
     if (Gpromo) {
       pr.classList.remove('hidden');
-      pr.innerHTML = '<b>🎖️ Promoción: elige pieza</b><div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap">' +
+      pr.innerHTML = '<b>🎖️ Promoción: elige pieza</b><div class="su-faf7a9">' +
         [['q', '♛ Dama'], ['r', '♜ Torre'], ['b', '♝ Alfil'], ['n', '♞ Caballo']].map(function (x) {
-          return '<button type="button" class="btn btn-accent aj-promo-btn" data-pr="' + x[0] + '" style="width:auto;font-size:16px">' + x[1] + '</button>';
+          return '<button type="button" class="btn btn-accent aj-promo-btn su-aea1ce" data-pr="' + x[0] + '">' + x[1] + '</button>';
         }).join('') + '</div>';
       pr.querySelectorAll('.aj-promo-btn').forEach(function (btn) {
         btn.onclick = function () { finishPromo(btn.getAttribute('data-pr')); };
@@ -705,22 +705,22 @@ function renderFree() {
   // estado
   var info = $('ajStatusBox');
   if (info) {
-    var t = '<div class="chip" style="display:block;white-space:normal;line-height:1.6">';
+    var t = '<div class="chip su-8c0a82">';
     t += (G.turn === 'w' ? '⚪ Juegan <b>blancas</b>' : '⚫ Juegan <b>negras</b>');
-    t += ' · <span class="muted" style="font-size:11px">' + esc(ajNivelNombre(Gnivel)) + '</span>';
+    t += ' · <span class="muted su-11a508">' + esc(ajNivelNombre(Gnivel)) + '</span>';
     if (Gpensando) t += ' · <b>🤔 pensando…</b>';
     else if (st.over) t += ' · <b>' + esc(st.reason) + '</b> (' + esc(st.result) + ')';
-    else if (st.check) t += ' · <b style="color:#ff9a9a">¡Jaque al rey!</b>';
-    t += '<br><span class="muted" style="font-size:11px">' + esc(materialDiff(G)) + ' · Jugada ' + G.full + '</span>';
+    else if (st.check) t += ' · <b class="su-23dd39">¡Jaque al rey!</b>';
+    t += '<br><span class="muted su-11a508">' + esc(materialDiff(G)) + ' · Jugada ' + G.full + '</span>';
     var cap = capturedLists(G);
-    if (cap.byWhite) t += '<br><span style="font-size:13px">⚪ capturó: ' + cap.byWhite + '</span>';
-    if (cap.byBlack) t += '<br><span style="font-size:13px">⚫ capturó: ' + cap.byBlack + '</span>';
+    if (cap.byWhite) t += '<br><span class="su-5e0faa">⚪ capturó: ' + cap.byWhite + '</span>';
+    if (cap.byBlack) t += '<br><span class="su-5e0faa">⚫ capturó: ' + cap.byBlack + '</span>';
     t += '</div>';
     info.innerHTML = t;
   }
   var ml = $('ajMovesBox');
   if (ml) {
-    if (!Ghist.length) ml.innerHTML = '<span class="muted" style="font-size:11px">Sin jugadas aún. Mueve tocando una pieza y luego su destino.</span>';
+    if (!Ghist.length) ml.innerHTML = '<span class="muted su-11a508">Sin jugadas aún. Mueve tocando una pieza y luego su destino.</span>';
     else {
       var h = '';
       for (var i = 0; i < Ghist.length; i += 2) {
@@ -824,13 +824,13 @@ function renderPuzzle() {
   if (info) {
     var st = getStats();
     var ok = st.puzzles[P.id] ? ' ✅ resuelto' : '';
-    info.innerHTML = '<div class="si-card" style="border-color:var(--gold)"><h4>' + esc(P.n) + ok + ' <span class="chip" style="font-size:10px">' + esc(P.dif || 'Fácil ⭐') + '</span></h4>' +
+    info.innerHTML = '<div class="si-card su-68a1a9"><h4>' + esc(P.n) + ok + ' <span class="chip su-0d5be0">' + esc(P.dif || 'Fácil ⭐') + '</span></h4>' +
       '<p>' + esc(P.d) + '</p>' +
-      '<p class="muted" style="font-size:11px">Tema: ' + esc(P.tema) + ' · Juegan ' + (P.turn === 'w' ? 'blancas' : 'negras') + '</p>' +
-      '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">' +
-      '<button type="button" class="btn" id="ajPuzHint" style="width:auto;font-size:11px">💡 Pista</button>' +
-      '<button type="button" class="btn" id="ajPuzReset" style="width:auto;font-size:11px">🔁 Reiniciar</button>' +
-      '</div><div id="ajPuzMsg" class="chip" style="display:block;margin-top:8px;white-space:normal">' + (PZdone ? '🏆 ¡Mate! Excelente cálculo.' : 'Toca tu pieza y luego el destino. Da mate en 1.') + '</div></div>';
+      '<p class="muted su-11a508">Tema: ' + esc(P.tema) + ' · Juegan ' + (P.turn === 'w' ? 'blancas' : 'negras') + '</p>' +
+      '<div class="su-c158a9">' +
+      '<button type="button" class="btn su-337714" id="ajPuzHint">💡 Pista</button>' +
+      '<button type="button" class="btn su-337714" id="ajPuzReset">🔁 Reiniciar</button>' +
+      '</div><div id="ajPuzMsg" class="chip su-3aa9e1">' + (PZdone ? '🏆 ¡Mate! Excelente cálculo.' : 'Toca tu pieza y luego el destino. Da mate en 1.') + '</div></div>';
     var hb = $('ajPuzHint');
     if (hb) hb.onclick = function () { var m = $('ajPuzMsg'); if (m) m.textContent = '💡 ' + P.pista; };
     var rb = $('ajPuzReset');
@@ -841,14 +841,14 @@ function renderPuzzle() {
     var st0 = getStats();
     var nOk = PUZZLES.filter(function (q) { return st0.puzzles[q.id]; }).length;
     var fBtns = ['Todos', 'Fácil ⭐', 'Media ⭐⭐', 'Difícil ⭐⭐⭐'].map(function (f) {
-      return '<button type="button" class="btn' + (PZfiltro === f ? ' btn-accent' : '') + '" data-pzf="' + f + '" style="width:auto;font-size:10px">' + f + '</button>';
+      return '<button type="button" class="btn' + (PZfiltro === f ? ' btn-accent' : '') + ' su-b0ee80" data-pzf="' + f + '">' + f + '</button>';
     }).join('');
     var list = PUZZLES.map(function (q, i) { return { q: q, i: i }; }).filter(function (x) {
       return PZfiltro === 'Todos' || (x.q.dif || '') === PZfiltro;
     });
-    nav.innerHTML = '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px;align-items:center"><span class="muted" style="font-size:10px">🎯 ' + nOk + '/' + PUZZLES.length + ' · ver:</span>' + fBtns + '</div>' +
-      '<div style="display:flex;gap:6px;flex-wrap:wrap">' + list.map(function (x) {
-        return '<button type="button" class="btn' + (x.i === PZidx ? ' btn-accent' : '') + '" data-pz="' + x.i + '" style="width:auto;font-size:11px">' + (st0.puzzles[x.q.id] ? '✅ ' : '') + esc(x.q.n) + '</button>';
+    nav.innerHTML = '<div class="su-ab39bd"><span class="muted su-0d5be0">🎯 ' + nOk + '/' + PUZZLES.length + ' · ver:</span>' + fBtns + '</div>' +
+      '<div class="su-6157e8">' + list.map(function (x) {
+        return '<button type="button" class="btn' + (x.i === PZidx ? ' btn-accent' : '') + ' su-337714" data-pz="' + x.i + '">' + (st0.puzzles[x.q.id] ? '✅ ' : '') + esc(x.q.n) + '</button>';
       }).join('') + '</div>';
     nav.querySelectorAll('[data-pzf]').forEach(function (b) {
       b.onclick = function () { PZfiltro = b.getAttribute('data-pzf'); renderPuzzle(); };
@@ -910,18 +910,18 @@ function renderLuna() {
   var f = lunaFaseAprox();
   var tip = LUNA_TIPS[f.idx] || LUNA_TIPS[4];
   box.innerHTML = '<b>🌙 Consejo lunar · iluminación ' + f.ilum + '%</b><br>' +
-    '<span style="color:var(--gold)">' + esc(tip.f) + '</span> — ' + esc(tip.t);
+    '<span class="su-e39eba">' + esc(tip.f) + '</span> — ' + esc(tip.t);
 }
 function renderAprender() {
   var box = $('ajPiezasBox');
   if (!box) return;
   box.innerHTML = PIEZAS.map(function (p) {
-    return '<div class="si-card"><h4><span style="font-size:22px">' + p.g + '</span> ' + esc(p.n) + ' · <span class="muted">' + esc(p.v) + '</span></h4>' +
-      '<p><b>Mueve:</b> ' + esc(p.m) + '</p><p class="muted" style="font-size:11px">💡 ' + esc(p.t) + '</p></div>';
+    return '<div class="si-card"><h4><span class="su-881f70">' + p.g + '</span> ' + esc(p.n) + ' · <span class="muted">' + esc(p.v) + '</span></h4>' +
+      '<p><b>Mueve:</b> ' + esc(p.m) + '</p><p class="muted su-11a508">💡 ' + esc(p.t) + '</p></div>';
   }).join('') + REGLAS.map(function (r) {
-    return '<div class="si-card" style="border-left:3px solid var(--gold)"><h4>' + esc(r.t) + '</h4><p>' + esc(r.d) + '</p></div>';
+    return '<div class="si-card su-63ba3c"><h4>' + esc(r.t) + '</h4><p>' + esc(r.d) + '</p></div>';
   }).join('') +
-    '<div class="si-card"><h4>✍️ Notación (para tu bitácora)</h4><p class="muted" style="font-size:11px;line-height:1.7">Piezas: R=Rey · D=Dama · T=Torre · A=Alfil · C=Caballo (peón sin letra).<br>Ej: <b>Cf3</b> = caballo a f3 · <b>exd5</b> = peón e captura en d5 · <b>O-O</b> = enroque corto · <b>+</b> jaque · <b>#</b> mate · <b>1-0</b> ganan blancas · <b>0-1</b> ganan negras · <b>½-½</b> tablas.</p></div>';
+    '<div class="si-card"><h4>✍️ Notación (para tu bitácora)</h4><p class="muted su-583677">Piezas: R=Rey · D=Dama · T=Torre · A=Alfil · C=Caballo (peón sin letra).<br>Ej: <b>Cf3</b> = caballo a f3 · <b>exd5</b> = peón e captura en d5 · <b>O-O</b> = enroque corto · <b>+</b> jaque · <b>#</b> mate · <b>1-0</b> ganan blancas · <b>0-1</b> ganan negras · <b>½-½</b> tablas.</p></div>';
 }
 function renderMotivos() {
   var box = $('ajMotivosBox');
@@ -934,8 +934,8 @@ function renderAperturas() {
   var box = $('ajAperturasBox');
   if (!box) return;
   box.innerHTML = APERTURAS.map(function (a) {
-    return '<div class="si-card"><h4>' + esc(a.n) + ' <span class="chip" style="font-size:10px">' + esc(a.nivel) + '</span></h4>' +
-      '<p><b>' + esc(a.mov) + '</b></p><p>' + esc(a.idea) + '</p><p class="muted" style="font-size:11px">📋 Plan: ' + esc(a.plan) + '</p></div>';
+    return '<div class="si-card"><h4>' + esc(a.n) + ' <span class="chip su-0d5be0">' + esc(a.nivel) + '</span></h4>' +
+      '<p><b>' + esc(a.mov) + '</b></p><p>' + esc(a.idea) + '</p><p class="muted su-11a508">📋 Plan: ' + esc(a.plan) + '</p></div>';
   }).join('');
 }
 
@@ -958,8 +958,8 @@ function renderDemoAprender() {
     } else {
       selTxt = '👆 Toca <b>cualquier pieza</b> (blanca o negra) y se iluminan sus jugadas legales. Toca un destino para moverla.';
     }
-    info.innerHTML = '<div class="chip" style="display:block;white-space:normal;line-height:1.6">' + selTxt +
-      '<br><span class="muted" style="font-size:11px">Jugadas hechas: ' + DAplies + ' · Turno: ' + (DAst.turn === 'w' ? '⚪ blancas' : '⚫ negras') + '</span></div>';
+    info.innerHTML = '<div class="chip su-8c0a82">' + selTxt +
+      '<br><span class="muted su-11a508">Jugadas hechas: ' + DAplies + ' · Turno: ' + (DAst.turn === 'w' ? '⚪ blancas' : '⚫ negras') + '</span></div>';
   }
 }
 function pickDemoA(s) {
@@ -1005,7 +1005,7 @@ function renderDemoTactica() {
   var btns = $('ajDemoTBtns');
   if (btns) {
     btns.innerHTML = MOTIVOS.map(function (m, i) {
-      return '<button type="button" class="btn' + (i === MOidx ? ' btn-accent' : '') + '" data-mot="' + i + '" style="width:auto;font-size:10px">' + esc(m.n) + '</button>';
+      return '<button type="button" class="btn' + (i === MOidx ? ' btn-accent' : '') + ' su-b0ee80" data-mot="' + i + '">' + esc(m.n) + '</button>';
     }).join('');
     btns.querySelectorAll('[data-mot]').forEach(function (b) {
       b.onclick = function () { demoTInit(parseInt(b.getAttribute('data-mot'), 10)); renderDemoTactica(); };
@@ -1013,13 +1013,13 @@ function renderDemoTactica() {
   }
   var info = $('ajDemoTInfo');
   if (info) {
-    info.innerHTML = '<div class="si-card" style="border-color:var(--gold)"><h4>' + esc(M.n) + '</h4><p>' + esc(M.d) + '</p>' +
+    info.innerHTML = '<div class="si-card su-68a1a9"><h4>' + esc(M.n) + '</h4><p>' + esc(M.d) + '</p>' +
       (MOshown
         ? '<p>▶ Jugada: <b>' + esc(MOsan || D.jugada) + '</b> — ' + esc(D.nota) + '</p>'
-        : '<p class="muted" style="font-size:11px">Mira la posición, intenta adivinar la jugada… y luego tócala en el tablero o pulsa ▶.</p>') +
-      '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">' +
-      '<button type="button" class="btn btn-accent" id="ajDemoTShow" style="width:auto;font-size:11px">▶ Ver la jugada' + (MOshown ? ' ✓' : '') + '</button>' +
-      '<button type="button" class="btn" id="ajDemoTReset" style="width:auto;font-size:11px">🔁 Reiniciar</button></div></div>';
+        : '<p class="muted su-11a508">Mira la posición, intenta adivinar la jugada… y luego tócala en el tablero o pulsa ▶.</p>') +
+      '<div class="su-c158a9">' +
+      '<button type="button" class="btn btn-accent su-337714" id="ajDemoTShow">▶ Ver la jugada' + (MOshown ? ' ✓' : '') + '</button>' +
+      '<button type="button" class="btn su-337714" id="ajDemoTReset">🔁 Reiniciar</button></div></div>';
     var sh = $('ajDemoTShow');
     if (sh) sh.onclick = function () { demoTPlay(); };
     var rs = $('ajDemoTReset');
@@ -1104,9 +1104,9 @@ function renderDemoAperturas() {
     var txt = r.sans.length ? r.sans.map(function (s2, i) {
       return (i % 2 === 0 ? Math.floor(i / 2 + 1) + '. ' : '') + s2;
     }).join(' ') : 'Posición inicial.';
-    info.innerHTML = '<div class="chip" style="display:block;white-space:normal;line-height:1.6"><b>' + esc(A.n) + '</b> · jugada ' + APply + '/' + seq.length +
+    info.innerHTML = '<div class="chip su-8c0a82"><b>' + esc(A.n) + '</b> · jugada ' + APply + '/' + seq.length +
       '<br>' + esc(txt) +
-      '<br><span class="muted" style="font-size:11px">' + esc(A.plan) + '</span></div>';
+      '<br><span class="muted su-11a508">' + esc(A.plan) + '</span></div>';
   }
   function go(n) { APply = Math.max(0, Math.min(seq.length, n)); renderDemoAperturas(); }
   var bS = $('ajDemoApStart'); if (bS) bS.onclick = function () { go(0); };
@@ -1126,17 +1126,17 @@ function renderPartidas() {
   var d = list.filter(function (x) { return x.res === '½-½'; }).length;
   var st = $('ajLogStats');
   if (st) st.textContent = list.length ? (list.length + ' partidas · ✅ ' + w + ' ganadas · ❌ ' + l + ' perdidas · 🤝 ' + d + ' tablas') : 'Sin partidas aún';
-  if (!list.length) { box.innerHTML = '<p class="muted" style="font-size:11px">Anota tu primera partida: fecha, rival, apertura y qué aprendiste. El cuaderno hace al maestro.</p>'; return; }
+  if (!list.length) { box.innerHTML = '<p class="muted su-11a508">Anota tu primera partida: fecha, rival, apertura y qué aprendiste. El cuaderno hace al maestro.</p>'; return; }
   var sorted = list.slice().sort(function (a, b) { return String(b.fecha).localeCompare(String(a.fecha)); });
   box.innerHTML = sorted.map(function (x) {
     var resTxt = x.res === '1-0' ? '⚪ 1-0' : x.res === '0-1' ? '⚫ 0-1' : '🤝 ½-½';
-    return '<div class="habit-item"><div class="habit-head"><b>' + esc(x.fecha) + '</b><span class="chip" style="font-size:10px">' + resTxt + '</span>' +
-      '<span class="chip" style="font-size:10px">' + (x.color === 'blancas' ? '⚪' : '⚫') + ' ' + esc(x.color) + '</span>' +
-      '<span style="flex:1"></span>' +
+    return '<div class="habit-item"><div class="habit-head"><b>' + esc(x.fecha) + '</b><span class="chip su-0d5be0">' + resTxt + '</span>' +
+      '<span class="chip su-0d5be0">' + (x.color === 'blancas' ? '⚪' : '⚫') + ' ' + esc(x.color) + '</span>' +
+      '<span class="su-97445a"></span>' +
       '<button type="button" class="btn btn-icon" data-edit="' + x.id + '" title="Editar">✏️</button>' +
       '<button type="button" class="btn btn-icon" data-del="' + x.id + '" title="Borrar">🗑</button></div>' +
-      '<div style="font-size:12px"><b>' + esc(x.rival || 'Sin rival') + '</b>' + (x.apertura ? ' · <span class="muted">' + esc(x.apertura) + '</span>' : '') + '</div>' +
-      (x.notas ? '<div class="muted" style="font-size:11px;margin-top:2px">' + esc(x.notas) + '</div>' : '') + '</div>';
+      '<div class="su-6cb285"><b>' + esc(x.rival || 'Sin rival') + '</b>' + (x.apertura ? ' · <span class="muted">' + esc(x.apertura) + '</span>' : '') + '</div>' +
+      (x.notas ? '<div class="muted su-21f4b1">' + esc(x.notas) + '</div>' : '') + '</div>';
   }).join('');
   box.querySelectorAll('[data-del]').forEach(function (b) {
     b.onclick = function () {
@@ -1231,68 +1231,68 @@ function buildDialog() {
   d.id = 'ajedrezDialog';
   d.innerHTML =
     '<form method="dialog">' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
-    '<h3 style="margin:0;color:var(--accent)">♟️ Ajedrez — gimnasio de la mente</h3>' +
+    '<div class="dlg-actions su-d2d053">' +
+    '<h3 class="su-ee0cfe">♟️ Ajedrez — gimnasio de la mente</h3>' +
     '<button type="button" id="ajCloseTop" class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    '<p class="muted" style="line-height:1.5">Juega, aprende y anota. Desde el mate pastor hasta tu primera victoria en la plaza. Todo queda <b>privado y local</b> por usuario.</p>' +
-    '<div id="ajLunaBox" class="menstrual-card" style="border-color:var(--gold);margin-bottom:10px;font-size:12px;line-height:1.6"></div>' +
-    '<div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">' +
-    '<button type="button" id="tabAjJugar" class="btn btn-accent" style="width:auto">♟️ Jugar</button>' +
-    '<button type="button" id="tabAjAprender" class="btn" style="width:auto">📖 Aprender</button>' +
-    '<button type="button" id="tabAjTactica" class="btn" style="width:auto">⚔️ Táctica</button>' +
-    '<button type="button" id="tabAjAperturas" class="btn" style="width:auto">♞ Aperturas</button>' +
-    '<button type="button" id="tabAjPartidas" class="btn" style="width:auto">📓 Mis partidas</button>' +
+    '<p class="muted su-77e2fe">Juega, aprende y anota. Desde el mate pastor hasta tu primera victoria en la plaza. Todo queda <b>privado y local</b> por usuario.</p>' +
+    '<div id="ajLunaBox" class="menstrual-card su-a91bab"></div>' +
+    '<div class="timer-tabs su-4dca21">' +
+    '<button type="button" id="tabAjJugar" class="btn btn-accent su-30e741">♟️ Jugar</button>' +
+    '<button type="button" id="tabAjAprender" class="btn su-30e741">📖 Aprender</button>' +
+    '<button type="button" id="tabAjTactica" class="btn su-30e741">⚔️ Táctica</button>' +
+    '<button type="button" id="tabAjAperturas" class="btn su-30e741">♞ Aperturas</button>' +
+    '<button type="button" id="tabAjPartidas" class="btn su-30e741">📓 Mis partidas</button>' +
     '</div>' +
     '<div id="ajPanelJugar">' +
-    '<div id="ajStatusBox" style="margin-bottom:8px"></div>' +
+    '<div id="ajStatusBox" class="su-fdf33f"></div>' +
     '<div id="ajBoardBox" class="aj-wrap"></div>' +
-    '<div id="ajPromoBox" class="menstrual-card hidden" style="margin-top:8px;border-color:var(--gold)"></div>' +
-    '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;align-items:center">' +
-    '<button type="button" id="ajUndoBtn" class="btn" style="width:auto;font-size:11px">↩ Deshacer</button>' +
-    '<button type="button" id="ajNewBtn" class="btn" style="width:auto;font-size:11px">🔀 Nueva partida</button>' +
-    '<button type="button" id="ajFlipBtn" class="btn" style="width:auto;font-size:11px">🔄 Ver desde negras</button>' +
-    '<label style="margin:0;font-size:11px;display:flex;gap:6px;align-items:center">🤖 Rival <select id="ajNivel" style="max-width:150px">' +
+    '<div id="ajPromoBox" class="menstrual-card hidden su-c15064"></div>' +
+    '<div class="su-1e4d3b">' +
+    '<button type="button" id="ajUndoBtn" class="btn su-337714">↩ Deshacer</button>' +
+    '<button type="button" id="ajNewBtn" class="btn su-337714">🔀 Nueva partida</button>' +
+    '<button type="button" id="ajFlipBtn" class="btn su-337714">🔄 Ver desde negras</button>' +
+    '<label class="su-611744">🤖 Rival <select id="ajNivel" class="su-7eba57">' +
     AJ_NIVELES.map(function (x) { return '<option value="' + x.id + '">' + x.n + '</option>'; }).join('') + '</select></label>' +
     '</div>' +
-    '<p id="ajNivelHint" class="muted" style="font-size:10px;margin:6px 0 0"></p>' +
-    '<div class="menstrual-card" style="margin-top:8px"><h4>📝 Jugadas</h4><div id="ajMovesBox" class="aj-moves"></div>' +
-    '<p class="muted" style="font-size:10px;margin:6px 0 0">Copia esta notación a tu bitácora. Consejo: si pierdes una pieza sin compensación, respira y busca contrajuego.</p></div>' +
+    '<p id="ajNivelHint" class="muted su-cb3213"></p>' +
+    '<div class="menstrual-card su-8a77e5"><h4>📝 Jugadas</h4><div id="ajMovesBox" class="aj-moves"></div>' +
+    '<p class="muted su-cb3213">Copia esta notación a tu bitácora. Consejo: si pierdes una pieza sin compensación, respira y busca contrajuego.</p></div>' +
     '</div>' +
     '<div id="ajPanelAprender" class="hidden">' +
-    '<div class="menstrual-card" style="border-color:var(--gold);margin-bottom:10px"><h4>♟️ Tablero: toca una pieza y ve a dónde puede ir</h4>' +
-    '<p class="muted" style="font-size:11px">Explorador libre desde la posición inicial: toca <b>cualquier pieza</b> para iluminar sus jugadas legales y muévela. Vale para blancas y negras.</p>' +
+    '<div class="menstrual-card su-39553d"><h4>♟️ Tablero: toca una pieza y ve a dónde puede ir</h4>' +
+    '<p class="muted su-11a508">Explorador libre desde la posición inicial: toca <b>cualquier pieza</b> para iluminar sus jugadas legales y muévela. Vale para blancas y negras.</p>' +
     '<div id="ajDemoABoard" class="aj-wrap"></div>' +
-    '<div id="ajDemoAInfo" style="margin-top:8px"></div>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="ajDemoAReset" class="btn" style="width:auto;font-size:11px">🔁 Reiniciar tablero</button></div></div>' +
+    '<div id="ajDemoAInfo" class="su-8a77e5"></div>' +
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="ajDemoAReset" class="btn su-337714">🔁 Reiniciar tablero</button></div></div>' +
     '<div id="ajPiezasBox"></div>' +
     '</div>' +
     '<div id="ajPanelTactica" class="hidden">' +
-    '<div class="menstrual-card" style="border-color:var(--gold);margin-bottom:10px"><h4>👁️ Tablero: mira el motivo en acción</h4>' +
-    '<p class="muted" style="font-size:11px">Elige un motivo, estudia la posición e intenta la jugada en el tablero. Si no la ves, pulsa ▶.</p>' +
-    '<div id="ajDemoTBtns" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px"></div>' +
+    '<div class="menstrual-card su-39553d"><h4>👁️ Tablero: mira el motivo en acción</h4>' +
+    '<p class="muted su-11a508">Elige un motivo, estudia la posición e intenta la jugada en el tablero. Si no la ves, pulsa ▶.</p>' +
+    '<div id="ajDemoTBtns" class="su-f787da"></div>' +
     '<div id="ajDemoTBoard" class="aj-wrap"></div>' +
-    '<div id="ajDemoTInfo" style="margin-top:8px"></div></div>' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>⚔️ Motivos que ganan partidas</h4><p class="muted" style="font-size:11px">La táctica es el 90% de las partidas entre principiantes: quien ve 1 jugada más, gana pieza y suele ganar.</p></div>' +
-    '<div id="ajMotivosBox" style="margin-top:8px"></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>🧩 Mate en 1 — calcula y toca</h4>' +
-    '<p class="muted" style="font-size:11px">8 puzzles por dificultad: 3 fáciles ⭐ · 3 medios ⭐⭐ · 2 difíciles ⭐⭐⭐. Filtra arriba y completa tu marcador.</p>' +
-    '<div id="ajPuzNav" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px"></div>' +
+    '<div id="ajDemoTInfo" class="su-8a77e5"></div></div>' +
+    '<div class="menstrual-card su-68a1a9"><h4>⚔️ Motivos que ganan partidas</h4><p class="muted su-11a508">La táctica es el 90% de las partidas entre principiantes: quien ve 1 jugada más, gana pieza y suele ganar.</p></div>' +
+    '<div id="ajMotivosBox" class="su-8a77e5"></div>' +
+    '<div class="menstrual-card su-d2c171"><h4>🧩 Mate en 1 — calcula y toca</h4>' +
+    '<p class="muted su-11a508">8 puzzles por dificultad: 3 fáciles ⭐ · 3 medios ⭐⭐ · 2 difíciles ⭐⭐⭐. Filtra arriba y completa tu marcador.</p>' +
+    '<div id="ajPuzNav" class="su-f787da"></div>' +
     '<div id="ajPuzBoard" class="aj-wrap"></div>' +
-    '<div id="ajPuzInfo" style="margin-top:8px"></div></div>' +
+    '<div id="ajPuzInfo" class="su-8a77e5"></div></div>' +
     '</div>' +
     '<div id="ajPanelAperturas" class="hidden">' +
-    '<div class="menstrual-card" style="border-color:var(--gold);margin-bottom:10px"><h4>♞ Tablero: recorre la apertura paso a paso</h4>' +
-    '<p class="muted" style="font-size:11px">Elige una apertura y avanza jugada por jugada con ◀ ▶. Fíjate dónde queda cada pieza.</p>' +
-    '<div class="conv-row"><label style="flex:2">Apertura <select id="ajDemoApSel"></select></label></div>' +
-    '<div id="ajDemoApBoard" class="aj-wrap" style="margin-top:8px"></div>' +
-    '<div id="ajDemoApInfo" style="margin-top:8px"></div>' +
-    '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">' +
-    '<button type="button" id="ajDemoApStart" class="btn" style="width:auto;font-size:11px">⏮ Inicio</button>' +
-    '<button type="button" id="ajDemoApPrev" class="btn" style="width:auto;font-size:11px">◀ Atrás</button>' +
-    '<button type="button" id="ajDemoApNext" class="btn btn-accent" style="width:auto;font-size:11px">Adelante ▶</button>' +
-    '<button type="button" id="ajDemoApEnd" class="btn" style="width:auto;font-size:11px">Final ⏭</button></div></div>' +
+    '<div class="menstrual-card su-39553d"><h4>♞ Tablero: recorre la apertura paso a paso</h4>' +
+    '<p class="muted su-11a508">Elige una apertura y avanza jugada por jugada con ◀ ▶. Fíjate dónde queda cada pieza.</p>' +
+    '<div class="conv-row"><label class="su-4b3de7">Apertura <select id="ajDemoApSel"></select></label></div>' +
+    '<div id="ajDemoApBoard" class="aj-wrap su-8a77e5"></div>' +
+    '<div id="ajDemoApInfo" class="su-8a77e5"></div>' +
+    '<div class="su-0ad856">' +
+    '<button type="button" id="ajDemoApStart" class="btn su-337714">⏮ Inicio</button>' +
+    '<button type="button" id="ajDemoApPrev" class="btn su-337714">◀ Atrás</button>' +
+    '<button type="button" id="ajDemoApNext" class="btn btn-accent su-337714">Adelante ▶</button>' +
+    '<button type="button" id="ajDemoApEnd" class="btn su-337714">Final ⏭</button></div></div>' +
     '<div id="ajAperturasBox"></div>' +
-    '<div class="si-card"><h4>🧭 ¿Por dónde empiezo?</h4><p class="muted" style="font-size:11px">Elige 1 apertura con blancas (Italiana o Londres) y 1 defensa con negras (Francesa o Siciliana). Repite sus primeras 6 jugadas hasta soñarlas. Después, táctica todos los días.</p></div></div>' +
+    '<div class="si-card"><h4>🧭 ¿Por dónde empiezo?</h4><p class="muted su-11a508">Elige 1 apertura con blancas (Italiana o Londres) y 1 defensa con negras (Francesa o Siciliana). Repite sus primeras 6 jugadas hasta soñarlas. Después, táctica todos los días.</p></div></div>' +
     '<div id="ajPanelPartidas" class="hidden">' +
     '<div class="menstrual-card"><h4>📓 Anotar partida</h4>' +
     '<div class="conv-row"><label>Fecha <input type="date" id="ajFecha"></label>' +
@@ -1301,12 +1301,12 @@ function buildDialog() {
     '<label>Resultado <select id="ajRes"><option value="1-0">1-0 ganan blancas</option><option value="0-1">0-1 ganan negras</option><option value="½-½">½-½ tablas</option></select></label></div>' +
     '<label>Apertura <input type="text" id="ajApertura" placeholder="ej: Italiana, Siciliana, libre…" maxlength="40"></label>' +
     '<label>¿Qué aprendí? <input type="text" id="ajNotas" placeholder="ej: no sacar la dama tan pronto, cuidar f7" maxlength="120"></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="ajAddBtn" class="btn btn-accent" style="width:auto">+ Guardar partida</button>' +
-    '<button type="button" id="ajCancelEdit" class="btn hidden" style="width:auto">Cancelar</button></div></div>' +
-    '<div id="ajLogList" class="habits-list" style="margin-top:10px"></div>' +
-    '<div class="dlg-actions" style="justify-content:space-between;align-items:center;margin-top:8px"><span id="ajLogStats" class="muted" style="font-size:11px"></span>' +
-    '<span style="display:flex;gap:8px"><button type="button" id="ajShare" class="btn" style="width:auto">📤 Compartir</button>' +
-    '<button type="button" id="ajClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar</button></span></div>' +
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="ajAddBtn" class="btn btn-accent su-30e741">+ Guardar partida</button>' +
+    '<button type="button" id="ajCancelEdit" class="btn hidden su-30e741">Cancelar</button></div></div>' +
+    '<div id="ajLogList" class="habits-list su-d2c171"></div>' +
+    '<div class="dlg-actions su-cc4a4c"><span id="ajLogStats" class="muted su-11a508"></span>' +
+    '<span class="su-a76d59"><button type="button" id="ajShare" class="btn su-30e741">📤 Compartir</button>' +
+    '<button type="button" id="ajClear" class="btn su-214f75">🗑 Borrar</button></span></div>' +
     '</div>' +
     '<div class="dlg-actions"><button type="button" id="ajClose" class="btn">Cerrar</button></div>' +
     '</form>';

@@ -95,10 +95,10 @@ function makeDialog(id, title, sub, bodyHTML) {
   var d = document.createElement('dialog');
   d.id = id;
   d.innerHTML = '<form method="dialog">' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
-    '<h3 style="margin:0;color:var(--accent)">' + title + '</h3>' +
+    '<div class="dlg-actions su-d2d053">' +
+    '<h3 class="su-ee0cfe">' + title + '</h3>' +
     '<button type="button" data-close class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    (sub ? '<p class="muted" style="line-height:1.5">' + sub + '</p>' : '') +
+    (sub ? '<p class="muted su-77e2fe">' + sub + '</p>' : '') +
     bodyHTML +
     '<div class="dlg-actions"><button type="button" data-close class="btn">Cerrar</button></div></form>';
   document.body.appendChild(d);
@@ -204,11 +204,11 @@ function renderTecCards() {
     var isFav = e.fav === f.id;
     return '<div class="menstrual-card" style="border-color:' + f.color + '66">' +
       '<h4 style="color:' + f.color + '">' + f.ico + ' ' + esc(f.n) + (isFav ? ' ⭐' : '') + '</h4>' +
-      '<p style="font-size:12px;line-height:1.55"><b>Qué es:</b> ' + esc(f.que) + '<br><b>Cuándo:</b> ' + esc(f.cuando) + '<br><b>Cómo:</b> ' + esc(f.como) + '</p>' +
-      '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">' +
-      '<button type="button" class="btn btn-accent" style="width:auto;font-size:11px" data-pract="' + esc(f.id) + '">🧘 Practicar</button>' +
-      '<button type="button" class="btn" style="width:auto;font-size:11px" data-voz="' + esc(f.id) + '">🔊 Escuchar</button>' +
-      '<button type="button" class="btn" style="width:auto;font-size:11px" data-fav="' + esc(f.id) + '">' + (isFav ? '⭐ Favorita' : '☆ Marcar') + '</button>' +
+      '<p class="su-afb724"><b>Qué es:</b> ' + esc(f.que) + '<br><b>Cuándo:</b> ' + esc(f.cuando) + '<br><b>Cómo:</b> ' + esc(f.como) + '</p>' +
+      '<div class="su-c158a9">' +
+      '<button type="button" class="btn btn-accent su-337714" data-pract="' + esc(f.id) + '">🧘 Practicar</button>' +
+      '<button type="button" class="btn su-337714" data-voz="' + esc(f.id) + '">🔊 Escuchar</button>' +
+      '<button type="button" class="btn su-337714" data-fav="' + esc(f.id) + '">' + (isFav ? '⭐ Favorita' : '☆ Marcar') + '</button>' +
       '</div></div>';
   }).join('') : '<p class="muted">Sin resultados. Prueba con “alfa”, “sueño”, “agua”, “dedos”…</p>';
   box.querySelectorAll('[data-pract]').forEach(function (b) { b.onclick = function () { irAPractica(b.getAttribute('data-pract')); }; });
@@ -333,14 +333,14 @@ function renderProg() {
   box.innerHTML = fil.length ? fil.map(function (r) {
     var col = r.estado === 'cumplido' ? '#8fd694' : (r.estado === 'en proceso' ? '#e8c56a' : '#c9a9c9');
     var t = tecById(r.tec);
-    return '<div class="habit-item"><div style="display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap"><span><b>' + esc(r.titulo) + '</b></span>' +
+    return '<div class="habit-item"><div class="su-34136d"><span><b>' + esc(r.titulo) + '</b></span>' +
       '<span class="chip" style="font-size:10px;border-color:' + col + '55;color:' + col + '">' + esc(r.estado || 'pendiente') + ' · ' + (r.inten || 0) + '/10</span></div>' +
-      '<div class="muted" style="font-size:11px;margin-top:4px">' + t.ico + ' ' + esc(t.n) + (r.area ? ' · 🏷️ ' + esc(r.area) : '') + ' · ' + esc(lunaTxt(r.fecha) || '') + (r.escena ? '<br>🎬 ' + esc(r.escena) : '') + (r.nota ? '<br>📝 ' + esc(r.nota) : '') + '</div>' +
-      '<div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap">' +
-      '<button class="btn btn-accent" style="width:auto;font-size:11px" data-prog="' + r.id + '">🧘 Programar</button>' +
-      '<button class="btn" style="width:auto;font-size:11px" data-next="' + r.id + '">⏭ ' + (r.estado === 'pendiente' ? 'en proceso' : r.estado === 'en proceso' ? 'cumplido' : 'reabrir') + '</button>' +
-      '<button class="btn" style="width:auto;font-size:11px" data-edit="' + r.id + '">✏️</button>' +
-      '<button class="btn" style="width:auto;font-size:11px;color:#e76e8a" data-del="' + r.id + '">✕</button></div></div>';
+      '<div class="muted su-cdff1d">' + t.ico + ' ' + esc(t.n) + (r.area ? ' · 🏷️ ' + esc(r.area) : '') + ' · ' + esc(lunaTxt(r.fecha) || '') + (r.escena ? '<br>🎬 ' + esc(r.escena) : '') + (r.nota ? '<br>📝 ' + esc(r.nota) : '') + '</div>' +
+      '<div class="su-faf7a9">' +
+      '<button class="btn btn-accent su-337714" data-prog="' + r.id + '">🧘 Programar</button>' +
+      '<button class="btn su-337714" data-next="' + r.id + '">⏭ ' + (r.estado === 'pendiente' ? 'en proceso' : r.estado === 'en proceso' ? 'cumplido' : 'reabrir') + '</button>' +
+      '<button class="btn su-337714" data-edit="' + r.id + '">✏️</button>' +
+      '<button class="btn su-9b8fb7" data-del="' + r.id + '">✕</button></div></div>';
   }).join('') : '<p class="muted">Sin programaciones. Agrega 1 deseo concreto arriba: lo que se ve claro en la pantalla, se programa.</p>';
   var st = $('svProgStats');
   if (st) st.textContent = d.length + ' programaciones · ' + d.filter(function (r) { return r.estado === 'cumplido'; }).length + ' cumplidas 🌅';
@@ -362,9 +362,9 @@ function renderSes() {
   box.innerHTML = d.length ? d.slice(0, 40).map(function (r) {
     var f = tecById(r.tec);
     return '<div class="habit-item"><b>🧠 ' + esc(r.fecha) + '</b> · ' + f.ico + ' ' + esc(f.n) + ' · ×' + (+r.ciclos || 0) +
-      '<br><span class="muted" style="font-size:11px">🎯 ' + esc(r.titulo || 'libre') + ' · ' + r.antes + '→' + r.despues + '/10 · ' + esc(lunaTxt(r.fecha)) + '</span>' +
-      (r.insight ? '<p style="font-size:12px">💡 ' + esc(r.insight) + '</p>' : '') +
-      '<div style="display:flex;gap:6px;margin-top:4px"><button class="btn" style="width:auto;font-size:11px" data-share="' + r.id + '">📤</button><button class="btn" style="width:auto;font-size:11px;color:#e76e8a" data-del="' + r.id + '">✕</button></div></div>';
+      '<br><span class="muted su-11a508">🎯 ' + esc(r.titulo || 'libre') + ' · ' + r.antes + '→' + r.despues + '/10 · ' + esc(lunaTxt(r.fecha)) + '</span>' +
+      (r.insight ? '<p class="su-6cb285">💡 ' + esc(r.insight) + '</p>' : '') +
+      '<div class="su-90237f"><button class="btn su-337714" data-share="' + r.id + '">📤</button><button class="btn su-9b8fb7" data-del="' + r.id + '">✕</button></div></div>';
   }).join('') : '<p class="muted">Sin sesiones aún. Ve a 🧘 Práctica y regálate 10 minutos en alfa hoy.</p>';
   box.querySelectorAll('[data-del]').forEach(function (b) { b.onclick = function () { if (!confirm('¿Borrar sesión?')) return; var dd = store().ses; var i = dd.findIndex(function (x) { return x.id === b.getAttribute('data-del'); }); if (i >= 0) dd.splice(i, 1); persistStore(); save(); renderSes(); renderAva(); }; });
   box.querySelectorAll('[data-share]').forEach(function (b) { b.onclick = function () { var dd = store().ses; var r = dd.find(function (x) { return x.id === b.getAttribute('data-share'); }); if (r) share('🧠 Mi práctica Silva ' + r.fecha, '🎯 ' + (r.titulo || '') + '\n' + tecById(r.tec).n + ' ×' + r.ciclos + ' (' + r.antes + '→' + r.despues + '/10)' + (r.insight ? '\n💡 ' + r.insight : '')); }; });
@@ -382,10 +382,10 @@ function renderAva() {
   var porTec = {};
   ses.forEach(function (r) { porTec[r.tec] = (porTec[r.tec] || 0) + 1; });
   var top = Object.keys(porTec).sort(function (a, b) { return porTec[b] - porTec[a]; })[0];
-  box.innerHTML = '<p class="muted" style="font-size:11px">🌅 Programaciones cumplidas: <b>' + ok + '/' + pr.length + '</b> (' + pct + '%)</p>' +
-    '<div style="background:var(--panel);border-radius:6px;height:10px;overflow:hidden"><div style="width:' + pct + '%;height:100%;background:linear-gradient(90deg,#7ab8ff,#e8c56a,#8fd694)"></div></div>' +
-    '<p class="muted" style="font-size:11px;margin-top:6px">🧘 ' + ses.length + ' sesiones · 🔁 ×' + vida + ' ciclos de vida · 🔥 racha ' + rachaDias() + ' días' + (top ? ' · técnica más usada: <b>' + esc(tecById(top).n) + '</b>' : '') + '</p>' +
-    '<p class="muted" style="font-size:11px">Ritmo sugerido: 10 min al día (mañana o noche). Luna creciente → programar metas; luna llena → cargar la escena con emoción; menguante → soltar y agradecer.</p>';
+  box.innerHTML = '<p class="muted su-11a508">🌅 Programaciones cumplidas: <b>' + ok + '/' + pr.length + '</b> (' + pct + '%)</p>' +
+    '<div class="su-ab9537"><div style="width:' + pct + '%;height:100%;background:linear-gradient(90deg,#7ab8ff,#e8c56a,#8fd694)"></div></div>' +
+    '<p class="muted su-e13d76">🧘 ' + ses.length + ' sesiones · 🔁 ×' + vida + ' ciclos de vida · 🔥 racha ' + rachaDias() + ' días' + (top ? ' · técnica más usada: <b>' + esc(tecById(top).n) + '</b>' : '') + '</p>' +
+    '<p class="muted su-11a508">Ritmo sugerido: 10 min al día (mañana o noche). Luna creciente → programar metas; luna llena → cargar la escena con emoción; menguante → soltar y agradecer.</p>';
 }
 function renderAll() { try { renderTecCards(); } catch (e) {} try { renderPractica(); } catch (e) {} try { renderProg(); } catch (e) {} try { renderSes(); } catch (e) {} try { renderAva(); } catch (e) {} }
 
@@ -396,13 +396,13 @@ function buildDialog() {
   var tecOpts = SV_TECNICAS.map(function (t) { return '<option value="' + t.id + '">' + t.ico + ' ' + esc(t.n) + '</option>'; }).join('');
   makeDialog('silvaDialog', '🧠 Método Silva — calma tu mente, programa tu día',
     'El método de <b>José Silva</b> para entrar a <b>alfa</b> (mente tranquila y enfocada) y desde ahí <b>visualizar, decidir y estudiar mejor</b>. 10 minutos, 1 técnica, 1 escena a la vez. Todo queda <b>privado y local</b>.',
-    '<div class="timer-tabs" style="flex-wrap:wrap;margin-bottom:10px">' +
-    '<button type="button" id="tabSvGuia" class="btn btn-accent" style="width:auto">📖 Guía</button>' +
-    '<button type="button" id="tabSvTec" class="btn" style="width:auto">🧰 Técnicas</button>' +
-    '<button type="button" id="tabSvPrac" class="btn" style="width:auto">🧘 Práctica</button>' +
-    '<button type="button" id="tabSvProg" class="btn" style="width:auto">🎯 Programar</button>' +
-    '<button type="button" id="tabSvSes" class="btn" style="width:auto">📓 Sesiones</button>' +
-    '<button type="button" id="tabSvAva" class="btn" style="width:auto">📊 Mi avance</button></div>' +
+    '<div class="timer-tabs su-dd1da5">' +
+    '<button type="button" id="tabSvGuia" class="btn btn-accent su-30e741">📖 Guía</button>' +
+    '<button type="button" id="tabSvTec" class="btn su-30e741">🧰 Técnicas</button>' +
+    '<button type="button" id="tabSvPrac" class="btn su-30e741">🧘 Práctica</button>' +
+    '<button type="button" id="tabSvProg" class="btn su-30e741">🎯 Programar</button>' +
+    '<button type="button" id="tabSvSes" class="btn su-30e741">📓 Sesiones</button>' +
+    '<button type="button" id="tabSvAva" class="btn su-30e741">📊 Mi avance</button></div>' +
 
     '<div id="svGuia">' +
       '<div class="si-card"><h4>🧠 ¿Qué es el Método Silva?</h4><p>Es un entrenamiento de <b>control mental</b> creado por <b>José Silva</b> (Texas, 1966): aprendes a bajar a propósito tu ritmo cerebral a <b>alfa (7–14 Hz)</b> —ese estado entre dormido y despierto donde imaginas vívido y te concentras mejor— y desde ahí <b>programas</b> lo que quieres: memoria, calma, salud de hábitos, decisiones y metas. No es magia: es <b>relajación + visualización + repetición</b>, lo mismo que usan deportistas y estudiantes. Su curso se llama hoy <i>Silva Ultramind</i> y se enseña en decenas de países.</p></div>' +
@@ -412,69 +412,69 @@ function buildDialog() {
       '<div class="si-card"><h4>🕯️ Práctica de 10 minutos (paso a paso)</h4><p><b>1)</b> Siéntate, 3 respiraciones.<br><b>2)</b> Cuenta 3-2-1 con ojos arriba (pestaña 🧘 Práctica te guía).<br><b>3)</b> Proyecta tu escena final 1–2 minutos (pantalla o espejo).<br><b>4)</b> Une tus 3 dedos y di tu frase («cada día mejor»).<br><b>5)</b> Sal contando 1-2-3, toma agua y anota 1 línea. Listo: actúa de día lo que programaste de mañana/noche.</p></div>' +
       '<div class="si-card"><h4>🌙 Silva y tus 13 lunas</h4><p><b>Creciente</b> → programa metas y estudio (siembra). <b>Llena</b> → carga tu escena con emoción fuerte. <b>Menguante</b> → suelta el cómo y agradece (vaso de agua, espejo en azul→blanco). <b>Nueva</b> → elige tu 1 programación de la luna. Cada sesión queda marcada con su luna en 📓 Sesiones.</p></div>' +
       '<div class="si-card"><h4>⚠️ Cuidados</h4><p>Es <b>entrenamiento educativo</b>: no diagnostica ni cura. Ante dolor fuerte, insomnio de semanas, angustia o ideas de daño, ve a tu <b>CESFAM / *4141 (Chile, 24 h)</b> además de practicar. No dejes tratamientos para “programar”. Y desconfía de quien te venda “alfa milagroso” por mucha plata: el método real es práctica diaria simple.</p></div>' +
-      '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="svGoTec" class="btn btn-accent" style="width:auto">🧰 Conocer las técnicas →</button> <button type="button" id="svGoPrac" class="btn" style="width:auto">🧘 Centrarme ahora →</button></div>' +
+      '<div class="dlg-actions su-59a5a8"><button type="button" id="svGoTec" class="btn btn-accent su-30e741">🧰 Conocer las técnicas →</button> <button type="button" id="svGoPrac" class="btn su-30e741">🧘 Centrarme ahora →</button></div>' +
     '</div>' +
 
     '<div id="svTec" class="hidden">' +
-      '<div class="conv-row"><label style="flex:2">🔍 Buscar <input type="text" id="svTecQ" placeholder="ej: alfa, sueño, agua, dedos, espejo..." autocomplete="off"></label></div>' +
+      '<div class="conv-row"><label class="su-4b3de7">🔍 Buscar <input type="text" id="svTecQ" placeholder="ej: alfa, sueño, agua, dedos, espejo..." autocomplete="off"></label></div>' +
       '<div id="svTecGrid"></div></div>' +
 
     '<div id="svPrac" class="hidden">' +
-      '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🧘 Centrado guiado en alfa</h4>' +
-      '<div class="conv-row"><label style="flex:2">🎯 Programación <select id="svPracProg"></select></label><label>📅 Fecha <input type="date" id="svPracFecha"></label></div>' +
-      '<div class="conv-row"><label style="flex:2">🧰 Técnica <select id="svPracTec">' + tecOpts + '</select></label></div>' +
-      '<div id="svPracFavBox" style="margin:6px 0"></div>' +
-      '<div class="menstrual-card" style="background:var(--panel);text-align:center"><div class="muted" style="font-size:11px">PASO A PASO (toca Siguiente)</div>' +
-      '<div id="svPasoTxt" style="font-size:13px;line-height:1.6;margin:6px 0;min-height:44px"></div>' +
-      '<div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap"><button type="button" id="svPasoBtn" class="btn btn-accent" style="width:auto">Siguiente →</button>' +
-      '<button type="button" id="svPasoReset" class="btn" style="width:auto">↺ Reiniciar</button>' +
-      '<button type="button" id="svVozGuia" class="btn" style="width:auto">🔊 Guía por voz</button></div></div>' +
-      '<div class="menstrual-card" style="background:var(--panel);text-align:center;margin-top:8px"><div style="font-size:11px" class="muted">CICLOS EN ALFA (meta dulce: 21)</div>' +
-      '<div id="svCountNum" style="font-size:44px;font-weight:800;color:var(--gold)">0</div>' +
-      '<div style="background:var(--panel);border-radius:6px;height:8px;overflow:hidden;margin:6px 0"><div id="svCountBar" style="width:0%;height:100%;background:linear-gradient(90deg,#7ab8ff,#e8c56a,#8fd694)"></div></div>' +
-      '<div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap"><button type="button" id="svPlus1" class="btn btn-accent" style="width:auto;font-size:15px">+1 🧠</button>' +
-      '<button type="button" id="svPlus5" class="btn" style="width:auto">+5</button>' +
-      '<button type="button" id="svZero" class="btn" style="width:auto">↺ 0</button></div>' +
-      '<div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:8px"><button type="button" id="svT5" class="btn" style="width:auto">⏱ 5 min</button>' +
-      '<button type="button" id="svT10" class="btn" style="width:auto">⏱ 10 min</button><button type="button" id="svT15" class="btn" style="width:auto">⏱ 15 min</button>' +
-      '<button type="button" id="svTStop" class="btn" style="width:auto">⏹ Detener</button></div>' +
-      '<div id="svTimerLabel" class="muted" style="font-size:11px;margin-top:6px">⏱ Temporizador listo: 5, 10 o 15 min en alfa con tu técnica.</div></div>' +
-      '<div class="conv-row" style="margin-top:8px"><label>Tensión antes (0–10) <input type="number" id="svAntes" min="0" max="10" value="6" style="width:80px"></label>' +
-      '<label>Calma después (0–10) <input type="number" id="svDespues" min="0" max="10" value="3" style="width:80px"></label>' +
-      '<label style="flex:1">Ciclos manuales <input type="number" id="svCiclos" min="0" value="0" style="width:90px"></label></div>' +
+      '<div class="menstrual-card su-68a1a9"><h4>🧘 Centrado guiado en alfa</h4>' +
+      '<div class="conv-row"><label class="su-4b3de7">🎯 Programación <select id="svPracProg"></select></label><label>📅 Fecha <input type="date" id="svPracFecha"></label></div>' +
+      '<div class="conv-row"><label class="su-4b3de7">🧰 Técnica <select id="svPracTec">' + tecOpts + '</select></label></div>' +
+      '<div id="svPracFavBox" class="su-c1fafc"></div>' +
+      '<div class="menstrual-card su-7c1198"><div class="muted su-11a508">PASO A PASO (toca Siguiente)</div>' +
+      '<div id="svPasoTxt" class="su-4f0343"></div>' +
+      '<div class="su-e376dd"><button type="button" id="svPasoBtn" class="btn btn-accent su-30e741">Siguiente →</button>' +
+      '<button type="button" id="svPasoReset" class="btn su-30e741">↺ Reiniciar</button>' +
+      '<button type="button" id="svVozGuia" class="btn su-30e741">🔊 Guía por voz</button></div></div>' +
+      '<div class="menstrual-card su-d59821"><div class="su-11a508" class="muted">CICLOS EN ALFA (meta dulce: 21)</div>' +
+      '<div id="svCountNum" class="su-5f3293">0</div>' +
+      '<div class="su-98b660"><div id="svCountBar" class="su-0bbd63"></div></div>' +
+      '<div class="su-e376dd"><button type="button" id="svPlus1" class="btn btn-accent su-e2cc6b">+1 🧠</button>' +
+      '<button type="button" id="svPlus5" class="btn su-30e741">+5</button>' +
+      '<button type="button" id="svZero" class="btn su-30e741">↺ 0</button></div>' +
+      '<div class="su-daa93d"><button type="button" id="svT5" class="btn su-30e741">⏱ 5 min</button>' +
+      '<button type="button" id="svT10" class="btn su-30e741">⏱ 10 min</button><button type="button" id="svT15" class="btn su-30e741">⏱ 15 min</button>' +
+      '<button type="button" id="svTStop" class="btn su-30e741">⏹ Detener</button></div>' +
+      '<div id="svTimerLabel" class="muted su-e13d76">⏱ Temporizador listo: 5, 10 o 15 min en alfa con tu técnica.</div></div>' +
+      '<div class="conv-row su-8a77e5"><label>Tensión antes (0–10) <input type="number" id="svAntes" min="0" max="10" value="6" class="su-8573ba"></label>' +
+      '<label>Calma después (0–10) <input type="number" id="svDespues" min="0" max="10" value="3" class="su-8573ba"></label>' +
+      '<label class="su-97445a">Ciclos manuales <input type="number" id="svCiclos" min="0" value="0" class="su-581be4"></label></div>' +
       '<label>💡 Insight / escena que vi <input type="text" id="svInsight" placeholder="ej: me vi rindiendo tranquila, sonreí al entregar" maxlength="300"></label>' +
-      '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="svGuardarSes" class="btn btn-accent" style="width:auto">🌅 Guardar sesión</button></div>' +
-      '<p class="muted" style="font-size:11px">Tip: para salir di dentro «1… salgo, 2… me muevo, 3… ojos abiertos, fresco y despierto». Toma agua.</p></div>' +
+      '<div class="dlg-actions su-59a5a8"><button type="button" id="svGuardarSes" class="btn btn-accent su-30e741">🌅 Guardar sesión</button></div>' +
+      '<p class="muted su-11a508">Tip: para salir di dentro «1… salgo, 2… me muevo, 3… ojos abiertos, fresco y despierto». Toma agua.</p></div>' +
     '</div>' +
 
     '<div id="svProg" class="hidden">' +
-      '<div class="menstrual-card" style="border-color:var(--gold)"><h4>➕ ¿Qué quiero programar?</h4>' +
-      '<div class="conv-row"><label style="flex:2">Deseo / meta * <input type="text" id="svProgTitulo" placeholder="ej: rendir tranquila el examen de mate" maxlength="60"></label><label>Con técnica <select id="svProgTec">' + tecOpts + '</select></label></div>' +
+      '<div class="menstrual-card su-68a1a9"><h4>➕ ¿Qué quiero programar?</h4>' +
+      '<div class="conv-row"><label class="su-4b3de7">Deseo / meta * <input type="text" id="svProgTitulo" placeholder="ej: rendir tranquila el examen de mate" maxlength="60"></label><label>Con técnica <select id="svProgTec">' + tecOpts + '</select></label></div>' +
       '<label>🎬 Escena final (ya logrado, en presente) <input type="text" id="svProgEscena" placeholder="ej: entrego la prueba sonriendo, sé que me fue bien" maxlength="140"></label>' +
       '<div class="conv-row"><label>Área <select id="svProgArea">' + SV_AREAS.map(function (a) { return '<option>' + a + '</option>'; }).join('') + '</select></label>' +
-      '<label>Carga/importancia (0–10) <input type="number" id="svProgInten" min="0" max="10" value="6" style="width:80px"></label>' +
+      '<label>Carga/importancia (0–10) <input type="number" id="svProgInten" min="0" max="10" value="6" class="su-8573ba"></label>' +
       '<label>Estado <select id="svProgEstado"><option>pendiente</option><option>en proceso</option><option>cumplido</option></select></label></div>' +
       '<label>Nota <input type="text" id="svProgNota" placeholder="ej: programo 10 min cada mañana por 2 semanas + estudio 40 min" maxlength="120"></label>' +
-      '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="svProgAdd" class="btn btn-accent" style="width:auto">+ Agregar</button><button type="button" id="svProgCancel" class="btn hidden" style="width:auto">Cancelar</button></div>' +
-      '<p class="muted" style="font-size:11px">Fórmula Silva: escena en presente + emoción + 1 acción real de día. Sin acción, no hay programa.</p></div>' +
-      '<div class="conv-row" style="margin-top:10px"><label style="flex:2">🔍 Buscar <input type="text" id="svProgQ" placeholder="meta, escena..." autocomplete="off"></label>' +
+      '<div class="dlg-actions su-59a5a8"><button type="button" id="svProgAdd" class="btn btn-accent su-30e741">+ Agregar</button><button type="button" id="svProgCancel" class="btn hidden su-30e741">Cancelar</button></div>' +
+      '<p class="muted su-11a508">Fórmula Silva: escena en presente + emoción + 1 acción real de día. Sin acción, no hay programa.</p></div>' +
+      '<div class="conv-row su-d2c171"><label class="su-4b3de7">🔍 Buscar <input type="text" id="svProgQ" placeholder="meta, escena..." autocomplete="off"></label>' +
       '<label>Estado <select id="svProgF"><option value="todas">Todas</option><option value="pendiente">Pendientes</option><option value="en proceso">En proceso</option><option value="cumplido">Cumplidas</option></select></label></div>' +
-      '<div id="svProgList" class="habits-list" style="margin-top:8px;max-height:300px"></div>' +
-      '<div class="dlg-actions" style="justify-content:space-between;margin-top:8px"><span id="svProgStats" class="muted" style="font-size:11px"></span>' +
-      '<span style="display:flex;gap:8px"><button type="button" id="svProgShare" class="btn" style="width:auto">📤 Compartir</button><button type="button" id="svProgClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar cumplidas</button></span></div>' +
+      '<div id="svProgList" class="habits-list su-8c96f6"></div>' +
+      '<div class="dlg-actions su-efea1d"><span id="svProgStats" class="muted su-11a508"></span>' +
+      '<span class="su-a76d59"><button type="button" id="svProgShare" class="btn su-30e741">📤 Compartir</button><button type="button" id="svProgClear" class="btn su-214f75">🗑 Borrar cumplidas</button></span></div>' +
     '</div>' +
 
     '<div id="svSes" class="hidden">' +
-      '<div class="menstrual-card" style="border-color:var(--gold)"><h4>📓 Mis sesiones en alfa</h4>' +
-      '<p class="muted" style="font-size:11px">Cada centrado cuenta, aunque la calma suba solo 1 punto. La constancia programa más que la intensidad.</p>' +
-      '<div id="svSesList" class="habits-list" style="max-height:320px"></div>' +
-      '<div class="dlg-actions" style="justify-content:space-between;margin-top:8px"><span id="svSesStats" class="muted" style="font-size:11px"></span>' +
-      '<span style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" id="svSesToNote" class="btn" style="width:auto">📝 Llevar a nota de hoy</button>' +
-      '<button type="button" id="svSesShareAll" class="btn" style="width:auto">📤 Compartir</button>' +
-      '<button type="button" id="svSesClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar</button></span></div></div>' +
+      '<div class="menstrual-card su-68a1a9"><h4>📓 Mis sesiones en alfa</h4>' +
+      '<p class="muted su-11a508">Cada centrado cuenta, aunque la calma suba solo 1 punto. La constancia programa más que la intensidad.</p>' +
+      '<div id="svSesList" class="habits-list su-0aced6"></div>' +
+      '<div class="dlg-actions su-efea1d"><span id="svSesStats" class="muted su-11a508"></span>' +
+      '<span class="su-3de8f9"><button type="button" id="svSesToNote" class="btn su-30e741">📝 Llevar a nota de hoy</button>' +
+      '<button type="button" id="svSesShareAll" class="btn su-30e741">📤 Compartir</button>' +
+      '<button type="button" id="svSesClear" class="btn su-214f75">🗑 Borrar</button></span></div></div>' +
     '</div>' +
 
-    '<div id="svAva" class="hidden"><div id="svAvaBox" class="menstrual-card" style="border-color:var(--gold)"></div>' +
+    '<div id="svAva" class="hidden"><div id="svAvaBox" class="menstrual-card su-68a1a9"></div>' +
       '<div class="si-card"><h4>🌙 Cierre de luna (ritual de 3 líneas)</h4><p>Cada fin de luna responde en tu cuaderno o en 📝 nota del día:<br><b>1)</b> ¿Qué programé esta luna?<br><b>2)</b> ¿Qué acción real hice cada día?<br><b>3)</b> ¿Qué suelto y qué sigo?<br>Termina uniendo tus 3 dedos: «cada día, en todo sentido, estoy mejor».</p></div></div>');
 }
 
@@ -490,7 +490,7 @@ function puenteMetodos() {
       if (!dlg || !dlg.open) return;
       if (v === 'silva' && !$('svOpenFromMetodos')) {
         var fab = document.createElement('div');
-        fab.innerHTML = '<button type="button" id="svOpenFromMetodos" class="btn btn-accent" style="width:auto;margin-top:8px">🧠 Abrir mi Método Silva completo</button>';
+        fab.innerHTML = '<button type="button" id="svOpenFromMetodos" class="btn btn-accent su-e182f0">🧠 Abrir mi Método Silva completo</button>';
         var f = dlg.querySelector('form') || dlg;
         f.appendChild(fab);
         var nb = $('svOpenFromMetodos');

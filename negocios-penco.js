@@ -526,52 +526,52 @@ function ensureDialog() {
   d.id = 'negociosDialog';
   d.innerHTML =
     '<form method="dialog">' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
-    '<h3 style="margin:0;color:var(--accent)">🏪 Economía Local — Penco</h3>' +
+    '<div class="dlg-actions su-d2d053">' +
+    '<h3 class="su-ee0cfe">🏪 Economía Local — Penco</h3>' +
     '<button type="button" id="negCloseTop" class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    '<p class="muted" style="line-height:1.5">Economía viva <b>de la comuna</b> en 6 subsecciones: 🏪 Negocios · 🌱 Emprendimientos · 🎨 Artesanos · 🔧 Oficios (incluye 💚 Salud) · 📚 Cursos · 🪙 Moneda Social. Parte en 🏠 Inicio y cambia de vista 📇/📋/🗂️ para explorar por partes. Agrega fichas con <b>datos verificados</b>; queda <b>privado y local</b>.</p>' +
-    '<div id="negHoyBox" class="menstrual-card" style="border-color:var(--gold)"></div>' +
-    '<div class="timer-tabs" style="margin:10px 0;flex-wrap:wrap">' +
-    '<button type="button" id="tabNegDir" class="btn btn-accent" style="width:auto">🏠 Inicio</button>' +
-    '<button type="button" id="tabNegNeg" class="btn" style="width:auto">🏪 Negocios</button>' +
-    '<button type="button" id="tabNegEmp" class="btn" style="width:auto">🌱 Emprendimientos</button>' +
-    '<button type="button" id="tabNegArt" class="btn" style="width:auto">🎨 Artesanos</button>' +
-    '<button type="button" id="tabNegOficios" class="btn" style="width:auto">🔧 Oficios</button>' +
-    '<button type="button" id="tabNegCursos" class="btn" style="width:auto">📚 Cursos</button>' +
-    '<button type="button" id="tabNegMoneda" class="btn" style="width:auto">🪙 Moneda Social</button>' +
-    '<button type="button" id="tabNegFavs" class="btn" style="width:auto">⭐ Míos</button>' +
-    '<button type="button" id="tabNegGuia" class="btn" style="width:auto">🧭 Guía</button>' +
+    '<p class="muted su-77e2fe">Economía viva <b>de la comuna</b> en 6 subsecciones: 🏪 Negocios · 🌱 Emprendimientos · 🎨 Artesanos · 🔧 Oficios (incluye 💚 Salud) · 📚 Cursos · 🪙 Moneda Social. Parte en 🏠 Inicio y cambia de vista 📇/📋/🗂️ para explorar por partes. Agrega fichas con <b>datos verificados</b>; queda <b>privado y local</b>.</p>' +
+    '<div id="negHoyBox" class="menstrual-card su-68a1a9"></div>' +
+    '<div class="timer-tabs su-ca7e11">' +
+    '<button type="button" id="tabNegDir" class="btn btn-accent su-30e741">🏠 Inicio</button>' +
+    '<button type="button" id="tabNegNeg" class="btn su-30e741">🏪 Negocios</button>' +
+    '<button type="button" id="tabNegEmp" class="btn su-30e741">🌱 Emprendimientos</button>' +
+    '<button type="button" id="tabNegArt" class="btn su-30e741">🎨 Artesanos</button>' +
+    '<button type="button" id="tabNegOficios" class="btn su-30e741">🔧 Oficios</button>' +
+    '<button type="button" id="tabNegCursos" class="btn su-30e741">📚 Cursos</button>' +
+    '<button type="button" id="tabNegMoneda" class="btn su-30e741">🪙 Moneda Social</button>' +
+    '<button type="button" id="tabNegFavs" class="btn su-30e741">⭐ Míos</button>' +
+    '<button type="button" id="tabNegGuia" class="btn su-30e741">🧭 Guía</button>' +
     '</div>' +
-    '<div class="menstrual-card" style="margin-bottom:10px;padding:8px 10px"><div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">' +
-    '<span class="muted" style="font-size:11px">Vista:</span>' +
-    '<button type="button" id="negViewCards" class="btn" style="width:auto;font-size:11px">📇 Por rubro</button>' +
-    '<button type="button" id="negViewList" class="btn" style="width:auto;font-size:11px">📋 Lista</button>' +
-    '<button type="button" id="negViewSectors" class="btn" style="width:auto;font-size:11px">🗂️ Sectores</button>' +
-    '<span class="muted" style="font-size:10px" id="negViewHint"></span></div></div>' +
+    '<div class="menstrual-card su-bf3171"><div class="su-b5711a">' +
+    '<span class="muted su-11a508">Vista:</span>' +
+    '<button type="button" id="negViewCards" class="btn su-337714">📇 Por rubro</button>' +
+    '<button type="button" id="negViewList" class="btn su-337714">📋 Lista</button>' +
+    '<button type="button" id="negViewSectors" class="btn su-337714">🗂️ Sectores</button>' +
+    '<span class="muted su-0d5be0" id="negViewHint"></span></div></div>' +
     '<div id="negFilterCard" class="menstrual-card"><h4>🔍 Buscar y filtrar</h4>' +
-    '<div class="conv-row"><label style="flex:2">Buscar <input type="text" id="negSearch" placeholder="ej: pan, costura, gasfiter, cueca, miel..." maxlength="60" autocomplete="off"></label>' +
+    '<div class="conv-row"><label class="su-4b3de7">Buscar <input type="text" id="negSearch" placeholder="ej: pan, costura, gasfiter, cueca, miel..." maxlength="60" autocomplete="off"></label>' +
     '<label>Rubro <select id="negCat"><option value="todas">Todos</option></select></label>' +
     '<label>Sector <select id="negSector"><option value="todos">Todos</option></select></label></div>' +
-    '<div class="conv-row" style="margin-top:6px"><label class="check-row" style="margin:0"><input type="checkbox" id="negSoloMoneda"> 🪙 Moneda social</label>' +
-    '<label class="check-row" style="margin:0"><input type="checkbox" id="negSoloTrueque"> 🔄 Trueque</label>' +
-    '<label class="check-row" style="margin:0"><input type="checkbox" id="negSoloAlmacen"> 🏪 Almacén</label></div>' +
-    '<p class="muted" style="font-size:11px;margin:4px 0 0" id="negCount"></p></div>' +
-    '<div id="negDirPanel" style="margin-top:10px">' +
+    '<div class="conv-row su-fe7b49"><label class="check-row su-116966"><input type="checkbox" id="negSoloMoneda"> 🪙 Moneda social</label>' +
+    '<label class="check-row su-116966"><input type="checkbox" id="negSoloTrueque"> 🔄 Trueque</label>' +
+    '<label class="check-row su-116966"><input type="checkbox" id="negSoloAlmacen"> 🏪 Almacén</label></div>' +
+    '<p class="muted su-954796" id="negCount"></p></div>' +
+    '<div id="negDirPanel" class="su-d2c171">' +
     '<div id="negHomeBox"></div>' +
-    '<div id="negList" style="margin-top:10px"></div>' +
+    '<div id="negList" class="su-d2c171"></div>' +
     '</div>' +
-    '<div id="negEmpPanel" class="hidden" style="margin-top:10px"><div id="negEmpList"></div></div>' +
-    '<div id="negArtPanel" class="hidden" style="margin-top:10px"><div id="negArtList"></div></div>' +
-    '<div id="negOficiosPanel" class="hidden" style="margin-top:10px"><div id="negOficiosList"></div></div>' +
-    '<div id="negCursosPanel" class="hidden" style="margin-top:10px"><div id="negCursosList"></div></div>' +
-    '<div id="negMonPanel" class="hidden" style="margin-top:10px"><div id="negMonList"></div></div>' +
-    '<div id="negFavsPanel" class="hidden" style="margin-top:10px"><div id="negFavsList"></div></div>' +
-    '<div id="negGuiaPanel" class="hidden" style="margin-top:10px"><div id="negGuiaList"></div></div>' +
-    '<div class="menstrual-card" style="margin-top:10px;border-color:var(--gold)"><h4>➕ Agregar negocio / emprendimiento / artesano / oficio / curso</h4>' +
-    '<p class="muted" style="font-size:11px">Suma lo que existe hoy en Penco con datos verificados. Elige el <b>tipo</b> y el <b>rubro</b> que corresponda: la ficha aparece en su subsección. Queda en tu dispositivo.</p>' +
+    '<div id="negEmpPanel" class="hidden su-d2c171"><div id="negEmpList"></div></div>' +
+    '<div id="negArtPanel" class="hidden su-d2c171"><div id="negArtList"></div></div>' +
+    '<div id="negOficiosPanel" class="hidden su-d2c171"><div id="negOficiosList"></div></div>' +
+    '<div id="negCursosPanel" class="hidden su-d2c171"><div id="negCursosList"></div></div>' +
+    '<div id="negMonPanel" class="hidden su-d2c171"><div id="negMonList"></div></div>' +
+    '<div id="negFavsPanel" class="hidden su-d2c171"><div id="negFavsList"></div></div>' +
+    '<div id="negGuiaPanel" class="hidden su-d2c171"><div id="negGuiaList"></div></div>' +
+    '<div class="menstrual-card su-51d56a"><h4>➕ Agregar negocio / emprendimiento / artesano / oficio / curso</h4>' +
+    '<p class="muted su-11a508">Suma lo que existe hoy en Penco con datos verificados. Elige el <b>tipo</b> y el <b>rubro</b> que corresponda: la ficha aparece en su subsección. Queda en tu dispositivo.</p>' +
     '<div class="conv-row"><label>Tipo * <select id="negFTipo"><option value="negocio">🏪 Negocio</option><option value="emprendimiento">🌱 Emprendimiento</option><option value="artesano">🎨 Artesano/a</option><option value="oficio">🔧 Oficio</option><option value="curso">📚 Curso / Formación</option></select></label>' +
     '<label>Rubro <select id="negFRubro"></select></label>' +
-    '<label>Icono <input type="text" id="negFIcon" maxlength="4" style="width:70px;text-align:center" value="🏪"></label></div>' +
+    '<label>Icono <input type="text" id="negFIcon" maxlength="4" class="su-745e46" value="🏪"></label></div>' +
     '<label>Nombre * <input type="text" id="negFNombre" placeholder="ej: Panadería Los Hornos / Miel Primer Agua" maxlength="60"></label>' +
     '<label>Qué ofrece <input type="text" id="negFDesc" placeholder="qué vende o hace, especialidad, qué llevar" maxlength="140"></label>' +
     '<div class="conv-row"><label>Sector <select id="negFSector"></select></label>' +
@@ -580,11 +580,11 @@ function ensureDialog() {
     '<label>Precio ref. <input type="text" id="negFPrecio" placeholder="ej: desde $2.000 / a convenir" maxlength="30"></label></div>' +
     '<div class="conv-row"><label>Contacto <input type="text" id="negFContacto" placeholder="ej: +56 9 ... / @cuenta (con permiso)" maxlength="60"></label>' +
     '<label>Redes / link <input type="text" id="negFRedes" placeholder="ej: instagram.com/... (opcional)" maxlength="80"></label></div>' +
-    '<div class="conv-row"><label class="check-row" style="margin:0"><input type="checkbox" id="negFMoneda"> 🪙 Acepta moneda social</label>' +
-    '<label class="check-row" style="margin:0"><input type="checkbox" id="negFTrueque"> 🔄 Acepta trueque</label>' +
-    '<label class="check-row" style="margin:0"><input type="checkbox" id="negFAlmacen"> 🏪 Es almacén / minimarket de barrio</label></div>' +
-    '<div class="dlg-actions" style="justify-content:flex-start;margin-top:8px"><button type="button" id="negFSave" class="btn btn-accent" style="width:auto">+ Guardar</button>' +
-    '<button type="button" id="negFCancel" class="btn hidden" style="width:auto">Cancelar</button></div></div>' +
+    '<div class="conv-row"><label class="check-row su-116966"><input type="checkbox" id="negFMoneda"> 🪙 Acepta moneda social</label>' +
+    '<label class="check-row su-116966"><input type="checkbox" id="negFTrueque"> 🔄 Acepta trueque</label>' +
+    '<label class="check-row su-116966"><input type="checkbox" id="negFAlmacen"> 🏪 Es almacén / minimarket de barrio</label></div>' +
+    '<div class="dlg-actions su-8f9e27"><button type="button" id="negFSave" class="btn btn-accent su-30e741">+ Guardar</button>' +
+    '<button type="button" id="negFCancel" class="btn hidden su-30e741">Cancelar</button></div></div>' +
     '<div class="dlg-actions"><button type="button" id="negClose" class="btn">Cerrar</button></div></form>';
   document.body.appendChild(d);
   return d;
@@ -596,9 +596,9 @@ function catNombre(c) { return CATS[c] || CATS.otro; }
 /* Ficha compacta: 1 línea + expandible. Muestra 1 ficha abierta a la vez. */
 function ecoBadges(t) {
   var b = '';
-  if (t.moneda) b += ' <span class="chip" style="font-size:10px;color:#e8c56a;border-color:#e8c56a55">🪙</span>';
-  if (t.trueque) b += ' <span class="chip" style="font-size:10px;color:#8fd694;border-color:#8fd69455">🔄</span>';
-  if (t.almacen) b += ' <span class="chip" style="font-size:10px;color:#9fc2ee;border-color:#9fc2ee55">🏪</span>';
+  if (t.moneda) b += ' <span class="chip su-8d684a">🪙</span>';
+  if (t.trueque) b += ' <span class="chip su-b143aa">🔄</span>';
+  if (t.almacen) b += ' <span class="chip su-312039">🏪</span>';
   return b;
 }
 /* Links operativos en 1 clic: urls, @instagram, emails, teléfonos chilenos y mapa.
@@ -638,20 +638,20 @@ function mapsLink(texto) {
   return '<a href="https://www.google.com/maps/search/?api=1&query=' + q + '" target="_blank" rel="noopener">📍 ' + esc(t) + '</a>';
 }
 function cardDetailInner(t, fav, vis) {
-  var html = (t.desc ? '<p style="font-size:12px;line-height:1.5">' + esc(t.desc) + '</p>' : '') +
-    '<p class="muted" style="font-size:11px;line-height:1.6">' + mapsLink(t.direccion || t.sector || 'Por confirmar') + (t.horario ? '<br>🕐 ' + esc(t.horario) : '') + (t.precio ? '<br>💰 ' + esc(t.precio) : '') + (t.contacto ? '<br>📞 ' + linkify(t.contacto) : '') + (t.redes ? '<br>🔗 ' + linkify(t.redes) : '') + '</p>' +
-    '<div class="conv-row" style="align-items:flex-end">' +
+  var html = (t.desc ? '<p class="su-37e316">' + esc(t.desc) + '</p>' : '') +
+    '<p class="muted su-b439ab">' + mapsLink(t.direccion || t.sector || 'Por confirmar') + (t.horario ? '<br>🕐 ' + esc(t.horario) : '') + (t.precio ? '<br>💰 ' + esc(t.precio) : '') + (t.contacto ? '<br>📞 ' + linkify(t.contacto) : '') + (t.redes ? '<br>🔗 ' + linkify(t.redes) : '') + '</p>' +
+    '<div class="conv-row su-7fed8e">' +
     '<label>Fecha <input type="date" data-neg-fecha="' + t.id + '" value="' + esc(todayKey()) + '"></label>' +
-    '<label>Hora <input type="time" data-neg-hora="' + t.id + '" value="10:00" style="max-width:110px"></label>' +
-    '<label class="check-row" style="margin:0;white-space:nowrap" title="Avisar a esa hora"><input type="checkbox" data-neg-aviso="' + t.id + '"> 🔔</label></div>' +
-    '<div class="conv-row" style="margin-top:4px"><label>Motivo <select data-neg-motivo="' + t.id + '"><option value="visita">📌 Visita / compra</option><option value="encargo">📦 Encargo / pedido</option><option value="clase">📚 Clase / curso</option><option value="cotizar">💰 Cotizar</option></select></label>' +
-    '<button type="button" class="btn btn-accent" data-neg-add="' + t.id + '" style="width:auto;align-self:flex-end">📌 Calendario</button></div>' +
-    '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">' +
-    '<button type="button" class="btn" data-neg-fav="' + t.id + '" style="width:auto;font-size:11px">' + (fav ? '★ Favorito' : '☆ Favorito') + '</button>' +
-    '<button type="button" class="btn" data-neg-share="' + t.id + '" style="width:auto;font-size:11px">📤 Compartir</button>';
+    '<label>Hora <input type="time" data-neg-hora="' + t.id + '" value="10:00" class="su-91245b"></label>' +
+    '<label class="check-row su-988f60" title="Avisar a esa hora"><input type="checkbox" data-neg-aviso="' + t.id + '"> 🔔</label></div>' +
+    '<div class="conv-row su-96ad60"><label>Motivo <select data-neg-motivo="' + t.id + '"><option value="visita">📌 Visita / compra</option><option value="encargo">📦 Encargo / pedido</option><option value="clase">📚 Clase / curso</option><option value="cotizar">💰 Cotizar</option></select></label>' +
+    '<button type="button" class="btn btn-accent su-4ed52d" data-neg-add="' + t.id + '">📌 Calendario</button></div>' +
+    '<div class="su-c158a9">' +
+    '<button type="button" class="btn su-337714" data-neg-fav="' + t.id + '">' + (fav ? '★ Favorito' : '☆ Favorito') + '</button>' +
+    '<button type="button" class="btn su-337714" data-neg-share="' + t.id + '">📤 Compartir</button>';
   if (!t.oficial) {
-    html += '<button type="button" class="btn" data-neg-edit="' + t.id + '" style="width:auto;font-size:11px">✏️ Editar</button>' +
-      '<button type="button" class="btn" data-neg-del="' + t.id + '" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕ Borrar</button>';
+    html += '<button type="button" class="btn su-337714" data-neg-edit="' + t.id + '">✏️ Editar</button>' +
+      '<button type="button" class="btn su-fd834a" data-neg-del="' + t.id + '">✕ Borrar</button>';
   }
   html += '</div>';
   return html;
@@ -662,18 +662,18 @@ function cardHTML(t, mode) {
   var vis = st.visitas.filter(function (x) { return x.negId === t.id; }).length;
   mode = mode || ecoView || 'cards';
   if (mode === 'list') {
-    return '<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center;gap:8px">' +
-      '<span style="min-width:0"><b style="font-size:12px">' + esc(t.icon || '🏪') + ' ' + esc(t.nombre) + '</b>' + ecoBadges(t) + (fav ? ' ★' : '') +
-      '<br><span class="muted" style="font-size:10px">' + esc(t.sector || '') + ' · ' + esc(catNombre(t.rubro)) + (t.precio ? ' · ' + esc(t.precio) : '') + (vis ? ' · 📌' + vis : '') + '</span></span>' +
-      '<span style="display:flex;gap:6px;flex:0 0 auto"><button type="button" class="btn" data-neg-toggle="' + t.id + '" style="width:auto;font-size:11px">👁 Ver</button>' +
-      '<button type="button" class="btn" data-neg-fav="' + t.id + '" style="width:auto;font-size:11px">' + (fav ? '★' : '☆') + '</button></span></div>' +
-      (ecoExpanded[t.id] ? '<div class="si-card" style="margin:-6px 0 8px;border-color:#d4af3766">' + cardDetailInner(t, fav, vis) + '</div>' : '');
+    return '<div class="habit-item su-e84fc1">' +
+      '<span class="su-3922d3"><b class="su-6cb285">' + esc(t.icon || '🏪') + ' ' + esc(t.nombre) + '</b>' + ecoBadges(t) + (fav ? ' ★' : '') +
+      '<br><span class="muted su-0d5be0">' + esc(t.sector || '') + ' · ' + esc(catNombre(t.rubro)) + (t.precio ? ' · ' + esc(t.precio) : '') + (vis ? ' · 📌' + vis : '') + '</span></span>' +
+      '<span class="su-0c0cb1"><button type="button" class="btn su-337714" data-neg-toggle="' + t.id + '">👁 Ver</button>' +
+      '<button type="button" class="btn su-337714" data-neg-fav="' + t.id + '">' + (fav ? '★' : '☆') + '</button></span></div>' +
+      (ecoExpanded[t.id] ? '<div class="si-card su-07a2fa">' + cardDetailInner(t, fav, vis) + '</div>' : '');
   }
   var open = !!ecoExpanded[t.id];
-  var html = '<details class="si-card" style="padding:8px 10px;border-color:#d4af3766"' + (open ? ' open' : '') + ' data-neg-details="' + t.id + '">' +
-    '<summary style="cursor:pointer;font-size:12.5px;line-height:1.4"><b>' + esc(t.icon || '🏪') + ' ' + esc(t.nombre) + '</b>' + ecoBadges(t) + (fav ? ' ★' : '') +
-    '<br><span class="muted" style="font-size:10px;font-weight:normal">' + esc(tipoNombre(t.tipo)) + ' · ' + esc(catNombre(t.rubro)) + ' · ' + esc(t.sector || '') + (vis ? ' · 📌' + vis : '') + '</span></summary>' +
-    '<div style="margin-top:8px">' + cardDetailInner(t, fav, vis) + '</div></details>';
+  var html = '<details class="si-card su-bd0a4f"' + (open ? ' open' : '') + ' data-neg-details="' + t.id + '">' +
+    '<summary class="su-00e144"><b>' + esc(t.icon || '🏪') + ' ' + esc(t.nombre) + '</b>' + ecoBadges(t) + (fav ? ' ★' : '') +
+    '<br><span class="muted su-40dbde">' + esc(tipoNombre(t.tipo)) + ' · ' + esc(catNombre(t.rubro)) + ' · ' + esc(t.sector || '') + (vis ? ' · 📌' + vis : '') + '</span></summary>' +
+    '<div class="su-8a77e5">' + cardDetailInner(t, fav, vis) + '</div></details>';
   return html;
 }
 
@@ -795,11 +795,11 @@ function bindCards(scope) {
 function ecoPagerHTML(total, label) {
   var pages = Math.max(1, Math.ceil(total / ECO_PAGE_SIZE));
   if (ecoPage > pages) ecoPage = pages;
-  if (pages <= 1) return '<p class="muted" style="font-size:10px;margin:6px 0 0">' + total + ' ' + (label || 'fichas') + ' · sin más páginas</p>';
-  var h = '<div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-top:8px">';
-  h += '<button type="button" class="btn" data-eco-page="' + (ecoPage - 1) + '" style="width:auto;font-size:11px"' + (ecoPage <= 1 ? ' disabled' : '') + '>◀</button>';
-  h += '<span class="muted" style="font-size:11px">Pág. ' + ecoPage + ' / ' + pages + ' · ' + total + ' ' + (label || 'fichas') + '</span>';
-  h += '<button type="button" class="btn" data-eco-page="' + (ecoPage + 1) + '" style="width:auto;font-size:11px"' + (ecoPage >= pages ? ' disabled' : '') + '>▶</button></div>';
+  if (pages <= 1) return '<p class="muted su-cb3213">' + total + ' ' + (label || 'fichas') + ' · sin más páginas</p>';
+  var h = '<div class="su-3d3327">';
+  h += '<button type="button" class="btn su-337714" data-eco-page="' + (ecoPage - 1) + '"' + (ecoPage <= 1 ? ' disabled' : '') + '>◀</button>';
+  h += '<span class="muted su-11a508">Pág. ' + ecoPage + ' / ' + pages + ' · ' + total + ' ' + (label || 'fichas') + '</span>';
+  h += '<button type="button" class="btn su-337714" data-eco-page="' + (ecoPage + 1) + '"' + (ecoPage >= pages ? ' disabled' : '') + '>▶</button></div>';
   return h;
 }
 function ecoSlice(list) {
@@ -829,10 +829,10 @@ function renderTipoInto(boxId, tipo, titulo, vacioBase) {
   var total = todos().length;
   var viewName = ecoView === 'list' ? '📋 Lista' : ecoView === 'sectors' ? '🗂️ Sectores' : '📇 Por rubro';
   var head = '<div class="menstrual-card"><h4>' + titulo + ' · ' + list.length + '</h4>' +
-    '<p class="muted" style="font-size:10px">Vista <b>' + esc(viewName) + '</b> · cada rubro se abre aparte. Toca el título para abrir la ficha. Marca <b>☆</b> para tu lista corta.</p>';
+    '<p class="muted su-0d5be0">Vista <b>' + esc(viewName) + '</b> · cada rubro se abre aparte. Toca el título para abrir la ficha. Marca <b>☆</b> para tu lista corta.</p>';
   if (!list.length) {
     box.innerHTML = head + (total === 0
-      ? '<p class="muted" style="font-size:11px;line-height:1.55">' + vacioBase + '</p>'
+      ? '<p class="muted su-b6db47">' + vacioBase + '</p>'
       : '<p class="muted">Sin resultados. Prueba otra búsqueda o agrega la ficha abajo en ➕ eligiendo tipo <b>' + esc(tipoNombre(tipo)) + '</b>.</p>') + '</div>';
     bindCards(box);
     return;
@@ -843,7 +843,7 @@ function renderTipoInto(boxId, tipo, titulo, vacioBase) {
     body = groups.map(function (g) {
       var inner = ecoSlice(g.items).map(function (t) { return cardHTML(t, 'cards'); }).join('');
       return '<details class="menstrual-details"' + (groups.length === 1 ? ' open' : '') + '><summary>📍 ' + esc(g.sector) + ' · ' + g.items.length + '</summary>' + inner +
-        (g.items.length > ECO_PAGE_SIZE ? '<p class="muted" style="font-size:10px">Mostrando ' + ecoSlice(g.items).length + ' de ' + g.items.length + '.</p>' : '') + '</details>';
+        (g.items.length > ECO_PAGE_SIZE ? '<p class="muted su-0d5be0">Mostrando ' + ecoSlice(g.items).length + ' de ' + g.items.length + '.</p>' : '') + '</details>';
     }).join('');
     body += ecoPagerHTML(list.length, 'fichas');
   } else if (ecoView === 'list') {
@@ -869,11 +869,11 @@ function renderTipoInto(boxId, tipo, titulo, vacioBase) {
       var vis = abierto ? g.items : g.items.slice(0, ECO_PAGE_SIZE);
       var nota = '';
       if (g.rubro === 'alimentos' && ecoSector !== 'todos' && ALMACENES_NOTA[ecoSector]) {
-        nota = '<p class="muted" style="font-size:11px;line-height:1.55">' + esc(ALMACENES_NOTA[ecoSector]) + '</p>';
+        nota = '<p class="muted su-b6db47">' + esc(ALMACENES_NOTA[ecoSector]) + '</p>';
       }
       return '<details class="menstrual-details"' + (grupos.length === 1 || i === 0 ? ' open' : '') + '><summary>' + esc(catNombre(g.rubro)) + ' · ' + g.items.length + '</summary>' + nota +
         vis.map(function (t) { return cardHTML(t, 'cards'); }).join('') +
-        (g.items.length > ECO_PAGE_SIZE ? '<button type="button" class="btn" data-eco-more="' + key + '" style="width:auto;font-size:11px;margin-top:6px">' + (abierto ? '▲ Mostrar menos' : '▼ Ver las ' + g.items.length + ' fichas') + '</button>' : '') + '</details>';
+        (g.items.length > ECO_PAGE_SIZE ? '<button type="button" class="btn su-e5d037" data-eco-more="' + key + '">' + (abierto ? '▲ Mostrar menos' : '▼ Ver las ' + g.items.length + ' fichas') + '</button>' : '') + '</details>';
     }).join('');
   }
   box.innerHTML = head + body + '</div>';
@@ -897,12 +897,12 @@ function renderHome() {
   if (ecoTab !== 'inicio') { box.innerHTML = ''; return; }
   var c = ecoCounts();
   var card = function (tab, icon, t, d, n) {
-    return '<button type="button" data-eco-goto="' + tab + '" class="si-card" style="flex:1 1 140px;text-align:left;cursor:pointer">' +
-      '<b style="font-size:12px">' + icon + ' ' + t + ' · ' + n + '</b><br><span class="muted" style="font-size:10px">' + d + '</span></button>';
+    return '<button type="button" data-eco-goto="' + tab + '" class="si-card su-c9deea">' +
+      '<b class="su-6cb285">' + icon + ' ' + t + ' · ' + n + '</b><br><span class="muted su-0d5be0">' + d + '</span></button>';
   };
-  box.innerHTML = '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🏠 Economía Local por tipo · ' + c.total + ' fichas</h4>' +
-    '<p class="muted" style="font-size:11px;line-height:1.55">Cada tipo trae sus rubros adentro: abre la subsección y luego el rubro que buscas. Todo sigue privado y offline.</p>' +
-    '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">' +
+  box.innerHTML = '<div class="menstrual-card su-68a1a9"><h4>🏠 Economía Local por tipo · ' + c.total + ' fichas</h4>' +
+    '<p class="muted su-b6db47">Cada tipo trae sus rubros adentro: abre la subsección y luego el rubro que buscas. Todo sigue privado y offline.</p>' +
+    '<div class="su-ac5453">' +
     card('negocios', '🏪', 'Negocios', 'Comer, abasto, servicios', c.negocio) +
     card('emprendimientos', '🌱', 'Emprendimientos', 'Comida, campo, arte', c.emprendimiento) +
     card('artesanos', '🎨', 'Artesanos', 'Arte, textil, madera', c.artesano) +
@@ -912,7 +912,7 @@ function renderHome() {
     card('mios', '⭐', 'Míos', c.favs + ' fav · ' + c.mios + ' propias', c.favs + c.mios) +
     card('guia', '🧭', 'Guía', 'Qué mapear por sector', '→') +
     '</div>' +
-    '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px"><span class="chip">🪙 ' + c.moneda + ' moneda social</span><span class="chip">🔄 ' + c.trueque + ' trueque</span><span class="chip">🏪 ' + c.almacen + ' almacenes</span></div></div>';
+    '<div class="su-0ad856"><span class="chip">🪙 ' + c.moneda + ' moneda social</span><span class="chip">🔄 ' + c.trueque + ' trueque</span><span class="chip">🏪 ' + c.almacen + ' almacenes</span></div></div>';
   bindToggle(box);
 }
 
@@ -955,80 +955,80 @@ function renderMoneda() {
   var bal = Number(m.balance) || 0;
   var tope = (c.tope === undefined || c.tope === null) ? -50 : Number(c.tope);
   var colBal = bal < tope ? '#e76e8a' : (bal < 0 ? '#e8c56a' : '#8fd694');
-  var html = '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🪙 Moneda Social — dentro de Economía Local</h4>' +
-    '<p class="muted" style="font-size:11px;line-height:1.55">Unidad de cuenta propia del territorio para intercambiar sin depender solo del peso. Los tratos se cierran <b>en persona</b>; aquí vive el registro <b>privado y local</b>. Esta sección es la puerta de entrada: el módulo completo vive en <b>🪙 Moneda Social</b>.</p>' +
-    '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">' +
-    '<button type="button" class="btn btn-accent" data-mon-open="guia" style="width:auto;font-size:11px">📖 Abrir guía</button>' +
-    '<button type="button" class="btn" data-mon-open="billetera" style="width:auto;font-size:11px">🪙 Mi Billetera</button>' +
-    '<button type="button" class="btn" data-mon-open="ofertas" style="width:auto;font-size:11px">📋 Ofertas</button>' +
-    '<button type="button" class="btn" data-mon-open="tx" style="width:auto;font-size:11px">💸 Transacciones</button>' +
-    '<button type="button" class="btn" data-mon-open="acuerdos" style="width:auto;font-size:11px">🤝 Acuerdos</button></div></div>';
+  var html = '<div class="menstrual-card su-68a1a9"><h4>🪙 Moneda Social — dentro de Economía Local</h4>' +
+    '<p class="muted su-b6db47">Unidad de cuenta propia del territorio para intercambiar sin depender solo del peso. Los tratos se cierran <b>en persona</b>; aquí vive el registro <b>privado y local</b>. Esta sección es la puerta de entrada: el módulo completo vive en <b>🪙 Moneda Social</b>.</p>' +
+    '<div class="su-0ad856">' +
+    '<button type="button" class="btn btn-accent su-337714" data-mon-open="guia">📖 Abrir guía</button>' +
+    '<button type="button" class="btn su-337714" data-mon-open="billetera">🪙 Mi Billetera</button>' +
+    '<button type="button" class="btn su-337714" data-mon-open="ofertas">📋 Ofertas</button>' +
+    '<button type="button" class="btn su-337714" data-mon-open="tx">💸 Transacciones</button>' +
+    '<button type="button" class="btn su-337714" data-mon-open="acuerdos">🤝 Acuerdos</button></div></div>';
   /* 1. Mi billetera (resumen) */
   if (!m.ok) {
-    html += '<div class="menstrual-card"><h4>🪙 Mi billetera</h4><p class="muted" style="font-size:11px">Módulo de moneda social cargando… Si no abre, recarga la app.</p>' +
-      '<button type="button" class="btn btn-accent" data-mon-open="billetera" style="width:auto;font-size:11px">🪙 Abrir Moneda Social</button></div>';
+    html += '<div class="menstrual-card"><h4>🪙 Mi billetera</h4><p class="muted su-11a508">Módulo de moneda social cargando… Si no abre, recarga la app.</p>' +
+      '<button type="button" class="btn btn-accent su-337714" data-mon-open="billetera">🪙 Abrir Moneda Social</button></div>';
   } else if (!c.nombre) {
-    html += '<div class="menstrual-card" style="border-color:#e8c56a88"><h4>🪙 Mi billetera — sin cuenta aún</h4>' +
-      '<p class="muted" style="font-size:11px;line-height:1.55">Aún no abres tu cuenta. Se abre en 1 minuto: nombre, moneda (ej: Lafken), símbolo y tope de confianza (sugerido −50 U).</p>' +
-      '<button type="button" class="btn btn-accent" data-mon-open="billetera" style="width:auto;font-size:11px">🪙 Crear mi cuenta</button></div>';
+    html += '<div class="menstrual-card su-f1b0fe"><h4>🪙 Mi billetera — sin cuenta aún</h4>' +
+      '<p class="muted su-b6db47">Aún no abres tu cuenta. Se abre en 1 minuto: nombre, moneda (ej: Lafken), símbolo y tope de confianza (sugerido −50 U).</p>' +
+      '<button type="button" class="btn btn-accent su-337714" data-mon-open="billetera">🪙 Crear mi cuenta</button></div>';
   } else {
     var entradas = m.txs.filter(function (t) { return Number(t.monto) > 0; }).reduce(function (a, t) { return a + Number(t.monto); }, 0);
     var salidas = m.txs.filter(function (t) { return Number(t.monto) < 0; }).reduce(function (a, t) { return a + Math.abs(Number(t.monto)); }, 0);
     html += '<div class="menstrual-card"><h4>🪙 Mi billetera · ' + esc(c.nombre) + '</h4>' +
-      '<p style="font-size:15px"><b style="color:' + colBal + '">' + esc(simb + ' ' + (Math.round(bal * 100) / 100)) + ' ' + esc(unidad) + '</b></p>' +
-      '<p class="muted" style="font-size:11px">Recibido +' + esc(String(Math.round(entradas * 100) / 100)) + ' · Entregado −' + esc(String(Math.round(salidas * 100) / 100)) + ' · Tope ' + esc(String(tope)) + ' · ' + m.ofertas.length + ' oferta(s) · ' + m.txs.length + ' transacción(es)</p>' +
-      '<div style="display:flex;gap:6px;flex-wrap:wrap"><button type="button" class="btn btn-accent" data-mon-open="billetera" style="width:auto;font-size:11px">🪙 Ver billetera</button>' +
-      '<button type="button" class="btn" data-mon-open="tx" style="width:auto;font-size:11px">💸 Registrar pago/cobro</button></div></div>';
+      '<p class="su-de0080"><b style="color:' + colBal + '">' + esc(simb + ' ' + (Math.round(bal * 100) / 100)) + ' ' + esc(unidad) + '</b></p>' +
+      '<p class="muted su-11a508">Recibido +' + esc(String(Math.round(entradas * 100) / 100)) + ' · Entregado −' + esc(String(Math.round(salidas * 100) / 100)) + ' · Tope ' + esc(String(tope)) + ' · ' + m.ofertas.length + ' oferta(s) · ' + m.txs.length + ' transacción(es)</p>' +
+      '<div class="su-6157e8"><button type="button" class="btn btn-accent su-337714" data-mon-open="billetera">🪙 Ver billetera</button>' +
+      '<button type="button" class="btn su-337714" data-mon-open="tx">💸 Registrar pago/cobro</button></div></div>';
   }
   /* 2. Ofertas y pedidos en moneda social */
   html += '<details class="menstrual-details" open><summary>📋 Ofertas y pedidos en moneda · ' + m.ofertas.length + '</summary>';
   if (!m.ok || !m.ofertas.length) {
-    html += '<p class="muted" style="font-size:11px;line-height:1.55">Aún no hay ofertas en moneda social. La semilla de la red es <b>1 oferta + 1 pedido por persona</b> (ej: pan amasado, clases, flete, cuidados).</p>' +
-      '<button type="button" class="btn btn-accent" data-mon-open="ofertas" style="width:auto;font-size:11px">➕ Publicar la primera</button>';
+    html += '<p class="muted su-b6db47">Aún no hay ofertas en moneda social. La semilla de la red es <b>1 oferta + 1 pedido por persona</b> (ej: pan amasado, clases, flete, cuidados).</p>' +
+      '<button type="button" class="btn btn-accent su-337714" data-mon-open="ofertas">➕ Publicar la primera</button>';
   } else {
     var of = m.ofertas.slice().sort(function (a, b) { return String(b.creado || '').localeCompare(String(a.creado || '')); }).slice(0, 6);
     html += of.map(function (o) {
       var chip = o.tipo === 'ofrezco' ? '🙌 Ofrezco' : '🙏 Necesito';
-      return '<div class="si-card" style="padding:8px 10px"><b style="font-size:12px">' + chip + ' · ' + esc(o.titulo || '') + '</b>' +
-        '<br><span class="muted" style="font-size:10px">' + esc(o.cat || '') + (o.precio ? ' · 💰 ' + esc(o.precio) + ' ' + esc(simb) : '') + (o.trueque ? ' · 🔄' : '') + (o.mixto ? ' · 💵 mixto' : '') + '</span>' +
-        (o.detalle ? '<br><span style="font-size:11px">' + esc(o.detalle) + '</span>' : '') + '</div>';
+      return '<div class="si-card su-cfa1ec"><b class="su-6cb285">' + chip + ' · ' + esc(o.titulo || '') + '</b>' +
+        '<br><span class="muted su-0d5be0">' + esc(o.cat || '') + (o.precio ? ' · 💰 ' + esc(o.precio) + ' ' + esc(simb) : '') + (o.trueque ? ' · 🔄' : '') + (o.mixto ? ' · 💵 mixto' : '') + '</span>' +
+        (o.detalle ? '<br><span class="su-11a508">' + esc(o.detalle) + '</span>' : '') + '</div>';
     }).join('') +
-      (m.ofertas.length > 6 ? '<p class="muted" style="font-size:10px">Mostrando 6 de ' + m.ofertas.length + '.</p>' : '') +
-      '<button type="button" class="btn" data-mon-open="ofertas" style="width:auto;font-size:11px">📋 Ver todas / publicar</button>';
+      (m.ofertas.length > 6 ? '<p class="muted su-0d5be0">Mostrando 6 de ' + m.ofertas.length + '.</p>' : '') +
+      '<button type="button" class="btn su-337714" data-mon-open="ofertas">📋 Ver todas / publicar</button>';
   }
   html += '</details>';
   /* 3. Últimas transacciones */
   html += '<details class="menstrual-details"><summary>💸 Últimas transacciones · ' + m.txs.length + '</summary>';
   if (!m.txs.length) {
-    html += '<p class="muted" style="font-size:11px">Sin movimientos. Ej: recibí 10 por pan → +10; pagué 8 por corte → −8.</p>';
+    html += '<p class="muted su-11a508">Sin movimientos. Ej: recibí 10 por pan → +10; pagué 8 por corte → −8.</p>';
   } else {
     var txs = m.txs.slice().sort(function (a, b) { return String(b.fecha).localeCompare(String(a.fecha)); }).slice(0, 6);
     html += txs.map(function (t) {
       var n = Number(t.monto) || 0;
       var col = n >= 0 ? '#8fd694' : '#e8a06a';
       return '<div class="habit-item"><span><b style="color:' + col + '">' + (n >= 0 ? '+' : '') + esc(String(Math.round(n * 100) / 100)) + ' ' + esc(simb) + '</b> · ' + esc(t.concepto || '') +
-        '<br><span class="muted" style="font-size:10px">' + esc(t.fecha || '') + (t.contraparte ? ' · ' + esc(t.contraparte) : '') + '</span></span></div>';
+        '<br><span class="muted su-0d5be0">' + esc(t.fecha || '') + (t.contraparte ? ' · ' + esc(t.contraparte) : '') + '</span></span></div>';
     }).join('') +
-      (m.txs.length > 6 ? '<p class="muted" style="font-size:10px">Mostrando 6 de ' + m.txs.length + '.</p>' : '');
+      (m.txs.length > 6 ? '<p class="muted su-0d5be0">Mostrando 6 de ' + m.txs.length + '.</p>' : '');
   }
-  html += '<div style="margin-top:6px"><button type="button" class="btn" data-mon-open="tx" style="width:auto;font-size:11px">💸 Abrir transacciones</button></div></details>';
+  html += '<div class="su-fe7b49"><button type="button" class="btn su-337714" data-mon-open="tx">💸 Abrir transacciones</button></div></details>';
   /* 4. Negocios que aceptan moneda social */
   html += '<details class="menstrual-details" open><summary>🏪 Aceptan 🪙 en Economía Local · ' + conMoneda.length + '</summary>' +
-    '<p class="muted" style="font-size:11px">Cuando una ficha acepta la moneda, se marca con 🪙 y aparece aquí y en el módulo de Moneda Social. Pregunta siempre en persona antes de pagar.</p>';
+    '<p class="muted su-11a508">Cuando una ficha acepta la moneda, se marca con 🪙 y aparece aquí y en el módulo de Moneda Social. Pregunta siempre en persona antes de pagar.</p>';
   if (!conMoneda.length) {
-    html += '<p class="muted" style="font-size:11px">Aún no hay fichas con 🪙. Marca <b>“Acepta moneda social”</b> al agregar o editar una ficha (➕ de abajo) y aparecerá aquí.</p>';
+    html += '<p class="muted su-11a508">Aún no hay fichas con 🪙. Marca <b>“Acepta moneda social”</b> al agregar o editar una ficha (➕ de abajo) y aparecerá aquí.</p>';
   } else {
     html += ecoSlice(conMoneda).map(function (t) { return cardHTML(t, 'cards'); }).join('') + ecoPagerHTML(conMoneda.length, 'fichas con 🪙');
   }
-  html += '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px"><button type="button" class="btn" data-mon-filter style="width:auto;font-size:11px">🔍 Ver solo 🪙 en Negocios</button></div></details>';
+  html += '<div class="su-c158a9"><button type="button" class="btn su-337714" data-mon-filter>🔍 Ver solo 🪙 en Negocios</button></div></details>';
   /* 5. Guía mínima + acuerdos */
   var nAcu = Object.keys(m.acuerdos || {}).filter(function (k) { return m.acuerdos[k]; }).length;
   html += '<details class="menstrual-details"><summary>📖 Guía mínima + acuerdos · ' + nAcu + '/5</summary>' +
     '<div class="si-card"><h4>🪙 ¿Qué es?</h4><p>Unidad de cuenta propia del territorio para intercambiar bienes, saberes y cuidados sin depender solo del peso. Registro de quién dio y quién recibió, con reglas acordadas en persona.</p></div>' +
     '<div class="si-card"><h4>🤝 Reglas base</h4><p>1) La moneda la sostiene la red · 2) Todo trato es voluntario y se anota · 3) Saldo puede ser negativo hasta el tope · 4) Precios justos, sin especulación · 5) Balances visibles en asamblea · 6) Se sale saldando o compensando.</p></div>' +
     '<div class="si-card"><h4>⚖️ Equivalencia punto de partida</h4><p>1 hora de oficio o cuidado = <b>10 U</b> · docena de huevos = 4–6 U · pan amasado (6 un.) = 3–5 U · almuerzo = 8–12 U · corte de pelo = 8 U · flete corto = 10–15 U. La asamblea define las finales.</p></div>' +
-    '<div style="margin-top:6px;display:flex;gap:6px;flex-wrap:wrap"><button type="button" class="btn" data-mon-open="guia" style="width:auto;font-size:11px">📖 Guía completa</button>' +
-    '<button type="button" class="btn" data-mon-open="acuerdos" style="width:auto;font-size:11px">🤝 Ver acuerdos (' + nAcu + '/5)</button></div></details>';
+    '<div class="su-1518ef"><button type="button" class="btn su-337714" data-mon-open="guia">📖 Guía completa</button>' +
+    '<button type="button" class="btn su-337714" data-mon-open="acuerdos">🤝 Ver acuerdos (' + nAcu + '/5)</button></div></details>';
   box.innerHTML = html;
   bindCards(box);
   box.querySelectorAll('[data-mon-open]').forEach(function (b) {
@@ -1061,17 +1061,17 @@ function renderFavs() {
   var favIds = Object.keys(st.favs || {}).filter(function (k) { return st.favs[k]; });
   var favs = favIds.map(porId).filter(Boolean);
   var html = '<details class="menstrual-details" open><summary>⭐ Favoritos · ' + favs.length + '</summary>' +
-    (favs.length ? ecoSlice(favs).map(function (t) { return cardHTML(t); }).join('') + ecoPagerHTML(favs.length, 'favoritos') : '<p class="muted" style="font-size:11px">Aún no marcas favoritos. Toca ☆ en cualquier ficha.</p>') + '</details>';
+    (favs.length ? ecoSlice(favs).map(function (t) { return cardHTML(t); }).join('') + ecoPagerHTML(favs.length, 'favoritos') : '<p class="muted su-11a508">Aún no marcas favoritos. Toca ☆ en cualquier ficha.</p>') + '</details>';
   var vis = st.visitas.slice().sort(function (a, b) { return String(a.fecha).localeCompare(String(b.fecha)) || String(a.hora).localeCompare(String(b.hora)); });
   html += '<details class="menstrual-details"><summary>📌 Mis visitas / encargos / clases · ' + vis.length + '</summary>' +
-    '<p class="muted" style="font-size:11px">Ya están como compromisos 🕐 en tu calendario. Aquí los ves todos juntos.</p>' +
+    '<p class="muted su-11a508">Ya están como compromisos 🕐 en tu calendario. Aquí los ves todos juntos.</p>' +
     (vis.length ? vis.slice(0, 10).map(function (r) {
-      return '<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center"><span><b>' + esc(r.nombre) + '</b> <span class="chip" style="font-size:10px">' + esc(r.motivo || 'visita') + '</span><br><span class="muted" style="font-size:11px">📅 ' + esc(r.fecha) + ' · 🕐 ' + esc(r.hora) + (r.notify ? ' · 🔔' : '') + '</span></span>' +
-        '<button type="button" class="btn" data-visdel="' + r.id + '" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕</button></div>';
-    }).join('') + (vis.length > 10 ? '<p class="muted" style="font-size:10px">Mostrando 10 de ' + vis.length + ' (los próximos primero).</p>' : '') : '<p class="muted" style="font-size:11px">Sin visitas agendadas. Agenda una desde 🏪/🌱/🎨/🔧/📚.</p>') +
-    (vis.length ? '<div class="dlg-actions" style="justify-content:space-between;margin-top:8px"><button type="button" id="negVisShare" class="btn" style="width:auto">📤 Compartir mi lista</button><button type="button" id="negVisClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar lista</button></div>' : '') + '</details>';
+      return '<div class="habit-item su-13313b"><span><b>' + esc(r.nombre) + '</b> <span class="chip su-0d5be0">' + esc(r.motivo || 'visita') + '</span><br><span class="muted su-11a508">📅 ' + esc(r.fecha) + ' · 🕐 ' + esc(r.hora) + (r.notify ? ' · 🔔' : '') + '</span></span>' +
+        '<button type="button" class="btn su-fd834a" data-visdel="' + r.id + '">✕</button></div>';
+    }).join('') + (vis.length > 10 ? '<p class="muted su-0d5be0">Mostrando 10 de ' + vis.length + ' (los próximos primero).</p>' : '') : '<p class="muted su-11a508">Sin visitas agendadas. Agenda una desde 🏪/🌱/🎨/🔧/📚.</p>') +
+    (vis.length ? '<div class="dlg-actions su-efea1d"><button type="button" id="negVisShare" class="btn su-30e741">📤 Compartir mi lista</button><button type="button" id="negVisClear" class="btn su-214f75">🗑 Borrar lista</button></div>' : '') + '</details>';
   html += '<details class="menstrual-details"><summary>📋 Mis fichas agregadas · ' + st.mios.length + '</summary>' +
-    (st.mios.length ? st.mios.slice(0, ECO_PAGE_SIZE).map(function (t) { return cardHTML(t); }).join('') + '<p class="muted" style="font-size:10px">Mostrando hasta ' + ECO_PAGE_SIZE + ' fichas en esta vista.</p>' : '<p class="muted" style="font-size:11px">Aún no agregas fichas. Hazlo en ➕ de abajo.</p>') + '</details>';
+    (st.mios.length ? st.mios.slice(0, ECO_PAGE_SIZE).map(function (t) { return cardHTML(t); }).join('') + '<p class="muted su-0d5be0">Mostrando hasta ' + ECO_PAGE_SIZE + ' fichas en esta vista.</p>' : '<p class="muted su-11a508">Aún no agregas fichas. Hazlo en ➕ de abajo.</p>') + '</details>';
   box.innerHTML = html;
   bindCards(box);
   box.querySelectorAll('[data-visdel]').forEach(function (b) {
@@ -1098,12 +1098,12 @@ function renderFavs() {
 
 function renderGuia() {
   var box = $('negGuiaList'); if (!box) return;
-  box.innerHTML = '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🧭 Guía de rubros por sector — qué mapear</h4>' +
-    '<p class="muted" style="font-size:11px;line-height:1.55">No trae nombres inventados: es una brújula para salir a registrar la economía real con datos verificados. Registra nombre, horario, dirección y contacto <b>con permiso del negocio</b>.</p>' +
+  box.innerHTML = '<div class="menstrual-card su-68a1a9"><h4>🧭 Guía de rubros por sector — qué mapear</h4>' +
+    '<p class="muted su-b6db47">No trae nombres inventados: es una brújula para salir a registrar la economía real con datos verificados. Registra nombre, horario, dirección y contacto <b>con permiso del negocio</b>.</p>' +
     RUBROS_GUIA.map(function (g) {
-      return '<div class="si-card" style="padding:8px 10px"><h4 style="font-size:12px">' + g.icon + ' ' + esc(g.sector) + '</h4><p style="font-size:11px;line-height:1.55">' + esc(g.rubros) + '</p></div>';
+      return '<div class="si-card su-cfa1ec"><h4 class="su-6cb285">' + g.icon + ' ' + esc(g.sector) + '</h4><p class="su-b6db47">' + esc(g.rubros) + '</p></div>';
     }).join('') +
-    '<div class="si-card" style="padding:8px 10px;border-color:var(--gold)"><h4 style="font-size:12px">🤝 Consejos de mapeo vecinal</h4><p style="font-size:11px;line-height:1.6">1) Pide permiso y explica que es un directorio vecinal offline. 2) Foto del horario pegado en la puerta (la mejor fuente). 3) Pregunta si acepta 🪙 moneda social o 🔄 trueque. 4) Actualiza 1 vez por luna: lo que cierra y lo que abre.</p></div></div>';
+    '<div class="si-card su-078e27"><h4 class="su-6cb285">🤝 Consejos de mapeo vecinal</h4><p class="su-b439ab">1) Pide permiso y explica que es un directorio vecinal offline. 2) Foto del horario pegado en la puerta (la mejor fuente). 3) Pregunta si acepta 🪙 moneda social o 🔄 trueque. 4) Actualiza 1 vez por luna: lo que cierra y lo que abre.</p></div></div>';
 }
 
 function paintViewBtns() {
@@ -1147,9 +1147,9 @@ function paintHoy() {
     var hk = todayKey();
     var deHoy = st.visitas.filter(function (x) { return x.fecha === hk; });
     var nMon = todos().filter(function (t) { return t.moneda; }).length;
-    b.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px"><span><b>🏪 Hoy — ' + esc((function () { try { return cal.fmtFull.format(new Date()); } catch (e) { return hk; } })()) + '</b></span><span class="chip">' + todos().length + ' fichas · 🪙 ' + nMon + ' con moneda social</span></div>' +
-      (deHoy.length ? deHoy.map(function (r) { return '<div class="chip" style="display:block;margin-top:6px">🕐 ' + esc(r.hora) + ' · <b>' + esc(r.nombre) + '</b> [' + esc(r.motivo || 'visita') + ']</div>'; }).join('')
-        : '<p class="muted" style="font-size:11px;margin-top:6px">Hoy no tienes visitas agendadas.' + (todos().length ? ' Elige una ficha y pulsa <b>📌 Calendario</b>.' : ' ¡Agrega la primera ficha abajo!') + '</p>');
+    b.innerHTML = '<div class="su-49710b"><span><b>🏪 Hoy — ' + esc((function () { try { return cal.fmtFull.format(new Date()); } catch (e) { return hk; } })()) + '</b></span><span class="chip">' + todos().length + ' fichas · 🪙 ' + nMon + ' con moneda social</span></div>' +
+      (deHoy.length ? deHoy.map(function (r) { return '<div class="chip su-b8ea88">🕐 ' + esc(r.hora) + ' · <b>' + esc(r.nombre) + '</b> [' + esc(r.motivo || 'visita') + ']</div>'; }).join('')
+        : '<p class="muted su-e13d76">Hoy no tienes visitas agendadas.' + (todos().length ? ' Elige una ficha y pulsa <b>📌 Calendario</b>.' : ' ¡Agrega la primera ficha abajo!') + '</p>');
   } catch (e) {}
 }
 

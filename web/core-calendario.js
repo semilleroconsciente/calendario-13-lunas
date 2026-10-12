@@ -229,7 +229,7 @@ function renderTodayView(){
         return '<label class="habit-today-item '+(done?'done':'')+'" style="border-color:'+h.color+'55"><input type="checkbox" data-id="'+h.id+'" '+(done?'checked':'')+'><span class="habit-icon" style="background:'+h.color+'22;color:'+h.color+'">'+escapeHtml(h.icono||'✓')+'</span><span>'+escapeHtml(h.nombre)+'</span></label>';
       }).join('')+'</div>';
     } else {
-      habHTML='<p class="muted" style="font-size:11px">Sin hábitos creados. Créalos en ✅ Hábitos (vista Completa).</p>';
+      habHTML='<p class="muted su-11a508">Sin hábitos creados. Créalos en ✅ Hábitos (vista Completa).</p>';
     }
   }catch(e){ habHTML=''; }
   const hhss = hh+':'+String(now.getSeconds()).padStart(2,'0');
@@ -249,11 +249,11 @@ function renderTodayView(){
     + (hb.solLuna === false ? '' : '<div class="today-card"><h3>☀️🌙 Sol y luna de hoy</h3>'
     + '<div class="today-sun"><span class="chip">☀️ Amanecer <b>'+(sun.rise?cal.fmtTime.format(new Date(sun.rise)):'--')+'</b></span>'
     + '<span class="chip">🌇 Atardecer <b>'+(sun.set?cal.fmtTime.format(new Date(sun.set)):'--')+'</b></span></div>'
-    + '<div style="height:8px"></div>'
+    + '<div class="su-83ca52"></div>'
     + '<div class="today-sun"><span class="chip">🌙 Sale <b>'+(moon.rise?cal.fmtTime.format(new Date(moon.rise)):'--')+'</b></span>'
     + '<span class="chip">🌘 Se pone <b>'+(moon.set?cal.fmtTime.format(new Date(moon.set)):'--')+'</b></span></div>'
-    + '<p class="muted" style="font-size:10px;margin:6px 0 0">Luna en Penco · hora local · aprox. ±15 min según lugar de observación.</p>'
-    + '<div style="height:8px"></div>'
+    + '<p class="muted su-cb3213">Luna en Penco · hora local · aprox. ±15 min según lugar de observación.</p>'
+    + '<div class="su-83ca52"></div>'
     + '<div class="today-sun"><span class="chip">'+moonIcon+' Fase <b>'+escapeHtml(faseTxt)+'</b></span>'
     + '</div></div>')
     + (hb.notas === false ? '' : '<div class="today-card"><h3>📝 Notas del día</h3>'
@@ -261,13 +261,13 @@ function renderTodayView(){
     + (hb.agenda === false ? '' : '<div class="today-card"><h3>🕐 Compromisos · '+agenda.length+'</h3>'
     + '<div id="todayAgendaList" class="today-agenda-list"></div>'
     + (isDFT
-      ? '<p class="muted" style="font-size:11px">Los compromisos por hora viven en los días de luna. Este día es de cierre y reflexión.</p>'
-      : '<div class="today-add"><input type="time" id="todayHourSel" value="'+hh+'" step="60" aria-label="Hora"><input type="text" id="todayHourText" placeholder="Compromiso..." maxlength="80"><label class="check-row" style="margin:0;white-space:nowrap"><input type="checkbox" id="todayHourNotify"> 🔔</label><button type="button" id="todayHourAdd" class="btn btn-accent" style="width:auto">+ Agregar</button></div>')
-    + '<div style="height:8px"></div>'
-    + '<div style="display:flex;gap:8px;flex-wrap:wrap">'
-    + (isDFT ? '' : '<button type="button" id="todayMensBtn" class="btn" style="flex:1;width:auto">🌸 Inicio ciclo</button>')
-    + (isDFT ? '' : '<button type="button" id="todayShareBtn" class="btn" style="flex:1;width:auto">📤 Compartir</button>')
-    + (isDFT ? '' : '<button type="button" id="todayOpenDay" class="btn" style="flex:1;width:auto">📖 Día completo</button>')
+      ? '<p class="muted su-11a508">Los compromisos por hora viven en los días de luna. Este día es de cierre y reflexión.</p>'
+      : '<div class="today-add"><input type="time" id="todayHourSel" value="'+hh+'" step="60" aria-label="Hora"><input type="text" id="todayHourText" placeholder="Compromiso..." maxlength="80"><label class="check-row su-988f60"><input type="checkbox" id="todayHourNotify"> 🔔</label><button type="button" id="todayHourAdd" class="btn btn-accent su-30e741">+ Agregar</button></div>')
+    + '<div class="su-83ca52"></div>'
+    + '<div class="su-3de8f9">'
+    + (isDFT ? '' : '<button type="button" id="todayMensBtn" class="btn su-1ce0dc">🌸 Inicio ciclo</button>')
+    + (isDFT ? '' : '<button type="button" id="todayShareBtn" class="btn su-1ce0dc">📤 Compartir</button>')
+    + (isDFT ? '' : '<button type="button" id="todayOpenDay" class="btn su-1ce0dc">📖 Día completo</button>')
     + '</div>'
     + '</div>')
     + (hb.habitos === false ? '' : '<div class="today-card"><h3>✅ Hábitos de hoy</h3><div id="todayHabitsBox">'+habHTML+'</div></div>')
@@ -275,59 +275,59 @@ function renderTodayView(){
     + '<button type="button" id="todayMoodMain" class="today-mood-main"><span class="tm-ico">'+sug.e+'</span><span>'+(cur?escapeHtml(cur.n)+' · toca para cambiar':'Sugerencia: '+sug.e+' · '+escapeHtml(sug.n))+'</span></button>'
     + '<div id="todayMoodPicker" class="today-mood-picker hidden"></div></div>')
     + (hb.suenos === false ? '' : '<div class="today-card"><h3>💭 Diario de Sueños</h3>'
-    + (function(){ try{ const dd=(typeof getSuenos==='function'?getSuenos():[]).filter(function(r){return r.fecha===key;}); return dd.length? '<p class="muted" style="font-size:11px">'+dd.length+' sueño(s) hoy en tu Diario · último: «'+escapeHtml((dd[dd.length-1].titulo||dd[dd.length-1].texto||'').slice(0,120))+'»</p>' : '<p class="muted" style="font-size:11px">Sin sueños hoy en tu Diario. Anota aunque sea una palabra — queda aparte, no en notas.</p>'; }catch(e){ return ''; } })()
+    + (function(){ try{ const dd=(typeof getSuenos==='function'?getSuenos():[]).filter(function(r){return r.fecha===key;}); return dd.length? '<p class="muted su-11a508">'+dd.length+' sueño(s) hoy en tu Diario · último: «'+escapeHtml((dd[dd.length-1].titulo||dd[dd.length-1].texto||'').slice(0,120))+'»</p>' : '<p class="muted su-11a508">Sin sueños hoy en tu Diario. Anota aunque sea una palabra — queda aparte, no en notas.</p>'; }catch(e){ return ''; } })()
     + '<textarea id="todayDreamText" class="today-note" rows="2" placeholder="Anoche soñé... (se guarda en tu Diario)"></textarea>'
-    + '<div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap"><button type="button" id="todayDreamSave" class="btn btn-accent" style="flex:1;width:auto">💾 Guardar en Diario</button><button type="button" id="todayDreamOpen" class="btn" style="flex:1;width:auto">📓 Abrir Diario</button></div></div>')
+    + '<div class="su-67b198"><button type="button" id="todayDreamSave" class="btn btn-accent su-1ce0dc">💾 Guardar en Diario</button><button type="button" id="todayDreamOpen" class="btn su-1ce0dc">📓 Abrir Diario</button></div></div>')
     + (hb.comidas === false ? '' : '<div class="today-card"><h3>🥗 Comidas de hoy</h3>'
-    + (function(){ try{ const e=(typeof getMealData==='function'?getMealData().entries[key]:null)||{}; const parts=[e.breakfast?('🌅 '+e.breakfast):'',e.lunch?('☀️ '+e.lunch):'',e.dinner?('🌙 '+e.dinner):''].filter(Boolean); return parts.length? '<p style="font-size:12px">'+escapeHtml(parts.join(' · ')).replace(/&quot;/g,'"')+'</p>' : '<p class="muted" style="font-size:11px">Sin plan de comidas hoy.</p>'; }catch(e){ return ''; } })()
-    + '<div class="today-add" style="flex-direction:column;align-items:stretch"><input type="text" id="todayMealB" placeholder="🌅 Desayuno..." maxlength="80"><input type="text" id="todayMealL" placeholder="☀️ Almuerzo..." maxlength="80"><input type="text" id="todayMealD" placeholder="🌙 Cena..." maxlength="80"><div style="display:flex;gap:8px"><button type="button" id="todayMealSave" class="btn btn-accent" style="flex:1;width:auto">💾 Guardar</button><button type="button" id="todayMealOpen" class="btn" style="flex:1;width:auto">🥗 Abrir Comidas</button></div></div></div>')
-    + (hb.tareas === false ? '' : '<div class="today-card"><h3>🏠 Tareas hogar de hoy</h3><div id="todayHomeTasksBox"></div><div style="margin-top:8px"><button type="button" id="todayHomeTasksOpen" class="btn" style="width:100%">🏠 Abrir Tareas Hogar</button></div></div>')
-    + (hb.compras === false ? '' : '<div class="today-card"><h3>🛒 Compras pendientes</h3><div id="todayShopBox"></div><div class="today-add"><input type="text" id="todayShopText" placeholder="Agregar (ej: pan)..." maxlength="60"><button type="button" id="todayShopAdd" class="btn btn-accent" style="width:auto">+ Agregar</button></div><div style="margin-top:8px"><button type="button" id="todayShopOpen" class="btn" style="width:100%">🛒 Abrir Compras</button></div></div>')
-    + (hb.finanzas === false ? '' : '<div class="today-card"><h3>💰 Finanzas del día</h3><div id="todayFinanceBox"></div><div class="today-add"><select id="todayFinTipo" style="width:auto"><option value="gasto">Gasto</option><option value="ingreso">Ingreso</option></select><input type="number" id="todayFinMonto" placeholder="$ monto" min="0" style="max-width:110px"><input type="text" id="todayFinDesc" placeholder="detalle..." maxlength="60"></div><div style="display:flex;gap:8px;margin-top:8px"><button type="button" id="todayFinAdd" class="btn btn-accent" style="flex:1;width:auto">+ Agregar</button><button type="button" id="todayFinOpen" class="btn" style="flex:1;width:auto">💰 Abrir Finanzas</button></div></div>')
+    + (function(){ try{ const e=(typeof getMealData==='function'?getMealData().entries[key]:null)||{}; const parts=[e.breakfast?('🌅 '+e.breakfast):'',e.lunch?('☀️ '+e.lunch):'',e.dinner?('🌙 '+e.dinner):''].filter(Boolean); return parts.length? '<p class="su-6cb285">'+escapeHtml(parts.join(' · ')).replace(/&quot;/g,'"')+'</p>' : '<p class="muted su-11a508">Sin plan de comidas hoy.</p>'; }catch(e){ return ''; } })()
+    + '<div class="today-add su-0de0c6"><input type="text" id="todayMealB" placeholder="🌅 Desayuno..." maxlength="80"><input type="text" id="todayMealL" placeholder="☀️ Almuerzo..." maxlength="80"><input type="text" id="todayMealD" placeholder="🌙 Cena..." maxlength="80"><div class="su-a76d59"><button type="button" id="todayMealSave" class="btn btn-accent su-1ce0dc">💾 Guardar</button><button type="button" id="todayMealOpen" class="btn su-1ce0dc">🥗 Abrir Comidas</button></div></div></div>')
+    + (hb.tareas === false ? '' : '<div class="today-card"><h3>🏠 Tareas hogar de hoy</h3><div id="todayHomeTasksBox"></div><div class="su-8a77e5"><button type="button" id="todayHomeTasksOpen" class="btn su-046678">🏠 Abrir Tareas Hogar</button></div></div>')
+    + (hb.compras === false ? '' : '<div class="today-card"><h3>🛒 Compras pendientes</h3><div id="todayShopBox"></div><div class="today-add"><input type="text" id="todayShopText" placeholder="Agregar (ej: pan)..." maxlength="60"><button type="button" id="todayShopAdd" class="btn btn-accent su-30e741">+ Agregar</button></div><div class="su-8a77e5"><button type="button" id="todayShopOpen" class="btn su-046678">🛒 Abrir Compras</button></div></div>')
+    + (hb.finanzas === false ? '' : '<div class="today-card"><h3>💰 Finanzas del día</h3><div id="todayFinanceBox"></div><div class="today-add"><select id="todayFinTipo" class="su-30e741"><option value="gasto">Gasto</option><option value="ingreso">Ingreso</option></select><input type="number" id="todayFinMonto" placeholder="$ monto" min="0" class="su-91245b"><input type="text" id="todayFinDesc" placeholder="detalle..." maxlength="60"></div><div class="su-a7d4af"><button type="button" id="todayFinAdd" class="btn btn-accent su-1ce0dc">+ Agregar</button><button type="button" id="todayFinOpen" class="btn su-1ce0dc">💰 Abrir Finanzas</button></div></div>')
     + (hb.disciplina === false ? '' : '<div class="today-card"><h3>🎯 Disciplina / intención</h3>'
-    + (function(){ try{ const t=(typeof discGetToday==='function'?discGetToday():null); const s=(typeof discCalcStats==='function'?discCalcStats():null); if(!t) return ''; if(t.mit) return '<p style="font-size:12px">'+(t.done?'✅':'🎯')+' MIT: <b>'+escapeHtml(t.mit)+'</b></p><p class="muted" style="font-size:11px;margin:2px 0 0">🍅 '+((+t.pomodoros||0))+' hoy · 🔥 racha '+(s?s.racha:0)+'</p>'; return '<p class="muted" style="font-size:11px">Define tu tarea más importante (MIT) de hoy.</p>'; }catch(e){ return ''; } })()
-    + '<input type="text" id="todayDiscMIT" class="today-note" style="min-height:0" placeholder="🎯 MIT de hoy..." maxlength="120">'
-    + '<div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap"><button type="button" id="todayDiscSave" class="btn btn-accent" style="flex:1;width:auto">💾 Guardar MIT</button><button type="button" id="todayDiscDone" class="btn" style="flex:1;width:auto">✅ Hecho</button><button type="button" id="todayDiscOpen" class="btn" style="flex:1;width:auto">🎯 Abrir</button></div></div>')
-    + (hb.respiracion === false ? '' : '<div class="today-card"><h3>🌬️ Respiración</h3><p class="muted" style="font-size:11px">Pausa de 1 minuto: 4-7-8 para calmar, caja 4-4-4-4 para enfocar.</p><div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" id="todayBreathOpen" class="btn btn-accent" style="flex:1;width:auto">🌬️ Respirar ahora</button></div></div>')
-    + (hb.ciclo === false ? '' : '<div class="today-card"><h3>🌸 Ciclo</h3><div id="todayCicloBox"></div><div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap"><button type="button" id="todayCicloMark" class="btn" style="flex:1;width:auto">🌸 Marcar inicio hoy</button><button type="button" id="todayCicloOpen" class="btn" style="flex:1;width:auto">🌸 Abrir Ciclo</button></div></div>')
-    + (hb.clima === false ? '' : '<div class="today-card"><h3>🌤️ Clima · próximas 10 horas</h3><div id="todayClimaBox"><p class="muted" style="font-size:11px">Cargando pronóstico de Penco...</p></div><p class="muted" style="font-size:10px;margin:6px 0 0">Fuente: Open-Meteo · Penco. Solo información.</p></div>')
-    + (hb.mareas === false ? '' : '<div class="today-card"><h3>🌊 Mareas</h3><div id="todayTideBox"><p class="muted" style="font-size:11px">Calculando mareas...</p></div><p class="muted" style="font-size:10px;margin:6px 0 0">Fuente: SHOA Talcahuano. Solo información.</p></div>')
+    + (function(){ try{ const t=(typeof discGetToday==='function'?discGetToday():null); const s=(typeof discCalcStats==='function'?discCalcStats():null); if(!t) return ''; if(t.mit) return '<p class="su-6cb285">'+(t.done?'✅':'🎯')+' MIT: <b>'+escapeHtml(t.mit)+'</b></p><p class="muted su-aa314c">🍅 '+((+t.pomodoros||0))+' hoy · 🔥 racha '+(s?s.racha:0)+'</p>'; return '<p class="muted su-11a508">Define tu tarea más importante (MIT) de hoy.</p>'; }catch(e){ return ''; } })()
+    + '<input type="text" id="todayDiscMIT" class="today-note su-64e0df" placeholder="🎯 MIT de hoy..." maxlength="120">'
+    + '<div class="su-67b198"><button type="button" id="todayDiscSave" class="btn btn-accent su-1ce0dc">💾 Guardar MIT</button><button type="button" id="todayDiscDone" class="btn su-1ce0dc">✅ Hecho</button><button type="button" id="todayDiscOpen" class="btn su-1ce0dc">🎯 Abrir</button></div></div>')
+    + (hb.respiracion === false ? '' : '<div class="today-card"><h3>🌬️ Respiración</h3><p class="muted su-11a508">Pausa de 1 minuto: 4-7-8 para calmar, caja 4-4-4-4 para enfocar.</p><div class="su-3de8f9"><button type="button" id="todayBreathOpen" class="btn btn-accent su-1ce0dc">🌬️ Respirar ahora</button></div></div>')
+    + (hb.ciclo === false ? '' : '<div class="today-card"><h3>🌸 Ciclo</h3><div id="todayCicloBox"></div><div class="su-67b198"><button type="button" id="todayCicloMark" class="btn su-1ce0dc">🌸 Marcar inicio hoy</button><button type="button" id="todayCicloOpen" class="btn su-1ce0dc">🌸 Abrir Ciclo</button></div></div>')
+    + (hb.clima === false ? '' : '<div class="today-card"><h3>🌤️ Clima · próximas 10 horas</h3><div id="todayClimaBox"><p class="muted su-11a508">Cargando pronóstico de Penco...</p></div><p class="muted su-cb3213">Fuente: Open-Meteo · Penco. Solo información.</p></div>')
+    + (hb.mareas === false ? '' : '<div class="today-card"><h3>🌊 Mareas</h3><div id="todayTideBox"><p class="muted su-11a508">Calculando mareas...</p></div><p class="muted su-cb3213">Fuente: SHOA Talcahuano. Solo información.</p></div>')
     + (hb.gratitud === false ? '' : '<div class="today-card"><h3>📓 Gratitud diaria</h3><div id="todayGratBox">'
-    + (function(){ try{ const e=(typeof getGratitudData==='function'?getGratitudData().entries[key]:null)||{}; const parts=[e.t1,e.t2,e.t3].filter(Boolean); let h=''; if(parts.length) h+='<p style="font-size:12px">✨ '+parts.map(function(p){return escapeHtml(p);}).join('<br>✨ ')+'</p>'; if(e.intencion) h+='<p class="muted" style="font-size:11px">🎯 '+escapeHtml(e.intencion)+'</p>'; if(!parts.length&&e.carta) h+='<p style="font-size:12px">💌 '+escapeHtml(String(e.carta).slice(0,120))+'</p>'; if(!h) return '<p class="muted" style="font-size:11px">Aún no registras gratitud hoy. Escribe una abajo.</p>'; return h; }catch(e){ return ''; } })()
-    + '</div><div class="today-add"><input type="text" id="todayGratInput" placeholder="Agradezco por..." maxlength="120"><button type="button" id="todayGratSave" class="btn btn-accent" style="width:auto">+ Guardar</button></div><div style="margin-top:8px"><button type="button" id="todayGratOpen" class="btn" style="width:100%">📓 Abrir Gratitud</button></div></div>')
+    + (function(){ try{ const e=(typeof getGratitudData==='function'?getGratitudData().entries[key]:null)||{}; const parts=[e.t1,e.t2,e.t3].filter(Boolean); let h=''; if(parts.length) h+='<p class="su-6cb285">✨ '+parts.map(function(p){return escapeHtml(p);}).join('<br>✨ ')+'</p>'; if(e.intencion) h+='<p class="muted su-11a508">🎯 '+escapeHtml(e.intencion)+'</p>'; if(!parts.length&&e.carta) h+='<p class="su-6cb285">💌 '+escapeHtml(String(e.carta).slice(0,120))+'</p>'; if(!h) return '<p class="muted su-11a508">Aún no registras gratitud hoy. Escribe una abajo.</p>'; return h; }catch(e){ return ''; } })()
+    + '</div><div class="today-add"><input type="text" id="todayGratInput" placeholder="Agradezco por..." maxlength="120"><button type="button" id="todayGratSave" class="btn btn-accent su-30e741">+ Guardar</button></div><div class="su-8a77e5"><button type="button" id="todayGratOpen" class="btn su-046678">📓 Abrir Gratitud</button></div></div>')
     + (hb.horario === false ? '' : '<div class="today-card"><h3>📚 Horario de hoy</h3><div id="todaySchedBox">'
-    + (function(){ try{ const d=(typeof getScheduleData==='function'?getScheduleData():null); if(!d||!d.items||!d.items.length) return '<p class="muted" style="font-size:11px">Sin horario creado.</p>'; const wd=new Date().getDay(); const t=d.items.filter(function(x){return parseInt(x.day)===wd;}).sort(function(a,b){return String(a.start).localeCompare(String(b.start));}); if(!t.length) return '<p class="muted" style="font-size:11px">Hoy no tienes clases. ¡Aprovecha la luna!</p>'; return t.map(function(it){return '<div class="hora-item"><span style="font-size:11px"><b>'+escapeHtml(it.subject)+'</b> '+escapeHtml(it.start)+'–'+escapeHtml(it.end)+(it.place?' · '+escapeHtml(it.place):'')+'</span></div>';}).join(''); }catch(e){ return ''; } })()
-    + '</div><div style="margin-top:8px"><button type="button" id="todaySchedOpen" class="btn" style="width:100%">📚 Abrir Horario</button></div></div>')
+    + (function(){ try{ const d=(typeof getScheduleData==='function'?getScheduleData():null); if(!d||!d.items||!d.items.length) return '<p class="muted su-11a508">Sin horario creado.</p>'; const wd=new Date().getDay(); const t=d.items.filter(function(x){return parseInt(x.day)===wd;}).sort(function(a,b){return String(a.start).localeCompare(String(b.start));}); if(!t.length) return '<p class="muted su-11a508">Hoy no tienes clases. ¡Aprovecha la luna!</p>'; return t.map(function(it){return '<div class="hora-item"><span class="su-11a508"><b>'+escapeHtml(it.subject)+'</b> '+escapeHtml(it.start)+'–'+escapeHtml(it.end)+(it.place?' · '+escapeHtml(it.place):'')+'</span></div>';}).join(''); }catch(e){ return ''; } })()
+    + '</div><div class="su-8a77e5"><button type="button" id="todaySchedOpen" class="btn su-046678">📚 Abrir Horario</button></div></div>')
     + (hb.entreno === false ? '' : '<div class="today-card"><h3>💪 Entrenamiento de hoy</h3><div id="todayGymBox">'
-    + (function(){ try{ const d=(typeof getGymData==='function'?getGymData():null); if(!d||!d.items||!d.items.length) return '<p class="muted" style="font-size:11px">Sin entrenamientos creados.</p>'; const wd=new Date().getDay(); const t=d.items.filter(function(x){return parseInt(x.day)===wd;}).sort(function(a,b){return String(a.start).localeCompare(String(b.start));}); if(!t.length) return '<p class="muted" style="font-size:11px">Hoy no tienes entrenamientos programados.</p>'; const comp=(d.completions&&d.completions[key])||{}; return '<div class="habits-today-grid">'+t.map(function(it){ const done=!!comp[it.id]; return '<label class="habit-today-item '+(done?'done':'')+'"><input type="checkbox" data-gid="'+it.id+'" '+(done?'checked':'')+'><span>'+escapeHtml(it.name)+'</span><span class="muted" style="font-size:10px"> · '+escapeHtml(it.start||'')+(it.place?' · '+escapeHtml(it.place):'')+'</span></label>'; }).join('')+'</div>'; }catch(e){ return ''; } })()
-    + '</div><div style="margin-top:8px"><button type="button" id="todayGymOpen" class="btn" style="width:100%">💪 Abrir Entrenamientos</button></div></div>')
+    + (function(){ try{ const d=(typeof getGymData==='function'?getGymData():null); if(!d||!d.items||!d.items.length) return '<p class="muted su-11a508">Sin entrenamientos creados.</p>'; const wd=new Date().getDay(); const t=d.items.filter(function(x){return parseInt(x.day)===wd;}).sort(function(a,b){return String(a.start).localeCompare(String(b.start));}); if(!t.length) return '<p class="muted su-11a508">Hoy no tienes entrenamientos programados.</p>'; const comp=(d.completions&&d.completions[key])||{}; return '<div class="habits-today-grid">'+t.map(function(it){ const done=!!comp[it.id]; return '<label class="habit-today-item '+(done?'done':'')+'"><input type="checkbox" data-gid="'+it.id+'" '+(done?'checked':'')+'><span>'+escapeHtml(it.name)+'</span><span class="muted su-0d5be0"> · '+escapeHtml(it.start||'')+(it.place?' · '+escapeHtml(it.place):'')+'</span></label>'; }).join('')+'</div>'; }catch(e){ return ''; } })()
+    + '</div><div class="su-8a77e5"><button type="button" id="todayGymOpen" class="btn su-046678">💪 Abrir Entrenamientos</button></div></div>')
     + (hb.medicina === false ? '' : '<div class="today-card"><h3>💊 Medicina de hoy</h3><div id="todayMedicBox">'
-    + (function(){ try{ const d=(typeof getMedicData==='function'?getMedicData():null); if(!d||!d.list||!d.list.length) return '<p class="muted" style="font-size:11px">Sin medicamentos registrados.</p>'; return d.list.slice(0,4).map(function(m){return '<div class="hora-item"><span style="font-size:11px">💊 <b>'+escapeHtml(m.name)+'</b> '+(m.dose?'· '+escapeHtml(m.dose):'')+' · ⏰ '+escapeHtml(m.time||'')+'</span></div>';}).join('')+(d.list.length>4?'<p class="muted" style="font-size:10px">+'+(d.list.length-4)+' más...</p>':''); }catch(e){ return ''; } })()
-    + '</div><div style="margin-top:8px"><button type="button" id="todayMedicOpen" class="btn" style="width:100%">💊 Abrir Medicina</button></div></div>')
+    + (function(){ try{ const d=(typeof getMedicData==='function'?getMedicData():null); if(!d||!d.list||!d.list.length) return '<p class="muted su-11a508">Sin medicamentos registrados.</p>'; return d.list.slice(0,4).map(function(m){return '<div class="hora-item"><span class="su-11a508">💊 <b>'+escapeHtml(m.name)+'</b> '+(m.dose?'· '+escapeHtml(m.dose):'')+' · ⏰ '+escapeHtml(m.time||'')+'</span></div>';}).join('')+(d.list.length>4?'<p class="muted su-0d5be0">+'+(d.list.length-4)+' más...</p>':''); }catch(e){ return ''; } })()
+    + '</div><div class="su-8a77e5"><button type="button" id="todayMedicOpen" class="btn su-046678">💊 Abrir Medicina</button></div></div>')
     + (hb.siembra === false ? '' : '<div class="today-card"><h3>🌱 Consejo siembra lunar</h3>'
-    + (function(){ try{ if(isDFT) return '<p style="font-size:12px">✷ Día Fuera del Tiempo: no siembres. Compost, ordena semillas y planifica.</p>'; const il=(typeof illum==='number'?illum:null); let txt=''; if(il===null) txt='Observa la luna esta noche y decide: ¿crece o mengua?'; else if(il<10) txt='🌑 Luna nueva: descanso. Haz compost, prepara suelo, ordena el semillero.'; else if(il<45) txt='🌒 Creciente: siembra hojas y frutos (lechuga, acelga, tomate). Buen trasplante.'; else if(il<55) txt='🌓 Cuarto creciente: pico de siembra. Riega moderado, asocia y aporca.'; else if(il<90) txt='🌔 Gibosa: cuida y deshierba. No podes fuerte; vigila plagas.'; else txt='🌕 Luna llena: cosecha hojas y semillas. Evita podar y trasplantar.'; return '<p style="font-size:12px">'+txt+'</p>'+(lunaN&&diaN?'<p class="muted" style="font-size:11px">Luna '+lunaN+' · día '+diaN+'/28'+(illum!==null?' · '+illum+'% iluminada':'')+'</p>':''); }catch(e){ return ''; } })()
-    + '<div style="margin-top:8px"><button type="button" id="todaySiembraOpen" class="btn" style="width:100%">🌱 Abrir Siembra lunar</button></div></div>')
+    + (function(){ try{ if(isDFT) return '<p class="su-6cb285">✷ Día Fuera del Tiempo: no siembres. Compost, ordena semillas y planifica.</p>'; const il=(typeof illum==='number'?illum:null); let txt=''; if(il===null) txt='Observa la luna esta noche y decide: ¿crece o mengua?'; else if(il<10) txt='🌑 Luna nueva: descanso. Haz compost, prepara suelo, ordena el semillero.'; else if(il<45) txt='🌒 Creciente: siembra hojas y frutos (lechuga, acelga, tomate). Buen trasplante.'; else if(il<55) txt='🌓 Cuarto creciente: pico de siembra. Riega moderado, asocia y aporca.'; else if(il<90) txt='🌔 Gibosa: cuida y deshierba. No podes fuerte; vigila plagas.'; else txt='🌕 Luna llena: cosecha hojas y semillas. Evita podar y trasplantar.'; return '<p class="su-6cb285">'+txt+'</p>'+(lunaN&&diaN?'<p class="muted su-11a508">Luna '+lunaN+' · día '+diaN+'/28'+(illum!==null?' · '+illum+'% iluminada':'')+'</p>':''); }catch(e){ return ''; } })()
+    + '<div class="su-8a77e5"><button type="button" id="todaySiembraOpen" class="btn su-046678">🌱 Abrir Siembra lunar</button></div></div>')
     + (hb.espiritual === false ? '' : '<div class="today-card"><h3>🕉️ Práctica espiritual</h3><div id="todayEspBox">'
-    + (function(){ try{ const k2=(typeof espTodayKey==='function'?espTodayKey():key); const d=(typeof getEspiritualData==='function'?getEspiritualData():null); const n=(d&&d.done&&d.done[k2]&&typeof d.done[k2]==='object')?Object.keys(d.done[k2]).filter(function(pid){return d.done[k2][pid];}).length:0; return '<p style="font-size:12px">Hoy llevas <b>'+n+'/9</b> prácticas.</p>'+(n?'':'<p class="muted" style="font-size:11px">Parte con 1: sol de mañana, grounding o respiración.</p>'); }catch(e){ return ''; } })()
-    + '</div><div style="margin-top:8px"><button type="button" id="todayEspOpen" class="btn" style="width:100%">🕉️ Abrir Prácticas</button></div></div>')
+    + (function(){ try{ const k2=(typeof espTodayKey==='function'?espTodayKey():key); const d=(typeof getEspiritualData==='function'?getEspiritualData():null); const n=(d&&d.done&&d.done[k2]&&typeof d.done[k2]==='object')?Object.keys(d.done[k2]).filter(function(pid){return d.done[k2][pid];}).length:0; return '<p class="su-6cb285">Hoy llevas <b>'+n+'/9</b> prácticas.</p>'+(n?'':'<p class="muted su-11a508">Parte con 1: sol de mañana, grounding o respiración.</p>'); }catch(e){ return ''; } })()
+    + '</div><div class="su-8a77e5"><button type="button" id="todayEspOpen" class="btn su-046678">🕉️ Abrir Prácticas</button></div></div>')
     + (hb.ritmo === false ? '' : '<div class="today-card"><h3>🌞 Ritmo + hora dorada</h3><div id="todayRitmoBox">'
-    + (function(){ try{ let fase=''; try{ const hr=now.getHours()+now.getMinutes()/60; const idx=(typeof getCircadianPhase==='function'?getCircadianPhase(hr):-1); const p=(typeof CIRCADIAN_PHASES!=='undefined'&&idx>=0?CIRCADIAN_PHASES[idx]:null); if(p) fase=p.icon+' <b>'+escapeHtml(p.label)+'</b> · '+escapeHtml(p.desc||''); }catch(e){} let dor=''; try{ const g=(typeof getGoldenForDay==='function'?getGoldenForDay(noonMs):null); if(g){ const f=function(ms){ try{ return new Intl.DateTimeFormat('es-CL',{timeZone:'America/Santiago',hour:'2-digit',minute:'2-digit',hour12:false}).format(new Date(ms)); }catch(e){ return '--'; } }; dor='<br>📸 Dorada AM <b>'+f(g.goldenAM[0])+'–'+f(g.goldenAM[1])+'</b> · PM <b>'+f(g.goldenPM[0])+'–'+f(g.goldenPM[1])+'</b>'; } }catch(e){} if(!fase&&!dor) return '<p class="muted" style="font-size:11px">Sin datos de ritmo.</p>'; return '<p style="font-size:12px">'+fase+dor+'</p>'; }catch(e){ return ''; } })()
-    + '</div><div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap"><button type="button" id="todayRitmoOpen" class="btn" style="flex:1;width:auto">🌞 Abrir Ritmo</button><button type="button" id="todayGoldenOpen" class="btn" style="flex:1;width:auto">📸 Hora Dorada</button></div></div>')
+    + (function(){ try{ let fase=''; try{ const hr=now.getHours()+now.getMinutes()/60; const idx=(typeof getCircadianPhase==='function'?getCircadianPhase(hr):-1); const p=(typeof CIRCADIAN_PHASES!=='undefined'&&idx>=0?CIRCADIAN_PHASES[idx]:null); if(p) fase=p.icon+' <b>'+escapeHtml(p.label)+'</b> · '+escapeHtml(p.desc||''); }catch(e){} let dor=''; try{ const g=(typeof getGoldenForDay==='function'?getGoldenForDay(noonMs):null); if(g){ const f=function(ms){ try{ return new Intl.DateTimeFormat('es-CL',{timeZone:'America/Santiago',hour:'2-digit',minute:'2-digit',hour12:false}).format(new Date(ms)); }catch(e){ return '--'; } }; dor='<br>📸 Dorada AM <b>'+f(g.goldenAM[0])+'–'+f(g.goldenAM[1])+'</b> · PM <b>'+f(g.goldenPM[0])+'–'+f(g.goldenPM[1])+'</b>'; } }catch(e){} if(!fase&&!dor) return '<p class="muted su-11a508">Sin datos de ritmo.</p>'; return '<p class="su-6cb285">'+fase+dor+'</p>'; }catch(e){ return ''; } })()
+    + '</div><div class="su-67b198"><button type="button" id="todayRitmoOpen" class="btn su-1ce0dc">🌞 Abrir Ritmo</button><button type="button" id="todayGoldenOpen" class="btn su-1ce0dc">📸 Hora Dorada</button></div></div>')
     + (hb.ekadashi === false ? '' : '<div class="today-card"><h3>📿 Ekadashi / ayuno</h3>'
-    + (function(){ try{ let t=null; try{ t=(window.astro&&typeof window.astro.tithi==='function'?window.astro.tithi(noonMs):null); }catch(e){} if(t===11) return '<p style="font-size:12px">🌙 <b>Hoy es Ekadashi Shukla</b> (tithi 11). Día de aligerar: fruta, agua, calma.</p>'; if(t===26) return '<p style="font-size:12px">🌙 <b>Hoy es Ekadashi Krishna</b> (tithi 26). Día de aligerar: fruta, agua, calma.</p>'; if(typeof t==='number') return '<p class="muted" style="font-size:11px">Hoy tithi '+t+'. Ekadashi cae en tithi 11 y 26 — el próximo se marca en 📿 Ekadashi.</p>'; return '<p class="muted" style="font-size:11px">Revisa en 📿 Ekadashi si hoy toca ayuno suave.</p>'; }catch(e){ return ''; } })()
-    + '<div style="margin-top:8px"><button type="button" id="todayEkaOpen" class="btn" style="width:100%">📿 Abrir Ekadashi</button></div></div>')
-    + (hb.pesca === false ? '' : '<div class="today-card"><h3>🎣 Pesca hoy</h3><p class="muted" style="font-size:11px">Pique según luna y pleamar: amanecer y 2h alrededor de pleamar (ver 🌊 Mareas). Respeta vedas y tallas.</p><div style="margin-top:8px"><button type="button" data-go="btnFishing" class="btn" style="width:100%">🎣 Abrir Pesca</button></div></div>')
-    + (hb.bosque === false ? '' : '<div class="today-card"><h3>🌳 Bosque hoy</h3><p class="muted" style="font-size:11px">Menguante otoñal: plantar y podar. Creciente primavera: esquejes. Cosecha solo el 30%, deja el resto al bosque.</p><div style="margin-top:8px"><button type="button" data-go="btnBosque" class="btn" style="width:100%">🌳 Abrir Bosque Nativo</button></div></div>')
-    + (hb.aves === false ? '' : '<div class="today-card"><h3>🦅 Aves hoy</h3><p class="muted" style="font-size:11px">Amanecer y pleamar: mayor canto y movimiento en Rocuant y costa. Observa sin molestar.</p><div style="margin-top:8px"><button type="button" data-go="btnBirds" class="btn" style="width:100%">🦅 Abrir Aves</button></div></div>')
-    + (hb.huerta === false ? '' : '<div class="today-card"><h3>🥬 Huerta hoy</h3><p class="muted" style="font-size:11px">Riega temprano, deshierba en gibosa y siembra hojas en creciente. Revisa bancales y cosechas en kg.</p><div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap"><button type="button" data-go="btnHuerta" class="btn" style="flex:1;width:auto">🥬 Abrir Huerta</button><button type="button" data-go="btnCompost" class="btn" style="flex:1;width:auto">🪱 Compost</button></div></div>')
-    + (hb.estudio === false ? '' : '<div class="today-card"><h3>🧠 Estudio hoy</h3><p class="muted" style="font-size:11px">25 min de foco + 5 de pausa. Repasa con Feynman: explica en voz alta lo de hoy.</p><div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap"><button type="button" data-go="btnStudy" class="btn" style="flex:1;width:auto">🧠 Abrir Estudio</button><button type="button" data-go="btnMapu" class="btn" style="flex:1;width:auto">🗣️ Kimün</button></div></div>')
+    + (function(){ try{ let t=null; try{ t=(window.astro&&typeof window.astro.tithi==='function'?window.astro.tithi(noonMs):null); }catch(e){} if(t===11) return '<p class="su-6cb285">🌙 <b>Hoy es Ekadashi Shukla</b> (tithi 11). Día de aligerar: fruta, agua, calma.</p>'; if(t===26) return '<p class="su-6cb285">🌙 <b>Hoy es Ekadashi Krishna</b> (tithi 26). Día de aligerar: fruta, agua, calma.</p>'; if(typeof t==='number') return '<p class="muted su-11a508">Hoy tithi '+t+'. Ekadashi cae en tithi 11 y 26 — el próximo se marca en 📿 Ekadashi.</p>'; return '<p class="muted su-11a508">Revisa en 📿 Ekadashi si hoy toca ayuno suave.</p>'; }catch(e){ return ''; } })()
+    + '<div class="su-8a77e5"><button type="button" id="todayEkaOpen" class="btn su-046678">📿 Abrir Ekadashi</button></div></div>')
+    + (hb.pesca === false ? '' : '<div class="today-card"><h3>🎣 Pesca hoy</h3><p class="muted su-11a508">Pique según luna y pleamar: amanecer y 2h alrededor de pleamar (ver 🌊 Mareas). Respeta vedas y tallas.</p><div class="su-8a77e5"><button type="button" data-go="btnFishing" class="btn su-046678">🎣 Abrir Pesca</button></div></div>')
+    + (hb.bosque === false ? '' : '<div class="today-card"><h3>🌳 Bosque hoy</h3><p class="muted su-11a508">Menguante otoñal: plantar y podar. Creciente primavera: esquejes. Cosecha solo el 30%, deja el resto al bosque.</p><div class="su-8a77e5"><button type="button" data-go="btnBosque" class="btn su-046678">🌳 Abrir Bosque Nativo</button></div></div>')
+    + (hb.aves === false ? '' : '<div class="today-card"><h3>🦅 Aves hoy</h3><p class="muted su-11a508">Amanecer y pleamar: mayor canto y movimiento en Rocuant y costa. Observa sin molestar.</p><div class="su-8a77e5"><button type="button" data-go="btnBirds" class="btn su-046678">🦅 Abrir Aves</button></div></div>')
+    + (hb.huerta === false ? '' : '<div class="today-card"><h3>🥬 Huerta hoy</h3><p class="muted su-11a508">Riega temprano, deshierba en gibosa y siembra hojas en creciente. Revisa bancales y cosechas en kg.</p><div class="su-67b198"><button type="button" data-go="btnHuerta" class="btn su-1ce0dc">🥬 Abrir Huerta</button><button type="button" data-go="btnCompost" class="btn su-1ce0dc">🪱 Compost</button></div></div>')
+    + (hb.estudio === false ? '' : '<div class="today-card"><h3>🧠 Estudio hoy</h3><p class="muted su-11a508">25 min de foco + 5 de pausa. Repasa con Feynman: explica en voz alta lo de hoy.</p><div class="su-67b198"><button type="button" data-go="btnStudy" class="btn su-1ce0dc">🧠 Abrir Estudio</button><button type="button" data-go="btnMapu" class="btn su-1ce0dc">🗣️ Kimün</button></div></div>')
     + (hb.cuentos === false ? '' : '<div class="today-card"><h3>📖 Cuento de la luna</h3>'
-    + (function(){ try{ if(isDFT) return '<p style="font-size:12px">✷ Día Fuera del Tiempo: lee el cuento de cierre y agradece el ciclo.</p>'; return '<p class="muted" style="font-size:11px">Luna '+(lunaN||'actual')+': un cuento por luna antes de dormir. También está 🧒 Crianza y 🗣️ Voz de los Abuelos.</p>'; }catch(e){ return ''; } })()
-    + '<div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap"><button type="button" data-go="btnTales" class="btn" style="flex:1;width:auto">📖 Abrir Cuentos</button><button type="button" data-go="btnVozAbuelos" class="btn" style="flex:1;width:auto">🗣️ Abuelos</button></div></div>')
-    + (hb.familia === false ? '' : '<div class="today-card"><h3>🌳 Familia y linaje</h3><p class="muted" style="font-size:11px">Honra una historia hoy: una voz, una foto o un nombre de tu árbol.</p><div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap"><button type="button" data-go="btnArbolFull" class="btn" style="flex:1;width:auto">🌳 Abrir Árbol</button><button type="button" data-go="btnDueloFull" class="btn" style="flex:1;width:auto">🕊️ Duelo</button></div></div>')
-    + (hb.emergencia === false ? '' : '<div class="today-card"><h3>🚨 Emergencia Penco</h3><p class="muted" style="font-size:11px">132 Bomberos · 133 Carabineros · 131 SAMU · *4141 crisis. Punto alto ante tsunami: sube al cerro.</p><div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap"><button type="button" data-go="btnEvac" class="btn" style="flex:1;width:auto">🌊▲ Evacuación</button><button type="button" data-go="btnFirstAid" class="btn" style="flex:1;width:auto">🩹 Auxilios</button></div></div>')
-    + (hb.comunidad === false ? '' : '<div class="today-card"><h3>🤝 Comunidad hoy</h3><p class="muted" style="font-size:11px">Minga, trueque y moneda social: ofrece una hora, pide una mano.</p><div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap"><button type="button" data-go="btnMinga" class="btn" style="flex:1;width:auto">🤝 Minga</button><button type="button" data-go="btnTrueque" class="btn" style="flex:1;width:auto">🔄 Trueque</button></div></div>')
-    + (hb.energia === false ? '' : '<div class="today-card"><h3>🔧 Energía y hogar</h3><p class="muted" style="font-size:11px">Leña seca (&lt;25% humedad) y consumo a la vista: anota kWh y compara por luna.</p><div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap"><button type="button" data-go="btnEnergy" class="btn" style="flex:1;width:auto">⚡ Consumo</button><button type="button" data-go="btnLena" class="btn" style="flex:1;width:auto">🪵 Leña</button></div></div>');
+    + (function(){ try{ if(isDFT) return '<p class="su-6cb285">✷ Día Fuera del Tiempo: lee el cuento de cierre y agradece el ciclo.</p>'; return '<p class="muted su-11a508">Luna '+(lunaN||'actual')+': un cuento por luna antes de dormir. También está 🧒 Crianza y 🗣️ Voz de los Abuelos.</p>'; }catch(e){ return ''; } })()
+    + '<div class="su-67b198"><button type="button" data-go="btnTales" class="btn su-1ce0dc">📖 Abrir Cuentos</button><button type="button" data-go="btnVozAbuelos" class="btn su-1ce0dc">🗣️ Abuelos</button></div></div>')
+    + (hb.familia === false ? '' : '<div class="today-card"><h3>🌳 Familia y linaje</h3><p class="muted su-11a508">Honra una historia hoy: una voz, una foto o un nombre de tu árbol.</p><div class="su-67b198"><button type="button" data-go="btnArbolFull" class="btn su-1ce0dc">🌳 Abrir Árbol</button><button type="button" data-go="btnDueloFull" class="btn su-1ce0dc">🕊️ Duelo</button></div></div>')
+    + (hb.emergencia === false ? '' : '<div class="today-card"><h3>🚨 Emergencia Penco</h3><p class="muted su-11a508">132 Bomberos · 133 Carabineros · 131 SAMU · *4141 crisis. Punto alto ante tsunami: sube al cerro.</p><div class="su-67b198"><button type="button" data-go="btnEvac" class="btn su-1ce0dc">🌊▲ Evacuación</button><button type="button" data-go="btnFirstAid" class="btn su-1ce0dc">🩹 Auxilios</button></div></div>')
+    + (hb.comunidad === false ? '' : '<div class="today-card"><h3>🤝 Comunidad hoy</h3><p class="muted su-11a508">Minga, trueque y moneda social: ofrece una hora, pide una mano.</p><div class="su-67b198"><button type="button" data-go="btnMinga" class="btn su-1ce0dc">🤝 Minga</button><button type="button" data-go="btnTrueque" class="btn su-1ce0dc">🔄 Trueque</button></div></div>')
+    + (hb.energia === false ? '' : '<div class="today-card"><h3>🔧 Energía y hogar</h3><p class="muted su-11a508">Leña seca (&lt;25% humedad) y consumo a la vista: anota kWh y compara por luna.</p><div class="su-67b198"><button type="button" data-go="btnEnergy" class="btn su-1ce0dc">⚡ Consumo</button><button type="button" data-go="btnLena" class="btn su-1ce0dc">🪵 Leña</button></div></div>');
   // --- ánimo: sugerencia + expandir opciones ---
   const main = $('todayMoodMain'), picker = $('todayMoodPicker');
   const paintPicker = ()=>{
@@ -368,7 +368,7 @@ function renderTodayView(){
     if(!list) return;
     let cur2=[];
     try{ cur2 = isDFT? [] : [...dayCell(lunaN,diaN).agenda].sort((a,b)=> getAgendaTime(a).localeCompare(getAgendaTime(b))); }catch(e){ cur2=[]; }
-    if(!cur2.length){ list.innerHTML='<p class="muted" style="font-size:11px">Sin compromisos aún. Agrega uno con su hora abajo (ej 08:37).</p>'; return; }
+    if(!cur2.length){ list.innerHTML='<p class="muted su-11a508">Sin compromisos aún. Agrega uno con su hora abajo (ej 08:37).</p>'; return; }
     list.innerHTML='';
     cur2.forEach(it=>{
       const row=document.createElement('div');
@@ -509,8 +509,8 @@ function renderTodayView(){
       try{
         const list=(typeof homeTasksForDate==='function'?homeTasksForDate(key):[]);
         const ht=getHomeTasksData(); const comp=(ht.completions[key]||{});
-        if(!list.length){ tb.innerHTML='<p class="muted" style="font-size:11px">Sin tareas para hoy.</p>'; return; }
-        tb.innerHTML='<div class="habits-today-grid">'+list.map(t=>{ const done=!!comp[t.id]; return '<label class="habit-today-item '+(done?'done':'')+'"><input type="checkbox" data-tid="'+t.id+'" '+(done?'checked':'')+'><span>'+escapeHtml(t.name)+'</span><span class="muted" style="font-size:10px"> · '+escapeHtml(t.time)+'′</span></label>'; }).join('')+'</div>';
+        if(!list.length){ tb.innerHTML='<p class="muted su-11a508">Sin tareas para hoy.</p>'; return; }
+        tb.innerHTML='<div class="habits-today-grid">'+list.map(t=>{ const done=!!comp[t.id]; return '<label class="habit-today-item '+(done?'done':'')+'"><input type="checkbox" data-tid="'+t.id+'" '+(done?'checked':'')+'><span>'+escapeHtml(t.name)+'</span><span class="muted su-0d5be0"> · '+escapeHtml(t.time)+'′</span></label>'; }).join('')+'</div>';
         tb.querySelectorAll('input[data-tid]').forEach(cb=> cb.onchange=()=>{ try{ const h=getHomeTasksData(); if(!h.completions[key]) h.completions[key]={}; if(cb.checked) h.completions[key][cb.dataset.tid]=true; else delete h.completions[key][cb.dataset.tid]; scheduleSave(); const lab=cb.closest('label'); if(lab){ if(cb.checked) lab.classList.add('done'); else lab.classList.remove('done'); } }catch(e){} });
       }catch(e){}
     };
@@ -526,8 +526,8 @@ function renderTodayView(){
       try{
         const items=getShoppingData().items;
         const pend=items.filter(x=>!x.done);
-        if(!items.length){ sb2.innerHTML='<p class="muted" style="font-size:11px">Lista vacía.</p>'; return; }
-        sb2.innerHTML='<p class="muted" style="font-size:11px">'+pend.length+' pendientes / '+items.length+' total</p><div class="habits-today-grid">'+pend.slice(0,6).map(it=>'<label class="habit-today-item"><input type="checkbox" data-sid="'+it.id+'"><span>'+escapeHtml(it.name)+'</span><span class="muted" style="font-size:10px"> · '+escapeHtml(it.qty||'')+'</span></label>').join('')+'</div>';
+        if(!items.length){ sb2.innerHTML='<p class="muted su-11a508">Lista vacía.</p>'; return; }
+        sb2.innerHTML='<p class="muted su-11a508">'+pend.length+' pendientes / '+items.length+' total</p><div class="habits-today-grid">'+pend.slice(0,6).map(it=>'<label class="habit-today-item"><input type="checkbox" data-sid="'+it.id+'"><span>'+escapeHtml(it.name)+'</span><span class="muted su-0d5be0"> · '+escapeHtml(it.qty||'')+'</span></label>').join('')+'</div>';
         sb2.querySelectorAll('input[data-sid]').forEach(cb=> cb.onchange=()=>{ try{ const it=getShoppingData().items.find(x=>x.id===cb.dataset.sid); if(it) it.done=cb.checked; scheduleSave(); paintTodayShop(); }catch(e){} });
       }catch(e){}
     };
@@ -546,7 +546,7 @@ function renderTodayView(){
         const list=getFinanceData().entries.filter(e=>e.date===key);
         let g=0,i=0; list.forEach(e=>{ const v=parseInt(e.monto)||0; if(e.tipo==='gasto') g+=v; else i+=v; });
         fb.innerHTML='<div class="today-sun"><span class="chip">💸 Gastos <b>'+formatCLP(g)+'</b></span><span class="chip">💵 Ingresos <b>'+formatCLP(i)+'</b></span><span class="chip">🧾 '+list.length+' mov.</span></div>'
-          + (list.length? '<div style="margin-top:6px">'+list.slice(-4).reverse().map(e=>'<div class="hora-item"><span style="font-size:11px">'+(e.tipo==='gasto'?'💸':'💵')+' '+escapeHtml(e.desc||e.categoria||'')+' · <b>'+formatCLP(e.monto)+'</b></span></div>').join('')+'</div>' : '<p class="muted" style="font-size:11px;margin-top:6px">Sin movimientos hoy.</p>');
+          + (list.length? '<div class="su-fe7b49">'+list.slice(-4).reverse().map(e=>'<div class="hora-item"><span class="su-11a508">'+(e.tipo==='gasto'?'💸':'💵')+' '+escapeHtml(e.desc||e.categoria||'')+' · <b>'+formatCLP(e.monto)+'</b></span></div>').join('')+'</div>' : '<p class="muted su-e13d76">Sin movimientos hoy.</p>');
       }catch(e){}
     };
     paintTodayFin();
@@ -579,7 +579,7 @@ function renderTodayView(){
         try{ const p=(typeof getMensPredictions==='function'?getMensPredictions():null); if(p&&p.nextPeriodMs){ const tKey=mensMsToKey(p.nextPeriodMs); const days=Math.round((mensKeyToMs(tKey)-mensKeyToMs(key))/86400000); txt = days===0? 'Predicción: periodo <b>hoy</b>' : days===1? 'Predicción: periodo <b>mañana</b>' : days<0? 'Periodo con <b>'+Math.abs(days)+' días de retraso</b> (promedio '+p.cycleLen+'d)' : 'Predicción: periodo en <b>'+days+' días</b> ('+escapeHtml(tKey)+')'; } else txt='Sin predicción: registra tu último inicio.'; }catch(e){ txt=''; }
         let faseTxt='';
         try{ const cur=(typeof mensCurrentDay==='function'?mensCurrentDay():null); if(cur){ const ph=mensPhaseForDay(cur.day, cur.avg, getMensData().periodLen); faseTxt=`<br>Día <b>${cur.day}/${cur.avg}</b> · ${ph.ico} ${ph.nombre}`; } }catch(e){}
-        cb2.innerHTML='<p style="font-size:12px">'+txt+faseTxt+'</p><p class="muted" style="font-size:11px">Hoy: '+(is?'<b style="color:var(--gold)">● inicio marcado</b>':'sin marca')+'</p>';
+        cb2.innerHTML='<p class="su-6cb285">'+txt+faseTxt+'</p><p class="muted su-11a508">Hoy: '+(is?'<b class="su-e39eba">● inicio marcado</b>':'sin marca')+'</p>';
       }catch(e){}
     };
     paintCiclo();
@@ -613,12 +613,12 @@ function renderTodayView(){
           }catch(e){ res.siguientes=(res.siguientes||[]).slice(0,2); }
           const fmtM=(typeof window.InfoClave!=='undefined'&&window.InfoClave.textoMarea)||((mm)=>(mm.t==='pleamar'?'⬆️':'⬇️')+' '+mm.t+' '+mm.h+(mm.a?' · '+mm.a:'')+(mm.dia===-1?' (ayer)':mm.dia===1?' (mañana)':''));
           if(res.actual||res.siguientes.length){
-            html+='<div class="today-sun" style="align-items:stretch">';
-            if(res.actual) html+='<span class="chip" style="border-color:var(--gold)">Ahora: <b>'+escapeHtml(fmtM(res.actual))+'</b></span>';
+            html+='<div class="today-sun su-3f367c">';
+            if(res.actual) html+='<span class="chip su-68a1a9">Ahora: <b>'+escapeHtml(fmtM(res.actual))+'</b></span>';
             res.siguientes.forEach((s,ix)=>{ html+='<span class="chip">Sig '+(ix+1)+': <b>'+escapeHtml(fmtM(s))+'</b></span>'; });
-            html+='</div><p class="muted" style="font-size:10px;margin:6px 0 0">SHOA Talcahuano · hora local · '+escapeHtml(ahoraHM)+'</p>';
-          } else html='<p class="muted" style="font-size:11px">Sin mareas para hoy.</p>';
-        }catch(e){ html='<p class="muted" style="font-size:11px">No se pudo calcular mareas.</p>'; }
+            html+='</div><p class="muted su-cb3213">SHOA Talcahuano · hora local · '+escapeHtml(ahoraHM)+'</p>';
+          } else html='<p class="muted su-11a508">Sin mareas para hoy.</p>';
+        }catch(e){ html='<p class="muted su-11a508">No se pudo calcular mareas.</p>'; }
         tbx.innerHTML=html;
       }
     }catch(e){}
@@ -643,7 +643,7 @@ function renderTodayView(){
             const cur=j.current||{};
             const cw=(typeof wmo==='function'?wmo(cur.weather_code,cur.is_day):{desc:'',ico:'🌤️'});
             const wdir=(typeof dirName==='function'&&cur.wind_direction_10m!=null?dirName(cur.wind_direction_10m):'');
-            let html='<div class="today-sun"><span class="chip">'+cw.ico+' Ahora <b>'+Math.round(cur.temperature_2m)+'°</b> · '+escapeHtml(cw.desc)+'</span><span class="chip">💨 <b>'+Math.round(cur.wind_speed_10m)+' km/h '+escapeHtml(wdir)+'</b></span></div><div style="height:8px"></div><div class="wp-hrow" style="flex-wrap:wrap">';
+            let html='<div class="today-sun"><span class="chip">'+cw.ico+' Ahora <b>'+Math.round(cur.temperature_2m)+'°</b> · '+escapeHtml(cw.desc)+'</span><span class="chip">💨 <b>'+Math.round(cur.wind_speed_10m)+' km/h '+escapeHtml(wdir)+'</b></span></div><div class="su-83ca52"></div><div class="wp-hrow su-62da06">';
             for(let k=idx;k<Math.min(idx+10,times.length);k++){
               const t=times[k];
               const isD=(j.hourly.is_day&&j.hourly.is_day[k]!==undefined)?j.hourly.is_day[k]:1;
@@ -652,12 +652,12 @@ function renderTodayView(){
               const ws=j.hourly.wind_speed_10m?Math.round(j.hourly.wind_speed_10m[k]):null;
               html+='<div class="wp-hour'+(k===idx?' now':'')+'" title="'+escapeHtml(hw.desc)+'"><div class="hh">'+t.slice(11,13)+'h</div><div class="hi">'+hw.ico+'</div><div class="ht">'+Math.round(j.hourly.temperature_2m[k])+'°</div><div class="hp">💧'+(pp==null?'–':pp)+'%</div>'+(ws!=null?'<div class="hp">💨'+ws+'</div>':'')+'</div>';
             }
-            html+='</div><p class="muted" style="font-size:10px;margin:6px 0 0">Open-Meteo · Penco · desde '+escapeHtml(nowKey.slice(11)+'h')+'</p>';
+            html+='</div><p class="muted su-cb3213">Open-Meteo · Penco · desde '+escapeHtml(nowKey.slice(11)+'h')+'</p>';
             const el=$('todayClimaBox'); if(el&&seq===window._todayClimaSeq) el.innerHTML=html;
           }catch(e){
             if(seq!==window._todayClimaSeq) return;
-            let fb='<p class="muted" style="font-size:11px">Sin conexión: referencia del mes.</p>';
-            try{ const mes=climaMesOffline(new Date()); fb='<div class="today-sun"><span class="chip">'+mes.icono+' '+escapeHtml(mes.nombre)+' <b>'+mes.tmin+'–'+mes.tmax+'°C</b></span><span class="chip">💧 <b>'+mes.probLluvia+'%</b></span></div><p class="muted" style="font-size:10px;margin:6px 0 0">'+escapeHtml(mes.resumen)+'</p>'; }catch(e2){}
+            let fb='<p class="muted su-11a508">Sin conexión: referencia del mes.</p>';
+            try{ const mes=climaMesOffline(new Date()); fb='<div class="today-sun"><span class="chip">'+mes.icono+' '+escapeHtml(mes.nombre)+' <b>'+mes.tmin+'–'+mes.tmax+'°C</b></span><span class="chip">💧 <b>'+mes.probLluvia+'%</b></span></div><p class="muted su-cb3213">'+escapeHtml(mes.resumen)+'</p>'; }catch(e2){}
             const el=$('todayClimaBox'); if(el) el.innerHTML=fb;
           }
         })();
@@ -1032,7 +1032,7 @@ function miniLunarCard(key, evMap, idx){
   const moon = moonDaily(key);
   const lunaTxt = ref ? (ref.luna==='dft' ? '✷ DFT' : 'L'+ref.luna+'·D'+ref.diaN) : '';
   const wd = cal.weekdayName(dt.getTime());
-  return `<div class="day-card${isToday?' today':''}" data-key="${key}" style="cursor:pointer" title="${escapeHtml(wd)} ${escapeHtml(key)} · ${moon.illum===null?'':moon.illum+'% iluminada'}">
+  return `<div class="day-card${isToday?' today':''} su-3b6a3a" data-key="${key}" title="${escapeHtml(wd)} ${escapeHtml(key)} · ${moon.illum===null?'':moon.illum+'% iluminada'}">
     <div class="dc-day">${escapeHtml(wd)} ${dt.getDate()}/${dt.getMonth()+1}</div>
     <div class="dc-head"><span class="dc-n">${idx!==undefined? String(idx).padStart(2,'0') : dt.getDate()}</span><span class="dc-phases">${moon.icon} ${evs.map(e=>`<span class="dc-phase" title="${e.tipo}">${e.simbolo}</span>`).join('')}</span><span class="dc-date">${dt.getDate()}/${dt.getMonth()+1}</span></div>
     <div class="dc-sun">${moon.illum===null?'🌙':moon.illum+'%'} · ${escapeHtml(wd.slice(0,3))}${lunaTxt? ' · '+lunaTxt:''}</div>
@@ -1063,7 +1063,7 @@ function renderSemanaLunarView(){
     $('lunaDesc').textContent='Toca un día para abrir sus notas y compromisos a cualquier hora (HH:MM).';
     const chips=[];
     keys.forEach(k=> (evMap[k]||[]).forEach(e=> chips.push(`<span class="chip">${e.simbolo} <b>${e.tipo.replace('-',' ')}</b> · ${cal.fmtDate.format(new Date(k+'T12:00:00'))} ${cal.fmtTime.format(new Date(e.utcMs))}</span>`)));
-    $('phaseChips').innerHTML = chips.join('') || '<span class="chip" style="color:var(--muted)">Sin fases exactas estos 7 días</span>';
+    $('phaseChips').innerHTML = chips.join('') || '<span class="chip su-57f9e3">Sin fases exactas estos 7 días</span>';
     dow.classList.add('dow-week');
     dow.innerHTML=keys.map(k=>{ const w=cal.weekdayName(new Date(k+'T12:00:00').getTime()); return `<div>${w.slice(0,3)}</div>`; }).join('');
     grid.style.display='block';
@@ -1088,7 +1088,7 @@ function renderSemanaLunarView(){
   dow.innerHTML=diaNums.map(diaN=>{
     const k = keys[diaNums.indexOf(diaN)];
     const w=cal.weekdayName(new Date(k+'T12:00:00').getTime());
-    return `<div>Día ${pad2(diaN)}<br><small style="font-weight:400;opacity:.75">${w.slice(0,3)}</small></div>`;
+    return `<div>Día ${pad2(diaN)}<br><small class="su-3f6750">${w.slice(0,3)}</small></div>`;
   }).join('');
   grid.style.display='block';
   grid.innerHTML='<div class="week-grid">'+keys.map((k,i)=>miniLunarCard(k, evMap, diaNums[i])).join('')+'</div>';
@@ -1135,7 +1135,7 @@ function renderLuna() {
   }
   $('phaseChips').innerHTML = chips.length
     ? chips.map(e => `<span class="chip">${e.simbolo} <b>${e.tipo.replace('-', ' ')}</b> · ${cal.fmtTime.format(new Date(e.utcMs))}</span>`).join('')
-    : '<span class="chip" style="color:var(--muted)">Sin fases exactas en esta luna</span>';
+    : '<span class="chip su-57f9e3">Sin fases exactas en esta luna</span>';
 
   const wdNames = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
   const firstWd = new Date(cal.santiagoParts(first.noonMs).y, cal.santiagoParts(first.noonMs).m - 1, cal.santiagoParts(first.noonMs).d);
@@ -1189,28 +1189,28 @@ function renderLuna() {
     let birdIcons='', fishIcons='', interIcons='', bosqueIcons='', astroIcons='', comunaIcons='', financeIcons='', homeIcons='';
     try{
       const birdsToday=birdEntriesCache.filter(x=>x.date===key);
-      if(birdsToday.length) birdIcons=birdsToday.map(b=> `<span class="dc-habit" style="background:#7ab8ff22;color:#7ab8ff;border-color:#7ab8ff55" title="${escapeHtml(b.species)} ×${b.count}">🦅</span>`).join('');
+      if(birdsToday.length) birdIcons=birdsToday.map(b=> `<span class="dc-habit su-8fa3a4" title="${escapeHtml(b.species)} ×${b.count}">🦅</span>`).join('');
     }catch(e){}
     try{
       const fishToday=fishEntriesCache.filter(x=>x.date===key);
-      if(fishToday.length) fishIcons=fishToday.map(f=> `<span class="dc-habit" style="background:#a9d18e22;color:#a9d18e;border-color:#a9d18e55" title="${escapeHtml(f.species)} ${escapeHtml(f.qty)}">🎣</span>`).join('');
+      if(fishToday.length) fishIcons=fishToday.map(f=> `<span class="dc-habit su-ae6395" title="${escapeHtml(f.species)} ${escapeHtml(f.qty)}">🎣</span>`).join('');
     }catch(e){}
     try{
       const interToday=interEntriesCache.filter(x=>x.date===key);
-      if(interToday.length) interIcons=interToday.map(r=> `<span class="dc-habit" style="background:#ff8c6a22;color:#ff8c6a;border-color:#ff8c6a55" title="${escapeHtml(r.species)} ${escapeHtml(r.qty||'') } 🦀">🦀</span>`).join('');
+      if(interToday.length) interIcons=interToday.map(r=> `<span class="dc-habit su-fbbb31" title="${escapeHtml(r.species)} ${escapeHtml(r.qty||'') } 🦀">🦀</span>`).join('');
     }catch(e){}
     try{
       const bosqueToday=bosqueEntriesCache.filter(x=>x.date===key);
-      if(bosqueToday.length) bosqueIcons=bosqueToday.map(r=> `<span class="dc-habit" style="background:#4caf7d22;color:#4caf7d;border-color:#4caf7d55" title="${escapeHtml(r.species)} · ${escapeHtml(r.action||'')}">🌳</span>`).join('');
+      if(bosqueToday.length) bosqueIcons=bosqueToday.map(r=> `<span class="dc-habit su-6a127e" title="${escapeHtml(r.species)} · ${escapeHtml(r.action||'')}">🌳</span>`).join('');
     }catch(e){}
     try{
       const astroToday=astroVisibleForDate(key);
-      if(astroToday.length) astroIcons=astroToday.map(a=> `<span class="dc-habit" style="background:#c9a0dc22;color:#c9a0dc;border-color:#c9a0dc55" title="${escapeHtml(a.nombre)}">🔭</span>`).join('');
+      if(astroToday.length) astroIcons=astroToday.map(a=> `<span class="dc-habit su-460df3" title="${escapeHtml(a.nombre)}">🔭</span>`).join('');
     }catch(e){}
     try{
       if(isComunaShowCal()){
         const comToday=getAllComunaEventsForMD(key.slice(5));
-        if(comToday.length) comunaIcons=comToday.map(c=> `<span class="dc-habit" style="background:#f0d48822;color:#f0d488;border-color:#f0d48855" title="${escapeHtml(c.nombre)}">🎉</span>`).join('');
+        if(comToday.length) comunaIcons=comToday.map(c=> `<span class="dc-habit su-e07fac" title="${escapeHtml(c.nombre)}">🎉</span>`).join('');
       }
     }catch(e){}
     try{
@@ -1218,7 +1218,7 @@ function renderLuna() {
       if(finToday.length){
         const totG=finToday.filter(x=>x.tipo==='gasto').reduce((s,x)=>s+(parseInt(x.monto)||0),0);
         const totI=finToday.filter(x=>x.tipo==='ingreso').reduce((s,x)=>s+(parseInt(x.monto)||0),0);
-        financeIcons=`<span class="dc-habit" style="background:#e8c56a22;color:#e8c56a;border-color:#e8c56a55" title="${finToday.length} mov. · gastos $${totG.toLocaleString('es-CL')} · ingresos $${totI.toLocaleString('es-CL')}">💰</span>`;
+        financeIcons=`<span class="dc-habit su-548541" title="${finToday.length} mov. · gastos $${totG.toLocaleString('es-CL')} · ingresos $${totI.toLocaleString('es-CL')}">💰</span>`;
       }
     }catch(e){}
     try{
@@ -1235,19 +1235,19 @@ function renderLuna() {
     let gratIcons='';
     try{
       const g=gratEntriesCache[key];
-      const hasGrat=(typeof gratTiene==='function'?gratTiene(g):(g&&(g.t1||g.t2||g.t3))); if(hasGrat) gratIcons=`<span class="dc-habit" style="background:#d8a0ff22;color:#d8a0ff;border-color:#d8a0ff55" title="Gratitud: ${escapeHtml(([g.t1,g.t2,g.t3].filter(Boolean).join(' · ')+(g.carta?' 💌 '+String(g.carta).slice(0,60):'')).slice(0,90))}">✨</span>`;
+      const hasGrat=(typeof gratTiene==='function'?gratTiene(g):(g&&(g.t1||g.t2||g.t3))); if(hasGrat) gratIcons=`<span class="dc-habit su-267ee4" title="Gratitud: ${escapeHtml(([g.t1,g.t2,g.t3].filter(Boolean).join(' · ')+(g.carta?' 💌 '+String(g.carta).slice(0,60):'')).slice(0,90))}">✨</span>`;
     }catch(e){}
     let espIcons='';
     try{
       const ed=(udCache.espiritual&&udCache.espiritual.done)||{};
       const eo=ed[key];
-      if(eo&&typeof eo==='object'){ const n=Object.values(eo).filter(Boolean).length; if(n>0) espIcons=`<span class="dc-habit" style="background:#e8c56a22;color:#e8c56a;border-color:#e8c56a55" title="Prácticas espirituales: ${n} hechas">🕉️</span>`; }
+      if(eo&&typeof eo==='object'){ const n=Object.values(eo).filter(Boolean).length; if(n>0) espIcons=`<span class="dc-habit su-548541" title="Prácticas espirituales: ${n} hechas">🕉️</span>`; }
     }catch(e){}
     let peloIcons='';
     try{
       const pd=(udCache.peloLunar&&udCache.peloLunar.cortes)||[];
       const pc=pd.filter(x=>x.fecha===key);
-      if(pc.length) peloIcons=pc.map(c=> `<span class="dc-habit" style="background:#f0d48822;color:#f0d488;border-color:#f0d48855" title="Corte: ${escapeHtml(c.tipo||'')} — ver 💇 Luna y Corte">✂️</span>`).join('');
+      if(pc.length) peloIcons=pc.map(c=> `<span class="dc-habit su-e07fac" title="Corte: ${escapeHtml(c.tipo||'')} — ver 💇 Luna y Corte">✂️</span>`).join('');
       else{
         const evs2=(typeof phaseMap!=='undefined'&&phaseMap[key])?phaseMap[key]:[];
         const has2=evs2.map(e=>e.tipo);
@@ -1256,14 +1256,14 @@ function renderLuna() {
         else if(has2.indexOf('cuarto-menguante')>=0) mark='🌓 Menguante: corte para que dure la forma 💇';
         else if(has2.indexOf('cuarto-creciente')>=0) mark='🌗 Creciente: corte para que crezca rápido 💇';
         else if(has2.indexOf('nueva')>=0) mark='🌑 Nueva: descanso, evita corte grande 💇';
-        if(mark) peloIcons=`<span class="dc-habit" style="background:#f0d48822;color:#f0d488;border-color:#f0d48855" title="${escapeHtml(mark)} — ver 💇 Luna y Corte">💇</span>`;
+        if(mark) peloIcons=`<span class="dc-habit su-e07fac" title="${escapeHtml(mark)} — ver 💇 Luna y Corte">💇</span>`;
       }
     }catch(e){}
     let fenoIcons='';
     try{
       const fz=(udCache.fenologia&&udCache.fenologia.obs)||[];
       const ft=fz.filter(x=>x.fecha===key);
-      if(ft.length) fenoIcons=ft.map(o=> `<span class="dc-habit" style="background:#a9d18e22;color:#a9d18e;border-color:#a9d18e55" title="Fenología: ${escapeHtml(o.primera?'🌟 Primera del año · ':'')}${escapeHtml(o.ev==='libre'?(o.libre||'Otra'):o.ev)}${o.lugar?' · '+escapeHtml(o.lugar):''}">📜</span>`).join('');
+      if(ft.length) fenoIcons=ft.map(o=> `<span class="dc-habit su-ae6395" title="Fenología: ${escapeHtml(o.primera?'🌟 Primera del año · ':'')}${escapeHtml(o.ev==='libre'?(o.libre||'Otra'):o.ev)}${o.lugar?' · '+escapeHtml(o.lugar):''}">📜</span>`).join('');
     }catch(e){}
     const card = document.createElement('div');
     card.className = 'day-card' + (key === todayKey ? ' today' : '') + (mensType ? ' mens-'+mensType : '') + hasHabits + hasGym;
@@ -1334,20 +1334,20 @@ function renderDFT() {
   const evs = phaseMap[key] || [];
   const frDft = (typeof defaultFraseDFT === 'function') ? defaultFraseDFT() : (window.fraseDFT || (window.frases ? window.frases[364] : null));
   grid.innerHTML = `
-    <div class="day-card today" style="max-width:520px">
+    <div class="day-card today su-04391f">
       <div class="dc-head"><span class="dc-n">365</span><span class="dc-date">${cal.fmtDate.format(new Date(dftDay.noonMs))}</span></div>
       <div class="dc-sun">☀ ${sun.rise ? cal.fmtTime.format(new Date(sun.rise)) : '--'} – ${sun.set ? cal.fmtTime.format(new Date(sun.set)) : '--'}</div>
       <div class="dc-moon" title="Salida y puesta de la luna en Penco (aprox.)">🌙 ${dftMoonRise} – ${dftMoonSet}</div>
       ${frDft ? `<blockquote class="dlg-quote">«${escapeHtml(frDft.t)}»<span class="q-a">— ${escapeHtml(frDft.a || 'Anónimo')}</span></blockquote>` : ''}
-      <div style="margin-top:10px;line-height:1.6;font-size:13px;color:var(--text)">${DFT.texto1}</div>
-      <p style="margin-top:10px;color:var(--accent);font-size:14px"><b>${DFT.sub2}</b></p>
-      <p style="margin-top:6px;line-height:1.55;font-size:13px;color:var(--text)">${DFT.texto2}</p>
-      <p style="margin-top:6px;line-height:1.55;font-size:13px;color:var(--text)">${DFT.texto3}</p>
-      <p style="margin-top:10px;color:var(--accent);font-size:14px"><b>${DFT.sub3}</b></p>
-      <p style="margin-top:6px;line-height:1.55;font-size:13px;color:var(--text)">${DFT.texto4}</p>
-      <p style="line-height:1.55;font-size:13px;color:var(--text)">${DFT.texto5}</p>
-      <p style="margin-top:6px;line-height:1.55;font-size:13px;color:var(--text)">${DFT.texto6}</p>
-      ${evs.map(e => `<div class="dc-tide" style="margin-top:8px">${e.simbolo} ${e.tipo.replace('-', ' ')} · ${cal.fmtTime.format(new Date(e.utcMs))}</div>`).join('')}
+      <div class="su-8c6175">${DFT.texto1}</div>
+      <p class="su-f14b16"><b>${DFT.sub2}</b></p>
+      <p class="su-6424e2">${DFT.texto2}</p>
+      <p class="su-6424e2">${DFT.texto3}</p>
+      <p class="su-f14b16"><b>${DFT.sub3}</b></p>
+      <p class="su-6424e2">${DFT.texto4}</p>
+      <p class="su-f3e545">${DFT.texto5}</p>
+      <p class="su-6424e2">${DFT.texto6}</p>
+      ${evs.map(e => `<div class="dc-tide su-8a77e5">${e.simbolo} ${e.tipo.replace('-', ' ')} · ${cal.fmtTime.format(new Date(e.utcMs))}</div>`).join('')}
     </div>`;
 
   const mnLabel = document.querySelector('#monthNoteWrap label');

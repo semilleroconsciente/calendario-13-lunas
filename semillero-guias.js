@@ -113,45 +113,45 @@ function switchSemilleroSub(t) {
 }
 
 function multiHtml() {
-  return '<p class="muted" style="font-size:11px;line-height:1.55">No todo se multiplica por semilla. Elige la técnica según la planta y la luna: toca <b>Siembra</b> para el calendario de esta luna.</p>' +
+  return '<p class="muted su-b6db47">No todo se multiplica por semilla. Elige la técnica según la planta y la luna: toca <b>Siembra</b> para el calendario de esta luna.</p>' +
     MULTIPLICACION.map(function (m) {
-      return '<div class="menstrual-card" style="margin-top:10px"><h4>' + esc(m.t) +
-        ' <span class="chip" style="font-size:9px">🌙 ' + esc(m.luna) + '</span></h4>' +
-        '<p class="muted" style="font-size:10px">📅 ' + esc(m.epoca) + '</p>' +
-        '<p style="font-size:11px">' + esc(m.pasos) + '</p>' +
-        '<p style="font-size:11px"><b>Sirve para:</b> ' + esc(m.sirve) + '</p>' +
-        '<p class="muted" style="font-size:11px">⚠️ ' + esc(m.error) + '</p></div>';
+      return '<div class="menstrual-card su-d2c171"><h4>' + esc(m.t) +
+        ' <span class="chip su-fb2957">🌙 ' + esc(m.luna) + '</span></h4>' +
+        '<p class="muted su-0d5be0">📅 ' + esc(m.epoca) + '</p>' +
+        '<p class="su-11a508">' + esc(m.pasos) + '</p>' +
+        '<p class="su-11a508"><b>Sirve para:</b> ' + esc(m.sirve) + '</p>' +
+        '<p class="muted su-11a508">⚠️ ' + esc(m.error) + '</p></div>';
     }).join('');
 }
 
 function estratHtml() {
   var g = ESTRATIFICACION;
-  return '<p class="muted" style="font-size:11px;line-height:1.55">' + g.intro + '</p>' +
+  return '<p class="muted su-b6db47">' + g.intro + '</p>' +
     g.metodos.map(function (m) {
-      return '<div class="si-card" style="padding:8px 10px"><h4 style="font-size:12px">' + esc(m.t) + '</h4>' +
-        '<p style="font-size:11px">' + esc(m.pasos) + '</p></div>';
+      return '<div class="si-card su-cfa1ec"><h4 class="su-6cb285">' + esc(m.t) + '</h4>' +
+        '<p class="su-11a508">' + esc(m.pasos) + '</p></div>';
     }).join('') +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>🌰 Quién pide qué</h4>' +
+    '<div class="menstrual-card su-d2c171"><h4>🌰 Quién pide qué</h4>' +
     g.tabla.map(function (r) {
-      return '<div class="si-card" style="padding:8px 10px"><h4 style="font-size:12px">🌰 ' + esc(r.sp) +
-        ' <span class="chip" style="font-size:9px">' + esc(r.tipo) + '</span></h4>' +
-        '<p style="font-size:11px">' + esc(r.que) + '</p></div>';
+      return '<div class="si-card su-cfa1ec"><h4 class="su-6cb285">🌰 ' + esc(r.sp) +
+        ' <span class="chip su-fb2957">' + esc(r.tipo) + '</span></h4>' +
+        '<p class="su-11a508">' + esc(r.que) + '</p></div>';
     }).join('') + '</div>' +
-    '<div class="menstrual-card" style="margin-top:10px;border-color:var(--gold)"><p style="font-size:12px">' + g.test + '</p></div>';
+    '<div class="menstrual-card su-51d56a"><p class="su-6cb285">' + g.test + '</p></div>';
 }
 
 function guiasHtml() {
-  return '<p class="muted" style="font-size:11px;line-height:1.55">Guías cortas conectadas con el resto de la app. Toca el botón para ir a la sección.</p>' +
+  return '<p class="muted su-b6db47">Guías cortas conectadas con el resto de la app. Toca el botón para ir a la sección.</p>' +
     GUIAS.map(function (x, i) {
       var btn = '';
-      if (x.go === 'banco') btn = '<button type="button" class="btn" style="width:auto;font-size:11px" data-semgo="banco">🏺 Ir al banco</button>';
-      else if (x.go === 'multi') btn = '<button type="button" class="btn" style="width:auto;font-size:11px" data-semgo="multi">🌱 Ver técnicas</button>';
-      else if (x.go === 'siembra') btn = '<button type="button" class="btn" style="width:auto;font-size:11px" data-semgoto="tabSiembra">🌱 Ir a Siembra</button>';
-      else if (x.go === 'bosque') btn = '<button type="button" class="btn" style="width:auto;font-size:11px" data-semgobosque="1">🌳 Ir a Bosque Nativo</button>';
-      else if (x.go === 'bosquesem') btn = '<button type="button" class="btn" style="width:auto;font-size:11px" data-sembosquesem="1">🌰 Ir al Semillero nativo</button>';
-      return '<div class="menstrual-card" style="margin-top:10px"><h4>' + esc(x.t) + '</h4>' +
-        '<p style="font-size:11px">' + esc(x.d) + '</p>' +
-        (btn ? '<div class="dlg-actions" style="justify-content:flex-start">' + btn + '</div>' : '') + '</div>';
+      if (x.go === 'banco') btn = '<button type="button" class="btn su-337714" data-semgo="banco">🏺 Ir al banco</button>';
+      else if (x.go === 'multi') btn = '<button type="button" class="btn su-337714" data-semgo="multi">🌱 Ver técnicas</button>';
+      else if (x.go === 'siembra') btn = '<button type="button" class="btn su-337714" data-semgoto="tabSiembra">🌱 Ir a Siembra</button>';
+      else if (x.go === 'bosque') btn = '<button type="button" class="btn su-337714" data-semgobosque="1">🌳 Ir a Bosque Nativo</button>';
+      else if (x.go === 'bosquesem') btn = '<button type="button" class="btn su-337714" data-sembosquesem="1">🌰 Ir al Semillero nativo</button>';
+      return '<div class="menstrual-card su-d2c171"><h4>' + esc(x.t) + '</h4>' +
+        '<p class="su-11a508">' + esc(x.d) + '</p>' +
+        (btn ? '<div class="dlg-actions su-59a5a8">' + btn + '</div>' : '') + '</div>';
     }).join('');
 }
 
@@ -192,11 +192,11 @@ function buildSemilleroShell() {
   while (box.firstChild) banco.appendChild(box.firstChild);
   var shell = document.createElement('div');
   shell.innerHTML =
-    '<div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">' +
-    '<button type="button" id="semSub-banco" class="btn btn-accent" style="width:auto">🏺 Banco de semillas</button>' +
-    '<button type="button" id="semSub-multi" class="btn" style="width:auto">🌱 Multiplicación</button>' +
-    '<button type="button" id="semSub-estrat" class="btn" style="width:auto">❄️ Estratificación</button>' +
-    '<button type="button" id="semSub-guias" class="btn" style="width:auto">📚 Guías</button></div>' +
+    '<div class="timer-tabs su-4dca21">' +
+    '<button type="button" id="semSub-banco" class="btn btn-accent su-30e741">🏺 Banco de semillas</button>' +
+    '<button type="button" id="semSub-multi" class="btn su-30e741">🌱 Multiplicación</button>' +
+    '<button type="button" id="semSub-estrat" class="btn su-30e741">❄️ Estratificación</button>' +
+    '<button type="button" id="semSub-guias" class="btn su-30e741">📚 Guías</button></div>' +
     '<div id="semillero-multi" class="hidden">' + multiHtml() + '</div>' +
     '<div id="semillero-estrat" class="hidden">' + estratHtml() + '</div>' +
     '<div id="semillero-guias" class="hidden">' + guiasHtml() + '</div>';

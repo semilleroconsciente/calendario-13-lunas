@@ -73,10 +73,10 @@ function makeDialog(id, title, sub, bodyHTML) {
   var d = document.createElement('dialog');
   d.id = id;
   d.innerHTML = '<form method="dialog">' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
-    '<h3 style="margin:0;color:var(--accent)">' + title + '</h3>' +
+    '<div class="dlg-actions su-d2d053">' +
+    '<h3 class="su-ee0cfe">' + title + '</h3>' +
     '<button type="button" data-close class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    (sub ? '<p class="muted" style="line-height:1.5">' + sub + '</p>' : '') +
+    (sub ? '<p class="muted su-77e2fe">' + sub + '</p>' : '') +
     bodyHTML +
     '<div class="dlg-actions"><button type="button" data-close class="btn">Cerrar</button></div></form>';
   document.body.appendChild(d);
@@ -261,94 +261,94 @@ var EST_LUNAS = [
    ============================================================ */
 function buildDialog() {
   var txGrid = EST_TEXTOS.map(function (it) {
-    return '<button type="button" class="btn est-tx-card" data-tx="' + it.id + '" style="text-align:left;height:auto;padding:10px">' +
+    return '<button type="button" class="btn est-tx-card su-1c48e1" data-tx="' + it.id + '">' +
       '<b>' + it.ico + ' ' + esc(it.cap) + '</b><br>' +
-      '<span class="muted" style="font-size:11px">' + esc(it.tag.split(' ').slice(0, 3).join(' · ')) + '</span></button>';
+      '<span class="muted su-11a508">' + esc(it.tag.split(' ').slice(0, 3).join(' · ')) + '</span></button>';
   }).join('');
 
   var testHTML = EST_TEST.map(function (q, i) {
     var opts = EST_LIKERT.map(function (o) {
-      return '<label class="check-row" style="margin:0;font-size:12px"><input type="radio" name="estQ' + i + '" value="' + o.v + '"> ' + o.t + '</label>';
+      return '<label class="check-row su-a16b97"><input type="radio" name="estQ' + i + '" value="' + o.v + '"> ' + o.t + '</label>';
     }).join('');
-    return '<div class="menstrual-card" style="margin-bottom:8px"><b style="font-size:12px">' + (i + 1) + '. ' + esc(q.txt) + '</b>' +
-      '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:6px">' + opts + '</div></div>';
+    return '<div class="menstrual-card su-fdf33f"><b class="su-6cb285">' + (i + 1) + '. ' + esc(q.txt) + '</b>' +
+      '<div class="su-8fd176">' + opts + '</div></div>';
   }).join('');
 
   var practHTML = EST_PRACTICAS.map(function (p) {
     return '<div class="menstrual-card"><h4>' + p.ico + ' ' + esc(p.n) + '</h4>' +
-      '<p class="muted" style="font-size:11px">⏱ ' + esc(p.tiempo) + '</p>' +
-      '<p style="font-size:12px">' + esc(p.pasos) + '</p>' +
-      '<p class="muted" style="font-size:12px">💡 ' + esc(p.tip) + '</p>' +
-      '<button type="button" class="btn est-pract-add" data-p="' + esc(p.n) + '" style="width:auto">+ Anotar en mi diario de hoy</button></div>';
+      '<p class="muted su-11a508">⏱ ' + esc(p.tiempo) + '</p>' +
+      '<p class="su-6cb285">' + esc(p.pasos) + '</p>' +
+      '<p class="muted su-6cb285">💡 ' + esc(p.tip) + '</p>' +
+      '<button type="button" class="btn est-pract-add su-30e741" data-p="' + esc(p.n) + '">+ Anotar en mi diario de hoy</button></div>';
   }).join('');
 
   var body =
-    '<div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">' +
-    '<button type="button" id="tabEstGuia" class="btn btn-accent" style="width:auto">📖 Guía</button>' +
-    '<button type="button" id="tabEstTextos" class="btn" style="width:auto">📜 12 Principios</button>' +
-    '<button type="button" id="tabEstPract" class="btn" style="width:auto">🛠️ Prácticas</button>' +
-    '<button type="button" id="tabEstTest" class="btn" style="width:auto">📝 Test virtudes</button>' +
-    '<button type="button" id="tabEstCamino" class="btn" style="width:auto">🌱 Mi Camino</button></div>' +
+    '<div class="timer-tabs su-4dca21">' +
+    '<button type="button" id="tabEstGuia" class="btn btn-accent su-30e741">📖 Guía</button>' +
+    '<button type="button" id="tabEstTextos" class="btn su-30e741">📜 12 Principios</button>' +
+    '<button type="button" id="tabEstPract" class="btn su-30e741">🛠️ Prácticas</button>' +
+    '<button type="button" id="tabEstTest" class="btn su-30e741">📝 Test virtudes</button>' +
+    '<button type="button" id="tabEstCamino" class="btn su-30e741">🌱 Mi Camino</button></div>' +
 
     '<div id="estGuia">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🏛️ ¿Qué es el estoicismo?</h4>' +
-    '<p class="muted" style="font-size:12px;line-height:1.6">Filosofía nacida en Atenas con <b>Zenón de Citio</b> (el Pórtico, hace 2300 años) y llevada a Roma por <b>Séneca</b> (cartas y ensayos), <b>Epicteto</b> (esclavo liberto: el <i>Manual</i>) y <b>Marco Aurelio</b> (emperador que escribía de noche sus <i>Meditaciones</i> en campaña). No es aguantar callado ni poner cara dura: es un <b>entrenamiento del carácter</b> —gobernarte para servir mejor.</p>' +
-    '<p class="muted" style="font-size:12px;line-height:1.6">Idea de una línea: <b>haz bien lo que depende de ti y suelta el resto</b>. Si hoy separas tu 2 columnas, frenas 1 impulso y cumples 1 deber, ya viviste estoico.</p></div>' +
-    '<div class="fishing-grid" style="margin-top:10px">' +
+    '<div class="menstrual-card su-68a1a9"><h4>🏛️ ¿Qué es el estoicismo?</h4>' +
+    '<p class="muted su-616df7">Filosofía nacida en Atenas con <b>Zenón de Citio</b> (el Pórtico, hace 2300 años) y llevada a Roma por <b>Séneca</b> (cartas y ensayos), <b>Epicteto</b> (esclavo liberto: el <i>Manual</i>) y <b>Marco Aurelio</b> (emperador que escribía de noche sus <i>Meditaciones</i> en campaña). No es aguantar callado ni poner cara dura: es un <b>entrenamiento del carácter</b> —gobernarte para servir mejor.</p>' +
+    '<p class="muted su-616df7">Idea de una línea: <b>haz bien lo que depende de ti y suelta el resto</b>. Si hoy separas tu 2 columnas, frenas 1 impulso y cumples 1 deber, ya viviste estoico.</p></div>' +
+    '<div class="fishing-grid su-d2c171">' +
     '<div class="menstrual-card"><h4>🗺️ El mapa en 6 piezas</h4>' +
-    '<p class="muted" style="font-size:12px"><b>1) Dicotomía:</b> hay cosas que dependen de ti (juicio, acto, esfuerzo) y otras que no (clima, otros, resultado). <b>2) 4 virtudes:</b> sabiduría 🦉, justicia 🤲, coraje 🦁, templanza 🍵: el único bien seguro. <b>3) Indiferentes:</b> plata, fama y salud se usan bien, no se adoran. <b>4) Obstáculo-camino 🪨:</b> cada traba entrena una virtud. <b>5) Memento mori ⏳ + amor fati 🌊:</b> el tiempo es oro y lo que pasa se usa. <b>6) Cosmópolis 🌍:</b> eres parte de Penco, de Chile, del mundo: tu bien es el bien común.</p></div>' +
+    '<p class="muted su-6cb285"><b>1) Dicotomía:</b> hay cosas que dependen de ti (juicio, acto, esfuerzo) y otras que no (clima, otros, resultado). <b>2) 4 virtudes:</b> sabiduría 🦉, justicia 🤲, coraje 🦁, templanza 🍵: el único bien seguro. <b>3) Indiferentes:</b> plata, fama y salud se usan bien, no se adoran. <b>4) Obstáculo-camino 🪨:</b> cada traba entrena una virtud. <b>5) Memento mori ⏳ + amor fati 🌊:</b> el tiempo es oro y lo que pasa se usa. <b>6) Cosmópolis 🌍:</b> eres parte de Penco, de Chile, del mundo: tu bien es el bien común.</p></div>' +
     '<div class="menstrual-card"><h4>📚 Los sabios en 1 minuto</h4>' +
-    '<p class="muted" style="font-size:12px"><b>Zenón</b> funda el Pórtico: vivir según la naturaleza y la razón. <b>Séneca</b> escribe a Lucilio sobre tiempo, ira y pobreza (lee <i>Cartas</i> 1, 18 y <i>Sobre la ira</i>). <b>Epicteto</b> resume: controla tu juicio y serás libre (<i>Manual</i> 1-5). <b>Marco Aurelio</b> se lo repite a sí mismo en la guerra (<i>Meditaciones</i> II, IV, VIII). Puerta de entrada: principios 1, 8 y 12 de esta sección.</p></div></div>' +
+    '<p class="muted su-6cb285"><b>Zenón</b> funda el Pórtico: vivir según la naturaleza y la razón. <b>Séneca</b> escribe a Lucilio sobre tiempo, ira y pobreza (lee <i>Cartas</i> 1, 18 y <i>Sobre la ira</i>). <b>Epicteto</b> resume: controla tu juicio y serás libre (<i>Manual</i> 1-5). <b>Marco Aurelio</b> se lo repite a sí mismo en la guerra (<i>Meditaciones</i> II, IV, VIII). Puerta de entrada: principios 1, 8 y 12 de esta sección.</p></div></div>' +
     '<details class="menstrual-details"><summary>🚶 ¿Cómo practicar sin maestro? (rutina mínima)</summary>' +
-    '<p class="muted" style="font-size:12px"><b>Mañana (2 min):</b> memento mori + 2 columnas del día + 1 deber justo. <b>Día:</b> STOP ante la ira + vista desde arriba si el ego se infla + 1 incomodidad chica. <b>Noche (3 min):</b> examen de 3 líneas. <b>Por luna:</b> 1 principio madre + releer diario. 10 min diarios bastan; lo simple, repetido, forja carácter.</p></details>' +
+    '<p class="muted su-6cb285"><b>Mañana (2 min):</b> memento mori + 2 columnas del día + 1 deber justo. <b>Día:</b> STOP ante la ira + vista desde arriba si el ego se infla + 1 incomodidad chica. <b>Noche (3 min):</b> examen de 3 líneas. <b>Por luna:</b> 1 principio madre + releer diario. 10 min diarios bastan; lo simple, repetido, forja carácter.</p></details>' +
     '<details class="menstrual-details"><summary>⚠️ Cuidados (léeme)</summary>' +
-    '<p class="muted" style="font-size:12px">✅ Esto es <b>filosofía educativa</b>, no religión ni terapia. ✅ El estoicismo no pide aguantar violencia, acoso ni explotación “con templanza”: pide poner límites, pedir ayuda y denunciar. ✅ No reemplaza médico ni terapeuta: con pena, ansiedad fuerte o crisis, pide apoyo (CESFAM, *4141 en Chile 24 h). Si un ejercicio te desborda, detente, camina, toma agua y conversa.</p></details>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>🌙 Estoicismo × 13 lunas (Penco)</h4><div id="estLunasBox"></div>' +
-    '<p class="muted" style="font-size:11px;margin-top:6px">Puentes dentro de la app: 🎯 <b>Disciplina</b> (hacer lo difícil) · 📓 <b>Gratitud</b> (suficiente) · 🌬️ <b>Respiración</b> (pausa STOP) · 📿 <b>Métodos</b> (ficha Estoicismo).</p></div>' +
+    '<p class="muted su-6cb285">✅ Esto es <b>filosofía educativa</b>, no religión ni terapia. ✅ El estoicismo no pide aguantar violencia, acoso ni explotación “con templanza”: pide poner límites, pedir ayuda y denunciar. ✅ No reemplaza médico ni terapeuta: con pena, ansiedad fuerte o crisis, pide apoyo (CESFAM, *4141 en Chile 24 h). Si un ejercicio te desborda, detente, camina, toma agua y conversa.</p></details>' +
+    '<div class="menstrual-card su-d2c171"><h4>🌙 Estoicismo × 13 lunas (Penco)</h4><div id="estLunasBox"></div>' +
+    '<p class="muted su-e13d76">Puentes dentro de la app: 🎯 <b>Disciplina</b> (hacer lo difícil) · 📓 <b>Gratitud</b> (suficiente) · 🌬️ <b>Respiración</b> (pausa STOP) · 📿 <b>Métodos</b> (ficha Estoicismo).</p></div>' +
     '</div>' +
 
     '<div id="estTextos" class="hidden">' +
-    '<div class="conv-row"><label style="flex:2">Buscar <input type="text" id="estQ" placeholder="ej: control, ira, muerte, tiempo, deber, obstáculo..." maxlength="40"></label></div>' +
-    '<div id="estTxGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-top:8px">' + txGrid + '</div>' +
-    '<div id="estDetalle" class="menstrual-card" style="margin-top:10px;border-color:var(--gold)"><p class="muted">Toca un principio para ver su ficha completa 👆</p></div></div>' +
+    '<div class="conv-row"><label class="su-4b3de7">Buscar <input type="text" id="estQ" placeholder="ej: control, ira, muerte, tiempo, deber, obstáculo..." maxlength="40"></label></div>' +
+    '<div id="estTxGrid" class="su-1e9d45">' + txGrid + '</div>' +
+    '<div id="estDetalle" class="menstrual-card su-51d56a"><p class="muted">Toca un principio para ver su ficha completa 👆</p></div></div>' +
 
     '<div id="estPract" class="hidden">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🛑 STOP Séneca — 2 minutos</h4>' +
-    '<p class="muted" style="font-size:12px">Cuando algo te enciende: Sal, Toma aire 4-6, Observa el hecho pelado, Procede justo. El botón te marca el tiempo.</p>' +
-    '<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><button type="button" id="estStopBtn" class="btn btn-accent" style="width:auto">▶ Pausa STOP ahora (2 min)</button>' +
-    '<span id="estStopMsg" class="muted" style="font-size:12px"></span></div>' +
-    '<div class="conv-row" style="margin-top:8px"><label>Hoy depende de mí… <input type="text" id="estDependeHoy" placeholder="ej: llamar al CESFAM, ordenar mi pieza" maxlength="140"></label></div>' +
+    '<div class="menstrual-card su-68a1a9"><h4>🛑 STOP Séneca — 2 minutos</h4>' +
+    '<p class="muted su-6cb285">Cuando algo te enciende: Sal, Toma aire 4-6, Observa el hecho pelado, Procede justo. El botón te marca el tiempo.</p>' +
+    '<div class="su-58703f"><button type="button" id="estStopBtn" class="btn btn-accent su-30e741">▶ Pausa STOP ahora (2 min)</button>' +
+    '<span id="estStopMsg" class="muted su-6cb285"></span></div>' +
+    '<div class="conv-row su-8a77e5"><label>Hoy depende de mí… <input type="text" id="estDependeHoy" placeholder="ej: llamar al CESFAM, ordenar mi pieza" maxlength="140"></label></div>' +
     '<div class="conv-row"><label>Hoy suelto (no depende)… <input type="text" id="estSueltoHoy" placeholder="ej: que mi jefe ande de malas" maxlength="140"></label>' +
     '<label>Mi deber justo de hoy… <input type="text" id="estDeberHoy" placeholder="ej: acompañar 10 min a mi mamá" maxlength="100"></label></div>' +
-    '<div class="dlg-actions" style="justify-content:flex-start;flex-wrap:wrap;gap:8px"><button type="button" id="estPractSave" class="btn btn-accent" style="width:auto">💾 Guardar día estoico</button>' +
-    '<button type="button" id="estGoRespira" class="btn" style="width:auto">🌬️ Ir a Respiración</button></div></div>' +
+    '<div class="dlg-actions su-41efc8"><button type="button" id="estPractSave" class="btn btn-accent su-30e741">💾 Guardar día estoico</button>' +
+    '<button type="button" id="estGoRespira" class="btn su-30e741">🌬️ Ir a Respiración</button></div></div>' +
     practHTML + '</div>' +
 
     '<div id="estTest" class="hidden">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>📝 Test: tus 4 virtudes (20 afirmaciones)</h4>' +
-    '<p class="muted" style="font-size:12px">Responde según <b>cómo eres casi siempre</b>. Escala: Nunca (0) · A veces (1) · A menudo (2) · Muy cierto (3). ~5 minutos. Mide <b>Sabiduría 🦉 · Justicia 🤲 · Coraje 🦁 · Templanza 🍵</b> + tu <b>nivel de queja/descontrol 🌪️</b> (F). <b>No es diagnóstico</b>: es un espejo para entrenar.</p>' +
-    '<div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" id="estTestReset" class="btn" style="width:auto">↺ Limpiar</button>' +
-    '<button type="button" id="estTestCalc" class="btn btn-accent" style="width:auto">📊 Ver mi resultado</button></div>' +
-    '<div id="estProgreso" class="muted" style="font-size:11px;margin-top:6px"></div></div>' +
-    '<div id="estTestBox" style="margin-top:10px">' + testHTML + '</div>' +
-    '<div id="estResultado" class="menstrual-card hidden" style="margin-top:10px;border-color:var(--gold)"></div></div>' +
+    '<div class="menstrual-card su-68a1a9"><h4>📝 Test: tus 4 virtudes (20 afirmaciones)</h4>' +
+    '<p class="muted su-6cb285">Responde según <b>cómo eres casi siempre</b>. Escala: Nunca (0) · A veces (1) · A menudo (2) · Muy cierto (3). ~5 minutos. Mide <b>Sabiduría 🦉 · Justicia 🤲 · Coraje 🦁 · Templanza 🍵</b> + tu <b>nivel de queja/descontrol 🌪️</b> (F). <b>No es diagnóstico</b>: es un espejo para entrenar.</p>' +
+    '<div class="su-3de8f9"><button type="button" id="estTestReset" class="btn su-30e741">↺ Limpiar</button>' +
+    '<button type="button" id="estTestCalc" class="btn btn-accent su-30e741">📊 Ver mi resultado</button></div>' +
+    '<div id="estProgreso" class="muted su-e13d76"></div></div>' +
+    '<div id="estTestBox" class="su-d2c171">' + testHTML + '</div>' +
+    '<div id="estResultado" class="menstrual-card hidden su-51d56a"></div></div>' +
 
     '<div id="estCamino" class="hidden">' +
-    '<div class="menstrual-grid"><div class="menstrual-card" style="border-color:var(--gold)"><h4>🌱 Mi virtud a entrenar</h4>' +
+    '<div class="menstrual-grid"><div class="menstrual-card su-68a1a9"><h4>🌱 Mi virtud a entrenar</h4>' +
     '<div class="conv-row"><label>Mi virtud <select id="estMiVirtud"><option value="">— sin definir —</option><option value="S">🦉 Sabiduría · ver claro</option><option value="J">🤲 Justicia · hacer el bien</option><option value="C">🦁 Coraje · actuar pese al miedo</option><option value="T">🍵 Templanza · medida justa</option></select></label></div>' +
-    '<div id="estMiVirtudBox" style="margin-top:6px"></div></div>' +
+    '<div id="estMiVirtudBox" class="su-fe7b49"></div></div>' +
     '<div class="menstrual-card"><h4>📓 Diario estoico</h4>' +
     '<div class="conv-row"><label>Fecha <input type="date" id="estDiaFecha"></label></div>' +
     '<label>Hoy en mi camino… (hice bien / fallé / corrijo) <input type="text" id="estDiaTxt" placeholder="ej: hice bien esperar; fallé en gritar; corrijo con STOP" maxlength="140"></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="estDiaAdd" class="btn btn-accent" style="width:auto">+ Guardar hoy</button></div>' +
-    '<div id="estDiaList" class="habits-list" style="margin-top:8px;max-height:220px"></div></div></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>🏛️ Mis días estoicos (racha de carácter)</h4><div id="estPractsBox"></div></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>🕘 Historial de tests</h4><div id="estHistBox"></div></div>' +
-    '<div class="dlg-actions" style="justify-content:space-between;align-items:center;margin-top:8px;flex-wrap:wrap;gap:8px">' +
-    '<span id="estStats" class="muted" style="font-size:11px"></span>' +
-    '<span style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" id="estShare" class="btn" style="width:auto">📤 Compartir</button>' +
-    '<button type="button" id="estToNote" class="btn" style="width:auto">📝 Llevar a nota de hoy</button>' +
-    '<button type="button" id="estClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar todo</button></span></div></div>';
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="estDiaAdd" class="btn btn-accent su-30e741">+ Guardar hoy</button></div>' +
+    '<div id="estDiaList" class="habits-list su-ebf445"></div></div></div>' +
+    '<div class="menstrual-card su-d2c171"><h4>🏛️ Mis días estoicos (racha de carácter)</h4><div id="estPractsBox"></div></div>' +
+    '<div class="menstrual-card su-d2c171"><h4>🕘 Historial de tests</h4><div id="estHistBox"></div></div>' +
+    '<div class="dlg-actions su-a1935c">' +
+    '<span id="estStats" class="muted su-11a508"></span>' +
+    '<span class="su-3de8f9"><button type="button" id="estShare" class="btn su-30e741">📤 Compartir</button>' +
+    '<button type="button" id="estToNote" class="btn su-30e741">📝 Llevar a nota de hoy</button>' +
+    '<button type="button" id="estClear" class="btn su-214f75">🗑 Borrar todo</button></span></div></div>';
 
   makeDialog('estoicismoDialog', '🏛️ Estoicismo',
     'Dicotomía del control, 4 virtudes y examen diario para Penco: haz lo que depende de ti, suelta el resto y cumple tu deber. Todo <b>privado y local</b>.',
@@ -368,15 +368,15 @@ function renderDetalle(id) {
   var e = store();
   var fav = e.favs.indexOf(id) >= 0;
   box.innerHTML =
-    '<h4 style="color:var(--gold)">' + t.ico + ' ' + esc(t.cap) + '</h4>' +
-    '<blockquote class="dlg-quote" style="font-size:12px">' + esc(t.texto) + '</blockquote>' +
-    '<p style="font-size:12px;line-height:1.6">' + esc(t.idea) + '</p>' +
-    '<p style="font-size:12px">🧰 <b>¿Cuándo sirve?</b> ' + esc(t.sirve) + '</p>' +
+    '<h4 class="su-e39eba">' + t.ico + ' ' + esc(t.cap) + '</h4>' +
+    '<blockquote class="dlg-quote su-6cb285">' + esc(t.texto) + '</blockquote>' +
+    '<p class="su-616df7">' + esc(t.idea) + '</p>' +
+    '<p class="su-6cb285">🧰 <b>¿Cuándo sirve?</b> ' + esc(t.sirve) + '</p>' +
     '<div class="si-card"><h4>✏️ Práctica de hoy</h4><p>' + esc(t.practica) + '</p><p class="muted">Pregunta que despierta: <i>' + esc(t.pregunta) + '</i></p></div>' +
-    '<p class="muted" style="font-size:12px">⚠️ Trampa típica: ' + esc(t.trampa) + '</p>' +
-    '<div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">' +
-    '<button type="button" class="btn" id="estFavBtn" style="width:auto">' + (fav ? '★ Quitar de favoritas' : '☆ Marcar favorita') + '</button>' +
-    '<button type="button" class="btn btn-accent" id="estHoyBtn" style="width:auto">✓ Vivir este hoy</button></div>';
+    '<p class="muted su-6cb285">⚠️ Trampa típica: ' + esc(t.trampa) + '</p>' +
+    '<div class="su-67b198">' +
+    '<button type="button" class="btn su-30e741" id="estFavBtn">' + (fav ? '★ Quitar de favoritas' : '☆ Marcar favorita') + '</button>' +
+    '<button type="button" class="btn btn-accent su-30e741" id="estHoyBtn">✓ Vivir este hoy</button></div>';
   var fb = $('estFavBtn');
   if (fb) fb.onclick = function () {
     var d = store();
@@ -430,22 +430,22 @@ function showResultado(sc) {
   var icoMap = { S: '🦉', J: '🤲', C: '🦁', T: '🍵' };
   var nomMap = { S: 'Sabiduría', J: 'Justicia', C: 'Coraje', T: 'Templanza' };
   box.innerHTML = '<h4>📊 Tu espejo (sin guardar)</h4>' +
-    '<p class="muted" style="font-size:11px">Máximo por virtud: 12 (4 preguntas × 3). Queja/descontrol (F): máximo 12 — mientras más alto, más sufres por lo incontrolable.</p>' +
+    '<p class="muted su-11a508">Máximo por virtud: 12 (4 preguntas × 3). Queja/descontrol (F): máximo 12 — mientras más alto, más sufres por lo incontrolable.</p>' +
     arr.map(function (a) {
       var pct = Math.round(a.p / max * 100);
       var isTop = dom === a.k;
-      return '<div style="display:flex;align-items:center;gap:8px;margin:4px 0">' +
-        '<span style="min-width:150px;font-size:12px"><b>' + icoMap[a.k] + ' ' + esc(nomMap[a.k]) + '</b></span>' +
-        '<span style="flex:1;background:var(--panel);border:1px solid var(--line);border-radius:6px;height:14px;position:relative;overflow:hidden">' +
+      return '<div class="su-0d84b3">' +
+        '<span class="su-b53707"><b>' + icoMap[a.k] + ' ' + esc(nomMap[a.k]) + '</b></span>' +
+        '<span class="su-2982dd">' +
         '<span style="display:block;height:100%;width:' + pct + '%;background:' + (isTop ? 'var(--gold)' : 'var(--accent)') + ';opacity:' + (isTop ? '1' : '.55') + '"></span></span>' +
-        '<b style="min-width:30px;text-align:right">' + a.p + '</b></div>';
+        '<b class="su-803c87">' + a.p + '</b></div>';
     }).join('') +
-    '<div class="si-card" style="margin-top:8px"><h4>' + EST_VIRTUDES[dom].ico + ' Tu virtud fuerte: ' + esc(EST_VIRTUDES[dom].nombre) + '</h4>' +
+    '<div class="si-card su-8a77e5"><h4>' + EST_VIRTUDES[dom].ico + ' Tu virtud fuerte: ' + esc(EST_VIRTUDES[dom].nombre) + '</h4>' +
     '<p>' + esc(EST_VIRTUDES[dom].desc) + '</p><p><b>Entrena así:</b> ' + esc(EST_VIRTUDES[dom].entrena) + '</p>' +
     '<p class="muted">🌪️ Nivel de queja/descontrol: <b>' + queja + '/12</b> — ' + esc(quejaTxt) + '</p></div>' +
-    '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"><button type="button" class="btn btn-accent" id="estSaveTest" style="width:auto">💾 Guardar este test</button>' +
-    '<button type="button" class="btn" id="estSetVirtud" style="width:auto">✓ Mi virtud: ' + esc(EST_VIRTUDES[dom].nombre) + '</button>' +
-    '<button type="button" class="btn" id="estReadTx" style="width:auto">📖 Leer principio que me sirve</button></div>';
+    '<div class="su-ac5453"><button type="button" class="btn btn-accent su-30e741" id="estSaveTest">💾 Guardar este test</button>' +
+    '<button type="button" class="btn su-30e741" id="estSetVirtud">✓ Mi virtud: ' + esc(EST_VIRTUDES[dom].nombre) + '</button>' +
+    '<button type="button" class="btn su-30e741" id="estReadTx">📖 Leer principio que me sirve</button></div>';
   var sv = $('estSaveTest');
   if (sv) sv.onclick = function () {
     var d = store();
@@ -473,9 +473,9 @@ function syncMiVirtud() {
 function renderMiVirtudBox() {
   var box = $('estMiVirtudBox'); if (!box) return;
   var k = store().miVirtud || '';
-  if (!k || !EST_VIRTUDES[k]) { box.innerHTML = '<p class="muted" style="font-size:12px">Aún sin definir. Haz el test 📝 o elígela arriba: es tu punto de partida, no tu jaula.</p>'; return; }
+  if (!k || !EST_VIRTUDES[k]) { box.innerHTML = '<p class="muted su-6cb285">Aún sin definir. Haz el test 📝 o elígela arriba: es tu punto de partida, no tu jaula.</p>'; return; }
   var c = EST_VIRTUDES[k];
-  box.innerHTML = '<div class="chip" style="display:block;white-space:normal;line-height:1.5"><b>' + c.ico + ' ' + esc(c.nombre) + '</b><br>' +
+  box.innerHTML = '<div class="chip su-d7c8b3"><b>' + c.ico + ' ' + esc(c.nombre) + '</b><br>' +
     '<span class="muted">' + esc(c.desc) + '<br><b>Entrena:</b> ' + esc(c.entrena) + '</span></div>';
 }
 function rachaPracts() {
@@ -495,12 +495,12 @@ function renderPracts() {
   var box = $('estPractsBox'); if (!box) return;
   var d = store().practs || [];
   var ult7 = d.slice().sort(function (a, b) { return b.fecha.localeCompare(a.fecha); }).slice(0, 7);
-  box.innerHTML = '<p class="muted" style="font-size:11px">🏛️ Racha: <b>' + rachaPracts() + ' días</b> · ' + d.length + ' día(s) estoicos · depende → suelto → deber.</p>' +
+  box.innerHTML = '<p class="muted su-11a508">🏛️ Racha: <b>' + rachaPracts() + ' días</b> · ' + d.length + ' día(s) estoicos · depende → suelto → deber.</p>' +
     (ult7.length ? ult7.map(function (r) {
-      return '<div class="hora-item" style="align-items:flex-start"><span style="font-size:11px"><b>' + esc(r.fecha) + '</b><br>' +
+      return '<div class="hora-item su-0486f7"><span class="su-11a508"><b>' + esc(r.fecha) + '</b><br>' +
         (r.depende ? '⚖️ ' + esc(r.depende) + '<br>' : '') + (r.suelto ? '🌊 ' + esc(r.suelto) + '<br>' : '') + (r.deber ? '🤲 ' + esc(r.deber) : '') + '</span>' +
         '<button type="button" class="btn btn-icon est-pract-del" data-id="' + r.id + '">✕</button></div>';
-    }).join('') : '<p class="muted" style="font-size:11px;text-align:center">Sin días aún. Guarda tu primer día estoico arriba 🏛️.</p>');
+    }).join('') : '<p class="muted su-e201a8">Sin días aún. Guarda tu primer día estoico arriba 🏛️.</p>');
   box.querySelectorAll('.est-pract-del').forEach(function (x) {
     x.onclick = function () { var e = store(); e.practs = e.practs.filter(function (r) { return r.id !== x.dataset.id; }); save(); renderPracts(); renderStats(); };
   });
@@ -509,9 +509,9 @@ function renderDiario() {
   var box = $('estDiaList'); if (!box) return;
   var d = store().diario || {};
   var keys = Object.keys(d).sort().reverse().slice(0, 30);
-  if (!keys.length) { box.innerHTML = '<p class="muted" style="font-size:11px;text-align:center">Sin registros. 3 líneas bastan: hice bien + fallé + corrijo.</p>'; return; }
+  if (!keys.length) { box.innerHTML = '<p class="muted su-e201a8">Sin registros. 3 líneas bastan: hice bien + fallé + corrijo.</p>'; return; }
   box.innerHTML = keys.map(function (k) {
-    return '<div class="hora-item" style="align-items:flex-start"><span style="font-size:11px"><b>' + esc(k) + '</b><br>' + esc(d[k]) + '</span>' +
+    return '<div class="hora-item su-0486f7"><span class="su-11a508"><b>' + esc(k) + '</b><br>' + esc(d[k]) + '</span>' +
       '<button type="button" class="btn btn-icon est-dia-del" data-k="' + esc(k) + '">✕</button></div>';
   }).join('');
   box.querySelectorAll('.est-dia-del').forEach(function (x) {
@@ -521,9 +521,9 @@ function renderDiario() {
 function renderHist() {
   var box = $('estHistBox'); if (!box) return;
   var t = (store().tests || []).slice().reverse().slice(0, 10);
-  if (!t.length) { box.innerHTML = '<p class="muted" style="font-size:11px">Sin tests guardados. Responde y pulsa “💾 Guardar este test”.</p>'; return; }
+  if (!t.length) { box.innerHTML = '<p class="muted su-11a508">Sin tests guardados. Responde y pulsa “💾 Guardar este test”.</p>'; return; }
   box.innerHTML = t.map(function (r) {
-    return '<div class="hora-item"><span style="font-size:11px"><b>' + esc(r.fecha) + '</b> · 🦉' + r.S + ' 🤲' + r.J + ' 🦁' + r.C + ' 🍵' + r.T + ' · fuerte <b>' + esc(r.dom || '') + '</b> · queja ' + esc(String(r.F)) + '/12</span>' +
+    return '<div class="hora-item"><span class="su-11a508"><b>' + esc(r.fecha) + '</b> · 🦉' + r.S + ' 🤲' + r.J + ' 🦁' + r.C + ' 🍵' + r.T + ' · fuerte <b>' + esc(r.dom || '') + '</b> · queja ' + esc(String(r.F)) + '/12</span>' +
       '<button type="button" class="btn btn-icon est-hist-del" data-id="' + r.id + '">✕</button></div>';
   }).join('');
   box.querySelectorAll('.est-hist-del').forEach(function (x) {

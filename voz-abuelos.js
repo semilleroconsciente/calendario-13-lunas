@@ -104,17 +104,17 @@ function switchVozTab(t) {
 
 function vozCardHTML(r, lunaHoy) {
   var disp = vozDesbloqueada(r, lunaHoy);
-  var html = '<div class="habit-item"' + (disp ? ' style="border-color:var(--gold)"' : '') + '>';
-  html += '<b>' + esc(r.icon || '🎙️') + ' ' + esc(r.titulo) + '</b> <span class="chip" style="font-size:10px">' + esc(r.tipo) + '</span> ';
-  html += '<span class="chip" style="font-size:10px">' + (disp ? '🌕 desbloqueado (Luna ' + r.desbloqueo + ')' : '🔒 se desbloquea Luna ' + r.desbloqueo) + '</span><br>';
-  html += '<span class="muted" style="font-size:11px">🎙️ ' + esc(r.quien || 'abuelo/a') + ' · ' + r.fecha + (r.fecha ? ' · ' + esc(lunaTxt(r.fecha)) : '') + (r.dur ? ' · ' + r.dur + 's' : '') + '</span>';
-  if (r.dataUrl) html += '<br><audio controls preload="none" src="' + r.dataUrl + '" style="width:100%;margin-top:6px"></audio>';
-  if (r.texto) html += '<p style="font-size:12px;white-space:pre-wrap">' + esc(r.texto) + '</p>';
-  html += '<div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap">';
-  if (r.texto) html += '<button class="btn" style="width:auto;font-size:11px" data-voz-hear="' + r.id + '">🔊 Escuchar texto</button>';
-  html += '<button class="btn" style="width:auto;font-size:11px" data-voz-share="' + r.id + '">📤 Compartir texto</button>';
-  html += '<button class="btn" style="width:auto;font-size:11px" data-voz-edit="' + r.id + '">✏️ Editar</button>';
-  html += '<button class="btn" style="width:auto;font-size:11px;color:#e76e8a" data-voz-del="' + r.id + '">✕ Borrar</button></div></div>';
+  var html = '<div class="habit-item"' + (disp ? ' class="su-68a1a9"' : '') + '>';
+  html += '<b>' + esc(r.icon || '🎙️') + ' ' + esc(r.titulo) + '</b> <span class="chip su-0d5be0">' + esc(r.tipo) + '</span> ';
+  html += '<span class="chip su-0d5be0">' + (disp ? '🌕 desbloqueado (Luna ' + r.desbloqueo + ')' : '🔒 se desbloquea Luna ' + r.desbloqueo) + '</span><br>';
+  html += '<span class="muted su-11a508">🎙️ ' + esc(r.quien || 'abuelo/a') + ' · ' + r.fecha + (r.fecha ? ' · ' + esc(lunaTxt(r.fecha)) : '') + (r.dur ? ' · ' + r.dur + 's' : '') + '</span>';
+  if (r.dataUrl) html += '<br><audio controls preload="none" src="' + r.dataUrl + '" class="su-a42d24"></audio>';
+  if (r.texto) html += '<p class="su-85c73c">' + esc(r.texto) + '</p>';
+  html += '<div class="su-faf7a9">';
+  if (r.texto) html += '<button class="btn su-337714" data-voz-hear="' + r.id + '">🔊 Escuchar texto</button>';
+  html += '<button class="btn su-337714" data-voz-share="' + r.id + '">📤 Compartir texto</button>';
+  html += '<button class="btn su-337714" data-voz-edit="' + r.id + '">✏️ Editar</button>';
+  html += '<button class="btn su-9b8fb7" data-voz-del="' + r.id + '">✕ Borrar</button></div></div>';
   return html;
 }
 function bindVozCards(scope) {
@@ -165,8 +165,8 @@ function renderVoz() {
   if (diaBox) {
     var vd = vozDelDia(todas);
     diaBox.innerHTML = vd
-      ? '<div style="display:flex;gap:10px;align-items:center"><span style="font-size:30px">' + esc(vd.icon || '🎙️') + '</span><span><b>Voz de hoy · ' + esc(vd.titulo) + '</b><br><span class="muted" style="font-size:11px">' + esc(vd.quien || 'abuelo/a') + ' · ' + esc(vd.tipo) + '</span>' + (vd.texto ? '<br><span style="font-size:12px">«' + esc(vd.texto.slice(0, 140)) + (vd.texto.length > 140 ? '…' : '') + '»</span>' : '') + '</span></div>'
-      : '<p class="muted" style="font-size:12px;margin:0">Aún no hay voces desbloqueadas. Graba la primera abajo: una receta, una historia de Penco o un consejo.</p>';
+      ? '<div class="su-5a5e36"><span class="su-12f66e">' + esc(vd.icon || '🎙️') + '</span><span><b>Voz de hoy · ' + esc(vd.titulo) + '</b><br><span class="muted su-11a508">' + esc(vd.quien || 'abuelo/a') + ' · ' + esc(vd.tipo) + '</span>' + (vd.texto ? '<br><span class="su-6cb285">«' + esc(vd.texto.slice(0, 140)) + (vd.texto.length > 140 ? '…' : '') + '»</span>' : '') + '</span></div>'
+      : '<p class="muted su-0163a7">Aún no hay voces desbloqueadas. Graba la primera abajo: una receta, una historia de Penco o un consejo.</p>';
   }
   /* pestaña Voces: buscador + filtro + lista */
   var q = clean((($('vozSearch') || {}).value || '').toLowerCase(), 60);
@@ -187,12 +187,12 @@ function renderVoz() {
   if (lun) {
     var porLuna = {};
     todas.forEach(function (r) { var k = +r.desbloqueo || 1; (porLuna[k] = porLuna[k] || []).push(r); });
-    var html = '<p class="muted" style="font-size:11px">Estamos en <b>Luna ' + lunaHoy + ' de 13</b>. Cada voz se desbloquea en su luna: los niños descubren un relato por luna.</p><div class="discipline-grid">';
+    var html = '<p class="muted su-11a508">Estamos en <b>Luna ' + lunaHoy + ' de 13</b>. Cada voz se desbloquea en su luna: los niños descubren un relato por luna.</p><div class="discipline-grid">';
     for (var i = 1; i <= 13; i++) {
       var rs = porLuna[i] || [];
       var abierto = i <= lunaHoy;
-      html += '<div class="si-card"' + (abierto && rs.length ? ' style="border-color:var(--gold)"' : '') + '><h4 style="font-size:12px">' + (abierto ? '🌕' : '🔒') + ' Luna ' + i + ' · ' + rs.length + '</h4>';
-      html += rs.length ? rs.map(function (r) { return '<p style="font-size:11px;margin:2px 0">' + esc(r.icon || '🎙️') + ' <b>' + esc(r.titulo) + '</b><br><span class="muted">' + esc(r.quien || '') + '</span></p>'; }).join('') : '<p class="muted" style="font-size:11px">Vacía' + (abierto ? ': graba algo para esta luna' : ' (se abre a su tiempo)') + '</p>';
+      html += '<div class="si-card"' + (abierto && rs.length ? ' class="su-68a1a9"' : '') + '><h4 class="su-6cb285">' + (abierto ? '🌕' : '🔒') + ' Luna ' + i + ' · ' + rs.length + '</h4>';
+      html += rs.length ? rs.map(function (r) { return '<p class="su-541e41">' + esc(r.icon || '🎙️') + ' <b>' + esc(r.titulo) + '</b><br><span class="muted">' + esc(r.quien || '') + '</span></p>'; }).join('') : '<p class="muted su-11a508">Vacía' + (abierto ? ': graba algo para esta luna' : ' (se abre a su tiempo)') + '</p>';
       html += '</div>';
     }
     lun.innerHTML = html + '</div>';
@@ -203,9 +203,9 @@ function renderVoz() {
     var html2 = '';
     VOZ_TIPOS.forEach(function (t) {
       var rs = todas.filter(function (r) { return r.tipo === t; });
-      html2 += '<div class="menstrual-card" style="margin-top:8px"><h4>' + esc(t) + ' · ' + rs.length + '</h4>';
-      html2 += rs.length ? '<div class="habits-list" style="max-height:220px">' + rs.map(function (r) { return vozCardHTML(r, lunaHoy); }).join('') + '</div>'
-        : '<p class="muted" style="font-size:11px">Nada aquí todavía.</p>';
+      html2 += '<div class="menstrual-card su-8a77e5"><h4>' + esc(t) + ' · ' + rs.length + '</h4>';
+      html2 += rs.length ? '<div class="habits-list su-936545">' + rs.map(function (r) { return vozCardHTML(r, lunaHoy); }).join('') + '</div>'
+        : '<p class="muted su-11a508">Nada aquí todavía.</p>';
       html2 += '</div>';
     });
     sab.innerHTML = html2;

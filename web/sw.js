@@ -1,6 +1,6 @@
 ﻿// Service Worker — Calendario 13 Lunas (offline-first, tolerante a versiones ?v=)
 // v55
-const CACHE = 'cal13-v67-offline';
+const CACHE = 'cal13-v68-offline';
 
 // Lista completa de archivos que usa index.html (bare + con ?v=).
 // Si se agrega un JS nuevo en index.html, agregarlo aquí también (bare y ?v=).
@@ -273,6 +273,8 @@ const CORE = [
   './min/splash.min.css?v=1',
   './min/storage-idb.min.js',
   './min/storage-idb.min.js?v=1',
+  './min/styles-csp.min.css',
+  './min/styles-csp.min.css?v=1',
   './min/styles.min.css',
   './min/styles.min.css?v=12',
   './min/sudoku-modulo.min.js',

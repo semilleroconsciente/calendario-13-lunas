@@ -1,13 +1,13 @@
 <dialog id="shoppingDialog">
     <form method="dialog">
-      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
-        <h3 style="margin:0;color:var(--accent)">🛒 Lista de compras</h3>
+      <div class="dlg-actions su-d2d053">
+        <h3 class="su-ee0cfe">🛒 Lista de compras</h3>
         <button type="button" id="shoppingCloseTop" class="btn btn-icon" title="Cerrar" aria-label="Cerrar">✕</button>
       </div>
-      <p class="muted" style="line-height:1.5">Organiza por categorías. Todo <b>local</b> por usuario. Se puede generar desde 🥗 Comidas.</p>
+      <p class="muted su-77e2fe">Organiza por categorías. Todo <b>local</b> por usuario. Se puede generar desde 🥗 Comidas.</p>
       <div class="conv-row">
-        <label style="flex:2">Producto <input type="text" id="shopName" placeholder="ej: Tomates, Pan, Avena" maxlength="40"></label>
-        <label>Cant. <input type="text" id="shopQty" placeholder="1 kg" maxlength="20" style="width:90px"></label>
+        <label class="su-4b3de7">Producto <input type="text" id="shopName" placeholder="ej: Tomates, Pan, Avena" maxlength="40"></label>
+        <label>Cant. <input type="text" id="shopQty" placeholder="1 kg" maxlength="20" class="su-581be4"></label>
         <label>Categoría
           <select id="shopCat">
             <option value="Verduras">Verduras</option>
@@ -19,14 +19,14 @@
             <option value="Otros">Otros</option>
           </select>
         </label>
-        <button type="button" id="shopAdd" class="btn btn-accent" style="width:auto;align-self:flex-end">+ Agregar</button>
+        <button type="button" id="shopAdd" class="btn btn-accent su-4ed52d">+ Agregar</button>
       </div>
       <div id="shoppingListBox" class="shopping-list"></div>
-      <div class="dlg-actions" style="justify-content:space-between;align-items:center">
-        <span id="shoppingStats" class="muted" style="font-size:12px"></span>
-        <span style="display:flex;gap:8px">
-          <button type="button" id="shoppingClearDone" class="btn" style="width:auto">✓ Limpiar comprados</button>
-          <button type="button" id="shoppingClearAll" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Vaciar</button>
+      <div class="dlg-actions su-2d7d27">
+        <span id="shoppingStats" class="muted su-6cb285"></span>
+        <span class="su-a76d59">
+          <button type="button" id="shoppingClearDone" class="btn su-30e741">✓ Limpiar comprados</button>
+          <button type="button" id="shoppingClearAll" class="btn su-214f75">🗑 Vaciar</button>
         </span>
       </div>
       <div class="dlg-actions"><button type="button" id="shoppingClose" class="btn">Cerrar</button></div>

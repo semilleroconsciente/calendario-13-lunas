@@ -180,96 +180,96 @@ function makeDialog() {
   var old = $('ikigaiDialog');
   if (old) old.remove();
   var circHTML = CIRCULOS.map(function (c) {
-    return '<div class="menstrual-card" style="margin-bottom:8px"><h4>' + c.ico + ' ' + esc(c.nombre) + '</h4>' +
-      '<p class="muted" style="font-size:11px">' + esc(c.desc) + '</p>' +
-      '<div style="display:flex;gap:6px"><input type="text" id="ikiIn_' + c.id + '" placeholder="' + esc(c.ph) + '" maxlength="60" style="flex:1">' +
-      '<button type="button" class="btn btn-accent iki-add" data-c="' + c.id + '" style="width:auto">+</button></div>' +
-      '<div id="ikiList_' + c.id + '" class="habits-list" style="margin-top:8px"></div></div>';
+    return '<div class="menstrual-card su-fdf33f"><h4>' + c.ico + ' ' + esc(c.nombre) + '</h4>' +
+      '<p class="muted su-11a508">' + esc(c.desc) + '</p>' +
+      '<div class="su-49cd09"><input type="text" id="ikiIn_' + c.id + '" placeholder="' + esc(c.ph) + '" maxlength="60" class="su-97445a">' +
+      '<button type="button" class="btn btn-accent iki-add su-30e741" data-c="' + c.id + '">+</button></div>' +
+      '<div id="ikiList_' + c.id + '" class="habits-list su-8a77e5"></div></div>';
   }).join('');
   var testHTML = BRUJULA.map(function (q, i) {
     var opts = LIKERT.map(function (o) {
-      return '<label class="check-row" style="margin:0;font-size:12px"><input type="radio" name="ikiQ' + i + '" value="' + o.v + '"> ' + o.t + '</label>';
+      return '<label class="check-row su-a16b97"><input type="radio" name="ikiQ' + i + '" value="' + o.v + '"> ' + o.t + '</label>';
     }).join('');
-    return '<div class="menstrual-card" style="margin-bottom:8px"><b style="font-size:12px">' + (i + 1) + '. ' + esc(q.txt) + '</b>' +
-      '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:6px">' + opts + '</div></div>';
+    return '<div class="menstrual-card su-fdf33f"><b class="su-6cb285">' + (i + 1) + '. ' + esc(q.txt) + '</b>' +
+      '<div class="su-8fd176">' + opts + '</div></div>';
   }).join('');
   var body =
-    '<div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">' +
-    '<button type="button" id="tabIkiGuia" class="btn btn-accent" style="width:auto">📖 Guía</button>' +
-    '<button type="button" id="tabIkiCirc" class="btn" style="width:auto">⭘ 4 círculos</button>' +
-    '<button type="button" id="tabIkiBruj" class="btn" style="width:auto">🧭 Brújula</button>' +
-    '<button type="button" id="tabIkiFrase" class="btn" style="width:auto">🌸 Mi Ikigai</button>' +
-    '<button type="button" id="tabIkiCam" class="btn" style="width:auto">🌱 Mi camino</button></div>' +
+    '<div class="timer-tabs su-4dca21">' +
+    '<button type="button" id="tabIkiGuia" class="btn btn-accent su-30e741">📖 Guía</button>' +
+    '<button type="button" id="tabIkiCirc" class="btn su-30e741">⭘ 4 círculos</button>' +
+    '<button type="button" id="tabIkiBruj" class="btn su-30e741">🧭 Brújula</button>' +
+    '<button type="button" id="tabIkiFrase" class="btn su-30e741">🌸 Mi Ikigai</button>' +
+    '<button type="button" id="tabIkiCam" class="btn su-30e741">🌱 Mi camino</button></div>' +
 
     '<div id="ikiGuia">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🌸 Ikigai: tu razón de ser (生き甲斐)</h4>' +
-    '<p class="muted" style="font-size:12px;line-height:1.6"><i>Iki</i> (vida) + <i>gai</i> (valor, merecer la pena). En Okinawa —zona azul de longevos— el ikigai no es “el trabajo soñado”: es <b>eso chico que te levanta en la mañana</b>: tu huerta, tus nietos, tu pan, tu canto, tu minga. Puede ser humilde y aun así sostener una vida entera.</p>' +
-    '<p class="muted" style="font-size:12px;line-height:1.6">El diagrama de 4 círculos (❤️ amas · 🌟 bueno · 🌍 mundo necesita · 💰 te pagan) es una <b>versión occidental</b> útil para ordenar, no una traducción literal japonesa. Úsalo como mapa, no como examen: donde se cruzan aparece tu <b>pasión, misión, vocación, profesión</b>… y al centro, tu ikigai de hoy.</p></div>' +
-    '<div class="fishing-grid" style="margin-top:10px"><div class="menstrual-card"><h4>⭘ El mapa en 1 minuto</h4>' +
-    '<p style="font-size:12px">❤️+🌟 = <b>🔥 Pasión</b> (gozo)<br>❤️+🌍 = <b>🤲 Misión</b> (servicio)<br>🌍+💰 = <b>🌱 Vocación</b> (oficio útil)<br>🌟+💰 = <b>💼 Profesión</b> (sustento)<br>❤️+🌟+🌍+💰 = <b>🌸 Ikigai</b> (cruce vivo)</p>' +
-    '<p class="muted" style="font-size:11px">Sin amor → vacío · sin talento → torpeza · sin mundo → ego · sin pago → precariedad. El equilibrio se cultiva, no se encuentra hecho.</p></div>' +
+    '<div class="menstrual-card su-68a1a9"><h4>🌸 Ikigai: tu razón de ser (生き甲斐)</h4>' +
+    '<p class="muted su-616df7"><i>Iki</i> (vida) + <i>gai</i> (valor, merecer la pena). En Okinawa —zona azul de longevos— el ikigai no es “el trabajo soñado”: es <b>eso chico que te levanta en la mañana</b>: tu huerta, tus nietos, tu pan, tu canto, tu minga. Puede ser humilde y aun así sostener una vida entera.</p>' +
+    '<p class="muted su-616df7">El diagrama de 4 círculos (❤️ amas · 🌟 bueno · 🌍 mundo necesita · 💰 te pagan) es una <b>versión occidental</b> útil para ordenar, no una traducción literal japonesa. Úsalo como mapa, no como examen: donde se cruzan aparece tu <b>pasión, misión, vocación, profesión</b>… y al centro, tu ikigai de hoy.</p></div>' +
+    '<div class="fishing-grid su-d2c171"><div class="menstrual-card"><h4>⭘ El mapa en 1 minuto</h4>' +
+    '<p class="su-6cb285">❤️+🌟 = <b>🔥 Pasión</b> (gozo)<br>❤️+🌍 = <b>🤲 Misión</b> (servicio)<br>🌍+💰 = <b>🌱 Vocación</b> (oficio útil)<br>🌟+💰 = <b>💼 Profesión</b> (sustento)<br>❤️+🌟+🌍+💰 = <b>🌸 Ikigai</b> (cruce vivo)</p>' +
+    '<p class="muted su-11a508">Sin amor → vacío · sin talento → torpeza · sin mundo → ego · sin pago → precariedad. El equilibrio se cultiva, no se encuentra hecho.</p></div>' +
     '<div class="menstrual-card"><h4>🏝️ Nota honesta desde Okinawa</h4>' +
-    '<p class="muted" style="font-size:12px">En Ogimi no hablan de “4 círculos”: hablan de <i>moai</i> (tu grupo de apoyo de por vida), de comer liviano, de moverse cada día, de reír y agradecer. Si el diagrama te presiona (“¡tengo que tenerlo todo!”), vuelve a lo simple: <b>¿qué pequeño quehacer te da alegría hoy?</b> Ese es tu ikigai de hoy.</p></div></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>🌱 Los 5 pilares (Ken Mogi)</h4><div id="ikiPilares"></div></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>📜 Las 10 reglas (García & Miralles)</h4><div id="ikiReglas" style="display:flex;flex-direction:column;gap:4px"></div></div>' +
-    '<details class="menstrual-details"><summary>⚠️ 5 errores comunes</summary><p class="muted" style="font-size:12px">❌ Buscarlo gigante (“cambiar el mundo”) y despreciar lo chico · ❌ Confundir ikigai con solo trabajo rentado · ❌ Querer los 4 círculos perfectos antes de partir · ❌ Compararte con otros (“su ikigai es mejor”) · ❌ Creer que es fijo: cambia con las lunas de la vida, se revisa cada ciclo.</p></details>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>🌙 Ikigai × 13 lunas × küme mongen</h4><div id="ikiLunasBox"></div>' +
-    '<p class="muted" style="font-size:11px;margin-top:6px">Como el <i>küme mongen</i>: tu buen vivir florece cuando te ubicas —en tu cuerpo, tu familia, tu territorio— y devuelves algo. Tu ikigai penqueño puede ser cuidar la quebrada, amasar, enseñar mapuzugun, acompañar.</p></div>' +
+    '<p class="muted su-6cb285">En Ogimi no hablan de “4 círculos”: hablan de <i>moai</i> (tu grupo de apoyo de por vida), de comer liviano, de moverse cada día, de reír y agradecer. Si el diagrama te presiona (“¡tengo que tenerlo todo!”), vuelve a lo simple: <b>¿qué pequeño quehacer te da alegría hoy?</b> Ese es tu ikigai de hoy.</p></div></div>' +
+    '<div class="menstrual-card su-d2c171"><h4>🌱 Los 5 pilares (Ken Mogi)</h4><div id="ikiPilares"></div></div>' +
+    '<div class="menstrual-card su-d2c171"><h4>📜 Las 10 reglas (García & Miralles)</h4><div id="ikiReglas" class="su-28e216"></div></div>' +
+    '<details class="menstrual-details"><summary>⚠️ 5 errores comunes</summary><p class="muted su-6cb285">❌ Buscarlo gigante (“cambiar el mundo”) y despreciar lo chico · ❌ Confundir ikigai con solo trabajo rentado · ❌ Querer los 4 círculos perfectos antes de partir · ❌ Compararte con otros (“su ikigai es mejor”) · ❌ Creer que es fijo: cambia con las lunas de la vida, se revisa cada ciclo.</p></details>' +
+    '<div class="menstrual-card su-d2c171"><h4>🌙 Ikigai × 13 lunas × küme mongen</h4><div id="ikiLunasBox"></div>' +
+    '<p class="muted su-e13d76">Como el <i>küme mongen</i>: tu buen vivir florece cuando te ubicas —en tu cuerpo, tu familia, tu territorio— y devuelves algo. Tu ikigai penqueño puede ser cuidar la quebrada, amasar, enseñar mapuzugun, acompañar.</p></div>' +
     '</div>' +
 
     '<div id="ikiCirc" class="hidden">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>⭘ Tus 4 círculos</h4>' +
-    '<p class="muted" style="font-size:11px">Escribe al menos 3 cosas por círculo (1 por vez, botón +). El calendario detecta solo las <b>coincidencias de palabras</b> y te muestra tus cruces. Todo queda privado y local.</p>' +
+    '<div class="menstrual-card su-68a1a9"><h4>⭘ Tus 4 círculos</h4>' +
+    '<p class="muted su-11a508">Escribe al menos 3 cosas por círculo (1 por vez, botón +). El calendario detecta solo las <b>coincidencias de palabras</b> y te muestra tus cruces. Todo queda privado y local.</p>' +
     '<div id="ikiCrucesBox"></div></div>' + circHTML +
-    '<div class="menstrual-card"><h4>💡 Si te trabas</h4><p class="muted" style="font-size:11px">❤️ Pregunta a 2 personas: “¿cuándo me ves más vivo/a?” · 🌟 “¿para qué me pides ayuda siempre?” · 🌍 Camina tu cuadra y anota 3 dolores que veas · 💰 “¿qué me comprarían mis vecinos sin dudar?”.</p></div></div>' +
+    '<div class="menstrual-card"><h4>💡 Si te trabas</h4><p class="muted su-11a508">❤️ Pregunta a 2 personas: “¿cuándo me ves más vivo/a?” · 🌟 “¿para qué me pides ayuda siempre?” · 🌍 Camina tu cuadra y anota 3 dolores que veas · 💰 “¿qué me comprarían mis vecinos sin dudar?”.</p></div></div>' +
 
     '<div id="ikiBruj" class="hidden">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🧭 Brújula (20 afirmaciones)</h4>' +
-    '<p class="muted" style="font-size:11px">Responde cómo eres <b>casi siempre</b>. Escala: Nunca 0 · A veces 1 · A menudo 2 · Muy cierto 3. ~5 min. No es diagnóstico: es un espejo para ver tu círculo más débil y regarlo.</p>' +
-    '<div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" id="ikiTestReset" class="btn" style="width:auto">↺ Limpiar</button>' +
-    '<button type="button" id="ikiTestCalc" class="btn btn-accent" style="width:auto">📊 Ver mi brújula</button></div>' +
-    '<div id="ikiProgreso" class="muted" style="font-size:11px;margin-top:6px"></div></div>' +
-    '<div style="margin-top:10px">' + testHTML + '</div>' +
-    '<div id="ikiResultado" class="menstrual-card hidden" style="margin-top:10px;border-color:var(--gold)"></div></div>' +
+    '<div class="menstrual-card su-68a1a9"><h4>🧭 Brújula (20 afirmaciones)</h4>' +
+    '<p class="muted su-11a508">Responde cómo eres <b>casi siempre</b>. Escala: Nunca 0 · A veces 1 · A menudo 2 · Muy cierto 3. ~5 min. No es diagnóstico: es un espejo para ver tu círculo más débil y regarlo.</p>' +
+    '<div class="su-3de8f9"><button type="button" id="ikiTestReset" class="btn su-30e741">↺ Limpiar</button>' +
+    '<button type="button" id="ikiTestCalc" class="btn btn-accent su-30e741">📊 Ver mi brújula</button></div>' +
+    '<div id="ikiProgreso" class="muted su-e13d76"></div></div>' +
+    '<div class="su-d2c171">' + testHTML + '</div>' +
+    '<div id="ikiResultado" class="menstrual-card hidden su-51d56a"></div></div>' +
 
     '<div id="ikiFrase" class="hidden">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🌸 Mi frase ikigai</h4>' +
-    '<p class="muted" style="font-size:11px">Completa y guarda. Se vale chico y concreto: “cuidar”, “amasar”, “acompañar”.</p>' +
+    '<div class="menstrual-card su-68a1a9"><h4>🌸 Mi frase ikigai</h4>' +
+    '<p class="muted su-11a508">Completa y guarda. Se vale chico y concreto: “cuidar”, “amasar”, “acompañar”.</p>' +
     '<div class="conv-row"><label>Amo <input type="text" id="ikiF_amo" placeholder="ej: amasar pan" maxlength="60"></label>' +
     '<label>Soy bueno/a en <input type="text" id="ikiF_bueno" placeholder="ej: dejarlo esponjoso" maxlength="60"></label></div>' +
     '<div class="conv-row"><label>Sirvo en <input type="text" id="ikiF_sirvo" placeholder="ej: desayuno de mis vecinos" maxlength="60"></label>' +
     '<label>Avanzo en <input type="text" id="ikiF_avance" placeholder="ej: vender 10 panes a precio justo" maxlength="60"></label></div>' +
     '<label>Mi ikigai de esta luna es… <input type="text" id="ikiF_texto" placeholder="ej: amasar pan que abrigue a mi gente" maxlength="120"></label>' +
     '<label>🎯 Mi micro-acción de hoy (5 min) <input type="text" id="ikiF_micro" placeholder="ej: amasar 4 panes y regalar 1" maxlength="120"></label>' +
-    '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"><button type="button" id="ikiFraseIdea" class="btn" style="width:auto">🎲 Idea de micro-acción</button>' +
-    '<button type="button" id="ikiFraseSave" class="btn btn-accent" style="width:auto">💾 Guardar mi ikigai</button></div>' +
-    '<div id="ikiFraseViva" style="margin-top:8px"></div></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>🕘 Historial de frases</h4><div id="ikiFraseHist"></div></div></div>' +
+    '<div class="su-ac5453"><button type="button" id="ikiFraseIdea" class="btn su-30e741">🎲 Idea de micro-acción</button>' +
+    '<button type="button" id="ikiFraseSave" class="btn btn-accent su-30e741">💾 Guardar mi ikigai</button></div>' +
+    '<div id="ikiFraseViva" class="su-8a77e5"></div></div>' +
+    '<div class="menstrual-card su-d2c171"><h4>🕘 Historial de frases</h4><div id="ikiFraseHist"></div></div></div>' +
 
     '<div id="ikiCam" class="hidden">' +
-    '<div class="menstrual-grid"><div class="menstrual-card" style="border-color:var(--gold)"><h4>🌸 Mi ikigai vigente</h4><div id="ikiVigente"></div></div>' +
+    '<div class="menstrual-grid"><div class="menstrual-card su-68a1a9"><h4>🌸 Mi ikigai vigente</h4><div id="ikiVigente"></div></div>' +
     '<div class="menstrual-card"><h4>📓 Diario (1 línea basta)</h4>' +
     '<div class="conv-row"><label>Fecha <input type="date" id="ikiDiaFecha"></label></div>' +
     '<label>Hoy mi ikigai fue… <input type="text" id="ikiDiaTxt" placeholder="ej: regalé pan a la veci y me agradeció con mote" maxlength="140"></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="ikiDiaAdd" class="btn btn-accent" style="width:auto">+ Guardar hoy</button></div>' +
-    '<div id="ikiDiaList" class="habits-list" style="margin-top:8px;max-height:220px"></div></div></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>🧭 Historial de brújulas</h4><div id="ikiHistBox"></div></div>' +
-    '<div class="dlg-actions" style="justify-content:space-between;align-items:center;margin-top:8px;flex-wrap:wrap;gap:8px">' +
-    '<span id="ikiStats" class="muted" style="font-size:11px"></span>' +
-    '<span style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" id="ikiShare" class="btn" style="width:auto">📤 Compartir</button>' +
-    '<button type="button" id="ikiToNote" class="btn" style="width:auto">📝 Llevar a nota de hoy</button>' +
-    '<button type="button" id="ikiExport" class="btn" style="width:auto">📥 Exportar</button>' +
-    '<button type="button" id="ikiClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar todo</button></span></div></div>';
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="ikiDiaAdd" class="btn btn-accent su-30e741">+ Guardar hoy</button></div>' +
+    '<div id="ikiDiaList" class="habits-list su-ebf445"></div></div></div>' +
+    '<div class="menstrual-card su-d2c171"><h4>🧭 Historial de brújulas</h4><div id="ikiHistBox"></div></div>' +
+    '<div class="dlg-actions su-a1935c">' +
+    '<span id="ikiStats" class="muted su-11a508"></span>' +
+    '<span class="su-3de8f9"><button type="button" id="ikiShare" class="btn su-30e741">📤 Compartir</button>' +
+    '<button type="button" id="ikiToNote" class="btn su-30e741">📝 Llevar a nota de hoy</button>' +
+    '<button type="button" id="ikiExport" class="btn su-30e741">📥 Exportar</button>' +
+    '<button type="button" id="ikiClear" class="btn su-214f75">🗑 Borrar todo</button></span></div></div>';
 
   var old2 = $('ikigaiDialog');
   if (old2) old2.remove();
   var d = document.createElement('dialog');
   d.id = 'ikigaiDialog';
   d.innerHTML = '<form method="dialog">' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
-    '<h3 style="margin:0;color:var(--accent)">🌸 Ikigai — tu razón de ser</h3>' +
+    '<div class="dlg-actions su-d2d053">' +
+    '<h3 class="su-ee0cfe">🌸 Ikigai — tu razón de ser</h3>' +
     '<button type="button" data-close class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    '<p class="muted" style="line-height:1.5">Lo que amas ❤️ · lo que haces bien 🌟 · lo que tu gente necesita 🌍 · cómo te sostienes 💰. Mapa + brújula + frase + diario. Todo <b>privado y local</b> por usuario.</p>' +
+    '<p class="muted su-77e2fe">Lo que amas ❤️ · lo que haces bien 🌟 · lo que tu gente necesita 🌍 · cómo te sostienes 💰. Mapa + brújula + frase + diario. Todo <b>privado y local</b> por usuario.</p>' +
     body +
     '<div class="dlg-actions"><button type="button" data-close class="btn">Cerrar</button></div></form>';
   document.body.appendChild(d);
@@ -289,10 +289,10 @@ function switchTab(name) {
 function renderGuia() {
   var p = $('ikiPilares');
   if (p) p.innerHTML = PILARES.map(function (x) {
-    return '<div class="si-card" style="padding:6px 10px"><b style="font-size:12px">' + x.ico + ' ' + esc(x.t) + '</b><p class="muted" style="font-size:11px;margin:2px 0 0">' + esc(x.d) + '</p></div>';
+    return '<div class="si-card su-7aab68"><b class="su-6cb285">' + x.ico + ' ' + esc(x.t) + '</b><p class="muted su-aa314c">' + esc(x.d) + '</p></div>';
   }).join('');
   var r = $('ikiReglas');
-  if (r) r.innerHTML = REGLAS10.map(function (t, i) { return '<span class="chip" style="font-size:11px;white-space:normal;text-align:left">' + (i + 1) + '. ' + esc(t) + '</span>'; }).join('');
+  if (r) r.innerHTML = REGLAS10.map(function (t, i) { return '<span class="chip su-656fb9">' + (i + 1) + '. ' + esc(t) + '</span>'; }).join('');
   var l = $('ikiLunasBox');
   if (l) l.innerHTML = LUNAS_TIP.map(function (g) {
     return '<div class="si-card"><h4>' + esc(g.luna) + '</h4><p>' + esc(g.tip) + '</p></div>';
@@ -304,9 +304,9 @@ function renderCirc() {
     var box = $('ikiList_' + c.id);
     if (!box) return;
     var arr = data.circles[c.id] || [];
-    if (!arr.length) { box.innerHTML = '<p class="muted" style="font-size:11px">Vacío. Agrega tu primera arriba 👆 (apunta a 3 o más).</p>'; return; }
+    if (!arr.length) { box.innerHTML = '<p class="muted su-11a508">Vacío. Agrega tu primera arriba 👆 (apunta a 3 o más).</p>'; return; }
     box.innerHTML = arr.map(function (x) {
-      return '<div class="hora-item"><span style="font-size:12px">• ' + esc(x.t) + '</span>' +
+      return '<div class="hora-item"><span class="su-6cb285">• ' + esc(x.t) + '</span>' +
         '<button type="button" class="btn btn-icon iki-del" data-c="' + c.id + '" data-id="' + x.id + '">✕</button></div>';
     }).join('');
   });
@@ -325,10 +325,10 @@ function renderCruces() {
   var data = store();
   var cr = crucesDe(data);
   var total = data.circles.ama.length + data.circles.bueno.length + data.circles.mundo.length + data.circles.pago.length;
-  if (!total) { box.innerHTML = '<p class="muted" style="font-size:11px">Tus cruces aparecerán aquí cuando escribas en 2+ círculos. Parte con ❤️ Lo que amas.</p>'; return; }
+  if (!total) { box.innerHTML = '<p class="muted su-11a508">Tus cruces aparecerán aquí cuando escribas en 2+ círculos. Parte con ❤️ Lo que amas.</p>'; return; }
   function chip(arr) {
-    if (!arr.length) return '<span class="muted" style="font-size:11px">aún sin cruce — agrega palabras parecidas en ambos círculos</span>';
-    return arr.map(function (t) { return '<span class="chip" style="font-size:11px">🌸 ' + esc(t) + '</span>'; }).join(' ');
+    if (!arr.length) return '<span class="muted su-11a508">aún sin cruce — agrega palabras parecidas en ambos círculos</span>';
+    return arr.map(function (t) { return '<span class="chip su-11a508">🌸 ' + esc(t) + '</span>'; }).join(' ');
   }
   var rows = [
     { h: '🔥 PASIÓN <span class="muted">❤️+🌟</span>', v: cr.pasion },
@@ -336,13 +336,13 @@ function renderCruces() {
     { h: '🌱 VOCACIÓN <span class="muted">🌍+💰</span>', v: cr.vocacion },
     { h: '💼 PROFESIÓN <span class="muted">🌟+💰</span>', v: cr.profesion }
   ].map(function (r) {
-    return '<div class="si-card" style="padding:6px 10px"><b style="font-size:12px">' + r.h + '</b><div style="margin-top:4px;display:flex;gap:4px;flex-wrap:wrap">' + chip(r.v) + '</div></div>';
+    return '<div class="si-card su-7aab68"><b class="su-6cb285">' + r.h + '</b><div class="su-1b1b03">' + chip(r.v) + '</div></div>';
   }).join('');
   var centro = cr.centro.length
-    ? '<div class="menstrual-card" style="border-color:var(--gold);margin-top:8px"><h4>🌸 Tu centro vivo (' + cr.centro.length + ')</h4><div style="display:flex;gap:4px;flex-wrap:wrap">' + cr.centro.map(function (t) { return '<span class="chip" style="font-size:12px;border-color:var(--gold)">🌸 <b>' + esc(t) + '</b></span>'; }).join(' ') + '</div><p class="muted" style="font-size:11px">Eso que aparece en 3-4 círculos es tu pista más fuerte. Llévalo a 🌸 Mi Ikigai.</p></div>'
-    : '<p class="muted" style="font-size:11px;margin-top:6px">💡 Centro vacío = normal al inicio. Cuando una misma palabra (ej “pan”, “niños”, “mar”) aparezca en 3+ círculos, brillará aquí 🌸.</p>';
-  box.innerHTML = '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px">' +
-    CIRCULOS.map(function (c) { return '<span class="chip" style="font-size:11px">' + c.ico + ' ' + (data.circles[c.id] || []).length + '</span>'; }).join('') + '</div>' + rows + centro;
+    ? '<div class="menstrual-card su-435dbc"><h4>🌸 Tu centro vivo (' + cr.centro.length + ')</h4><div class="su-d18560">' + cr.centro.map(function (t) { return '<span class="chip su-3e2156">🌸 <b>' + esc(t) + '</b></span>'; }).join(' ') + '</div><p class="muted su-11a508">Eso que aparece en 3-4 círculos es tu pista más fuerte. Llévalo a 🌸 Mi Ikigai.</p></div>'
+    : '<p class="muted su-e13d76">💡 Centro vacío = normal al inicio. Cuando una misma palabra (ej “pan”, “niños”, “mar”) aparezca en 3+ círculos, brillará aquí 🌸.</p>';
+  box.innerHTML = '<div class="su-f787da">' +
+    CIRCULOS.map(function (c) { return '<span class="chip su-11a508">' + c.ico + ' ' + (data.circles[c.id] || []).length + '</span>'; }).join('') + '</div>' + rows + centro;
 }
 function calcBruj() {
   var scores = { ama: 0, bueno: 0, mundo: 0, pago: 0 };
@@ -374,19 +374,19 @@ function showResultado(sc, saved) {
   var meta = { ama: '❤️ Lo que amas', bueno: '🌟 En lo que eres bueno', mundo: '🌍 Lo que el mundo necesita', pago: '💰 Por lo que te pagan' };
   box.classList.remove('hidden');
   box.innerHTML = '<h4>🧭 Tu brújula ' + (saved ? '(guardada ✓)' : '(sin guardar)') + '</h4>' +
-    '<p class="muted" style="font-size:11px">Máximo por círculo: 15 (5 preguntas × 3). Mira el más bajo: ahí está tu riego de esta luna.</p>' +
+    '<p class="muted su-11a508">Máximo por círculo: 15 (5 preguntas × 3). Mira el más bajo: ahí está tu riego de esta luna.</p>' +
     ['ama', 'bueno', 'mundo', 'pago'].map(function (k) {
       var v = sc[k] || 0;
       var pct = Math.round(v / max * 100);
       var ico = { ama: '❤️', bueno: '🌟', mundo: '🌍', pago: '💰' }[k];
       var top = arr[0].k === k;
-      return '<div style="display:flex;align-items:center;gap:8px;margin:4px 0">' +
-        '<span style="min-width:150px;font-size:12px">' + ico + ' ' + esc(meta[k].split(' ').slice(1).join(' ') || k) + '</span>' +
-        '<span style="flex:1;background:var(--panel);border:1px solid var(--line);border-radius:6px;height:14px;overflow:hidden"><span style="display:block;height:100%;width:' + pct + '%;background:' + (top ? 'var(--gold)' : 'var(--accent)') + ';opacity:' + (top ? '1' : '.55') + '"></span></span>' +
-        '<b style="min-width:30px;text-align:right">' + v + '</b></div>';
+      return '<div class="su-0d84b3">' +
+        '<span class="su-b53707">' + ico + ' ' + esc(meta[k].split(' ').slice(1).join(' ') || k) + '</span>' +
+        '<span class="su-b248e0"><span style="display:block;height:100%;width:' + pct + '%;background:' + (top ? 'var(--gold)' : 'var(--accent)') + ';opacity:' + (top ? '1' : '.55') + '"></span></span>' +
+        '<b class="su-803c87">' + v + '</b></div>';
     }).join('') +
-    '<div class="si-card" style="margin-top:8px"><h4>🌱 A regar: ' + esc(meta[deb.k]) + ' (' + deb.p + '/15)</h4><p>' + esc(CONSEJO[deb.k]) + '</p></div>' +
-    '<div style="margin-top:8px"><button type="button" class="btn btn-accent" id="ikiSaveTest" style="width:auto">💾 Guardar esta brújula</button></div>';
+    '<div class="si-card su-8a77e5"><h4>🌱 A regar: ' + esc(meta[deb.k]) + ' (' + deb.p + '/15)</h4><p>' + esc(CONSEJO[deb.k]) + '</p></div>' +
+    '<div class="su-8a77e5"><button type="button" class="btn btn-accent su-30e741" id="ikiSaveTest">💾 Guardar esta brújula</button></div>';
   var sv = $('ikiSaveTest');
   if (sv) sv.onclick = function () {
     var dd = store();
@@ -417,22 +417,22 @@ function renderFrase() {
   if (viva) {
     var t = fraseTexto(f);
     viva.innerHTML = t
-      ? '<div class="chip" style="display:block;white-space:normal;line-height:1.6;border-color:var(--gold)">🌸 <b>' + esc(t) + '</b>' + (f.fecha ? '<br><span class="muted">vigente desde ' + esc(f.fecha) + '</span>' : '') + '</div>'
-      : '<p class="muted" style="font-size:11px">Tu frase viva aparecerá aquí. Ejemplo: “Mi ikigai de esta luna es amasar pan que abrigue a mi gente, porque amo el horno, sirvo desayunos y avanzo a precio justo”.</p>';
+      ? '<div class="chip su-b20a18">🌸 <b>' + esc(t) + '</b>' + (f.fecha ? '<br><span class="muted">vigente desde ' + esc(f.fecha) + '</span>' : '') + '</div>'
+      : '<p class="muted su-11a508">Tu frase viva aparecerá aquí. Ejemplo: “Mi ikigai de esta luna es amasar pan que abrigue a mi gente, porque amo el horno, sirvo desayunos y avanzo a precio justo”.</p>';
   }
   var h = $('ikiFraseHist');
   if (h) {
     var hist = (f.historia || []).slice().reverse().slice(0, 10);
     h.innerHTML = hist.length ? hist.map(function (r) {
-      return '<div class="hora-item" style="align-items:flex-start"><span style="font-size:11px"><b>' + esc(r.fecha || '') + '</b><br>' + esc(r.texto || '') + '</span></div>';
-    }).join('') : '<p class="muted" style="font-size:11px">Sin versiones guardadas. Guarda tu primera frase arriba 👆.</p>';
+      return '<div class="hora-item su-0486f7"><span class="su-11a508"><b>' + esc(r.fecha || '') + '</b><br>' + esc(r.texto || '') + '</span></div>';
+    }).join('') : '<p class="muted su-11a508">Sin versiones guardadas. Guarda tu primera frase arriba 👆.</p>';
   }
   var v = $('ikiVigente');
   if (v) {
     var t2 = fraseTexto(f);
     v.innerHTML = t2
-      ? '<div class="chip" style="display:block;white-space:normal;line-height:1.6">🌸 <b>' + esc(t2) + '</b></div><p class="muted" style="font-size:11px;margin-top:6px">Revisa cada luna: ¿sigue vivo? Si cambió, edítalo en 🌸 Mi Ikigai.</p>'
-      : '<p class="muted" style="font-size:11px">Aún sin frase. Ve a 🌸 Mi Ikigai y escribe tu primera versión (vale chica).</p>';
+      ? '<div class="chip su-8c0a82">🌸 <b>' + esc(t2) + '</b></div><p class="muted su-e13d76">Revisa cada luna: ¿sigue vivo? Si cambió, edítalo en 🌸 Mi Ikigai.</p>'
+      : '<p class="muted su-11a508">Aún sin frase. Ve a 🌸 Mi Ikigai y escribe tu primera versión (vale chica).</p>';
   }
 }
 function renderDiario() {
@@ -440,9 +440,9 @@ function renderDiario() {
   if (!box) return;
   var d = store().diario || {};
   var keys = Object.keys(d).sort().reverse().slice(0, 30);
-  if (!keys.length) { box.innerHTML = '<p class="muted" style="font-size:11px;text-align:center">Sin registros. 1 línea al día basta: “hoy mi ikigai fue…”.</p>'; return; }
+  if (!keys.length) { box.innerHTML = '<p class="muted su-e201a8">Sin registros. 1 línea al día basta: “hoy mi ikigai fue…”.</p>'; return; }
   box.innerHTML = keys.map(function (k) {
-    return '<div class="hora-item" style="align-items:flex-start"><span style="font-size:11px"><b>' + esc(k) + '</b><br>' + esc(d[k]) + '</span>' +
+    return '<div class="hora-item su-0486f7"><span class="su-11a508"><b>' + esc(k) + '</b><br>' + esc(d[k]) + '</span>' +
       '<button type="button" class="btn btn-icon iki-dia-del" data-k="' + esc(k) + '">✕</button></div>';
   }).join('');
   box.querySelectorAll('.iki-dia-del').forEach(function (x) {
@@ -453,12 +453,12 @@ function renderHist() {
   var box = $('ikiHistBox');
   if (!box) return;
   var t = store().tests || [];
-  if (!t.length) { box.innerHTML = '<p class="muted" style="font-size:11px">Sin brújulas guardadas. Responde la 🧭 Brújula y pulsa “💾 Guardar”.</p>'; return; }
+  if (!t.length) { box.innerHTML = '<p class="muted su-11a508">Sin brújulas guardadas. Responde la 🧭 Brújula y pulsa “💾 Guardar”.</p>'; return; }
   var meta = { ama: '❤️', bueno: '🌟', mundo: '🌍', pago: '💰' };
   box.innerHTML = t.slice().reverse().slice(0, 10).map(function (r) {
     var s = r.scores || {};
     var txt = ['ama', 'bueno', 'mundo', 'pago'].map(function (k) { return meta[k] + (s[k] == null ? '–' : s[k]); }).join(' · ');
-    return '<div class="hora-item"><span style="font-size:11px"><b>' + esc(r.fecha || '') + '</b> · ' + esc(txt) + '</span>' +
+    return '<div class="hora-item"><span class="su-11a508"><b>' + esc(r.fecha || '') + '</b> · ' + esc(txt) + '</span>' +
       '<button type="button" class="btn btn-icon iki-hist-del" data-id="' + r.id + '">✕</button></div>';
   }).join('');
   box.querySelectorAll('.iki-hist-del').forEach(function (x) {

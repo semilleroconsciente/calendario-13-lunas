@@ -67,10 +67,10 @@ function makeDialog(id, title, sub, bodyHTML) {
   var d = document.createElement('dialog');
   d.id = id;
   d.innerHTML = '<form method="dialog">' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
-    '<h3 style="margin:0;color:var(--accent)">' + title + '</h3>' +
+    '<div class="dlg-actions su-d2d053">' +
+    '<h3 class="su-ee0cfe">' + title + '</h3>' +
     '<button type="button" data-close class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    (sub ? '<p class="muted" style="line-height:1.5">' + sub + '</p>' : '') +
+    (sub ? '<p class="muted su-77e2fe">' + sub + '</p>' : '') +
     bodyHTML +
     '<div class="dlg-actions"><button type="button" data-close class="btn">Cerrar</button></div></form>';
   document.body.appendChild(d);
@@ -152,31 +152,31 @@ function buildDialog() {
   var testsHTML = TESTS.map(function (t, i) {
     var itemsHTML = t.items.map(function (q, j) {
       var opts = t.opts.map(function (o, v) {
-        return '<label style="display:flex;gap:6px;align-items:center;font-size:12px;margin:3px 0;color:var(--text)"><input type="radio" name="t_' + t.id + '_' + j + '" value="' + v + '" style="accent-color:var(--gold)"> ' + esc(o) + '</label>';
+        return '<label class="su-61e399"><input type="radio" name="t_' + t.id + '_' + j + '" value="' + v + '" class="su-df8100"> ' + esc(o) + '</label>';
       }).join('');
-      return '<div class="si-card" style="margin-bottom:8px"><p style="margin-bottom:6px"><b>' + (j + 1) + '.</b> ' + esc(q) + '</p>' + opts + '</div>';
+      return '<div class="si-card su-fdf33f"><p class="su-4e420a"><b>' + (j + 1) + '.</b> ' + esc(q) + '</p>' + opts + '</div>';
     }).join('');
-    return '<div class="menstrual-card" style="margin-bottom:10px"><h4>' + t.ico + ' ' + esc(t.nombre) + '</h4>' +
-      '<p class="muted" style="font-size:11px">' + esc(t.desc) + '</p>' + itemsHTML +
-      '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">' +
-      '<button type="button" class="btn btn-accent psi-tcalc" data-test="' + t.id + '" style="width:auto">Ver mi resultado</button>' +
-      '<button type="button" class="btn psi-treset" data-test="' + t.id + '" style="width:auto">Limpiar</button></div>' +
-      '<div id="res_' + t.id + '" style="margin-top:8px"></div></div>';
+    return '<div class="menstrual-card su-761d3a"><h4>' + t.ico + ' ' + esc(t.nombre) + '</h4>' +
+      '<p class="muted su-11a508">' + esc(t.desc) + '</p>' + itemsHTML +
+      '<div class="su-ac5453">' +
+      '<button type="button" class="btn btn-accent psi-tcalc su-30e741" data-test="' + t.id + '">Ver mi resultado</button>' +
+      '<button type="button" class="btn psi-treset su-30e741" data-test="' + t.id + '">Limpiar</button></div>' +
+      '<div id="res_' + t.id + '" class="su-8a77e5"></div></div>';
   }).join('');
 
   var emoChips = EMOCIONES.map(function (e) {
-    return '<label class="check-row" style="margin:2px 8px 2px 0;font-size:12px"><input type="checkbox" class="psi-emo" value="' + esc(e) + '"> ' + esc(e) + '</label>';
+    return '<label class="check-row su-d16943"><input type="checkbox" class="psi-emo" value="' + esc(e) + '"> ' + esc(e) + '</label>';
   }).join('');
 
   var body =
-    '<div class="timer-tabs" style="margin:12px 0 10px;flex-wrap:wrap">' +
-    '<button type="button" id="tabPsi2Guia" class="btn btn-accent" style="width:auto">🧭 Guía</button>' +
-    '<button type="button" id="tabPsi2Escuelas" class="btn" style="width:auto">🏫 Escuelas</button>' +
-    '<button type="button" id="tabPsi2Herr" class="btn" style="width:auto">🧰 Herramientas</button>' +
-    '<button type="button" id="tabPsi2Tests" class="btn" style="width:auto">📝 Tests</button>' +
-    '<button type="button" id="tabPsi2Proceso" class="btn" style="width:auto">📓 Mi proceso</button></div>' +
+    '<div class="timer-tabs su-f7ad78">' +
+    '<button type="button" id="tabPsi2Guia" class="btn btn-accent su-30e741">🧭 Guía</button>' +
+    '<button type="button" id="tabPsi2Escuelas" class="btn su-30e741">🏫 Escuelas</button>' +
+    '<button type="button" id="tabPsi2Herr" class="btn su-30e741">🧰 Herramientas</button>' +
+    '<button type="button" id="tabPsi2Tests" class="btn su-30e741">📝 Tests</button>' +
+    '<button type="button" id="tabPsi2Proceso" class="btn su-30e741">📓 Mi proceso</button></div>' +
 
-    '<div id="psi2Streak" class="menstrual-card" style="border-color:var(--gold);margin-bottom:10px"></div>' +
+    '<div id="psi2Streak" class="menstrual-card su-39553d"></div>' +
 
     /* GUIA */
     '<div id="psi2Guia">' +
@@ -185,52 +185,52 @@ function buildDialog() {
     '<div class="discipline-card"><h4>🧬 Ramas principales</h4><p>• <b>Clínica:</b> ansiedad, depresión, trauma.<br>• <b>Educacional:</b> aprendizaje y crianza.<br>• <b>Laboral:</b> trabajo y equipos.<br>• <b>Comunitaria:</b> territorio y grupos.<br>• <b>Neuropsicología:</b> cerebro y conducta.<br>• <b>Deportiva:</b> rendimiento y foco.</p></div>' +
     '<div class="discipline-card"><h4>🚫 Mitos que frenan</h4><p>• "Ir al psicólogo es para locos" → es para quien quiere vivir mejor.<br>• "El tiempo lo cura todo" → lo cura el <b>trabajo</b> sobre lo que pasó.<br>• "Ser fuerte es aguantar solo" → pedir ayuda <b>es</b> fortaleza.<br>• "Un test de internet me diagnostica" → solo un profesional diagnostica.</p></div>' +
     '</div>' +
-    '<div class="si-card" style="border-left:3px solid #e76e8a"><h4>🚨 ¿Cuándo pedir ayuda profesional?</h4><p>• Malestar intenso <b>más de 2 semanas</b> o que interfiere con dormir, comer, trabajar o vincularte.<br>• Crisis, autolesión o ideas de no querer vivir → <b>*4141 prevención del suicidio (Chile, 24h, gratis)</b>.<br>• En Penco: <b>CESFAM Penco</b> (hora salud mental), Salud Responde <b>600 360 7777</b>. Violencia: <b>1455</b> · Familia: <b>149</b>.</p></div>' +
+    '<div class="si-card su-7266f7"><h4>🚨 ¿Cuándo pedir ayuda profesional?</h4><p>• Malestar intenso <b>más de 2 semanas</b> o que interfiere con dormir, comer, trabajar o vincularte.<br>• Crisis, autolesión o ideas de no querer vivir → <b>*4141 prevención del suicidio (Chile, 24h, gratis)</b>.<br>• En Penco: <b>CESFAM Penco</b> (hora salud mental), Salud Responde <b>600 360 7777</b>. Violencia: <b>1455</b> · Familia: <b>149</b>.</p></div>' +
     '<div class="si-card"><h4>🗺️ Cómo usar esta sección</h4><p>1) Lee la <b>Guía</b> una vez. 2) Explora 1 <b>Escuela</b> que te resuene. 3) Practica 1 <b>Herramienta</b> 5 min hoy. 4) Cada tanto haz un <b>Test</b> para verte en el tiempo. 5) Registra todo en <b>Mi proceso</b> y relee cada luna: los patrones se ven en el tiempo, no en un día.</p></div>' +
     '</div>' +
 
     /* ESCUELAS */
     '<div id="psi2Escuelas" class="hidden">' +
-    '<input type="search" id="psiEscQ" placeholder="🔍 Buscar escuela... ej: ansiedad, sueños, hábitos" style="display:block;width:100%;margin:0 0 10px;background:var(--card);border:1px solid var(--line);color:var(--text);border-radius:8px;padding:8px">' +
+    '<input type="search" id="psiEscQ" placeholder="🔍 Buscar escuela... ej: ansiedad, sueños, hábitos" class="su-3d4207">' +
     '<div class="discipline-grid" id="psiEscGrid">' + escuelasHTML + '</div></div>' +
 
     /* HERRAMIENTAS */
     '<div id="psi2Herr" class="hidden">' +
-    '<div class="menstrual-card" style="border-color:var(--gold);margin-bottom:10px"><h4>🧠 Registro TCC rápido — pruébalo con algo de hoy</h4>' +
+    '<div class="menstrual-card su-39553d"><h4>🧠 Registro TCC rápido — pruébalo con algo de hoy</h4>' +
     '<div class="conv-row"><label>Situación <input type="text" id="tccSit" placeholder="ej: me corrigieron en el trabajo" maxlength="120"></label></div>' +
     '<div class="conv-row"><label>Pensamiento automático <input type="text" id="tccPen" placeholder="ej: soy un fracaso" maxlength="140"></label>' +
     '<label>Emoción 0-100 <input type="number" id="tccEmo" min="0" max="100" value="60"></label></div>' +
     '<div class="conv-row"><label>Distorsión <select id="tccDis"><option>todo o nada</option><option>catastrofismo</option><option>lectura mental</option><option>"debo / tengo que"</option><option>descalificar lo positivo</option><option>personalización</option></select></label></div>' +
     '<label>Pensamiento alternativo realista <input type="text" id="tccAlt" placeholder="ej: me corrigieron 1 punto de 10 que hago bien; puedo ajustar" maxlength="160"></label>' +
     '<div class="conv-row"><label>Emoción ahora 0-100 <input type="number" id="tccEmo2" min="0" max="100" value="40"></label></div>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="tccSave" class="btn btn-accent" style="width:auto">💾 Guardar registro TCC</button></div></div>' +
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="tccSave" class="btn btn-accent su-30e741">💾 Guardar registro TCC</button></div></div>' +
     herrHTML + '</div>' +
 
     /* TESTS */
     '<div id="psi2Tests" class="hidden">' +
     '<div class="si-card"><h4>📝 Tests de autoconocimiento (screening educativo)</h4><p>No son diagnóstico: son un <b>termómetro</b> para verte en el tiempo. Responde pensando en las últimas 2 semanas (ánimo) o último mes (estrés). Si un resultado te preocupa, conversa con alguien de confianza o pide hora en tu CESFAM.</p></div>' +
     testsHTML +
-    '<div class="menstrual-card"><h4>📊 Mi historial de tests</h4><div id="psiTestsHist" class="habits-list" style="max-height:200px"></div><div class="dlg-actions" style="justify-content:flex-end;margin-top:8px"><button type="button" id="psiTestsClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar tests</button></div></div>' +
+    '<div class="menstrual-card"><h4>📊 Mi historial de tests</h4><div id="psiTestsHist" class="habits-list su-b4992a"></div><div class="dlg-actions su-ded8e2"><button type="button" id="psiTestsClear" class="btn su-214f75">🗑 Borrar tests</button></div></div>' +
     '</div>' +
 
     /* PROCESO */
     '<div id="psi2Proceso" class="hidden">' +
-    '<div class="menstrual-card" style="margin-bottom:10px"><h4>💚 Chequeo de hoy — 1 minuto</h4>' +
+    '<div class="menstrual-card su-761d3a"><h4>💚 Chequeo de hoy — 1 minuto</h4>' +
     '<div class="conv-row"><label>Fecha <input type="date" id="psiFecha"></label></div>' +
-    '<div class="conv-row" style="align-items:center"><label style="flex:1">Ánimo 1-10 <input type="range" id="psiAnimo" min="1" max="10" value="6" style="width:100%"></label><span id="psiAnimoV" class="chip" style="min-width:44px;text-align:center">6</span>' +
-    '<label style="flex:1">Energía 1-10 <input type="range" id="psiEnergia" min="1" max="10" value="6" style="width:100%"></label><span id="psiEnergiaV" class="chip" style="min-width:44px;text-align:center">6</span></div>' +
-    '<p class="muted" style="font-size:11px;margin:6px 0 4px">Emociones presentes (marca las que haya):</p>' +
-    '<div style="display:flex;flex-wrap:wrap">' + emoChips + '</div>' +
-    '<div class="conv-row" style="margin-top:8px"><label>¿Qué lo gatilló? <input type="text" id="psiMotivo" placeholder="ej: dormí mal, discusión, buena noticia" maxlength="100"></label>' +
+    '<div class="conv-row su-7c6197"><label class="su-97445a">Ánimo 1-10 <input type="range" id="psiAnimo" min="1" max="10" value="6" class="su-046678"></label><span id="psiAnimoV" class="chip su-78a96b">6</span>' +
+    '<label class="su-97445a">Energía 1-10 <input type="range" id="psiEnergia" min="1" max="10" value="6" class="su-046678"></label><span id="psiEnergiaV" class="chip su-78a96b">6</span></div>' +
+    '<p class="muted su-db6a1e">Emociones presentes (marca las que haya):</p>' +
+    '<div class="su-2fb621">' + emoChips + '</div>' +
+    '<div class="conv-row su-8a77e5"><label>¿Qué lo gatilló? <input type="text" id="psiMotivo" placeholder="ej: dormí mal, discusión, buena noticia" maxlength="100"></label>' +
     '<label>¿Qué me ayuda? <input type="text" id="psiAyuda" placeholder="ej: caminar, llamar a mi hermana" maxlength="100"></label></div>' +
     '<label>Diario (5 líneas bastan) <textarea id="psiNota" rows="3" placeholder="Hoy noté que... / Me di cuenta de... / Mañana quiero..." maxlength="600"></textarea></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start;flex-wrap:wrap"><button type="button" id="psiCheckSave" class="btn btn-accent" style="width:auto">💾 Guardar chequeo</button>' +
-    '<button type="button" id="psiToNote" class="btn" style="width:auto">📝 Llevar a nota de hoy</button></div></div>' +
-    '<div class="menstrual-card"><h4>📓 Mi diario (últimos 15)</h4><div id="psiLog" class="habits-list" style="max-height:240px"></div>' +
-    '<div class="dlg-actions" style="justify-content:space-between;align-items:center;margin-top:8px"><span id="psiStats" class="muted" style="font-size:11px"></span>' +
-    '<span style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" id="psiShare" class="btn" style="width:auto">📤 Compartir</button>' +
-    '<button type="button" id="psiExport" class="btn" style="width:auto">📥 Exportar</button>' +
-    '<button type="button" id="psiClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar</button></span></div></div>' +
+    '<div class="dlg-actions su-117179"><button type="button" id="psiCheckSave" class="btn btn-accent su-30e741">💾 Guardar chequeo</button>' +
+    '<button type="button" id="psiToNote" class="btn su-30e741">📝 Llevar a nota de hoy</button></div></div>' +
+    '<div class="menstrual-card"><h4>📓 Mi diario (últimos 15)</h4><div id="psiLog" class="habits-list su-5701fb"></div>' +
+    '<div class="dlg-actions su-cc4a4c"><span id="psiStats" class="muted su-11a508"></span>' +
+    '<span class="su-3de8f9"><button type="button" id="psiShare" class="btn su-30e741">📤 Compartir</button>' +
+    '<button type="button" id="psiExport" class="btn su-30e741">📥 Exportar</button>' +
+    '<button type="button" id="psiClear" class="btn su-214f75">🗑 Borrar</button></span></div></div>' +
     '</div>';
 
 
@@ -268,7 +268,7 @@ function renderStreak() {
     }
   } catch (x) {}
   b.innerHTML = '<b>🧠 Racha:</b> ' + streak() + ' días seguidos · <b>' + n + '</b> chequeos · <b>' + nt + '</b> tests' + avg +
-    '<span class="muted" style="font-size:11px"> — relee cada luna para ver patrones</span>';
+    '<span class="muted su-11a508"> — relee cada luna para ver patrones</span>';
 }
 function renderLog() {
   var box = $('psiLog'); if (!box) return;
@@ -277,13 +277,13 @@ function renderLog() {
   box.innerHTML = keys.length ? keys.map(function (k) {
     var d = c[k] || {};
     var emos = (d.emociones || []).join(', ');
-    return '<div class="hora-item" style="align-items:flex-start"><span style="font-size:11px"><b>' + esc(k) + '</b> · ánimo ' + esc(String(d.animo || '-')) + '/10 · energía ' + esc(String(d.energia || '-')) + '/10' +
+    return '<div class="hora-item su-0486f7"><span class="su-11a508"><b>' + esc(k) + '</b> · ánimo ' + esc(String(d.animo || '-')) + '/10 · energía ' + esc(String(d.energia || '-')) + '/10' +
       (emos ? '<br>Emociones: ' + esc(emos) : '') +
       (d.motivo ? '<br>Gatilló: ' + esc(d.motivo) : '') +
       (d.ayuda ? '<br>Ayuda: ' + esc(d.ayuda) : '') +
       (d.nota ? '<br>' + esc(d.nota) : '') + '</span>' +
       '<button type="button" class="btn btn-icon psi-daydel" data-k="' + esc(k) + '">✕</button></div>';
-  }).join('') : '<p class="muted" style="font-size:11px;text-align:center">Sin chequeos. Guarda el primero arriba: 1 minuto.</p>';
+  }).join('') : '<p class="muted su-e201a8">Sin chequeos. Guarda el primero arriba: 1 minuto.</p>';
   box.querySelectorAll('.psi-daydel').forEach(function (x) {
     x.onclick = function () { var e = store(); delete e.checks[x.dataset.k]; save(); renderStreak(); renderLog(); };
   });
@@ -293,9 +293,9 @@ function renderTestsHist() {
   var box = $('psiTestsHist'); if (!box) return;
   var t = (store().tests || []).slice().reverse().slice(0, 12);
   box.innerHTML = t.length ? t.map(function (r) {
-    return '<div class="hora-item"><span style="font-size:11px"><b>' + esc(r.fecha) + '</b> · ' + esc(r.nombre) + ': <b>' + esc(String(r.puntaje)) + '</b> — ' + esc(r.nivel) + '</span>' +
+    return '<div class="hora-item"><span class="su-11a508"><b>' + esc(r.fecha) + '</b> · ' + esc(r.nombre) + ': <b>' + esc(String(r.puntaje)) + '</b> — ' + esc(r.nivel) + '</span>' +
       '<button type="button" class="btn btn-icon psi-tdel" data-k="' + esc(r.id) + '">✕</button></div>';
-  }).join('') : '<p class="muted" style="font-size:11px;text-align:center">Sin tests aún. Responde uno arriba.</p>';
+  }).join('') : '<p class="muted su-e201a8">Sin tests aún. Responde uno arriba.</p>';
   box.querySelectorAll('.psi-tdel').forEach(function (x) {
     x.onclick = function () { var e = store(); e.tests = (e.tests || []).filter(function (r) { return r.id !== x.dataset.k; }); save(); renderStreak(); renderTestsHist(); };
   });
@@ -464,9 +464,9 @@ function setup() {
       if (!def) return;
       var r = calcTest(def);
       var box = $('res_' + def.id);
-      if (!r.ok) { if (box) box.innerHTML = '<p class="muted" style="font-size:12px">Responde todas las preguntas para ver tu resultado.</p>'; return; }
+      if (!r.ok) { if (box) box.innerHTML = '<p class="muted su-6cb285">Responde todas las preguntas para ver tu resultado.</p>'; return; }
       var lvl = typeof r.puntaje === 'number' ? def.interp(r.puntaje) : r.nivel;
-      if (box) box.innerHTML = '<div class="si-card" style="border-color:var(--gold)"><h4>Resultado: ' + esc(String(r.puntaje)) + '</h4><p>' + esc(lvl) + '</p><p class="muted" style="font-size:11px">Educativo, no diagnóstico. Si te preocupa, conversa con alguien de confianza o pide hora en tu CESFAM.</p></div>';
+      if (box) box.innerHTML = '<div class="si-card su-68a1a9"><h4>Resultado: ' + esc(String(r.puntaje)) + '</h4><p>' + esc(lvl) + '</p><p class="muted su-11a508">Educativo, no diagnóstico. Si te preocupa, conversa con alguien de confianza o pide hora en tu CESFAM.</p></div>';
       var e = store();
       e.tests.push({ id: uid('pt'), fecha: todayKey(), tipo: def.id, nombre: def.nombre, puntaje: r.puntaje, nivel: (typeof r.puntaje === 'number' ? lvl : 'perfil por rasgos'), respuestas: r.vals || [] });
       save('Test guardado ✓'); renderStreak(); renderTestsHist();

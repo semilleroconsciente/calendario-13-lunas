@@ -21,11 +21,11 @@
     box.setAttribute('role', 'dialog');
     box.setAttribute('aria-label', 'Guía inicial paso ' + (step + 1) + ' de ' + STEPS.length);
     box.style.cssText = 'position:fixed;z-index:99998;left:50%;bottom:18px;transform:translateX(-50%);max-width:min(440px,92vw);background:#161e3f;border:1px solid #e8c56a55;border-radius:12px;padding:14px 16px;color:#e8ecff;font-family:system-ui;box-shadow:0 8px 30px #000a';
-    box.innerHTML = '<div style="font-size:40px;line-height:1;text-align:center" aria-hidden="true"></div><b></b><p style="font-size:13px;line-height:1.5;margin:8px 0 12px"></p>' +
-      '<div style="display:flex;gap:8px;justify-content:space-between;align-items:center">' +
-      '<span class="muted" style="font-size:11px"></span>' +
-      '<span style="display:flex;gap:8px"><button class="btn" data-a="skip" style="width:auto">Omitir</button>' +
-      '<button class="btn btn-accent" data-a="next" style="width:auto"></button></span></div>';
+    box.innerHTML = '<div class="su-5f8763" aria-hidden="true"></div><b></b><p class="su-829f7d"></p>' +
+      '<div class="su-1ef9ff">' +
+      '<span class="muted su-11a508"></span>' +
+      '<span class="su-a76d59"><button class="btn su-30e741" data-a="skip">Omitir</button>' +
+      '<button class="btn btn-accent su-30e741" data-a="next"></button></span></div>';
     box.querySelector('div').textContent = s.i || '🧭';
     box.querySelector('b').textContent = s.t;
     box.querySelector('p').textContent = s.d;

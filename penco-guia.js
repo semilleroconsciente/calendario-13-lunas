@@ -259,7 +259,7 @@ var HISTORIA_PENCO = {
   fuentes: 'Fuentes: Sociedad de Historia de Penco (historiadepenco.cl) · Museo Hist. Nat. Concepción (Formación Quiriquina, Biró 1982, Stinnesbeck) · Repositorio UdeC (CRAV, Cosmito, Cerro Alto) · Bustos y Vergara Chungara 2004 (30 conchales, Arcaico 4.580 a.p.) · Torres et al. 2007 (Playa Negra 9) · Museo Precolombino (Pitrén–El Vergel) · Villagrán / Premoli et al. 2019 (refugio Costa) · Resumen.cl “Penco, historia e industria” · Wikipedia “Penco” · memoria caleta Lirquén.'
 };
 
-function chip(t) { return '<span class="chip" style="font-size:10px">' + esc(t) + '</span>'; }
+function chip(t) { return '<span class="chip su-0d5be0">' + esc(t) + '</span>'; }
 
 /* ---------- RENDER: GUIA (sin historia) ---------- */
 function renderGuiaPenco() {
@@ -267,23 +267,23 @@ function renderGuiaPenco() {
   if (!box) return;
   var g = dynGuia();
   var html = '';
-  html += '<p class="muted" style="font-size:11px;line-height:1.55">' + g.marco + '</p>';
-  html += '<div class="menstrual-card" style="margin-top:10px"><h4>🧭 Límites comunales</h4>' +
-    '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px">' +
+  html += '<p class="muted su-b6db47">' + g.marco + '</p>';
+  html += '<div class="menstrual-card su-d2c171"><h4>🧭 Límites comunales</h4>' +
+    '<div class="su-2c76a2">' +
     g.limites.map(function (l) { return '<span class="chip"><b>' + esc(l.p) + ':</b> ' + esc(l.v) + '</span>'; }).join('') + '</div>' +
-    '<p class="muted" style="font-size:11px;line-height:1.55">' + g.limitesNota + '</p></div>';
-  html += '<div class="menstrual-card" style="margin-top:10px"><h4>📍 Lugares de interés</h4>' +
+    '<p class="muted su-b6db47">' + g.limitesNota + '</p></div>';
+  html += '<div class="menstrual-card su-d2c171"><h4>📍 Lugares de interés</h4>' +
     g.lugares.map(function (l) {
-      return '<div class="si-card" style="padding:8px 10px"><h4 style="font-size:12px">📍 ' + esc(l.n) + '</h4><p style="font-size:11px">' + l.d + '</p></div>';
+      return '<div class="si-card su-cfa1ec"><h4 class="su-6cb285">📍 ' + esc(l.n) + '</h4><p class="su-11a508">' + l.d + '</p></div>';
     }).join('') +
-    '<p class="muted" style="font-size:10px;margin-top:6px">Guía básica en crecimiento: para mareas, pesca, aves e intermareal usa las secciones 🌊 Territorio.</p></div>';
-  html += '<div class="menstrual-card" style="margin-top:10px"><h4>🏘️ Sectores de la comuna · ' + g.sectores.length + '</h4>' +
-    '<p class="muted" style="font-size:11px">Cada sector ya tiene su ficha con historia e hitos en la pestaña <b>🏘️ Sectores</b>, donde además puedes sumar tus relatos.</p>' +
+    '<p class="muted su-d47a97">Guía básica en crecimiento: para mareas, pesca, aves e intermareal usa las secciones 🌊 Territorio.</p></div>';
+  html += '<div class="menstrual-card su-d2c171"><h4>🏘️ Sectores de la comuna · ' + g.sectores.length + '</h4>' +
+    '<p class="muted su-11a508">Cada sector ya tiene su ficha con historia e hitos en la pestaña <b>🏘️ Sectores</b>, donde además puedes sumar tus relatos.</p>' +
     g.sectores.map(function (s) {
-      return '<details class="menstrual-details"><summary>' + esc(s.n) + ' <span class="muted" style="font-size:11px">· ' + s.items.length + '</span></summary>' +
-        '<p class="muted" style="font-size:11px">' + esc(s.d) + '</p>' +
-        '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">' + s.items.map(chip).join('') + '</div></details>';
-    }).join('') + '<div class="dlg-actions" style="justify-content:flex-start;margin-top:6px"><button type="button" id="guiaGoSect2" class="btn" style="width:auto;font-size:11px">🏘️ Ir a Sectores e historias</button></div></div>';
+      return '<details class="menstrual-details"><summary>' + esc(s.n) + ' <span class="muted su-11a508">· ' + s.items.length + '</span></summary>' +
+        '<p class="muted su-11a508">' + esc(s.d) + '</p>' +
+        '<div class="su-c158a9">' + s.items.map(chip).join('') + '</div></details>';
+    }).join('') + '<div class="dlg-actions su-8a0a91"><button type="button" id="guiaGoSect2" class="btn su-337714">🏘️ Ir a Sectores e historias</button></div></div>';
   box.innerHTML = html;
   var go = $('guiaGoHist');
   if (go) go.onclick = function () { try { switchGuiaTab('historia'); } catch (e) {} };
@@ -298,14 +298,14 @@ function renderHistoriaPenco() {
   var box = $('comunaHistoriaPanel');
   if (!box) return;
   var h = dynHistoria();
-  var html = '<p class="muted" style="font-size:11px;line-height:1.55">' + h.intro + '</p>';
+  var html = '<p class="muted su-b6db47">' + h.intro + '</p>';
   html += h.eras.map(function (e, i) {
     return '<div class="menstrual-card" style="margin-top:10px' + (i === 0 ? ';border-color:var(--gold)' : '') + '">' +
       '<h4>' + esc(e.t) + '</h4>' +
-      '<p class="muted" style="font-size:10px;margin:2px 0 6px">' + esc(e.cuando) + '</p>' +
-      '<p style="font-size:12px;line-height:1.55">' + e.d + '</p></div>';
+      '<p class="muted su-2c4c6c">' + esc(e.cuando) + '</p>' +
+      '<p class="su-afb724">' + e.d + '</p></div>';
   }).join('');
-  html += '<p class="muted" style="font-size:10px;margin-top:8px">' + esc(h.fuentes) + '</p>';
+  html += '<p class="muted su-a953a7">' + esc(h.fuentes) + '</p>';
   box.innerHTML = html;
 }
 
@@ -327,13 +327,13 @@ function shareTxt(t, x) {
   } catch (e) {}
 }
 function relatoCard(r) {
-  var html = '<div class="si-card" style="padding:8px 10px;border-color:#d4af3766"><h4 style="font-size:12px">' + esc(r.icon || '📖') + ' ' + esc(r.titulo) + '</h4>' +
-    '<p class="muted" style="font-size:10px">' + esc(r.tipo) + ' · ' + esc(sectorNombre(r.sector)) + (r.quien ? ' · ' + esc(r.quien) : '') + (r.anio ? ' · ~' + esc(r.anio) : '') + '</p>' +
-    (r.texto ? '<p style="font-size:11px;white-space:pre-wrap">' + esc(r.texto) + '</p>' : '') +
-    '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">' +
-    '<button type="button" class="btn" data-secedit="' + r.id + '" style="width:auto;font-size:11px">✏️ Editar</button>' +
-    '<button type="button" class="btn" data-secshare="' + r.id + '" style="width:auto;font-size:11px">📤 Compartir</button>' +
-    '<button type="button" class="btn" data-secdel="' + r.id + '" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕ Borrar</button></div></div>';
+  var html = '<div class="si-card su-bd0a4f"><h4 class="su-6cb285">' + esc(r.icon || '📖') + ' ' + esc(r.titulo) + '</h4>' +
+    '<p class="muted su-0d5be0">' + esc(r.tipo) + ' · ' + esc(sectorNombre(r.sector)) + (r.quien ? ' · ' + esc(r.quien) : '') + (r.anio ? ' · ~' + esc(r.anio) : '') + '</p>' +
+    (r.texto ? '<p class="su-4dbc08">' + esc(r.texto) + '</p>' : '') +
+    '<div class="su-c158a9">' +
+    '<button type="button" class="btn su-337714" data-secedit="' + r.id + '">✏️ Editar</button>' +
+    '<button type="button" class="btn su-337714" data-secshare="' + r.id + '">📤 Compartir</button>' +
+    '<button type="button" class="btn su-fd834a" data-secdel="' + r.id + '">✕ Borrar</button></div></div>';
   return html;
 }
 function bindRelatos(scope) {
@@ -373,25 +373,25 @@ function renderSectores() {
   var SECT = dynSectores();
   var todos = getSectorRelatos();
   var q = (sectorQuery || '').toLowerCase();
-  var html = '<p class="muted" style="font-size:11px;line-height:1.55">Todos los sectores en <b>' + SECT.length + ' fichas</b>: lo que se sabe + lo que tú sabes. Agrega <b>relatos, historias, hitos, oficios y fiestas</b> de tu barrio: quedan <b>privados en tu dispositivo</b>.</p>';
+  var html = '<p class="muted su-b6db47">Todos los sectores en <b>' + SECT.length + ' fichas</b>: lo que se sabe + lo que tú sabes. Agrega <b>relatos, historias, hitos, oficios y fiestas</b> de tu barrio: quedan <b>privados en tu dispositivo</b>.</p>';
   /* buscador + filtro */
-  html += '<div class="menstrual-card"><h4>🔍 Buscar en sectores</h4><div class="conv-row"><label style="flex:2">Buscar <input type="text" id="secSearch" placeholder="ej: CRAV, carbón, caleta, 1960..." maxlength="60" autocomplete="off" value="' + esc(sectorQuery) + '"></label>' +
+  html += '<div class="menstrual-card"><h4>🔍 Buscar en sectores</h4><div class="conv-row"><label class="su-4b3de7">Buscar <input type="text" id="secSearch" placeholder="ej: CRAV, carbón, caleta, 1960..." maxlength="60" autocomplete="off" value="' + esc(sectorQuery) + '"></label>' +
     '<label>Ver <select id="secFilter"><option value="todos">Todos</option>' +
     SECT.map(function (s) { return '<option value="' + s.id + '"' + (sectorFiltro === s.id ? ' selected' : '') + '>' + esc(s.n) + '</option>'; }).join('') +
     '<option value="mios"' + (sectorFiltro === 'mios' ? ' selected' : '') + '>⭐ Solo mis relatos (' + todos.length + ')</option></select></label></div></div>';
   /* formulario */
-  html += '<div class="menstrual-card" style="margin-top:10px;border-color:var(--gold)"><h4>➕ Agregar relato, historia o hito del sector</h4>' +
-    '<div class="conv-row"><label style="flex:2">Sector * <select id="secSector">' +
+  html += '<div class="menstrual-card su-51d56a"><h4>➕ Agregar relato, historia o hito del sector</h4>' +
+    '<div class="conv-row"><label class="su-4b3de7">Sector * <select id="secSector">' +
     SECT.map(function (s) { return '<option value="' + s.id + '">' + esc(s.n) + '</option>'; }).join('') + '</select></label>' +
     '<label>Tipo <select id="secTipo">' + SECTOR_TIPOS.map(function (t) { return '<option>' + esc(t) + '</option>'; }).join('') + '</select></label></div>' +
     '<label>Título * <input type="text" id="secTitulo" placeholder="ej: La panadería de mi abuelo en Penco Chico" maxlength="70"></label>' +
     '<label>Relato / historia / hito <textarea id="secTexto" rows="3" placeholder="¿Qué pasó? ¿Quiénes? ¿Cuándo? Nombres, calles, años, olores, sonidos..." maxlength="1000"></textarea></label>' +
     '<div class="conv-row"><label>Quién cuenta <input type="text" id="secQuien" placeholder="ej: Rosa, vecina de Cerro Verde" maxlength="40"></label>' +
-    '<label>Año aprox. <input type="text" id="secAnio" placeholder="ej: 1978" maxlength="12" style="width:110px"></label></div>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="secAddBtn" class="btn btn-accent" style="width:auto">+ Guardar en mi sector</button>' +
-    '<button type="button" id="secCancelBtn" class="btn hidden" style="width:auto">Cancelar</button>' +
-    '<button type="button" id="secExportBtn" class="btn" style="width:auto">📤 Exportar mis relatos</button></div>' +
-    '<p class="muted" style="font-size:10px">Se guarda solo en tu usuario. “Hito” = fecha/lugar verificable; “Relato” = memoria viva aunque no tenga fecha exacta.</p></div>';
+    '<label>Año aprox. <input type="text" id="secAnio" placeholder="ej: 1978" maxlength="12" class="su-607468"></label></div>' +
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="secAddBtn" class="btn btn-accent su-30e741">+ Guardar en mi sector</button>' +
+    '<button type="button" id="secCancelBtn" class="btn hidden su-30e741">Cancelar</button>' +
+    '<button type="button" id="secExportBtn" class="btn su-30e741">📤 Exportar mis relatos</button></div>' +
+    '<p class="muted su-0d5be0">Se guarda solo en tu usuario. “Hito” = fecha/lugar verificable; “Relato” = memoria viva aunque no tenga fecha exacta.</p></div>';
   /* fichas */
   SECT.forEach(function (s) {
     if (sectorFiltro !== 'todos' && sectorFiltro !== 'mios' && sectorFiltro !== s.id) return;
@@ -400,21 +400,21 @@ function renderSectores() {
     var textoPlano = (s.n + ' ' + s.historia + ' ' + s.barrios.join(' ') + ' ' + s.hitos.map(function (h) { return h.f + ' ' + h.t; }).join(' ')).toLowerCase();
     var miosPlano = mios.map(function (r) { return (r.titulo + ' ' + r.texto + ' ' + (r.quien || '')).toLowerCase(); }).join(' ');
     if (q && textoPlano.indexOf(q) < 0 && miosPlano.indexOf(q) < 0) return;
-    html += '<div class="menstrual-card" style="margin-top:10px"><h4>' + esc(s.n) + ' <span class="muted" style="font-size:11px">· ' + s.barrios.length + ' barrios · ' + mios.length + ' míos</span></h4>' +
-      '<p style="font-size:12px;line-height:1.55">' + s.historia + '</p>' +
-      '<div style="display:flex;gap:6px;flex-wrap:wrap;margin:6px 0">' + s.barrios.map(function (b) { return '<span class="chip" style="font-size:10px">' + esc(b) + '</span>'; }).join('') + '</div>' +
-      '<div style="margin-top:6px">' + s.hitos.map(function (h) { return '<p style="font-size:11px;margin:3px 0">📌 <b>' + esc(h.f) + '</b> — ' + esc(h.t) + '</p>'; }).join('') + '</div>';
+    html += '<div class="menstrual-card su-d2c171"><h4>' + esc(s.n) + ' <span class="muted su-11a508">· ' + s.barrios.length + ' barrios · ' + mios.length + ' míos</span></h4>' +
+      '<p class="su-afb724">' + s.historia + '</p>' +
+      '<div class="su-38c0a4">' + s.barrios.map(function (b) { return '<span class="chip su-0d5be0">' + esc(b) + '</span>'; }).join('') + '</div>' +
+      '<div class="su-fe7b49">' + s.hitos.map(function (h) { return '<p class="su-9a1ec9">📌 <b>' + esc(h.f) + '</b> — ' + esc(h.t) + '</p>'; }).join('') + '</div>';
     if (mios.length) {
-      html += '<div style="margin-top:8px"><p class="muted" style="font-size:11px">⭐ Mis relatos aquí (' + mios.length + '):</p>' + mios.map(relatoCard).join('') + '</div>';
+      html += '<div class="su-8a77e5"><p class="muted su-11a508">⭐ Mis relatos aquí (' + mios.length + '):</p>' + mios.map(relatoCard).join('') + '</div>';
     } else if (sectorFiltro === 'mios') {
       html += '';
     } else {
-      html += '<p class="muted" style="font-size:11px;margin-top:6px">Aún no agregas relatos aquí. ¡Sé la primera memoria de este sector! 👆</p>';
+      html += '<p class="muted su-e13d76">Aún no agregas relatos aquí. ¡Sé la primera memoria de este sector! 👆</p>';
     }
     html += '</div>';
   });
   if (sectorFiltro === 'mios' && !todos.length) html += '<p class="muted">Aún no tienes relatos. Agrega el primero arriba.</p>';
-  html += '<p class="muted" style="font-size:10px;margin-top:8px">Fichas oficiales: Sociedad de Historia de Penco · Museo Hist. Nat. Concepción (Quiriquina) · Bustos y Vergara 2004 · Torres et al. 2007 · memoria caletas y barrios. Tus relatos son tuyos y no se suben a ningún servidor.</p>';
+  html += '<p class="muted su-a953a7">Fichas oficiales: Sociedad de Historia de Penco · Museo Hist. Nat. Concepción (Quiriquina) · Bustos y Vergara 2004 · Torres et al. 2007 · memoria caletas y barrios. Tus relatos son tuyos y no se suben a ningún servidor.</p>';
   box.innerHTML = html;
   bindRelatos(box);
   var ss = $('secSearch');

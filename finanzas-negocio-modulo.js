@@ -142,105 +142,105 @@ function ensureDialog() {
   }).join('');
   d.innerHTML =
     '<form method="dialog">' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
-    '<h3 style="margin:0;color:var(--accent)">💼 Finanzas de mi Negocio</h3>' +
+    '<div class="dlg-actions su-d2d053">' +
+    '<h3 class="su-ee0cfe">💼 Finanzas de mi Negocio</h3>' +
     '<button type="button" id="bizCloseTop" class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    '<p class="muted" style="line-height:1.5">Cuentas del <b>negocio separadas de la casa</b>. Todo queda <b>privado y local</b> por usuario. Revisa tu utilidad por <b>mes y por luna de 28 días</b>.</p>' +
-    '<div id="bizHoyBox" class="menstrual-card" style="border-color:var(--gold)"></div>' +
-    '<div class="timer-tabs" style="margin:10px 0;flex-wrap:wrap">' +
-    '<button type="button" id="tabBizResumen" class="btn btn-accent" style="width:auto">📊 Resumen</button>' +
-    '<button type="button" id="tabBizMov" class="btn" style="width:auto">💸 Movimientos</button>' +
-    '<button type="button" id="tabBizProd" class="btn" style="width:auto">🏷️ Productos y precios</button>' +
-    '<button type="button" id="tabBizDeuda" class="btn" style="width:auto">🧾 Deudas y metas</button>' +
-    '<button type="button" id="tabBizGuia" class="btn" style="width:auto">📖 Guía</button>' +
+    '<p class="muted su-77e2fe">Cuentas del <b>negocio separadas de la casa</b>. Todo queda <b>privado y local</b> por usuario. Revisa tu utilidad por <b>mes y por luna de 28 días</b>.</p>' +
+    '<div id="bizHoyBox" class="menstrual-card su-68a1a9"></div>' +
+    '<div class="timer-tabs su-ca7e11">' +
+    '<button type="button" id="tabBizResumen" class="btn btn-accent su-30e741">📊 Resumen</button>' +
+    '<button type="button" id="tabBizMov" class="btn su-30e741">💸 Movimientos</button>' +
+    '<button type="button" id="tabBizProd" class="btn su-30e741">🏷️ Productos y precios</button>' +
+    '<button type="button" id="tabBizDeuda" class="btn su-30e741">🧾 Deudas y metas</button>' +
+    '<button type="button" id="tabBizGuia" class="btn su-30e741">📖 Guía</button>' +
     '</div>' +
     /* RESUMEN */
     '<div id="bizPanelResumen">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🏪 Mi negocio</h4>' +
-    '<div class="conv-row"><label style="flex:2">Nombre * <input type="text" id="bizNombre" placeholder="ej: Amasandería La Luna, Taller Penco" maxlength="50"></label>' +
+    '<div class="menstrual-card su-68a1a9"><h4>🏪 Mi negocio</h4>' +
+    '<div class="conv-row"><label class="su-4b3de7">Nombre * <input type="text" id="bizNombre" placeholder="ej: Amasandería La Luna, Taller Penco" maxlength="50"></label>' +
     '<label>Rubro <select id="bizRubro">' + RUBROS.map(function (r) { return '<option>' + esc(r) + '</option>'; }).join('') + '</select></label></div>' +
     '<div class="conv-row"><label>Meta ventas mes $ <input type="number" id="bizMeta" min="0" step="1000" placeholder="ej: 500000"></label>' +
     '<label>Costos fijos mes $ <input type="number" id="bizFijos" min="0" step="1000" placeholder="arriendo+luz+sueldos base"></label></div>' +
-    '<p class="muted" style="font-size:11px">Costos fijos = lo que pagas aunque no vendas (arriendo, luz, internet, sueldo base). Sirve para tu punto de equilibrio.</p>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="bizPerfilSave" class="btn btn-accent" style="width:auto">💾 Guardar perfil</button></div></div>' +
-    '<div id="bizResumenBox" style="margin-top:10px"></div>' +
-    '<div id="bizLunaBox" class="menstrual-card" style="margin-top:10px"></div>' +
-    '<div id="bizCatBox" class="menstrual-card" style="margin-top:10px"></div>' +
-    '<div class="menstrual-card" style="margin-top:10px;border-color:var(--gold)"><h4>🧮 Calculadora rápida de precio</h4>' +
+    '<p class="muted su-11a508">Costos fijos = lo que pagas aunque no vendas (arriendo, luz, internet, sueldo base). Sirve para tu punto de equilibrio.</p>' +
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="bizPerfilSave" class="btn btn-accent su-30e741">💾 Guardar perfil</button></div></div>' +
+    '<div id="bizResumenBox" class="su-d2c171"></div>' +
+    '<div id="bizLunaBox" class="menstrual-card su-d2c171"></div>' +
+    '<div id="bizCatBox" class="menstrual-card su-d2c171"></div>' +
+    '<div class="menstrual-card su-51d56a"><h4>🧮 Calculadora rápida de precio</h4>' +
     '<div class="conv-row"><label>Costo total $ <input type="number" id="bizCalcCosto" min="0" step="100" placeholder="insumos+hora+gastos"></label>' +
     '<label>Margen deseado % <input type="number" id="bizCalcMargen" min="0" max="95" value="40"></label>' +
-    '<label class="check-row" style="align-self:flex-end"><input type="checkbox" id="bizCalcIva" checked> + IVA 19%</label></div>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="bizCalcBtn" class="btn btn-accent" style="width:auto">Calcular precio</button></div>' +
-    '<div id="bizCalcOut" class="chip" style="display:block;white-space:normal;margin-top:8px">Pon tu costo y margen para ver el precio sugerido.</div></div>' +
+    '<label class="check-row su-ffd20f"><input type="checkbox" id="bizCalcIva" checked> + IVA 19%</label></div>' +
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="bizCalcBtn" class="btn btn-accent su-30e741">Calcular precio</button></div>' +
+    '<div id="bizCalcOut" class="chip su-7600c4">Pon tu costo y margen para ver el precio sugerido.</div></div>' +
     '</div>' +
     /* MOVIMIENTOS */
     '<div id="bizPanelMov" class="hidden">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>➕ Nuevo movimiento del negocio</h4>' +
+    '<div class="menstrual-card su-68a1a9"><h4>➕ Nuevo movimiento del negocio</h4>' +
     '<div class="conv-row"><label>Fecha <input type="date" id="bizDate"></label>' +
     '<label>Tipo <select id="bizTipo"><option value="ingreso">💰 Ingreso (venta)</option><option value="egreso">💸 Egreso (gasto/costo)</option></select></label>' +
     '<label>Categoría <select id="bizCat"></select></label></div>' +
-    '<div class="conv-row"><label style="flex:1">Monto $ <input type="number" id="bizMonto" min="0" step="100" placeholder="ej: 15000"></label>' +
+    '<div class="conv-row"><label class="su-97445a">Monto $ <input type="number" id="bizMonto" min="0" step="100" placeholder="ej: 15000"></label>' +
     '<label>Método <select id="bizMetodo">' + METODOS.map(function (m) { return '<option>' + esc(m) + '</option>'; }).join('') + '</select></label>' +
     '<label>Documento <select id="bizDoc">' + DOCS.map(function (m) { return '<option>' + esc(m) + '</option>'; }).join('') + '</select></label></div>' +
     '<label>Cliente / Proveedor <input type="text" id="bizContra" placeholder="ej: Feria Plaza, Marta (pedido), Proveedor harina" maxlength="50"></label>' +
     '<label>Detalle <input type="text" id="bizDesc" placeholder="ej: 20 panes + 2 kuchen, compra harina 10kg" maxlength="80"></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="bizAdd" class="btn btn-accent" style="width:auto">+ Guardar</button>' +
-    '<button type="button" id="bizUpdate" class="btn hidden" style="width:auto">↻ Actualizar</button>' +
-    '<button type="button" id="bizCancelEdit" class="btn hidden" style="width:auto">Cancelar</button></div></div>' +
-    '<div class="conv-row" style="margin-top:10px"><label style="flex:2">🔍 Buscar <input type="text" id="bizFilter" placeholder="detalle, cliente, categoría..." autocomplete="off"></label>' +
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="bizAdd" class="btn btn-accent su-30e741">+ Guardar</button>' +
+    '<button type="button" id="bizUpdate" class="btn hidden su-30e741">↻ Actualizar</button>' +
+    '<button type="button" id="bizCancelEdit" class="btn hidden su-30e741">Cancelar</button></div></div>' +
+    '<div class="conv-row su-d2c171"><label class="su-4b3de7">🔍 Buscar <input type="text" id="bizFilter" placeholder="detalle, cliente, categoría..." autocomplete="off"></label>' +
     '<label>Mes <input type="month" id="bizMonthFilter"></label></div>' +
-    '<div id="bizListBox" class="habits-list" style="margin-top:10px;max-height:300px"></div>' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-top:8px"><span id="bizStats" class="muted" style="font-size:11px"></span>' +
-    '<span style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" id="bizExport" class="btn" style="width:auto">📥 CSV</button>' +
-    '<button type="button" id="bizShare" class="btn" style="width:auto">📤 Compartir</button>' +
-    '<button type="button" id="bizClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar mes</button></span></div>' +
+    '<div id="bizListBox" class="habits-list su-e50587"></div>' +
+    '<div class="dlg-actions su-efea1d"><span id="bizStats" class="muted su-11a508"></span>' +
+    '<span class="su-3de8f9"><button type="button" id="bizExport" class="btn su-30e741">📥 CSV</button>' +
+    '<button type="button" id="bizShare" class="btn su-30e741">📤 Compartir</button>' +
+    '<button type="button" id="bizClear" class="btn su-214f75">🗑 Borrar mes</button></span></div>' +
     '</div>' +
     /* PRODUCTOS */
     '<div id="bizPanelProd" class="hidden">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>➕ Producto / Servicio</h4>' +
-    '<div class="conv-row"><label style="flex:2">Nombre * <input type="text" id="bizProdNombre" placeholder="ej: Pan amasado c/u, Corte + barba" maxlength="50"></label>' +
+    '<div class="menstrual-card su-68a1a9"><h4>➕ Producto / Servicio</h4>' +
+    '<div class="conv-row"><label class="su-4b3de7">Nombre * <input type="text" id="bizProdNombre" placeholder="ej: Pan amasado c/u, Corte + barba" maxlength="50"></label>' +
     '<label>Tipo <select id="bizProdTipo"><option>Producto</option><option>Servicio</option><option>Pack / Promo</option></select></label></div>' +
     '<div class="conv-row"><label>Costo $ <input type="number" id="bizProdCosto" min="0" step="50" placeholder="cuánto te cuesta"></label>' +
     '<label>Precio venta $ <input type="number" id="bizProdPrecio" min="0" step="50" placeholder="a cuánto lo vendes"></label>' +
     '<label>Stock <input type="number" id="bizProdStock" min="0" step="1" placeholder="opcional"></label></div>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="bizProdSave" class="btn btn-accent" style="width:auto">+ Guardar</button>' +
-    '<button type="button" id="bizProdCancel" class="btn hidden" style="width:auto">Cancelar</button></div>' +
-    '<p class="muted" style="font-size:11px">Margen = (precio − costo) / precio. Si es menor a 30%, revisa tu precio con la calculadora del Resumen.</p></div>' +
-    '<div id="bizProdStats" class="menstrual-card" style="margin-top:10px"></div>' +
-    '<div id="bizProdList" style="margin-top:10px"></div>' +
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="bizProdSave" class="btn btn-accent su-30e741">+ Guardar</button>' +
+    '<button type="button" id="bizProdCancel" class="btn hidden su-30e741">Cancelar</button></div>' +
+    '<p class="muted su-11a508">Margen = (precio − costo) / precio. Si es menor a 30%, revisa tu precio con la calculadora del Resumen.</p></div>' +
+    '<div id="bizProdStats" class="menstrual-card su-d2c171"></div>' +
+    '<div id="bizProdList" class="su-d2c171"></div>' +
     '</div>' +
     /* DEUDAS Y METAS */
     '<div id="bizPanelDeuda" class="hidden">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>➕ Cuenta por cobrar / pagar</h4>' +
+    '<div class="menstrual-card su-68a1a9"><h4>➕ Cuenta por cobrar / pagar</h4>' +
     '<div class="conv-row"><label>Tipo <select id="bizDeudaTipo"><option value="cobrar">📥 Por cobrar (me deben)</option><option value="pagar">📤 Por pagar (yo debo)</option></select></label>' +
-    '<label style="flex:2">Contraparte * <input type="text" id="bizDeudaQuien" placeholder="ej: Marta pedido torta, Proveedor harina" maxlength="50"></label></div>' +
+    '<label class="su-4b3de7">Contraparte * <input type="text" id="bizDeudaQuien" placeholder="ej: Marta pedido torta, Proveedor harina" maxlength="50"></label></div>' +
     '<div class="conv-row"><label>Total $ <input type="number" id="bizDeudaTotal" min="0" step="100"></label>' +
     '<label>Abonado $ <input type="number" id="bizDeudaPagado" min="0" step="100" value="0"></label>' +
     '<label>Fecha <input type="date" id="bizDeudaFecha"></label></div>' +
     '<label>Nota <input type="text" id="bizDeudaNota" placeholder="ej: saldo feria, 50% anticipo" maxlength="80"></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="bizDeudaSave" class="btn btn-accent" style="width:auto">+ Guardar</button>' +
-    '<button type="button" id="bizDeudaCancel" class="btn hidden" style="width:auto">Cancelar</button></div></div>' +
-    '<div id="bizDeudaList" style="margin-top:10px"></div>' +
-    '<div class="menstrual-card" style="margin-top:10px;border-color:var(--gold)"><h4>🎯 Meta del negocio</h4>' +
-    '<div class="conv-row"><label style="flex:2">Meta * <input type="text" id="bizMetaNombre" placeholder="ej: Fondo emergencia, Horno nuevo, IVA guardado" maxlength="50"></label>' +
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="bizDeudaSave" class="btn btn-accent su-30e741">+ Guardar</button>' +
+    '<button type="button" id="bizDeudaCancel" class="btn hidden su-30e741">Cancelar</button></div></div>' +
+    '<div id="bizDeudaList" class="su-d2c171"></div>' +
+    '<div class="menstrual-card su-51d56a"><h4>🎯 Meta del negocio</h4>' +
+    '<div class="conv-row"><label class="su-4b3de7">Meta * <input type="text" id="bizMetaNombre" placeholder="ej: Fondo emergencia, Horno nuevo, IVA guardado" maxlength="50"></label>' +
     '<label>Monto $ <input type="number" id="bizMetaMonto" min="0" step="1000"></label></div>' +
     '<div class="conv-row"><label>Ahorrado $ <input type="number" id="bizMetaTiene" min="0" step="100" value="0"></label>' +
     '<label>Fecha objetivo <input type="date" id="bizMetaFecha"></label></div>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="bizMetaSave" class="btn btn-accent" style="width:auto">+ Guardar meta</button>' +
-    '<button type="button" id="bizMetaCancel" class="btn hidden" style="width:auto">Cancelar</button></div></div>' +
-    '<div id="bizMetaList" style="margin-top:10px"></div>' +
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="bizMetaSave" class="btn btn-accent su-30e741">+ Guardar meta</button>' +
+    '<button type="button" id="bizMetaCancel" class="btn hidden su-30e741">Cancelar</button></div></div>' +
+    '<div id="bizMetaList" class="su-d2c171"></div>' +
     '</div>' +
     /* GUIA */
     '<div id="bizPanelGuia" class="hidden">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4 style="color:var(--gold)">📖 Guía emprendedora — Penco y Chile</h4>' +
-    '<p class="muted" style="font-size:11px">No es asesoría profesional: son hábitos que funcionan. Para dudas tributarias ve a SII.cl, DIDECO o Fomento Productivo de Penco (gratis).</p></div>' +
-    '<div class="discipline-grid" style="margin-top:10px">' + guiaHTML + '</div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>⚠️ 5 errores que funden emprendimientos</h4><div class="help-grid" style="margin-top:6px">' + errHTML + '</div></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>🔗 Conecta tus otras secciones</h4>' +
-    '<p class="muted" style="font-size:11px">🏪 Economía Local: crea tu ficha para que te encuentren. 🪙 Moneda Social: acepta parte en moneda en ferias. 💰 Finanzas personales: tu "sueldo" del negocio entra ahí como ingreso.</p>' +
-    '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px"><button type="button" id="bizGoEco" class="btn" style="width:auto;font-size:11px">🏪 Economía Local</button>' +
-    '<button type="button" id="bizGoMoneda" class="btn" style="width:auto;font-size:11px">🪙 Moneda Social</button>' +
-    '<button type="button" id="bizGoFin" class="btn" style="width:auto;font-size:11px">💰 Finanzas personales</button></div></div>' +
+    '<div class="menstrual-card su-68a1a9"><h4 class="su-e39eba">📖 Guía emprendedora — Penco y Chile</h4>' +
+    '<p class="muted su-11a508">No es asesoría profesional: son hábitos que funcionan. Para dudas tributarias ve a SII.cl, DIDECO o Fomento Productivo de Penco (gratis).</p></div>' +
+    '<div class="discipline-grid su-d2c171">' + guiaHTML + '</div>' +
+    '<div class="menstrual-card su-d2c171"><h4>⚠️ 5 errores que funden emprendimientos</h4><div class="help-grid su-fe7b49">' + errHTML + '</div></div>' +
+    '<div class="menstrual-card su-d2c171"><h4>🔗 Conecta tus otras secciones</h4>' +
+    '<p class="muted su-11a508">🏪 Economía Local: crea tu ficha para que te encuentren. 🪙 Moneda Social: acepta parte en moneda en ferias. 💰 Finanzas personales: tu "sueldo" del negocio entra ahí como ingreso.</p>' +
+    '<div class="su-bab623"><button type="button" id="bizGoEco" class="btn su-337714">🏪 Economía Local</button>' +
+    '<button type="button" id="bizGoMoneda" class="btn su-337714">🪙 Moneda Social</button>' +
+    '<button type="button" id="bizGoFin" class="btn su-337714">💰 Finanzas personales</button></div></div>' +
     '</div>' +
     '<div class="dlg-actions"><button type="button" id="bizClose" class="btn">Cerrar</button></div></form>';
   document.body.appendChild(d);
@@ -276,9 +276,9 @@ function paintHoy() {
     var tk = todayKey();
     var hoyIng = s.movs.filter(function (e) { return e.date === tk && e.tipo === 'ingreso'; }).reduce(function (a, x) { return a + (parseInt(x.monto, 10) || 0); }, 0);
     var nom = s.perfil.nombre ? esc(s.perfil.nombre) : 'Mi negocio (ponle nombre en Resumen)';
-    b.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px"><span><b>💼 ' + nom + '</b></span>' +
+    b.innerHTML = '<div class="su-49710b"><span><b>💼 ' + nom + '</b></span>' +
       '<span class="chip" style="border-color:' + (t.util >= 0 ? '#8fd69455' : '#e76e8a55') + ';color:' + (t.util >= 0 ? '#8fd694' : '#e76e8a') + '">Utilidad ' + mk + ': ' + fmtCLP(t.util) + '</span></div>' +
-      '<p class="muted" style="font-size:11px;margin:4px 0 0">' + s.movs.length + ' movimiento(s) · ' + s.productos.length + ' producto(s) · Hoy ingresado: <b>' + fmtCLP(hoyIng) + '</b>' +
+      '<p class="muted su-954796">' + s.movs.length + ' movimiento(s) · ' + s.productos.length + ' producto(s) · Hoy ingresado: <b>' + fmtCLP(hoyIng) + '</b>' +
       (s.perfil.metaMensual ? ' · Meta ' + fmtCLP(s.perfil.metaMensual) : '') + '</p>';
   } catch (e) {}
 }
@@ -300,19 +300,19 @@ function paintResumen() {
   var equilibrio = (fijos && margenProm > 0) ? Math.round(fijos / margenProm) : (fijos ? 0 : 0);
   var colU = t.util >= 0 ? '#8fd694' : '#e76e8a';
   box.innerHTML =
-    '<div class="menstrual-card" style="background:linear-gradient(135deg,var(--panel),var(--card))">' +
-    '<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px"><span style="font-size:15px"><b>📊 Balance ' + esc(mk) + '</b></span>' +
+    '<div class="menstrual-card su-0a5cce">' +
+    '<div class="su-083eb7"><span class="su-de0080"><b>📊 Balance ' + esc(mk) + '</b></span>' +
     '<span class="chip" style="background:' + colU + ';color:#10142c">Utilidad ' + fmtCLP(t.util) + ' · margen ' + margen + '%</span></div>' +
-    '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px">' +
-    '<div class="chip" style="text-align:center"><span class="muted" style="font-size:10px">Ingresos</span><br><b style="color:#8fd694">' + fmtCLP(t.ing) + '</b></div>' +
-    '<div class="chip" style="text-align:center"><span class="muted" style="font-size:10px">Egresos</span><br><b style="color:#e8a06a">' + fmtCLP(t.egr) + '</b></div>' +
-    '<div class="chip" style="text-align:center"><span class="muted" style="font-size:10px">Movimientos</span><br><b>' + list.length + '</b></div></div>' +
-    (meta ? '<div style="margin-top:8px"><div style="display:flex;justify-content:space-between;font-size:11px"><span class="muted">Meta ventas ' + fmtCLP(meta) + ' · Llevas ' + fmtCLP(t.ing) + ' (' + avMeta + '%)</span><span style="color:' + (avMeta >= 100 ? '#8fd694' : '#e8c56a') + ';font-weight:700">' + (avMeta >= 100 ? '¡Meta lograda! 🎉' : 'En camino') + '</span></div>' +
-    '<div style="margin-top:4px;background:var(--panel);border-radius:6px;height:10px;overflow:hidden"><div style="width:' + Math.min(100, avMeta) + '%;height:100%;background:linear-gradient(90deg,#e8c56a,#8fd694)"></div></div></div>'
-      : '<p class="muted" style="font-size:11px;margin-top:6px">Pon tu meta de ventas del mes arriba para ver tu avance.</p>') +
-    (fijos ? '<p class="muted" style="font-size:11px;margin-top:6px">⚖️ Punto de equilibrio: con fijos de <b>' + fmtCLP(fijos) + '</b> ' +
+    '<div class="su-d85a2b">' +
+    '<div class="chip su-91a870"><span class="muted su-0d5be0">Ingresos</span><br><b class="su-752b1a">' + fmtCLP(t.ing) + '</b></div>' +
+    '<div class="chip su-91a870"><span class="muted su-0d5be0">Egresos</span><br><b class="su-bee171">' + fmtCLP(t.egr) + '</b></div>' +
+    '<div class="chip su-91a870"><span class="muted su-0d5be0">Movimientos</span><br><b>' + list.length + '</b></div></div>' +
+    (meta ? '<div class="su-8a77e5"><div class="su-dd0575"><span class="muted">Meta ventas ' + fmtCLP(meta) + ' · Llevas ' + fmtCLP(t.ing) + ' (' + avMeta + '%)</span><span style="color:' + (avMeta >= 100 ? '#8fd694' : '#e8c56a') + ';font-weight:700">' + (avMeta >= 100 ? '¡Meta lograda! 🎉' : 'En camino') + '</span></div>' +
+    '<div class="su-3425a2"><div style="width:' + Math.min(100, avMeta) + '%;height:100%;background:linear-gradient(90deg,#e8c56a,#8fd694)"></div></div></div>'
+      : '<p class="muted su-e13d76">Pon tu meta de ventas del mes arriba para ver tu avance.</p>') +
+    (fijos ? '<p class="muted su-e13d76">⚖️ Punto de equilibrio: con fijos de <b>' + fmtCLP(fijos) + '</b> ' +
       (equilibrio ? 'debes vender <b>' + fmtCLP(equilibrio) + '</b> para empatar este mes.' : 'aún sin margen positivo para calcularlo (vende con margen).') + '</p>'
-      : '<p class="muted" style="font-size:11px;margin-top:6px">Anota tus costos fijos arriba y te digo cuánto vender para empatar.</p>') +
+      : '<p class="muted su-e13d76">Anota tus costos fijos arriba y te digo cuánto vender para empatar.</p>') +
     '</div>';
   /* luna */
   var lb = $('bizLunaBox');
@@ -326,12 +326,12 @@ function paintResumen() {
         var lt = totals(le);
         var avg = le.length ? Math.round(lt.ing / 28) : 0;
         var mNombre = (typeof MOONS !== 'undefined' && MOONS[cur.luna - 1]) ? MOONS[cur.luna - 1].nombre : '';
-        lb.innerHTML = '<h4 style="color:var(--accent)">🌙 Luna ' + cur.luna + ' · ' + esc(mNombre) + ' — 28 días</h4>' +
-          '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:6px">' +
-          '<div class="chip" style="text-align:center"><span class="muted" style="font-size:10px">Ingresos luna</span><br><b style="color:#8fd694">' + fmtCLP(lt.ing) + '</b></div>' +
-          '<div class="chip" style="text-align:center"><span class="muted" style="font-size:10px">Egresos luna</span><br><b style="color:#e8a06a">' + fmtCLP(lt.egr) + '</b></div>' +
-          '<div class="chip" style="text-align:center"><span class="muted" style="font-size:10px">Promedio venta/día</span><br><b>' + fmtCLP(avg) + '</b></div></div>' +
-          '<p class="muted" style="font-size:11px;margin-top:6px">' + le.length + ' movimientos en esta luna · Utilidad ' + fmtCLP(lt.util) + ' ' + (lt.util >= 0 ? '😊' : '⚠️') + '</p>';
+        lb.innerHTML = '<h4 class="su-a80552">🌙 Luna ' + cur.luna + ' · ' + esc(mNombre) + ' — 28 días</h4>' +
+          '<div class="su-b022fe">' +
+          '<div class="chip su-91a870"><span class="muted su-0d5be0">Ingresos luna</span><br><b class="su-752b1a">' + fmtCLP(lt.ing) + '</b></div>' +
+          '<div class="chip su-91a870"><span class="muted su-0d5be0">Egresos luna</span><br><b class="su-bee171">' + fmtCLP(lt.egr) + '</b></div>' +
+          '<div class="chip su-91a870"><span class="muted su-0d5be0">Promedio venta/día</span><br><b>' + fmtCLP(avg) + '</b></div></div>' +
+          '<p class="muted su-e13d76">' + le.length + ' movimientos en esta luna · Utilidad ' + fmtCLP(lt.util) + ' ' + (lt.util >= 0 ? '😊' : '⚠️') + '</p>';
       }
     } catch (e) {}
   }
@@ -339,17 +339,17 @@ function paintResumen() {
   var cb = $('bizCatBox');
   if (cb) {
     var egrs = list.filter(function (e) { return e.tipo === 'egreso'; });
-    if (!egrs.length) { cb.innerHTML = '<h4 style="color:var(--accent)">📊 Egresos por categoría — ' + esc(mk) + '</h4><p class="muted">Sin egresos este mes.</p>'; }
+    if (!egrs.length) { cb.innerHTML = '<h4 class="su-a80552">📊 Egresos por categoría — ' + esc(mk) + '</h4><p class="muted">Sin egresos este mes.</p>'; }
     else {
       var byC = {};
       egrs.forEach(function (e) { byC[e.categoria] = (byC[e.categoria] || 0) + (parseInt(e.monto, 10) || 0); });
       var sorted = Object.keys(byC).map(function (k) { return [k, byC[k]]; }).sort(function (a, b) { return b[1] - a[1]; });
       var totG = sorted.reduce(function (a, x) { return a + x[1]; }, 0);
-      cb.innerHTML = '<h4 style="color:var(--accent)">📊 Egresos por categoría — ' + esc(mk) + ' (' + fmtCLP(totG) + ')</h4>' +
+      cb.innerHTML = '<h4 class="su-a80552">📊 Egresos por categoría — ' + esc(mk) + ' (' + fmtCLP(totG) + ')</h4>' +
         sorted.map(function (row) {
           var pct = totG ? Math.round(row[1] / totG * 100) : 0;
-          return '<div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px"><span style="font-size:12px">' + esc(row[0]) + ' <span class="muted" style="font-size:11px">' + fmtCLP(row[1]) + ' · ' + pct + '%</span></span>' +
-            '<span style="flex:1;margin:0 8px;background:var(--panel);border-radius:6px;height:8px;overflow:hidden;display:inline-block;max-width:140px"><span style="display:block;width:' + pct + '%;height:100%;background:linear-gradient(90deg,#e8c56a,#e8a06a)"></span></span></div>';
+          return '<div class="su-1c6200"><span class="su-6cb285">' + esc(row[0]) + ' <span class="muted su-11a508">' + fmtCLP(row[1]) + ' · ' + pct + '%</span></span>' +
+            '<span class="su-b9cbf7"><span style="display:block;width:' + pct + '%;height:100%;background:linear-gradient(90deg,#e8c56a,#e8a06a)"></span></span></div>';
         }).join('');
     }
   }
@@ -370,9 +370,9 @@ function paintMovs() {
     var sign = e.tipo === 'ingreso' ? '+' : '−';
     return '<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center;border-left:3px solid ' + col + '">' +
       '<span><b style="color:' + col + '">' + (e.tipo === 'ingreso' ? '💰 ' : '💸 ') + sign + fmtCLP(e.monto) + '</b> — ' + esc(e.categoria) + ' · ' + esc(e.metodo || '') + '<br>' +
-      '<span class="muted" style="font-size:11px">' + esc(e.date) + ' ' + esc(lunaTxt(e.date)) + (e.contra ? ' · ' + esc(e.contra) : '') + (e.doc && e.doc !== 'Sin documento' ? ' · 🧾 ' + esc(e.doc) : '') + (e.desc ? ' · ' + esc(e.desc) : '') + '</span></span>' +
-      '<span style="display:flex;gap:6px;flex:0 0 auto"><button data-id="' + e.id + '" class="btn biz-mov-edit" style="width:auto;font-size:11px">✏️</button>' +
-      '<button data-id="' + e.id + '" class="btn biz-mov-del" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕</button></span></div>';
+      '<span class="muted su-11a508">' + esc(e.date) + ' ' + esc(lunaTxt(e.date)) + (e.contra ? ' · ' + esc(e.contra) : '') + (e.doc && e.doc !== 'Sin documento' ? ' · 🧾 ' + esc(e.doc) : '') + (e.desc ? ' · ' + esc(e.desc) : '') + '</span></span>' +
+      '<span class="su-0c0cb1"><button data-id="' + e.id + '" class="btn biz-mov-edit su-337714">✏️</button>' +
+      '<button data-id="' + e.id + '" class="btn biz-mov-del su-fd834a">✕</button></span></div>';
   }).join('');
   if (st) { var t = totals(list); st.textContent = list.length + ' mov. · Ing ' + fmtCLP(t.ing) + ' · Egr ' + fmtCLP(t.egr) + ' · Util ' + fmtCLP(t.util); }
   box.querySelectorAll('.biz-mov-edit').forEach(function (b) {
@@ -413,18 +413,18 @@ function paintProds() {
   var avg = Math.round(ms.reduce(function (a, x) { return a + x.pct; }, 0) / ms.length);
   var stockVal = s.productos.reduce(function (a, p) { return a + ((Number(p.precio) || 0) * (Number(p.stock) || 0)); }, 0);
   stats.innerHTML = '<h4>📦 Tu catálogo · ' + s.productos.length + '</h4>' +
-    '<p class="muted" style="font-size:11px">Margen promedio <b>' + avg + '%</b> · Valor inventario (precio × stock) <b>' + fmtCLP(stockVal) + '</b></p>';
+    '<p class="muted su-11a508">Margen promedio <b>' + avg + '%</b> · Valor inventario (precio × stock) <b>' + fmtCLP(stockVal) + '</b></p>';
   box.innerHTML = s.productos.map(function (p) {
     var mg = prodMargin(p);
     var col = mg.pct >= 40 ? '#8fd694' : (mg.pct >= 25 ? '#e8c56a' : '#e76e8a');
     var conIva = Math.round((Number(p.precio) || 0) * 1.19);
-    return '<div class="si-card" style="padding:10px 12px"><h4 style="font-size:13px">🏷️ ' + esc(p.nombre) + ' <span class="chip" style="font-size:10px">' + esc(p.tipo || 'Producto') + '</span></h4>' +
-      '<p style="font-size:12px">Costo ' + fmtCLP(p.costo) + ' · Precio ' + fmtCLP(p.precio) + ' (c/IVA ' + fmtCLP(conIva) + ') · <b style="color:' + col + '">Margen ' + fmtCLP(mg.m) + ' (' + mg.pct + '%)</b>' +
+    return '<div class="si-card su-2285bd"><h4 class="su-5e0faa">🏷️ ' + esc(p.nombre) + ' <span class="chip su-0d5be0">' + esc(p.tipo || 'Producto') + '</span></h4>' +
+      '<p class="su-6cb285">Costo ' + fmtCLP(p.costo) + ' · Precio ' + fmtCLP(p.precio) + ' (c/IVA ' + fmtCLP(conIva) + ') · <b style="color:' + col + '">Margen ' + fmtCLP(mg.m) + ' (' + mg.pct + '%)</b>' +
       ((p.stock !== '' && p.stock !== null && p.stock !== undefined) ? ' · Stock ' + esc(String(p.stock)) : '') + '</p>' +
-      '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">' +
-      '<button type="button" class="btn btn-accent" data-prod-vender="' + p.id + '" style="width:auto;font-size:11px">💰 Registrar venta</button>' +
-      '<button type="button" class="btn" data-prod-edit="' + p.id + '" style="width:auto;font-size:11px">✏️</button>' +
-      '<button type="button" class="btn" data-prod-del="' + p.id + '" style="width:auto;font-size:11px;color:#e76e8a">✕</button></div></div>';
+      '<div class="su-c158a9">' +
+      '<button type="button" class="btn btn-accent su-337714" data-prod-vender="' + p.id + '">💰 Registrar venta</button>' +
+      '<button type="button" class="btn su-337714" data-prod-edit="' + p.id + '">✏️</button>' +
+      '<button type="button" class="btn su-9b8fb7" data-prod-del="' + p.id + '">✕</button></div></div>';
   }).join('');
   box.querySelectorAll('[data-prod-del]').forEach(function (b) {
     b.onclick = function () {
@@ -462,7 +462,7 @@ function paintDeudasMetas() {
   var dl = $('bizDeudaList'), ml = $('bizMetaList');
   var s = store();
   if (dl) {
-    if (!s.deudas.length) dl.innerHTML = '<p class="muted" style="font-size:11px">Sin cuentas registradas. Anota tus fiados y tus deudas para no perder plata.</p>';
+    if (!s.deudas.length) dl.innerHTML = '<p class="muted su-11a508">Sin cuentas registradas. Anota tus fiados y tus deudas para no perder plata.</p>';
     else {
       var cob = 0, pag = 0;
       dl.innerHTML = '<div class="menstrual-card"><h4>🧾 Cuentas · ' + s.deudas.length + '</h4>' + s.deudas.slice().sort(function (a, b) { return String(a.fecha || '').localeCompare(String(b.fecha || '')); }).map(function (d2) {
@@ -471,13 +471,13 @@ function paintDeudasMetas() {
         var pct = tot ? Math.min(100, Math.round(ab / tot * 100)) : 0;
         var done = saldo <= 0;
         return '<div class="habit-item" style="border-left:3px solid ' + (d2.tipo === 'cobrar' ? '#8fd694' : '#e8a06a') + '">' +
-          '<span><b>' + (d2.tipo === 'cobrar' ? '📥 ' : '📤 ') + esc(d2.quien || '') + '</b> · Saldo <b>' + fmtCLP(saldo) + '</b> <span class="muted" style="font-size:11px">de ' + fmtCLP(tot) + ' (' + pct + '% pagado)' + (d2.fecha ? ' · ' + esc(d2.fecha) : '') + (d2.nota ? ' · ' + esc(d2.nota) : '') + (done ? ' · ✅ saldada' : '') + '</span></span>' +
-          '<span style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">' +
-          (done ? '' : '<button type="button" class="btn btn-accent" data-deuda-abono="' + d2.id + '" style="width:auto;font-size:11px">+ Abono</button>') +
-          '<button type="button" class="btn" data-deuda-edit="' + d2.id + '" style="width:auto;font-size:11px">✏️</button>' +
-          '<button type="button" class="btn" data-deuda-del="' + d2.id + '" style="width:auto;font-size:11px;color:#e76e8a">✕</button></span></div>';
+          '<span><b>' + (d2.tipo === 'cobrar' ? '📥 ' : '📤 ') + esc(d2.quien || '') + '</b> · Saldo <b>' + fmtCLP(saldo) + '</b> <span class="muted su-11a508">de ' + fmtCLP(tot) + ' (' + pct + '% pagado)' + (d2.fecha ? ' · ' + esc(d2.fecha) : '') + (d2.nota ? ' · ' + esc(d2.nota) : '') + (done ? ' · ✅ saldada' : '') + '</span></span>' +
+          '<span class="su-c158a9">' +
+          (done ? '' : '<button type="button" class="btn btn-accent su-337714" data-deuda-abono="' + d2.id + '">+ Abono</button>') +
+          '<button type="button" class="btn su-337714" data-deuda-edit="' + d2.id + '">✏️</button>' +
+          '<button type="button" class="btn su-9b8fb7" data-deuda-del="' + d2.id + '">✕</button></span></div>';
       }).join('') +
-        '<p class="muted" style="font-size:11px;margin-top:6px">Te deben <b>' + fmtCLP(cob) + '</b> · Debes <b>' + fmtCLP(pag) + '</b></p></div>';
+        '<p class="muted su-e13d76">Te deben <b>' + fmtCLP(cob) + '</b> · Debes <b>' + fmtCLP(pag) + '</b></p></div>';
       dl.querySelectorAll('[data-deuda-del]').forEach(function (b) {
         b.onclick = function () {
           if (!confirm('¿Borrar esta cuenta?')) return;
@@ -512,17 +512,17 @@ function paintDeudasMetas() {
     }
   }
   if (ml) {
-    if (!s.metas.length) ml.innerHTML = '<p class="muted" style="font-size:11px">Sin metas aún. Crea la primera: fondo de emergencia de 1 mes de fijos.</p>';
+    if (!s.metas.length) ml.innerHTML = '<p class="muted su-11a508">Sin metas aún. Crea la primera: fondo de emergencia de 1 mes de fijos.</p>';
     else {
       ml.innerHTML = '<div class="menstrual-card"><h4>🎯 Metas · ' + s.metas.length + '</h4>' + s.metas.map(function (m) {
         var tot = Number(m.monto) || 0, tie = Number(m.tiene) || 0;
         var pct = tot ? Math.min(100, Math.round(tie / tot * 100)) : 0;
-        return '<div class="habit-item"><span><b>🎯 ' + esc(m.nombre) + '</b> <span class="muted" style="font-size:11px">' + fmtCLP(tie) + ' de ' + fmtCLP(tot) + ' (' + pct + '%)' + (m.fecha ? ' · 🎯 ' + esc(m.fecha) : '') + '</span>' +
-          '<span style="display:block;margin-top:4px;background:var(--panel);border-radius:6px;height:8px;overflow:hidden"><span style="display:block;width:' + pct + '%;height:100%;background:linear-gradient(90deg,#e8c56a,#8fd694)"></span></span></span>' +
-          '<span style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">' +
-          '<button type="button" class="btn btn-accent" data-meta-abono="' + m.id + '" style="width:auto;font-size:11px">+ Abonar</button>' +
-          '<button type="button" class="btn" data-meta-edit="' + m.id + '" style="width:auto;font-size:11px">✏️</button>' +
-          '<button type="button" class="btn" data-meta-del="' + m.id + '" style="width:auto;font-size:11px;color:#e76e8a">✕</button></span></div>';
+        return '<div class="habit-item"><span><b>🎯 ' + esc(m.nombre) + '</b> <span class="muted su-11a508">' + fmtCLP(tie) + ' de ' + fmtCLP(tot) + ' (' + pct + '%)' + (m.fecha ? ' · 🎯 ' + esc(m.fecha) : '') + '</span>' +
+          '<span class="su-4fe1f8"><span style="display:block;width:' + pct + '%;height:100%;background:linear-gradient(90deg,#e8c56a,#8fd694)"></span></span></span>' +
+          '<span class="su-c158a9">' +
+          '<button type="button" class="btn btn-accent su-337714" data-meta-abono="' + m.id + '">+ Abonar</button>' +
+          '<button type="button" class="btn su-337714" data-meta-edit="' + m.id + '">✏️</button>' +
+          '<button type="button" class="btn su-9b8fb7" data-meta-del="' + m.id + '">✕</button></span></div>';
       }).join('') + '</div>';
       ml.querySelectorAll('[data-meta-del]').forEach(function (b) {
         b.onclick = function () {
@@ -629,7 +629,7 @@ function wireOnce() {
     var precio = costo / (1 - mg / 100);
     var final = conIva ? precio * 1.19 : precio;
     if (out) out.innerHTML = '💡 Precio sugerido: <b>' + fmtCLP(Math.ceil(final / 10) * 10) + '</b>' +
-      ' <span class="muted" style="font-size:11px">(base ' + fmtCLP(Math.round(precio)) + (conIva ? ' + IVA 19%' : ' sin IVA') + ' · ganas ' + fmtCLP(Math.round(precio - costo)) + ' por venta)</span>';
+      ' <span class="muted su-11a508">(base ' + fmtCLP(Math.round(precio)) + (conIva ? ' + IVA 19%' : ' sin IVA') + ' · ganas ' + fmtCLP(Math.round(precio - costo)) + ' por venta)</span>';
   };
   /* movimientos */
   var ts = $('bizTipo');

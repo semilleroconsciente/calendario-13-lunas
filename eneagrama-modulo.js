@@ -64,10 +64,10 @@ function makeDialog(id, title, sub, bodyHTML) {
   var d = document.createElement('dialog');
   d.id = id;
   d.innerHTML = '<form method="dialog">' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
-    '<h3 style="margin:0;color:var(--accent)">' + title + '</h3>' +
+    '<div class="dlg-actions su-d2d053">' +
+    '<h3 class="su-ee0cfe">' + title + '</h3>' +
     '<button type="button" data-close class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    (sub ? '<p class="muted" style="line-height:1.5">' + sub + '</p>' : '') +
+    (sub ? '<p class="muted su-77e2fe">' + sub + '</p>' : '') +
     bodyHTML +
     '<div class="dlg-actions"><button type="button" data-close class="btn">Cerrar</button></div></form>';
   document.body.appendChild(d);
@@ -271,89 +271,89 @@ var ENE_GUIA_LUNAS = [
    ============================================================ */
 function buildDialog() {
   var tiposGrid = ENE_TIPOS.map(function (t) {
-    return '<button type="button" class="btn ene-tipo-card" data-tipo="' + t.n + '" style="text-align:left;height:auto;padding:10px">' +
+    return '<button type="button" class="btn ene-tipo-card su-1c48e1" data-tipo="' + t.n + '">' +
       '<b>' + t.icon + ' ' + t.n + ' · ' + esc(t.nombre) + '</b><br>' +
-      '<span class="muted" style="font-size:11px">' + esc(t.alias) + ' · ' + esc(t.centro.split('·')[0].trim()) + '</span></button>';
+      '<span class="muted su-11a508">' + esc(t.alias) + ' · ' + esc(t.centro.split('·')[0].trim()) + '</span></button>';
   }).join('');
 
   var testHTML = ENE_TEST.map(function (q, i) {
     var opts = ENE_LIKERT.map(function (o) {
-      return '<label class="check-row" style="margin:0;font-size:12px"><input type="radio" name="eneQ' + i + '" value="' + o.v + '"> ' + o.t + '</label>';
+      return '<label class="check-row su-a16b97"><input type="radio" name="eneQ' + i + '" value="' + o.v + '"> ' + o.t + '</label>';
     }).join('');
-    return '<div class="menstrual-card" style="margin-bottom:8px"><b style="font-size:12px">' + (i + 1) + '. ' + esc(q.txt) + '</b>' +
-      '<span class="muted" style="font-size:10px"> · tipo ' + q.t + ' (oculto al responder, visible al corregir)</span>' +
-      '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:6px">' + opts + '</div></div>';
+    return '<div class="menstrual-card su-fdf33f"><b class="su-6cb285">' + (i + 1) + '. ' + esc(q.txt) + '</b>' +
+      '<span class="muted su-0d5be0"> · tipo ' + q.t + ' (oculto al responder, visible al corregir)</span>' +
+      '<div class="su-8fd176">' + opts + '</div></div>';
   }).join('');
 
   var body =
-    '<div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">' +
-    '<button type="button" id="tabEneGuia" class="btn btn-accent" style="width:auto">📖 ¿Qué es?</button>' +
-    '<button type="button" id="tabEneTipos" class="btn" style="width:auto">🔢 9 Tipos</button>' +
-    '<button type="button" id="tabEneTest" class="btn" style="width:auto">📝 Test (36)</button>' +
-    '<button type="button" id="tabEneSub" class="btn" style="width:auto">🔥 Subtipos</button>' +
-    '<button type="button" id="tabEneCamino" class="btn" style="width:auto">🌱 Mi camino</button></div>' +
+    '<div class="timer-tabs su-4dca21">' +
+    '<button type="button" id="tabEneGuia" class="btn btn-accent su-30e741">📖 ¿Qué es?</button>' +
+    '<button type="button" id="tabEneTipos" class="btn su-30e741">🔢 9 Tipos</button>' +
+    '<button type="button" id="tabEneTest" class="btn su-30e741">📝 Test (36)</button>' +
+    '<button type="button" id="tabEneSub" class="btn su-30e741">🔥 Subtipos</button>' +
+    '<button type="button" id="tabEneCamino" class="btn su-30e741">🌱 Mi camino</button></div>' +
 
     /* GUIA */
     '<div id="eneGuia">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>⭘ ¿Qué es el Eneagrama?</h4>' +
-    '<p class="muted" style="font-size:12px;line-height:1.6">El <b>Eneagrama</b> (“dibujo de 9”) es un mapa de la personalidad: describe <b>9 formas de ver el mundo</b>, cada una con un miedo, un deseo y una estrategia que se armó en la infancia para sentirse seguro y amado. <b>No te encierra en una caja: te muestra la caja en la que ya estás</b> para que puedas salir.</p>' +
-    '<p class="muted" style="font-size:12px;line-height:1.6">La figura es un círculo con 9 puntos unidos por flechas. Cada punto es un <b>eneatipo</b> (del 1 al 9, sin jerarquía: ninguno es mejor). Lo que importa no es lo que haces, sino <b>por qué lo haces</b>: dos personas pueden ayudar (E2 por amor, E1 por deber, E3 por imagen).</p></div>' +
-    '<div class="fishing-grid" style="margin-top:10px">' +
+    '<div class="menstrual-card su-68a1a9"><h4>⭘ ¿Qué es el Eneagrama?</h4>' +
+    '<p class="muted su-616df7">El <b>Eneagrama</b> (“dibujo de 9”) es un mapa de la personalidad: describe <b>9 formas de ver el mundo</b>, cada una con un miedo, un deseo y una estrategia que se armó en la infancia para sentirse seguro y amado. <b>No te encierra en una caja: te muestra la caja en la que ya estás</b> para que puedas salir.</p>' +
+    '<p class="muted su-616df7">La figura es un círculo con 9 puntos unidos por flechas. Cada punto es un <b>eneatipo</b> (del 1 al 9, sin jerarquía: ninguno es mejor). Lo que importa no es lo que haces, sino <b>por qué lo haces</b>: dos personas pueden ayudar (E2 por amor, E1 por deber, E3 por imagen).</p></div>' +
+    '<div class="fishing-grid su-d2c171">' +
     '<div class="menstrual-card"><h4>🧭 Los 3 centros</h4>' +
-    '<p class="muted" style="font-size:12px"><b>Víscera (8-9-1) · tema: ira.</b> Deciden con el cuerpo: control, territorio, justicia. Ira: el 8 la explota, el 9 la duerme, el 1 la contiene.</p>' +
-    '<p class="muted" style="font-size:12px"><b>Corazón (2-3-4) · tema: vergüenza.</b> Deciden con la imagen: vínculo, éxito, identidad. Vergüenza: el 2 la tapa ayudando, el 3 rindiendo, el 4 hundiéndose.</p>' +
-    '<p class="muted" style="font-size:12px"><b>Cabeza (5-6-7) · tema: miedo.</b> Deciden con la mente: análisis, seguridad, opciones. Miedo: el 5 se esconde, el 6 duda, el 7 huye.</p></div>' +
+    '<p class="muted su-6cb285"><b>Víscera (8-9-1) · tema: ira.</b> Deciden con el cuerpo: control, territorio, justicia. Ira: el 8 la explota, el 9 la duerme, el 1 la contiene.</p>' +
+    '<p class="muted su-6cb285"><b>Corazón (2-3-4) · tema: vergüenza.</b> Deciden con la imagen: vínculo, éxito, identidad. Vergüenza: el 2 la tapa ayudando, el 3 rindiendo, el 4 hundiéndose.</p>' +
+    '<p class="muted su-6cb285"><b>Cabeza (5-6-7) · tema: miedo.</b> Deciden con la mente: análisis, seguridad, opciones. Miedo: el 5 se esconde, el 6 duda, el 7 huye.</p></div>' +
     '<div class="menstrual-card"><h4>🪽 Alas · ➡️ Flechas · 🔥 Subtipos</h4>' +
-    '<p class="muted" style="font-size:12px"><b>Alas:</b> tus vecinos te tiñen. Un 4 con ala 3 es más ambicioso; con ala 5, más reservado. Todos tenemos algo de ambas.</p>' +
-    '<p class="muted" style="font-size:12px"><b>Flechas:</b> en <b>estrés</b> tomas lo peor del otro número; en <b>seguridad</b>, lo mejor. Ej: el 1 estresado se pone melancólico como el 4; seguro, suelto como el 7.</p>' +
-    '<p class="muted" style="font-size:12px"><b>Subtipos (instintos):</b> conservación (yo), social (nosotros) y sexual/1a1 (tú y yo). El mismo tipo se ve muy distinto según su instinto dominante. Ver pestaña 🔥.</p></div></div>' +
+    '<p class="muted su-6cb285"><b>Alas:</b> tus vecinos te tiñen. Un 4 con ala 3 es más ambicioso; con ala 5, más reservado. Todos tenemos algo de ambas.</p>' +
+    '<p class="muted su-6cb285"><b>Flechas:</b> en <b>estrés</b> tomas lo peor del otro número; en <b>seguridad</b>, lo mejor. Ej: el 1 estresado se pone melancólico como el 4; seguro, suelto como el 7.</p>' +
+    '<p class="muted su-6cb285"><b>Subtipos (instintos):</b> conservación (yo), social (nosotros) y sexual/1a1 (tú y yo). El mismo tipo se ve muy distinto según su instinto dominante. Ver pestaña 🔥.</p></div></div>' +
     '<details class="menstrual-details"><summary>📜 Origen en 1 minuto</summary>' +
-    '<p class="muted" style="font-size:12px">Raíces antiguas (sufismo, Gurdjieff) + psicología moderna (Óscar Ichazo, Claudio Naranjo en los 70). Hoy se usa en terapia, empresas y autoconocimiento. <b>No es ciencia dura ni horóscopo</b>: es un lenguaje útil si se usa con honestidad y sin etiquetar a otros.</p></details>' +
+    '<p class="muted su-6cb285">Raíces antiguas (sufismo, Gurdjieff) + psicología moderna (Óscar Ichazo, Claudio Naranjo en los 70). Hoy se usa en terapia, empresas y autoconocimiento. <b>No es ciencia dura ni horóscopo</b>: es un lenguaje útil si se usa con honestidad y sin etiquetar a otros.</p></details>' +
     '<details class="menstrual-details"><summary>⚠️ Cómo usarlo bien (y 5 errores comunes)</summary>' +
-    '<p class="muted" style="font-size:12px">✅ Úsalo para <b>entenderte y suavizar tu patrón</b>, no para justificarlo (“soy 8, así soy”). ✅ Confirma tu tipo leyendo 2-3 fichas y preguntando a quien te conoce. ✅ Trabaja <b>un hábito</b> de tu virtud, no todo a la vez.<br>❌ No tipifiques a otros en su cara. ❌ No lo uses para contratar, diagnosticar o pelear (“típico de 4”). ❌ No te cases con el resultado del test: es una <b>pista</b>, el tipo lo eliges tú al reconocerte. ❌ No mezcles con crisis de salud mental: si hay sufrimiento fuerte, busca ayuda profesional.</p></details>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>🌙 Eneagrama × 13 lunas</h4><div id="eneLunasBox"></div></div>' +
+    '<p class="muted su-6cb285">✅ Úsalo para <b>entenderte y suavizar tu patrón</b>, no para justificarlo (“soy 8, así soy”). ✅ Confirma tu tipo leyendo 2-3 fichas y preguntando a quien te conoce. ✅ Trabaja <b>un hábito</b> de tu virtud, no todo a la vez.<br>❌ No tipifiques a otros en su cara. ❌ No lo uses para contratar, diagnosticar o pelear (“típico de 4”). ❌ No te cases con el resultado del test: es una <b>pista</b>, el tipo lo eliges tú al reconocerte. ❌ No mezcles con crisis de salud mental: si hay sufrimiento fuerte, busca ayuda profesional.</p></details>' +
+    '<div class="menstrual-card su-d2c171"><h4>🌙 Eneagrama × 13 lunas</h4><div id="eneLunasBox"></div></div>' +
     '</div>' +
 
     /* TIPOS */
     '<div id="eneTipos" class="hidden">' +
-    '<div class="conv-row"><label style="flex:2">Buscar <input type="text" id="eneQ" placeholder="ej: perfeccionista, miedo, ira, ayuda..." maxlength="40"></label>' +
+    '<div class="conv-row"><label class="su-4b3de7">Buscar <input type="text" id="eneQ" placeholder="ej: perfeccionista, miedo, ira, ayuda..." maxlength="40"></label>' +
     '<label>Centro <select id="eneCentroF"><option value="">Todos</option><option value="Víscera">Víscera (8-9-1)</option><option value="Corazón">Corazón (2-3-4)</option><option value="Cabeza">Cabeza (5-6-7)</option></select></label></div>' +
-    '<div id="eneTiposGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-top:8px">' + tiposGrid + '</div>' +
-    '<div id="eneDetalle" class="menstrual-card" style="margin-top:10px;border-color:var(--gold)"><p class="muted">Toca un tipo para ver su ficha completa 👆</p></div></div>' +
+    '<div id="eneTiposGrid" class="su-1e9d45">' + tiposGrid + '</div>' +
+    '<div id="eneDetalle" class="menstrual-card su-51d56a"><p class="muted">Toca un tipo para ver su ficha completa 👆</p></div></div>' +
 
     /* TEST */
     '<div id="eneTest" class="hidden">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>📝 Test rápido (36 afirmaciones)</h4>' +
-    '<p class="muted" style="font-size:12px">Responde según <b>cómo eres casi siempre</b>, no cómo te gustaría ser. Escala: Nunca (0) · A veces (1) · A menudo (2) · Muy cierto (3). Toma ~6 minutos. <b>No es diagnóstico</b>: es una pista para que luego leas tus 2-3 tipos más altos y elijas el que más te reconozca (incluso en lo incómodo).</p>' +
-    '<div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" id="eneTestReset" class="btn" style="width:auto">↺ Limpiar</button>' +
-    '<button type="button" id="eneTestCalc" class="btn btn-accent" style="width:auto">📊 Ver mi resultado</button></div>' +
-    '<div id="eneProgreso" class="muted" style="font-size:11px;margin-top:6px"></div></div>' +
-    '<div id="eneTestBox" style="margin-top:10px">' + testHTML + '</div>' +
-    '<div id="eneResultado" class="menstrual-card hidden" style="margin-top:10px;border-color:var(--gold)"></div></div>' +
+    '<div class="menstrual-card su-68a1a9"><h4>📝 Test rápido (36 afirmaciones)</h4>' +
+    '<p class="muted su-6cb285">Responde según <b>cómo eres casi siempre</b>, no cómo te gustaría ser. Escala: Nunca (0) · A veces (1) · A menudo (2) · Muy cierto (3). Toma ~6 minutos. <b>No es diagnóstico</b>: es una pista para que luego leas tus 2-3 tipos más altos y elijas el que más te reconozca (incluso en lo incómodo).</p>' +
+    '<div class="su-3de8f9"><button type="button" id="eneTestReset" class="btn su-30e741">↺ Limpiar</button>' +
+    '<button type="button" id="eneTestCalc" class="btn btn-accent su-30e741">📊 Ver mi resultado</button></div>' +
+    '<div id="eneProgreso" class="muted su-e13d76"></div></div>' +
+    '<div id="eneTestBox" class="su-d2c171">' + testHTML + '</div>' +
+    '<div id="eneResultado" class="menstrual-card hidden su-51d56a"></div></div>' +
 
     /* SUBTIPOS */
     '<div id="eneSub" class="hidden">' +
     '<div class="menstrual-card"><h4>🔥 Los 3 instintos (subtipos)</h4>' +
-    '<p class="muted" style="font-size:12px">Cada eneatipo tiene 3 versiones según su instinto dominante. Por eso dos personas del mismo tipo pueden verse muy distintas. Lee los 3 y elige el que más te mueva (no el que “debería”).</p></div>' +
-    '<div id="eneSubBox" style="margin-top:8px"></div>' +
-    '<div class="conv-row" style="margin-top:8px"><label>Mi instinto dominante <select id="eneSubSel"><option value="">— elegir —</option><option value="conservacion">🏠 Conservación (yo)</option><option value="social">👥 Social (nosotros)</option><option value="sexual">🔥 Sexual / 1 a 1</option></select></label></div></div>' +
+    '<p class="muted su-6cb285">Cada eneatipo tiene 3 versiones según su instinto dominante. Por eso dos personas del mismo tipo pueden verse muy distintas. Lee los 3 y elige el que más te mueva (no el que “debería”).</p></div>' +
+    '<div id="eneSubBox" class="su-8a77e5"></div>' +
+    '<div class="conv-row su-8a77e5"><label>Mi instinto dominante <select id="eneSubSel"><option value="">— elegir —</option><option value="conservacion">🏠 Conservación (yo)</option><option value="social">👥 Social (nosotros)</option><option value="sexual">🔥 Sexual / 1 a 1</option></select></label></div></div>' +
 
     /* CAMINO */
     '<div id="eneCamino" class="hidden">' +
-    '<div class="menstrual-grid"><div class="menstrual-card" style="border-color:var(--gold)"><h4>🌱 Mi tipo</h4>' +
+    '<div class="menstrual-grid"><div class="menstrual-card su-68a1a9"><h4>🌱 Mi tipo</h4>' +
     '<div class="conv-row"><label>Mi eneatipo <select id="eneMiTipo"><option value="0">— sin definir —</option></select></label></div>' +
-    '<div id="eneMiTipoBox" style="margin-top:6px"></div></div>' +
+    '<div id="eneMiTipoBox" class="su-fe7b49"></div></div>' +
     '<div class="menstrual-card"><h4>📓 Diario de trabajo interior</h4>' +
     '<div class="conv-row"><label>Fecha <input type="date" id="eneDiaFecha"></label></div>' +
     '<label>Hoy observé de mi patrón… <input type="text" id="eneDiaTxt" placeholder="ej: corregí 3 veces; respiré y agradecí 1" maxlength="140"></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="eneDiaAdd" class="btn btn-accent" style="width:auto">+ Guardar hoy</button></div>' +
-    '<div id="eneDiaList" class="habits-list" style="margin-top:8px;max-height:220px"></div></div></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>🕘 Historial de tests</h4><div id="eneHistBox"></div></div>' +
-    '<div class="dlg-actions" style="justify-content:space-between;align-items:center;margin-top:8px;flex-wrap:wrap;gap:8px">' +
-    '<span id="eneStats" class="muted" style="font-size:11px"></span>' +
-    '<span style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" id="eneShare" class="btn" style="width:auto">📤 Compartir</button>' +
-    '<button type="button" id="eneToNote" class="btn" style="width:auto">📝 Llevar a nota de hoy</button>' +
-    '<button type="button" id="eneClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar todo</button></span></div></div>';
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="eneDiaAdd" class="btn btn-accent su-30e741">+ Guardar hoy</button></div>' +
+    '<div id="eneDiaList" class="habits-list su-ebf445"></div></div></div>' +
+    '<div class="menstrual-card su-d2c171"><h4>🕘 Historial de tests</h4><div id="eneHistBox"></div></div>' +
+    '<div class="dlg-actions su-a1935c">' +
+    '<span id="eneStats" class="muted su-11a508"></span>' +
+    '<span class="su-3de8f9"><button type="button" id="eneShare" class="btn su-30e741">📤 Compartir</button>' +
+    '<button type="button" id="eneToNote" class="btn su-30e741">📝 Llevar a nota de hoy</button>' +
+    '<button type="button" id="eneClear" class="btn su-214f75">🗑 Borrar todo</button></span></div></div>';
 
   makeDialog('eneagramaDialog', '🔺 Eneagrama — mapa de 9 personalidades',
     'Qué eres, por qué actúas así y cómo suavizar tu patrón. Guía + fichas + test + diario. Todo <b>privado y local</b> por usuario.',
@@ -373,18 +373,18 @@ function renderDetalle(n) {
   var e = store();
   var fav = e.favs.indexOf(n) >= 0;
   box.innerHTML =
-    '<h4 style="color:var(--gold)">' + t.icon + ' Tipo ' + t.n + ' · ' + esc(t.nombre) + ' <span class="muted">(' + esc(t.alias) + ')</span></h4>' +
-    '<p class="muted" style="font-size:12px"><b>Centro:</b> ' + esc(t.centro) + ' · ' + esc(t.triada) + '<br><b>Pasión:</b> ' + esc(t.pasion) + ' · <b>Virtud a entrenar:</b> ' + esc(t.virtud) + '</p>' +
-    '<div class="fishing-grid"><div><p style="font-size:12px"><b>😨 Miedo base:</b> ' + esc(t.miedo) + '<br><b>💛 Deseo base:</b> ' + esc(t.deseo) + '<br><b>💬 Mensaje que sana:</b> ' + esc(t.mensaje) + '<br><b>🔍 Foco de atención:</b> ' + esc(t.foco) + '</p>' +
-    '<p class="muted" style="font-size:12px"><b>Habla típica:</b> ' + t.habla.map(esc).join(' · ') + '</p></div>' +
-    '<div><p style="font-size:12px">🌟 <b>En luz:</b><br>· ' + t.luz.map(esc).join('<br>· ') + '</p>' +
-    '<p style="font-size:12px">🌑 <b>En sombra:</b><br>· ' + t.sombra.map(esc).join('<br>· ') + '</p></div></div>' +
-    '<p class="muted" style="font-size:12px">➡️ <b>Flechas:</b> ' + esc(t.estres) + ' ' + esc(t.seguridad) + '<br>🪽 <b>Alas:</b> ' + esc(t.alas) + '</p>' +
-    '<p style="font-size:12px">❤️ <b>En pareja:</b> ' + esc(t.pareja) + '<br>💼 <b>En trabajo:</b> ' + esc(t.trabajo) + '</p>' +
+    '<h4 class="su-e39eba">' + t.icon + ' Tipo ' + t.n + ' · ' + esc(t.nombre) + ' <span class="muted">(' + esc(t.alias) + ')</span></h4>' +
+    '<p class="muted su-6cb285"><b>Centro:</b> ' + esc(t.centro) + ' · ' + esc(t.triada) + '<br><b>Pasión:</b> ' + esc(t.pasion) + ' · <b>Virtud a entrenar:</b> ' + esc(t.virtud) + '</p>' +
+    '<div class="fishing-grid"><div><p class="su-6cb285"><b>😨 Miedo base:</b> ' + esc(t.miedo) + '<br><b>💛 Deseo base:</b> ' + esc(t.deseo) + '<br><b>💬 Mensaje que sana:</b> ' + esc(t.mensaje) + '<br><b>🔍 Foco de atención:</b> ' + esc(t.foco) + '</p>' +
+    '<p class="muted su-6cb285"><b>Habla típica:</b> ' + t.habla.map(esc).join(' · ') + '</p></div>' +
+    '<div><p class="su-6cb285">🌟 <b>En luz:</b><br>· ' + t.luz.map(esc).join('<br>· ') + '</p>' +
+    '<p class="su-6cb285">🌑 <b>En sombra:</b><br>· ' + t.sombra.map(esc).join('<br>· ') + '</p></div></div>' +
+    '<p class="muted su-6cb285">➡️ <b>Flechas:</b> ' + esc(t.estres) + ' ' + esc(t.seguridad) + '<br>🪽 <b>Alas:</b> ' + esc(t.alas) + '</p>' +
+    '<p class="su-6cb285">❤️ <b>En pareja:</b> ' + esc(t.pareja) + '<br>💼 <b>En trabajo:</b> ' + esc(t.trabajo) + '</p>' +
     '<div class="si-card"><h4>✏️ Práctica 5 min</h4><p>' + esc(t.practica) + '</p><p class="muted">Pregunta sombra: <i>' + esc(t.pregunta) + '</i></p></div>' +
-    '<div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">' +
-    '<button type="button" class="btn" id="eneFavBtn" style="width:auto">' + (fav ? '★ Quitar de favoritos' : '☆ Marcar favorito') + '</button>' +
-    '<button type="button" class="btn btn-accent" id="eneSoyBtn" style="width:auto">✓ Este soy yo</button></div>';
+    '<div class="su-67b198">' +
+    '<button type="button" class="btn su-30e741" id="eneFavBtn">' + (fav ? '★ Quitar de favoritos' : '☆ Marcar favorito') + '</button>' +
+    '<button type="button" class="btn btn-accent su-30e741" id="eneSoyBtn">✓ Este soy yo</button></div>';
   var fb = $('eneFavBtn');
   if (fb) fb.onclick = function () {
     var d = store();
@@ -435,23 +435,23 @@ function showResultado(scores, saved) {
   var top = arr.slice(0, 3);
   box.classList.remove('hidden');
   box.innerHTML = '<h4>📊 Tu resultado ' + (saved ? '(guardado ✓)' : '(sin guardar)') + '</h4>' +
-    '<p class="muted" style="font-size:11px">Puntaje máximo por tipo: 12 (4 preguntas × 3). Lee tus 2-3 más altos y elige el que más te reconozca, sobre todo en lo incómodo.</p>' +
+    '<p class="muted su-11a508">Puntaje máximo por tipo: 12 (4 preguntas × 3). Lee tus 2-3 más altos y elige el que más te reconozca, sobre todo en lo incómodo.</p>' +
     arr.map(function (a) {
       var t = eneTipo(a.n);
       var pct = Math.round(a.p / max * 100);
       var isTop = top[0].n === a.n;
-      return '<div style="display:flex;align-items:center;gap:8px;margin:4px 0">' +
-        '<span style="min-width:92px;font-size:12px"><b>' + t.icon + ' E' + a.n + '</b> ' + esc(t.alias.replace('El ', '').replace('La ', '')) + '</span>' +
-        '<span style="flex:1;background:var(--panel);border:1px solid var(--line);border-radius:6px;height:14px;position:relative;overflow:hidden">' +
+      return '<div class="su-0d84b3">' +
+        '<span class="su-bf1bb3"><b>' + t.icon + ' E' + a.n + '</b> ' + esc(t.alias.replace('El ', '').replace('La ', '')) + '</span>' +
+        '<span class="su-2982dd">' +
         '<span style="display:block;height:100%;width:' + pct + '%;background:' + (isTop ? 'var(--gold)' : 'var(--accent)') + ';opacity:' + (isTop ? '1' : '.55') + '"></span></span>' +
-        '<b style="min-width:34px;text-align:right">' + a.p + '</b>' +
+        '<b class="su-abe0ff">' + a.p + '</b>' +
         '<button type="button" class="btn btn-icon ene-ver" data-n="' + a.n + '" title="Ver ficha">👁</button></div>';
     }).join('') +
-    '<div class="si-card" style="margin-top:8px"><h4>🔎 Tus 3 probables: ' + top.map(function (a) { return 'E' + a.n + ' (' + a.p + ')'; }).join(' · ') + '</h4>' +
+    '<div class="si-card su-8a77e5"><h4>🔎 Tus 3 probables: ' + top.map(function (a) { return 'E' + a.n + ' (' + a.p + ')'; }).join(' · ') + '</h4>' +
     '<p>' + esc(eneTipo(top[0].n).nombre) + ': ' + esc(eneTipo(top[0].n).practica) + '</p>' +
     '<p class="muted">Toca 👁 para leer cada ficha y luego marca “✓ Este soy yo” en la que más te reconozcas.</p></div>' +
-    '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"><button type="button" class="btn btn-accent" id="eneSaveTest" style="width:auto">💾 Guardar este test</button>' +
-    '<button type="button" class="btn" id="eneReadTop" style="width:auto">📖 Leer mi probable (E' + top[0].n + ')</button></div>';
+    '<div class="su-ac5453"><button type="button" class="btn btn-accent su-30e741" id="eneSaveTest">💾 Guardar este test</button>' +
+    '<button type="button" class="btn su-30e741" id="eneReadTop">📖 Leer mi probable (E' + top[0].n + ')</button></div>';
   box.querySelectorAll('.ene-ver').forEach(function (b) {
     b.onclick = function () { switchEneTab('Tipos'); renderDetalle(+b.dataset.n); };
   });
@@ -472,8 +472,8 @@ function renderSubs() {
   box.innerHTML = ENE_SUBTIPOS.map(function (s) {
     var active = d.subtipo === s.id;
     return '<div class="menstrual-card" style="' + (active ? 'border-color:var(--gold)' : '') + '"><h4>' + s.icon + ' ' + esc(s.nombre) + (active ? ' ✓ tu dominante' : '') + '</h4>' +
-      '<p class="muted" style="font-size:12px">' + esc(s.desc) + '</p><p style="font-size:12px">' + esc(s.ej) + '</p>' +
-      '<button type="button" class="btn ene-sub-pick" data-id="' + s.id + '" style="width:auto">' + (active ? '✓ Dominante' : 'Elegir como dominante') + '</button></div>';
+      '<p class="muted su-6cb285">' + esc(s.desc) + '</p><p class="su-6cb285">' + esc(s.ej) + '</p>' +
+      '<button type="button" class="btn ene-sub-pick su-30e741" data-id="' + s.id + '">' + (active ? '✓ Dominante' : 'Elegir como dominante') + '</button></div>';
   }).join('');
   box.querySelectorAll('.ene-sub-pick').forEach(function (b) {
     b.onclick = function () { var e = store(); e.subtipo = b.dataset.id; save(); renderSubs(); syncSubSel(); };
@@ -492,14 +492,14 @@ function syncMiTipo() {
 function renderMiTipoBox() {
   var box = $('eneMiTipoBox'); if (!box) return;
   var n = +store().miTipo || 0;
-  if (!n) { box.innerHTML = '<p class="muted" style="font-size:12px">Aún sin definir. Haz el test 📝 o lee las fichas 🔢 y marca “✓ Este soy yo”.</p>'; return; }
+  if (!n) { box.innerHTML = '<p class="muted su-6cb285">Aún sin definir. Haz el test 📝 o lee las fichas 🔢 y marca “✓ Este soy yo”.</p>'; return; }
   var t = eneTipo(n);
   var sub = ENE_SUBTIPOS.filter(function (s) { return s.id === store().subtipo; })[0];
-  box.innerHTML = '<div class="chip" style="display:block;white-space:normal;line-height:1.5"><b>' + t.icon + ' E' + t.n + ' · ' + esc(t.nombre) + '</b> (' + esc(t.alias) + ')<br>' +
+  box.innerHTML = '<div class="chip su-d7c8b3"><b>' + t.icon + ' E' + t.n + ' · ' + esc(t.nombre) + '</b> (' + esc(t.alias) + ')<br>' +
     'Virtud a entrenar: <b>' + esc(t.virtud) + '</b> · Pasión a observar: ' + esc(t.pasion) +
     (sub ? '<br>Instinto dominante: <b>' + esc(sub.nombre) + '</b>' : '') +
     '<br><span class="muted">Práctica de hoy: ' + esc(t.practica) + '</span></div>' +
-    '<div style="margin-top:6px"><button type="button" class="btn" id="eneVerMiTipo" style="width:auto">📖 Ver mi ficha completa</button></div>';
+    '<div class="su-fe7b49"><button type="button" class="btn su-30e741" id="eneVerMiTipo">📖 Ver mi ficha completa</button></div>';
   var b = $('eneVerMiTipo');
   if (b) b.onclick = function () { switchEneTab('Tipos'); renderDetalle(n); };
 }
@@ -507,9 +507,9 @@ function renderDiario() {
   var box = $('eneDiaList'); if (!box) return;
   var d = store().diario || {};
   var keys = Object.keys(d).sort().reverse().slice(0, 30);
-  if (!keys.length) { box.innerHTML = '<p class="muted" style="font-size:11px;text-align:center">Sin registros. Anota 1 observación de tu patrón al día (2 líneas bastan).</p>'; return; }
+  if (!keys.length) { box.innerHTML = '<p class="muted su-e201a8">Sin registros. Anota 1 observación de tu patrón al día (2 líneas bastan).</p>'; return; }
   box.innerHTML = keys.map(function (k) {
-    return '<div class="hora-item" style="align-items:flex-start"><span style="font-size:11px"><b>' + esc(k) + '</b><br>' + esc(d[k]) + '</span>' +
+    return '<div class="hora-item su-0486f7"><span class="su-11a508"><b>' + esc(k) + '</b><br>' + esc(d[k]) + '</span>' +
       '<button type="button" class="btn btn-icon ene-dia-del" data-k="' + esc(k) + '">✕</button></div>';
   }).join('');
   box.querySelectorAll('.ene-dia-del').forEach(function (x) {
@@ -519,12 +519,12 @@ function renderDiario() {
 function renderHist() {
   var box = $('eneHistBox'); if (!box) return;
   var t = store().tests || [];
-  if (!t.length) { box.innerHTML = '<p class="muted" style="font-size:11px">Sin tests guardados. Responde el test y pulsa “💾 Guardar este test”.</p>'; return; }
+  if (!t.length) { box.innerHTML = '<p class="muted su-11a508">Sin tests guardados. Responde el test y pulsa “💾 Guardar este test”.</p>'; return; }
   box.innerHTML = t.slice().reverse().slice(0, 10).map(function (r) {
     var arr = (r.scores || []).map(function (p, i) { return { n: i + 1, p: p }; }).sort(function (a, b) { return b.p - a.p; });
     var top3 = arr.slice(0, 3).map(function (a) { return 'E' + a.n + ':' + a.p; }).join(' · ');
-    return '<div class="hora-item"><span style="font-size:11px"><b>' + esc(r.fecha) + '</b> · ' + esc(top3) + '</span>' +
-      '<span style="display:flex;gap:6px"><button type="button" class="btn btn-icon ene-hist-ver" data-id="' + r.id + '" title="Ver">👁</button>' +
+    return '<div class="hora-item"><span class="su-11a508"><b>' + esc(r.fecha) + '</b> · ' + esc(top3) + '</span>' +
+      '<span class="su-49cd09"><button type="button" class="btn btn-icon ene-hist-ver" data-id="' + r.id + '" title="Ver">👁</button>' +
       '<button type="button" class="btn btn-icon ene-hist-del" data-id="' + r.id + '" title="Borrar">✕</button></span></div>';
   }).join('');
   box.querySelectorAll('.ene-hist-del').forEach(function (x) {

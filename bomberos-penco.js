@@ -179,17 +179,17 @@ function asegurarPanel() {
   if (!panel.dataset.bombOk) {
     panel.dataset.bombOk = '1';
     panel.innerHTML =
-      '<p class="muted" style="font-size:11px;line-height:1.55">El <b>Cuerpo de Bomberos de Penco</b>: cómo pedir ayuda al <b>132</b>, sus 4 compañías, su historia desde 1927 y cómo dejar tu casa a prueba de fuego. Marca tu avance en <b>⭐ Mi hogar</b> y agenda mantenciones con <b>📌</b>. Todo queda <b>privado y local</b>.</p>' +
-      '<div class="timer-tabs" style="margin:8px 0 10px;flex-wrap:wrap">' +
-      '<button type="button" id="tabBombEme" class="btn btn-accent" style="width:auto">🚨 Emergencia</button>' +
-      '<button type="button" id="tabBombCias" class="btn" style="width:auto">🚒 Compañías</button>' +
-      '<button type="button" id="tabBombHist" class="btn" style="width:auto">📜 Historia</button>' +
-      '<button type="button" id="tabBombPrev" class="btn" style="width:auto">🧯 Prevención</button>' +
-      '<button type="button" id="tabBombMios" class="btn" style="width:auto">⭐ Mi hogar</button>' +
+      '<p class="muted su-b6db47">El <b>Cuerpo de Bomberos de Penco</b>: cómo pedir ayuda al <b>132</b>, sus 4 compañías, su historia desde 1927 y cómo dejar tu casa a prueba de fuego. Marca tu avance en <b>⭐ Mi hogar</b> y agenda mantenciones con <b>📌</b>. Todo queda <b>privado y local</b>.</p>' +
+      '<div class="timer-tabs su-525c61">' +
+      '<button type="button" id="tabBombEme" class="btn btn-accent su-30e741">🚨 Emergencia</button>' +
+      '<button type="button" id="tabBombCias" class="btn su-30e741">🚒 Compañías</button>' +
+      '<button type="button" id="tabBombHist" class="btn su-30e741">📜 Historia</button>' +
+      '<button type="button" id="tabBombPrev" class="btn su-30e741">🧯 Prevención</button>' +
+      '<button type="button" id="tabBombMios" class="btn su-30e741">⭐ Mi hogar</button>' +
       '</div>' +
-      '<div class="menstrual-card" style="margin-top:0"><h4>🔍 Buscar en Bomberos</h4>' +
-      '<div class="conv-row"><label style="flex:2">Buscar <input type="text" id="bombSearch" placeholder="ej: 132, extintor, Lirquén, detector, 1927..." maxlength="60" autocomplete="off"></label></div></div>' +
-      '<div id="bombBody" style="margin-top:10px"></div>';
+      '<div class="menstrual-card su-d46224"><h4>🔍 Buscar en Bomberos</h4>' +
+      '<div class="conv-row"><label class="su-4b3de7">Buscar <input type="text" id="bombSearch" placeholder="ej: 132, extintor, Lirquén, detector, 1927..." maxlength="60" autocomplete="off"></label></div></div>' +
+      '<div id="bombBody" class="su-d2c171"></div>';
     var map = { tabBombEme: 'eme', tabBombCias: 'cias', tabBombHist: 'hist', tabBombPrev: 'prev', tabBombMios: 'mios' };
     Object.keys(map).forEach(function (id) {
       var b = $(id);
@@ -210,22 +210,22 @@ function matchQ() {
 /* ---------- renders por pestaña ---------- */
 function renderEmergencia(d) {
   var c = d.cuerpo, l = d.llamar132;
-  var html = '<div class="menstrual-card" style="border-color:#ff6b6b"><h4 style="color:#ff6b6b">🚨 Emergencia de incendio — llama al 132</h4>' +
-    '<p style="font-size:13px;line-height:1.6">📞 <b style="font-size:18px">132</b> <span class="muted" style="font-size:11px">(gratis, sin saldo · Bomberos de Chile 24 h)</span><br>' +
-    '<span class="muted" style="font-size:11px">Si no hay respuesta: 131 SAMU · *4157 Seguridad Penco</span></p>' +
-    '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">' +
-    '<button type="button" class="btn" data-bomb-tel="132" style="width:auto;font-size:11px">📋 Copiar 132</button>' +
-    '<button type="button" class="btn" data-bomb-share132 style="width:auto;font-size:11px">📤 Compartir cómo pedir ayuda</button></div></div>';
-  html += '<div class="menstrual-card" style="margin-top:10px"><h4>📢 ' + esc(l.titulo) + '</h4>' +
-    '<ol style="font-size:11px;line-height:1.6;margin:4px 0 4px 18px">' + l.pasos.map(function (p) { return '<li>' + esc(p) + '</li>'; }).join('') + '</ol>' +
-    '<p style="font-size:12px;margin-top:6px"><b>⛔ Lo que NO hay que hacer:</b></p>' +
-    '<ul style="font-size:11px;line-height:1.6;margin:2px 0 2px 18px">' + l.noHacer.map(function (p) { return '<li>' + esc(p) + '</li>'; }).join('') + '</ul></div>';
-  html += '<div class="menstrual-card" style="margin-top:10px"><h4>🚒 ' + esc(c.nombre) + '</h4>' +
-    '<p style="font-size:12px;line-height:1.6">Fundado el <b>' + esc(c.fundacion) + '</b><br><span class="muted" style="font-size:11px">' + esc(c.origen) + '</span></p>' +
-    '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">' +
+  var html = '<div class="menstrual-card su-55637b"><h4 class="su-0562fa">🚨 Emergencia de incendio — llama al 132</h4>' +
+    '<p class="su-6bcb8f">📞 <b class="su-4ff818">132</b> <span class="muted su-11a508">(gratis, sin saldo · Bomberos de Chile 24 h)</span><br>' +
+    '<span class="muted su-11a508">Si no hay respuesta: 131 SAMU · *4157 Seguridad Penco</span></p>' +
+    '<div class="su-c158a9">' +
+    '<button type="button" class="btn su-337714" data-bomb-tel="132">📋 Copiar 132</button>' +
+    '<button type="button" class="btn su-337714" data-bomb-share132>📤 Compartir cómo pedir ayuda</button></div></div>';
+  html += '<div class="menstrual-card su-d2c171"><h4>📢 ' + esc(l.titulo) + '</h4>' +
+    '<ol class="su-9f4380">' + l.pasos.map(function (p) { return '<li>' + esc(p) + '</li>'; }).join('') + '</ol>' +
+    '<p class="su-2b0979"><b>⛔ Lo que NO hay que hacer:</b></p>' +
+    '<ul class="su-ac87c3">' + l.noHacer.map(function (p) { return '<li>' + esc(p) + '</li>'; }).join('') + '</ul></div>';
+  html += '<div class="menstrual-card su-d2c171"><h4>🚒 ' + esc(c.nombre) + '</h4>' +
+    '<p class="su-616df7">Fundado el <b>' + esc(c.fundacion) + '</b><br><span class="muted su-11a508">' + esc(c.origen) + '</span></p>' +
+    '<div class="su-c158a9">' +
     '<span class="chip">🚒 ' + esc(String(c.companias)) + ' compañías</span>' +
     '<span class="chip">👨‍🚒 ' + esc(c.voluntarios) + '</span></div>' +
-    '<p class="muted" style="font-size:11px;margin-top:6px">📖 ' + esc(c.libro) + '</p></div>';
+    '<p class="muted su-e13d76">📖 ' + esc(c.libro) + '</p></div>';
   return html;
 }
 
@@ -235,20 +235,20 @@ function renderCias(d) {
   if (q) list = list.filter(function (x) {
     return ((x.nombre || '') + ' ' + (x.sector || '') + ' ' + (x.lema || '') + ' ' + (x.d || '') + ' ' + (x.notas || []).join(' ')).toLowerCase().indexOf(q) >= 0;
   });
-  var html = '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🚒 Compañías · ' + list.length + '</h4>' +
-    '<p class="muted" style="font-size:11px">Más de un centenar de voluntarios en 4 compañías + brigada, cubriendo todo el territorio urbano y rural. Superintendente (2023): <b>' + esc(d.cuerpo.superintendente2023) + '</b>.</p></div>';
+  var html = '<div class="menstrual-card su-68a1a9"><h4>🚒 Compañías · ' + list.length + '</h4>' +
+    '<p class="muted su-11a508">Más de un centenar de voluntarios en 4 compañías + brigada, cubriendo todo el territorio urbano y rural. Superintendente (2023): <b>' + esc(d.cuerpo.superintendente2023) + '</b>.</p></div>';
   if (!list.length) return html + '<p class="muted">Sin resultados.</p>';
   html += list.map(function (x) {
-    return '<div class="si-card" style="padding:8px 10px"><h4 style="font-size:12px">' + esc(x.icon || '🚒') + ' ' + esc(x.nombre) + '</h4>' +
-      '<p class="muted" style="font-size:11px">📍 ' + esc(x.sector) + ' · 💬 “' + esc(x.lema) + '”</p>' +
-      '<p style="font-size:11px">' + esc(x.d) + '</p>' +
-      (x.notas && x.notas.length ? '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px">' + x.notas.map(function (n) { return '<span class="chip" style="font-size:10px">' + esc(n) + '</span>'; }).join('') + '</div>' : '') + '</div>';
+    return '<div class="si-card su-cfa1ec"><h4 class="su-6cb285">' + esc(x.icon || '🚒') + ' ' + esc(x.nombre) + '</h4>' +
+      '<p class="muted su-11a508">📍 ' + esc(x.sector) + ' · 💬 “' + esc(x.lema) + '”</p>' +
+      '<p class="su-11a508">' + esc(x.d) + '</p>' +
+      (x.notas && x.notas.length ? '<div class="su-8af0ed">' + x.notas.map(function (n) { return '<span class="chip su-0d5be0">' + esc(n) + '</span>'; }).join('') + '</div>' : '') + '</div>';
   }).join('');
   var v = d.voluntariado;
   if (v && (!q || 'voluntario brigada postular'.indexOf(q) >= 0)) {
-    html += '<div class="menstrual-card" style="margin-top:10px;border-color:var(--gold)"><h4>👨‍🚒 ' + esc(v.titulo) + '</h4>' +
-      '<p style="font-size:11px;line-height:1.55">' + esc(v.texto) + '</p>' +
-      '<p class="muted" style="font-size:11px">💡 ' + esc(v.aporte) + '</p></div>';
+    html += '<div class="menstrual-card su-51d56a"><h4>👨‍🚒 ' + esc(v.titulo) + '</h4>' +
+      '<p class="su-b6db47">' + esc(v.texto) + '</p>' +
+      '<p class="muted su-11a508">💡 ' + esc(v.aporte) + '</p></div>';
   }
   return html;
 }
@@ -261,14 +261,14 @@ function renderHistoria(d) {
   if (q) eras = eras.filter(function (e) {
     return ((e.t || '') + ' ' + (e.cuando || '') + ' ' + (e.d || '')).toLowerCase().indexOf(q) >= 0;
   });
-  var html = '<p class="muted" style="font-size:11px;line-height:1.55">' + h.intro + '</p>';
+  var html = '<p class="muted su-b6db47">' + h.intro + '</p>';
   html += eras.map(function (e, i) {
     return '<div class="menstrual-card" style="margin-top:10px' + (i === 0 ? ';border-color:var(--gold)' : '') + '">' +
       '<h4>' + esc(e.t) + '</h4>' +
-      '<p class="muted" style="font-size:10px;margin:2px 0 6px">' + esc(e.cuando) + '</p>' +
-      '<p style="font-size:12px;line-height:1.55">' + esc(e.d) + '</p></div>';
+      '<p class="muted su-2c4c6c">' + esc(e.cuando) + '</p>' +
+      '<p class="su-afb724">' + esc(e.d) + '</p></div>';
   }).join('');
-  html += '<p class="muted" style="font-size:10px;margin-top:8px">Fuentes: ' + esc(d.fuentes || '') + '</p>';
+  html += '<p class="muted su-a953a7">Fuentes: ' + esc(d.fuentes || '') + '</p>';
   return html;
 }
 
@@ -277,21 +277,21 @@ function fichaCard(t) {
   var hecho = !!st.hechos[t.id];
   var nota = st.notas[t.id] || '';
   var html = '<div class="si-card" style="padding:10px 12px;border-color:#d4af3766' + (hecho ? ';opacity:.85' : '') + '">' +
-    '<h4 style="font-size:13px">' + (hecho ? '✅ ' : esc(t.icon || '🧯') + ' ') + esc(t.nombre) + '</h4>' +
-    '<p class="muted" style="font-size:11px;line-height:1.6">📍 ' + esc(t.donde) + '<br>🗓️ ' + esc(t.cuando) + ' · 💰 ' + esc(t.costo || 'Consultar') + '</p>' +
-    '<p style="font-size:12px"><b>Revisar:</b></p><ul style="font-size:11px;margin:2px 0 6px 18px;line-height:1.5">' +
+    '<h4 class="su-5e0faa">' + (hecho ? '✅ ' : esc(t.icon || '🧯') + ' ') + esc(t.nombre) + '</h4>' +
+    '<p class="muted su-b439ab">📍 ' + esc(t.donde) + '<br>🗓️ ' + esc(t.cuando) + ' · 💰 ' + esc(t.costo || 'Consultar') + '</p>' +
+    '<p class="su-6cb285"><b>Revisar:</b></p><ul class="su-3e8e6a">' +
     (t.requisitos || []).map(function (r) { return '<li>' + esc(r) + '</li>'; }).join('') + '</ul>' +
-    (t.tip ? '<p class="muted" style="font-size:11px">💡 ' + esc(t.tip) + '</p>' : '') +
-    '<label style="font-size:11px">📝 Mi nota <input type="text" data-bomb-nota="' + esc(t.id) + '" placeholder="ej: extintor vence 03/27, pila cambiada..." maxlength="80" value="' + esc(nota) + '"></label>' +
-    '<div class="conv-row" style="align-items:flex-end;margin-top:6px">' +
+    (t.tip ? '<p class="muted su-11a508">💡 ' + esc(t.tip) + '</p>' : '') +
+    '<label class="su-11a508">📝 Mi nota <input type="text" data-bomb-nota="' + esc(t.id) + '" placeholder="ej: extintor vence 03/27, pila cambiada..." maxlength="80" value="' + esc(nota) + '"></label>' +
+    '<div class="conv-row su-7c1cbb">' +
     '<label>Fecha <input type="date" data-bomb-fecha="' + esc(t.id) + '" value="' + esc(todayKey()) + '"></label>' +
-    '<label>Hora <input type="time" data-bomb-hora="' + esc(t.id) + '" value="10:00" style="max-width:110px"></label>' +
-    '<label class="check-row" style="margin:0;white-space:nowrap"><input type="checkbox" data-bomb-aviso="' + esc(t.id) + '"> 🔔</label>' +
-    '<button type="button" class="btn btn-accent" data-bomb-add="' + esc(t.id) + '" style="width:auto">📌 Calendario</button>' +
+    '<label>Hora <input type="time" data-bomb-hora="' + esc(t.id) + '" value="10:00" class="su-91245b"></label>' +
+    '<label class="check-row su-988f60"><input type="checkbox" data-bomb-aviso="' + esc(t.id) + '"> 🔔</label>' +
+    '<button type="button" class="btn btn-accent su-30e741" data-bomb-add="' + esc(t.id) + '">📌 Calendario</button>' +
     '</div>' +
-    '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">' +
-    '<button type="button" class="btn" data-bomb-hecho="' + esc(t.id) + '" style="width:auto;font-size:11px">' + (hecho ? '↩️ Reabrir' : '☑️ Marcar hecho') + '</button>' +
-    '<button type="button" class="btn" data-bomb-share="' + esc(t.id) + '" style="width:auto;font-size:11px">📤 Compartir</button></div></div>';
+    '<div class="su-c158a9">' +
+    '<button type="button" class="btn su-337714" data-bomb-hecho="' + esc(t.id) + '">' + (hecho ? '↩️ Reabrir' : '☑️ Marcar hecho') + '</button>' +
+    '<button type="button" class="btn su-337714" data-bomb-share="' + esc(t.id) + '">📤 Compartir</button></div></div>';
   return html;
 }
 
@@ -303,13 +303,13 @@ function renderPrev(d) {
   if (q) list = list.filter(function (t) {
     return ((t.nombre || '') + ' ' + (t.donde || '') + ' ' + (t.cuando || '') + ' ' + ((t.requisitos || []).join(' '))).toLowerCase().indexOf(q) >= 0;
   });
-  var html = '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🧯 Prevención en casa · ' + list.length + '</h4>' +
-    '<p class="muted" style="font-size:11px">Agenda cada mantención con <b>📌 Calendario</b> (queda como compromiso 🕐 en tu día) y marca <b>☑️ Hecho</b> al hacerla. Tu nota queda privada.</p></div>';
-  html += '<div class="menstrual-card" style="margin-top:10px"><h4>➕ Agregar mi mantención</h4>' +
-    '<div class="conv-row"><label style="flex:2">Nombre * <input type="text" id="bombMioNombre" placeholder="ej: Deshollinar estufa" maxlength="60"></label>' +
+  var html = '<div class="menstrual-card su-68a1a9"><h4>🧯 Prevención en casa · ' + list.length + '</h4>' +
+    '<p class="muted su-11a508">Agenda cada mantención con <b>📌 Calendario</b> (queda como compromiso 🕐 en tu día) y marca <b>☑️ Hecho</b> al hacerla. Tu nota queda privada.</p></div>';
+  html += '<div class="menstrual-card su-d2c171"><h4>➕ Agregar mi mantención</h4>' +
+    '<div class="conv-row"><label class="su-4b3de7">Nombre * <input type="text" id="bombMioNombre" placeholder="ej: Deshollinar estufa" maxlength="60"></label>' +
     '<label>Dónde <input type="text" id="bombMioDonde" placeholder="ej: living" maxlength="50"></label></div>' +
     '<label>Detalle <input type="text" id="bombMioReq" placeholder="qué revisar, técnico, fecha..." maxlength="120"></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="bombMioAdd" class="btn btn-accent" style="width:auto">+ Guardar mantención</button></div></div>';
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="bombMioAdd" class="btn btn-accent su-30e741">+ Guardar mantención</button></div></div>';
   html += list.length ? list.map(fichaCard).join('') : '<p class="muted">Sin resultados.</p>';
   return html;
 }
@@ -318,30 +318,30 @@ function renderMios(d) {
   var st = storeBomb();
   var hechos = (d.prevencion || []).filter(function (t) { return st.hechos[t.id]; });
   var avisos = st.avisos.slice().sort(function (a, b) { return String(a.fecha).localeCompare(String(b.fecha)); });
-  var html = '<div class="menstrual-card" style="border-color:var(--gold)"><h4>⭐ Mi hogar · ' + hechos.length + ' hechos · ' + avisos.length + ' en calendario · ' + st.mios.length + ' propios</h4>' +
-    '<p class="muted" style="font-size:11px">Tus mantenciones ya están como compromisos 🕐 en tu calendario. Aquí las ves todas juntas.</p>';
+  var html = '<div class="menstrual-card su-68a1a9"><h4>⭐ Mi hogar · ' + hechos.length + ' hechos · ' + avisos.length + ' en calendario · ' + st.mios.length + ' propios</h4>' +
+    '<p class="muted su-11a508">Tus mantenciones ya están como compromisos 🕐 en tu calendario. Aquí las ves todas juntas.</p>';
   if (hechos.length) {
-    html += '<p class="muted" style="font-size:11px">✅ Hechos:</p>' + hechos.map(function (t) {
-      return '<div class="chip" style="display:block;margin-top:4px">✅ <b>' + esc(t.nombre) + '</b>' + (st.notas[t.id] ? ' · ' + esc(st.notas[t.id]) : '') + '</div>';
+    html += '<p class="muted su-11a508">✅ Hechos:</p>' + hechos.map(function (t) {
+      return '<div class="chip su-6f28f3">✅ <b>' + esc(t.nombre) + '</b>' + (st.notas[t.id] ? ' · ' + esc(st.notas[t.id]) : '') + '</div>';
     }).join('');
   } else {
-    html += '<p class="muted" style="font-size:11px">Aún no marcas hechos. Ve a 🧯 Prevención y pulsa ☑️.</p>';
+    html += '<p class="muted su-11a508">Aún no marcas hechos. Ve a 🧯 Prevención y pulsa ☑️.</p>';
   }
   if (avisos.length) {
-    html += '<div style="margin-top:8px">' + avisos.map(function (r) {
-      return '<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center"><span><b>' + esc(r.nombre) + '</b><br><span class="muted" style="font-size:11px">📅 ' + esc(r.fecha) + ' · 🕐 ' + esc(r.hora) + (r.notify ? ' · 🔔' : '') + (r.detalle ? ' · ' + esc(r.detalle) : '') + '</span></span>' +
-        '<button type="button" class="btn" data-bomb-avdel="' + r.id + '" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕</button></div>';
+    html += '<div class="su-8a77e5">' + avisos.map(function (r) {
+      return '<div class="habit-item su-13313b"><span><b>' + esc(r.nombre) + '</b><br><span class="muted su-11a508">📅 ' + esc(r.fecha) + ' · 🕐 ' + esc(r.hora) + (r.notify ? ' · 🔔' : '') + (r.detalle ? ' · ' + esc(r.detalle) : '') + '</span></span>' +
+        '<button type="button" class="btn su-fd834a" data-bomb-avdel="' + r.id + '">✕</button></div>';
     }).join('') + '</div>';
   }
   if (st.mios.length) {
-    html += '<p class="muted" style="font-size:11px;margin-top:8px">📌 Mis mantenciones propias:</p>' + st.mios.map(function (t) {
-      return '<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center"><span><b>' + esc(t.icon || '📌') + ' ' + esc(t.nombre) + '</b>' + (st.hechos[t.id] ? ' ✅' : '') + '<br><span class="muted" style="font-size:11px">' + esc(t.donde || '') + '</span></span>' +
-        '<span style="display:flex;gap:6px"><button type="button" class="btn" data-bomb-hecho="' + esc(t.id) + '" style="width:auto;font-size:11px">☑️</button>' +
-        '<button type="button" class="btn" data-bomb-miodel="' + esc(t.id) + '" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕</button></span></div>';
+    html += '<p class="muted su-e6fe60">📌 Mis mantenciones propias:</p>' + st.mios.map(function (t) {
+      return '<div class="habit-item su-13313b"><span><b>' + esc(t.icon || '📌') + ' ' + esc(t.nombre) + '</b>' + (st.hechos[t.id] ? ' ✅' : '') + '<br><span class="muted su-11a508">' + esc(t.donde || '') + '</span></span>' +
+        '<span class="su-49cd09"><button type="button" class="btn su-337714" data-bomb-hecho="' + esc(t.id) + '">☑️</button>' +
+        '<button type="button" class="btn su-fd834a" data-bomb-miodel="' + esc(t.id) + '">✕</button></span></div>';
     }).join('');
   }
-  html += '<div class="dlg-actions" style="justify-content:space-between;margin-top:8px"><button type="button" id="bombShareAll" class="btn" style="width:auto">📤 Compartir mi lista</button>' +
-    '<button type="button" id="bombClearAll" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar lista</button></div></div>';
+  html += '<div class="dlg-actions su-efea1d"><button type="button" id="bombShareAll" class="btn su-30e741">📤 Compartir mi lista</button>' +
+    '<button type="button" id="bombClearAll" class="btn su-214f75">🗑 Borrar lista</button></div></div>';
   return html;
 }
 

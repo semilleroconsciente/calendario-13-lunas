@@ -73,10 +73,10 @@ function makeDialog(id, title, sub, bodyHTML) {
   var d = document.createElement('dialog');
   d.id = id;
   d.innerHTML = '<form method="dialog">' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
-    '<h3 style="margin:0;color:var(--accent)">' + title + '</h3>' +
+    '<div class="dlg-actions su-d2d053">' +
+    '<h3 class="su-ee0cfe">' + title + '</h3>' +
     '<button type="button" data-close class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    (sub ? '<p class="muted" style="line-height:1.5">' + sub + '</p>' : '') +
+    (sub ? '<p class="muted su-77e2fe">' + sub + '</p>' : '') +
     bodyHTML +
     '<div class="dlg-actions"><button type="button" data-close class="btn">Cerrar</button></div></form>';
   document.body.appendChild(d);
@@ -257,92 +257,92 @@ var CC_LUNAS = [
    ============================================================ */
 function buildDialog() {
   var ideasGrid = CC_IDEAS.map(function (it) {
-    return '<button type="button" class="btn cc-idea-card" data-idea="' + it.id + '" style="text-align:left;height:auto;padding:10px">' +
+    return '<button type="button" class="btn cc-idea-card su-1c48e1" data-idea="' + it.id + '">' +
       '<b>' + it.ico + ' ' + esc(it.n) + '</b><br>' +
-      '<span class="muted" style="font-size:11px">' + esc(it.tag.split(' ').slice(0, 3).join(' · ')) + '</span></button>';
+      '<span class="muted su-11a508">' + esc(it.tag.split(' ').slice(0, 3).join(' · ')) + '</span></button>';
   }).join('');
 
   var testHTML = CC_TEST.map(function (q, i) {
     var opts = CC_LIKERT.map(function (o) {
-      return '<label class="check-row" style="margin:0;font-size:12px"><input type="radio" name="ccQ' + i + '" value="' + o.v + '"> ' + o.t + '</label>';
+      return '<label class="check-row su-a16b97"><input type="radio" name="ccQ' + i + '" value="' + o.v + '"> ' + o.t + '</label>';
     }).join('');
-    return '<div class="menstrual-card" style="margin-bottom:8px"><b style="font-size:12px">' + (i + 1) + '. ' + esc(q.txt) + '</b>' +
-      '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:6px">' + opts + '</div></div>';
+    return '<div class="menstrual-card su-fdf33f"><b class="su-6cb285">' + (i + 1) + '. ' + esc(q.txt) + '</b>' +
+      '<div class="su-8fd176">' + opts + '</div></div>';
   }).join('');
 
   var practHTML = CC_PRACTICAS.map(function (p) {
     return '<div class="menstrual-card"><h4>' + p.ico + ' ' + esc(p.n) + '</h4>' +
-      '<p class="muted" style="font-size:11px">⏱ ' + esc(p.tiempo) + '</p>' +
-      '<p style="font-size:12px">' + esc(p.pasos) + '</p>' +
-      '<p class="muted" style="font-size:12px">💡 ' + esc(p.tip) + '</p>' +
-      '<button type="button" class="btn cc-pract-add" data-p="' + esc(p.n) + '" style="width:auto">+ Anotar en mi diario de hoy</button></div>';
+      '<p class="muted su-11a508">⏱ ' + esc(p.tiempo) + '</p>' +
+      '<p class="su-6cb285">' + esc(p.pasos) + '</p>' +
+      '<p class="muted su-6cb285">💡 ' + esc(p.tip) + '</p>' +
+      '<button type="button" class="btn cc-pract-add su-30e741" data-p="' + esc(p.n) + '">+ Anotar en mi diario de hoy</button></div>';
   }).join('');
 
   var body =
-    '<div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">' +
-    '<button type="button" id="tabCcGuia" class="btn btn-accent" style="width:auto">📖 Guía</button>' +
-    '<button type="button" id="tabCcIdeas" class="btn" style="width:auto">💡 14 Ideas</button>' +
-    '<button type="button" id="tabCcPract" class="btn" style="width:auto">🛠️ Prácticas</button>' +
-    '<button type="button" id="tabCcTest" class="btn" style="width:auto">📝 Test centros</button>' +
-    '<button type="button" id="tabCcTrabajo" class="btn" style="width:auto">🌱 Mi trabajo</button></div>' +
+    '<div class="timer-tabs su-4dca21">' +
+    '<button type="button" id="tabCcGuia" class="btn btn-accent su-30e741">📖 Guía</button>' +
+    '<button type="button" id="tabCcIdeas" class="btn su-30e741">💡 14 Ideas</button>' +
+    '<button type="button" id="tabCcPract" class="btn su-30e741">🛠️ Prácticas</button>' +
+    '<button type="button" id="tabCcTest" class="btn su-30e741">📝 Test centros</button>' +
+    '<button type="button" id="tabCcTrabajo" class="btn su-30e741">🌱 Mi trabajo</button></div>' +
 
     '<div id="ccGuia">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🛤️ ¿Qué es el Cuarto Camino?</h4>' +
-    '<p class="muted" style="font-size:12px;line-height:1.6">Es la vía de <b>despertar en medio de la vida común</b>, enseñada por <b>G. I. Gurdjieff</b> (Armenia/Grecia, ~1866-1949) y ordenada por su alumno <b>P. D. Ouspensky</b> en <i>Fragmentos de una enseñanza desconocida</i>. Hay 3 caminos clásicos: el del <b>faquir</b> (cuerpo y aguante), el del <b>monje</b> (fe y emoción) y el del <b>yogui</b> (mente y saber). El <b>Cuarto</b> no se retira al monasterio ni al Himalaya: <b>usa tu casa, tu pega y tu familia como escuela</b>, trabajando los 3 centros a la vez.</p>' +
-    '<p class="muted" style="font-size:12px;line-height:1.6">Idea de una línea: <b>estás dormido creyendo que estás despierto</b>. Hablas dormido, te enojas dormido, decides dormido. Despertar = <b>recordarte a ti mismo</b> varias veces al día, observar tu máquina sin mentirte y soltar lo que te tiene pegado.</p></div>' +
-    '<div class="fishing-grid" style="margin-top:10px">' +
+    '<div class="menstrual-card su-68a1a9"><h4>🛤️ ¿Qué es el Cuarto Camino?</h4>' +
+    '<p class="muted su-616df7">Es la vía de <b>despertar en medio de la vida común</b>, enseñada por <b>G. I. Gurdjieff</b> (Armenia/Grecia, ~1866-1949) y ordenada por su alumno <b>P. D. Ouspensky</b> en <i>Fragmentos de una enseñanza desconocida</i>. Hay 3 caminos clásicos: el del <b>faquir</b> (cuerpo y aguante), el del <b>monje</b> (fe y emoción) y el del <b>yogui</b> (mente y saber). El <b>Cuarto</b> no se retira al monasterio ni al Himalaya: <b>usa tu casa, tu pega y tu familia como escuela</b>, trabajando los 3 centros a la vez.</p>' +
+    '<p class="muted su-616df7">Idea de una línea: <b>estás dormido creyendo que estás despierto</b>. Hablas dormido, te enojas dormido, decides dormido. Despertar = <b>recordarte a ti mismo</b> varias veces al día, observar tu máquina sin mentirte y soltar lo que te tiene pegado.</p></div>' +
+    '<div class="fishing-grid su-d2c171">' +
     '<div class="menstrual-card"><h4>🧭 El mapa en 6 piezas</h4>' +
-    '<p class="muted" style="font-size:12px"><b>1) Sueño:</b> piloto automático. <b>2) 3 centros:</b> cabeza, corazón, cuerpo (uno manda). <b>3) Identificación:</b> te pegas a todo. <b>4) Consideración interna:</b> ruido del "qué dirán". <b>5) Amortiguadores:</b> excusas que tapan contradicciones. <b>6) Leyes 3 y 7:</b> por qué todo se traba y se desvía.</p></div>' +
+    '<p class="muted su-6cb285"><b>1) Sueño:</b> piloto automático. <b>2) 3 centros:</b> cabeza, corazón, cuerpo (uno manda). <b>3) Identificación:</b> te pegas a todo. <b>4) Consideración interna:</b> ruido del "qué dirán". <b>5) Amortiguadores:</b> excusas que tapan contradicciones. <b>6) Leyes 3 y 7:</b> por qué todo se traba y se desvía.</p></div>' +
     '<div class="menstrual-card"><h4>🙋 Gurdjieff en 1 minuto</h4>' +
-    '<p class="muted" style="font-size:12px">Buscador de escuelas olvidadas (sufíes, monte Athos, Asia central). En Moscú (1915) enseña a Ouspensky; tras la revolución huye al <b>Instituto del Prieuré</b> (Francia). Métodos famosos: <b>STOP</b>, danzas sagradas, trabajo en grupos, el <b>Eneagrama de procesos</b>. Murió en 1949 dejando alumnos (Ouspensky, Nicoll, Rodney Collin) que escribieron todo.</p></div></div>' +
+    '<p class="muted su-6cb285">Buscador de escuelas olvidadas (sufíes, monte Athos, Asia central). En Moscú (1915) enseña a Ouspensky; tras la revolución huye al <b>Instituto del Prieuré</b> (Francia). Métodos famosos: <b>STOP</b>, danzas sagradas, trabajo en grupos, el <b>Eneagrama de procesos</b>. Murió en 1949 dejando alumnos (Ouspensky, Nicoll, Rodney Collin) que escribieron todo.</p></div></div>' +
     '<details class="menstrual-details"><summary>🚶 ¿Cómo se practica sin escuela? (rutina mínima)</summary>' +
-    '<p class="muted" style="font-size:12px"><b>Manana:</b> 1 STOP + intencion ("hoy me observo en ___"). <b>Día:</b> recuerdo de si x3 atado a hábitos + 1 no-queja escrita. <b>Noche:</b> revision 5 min (¿presente? ¿pegado? ¿qué centro mandó?). <b>Por luna:</b> 1 reto 🤐 de 24 h + 1 espejo (pedir senalamiento) + releer diario. 15 min diarios bastan; la constancia hace el camino.</p></details>' +
+    '<p class="muted su-6cb285"><b>Manana:</b> 1 STOP + intencion ("hoy me observo en ___"). <b>Día:</b> recuerdo de si x3 atado a hábitos + 1 no-queja escrita. <b>Noche:</b> revision 5 min (¿presente? ¿pegado? ¿qué centro mandó?). <b>Por luna:</b> 1 reto 🤐 de 24 h + 1 espejo (pedir senalamiento) + releer diario. 15 min diarios bastan; la constancia hace el camino.</p></details>' +
     '<details class="menstrual-details"><summary>⚠️ Cuidados (léeme)</summary>' +
-    '<p class="muted" style="font-size:12px">✅ Esto es <b>autoconocimiento educativo</b>, no terapia ni religión. ✅ Si un ejercicio te desborda (angustia fuerte, disociación, llanto incontrolable), detente, camina, toma agua y conversa con alguien. ✅ Con trauma grave, duelo fresco o crisis de salud mental, practica acompañado (terapeuta, CESFAM, *4141 en Chile 24 h). ❌ Ninguna escuela seria te pide plata grande, obediencia ciega ni decisiones sobre pareja/salud. Desconfía de gurúes.</p></details>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>🌙 Cuarto Camino × 13 lunas</h4><div id="ccLunasBox"></div>' +
-    '<p class="muted" style="font-size:11px;margin-top:6px">Puentes dentro de la app: 🔺 <b>Eneagrama</b> (su hija famosa: ver ficha ✡️) · 📿 <b>Métodos</b> (ficha Cuarto camino) · 🪞 <b>Autoconocimiento</b> · 🔁 <b>Recapitulación</b> (revisión nocturna grande).</p></div>' +
+    '<p class="muted su-6cb285">✅ Esto es <b>autoconocimiento educativo</b>, no terapia ni religión. ✅ Si un ejercicio te desborda (angustia fuerte, disociación, llanto incontrolable), detente, camina, toma agua y conversa con alguien. ✅ Con trauma grave, duelo fresco o crisis de salud mental, practica acompañado (terapeuta, CESFAM, *4141 en Chile 24 h). ❌ Ninguna escuela seria te pide plata grande, obediencia ciega ni decisiones sobre pareja/salud. Desconfía de gurúes.</p></details>' +
+    '<div class="menstrual-card su-d2c171"><h4>🌙 Cuarto Camino × 13 lunas</h4><div id="ccLunasBox"></div>' +
+    '<p class="muted su-e13d76">Puentes dentro de la app: 🔺 <b>Eneagrama</b> (su hija famosa: ver ficha ✡️) · 📿 <b>Métodos</b> (ficha Cuarto camino) · 🪞 <b>Autoconocimiento</b> · 🔁 <b>Recapitulación</b> (revisión nocturna grande).</p></div>' +
     '</div>' +
 
     '<div id="ccIdeas" class="hidden">' +
-    '<div class="conv-row"><label style="flex:2">Buscar <input type="text" id="ccQ" placeholder="ej: sueño, identificación, ley de tres, eneagrama..." maxlength="40"></label></div>' +
-    '<div id="ccIdeasGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-top:8px">' + ideasGrid + '</div>' +
-    '<div id="ccDetalle" class="menstrual-card" style="margin-top:10px;border-color:var(--gold)"><p class="muted">Toca una idea para ver su ficha completa 👆</p></div></div>' +
+    '<div class="conv-row"><label class="su-4b3de7">Buscar <input type="text" id="ccQ" placeholder="ej: sueño, identificación, ley de tres, eneagrama..." maxlength="40"></label></div>' +
+    '<div id="ccIdeasGrid" class="su-1e9d45">' + ideasGrid + '</div>' +
+    '<div id="ccDetalle" class="menstrual-card su-51d56a"><p class="muted">Toca una idea para ver su ficha completa 👆</p></div></div>' +
 
     '<div id="ccPract" class="hidden">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🛑 STOP guiado — 1 minuto</h4>' +
-    '<p class="muted" style="font-size:12px">Para todo. Siente pies + manos + respiración. Mira como si fuera primera vez. Cuando termines, marca abajo tu recuerdo del día.</p>' +
-    '<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><button type="button" id="ccStopBtn" class="btn btn-accent" style="width:auto">▶ Hacer STOP ahora (60 seg)</button>' +
-    '<span id="ccStopMsg" class="muted" style="font-size:12px"></span></div>' +
-    '<div class="conv-row" style="margin-top:8px"><label>Recuerdo de sí hoy (0-3) <select id="ccRecSel"><option value="0">0 · dormido total</option><option value="1">1 · un momento</option><option value="2">2 · dos momentos</option><option value="3">3 · mañana + tarde + noche</option></select></label>' +
+    '<div class="menstrual-card su-68a1a9"><h4>🛑 STOP guiado — 1 minuto</h4>' +
+    '<p class="muted su-6cb285">Para todo. Siente pies + manos + respiración. Mira como si fuera primera vez. Cuando termines, marca abajo tu recuerdo del día.</p>' +
+    '<div class="su-58703f"><button type="button" id="ccStopBtn" class="btn btn-accent su-30e741">▶ Hacer STOP ahora (60 seg)</button>' +
+    '<span id="ccStopMsg" class="muted su-6cb285"></span></div>' +
+    '<div class="conv-row su-8a77e5"><label>Recuerdo de sí hoy (0-3) <select id="ccRecSel"><option value="0">0 · dormido total</option><option value="1">1 · un momento</option><option value="2">2 · dos momentos</option><option value="3">3 · mañana + tarde + noche</option></select></label>' +
     '<label>Centro que mandó hoy <select id="ccCentroHoy"><option value="">—</option><option value="I">🧠 Intelectual</option><option value="E">💗 Emocional</option><option value="M">🏃 Motor-instintivo</option></select></label></div>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="ccPractSave" class="btn btn-accent" style="width:auto">💾 Guardar práctica de hoy</button></div></div>' +
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="ccPractSave" class="btn btn-accent su-30e741">💾 Guardar práctica de hoy</button></div></div>' +
     practHTML + '</div>' +
 
     '<div id="ccTest" class="hidden">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>📝 Test: ¿qué centro te domina? (21 afirmaciones)</h4>' +
-    '<p class="muted" style="font-size:12px">Responde según <b>cómo eres casi siempre</b>. Escala: Nunca (0) · A veces (1) · A menudo (2) · Muy cierto (3). ~5 minutos. Incluye 6 preguntas de <b>nivel de sueño</b> (S). <b>No es diagnóstico</b>: es un espejo para elegir por dónde empezar.</p>' +
-    '<div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" id="ccTestReset" class="btn" style="width:auto">↺ Limpiar</button>' +
-    '<button type="button" id="ccTestCalc" class="btn btn-accent" style="width:auto">📊 Ver mi resultado</button></div>' +
-    '<div id="ccProgreso" class="muted" style="font-size:11px;margin-top:6px"></div></div>' +
-    '<div id="ccTestBox" style="margin-top:10px">' + testHTML + '</div>' +
-    '<div id="ccResultado" class="menstrual-card hidden" style="margin-top:10px;border-color:var(--gold)"></div></div>' +
+    '<div class="menstrual-card su-68a1a9"><h4>📝 Test: ¿qué centro te domina? (21 afirmaciones)</h4>' +
+    '<p class="muted su-6cb285">Responde según <b>cómo eres casi siempre</b>. Escala: Nunca (0) · A veces (1) · A menudo (2) · Muy cierto (3). ~5 minutos. Incluye 6 preguntas de <b>nivel de sueño</b> (S). <b>No es diagnóstico</b>: es un espejo para elegir por dónde empezar.</p>' +
+    '<div class="su-3de8f9"><button type="button" id="ccTestReset" class="btn su-30e741">↺ Limpiar</button>' +
+    '<button type="button" id="ccTestCalc" class="btn btn-accent su-30e741">📊 Ver mi resultado</button></div>' +
+    '<div id="ccProgreso" class="muted su-e13d76"></div></div>' +
+    '<div id="ccTestBox" class="su-d2c171">' + testHTML + '</div>' +
+    '<div id="ccResultado" class="menstrual-card hidden su-51d56a"></div></div>' +
 
     '<div id="ccTrabajo" class="hidden">' +
-    '<div class="menstrual-grid"><div class="menstrual-card" style="border-color:var(--gold)"><h4>🌱 Mi centro</h4>' +
+    '<div class="menstrual-grid"><div class="menstrual-card su-68a1a9"><h4>🌱 Mi centro</h4>' +
     '<div class="conv-row"><label>Mi centro dominante <select id="ccMiCentro"><option value="">— sin definir —</option><option value="I">🧠 Intelectual</option><option value="E">💗 Emocional</option><option value="M">🏃 Motor-instintivo</option></select></label></div>' +
-    '<div id="ccMiCentroBox" style="margin-top:6px"></div></div>' +
+    '<div id="ccMiCentroBox" class="su-fe7b49"></div></div>' +
     '<div class="menstrual-card"><h4>📓 Diario del observador</h4>' +
     '<div class="conv-row"><label>Fecha <input type="date" id="ccDiaFecha"></label></div>' +
     '<label>Hoy me observé… (situación + centro + ¿me pegué?) <input type="text" id="ccDiaTxt" placeholder="ej: me apuré en la fila; M; respiré y solté" maxlength="140"></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="ccDiaAdd" class="btn btn-accent" style="width:auto">+ Guardar hoy</button></div>' +
-    '<div id="ccDiaList" class="habits-list" style="margin-top:8px;max-height:220px"></div></div></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>🛑 Mis STOPs (racha de presencia)</h4><div id="ccStopsBox"></div></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>🕘 Historial de tests</h4><div id="ccHistBox"></div></div>' +
-    '<div class="dlg-actions" style="justify-content:space-between;align-items:center;margin-top:8px;flex-wrap:wrap;gap:8px">' +
-    '<span id="ccStats" class="muted" style="font-size:11px"></span>' +
-    '<span style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" id="ccShare" class="btn" style="width:auto">📤 Compartir</button>' +
-    '<button type="button" id="ccToNote" class="btn" style="width:auto">📝 Llevar a nota de hoy</button>' +
-    '<button type="button" id="ccClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar todo</button></span></div></div>';
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="ccDiaAdd" class="btn btn-accent su-30e741">+ Guardar hoy</button></div>' +
+    '<div id="ccDiaList" class="habits-list su-ebf445"></div></div></div>' +
+    '<div class="menstrual-card su-d2c171"><h4>🛑 Mis STOPs (racha de presencia)</h4><div id="ccStopsBox"></div></div>' +
+    '<div class="menstrual-card su-d2c171"><h4>🕘 Historial de tests</h4><div id="ccHistBox"></div></div>' +
+    '<div class="dlg-actions su-a1935c">' +
+    '<span id="ccStats" class="muted su-11a508"></span>' +
+    '<span class="su-3de8f9"><button type="button" id="ccShare" class="btn su-30e741">📤 Compartir</button>' +
+    '<button type="button" id="ccToNote" class="btn su-30e741">📝 Llevar a nota de hoy</button>' +
+    '<button type="button" id="ccClear" class="btn su-214f75">🗑 Borrar todo</button></span></div></div>';
 
   makeDialog('cuartoCaminoDialog', '🛤️ Cuarto Camino — despertar en la vida diaria',
     'Gurdjieff para gente común: recuerda que existes, observa tu máquina y suelta lo que te maneja. Sin monasterio: en Penco, en tu casa, hoy. Todo <b>privado y local</b>.',
@@ -362,14 +362,14 @@ function renderDetalle(id) {
   var e = store();
   var fav = e.favs.indexOf(id) >= 0;
   box.innerHTML =
-    '<h4 style="color:var(--gold)">' + t.ico + ' ' + esc(t.n) + '</h4>' +
-    '<p style="font-size:12px;line-height:1.6">' + esc(t.idea) + '</p>' +
-    '<p style="font-size:12px">🧰 <b>¿Cuándo sirve?</b> ' + esc(t.sirve) + '</p>' +
+    '<h4 class="su-e39eba">' + t.ico + ' ' + esc(t.n) + '</h4>' +
+    '<p class="su-616df7">' + esc(t.idea) + '</p>' +
+    '<p class="su-6cb285">🧰 <b>¿Cuándo sirve?</b> ' + esc(t.sirve) + '</p>' +
     '<div class="si-card"><h4>✏️ Práctica</h4><p>' + esc(t.practica) + '</p><p class="muted">Pregunta que despierta: <i>' + esc(t.pregunta) + '</i></p></div>' +
-    '<p class="muted" style="font-size:12px">⚠️ Trampa típica: ' + esc(t.trampa) + '</p>' +
-    '<div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">' +
-    '<button type="button" class="btn" id="ccFavBtn" style="width:auto">' + (fav ? '★ Quitar de favoritas' : '☆ Marcar favorita') + '</button>' +
-    '<button type="button" class="btn btn-accent" id="ccHoyBtn" style="width:auto">✓ Trabajar esta hoy</button></div>';
+    '<p class="muted su-6cb285">⚠️ Trampa típica: ' + esc(t.trampa) + '</p>' +
+    '<div class="su-67b198">' +
+    '<button type="button" class="btn su-30e741" id="ccFavBtn">' + (fav ? '★ Quitar de favoritas' : '☆ Marcar favorita') + '</button>' +
+    '<button type="button" class="btn btn-accent su-30e741" id="ccHoyBtn">✓ Trabajar esta hoy</button></div>';
   var fb = $('ccFavBtn');
   if (fb) fb.onclick = function () {
     var d = store();
@@ -421,23 +421,23 @@ function showResultado(sc, saved) {
   var suenoTxt = sueno <= 6 ? 'Liviano: hay presencia. Sostén con recuerdo x3.' : sueno <= 11 ? 'Medio: piloto automático frecuente. STOP diario te cambia la luna.' : 'Denso: andas muy en máquina. Parte por 1 STOP + revisión nocturna, sin exigirte todo.';
   box.classList.remove('hidden');
   box.innerHTML = '<h4>📊 Tu espejo ' + (saved ? '(guardado ✓)' : '(sin guardar)') + '</h4>' +
-    '<p class="muted" style="font-size:11px">Máximo por centro: 21 (7 preguntas × 3). Sueño (S): máximo 18.</p>' +
+    '<p class="muted su-11a508">Máximo por centro: 21 (7 preguntas × 3). Sueño (S): máximo 18.</p>' +
     arr.map(function (a) {
       var c = CC_CENTROS[a.k];
       var pct = Math.round(a.p / max * 100);
       var isTop = dom === a.k;
-      return '<div style="display:flex;align-items:center;gap:8px;margin:4px 0">' +
-        '<span style="min-width:150px;font-size:12px"><b>' + c.ico + ' ' + esc(c.nombre) + '</b></span>' +
-        '<span style="flex:1;background:var(--panel);border:1px solid var(--line);border-radius:6px;height:14px;position:relative;overflow:hidden">' +
+      return '<div class="su-0d84b3">' +
+        '<span class="su-b53707"><b>' + c.ico + ' ' + esc(c.nombre) + '</b></span>' +
+        '<span class="su-2982dd">' +
         '<span style="display:block;height:100%;width:' + pct + '%;background:' + (isTop ? 'var(--gold)' : 'var(--accent)') + ';opacity:' + (isTop ? '1' : '.55') + '"></span></span>' +
-        '<b style="min-width:30px;text-align:right">' + a.p + '</b></div>';
+        '<b class="su-803c87">' + a.p + '</b></div>';
     }).join('') +
-    '<div class="si-card" style="margin-top:8px"><h4>' + CC_CENTROS[dom].ico + ' Tu centro dominante: ' + esc(CC_CENTROS[dom].nombre) + '</h4>' +
+    '<div class="si-card su-8a77e5"><h4>' + CC_CENTROS[dom].ico + ' Tu centro dominante: ' + esc(CC_CENTROS[dom].nombre) + '</h4>' +
     '<p>' + esc(CC_CENTROS[dom].desc) + '</p><p><b>Entrena así:</b> ' + esc(CC_CENTROS[dom].entrena) + '</p>' +
     '<p class="muted">😴 Nivel de sueño: <b>' + sueno + '/18</b> — ' + esc(suenoTxt) + '</p></div>' +
-    '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"><button type="button" class="btn btn-accent" id="ccSaveTest" style="width:auto">💾 Guardar este test</button>' +
-    '<button type="button" class="btn" id="ccSetCentro" style="width:auto">✓ Soy ' + esc(CC_CENTROS[dom].nombre) + '</button>' +
-    '<button type="button" class="btn" id="ccReadIdea" style="width:auto">📖 Leer idea que me sirve</button></div>';
+    '<div class="su-ac5453"><button type="button" class="btn btn-accent su-30e741" id="ccSaveTest">💾 Guardar este test</button>' +
+    '<button type="button" class="btn su-30e741" id="ccSetCentro">✓ Soy ' + esc(CC_CENTROS[dom].nombre) + '</button>' +
+    '<button type="button" class="btn su-30e741" id="ccReadIdea">📖 Leer idea que me sirve</button></div>';
   var sv = $('ccSaveTest');
   if (sv) sv.onclick = function () {
     var d = store();
@@ -464,9 +464,9 @@ function syncMiCentro() {
 function renderMiCentroBox() {
   var box = $('ccMiCentroBox'); if (!box) return;
   var k = store().miCentro || '';
-  if (!k || !CC_CENTROS[k]) { box.innerHTML = '<p class="muted" style="font-size:12px">Aún sin definir. Haz el test 📝 o elígelo arriba: es tu punto de partida, no tu jaula.</p>'; return; }
+  if (!k || !CC_CENTROS[k]) { box.innerHTML = '<p class="muted su-6cb285">Aún sin definir. Haz el test 📝 o elígelo arriba: es tu punto de partida, no tu jaula.</p>'; return; }
   var c = CC_CENTROS[k];
-  box.innerHTML = '<div class="chip" style="display:block;white-space:normal;line-height:1.5"><b>' + c.ico + ' ' + esc(c.nombre) + '</b><br>' +
+  box.innerHTML = '<div class="chip su-d7c8b3"><b>' + c.ico + ' ' + esc(c.nombre) + '</b><br>' +
     '<span class="muted">' + esc(c.desc) + '<br><b>Entrena:</b> ' + esc(c.entrena) + '</span></div>';
 }
 function rachaStops() {
@@ -486,11 +486,11 @@ function renderStops() {
   var box = $('ccStopsBox'); if (!box) return;
   var d = store().stops || [];
   var ult7 = d.slice().sort(function (a, b) { return b.fecha.localeCompare(a.fecha); }).slice(0, 7);
-  box.innerHTML = '<p class="muted" style="font-size:11px">🔥 Racha: <b>' + rachaStops() + ' días</b> · ' + d.length + ' práctica(s) guardada(s) · marca 1 por día (recuerdo 0-3 + centro de hoy).</p>' +
+  box.innerHTML = '<p class="muted su-11a508">🔥 Racha: <b>' + rachaStops() + ' días</b> · ' + d.length + ' práctica(s) guardada(s) · marca 1 por día (recuerdo 0-3 + centro de hoy).</p>' +
     (ult7.length ? ult7.map(function (r) {
-      return '<div class="hora-item"><span style="font-size:11px"><b>' + esc(r.fecha) + '</b> · recuerdo ' + esc(String(r.rec)) + '/3' + (r.centro ? ' · centro ' + esc(r.centro) : '') + '</span>' +
+      return '<div class="hora-item"><span class="su-11a508"><b>' + esc(r.fecha) + '</b> · recuerdo ' + esc(String(r.rec)) + '/3' + (r.centro ? ' · centro ' + esc(r.centro) : '') + '</span>' +
         '<button type="button" class="btn btn-icon cc-stop-del" data-id="' + r.id + '">✕</button></div>';
-    }).join('') : '<p class="muted" style="font-size:11px;text-align:center">Sin prácticas aún. Haz un STOP 🛑 y guárdalo arriba.</p>');
+    }).join('') : '<p class="muted su-e201a8">Sin prácticas aún. Haz un STOP 🛑 y guárdalo arriba.</p>');
   box.querySelectorAll('.cc-stop-del').forEach(function (x) {
     x.onclick = function () { var e = store(); e.stops = e.stops.filter(function (r) { return r.id !== x.dataset.id; }); save(); renderStops(); renderStats(); };
   });
@@ -499,9 +499,9 @@ function renderDiario() {
   var box = $('ccDiaList'); if (!box) return;
   var d = store().diario || {};
   var keys = Object.keys(d).sort().reverse().slice(0, 30);
-  if (!keys.length) { box.innerHTML = '<p class="muted" style="font-size:11px;text-align:center">Sin registros. 3 líneas al día bastan: situación + centro + ¿me pegué?</p>'; return; }
+  if (!keys.length) { box.innerHTML = '<p class="muted su-e201a8">Sin registros. 3 líneas al día bastan: situación + centro + ¿me pegué?</p>'; return; }
   box.innerHTML = keys.map(function (k) {
-    return '<div class="hora-item" style="align-items:flex-start"><span style="font-size:11px"><b>' + esc(k) + '</b><br>' + esc(d[k]) + '</span>' +
+    return '<div class="hora-item su-0486f7"><span class="su-11a508"><b>' + esc(k) + '</b><br>' + esc(d[k]) + '</span>' +
       '<button type="button" class="btn btn-icon cc-dia-del" data-k="' + esc(k) + '">✕</button></div>';
   }).join('');
   box.querySelectorAll('.cc-dia-del').forEach(function (x) {
@@ -511,9 +511,9 @@ function renderDiario() {
 function renderHist() {
   var box = $('ccHistBox'); if (!box) return;
   var t = (store().tests || []).slice().reverse().slice(0, 10);
-  if (!t.length) { box.innerHTML = '<p class="muted" style="font-size:11px">Sin tests guardados. Responde y pulsa “💾 Guardar este test”.</p>'; return; }
+  if (!t.length) { box.innerHTML = '<p class="muted su-11a508">Sin tests guardados. Responde y pulsa “💾 Guardar este test”.</p>'; return; }
   box.innerHTML = t.map(function (r) {
-    return '<div class="hora-item"><span style="font-size:11px"><b>' + esc(r.fecha) + '</b> · 🧠' + r.I + ' 💗' + r.E + ' 🏃' + r.M + ' · domina <b>' + esc(r.dom || '') + '</b> · sueño ' + esc(String(r.S)) + '/18</span>' +
+    return '<div class="hora-item"><span class="su-11a508"><b>' + esc(r.fecha) + '</b> · 🧠' + r.I + ' 💗' + r.E + ' 🏃' + r.M + ' · domina <b>' + esc(r.dom || '') + '</b> · sueño ' + esc(String(r.S)) + '/18</span>' +
       '<button type="button" class="btn btn-icon cc-hist-del" data-id="' + r.id + '">✕</button></div>';
   }).join('');
   box.querySelectorAll('.cc-hist-del').forEach(function (x) {
@@ -580,7 +580,7 @@ function puenteMetodos() {
       }
       if (tries > 20) {
         var fab = document.createElement('div');
-        fab.innerHTML = '<button type="button" id="ccOpenFromMetodos" class="btn btn-accent" style="width:auto;margin-top:8px">🛤️ Abrir mi Cuarto Camino</button>';
+        fab.innerHTML = '<button type="button" id="ccOpenFromMetodos" class="btn btn-accent su-e182f0">🛤️ Abrir mi Cuarto Camino</button>';
         var f = dlg.querySelector('form') || dlg;
         f.appendChild(fab);
         var nb = $('ccOpenFromMetodos');

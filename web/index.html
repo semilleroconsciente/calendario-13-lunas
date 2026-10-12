@@ -7,6 +7,7 @@
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; font-src 'self'; connect-src 'self' https://api.open-meteo.com https://air-quality-api.open-meteo.com; object-src 'none'; base-uri 'self'; form-action 'self'">
   <title>Calendario de las 13 Lunas</title>
   <link rel="stylesheet" href="min/styles.min.css?v=12">
+  <link rel="stylesheet" href="min/styles-csp.min.css?v=1">
   <link rel="stylesheet" href="min/splash.min.css?v=1">
   <link rel="manifest" href="manifest.json">
   <link rel="preconnect" href="https://api.open-meteo.com">
@@ -23,12 +24,12 @@
     </div>
     <div id="liveClock" class="live-clock" title="Hora de Penco · America/Santiago">--:--:--</div>
     <button id="btnToday" class="btn btn-accent">◉ Ir a hoy</button>
-    <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap">
-      <button id="btnConfig" class="btn" style="flex:1">⚙️ Personalizar</button>
-      <button id="btnSharePage" class="btn" style="flex:1" title="Copiar enlace https://calendario-13-lunas.pages.dev/">🔗 Compartir</button>
-      <button id="btnHelp" class="btn" style="flex:1" data-keywords="ayuda como usar guia instrucciones vision que es calendario">❓ Guía</button>
+    <div class="su-39c4d3">
+      <button id="btnConfig" class="btn su-97445a">⚙️ Personalizar</button>
+      <button id="btnSharePage" class="btn su-97445a" title="Copiar enlace https://calendario-13-lunas.pages.dev/">🔗 Compartir</button>
+      <button id="btnHelp" class="btn su-97445a" data-keywords="ayuda como usar guia instrucciones vision que es calendario">❓ Guía</button>
     </div>
-    <button id="btnInstall" class="btn btn-accent" hidden style="width:100%;margin-top:8px" title="Instalar como app (sin tienda)">📲 Instalar app</button>
+    <button id="btnInstall" class="btn btn-accent su-3cfbdf" hidden title="Instalar como app (sin tienda)">📲 Instalar app</button>
     <nav id="moonNav"></nav>
     <div class="sidebar-foot">
       <span id="dataInfo"></span>
@@ -67,13 +68,13 @@
         <button type="button" id="viewPrev" class="btn btn-icon" title="Anterior" aria-label="Anterior">◀</button>
         <button type="button" id="viewTodayBtn" class="btn" title="Ir a hoy">◉ Hoy</button>
         <button type="button" id="viewNext" class="btn btn-icon" title="Siguiente" aria-label="Siguiente">▶</button>
-        <span id="viewNavLabel" class="muted" style="margin:0"></span>
+        <span id="viewNavLabel" class="muted su-116966"></span>
       </div>
     </section>
 
     <section id="gridWrap">
       <div class="dow-row" id="dowRow"></div>
-      <div id="grid"><p class="muted" style="padding:18px;text-align:center">🌙 Cargando calendario…</p></div>
+      <div id="grid"><p class="muted su-6c5767">🌙 Cargando calendario…</p></div>
     </section>
 
     <section id="monthNoteWrap">
@@ -217,7 +218,7 @@
           <button id="btnShortcut" class="btn" data-sub="app" data-keywords="acceso directo escritorio pwa instalar">📌 Acceso directo</button>
           <button id="btnPdfLuna" class="btn" data-sub="app" data-keywords="pdf luna imprimir exportar">📄 PDF luna</button>
           <button id="btnPdfCiclo" class="btn" data-sub="app" data-keywords="pdf ciclo completo imprimir">📚 PDF ciclo</button>
-          <button id="btnDonate" class="btn btn-accent" data-sub="app" style="width:auto" data-keywords="aporte donar mercadopago paypal personalizado organizacion encargo medida territorio">❤ Aporte voluntario</button>
+          <button id="btnDonate" class="btn btn-accent su-30e741" data-sub="app" data-keywords="aporte donar mercadopago paypal personalizado organizacion encargo medida territorio">❤ Aporte voluntario</button>
         </div>
       </details>
     </footer>

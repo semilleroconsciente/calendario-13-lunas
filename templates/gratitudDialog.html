@@ -1,25 +1,25 @@
 <dialog id="gratitudDialog">
     <form method="dialog">
-      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
-        <h3 style="margin:0;color:var(--accent)">📓 Gratitud Diaria — Wenu</h3>
+      <div class="dlg-actions su-d2d053">
+        <h3 class="su-ee0cfe">📓 Gratitud Diaria — Wenu</h3>
         <button type="button" id="gratitudCloseTop" class="btn btn-icon" title="Cerrar" aria-label="Cerrar">✕</button>
       </div>
-      <p class="muted" style="line-height:1.5">3 gratitudes al día, 2 minutos. <b>Privado y local.</b> Marca tu ánimo, ponle ámbito a cada gratitud y, cuando quieras, escribe una carta. Se refleja en el calendario con ✨.</p>
-      <div id="gratFraseBox" class="menstrual-card" style="border-style:dashed"></div>
-      <div id="gratitudStreakBox" class="menstrual-card" style="border-color:var(--gold)"></div>
+      <p class="muted su-77e2fe">3 gratitudes al día, 2 minutos. <b>Privado y local.</b> Marca tu ánimo, ponle ámbito a cada gratitud y, cuando quieras, escribe una carta. Se refleja en el calendario con ✨.</p>
+      <div id="gratFraseBox" class="menstrual-card su-12296c"></div>
+      <div id="gratitudStreakBox" class="menstrual-card su-68a1a9"></div>
       <div id="gratMonthBox" class="menstrual-card"></div>
-      <div class="conv-row" style="margin-top:8px"><label>Fecha <input type="date" id="gratDate"></label><button type="button" id="gratToday" class="btn" style="width:auto;align-self:flex-end">Hoy</button></div>
-      <div class="conv-row"><label>Ánimo del día <select id="gratAnimo"><option value="">—</option><option value="1">1 · 😞 bajo</option><option value="2">2 · 😕 desanimado</option><option value="3">3 · 😐 neutro</option><option value="4">4 · 🙂 bien</option><option value="5">5 · 😄 radiante</option></select></label><label style="flex:2">🎯 Intención del día <input type="text" id="gratIntencion" placeholder="ej: caminar sin apuro, llamar a mi mamá" maxlength="120"></label></div>
-      <div class="conv-row"><label style="flex:2">1 · Agradezco <input type="text" id="grat1" placeholder="ej: el sol tras la lluvia" maxlength="120"></label><label>Ámbito <select id="gratCat1"><option value="">—</option></select></label></div>
-      <div class="conv-row"><label style="flex:2">2 · Agradezco <input type="text" id="grat2" placeholder="ej: la sopa de mi mamá" maxlength="120"></label><label>Ámbito <select id="gratCat2"><option value="">—</option></select></label></div>
-      <div class="conv-row"><label style="flex:2">3 · Agradezco <input type="text" id="grat3" placeholder="ej: caminar a la playa" maxlength="120"></label><label>Ámbito <select id="gratCat3"><option value="">—</option></select></label></div>
+      <div class="conv-row su-8a77e5"><label>Fecha <input type="date" id="gratDate"></label><button type="button" id="gratToday" class="btn su-4ed52d">Hoy</button></div>
+      <div class="conv-row"><label>Ánimo del día <select id="gratAnimo"><option value="">—</option><option value="1">1 · 😞 bajo</option><option value="2">2 · 😕 desanimado</option><option value="3">3 · 😐 neutro</option><option value="4">4 · 🙂 bien</option><option value="5">5 · 😄 radiante</option></select></label><label class="su-4b3de7">🎯 Intención del día <input type="text" id="gratIntencion" placeholder="ej: caminar sin apuro, llamar a mi mamá" maxlength="120"></label></div>
+      <div class="conv-row"><label class="su-4b3de7">1 · Agradezco <input type="text" id="grat1" placeholder="ej: el sol tras la lluvia" maxlength="120"></label><label>Ámbito <select id="gratCat1"><option value="">—</option></select></label></div>
+      <div class="conv-row"><label class="su-4b3de7">2 · Agradezco <input type="text" id="grat2" placeholder="ej: la sopa de mi mamá" maxlength="120"></label><label>Ámbito <select id="gratCat2"><option value="">—</option></select></label></div>
+      <div class="conv-row"><label class="su-4b3de7">3 · Agradezco <input type="text" id="grat3" placeholder="ej: caminar a la playa" maxlength="120"></label><label>Ámbito <select id="gratCat3"><option value="">—</option></select></label></div>
       <label>🤝 Agradezco especialmente a <input type="text" id="gratPara" placeholder="ej: mi vecina Rosa, que me regaló lechugas" maxlength="80"></label>
-      <details style="border:1px dashed var(--gold);border-radius:10px;padding:8px 10px;margin-top:6px"><summary style="cursor:pointer;font-size:12px;color:var(--gold)"><b>💌 Carta de gratitud (opcional)</b></summary>
-        <div class="conv-row" style="margin-top:8px"><label>Para <input type="text" id="gratCartaPara" placeholder="ej: mi abuela" maxlength="60"></label></div>
-        <label>Mensaje <textarea id="gratCarta" rows="3" style="width:100%;box-sizing:border-box" placeholder="Querida... gracias por..." maxlength="600"></textarea></label>
-        <p class="muted" style="font-size:10px">Léela en voz alta, entrégala o guárdala: escribirla ya hace bien.</p></details>
-      <div class="dlg-actions" style="justify-content:flex-start;flex-wrap:wrap"><button type="button" id="gratSave" class="btn btn-accent" style="width:auto">💾 Guardar día</button><button type="button" id="gratShare" class="btn" style="width:auto">📤 Compartir día</button><button type="button" id="gratExport" class="btn" style="width:auto">📥 Exportar todo</button><button type="button" id="gratClearDay" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar día</button></div>
-      <div id="gratHistory" class="habits-list" style="margin-top:10px;max-height:220px"></div>
+      <details class="su-9cf9f9"><summary class="su-d9db22"><b>💌 Carta de gratitud (opcional)</b></summary>
+        <div class="conv-row su-8a77e5"><label>Para <input type="text" id="gratCartaPara" placeholder="ej: mi abuela" maxlength="60"></label></div>
+        <label>Mensaje <textarea id="gratCarta" rows="3" class="su-62e68e" placeholder="Querida... gracias por..." maxlength="600"></textarea></label>
+        <p class="muted su-0d5be0">Léela en voz alta, entrégala o guárdala: escribirla ya hace bien.</p></details>
+      <div class="dlg-actions su-117179"><button type="button" id="gratSave" class="btn btn-accent su-30e741">💾 Guardar día</button><button type="button" id="gratShare" class="btn su-30e741">📤 Compartir día</button><button type="button" id="gratExport" class="btn su-30e741">📥 Exportar todo</button><button type="button" id="gratClearDay" class="btn su-214f75">🗑 Borrar día</button></div>
+      <div id="gratHistory" class="habits-list su-90a939"></div>
       <div class="dlg-actions"><button type="button" id="gratitudClose" class="btn">Cerrar</button></div>
     </form>
   </dialog>

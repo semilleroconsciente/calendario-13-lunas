@@ -57,10 +57,10 @@ function makeDialog(id, title, sub, bodyHTML) {
   var d = document.createElement('dialog');
   d.id = id;
   d.innerHTML = '<form method="dialog">' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
-    '<h3 style="margin:0;color:var(--accent)">' + title + '</h3>' +
+    '<div class="dlg-actions su-d2d053">' +
+    '<h3 class="su-ee0cfe">' + title + '</h3>' +
     '<button type="button" data-close class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    (sub ? '<p class="muted" style="line-height:1.5">' + sub + '</p>' : '') +
+    (sub ? '<p class="muted su-77e2fe">' + sub + '</p>' : '') +
     bodyHTML +
     '<div class="dlg-actions"><button type="button" data-close class="btn">Cerrar</button></div></form>';
   document.body.appendChild(d);
@@ -117,17 +117,17 @@ var editId = null, fGen = 'todos', fEst = 'todos', fFmt = 'todos', fQ = '', fSol
 
 function buildDialog() {
   var body =
-    '<div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">' +
-    '<button type="button" id="tabBibResumen" class="btn btn-accent" style="width:auto">🏡 Resumen</button>' +
-    '<button type="button" id="tabBibLibros" class="btn" style="width:auto">📚 Libros</button>' +
-    '<button type="button" id="tabBibPrestamos" class="btn" style="width:auto">🤝 Préstamos</button>' +
-    '<button type="button" id="tabBibGuia" class="btn" style="width:auto">📖 Guía</button></div>' +
+    '<div class="timer-tabs su-4dca21">' +
+    '<button type="button" id="tabBibResumen" class="btn btn-accent su-30e741">🏡 Resumen</button>' +
+    '<button type="button" id="tabBibLibros" class="btn su-30e741">📚 Libros</button>' +
+    '<button type="button" id="tabBibPrestamos" class="btn su-30e741">🤝 Préstamos</button>' +
+    '<button type="button" id="tabBibGuia" class="btn su-30e741">📖 Guía</button></div>' +
 
     '<div id="bibResumen"></div>' +
 
     '<div id="bibLibros" class="hidden">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>➕ <span id="bibFormTitle">Nuevo libro</span></h4>' +
-    '<div class="conv-row"><label style="flex:2">Título * <input type="text" id="bibTitulo" placeholder="ej: Canto general, Papelucho, Azmapu" maxlength="80"></label>' +
+    '<div class="menstrual-card su-68a1a9"><h4>➕ <span id="bibFormTitle">Nuevo libro</span></h4>' +
+    '<div class="conv-row"><label class="su-4b3de7">Título * <input type="text" id="bibTitulo" placeholder="ej: Canto general, Papelucho, Azmapu" maxlength="80"></label>' +
     '<label>Autor <input type="text" id="bibAutor" placeholder="ej: Gabriela Mistral, M. Luisa Bombal" maxlength="60"></label></div>' +
     '<div class="conv-row"><label>Género <select id="bibGenero">' + GENEROS.map(function (t) { return '<option>' + esc(t) + '</option>'; }).join('') + '</select></label>' +
     '<label>Formato <select id="bibFormato">' + FORMATOS.map(function (t) { return '<option>' + esc(t) + '</option>'; }).join('') + '</select></label>' +
@@ -136,27 +136,27 @@ function buildDialog() {
     '<label>Voy en la página <input type="number" id="bibPaginaActual" min="0" step="1" placeholder="ej: 45"></label>' +
     '<label>Mi nota (0-5) <select id="bibRating"><option value="0">Sin nota</option><option value="1">★ 1</option><option value="2">★★ 2</option><option value="3">★★★ 3</option><option value="4">★★★★ 4</option><option value="5">★★★★★ 5</option></select></label></div>' +
     '<div class="conv-row"><label>Guardado en <select id="bibUbi">' + UBIS.map(function (t) { return '<option>' + esc(t) + '</option>'; }).join('') + '</select></label>' +
-    '<label class="check-row" style="margin:0;align-self:flex-end"><input type="checkbox" id="bibFav"> ⭐ Favorito</label></div>' +
+    '<label class="check-row su-70c149"><input type="checkbox" id="bibFav"> ⭐ Favorito</label></div>' +
     '<label>Reseña / por qué lo quiero <input type="text" id="bibNota" placeholder="ej: me lo regaló mi mamá, para leer con los niños, prestado por la tía" maxlength="140"></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start;margin-top:8px"><button type="button" id="bibAdd" class="btn btn-accent" style="width:auto">+ Guardar libro</button>' +
-    '<button type="button" id="bibCancel" class="btn hidden" style="width:auto">Cancelar</button></div></div>' +
-    '<div class="conv-row" style="margin-top:10px"><label style="flex:2">🔍 Buscar <input type="text" id="bibQ" placeholder="título, autor, nota..."></label>' +
+    '<div class="dlg-actions su-8f9e27"><button type="button" id="bibAdd" class="btn btn-accent su-30e741">+ Guardar libro</button>' +
+    '<button type="button" id="bibCancel" class="btn hidden su-30e741">Cancelar</button></div></div>' +
+    '<div class="conv-row su-d2c171"><label class="su-4b3de7">🔍 Buscar <input type="text" id="bibQ" placeholder="título, autor, nota..."></label>' +
     '<label>Género <select id="bibFQ"><option value="todos">Todos</option>' + GENEROS.map(function (t) { return '<option>' + esc(t) + '</option>'; }).join('') + '</select></label>' +
     '<label>Estado <select id="bibFE"><option value="todos">Todos</option>' + ESTADOS.map(function (t) { return '<option>' + esc(t) + '</option>'; }).join('') + '</select></label></div>' +
-    '<div class="conv-row" style="margin-top:6px"><label>Formato <select id="bibFF"><option value="todos">Todos</option>' + FORMATOS.map(function (t) { return '<option>' + esc(t) + '</option>'; }).join('') + '</select></label>' +
-    '<label class="check-row" style="margin:0;align-self:flex-end"><input type="checkbox" id="bibFSolo"> ⭐ Solo favoritos / leyendo</label></div>' +
-    '<div id="bibList" style="margin-top:8px;display:flex;flex-direction:column;gap:8px"></div></div>' +
+    '<div class="conv-row su-fe7b49"><label>Formato <select id="bibFF"><option value="todos">Todos</option>' + FORMATOS.map(function (t) { return '<option>' + esc(t) + '</option>'; }).join('') + '</select></label>' +
+    '<label class="check-row su-70c149"><input type="checkbox" id="bibFSolo"> ⭐ Solo favoritos / leyendo</label></div>' +
+    '<div id="bibList" class="su-bf3828"></div></div>' +
 
     '<div id="bibPrestamos" class="hidden">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🤝 Prestar un libro</h4>' +
-    '<div class="conv-row"><label style="flex:2">Libro * <select id="bibPLibro"></select></label>' +
+    '<div class="menstrual-card su-68a1a9"><h4>🤝 Prestar un libro</h4>' +
+    '<div class="conv-row"><label class="su-4b3de7">Libro * <select id="bibPLibro"></select></label>' +
     '<label>¿A quién? * <input type="text" id="bibPQuien" placeholder="ej: vecina Marta, primo Diego, 5°B" maxlength="50"></label></div>' +
     '<div class="conv-row"><label>Fecha préstamo <input type="date" id="bibPFecha"></label>' +
     '<label>Devuelve aprox. <input type="date" id="bibPDev"></label></div>' +
     '<label>Nota <input type="text" id="bibPNota" placeholder="ej: cuídalo, tiene dedicatoria" maxlength="100"></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start;margin-top:8px"><button type="button" id="bibPAdd" class="btn btn-accent" style="width:auto">🤝 Registrar préstamo</button></div></div>' +
+    '<div class="dlg-actions su-8f9e27"><button type="button" id="bibPAdd" class="btn btn-accent su-30e741">🤝 Registrar préstamo</button></div></div>' +
     '<div id="bibPActivos"></div>' +
-    '<div id="bibPHist" style="margin-top:10px"></div></div>' +
+    '<div id="bibPHist" class="su-d2c171"></div></div>' +
 
     '<div id="bibGuia" class="hidden">' +
     '<div class="si-card"><h4>🏡 Orden que invita a leer</h4><p><b>Por ambiente, no por tamaño:</b> niños a su altura, cocina cerca de la cocina, estudio junto al escritorio. Un <b>rincón lector</b> vale más que una repisa llena: cojín, luz cálida y los 3 libros del mes a la vista. Revisa esta lista <b>1 vez por luna</b>: archiva lo ya terminado y deja a mano lo que estás leyendo.</p></div>' +
@@ -206,36 +206,36 @@ function renderResumen() {
 
   box.innerHTML =
     '<div class="fishing-grid">' +
-    '<div class="menstrual-card"><h4>📚 Mi biblioteca</h4><p style="font-size:22px;color:var(--gold)"><b>' + items.length + '</b> <span style="font-size:12px">libros</span></p>' +
-    '<p class="muted" style="font-size:11px">📖 ' + leyendo.length + ' leyendo · 📥 ' + porLeer + ' por leer · ✅ ' + term.length + ' terminados' + (arch ? '<br>📦 ' + arch + ' archivado(s)/donados' : '') + '</p>' +
-    (Object.keys(porGen).length ? '<p class="muted" style="font-size:11px">' + Object.keys(porGen).slice(0, 5).map(function (k) { return esc(k.split(' ')[0] + ' ' + porGen[k]); }).join(' · ') + '</p>' : '') + '</div>' +
-    '<div class="menstrual-card"><h4>🎯 Reto lector ' + anio + '</h4><p style="font-size:22px;color:var(--gold)"><b>' + leidosAnio + '</b><span style="font-size:12px"> / ' + meta + ' libros</span></p>' +
-    '<div style="background:var(--panel);border:1px solid var(--line);border-radius:8px;height:10px;overflow:hidden;margin:6px 0"><div style="height:100%;width:' + pctReto + '%;background:var(--gold)"></div></div>' +
-    '<div class="conv-row" style="margin-top:6px"><label style="flex:1">Meta anual <input type="number" id="bibMeta" min="1" max="365" value="' + meta + '" style="width:90px"></label>' +
-    '<button type="button" id="bibMetaSave" class="btn" style="width:auto;align-self:flex-end">Guardar</button></div>' +
-    '<p class="muted" style="font-size:11px">🤝 ' + activos.length + ' prestado(s) fuera' + (atrasados.length ? ' · <b style="color:#e76e8a">' + atrasados.length + ' atrasado(s)</b>' : '') + (favs.length ? ' · ⭐ ' + favs.length + ' favorito(s)' : '') + '</p></div></div>' +
+    '<div class="menstrual-card"><h4>📚 Mi biblioteca</h4><p class="su-f3dba9"><b>' + items.length + '</b> <span class="su-6cb285">libros</span></p>' +
+    '<p class="muted su-11a508">📖 ' + leyendo.length + ' leyendo · 📥 ' + porLeer + ' por leer · ✅ ' + term.length + ' terminados' + (arch ? '<br>📦 ' + arch + ' archivado(s)/donados' : '') + '</p>' +
+    (Object.keys(porGen).length ? '<p class="muted su-11a508">' + Object.keys(porGen).slice(0, 5).map(function (k) { return esc(k.split(' ')[0] + ' ' + porGen[k]); }).join(' · ') + '</p>' : '') + '</div>' +
+    '<div class="menstrual-card"><h4>🎯 Reto lector ' + anio + '</h4><p class="su-f3dba9"><b>' + leidosAnio + '</b><span class="su-6cb285"> / ' + meta + ' libros</span></p>' +
+    '<div class="su-fe82e6"><div style="height:100%;width:' + pctReto + '%;background:var(--gold)"></div></div>' +
+    '<div class="conv-row su-fe7b49"><label class="su-97445a">Meta anual <input type="number" id="bibMeta" min="1" max="365" value="' + meta + '" class="su-581be4"></label>' +
+    '<button type="button" id="bibMetaSave" class="btn su-4ed52d">Guardar</button></div>' +
+    '<p class="muted su-11a508">🤝 ' + activos.length + ' prestado(s) fuera' + (atrasados.length ? ' · <b class="su-a861ba">' + atrasados.length + ' atrasado(s)</b>' : '') + (favs.length ? ' · ⭐ ' + favs.length + ' favorito(s)' : '') + '</p></div></div>' +
 
-    (leyendo.length ? '<div class="menstrual-card" style="margin-top:10px"><h4>📖 Leyendo ahora</h4>' +
+    (leyendo.length ? '<div class="menstrual-card su-d2c171"><h4>📖 Leyendo ahora</h4>' +
       leyendo.slice(0, 4).map(function (x) {
         var p = progreso(x);
-        return '<div class="hora-item" style="align-items:center"><span style="font-size:12px;flex:1">📖 <b>' + esc(x.titulo) + '</b> <span class="muted">· ' + esc(x.autor || 's/a') + ' · pág ' + esc(String(x.paginaActual || 0)) + '/' + esc(String(x.paginas || '?')) + ' (' + p + '%)</span>' +
-          '<span style="display:block;background:var(--panel);border:1px solid var(--line);border-radius:6px;height:8px;margin-top:4px;overflow:hidden"><span style="display:block;height:100%;width:' + p + '%;background:var(--gold)"></span></span></span>' +
-          '<span style="display:flex;gap:6px"><button type="button" class="btn bib-adv" data-k="' + esc(x.id) + '" style="width:auto;font-size:11px">+10 pág</button>' +
-          '<button type="button" class="btn bib-fin" data-k="' + esc(x.id) + '" style="width:auto;font-size:11px">✅ Terminar</button></span></div>';
+        return '<div class="hora-item su-7c6197"><span class="su-ceab66">📖 <b>' + esc(x.titulo) + '</b> <span class="muted">· ' + esc(x.autor || 's/a') + ' · pág ' + esc(String(x.paginaActual || 0)) + '/' + esc(String(x.paginas || '?')) + ' (' + p + '%)</span>' +
+          '<span class="su-46698a"><span style="display:block;height:100%;width:' + p + '%;background:var(--gold)"></span></span></span>' +
+          '<span class="su-49cd09"><button type="button" class="btn bib-adv su-337714" data-k="' + esc(x.id) + '">+10 pág</button>' +
+          '<button type="button" class="btn bib-fin su-337714" data-k="' + esc(x.id) + '">✅ Terminar</button></span></div>';
       }).join('') + '</div>' : '') +
 
-    (activos.length ? '<div class="menstrual-card" style="margin-top:10px;border-color:var(--gold)"><h4>🤝 Fuera de casa — no olvidar</h4>' +
+    (activos.length ? '<div class="menstrual-card su-51d56a"><h4>🤝 Fuera de casa — no olvidar</h4>' +
       activos.slice(0, 5).map(function (p) {
         var b = byId(p.libroId);
         var dias = p.fecha ? diffDays(p.fecha, todayKey()) : 0;
         var alerta = dias > 30 ? ' 🔴 ' + dias + ' días' : ' · hace ' + dias + ' d';
-        return '<div class="hora-item"><span style="font-size:12px">🤝 <b>' + esc(b ? b.titulo : (p.titulo || 'Libro')) + '</b> <span class="muted">→ ' + esc(p.quien || '') + alerta + '</span></span>' +
-          '<button type="button" class="btn bib-dev" data-k="' + esc(p.id) + '" style="width:auto;font-size:11px">↩ Devolver</button></div>';
+        return '<div class="hora-item"><span class="su-6cb285">🤝 <b>' + esc(b ? b.titulo : (p.titulo || 'Libro')) + '</b> <span class="muted">→ ' + esc(p.quien || '') + alerta + '</span></span>' +
+          '<button type="button" class="btn bib-dev su-337714" data-k="' + esc(p.id) + '">↩ Devolver</button></div>';
       }).join('') + '</div>' : '') +
 
-    '<div class="dlg-actions" style="justify-content:flex-start;margin-top:8px"><button type="button" id="bibGoAdd" class="btn" style="width:auto">➕ Anotar libro</button>' +
-    '<button type="button" id="bibGoPrest" class="btn" style="width:auto">🤝 Prestar</button>' +
-    '<button type="button" id="bibShareBtn" class="btn" style="width:auto">📤 Compartir</button></div>';
+    '<div class="dlg-actions su-8f9e27"><button type="button" id="bibGoAdd" class="btn su-30e741">➕ Anotar libro</button>' +
+    '<button type="button" id="bibGoPrest" class="btn su-30e741">🤝 Prestar</button>' +
+    '<button type="button" id="bibShareBtn" class="btn su-30e741">📤 Compartir</button></div>';
 
   var ms = $('bibMetaSave');
   if (ms) ms.onclick = function () {
@@ -298,28 +298,28 @@ function renderList() {
     return tn.indexOf(qn) >= 0;
   });
   if (!list.length) {
-    box.innerHTML = '<p class="muted" style="font-size:11px;text-align:center">Sin libros con ese filtro. Anota el primero arriba: ej “Papelucho” 🧒.</p>';
+    box.innerHTML = '<p class="muted su-e201a8">Sin libros con ese filtro. Anota el primero arriba: ej “Papelucho” 🧒.</p>';
     return;
   }
   box.innerHTML = list.map(function (x) {
     var p = progreso(x);
     var prestInfo = (x.estado === '🤝 Prestado fuera' && x.prestadoA) ? ' · 🤝 ' + esc(x.prestadoA) : '';
-    return '<div class="si-card"' + (x.archivada ? ' style="opacity:.6"' : '') + '><h4>📚 ' + esc(x.titulo) + (x.fav ? ' ⭐' : '') + (x.archivada ? ' <span class="chip" style="font-size:10px">archivado</span>' : '') + '</h4>' +
-      '<p class="muted" style="font-size:12px">' + esc(x.autor || 'Autor desconocido') + (x.rating ? ' · <span style="color:var(--gold)">' + stars(x.rating) + '</span>' : '') + '</p>' +
-      '<p style="display:flex;gap:6px;flex-wrap:wrap"><span class="chip" style="font-size:10px">' + esc(x.genero || '') + '</span>' +
-      '<span class="chip" style="font-size:10px">' + esc(x.formato || '') + '</span>' +
-      '<span class="chip" style="font-size:10px">' + esc(x.estado || '') + '</span>' +
-      (x.ubi ? '<span class="chip" style="font-size:10px">📍 ' + esc(x.ubi) + '</span>' : '') +
-      (x.paginas ? '<span class="chip" style="font-size:10px">📄 ' + esc(String(x.paginaActual || 0)) + '/' + esc(String(x.paginas)) + ' · ' + p + '%</span>' : '') + '</p>' +
-      ((x.paginas && x.estado === '📖 Leyendo') ? '<div style="background:var(--panel);border:1px solid var(--line);border-radius:6px;height:8px;overflow:hidden;margin:6px 0"><div style="height:100%;width:' + p + '%;background:var(--gold)"></div></div>' : '') +
+    return '<div class="si-card"' + (x.archivada ? ' class="su-6109bb"' : '') + '><h4>📚 ' + esc(x.titulo) + (x.fav ? ' ⭐' : '') + (x.archivada ? ' <span class="chip su-0d5be0">archivado</span>' : '') + '</h4>' +
+      '<p class="muted su-6cb285">' + esc(x.autor || 'Autor desconocido') + (x.rating ? ' · <span class="su-e39eba">' + stars(x.rating) + '</span>' : '') + '</p>' +
+      '<p class="su-6157e8"><span class="chip su-0d5be0">' + esc(x.genero || '') + '</span>' +
+      '<span class="chip su-0d5be0">' + esc(x.formato || '') + '</span>' +
+      '<span class="chip su-0d5be0">' + esc(x.estado || '') + '</span>' +
+      (x.ubi ? '<span class="chip su-0d5be0">📍 ' + esc(x.ubi) + '</span>' : '') +
+      (x.paginas ? '<span class="chip su-0d5be0">📄 ' + esc(String(x.paginaActual || 0)) + '/' + esc(String(x.paginas)) + ' · ' + p + '%</span>' : '') + '</p>' +
+      ((x.paginas && x.estado === '📖 Leyendo') ? '<div class="su-2f373c"><div style="height:100%;width:' + p + '%;background:var(--gold)"></div></div>' : '') +
       (x.nota ? '<p class="muted">“' + esc(x.nota) + '”' + prestInfo + '</p>' : (prestInfo ? '<p class="muted">' + prestInfo + '</p>' : '')) +
-      '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">' +
-      (x.estado !== '✅ Terminado' && !x.archivada ? '<button type="button" class="btn bib-a10" data-k="' + esc(x.id) + '" style="width:auto;font-size:11px">+10 pág</button>' : '') +
-      (x.estado !== '✅ Terminado' && !x.archivada ? '<button type="button" class="btn bib-term" data-k="' + esc(x.id) + '" style="width:auto;font-size:11px">✅ Terminar</button>' : '') +
-      (!x.archivada ? '<button type="button" class="btn bib-pres" data-k="' + esc(x.id) + '" style="width:auto;font-size:11px">🤝 Prestar</button>' : '') +
-      '<button type="button" class="btn bib-edit" data-k="' + esc(x.id) + '" style="width:auto;font-size:11px">✏️ Editar</button>' +
-      '<button type="button" class="btn bib-arch" data-k="' + esc(x.id) + '" style="width:auto;font-size:11px">' + (x.archivada ? '📂 Reactivar' : '📦 Archivar') + '</button>' +
-      '<button type="button" class="btn bib-del" data-k="' + esc(x.id) + '" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕</button></div></div>';
+      '<div class="su-c158a9">' +
+      (x.estado !== '✅ Terminado' && !x.archivada ? '<button type="button" class="btn bib-a10 su-337714" data-k="' + esc(x.id) + '">+10 pág</button>' : '') +
+      (x.estado !== '✅ Terminado' && !x.archivada ? '<button type="button" class="btn bib-term su-337714" data-k="' + esc(x.id) + '">✅ Terminar</button>' : '') +
+      (!x.archivada ? '<button type="button" class="btn bib-pres su-337714" data-k="' + esc(x.id) + '">🤝 Prestar</button>' : '') +
+      '<button type="button" class="btn bib-edit su-337714" data-k="' + esc(x.id) + '">✏️ Editar</button>' +
+      '<button type="button" class="btn bib-arch su-337714" data-k="' + esc(x.id) + '">' + (x.archivada ? '📂 Reactivar' : '📦 Archivar') + '</button>' +
+      '<button type="button" class="btn bib-del su-fd834a" data-k="' + esc(x.id) + '">✕</button></div></div>';
   }).join('');
 
   box.querySelectorAll('.bib-a10').forEach(function (b) {
@@ -402,25 +402,25 @@ function renderPrestamos() {
   var hist = st.prestamos.filter(function (p) { return p.devuelto; })
     .sort(function (a, b) { return String(b.devueltoFecha || '').localeCompare(String(a.devueltoFecha || '')); }).slice(0, 20);
 
-  boxA.innerHTML = '<div class="menstrual-card" style="margin-top:10px"><h4>📤 Activos (' + act.length + ')</h4>' +
+  boxA.innerHTML = '<div class="menstrual-card su-d2c171"><h4>📤 Activos (' + act.length + ')</h4>' +
     (act.length ? act.map(function (p) {
       var b = byId(p.libroId);
       var dias = p.fecha ? diffDays(p.fecha, todayKey()) : 0;
       var mal = dias > 30;
-      return '<div class="hora-item"><span style="font-size:12px">' + (mal ? '🔴' : '🤝') + ' <b>' + esc(b ? b.titulo : (p.titulo || 'Libro')) + '</b>' +
+      return '<div class="hora-item"><span class="su-6cb285">' + (mal ? '🔴' : '🤝') + ' <b>' + esc(b ? b.titulo : (p.titulo || 'Libro')) + '</b>' +
         '<span class="muted"> → ' + esc(p.quien || '') + ' · desde ' + esc(p.fecha || '') + (p.dev ? ' · devolver ' + esc(p.dev) : '') + ' · hace ' + dias + ' d' + (mal ? ' ⚠️ ¡recordar!' : '') + '</span></span>' +
-        '<span style="display:flex;gap:6px"><button type="button" class="btn bib-dev2" data-k="' + esc(p.id) + '" style="width:auto;font-size:11px">↩ Devolvieron</button>' +
-        '<button type="button" class="btn bib-msg" data-k="' + esc(p.id) + '" style="width:auto;font-size:11px">💬 Recordar</button></span></div>';
-    }).join('') : '<p class="muted" style="font-size:11px">Nada fuera de casa. Todo en su repisa. 🏡</p>') + '</div>';
+        '<span class="su-49cd09"><button type="button" class="btn bib-dev2 su-337714" data-k="' + esc(p.id) + '">↩ Devolvieron</button>' +
+        '<button type="button" class="btn bib-msg su-337714" data-k="' + esc(p.id) + '">💬 Recordar</button></span></div>';
+    }).join('') : '<p class="muted su-11a508">Nada fuera de casa. Todo en su repisa. 🏡</p>') + '</div>';
 
-  boxH.innerHTML = '<div class="menstrual-card" style="margin-top:10px"><h4>📜 Historial (' + st.prestamos.filter(function (p) { return p.devuelto; }).length + ' devueltos)</h4>' +
+  boxH.innerHTML = '<div class="menstrual-card su-d2c171"><h4>📜 Historial (' + st.prestamos.filter(function (p) { return p.devuelto; }).length + ' devueltos)</h4>' +
     (hist.length ? hist.slice(0, 10).map(function (p) {
       var b = byId(p.libroId);
-      return '<p class="muted" style="font-size:11px">↩ <b>' + esc(b ? b.titulo : (p.titulo || '')) + '</b> → ' + esc(p.quien || '') + ' · devuelto ' + esc(p.devueltoFecha || '') + '</p>';
-    }).join('') : '<p class="muted" style="font-size:11px">Aún sin devoluciones registradas.</p>') +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-top:8px"><span class="muted" style="font-size:11px">Tip: presta máximo 30 días.</span>' +
-    '<span style="display:flex;gap:8px"><button type="button" id="bibPShare" class="btn" style="width:auto">📤 Compartir</button>' +
-    '<button type="button" id="bibPClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar historial</button></span></div></div>';
+      return '<p class="muted su-11a508">↩ <b>' + esc(b ? b.titulo : (p.titulo || '')) + '</b> → ' + esc(p.quien || '') + ' · devuelto ' + esc(p.devueltoFecha || '') + '</p>';
+    }).join('') : '<p class="muted su-11a508">Aún sin devoluciones registradas.</p>') +
+    '<div class="dlg-actions su-efea1d"><span class="muted su-11a508">Tip: presta máximo 30 días.</span>' +
+    '<span class="su-a76d59"><button type="button" id="bibPShare" class="btn su-30e741">📤 Compartir</button>' +
+    '<button type="button" id="bibPClear" class="btn su-214f75">🗑 Borrar historial</button></span></div></div>';
 
   boxA.querySelectorAll('.bib-dev2').forEach(function (b) {
     b.onclick = function () { devolverPrestamo(b.dataset.k); };

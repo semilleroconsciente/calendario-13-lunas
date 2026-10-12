@@ -53,10 +53,10 @@ function makeDialog(id, title, sub, bodyHTML) {
   var d = document.createElement('dialog');
   d.id = id;
   d.innerHTML = '<form method="dialog">' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
-    '<h3 style="margin:0;color:var(--accent)">' + title + '</h3>' +
+    '<div class="dlg-actions su-d2d053">' +
+    '<h3 class="su-ee0cfe">' + title + '</h3>' +
     '<button type="button" data-close class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    (sub ? '<p class="muted" style="line-height:1.5">' + sub + '</p>' : '') +
+    (sub ? '<p class="muted su-77e2fe">' + sub + '</p>' : '') +
     bodyHTML +
     '<div class="dlg-actions"><button type="button" data-close class="btn">Cerrar</button></div></form>';
   document.body.appendChild(d);
@@ -209,20 +209,20 @@ function renderResumen() {
   var puerta = s.perfil.puerta || 'sin definir';
   box.innerHTML =
     '<div class="fishing-grid">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🌙 Hoy · ' + esc(todayKey()) + '</h4>' +
-    '<p style="font-size:12px">' + esc(c.txt) + '</p><p class="muted" style="font-size:11px">' + esc(c.tip) + '</p></div>' +
+    '<div class="menstrual-card su-68a1a9"><h4>🌙 Hoy · ' + esc(todayKey()) + '</h4>' +
+    '<p class="su-6cb285">' + esc(c.txt) + '</p><p class="muted su-11a508">' + esc(c.tip) + '</p></div>' +
     '<div class="menstrual-card"><h4>☯️ Armonía de mi casa</h4>' +
-    '<p style="font-size:22px;color:var(--gold)"><b>' + sc.pct + '%</b> <span style="font-size:11px">' + sc.ok + '/' + sc.t + ' hábitos</span></p>' +
-    '<div style="background:var(--panel);border-radius:6px;height:10px;overflow:hidden"><div style="width:' + sc.pct + '%;height:100%;background:linear-gradient(90deg,#8fd694,#e8c56a,#e76e8a)"></div></div>' +
-    '<p class="muted" style="font-size:11px;margin-top:6px">Puerta: ' + esc(puerta) + ' · ' + s.curas.length + ' curas registradas</p></div></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>🎯 Próxima acción (5 min)</h4>' +
-    '<p class="muted" style="font-size:12px">' + esc(proximaAccion()) + '</p>' +
-    '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">' +
-    '<button type="button" id="fsGoBagua" class="btn" style="width:auto">🗺️ Ver mi Bagua</button>' +
-    '<button type="button" id="fsGoCasa" class="btn" style="width:auto">✅ Chequear mi casa</button>' +
-    '<button type="button" id="fsGoTareas" class="btn" style="width:auto">🏠 Ir a Tareas Hogar</button></div></div>' +
-    (curas.length ? '<div class="menstrual-card" style="margin-top:10px"><h4>🕯️ Últimas curas</h4>' +
-      curas.map(function (r) { return '<div class="hora-item"><span style="font-size:12px">🕯️ <b>' + esc(r.zona || '') + '</b> · ' + esc(r.accion || '') + '<br><span class="muted">' + esc(r.fecha) + '</span></span></div>'; }).join('') + '</div>' : '');
+    '<p class="su-f3dba9"><b>' + sc.pct + '%</b> <span class="su-11a508">' + sc.ok + '/' + sc.t + ' hábitos</span></p>' +
+    '<div class="su-ab9537"><div style="width:' + sc.pct + '%;height:100%;background:linear-gradient(90deg,#8fd694,#e8c56a,#e76e8a)"></div></div>' +
+    '<p class="muted su-e13d76">Puerta: ' + esc(puerta) + ' · ' + s.curas.length + ' curas registradas</p></div></div>' +
+    '<div class="menstrual-card su-d2c171"><h4>🎯 Próxima acción (5 min)</h4>' +
+    '<p class="muted su-6cb285">' + esc(proximaAccion()) + '</p>' +
+    '<div class="su-c158a9">' +
+    '<button type="button" id="fsGoBagua" class="btn su-30e741">🗺️ Ver mi Bagua</button>' +
+    '<button type="button" id="fsGoCasa" class="btn su-30e741">✅ Chequear mi casa</button>' +
+    '<button type="button" id="fsGoTareas" class="btn su-30e741">🏠 Ir a Tareas Hogar</button></div></div>' +
+    (curas.length ? '<div class="menstrual-card su-d2c171"><h4>🕯️ Últimas curas</h4>' +
+      curas.map(function (r) { return '<div class="hora-item"><span class="su-6cb285">🕯️ <b>' + esc(r.zona || '') + '</b> · ' + esc(r.accion || '') + '<br><span class="muted">' + esc(r.fecha) + '</span></span></div>'; }).join('') + '</div>' : '');
   var gb = $('fsGoBagua'); if (gb) gb.onclick = function () { switchTab('Bagua'); renderBagua(); };
   var gc = $('fsGoCasa'); if (gc) gc.onclick = function () { switchTab('Casa'); };
   var gt = $('fsGoTareas'); if (gt) gt.onclick = function () { try { if ($('btnHomeTasks')) $('btnHomeTasks').click(); } catch (e) {} };
@@ -249,11 +249,11 @@ function renderBagua() {
     var esPuerta = (puerta === d);
     return '<div class="si-card" style="' + (esPuerta ? 'border-color:var(--gold);background:rgba(232,197,106,.08)' : '') + '">' +
       '<h4>' + esc(b.z) + (esPuerta ? ' 🚪' : '') + '</h4>' +
-      '<p><span class="chip" style="font-size:10px">' + esc(b.dir) + '</span> <span class="chip" style="font-size:10px">' + esc(b.el) + '</span></p>' +
+      '<p><span class="chip su-0d5be0">' + esc(b.dir) + '</span> <span class="chip su-0d5be0">' + esc(b.el) + '</span></p>' +
       '<p class="muted">🎨 ' + esc(b.col) + '</p>' +
       '<p class="muted">🔍 ' + esc(b.preg) + '</p>' +
-      '<p style="font-size:12px">💡 ' + esc(b.curas) + '</p>' +
-      (esPuerta ? '<p class="chip" style="font-size:10px;border-color:var(--gold);color:var(--gold)">Tu puerta mira aquí: refuerza entrada + luz</p>' : '') +
+      '<p class="su-6cb285">💡 ' + esc(b.curas) + '</p>' +
+      (esPuerta ? '<p class="chip su-8116f2">Tu puerta mira aquí: refuerza entrada + luz</p>' : '') +
       '</div>';
   }).join('');
   var f = $('fsBaguaFoco');
@@ -273,13 +273,13 @@ function renderKua() {
   }
   var info = KUA_INFO[n];
   if (!info) { box.innerHTML = '<p class="muted">Número no válido. Revisa el año.</p>'; return; }
-  box.innerHTML = '<div class="fishing-grid"><div class="menstrual-card" style="border-color:var(--gold)">' +
+  box.innerHTML = '<div class="fishing-grid"><div class="menstrual-card su-68a1a9">' +
     '<h4>☯️ Tu Kua es ' + n + ' · grupo ' + esc(info.g) + '</h4>' +
-    '<p style="font-size:12px">Elemento: ' + esc(info.el) + '</p>' +
-    '<p class="muted" style="font-size:12px">✅ Favorable: ' + esc(info.fav) + '<br>🚫 A evitar para cama/escritorio: ' + esc(info.ev) + '</p>' +
-    '<p style="font-size:12px">💡 ' + esc(info.tip) + '</p></div>' +
+    '<p class="su-6cb285">Elemento: ' + esc(info.el) + '</p>' +
+    '<p class="muted su-6cb285">✅ Favorable: ' + esc(info.fav) + '<br>🚫 A evitar para cama/escritorio: ' + esc(info.ev) + '</p>' +
+    '<p class="su-6cb285">💡 ' + esc(info.tip) + '</p></div>' +
     '<div class="menstrual-card"><h4>🧭 Aplícalo hoy (sin remodelar)</h4>' +
-    '<p class="muted" style="font-size:12px">• Duerme con la cabeza hacia una dirección favorable.<br>• Escritorio mirando a una favorable (aunque sea en diagonal).<br>• Puerta de entrada: si cae en zona a evitar, compensa con luz + orden + planta.</p></div></div>';
+    '<p class="muted su-6cb285">• Duerme con la cabeza hacia una dirección favorable.<br>• Escritorio mirando a una favorable (aunque sea en diagonal).<br>• Puerta de entrada: si cae en zona a evitar, compensa con luz + orden + planta.</p></div></div>';
 }
 
 function renderElementos() {
@@ -287,10 +287,10 @@ function renderElementos() {
   box.innerHTML = ELEMENTOS.map(function (e) {
     return '<div class="si-card"><h4>' + esc(e.n) + '</h4>' +
       '<p class="muted">' + esc(e.col) + ' · 🏠 ' + esc(e.enCasa) + '</p>' +
-      '<p class="muted" style="font-size:12px">🔄 ' + esc(e.alimenta) + ' · ⛔ ' + esc(e.controla) + '</p>' +
-      '<p style="font-size:12px">⬇️ ' + esc(e.falta) + '<br>⬆️ ' + esc(e.exceso) + '</p></div>';
+      '<p class="muted su-6cb285">🔄 ' + esc(e.alimenta) + ' · ⛔ ' + esc(e.controla) + '</p>' +
+      '<p class="su-6cb285">⬇️ ' + esc(e.falta) + '<br>⬆️ ' + esc(e.exceso) + '</p></div>';
   }).join('') +
-  '<div class="si-card" style="border-color:var(--gold)"><h4>⚖️ Ciclo en una frase</h4><p>💧 nutre 🌳 → 🌳 alimenta 🔥 → 🔥 crea 🪨 → 🪨 crea ⚙️ → ⚙️ nutre 💧. Para calmar un exceso usa su control (ej: mucha agua → tierra). Para levantar una falta usa quien la alimenta.</p></div>';
+  '<div class="si-card su-68a1a9"><h4>⚖️ Ciclo en una frase</h4><p>💧 nutre 🌳 → 🌳 alimenta 🔥 → 🔥 crea 🪨 → 🪨 crea ⚙️ → ⚙️ nutre 💧. Para calmar un exceso usa su control (ej: mucha agua → tierra). Para levantar una falta usa quien la alimenta.</p></div>';
 }
 
 function renderCasa() {
@@ -299,11 +299,11 @@ function renderCasa() {
   wrap.innerHTML = HABITATS.map(function (h) {
     var ok = h.items.filter(function (_, i) { return s.checks[h.id + '_' + i]; }).length;
     var pct = Math.round(ok / h.items.length * 100);
-    return '<div class="menstrual-card" style="margin-top:10px"><h4>' + esc(h.n) + ' · ' + ok + '/' + h.items.length + ' (' + pct + '%)</h4>' +
-      '<div style="background:var(--panel);border-radius:6px;height:8px;overflow:hidden;margin-bottom:6px"><div style="width:' + pct + '%;height:100%;background:linear-gradient(90deg,#8fd694,#e8c56a)"></div></div>' +
+    return '<div class="menstrual-card su-d2c171"><h4>' + esc(h.n) + ' · ' + ok + '/' + h.items.length + ' (' + pct + '%)</h4>' +
+      '<div class="su-6e37d7"><div style="width:' + pct + '%;height:100%;background:linear-gradient(90deg,#8fd694,#e8c56a)"></div></div>' +
       h.items.map(function (t, i) {
         var k = h.id + '_' + i, v = !!s.checks[k];
-        return '<label class="check-row" style="font-size:12px"><input type="checkbox" data-fs="' + k + '"' + (v ? ' checked' : '') + '> ' + esc(t) + '</label>';
+        return '<label class="check-row su-6cb285"><input type="checkbox" data-fs="' + k + '"' + (v ? ' checked' : '') + '> ' + esc(t) + '</label>';
       }).join('') + '</div>';
   }).join('');
   wrap.querySelectorAll('[data-fs]').forEach(function (c) {
@@ -324,9 +324,9 @@ function renderCuras() {
   if (st) st.textContent = d.length + ' curas · ' + d.filter(function (r) { return r.fecha === todayKey(); }).length + ' hoy';
   if (!d.length) { box.innerHTML = '<p class="muted">Sin curas aún. Registra tu primera activación arriba: zona + acción + fecha.</p>'; return; }
   box.innerHTML = d.slice(0, 60).map(function (r) {
-    return '<div class="habit-item"><b>🕯️ ' + esc(r.zona || '') + '</b> <span class="muted" style="font-size:11px">· ' + esc(r.fecha || '') + '</span>' +
-      '<p style="font-size:12px">' + esc(r.accion || '') + (r.nota ? ' <span class="muted">· ' + esc(r.nota) + '</span>' : '') + '</p>' +
-      '<div style="display:flex;gap:6px"><button class="btn" style="width:auto;font-size:11px" data-del="' + r.id + '">✕ Borrar</button></div></div>';
+    return '<div class="habit-item"><b>🕯️ ' + esc(r.zona || '') + '</b> <span class="muted su-11a508">· ' + esc(r.fecha || '') + '</span>' +
+      '<p class="su-6cb285">' + esc(r.accion || '') + (r.nota ? ' <span class="muted">· ' + esc(r.nota) + '</span>' : '') + '</p>' +
+      '<div class="su-49cd09"><button class="btn su-337714" data-del="' + r.id + '">✕ Borrar</button></div></div>';
   }).join('');
   box.querySelectorAll('[data-del]').forEach(function (b) {
     b.onclick = function () {
@@ -344,52 +344,52 @@ function renderAll() { renderResumen(); renderBagua(); renderKua(); renderElemen
 function buildDialog() {
   var dirs = ['Norte', 'Noreste', 'Este', 'Sureste', 'Sur', 'Suroeste', 'Oeste', 'Noroeste'];
   var body =
-    '<div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">' +
-    '<button type="button" id="tabFsResumen" class="btn btn-accent" style="width:auto">☯️ Resumen</button>' +
-    '<button type="button" id="tabFsBagua" class="btn" style="width:auto">🗺️ Bagua</button>' +
-    '<button type="button" id="tabFsKua" class="btn" style="width:auto">🧭 Kua y Elementos</button>' +
-    '<button type="button" id="tabFsCasa" class="btn" style="width:auto">🏠 Mi Casa</button>' +
-    '<button type="button" id="tabFsCuras" class="btn" style="width:auto">🕯️ Curas</button>' +
-    '<button type="button" id="tabFsGuia" class="btn" style="width:auto">📖 Guía</button></div>' +
+    '<div class="timer-tabs su-4dca21">' +
+    '<button type="button" id="tabFsResumen" class="btn btn-accent su-30e741">☯️ Resumen</button>' +
+    '<button type="button" id="tabFsBagua" class="btn su-30e741">🗺️ Bagua</button>' +
+    '<button type="button" id="tabFsKua" class="btn su-30e741">🧭 Kua y Elementos</button>' +
+    '<button type="button" id="tabFsCasa" class="btn su-30e741">🏠 Mi Casa</button>' +
+    '<button type="button" id="tabFsCuras" class="btn su-30e741">🕯️ Curas</button>' +
+    '<button type="button" id="tabFsGuia" class="btn su-30e741">📖 Guía</button></div>' +
 
     '<div id="fsResumen"></div>' +
 
     '<div id="fsBagua" class="hidden">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🧲 Mi puerta mira hacia…</h4>' +
-    '<p class="muted" style="font-size:11px">Párate en la puerta mirando hacia afuera con la brújula del celu. Elige la dirección: el mapa se marca con 🚪 y te dice qué reforzar.</p>' +
+    '<div class="menstrual-card su-68a1a9"><h4>🧲 Mi puerta mira hacia…</h4>' +
+    '<p class="muted su-11a508">Párate en la puerta mirando hacia afuera con la brújula del celu. Elige la dirección: el mapa se marca con 🚪 y te dice qué reforzar.</p>' +
     '<div class="conv-row"><label>Dirección puerta <select id="fsPuerta">' + dirs.map(function (d) { return '<option>' + d + '</option>'; }).join('') + '</select></label>' +
     '<label>Foco de esta luna <select id="fsBaguaFoco"></select></label></div>' +
-    '<p class="muted" style="font-size:11px">Método puerta (el más simple y el que usamos aquí): la zona Bagua de tu puerta es tu punto de partida. Sur = hemisferio norte clásico; en Penco úsalo como mapa de intenciones, no como dogma — ver 📖 Guía.</p></div>' +
-    '<div id="fsBaguaGrid" style="margin-top:10px;display:flex;flex-direction:column;gap:8px"></div></div>' +
+    '<p class="muted su-11a508">Método puerta (el más simple y el que usamos aquí): la zona Bagua de tu puerta es tu punto de partida. Sur = hemisferio norte clásico; en Penco úsalo como mapa de intenciones, no como dogma — ver 📖 Guía.</p></div>' +
+    '<div id="fsBaguaGrid" class="su-ed55fd"></div></div>' +
 
     '<div id="fsKua" class="hidden">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🧭 Calcula tu número Kua</h4>' +
+    '<div class="menstrual-card su-68a1a9"><h4>🧭 Calcula tu número Kua</h4>' +
     '<div class="conv-row"><label>Año nacimiento <input type="number" id="fsKuaAnio" min="1900" max="2100" placeholder="ej: 1985"></label>' +
     '<label>Sexo <select id="fsKuaSexo"><option value="M">Masculino</option><option value="F">Femenino</option></select></label></div>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="fsKuaCalc" class="btn btn-accent" style="width:auto">Calcular mi Kua</button></div></div>' +
-    '<div id="fsKuaBox" style="margin-top:10px"></div>' +
-    '<div id="fsElemBox" style="margin-top:10px;display:flex;flex-direction:column;gap:8px"></div></div>' +
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="fsKuaCalc" class="btn btn-accent su-30e741">Calcular mi Kua</button></div></div>' +
+    '<div id="fsKuaBox" class="su-d2c171"></div>' +
+    '<div id="fsElemBox" class="su-ed55fd"></div></div>' +
 
     '<div id="fsCasa" class="hidden">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🏠 Perfil de mi casa</h4>' +
-    '<div class="conv-row"><label style="flex:2">Tipo <select id="fsTipo"><option>Casa</option><option>Departamento</option><option>Pieza / allegada</option><option>Ruka / campo</option><option>Otro</option></select></label>' +
+    '<div class="menstrual-card su-68a1a9"><h4>🏠 Perfil de mi casa</h4>' +
+    '<div class="conv-row"><label class="su-4b3de7">Tipo <select id="fsTipo"><option>Casa</option><option>Departamento</option><option>Pieza / allegada</option><option>Ruka / campo</option><option>Otro</option></select></label>' +
     '<label>Puerta <select id="fsTipoPuerta">' + dirs.map(function (d) { return '<option>' + d + '</option>'; }).join('') + '</select></label></div>' +
     '<label>Nota (ej: arriendo, 2 piezas, patio chico) <input type="text" id="fsNota" placeholder="ej: casa Penco, living chico, patio con parra" maxlength="80"></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="fsPerfilSave" class="btn btn-accent" style="width:auto">Guardar perfil</button></div></div>' +
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="fsPerfilSave" class="btn btn-accent su-30e741">Guardar perfil</button></div></div>' +
     '<div id="fsCasaWrap"></div>' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-top:8px"><span id="fsCasaStats" class="muted" style="font-size:11px"></span><button type="button" id="fsCasaShare" class="btn" style="width:auto">📤 Compartir avance</button></div></div>' +
+    '<div class="dlg-actions su-efea1d"><span id="fsCasaStats" class="muted su-11a508"></span><button type="button" id="fsCasaShare" class="btn su-30e741">📤 Compartir avance</button></div></div>' +
 
     '<div id="fsCuras" class="hidden">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>➕ Registrar cura / activación</h4>' +
+    '<div class="menstrual-card su-68a1a9"><h4>➕ Registrar cura / activación</h4>' +
     '<div class="conv-row"><label>Zona Bagua <select id="fsCuraZona">' + BAGUA.map(function (b) { return '<option>' + esc(b.z) + '</option>'; }).join('') + '</select></label>' +
     '<label>Fecha <input type="date" id="fsCuraFecha"></label></div>' +
     '<label>Acción <input type="text" id="fsCuraAcc" placeholder="ej: puse lámpara cálida + planta en sureste" maxlength="80"></label>' +
     '<label>Nota / intención <input type="text" id="fsCuraNota" placeholder="ej: intención: trabajo estable" maxlength="80"></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="fsCuraAdd" class="btn btn-accent" style="width:auto">+ Guardar cura</button></div></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>⚡ Curas rápidas (sin comprar nada)</h4><p class="muted" style="font-size:12px;line-height:1.7">' +
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="fsCuraAdd" class="btn btn-accent su-30e741">+ Guardar cura</button></div></div>' +
+    '<div class="menstrual-card su-d2c171"><h4>⚡ Curas rápidas (sin comprar nada)</h4><p class="muted su-fe5ef3">' +
     CURAS_RAPIDAS.map(function (c) { return esc(c); }).join('<br>') + '</p></div>' +
-    '<div id="fsCurasList" class="habits-list" style="margin-top:10px;max-height:260px"></div>' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-top:8px"><span id="fsCurasStats" class="muted" style="font-size:11px"></span><button type="button" id="fsCurasShare" class="btn" style="width:auto">📤 Compartir curas</button></div></div>' +
+    '<div id="fsCurasList" class="habits-list su-d36145"></div>' +
+    '<div class="dlg-actions su-efea1d"><span id="fsCurasStats" class="muted su-11a508"></span><button type="button" id="fsCurasShare" class="btn su-30e741">📤 Compartir curas</button></div></div>' +
 
     '<div id="fsGuia" class="hidden">' +
     '<div class="si-card"><h4>☯️ Feng Shui en 1 minuto</h4><p><b>Viento y agua:</b> que el aire (chi) circule y la vida fluya. 3 reglas de oro: <b>1) todo funciona</b> (nada roto/atorado), <b>2) todo respira</b> (luz, aire, espacio), <b>3) todo te quiere</b> (solo lo útil o lo amado). Si algo está roto, sucio o guardado “por si acaso” hace 2 años, está frenando tu chi.</p></div>' +

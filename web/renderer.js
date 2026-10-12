@@ -343,14 +343,14 @@ function renderSiembraContent(tab){
   if(siembraTab==='cosecha'){
     box.innerHTML = '';
     if(hBox){
-      let html='<p class="muted" style="font-size:11px;margin-bottom:12px">Cosecha y plagas — <b>luna actual + 2 siguientes</b></p>';
-      html+='<div style="display:flex;flex-direction:column;gap:14px">';
+      let html='<p class="muted su-41d23c">Cosecha y plagas — <b>luna actual + 2 siguientes</b></p>';
+      html+='<div class="su-c7da91">';
       tres.forEach((n,i)=>{
         const s=SIEMBRA_LUNAS[n]; const meta=MOONS[n-1];
         const badge=i===0?'actual': i===1?'próxima':'siguiente';
         const plaga = n<=3?'Babosas/hongos por humedad': n<=6?'Pulgones en brotes': n<=9?'Mosca blanca/gusano fruto':'Hongos por frío/humedad';
-        html+=`<div class="si-card" style="margin:0;${i===0?'border-color:var(--gold);background:linear-gradient(135deg,var(--panel),var(--card))':''}"><h4>🌱 Luna ${n} · ${escapeHtml(meta.nombre)} <span class="chip" style="font-size:10px">${badge}</span></h4><p style="font-size:11px;color:var(--muted)">${escapeHtml(s.epoca)}</p><p style="font-size:11px;color:var(--gold)"><b>${escapeHtml(s.titulo)}</b></p><p class="si-sem" style="font-size:11px">🌾 Cosecha: ${escapeHtml(s.cosecha)}</p><p style="font-size:11px;color:#ff9a9a">🐛 Plagas: ${escapeHtml(plaga)}</p><p style="font-size:11px">🛠️ ${escapeHtml(s.tareas)}</p></div>`;
-        if(i<2) html+='<div style="height:1px;background:var(--line);opacity:0.6;margin:2px 12px"></div>';
+        html+=`<div class="si-card" style="margin:0;${i===0?'border-color:var(--gold);background:linear-gradient(135deg,var(--panel),var(--card))':''}"><h4>🌱 Luna ${n} · ${escapeHtml(meta.nombre)} <span class="chip su-0d5be0">${badge}</span></h4><p class="su-1fd8c8">${escapeHtml(s.epoca)}</p><p class="su-49f9d7"><b>${escapeHtml(s.titulo)}</b></p><p class="si-sem su-11a508">🌾 Cosecha: ${escapeHtml(s.cosecha)}</p><p class="su-9caaf4">🐛 Plagas: ${escapeHtml(plaga)}</p><p class="su-11a508">🛠️ ${escapeHtml(s.tareas)}</p></div>`;
+        if(i<2) html+='<div class="su-081822"></div>';
       });
       html+='</div>';
       hBox.innerHTML=html;
@@ -359,13 +359,13 @@ function renderSiembraContent(tab){
   }
   // siembra: solo luna actual + 2 siguientes (sin vista rápida, sin ciclo completo, sin guía por fase)
   if(hBox) hBox.innerHTML='';
-  let html='<p class="muted" style="font-size:11px;margin-bottom:12px">Siembra — <b>luna actual + 2 siguientes</b></p>';
-  html+='<div style="display:flex;flex-direction:column;gap:14px">';
+  let html='<p class="muted su-41d23c">Siembra — <b>luna actual + 2 siguientes</b></p>';
+  html+='<div class="su-c7da91">';
   tres.forEach((n,i)=>{
     const s=SIEMBRA_LUNAS[n]; const meta=MOONS[n-1];
     const badge=i===0?'actual': i===1?'próxima':'siguiente';
-    html+=`<div class="si-card" style="margin:0;${i===0?'border-color:var(--gold);background:linear-gradient(135deg,var(--panel),var(--card))':''}"><h4>🌱 Luna ${n} · ${escapeHtml(meta.nombre)} <span class="chip" style="font-size:10px">${badge}</span></h4><p style="font-size:11px;color:var(--muted)">${escapeHtml(s.epoca)}</p><p style="font-size:11px;color:var(--gold)"><b>${escapeHtml(s.titulo)}</b></p><p class="si-sem">🌱 Siembra directa: ${escapeHtml(s.directa)}</p><p class="si-tar">🌱 Almácigos: ${escapeHtml(s.almacigos)}</p><p style="font-size:11px">🌾 Cosecha: ${escapeHtml(s.cosecha)}</p><p style="font-size:11px">🛠️ ${escapeHtml(s.tareas)}</p></div>`;
-    if(i<2) html+='<div style="height:1px;background:var(--line);opacity:0.6;margin:2px 12px"></div>';
+    html+=`<div class="si-card" style="margin:0;${i===0?'border-color:var(--gold);background:linear-gradient(135deg,var(--panel),var(--card))':''}"><h4>🌱 Luna ${n} · ${escapeHtml(meta.nombre)} <span class="chip su-0d5be0">${badge}</span></h4><p class="su-1fd8c8">${escapeHtml(s.epoca)}</p><p class="su-49f9d7"><b>${escapeHtml(s.titulo)}</b></p><p class="si-sem">🌱 Siembra directa: ${escapeHtml(s.directa)}</p><p class="si-tar">🌱 Almácigos: ${escapeHtml(s.almacigos)}</p><p class="su-11a508">🌾 Cosecha: ${escapeHtml(s.cosecha)}</p><p class="su-11a508">🛠️ ${escapeHtml(s.tareas)}</p></div>`;
+    if(i<2) html+='<div class="su-081822"></div>';
   });
   html+='</div>';
   box.innerHTML=html;
@@ -408,24 +408,24 @@ function renderSiembraAsociaciones(filterText){
   const familias=[...new Set(ASOC_DATA.map(a=>a.familia))].sort();
   let html='';
   // Encabezado ordenado
-  html+='<div class="menstrual-card asoc-header" style="background:linear-gradient(135deg,var(--panel),var(--card));border-color:var(--gold)">';
-  html+='<h4 style="color:var(--gold)">🤝 Asociaciones — qué plantar junto</h4>';
-  html+='<p class="muted" style="font-size:11px">Combina cultivos para repeler plagas, mejorar sabor y aprovechar espacio. <b>Verde</b>=buena compañía, <b>rojo</b>=evitar. Basado en huerto de Penco (Bío-Bío).</p>';
+  html+='<div class="menstrual-card asoc-header su-7baee2">';
+  html+='<h4 class="su-e39eba">🤝 Asociaciones — qué plantar junto</h4>';
+  html+='<p class="muted su-11a508">Combina cultivos para repeler plagas, mejorar sabor y aprovechar espacio. <b>Verde</b>=buena compañía, <b>rojo</b>=evitar. Basado en huerto de Penco (Bío-Bío).</p>';
   html+='<div class="asoc-controls">';
   html+='<label class="asoc-control">🔍 Buscar<input type="text" id="asocSearch" placeholder="ej: tomate, lechuga, ajo..." value="'+escapeHtml(ft)+'"></label>';
   html+='<label class="asoc-control">↕️ Orden<select id="asocSort"><option value="destacado" '+(asocSortMode==='destacado'?'selected':'')+'>⭐ Luna actual primero</option><option value="alfabetico" '+(asocSortMode==='alfabetico'?'selected':'')+'>🔤 A → Z</option><option value="familia" '+(asocSortMode==='familia'?'selected':'')+'>🌿 Por familia</option></select></label>';
   html+='<label class="asoc-control">🌿 Familia<select id="asocFamilia"><option value="">Todas</option>'+familias.map(f=>'<option value="'+escapeHtml(f)+'" '+(asocFamiliaFilter===f?'selected':'')+'>'+escapeHtml(f)+'</option>').join('')+'</select></label>';
   html+='<span class="chip asoc-count">'+list.length+' cultivos'+(asocFamiliaFilter?' · '+escapeHtml(asocFamiliaFilter):'')+'</span>';
   html+='</div>';
-  if(destacados.size) html+='<div class="asoc-destacados"><span class="muted" style="font-size:11px">⭐ Destacados esta luna ('+destacados.size+'):</span> '+Array.from(destacados).map(c=>'<span class="pill good" style="font-size:11px">'+escapeHtml(c)+'</span>').join(' ')+'</div>';
+  if(destacados.size) html+='<div class="asoc-destacados"><span class="muted su-11a508">⭐ Destacados esta luna ('+destacados.size+'):</span> '+Array.from(destacados).map(c=>'<span class="pill good su-11a508">'+escapeHtml(c)+'</span>').join(' ')+'</div>';
   html+='<div class="asoc-legend">';
   html+='<span class="asoc-legend-item good">✅ Buena compañía</span><span class="asoc-legend-item bad">🚫 Evitar</span><span class="asoc-legend-item tip">💡 Consejo</span>';
   html+='</div>';
   html+='</div>';
   // Bloque Tres Hermanas destacado ordenado
-  html+='<div class="si-card asoc-milpa" style="border-color:var(--gold);display:flex;gap:12px;align-items:flex-start"><span style="font-size:28px">🌽</span><div><h4>Las Tres Hermanas — milpa mapuche</h4><p style="font-size:12px;color:var(--text)">Técnica ancestral: <b>Maíz</b> es tutor del <b>Poroto</b> (fija nitrógeno) y <b>Zapallo</b> cubre suelo, guarda humedad y frena maleza. Juntas producen más que separadas.</p><p class="muted" style="font-size:11px">Espacio: maíz 40 cm, poroto al pie, zapallo 1,2 m entre mata. Siembra las 3 en la misma luna de Pewü.</p></div></div>';
+  html+='<div class="si-card asoc-milpa su-b77201"><span class="su-a2600b">🌽</span><div><h4>Las Tres Hermanas — milpa mapuche</h4><p class="su-707c92">Técnica ancestral: <b>Maíz</b> es tutor del <b>Poroto</b> (fija nitrógeno) y <b>Zapallo</b> cubre suelo, guarda humedad y frena maleza. Juntas producen más que separadas.</p><p class="muted su-11a508">Espacio: maíz 40 cm, poroto al pie, zapallo 1,2 m entre mata. Siembra las 3 en la misma luna de Pewü.</p></div></div>';
   if(!list.length){
-    html+='<p class="muted" style="margin-top:14px;text-align:center">Sin resultados para “'+escapeHtml(ft)+'”'+(asocFamiliaFilter?' en '+escapeHtml(asocFamiliaFilter):'')+'. Prueba con otro término.</p>';
+    html+='<p class="muted su-3a6477">Sin resultados para “'+escapeHtml(ft)+'”'+(asocFamiliaFilter?' en '+escapeHtml(asocFamiliaFilter):'')+'. Prueba con otro término.</p>';
   } else {
     // Lista ordenada vertical, una card por fila, más legible
     html+='<div class="asoc-list">';
@@ -450,7 +450,7 @@ function renderSiembraAsociaciones(filterText){
     });
     html+='</div>';
   }
-  html+='<p class="muted" style="font-size:10px;margin-top:10px;text-align:center">Tip: alterna familias cada luna (no repetir solanácea tras solanácea). Deja flores (caléndula, cosmos) para atraer polinizadores. Toca ⭐ para ver destacadas arriba.</p>';
+  html+='<p class="muted su-2b3781">Tip: alterna familias cada luna (no repetir solanácea tras solanácea). Deja flores (caléndula, cosmos) para atraer polinizadores. Toca ⭐ para ver destacadas arriba.</p>';
   aBox.innerHTML=html;
   const inp=$('asocSearch');
   if(inp){
@@ -473,18 +473,18 @@ function renderSiembraPreparados(){
   if(tipoFiltro) list=list.filter(p=> p.familia===tipoFiltro || p.tipo.toLowerCase().includes(tipoFiltro.toLowerCase()));
   const tipos=[...new Set(PREP_DATA.map(p=>p.familia))].sort();
   let html='';
-  html+='<div class="menstrual-card" style="background:linear-gradient(135deg,var(--panel),var(--card));border-color:var(--gold)">';
-  html+='<h4 style="color:var(--gold)">🧪 Preparados orgánicos — botica de la huerta pencona</h4>';
-  html+='<p class="muted" style="font-size:11px">Alternativa sin venenos para <b>fertilizar, prevenir hongos y repeler insectos</b>. Todos se hacen con ingredientes locales (ortiga, cola de caballo, ajo, ceniza). Respeta dosis y luna: menos es más.</p>';
+  html+='<div class="menstrual-card su-7baee2">';
+  html+='<h4 class="su-e39eba">🧪 Preparados orgánicos — botica de la huerta pencona</h4>';
+  html+='<p class="muted su-11a508">Alternativa sin venenos para <b>fertilizar, prevenir hongos y repeler insectos</b>. Todos se hacen con ingredientes locales (ortiga, cola de caballo, ajo, ceniza). Respeta dosis y luna: menos es más.</p>';
   html+='<div class="asoc-controls">';
   html+='<label class="asoc-control">🔍 Buscar<input type="text" id="prepSearch" placeholder="ej: pulgón, ortiga, neem..." value="'+escapeHtml(ft)+'"></label>';
   html+='<label class="asoc-control">🧪 Tipo<select id="prepTipo"><option value="">Todos</option>'+tipos.map(t=>'<option value="'+escapeHtml(t)+'" '+(tipoFiltro===t?'selected':'')+'>'+escapeHtml(t)+'</option>').join('')+'</select></label>';
   html+='<span class="chip asoc-count">'+list.length+' preparados</span>';
   html+='</div>';
-  html+='<div class="asoc-legend"><span class="asoc-legend-item good">🌿 Fertilizante</span><span class="asoc-legend-item" style="background:#7ab8ff22;color:#7ab8ff;border-color:#7ab8ff55">🍄 Fungicida</span><span class="asoc-legend-item bad">🐛 Insecticida</span><span class="asoc-legend-item tip">⚗️ Trampa</span></div>';
+  html+='<div class="asoc-legend"><span class="asoc-legend-item good">🌿 Fertilizante</span><span class="asoc-legend-item su-8fa3a4">🍄 Fungicida</span><span class="asoc-legend-item bad">🐛 Insecticida</span><span class="asoc-legend-item tip">⚗️ Trampa</span></div>';
   html+='</div>';
   if(!list.length){
-    html+='<p class="muted" style="margin-top:14px;text-align:center">Sin preparados para ese filtro. Prueba “ortiga” o “jabón”.</p>';
+    html+='<p class="muted su-3a6477">Sin preparados para ese filtro. Prueba “ortiga” o “jabón”.</p>';
   } else {
     html+='<div class="prep-list">';
     list.forEach(p=>{
@@ -495,7 +495,7 @@ function renderSiembraPreparados(){
       html+='<div class="prep-body">';
       html+='<div class="prep-row"><span class="prep-label">🧾 Ingredientes</span><p>'+escapeHtml(p.ingredientes)+'</p></div>';
       html+='<div class="prep-row"><span class="prep-label">⚗️ Preparación</span><p>'+escapeHtml(p.preparacion)+'</p></div>';
-      html+='<div class="prep-row"><span class="prep-label">💧 Dosis</span><p style="color:#8fd694"><b>'+escapeHtml(p.dosis)+'</b></p></div>';
+      html+='<div class="prep-row"><span class="prep-label">💧 Dosis</span><p class="su-752b1a"><b>'+escapeHtml(p.dosis)+'</b></p></div>';
       html+='<div class="prep-row"><span class="prep-label">🎯 Uso</span><p>'+escapeHtml(p.uso)+'</p></div>';
       html+='<div class="prep-caution">⚠️ '+escapeHtml(p.precauciones)+'</div>';
       html+='</div>';
@@ -503,7 +503,7 @@ function renderSiembraPreparados(){
     });
     html+='</div>';
   }
-  html+='<div class="si-card" style="border-color:var(--gold);margin-top:12px"><h4>📅 Calendario de preparados — por luna</h4><p style="font-size:11px;color:var(--text)"><b>Pukem (invierno):</b> cola de caballo + caldo bordelés preventivo. <b>Pewü:</b> ortiga + jabón potásico para brotes. <b>Walüng:</b> neem + ajo-ají para mosca blanca. <b>Rimü:</b> sulfocálcico + té de compost para guardar.</p><p class="muted" style="font-size:10px">Aplica siempre al atardecer, sin viento sur. Alterna preparados (no repitas cobre >3 veces). Lava hortalizas antes de consumir y respeta carencias.</p></div>';
+  html+='<div class="si-card su-8a5705"><h4>📅 Calendario de preparados — por luna</h4><p class="su-f6ebab"><b>Pukem (invierno):</b> cola de caballo + caldo bordelés preventivo. <b>Pewü:</b> ortiga + jabón potásico para brotes. <b>Walüng:</b> neem + ajo-ají para mosca blanca. <b>Rimü:</b> sulfocálcico + té de compost para guardar.</p><p class="muted su-0d5be0">Aplica siempre al atardecer, sin viento sur. Alterna preparados (no repitas cobre >3 veces). Lava hortalizas antes de consumir y respeta carencias.</p></div>';
   pBox.innerHTML=html;
   const inp=$('prepSearch'); if(inp){ inp.oninput=()=>{ prepSearch=inp.value; renderSiembraPreparados(); inp.focus(); try{const v=inp.value; inp.setSelectionRange(v.length,v.length);}catch{} }; }
   const sel=$('prepTipo'); if(sel) sel.onchange=()=>{ prepFilterTipo=sel.value; renderSiembraPreparados(); };
@@ -563,7 +563,7 @@ function renderFishingDialog(){
   const todayBox=$('fishingTodayBox');
   if(todayBox){
     const color = rating.score>=85? '#a9d18e' : rating.score>=65? '#e8c56a' : '#9aa3c7';
-    todayBox.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:14px"><b>🎣 Hoy — '+cal.weekdayName(todayMs)+' '+cal.fmtFull.format(new Date(todayMs))+'</b></span><span class="chip" style="background:'+color+';color:#10142c">'+rating.label+' ('+rating.score+'/100)</span></div><p class="muted" style="font-size:11px;margin-top:6px">'+rating.desc+' · Tithi '+rating.tithi+' · Mareas: '+tideToday.tides.map(t=> t.h+' '+t.a).join(' · ')+ (tideToday.estimated?' *est.':'') +'</p><p class="muted" style="font-size:11px">Mejor ventana: <b>2h antes/después de pleamar</b> ('+tideToday.tides.filter(t=>t.t==='pleamar').map(t=>t.h).join(', ')+') y <b>amanecer/atard ecer</b>.</p>';
+    todayBox.innerHTML='<div class="su-13313b"><span class="su-433de3"><b>🎣 Hoy — '+cal.weekdayName(todayMs)+' '+cal.fmtFull.format(new Date(todayMs))+'</b></span><span class="chip" style="background:'+color+';color:#10142c">'+rating.label+' ('+rating.score+'/100)</span></div><p class="muted su-e13d76">'+rating.desc+' · Tithi '+rating.tithi+' · Mareas: '+tideToday.tides.map(t=> t.h+' '+t.a).join(' · ')+ (tideToday.estimated?' *est.':'') +'</p><p class="muted su-11a508">Mejor ventana: <b>2h antes/después de pleamar</b> ('+tideToday.tides.filter(t=>t.t==='pleamar').map(t=>t.h).join(', ')+') y <b>amanecer/atard ecer</b>.</p>';
   }
   const lunaBox=$('fishingLunaBox');
   if(lunaBox){
@@ -577,22 +577,22 @@ function renderFishingDialog(){
     });
     if(!best.length) lunaBox.innerHTML='<p class="muted">En esta luna no hay picos excelentes, pero días buenos: revisa mareas diarias.</p>';
     else {
-      lunaBox.innerHTML='<h4 style="color:var(--gold)">🌙 Mejores días en '+ (info? info.nombre : 'esta luna') +'</h4>' + best.slice(0,5).map(b=>'<div class="chip" style="display:block;margin-top:4px">'+cal.weekdayName(mensKeyToMs(b.k))+' '+cal.fmtDate.format(new Date(mensKeyToMs(b.k)))+' — '+b.r.label+' ('+b.r.score+')</div>').join('') + '<p class="muted" style="font-size:10px;margin-top:6px">Basado en luna + marea. Valida con experiencia local.</p>';
+      lunaBox.innerHTML='<h4 class="su-e39eba">🌙 Mejores días en '+ (info? info.nombre : 'esta luna') +'</h4>' + best.slice(0,5).map(b=>'<div class="chip su-6f28f3">'+cal.weekdayName(mensKeyToMs(b.k))+' '+cal.fmtDate.format(new Date(mensKeyToMs(b.k)))+' — '+b.r.label+' ('+b.r.score+')</div>').join('') + '<p class="muted su-d47a97">Basado en luna + marea. Valida con experiencia local.</p>';
     }
   }
   const speciesBox=$('fishingSpeciesBox');
   if(speciesBox){
     const mine=getFishingCustom();
     speciesBox.innerHTML='<div class="fishing-species">'
-      +FISHING_SPECIES.map(s=>'<div class="fishing-species-item" style="cursor:pointer" data-fish="'+escapeHtml(s.nombre)+'"><b>'+escapeHtml(s.nombre)+'</b> — <span class="muted">'+escapeHtml(s.temporada)+' · Talla '+escapeHtml(s.talla)+'</span><br><span style="font-size:11px">Carnada: '+escapeHtml(s.carnada)+'</span><br><span class="muted" style="font-size:10px">'+escapeHtml(s.nota)+'</span></div>').join('')
-      +mine.map((s,i)=>'<div class="fishing-species-item" style="cursor:pointer;border-color:#a9d18e55" data-fish="'+escapeHtml(s.nombre)+'"><div style="display:flex;justify-content:space-between;align-items:center;gap:6px"><span><b>🎣 '+escapeHtml(s.nombre)+'</b> <span class="chip" style="font-size:9px;background:#a9d18e22;color:#a9d18e;border-color:#a9d18e55">mía</span></span><button type="button" class="btn btn-icon fishsp-del" data-i="'+i+'" title="Borrar mi especie" style="width:24px;height:24px;font-size:11px;flex:none">✕</button></div><span class="muted">'+escapeHtml(s.temporada||'—')+' · Talla '+escapeHtml(s.talla||'—')+'</span><br><span style="font-size:11px">Carnada: '+escapeHtml(s.carnada||'—')+'</span><br><span class="muted" style="font-size:10px">'+escapeHtml(s.nota||'')+'</span></div>').join('')
+      +FISHING_SPECIES.map(s=>'<div class="fishing-species-item su-3b6a3a" data-fish="'+escapeHtml(s.nombre)+'"><b>'+escapeHtml(s.nombre)+'</b> — <span class="muted">'+escapeHtml(s.temporada)+' · Talla '+escapeHtml(s.talla)+'</span><br><span class="su-11a508">Carnada: '+escapeHtml(s.carnada)+'</span><br><span class="muted su-0d5be0">'+escapeHtml(s.nota)+'</span></div>').join('')
+      +mine.map((s,i)=>'<div class="fishing-species-item su-263abd" data-fish="'+escapeHtml(s.nombre)+'"><div class="su-533ebe"><span><b>🎣 '+escapeHtml(s.nombre)+'</b> <span class="chip su-421073">mía</span></span><button type="button" class="btn btn-icon fishsp-del su-4503f1" data-i="'+i+'" title="Borrar mi especie">✕</button></div><span class="muted">'+escapeHtml(s.temporada||'—')+' · Talla '+escapeHtml(s.talla||'—')+'</span><br><span class="su-11a508">Carnada: '+escapeHtml(s.carnada||'—')+'</span><br><span class="muted su-0d5be0">'+escapeHtml(s.nota||'')+'</span></div>').join('')
       +'</div>'
-      +'<p class="muted" style="font-size:10px;margin:6px 0">Toca una especie para cargarla en la bitácora. '+FISHING_SPECIES.length+' base'+(mine.length? ' + <b>'+mine.length+' mías</b>':'')+'.</p>'
-      +'<details style="border:1px dashed var(--gold);border-radius:10px;padding:8px 10px;margin-top:6px"><summary style="cursor:pointer;font-size:12px;color:var(--gold)"><b>➕ Agregar especie</b></summary>'
-      +'<div class="conv-row" style="margin-top:8px"><label style="flex:2">Especie * <input type="text" id="fishSpName" placeholder="ej: Cabrilla, Pejesapo" maxlength="30"></label><label>Temporada <input type="text" id="fishSpTemp" placeholder="ej: Oct-Mar" maxlength="20"></label></div>'
-      +'<div class="conv-row"><label>Talla mín. <input type="text" id="fishSpTalla" placeholder="ej: 30 cm" maxlength="20"></label><label style="flex:2">Carnada / señuelo <input type="text" id="fishSpCarn" placeholder="ej: Jibia, cuchara rosada" maxlength="40"></label></div>'
+      +'<p class="muted su-b64a5a">Toca una especie para cargarla en la bitácora. '+FISHING_SPECIES.length+' base'+(mine.length? ' + <b>'+mine.length+' mías</b>':'')+'.</p>'
+      +'<details class="su-9cf9f9"><summary class="su-d9db22"><b>➕ Agregar especie</b></summary>'
+      +'<div class="conv-row su-8a77e5"><label class="su-4b3de7">Especie * <input type="text" id="fishSpName" placeholder="ej: Cabrilla, Pejesapo" maxlength="30"></label><label>Temporada <input type="text" id="fishSpTemp" placeholder="ej: Oct-Mar" maxlength="20"></label></div>'
+      +'<div class="conv-row"><label>Talla mín. <input type="text" id="fishSpTalla" placeholder="ej: 30 cm" maxlength="20"></label><label class="su-4b3de7">Carnada / señuelo <input type="text" id="fishSpCarn" placeholder="ej: Jibia, cuchara rosada" maxlength="40"></label></div>'
       +'<label>Nota <input type="text" id="fishSpNota" placeholder="ej: Amanecer, fondo arena" maxlength="80"></label>'
-      +'<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="fishSpAdd" class="btn btn-accent" style="width:auto">+ Guardar especie</button></div></details>';
+      +'<div class="dlg-actions su-59a5a8"><button type="button" id="fishSpAdd" class="btn btn-accent su-30e741">+ Guardar especie</button></div></details>';
     speciesBox.querySelectorAll('[data-fish]').forEach(el=> el.onclick=(e)=>{ if(e.target && e.target.classList && e.target.classList.contains('fishsp-del')) return; const v=el.dataset.fish; const inp=$('fishLogSpecies'); if(inp){ inp.value=v; inp.focus(); } });
     speciesBox.querySelectorAll('.fishsp-del').forEach(b=> b.onclick=(e)=>{ e.stopPropagation(); const arr=getFishingCustom(); arr.splice(parseInt(b.dataset.i,10),1); scheduleSave('Guardado ✓'); renderFishingDialog(); });
     const fishSpAdd=$('fishSpAdd');
@@ -628,7 +628,7 @@ function renderFishingLog(){
   box.innerHTML=sorted.map(it=>{
     const luna=mensLunaForKey(it.date);
     const lunaTxt=luna? `Luna ${luna.luna} d${luna.dia}`: '';
-    return `<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center"><span><b>${escapeHtml(it.species||'—')}</b> — ${escapeHtml(it.qty||'')} · ${escapeHtml(it.place||'')} <br><span class="muted" style="font-size:11px">${it.date} ${it.tide? '· '+escapeHtml(it.tide):''} ${lunaTxt? '· '+lunaTxt:''} ${it.weather? '· '+escapeHtml(it.weather):''}</span><br><span class="muted" style="font-size:11px">${escapeHtml(it.notes||'')}</span></span><span style="display:flex;gap:6px;flex:0 0 auto"><button data-id="${it.id}" class="btn fishlog-share" style="width:auto;font-size:11px" title="Compartir esta salida">📤</button><button data-id="${it.id}" class="btn fishlog-edit" style="width:auto;font-size:11px">✏️</button><button data-id="${it.id}" class="btn fishlog-del" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕</button></span></div>`;
+    return `<div class="habit-item su-13313b"><span><b>${escapeHtml(it.species||'—')}</b> — ${escapeHtml(it.qty||'')} · ${escapeHtml(it.place||'')} <br><span class="muted su-11a508">${it.date} ${it.tide? '· '+escapeHtml(it.tide):''} ${lunaTxt? '· '+lunaTxt:''} ${it.weather? '· '+escapeHtml(it.weather):''}</span><br><span class="muted su-11a508">${escapeHtml(it.notes||'')}</span></span><span class="su-0c0cb1"><button data-id="${it.id}" class="btn fishlog-share su-337714" title="Compartir esta salida">📤</button><button data-id="${it.id}" class="btn fishlog-edit su-337714">✏️</button><button data-id="${it.id}" class="btn fishlog-del su-fd834a">✕</button></span></div>`;
   }).join('');
   if(stats) stats.textContent=`${data.length} salidas · ${data.filter(x=>x.qty).length} con captura`;
   box.querySelectorAll('.fishlog-share').forEach(b=> b.onclick=async()=>{
@@ -704,7 +704,7 @@ function renderBirdsDialog(){
   if(todayBox){
     const cnt=getBirdData().entries.length;
     const todayCnt=getBirdData().entries.filter(x=>x.date===todayKey).length;
-    todayBox.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:14px"><b>🦅 Hoy — ${cal.fmtFull.format(new Date())}</b></span><span class="chip" style="background:var(--gold);color:#10142c">${todayCnt} hoy · ${cnt} total</span></div><p class="muted" style="font-size:11px;margin-top:6px">Humedal Rocuant es sitio clave: pleamar concentra aves limícolas. Mejor 06:30-09:00 y 17:30-19:00. Viento sur fuerte → poca actividad.</p>`;
+    todayBox.innerHTML=`<div class="su-13313b"><span class="su-433de3"><b>🦅 Hoy — ${cal.fmtFull.format(new Date())}</b></span><span class="chip su-e4aba6">${todayCnt} hoy · ${cnt} total</span></div><p class="muted su-e13d76">Humedal Rocuant es sitio clave: pleamar concentra aves limícolas. Mejor 06:30-09:00 y 17:30-19:00. Viento sur fuerte → poca actividad.</p>`;
   }
   const moonBox=$('birdsMoonBox');
   if(moonBox){
@@ -716,15 +716,15 @@ function renderBirdsDialog(){
   if(catBox){
     const mineB=getBirdsCustom();
     catBox.innerHTML='<div class="fishing-species">'
-      +BIRDS_CATALOG.map(b=>`<div class="fishing-species-item" style="cursor:pointer" data-bird="${escapeHtml(b.nombre)}"><b>${escapeHtml(b.icon||'🐦')} ${escapeHtml(b.nombre)}</b> — <span class="muted" style="font-size:10px">${escapeHtml(b.cient||'')}</span><br><span style="font-size:11px">${escapeHtml(b.hab||'')} · ${escapeHtml(b.epoca||'')}</span>${b.nombre==='Chucao'?'<br><button type="button" class="btn btn-chucao-sound" style="width:auto;font-size:11px;margin-top:4px">🔊 Escuchar canto</button>':''}</div>`).join('')
-      +mineB.map((b,i)=>`<div class="fishing-species-item" style="cursor:pointer;border-color:#a9d18e55" data-bird="${escapeHtml(b.nombre)}"><div style="display:flex;justify-content:space-between;align-items:center;gap:6px"><span><b>${escapeHtml(b.icon||'🐦')} ${escapeHtml(b.nombre)}</b> <span class="chip" style="font-size:9px;background:#a9d18e22;color:#a9d18e;border-color:#a9d18e55">mía</span></span><button type="button" class="btn btn-icon birdsp-del" data-i="${i}" title="Borrar mi especie" style="width:24px;height:24px;font-size:11px;flex:none">✕</button></div><span class="muted" style="font-size:10px">${escapeHtml(b.cient||'')}</span><br><span style="font-size:11px">${escapeHtml(b.hab||'')} · ${escapeHtml(b.epoca||'')}</span></div>`).join('')
+      +BIRDS_CATALOG.map(b=>`<div class="fishing-species-item su-3b6a3a" data-bird="${escapeHtml(b.nombre)}"><b>${escapeHtml(b.icon||'🐦')} ${escapeHtml(b.nombre)}</b> — <span class="muted su-0d5be0">${escapeHtml(b.cient||'')}</span><br><span class="su-11a508">${escapeHtml(b.hab||'')} · ${escapeHtml(b.epoca||'')}</span>${b.nombre==='Chucao'?'<br><button type="button" class="btn btn-chucao-sound su-d2fb07">🔊 Escuchar canto</button>':''}</div>`).join('')
+      +mineB.map((b,i)=>`<div class="fishing-species-item su-263abd" data-bird="${escapeHtml(b.nombre)}"><div class="su-533ebe"><span><b>${escapeHtml(b.icon||'🐦')} ${escapeHtml(b.nombre)}</b> <span class="chip su-421073">mía</span></span><button type="button" class="btn btn-icon birdsp-del su-4503f1" data-i="${i}" title="Borrar mi especie">✕</button></div><span class="muted su-0d5be0">${escapeHtml(b.cient||'')}</span><br><span class="su-11a508">${escapeHtml(b.hab||'')} · ${escapeHtml(b.epoca||'')}</span></div>`).join('')
       +'</div>'
-      +'<p class="muted" style="font-size:10px;margin:6px 0">Toca una especie para cargarla en el formulario. '+BIRDS_CATALOG.length+' base'+(mineB.length? ' + <b>'+mineB.length+' mías</b>':'')+'.</p>'
-      +'<details style="border:1px dashed var(--gold);border-radius:10px;padding:8px 10px;margin-top:6px"><summary style="cursor:pointer;font-size:12px;color:var(--gold)"><b>➕ Agregar especie</b></summary>'
-      +'<div class="conv-row" style="margin-top:8px"><label style="flex:2">Especie * <input type="text" id="birdSpName" placeholder="ej: Diuca, Tenca" maxlength="30"></label><label>Icono <input type="text" id="birdSpIcon" placeholder="🐦" maxlength="4" style="width:60px;text-align:center"></label></div>'
-      +'<div class="conv-row"><label style="flex:2">Nombre científico <input type="text" id="birdSpCient" placeholder="ej: Diuca diuca" maxlength="40"></label><label>Época <input type="text" id="birdSpEpoca" placeholder="ej: Sep-Mar" maxlength="20"></label></div>'
+      +'<p class="muted su-b64a5a">Toca una especie para cargarla en el formulario. '+BIRDS_CATALOG.length+' base'+(mineB.length? ' + <b>'+mineB.length+' mías</b>':'')+'.</p>'
+      +'<details class="su-9cf9f9"><summary class="su-d9db22"><b>➕ Agregar especie</b></summary>'
+      +'<div class="conv-row su-8a77e5"><label class="su-4b3de7">Especie * <input type="text" id="birdSpName" placeholder="ej: Diuca, Tenca" maxlength="30"></label><label>Icono <input type="text" id="birdSpIcon" placeholder="🐦" maxlength="4" class="su-4a6a2f"></label></div>'
+      +'<div class="conv-row"><label class="su-4b3de7">Nombre científico <input type="text" id="birdSpCient" placeholder="ej: Diuca diuca" maxlength="40"></label><label>Época <input type="text" id="birdSpEpoca" placeholder="ej: Sep-Mar" maxlength="20"></label></div>'
       +'<label>Hábitat / lugar <input type="text" id="birdSpHab" placeholder="ej: Humedal Rocuant, cerro" maxlength="50"></label>'
-      +'<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="birdSpAdd" class="btn btn-accent" style="width:auto">+ Guardar especie</button></div></details>';
+      +'<div class="dlg-actions su-59a5a8"><button type="button" id="birdSpAdd" class="btn btn-accent su-30e741">+ Guardar especie</button></div></details>';
     catBox.querySelectorAll('[data-bird]').forEach(el=> el.onclick=(e)=>{ if(e.target && e.target.closest && e.target.closest('.btn-chucao-sound')){ e.stopPropagation(); try{ playNotifySound(); }catch{} return; } if(e.target && e.target.classList && e.target.classList.contains('birdsp-del')) return; const inp=$('birdSpecies'); if(inp){ inp.value=el.dataset.bird; inp.focus(); } });
     catBox.querySelectorAll('.btn-chucao-sound').forEach(b=> b.onclick=(e)=>{ e.stopPropagation(); try{ playNotifySound(); }catch{} });
     catBox.querySelectorAll('.birdsp-del').forEach(b=> b.onclick=(e)=>{ e.stopPropagation(); const arr=getBirdsCustom(); arr.splice(parseInt(b.dataset.i,10),1); scheduleSave('Guardado ✓'); renderBirdsDialog(); });
@@ -748,7 +748,7 @@ function renderBirdsLog(){
   const sorted=[...data].sort((a,b)=> (b.date+b.time).localeCompare(a.date+a.time));
   box.innerHTML=sorted.slice(0,60).map(it=>{
     const luna=mensLunaForKey(it.date);
-    return `<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center"><span><b>${escapeHtml(it.species)}</b> ×${it.count} — ${escapeHtml(it.place||'—')} · ${escapeHtml(it.activity||'')} <br><span class="muted" style="font-size:11px">${it.date} ${it.time||''} ${luna? '· Luna '+luna.luna+' d'+luna.dia:''}</span><br><span class="muted" style="font-size:11px">${escapeHtml(it.notes||'')}</span></span><span style="display:flex;gap:6px;flex:0 0 auto"><button data-id="${it.id}" class="btn bird-share" style="width:auto;font-size:11px" title="Compartir avistamiento">📤</button><button data-id="${it.id}" class="btn bird-edit" style="width:auto;font-size:11px">✏️</button><button data-id="${it.id}" class="btn bird-del" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕</button></span></div>`;
+    return `<div class="habit-item su-13313b"><span><b>${escapeHtml(it.species)}</b> ×${it.count} — ${escapeHtml(it.place||'—')} · ${escapeHtml(it.activity||'')} <br><span class="muted su-11a508">${it.date} ${it.time||''} ${luna? '· Luna '+luna.luna+' d'+luna.dia:''}</span><br><span class="muted su-11a508">${escapeHtml(it.notes||'')}</span></span><span class="su-0c0cb1"><button data-id="${it.id}" class="btn bird-share su-337714" title="Compartir avistamiento">📤</button><button data-id="${it.id}" class="btn bird-edit su-337714">✏️</button><button data-id="${it.id}" class="btn bird-del su-fd834a">✕</button></span></div>`;
   }).join('');
   const speciesSet=new Set(data.map(x=>x.species));
   if(stats) stats.textContent=`${data.length} avistamientos · ${speciesSet.size} especies · ${data.reduce((s,x)=>s+(parseInt(x.count)||0),0)} individuos`;
@@ -850,10 +850,10 @@ function renderIntermarealDialog(){
     const bajamares=tide.tides.filter(t=>t.t==='bajamar');
     const mejor=bajamares.length? bajamares.sort((a,b)=> parseFloat(a.a)-parseFloat(b.a))[0] : null;
     const puede = mejor && parseFloat(mejor.a) < 0.6 ? '✅ Ventana buena hoy' : '⚠️ Revisa altura — ideal <0.6m';
-    todayBox.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:14px"><b>🦀 Hoy — ${cal.fmtFull.format(new Date())}</b></span><span class="chip" style="background:var(--gold);color:#10142c">${todayCnt} hoy · ${cnt} total</span></div>`+
-      `<p class="muted" style="font-size:11px;margin-top:6px">Mareas hoy: ${tide.tides.map(t=> t.h+' '+t.t+' '+t.a).join(' · ')} ${tide.estimated?'*est.':''}</p>`+
-      `<p class="muted" style="font-size:11px">${puede}${mejor? ' · mejor bajamar '+mejor.h+' ('+mejor.a+') · ventana 1h antes/después':''}</p>`+
-      `<p class="muted" style="font-size:10px">Sernapesca marea roja: consulta sernapesca.cl antes de cosechar. Nunca solo, zapatilla con agarre.</p>`;
+    todayBox.innerHTML=`<div class="su-13313b"><span class="su-433de3"><b>🦀 Hoy — ${cal.fmtFull.format(new Date())}</b></span><span class="chip su-e4aba6">${todayCnt} hoy · ${cnt} total</span></div>`+
+      `<p class="muted su-e13d76">Mareas hoy: ${tide.tides.map(t=> t.h+' '+t.t+' '+t.a).join(' · ')} ${tide.estimated?'*est.':''}</p>`+
+      `<p class="muted su-11a508">${puede}${mejor? ' · mejor bajamar '+mejor.h+' ('+mejor.a+') · ventana 1h antes/después':''}</p>`+
+      `<p class="muted su-0d5be0">Sernapesca marea roja: consulta sernapesca.cl antes de cosechar. Nunca solo, zapatilla con agarre.</p>`;
   }
   const moonBox=$('interMoonBox');
   if(moonBox){
@@ -863,22 +863,22 @@ function renderIntermarealDialog(){
   }
   const consejoBox=$('interConsejoBox');
   if(consejoBox && consejo){
-    consejoBox.innerHTML=`<h4 style="font-size:11px;color:var(--gold)">🌊 ${escapeHtml(consejo.titulo)}</h4><p class="muted" style="font-size:11px;margin-top:4px">${escapeHtml(consejo.texto)}</p>`;
+    consejoBox.innerHTML=`<h4 class="su-49f9d7">🌊 ${escapeHtml(consejo.titulo)}</h4><p class="muted su-cdff1d">${escapeHtml(consejo.texto)}</p>`;
   }
   const catBox=$('interCatalogBox');
   if(catBox){
     const mineI=getInterCustom();
     catBox.innerHTML='<div class="fishing-species">'
-      +INTER_CATALOG.map(b=>`<div class="fishing-species-item" style="cursor:pointer" data-inter="${escapeHtml(b.nombre)}"><b>${escapeHtml(b.icon||'🦀')} ${escapeHtml(b.nombre)}</b> — <span class="muted" style="font-size:10px">${escapeHtml(b.cient||'')}</span><br><span style="font-size:11px">${escapeHtml(b.hab||'')} · ${escapeHtml(b.epoca||'')}</span><br><span class="muted" style="font-size:10px">${escapeHtml(b.nota||'')}</span></div>`).join('')
-      +mineI.map((b,i)=>`<div class="fishing-species-item" style="cursor:pointer;border-color:#a9d18e55" data-inter="${escapeHtml(b.nombre)}"><div style="display:flex;justify-content:space-between;align-items:center;gap:6px"><span><b>${escapeHtml(b.icon||'🦀')} ${escapeHtml(b.nombre)}</b> <span class="chip" style="font-size:9px;background:#a9d18e22;color:#a9d18e;border-color:#a9d18e55">mía</span></span><button type="button" class="btn btn-icon intersp-del" data-i="${i}" title="Borrar mi especie" style="width:24px;height:24px;font-size:11px;flex:none">✕</button></div><span class="muted" style="font-size:10px">${escapeHtml(b.cient||'')}</span><br><span style="font-size:11px">${escapeHtml(b.hab||'')} · ${escapeHtml(b.epoca||'')}</span><br><span class="muted" style="font-size:10px">${escapeHtml(b.nota||'')}</span></div>`).join('')
+      +INTER_CATALOG.map(b=>`<div class="fishing-species-item su-3b6a3a" data-inter="${escapeHtml(b.nombre)}"><b>${escapeHtml(b.icon||'🦀')} ${escapeHtml(b.nombre)}</b> — <span class="muted su-0d5be0">${escapeHtml(b.cient||'')}</span><br><span class="su-11a508">${escapeHtml(b.hab||'')} · ${escapeHtml(b.epoca||'')}</span><br><span class="muted su-0d5be0">${escapeHtml(b.nota||'')}</span></div>`).join('')
+      +mineI.map((b,i)=>`<div class="fishing-species-item su-263abd" data-inter="${escapeHtml(b.nombre)}"><div class="su-533ebe"><span><b>${escapeHtml(b.icon||'🦀')} ${escapeHtml(b.nombre)}</b> <span class="chip su-421073">mía</span></span><button type="button" class="btn btn-icon intersp-del su-4503f1" data-i="${i}" title="Borrar mi especie">✕</button></div><span class="muted su-0d5be0">${escapeHtml(b.cient||'')}</span><br><span class="su-11a508">${escapeHtml(b.hab||'')} · ${escapeHtml(b.epoca||'')}</span><br><span class="muted su-0d5be0">${escapeHtml(b.nota||'')}</span></div>`).join('')
       +'</div>'
-      +'<p class="muted" style="font-size:10px;margin:6px 0">Toca una especie para cargarla en el formulario. '+INTER_CATALOG.length+' base'+(mineI.length? ' + <b>'+mineI.length+' mías</b>':'')+'.</p>'
-      +'<details style="border:1px dashed var(--gold);border-radius:10px;padding:8px 10px;margin-top:6px"><summary style="cursor:pointer;font-size:12px;color:var(--gold)"><b>➕ Agregar especie</b></summary>'
-      +'<div class="conv-row" style="margin-top:8px"><label style="flex:2">Especie * <input type="text" id="interSpName" placeholder="ej: Lapa negra, Huiro palo" maxlength="30"></label><label>Icono <input type="text" id="interSpIcon" placeholder="🦀" maxlength="4" style="width:60px;text-align:center"></label></div>'
-      +'<div class="conv-row"><label style="flex:2">Nombre científico <input type="text" id="interSpCient" placeholder="ej: Fissurella sp." maxlength="40"></label><label>Época <input type="text" id="interSpEpoca" placeholder="ej: Todo el año" maxlength="25"></label></div>'
+      +'<p class="muted su-b64a5a">Toca una especie para cargarla en el formulario. '+INTER_CATALOG.length+' base'+(mineI.length? ' + <b>'+mineI.length+' mías</b>':'')+'.</p>'
+      +'<details class="su-9cf9f9"><summary class="su-d9db22"><b>➕ Agregar especie</b></summary>'
+      +'<div class="conv-row su-8a77e5"><label class="su-4b3de7">Especie * <input type="text" id="interSpName" placeholder="ej: Lapa negra, Huiro palo" maxlength="30"></label><label>Icono <input type="text" id="interSpIcon" placeholder="🦀" maxlength="4" class="su-4a6a2f"></label></div>'
+      +'<div class="conv-row"><label class="su-4b3de7">Nombre científico <input type="text" id="interSpCient" placeholder="ej: Fissurella sp." maxlength="40"></label><label>Época <input type="text" id="interSpEpoca" placeholder="ej: Todo el año" maxlength="25"></label></div>'
       +'<label>Hábitat <input type="text" id="interSpHab" placeholder="ej: Roquerío Playa Negra, pozas" maxlength="50"></label>'
       +'<label>Nota (talla, cosecha, cuidado) <input type="text" id="interSpNota" placeholder="ej: Talla 6cm+, 1 por roca" maxlength="80"></label>'
-      +'<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="interSpAdd" class="btn btn-accent" style="width:auto">+ Guardar especie</button></div></details>';
+      +'<div class="dlg-actions su-59a5a8"><button type="button" id="interSpAdd" class="btn btn-accent su-30e741">+ Guardar especie</button></div></details>';
     catBox.querySelectorAll('[data-inter]').forEach(el=> el.onclick=(e)=>{ if(e.target && e.target.classList && e.target.classList.contains('intersp-del')) return; const inp=$('interSpecies'); if(inp){ inp.value=el.dataset.inter; inp.focus(); } });
     catBox.querySelectorAll('.intersp-del').forEach(b=> b.onclick=(e)=>{ e.stopPropagation(); const arr=getInterCustom(); arr.splice(parseInt(b.dataset.i,10),1); scheduleSave('Guardado ✓'); renderIntermarealDialog(); });
     const interSpAdd=$('interSpAdd');
@@ -901,7 +901,7 @@ function renderIntermarealLog(){
   const sorted=[...data].sort((a,b)=> (b.date+b.time).localeCompare(a.date+a.time));
   box.innerHTML=sorted.slice(0,60).map(it=>{
     const luna=mensLunaForKey(it.date);
-    return `<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center"><span><b>${escapeHtml(it.species)}</b> ${it.qty? '· '+escapeHtml(it.qty):''} — ${escapeHtml(it.place||'—')}<br><span class="muted" style="font-size:11px">${it.date} ${it.time||''} ${it.tide? '· 🌊 '+escapeHtml(it.tide):''} ${luna? '· Luna '+luna.luna+' d'+luna.dia:''}</span><br><span class="muted" style="font-size:11px">${escapeHtml(it.notes||'')}</span></span><span style="display:flex;gap:6px;flex:0 0 auto"><button data-id="${it.id}" class="btn inter-share" style="width:auto;font-size:11px" title="Compartir">📤</button><button data-id="${it.id}" class="btn inter-edit" style="width:auto;font-size:11px">✏️</button><button data-id="${it.id}" class="btn inter-del" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕</button></span></div>`;
+    return `<div class="habit-item su-13313b"><span><b>${escapeHtml(it.species)}</b> ${it.qty? '· '+escapeHtml(it.qty):''} — ${escapeHtml(it.place||'—')}<br><span class="muted su-11a508">${it.date} ${it.time||''} ${it.tide? '· 🌊 '+escapeHtml(it.tide):''} ${luna? '· Luna '+luna.luna+' d'+luna.dia:''}</span><br><span class="muted su-11a508">${escapeHtml(it.notes||'')}</span></span><span class="su-0c0cb1"><button data-id="${it.id}" class="btn inter-share su-337714" title="Compartir">📤</button><button data-id="${it.id}" class="btn inter-edit su-337714">✏️</button><button data-id="${it.id}" class="btn inter-del su-fd834a">✕</button></span></div>`;
   }).join('');
   const speciesSet=new Set(data.map(x=>x.species));
   if(stats) stats.textContent=`${data.length} salidas · ${speciesSet.size} especies · ${data.filter(x=>x.qty).length} con cosecha`;
@@ -1001,8 +1001,8 @@ function renderBosqueDialog(){
     const cnt=getBosqueData().entries.length;
     const todayCnt=getBosqueData().entries.filter(x=>x.date===todayKey).length;
     const estNombre = lunaInfo? ESTACIONES[lunaInfo.estacion].nombre : '—';
-    todayBox.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:14px"><b>🌳 Hoy — ${cal.fmtFull.format(new Date())} · ${estNombre}</b></span><span class="chip" style="background:var(--gold);color:#10142c">${todayCnt} hoy · ${cnt} total</span></div>`+
-      `<p class="muted" style="font-size:11px;margin-top:6px">Cordillera de Penco: bosque esclerófilo (boldo, peumo, quillay) + laurifolio en quebradas (lingue, canelo). No hagas fuego, no dejes rastro.</p>`;
+    todayBox.innerHTML=`<div class="su-13313b"><span class="su-433de3"><b>🌳 Hoy — ${cal.fmtFull.format(new Date())} · ${estNombre}</b></span><span class="chip su-e4aba6">${todayCnt} hoy · ${cnt} total</span></div>`+
+      `<p class="muted su-e13d76">Cordillera de Penco: bosque esclerófilo (boldo, peumo, quillay) + laurifolio en quebradas (lingue, canelo). No hagas fuego, no dejes rastro.</p>`;
   }
   const moonBox=$('bosqueMoonBox');
   if(moonBox){
@@ -1014,23 +1014,23 @@ function renderBosqueDialog(){
   }
   const consejoBox=$('bosqueConsejoBox');
   if(consejoBox && consejo){
-    consejoBox.innerHTML=`<h4 style="font-size:11px;color:var(--gold)">🌳 ${escapeHtml(consejo.titulo)}</h4><p class="muted" style="font-size:11px;margin-top:4px">${escapeHtml(consejo.texto)}</p>`;
+    consejoBox.innerHTML=`<h4 class="su-49f9d7">🌳 ${escapeHtml(consejo.titulo)}</h4><p class="muted su-cdff1d">${escapeHtml(consejo.texto)}</p>`;
   }
   const catBox=$('bosqueCatalogBox');
   if(catBox){
     const mineBo=getBosqueCustom();
     catBox.innerHTML='<div class="fishing-species">'
-      +BOSQUE_CATALOG.map(b=>`<div class="fishing-species-item" style="cursor:pointer" data-bosque="${escapeHtml(b.nombre)}"><b>${escapeHtml(b.icon||'🌳')} ${escapeHtml(b.nombre)}</b> — <span class="muted" style="font-size:10px">${escapeHtml(b.cient||'')}</span><span class="chip" style="font-size:9px;margin-left:6px">${escapeHtml(b.tipo||'')}</span><br><span style="font-size:11px">${escapeHtml(b.hab||'')} · ${escapeHtml(b.epoca||'')}</span><br><span style="font-size:11px;color:var(--gold)">🌰 Semillas: ${escapeHtml(b.semillas||'—')}</span><br><span class="muted" style="font-size:10px">${escapeHtml(b.nota||'')}</span></div>`).join('')
-      +mineBo.map((b,i)=>`<div class="fishing-species-item" style="cursor:pointer;border-color:#a9d18e55" data-bosque="${escapeHtml(b.nombre)}"><div style="display:flex;justify-content:space-between;align-items:center;gap:6px"><span><b>${escapeHtml(b.icon||'🌳')} ${escapeHtml(b.nombre)}</b> <span class="chip" style="font-size:9px;background:#a9d18e22;color:#a9d18e;border-color:#a9d18e55">mía</span></span><button type="button" class="btn btn-icon bosquesp-del" data-i="${i}" title="Borrar mi especie" style="width:24px;height:24px;font-size:11px;flex:none">✕</button></div><span class="muted" style="font-size:10px">${escapeHtml(b.cient||'')}</span> <span class="chip" style="font-size:9px;margin-left:6px">${escapeHtml(b.tipo||'')}</span><br><span style="font-size:11px">${escapeHtml(b.hab||'')} · ${escapeHtml(b.epoca||'')}</span><br><span style="font-size:11px;color:var(--gold)">🌰 Semillas: ${escapeHtml(b.semillas||'—')}</span><br><span class="muted" style="font-size:10px">${escapeHtml(b.nota||'')}</span></div>`).join('')
+      +BOSQUE_CATALOG.map(b=>`<div class="fishing-species-item su-3b6a3a" data-bosque="${escapeHtml(b.nombre)}"><b>${escapeHtml(b.icon||'🌳')} ${escapeHtml(b.nombre)}</b> — <span class="muted su-0d5be0">${escapeHtml(b.cient||'')}</span><span class="chip su-8b29b9">${escapeHtml(b.tipo||'')}</span><br><span class="su-11a508">${escapeHtml(b.hab||'')} · ${escapeHtml(b.epoca||'')}</span><br><span class="su-49f9d7">🌰 Semillas: ${escapeHtml(b.semillas||'—')}</span><br><span class="muted su-0d5be0">${escapeHtml(b.nota||'')}</span></div>`).join('')
+      +mineBo.map((b,i)=>`<div class="fishing-species-item su-263abd" data-bosque="${escapeHtml(b.nombre)}"><div class="su-533ebe"><span><b>${escapeHtml(b.icon||'🌳')} ${escapeHtml(b.nombre)}</b> <span class="chip su-421073">mía</span></span><button type="button" class="btn btn-icon bosquesp-del su-4503f1" data-i="${i}" title="Borrar mi especie">✕</button></div><span class="muted su-0d5be0">${escapeHtml(b.cient||'')}</span> <span class="chip su-8b29b9">${escapeHtml(b.tipo||'')}</span><br><span class="su-11a508">${escapeHtml(b.hab||'')} · ${escapeHtml(b.epoca||'')}</span><br><span class="su-49f9d7">🌰 Semillas: ${escapeHtml(b.semillas||'—')}</span><br><span class="muted su-0d5be0">${escapeHtml(b.nota||'')}</span></div>`).join('')
       +'</div>'
-      +'<p class="muted" style="font-size:10px;margin:6px 0">Toca una especie para cargarla en el formulario. '+BOSQUE_CATALOG.length+' base'+(mineBo.length? ' + <b>'+mineBo.length+' mías</b>':'')+'.</p>'
-      +'<details style="border:1px dashed var(--gold);border-radius:10px;padding:8px 10px;margin-top:6px"><summary style="cursor:pointer;font-size:12px;color:var(--gold)"><b>➕ Agregar especie</b></summary>'
-      +'<div class="conv-row" style="margin-top:8px"><label style="flex:2">Especie * <input type="text" id="bosqueSpName" placeholder="ej: Huillipatagua, Olivillo" maxlength="30"></label><label>Icono <input type="text" id="bosqueSpIcon" placeholder="🌳" maxlength="4" style="width:60px;text-align:center"></label></div>'
-      +'<div class="conv-row"><label style="flex:2">Nombre científico <input type="text" id="bosqueSpCient" placeholder="ej: Citronella mucronata" maxlength="40"></label><label>Tipo <input type="text" id="bosqueSpTipo" placeholder="ej: Árbol, Arbusto" maxlength="20"></label></div>'
-      +'<div class="conv-row"><label style="flex:2">Hábitat <input type="text" id="bosqueSpHab" placeholder="ej: Quebrada Honda" maxlength="50"></label><label>Época <input type="text" id="bosqueSpEpoca" placeholder="ej: Flor Nov-Dic" maxlength="25"></label></div>'
+      +'<p class="muted su-b64a5a">Toca una especie para cargarla en el formulario. '+BOSQUE_CATALOG.length+' base'+(mineBo.length? ' + <b>'+mineBo.length+' mías</b>':'')+'.</p>'
+      +'<details class="su-9cf9f9"><summary class="su-d9db22"><b>➕ Agregar especie</b></summary>'
+      +'<div class="conv-row su-8a77e5"><label class="su-4b3de7">Especie * <input type="text" id="bosqueSpName" placeholder="ej: Huillipatagua, Olivillo" maxlength="30"></label><label>Icono <input type="text" id="bosqueSpIcon" placeholder="🌳" maxlength="4" class="su-4a6a2f"></label></div>'
+      +'<div class="conv-row"><label class="su-4b3de7">Nombre científico <input type="text" id="bosqueSpCient" placeholder="ej: Citronella mucronata" maxlength="40"></label><label>Tipo <input type="text" id="bosqueSpTipo" placeholder="ej: Árbol, Arbusto" maxlength="20"></label></div>'
+      +'<div class="conv-row"><label class="su-4b3de7">Hábitat <input type="text" id="bosqueSpHab" placeholder="ej: Quebrada Honda" maxlength="50"></label><label>Época <input type="text" id="bosqueSpEpoca" placeholder="ej: Flor Nov-Dic" maxlength="25"></label></div>'
       +'<label>🌰 Semillas <input type="text" id="bosqueSpSem" placeholder="ej: Feb-Abr, siembra inmediata" maxlength="50"></label>'
       +'<label>Nota <input type="text" id="bosqueSpNota" placeholder="ej: Solo observar, no cortar" maxlength="80"></label>'
-      +'<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="bosqueSpAdd" class="btn btn-accent" style="width:auto">+ Guardar especie</button></div></details>';
+      +'<div class="dlg-actions su-59a5a8"><button type="button" id="bosqueSpAdd" class="btn btn-accent su-30e741">+ Guardar especie</button></div></details>';
     catBox.querySelectorAll('[data-bosque]').forEach(el=> el.onclick=(e)=>{ if(e.target && e.target.classList && (e.target.classList.contains('bosquesp-del'))) return; const inp=$('bosqueSpecies'); if(inp){ inp.value=el.dataset.bosque; inp.focus(); } });
     catBox.querySelectorAll('.bosquesp-del').forEach(b=> b.onclick=(e)=>{ e.stopPropagation(); const arr=getBosqueCustom(); arr.splice(parseInt(b.dataset.i,10),1); scheduleSave('Guardado ✓'); renderBosqueDialog(); });
     const bosqueSpAdd=$('bosqueSpAdd');
@@ -1053,7 +1053,7 @@ function renderBosqueLog(){
   const sorted=[...data].sort((a,b)=> (b.date+b.time).localeCompare(a.date+a.time));
   box.innerHTML=sorted.slice(0,60).map(it=>{
     const luna=mensLunaForKey(it.date);
-    return `<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center"><span><b>${escapeHtml(it.species)}</b> · <span class="chip" style="font-size:10px">${escapeHtml(it.action||'observación')}</span> ${it.qty? '· '+escapeHtml(it.qty):''} — ${escapeHtml(it.place||'—')}<br><span class="muted" style="font-size:11px">${it.date} ${it.time||''} ${luna? '· Luna '+luna.luna+' d'+luna.dia:''}</span><br><span class="muted" style="font-size:11px">${escapeHtml(it.notes||'')}</span></span><span style="display:flex;gap:6px;flex:0 0 auto"><button data-id="${it.id}" class="btn bosque-share" style="width:auto;font-size:11px" title="Compartir">📤</button><button data-id="${it.id}" class="btn bosque-edit" style="width:auto;font-size:11px">✏️</button><button data-id="${it.id}" class="btn bosque-del" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕</button></span></div>`;
+    return `<div class="habit-item su-13313b"><span><b>${escapeHtml(it.species)}</b> · <span class="chip su-0d5be0">${escapeHtml(it.action||'observación')}</span> ${it.qty? '· '+escapeHtml(it.qty):''} — ${escapeHtml(it.place||'—')}<br><span class="muted su-11a508">${it.date} ${it.time||''} ${luna? '· Luna '+luna.luna+' d'+luna.dia:''}</span><br><span class="muted su-11a508">${escapeHtml(it.notes||'')}</span></span><span class="su-0c0cb1"><button data-id="${it.id}" class="btn bosque-share su-337714" title="Compartir">📤</button><button data-id="${it.id}" class="btn bosque-edit su-337714">✏️</button><button data-id="${it.id}" class="btn bosque-del su-fd834a">✕</button></span></div>`;
   }).join('');
   const speciesSet=new Set(data.map(x=>x.species));
   const byAction={}; data.forEach(x=>{ byAction[x.action]=(byAction[x.action]||0)+1; });
@@ -1327,24 +1327,24 @@ function renderTidesPanel3() {
   const moonIc=(function(){ try{ return window.astro.moonIcon(now.getTime())||'🌙'; }catch(e){ return '🌙'; } })();
 
   let html = '<div class="tp-head"><b>🌊 Mareas — Penco · Bahía de Concepción</b><span class="muted">SHOA · Talcahuano (15 km, misma bahía) · 7 días · hora local America/Santiago</span>'
-    +'<span style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" id="tidesToDayBtn" class="btn btn-accent" style="width:auto;white-space:nowrap" title="Agregar la marea actual y las 2 siguientes a la pantalla del día de hoy">📌 Al día: actual + 2</button>'
-    +'<a class="btn" style="width:auto;text-decoration:none" href="https://www.shoa.cl/php/mareas.php" target="_blank" rel="noopener" title="Tabla oficial SHOA">🌐 SHOA oficial</a></span></div>';
+    +'<span class="su-3de8f9"><button type="button" id="tidesToDayBtn" class="btn btn-accent su-c4b37a" title="Agregar la marea actual y las 2 siguientes a la pantalla del día de hoy">📌 Al día: actual + 2</button>'
+    +'<a class="btn su-7ab949" href="https://www.shoa.cl/php/mareas.php" target="_blank" rel="noopener" title="Tabla oficial SHOA">🌐 SHOA oficial</a></span></div>';
 
   // 1) AHORA
   html += '<div class="tide-grid2">'
     +'<div class="tide-card tide-now"><div class="tide-head"><b>'+dirTxt+'</b><span>Ahora '+escapeHtml(ahoraHM)+' · Talcahuano/Penco</span></div>'
-    +'<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">'
-    +(res.actual?'<span class="chip" style="border-color:var(--gold)">Última: <b>'+escapeHtml(fmtM(res.actual))+'</b></span>':'<span class="chip">Sin marea previa hoy</span>')
+    +'<div class="su-0ad856">'
+    +(res.actual?'<span class="chip su-68a1a9">Última: <b>'+escapeHtml(fmtM(res.actual))+'</b></span>':'<span class="chip">Sin marea previa hoy</span>')
     +res.siguientes.map((s,ix)=>'<span class="chip">Sig '+(ix+1)+': <b>'+escapeHtml(fmtM(s))+'</b></span>').join('')
     +'</div>'
-    +'<p class="muted" style="font-size:12px;margin:8px 0 0">'+nextTxt+'</p>'
-    +(progPct!=null?'<div class="tide-prog"><div class="tide-prog-fill" style="width:'+progPct+'%"></div></div><p class="muted" style="font-size:10px;margin:4px 0 0">'+progPct+'% del tramo entre mareas · el cambio es gradual, no de golpe</p>':'')
-    +'<p class="muted" style="font-size:10.5px;margin:6px 0 0">⚠️ Horas de referencia para caleta, orilla y roquerío. Para navegar usa siempre la tabla oficial SHOA del día.</p></div>'
+    +'<p class="muted su-11365b">'+nextTxt+'</p>'
+    +(progPct!=null?'<div class="tide-prog"><div class="tide-prog-fill" style="width:'+progPct+'%"></div></div><p class="muted su-32206a">'+progPct+'% del tramo entre mareas · el cambio es gradual, no de golpe</p>':'')
+    +'<p class="muted su-46d1cc">⚠️ Horas de referencia para caleta, orilla y roquerío. Para navegar usa siempre la tabla oficial SHOA del día.</p></div>'
     // 2) LUNA
     +'<div class="tide-card"><div class="tide-head"><b>'+moonIc+' Luna y tipo de marea</b><span>'+escapeHtml(cal.fmtDate.format(now))+' · tithi '+lunaHoy.tithi+(lunaHoy.illum!=null?' · '+lunaHoy.illum+'% iluminada':'')+'</span></div>'
-    +'<p style="font-size:13px;margin:8px 0 4px"><b>'+escapeHtml(lunaHoy.label)+'</b>'+(coefHoy?' · coef. <b>'+coefHoy.coef+'</b> · amplitud <b>'+coefHoy.amp.toFixed(2)+'m</b> ('+coefHoy.rango+')':'')+'</p>'
-    +'<p class="muted" style="font-size:11.5px;margin:0;line-height:1.5">'+escapeHtml(lunaHoy.desc)+'</p>'
-    +'<p class="muted" style="font-size:11px;margin:6px 0 0;line-height:1.5">🌑🌕 nueva/llena → <b>vivas</b> (bajamar muy baja, ideal luche/cochayuyo con cuidado). 🌓🌗 cuartos → <b>muertas</b> (poco movimiento, mar calmo). La pleamar/bajamar se atrasa ~50 min cada día.</p></div>'
+    +'<p class="su-582fcd"><b>'+escapeHtml(lunaHoy.label)+'</b>'+(coefHoy?' · coef. <b>'+coefHoy.coef+'</b> · amplitud <b>'+coefHoy.amp.toFixed(2)+'m</b> ('+coefHoy.rango+')':'')+'</p>'
+    +'<p class="muted su-1ae50f">'+escapeHtml(lunaHoy.desc)+'</p>'
+    +'<p class="muted su-4384f3">🌑🌕 nueva/llena → <b>vivas</b> (bajamar muy baja, ideal luche/cochayuyo con cuidado). 🌓🌗 cuartos → <b>muertas</b> (poco movimiento, mar calmo). La pleamar/bajamar se atrasa ~50 min cada día.</p></div>'
     +'</div>';
 
   // 3) NAV 7 días
@@ -1378,25 +1378,25 @@ function renderTidesPanel3() {
       html+='<table class="tide-mini"><thead><tr><th>Hora</th><th>Altura</th><th>Tipo</th><th>Ventana</th></tr></thead><tbody>';
       for(const t of tides){
         const icon=t.t==='pleamar'?'⬆️':'⬇️';
-        const hl=(isToday&&res.siguientes.length&&res.siguientes[0].h===t.h&&res.siguientes[0].t===t.t)?' style="background:rgba(143,214,148,.12)"':'';
+        const hl=(isToday&&res.siguientes.length&&res.siguientes[0].h===t.h&&res.siguientes[0].t===t.t)?' class="su-1ccebf"':'';
         html+='<tr'+hl+'><td>'+t.h+'</td><td>'+t.a+'</td><td>'+icon+' '+t.t+'</td><td class="tide-ventana">'+tideVentana(t)+'</td></tr>';
       }
       html+='</tbody></table>';
-      if(isEstimated) html+='<p class="muted" style="font-size:10.5px;margin:6px 0 0">* Estimada por ciclo lunar (~50 min/día desde tabla SHOA 19–28 ago). Contrasta con <a href="https://www.shoa.cl/php/mareas.php" target="_blank" rel="noopener">shoa.cl</a> antes de navegar o bajar a roquerío.</p>';
+      if(isEstimated) html+='<p class="muted su-46d1cc">* Estimada por ciclo lunar (~50 min/día desde tabla SHOA 19–28 ago). Contrasta con <a href="https://www.shoa.cl/php/mareas.php" target="_blank" rel="noopener">shoa.cl</a> antes de navegar o bajar a roquerío.</p>';
     }
-    html+='<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">'
-      +'<button type="button" class="btn" style="width:auto" data-tide-send-day="'+skey+'">📌 Llevar este día al calendario</button>'
-      +'<button type="button" class="btn" style="width:auto" data-tide-copy="'+skey+'">📋 Copiar</button></div>';
-    html+='</div><div><div class="muted" style="font-size:11px;margin-bottom:4px">Curva del día (altura vs hora · línea verde = ahora)</div>'
+    html+='<div class="su-ac5453">'
+      +'<button type="button" class="btn su-30e741" data-tide-send-day="'+skey+'">📌 Llevar este día al calendario</button>'
+      +'<button type="button" class="btn su-30e741" data-tide-copy="'+skey+'">📋 Copiar</button></div>';
+    html+='</div><div><div class="muted su-455c1c">Curva del día (altura vs hora · línea verde = ahora)</div>'
       +tideCurvaSVG(tides, isToday?ahoraHM:null)
-      +'<div class="tide-best"><p style="font-size:12px;margin:6px 0">🎣 <b>Pesca orilla:</b> 2h antes/después de pleamar '+(mejorPesca?'('+escapeHtml(mejorPesca)+')':'')+'</p>'
-      +'<p style="font-size:12px;margin:6px 0">🦀 <b>Roquerío Lirquén/Playa Negra:</b> '+(bajaMin?('entra 1h antes de la bajamar '+bajaMin.h+' ('+bajaMin.a+') y sal 1h después'+(tideAltNum(bajaMin.a)<0.6?' · ✅ apta (<0.6m)':' · ⚠️ alta para cosecha, mejor observar')):'solo con bajamar <0.6m y sin alerta SHOA')+'</p>'
-      +'<p class="muted" style="font-size:11px;margin:6px 0">🚣 Bote/kayak: evita salir en bajamar mínima con viento sur. 🏊 Baño: solo con pleamar subiendo y playa apta, nunca con marejada.</p></div>'
+      +'<div class="tide-best"><p class="su-f9928b">🎣 <b>Pesca orilla:</b> 2h antes/después de pleamar '+(mejorPesca?'('+escapeHtml(mejorPesca)+')':'')+'</p>'
+      +'<p class="su-f9928b">🦀 <b>Roquerío Lirquén/Playa Negra:</b> '+(bajaMin?('entra 1h antes de la bajamar '+bajaMin.h+' ('+bajaMin.a+') y sal 1h después'+(tideAltNum(bajaMin.a)<0.6?' · ✅ apta (<0.6m)':' · ⚠️ alta para cosecha, mejor observar')):'solo con bajamar <0.6m y sin alerta SHOA')+'</p>'
+      +'<p class="muted su-2aad63">🚣 Bote/kayak: evita salir en bajamar mínima con viento sur. 🏊 Baño: solo con pleamar subiendo y playa apta, nunca con marejada.</p></div>'
       +'</div></div></div>';
   }
 
   // 5) GUÍA PENCO
-  html+='<div class="tide-grid2" style="margin-top:10px">'
+  html+='<div class="tide-grid2 su-d2c171">'
     +'<div class="tide-card"><div class="tide-head"><b>📖 Cómo leer la tabla</b><span>Glosario mínimo</span></div>'
     +'<ul class="tide-list"><li><b>⬆️ Pleamar</b> = marea alta (mar lleno). <b>⬇️ Bajamar</b> = marea baja.</li>'
     +'<li><b>Altura (m):</b> metros sobre el nivel medio. Ej 1.70m = llena grande; 0.30m = vacía grande.</li>'
@@ -1411,7 +1411,7 @@ function renderTidesPanel3() {
     +'<li>🦀 <b>Cosecha medida:</b> talla mínima, deja reproductores y 30% en la roca. Ver 🦀 Intermareal.</li></ul></div>'
     +'</div>';
 
-  html+='<div class="tide-card" style="margin-top:10px"><div class="tide-head"><b>🎯 Ventanas por actividad — Penco</b><span>Regla de bolsillo</span></div>'
+  html+='<div class="tide-card su-d2c171"><div class="tide-head"><b>🎯 Ventanas por actividad — Penco</b><span>Regla de bolsillo</span></div>'
     +'<div class="tide-acts">'
     +'<div><b>🎣 Pesca orilla</b><br><span class="muted">2h antes/después de pleamar + amanecer/atardecer. Con luna clara usa señuelo oscuro; con oscura, claro.</span></div>'
     +'<div><b>🦀 Roquerío</b><br><span class="muted">±1h de bajamar &lt;0.6m, de día y sin marejada. Corta fronda, no arranques disco.</span></div>'
@@ -1419,7 +1419,7 @@ function renderTidesPanel3() {
     +'<div><b>🦅 Aves Rocuant</b><br><span class="muted">Pleamar concentra limícolas; amanecer = canto. Ver 🦅 Aves.</span></div>'
     +'</div></div>';
 
-  html+='<p class="muted" style="font-size:11px;margin-top:10px;line-height:1.6">Fuente: tabla SHOA Talcahuano precargada 19–28 ago + estimación lunar el resto del año (*est.). Para navegación, buceo o faena: confirma siempre en <a href="https://www.shoa.cl/php/mareas.php" target="_blank" rel="noopener">shoa.cl → Mareas</a> · Avisos de marejada: <a href="https://www.directemar.cl/" target="_blank" rel="noopener">Directemar</a> · Marea roja/vedas: <a href="https://www.sernapesca.cl/" target="_blank" rel="noopener">sernapesca.cl</a> · Emergencia: <a href="https://www.senapred.cl/" target="_blank" rel="noopener">Senapred</a> 137 Armada.</p>';
+  html+='<p class="muted su-eced32">Fuente: tabla SHOA Talcahuano precargada 19–28 ago + estimación lunar el resto del año (*est.). Para navegación, buceo o faena: confirma siempre en <a href="https://www.shoa.cl/php/mareas.php" target="_blank" rel="noopener">shoa.cl → Mareas</a> · Avisos de marejada: <a href="https://www.directemar.cl/" target="_blank" rel="noopener">Directemar</a> · Marea roja/vedas: <a href="https://www.sernapesca.cl/" target="_blank" rel="noopener">sernapesca.cl</a> · Emergencia: <a href="https://www.senapred.cl/" target="_blank" rel="noopener">Senapred</a> 137 Armada.</p>';
   panel.innerHTML = html;
   try {
     const toDayBtn = $('tidesToDayBtn');
@@ -1523,63 +1523,63 @@ function getEkadashiVisibleKeys() {
 function renderEkadashi() {
   const intro = $('ekadashiIntro');
   intro.innerHTML = `
-    <div class="eka-tabs" style="position:sticky;top:-6px;z-index:2;display:flex;gap:6px;flex-wrap:wrap;background:var(--bg,#0e1120);padding:6px 0;margin-bottom:8px">
-      <button type="button" data-eka-tab="resumen" class="btn eka-tab" style="border-color:var(--gold);background:var(--gold);color:#10142c;font-weight:700">📖 Resumen</button>
+    <div class="eka-tabs su-a2761b">
+      <button type="button" data-eka-tab="resumen" class="btn eka-tab su-43351a">📖 Resumen</button>
       <button type="button" data-eka-tab="ayuno" class="btn eka-tab">🍵 Ayuno</button>
       <button type="button" data-eka-tab="historia" class="btn eka-tab">📜 Historia</button>
       <button type="button" data-eka-tab="fechas" class="btn eka-tab">📅 Fechas ↓</button>
     </div>
     <div data-eka-panel="resumen">
-      <div style="background:linear-gradient(135deg,var(--panel),var(--card));border:1px solid var(--gold);border-radius:10px;padding:10px;margin-bottom:8px">
-        <p style="margin:0;font-size:13px;line-height:1.55"><b>📿 ¿Qué es Ekadashi?</b> En sánscrito <i>eka-dasha</i> = once. Es el <b>día 11</b> de cada quincena lunar: <b style="color:#d4a947">Shukla</b> (creciente) y <b style="color:#7a6fa5">Krishna</b> (menguante).</p>
-        <p class="muted" style="font-size:11px;margin-top:6px">Cálculo astronómico: elongación Sol-Luna /12° = tithi. Mostramos el día que el tithi 11 ó 26 cae al amanecer en America/Santiago.</p>
+      <div class="su-389104">
+        <p class="su-9c571d"><b>📿 ¿Qué es Ekadashi?</b> En sánscrito <i>eka-dasha</i> = once. Es el <b>día 11</b> de cada quincena lunar: <b class="su-529a5a">Shukla</b> (creciente) y <b class="su-671f21">Krishna</b> (menguante).</p>
+        <p class="muted su-e13d76">Cálculo astronómico: elongación Sol-Luna /12° = tithi. Mostramos el día que el tithi 11 ó 26 cae al amanecer en America/Santiago.</p>
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
-        <div style="background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px"><b style="color:var(--gold)">🌙 ¿Por qué importa?</b><p class="muted" style="font-size:11px;margin:4px 0 0">La luna mueve mareas y tu agua interna. Ekadashi es un <b>recordatorio</b> para aligerar digestión y mente. <a href="#" data-eka-goto="ayuno" style="color:var(--accent)">Ver guía de ayuno →</a></p></div>
-        <div style="background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px"><b style="color:var(--gold)">📜 ¿De dónde viene?</b><p class="muted" style="font-size:11px;margin:4px 0 0">Día querido por Vishnu, diosa que vence al demonio Murdanava, Krishna lo explica a Yudhishthira. <a href="#" data-eka-goto="historia" style="color:var(--accent)">Leer historia →</a></p></div>
+      <div class="su-2a51d0">
+        <div class="su-5cc4d8"><b class="su-e39eba">🌙 ¿Por qué importa?</b><p class="muted su-954796">La luna mueve mareas y tu agua interna. Ekadashi es un <b>recordatorio</b> para aligerar digestión y mente. <a href="#" data-eka-goto="ayuno" class="su-a80552">Ver guía de ayuno →</a></p></div>
+        <div class="su-5cc4d8"><b class="su-e39eba">📜 ¿De dónde viene?</b><p class="muted su-954796">Día querido por Vishnu, diosa que vence al demonio Murdanava, Krishna lo explica a Yudhishthira. <a href="#" data-eka-goto="historia" class="su-a80552">Leer historia →</a></p></div>
       </div>
-      <details style="background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px;margin-bottom:8px"><summary style="cursor:pointer;color:var(--accent);font-weight:600">🥗 Práctica en 4 pasos (resumen)</summary>
-        <ol style="margin:6px 0 0 18px;font-size:12px;color:var(--text);line-height:1.5">
+      <details class="su-4e7955"><summary class="su-49b201">🥗 Práctica en 4 pasos (resumen)</summary>
+        <ol class="su-74b498">
           <li><b>Víspera (Dashami):</b> cena liviana antes de las 20:00.</li>
           <li><b>Ekadashi:</b> sin granos/legumbres/carnes/alcohol. Fruta, verdura, agua, infusiones.</li>
           <li><b>Actitud:</b> calma, caminata, meditar 10 min.</li>
           <li><b>Parana (Dwadashi):</b> rompe tras el amanecer con agua + fruta.</li>
         </ol>
       </details>
-      <details style="background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px;margin-bottom:8px"><summary style="cursor:pointer;color:var(--accent);font-weight:600">⚠️ Precauciones</summary>
-        <p class="muted" style="font-size:11px;margin:6px 0 0">Sin ayuno total si hay embarazo, lactancia, diabetes insulino-dependiente, TCA o medicación con comida. Adapta o consulta. Precisión ±1 día según linaje.</p>
+      <details class="su-4e7955"><summary class="su-49b201">⚠️ Precauciones</summary>
+        <p class="muted su-1db776">Sin ayuno total si hay embarazo, lactancia, diabetes insulino-dependiente, TCA o medicación con comida. Adapta o consulta. Precisión ±1 día según linaje.</p>
       </details>
     </div>
-    <div data-eka-panel="ayuno" style="display:none">
-      <div style="background:linear-gradient(135deg,#2a2410,#1d1a12);border:1px solid var(--gold);border-radius:8px;padding:10px;margin-bottom:8px">
-      <p style="font-size:12px;color:var(--text);margin:0 0 8px"><b>🍵 El ayuno no es castigo, es descanso.</b> Elige tu nivel sin culpa:</p>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
-        <div style="background:rgba(0,0,0,.25);border:1px solid var(--line);border-radius:8px;padding:8px"><b style="color:#8ee6a0;font-size:12px">🌱 Nivel 1 — Suave</b><p class="muted" style="font-size:11px;margin:4px 0 0">Sin carnes, alcohol ni ultraprocesados. Fruta + verdura cocida + frutos secos. Ideal si trabajas o cuidas a otros.</p></div>
-        <div style="background:rgba(0,0,0,.25);border:1px solid var(--line);border-radius:8px;padding:8px"><b style="color:#d4a947;font-size:12px">🍎 Nivel 2 — Phalahara</b><p class="muted" style="font-size:11px;margin:4px 0 0">Solo fruta, frutos secos, leche/yogur si toleras, agua e infusiones. Sin arroz, pan, fideos, porotos, lentejas, avena ni mote.</p></div>
-        <div style="background:rgba(0,0,0,.25);border:1px solid var(--line);border-radius:8px;padding:8px"><b style="color:#7ab8ff;font-size:12px">💧 Nivel 3 — Líquidos</b><p class="muted" style="font-size:11px;margin:4px 0 0">Agua, limón/miel, manzanilla, boldo, matico, jugos colados. Solo con experiencia y sin trabajo físico exigente.</p></div>
-        <div style="background:rgba(0,0,0,.25);border:1px solid var(--line);border-radius:8px;padding:8px"><b style="color:#e08a8a;font-size:12px">🌑 Nivel 4 — Nirjala</b><p class="muted" style="font-size:11px;margin:4px 0 0">Sin agua ni comida de amanecer a amanecer. <b>Solo con guía</b> (1 vez/año). No lo intentes sin preparación.</p></div>
+    <div data-eka-panel="ayuno" class="su-6b99de">
+      <div class="su-3fc5a8">
+      <p class="su-46a625"><b>🍵 El ayuno no es castigo, es descanso.</b> Elige tu nivel sin culpa:</p>
+      <div class="su-2a51d0">
+        <div class="su-1a720d"><b class="su-e430b4">🌱 Nivel 1 — Suave</b><p class="muted su-954796">Sin carnes, alcohol ni ultraprocesados. Fruta + verdura cocida + frutos secos. Ideal si trabajas o cuidas a otros.</p></div>
+        <div class="su-1a720d"><b class="su-bb34f9">🍎 Nivel 2 — Phalahara</b><p class="muted su-954796">Solo fruta, frutos secos, leche/yogur si toleras, agua e infusiones. Sin arroz, pan, fideos, porotos, lentejas, avena ni mote.</p></div>
+        <div class="su-1a720d"><b class="su-3ff3c2">💧 Nivel 3 — Líquidos</b><p class="muted su-954796">Agua, limón/miel, manzanilla, boldo, matico, jugos colados. Solo con experiencia y sin trabajo físico exigente.</p></div>
+        <div class="su-1a720d"><b class="su-4c8285">🌑 Nivel 4 — Nirjala</b><p class="muted su-954796">Sin agua ni comida de amanecer a amanecer. <b>Solo con guía</b> (1 vez/año). No lo intentes sin preparación.</p></div>
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
-        <div style="background:#10240f;border:1px solid #2c5a2e;border-radius:8px;padding:8px"><b style="color:#8ee6a0;font-size:12px">✅ SÍ</b><ul style="margin:4px 0 0 16px;font-size:11px;color:var(--text);line-height:1.5"><li>Frutas, papas, camote, zapallo, zanahoria</li><li>Maní, nuez, almendra, leche, yogur</li><li>Miel, agua, limonada, infusiones</li></ul></div>
-        <div style="background:#2a1212;border:1px solid #6b2a2a;border-radius:8px;padding:8px"><b style="color:#e08a8a;font-size:12px">🚫 NO</b><ul style="margin:4px 0 0 16px;font-size:11px;color:var(--text);line-height:1.5"><li>Arroz, pan, fideos, avena, mote, quinoa</li><li>Porotos, lentejas, garbanzos, soya</li><li>Carnes, embutidos, huevo, alcohol, frituras</li></ul></div>
+      <div class="su-2a51d0">
+        <div class="su-90e0b8"><b class="su-e430b4">✅ SÍ</b><ul class="su-b3588d"><li>Frutas, papas, camote, zapallo, zanahoria</li><li>Maní, nuez, almendra, leche, yogur</li><li>Miel, agua, limonada, infusiones</li></ul></div>
+        <div class="su-e90bf0"><b class="su-4c8285">🚫 NO</b><ul class="su-b3588d"><li>Arroz, pan, fideos, avena, mote, quinoa</li><li>Porotos, lentejas, garbanzos, soya</li><li>Carnes, embutidos, huevo, alcohol, frituras</li></ul></div>
       </div>
-      <b style="color:var(--gold);font-size:12px">🕰️ Horario (America/Santiago)</b>
-      <ol style="margin:6px 0 8px 18px;font-size:12px;color:var(--text);line-height:1.55">
+      <b class="su-a40df9">🕰️ Horario (America/Santiago)</b>
+      <ol class="su-4f29fd">
         <li><b>Dashami:</b> cena liviana antes de las 20:00 (sopa + fruta).</li>
         <li><b>Ekadashi:</b> agua tibia + limón al amanecer, medita 10–20 min, come ligero solo con hambre real.</li>
         <li><b>Dwadashi (parana):</b> rompe 2–3 h tras el amanecer con agua + fruta + cocido suave.</li>
       </ol>
-      <b style="color:var(--gold);font-size:12px">🧺 Ejemplo Penco</b>
-      <p class="muted" style="font-size:11px;margin:4px 0 0;line-height:1.5">Mañana: agua tibia + manzana + nueces · Mediodía: papas con zapallo + manzanilla · Tarde: plátano + yogur · Noche: sopa colada o boldo/matico.</p>
+      <b class="su-a40df9">🧺 Ejemplo Penco</b>
+      <p class="muted su-a6c067">Mañana: agua tibia + manzana + nueces · Mediodía: papas con zapallo + manzanilla · Tarde: plátano + yogur · Noche: sopa colada o boldo/matico.</p>
       </div>
     </div>
-    <div data-eka-panel="historia" style="display:none">
-      <div style="background:linear-gradient(135deg,#1a1430,#12101f);border:1px solid #7a6fa5;border-radius:8px;padding:10px;margin-bottom:8px">
-      <p style="font-size:12px;color:var(--text);line-height:1.6;margin:0 0 8px"><b>📜 Origen.</b> <i>Eka+dasha</i> = once. Puranas (Padma, Garuda, Skanda) lo llaman el día querido por <b>Vishnu</b>.</p>
-      <p style="font-size:12px;color:var(--text);line-height:1.6;margin:0 0 8px"><b>La diosa Ekadashi.</b> El demonio Murdanava no podía ser vencido. Vishnu descansó en una cueva; Murdanava entró a matarlo y de la respiración de Vishnu nació una joven luminosa que lo derrotó. Vishnu la nombró <b>Ekadashi</b>: quien ayune en su día hallará claridad.</p>
-      <p style="font-size:12px;color:var(--text);line-height:1.6;margin:0 0 8px"><b>Krishna y Yudhishthira</b> (Mahabharata) narran cada Ekadashi con su nombre y fruto — origen de la lista actual.</p>
-      <b style="color:#b8aef0;font-size:12px">🌙 Los 24 del año</b>
-      <div style="font-size:11px;color:var(--text);line-height:1.6;background:rgba(0,0,0,.25);border:1px solid var(--line);border-radius:8px;padding:8px;margin:6px 0">
+    <div data-eka-panel="historia" class="su-6b99de">
+      <div class="su-b54cc2">
+      <p class="su-edfca6"><b>📜 Origen.</b> <i>Eka+dasha</i> = once. Puranas (Padma, Garuda, Skanda) lo llaman el día querido por <b>Vishnu</b>.</p>
+      <p class="su-edfca6"><b>La diosa Ekadashi.</b> El demonio Murdanava no podía ser vencido. Vishnu descansó en una cueva; Murdanava entró a matarlo y de la respiración de Vishnu nació una joven luminosa que lo derrotó. Vishnu la nombró <b>Ekadashi</b>: quien ayune en su día hallará claridad.</p>
+      <p class="su-edfca6"><b>Krishna y Yudhishthira</b> (Mahabharata) narran cada Ekadashi con su nombre y fruto — origen de la lista actual.</p>
+      <b class="su-8188d6">🌙 Los 24 del año</b>
+      <div class="su-071f4d">
         <b>Ene–Feb:</b> Putrada · Shat-tila · Jaya · Vijaya<br>
         <b>Mar–Abr:</b> Amalaki · Papmochani · Kamada · Varuthini<br>
         <b>May–Jun:</b> Mohini · Apara · ⭐ <b>Nirjala</b> · Yogini<br>
@@ -1587,11 +1587,11 @@ function renderEkadashi() {
         <b>Sep–Oct:</b> Parivartini · Indira · Papankusha · Rama<br>
         <b>Nov–Dic:</b> ⭐ <b>Devutthana</b> (Vishnu despierta) · Utpanna · Mokshada · Saphala
       </div>
-      <p style="font-size:11px;color:var(--text);line-height:1.6;margin:0 0 6px"><b>Símbolo:</b> 5 sentidos + 5 acciones + mente = 11. Ekadashi = gobernar los once.</p>
-      <p class="muted" style="font-size:11px;margin:0">Chaitanya (s. XVI) y Gandhi lo practicaron. Aquí lo unimos a las 13 lunas y la marea. 📚 Padma Purana, Garuda Purana, Ekadashi Mahatmya.</p>
+      <p class="su-db4e5c"><b>Símbolo:</b> 5 sentidos + 5 acciones + mente = 11. Ekadashi = gobernar los once.</p>
+      <p class="muted su-1b014d">Chaitanya (s. XVI) y Gandhi lo practicaron. Aquí lo unimos a las 13 lunas y la marea. 📚 Padma Purana, Garuda Purana, Ekadashi Mahatmya.</p>
       </div>
     </div>
-    <div style="background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin-top:8px;font-size:12px;color:var(--gold)">Mostrando solo <b>3 lunas</b> contando la actual: <span id="ekadashiScope"></span> · <a href="#" id="ekadashiShowAll" style="color:var(--accent)">ver ciclo completo</a></div>`;
+    <div class="su-b90b2d">Mostrando solo <b>3 lunas</b> contando la actual: <span id="ekadashiScope"></span> · <a href="#" id="ekadashiShowAll" class="su-a80552">ver ciclo completo</a></div>`;
   (function wireEkaTabs(){
     const tabs = intro.querySelectorAll('[data-eka-tab]');
     const panels = intro.querySelectorAll('[data-eka-panel]');
@@ -1629,19 +1629,19 @@ function renderEkadashi() {
       const arr = byLuna[k];
       if (!arr || !arr.length) {
         const labelEmpty = k === 'dft' ? 'Día Fuera del Tiempo' : `Luna ${k} · ${MOONS[+k - 1].nombre}`;
-        html += `<div class="ek-luna"><h4 style="color:var(--muted);font-size:13px;margin:6px 0">${labelEmpty} <span style="font-weight:400">· sin Ekadashi en esta luna</span></h4><p class="muted" style="font-size:12px">No cae tithi 11/26 en estos 28 días. La descripción de la luna: <i>${k !== 'dft' ? MOONS[+k - 1].descripcion : DFT.texto1.slice(0,120)+'…'}</i></p></div>`;
+        html += `<div class="ek-luna"><h4 class="su-18a706">${labelEmpty} <span class="su-7e3a94">· sin Ekadashi en esta luna</span></h4><p class="muted su-6cb285">No cae tithi 11/26 en estos 28 días. La descripción de la luna: <i>${k !== 'dft' ? MOONS[+k - 1].descripcion : DFT.texto1.slice(0,120)+'…'}</i></p></div>`;
         continue;
       }
       const meta = k === 'dft' ? null : MOONS[+k - 1];
       const desc = k === 'dft' ? DFT.texto1 : meta.descripcion;
       const traduccion = k === 'dft' ? 'Víspera del We Tripantu' : meta.traduccion;
-      const label = k === 'dft' ? 'Día Fuera del Tiempo' : `Luna ${k} · ${meta.nombre} <span style="color:var(--muted);font-weight:400">· ${cal.fmtDate.format(new Date(cycle.start + ((+k - 1) * 28) * 86400000))} – ${cal.fmtDate.format(new Date(cycle.start + ((+k - 1) * 28 + 27) * 86400000))}</span>`;
+      const label = k === 'dft' ? 'Día Fuera del Tiempo' : `Luna ${k} · ${meta.nombre} <span class="su-21bab4">· ${cal.fmtDate.format(new Date(cycle.start + ((+k - 1) * 28) * 86400000))} – ${cal.fmtDate.format(new Date(cycle.start + ((+k - 1) * 28 + 27) * 86400000))}</span>`;
       const isCurrent = currentView.tipo === 'luna' && String(currentView.luna) === k || currentView.tipo === 'dft' && k === 'dft';
-      html += `<div class="ek-luna" style="${isCurrent ? 'outline:1px solid var(--gold);border-radius:10px;padding:6px' : ''}"><h4 style="color:var(--accent);font-size:13px;margin:6px 0">${label}</h4><p class="muted" style="font-size:12px;margin:0 0 6px;line-height:1.4"><i>${escapeHtml(traduccion)}</i> — ${escapeHtml(desc)}</p>`;
+      html += `<div class="ek-luna" style="${isCurrent ? 'outline:1px solid var(--gold);border-radius:10px;padding:6px' : ''}"><h4 class="su-38eb9e">${label}</h4><p class="muted su-818aee"><i>${escapeHtml(traduccion)}</i> — ${escapeHtml(desc)}</p>`;
       for (const it of arr) {
         const key = cal.fmtKey.format(new Date(it.dd.noonMs));
         const isToday = key === cal.fmtKey.format(new Date());
-        html += `<div class="ek-card${isToday ? ' today' : ''}"><h4>${cal.weekdayName(it.dd.noonMs)} ${cal.fmtFull.format(new Date(it.dd.noonMs))} <span class="ek-badge ${it.badge}">${it.paksha}</span> <span style="font-weight:400;color:var(--muted);font-size:12px">· tithi ${it.tithi}</span>${isToday ? ' · hoy' : ''}</h4><div class="ek-meta">Luna ${it.dd.luna} · Día ${it.dd.diaN} · ${cal.fmtDate.format(new Date(it.dd.noonMs))}</div></div>`;
+        html += `<div class="ek-card${isToday ? ' today' : ''}"><h4>${cal.weekdayName(it.dd.noonMs)} ${cal.fmtFull.format(new Date(it.dd.noonMs))} <span class="ek-badge ${it.badge}">${it.paksha}</span> <span class="su-ea96ac">· tithi ${it.tithi}</span>${isToday ? ' · hoy' : ''}</h4><div class="ek-meta">Luna ${it.dd.luna} · Día ${it.dd.diaN} · ${cal.fmtDate.format(new Date(it.dd.noonMs))}</div></div>`;
       }
       html += '</div>';
     }
@@ -1785,8 +1785,8 @@ async function exportPDF(fullCycle) {
         <p><b>${escapeHtml(DFT.sub2)}</b> — ${escapeHtml(DFT.texto2)}</p>
         <p>${escapeHtml(DFT.texto3)}</p>
         <p><b>${escapeHtml(DFT.sub3)}</b> — ${escapeHtml(DFT.texto4)} ${escapeHtml(DFT.texto5)}</p>
-        <h3 style="font-size:9pt;color:#666;margin-top:8px">REFLEXIÓN DEL CICLO</h3>
-        <div style="border:1px solid #999;border-radius:6px;min-height:60px;padding:6px;font-size:9pt;white-space:pre-wrap">${escapeHtml(cc ? cc.dft.nota : '') || '&nbsp;'}</div>
+        <h3 class="su-0c48f6">REFLEXIÓN DEL CICLO</h3>
+        <div class="su-3f72c8">${escapeHtml(cc ? cc.dft.nota : '') || '&nbsp;'}</div>
       </section>`;
   } else {
     if (currentView.tipo === 'dft') {
@@ -1797,8 +1797,8 @@ async function exportPDF(fullCycle) {
           <p>${escapeHtml(DFT.texto1)}</p>
           <p><b>${escapeHtml(DFT.sub2)}</b> — ${escapeHtml(DFT.texto2)}</p>
           <p>${escapeHtml(DFT.texto3)}</p>
-          <h3 style="font-size:9pt;color:#666;margin-top:8px">REFLEXIÓN DEL CICLO</h3>
-          <div style="border:1px solid #999;border-radius:6px;min-height:60px;padding:6px;font-size:9pt;white-space:pre-wrap">${escapeHtml(cc ? cc.dft.nota : '') || '&nbsp;'}</div>
+          <h3 class="su-0c48f6">REFLEXIÓN DEL CICLO</h3>
+          <div class="su-3f72c8">${escapeHtml(cc ? cc.dft.nota : '') || '&nbsp;'}</div>
         </section>`;
     } else {
       inner = lunaHTML(y, MOONS[currentView.luna - 1], { monthNotes: true });
@@ -2131,7 +2131,7 @@ function renderMensTodayBanner() {
 function renderMensStats() {
   const box = $('mensStatsBox'); if (!box) return;
   const st = mensStats();
-  if (!st) { box.innerHTML = '<p class="muted" style="font-size:11px;margin:6px 0 0">Con 2+ inicios calculo tu promedio real y regularidad.</p>'; return; }
+  if (!st) { box.innerHTML = '<p class="muted su-1db776">Con 2+ inicios calculo tu promedio real y regularidad.</p>'; return; }
   const auto = getMensData().autoLen && st.n >= 2;
   box.innerHTML = `<div class="mens-stat-grid">`
     + `<div class="mens-stat"><b>${st.avg}d</b><span>promedio${auto?' ● auto':''}</span></div>`
@@ -2148,7 +2148,7 @@ function renderMensPredictBox() {
   const pred = getMensPredictions();
   const md = getMensData();
   if (!pred) {
-    box.innerHTML = `<h4 style="color:var(--gold)">🔮 Predicción</h4><p class="muted">Aún sin registros. Agrega tu último inicio en <b>📝 Registro</b>.</p><p class="muted" style="font-size:11px">13 lunas × 28 días = 364 días. Muchas personas con ciclos de 27-30 días notan sincronía cuerpo-luna — úsalo como ritual, no como diagnóstico.</p>`;
+    box.innerHTML = `<h4 class="su-e39eba">🔮 Predicción</h4><p class="muted">Aún sin registros. Agrega tu último inicio en <b>📝 Registro</b>.</p><p class="muted su-11a508">13 lunas × 28 días = 364 días. Muchas personas con ciclos de 27-30 días notan sincronía cuerpo-luna — úsalo como ritual, no como diagnóstico.</p>`;
     return;
   }
   const fmt = d=> cal.fmtFull.format(new Date(d));
@@ -2161,13 +2161,13 @@ function renderMensPredictBox() {
   const rangeTxt = pred.variability > 0 ? `${mensMsToKey(pred.winStart)} → ${mensMsToKey(pred.winEnd)}` : nextKey;
   const src = getMensData().autoLen && pred.hist.length >= 2 ? `promedio real ${pred.cycleLen}d (${pred.hist.length} ciclos)` : `ciclo ref ${pred.cycleLen}d`;
   box.innerHTML = `
-    <h4 style="color:var(--gold)">🔮 Predicción · ${src}</h4>
+    <h4 class="su-e39eba">🔮 Predicción · ${src}</h4>
     <div class="mens-pred-grid">
-      <div class="mens-pred-item period"><span class="mens-dot period"></span><b>Próximo periodo</b><span>${wk(pred.nextPeriodMs)} ${fmt(pred.nextPeriodMs)} — ${untilTxt}</span><span style="font-size:11px;color:var(--muted)">${lunaTxt}</span><span style="font-size:11px">Sangrado hasta ${fmt(pred.periodEnd)} · ventana ±${pred.variability}d: ${rangeTxt}</span></div>
-      <div class="mens-pred-item fertile"><span class="mens-dot fertile"></span><b>Ventana fértil</b><span>${fmt(pred.fertileStart)} → ${fmt(pred.fertileEnd)}</span><span style="font-size:11px;color:var(--muted)">~ ovulación ${fmt(pred.ovulationMs)}</span></div>
-      <div class="mens-pred-item ovulation"><span class="mens-dot ovulation"></span><b>Ovulación estimada</b><span>${wk(pred.ovulationMs)} ${fmt(pred.ovulationMs)}</span><span style="font-size:11px;color:var(--muted)">día ${pred.cycleLen-14} del ciclo (ciclo−14)</span></div>
+      <div class="mens-pred-item period"><span class="mens-dot period"></span><b>Próximo periodo</b><span>${wk(pred.nextPeriodMs)} ${fmt(pred.nextPeriodMs)} — ${untilTxt}</span><span class="su-1fd8c8">${lunaTxt}</span><span class="su-11a508">Sangrado hasta ${fmt(pred.periodEnd)} · ventana ±${pred.variability}d: ${rangeTxt}</span></div>
+      <div class="mens-pred-item fertile"><span class="mens-dot fertile"></span><b>Ventana fértil</b><span>${fmt(pred.fertileStart)} → ${fmt(pred.fertileEnd)}</span><span class="su-1fd8c8">~ ovulación ${fmt(pred.ovulationMs)}</span></div>
+      <div class="mens-pred-item ovulation"><span class="mens-dot ovulation"></span><b>Ovulación estimada</b><span>${wk(pred.ovulationMs)} ${fmt(pred.ovulationMs)}</span><span class="su-1fd8c8">día ${pred.cycleLen-14} del ciclo (ciclo−14)</span></div>
     </div>
-    <p class="muted" style="font-size:11px;margin-top:8px">Próximos 3: ${pred.pred.slice(0,3).map(p=>mensMsToKey(p.pStart)).join(' · ')}.<br>Estimación estadística; tu cuerpo es soberano. Si buscas o evitas embarazo, usa método adicional.</p>`;
+    <p class="muted su-e6fe60">Próximos 3: ${pred.pred.slice(0,3).map(p=>mensMsToKey(p.pStart)).join(' · ')}.<br>Estimación estadística; tu cuerpo es soberano. Si buscas o evitas embarazo, usa método adicional.</p>`;
 }
 function renderMensLunaBox() {
   const box = $('mensLunaBox'); if(!box) return;
@@ -2176,7 +2176,7 @@ function renderMensLunaBox() {
   const info = mensLunaForKey(mensMsToKey(pred.nextPeriodMs));
   if (!info) { box.innerHTML=''; return;}
   const meta = info.luna==='dft'? null : MOONS[info.luna-1];
-  box.innerHTML = `<h4 style="color:var(--accent)">🌙 Tu próximo periodo y la luna</h4><p style="font-size:13px;color:var(--text)">Cae en <b>${info.luna==='dft'?'Día Fuera del Tiempo':`Luna ${info.luna} · ${meta.nombre}`}</b> (día ${info.dia} de 28). <i>${info.luna==='dft'?DFT.texto1.slice(0,140)+'…':meta.descripcion}</i></p><p class="muted" style="font-size:11px">En el calendario verás 🌸 período · 🌿 fértil · ✨ ovulación. La luna perfecta no exige regularidad perfecta.</p>`;
+  box.innerHTML = `<h4 class="su-a80552">🌙 Tu próximo periodo y la luna</h4><p class="su-0cd86b">Cae en <b>${info.luna==='dft'?'Día Fuera del Tiempo':`Luna ${info.luna} · ${meta.nombre}`}</b> (día ${info.dia} de 28). <i>${info.luna==='dft'?DFT.texto1.slice(0,140)+'…':meta.descripcion}</i></p><p class="muted su-11a508">En el calendario verás 🌸 período · 🌿 fértil · ✨ ovulación. La luna perfecta no exige regularidad perfecta.</p>`;
 }
 function renderMensPhaseBox() {
   const box = $('mensPhaseBox'); if (!box) return;
@@ -2188,7 +2188,7 @@ function renderMensPhaseBox() {
   const f = (a,b,label,ico) => { const on = cur.day >= a && cur.day <= b; return `<div class="mens-phase ${on?'on':''}"><span>${ico}</span><b>${label}</b><small>días ${a}–${b}</small></div>`; };
   box.innerHTML = `<h4>🌀 Tu fase hoy — día ${cur.day}</h4><div class="mens-phase-row">`
     + f(1, P, 'Menstrual', '🌧️') + f(P+1, ov-3, 'Folicular', '🌱') + f(Math.max(P+1,ov-2), ov+1, 'Ovulatoria', '☀️') + f(ov+2, L, 'Lútea', '🍂')
-    + `</div><p class="muted" style="font-size:11px;margin:6px 0 0">${mensPhaseForDay(cur.day, L, P).consejo} <button type="button" id="mensGoHorm" class="btn" style="width:auto;font-size:11px;padding:2px 8px">Ver en 🧬 Hormonas</button></p>`;
+    + `</div><p class="muted su-1db776">${mensPhaseForDay(cur.day, L, P).consejo} <button type="button" id="mensGoHorm" class="btn su-43fa01">Ver en 🧬 Hormonas</button></p>`;
   const b = $('mensGoHorm'); if (b) b.onclick = () => mensSwitchTab('Hormonas');
 }
 function mensSymptLabel(s) {
@@ -2213,7 +2213,7 @@ function renderMensSymptToday() {
   const box = $('mensSymptTodayBox'); if (!box) return;
   const today = cal.fmtKey.format(new Date());
   const s = getMensData().symptoms[today];
-  box.innerHTML = `<h4>💗 Hoy ${today}</h4>` + (s ? `<p style="font-size:12px">${escapeHtml(mensSymptLabel(s))}</p>` : '<p class="muted" style="font-size:11px">Aún no registras cómo estás hoy. Usa el formulario de arriba.</p>');
+  box.innerHTML = `<h4>💗 Hoy ${today}</h4>` + (s ? `<p class="su-6cb285">${escapeHtml(mensSymptLabel(s))}</p>` : '<p class="muted su-11a508">Aún no registras cómo estás hoy. Usa el formulario de arriba.</p>');
 }
 function renderMensHistory() {
   const box = $('mensHistoryBox'); if(!box) return;
@@ -2228,12 +2228,12 @@ function renderMensHistory() {
     const idx = full.indexOf(k);
     const prev = idx > 0 ? full[idx-1] : null;
     const gap = prev ? Math.round((mensKeyToMs(k)-mensKeyToMs(prev))/86400000) : null;
-    const gapTxt = gap ? ` · <span class="chip" style="font-size:10px">+${gap}d</span>` : ' · <span class="muted" style="font-size:10px">primero</span>';
+    const gapTxt = gap ? ` · <span class="chip su-0d5be0">+${gap}d</span>` : ' · <span class="muted su-0d5be0">primero</span>';
     const isLast = k===md.history[md.history.length-1];
     const sym = md.symptoms[k];
-    const symTxt = sym ? `<br><span class="muted" style="font-size:10px">${escapeHtml(mensSymptLabel(sym))}</span>` : '';
-    return `<div class="mens-hist-item"><span>${cal.weekdayName(ms)} ${cal.fmtFull.format(new Date(ms))} ${lunaTxt}${gapTxt} ${isLast?'<span style="color:var(--gold)">· último</span>':''}${symTxt}</span><button data-k="${k}" class="btn btn-icon mens-del" title="Eliminar">✕</button></div>`;
-  }).join('') + `</div><p class="muted" style="font-size:10px;margin-top:6px">+Nd = días desde el inicio anterior. Ideal 21–35. Toca ✕ para corregir un error.</p>`;
+    const symTxt = sym ? `<br><span class="muted su-0d5be0">${escapeHtml(mensSymptLabel(sym))}</span>` : '';
+    return `<div class="mens-hist-item"><span>${cal.weekdayName(ms)} ${cal.fmtFull.format(new Date(ms))} ${lunaTxt}${gapTxt} ${isLast?'<span class="su-e39eba">· último</span>':''}${symTxt}</span><button data-k="${k}" class="btn btn-icon mens-del" title="Eliminar">✕</button></div>`;
+  }).join('') + `</div><p class="muted su-d47a97">+Nd = días desde el inicio anterior. Ideal 21–35. Toca ✕ para corregir un error.</p>`;
   box.querySelectorAll('.mens-del').forEach(b=> b.onclick=()=>{
     const k=b.dataset.k;
     const md2=getMensData();
@@ -2403,14 +2403,14 @@ function hormDayInfoText(d, cycleLen, periodLen) {
     practicas='🧘 <b>Prácticas:</b> anidar/ordenar casa, listas, límites claros, meditación, masaje, escritura reflexiva.';
     cuidados='🌿 <b>Cuidados:</b> magnesio+calcio para SPM, baños tibios, pasiflora/valeriana, dormir temprano, evita decisiones grandes los últimos 3 días.';
   }
-  return `<b>Día ${d}/${cycleLen} — ${fase}</b><br><span style="color:#e76e8a">● Estrógeno ${e}</span> · <span style="color:#7ab8ff">● Progesterona ${p}</span> · <span style="color:#e8c56a">● LH ${l}</span> · <span style="color:#8fd694">● FSH ${f}</span><br><span style="color:var(--muted)">${energia}</span>
+  return `<b>Día ${d}/${cycleLen} — ${fase}</b><br><span class="su-a861ba">● Estrógeno ${e}</span> · <span class="su-721a46">● Progesterona ${p}</span> · <span class="su-7c91e2">● LH ${l}</span> · <span class="su-752b1a">● FSH ${f}</span><br><span class="su-57f9e3">${energia}</span>
     <div class="horm-suggest-grid">
       <div class="horm-suggest-card">${alimentos}</div>
       <div class="horm-suggest-card">${entreno}</div>
       <div class="horm-suggest-card">${practicas}</div>
       <div class="horm-suggest-card">${cuidados}</div>
     </div>
-    <p class="muted" style="font-size:10px;margin-top:6px">Sugerencias educativas, no reemplazan consejo médico. Escucha tu cuerpo: si algo no te sirve, descártalo.</p>`;
+    <p class="muted su-d47a97">Sugerencias educativas, no reemplazan consejo médico. Escucha tu cuerpo: si algo no te sirve, descártalo.</p>`;
 }
 function renderHormonalChart(highlightDay) {
   const canvas=$('hormonalChart'); if(!canvas) return;
@@ -2523,7 +2523,7 @@ function renderMedicList(){
     const next = medicNextDoses(med, Date.now(), 1)[0];
     const nextTxt = next ? cal.weekdayName(next)+' '+cal.fmtFull.format(new Date(next))+' '+med.time : '—';
     const luna = next? mensLunaForKey(mensMsToKey(next)): null;
-    div.innerHTML=`<div class="medic-head"><b>💊 ${escapeHtml(med.name)}</b> <span class="muted" style="font-size:11px">${escapeHtml(med.dose||'')}</span></div><div class="muted" style="font-size:12px">⏰ ${med.freq} ${med.time} ${med.days? '('+escapeHtml(med.days)+')':''} · ${med.from||'?'} → ${med.to||'∞'}</div><div class="muted" style="font-size:11px">${escapeHtml(med.notes||'')}</div><div style="margin-top:4px;font-size:12px;color:var(--gold)">Próxima: ${nextTxt} ${luna? '· Luna '+luna.luna:''}</div><div class="dlg-actions" style="justify-content:flex-end;margin-top:6px"><button data-id="${med.id}" class="btn medic-edit" style="width:auto;font-size:11px">✏️ Editar</button><button data-id="${med.id}" class="btn medic-del" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕ Eliminar</button></div>`;
+    div.innerHTML=`<div class="medic-head"><b>💊 ${escapeHtml(med.name)}</b> <span class="muted su-11a508">${escapeHtml(med.dose||'')}</span></div><div class="muted su-6cb285">⏰ ${med.freq} ${med.time} ${med.days? '('+escapeHtml(med.days)+')':''} · ${med.from||'?'} → ${med.to||'∞'}</div><div class="muted su-11a508">${escapeHtml(med.notes||'')}</div><div class="su-c20229">Próxima: ${nextTxt} ${luna? '· Luna '+luna.luna:''}</div><div class="dlg-actions su-d764ff"><button data-id="${med.id}" class="btn medic-edit su-337714">✏️ Editar</button><button data-id="${med.id}" class="btn medic-del su-fd834a">✕ Eliminar</button></div>`;
     box.appendChild(div);
   });
   box.querySelectorAll('.medic-edit').forEach(b=> b.onclick=()=>{
@@ -2546,7 +2546,7 @@ function renderMedicNextBox(){
   const all=[]; allLists.forEach(med=>{ medicNextDoses(med, Date.now(), 3).forEach(t=> all.push({t, med})); });
   all.sort((a,b)=>a.t-b.t);
   const next5=all.slice(0,5);
-  box.innerHTML='<h4 style="color:var(--gold)">⏰ Próximas tomas — farmacología + natural (5)</h4>'+ (next5.length? '<div class="mens-history">'+ next5.map(o=>`<div class="mens-hist-item"><span><b>${o.med._tipo} ${escapeHtml(o.med.name)}</b> — ${cal.weekdayName(o.t)} ${cal.fmtFull.format(new Date(o.t))} ${cal.fmtTime.format(new Date(o.t))} · ${escapeHtml(o.med.dose||o.med.notes||'')}</span><span class="muted" style="font-size:10px">${o.t-Date.now()<3600000? '¡pronto!':''}</span></div>`).join('')+'</div>' : '<p class="muted">Sin tomas próximas.</p>');
+  box.innerHTML='<h4 class="su-e39eba">⏰ Próximas tomas — farmacología + natural (5)</h4>'+ (next5.length? '<div class="mens-history">'+ next5.map(o=>`<div class="mens-hist-item"><span><b>${o.med._tipo} ${escapeHtml(o.med.name)}</b> — ${cal.weekdayName(o.t)} ${cal.fmtFull.format(new Date(o.t))} ${cal.fmtTime.format(new Date(o.t))} · ${escapeHtml(o.med.dose||o.med.notes||'')}</span><span class="muted su-0d5be0">${o.t-Date.now()<3600000? '¡pronto!':''}</span></div>`).join('')+'</div>' : '<p class="muted">Sin tomas próximas.</p>');
 }
 function medicCheckNotify(){
   const farma=getMedicData(); const nat=getMedicNaturalData();
@@ -2721,7 +2721,7 @@ function renderHabitsList(){
     const st=habitStreak(h.id);
     const stats=habitStats(h.id);
     const div=document.createElement('div'); div.className='habit-item';
-    div.innerHTML=`<div class="habit-head"><span class="habit-icon" style="background:${h.color}22;border-color:${h.color}55;color:${h.color}">${escapeHtml(h.icono||'✓')}</span><b>${escapeHtml(h.nombre)}</b><span class="muted" style="font-size:11px">${h.freq==='diaria'?'Diaria':'Semanal'}${habitMeta(h)?' · ⏱ '+habitMeta(h)+' min/día':''}</span></div><div class="habit-stats"><span>🔥 Racha ${st} días</span><span>📊 ${stats.pct}% mes (${stats.doneThisMonth}/${stats.daysInMonth})</span><span>✅ Total ${stats.total}</span>${habitMeta(h)?`<span>⏱ ${stats.minThisMonth} min este mes</span>`:''}</div><div class="dlg-actions" style="justify-content:flex-end;margin-top:6px"><button data-id="${h.id}" class="btn habit-toggle-today" style="width:auto;font-size:11px">◉ Hoy</button><button data-id="${h.id}" class="btn habit-edit" style="width:auto;font-size:11px">✏️</button><button data-id="${h.id}" class="btn habit-del" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕</button></div>`;
+    div.innerHTML=`<div class="habit-head"><span class="habit-icon" style="background:${h.color}22;border-color:${h.color}55;color:${h.color}">${escapeHtml(h.icono||'✓')}</span><b>${escapeHtml(h.nombre)}</b><span class="muted su-11a508">${h.freq==='diaria'?'Diaria':'Semanal'}${habitMeta(h)?' · ⏱ '+habitMeta(h)+' min/día':''}</span></div><div class="habit-stats"><span>🔥 Racha ${st} días</span><span>📊 ${stats.pct}% mes (${stats.doneThisMonth}/${stats.daysInMonth})</span><span>✅ Total ${stats.total}</span>${habitMeta(h)?`<span>⏱ ${stats.minThisMonth} min este mes</span>`:''}</div><div class="dlg-actions su-d764ff"><button data-id="${h.id}" class="btn habit-toggle-today su-337714">◉ Hoy</button><button data-id="${h.id}" class="btn habit-edit su-337714">✏️</button><button data-id="${h.id}" class="btn habit-del su-fd834a">✕</button></div>`;
     box.appendChild(div);
   });
   box.querySelectorAll('.habit-toggle-today').forEach(b=> b.onclick=()=>{
@@ -2747,11 +2747,11 @@ function renderHabitsTodayBox(){
   const data=getHabitData();
   const today=cal.fmtKey.format(new Date());
   if(!data.list.length){ box.innerHTML='<p class="muted">Crea hábitos para marcarlos cada día.</p>'; return; }
-  box.innerHTML='<h4 style="color:var(--gold)">◉ Hoy — '+cal.weekdayName(Date.now())+' '+cal.fmtFull.format(new Date())+'</h4><div class="habits-today-grid">'+ data.list.map(h=>{
+  box.innerHTML='<h4 class="su-e39eba">◉ Hoy — '+cal.weekdayName(Date.now())+' '+cal.fmtFull.format(new Date())+'</h4><div class="habits-today-grid">'+ data.list.map(h=>{
     const done = data.entries[today] && data.entries[today][h.id];
     const meta=habitMeta(h), mins=habitMinutes(today,h.id);
-    const minTag = meta? `<span class="muted" style="font-size:10px">⏱ ${mins}/${meta} min</span>` : (mins? `<span class="muted" style="font-size:10px">⏱ ${mins} min</span>`:'');
-    const minCtl = meta? `<span style="display:inline-flex;gap:4px;align-items:center;margin-top:4px"><input type="number" class="habit-min-input" data-id="${h.id}" min="1" max="300" value="${meta}" style="width:56px;font-size:11px" title="Minutos a sumar"><button type="button" class="btn habit-min-add" data-id="${h.id}" style="width:auto;font-size:11px;padding:2px 8px">+ min</button>${mins?`<button type="button" class="btn habit-min-clear" data-id="${h.id}" style="width:auto;font-size:11px;padding:2px 8px" title="Quitar minutos de hoy">✕</button>`:''}</span>`:'';
+    const minTag = meta? `<span class="muted su-0d5be0">⏱ ${mins}/${meta} min</span>` : (mins? `<span class="muted su-0d5be0">⏱ ${mins} min</span>`:'');
+    const minCtl = meta? `<span class="su-92b9f8"><input type="number" class="habit-min-input su-b2e80b" data-id="${h.id}" min="1" max="300" value="${meta}" title="Minutos a sumar"><button type="button" class="btn habit-min-add su-43fa01" data-id="${h.id}">+ min</button>${mins?`<button type="button" class="btn habit-min-clear su-43fa01" data-id="${h.id}" title="Quitar minutos de hoy">✕</button>`:''}</span>`:'';
     return `<label class="habit-today-item ${done?'done':''}" style="border-color:${h.color}55"><input type="checkbox" data-id="${h.id}" ${done?'checked':''}><span class="habit-icon" style="background:${h.color}22;color:${h.color}">${escapeHtml(h.icono||'✓')}</span><span>${escapeHtml(h.nombre)}<br>${minTag}${minCtl}</span></label>`;
   }).join('')+'</div>';
   box.querySelectorAll('input[type="checkbox"]').forEach(cb=> cb.onchange=(e)=>{
@@ -2781,7 +2781,7 @@ function renderHabitsStatsBox(){
   const daysInMonth=new Date(new Date().getFullYear(), new Date().getMonth()+1,0).getDate();
   let totalDoneToday=0; data.list.forEach(h=>{ if(data.entries[today] && data.entries[today][h.id]) totalDoneToday++; });
   const pctToday = data.list.length? Math.round(totalDoneToday/data.list.length*100):0;
-  box.innerHTML=`<h4 style="color:var(--accent)">📈 Resumen</h4><div class="habit-stats" style="flex-direction:column;align-items:flex-start"><span>Hoy: ${totalDoneToday}/${data.list.length} (${pctToday}%) completados</span><span>Hábitos activos: ${data.list.length} · Registros: ${Object.keys(data.entries).length} días</span></div><div style="margin-top:6px;background:var(--panel);border-radius:6px;height:10px;overflow:hidden"><div style="width:${pctToday}%;height:100%;background:linear-gradient(90deg,#e8c56a,#a9d18e);transition:width .3s"></div></div>`;
+  box.innerHTML=`<h4 class="su-a80552">📈 Resumen</h4><div class="habit-stats su-b9f73a"><span>Hoy: ${totalDoneToday}/${data.list.length} (${pctToday}%) completados</span><span>Hábitos activos: ${data.list.length} · Registros: ${Object.keys(data.entries).length} días</span></div><div class="su-9c3529"><div style="width:${pctToday}%;height:100%;background:linear-gradient(90deg,#e8c56a,#a9d18e);transition:width .3s"></div></div>`;
 }
 function renderHabitsLunaBox(){
   const box=$('habitsLunaBox'); if(!box) return;
@@ -2796,7 +2796,7 @@ function renderHabitsLunaBox(){
   });
   const pct = totalPossible? Math.round(doneInLuna/totalPossible*100):0;
   const lunaName = currentView.tipo==='dft'? 'Día Fuera del Tiempo': 'Luna '+currentView.luna;
-  box.innerHTML=`<h4 style="color:var(--accent)">🌙 ${lunaName} — hábitos</h4><p class="muted" style="font-size:12px">${doneInLuna} checks de ${totalPossible} posibles (${pct}%)</p><div style="margin-top:6px;background:var(--panel);border-radius:6px;height:10px;overflow:hidden"><div style="width:${pct}%;height:100%;background:linear-gradient(90deg,#7ab8ff,#e8c56a);transition:width .3s"></div></div>`;
+  box.innerHTML=`<h4 class="su-a80552">🌙 ${lunaName} — hábitos</h4><p class="muted su-6cb285">${doneInLuna} checks de ${totalPossible} posibles (${pct}%)</p><div class="su-9c3529"><div style="width:${pct}%;height:100%;background:linear-gradient(90deg,#7ab8ff,#e8c56a);transition:width .3s"></div></div>`;
 }
 let habitTrackerRange=14;
 function habitRefreshAll(){
@@ -2811,7 +2811,7 @@ function habitRefreshAll(){
 function renderHabitsTracker(){
   const box=$('habitsTrackerBox'); if(!box) return;
   const data=getHabitData();
-  if(!data.list.length){ box.innerHTML='<h4 style="color:var(--accent)">📊 Rastreador de hábitos</h4><p class="muted" style="font-size:12px">Agrega tu primer hábito arriba y aquí verás el gráfico de los últimos días. Toca las celdas para marcar días pasados.</p>'; return; }
+  if(!data.list.length){ box.innerHTML='<h4 class="su-a80552">📊 Rastreador de hábitos</h4><p class="muted su-6cb285">Agrega tu primer hábito arriba y aquí verás el gráfico de los últimos días. Toca las celdas para marcar días pasados.</p>'; return; }
   const range=[7,14,28].includes(habitTrackerRange)? habitTrackerRange:14;
   const todayKey=cal.fmtKey.format(new Date());
   let baseMs; try{ baseMs=mensKeyToMs(todayKey); }catch(e){ baseMs=Date.now(); }
@@ -2836,7 +2836,7 @@ function renderHabitsTracker(){
     const col=d.pct===100?'linear-gradient(180deg,#8fd694,#5aa469)':d.pct>=50?'linear-gradient(180deg,#e8c56a,#b98a2e)':d.pct>0?'linear-gradient(180deg,#7ab8ff,#4a6fa5)':'transparent';
     return `<div class="habit-bar-col" title="${d.key}: ${d.done}/${n} (${d.pct}%)"><span class="habit-bar-pct">${d.pct>0?d.pct+'%':''}</span><div class="habit-bar-track"><div class="habit-bar-fill" style="height:${d.pct}%;background:${col}"></div></div><span class="habit-bar-day">${d.wd}<br><b>${d.num}</b></span></div>`;
   }).join('');
-  const head=`<tr><th style="text-align:left">Hábito</th>`+perDay.map(d=>`<th class="${d.isToday?'':''}" title="${d.key}">${d.isToday?'◉':d.wd}<br>${d.num}</th>`).join('')+`<th>🔥</th></tr>`;
+  const head=`<tr><th class="su-6be0d8">Hábito</th>`+perDay.map(d=>`<th class="${d.isToday?'':''}" title="${d.key}">${d.isToday?'◉':d.wd}<br>${d.num}</th>`).join('')+`<th>🔥</th></tr>`;
   const rows=data.list.map(h=>{
     const st=habitStreak(h.id);
     const cells=perDay.map(d=>{
@@ -2845,13 +2845,13 @@ function renderHabitsTracker(){
       const style=done? `background:${h.color}33;border-color:${h.color};color:${h.color}`:'';
       return `<td><button type="button" class="habit-cell ${d.isToday?'today':''}" data-key="${d.key}" data-id="${h.id}" style="${style}" title="${escapeHtml(h.nombre)} · ${d.key}${mins?' · '+mins+' min':done?' ✓':''}">${done? escapeHtml(mins? String(mins)+'′' : (h.icono||'✓')):'·'}</button></td>`;
     }).join('');
-    return `<tr><td class="hname"><span class="habit-icon" style="display:inline-flex;width:20px;height:20px;font-size:11px;vertical-align:-4px;background:${h.color}22;color:${h.color};border:1px solid ${h.color}55;border-radius:50%;align-items:center;justify-content:center">${escapeHtml(h.icono||'✓')}</span> ${escapeHtml(h.nombre.length>16? h.nombre.slice(0,16)+'…':h.nombre)}</td>${cells}<td style="white-space:nowrap">🔥${st}</td></tr>`;
+    return `<tr><td class="hname"><span class="habit-icon" style="display:inline-flex;width:20px;height:20px;font-size:11px;vertical-align:-4px;background:${h.color}22;color:${h.color};border:1px solid ${h.color}55;border-radius:50%;align-items:center;justify-content:center">${escapeHtml(h.icono||'✓')}</span> ${escapeHtml(h.nombre.length>16? h.nombre.slice(0,16)+'…':h.nombre)}</td>${cells}<td class="su-86abda">🔥${st}</td></tr>`;
   }).join('');
-  box.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><h4 style="color:var(--accent);margin:0">📊 Rastreador — últimos ${range} días</h4><div class="habit-range-btns"><button type="button" class="btn habit-range ${range===7?'on':''}" data-range="7" style="width:auto;font-size:11px">7d</button><button type="button" class="btn habit-range ${range===14?'on':''}" data-range="14" style="width:auto;font-size:11px">14d</button><button type="button" class="btn habit-range ${range===28?'on':''}" data-range="28" style="width:auto;font-size:11px">28d</button></div></div>`
-    +`<p class="muted" style="font-size:11px;margin:4px 0 0">${totalChecks} checks · promedio <b>${avg}%</b> · mejor día ${bestDay}/${n} · toca una celda para marcar/desmarcar ese día</p>`
+  box.innerHTML=`<div class="su-24ce67"><h4 class="su-772847">📊 Rastreador — últimos ${range} días</h4><div class="habit-range-btns"><button type="button" class="btn habit-range ${range===7?'on':''} su-337714" data-range="7">7d</button><button type="button" class="btn habit-range ${range===14?'on':''} su-337714" data-range="14">14d</button><button type="button" class="btn habit-range ${range===28?'on':''} su-337714" data-range="28">28d</button></div></div>`
+    +`<p class="muted su-954796">${totalChecks} checks · promedio <b>${avg}%</b> · mejor día ${bestDay}/${n} · toca una celda para marcar/desmarcar ese día</p>`
     +`<div class="habit-bars">${bars}</div>`
     +`<div class="habit-heat"><table>${head}${rows}</table></div>`
-    +`<div class="dlg-actions" style="justify-content:flex-start;margin-top:8px"><button type="button" id="habitTrackerShare" class="btn" style="width:auto;font-size:11px">📤 Compartir avance</button><span class="muted" style="font-size:10px">💡 Consejo: si un día quedó vacío, márcalo hoy en versión mínima (2 min) y sigue la cadena.</span></div>`;
+    +`<div class="dlg-actions su-8f9e27"><button type="button" id="habitTrackerShare" class="btn su-337714">📤 Compartir avance</button><span class="muted su-0d5be0">💡 Consejo: si un día quedó vacío, márcalo hoy en versión mínima (2 min) y sigue la cadena.</span></div>`;
   box.querySelectorAll('.habit-range').forEach(b=> b.onclick=()=>{ habitTrackerRange=+b.dataset.range; renderHabitsTracker(); });
   box.querySelectorAll('.habit-cell').forEach(c=> c.onclick=()=>{ habitToggle(c.dataset.key, c.dataset.id); habitRefreshAll(); });
   const sh=$('habitTrackerShare');
@@ -2872,11 +2872,11 @@ function renderDlgHabits(){
   const d=cycle.days.find(x=>x.luna===editing.lunaN && x.diaN===editing.diaN);
   if(!d) { box.innerHTML=''; return; }
   const key=cal.fmtKey.format(new Date(d.noonMs));
-  box.innerHTML='<label style="font-size:12px;color:var(--muted);margin-bottom:4px;display:block">✅ Hábitos de este día</label><div class="habits-today-grid">'+ data.list.map(h=>{
+  box.innerHTML='<label class="su-242ac3">✅ Hábitos de este día</label><div class="habits-today-grid">'+ data.list.map(h=>{
     const done=data.entries[key] && data.entries[key][h.id];
     const meta=habitMeta(h), mins=habitMinutes(key,h.id);
-    const minTag = meta? `<span class="muted" style="font-size:10px">⏱ ${mins}/${meta} min</span>` : (mins? `<span class="muted" style="font-size:10px">⏱ ${mins} min</span>`:'');
-    const minCtl = meta? `<span style="display:inline-flex;gap:4px;align-items:center;margin-top:4px"><input type="number" class="habit-min-input" data-id="${h.id}" min="1" max="300" value="${meta}" style="width:56px;font-size:11px"><button type="button" class="btn habit-min-add" data-id="${h.id}" style="width:auto;font-size:11px;padding:2px 8px">+ min</button></span>`:'';
+    const minTag = meta? `<span class="muted su-0d5be0">⏱ ${mins}/${meta} min</span>` : (mins? `<span class="muted su-0d5be0">⏱ ${mins} min</span>`:'');
+    const minCtl = meta? `<span class="su-92b9f8"><input type="number" class="habit-min-input su-b2e80b" data-id="${h.id}" min="1" max="300" value="${meta}"><button type="button" class="btn habit-min-add su-43fa01" data-id="${h.id}">+ min</button></span>`:'';
     return `<label class="habit-today-item ${done?'done':''}" style="border-color:${h.color}55"><input type="checkbox" data-id="${h.id}" ${done?'checked':''}><span class="habit-icon" style="background:${h.color}22;color:${h.color}">${escapeHtml(h.icono||'✓')}</span><span>${escapeHtml(h.nombre)}<br>${minTag}${minCtl}</span></label>`;
   }).join('')+'</div>';
   box.querySelectorAll('input[type="checkbox"]').forEach(cb=> cb.onchange=(e)=>{
@@ -3013,7 +3013,7 @@ function getMedicNaturalData(){
 let naturalEditingId=null;
 function renderNaturalList(){
   const box=$('naturalList'); if(!box) return;
-  box.innerHTML=NATURAL_HERBS.map(h=>`<div class="habit-item" style="cursor:pointer" data-n="${escapeHtml(h.n)}"><div style="display:flex;justify-content:space-between;align-items:center"><b>${escapeHtml(h.n)}</b><span class="chip" style="font-size:10px">${h.luna} · ${h.freq} ${h.time}</span></div><div class="muted" style="font-size:11px">${escapeHtml(h.uso)} — ${escapeHtml(h.prep)}</div><div class="muted" style="font-size:10px">Sug: ${h.freq} ${h.time}${h.notes?' · '+escapeHtml(h.notes):''}</div></div>`).join('');
+  box.innerHTML=NATURAL_HERBS.map(h=>`<div class="habit-item su-3b6a3a" data-n="${escapeHtml(h.n)}"><div class="su-13313b"><b>${escapeHtml(h.n)}</b><span class="chip su-0d5be0">${h.luna} · ${h.freq} ${h.time}</span></div><div class="muted su-11a508">${escapeHtml(h.uso)} — ${escapeHtml(h.prep)}</div><div class="muted su-0d5be0">Sug: ${h.freq} ${h.time}${h.notes?' · '+escapeHtml(h.notes):''}</div></div>`).join('');
   box.querySelectorAll('[data-n]').forEach(el=> el.onclick=()=>{
     const h=NATURAL_HERBS.find(x=>x.n===el.dataset.n);
     if(!h) return;
@@ -3036,7 +3036,7 @@ function renderNaturalUserList(){
     const next = medicNextDoses(med, Date.now(), 1)[0];
     const nextTxt = next ? cal.weekdayName(next)+' '+cal.fmtFull.format(new Date(next))+' '+med.time : '—';
     const luna = next? mensLunaForKey(mensMsToKey(next)): null;
-    div.innerHTML=`<div class="medic-head"><b>🌿 ${escapeHtml(med.name)}</b> <span class="muted" style="font-size:11px">${escapeHtml(med.dose||'')}</span></div><div class="muted" style="font-size:12px">⏰ ${med.freq} ${med.time} ${med.days? '('+escapeHtml(med.days)+')':''} · ${med.from||'?'} → ${med.to||'∞'}</div><div class="muted" style="font-size:11px">${escapeHtml(med.notes||'')}</div><div style="margin-top:4px;font-size:12px;color:var(--gold)">Próxima: ${nextTxt} ${luna? '· Luna '+luna.luna:''}</div><div class="dlg-actions" style="justify-content:flex-end;margin-top:6px"><button data-id="${med.id}" class="btn natural-edit" style="width:auto;font-size:11px">✏️ Editar</button><button data-id="${med.id}" class="btn natural-del" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕ Eliminar</button></div>`;
+    div.innerHTML=`<div class="medic-head"><b>🌿 ${escapeHtml(med.name)}</b> <span class="muted su-11a508">${escapeHtml(med.dose||'')}</span></div><div class="muted su-6cb285">⏰ ${med.freq} ${med.time} ${med.days? '('+escapeHtml(med.days)+')':''} · ${med.from||'?'} → ${med.to||'∞'}</div><div class="muted su-11a508">${escapeHtml(med.notes||'')}</div><div class="su-c20229">Próxima: ${nextTxt} ${luna? '· Luna '+luna.luna:''}</div><div class="dlg-actions su-d764ff"><button data-id="${med.id}" class="btn natural-edit su-337714">✏️ Editar</button><button data-id="${med.id}" class="btn natural-del su-fd834a">✕ Eliminar</button></div>`;
     box.appendChild(div);
   });
   box.querySelectorAll('.natural-edit').forEach(b=> b.onclick=()=>{
@@ -3073,8 +3073,8 @@ const MEDIC_BOTIQUIN_ITEMS=[
 ];
 function renderMedicBasica(){
   const box=$('medicBasicaBox'); if(!box) return;
-  box.innerHTML='<div class="help-grid">'+MEDIC_BASICA_CARDS.map(c=>`<div class="help-card"><h4>${c.t}</h4><p style="font-size:11px;line-height:1.5">${c.d}</p></div>`).join('')+'</div>'
-  +'<div class="menstrual-card" style="margin-top:10px;background:var(--panel)"><h4>🚦 ¿CESFAM/SAR, Salud Responde o SAMU 131?</h4><p class="muted" style="font-size:11px;line-height:1.5"><b>SAMU 131:</b> no respira, inconsciente, dolor pecho &gt;5 min, ACV, hemorragia masiva, convulsión &gt;5 min. <b>SAR Penco 41 272 6350 / CESFAM:</b> fiebre 2+ días, corte que necesita puntos, esguince, vómitos con deshidratación, quemadura leve, picadura infectada. <b>Salud Responde 600 360 7777:</b> dudas 24 h (dosis olvidada, mezcla, cuidado en casa). Lleva lista de medicamentos + alergias.</p></div>';
+  box.innerHTML='<div class="help-grid">'+MEDIC_BASICA_CARDS.map(c=>`<div class="help-card"><h4>${c.t}</h4><p class="su-a6c665">${c.d}</p></div>`).join('')+'</div>'
+  +'<div class="menstrual-card su-4adf8c"><h4>🚦 ¿CESFAM/SAR, Salud Responde o SAMU 131?</h4><p class="muted su-a6c665"><b>SAMU 131:</b> no respira, inconsciente, dolor pecho &gt;5 min, ACV, hemorragia masiva, convulsión &gt;5 min. <b>SAR Penco 41 272 6350 / CESFAM:</b> fiebre 2+ días, corte que necesita puntos, esguince, vómitos con deshidratación, quemadura leve, picadura infectada. <b>Salud Responde 600 360 7777:</b> dudas 24 h (dosis olvidada, mezcla, cuidado en casa). Lleva lista de medicamentos + alergias.</p></div>';
 }
 function renderMedicBotiquin(){
   const box=$('medicBotiquinBox'); if(!box) return;
@@ -3130,8 +3130,8 @@ function renderMedicHistoria(){
     return true;
   });
   if(!list.length){ box.innerHTML='<p class="muted">Sin resultados. Prueba con “vacuna”, “machi”, “hospital”...</p>'; return; }
-  box.innerHTML='<div class="mens-history">'+list.map(h=>`<div class="mens-hist-item" style="align-items:flex-start"><span><b>${escapeHtml(h.anio)}</b> · <span class="chip" style="font-size:10px">${MEDIC_HIST_ERA[h.era]||h.era}</span><br><b>${escapeHtml(h.t)}</b><br><span class="muted" style="font-size:11px;line-height:1.5">${h.d}</span></span></div>`).join('')+'</div>'
-  +'<div class="menstrual-card" style="margin-top:10px;background:var(--panel)"><h4>🙏 Nota intercultural</h4><p class="muted" style="font-size:11px;line-height:1.5">El lawen mapuche es conocimiento vivo (<b>kimün</b>). Úsalo con respeto: aprende con machi/lawentuchefe, no extraigas en exceso, no mezcles hierbas fuertes con fármacos sin consultar, y cita la fuente cuando compartas. Ver 🌿 Lawen Herbario y Voz de los Abuelos.</p></div>';
+  box.innerHTML='<div class="mens-history">'+list.map(h=>`<div class="mens-hist-item su-0486f7"><span><b>${escapeHtml(h.anio)}</b> · <span class="chip su-0d5be0">${MEDIC_HIST_ERA[h.era]||h.era}</span><br><b>${escapeHtml(h.t)}</b><br><span class="muted su-a6c665">${h.d}</span></span></div>`).join('')+'</div>'
+  +'<div class="menstrual-card su-4adf8c"><h4>🙏 Nota intercultural</h4><p class="muted su-a6c665">El lawen mapuche es conocimiento vivo (<b>kimün</b>). Úsalo con respeto: aprende con machi/lawentuchefe, no extraigas en exceso, no mezcles hierbas fuertes con fármacos sin consultar, y cita la fuente cuando compartas. Ver 🌿 Lawen Herbario y Voz de los Abuelos.</p></div>';
 }
 const MEDIC_SEGURIDAD=[
   { t:'🚫 No te automediques con…', d:'<b>Antibióticos, corticoides, ansiolíticos, warfarina, insulina, antihipertensivos, anticonvulsivantes:</b> siempre con receta y control. Nunca uses receta ajena ni partas comprimidos de liberación prolongada.' },
@@ -3143,8 +3143,8 @@ const MEDIC_SEGURIDAD=[
 function renderMedicSeguridad(){
   const box=$('medicSeguridadBox'); if(!box) return;
   const extra=getMedicExtraData();
-  const aviso=(extra.alergias||extra.grupo)? `<div class="menstrual-card" style="border-color:var(--gold)"><h4 style="color:var(--gold)">📋 Tu aviso registrado</h4><p class="muted" style="font-size:11px">Alergias: <b>${escapeHtml(extra.alergias||'—')}</b> · Grupo: <b>${escapeHtml(extra.grupo||'—')}</b> · Contacto: <b>${escapeHtml(extra.contacto||'—')}</b><br>Muestra esto en CESFAM/SAR/farmacia. Edítalo en 🩺 Básica.</p></div>`:'<p class="muted" style="font-size:11px;margin-bottom:8px">💡 Registra tus alergias en 🩺 Básica y aparecerán aquí como recordatorio.</p>';
-  box.innerHTML=aviso+'<div class="help-grid">'+MEDIC_SEGURIDAD.map(c=>`<div class="help-card" style="border-color:#ff6b6b55"><h4>${c.t}</h4><p style="font-size:11px;line-height:1.5">${c.d}</p></div>`).join('')+'</div>';
+  const aviso=(extra.alergias||extra.grupo)? `<div class="menstrual-card su-68a1a9"><h4 class="su-e39eba">📋 Tu aviso registrado</h4><p class="muted su-11a508">Alergias: <b>${escapeHtml(extra.alergias||'—')}</b> · Grupo: <b>${escapeHtml(extra.grupo||'—')}</b> · Contacto: <b>${escapeHtml(extra.contacto||'—')}</b><br>Muestra esto en CESFAM/SAR/farmacia. Edítalo en 🩺 Básica.</p></div>`:'<p class="muted su-245797">💡 Registra tus alergias en 🩺 Básica y aparecerán aquí como recordatorio.</p>';
+  box.innerHTML=aviso+'<div class="help-grid">'+MEDIC_SEGURIDAD.map(c=>`<div class="help-card su-8b6024"><h4>${c.t}</h4><p class="su-a6c665">${c.d}</p></div>`).join('')+'</div>';
 }
 
 // === NUTRICIÓN (sección propia en Cuidado, junto a Entrenamientos) ===
@@ -3170,24 +3170,24 @@ function nutriSwitchTab(w){
   renderNutri();
 }
 function nutriQueesHTML(){
-  return `<div class="menstrual-card" style="border-color:var(--gold);background:linear-gradient(135deg,var(--panel),var(--card))"><h4 style="color:var(--gold)">📖 ¿Qué es la nutrición?</h4><p class="muted" style="font-size:11px;line-height:1.6"><b>Alimentación</b> es lo que eliges y comes (acto voluntario y cultural). <b>Nutrición</b> es lo que tu cuerpo hace con eso: digerir, absorber y usar <b>nutrientes</b> para energía, construcción y defensa. comes 3 veces al día; te nutres las 24 h. Por eso no existen “alimentos prohibidos”, sino <b>patrones</b>: lo que repites cada semana manda.</p></div>
-  <div class="help-grid" style="margin-top:10px">
-    <div class="help-card"><h4>⚡ Macros (energía)</h4><p style="font-size:11px;line-height:1.5"><b>Carbohidratos</b> (4 kcal/g): pan, arroz, papas, mote, avena, legumbres → combustible diario. <b>Proteínas</b> (4 kcal/g): legumbres, huevo, pescado, pollo, lácteos → músculos y defensas. <b>Grasas</b> (9 kcal/g): aceite crudo, palta, frutos secos → energía de reserva y hormonas. Faltan o sobran cuando el plato se desbalancea, no por un alimento solo.</p></div>
-    <div class="help-card"><h4>🛡️ Micros (regulan)</h4><p style="font-size:11px;line-height:1.5"><b>Vitaminas y minerales</b> en pequeñas dosis mandan mucho: hierro (sangre), calcio + vitamina D (huesos), B12 (nervios), vitamina C (absorber hierro y defender), yodo y zinc. Se obtienen comiendo <b>variado y de colores</b>; ningún suplemento reemplaza el plato.</p></div>
-    <div class="help-card"><h4>💧 Agua + fibra (olvidadas)</h4><p style="font-size:11px;line-height:1.5"><b>Agua:</b> 6–8 vasos/día, más con calor o faena física. <b>Fibra:</b> 25 g/día (legumbres, avena, verduras, fruta con cáscara): alimenta tu microbiota, regula azúcar y tránsito. Si tomas hierro, sepáralo del té/café 2 h y acompáñalo con vitamina C.</p></div>
-    <div class="help-card"><h4>🍽️ El plato chileno (MINSAL)</h4><p style="font-size:11px;line-height:1.5"><b>½ verduras</b> + <b>¼ proteína</b> (legumbres, huevo, pescado, pollo) + <b>¼ grano integral</b> (arroz integral, mote, avena, papa con cáscara) + <b>agua</b>. Aceite crudo 1–2 cdtas, fruta de postre. <b>Mano-medida:</b> verduras 2 puños, grano 1 puño, proteína 1 palma, aceite punta del pulgar.</p></div>
+  return `<div class="menstrual-card su-bcee4f"><h4 class="su-e39eba">📖 ¿Qué es la nutrición?</h4><p class="muted su-b439ab"><b>Alimentación</b> es lo que eliges y comes (acto voluntario y cultural). <b>Nutrición</b> es lo que tu cuerpo hace con eso: digerir, absorber y usar <b>nutrientes</b> para energía, construcción y defensa. comes 3 veces al día; te nutres las 24 h. Por eso no existen “alimentos prohibidos”, sino <b>patrones</b>: lo que repites cada semana manda.</p></div>
+  <div class="help-grid su-d2c171">
+    <div class="help-card"><h4>⚡ Macros (energía)</h4><p class="su-a6c665"><b>Carbohidratos</b> (4 kcal/g): pan, arroz, papas, mote, avena, legumbres → combustible diario. <b>Proteínas</b> (4 kcal/g): legumbres, huevo, pescado, pollo, lácteos → músculos y defensas. <b>Grasas</b> (9 kcal/g): aceite crudo, palta, frutos secos → energía de reserva y hormonas. Faltan o sobran cuando el plato se desbalancea, no por un alimento solo.</p></div>
+    <div class="help-card"><h4>🛡️ Micros (regulan)</h4><p class="su-a6c665"><b>Vitaminas y minerales</b> en pequeñas dosis mandan mucho: hierro (sangre), calcio + vitamina D (huesos), B12 (nervios), vitamina C (absorber hierro y defender), yodo y zinc. Se obtienen comiendo <b>variado y de colores</b>; ningún suplemento reemplaza el plato.</p></div>
+    <div class="help-card"><h4>💧 Agua + fibra (olvidadas)</h4><p class="su-a6c665"><b>Agua:</b> 6–8 vasos/día, más con calor o faena física. <b>Fibra:</b> 25 g/día (legumbres, avena, verduras, fruta con cáscara): alimenta tu microbiota, regula azúcar y tránsito. Si tomas hierro, sepáralo del té/café 2 h y acompáñalo con vitamina C.</p></div>
+    <div class="help-card"><h4>🍽️ El plato chileno (MINSAL)</h4><p class="su-a6c665"><b>½ verduras</b> + <b>¼ proteína</b> (legumbres, huevo, pescado, pollo) + <b>¼ grano integral</b> (arroz integral, mote, avena, papa con cáscara) + <b>agua</b>. Aceite crudo 1–2 cdtas, fruta de postre. <b>Mano-medida:</b> verduras 2 puños, grano 1 puño, proteína 1 palma, aceite punta del pulgar.</p></div>
   </div>`;
 }
 function nutriGuiaHTML(){
   return `<div class="help-grid">
-    <div class="help-card"><h4>🦴 Lo que más falta en Chile</h4><p style="font-size:11px;line-height:1.5"><b>Vitamina D:</b> sol 15 min + fortificados. <b>Calcio:</b> 3 lácteos/día. <b>Hierro:</b> legumbres + vitamina C; carne 1–2/sem basta. <b>B12:</b> si comes poco animal, consulta suplemento. <b>Omega-3:</b> pescado 2/sem (jurel, sardina, merluza).</p></div>
-    <div class="help-card"><h4>🤰 Etapas</h4><p style="font-size:11px;line-height:1.5"><b>Embarazo/lactancia:</b> +1 lácteo, hierro + fólico con matrona, cero alcohol y cero dietas. <b>Niños:</b> 3 comidas + 2 colaciones, lácteos diario. <b>Mayores:</b> proteína en cada comida + caminar. <b>Diabetes/presión:</b> plan CESFAM; base: menos sal/azúcar, más legumbre y verdura.</p></div>
-    <div class="help-card"><h4>💊 Comida + remedios</h4><p style="font-size:11px;line-height:1.5">Levotiroxina en ayunas lejos de calcio/hierro 4 h · Hierro lejos de té/lácteos · Metformina con comida. Anota con/sin comida en 💊 y pregunta en farmacia.</p></div>
-    <div class="help-card"><h4>🏷️ Sellos ALTO EN (Ley 20.606)</h4><p style="font-size:11px;line-height:1.5">Prefiere el de <b>menos sellos</b>. Lee en 30 seg: sellos → por 100 g → ingredientes (si azúcar/sal/aceite van primeros, devuélvelo). Cambios: bebida→agua, galleta con sellos→fruta+maní, jugo en caja→fruta entera. Sal &lt;5 g y azúcar &lt;25 g/día.</p></div>
-    <div class="help-card"><h4>🚫 Mitos</h4><p style="font-size:11px;line-height:1.5">“El pan engorda” → engorda el exceso. “Cenar engorda” → importa el total del día. “Detox con jugos” → tu hígado ya lo hace. “Quema-grasa” → ninguno reemplaza plato + movimiento.</p></div>
-    <div class="help-card"><h4>🚦 Pedir ayuda</h4><p style="font-size:11px;line-height:1.5">Nutricionista/médico CESFAM si hay cambios bruscos de peso, sed excesiva, presión o colesterol altos. <b>SAMU 131</b> urgencias · <b>Salud Responde 600 360 7777</b> dudas.</p></div>
+    <div class="help-card"><h4>🦴 Lo que más falta en Chile</h4><p class="su-a6c665"><b>Vitamina D:</b> sol 15 min + fortificados. <b>Calcio:</b> 3 lácteos/día. <b>Hierro:</b> legumbres + vitamina C; carne 1–2/sem basta. <b>B12:</b> si comes poco animal, consulta suplemento. <b>Omega-3:</b> pescado 2/sem (jurel, sardina, merluza).</p></div>
+    <div class="help-card"><h4>🤰 Etapas</h4><p class="su-a6c665"><b>Embarazo/lactancia:</b> +1 lácteo, hierro + fólico con matrona, cero alcohol y cero dietas. <b>Niños:</b> 3 comidas + 2 colaciones, lácteos diario. <b>Mayores:</b> proteína en cada comida + caminar. <b>Diabetes/presión:</b> plan CESFAM; base: menos sal/azúcar, más legumbre y verdura.</p></div>
+    <div class="help-card"><h4>💊 Comida + remedios</h4><p class="su-a6c665">Levotiroxina en ayunas lejos de calcio/hierro 4 h · Hierro lejos de té/lácteos · Metformina con comida. Anota con/sin comida en 💊 y pregunta en farmacia.</p></div>
+    <div class="help-card"><h4>🏷️ Sellos ALTO EN (Ley 20.606)</h4><p class="su-a6c665">Prefiere el de <b>menos sellos</b>. Lee en 30 seg: sellos → por 100 g → ingredientes (si azúcar/sal/aceite van primeros, devuélvelo). Cambios: bebida→agua, galleta con sellos→fruta+maní, jugo en caja→fruta entera. Sal &lt;5 g y azúcar &lt;25 g/día.</p></div>
+    <div class="help-card"><h4>🚫 Mitos</h4><p class="su-a6c665">“El pan engorda” → engorda el exceso. “Cenar engorda” → importa el total del día. “Detox con jugos” → tu hígado ya lo hace. “Quema-grasa” → ninguno reemplaza plato + movimiento.</p></div>
+    <div class="help-card"><h4>🚦 Pedir ayuda</h4><p class="su-a6c665">Nutricionista/médico CESFAM si hay cambios bruscos de peso, sed excesiva, presión o colesterol altos. <b>SAMU 131</b> urgencias · <b>Salud Responde 600 360 7777</b> dudas.</p></div>
   </div>
-  <div class="menstrual-card" style="margin-top:10px;background:var(--panel)"><h4>🔗 Conecta</h4><p class="muted" style="font-size:11px;line-height:1.5">Arma el día en 🥗 <b>Comidas</b>, trae ingredientes con 🛒 <b>Compras</b>, calcula tu meta en 🧮 <b>Calculadora</b> y cosecha de 🌿 <b>Huerta/Siembra</b>.</p></div>`;
+  <div class="menstrual-card su-4adf8c"><h4>🔗 Conecta</h4><p class="muted su-a6c665">Arma el día en 🥗 <b>Comidas</b>, trae ingredientes con 🛒 <b>Compras</b>, calcula tu meta en 🧮 <b>Calculadora</b> y cosecha de 🌿 <b>Huerta/Siembra</b>.</p></div>`;
 }
 const NUTRI_HISTORIA=[
   { anio:'~400 a.C.', t:'Hipócrates — “el alimento, medicina”', d:'Dieta, reposo e higiene como tratamiento. La idea de que comer ordena la salud nace aquí.' },
@@ -3201,65 +3201,65 @@ const NUTRI_HISTORIA=[
   { anio:'Hoy', t:'NOVA + microbiota + guías MINSAL', d:'Ultraprocesados (NOVA), fibra y microbiota al centro. Guías Alimentarias 2022: más legumbres, pescado, agua y cocina casera; menos sellos. Esta sección las resume para Penco.' }
 ];
 function nutriHistoriaHTML(){
-  return `<div class="menstrual-card" style="border-color:var(--gold);background:linear-gradient(135deg,var(--panel),var(--card))"><h4 style="color:var(--gold)">📜 Historia de la nutrición — del mito al sello</h4><p class="muted" style="font-size:11px;line-height:1.5">Cómo pasamos de “come esto porque sí” a calorías, vitaminas y sellos negros. La nutrición como ciencia tiene apenas ~100 años.</p></div>`
-  +'<div class="mens-history" style="margin-top:10px">'+NUTRI_HISTORIA.map(h=>`<div class="mens-hist-item" style="align-items:flex-start"><span><b>${escapeHtml(h.anio)}</b><br><b>${escapeHtml(h.t)}</b><br><span class="muted" style="font-size:11px;line-height:1.5">${h.d}</span></span></div>`).join('')+'</div>'
-  +'<div class="menstrual-card" style="margin-top:10px;background:var(--panel)"><h4>📚 Para seguir</h4><p class="muted" style="font-size:11px;line-height:1.5">Guías Alimentarias para Chile (MINSAL) · Ley 20.606 · Clasificación NOVA · Tu nutricionista CESFAM. Si estudias el tema, anótalo en 🧠 Estudio.</p></div>';
+  return `<div class="menstrual-card su-bcee4f"><h4 class="su-e39eba">📜 Historia de la nutrición — del mito al sello</h4><p class="muted su-a6c665">Cómo pasamos de “come esto porque sí” a calorías, vitaminas y sellos negros. La nutrición como ciencia tiene apenas ~100 años.</p></div>`
+  +'<div class="mens-history su-d2c171">'+NUTRI_HISTORIA.map(h=>`<div class="mens-hist-item su-0486f7"><span><b>${escapeHtml(h.anio)}</b><br><b>${escapeHtml(h.t)}</b><br><span class="muted su-a6c665">${h.d}</span></span></div>`).join('')+'</div>'
+  +'<div class="menstrual-card su-4adf8c"><h4>📚 Para seguir</h4><p class="muted su-a6c665">Guías Alimentarias para Chile (MINSAL) · Ley 20.606 · Clasificación NOVA · Tu nutricionista CESFAM. Si estudias el tema, anótalo en 🧠 Estudio.</p></div>';
 }
 function nutriPencoHTML(){
-  return `<div class="menstrual-card" style="border-color:var(--gold);background:linear-gradient(135deg,var(--panel),var(--card))"><h4 style="color:var(--gold)">🧺 Comer bien en Penco (feria + caleta + huerta)</h4><p class="muted" style="font-size:11px;line-height:1.5">Base semanal: <b>legumbres 2–3 veces</b>, <b>pescado 2 veces</b> (jurel, merluza, sardina), huevo 3–4/sem, verduras de estación, papa/mote/avena. Despliega cada tema ⬇️ — el menú de ejemplo va primero.</p></div>
-  <div class="help-grid" style="margin-top:10px">
-    <div class="help-card"><h4>Lunes — Lentejas</h4><p style="font-size:11px">Lentejas con zapallo + repollo-limón + manzana. Hierro + fibra por poca plata.</p></div>
-    <div class="help-card"><h4>Martes — Jurel</h4><p style="font-size:11px">Jurel al horno + papas con cáscara + pebre + naranja (la vit C ayuda a absorber el hierro).</p></div>
-    <div class="help-card"><h4>Miércoles — Tortilla</h4><p style="font-size:11px">Tortilla de verduras + arroz integral + yogur natural. Buena para llevar al trabajo.</p></div>
-    <div class="help-card"><h4>Jueves — Porotos</h4><p style="font-size:11px">Porotos con mote + ensalada + kiwi. Cocina olla grande y guarda porción para el sábado.</p></div>
-    <div class="help-card"><h4>Viernes — Merluza</h4><p style="font-size:11px">Merluza a la plancha + puré + brócoli + limonada sin azúcar. Cierre liviano de semana.</p></div>
-    <div class="help-card"><h4>Fin de semana</h4><p style="font-size:11px">Sábado: cazuela liviana (aprovecha el caldo de los porotos). Domingo: sobras ordenadas + fruta. Colaciones: fruta, maní sin sal, yogur, avena.</p></div>
+  return `<div class="menstrual-card su-bcee4f"><h4 class="su-e39eba">🧺 Comer bien en Penco (feria + caleta + huerta)</h4><p class="muted su-a6c665">Base semanal: <b>legumbres 2–3 veces</b>, <b>pescado 2 veces</b> (jurel, merluza, sardina), huevo 3–4/sem, verduras de estación, papa/mote/avena. Despliega cada tema ⬇️ — el menú de ejemplo va primero.</p></div>
+  <div class="help-grid su-d2c171">
+    <div class="help-card"><h4>Lunes — Lentejas</h4><p class="su-11a508">Lentejas con zapallo + repollo-limón + manzana. Hierro + fibra por poca plata.</p></div>
+    <div class="help-card"><h4>Martes — Jurel</h4><p class="su-11a508">Jurel al horno + papas con cáscara + pebre + naranja (la vit C ayuda a absorber el hierro).</p></div>
+    <div class="help-card"><h4>Miércoles — Tortilla</h4><p class="su-11a508">Tortilla de verduras + arroz integral + yogur natural. Buena para llevar al trabajo.</p></div>
+    <div class="help-card"><h4>Jueves — Porotos</h4><p class="su-11a508">Porotos con mote + ensalada + kiwi. Cocina olla grande y guarda porción para el sábado.</p></div>
+    <div class="help-card"><h4>Viernes — Merluza</h4><p class="su-11a508">Merluza a la plancha + puré + brócoli + limonada sin azúcar. Cierre liviano de semana.</p></div>
+    <div class="help-card"><h4>Fin de semana</h4><p class="su-11a508">Sábado: cazuela liviana (aprovecha el caldo de los porotos). Domingo: sobras ordenadas + fruta. Colaciones: fruta, maní sin sal, yogur, avena.</p></div>
   </div>
-  <details style="background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px;margin-top:10px"><summary style="cursor:pointer;color:var(--accent);font-weight:600">🗓️ Qué trae cada estación (feria)</summary>
-    <ul style="margin:6px 0 0 18px;font-size:11px;color:var(--text);line-height:1.6">
+  <details class="su-6fb574"><summary class="su-49b201">🗓️ Qué trae cada estación (feria)</summary>
+    <ul class="su-85bb5c">
       <li><b>Otoño:</b> manzana, pera, membrillo, zapallo, repollo, espinaca, nueces y avellanas. Momento de guisos y sopas.</li>
       <li><b>Invierno:</b> cítricos (naranja, limón, mandarina), kiwi, coliflor, brócoli, zanahoria, betarraga. Vit C contra resfríos.</li>
       <li><b>Primavera:</b> habas, arvejas, lechugas, acelga, frutillas, cerezas. Ensaladas vuelven a la mesa.</li>
       <li><b>Verano:</b> tomate, choclo, porotos granados, durazno, sandía, arándanos, albahaca. Hidrata con fruta + agua.</li>
     </ul>
-    <p class="muted" style="font-size:11px;margin:6px 0 0">Regla feria: lo de estación es más barato, más fresco y con menos viaje. Si está caro, cambia el ingrediente, no la receta.</p>
+    <p class="muted su-1db776">Regla feria: lo de estación es más barato, más fresco y con menos viaje. Si está caro, cambia el ingrediente, no la receta.</p>
   </details>
-  <details style="background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px;margin-top:8px"><summary style="cursor:pointer;color:var(--accent);font-weight:600">🐟 Caleta: fresco, barato y seguro</summary>
-    <ul style="margin:6px 0 0 18px;font-size:11px;color:var(--text);line-height:1.6">
+  <details class="su-35380a"><summary class="su-49b201">🐟 Caleta: fresco, barato y seguro</summary>
+    <ul class="su-85bb5c">
       <li><b>De Penco:</b> merluza, jurel, sardina, reineta según temporada; choritos, almejas y piures. El jurel es el campeón calidad-precio (omega-3 + hierro).</li>
       <li><b>Ojo fresco:</b> ojos brillantes, agallas rojas, olor a mar (no a amoníaco), carne firme que vuelve al presionar. Marisco: concha cerrada o que se cierra al tocar.</li>
       <li><b>En casa:</b> pescado a 0–4 °C y úsalo en 24 h; si no, porciónalo y congela con fecha (dura 2–3 meses). Descongela en el refrigerador, nunca a temperatura ambiente.</li>
       <li><b>Mariscos:</b> hiérvelos bien (que abran todos), bota los cerrados. Con marea roja o veda, respeta el aviso de la autoridad: no hay plato que valga una intoxicación.</li>
     </ul>
   </details>
-  <details style="background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px;margin-top:8px"><summary style="cursor:pointer;color:var(--accent);font-weight:600">🫙 Olla grande + despensa (cocina una vez, come tres)</summary>
-    <ul style="margin:6px 0 0 18px;font-size:11px;color:var(--text);line-height:1.6">
+  <details class="su-35380a"><summary class="su-49b201">🫙 Olla grande + despensa (cocina una vez, come tres)</summary>
+    <ul class="su-85bb5c">
       <li><b>Batch del domingo:</b> 1 olla de legumbres + 1 de grano (arroz/mote) + verduras al horno. Porciona en potes con fecha: 3 días refrigerado, 3 meses congelado.</li>
       <li><b>Despensa base:</b> lentejas, porotos, garbanzos, arroz, avena, mote, harina integral, aceite, sal de mar, orégano, comino, ají, té, leche en polvo o larga vida, atún/jurel en tarro para emergencias.</li>
       <li><b>Remojo:</b> legumbres 8–12 h con agua + limón/vinagre, bota esa agua y cocina con agua nueva: menos gases, mejor digestión.</li>
       <li><b>Rotula todo:</b> nombre + fecha con masking tape. Lo que no se ve, se pierde al fondo del freezer.</li>
     </ul>
   </details>
-  <details style="background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px;margin-top:8px"><summary style="cursor:pointer;color:var(--accent);font-weight:600">🌱 De tu huerta y la luna</summary>
-    <p class="muted" style="font-size:11px;line-height:1.6;margin:6px 0 0">Cilantro, perejil, lechuga, acelga, zanahoria y habas se dan bien en Penco y abaratan la ensalada. Cosecha en la mañana (más turgente) y lava con agua segura. Cruza con 🌿 <b>Huerta/Siembra</b> del calendario: siembra hoja en creciente, raíz en menguante, y programa tus almácigos por luna.</p>
+  <details class="su-35380a"><summary class="su-49b201">🌱 De tu huerta y la luna</summary>
+    <p class="muted su-540708">Cilantro, perejil, lechuga, acelga, zanahoria y habas se dan bien en Penco y abaratan la ensalada. Cosecha en la mañana (más turgente) y lava con agua segura. Cruza con 🌿 <b>Huerta/Siembra</b> del calendario: siembra hoja en creciente, raíz en menguante, y programa tus almácigos por luna.</p>
   </details>
-  <details style="background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px;margin-top:8px"><summary style="cursor:pointer;color:var(--accent);font-weight:600">💧 Agua y colaciones que salvan</summary>
-    <ul style="margin:6px 0 0 18px;font-size:11px;color:var(--text);line-height:1.6">
+  <details class="su-35380a"><summary class="su-49b201">💧 Agua y colaciones que salvan</summary>
+    <ul class="su-85bb5c">
       <li><b>Agua:</b> 6–8 vasos; lleva botella a la pega, la caleta y la multicancha. Agua con rodaja de limón o pepino reemplaza la bebida.</li>
       <li><b>Colación mochila:</b> fruta + maní sin sal, yogur, huevo duro, avena con leche. Evita el kiosco con sellos a las 11:00.</li>
       <li><b>Once chilena sana:</b> pan integral + palta/huevo/quesillo + tomate, té o leche. La once no es enemiga: manda la porción.</li>
     </ul>
   </details>
-  <div class="menstrual-card" style="margin-top:10px"><h4>💰 Ahorro feria</h4><p class="muted" style="font-size:11px;line-height:1.5">Compra lo de estación con lista (🛒 <b>Compras</b>), anda a última hora por ofertas, prefiere feria/caleta sobre mall, congela pan y pescado porcionado y usa tu huerta. Menos sellos = menos plata y más salud. Anota el menú en 🥗 <b>Comidas</b> para verlo en la luna.</p></div>`;
+  <div class="menstrual-card su-d2c171"><h4>💰 Ahorro feria</h4><p class="muted su-a6c665">Compra lo de estación con lista (🛒 <b>Compras</b>), anda a última hora por ofertas, prefiere feria/caleta sobre mall, congela pan y pescado porcionado y usa tu huerta. Menos sellos = menos plata y más salud. Anota el menú en 🥗 <b>Comidas</b> para verlo en la luna.</p></div>`;
 }
 function nutriSemanaHTML(){
   const d=getMedicNutriData();
   const n=MEDIC_NUTRI_CHECKS.filter(([id])=>d[id]).length;
   const pct=Math.round(n/MEDIC_NUTRI_CHECKS.length*100);
-  return `<div class="menstrual-card"><h4 style="color:var(--accent)">✅ Mi semana nutricional (${n}/${MEDIC_NUTRI_CHECKS.length} · ${pct}%)</h4><p class="muted" style="font-size:11px">Toca para marcar. Privado y local por usuario. Apunta a 6/8 sin culpa.</p><div id="nutriChecks" class="habits-today-grid" style="margin-top:8px">`
+  return `<div class="menstrual-card"><h4 class="su-a80552">✅ Mi semana nutricional (${n}/${MEDIC_NUTRI_CHECKS.length} · ${pct}%)</h4><p class="muted su-11a508">Toca para marcar. Privado y local por usuario. Apunta a 6/8 sin culpa.</p><div id="nutriChecks" class="habits-today-grid su-8a77e5">`
     +MEDIC_NUTRI_CHECKS.map(([id,label])=>`<label class="habit-today-item${d[id]?' done':''}"><input type="checkbox" data-id="${id}" ${d[id]?'checked':''}><span>${label}</span></label>`).join('')
-    +`</div><div class="dlg-actions" style="justify-content:space-between;margin-top:8px"><span class="muted" style="font-size:11px">${pct>=75?'🌟 ¡Semana equilibrada!':pct>=50?'💪 Vas bien, suma agua y verduras':'🌱 Empieza por agua + 1 verdura hoy'}</span><button type="button" id="nutriReset" class="btn" style="width:auto;font-size:11px">↺ Reiniciar</button></div></div>
-    <div class="menstrual-card" style="margin-top:10px;background:var(--panel)"><h4>📝 Meta de esta luna</h4><p class="muted" style="font-size:11px;line-height:1.5">Elige UNA sola (ej: “legumbres martes y jueves”). Anótala en 🥗 Comidas y revísala cada luna.</p></div>`;
+    +`</div><div class="dlg-actions su-efea1d"><span class="muted su-11a508">${pct>=75?'🌟 ¡Semana equilibrada!':pct>=50?'💪 Vas bien, suma agua y verduras':'🌱 Empieza por agua + 1 verdura hoy'}</span><button type="button" id="nutriReset" class="btn su-337714">↺ Reiniciar</button></div></div>
+    <div class="menstrual-card su-4adf8c"><h4>📝 Meta de esta luna</h4><p class="muted su-a6c665">Elige UNA sola (ej: “legumbres martes y jueves”). Anótala en 🥗 Comidas y revísala cada luna.</p></div>`;
 }
 function renderNutri(){
   const box=$('nutriBox'); if(!box) return;
@@ -3292,13 +3292,13 @@ function renderMealWeekBox(){
   const box=$('mealWeekBox'); if(!box) return;
   const data=getMealData();
   const todayKey=cal.fmtKey.format(new Date());
-  let html='<h4 style="color:var(--accent)">📅 Semana</h4><div class="mens-history">';
+  let html='<h4 class="su-a80552">📅 Semana</h4><div class="mens-history">';
   for(let i=0;i<7;i++){
     const ms=mensKeyToMs(todayKey)+i*86400000;
     const k=mensMsToKey(ms);
     const e=data.entries[k];
     const has=e && (e.breakfast||e.lunch||e.dinner);
-    html+=`<div class="mens-hist-item" style="${has?'border-color:var(--gold)':''}"><span><b>${cal.weekdayName(ms).slice(0,3)} ${k.slice(5)}</b> — ${has? escapeHtml([e.breakfast,e.lunch,e.dinner].filter(Boolean).join(' · ')) : '<span class=\'muted\'>sin plan</span>'} </span><button data-k="${k}" class="btn btn-icon meal-load" style="padding:4px 8px">✏️</button></div>`;
+    html+=`<div class="mens-hist-item" style="${has?'border-color:var(--gold)':''}"><span><b>${cal.weekdayName(ms).slice(0,3)} ${k.slice(5)}</b> — ${has? escapeHtml([e.breakfast,e.lunch,e.dinner].filter(Boolean).join(' · ')) : '<span class=\'muted\'>sin plan</span>'} </span><button data-k="${k}" class="btn btn-icon meal-load su-f26165">✏️</button></div>`;
   }
   html+='</div>';
   box.innerHTML=html;
@@ -3312,7 +3312,7 @@ function renderMealLunaBox(){
   const days=cycle.days.filter(d=>d.luna===currentView.luna);
   let done=0; days.forEach(d=>{ const k=cal.fmtKey.format(new Date(d.noonMs)); if(data.entries[k] && (data.entries[k].breakfast||data.entries[k].lunch||data.entries[k].dinner)) done++; });
   const pct=days.length? Math.round(done/days.length*100):0;
-  box.innerHTML=`<h4 style="color:var(--accent)">🌙 Luna ${currentView.luna} — comidas</h4><p class="muted" style="font-size:12px">${done}/${days.length} días con plan (${pct}%)</p><div style="margin-top:6px;background:var(--panel);border-radius:6px;height:10px;overflow:hidden"><div style="width:${pct}%;height:100%;background:linear-gradient(90deg,#a9d18e,#e8c56a)"></div></div>`;
+  box.innerHTML=`<h4 class="su-a80552">🌙 Luna ${currentView.luna} — comidas</h4><p class="muted su-6cb285">${done}/${days.length} días con plan (${pct}%)</p><div class="su-9c3529"><div style="width:${pct}%;height:100%;background:linear-gradient(90deg,#a9d18e,#e8c56a)"></div></div>`;
 }
 
 // === NUTRICIÓN ===
@@ -3365,25 +3365,25 @@ function renderMealNutritionBox(){
   const k=$('mealDate')?.value; if(!k){ box.innerHTML='<p class="muted">Elige fecha para ver cálculo.</p>'; return; }
   const e=getMealData().entries[k];
   if(!e || (!e.breakfast && !e.lunch && !e.dinner && !e.snack)){
-    box.innerHTML='<h4 style="color:var(--gold)">📊 Nutrición estimada</h4><p class="muted">Sin comidas para este día. Agrega desayuno/almuerzo/cena para calcular.</p>';
+    box.innerHTML='<h4 class="su-e39eba">📊 Nutrición estimada</h4><p class="muted">Sin comidas para este día. Agrega desayuno/almuerzo/cena para calcular.</p>';
     return;
   }
   const allText=[e.breakfast,e.lunch,e.dinner,e.snack].filter(Boolean).join(', ');
   const tot=parseNutrition(allText);
   if(!tot){
-    box.innerHTML='<h4 style="color:var(--gold)">📊 Nutrición estimada</h4><p class="muted">No se reconocieron alimentos. Prueba con: avena, lentejas, pollo, ensalada.</p>';
+    box.innerHTML='<h4 class="su-e39eba">📊 Nutrición estimada</h4><p class="muted">No se reconocieron alimentos. Prueba con: avena, lentejas, pollo, ensalada.</p>';
     return;
   }
-  box.innerHTML=`<h4 style="color:var(--gold)">📊 Nutrición estimada — ${k}</h4>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:6px">
-      <div class="chip" style="text-align:center"><b>${Math.round(tot.cal)}</b><br><span class="muted" style="font-size:10px">kcal</span></div>
-      <div class="chip" style="text-align:center"><b>${tot.prot.toFixed(1)}g</b><br><span class="muted" style="font-size:10px">proteína</span></div>
-      <div class="chip" style="text-align:center"><b>${tot.carb.toFixed(1)}g</b><br><span class="muted" style="font-size:10px">carbos</span></div>
-      <div class="chip" style="text-align:center"><b>${tot.fat.toFixed(1)}g</b><br><span class="muted" style="font-size:10px">grasa</span></div>
-      <div class="chip" style="text-align:center"><b>${tot.hierro.toFixed(1)}mg</b><br><span class="muted" style="font-size:10px">hierro</span></div>
-      <div class="chip" style="text-align:center"><b>${tot.fibra.toFixed(1)}g</b><br><span class="muted" style="font-size:10px">fibra</span></div>
+  box.innerHTML=`<h4 class="su-e39eba">📊 Nutrición estimada — ${k}</h4>
+    <div class="su-b022fe">
+      <div class="chip su-91a870"><b>${Math.round(tot.cal)}</b><br><span class="muted su-0d5be0">kcal</span></div>
+      <div class="chip su-91a870"><b>${tot.prot.toFixed(1)}g</b><br><span class="muted su-0d5be0">proteína</span></div>
+      <div class="chip su-91a870"><b>${tot.carb.toFixed(1)}g</b><br><span class="muted su-0d5be0">carbos</span></div>
+      <div class="chip su-91a870"><b>${tot.fat.toFixed(1)}g</b><br><span class="muted su-0d5be0">grasa</span></div>
+      <div class="chip su-91a870"><b>${tot.hierro.toFixed(1)}mg</b><br><span class="muted su-0d5be0">hierro</span></div>
+      <div class="chip su-91a870"><b>${tot.fibra.toFixed(1)}g</b><br><span class="muted su-0d5be0">fibra</span></div>
     </div>
-    <p class="muted" style="font-size:10px;margin-top:6px">Estimación por porción estándar (100g aprox). No reemplaza consejo nutricional.</p>`;
+    <p class="muted su-d47a97">Estimación por porción estándar (100g aprox). No reemplaza consejo nutricional.</p>`;
 }
 function renderMealSuggestionsBox(){
   const box=$('mealSuggestionsBox'); if(!box) return;
@@ -3412,7 +3412,7 @@ function renderMealSuggestionsBox(){
     else sug.push('🍂 <b>Rimü (otoño):</b> cremas, porotos, piñón, manzana, chicha de manzana sin exceso.');
   }
   if(sug.length===0) sug.push('✅ Equilibrado para hoy. Mantén variedad y agua.');
-  box.innerHTML='<h4 style="color:var(--accent)">💡 Sugerencias</h4>' + sug.map(s=>'<p class="muted" style="font-size:11.5px;margin:4px 0">'+s+'</p>').join('') + '<p class="muted" style="font-size:10px;margin-top:6px">Sugerencias estacionales para Penco, no diagnóstico.</p>';
+  box.innerHTML='<h4 class="su-a80552">💡 Sugerencias</h4>' + sug.map(s=>'<p class="muted su-5cb278">'+s+'</p>').join('') + '<p class="muted su-d47a97">Sugerencias estacionales para Penco, no diagnóstico.</p>';
 }
 
 // === CALCULADORA NUTRICIONAL + MENÚS ===
@@ -3454,32 +3454,32 @@ function renderCalcResultado(){
   const r=calcNutrition(prof);
   if(!r){ box.innerHTML='<p class="muted">Completa edad, peso y altura para calcular.</p>'; if(det) det.classList.add('hidden'); return; }
   const imcCat = r.imc<18.5?'Bajo peso': r.imc<25?'Normal': r.imc<30?'Sobrepeso':'Obesidad';
-  box.innerHTML=`<h4 style="color:var(--gold)">🎯 Tu meta: ${r.objetivoKcal} kcal/día</h4>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:6px">
-      <div class="chip" style="text-align:center"><b>${r.tmb}</b><br><span class="muted" style="font-size:10px">TMB</span></div>
-      <div class="chip" style="text-align:center"><b>${r.tdee}</b><br><span class="muted" style="font-size:10px">TDEE</span></div>
-      <div class="chip" style="text-align:center"><b>${r.objetivoKcal}</b><br><span class="muted" style="font-size:10px">Objetivo</span></div>
-      <div class="chip" style="text-align:center"><b>${r.protG}g</b><br><span class="muted" style="font-size:10px">Proteína</span></div>
-      <div class="chip" style="text-align:center"><b>${r.carbG}g</b><br><span class="muted" style="font-size:10px">Carbos</span></div>
-      <div class="chip" style="text-align:center"><b>${r.fatG}g</b><br><span class="muted" style="font-size:10px">Grasa</span></div>
+  box.innerHTML=`<h4 class="su-e39eba">🎯 Tu meta: ${r.objetivoKcal} kcal/día</h4>
+    <div class="su-b022fe">
+      <div class="chip su-91a870"><b>${r.tmb}</b><br><span class="muted su-0d5be0">TMB</span></div>
+      <div class="chip su-91a870"><b>${r.tdee}</b><br><span class="muted su-0d5be0">TDEE</span></div>
+      <div class="chip su-91a870"><b>${r.objetivoKcal}</b><br><span class="muted su-0d5be0">Objetivo</span></div>
+      <div class="chip su-91a870"><b>${r.protG}g</b><br><span class="muted su-0d5be0">Proteína</span></div>
+      <div class="chip su-91a870"><b>${r.carbG}g</b><br><span class="muted su-0d5be0">Carbos</span></div>
+      <div class="chip su-91a870"><b>${r.fatG}g</b><br><span class="muted su-0d5be0">Grasa</span></div>
     </div>
-    <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+    <div class="su-67b198">
       <span class="chip">IMC ${r.imc} · ${imcCat}</span>
       <span class="chip">💧 Agua ~${r.agua} ml/día</span>
       <span class="chip">${prof.objetivo.replace('_',' ')} (${r.ajuste>=0?'+'+r.ajuste:r.ajuste} kcal)</span>
     </div>
-    <div style="margin-top:8px;background:var(--panel);border-radius:6px;height:10px;overflow:hidden;display:flex">
+    <div class="su-10c3ba">
       <div style="width:${Math.round(r.protG*4/r.objetivoKcal*100)}%;background:#a9d18e"></div>
       <div style="width:${Math.round(r.carbG*4/r.objetivoKcal*100)}%;background:#e8c56a"></div>
       <div style="width:${Math.round(r.fatG*9/r.objetivoKcal*100)}%;background:#7ab8ff"></div>
     </div>
-    <p class="muted" style="font-size:10px;margin-top:4px">Distribución: <span style="color:#a9d18e">● Proteína ${Math.round(r.protG*4/r.objetivoKcal*100)}%</span> · <span style="color:#e8c56a">● Carbos ${Math.round(r.carbG*4/r.objetivoKcal*100)}%</span> · <span style="color:#7ab8ff">● Grasa ${Math.round(r.fatG*9/r.objetivoKcal*100)}%</span></p>`;
+    <p class="muted su-bf4cbe">Distribución: <span class="su-559282">● Proteína ${Math.round(r.protG*4/r.objetivoKcal*100)}%</span> · <span class="su-7c91e2">● Carbos ${Math.round(r.carbG*4/r.objetivoKcal*100)}%</span> · <span class="su-721a46">● Grasa ${Math.round(r.fatG*9/r.objetivoKcal*100)}%</span></p>`;
   if(det){
     det.classList.remove('hidden');
     det.innerHTML=`<h4>📋 Detalle</h4>
-      <p class="muted" style="font-size:11px;line-height:1.5">TMB (reposo) ${r.tmb} × actividad ${prof.actividad} = TDEE ${r.tdee}. Objetivo ${r.objetivoKcal} kcal. Proteína ${r.protG}g ×4=${r.protG*4} kcal · Grasa ${r.fatG}g ×9=${r.fatG*9} kcal · Carbos resto ${r.carbG}g.</p>
-      <p class="muted" style="font-size:11px">Recomendación: 25-35g fibra, &lt;2300mg sodio, 5 porciones verdura/fruta. Si entrenas fuerza, prioriza proteína repartida en 3-4 comidas.</p>
-      <p class="muted" style="font-size:10px">Cálculo informativo, no reemplaza evaluación profesional.</p>`;
+      <p class="muted su-a6c665">TMB (reposo) ${r.tmb} × actividad ${prof.actividad} = TDEE ${r.tdee}. Objetivo ${r.objetivoKcal} kcal. Proteína ${r.protG}g ×4=${r.protG*4} kcal · Grasa ${r.fatG}g ×9=${r.fatG*9} kcal · Carbos resto ${r.carbG}g.</p>
+      <p class="muted su-11a508">Recomendación: 25-35g fibra, &lt;2300mg sodio, 5 porciones verdura/fruta. Si entrenas fuerza, prioriza proteína repartida en 3-4 comidas.</p>
+      <p class="muted su-0d5be0">Cálculo informativo, no reemplaza evaluación profesional.</p>`;
   }
   renderMealCompareBox();
   renderMealMenus();
@@ -3491,20 +3491,20 @@ function renderMealCompareBox(){
   if(!r){ box.innerHTML=''; return; }
   const e=k? getMealData().entries[k]:null;
   const tot=e? parseNutrition([e.breakfast,e.lunch,e.dinner,e.snack].filter(Boolean).join(', ')) : null;
-  if(!tot){ box.innerHTML=`<h4 style="color:var(--accent)">⚖️ Plan vs meta (${r.objetivoKcal} kcal)</h4><p class="muted">Sin plan este día. Carga un menú de 🍽️ Menús sugeridos.</p>`; return; }
+  if(!tot){ box.innerHTML=`<h4 class="su-a80552">⚖️ Plan vs meta (${r.objetivoKcal} kcal)</h4><p class="muted">Sin plan este día. Carga un menú de 🍽️ Menús sugeridos.</p>`; return; }
   const pctCal=Math.round(tot.cal/r.objetivoKcal*100);
   const pctProt=Math.round(tot.prot/r.protG*100);
   const pctCarb=Math.round(tot.carb/r.carbG*100);
   const pctFat=Math.round(tot.fat/r.fatG*100);
-  const bar=(pct, col)=> `<div style="background:var(--panel);border-radius:6px;height:8px;overflow:hidden;margin-top:2px"><div style="width:${Math.min(100,pct)}%;height:100%;background:${col}"></div></div>`;
-  box.innerHTML=`<h4 style="color:var(--accent)">⚖️ Plan del día vs meta (${r.objetivoKcal} kcal)</h4>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px;font-size:11px">
+  const bar=(pct, col)=> `<div class="su-ed37ef"><div style="width:${Math.min(100,pct)}%;height:100%;background:${col}"></div></div>`;
+  box.innerHTML=`<h4 class="su-a80552">⚖️ Plan del día vs meta (${r.objetivoKcal} kcal)</h4>
+    <div class="su-59663d">
       <div><b>${Math.round(tot.cal)} kcal</b> <span class="muted">${pctCal}% meta</span>${bar(pctCal, pctCal>110?'#e76e8a': pctCal<70?'#e8c56a':'#a9d18e')}</div>
       <div><b>${tot.prot.toFixed(1)}g prot</b> <span class="muted">${pctProt}%</span>${bar(pctProt,'#a9d18e')}</div>
       <div><b>${tot.carb.toFixed(1)}g carb</b> <span class="muted">${pctCarb}%</span>${bar(pctCarb,'#e8c56a')}</div>
       <div><b>${tot.fat.toFixed(1)}g grasa</b> <span class="muted">${pctFat}%</span>${bar(pctFat,'#7ab8ff')}</div>
     </div>
-    <p class="muted" style="font-size:11px;margin-top:6px">${pctCal<80?'⚡ Te faltan ~'+(r.objetivoKcal-Math.round(tot.cal))+' kcal — agrega snack (yogur+fruta, palta+pan).': pctCal>115?'⚠️ Excedes ~'+(Math.round(tot.cal)-r.objetivoKcal)+' kcal — aligera cena.':'✅ Dentro de rango (±15%).'}</p>`;
+    <p class="muted su-e13d76">${pctCal<80?'⚡ Te faltan ~'+(r.objetivoKcal-Math.round(tot.cal))+' kcal — agrega snack (yogur+fruta, palta+pan).': pctCal>115?'⚠️ Excedes ~'+(Math.round(tot.cal)-r.objetivoKcal)+' kcal — aligera cena.':'✅ Dentro de rango (±15%).'}</p>`;
 }
 const MENUS_SUGERIDOS = [
   { id:'m1', nombre:'Penco Económico', kcal:1850, prot:95, carb:220, fat:65, precio:'$ bajo', desc:'Feria + legumbre — ideal para presupuesto ajustado', desayuno:'Avena 60g + leche 200ml + manzana + miel 5g', almuerzo:'Lentejas 120g secas + arroz 60g + ensalada tomate/lechuga + palta 30g', cena:'Tortilla espinaca 2 huevos + papa 150g + zanahoria', snack:'Yogur natural 200g + avena 20g' },
@@ -3522,30 +3522,30 @@ function renderMealMenus(){
     return;
   }
   if(resumen){
-    resumen.innerHTML=`<h4 style="color:var(--gold)">🍽️ Menús para ${r.objetivoKcal} kcal · Prot ${r.protG}g · Carb ${r.carbG}g · Grasa ${r.fatG}g</h4>
-      <p class="muted" style="font-size:11px">Mostrando menús ordenados por cercanía a tu meta. Toca <b>Cargar</b> para copiar al plan del día.</p>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:6px">
-        <div class="chip" style="text-align:center"><b>${r.objetivoKcal}</b><br><span class="muted" style="font-size:10px">kcal meta</span></div>
-        <div class="chip" style="text-align:center"><b>${r.imc}</b><br><span class="muted" style="font-size:10px">IMC</span></div>
-        <div class="chip" style="text-align:center"><b>${r.agua} ml</b><br><span class="muted" style="font-size:10px">agua</span></div>
+    resumen.innerHTML=`<h4 class="su-e39eba">🍽️ Menús para ${r.objetivoKcal} kcal · Prot ${r.protG}g · Carb ${r.carbG}g · Grasa ${r.fatG}g</h4>
+      <p class="muted su-11a508">Mostrando menús ordenados por cercanía a tu meta. Toca <b>Cargar</b> para copiar al plan del día.</p>
+      <div class="su-b022fe">
+        <div class="chip su-91a870"><b>${r.objetivoKcal}</b><br><span class="muted su-0d5be0">kcal meta</span></div>
+        <div class="chip su-91a870"><b>${r.imc}</b><br><span class="muted su-0d5be0">IMC</span></div>
+        <div class="chip su-91a870"><b>${r.agua} ml</b><br><span class="muted su-0d5be0">agua</span></div>
       </div>`;
   }
   const sorted=[...MENUS_SUGERIDOS].map(m=> ({...m, diff: Math.abs(m.kcal - r.objetivoKcal) + Math.abs(m.prot - r.protG)*4 })).sort((a,b)=>a.diff-b.diff);
   lista.innerHTML=sorted.map(m=>{
     const delta=m.kcal - r.objetivoKcal;
-    const tag= Math.abs(delta)<100 ? '<span class="chip" style="background:#a9d18e;color:#10142c">✓ Cerca</span>' : delta>0? `<span class="chip">${'+'+delta} kcal</span>` : `<span class="chip">${delta} kcal</span>`;
-    return `<div class="si-card" style="border-left:3px solid var(--gold)">
-      <div style="display:flex;justify-content:space-between;align-items:center"><h4>${escapeHtml(m.nombre)} ${tag}</h4><span class="muted" style="font-size:11px">${m.precio}</span></div>
-      <p class="muted" style="font-size:11px">${escapeHtml(m.desc)} — ${m.kcal} kcal · P ${m.prot}g · C ${m.carb}g · G ${m.fat}g</p>
-      <div style="font-size:11px;color:var(--text);line-height:1.5;margin-top:4px">
+    const tag= Math.abs(delta)<100 ? '<span class="chip su-8323db">✓ Cerca</span>' : delta>0? `<span class="chip">${'+'+delta} kcal</span>` : `<span class="chip">${delta} kcal</span>`;
+    return `<div class="si-card su-63ba3c">
+      <div class="su-13313b"><h4>${escapeHtml(m.nombre)} ${tag}</h4><span class="muted su-11a508">${m.precio}</span></div>
+      <p class="muted su-11a508">${escapeHtml(m.desc)} — ${m.kcal} kcal · P ${m.prot}g · C ${m.carb}g · G ${m.fat}g</p>
+      <div class="su-596d4d">
         <b>Desayuno:</b> ${escapeHtml(m.desayuno)}<br>
         <b>Almuerzo:</b> ${escapeHtml(m.almuerzo)}<br>
         <b>Cena:</b> ${escapeHtml(m.cena)}<br>
         <b>Snack:</b> ${escapeHtml(m.snack)}
       </div>
-      <div class="dlg-actions" style="justify-content:flex-start;margin-top:8px">
-        <button type="button" data-id="${m.id}" class="btn btn-accent menu-load" style="width:auto">📥 Cargar en plan de hoy</button>
-        <button type="button" data-id="${m.id}" class="btn menu-shop" style="width:auto">🛒 A lista</button>
+      <div class="dlg-actions su-8f9e27">
+        <button type="button" data-id="${m.id}" class="btn btn-accent menu-load su-30e741">📥 Cargar en plan de hoy</button>
+        <button type="button" data-id="${m.id}" class="btn menu-shop su-30e741">🛒 A lista</button>
       </div>
     </div>`;
   }).join('');
@@ -3667,20 +3667,20 @@ function renderMealRecetas(){
   lista.innerHTML=rs.map(r=>{
     const esFav=favs.indexOf(r.id)>=0;
     return `<div class="si-card" style="border-left:3px solid ${r.mia?'#7ab8ff':'var(--gold)'}">
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
-        <h4 style="margin:0">${escapeHtml(r.nombre)} ${r.mia?'<span class="chip">mía</span>':''}</h4>
-        <button type="button" data-fav="${r.id}" class="btn btn-icon" style="padding:4px 8px" title="Favorita">${esFav?'⭐':'☆'}</button>
+      <div class="su-e84fc1">
+        <h4 class="su-116966">${escapeHtml(r.nombre)} ${r.mia?'<span class="chip">mía</span>':''}</h4>
+        <button type="button" data-fav="${r.id}" class="btn btn-icon su-f26165" title="Favorita">${esFav?'⭐':'☆'}</button>
       </div>
-      <p class="muted" style="font-size:11px;margin:4px 0">${escapeHtml(r.cat||'')} · ⏱ ${r.tiempo||'—'} min · ${escapeHtml(r.dif||'Fácil')} · ${escapeHtml(r.costo||'$')} · ~${r.kcal||'—'} kcal · ${escapeHtml(r.porc||'')}</p>
-      <div id="recDet_${r.id}" class="hidden" style="font-size:11.5px;color:var(--text);line-height:1.55;margin-top:6px">
-        <b>Ingredientes:</b><ul style="margin:4px 0 4px 18px">${(r.ing||[]).map(i=>'<li>'+escapeHtml(i)+'</li>').join('')}</ul>
-        <b>Pasos:</b><ol style="margin:4px 0 4px 18px">${(r.pasos||[]).map(p=>'<li>'+escapeHtml(p)+'</li>').join('')}</ol>
+      <p class="muted su-48eb2e">${escapeHtml(r.cat||'')} · ⏱ ${r.tiempo||'—'} min · ${escapeHtml(r.dif||'Fácil')} · ${escapeHtml(r.costo||'$')} · ~${r.kcal||'—'} kcal · ${escapeHtml(r.porc||'')}</p>
+      <div id="recDet_${r.id}" class="hidden su-c18035">
+        <b>Ingredientes:</b><ul class="su-c44258">${(r.ing||[]).map(i=>'<li>'+escapeHtml(i)+'</li>').join('')}</ul>
+        <b>Pasos:</b><ol class="su-c44258">${(r.pasos||[]).map(p=>'<li>'+escapeHtml(p)+'</li>').join('')}</ol>
       </div>
-      <div class="dlg-actions" style="justify-content:flex-start;margin-top:8px;flex-wrap:wrap">
-        <button type="button" data-ver="${r.id}" class="btn" style="width:auto">👁️ Ver</button>
-        <button type="button" data-plan="${r.id}" class="btn btn-accent" style="width:auto">🥗 Al plan</button>
-        <button type="button" data-lista="${r.id}" class="btn" style="width:auto">🛒 A lista</button>
-        ${r.mia?`<button type="button" data-del="${r.id}" class="btn" style="width:auto">🗑️ Borrar</button>`:''}
+      <div class="dlg-actions su-5010dc">
+        <button type="button" data-ver="${r.id}" class="btn su-30e741">👁️ Ver</button>
+        <button type="button" data-plan="${r.id}" class="btn btn-accent su-30e741">🥗 Al plan</button>
+        <button type="button" data-lista="${r.id}" class="btn su-30e741">🛒 A lista</button>
+        ${r.mia?`<button type="button" data-del="${r.id}" class="btn su-30e741">🗑️ Borrar</button>`:''}
       </div>
     </div>`;
   }).join('');
@@ -3845,7 +3845,7 @@ function renderShoppingList(){
   Object.keys(cats).sort().forEach(cat=>{
     html+=`<div class="shop-cat"><b>${escapeHtml(cat)}</b></div>`;
     cats[cat].forEach(it=>{
-      html+=`<label class="shop-item ${it.done?'done':''}"><input type="checkbox" data-id="${it.id}" ${it.done?'checked':''}><span class="shop-name">${escapeHtml(it.name)}</span><span class="muted" style="font-size:11px">${escapeHtml(it.qty)}</span><button data-id="${it.id}" class="btn btn-icon shop-del" style="padding:2px 6px;margin-left:auto">✕</button></label>`;
+      html+=`<label class="shop-item ${it.done?'done':''}"><input type="checkbox" data-id="${it.id}" ${it.done?'checked':''}><span class="shop-name">${escapeHtml(it.name)}</span><span class="muted su-11a508">${escapeHtml(it.qty)}</span><button data-id="${it.id}" class="btn btn-icon shop-del su-4e1e74">✕</button></label>`;
     });
   });
   box.innerHTML=html;
@@ -3929,31 +3929,31 @@ function renderFinanceResumen(){
   const colorPres = pctPres>100? '#e76e8a' : pctPres>80? '#e8c56a' : '#a9d18e';
   const todayKey=cal.fmtKey.format(new Date());
   const hoyGasto=fd.entries.filter(e=> e.date===todayKey && e.tipo==='gasto').reduce((s,x)=>s+(parseInt(x.monto)||0),0);
-  box.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
-    <span style="font-size:15px"><b>💰 Balance ${monthFilter||'total filtrado'}</b></span>
+  box.innerHTML=`<div class="su-083eb7">
+    <span class="su-de0080"><b>💰 Balance ${monthFilter||'total filtrado'}</b></span>
     <span class="chip" style="background:${colorBal};color:#10142c">${formatCLP(tot.balance)} ${tot.balance>=0?'· positivo':'· negativo'}</span>
   </div>
-  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px">
-    <div class="chip" style="text-align:center"><span class="muted" style="font-size:10px">Ingresos</span><br><b style="color:#a9d18e">${formatCLP(tot.ingreso)}</b></div>
-    <div class="chip" style="text-align:center"><span class="muted" style="font-size:10px">Gastos</span><br><b style="color:#e76e8a">${formatCLP(tot.gasto)}</b></div>
-    <div class="chip" style="text-align:center"><span class="muted" style="font-size:10px">Movimientos</span><br><b>${entries.length}</b></div>
+  <div class="su-d85a2b">
+    <div class="chip su-91a870"><span class="muted su-0d5be0">Ingresos</span><br><b class="su-559282">${formatCLP(tot.ingreso)}</b></div>
+    <div class="chip su-91a870"><span class="muted su-0d5be0">Gastos</span><br><b class="su-a861ba">${formatCLP(tot.gasto)}</b></div>
+    <div class="chip su-91a870"><span class="muted su-0d5be0">Movimientos</span><br><b>${entries.length}</b></div>
   </div>
-  ${pres? `<div style="margin-top:8px"><div style="display:flex;justify-content:space-between;font-size:11px"><span class="muted">Presupuesto ${formatCLP(pres)} · Gastado ${formatCLP(gastoMes)} (${pctPres}%)</span><span style="color:${colorPres};font-weight:700">${pctPres>100? '¡Excedido!':'En rango'}</span></div><div style="margin-top:4px;background:var(--panel);border-radius:6px;height:10px;overflow:hidden"><div style="width:${Math.min(100,pctPres)}%;height:100%;background:${colorPres};transition:width .3s"></div></div></div>` : '<p class="muted" style="font-size:11px;margin-top:6px">Define un presupuesto mensual abajo para ver barra de avance.</p>'}
-  <p class="muted" style="font-size:11px;margin-top:6px">Hoy ${todayKey} gastado: <b style="color:#e8c56a">${formatCLP(hoyGasto)}</b> · Luna actual: ${currentView.tipo==='dft'?'DFT':'Luna '+currentView.luna}</p>`;
+  ${pres? `<div class="su-8a77e5"><div class="su-dd0575"><span class="muted">Presupuesto ${formatCLP(pres)} · Gastado ${formatCLP(gastoMes)} (${pctPres}%)</span><span style="color:${colorPres};font-weight:700">${pctPres>100? '¡Excedido!':'En rango'}</span></div><div class="su-3425a2"><div style="width:${Math.min(100,pctPres)}%;height:100%;background:${colorPres};transition:width .3s"></div></div></div>` : '<p class="muted su-e13d76">Define un presupuesto mensual abajo para ver barra de avance.</p>'}
+  <p class="muted su-e13d76">Hoy ${todayKey} gastado: <b class="su-7c91e2">${formatCLP(hoyGasto)}</b> · Luna actual: ${currentView.tipo==='dft'?'DFT':'Luna '+currentView.luna}</p>`;
 }
 function renderFinanceCatBox(){
   const box=$('financeCatBox'); if(!box) return;
   const fd=getFinanceData();
   const monthFilter=$('finMonthFilter')?.value || new Date().toISOString().slice(0,7);
   const entries=fd.entries.filter(e=> financeMonthKey(e.date)===monthFilter);
-  if(!entries.length){ box.innerHTML='<h4 style="color:var(--accent)">📊 Por categoría — '+monthFilter+'</h4><p class="muted">Sin movimientos este mes.</p>'; return; }
+  if(!entries.length){ box.innerHTML='<h4 class="su-a80552">📊 Por categoría — '+monthFilter+'</h4><p class="muted">Sin movimientos este mes.</p>'; return; }
   const byCat={};
   entries.filter(e=>e.tipo==='gasto').forEach(e=>{ byCat[e.categoria]=(byCat[e.categoria]||0)+(parseInt(e.monto)||0); });
   const sorted=Object.entries(byCat).sort((a,b)=>b[1]-a[1]);
   const totalG=sorted.reduce((s,x)=>s+x[1],0);
-  box.innerHTML='<h4 style="color:var(--accent)">📊 Gastos por categoría — '+monthFilter+' (total '+formatCLP(totalG)+')</h4>' + (sorted.length? sorted.map(([cat,val])=>{
+  box.innerHTML='<h4 class="su-a80552">📊 Gastos por categoría — '+monthFilter+' (total '+formatCLP(totalG)+')</h4>' + (sorted.length? sorted.map(([cat,val])=>{
     const pct= totalG? Math.round(val/totalG*100):0;
-    return `<div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px"><span style="font-size:12px">${escapeHtml(cat)} <span class="muted" style="font-size:11px">${formatCLP(val)} · ${pct}%</span></span><span style="flex:1;margin:0 8px;background:var(--panel);border-radius:6px;height:8px;overflow:hidden;display:inline-block;max-width:140px"><span style="display:block;width:${pct}%;height:100%;background:linear-gradient(90deg,#e8c56a,#e76e8a)"></span></span></div>`;
+    return `<div class="su-1c6200"><span class="su-6cb285">${escapeHtml(cat)} <span class="muted su-11a508">${formatCLP(val)} · ${pct}%</span></span><span class="su-b9cbf7"><span style="display:block;width:${pct}%;height:100%;background:linear-gradient(90deg,#e8c56a,#e76e8a)"></span></span></div>`;
   }).join('') : '<p class="muted">Sin gastos.</p>');
 }
 function renderFinanceLunaBox(){
@@ -3968,13 +3968,13 @@ function renderFinanceLunaBox(){
   });
   const tot=financeTotals(lunaEntries);
   const avgDia = lunaDays.length? Math.round(tot.gasto / 28):0;
-  box.innerHTML=`<h4 style="color:var(--accent)">🌙 Luna ${currentView.luna} · ${MOONS[currentView.luna-1].nombre} — 28 días</h4>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:6px">
-      <div class="chip" style="text-align:center"><span class="muted" style="font-size:10px">Gastos luna</span><br><b style="color:#e76e8a">${formatCLP(tot.gasto)}</b></div>
-      <div class="chip" style="text-align:center"><span class="muted" style="font-size:10px">Ingresos luna</span><br><b style="color:#a9d18e">${formatCLP(tot.ingreso)}</b></div>
-      <div class="chip" style="text-align:center"><span class="muted" style="font-size:10px">Promedio/día gasto</span><br><b>${formatCLP(avgDia)}</b></div>
+  box.innerHTML=`<h4 class="su-a80552">🌙 Luna ${currentView.luna} · ${MOONS[currentView.luna-1].nombre} — 28 días</h4>
+    <div class="su-b022fe">
+      <div class="chip su-91a870"><span class="muted su-0d5be0">Gastos luna</span><br><b class="su-a861ba">${formatCLP(tot.gasto)}</b></div>
+      <div class="chip su-91a870"><span class="muted su-0d5be0">Ingresos luna</span><br><b class="su-559282">${formatCLP(tot.ingreso)}</b></div>
+      <div class="chip su-91a870"><span class="muted su-0d5be0">Promedio/día gasto</span><br><b>${formatCLP(avgDia)}</b></div>
     </div>
-    <p class="muted" style="font-size:11px;margin-top:6px">${lunaEntries.length} movimientos en esta luna · Balance ${formatCLP(tot.balance)} ${tot.balance>=0?'😊':'⚠️'}</p>`;
+    <p class="muted su-e13d76">${lunaEntries.length} movimientos en esta luna · Balance ${formatCLP(tot.balance)} ${tot.balance>=0?'😊':'⚠️'}</p>`;
 }
 function updateFinanceCatOptions(){
   const sel=$('finCat'); if(!sel) return;
@@ -3999,8 +3999,8 @@ function renderFinanceList(){
     const luna=mensLunaForKey(e.date);
     return `<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center;border-left:3px solid ${color}">
       <span><b style="color:${color}">${e.tipo==='gasto'?'💸':'💰'} ${sign}${formatCLP(e.monto)}</b> — ${escapeHtml(e.categoria)} · ${escapeHtml(e.metodo||'')}<br>
-      <span class="muted" style="font-size:11px">${e.date} ${luna? '· Luna '+luna.luna+' d'+luna.dia:''} ${e.desc? '· '+escapeHtml(e.desc):''}</span></span>
-      <span style="display:flex;gap:6px;flex:0 0 auto"><button data-id="${e.id}" class="btn fin-edit" style="width:auto;font-size:11px">✏️</button><button data-id="${e.id}" class="btn fin-del" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕</button></span>
+      <span class="muted su-11a508">${e.date} ${luna? '· Luna '+luna.luna+' d'+luna.dia:''} ${e.desc? '· '+escapeHtml(e.desc):''}</span></span>
+      <span class="su-0c0cb1"><button data-id="${e.id}" class="btn fin-edit su-337714">✏️</button><button data-id="${e.id}" class="btn fin-del su-fd834a">✕</button></span>
     </div>`;
   }).join('');
   if(stats){
@@ -4215,14 +4215,14 @@ function renderHomeTasksResumen(){
   const totalMin=todayTasks.reduce((s,t)=> s+ (parseInt(t.time)||0),0);
   const doneMin=todayTasks.filter(t=> ht.completions[todayKey] && ht.completions[todayKey][t.id]).reduce((s,t)=> s+ (parseInt(t.time)||0),0);
   const lunaName=currentView && currentView.tipo!=='dft' ? MOONS[currentView.luna-1].nombre : '—';
-  box.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px"><span style="font-size:15px"><b>🏠 Hoy</b> — ${cal.weekdayName(mensKeyToMs(todayKey))} ${cal.fmtDate.format(new Date(mensKeyToMs(todayKey)))}</span><span class="chip" style="background:${pending===0?'#a9d18e':'var(--gold)'};color:#10142c">${doneToday}/${todayTasks.length} hechas</span></div>
-  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px">
-    <div class="chip" style="text-align:center"><b>${pending} pendientes</b><br><span class="muted" style="font-size:10px">${todayTasks.length} hoy · ${totalMin} min est.</span></div>
-    <div class="chip" style="text-align:center"><b>${doneMin} min hecho</b><br><span class="muted" style="font-size:10px">${totalMin? Math.round(doneMin/totalMin*100):0}% tiempo</span></div>
-    <div class="chip" style="text-align:center"><b>${ht.tasks.length} tareas</b><br><span class="muted" style="font-size:10px">Luna: ${escapeHtml(lunaName)}</span></div>
+  box.innerHTML=`<div class="su-083eb7"><span class="su-de0080"><b>🏠 Hoy</b> — ${cal.weekdayName(mensKeyToMs(todayKey))} ${cal.fmtDate.format(new Date(mensKeyToMs(todayKey)))}</span><span class="chip" style="background:${pending===0?'#a9d18e':'var(--gold)'};color:#10142c">${doneToday}/${todayTasks.length} hechas</span></div>
+  <div class="su-d85a2b">
+    <div class="chip su-91a870"><b>${pending} pendientes</b><br><span class="muted su-0d5be0">${todayTasks.length} hoy · ${totalMin} min est.</span></div>
+    <div class="chip su-91a870"><b>${doneMin} min hecho</b><br><span class="muted su-0d5be0">${totalMin? Math.round(doneMin/totalMin*100):0}% tiempo</span></div>
+    <div class="chip su-91a870"><b>${ht.tasks.length} tareas</b><br><span class="muted su-0d5be0">Luna: ${escapeHtml(lunaName)}</span></div>
   </div>
-  <div style="margin-top:8px;background:var(--panel);border-radius:6px;height:8px;overflow:hidden"><div style="width:${todayTasks.length? Math.round(doneToday/todayTasks.length*100):0}%;height:100%;background:linear-gradient(90deg,#a9d18e,#e8c56a)"></div></div>
-  <p class="muted" style="font-size:10px;margin-top:6px">Tip: toca ☑ en 📋 Tareas para marcar. Las tareas diarias aparecen todos los días; semanales solo su día.</p>`;
+  <div class="su-5534eb"><div style="width:${todayTasks.length? Math.round(doneToday/todayTasks.length*100):0}%;height:100%;background:linear-gradient(90deg,#a9d18e,#e8c56a)"></div></div>
+  <p class="muted su-d47a97">Tip: toca ☑ en 📋 Tareas para marcar. Las tareas diarias aparecen todos los días; semanales solo su día.</p>`;
 }
 function renderHomeTasksTodayBox(){
   const box=$('homeTasksTodayBox'); if(!box) return;
@@ -4233,14 +4233,14 @@ function renderHomeTasksTodayBox(){
   const completions=ht.completions[todayKey]||{};
   // agrupar por área
   const byArea={}; todayTasks.forEach(t=>{ if(!byArea[t.area]) byArea[t.area]=[]; byArea[t.area].push(t); });
-  let html='<h4 style="color:var(--gold)">☑ Hoy — marca al terminar</h4>';
+  let html='<h4 class="su-e39eba">☑ Hoy — marca al terminar</h4>';
   Object.keys(byArea).sort().forEach(area=>{
     const icon=HOME_AREA_ICON[area]||"🏠";
-    html+=`<div class="shop-cat" style="margin-top:8px">${icon} ${escapeHtml(area)} · ${byArea[area].length}</div>`;
+    html+=`<div class="shop-cat su-8a77e5">${icon} ${escapeHtml(area)} · ${byArea[area].length}</div>`;
     byArea[area].forEach(t=>{
       const done=!!completions[t.id];
       const priColor=t.priority==='alta'?'#ff6b6b': t.priority==='baja'?'#8fd694':'var(--gold)';
-      html+=`<label class="shop-item ${done?'done':''}" style="border-left:3px solid ${priColor}"><input type="checkbox" data-home-id="${t.id}" ${done?'checked':''}><span class="shop-name"><b>${escapeHtml(t.name)}</b> <span class="muted" style="font-size:11px">· ${escapeHtml(t.owner||'Sin asignar')} · ${t.time}′ · ${t.freq}${t.day!=='todos'?' · '+['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'][t.day]:''}</span>${t.notes? '<br><span class="muted" style="font-size:11px">'+escapeHtml(t.notes)+'</span>':''}</span><span class="chip" style="font-size:10px;background:${priColor};color:#10142c">${t.priority}</span></label>`;
+      html+=`<label class="shop-item ${done?'done':''}" style="border-left:3px solid ${priColor}"><input type="checkbox" data-home-id="${t.id}" ${done?'checked':''}><span class="shop-name"><b>${escapeHtml(t.name)}</b> <span class="muted su-11a508">· ${escapeHtml(t.owner||'Sin asignar')} · ${t.time}′ · ${t.freq}${t.day!=='todos'?' · '+['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'][t.day]:''}</span>${t.notes? '<br><span class="muted su-11a508">'+escapeHtml(t.notes)+'</span>':''}</span><span class="chip" style="font-size:10px;background:${priColor};color:#10142c">${t.priority}</span></label>`;
     });
   });
   box.innerHTML=html;
@@ -4276,8 +4276,8 @@ function renderHomeTasksList(){
     const icon=HOME_AREA_ICON[t.area]||"🏠";
     const freqLabel=t.freq + (t.day!=='todos'?' · '+['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'][t.day]:'') + (t.freq==='puntual' && t.date? ' · '+t.date : '');
     return `<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center;border-left:3px solid ${priColor};${inToday?'':'opacity:0.75'}">
-      <span><b>${icon} ${escapeHtml(t.name)}</b> <span class="chip" style="font-size:10px">${escapeHtml(t.area)}</span> <span class="chip" style="font-size:10px;background:${priColor};color:#10142c">${t.priority}</span> ${inToday? (done? '<span class="chip" style="font-size:10px;background:#a9d18e;color:#10142c">✓ hoy</span>': '<span class="chip" style="font-size:10px">hoy</span>') : '<span class="muted" style="font-size:10px">no hoy</span>'}<br><span class="muted" style="font-size:11px">${escapeHtml(freqLabel)} · ${t.time}′ · ${escapeHtml(t.owner||'Sin asignar')}</span>${t.notes? '<br><span class="muted" style="font-size:11px">'+escapeHtml(t.notes)+'</span>':''}</span>
-      <span style="display:flex;gap:6px;flex:0 0 auto"><button data-id="${t.id}" class="btn home-edit" style="width:auto;font-size:11px">✏️</button><button data-id="${t.id}" class="btn home-del" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕</button></span>
+      <span><b>${icon} ${escapeHtml(t.name)}</b> <span class="chip su-0d5be0">${escapeHtml(t.area)}</span> <span class="chip" style="font-size:10px;background:${priColor};color:#10142c">${t.priority}</span> ${inToday? (done? '<span class="chip su-ca290b">✓ hoy</span>': '<span class="chip su-0d5be0">hoy</span>') : '<span class="muted su-0d5be0">no hoy</span>'}<br><span class="muted su-11a508">${escapeHtml(freqLabel)} · ${t.time}′ · ${escapeHtml(t.owner||'Sin asignar')}</span>${t.notes? '<br><span class="muted su-11a508">'+escapeHtml(t.notes)+'</span>':''}</span>
+      <span class="su-0c0cb1"><button data-id="${t.id}" class="btn home-edit su-337714">✏️</button><button data-id="${t.id}" class="btn home-del su-fd834a">✕</button></span>
     </div>`;
   }).join('');
   const stats=$('homeTasksStats'); if(stats){ const pend=homeTasksForDate(todayKey).filter(t=> !completionsToday[t.id]).length; stats.textContent=`${list.length} mostradas · ${ht.tasks.length} totales · ${pend} pendientes hoy`; }
@@ -4314,7 +4314,7 @@ function renderHomeTasksWeekGrid(){
     const completions=ht.completions[dateStr]||{};
     const done=tasks.filter(t=> completions[t.id]).length;
     const isToday=today===idx;
-    html+=`<div class="schedule-day ${isToday?'schedule-today':''}"><b>${name} <span class="muted" style="font-size:10px">${dateStr.slice(8,10)}/${dateStr.slice(5,7)}</span></b><span class="chip" style="font-size:10px;margin-top:4px;display:inline-block">${done}/${tasks.length}</span>${tasks.length? tasks.map(t=>{ const icon=HOME_AREA_ICON[t.area]||"🏠"; const isDone=completions[t.id]; return `<div class="schedule-block" style="background:${isDone?'#a9d18e': t.priority==='alta'?'#ff9a76':'#e8c56a'};border:1px solid ${isDone?'#a9d18e':'var(--line)'};opacity:${isDone?'0.85':1}">${icon} ${escapeHtml(t.name)}<br><span style="font-size:10px">${t.time}′ ${isDone?'✓':''}</span></div>`; }).join('') : '<p class="muted" style="font-size:10px">Sin tareas</p>'}</div>`;
+    html+=`<div class="schedule-day ${isToday?'schedule-today':''}"><b>${name} <span class="muted su-0d5be0">${dateStr.slice(8,10)}/${dateStr.slice(5,7)}</span></b><span class="chip su-59d9aa">${done}/${tasks.length}</span>${tasks.length? tasks.map(t=>{ const icon=HOME_AREA_ICON[t.area]||"🏠"; const isDone=completions[t.id]; return `<div class="schedule-block" style="background:${isDone?'#a9d18e': t.priority==='alta'?'#ff9a76':'#e8c56a'};border:1px solid ${isDone?'#a9d18e':'var(--line)'};opacity:${isDone?'0.85':1}">${icon} ${escapeHtml(t.name)}<br><span class="su-0d5be0">${t.time}′ ${isDone?'✓':''}</span></div>`; }).join('') : '<p class="muted su-0d5be0">Sin tareas</p>'}</div>`;
   });
   grid.innerHTML=html;
   const weekBox=$('homeTasksWeekList'); if(weekBox){
@@ -4324,7 +4324,7 @@ function renderHomeTasksWeekGrid(){
     const totalWeek=weekTasks.size;
     let doneWeek=0; for(let i=0;i<7;i++){ const d=new Date(monday); d.setDate(monday.getDate()+i); const ds=cal.fmtKey.format(d); const comp=ht.completions[ds]||{}; Object.keys(comp).forEach(id=>{ if(!weekTasks.has(id)) return; doneWeek++; }); }
     // dedup no needed for simple count; mostrar estimación
-    weekBox.innerHTML=`<h4 style="color:var(--accent)">🗓️ Semana — ${cal.fmtDate.format(monday)} al ${cal.fmtDate.format(new Date(monday.getTime()+6*86400000))}</h4><p class="muted" style="font-size:11px">${totalWeek} tareas distintas esta semana · ${Object.keys(ht.completions).filter(k=>{ const d=new Date(k+"T12:00:00"); return d>=monday && d<=new Date(monday.getTime()+6*86400000); }).length} días con avance. Revisa 📋 Tareas para marcar.</p>`;
+    weekBox.innerHTML=`<h4 class="su-a80552">🗓️ Semana — ${cal.fmtDate.format(monday)} al ${cal.fmtDate.format(new Date(monday.getTime()+6*86400000))}</h4><p class="muted su-11a508">${totalWeek} tareas distintas esta semana · ${Object.keys(ht.completions).filter(k=>{ const d=new Date(k+"T12:00:00"); return d>=monday && d<=new Date(monday.getTime()+6*86400000); }).length} días con avance. Revisa 📋 Tareas para marcar.</p>`;
   }
 }
 function renderHomeTasksLunaBox(){
@@ -4342,10 +4342,10 @@ function renderHomeTasksLunaBox(){
     doneOccurrences+=tasks.filter(t=> comp[t.id]).length;
   });
   const pct= totalOccurrences? Math.round(doneOccurrences/totalOccurrences*100):0;
-  box.innerHTML=`<h4 style="color:var(--gold)">🌙 Luna ${lunaN} · ${escapeHtml(lunaName)} — proyección 28 días</h4>
-    <p class="muted" style="font-size:11px">${totalOccurrences} ocurrencias de tareas en esta luna · ${doneOccurrences} hechas · ${pct}% avance</p>
-    <div style="margin-top:6px;background:var(--panel);border-radius:6px;height:8px;overflow:hidden"><div style="width:${pct}%;height:100%;background:linear-gradient(90deg,#7ab8ff,#a9d18e)"></div></div>
-    <p class="muted" style="font-size:10px;margin-top:6px">Las tareas diarias cuentan 28 veces; semanales ~4 veces; quincenales ~2; mensuales 1. Útil para planificar carga real por luna.</p>`;
+  box.innerHTML=`<h4 class="su-e39eba">🌙 Luna ${lunaN} · ${escapeHtml(lunaName)} — proyección 28 días</h4>
+    <p class="muted su-11a508">${totalOccurrences} ocurrencias de tareas en esta luna · ${doneOccurrences} hechas · ${pct}% avance</p>
+    <div class="su-b07124"><div style="width:${pct}%;height:100%;background:linear-gradient(90deg,#7ab8ff,#a9d18e)"></div></div>
+    <p class="muted su-d47a97">Las tareas diarias cuentan 28 veces; semanales ~4 veces; quincenales ~2; mensuales 1. Útil para planificar carga real por luna.</p>`;
 }
 function renderHomeTasksAreasBox(){
   const box=$('homeTasksAreasBox'); if(!box) return;
@@ -4355,29 +4355,29 @@ function renderHomeTasksAreasBox(){
   const compToday=ht.completions[todayKey]||{};
   const byArea={}; ht.tasks.forEach(t=>{ if(!byArea[t.area]) byArea[t.area]=0; byArea[t.area]++; });
   const byAreaToday={}; todayTasks.forEach(t=>{ if(!byAreaToday[t.area]) byAreaToday[t.area]={total:0,done:0}; byAreaToday[t.area].total++; if(compToday[t.id]) byAreaToday[t.area].done++; });
-  let html='<h4 style="color:var(--accent)">📦 Por área — totales y hoy</h4><div class="help-grid" style="margin-top:8px">';
+  let html='<h4 class="su-a80552">📦 Por área — totales y hoy</h4><div class="help-grid su-8a77e5">';
   Object.keys(byArea).sort().forEach(area=>{
     const icon=HOME_AREA_ICON[area]||"🏠";
     const tot=byArea[area];
     const todayInfo=byAreaToday[area] ? `${byAreaToday[area].done}/${byAreaToday[area].total} hoy` : `0/${tot} hoy — no toca`;
-    html+=`<div class="help-card" style="padding:8px"><h4>${icon} ${escapeHtml(area)}</h4><p style="font-size:11px"><b>${tot} tareas</b> · ${todayInfo}</p><div style="margin-top:4px;background:var(--panel);border-radius:6px;height:6px;overflow:hidden"><div style="width:${byAreaToday[area]? Math.round(byAreaToday[area].done/Math.max(1,byAreaToday[area].total)*100):0}%;height:100%;background:var(--gold)"></div></div></div>`;
+    html+=`<div class="help-card su-e2c960"><h4>${icon} ${escapeHtml(area)}</h4><p class="su-11a508"><b>${tot} tareas</b> · ${todayInfo}</p><div class="su-9a2481"><div style="width:${byAreaToday[area]? Math.round(byAreaToday[area].done/Math.max(1,byAreaToday[area].total)*100):0}%;height:100%;background:var(--gold)"></div></div></div>`;
   });
   html+='</div>';
-  if(!ht.tasks.length) html='<h4 style="color:var(--accent)">📦 Por área</h4><p class="muted">Aún sin tareas. Carga el kit básico en 🧹 Plantillas.</p>';
+  if(!ht.tasks.length) html='<h4 class="su-a80552">📦 Por área</h4><p class="muted">Aún sin tareas. Carga el kit básico en 🧹 Plantillas.</p>';
   box.innerHTML=html;
 }
 function renderHomeTasksTemplates(){
   const box=$('homeTasksTemplates'); if(!box) return;
-  let html='<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">';
+  let html='<div class="su-52b85a">';
   HOME_TEMPLATES.forEach(tpl=>{
-    html+=`<div class="si-card" style="margin:0"><h4>🧹 ${escapeHtml(tpl.nombre)} <span class="chip" style="font-size:10px">${tpl.tareas.length} tareas</span></h4><p class="muted" style="font-size:11px">${tpl.tareas.slice(0,4).map(t=> escapeHtml(t.name)).join(' · ')}${tpl.tareas.length>4?' …':''}</p><button type="button" class="btn" style="width:auto;font-size:11px;margin-top:6px" data-tpl="${escapeHtml(tpl.nombre)}">👁️ Ver / Cargar</button></div>`;
+    html+=`<div class="si-card su-116966"><h4>🧹 ${escapeHtml(tpl.nombre)} <span class="chip su-0d5be0">${tpl.tareas.length} tareas</span></h4><p class="muted su-11a508">${tpl.tareas.slice(0,4).map(t=> escapeHtml(t.name)).join(' · ')}${tpl.tareas.length>4?' …':''}</p><button type="button" class="btn su-e5d037" data-tpl="${escapeHtml(tpl.nombre)}">👁️ Ver / Cargar</button></div>`;
   });
   html+='</div>';
   box.innerHTML=html;
   box.querySelectorAll('[data-tpl]').forEach(b=> b.onclick=()=>{
     const tpl=HOME_TEMPLATES.find(x=>x.nombre===b.dataset.tpl); if(!tpl) return;
     // mostrar detalle y ofrecer cargar una por una en formulario
-    const detail=`<div class="menstrual-card" style="margin-top:10px"><h4>${escapeHtml(tpl.nombre)}</h4>` + tpl.tareas.map(t=>`<div class="habit-item" style="padding:6px 8px"><span><b>${HOME_AREA_ICON[t.area]||"🏠"} ${escapeHtml(t.name)}</b> · ${escapeHtml(t.area)} · ${t.freq}${t.day?' · '+t.day:''} · ${t.time}′</span><button data-tpltask="${escapeHtml(t.name)}" class="btn" style="width:auto;font-size:11px">↗ Cargar</button></div>`).join('') + `<p class="muted" style="font-size:10px;margin-top:6px">Toca “Cargar” para llevar la tarea al formulario y ajustarla antes de agregar.</p><div style="display:flex;gap:8px;margin-top:8px"><button id="tplAddAll" class="btn btn-accent" style="width:auto">+ Agregar todas (${tpl.tareas.length})</button></div></div>`;
+    const detail=`<div class="menstrual-card su-d2c171"><h4>${escapeHtml(tpl.nombre)}</h4>` + tpl.tareas.map(t=>`<div class="habit-item su-8c2017"><span><b>${HOME_AREA_ICON[t.area]||"🏠"} ${escapeHtml(t.name)}</b> · ${escapeHtml(t.area)} · ${t.freq}${t.day?' · '+t.day:''} · ${t.time}′</span><button data-tpltask="${escapeHtml(t.name)}" class="btn su-337714">↗ Cargar</button></div>`).join('') + `<p class="muted su-d47a97">Toca “Cargar” para llevar la tarea al formulario y ajustarla antes de agregar.</p><div class="su-a7d4af"><button id="tplAddAll" class="btn btn-accent su-30e741">+ Agregar todas (${tpl.tareas.length})</button></div></div>`;
     const existing=box.querySelector('#tplDetail'); if(existing) existing.remove();
     const div=document.createElement('div'); div.id='tplDetail'; div.innerHTML=detail; box.appendChild(div);
     div.querySelectorAll('[data-tpltask]').forEach(btn=> btn.onclick=()=>{
@@ -4429,8 +4429,8 @@ function renderDiogenes(){
   const done=Object.keys(dg.done||{}).filter(k=>dg.done[k]).length;
   const pct=Math.round(done/DIOGENES_STEPS.length*100);
   const prog=$('diogenesProgress');
-  if(prog) prog.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px"><b>${done}/${DIOGENES_STEPS.length}</b> pasos · ${pct}%</span><span class="chip" style="background:${pct===100?'#a9d18e':'var(--gold)'};color:#10142c">${pct===100?'🎉 Luna despejada':'🌱 paso a paso'}</span></div><div style="margin-top:6px;background:var(--panel);border-radius:6px;height:8px;overflow:hidden"><div style="width:${pct}%;height:100%;background:linear-gradient(90deg,#a9d18e,#e8c56a)"></div></div><p class="muted" style="font-size:10px;margin-top:6px">Marca solo lo hecho de verdad. 1 paso por día está perfecto.</p>`;
-  box.innerHTML='<h4 style="color:var(--gold);font-size:12.5px;margin:0 0 6px">✅ Checklist 12 pasos — 1 por día si puedes</h4><div class="dio-compact">'+DIOGENES_STEPS.map(s=>{
+  if(prog) prog.innerHTML=`<div class="su-13313b"><span class="su-5e0faa"><b>${done}/${DIOGENES_STEPS.length}</b> pasos · ${pct}%</span><span class="chip" style="background:${pct===100?'#a9d18e':'var(--gold)'};color:#10142c">${pct===100?'🎉 Luna despejada':'🌱 paso a paso'}</span></div><div class="su-b07124"><div style="width:${pct}%;height:100%;background:linear-gradient(90deg,#a9d18e,#e8c56a)"></div></div><p class="muted su-d47a97">Marca solo lo hecho de verdad. 1 paso por día está perfecto.</p>`;
+  box.innerHTML='<h4 class="su-76decf">✅ Checklist 12 pasos — 1 por día si puedes</h4><div class="dio-compact">'+DIOGENES_STEPS.map(s=>{
     const on=!!(dg.done&&dg.done[s.id]);
     return `<label class="dio-item ${on?'done':''}"><input type="checkbox" data-dio="${s.id}" ${on?'checked':''}><span class="dio-txt" title="${escapeHtml(s.d)}"><b>${escapeHtml(s.t)}</b><small>${escapeHtml(s.d)}</small></span><span class="dio-check">${on?'✓':'○'}</span></label>`;
   }).join('')+'</div>';
@@ -5351,13 +5351,13 @@ function renderDiscipline(){
     // 2-min
     const ql=$('discQuickList');
     if(ql){
-      ql.innerHTML = t.quick.length ? t.quick.map((q,i)=>'<label class="dio-item'+(q.done?' done':'')+'"><input type="checkbox" data-dq="'+i+'"'+(q.done?' checked':'')+'><span class="dio-txt"><b>'+escapeHtml(q.txt)+'</b></span><span class="dio-check">'+(q.done?'✓':'2′')+'</span></label>').join('') : '<p class="muted" style="font-size:11px">Vacío. Agrega tu primer micro-pendiente 👆.</p>';
+      ql.innerHTML = t.quick.length ? t.quick.map((q,i)=>'<label class="dio-item'+(q.done?' done':'')+'"><input type="checkbox" data-dq="'+i+'"'+(q.done?' checked':'')+'><span class="dio-txt"><b>'+escapeHtml(q.txt)+'</b></span><span class="dio-check">'+(q.done?'✓':'2′')+'</span></label>').join('') : '<p class="muted su-11a508">Vacío. Agrega tu primer micro-pendiente 👆.</p>';
       ql.querySelectorAll('[data-dq]').forEach(cb=> cb.onchange=()=>{ t.quick[+cb.dataset.dq].done=cb.checked; d.mit=(t.mit||""); scheduleSave(cb.checked?'2-min hecho ✓':'Guardado ✓'); renderDiscipline(); });
     }
     // distracciones
     const dl=$('discDistList');
     if(dl){
-      dl.innerHTML = t.dist.length ? t.dist.map((x,i)=>'<div class="dio-item"><span class="dio-txt"><b>'+escapeHtml(x)+'</b></span><button type="button" class="btn btn-icon" data-dd="'+i+'" title="Quitar">✕</button></div>').join('') : '<p class="muted" style="font-size:11px">Sin distracciones. Mente despejada 🌙.</p>';
+      dl.innerHTML = t.dist.length ? t.dist.map((x,i)=>'<div class="dio-item"><span class="dio-txt"><b>'+escapeHtml(x)+'</b></span><button type="button" class="btn btn-icon" data-dd="'+i+'" title="Quitar">✕</button></div>').join('') : '<p class="muted su-11a508">Sin distracciones. Mente despejada 🌙.</p>';
       dl.querySelectorAll('[data-dd]').forEach(b=> b.onclick=()=>{ t.dist.splice(+b.dataset.dd,1); scheduleSave(); renderDiscipline(); });
     }
     // historial
@@ -5369,7 +5369,7 @@ function renderDiscipline(){
         const k=discShiftKey(today,-i);
         const e=d.log[k];
         const label = i===0 ? 'Hoy' : i===1 ? 'Ayer' : k.slice(5);
-        rows.push('<div class="hora-item"><span class="hora-text">'+(e&&e.done?'✅':'⬜')+' <b>'+label+'</b> · '+(e&&e.mit?escapeHtml((e.mit||'').slice(0,48)):'<span style="color:var(--muted)">sin MIT</span>')+'</span><span class="muted" style="font-size:11px">🍅 '+(e?(+e.pomodoros||0):0)+'</span></div>');
+        rows.push('<div class="hora-item"><span class="hora-text">'+(e&&e.done?'✅':'⬜')+' <b>'+label+'</b> · '+(e&&e.mit?escapeHtml((e.mit||'').slice(0,48)):'<span class="su-57f9e3">sin MIT</span>')+'</span><span class="muted su-11a508">🍅 '+(e?(+e.pomodoros||0):0)+'</span></div>');
       }
       h.innerHTML=rows.join('');
     }
@@ -5478,7 +5478,7 @@ function renderBreathGrid(){
   const g=$('breathGrid'); if(!g) return;
   const list=BREATH_TECHNIQUES.filter(t=> breathFilter==='todos' || t.cat===breathFilter);
   if(!list.length){ g.innerHTML='<p class="muted">Sin técnicas en este filtro.</p>'; return; }
-  g.innerHTML=list.map(t=>`<div class="breath-card ${t.id===breathSelected.id?'sel':''}" data-id="${t.id}" role="button" tabindex="0"><b>${t.ico||''} ${escapeHtml(t.name)}</b><br><span class="muted" style="font-size:10px">${t.pattern.map(p=>p.l+' '+p.d).join(' → ')}</span><br><span class="chip" style="font-size:10px;margin:4px 0;display:inline-block">${BREATH_CATS[t.cat]||t.cat} · ${escapeHtml(t.nivel||'')}</span><br><span class="muted" style="font-size:11px">${escapeHtml(t.desc)}</span></div>`).join('');
+  g.innerHTML=list.map(t=>`<div class="breath-card ${t.id===breathSelected.id?'sel':''}" data-id="${t.id}" role="button" tabindex="0"><b>${t.ico||''} ${escapeHtml(t.name)}</b><br><span class="muted su-0d5be0">${t.pattern.map(p=>p.l+' '+p.d).join(' → ')}</span><br><span class="chip su-42b0b7">${BREATH_CATS[t.cat]||t.cat} · ${escapeHtml(t.nivel||'')}</span><br><span class="muted su-11a508">${escapeHtml(t.desc)}</span></div>`).join('');
   g.querySelectorAll('.breath-card').forEach(el=>{
     const pick=()=>{ breathStop(true); breathSelected=BREATH_TECHNIQUES.find(x=>x.id===el.dataset.id)||breathSelected; breathTargetCycles=breathSelected.ciclos||4; const cs=$('breathCycles'); if(cs) cs.value=String(breathTargetCycles); renderBreathGrid(); updateBreathHeader(); };
     el.onclick=pick; el.onkeydown=(e)=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); pick(); } };
@@ -5576,7 +5576,7 @@ function renderBreathLog(){
   box.innerHTML=log.map(x=>{
     const t=BREATH_TECHNIQUES.find(t=>t.id===x.tech);
     const f=new Date(x.ts);
-    return `<div class="habit-item"><div class="habit-head"><b style="color:var(--gold)">${escapeHtml(t? (t.ico+' '+t.name):(x.name||x.tech))}</b><span class="muted" style="font-size:11px">${f.toLocaleString('es-CL',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}</span></div><div style="font-size:12px;color:var(--text)">${x.cycles} ciclos · ~${Math.round((x.secs||0)/60*10)/10} min</div></div>`;
+    return `<div class="habit-item"><div class="habit-head"><b class="su-e39eba">${escapeHtml(t? (t.ico+' '+t.name):(x.name||x.tech))}</b><span class="muted su-11a508">${f.toLocaleString('es-CL',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}</span></div><div class="su-707c92">${x.cycles} ciclos · ~${Math.round((x.secs||0)/60*10)/10} min</div></div>`;
   }).join('');
 }
 function breathTab(which){
@@ -5636,7 +5636,7 @@ function renderScheduleTodayBox(){
   const today=new Date().getDay();
   const todays=d.items.filter(x=> parseInt(x.day)===today).sort((a,b)=> a.start.localeCompare(b.start));
   if(!todays.length) box.innerHTML='<p class="muted">Hoy no tienes clases. ¡Aprovecha la luna!</p>';
-  else box.innerHTML='<h4 style="color:var(--gold)">Hoy — '+['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'][today]+'</h4>' + todays.map(it=>`<div class="mens-hist-item" style="border-left:3px solid ${it.color}"><span><b>${escapeHtml(it.subject)}</b> ${it.start}–${it.end} · ${escapeHtml(it.place||'')}</span></div>`).join('');
+  else box.innerHTML='<h4 class="su-e39eba">Hoy — '+['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'][today]+'</h4>' + todays.map(it=>`<div class="mens-hist-item" style="border-left:3px solid ${it.color}"><span><b>${escapeHtml(it.subject)}</b> ${it.start}–${it.end} · ${escapeHtml(it.place||'')}</span></div>`).join('');
 }
 function renderScheduleWeekGrid(){
   const box=$('scheduleWeekGrid'); if(!box) return;
@@ -5646,7 +5646,7 @@ function renderScheduleWeekGrid(){
   days.forEach(([name, idx])=>{
     const items=d.items.filter(x=> parseInt(x.day)===idx).sort((a,b)=> a.start.localeCompare(b.start));
     const isToday=new Date().getDay()===idx;
-    html+=`<div class="schedule-day ${isToday?'schedule-today':''}"><b>${name}</b>${items.length? items.map(it=>`<div class="schedule-block" style="background:${it.color};border:1px solid ${it.color}">${escapeHtml(it.subject)}<br><span style="font-size:10px">${it.start}–${it.end}</span></div>`).join('') : '<p class="muted" style="font-size:10px">—</p>'}</div>`;
+    html+=`<div class="schedule-day ${isToday?'schedule-today':''}"><b>${name}</b>${items.length? items.map(it=>`<div class="schedule-block" style="background:${it.color};border:1px solid ${it.color}">${escapeHtml(it.subject)}<br><span class="su-0d5be0">${it.start}–${it.end}</span></div>`).join('') : '<p class="muted su-0d5be0">—</p>'}</div>`;
   });
   box.innerHTML=html;
 }
@@ -5655,7 +5655,7 @@ function renderScheduleList(){
   const d=getScheduleData();
   if(!d.items.length){ box.innerHTML='<p class="muted">Sin clases aún. Agrega tu primera arriba.</p>'; return; }
   const sorted=[...d.items].sort((a,b)=> parseInt(a.day)-parseInt(b.day) || a.start.localeCompare(b.start));
-  box.innerHTML=sorted.map(it=>`<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center"><span><b style="color:${it.color}">●</b> ${escapeHtml(it.subject)} — ${['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'][it.day]} ${it.start}–${it.end} ${it.place? '· '+escapeHtml(it.place):''}</span><span style="display:flex;gap:6px"><button data-id="${it.id}" class="btn sched-edit" style="width:auto;font-size:11px">✏️</button><button data-id="${it.id}" class="btn sched-del" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕</button></span></div>`).join('');
+  box.innerHTML=sorted.map(it=>`<div class="habit-item su-13313b"><span><b style="color:${it.color}">●</b> ${escapeHtml(it.subject)} — ${['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'][it.day]} ${it.start}–${it.end} ${it.place? '· '+escapeHtml(it.place):''}</span><span class="su-49cd09"><button data-id="${it.id}" class="btn sched-edit su-337714">✏️</button><button data-id="${it.id}" class="btn sched-del su-fd834a">✕</button></span></div>`).join('');
   box.querySelectorAll('.sched-edit').forEach(b=> b.onclick=()=>{
     const it=d.items.find(x=>x.id===b.dataset.id); if(!it) return;
     scheduleEditingId=it.id;
@@ -5840,10 +5840,10 @@ function renderGymSuggestions(cat, age, place){
   const ageChip = ageF==='todos' ? '' : ` · ${ageInfo.icon} ${ageInfo.label}`;
   const placeChip = placeF==='todos' ? '' : ` · ${placeInfo.icon} ${placeInfo.label}`;
   if(!list.length){
-    box.innerHTML=`<h4 style="color:var(--gold)">${catInfo.icon} ${catInfo.label}${ageChip}${placeChip} — 0 sugerencias</h4><p class="muted">No hay sugerencias para ${catInfo.label} en ${placeInfo.icon} ${placeInfo.label} con este filtro de edad. Prueba con 📍 Todos o 👥 Todas, o crea tu rutina abajo con ese lugar.</p>`;
+    box.innerHTML=`<h4 class="su-e39eba">${catInfo.icon} ${catInfo.label}${ageChip}${placeChip} — 0 sugerencias</h4><p class="muted">No hay sugerencias para ${catInfo.label} en ${placeInfo.icon} ${placeInfo.label} con este filtro de edad. Prueba con 📍 Todos o 👥 Todas, o crea tu rutina abajo con ese lugar.</p>`;
     return;
   }
-  box.innerHTML=`<h4 style="color:var(--gold)">${catInfo.icon} ${catInfo.label}${ageChip}${placeChip} — ${list.length} sugerencias (toca para cargar)</h4>` + list.map(s=>{ const ed=(s.edad&&s.edad!=='todos'&&(typeof TRAINING_AGE_GROUPS!=='undefined'&&TRAINING_AGE_GROUPS[s.edad]))?` <span class="chip" style="font-size:9px">${TRAINING_AGE_GROUPS[s.edad].icon} ${TRAINING_AGE_GROUPS[s.edad].label}</span>`:''; const pk=gymPlaceKey(s.place); const pl=TRAINING_PLACES[pk]||TRAINING_PLACES.otro; return `<div class="habit-item" style="cursor:pointer;border-left:3px solid ${s.color}" data-sug="${escapeHtml(s.name)}" data-cat="${cat}"><b>${escapeHtml(s.name)}</b>${ed} <span class="chip" style="font-size:9px">${pl.icon} ${escapeHtml(s.place)}</span><br><span class="muted" style="font-size:11px;white-space:pre-wrap">${escapeHtml(s.exercises)}</span><br><span class="chip" style="font-size:10px;margin-top:4px">+ Agregar al calendario</span></div>`; }).join('') + `<p class="muted" style="font-size:10px;margin-top:6px">Toca una tarjeta para cargar nombre/lugar/ejercicios/color y luego elige día/hora y pulsa “Agregar al calendario”. Filtros: tipo + edad + lugar.</p>`;
+  box.innerHTML=`<h4 class="su-e39eba">${catInfo.icon} ${catInfo.label}${ageChip}${placeChip} — ${list.length} sugerencias (toca para cargar)</h4>` + list.map(s=>{ const ed=(s.edad&&s.edad!=='todos'&&(typeof TRAINING_AGE_GROUPS!=='undefined'&&TRAINING_AGE_GROUPS[s.edad]))?` <span class="chip su-fb2957">${TRAINING_AGE_GROUPS[s.edad].icon} ${TRAINING_AGE_GROUPS[s.edad].label}</span>`:''; const pk=gymPlaceKey(s.place); const pl=TRAINING_PLACES[pk]||TRAINING_PLACES.otro; return `<div class="habit-item" style="cursor:pointer;border-left:3px solid ${s.color}" data-sug="${escapeHtml(s.name)}" data-cat="${cat}"><b>${escapeHtml(s.name)}</b>${ed} <span class="chip su-fb2957">${pl.icon} ${escapeHtml(s.place)}</span><br><span class="muted su-4dbc08">${escapeHtml(s.exercises)}</span><br><span class="chip su-bf4cbe">+ Agregar al calendario</span></div>`; }).join('') + `<p class="muted su-d47a97">Toca una tarjeta para cargar nombre/lugar/ejercicios/color y luego elige día/hora y pulsa “Agregar al calendario”. Filtros: tipo + edad + lugar.</p>`;
   box.querySelectorAll('[data-sug]').forEach(el=> el.onclick=()=>{
     const cat2=el.dataset.cat; const s=TRAINING_SUGGESTIONS[cat2].find(x=>x.name===el.dataset.sug); if(!s) return;
     $('gymName').value=s.name; $('gymCategory').value=cat2; $('gymPlace').value=s.place; $('gymExercises').value=s.exercises; $('gymColor').value=s.color;
@@ -5857,12 +5857,12 @@ function renderGymTodayBox(){
   const todays=d.items.filter(x=> parseInt(x.day)===today).sort((a,b)=> a.start.localeCompare(b.start));
   const todayKey=cal.fmtKey.format(new Date());
   if(!todays.length) box.innerHTML='<p class="muted">Hoy no tienes entrenamientos. ¡Toca una sugerencia arriba y agrégala!</p>';
-  else box.innerHTML='<h4 style="color:var(--gold)">Hoy — '+['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'][today]+'</h4>' + todays.map(it=>{
+  else box.innerHTML='<h4 class="su-e39eba">Hoy — '+['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'][today]+'</h4>' + todays.map(it=>{
     const done = d.completions[todayKey] && d.completions[todayKey][it.id];
     const cat=TRAINING_CATS[it.cat]||TRAINING_CATS.gym;
     const pk=gymPlaceKey(it.place); const pl=TRAINING_PLACES[pk]||TRAINING_PLACES.otro;
-    return `<div class="mens-hist-item" style="border-left:3px solid ${it.color}"><span><b>${cat.icon} ${escapeHtml(it.name)}</b> <span class="chip" style="font-size:10px">${cat.label}</span> <span class="chip" style="font-size:10px">${pl.icon} ${escapeHtml(it.place||pl.label)}</span> ${it.start}–${it.end} ${done?'<span class="chip" style="background:var(--gold);color:#10142c;margin-left:6px">✓ hecho</span>':''}</span><label class="check-row" style="margin:0"><input type="checkbox" data-id="${it.id}" ${done?'checked':''}> Hecho</label></div>`;
-  }).join('') + '<p class="muted" style="font-size:10px;margin-top:6px">Marca como hecho para racha.</p>';
+    return `<div class="mens-hist-item" style="border-left:3px solid ${it.color}"><span><b>${cat.icon} ${escapeHtml(it.name)}</b> <span class="chip su-0d5be0">${cat.label}</span> <span class="chip su-0d5be0">${pl.icon} ${escapeHtml(it.place||pl.label)}</span> ${it.start}–${it.end} ${done?'<span class="chip su-1fd357">✓ hecho</span>':''}</span><label class="check-row su-116966"><input type="checkbox" data-id="${it.id}" ${done?'checked':''}> Hecho</label></div>`;
+  }).join('') + '<p class="muted su-d47a97">Marca como hecho para racha.</p>';
   box.querySelectorAll('input[type="checkbox"]').forEach(cb=> cb.onchange=()=>{
     const id=cb.dataset.id; const key=cal.fmtKey.format(new Date());
     const gd=getGymData();
@@ -5877,9 +5877,9 @@ function renderGymPlacesBox(){
   const d=getGymData();
   const counts={}; d.items.forEach(it=>{ const k=gymPlaceKey(it.place); counts[k]=(counts[k]||0)+1; });
   const order=['casa','gimnasio','playa','bosque','multicancha','plaza','costanera','otro'];
-  box.innerHTML='<h4 style="color:var(--gold)">📍 Entrenamientos por lugar</h4><div style="display:flex;gap:6px;flex-wrap:wrap">'
-    + order.map(k=>{ const p=TRAINING_PLACES[k]; const c=counts[k]||0; return `<span class="chip" style="font-size:11px">${p.icon} ${p.label} (${c})</span>`; }).join('')
-    + `</div><p class="muted" style="font-size:10px;margin:6px 0 0">Usa el filtro <b>Lugar</b> de arriba para ver solo esas rutinas. Tus lugares se detectan solos desde el texto (ej: “Playa Penco” → 🏖️ Playa).</p>`;
+  box.innerHTML='<h4 class="su-e39eba">📍 Entrenamientos por lugar</h4><div class="su-6157e8">'
+    + order.map(k=>{ const p=TRAINING_PLACES[k]; const c=counts[k]||0; return `<span class="chip su-11a508">${p.icon} ${p.label} (${c})</span>`; }).join('')
+    + `</div><p class="muted su-cb3213">Usa el filtro <b>Lugar</b> de arriba para ver solo esas rutinas. Tus lugares se detectan solos desde el texto (ej: “Playa Penco” → 🏖️ Playa).</p>`;
 }
 function renderGymWeekGrid(){
   const box=$('gymWeekGrid'); if(!box) return;
@@ -5893,8 +5893,8 @@ function renderGymWeekGrid(){
       const cat=TRAINING_CATS[it.cat]||TRAINING_CATS.gym;
       const pk=gymPlaceKey(it.place); const pl=TRAINING_PLACES[pk]||TRAINING_PLACES.otro;
       const dimmed=(gymCurrentPlace!=='todos' && pk!==gymCurrentPlace);
-      return `<div class="schedule-block" style="background:${it.color};border:1px solid ${it.color}${dimmed?';opacity:.35':''}">${cat.icon} ${escapeHtml(it.name)}<br><span style="font-size:10px">${it.start}–${it.end} · ${pl.icon}</span></div>`;
-    }).join('') : '<p class="muted" style="font-size:10px">—</p>'}</div>`;
+      return `<div class="schedule-block" style="background:${it.color};border:1px solid ${it.color}${dimmed?';opacity:.35':''}">${cat.icon} ${escapeHtml(it.name)}<br><span class="su-0d5be0">${it.start}–${it.end} · ${pl.icon}</span></div>`;
+    }).join('') : '<p class="muted su-0d5be0">—</p>'}</div>`;
   });
   box.innerHTML=html;
 }
@@ -5905,12 +5905,12 @@ function renderGymList(){
   const placeF=gymCurrentPlace||'todos';
   const filtered=d.items.filter(it=> gymMatchesPlace(it.place, placeF));
   const title= placeF==='todos' ? 'Mis rutinas' : `${TRAINING_PLACES[placeF].icon} Mis rutinas en ${TRAINING_PLACES[placeF].label}`;
-  if(!filtered.length){ box.innerHTML=`<h4 style="color:var(--gold)">${title} — 0</h4><p class="muted">No tienes rutinas en ${TRAINING_PLACES[placeF].icon} ${TRAINING_PLACES[placeF].label}. Cambia el filtro a 📍 Todos o crea una con ese lugar.</p>`; return; }
+  if(!filtered.length){ box.innerHTML=`<h4 class="su-e39eba">${title} — 0</h4><p class="muted">No tienes rutinas en ${TRAINING_PLACES[placeF].icon} ${TRAINING_PLACES[placeF].label}. Cambia el filtro a 📍 Todos o crea una con ese lugar.</p>`; return; }
   const sorted=[...filtered].sort((a,b)=> parseInt(a.day)-parseInt(b.day) || a.start.localeCompare(b.start));
-  box.innerHTML=`<h4 style="color:var(--gold)">${title} — ${sorted.length}</h4>`+sorted.map(it=>{
+  box.innerHTML=`<h4 class="su-e39eba">${title} — ${sorted.length}</h4>`+sorted.map(it=>{
     const cat=TRAINING_CATS[it.cat]||TRAINING_CATS.gym;
     const pk=gymPlaceKey(it.place); const pl=TRAINING_PLACES[pk]||TRAINING_PLACES.otro;
-    return `<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center"><span><b style="color:${it.color}">${cat.icon}</b> <span class="chip" style="font-size:10px;background:${cat.color};color:#10142c">${cat.label}</span> <span class="chip" style="font-size:10px">${pl.icon} ${pl.label}</span> <b>${escapeHtml(it.name)}</b> — ${['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'][it.day]} ${it.start}–${it.end} ${it.place? '· '+escapeHtml(it.place):''}${it._legacyPool?'<br><span class="muted" style="font-size:10px">🏊 Antes era piscina (en Penco no hay): edítala y cámbiale el lugar</span>':''}<br><span class="muted" style="font-size:11px">${escapeHtml((it.exercises||'').split('\n')[0]||'')}</span></span><span style="display:flex;gap:6px"><button data-id="${it.id}" class="btn gym-edit" style="width:auto;font-size:11px">✏️</button><button data-id="${it.id}" class="btn gym-del" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕</button></span></div>`;
+    return `<div class="habit-item su-13313b"><span><b style="color:${it.color}">${cat.icon}</b> <span class="chip" style="font-size:10px;background:${cat.color};color:#10142c">${cat.label}</span> <span class="chip su-0d5be0">${pl.icon} ${pl.label}</span> <b>${escapeHtml(it.name)}</b> — ${['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'][it.day]} ${it.start}–${it.end} ${it.place? '· '+escapeHtml(it.place):''}${it._legacyPool?'<br><span class="muted su-0d5be0">🏊 Antes era piscina (en Penco no hay): edítala y cámbiale el lugar</span>':''}<br><span class="muted su-11a508">${escapeHtml((it.exercises||'').split('\n')[0]||'')}</span></span><span class="su-49cd09"><button data-id="${it.id}" class="btn gym-edit su-337714">✏️</button><button data-id="${it.id}" class="btn gym-del su-fd834a">✕</button></span></div>`;
   }).join('');
   box.querySelectorAll('.gym-edit').forEach(b=> b.onclick=()=>{
     const it=d.items.find(x=>x.id===b.dataset.id); if(!it) return;
@@ -5935,7 +5935,7 @@ function renderGymStatsBox(){
   const catTxt=Object.entries(byCat).map(([k,c])=>`${(TRAINING_CATS[k]||TRAINING_CATS.gym).icon} ${c}`).join(' · ') || '0';
   const byPlace={}; d.items.forEach(it=>{ const k=gymPlaceKey(it.place); byPlace[k]=(byPlace[k]||0)+1; });
   const placeTxt=Object.entries(byPlace).map(([k,c])=>`${(TRAINING_PLACES[k]||TRAINING_PLACES.otro).icon} ${c}`).join(' · ') || '0';
-  box.innerHTML='<h4 style="color:var(--accent)">📊 Progreso</h4><div class="habit-stats"><span>Hoy: '+todayDone+' completadas</span><span>Esta semana: '+weekDone+' días</span><span>Total: '+d.items.length+' ('+catTxt+')</span><span>Por lugar: '+placeTxt+'</span></div>';
+  box.innerHTML='<h4 class="su-a80552">📊 Progreso</h4><div class="habit-stats"><span>Hoy: '+todayDone+' completadas</span><span>Esta semana: '+weekDone+' días</span><span>Total: '+d.items.length+' ('+catTxt+')</span><span>Por lugar: '+placeTxt+'</span></div>';
 }
 // === PLAN DE ENTRENAMIENTO SEGÚN QUIÉN ERES + OBJETIVO (local, sin cuentas) ===
 const GYM_PLAN_GOALS = {
@@ -6114,15 +6114,15 @@ function renderGymPlanPreview(plan){
   const box=$('gymPlanOut'); if(!box) return;
   if(!plan){ box.textContent='Pulsa “Generar mi plan”.'; return; }
   const names=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
-  let html='<b style="color:var(--gold)">'+escapeHtml(plan.title)+'</b><br>';
-  if(plan.guide) html+='<p class="muted" style="font-size:10px;margin:4px 0">📚 '+escapeHtml(plan.guide)+'</p>';
-  if(plan.phases&&plan.phases.length>1) html+='<p class="muted" style="font-size:10px;margin:4px 0">🗓️ '+plan.phases.map(p=>'S'+p.n+': '+escapeHtml((p.t.split('·')[1]||p.t).trim())).join(' → ')+'</p>';
+  let html='<b class="su-e39eba">'+escapeHtml(plan.title)+'</b><br>';
+  if(plan.guide) html+='<p class="muted su-84d476">📚 '+escapeHtml(plan.guide)+'</p>';
+  if(plan.phases&&plan.phases.length>1) html+='<p class="muted su-84d476">🗓️ '+plan.phases.map(p=>'S'+p.n+': '+escapeHtml((p.t.split('·')[1]||p.t).trim())).join(' → ')+'</p>';
   plan.sessions.forEach((s,i)=>{
     const cat=TRAINING_CATS[s.cat]||TRAINING_CATS.varias;
-    html+='<div class="habit-item" style="margin-top:6px;border-left:3px solid '+s.color+'"><b>'+(i+1)+'. '+names[s.day]+' '+s.start+'–'+s.end+' · '+cat.icon+' '+escapeHtml(s.name)+'</b> <span class="chip" style="font-size:9px">'+escapeHtml(s.place)+'</span><br><span class="muted" style="font-size:11px;white-space:pre-wrap">'+escapeHtml(s.exercises)+'</span></div>';
+    html+='<div class="habit-item" style="margin-top:6px;border-left:3px solid '+s.color+'"><b>'+(i+1)+'. '+names[s.day]+' '+s.start+'–'+s.end+' · '+cat.icon+' '+escapeHtml(s.name)+'</b> <span class="chip su-fb2957">'+escapeHtml(s.place)+'</span><br><span class="muted su-4dbc08">'+escapeHtml(s.exercises)+'</span></div>';
   });
-  if(plan.warn) html+='<p class="muted" style="font-size:10px;margin:6px 0 0">⚠️ '+escapeHtml(plan.warn)+'</p>';
-  html+='<p class="muted" style="font-size:10px;margin:6px 0 0">✅ Checklist integral: 💧 agua · 😴 7-8h · 🍲 comida de verdad · 📓 anota cómo te sentiste · 🧘 1 día de descanso total/sem</p>';
+  if(plan.warn) html+='<p class="muted su-cb3213">⚠️ '+escapeHtml(plan.warn)+'</p>';
+  html+='<p class="muted su-cb3213">✅ Checklist integral: 💧 agua · 😴 7-8h · 🍲 comida de verdad · 📓 anota cómo te sentiste · 🧘 1 día de descanso total/sem</p>';
   box.innerHTML=html;
   const add=$('gymPlanAdd'); if(add) add.classList.remove('hidden');
 }
@@ -6428,7 +6428,7 @@ function setupStudyDialog(){
       const list=$('studyLogList'), tot=$('studyLogTotal');
       if(!list) return;
       const items=u.studyLog.slice(-10).reverse();
-      list.innerHTML=items.length? items.map(function(s){ return '<div class="habit-row"><span>📚 '+String(s.t||'estudio').replace(/</g,'&lt;')+'</span><span class="chip">'+s.m+' min · '+s.f+'</span></div>'; }).join('') : '<p class="muted" style="font-size:11px">Sin sesiones aún. Suma tu primera de 25 min 👆</p>';
+      list.innerHTML=items.length? items.map(function(s){ return '<div class="habit-row"><span>📚 '+String(s.t||'estudio').replace(/</g,'&lt;')+'</span><span class="chip">'+s.m+' min · '+s.f+'</span></div>'; }).join('') : '<p class="muted su-11a508">Sin sesiones aún. Suma tu primera de 25 min 👆</p>';
       const weekAgo=Date.now()-7*864e5;
       const weekMin=u.studyLog.filter(s=> (s.ts||0)>=weekAgo).reduce((a,s)=> a+(parseInt(s.m)||0),0);
       if(tot) tot.textContent='Total últimos 7 días: '+weekMin+' min ('+(weekMin/25).toFixed(1)+' pomodoros) · Total histórico: '+u.studyLog.length+' sesiones';
@@ -6520,7 +6520,7 @@ function renderTalesGrid(){
   const eff=getEffectiveTales();
   g.innerHTML=eff.map(t=>{
     const isEdited = !!getTalesData().edits[String(t.n)];
-    return `<div class="discipline-card" style="cursor:pointer;${isEdited?'border-color:var(--gold)':''}" data-n="${t.n}"><h4>🌙 Luna ${t.n} — ${escapeHtml(t.titulo)} ${isEdited?'<span class="chip" style="font-size:10px">editado</span>':''}</h4><p style="font-size:11px;color:var(--muted)">${escapeHtml(t.nombre)}</p><p class="muted" style="font-size:11px;margin-top:4px">${escapeHtml(t.texto.slice(0,120))}…</p><p style="font-size:10px;color:var(--gold)"><i>Moraleja: ${escapeHtml(t.moral)}</i></p></div>`;
+    return `<div class="discipline-card" style="cursor:pointer;${isEdited?'border-color:var(--gold)':''}" data-n="${t.n}"><h4>🌙 Luna ${t.n} — ${escapeHtml(t.titulo)} ${isEdited?'<span class="chip su-0d5be0">editado</span>':''}</h4><p class="su-1fd8c8">${escapeHtml(t.nombre)}</p><p class="muted su-cdff1d">${escapeHtml(t.texto.slice(0,120))}…</p><p class="su-9bc3cd"><i>Moraleja: ${escapeHtml(t.moral)}</i></p></div>`;
   }).join('');
   g.querySelectorAll('[data-n]').forEach(el=> el.onclick=()=>{
     const eff2=getEffectiveTales();
@@ -6528,7 +6528,7 @@ function renderTalesGrid(){
     talesEditingN=t.n;
     const r=$('talesReader'); const eBox=$('talesEditBox');
     if(r){ r.classList.remove('hidden');
-      r.innerHTML='<h4 style="color:var(--gold)">🌙 Luna '+t.n+' — '+escapeHtml(t.titulo)+'</h4><p style="font-size:11px;color:var(--muted)">'+escapeHtml(t.nombre)+' · '+escapeHtml(MOONS[t.n-1].traduccion)+'</p><p style="font-size:13px;color:var(--text);line-height:1.75;margin-top:8px;white-space:pre-wrap">'+escapeHtml(t.texto)+'</p><p style="font-size:12px;color:var(--gold);margin-top:10px"><b>Moraleja:</b> <i>'+escapeHtml(t.moral)+'</i></p><div class="dlg-actions" style="justify-content:flex-start;margin-top:10px"><button type="button" class="btn btn-accent tales-edit-btn" style="width:auto">✏️ Editar este cuento</button></div>';
+      r.innerHTML='<h4 class="su-e39eba">🌙 Luna '+t.n+' — '+escapeHtml(t.titulo)+'</h4><p class="su-1fd8c8">'+escapeHtml(t.nombre)+' · '+escapeHtml(MOONS[t.n-1].traduccion)+'</p><p class="su-a46e7d">'+escapeHtml(t.texto)+'</p><p class="su-c6ec8a"><b>Moraleja:</b> <i>'+escapeHtml(t.moral)+'</i></p><div class="dlg-actions su-d6c2a3"><button type="button" class="btn btn-accent tales-edit-btn su-30e741">✏️ Editar este cuento</button></div>';
       const eb=r.querySelector('.tales-edit-btn'); if(eb) eb.onclick=()=> openTalesEdit(t.n);
       r.scrollIntoView({behavior:'smooth',block:'nearest'});
     }
@@ -6558,7 +6558,7 @@ function setupTalesDialog(){
     scheduleSave();
     $('talesEditBox').classList.add('hidden');
     renderTalesGrid();
-    const r=$('talesReader'); if(r){ const t=getEffectiveTales().find(x=>x.n===n); r.classList.remove('hidden'); r.innerHTML='<h4 style="color:var(--gold)">🌙 Luna '+t.n+' — '+escapeHtml(t.titulo)+' <span class="chip" style="font-size:10px">guardado</span></h4><p style="font-size:13px;color:var(--text);line-height:1.75;white-space:pre-wrap">'+escapeHtml(t.texto)+'</p><p style="font-size:12px;color:var(--gold)"><b>Moraleja:</b> <i>'+escapeHtml(t.moral)+'</i></p>'; }
+    const r=$('talesReader'); if(r){ const t=getEffectiveTales().find(x=>x.n===n); r.classList.remove('hidden'); r.innerHTML='<h4 class="su-e39eba">🌙 Luna '+t.n+' — '+escapeHtml(t.titulo)+' <span class="chip su-0d5be0">guardado</span></h4><p class="su-4fdb48">'+escapeHtml(t.texto)+'</p><p class="su-6a6e7c"><b>Moraleja:</b> <i>'+escapeHtml(t.moral)+'</i></p>'; }
   };
   const restore=$('talesRestore'); if(restore) restore.onclick=()=>{
     const n=talesEditingN; if(!n) return;
@@ -6595,7 +6595,7 @@ function renderMemoryProg(){
   const box=$('memoryProgStats'); if(!box) return;
   const m=getMemoryData(); const bp=m.bestPairs||{};
   const row=(e,v)=> '<div>'+e+' <b>'+v+'</b></div>';
-  box.innerHTML='<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px 12px;font-size:12px;text-align:left">'
+  box.innerHTML='<div class="su-cd99c5">'
     +row('🔥 Racha',(m.streak||0)+' día(s)')+row('🎮 Sesiones',m.sessions||0)
     +row('🃏 Pares fácil',bp.facil? bp.facil.moves+' int · '+bp.facil.time+'s':'—')
     +row('🃏 Pares medio',bp.medio? bp.medio.moves+' int · '+bp.medio.time+'s':'—')
@@ -6605,7 +6605,7 @@ function renderMemoryProg(){
     +row('🔢 Número',(m.bestNum||0)+' dígitos')
     +row('👁️ Distinto 5 rondas',(m.bestOdd? m.bestOdd+'s':'—'))
     +row('🔢 Schulte 5×5',(m.bestSchulte? m.bestSchulte+'s':'—'))
-    +'</div><p class="muted" style="font-size:10px;margin-top:6px">La racha sube 1 vez al día cuando completas cualquier juego. Los récords quedan por usuario, privados y locales.</p>';
+    +'</div><p class="muted su-d47a97">La racha sube 1 vez al día cuando completas cualquier juego. Los récords quedan por usuario, privados y locales.</p>';
 }
 // --- LOCI ---
 const MEMORY_ROUTES={
@@ -6641,9 +6641,9 @@ function setupMemoryLoci(){
   const quiz=$('memoryQuizLoci'); if(quiz) quiz.onclick=()=>{
     if(!memoryLociAnswers.length) return;
     const qb=$('memoryLociQuiz'); qb.classList.remove('hidden');
-    qb.innerHTML='<p class="muted" style="font-size:11px">Escribe qué palabra va en cada lugar (en orden):</p>'
-      +memoryLociAnswers.map((a,i)=>'<label style="font-size:12px">'+(i+1)+'. '+escapeHtml(a.place)+' <input type="text" data-loci-i="'+i+'" placeholder="palabra..." style="margin-top:2px"></label>').join('')
-      +'<div style="display:flex;gap:6px;margin-top:6px"><button type="button" id="memoryLociCheck" class="btn btn-accent" style="width:auto">✓ Evaluar</button></div><div id="memoryLociFb" class="chip" style="display:block;margin-top:6px;white-space:normal"></div>';
+    qb.innerHTML='<p class="muted su-11a508">Escribe qué palabra va en cada lugar (en orden):</p>'
+      +memoryLociAnswers.map((a,i)=>'<label class="su-6cb285">'+(i+1)+'. '+escapeHtml(a.place)+' <input type="text" data-loci-i="'+i+'" placeholder="palabra..." class="su-7a21c6"></label>').join('')
+      +'<div class="su-30b926"><button type="button" id="memoryLociCheck" class="btn btn-accent su-30e741">✓ Evaluar</button></div><div id="memoryLociFb" class="chip su-84c735"></div>';
     $('memoryLociCheck').onclick=()=>{
       let ok=0;
       qb.querySelectorAll('[data-loci-i]').forEach(inp=>{
@@ -6737,7 +6737,7 @@ function memSeqBuildGrid(){
   MEM_SEQ_BTNS.forEach((bb,i)=>{
     const d=document.createElement('button');
     d.type='button'; d.className='mem-seq-btn'; d.dataset.i=i;
-    d.innerHTML='<span style="font-size:30px">'+bb.e+'</span><small>'+bb.n+'</small>';
+    d.innerHTML='<span class="su-12f66e">'+bb.e+'</span><small>'+bb.n+'</small>';
     d.onclick=()=> memSeqPress(i,d);
     g.appendChild(d);
   });
@@ -6980,7 +6980,7 @@ function astroItemHTML(e, todayKey, todayNoon){
   const wd=cal.weekdayName(dt.getTime());
   const tc=ASTRO_TYPE_COLOR[e.tipo]||'var(--muted)';
   const cd=astroCountdown(e, todayKey, todayNoon);
-  return `<div class="astro-item${isToday?' today':''}"><div class="astro-date"><b>${dt.getDate()}</b><span>${escapeHtml(wd.slice(0,3))}</span></div><div class="astro-body"><div class="astro-top"><span class="astro-name">${e.icon} ${escapeHtml(e.nombre)}</span><span class="chip astro-cd"${isToday?' style="background:var(--gold);color:#10142c"':''}>${cd}</span></div><div style="margin:4px 0"><span class="chip" style="font-size:10px;background:${tc}22;color:${tc};border-color:${tc}55">${escapeHtml(e.tipo)}</span>${luna? ` <span class="muted" style="font-size:11px">Luna ${luna.luna}·d${luna.dia}</span>`:''}</div><p style="font-size:12px">${escapeHtml(e.desc)}</p></div></div>`;
+  return `<div class="astro-item${isToday?' today':''}"><div class="astro-date"><b>${dt.getDate()}</b><span>${escapeHtml(wd.slice(0,3))}</span></div><div class="astro-body"><div class="astro-top"><span class="astro-name">${e.icon} ${escapeHtml(e.nombre)}</span><span class="chip astro-cd"${isToday ? ' class="su-e4aba6"' : ''}>${cd}</span></div><div class="su-557d84"><span class="chip" style="font-size:10px;background:${tc}22;color:${tc};border-color:${tc}55">${escapeHtml(e.tipo)}</span>${luna? ` <span class="muted su-11a508">Luna ${luna.luna}·d${luna.dia}</span>`:''}</div><p class="su-6cb285">${escapeHtml(e.desc)}</p></div></div>`;
 }
 let astroTab='upcoming';
 function renderAstroDialog(tab){
@@ -7005,10 +7005,10 @@ function renderAstroDialog(tab){
       if(mnToday.rise) moonRiseTxt = cal.fmtTime.format(new Date(mnToday.rise));
       if(mnToday.set) moonSetTxt = cal.fmtTime.format(new Date(mnToday.set));
     }catch(e){}
-    todayBox.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center"><span><b>🔭 Hoy — ${cal.weekdayName(mensKeyToMs(todayKey))} ${cal.fmtFull.format(new Date(mensKeyToMs(todayKey)))}</b></span><span class="chip">${phaseTxt}</span></div>`
-    + `<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px"><span class="chip">🌙 Sale <b>${moonRiseTxt}</b></span><span class="chip">🌘 Se pone <b>${moonSetTxt}</b></span></div>`
-    + `<p class="muted" style="font-size:10px;margin:4px 0 0">Luna en Penco · hora local · aprox. ±15 min según lugar de observación.</p>`
-    + (todayEvents.length? todayEvents.map(e=> `<div class="chip" style="display:block;margin-top:6px;border-color:var(--gold)">${e.icon} <b>${escapeHtml(e.nombre)}</b> — ${escapeHtml(e.desc)}</div>`).join('') : '<p class="muted" style="font-size:11px;margin-top:6px">Hoy sin eclipse/lluvia destacada. Revisa fases arriba.</p>') + `<p class="muted" style="font-size:11px;margin-top:6px">Penco: lat ${PENCO.lat}, lng ${PENCO.lng}. Cielo ideal: humedal Rocuant sin luces.</p>`;
+    todayBox.innerHTML=`<div class="su-13313b"><span><b>🔭 Hoy — ${cal.weekdayName(mensKeyToMs(todayKey))} ${cal.fmtFull.format(new Date(mensKeyToMs(todayKey)))}</b></span><span class="chip">${phaseTxt}</span></div>`
+    + `<div class="su-0ad856"><span class="chip">🌙 Sale <b>${moonRiseTxt}</b></span><span class="chip">🌘 Se pone <b>${moonSetTxt}</b></span></div>`
+    + `<p class="muted su-32206a">Luna en Penco · hora local · aprox. ±15 min según lugar de observación.</p>`
+    + (todayEvents.length? todayEvents.map(e=> `<div class="chip su-d314e1">${e.icon} <b>${escapeHtml(e.nombre)}</b> — ${escapeHtml(e.desc)}</div>`).join('') : '<p class="muted su-e13d76">Hoy sin eclipse/lluvia destacada. Revisa fases arriba.</p>') + `<p class="muted su-e13d76">Penco: lat ${PENCO.lat}, lng ${PENCO.lng}. Cielo ideal: humedal Rocuant sin luces.</p>`;
   }
   const list=$('astroList'); if(!list) return;
   let events=[];
@@ -7018,7 +7018,7 @@ function renderAstroDialog(tab){
     events=ASTRO_EVENTS.filter(e=> e.date >= nowKey).sort((a,b)=> a.date.localeCompare(b.date)).slice(0,8);
     if(!events.length) events=ASTRO_EVENTS.slice(0,6);
     const monthOf=d=>{ const dt=new Date(d+'T12:00:00'); let n=dt.toLocaleDateString('es-CL',{month:'long',year:'numeric'}); return n.charAt(0).toUpperCase()+n.slice(1); };
-    let html='<h4 style="color:var(--gold);margin-top:10px">⏳ Próximos — ordenados por fecha</h4>';
+    let html='<h4 class="su-e21c16">⏳ Próximos — ordenados por fecha</h4>';
     let lastMonth='';
     html+=events.map(e=> {
       const m=monthOf(e.date);
@@ -7036,33 +7036,33 @@ function renderAstroDialog(tab){
     range.days.forEach(k=>{ (evMap[k]||[]).forEach(e=>{ if(!keyPhase[e.tipo]) keyPhase[e.tipo]={k,e}; }); });
     const phaseOrder=['nueva','cuarto-creciente','llena','cuarto-menguante'];
     const phaseLabel={'nueva':'Luna nueva','cuarto-creciente':'Cuarto creciente','llena':'Luna llena','cuarto-menguante':'Cuarto menguante'};
-    let html=`<h4 style="color:var(--gold);margin-top:10px">🌕 Mes lunar · ${cal.fmtDate.format(d0)} — ${cal.fmtDate.format(d1)}</h4>`;
-    html+=`<div class="menstrual-card" style="border-color:var(--gold);background:linear-gradient(135deg,var(--panel),var(--card))"><div style="display:flex;gap:10px;align-items:center"><span style="font-size:34px">${moon.icon}</span><span><b>Hoy: ${moon.illum===null?'—':moon.illum+'% iluminada'}</b><br><span class="muted" style="font-size:11px">Lunación de ${range.days.length} días · Penco (America/Santiago)</span></span></div></div>`;
+    let html=`<h4 class="su-e21c16">🌕 Mes lunar · ${cal.fmtDate.format(d0)} — ${cal.fmtDate.format(d1)}</h4>`;
+    html+=`<div class="menstrual-card su-bcee4f"><div class="su-5a5e36"><span class="su-b96a38">${moon.icon}</span><span><b>Hoy: ${moon.illum===null?'—':moon.illum+'% iluminada'}</b><br><span class="muted su-11a508">Lunación de ${range.days.length} días · Penco (America/Santiago)</span></span></div></div>`;
     html+='<div class="astro-phases">'+phaseOrder.map(t=>{
       const o=keyPhase[t];
       if(!o) return '';
       const dk=new Date(o.k+'T12:00:00');
-      return `<div class="astro-phase"><span class="astro-phase-icon">${o.e.simbolo}</span><b>${phaseLabel[t]}</b><span class="muted" style="font-size:11px">${cal.weekdayName(dk.getTime()).slice(0,3)} ${cal.fmtDate.format(dk)}</span><span style="font-size:11px;color:var(--gold)">${cal.fmtTime.format(new Date(o.e.utcMs))}</span></div>`;
+      return `<div class="astro-phase"><span class="astro-phase-icon">${o.e.simbolo}</span><b>${phaseLabel[t]}</b><span class="muted su-11a508">${cal.weekdayName(dk.getTime()).slice(0,3)} ${cal.fmtDate.format(dk)}</span><span class="su-49f9d7">${cal.fmtTime.format(new Date(o.e.utcMs))}</span></div>`;
     }).join('')+'</div>';
-    html+=`<p class="muted" style="font-size:11px;margin-top:8px">💡 Cielo más oscuro para meteoros cerca de la <b>luna nueva</b> · luna más brillante en la <b>llena</b>. Para sembrar revisa 🌱 Siembra lunar.</p>`;
-    html+=`<h4 style="color:var(--accent);margin-top:10px">🌙 Iluminación día por día</h4><div class="astro-luna-grid">`+range.days.map((k,i)=>{
+    html+=`<p class="muted su-e6fe60">💡 Cielo más oscuro para meteoros cerca de la <b>luna nueva</b> · luna más brillante en la <b>llena</b>. Para sembrar revisa 🌱 Siembra lunar.</p>`;
+    html+=`<h4 class="su-5e472a">🌙 Iluminación día por día</h4><div class="astro-luna-grid">`+range.days.map((k,i)=>{
       const md=moonDaily(k); const dk=new Date(k+'T12:00:00');
       const hasEv=(evMap[k]||[]).length>0;
-      return `<div class="astro-luna-cell${k===todayKey?' today':''}" title="${escapeHtml(k)}"><span class="muted" style="font-size:10px">${dk.getDate()}/${dk.getMonth()+1}</span><span style="font-size:20px">${hasEv? (evMap[k][0].simbolo) : md.icon}</span><span style="font-size:10px;color:var(--gold)">${md.illum===null?'—':md.illum+'%'}</span><span class="astro-bar"><i style="width:${md.illum||0}%"></i></span></div>`;
+      return `<div class="astro-luna-cell${k===todayKey?' today':''}" title="${escapeHtml(k)}"><span class="muted su-0d5be0">${dk.getDate()}/${dk.getMonth()+1}</span><span class="su-b9199e">${hasEv? (evMap[k][0].simbolo) : md.icon}</span><span class="su-9bc3cd">${md.illum===null?'—':md.illum+'%'}</span><span class="astro-bar"><i style="width:${md.illum||0}%"></i></span></div>`;
     }).join('')+`</div>`;
     const todayNoonML=new Date(todayKey+'T12:00:00').getTime();
     const inLuna=ASTRO_EVENTS.filter(e=> e.date>=range.startKey && e.date<range.endKey).sort((a,b)=> a.date.localeCompare(b.date));
-    html+=`<h4 style="color:var(--accent);margin-top:12px">🔭 Eventos en esta lunación · ${inLuna.length}</h4>`;
+    html+=`<h4 class="su-5d0cfa">🔭 Eventos en esta lunación · ${inLuna.length}</h4>`;
     html+= inLuna.length
       ? inLuna.map(e=> astroItemHTML(e, todayKey, todayNoonML)).join('')
-      : '<p class="muted" style="font-size:11px">Sin eclipses, superlunas ni lluvias destacadas entre estas dos lunas nuevas. Revisa ⏳ Próximos.</p>';
+      : '<p class="muted su-11a508">Sin eclipses, superlunas ni lluvias destacadas entre estas dos lunas nuevas. Revisa ⏳ Próximos.</p>';
     list.innerHTML=html;
   } else if(astroTab==='year'){
     const yr=new Date().getFullYear();
     const yearEvents=ASTRO_EVENTS.filter(e=> e.date.startsWith(String(yr)) || e.date.startsWith(String(yr+1))).sort((a,b)=>a.date.localeCompare(b.date));
     const byType={}; yearEvents.forEach(e=>{ if(!byType[e.tipo]) byType[e.tipo]=[]; byType[e.tipo].push(e); });
-    let html=`<h4 style="color:var(--gold);margin-top:10px">📅 ${yr} — ${yr+1} ciclo</h4>`;
-    Object.keys(byType).forEach(t=>{ html+=`<p class="muted" style="font-size:11px;margin:8px 0 4px"><b>${t}</b> · ${byType[t].length}</p>` + byType[t].map(e=> `<div class="si-card" style="padding:8px 10px"><h4 style="font-size:12px">${e.icon} ${escapeHtml(e.nombre)} <span class="muted" style="font-size:11px">${e.date}</span></h4><p style="font-size:11px">${escapeHtml(e.desc)}</p></div>`).join(''); });
+    let html=`<h4 class="su-e21c16">📅 ${yr} — ${yr+1} ciclo</h4>`;
+    Object.keys(byType).forEach(t=>{ html+=`<p class="muted su-5c43de"><b>${t}</b> · ${byType[t].length}</p>` + byType[t].map(e=> `<div class="si-card su-cfa1ec"><h4 class="su-6cb285">${e.icon} ${escapeHtml(e.nombre)} <span class="muted su-11a508">${e.date}</span></h4><p class="su-11a508">${escapeHtml(e.desc)}</p></div>`).join(''); });
     list.innerHTML=html;
   } else {
     // fallback seguro: cualquier tab desconocido vuelve a Próximos
@@ -7111,13 +7111,13 @@ function renderComunaDialog(){
   const todayBox=$('comunaTodayBox');
   if(todayBox){
     const todayEvents=getAllComunaEventsForMD(mdToday);
-    todayBox.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center"><span><b>🎉 Hoy — ${cal.fmtFull.format(new Date())}</b></span><span class="chip">${todayEvents.length? todayEvents.length+' evento(s)':'Sin evento hoy'}</span></div>` + (todayEvents.length? todayEvents.map(e=> `<div class="chip" style="display:block;margin-top:6px">${e.icon} <b>${escapeHtml(e.nombre)}</b> — ${escapeHtml(e.desc)}</div>`).join('') : '<p class="muted" style="font-size:11px;margin-top:6px">Hoy sin evento comunal. ¡Crea uno anual!</p>');
+    todayBox.innerHTML=`<div class="su-13313b"><span><b>🎉 Hoy — ${cal.fmtFull.format(new Date())}</b></span><span class="chip">${todayEvents.length? todayEvents.length+' evento(s)':'Sin evento hoy'}</span></div>` + (todayEvents.length? todayEvents.map(e=> `<div class="chip su-b8ea88">${e.icon} <b>${escapeHtml(e.nombre)}</b> — ${escapeHtml(e.desc)}</div>`).join('') : '<p class="muted su-e13d76">Hoy sin evento comunal. ¡Crea uno anual!</p>');
   }
   const lunaBox=$('comunaLunaBox');
   if(lunaBox){
     const yr=currentCycleYear();
     const lunaName=currentView.tipo==='dft'? 'DFT' : MOONS[currentView.luna-1].nombre;
-    lunaBox.innerHTML=`<h4 style="color:var(--accent)">🌙 Luna ${currentView.tipo==='dft'?'DFT':currentView.luna} · ${escapeHtml(lunaName)}</h4><p class="muted" style="font-size:11px">Eventos anuales que caen dentro de esta luna (28 días) aparecen en el calendario como 📅.</p>`;
+    lunaBox.innerHTML=`<h4 class="su-a80552">🌙 Luna ${currentView.tipo==='dft'?'DFT':currentView.luna} · ${escapeHtml(lunaName)}</h4><p class="muted su-11a508">Eventos anuales que caen dentro de esta luna (28 días) aparecen en el calendario como 📅.</p>`;
   }
   const lunaList=$('comunaLunaList');
   if(lunaList){
@@ -7127,7 +7127,7 @@ function renderComunaDialog(){
       const md=cal.fmtKey.format(new Date(d.noonMs)).slice(5);
       const evs=getAllComunaEventsForMD(md);
       evs.forEach(e=>{
-        html+=`<div class="si-card" style="padding:8px 10px"><h4>${e.icon} ${escapeHtml(e.nombre)} <span class="chip" style="font-size:10px">${e.cat||'evento'}</span></h4><p style="font-size:11px;color:var(--muted)">${cal.fmtDate.format(new Date(d.noonMs))} (${md})</p><p style="font-size:12px">${escapeHtml(e.desc)}</p></div>`;
+        html+=`<div class="si-card su-cfa1ec"><h4>${e.icon} ${escapeHtml(e.nombre)} <span class="chip su-0d5be0">${e.cat||'evento'}</span></h4><p class="su-1fd8c8">${cal.fmtDate.format(new Date(d.noonMs))} (${md})</p><p class="su-6cb285">${escapeHtml(e.desc)}</p></div>`;
       });
     });
     lunaList.innerHTML=html||'<p class="muted">Sin eventos anuales en esta luna.</p>';
@@ -7135,7 +7135,7 @@ function renderComunaDialog(){
   const list=$('comunaList'); if(list){
     const all=getAllComunaEvents();
     if(!all.length) list.innerHTML='<p class="muted">Sin eventos.</p>';
-    else list.innerHTML=all.map(e=> `<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center"><span><b>${e.icon} ${escapeHtml(e.nombre)}</b> <span class="chip" style="font-size:10px">${e.md} · ${e.cat||''} ${e.oficial? '· oficial':''}</span><br><span class="muted" style="font-size:11px">${escapeHtml(e.desc)}</span></span><span style="display:flex;gap:6px;flex:0 0 auto">${!e.oficial?`<button data-id="${e.id}" class="btn comuna-edit" style="width:auto;font-size:11px">✏️</button><button data-id="${e.id}" class="btn comuna-del" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕</button>`: '<span class="muted" style="font-size:10px">oficial</span>'}</span></div>`).join('');
+    else list.innerHTML=all.map(e=> `<div class="habit-item su-13313b"><span><b>${e.icon} ${escapeHtml(e.nombre)}</b> <span class="chip su-0d5be0">${e.md} · ${e.cat||''} ${e.oficial? '· oficial':''}</span><br><span class="muted su-11a508">${escapeHtml(e.desc)}</span></span><span class="su-0c0cb1">${!e.oficial?`<button data-id="${e.id}" class="btn comuna-edit su-337714">✏️</button><button data-id="${e.id}" class="btn comuna-del su-fd834a">✕</button>`: '<span class="muted su-0d5be0">oficial</span>'}</span></div>`).join('');
     list.querySelectorAll('.comuna-edit').forEach(b=> b.onclick=()=>{
       const d=getComunaData().list.find(x=>x.id===b.dataset.id); if(!d) return;
       comunaEditingId=d.id; $('comunaDate').value=new Date().getFullYear()+'-'+d.md; $('comunaName').value=d.nombre; $('comunaDesc').value=d.desc; $('comunaIcon').value=d.icon||'🎉'; $('comunaCat').value=d.cat||'otro';
@@ -7188,74 +7188,74 @@ function renderFirstAidPanel(tab){
   const box = $('firstAidPanel'); if(!box) return;
   let html = '';
   if(firstAidTab==='actuar'){
-    html += `<div class="menstrual-card" style="background:linear-gradient(135deg,var(--panel),var(--card));border-color:#ff6b6b">
-      <h4 style="color:#ff6b6b">🚨 PAS — Proteger · Avisar · Socorrer</h4>
-      <p class="muted" style="font-size:11px">En Penco, con marejada y cerros, la escena puede ser cambiante. Nunca te conviertas en segunda víctima.</p>
-      <div class="help-grid" style="margin-top:8px">
-        <div class="help-card"><h4>1️⃣ Proteger</h4><p style="font-size:11px">Haz segura la escena: corta gas/cocina, aleja de agua/cable eléctrico, usa guantes si hay sangre. Señaliza si es en carretera Penco-Lirquén.</p></div>
-        <div class="help-card"><h4>2️⃣ Avisar — 131</h4><p style="font-size:11px">Llama <b>131 SAMU</b> (24h) o <b>132 Bomberos</b> si hay atrapados. Di: <i>“Estoy en Penco, calle X con Y, referencia (CESFAM/playa), adulto/niño, consciente sí/no, respira sí/no, sangra mucho sí/no”</i>. No cuelgues primero. Si no tienes señal, pide a otra persona que llame.</p></div>
+    html += `<div class="menstrual-card su-f24d6f">
+      <h4 class="su-0562fa">🚨 PAS — Proteger · Avisar · Socorrer</h4>
+      <p class="muted su-11a508">En Penco, con marejada y cerros, la escena puede ser cambiante. Nunca te conviertas en segunda víctima.</p>
+      <div class="help-grid su-8a77e5">
+        <div class="help-card"><h4>1️⃣ Proteger</h4><p class="su-11a508">Haz segura la escena: corta gas/cocina, aleja de agua/cable eléctrico, usa guantes si hay sangre. Señaliza si es en carretera Penco-Lirquén.</p></div>
+        <div class="help-card"><h4>2️⃣ Avisar — 131</h4><p class="su-11a508">Llama <b>131 SAMU</b> (24h) o <b>132 Bomberos</b> si hay atrapados. Di: <i>“Estoy en Penco, calle X con Y, referencia (CESFAM/playa), adulto/niño, consciente sí/no, respira sí/no, sangra mucho sí/no”</i>. No cuelgues primero. Si no tienes señal, pide a otra persona que llame.</p></div>
       </div>
-      <div class="help-card" style="margin-top:8px"><h4>3️⃣ Socorrer — Evaluación primaria (XABCDE)</h4><p style="font-size:11px;line-height:1.5"><b>X</b> Hemorragia exsanguinante → presiona ya · <b>A</b> Vía aérea → abre frente-mentón si no hay trauma · <b>B</b> Respiración → mira 10s · <b>C</b> Circulación → pulso/sangrado · <b>D</b> Discapacidad (¿responde? habla, dolor, inconsciente) · <b>E</b> Exposición → abriga (hipotermia en Penco en invierno). Si inconsciente pero respira → <b>Posición Lateral de Seguridad</b>; si no respira → inicia RCP (pestaña siguiente).</p></div>
-      <details class="menstrual-details" style="margin-top:8px" open><summary>🗒️ Protocolo telefónico — qué decir al 131</summary><p class="muted" style="font-size:11px;line-height:1.5">1. Lugar exacto + comuna Penco, nº, intersección, punto de referencia (Playa Penco / CESFAM / Cerro Verde).<br>2. Edad y sexo aproximado, ¿cuántas víctimas?<br>3. ¿Consciente? ¿Respira? ¿Sangra mucho? ¿Convulsiona?<br>4. ¿Qué pasó? (caída, atropello, ahogamiento, infarto).<br>5. Tu nombre y teléfono. Mantén línea, sigue instrucciones del operador. Si te dice “comprime”, pon altavoz.</p></details>
+      <div class="help-card su-8a77e5"><h4>3️⃣ Socorrer — Evaluación primaria (XABCDE)</h4><p class="su-a6c665"><b>X</b> Hemorragia exsanguinante → presiona ya · <b>A</b> Vía aérea → abre frente-mentón si no hay trauma · <b>B</b> Respiración → mira 10s · <b>C</b> Circulación → pulso/sangrado · <b>D</b> Discapacidad (¿responde? habla, dolor, inconsciente) · <b>E</b> Exposición → abriga (hipotermia en Penco en invierno). Si inconsciente pero respira → <b>Posición Lateral de Seguridad</b>; si no respira → inicia RCP (pestaña siguiente).</p></div>
+      <details class="menstrual-details su-8a77e5" open><summary>🗒️ Protocolo telefónico — qué decir al 131</summary><p class="muted su-a6c665">1. Lugar exacto + comuna Penco, nº, intersección, punto de referencia (Playa Penco / CESFAM / Cerro Verde).<br>2. Edad y sexo aproximado, ¿cuántas víctimas?<br>3. ¿Consciente? ¿Respira? ¿Sangra mucho? ¿Convulsiona?<br>4. ¿Qué pasó? (caída, atropello, ahogamiento, infarto).<br>5. Tu nombre y teléfono. Mantén línea, sigue instrucciones del operador. Si te dice “comprime”, pon altavoz.</p></details>
     </div>
-    <div class="help-grid" style="margin-top:10px">
-      <div class="help-card"><h4>😵‍💫 Desmayo (síncope)</h4><p style="font-size:11px">Acuesta boca arriba, eleva piernas 30cm, afloja ropa, ventila, controla respiración 2 min. Si no despierta en 1 min o convulsiona → 131. No le des agua si está inconsciente.</p></div>
-      <div class="help-card"><h4>⚡ Convulsión</h4><p style="font-size:11px">No sujetes, no metas nada en la boca, aparta objetos, pon algo blando bajo cabeza, cronometra. Al terminar → lateral seguridad. Si dura &gt;5 min, se repite, o es primera vez → 131. Anota hora y duración.</p></div>
-      <div class="help-card"><h4>🧠 ACV — reconoce FAST</h4><p style="font-size:11px"><b>F</b> Face caída de un lado — pide sonreír<br><b>A</b> Arms — pide levantar brazos, ¿uno cae?<br><b>S</b> Speech — habla raro o no entiende<br><b>T</b> Time — llama 131 de inmediato, anota hora inicio. No le des aspirina sin indicación.</p></div>
-      <div class="help-card"><h4>💔 Dolor torácico / Infarto</h4><p style="font-size:11px">Opresión pecho 5+ min con irradiación a brazo/mandíbula, sudor frío, náusea, falta de aire → 131 ya, recuesta semi-sentado, afloja ropa, no caminar/esforzar, si toma medicación y la tiene a mano ayúdale, monitorea pulso. No manejes tú a urgencias si hay SAMU.</p></div>
+    <div class="help-grid su-d2c171">
+      <div class="help-card"><h4>😵‍💫 Desmayo (síncope)</h4><p class="su-11a508">Acuesta boca arriba, eleva piernas 30cm, afloja ropa, ventila, controla respiración 2 min. Si no despierta en 1 min o convulsiona → 131. No le des agua si está inconsciente.</p></div>
+      <div class="help-card"><h4>⚡ Convulsión</h4><p class="su-11a508">No sujetes, no metas nada en la boca, aparta objetos, pon algo blando bajo cabeza, cronometra. Al terminar → lateral seguridad. Si dura &gt;5 min, se repite, o es primera vez → 131. Anota hora y duración.</p></div>
+      <div class="help-card"><h4>🧠 ACV — reconoce FAST</h4><p class="su-11a508"><b>F</b> Face caída de un lado — pide sonreír<br><b>A</b> Arms — pide levantar brazos, ¿uno cae?<br><b>S</b> Speech — habla raro o no entiende<br><b>T</b> Time — llama 131 de inmediato, anota hora inicio. No le des aspirina sin indicación.</p></div>
+      <div class="help-card"><h4>💔 Dolor torácico / Infarto</h4><p class="su-11a508">Opresión pecho 5+ min con irradiación a brazo/mandíbula, sudor frío, náusea, falta de aire → 131 ya, recuesta semi-sentado, afloja ropa, no caminar/esforzar, si toma medicación y la tiene a mano ayúdale, monitorea pulso. No manejes tú a urgencias si hay SAMU.</p></div>
     </div>`;
   } else if(firstAidTab==='rcp'){
     html += `<div class="help-grid">
-      <div class="help-card" style="border-color:#e74c3c"><h4>🫀 RCP básico adulto — 30:2</h4><p style="font-size:11px;line-height:1.5">Solo si <b>no respira y no responde</b>. 1) Confirma, pide 131 y DEA si hay. 2) Víctima en suelo duro. 3) Talón de mano en centro del pecho, otra encima, brazos rectos. 4) <b>Comprime 5-6 cm, 100-120/min</b> (ritmo “Stayin’ Alive”), deja que el pecho vuelva. 5) 30 compresiones → 2 ventilaciones si sabes (si no, solo comprime). 6) No pares hasta que llegue ayuda o respire. Si hay DEA, sigue sus instrucciones, no toques durante descarga.</p><p class="muted" style="font-size:10px">Curso práctico recomendado en CESFAM/Bomberos Penco — esta guía no reemplaza práctica presencial.</p></div>
-      <div class="help-card"><h4>👶 Niños y lactantes — diferencias</h4><p style="font-size:11px;line-height:1.5"><b>Niño 1-8 años:</b> 1 mano si es pequeño, profundidad 1/3 del tórax (~5cm), 30:2 igual, si 2 reanimadores 15:2.<br><b>Lactante &lt;1 año:</b> 2 dedos centro pecho, 4cm profundidad, 30:2 (solo 15:2 con 2 reanimadores), no inclinación excesiva de cabeza.<br>Si te ahogas solo, llama 131 y haz compresiones contra respaldo de silla.</p></div>
+      <div class="help-card su-f90540"><h4>🫀 RCP básico adulto — 30:2</h4><p class="su-a6c665">Solo si <b>no respira y no responde</b>. 1) Confirma, pide 131 y DEA si hay. 2) Víctima en suelo duro. 3) Talón de mano en centro del pecho, otra encima, brazos rectos. 4) <b>Comprime 5-6 cm, 100-120/min</b> (ritmo “Stayin’ Alive”), deja que el pecho vuelva. 5) 30 compresiones → 2 ventilaciones si sabes (si no, solo comprime). 6) No pares hasta que llegue ayuda o respire. Si hay DEA, sigue sus instrucciones, no toques durante descarga.</p><p class="muted su-0d5be0">Curso práctico recomendado en CESFAM/Bomberos Penco — esta guía no reemplaza práctica presencial.</p></div>
+      <div class="help-card"><h4>👶 Niños y lactantes — diferencias</h4><p class="su-a6c665"><b>Niño 1-8 años:</b> 1 mano si es pequeño, profundidad 1/3 del tórax (~5cm), 30:2 igual, si 2 reanimadores 15:2.<br><b>Lactante &lt;1 año:</b> 2 dedos centro pecho, 4cm profundidad, 30:2 (solo 15:2 con 2 reanimadores), no inclinación excesiva de cabeza.<br>Si te ahogas solo, llama 131 y haz compresiones contra respaldo de silla.</p></div>
     </div>
-    <div class="menstrual-card" style="margin-top:10px;border-color:#ff9a76"><h4>🫁 Atragantamiento — Heimlich</h4>
-      <div class="help-grid" style="margin-top:6px">
-        <div class="help-card"><h4>Adulto consciente que no tose/habla</h4><p style="font-size:11px">Abraza por detrás, puño sobre ombligo (sobre cicatriz umbilical, bajo esternón), otra mano encima, compresiones en J hacia adentro y arriba (5 veces). Alterna 5 palmadas entre omóplatos + 5 Heimlich hasta que expulse o llegue ayuda. Si queda inconsciente → inicia RCP.</p></div>
-        <div class="help-card"><h4>🤰 Embarazada / obeso</h4><p style="font-size:11px">Compresiones en <b>centro del esternón</b>, no en abdomen. Misma alternancia 5+5.</p></div>
-        <div class="help-card"><h4>👶 Lactante atragantado</h4><p style="font-size:11px">Boca abajo sobre antebrazo, cabeza más baja que tronco, 5 palmadas suaves entre omóplatos. Gira boca arriba, 5 compresiones con 2 dedos en centro pecho. Repite. Si pierde conciencia → RCP lactante. No metas dedos a ciegas.</p></div>
-        <div class="help-card"><h4>🪞 Si te atragantas solo</h4><p style="font-size:11px">Tose fuerte, si no puedes, apoya tu abdomen sobre respaldo de silla/mesón y haz presión brusca hacia adentro-arriba. Llama 131 aunque lo expulses — revisa vía aérea en Hospital.</p></div>
+    <div class="menstrual-card su-4bb1f8"><h4>🫁 Atragantamiento — Heimlich</h4>
+      <div class="help-grid su-fe7b49">
+        <div class="help-card"><h4>Adulto consciente que no tose/habla</h4><p class="su-11a508">Abraza por detrás, puño sobre ombligo (sobre cicatriz umbilical, bajo esternón), otra mano encima, compresiones en J hacia adentro y arriba (5 veces). Alterna 5 palmadas entre omóplatos + 5 Heimlich hasta que expulse o llegue ayuda. Si queda inconsciente → inicia RCP.</p></div>
+        <div class="help-card"><h4>🤰 Embarazada / obeso</h4><p class="su-11a508">Compresiones en <b>centro del esternón</b>, no en abdomen. Misma alternancia 5+5.</p></div>
+        <div class="help-card"><h4>👶 Lactante atragantado</h4><p class="su-11a508">Boca abajo sobre antebrazo, cabeza más baja que tronco, 5 palmadas suaves entre omóplatos. Gira boca arriba, 5 compresiones con 2 dedos en centro pecho. Repite. Si pierde conciencia → RCP lactante. No metas dedos a ciegas.</p></div>
+        <div class="help-card"><h4>🪞 Si te atragantas solo</h4><p class="su-11a508">Tose fuerte, si no puedes, apoya tu abdomen sobre respaldo de silla/mesón y haz presión brusca hacia adentro-arriba. Llama 131 aunque lo expulses — revisa vía aérea en Hospital.</p></div>
       </div>
     </div>
-    <div class="menstrual-card" style="margin-top:10px;background:var(--panel)"><h4>🌊 Ahogamiento (mar/piscina) — Penco costa</h4><p class="muted" style="font-size:11px;line-height:1.5">No entres al agua sin salvavidas/cuerda; pide rescate (Armada 137). Si rescatas: saca sin golpear, acuesta, evalúa respiración. Si no respira → RCP + 131 de inmediato. No hagas “sacar agua” apretando abdomen. Abriga (hipotermia). Si vomita → lateral. Tras cualquier inmersión, aunque respire, evalúalo en Hospital (edema tardío).</p></div>`;
+    <div class="menstrual-card su-4adf8c"><h4>🌊 Ahogamiento (mar/piscina) — Penco costa</h4><p class="muted su-a6c665">No entres al agua sin salvavidas/cuerda; pide rescate (Armada 137). Si rescatas: saca sin golpear, acuesta, evalúa respiración. Si no respira → RCP + 131 de inmediato. No hagas “sacar agua” apretando abdomen. Abriga (hipotermia). Si vomita → lateral. Tras cualquier inmersión, aunque respire, evalúalo en Hospital (edema tardío).</p></div>`;
   } else if(firstAidTab==='heridas'){
     html += `<div class="help-grid">
-      <div class="help-card"><h4>🩹 Corte leve / erosión</h4><p style="font-size:11px;line-height:1.5">Lava manos, presiona con gasa limpia, lava con agua potable abundante (no alcohol directo), retira tierra visible, seca, povidona si hay solo alrededor (no dentro profunda), tapa con apósito limpio. Cambia diario. Vigila: enrojecimiento creciente, pus, fiebre → CESFAM. Vacuna antitetánica al día.</p></div>
-      <div class="help-card" style="border-color:#ff6b6b"><h4>🩸 Hemorragia grave</h4><p style="font-size:11px;line-height:1.5"><b>Presión directa</b> con gasa/compresa, no retires, añade capas. Eleva extremidad si no hay fractura. <b>Torniquete</b> solo si sangrado masivo que no para en extremidad (cinturón/ancho 5cm, 5cm sobre herida, anota hora, no lo sueltes). Llama 131. No quites objeto clavado — estabilízalo. Shock: pálido, frío, sed → acuesta, eleva piernas, abriga.</p></div>
-      <div class="help-card"><h4>👃 Sangrado nasal</h4><p style="font-size:11px">Siéntate inclinado adelante, presiona ala blanda de nariz 10-15 min sin soltar, respira por boca, no te suenes ni te acuestes. Frío local. Si dura &gt;20 min, sangra mucho o es por golpe fuerte → SAR/Hospital.</p></div>
-      <div class="help-card"><h4>🐶 Mordedura / araña</h4><p style="font-size:11px">Lava con agua y jabón 5 min, no cierres, cubre, consulta CESFAM (antirrábica/antitetánica). Si es araña de rincón (violín) → lleva araña/foto, marca hora, aplica frío, no cortes. En Penco, conserva ejemplar para identificación. Si alergia (hinchazón cara/dificultad respirar) → 131.</p></div>
+      <div class="help-card"><h4>🩹 Corte leve / erosión</h4><p class="su-a6c665">Lava manos, presiona con gasa limpia, lava con agua potable abundante (no alcohol directo), retira tierra visible, seca, povidona si hay solo alrededor (no dentro profunda), tapa con apósito limpio. Cambia diario. Vigila: enrojecimiento creciente, pus, fiebre → CESFAM. Vacuna antitetánica al día.</p></div>
+      <div class="help-card su-55637b"><h4>🩸 Hemorragia grave</h4><p class="su-a6c665"><b>Presión directa</b> con gasa/compresa, no retires, añade capas. Eleva extremidad si no hay fractura. <b>Torniquete</b> solo si sangrado masivo que no para en extremidad (cinturón/ancho 5cm, 5cm sobre herida, anota hora, no lo sueltes). Llama 131. No quites objeto clavado — estabilízalo. Shock: pálido, frío, sed → acuesta, eleva piernas, abriga.</p></div>
+      <div class="help-card"><h4>👃 Sangrado nasal</h4><p class="su-11a508">Siéntate inclinado adelante, presiona ala blanda de nariz 10-15 min sin soltar, respira por boca, no te suenes ni te acuestes. Frío local. Si dura &gt;20 min, sangra mucho o es por golpe fuerte → SAR/Hospital.</p></div>
+      <div class="help-card"><h4>🐶 Mordedura / araña</h4><p class="su-11a508">Lava con agua y jabón 5 min, no cierres, cubre, consulta CESFAM (antirrábica/antitetánica). Si es araña de rincón (violín) → lleva araña/foto, marca hora, aplica frío, no cortes. En Penco, conserva ejemplar para identificación. Si alergia (hinchazón cara/dificultad respirar) → 131.</p></div>
     </div>
-    <div class="menstrual-card" style="margin-top:10px"><h4>🦟 Picaduras — manejo local</h4><p class="muted" style="font-size:11px;line-height:1.5"><b>Abeja/avispa:</b> retira aguijón raspando (no aprietes), lava, frío 10 min, antihistamínico si pica generalizado. <b>Zancudo/ pulga:</b> lava, no rasques, frío. Vigila infección. <b>Medusa / fragata portuguesa</b> (costa Penco): lava con <b>agua de mar</b> (no dulce), retira tentáculos con pinza/guante, no frotes con arena, frío, vinagre no. Si dolor extenso, vómitos, dificultad respirar → 131. Reporta a Capitanía 41 275 1006.</p></div>`;
+    <div class="menstrual-card su-d2c171"><h4>🦟 Picaduras — manejo local</h4><p class="muted su-a6c665"><b>Abeja/avispa:</b> retira aguijón raspando (no aprietes), lava, frío 10 min, antihistamínico si pica generalizado. <b>Zancudo/ pulga:</b> lava, no rasques, frío. Vigila infección. <b>Medusa / fragata portuguesa</b> (costa Penco): lava con <b>agua de mar</b> (no dulce), retira tentáculos con pinza/guante, no frotes con arena, frío, vinagre no. Si dolor extenso, vómitos, dificultad respirar → 131. Reporta a Capitanía 41 275 1006.</p></div>`;
   } else if(firstAidTab==='quemaduras'){
     html += `<div class="help-grid">
-      <div class="help-card" style="border-color:#ff9a76"><h4>🔥 Quemadura térmica</h4><p style="font-size:11px;line-height:1.5"><b>1º grado</b> (roja, duele): enfría con <b>agua potable 15-20 min</b> (no hielo, no pasta dental, no mantequilla), cubre con gasa limpia, hidrata, analgésico si no hay alergia.<br><b>2º grado</b> (ampolla): no revientes, enfría, cubre sin apretar, SAR/Hospital.<br><b>3º grado</b> (blanca/negra, no duele): no retires ropa pegada, cubre con paño limpio húmedo, 131 ya. En cara/manos/ingles o extensa → 131.</p></div>
-      <div class="help-card"><h4>💨 Inhalación de humo (incendio, brasero)</h4><p style="font-size:11px">Saca al aire, 131, semi-sentado si respira, lateral si inconsciente pero respira. Vigila tos persistente, hollín en nariz — indica daño vía aérea. No vuelvas a entrar por objetos. En Penco inviernos, ventila brasero a leña/parafina: bota ceniza afuera fría.</p></div>
-      <div class="help-card"><h4>🧴 Química (cloro, soda)</h4><p style="font-size:11px">Piel: lava agua abundante 20 min, retira ropa contaminada. Ojos: lava 15 min párpado abierto, agua templada. No neutralices con vinagre. Lleva etiqueta del producto a urgencias. 131 / CITUC 22 635 3800.</p></div>
-      <div class="help-card"><h4>⚗️ Intoxicación / envenenamiento</h4><p style="font-size:11px">Llama <b>CITUC 22 635 3800</b> (24h) y 131 si grave. No induzcas vómito, no des leche. Guarda envase y anota hora y cantidad. Si no respira → RCP. Niños: guarda medicamentos/bleach bajo llave — en Penco, guarda a altura, nunca en botella de bebida.</p></div>
+      <div class="help-card su-1fadd9"><h4>🔥 Quemadura térmica</h4><p class="su-a6c665"><b>1º grado</b> (roja, duele): enfría con <b>agua potable 15-20 min</b> (no hielo, no pasta dental, no mantequilla), cubre con gasa limpia, hidrata, analgésico si no hay alergia.<br><b>2º grado</b> (ampolla): no revientes, enfría, cubre sin apretar, SAR/Hospital.<br><b>3º grado</b> (blanca/negra, no duele): no retires ropa pegada, cubre con paño limpio húmedo, 131 ya. En cara/manos/ingles o extensa → 131.</p></div>
+      <div class="help-card"><h4>💨 Inhalación de humo (incendio, brasero)</h4><p class="su-11a508">Saca al aire, 131, semi-sentado si respira, lateral si inconsciente pero respira. Vigila tos persistente, hollín en nariz — indica daño vía aérea. No vuelvas a entrar por objetos. En Penco inviernos, ventila brasero a leña/parafina: bota ceniza afuera fría.</p></div>
+      <div class="help-card"><h4>🧴 Química (cloro, soda)</h4><p class="su-11a508">Piel: lava agua abundante 20 min, retira ropa contaminada. Ojos: lava 15 min párpado abierto, agua templada. No neutralices con vinagre. Lleva etiqueta del producto a urgencias. 131 / CITUC 22 635 3800.</p></div>
+      <div class="help-card"><h4>⚗️ Intoxicación / envenenamiento</h4><p class="su-11a508">Llama <b>CITUC 22 635 3800</b> (24h) y 131 si grave. No induzcas vómito, no des leche. Guarda envase y anota hora y cantidad. Si no respira → RCP. Niños: guarda medicamentos/bleach bajo llave — en Penco, guarda a altura, nunca en botella de bebida.</p></div>
     </div>
-    <div class="menstrual-card" style="margin-top:10px;background:var(--panel)"><h4>🌡️ Golpe de calor & Hipotermia — Penco costero</h4><p class="muted" style="font-size:11px;line-height:1.5"><b>Calor</b> (verano playa, sin sombra): náusea, dolor cabeza, piel caliente → sombra, desabrocha, paños húmedos en cuello/axilas, sorbitos agua, si confuso/vomita o no suda → 131.<br><b>Hipotermia</b> (viento sur, lluvia, mar): temblor → quietud → somnolencia → quita ropa mojada, abriga seco, manta, bebida tibia si consciente, no alcohol, no fricción brusca, 131 si grave. En marejadas, no te acerques a rocas por fotos.</p></div>`;
+    <div class="menstrual-card su-4adf8c"><h4>🌡️ Golpe de calor & Hipotermia — Penco costero</h4><p class="muted su-a6c665"><b>Calor</b> (verano playa, sin sombra): náusea, dolor cabeza, piel caliente → sombra, desabrocha, paños húmedos en cuello/axilas, sorbitos agua, si confuso/vomita o no suda → 131.<br><b>Hipotermia</b> (viento sur, lluvia, mar): temblor → quietud → somnolencia → quita ropa mojada, abriga seco, manta, bebida tibia si consciente, no alcohol, no fricción brusca, 131 si grave. En marejadas, no te acerques a rocas por fotos.</p></div>`;
   } else if(firstAidTab==='trauma'){
     html += `<div class="help-grid">
-      <div class="help-card"><h4>🦴 Fractura / sospecha</h4><p style="font-size:11px">Dolor intenso, deformidad, crujido, impotencia: <b>no endereces</b>, no masajees. Inmoviliza como está (tabla/cartón acolchado), por encima y debajo de la fractura. Frío intermitente, eleva si es extremidad. Llama 131 / traslada a Hospital Penco sin mover mucho. Controla hemorragia y shock.</p></div>
-      <div class="help-card"><h4>🤸 Esguince / luxación</h4><p style="font-size:11px">Reposo, Hielo 15min cada 2h (con paño), Compresión suave, Elevación (RICE). Si deformidad o clic → no intentes encajar, inmoviliza y 131. Usa cabestrillo con pañuelo para brazo.</p></div>
-      <div class="help-card"><h4>🧠 TEC — golpe en cabeza</h4><p style="font-size:11px">Si cayó de altura, golpe fuerte, pérdida conciencia aunque breve, vómito, dolor cabeza creciente, pupilas distintas, sangrado oído → 131, no lo dejes solo 24h, no automediques, no duermas sin vigilancia. Niños: llanto inconsolable o somnolencia → urgencias ya.</p></div>
-      <div class="help-card" style="border-color:#ff6b6b"><h4>🦽 Sospecha lesión de columna (caída, zambullida, atropello)</h4><p style="font-size:11px"><b>No muevas</b>, no lo sientes, no le quites casco. Estabiliza cabeza con manos, pide 131, abriga. Solo mueve si hay peligro inminente (fuego) arrastrando en bloque.</p></div>
+      <div class="help-card"><h4>🦴 Fractura / sospecha</h4><p class="su-11a508">Dolor intenso, deformidad, crujido, impotencia: <b>no endereces</b>, no masajees. Inmoviliza como está (tabla/cartón acolchado), por encima y debajo de la fractura. Frío intermitente, eleva si es extremidad. Llama 131 / traslada a Hospital Penco sin mover mucho. Controla hemorragia y shock.</p></div>
+      <div class="help-card"><h4>🤸 Esguince / luxación</h4><p class="su-11a508">Reposo, Hielo 15min cada 2h (con paño), Compresión suave, Elevación (RICE). Si deformidad o clic → no intentes encajar, inmoviliza y 131. Usa cabestrillo con pañuelo para brazo.</p></div>
+      <div class="help-card"><h4>🧠 TEC — golpe en cabeza</h4><p class="su-11a508">Si cayó de altura, golpe fuerte, pérdida conciencia aunque breve, vómito, dolor cabeza creciente, pupilas distintas, sangrado oído → 131, no lo dejes solo 24h, no automediques, no duermas sin vigilancia. Niños: llanto inconsolable o somnolencia → urgencias ya.</p></div>
+      <div class="help-card su-55637b"><h4>🦽 Sospecha lesión de columna (caída, zambullida, atropello)</h4><p class="su-11a508"><b>No muevas</b>, no lo sientes, no le quites casco. Estabiliza cabeza con manos, pide 131, abriga. Solo mueve si hay peligro inminente (fuego) arrastrando en bloque.</p></div>
     </div>
-    <div class="menstrual-card" style="margin-top:10px"><h4>🫁 Obstrucción nasal / cuerpo extraño</h4><p class="muted" style="font-size:11px">Nariz/oído con objeto: no intentes con pinza profunda, lleva a SAR. Si es pila botón (reloj) → 131 de inmediato (quema en 2h). Atragantamiento ver pestaña RCP.</p></div>`;
+    <div class="menstrual-card su-d2c171"><h4>🫁 Obstrucción nasal / cuerpo extraño</h4><p class="muted su-11a508">Nariz/oído con objeto: no intentes con pinza profunda, lleva a SAR. Si es pila botón (reloj) → 131 de inmediato (quema en 2h). Atragantamiento ver pestaña RCP.</p></div>`;
   } else if(firstAidTab==='botiquin'){
-    html += `<div class="menstrual-card" style="background:linear-gradient(135deg,var(--panel),var(--card));border-color:var(--gold)">
-      <h4 style="color:var(--gold)">🎒 Botiquín hogar Penco — revisa cada luna (28 días)</h4>
-      <div class="help-grid" style="margin-top:8px">
-        <div class="help-card"><h4>🩹 Básico</h4><p style="font-size:11px">Guantes desechables, mascarilla, gasas estériles, apósitos, tela adhesiva, vendaje elástico, curitas, suero fisiológico 0,9% (o agua hervida fría), tijera punta roma, pinza, termómetro, linterna, manta.</p></div>
-        <div class="help-card"><h4>💊 Botiquín (con receta según caso)</h4><p style="font-size:11px">Paracetamol/ibuprofeno, antihistamínico, sales rehidratación oral, povidona yodada, alcohol 70% (solo para instrumental), crema quemadura leve. Guarda prospectos y fechas de vencimiento. No automediques antibióticos.</p></div>
-        <div class="help-card"><h4>📄 Documentos</h4><p style="font-size:11px">Fotocopia carnet, previsión, alergias, medicamentos crónicos, contactos (131/132/133, Hospital 41 272 6300, persona de confianza), plan de evacuación a cerro si vives bajo 30 msnm (tsunami).</p></div>
-        <div class="help-card"><h4>🌧️ Extra Penco invernal</h4><p style="font-size:11px">Impermeable, nylon, silbato, power bank, agua 2L p/persona, barras cereal, copia llaves. En bolsa ziploc seca. Si vives cerca de estero, ten saco de arena y pala.</p></div>
+    html += `<div class="menstrual-card su-7baee2">
+      <h4 class="su-e39eba">🎒 Botiquín hogar Penco — revisa cada luna (28 días)</h4>
+      <div class="help-grid su-8a77e5">
+        <div class="help-card"><h4>🩹 Básico</h4><p class="su-11a508">Guantes desechables, mascarilla, gasas estériles, apósitos, tela adhesiva, vendaje elástico, curitas, suero fisiológico 0,9% (o agua hervida fría), tijera punta roma, pinza, termómetro, linterna, manta.</p></div>
+        <div class="help-card"><h4>💊 Botiquín (con receta según caso)</h4><p class="su-11a508">Paracetamol/ibuprofeno, antihistamínico, sales rehidratación oral, povidona yodada, alcohol 70% (solo para instrumental), crema quemadura leve. Guarda prospectos y fechas de vencimiento. No automediques antibióticos.</p></div>
+        <div class="help-card"><h4>📄 Documentos</h4><p class="su-11a508">Fotocopia carnet, previsión, alergias, medicamentos crónicos, contactos (131/132/133, Hospital 41 272 6300, persona de confianza), plan de evacuación a cerro si vives bajo 30 msnm (tsunami).</p></div>
+        <div class="help-card"><h4>🌧️ Extra Penco invernal</h4><p class="su-11a508">Impermeable, nylon, silbato, power bank, agua 2L p/persona, barras cereal, copia llaves. En bolsa ziploc seca. Si vives cerca de estero, ten saco de arena y pala.</p></div>
       </div>
-      <p class="muted" style="font-size:10px;margin-top:8px">Guarda en lugar seco, alto para niños, señalizado. Reemplaza lo usado y lo vencido. Haz simulacro familiar: ¿quién llama, quién abre la puerta a SAMU, dónde esperan?</p>
+      <p class="muted su-a953a7">Guarda en lugar seco, alto para niños, señalizado. Reemplaza lo usado y lo vencido. Haz simulacro familiar: ¿quién llama, quién abre la puerta a SAMU, dónde esperan?</p>
     </div>
-    <div class="help-grid" style="margin-top:10px">
-      <div class="help-card"><h4>🗓️ Rutina mensual</h4><p style="font-size:11px">Luna 1 revisa vencimientos · Luna 4 simulacro · Luna 7 reposición · Luna 10 curso Bomberos/CESFAM. Anota en “Notas de la Luna”.</p></div>
-      <div class="help-card"><h4>♿ Inclusivo</h4><p style="font-size:11px">Si hay adulto mayor/movilidad reducida: ten silla/camilla cerca, lista de medicamentos en refrigerador visible para rescatistas, pulsera con datos.</p></div>
+    <div class="help-grid su-d2c171">
+      <div class="help-card"><h4>🗓️ Rutina mensual</h4><p class="su-11a508">Luna 1 revisa vencimientos · Luna 4 simulacro · Luna 7 reposición · Luna 10 curso Bomberos/CESFAM. Anota en “Notas de la Luna”.</p></div>
+      <div class="help-card"><h4>♿ Inclusivo</h4><p class="su-11a508">Si hay adulto mayor/movilidad reducida: ten silla/camilla cerca, lista de medicamentos en refrigerador visible para rescatistas, pulsera con datos.</p></div>
     </div>`;
   }
   box.innerHTML = html;
@@ -7279,64 +7279,64 @@ function renderAnimalCarePanel(tab){
   const box = $('animalCarePanel'); if(!box) return;
   let html='';
   if(animalCareTab==='tenencia'){
-    html+= `<div class="menstrual-card" style="background:linear-gradient(135deg,var(--panel),var(--card));border-color:#a9d18e">
-      <h4 style="color:#a9d18e">🏠 Tenencia responsable — Ley 21.020 (Ley Cholito)</h4>
-      <p class="muted" style="font-size:11px">Eres responsable legal de su bienestar, registro y daños. Multas 1-30 UTM.</p>
-      <div class="help-grid" style="margin-top:8px">
-        <div class="help-card"><h4>📝 Obligatorio en Penco</h4><p style="font-size:11px;line-height:1.5">1. <b>Microchip + Registro</b> en <b>registratumascota.cl</b> (con Clave Única) — perro y gato.<br>2. <b>Vacunas y desparasitación</b> al día (ver pestaña 💉).<br>3. <b>Esterilización recomendada</b> (gratuita en operativos DIDECO 41 226 1020).<br>4. <b>Paseo con correa</b>, bozal si es razas fuertes, <b>bolsa para fecas</b> — multa municipal si no recoges (Ord. Penco).<br>5. <b>No abandono:</b> si no puedes cuidar, busca adopción, no lo sueltes en humedal/cerro.</p></div>
-        <div class="help-card"><h4>🏡 Patio Penco</h4><p style="font-size:11px;line-height:1.5">Viento sur y lluvia horizontal: cucha elevada, seca, con techo y aislación, no amarrado con cadena corta. Agua fresca diaria, sombra en verano (Walüng), no dejar en auto ni balcón al sol. Si arriendas, confirma que acepten mascotas.</p></div>
+    html+= `<div class="menstrual-card su-ede178">
+      <h4 class="su-559282">🏠 Tenencia responsable — Ley 21.020 (Ley Cholito)</h4>
+      <p class="muted su-11a508">Eres responsable legal de su bienestar, registro y daños. Multas 1-30 UTM.</p>
+      <div class="help-grid su-8a77e5">
+        <div class="help-card"><h4>📝 Obligatorio en Penco</h4><p class="su-a6c665">1. <b>Microchip + Registro</b> en <b>registratumascota.cl</b> (con Clave Única) — perro y gato.<br>2. <b>Vacunas y desparasitación</b> al día (ver pestaña 💉).<br>3. <b>Esterilización recomendada</b> (gratuita en operativos DIDECO 41 226 1020).<br>4. <b>Paseo con correa</b>, bozal si es razas fuertes, <b>bolsa para fecas</b> — multa municipal si no recoges (Ord. Penco).<br>5. <b>No abandono:</b> si no puedes cuidar, busca adopción, no lo sueltes en humedal/cerro.</p></div>
+        <div class="help-card"><h4>🏡 Patio Penco</h4><p class="su-a6c665">Viento sur y lluvia horizontal: cucha elevada, seca, con techo y aislación, no amarrado con cadena corta. Agua fresca diaria, sombra en verano (Walüng), no dejar en auto ni balcón al sol. Si arriendas, confirma que acepten mascotas.</p></div>
       </div>
-      <details class="menstrual-details" style="margin-top:8px" open><summary>🐕‍🦺 Paseo seguro en costanera / humedal</summary><p class="muted" style="font-size:11px;line-height:1.5">Correa 1,5-2m, no extensible en zona de aves. Lleva agua y bolsa. Evita horas de calor 12-17h (asfalto quema patas — prueba 7s con tu mano). Si tu perro persigue aves, usa correa corta: el <b>chorlo nevado</b> nidifica en arena Oct-Feb y abandona nido si lo asustan.</p></details>
+      <details class="menstrual-details su-8a77e5" open><summary>🐕‍🦺 Paseo seguro en costanera / humedal</summary><p class="muted su-a6c665">Correa 1,5-2m, no extensible en zona de aves. Lleva agua y bolsa. Evita horas de calor 12-17h (asfalto quema patas — prueba 7s con tu mano). Si tu perro persigue aves, usa correa corta: el <b>chorlo nevado</b> nidifica en arena Oct-Feb y abandona nido si lo asustan.</p></details>
     </div>
-    <div class="help-grid" style="margin-top:10px">
-      <div class="help-card"><h4>🐶 Perro — rutina diaria</h4><p style="font-size:11px">2 paseos 20-30min + juego olfativo, agua limpia, croqueta según peso/edad (no sobras condimentadas), cepillado, no huesos astillables. Sociabiliza de cachorro.</p></div>
-      <div class="help-card"><h4>🐱 Gato — indoor</h4><p style="font-size:11px">Indoor o con catio: arenero limpio diario, rascador, juguete, agua fresca lejos de comida, esteriliza a los 5-6 meses. No collar con cascabel permanente.</p></div>
+    <div class="help-grid su-d2c171">
+      <div class="help-card"><h4>🐶 Perro — rutina diaria</h4><p class="su-11a508">2 paseos 20-30min + juego olfativo, agua limpia, croqueta según peso/edad (no sobras condimentadas), cepillado, no huesos astillables. Sociabiliza de cachorro.</p></div>
+      <div class="help-card"><h4>🐱 Gato — indoor</h4><p class="su-11a508">Indoor o con catio: arenero limpio diario, rascador, juguete, agua fresca lejos de comida, esteriliza a los 5-6 meses. No collar con cascabel permanente.</p></div>
     </div>`;
   } else if(animalCareTab==='auxilios'){
     html+= `<div class="help-grid">
-      <div class="help-card" style="border-color:#ff6b6b"><h4>🩸 Herida / hemorragia</h4><p style="font-size:11px;line-height:1.5">Guantes, presiona con gasa limpia 5 min sin retirar, venda suave. No uses alcohol directo ni torniquete improvisado apretado. Collar isabelino/cartón para que no lama. Traslada a vet (41 222 3456 Conce 24h) si es profunda, no para de sangrar o hay objeto clavado.</p></div>
-      <div class="help-card"><h4>🚗 Atropello</h4><p style="font-size:11px;line-height:1.5">No lo abraces brusco: puede morder por dolor. Inmoviliza en manta rígida, controla hemorragia, abriga (shock), llama vet. Si es callejero, avisa a Vet Municipal 41 226 1017 y Carabineros 133. Anota patente si se da a la fuga.</p></div>
-      <div class="help-card"><h4>🤢 Envenenamiento (raticida, anticongelante, chocolate, cebolla, lirio)</h4><p style="font-size:11px;line-height:1.5"><b>No des leche, aceite ni induzcas vómito</b>. Retira resto del hocico, guarda envase, llama vet ya. Lirio y anticongelante son letales en gatos/perros. Xilitol (chicle) → hipoglucemia grave en perro. Tiempo es oro.</p></div>
-      <div class="help-card"><h4>🥵 Golpe de calor</h4><p style="font-size:11px;line-height:1.5">Jadeo extremo, babeo, tambaleo, encías rojas → sombra, agua fresca (no helada) en patas y panza, ventilador, ofrece agua a sorbos, no lo sumerjas en hielo. Traslada ya: daño renal. En Penco, nunca dejes perro en auto ni patio sin sombra en verano.</p></div>
+      <div class="help-card su-55637b"><h4>🩸 Herida / hemorragia</h4><p class="su-a6c665">Guantes, presiona con gasa limpia 5 min sin retirar, venda suave. No uses alcohol directo ni torniquete improvisado apretado. Collar isabelino/cartón para que no lama. Traslada a vet (41 222 3456 Conce 24h) si es profunda, no para de sangrar o hay objeto clavado.</p></div>
+      <div class="help-card"><h4>🚗 Atropello</h4><p class="su-a6c665">No lo abraces brusco: puede morder por dolor. Inmoviliza en manta rígida, controla hemorragia, abriga (shock), llama vet. Si es callejero, avisa a Vet Municipal 41 226 1017 y Carabineros 133. Anota patente si se da a la fuga.</p></div>
+      <div class="help-card"><h4>🤢 Envenenamiento (raticida, anticongelante, chocolate, cebolla, lirio)</h4><p class="su-a6c665"><b>No des leche, aceite ni induzcas vómito</b>. Retira resto del hocico, guarda envase, llama vet ya. Lirio y anticongelante son letales en gatos/perros. Xilitol (chicle) → hipoglucemia grave en perro. Tiempo es oro.</p></div>
+      <div class="help-card"><h4>🥵 Golpe de calor</h4><p class="su-a6c665">Jadeo extremo, babeo, tambaleo, encías rojas → sombra, agua fresca (no helada) en patas y panza, ventilador, ofrece agua a sorbos, no lo sumerjas en hielo. Traslada ya: daño renal. En Penco, nunca dejes perro en auto ni patio sin sombra en verano.</p></div>
     </div>
-    <div class="help-grid" style="margin-top:10px">
-      <div class="help-card"><h4>🫁 Atragantamiento animal</h4><p style="font-size:11px">Perro: si tose y puede respirar, déjalo toser. Si no respira y está consciente, abre hocico, mira objeto, retíralo con pinza si lo ves (no a ciegas). Si inconsciente → maniobra Heimlich adaptada (compresión abdominal suave por detrás). Gato similar. Tras expulsar, vet.</p></div>
-      <div class="help-card"><h4>🌀 Convulsión</h4><p style="font-size:11px">No sujetes, aparta muebles, baja luz y ruido, cronometra, no metas mano en hocico. Al terminar, abriga y traslada. Anota duración. Si &gt;5min o se repite → urgencia.</p></div>
-      <div class="help-card"><h4>🦂 Picadura abeja / araña</h4><p style="font-size:11px">Retira aguijón raspando, frío 10min, vigila hinchazón cara/dificultad respirar (anafilaxia) → vet ya. Araña de rincón: lleva ejemplar, frío, no cortes.</p></div>
-      <div class="help-card"><h4>🧰 Cómo trasladar seguro</h4><p style="font-size:11px">Manta como camilla, hocico con bozal casero (venda suave, no aprietes si vomita o tiene dificultad respirar), cabeza levemente elevada si respira mal. Lleva carnet vacuna. En moto/auto, jaula o arnés.</p></div>
+    <div class="help-grid su-d2c171">
+      <div class="help-card"><h4>🫁 Atragantamiento animal</h4><p class="su-11a508">Perro: si tose y puede respirar, déjalo toser. Si no respira y está consciente, abre hocico, mira objeto, retíralo con pinza si lo ves (no a ciegas). Si inconsciente → maniobra Heimlich adaptada (compresión abdominal suave por detrás). Gato similar. Tras expulsar, vet.</p></div>
+      <div class="help-card"><h4>🌀 Convulsión</h4><p class="su-11a508">No sujetes, aparta muebles, baja luz y ruido, cronometra, no metas mano en hocico. Al terminar, abriga y traslada. Anota duración. Si &gt;5min o se repite → urgencia.</p></div>
+      <div class="help-card"><h4>🦂 Picadura abeja / araña</h4><p class="su-11a508">Retira aguijón raspando, frío 10min, vigila hinchazón cara/dificultad respirar (anafilaxia) → vet ya. Araña de rincón: lleva ejemplar, frío, no cortes.</p></div>
+      <div class="help-card"><h4>🧰 Cómo trasladar seguro</h4><p class="su-11a508">Manta como camilla, hocico con bozal casero (venda suave, no aprietes si vomita o tiene dificultad respirar), cabeza levemente elevada si respira mal. Lleva carnet vacuna. En moto/auto, jaula o arnés.</p></div>
     </div>`;
   } else if(animalCareTab==='salud'){
-    html+= `<div class="menstrual-card" style="background:linear-gradient(135deg,var(--panel),var(--card));border-color:#7ab8ff">
-      <h4 style="color:#7ab8ff">💉 Vacunas & desparasitación — calendario Penco</h4>
-      <div class="help-grid" style="margin-top:8px">
-        <div class="help-card"><h4>🐶 Cachorro perro</h4><p style="font-size:11px;line-height:1.5"><b>45 días:</b> Puppy DP<br><b>60/90/120 días:</b> Óctuple (3 dosis)<br><b>120 días:</b> Antirrábica (obligatoria, anual)<br><b>+</b> KC si va a hotel canil.<br>Desparasita interna cada 15 días hasta 3 meses, luego mensual hasta 6m, luego cada 3 meses.</p></div>
-        <div class="help-card"><h4>🐶 Adulto perro</h4><p style="font-size:11px;line-height:1.5"><b>Anual:</b> Óctuple + Antirrábica.<br><b>Cada 3 meses:</b> antiparasitario interno (según peso).<br><b>Mensual:</b> pipeta/pastilla pulga-garrapata (Bío-Bío hay garrapatas todo el año, más en Walüng).<br>Chequeo vet 1-2 veces/año.</p></div>
-        <div class="help-card"><h4>🐱 Gatito</h4><p style="font-size:11px;line-height:1.5"><b>60/90/120 días:</b> Triple felina (3 dosis)<br><b>120 días:</b> Antirrábica<br><b>Leucemia:</b> test + vacuna si negativo.<br>Desparasita igual que perro. Esteriliza 5-6 meses.</p></div>
-        <div class="help-card"><h4>✂️ Esterilización municipal</h4><p style="font-size:11px;line-height:1.5">Gratuita vía SUBDERE — inscribe en DIDECO 41 226 1020. Ayuna 8h, lleva manta, collar isabelino. Post-op: 10 días reposo, no lamer, antibiótico según receta. Evita camadas no deseadas y reduce tumores/abandono.</p></div>
+    html+= `<div class="menstrual-card su-4ab442">
+      <h4 class="su-721a46">💉 Vacunas & desparasitación — calendario Penco</h4>
+      <div class="help-grid su-8a77e5">
+        <div class="help-card"><h4>🐶 Cachorro perro</h4><p class="su-a6c665"><b>45 días:</b> Puppy DP<br><b>60/90/120 días:</b> Óctuple (3 dosis)<br><b>120 días:</b> Antirrábica (obligatoria, anual)<br><b>+</b> KC si va a hotel canil.<br>Desparasita interna cada 15 días hasta 3 meses, luego mensual hasta 6m, luego cada 3 meses.</p></div>
+        <div class="help-card"><h4>🐶 Adulto perro</h4><p class="su-a6c665"><b>Anual:</b> Óctuple + Antirrábica.<br><b>Cada 3 meses:</b> antiparasitario interno (según peso).<br><b>Mensual:</b> pipeta/pastilla pulga-garrapata (Bío-Bío hay garrapatas todo el año, más en Walüng).<br>Chequeo vet 1-2 veces/año.</p></div>
+        <div class="help-card"><h4>🐱 Gatito</h4><p class="su-a6c665"><b>60/90/120 días:</b> Triple felina (3 dosis)<br><b>120 días:</b> Antirrábica<br><b>Leucemia:</b> test + vacuna si negativo.<br>Desparasita igual que perro. Esteriliza 5-6 meses.</p></div>
+        <div class="help-card"><h4>✂️ Esterilización municipal</h4><p class="su-a6c665">Gratuita vía SUBDERE — inscribe en DIDECO 41 226 1020. Ayuna 8h, lleva manta, collar isabelino. Post-op: 10 días reposo, no lamer, antibiótico según receta. Evita camadas no deseadas y reduce tumores/abandono.</p></div>
       </div>
-      <p class="muted" style="font-size:10px;margin-top:6px">Siempre verifica con tu veterinario: calendario puede variar por marca y estado del animal.</p>
+      <p class="muted su-d47a97">Siempre verifica con tu veterinario: calendario puede variar por marca y estado del animal.</p>
     </div>
-    <div class="menstrual-card" style="margin-top:10px"><h4>🚨 Signos de alarma — consulta hoy</h4><p class="muted" style="font-size:11px;line-height:1.5">No come 24h + decaído, vómitos/diarrea con sangre, no orina, dificultad respirar, bulto que crece rápido, cojera &gt;24h, rascado con heridas, cambio brusco de conducta. No automediques con paracetamol/ibuprofeno: <b>es tóxico para perros y letal para gatos</b>.</p></div>`;
+    <div class="menstrual-card su-d2c171"><h4>🚨 Signos de alarma — consulta hoy</h4><p class="muted su-a6c665">No come 24h + decaído, vómitos/diarrea con sangre, no orina, dificultad respirar, bulto que crece rápido, cojera &gt;24h, rascado con heridas, cambio brusco de conducta. No automediques con paracetamol/ibuprofeno: <b>es tóxico para perros y letal para gatos</b>.</p></div>`;
   } else if(animalCareTab==='bienestar'){
     html+= `<div class="help-grid">
-      <div class="help-card"><h4>🥣 Alimentación & agua</h4><p style="font-size:11px;line-height:1.5">Croqueta según edad/peso (cachorro/adulto/senior) — raciona, no a libre demanda. Agua fresca siempre, cambia diario, lava bebedero. No chocolate, xilitol, uva/pasa, cebolla/ajo, huesos cocidos astillables, leche en exceso. En Penco, guarda alimento seco en tarro hermético (humedad).</p></div>
-      <div class="help-card"><h4>🐾 Paseo & juego</h4><p style="font-size:11px;line-height:1.5">Perro: 2 paseos + 15min olfato/juego. No lo sueltes cerca de avenida o humedal. Gato: juguete caña 10min, rascador, cajas, hierba gatera. Castra → menos fuga.</p></div>
-      <div class="help-card"><h4>🧹 Higiene</h4><p style="font-size:11px;line-height:1.5">Cepillado semanal (más en muda Rimü), baño cada 3-4 semanas con shampoo vet, no uses detergente. Corte uñas cada 3 semanas, limpieza oídos si olor. Arenero gato: 1 por gato +1, en lugar tranquilo.</p></div>
-      <div class="help-card"><h4>❄️☀️ Penco clima extremo</h4><p style="font-size:11px;line-height:1.5"><b>Invierno Pukem:</b> cucha aislada del suelo, manta seca, no lo dejes en patio con helada/lluvia toda la noche. <b>Verano Walüng:</b> sombra, agua, no paseo 12-17h, no auto. Tras marejada, lava patas si pisó petróleo/algas rojas.</p></div>
+      <div class="help-card"><h4>🥣 Alimentación & agua</h4><p class="su-a6c665">Croqueta según edad/peso (cachorro/adulto/senior) — raciona, no a libre demanda. Agua fresca siempre, cambia diario, lava bebedero. No chocolate, xilitol, uva/pasa, cebolla/ajo, huesos cocidos astillables, leche en exceso. En Penco, guarda alimento seco en tarro hermético (humedad).</p></div>
+      <div class="help-card"><h4>🐾 Paseo & juego</h4><p class="su-a6c665">Perro: 2 paseos + 15min olfato/juego. No lo sueltes cerca de avenida o humedal. Gato: juguete caña 10min, rascador, cajas, hierba gatera. Castra → menos fuga.</p></div>
+      <div class="help-card"><h4>🧹 Higiene</h4><p class="su-a6c665">Cepillado semanal (más en muda Rimü), baño cada 3-4 semanas con shampoo vet, no uses detergente. Corte uñas cada 3 semanas, limpieza oídos si olor. Arenero gato: 1 por gato +1, en lugar tranquilo.</p></div>
+      <div class="help-card"><h4>❄️☀️ Penco clima extremo</h4><p class="su-a6c665"><b>Invierno Pukem:</b> cucha aislada del suelo, manta seca, no lo dejes en patio con helada/lluvia toda la noche. <b>Verano Walüng:</b> sombra, agua, no paseo 12-17h, no auto. Tras marejada, lava patas si pisó petróleo/algas rojas.</p></div>
     </div>
-    <div class="menstrual-card" style="margin-top:10px;background:var(--panel)"><h4>🏠 Si encuentras animal perdido/herido</h4><p class="muted" style="font-size:11px;line-height:1.5">1) Foto + ubicación (calle, playa, humedal) y comparte en redes Penco. 2) Revisa chapita/código QR; si tiene chip, Vet Municipal 41 226 1017 lo lee gratis. 3) No lo persigas si está asustado — usa comida. 4) Herido → traslada con manta a vet; si es fauna silvestre (cisne, gaviota enferma) → no lo toques sin guantes, llama SAG 41 274 0600. 5) Denuncia abandono/maltrato: BIDEMA 41 215 3400 o 134 + evidencia (foto/video, fecha).</p></div>`;
+    <div class="menstrual-card su-4adf8c"><h4>🏠 Si encuentras animal perdido/herido</h4><p class="muted su-a6c665">1) Foto + ubicación (calle, playa, humedal) y comparte en redes Penco. 2) Revisa chapita/código QR; si tiene chip, Vet Municipal 41 226 1017 lo lee gratis. 3) No lo persigas si está asustado — usa comida. 4) Herido → traslada con manta a vet; si es fauna silvestre (cisne, gaviota enferma) → no lo toques sin guantes, llama SAG 41 274 0600. 5) Denuncia abandono/maltrato: BIDEMA 41 215 3400 o 134 + evidencia (foto/video, fecha).</p></div>`;
   } else if(animalCareTab==='humedal'){
-    html+= `<div class="menstrual-card" style="background:linear-gradient(135deg,#1a2a1a,var(--card));border-color:#7ab8ff">
-      <h4 style="color:#7ab8ff">🦅 Humedal Rocuant-Andalién — aves & fauna protegida</h4>
-      <p class="muted" style="font-size:11px;line-height:1.5">Sitio prioritario Penco-Lirquén: nidifican <b>chorlo nevado, pilpilén, zarapito</b>. Ley 19.300 y Ordenanza Municipal prohíben caza, captura, ingreso de perros sueltos y botar basura.</p>
-      <div class="help-grid" style="margin-top:8px">
-        <div class="help-card"><h4>🚫 No hagas</h4><p style="font-size:11px">No sueltes perro sin correa en playa/humedal (espanta nidada y multa). No des <b>pan</b> a cisnes/patos (hincha, desnutre) — si quieres alimentar, usa grano específico con autorización. No toques nidos ni uses flash. No entres con 4x4 a la arena.</p></div>
-        <div class="help-card"><h4>✅ Qué sí</h4><p style="font-size:11px">Observa a 30m con binoculares, silencio, no dejes rastro. Recoge tus fecas de perro en bolsa y llévala. Reporta varamiento de lobo/cisne a SERNAPESCA 800 320 032 o SAG 41 274 0600. Participa en limpiezas de playa.</p></div>
-        <div class="help-card"><h4>📅 Calendario fauna</h4><p style="font-size:11px"><b>Oct-Feb:</b> chorlo nevado nidifica en arena — no pises dunas.<br><b>Sep-Mar:</b> zarapito migratorio en Rocuant.<br><b>Ago-Nov:</b> ballenas frente a golfo (no acercar embarcación &lt;300m).</p></div>
-        <div class="help-card"><h4>📞 Reportes</h4><p style="font-size:11px"><b>SAG Bío-Bío:</b> 41 274 0600 (fauna silvestre herida)<br><b>SERNAPESCA:</b> 800 320 032 (varamiento lobo/ballena)<br><b>Municipal Medio Ambiente:</b> 41 226 1017<br><b>Capitanía Lirquén:</b> 41 275 1006 (contaminación mar)</p></div>
+    html+= `<div class="menstrual-card su-f417c2">
+      <h4 class="su-721a46">🦅 Humedal Rocuant-Andalién — aves & fauna protegida</h4>
+      <p class="muted su-a6c665">Sitio prioritario Penco-Lirquén: nidifican <b>chorlo nevado, pilpilén, zarapito</b>. Ley 19.300 y Ordenanza Municipal prohíben caza, captura, ingreso de perros sueltos y botar basura.</p>
+      <div class="help-grid su-8a77e5">
+        <div class="help-card"><h4>🚫 No hagas</h4><p class="su-11a508">No sueltes perro sin correa en playa/humedal (espanta nidada y multa). No des <b>pan</b> a cisnes/patos (hincha, desnutre) — si quieres alimentar, usa grano específico con autorización. No toques nidos ni uses flash. No entres con 4x4 a la arena.</p></div>
+        <div class="help-card"><h4>✅ Qué sí</h4><p class="su-11a508">Observa a 30m con binoculares, silencio, no dejes rastro. Recoge tus fecas de perro en bolsa y llévala. Reporta varamiento de lobo/cisne a SERNAPESCA 800 320 032 o SAG 41 274 0600. Participa en limpiezas de playa.</p></div>
+        <div class="help-card"><h4>📅 Calendario fauna</h4><p class="su-11a508"><b>Oct-Feb:</b> chorlo nevado nidifica en arena — no pises dunas.<br><b>Sep-Mar:</b> zarapito migratorio en Rocuant.<br><b>Ago-Nov:</b> ballenas frente a golfo (no acercar embarcación &lt;300m).</p></div>
+        <div class="help-card"><h4>📞 Reportes</h4><p class="su-11a508"><b>SAG Bío-Bío:</b> 41 274 0600 (fauna silvestre herida)<br><b>SERNAPESCA:</b> 800 320 032 (varamiento lobo/ballena)<br><b>Municipal Medio Ambiente:</b> 41 226 1017<br><b>Capitanía Lirquén:</b> 41 275 1006 (contaminación mar)</p></div>
       </div>
     </div>
-    <div class="menstrual-card" style="margin-top:10px"><h4>🐾 Gatos ferales & perros comunitarios</h4><p class="muted" style="font-size:11px;line-height:1.5">Penco tiene colonias gestionadas con método TNR (captura-esteriliza-retorna). No los alimentes con sobras en vía pública sin coordinar con Medio Ambiente — genera foco de roedores. Si quieres ayudar, ofrece traslado a operativo o adopción.</p></div>`;
+    <div class="menstrual-card su-d2c171"><h4>🐾 Gatos ferales & perros comunitarios</h4><p class="muted su-a6c665">Penco tiene colonias gestionadas con método TNR (captura-esteriliza-retorna). No los alimentes con sobras en vía pública sin coordinar con Medio Ambiente — genera foco de roedores. Si quieres ayudar, ofrece traslado a operativo o adopción.</p></div>`;
   }
   box.innerHTML = html;
 }
@@ -7359,93 +7359,93 @@ function renderViolencePanel(tab){
   const box = $('violencePanel'); if(!box) return;
   let html='';
   if(violenceTab==='tipos'){
-    html+= `<div class="menstrual-card" style="background:linear-gradient(135deg,#231a33,var(--card));border-color:#d8a0ff">
-      <h4 style="color:#d8a0ff">📚 Los 7 tipos principales — Ley 20.066 VIF y Ley 21.675 Integral (Chile)</h4>
-      <p class="muted" style="font-size:11px">Toda violencia es grave aunque no deje marca visible. Puede ocurrir en pareja (pololeo, convivencia, matrimonio, ex), familia, o a hijos/as. No necesitas que sea “físico” para pedir ayuda. Reconocer el tipo te ayuda a nombrar y actuar.</p>
-      <p class="muted" style="font-size:10px">Basado en definiciones SERNAMEG, Ley VIF y OMS. No es diagnóstico legal — cada caso lo califica Fiscalía/Tribunal.</p>
+    html+= `<div class="menstrual-card su-ffd1a9">
+      <h4 class="su-399074">📚 Los 7 tipos principales — Ley 20.066 VIF y Ley 21.675 Integral (Chile)</h4>
+      <p class="muted su-11a508">Toda violencia es grave aunque no deje marca visible. Puede ocurrir en pareja (pololeo, convivencia, matrimonio, ex), familia, o a hijos/as. No necesitas que sea “físico” para pedir ayuda. Reconocer el tipo te ayuda a nombrar y actuar.</p>
+      <p class="muted su-0d5be0">Basado en definiciones SERNAMEG, Ley VIF y OMS. No es diagnóstico legal — cada caso lo califica Fiscalía/Tribunal.</p>
     </div>
-    <div class="help-grid" style="margin-top:10px">
-      <div class="help-card" style="border-left:3px solid #e76e8a"><h4>👊 1. Física</h4><p style="font-size:11px;line-height:1.5"><b>Qué es:</b> uso de fuerza que daña cuerpo.<br><b>Ejemplos:</b> empujones, tirones de pelo, cachetadas, golpes, patadas, quemaduras, intentos de estrangulamiento (“me apretó el cuello”), lanzar objetos, encerrar, no dejar salir.<br><b>Señal clave:</b> miedo a su reacción, justificar moretones, ropa para ocultar.<br><b>Riesgo alto:</b> si hubo estrangulamiento, uso de armas, o “si me dejas te mato” → busca ayuda ese día.</p><div style="background:#e76e8a22;border:1px solid #e76e8a55;border-radius:6px;padding:6px;margin-top:6px"><b style="font-size:11px;color:#e76e8a">Qué hacer ahora → ver pestaña 🛡️</b><p class="muted" style="font-size:11px;margin:2px 0 0">No te quedes sola/o tras golpe. Ve a SAR/CESFAM Penco <b>hoy</b> para constatación de lesiones (sirve aunque no denuncies aún) y guarda fotos/fechas en lugar seguro.</p></div></div>
-      <div class="help-card" style="border-left:3px solid #d8a0ff"><h4>🧠 2. Psicológica / Emocional</h4><p style="font-size:11px;line-height:1.5"><b>Qué es:</b> control, humillación y miedo sin tocar.<br><b>Ejemplos:</b> insultos (“tonta, inútil”), gritos, desprecios frente a otros, culparte de todo, celos extremos, revisar celular, prohibir salir/vestirte/estudiar, amenazas (“te quitaré a los niños”), gaslighting (“estás loca, yo nunca dije eso”), ley del hielo prolongada, romper tus cosas.<br><b>Señal clave:</b> ansiedad constante, pedir permiso por todo, baja autoestima, aislarte de familia/amigos.</p><div style="background:#d8a0ff22;border:1px solid #d8a0ff55;border-radius:6px;padding:6px;margin-top:6px"><b style="font-size:11px;color:#d8a0ff">Qué hacer</b><p class="muted" style="font-size:11px;margin:2px 0 0">No es “sensibilidad tuya”. Anota fechas/frases, guarda audios/capturas en correo oculto. Habla con persona de confianza y llama 1455 para orientación gratuita y confidencial.</p></div></div>
-      <div class="help-card" style="border-left:3px solid #ff9a76"><h4>🔒 3. Sexual</h4><p style="font-size:11px;line-height:1.5"><b>Qué es:</b> cualquier acto sexual sin tu consentimiento libre — <b>dentro de pareja también es delito</b> (art. 361 CP).<br><b>Ejemplos:</b> forzar relaciones, chantaje (“si no quieres es porque andas con otro”), obligar a prácticas que no quieres, grabar/difundir fotos íntimas sin permiso, impedir anticoncepción, tocar a la fuerza. No necesitas “resistir” para que sea abuso.<br><b>Señal:</b> culpa, asco, miedo a decir “no”.</p><div style="background:#ff9a7622;border:1px solid #ff9a7655;border-radius:6px;padding:6px;margin-top:6px"><b style="font-size:11px;color:#ff9a76">Qué hacer</b><p class="muted" style="font-size:11px;margin:2px 0 0">Tu “no” basta. Si ocurrió en 72h ve a SAR/Hospital para atención, profilaxis y constatación aunque dudes en denunciar. No te bañes antes si puedes, lleva ropa en bolsa de papel. Llama 1455/149 — no estás sola.</p></div></div>
-      <div class="help-card" style="border-left:3px solid #e8c56a"><h4>💰 4. Económica / Patrimonial</h4><p style="font-size:11px;line-height:1.5"><b>Qué es:</b> control del dinero, trabajo o bienes para hacerte depender.<br><b>Ejemplos:</b> quitar sueldo/IFE, no dar para comida/hijos, endeudarte a tu nombre, esconder documentos/RUT/tarjetas, impedir que trabajes/estudies, romper tu celular/herramientas, no pagar pensión alimentos.<br><b>Señal:</b> no tener $ propio, pedir para cada gasto, miedo a que te “corte” el dinero.</p><div style="background:#e8c56a22;border:1px solid #e8c56a55;border-radius:6px;padding:6px;margin-top:6px"><b style="font-size:11px;color:#e8c56a">Qué hacer</b><p class="muted" style="font-size:11px;margin:2px 0 0">Haz copia de carnet, certificados, cuentas, boletas y guarda en correo seguro de confianza. Abre cuenta RUT solo tuya (BancoEstado) y contacta Centro de la Mujer 41 246 7700 para autonomía económica.</p></div></div>
-      <div class="help-card" style="border-left:3px solid #7ab8ff"><h4>👧 5. Vicaria — usando a hijos/as o mascotas</h4><p style="font-size:11px;line-height:1.5"><b>Qué es:</b> dañar a tus hijos, mascotas o seres queridos para golpearte donde más duele. Reconocida en Ley 21.675.<br><b>Ejemplos:</b> amenazar con quitar custodia, maltratar/ golpear a hijos para castigarte, usar visita para interrogar al niño, dejar de pagar pensión a propósito, matar/amenazar mascota, hablar mal de ti a tus hijos (“tu mamá es mala”).<br><b>Señal:</b> niños con miedo, retrocesos, culpa.</p><div style="background:#7ab8ff22;border:1px solid #7ab8ff55;border-radius:6px;padding:6px;margin-top:6px"><b style="font-size:11px;color:#7ab8ff">Qué hacer</b><p class="muted" style="font-size:11px;margin:2px 0 0">Documenta, no expongas a niños a careos. Pide medidas de protección en Trib. Familia (41 274 4000) y orientación en Oficina Niñez Penco 41 226 1020. Si hay riesgo para niños llama 149 o 800 730 800.</p></div></div>
-      <div class="help-card" style="border-left:3px solid #a9d18e"><h4>📱 6. Digital / Cibernética</h4><p style="font-size:11px;line-height:1.5"><b>Qué es:</b> control y acoso vía celular/redes — es violencia aunque sea “virtual”. Ley 21.675 la contempla.<br><b>Ejemplos:</b> exigir contraseñas, revisar chats, geolocalizar 24/7, instalar stalkerware, difundir packs/fotos íntimas, crear perfiles falsos, acosar con 100 mensajes/llamadas, amenazar por WhatsApp/IG.<br><b>Señal:</b> borrar chats por miedo, ansiedad al notificar.</p><div style="background:#a9d18e22;border:1px solid #a9d18e55;border-radius:6px;padding:6px;margin-top:6px"><b style="font-size:11px;color:#a9d18e">Qué hacer</b><p class="muted" style="font-size:11px;margin:2px 0 0">No borres pruebas: saca captura con fecha/hora y guarda en drive seguro. Cambia contraseñas en dispositivo seguro, activa 2 pasos, revisa permisos de ubicación. Denunciable como amenazas/coacción (Fiscalía).</p></div></div>
-      <div class="help-card" style="border-left:3px solid #c96fb1"><h4>🚧 7. Social / Aislamiento + Acoso</h4><p style="font-size:11px;line-height:1.5"><b>Qué es:</b> cortar tu red para que dependas solo de él/ella.<br><b>Ejemplos:</b> prohibir ver familia/amigos, hablar mal de tu gente para alejarte, controlar salidas/horarios, seguirte, esperarte fuera del trabajo, celar hasta con familia.<br><b>Señal:</b> dejar de salir, “mejor no cuento nada para no pelear”.</p><div style="background:#c96fb122;border:1px solid #c96fb155;border-radius:6px;padding:6px;margin-top:6px"><b style="font-size:11px;color:#c96fb1">Qué hacer</b><p class="muted" style="font-size:11px;margin:2px 0 0">Mantén al menos 1 contacto de confianza con código secreto. Retoma vínculos de a poco. Grupo de apoyo Centro de la Mujer rompe aislamiento.</p></div></div>
+    <div class="help-grid su-d2c171">
+      <div class="help-card su-7266f7"><h4>👊 1. Física</h4><p class="su-a6c665"><b>Qué es:</b> uso de fuerza que daña cuerpo.<br><b>Ejemplos:</b> empujones, tirones de pelo, cachetadas, golpes, patadas, quemaduras, intentos de estrangulamiento (“me apretó el cuello”), lanzar objetos, encerrar, no dejar salir.<br><b>Señal clave:</b> miedo a su reacción, justificar moretones, ropa para ocultar.<br><b>Riesgo alto:</b> si hubo estrangulamiento, uso de armas, o “si me dejas te mato” → busca ayuda ese día.</p><div class="su-7cd661"><b class="su-51a029">Qué hacer ahora → ver pestaña 🛡️</b><p class="muted su-aa314c">No te quedes sola/o tras golpe. Ve a SAR/CESFAM Penco <b>hoy</b> para constatación de lesiones (sirve aunque no denuncies aún) y guarda fotos/fechas en lugar seguro.</p></div></div>
+      <div class="help-card su-91932e"><h4>🧠 2. Psicológica / Emocional</h4><p class="su-a6c665"><b>Qué es:</b> control, humillación y miedo sin tocar.<br><b>Ejemplos:</b> insultos (“tonta, inútil”), gritos, desprecios frente a otros, culparte de todo, celos extremos, revisar celular, prohibir salir/vestirte/estudiar, amenazas (“te quitaré a los niños”), gaslighting (“estás loca, yo nunca dije eso”), ley del hielo prolongada, romper tus cosas.<br><b>Señal clave:</b> ansiedad constante, pedir permiso por todo, baja autoestima, aislarte de familia/amigos.</p><div class="su-bef501"><b class="su-a067b4">Qué hacer</b><p class="muted su-aa314c">No es “sensibilidad tuya”. Anota fechas/frases, guarda audios/capturas en correo oculto. Habla con persona de confianza y llama 1455 para orientación gratuita y confidencial.</p></div></div>
+      <div class="help-card su-ce4328"><h4>🔒 3. Sexual</h4><p class="su-a6c665"><b>Qué es:</b> cualquier acto sexual sin tu consentimiento libre — <b>dentro de pareja también es delito</b> (art. 361 CP).<br><b>Ejemplos:</b> forzar relaciones, chantaje (“si no quieres es porque andas con otro”), obligar a prácticas que no quieres, grabar/difundir fotos íntimas sin permiso, impedir anticoncepción, tocar a la fuerza. No necesitas “resistir” para que sea abuso.<br><b>Señal:</b> culpa, asco, miedo a decir “no”.</p><div class="su-600966"><b class="su-da84ad">Qué hacer</b><p class="muted su-aa314c">Tu “no” basta. Si ocurrió en 72h ve a SAR/Hospital para atención, profilaxis y constatación aunque dudes en denunciar. No te bañes antes si puedes, lleva ropa en bolsa de papel. Llama 1455/149 — no estás sola.</p></div></div>
+      <div class="help-card su-3fd46e"><h4>💰 4. Económica / Patrimonial</h4><p class="su-a6c665"><b>Qué es:</b> control del dinero, trabajo o bienes para hacerte depender.<br><b>Ejemplos:</b> quitar sueldo/IFE, no dar para comida/hijos, endeudarte a tu nombre, esconder documentos/RUT/tarjetas, impedir que trabajes/estudies, romper tu celular/herramientas, no pagar pensión alimentos.<br><b>Señal:</b> no tener $ propio, pedir para cada gasto, miedo a que te “corte” el dinero.</p><div class="su-948e44"><b class="su-d33357">Qué hacer</b><p class="muted su-aa314c">Haz copia de carnet, certificados, cuentas, boletas y guarda en correo seguro de confianza. Abre cuenta RUT solo tuya (BancoEstado) y contacta Centro de la Mujer 41 246 7700 para autonomía económica.</p></div></div>
+      <div class="help-card su-7e56a1"><h4>👧 5. Vicaria — usando a hijos/as o mascotas</h4><p class="su-a6c665"><b>Qué es:</b> dañar a tus hijos, mascotas o seres queridos para golpearte donde más duele. Reconocida en Ley 21.675.<br><b>Ejemplos:</b> amenazar con quitar custodia, maltratar/ golpear a hijos para castigarte, usar visita para interrogar al niño, dejar de pagar pensión a propósito, matar/amenazar mascota, hablar mal de ti a tus hijos (“tu mamá es mala”).<br><b>Señal:</b> niños con miedo, retrocesos, culpa.</p><div class="su-b56159"><b class="su-a152ab">Qué hacer</b><p class="muted su-aa314c">Documenta, no expongas a niños a careos. Pide medidas de protección en Trib. Familia (41 274 4000) y orientación en Oficina Niñez Penco 41 226 1020. Si hay riesgo para niños llama 149 o 800 730 800.</p></div></div>
+      <div class="help-card su-275a30"><h4>📱 6. Digital / Cibernética</h4><p class="su-a6c665"><b>Qué es:</b> control y acoso vía celular/redes — es violencia aunque sea “virtual”. Ley 21.675 la contempla.<br><b>Ejemplos:</b> exigir contraseñas, revisar chats, geolocalizar 24/7, instalar stalkerware, difundir packs/fotos íntimas, crear perfiles falsos, acosar con 100 mensajes/llamadas, amenazar por WhatsApp/IG.<br><b>Señal:</b> borrar chats por miedo, ansiedad al notificar.</p><div class="su-5f8528"><b class="su-a07271">Qué hacer</b><p class="muted su-aa314c">No borres pruebas: saca captura con fecha/hora y guarda en drive seguro. Cambia contraseñas en dispositivo seguro, activa 2 pasos, revisa permisos de ubicación. Denunciable como amenazas/coacción (Fiscalía).</p></div></div>
+      <div class="help-card su-5b8d9e"><h4>🚧 7. Social / Aislamiento + Acoso</h4><p class="su-a6c665"><b>Qué es:</b> cortar tu red para que dependas solo de él/ella.<br><b>Ejemplos:</b> prohibir ver familia/amigos, hablar mal de tu gente para alejarte, controlar salidas/horarios, seguirte, esperarte fuera del trabajo, celar hasta con familia.<br><b>Señal:</b> dejar de salir, “mejor no cuento nada para no pelear”.</p><div class="su-bf9122"><b class="su-e3b23c">Qué hacer</b><p class="muted su-aa314c">Mantén al menos 1 contacto de confianza con código secreto. Retoma vínculos de a poco. Grupo de apoyo Centro de la Mujer rompe aislamiento.</p></div></div>
     </div>
-    <div class="menstrual-card" style="margin-top:10px;background:var(--panel)"><h4>💡 ¿No sabes qué tipo es? No importa el nombre</h4><p class="muted" style="font-size:11px;line-height:1.5">Si sientes <b>miedo, culpa, ansiedad, obligación constante o pérdida de libertad</b>, pide orientación igual. El Centro de la Mujer y 1455 te ayudan a ponerle nombre sin juzgar y sin obligarte a denunciar de inmediato.</p></div>`;
+    <div class="menstrual-card su-4adf8c"><h4>💡 ¿No sabes qué tipo es? No importa el nombre</h4><p class="muted su-a6c665">Si sientes <b>miedo, culpa, ansiedad, obligación constante o pérdida de libertad</b>, pide orientación igual. El Centro de la Mujer y 1455 te ayudan a ponerle nombre sin juzgar y sin obligarte a denunciar de inmediato.</p></div>`;
   } else if(violenceTab==='senales'){
-    html+= `<div class="menstrual-card" style="background:linear-gradient(135deg,#231a33,var(--card));border-color:#d8a0ff">
-      <h4 style="color:#d8a0ff">⚠️ Señales de alerta — checklist silencioso</h4>
-      <p class="muted" style="font-size:11px">Marca mentalmente. Si 2-3 te resuenan, pide orientación. No necesitas vivirlas todas para que sea violencia.</p>
-      <div class="help-grid" style="margin-top:8px">
-        <div class="help-card"><h4>🚩 Señales psicológicas</h4><p style="font-size:11px;line-height:1.5">• Te insulta, grita o te hace sentir tonta/culpable siempre.<br>• Minimiza: “fue una tontera, exageras”.<br>• Te controla ropa, maquillaje, amistades, redes, horarios.<br>• Celos extremos y acusa infidelidad sin razón.<br>• Te aíslas de familia/amigos para “evitar problema”.</p></div>
-        <div class="help-card"><h4>🚩 Señales físicas/sexuales</h4><p style="font-size:11px;line-height:1.5">• Empujones, zamarreos “suaves” que escalan.<br>• Te aprieta el cuello, aunque sea “jugando”.<br>• Rompe objetos, golpea paredes, te encierra.<br>• Te fuerza o presiona a sexo / no respeta tu no.<br>• Te deja moretones y dice “fue sin querer”.</p></div>
-        <div class="help-card"><h4>🚩 Económicas/digital</h4><p style="font-size:11px;line-height:1.5">• Te quita plata, tarjeta o sueldo.<br>• Te impide trabajar/estudiar.<br>• Revisa tu celular, pide claves, te geolocaliza.<br>• Te endeuda o no paga pensión.<br>• Difunde o amenaza con fotos íntimas.</p></div>
-        <div class="help-card"><h4>🚩 En ti misma/o</h4><p style="font-size:11px;line-height:1.5">• Pides permiso por todo, con ansiedad.<br>• Caminas “pisando huevos”, mides cada palabra.<br>• Justificas su conducta delante de otros.<br>• Sientes vergüenza, culpa o miedo constante.<br>• Tu salud duerme mal, duele estómago/cabeza, sube consumo alcohol.</p></div>
+    html+= `<div class="menstrual-card su-ffd1a9">
+      <h4 class="su-399074">⚠️ Señales de alerta — checklist silencioso</h4>
+      <p class="muted su-11a508">Marca mentalmente. Si 2-3 te resuenan, pide orientación. No necesitas vivirlas todas para que sea violencia.</p>
+      <div class="help-grid su-8a77e5">
+        <div class="help-card"><h4>🚩 Señales psicológicas</h4><p class="su-a6c665">• Te insulta, grita o te hace sentir tonta/culpable siempre.<br>• Minimiza: “fue una tontera, exageras”.<br>• Te controla ropa, maquillaje, amistades, redes, horarios.<br>• Celos extremos y acusa infidelidad sin razón.<br>• Te aíslas de familia/amigos para “evitar problema”.</p></div>
+        <div class="help-card"><h4>🚩 Señales físicas/sexuales</h4><p class="su-a6c665">• Empujones, zamarreos “suaves” que escalan.<br>• Te aprieta el cuello, aunque sea “jugando”.<br>• Rompe objetos, golpea paredes, te encierra.<br>• Te fuerza o presiona a sexo / no respeta tu no.<br>• Te deja moretones y dice “fue sin querer”.</p></div>
+        <div class="help-card"><h4>🚩 Económicas/digital</h4><p class="su-a6c665">• Te quita plata, tarjeta o sueldo.<br>• Te impide trabajar/estudiar.<br>• Revisa tu celular, pide claves, te geolocaliza.<br>• Te endeuda o no paga pensión.<br>• Difunde o amenaza con fotos íntimas.</p></div>
+        <div class="help-card"><h4>🚩 En ti misma/o</h4><p class="su-a6c665">• Pides permiso por todo, con ansiedad.<br>• Caminas “pisando huevos”, mides cada palabra.<br>• Justificas su conducta delante de otros.<br>• Sientes vergüenza, culpa o miedo constante.<br>• Tu salud duerme mal, duele estómago/cabeza, sube consumo alcohol.</p></div>
       </div>
     </div>
-    <div class="menstrual-card" style="margin-top:10px;border-color:#e8c56a"><h4>🔄 El ciclo de la violencia — por qué cuesta salir (Walker)</h4>
-      <div class="help-grid" style="margin-top:6px">
-        <div class="help-card"><h4>1️⃣ Tensión</h4><p style="font-size:11px">Discusiones, celos, control, gritos. Sientes que “algo va a explotar”. Caminas con cuidado.</p></div>
-        <div class="help-card"><h4>2️⃣ Explosión</h4><p style="font-size:11px">Golpe, insulto grave, amenaza, ataque sexual. Miedo intenso. Puede durar minutos u horas.</p></div>
-        <div class="help-card"><h4>3️⃣ Reconciliación / Luna de miel</h4><p style="font-size:11px">Arrepentimiento, regalos, “cambiaré, fue el alcohol/estrés”, cariño. Esperanza de que ahora sí.</p></div>
-        <div class="help-card"><h4>4️⃣ Calma</h4><p style="font-size:11px">Tranquilidad falsa. Hasta que vuelve la tensión. Cada ciclo se acorta y se agrava.</p></div>
+    <div class="menstrual-card su-0d015f"><h4>🔄 El ciclo de la violencia — por qué cuesta salir (Walker)</h4>
+      <div class="help-grid su-fe7b49">
+        <div class="help-card"><h4>1️⃣ Tensión</h4><p class="su-11a508">Discusiones, celos, control, gritos. Sientes que “algo va a explotar”. Caminas con cuidado.</p></div>
+        <div class="help-card"><h4>2️⃣ Explosión</h4><p class="su-11a508">Golpe, insulto grave, amenaza, ataque sexual. Miedo intenso. Puede durar minutos u horas.</p></div>
+        <div class="help-card"><h4>3️⃣ Reconciliación / Luna de miel</h4><p class="su-11a508">Arrepentimiento, regalos, “cambiaré, fue el alcohol/estrés”, cariño. Esperanza de que ahora sí.</p></div>
+        <div class="help-card"><h4>4️⃣ Calma</h4><p class="su-11a508">Tranquilidad falsa. Hasta que vuelve la tensión. Cada ciclo se acorta y se agrava.</p></div>
       </div>
-      <p class="muted" style="font-size:11px;margin-top:8px">Entender el ciclo <b>no justifica</b>. Quedarse no es “gusto”, es esperanza, miedo, dependencia económica, hijos, vergüenza, amenazas o falta de red. Con apoyo, salir es posible.</p>
+      <p class="muted su-e6fe60">Entender el ciclo <b>no justifica</b>. Quedarse no es “gusto”, es esperanza, miedo, dependencia económica, hijos, vergüenza, amenazas o falta de red. Con apoyo, salir es posible.</p>
     </div>
-    <details class="menstrual-details" style="margin-top:10px" open><summary>🧩 Mitos que encubren violencia</summary>
-      <div class="help-grid" style="margin-top:8px">
-        <div class="help-card"><h4>❌ “Me cela porque me quiere”</h4><p style="font-size:11px">Celo = control, no amor. Amor cuida libertad.</p></div>
-        <div class="help-card"><h4>❌ “Solo fue una vez / estaba curado”</h4><p style="font-size:11px">Alcohol no crea violencia, la desinhibe. Patrón se repite.</p></div>
-        <div class="help-card"><h4>❌ “Aguanto por mis hijos”</h4><p style="font-size:11px">Crecer viendo violencia daña más que separarse con apoyo.</p></div>
-        <div class="help-card"><h4>❌ “Yo lo provoqué”</h4><p style="font-size:11px">Nadie provoca ser golpeada/o. Responsable es quien agrede.</p></div>
+    <details class="menstrual-details su-d2c171" open><summary>🧩 Mitos que encubren violencia</summary>
+      <div class="help-grid su-8a77e5">
+        <div class="help-card"><h4>❌ “Me cela porque me quiere”</h4><p class="su-11a508">Celo = control, no amor. Amor cuida libertad.</p></div>
+        <div class="help-card"><h4>❌ “Solo fue una vez / estaba curado”</h4><p class="su-11a508">Alcohol no crea violencia, la desinhibe. Patrón se repite.</p></div>
+        <div class="help-card"><h4>❌ “Aguanto por mis hijos”</h4><p class="su-11a508">Crecer viendo violencia daña más que separarse con apoyo.</p></div>
+        <div class="help-card"><h4>❌ “Yo lo provoqué”</h4><p class="su-11a508">Nadie provoca ser golpeada/o. Responsable es quien agrede.</p></div>
       </div>
     </details>`;
   } else if(violenceTab==='quehacer'){
-    html+= `<div class="menstrual-card" style="border-color:#ff6b6b;background:linear-gradient(135deg,#2a1a20,var(--card))"><h4 style="color:#ff6b6b">🛡️ ¿Qué hacer AHORA? — elige tu situación</h4><p class="muted" style="font-size:11px">Si hay peligro inmediato → <b>prioriza salir y llamar 133/149</b>. No intentes “arreglar” en medio de la crisis. Luego sigue pasos por tipo.</p></div>
-    <div class="help-card" style="margin-top:10px;border-color:#ff6b6b"><h4>🚨 PELIGRO INMEDIATO — estás en riesgo ahora</h4><p style="font-size:11px;line-height:1.5"><b>1. Sal:</b> si puedes, anda a pieza con salida, baño con celular, casa vecina, negocio con gente. No discutas en cocina (cuchillos) ni baño sin salida. <b>2. Avisa:</b> 133 Carabineros o 149 Fono Familia (24h). Di: “Violencia intrafamiliar en [calle, nº, Penco], agresor en casa, necesito ayuda”. <b>3. Código silencioso:</b> mensaje a confianza: “¿Me prestas azúcar?” o llama 1455 WhatsApp +56 9 9700 7000. <b>4. Con niños:</b> llévalos contigo, no los dejes. <b>5. Documenta después:</b> fotos lesiones, parte médico SAR. No vuelvas sola/o a buscar cosas.</p></div>
-    <div class="help-grid" style="margin-top:10px">
-      <div class="help-card"><h4>👊 Tras agresión física</h4><p style="font-size:11px;line-height:1.5"><b>1. Seguridad + salud hoy:</b> SAR Penco 41 272 6350 / Hospital Penco-Lirquén 41 272 6300 → pide <b>constatación de lesiones</b> (aunque no denuncies). <b>2. Pruebas:</b> fotos con luz, fecha, ropa rota guardada en bolsa papel, capturas amenazas. Guarda en correo Drive oculto, no galería. <b>3. No limpies escena</b> si es grave. <b>4. Denuncia o no decide después</b> con apoyo (1455). <b>5. No minimices:</b> estrangulamiento aunque “no dejó marca” es riesgo vital → evalúate hoy.</p></div>
-      <div class="help-card"><h4>🧠 Si es psicológica / control</h4><p style="font-size:11px;line-height:1.5"><b>1. Valida:</b> no es tu imaginación. Anota diario (fecha, frase, contexto, testigos). <b>2. Red:</b> habla con 1 persona segura (familia, CESFAM, Centro Mujer). <b>3. 1455 SERNAMEG</b> te orienta sin obligar a denunciar. <b>4. Límites:</b> “No me grites, hablaremos cuando te calmes” + retírate. Si no respeta, no insistas sola/o. <b>5. Apoyo psicológico gratuito:</b> CESFAM/SAR Penco hora salud mental, Centro Mujer Conce 41 246 7700.</p></div>
-      <div class="help-card" style="border-color:#ff9a76"><h4>🔒 Sexual en pareja/expareja</h4><p style="font-size:11px;line-height:1.5"><b>1. Prioridad tú, no pruebas:</b> alójate segura. <b>2. 72h:</b> SAR/Hospital para protocolo (anticoncepción emergencia, VIH, lesiones genéricas) — no necesitas denunciar para atenderte. <b>3. Si puedes:</b> no te laves, lleva ropa en bolsa papel, anota hora/lugar. <b>4. Denuncia:</b> PDI 134 o Fiscalía (no Carabineros si prefieres privacidad). Lleva acompañante. <b>5. No es tu culpa</b> aunque hayas tomado alcohol o vuelvas con él/ella.</p></div>
-      <div class="help-card"><h4>💰 Económica / Patrimonial</h4><p style="font-size:11px;line-height:1.5"><b>1. Copias ocultas:</b> carnet, escrituras, contratos, liquidaciones, certificados hijos, claves, fotos deudas. Envíalas a correo seguro de amiga/madre. <b>2. Cuenta propia:</b> BancoEstado Cuenta RUT sin que sepa, guarda $ aunque sea poco. <b>3. Pensión alimentos:</b> Tribunal Familia Conce 41 274 4000 — puedes demandar sin abogado (CAJ gratuita 41 274 2400). <b>4. No firmes</b> créditos o ventas bajo presión. <b>5. CAD Mujer</b> orienta autonomía: SENCE, FOSIS.</p></div>
-      <div class="help-card"><h4>👶 Vicaria (con hijos/as)</h4><p style="font-size:11px;line-height:1.5"><b>1. Protege a NNA:</b> no los uses de mensajeros. Escucha sin interrogar. <b>2. Registra:</b> fechas, frases, incumplimiento visitas, mensajes que usa a niños para control. <b>3. Medidas:</b> Tribunal Familia puede suspender visitas, ordenar terapia. Contacta Oficina Local Niñez Penco 41 226 1020 / 800 730 800. <b>4. No confrontes</b> delante de niños. <b>5. Si hay golpe a niño → 133/149 + SAR inmediato.</p></div>
-      <div class="help-card"><h4>📱 Digital</h4><p style="font-size:11px;line-height:1.5"><b>1. Guarda evidencia:</b> captura con fecha, URL, perfil. Respalda en drive seguro. <b>2. Protege cuentas:</b> cambia claves en PC seguro, activa doble factor, revisa apps con acceso a ubicación, desinstala stalkerware (ajustes > apps). <b>3. No borres</b> todo aún si vas a denunciar. <b>4. Bloquear reportar</b> en red, pero antes guarda pruebas. <b>5. Ley 21.675:</b> difusión no consentida de imágenes íntimas es delito → PDI Brigada Cibercrimen 134.</p></div>
+    html+= `<div class="menstrual-card su-dfa7a6"><h4 class="su-0562fa">🛡️ ¿Qué hacer AHORA? — elige tu situación</h4><p class="muted su-11a508">Si hay peligro inmediato → <b>prioriza salir y llamar 133/149</b>. No intentes “arreglar” en medio de la crisis. Luego sigue pasos por tipo.</p></div>
+    <div class="help-card su-2a4c9c"><h4>🚨 PELIGRO INMEDIATO — estás en riesgo ahora</h4><p class="su-a6c665"><b>1. Sal:</b> si puedes, anda a pieza con salida, baño con celular, casa vecina, negocio con gente. No discutas en cocina (cuchillos) ni baño sin salida. <b>2. Avisa:</b> 133 Carabineros o 149 Fono Familia (24h). Di: “Violencia intrafamiliar en [calle, nº, Penco], agresor en casa, necesito ayuda”. <b>3. Código silencioso:</b> mensaje a confianza: “¿Me prestas azúcar?” o llama 1455 WhatsApp +56 9 9700 7000. <b>4. Con niños:</b> llévalos contigo, no los dejes. <b>5. Documenta después:</b> fotos lesiones, parte médico SAR. No vuelvas sola/o a buscar cosas.</p></div>
+    <div class="help-grid su-d2c171">
+      <div class="help-card"><h4>👊 Tras agresión física</h4><p class="su-a6c665"><b>1. Seguridad + salud hoy:</b> SAR Penco 41 272 6350 / Hospital Penco-Lirquén 41 272 6300 → pide <b>constatación de lesiones</b> (aunque no denuncies). <b>2. Pruebas:</b> fotos con luz, fecha, ropa rota guardada en bolsa papel, capturas amenazas. Guarda en correo Drive oculto, no galería. <b>3. No limpies escena</b> si es grave. <b>4. Denuncia o no decide después</b> con apoyo (1455). <b>5. No minimices:</b> estrangulamiento aunque “no dejó marca” es riesgo vital → evalúate hoy.</p></div>
+      <div class="help-card"><h4>🧠 Si es psicológica / control</h4><p class="su-a6c665"><b>1. Valida:</b> no es tu imaginación. Anota diario (fecha, frase, contexto, testigos). <b>2. Red:</b> habla con 1 persona segura (familia, CESFAM, Centro Mujer). <b>3. 1455 SERNAMEG</b> te orienta sin obligar a denunciar. <b>4. Límites:</b> “No me grites, hablaremos cuando te calmes” + retírate. Si no respeta, no insistas sola/o. <b>5. Apoyo psicológico gratuito:</b> CESFAM/SAR Penco hora salud mental, Centro Mujer Conce 41 246 7700.</p></div>
+      <div class="help-card su-1fadd9"><h4>🔒 Sexual en pareja/expareja</h4><p class="su-a6c665"><b>1. Prioridad tú, no pruebas:</b> alójate segura. <b>2. 72h:</b> SAR/Hospital para protocolo (anticoncepción emergencia, VIH, lesiones genéricas) — no necesitas denunciar para atenderte. <b>3. Si puedes:</b> no te laves, lleva ropa en bolsa papel, anota hora/lugar. <b>4. Denuncia:</b> PDI 134 o Fiscalía (no Carabineros si prefieres privacidad). Lleva acompañante. <b>5. No es tu culpa</b> aunque hayas tomado alcohol o vuelvas con él/ella.</p></div>
+      <div class="help-card"><h4>💰 Económica / Patrimonial</h4><p class="su-a6c665"><b>1. Copias ocultas:</b> carnet, escrituras, contratos, liquidaciones, certificados hijos, claves, fotos deudas. Envíalas a correo seguro de amiga/madre. <b>2. Cuenta propia:</b> BancoEstado Cuenta RUT sin que sepa, guarda $ aunque sea poco. <b>3. Pensión alimentos:</b> Tribunal Familia Conce 41 274 4000 — puedes demandar sin abogado (CAJ gratuita 41 274 2400). <b>4. No firmes</b> créditos o ventas bajo presión. <b>5. CAD Mujer</b> orienta autonomía: SENCE, FOSIS.</p></div>
+      <div class="help-card"><h4>👶 Vicaria (con hijos/as)</h4><p class="su-a6c665"><b>1. Protege a NNA:</b> no los uses de mensajeros. Escucha sin interrogar. <b>2. Registra:</b> fechas, frases, incumplimiento visitas, mensajes que usa a niños para control. <b>3. Medidas:</b> Tribunal Familia puede suspender visitas, ordenar terapia. Contacta Oficina Local Niñez Penco 41 226 1020 / 800 730 800. <b>4. No confrontes</b> delante de niños. <b>5. Si hay golpe a niño → 133/149 + SAR inmediato.</p></div>
+      <div class="help-card"><h4>📱 Digital</h4><p class="su-a6c665"><b>1. Guarda evidencia:</b> captura con fecha, URL, perfil. Respalda en drive seguro. <b>2. Protege cuentas:</b> cambia claves en PC seguro, activa doble factor, revisa apps con acceso a ubicación, desinstala stalkerware (ajustes > apps). <b>3. No borres</b> todo aún si vas a denunciar. <b>4. Bloquear reportar</b> en red, pero antes guarda pruebas. <b>5. Ley 21.675:</b> difusión no consentida de imágenes íntimas es delito → PDI Brigada Cibercrimen 134.</p></div>
     </div>
-    <div class="menstrual-card" style="margin-top:10px;background:var(--panel)"><h4>📂 Cómo guardar pruebas sin riesgo</h4><p class="muted" style="font-size:11px;line-height:1.5">Correo nuevo que solo tú sepas (ej: Gmail con nombre distinto) → envíate fotos/audios con fecha. O Drive oculto. Borra de “Enviados” y papelera. No en WhatsApp del agresor. Anota en papel escondido: fecha, hora, qué pasó, testigos. Sirve para denuncia futura aunque hoy no quieras.</p></div>`;
+    <div class="menstrual-card su-4adf8c"><h4>📂 Cómo guardar pruebas sin riesgo</h4><p class="muted su-a6c665">Correo nuevo que solo tú sepas (ej: Gmail con nombre distinto) → envíate fotos/audios con fecha. O Drive oculto. Borra de “Enviados” y papelera. No en WhatsApp del agresor. Anota en papel escondido: fecha, hora, qué pasó, testigos. Sirve para denuncia futura aunque hoy no quieras.</p></div>`;
   } else if(violenceTab==='plan'){
-    html+= `<div class="menstrual-card" style="background:linear-gradient(135deg,#231a33,var(--card));border-color:#d8a0ff"><h4 style="color:#d8a0ff">🎒 Plan de seguridad — para salir cuando decidas, o si debes salir corriendo</h4><p class="muted" style="font-size:11px">No necesitas sufrir más para hacer el plan. Hazlo en momento calmo, sin que te vea. Revisa cada luna.</p></div>
-    <div class="help-grid" style="margin-top:10px">
-      <div class="help-card"><h4>✅ Bolso de emergencia (escondido)</h4><p style="font-size:11px;line-height:1.5">• Copias carnet, certificado nacimiento hijos, libreta familia, contrato arriendo<br>• Tarjeta/RUT, cuenta propia, $ en efectivo (aunque poco)<br>• Llaves casa + copia a confianza<br>• Ropa 2 cambios + para hijos, medicamentos, recetas<br>• Celular cargador, lista teléfonos escrita a mano<br>Déjalo en casa de madre/vecina confiable o bolso camuflado. No en auto del agresor.</p></div>
-      <div class="help-card"><h4>🏠 Lugares seguros Penco</h4><p style="font-size:11px;line-height:1.5">• Casa de confianza a menos de 10 min a pie (acuerda código)<br>• SAR Penco 24h / Hospital Penco-Lirquén (puedes quedarte mientras llega Carabineros)<br>• 2ª Comisaría Penco (Freire) — puedes pedir <b>medida cautelar</b> ahí mismo<br>• Si debes dejar tu barrio, Centro de la Mujer deriva a casa de acogida SERNAMEG (reservada, gratuita). No publiques tu plan en redes.</p></div>
-      <div class="help-card"><h4>📱 Código con red</h4><p style="font-size:11px;line-height:1.5">Con 1-2 personas de confianza acuerda:<br>• Palabra clave: “¿Tienes azúcar?” / “¿Cómo está la mami?” = ven/llama a Carabineros<br>• Señal con vecino: luz prendida, toalla en ventana<br>• Si te controla celular, usa WhatsApp 1455 (+56 9 9700 7000) que es silencioso<br>• Prueba el código 1 vez.</p></div>
-      <div class="help-card"><h4>👶 Si sales con niños/as o mascota</h4><p style="font-size:11px;line-height:1.5">• Llévalos siempre contigo, mochila con útiles, juguete, leche/paño.<br>• Diles plan simple: “si escuchas gritos, ve a casa de la tía X”.<br>• Mascota: si amenaza con dañarla, Of. Medio Ambiente Penco 41 226 1017 / Vet Municipal puede orientar dónde dejarla breve.<br>• En escuela avisa: “solo yo retiro a mi hijo/a”.</p></div>
+    html+= `<div class="menstrual-card su-ffd1a9"><h4 class="su-399074">🎒 Plan de seguridad — para salir cuando decidas, o si debes salir corriendo</h4><p class="muted su-11a508">No necesitas sufrir más para hacer el plan. Hazlo en momento calmo, sin que te vea. Revisa cada luna.</p></div>
+    <div class="help-grid su-d2c171">
+      <div class="help-card"><h4>✅ Bolso de emergencia (escondido)</h4><p class="su-a6c665">• Copias carnet, certificado nacimiento hijos, libreta familia, contrato arriendo<br>• Tarjeta/RUT, cuenta propia, $ en efectivo (aunque poco)<br>• Llaves casa + copia a confianza<br>• Ropa 2 cambios + para hijos, medicamentos, recetas<br>• Celular cargador, lista teléfonos escrita a mano<br>Déjalo en casa de madre/vecina confiable o bolso camuflado. No en auto del agresor.</p></div>
+      <div class="help-card"><h4>🏠 Lugares seguros Penco</h4><p class="su-a6c665">• Casa de confianza a menos de 10 min a pie (acuerda código)<br>• SAR Penco 24h / Hospital Penco-Lirquén (puedes quedarte mientras llega Carabineros)<br>• 2ª Comisaría Penco (Freire) — puedes pedir <b>medida cautelar</b> ahí mismo<br>• Si debes dejar tu barrio, Centro de la Mujer deriva a casa de acogida SERNAMEG (reservada, gratuita). No publiques tu plan en redes.</p></div>
+      <div class="help-card"><h4>📱 Código con red</h4><p class="su-a6c665">Con 1-2 personas de confianza acuerda:<br>• Palabra clave: “¿Tienes azúcar?” / “¿Cómo está la mami?” = ven/llama a Carabineros<br>• Señal con vecino: luz prendida, toalla en ventana<br>• Si te controla celular, usa WhatsApp 1455 (+56 9 9700 7000) que es silencioso<br>• Prueba el código 1 vez.</p></div>
+      <div class="help-card"><h4>👶 Si sales con niños/as o mascota</h4><p class="su-a6c665">• Llévalos siempre contigo, mochila con útiles, juguete, leche/paño.<br>• Diles plan simple: “si escuchas gritos, ve a casa de la tía X”.<br>• Mascota: si amenaza con dañarla, Of. Medio Ambiente Penco 41 226 1017 / Vet Municipal puede orientar dónde dejarla breve.<br>• En escuela avisa: “solo yo retiro a mi hijo/a”.</p></div>
     </div>
-    <div class="menstrual-card" style="margin-top:10px"><h4>🗒️ Checklist — ¿Qué ya tengo?</h4>
-      <p class="muted" style="font-size:11px">Copia mental: ¿documentos? ¿copia llaves? ¿plata separada? ¿1 persona sabe código? ¿ruta a Comisaría sin depender de él/ella? Si te falta 1, es tu próximo paso esta semana — pide ayuda 1455 para armarlo.</p>
-      <details class="menstrual-details" style="margin-top:8px"><summary>🚪 Si decides volver tras salir</summary><p class="muted" style="font-size:11px;line-height:1.5">Es común volver por esperanza/miedo. No te juzgues. Asegura: medidas cautelares vigentes, terapia para ambos (por separado), seguimiento Centro Mujer. Si vuelve violencia, no dudes en irte de nuevo — el plan sigue vigente.</p></details>
+    <div class="menstrual-card su-d2c171"><h4>🗒️ Checklist — ¿Qué ya tengo?</h4>
+      <p class="muted su-11a508">Copia mental: ¿documentos? ¿copia llaves? ¿plata separada? ¿1 persona sabe código? ¿ruta a Comisaría sin depender de él/ella? Si te falta 1, es tu próximo paso esta semana — pide ayuda 1455 para armarlo.</p>
+      <details class="menstrual-details su-8a77e5"><summary>🚪 Si decides volver tras salir</summary><p class="muted su-a6c665">Es común volver por esperanza/miedo. No te juzgues. Asegura: medidas cautelares vigentes, terapia para ambos (por separado), seguimiento Centro Mujer. Si vuelve violencia, no dudes en irte de nuevo — el plan sigue vigente.</p></details>
     </div>`;
   } else if(violenceTab==='redes'){
-    html+= `<div class="menstrual-card" style="background:linear-gradient(135deg,#231a33,var(--card));border-color:#d8a0ff"><h4 style="color:#d8a0ff">🏛️ Redes, denuncia y derechos — Chile & Penco</h4><p class="muted" style="font-size:11px;line-height:1.5"><b>VIF es delito</b> (Ley 20.066) y desde 2024 <b>Ley 21.675</b> amplia protección a pololeo, ex, violencia no solo física. Puedes denunciar como víctima o testigo, presencial o por teléfono. Medidas salen en horas.</p></div>
-    <div class="help-grid" style="margin-top:10px">
-      <div class="help-card"><h4>📋 Dónde y cómo denunciar</h4><p style="font-size:11px;line-height:1.5"><b>Opciones:</b><br>• <b>133 Carabineros / 149 Fono Familia</b> (comisaría más cercana)<br>• <b>PDI 134</b> (si prefieres no ir a comisaría)<br>• <b>Fiscalía Concepción</b> (causa penal)<br>• <b>Tribunal de Familia Concepción</b> (medidas protección, pensión, cuidado hijos) — 41 274 4000<br><b>Lleva:</b> carnet, relato escrito con fechas, pruebas (fotos, audios, capturas), constatación lesiones (SAR), testigos (nombre/tel). No necesitas abogado para denunciar. Puedes ir acompañada/o.</p></div>
-      <div class="help-card"><h4>⚖️ Qué pasa después — medidas</h4><p style="font-size:11px;line-height:1.5"><b>Juez puede ordenar en 24h:</b> salida del agresor del hogar, prohibición acercarse (200-500m), no porte armas, entrega de hijos a ti, pensión provisoria, rondas Carabineros. Incumplir es delito. Si hay niños, Tribunal dicta protección. Causa penal (lesiones/amenazas) va a Fiscalía. Centro Mujer te acompaña gratis a audiencias.</p></div>
-      <div class="help-card"><h4>🏥 Salud — hora segura y gratuita</h4><p style="font-size:11px;line-height:1.5"><b>CESFAM/SAR Penco:</b> 41 272 6350 / 41 272 6000 · Matrona, psicólogo/a, trabajador social — pide <b>hora por VIF</b> (reserva confidencial).<br><b>Hospital Penco-Lirquén:</b> 41 272 6300 urgencias.<br><b>SERNAMEG Centro Mujer Conce:</b> 41 246 7700 (terapia, jurídica, grupo apoyo, casa acogida).<br><b>Salud Responde 600 360 7777</b> orientación.</p></div>
-      <div class="help-card"><h4>💜 Apoyo psicosocial gratuito</h4><p style="font-size:11px;line-height:1.5"><b>1455 SERNAMEG (24h)</b> + WhatsApp +56 9 9700 7000 (chat silencioso).<br><b>149 Fono Familia Carabineros</b> (24h VIF).<br><b>800 104 008 Fono VIF</b> (ex 800 104 008).<br><b>Centro Hombre</b> que quiere cambiar (SERNAMEG) — derivación si agresor pide ayuda.<br><b>Fundación Honra, Miles, Corporación Humanas</b> — redes Bío-Bío.<br>En Penco: <b>Of. Mujer DIDECO 41 226 1020</b> + <b>Of. Niñez 41 226 1020</b> + <b>Programa SENDA Previene Penco</b>.</p></div>
+    html+= `<div class="menstrual-card su-ffd1a9"><h4 class="su-399074">🏛️ Redes, denuncia y derechos — Chile & Penco</h4><p class="muted su-a6c665"><b>VIF es delito</b> (Ley 20.066) y desde 2024 <b>Ley 21.675</b> amplia protección a pololeo, ex, violencia no solo física. Puedes denunciar como víctima o testigo, presencial o por teléfono. Medidas salen en horas.</p></div>
+    <div class="help-grid su-d2c171">
+      <div class="help-card"><h4>📋 Dónde y cómo denunciar</h4><p class="su-a6c665"><b>Opciones:</b><br>• <b>133 Carabineros / 149 Fono Familia</b> (comisaría más cercana)<br>• <b>PDI 134</b> (si prefieres no ir a comisaría)<br>• <b>Fiscalía Concepción</b> (causa penal)<br>• <b>Tribunal de Familia Concepción</b> (medidas protección, pensión, cuidado hijos) — 41 274 4000<br><b>Lleva:</b> carnet, relato escrito con fechas, pruebas (fotos, audios, capturas), constatación lesiones (SAR), testigos (nombre/tel). No necesitas abogado para denunciar. Puedes ir acompañada/o.</p></div>
+      <div class="help-card"><h4>⚖️ Qué pasa después — medidas</h4><p class="su-a6c665"><b>Juez puede ordenar en 24h:</b> salida del agresor del hogar, prohibición acercarse (200-500m), no porte armas, entrega de hijos a ti, pensión provisoria, rondas Carabineros. Incumplir es delito. Si hay niños, Tribunal dicta protección. Causa penal (lesiones/amenazas) va a Fiscalía. Centro Mujer te acompaña gratis a audiencias.</p></div>
+      <div class="help-card"><h4>🏥 Salud — hora segura y gratuita</h4><p class="su-a6c665"><b>CESFAM/SAR Penco:</b> 41 272 6350 / 41 272 6000 · Matrona, psicólogo/a, trabajador social — pide <b>hora por VIF</b> (reserva confidencial).<br><b>Hospital Penco-Lirquén:</b> 41 272 6300 urgencias.<br><b>SERNAMEG Centro Mujer Conce:</b> 41 246 7700 (terapia, jurídica, grupo apoyo, casa acogida).<br><b>Salud Responde 600 360 7777</b> orientación.</p></div>
+      <div class="help-card"><h4>💜 Apoyo psicosocial gratuito</h4><p class="su-a6c665"><b>1455 SERNAMEG (24h)</b> + WhatsApp +56 9 9700 7000 (chat silencioso).<br><b>149 Fono Familia Carabineros</b> (24h VIF).<br><b>800 104 008 Fono VIF</b> (ex 800 104 008).<br><b>Centro Hombre</b> que quiere cambiar (SERNAMEG) — derivación si agresor pide ayuda.<br><b>Fundación Honra, Miles, Corporación Humanas</b> — redes Bío-Bío.<br>En Penco: <b>Of. Mujer DIDECO 41 226 1020</b> + <b>Of. Niñez 41 226 1020</b> + <b>Programa SENDA Previene Penco</b>.</p></div>
     </div>
-    <div class="menstrual-card" style="margin-top:10px;border-color:#e8c56a"><h4>📄 Constatación de lesiones ≠ denuncia automática (pero ayuda mucho)</h4><p class="muted" style="font-size:11px;line-height:1.5">Puedes pedir en SAR/Hospital “constatación por VIF” solo para dejar registro médico (fecha, lesiones, firma). Te dan copia. No obliga a denunciar, pero es prueba clave si denuncias después (plazo lesiones leves 6 meses). Pide que describan todo, incluso hematomas pequeños y estado emocional.</p></div>
-    <details class="menstrual-details" style="margin-top:10px" open><summary>🗓️ Si no quieres denunciar ahora — igual puedes avanzar</summary><p class="muted" style="font-size:11px;line-height:1.5">• Ve a 1455/Centro Mujer solo para conversar (confidencial).<br>• Actualiza plan de seguridad.<br>• Busca terapia en CESFAM.<br>• Documenta. <br><b>No hay plazo único para todo:</b> lesiones/coacción 6 meses, amenazas/abusos sexuales hasta años, pero entre más pronto, más pruebas. Si cambias de opinión, puedes denunciar cuando estés lista/o.</p></details>`;
+    <div class="menstrual-card su-0d015f"><h4>📄 Constatación de lesiones ≠ denuncia automática (pero ayuda mucho)</h4><p class="muted su-a6c665">Puedes pedir en SAR/Hospital “constatación por VIF” solo para dejar registro médico (fecha, lesiones, firma). Te dan copia. No obliga a denunciar, pero es prueba clave si denuncias después (plazo lesiones leves 6 meses). Pide que describan todo, incluso hematomas pequeños y estado emocional.</p></div>
+    <details class="menstrual-details su-d2c171" open><summary>🗓️ Si no quieres denunciar ahora — igual puedes avanzar</summary><p class="muted su-a6c665">• Ve a 1455/Centro Mujer solo para conversar (confidencial).<br>• Actualiza plan de seguridad.<br>• Busca terapia en CESFAM.<br>• Documenta. <br><b>No hay plazo único para todo:</b> lesiones/coacción 6 meses, amenazas/abusos sexuales hasta años, pero entre más pronto, más pruebas. Si cambias de opinión, puedes denunciar cuando estés lista/o.</p></details>`;
   } else if(violenceTab==='ayudar'){
-    html+= `<div class="menstrual-card" style="background:linear-gradient(135deg,#231a33,var(--card));border-color:#d8a0ff"><h4 style="color:#d8a0ff">🤝 Cómo ayudar a otra persona sin ponerla en riesgo</h4><p class="muted" style="font-size:11px">Tu rol: creer, escuchar, informar, acompañar — no rescatar a la fuerza. Respeta sus tiempos.</p></div>
-    <div class="help-grid" style="margin-top:10px">
-      <div class="help-card"><h4>✅ Qué decir</h4><p style="font-size:11px;line-height:1.5">• “Te creo, no es tu culpa, estoy aquí”.<br>• “¿Cómo te puedo apoyar? ¿Quieres que busquemos ayuda juntas?”<br>• “Mereces vivir sin miedo”.<br>• Ofrece info, no órdenes: “Existe 1455/149, si quieres llamamos juntos”.<br>• “Si decides irte, te ayudo con bolso/contacto”.</p></div>
-      <div class="help-card"><h4>❌ Evita</h4><p style="font-size:11px;line-height:1.5">• “¿Por qué no te vas?” / “Aguanta por tus hijos”.<br>• Juzgar, culpar, minimizar: “seguro lo provocaste”.<br>• Dar ultimátum o contar sin permiso (puede aumentar riesgo).<br>• Confrontar al agresor tú sola/o.<br>• Prometer lo que no cumplirás.</p></div>
-      <div class="help-card"><h4>👂 Escucha segura</h4><p style="font-size:11px;line-height:1.5">Privado, sin interrupciones, sin hijos del agresor cerca. Valida emociones, pregunta: “¿Te sientes segura en casa hoy?” No interrogues. Deja que ella/él decida ritmo. Ofrece acompañar a CESFAM/Comisaría/Centro Mujer si quiere, no obligar.</p></div>
-      <div class="help-card"><h4>🆘 Como testigo / vecino en Penco</h4><p style="font-size:11px;line-height:1.5">Escuchas gritos/golpes: <b>no entres solo</b>. Llama <b>133 o 149</b>, da dirección exacta. Quédate disponible como testigo. Si ves agresión en calle, llama 133, no te expongas. Ofrece después: “Si necesitas algo, aquí estoy”. Registra fecha/hora por si te piden declaración.</p></div>
+    html+= `<div class="menstrual-card su-ffd1a9"><h4 class="su-399074">🤝 Cómo ayudar a otra persona sin ponerla en riesgo</h4><p class="muted su-11a508">Tu rol: creer, escuchar, informar, acompañar — no rescatar a la fuerza. Respeta sus tiempos.</p></div>
+    <div class="help-grid su-d2c171">
+      <div class="help-card"><h4>✅ Qué decir</h4><p class="su-a6c665">• “Te creo, no es tu culpa, estoy aquí”.<br>• “¿Cómo te puedo apoyar? ¿Quieres que busquemos ayuda juntas?”<br>• “Mereces vivir sin miedo”.<br>• Ofrece info, no órdenes: “Existe 1455/149, si quieres llamamos juntos”.<br>• “Si decides irte, te ayudo con bolso/contacto”.</p></div>
+      <div class="help-card"><h4>❌ Evita</h4><p class="su-a6c665">• “¿Por qué no te vas?” / “Aguanta por tus hijos”.<br>• Juzgar, culpar, minimizar: “seguro lo provocaste”.<br>• Dar ultimátum o contar sin permiso (puede aumentar riesgo).<br>• Confrontar al agresor tú sola/o.<br>• Prometer lo que no cumplirás.</p></div>
+      <div class="help-card"><h4>👂 Escucha segura</h4><p class="su-a6c665">Privado, sin interrupciones, sin hijos del agresor cerca. Valida emociones, pregunta: “¿Te sientes segura en casa hoy?” No interrogues. Deja que ella/él decida ritmo. Ofrece acompañar a CESFAM/Comisaría/Centro Mujer si quiere, no obligar.</p></div>
+      <div class="help-card"><h4>🆘 Como testigo / vecino en Penco</h4><p class="su-a6c665">Escuchas gritos/golpes: <b>no entres solo</b>. Llama <b>133 o 149</b>, da dirección exacta. Quédate disponible como testigo. Si ves agresión en calle, llama 133, no te expongas. Ofrece después: “Si necesitas algo, aquí estoy”. Registra fecha/hora por si te piden declaración.</p></div>
     </div>
-    <div class="menstrual-card" style="margin-top:10px"><h4>🧘 Autocuidado de quien apoya</h4><p class="muted" style="font-size:11px;line-height:1.5">Acompañar duele. Pon límites, no te expongas a violencia. Busca tu propia red, habla con profesional si te angustia. Si el agresor es tu familiar/amigo, puedes decir: “No justifico lo que haces, busca ayuda en 149/Centro Hombres” sin encubrir.</p></div>
-    <details class="menstrual-details" style="margin-top:10px"><summary>🧒 Si la víctima es adolescente o persona mayor</summary><p class="muted" style="font-size:11px;line-height:1.5"><b>Adolescente:</b> pololeo violento es VIF desde Ley 21.675. Habla sin sermonear, ofrece 1455/INJUV, avisa a adulto protector con su permiso. <b>Persona mayor:</b> puede depender económicamente → coordina con CESFAM, SENAMA Bío-Bío 800 400 035, Oficina Adulto Mayor Penco 41 226 1020.</p></details>`;
+    <div class="menstrual-card su-d2c171"><h4>🧘 Autocuidado de quien apoya</h4><p class="muted su-a6c665">Acompañar duele. Pon límites, no te expongas a violencia. Busca tu propia red, habla con profesional si te angustia. Si el agresor es tu familiar/amigo, puedes decir: “No justifico lo que haces, busca ayuda en 149/Centro Hombres” sin encubrir.</p></div>
+    <details class="menstrual-details su-d2c171"><summary>🧒 Si la víctima es adolescente o persona mayor</summary><p class="muted su-a6c665"><b>Adolescente:</b> pololeo violento es VIF desde Ley 21.675. Habla sin sermonear, ofrece 1455/INJUV, avisa a adulto protector con su permiso. <b>Persona mayor:</b> puede depender económicamente → coordina con CESFAM, SENAMA Bío-Bío 800 400 035, Oficina Adulto Mayor Penco 41 226 1020.</p></details>`;
   }
   box.innerHTML = html;
 }
@@ -7472,16 +7472,16 @@ function renderEvacPanel(tab){
   const box = $('evacPanel'); if(!box) return;
   let html='';
   if(evacTab==='rutas'){
-    html+= `<div class="menstrual-card" style="background:linear-gradient(135deg,var(--panel),var(--card));border-color:#ff6b6b">
-      <h4 style="color:#ff6b6b">🗺️ Rutas orientativas — sube a pie al cerro</h4>
-      <p class="muted" style="font-size:11px">Orientativo: confirma en carta SHOA y municipio. El principio es uno solo: <b>desde costanera, sube por la calle más corta al cerro, sin auto</b>.</p>
-      <div class="help-grid" style="margin-top:8px">
-        <div class="help-card"><h4>🏖️ Penco centro / Costanera</h4><p style="font-size:11px;line-height:1.5">Costanera → <b>Freire / O'Higgins hacia arriba</b> (este, al cerro). Punto alto: sector <b>Plaza / Municipalidad y más arriba</b>. No uses auto: tacos bloquean. Si estás en playa, deja todo y sube.</p></div>
-        <div class="help-card"><h4>⚓ Lirquén / Caleta</h4><p style="font-size:11px;line-height:1.5">Puerto y caleta → sube por <b>camino a Lirquén alto / cerros tras la línea férrea</b>. Pescadores: si el sismo es largo y estás en bote cerca, no vuelvas a puerto bajo — sigue instrucción Armada 137.</p></div>
-        <div class="help-card"><h4>🌿 Rocuant / Humedal</h4><p style="font-size:11px;line-height:1.5">Zona plana e inundable. Sal <b>tierra adentro hacia Andalién / camino a Concepción en altura</b>. No cruces esteros crecidos. Con niños/mascotas, sal antes.</p></div>
-        <div class="help-card"><h4>🏠 Si vives sobre 30 msnm</h4><p style="font-size:11px;line-height:1.5">Quédate en casa en lugar seguro (ver pestaña Sismo). Recibe a familiares de abajo en tu <b>punto de encuentro</b>. Ten lista de contactos y radio a pilas.</p></div>
+    html+= `<div class="menstrual-card su-f24d6f">
+      <h4 class="su-0562fa">🗺️ Rutas orientativas — sube a pie al cerro</h4>
+      <p class="muted su-11a508">Orientativo: confirma en carta SHOA y municipio. El principio es uno solo: <b>desde costanera, sube por la calle más corta al cerro, sin auto</b>.</p>
+      <div class="help-grid su-8a77e5">
+        <div class="help-card"><h4>🏖️ Penco centro / Costanera</h4><p class="su-a6c665">Costanera → <b>Freire / O'Higgins hacia arriba</b> (este, al cerro). Punto alto: sector <b>Plaza / Municipalidad y más arriba</b>. No uses auto: tacos bloquean. Si estás en playa, deja todo y sube.</p></div>
+        <div class="help-card"><h4>⚓ Lirquén / Caleta</h4><p class="su-a6c665">Puerto y caleta → sube por <b>camino a Lirquén alto / cerros tras la línea férrea</b>. Pescadores: si el sismo es largo y estás en bote cerca, no vuelvas a puerto bajo — sigue instrucción Armada 137.</p></div>
+        <div class="help-card"><h4>🌿 Rocuant / Humedal</h4><p class="su-a6c665">Zona plana e inundable. Sal <b>tierra adentro hacia Andalién / camino a Concepción en altura</b>. No cruces esteros crecidos. Con niños/mascotas, sal antes.</p></div>
+        <div class="help-card"><h4>🏠 Si vives sobre 30 msnm</h4><p class="su-a6c665">Quédate en casa en lugar seguro (ver pestaña Sismo). Recibe a familiares de abajo en tu <b>punto de encuentro</b>. Ten lista de contactos y radio a pilas.</p></div>
       </div>
-      <p class="muted" style="font-size:10px;margin-top:6px">Señal natural = alerta: sismo que bota, ruido marino raro, mar que se recoge. Sirenas + mensaje SAE confirman. Practica la caminata 1 vez por luna.</p>
+      <p class="muted su-d47a97">Señal natural = alerta: sismo que bota, ruido marino raro, mar que se recoge. Sirenas + mensaje SAE confirman. Practica la caminata 1 vez por luna.</p>
     </div>`;
   } else if(evacTab==='mochila'){
     const chk = getEvacCheck();
@@ -7496,24 +7496,24 @@ function renderEvacPanel(tab){
       ['mascota','🐾 Correa, comida mascota, bozal, bolsa fecas'],
       ['llaves','🔑 Copia llaves, algo de efectivo, silbato']
     ];
-    html+= `<div class="menstrual-card" style="border-color:var(--gold)"><h4 style="color:var(--gold)">🎒 Mochila 72h — una por familia (marca avance)</h4>
-      <p class="muted" style="font-size:11px">Toca para marcar. Se guarda local por usuario. Meta: 9/9 antes de Luna 4.</p>
-      <div id="evacCheckList" class="habits-list" style="margin-top:8px">` +
-      items.map(([id,label])=>`<label class="check-row" style="border:1px solid var(--line);border-radius:8px;padding:8px;margin-bottom:6px;cursor:pointer"><input type="checkbox" data-evac="${id}" ${chk[id]?'checked':''}> <span style="font-size:12px">${label}</span></label>`).join('') +
-      `</div><p class="muted" id="evacCheckStats" style="font-size:11px"></p></div>`;
+    html+= `<div class="menstrual-card su-68a1a9"><h4 class="su-e39eba">🎒 Mochila 72h — una por familia (marca avance)</h4>
+      <p class="muted su-11a508">Toca para marcar. Se guarda local por usuario. Meta: 9/9 antes de Luna 4.</p>
+      <div id="evacCheckList" class="habits-list su-8a77e5">` +
+      items.map(([id,label])=>`<label class="check-row su-77f2ec"><input type="checkbox" data-evac="${id}" ${chk[id]?'checked':''}> <span class="su-6cb285">${label}</span></label>`).join('') +
+      `</div><p class="muted su-11a508" id="evacCheckStats"></p></div>`;
   } else if(evacTab==='plan'){
     html+= `<div class="help-grid">
-      <div class="help-card"><h4>📋 Ficha familiar (escríbela a mano)</h4><p style="font-size:11px;line-height:1.5">• Punto encuentro 1 (cerro): ______<br>• Punto encuentro 2 (fuera Penco): ______<br>• Contacto fuera de la zona (todo llaman a él): ______<br>• Quién busca a niños en escuela: ______<br>• Mascota quién la toma: ______<br>• Lugar medicamentos/llaves/mochila: ______</p></div>
-      <div class="help-card"><h4>🏫 Escuela / trabajo</h4><p style="font-size:11px;line-height:1.5">Pregunta el <b>plan PISE</b> de la escuela: ¿dónde retiran? ¿quién autorizado? No llames en masa (colapsa red): usa <b>SMS / WhatsApp corto</b> + contacto único. Niños no se devuelven solos a casa en alerta.</p></div>
-      <div class="help-card"><h4>♿ Movilidad reducida</h4><p style="font-size:11px;line-height:1.5">Vecino de apoyo asignado, silla cerca, lista medicamentos visible en refrigerador, pulsera con datos. Ensaya traslado a pie.</p></div>
-      <div class="help-card"><h4>🔁 Simulacro 10 min</h4><p style="font-size:11px;line-height:1.5">1) Suena alarma (celular). 2) Cortan gas/luz/agua. 3) Toman mochila + mascota. 4) Caminan a punto alto cronometrando. 5) Anotan en Notas de la Luna qué falló. Repite en <b>Luna 1, 4, 7, 10</b>.</p></div>
+      <div class="help-card"><h4>📋 Ficha familiar (escríbela a mano)</h4><p class="su-a6c665">• Punto encuentro 1 (cerro): ______<br>• Punto encuentro 2 (fuera Penco): ______<br>• Contacto fuera de la zona (todo llaman a él): ______<br>• Quién busca a niños en escuela: ______<br>• Mascota quién la toma: ______<br>• Lugar medicamentos/llaves/mochila: ______</p></div>
+      <div class="help-card"><h4>🏫 Escuela / trabajo</h4><p class="su-a6c665">Pregunta el <b>plan PISE</b> de la escuela: ¿dónde retiran? ¿quién autorizado? No llames en masa (colapsa red): usa <b>SMS / WhatsApp corto</b> + contacto único. Niños no se devuelven solos a casa en alerta.</p></div>
+      <div class="help-card"><h4>♿ Movilidad reducida</h4><p class="su-a6c665">Vecino de apoyo asignado, silla cerca, lista medicamentos visible en refrigerador, pulsera con datos. Ensaya traslado a pie.</p></div>
+      <div class="help-card"><h4>🔁 Simulacro 10 min</h4><p class="su-a6c665">1) Suena alarma (celular). 2) Cortan gas/luz/agua. 3) Toman mochila + mascota. 4) Caminan a punto alto cronometrando. 5) Anotan en Notas de la Luna qué falló. Repite en <b>Luna 1, 4, 7, 10</b>.</p></div>
     </div>`;
   } else if(evacTab==='sismo'){
     html+= `<div class="help-grid">
-      <div class="help-card" style="border-color:#ff6b6b"><h4>🏚️ Durante el sismo</h4><p style="font-size:11px;line-height:1.5"><b>Agáchate, cúbrete, afírmate</b> bajo mesa firme, lejos de ventanas/estantes. No uses ascensor ni escalera corriendo. Si cocinas, apaga fuego si alcanzas sin riesgo. En auto: detente lejos de postes, quédate dentro.</p></div>
-      <div class="help-card"><h4>🌊 Después — decide evacuar</h4><p style="font-size:11px;line-height:1.5">Evacúa si: sismo largo, no te podías parar, alerta SAE/SHOA, mar extraño. <b>A pie, con mochila, sin volver por cosas.</b> Corta gas si huele. No entres a casas dañadas. Escucha radio, no rumores de WhatsApp.</p></div>
-      <div class="help-card"><h4>📻 Vuelta a casa</h4><p style="font-size:11px;line-height:1.5">Solo cuando autoridad levanta alerta. Revisa grietas, gas, cables. Hierve agua si hubo corte. Foto daños para FIBE/municipio. Contiene a niños: rutina, juego, relato.</p></div>
-      <div class="help-card"><h4>📞 Números Penco</h4><p style="font-size:11px;line-height:1.5">Armada/Capitanía Lirquén <b>137 / 41 275 1006</b> · Bomberos 132 · Carabineros 133 / 2ª Comisaría 41 214 3240 · SAMU 131 · Municipalidad 41 226 1000 · Hospital Penco-Lirquén 41 272 6300.</p></div>
+      <div class="help-card su-55637b"><h4>🏚️ Durante el sismo</h4><p class="su-a6c665"><b>Agáchate, cúbrete, afírmate</b> bajo mesa firme, lejos de ventanas/estantes. No uses ascensor ni escalera corriendo. Si cocinas, apaga fuego si alcanzas sin riesgo. En auto: detente lejos de postes, quédate dentro.</p></div>
+      <div class="help-card"><h4>🌊 Después — decide evacuar</h4><p class="su-a6c665">Evacúa si: sismo largo, no te podías parar, alerta SAE/SHOA, mar extraño. <b>A pie, con mochila, sin volver por cosas.</b> Corta gas si huele. No entres a casas dañadas. Escucha radio, no rumores de WhatsApp.</p></div>
+      <div class="help-card"><h4>📻 Vuelta a casa</h4><p class="su-a6c665">Solo cuando autoridad levanta alerta. Revisa grietas, gas, cables. Hierve agua si hubo corte. Foto daños para FIBE/municipio. Contiene a niños: rutina, juego, relato.</p></div>
+      <div class="help-card"><h4>📞 Números Penco</h4><p class="su-a6c665">Armada/Capitanía Lirquén <b>137 / 41 275 1006</b> · Bomberos 132 · Carabineros 133 / 2ª Comisaría 41 214 3240 · SAMU 131 · Municipalidad 41 226 1000 · Hospital Penco-Lirquén 41 272 6300.</p></div>
     </div>`;
   }
   box.innerHTML = html;
@@ -7660,7 +7660,7 @@ function renderMapuStreak(){
   const b=$('mapuStreakBox'); if(!b) return;
   const d=getMapuData();
   const pct = d.total? Math.round(d.ok/d.total*100):0;
-  b.innerHTML = `<b>🌱 Tu kimün:</b> ${d.ok}/${d.total} buenas (${pct}%) · racha ${d.streak} 🔥 <span class="muted" style="font-size:11px">— Básico: 1 palabra/día · Intermedio: 1 frase/día · Avanzado: rakizuam. Todo se guarda local.</span>`;
+  b.innerHTML = `<b>🌱 Tu kimün:</b> ${d.ok}/${d.total} buenas (${pct}%) · racha ${d.streak} 🔥 <span class="muted su-11a508">— Básico: 1 palabra/día · Intermedio: 1 frase/día · Avanzado: rakizuam. Todo se guarda local.</span>`;
 }
 function renderMapuPanel(tab){
   mapuTab = tab || mapuTab;
@@ -7672,64 +7672,64 @@ function renderMapuPanel(tab){
   if(mapuTab==='palabra'){
     const w = MAPU_WORDS[mapuDayIndex()];
     const rel = [MAPU_WORDS[(mapuDayIndex()+5)%MAPU_WORDS.length], MAPU_WORDS[(mapuDayIndex()+9)%MAPU_WORDS.length]];
-    html+= `<div class="menstrual-card" style="background:linear-gradient(135deg,var(--panel),var(--card));border-color:var(--gold);text-align:center">
-      <p class="muted" style="font-size:11px">☀️ PALABRA DE HOY · NIVEL BÁSICO · ${cal.fmtDate.format(new Date())} · ${MAPU_WORDS.length} palabras en total</p>
-      <div style="font-size:30px;font-weight:800;color:var(--gold);margin:6px 0">${escapeHtml(w.m)}</div>
-      <div style="font-size:15px;color:#e8eaf6"><b>${escapeHtml(w.e)}</b> <span class="chip" style="font-size:10px">${escapeHtml(w.t||'')}</span></div>
-      <p class="muted" style="font-size:12px;margin-top:6px">“${escapeHtml(w.x)}”</p>
-      <div style="display:flex;gap:6px;justify-content:center;margin-top:8px;flex-wrap:wrap">
-        <button type="button" id="mapuSpeakBtn" class="btn" style="width:auto" disabled title="Audio nativo en grabación">🔇 Audio próximamente</button>
-        <button type="button" id="mapuNextBtn" class="btn" style="width:auto">🎲 Otra palabra</button>
+    html+= `<div class="menstrual-card su-3fa1a8">
+      <p class="muted su-11a508">☀️ PALABRA DE HOY · NIVEL BÁSICO · ${cal.fmtDate.format(new Date())} · ${MAPU_WORDS.length} palabras en total</p>
+      <div class="su-457da9">${escapeHtml(w.m)}</div>
+      <div class="su-cd8bd8"><b>${escapeHtml(w.e)}</b> <span class="chip su-0d5be0">${escapeHtml(w.t||'')}</span></div>
+      <p class="muted su-2b0979">“${escapeHtml(w.x)}”</p>
+      <div class="su-9bc2df">
+        <button type="button" id="mapuSpeakBtn" class="btn su-30e741" disabled title="Audio nativo en grabación">🔇 Audio próximamente</button>
+        <button type="button" id="mapuNextBtn" class="btn su-30e741">🎲 Otra palabra</button>
       </div></div>
-      <div class="help-grid" style="margin-top:10px">`+
-      rel.map(r=>`<div class="help-card"><h4>${escapeHtml(r.m)}</h4><p style="font-size:11px">${escapeHtml(r.e)}<br><span class="muted">“${escapeHtml(r.x)}”</span></p></div>`).join('')+`</div>
-      <div class="help-grid" style="margin-top:10px">
-        <div class="help-card"><h4>🗣️ ¿Cómo pronunciar?</h4><p style="font-size:11px;line-height:1.6"><b>ü</b> → suena entre i y u (küla ≈ kula cerrada)<br><b>ng</b> → nasal como en <i>ngillatun</i><br><b>tr</b> → suave, no enrollada<br><b>Habla lento y con respeto</b>, mejor que perfecto. Repite 3 veces en voz alta.</p></div>
-        <div class="help-card"><h4>📚 ¿Cómo avanzar?</h4><p style="font-size:11px;line-height:1.6">1) Aprende 1 palabra/día de esta pestaña.<br>2) Pasa a <b>💬 Intermedio</b> cuando reconozcas 30 sin mirar.<br>3) Pasa a <b>📜 Avanzado</b> cuando armes frases solas.<br>El quiz te dice tu nivel real.</p></div>
+      <div class="help-grid su-d2c171">`+
+      rel.map(r=>`<div class="help-card"><h4>${escapeHtml(r.m)}</h4><p class="su-11a508">${escapeHtml(r.e)}<br><span class="muted">“${escapeHtml(r.x)}”</span></p></div>`).join('')+`</div>
+      <div class="help-grid su-d2c171">
+        <div class="help-card"><h4>🗣️ ¿Cómo pronunciar?</h4><p class="su-b439ab"><b>ü</b> → suena entre i y u (küla ≈ kula cerrada)<br><b>ng</b> → nasal como en <i>ngillatun</i><br><b>tr</b> → suave, no enrollada<br><b>Habla lento y con respeto</b>, mejor que perfecto. Repite 3 veces en voz alta.</p></div>
+        <div class="help-card"><h4>📚 ¿Cómo avanzar?</h4><p class="su-b439ab">1) Aprende 1 palabra/día de esta pestaña.<br>2) Pasa a <b>💬 Intermedio</b> cuando reconozcas 30 sin mirar.<br>3) Pasa a <b>📜 Avanzado</b> cuando armes frases solas.<br>El quiz te dice tu nivel real.</p></div>
       </div>
-      <p class="muted" style="font-size:10px;margin-top:6px">Grafemarios: <b>Azümchefe</b> (el usado aquí) · <b>Unificado</b> · <b>Raguileo</b>. Ej: <i>kimün = kimvn / kimün</i> según grafemario. Puede variar por zona — lo importante es usar con respeto y preguntar.</p>`;
+      <p class="muted su-d47a97">Grafemarios: <b>Azümchefe</b> (el usado aquí) · <b>Unificado</b> · <b>Raguileo</b>. Ej: <i>kimün = kimvn / kimün</i> según grafemario. Puede variar por zona — lo importante es usar con respeto y preguntar.</p>`;
   } else if(mapuTab==='numeros'){
-    html+= `<div class="menstrual-card" style="border-color:#7ab8ff"><h4 style="color:#7ab8ff">🔢 Números 1–100 — las 13 lunas se cuentan así</h4>
-      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:6px;margin-top:8px">`+
-      MAPU_NUMS.map(([m,n])=>`<button type="button" class="btn mapu-word" data-w="${escapeHtml(m)}" style="font-size:12px"><b>${n}</b> · ${escapeHtml(m)}</button>`).join('')+`</div>
-      <p class="muted" style="font-size:11px;margin-top:8px">Lógica: <b>mari küla = 10+3 = 13</b> → <b>mari küla küyen</b>. <b>epu mari = 2×10 = 20</b>, <b>küla mari = 30</b>, <b>pataka = 100</b>. Toca para escuchar.</p></div>
-      <div class="help-grid" style="margin-top:10px">
-        <div class="help-card"><h4>👋 Saludos lafkenche</h4><p style="font-size:11px;line-height:1.6"><b>Mari mari</b> — hola (una o varias personas)<br><b>Mari mari, lamngen</b> — hola hermano/a (respetuoso)<br><b>Chaltu may</b> — muchas gracias<br><b>Küme mañum</b> — gracias con reconocimiento<br><b>Peukayal / wüle pewaiñ</b> — nos vemos / mañana nos vemos<br><b>Pentukun</b> — vengo a saludar formalmente.</p></div>
-        <div class="help-card"><h4>🗣️ Pronunciación rápida</h4><p style="font-size:11px;line-height:1.6"><b>ü</b> como u casi cerrada (küla ≈ kula)<br><b>ng</b> nasal (ngillatun)<br><b>tr</b> suave, no como español fuerte<br><b>Habla lento</b>, mejor que perfecto. En Penco, territorio lafkenche, se saluda mirando a los ojos.</p></div>
+    html+= `<div class="menstrual-card su-018729"><h4 class="su-721a46">🔢 Números 1–100 — las 13 lunas se cuentan así</h4>
+      <div class="su-2cb0d6">`+
+      MAPU_NUMS.map(([m,n])=>`<button type="button" class="btn mapu-word su-6cb285" data-w="${escapeHtml(m)}"><b>${n}</b> · ${escapeHtml(m)}</button>`).join('')+`</div>
+      <p class="muted su-e6fe60">Lógica: <b>mari küla = 10+3 = 13</b> → <b>mari küla küyen</b>. <b>epu mari = 2×10 = 20</b>, <b>küla mari = 30</b>, <b>pataka = 100</b>. Toca para escuchar.</p></div>
+      <div class="help-grid su-d2c171">
+        <div class="help-card"><h4>👋 Saludos lafkenche</h4><p class="su-b439ab"><b>Mari mari</b> — hola (una o varias personas)<br><b>Mari mari, lamngen</b> — hola hermano/a (respetuoso)<br><b>Chaltu may</b> — muchas gracias<br><b>Küme mañum</b> — gracias con reconocimiento<br><b>Peukayal / wüle pewaiñ</b> — nos vemos / mañana nos vemos<br><b>Pentukun</b> — vengo a saludar formalmente.</p></div>
+        <div class="help-card"><h4>🗣️ Pronunciación rápida</h4><p class="su-b439ab"><b>ü</b> como u casi cerrada (küla ≈ kula)<br><b>ng</b> nasal (ngillatun)<br><b>tr</b> suave, no como español fuerte<br><b>Habla lento</b>, mejor que perfecto. En Penco, territorio lafkenche, se saluda mirando a los ojos.</p></div>
       </div>`;
   } else if(mapuTab==='intermedio'){
-    html+= `<div class="menstrual-card" style="border-color:#7fd8a0"><h4 style="color:#7fd8a0">💬 Nivel Intermedio — conversa de verdad</h4>
-      <p class="muted" style="font-size:11px;line-height:1.5">Ya sabes palabras sueltas. Ahora: <b>pronombres + verbos + 14 frases</b> para presentarte, ir a la feria y a la playa. (🔇 Audio nativo en grabación.)</p></div>
-      <div class="help-grid" style="margin-top:10px">
-        <div class="help-card"><h4>👥 Pronombres (quién)</h4><p style="font-size:11px;line-height:1.7">`+
-        MAPU_PRONOMBRES.map(([m,e])=>`<b>${escapeHtml(m)}</b> = ${escapeHtml(e)}`).join('<br>')+`</p><p class="muted" style="font-size:10px">Dual (dos personas) y plural (varios) existen — el mapuzugun es preciso con cuántos somos.</p></div>
-        <div class="help-card"><h4>🏃 12 verbos base (raíz + -n = yo)</h4><p style="font-size:11px;line-height:1.7">`+
-        MAPU_VERBOS.map(v=>`<button type="button" class="btn mapu-word" data-w="${escapeHtml(v.m)}" style="font-size:11px;width:100%;text-align:left;margin-bottom:4px"><b>${escapeHtml(v.m)}</b> — ${escapeHtml(v.e)}<br><span class="muted">“${escapeHtml(v.x)}”</span></button>`).join('')+`</p></div>
+    html+= `<div class="menstrual-card su-56c5cb"><h4 class="su-42f1fd">💬 Nivel Intermedio — conversa de verdad</h4>
+      <p class="muted su-a6c665">Ya sabes palabras sueltas. Ahora: <b>pronombres + verbos + 14 frases</b> para presentarte, ir a la feria y a la playa. (🔇 Audio nativo en grabación.)</p></div>
+      <div class="help-grid su-d2c171">
+        <div class="help-card"><h4>👥 Pronombres (quién)</h4><p class="su-583677">`+
+        MAPU_PRONOMBRES.map(([m,e])=>`<b>${escapeHtml(m)}</b> = ${escapeHtml(e)}`).join('<br>')+`</p><p class="muted su-0d5be0">Dual (dos personas) y plural (varios) existen — el mapuzugun es preciso con cuántos somos.</p></div>
+        <div class="help-card"><h4>🏃 12 verbos base (raíz + -n = yo)</h4><p class="su-583677">`+
+        MAPU_VERBOS.map(v=>`<button type="button" class="btn mapu-word su-136500" data-w="${escapeHtml(v.m)}"><b>${escapeHtml(v.m)}</b> — ${escapeHtml(v.e)}<br><span class="muted">“${escapeHtml(v.x)}”</span></button>`).join('')+`</p></div>
       </div>
-      <div class="menstrual-card" style="margin-top:10px;border-color:#7fd8a0"><h4 style="color:#7fd8a0">💬 14 frases para Penco</h4>
-      <div style="display:flex;flex-direction:column;gap:6px;margin-top:8px">`+
-      MAPU_FRASES_M.map(f=>`<button type="button" class="btn mapu-word" data-w="${escapeHtml(f.m)}" style="width:100%;text-align:left;font-size:12px"><b>${escapeHtml(f.m)}</b><br><span style="color:#e8eaf6">${escapeHtml(f.e)}</span><br><span class="muted" style="font-size:11px">“${escapeHtml(f.x)}”</span></button>`).join('')+`</div></div>
-      <div class="menstrual-card" style="margin-top:10px;background:var(--panel)"><h4>🎭 Mini-diálogo: en la feria de Penco</h4><p style="font-size:11px;line-height:1.7">— <b>Mari mari, lamngen, chumleymi?</b> (Hola, ¿cómo estás?)<br>— <b>Kümelekan, chaltu may. ¿Eymi kay?</b> (Bien, gracias. ¿Y tú?)<br>— <b>Kümelekan. Chem am ta küdawkeeymi?</b> (Bien. ¿En qué trabajas?)<br>— <b>Huerta meu küdawken. Wüle lafken mew amukeaiñ.</b> (Trabajo en huerta. Mañana iremos al mar.)<br>— <b>Feymew, peukayal!</b> (¡Entonces, nos vemos!)<br><span class="muted">Practícalo con alguien: uno hace cada fila.</span></p></div>`;
+      <div class="menstrual-card su-b6037f"><h4 class="su-42f1fd">💬 14 frases para Penco</h4>
+      <div class="su-5e3875">`+
+      MAPU_FRASES_M.map(f=>`<button type="button" class="btn mapu-word su-6cd6a1" data-w="${escapeHtml(f.m)}"><b>${escapeHtml(f.m)}</b><br><span class="su-2f290d">${escapeHtml(f.e)}</span><br><span class="muted su-11a508">“${escapeHtml(f.x)}”</span></button>`).join('')+`</div></div>
+      <div class="menstrual-card su-4adf8c"><h4>🎭 Mini-diálogo: en la feria de Penco</h4><p class="su-583677">— <b>Mari mari, lamngen, chumleymi?</b> (Hola, ¿cómo estás?)<br>— <b>Kümelekan, chaltu may. ¿Eymi kay?</b> (Bien, gracias. ¿Y tú?)<br>— <b>Kümelekan. Chem am ta küdawkeeymi?</b> (Bien. ¿En qué trabajas?)<br>— <b>Huerta meu küdawken. Wüle lafken mew amukeaiñ.</b> (Trabajo en huerta. Mañana iremos al mar.)<br>— <b>Feymew, peukayal!</b> (¡Entonces, nos vemos!)<br><span class="muted">Practícalo con alguien: uno hace cada fila.</span></p></div>`;
   } else if(mapuTab==='avanzado'){
-    html+= `<div class="menstrual-card" style="border-color:#d8a0ff"><h4 style="color:#d8a0ff">📜 Nivel Avanzado — rakizuam y gramática viva</h4>
-      <p class="muted" style="font-size:11px;line-height:1.5">Ya conversas. Ahora piensa en mapuzugun: <b>conjugación, negación, futuro, ad mapu y epew</b>. Este nivel no se memoriza: se mastica, se conversa con kimeltuchefe.</p></div>
-      <div class="help-grid" style="margin-top:10px">
-        <div class="help-card"><h4>⚙️ Conjugación presente (verbo kim- = saber)</h4><p style="font-size:11px;line-height:1.7"><b>kimn</b> = yo sé<br><b>kimnimi / kimnymi</b> = tú sabes<br><b>kimy</b> = él/ella sabe<br><b>kimiñ</b> = nosotros sabemos<br><b>kimymün</b> = ustedes saben<br><b>kimyngün</b> = ellos saben<br><span class="muted">Raíz + terminación. Prueba con amu-, müle-, ayü-.</span></p></div>
-        <div class="help-card"><h4>🔮 Futuro + negación + pregunta</h4><p style="font-size:11px;line-height:1.7"><b>Futuro -a-:</b> amu- → <b>amuan</b> = iré · <b>amukeaiñ</b> = iremos<br><b>Negación la / no-:</b> <b>kimlan</b> = no sé · <b>kimkelay</b> = no sabe/no conoce<br><b>Pregunta -mi / -kam:</b> <b>chumleymi?</b> = ¿cómo estás? · <b>amuaimi?</b> = ¿irás?<br><b>Posesivo ñi:</b> <b>lafken ñi newen</b> = la fuerza del mar.</p></div>
+    html+= `<div class="menstrual-card su-5b7cd0"><h4 class="su-399074">📜 Nivel Avanzado — rakizuam y gramática viva</h4>
+      <p class="muted su-a6c665">Ya conversas. Ahora piensa en mapuzugun: <b>conjugación, negación, futuro, ad mapu y epew</b>. Este nivel no se memoriza: se mastica, se conversa con kimeltuchefe.</p></div>
+      <div class="help-grid su-d2c171">
+        <div class="help-card"><h4>⚙️ Conjugación presente (verbo kim- = saber)</h4><p class="su-583677"><b>kimn</b> = yo sé<br><b>kimnimi / kimnymi</b> = tú sabes<br><b>kimy</b> = él/ella sabe<br><b>kimiñ</b> = nosotros sabemos<br><b>kimymün</b> = ustedes saben<br><b>kimyngün</b> = ellos saben<br><span class="muted">Raíz + terminación. Prueba con amu-, müle-, ayü-.</span></p></div>
+        <div class="help-card"><h4>🔮 Futuro + negación + pregunta</h4><p class="su-583677"><b>Futuro -a-:</b> amu- → <b>amuan</b> = iré · <b>amukeaiñ</b> = iremos<br><b>Negación la / no-:</b> <b>kimlan</b> = no sé · <b>kimkelay</b> = no sabe/no conoce<br><b>Pregunta -mi / -kam:</b> <b>chumleymi?</b> = ¿cómo estás? · <b>amuaimi?</b> = ¿irás?<br><b>Posesivo ñi:</b> <b>lafken ñi newen</b> = la fuerza del mar.</p></div>
       </div>
-      <div class="menstrual-card" style="margin-top:10px;border-color:#d8a0ff"><h4 style="color:#d8a0ff">🧠 8 frases rakizuam</h4>
-      <div style="display:flex;flex-direction:column;gap:6px;margin-top:8px">`+
-      MAPU_FRASES_A.map(f=>`<button type="button" class="btn mapu-word" data-w="${escapeHtml(f.m)}" style="width:100%;text-align:left;font-size:12px"><b>${escapeHtml(f.m)}</b><br><span style="color:#e8eaf6">${escapeHtml(f.e)}</span><br><span class="muted" style="font-size:11px">“${escapeHtml(f.x)}”</span></button>`).join('')+`</div></div>
-      <div class="help-grid" style="margin-top:10px">
-        <div class="help-card"><h4>📖 Epew corto: Ngürü ka Küyen</h4><p style="font-size:11px;line-height:1.7">Epew pin: ngürü amuy lafken meu.<br><span class="muted">Cuenta el cuento: el zorro fue al mar.</span><br>Küyen wallme mew, ko küme azküy.<br><span class="muted">En la luna llena, el agua se ve hermosa.</span><br>Ngürü rakizuamy: “kimün mapu mew müley”.<br><span class="muted">El zorro pensó: “el saber está en la tierra”.</span><br><b>Moraleja lafkenche:</b> mirar antes de tomar.</p></div>
-        <div class="help-card" style="border-color:var(--gold)"><h4>🤝 Ad mapu — cómo usar sin dañar</h4><p style="font-size:11px;line-height:1.6">1) <b>Pide permiso:</b> “Kimkelay, ayün kimam” antes de usar lengua ceremonial.<br>2) <b>Ngillatun y canelo</b> no son adorno: solo con guía y comunidad.<br>3) <b>No mezcles</b> sagrado con broma o comercio.<br>4) <b>Devuelve:</b> enseña a un pichike lo que aprendas.<br>5) En Penco, reconoce: estás en <b>territorio lafkenche</b>.</p></div>
+      <div class="menstrual-card su-45bfae"><h4 class="su-399074">🧠 8 frases rakizuam</h4>
+      <div class="su-5e3875">`+
+      MAPU_FRASES_A.map(f=>`<button type="button" class="btn mapu-word su-6cd6a1" data-w="${escapeHtml(f.m)}"><b>${escapeHtml(f.m)}</b><br><span class="su-2f290d">${escapeHtml(f.e)}</span><br><span class="muted su-11a508">“${escapeHtml(f.x)}”</span></button>`).join('')+`</div></div>
+      <div class="help-grid su-d2c171">
+        <div class="help-card"><h4>📖 Epew corto: Ngürü ka Küyen</h4><p class="su-583677">Epew pin: ngürü amuy lafken meu.<br><span class="muted">Cuenta el cuento: el zorro fue al mar.</span><br>Küyen wallme mew, ko küme azküy.<br><span class="muted">En la luna llena, el agua se ve hermosa.</span><br>Ngürü rakizuamy: “kimün mapu mew müley”.<br><span class="muted">El zorro pensó: “el saber está en la tierra”.</span><br><b>Moraleja lafkenche:</b> mirar antes de tomar.</p></div>
+        <div class="help-card su-68a1a9"><h4>🤝 Ad mapu — cómo usar sin dañar</h4><p class="su-b439ab">1) <b>Pide permiso:</b> “Kimkelay, ayün kimam” antes de usar lengua ceremonial.<br>2) <b>Ngillatun y canelo</b> no son adorno: solo con guía y comunidad.<br>3) <b>No mezcles</b> sagrado con broma o comercio.<br>4) <b>Devuelve:</b> enseña a un pichike lo que aprendas.<br>5) En Penco, reconoce: estás en <b>territorio lafkenche</b>.</p></div>
       </div>
-      <div class="menstrual-card" style="margin-top:10px;background:var(--panel)"><h4>🔤 Grafemarios (por qué ves 3 escrituras)</h4><p class="muted" style="font-size:11px;line-height:1.6">El mapuzugun fue oral por siglos. Hoy hay 3 formas de escribirlo: <b>Azümchefe</b> (ü, ng — usado aquí, escolar), <b>Unificado</b> (ü, ng, tr — académico) y <b>Raguileo</b> (v, q, x — propio mapuche, sin letras españolas). Ej: <i>tierra = mapu (los tres)</i> · <i>saber = kimün / kimvn / kimvn</i>. Si ves otra escritura, no está mal: es otro grafemario.</p></div>`;
+      <div class="menstrual-card su-4adf8c"><h4>🔤 Grafemarios (por qué ves 3 escrituras)</h4><p class="muted su-b439ab">El mapuzugun fue oral por siglos. Hoy hay 3 formas de escribirlo: <b>Azümchefe</b> (ü, ng — usado aquí, escolar), <b>Unificado</b> (ü, ng, tr — académico) y <b>Raguileo</b> (v, q, x — propio mapuche, sin letras españolas). Ej: <i>tierra = mapu (los tres)</i> · <i>saber = kimün / kimvn / kimvn</i>. Si ves otra escritura, no está mal: es otro grafemario.</p></div>`;
   } else if(mapuTab==='lunas'){
     try{
-      html+= `<div class="menstrual-card" style="border-color:#a9d18e"><h4 style="color:#a9d18e">🌙 Las 13 lunas en kimün</h4>
-      <div style="display:flex;flex-direction:column;gap:6px;margin-top:8px">`+
-      MOONS.map(m=>`<button type="button" class="btn mapu-word" data-w="${escapeHtml(m.nombre)}" style="width:100%;text-align:left;font-size:12px"><b>Luna ${m.n}</b> · ${escapeHtml(m.nombre)}<br><span class="muted" style="font-size:11px">${escapeHtml(m.traduccion)}</span></button>`).join('')+`</div></div>`;
+      html+= `<div class="menstrual-card su-4181c1"><h4 class="su-559282">🌙 Las 13 lunas en kimün</h4>
+      <div class="su-5e3875">`+
+      MOONS.map(m=>`<button type="button" class="btn mapu-word su-6cd6a1" data-w="${escapeHtml(m.nombre)}"><b>Luna ${m.n}</b> · ${escapeHtml(m.nombre)}<br><span class="muted su-11a508">${escapeHtml(m.traduccion)}</span></button>`).join('')+`</div></div>`;
     }catch{ html+='<p class="muted">No se pudo cargar lunas.</p>'; }
   } else if(mapuTab==='quiz'){
     const d=getMapuData();
@@ -7742,16 +7742,16 @@ function renderMapuPanel(tab){
       mapuQuizQ = { w, opts:[...opts].sort(()=>Math.random()-0.5) };
     }
     const q=mapuQuizQ;
-    const lvBtn=(v,l)=>`<button type="button" class="btn mapu-lv${mapuQuizLevel===v?' btn-accent':''}" data-lv="${v}" style="width:auto;font-size:11px">${l}</button>`;
-    html+= `<div class="menstrual-card" style="border-color:#d8a0ff;text-align:center"><h4 style="color:#d8a0ff">🧩 Quiz por niveles</h4>
-      <div style="display:flex;gap:6px;justify-content:center;margin:8px 0;flex-wrap:wrap">${lvBtn('todo','🌎 Todo')}${lvBtn('basico','☀️ Básico')}${lvBtn('intermedio','💬 Intermedio')}${lvBtn('avanzado','📜 Avanzado')}</div>
-      <div style="font-size:26px;font-weight:800;color:var(--gold);margin:8px 0">“${escapeHtml(q.w.m)}”</div>
-      <div style="display:grid;gap:6px;margin-top:8px">`+
-      q.opts.map(o=>`<button type="button" class="btn mapu-opt" data-o="${escapeHtml(o)}" style="width:100%">${escapeHtml(o)}</button>`).join('')+`</div>
-      <div id="mapuQuizFb" style="margin-top:8px;font-size:13px;min-height:20px"></div>
-      <p class="muted" style="font-size:11px;margin-top:6px">Aciertos ${d.ok}/${d.total} · racha ${d.streak} · nivel quiz: <b>${escapeHtml(mapuQuizLevel)}</b> · pool: ${mapuQuizPool().length} palabras/frases</p></div>`;
+    const lvBtn=(v,l)=>`<button type="button" class="btn mapu-lv${mapuQuizLevel===v?' btn-accent':''} su-337714" data-lv="${v}">${l}</button>`;
+    html+= `<div class="menstrual-card su-1f2df9"><h4 class="su-399074">🧩 Quiz por niveles</h4>
+      <div class="su-a8712a">${lvBtn('todo','🌎 Todo')}${lvBtn('basico','☀️ Básico')}${lvBtn('intermedio','💬 Intermedio')}${lvBtn('avanzado','📜 Avanzado')}</div>
+      <div class="su-73ce29">“${escapeHtml(q.w.m)}”</div>
+      <div class="su-ae0e71">`+
+      q.opts.map(o=>`<button type="button" class="btn mapu-opt su-046678" data-o="${escapeHtml(o)}">${escapeHtml(o)}</button>`).join('')+`</div>
+      <div id="mapuQuizFb" class="su-ac1122"></div>
+      <p class="muted su-e13d76">Aciertos ${d.ok}/${d.total} · racha ${d.streak} · nivel quiz: <b>${escapeHtml(mapuQuizLevel)}</b> · pool: ${mapuQuizPool().length} palabras/frases</p></div>`;
   }
-  box.innerHTML = html + `<p class="muted" style="font-size:10px;margin-top:8px">🔇 Audio desactivado temporalmente — estamos grabando audio nativo. El quiz y el vocabulario funcionan sin sonido.</p>`;
+  box.innerHTML = html + `<p class="muted su-a953a7">🔇 Audio desactivado temporalmente — estamos grabando audio nativo. El quiz y el vocabulario funcionan sin sonido.</p>`;
   const sp=$('mapuSpeakBtn'); if(sp) sp.onclick=(e)=>{ try{ e.preventDefault(); }catch{} };
   const nx=$('mapuNextBtn'); if(nx) nx.onclick=()=>{ renderMapuPanel('palabra'); };
   /* audio desactivado: las tarjetas .mapu-word ya no hablan al tocar */
@@ -7865,10 +7865,10 @@ function renderEnglishStreak(){
   const b=$('englishStreakBox'); if(!b) return;
   const d=getEnglishData();
   const pct = d.total? Math.round(d.ok/d.total*100):0;
-  b.innerHTML = `<b>🌱 Your English:</b> ${d.ok}/${d.total} correct (${pct}%) · streak ${d.streak} 🔥 <span class="muted" style="font-size:11px">— Word a day · A1→C1 · todo se guarda local.</span>`;
+  b.innerHTML = `<b>🌱 Your English:</b> ${d.ok}/${d.total} correct (${pct}%) · streak ${d.streak} 🔥 <span class="muted su-11a508">— Word a day · A1→C1 · todo se guarda local.</span>`;
 }
 function engCard(item, lv){
-  return `<button type="button" class="btn eng-word" data-w="${escapeHtml(item.en)}" style="width:100%;text-align:left;font-size:12px"><b>🔊 ${escapeHtml(item.en)}</b> <span class="chip" style="font-size:10px">${lv}</span><br><span style="color:#e8eaf6">${escapeHtml(item.es)}</span><br><span class="muted" style="font-size:11px">“${escapeHtml(item.ex)}”</span></button>`;
+  return `<button type="button" class="btn eng-word su-6cd6a1" data-w="${escapeHtml(item.en)}"><b>🔊 ${escapeHtml(item.en)}</b> <span class="chip su-0d5be0">${lv}</span><br><span class="su-2f290d">${escapeHtml(item.es)}</span><br><span class="muted su-11a508">“${escapeHtml(item.ex)}”</span></button>`;
 }
 function renderEnglishPanel(tab){
   engTab = tab || engTab;
@@ -7881,50 +7881,50 @@ function renderEnglishPanel(tab){
     const all=ENG_A1.concat(ENG_A2,ENG_B1,ENG_B2C1);
     const w = all[engDayIndex()];
     const rel = [all[(engDayIndex()+7)%all.length], all[(engDayIndex()+13)%all.length]];
-    html+= `<div class="menstrual-card" style="background:linear-gradient(135deg,var(--panel),var(--card));border-color:var(--gold);text-align:center">
-      <p class="muted" style="font-size:11px">☀️ WORD OF THE DAY · ${cal.fmtDate.format(new Date())} · ${all.length} words & phrases</p>
-      <div style="font-size:28px;font-weight:800;color:var(--gold);margin:6px 0">${escapeHtml(w.en)}</div>
-      <div style="font-size:15px;color:#e8eaf6"><b>${escapeHtml(w.es)}</b></div>
-      <p class="muted" style="font-size:12px;margin-top:6px">“${escapeHtml(w.ex)}”</p>
-      <div style="display:flex;gap:6px;justify-content:center;margin-top:8px;flex-wrap:wrap">
-        <button type="button" id="engSpeakBtn" class="btn btn-accent" style="width:auto">🔊 Listen</button>
-        <button type="button" id="engNextBtn" class="btn" style="width:auto">🎲 Another word</button>
+    html+= `<div class="menstrual-card su-3fa1a8">
+      <p class="muted su-11a508">☀️ WORD OF THE DAY · ${cal.fmtDate.format(new Date())} · ${all.length} words & phrases</p>
+      <div class="su-6adb68">${escapeHtml(w.en)}</div>
+      <div class="su-cd8bd8"><b>${escapeHtml(w.es)}</b></div>
+      <p class="muted su-2b0979">“${escapeHtml(w.ex)}”</p>
+      <div class="su-9bc2df">
+        <button type="button" id="engSpeakBtn" class="btn btn-accent su-30e741">🔊 Listen</button>
+        <button type="button" id="engNextBtn" class="btn su-30e741">🎲 Another word</button>
       </div></div>
-      <div class="help-grid" style="margin-top:10px">`+
-      rel.map(r=>`<div class="help-card"><h4>${escapeHtml(r.en)}</h4><p style="font-size:11px">${escapeHtml(r.es)}<br><span class="muted">“${escapeHtml(r.ex)}”</span></p></div>`).join('')+`</div>
-      <div class="help-grid" style="margin-top:10px">
-        <div class="help-card"><h4>🗣️ How to practice?</h4><p style="font-size:11px;line-height:1.6">1) <b>Listen</b> with 🔊 and repeat 3 times aloud.<br>2) <b>Write</b> 1 sentence with the word in Notas del día.<br>3) <b>Use it</b> today: 1 word/day → ~365/year.<br>Pass to A1 when you know 20 without looking.</p></div>
-        <div class="help-card"><h4>📚 Levels (CEFR)</h4><p style="font-size:11px;line-height:1.6">🌱 <b>A1:</b> survive (hello, food, home).<br>🌿 <b>A2:</b> daily life (past, future, shopping).<br>💬 <b>B1:</b> travel + work + opinions.<br>📜 <b>B2–C1:</b> idioms, passive, interviews, essays.</p></div>
+      <div class="help-grid su-d2c171">`+
+      rel.map(r=>`<div class="help-card"><h4>${escapeHtml(r.en)}</h4><p class="su-11a508">${escapeHtml(r.es)}<br><span class="muted">“${escapeHtml(r.ex)}”</span></p></div>`).join('')+`</div>
+      <div class="help-grid su-d2c171">
+        <div class="help-card"><h4>🗣️ How to practice?</h4><p class="su-b439ab">1) <b>Listen</b> with 🔊 and repeat 3 times aloud.<br>2) <b>Write</b> 1 sentence with the word in Notas del día.<br>3) <b>Use it</b> today: 1 word/day → ~365/year.<br>Pass to A1 when you know 20 without looking.</p></div>
+        <div class="help-card"><h4>📚 Levels (CEFR)</h4><p class="su-b439ab">🌱 <b>A1:</b> survive (hello, food, home).<br>🌿 <b>A2:</b> daily life (past, future, shopping).<br>💬 <b>B1:</b> travel + work + opinions.<br>📜 <b>B2–C1:</b> idioms, passive, interviews, essays.</p></div>
       </div>`;
   } else if(engTab==='a1'){
-    html+= `<div class="menstrual-card" style="border-color:#8fd694"><h4 style="color:#8fd694">🌱 A1 Principiante — survive in English</h4>
-      <p class="muted" style="font-size:11px;line-height:1.5">Meta: presentarte, pedir comida, contar 1–100. Gramática: <b>to be (I am / you are), a/an/the, I like / I need, plural -s</b>. Toca 🔊 en cada tarjeta para escuchar.</p>
-      <div style="display:flex;flex-direction:column;gap:6px;margin-top:8px">`+
+    html+= `<div class="menstrual-card su-5a6934"><h4 class="su-752b1a">🌱 A1 Principiante — survive in English</h4>
+      <p class="muted su-a6c665">Meta: presentarte, pedir comida, contar 1–100. Gramática: <b>to be (I am / you are), a/an/the, I like / I need, plural -s</b>. Toca 🔊 en cada tarjeta para escuchar.</p>
+      <div class="su-5e3875">`+
       ENG_A1.map(f=>engCard(f,'A1')).join('')+`</div></div>
-      <div class="help-grid" style="margin-top:10px">
-        <div class="help-card"><h4>⚙️ To be (ser/estar)</h4><p style="font-size:11px;line-height:1.7"><b>I am</b> tired · <b>You are</b> kind<br><b>He/She is</b> here · <b>We are</b> friends<br><b>They are</b> from Penco<br><span class="muted">Negación: I am <b>not</b>… Pregunta: <b>Are</b> you…?</span></p></div>
-        <div class="help-card"><h4>🎭 Mini-dialog: market</h4><p style="font-size:11px;line-height:1.7">— <b>Hello! How much is it?</b><br>— <b>Five thousand pesos.</b><br>— <b>Thank you. See you tomorrow!</b><br><span class="muted">Practice: one person per line.</span></p></div>
+      <div class="help-grid su-d2c171">
+        <div class="help-card"><h4>⚙️ To be (ser/estar)</h4><p class="su-583677"><b>I am</b> tired · <b>You are</b> kind<br><b>He/She is</b> here · <b>We are</b> friends<br><b>They are</b> from Penco<br><span class="muted">Negación: I am <b>not</b>… Pregunta: <b>Are</b> you…?</span></p></div>
+        <div class="help-card"><h4>🎭 Mini-dialog: market</h4><p class="su-583677">— <b>Hello! How much is it?</b><br>— <b>Five thousand pesos.</b><br>— <b>Thank you. See you tomorrow!</b><br><span class="muted">Practice: one person per line.</span></p></div>
       </div>`;
   } else if(engTab==='a2'){
-    html+= `<div class="menstrual-card" style="border-color:#7ab8ff"><h4 style="color:#7ab8ff">🌿 A2 Básico — daily life</h4>
-      <p class="muted" style="font-size:11px;line-height:1.5">Meta: contar qué hiciste, planes, compras y direcciones. Gramática: <b>past simple (went/ate), going to future, comparatives, there is/are, can</b>.</p>
-      <div style="display:flex;flex-direction:column;gap:6px;margin-top:8px">`+
+    html+= `<div class="menstrual-card su-018729"><h4 class="su-721a46">🌿 A2 Básico — daily life</h4>
+      <p class="muted su-a6c665">Meta: contar qué hiciste, planes, compras y direcciones. Gramática: <b>past simple (went/ate), going to future, comparatives, there is/are, can</b>.</p>
+      <div class="su-5e3875">`+
       ENG_A2.map(f=>engCard(f,'A2')).join('')+`</div></div>
-      <div class="menstrual-card" style="margin-top:10px;background:var(--panel)"><h4>🎭 Mini-dialog: directions in Penco</h4><p style="font-size:11px;line-height:1.7">— <b>Excuse me, where is the beach?</b><br>— <b>Go straight, then turn left at the plaza.</b><br>— <b>Thank you very much!</b> — <b>You’re welcome!</b><br><span class="muted">Key: straight = derecho, turn = girar, near = cerca.</span></p></div>`;
+      <div class="menstrual-card su-4adf8c"><h4>🎭 Mini-dialog: directions in Penco</h4><p class="su-583677">— <b>Excuse me, where is the beach?</b><br>— <b>Go straight, then turn left at the plaza.</b><br>— <b>Thank you very much!</b> — <b>You’re welcome!</b><br><span class="muted">Key: straight = derecho, turn = girar, near = cerca.</span></p></div>`;
   } else if(engTab==='b1'){
-    html+= `<div class="menstrual-card" style="border-color:#e8c56a"><h4 style="color:#e8c56a">💬 B1 Intermedio — travel, work & opinions</h4>
-      <p class="muted" style="font-size:11px;line-height:1.5">Meta: viajar, trabajar y opinar. Gramática: <b>present perfect (have lived), conditional 1 (if… will), used to, phrasal verbs (look for, give up)</b>.</p>
-      <div style="display:flex;flex-direction:column;gap:6px;margin-top:8px">`+
+    html+= `<div class="menstrual-card su-d4d722"><h4 class="su-7c91e2">💬 B1 Intermedio — travel, work & opinions</h4>
+      <p class="muted su-a6c665">Meta: viajar, trabajar y opinar. Gramática: <b>present perfect (have lived), conditional 1 (if… will), used to, phrasal verbs (look for, give up)</b>.</p>
+      <div class="su-5e3875">`+
       ENG_B1.map(f=>engCard(f,'B1')).join('')+`</div></div>
-      <div class="menstrual-card" style="margin-top:10px;background:var(--panel)"><h4>🎭 Mini-dialog: travel</h4><p style="font-size:11px;line-height:1.7">— <b>I would like a ticket to Concepción.</b><br>— <b>Single or return?</b> — <b>Return, please.</b><br>— <b>Have you been here before?</b> — <b>Yes, I have lived here for 5 years.</b><br><span class="muted">Practice with times, prices and “I have…”.</span></p></div>`;
+      <div class="menstrual-card su-4adf8c"><h4>🎭 Mini-dialog: travel</h4><p class="su-583677">— <b>I would like a ticket to Concepción.</b><br>— <b>Single or return?</b> — <b>Return, please.</b><br>— <b>Have you been here before?</b> — <b>Yes, I have lived here for 5 years.</b><br><span class="muted">Practice with times, prices and “I have…”.</span></p></div>`;
   } else if(engTab==='avanzado'){
-    html+= `<div class="menstrual-card" style="border-color:#d8a0ff"><h4 style="color:#d8a0ff">📜 B2–C1 Avanzado — idioms & real grammar</h4>
-      <p class="muted" style="font-size:11px;line-height:1.5">Meta: entrevistas, ensayos e idioms. Gramática: <b>past perfect, conditional 3, passive voice, reported speech, linkers (however, moreover)</b>.</p>
-      <div style="display:flex;flex-direction:column;gap:6px;margin-top:8px">`+
+    html+= `<div class="menstrual-card su-5b7cd0"><h4 class="su-399074">📜 B2–C1 Avanzado — idioms & real grammar</h4>
+      <p class="muted su-a6c665">Meta: entrevistas, ensayos e idioms. Gramática: <b>past perfect, conditional 3, passive voice, reported speech, linkers (however, moreover)</b>.</p>
+      <div class="su-5e3875">`+
       ENG_B2C1.map(f=>engCard(f,'B2–C1')).join('')+`</div></div>
-      <div class="help-grid" style="margin-top:10px">
-        <div class="help-card"><h4>⚙️ Passive + Reported</h4><p style="font-size:11px;line-height:1.7"><b>Passive:</b> The beach <b>was cleaned</b>.<br><b>Reported:</b> “I am tired” → She said she <b>was</b> tired.<br><b>Cond. 3:</b> If I <b>had studied</b>, I <b>would have passed</b>.</p></div>
-        <div class="help-card"><h4>💼 Interview kit</h4><p style="font-size:11px;line-height:1.7">— <b>Tell me about yourself.</b><br>— <b>I am responsible and I work well in a team.</b><br>— <b>My strength is… My goal is…</b><br><span class="muted">Close: “Thank you for your time.”</span></p></div>
+      <div class="help-grid su-d2c171">
+        <div class="help-card"><h4>⚙️ Passive + Reported</h4><p class="su-583677"><b>Passive:</b> The beach <b>was cleaned</b>.<br><b>Reported:</b> “I am tired” → She said she <b>was</b> tired.<br><b>Cond. 3:</b> If I <b>had studied</b>, I <b>would have passed</b>.</p></div>
+        <div class="help-card"><h4>💼 Interview kit</h4><p class="su-583677">— <b>Tell me about yourself.</b><br>— <b>I am responsible and I work well in a team.</b><br>— <b>My strength is… My goal is…</b><br><span class="muted">Close: “Thank you for your time.”</span></p></div>
       </div>`;
   } else if(engTab==='quiz'){
     const d=getEnglishData();
@@ -7937,17 +7937,17 @@ function renderEnglishPanel(tab){
       engQuizQ = { w, opts:[...opts].sort(()=>Math.random()-0.5) };
     }
     const q=engQuizQ;
-    const lvBtn=(v,l)=>`<button type="button" class="btn eng-lv${engQuizLevel===v?' btn-accent':''}" data-lv="${v}" style="width:auto;font-size:11px">${l}</button>`;
-    html+= `<div class="menstrual-card" style="border-color:#d8a0ff;text-align:center"><h4 style="color:#d8a0ff">🧩 Quiz por niveles</h4>
-      <div style="display:flex;gap:6px;justify-content:center;margin:8px 0;flex-wrap:wrap">${lvBtn('todo','🌎 Todo')}${lvBtn('a1','🌱 A1')}${lvBtn('a2','🌿 A2')}${lvBtn('b1','💬 B1')}${lvBtn('b2c1','📜 B2–C1')}</div>
-      <div style="font-size:26px;font-weight:800;color:var(--gold);margin:8px 0">“${escapeHtml(q.w.en)}”</div>
-      <button type="button" id="engQuizSpeak" class="btn" style="width:auto;font-size:11px">🔊 Listen</button>
-      <div style="display:grid;gap:6px;margin-top:8px">`+
-      q.opts.map(o=>`<button type="button" class="btn eng-opt" data-o="${escapeHtml(o)}" style="width:100%">${escapeHtml(o)}</button>`).join('')+`</div>
-      <div id="engQuizFb" style="margin-top:8px;font-size:13px;min-height:20px"></div>
-      <p class="muted" style="font-size:11px;margin-top:6px">Correct ${d.ok}/${d.total} · streak ${d.streak} · level: <b>${escapeHtml(engQuizLevel)}</b> · pool: ${engQuizPool().length} words/phrases</p></div>`;
+    const lvBtn=(v,l)=>`<button type="button" class="btn eng-lv${engQuizLevel===v?' btn-accent':''} su-337714" data-lv="${v}">${l}</button>`;
+    html+= `<div class="menstrual-card su-1f2df9"><h4 class="su-399074">🧩 Quiz por niveles</h4>
+      <div class="su-a8712a">${lvBtn('todo','🌎 Todo')}${lvBtn('a1','🌱 A1')}${lvBtn('a2','🌿 A2')}${lvBtn('b1','💬 B1')}${lvBtn('b2c1','📜 B2–C1')}</div>
+      <div class="su-73ce29">“${escapeHtml(q.w.en)}”</div>
+      <button type="button" id="engQuizSpeak" class="btn su-337714">🔊 Listen</button>
+      <div class="su-ae0e71">`+
+      q.opts.map(o=>`<button type="button" class="btn eng-opt su-046678" data-o="${escapeHtml(o)}">${escapeHtml(o)}</button>`).join('')+`</div>
+      <div id="engQuizFb" class="su-ac1122"></div>
+      <p class="muted su-e13d76">Correct ${d.ok}/${d.total} · streak ${d.streak} · level: <b>${escapeHtml(engQuizLevel)}</b> · pool: ${engQuizPool().length} words/phrases</p></div>`;
   }
-  box.innerHTML = html + `<p class="muted" style="font-size:10px;margin-top:8px">🔊 Toca cualquier tarjeta para escuchar en inglés (en-US, voz del dispositivo). El quiz suma a tu racha local y privada.</p>`;
+  box.innerHTML = html + `<p class="muted su-a953a7">🔊 Toca cualquier tarjeta para escuchar en inglés (en-US, voz del dispositivo). El quiz suma a tu racha local y privada.</p>`;
   const sp=$('engSpeakBtn'); if(sp) sp.onclick=(e)=>{ try{ e.preventDefault(); }catch{} engSpeak(all_eng_word_current()); };
   const nx=$('engNextBtn'); if(nx) nx.onclick=()=>{ engQuizQ=null; renderEnglishPanel('word'); };
   const qs=$('engQuizSpeak'); if(qs) qs.onclick=(e)=>{ try{ e.preventDefault(); }catch{} if(engQuizQ) engSpeak(engQuizQ.w.en); };
@@ -8022,7 +8022,7 @@ function renderGuitarLog(){
     const lv = it.level==='avanzado'?'🌳':it.level==='intermedio'?'🌿':'🌱';
     const ii = INST_ICON[it.inst||'guitarra']||'🎸';
     const nn = INST_NAME[it.inst||'guitarra']||'Guitarra';
-    return `<div class="habit-row"><span style="flex:1">📅 <b>${escapeHtml(it.date||'')}</b> · ${ii} ${nn} · ${lv} ${escapeHtml(it.level||'')} · <b>${escapeHtml(String(it.min||0))} min</b><br><span class="muted" style="font-size:11px">${escapeHtml(it.detail||'')}</span></span><span style="display:flex;gap:4px"><button type="button" class="btn btn-icon prac-edit" data-id="${it.id}" title="Editar" style="width:28px;height:28px">✏️</button><button type="button" class="btn btn-icon prac-del" data-id="${it.id}" title="Borrar" style="width:28px;height:28px">✕</button></span></div>`;
+    return `<div class="habit-row"><span class="su-97445a">📅 <b>${escapeHtml(it.date||'')}</b> · ${ii} ${nn} · ${lv} ${escapeHtml(it.level||'')} · <b>${escapeHtml(String(it.min||0))} min</b><br><span class="muted su-11a508">${escapeHtml(it.detail||'')}</span></span><span class="su-74cac9"><button type="button" class="btn btn-icon prac-edit su-2760a5" data-id="${it.id}" title="Editar">✏️</button><button type="button" class="btn btn-icon prac-del su-2760a5" data-id="${it.id}" title="Borrar">✕</button></span></div>`;
   }).join('');
   const s = guitarStats();
   if(stats) stats.textContent = `${s.total} prácticas · ${s.days} días distintos · ${s.totalMin} min · racha ${s.streak} 🔥`;
@@ -8253,10 +8253,10 @@ const LAWEN_PLANTS = [
 function getLawenUserData(){ try{ const u=userData(); if(!u.lawenUser) u.lawenUser=[]; if(!Array.isArray(u.lawenUser)) u.lawenUser=[]; return u.lawenUser; }catch{ return []; } }
 function setLawenUserData(a){ try{ userData().lawenUser=a; }catch{} }
 function lawenCardHTML(p, mine, idx){
-  const del = mine? `<button type="button" class="btn btn-icon lawen-del" data-i="${idx}" title="Borrar mi ficha" style="width:26px;height:26px;font-size:11px;flex:none">✕</button>` : '';
-  const mineChip = mine? `<span class="chip" style="font-size:10px;background:#a9d18e22;color:#a9d18e;border-color:#a9d18e55;white-space:nowrap">🌱 mía</span>` : '';
+  const del = mine? `<button type="button" class="btn btn-icon lawen-del su-2fa310" data-i="${idx}" title="Borrar mi ficha">✕</button>` : '';
+  const mineChip = mine? `<span class="chip su-f71d39">🌱 mía</span>` : '';
   return `<div class="si-card lawen-card${mine?' mine':''}">`
-    + `<div class="lawen-head"><span class="lawen-ico">${p.i||'🌱'}</span><span class="lawen-name">${escapeHtml(p.n)}</span>${mineChip}<span style="flex:1"></span><span class="chip lawen-luna">🌙 ${escapeHtml(p.luna||'Cualquiera')}</span>${del}</div>`
+    + `<div class="lawen-head"><span class="lawen-ico">${p.i||'🌱'}</span><span class="lawen-name">${escapeHtml(p.n)}</span>${mineChip}<span class="su-97445a"></span><span class="chip lawen-luna">🌙 ${escapeHtml(p.luna||'Cualquiera')}</span>${del}</div>`
     + `<div class="lawen-grid">`
     + `<span class="lawen-label">USO</span><span class="lawen-val">${escapeHtml(p.uso||'—')}</span>`
     + (p.prep? `<span class="lawen-label">PREPARA</span><span class="lawen-val">🫖 ${escapeHtml(p.prep)}</span>`:'')
@@ -8279,13 +8279,13 @@ function renderLawenList(){
   const base=LAWEN_PLANTS.filter(match);
   const own=mine.map((p,i)=>({p,i})).filter(({p})=>match(p));
   const total=base.length+own.length;
-  let html=`<p class="muted" style="font-size:11px;margin-bottom:8px">🌿 ${LAWEN_PLANTS.length} fichas base${mine.length?` + <b>${mine.length} mías</b>`:''} · mostrando <b>${total}</b></p>`;
+  let html=`<p class="muted su-245797">🌿 ${LAWEN_PLANTS.length} fichas base${mine.length?` + <b>${mine.length} mías</b>`:''} · mostrando <b>${total}</b></p>`;
   if(total){
-    html+=`<div style="display:flex;flex-direction:column;gap:10px">`+base.map(p=>lawenCardHTML(p,false,-1)).join('');
-    if(own.length) html+=`<div style="display:flex;align-items:center;gap:8px;margin-top:2px"><span style="flex:1;height:1px;background:var(--line)"></span><span class="muted" style="font-size:11px">🌱 Mis fichas (${own.length})</span><span style="flex:1;height:1px;background:var(--line)"></span></div>`+own.map(({p,i})=>lawenCardHTML(p,true,i)).join('');
+    html+=`<div class="su-a56c85">`+base.map(p=>lawenCardHTML(p,false,-1)).join('');
+    if(own.length) html+=`<div class="su-0c1cf5"><span class="su-3cd8ec"></span><span class="muted su-11a508">🌱 Mis fichas (${own.length})</span><span class="su-3cd8ec"></span></div>`+own.map(({p,i})=>lawenCardHTML(p,true,i)).join('');
     html+=`</div>`;
   } else {
-    html+=`<div class="menstrual-card" style="text-align:center"><p style="font-size:12px">Sin resultados para “${escapeHtml(q)}”.</p><p class="muted" style="font-size:11px">Prueba “tos”, “herida”, “digestión” — o agrégala como ficha propia:</p><button type="button" id="lawenEmptyAdd" class="btn btn-accent" style="width:auto;margin-top:6px">➕ Agregar “${escapeHtml(q.slice(0,30))}” como mi lawen</button></div>`;
+    html+=`<div class="menstrual-card su-91a870"><p class="su-6cb285">Sin resultados para “${escapeHtml(q)}”.</p><p class="muted su-11a508">Prueba “tos”, “herida”, “digestión” — o agrégala como ficha propia:</p><button type="button" id="lawenEmptyAdd" class="btn btn-accent su-9b41c6">➕ Agregar “${escapeHtml(q.slice(0,30))}” como mi lawen</button></div>`;
   }
   box.innerHTML=html;
   box.querySelectorAll('.lawen-del').forEach(b=> b.onclick=()=>{ const arr=getLawenUserData(); arr.splice(parseInt(b.dataset.i),1); setLawenUserData(arr); scheduleSave('Guardado ✓'); renderLawenList(); });
@@ -8364,9 +8364,9 @@ function renderCompostStatus(){
   const pct=c.start?Math.min(100,Math.round(dias/meta*100)):0;
   const ms=compostNextMenguantes();
   const prox=ms.length?ms[0].key:'—';
-  b.innerHTML=`<div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:center"><b>${tipo}</b><span class="muted" style="font-size:11px">inicio ${escapeHtml(c.start||'—')} · día ${dias}/${meta} · volteos <b>${n}</b> · último ${escapeHtml(last)}</span></div>
-  <div style="height:8px;border-radius:99px;background:#ffffff18;margin-top:8px;overflow:hidden"><div style="height:100%;width:${pct}%;border-radius:99px;background:linear-gradient(90deg,#c9a86a,#a9d18e)"></div></div>
-  <div class="muted" style="font-size:11px;margin-top:6px">${pct}% madurez estimada · próximo menguante para voltear: <b>${escapeHtml(prox)}</b> — se guarda local</div>`;
+  b.innerHTML=`<div class="su-48a924"><b>${tipo}</b><span class="muted su-11a508">inicio ${escapeHtml(c.start||'—')} · día ${dias}/${meta} · volteos <b>${n}</b> · último ${escapeHtml(last)}</span></div>
+  <div class="su-160736"><div style="height:100%;width:${pct}%;border-radius:99px;background:linear-gradient(90deg,#c9a86a,#a9d18e)"></div></div>
+  <div class="muted su-e13d76">${pct}% madurez estimada · próximo menguante para voltear: <b>${escapeHtml(prox)}</b> — se guarda local</div>`;
 }
 function compostDiagnostico(olor, hum, temp){
   if(olor==='podrido'||hum==='chorrea') return '<b>💧 Exceso de verde / agua (anaerobio).</b> Agrega 3 puñados de seco (hojas, cartón picado, paja), voltea entero y tapa con nylon con un palo para que respire. No riegues 3-4 días. En Pukem pon la pila bajo techo o con lona.';
@@ -8388,71 +8388,71 @@ function renderCompostPanel(tab){
     const dias=compostDias(c);
     const meta=COMPOST_META[c.type]||90;
     const pct=c.start?Math.min(100,Math.round(dias/meta*100)):0;
-    html+=`<div class="menstrual-card" style="border-color:var(--gold)"><h4 style="color:var(--gold)">🪱 Mi pila — registro</h4>
+    html+=`<div class="menstrual-card su-68a1a9"><h4 class="su-e39eba">🪱 Mi pila — registro</h4>
       <div class="conv-row"><label>Tipo <select id="cpType"><option value="pila" ${c.type==='pila'?'selected':''}>Pila caliente (patio)</option><option value="vermi" ${c.type==='vermi'?'selected':''}>Vermicompostera (depto/balcón)</option><option value="bocashi" ${c.type==='bocashi'?'selected':''}>Bocashi (fermentado 14 días)</option></select></label>
       <label>Inicio <input type="date" id="cpStart" value="${escapeHtml(c.start||'')}"></label>
-      <button type="button" id="cpToday" class="btn" style="width:auto;align-self:flex-end">◉ Hoy volteé</button></div>
+      <button type="button" id="cpToday" class="btn su-4ed52d">◉ Hoy volteé</button></div>
       <label>Nota <input type="text" id="cpNote" placeholder="olor, humedad, temperatura, qué agregué" maxlength="80" value="${escapeHtml(c.note||'')}"></label>
-      <p class="muted" style="font-size:11px;margin:8px 0 0">Día ${dias}/${meta} (${pct}%) · ${escapeHtml(compostEtapa(c,dias))}</p>
-      <div id="cpTurns" class="habits-list" style="margin-top:8px;max-height:150px">`+
-      (c.turns.slice().sort().reverse().map(t=>`<div class="hora-item"><span>🪱 ${escapeHtml(t)}</span><button type="button" class="btn btn-icon cp-del" data-t="${escapeHtml(t)}">✕</button></div>`).join('')||'<p class="muted" style="font-size:11px">Sin volteos aún. Marca “Hoy volteé” o marca un menguante en 📅 Luna.</p>')+`</div></div>
-      <div class="menstrual-card" style="margin-top:10px;border-color:#a9d18e"><h4 style="color:#a9d18e">🔍 Diagnóstico rápido — ¿cómo está hoy?</h4>
+      <p class="muted su-2370ea">Día ${dias}/${meta} (${pct}%) · ${escapeHtml(compostEtapa(c,dias))}</p>
+      <div id="cpTurns" class="habits-list su-9944cd">`+
+      (c.turns.slice().sort().reverse().map(t=>`<div class="hora-item"><span>🪱 ${escapeHtml(t)}</span><button type="button" class="btn btn-icon cp-del" data-t="${escapeHtml(t)}">✕</button></div>`).join('')||'<p class="muted su-11a508">Sin volteos aún. Marca “Hoy volteé” o marca un menguante en 📅 Luna.</p>')+`</div></div>
+      <div class="menstrual-card su-8c7f2d"><h4 class="su-559282">🔍 Diagnóstico rápido — ¿cómo está hoy?</h4>
       <div class="conv-row"><label>Olor <select id="cpOlor"><option value="tierra">Tierra / bosque</option><option value="podrido">Podrido / huevo</option><option value="amoniaco">Amoníaco / pipí fuerte</option><option value="vinagre">Vinagre / chicha ácida</option><option value="nada">Sin olor</option></select></label>
       <label>Humedad (puño) <select id="cpHum"><option value="esponja">Esponja estrujada ✓</option><option value="chorrea">Chorrea agua</option><option value="seco">Seco / polvo</option></select></label>
       <label>Temperatura <select id="cpTemp"><option value="caliente">Tibio-caliente</option><option value="tibio">Tibio leve</option><option value="frio-seco">Frío + seco</option><option value="frio-mojado">Frío + mojado</option></select></label></div>
-      <button type="button" id="cpDiagBtn" class="btn" style="width:auto;margin-top:8px">Diagnosticar</button>
-      <div id="cpDiagOut" class="muted" style="font-size:12px;line-height:1.5;margin-top:8px">Elige las 3 y presiona Diagnosticar.</div></div>
-      <div class="help-grid" style="margin-top:10px">
-        <div class="help-card"><h4>🟤 Receta base 3×1 Penco</h4><p style="font-size:11px;line-height:1.5"><b>3 secos (carbono):</b> hojas secas, cartón picado sin tinta, paja, viruta, hojas de boldo/peumo.<br><b>1 verde (nitrógeno):</b> restos cocina, pasto fresco, guano, café/yerma mate.<br>Capas de 5-10 cm, puño húmedo. Tapa con nylon en Pukem, con rama para que respire.</p></div>
-        <div class="help-card"><h4>🚫 No va nunca</h4><p style="font-size:11px;line-height:1.5">Carne, pescado, lácteos, aceite, fecas perro/gato, pañales, ceniza con carbón pintado o parafina, maleza con semilla (chufa, vinagrillo), tierra con herbicida.</p></div>
-        <div class="help-card"><h4>✅ Sí va (poco)</h4><p style="font-size:11px;line-height:1.5">Cáscara huevo molida, ceniza de leña pura (1 taza/m² max), pelo, cartón huevo, podas trituradas, algas enjuagadas de Lirquén, ortiga (activa).</p></div>
-        <div class="help-card"><h4>📏 Tamaño ideal</h4><p style="font-size:11px;line-height:1.5">Mínimo 1 m³ (1×1×1 m) para que caliente. Menos que eso = vermi o bocashi mejor. Palet + malla + lona arriba funciona perfecto en patio Penco.</p></div>
+      <button type="button" id="cpDiagBtn" class="btn su-e182f0">Diagnosticar</button>
+      <div id="cpDiagOut" class="muted su-14bd55">Elige las 3 y presiona Diagnosticar.</div></div>
+      <div class="help-grid su-d2c171">
+        <div class="help-card"><h4>🟤 Receta base 3×1 Penco</h4><p class="su-a6c665"><b>3 secos (carbono):</b> hojas secas, cartón picado sin tinta, paja, viruta, hojas de boldo/peumo.<br><b>1 verde (nitrógeno):</b> restos cocina, pasto fresco, guano, café/yerma mate.<br>Capas de 5-10 cm, puño húmedo. Tapa con nylon en Pukem, con rama para que respire.</p></div>
+        <div class="help-card"><h4>🚫 No va nunca</h4><p class="su-a6c665">Carne, pescado, lácteos, aceite, fecas perro/gato, pañales, ceniza con carbón pintado o parafina, maleza con semilla (chufa, vinagrillo), tierra con herbicida.</p></div>
+        <div class="help-card"><h4>✅ Sí va (poco)</h4><p class="su-a6c665">Cáscara huevo molida, ceniza de leña pura (1 taza/m² max), pelo, cartón huevo, podas trituradas, algas enjuagadas de Lirquén, ortiga (activa).</p></div>
+        <div class="help-card"><h4>📏 Tamaño ideal</h4><p class="su-a6c665">Mínimo 1 m³ (1×1×1 m) para que caliente. Menos que eso = vermi o bocashi mejor. Palet + malla + lona arriba funciona perfecto en patio Penco.</p></div>
       </div>`;
   } else if(compostTab==='suelo'){
     html+=`<div class="help-grid">
-      <div class="help-card"><h4>🗺️ Tu suelo según sector Penco</h4><p style="font-size:11px;line-height:1.5"><b>Penco Alto / greda roja:</b> arcilla pesada, se aprieta en Pukem y se parte en Walüng → bancal alto + yeso + mulch grueso.<br><b>Centro / relleno:</b> franco con escombro → saca piedras, 5 cm compost, mulch.<br><b>Lirquén–Playa Negra / costa:</b> arena que no retiene → mucho compost + mulch + riego corto frecuente.<br><b>Vega / humedal:</b> negro que se encharca → camas altas 30 cm + zanja drenaje, nunca pises mojado.</p></div>
-      <div class="help-card"><h4>✊ Test 1 · Puño (textura)</h4><p style="font-size:11px;line-height:1.5">Moja un puñado y aprieta:<br>• Se desarma = <b>arenoso</b> → compost + mulch.<br>• Bola que se marca pero se quiebra = <b>franco ideal</b>.<br>• Bola plástica / cinta &gt;3 cm = <b>arcilla</b> → nunca arena sola (hace ladrillo): compost 3-5 cm + yeso agrícola 200 g/m².</p></div>
-      <div class="help-card"><h4>🫙 Test 2 · Frasco (% real)</h4><p style="font-size:11px;line-height:1.5">1 taza tierra + agua + 1 cdta sal en frasco, agita y deja 24 h. Arena abajo, limo medio, arcilla arriba. Ideal huerta: ~40% arena / 40% limo / 20% arcilla. Si &gt;50% arcilla → plan arcilla Penco.</p></div>
-      <div class="help-card"><h4>🕳️ Test 3 · Infiltración (drenaje)</h4><p style="font-size:11px;line-height:1.5">Hoyo 30×30 cm, llena de agua 2 veces. 2ª vez: mide cuánto baja en 1 h.<br>• &lt;2 cm/h = <b>encharca</b> → cama alta + drenaje.<br>• 2-8 cm/h = <b>ideal</b>.<br>• &gt;15 cm/h = <b>arena</b> → mulch 8 cm + compost + riego corto.</p></div>
-      <div class="help-card"><h4>🧪 Test 4 · pH casero</h4><p style="font-size:11px;line-height:1.5"><b>Vinagre:</b> efervesce = alcalino (&gt;7,5). <b>Bicarbonato + agua:</b> efervesce = ácido (&lt;5,5). Penco típico 5,5-6,5 (levemente ácido, bien para casi todo). Solo encalan si mediste &lt;5,5: cal agrícola 200-300 g/m² en otoño, nunca junto a guano fresco.</p></div>
-      <div class="help-card"><h4>🛠️ Plan arcilla Penco (otoño→primavera)</h4><p style="font-size:11px;line-height:1.5">1) No pises mojado. 2) Levanta bancal 20-30 cm. 3) 3-5 cm compost maduro + yeso 200 g/m² (no cambia pH, abre). 4) Mulch hojas/paja 5-8 cm. 5) Siembra abono verde avena+vicia en Rimü y córtalo antes de semillar. Repite cada año: la arcilla se doma en 2-3 ciclos.</p></div>
-      <div class="help-card"><h4>🍂 Mulch correcto</h4><p style="font-size:11px;line-height:1.5">5-8 cm hojas secas/paja. Guarda humedad de Walüng, evita barro y sopa de babosas en Pukem. Deja 3 cm libres alrededor del tallo. Renueva cuando se vea la tierra.</p></div>
-      <div class="help-card"><h4>🌱 Abono verde (el mejor secreto)</h4><p style="font-size:11px;line-height:1.5">Siembra en Rimü (mar-may): avena + vicia o mostaza. Corta en flor (ago), deja 2 semanas sobre el suelo y planta encima. Raíces rompen arcilla gratis + fijan nitrógeno. Dosis: 30 g/m².</p></div>
+      <div class="help-card"><h4>🗺️ Tu suelo según sector Penco</h4><p class="su-a6c665"><b>Penco Alto / greda roja:</b> arcilla pesada, se aprieta en Pukem y se parte en Walüng → bancal alto + yeso + mulch grueso.<br><b>Centro / relleno:</b> franco con escombro → saca piedras, 5 cm compost, mulch.<br><b>Lirquén–Playa Negra / costa:</b> arena que no retiene → mucho compost + mulch + riego corto frecuente.<br><b>Vega / humedal:</b> negro que se encharca → camas altas 30 cm + zanja drenaje, nunca pises mojado.</p></div>
+      <div class="help-card"><h4>✊ Test 1 · Puño (textura)</h4><p class="su-a6c665">Moja un puñado y aprieta:<br>• Se desarma = <b>arenoso</b> → compost + mulch.<br>• Bola que se marca pero se quiebra = <b>franco ideal</b>.<br>• Bola plástica / cinta &gt;3 cm = <b>arcilla</b> → nunca arena sola (hace ladrillo): compost 3-5 cm + yeso agrícola 200 g/m².</p></div>
+      <div class="help-card"><h4>🫙 Test 2 · Frasco (% real)</h4><p class="su-a6c665">1 taza tierra + agua + 1 cdta sal en frasco, agita y deja 24 h. Arena abajo, limo medio, arcilla arriba. Ideal huerta: ~40% arena / 40% limo / 20% arcilla. Si &gt;50% arcilla → plan arcilla Penco.</p></div>
+      <div class="help-card"><h4>🕳️ Test 3 · Infiltración (drenaje)</h4><p class="su-a6c665">Hoyo 30×30 cm, llena de agua 2 veces. 2ª vez: mide cuánto baja en 1 h.<br>• &lt;2 cm/h = <b>encharca</b> → cama alta + drenaje.<br>• 2-8 cm/h = <b>ideal</b>.<br>• &gt;15 cm/h = <b>arena</b> → mulch 8 cm + compost + riego corto.</p></div>
+      <div class="help-card"><h4>🧪 Test 4 · pH casero</h4><p class="su-a6c665"><b>Vinagre:</b> efervesce = alcalino (&gt;7,5). <b>Bicarbonato + agua:</b> efervesce = ácido (&lt;5,5). Penco típico 5,5-6,5 (levemente ácido, bien para casi todo). Solo encalan si mediste &lt;5,5: cal agrícola 200-300 g/m² en otoño, nunca junto a guano fresco.</p></div>
+      <div class="help-card"><h4>🛠️ Plan arcilla Penco (otoño→primavera)</h4><p class="su-a6c665">1) No pises mojado. 2) Levanta bancal 20-30 cm. 3) 3-5 cm compost maduro + yeso 200 g/m² (no cambia pH, abre). 4) Mulch hojas/paja 5-8 cm. 5) Siembra abono verde avena+vicia en Rimü y córtalo antes de semillar. Repite cada año: la arcilla se doma en 2-3 ciclos.</p></div>
+      <div class="help-card"><h4>🍂 Mulch correcto</h4><p class="su-a6c665">5-8 cm hojas secas/paja. Guarda humedad de Walüng, evita barro y sopa de babosas en Pukem. Deja 3 cm libres alrededor del tallo. Renueva cuando se vea la tierra.</p></div>
+      <div class="help-card"><h4>🌱 Abono verde (el mejor secreto)</h4><p class="su-a6c665">Siembra en Rimü (mar-may): avena + vicia o mostaza. Corta en flor (ago), deja 2 semanas sobre el suelo y planta encima. Raíces rompen arcilla gratis + fijan nitrógeno. Dosis: 30 g/m².</p></div>
     </div>
-    <div class="menstrual-card" style="margin-top:10px"><h4>⚗️ Enmiendas: dosis sin pasarse</h4><p class="muted" style="font-size:11px;line-height:1.6"><b>Compost maduro:</b> 3-5 cm/año (≈30 L/m²) 7 días antes de siembra. <b>Humus vermi:</b> 1-2 L/m² o 100 g/planta. <b>Ceniza leña pura:</b> máx 100 g/m²/año, nunca sobre plantín. <b>Yeso agrícola:</b> 200 g/m² para arcilla. <b>Cal:</b> solo con pH medido &lt;5,5. <b>Bocashi:</b> 500 g/m² 7 días antes (nunca fresco). Exceso quema más que la falta.</p></div>`;
+    <div class="menstrual-card su-d2c171"><h4>⚗️ Enmiendas: dosis sin pasarse</h4><p class="muted su-b439ab"><b>Compost maduro:</b> 3-5 cm/año (≈30 L/m²) 7 días antes de siembra. <b>Humus vermi:</b> 1-2 L/m² o 100 g/planta. <b>Ceniza leña pura:</b> máx 100 g/m²/año, nunca sobre plantín. <b>Yeso agrícola:</b> 200 g/m² para arcilla. <b>Cal:</b> solo con pH medido &lt;5,5. <b>Bocashi:</b> 500 g/m² 7 días antes (nunca fresco). Exceso quema más que la falta.</p></div>`;
   } else if(compostTab==='recetas'){
     html+=`<div class="help-grid">
-      <div class="help-card"><h4>🪱 Vermicompostera (depto)</h4><p style="font-size:11px;line-height:1.5"><b>Caja:</b> 2 cajas apiladas con hoyos + bandeja jugo (lixiviado). <b>Lombriz:</b> roja californiana, 200-500 inicio. <b>Comida:</b> restos picados 300 g/semana, siempre tapados con seco. <b>Cosecha:</b> 3 meses, luz encima y migran solas. <b>Lixiviado:</b> 1:10 riego. Luna: instalar en nueva. Ojo: sin sol directo, sin cítricos/cebolla en exceso.</p></div>
-      <div class="help-card"><h4>♻️ Bocashi 14 días (fermentado)</h4><p style="font-size:11px;line-height:1.5"><b>Mezcla seca:</b> 10 kg guano seco + 10 kg tierra + 5 kg afrechillo + 1 kg carbón molido. <b>Agua:</b> 5 L tibia + 10 g levadura + 200 g chancaca. Humedad “puño” (gotea 1 gota). Pila 50 cm, voltea 2× día hasta que enfríe. <b>Uso:</b> 500 g/m² 7 días antes de siembra. Nunca fresco (quema).</p></div>
-      <div class="help-card"><h4>🫖 Té de compost (biofertilizante)</h4><p style="font-size:11px;line-height:1.5">1 kg compost maduro en bolsa de tela + 10 L agua + 20 g azúcar. Airea 24-36 h (o revuelve 3× día). Filtra y usa en 24 h. <b>Riego:</b> puro o 1:3. <b>Foliar:</b> 1:10 cada 14 días en creciente. Activa microvida en arcilla Penco. Sin olor feo = bien hecho.</p></div>
-      <div class="help-card"><h4>🍂 Tierra de hojas otoñal (Rimü)</h4><p style="font-size:11px;line-height:1.5">Junta hojas de peumo/boldo/maqui (no eucalipto/pino solo). Malla o saco con hoyos, moja y guarda a la sombra. Voltea 1× mes. En 6-9 meses tienes tierra esponjosa para almácigos. Mezcla ideal almácigo: 2 tierra hoja + 1 compost + 1 arena gruesa.</p></div>
-      <div class="help-card"><h4>🌿 Purín de ortiga / diente de león</h4><p style="font-size:11px;line-height:1.5">1 kg planta fresca + 10 L agua, tapa con respiración, revuelve diario 7-14 días (espuma = listo). Filtra. <b>Riego:</b> 1:10. <b>Foliar:</b> 1:20. Huele fuerte = normal. Aporta nitrógeno + hierro. No en floración avanzada ni a 1 semana de cosecha.</p></div>
-      <div class="help-card"><h4>⬛ Carbón + ceniza (bien usados)</h4><p style="font-size:11px;line-height:1.5"><b>Biochar casero:</b> carbón leña molido + “cargado” 1 semana en té compost antes de enterrar (si no, roba nutrientes). 200 g/m². <b>Ceniza:</b> solo leña pura, 100 g/m² max, nunca con semilla recién puesta ni sobre lombrices. Guarda seca: mojada pierde potasio.</p></div>
+      <div class="help-card"><h4>🪱 Vermicompostera (depto)</h4><p class="su-a6c665"><b>Caja:</b> 2 cajas apiladas con hoyos + bandeja jugo (lixiviado). <b>Lombriz:</b> roja californiana, 200-500 inicio. <b>Comida:</b> restos picados 300 g/semana, siempre tapados con seco. <b>Cosecha:</b> 3 meses, luz encima y migran solas. <b>Lixiviado:</b> 1:10 riego. Luna: instalar en nueva. Ojo: sin sol directo, sin cítricos/cebolla en exceso.</p></div>
+      <div class="help-card"><h4>♻️ Bocashi 14 días (fermentado)</h4><p class="su-a6c665"><b>Mezcla seca:</b> 10 kg guano seco + 10 kg tierra + 5 kg afrechillo + 1 kg carbón molido. <b>Agua:</b> 5 L tibia + 10 g levadura + 200 g chancaca. Humedad “puño” (gotea 1 gota). Pila 50 cm, voltea 2× día hasta que enfríe. <b>Uso:</b> 500 g/m² 7 días antes de siembra. Nunca fresco (quema).</p></div>
+      <div class="help-card"><h4>🫖 Té de compost (biofertilizante)</h4><p class="su-a6c665">1 kg compost maduro en bolsa de tela + 10 L agua + 20 g azúcar. Airea 24-36 h (o revuelve 3× día). Filtra y usa en 24 h. <b>Riego:</b> puro o 1:3. <b>Foliar:</b> 1:10 cada 14 días en creciente. Activa microvida en arcilla Penco. Sin olor feo = bien hecho.</p></div>
+      <div class="help-card"><h4>🍂 Tierra de hojas otoñal (Rimü)</h4><p class="su-a6c665">Junta hojas de peumo/boldo/maqui (no eucalipto/pino solo). Malla o saco con hoyos, moja y guarda a la sombra. Voltea 1× mes. En 6-9 meses tienes tierra esponjosa para almácigos. Mezcla ideal almácigo: 2 tierra hoja + 1 compost + 1 arena gruesa.</p></div>
+      <div class="help-card"><h4>🌿 Purín de ortiga / diente de león</h4><p class="su-a6c665">1 kg planta fresca + 10 L agua, tapa con respiración, revuelve diario 7-14 días (espuma = listo). Filtra. <b>Riego:</b> 1:10. <b>Foliar:</b> 1:20. Huele fuerte = normal. Aporta nitrógeno + hierro. No en floración avanzada ni a 1 semana de cosecha.</p></div>
+      <div class="help-card"><h4>⬛ Carbón + ceniza (bien usados)</h4><p class="su-a6c665"><b>Biochar casero:</b> carbón leña molido + “cargado” 1 semana en té compost antes de enterrar (si no, roba nutrientes). 200 g/m². <b>Ceniza:</b> solo leña pura, 100 g/m² max, nunca con semilla recién puesta ni sobre lombrices. Guarda seca: mojada pierde potasio.</p></div>
     </div>
-    <div class="menstrual-card" style="margin-top:10px;border-color:var(--gold)"><h4 style="color:var(--gold)">📅 ¿Cuándo aplicar? regla 7 días</h4><p class="muted" style="font-size:11px;line-height:1.5">Compost/bocashi/humus siempre <b>7 días antes de sembrar/trasplantar</b>, no el mismo día. Té foliar en <b>creciente</b> al atardecer. Cal/yeso en <b>otoño (Rimü)</b>. Abono verde se corta <b>2 semanas antes</b> de plantar. Así la microvida se instala y no “quema” raíces.</p></div>`;
+    <div class="menstrual-card su-51d56a"><h4 class="su-e39eba">📅 ¿Cuándo aplicar? regla 7 días</h4><p class="muted su-a6c665">Compost/bocashi/humus siempre <b>7 días antes de sembrar/trasplantar</b>, no el mismo día. Té foliar en <b>creciente</b> al atardecer. Cal/yeso en <b>otoño (Rimü)</b>. Abono verde se corta <b>2 semanas antes</b> de plantar. Así la microvida se instala y no “quema” raíces.</p></div>`;
   } else if(compostTab==='problemas'){
     html+=`<div class="help-grid">
-      <div class="help-card"><h4>🤢 Huele a podrido / huevo</h4><p style="font-size:11px;line-height:1.5"><b>Causa:</b> sin aire + mucha agua/verde. <b>Arreglo:</b> voltea entero, mete 3 puñados seco, haz chimenea con palo. Tapa con lona que respire. En 2 días debe bajar.</p></div>
-      <div class="help-card"><h4>🪰 Nube de mosquitas</h4><p style="font-size:11px;line-height:1.5"><b>Causa:</b> resto fresco expuesto. <b>Arreglo:</b> entierra 10 cm, tapa siempre con seco/cartón, pon malla. Trampa: vinagre + gota lavalozas al lado. Menguante hay menos.</p></div>
-      <div class="help-card"><h4>🏜️ No calienta / seco</h4><p style="font-size:11px;line-height:1.5"><b>Causa:</b> puro seco o pila chica. <b>Arreglo:</b> riega lluvia + 1 balde verde/guano + agua con chancaca. Junta mínimo 1 m³. Tapa negro al sol en Pewü.</p></div>
-      <div class="help-card"><h4>🌊 Barro / chorrea (Pukem)</h4><p style="font-size:11px;line-height:1.5"><b>Causa:</b> lluvia directa + poco techo. <b>Arreglo:</b> lona con caída, zanja alrededor, agrega cartón/paja seca. Pon pallet abajo para que drene. No voltees con lluvia torrencial.</p></div>
-      <div class="help-card"><h4>🐜 Hormigas en la pila/vermi</h4><p style="font-size:11px;line-height:1.5"><b>Causa:</b> muy seco + dulce. <b>Arreglo:</b> moja bien, entierra fruta, banda de ceniza afuera (no adentro). En vermi: revisa drenaje y baja cítricos.</p></div>
-      <div class="help-card"><h4>🧱 Suelo ladrillo imposible</h4><p style="font-size:11px;line-height:1.5"><b>Causa:</b> arcilla + pisoteo + arena sola. <b>Arreglo:</b> no piques seco (rompes estructura). Moja profundo, espera 2 días, incorpora compost + yeso 200 g/m² + mulch 8 cm. Bancal alto desde ahora.</p></div>
-      <div class="help-card"><h4>🐌 Babosas tras el mulch</h4><p style="font-size:11px;line-height:1.5"><b>Causa:</b> mulch pegado al tallo + riego noche. <b>Arreglo:</b> 3 cm libres al tallo, riega mañana, trampa cerveza + anillo ceniza seca. Patos/gallinas 1 h al atardecer = control total.</p></div>
-      <div class="help-card"><h4>🌱 “Quemé” plantas con abono</h4><p style="font-size:11px;line-height:1.5"><b>Causa:</b> bocashi/guano fresco directo. <b>Arreglo:</b> riega abundante 3 días, sombrea, poda hojas quemadas. Regla: fresco nunca toca raíz; espera 7 días siempre.</p></div>
+      <div class="help-card"><h4>🤢 Huele a podrido / huevo</h4><p class="su-a6c665"><b>Causa:</b> sin aire + mucha agua/verde. <b>Arreglo:</b> voltea entero, mete 3 puñados seco, haz chimenea con palo. Tapa con lona que respire. En 2 días debe bajar.</p></div>
+      <div class="help-card"><h4>🪰 Nube de mosquitas</h4><p class="su-a6c665"><b>Causa:</b> resto fresco expuesto. <b>Arreglo:</b> entierra 10 cm, tapa siempre con seco/cartón, pon malla. Trampa: vinagre + gota lavalozas al lado. Menguante hay menos.</p></div>
+      <div class="help-card"><h4>🏜️ No calienta / seco</h4><p class="su-a6c665"><b>Causa:</b> puro seco o pila chica. <b>Arreglo:</b> riega lluvia + 1 balde verde/guano + agua con chancaca. Junta mínimo 1 m³. Tapa negro al sol en Pewü.</p></div>
+      <div class="help-card"><h4>🌊 Barro / chorrea (Pukem)</h4><p class="su-a6c665"><b>Causa:</b> lluvia directa + poco techo. <b>Arreglo:</b> lona con caída, zanja alrededor, agrega cartón/paja seca. Pon pallet abajo para que drene. No voltees con lluvia torrencial.</p></div>
+      <div class="help-card"><h4>🐜 Hormigas en la pila/vermi</h4><p class="su-a6c665"><b>Causa:</b> muy seco + dulce. <b>Arreglo:</b> moja bien, entierra fruta, banda de ceniza afuera (no adentro). En vermi: revisa drenaje y baja cítricos.</p></div>
+      <div class="help-card"><h4>🧱 Suelo ladrillo imposible</h4><p class="su-a6c665"><b>Causa:</b> arcilla + pisoteo + arena sola. <b>Arreglo:</b> no piques seco (rompes estructura). Moja profundo, espera 2 días, incorpora compost + yeso 200 g/m² + mulch 8 cm. Bancal alto desde ahora.</p></div>
+      <div class="help-card"><h4>🐌 Babosas tras el mulch</h4><p class="su-a6c665"><b>Causa:</b> mulch pegado al tallo + riego noche. <b>Arreglo:</b> 3 cm libres al tallo, riega mañana, trampa cerveza + anillo ceniza seca. Patos/gallinas 1 h al atardecer = control total.</p></div>
+      <div class="help-card"><h4>🌱 “Quemé” plantas con abono</h4><p class="su-a6c665"><b>Causa:</b> bocashi/guano fresco directo. <b>Arreglo:</b> riega abundante 3 días, sombrea, poda hojas quemadas. Regla: fresco nunca toca raíz; espera 7 días siempre.</p></div>
     </div>
-    <div class="menstrual-card" style="margin-top:10px"><h4>❄️ Invierno Pukem: no abandones la pila</h4><p class="muted" style="font-size:11px;line-height:1.5">La lluvia enfría y lava nutrientes. Tapa con lona, reduce verdes acuosos (sandía, tomate), suma hojas secas guardadas en Rimü. Voltea solo en pausa de lluvia y en menguante. La vermi entra bajo techo (garaJe/balcón tapado): lombriz muere bajo 5°C.</p></div>`;
+    <div class="menstrual-card su-d2c171"><h4>❄️ Invierno Pukem: no abandones la pila</h4><p class="muted su-a6c665">La lluvia enfría y lava nutrientes. Tapa con lona, reduce verdes acuosos (sandía, tomate), suma hojas secas guardadas en Rimü. Voltea solo en pausa de lluvia y en menguante. La vermi entra bajo techo (garaJe/balcón tapado): lombriz muere bajo 5°C.</p></div>`;
   } else if(compostTab==='luna'){
     const ms=compostNextMenguantes();
-    html+=`<div class="menstrual-card" style="border-color:#a9d18e"><h4 style="color:#a9d18e">📅 Voltea en menguante — próximos</h4>`+
-    (ms.length? `<div style="display:flex;flex-direction:column;gap:6px;margin-top:8px">`+ms.map(o=>`<div class="hora-item"><span>🌓 ${escapeHtml(o.key)} · ${escapeHtml((o.e.tipo||'menguante').replace(/-/g,' '))} ${o.e.simbolo||''}</span><button type="button" class="btn cp-go" data-k="${escapeHtml(o.key)}" style="width:auto;font-size:11px">Marcar volteo</button></div>`).join('')+`</div>`
-    : '<p class="muted" style="font-size:11px">Cambia de luna en el calendario para cargar fases.</p>')+
-    `<p class="muted" style="font-size:11px;margin-top:6px">Menguante = energía a raíces + menos moscas. Airea, ajusta humedad y agrega seco.</p></div>
-    <div class="help-grid" style="margin-top:10px">
-      <div class="help-card"><h4>🌑 Nueva — planifica</h4><p style="font-size:11px">Descansa la pila. Instala vermi nueva, arma cajón, junta secos, anota qué sembrarás. Sin volteo.</p></div>
-      <div class="help-card"><h4>🌒 Creciente — alimenta hoja</h4><p style="font-size:11px">Té de compost foliar 1:10 + riego. Siembra hoja y trasplanta sobre compost de hace 7 días.</p></div>
-      <div class="help-card"><h4>🌕 Llena — observa</h4><p style="font-size:11px">No voltees fuerte. Cosecha compost maduro si está listo, pesa y anota. Revisa humedad con puño.</p></div>
-      <div class="help-card"><h4>🌖 Menguante — voltea y abona</h4><p style="font-size:11px">Volteo completo + seco + ajuste agua. Aplica bocashi/compost a raíz (zanahoria, ajo, betarraga). Controla moscas y repara lona Pukem.</p></div>
+    html+=`<div class="menstrual-card su-4181c1"><h4 class="su-559282">📅 Voltea en menguante — próximos</h4>`+
+    (ms.length? `<div class="su-5e3875">`+ms.map(o=>`<div class="hora-item"><span>🌓 ${escapeHtml(o.key)} · ${escapeHtml((o.e.tipo||'menguante').replace(/-/g,' '))} ${o.e.simbolo||''}</span><button type="button" class="btn cp-go su-337714" data-k="${escapeHtml(o.key)}">Marcar volteo</button></div>`).join('')+`</div>`
+    : '<p class="muted su-11a508">Cambia de luna en el calendario para cargar fases.</p>')+
+    `<p class="muted su-e13d76">Menguante = energía a raíces + menos moscas. Airea, ajusta humedad y agrega seco.</p></div>
+    <div class="help-grid su-d2c171">
+      <div class="help-card"><h4>🌑 Nueva — planifica</h4><p class="su-11a508">Descansa la pila. Instala vermi nueva, arma cajón, junta secos, anota qué sembrarás. Sin volteo.</p></div>
+      <div class="help-card"><h4>🌒 Creciente — alimenta hoja</h4><p class="su-11a508">Té de compost foliar 1:10 + riego. Siembra hoja y trasplanta sobre compost de hace 7 días.</p></div>
+      <div class="help-card"><h4>🌕 Llena — observa</h4><p class="su-11a508">No voltees fuerte. Cosecha compost maduro si está listo, pesa y anota. Revisa humedad con puño.</p></div>
+      <div class="help-card"><h4>🌖 Menguante — voltea y abona</h4><p class="su-11a508">Volteo completo + seco + ajuste agua. Aplica bocashi/compost a raíz (zanahoria, ajo, betarraga). Controla moscas y repara lona Pukem.</p></div>
     </div>`;
   }
   box.innerHTML=html;
@@ -8506,7 +8506,7 @@ function renderReciclaList(){
   const f=(($('reciclaFilter')&&$('reciclaFilter').value)||'');
   const list=RECICLA_ITEMS.filter(p=>{ if(f && p.d!==f) return false; if(q && !(p.n+' '+p.e+' '+p.k).toLowerCase().includes(q)) return false; return true; });
   const col={ 'Punto limpio':'#7ab8ff', 'Feria':'#a9d18e', 'Compost':'#c9a86a', 'Basura':'#9aa3c7', 'Peligroso':'#e76e8a' };
-  box.innerHTML = list.length? `<div style="display:flex;flex-direction:column;gap:6px">`+list.map(p=>`<div class="hora-item" style="justify-content:flex-start;gap:8px"><span class="chip" style="font-size:10px;background:${col[p.d]}22;color:${col[p.d]};border-color:${col[p.d]}55;white-space:nowrap">${escapeHtml(p.d)}</span><span style="font-size:12px"><b>${escapeHtml(p.n)}</b> — ${escapeHtml(p.e)}</span></div>`).join('')+`</div>` : '<p class="muted" style="text-align:center">Sin resultados. Prueba “botella”, “pila”, “aceite”.</p>';
+  box.innerHTML = list.length? `<div class="su-14b4b5">`+list.map(p=>`<div class="hora-item su-ec9903"><span class="chip" style="font-size:10px;background:${col[p.d]}22;color:${col[p.d]};border-color:${col[p.d]}55;white-space:nowrap">${escapeHtml(p.d)}</span><span class="su-6cb285"><b>${escapeHtml(p.n)}</b> — ${escapeHtml(p.e)}</span></div>`).join('')+`</div>` : '<p class="muted su-91a870">Sin resultados. Prueba “botella”, “pila”, “aceite”.</p>';
 }
 function setupReciclaDialog(){
   const btn=$('btnRecicla'); if(btn) btn.onclick=()=>{ renderReciclaList(); $('reciclaDialog').showModal(); };
@@ -8525,8 +8525,8 @@ function renderAireTips(pm25){
     ['😷 Grupos sensibles','Niños, mayores y asma: evita ejercicio costanera con humo. Mascarilla si hay preemergencia.'],
     ['📻 Alerta','Preemergencia SEREMI: no más humo, sigue radio/muni. Denuncia humo industrial a SMA.']
   ];
-  box.innerHTML = `<div class="help-grid">`+tips.map(t=>`<div class="help-card"><h4>${t[0]}</h4><p style="font-size:11px">${t[1]}</p></div>`).join('')+`</div>`+
-    (nivel? `<p class="muted" style="font-size:11px;margin-top:6px">PM2.5 ahora ≈ <b>${Math.round(pm25)} µg/m³ (${nivel})</b> — referencia OMS diaria 15. Si está Regular/Malo, baja la estufa y ventila corto.</p>` : `<p class="muted" style="font-size:11px;margin-top:6px">Sin dato en vivo (offline). Usa la guía: si ves humo estancado sobre la bahía, aplica modo invierno.</p>`);
+  box.innerHTML = `<div class="help-grid">`+tips.map(t=>`<div class="help-card"><h4>${t[0]}</h4><p class="su-11a508">${t[1]}</p></div>`).join('')+`</div>`+
+    (nivel? `<p class="muted su-e13d76">PM2.5 ahora ≈ <b>${Math.round(pm25)} µg/m³ (${nivel})</b> — referencia OMS diaria 15. Si está Regular/Malo, baja la estufa y ventila corto.</p>` : `<p class="muted su-e13d76">Sin dato en vivo (offline). Usa la guía: si ves humo estancado sobre la bahía, aplica modo invierno.</p>`);
 }
 async function fetchAire(){
   const box=$('aireLiveBox'); if(box) box.innerHTML='<i>Cargando aire…</i>';
@@ -8538,7 +8538,7 @@ async function fetchAire(){
     const key=`${p.y}-${String(p.m).padStart(2,'0')}-${String(p.d).padStart(2,'0')}T${String(p.hh).padStart(2,'0')}`;
     let idx=times.findIndex(t=>t>=key); if(idx<0) idx=vals.length-1;
     const pm25=vals[idx];
-    if(box) box.innerHTML=`<b>🌬️ Penco ahora:</b> PM2.5 ≈ <b>${pm25==null?'—':Math.round(pm25)+' µg/m³'}</b> · AQI US ${j.hourly.us_aqi[idx]??'—'} <span class="muted" style="font-size:11px">(Open-Meteo, modelo, no estación oficial — contrasta con SINCA sinca.mma.gob.cl)</span>`;
+    if(box) box.innerHTML=`<b>🌬️ Penco ahora:</b> PM2.5 ≈ <b>${pm25==null?'—':Math.round(pm25)+' µg/m³'}</b> · AQI US ${j.hourly.us_aqi[idx]??'—'} <span class="muted su-11a508">(Open-Meteo, modelo, no estación oficial — contrasta con SINCA sinca.mma.gob.cl)</span>`;
     renderAireTips(pm25);
   }catch{ if(box) box.innerHTML='<i>Sin conexión: guía offline abajo. Estación oficial: SINCA (sinca.mma.gob.cl) / SEREMI Bío-Bío.</i>'; renderAireTips(null); }
 }
@@ -8555,30 +8555,30 @@ function renderSiembraSemillas(){
   const box=$('siembraSemillasBox'); if(!box) return;
   const a=getSemillasInvData();
   const totalSobres=a.reduce((s,e)=> s+(parseInt(e.qty)||0), 0);
-  box.innerHTML = `<div class="menstrual-card" style="border-color:var(--gold);background:linear-gradient(135deg,var(--panel),var(--card))">
-    <h4 style="color:var(--gold)">🏺 Banco de semillas — recuento (${a.length} variedades · ${totalSobres} sobres/semillas)</h4>
-    <p class="muted" style="font-size:11px">Tu stock personal, <b>local por usuario</b>. Descuenta al sembrar (−) y suma al cosechar semilla (+). Úsalo con la guía de arriba.</p>
-    <div style="font-size:11px;margin-top:6px;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px"><b>🏺 Cómo almacenar tus semillas:</b><ul style="margin:4px 0 0 16px;padding:0" class="muted"><li>Seca bien a la sombra, lugar ventilado, 7–14 días antes de guardar.</li><li>Guarda en <b>sobre de papel</b>, no plástico (respira y evita hongos).</li><li>Frasco hermético en lugar <b>fresco, seco y oscuro</b> (ideal &lt;20 °C).</li><li>Etiqueta siempre: variedad + <b>fecha de recolección</b> + origen.</li><li>Revisa cada luna: descarta las húmedas o con moho.</li></ul></div>
-    <div class="conv-row" style="margin-top:8px">
-      <label style="flex:2">Variedad <input type="text" id="semInvName" placeholder="ej: Tomate rosado, Poroto manteca" maxlength="40"></label>
-      <label>Cant. <input type="number" id="semInvQty" min="0" value="1" style="width:70px"></label>
+  box.innerHTML = `<div class="menstrual-card su-bcee4f">
+    <h4 class="su-e39eba">🏺 Banco de semillas — recuento (${a.length} variedades · ${totalSobres} sobres/semillas)</h4>
+    <p class="muted su-11a508">Tu stock personal, <b>local por usuario</b>. Descuenta al sembrar (−) y suma al cosechar semilla (+). Úsalo con la guía de arriba.</p>
+    <div class="su-1f0834"><b>🏺 Cómo almacenar tus semillas:</b><ul class="su-0e424a" class="muted"><li>Seca bien a la sombra, lugar ventilado, 7–14 días antes de guardar.</li><li>Guarda en <b>sobre de papel</b>, no plástico (respira y evita hongos).</li><li>Frasco hermético en lugar <b>fresco, seco y oscuro</b> (ideal &lt;20 °C).</li><li>Etiqueta siempre: variedad + <b>fecha de recolección</b> + origen.</li><li>Revisa cada luna: descarta las húmedas o con moho.</li></ul></div>
+    <div class="conv-row su-8a77e5">
+      <label class="su-4b3de7">Variedad <input type="text" id="semInvName" placeholder="ej: Tomate rosado, Poroto manteca" maxlength="40"></label>
+      <label>Cant. <input type="number" id="semInvQty" min="0" value="1" class="su-ec6626"></label>
     </div>
-    <div class="conv-row" style="margin-top:6px">
-      <label>📅 Recolección <input type="date" id="semInvHarvest" style="min-width:140px"></label>
-      <label style="flex:2">Detalle <input type="text" id="semInvNote" placeholder="ej: sobres, gr, origen" maxlength="30"></label>
+    <div class="conv-row su-fe7b49">
+      <label>📅 Recolección <input type="date" id="semInvHarvest" class="su-4592c7"></label>
+      <label class="su-4b3de7">Detalle <input type="text" id="semInvNote" placeholder="ej: sobres, gr, origen" maxlength="30"></label>
     </div>
-    <div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="semInvAdd" class="btn btn-accent" style="width:auto">+ Agregar</button></div>
-    <div id="semInvList" class="habits-list" style="margin-top:8px;max-height:240px"></div>
-    <div class="dlg-actions" style="justify-content:space-between;align-items:center;margin-top:6px">
-      <span id="semInvStats" class="muted" style="font-size:11px"></span>
-      <span style="display:flex;gap:8px"><button type="button" id="semInvShare" class="btn" style="width:auto">📤 Compartir</button><button type="button" id="semInvClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Vaciar</button></span>
+    <div class="dlg-actions su-59a5a8"><button type="button" id="semInvAdd" class="btn btn-accent su-30e741">+ Agregar</button></div>
+    <div id="semInvList" class="habits-list su-614525"></div>
+    <div class="dlg-actions su-249a6a">
+      <span id="semInvStats" class="muted su-11a508"></span>
+      <span class="su-a76d59"><button type="button" id="semInvShare" class="btn su-30e741">📤 Compartir</button><button type="button" id="semInvClear" class="btn su-214f75">🗑 Vaciar</button></span>
     </div></div>`;
   const list=$('semInvList');
   const paint=()=>{
     const arr=getSemillasInvData();
     list.innerHTML = arr.length? arr.map((e,i)=>
-      `<div class="hora-item"><span style="font-size:12px"><b>${escapeHtml(e.name)}</b> <span class="chip" style="font-size:10px">${escapeHtml(String(e.qty))} ${escapeHtml(e.note||'')}</span>${e.harvest?` <span class="chip" style="font-size:10px">📅 ${escapeHtml(e.harvest)}</span>`:''}</span><span class="hora-actions"><button type="button" class="btn btn-icon sem-dec" data-i="${i}" title="Sembré 1 (−)">−</button><button type="button" class="btn btn-icon sem-inc" data-i="${i}" title="Sumar 1 (+)">+</button><button type="button" class="btn btn-icon sem-del" data-i="${i}" title="Borrar">✕</button></span></div>`).join('')
-      : '<p class="muted" style="font-size:11px;text-align:center">Vacío. Agrega tu primer sobre arriba.</p>';
+      `<div class="hora-item"><span class="su-6cb285"><b>${escapeHtml(e.name)}</b> <span class="chip su-0d5be0">${escapeHtml(String(e.qty))} ${escapeHtml(e.note||'')}</span>${e.harvest?` <span class="chip su-0d5be0">📅 ${escapeHtml(e.harvest)}</span>`:''}</span><span class="hora-actions"><button type="button" class="btn btn-icon sem-dec" data-i="${i}" title="Sembré 1 (−)">−</button><button type="button" class="btn btn-icon sem-inc" data-i="${i}" title="Sumar 1 (+)">+</button><button type="button" class="btn btn-icon sem-del" data-i="${i}" title="Borrar">✕</button></span></div>`).join('')
+      : '<p class="muted su-e201a8">Vacío. Agrega tu primer sobre arriba.</p>';
     const st=$('semInvStats'); if(st) st.textContent = arr.length? `${arr.length} variedades · bajo stock (≤2): ${arr.filter(x=>(parseInt(x.qty)||0)<=2).length}` : '';
     list.querySelectorAll('.sem-dec').forEach(b=> b.onclick=()=>{ const ar=getSemillasInvData(); const it=ar[parseInt(b.dataset.i)]; if(!it) return; it.qty=Math.max(0,(parseInt(it.qty)||0)-1); setSemillasInvData(ar); scheduleSave(); paint(); });
     list.querySelectorAll('.sem-inc').forEach(b=> b.onclick=()=>{ const ar=getSemillasInvData(); const it=ar[parseInt(b.dataset.i)]; if(!it) return; it.qty=(parseInt(it.qty)||0)+1; setSemillasInvData(ar); scheduleSave(); paint(); });
@@ -8664,7 +8664,7 @@ function gratFraseDelDia(){
 }
 function renderGratFrase(){
   const box=$('gratFraseBox'); if(!box) return;
-  box.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><span style="font-size:12px">💬 <i>'+escapeHtml(gratFraseDelDia())+'</i></span><button type="button" id="gratFraseNew" class="btn" style="width:auto;font-size:11px;flex:0 0 auto">🎲 Otra</button></div>';
+  box.innerHTML='<div class="su-e84fc1"><span class="su-6cb285">💬 <i>'+escapeHtml(gratFraseDelDia())+'</i></span><button type="button" id="gratFraseNew" class="btn su-423b48">🎲 Otra</button></div>';
   const nb=$('gratFraseNew'); if(nb) nb.onclick=()=>{ gratFraseOff++; renderGratFrase(); };
 }
 function gratDayText(k,g){
@@ -8695,8 +8695,8 @@ function renderGratitudBox(){
   const mes=ym?keys.filter(k=>k.slice(0,7)===ym).length:0;
   let cur=null, nxt=null;
   GRATITUD_HITOS.forEach(h=>{ if(n>=h[0]) cur=h; else if(!nxt) nxt=h; });
-  b.innerHTML='<div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center"><span style="font-size:13px"><b>✨ Racha:</b> '+racha+' día'+(racha===1?'':'s')+'</span><span class="chip">🔥 mejor '+mejor+'</span><span class="chip">📓 '+n+' días</span><span class="chip">🗓️ '+mes+' este mes</span></div>'
-    +'<p class="muted" style="font-size:11px;margin:6px 0 0">'+(cur?cur[1]:'Escribe tus 3 de hoy para encender la racha ✨')+(nxt?' Te faltan '+(nxt[0]-n)+' para '+nxt[2]+'.':' ¡Hito máximo alcanzado!')+'</p>';
+  b.innerHTML='<div class="su-b5711a"><span class="su-5e0faa"><b>✨ Racha:</b> '+racha+' día'+(racha===1?'':'s')+'</span><span class="chip">🔥 mejor '+mejor+'</span><span class="chip">📓 '+n+' días</span><span class="chip">🗓️ '+mes+' este mes</span></div>'
+    +'<p class="muted su-1db776">'+(cur?cur[1]:'Escribe tus 3 de hoy para encender la racha ✨')+(nxt?' Te faltan '+(nxt[0]-n)+' para '+nxt[2]+'.':' ¡Hito máximo alcanzado!')+'</p>';
 }
 function renderGratMonth(){
   const box=$('gratMonthBox'); if(!box) return;
@@ -8707,7 +8707,7 @@ function renderGratMonth(){
   const lead=(new Date(y,m-1,1).getDay()+6)%7;
   const names=['L','M','M','J','V','S','D'];
   const pm=String(m).padStart(2,'0');
-  let h='<b style="font-size:12px">🗓️ '+y+'-'+pm+'</b> <span class="muted" style="font-size:10px">toca un día ✨ para verlo</span><div style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-top:6px;text-align:center;font-size:11px">';
+  let h='<b class="su-6cb285">🗓️ '+y+'-'+pm+'</b> <span class="muted su-0d5be0">toca un día ✨ para verlo</span><div class="su-5547f7">';
   h+=names.map(n2=>'<span class="muted"><b>'+n2+'</b></span>').join('');
   for(let i=0;i<lead;i++) h+='<span></span>';
   for(let d=1;d<=dim;d++){
@@ -8723,16 +8723,16 @@ function renderGratHistory(){
   const box=$('gratHistory'); if(!box) return;
   const e=getGratitudData().entries;
   const keys=Object.keys(e).filter(k=>gratTiene(e[k])).sort().reverse().slice(0,30);
-  if(!keys.length){ box.innerHTML='<p class="muted" style="font-size:11px;text-align:center">Sin registros. Escribe tus 3 de hoy.</p>'; return; }
+  if(!keys.length){ box.innerHTML='<p class="muted su-e201a8">Sin registros. Escribe tus 3 de hoy.</p>'; return; }
   box.innerHTML=keys.map(k=>{
     const g=e[k];
     let lines='';
     for(let i=1;i<=3;i++){ const t=g['t'+i]; if(!t) continue; const cd=gratCatDe(g['c'+i]);
-      lines+='<div>✨ '+escapeHtml(t)+(cd?' <span class="chip" style="font-size:9px">'+cd.ico+' '+escapeHtml(cd.nombre)+'</span>':'')+'</div>'; }
+      lines+='<div>✨ '+escapeHtml(t)+(cd?' <span class="chip su-fb2957">'+cd.ico+' '+escapeHtml(cd.nombre)+'</span>':'')+'</div>'; }
     const extra=(g.intencion?'<div class="muted">🎯 '+escapeHtml(g.intencion)+'</div>':'')
       +(g.para?'<div class="muted">🤝 '+escapeHtml(g.para)+'</div>':'')
       +(((g.carta&&String(g.carta).trim())||g.cartaPara)?'<div class="muted">💌 Carta'+(g.cartaPara?' para '+escapeHtml(g.cartaPara):'')+': '+escapeHtml(String(g.carta||'').slice(0,90))+(String(g.carta||'').length>90?'…':'')+'</div>':'');
-    return '<div class="hora-item" style="align-items:flex-start"><span style="font-size:11px;flex:1;min-width:0"><b><a href="#" data-gload="'+escapeHtml(k)+'" style="color:inherit">'+escapeHtml(k)+'</a></b>'+(g.animo?' '+gratAnimoIco(g.animo):'')+'<br>'+lines+extra+'</span><span style="display:flex;gap:4px;flex:0 0 auto"><button type="button" class="btn btn-icon grat-share" data-k="'+escapeHtml(k)+'" title="Compartir">📤</button><button type="button" class="btn btn-icon grat-del" data-k="'+escapeHtml(k)+'">✕</button></span></div>';
+    return '<div class="hora-item su-0486f7"><span class="su-9c141b"><b><a href="#" data-gload="'+escapeHtml(k)+'" class="su-1c9c44">'+escapeHtml(k)+'</a></b>'+(g.animo?' '+gratAnimoIco(g.animo):'')+'<br>'+lines+extra+'</span><span class="su-3a76ac"><button type="button" class="btn btn-icon grat-share" data-k="'+escapeHtml(k)+'" title="Compartir">📤</button><button type="button" class="btn btn-icon grat-del" data-k="'+escapeHtml(k)+'">✕</button></span></div>';
   }).join('');
   box.querySelectorAll('[data-gload]').forEach(a=> a.onclick=ev=>{ ev.preventDefault(); const dt=$('gratDate'); if(dt){ dt.value=a.getAttribute('data-gload'); dt.onchange(); } const dlg=$('gratitudDialog'); try{ if(dlg&&dlg.scrollTo) dlg.scrollTo({top:0,behavior:'smooth'}); }catch(e2){} });
   box.querySelectorAll('.grat-del').forEach(x=> x.onclick=()=>{ if(!confirm('¿Borrar la gratitud del '+x.dataset.k+'?')) return; const gd=getGratitudData(); delete gd.entries[x.dataset.k]; scheduleSave(); gratRefreshAll(); });
@@ -8835,7 +8835,7 @@ function renderPsicoBox(){
   const b=$('psicoStreakBox'); if(!b) return;
   const e=getPsicoData().entries;
   const n=Object.keys(e).filter(k=>{ const day=e[k]; return day && Object.values(day).some(v=>v&&v.trim()); }).length;
-  b.innerHTML=`<b>🪞 Racha:</b> ${psicoStreak()} días seguidos · <b>${n}</b> días con práctica <span class="muted" style="font-size:11px">— relee cada luna para ver patrones</span>`;
+  b.innerHTML=`<b>🪞 Racha:</b> ${psicoStreak()} días seguidos · <b>${n}</b> días con práctica <span class="muted su-11a508">— relee cada luna para ver patrones</span>`;
 }
 function renderPsicoLog(){
   const box=$('psiLog'); if(!box) return;
@@ -8843,8 +8843,8 @@ function renderPsicoLog(){
   const rows=[];
   Object.keys(e).sort().reverse().forEach(k=>{ const day=e[k]||{}; Object.keys(day).forEach(t=>{ if(day[t]&&day[t].trim()) rows.push({k,t,v:day[t]}); }); });
   const last=rows.slice(0,15);
-  box.innerHTML = last.length? last.map((r,i)=>`<div class="hora-item" style="align-items:flex-start"><span style="font-size:11px"><b>${escapeHtml(r.k)}</b> · ${escapeHtml(psicoTopicName(r.t))}<br>${escapeHtml(r.v)}</span><button type="button" class="btn btn-icon psi-del" data-k="${escapeHtml(r.k)}" data-t="${escapeHtml(r.t)}">✕</button></div>`).join('')
-    : '<p class="muted" style="font-size:11px;text-align:center">Sin registros. Elige un tema y escribe tu ejercicio de hoy.</p>';
+  box.innerHTML = last.length? last.map((r,i)=>`<div class="hora-item su-0486f7"><span class="su-11a508"><b>${escapeHtml(r.k)}</b> · ${escapeHtml(psicoTopicName(r.t))}<br>${escapeHtml(r.v)}</span><button type="button" class="btn btn-icon psi-del" data-k="${escapeHtml(r.k)}" data-t="${escapeHtml(r.t)}">✕</button></div>`).join('')
+    : '<p class="muted su-e201a8">Sin registros. Elige un tema y escribe tu ejercicio de hoy.</p>';
   box.querySelectorAll('.psi-del').forEach(x=> x.onclick=()=>{ const gd=getPsicoData(); if(gd.entries[x.dataset.k]){ delete gd.entries[x.dataset.k][x.dataset.t]; if(!Object.keys(gd.entries[x.dataset.k]).length) delete gd.entries[x.dataset.k]; } scheduleSave(); renderPsicoBox(); renderPsicoLog(); });
   const st=$('psiStats'); if(st) st.textContent = rows.length? `${rows.length} prácticas guardadas` : '';
 }
@@ -8920,8 +8920,8 @@ function renderMetodosLog(){
   const rows=[];
   Object.keys(e).sort().reverse().forEach(k=>{ const day=e[k]||{}; Object.keys(day).forEach(t=>{ if(day[t]&&day[t].trim()) rows.push({k,t,v:day[t]}); }); });
   const last=rows.slice(0,15);
-  box.innerHTML = last.length? last.map(r=>`<div class="hora-item" style="align-items:flex-start"><span style="font-size:11px"><b>${escapeHtml(r.k)}</b> · ${escapeHtml(metodosTopicName(r.t))}<br>${escapeHtml(r.v)}</span><button type="button" class="btn btn-icon met-del" data-k="${escapeHtml(r.k)}" data-t="${escapeHtml(r.t)}">✕</button></div>`).join('')
-    : '<p class="muted" style="font-size:11px;text-align:center">Sin registros. Elige una visión y anota tu práctica de hoy.</p>';
+  box.innerHTML = last.length? last.map(r=>`<div class="hora-item su-0486f7"><span class="su-11a508"><b>${escapeHtml(r.k)}</b> · ${escapeHtml(metodosTopicName(r.t))}<br>${escapeHtml(r.v)}</span><button type="button" class="btn btn-icon met-del" data-k="${escapeHtml(r.k)}" data-t="${escapeHtml(r.t)}">✕</button></div>`).join('')
+    : '<p class="muted su-e201a8">Sin registros. Elige una visión y anota tu práctica de hoy.</p>';
   box.querySelectorAll('.met-del').forEach(x=> x.onclick=()=>{ const gd=getMetodosData(); if(gd.entries[x.dataset.k]){ delete gd.entries[x.dataset.k][x.dataset.t]; if(!Object.keys(gd.entries[x.dataset.k]).length) delete gd.entries[x.dataset.k]; } scheduleSave(); renderMetodosLog(); });
   const st=$('metStats'); if(st) st.textContent = rows.length? `${rows.length} prácticas guardadas` : '';
 }
@@ -8958,7 +8958,7 @@ function setupLenaDialog(){
   const ct=$('lenaCloseTop'), cb=$('lenaClose'); if(ct) ct.onclick=()=>$('lenaDialog').close(); if(cb) cb.onclick=()=>$('lenaDialog').close();
   const c=$('lenaCalc'); if(c) c.onclick=renderLenaCalc;
 }
-function renderLenaEmpty(){ const b=$('lenaResult'); if(b) b.innerHTML='<span class="muted" style="font-size:11px">Ingresa cantidad y precio para comparar. Ej: 1 m³ eucalipto ≈ 450 kg seco.</span>'; }
+function renderLenaEmpty(){ const b=$('lenaResult'); if(b) b.innerHTML='<span class="muted su-11a508">Ingresa cantidad y precio para comparar. Ej: 1 m³ eucalipto ≈ 450 kg seco.</span>'; }
 function renderLenaCalc(){
   const box=$('lenaResult'); if(!box) return;
   const tipo=$('lenaTipo').value, cant=parseFloat($('lenaCant').value)||0, uni=$('lenaUnidad').value, precio=parseFloat($('lenaPrecio').value)||0;
@@ -8970,8 +8970,8 @@ function renderLenaCalc(){
   const kwh=kg*(KWH[tipo]||4);
   const perKwh=precio>0&&kwh>0? ` · <b>$${Math.round(precio/kwh)}/kWh</b>` : '';
   const dias=kwh>0? ` ≈ calefacción de una casa Penco chica por <b>${(kwh/25).toFixed(1)} días</b> (25 kWh/día invierno)` : '';
-  const warn=tipo==='humeda'? `<br><span style="color:#ff9a9a">⚠️ Húmeda rinde ~40% menos y satura el aire (ver 🌬️ Aire). Seca 6+ meses bajo techo.</span>` : tipo==='parafina'? `<br><span class="muted" style="font-size:11px">Ventila siempre con parafina, nunca durmiendo.</span>` : '';
-  box.innerHTML=`<b>${escapeHtml(NOM[tipo])}</b> ${cant} ${escapeHtml(uni)} ≈ <b>${Math.round(kwh)} kWh</b>${perKwh}${dias}${warn}<br><span class="muted" style="font-size:11px">Ref: 1 m³ estéreo ≈ 450 kg seco · pellet 15 kg ≈ 72 kWh · compara $/kWh antes de comprar.</span>`;
+  const warn=tipo==='humeda'? `<br><span class="su-23dd39">⚠️ Húmeda rinde ~40% menos y satura el aire (ver 🌬️ Aire). Seca 6+ meses bajo techo.</span>` : tipo==='parafina'? `<br><span class="muted su-11a508">Ventila siempre con parafina, nunca durmiendo.</span>` : '';
+  box.innerHTML=`<b>${escapeHtml(NOM[tipo])}</b> ${cant} ${escapeHtml(uni)} ≈ <b>${Math.round(kwh)} kWh</b>${perKwh}${dias}${warn}<br><span class="muted su-11a508">Ref: 1 m³ estéreo ≈ 450 kg seco · pellet 15 kg ≈ 72 kWh · compara $/kWh antes de comprar.</span>`;
 }
 setTimeout(setupLenaDialog, 894);
 
@@ -9024,7 +9024,7 @@ function renderCircadianDialog(){
   if(nowBox){
     const p=CIRCADIAN_PHASES[idx];
     const timeStr=new Intl.DateTimeFormat('es-CL',{timeZone:'America/Santiago',hour:'2-digit',minute:'2-digit'}).format(new Date());
-    nowBox.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:15px"><b>${p.icon} ${p.label}</b> · ${p.desc}</span><span class="chip">${timeStr} · Penco</span></div><p class="muted" style="margin-top:6px">${p.tip} — Hora local America/Santiago.</p>`;
+    nowBox.innerHTML=`<div class="su-13313b"><span class="su-de0080"><b>${p.icon} ${p.label}</b> · ${p.desc}</span><span class="chip">${timeStr} · Penco</span></div><p class="muted su-fe7b49">${p.tip} — Hora local America/Santiago.</p>`;
   }
   const grid=$('circadianPhases');
   if(grid){
@@ -9087,16 +9087,16 @@ function renderGoldenDialog(){
     if(!gToday) todayBox.innerHTML='<p class="muted">Sin datos solares para hoy.</p>';
     else {
       const isGolden = (nowMs>=gToday.goldenAM[0]&&nowMs<=gToday.goldenAM[1])||(nowMs>=gToday.goldenPM[0]&&nowMs<=gToday.goldenPM[1]);
-      todayBox.innerHTML=`<h4 style="color:var(--gold)">Hoy — ${cal.weekdayName(todayNoon)} ${cal.fmtFull.format(new Date(todayNoon))} ${isGolden?'<span class="chip" style="margin-left:6px;background:#e8c56a;color:#1a1000">¡Ahora es hora dorada!</span>':''}</h4>
-        <div class="golden-table" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">
-          <div style="background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px;text-align:center"><b>🌅 Salida</b><br>${formatGoldenTime(gToday.rise)}<br><span class="muted" style="font-size:11px">Dorado: ${formatGoldenTime(gToday.goldenAM[0])}–${formatGoldenTime(gToday.goldenAM[1])}</span></div>
-          <div style="background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px;text-align:center"><b>🌇 Puesta</b><br>${formatGoldenTime(gToday.set)}<br><span class="muted" style="font-size:11px">Dorado: ${formatGoldenTime(gToday.goldenPM[0])}–${formatGoldenTime(gToday.goldenPM[1])}</span></div>
+      todayBox.innerHTML=`<h4 class="su-e39eba">Hoy — ${cal.weekdayName(todayNoon)} ${cal.fmtFull.format(new Date(todayNoon))} ${isGolden?'<span class="chip su-6e455f">¡Ahora es hora dorada!</span>':''}</h4>
+        <div class="golden-table su-4c8bdb">
+          <div class="su-173e4f"><b>🌅 Salida</b><br>${formatGoldenTime(gToday.rise)}<br><span class="muted su-11a508">Dorado: ${formatGoldenTime(gToday.goldenAM[0])}–${formatGoldenTime(gToday.goldenAM[1])}</span></div>
+          <div class="su-173e4f"><b>🌇 Puesta</b><br>${formatGoldenTime(gToday.set)}<br><span class="muted su-11a508">Dorado: ${formatGoldenTime(gToday.goldenPM[0])}–${formatGoldenTime(gToday.goldenPM[1])}</span></div>
         </div>
-        <p class="muted" style="font-size:11px;margin-top:6px">Azul mañana ${formatGoldenTime(gToday.blueAM[0])}–${formatGoldenTime(gToday.blueAM[1])} · Azul tarde ${formatGoldenTime(gToday.bluePM[0])}–${formatGoldenTime(gToday.bluePM[1])}</p>`;
+        <p class="muted su-e13d76">Azul mañana ${formatGoldenTime(gToday.blueAM[0])}–${formatGoldenTime(gToday.blueAM[1])} · Azul tarde ${formatGoldenTime(gToday.bluePM[0])}–${formatGoldenTime(gToday.bluePM[1])}</p>`;
     }
   }
   if(weekBox){
-    let html='<h4 style="color:var(--accent)">Próximos 7 días</h4><table class="golden-table"><tr><th>Día</th><th>Salida</th><th>Dorado AM</th><th>Puesta</th><th>Dorado PM</th></tr>';
+    let html='<h4 class="su-a80552">Próximos 7 días</h4><table class="golden-table"><tr><th>Día</th><th>Salida</th><th>Dorado AM</th><th>Puesta</th><th>Dorado PM</th></tr>';
     for(let i=0;i<7;i++){
       const noon=todayNoon+i*86400000;
       const g=getGoldenForDay(noon);
@@ -9224,10 +9224,10 @@ function renderEspiritualTodayBox(){
   const pct=Math.min(100, Math.round(doneToday/Math.max(1,totalP)*100));
   const sug=espSuggestToday();
   const nowStr=new Intl.DateTimeFormat('es-CL',{timeZone:'America/Santiago',hour:'2-digit',minute:'2-digit'}).format(new Date());
-  box.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><span style="font-size:15px"><b>☀️ Hoy Penco</b> · salida <b>${s.riseT}</b> · puesta <b>${s.setT}</b></span><span class="chip">${nowStr} · ${doneToday}/${totalP} hoy</span></div>
+  box.innerHTML=`<div class="su-24ce67"><span class="su-de0080"><b>☀️ Hoy Penco</b> · salida <b>${s.riseT}</b> · puesta <b>${s.setT}</b></span><span class="chip">${nowStr} · ${doneToday}/${totalP} hoy</span></div>
   <div class="esp-progress"><div class="esp-progress-fill" style="width:${pct}%"></div></div>
-  <p class="muted" style="margin-top:6px">🌅 Amanecer ideal: <b>${s.riseT} → +60 min</b> · 🌇 Atardecer ideal: <b>−60 min → ${s.setT}</b> · 💧 Agua: 10:00–14:00 · 🔴 Roja desde 20:30.</p>
-  ${sug?`<div class="esp-suggest">✨ <b>Sugerida ahora:</b> ${sug.icon} <b>${escapeHtml(sug.nombre)}</b> <span class="muted">· ${escapeHtml(sug.tiempo)}</span> <button type="button" class="btn btn-accent esp-suggest-go" data-id="${sug.id}" style="width:auto;font-size:11px;margin-left:6px">▶ Empezar ${sug.mins||5} min</button></div>`:''}`;
+  <p class="muted su-fe7b49">🌅 Amanecer ideal: <b>${s.riseT} → +60 min</b> · 🌇 Atardecer ideal: <b>−60 min → ${s.setT}</b> · 💧 Agua: 10:00–14:00 · 🔴 Roja desde 20:30.</p>
+  ${sug?`<div class="esp-suggest">✨ <b>Sugerida ahora:</b> ${sug.icon} <b>${escapeHtml(sug.nombre)}</b> <span class="muted">· ${escapeHtml(sug.tiempo)}</span> <button type="button" class="btn btn-accent esp-suggest-go su-8d836b" data-id="${sug.id}">▶ Empezar ${sug.mins||5} min</button></div>`:''}`;
   const go=box.querySelector('.esp-suggest-go');
   if(go) go.onclick=()=>{
     const sel=$('espTimerPractice'); if(sel) sel.value=go.dataset.id;
@@ -9245,25 +9245,25 @@ function renderEspiritualCards(){
   const horaTxt={ amanecer:`${s.riseT} → +60 min`, atardecer:`−60 min → ${s.setT}`, agua:'10:00–14:00', ducha:'mañana', grounding:'mañana/tarde', luzroja:'20:30 → dormir', respiracion:`con amanecer ${s.riseT}`, luna:'noche', silencio:'amanecer/noche', gratitud:'mañana/noche 3 min', hoponopono:'cuando lo necesites', intencion:'al despertar', decreto:'mañana' };
   const all=espFilteredPractices();
   const totalAll=getAllEspPractices().length;
-  if(!all.length){ box.innerHTML='<p class="muted" style="font-size:12px;padding:8px">Sin resultados. Prueba otra palabra o limpia los filtros. <button type="button" class="btn" id="espClearF" style="width:auto;font-size:11px">Limpiar filtros</button></p>'; const cf=$('espClearF'); if(cf) cf.onclick=()=>{ ESP_FILTER={q:'',cat:'todas',nivel:'todos'}; renderEspFilters(); renderEspiritualCards(); }; return; }
-  box.innerHTML=`<p class="muted" style="font-size:11px;margin:4px 0 8px">Mostrando <b>${all.length}/${totalAll}</b> · toca el título para abrir/cerrar · 🔥 = racha de días seguidos</p>`+all.map(p=>{
+  if(!all.length){ box.innerHTML='<p class="muted su-8fd210">Sin resultados. Prueba otra palabra o limpia los filtros. <button type="button" class="btn su-337714" id="espClearF">Limpiar filtros</button></p>'; const cf=$('espClearF'); if(cf) cf.onclick=()=>{ ESP_FILTER={q:'',cat:'todas',nivel:'todos'}; renderEspFilters(); renderEspiritualCards(); }; return; }
+  box.innerHTML=`<p class="muted su-41ad1d">Mostrando <b>${all.length}/${totalAll}</b> · toca el título para abrir/cerrar · 🔥 = racha de días seguidos</p>`+all.map(p=>{
     const st=espStreak(p.id); const done=!!curDone[p.id];
     const catLbl=ESP_CATS[p.cat]||'🕯️ Interior';
     return `
     <details class="esp-card" ${done?'':''}>
       <summary class="esp-card-head"><span class="esp-icon">${p.icon}</span>
-        <div class="esp-titles"><div class="esp-name">${escapeHtml(p.nombre)} ${done?'<span class="chip" style="font-size:10px">✅ hoy</span>':''} ${st>1?`<span class="chip" style="font-size:10px;background:#ff9a3c22;color:#ff9a3c;border-color:#ff9a3c55">🔥${st}</span>`:''}</div><div class="esp-sub">${escapeHtml(p.sub)}</div><div class="esp-cat">${catLbl} · ${escapeHtml(p.nivel)} · ⏱ ${escapeHtml(p.tiempo)}</div></div>
+        <div class="esp-titles"><div class="esp-name">${escapeHtml(p.nombre)} ${done?'<span class="chip su-0d5be0">✅ hoy</span>':''} ${st>1?`<span class="chip su-a612bd">🔥${st}</span>`:''}</div><div class="esp-sub">${escapeHtml(p.sub)}</div><div class="esp-cat">${catLbl} · ${escapeHtml(p.nivel)} · ⏱ ${escapeHtml(p.tiempo)}</div></div>
         <span class="chip esp-level">${escapeHtml(p.nivel)}</span>
       </summary>
       <div class="esp-body">
-        <div class="esp-meta"><span class="esp-pill gold">⏱ ${escapeHtml(p.tiempo)}</span><span class="esp-pill green">🕐 ${escapeHtml(horaTxt[p.id]||p.horario)}</span><span class="esp-pill">🎒 ${escapeHtml(p.mats)}</span>${p.benef?`<span class="esp-pill" style="border-color:var(--gold);color:var(--gold)">💛 ${escapeHtml(p.benef)}</span>`:''}</div>
+        <div class="esp-meta"><span class="esp-pill gold">⏱ ${escapeHtml(p.tiempo)}</span><span class="esp-pill green">🕐 ${escapeHtml(horaTxt[p.id]||p.horario)}</span><span class="esp-pill">🎒 ${escapeHtml(p.mats)}</span>${p.benef?`<span class="esp-pill su-8fb65a">💛 ${escapeHtml(p.benef)}</span>`:''}</div>
         <ol class="esp-steps">${(p.pasos||[]).map(st2=>`<li>${escapeHtml(st2)}</li>`).join('')}</ol>
-        <p class="esp-pill red" style="margin:0">⚠️ ${escapeHtml(p.cuidado)}</p>
+        <p class="esp-pill red su-116966">⚠️ ${escapeHtml(p.cuidado)}</p>
         <div class="esp-actions">
-          <button type="button" class="btn ${done?'':'btn-accent'} esp-done" data-id="${p.id}" style="width:auto;font-size:11px">${done?'✅ Hecha hoy (quitar)':'✅ Hice esta hoy'}</button>
-          <button type="button" class="btn esp-timer" data-id="${p.id}" data-mins="${p.mins}" style="width:auto;font-size:11px">⏱ ${p.mins} min</button>
-          <button type="button" class="btn esp-agendar" data-id="${p.id}" style="width:auto;font-size:11px">🕐 Agendar</button>
-          ${p.custom?`<button type="button" class="btn esp-del" data-id="${p.id}" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕ Borrar</button>`:''}
+          <button type="button" class="btn ${done?'':'btn-accent'} esp-done su-337714" data-id="${p.id}">${done?'✅ Hecha hoy (quitar)':'✅ Hice esta hoy'}</button>
+          <button type="button" class="btn esp-timer su-337714" data-id="${p.id}" data-mins="${p.mins}">⏱ ${p.mins} min</button>
+          <button type="button" class="btn esp-agendar su-337714" data-id="${p.id}">🕐 Agendar</button>
+          ${p.custom?`<button type="button" class="btn esp-del su-fd834a" data-id="${p.id}">✕ Borrar</button>`:''}
         </div>
       </div>
     </details>`;
@@ -9299,7 +9299,7 @@ function renderEspTodayChecks(){
   const note=(d.notes[k]&&d.notes[k].t)||'';
   box.innerHTML=`<h4>✅ Hoy ${k} — toca para marcar</h4>
     <div class="esp-check-grid">${getAllEspPractices().map(p=>`<label class="esp-check ${cur[p.id]?'done':''}"><input type="checkbox" data-id="${p.id}" ${cur[p.id]?'checked':''}> ${p.icon} ${escapeHtml(p.nombre)}</label>`).join('')}</div>
-    ${note?`<p class="muted" style="font-size:11px;margin-top:6px">📝 ${escapeHtml(note)}</p>`:''}`;
+    ${note?`<p class="muted su-e13d76">📝 ${escapeHtml(note)}</p>`:''}`;
   box.querySelectorAll('input[type=checkbox]').forEach(cb=> cb.onchange=()=> espMarkDone(cb.dataset.id, cb.checked));
   const ni=$('espNoteInput'); if(ni && !ni.dataset.bound){ ni.dataset.bound='1'; }
 }
@@ -9328,26 +9328,26 @@ function renderEspStats(){
     const h=Math.round(n/maxDay*56)+4;
     const lbl=(k||'').slice(5);
     return `<div class="esp-bar-col" title="${k}: ${n}"><div class="esp-bar" style="height:${h}px"></div><span>${lbl}</span><b>${n}</b></div>`;
-  }).join('')||'<p class="muted" style="font-size:11px">Sin datos aún.</p>';
+  }).join('')||'<p class="muted su-11a508">Sin datos aún.</p>';
   const rows=getAllEspPractices().map(p=>{
     let c7=0; keys.forEach(k=>{ if(d.done[k]&&d.done[k][p.id]) c7++; });
     const st=espStreak(p.id);
     return `<span class="esp-pill ${c7>0?'gold':''}">${p.icon} ${escapeHtml(p.nombre)}: <b>${c7}/7</b>${st>1?` · 🔥${st}`:''}</span>`;
   }).join('');
-  box.innerHTML=`<h4>📊 Últimos 7 días: <b>${totalWeek}</b> prácticas</h4><div class="esp-bars">${bars}</div><div class="esp-meta" style="margin-top:8px">${rows}</div>
-  <p class="muted" style="font-size:11px;margin-top:6px">Consejo: la racha se construye con 1–2 prácticas diarias, no con las 13. Si fallas un día, retoma al siguiente sin culpa.</p>`;
+  box.innerHTML=`<h4>📊 Últimos 7 días: <b>${totalWeek}</b> prácticas</h4><div class="esp-bars">${bars}</div><div class="esp-meta su-8a77e5">${rows}</div>
+  <p class="muted su-e13d76">Consejo: la racha se construye con 1–2 prácticas diarias, no con las 13. Si fallas un día, retoma al siguiente sin culpa.</p>`;
 }
 function renderEspLog(){
   const box=$('espLogBox'); if(!box) return;
   const d=getEspiritualData();
   const keys=Object.keys(d.done).sort().reverse().slice(0,14);
-  if(!keys.length){ box.innerHTML='<p class="muted" style="font-size:11px">Sin registros aún. Marca tu primera práctica arriba ⬆️</p>'; return; }
+  if(!keys.length){ box.innerHTML='<p class="muted su-11a508">Sin registros aún. Marca tu primera práctica arriba ⬆️</p>'; return; }
   box.innerHTML=keys.map(k=>{
     const o=d.done[k]||{};
     const all=getAllEspPractices();
     const names=all.filter(p=>o[p.id]).map(p=>p.icon+' '+p.nombre).join(' · ')||'—';
     const n=(d.notes[k]&&d.notes[k].t)? ' · 📝 '+d.notes[k].t : '';
-    return `<div class="habit-item"><div class="habit-head"><b style="color:var(--gold)">${k}</b><span class="muted" style="font-size:11px">${Object.values(o).filter(Boolean).length} prácticas</span></div><div style="font-size:12px;color:var(--text)">${escapeHtml(names)}${escapeHtml(n)}</div></div>`;
+    return `<div class="habit-item"><div class="habit-head"><b class="su-e39eba">${k}</b><span class="muted su-11a508">${Object.values(o).filter(Boolean).length} prácticas</span></div><div class="su-707c92">${escapeHtml(names)}${escapeHtml(n)}</div></div>`;
   }).join('');
 }
 function espAgendar(pid){
@@ -9510,7 +9510,7 @@ function calcEnergyItem(it){
 }
 function renderEnergyPresets(){
   const box=$('energyPresets'); if(!box) return;
-  box.innerHTML=ENERGY_PRESETS.map(p=> `<button type="button" class="btn" style="width:auto;font-size:11px" data-preset="${escapeHtml(p.nombre)}">${escapeHtml(p.nombre)} · ${p.watts}W</button>`).join('');
+  box.innerHTML=ENERGY_PRESETS.map(p=> `<button type="button" class="btn su-337714" data-preset="${escapeHtml(p.nombre)}">${escapeHtml(p.nombre)} · ${p.watts}W</button>`).join('');
   box.querySelectorAll('[data-preset]').forEach(b=> b.onclick=()=>{
     const p=ENERGY_PRESETS.find(x=>x.nombre===b.dataset.preset); if(!p) return;
     $('energyName').value=p.nombre; $('energyWatts').value=p.watts; $('energyHoras').value=p.horas; $('energyDias').value=p.dias; $('energyCant').value=1; $('energyName').focus();
@@ -9526,13 +9526,13 @@ function renderEnergyResumen(){
   const totalDia = totalKwh/30;
   const potenciaPico = d.items.reduce((s,it)=> s + (parseFloat(it.watts)||0)*(parseInt(it.cantidad)||1),0);
   const lunaName=currentView&&currentView.tipo==='luna'? MOONS[currentView.luna-1].nombre : '—';
-  box.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px"><span style="font-size:15px"><b>⚡ Total mes</b></span><span class="chip" style="background:var(--gold);color:#10142c">${totalKwh.toFixed(1)} kWh</span></div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px">
-      <div class="chip" style="text-align:center"><b>$${totalCosto.toLocaleString('es-CL')}</b><br><span class="muted" style="font-size:10px">a $${tarifa}/kWh</span></div>
-      <div class="chip" style="text-align:center"><b>${totalDia.toFixed(2)} kWh/día</b><br><span class="muted" style="font-size:10px">${Math.round(totalDia*1000)} Wh/día</span></div>
-      <div class="chip" style="text-align:center"><b>${(potenciaPico/1000).toFixed(2)} kW</b><br><span class="muted" style="font-size:10px">pico instalado</span></div>
+  box.innerHTML=`<div class="su-083eb7"><span class="su-de0080"><b>⚡ Total mes</b></span><span class="chip su-e4aba6">${totalKwh.toFixed(1)} kWh</span></div>
+    <div class="su-d85a2b">
+      <div class="chip su-91a870"><b>$${totalCosto.toLocaleString('es-CL')}</b><br><span class="muted su-0d5be0">a $${tarifa}/kWh</span></div>
+      <div class="chip su-91a870"><b>${totalDia.toFixed(2)} kWh/día</b><br><span class="muted su-0d5be0">${Math.round(totalDia*1000)} Wh/día</span></div>
+      <div class="chip su-91a870"><b>${(potenciaPico/1000).toFixed(2)} kW</b><br><span class="muted su-0d5be0">pico instalado</span></div>
     </div>
-    <p class="muted" style="font-size:11px;margin-top:6px">${d.items.length} artefactos · Tarifa $${tarifa}/kWh · Luna actual: ${lunaName} · Estimación mes 30 días; ajusta tarifa con tu boleta (energía + cargos).</p>`;
+    <p class="muted su-e13d76">${d.items.length} artefactos · Tarifa $${tarifa}/kWh · Luna actual: ${lunaName} · Estimación mes 30 días; ajusta tarifa con tu boleta (energía + cargos).</p>`;
 }
 function renderEnergyList(){
   const box=$('energyList'); if(!box) return;
@@ -9543,9 +9543,9 @@ function renderEnergyList(){
   box.innerHTML=sorted.map(it=>{
     const costo=Math.round(it.kWhMes*tarifa);
     const pctTotal = sorted.reduce((s,x)=>s+x.kWhMes,0) ? Math.round(it.kWhMes / sorted.reduce((s,x)=>s+x.kWhMes,0)*100) : 0;
-    return `<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center;border-left:3px solid var(--gold)">
-      <span><b>${escapeHtml(it.nombre)}</b> · ${it.watts}W ×${it.cantidad} · ${it.horasDia}h/día ×${it.diasMes}d<br><span class="muted" style="font-size:11px">${it.kWhMes.toFixed(2)} kWh/mes · $${costo.toLocaleString('es-CL')} · ${pctTotal}% del total</span><div style="margin-top:4px;background:var(--panel);border-radius:6px;height:6px;overflow:hidden"><div style="width:${pctTotal}%;height:100%;background:linear-gradient(90deg,#e8c56a,#e8c56a)"></div></div></span>
-      <span style="display:flex;gap:6px;flex:0 0 auto"><button data-id="${it.id}" class="btn energy-edit" style="width:auto;font-size:11px">✏️</button><button data-id="${it.id}" class="btn energy-del" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕</button></span>
+    return `<div class="habit-item su-4e0699">
+      <span><b>${escapeHtml(it.nombre)}</b> · ${it.watts}W ×${it.cantidad} · ${it.horasDia}h/día ×${it.diasMes}d<br><span class="muted su-11a508">${it.kWhMes.toFixed(2)} kWh/mes · $${costo.toLocaleString('es-CL')} · ${pctTotal}% del total</span><div class="su-9a2481"><div style="width:${pctTotal}%;height:100%;background:linear-gradient(90deg,#e8c56a,#e8c56a)"></div></div></span>
+      <span class="su-0c0cb1"><button data-id="${it.id}" class="btn energy-edit su-337714">✏️</button><button data-id="${it.id}" class="btn energy-del su-fd834a">✕</button></span>
     </div>`;
   }).join('');
   const totalKwh=sorted.reduce((s,x)=>s+x.kWhMes,0);
@@ -9575,7 +9575,7 @@ function renderEnergyTips(){
   tips.push('❄️ Refri: 3-4°C, no abrir largo, alejado de horno, sello impecable.');
   tips.push('🫖 Hervidor: hierve solo lo necesario, descalcifica.');
   tips.push('👕 Lava con agua fría y carga completa; seca al sol, no secadora.');
-  box.innerHTML=`<h4 style="color:var(--accent)">💡 Consejos ahorro Penco</h4>`+ tips.map(t=> `<p class="muted" style="font-size:11px;margin:4px 0">• ${t}</p>`).join('') + `<p class="muted" style="font-size:10px;margin-top:6px">Tarifa referencial CGE 2025-26 ~$120-160/kWh según tramo y cargos. Ajusta arriba para tu boleta real.</p>`;
+  box.innerHTML=`<h4 class="su-a80552">💡 Consejos ahorro Penco</h4>`+ tips.map(t=> `<p class="muted su-48eb2e">• ${t}</p>`).join('') + `<p class="muted su-d47a97">Tarifa referencial CGE 2025-26 ~$120-160/kWh según tramo y cargos. Ajusta arriba para tu boleta real.</p>`;
 }
 function renderEnergyLuna(){
   const box=$('energyLuna'); if(!box) return;
@@ -9586,9 +9586,9 @@ function renderEnergyLuna(){
   const kwhLuna= kwhDia*lunaDias;
   const costoLuna=Math.round(kwhLuna*(parseInt(d.tarifa)||140));
   const nombre=currentView&&currentView.tipo!=='dft'? MOONS[currentView.luna-1].nombre : 'DFT';
-  box.innerHTML=`<h4 style="color:var(--accent)">🌙 Luna ${currentView&&currentView.tipo!=='dft'? currentView.luna:'—'} · ${escapeHtml(nombre)} — proyección 28 días</h4>
-    <p class="muted" style="font-size:11px">~${kwhLuna.toFixed(1)} kWh / luna · ~$${costoLuna.toLocaleString('es-CL')} con tarifa actual. Útil para comparar lunas y fijar meta de ahorro.</p>
-    <div style="margin-top:6px;background:var(--panel);border-radius:6px;height:8px;overflow:hidden"><div style="width:${Math.min(100, Math.round(kwhLuna/2))}%;height:100%;background:linear-gradient(90deg,#7ab8ff,#e8c56a)"></div></div>`;
+  box.innerHTML=`<h4 class="su-a80552">🌙 Luna ${currentView&&currentView.tipo!=='dft'? currentView.luna:'—'} · ${escapeHtml(nombre)} — proyección 28 días</h4>
+    <p class="muted su-11a508">~${kwhLuna.toFixed(1)} kWh / luna · ~$${costoLuna.toLocaleString('es-CL')} con tarifa actual. Útil para comparar lunas y fijar meta de ahorro.</p>
+    <div class="su-b07124"><div style="width:${Math.min(100, Math.round(kwhLuna/2))}%;height:100%;background:linear-gradient(90deg,#7ab8ff,#e8c56a)"></div></div>`;
 }
 let energyEditingId=null;
 let energyTab='consumo';
@@ -9634,8 +9634,8 @@ function setupOhmCalc(){
     V=parseVal(vEl); I=parseVal(iEl); R=parseVal(rEl); P=parseVal(pEl);
     const E_kWh = (P!==null)? (P*1/1000).toFixed(4) : '—';
     if(resEl){
-      if(V===null||I===null||R===null||P===null){ resEl.innerHTML='<span style="color:#ff9a9a">Faltan datos o combinación inconsistente. Prueba con V+I, V+R, V+P, I+R, I+P o R+P.</span>'; }
-      else { resEl.innerHTML=`<b style="color:var(--gold)">V=${fmt(V)} V · I=${fmt(I)} A · R=${fmt(R)} Ω · P=${fmt(P)} W</b><br><span class="muted">Comprobación: V=I·R → ${fmt(I*R)} V · P=V·I → ${fmt(V*I)} W · En 1h → ${E_kWh} kWh</span>`; }
+      if(V===null||I===null||R===null||P===null){ resEl.innerHTML='<span class="su-23dd39">Faltan datos o combinación inconsistente. Prueba con V+I, V+R, V+P, I+R, I+P o R+P.</span>'; }
+      else { resEl.innerHTML=`<b class="su-e39eba">V=${fmt(V)} V · I=${fmt(I)} A · R=${fmt(R)} Ω · P=${fmt(P)} W</b><br><span class="muted">Comprobación: V=I·R → ${fmt(I*R)} V · P=V·I → ${fmt(V*I)} W · En 1h → ${E_kWh} kWh</span>`; }
     }
   }
   if(btn) btn.onclick=calc;
@@ -9668,7 +9668,7 @@ function setupEnergyCalcExtras(){
     const Vs=parseFloat(vs&&vs.value), Vf=parseFloat(vf&&vf.value), IfmA=parseFloat(iff&&iff.value);
     if(isNaN(Vs)||isNaN(Vf)||isNaN(IfmA)||IfmA<=0){ if(lRes) lRes.textContent='Completa Vs, Vf, If'; return; }
     const IfA=IfmA/1000; const R=(Vs - Vf)/IfA; const PR=IfA*IfA*R;
-    if(R<=0){ if(lRes) lRes.innerHTML='<span style="color:#ff9a9a">Vs debe ser mayor que Vf</span>'; return; }
+    if(R<=0){ if(lRes) lRes.innerHTML='<span class="su-23dd39">Vs debe ser mayor que Vf</span>'; return; }
     const comercial=[10,22,47,100,120,150,220,270,330,470,510,560,680,1000];
     let rec=comercial.find(v=>v>=R)||Math.ceil(R);
     if(lRes) lRes.innerHTML=`R = <b>${R.toFixed(1)} Ω</b> → usa <b>${rec} Ω</b> comercial · P≈${PR.toFixed(3)}W (usa 0.5W si <0.25W)`;
@@ -9714,28 +9714,28 @@ function setupSolarPV(){
     const paybackMeses=ahorroMes>0? Math.ceil(costoTotal/ahorroMes):999;
     const paybackAnos=(paybackMeses/12).toFixed(1);
     const co2=prodMes*0.39;
-    let html=`<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
-      <div class="chip" style="text-align:center;padding:10px"><b style="font-size:18px;color:var(--gold)">${nPaneles} paneles</b><br><span class="muted" style="font-size:10px">${Wp}Wp · ${potInstKW.toFixed(2)} kWp</span></div>
-      <div class="chip" style="text-align:center;padding:10px"><b>${prodDia.toFixed(1)} kWh/día</b><br><span class="muted" style="font-size:10px">${prodMes.toFixed(0)} kWh/mes</span></div>
-      <div class="chip" style="text-align:center;padding:10px"><b>~${area.toFixed(1)} m²</b><br><span class="muted" style="font-size:10px">${(area/1.7).toFixed(0)} paneles · 1.7m² c/u</span></div>
+    let html=`<div class="su-bdb7db">
+      <div class="chip su-22a539"><b class="su-e416a3">${nPaneles} paneles</b><br><span class="muted su-0d5be0">${Wp}Wp · ${potInstKW.toFixed(2)} kWp</span></div>
+      <div class="chip su-22a539"><b>${prodDia.toFixed(1)} kWh/día</b><br><span class="muted su-0d5be0">${prodMes.toFixed(0)} kWh/mes</span></div>
+      <div class="chip su-22a539"><b>~${area.toFixed(1)} m²</b><br><span class="muted su-0d5be0">${(area/1.7).toFixed(0)} paneles · 1.7m² c/u</span></div>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px">
-      <div class="chip" style="text-align:center"><b>$${costoTotal.toLocaleString('es-CL')}</b><br><span class="muted" style="font-size:10px">inversión total est.</span></div>
-      <div class="chip" style="text-align:center"><b>$${Math.round(ahorroMes).toLocaleString('es-CL')}/mes</b><br><span class="muted" style="font-size:10px">ahorro (NetBilling 80-90%)</span></div>
-      <div class="chip" style="text-align:center"><b>${paybackAnos} años</b><br><span class="muted" style="font-size:10px">${paybackMeses} meses ROI</span></div>
+    <div class="su-d85a2b">
+      <div class="chip su-91a870"><b>$${costoTotal.toLocaleString('es-CL')}</b><br><span class="muted su-0d5be0">inversión total est.</span></div>
+      <div class="chip su-91a870"><b>$${Math.round(ahorroMes).toLocaleString('es-CL')}/mes</b><br><span class="muted su-0d5be0">ahorro (NetBilling 80-90%)</span></div>
+      <div class="chip su-91a870"><b>${paybackAnos} años</b><br><span class="muted su-0d5be0">${paybackMeses} meses ROI</span></div>
     </div>
-    <p class="muted" style="font-size:11px;margin-top:8px">Potencia necesaria: <b>${(potenciaNecKW*1000).toFixed(0)} W</b> = ${kwhDia.toFixed(1)} kWh/día ÷ (${HSP}h × ${PR}) · Producción cubre <b>${Math.min(100, Math.round(prodMes/kwhMes*100))}%</b> de tu consumo · CO₂ evitado ~<b>${co2.toFixed(0)} kg/mes</b></p>`;
+    <p class="muted su-e6fe60">Potencia necesaria: <b>${(potenciaNecKW*1000).toFixed(0)} W</b> = ${kwhDia.toFixed(1)} kWh/día ÷ (${HSP}h × ${PR}) · Producción cubre <b>${Math.min(100, Math.round(prodMes/kwhMes*100))}%</b> de tu consumo · CO₂ evitado ~<b>${co2.toFixed(0)} kg/mes</b></p>`;
     if(resEl) resEl.innerHTML=html;
     if(detEl){
       detEl.classList.remove('hidden');
-      detEl.innerHTML=`<h4 style="color:var(--gold)">📐 Detalle técnico Penco</h4>
-        <div class="help-grid" style="margin-top:6px">
-          <div class="help-card"><h4>☀️ Producción</h4><p style="font-size:11px">E_día = ${potInstKW.toFixed(2)}kWp × ${HSP}h × ${PR} = <b>${prodDia.toFixed(2)} kWh/día</b><br>E_mes = <b>${prodMes.toFixed(0)} kWh</b></p></div>
-          <div class="help-card"><h4>🏠 Consumo</h4><p style="font-size:11px">${kwhMes} kWh/mes → <b>${kwhDia.toFixed(2)} kWh/día</b><br>Tipo: <b>${tipo}</b> · PR ${PR} (pérdidas ${(1-PR*100).toFixed(0)}%)</p></div>
-          <div class="help-card"><h4>📦 Área y peso</h4><p style="font-size:11px">${nPaneles} × 1.7m² = <b>${area.toFixed(1)} m²</b><br>Peso ~${(nPaneles*21).toFixed(0)} kg · Viento sur: anclaje reforzado</p></div>
-          <div class="help-card"><h4>💡 Costos 2026</h4><p style="font-size:11px">Paneles: $${costoPaneles.toLocaleString('es-CL')} (${nPaneles}×$${precio.toLocaleString('es-CL')})<br>Total c/inversor/estructura: <b>$${costoTotal.toLocaleString('es-CL')}</b></p></div>
+      detEl.innerHTML=`<h4 class="su-e39eba">📐 Detalle técnico Penco</h4>
+        <div class="help-grid su-fe7b49">
+          <div class="help-card"><h4>☀️ Producción</h4><p class="su-11a508">E_día = ${potInstKW.toFixed(2)}kWp × ${HSP}h × ${PR} = <b>${prodDia.toFixed(2)} kWh/día</b><br>E_mes = <b>${prodMes.toFixed(0)} kWh</b></p></div>
+          <div class="help-card"><h4>🏠 Consumo</h4><p class="su-11a508">${kwhMes} kWh/mes → <b>${kwhDia.toFixed(2)} kWh/día</b><br>Tipo: <b>${tipo}</b> · PR ${PR} (pérdidas ${(1-PR*100).toFixed(0)}%)</p></div>
+          <div class="help-card"><h4>📦 Área y peso</h4><p class="su-11a508">${nPaneles} × 1.7m² = <b>${area.toFixed(1)} m²</b><br>Peso ~${(nPaneles*21).toFixed(0)} kg · Viento sur: anclaje reforzado</p></div>
+          <div class="help-card"><h4>💡 Costos 2026</h4><p class="su-11a508">Paneles: $${costoPaneles.toLocaleString('es-CL')} (${nPaneles}×$${precio.toLocaleString('es-CL')})<br>Total c/inversor/estructura: <b>$${costoTotal.toLocaleString('es-CL')}</b></p></div>
         </div>
-        <p class="muted" style="font-size:10px;margin-top:8px">Cálculo referencial. Para TE4 y NetBilling consulta instalador SEC. HSP anual 4.9h es promedio; invierno real 2.8-3.0h → produce menos (usa dato mensual para precisión).</p>`;
+        <p class="muted su-a953a7">Cálculo referencial. Para TE4 y NetBilling consulta instalador SEC. HSP anual 4.9h es promedio; invierno real 2.8-3.0h → produce menos (usa dato mensual para precisión).</p>`;
     }
     if(batBox){
       if(tipo==='ongrid'){ batBox.classList.add('hidden'); }
@@ -9747,8 +9747,8 @@ function setupSolarPV(){
         const batInfoTxt=`${ah.toFixed(0)} Ah (${ahRed} Ah comercial) a ${volt}V`;
         if(batInfo) batInfo.value=batInfoTxt;
         const nBat100=Math.ceil(ah/100);
-        batBox.innerHTML=`<h4 style="color:#7ab8ff">🔋 Banco baterías — ${tipo}</h4>
-          <p style="font-size:11px;line-height:1.5">Autonomía <b>${autonomia} días</b> → ${energiaKwh.toFixed(1)} kWh almacenados<br>Capacidad necesaria: <b>${ah.toFixed(0)} Ah</b> a ${volt}V (DOD ${dod}%, eff ${eff}%)<br>→ <b>${ahRed} Ah</b> mínimo → ej: <b>${nBat100}× 100Ah ${volt}V LiFePO4</b><br><span class="muted" style="font-size:10px">LiFePO4 DOD 80-90% y 4000 ciclos; plomo-ácido DOD 50%.</span></p>`;
+        batBox.innerHTML=`<h4 class="su-721a46">🔋 Banco baterías — ${tipo}</h4>
+          <p class="su-a6c665">Autonomía <b>${autonomia} días</b> → ${energiaKwh.toFixed(1)} kWh almacenados<br>Capacidad necesaria: <b>${ah.toFixed(0)} Ah</b> a ${volt}V (DOD ${dod}%, eff ${eff}%)<br>→ <b>${ahRed} Ah</b> mínimo → ej: <b>${nBat100}× 100Ah ${volt}V LiFePO4</b><br><span class="muted su-0d5be0">LiFePO4 DOD 80-90% y 4000 ciclos; plomo-ácido DOD 50%.</span></p>`;
       }
     }
   }
@@ -9862,7 +9862,7 @@ function setupConvert() {
     const cat = catSel.value, v = parseFloat(valIn.value);
     if (isNaN(v)) { resEl.textContent = '—'; return; }
     const r = convertValue(v, fromSel.value, toSel.value, cat);
-    resEl.innerHTML = `<b>${v} ${fromSel.value}</b> = <b style="color:var(--gold);font-size:18px">${Number.isInteger(r)? r : (+r.toFixed(6)).toString()} ${toSel.value}</b>`;
+    resEl.innerHTML = `<b>${v} ${fromSel.value}</b> = <b class="su-a666e8">${Number.isInteger(r)? r : (+r.toFixed(6)).toString()} ${toSel.value}</b>`;
   }
   function renderTable() {
     const cat = catSel.value;
@@ -9878,7 +9878,7 @@ function setupConvert() {
     for (const u of units.slice(0,5)) {
       h += `<tr><td><b>1 ${u}</b></td>${units.map(v=>`<td>${(+convertValue(1,u,v,cat).toFixed(4)).toString()}</td>`).join('')}</tr>`;
     }
-    h += '</table><p class="muted" style="font-size:11px;margin-top:6px">Tabla recortada a 5 filas. Usa el conversor arriba para cualquier par.</p>';
+    h += '</table><p class="muted su-e13d76">Tabla recortada a 5 filas. Usa el conversor arriba para cualquier par.</p>';
     tableEl.innerHTML = h;
   }
   catSel.onchange = refreshUnits;

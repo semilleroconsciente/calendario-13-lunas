@@ -62,10 +62,10 @@ function makeDialog(id, title, sub, bodyHTML) {
   var d = document.createElement('dialog');
   d.id = id;
   d.innerHTML = '<form method="dialog">' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
-    '<h3 style="margin:0;color:var(--accent)">' + title + '</h3>' +
+    '<div class="dlg-actions su-d2d053">' +
+    '<h3 class="su-ee0cfe">' + title + '</h3>' +
     '<button type="button" data-close class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    (sub ? '<p class="muted" style="line-height:1.5">' + sub + '</p>' : '') +
+    (sub ? '<p class="muted su-77e2fe">' + sub + '</p>' : '') +
     bodyHTML +
     '<div class="dlg-actions"><button type="button" data-close class="btn">Cerrar</button></div></form>';
   document.body.appendChild(d);
@@ -146,23 +146,23 @@ function buildDialog() {
 
   var antHTML = ANTENAS.map(function (a, i) {
     return '<div class="si-card"><h4>' + a.ico + ' ' + esc(a.n) + '</h4>' +
-      '<p><span class="chip" style="font-size:10px">' + esc(a.tag) + '</span></p>' +
+      '<p><span class="chip su-0d5be0">' + esc(a.tag) + '</span></p>' +
       '<p><b>Para:</b> ' + esc(a.para) + '<br><b>Materiales:</b> ' + esc(a.mat) + '</p>' +
       '<p><b>Cómo:</b> ' + esc(a.como) + '</p>' +
       '<p class="muted">' + esc(a.nota) + '</p>' +
-      '<p style="font-size:11px;color:#e8c56a">⚠️ ' + esc(a.cuidado) + '</p>' +
-      '<div style="display:flex;gap:6px;margin-top:6px"><button type="button" class="btn elec-use" data-n="' + esc(a.n) + '" style="width:auto;font-size:11px">➕ Probar esta en mi experimento</button></div></div>';
+      '<p class="su-d33357">⚠️ ' + esc(a.cuidado) + '</p>' +
+      '<div class="su-30b926"><button type="button" class="btn elec-use su-337714" data-n="' + esc(a.n) + '">➕ Probar esta en mi experimento</button></div></div>';
   }).join('');
 
   var proyHTML = PROYECTOS.map(function (p) {
     var mats = p.mats.map(function (m) { return '<li>' + esc(m) + '</li>'; }).join('');
     var pasos = p.pasos.map(function (s, i) { return '<li><b>' + (i + 1) + '.</b> ' + esc(s) + '</li>'; }).join('');
-    return '<div class="si-card" style="border-color:var(--gold)"><h4>' + p.ico + ' ' + esc(p.n) + '</h4>' +
-      '<p><span class="chip" style="font-size:10px">' + esc(p.nivel) + '</span></p>' +
-      '<p><b>Materiales</b></p><ol style="font-size:12px;margin:4px 0 4px 18px">' + mats + '</ol>' +
-      '<p><b>Paso a paso</b></p><ol style="font-size:12px;margin:4px 0 4px 18px;line-height:1.6">' + pasos + '</ol>' +
-      '<p class="muted" style="font-size:11px">📏 ' + esc(p.mide) + '</p>' +
-      '<div style="display:flex;gap:6px;margin-top:6px"><button type="button" class="btn elec-use" data-n="' + esc(p.n) + '" style="width:auto;font-size:11px">➕ Registrar este proyecto</button></div></div>';
+    return '<div class="si-card su-68a1a9"><h4>' + p.ico + ' ' + esc(p.n) + '</h4>' +
+      '<p><span class="chip su-0d5be0">' + esc(p.nivel) + '</span></p>' +
+      '<p><b>Materiales</b></p><ol class="su-495dd4">' + mats + '</ol>' +
+      '<p><b>Paso a paso</b></p><ol class="su-024838">' + pasos + '</ol>' +
+      '<p class="muted su-11a508">📏 ' + esc(p.mide) + '</p>' +
+      '<div class="su-30b926"><button type="button" class="btn elec-use su-337714" data-n="' + esc(p.n) + '">➕ Registrar este proyecto</button></div></div>';
   }).join('');
 
   var lunaHTML = LUNA.map(function (l) {
@@ -170,29 +170,29 @@ function buildDialog() {
   }).join('');
 
   var body =
-    '<div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">' +
-    '<button type="button" id="tabElecGuia" class="btn btn-accent" style="width:auto">📖 Guía</button>' +
-    '<button type="button" id="tabElecAntenas" class="btn" style="width:auto">📡 Antenas</button>' +
-    '<button type="button" id="tabElecProyectos" class="btn" style="width:auto">🔧 Proyectos</button>' +
-    '<button type="button" id="tabElecLuna" class="btn" style="width:auto">🌙 Luna & Medir</button>' +
-    '<button type="button" id="tabElecExperimento" class="btn" style="width:auto">🧪 Mi experimento</button></div>' +
+    '<div class="timer-tabs su-4dca21">' +
+    '<button type="button" id="tabElecGuia" class="btn btn-accent su-30e741">📖 Guía</button>' +
+    '<button type="button" id="tabElecAntenas" class="btn su-30e741">📡 Antenas</button>' +
+    '<button type="button" id="tabElecProyectos" class="btn su-30e741">🔧 Proyectos</button>' +
+    '<button type="button" id="tabElecLuna" class="btn su-30e741">🌙 Luna & Medir</button>' +
+    '<button type="button" id="tabElecExperimento" class="btn su-30e741">🧪 Mi experimento</button></div>' +
     '<div id="elecGuia">' + guiaHTML +
-    '<div class="menstrual-card" style="margin-top:10px;border-color:var(--gold)"><h4>⚡ Regla de oro en 1 frase</h4><p class="muted" style="font-size:12px">Una antena no salva una huerta seca y sin compost. Primero suelo + agua + sol; la electrocultura es el aliño, no el plato.</p></div></div>' +
-    '<div id="elecAntenas" class="hidden"><div class="conv-row"><label style="flex:1">🔍 Filtrar <input type="text" id="elecFilter" placeholder="cobre, basalto, maceta, bancal..."></label></div><div id="elecAntList" style="margin-top:8px;display:flex;flex-direction:column;gap:8px">' + antHTML + '</div></div>' +
+    '<div class="menstrual-card su-51d56a"><h4>⚡ Regla de oro en 1 frase</h4><p class="muted su-6cb285">Una antena no salva una huerta seca y sin compost. Primero suelo + agua + sol; la electrocultura es el aliño, no el plato.</p></div></div>' +
+    '<div id="elecAntenas" class="hidden"><div class="conv-row"><label class="su-97445a">🔍 Filtrar <input type="text" id="elecFilter" placeholder="cobre, basalto, maceta, bancal..."></label></div><div id="elecAntList" class="su-bf3828">' + antHTML + '</div></div>' +
     '<div id="elecProyectos" class="hidden">' + proyHTML + '</div>' +
-    '<div id="elecLuna" class="hidden"><div id="elecHoyBox" class="menstrual-card" style="border-color:var(--gold)"></div>' +
-    '<div style="margin-top:8px;display:flex;flex-direction:column;gap:8px">' + lunaHTML + '</div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>📏 Cómo medir sin gastar (método serio)</h4><p class="muted" style="font-size:11px;line-height:1.6">1) Siempre 2 grupos iguales: <b>tratado (con antena) vs control (sin nada)</b>, misma semilla, misma tierra, mismo riego.<br>2) Mide 3 cosas: <b>altura (cm) cada 7 días</b>, <b>días a germinar</b>, <b>peso cosechado (g/kg)</b>.<br>3) Foto mismo lugar y hora.<br>4) Mínimo 1 luna completa (28 días) antes de opinar.<br>5) Anota el clima: lluvia y viento sur cambian todo en Penco.</p></div></div>' +
+    '<div id="elecLuna" class="hidden"><div id="elecHoyBox" class="menstrual-card su-68a1a9"></div>' +
+    '<div class="su-bf3828">' + lunaHTML + '</div>' +
+    '<div class="menstrual-card su-d2c171"><h4>📏 Cómo medir sin gastar (método serio)</h4><p class="muted su-b439ab">1) Siempre 2 grupos iguales: <b>tratado (con antena) vs control (sin nada)</b>, misma semilla, misma tierra, mismo riego.<br>2) Mide 3 cosas: <b>altura (cm) cada 7 días</b>, <b>días a germinar</b>, <b>peso cosechado (g/kg)</b>.<br>3) Foto mismo lugar y hora.<br>4) Mínimo 1 luna completa (28 días) antes de opinar.<br>5) Anota el clima: lluvia y viento sur cambian todo en Penco.</p></div></div>' +
     '<div id="elecExperimento" class="hidden">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>➕ Nuevo registro</h4>' +
+    '<div class="menstrual-card su-68a1a9"><h4>➕ Nuevo registro</h4>' +
     '<div class="conv-row"><label>Fecha <input type="date" id="elecFecha"></label><label>Cultivo <input type="text" id="elecCultivo" placeholder="ej: Tomate, Lechuga" maxlength="30"></label></div>' +
     '<div class="conv-row"><label>Técnica <select id="elecTecnica"><option>Tutor espiral de cobre</option><option>Antena atmosférica (Christofleau)</option><option>Anillo Lakhovsky</option><option>Pirámide / cono</option><option>Basalto + compost</option><option>Cable norte-sur</option><option>Agua dinamizada</option><option>Otra</option></select></label><label>Luna <select id="elecFase"><option value="auto">Auto (hoy)</option><option>Nueva</option><option>Creciente</option><option>Llena</option><option>Menguante</option></select></label></div>' +
     '<div class="conv-row"><label>Altura tratado (cm) <input type="number" id="elecAltT" min="0" step="0.5" placeholder="ej: 24"></label><label>Altura control (cm) <input type="number" id="elecAltC" min="0" step="0.5" placeholder="ej: 20"></label></div>' +
     '<label>Notas / clima <input type="text" id="elecNota" placeholder="ej: viento sur 3 días, riego parejo" maxlength="100"></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start;margin-top:8px"><button type="button" id="elecAdd" class="btn btn-accent" style="width:auto">+ Guardar medición</button></div></div>' +
-    '<div id="elecResumen" class="menstrual-card" style="margin-top:10px"></div>' +
-    '<div id="elecLog" class="habits-list" style="margin-top:10px;max-height:260px"></div>' +
-    '<div class="dlg-actions" style="justify-content:space-between;align-items:center;margin-top:8px"><span id="elecStats" class="muted" style="font-size:11px"></span><span style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" id="elecShare" class="btn" style="width:auto">📤 Compartir</button><button type="button" id="elecExport" class="btn" style="width:auto">📥 Exportar</button><button type="button" id="elecClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar</button></span></div></div>';
+    '<div class="dlg-actions su-8f9e27"><button type="button" id="elecAdd" class="btn btn-accent su-30e741">+ Guardar medición</button></div></div>' +
+    '<div id="elecResumen" class="menstrual-card su-d2c171"></div>' +
+    '<div id="elecLog" class="habits-list su-d36145"></div>' +
+    '<div class="dlg-actions su-cc4a4c"><span id="elecStats" class="muted su-11a508"></span><span class="su-3de8f9"><button type="button" id="elecShare" class="btn su-30e741">📤 Compartir</button><button type="button" id="elecExport" class="btn su-30e741">📥 Exportar</button><button type="button" id="elecClear" class="btn su-214f75">🗑 Borrar</button></span></div></div>';
 
   makeDialog('electroDialog', '⚡ Electrocultura — energía del cielo a la huerta',
     'Antenas de cobre, espirales y basalto para tu huerta en Penco. Barato, seguro y medible: <b>una cama con antena + una cama control</b>. Todo queda <b>privado y local</b>. Nada va a 220V.',
@@ -206,17 +206,17 @@ function renderLog() {
   var data = e.logs || [];
   var res = $('elecResumen'), st = $('elecStats');
   if (!data.length) {
-    box.innerHTML = '<p class="muted" style="font-size:11px;text-align:center">Sin mediciones. Guarda la primera arriba: tratado vs control el mismo día.</p>';
-    if (res) res.innerHTML = '<h4>📊 Tu comparativa</h4><p class="muted" style="font-size:11px">Cuando tengas 2+ mediciones verás aquí el promedio tratado vs control.</p>';
+    box.innerHTML = '<p class="muted su-e201a8">Sin mediciones. Guarda la primera arriba: tratado vs control el mismo día.</p>';
+    if (res) res.innerHTML = '<h4>📊 Tu comparativa</h4><p class="muted su-11a508">Cuando tengas 2+ mediciones verás aquí el promedio tratado vs control.</p>';
     if (st) st.textContent = '';
     return;
   }
   var s = data.slice().sort(function (a, b) { return (b.fecha || '').localeCompare(a.fecha || ''); });
   box.innerHTML = s.map(function (r) {
     var dif = (r.altT != null && r.altC != null) ? (Math.round((r.altT - r.altC) * 10) / 10) : null;
-    var chip = dif == null ? '' : dif > 0 ? ' <span class="chip" style="font-size:10px;color:#8fd694;border-color:#8fd69455">+' + dif + ' cm 🌱</span>' : dif < 0 ? ' <span class="chip" style="font-size:10px;color:#e8c56a;border-color:#e8c56a55">' + dif + ' cm</span>' : ' <span class="chip" style="font-size:10px">igual</span>';
-    return '<div class="hora-item"><span style="font-size:12px"><b>' + esc(r.cultivo || 'Cultivo') + '</b> · ' + esc(r.tecnica || '') + chip +
-      '<br><span class="muted" style="font-size:10px">' + esc(r.fecha || '') + ' · ' + esc(r.fase || '') + ' · T ' + (r.altT != null ? r.altT : '–') + ' cm vs C ' + (r.altC != null ? r.altC : '–') + ' cm' + (r.nota ? ' · ' + esc(r.nota) : '') + '</span></span>' +
+    var chip = dif == null ? '' : dif > 0 ? ' <span class="chip su-b143aa">+' + dif + ' cm 🌱</span>' : dif < 0 ? ' <span class="chip su-8d684a">' + dif + ' cm</span>' : ' <span class="chip su-0d5be0">igual</span>';
+    return '<div class="hora-item"><span class="su-6cb285"><b>' + esc(r.cultivo || 'Cultivo') + '</b> · ' + esc(r.tecnica || '') + chip +
+      '<br><span class="muted su-0d5be0">' + esc(r.fecha || '') + ' · ' + esc(r.fase || '') + ' · T ' + (r.altT != null ? r.altT : '–') + ' cm vs C ' + (r.altC != null ? r.altC : '–') + ' cm' + (r.nota ? ' · ' + esc(r.nota) : '') + '</span></span>' +
       '<button type="button" class="btn btn-icon elec-del" data-k="' + esc(r.id) + '">✕</button></div>';
   }).join('');
   box.querySelectorAll('.elec-del').forEach(function (x) {
@@ -231,7 +231,7 @@ function renderLog() {
   var aT = avg(conT, 'altT'), aC = avg(conC, 'altC');
   if (res) {
     var veredicto = (aT != null && aC != null) ? (aT > aC ? '🌱 Tratado va <b>+' + Math.round((aT - aC) * 10) / 10 + ' cm</b> sobre control. Sigue 1 luna más antes de celebrar.' : aT < aC ? '🟡 Control va arriba. Revisa riego/luz pareja y repite: el experimento también enseña.' : '➖ Empate. Prueba mover la antena o cambiar de cultivo.') : 'Suma alturas para ver el promedio.';
-    res.innerHTML = '<h4>📊 Tu comparativa (' + data.length + ' mediciones)</h4><p style="font-size:12px">Tratado: <b>' + (aT != null ? aT + ' cm' : '–') + '</b> · Control: <b>' + (aC != null ? aC + ' cm' : '–') + '</b></p><p class="muted" style="font-size:11px">' + veredicto + '</p>';
+    res.innerHTML = '<h4>📊 Tu comparativa (' + data.length + ' mediciones)</h4><p class="su-6cb285">Tratado: <b>' + (aT != null ? aT + ' cm' : '–') + '</b> · Control: <b>' + (aC != null ? aC + ' cm' : '–') + '</b></p><p class="muted su-11a508">' + veredicto + '</p>';
   }
   if (st) st.textContent = data.length + ' medición(es)';
 }
@@ -241,7 +241,7 @@ function paintHoy() {
   var l = lunaDeHoy();
   var txt = l ? ('Hoy · Luna ' + l.luna + ' · día ' + l.dia) : ('Hoy · ' + todayKey());
   var rec = !l ? 'Mide y anota parejo.' : l.luna <= 3 ? 'Pukem: instala, entierra cables y aplica basalto+compost.' : l.luna <= 6 ? 'Pewü: siembra y trasplanta junto a antenas.' : l.luna <= 9 ? 'Walüng: observa en llena, mide altura y pesa.' : 'Rimü: cosecha, repara antenas del viento sur, abona.';
-  b.innerHTML = '<h4>🌙 ' + esc(txt) + '</h4><p class="muted" style="font-size:12px">' + esc(rec) + '</p>';
+  b.innerHTML = '<h4>🌙 ' + esc(txt) + '</h4><p class="muted su-6cb285">' + esc(rec) + '</p>';
   if ($('elecFecha') && !$('elecFecha').value) $('elecFecha').value = todayKey();
 }
 

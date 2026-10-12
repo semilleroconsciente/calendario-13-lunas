@@ -1,48 +1,48 @@
 <dialog id="habitsDialog">
     <form method="dialog">
-      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
-        <h3 style="margin:0;color:var(--accent)">✅ Seguimiento de hábitos</h3>
+      <div class="dlg-actions su-d2d053">
+        <h3 class="su-ee0cfe">✅ Seguimiento de hábitos</h3>
         <button type="button" id="habitsCloseTop" class="btn btn-icon" title="Cerrar" aria-label="Cerrar">✕</button>
       </div>
-      <p class="muted" style="line-height:1.5">Define hábitos diarios y márcalos en el calendario. Racha, % mensual y vista por luna. Todo queda <b>local y privado</b> por usuario.</p>
+      <p class="muted su-77e2fe">Define hábitos diarios y márcalos en el calendario. Racha, % mensual y vista por luna. Todo queda <b>local y privado</b> por usuario.</p>
       <div class="habits-form">
         <div class="conv-row">
-          <label style="flex:2">Hábito <input type="text" id="habitName" placeholder="ej: Meditar 10 min, Caminar, Leer, Regar plantas" maxlength="40"></label>
-          <label>Icono <input type="text" id="habitIcon" placeholder="✓" maxlength="4" style="width:70px;text-align:center" readonly></label>
+          <label class="su-4b3de7">Hábito <input type="text" id="habitName" placeholder="ej: Meditar 10 min, Caminar, Leer, Regar plantas" maxlength="40"></label>
+          <label>Icono <input type="text" id="habitIcon" placeholder="✓" maxlength="4" class="su-745e46" readonly></label>
         </div>
         <div id="habitIconPicker" class="habit-icon-picker"></div>
         <div class="conv-row">
-          <label>Color <input type="color" id="habitColor" value="#e8c56a" style="height:36px;padding:2px;width:60px"></label>
+          <label>Color <input type="color" id="habitColor" value="#e8c56a" class="su-ac97bc"></label>
           <label>Frecuencia
             <select id="habitFreq">
               <option value="diaria">Diaria</option>
               <option value="semanal">Semanal</option>
             </select>
           </label>
-          <label title="Meta de minutos por día (0 = solo marcar sin minutos)">⏱ Min/día <input type="number" id="habitGoal" min="0" max="1440" step="1" value="0" style="width:70px"></label>
-          <button type="button" id="habitAdd" class="btn btn-accent" style="width:auto;align-self:flex-end">+ Agregar</button>
-          <button type="button" id="habitUpdate" class="btn hidden" style="width:auto;align-self:flex-end">↻ Actualizar</button>
-          <button type="button" id="habitCancelEdit" class="btn hidden" style="width:auto;align-self:flex-end">Cancelar</button>
+          <label title="Meta de minutos por día (0 = solo marcar sin minutos)">⏱ Min/día <input type="number" id="habitGoal" min="0" max="1440" step="1" value="0" class="su-ec6626"></label>
+          <button type="button" id="habitAdd" class="btn btn-accent su-4ed52d">+ Agregar</button>
+          <button type="button" id="habitUpdate" class="btn hidden su-4ed52d">↻ Actualizar</button>
+          <button type="button" id="habitCancelEdit" class="btn hidden su-4ed52d">Cancelar</button>
         </div>
       </div>
-      <div class="timer-tabs" style="margin:10px 0;flex-wrap:wrap">
-        <button type="button" id="tabHabitsList" class="btn" style="width:auto">📝 Mis hábitos</button>
-        <button type="button" id="tabHabitsToday" class="btn btn-accent" style="width:auto">◉ Hoy</button>
-        <button type="button" id="tabHabitsResume" class="btn" style="width:auto">📈 Resumen</button>
-        <button type="button" id="tabHabitsTracker" class="btn" style="width:auto">📊 Rastreador</button>
-        <button type="button" id="tabHabitsGuide" class="btn" style="width:auto">📚 Guía</button>
+      <div class="timer-tabs su-ca7e11">
+        <button type="button" id="tabHabitsList" class="btn su-30e741">📝 Mis hábitos</button>
+        <button type="button" id="tabHabitsToday" class="btn btn-accent su-30e741">◉ Hoy</button>
+        <button type="button" id="tabHabitsResume" class="btn su-30e741">📈 Resumen</button>
+        <button type="button" id="tabHabitsTracker" class="btn su-30e741">📊 Rastreador</button>
+        <button type="button" id="tabHabitsGuide" class="btn su-30e741">📚 Guía</button>
       </div>
       <div id="habitsList" class="habits-list"></div>
-      <div id="habitsTodayBox" class="menstrual-card" style="margin-top:10px"></div>
-      <div id="habitsResumePanel" style="margin-top:10px">
+      <div id="habitsTodayBox" class="menstrual-card su-d2c171"></div>
+      <div id="habitsResumePanel" class="su-d2c171">
         <div id="habitsStatsBox" class="menstrual-card"></div>
-        <div id="habitsLunaBox" class="menstrual-card" style="margin-top:10px"></div>
+        <div id="habitsLunaBox" class="menstrual-card su-d2c171"></div>
       </div>
-      <div id="habitsTrackerBox" class="menstrual-card" style="margin-top:10px"></div>
-      <div id="habitsGuidePanel" style="margin-top:10px">
-      <details class="menstrual-card" style="margin-top:0" open>
-        <summary style="cursor:pointer;font-weight:700;color:var(--gold);font-size:13px">📚 Guía: consejos, métodos y estrategias</summary>
-        <div style="margin-top:8px;display:flex;flex-direction:column;gap:8px">
+      <div id="habitsTrackerBox" class="menstrual-card su-d2c171"></div>
+      <div id="habitsGuidePanel" class="su-d2c171">
+      <details class="menstrual-card su-d46224" open>
+        <summary class="su-8121e6">📚 Guía: consejos, métodos y estrategias</summary>
+        <div class="su-bf3828">
           <div class="si-card"><h4>🌱 Empieza ridículamente pequeño — Regla de los 2 minutos</h4><p>Todo hábito debe tardar &lt;2 min al empezar: “meditar 10 min” → “sentarme en el cojín”. <b>Consejo:</b> si cuesta, córtalo a la mitad hasta que sea imposible fallar. La constancia crea la identidad (“soy alguien que medita”).</p></div>
           <div class="si-card"><h4>🔗 Apilamiento (habit stacking)</h4><p>Fórmula: <b>“Después de [hábito actual], haré [hábito nuevo]”</b>. Ej: después de hervir el agua → 5 respiraciones; después de lavarme los dientes → anotar gratitud. Engancha lo nuevo a lo automático.</p></div>
           <div class="si-card"><h4>📝 Intención de implementación (si–entonces)</h4><p>Escribe <b>dónde, cuándo y cómo</b>: “Si son las 07:30 y estoy en la cocina, entonces camino 15 min”. Los planes concretos duplican la adherencia. Anótalo en 📝 Notas del día.</p></div>
@@ -50,12 +50,12 @@
           <div class="si-card"><h4>🏠 Diseña tu entorno</h4><p>Haz lo bueno <b>obvio y fácil</b> (botella de agua visible, zapatillas junto a la cama, libro en la almohada) y lo malo <b>invisible y difícil</b> (celular fuera del dormitorio, galletas en caja alta). No dependas de la fuerza de voluntad.</p></div>
           <div class="si-card"><h4>📈 1% mejor + recompensa inmediata</h4><p>Sube de a poco (5 → 7 → 10 min). Celebra al terminar: ✅ márcalo aquí, respira hondo, di “bien hecho”. El cerebro repite lo que se siente bien. Revisa el % mensual: apunta a <b>80%, no a 100%</b> perfecto.</p></div>
           <div class="si-card"><h4>🌙 Estrategia lunar (13 × 28)</h4><p><b>Nueva:</b> siembra 1 hábito nuevo pequeño. <b>Creciente:</b> suma minutos y construye. <b>Llena:</b> celebra la racha y comparte. <b>Menguante:</b> simplifica, suelta el hábito que no funcionó sin culpa. Revisa cada luna: ¿qué sumo, qué suelto?</p></div>
-          <div class="si-card"><h4>🚀 Pack inicial sugerido</h4><p class="muted" style="font-size:11px">Toca para agregarlos de a uno (si no los tienes):</p><div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px"><button type="button" class="btn habit-starter" data-name="Tomar agua al despertar" data-icon="💧" data-color="#7ab8ff" style="width:auto;font-size:11px">💧 Agua</button><button type="button" class="btn habit-starter" data-name="Caminar 15 min" data-icon="🚶" data-color="#8fd694" data-min="15" style="width:auto;font-size:11px">🚶 Caminar</button><button type="button" class="btn habit-starter" data-name="Meditar 5 min" data-icon="🧘" data-color="#c9a7eb" data-min="5" style="width:auto;font-size:11px">🧘 Meditar</button><button type="button" class="btn habit-starter" data-name="Leer 10 min" data-icon="📚" data-color="#e8c56a" data-min="10" style="width:auto;font-size:11px">📚 Leer</button><button type="button" class="btn habit-starter" data-name="Dormir antes de las 23:30" data-icon="😴" data-color="#7ab8ff" style="width:auto;font-size:11px">😴 Dormir</button><button type="button" class="btn habit-starter" data-name="Gratitud: 3 cosas" data-icon="🙏" data-color="#f4a7c3" style="width:auto;font-size:11px">🙏 Gratitud</button></div></div>
+          <div class="si-card"><h4>🚀 Pack inicial sugerido</h4><p class="muted su-11a508">Toca para agregarlos de a uno (si no los tienes):</p><div class="su-c158a9"><button type="button" class="btn habit-starter su-337714" data-name="Tomar agua al despertar" data-icon="💧" data-color="#7ab8ff">💧 Agua</button><button type="button" class="btn habit-starter su-337714" data-name="Caminar 15 min" data-icon="🚶" data-color="#8fd694" data-min="15">🚶 Caminar</button><button type="button" class="btn habit-starter su-337714" data-name="Meditar 5 min" data-icon="🧘" data-color="#c9a7eb" data-min="5">🧘 Meditar</button><button type="button" class="btn habit-starter su-337714" data-name="Leer 10 min" data-icon="📚" data-color="#e8c56a" data-min="10">📚 Leer</button><button type="button" class="btn habit-starter su-337714" data-name="Dormir antes de las 23:30" data-icon="😴" data-color="#7ab8ff">😴 Dormir</button><button type="button" class="btn habit-starter su-337714" data-name="Gratitud: 3 cosas" data-icon="🙏" data-color="#f4a7c3">🙏 Gratitud</button></div></div>
         </div>
       </details>
       </div>
-      <div class="dlg-actions" style="justify-content:space-between;align-items:center">
-        <button type="button" id="habitsClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar todo</button>
+      <div class="dlg-actions su-2d7d27">
+        <button type="button" id="habitsClear" class="btn su-214f75">🗑 Borrar todo</button>
         <button type="button" id="habitsClose" class="btn">Cerrar</button>
       </div>
     </form>

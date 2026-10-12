@@ -90,10 +90,10 @@ function makeDialog(id, title, sub, bodyHTML) {
   var d = document.createElement('dialog');
   d.id = id;
   d.innerHTML = '<form method="dialog">' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
-    '<h3 style="margin:0;color:var(--accent)">' + title + '</h3>' +
+    '<div class="dlg-actions su-d2d053">' +
+    '<h3 class="su-ee0cfe">' + title + '</h3>' +
     '<button type="button" data-close class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    (sub ? '<p class="muted" style="line-height:1.5">' + sub + '</p>' : '') +
+    (sub ? '<p class="muted su-77e2fe">' + sub + '</p>' : '') +
     bodyHTML +
     '<div class="dlg-actions"><button type="button" data-close class="btn">Cerrar</button></div></form>';
   document.body.appendChild(d);
@@ -214,14 +214,14 @@ function renderSeqs() {
   box.innerHTML = list.length ? list.map(function (s) {
     var isFav = e.fav === s.id;
     var catN = '🌌'; GB_CATS.forEach(function (c) { if (c.id === s.cat) catN = c.n; });
-    return '<div class="menstrual-card" style="border-color:#8fd69455">' +
-      '<h4 style="color:#8fd694">🔢 ' + esc(s.seq) + (isFav ? ' ⭐' : '') + '</h4>' +
-      '<p style="font-size:13px;margin:2px 0"><b>' + esc(s.n) + '</b> <span class="muted" style="font-size:10px">· ' + esc(catN) + '</span></p>' +
-      '<p style="font-size:12px;line-height:1.55"><b>Foco:</b> ' + esc(s.uso) + '<br><b>Cómo:</b> ' + esc(s.como) + '</p>' +
-      '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">' +
-      '<button type="button" class="btn btn-accent" style="width:auto;font-size:11px" data-pilot="' + esc(s.id) + '">🎯 Pilotar</button>' +
-      '<button type="button" class="btn" style="width:auto;font-size:11px" data-voz="' + esc(s.id) + '">🔊 Escuchar</button>' +
-      '<button type="button" class="btn" style="width:auto;font-size:11px" data-fav="' + esc(s.id) + '">' + (isFav ? '⭐ Favorita' : '☆ Marcar') + '</button>' +
+    return '<div class="menstrual-card su-49cd48">' +
+      '<h4 class="su-752b1a">🔢 ' + esc(s.seq) + (isFav ? ' ⭐' : '') + '</h4>' +
+      '<p class="su-ce535f"><b>' + esc(s.n) + '</b> <span class="muted su-0d5be0">· ' + esc(catN) + '</span></p>' +
+      '<p class="su-afb724"><b>Foco:</b> ' + esc(s.uso) + '<br><b>Cómo:</b> ' + esc(s.como) + '</p>' +
+      '<div class="su-c158a9">' +
+      '<button type="button" class="btn btn-accent su-337714" data-pilot="' + esc(s.id) + '">🎯 Pilotar</button>' +
+      '<button type="button" class="btn su-337714" data-voz="' + esc(s.id) + '">🔊 Escuchar</button>' +
+      '<button type="button" class="btn su-337714" data-fav="' + esc(s.id) + '">' + (isFav ? '⭐ Favorita' : '☆ Marcar') + '</button>' +
       '</div></div>';
   }).join('') : '<p class="muted">Sin resultados. Prueba con “calma”, “dinero”, “dormir”, “amor”…</p>';
   box.querySelectorAll('[data-pilot]').forEach(function (b) { b.onclick = function () { irAPilotaje(b.getAttribute('data-pilot'), null); }; });
@@ -297,7 +297,7 @@ function renderPilot() {
   }
   gbCountPaint();
   var fb = $('gbPilSeqBox');
-  if (fb && ss) { var s = seqById(ss.value); fb.innerHTML = '<span class="chip" style="border-color:#8fd69488;color:#8fd694">🔢 ' + esc(s.seq) + ' · ' + esc(s.n) + ': ' + esc(s.como) + '</span>'; }
+  if (fb && ss) { var s = seqById(ss.value); fb.innerHTML = '<span class="chip su-92a023">🔢 ' + esc(s.seq) + ' · ' + esc(s.n) + ': ' + esc(s.como) + '</span>'; }
 }
 function guardarSesion() {
   var intenId = ($('gbPilInten') || {}).value || '';
@@ -344,14 +344,14 @@ function renderInt() {
   box.innerHTML = fil.length ? fil.map(function (r) {
     var col = r.estado === 'armonizado' ? '#8fd694' : (r.estado === 'en proceso' ? '#e8c56a' : '#9ab8ff');
     var s = r.seqId ? seqById(r.seqId) : null;
-    return '<div class="habit-item"><div style="display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap"><span><b>' + esc(r.titulo) + '</b></span>' +
+    return '<div class="habit-item"><div class="su-34136d"><span><b>' + esc(r.titulo) + '</b></span>' +
       '<span class="chip" style="font-size:10px;border-color:' + col + '55;color:' + col + '">' + esc(r.estado || 'pendiente') + ' · ' + (r.inten0 || 0) + '/10</span></div>' +
-      '<div class="muted" style="font-size:11px;margin-top:4px">' + (s ? '🔢 ' + esc(s.seq) + ' · ' + esc(s.n) + ' · ' : '') + (r.area ? '🏷️ ' + esc(r.area) + ' · ' : '') + esc(lunaTxt(r.fecha) || '') + (r.nota ? '<br>📝 ' + esc(r.nota) : '') + '</div>' +
-      '<div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap">' +
-      '<button class="btn" style="width:auto;font-size:11px" data-pilot="' + r.id + '">🎯 Pilotar</button>' +
-      '<button class="btn" style="width:auto;font-size:11px" data-next="' + r.id + '">⏭ ' + (r.estado === 'pendiente' ? 'en proceso' : r.estado === 'en proceso' ? 'armonizado' : 'reabrir') + '</button>' +
-      '<button class="btn" style="width:auto;font-size:11px" data-edit="' + r.id + '">✏️</button>' +
-      '<button class="btn" style="width:auto;font-size:11px;color:#e76e8a" data-del="' + r.id + '">✕</button></div></div>';
+      '<div class="muted su-cdff1d">' + (s ? '🔢 ' + esc(s.seq) + ' · ' + esc(s.n) + ' · ' : '') + (r.area ? '🏷️ ' + esc(r.area) + ' · ' : '') + esc(lunaTxt(r.fecha) || '') + (r.nota ? '<br>📝 ' + esc(r.nota) : '') + '</div>' +
+      '<div class="su-faf7a9">' +
+      '<button class="btn su-337714" data-pilot="' + r.id + '">🎯 Pilotar</button>' +
+      '<button class="btn su-337714" data-next="' + r.id + '">⏭ ' + (r.estado === 'pendiente' ? 'en proceso' : r.estado === 'en proceso' ? 'armonizado' : 'reabrir') + '</button>' +
+      '<button class="btn su-337714" data-edit="' + r.id + '">✏️</button>' +
+      '<button class="btn su-9b8fb7" data-del="' + r.id + '">✕</button></div></div>';
   }).join('') : '<p class="muted">Inventario vacío. Anota 1 tema a pilotar: lo que se nombra, se puede ordenar.</p>';
   var st = $('gbIntStats');
   if (st) st.textContent = d.length + ' intenciones · ' + d.filter(function (r) { return r.estado === 'armonizado'; }).length + ' armonizadas 🌌';
@@ -368,9 +368,9 @@ function renderSes() {
   var d = store().ses.slice().sort(function (a, b) { return b.fecha.localeCompare(a.fecha); });
   box.innerHTML = d.length ? d.slice(0, 40).map(function (r) {
     return '<div class="habit-item"><b>🌌 ' + esc(r.fecha) + '</b> · 🔢 ' + esc(r.seq || '') + ' · ×' + (+r.reps || 0) +
-      '<br><span class="muted" style="font-size:11px">📌 ' + esc(r.titulo || 'libre') + ' · ' + r.antes + '→' + r.despues + '/10 · ' + esc(lunaTxt(r.fecha)) + '</span>' +
-      (r.insight ? '<p style="font-size:12px">💡 ' + esc(r.insight) + '</p>' : '') +
-      '<div style="display:flex;gap:6px;margin-top:4px"><button class="btn" style="width:auto;font-size:11px" data-share="' + r.id + '">📤</button><button class="btn" style="width:auto;font-size:11px;color:#e76e8a" data-del="' + r.id + '">✕</button></div></div>';
+      '<br><span class="muted su-11a508">📌 ' + esc(r.titulo || 'libre') + ' · ' + r.antes + '→' + r.despues + '/10 · ' + esc(lunaTxt(r.fecha)) + '</span>' +
+      (r.insight ? '<p class="su-6cb285">💡 ' + esc(r.insight) + '</p>' : '') +
+      '<div class="su-90237f"><button class="btn su-337714" data-share="' + r.id + '">📤</button><button class="btn su-9b8fb7" data-del="' + r.id + '">✕</button></div></div>';
   }).join('') : '<p class="muted">Sin sesiones aún. Ve a 🎯 Pilotaje y regala 3 minutos a tu foco de hoy.</p>';
   box.querySelectorAll('[data-del]').forEach(function (b) { b.onclick = function () { if (!confirm('¿Borrar sesión?')) return; var dd = store().ses; var i = dd.findIndex(function (x) { return x.id === b.getAttribute('data-del'); }); if (i >= 0) dd.splice(i, 1); persistStore(); save(); renderSes(); renderAva(); }; });
   box.querySelectorAll('[data-share]').forEach(function (b) { b.onclick = function () { var dd = store().ses; var r = dd.find(function (x) { return x.id === b.getAttribute('data-share'); }); if (r) share('🌌 Mi pilotaje ' + r.fecha, '📌 ' + (r.titulo || '') + '\n🔢 ' + (r.seq || '') + ' ×' + r.reps + ' (' + r.antes + '→' + r.despues + '/10)' + (r.insight ? '\n💡 ' + r.insight : '')); }; });
@@ -388,10 +388,10 @@ function renderAva() {
   var porSeq = {};
   ses.forEach(function (r) { var k = r.seq || r.seqId || '?'; porSeq[k] = (porSeq[k] || 0) + 1; });
   var topSeq = Object.keys(porSeq).sort(function (a, b) { return porSeq[b] - porSeq[a]; })[0] || '—';
-  box.innerHTML = '<p class="muted" style="font-size:11px">🌌 Intenciones armonizadas: <b>' + arm + '/' + inv.length + '</b> (' + pct + '%)</p>' +
-    '<div style="background:var(--panel);border-radius:6px;height:10px;overflow:hidden"><div style="width:' + pct + '%;height:100%;background:linear-gradient(90deg,#8fd694,#7ab8ff,#e8c56a)"></div></div>' +
-    '<p class="muted" style="font-size:11px;margin-top:6px">🎯 ' + ses.length + ' sesiones · 🔁 ×' + vidaReps + ' repeticiones de vida · 🔥 racha ' + rachaDias() + ' días · secuencia más usada: <b>' + esc(topSeq) + '</b></p>' +
-    '<p class="muted" style="font-size:11px">Ritmo sugerido: 1 pilotaje corto al día (3–5 min). Luna menguante → ordenar y soltar; luna nueva → sembrar intención. Lo que vuelve se pilota de nuevo, sin culpa.</p>';
+  box.innerHTML = '<p class="muted su-11a508">🌌 Intenciones armonizadas: <b>' + arm + '/' + inv.length + '</b> (' + pct + '%)</p>' +
+    '<div class="su-ab9537"><div style="width:' + pct + '%;height:100%;background:linear-gradient(90deg,#8fd694,#7ab8ff,#e8c56a)"></div></div>' +
+    '<p class="muted su-e13d76">🎯 ' + ses.length + ' sesiones · 🔁 ×' + vidaReps + ' repeticiones de vida · 🔥 racha ' + rachaDias() + ' días · secuencia más usada: <b>' + esc(topSeq) + '</b></p>' +
+    '<p class="muted su-11a508">Ritmo sugerido: 1 pilotaje corto al día (3–5 min). Luna menguante → ordenar y soltar; luna nueva → sembrar intención. Lo que vuelve se pilota de nuevo, sin culpa.</p>';
 }
 function renderAll() { try { renderSeqs(); } catch (e) {} try { renderPilot(); } catch (e) {} try { renderInt(); } catch (e) {} try { renderSes(); } catch (e) {} try { renderAva(); } catch (e) {} }
 
@@ -401,13 +401,13 @@ function renderAll() { try { renderSeqs(); } catch (e) {} try { renderPilot(); }
 function buildDialog() {
   makeDialog('grabovoiDialog', '🌌 Grabovoi — secuencias y pilotaje de la realidad',
     'Método de concentración del autor ruso <b>Grigori Grabovoi</b>: lees secuencias numéricas dígito por dígito, sostienes la imagen del resultado y actúas en coherencia. Aquí lo usamos como <b>meditación de foco + acción concreta</b>. Todo queda <b>privado y local</b>.',
-    '<div class="timer-tabs" style="flex-wrap:wrap;margin-bottom:10px">' +
-    '<button type="button" id="tabGbGuia" class="btn btn-accent" style="width:auto">📖 Guía</button>' +
-    '<button type="button" id="tabGbSec" class="btn" style="width:auto">🔢 Secuencias</button>' +
-    '<button type="button" id="tabGbPil" class="btn" style="width:auto">🎯 Pilotaje</button>' +
-    '<button type="button" id="tabGbInt" class="btn" style="width:auto">📋 Intenciones</button>' +
-    '<button type="button" id="tabGbSes" class="btn" style="width:auto">📓 Sesiones</button>' +
-    '<button type="button" id="tabGbAva" class="btn" style="width:auto">📊 Mi avance</button></div>' +
+    '<div class="timer-tabs su-dd1da5">' +
+    '<button type="button" id="tabGbGuia" class="btn btn-accent su-30e741">📖 Guía</button>' +
+    '<button type="button" id="tabGbSec" class="btn su-30e741">🔢 Secuencias</button>' +
+    '<button type="button" id="tabGbPil" class="btn su-30e741">🎯 Pilotaje</button>' +
+    '<button type="button" id="tabGbInt" class="btn su-30e741">📋 Intenciones</button>' +
+    '<button type="button" id="tabGbSes" class="btn su-30e741">📓 Sesiones</button>' +
+    '<button type="button" id="tabGbAva" class="btn su-30e741">📊 Mi avance</button></div>' +
 
     '<div id="gbGuia">' +
       '<div class="si-card"><h4>🌌 ¿Qué es esto de Grabovoi?</h4><p><b>Grigori Grabovoi</b> (Kazajistán, 1963) propone que la <b>concentración sostenida</b> en formas —números, esferas, imágenes— ordena primero tu mente y luego tus actos: a eso llama <b>pilotaje de la realidad</b>. Sus libros (<i>Recuperación del organismo</i>, <i>Secuencias numéricas</i>) listan cientos de secuencias. En redes se popularizaron unas decenas para el día a día. Aquí reunimos las más compartidas como <b>foco meditativo</b>.</p></div>' +
@@ -416,64 +416,64 @@ function buildDialog() {
       '<div class="si-card"><h4>🔮 La esfera plateada (técnica clásica)</h4><p>Imagina una <b>esfera de luz plateada</b> frente a ti. Mete dentro tu tema + la secuencia escrita en luz. Mírala 1–3 min mientras repites. Al terminar, imagina que la esfera se eleva y se disuelve: “entrego y actúo”. Sirve para no rumiar: concentras, sueltas, actúas.</p></div>' +
       '<div class="si-card"><h4>🌙 Grabovoi y tus 13 lunas</h4><p><b>Menguante</b> → ordenar, pagar, soltar (741, 318 798). <b>Nueva</b> → sembrar intención del ciclo (123 4814). <b>Llena</b> → ver claro y agradecer (777, 8888). <b>Creciente</b> → trabajo y estudios (714…, 497 241). Cada sesión queda marcada con su luna en 📓 Sesiones.</p></div>' +
       '<div class="si-card"><h4>⚠️ Contexto honesto y cuidados</h4><p>Las secuencias <b>no tienen respaldo científico</b> y Grabovoi es una figura controvertida (fue condenado en Rusia en 2008 por fraude). Úsalo como <b>concentración y calma</b>, nunca como reemplazo de medicina, terapia o decisiones económicas: <b>no abandones tratamientos, no entregues dinero por “activaciones”, no te endeudes por promesas</b>. Si un tema te desborda: *4141 (Chile, 24h), CESFAM o profesional. Si algo te pide plata a cambio de “normar”, aléjate.</p></div>' +
-      '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="gbGoSec" class="btn btn-accent" style="width:auto">🔢 Ver secuencias →</button> <button type="button" id="gbGoPil" class="btn" style="width:auto">🎯 Pilotar ahora →</button></div>' +
+      '<div class="dlg-actions su-59a5a8"><button type="button" id="gbGoSec" class="btn btn-accent su-30e741">🔢 Ver secuencias →</button> <button type="button" id="gbGoPil" class="btn su-30e741">🎯 Pilotar ahora →</button></div>' +
     '</div>' +
 
     '<div id="gbSec" class="hidden">' +
-      '<div class="conv-row"><label style="flex:2">🔍 Buscar <input type="text" id="gbSeqQ" placeholder="calma, dinero, dormir, amor..." autocomplete="off"></label>' +
+      '<div class="conv-row"><label class="su-4b3de7">🔍 Buscar <input type="text" id="gbSeqQ" placeholder="calma, dinero, dormir, amor..." autocomplete="off"></label>' +
       '<label>Categoría <select id="gbSeqCat">' + GB_CATS.map(function (c) { return '<option value="' + c.id + '">' + c.n + '</option>'; }).join('') + '</select></label></div>' +
-      '<p class="muted" style="font-size:11px">Recopilación popular: las versiones varían entre fuentes. Úsalas como foco de concentración + 1 acción real.</p>' +
+      '<p class="muted su-11a508">Recopilación popular: las versiones varían entre fuentes. Úsalas como foco de concentración + 1 acción real.</p>' +
       '<div id="gbSeqGrid"></div></div>' +
 
     '<div id="gbPil" class="hidden">' +
-      '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🎯 Pilotaje guiado</h4>' +
-      '<div class="conv-row"><label style="flex:2">📌 Intención <select id="gbPilInten"></select></label><label>📅 Fecha <input type="date" id="gbPilFecha"></label></div>' +
-      '<div class="conv-row"><label style="flex:2">🔢 Secuencia <select id="gbPilSeq">' + GB_SEQS.map(function (s) { return '<option value="' + s.id + '">' + esc(s.seq) + ' · ' + esc(s.n) + '</option>'; }).join('') + '</select></label></div>' +
-      '<div id="gbPilSeqBox" style="margin:6px 0"></div>' +
-      '<div class="menstrual-card" style="background:var(--panel);text-align:center"><div style="font-size:11px" class="muted">CONTADOR DE REPETICIONES (meta dulce: 108)</div>' +
-      '<div id="gbCountNum" style="font-size:44px;font-weight:800;color:var(--gold)">0</div>' +
-      '<div style="background:var(--panel);border-radius:6px;height:8px;overflow:hidden;margin:6px 0"><div id="gbCountBar" style="width:0%;height:100%;background:linear-gradient(90deg,#8fd694,#7ab8ff,#e8c56a)"></div></div>' +
-      '<div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap"><button type="button" id="gbPlus1" class="btn btn-accent" style="width:auto;font-size:15px">+1 🎯</button>' +
-      '<button type="button" id="gbPlus7" class="btn" style="width:auto">+7</button><button type="button" id="gbPlus21" class="btn" style="width:auto">+21</button>' +
-      '<button type="button" id="gbZero" class="btn" style="width:auto">↺ 0</button><button type="button" id="gbVozPil" class="btn" style="width:auto">🔊 Guía por voz</button></div>' +
-      '<div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:8px"><button type="button" id="gbT1" class="btn" style="width:auto">⏱ 1 min</button>' +
-      '<button type="button" id="gbT5" class="btn" style="width:auto">⏱ 5 min</button><button type="button" id="gbT10" class="btn" style="width:auto">⏱ 10 min</button>' +
-      '<button type="button" id="gbTStop" class="btn" style="width:auto">⏹ Detener</button></div>' +
-      '<div id="gbTimerLabel" class="muted" style="font-size:11px;margin-top:6px">⏱ Temporizador listo: 1, 5 o 10 min de concentración suave.</div></div>' +
-      '<div class="conv-row" style="margin-top:8px"><label>Carga antes (0–10) <input type="number" id="gbAntes" min="0" max="10" value="6" style="width:80px"></label>' +
-      '<label>Carga después (0–10) <input type="number" id="gbDespues" min="0" max="10" value="4" style="width:80px"></label>' +
-      '<label style="flex:1">Repeticiones manuales <input type="number" id="gbReps" min="0" value="0" style="width:90px"></label></div>' +
+      '<div class="menstrual-card su-68a1a9"><h4>🎯 Pilotaje guiado</h4>' +
+      '<div class="conv-row"><label class="su-4b3de7">📌 Intención <select id="gbPilInten"></select></label><label>📅 Fecha <input type="date" id="gbPilFecha"></label></div>' +
+      '<div class="conv-row"><label class="su-4b3de7">🔢 Secuencia <select id="gbPilSeq">' + GB_SEQS.map(function (s) { return '<option value="' + s.id + '">' + esc(s.seq) + ' · ' + esc(s.n) + '</option>'; }).join('') + '</select></label></div>' +
+      '<div id="gbPilSeqBox" class="su-c1fafc"></div>' +
+      '<div class="menstrual-card su-7c1198"><div class="su-11a508" class="muted">CONTADOR DE REPETICIONES (meta dulce: 108)</div>' +
+      '<div id="gbCountNum" class="su-5f3293">0</div>' +
+      '<div class="su-98b660"><div id="gbCountBar" class="su-baad79"></div></div>' +
+      '<div class="su-e376dd"><button type="button" id="gbPlus1" class="btn btn-accent su-e2cc6b">+1 🎯</button>' +
+      '<button type="button" id="gbPlus7" class="btn su-30e741">+7</button><button type="button" id="gbPlus21" class="btn su-30e741">+21</button>' +
+      '<button type="button" id="gbZero" class="btn su-30e741">↺ 0</button><button type="button" id="gbVozPil" class="btn su-30e741">🔊 Guía por voz</button></div>' +
+      '<div class="su-daa93d"><button type="button" id="gbT1" class="btn su-30e741">⏱ 1 min</button>' +
+      '<button type="button" id="gbT5" class="btn su-30e741">⏱ 5 min</button><button type="button" id="gbT10" class="btn su-30e741">⏱ 10 min</button>' +
+      '<button type="button" id="gbTStop" class="btn su-30e741">⏹ Detener</button></div>' +
+      '<div id="gbTimerLabel" class="muted su-e13d76">⏱ Temporizador listo: 1, 5 o 10 min de concentración suave.</div></div>' +
+      '<div class="conv-row su-8a77e5"><label>Carga antes (0–10) <input type="number" id="gbAntes" min="0" max="10" value="6" class="su-8573ba"></label>' +
+      '<label>Carga después (0–10) <input type="number" id="gbDespues" min="0" max="10" value="4" class="su-8573ba"></label>' +
+      '<label class="su-97445a">Repeticiones manuales <input type="number" id="gbReps" min="0" value="0" class="su-581be4"></label></div>' +
       '<label>💡 Señal / acción de hoy <input type="text" id="gbInsight" placeholder="ej: llamé al dato de pega; pagué la mitad de la deuda" maxlength="300"></label>' +
-      '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="gbGuardarSes" class="btn btn-accent" style="width:auto">🌌 Guardar sesión</button></div>' +
-      '<p class="muted" style="font-size:11px">Tip: sin intención clara, pilota libre con 741 o 318 798 antes de dormir. Suma igual a tu racha.</p></div>' +
+      '<div class="dlg-actions su-59a5a8"><button type="button" id="gbGuardarSes" class="btn btn-accent su-30e741">🌌 Guardar sesión</button></div>' +
+      '<p class="muted su-11a508">Tip: sin intención clara, pilota libre con 741 o 318 798 antes de dormir. Suma igual a tu racha.</p></div>' +
     '</div>' +
 
     '<div id="gbInt" class="hidden">' +
-      '<div class="menstrual-card" style="border-color:var(--gold)"><h4>➕ ¿Qué quiero pilotar?</h4>' +
-      '<div class="conv-row"><label style="flex:2">Intención * <input type="text" id="gbIntTitulo" placeholder="ej: pagar la deuda de la luz en paz" maxlength="60"></label><label>Secuencia <select id="gbIntSeq">' + GB_SEQS.map(function (s) { return '<option value="' + s.id + '">' + esc(s.seq) + ' · ' + esc(s.n) + '</option>'; }).join('') + '</select></label></div>' +
+      '<div class="menstrual-card su-68a1a9"><h4>➕ ¿Qué quiero pilotar?</h4>' +
+      '<div class="conv-row"><label class="su-4b3de7">Intención * <input type="text" id="gbIntTitulo" placeholder="ej: pagar la deuda de la luz en paz" maxlength="60"></label><label>Secuencia <select id="gbIntSeq">' + GB_SEQS.map(function (s) { return '<option value="' + s.id + '">' + esc(s.seq) + ' · ' + esc(s.n) + '</option>'; }).join('') + '</select></label></div>' +
       '<div class="conv-row"><label>Área <select id="gbIntArea">' + GB_INT_AREAS.map(function (a) { return '<option>' + a + '</option>'; }).join('') + '</select></label>' +
-      '<label>Carga (0–10) <input type="number" id="gbIntInten" min="0" max="10" value="6" style="width:80px"></label>' +
+      '<label>Carga (0–10) <input type="number" id="gbIntInten" min="0" max="10" value="6" class="su-8573ba"></label>' +
       '<label>Estado <select id="gbIntEstado"><option>pendiente</option><option>en proceso</option><option>armonizado</option></select></label></div>' +
       '<label>Nota <input type="text" id="gbIntNota" placeholder="ej: me aprieta el pecho al pensar en la cuenta" maxlength="120"></label>' +
-      '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="gbIntAdd" class="btn btn-accent" style="width:auto">+ Agregar</button><button type="button" id="gbIntCancel" class="btn hidden" style="width:auto">Cancelar</button></div></div>' +
-      '<div class="conv-row" style="margin-top:10px"><label style="flex:2">🔍 Buscar <input type="text" id="gbIntQ" placeholder="tema..." autocomplete="off"></label>' +
+      '<div class="dlg-actions su-59a5a8"><button type="button" id="gbIntAdd" class="btn btn-accent su-30e741">+ Agregar</button><button type="button" id="gbIntCancel" class="btn hidden su-30e741">Cancelar</button></div></div>' +
+      '<div class="conv-row su-d2c171"><label class="su-4b3de7">🔍 Buscar <input type="text" id="gbIntQ" placeholder="tema..." autocomplete="off"></label>' +
       '<label>Estado <select id="gbIntF"><option value="todas">Todas</option><option value="pendiente">Pendientes</option><option value="en proceso">En proceso</option><option value="armonizado">Armonizadas</option></select></label></div>' +
-      '<div id="gbIntList" class="habits-list" style="margin-top:8px;max-height:300px"></div>' +
-      '<div class="dlg-actions" style="justify-content:space-between;margin-top:8px"><span id="gbIntStats" class="muted" style="font-size:11px"></span>' +
-      '<span style="display:flex;gap:8px"><button type="button" id="gbIntShare" class="btn" style="width:auto">📤 Compartir</button><button type="button" id="gbIntClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar armonizadas</button></span></div>' +
+      '<div id="gbIntList" class="habits-list su-8c96f6"></div>' +
+      '<div class="dlg-actions su-efea1d"><span id="gbIntStats" class="muted su-11a508"></span>' +
+      '<span class="su-a76d59"><button type="button" id="gbIntShare" class="btn su-30e741">📤 Compartir</button><button type="button" id="gbIntClear" class="btn su-214f75">🗑 Borrar armonizadas</button></span></div>' +
     '</div>' +
 
     '<div id="gbSes" class="hidden">' +
-      '<div class="menstrual-card" style="border-color:var(--gold)"><h4>📓 Mis sesiones de pilotaje</h4>' +
-      '<p class="muted" style="font-size:11px">Cada foco cuenta, aunque baje solo 1 punto. La constancia ordena más que la intensidad.</p>' +
-      '<div id="gbSesList" class="habits-list" style="max-height:320px"></div>' +
-      '<div class="dlg-actions" style="justify-content:space-between;margin-top:8px"><span id="gbSesStats" class="muted" style="font-size:11px"></span>' +
-      '<span style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" id="gbSesToNote" class="btn" style="width:auto">📝 Llevar a nota de hoy</button>' +
-      '<button type="button" id="gbSesShareAll" class="btn" style="width:auto">📤 Compartir</button>' +
-      '<button type="button" id="gbSesClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar</button></span></div></div>' +
+      '<div class="menstrual-card su-68a1a9"><h4>📓 Mis sesiones de pilotaje</h4>' +
+      '<p class="muted su-11a508">Cada foco cuenta, aunque baje solo 1 punto. La constancia ordena más que la intensidad.</p>' +
+      '<div id="gbSesList" class="habits-list su-0aced6"></div>' +
+      '<div class="dlg-actions su-efea1d"><span id="gbSesStats" class="muted su-11a508"></span>' +
+      '<span class="su-3de8f9"><button type="button" id="gbSesToNote" class="btn su-30e741">📝 Llevar a nota de hoy</button>' +
+      '<button type="button" id="gbSesShareAll" class="btn su-30e741">📤 Compartir</button>' +
+      '<button type="button" id="gbSesClear" class="btn su-214f75">🗑 Borrar</button></span></div></div>' +
     '</div>' +
 
-    '<div id="gbAva" class="hidden"><div id="gbAvaBox" class="menstrual-card" style="border-color:var(--gold)"></div>' +
+    '<div id="gbAva" class="hidden"><div id="gbAvaBox" class="menstrual-card su-68a1a9"></div>' +
       '<div class="si-card"><h4>🌙 Cierre de luna (ritual de 3 líneas)</h4><p>Cada fin de luna responde en tu cuaderno o en 📝 nota del día:<br><b>1)</b> ¿Qué piloté esta luna?<br><b>2)</b> ¿Qué acción concreta hice?<br><b>3)</b> ¿Qué dejo ordenado?<br>Termina con 7 repeticiones de tu secuencia favorita.</p></div></div>');
 }
 
@@ -489,7 +489,7 @@ function puenteMetodos() {
       if (!dlg || !dlg.open) return;
       if ((v === 'grabovoi' || v === 'hoponopono') && !$('gbOpenFromMetodos')) {
         var fab = document.createElement('div');
-        fab.innerHTML = '<button type="button" id="gbOpenFromMetodos" class="btn btn-accent" style="width:auto;margin-top:8px">🌌 Abrir mi Grabovoi completo</button>';
+        fab.innerHTML = '<button type="button" id="gbOpenFromMetodos" class="btn btn-accent su-e182f0">🌌 Abrir mi Grabovoi completo</button>';
         var f = dlg.querySelector('form') || dlg;
         f.appendChild(fab);
         var nb = $('gbOpenFromMetodos');

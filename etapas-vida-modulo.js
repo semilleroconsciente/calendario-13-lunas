@@ -54,10 +54,10 @@ function makeDialog(id, title, sub, bodyHTML) {
   var d = document.createElement('dialog');
   d.id = id;
   d.innerHTML = '<form method="dialog">' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
-    '<h3 style="margin:0;color:var(--accent)">' + title + '</h3>' +
+    '<div class="dlg-actions su-d2d053">' +
+    '<h3 class="su-ee0cfe">' + title + '</h3>' +
     '<button type="button" data-close class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    (sub ? '<p class="muted" style="line-height:1.5">' + sub + '</p>' : '') +
+    (sub ? '<p class="muted su-77e2fe">' + sub + '</p>' : '') +
     bodyHTML +
     '<div class="dlg-actions"><button type="button" data-close class="btn">Cerrar</button></div></form>';
   document.body.appendChild(d);
@@ -91,8 +91,8 @@ function stageStore(key) {
 }
 
 /* ---------------- CONTENIDOS ---------------- */
-var SOS_HTML = '<div class="si-card" style="border-left:3px solid #e76e8a"><h4>🆘 Si la estás pasando mal ahora</h4>' +
-  '<p style="font-size:12px">No tienes que aguantarlo solo/a: <b>*4141</b> prevención del suicidio (24 h, gratis) · <b>149</b> Fono Familia · <b>1455</b> violencia · <b>600 360 7777</b> Salud Responde · <b>800 400 035</b> SENAMA (personas mayores) · En Penco: tu <b>CESFAM</b>. Peligro inmediato: <b>133</b> / <b>131</b> SAMU.</p></div>';
+var SOS_HTML = '<div class="si-card su-7266f7"><h4>🆘 Si la estás pasando mal ahora</h4>' +
+  '<p class="su-6cb285">No tienes que aguantarlo solo/a: <b>*4141</b> prevención del suicidio (24 h, gratis) · <b>149</b> Fono Familia · <b>1455</b> violencia · <b>600 360 7777</b> Salud Responde · <b>800 400 035</b> SENAMA (personas mayores) · En Penco: tu <b>CESFAM</b>. Peligro inmediato: <b>133</b> / <b>131</b> SAMU.</p></div>';
 
 var EMOS_BASE = ['alegría', 'tranquilidad', 'motivación', 'orgullo', 'cariño', 'tristeza', 'rabia', 'miedo', 'ansiedad', 'culpa', 'soledad', 'cansancio'];
 
@@ -356,39 +356,39 @@ function fasesHTML(fases) {
 }
 function emoChipsHTML(p) {
   return EMOS_BASE.map(function (e) {
-    return '<label class="check-row" style="margin:2px 8px 2px 0;font-size:12px"><input type="checkbox" class="' + p + '-emo" value="' + esc(e) + '"> ' + esc(e) + '</label>';
+    return '<label class="check-row su-d16943"><input type="checkbox" class="' + p + '-emo" value="' + esc(e) + '"> ' + esc(e) + '</label>';
   }).join('');
 }
 function cliSintomasHTML() {
   return CLI_SINTOMAS.map(function (s) {
-    return '<label class="check-row" style="margin:2px 8px 2px 0;font-size:12px"><input type="checkbox" class="cli-sin" value="' + esc(s) + '"> ' + esc(s) + '</label>';
+    return '<label class="check-row su-d16943"><input type="checkbox" class="cli-sin" value="' + esc(s) + '"> ' + esc(s) + '</label>';
   }).join('');
 }
 
 function buildDialogFor(cf) {
   var p = cf.p;
   var tabs = cf.tabNames.map(function (t, i) {
-    return '<button type="button" id="tab' + p + t + '" class="btn' + (i === 0 ? ' btn-accent' : '') + '" style="width:auto">' + cf.tabLabels[i] + '</button>';
+    return '<button type="button" id="tab' + p + t + '" class="btn' + (i === 0 ? ' btn-accent' : '') + ' su-30e741">' + cf.tabLabels[i] + '</button>';
   }).join('');
 
   var extraField = '';
   if (cf.key === 'cli') {
-    extraField = '<p class="muted" style="font-size:11px;margin:6px 0 4px">Síntomas de esta luna (marca los presentes):</p>' +
-      '<div style="display:flex;flex-wrap:wrap">' + cliSintomasHTML() + '</div>' +
-      '<div class="conv-row" style="align-items:center"><label style="flex:1">Intensidad máx (1-10) <input type="number" id="' + p + 'Inten" min="1" max="10" value="5"></label>' +
-      '<label style="flex:2">Qué me alivió <input type="text" id="' + p + 'Alivio" placeholder="ej: ventilador, caminar, mate" maxlength="60"></label></div>';
+    extraField = '<p class="muted su-db6a1e">Síntomas de esta luna (marca los presentes):</p>' +
+      '<div class="su-2fb621">' + cliSintomasHTML() + '</div>' +
+      '<div class="conv-row su-7c6197"><label class="su-97445a">Intensidad máx (1-10) <input type="number" id="' + p + 'Inten" min="1" max="10" value="5"></label>' +
+      '<label class="su-4b3de7">Qué me alivió <input type="text" id="' + p + 'Alivio" placeholder="ej: ventilador, caminar, mate" maxlength="60"></label></div>';
   } else {
-    extraField = '<div class="conv-row" style="align-items:center"><label style="flex:1">' + esc(cf.espacioExtraLabel) + ' <input type="range" id="' + p + 'Extra" min="1" max="10" value="6" style="width:100%"></label><span id="' + p + 'ExtraV" class="chip" style="min-width:44px;text-align:center">6</span></div>';
+    extraField = '<div class="conv-row su-7c6197"><label class="su-97445a">' + esc(cf.espacioExtraLabel) + ' <input type="range" id="' + p + 'Extra" min="1" max="10" value="6" class="su-046678"></label><span id="' + p + 'ExtraV" class="chip su-78a96b">6</span></div>';
   }
 
   var bridgesBtns = cf.bridges.map(function (b) {
     var label = b[2] || b[1].replace(/^btn/, '');
-    return '<button type="button" id="' + b[0] + '" class="btn" style="width:auto">' + esc(label) + '</button>';
+    return '<button type="button" id="' + b[0] + '" class="btn su-30e741">' + esc(label) + '</button>';
   }).join('');
 
   var body =
-    '<div class="timer-tabs" style="margin:12px 0 10px;flex-wrap:wrap">' + tabs + '</div>' +
-    '<div id="' + p + 'Streak" class="menstrual-card" style="border-color:var(--gold);margin-bottom:10px"></div>' +
+    '<div class="timer-tabs su-f7ad78">' + tabs + '</div>' +
+    '<div id="' + p + 'Streak" class="menstrual-card su-39553d"></div>' +
     SOS_HTML +
 
     '<div id="' + p + cf.tabNames[0] + '">' +
@@ -414,32 +414,32 @@ function buildDialogFor(cf) {
     '<div id="' + p + cf.tabNames[3] + '" class="hidden">' +
     '<div class="si-card"><h4>🧰 Papeles y decisiones</h4><p>' + cf.pracIntro + '</p></div>' +
     cards(cf.prac) +
-    '<div class="menstrual-card"><h4>' + esc(cf.bridgesLabel) + '</h4><p class="muted" style="font-size:11px">' + esc(cf.bridgesTxt) + '</p><div style="display:flex;gap:6px;flex-wrap:wrap">' + bridgesBtns + '</div></div>' +
+    '<div class="menstrual-card"><h4>' + esc(cf.bridgesLabel) + '</h4><p class="muted su-11a508">' + esc(cf.bridgesTxt) + '</p><div class="su-6157e8">' + bridgesBtns + '</div></div>' +
     '</div>' +
 
     '<div id="' + p + cf.tabNames[4] + '" class="hidden">' +
-    '<div class="menstrual-card" style="margin-bottom:10px"><h4>💚 Chequeo — 1 minuto</h4>' +
+    '<div class="menstrual-card su-761d3a"><h4>💚 Chequeo — 1 minuto</h4>' +
     '<div class="conv-row"><label>Fecha <input type="date" id="' + p + 'Fecha"></label></div>' +
-    '<div class="conv-row" style="align-items:center"><label style="flex:1">Ánimo 1-10 <input type="range" id="' + p + 'Animo" min="1" max="10" value="6" style="width:100%"></label><span id="' + p + 'AnimoV" class="chip" style="min-width:44px;text-align:center">6</span>' +
-    '<label style="flex:1">Energía 1-10 <input type="range" id="' + p + 'Energia" min="1" max="10" value="6" style="width:100%"></label><span id="' + p + 'EnergiaV" class="chip" style="min-width:44px;text-align:center">6</span></div>' +
-    '<div class="conv-row" style="align-items:center"><label style="flex:1">Sueño anoche (h) <input type="number" id="' + p + 'Sueno" min="0" max="14" step="0.5" value="7"></label></div>' +
+    '<div class="conv-row su-7c6197"><label class="su-97445a">Ánimo 1-10 <input type="range" id="' + p + 'Animo" min="1" max="10" value="6" class="su-046678"></label><span id="' + p + 'AnimoV" class="chip su-78a96b">6</span>' +
+    '<label class="su-97445a">Energía 1-10 <input type="range" id="' + p + 'Energia" min="1" max="10" value="6" class="su-046678"></label><span id="' + p + 'EnergiaV" class="chip su-78a96b">6</span></div>' +
+    '<div class="conv-row su-7c6197"><label class="su-97445a">Sueño anoche (h) <input type="number" id="' + p + 'Sueno" min="0" max="14" step="0.5" value="7"></label></div>' +
     extraField +
-    '<p class="muted" style="font-size:11px;margin:6px 0 4px">Emociones (marca las presentes):</p>' +
-    '<div style="display:flex;flex-wrap:wrap">' + emoChipsHTML(p) + '</div>' +
+    '<p class="muted su-db6a1e">Emociones (marca las presentes):</p>' +
+    '<div class="su-2fb621">' + emoChipsHTML(p) + '</div>' +
     '<label>Diario (5 líneas bastan) <textarea id="' + p + 'Nota" rows="3" placeholder="Hoy me sentí... / Me costó... / Mañana quiero..." maxlength="600"></textarea></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start;flex-wrap:wrap"><button type="button" id="' + p + 'CheckSave" class="btn btn-accent" style="width:auto">💾 Guardar chequeo</button></div></div>' +
+    '<div class="dlg-actions su-117179"><button type="button" id="' + p + 'CheckSave" class="btn btn-accent su-30e741">💾 Guardar chequeo</button></div></div>' +
 
-    '<div class="menstrual-card" style="margin-bottom:10px"><h4>🎯 Mis metas de la luna (máx 3)</h4>' +
-    '<p class="muted" style="font-size:11px">Chicas y medibles: "caminar 20 min × 3" mejor que "cuidarme más".</p>' +
-    '<div class="conv-row"><label style="flex:2">Meta <input type="text" id="' + p + 'MetaTxt" placeholder="ej: pedir hora EMPA" maxlength="80"></label></div>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="' + p + 'MetaAdd" class="btn btn-accent" style="width:auto">+ Agregar meta</button></div>' +
-    '<div id="' + p + 'Metas" class="habits-list" style="margin-top:10px"></div></div>' +
+    '<div class="menstrual-card su-761d3a"><h4>🎯 Mis metas de la luna (máx 3)</h4>' +
+    '<p class="muted su-11a508">Chicas y medibles: "caminar 20 min × 3" mejor que "cuidarme más".</p>' +
+    '<div class="conv-row"><label class="su-4b3de7">Meta <input type="text" id="' + p + 'MetaTxt" placeholder="ej: pedir hora EMPA" maxlength="80"></label></div>' +
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="' + p + 'MetaAdd" class="btn btn-accent su-30e741">+ Agregar meta</button></div>' +
+    '<div id="' + p + 'Metas" class="habits-list su-d2c171"></div></div>' +
 
-    '<div class="menstrual-card"><h4>📓 Mi diario (últimos 15)</h4><div id="' + p + 'Log" class="habits-list" style="max-height:240px"></div>' +
-    '<div class="dlg-actions" style="justify-content:space-between;align-items:center;margin-top:8px"><span id="' + p + 'Stats" class="muted" style="font-size:11px"></span>' +
-    '<span style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" id="' + p + 'Share" class="btn" style="width:auto">📤 Compartir</button>' +
-    '<button type="button" id="' + p + 'Export" class="btn" style="width:auto">📥 Exportar</button>' +
-    '<button type="button" id="' + p + 'Clear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar</button></span></div></div>' +
+    '<div class="menstrual-card"><h4>📓 Mi diario (últimos 15)</h4><div id="' + p + 'Log" class="habits-list su-5701fb"></div>' +
+    '<div class="dlg-actions su-cc4a4c"><span id="' + p + 'Stats" class="muted su-11a508"></span>' +
+    '<span class="su-3de8f9"><button type="button" id="' + p + 'Share" class="btn su-30e741">📤 Compartir</button>' +
+    '<button type="button" id="' + p + 'Export" class="btn su-30e741">📥 Exportar</button>' +
+    '<button type="button" id="' + p + 'Clear" class="btn su-214f75">🗑 Borrar</button></span></div></div>' +
     '</div>';
 
   makeDialog(cf.dlg, cf.title, cf.sub, body);
@@ -465,7 +465,7 @@ function renderStreak(cf) {
   var n = Object.keys(e.checks || {}).length;
   var nm = (e.metas || []).filter(function (m) { return m.done; }).length;
   b.innerHTML = '<b>' + esc(cf.btnTxt) + ' · Racha:</b> ' + streakOf(cf.key) + ' días · <b>' + n + '</b> chequeos · <b>' + nm + '</b> metas logradas' +
-    '<span class="muted" style="font-size:11px"> — relee cada luna: ahí se ven los avances</span>';
+    '<span class="muted su-11a508"> — relee cada luna: ahí se ven los avances</span>';
 }
 function dayLine(d) {
   var bits = 'ánimo ' + esc(String(d.animo || '-')) + '/10 · energía ' + esc(String(d.energia || '-')) + '/10' +
@@ -482,9 +482,9 @@ function renderLog(cf) {
   var c = stageStore(cf.key).checks;
   var keys = Object.keys(c).sort().reverse().slice(0, 15);
   box.innerHTML = keys.length ? keys.map(function (k) {
-    return '<div class="hora-item" style="align-items:flex-start"><span style="font-size:11px"><b>' + esc(k) + '</b> · ' + dayLine(c[k] || {}) + '</span>' +
+    return '<div class="hora-item su-0486f7"><span class="su-11a508"><b>' + esc(k) + '</b> · ' + dayLine(c[k] || {}) + '</span>' +
       '<button type="button" class="btn btn-icon ' + p + '-daydel" data-k="' + esc(k) + '">✕</button></div>';
-  }).join('') : '<p class="muted" style="font-size:11px;text-align:center">Sin chequeos. Guarda el primero arriba: 1 minuto.</p>';
+  }).join('') : '<p class="muted su-e201a8">Sin chequeos. Guarda el primero arriba: 1 minuto.</p>';
   box.querySelectorAll('.' + p + '-daydel').forEach(function (x) {
     x.onclick = function () { var e = stageStore(cf.key); delete e.checks[x.dataset.k]; save(); renderStreak(cf); renderLog(cf); };
   });
@@ -494,11 +494,11 @@ function renderMetas(cf) {
   var p = cf.p;
   var box = $(p + 'Metas'); if (!box) return;
   var ms = stageStore(cf.key).metas || [];
-  if (!ms.length) { box.innerHTML = '<p class="muted" style="font-size:11px;text-align:center">Sin metas. Agrega 1 pequeña arriba para esta luna.</p>'; return; }
+  if (!ms.length) { box.innerHTML = '<p class="muted su-e201a8">Sin metas. Agrega 1 pequeña arriba para esta luna.</p>'; return; }
   box.innerHTML = ms.map(function (m) {
-    return '<div class="hora-item"><span style="font-size:12px">' + (m.done ? '✅ <s>' : '⬜ ') + esc(m.txt) + (m.done ? '</s>' : '') +
-      '<br><span class="muted" style="font-size:10px">' + esc(m.fecha || '') + '</span></span>' +
-      '<span style="display:flex;gap:6px"><button type="button" class="btn btn-icon ' + p + '-mdone" data-k="' + esc(m.id) + '" title="Marcar/desmarcar">✓</button>' +
+    return '<div class="hora-item"><span class="su-6cb285">' + (m.done ? '✅ <s>' : '⬜ ') + esc(m.txt) + (m.done ? '</s>' : '') +
+      '<br><span class="muted su-0d5be0">' + esc(m.fecha || '') + '</span></span>' +
+      '<span class="su-49cd09"><button type="button" class="btn btn-icon ' + p + '-mdone" data-k="' + esc(m.id) + '" title="Marcar/desmarcar">✓</button>' +
       '<button type="button" class="btn btn-icon ' + p + '-mdel" data-k="' + esc(m.id) + '">✕</button></span></div>';
   }).join('');
   box.querySelectorAll('.' + p + '-mdone').forEach(function (x) {

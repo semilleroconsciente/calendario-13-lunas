@@ -1,25 +1,25 @@
 <dialog id="memoryDialog">
     <form method="dialog">
-      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
-        <h3 style="margin:0;color:var(--accent)">🧩 Memoria y Atención</h3>
+      <div class="dlg-actions su-d2d053">
+        <h3 class="su-ee0cfe">🧩 Memoria y Atención</h3>
         <button type="button" id="memoryCloseTop" class="btn btn-icon" title="Cerrar" aria-label="Cerrar">✕</button>
       </div>
-      <p class="muted" style="line-height:1.5">Gimnasio mental: 6 recursos para entrenar memoria visual, verbal, numérica y atención. 3 minutos al día. Ideal para 60+ y estudiantes. Todo se guarda <b>local y privado</b>.</p>
-      <div id="memoryStreakBar" class="chip" style="display:block;margin:6px 0;white-space:normal"></div>
-      <div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">
-        <button type="button" id="tabMemoryLoci" class="btn btn-accent" style="width:auto">🏛️ Loci</button>
-        <button type="button" id="tabMemoryPairs" class="btn" style="width:auto">🃏 Pares</button>
-        <button type="button" id="tabMemorySeq" class="btn" style="width:auto">🔢 Secuencia</button>
-        <button type="button" id="tabMemoryWords" class="btn" style="width:auto">📝 Palabras</button>
-        <button type="button" id="tabMemoryAtt" class="btn" style="width:auto">👁️ Atención</button>
-        <button type="button" id="tabMemoryProg" class="btn" style="width:auto">📊 Progreso</button>
+      <p class="muted su-77e2fe">Gimnasio mental: 6 recursos para entrenar memoria visual, verbal, numérica y atención. 3 minutos al día. Ideal para 60+ y estudiantes. Todo se guarda <b>local y privado</b>.</p>
+      <div id="memoryStreakBar" class="chip su-77fdb0"></div>
+      <div class="timer-tabs su-4dca21">
+        <button type="button" id="tabMemoryLoci" class="btn btn-accent su-30e741">🏛️ Loci</button>
+        <button type="button" id="tabMemoryPairs" class="btn su-30e741">🃏 Pares</button>
+        <button type="button" id="tabMemorySeq" class="btn su-30e741">🔢 Secuencia</button>
+        <button type="button" id="tabMemoryWords" class="btn su-30e741">📝 Palabras</button>
+        <button type="button" id="tabMemoryAtt" class="btn su-30e741">👁️ Atención</button>
+        <button type="button" id="tabMemoryProg" class="btn su-30e741">📊 Progreso</button>
       </div>
       <div id="memoryLociPanel">
         <div class="menstrual-card">
           <h4>🏛️ Palacio de la memoria — método Loci</h4>
-          <p class="muted" style="font-size:11px">Asocia cada palabra a un lugar de un recorrido que conoces. Ej: 1=Entrada → imagina la palabra gigante ahí. Mientras más absurda la imagen, mejor se graba.</p>
+          <p class="muted su-11a508">Asocia cada palabra a un lugar de un recorrido que conoces. Ej: 1=Entrada → imagina la palabra gigante ahí. Mientras más absurda la imagen, mejor se graba.</p>
           <div class="conv-row">
-            <label style="flex:1">Recorrido
+            <label class="su-97445a">Recorrido
               <select id="memoryRoute">
                 <option value="casa">🏠 Mi casa (5 lugares)</option>
                 <option value="feria">🧺 Feria de Penco (7 lugares)</option>
@@ -27,7 +27,7 @@
                 <option value="cuerpo">🧍 Mi cuerpo (10 lugares)</option>
               </select>
             </label>
-            <label style="flex:1">Nivel
+            <label class="su-97445a">Nivel
               <select id="memoryLociN">
                 <option value="5">Fácil · 5 palabras</option>
                 <option value="7" selected>Medio · 7 palabras</option>
@@ -36,73 +36,73 @@
             </label>
           </div>
           <label>Palabras a recordar (separadas por coma) <input type="text" id="memoryWords" placeholder="ej: luna, pez, harina, risa, viento, boldo, lluvia"></label>
-          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">
-            <button type="button" id="memoryRandomWords" class="btn" style="width:auto">🎲 Palabras al azar</button>
-            <button type="button" id="memoryBuildLoci" class="btn btn-accent" style="width:auto">Crear palacio</button>
-            <button type="button" id="memoryQuizLoci" class="btn hidden" style="width:auto">🙈 Ocultar y practicar</button>
+          <div class="su-c158a9">
+            <button type="button" id="memoryRandomWords" class="btn su-30e741">🎲 Palabras al azar</button>
+            <button type="button" id="memoryBuildLoci" class="btn btn-accent su-30e741">Crear palacio</button>
+            <button type="button" id="memoryQuizLoci" class="btn hidden su-30e741">🙈 Ocultar y practicar</button>
           </div>
-          <div id="memoryLociOutput" class="chip" style="display:block;margin-top:8px;white-space:normal;line-height:1.7"></div>
-          <div id="memoryLociQuiz" class="hidden" style="margin-top:8px"></div>
-          <p class="muted" style="font-size:10px;margin-top:6px">💡 Técnica: 1) Lee en voz alta · 2) Cierra los ojos y recorre · 3) Repite a los 10 min, 1 día y 7 días (repetición espaciada). Lo absurdo y con olor/sabor se recuerda 3× más.</p>
+          <div id="memoryLociOutput" class="chip su-dba528"></div>
+          <div id="memoryLociQuiz" class="hidden su-8a77e5"></div>
+          <p class="muted su-d47a97">💡 Técnica: 1) Lee en voz alta · 2) Cierra los ojos y recorre · 3) Repite a los 10 min, 1 día y 7 días (repetición espaciada). Lo absurdo y con olor/sabor se recuerda 3× más.</p>
         </div>
       </div>
       <div id="memoryPairsPanel" class="hidden">
-        <div class="menstrual-card" style="text-align:center">
+        <div class="menstrual-card su-91a870">
           <h4>🃏 Pares — memoria visual y atención</h4>
-          <p class="muted" style="font-size:11px">Toca 2 cartas. Si coinciden, quedan abiertas. Menos movimientos y menos tiempo = mejor.</p>
-          <div style="display:flex;gap:6px;justify-content:center;margin:8px 0;flex-wrap:wrap">
-            <button type="button" class="btn mem-pairs-lv" data-lv="facil" style="width:auto;font-size:11px">😌 Fácil 4×3</button>
-            <button type="button" class="btn mem-pairs-lv btn-accent" data-lv="medio" style="width:auto;font-size:11px">🙂 Medio 4×4</button>
-            <button type="button" class="btn mem-pairs-lv" data-lv="dificil" style="width:auto;font-size:11px">🔥 Difícil 6×4</button>
+          <p class="muted su-11a508">Toca 2 cartas. Si coinciden, quedan abiertas. Menos movimientos y menos tiempo = mejor.</p>
+          <div class="su-a8712a">
+            <button type="button" class="btn mem-pairs-lv su-337714" data-lv="facil">😌 Fácil 4×3</button>
+            <button type="button" class="btn mem-pairs-lv btn-accent su-337714" data-lv="medio">🙂 Medio 4×4</button>
+            <button type="button" class="btn mem-pairs-lv su-337714" data-lv="dificil">🔥 Difícil 6×4</button>
           </div>
-          <div style="display:flex;gap:6px;justify-content:center;margin-bottom:8px;flex-wrap:wrap">
+          <div class="su-9a67db">
             <span id="memoryPairsScore" class="chip">0 pares</span>
             <span id="memoryPairsMoves" class="chip">0 intentos</span>
             <span id="memoryPairsTime" class="chip">0:00</span>
             <span id="memoryPairsBest" class="chip">récord —</span>
           </div>
           <div id="memoryPairsGrid" class="mem-grid"></div>
-          <div style="margin-top:8px;display:flex;gap:6px;justify-content:center">
-            <button type="button" id="memoryPairsNew" class="btn btn-accent" style="width:auto">🔀 Nuevo juego</button>
+          <div class="su-5f9bb2">
+            <button type="button" id="memoryPairsNew" class="btn btn-accent su-30e741">🔀 Nuevo juego</button>
           </div>
         </div>
       </div>
       <div id="memorySeqPanel" class="hidden">
-        <div class="menstrual-card" style="text-align:center">
+        <div class="menstrual-card su-91a870">
           <h4>🔢 Secuencia lunar — memoria de trabajo (estilo Simón)</h4>
-          <p class="muted" style="font-size:11px">Mira la secuencia de lunas, luego repítela en orden. Cada ronda agrega 1 paso. ¿Hasta qué nivel llegas?</p>
-          <div style="display:flex;gap:6px;justify-content:center;margin:6px 0;flex-wrap:wrap">
+          <p class="muted su-11a508">Mira la secuencia de lunas, luego repítela en orden. Cada ronda agrega 1 paso. ¿Hasta qué nivel llegas?</p>
+          <div class="su-fcd9dc">
             <span id="memorySeqLevel" class="chip">Nivel 0</span>
             <span id="memorySeqBest" class="chip">récord 0</span>
             <span id="memorySeqMsg" class="chip">pulsa Iniciar</span>
           </div>
           <div id="memorySeqGrid" class="mem-seq-grid"></div>
-          <div style="display:flex;gap:6px;justify-content:center;margin-top:10px;flex-wrap:wrap">
-            <button type="button" id="memorySeqStart" class="btn btn-accent" style="width:auto">▶ Iniciar</button>
-            <button type="button" id="memorySeqSlow" class="btn" style="width:auto;font-size:11px">🐢 Lento</button>
-            <button type="button" id="memorySeqFast" class="btn" style="width:auto;font-size:11px">🐇 Rápido</button>
+          <div class="su-b4e04a">
+            <button type="button" id="memorySeqStart" class="btn btn-accent su-30e741">▶ Iniciar</button>
+            <button type="button" id="memorySeqSlow" class="btn su-337714">🐢 Lento</button>
+            <button type="button" id="memorySeqFast" class="btn su-337714">🐇 Rápido</button>
           </div>
-          <p class="muted" style="font-size:10px;margin-top:6px">💡 Truco: ponle nombre en voz alta a cada luna (ej: “nueva, llena, menguante…”) — la doble codificación verbal+visual duplica el recuerdo.</p>
+          <p class="muted su-d47a97">💡 Truco: ponle nombre en voz alta a cada luna (ej: “nueva, llena, menguante…”) — la doble codificación verbal+visual duplica el recuerdo.</p>
         </div>
       </div>
       <div id="memoryWordsPanel" class="hidden">
         <div class="menstrual-card">
           <h4>📝 Palabras y números — memoria verbal</h4>
-          <p class="muted" style="font-size:11px">Memoriza la lista (o el número), ocúltala y escríbela de memoria. Entrena para compras, recados y estudios.</p>
-          <div class="timer-tabs" style="margin:8px 0">
-            <button type="button" id="tabMemWList" class="btn btn-accent" style="width:auto;font-size:11px">📝 Lista</button>
-            <button type="button" id="tabMemWNum" class="btn" style="width:auto;font-size:11px">🔢 Número</button>
+          <p class="muted su-11a508">Memoriza la lista (o el número), ocúltala y escríbela de memoria. Entrena para compras, recados y estudios.</p>
+          <div class="timer-tabs su-f5554e">
+            <button type="button" id="tabMemWList" class="btn btn-accent su-337714">📝 Lista</button>
+            <button type="button" id="tabMemWNum" class="btn su-337714">🔢 Número</button>
           </div>
           <div id="memWListBox">
             <div class="conv-row">
-              <label style="flex:1">Cantidad
+              <label class="su-97445a">Cantidad
                 <select id="memoryWordsN">
                   <option value="5">5 palabras</option>
                   <option value="7" selected>7 palabras</option>
                   <option value="10">10 palabras</option>
                 </select>
               </label>
-              <label style="flex:1">Tiempo para mirar
+              <label class="su-97445a">Tiempo para mirar
                 <select id="memoryWordsT">
                   <option value="15">15 seg</option>
                   <option value="30" selected>30 seg</option>
@@ -110,24 +110,24 @@
                 </select>
               </label>
             </div>
-            <div style="display:flex;gap:6px;flex-wrap:wrap;margin:6px 0">
-              <button type="button" id="memoryWordsGen" class="btn btn-accent" style="width:auto">🎲 Generar lista</button>
-              <button type="button" id="memoryWordsHide" class="btn hidden" style="width:auto">🙈 Ocultar</button>
-              <button type="button" id="memoryWordsShow" class="btn hidden" style="width:auto">👁️ Mostrar</button>
+            <div class="su-38c0a4">
+              <button type="button" id="memoryWordsGen" class="btn btn-accent su-30e741">🎲 Generar lista</button>
+              <button type="button" id="memoryWordsHide" class="btn hidden su-30e741">🙈 Ocultar</button>
+              <button type="button" id="memoryWordsShow" class="btn hidden su-30e741">👁️ Mostrar</button>
             </div>
-            <div id="memoryWordsList" class="chip" style="display:block;white-space:normal;line-height:1.8;min-height:40px">Pulsa “Generar lista”.</div>
-            <div id="memoryWordsTimer" class="chip hidden" style="display:block;margin-top:6px;text-align:center"></div>
-            <div id="memoryWordsRecallBox" class="hidden" style="margin-top:8px">
+            <div id="memoryWordsList" class="chip su-0ba8f7">Pulsa “Generar lista”.</div>
+            <div id="memoryWordsTimer" class="chip hidden su-8418cc"></div>
+            <div id="memoryWordsRecallBox" class="hidden su-8a77e5">
               <label>Escríbelas de memoria (coma o una por línea) <textarea id="memoryWordsRecall" rows="3" placeholder="ej: luna, mar, boldo..."></textarea></label>
-              <div style="display:flex;gap:6px;margin-top:6px">
-                <button type="button" id="memoryWordsCheck" class="btn btn-accent" style="width:auto">✓ Evaluar</button>
+              <div class="su-30b926">
+                <button type="button" id="memoryWordsCheck" class="btn btn-accent su-30e741">✓ Evaluar</button>
               </div>
-              <div id="memoryWordsResult" class="chip" style="display:block;margin-top:6px;white-space:normal"></div>
+              <div id="memoryWordsResult" class="chip su-84c735"></div>
             </div>
           </div>
           <div id="memWNumBox" class="hidden">
             <div class="conv-row">
-              <label style="flex:1">Dígitos
+              <label class="su-97445a">Dígitos
                 <select id="memoryNumN">
                   <option value="4">4 (teléfono corto)</option>
                   <option value="6" selected>6</option>
@@ -135,7 +135,7 @@
                   <option value="10">10 (desafío)</option>
                 </select>
               </label>
-              <label style="flex:1">Tiempo
+              <label class="su-97445a">Tiempo
                 <select id="memoryNumT">
                   <option value="10">10 seg</option>
                   <option value="20" selected>20 seg</option>
@@ -143,73 +143,73 @@
                 </select>
               </label>
             </div>
-            <div style="display:flex;gap:6px;flex-wrap:wrap;margin:6px 0">
-              <button type="button" id="memoryNumGen" class="btn btn-accent" style="width:auto">🎲 Generar número</button>
-              <button type="button" id="memoryNumHide" class="btn hidden" style="width:auto">🙈 Ocultar</button>
-              <button type="button" id="memoryNumShow" class="btn hidden" style="width:auto">👁️ Mostrar</button>
+            <div class="su-38c0a4">
+              <button type="button" id="memoryNumGen" class="btn btn-accent su-30e741">🎲 Generar número</button>
+              <button type="button" id="memoryNumHide" class="btn hidden su-30e741">🙈 Ocultar</button>
+              <button type="button" id="memoryNumShow" class="btn hidden su-30e741">👁️ Mostrar</button>
             </div>
-            <div id="memoryNumList" class="chip" style="display:block;text-align:center;font-size:26px;letter-spacing:4px;font-weight:800;min-height:48px">— — —</div>
-            <div id="memoryNumTimer" class="chip hidden" style="display:block;margin-top:6px;text-align:center"></div>
-            <div id="memoryNumRecallBox" class="hidden" style="margin-top:8px">
+            <div id="memoryNumList" class="chip su-d2d7f5">— — —</div>
+            <div id="memoryNumTimer" class="chip hidden su-8418cc"></div>
+            <div id="memoryNumRecallBox" class="hidden su-8a77e5">
               <label>Escríbelo de memoria <input type="text" id="memoryNumRecall" inputmode="numeric" placeholder="ej: 482916" maxlength="12"></label>
-              <div style="display:flex;gap:6px;margin-top:6px">
-                <button type="button" id="memoryNumCheck" class="btn btn-accent" style="width:auto">✓ Evaluar</button>
+              <div class="su-30b926">
+                <button type="button" id="memoryNumCheck" class="btn btn-accent su-30e741">✓ Evaluar</button>
               </div>
-              <div id="memoryNumResult" class="chip" style="display:block;margin-top:6px;white-space:normal"></div>
+              <div id="memoryNumResult" class="chip su-84c735"></div>
             </div>
-            <p class="muted" style="font-size:10px;margin-top:6px">💡 Agrupa de a 2-3 dígitos (48-29-16) y crea una historia. Es la técnica de “chunking” que usan los campeones de memoria.</p>
+            <p class="muted su-d47a97">💡 Agrupa de a 2-3 dígitos (48-29-16) y crea una historia. Es la técnica de “chunking” que usan los campeones de memoria.</p>
           </div>
         </div>
       </div>
       <div id="memoryAttPanel" class="hidden">
-        <div class="menstrual-card" style="text-align:center">
+        <div class="menstrual-card su-91a870">
           <h4>👁️ Encuentra el distinto — velocidad de atención</h4>
-          <p class="muted" style="font-size:11px">Hay 1 emoji distinto entre todos. Tócalo lo más rápido posible. 5 rondas.</p>
-          <div style="display:flex;gap:6px;justify-content:center;margin:6px 0;flex-wrap:wrap">
+          <p class="muted su-11a508">Hay 1 emoji distinto entre todos. Tócalo lo más rápido posible. 5 rondas.</p>
+          <div class="su-fcd9dc">
             <span id="memoryOddRound" class="chip">Ronda 0/5</span>
             <span id="memoryOddTime" class="chip">0.0s</span>
             <span id="memoryOddBest" class="chip">récord —</span>
           </div>
           <div id="memoryOddGrid" class="mem-grid"></div>
-          <div style="margin-top:8px"><button type="button" id="memoryOddNew" class="btn btn-accent" style="width:auto">▶ Nueva partida (5 rondas)</button></div>
+          <div class="su-8a77e5"><button type="button" id="memoryOddNew" class="btn btn-accent su-30e741">▶ Nueva partida (5 rondas)</button></div>
         </div>
-        <div class="menstrual-card" style="text-align:center;margin-top:10px">
+        <div class="menstrual-card su-be1e37">
           <h4>🔢 Tabla de Schulte 5×5 — atención plena</h4>
-          <p class="muted" style="font-size:11px">Toca los números del 1 al 25 en orden, lo más rápido posible, sin mover mucho los ojos. Excelente para lectura y concentración.</p>
-          <div style="display:flex;gap:6px;justify-content:center;margin:6px 0;flex-wrap:wrap">
+          <p class="muted su-11a508">Toca los números del 1 al 25 en orden, lo más rápido posible, sin mover mucho los ojos. Excelente para lectura y concentración.</p>
+          <div class="su-fcd9dc">
             <span id="memorySchNext" class="chip">Siguiente: 1</span>
             <span id="memorySchTime" class="chip">0.0s</span>
             <span id="memorySchBest" class="chip">récord —</span>
           </div>
           <div id="memorySchGrid" class="mem-schulte"></div>
-          <div style="margin-top:8px;display:flex;gap:6px;justify-content:center;flex-wrap:wrap">
-            <button type="button" id="memorySchNew" class="btn btn-accent" style="width:auto">🔀 Nueva tabla</button>
+          <div class="su-38b831">
+            <button type="button" id="memorySchNew" class="btn btn-accent su-30e741">🔀 Nueva tabla</button>
           </div>
-          <p class="muted" style="font-size:10px;margin-top:6px">Meta sana: &lt;60s principiante · &lt;40s intermedio · &lt;25s avanzado. Si te frustras, respira y vuelve mañana.</p>
+          <p class="muted su-d47a97">Meta sana: &lt;60s principiante · &lt;40s intermedio · &lt;25s avanzado. Si te frustras, respira y vuelve mañana.</p>
         </div>
       </div>
       <div id="memoryProgPanel" class="hidden">
         <div class="menstrual-card">
           <h4>📊 Tu progreso — racha y récords</h4>
-          <div id="memoryProgStats" class="chip" style="display:block;white-space:normal;line-height:1.7"></div>
-          <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap">
-            <button type="button" id="memoryProgReset" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar récords</button>
+          <div id="memoryProgStats" class="chip su-f48a17"></div>
+          <div class="su-39c4d3">
+            <button type="button" id="memoryProgReset" class="btn su-214f75">🗑 Borrar récords</button>
           </div>
         </div>
-        <div class="menstrual-card" style="margin-top:10px">
+        <div class="menstrual-card su-d2c171">
           <h4>🗓️ Rutina 3 minutos al día (sugerida)</h4>
-          <div class="help-grid" style="margin-top:8px">
-            <div class="help-card"><h4>Lun · Pares</h4><p style="font-size:11px">Medio 4×4, 1 partida. Calienta la vista.</p></div>
-            <div class="help-card"><h4>Mar · Secuencia</h4><p style="font-size:11px">Llega a nivel 6. Memoria de trabajo.</p></div>
-            <div class="help-card"><h4>Mié · Palabras</h4><p style="font-size:11px">7 palabras en 30 seg. Verbal.</p></div>
-            <div class="help-card"><h4>Jue · Atención</h4><p style="font-size:11px">5 rondas del distinto + 1 Schulte.</p></div>
-            <div class="help-card"><h4>Vie · Loci</h4><p style="font-size:11px">Crea 1 palacio con tu lista de compras.</p></div>
-            <div class="help-card"><h4>Sáb/Dom · Libre</h4><p style="font-size:11px">Repite tu favorito o descansa. Dormir consolida.</p></div>
+          <div class="help-grid su-8a77e5">
+            <div class="help-card"><h4>Lun · Pares</h4><p class="su-11a508">Medio 4×4, 1 partida. Calienta la vista.</p></div>
+            <div class="help-card"><h4>Mar · Secuencia</h4><p class="su-11a508">Llega a nivel 6. Memoria de trabajo.</p></div>
+            <div class="help-card"><h4>Mié · Palabras</h4><p class="su-11a508">7 palabras en 30 seg. Verbal.</p></div>
+            <div class="help-card"><h4>Jue · Atención</h4><p class="su-11a508">5 rondas del distinto + 1 Schulte.</p></div>
+            <div class="help-card"><h4>Vie · Loci</h4><p class="su-11a508">Crea 1 palacio con tu lista de compras.</p></div>
+            <div class="help-card"><h4>Sáb/Dom · Libre</h4><p class="su-11a508">Repite tu favorito o descansa. Dormir consolida.</p></div>
           </div>
         </div>
-        <div class="menstrual-card" style="margin-top:10px">
+        <div class="menstrual-card su-d2c171">
           <h4>📚 7 hábitos que cuidan la memoria (60+)</h4>
-          <p class="muted" style="font-size:11px;line-height:1.7">1) <b>Dormir 7-8h</b> — el sueño fija recuerdos.<br>2) <b>Caminar 20-30 min</b> — oxigena el hipocampo.<br>3) <b>Agua y comida de verdad</b> — menos ultraprocesados.<br>4) <b>Repetir en voz alta</b> — nombres, recados, listas.<br>5) <b>Un cuaderno siempre</b> — descargar en papel libera memoria.<br>6) <b>Vida social</b> — conversar es el mejor entrenamiento.<br>7) <b>Chequeo médico</b> si hay olvidos que preocupan (no es consejo médico: consulta a tu CESFAM).<br><br>⚠️ Si los olvidos interfieren con tu vida diaria, pide hora con profesional. Entrenar ayuda, pero no reemplaza evaluación.</p>
+          <p class="muted su-583677">1) <b>Dormir 7-8h</b> — el sueño fija recuerdos.<br>2) <b>Caminar 20-30 min</b> — oxigena el hipocampo.<br>3) <b>Agua y comida de verdad</b> — menos ultraprocesados.<br>4) <b>Repetir en voz alta</b> — nombres, recados, listas.<br>5) <b>Un cuaderno siempre</b> — descargar en papel libera memoria.<br>6) <b>Vida social</b> — conversar es el mejor entrenamiento.<br>7) <b>Chequeo médico</b> si hay olvidos que preocupan (no es consejo médico: consulta a tu CESFAM).<br><br>⚠️ Si los olvidos interfieren con tu vida diaria, pide hora con profesional. Entrenar ayuda, pero no reemplaza evaluación.</p>
         </div>
       </div>
       <div class="dlg-actions"><button type="button" id="memoryClose" class="btn">Cerrar</button></div>

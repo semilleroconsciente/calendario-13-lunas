@@ -110,21 +110,21 @@ function ensureDialog() {
   d.id = 'actoresDialog';
   d.innerHTML =
     '<form method="dialog">' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
-    '<h3 style="margin:0;color:var(--accent)">🛡️ Guardianes del Territorio — Penco</h3>' +
+    '<div class="dlg-actions su-d2d053">' +
+    '<h3 class="su-ee0cfe">🛡️ Guardianes del Territorio — Penco</h3>' +
     '<button type="button" id="actoresCloseTop" class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    '<p class="muted" style="line-height:1.5">Quiénes defienden activamente el territorio: humedal, bahía, agua, bosque y economía local. Base verificable 2021–2026 — <b>verifica vigencia</b> antes de contactar. Tus agregados y ⭐ quedan <b>privados y locales</b>.</p>' +
-    '<div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">' +
-    '<button type="button" id="tabActDir" class="btn btn-accent" style="width:auto">🛡️ Directorio</button>' +
-    '<button type="button" id="tabActMios" class="btn" style="width:auto">⭐ Siguiendo y míos</button>' +
+    '<p class="muted su-77e2fe">Quiénes defienden activamente el territorio: humedal, bahía, agua, bosque y economía local. Base verificable 2021–2026 — <b>verifica vigencia</b> antes de contactar. Tus agregados y ⭐ quedan <b>privados y locales</b>.</p>' +
+    '<div class="timer-tabs su-4dca21">' +
+    '<button type="button" id="tabActDir" class="btn btn-accent su-30e741">🛡️ Directorio</button>' +
+    '<button type="button" id="tabActMios" class="btn su-30e741">⭐ Siguiendo y míos</button>' +
     '</div>' +
     '<div id="actDirPanel">' +
     '<div class="menstrual-card"><h4>🔍 Buscar y filtrar</h4>' +
-    '<div class="conv-row"><label style="flex:2">Buscar <input type="text" id="actSearch" placeholder="ej: humedal, GNL, tierras raras, mujeres, pesca..." maxlength="60" autocomplete="off"></label>' +
+    '<div class="conv-row"><label class="su-4b3de7">Buscar <input type="text" id="actSearch" placeholder="ej: humedal, GNL, tierras raras, mujeres, pesca..." maxlength="60" autocomplete="off"></label>' +
     '<label>Frente <select id="actFrente"><option value="todos">Todos</option></select></label></div>' +
-    '<p class="muted" style="font-size:11px;margin:4px 0 0" id="actCount"></p></div>' +
-    '<div id="actList" style="margin-top:10px"></div>' +
-    '<p class="muted" style="font-size:10px;margin-top:8px" id="actNota"></p></div>' +
+    '<p class="muted su-954796" id="actCount"></p></div>' +
+    '<div id="actList" class="su-d2c171"></div>' +
+    '<p class="muted su-a953a7" id="actNota"></p></div>' +
     '<div id="actMiosPanel" class="hidden">' +
     '<div class="menstrual-card"><h4>➕ Agregar mi guardián (junta, colectivo, olla, brigada...)</h4>' +
     '<div class="conv-row"><label>Nombre * <input type="text" id="actMioNombre" placeholder="ej: Junta VV Ríos de Chile" maxlength="60"></label>' +
@@ -132,9 +132,9 @@ function ensureDialog() {
     '<div class="conv-row"><label>Frentes (coma) <input type="text" id="actMioFrentes" placeholder="ej: humedal, agua" maxlength="60"></label>' +
     '<label>Contacto <input type="text" id="actMioContacto" placeholder="ej: nombre + lugar de encuentro" maxlength="60"></label></div>' +
     '<label>Nota <input type="text" id="actMioNota" placeholder="qué defiende, cuándo se juntan" maxlength="120"></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="actMioAdd" class="btn btn-accent" style="width:auto">+ Guardar</button>' +
-    '<button type="button" id="actMioCancel" class="btn hidden" style="width:auto">Cancelar</button></div></div>' +
-    '<div id="actMiosList" style="margin-top:10px"></div></div>' +
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="actMioAdd" class="btn btn-accent su-30e741">+ Guardar</button>' +
+    '<button type="button" id="actMioCancel" class="btn hidden su-30e741">Cancelar</button></div></div>' +
+    '<div id="actMiosList" class="su-d2c171"></div></div>' +
     '<div class="dlg-actions"><button type="button" id="actoresClose" class="btn">Cerrar</button></div></form>';
   document.body.appendChild(d);
   return d;
@@ -143,18 +143,18 @@ function ensureDialog() {
 function actorCard(a) {
   var st = store();
   var sig = !!st.siguiendo[a.id];
-  var fr = (a.frentes || []).map(function (f) { return '<span class="chip" style="font-size:10px">' + esc(f) + '</span>'; }).join(' ');
-  var html = '<div class="si-card" style="padding:10px 12px"><h4 style="font-size:13px">' + (sig ? '⭐ ' : '🛡️ ') + esc(a.nombre) + '</h4>' +
-    '<p class="muted" style="font-size:11px;margin:2px 0">' + esc(a.tipo || '') + '</p>' +
-    (fr ? '<div style="display:flex;gap:6px;flex-wrap:wrap;margin:4px 0">' + fr + '</div>' : '') +
-    '<p style="font-size:12px;line-height:1.55"><b>Defiende:</b> ' + esc(a.lucha || '') + '</p>' +
-    (a.sumarse ? '<p class="muted" style="font-size:11px;line-height:1.5">🤝 <b>Sumarse:</b> ' + esc(a.sumarse) + '</p>' : '') +
-    (a.redes && a.redes.length ? '<div style="display:flex;gap:6px;flex-wrap:wrap;margin:4px 0">' + a.redes.map(function (r) { return '<a class="btn" style="width:auto;font-size:11px;text-decoration:none" href="' + esc(r.url) + '" target="_blank" rel="noopener">🔗 ' + esc(r.label) + '</a>'; }).join('') + '</div>' : '<p class="muted" style="font-size:10px">Sin red pública verificada — si la conoces, agrégala en ⭐ Mis guardianes.</p>') +
-    (a.fuente ? '<p class="muted" style="font-size:10px">📰 ' + esc(a.fuente) + (a.fuenteUrl ? ' · <a href="' + esc(a.fuenteUrl) + '" target="_blank" rel="noopener">ver fuente</a>' : '') + '</p>' : '') +
-    '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">' +
-    '<button type="button" class="btn" style="width:auto;font-size:11px" data-act-sig="' + esc(a.id) + '">' + (sig ? '★ Siguiendo' : '☆ Sigo') + '</button>' +
-    '<button type="button" class="btn" style="width:auto;font-size:11px" data-act-cal="' + esc(a.id) + '">📌 Al calendario</button>' +
-    '<button type="button" class="btn" style="width:auto;font-size:11px" data-act-share="' + esc(a.id) + '">📤 Compartir</button>' +
+  var fr = (a.frentes || []).map(function (f) { return '<span class="chip su-0d5be0">' + esc(f) + '</span>'; }).join(' ');
+  var html = '<div class="si-card su-2285bd"><h4 class="su-5e0faa">' + (sig ? '⭐ ' : '🛡️ ') + esc(a.nombre) + '</h4>' +
+    '<p class="muted su-541e41">' + esc(a.tipo || '') + '</p>' +
+    (fr ? '<div class="su-93b961">' + fr + '</div>' : '') +
+    '<p class="su-afb724"><b>Defiende:</b> ' + esc(a.lucha || '') + '</p>' +
+    (a.sumarse ? '<p class="muted su-a6c665">🤝 <b>Sumarse:</b> ' + esc(a.sumarse) + '</p>' : '') +
+    (a.redes && a.redes.length ? '<div class="su-93b961">' + a.redes.map(function (r) { return '<a class="btn su-b24d9d" href="' + esc(r.url) + '" target="_blank" rel="noopener">🔗 ' + esc(r.label) + '</a>'; }).join('') + '</div>' : '<p class="muted su-0d5be0">Sin red pública verificada — si la conoces, agrégala en ⭐ Mis guardianes.</p>') +
+    (a.fuente ? '<p class="muted su-0d5be0">📰 ' + esc(a.fuente) + (a.fuenteUrl ? ' · <a href="' + esc(a.fuenteUrl) + '" target="_blank" rel="noopener">ver fuente</a>' : '') + '</p>' : '') +
+    '<div class="su-c158a9">' +
+    '<button type="button" class="btn su-337714" data-act-sig="' + esc(a.id) + '">' + (sig ? '★ Siguiendo' : '☆ Sigo') + '</button>' +
+    '<button type="button" class="btn su-337714" data-act-cal="' + esc(a.id) + '">📌 Al calendario</button>' +
+    '<button type="button" class="btn su-337714" data-act-share="' + esc(a.id) + '">📤 Compartir</button>' +
     '</div></div>';
   return html;
 }
@@ -181,17 +181,17 @@ function renderMios() {
   var seguidos = data.filter(function (a) { return st.siguiendo[a.id]; });
   var html = '<div class="menstrual-card"><h4>⭐ Siguiendo · ' + seguidos.length + '</h4>';
   html += seguidos.length ? seguidos.map(function (a) {
-    return '<div class="hora-item"><span style="font-size:12px"><b>' + esc(a.nombre) + '</b><br><span class="muted" style="font-size:10px">' + esc((a.frentes || []).join(' · ')) + '</span></span>' +
-      '<span style="display:flex;gap:4px"><button type="button" class="btn btn-icon" data-act-cal="' + esc(a.id) + '" title="Al calendario">📌</button>' +
+    return '<div class="hora-item"><span class="su-6cb285"><b>' + esc(a.nombre) + '</b><br><span class="muted su-0d5be0">' + esc((a.frentes || []).join(' · ')) + '</span></span>' +
+      '<span class="su-74cac9"><button type="button" class="btn btn-icon" data-act-cal="' + esc(a.id) + '" title="Al calendario">📌</button>' +
       '<button type="button" class="btn btn-icon" data-act-unsig="' + esc(a.id) + '" title="Dejar de seguir">✕</button></span></div>';
-  }).join('') : '<p class="muted" style="font-size:11px">Aún no sigues a nadie. Marca ☆ Sigo en el Directorio.</p>';
+  }).join('') : '<p class="muted su-11a508">Aún no sigues a nadie. Marca ☆ Sigo en el Directorio.</p>';
   html += '</div>';
-  html += '<div class="menstrual-card" style="margin-top:10px"><h4>📋 Mis guardianes agregados · ' + st.mios.length + '</h4><div id="actMiosInner">';
+  html += '<div class="menstrual-card su-d2c171"><h4>📋 Mis guardianes agregados · ' + st.mios.length + '</h4><div id="actMiosInner">';
   html += st.mios.length ? st.mios.map(function (m) {
-    return '<div class="hora-item"><span style="font-size:12px"><b>' + esc(m.nombre) + '</b> <span class="muted">· ' + esc(m.tipo || '') + '</span><br><span class="muted" style="font-size:10px">' + esc(m.frentes || '') + (m.contacto ? ' · 📞 ' + esc(m.contacto) : '') + (m.nota ? '<br>' + esc(m.nota) : '') + '</span></span>' +
-      '<span style="display:flex;gap:4px"><button type="button" class="btn btn-icon" data-mio-edit="' + esc(m.id) + '" title="Editar">✎</button>' +
+    return '<div class="hora-item"><span class="su-6cb285"><b>' + esc(m.nombre) + '</b> <span class="muted">· ' + esc(m.tipo || '') + '</span><br><span class="muted su-0d5be0">' + esc(m.frentes || '') + (m.contacto ? ' · 📞 ' + esc(m.contacto) : '') + (m.nota ? '<br>' + esc(m.nota) : '') + '</span></span>' +
+      '<span class="su-74cac9"><button type="button" class="btn btn-icon" data-mio-edit="' + esc(m.id) + '" title="Editar">✎</button>' +
       '<button type="button" class="btn btn-icon" data-mio-del="' + esc(m.id) + '" title="Borrar">✕</button></span></div>';
-  }).join('') : '<p class="muted" style="font-size:11px">Agrega tu junta, colectivo u olla común arriba. Queda solo en tu dispositivo.</p>';
+  }).join('') : '<p class="muted su-11a508">Agrega tu junta, colectivo u olla común arriba. Queda solo en tu dispositivo.</p>';
   html += '</div></div>';
   box.innerHTML = html;
   wireCards(box);

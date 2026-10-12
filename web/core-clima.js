@@ -103,24 +103,24 @@ function buildOfflineMesHTML(nowDate, cacheInfo) {
   const dias = climaRefDias(nowDate);
   const cacheTxt = cacheInfo && cacheInfo.ts
     ? `<span class="chip">💾 Último dato online: ${cacheInfo.ts} · ${escapeHtml(cacheInfo.resumen || '')}</span>`
-    : `<span class="chip" style="color:var(--muted)">💾 Sin dato online guardado aún — conéctate una vez para guardar referencia</span>`;
+    : `<span class="chip su-57f9e3">💾 Sin dato online guardado aún — conéctate una vez para guardar referencia</span>`;
   return `<div class="wp-current">${mes.icono} <b>Penco · ${mes.nombre}:</b> esperable ${mes.tmin}–${mes.tmax}°C · 💧${mes.probLluvia}% lluvia · 💨 ${escapeHtml(mes.viento)}</div>
-  <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px">${cacheTxt}<span class="chip">🌧️ Lluvia mes ~${mes.lluviaMm} mm en ~${mes.diasLluvia} días</span></div>
-  <p class="muted" style="margin:4px 0 8px">${escapeHtml(mes.resumen)}</p>
+  <div class="su-f787da">${cacheTxt}<span class="chip">🌧️ Lluvia mes ~${mes.lluviaMm} mm en ~${mes.diasLluvia} días</span></div>
+  <p class="muted su-54eb29">${escapeHtml(mes.resumen)}</p>
   <div class="wp-hours-title">Referencia próximos 3 días (climatología)</div>
-  <div class="wp-days">${dias.map(d => `<div class="wp-day"><div class="wd-date">${escapeHtml(d.label)}</div><div class="wd-ico">${d.icono}</div><div>${d.tmin}–${d.tmax}°C</div><div class="wd-date">💧${d.prob}%</div><div class="wd-date" style="font-size:10px">${escapeHtml(d.viento.split(' ')[0])} ${escapeHtml(d.viento.split(' ')[1] || '')}</div></div>`).join('')}</div>
-  <p class="muted" style="font-size:11px;margin-top:8px">📴 Climatología histórica, no pronóstico exacto. Promedios Concepción/Penco — ajusta mirando cielo y viento.</p>`;
+  <div class="wp-days">${dias.map(d => `<div class="wp-day"><div class="wd-date">${escapeHtml(d.label)}</div><div class="wd-ico">${d.icono}</div><div>${d.tmin}–${d.tmax}°C</div><div class="wd-date">💧${d.prob}%</div><div class="wd-date su-0d5be0">${escapeHtml(d.viento.split(' ')[0])} ${escapeHtml(d.viento.split(' ')[1] || '')}</div></div>`).join('')}</div>
+  <p class="muted su-e6fe60">📴 Climatología histórica, no pronóstico exacto. Promedios Concepción/Penco — ajusta mirando cielo y viento.</p>`;
 }
 function buildOfflineConsejosHTML(nowDate) {
   const mes = climaMesOffline(nowDate);
   const consejos = climaConsejosOffline(mes);
-  return `<div style="display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))">${consejos.map(c => `<div class="si-card"><h4>${escapeHtml(c.t)}</h4><p>${escapeHtml(c.d)}</p></div>`).join('')}</div>
-  <p class="muted" style="font-size:12px;margin-top:8px">Conecta: 🌱 Siembra lunar · 🎣 Pesca según viento · 🪵 Leña & Pellet en heladas · 🌬️ Aire Penco si hay humo · 🌊 Mareas antes de costa · 🌿 Lawen para resfríos. Todo funciona offline.</p>`;
+  return `<div class="su-b8d7a3">${consejos.map(c => `<div class="si-card"><h4>${escapeHtml(c.t)}</h4><p>${escapeHtml(c.d)}</p></div>`).join('')}</div>
+  <p class="muted su-b0cc7e">Conecta: 🌱 Siembra lunar · 🎣 Pesca según viento · 🪵 Leña & Pellet en heladas · 🌬️ Aire Penco si hay humo · 🌊 Mareas antes de costa · 🌿 Lawen para resfríos. Todo funciona offline.</p>`;
 }
 function buildOfflineSenasHTML() {
   // Contenido directo (sin <details> anidado): al hacer clic en 🔭 Señas se ve al tiro
-  return `<p class="muted" style="margin:4px 0 8px">🔭 Señas del cielo, mar y campo en Penco — mira esto antes de salir, sin internet.</p>
-  <div style="display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))">
+  return `<p class="muted su-54eb29">🔭 Señas del cielo, mar y campo en Penco — mira esto antes de salir, sin internet.</p>
+  <div class="su-b8d7a3">
     <div class="si-card"><h4>☁️ Nubes</h4><p>Cirros altos en velo = lluvia en 12–24h. Estratos pegados al cerro que no levantan a las 11h = tarde lluviosa. Cúmulos algodonosos aislados con sur = buen tiempo.</p></div>
     <div class="si-card"><h4>💨 Viento</h4><p><b>Norte tibio y húmedo</b> que gira al NO + mar picado = frente llegando. <b>Sur frío y seco</b> que limpia = despeje 2–3 días. Calma + niebla espesa en Rocuant = helada nocturna si despeja.</p></div>
     <div class="si-card"><h4>🌙 Luna y cielo</h4><p>Halo alrededor de la luna (cerco) = humedad alta, lluvia en 24–48h. Luna nítida + estrellas que casi no titilan + aire frío = helada. Atardecer rojo con sur = buen día; plomo con norte = agua.</p></div>
@@ -131,15 +131,15 @@ function buildOfflineSenasHTML() {
 function buildOfflineClimaHTML(nowDate, cacheInfo) {
   // Sub-pestañas ordenadas dentro de la guía offline
   const sec = climaOfflineSec || 'mes';
-  const btn = (id, label) => `<button type="button" id="${id}" class="btn${sec === id.replace('climaSec', '').toLowerCase() ? ' btn-accent' : ''}" style="width:auto">${label}</button>`;
+  const btn = (id, label) => `<button type="button" id="${id}" class="btn${sec === id.replace('climaSec', '').toLowerCase() ? ' btn-accent' : ''} su-30e741">${label}</button>`;
   let body = '';
   if (sec === 'consejos') body = buildOfflineConsejosHTML(nowDate);
   else if (sec === 'senas') body = buildOfflineSenasHTML();
   else body = buildOfflineMesHTML(nowDate, cacheInfo);
-  return `<div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">
-      <button type="button" id="climaSecMes" class="btn${sec === 'mes' ? ' btn-accent' : ''}" style="width:auto">📅 Mes</button>
-      <button type="button" id="climaSecConsejos" class="btn${sec === 'consejos' ? ' btn-accent' : ''}" style="width:auto">💡 Consejos</button>
-      <button type="button" id="climaSecSenas" class="btn${sec === 'senas' ? ' btn-accent' : ''}" style="width:auto">🔭 Señas</button>
+  return `<div class="timer-tabs su-4dca21">
+      <button type="button" id="climaSecMes" class="btn${sec === 'mes' ? ' btn-accent' : ''} su-30e741">📅 Mes</button>
+      <button type="button" id="climaSecConsejos" class="btn${sec === 'consejos' ? ' btn-accent' : ''} su-30e741">💡 Consejos</button>
+      <button type="button" id="climaSecSenas" class="btn${sec === 'senas' ? ' btn-accent' : ''} su-30e741">🔭 Señas</button>
     </div><div id="climaOfflineBody">${body}</div>`;
 }
 function bindOfflineClimaTabs(nowDate, cacheInfo) {
@@ -193,9 +193,9 @@ function buildSolOfflineHTML(nowDate) {
   const n = uvNivel(uv);
   const nombreMes = CLIMA_PENCO_MESES[mes - 1].nombre;
   return `<div class="wp-current">☀️ <b>Sol / UV · ${nombreMes} (offline):</b> índice máximo típico <b style="color:${n.color}">UV ${uv} (${n.label})</b></div>
-  <p class="muted" style="margin:4px 0 8px">${escapeHtml(n.consejo)} En Penco el viento sur engaña: quema aunque esté fresco.</p>
+  <p class="muted su-54eb29">${escapeHtml(n.consejo)} En Penco el viento sur engaña: quema aunque esté fresco.</p>
   <div class="wp-days">${UV_PENCO_MES.map((u, i) => { const nn = uvNivel(u); return `<div class="wp-day${i + 1 === mes ? ' now' : ''}" title="${CLIMA_PENCO_MESES[i].nombre}: ${nn.label}"><div class="wd-date">${CLIMA_PENCO_MESES[i].nombre.slice(0, 3)}</div><div class="wd-ico">☀️</div><div><b style="color:${nn.color}">UV ${u}</b></div><div class="wd-date">${nn.label}</div></div>`; }).join('')}</div>
-  <div style="display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));margin-top:8px">
+  <div class="su-437f40">
     <div class="si-card"><h4>🏖️ Horarios playa Penco</h4><p>Antes de las 11h y después de las 17h = exposición más segura. Entre 12–16h busca sombra (quiosco, árbol, toldo). Con vaguada matinal el UV igual atraviesa la nube.</p></div>
     <div class="si-card"><h4>🧴 Exposición segura</h4><p>FPS 50 en cara/hombros, reaplica cada 2h y tras baño. Gorro ala ancha + lentes con filtro UV. Niños y bebés siempre a la sombra + hidratación. Lleva 1L agua por persona.</p></div>
     <div class="si-card"><h4>🌬️ Viento + sol</h4><p>Sur fuerte reseca y quema labios: bálsamo + agua. Norte nublado no significa UV cero: igual protege si estás horas fuera. Revisa 💨 viento en Pronóstico antes de toldos.</p></div>
@@ -215,13 +215,13 @@ function buildAireOfflineHTML(nowDate) {
   try { mes = (typeof cal !== 'undefined' && cal.santiagoParts) ? cal.santiagoParts(nowDate.getTime()).m : nowDate.getMonth() + 1; } catch { mes = nowDate.getMonth() + 1; }
   const invierno = (mes >= 4 && mes <= 9);
   return `<div class="wp-current">🌬️ <b>Aire Penco ${invierno ? '(Pukem: riesgo humo de leña)' : '(estable, ventila sin miedo)'}:</b> ${c && c.ts ? `💾 último PM2.5 ≈ <b>${Math.round(c.pm25)} µg/m³</b> · AQI ${c.aqi ?? '—'} <span class="muted">(${escapeHtml(c.ts)})</span>` : 'sin dato online guardado — usa la guía visual'}</div>
-  <p class="muted" style="margin:4px 0 8px">${invierno ? 'Abr–Sep el humo se estanca sobre la bahía. Si ves capa gris + olor a leña, aplica modo invierno.' : 'Con sur estable ventila 10 min al mediodía. Si hay incendio/forestal, cierra y recircula.'}</p>
-  <div style="display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))">
+  <p class="muted su-54eb29">${invierno ? 'Abr–Sep el humo se estanca sobre la bahía. Si ves capa gris + olor a leña, aplica modo invierno.' : 'Con sur estable ventila 10 min al mediodía. Si hay incendio/forestal, cierra y recircula.'}</p>
+  <div class="su-b8d7a3">
     <div class="si-card"><h4>🔥 Leña seca</h4><p>Quema solo &lt;25% humedad, carga pequeña y aire abierto. Humo denso = mala combustión = más PM2.5 en tu casa y la vecina.</p></div>
     <div class="si-card"><h4>🪟 Ventila</h4><p>10 min al mediodía (mejor aire), no de noche con humo. Si hay preemergencia SEREMI: no más humo, sigue radio/muni.</p></div>
     <div class="si-card"><h4>😷 Grupos sensibles</h4><p>Niños, mayores y asma: evita ejercicio en costanera con humo. Mascarilla si hay alerta. Oficial: SINCA sinca.mma.gob.cl.</p></div>
   </div>
-  <div class="dlg-actions" style="justify-content:flex-start;margin-top:8px"><button type="button" id="climaOpenAire" class="btn btn-accent" style="width:auto">🌬️ Abrir Aire Penco completo</button></div>`;
+  <div class="dlg-actions su-8f9e27"><button type="button" id="climaOpenAire" class="btn btn-accent su-30e741">🌬️ Abrir Aire Penco completo</button></div>`;
 }
 function bindClimaOpenAire() {
   const b = $('climaOpenAire') || $('climaOpenAire2');
@@ -247,10 +247,10 @@ async function fetchAireMiniInto() {
     const pm25 = vals[idx], aqi = aqis ? aqis[idx] : null;
     setAireCache(pm25, aqi);
     const nivel = pm25 == null ? '—' : pm25 <= 12 ? 'Bueno' : pm25 <= 35 ? 'Moderado' : pm25 <= 55 ? 'Regular' : 'Malo';
-    box.innerHTML = `🌬️ <b>Aire Penco ahora:</b> PM2.5 ≈ <b>${pm25 == null ? '—' : Math.round(pm25) + ' µg/m³'} (${nivel})</b> · AQI US ${aqi ?? '—'} <span class="muted" style="font-size:11px">(modelo, contrasta con SINCA)</span> <button type="button" id="climaOpenAire2" class="btn" style="width:auto;font-size:11px;margin-left:6px">Ver detalle</button>`;
+    box.innerHTML = `🌬️ <b>Aire Penco ahora:</b> PM2.5 ≈ <b>${pm25 == null ? '—' : Math.round(pm25) + ' µg/m³'} (${nivel})</b> · AQI US ${aqi ?? '—'} <span class="muted su-11a508">(modelo, contrasta con SINCA)</span> <button type="button" id="climaOpenAire2" class="btn su-8d836b">Ver detalle</button>`;
     bindClimaOpenAire();
   } catch {
-    box.innerHTML = `🌬️ <b>Aire Penco:</b> <span class="muted">sin conexión — ${c && c.ts ? `último PM2.5 ≈ ${Math.round(c.pm25)} µg/m³ (${escapeHtml(c.ts)})` : 'usa la guía offline en 📴 Guía offline → 🌬️ Aire'}</span> <button type="button" id="climaOpenAire2" class="btn" style="width:auto;font-size:11px;margin-left:6px">Abrir guía</button>`;
+    box.innerHTML = `🌬️ <b>Aire Penco:</b> <span class="muted">sin conexión — ${c && c.ts ? `último PM2.5 ≈ ${Math.round(c.pm25)} µg/m³ (${escapeHtml(c.ts)})` : 'usa la guía offline en 📴 Guía offline → 🌬️ Aire'}</span> <button type="button" id="climaOpenAire2" class="btn su-8d836b">Abrir guía</button>`;
     bindClimaOpenAire();
   }
 }
@@ -260,11 +260,11 @@ function buildUVOnlineHTML(j) {
     if (!maxs) {
       const { uv } = uvMesOffline(new Date());
       const n = uvNivel(uv);
-      return `<div class="wp-hours-title">☀️ Radiación UV (referencia offline)</div><p class="muted">UV máx típico del mes: <b style="color:${n.color}">UV ${uv} (${n.label})</b> — ${escapeHtml(n.consejo)} <span style="color:var(--muted)">Detalle en 📴 Guía offline → ☀️ Sol.</span></p>`;
+      return `<div class="wp-hours-title">☀️ Radiación UV (referencia offline)</div><p class="muted">UV máx típico del mes: <b style="color:${n.color}">UV ${uv} (${n.label})</b> — ${escapeHtml(n.consejo)} <span class="su-57f9e3">Detalle en 📴 Guía offline → ☀️ Sol.</span></p>`;
     }
     const t0 = maxs[0], n0 = uvNivel(t0);
     const days = maxs.slice(0, 4).map((u, i) => { const n = uvNivel(u); return `<div class="wp-day"><div class="wd-date">${i === 0 ? 'Hoy' : '+' + i + 'd'}</div><div class="wd-ico">☀️</div><div><b style="color:${n.color}">UV ${u == null ? '—' : Math.round(u)}</b></div><div class="wd-date">${n.label}</div></div>`; }).join('');
-    return `<div class="wp-hours-title">☀️ Radiación UV — playa / exposición</div><div class="wp-days">${days}</div><p class="muted" style="font-size:12px;margin-top:6px">Hoy: <b style="color:${n0.color}">UV ${t0 == null ? '—' : t0} (${n0.label})</b> — ${escapeHtml(n0.consejo)} Horario seguro: antes de 11h / después de 17h. <span style="color:var(--muted)">Guía completa en 📴 Guía offline → ☀️ Sol.</span></p>`;
+    return `<div class="wp-hours-title">☀️ Radiación UV — playa / exposición</div><div class="wp-days">${days}</div><p class="muted su-2b0979">Hoy: <b style="color:${n0.color}">UV ${t0 == null ? '—' : t0} (${n0.label})</b> — ${escapeHtml(n0.consejo)} Horario seguro: antes de 11h / después de 17h. <span class="su-57f9e3">Guía completa en 📴 Guía offline → ☀️ Sol.</span></p>`;
   } catch { return ''; }
 }
 function renderOnlineClimaHTML(j) {
@@ -315,13 +315,13 @@ let climaTab = 'online'; // online | offline | aire | sol
 let climaOnlineData = null;
 let climaOnlineError = '';
 function buildAireTabHTML(now) {
-  return `<div class="chip" style="margin-bottom:8px">🌬️ Aire Penco — humo y ventilación <span style="color:var(--muted)">(antes botón suelto, ahora aquí)</span></div>` +
-    `<div id="climaAireMini" class="menstrual-card" style="border-color:var(--gold)"><i>Cargando aire…</i></div>` +
-    `<div style="height:8px"></div>` + buildAireOfflineHTML(now);
+  return `<div class="chip su-fdf33f">🌬️ Aire Penco — humo y ventilación <span class="su-57f9e3">(antes botón suelto, ahora aquí)</span></div>` +
+    `<div id="climaAireMini" class="menstrual-card su-68a1a9"><i>Cargando aire…</i></div>` +
+    `<div class="su-83ca52"></div>` + buildAireOfflineHTML(now);
 }
 function buildSolTabHTML(now) {
   const on = climaOnlineData ? buildUVOnlineHTML(climaOnlineData) : `<p class="muted">Sin dato UV online aún — abajo la referencia offline del mes.</p>`;
-  return `<div class="chip" style="margin-bottom:8px">☀️ Sol / UV — playa y exposición</div>` + on +
+  return `<div class="chip su-fdf33f">☀️ Sol / UV — playa y exposición</div>` + on +
     `<div class="wp-hours-title">Referencia offline por mes</div>` + buildSolOfflineHTML(now);
 }
 function renderWeatherPanel() {
@@ -329,25 +329,25 @@ function renderWeatherPanel() {
   if (!panel) return;
   const now = new Date();
   const cache = getClimaCache();
-  const tabBar = `<div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">
-      <button type="button" id="climaTabOnline" class="btn${climaTab === 'online' ? ' btn-accent' : ''}" style="width:auto">🌐 Pronóstico</button>
-      <button type="button" id="climaTabOffline" class="btn${climaTab === 'offline' ? ' btn-accent' : ''}" style="width:auto">📴 Guía offline</button>
-      <button type="button" id="climaTabAire" class="btn${climaTab === 'aire' ? ' btn-accent' : ''}" style="width:auto">🌬️ Aire</button>
-      <button type="button" id="climaTabSol" class="btn${climaTab === 'sol' ? ' btn-accent' : ''}" style="width:auto">☀️ Sol / UV</button>
+  const tabBar = `<div class="timer-tabs su-4dca21">
+      <button type="button" id="climaTabOnline" class="btn${climaTab === 'online' ? ' btn-accent' : ''} su-30e741">🌐 Pronóstico</button>
+      <button type="button" id="climaTabOffline" class="btn${climaTab === 'offline' ? ' btn-accent' : ''} su-30e741">📴 Guía offline</button>
+      <button type="button" id="climaTabAire" class="btn${climaTab === 'aire' ? ' btn-accent' : ''} su-30e741">🌬️ Aire</button>
+      <button type="button" id="climaTabSol" class="btn${climaTab === 'sol' ? ' btn-accent' : ''} su-30e741">☀️ Sol / UV</button>
     </div>`;
   let body = '';
   if (climaTab === 'offline') {
-    body = `<div class="chip" style="margin-bottom:8px">📴 Guía offline Penco — climatología + consejos, sin internet</div>` +
+    body = `<div class="chip su-fdf33f">📴 Guía offline Penco — climatología + consejos, sin internet</div>` +
       buildOfflineClimaHTML(now, cache);
   } else if (climaTab === 'aire') {
     body = buildAireTabHTML(now);
   } else if (climaTab === 'sol') {
     body = buildSolTabHTML(now);
   } else if (climaOnlineData) {
-    body = `<div class="chip" style="margin-bottom:8px">🟢 En línea — Open-Meteo · Penco</div>` + renderOnlineClimaHTML(climaOnlineData);
+    body = `<div class="chip su-fdf33f">🟢 En línea — Open-Meteo · Penco</div>` + renderOnlineClimaHTML(climaOnlineData);
   } else if (climaOnlineError) {
     const c2 = cache;
-    body = `<div class="chip" style="margin-bottom:8px">📴 Sin conexión — ${escapeHtml(climaOnlineError)} ${c2 && c2.ts ? '· 💾 Último dato: ' + escapeHtml(c2.ts) + ' ' + escapeHtml(c2.resumen || '') : ''} · <span style="color:var(--muted)">usa la 📴 Guía offline</span></div>` +
+    body = `<div class="chip su-fdf33f">📴 Sin conexión — ${escapeHtml(climaOnlineError)} ${c2 && c2.ts ? '· 💾 Último dato: ' + escapeHtml(c2.ts) + ' ' + escapeHtml(c2.resumen || '') : ''} · <span class="su-57f9e3">usa la 📴 Guía offline</span></div>` +
       `<p class="muted">No se pudo obtener el pronóstico online. Revisa la guía offline mientras tanto.</p>`;
   } else {
     body = '<i>Cargando clima…</i>';

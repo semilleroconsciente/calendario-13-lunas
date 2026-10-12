@@ -200,18 +200,18 @@ function makeDialog() {
   var d = document.createElement('dialog');
   d.id = 'openSourceDialog';
   d.innerHTML = '<form method="dialog">' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
-    '<h3 style="margin:0;color:var(--accent)">🌐 Código Abierto — el saber se comparte</h3>' +
+    '<div class="dlg-actions su-d2d053">' +
+    '<h3 class="su-ee0cfe">🌐 Código Abierto — el saber se comparte</h3>' +
     '<button type="button" data-close class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    '<p class="muted" style="line-height:1.5">Por qué existe lo libre, qué puedes usar gratis y legal en Penco, cómo funciona <b>esta misma app (licencia MIT)</b> y cómo aportar aunque no programes. Todo <b>offline y privado</b>.</p>' +
-    '<div id="osProgress" class="muted" style="font-size:11px;margin-bottom:8px"></div>' +
-    '<div class="timer-tabs" style="flex-wrap:wrap;margin-bottom:10px">' +
-    '<button type="button" id="tabOsGuia" class="btn btn-accent" style="width:auto">📖 Guía</button>' +
-    '<button type="button" id="tabOsLicencias" class="btn" style="width:auto">⚖️ Licencias</button>' +
-    '<button type="button" id="tabOsProgramas" class="btn" style="width:auto">🧰 Programas</button>' +
-    '<button type="button" id="tabOsProyecto" class="btn" style="width:auto">🌙 Este proyecto</button>' +
-    '<button type="button" id="tabOsAportar" class="btn" style="width:auto">🤝 Aportar</button>' +
-    '<button type="button" id="tabOsQuiz" class="btn" style="width:auto">🧠 Soberanía + quiz</button></div>' +
+    '<p class="muted su-77e2fe">Por qué existe lo libre, qué puedes usar gratis y legal en Penco, cómo funciona <b>esta misma app (licencia MIT)</b> y cómo aportar aunque no programes. Todo <b>offline y privado</b>.</p>' +
+    '<div id="osProgress" class="muted su-245797"></div>' +
+    '<div class="timer-tabs su-dd1da5">' +
+    '<button type="button" id="tabOsGuia" class="btn btn-accent su-30e741">📖 Guía</button>' +
+    '<button type="button" id="tabOsLicencias" class="btn su-30e741">⚖️ Licencias</button>' +
+    '<button type="button" id="tabOsProgramas" class="btn su-30e741">🧰 Programas</button>' +
+    '<button type="button" id="tabOsProyecto" class="btn su-30e741">🌙 Este proyecto</button>' +
+    '<button type="button" id="tabOsAportar" class="btn su-30e741">🤝 Aportar</button>' +
+    '<button type="button" id="tabOsQuiz" class="btn su-30e741">🧠 Soberanía + quiz</button></div>' +
     '<div id="osGuia"></div>' +
     '<div id="osLicencias" class="hidden"></div>' +
     '<div id="osProgramas" class="hidden"></div>' +
@@ -252,7 +252,7 @@ function renderGuia() {
     '<div class="si-card"><h4>🚫 Mitos frecuentes</h4>' + MITOS.map(function (m) {
       return '<p><b>' + esc(m.m) + '</b><br><span class="muted">' + m.r + '</span></p>';
     }).join('') + '</div>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="osGoProg" class="btn btn-accent" style="width:auto">🧰 Ver programas libres para mi casa →</button></div>';
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="osGoProg" class="btn btn-accent su-30e741">🧰 Ver programas libres para mi casa →</button></div>';
   var g = $('osGoProg');
   if (g) g.onclick = function () { switchTab('Programas'); renderAll(); };
 }
@@ -263,18 +263,18 @@ function renderLicencias() {
   var sel = LICENCIAS.filter(function (l) { return l.id === licSel; })[0] || LICENCIAS[0];
   box.innerHTML =
     '<div class="si-card"><h4>⚖️ Licencias en simple: el permiso escrito</h4><p>Sin licencia clara, todo es “reservado”. Con licencia libre, el autor <b>regala libertades por escrito</b>. Toca cada una para ver qué permite, qué exige y cuándo conviene. <b>Este proyecto usa MIT</b> (package.json → "license": "MIT").</p></div>' +
-    '<div class="timer-tabs" style="flex-wrap:wrap">' + LICENCIAS.map(function (l) {
-      return '<button type="button" data-lic="' + l.id + '" class="btn' + (l.id === licSel ? ' btn-accent' : '') + '" style="width:auto">' + l.ico + ' ' + esc(l.nombre.split(' (')[0]) + '</button>';
+    '<div class="timer-tabs su-62da06">' + LICENCIAS.map(function (l) {
+      return '<button type="button" data-lic="' + l.id + '" class="btn' + (l.id === licSel ? ' btn-accent' : '') + ' su-30e741">' + l.ico + ' ' + esc(l.nombre.split(' (')[0]) + '</button>';
     }).join('') + '</div>' +
-    '<div class="menstrual-card" style="border-color:var(--gold);margin-top:10px"><h4>' + sel.ico + ' ' + esc(sel.nombre) + '</h4>' +
-    '<p class="muted" style="font-size:11px">' + esc(sel.tipo) + '</p>' +
+    '<div class="menstrual-card su-f3d143"><h4>' + sel.ico + ' ' + esc(sel.nombre) + '</h4>' +
+    '<p class="muted su-11a508">' + esc(sel.tipo) + '</p>' +
     '<p><b>✅ Permite:</b> ' + sel.permite + '</p>' +
     '<p><b>📋 Exige:</b> ' + sel.exige + '</p>' +
     '<p><b>🎯 Ideal para:</b> ' + sel.ideal + '</p>' +
-    '<p class="muted" style="font-size:11px"><b>⚠️ Ojo:</b> ' + sel.ojo + '</p></div>' +
+    '<p class="muted su-11a508"><b>⚠️ Ojo:</b> ' + sel.ojo + '</p></div>' +
     '<div class="si-card"><h4>🤔 ¿Cuál elijo para lo mío?</h4><p>• <b>Quiero máxima difusión</b> (guía, app comunitaria) → <b>MIT o CC BY-SA</b>.<br>• <b>Me da miedo que una empresa se lo apropie</b> → <b>GPL</b> (código) o <b>CC BY-SA</b> (contenido).<br>• <b>Es biblioteca para que otros la usen</b> → <b>Apache 2.0 o MPL</b>.<br>• <b>Son datos/plantillas para regalar</b> → <b>CC0</b>.<br>• <b>No sé aún</b> → parte con MIT (código) / CC BY-SA (contenido): simples y compatibles con casi todo.</p>' +
-    '<p class="muted" style="font-size:11px">Regla de oro: la licencia se escribe en 1 archivo (LICENSE o encabezado) + se nombra en la portada. Sin archivo, no vale.</p></div>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="osCopyMit" class="btn" style="width:auto">📋 Copiar aviso MIT de este proyecto</button></div>';
+    '<p class="muted su-11a508">Regla de oro: la licencia se escribe en 1 archivo (LICENSE o encabezado) + se nombra en la portada. Sin archivo, no vale.</p></div>' +
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="osCopyMit" class="btn su-30e741">📋 Copiar aviso MIT de este proyecto</button></div>';
   box.querySelectorAll('[data-lic]').forEach(function (b) {
     b.onclick = function () { licSel = b.getAttribute('data-lic'); markSeen('lic-' + licSel); renderLicencias(); };
   });
@@ -291,7 +291,7 @@ function renderProgramas() {
     var out = '';
     try {
       (p.links || []).forEach(function (l) {
-        if (l && l.u) out += '<a href="' + esc(l.u) + '" target="_blank" rel="noopener" class="btn" style="width:auto;text-decoration:none;font-size:11px">🌐 ' + esc(l.t || 'Sitio oficial') + '</a>';
+        if (l && l.u) out += '<a href="' + esc(l.u) + '" target="_blank" rel="noopener" class="btn su-abb0f2">🌐 ' + esc(l.t || 'Sitio oficial') + '</a>';
       });
     } catch (e) {}
     return out;
@@ -309,9 +309,9 @@ function renderProgramas() {
   });
   box.innerHTML =
     '<div class="si-card"><h4>🧰 Botiquín libre para la casa y la organización</h4><p>Todo aquí es <b>legal, gratuito y auditable</b>. Busca por necesidad (“mapa sin internet”, “oficina”, “video”) o filtra por grupo. El botón <b>🌐 abre el sitio oficial</b> (solo necesitas internet para descargar; después todo funciona offline).</p>' +
-    '<div class="conv-row"><label style="flex:2">Buscar <input type="text" id="osProgQ" placeholder="ej: mapa sin internet, oficina, claves, video..." maxlength="60" value="' + esc(progQ) + '"></label>' +
+    '<div class="conv-row"><label class="su-4b3de7">Buscar <input type="text" id="osProgQ" placeholder="ej: mapa sin internet, oficina, claves, video..." maxlength="60" value="' + esc(progQ) + '"></label>' +
     '<label>Grupo <select id="osProgCat">' + cats.map(function (c) { return '<option value="' + esc(c) + '"' + (c === progCat ? ' selected' : '') + '>' + esc(c) + '</option>'; }).join('') + '</select></label></div>' +
-    '<p class="muted" style="font-size:11px">' + list.length + ' programas · toca el que te sirva y márcalo como “ya lo probé”.</p></div>' +
+    '<p class="muted su-11a508">' + list.length + ' programas · toca el que te sirva y márcalo como “ya lo probé”.</p></div>' +
     (list.length ? list.map(function (p, i) {
       var seen = false;
       try { seen = !!store().exploradas['prog-' + p.n]; } catch (e) {}
@@ -319,9 +319,9 @@ function renderProgramas() {
       return '<div class="si-card"><h4>' + p.ico + ' ' + esc(p.n) + ' ' + (seen ? '<span class="chip">✅ probado</span>' : '') + '</h4>' +
         '<p><b>¿Para qué?</b> ' + p.para + '</p>' +
         '<p><b>Reemplaza a:</b> ' + esc(p.reemplaza) + ' · <span class="muted">' + esc(p.cat) + '</span></p>' +
-        '<p class="muted" style="font-size:11px">💡 ' + esc(p.dato) + '</p>' +
-        (lk ? '<div class="dlg-actions" style="justify-content:flex-start;flex-wrap:wrap">' + lk + '</div>' : '') +
-        '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" data-prog="' + esc(p.n) + '" class="btn" style="width:auto">' + (seen ? '↩️ Marcar por probar' : '✅ Ya lo probé') + '</button></div></div>';
+        '<p class="muted su-11a508">💡 ' + esc(p.dato) + '</p>' +
+        (lk ? '<div class="dlg-actions su-117179">' + lk + '</div>' : '') +
+        '<div class="dlg-actions su-59a5a8"><button type="button" data-prog="' + esc(p.n) + '" class="btn su-30e741">' + (seen ? '↩️ Marcar por probar' : '✅ Ya lo probé') + '</button></div></div>';
     }).join('') : '<p class="muted">Sin resultados. Prueba “mapa”, “oficina”, “video”, “claves”…</p>');
   var qi = $('osProgQ'), cs = $('osProgCat');
   if (qi) qi.oninput = function () { progQ = qi.value; var pos = qi.selectionStart; renderProgramas(); var nq = $('osProgQ'); if (nq) { try { nq.focus(); nq.setSelectionRange(pos, pos); } catch (e) {} } };
@@ -341,7 +341,7 @@ function renderProyecto() {
   var box = $('osProyecto'); if (!box) return;
   box.innerHTML =
     '<div class="si-card"><h4>🌙 Esta app ES la lección (licencia MIT)</h4><p>El <b>Calendario de las 13 Lunas</b> es código abierto: puedes leer cada archivo, copiarlo y adaptarlo a tu comuna manteniendo el crédito. Funciona <b>offline-first</b>, guarda todo <b>en tu dispositivo</b> y cada tema es un archivo <b>*-modulo.js</b> independiente —incluida esta sección que estás leyendo (<b>open-source-modulo.js</b>).</p>' +
-    '<p class="muted" style="font-size:11px">package.json → "license": "MIT" · "version": "1.6.0" · Sin cuentas · Sin rastreo · Funciona con doble clic.</p></div>' +
+    '<p class="muted su-11a508">package.json → "license": "MIT" · "version": "1.6.0" · Sin cuentas · Sin rastreo · Funciona con doble clic.</p></div>' +
     '<div class="si-card"><h4>🧩 Anatomía (¿dónde está cada cosa?)</h4>' + ARQUITECTURA.map(function (a) {
       return '<p><b>' + a.ico + ' ' + esc(a.n) + ':</b> ' + a.d + '</p>';
     }).join('') + '</div>' +
@@ -349,8 +349,8 @@ function renderProyecto() {
       return '<p><b>' + esc(r.t) + ':</b> ' + r.d + '</p>';
     }).join('') + '</div>' +
     '<div class="si-card"><h4>🔗 Puentes con otras secciones</h4><p>• <b>🛡️ Ciberseguridad:</b> verifica links, usa gestor de claves y 2 pasos antes de publicar tu réplica.<br>• <b>🤖 IA (módulo Aprender):</b> pide a la IA “explícame este .js como si tuviera 12 años” o “redacta la guía de mi comuna”.<br>• <b>📡 Red Comunitaria:</b> comparte la app en pendrive o Mesh sin internet.<br>• <b>💾 Respaldo:</b> exporta tus bitácoras antes de experimentar con copias.</p></div>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="osGoAportar" class="btn btn-accent" style="width:auto">🤝 Quiero aportar →</button> ' +
-    '<button type="button" id="osShareProj" class="btn" style="width:auto">📤 Compartir el proyecto</button></div>';
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="osGoAportar" class="btn btn-accent su-30e741">🤝 Quiero aportar →</button> ' +
+    '<button type="button" id="osShareProj" class="btn su-30e741">📤 Compartir el proyecto</button></div>';
   var g = $('osGoAportar');
   if (g) g.onclick = function () { switchTab('Aportar'); renderAll(); };
   var sp = $('osShareProj');
@@ -369,28 +369,28 @@ function renderAportar() {
     '<div class="si-card"><h4>💻 Con código (cuando quieras)</h4>' + CON_CODIGO.map(function (a) {
       return '<p><b>' + a.ico + ' ' + esc(a.n) + ':</b> ' + a.d + '</p>';
     }).join('') +
-    '<p class="muted" style="font-size:11px">Plantilla ideal: copia <b>open-source-modulo.js</b> (este archivo, el más comentado) y cámbiale datos + textos. Patrón obligatorio: diálogo propio + ensureSection + registro ALL_BTNS/BTN_HOME/BTN_ORDER + entrada en MODS, sw.js y package.json.</p></div>' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>✅ Checklist de mi primer aporte</h4>' +
+    '<p class="muted su-11a508">Plantilla ideal: copia <b>open-source-modulo.js</b> (este archivo, el más comentado) y cámbiale datos + textos. Patrón obligatorio: diálogo propio + ensureSection + registro ALL_BTNS/BTN_HOME/BTN_ORDER + entrada en MODS, sw.js y package.json.</p></div>' +
+    '<div class="menstrual-card su-68a1a9"><h4>✅ Checklist de mi primer aporte</h4>' +
     ['Elegí algo chico (1 error, 1 dato, 1 texto)', 'Probé mi cambio con doble clic a index.html', 'Anoté qué cambié en 3 líneas', 'Pedí a otra persona que lo pruebe', 'Compartí mi copia (pendrive / archivo)'].map(function (t, i) {
       var on = !!(s.checks['aporte-step-' + i]);
       return '<label class="check-row"><input type="checkbox" data-apstep="' + i + '"' + (on ? ' checked' : '') + '> ' + esc(t) + '</label>';
     }).join('') + '</div>' +
     '<div class="menstrual-card"><h4>📓 Mi bitácora de aportes (privada, local)</h4>' +
-    '<p class="muted" style="font-size:11px">Queda solo en tu dispositivo. Anota qué aportaste para no olvidar y celebrar tu racha.</p>' +
-    '<div class="conv-row"><label style="flex:2">Mi aporte <input type="text" id="osAporteTxt" placeholder="ej: corregí teléfono CESFAM Lirquén, enseñé Firefox a mi mamá" maxlength="120"></label></div>' +
+    '<p class="muted su-11a508">Queda solo en tu dispositivo. Anota qué aportaste para no olvidar y celebrar tu racha.</p>' +
+    '<div class="conv-row"><label class="su-4b3de7">Mi aporte <input type="text" id="osAporteTxt" placeholder="ej: corregí teléfono CESFAM Lirquén, enseñé Firefox a mi mamá" maxlength="120"></label></div>' +
     '<div class="conv-row"><label>Tipo <select id="osAporteTipo"><option>Probar / reportar</option><option>Dato territorial</option><option>Texto / traducción</option><option>Enseñar / taller</option><option>Diseño / difusión</option><option>Código</option></select></label>' +
     '<label>Fecha <input type="date" id="osAporteFecha"></label></div>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="osAporteAdd" class="btn btn-accent" style="width:auto">+ Guardar aporte</button></div>' +
-    '<div id="osAporteList" class="habits-list" style="margin-top:10px">' + (aportes.length ? aportes.map(function (a) {
-      return '<div class="habit-row"><span>🤝 <b>' + esc(a.tipo) + '</b> · ' + esc(a.txt) + ' <span class="muted">(' + esc(a.fecha || '') + ')</span></span><span style="display:flex;gap:6px"><button type="button" class="btn" data-apshare="' + a.id + '" style="width:auto">📤</button><button type="button" class="btn" data-apdel="' + a.id + '" style="width:auto;color:#e76e8a;border-color:#e76e8a55">✕</button></span></div>';
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="osAporteAdd" class="btn btn-accent su-30e741">+ Guardar aporte</button></div>' +
+    '<div id="osAporteList" class="habits-list su-d2c171">' + (aportes.length ? aportes.map(function (a) {
+      return '<div class="habit-row"><span>🤝 <b>' + esc(a.tipo) + '</b> · ' + esc(a.txt) + ' <span class="muted">(' + esc(a.fecha || '') + ')</span></span><span class="su-49cd09"><button type="button" class="btn su-30e741" data-apshare="' + a.id + '">📤</button><button type="button" class="btn su-214f75" data-apdel="' + a.id + '">✕</button></span></div>';
     }).join('') : '<p class="muted">Aún sin aportes. El primero puede ser de 5 minutos: reporta algo que no entendiste de esta sección.</p>') + '</div>' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-top:8px"><span class="muted" style="font-size:11px">Total: ' + aportes.length + ' aporte(s)</span><button type="button" id="osAporteShareAll" class="btn" style="width:auto">📤 Compartir mi racha</button></div></div>' +
+    '<div class="dlg-actions su-efea1d"><span class="muted su-11a508">Total: ' + aportes.length + ' aporte(s)</span><button type="button" id="osAporteShareAll" class="btn su-30e741">📤 Compartir mi racha</button></div></div>' +
     '<div class="si-card"><h4>📋 Plantillas copiar/pegar</h4>' +
-    '<div class="dlg-actions" style="justify-content:flex-start;flex-wrap:wrap">' +
-    '<button type="button" id="osTplBug" class="btn" style="width:auto">🐞 Reporte de error</button>' +
-    '<button type="button" id="osTplIdea" class="btn" style="width:auto">💡 Propuesta de mejora</button>' +
-    '<button type="button" id="osTplMod" class="btn" style="width:auto">🧩 Ficha de módulo nuevo</button></div>' +
-    '<p class="muted" style="font-size:11px">Se copian al portapapeles: pégalas en tu cuaderno, WhatsApp o donde coordine tu grupo.</p></div>';
+    '<div class="dlg-actions su-117179">' +
+    '<button type="button" id="osTplBug" class="btn su-30e741">🐞 Reporte de error</button>' +
+    '<button type="button" id="osTplIdea" class="btn su-30e741">💡 Propuesta de mejora</button>' +
+    '<button type="button" id="osTplMod" class="btn su-30e741">🧩 Ficha de módulo nuevo</button></div>' +
+    '<p class="muted su-11a508">Se copian al portapapeles: pégalas en tu cuaderno, WhatsApp o donde coordine tu grupo.</p></div>';
   box.querySelectorAll('[data-apstep]').forEach(function (c) {
     c.onchange = function () {
       var st = store(); st.checks['aporte-step-' + c.getAttribute('data-apstep')] = c.checked ? 1 : 0;
@@ -441,14 +441,14 @@ function renderQuiz() {
   html += '<div class="menstrual-card"><h4>✅ Mi chequeo (<span id="osCheckN">' + CHEQUEO.filter(function (c) { return s.checks[c.id]; }).length + '</span>/10)</h4>';
   html += CHEQUEO.map(function (c) {
     var on = !!s.checks[c.id];
-    return '<label class="check-row" title="' + esc(c.d) + '"><input type="checkbox" data-oscheck="' + c.id + '"' + (on ? ' checked' : '') + '> ' + esc(c.n) + '</label><p class="muted" style="font-size:11px;margin:0 0 6px 26px">' + esc(c.d) + '</p>';
+    return '<label class="check-row" title="' + esc(c.d) + '"><input type="checkbox" data-oscheck="' + c.id + '"' + (on ? ' checked' : '') + '> ' + esc(c.n) + '</label><p class="muted su-a8c315">' + esc(c.d) + '</p>';
   }).join('');
-  html += '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="osCheckShare" class="btn" style="width:auto">📤 Compartir mi puntaje</button></div></div>';
+  html += '<div class="dlg-actions su-59a5a8"><button type="button" id="osCheckShare" class="btn su-30e741">📤 Compartir mi puntaje</button></div></div>';
   html += '<div class="si-card"><h4>📚 Glosario mínimo (12 palabras)</h4>' + GLOSARIO.map(function (g) {
     return '<p><b>' + esc(g.t) + ':</b> <span class="muted">' + esc(g.d) + '</span></p>';
   }).join('') + '</div>';
-  html += '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🧠 Quiz: ¿cachai lo libre? (mejor: ' + (s.quizBest || 0) + '/' + QUIZ.length + ')</h4><div id="osQuizBox"><p class="muted">8 preguntas, 3 minutos. Toca empezar.</p></div>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="osQuizStart" class="btn btn-accent" style="width:auto">▶ Empezar quiz</button></div></div>';
+  html += '<div class="menstrual-card su-68a1a9"><h4>🧠 Quiz: ¿cachai lo libre? (mejor: ' + (s.quizBest || 0) + '/' + QUIZ.length + ')</h4><div id="osQuizBox"><p class="muted">8 preguntas, 3 minutos. Toca empezar.</p></div>' +
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="osQuizStart" class="btn btn-accent su-30e741">▶ Empezar quiz</button></div></div>';
   box.innerHTML = html;
   box.querySelectorAll('[data-oscheck]').forEach(function (c) {
     c.onchange = function () {
@@ -471,22 +471,22 @@ function renderQuiz() {
       if (quizPts > (st.quizBest || 0)) { st.quizBest = quizPts; save('Récord quiz 🏆'); }
       paintProgress();
       qb.innerHTML = '<p><b>Resultado: ' + quizPts + '/' + QUIZ.length + '</b> ' + (quizPts === QUIZ.length ? '🟢 ¡Semilla libre! Ya puedes enseñar esta sección.' : (quizPts >= 5 ? '🟡 Bien encaminado: repasa Licencias.' : '🔴 Lee la Guía con calma y repite.')) + '</p>' +
-        '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="osQuizAgain" class="btn" style="width:auto">🔁 Repetir</button>' +
-        '<button type="button" id="osQuizShare" class="btn" style="width:auto">📤 Compartir resultado</button></div>';
+        '<div class="dlg-actions su-59a5a8"><button type="button" id="osQuizAgain" class="btn su-30e741">🔁 Repetir</button>' +
+        '<button type="button" id="osQuizShare" class="btn su-30e741">📤 Compartir resultado</button></div>';
       $('osQuizAgain').onclick = function () { quizIdx = 0; quizPts = 0; paintQuiz(); };
       $('osQuizShare').onclick = function () { share('🌐 Mi quiz open source', 'Saqué ' + quizPts + '/' + QUIZ.length + ' en el quiz de código abierto del Calendario 13 Lunas. Libre = usar, estudiar, compartir y mejorar.'); };
       return;
     }
     var qq = QUIZ[quizIdx];
     qb.innerHTML = '<p><b>' + (quizIdx + 1) + '/' + QUIZ.length + ' ·</b> ' + esc(qq.q) + '</p>' +
-      qq.opts.map(function (o, i) { return '<button type="button" data-osopt="' + i + '" class="btn" style="width:100%;text-align:left;margin-bottom:6px">' + esc(o) + '</button>'; }).join('') +
-      '<p class="muted" style="font-size:11px">Puntos: ' + quizPts + '</p>';
+      qq.opts.map(function (o, i) { return '<button type="button" data-osopt="' + i + '" class="btn su-b6f6af">' + esc(o) + '</button>'; }).join('') +
+      '<p class="muted su-11a508">Puntos: ' + quizPts + '</p>';
     qb.querySelectorAll('[data-osopt]').forEach(function (b) {
       b.onclick = function () {
         var ok = (+b.getAttribute('data-osopt') === qq.ok);
         if (ok) quizPts++;
         qb.innerHTML = '<p>' + (ok ? '✅ ¡Correcto!' : '❌ Casi…') + '</p><p class="muted">' + esc(qq.por) + '</p>' +
-          '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="osQuizNext" class="btn btn-accent" style="width:auto">Siguiente →</button></div>';
+          '<div class="dlg-actions su-59a5a8"><button type="button" id="osQuizNext" class="btn btn-accent su-30e741">Siguiente →</button></div>';
         $('osQuizNext').onclick = function () { quizIdx++; paintQuiz(); };
       };
     });

@@ -552,7 +552,7 @@ function renderTemas() {
   var box = $('crTemas');
   if (!box || !G) return;
   box.innerHTML = TEMAS.map(function (t) {
-    return '<button type="button" class="btn' + (t.id === G.tema ? ' btn-accent' : '') + '" data-tema="' + t.id + '" style="width:auto;font-size:11px" title="' + esc(t.d) + '">' + t.n + '</button>';
+    return '<button type="button" class="btn' + (t.id === G.tema ? ' btn-accent' : '') + ' su-337714" data-tema="' + t.id + '" title="' + esc(t.d) + '">' + t.n + '</button>';
   }).join('');
   box.querySelectorAll('[data-tema]').forEach(function (b) {
     b.onclick = function () {
@@ -566,9 +566,9 @@ function renderTemas() {
   });
   var db = $('crDifs');
   if (db) {
-    db.innerHTML = '<span class="muted" style="font-size:11px">Dificultad:</span>' + DIFS.map(function (d) {
+    db.innerHTML = '<span class="muted su-11a508">Dificultad:</span>' + DIFS.map(function (d) {
       return '<button type="button" class="cr-dif' + (d.id === G.dif ? ' on' : '') + '" data-dif="' + d.id + '" title="' + esc(d.desc) + '">' + d.n + '</button>';
-    }).join('') + '<span class="muted" style="font-size:10px">' + esc(difById(G.dif).desc) + '</span>';
+    }).join('') + '<span class="muted su-0d5be0">' + esc(difById(G.dif).desc) + '</span>';
     db.querySelectorAll('[data-dif]').forEach(function (b) {
       b.onclick = function () {
         var id = b.getAttribute('data-dif');
@@ -599,7 +599,7 @@ function renderTop() {
     '<span class="cr-stat">' + difById(G.dif).n + '</span>' +
     '</div>' +
     '<div class="cr-prog" role="progressbar" aria-valuenow="' + pct + '" aria-valuemin="0" aria-valuemax="100"><i style="width:' + pct + '%"></i></div>' +
-    '<p class="muted" style="font-size:11px;margin:4px 0">' + esc(t.n) + ' — ' + esc(t.d) + '</p>' +
+    '<p class="muted su-48eb2e">' + esc(t.n) + ' — ' + esc(t.d) + '</p>' +
     '<label class="cr-live"><input type="checkbox" id="crLiveCk"' + (G.live ? ' checked' : '') + '> Revisar en vivo (marca errores al escribir)</label>';
   var ck = $('crLiveCk');
   if (ck) ck.onchange = function () { G.live = !!ck.checked; errFlash = null; persistCurrent(); renderBoard(); };
@@ -659,12 +659,12 @@ function renderBoard() {
       var stW = getStats();
       var kW = G.tema + ':' + G.dif;
       var bestW = stW.mejor && stW.mejor[kW] ? fmtTime(stW.mejor[kW]) : fmtTime(G.seconds);
-      cur.innerHTML = '<div class="cr-win"><div style="font-size:40px">🏆</div><b>¡Crucigrama completo!</b><br>' +
+      cur.innerHTML = '<div class="cr-win"><div class="su-e7fec3">🏆</div><b>¡Crucigrama completo!</b><br>' +
         esc(temaById(G.tema).n) + ' · ' + difById(G.dif).n + ' · ⏱️ ' + fmtTime(G.seconds) + (G.conAyuda ? ' (con ayuda)' : ' (sin ayuda 🌟)') +
         '<br><span class="muted">Mejor en este nivel: ' + bestW + '</span><br>' +
-        '<span style="display:flex;gap:6px;justify-content:center;margin-top:8px;flex-wrap:wrap">' +
-        '<button type="button" class="btn btn-accent" id="crWinNew" style="width:auto;font-size:12px">🎲 Nuevo</button>' +
-        '<button type="button" class="btn" id="crWinShare" style="width:auto;font-size:12px">📤 Compartir</button></span></div>';
+        '<span class="su-9bc2df">' +
+        '<button type="button" class="btn btn-accent su-115a53" id="crWinNew">🎲 Nuevo</button>' +
+        '<button type="button" class="btn su-115a53" id="crWinShare">📤 Compartir</button></span></div>';
       var nwb = $('crWinNew'), swb = $('crWinShare');
       if (nwb) nwb.onclick = function () { newGame(G.tema, G.dif); };
       if (swb) swb.onclick = shareCruci;
@@ -677,7 +677,7 @@ function renderBoard() {
         fill += (G.fill[rr][cc] || '·') + ' ';
       }
       cur.innerHTML = '<b>' + w.n + ' ' + (w.dir === 'H' ? '→' : '↓') + '</b> · ' + esc(w.c) + ' <span class="muted">(' + w.w.length + ' letras)</span><br>' +
-        '<span style="font-family:monospace;letter-spacing:2px;font-weight:800">' + esc(fill) + '</span><br><span class="muted" style="font-size:11px">Toca la celda activa para cambiar de dirección · ⌨️ escribe o usa el teclado.</span>';
+        '<span class="su-17b316">' + esc(fill) + '</span><br><span class="muted su-11a508">Toca la celda activa para cambiar de dirección · ⌨️ escribe o usa el teclado.</span>';
     }
     else cur.textContent = 'Toca una casilla blanca para empezar.';
   }
@@ -688,8 +688,8 @@ function renderClues() {
   var w = activeWord();
   function list(dir, titulo) {
     var items = G.placements.filter(function (p) { return p.dir === dir; });
-    var h = '<div class="menstrual-card" style="margin:0"><h4 style="font-size:12px">' + titulo + '</h4><div class="cr-clue-list">';
-    if (!items.length) h += '<span class="muted" style="font-size:11px">—</span>';
+    var h = '<div class="menstrual-card su-116966"><h4 class="su-6cb285">' + titulo + '</h4><div class="cr-clue-list">';
+    if (!items.length) h += '<span class="muted su-11a508">—</span>';
     items.forEach(function (p) {
       var sel = (w && w.n === p.n && w.dir === p.dir) ? ' sel' : '';
       var done = wordDone(p) ? ' done' : '';
@@ -725,18 +725,18 @@ function renderPad() {
   });
   box.innerHTML = h + '</div>' +
     '<div class="cr-tools">' +
-    '<button type="button" class="btn" id="crBack" style="width:auto;font-size:12px">⌫ Borrar</button>' +
-    '<button type="button" class="btn" id="crCheck" style="width:auto;font-size:12px">✅ Comprobar</button>' +
-    '<button type="button" class="btn" id="crCheckWord" style="width:auto;font-size:12px">🔍 Palabra</button>' +
-    '<button type="button" class="btn" id="crHint" style="width:auto;font-size:12px">💡 Pista (' + G.hints + ')</button>' +
+    '<button type="button" class="btn su-115a53" id="crBack">⌫ Borrar</button>' +
+    '<button type="button" class="btn su-115a53" id="crCheck">✅ Comprobar</button>' +
+    '<button type="button" class="btn su-115a53" id="crCheckWord">🔍 Palabra</button>' +
+    '<button type="button" class="btn su-115a53" id="crHint">💡 Pista (' + G.hints + ')</button>' +
     '</div>' +
     '<div class="cr-tools">' +
-    '<button type="button" class="btn" id="crWord" style="width:auto;font-size:12px">🔎 Revelar</button>' +
-    '<button type="button" class="btn" id="crRetry" style="width:auto;font-size:12px" title="Vacía las letras y reintenta el mismo tablero">↺ Reintentar</button>' +
-    '<button type="button" class="btn" id="crClear" style="width:auto;font-size:12px">🧹 Limpiar</button>' +
-    '<button type="button" class="btn" id="crNew" style="width:auto;font-size:12px">🎲 Nuevo</button>' +
-    '<button type="button" class="btn" id="crShare" style="width:auto;font-size:12px">📤 Compartir</button>' +
-    '<button type="button" class="btn" id="crSolve" style="width:auto;font-size:12px" title="Muestra la solución (no cuenta como victoria)">👁️ Ver</button>' +
+    '<button type="button" class="btn su-115a53" id="crWord">🔎 Revelar</button>' +
+    '<button type="button" class="btn su-115a53" id="crRetry" title="Vacía las letras y reintenta el mismo tablero">↺ Reintentar</button>' +
+    '<button type="button" class="btn su-115a53" id="crClear">🧹 Limpiar</button>' +
+    '<button type="button" class="btn su-115a53" id="crNew">🎲 Nuevo</button>' +
+    '<button type="button" class="btn su-115a53" id="crShare">📤 Compartir</button>' +
+    '<button type="button" class="btn su-115a53" id="crSolve" title="Muestra la solución (no cuenta como victoria)">👁️ Ver</button>' +
     '</div>';
   box.querySelectorAll('[data-k]').forEach(function (b) {
     b.onclick = function () { enterLetter(b.getAttribute('data-k')); };
@@ -767,13 +767,13 @@ function renderLuna() {
   var f = lunaFaseAprox();
   var tip = LUNA_TIPS[f.idx] || LUNA_TIPS[4];
   box.innerHTML = '<b>🌙 Consejo lunar · iluminación ' + f.ilum + '%</b><br>' +
-    '<span style="color:var(--gold)">' + esc(tip.f) + '</span> — ' + esc(tip.t);
+    '<span class="su-e39eba">' + esc(tip.f) + '</span> — ' + esc(tip.t);
 }
 function renderAprender() {
   var box = $('crLearnBox');
   if (!box) return;
   box.innerHTML =
-    '<div class="si-card" style="border-left:3px solid var(--gold)"><h4>📝 ¿Qué es?</h4><p>Palabras que se cruzan: cada letra compartida une una horizontal con una vertical. Todo de Penco. Dificultades: 🌱 9×9/6 palabras, 🌊 11×11/9, 🔥 13×13/12. Cada tablero es distinto.</p></div>' +
+    '<div class="si-card su-63ba3c"><h4>📝 ¿Qué es?</h4><p>Palabras que se cruzan: cada letra compartida une una horizontal con una vertical. Todo de Penco. Dificultades: 🌱 9×9/6 palabras, 🌊 11×11/9, 🔥 13×13/12. Cada tablero es distinto.</p></div>' +
     '<div class="si-card"><h4>👆 Cómo jugar</h4><p>1) Toca una casilla o una pista. 2) Escribe con el teclado en pantalla o el físico. 3) Toca la celda activa para cambiar →/↓. 4) Verde = correcta. ✅ Comprobar marca errores; 🔍 Palabra revisa solo la activa; ↺ Reintentar vacía el mismo tablero.</p></div>' +
     '<div class="si-card"><h4>💡 Estrategia</h4><p>Parte por cortas y cruces. Activa “Revisar en vivo” para ver errores al escribir. 💡 Pista revela la letra más útil (cruces primero). 🔎 Revelar completa la palabra activa.</p></div>' +
     '<div class="si-card"><h4>⌨️ Teclado físico</h4><p>Letras A–Z y Ñ, Retroceso/Supr para borrar, Espacio para cambiar de dirección, flechas para moverte (sin saltos raros), Enter para ir a la siguiente pista.</p></div>';
@@ -787,20 +787,20 @@ function renderHistPanel() {
   TEMAS.forEach(function (t) {
     DIFS.forEach(function (d) {
       var m = st.mejor && (st.mejor[t.id + ':' + d.id] || (d.id === 'normal' && st.mejor[t.id]));
-      mejor.push('<span class="chip" style="font-size:10px">' + t.n + ' ' + d.n + ': ' + (m ? fmtTime(m) : '—') + '</span>');
+      mejor.push('<span class="chip su-0d5be0">' + t.n + ' ' + d.n + ': ' + (m ? fmtTime(m) : '—') + '</span>');
     });
   });
   mejor = mejor.join(' ');
   box.innerHTML =
     '<div class="menstrual-card"><h4>📊 Mis números</h4>' +
-    '<p class="muted" style="font-size:12px">' + st.ganadas + ' completados de ' + st.jugadas + ' jugados · racha actual: ' + (st.racha || 0) + '</p>' +
-    '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px"><span class="muted" style="font-size:11px">⏱️ Mejor tiempo:</span>' + mejor + '</div></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>🕘 Últimos crucigramas</h4>' +
-    (hist.length ? '<div class="habits-list" style="margin-top:6px">' + hist.map(function (r) {
-      return '<div class="habit-item" style="font-size:12px">' + (r.won ? '🏆' : '👁️') + ' <b>' + esc(temaById(r.tema).n) + '</b> · ' + esc(difById(r.dif || 'normal').n) + ' · ' + (r.palabras || 0) + ' palabras · ' + fmtTime(r.seconds) + ' · ' + esc(r.fecha || '') + '</div>';
-    }).join('') + '</div>' : '<p class="muted" style="font-size:12px">Aún sin crucigramas terminados. ¡Completa el primero!</p>') +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-top:8px"><button type="button" class="btn" id="crHistShare" style="width:auto;font-size:11px">📤 Compartir</button>' +
-    '<button type="button" class="btn" id="crHistClear" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar</button></div></div>';
+    '<p class="muted su-6cb285">' + st.ganadas + ' completados de ' + st.jugadas + ' jugados · racha actual: ' + (st.racha || 0) + '</p>' +
+    '<div class="su-c158a9"><span class="muted su-11a508">⏱️ Mejor tiempo:</span>' + mejor + '</div></div>' +
+    '<div class="menstrual-card su-d2c171"><h4>🕘 Últimos crucigramas</h4>' +
+    (hist.length ? '<div class="habits-list su-fe7b49">' + hist.map(function (r) {
+      return '<div class="habit-item su-6cb285">' + (r.won ? '🏆' : '👁️') + ' <b>' + esc(temaById(r.tema).n) + '</b> · ' + esc(difById(r.dif || 'normal').n) + ' · ' + (r.palabras || 0) + ' palabras · ' + fmtTime(r.seconds) + ' · ' + esc(r.fecha || '') + '</div>';
+    }).join('') + '</div>' : '<p class="muted su-6cb285">Aún sin crucigramas terminados. ¡Completa el primero!</p>') +
+    '<div class="dlg-actions su-efea1d"><button type="button" class="btn su-337714" id="crHistShare">📤 Compartir</button>' +
+    '<button type="button" class="btn su-fd834a" id="crHistClear">🗑 Borrar</button></div></div>';
   var sh = $('crHistShare');
   if (sh) sh.onclick = function () {
     if (!hist.length) return alert('Sin partidas aún');
@@ -1096,21 +1096,21 @@ function buildDialog() {
   d.id = 'cruciDialog';
   d.innerHTML =
     '<form method="dialog">' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
-    '<h3 style="margin:0;color:var(--accent)">📝 Crucigrama</h3>' +
+    '<div class="dlg-actions su-d2d053">' +
+    '<h3 class="su-ee0cfe">📝 Crucigrama</h3>' +
     '<button type="button" data-close class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    '<p class="muted" style="line-height:1.5">Palabras cruzadas de Penco: mar, mapuzugun, bosque y luna. Cada tablero es distinto. Todo queda <b>privado y local</b> en tu usuario.</p>' +
-    '<div id="crLunaBox" class="menstrual-card" style="border-color:var(--gold);margin-bottom:10px"></div>' +
-    '<div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">' +
-    '<button type="button" id="tabCrJugar" class="btn btn-accent" style="width:auto">📝 Jugar</button>' +
-    '<button type="button" id="tabCrAprender" class="btn" style="width:auto">📚 Aprender</button>' +
-    '<button type="button" id="tabCrRegistros" class="btn" style="width:auto">🏆 Mis registros</button>' +
+    '<p class="muted su-77e2fe">Palabras cruzadas de Penco: mar, mapuzugun, bosque y luna. Cada tablero es distinto. Todo queda <b>privado y local</b> en tu usuario.</p>' +
+    '<div id="crLunaBox" class="menstrual-card su-39553d"></div>' +
+    '<div class="timer-tabs su-4dca21">' +
+    '<button type="button" id="tabCrJugar" class="btn btn-accent su-30e741">📝 Jugar</button>' +
+    '<button type="button" id="tabCrAprender" class="btn su-30e741">📚 Aprender</button>' +
+    '<button type="button" id="tabCrRegistros" class="btn su-30e741">🏆 Mis registros</button>' +
     '</div>' +
     '<div id="crPanelJugar"><div class="cr-wrap"><div id="crTemas" class="cr-temas"></div><div id="crDifs" class="cr-difs"></div><div id="crTop"></div><div id="crBoard"></div>' +
-    '<div id="crCur" class="chip cr-cur" style="display:block;white-space:normal"></div>' +
+    '<div id="crCur" class="chip cr-cur su-f5ce59"></div>' +
     '<div id="crClues"></div>' +
     '<div id="crPad"></div></div></div>' +
-    '<div id="crPanelAprender" class="hidden"><div id="crLearnBox" style="display:flex;flex-direction:column;gap:8px"></div></div>' +
+    '<div id="crPanelAprender" class="hidden"><div id="crLearnBox" class="su-be2653"></div></div>' +
     '<div id="crPanelRegistros" class="hidden"><div id="crHistBox"></div></div>' +
     '<div class="dlg-actions"><button type="button" data-close class="btn">Cerrar</button></div></form>';
   d.style.width = '680px';

@@ -59,7 +59,7 @@ describe('manifest + cableado', () => {
     for (const f of ['storage-idb.js', 'accesibilidad-modulo.js', 'onboarding-modulo.js', 'auto-backup-modulo.js', '_headers', 'boot-modulos.js', 'sw-registro.js', 'splash.css', 'min/**/*', 'templates-bundled.js', 'templates/*.html']) {
       assert.ok((pkg.build.files || []).includes(f), 'build.files sin ' + f);
     }
-    for (const s of ['build:sw', 'check:sw', 'check:donate', 'movil:build', 'check:size', 'build:min', 'check:min', 'build:tpl', 'check:tpl', 'check:perf']) {
+    for (const s of ['build:sw', 'check:sw', 'check:donate', 'movil:build', 'check:size', 'build:min', 'check:min', 'build:tpl', 'check:tpl', 'check:perf', 'csp:fase2', 'check:csp2']) {
       assert.ok(pkg.scripts[s], 'script ausente: ' + s);
     }
     assert.ok((pkg.devDependencies || {}).esbuild, 'falta devDep esbuild (minificación)');

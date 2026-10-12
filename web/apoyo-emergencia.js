@@ -233,18 +233,18 @@ function asegurarPanel() {
   if (!panel.dataset.apoyoOk) {
     panel.dataset.apoyoOk = '1';
     panel.innerHTML =
-      '<p class="muted" style="font-size:11px;line-height:1.55">Si el fuego o la emergencia te golpeó —o golpeó a tu familia— aquí está el camino: <b>primeras horas, catastro, contención y reconstrucción</b>. Marca tu avance con <b>☑️</b> y agenda plazos con <b>📌</b>. Todo queda <b>privado y local</b>.</p>' +
-      '<div class="timer-tabs" style="margin:8px 0 10px;flex-wrap:wrap">' +
-      '<button type="button" id="tabApoyoHoras" class="btn btn-accent" style="width:auto">🆘 Primeras horas</button>' +
-      '<button type="button" id="tabApoyoCat" class="btn" style="width:auto">🏠 Catastro y beneficios</button>' +
-      '<button type="button" id="tabApoyoCont" class="btn" style="width:auto">🧠 Contención</button>' +
-      '<button type="button" id="tabApoyoDonde" class="btn" style="width:auto">🤝 Dónde ir</button>' +
-      '<button type="button" id="tabApoyoMoch" class="btn" style="width:auto">🎒 Mochila</button>' +
-      '<button type="button" id="tabApoyoMios" class="btn" style="width:auto">⭐ Mi plan</button>' +
+      '<p class="muted su-b6db47">Si el fuego o la emergencia te golpeó —o golpeó a tu familia— aquí está el camino: <b>primeras horas, catastro, contención y reconstrucción</b>. Marca tu avance con <b>☑️</b> y agenda plazos con <b>📌</b>. Todo queda <b>privado y local</b>.</p>' +
+      '<div class="timer-tabs su-525c61">' +
+      '<button type="button" id="tabApoyoHoras" class="btn btn-accent su-30e741">🆘 Primeras horas</button>' +
+      '<button type="button" id="tabApoyoCat" class="btn su-30e741">🏠 Catastro y beneficios</button>' +
+      '<button type="button" id="tabApoyoCont" class="btn su-30e741">🧠 Contención</button>' +
+      '<button type="button" id="tabApoyoDonde" class="btn su-30e741">🤝 Dónde ir</button>' +
+      '<button type="button" id="tabApoyoMoch" class="btn su-30e741">🎒 Mochila</button>' +
+      '<button type="button" id="tabApoyoMios" class="btn su-30e741">⭐ Mi plan</button>' +
       '</div>' +
-      '<div class="menstrual-card" style="margin-top:0"><h4>🔍 Buscar en Apoyo</h4>' +
-      '<div class="conv-row"><label style="flex:2">Buscar <input type="text" id="apoyoSearch" placeholder="ej: FIBE, albergue, DIDECO, mochila, duelo..." maxlength="60" autocomplete="off"></label></div></div>' +
-      '<div id="apoyoBody" style="margin-top:10px"></div>';
+      '<div class="menstrual-card su-d46224"><h4>🔍 Buscar en Apoyo</h4>' +
+      '<div class="conv-row"><label class="su-4b3de7">Buscar <input type="text" id="apoyoSearch" placeholder="ej: FIBE, albergue, DIDECO, mochila, duelo..." maxlength="60" autocomplete="off"></label></div></div>' +
+      '<div id="apoyoBody" class="su-d2c171"></div>';
     var map = { tabApoyoHoras: 'horas', tabApoyoCat: 'cat', tabApoyoCont: 'cont', tabApoyoDonde: 'donde', tabApoyoMoch: 'moch', tabApoyoMios: 'mios' };
     Object.keys(map).forEach(function (id) {
       var b = $(id);
@@ -268,24 +268,24 @@ function pasoCard(p, conCalendario) {
   var hecho = !!st.hechos[p.id];
   var nota = st.notas[p.id] || '';
   var html = '<div class="si-card" style="padding:10px 12px;border-color:#d4af3766' + (hecho ? ';opacity:.85' : '') + '">' +
-    '<h4 style="font-size:13px">' + (hecho ? '✅ ' : esc(p.icon || '📌') + ' ') + esc(p.nombre) + '</h4>' +
-    '<p style="font-size:12px;line-height:1.55">' + esc(p.detalle || p.donde || '') + '</p>' +
-    (p.donde && p.detalle ? '<p class="muted" style="font-size:11px">📍 ' + esc(p.donde) + '</p>' : '') +
-    ((p.requisitos && p.requisitos.length) ? '<ul style="font-size:11px;margin:2px 0 6px 18px;line-height:1.5">' +
+    '<h4 class="su-5e0faa">' + (hecho ? '✅ ' : esc(p.icon || '📌') + ' ') + esc(p.nombre) + '</h4>' +
+    '<p class="su-afb724">' + esc(p.detalle || p.donde || '') + '</p>' +
+    (p.donde && p.detalle ? '<p class="muted su-11a508">📍 ' + esc(p.donde) + '</p>' : '') +
+    ((p.requisitos && p.requisitos.length) ? '<ul class="su-3e8e6a">' +
       p.requisitos.map(function (r) { return '<li>' + esc(r) + '</li>'; }).join('') + '</ul>' : '') +
-    (p.cuando ? '<p class="muted" style="font-size:11px">🗓️ ' + esc(p.cuando) + (p.costo ? ' · 💰 ' + esc(p.costo) : '') + '</p>' : '') +
-    (p.tip ? '<p class="muted" style="font-size:11px">💡 ' + esc(p.tip) + '</p>' : '') +
-    '<label style="font-size:11px">📝 Mi nota <input type="text" data-apoyo-nota="' + esc(p.id) + '" placeholder="ej: folio, fecha, con quién hablé..." maxlength="80" value="' + esc(nota) + '"></label>';
+    (p.cuando ? '<p class="muted su-11a508">🗓️ ' + esc(p.cuando) + (p.costo ? ' · 💰 ' + esc(p.costo) : '') + '</p>' : '') +
+    (p.tip ? '<p class="muted su-11a508">💡 ' + esc(p.tip) + '</p>' : '') +
+    '<label class="su-11a508">📝 Mi nota <input type="text" data-apoyo-nota="' + esc(p.id) + '" placeholder="ej: folio, fecha, con quién hablé..." maxlength="80" value="' + esc(nota) + '"></label>';
   if (conCalendario) {
-    html += '<div class="conv-row" style="align-items:flex-end;margin-top:6px">' +
+    html += '<div class="conv-row su-7c1cbb">' +
       '<label>Fecha <input type="date" data-apoyo-fecha="' + esc(p.id) + '" value="' + esc(todayKey()) + '"></label>' +
-      '<label>Hora <input type="time" data-apoyo-hora="' + esc(p.id) + '" value="10:00" style="max-width:110px"></label>' +
-      '<label class="check-row" style="margin:0;white-space:nowrap"><input type="checkbox" data-apoyo-aviso="' + esc(p.id) + '"> 🔔</label>' +
-      '<button type="button" class="btn btn-accent" data-apoyo-add="' + esc(p.id) + '" style="width:auto">📌 Calendario</button></div>';
+      '<label>Hora <input type="time" data-apoyo-hora="' + esc(p.id) + '" value="10:00" class="su-91245b"></label>' +
+      '<label class="check-row su-988f60"><input type="checkbox" data-apoyo-aviso="' + esc(p.id) + '"> 🔔</label>' +
+      '<button type="button" class="btn btn-accent su-30e741" data-apoyo-add="' + esc(p.id) + '">📌 Calendario</button></div>';
   }
-  html += '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">' +
-    '<button type="button" class="btn" data-apoyo-hecho="' + esc(p.id) + '" style="width:auto;font-size:11px">' + (hecho ? '↩️ Reabrir' : '☑️ Marcar hecho') + '</button>' +
-    '<button type="button" class="btn" data-apoyo-share="' + esc(p.id) + '" style="width:auto;font-size:11px">📤 Compartir</button></div></div>';
+  html += '<div class="su-c158a9">' +
+    '<button type="button" class="btn su-337714" data-apoyo-hecho="' + esc(p.id) + '">' + (hecho ? '↩️ Reabrir' : '☑️ Marcar hecho') + '</button>' +
+    '<button type="button" class="btn su-337714" data-apoyo-share="' + esc(p.id) + '">📤 Compartir</button></div></div>';
   return html;
 }
 
@@ -301,8 +301,8 @@ function renderHoras(d) {
   var list = (d.primerasHoras || []).slice();
   if (q) list = list.filter(function (p) { return ((p.nombre || '') + ' ' + (p.detalle || '')).toLowerCase().indexOf(q) >= 0; });
   var he = Object.keys(storeApoyo().hechos).length;
-  var html = '<div class="menstrual-card" style="border-color:#ff6b6b"><h4 style="color:#ff6b6b">🆘 Primeras 24–72 horas · marca cada paso con ☑️</h4>' +
-    '<p class="muted" style="font-size:11px">' + esc(d.intro.texto) + '</p></div>';
+  var html = '<div class="menstrual-card su-55637b"><h4 class="su-0562fa">🆘 Primeras 24–72 horas · marca cada paso con ☑️</h4>' +
+    '<p class="muted su-11a508">' + esc(d.intro.texto) + '</p></div>';
   return html + (list.length ? list.map(function (p) { return pasoCard(p, false); }).join('') : '<p class="muted">Sin resultados.</p>');
 }
 
@@ -312,13 +312,13 @@ function renderCatastro(d) {
   if (q) list = list.filter(function (p) {
     return ((p.nombre || '') + ' ' + (p.donde || '') + ' ' + ((p.requisitos || []).join(' '))).toLowerCase().indexOf(q) >= 0;
   });
-  var html = '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🏠 Catastro y beneficios · ' + list.length + '</h4>' +
-    '<p class="muted" style="font-size:11px">' + esc(d.catastro.intro) + ' Agenda plazos con <b>📌</b> y verifica vigencia en DIDECO.</p></div>';
-  html += '<div class="menstrual-card" style="margin-top:10px"><h4>➕ Agregar mi trámite</h4>' +
-    '<div class="conv-row"><label style="flex:2">Nombre * <input type="text" id="apoyoMioNombre" placeholder="ej: Postular subsidio techo" maxlength="60"></label>' +
+  var html = '<div class="menstrual-card su-68a1a9"><h4>🏠 Catastro y beneficios · ' + list.length + '</h4>' +
+    '<p class="muted su-11a508">' + esc(d.catastro.intro) + ' Agenda plazos con <b>📌</b> y verifica vigencia en DIDECO.</p></div>';
+  html += '<div class="menstrual-card su-d2c171"><h4>➕ Agregar mi trámite</h4>' +
+    '<div class="conv-row"><label class="su-4b3de7">Nombre * <input type="text" id="apoyoMioNombre" placeholder="ej: Postular subsidio techo" maxlength="60"></label>' +
     '<label>Dónde <input type="text" id="apoyoMioDonde" placeholder="ej: EGIS" maxlength="50"></label></div>' +
     '<label>Detalle <input type="text" id="apoyoMioReq" placeholder="folio, plazo, requisitos..." maxlength="120"></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="apoyoMioAdd" class="btn btn-accent" style="width:auto">+ Guardar trámite</button></div></div>';
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="apoyoMioAdd" class="btn btn-accent su-30e741">+ Guardar trámite</button></div></div>';
   return html + (list.length ? list.map(function (p) { return pasoCard(p, true); }).join('') : '<p class="muted">Sin resultados.</p>');
 }
 
@@ -333,50 +333,50 @@ function renderContencion(d) {
     calma = calma.filter(function (x) { return ((x.nombre || '') + ' ' + (x.detalle || '')).toLowerCase().indexOf(q) >= 0; });
     grupos = grupos.filter(function (x) { return ((x.nombre || '') + ' ' + (x.dato || '') + ' ' + (x.nota || '')).toLowerCase().indexOf(q) >= 0; });
   }
-  var html = '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🧠 Contención · no estás solo/a</h4>' +
-    '<p class="muted" style="font-size:11px">' + esc(c.intro || '') + '</p></div>';
+  var html = '<div class="menstrual-card su-68a1a9"><h4>🧠 Contención · no estás solo/a</h4>' +
+    '<p class="muted su-11a508">' + esc(c.intro || '') + '</p></div>';
   if (!q || (c.reacciones || []).join(' ').toLowerCase().indexOf(q || '') >= 0 || !q) {
     if ((c.reacciones || []).length && !q) {
       html += '<div class="menstrual-card"><h4>💛 Reacciones normales ante algo anormal</h4>' +
-        '<p class="muted" style="font-size:11px">Si sientes esto, no significa que estés mal: es tu cuerpo y tu mente procesando. Pasa con el tiempo y el apoyo.</p>' +
-        '<ul style="font-size:11px;margin:2px 0 6px 18px;line-height:1.55">' +
+        '<p class="muted su-11a508">Si sientes esto, no significa que estés mal: es tu cuerpo y tu mente procesando. Pasa con el tiempo y el apoyo.</p>' +
+        '<ul class="su-a34d74">' +
         c.reacciones.map(function (r) { return '<li>' + esc(r) + '</li>'; }).join('') + '</ul></div>';
     }
   }
   if (calma.length) {
     html += '<div class="menstrual-card"><h4>🌿 Para calmarte ahora mismo</h4>' +
       calma.map(function (x) {
-        return '<div class="si-card" style="padding:8px 10px"><h4 style="font-size:12px">🌿 ' + esc(x.nombre) + '</h4>' +
-          '<p class="muted" style="font-size:11px">' + esc(x.detalle || x.dato || '') + '</p></div>';
+        return '<div class="si-card su-cfa1ec"><h4 class="su-6cb285">🌿 ' + esc(x.nombre) + '</h4>' +
+          '<p class="muted su-11a508">' + esc(x.detalle || x.dato || '') + '</p></div>';
       }).join('') + '</div>';
   }
   if (!q && ((c.queHacer || []).length || (c.queEvitar || []).length)) {
     html += '<div class="menstrual-card"><h4>🤲 Cómo acompañar a otro/a</h4>' +
-      ((c.queHacer || []).length ? '<p class="muted" style="font-size:11px"><b>✅ Haz:</b></p><ul style="font-size:11px;margin:2px 0 6px 18px;line-height:1.55">' +
+      ((c.queHacer || []).length ? '<p class="muted su-11a508"><b>✅ Haz:</b></p><ul class="su-a34d74">' +
         c.queHacer.map(function (r) { return '<li>' + esc(r) + '</li>'; }).join('') + '</ul>' : '') +
-      ((c.queEvitar || []).length ? '<p class="muted" style="font-size:11px"><b>🚫 Evita:</b></p><ul style="font-size:11px;margin:2px 0 6px 18px;line-height:1.55">' +
+      ((c.queEvitar || []).length ? '<p class="muted su-11a508"><b>🚫 Evita:</b></p><ul class="su-a34d74">' +
         c.queEvitar.map(function (r) { return '<li>' + esc(r) + '</li>'; }).join('') + '</ul>' : '') + '</div>';
   }
   if (grupos.length) {
     html += '<div class="menstrual-card"><h4>👨‍👩‍👧 Según a quién cuidas</h4>' +
       grupos.map(function (x) {
-        return '<div class="si-card" style="padding:8px 10px"><h4 style="font-size:12px">💚 ' + esc(x.nombre) + '</h4>' +
-          '<p style="font-size:11px"><b>' + esc(x.dato) + '</b></p>' +
-          '<p class="muted" style="font-size:11px">' + esc(x.nota) + '</p></div>';
+        return '<div class="si-card su-cfa1ec"><h4 class="su-6cb285">💚 ' + esc(x.nombre) + '</h4>' +
+          '<p class="su-11a508"><b>' + esc(x.dato) + '</b></p>' +
+          '<p class="muted su-11a508">' + esc(x.nota) + '</p></div>';
       }).join('') + '</div>';
   }
   if (!q && (c.senales || []).length) {
-    html += '<div class="menstrual-card" style="border-color:#e76e8a"><h4 style="color:#e76e8a">🚨 Pide ayuda profesional si…</h4>' +
-      '<ul style="font-size:11px;margin:2px 0 6px 18px;line-height:1.55">' +
+    html += '<div class="menstrual-card su-006fa0"><h4 class="su-a861ba">🚨 Pide ayuda profesional si…</h4>' +
+      '<ul class="su-a34d74">' +
       c.senales.map(function (r) { return '<li>' + esc(r) + '</li>'; }).join('') + '</ul></div>';
   }
-  html += '<div class="menstrual-card" style="border-color:var(--gold)"><h4>📞 Dónde pedir ayuda</h4>' +
+  html += '<div class="menstrual-card su-68a1a9"><h4>📞 Dónde pedir ayuda</h4>' +
     (list.length ? list.map(function (x) {
-      return '<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center;gap:8px"><span><b style="font-size:12px">💚 ' + esc(x.nombre) + '</b><br><span style="font-size:11px"><b>' + esc(x.dato) + '</b></span><br><span class="muted" style="font-size:11px">' + esc(x.nota || '') + '</span></span>' +
-        '<button type="button" class="btn" data-apoyo-tel="' + esc(x.dato) + '" style="width:auto" title="Copiar">📋</button></div>';
+      return '<div class="habit-item su-e84fc1"><span><b class="su-6cb285">💚 ' + esc(x.nombre) + '</b><br><span class="su-11a508"><b>' + esc(x.dato) + '</b></span><br><span class="muted su-11a508">' + esc(x.nota || '') + '</span></span>' +
+        '<button type="button" class="btn su-30e741" data-apoyo-tel="' + esc(x.dato) + '" title="Copiar">📋</button></div>';
     }).join('') : '<p class="muted">Sin resultados.</p>') + '</div>';
   if (!q && c.cierre) {
-    html += '<div class="menstrual-card"><p class="muted" style="font-size:11px">💡 ' + esc(c.cierre) + '</p></div>';
+    html += '<div class="menstrual-card"><p class="muted su-11a508">💡 ' + esc(c.cierre) + '</p></div>';
   }
   return html;
 }
@@ -385,10 +385,10 @@ function renderDonde(d) {
   var q = matchQ();
   var list = (d.dondeIr || []).slice();
   if (q) list = list.filter(function (x) { return ((x.nombre || '') + ' ' + (x.dato || '')).toLowerCase().indexOf(q) >= 0; });
-  var html = '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🤝 Dónde ir · directorio de ayuda</h4>' +
+  var html = '<div class="menstrual-card su-68a1a9"><h4>🤝 Dónde ir · directorio de ayuda</h4>' +
     list.map(function (x) {
-      return '<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center"><span><b>' + esc(x.nombre) + '</b><br><span class="muted" style="font-size:11px">📞 <b>' + esc(x.dato) + '</b><br>' + esc(x.nota || '') + '</span></span>' +
-        '<button type="button" class="btn" data-apoyo-tel="' + esc(x.dato) + '" style="width:auto" title="Copiar">📋</button></div>';
+      return '<div class="habit-item su-13313b"><span><b>' + esc(x.nombre) + '</b><br><span class="muted su-11a508">📞 <b>' + esc(x.dato) + '</b><br>' + esc(x.nota || '') + '</span></span>' +
+        '<button type="button" class="btn su-30e741" data-apoyo-tel="' + esc(x.dato) + '" title="Copiar">📋</button></div>';
     }).join('') + '</div>';
   return html;
 }
@@ -396,15 +396,15 @@ function renderDonde(d) {
 function renderMochila(d) {
   var m = d.mochila;
   var st = storeApoyo();
-  var html = '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🎒 Mochila de 72 horas</h4>' +
-    '<p class="muted" style="font-size:11px">' + esc(m.intro) + '</p>' +
+  var html = '<div class="menstrual-card su-68a1a9"><h4>🎒 Mochila de 72 horas</h4>' +
+    '<p class="muted su-11a508">' + esc(m.intro) + '</p>' +
     m.items.map(function (it, i) {
       var id = 'moch-' + i;
       var ok = !!st.hechos[id];
-      return '<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center"><span>' + (ok ? '✅ ' : '⬜ ') + esc(it) + '</span>' +
-        '<button type="button" class="btn" data-apoyo-hecho="' + id + '" style="width:auto;font-size:11px">' + (ok ? '↩️' : '☑️') + '</button></div>';
+      return '<div class="habit-item su-13313b"><span>' + (ok ? '✅ ' : '⬜ ') + esc(it) + '</span>' +
+        '<button type="button" class="btn su-337714" data-apoyo-hecho="' + id + '">' + (ok ? '↩️' : '☑️') + '</button></div>';
     }).join('') +
-    '<p class="muted" style="font-size:11px;margin-top:6px">💡 ' + esc(m.tip) + '</p></div>';
+    '<p class="muted su-e13d76">💡 ' + esc(m.tip) + '</p></div>';
   return html;
 }
 
@@ -413,30 +413,30 @@ function renderMios(d) {
   var all = (d.primerasHoras || []).concat((d.catastro && d.catastro.pasos) || []);
   var hechos = all.filter(function (p) { return st.hechos[p.id]; });
   var avisos = st.avisos.slice().sort(function (a, b) { return String(a.fecha).localeCompare(String(b.fecha)); });
-  var html = '<div class="menstrual-card" style="border-color:var(--gold)"><h4>⭐ Mi plan · ' + hechos.length + ' hechos · ' + avisos.length + ' en calendario · ' + st.mios.length + ' propios</h4>' +
-    '<p class="muted" style="font-size:11px">Tus plazos ya están como compromisos 🕐 en tu calendario. Aquí los ves todos juntos.</p>';
+  var html = '<div class="menstrual-card su-68a1a9"><h4>⭐ Mi plan · ' + hechos.length + ' hechos · ' + avisos.length + ' en calendario · ' + st.mios.length + ' propios</h4>' +
+    '<p class="muted su-11a508">Tus plazos ya están como compromisos 🕐 en tu calendario. Aquí los ves todos juntos.</p>';
   if (hechos.length) {
     html += hechos.map(function (p) {
-      return '<div class="chip" style="display:block;margin-top:4px">✅ <b>' + esc(p.nombre) + '</b>' + (st.notas[p.id] ? ' · ' + esc(st.notas[p.id]) : '') + '</div>';
+      return '<div class="chip su-6f28f3">✅ <b>' + esc(p.nombre) + '</b>' + (st.notas[p.id] ? ' · ' + esc(st.notas[p.id]) : '') + '</div>';
     }).join('');
   } else {
-    html += '<p class="muted" style="font-size:11px">Aún no marcas pasos. Ve a 🆘 Primeras horas y pulsa ☑️.</p>';
+    html += '<p class="muted su-11a508">Aún no marcas pasos. Ve a 🆘 Primeras horas y pulsa ☑️.</p>';
   }
   if (avisos.length) {
-    html += '<div style="margin-top:8px">' + avisos.map(function (r) {
-      return '<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center"><span><b>' + esc(r.nombre) + '</b><br><span class="muted" style="font-size:11px">📅 ' + esc(r.fecha) + ' · 🕐 ' + esc(r.hora) + (r.notify ? ' · 🔔' : '') + (r.detalle ? ' · ' + esc(r.detalle) : '') + '</span></span>' +
-        '<button type="button" class="btn" data-apoyo-avdel="' + r.id + '" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕</button></div>';
+    html += '<div class="su-8a77e5">' + avisos.map(function (r) {
+      return '<div class="habit-item su-13313b"><span><b>' + esc(r.nombre) + '</b><br><span class="muted su-11a508">📅 ' + esc(r.fecha) + ' · 🕐 ' + esc(r.hora) + (r.notify ? ' · 🔔' : '') + (r.detalle ? ' · ' + esc(r.detalle) : '') + '</span></span>' +
+        '<button type="button" class="btn su-fd834a" data-apoyo-avdel="' + r.id + '">✕</button></div>';
     }).join('') + '</div>';
   }
   if (st.mios.length) {
-    html += '<p class="muted" style="font-size:11px;margin-top:8px">📌 Mis trámites propios:</p>' + st.mios.map(function (t) {
-      return '<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center"><span><b>📌 ' + esc(t.nombre) + '</b>' + (st.hechos[t.id] ? ' ✅' : '') + '<br><span class="muted" style="font-size:11px">' + esc(t.donde || '') + '</span></span>' +
-        '<span style="display:flex;gap:6px"><button type="button" class="btn" data-apoyo-hecho="' + esc(t.id) + '" style="width:auto;font-size:11px">☑️</button>' +
-        '<button type="button" class="btn" data-apoyo-miodel="' + esc(t.id) + '" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕</button></span></div>';
+    html += '<p class="muted su-e6fe60">📌 Mis trámites propios:</p>' + st.mios.map(function (t) {
+      return '<div class="habit-item su-13313b"><span><b>📌 ' + esc(t.nombre) + '</b>' + (st.hechos[t.id] ? ' ✅' : '') + '<br><span class="muted su-11a508">' + esc(t.donde || '') + '</span></span>' +
+        '<span class="su-49cd09"><button type="button" class="btn su-337714" data-apoyo-hecho="' + esc(t.id) + '">☑️</button>' +
+        '<button type="button" class="btn su-fd834a" data-apoyo-miodel="' + esc(t.id) + '">✕</button></span></div>';
     }).join('');
   }
-  html += '<div class="dlg-actions" style="justify-content:space-between;margin-top:8px"><button type="button" id="apoyoShareAll" class="btn" style="width:auto">📤 Compartir mi plan</button>' +
-    '<button type="button" id="apoyoClearAll" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar plan</button></div></div>';
+  html += '<div class="dlg-actions su-efea1d"><button type="button" id="apoyoShareAll" class="btn su-30e741">📤 Compartir mi plan</button>' +
+    '<button type="button" id="apoyoClearAll" class="btn su-214f75">🗑 Borrar plan</button></div></div>';
   return html;
 }
 

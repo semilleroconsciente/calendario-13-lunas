@@ -85,10 +85,10 @@ function makeDialog(id, title, sub, bodyHTML) {
   var d = document.createElement('dialog');
   d.id = id;
   d.innerHTML = '<form method="dialog">' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
-    '<h3 style="margin:0;color:var(--accent)">' + title + '</h3>' +
+    '<div class="dlg-actions su-d2d053">' +
+    '<h3 class="su-ee0cfe">' + title + '</h3>' +
     '<button type="button" data-close class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    (sub ? '<p class="muted" style="line-height:1.5">' + sub + '</p>' : '') +
+    (sub ? '<p class="muted su-77e2fe">' + sub + '</p>' : '') +
     bodyHTML +
     '<div class="dlg-actions"><button type="button" data-close class="btn">Cerrar</button></div></form>';
   document.body.appendChild(d);
@@ -414,33 +414,33 @@ function escalaCant(c, mult) {
 
 function buildDialog() {
   var body =
-    '<div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">' +
-    '<button type="button" id="tabRecResumen" class="btn btn-accent" style="width:auto">🏡 Resumen</button>' +
-    '<button type="button" id="tabRecRecetas" class="btn" style="width:auto">📖 Recetas</button>' +
-    '<button type="button" id="tabRecPreps" class="btn" style="width:auto">🫙 Mis Preparaciones</button>' +
-    '<button type="button" id="tabRecSeg" class="btn" style="width:auto">⚠️ Seguridad</button></div>' +
+    '<div class="timer-tabs su-4dca21">' +
+    '<button type="button" id="tabRecResumen" class="btn btn-accent su-30e741">🏡 Resumen</button>' +
+    '<button type="button" id="tabRecRecetas" class="btn su-30e741">📖 Recetas</button>' +
+    '<button type="button" id="tabRecPreps" class="btn su-30e741">🫙 Mis Preparaciones</button>' +
+    '<button type="button" id="tabRecSeg" class="btn su-30e741">⚠️ Seguridad</button></div>' +
 
     '<div id="recResumen"></div>' +
 
     '<div id="recRecetas" class="hidden">' +
-    '<div class="conv-row"><label style="flex:2">🔍 Buscar <input type="text" id="recQ" placeholder="pasta, coco, karité, jabón..."></label>' +
+    '<div class="conv-row"><label class="su-4b3de7">🔍 Buscar <input type="text" id="recQ" placeholder="pasta, coco, karité, jabón..."></label>' +
     '<label>Categoría <select id="recFC"><option value="todas">Todas</option>' + CATS.map(function (c) { return '<option>' + esc(c) + '</option>'; }).join('') + '</select></label>' +
-    '<label class="check-row" style="margin:0;white-space:nowrap"><input type="checkbox" id="recFavOnly"> ⭐ solo favs</label></div>' +
-    '<div id="recList" style="margin-top:8px;display:flex;flex-direction:column;gap:8px;max-height:380px;overflow-y:auto"></div></div>' +
+    '<label class="check-row su-988f60"><input type="checkbox" id="recFavOnly"> ⭐ solo favs</label></div>' +
+    '<div id="recList" class="su-be747f"></div></div>' +
 
     '<div id="recPreps" class="hidden">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>➕ Registrar preparación</h4>' +
-    '<div class="conv-row"><label style="flex:2">Receta <select id="rpReceta"></select></label>' +
+    '<div class="menstrual-card su-68a1a9"><h4>➕ Registrar preparación</h4>' +
+    '<div class="conv-row"><label class="su-4b3de7">Receta <select id="rpReceta"></select></label>' +
     '<label>Fecha <input type="date" id="rpFecha"></label></div>' +
     '<div class="conv-row"><label>Cantidad hecha <input type="text" id="rpCant" placeholder="ej: 1 frasco 60 ml" maxlength="40"></label>' +
     '<label>¿Te gustó? <select id="rpRate"><option value="5">⭐⭐⭐⭐⭐ me encantó</option><option value="4">⭐⭐⭐⭐ bien</option><option value="3">⭐⭐⭐ regular</option><option value="2">⭐⭐ flojo</option><option value="1">⭐ no repetir</option></select></label></div>' +
     '<label>Notas <input type="text" id="rpNota" placeholder="ej: quedó espesa, próxima vez menos arcilla" maxlength="120"></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start;margin-top:8px"><button type="button" id="rpAdd" class="btn btn-accent" style="width:auto">+ Guardar</button>' +
-    '<button type="button" id="rpCancel" class="btn hidden" style="width:auto">Cancelar</button></div></div>' +
-    '<div id="recLogList" class="habits-list" style="margin-top:8px;max-height:260px"></div>' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-top:8px"><span id="recLogStats" class="muted" style="font-size:11px"></span>' +
-    '<span style="display:flex;gap:6px"><button type="button" id="recLogShare" class="btn" style="width:auto">📤 Compartir</button>' +
-    '<button type="button" id="recLogClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar</button></span></div></div>' +
+    '<div class="dlg-actions su-8f9e27"><button type="button" id="rpAdd" class="btn btn-accent su-30e741">+ Guardar</button>' +
+    '<button type="button" id="rpCancel" class="btn hidden su-30e741">Cancelar</button></div></div>' +
+    '<div id="recLogList" class="habits-list su-57635e"></div>' +
+    '<div class="dlg-actions su-efea1d"><span id="recLogStats" class="muted su-11a508"></span>' +
+    '<span class="su-49cd09"><button type="button" id="recLogShare" class="btn su-30e741">📤 Compartir</button>' +
+    '<button type="button" id="recLogClear" class="btn su-214f75">🗑 Borrar</button></span></div></div>' +
 
     '<div id="recSeg" class="hidden">' +
     '<div class="si-card"><h4>🧪 Test de parche (siempre, con todo)</h4><p>Aplica una lenteja en el antebrazo interno, tapa con parche y espera <b>48 h</b>. Si pica, arde, enrojece o salen granitos: esa receta no es para tu piel. Prueba la versión sensible (spray sin bicarbonato, crema sin esenciales).</p></div>' +
@@ -488,17 +488,17 @@ function renderResumen() {
   venc.sort(function (a, b) { return (a.e.v || '').localeCompare(b.e.v || ''); });
   box.innerHTML =
     '<div class="fishing-grid">' +
-    '<div class="menstrual-card"><h4>📖 Recetario</h4><p style="font-size:22px;color:var(--gold)"><b>' + total + '</b> <span style="font-size:12px">recetas</span></p>' +
-    '<p class="muted" style="font-size:11px">' + CATS.map(function (c) { return esc(c); }).join(' · ') + '</p></div>' +
-    '<div class="menstrual-card"><h4>🫙 Este mes</h4><p style="font-size:22px;color:var(--gold)"><b>' + mes.length + '</b> <span style="font-size:12px">preparaciones</span></p>' +
-    '<p class="muted" style="font-size:11px">⭐ ' + s.favs.length + ' favoritas · 🫙 ' + s.log.length + ' totales' + (venc.length ? ' · <b style="color:#e76e8a">' + venc.length + ' vencidas</b>' : '') + '</p></div></div>' +
-    '<div class="menstrual-card" style="margin-top:10px;border-color:var(--gold)"><h4>🌙 Consejo lunar</h4><p style="font-size:12px">' + esc(lunaConsejo()) + '</p></div>' +
+    '<div class="menstrual-card"><h4>📖 Recetario</h4><p class="su-f3dba9"><b>' + total + '</b> <span class="su-6cb285">recetas</span></p>' +
+    '<p class="muted su-11a508">' + CATS.map(function (c) { return esc(c); }).join(' · ') + '</p></div>' +
+    '<div class="menstrual-card"><h4>🫙 Este mes</h4><p class="su-f3dba9"><b>' + mes.length + '</b> <span class="su-6cb285">preparaciones</span></p>' +
+    '<p class="muted su-11a508">⭐ ' + s.favs.length + ' favoritas · 🫙 ' + s.log.length + ' totales' + (venc.length ? ' · <b class="su-a861ba">' + venc.length + ' vencidas</b>' : '') + '</p></div></div>' +
+    '<div class="menstrual-card su-51d56a"><h4>🌙 Consejo lunar</h4><p class="su-6cb285">' + esc(lunaConsejo()) + '</p></div>' +
     ((venc.length || prox.length) ?
-      '<div class="menstrual-card" style="margin-top:10px"><h4>⏳ Vencimientos de tus frascos</h4>' +
-      (venc.slice(0, 4).map(function (x) { return '<div class="hora-item"><span style="font-size:12px">🔴 <b>' + esc(x.l.nombre || 'Preparación') + '</b> <span class="muted">· hecha ' + esc(x.l.fecha) + ' · ' + esc(x.e.txt) + '</span></span></div>'; }).join('') +
-      prox.slice(0, 4).map(function (x) { return '<div class="hora-item"><span style="font-size:12px">🟡 <b>' + esc(x.l.nombre || 'Preparación') + '</b> <span class="muted">· ' + esc(x.e.txt) + ' (' + esc(x.e.v || '') + ')</span></span></div>'; }).join('') || '<p class="muted">Todo al día ✓</p>') + '</div>' : '') +
-    '<div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap"><button type="button" id="recGoList" class="btn btn-accent" style="flex:1;width:auto">📖 Ver recetas</button>' +
-    '<button type="button" id="recGoPrep" class="btn" style="flex:1;width:auto">🫙 Registrar preparación</button></div>';
+      '<div class="menstrual-card su-d2c171"><h4>⏳ Vencimientos de tus frascos</h4>' +
+      (venc.slice(0, 4).map(function (x) { return '<div class="hora-item"><span class="su-6cb285">🔴 <b>' + esc(x.l.nombre || 'Preparación') + '</b> <span class="muted">· hecha ' + esc(x.l.fecha) + ' · ' + esc(x.e.txt) + '</span></span></div>'; }).join('') +
+      prox.slice(0, 4).map(function (x) { return '<div class="hora-item"><span class="su-6cb285">🟡 <b>' + esc(x.l.nombre || 'Preparación') + '</b> <span class="muted">· ' + esc(x.e.txt) + ' (' + esc(x.e.v || '') + ')</span></span></div>'; }).join('') || '<p class="muted">Todo al día ✓</p>') + '</div>' : '') +
+    '<div class="su-44ef29"><button type="button" id="recGoList" class="btn btn-accent su-1ce0dc">📖 Ver recetas</button>' +
+    '<button type="button" id="recGoPrep" class="btn su-1ce0dc">🫙 Registrar preparación</button></div>';
   var g1 = $('recGoList'); if (g1) g1.onclick = function () { switchTab('Recetas'); };
   var g2 = $('recGoPrep'); if (g2) g2.onclick = function () { switchTab('Preps'); };
 }
@@ -508,16 +508,16 @@ function recetaCard(r) {
   var chk = store().checks[r.id] || [];
   var hechas = chk.filter(Boolean).length;
   return '<div class="si-card"><h4>' + esc(r.icon + ' ' + r.nombre) + '</h4>' +
-    '<p style="display:flex;gap:6px;flex-wrap:wrap"><span class="chip" style="font-size:10px">' + esc(r.cat) + '</span>' +
-    '<span class="chip" style="font-size:10px">⏱ ' + esc(r.tiempo) + '</span>' +
-    '<span class="chip" style="font-size:10px">🫙 ' + esc(r.rinde) + '</span>' +
-    '<span class="chip" style="font-size:10px">' + esc(r.dif) + ' · ' + esc(r.costo) + '</span>' +
-    (r.dura ? '<span class="chip" style="font-size:10px">⏳ dura ' + r.dura + ' d</span>' : '<span class="chip" style="font-size:10px">⚡ uso inmediato</span>') + '</p>' +
-    '<p style="font-size:12px">' + esc(r.desc) + '</p>' +
-    '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">' +
-    '<button type="button" class="btn rec-open" data-k="' + esc(r.id) + '" style="width:auto;font-size:11px">📖 Ver receta</button>' +
-    '<button type="button" class="btn rec-fav" data-k="' + esc(r.id) + '" style="width:auto;font-size:11px">' + fav + ' Fav' + (hechas ? ' · ✓' + hechas + '/' + r.ing.length : '') + '</button>' +
-    '<button type="button" class="btn rec-make" data-k="' + esc(r.id) + '" style="width:auto;font-size:11px">🫙 La preparé</button></div></div>';
+    '<p class="su-6157e8"><span class="chip su-0d5be0">' + esc(r.cat) + '</span>' +
+    '<span class="chip su-0d5be0">⏱ ' + esc(r.tiempo) + '</span>' +
+    '<span class="chip su-0d5be0">🫙 ' + esc(r.rinde) + '</span>' +
+    '<span class="chip su-0d5be0">' + esc(r.dif) + ' · ' + esc(r.costo) + '</span>' +
+    (r.dura ? '<span class="chip su-0d5be0">⏳ dura ' + r.dura + ' d</span>' : '<span class="chip su-0d5be0">⚡ uso inmediato</span>') + '</p>' +
+    '<p class="su-6cb285">' + esc(r.desc) + '</p>' +
+    '<div class="su-c158a9">' +
+    '<button type="button" class="btn rec-open su-337714" data-k="' + esc(r.id) + '">📖 Ver receta</button>' +
+    '<button type="button" class="btn rec-fav su-337714" data-k="' + esc(r.id) + '">' + fav + ' Fav' + (hechas ? ' · ✓' + hechas + '/' + r.ing.length : '') + '</button>' +
+    '<button type="button" class="btn rec-make su-337714" data-k="' + esc(r.id) + '">🫙 La preparé</button></div></div>';
 }
 
 function renderRecetas() {
@@ -534,7 +534,7 @@ function renderRecetas() {
     return tn.indexOf(qn) >= 0;
   });
   if (!list.length) {
-    box.innerHTML = '<p class="muted" style="font-size:11px;text-align:center">Sin resultados. Prueba "coco", "karité" o "jabón".</p>';
+    box.innerHTML = '<p class="muted su-e201a8">Sin resultados. Prueba "coco", "karité" o "jabón".</p>';
     bindRecetaBtns(box);
     return;
   }
@@ -553,23 +553,23 @@ function recetaDetalle(r) {
   var chk = s.checks[r.id] || [];
   var ingHTML = r.ing.map(function (x, i) {
     var done = !!chk[i];
-    return '<label class="habit-today-item ' + (done ? 'done' : '') + '" style="display:flex"><input type="checkbox" data-chk="' + i + '" ' + (done ? 'checked' : '') + '><span style="font-size:12px"><b>' + esc(escalaCant(x.c, multiplo)) + '</b> ' + esc(x.i) + '</span></label>';
+    return '<label class="habit-today-item ' + (done ? 'done' : '') + ' su-75816c"><input type="checkbox" data-chk="' + i + '" ' + (done ? 'checked' : '') + '><span class="su-6cb285"><b>' + esc(escalaCant(x.c, multiplo)) + '</b> ' + esc(x.i) + '</span></label>';
   }).join('');
-  var pasosHTML = r.pasos.map(function (p, i) { return '<p style="font-size:12px"><b>' + (i + 1) + '.</b> ' + esc(p) + '</p>'; }).join('');
-  return '<div class="menstrual-card" id="recDet" style="border-color:var(--gold);margin-top:4px">' +
+  var pasosHTML = r.pasos.map(function (p, i) { return '<p class="su-6cb285"><b>' + (i + 1) + '.</b> ' + esc(p) + '</p>'; }).join('');
+  return '<div class="menstrual-card su-ee187f" id="recDet">' +
     '<h4>' + esc(r.icon + ' ' + r.nombre) + '</h4>' +
-    '<p class="muted" style="font-size:11px">' + esc(r.cat) + ' · ⏱ ' + esc(r.tiempo) + ' · 🫙 ' + esc(r.rinde) + ' · ' + esc(r.dif) + '</p>' +
-    '<div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin:6px 0"><span class="muted" style="font-size:11px">Porciones:</span>' +
-    [0.5, 1, 2, 3].map(function (m) { return '<button type="button" class="btn rec-mult' + (multiplo === m ? ' btn-accent' : '') + '" data-m="' + m + '" style="width:auto;font-size:11px">×' + m + '</button>'; }).join('') + '</div>' +
-    '<h4 style="font-size:12px">🧾 Ingredientes (toca para tachar)</h4><div class="habits-today-grid">' + ingHTML + '</div>' +
-    '<h4 style="font-size:12px;margin-top:8px">👩‍🍳 Preparación</h4>' + pasosHTML +
-    '<div class="si-card" style="margin-top:8px"><h4>💡 Uso</h4><p>' + esc(r.uso) + '</p><h4>🫙 Conservación</h4><p>' + esc(r.conserva) + '</p></div>' +
+    '<p class="muted su-11a508">' + esc(r.cat) + ' · ⏱ ' + esc(r.tiempo) + ' · 🫙 ' + esc(r.rinde) + ' · ' + esc(r.dif) + '</p>' +
+    '<div class="su-b0ef29"><span class="muted su-11a508">Porciones:</span>' +
+    [0.5, 1, 2, 3].map(function (m) { return '<button type="button" class="btn rec-mult' + (multiplo === m ? ' btn-accent' : '') + ' su-337714" data-m="' + m + '">×' + m + '</button>'; }).join('') + '</div>' +
+    '<h4 class="su-6cb285">🧾 Ingredientes (toca para tachar)</h4><div class="habits-today-grid">' + ingHTML + '</div>' +
+    '<h4 class="su-b0cc7e">👩‍🍳 Preparación</h4>' + pasosHTML +
+    '<div class="si-card su-8a77e5"><h4>💡 Uso</h4><p>' + esc(r.uso) + '</p><h4>🫙 Conservación</h4><p>' + esc(r.conserva) + '</p></div>' +
     '<div class="lawen-warn">⚠️ ' + esc(r.aviso) + '</div>' +
-    '<p class="muted" style="font-size:11px;margin-top:6px">' + esc(r.luna) + '<br>👶 ' + esc(r.kids) + '</p>' +
-    '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">' +
-    '<button type="button" class="btn btn-accent rec-make" data-k="' + esc(r.id) + '" style="width:auto">🫙 La preparé → registrar</button>' +
-    '<button type="button" class="btn rec-share" data-k="' + esc(r.id) + '" style="width:auto">📤 Compartir</button>' +
-    '<button type="button" class="btn rec-close" style="width:auto">↑ Cerrar detalle</button></div></div>';
+    '<p class="muted su-e13d76">' + esc(r.luna) + '<br>👶 ' + esc(r.kids) + '</p>' +
+    '<div class="su-0ad856">' +
+    '<button type="button" class="btn btn-accent rec-make su-30e741" data-k="' + esc(r.id) + '">🫙 La preparé → registrar</button>' +
+    '<button type="button" class="btn rec-share su-30e741" data-k="' + esc(r.id) + '">📤 Compartir</button>' +
+    '<button type="button" class="btn rec-close su-30e741">↑ Cerrar detalle</button></div></div>';
 }
 
 function recetaTexto(r) {
@@ -654,7 +654,7 @@ function renderLog() {
   var s = store();
   var st = $('recLogStats');
   if (!s.log.length) {
-    box.innerHTML = '<p class="muted" style="font-size:11px;text-align:center">Sin preparaciones aún. Registra tu primera pasta o desodorante arriba 🫙</p>';
+    box.innerHTML = '<p class="muted su-e201a8">Sin preparaciones aún. Registra tu primera pasta o desodorante arriba 🫙</p>';
     if (st) st.textContent = '0 preparaciones';
     return;
   }
@@ -662,8 +662,8 @@ function renderLog() {
   box.innerHTML = list.map(function (l) {
     var e = estadoVence(l);
     var dot = e.k === 'venc' ? '🔴' : e.k === 'hoy' ? '🔴' : e.k === 'prox' ? '🟡' : e.k === 'na' ? '⚡' : '🟢';
-    return '<div class="hora-item"><span style="font-size:12px">' + dot + ' <b>' + esc(l.nombre || 'Preparación') + '</b> · ' + esc(l.fecha || '') +
-      '<br><span class="muted" style="font-size:10px">' + esc(l.cantidad || '') + ' · ' + stars(l.rate) + ' · ' + esc(e.txt) + (e.v ? ' (' + esc(e.v) + ')' : '') + (l.nota ? '<br>📝 ' + esc(l.nota) : '') + '</span></span>' +
+    return '<div class="hora-item"><span class="su-6cb285">' + dot + ' <b>' + esc(l.nombre || 'Preparación') + '</b> · ' + esc(l.fecha || '') +
+      '<br><span class="muted su-0d5be0">' + esc(l.cantidad || '') + ' · ' + stars(l.rate) + ' · ' + esc(e.txt) + (e.v ? ' (' + esc(e.v) + ')' : '') + (l.nota ? '<br>📝 ' + esc(l.nota) : '') + '</span></span>' +
       '<span class="hora-actions"><button type="button" class="btn btn-icon rec-le" data-k="' + esc(l.id) + '" title="Editar">✏️</button>' +
       '<button type="button" class="btn btn-icon rec-lx" data-k="' + esc(l.id) + '" title="Borrar">✕</button></span></div>';
   }).join('');

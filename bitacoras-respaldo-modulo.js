@@ -520,17 +520,17 @@ function buildDialog() {
   dlg.id = 'bitacorasDialog';
   dlg.innerHTML =
     '<form method="dialog">' +
-      '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:6px">' +
-        '<h3 style="margin:0;color:var(--accent)">📓 Bitácoras independientes</h3>' +
+      '<div class="dlg-actions su-e2cc9e">' +
+        '<h3 class="su-ee0cfe">📓 Bitácoras independientes</h3>' +
         '<button type="button" id="bitCloseTop" class="btn btn-icon" title="Cerrar" aria-label="Cerrar">✕</button>' +
       '</div>' +
-      '<p class="muted" style="line-height:1.5">Cada bitácora es <b>independiente</b>: tiene sus propios datos y su propio archivo de respaldo. ' +
+      '<p class="muted su-77e2fe">Cada bitácora es <b>independiente</b>: tiene sus propios datos y su propio archivo de respaldo. ' +
       'Exportar, importar o borrar una <b>no toca a las demás</b>. Usuario actual: <b id="bitUser">—</b></p>' +
       '<div class="bit-tools">' +
-        '<input type="search" id="bitFilter" placeholder="🔎 filtrar bitácora..." style="flex:1;min-width:160px" aria-label="Filtrar bitácoras">' +
+        '<input type="search" id="bitFilter" placeholder="🔎 filtrar bitácora..." class="su-eb6218" aria-label="Filtrar bitácoras">' +
       '</div>' +
       '<div id="bitList"></div>' +
-      '<p id="bitStatus" class="muted" style="min-height:18px;font-size:12px"></p>' +
+      '<p id="bitStatus" class="muted su-78060e"></p>' +
       '<div class="dlg-actions"><button type="button" id="bitClose" class="btn">Cerrar</button></div>' +
     '</form>';
   document.body.appendChild(dlg);

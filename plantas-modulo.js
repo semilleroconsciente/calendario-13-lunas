@@ -79,10 +79,10 @@ function makeDialog(id, title, sub, bodyHTML) {
   var d = document.createElement('dialog');
   d.id = id;
   d.innerHTML = '<form method="dialog">' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
-    '<h3 style="margin:0;color:var(--accent)">' + title + '</h3>' +
+    '<div class="dlg-actions su-d2d053">' +
+    '<h3 class="su-ee0cfe">' + title + '</h3>' +
     '<button type="button" data-close class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    (sub ? '<p class="muted" style="line-height:1.5">' + sub + '</p>' : '') +
+    (sub ? '<p class="muted su-77e2fe">' + sub + '</p>' : '') +
     bodyHTML +
     '<div class="dlg-actions"><button type="button" data-close class="btn">Cerrar</button></div></form>';
   document.body.appendChild(d);
@@ -153,17 +153,17 @@ var editId = null, fTipo = 'todos', fUbi = 'todas', fQ = '';
 
 function buildDialog() {
   var body =
-    '<div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">' +
-    '<button type="button" id="tabPlaResumen" class="btn btn-accent" style="width:auto">🏡 Resumen</button>' +
-    '<button type="button" id="tabPlaPlantas" class="btn" style="width:auto">🪴 Mis Plantas</button>' +
-    '<button type="button" id="tabPlaCuidados" class="btn" style="width:auto">✅ Cuidados</button>' +
-    '<button type="button" id="tabPlaGuia" class="btn" style="width:auto">📖 Guía</button></div>' +
+    '<div class="timer-tabs su-4dca21">' +
+    '<button type="button" id="tabPlaResumen" class="btn btn-accent su-30e741">🏡 Resumen</button>' +
+    '<button type="button" id="tabPlaPlantas" class="btn su-30e741">🪴 Mis Plantas</button>' +
+    '<button type="button" id="tabPlaCuidados" class="btn su-30e741">✅ Cuidados</button>' +
+    '<button type="button" id="tabPlaGuia" class="btn su-30e741">📖 Guía</button></div>' +
 
     '<div id="plaResumen"></div>' +
 
     '<div id="plaPlantas" class="hidden">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>➕ <span id="plaFormTitle">Nueva planta</span></h4>' +
-    '<div class="conv-row"><label style="flex:2">Nombre * <input type="text" id="plNombre" placeholder="ej: Monstera, Ficus, Jade, Limonero" maxlength="40"></label>' +
+    '<div class="menstrual-card su-68a1a9"><h4>➕ <span id="plaFormTitle">Nueva planta</span></h4>' +
+    '<div class="conv-row"><label class="su-4b3de7">Nombre * <input type="text" id="plNombre" placeholder="ej: Monstera, Ficus, Jade, Limonero" maxlength="40"></label>' +
     '<label>Tipo <select id="plTipo">' + TIPOS.map(function (t) { return '<option>' + esc(t) + '</option>'; }).join('') + '</select></label></div>' +
     '<div class="conv-row"><label>Nombre científico <input type="text" id="plCient" placeholder="ej: Monstera deliciosa" maxlength="50"></label>' +
     '<label>Ubicación <select id="plUbi">' + UBICACIONES.map(function (t) { return '<option>' + esc(t) + '</option>'; }).join('') + '</select></label></div>' +
@@ -173,27 +173,27 @@ function buildDialog() {
     '<label>Último riego <input type="date" id="plUltRiego"></label>' +
     '<label>Llegó a casa <input type="date" id="plLlego"></label></div>' +
     '<div class="conv-row"><label>Maceta / sustrato <input type="text" id="plMaceta" placeholder="ej: greda 20cm + compost + perlita" maxlength="60"></label></div>' +
-    '<div class="conv-row"><label class="check-row" style="margin:0"><input type="checkbox" id="plTox"> ☠️ Tóxica mascotas / niños</label>' +
-    '<label class="check-row" style="margin:0"><input type="checkbox" id="plFav"> ⭐ Favorita</label></div>' +
+    '<div class="conv-row"><label class="check-row su-116966"><input type="checkbox" id="plTox"> ☠️ Tóxica mascotas / niños</label>' +
+    '<label class="check-row su-116966"><input type="checkbox" id="plFav"> ⭐ Favorita</label></div>' +
     '<label>Notas <input type="text" id="plNotas" placeholder="ej: junto a la ventana sur, no encharcar" maxlength="120"></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start;margin-top:8px"><button type="button" id="plAdd" class="btn btn-accent" style="width:auto">+ Guardar planta</button>' +
-    '<button type="button" id="plCancel" class="btn hidden" style="width:auto">Cancelar</button></div></div>' +
-    '<div class="conv-row" style="margin-top:10px"><label style="flex:2">🔍 Buscar <input type="text" id="plQ" placeholder="nombre, nota, maceta..."></label>' +
+    '<div class="dlg-actions su-8f9e27"><button type="button" id="plAdd" class="btn btn-accent su-30e741">+ Guardar planta</button>' +
+    '<button type="button" id="plCancel" class="btn hidden su-30e741">Cancelar</button></div></div>' +
+    '<div class="conv-row su-d2c171"><label class="su-4b3de7">🔍 Buscar <input type="text" id="plQ" placeholder="nombre, nota, maceta..."></label>' +
     '<label>Tipo <select id="plFQ"><option value="todos">Todos</option>' + TIPOS.map(function (t) { return '<option>' + esc(t) + '</option>'; }).join('') + '</select></label>' +
     '<label>Ubicación <select id="plFU"><option value="todas">Todas</option>' + UBICACIONES.map(function (t) { return '<option>' + esc(t) + '</option>'; }).join('') + '</select></label></div>' +
-    '<div id="plaList" style="margin-top:8px;display:flex;flex-direction:column;gap:8px"></div></div>' +
+    '<div id="plaList" class="su-bf3828"></div></div>' +
 
     '<div id="plaCuidados" class="hidden">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>➕ Nuevo cuidado</h4>' +
+    '<div class="menstrual-card su-68a1a9"><h4>➕ Nuevo cuidado</h4>' +
     '<div class="conv-row"><label>Planta <select id="pcPlanta"></select></label>' +
     '<label>Tipo <select id="pcTipo">' + TIPOS_CUIDADO.map(function (t) { return '<option>' + esc(t) + '</option>'; }).join('') + '</select></label>' +
     '<label>Fecha <input type="date" id="pcFecha"></label></div>' +
     '<label>Detalle <input type="text" id="pcNota" placeholder="ej: 500ml sin encharcar, té de plátano 1:5" maxlength="100"></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start;margin-top:8px"><button type="button" id="pcAdd" class="btn btn-accent" style="width:auto">+ Guardar cuidado</button></div></div>' +
-    '<div class="conv-row" style="margin-top:10px"><label>Mostrar <select id="pcFiltro"><option value="pendientes">Pendientes</option><option value="todas">Todos</option><option value="hechos">Hechos</option></select></label></div>' +
-    '<div id="plaCuidList" class="habits-list" style="margin-top:8px;max-height:280px"></div>' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-top:8px"><span id="plaCuidStats" class="muted" style="font-size:11px"></span>' +
-    '<button type="button" id="pcClear" class="btn" style="width:auto">🧹 Borrar hechos</button></div></div>' +
+    '<div class="dlg-actions su-8f9e27"><button type="button" id="pcAdd" class="btn btn-accent su-30e741">+ Guardar cuidado</button></div></div>' +
+    '<div class="conv-row su-d2c171"><label>Mostrar <select id="pcFiltro"><option value="pendientes">Pendientes</option><option value="todas">Todos</option><option value="hechos">Hechos</option></select></label></div>' +
+    '<div id="plaCuidList" class="habits-list su-9daa59"></div>' +
+    '<div class="dlg-actions su-efea1d"><span id="plaCuidStats" class="muted su-11a508"></span>' +
+    '<button type="button" id="pcClear" class="btn su-30e741">🧹 Borrar hechos</button></div></div>' +
 
     '<div id="plaGuia" class="hidden">' +
     '<div class="si-card"><h4>🪷 Suculentas y 🌵 cactus (las que más se mueren por amor)</h4><p><b>Luz:</b> sol directo o interior muy luminoso (ventana sur). Sin luz se estiran (etiolan). <b>Agua:</b> solo cuando el sustrato está seco hasta el fondo: cactus cada ~21 días, suculentas cada ~14. Invierno Penco: la mitad. <b>Maceta:</b> SIEMPRE con hoyo + sustrato mineral (tierra + perlita/arena gruesa 50/50). Sin drenaje = pudrición. <b>Luna:</b> trasplanta en menguante.</p></div>' +
@@ -240,29 +240,29 @@ function renderResumen() {
 
   box.innerHTML =
     '<div class="fishing-grid">' +
-    '<div class="menstrual-card"><h4>🪴 Mi selva</h4><p style="font-size:22px;color:var(--gold)"><b>' + act.length + '</b> <span style="font-size:12px">plantas</span></p>' +
-    '<p class="muted" style="font-size:11px">' + Object.keys(porTipo).map(function (k) { return esc(k + ': ' + porTipo[k]); }).join(' · ') + (act.length ? '' : 'Agrega tu primera planta en 🪴 Mis Plantas.') + (arch ? '<br>📦 ' + arch + ' archivada(s)' : '') + '</p></div>' +
-    '<div class="menstrual-card"><h4>💧 Riego</h4><p style="font-size:22px;color:var(--gold)"><b>' + hoyL.length + '</b> <span style="font-size:12px">hoy</span>' + (venc.length ? ' · <b style="color:#e76e8a">' + venc.length + ' venc.</b>' : '') + '</p>' +
-    '<p class="muted" style="font-size:11px">' + pend.length + ' cuidados pendientes' + (pendVenc.length ? ' (' + pendVenc.length + ' vencidos)' : '') + (enfermas.length ? ' · 🤒 ' + enfermas.length + ' pide(n) ayuda' : '') + '</p></div></div>' +
+    '<div class="menstrual-card"><h4>🪴 Mi selva</h4><p class="su-f3dba9"><b>' + act.length + '</b> <span class="su-6cb285">plantas</span></p>' +
+    '<p class="muted su-11a508">' + Object.keys(porTipo).map(function (k) { return esc(k + ': ' + porTipo[k]); }).join(' · ') + (act.length ? '' : 'Agrega tu primera planta en 🪴 Mis Plantas.') + (arch ? '<br>📦 ' + arch + ' archivada(s)' : '') + '</p></div>' +
+    '<div class="menstrual-card"><h4>💧 Riego</h4><p class="su-f3dba9"><b>' + hoyL.length + '</b> <span class="su-6cb285">hoy</span>' + (venc.length ? ' · <b class="su-a861ba">' + venc.length + ' venc.</b>' : '') + '</p>' +
+    '<p class="muted su-11a508">' + pend.length + ' cuidados pendientes' + (pendVenc.length ? ' (' + pendVenc.length + ' vencidos)' : '') + (enfermas.length ? ' · 🤒 ' + enfermas.length + ' pide(n) ayuda' : '') + '</p></div></div>' +
 
-    '<div class="menstrual-card" style="margin-top:10px"><h4>💧 Riegos (automático según cada planta)</h4>' +
+    '<div class="menstrual-card su-d2c171"><h4>💧 Riegos (automático según cada planta)</h4>' +
     (act.length ? rie.sort(function (a, b) { return a.e.pr.localeCompare(b.e.pr); }).slice(0, 6).map(function (r) {
       var dot = r.e.k === 'venc' ? '🔴' : r.e.k === 'hoy' ? '🔵' : r.e.k === 'man' ? '🟡' : '🟢';
-      return '<div class="hora-item"><span style="font-size:12px">' + dot + ' <b>' + esc(r.x.nombre) + '</b> <span class="muted">· ' + esc(r.e.pr) + ' (' + esc(r.e.txt) + ')</span><br><span class="muted" style="font-size:10px">' + esc(r.x.tipo || '') + ' · ' + esc(r.x.ubicacion || '') + '</span></span>' +
-        '<button type="button" class="btn pla-regar" data-k="' + esc(r.x.id) + '" style="width:auto;font-size:11px">💧 Regar</button></div>';
-    }).join('') : '<p class="muted" style="font-size:11px">Sin plantas aún.</p>') + '</div>' +
+      return '<div class="hora-item"><span class="su-6cb285">' + dot + ' <b>' + esc(r.x.nombre) + '</b> <span class="muted">· ' + esc(r.e.pr) + ' (' + esc(r.e.txt) + ')</span><br><span class="muted su-0d5be0">' + esc(r.x.tipo || '') + ' · ' + esc(r.x.ubicacion || '') + '</span></span>' +
+        '<button type="button" class="btn pla-regar su-337714" data-k="' + esc(r.x.id) + '">💧 Regar</button></div>';
+    }).join('') : '<p class="muted su-11a508">Sin plantas aún.</p>') + '</div>' +
 
-    (enfermas.length ? '<div class="menstrual-card" style="margin-top:10px;border-color:#e8c56a"><h4>🤒 Piden ayuda</h4><p class="muted" style="font-size:11px">' + enfermas.map(function (x) { return esc(x.nombre + ' (' + (x.salud || '') + ')'); }).join('<br>') + '</p></div>' : '') +
+    (enfermas.length ? '<div class="menstrual-card su-0d015f"><h4>🤒 Piden ayuda</h4><p class="muted su-11a508">' + enfermas.map(function (x) { return esc(x.nombre + ' (' + (x.salud || '') + ')'); }).join('<br>') + '</p></div>' : '') +
 
-    '<div class="menstrual-card" style="margin-top:10px"><h4>✅ Próximos cuidados</h4>' +
+    '<div class="menstrual-card su-d2c171"><h4>✅ Próximos cuidados</h4>' +
     (pend.length ? pend.slice(0, 5).map(function (c) {
       var pl = plantaById(c.plantaId);
       var v = c.fecha && c.fecha < hoy;
-      return '<div class="hora-item"><span style="font-size:12px">' + (v ? '🔴' : '⬜') + ' <b>' + esc(c.tipo || 'Cuidado') + '</b> · ' + esc(c.fecha || 'sin fecha') + '<br><span class="muted" style="font-size:10px">' + esc(pl ? pl.nombre : '') + (c.nota ? ' · ' + esc(c.nota) : '') + '</span></span></div>';
-    }).join('') : '<p class="muted" style="font-size:11px">Sin cuidados pendientes. Crea uno en ✅ Cuidados.</p>') + '</div>' +
+      return '<div class="hora-item"><span class="su-6cb285">' + (v ? '🔴' : '⬜') + ' <b>' + esc(c.tipo || 'Cuidado') + '</b> · ' + esc(c.fecha || 'sin fecha') + '<br><span class="muted su-0d5be0">' + esc(pl ? pl.nombre : '') + (c.nota ? ' · ' + esc(c.nota) : '') + '</span></span></div>';
+    }).join('') : '<p class="muted su-11a508">Sin cuidados pendientes. Crea uno en ✅ Cuidados.</p>') + '</div>' +
 
-    '<div class="dlg-actions" style="justify-content:flex-start;margin-top:8px"><button type="button" id="plaGoAdd" class="btn" style="width:auto">➕ Agregar mi primera planta</button>' +
-    '<button type="button" id="plaShareBtn" class="btn" style="width:auto">📤 Compartir resumen</button></div>';
+    '<div class="dlg-actions su-8f9e27"><button type="button" id="plaGoAdd" class="btn su-30e741">➕ Agregar mi primera planta</button>' +
+    '<button type="button" id="plaShareBtn" class="btn su-30e741">📤 Compartir resumen</button></div>';
 
   var g = $('plaGoAdd'); if (g) g.onclick = function () { switchTab('Plantas'); };
   var sh = $('plaShareBtn'); if (sh) sh.onclick = shareResumen;
@@ -306,28 +306,28 @@ function renderPlantas() {
     return tn.indexOf(qn) >= 0;
   });
   if (!list.length) {
-    box.innerHTML = '<p class="muted" style="font-size:11px;text-align:center">Sin plantas con ese filtro. Agrega la primera arriba: ej "Jade" 🪷 Suculenta.</p>';
+    box.innerHTML = '<p class="muted su-e201a8">Sin plantas con ese filtro. Agrega la primera arriba: ej "Jade" 🪷 Suculenta.</p>';
     return;
   }
   box.innerHTML = list.map(function (x) {
     var e = estadoRiego(x);
     var dot = e.k === 'venc' ? '🔴' : e.k === 'hoy' ? '🔵' : e.k === 'man' ? '🟡' : '🟢';
-    return '<div class="si-card' + (x.archivada ? '" style="opacity:.6' : '') + '"><h4>' + esc((x.tipo || '🌸').split(' ')[0] + ' ' + x.nombre) + (x.fav ? ' ⭐' : '') + (x.archivada ? ' <span class="chip" style="font-size:10px">archivada</span>' : '') + '</h4>' +
-      '<p style="display:flex;gap:6px;flex-wrap:wrap"><span class="chip" style="font-size:10px">' + esc(x.tipo || '') + '</span>' +
-      (x.ubicacion ? '<span class="chip" style="font-size:10px">📍 ' + esc(x.ubicacion) + '</span>' : '') +
-      (x.luz ? '<span class="chip" style="font-size:10px">' + esc(x.luz) + '</span>' : '') +
-      '<span class="chip" style="font-size:10px">' + dot + ' riego: ' + esc(e.pr) + '</span>' +
-      (x.salud ? '<span class="chip" style="font-size:10px">' + esc(x.salud) + '</span>' : '') +
-      (x.tox ? '<span class="chip" style="font-size:10px">☠️ tóxica</span>' : '') + '</p>' +
-      (x.cient ? '<p class="muted" style="font-style:italic">' + esc(x.cient) + '</p>' : '') +
+    return '<div class="si-card' + (x.archivada ? '" style="opacity:.6' : '') + '"><h4>' + esc((x.tipo || '🌸').split(' ')[0] + ' ' + x.nombre) + (x.fav ? ' ⭐' : '') + (x.archivada ? ' <span class="chip su-0d5be0">archivada</span>' : '') + '</h4>' +
+      '<p class="su-6157e8"><span class="chip su-0d5be0">' + esc(x.tipo || '') + '</span>' +
+      (x.ubicacion ? '<span class="chip su-0d5be0">📍 ' + esc(x.ubicacion) + '</span>' : '') +
+      (x.luz ? '<span class="chip su-0d5be0">' + esc(x.luz) + '</span>' : '') +
+      '<span class="chip su-0d5be0">' + dot + ' riego: ' + esc(e.pr) + '</span>' +
+      (x.salud ? '<span class="chip su-0d5be0">' + esc(x.salud) + '</span>' : '') +
+      (x.tox ? '<span class="chip su-0d5be0">☠️ tóxica</span>' : '') + '</p>' +
+      (x.cient ? '<p class="muted su-e698a0">' + esc(x.cient) + '</p>' : '') +
       (x.maceta ? '<p><b>Maceta:</b> ' + esc(x.maceta) + '</p>' : '') +
       (x.nota ? '<p class="muted">' + esc(x.nota) + '</p>' : '') +
-      '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">' +
-      '<button type="button" class="btn pla-r" data-k="' + esc(x.id) + '" style="width:auto;font-size:11px">💧 Regar hoy</button>' +
-      '<button type="button" class="btn pla-c" data-k="' + esc(x.id) + '" style="width:auto;font-size:11px">✅ + Cuidado</button>' +
-      '<button type="button" class="btn pla-e" data-k="' + esc(x.id) + '" style="width:auto;font-size:11px">✏️ Editar</button>' +
-      '<button type="button" class="btn pla-a" data-k="' + esc(x.id) + '" style="width:auto;font-size:11px">' + (x.archivada ? '📂 Reactivar' : '📦 Archivar') + '</button>' +
-      '<button type="button" class="btn pla-d" data-k="' + esc(x.id) + '" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕</button></div></div>';
+      '<div class="su-c158a9">' +
+      '<button type="button" class="btn pla-r su-337714" data-k="' + esc(x.id) + '">💧 Regar hoy</button>' +
+      '<button type="button" class="btn pla-c su-337714" data-k="' + esc(x.id) + '">✅ + Cuidado</button>' +
+      '<button type="button" class="btn pla-e su-337714" data-k="' + esc(x.id) + '">✏️ Editar</button>' +
+      '<button type="button" class="btn pla-a su-337714" data-k="' + esc(x.id) + '">' + (x.archivada ? '📂 Reactivar' : '📦 Archivar') + '</button>' +
+      '<button type="button" class="btn pla-d su-fd834a" data-k="' + esc(x.id) + '">✕</button></div></div>';
   }).join('');
   box.querySelectorAll('.pla-r').forEach(function (b) { b.onclick = function () { regarHoy(b.dataset.k); }; });
   box.querySelectorAll('.pla-c').forEach(function (b) {
@@ -382,15 +382,15 @@ function renderCuidados() {
   var pend = p.cuidados.filter(function (c) { return !c.hecho; }).length;
   if (st) st.textContent = p.cuidados.length + ' cuidados · ' + pend + ' pendientes';
   if (!list.length) {
-    box.innerHTML = '<p class="muted" style="font-size:11px;text-align:center">Sin cuidados aquí. Crea el primero arriba: ej "💧 Riego".</p>';
+    box.innerHTML = '<p class="muted su-e201a8">Sin cuidados aquí. Crea el primero arriba: ej "💧 Riego".</p>';
     return;
   }
   var hoy = todayKey();
   box.innerHTML = list.map(function (c) {
     var pl = plantaById(c.plantaId);
     var v = !c.hecho && c.fecha && c.fecha < hoy;
-    return '<div class="hora-item' + (c.hecho ? '" style="opacity:.6' : '') + '"><span style="font-size:12px"><b>' + (c.hecho ? '✅' : v ? '🔴' : '⬜') + ' ' + esc(c.tipo || 'Cuidado') + '</b> · ' + esc(c.fecha || 'sin fecha') +
-      '<br><span class="muted" style="font-size:10px">' + esc(pl ? pl.nombre : '(planta borrada)') + (c.nota ? ' · ' + esc(c.nota) : '') + '</span></span>' +
+    return '<div class="hora-item' + (c.hecho ? '" style="opacity:.6' : '') + '"><span class="su-6cb285"><b>' + (c.hecho ? '✅' : v ? '🔴' : '⬜') + ' ' + esc(c.tipo || 'Cuidado') + '</b> · ' + esc(c.fecha || 'sin fecha') +
+      '<br><span class="muted su-0d5be0">' + esc(pl ? pl.nombre : '(planta borrada)') + (c.nota ? ' · ' + esc(c.nota) : '') + '</span></span>' +
       '<span class="hora-actions"><button type="button" class="btn btn-icon pla-cd" data-k="' + esc(c.id) + '" title="Marcar">' + (c.hecho ? '↩' : '✓') + '</button>' +
       '<button type="button" class="btn btn-icon pla-cx" data-k="' + esc(c.id) + '">✕</button></span></div>';
   }).join('');

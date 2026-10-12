@@ -140,40 +140,40 @@ function renderBvVision() {
   var box = $('bvVisionPanel');
   if (!box) return;
   box.innerHTML =
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🙏🌎 El Buen Vivir no es un ideal individual</h4>' +
-    '<p style="font-size:12px;line-height:1.6">Es una <b>ética de lo suficiente para toda la comunidad</b>: una visión holística del ser humano, entendido no como dueño del mundo, sino como <b>parte viva de la gran comunidad terrenal</b>.</p></div>' +
+    '<div class="menstrual-card su-68a1a9"><h4>🙏🌎 El Buen Vivir no es un ideal individual</h4>' +
+    '<p class="su-616df7">Es una <b>ética de lo suficiente para toda la comunidad</b>: una visión holística del ser humano, entendido no como dueño del mundo, sino como <b>parte viva de la gran comunidad terrenal</b>.</p></div>' +
     '<div class="menstrual-card"><h4>🌿 Comunión con la Ñuke Mapu</h4>' +
-    '<p style="font-size:12px;line-height:1.6">El aire que respiramos 🌬️, el agua que nos da vida 💧, los suelos que nos sostienen, las montañas que nos protegen, los árboles que nos cobijan 🌳, los animales que comparten nuestro camino: estar en profunda comunión con la <b>Ñuke Mapu (Madre Tierra)</b> y con las energías del universo 🌈🌕🔥.</p></div>' +
+    '<p class="su-616df7">El aire que respiramos 🌬️, el agua que nos da vida 💧, los suelos que nos sostienen, las montañas que nos protegen, los árboles que nos cobijan 🌳, los animales que comparten nuestro camino: estar en profunda comunión con la <b>Ñuke Mapu (Madre Tierra)</b> y con las energías del universo 🌈🌕🔥.</p></div>' +
     '<div class="menstrual-card"><h4>🌱 Contra el consumir, acumular y dominar</h4>' +
-    '<p style="font-size:12px;line-height:1.6">La naturaleza y la comunidad ya nos dan todo lo necesario. Vivir en armonía con todo lo que existe, celebrando ritos sagrados que renuevan, una y otra vez, los lazos entre lo <b>individual, lo colectivo y lo cósmico</b>.</p></div>' +
+    '<p class="su-616df7">La naturaleza y la comunidad ya nos dan todo lo necesario. Vivir en armonía con todo lo que existe, celebrando ritos sagrados que renuevan, una y otra vez, los lazos entre lo <b>individual, lo colectivo y lo cósmico</b>.</p></div>' +
     '<div class="menstrual-card"><h4>♻️ Consumo frugal, consciente y regenerativo</h4>' +
-    '<p style="font-size:12px;line-height:1.6">No tomar más de lo que el ecosistema puede regenerar, no generar residuos que no podamos reintegrar, reutilizar, reciclar y honrar cada recurso. <b>Y así, no habrá escasez.</b></p></div>' +
+    '<p class="su-616df7">No tomar más de lo que el ecosistema puede regenerar, no generar residuos que no podamos reintegrar, reutilizar, reciclar y honrar cada recurso. <b>Y así, no habrá escasez.</b></p></div>' +
     '<div class="menstrual-card"><h4>❤️ Afectivo, espiritual y comunitario</h4>' +
-    '<p style="font-size:12px;line-height:1.6">Bienes materiales en equilibrio con la naturaleza y las personas. Nadie vive aislado: vivimos en familia, en sociedad, en diálogo con el entorno. <b>No se puede Vivir Bien si se daña la Tierra.</b></p></div>' +
+    '<p class="su-616df7">Bienes materiales en equilibrio con la naturaleza y las personas. Nadie vive aislado: vivimos en familia, en sociedad, en diálogo con el entorno. <b>No se puede Vivir Bien si se daña la Tierra.</b></p></div>' +
     '<div class="menstrual-card"><h4>✊ Una relación distinta</h4>' +
-    '<p style="font-size:12px;line-height:1.6">Se opone al individualismo, al lucro desmedido, a la lógica fría del costo-beneficio, a la mercantilización de la vida, a la explotación y a la violencia del consumismo egoísta. Propone otra relación: entre humanos, entre culturas, y entre la humanidad y la naturaleza — con dimensión ética, humana y cósmica, enraizada en la historia, la espiritualidad y el respeto mutuo.</p>' +
-    '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">' + BV_PRINCIPIOS.map(function (p) { return '<span class="chip" style="font-size:10px;white-space:normal">' + esc(p) + '</span>'; }).join('') + '</div></div>';
+    '<p class="su-616df7">Se opone al individualismo, al lucro desmedido, a la lógica fría del costo-beneficio, a la mercantilización de la vida, a la explotación y a la violencia del consumismo egoísta. Propone otra relación: entre humanos, entre culturas, y entre la humanidad y la naturaleza — con dimensión ética, humana y cósmica, enraizada en la historia, la espiritualidad y el respeto mutuo.</p>' +
+    '<div class="su-c158a9">' + BV_PRINCIPIOS.map(function (p) { return '<span class="chip su-4d5ab7">' + esc(p) + '</span>'; }).join('') + '</div></div>';
 }
 
 function renderBvPueblos() {
   var box = $('bvPueblosPanel');
   if (!box) return;
-  box.innerHTML = '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🌿 Siete miradas, un mismo horizonte</h4>' +
-    '<p class="muted" style="font-size:11px">Los pueblos originarios ofrecen caminos reales hacia el bien común. Toca tu compromiso en la pestaña 🌱 Práctica.</p></div>' +
+  box.innerHTML = '<div class="menstrual-card su-68a1a9"><h4>🌿 Siete miradas, un mismo horizonte</h4>' +
+    '<p class="muted su-11a508">Los pueblos originarios ofrecen caminos reales hacia el bien común. Toca tu compromiso en la pestaña 🌱 Práctica.</p></div>' +
     BV_PUEBLOS.map(function (p) {
-      return '<div class="si-card" style="padding:8px 10px"><h4 style="font-size:12.5px">' + p.ico + ' ' + esc(p.nombre) + ' <span class="muted" style="font-weight:400">· ' + esc(p.pueblo) + '</span></h4>' +
-        '<p style="font-size:11px;color:var(--gold)"><i>' + esc(p.sig) + '</i></p>' +
-        '<p style="font-size:11.5px;line-height:1.6">' + esc(p.texto) + '</p></div>';
+      return '<div class="si-card su-cfa1ec"><h4 class="su-6750b2">' + p.ico + ' ' + esc(p.nombre) + ' <span class="muted su-7e3a94">· ' + esc(p.pueblo) + '</span></h4>' +
+        '<p class="su-49f9d7"><i>' + esc(p.sig) + '</i></p>' +
+        '<p class="su-83cb86">' + esc(p.texto) + '</p></div>';
     }).join('') +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><p style="font-size:12px;line-height:1.6">🌱 Como sociedad global, tenemos mucho que aprender de estas visiones: no solo una crítica al modelo actual, sino caminos profundos y sanadores hacia el bien común, la solidaridad activa y una vida digna para todos los seres.<br><b>Porque Vivir Bien es Vivir Juntos. ❤️🌱</b></p></div>';
+    '<div class="menstrual-card su-68a1a9"><p class="su-616df7">🌱 Como sociedad global, tenemos mucho que aprender de estas visiones: no solo una crítica al modelo actual, sino caminos profundos y sanadores hacia el bien común, la solidaridad activa y una vida digna para todos los seres.<br><b>Porque Vivir Bien es Vivir Juntos. ❤️🌱</b></p></div>';
 }
 
 function renderBvPractGuia() {
   var box = $('bvPractGuia');
   if (!box) return;
   box.innerHTML = '<h4>🌱 Práctica pencona de todos los días</h4>' +
-    '<div style="display:flex;flex-direction:column;gap:6px">' + BV_PRACTICAS.map(function (p) {
-      return '<div class="si-card" style="padding:6px 10px"><b style="font-size:12px">' + p.ico + ' ' + esc(p.t) + '</b><p class="muted" style="font-size:11px;margin:2px 0 0">' + esc(p.d) + '</p></div>';
+    '<div class="su-14b4b5">' + BV_PRACTICAS.map(function (p) {
+      return '<div class="si-card su-7aab68"><b class="su-6cb285">' + p.ico + ' ' + esc(p.t) + '</b><p class="muted su-aa314c">' + esc(p.d) + '</p></div>';
     }).join('') + '</div>';
 }
 
@@ -186,15 +186,15 @@ function renderBvComp() {
   var st = $('bvCompStats');
   var s = bvStats();
   if (st) st.textContent = s.total ? (s.total + ' compromisos · ' + s.hechas + ' cumplidos') : 'Sin compromisos aún';
-  if (!list.length) { box.innerHTML = '<p class="muted" style="font-size:11px">Sin compromisos. Elige una práctica de arriba y escríbela como compromiso: “esta luna, yo…”.</p>'; return; }
+  if (!list.length) { box.innerHTML = '<p class="muted su-11a508">Sin compromisos. Elige una práctica de arriba y escríbela como compromiso: “esta luna, yo…”.</p>'; return; }
   var sorted = list.slice().sort(function (a, b) { return String(b.fecha).localeCompare(String(a.fecha)); });
   box.innerHTML = sorted.slice(0, 60).map(function (c) {
-    return '<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center;gap:6px"><span style="font-size:11.5px;flex:1;min-width:0">' +
+    return '<div class="habit-item su-533ebe"><span class="su-fbb1e4">' +
       (c.hecho ? '✅ <s>' + esc(c.texto) + '</s>' : '• <b>' + esc(c.texto) + '</b>') +
-      '<br><span class="muted" style="font-size:10.5px">' + esc(c.ambito || '') + ' · ' + esc(c.fecha || '') + '</span></span>' +
-      '<span style="display:flex;gap:4px;flex:0 0 auto">' +
-      '<button type="button" class="btn bv-done" data-id="' + c.id + '" style="width:auto;font-size:11px" title="Marcar cumplido">' + (c.hecho ? '↩️' : '✅') + '</button>' +
-      '<button type="button" class="btn bv-del" data-id="' + c.id + '" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕</button></span></div>';
+      '<br><span class="muted su-4adef8">' + esc(c.ambito || '') + ' · ' + esc(c.fecha || '') + '</span></span>' +
+      '<span class="su-3a76ac">' +
+      '<button type="button" class="btn bv-done su-337714" data-id="' + c.id + '" title="Marcar cumplido">' + (c.hecho ? '↩️' : '✅') + '</button>' +
+      '<button type="button" class="btn bv-del su-fd834a" data-id="' + c.id + '">✕</button></span></div>';
   }).join('');
   box.querySelectorAll('.bv-done').forEach(function (b) {
     b.onclick = function () {
@@ -221,36 +221,36 @@ function ensureBvDialog() {
   d.id = 'buenVivirDialog';
   d.innerHTML =
     '<form method="dialog">' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
-    '<h3 style="margin:0;color:var(--accent)">🌎 Buen Vivir — Küme Mongen</h3>' +
+    '<div class="dlg-actions su-d2d053">' +
+    '<h3 class="su-ee0cfe">🌎 Buen Vivir — Küme Mongen</h3>' +
     '<button type="button" id="bvCloseTop" class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    '<p class="muted" style="line-height:1.5">Ética de lo suficiente para toda la comunidad 🙏🌎. Siete pueblos, un horizonte: <b>Vivir Bien es Vivir Juntos</b>. Tus compromisos quedan <b>privados y locales</b>.</p>' +
-    '<div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">' +
-    '<button type="button" id="tabBvVision" class="btn btn-accent" style="width:auto">🌎 Visión</button>' +
-    '<button type="button" id="tabBvPueblos" class="btn" style="width:auto">🌿 Pueblos</button>' +
-    '<button type="button" id="tabBvPract" class="btn" style="width:auto">🌱 Práctica</button></div>' +
+    '<p class="muted su-77e2fe">Ética de lo suficiente para toda la comunidad 🙏🌎. Siete pueblos, un horizonte: <b>Vivir Bien es Vivir Juntos</b>. Tus compromisos quedan <b>privados y locales</b>.</p>' +
+    '<div class="timer-tabs su-4dca21">' +
+    '<button type="button" id="tabBvVision" class="btn btn-accent su-30e741">🌎 Visión</button>' +
+    '<button type="button" id="tabBvPueblos" class="btn su-30e741">🌿 Pueblos</button>' +
+    '<button type="button" id="tabBvPract" class="btn su-30e741">🌱 Práctica</button></div>' +
     '<div id="bvVisionPanel"></div>' +
     '<div id="bvPueblosPanel" class="hidden"></div>' +
-    '<div id="bvPractPanel" class="hidden"><div id="bvPractGuia" style="display:flex;flex-direction:column;gap:8px"></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>🤝 Mis compromisos del Buen Vivir</h4>' +
-    '<div class="conv-row"><label style="flex:2">Compromiso <input type="text" id="bvCompInput" placeholder="ej: esta luna llevo mi bolsa a la feria" maxlength="90"></label>' +
+    '<div id="bvPractPanel" class="hidden"><div id="bvPractGuia" class="su-be2653"></div>' +
+    '<div class="menstrual-card su-d2c171"><h4>🤝 Mis compromisos del Buen Vivir</h4>' +
+    '<div class="conv-row"><label class="su-4b3de7">Compromiso <input type="text" id="bvCompInput" placeholder="ej: esta luna llevo mi bolsa a la feria" maxlength="90"></label>' +
     '<label>Ámbito <select id="bvCompAmbito"></select></label></div>' +
-    '<div class="dlg-actions" style="justify-content:flex-start;flex-wrap:wrap"><button type="button" id="bvCompAdd" class="btn btn-accent" style="width:auto">+ Comprometerme</button>' +
-    '<button type="button" id="bvCompShare" class="btn" style="width:auto">📤 Compartir</button>' +
-    '<button type="button" id="bvCompExport" class="btn" style="width:auto">📥 Exportar</button>' +
-    '<button type="button" id="bvCompClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar</button></div>' +
-    '<div id="bvCompList" class="habits-list" style="margin-top:8px;max-height:220px"></div>' +
-    '<p id="bvCompStats" class="muted" style="font-size:11px;margin-top:6px"></p></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>🔗 Camina con el calendario</h4>' +
-    '<div style="display:flex;gap:6px;flex-wrap:wrap">' +
-    '<button type="button" class="btn bv-go" data-go="btnGratitud" style="width:auto;font-size:11px">📓 Gratitud</button>' +
-    '<button type="button" class="btn bv-go" data-go="btnEspiritual" style="width:auto;font-size:11px">🕉️ Prácticas</button>' +
-    '<button type="button" class="btn bv-go" data-go="btnVozAbuelos" style="width:auto;font-size:11px">🗣️ Abuelos</button>' +
-    '<button type="button" class="btn bv-go" data-go="btnMapu" style="width:auto;font-size:11px">🗣️ Kimün</button>' +
-    '<button type="button" class="btn bv-go" data-go="btnMinga" style="width:auto;font-size:11px">🤝 Minga</button>' +
-    '<button type="button" class="btn bv-go" data-go="btnTrueque" style="width:auto;font-size:11px">🔄 Trueque</button>' +
-    '<button type="button" class="btn bv-go" data-go="btnSiembra" style="width:auto;font-size:11px">🌱 Siembra</button>' +
-    '<button type="button" class="btn bv-go" data-go="btnCompost" style="width:auto;font-size:11px">🪱 Compost</button>' +
+    '<div class="dlg-actions su-117179"><button type="button" id="bvCompAdd" class="btn btn-accent su-30e741">+ Comprometerme</button>' +
+    '<button type="button" id="bvCompShare" class="btn su-30e741">📤 Compartir</button>' +
+    '<button type="button" id="bvCompExport" class="btn su-30e741">📥 Exportar</button>' +
+    '<button type="button" id="bvCompClear" class="btn su-214f75">🗑 Borrar</button></div>' +
+    '<div id="bvCompList" class="habits-list su-ebf445"></div>' +
+    '<p id="bvCompStats" class="muted su-e13d76"></p></div>' +
+    '<div class="menstrual-card su-d2c171"><h4>🔗 Camina con el calendario</h4>' +
+    '<div class="su-6157e8">' +
+    '<button type="button" class="btn bv-go su-337714" data-go="btnGratitud">📓 Gratitud</button>' +
+    '<button type="button" class="btn bv-go su-337714" data-go="btnEspiritual">🕉️ Prácticas</button>' +
+    '<button type="button" class="btn bv-go su-337714" data-go="btnVozAbuelos">🗣️ Abuelos</button>' +
+    '<button type="button" class="btn bv-go su-337714" data-go="btnMapu">🗣️ Kimün</button>' +
+    '<button type="button" class="btn bv-go su-337714" data-go="btnMinga">🤝 Minga</button>' +
+    '<button type="button" class="btn bv-go su-337714" data-go="btnTrueque">🔄 Trueque</button>' +
+    '<button type="button" class="btn bv-go su-337714" data-go="btnSiembra">🌱 Siembra</button>' +
+    '<button type="button" class="btn bv-go su-337714" data-go="btnCompost">🪱 Compost</button>' +
     '</div></div></div>' +
     '<div class="dlg-actions"><button type="button" id="bvClose" class="btn">Cerrar</button></div></form>';
   document.body.appendChild(d);

@@ -60,10 +60,10 @@ function makeDialog(id, title, sub, bodyHTML) {
   var d = document.createElement('dialog');
   d.id = id;
   d.innerHTML = '<form method="dialog">' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
-    '<h3 style="margin:0;color:var(--accent)">' + title + '</h3>' +
+    '<div class="dlg-actions su-d2d053">' +
+    '<h3 class="su-ee0cfe">' + title + '</h3>' +
     '<button type="button" data-close class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    (sub ? '<p class="muted" style="line-height:1.5">' + sub + '</p>' : '') +
+    (sub ? '<p class="muted su-77e2fe">' + sub + '</p>' : '') +
     bodyHTML +
     '<div class="dlg-actions"><button type="button" data-close class="btn">Cerrar</button></div></form>';
   document.body.appendChild(d);
@@ -140,31 +140,31 @@ var desEditId = null, desFCat = 'todas', desFUbi = 'todas', desFQ = '', desFSolo
 
 function desBuildDialog() {
   var body =
-    '<div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">' +
-    '<button type="button" id="tabDesResumen" class="btn btn-accent" style="width:auto">🏡 Resumen</button>' +
-    '<button type="button" id="tabDesAlimentos" class="btn" style="width:auto">🥫 Alimentos</button>' +
-    '<button type="button" id="tabDesGuia" class="btn" style="width:auto">📖 Guía</button></div>' +
+    '<div class="timer-tabs su-4dca21">' +
+    '<button type="button" id="tabDesResumen" class="btn btn-accent su-30e741">🏡 Resumen</button>' +
+    '<button type="button" id="tabDesAlimentos" class="btn su-30e741">🥫 Alimentos</button>' +
+    '<button type="button" id="tabDesGuia" class="btn su-30e741">📖 Guía</button></div>' +
 
     '<div id="desResumen"></div>' +
 
     '<div id="desAlimentos" class="hidden">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>➕ <span id="desFormTitle">Nuevo alimento</span></h4>' +
-    '<div class="conv-row"><label style="flex:2">Alimento * <input type="text" id="desNombre" placeholder="ej: Arroz, Lentejas, Aceite, Leche" maxlength="40"></label>' +
+    '<div class="menstrual-card su-68a1a9"><h4>➕ <span id="desFormTitle">Nuevo alimento</span></h4>' +
+    '<div class="conv-row"><label class="su-4b3de7">Alimento * <input type="text" id="desNombre" placeholder="ej: Arroz, Lentejas, Aceite, Leche" maxlength="40"></label>' +
     '<label>Categoría <select id="desCat">' + DES_CATS.map(function (t) { return '<option>' + esc(t) + '</option>'; }).join('') + '</select></label></div>' +
     '<div class="conv-row"><label>Cantidad <input type="number" id="desCant" min="0" step="0.5" value="1"></label>' +
     '<label>Unidad <select id="desUnid">' + DES_UNIDS.map(function (t) { return '<option>' + esc(t) + '</option>'; }).join('') + '</select></label>' +
     '<label>Mínimo (avisa si baja) <input type="number" id="desMin" min="0" step="0.5" value="1"></label></div>' +
     '<div class="conv-row"><label>Guardado en <select id="desUbi">' + DES_UBIS.map(function (t) { return '<option>' + esc(t) + '</option>'; }).join('') + '</select></label>' +
     '<label>Vence <input type="date" id="desVence"></label></div>' +
-    '<div class="conv-row"><label class="check-row" style="margin:0"><input type="checkbox" id="desFav"> ⭐ Uso frecuente</label></div>' +
+    '<div class="conv-row"><label class="check-row su-116966"><input type="checkbox" id="desFav"> ⭐ Uso frecuente</label></div>' +
     '<label>Nota <input type="text" id="desNota" placeholder="ej: integral, sin gluten, abierto el lunes" maxlength="100"></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start;margin-top:8px"><button type="button" id="desAdd" class="btn btn-accent" style="width:auto">+ Guardar alimento</button>' +
-    '<button type="button" id="desCancel" class="btn hidden" style="width:auto">Cancelar</button></div></div>' +
-    '<div class="conv-row" style="margin-top:10px"><label style="flex:2">🔍 Buscar <input type="text" id="desQ" placeholder="nombre, nota..."></label>' +
+    '<div class="dlg-actions su-8f9e27"><button type="button" id="desAdd" class="btn btn-accent su-30e741">+ Guardar alimento</button>' +
+    '<button type="button" id="desCancel" class="btn hidden su-30e741">Cancelar</button></div></div>' +
+    '<div class="conv-row su-d2c171"><label class="su-4b3de7">🔍 Buscar <input type="text" id="desQ" placeholder="nombre, nota..."></label>' +
     '<label>Categoría <select id="desFQ"><option value="todas">Todas</option>' + DES_CATS.map(function (t) { return '<option>' + esc(t) + '</option>'; }).join('') + '</select></label>' +
     '<label>Dónde <select id="desFU"><option value="todas">Todos</option>' + DES_UBIS.map(function (t) { return '<option>' + esc(t) + '</option>'; }).join('') + '</select></label></div>' +
-    '<label class="check-row" style="margin-top:6px"><input type="checkbox" id="desFSolo"> ⚠️ Ver solo stock bajo / por vencer</label>' +
-    '<div id="desList" style="margin-top:8px;display:flex;flex-direction:column;gap:8px"></div></div>' +
+    '<label class="check-row su-fe7b49"><input type="checkbox" id="desFSolo"> ⚠️ Ver solo stock bajo / por vencer</label>' +
+    '<div id="desList" class="su-bf3828"></div></div>' +
 
     '<div id="desGuia" class="hidden">' +
     '<div class="si-card"><h4>🔄 FIFO: lo primero que entra, primero que sale</h4><p>Lo nuevo va <b>atrás</b>, lo por vencer va <b>adelante a la vista</b>. Marca con plumón la fecha de apertura en frascos y bolsas. Revisa esta lista <b>1 vez por luna</b> antes de ir a la feria: ahorra plata y evita que se eche a perder.</p></div>' +
@@ -190,29 +190,29 @@ function desRenderResumen() {
 
   box.innerHTML =
     '<div class="fishing-grid">' +
-    '<div class="menstrual-card"><h4>🥫 Mi despensa</h4><p style="font-size:22px;color:var(--gold)"><b>' + items.length + '</b> <span style="font-size:12px">alimentos</span></p>' +
-    '<p class="muted" style="font-size:11px">' + (items.length ? Object.keys(porCat).map(function (k) { return esc(k + ': ' + porCat[k]); }).join(' · ') : 'Anota tu primer alimento en 🥫 Alimentos.') + '</p></div>' +
-    '<div class="menstrual-card"><h4>⚠️ Alertas</h4><p style="font-size:22px;color:var(--gold)"><b>' + bajos.length + '</b> <span style="font-size:12px">stock bajo</span>' + (vencidos.length ? ' · <b style="color:#e76e8a">' + vencidos.length + ' venc.</b>' : '') + '</p>' +
-    '<p class="muted" style="font-size:11px">' + prox.length + ' por vencer (7 días)' + '</p></div></div>' +
+    '<div class="menstrual-card"><h4>🥫 Mi despensa</h4><p class="su-f3dba9"><b>' + items.length + '</b> <span class="su-6cb285">alimentos</span></p>' +
+    '<p class="muted su-11a508">' + (items.length ? Object.keys(porCat).map(function (k) { return esc(k + ': ' + porCat[k]); }).join(' · ') : 'Anota tu primer alimento en 🥫 Alimentos.') + '</p></div>' +
+    '<div class="menstrual-card"><h4>⚠️ Alertas</h4><p class="su-f3dba9"><b>' + bajos.length + '</b> <span class="su-6cb285">stock bajo</span>' + (vencidos.length ? ' · <b class="su-a861ba">' + vencidos.length + ' venc.</b>' : '') + '</p>' +
+    '<p class="muted su-11a508">' + prox.length + ' por vencer (7 días)' + '</p></div></div>' +
 
-    (vencidos.length ? '<div class="menstrual-card" style="margin-top:10px;border-color:#e76e8a"><h4>🔴 Vencidos — revisar hoy</h4>' +
+    (vencidos.length ? '<div class="menstrual-card su-791d1a"><h4>🔴 Vencidos — revisar hoy</h4>' +
       vencidos.slice(0, 6).map(function (x) {
-        return '<div class="hora-item"><span style="font-size:12px">🔴 <b>' + esc(x.nombre) + '</b> <span class="muted">· ' + esc(x.vence || '') + ' · ' + esc(x.ubi || '') + '</span></span>' +
-          '<button type="button" class="btn des-shop" data-k="' + esc(x.id) + '" style="width:auto;font-size:11px">🛒 Reponer</button></div>';
+        return '<div class="hora-item"><span class="su-6cb285">🔴 <b>' + esc(x.nombre) + '</b> <span class="muted">· ' + esc(x.vence || '') + ' · ' + esc(x.ubi || '') + '</span></span>' +
+          '<button type="button" class="btn des-shop su-337714" data-k="' + esc(x.id) + '">🛒 Reponer</button></div>';
       }).join('') + '</div>' : '') +
 
-    ((prox.length || bajos.length) ? '<div class="menstrual-card" style="margin-top:10px"><h4>🟡 Atentos esta semana</h4>' +
+    ((prox.length || bajos.length) ? '<div class="menstrual-card su-d2c171"><h4>🟡 Atentos esta semana</h4>' +
       bajos.slice(0, 6).map(function (x) {
-        return '<div class="hora-item"><span style="font-size:12px">🟡 <b>' + esc(x.nombre) + '</b> <span class="muted">· quedan ' + esc(String(x.cant)) + ' ' + esc(x.unid || '') + ' (mín ' + esc(String(x.min)) + ')</span></span>' +
-          '<button type="button" class="btn des-shop" data-k="' + esc(x.id) + '" style="width:auto;font-size:11px">🛒 Comprar</button></div>';
+        return '<div class="hora-item"><span class="su-6cb285">🟡 <b>' + esc(x.nombre) + '</b> <span class="muted">· quedan ' + esc(String(x.cant)) + ' ' + esc(x.unid || '') + ' (mín ' + esc(String(x.min)) + ')</span></span>' +
+          '<button type="button" class="btn des-shop su-337714" data-k="' + esc(x.id) + '">🛒 Comprar</button></div>';
       }).join('') +
       prox.slice(0, 6).map(function (x) {
         var v = desVenceInfo(x);
-        return '<div class="hora-item"><span style="font-size:12px">⏰ <b>' + esc(x.nombre) + '</b> <span class="muted">· ' + esc(v.txt) + ' (' + esc(x.vence || '') + ')</span></span></div>';
+        return '<div class="hora-item"><span class="su-6cb285">⏰ <b>' + esc(x.nombre) + '</b> <span class="muted">· ' + esc(v.txt) + ' (' + esc(x.vence || '') + ')</span></span></div>';
       }).join('') + '</div>' : '') +
 
-    '<div class="dlg-actions" style="justify-content:flex-start;margin-top:8px"><button type="button" id="desGoAdd" class="btn" style="width:auto">➕ Anotar alimento</button>' +
-    '<button type="button" id="desShareBtn" class="btn" style="width:auto">📤 Compartir lista</button></div>';
+    '<div class="dlg-actions su-8f9e27"><button type="button" id="desGoAdd" class="btn su-30e741">➕ Anotar alimento</button>' +
+    '<button type="button" id="desShareBtn" class="btn su-30e741">📤 Compartir lista</button></div>';
 
   var g = $('desGoAdd'); if (g) g.onclick = function () { desSwitch('Alimentos'); };
   var sh = $('desShareBtn'); if (sh) sh.onclick = desShare;
@@ -250,25 +250,25 @@ function desRenderList() {
     return tn.indexOf(qn) >= 0;
   });
   if (!list.length) {
-    box.innerHTML = '<p class="muted" style="font-size:11px;text-align:center">Sin alimentos con ese filtro. Anota el primero arriba: ej "Arroz" 🌾 Abarrotes.</p>';
+    box.innerHTML = '<p class="muted su-e201a8">Sin alimentos con ese filtro. Anota el primero arriba: ej "Arroz" 🌾 Abarrotes.</p>';
     return;
   }
   box.innerHTML = list.map(function (x) {
     var v = desVenceInfo(x);
     var dot = v.k === 'venc' ? '🔴' : (v.k === 'hoy' || v.k === 'prox') ? '🟡' : desBajo(x) ? '🟡' : '🟢';
     return '<div class="si-card"><h4>' + dot + ' ' + esc(x.nombre) + (x.fav ? ' ⭐' : '') + '</h4>' +
-      '<p style="display:flex;gap:6px;flex-wrap:wrap"><span class="chip" style="font-size:10px">' + esc(x.cat || '') + '</span>' +
-      '<span class="chip" style="font-size:10px">📦 ' + esc(String(x.cant)) + ' ' + esc(x.unid || '') + '</span>' +
-      (x.ubi ? '<span class="chip" style="font-size:10px">📍 ' + esc(x.ubi) + '</span>' : '') +
-      (x.vence ? '<span class="chip" style="font-size:10px">⏰ ' + esc(x.vence) + ' (' + esc(v.txt) + ')</span>' : '') +
-      (desBajo(x) ? '<span class="chip" style="font-size:10px">⚠️ stock bajo</span>' : '') + '</p>' +
+      '<p class="su-6157e8"><span class="chip su-0d5be0">' + esc(x.cat || '') + '</span>' +
+      '<span class="chip su-0d5be0">📦 ' + esc(String(x.cant)) + ' ' + esc(x.unid || '') + '</span>' +
+      (x.ubi ? '<span class="chip su-0d5be0">📍 ' + esc(x.ubi) + '</span>' : '') +
+      (x.vence ? '<span class="chip su-0d5be0">⏰ ' + esc(x.vence) + ' (' + esc(v.txt) + ')</span>' : '') +
+      (desBajo(x) ? '<span class="chip su-0d5be0">⚠️ stock bajo</span>' : '') + '</p>' +
       (x.nota ? '<p class="muted">' + esc(x.nota) + '</p>' : '') +
-      '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">' +
-      '<button type="button" class="btn des-minus" data-k="' + esc(x.id) + '" style="width:auto;font-size:11px">➖ Gasté 1</button>' +
-      '<button type="button" class="btn des-plus" data-k="' + esc(x.id) + '" style="width:auto;font-size:11px">➕ Sumé 1</button>' +
-      '<button type="button" class="btn des-buy" data-k="' + esc(x.id) + '" style="width:auto;font-size:11px">🛒 A Compras</button>' +
-      '<button type="button" class="btn des-edit" data-k="' + esc(x.id) + '" style="width:auto;font-size:11px">✏️ Editar</button>' +
-      '<button type="button" class="btn des-del" data-k="' + esc(x.id) + '" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕</button></div></div>';
+      '<div class="su-c158a9">' +
+      '<button type="button" class="btn des-minus su-337714" data-k="' + esc(x.id) + '">➖ Gasté 1</button>' +
+      '<button type="button" class="btn des-plus su-337714" data-k="' + esc(x.id) + '">➕ Sumé 1</button>' +
+      '<button type="button" class="btn des-buy su-337714" data-k="' + esc(x.id) + '">🛒 A Compras</button>' +
+      '<button type="button" class="btn des-edit su-337714" data-k="' + esc(x.id) + '">✏️ Editar</button>' +
+      '<button type="button" class="btn des-del su-fd834a" data-k="' + esc(x.id) + '">✕</button></div></div>';
   }).join('');
   function byId(id) {
     var f = null;
@@ -346,30 +346,30 @@ var clEditId = null, clFCat = 'todas', clFEst = 'todos', clFQ = '';
 
 function clBuildDialog() {
   var body =
-    '<div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">' +
-    '<button type="button" id="tabCloResumen" class="btn btn-accent" style="width:auto">🏡 Resumen</button>' +
-    '<button type="button" id="tabCloRopa" class="btn" style="width:auto">👗 Ropa</button>' +
-    '<button type="button" id="tabCloGuia" class="btn" style="width:auto">📖 Guía</button></div>' +
+    '<div class="timer-tabs su-4dca21">' +
+    '<button type="button" id="tabCloResumen" class="btn btn-accent su-30e741">🏡 Resumen</button>' +
+    '<button type="button" id="tabCloRopa" class="btn su-30e741">👗 Ropa</button>' +
+    '<button type="button" id="tabCloGuia" class="btn su-30e741">📖 Guía</button></div>' +
 
     '<div id="cloResumen"></div>' +
 
     '<div id="cloRopa" class="hidden">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>➕ <span id="cloFormTitle">Nueva prenda</span></h4>' +
-    '<div class="conv-row"><label style="flex:2">Prenda * <input type="text" id="cloNombre" placeholder="ej: Polerón gris, Jeans azul, Parka" maxlength="40"></label>' +
+    '<div class="menstrual-card su-68a1a9"><h4>➕ <span id="cloFormTitle">Nueva prenda</span></h4>' +
+    '<div class="conv-row"><label class="su-4b3de7">Prenda * <input type="text" id="cloNombre" placeholder="ej: Polerón gris, Jeans azul, Parka" maxlength="40"></label>' +
     '<label>Categoría <select id="cloCat">' + CL_CATS.map(function (t) { return '<option>' + esc(t) + '</option>'; }).join('') + '</select></label></div>' +
     '<div class="conv-row"><label>Talla <input type="text" id="cloTalla" placeholder="ej: M, 42, 10 años" maxlength="12"></label>' +
     '<label>Color <input type="text" id="cloColor" placeholder="ej: azul, negro" maxlength="20"></label>' +
     '<label>Temporada <select id="cloTemp">' + CL_TEMPS.map(function (t) { return '<option>' + esc(t) + '</option>'; }).join('') + '</select></label></div>' +
     '<div class="conv-row"><label>Guardada en <select id="cloUbi">' + CL_UBIS.map(function (t) { return '<option>' + esc(t) + '</option>'; }).join('') + '</select></label>' +
     '<label>Estado <select id="cloEstado">' + CL_ESTADOS.map(function (t) { return '<option>' + esc(t) + '</option>'; }).join('') + '</select></label></div>' +
-    '<div class="conv-row"><label class="check-row" style="margin:0"><input type="checkbox" id="cloFav"> ⭐ Favorita</label></div>' +
+    '<div class="conv-row"><label class="check-row su-116966"><input type="checkbox" id="cloFav"> ⭐ Favorita</label></div>' +
     '<label>Nota <input type="text" id="cloNota" placeholder="ej: de la feria, le falta un botón, del colegio" maxlength="100"></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start;margin-top:8px"><button type="button" id="cloAdd" class="btn btn-accent" style="width:auto">+ Guardar prenda</button>' +
-    '<button type="button" id="cloCancel" class="btn hidden" style="width:auto">Cancelar</button></div></div>' +
-    '<div class="conv-row" style="margin-top:10px"><label style="flex:2">🔍 Buscar <input type="text" id="cloQ" placeholder="prenda, color, nota..."></label>' +
+    '<div class="dlg-actions su-8f9e27"><button type="button" id="cloAdd" class="btn btn-accent su-30e741">+ Guardar prenda</button>' +
+    '<button type="button" id="cloCancel" class="btn hidden su-30e741">Cancelar</button></div></div>' +
+    '<div class="conv-row su-d2c171"><label class="su-4b3de7">🔍 Buscar <input type="text" id="cloQ" placeholder="prenda, color, nota..."></label>' +
     '<label>Categoría <select id="cloFQ"><option value="todas">Todas</option>' + CL_CATS.map(function (t) { return '<option>' + esc(t) + '</option>'; }).join('') + '</select></label>' +
     '<label>Estado <select id="cloFE"><option value="todos">Todos</option>' + CL_ESTADOS.map(function (t) { return '<option>' + esc(t) + '</option>'; }).join('') + '</select></label></div>' +
-    '<div id="cloList" style="margin-top:8px;display:flex;flex-direction:column;gap:8px"></div></div>' +
+    '<div id="cloList" class="su-bf3828"></div></div>' +
 
     '<div id="cloGuia" class="hidden">' +
     '<div class="si-card"><h4>👗 Fondo de clóset (lo que de verdad se usa)</h4><p>Jeans que queda bien · poleras lisas · polerón abrigado · chaqueta impermeable · zapatillas cómodas · zapatos de cambio · pijama · ropa interior suficiente · 1 tenida presentable. Si ya tienes eso cubierto, lo demás es extra: anótalo y decide con calma.</p></div>' +
@@ -396,16 +396,16 @@ function clRenderResumen() {
 
   box.innerHTML =
     '<div class="fishing-grid">' +
-    '<div class="menstrual-card"><h4>👗 Mi clóset</h4><p style="font-size:22px;color:var(--gold)"><b>' + items.length + '</b> <span style="font-size:12px">prendas</span></p>' +
-    '<p class="muted" style="font-size:11px">' + (items.length ? Object.keys(porCat).map(function (k) { return esc(k.split(' ')[0] + ' ' + k.split(' ').slice(1).join(' ') + ': ' + porCat[k]); }).join(' · ') : 'Anota tu primera prenda en 👗 Ropa.') + (arch ? '<br>📦 ' + arch + ' archivada(s)' : '') + '</p></div>' +
-    '<div class="menstrual-card"><h4>🔄 Circula</h4><p style="font-size:15px">🧵 <b>' + arreglar.length + '</b> arreglar · 💝 <b>' + donar.length + '</b> donar' + (reciclar.length ? ' · ♻️ <b>' + reciclar.length + '</b> reciclar' : '') + '</p>' +
-    '<p class="muted" style="font-size:11px">' + favs.length + ' favorita(s) ⭐</p></div></div>' +
+    '<div class="menstrual-card"><h4>👗 Mi clóset</h4><p class="su-f3dba9"><b>' + items.length + '</b> <span class="su-6cb285">prendas</span></p>' +
+    '<p class="muted su-11a508">' + (items.length ? Object.keys(porCat).map(function (k) { return esc(k.split(' ')[0] + ' ' + k.split(' ').slice(1).join(' ') + ': ' + porCat[k]); }).join(' · ') : 'Anota tu primera prenda en 👗 Ropa.') + (arch ? '<br>📦 ' + arch + ' archivada(s)' : '') + '</p></div>' +
+    '<div class="menstrual-card"><h4>🔄 Circula</h4><p class="su-de0080">🧵 <b>' + arreglar.length + '</b> arreglar · 💝 <b>' + donar.length + '</b> donar' + (reciclar.length ? ' · ♻️ <b>' + reciclar.length + '</b> reciclar' : '') + '</p>' +
+    '<p class="muted su-11a508">' + favs.length + ' favorita(s) ⭐</p></div></div>' +
 
-    (arreglar.length ? '<div class="menstrual-card" style="margin-top:10px"><h4>🧵 Para arreglar</h4><p class="muted" style="font-size:11px">' + arreglar.slice(0, 6).map(function (x) { return esc(x.nombre + (x.nota ? ' (' + x.nota + ')' : '')); }).join('<br>') + '</p></div>' : '') +
-    (donar.length ? '<div class="menstrual-card" style="margin-top:10px"><h4>💝 Para donar / regalar</h4><p class="muted" style="font-size:11px">' + donar.slice(0, 6).map(function (x) { return esc(x.nombre + ' · ' + (x.talla || '?') + ' · ' + (x.ubi || '')); }).join('<br>') + '</p></div>' : '') +
+    (arreglar.length ? '<div class="menstrual-card su-d2c171"><h4>🧵 Para arreglar</h4><p class="muted su-11a508">' + arreglar.slice(0, 6).map(function (x) { return esc(x.nombre + (x.nota ? ' (' + x.nota + ')' : '')); }).join('<br>') + '</p></div>' : '') +
+    (donar.length ? '<div class="menstrual-card su-d2c171"><h4>💝 Para donar / regalar</h4><p class="muted su-11a508">' + donar.slice(0, 6).map(function (x) { return esc(x.nombre + ' · ' + (x.talla || '?') + ' · ' + (x.ubi || '')); }).join('<br>') + '</p></div>' : '') +
 
-    '<div class="dlg-actions" style="justify-content:flex-start;margin-top:8px"><button type="button" id="cloGoAdd" class="btn" style="width:auto">➕ Anotar prenda</button>' +
-    '<button type="button" id="cloShareBtn" class="btn" style="width:auto">📤 Compartir lista</button></div>';
+    '<div class="dlg-actions su-8f9e27"><button type="button" id="cloGoAdd" class="btn su-30e741">➕ Anotar prenda</button>' +
+    '<button type="button" id="cloShareBtn" class="btn su-30e741">📤 Compartir lista</button></div>';
 
   var g = $('cloGoAdd'); if (g) g.onclick = function () { clSwitch('Ropa'); };
   var sh = $('cloShareBtn'); if (sh) sh.onclick = clShare;
@@ -433,22 +433,22 @@ function clRenderList() {
     return tn.indexOf(qn) >= 0;
   });
   if (!list.length) {
-    box.innerHTML = '<p class="muted" style="font-size:11px;text-align:center">Sin prendas con ese filtro. Anota la primera arriba: ej "Polerón gris" 🧶.</p>';
+    box.innerHTML = '<p class="muted su-e201a8">Sin prendas con ese filtro. Anota la primera arriba: ej "Polerón gris" 🧶.</p>';
     return;
   }
   box.innerHTML = list.map(function (x) {
-    return '<div class="si-card' + (x.archivada ? '" style="opacity:.6' : '') + '"><h4>' + esc((x.cat || '📦').split(' ')[0] + ' ' + x.nombre) + (x.fav ? ' ⭐' : '') + (x.archivada ? ' <span class="chip" style="font-size:10px">archivada</span>' : '') + '</h4>' +
-      '<p style="display:flex;gap:6px;flex-wrap:wrap"><span class="chip" style="font-size:10px">' + esc(x.cat || '') + '</span>' +
-      (x.talla ? '<span class="chip" style="font-size:10px">📏 ' + esc(x.talla) + '</span>' : '') +
-      (x.color ? '<span class="chip" style="font-size:10px">🎨 ' + esc(x.color) + '</span>' : '') +
-      (x.temp ? '<span class="chip" style="font-size:10px">' + esc(x.temp) + '</span>' : '') +
-      (x.ubi ? '<span class="chip" style="font-size:10px">📍 ' + esc(x.ubi) + '</span>' : '') +
-      (x.estado ? '<span class="chip" style="font-size:10px">' + esc(x.estado) + '</span>' : '') + '</p>' +
+    return '<div class="si-card' + (x.archivada ? '" style="opacity:.6' : '') + '"><h4>' + esc((x.cat || '📦').split(' ')[0] + ' ' + x.nombre) + (x.fav ? ' ⭐' : '') + (x.archivada ? ' <span class="chip su-0d5be0">archivada</span>' : '') + '</h4>' +
+      '<p class="su-6157e8"><span class="chip su-0d5be0">' + esc(x.cat || '') + '</span>' +
+      (x.talla ? '<span class="chip su-0d5be0">📏 ' + esc(x.talla) + '</span>' : '') +
+      (x.color ? '<span class="chip su-0d5be0">🎨 ' + esc(x.color) + '</span>' : '') +
+      (x.temp ? '<span class="chip su-0d5be0">' + esc(x.temp) + '</span>' : '') +
+      (x.ubi ? '<span class="chip su-0d5be0">📍 ' + esc(x.ubi) + '</span>' : '') +
+      (x.estado ? '<span class="chip su-0d5be0">' + esc(x.estado) + '</span>' : '') + '</p>' +
       (x.nota ? '<p class="muted">' + esc(x.nota) + '</p>' : '') +
-      '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">' +
-      '<button type="button" class="btn clo-e" data-k="' + esc(x.id) + '" style="width:auto;font-size:11px">✏️ Editar</button>' +
-      '<button type="button" class="btn clo-a" data-k="' + esc(x.id) + '" style="width:auto;font-size:11px">' + (x.archivada ? '📂 Reactivar' : '📦 Archivar') + '</button>' +
-      '<button type="button" class="btn clo-d" data-k="' + esc(x.id) + '" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕</button></div></div>';
+      '<div class="su-c158a9">' +
+      '<button type="button" class="btn clo-e su-337714" data-k="' + esc(x.id) + '">✏️ Editar</button>' +
+      '<button type="button" class="btn clo-a su-337714" data-k="' + esc(x.id) + '">' + (x.archivada ? '📂 Reactivar' : '📦 Archivar') + '</button>' +
+      '<button type="button" class="btn clo-d su-fd834a" data-k="' + esc(x.id) + '">✕</button></div></div>';
   }).join('');
   function byId(id) {
     var f = null;

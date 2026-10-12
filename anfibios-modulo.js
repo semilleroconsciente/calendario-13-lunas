@@ -133,16 +133,16 @@ function renderHoy() {
   var c = mesConsejo();
   var lt = lunaTxt();
   box.innerHTML =
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🐸 Esta noche en Penco ' + (lt ? '<span class="muted">· ' + esc(lt) + '</span>' : '') + '</h4>' +
-    '<p style="font-size:12.5px"><b>' + esc(c.t) + '</b></p>' +
-    '<p class="muted" style="font-size:11.5px;line-height:1.6">' + esc(c.d) + '</p>' +
-    '<p class="muted" style="font-size:11px;line-height:1.6">🌙 Luna y coros: con <b>luna llena</b> ves mejor el camino pero los coros a veces se callan (más depredadores); las <b>noches nubladas y tibias tras la lluvia</b> son las de gran concierto. Viento sur fuerte = silencio.</p></div>';
+    '<div class="menstrual-card su-68a1a9"><h4>🐸 Esta noche en Penco ' + (lt ? '<span class="muted">· ' + esc(lt) + '</span>' : '') + '</h4>' +
+    '<p class="su-6750b2"><b>' + esc(c.t) + '</b></p>' +
+    '<p class="muted su-83cb86">' + esc(c.d) + '</p>' +
+    '<p class="muted su-b439ab">🌙 Luna y coros: con <b>luna llena</b> ves mejor el camino pero los coros a veces se callan (más depredadores); las <b>noches nubladas y tibias tras la lluvia</b> son las de gran concierto. Viento sur fuerte = silencio.</p></div>';
   var box2 = $('anfHoyEspecies');
   if (box2) {
-    box2.innerHTML = '<h4>🐸 Vecinos que puedes oír hoy</h4><div style="display:flex;flex-direction:column;gap:6px">' +
+    box2.innerHTML = '<h4>🐸 Vecinos que puedes oír hoy</h4><div class="su-14b4b5">' +
       ESPECIES.map(function (e) {
-        return '<div class="si-card" style="padding:6px 10px"><b style="font-size:12px">' + e.ico + ' ' + esc(e.nombre) + '</b> <span class="muted" style="font-size:10.5px"><i>' + esc(e.cient) + '</i></span>' +
-          '<p class="muted" style="font-size:11px;margin:2px 0 0">🔊 ' + esc(e.canto) + '</p></div>';
+        return '<div class="si-card su-7aab68"><b class="su-6cb285">' + e.ico + ' ' + esc(e.nombre) + '</b> <span class="muted su-4adef8"><i>' + esc(e.cient) + '</i></span>' +
+          '<p class="muted su-aa314c">🔊 ' + esc(e.canto) + '</p></div>';
       }).join('') + '</div>';
   }
 }
@@ -155,17 +155,17 @@ function renderCatalogo() {
     return !q || (e.nombre + ' ' + e.cient + ' ' + e.hab + ' ' + e.estado).toLowerCase().indexOf(q) >= 0;
   });
   box.innerHTML = list.map(function (e) {
-    return '<div class="si-card" style="padding:8px 10px"><h4 style="font-size:12.5px">' + e.ico + ' ' + esc(e.nombre) + ' <span class="muted" style="font-weight:400">· <i>' + esc(e.cient) + '</i></span></h4>' +
-      '<p style="font-size:11px;color:var(--gold)">📍 ' + esc(e.hab) + ' · ' + esc(e.estado) + '</p>' +
-      '<p style="font-size:11px">🔊 ' + esc(e.canto) + '</p>' +
-      '<p style="font-size:11.5px;line-height:1.6">' + esc(e.nota) + '</p>' +
-      '<button type="button" class="btn anf-cargar" data-n="' + esc(e.nombre) + '" style="width:auto;font-size:11px">📓 Cargar en bitácora</button></div>';
+    return '<div class="si-card su-cfa1ec"><h4 class="su-6750b2">' + e.ico + ' ' + esc(e.nombre) + ' <span class="muted su-7e3a94">· <i>' + esc(e.cient) + '</i></span></h4>' +
+      '<p class="su-49f9d7">📍 ' + esc(e.hab) + ' · ' + esc(e.estado) + '</p>' +
+      '<p class="su-11a508">🔊 ' + esc(e.canto) + '</p>' +
+      '<p class="su-83cb86">' + esc(e.nota) + '</p>' +
+      '<button type="button" class="btn anf-cargar su-337714" data-n="' + esc(e.nombre) + '">📓 Cargar en bitácora</button></div>';
   }).join('') +
-    '<div class="si-card" style="padding:8px 10px;border-color:#e76e8a"><h4 style="font-size:12.5px">' + INVASORA.ico + ' ' + esc(INVASORA.nombre) + ' <span class="muted" style="font-weight:400">· <i>' + esc(INVASORA.cient) + '</i></span></h4>' +
-    '<p style="font-size:11px;color:#e76e8a">📍 ' + esc(INVASORA.hab) + '</p>' +
-    '<p style="font-size:11.5px;line-height:1.6">' + esc(INVASORA.nota) + '</p>' +
-    '<button type="button" class="btn anf-cargar" data-n="' + esc(INVASORA.nombre) + '" style="width:auto;font-size:11px">📓 Cargar en bitácora</button></div>' +
-    (list.length ? '' : '<p class="muted" style="font-size:11px">Sin resultados. Prueba “bosque”, “humedal”, “canto”…</p>');
+    '<div class="si-card su-272b20"><h4 class="su-6750b2">' + INVASORA.ico + ' ' + esc(INVASORA.nombre) + ' <span class="muted su-7e3a94">· <i>' + esc(INVASORA.cient) + '</i></span></h4>' +
+    '<p class="su-51a029">📍 ' + esc(INVASORA.hab) + '</p>' +
+    '<p class="su-83cb86">' + esc(INVASORA.nota) + '</p>' +
+    '<button type="button" class="btn anf-cargar su-337714" data-n="' + esc(INVASORA.nombre) + '">📓 Cargar en bitácora</button></div>' +
+    (list.length ? '' : '<p class="muted su-11a508">Sin resultados. Prueba “bosque”, “humedal”, “canto”…</p>');
   box.querySelectorAll('.anf-cargar').forEach(function (b) {
     b.onclick = function () {
       var sp = $('anfSpecies');
@@ -187,17 +187,17 @@ function renderLog() {
     arr.forEach(function (r) { if (r.especie) especies[r.especie] = true; });
     st.textContent = arr.length ? (arr.length + ' salidas · ' + Object.keys(especies).length + ' especie(s)') : 'Sin salidas aún';
   }
-  if (!arr.length) { box.innerHTML = '<p class="muted" style="font-size:11px">Sin salidas. Escucha un coro, mira un charco y anótalo: fecha, lugar y qué oíste/viste.</p>'; return; }
+  if (!arr.length) { box.innerHTML = '<p class="muted su-11a508">Sin salidas. Escucha un coro, mira un charco y anótalo: fecha, lugar y qué oíste/viste.</p>'; return; }
   var sorted = arr.slice().sort(function (a, b) { return String(b.fecha + (b.hora || '')).localeCompare(String(a.fecha + (a.hora || ''))); });
   box.innerHTML = sorted.slice(0, 60).map(function (r) {
     var act = ACTIVIDADES.filter(function (a) { return a.id === r.actividad; })[0];
-    return '<div class="habit-item" style="display:flex;justify-content:space-between;align-items:flex-start;gap:6px"><span style="font-size:11.5px;flex:1;min-width:0">' +
+    return '<div class="habit-item su-78abdc"><span class="su-fbb1e4">' +
       '🐸 <b>' + esc(r.especie || 'Anfibio') + '</b> · ' + esc(r.fecha || '') + (r.hora ? ' ' + esc(r.hora) : '') +
-      '<br><span class="muted" style="font-size:10.5px">' + esc(r.lugar || '') + (act ? ' · ' + esc(act.t) : '') + (r.cantidad ? ' · ×' + esc(r.cantidad) : '') + (lunaTxtFor(r.fecha) ? ' · ' + esc(lunaTxtFor(r.fecha)) : '') + '</span>' +
-      (r.notas ? '<br><span style="font-size:11px">' + esc(r.notas) + '</span>' : '') + '</span>' +
-      '<span style="display:flex;gap:4px;flex:0 0 auto">' +
-      '<button type="button" class="btn anf-edit" data-id="' + r.id + '" style="width:auto;font-size:11px" title="Editar">✏️</button>' +
-      '<button type="button" class="btn anf-del" data-id="' + r.id + '" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55" title="Borrar">✕</button></span></div>';
+      '<br><span class="muted su-4adef8">' + esc(r.lugar || '') + (act ? ' · ' + esc(act.t) : '') + (r.cantidad ? ' · ×' + esc(r.cantidad) : '') + (lunaTxtFor(r.fecha) ? ' · ' + esc(lunaTxtFor(r.fecha)) : '') + '</span>' +
+      (r.notas ? '<br><span class="su-11a508">' + esc(r.notas) + '</span>' : '') + '</span>' +
+      '<span class="su-3a76ac">' +
+      '<button type="button" class="btn anf-edit su-337714" data-id="' + r.id + '" title="Editar">✏️</button>' +
+      '<button type="button" class="btn anf-del su-fd834a" data-id="' + r.id + '" title="Borrar">✕</button></span></div>';
   }).join('');
   box.querySelectorAll('.anf-del').forEach(function (b) {
     b.onclick = function () {
@@ -234,24 +234,24 @@ function renderGuia() {
   if (!box) return;
   box.innerHTML =
     '<div class="menstrual-card"><h4>🔄 Su ciclo (agua + tierra)</h4>' +
-    '<p style="font-size:12px;line-height:1.7">🥚 <b>Huevos</b> en charcos quietos → 🦐 <b>renacuajos</b> que comen algas → 🐸 <b>metamorfosis</b> (salen patitas, se acorta la cola) → 🐸 <b>adulto</b> que vuelve al agua a cantar y reproducirse. Todo en el <b>mismo charco</b>: por eso cada poza cuenta.</p></div>' +
+    '<p class="su-fe5ef3">🥚 <b>Huevos</b> en charcos quietos → 🦐 <b>renacuajos</b> que comen algas → 🐸 <b>metamorfosis</b> (salen patitas, se acorta la cola) → 🐸 <b>adulto</b> que vuelve al agua a cantar y reproducirse. Todo en el <b>mismo charco</b>: por eso cada poza cuenta.</p></div>' +
     '<div class="menstrual-card"><h4>🤲 Ética: mirar sin dañar</h4>' +
-    '<div style="display:flex;flex-direction:column;gap:4px">' +
+    '<div class="su-28e216">' +
     ['No tocar con manos secas, con crema o bloqueador: su piel respira y absorbe todo. Foto a distancia.'].concat([
       'No mover sapos, ranas ni renacuajos entre pozas: así viaja el hongo quitridio que los mata.',
       'Luz roja o luna: la linterna blanca directa los ciega y corta el coro.',
       'Pies fuera del charco: un pisotón mata una postura entera. Observa desde la orilla.',
       'Perros con correa junto al agua: un hocico curioso basta para romper una noche de reproducción.',
       'Nunca llevar renacuajos “para la casa” ni soltar mascotas (rana africana, peces) en el humedal.'
-    ]).map(function (t) { return '<span class="chip" style="font-size:11px;white-space:normal;text-align:left">• ' + esc(t) + '</span>'; }).join('') + '</div></div>' +
+    ]).map(function (t) { return '<span class="chip su-656fb9">• ' + esc(t) + '</span>'; }).join('') + '</div></div>' +
     '<div class="menstrual-card"><h4>🦠 Bioseguridad (quitridio)</h4>' +
-    '<p class="muted" style="font-size:11.5px;line-height:1.6">Si entras a una poza o quebrada, lava botas y manos antes y después, y <b>no compartas agua</b> entre lugares. Si ves varios muertos sin causa clara, anota lugar y fecha y avisa al SAG.</p></div>' +
+    '<p class="muted su-83cb86">Si entras a una poza o quebrada, lava botas y manos antes y después, y <b>no compartas agua</b> entre lugares. Si ves varios muertos sin causa clara, anota lugar y fecha y avisa al SAG.</p></div>' +
     '<div class="menstrual-card"><h4>🔗 Camina con el calendario</h4>' +
-    '<div style="display:flex;gap:6px;flex-wrap:wrap">' +
-    '<button type="button" class="btn anf-go" data-go="btnBirds" style="width:auto;font-size:11px">🦅 Aves</button>' +
-    '<button type="button" class="btn anf-go" data-go="btnBosque" style="width:auto;font-size:11px">🌳 Bosque</button>' +
-    '<button type="button" class="btn anf-go" data-go="btnCompost" style="width:auto;font-size:11px">🪱 Compost</button>' +
-    '<button type="button" class="btn anf-go" data-go="btnGratitud" style="width:auto;font-size:11px">📓 Gratitud</button>' +
+    '<div class="su-6157e8">' +
+    '<button type="button" class="btn anf-go su-337714" data-go="btnBirds">🦅 Aves</button>' +
+    '<button type="button" class="btn anf-go su-337714" data-go="btnBosque">🌳 Bosque</button>' +
+    '<button type="button" class="btn anf-go su-337714" data-go="btnCompost">🪱 Compost</button>' +
+    '<button type="button" class="btn anf-go su-337714" data-go="btnGratitud">📓 Gratitud</button>' +
     '</div></div>';
 }
 
@@ -300,36 +300,36 @@ function ensureDialog() {
   d.id = 'anfibiosDialog';
   d.innerHTML =
     '<form method="dialog">' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
-    '<h3 style="margin:0;color:var(--accent)">🐸 Anfibios — coros de Penco</h3>' +
+    '<div class="dlg-actions su-d2d053">' +
+    '<h3 class="su-ee0cfe">🐸 Anfibios — coros de Penco</h3>' +
     '<button type="button" id="anfCloseTop" class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    '<p class="muted" style="line-height:1.5">Sapos y ranas del Bio-Bío 🐸: escucha el coro, conoce a tus vecinos y anota tus salidas. Observar sin tocar, sin mover. Tus registros quedan <b>privados y locales</b>.</p>' +
-    '<div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">' +
-    '<button type="button" id="tabAnfHoy" class="btn btn-accent" style="width:auto">🐸 Hoy</button>' +
-    '<button type="button" id="tabAnfCat" class="btn" style="width:auto">📖 Catálogo</button>' +
-    '<button type="button" id="tabAnfBit" class="btn" style="width:auto">📓 Bitácora</button>' +
-    '<button type="button" id="tabAnfGuia" class="btn" style="width:auto">🌙 Guía</button></div>' +
-    '<div id="anfHoyPanel"><div id="anfHoyBox"></div><div id="anfHoyEspecies" class="menstrual-card" style="margin-top:10px"></div></div>' +
-    '<div id="anfCatPanel" class="hidden"><div class="conv-row"><label style="flex:2">Buscar <input type="text" id="anfCatFilter" placeholder="ej: bosque, humedal, canto..." maxlength="40"></label></div><div id="anfCatBox" style="display:flex;flex-direction:column;gap:8px;margin-top:8px"></div></div>' +
+    '<p class="muted su-77e2fe">Sapos y ranas del Bio-Bío 🐸: escucha el coro, conoce a tus vecinos y anota tus salidas. Observar sin tocar, sin mover. Tus registros quedan <b>privados y locales</b>.</p>' +
+    '<div class="timer-tabs su-4dca21">' +
+    '<button type="button" id="tabAnfHoy" class="btn btn-accent su-30e741">🐸 Hoy</button>' +
+    '<button type="button" id="tabAnfCat" class="btn su-30e741">📖 Catálogo</button>' +
+    '<button type="button" id="tabAnfBit" class="btn su-30e741">📓 Bitácora</button>' +
+    '<button type="button" id="tabAnfGuia" class="btn su-30e741">🌙 Guía</button></div>' +
+    '<div id="anfHoyPanel"><div id="anfHoyBox"></div><div id="anfHoyEspecies" class="menstrual-card su-d2c171"></div></div>' +
+    '<div id="anfCatPanel" class="hidden"><div class="conv-row"><label class="su-4b3de7">Buscar <input type="text" id="anfCatFilter" placeholder="ej: bosque, humedal, canto..." maxlength="40"></label></div><div id="anfCatBox" class="su-a22da5"></div></div>' +
     '<div id="anfBitPanel" class="hidden"><div class="menstrual-card"><h4>📓 Nueva salida</h4>' +
     '<div class="conv-row"><label>Fecha <input type="date" id="anfDate"></label>' +
     '<label>Hora <input type="time" id="anfTime" value="21:30"></label>' +
     '<label>Lugar <select id="anfPlace"></select></label></div>' +
-    '<div class="conv-row"><label style="flex:2">Especie <select id="anfSpecies"></select></label>' +
-    '<label>Cantidad <input type="number" id="anfQty" min="1" value="1" style="width:80px"></label>' +
+    '<div class="conv-row"><label class="su-4b3de7">Especie <select id="anfSpecies"></select></label>' +
+    '<label>Cantidad <input type="number" id="anfQty" min="1" value="1" class="su-8573ba"></label>' +
     '<label>Actividad <select id="anfAct"></select></label></div>' +
-    '<div class="conv-row"><label style="flex:2">Clima <input type="text" id="anfWeather" placeholder="ej: lluvia suave, nublado" maxlength="30"></label></div>' +
+    '<div class="conv-row"><label class="su-4b3de7">Clima <input type="text" id="anfWeather" placeholder="ej: lluvia suave, nublado" maxlength="30"></label></div>' +
     '<label>Notas <input type="text" id="anfNotes" placeholder="ej: coro fuerte tras la lluvia, 3 cantando" maxlength="80"></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start">' +
-    '<button type="button" id="anfAdd" class="btn btn-accent" style="width:auto">+ Guardar salida</button></div>' +
-    '<div id="anfLogBox" class="habits-list" style="margin-top:10px;max-height:240px"></div>' +
-    '<div class="dlg-actions" style="justify-content:space-between;align-items:center;margin-top:8px">' +
-    '<span id="anfStats" class="muted" style="font-size:11px"></span>' +
-    '<span style="display:flex;gap:8px;flex-wrap:wrap">' +
-    '<button type="button" id="anfShare" class="btn" style="width:auto">📤 Compartir</button>' +
-    '<button type="button" id="anfExport" class="btn" style="width:auto">📥 Exportar</button>' +
-    '<button type="button" id="anfClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar</button></span></div></div></div>' +
-    '<div id="anfGuiaPanel" class="hidden"><div id="anfGuiaBox" style="display:flex;flex-direction:column;gap:8px"></div></div>' +
+    '<div class="dlg-actions su-59a5a8">' +
+    '<button type="button" id="anfAdd" class="btn btn-accent su-30e741">+ Guardar salida</button></div>' +
+    '<div id="anfLogBox" class="habits-list su-62f8f6"></div>' +
+    '<div class="dlg-actions su-cc4a4c">' +
+    '<span id="anfStats" class="muted su-11a508"></span>' +
+    '<span class="su-3de8f9">' +
+    '<button type="button" id="anfShare" class="btn su-30e741">📤 Compartir</button>' +
+    '<button type="button" id="anfExport" class="btn su-30e741">📥 Exportar</button>' +
+    '<button type="button" id="anfClear" class="btn su-214f75">🗑 Borrar</button></span></div></div></div>' +
+    '<div id="anfGuiaPanel" class="hidden"><div id="anfGuiaBox" class="su-be2653"></div></div>' +
     '<div class="dlg-actions"><button type="button" id="anfClose" class="btn">Cerrar</button></div></form>';
   document.body.appendChild(d);
   var pl = d.querySelector('#anfPlace');

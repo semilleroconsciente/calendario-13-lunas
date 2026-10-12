@@ -65,10 +65,10 @@ function makeDialog(id, title, sub, bodyHTML) {
   var d = document.createElement('dialog');
   d.id = id;
   d.innerHTML = '<form method="dialog">' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
-    '<h3 style="margin:0;color:var(--accent)">' + title + '</h3>' +
+    '<div class="dlg-actions su-d2d053">' +
+    '<h3 class="su-ee0cfe">' + title + '</h3>' +
     '<button type="button" data-close class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    (sub ? '<p class="muted" style="line-height:1.5">' + sub + '</p>' : '') +
+    (sub ? '<p class="muted su-77e2fe">' + sub + '</p>' : '') +
     bodyHTML +
     '<div class="dlg-actions"><button type="button" data-close class="btn">Cerrar</button></div></form>';
   document.body.appendChild(d);
@@ -187,7 +187,7 @@ function buildDialog() {
   }).join('');
 
   var hollItems = HOLLAND_ITEMS.map(function (it, i) {
-    return '<label class="check-row" style="font-size:12px;margin:4px 0"><input type="checkbox" class="adol-holl" data-area="' + it[1] + '"> ' + esc(it[0]) + ' <span class="muted">(' + it[1] + ')</span></label>';
+    return '<label class="check-row su-88a33e"><input type="checkbox" class="adol-holl" data-area="' + it[1] + '"> ' + esc(it[0]) + ' <span class="muted">(' + it[1] + ')</span></label>';
   }).join('');
 
   var socialHTML = SOCIAL.map(function (c) {
@@ -195,22 +195,22 @@ function buildDialog() {
   }).join('');
 
   var emoChips = EMOS.map(function (e) {
-    return '<label class="check-row" style="margin:2px 8px 2px 0;font-size:12px"><input type="checkbox" class="adol-emo" value="' + esc(e) + '"> ' + esc(e) + '</label>';
+    return '<label class="check-row su-d16943"><input type="checkbox" class="adol-emo" value="' + esc(e) + '"> ' + esc(e) + '</label>';
   }).join('');
 
   var body =
-    '<div class="timer-tabs" style="margin:12px 0 10px;flex-wrap:wrap">' +
-    '<button type="button" id="tabAdolGuia" class="btn btn-accent" style="width:auto">🧭 Guía</button>' +
-    '<button type="button" id="tabAdolCuerpo" class="btn" style="width:auto">🌱 Cuerpo</button>' +
-    '<button type="button" id="tabAdolMente" class="btn" style="width:auto">🧠 Mente</button>' +
-    '<button type="button" id="tabAdolEstudio" class="btn" style="width:auto">📚 Estudio</button>' +
-    '<button type="button" id="tabAdolSocial" class="btn" style="width:auto">🤝 Social</button>' +
-    '<button type="button" id="tabAdolEspacio" class="btn" style="width:auto">📓 Mi espacio</button></div>' +
+    '<div class="timer-tabs su-f7ad78">' +
+    '<button type="button" id="tabAdolGuia" class="btn btn-accent su-30e741">🧭 Guía</button>' +
+    '<button type="button" id="tabAdolCuerpo" class="btn su-30e741">🌱 Cuerpo</button>' +
+    '<button type="button" id="tabAdolMente" class="btn su-30e741">🧠 Mente</button>' +
+    '<button type="button" id="tabAdolEstudio" class="btn su-30e741">📚 Estudio</button>' +
+    '<button type="button" id="tabAdolSocial" class="btn su-30e741">🤝 Social</button>' +
+    '<button type="button" id="tabAdolEspacio" class="btn su-30e741">📓 Mi espacio</button></div>' +
 
-    '<div id="adolStreak" class="menstrual-card" style="border-color:var(--gold);margin-bottom:10px"></div>' +
+    '<div id="adolStreak" class="menstrual-card su-39553d"></div>' +
 
-    '<div class="si-card" style="border-left:3px solid #e76e8a"><h4>🆘 Si la estás pasando mal ahora</h4>' +
-    '<p style="font-size:12px">No tienes que aguantarlo solo/a: <b>*4141</b> prevención del suicidio (24 h, gratis) · <b>149</b> Fono Familia · <b>1455</b> violencia · <b>600 360 7777</b> Salud Responde · En Penco: tu <b>CESFAM</b>, orientador/a o profe de confianza. Si hay peligro inmediato: <b>133</b> Carabineros / <b>131</b> SAMU.</p></div>' +
+    '<div class="si-card su-7266f7"><h4>🆘 Si la estás pasando mal ahora</h4>' +
+    '<p class="su-6cb285">No tienes que aguantarlo solo/a: <b>*4141</b> prevención del suicidio (24 h, gratis) · <b>149</b> Fono Familia · <b>1455</b> violencia · <b>600 360 7777</b> Salud Responde · En Penco: tu <b>CESFAM</b>, orientador/a o profe de confianza. Si hay peligro inmediato: <b>133</b> Carabineros / <b>131</b> SAMU.</p></div>' +
 
     /* GUIA */
     '<div id="adolGuia">' +
@@ -227,60 +227,60 @@ function buildDialog() {
     '<div id="adolCuerpo" class="hidden">' +
     '<div class="si-card"><h4>🌱 Tu cuerpo, tu ritmo</h4><p>Cada cuerpo tiene su luna: unos cambian a los 10, otros a los 15. Lo raro no es cambiar: lo raro sería no cambiar. Cuídalo con sueño, comida real, movimiento e higiene — y pregunta sin vergüenza en salud.</p></div>' +
     cuerpoHTML +
-    '<div class="menstrual-card"><h4>🔗 Conecta con tu calendario</h4><p class="muted" style="font-size:11px">Lleva tu energía y descanso en 📓 Mi espacio. Si menstruas, usa también 🌸 Ciclo para predecir y entender tu ánimo por fase.</p><div style="display:flex;gap:6px;flex-wrap:wrap"><button type="button" id="adolGoCiclo" class="btn" style="width:auto">🌸 Ir a Ciclo</button><button type="button" id="adolGoRutina" class="btn" style="width:auto">🌞 Mi ritmo</button><button type="button" id="adolGoGym" class="btn" style="width:auto">💪 Entrenamientos</button></div></div>' +
+    '<div class="menstrual-card"><h4>🔗 Conecta con tu calendario</h4><p class="muted su-11a508">Lleva tu energía y descanso en 📓 Mi espacio. Si menstruas, usa también 🌸 Ciclo para predecir y entender tu ánimo por fase.</p><div class="su-6157e8"><button type="button" id="adolGoCiclo" class="btn su-30e741">🌸 Ir a Ciclo</button><button type="button" id="adolGoRutina" class="btn su-30e741">🌞 Mi ritmo</button><button type="button" id="adolGoGym" class="btn su-30e741">💪 Entrenamientos</button></div></div>' +
     '</div>' +
 
     /* MENTE */
     '<div id="adolMente" class="hidden">' +
     '<div class="si-card"><h4>🧠 Mente adolescente: intensa por diseño</h4><p>Compararte, sentirte fuera de lugar o llorar por algo "chico" es esperable. Lo que importa es tener <b>herramientas + 1 persona segura + 1 rutina</b> que te sostenga. Si el bajón dura 2+ semanas o piensas en hacerte daño, pide ayuda hoy (*4141).</p></div>' +
     menteHTML +
-    '<div class="menstrual-card"><h4>🧰 Kit 2 minutos (pruébalo ahora)</h4><p class="muted" style="font-size:11px">1) Respiración 4-6 × 4 ciclos. 2) Nombra lo que sientes en 1 frase. 3) Elige la micro-acción siguiente (abrir cuaderno, caminar 5 min, escribir). 4) Si sigue en 8/10, habla con tu persona segura.</p><div style="display:flex;gap:6px;flex-wrap:wrap"><button type="button" id="adolGoBreath" class="btn" style="width:auto">🌬️ Respiración</button><button type="button" id="adolGoGrat" class="btn" style="width:auto">📓 Gratitud</button><button type="button" id="adolGoPsico" class="btn" style="width:auto">🪞 Autoconocimiento</button></div></div>' +
+    '<div class="menstrual-card"><h4>🧰 Kit 2 minutos (pruébalo ahora)</h4><p class="muted su-11a508">1) Respiración 4-6 × 4 ciclos. 2) Nombra lo que sientes en 1 frase. 3) Elige la micro-acción siguiente (abrir cuaderno, caminar 5 min, escribir). 4) Si sigue en 8/10, habla con tu persona segura.</p><div class="su-6157e8"><button type="button" id="adolGoBreath" class="btn su-30e741">🌬️ Respiración</button><button type="button" id="adolGoGrat" class="btn su-30e741">📓 Gratitud</button><button type="button" id="adolGoPsico" class="btn su-30e741">🪞 Autoconocimiento</button></div></div>' +
     '</div>' +
 
     /* ESTUDIO */
     '<div id="adolEstudio" class="hidden">' +
     '<div class="si-card"><h4>📚 Estudiar sin matarse</h4><p>No es cuántas horas: es <b>foco + repaso espaciado + sueño</b>. Elige 1 técnica de abajo por luna y mide tu nota/ánimo. El celular en otra pieza sube tu nota más que cualquier plumón bonito.</p></div>' +
     estudioHTML +
-    '<div class="menstrual-card"><h4>🧭 Test vocacional Holland (12 frases)</h4><p class="muted" style="font-size:11px">Marca lo que te gusta de verdad (no lo que "debería"). Resultado: tus 2 letras fuertes para conversar con tu orientador/a. No es destino: es brújula.</p>' +
+    '<div class="menstrual-card"><h4>🧭 Test vocacional Holland (12 frases)</h4><p class="muted su-11a508">Marca lo que te gusta de verdad (no lo que "debería"). Resultado: tus 2 letras fuertes para conversar con tu orientador/a. No es destino: es brújula.</p>' +
     hollItems +
-    '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"><button type="button" id="adolHollCalc" class="btn btn-accent" style="width:auto">Ver mi resultado</button><button type="button" id="adolHollClear" class="btn" style="width:auto">Limpiar</button></div>' +
-    '<div id="adolHollRes" style="margin-top:8px"></div></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>📖 Las 6 áreas Holland</h4>' + hollHTML + '</div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>🔗 Estudia con tu calendario</h4><div style="display:flex;gap:6px;flex-wrap:wrap"><button type="button" id="adolGoStudy" class="btn" style="width:auto">🧠 Estudio</button><button type="button" id="adolGoSched" class="btn" style="width:auto">📚 Horario</button><button type="button" id="adolGoDisc" class="btn" style="width:auto">🎯 Disciplina</button></div></div>' +
+    '<div class="su-ac5453"><button type="button" id="adolHollCalc" class="btn btn-accent su-30e741">Ver mi resultado</button><button type="button" id="adolHollClear" class="btn su-30e741">Limpiar</button></div>' +
+    '<div id="adolHollRes" class="su-8a77e5"></div></div>' +
+    '<div class="menstrual-card su-d2c171"><h4>📖 Las 6 áreas Holland</h4>' + hollHTML + '</div>' +
+    '<div class="menstrual-card su-d2c171"><h4>🔗 Estudia con tu calendario</h4><div class="su-6157e8"><button type="button" id="adolGoStudy" class="btn su-30e741">🧠 Estudio</button><button type="button" id="adolGoSched" class="btn su-30e741">📚 Horario</button><button type="button" id="adolGoDisc" class="btn su-30e741">🎯 Disciplina</button></div></div>' +
     '</div>' +
 
     /* SOCIAL */
     '<div id="adolSocial" class="hidden">' +
     '<div class="si-card"><h4>🤝 Vínculos que cuidan</h4><p>Amistad, pololeo, grupo y redes: todos enseñan. La regla de oro: <b>si tienes que achicarte para encajar, ese no es tu lugar</b>. Pon límites temprano: un no claro hoy evita un problema grande mañana.</p></div>' +
     socialHTML +
-    '<div class="si-card" style="border-left:3px solid var(--gold)"><h4>📵 Pacto de redes (copia y pega con tu grupo)</h4><p>1) Nada íntimo por chat. 2) No se reenvía nada de nadie. 3) Si alguien la pasa mal en el grupo, se para el hueveo. 4) Pantallas fuera de 23:00 a 07:00. 5) Si un adulto desconocido pide fotos/secreto/junta: bloquear + contar + denunciar.</p></div>' +
+    '<div class="si-card su-63ba3c"><h4>📵 Pacto de redes (copia y pega con tu grupo)</h4><p>1) Nada íntimo por chat. 2) No se reenvía nada de nadie. 3) Si alguien la pasa mal en el grupo, se para el hueveo. 4) Pantallas fuera de 23:00 a 07:00. 5) Si un adulto desconocido pide fotos/secreto/junta: bloquear + contar + denunciar.</p></div>' +
     '</div>' +
 
     /* ESPACIO */
     '<div id="adolEspacio" class="hidden">' +
-    '<div class="menstrual-card" style="margin-bottom:10px"><h4>💚 Chequeo de hoy — 1 minuto</h4>' +
+    '<div class="menstrual-card su-761d3a"><h4>💚 Chequeo de hoy — 1 minuto</h4>' +
     '<div class="conv-row"><label>Fecha <input type="date" id="adolFecha"></label></div>' +
-    '<div class="conv-row" style="align-items:center"><label style="flex:1">Ánimo 1-10 <input type="range" id="adolAnimo" min="1" max="10" value="6" style="width:100%"></label><span id="adolAnimoV" class="chip" style="min-width:44px;text-align:center">6</span>' +
-    '<label style="flex:1">Energía 1-10 <input type="range" id="adolEnergia" min="1" max="10" value="6" style="width:100%"></label><span id="adolEnergiaV" class="chip" style="min-width:44px;text-align:center">6</span></div>' +
-    '<div class="conv-row" style="align-items:center"><label style="flex:1">Sueño anoche (h) <input type="number" id="adolSueno" min="0" max="14" step="0.5" value="8"></label>' +
-    '<label style="flex:2">Persona segura de hoy <input type="text" id="adolSegura" placeholder="ej: mamá, profe Javi, amiga Paz" maxlength="40"></label></div>' +
-    '<p class="muted" style="font-size:11px;margin:6px 0 4px">Emociones (marca las presentes):</p>' +
-    '<div style="display:flex;flex-wrap:wrap">' + emoChips + '</div>' +
+    '<div class="conv-row su-7c6197"><label class="su-97445a">Ánimo 1-10 <input type="range" id="adolAnimo" min="1" max="10" value="6" class="su-046678"></label><span id="adolAnimoV" class="chip su-78a96b">6</span>' +
+    '<label class="su-97445a">Energía 1-10 <input type="range" id="adolEnergia" min="1" max="10" value="6" class="su-046678"></label><span id="adolEnergiaV" class="chip su-78a96b">6</span></div>' +
+    '<div class="conv-row su-7c6197"><label class="su-97445a">Sueño anoche (h) <input type="number" id="adolSueno" min="0" max="14" step="0.5" value="8"></label>' +
+    '<label class="su-4b3de7">Persona segura de hoy <input type="text" id="adolSegura" placeholder="ej: mamá, profe Javi, amiga Paz" maxlength="40"></label></div>' +
+    '<p class="muted su-db6a1e">Emociones (marca las presentes):</p>' +
+    '<div class="su-2fb621">' + emoChips + '</div>' +
     '<label>Diario (5 líneas bastan) <textarea id="adolNota" rows="3" placeholder="Hoy me sentí... / Me costó... / Mañana quiero..." maxlength="600"></textarea></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start;flex-wrap:wrap"><button type="button" id="adolCheckSave" class="btn btn-accent" style="width:auto">💾 Guardar chequeo</button></div></div>' +
+    '<div class="dlg-actions su-117179"><button type="button" id="adolCheckSave" class="btn btn-accent su-30e741">💾 Guardar chequeo</button></div></div>' +
 
-    '<div class="menstrual-card" style="margin-bottom:10px"><h4>🎯 Mis metas de la luna (máx 3)</h4>' +
-    '<p class="muted" style="font-size:11px">Una de estudio, una de cuidado y una libre. Chicas y medibles: "25 min inglés × 4 días" mejor que "estudiar más".</p>' +
-    '<div class="conv-row"><label style="flex:2">Meta <input type="text" id="adolMetaTxt" placeholder="ej: Pomodoro inglés 4 días" maxlength="80"></label>' +
+    '<div class="menstrual-card su-761d3a"><h4>🎯 Mis metas de la luna (máx 3)</h4>' +
+    '<p class="muted su-11a508">Una de estudio, una de cuidado y una libre. Chicas y medibles: "25 min inglés × 4 días" mejor que "estudiar más".</p>' +
+    '<div class="conv-row"><label class="su-4b3de7">Meta <input type="text" id="adolMetaTxt" placeholder="ej: Pomodoro inglés 4 días" maxlength="80"></label>' +
     '<label>Tipo <select id="adolMetaTipo"><option value="estudio">📚 Estudio</option><option value="cuidado">💚 Cuidado</option><option value="social">🤝 Social</option><option value="plata">💰 Plata</option><option value="otra">✨ Otra</option></select></label></div>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="adolMetaAdd" class="btn btn-accent" style="width:auto">+ Agregar meta</button></div>' +
-    '<div id="adolMetas" class="habits-list" style="margin-top:10px"></div></div>' +
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="adolMetaAdd" class="btn btn-accent su-30e741">+ Agregar meta</button></div>' +
+    '<div id="adolMetas" class="habits-list su-d2c171"></div></div>' +
 
-    '<div class="menstrual-card"><h4>📓 Mi diario (últimos 15)</h4><div id="adolLog" class="habits-list" style="max-height:240px"></div>' +
-    '<div class="dlg-actions" style="justify-content:space-between;align-items:center;margin-top:8px"><span id="adolStats" class="muted" style="font-size:11px"></span>' +
-    '<span style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" id="adolShare" class="btn" style="width:auto">📤 Compartir</button>' +
-    '<button type="button" id="adolExport" class="btn" style="width:auto">📥 Exportar</button>' +
-    '<button type="button" id="adolClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar</button></span></div></div>' +
+    '<div class="menstrual-card"><h4>📓 Mi diario (últimos 15)</h4><div id="adolLog" class="habits-list su-5701fb"></div>' +
+    '<div class="dlg-actions su-cc4a4c"><span id="adolStats" class="muted su-11a508"></span>' +
+    '<span class="su-3de8f9"><button type="button" id="adolShare" class="btn su-30e741">📤 Compartir</button>' +
+    '<button type="button" id="adolExport" class="btn su-30e741">📥 Exportar</button>' +
+    '<button type="button" id="adolClear" class="btn su-214f75">🗑 Borrar</button></span></div></div>' +
     '</div>';
 
   makeDialog('adolescenciaDialog', '🌱 Adolescencia',
@@ -318,7 +318,7 @@ function renderStreak() {
     }
   } catch (x) {}
   b.innerHTML = '<b>🌱 Racha:</b> ' + streak() + ' días · <b>' + n + '</b> chequeos · <b>' + nm + '</b> metas logradas · <b>' + nt + '</b> tests' + avg +
-    '<span class="muted" style="font-size:11px"> — relee cada luna: ahí se ven los avances</span>';
+    '<span class="muted su-11a508"> — relee cada luna: ahí se ven los avances</span>';
 }
 function renderLog() {
   var box = $('adolLog'); if (!box) return;
@@ -327,13 +327,13 @@ function renderLog() {
   box.innerHTML = keys.length ? keys.map(function (k) {
     var d = c[k] || {};
     var emos = (d.emociones || []).join(', ');
-    return '<div class="hora-item" style="align-items:flex-start"><span style="font-size:11px"><b>' + esc(k) + '</b> · ánimo ' + esc(String(d.animo || '-')) + '/10 · energía ' + esc(String(d.energia || '-')) + '/10' +
+    return '<div class="hora-item su-0486f7"><span class="su-11a508"><b>' + esc(k) + '</b> · ánimo ' + esc(String(d.animo || '-')) + '/10 · energía ' + esc(String(d.energia || '-')) + '/10' +
       (d.sueno != null && d.sueno !== '' ? ' · 😴 ' + esc(String(d.sueno)) + 'h' : '') +
       (emos ? '<br>Emociones: ' + esc(emos) : '') +
       (d.segura ? '<br>Persona segura: ' + esc(d.segura) : '') +
       (d.nota ? '<br>' + esc(d.nota) : '') + '</span>' +
       '<button type="button" class="btn btn-icon adol-daydel" data-k="' + esc(k) + '">✕</button></div>';
-  }).join('') : '<p class="muted" style="font-size:11px;text-align:center">Sin chequeos. Guarda el primero arriba: 1 minuto.</p>';
+  }).join('') : '<p class="muted su-e201a8">Sin chequeos. Guarda el primero arriba: 1 minuto.</p>';
   box.querySelectorAll('.adol-daydel').forEach(function (x) {
     x.onclick = function () { var e = store(); delete e.checks[x.dataset.k]; save(); renderStreak(); renderLog(); };
   });
@@ -342,11 +342,11 @@ function renderLog() {
 function renderMetas() {
   var box = $('adolMetas'); if (!box) return;
   var ms = store().metas || [];
-  if (!ms.length) { box.innerHTML = '<p class="muted" style="font-size:11px;text-align:center">Sin metas. Agrega 1 pequeña arriba para esta luna.</p>'; return; }
+  if (!ms.length) { box.innerHTML = '<p class="muted su-e201a8">Sin metas. Agrega 1 pequeña arriba para esta luna.</p>'; return; }
   box.innerHTML = ms.map(function (m) {
-    return '<div class="hora-item"><span style="font-size:12px">' + (m.done ? '✅ <s>' : '⬜ ') + esc(m.txt) + (m.done ? '</s>' : '') +
-      ' <span class="chip" style="font-size:10px">' + esc(m.tipo || 'otra') + '</span><br><span class="muted" style="font-size:10px">' + esc(m.fecha || '') + '</span></span>' +
-      '<span style="display:flex;gap:6px"><button type="button" class="btn btn-icon adol-mdone" data-k="' + esc(m.id) + '" title="Marcar/desmarcar">✓</button>' +
+    return '<div class="hora-item"><span class="su-6cb285">' + (m.done ? '✅ <s>' : '⬜ ') + esc(m.txt) + (m.done ? '</s>' : '') +
+      ' <span class="chip su-0d5be0">' + esc(m.tipo || 'otra') + '</span><br><span class="muted su-0d5be0">' + esc(m.fecha || '') + '</span></span>' +
+      '<span class="su-49cd09"><button type="button" class="btn btn-icon adol-mdone" data-k="' + esc(m.id) + '" title="Marcar/desmarcar">✓</button>' +
       '<button type="button" class="btn btn-icon adol-mdel" data-k="' + esc(m.id) + '">✕</button></span></div>';
   }).join('');
   box.querySelectorAll('.adol-mdone').forEach(function (x) {
@@ -500,12 +500,12 @@ function setup() {
     var counts = { R: 0, I: 0, A: 0, S: 0, E: 0, C: 0 }, total = 0;
     document.querySelectorAll('.adol-holl:checked').forEach(function (x) { counts[x.dataset.area] = (counts[x.dataset.area] || 0) + 1; total++; });
     var box = $('adolHollRes');
-    if (!total) { if (box) box.innerHTML = '<p class="muted" style="font-size:12px">Marca al menos 3 frases que te gusten para ver tu resultado.</p>'; return; }
+    if (!total) { if (box) box.innerHTML = '<p class="muted su-6cb285">Marca al menos 3 frases que te gusten para ver tu resultado.</p>'; return; }
     var order = Object.keys(counts).sort(function (a, c2) { return counts[c2] - counts[a]; });
     var top = order.slice(0, 2).join(' + ');
     var names = { R: 'Realista (manos)', I: 'Investigador (ideas)', A: 'Artístico (crear)', S: 'Social (personas)', E: 'Emprendedor (liderar)', C: 'Convencional (orden)' };
     var detail = order.map(function (k) { return k + ' ' + counts[k]; }).join(' · ');
-    if (box) box.innerHTML = '<div class="si-card" style="border-color:var(--gold)"><h4>Tu brújula: ' + esc(top) + '</h4><p>' + esc(names[order[0]]) + ' + ' + esc(names[order[1]]) + ' — puntajes: ' + esc(detail) + '</p><p class="muted" style="font-size:11px">Llévalo a tu orientador/a: ¿qué carreras/oficios de Penco y Bío-Bío usan estas 2 fuerzas? Es brújula, no destino.</p></div>';
+    if (box) box.innerHTML = '<div class="si-card su-68a1a9"><h4>Tu brújula: ' + esc(top) + '</h4><p>' + esc(names[order[0]]) + ' + ' + esc(names[order[1]]) + ' — puntajes: ' + esc(detail) + '</p><p class="muted su-11a508">Llévalo a tu orientador/a: ¿qué carreras/oficios de Penco y Bío-Bío usan estas 2 fuerzas? Es brújula, no destino.</p></div>';
     var e = store();
     e.tests.push({ id: uid('at'), fecha: todayKey(), tipo: 'holland', nombre: 'Vocacional Holland', puntaje: top, nivel: detail, respuestas: total });
     save('Test guardado ✓'); renderStreak();

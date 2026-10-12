@@ -81,10 +81,10 @@ function makeDialog(id, title, sub, bodyHTML) {
   var d = document.createElement('dialog');
   d.id = id;
   d.innerHTML = '<form method="dialog">' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
-    '<h3 style="margin:0;color:var(--accent)">' + title + '</h3>' +
+    '<div class="dlg-actions su-d2d053">' +
+    '<h3 class="su-ee0cfe">' + title + '</h3>' +
     '<button type="button" data-close class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    (sub ? '<p class="muted" style="line-height:1.5">' + sub + '</p>' : '') +
+    (sub ? '<p class="muted su-77e2fe">' + sub + '</p>' : '') +
     bodyHTML +
     '<div class="dlg-actions"><button type="button" data-close class="btn">Cerrar</button></div></form>';
   document.body.appendChild(d);
@@ -258,71 +258,71 @@ function buildDialog() {
   }).join('') + '</datalist>';
 
   var body =
-    '<div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">' +
-    '<button type="button" id="tabHuertaResumen" class="btn btn-accent" style="width:auto">🏡 Resumen</button>' +
-    '<button type="button" id="tabHuertaBancales" class="btn" style="width:auto">🟫 Bancales</button>' +
-    '<button type="button" id="tabHuertaCultivos" class="btn" style="width:auto">🌱 Cultivos</button>' +
-    '<button type="button" id="tabHuertaTareas" class="btn" style="width:auto">✅ Tareas</button>' +
-    '<button type="button" id="tabHuertaCosechas" class="btn" style="width:auto">🧺 Cosechas</button>' +
-    '<button type="button" id="tabHuertaGuia" class="btn" style="width:auto">📖 Guía</button></div>' +
+    '<div class="timer-tabs su-4dca21">' +
+    '<button type="button" id="tabHuertaResumen" class="btn btn-accent su-30e741">🏡 Resumen</button>' +
+    '<button type="button" id="tabHuertaBancales" class="btn su-30e741">🟫 Bancales</button>' +
+    '<button type="button" id="tabHuertaCultivos" class="btn su-30e741">🌱 Cultivos</button>' +
+    '<button type="button" id="tabHuertaTareas" class="btn su-30e741">✅ Tareas</button>' +
+    '<button type="button" id="tabHuertaCosechas" class="btn su-30e741">🧺 Cosechas</button>' +
+    '<button type="button" id="tabHuertaGuia" class="btn su-30e741">📖 Guía</button></div>' +
 
     '<div id="huertaResumen"></div>' +
 
     '<div id="huertaBancales" class="hidden">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>➕ <span id="huertaBancTitle">Nuevo bancal / espacio</span></h4>' +
-    '<div class="conv-row"><label style="flex:2">Nombre * <input type="text" id="hbNombre" placeholder="ej: Bancal 1 norte, Cajón tomates" maxlength="40"></label>' +
+    '<div class="menstrual-card su-68a1a9"><h4>➕ <span id="huertaBancTitle">Nuevo bancal / espacio</span></h4>' +
+    '<div class="conv-row"><label class="su-4b3de7">Nombre * <input type="text" id="hbNombre" placeholder="ej: Bancal 1 norte, Cajón tomates" maxlength="40"></label>' +
     '<label>Tipo <select id="hbTipo">' + TIPOS_BANCAL.map(function (t) { return '<option>' + t + '</option>'; }).join('') + '</select></label></div>' +
     '<div class="conv-row"><label>Largo (m) <input type="number" id="hbLargo" min="0" step="0.1" placeholder="ej: 3"></label>' +
     '<label>Ancho (m) <input type="number" id="hbAncho" min="0" step="0.1" placeholder="ej: 1"></label>' +
     '<label>Sol <select id="hbSol"><option>Pleno sol (6h+)</option><option>Medio sol (3–6h)</option><option>Sombra parcial</option><option>Invernadero</option></select></label></div>' +
-    '<div class="conv-row"><label style="flex:2">Suelo / sustrato <input type="text" id="hbSuelo" placeholder="ej: arcilloso + compost, coco+perlita" maxlength="60"></label></div>' +
+    '<div class="conv-row"><label class="su-4b3de7">Suelo / sustrato <input type="text" id="hbSuelo" placeholder="ej: arcilloso + compost, coco+perlita" maxlength="60"></label></div>' +
     '<label>Notas <input type="text" id="hbNotas" placeholder="ej: junto a la llave, viento sur tapado" maxlength="100"></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start;margin-top:8px"><button type="button" id="hbAdd" class="btn btn-accent" style="width:auto">+ Guardar bancal</button>' +
-    '<button type="button" id="hbCancel" class="btn hidden" style="width:auto">Cancelar</button></div></div>' +
-    '<div id="huertaBancList" style="margin-top:10px;display:flex;flex-direction:column;gap:8px"></div></div>' +
+    '<div class="dlg-actions su-8f9e27"><button type="button" id="hbAdd" class="btn btn-accent su-30e741">+ Guardar bancal</button>' +
+    '<button type="button" id="hbCancel" class="btn hidden su-30e741">Cancelar</button></div></div>' +
+    '<div id="huertaBancList" class="su-ed55fd"></div></div>' +
 
     '<div id="huertaCultivos" class="hidden">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>➕ <span id="huertaCultTitle">Nuevo cultivo</span></h4>' +
+    '<div class="menstrual-card su-68a1a9"><h4>➕ <span id="huertaCultTitle">Nuevo cultivo</span></h4>' +
     '<div class="conv-row"><label>Bancal * <select id="hcBancal"></select></label>' +
     '<label>Estado <select id="hcEstado">' + ESTADOS.map(function (e) { return '<option>' + e + '</option>'; }).join('') + '</select></label></div>' +
-    '<div class="conv-row"><label style="flex:2">Cultivo * <input type="text" id="hcNombre" list="huertaCultDL" placeholder="ej: Tomate, Lechuga" maxlength="30"></label>' +
+    '<div class="conv-row"><label class="su-4b3de7">Cultivo * <input type="text" id="hcNombre" list="huertaCultDL" placeholder="ej: Tomate, Lechuga" maxlength="30"></label>' +
     '<label>Variedad <input type="text" id="hcVar" placeholder="ej: rosado, manteca" maxlength="30"></label>' +
-    '<label>Cant. <input type="number" id="hcCant" min="1" value="4" style="width:70px"></label></div>' + datalist +
+    '<label>Cant. <input type="number" id="hcCant" min="1" value="4" class="su-ec6626"></label></div>' + datalist +
     '<div class="conv-row"><label>Siembra <input type="date" id="hcFS"></label>' +
     '<label>Trasplante <input type="date" id="hcFT"></label>' +
-    '<label>Días a cosecha <input type="number" id="hcDias" min="10" max="300" value="60" style="width:80px"></label></div>' +
+    '<label>Días a cosecha <input type="number" id="hcDias" min="10" max="300" value="60" class="su-8573ba"></label></div>' +
     '<div class="conv-row"><label>Origen <select id="hcOrigen"><option>Siembra directa</option><option>Almácigo propio</option><option>Plantín comprado</option><option>Rebrote / esqueje</option></select></label></div>' +
     '<label>Notas <input type="text" id="hcNota" placeholder="ej: hilera norte-sur, mulch de paja" maxlength="100"></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start;margin-top:8px"><button type="button" id="hcAdd" class="btn btn-accent" style="width:auto">+ Guardar cultivo</button>' +
-    '<button type="button" id="hcCancel" class="btn hidden" style="width:auto">Cancelar</button></div></div>' +
-    '<div class="conv-row" style="margin-top:10px"><label>Ver bancal <select id="hcFiltroB"><option value="todos">Todos</option></select></label>' +
+    '<div class="dlg-actions su-8f9e27"><button type="button" id="hcAdd" class="btn btn-accent su-30e741">+ Guardar cultivo</button>' +
+    '<button type="button" id="hcCancel" class="btn hidden su-30e741">Cancelar</button></div></div>' +
+    '<div class="conv-row su-d2c171"><label>Ver bancal <select id="hcFiltroB"><option value="todos">Todos</option></select></label>' +
     '<label>Estado <select id="hcFiltroE"><option value="activos">Activos</option><option value="todos">Todos</option><option value="Planificado">Planificado</option><option value="Almácigo">Almácigo</option><option value="Trasplantado">Trasplantado</option><option value="Crecimiento">Crecimiento</option><option value="Flor">Flor</option><option value="Cosechando">Cosechando</option><option value="Terminado">Terminado</option></select></label></div>' +
-    '<div id="huertaCultList" style="margin-top:8px;display:flex;flex-direction:column;gap:8px"></div></div>' +
+    '<div id="huertaCultList" class="su-bf3828"></div></div>' +
 
     '<div id="huertaTareas" class="hidden">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>➕ Nueva tarea</h4>' +
+    '<div class="menstrual-card su-68a1a9"><h4>➕ Nueva tarea</h4>' +
     '<div class="conv-row"><label>Tipo <select id="htTipo">' + TIPOS_TAREA.map(function (t) { return '<option>' + t + '</option>'; }).join('') + '</select></label>' +
     '<label>Fecha <input type="date" id="htFecha"></label></div>' +
     '<div class="conv-row"><label>Bancal <select id="htBancal"><option value="">—</option></select></label>' +
     '<label>Cultivo <select id="htCultivo"><option value="">—</option></select></label></div>' +
     '<label>Detalle <input type="text" id="htNota" placeholder="ej: regar profundo AM, purín 1:10" maxlength="100"></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start;margin-top:8px"><button type="button" id="htAdd" class="btn btn-accent" style="width:auto">+ Guardar tarea</button></div></div>' +
-    '<div class="conv-row" style="margin-top:10px"><label>Mostrar <select id="htFiltro"><option value="pendientes">Pendientes</option><option value="todas">Todas</option><option value="hechas">Hechas</option></select></label></div>' +
-    '<div id="huertaTarList" class="habits-list" style="margin-top:8px;max-height:280px"></div>' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-top:8px"><span id="huertaTarStats" class="muted" style="font-size:11px"></span>' +
-    '<button type="button" id="htClearHechas" class="btn" style="width:auto">🧹 Borrar hechas</button></div></div>' +
+    '<div class="dlg-actions su-8f9e27"><button type="button" id="htAdd" class="btn btn-accent su-30e741">+ Guardar tarea</button></div></div>' +
+    '<div class="conv-row su-d2c171"><label>Mostrar <select id="htFiltro"><option value="pendientes">Pendientes</option><option value="todas">Todas</option><option value="hechas">Hechas</option></select></label></div>' +
+    '<div id="huertaTarList" class="habits-list su-9daa59"></div>' +
+    '<div class="dlg-actions su-efea1d"><span id="huertaTarStats" class="muted su-11a508"></span>' +
+    '<button type="button" id="htClearHechas" class="btn su-30e741">🧹 Borrar hechas</button></div></div>' +
 
     '<div id="huertaCosechas" class="hidden">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>➕ Registrar cosecha</h4>' +
+    '<div class="menstrual-card su-68a1a9"><h4>➕ Registrar cosecha</h4>' +
     '<div class="conv-row"><label>Cultivo * <select id="hxCultivo"></select></label>' +
     '<label>Fecha <input type="date" id="hxFecha"></label></div>' +
     '<div class="conv-row"><label>Cantidad * <input type="number" id="hxCant" min="0" step="0.1" placeholder="ej: 2.5"></label>' +
     '<label>Unidad <select id="hxUni"><option>kg</option><option>g</option><option>unidades</option><option>atados</option><option>canastos</option></select></label>' +
     '<label>Calidad <select id="hxCal"><option>Buena</option><option>Regular</option><option>Para guardar</option><option>Para semilla</option></select></label></div>' +
     '<label>Notas <input type="text" id="hxNota" placeholder="ej: primera corta, para ensalada" maxlength="80"></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start;margin-top:8px"><button type="button" id="hxAdd" class="btn btn-accent" style="width:auto">+ Guardar cosecha</button></div></div>' +
-    '<div id="huertaCosResumen" class="menstrual-card" style="margin-top:10px"></div>' +
-    '<div id="huertaCosList" class="habits-list" style="margin-top:10px;max-height:260px"></div></div>' +
+    '<div class="dlg-actions su-8f9e27"><button type="button" id="hxAdd" class="btn btn-accent su-30e741">+ Guardar cosecha</button></div></div>' +
+    '<div id="huertaCosResumen" class="menstrual-card su-d2c171"></div>' +
+    '<div id="huertaCosList" class="habits-list su-d36145"></div></div>' +
 
     '<div id="huertaGuia" class="hidden">' +
     '<div class="si-card"><h4>🔄 Rotación en 4 grupos (no repitas familia)</h4><p><b>1 Hoja</b> (lechuga, acelga, espinaca) → <b>2 Fruto</b> (tomate, zapallo, maíz) → <b>3 Raíz</b> (zanahoria, betarraga, papa, cebolla) → <b>4 Legumbre</b> (haba, arveja, poroto que devuelve nitrógeno) → vuelve a Hoja. Anota en cada bancal qué hubo la temporada pasada y rota.</p></div>' +
@@ -403,28 +403,28 @@ function renderResumen() {
   });
 
   box.innerHTML =
-    '<div id="huertaHoyBox" class="menstrual-card" style="border-color:var(--gold)"><h4>🌙 Hoy · ' + esc(hoy) + (l ? ' · Luna ' + l.luna + ' día ' + l.dia : '') + '</h4>' +
-    '<p class="muted" style="font-size:12px">' + esc(lunaTip) + '</p></div>' +
-    '<div class="fishing-grid" style="margin-top:10px">' +
-    '<div class="menstrual-card"><h4>📐 Mi espacio</h4><p style="font-size:22px;color:var(--gold)"><b>' + bancAct.length + '</b> <span style="font-size:12px">bancales</span> · <b>' + (Math.round(m2 * 10) / 10) + '</b> <span style="font-size:12px">m²</span></p>' +
-    '<p class="muted" style="font-size:11px">' + cultAct.length + ' cultivos activos · ' + h.cosechas.length + ' cosechas registradas</p></div>' +
-    '<div class="menstrual-card"><h4>✅ Tareas</h4><p style="font-size:22px;color:var(--gold)"><b>' + tarPend.length + '</b> <span style="font-size:12px">pendientes</span>' + (tarVenc.length ? ' · <b style="color:#e76e8a">' + tarVenc.length + ' vencidas</b>' : '') + '</p>' +
-    '<p class="muted" style="font-size:11px">Pestaña ✅ Tareas para marcar hechas.</p></div></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>🧺 Próximas cosechas</h4>' +
+    '<div id="huertaHoyBox" class="menstrual-card su-68a1a9"><h4>🌙 Hoy · ' + esc(hoy) + (l ? ' · Luna ' + l.luna + ' día ' + l.dia : '') + '</h4>' +
+    '<p class="muted su-6cb285">' + esc(lunaTip) + '</p></div>' +
+    '<div class="fishing-grid su-d2c171">' +
+    '<div class="menstrual-card"><h4>📐 Mi espacio</h4><p class="su-f3dba9"><b>' + bancAct.length + '</b> <span class="su-6cb285">bancales</span> · <b>' + (Math.round(m2 * 10) / 10) + '</b> <span class="su-6cb285">m²</span></p>' +
+    '<p class="muted su-11a508">' + cultAct.length + ' cultivos activos · ' + h.cosechas.length + ' cosechas registradas</p></div>' +
+    '<div class="menstrual-card"><h4>✅ Tareas</h4><p class="su-f3dba9"><b>' + tarPend.length + '</b> <span class="su-6cb285">pendientes</span>' + (tarVenc.length ? ' · <b class="su-a861ba">' + tarVenc.length + ' vencidas</b>' : '') + '</p>' +
+    '<p class="muted su-11a508">Pestaña ✅ Tareas para marcar hechas.</p></div></div>' +
+    '<div class="menstrual-card su-d2c171"><h4>🧺 Próximas cosechas</h4>' +
     (prox.length ? prox.map(function (x) {
       var pr = progresoCultivo(x.c);
       var falta = pr ? pr.faltan : diffDays(hoy, x.f);
       var txt = falta > 0 ? 'en ' + falta + ' días' : falta === 0 ? '¡esta semana!' : 'hace ' + Math.abs(falta) + ' días (revisa)';
       var b = bancalById(x.c.bancalId);
-      return '<div class="hora-item"><span style="font-size:12px"><b>' + esc(icoDe(x.c.nombre) + ' ' + x.c.nombre) + '</b> · ' + esc(x.f) + ' <span class="chip" style="font-size:10px">' + esc(txt) + '</span><br><span class="muted" style="font-size:10px">' + esc(b ? b.nombre : '') + ' · ' + esc(x.c.estado) + '</span></span></div>';
-    }).join('') : '<p class="muted" style="font-size:11px">Sin fechas aún. Agrega cultivos con fecha de siembra y días a cosecha.</p>') + '</div>' +
-    (alertas.length ? '<div class="menstrual-card" style="margin-top:10px;border-color:#e8c56a"><h4>🤝 Revisa asociaciones</h4><p class="muted" style="font-size:11px">' + alertas.join('<br>') + '</p></div>' : '') +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>🟫 Ocupación por bancal</h4>' +
+      return '<div class="hora-item"><span class="su-6cb285"><b>' + esc(icoDe(x.c.nombre) + ' ' + x.c.nombre) + '</b> · ' + esc(x.f) + ' <span class="chip su-0d5be0">' + esc(txt) + '</span><br><span class="muted su-0d5be0">' + esc(b ? b.nombre : '') + ' · ' + esc(x.c.estado) + '</span></span></div>';
+    }).join('') : '<p class="muted su-11a508">Sin fechas aún. Agrega cultivos con fecha de siembra y días a cosecha.</p>') + '</div>' +
+    (alertas.length ? '<div class="menstrual-card su-0d015f"><h4>🤝 Revisa asociaciones</h4><p class="muted su-11a508">' + alertas.join('<br>') + '</p></div>' : '') +
+    '<div class="menstrual-card su-d2c171"><h4>🟫 Ocupación por bancal</h4>' +
     (ocup.length ? ocup.map(function (o) {
-      return '<div class="hora-item"><span style="font-size:12px"><b>' + esc(o.b.nombre) + '</b>' + (o.m2 ? ' <span class="muted">· ' + o.m2 + ' m²</span>' : '') + '<br><span class="muted" style="font-size:10px">' + (o.nombres ? esc(o.nombres) : 'vacío — listo para sembrar') + '</span></span><span class="chip" style="font-size:10px">' + o.n + ' cult.</span></div>';
-    }).join('') : '<p class="muted" style="font-size:11px">Aún no tienes bancales. Crea el primero en 🟫 Bancales.</p>') + '</div>' +
-    '<div class="dlg-actions" style="justify-content:flex-start;margin-top:8px"><button type="button" id="huertaGoBancal" class="btn" style="width:auto">➕ Agregar mi primer bancal</button>' +
-    '<button type="button" id="huertaShareBtn" class="btn" style="width:auto">📤 Compartir resumen</button></div>';
+      return '<div class="hora-item"><span class="su-6cb285"><b>' + esc(o.b.nombre) + '</b>' + (o.m2 ? ' <span class="muted">· ' + o.m2 + ' m²</span>' : '') + '<br><span class="muted su-0d5be0">' + (o.nombres ? esc(o.nombres) : 'vacío — listo para sembrar') + '</span></span><span class="chip su-0d5be0">' + o.n + ' cult.</span></div>';
+    }).join('') : '<p class="muted su-11a508">Aún no tienes bancales. Crea el primero en 🟫 Bancales.</p>') + '</div>' +
+    '<div class="dlg-actions su-8f9e27"><button type="button" id="huertaGoBancal" class="btn su-30e741">➕ Agregar mi primer bancal</button>' +
+    '<button type="button" id="huertaShareBtn" class="btn su-30e741">📤 Compartir resumen</button></div>';
 
   var gb = $('huertaGoBancal');
   if (gb) gb.onclick = function () { switchTab('Bancales'); };
@@ -448,25 +448,25 @@ function renderBancales() {
   var box = $('huertaBancList'); if (!box) return;
   var h = store();
   if (!h.bancales.length) {
-    box.innerHTML = '<p class="muted" style="font-size:11px;text-align:center">Sin bancales. Crea el primero arriba: ej "Bancal 1 norte" 3×1 m.</p>';
+    box.innerHTML = '<p class="muted su-e201a8">Sin bancales. Crea el primero arriba: ej "Bancal 1 norte" 3×1 m.</p>';
     return;
   }
   var s = h.bancales.slice().sort(function (a, b) { return (a.archivado ? 1 : 0) - (b.archivado ? 1 : 0); });
   box.innerHTML = s.map(function (b) {
     var m2 = m2Bancal(b);
     var n = h.cultivos.filter(function (c) { return c.bancalId === b.id && esActivo(c); }).length;
-    return '<div class="si-card' + (b.archivado ? '" style="opacity:.6' : '') + '"><h4>🟫 ' + esc(b.nombre) + (b.archivado ? ' <span class="chip" style="font-size:10px">archivado</span>' : '') + '</h4>' +
-      '<p style="display:flex;gap:6px;flex-wrap:wrap"><span class="chip" style="font-size:10px">' + esc(b.tipo || 'Bancal') + '</span>' +
-      (m2 ? '<span class="chip" style="font-size:10px">📐 ' + m2 + ' m² (' + esc(String(b.largo || '?')) + '×' + esc(String(b.ancho || '?')) + ' m)</span>' : '') +
-      (b.sol ? '<span class="chip" style="font-size:10px">☀️ ' + esc(b.sol) + '</span>' : '') +
-      '<span class="chip" style="font-size:10px">🌱 ' + n + ' activos</span></p>' +
+    return '<div class="si-card' + (b.archivado ? '" style="opacity:.6' : '') + '"><h4>🟫 ' + esc(b.nombre) + (b.archivado ? ' <span class="chip su-0d5be0">archivado</span>' : '') + '</h4>' +
+      '<p class="su-6157e8"><span class="chip su-0d5be0">' + esc(b.tipo || 'Bancal') + '</span>' +
+      (m2 ? '<span class="chip su-0d5be0">📐 ' + m2 + ' m² (' + esc(String(b.largo || '?')) + '×' + esc(String(b.ancho || '?')) + ' m)</span>' : '') +
+      (b.sol ? '<span class="chip su-0d5be0">☀️ ' + esc(b.sol) + '</span>' : '') +
+      '<span class="chip su-0d5be0">🌱 ' + n + ' activos</span></p>' +
       (b.suelo ? '<p><b>Suelo:</b> ' + esc(b.suelo) + '</p>' : '') +
       (b.notas ? '<p class="muted">' + esc(b.notas) + '</p>' : '') +
-      '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">' +
-      '<button type="button" class="btn huerta-b-edit" data-k="' + esc(b.id) + '" style="width:auto;font-size:11px">✏️ Editar</button>' +
-      '<button type="button" class="btn huerta-b-cult" data-k="' + esc(b.id) + '" style="width:auto;font-size:11px">🌱 + Cultivo aquí</button>' +
-      '<button type="button" class="btn huerta-b-arch" data-k="' + esc(b.id) + '" style="width:auto;font-size:11px">' + (b.archivado ? '📂 Reactivar' : '📦 Archivar') + '</button>' +
-      '<button type="button" class="btn huerta-b-del" data-k="' + esc(b.id) + '" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕</button></div></div>';
+      '<div class="su-c158a9">' +
+      '<button type="button" class="btn huerta-b-edit su-337714" data-k="' + esc(b.id) + '">✏️ Editar</button>' +
+      '<button type="button" class="btn huerta-b-cult su-337714" data-k="' + esc(b.id) + '">🌱 + Cultivo aquí</button>' +
+      '<button type="button" class="btn huerta-b-arch su-337714" data-k="' + esc(b.id) + '">' + (b.archivado ? '📂 Reactivar' : '📦 Archivar') + '</button>' +
+      '<button type="button" class="btn huerta-b-del su-fd834a" data-k="' + esc(b.id) + '">✕</button></div></div>';
   }).join('');
   box.querySelectorAll('.huerta-b-edit').forEach(function (x) {
     x.onclick = function () {
@@ -516,28 +516,28 @@ function renderCultivos() {
   if (filtroEstado === 'activos') list = list.filter(esActivo);
   else if (filtroEstado !== 'todos') list = list.filter(function (c) { return c.estado === filtroEstado; });
   if (!list.length) {
-    box.innerHTML = '<p class="muted" style="font-size:11px;text-align:center">Sin cultivos con ese filtro. Agrega el primero arriba.</p>';
+    box.innerHTML = '<p class="muted su-e201a8">Sin cultivos con ese filtro. Agrega el primero arriba.</p>';
     return;
   }
   box.innerHTML = list.map(function (c) {
     var b = bancalById(c.bancalId);
     var pr = progresoCultivo(c);
     var fEst = fCosechaEst(c);
-    var bar = pr ? '<div style="height:8px;background:var(--panel);border:1px solid var(--line);border-radius:99px;overflow:hidden;margin-top:6px"><div style="height:100%;width:' + pr.pct + '%;background:linear-gradient(90deg,#8fd694,#e8c56a)"></div></div>' +
-      '<p class="muted" style="font-size:10px;margin-top:2px">Día ' + Math.max(0, pr.pas) + '/' + pr.total + ' · ' + pr.pct + '% — cosecha est: ' + (fEst || '?') + '</p>' : '';
+    var bar = pr ? '<div class="su-0ead41"><div style="height:100%;width:' + pr.pct + '%;background:linear-gradient(90deg,#8fd694,#e8c56a)"></div></div>' +
+      '<p class="muted su-2b627f">Día ' + Math.max(0, pr.pas) + '/' + pr.total + ' · ' + pr.pct + '% — cosecha est: ' + (fEst || '?') + '</p>' : '';
     return '<div class="si-card"><h4>' + esc(icoDe(c.nombre) + ' ' + c.nombre) + (c.variedad ? ' <small class="muted">' + esc(c.variedad) + '</small>' : '') + '</h4>' +
-      '<p style="display:flex;gap:6px;flex-wrap:wrap"><span class="chip" style="font-size:10px">🟫 ' + esc(b ? b.nombre : 'sin bancal') + '</span>' +
-      '<span class="chip" style="font-size:10px">' + esc(c.estado) + '</span>' +
-      (c.cantidad ? '<span class="chip" style="font-size:10px">×' + esc(String(c.cantidad)) + '</span>' : '') +
-      (c.fSiembra ? '<span class="chip" style="font-size:10px">🌱 ' + esc(c.fSiembra) + '</span>' : '') + '</p>' +
+      '<p class="su-6157e8"><span class="chip su-0d5be0">🟫 ' + esc(b ? b.nombre : 'sin bancal') + '</span>' +
+      '<span class="chip su-0d5be0">' + esc(c.estado) + '</span>' +
+      (c.cantidad ? '<span class="chip su-0d5be0">×' + esc(String(c.cantidad)) + '</span>' : '') +
+      (c.fSiembra ? '<span class="chip su-0d5be0">🌱 ' + esc(c.fSiembra) + '</span>' : '') + '</p>' +
       bar +
       (c.nota ? '<p class="muted">' + esc(c.nota) + '</p>' : '') +
-      '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">' +
-      '<button type="button" class="btn huerta-c-next" data-k="' + esc(c.id) + '" style="width:auto;font-size:11px">⏭ Avanzar estado</button>' +
-      '<button type="button" class="btn huerta-c-task" data-k="' + esc(c.id) + '" style="width:auto;font-size:11px">✅ + Tarea</button>' +
-      '<button type="button" class="btn huerta-c-harv" data-k="' + esc(c.id) + '" style="width:auto;font-size:11px">🧺 Cosechar</button>' +
-      '<button type="button" class="btn huerta-c-edit" data-k="' + esc(c.id) + '" style="width:auto;font-size:11px">✏️</button>' +
-      '<button type="button" class="btn huerta-c-del" data-k="' + esc(c.id) + '" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕</button></div></div>';
+      '<div class="su-c158a9">' +
+      '<button type="button" class="btn huerta-c-next su-337714" data-k="' + esc(c.id) + '">⏭ Avanzar estado</button>' +
+      '<button type="button" class="btn huerta-c-task su-337714" data-k="' + esc(c.id) + '">✅ + Tarea</button>' +
+      '<button type="button" class="btn huerta-c-harv su-337714" data-k="' + esc(c.id) + '">🧺 Cosechar</button>' +
+      '<button type="button" class="btn huerta-c-edit su-337714" data-k="' + esc(c.id) + '">✏️</button>' +
+      '<button type="button" class="btn huerta-c-del su-fd834a" data-k="' + esc(c.id) + '">✕</button></div></div>';
   }).join('');
   box.querySelectorAll('.huerta-c-edit').forEach(function (x) {
     x.onclick = function () {
@@ -609,7 +609,7 @@ function renderTareas() {
   var pend = h.tareas.filter(function (t) { return !t.hecha; }).length;
   if (st) st.textContent = h.tareas.length + ' tareas · ' + pend + ' pendientes';
   if (!list.length) {
-    box.innerHTML = '<p class="muted" style="font-size:11px;text-align:center">Sin tareas aquí. Crea la primera arriba: ej "Riego profundo".</p>';
+    box.innerHTML = '<p class="muted su-e201a8">Sin tareas aquí. Crea la primera arriba: ej "Riego profundo".</p>';
     return;
   }
   var hoy = todayKey();
@@ -617,8 +617,8 @@ function renderTareas() {
     var c = t.cultivoId ? cultivoById(t.cultivoId) : null;
     var b = t.bancalId ? bancalById(t.bancalId) : (c ? bancalById(c.bancalId) : null);
     var venc = !t.hecha && t.fecha && t.fecha < hoy;
-    return '<div class="hora-item' + (t.hecha ? '" style="opacity:.6' : '') + '"><span style="font-size:12px"><b>' + (t.hecha ? '✅' : venc ? '🔴' : '⬜') + ' ' + esc(t.tipo) + '</b> · ' + esc(t.fecha || 'sin fecha') +
-      '<br><span class="muted" style="font-size:10px">' + esc(b ? b.nombre + ' · ' : '') + esc(c ? icoDe(c.nombre) + ' ' + c.nombre + ' · ' : '') + esc(t.nota || '') + '</span></span>' +
+    return '<div class="hora-item' + (t.hecha ? '" style="opacity:.6' : '') + '"><span class="su-6cb285"><b>' + (t.hecha ? '✅' : venc ? '🔴' : '⬜') + ' ' + esc(t.tipo) + '</b> · ' + esc(t.fecha || 'sin fecha') +
+      '<br><span class="muted su-0d5be0">' + esc(b ? b.nombre + ' · ' : '') + esc(c ? icoDe(c.nombre) + ' ' + c.nombre + ' · ' : '') + esc(t.nota || '') + '</span></span>' +
       '<span class="hora-actions"><button type="button" class="btn btn-icon huerta-t-done" data-k="' + esc(t.id) + '" title="Marcar">' + (t.hecha ? '↩' : '✓') + '</button>' +
       '<button type="button" class="btn btn-icon huerta-t-del" data-k="' + esc(t.id) + '">✕</button></span></div>';
   }).join('');
@@ -654,19 +654,19 @@ function renderCosechas() {
   });
   var totKg = s.filter(function (r) { return r.unidad === 'kg'; }).reduce(function (t, r) { return t + (parseFloat(r.cantidad) || 0); }, 0);
   if (res) {
-    res.innerHTML = '<h4>🧺 Total (' + s.length + ' registros)</h4><p style="font-size:12px">' +
+    res.innerHTML = '<h4>🧺 Total (' + s.length + ' registros)</h4><p class="su-6cb285">' +
       Object.keys(porCult).map(function (k) { return porCult[k].ico + ' ' + esc(k) + ': <b>' + porCult[k].n + '</b>'; }).join(' · ') + '</p>' +
-      (totKg ? '<p class="muted" style="font-size:11px">Suma en kg: <b>' + (Math.round(totKg * 10) / 10) + ' kg</b> (más lo contado en unidades/atados).</p>' : '<p class="muted" style="font-size:11px">Registra cada corta para ver tu producción real por luna.</p>');
+      (totKg ? '<p class="muted su-11a508">Suma en kg: <b>' + (Math.round(totKg * 10) / 10) + ' kg</b> (más lo contado en unidades/atados).</p>' : '<p class="muted su-11a508">Registra cada corta para ver tu producción real por luna.</p>');
   }
   if (!s.length) {
-    box.innerHTML = '<p class="muted" style="font-size:11px;text-align:center">Sin cosechas. Registra la primera arriba.</p>';
+    box.innerHTML = '<p class="muted su-e201a8">Sin cosechas. Registra la primera arriba.</p>';
     return;
   }
   box.innerHTML = s.map(function (r) {
     var c = cultivoById(r.cultivoId);
     var b = c ? bancalById(c.bancalId) : null;
-    return '<div class="hora-item"><span style="font-size:12px"><b>' + esc((c ? icoDe(c.nombre) + ' ' + c.nombre : 'Cultivo') + ' · ' + r.cantidad + ' ' + r.unidad) + '</b>' +
-      '<br><span class="muted" style="font-size:10px">' + esc(r.fecha || '') + (b ? ' · ' + esc(b.nombre) : '') + ' · ' + esc(r.calidad || '') + (r.nota ? ' · ' + esc(r.nota) : '') + '</span></span>' +
+    return '<div class="hora-item"><span class="su-6cb285"><b>' + esc((c ? icoDe(c.nombre) + ' ' + c.nombre : 'Cultivo') + ' · ' + r.cantidad + ' ' + r.unidad) + '</b>' +
+      '<br><span class="muted su-0d5be0">' + esc(r.fecha || '') + (b ? ' · ' + esc(b.nombre) : '') + ' · ' + esc(r.calidad || '') + (r.nota ? ' · ' + esc(r.nota) : '') + '</span></span>' +
       '<button type="button" class="btn btn-icon huerta-x-del" data-k="' + esc(r.id) + '">✕</button></div>';
   }).join('');
   box.querySelectorAll('.huerta-x-del').forEach(function (x) {

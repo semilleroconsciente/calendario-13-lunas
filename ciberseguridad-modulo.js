@@ -170,17 +170,17 @@ function makeDialog() {
   var d = document.createElement('dialog');
   d.id = 'ciberDialog';
   d.innerHTML = '<form method="dialog">' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
-    '<h3 style="margin:0;color:var(--accent)">🛡️ Ciberseguridad — cuida tu plata y tus datos</h3>' +
+    '<div class="dlg-actions su-d2d053">' +
+    '<h3 class="su-ee0cfe">🛡️ Ciberseguridad — cuida tu plata y tus datos</h3>' +
     '<button type="button" data-close class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    '<p class="muted" style="line-height:1.5">Estafas por celu, claves robadas y cuentas quitadas: aquí aprendes a frenarlas con reglas simples, <b>sin tecnicismos</b>. Todo es <b>offline y privado</b>: nada sale de este dispositivo.</p>' +
-    '<div class="timer-tabs" style="flex-wrap:wrap;margin-bottom:10px">' +
-    '<button type="button" id="tabCiberGuia" class="btn btn-accent" style="width:auto">📖 Guía</button>' +
-    '<button type="button" id="tabCiberClaves" class="btn" style="width:auto">🔑 Claves</button>' +
-    '<button type="button" id="tabCiberEstafas" class="btn" style="width:auto">🎣 Estafas</button>' +
-    '<button type="button" id="tabCiberPriv" class="btn" style="width:auto">🔒 Privacidad</button>' +
-    '<button type="button" id="tabCiberChequeo" class="btn" style="width:auto">✅ Chequeo</button>' +
-    '<button type="button" id="tabCiberAyuda" class="btn" style="width:auto">🆘 Ayuda</button></div>' +
+    '<p class="muted su-77e2fe">Estafas por celu, claves robadas y cuentas quitadas: aquí aprendes a frenarlas con reglas simples, <b>sin tecnicismos</b>. Todo es <b>offline y privado</b>: nada sale de este dispositivo.</p>' +
+    '<div class="timer-tabs su-dd1da5">' +
+    '<button type="button" id="tabCiberGuia" class="btn btn-accent su-30e741">📖 Guía</button>' +
+    '<button type="button" id="tabCiberClaves" class="btn su-30e741">🔑 Claves</button>' +
+    '<button type="button" id="tabCiberEstafas" class="btn su-30e741">🎣 Estafas</button>' +
+    '<button type="button" id="tabCiberPriv" class="btn su-30e741">🔒 Privacidad</button>' +
+    '<button type="button" id="tabCiberChequeo" class="btn su-30e741">✅ Chequeo</button>' +
+    '<button type="button" id="tabCiberAyuda" class="btn su-30e741">🆘 Ayuda</button></div>' +
     '<div id="ciberGuia"></div>' +
     '<div id="ciberClaves" class="hidden"></div>' +
     '<div id="ciberEstafas" class="hidden"></div>' +
@@ -207,7 +207,7 @@ function renderGuia() {
       return '<div class="si-card"><h4>' + r.ico + ' ' + esc(r.n) + '</h4><p>' + r.txt + '</p></div>';
     }).join('') +
     '<div class="si-card"><h4>🧭 Método ALTO (pégalo en el refri)</h4><p><b>A</b> — Alto: ¿me mete prisa o miedo? → pausa.<br><b>L</b> — Lee: ¿quién manda REALMENTE? (dirección, número, faltas).<br><b>T</b> — Toca nada: ni link, ni código, ni app que te pidan.<br><b>O</b> — Otro canal: verifica llamando al número guardado o en persona.</p></div>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="ciberGoChequeo" class="btn btn-accent" style="width:auto">✅ Hacer mi chequeo (2 min) →</button></div>';
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="ciberGoChequeo" class="btn btn-accent su-30e741">✅ Hacer mi chequeo (2 min) →</button></div>';
   var g = $('ciberGoChequeo');
   if (g) g.onclick = function () { switchTab('Chequeo'); renderAll(); };
 }
@@ -237,18 +237,18 @@ function genClave(n, simbolos) {
 function renderClaves() {
   var box = $('ciberClaves'); if (!box) return;
   box.innerHTML =
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🎲 Generador offline (aquí mismo, sin internet)</h4>' +
-    '<p class="muted" style="font-size:11px">Crea una clave y cópiala a tu cuaderno o gestor. <b>Este calendario NO guarda claves</b>: el generador no registra nada.</p>' +
+    '<div class="menstrual-card su-68a1a9"><h4>🎲 Generador offline (aquí mismo, sin internet)</h4>' +
+    '<p class="muted su-11a508">Crea una clave y cópiala a tu cuaderno o gestor. <b>Este calendario NO guarda claves</b>: el generador no registra nada.</p>' +
     '<div class="conv-row"><label>Largo <select id="ciberGenLen"><option value="12">12 (mínimo)</option><option value="16" selected>16 (recomendado)</option><option value="20">20 (banco/correo)</option></select></label>' +
-    '<label class="check-row" style="align-self:flex-end"><input type="checkbox" id="ciberGenSim" checked> Símbolos (!@#%)</label></div>' +
-    '<div class="conv-row"><label style="flex:2">Tu clave <input type="text" id="ciberGenOut" readonly placeholder="toca Generar…" style="font-family:monospace"></label></div>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="ciberGenBtn" class="btn btn-accent" style="width:auto">🎲 Generar</button>' +
-    '<button type="button" id="ciberGenCopy" class="btn" style="width:auto">📋 Copiar</button>' +
-    '<button type="button" id="ciberGenFrase" class="btn" style="width:auto">💬 Idea de frase</button></div>' +
-    '<div style="margin-top:8px"><span class="muted" style="font-size:11px">Medidor: </span><span id="ciberFuerza" class="chip">—</span>' +
-    '<div style="background:var(--panel);border-radius:6px;height:8px;overflow:hidden;margin-top:4px"><div id="ciberFuerzaBar" style="width:0%;height:100%;background:linear-gradient(90deg,#e76e8a,#e8c56a,#8fd694)"></div></div></div></div>' +
+    '<label class="check-row su-ffd20f"><input type="checkbox" id="ciberGenSim" checked> Símbolos (!@#%)</label></div>' +
+    '<div class="conv-row"><label class="su-4b3de7">Tu clave <input type="text" id="ciberGenOut" readonly placeholder="toca Generar…" class="su-72126d"></label></div>' +
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="ciberGenBtn" class="btn btn-accent su-30e741">🎲 Generar</button>' +
+    '<button type="button" id="ciberGenCopy" class="btn su-30e741">📋 Copiar</button>' +
+    '<button type="button" id="ciberGenFrase" class="btn su-30e741">💬 Idea de frase</button></div>' +
+    '<div class="su-8a77e5"><span class="muted su-11a508">Medidor: </span><span id="ciberFuerza" class="chip">—</span>' +
+    '<div class="su-add54f"><div id="ciberFuerzaBar" class="su-75fe76"></div></div></div></div>' +
     '<div class="si-card"><h4>🔑 La regla de las 3 claves</h4><p>Necesitas <b>3 claves distintas como mínimo</b>: 1) banco, 2) correo (Gmail), 3) resto (redes). Si repites la misma en todo, con una filtración caen todas. Truco de memoria: <b>frase larga</b> que solo tú entiendes + un número + un símbolo. Ej: <i>“' + esc(FRASES_TIPO[0]) + '”</i> → <i>LunaLadra7:30-Lirq!</i></p>' +
-    '<p class="muted" style="font-size:11px">❌ Nunca uses: ' + CLAVES_MALAS.map(esc).join(' · ') + '.</p></div>' +
+    '<p class="muted su-11a508">❌ Nunca uses: ' + CLAVES_MALAS.map(esc).join(' · ') + '.</p></div>' +
     '<div class="si-card"><h4>📓 ¿Dónde guardo mis claves?</h4><p><b>Mejor:</b> gestor del celu (Google / iCloud) o app de claves con una clave maestra.<br><b>Bueno:</b> cuaderno en casa (no al lado del celu, no con foto).<br><b>Nunca:</b> en Notas sin clave, en foto de galería, en el chat conmigo misma, en papel en la billetera, ni dictadas por teléfono.</p></div>' +
     '<div class="si-card"><h4>🔐 Activa el 2° paso HOY (5 minutos)</h4><p><b>WhatsApp:</b> Ajustes → Cuenta → Verificación en dos pasos → Activar → PIN + correo.<br><b>Gmail:</b> Cuenta Google → Seguridad → Verificación en 2 pasos → activar.<br><b>BancoEstado:</b> app → BE Pass / segunda clave + avisos por movimiento.<br>Con 2 pasos, aunque te roben la clave, no entran sin tu celu.</p></div>';
   var out = $('ciberGenOut'), bar = $('ciberFuerzaBar'), chip = $('ciberFuerza');
@@ -289,13 +289,13 @@ function renderEstafas() {
       '<p><b>Cómo es:</b> ' + e.como + '</p>' +
       '<p><b>🚩 Señales:</b> ' + e.senal + '</p>' +
       '<p><b>✅ Haz esto:</b><br>' + e.que.map(function (q, i) { return (i + 1) + ') ' + q; }).join('<br>') + '</p>' +
-      '<p class="muted" style="font-size:11px"><b>Frase que salva:</b> ' + esc(e.decir) + '</p></div>';
+      '<p class="muted su-11a508"><b>Frase que salva:</b> ' + esc(e.decir) + '</p></div>';
   }).join('');
   var best = 0;
   try { best = store().quizBest || 0; } catch (e) {}
-  html += '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🧠 Quiz: ¿la detectas? (mejor: ' + best + '/' + QUIZ.length + ')</h4>' +
+  html += '<div class="menstrual-card su-68a1a9"><h4>🧠 Quiz: ¿la detectas? (mejor: ' + best + '/' + QUIZ.length + ')</h4>' +
     '<div id="ciberQuizBox"></div>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="ciberQuizStart" class="btn btn-accent" style="width:auto">▶ Empezar quiz</button></div></div>';
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="ciberQuizStart" class="btn btn-accent su-30e741">▶ Empezar quiz</button></div></div>';
   box.innerHTML = html;
   $('ciberQuizStart').onclick = function () { quizIdx = 0; quizPts = 0; paintQuiz(); };
   function paintQuiz() {
@@ -304,16 +304,16 @@ function renderEstafas() {
       var s = store();
       if (quizPts > (s.quizBest || 0)) { s.quizBest = quizPts; save('Récord quiz 🧠'); }
       qb.innerHTML = '<p><b>Resultado: ' + quizPts + '/' + QUIZ.length + '</b> ' + (quizPts === QUIZ.length ? '🟢 ¡Ojo de lince! Enséñale a tu familia.' : (quizPts >= 4 ? '🟡 Bien, repasa las fichas de arriba.' : '🔴 Lee las 6 fichas con calma y repite el quiz.')) + '</p>' +
-        '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="ciberQuizAgain" class="btn" style="width:auto">🔁 Repetir</button>' +
-        '<button type="button" id="ciberQuizShare" class="btn" style="width:auto">📤 Compartir resultado</button></div>';
+        '<div class="dlg-actions su-59a5a8"><button type="button" id="ciberQuizAgain" class="btn su-30e741">🔁 Repetir</button>' +
+        '<button type="button" id="ciberQuizShare" class="btn su-30e741">📤 Compartir resultado</button></div>';
       $('ciberQuizAgain').onclick = function () { quizIdx = 0; quizPts = 0; paintQuiz(); };
       $('ciberQuizShare').onclick = function () { share('🛡️ Mi quiz de ciberseguridad', 'Saqué ' + quizPts + '/' + QUIZ.length + ' en el quiz anti-estafas del Calendario 13 Lunas. ¿Y tú? Regla de oro: mensaje urgente = pausa + verificar por otro canal.'); };
       return;
     }
     var q = QUIZ[quizIdx];
-    qb.innerHTML = '<p style="font-size:13px"><b>' + (quizIdx + 1) + '/' + QUIZ.length + '.</b> ' + esc(q.q) + '</p>' +
-      q.opts.map(function (o, i) { return '<button type="button" class="btn" style="width:100%;text-align:left;margin-bottom:6px;white-space:normal" data-q="' + i + '">' + esc(o) + '</button>'; }).join('') +
-      '<div id="ciberQuizFeed" class="muted" style="font-size:12px"></div>';
+    qb.innerHTML = '<p class="su-5e0faa"><b>' + (quizIdx + 1) + '/' + QUIZ.length + '.</b> ' + esc(q.q) + '</p>' +
+      q.opts.map(function (o, i) { return '<button type="button" class="btn su-1309a0" data-q="' + i + '">' + esc(o) + '</button>'; }).join('') +
+      '<div id="ciberQuizFeed" class="muted su-6cb285"></div>';
     qb.querySelectorAll('[data-q]').forEach(function (b) {
       b.onclick = function () {
         var i = +b.getAttribute('data-q');
@@ -348,19 +348,19 @@ function renderChequeo() {
   var pct = Math.round(pts / tot * 100);
   var nivel = pts <= 4 ? '🔴 Expuesto — parte por las 3 primeras esta semana' : (pts <= 8 ? '🟡 En camino — te faltan ' + (tot - pts) + ' pasos' : (pts < tot ? '🟢 Casi blindado — cierra las que faltan' : '🟢 Blindado — mantén 1 revisión por luna'));
   box.innerHTML =
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>✅ Mi escudo digital: ' + pts + '/' + tot + ' (' + pct + '%)</h4>' +
-    '<div style="background:var(--panel);border-radius:6px;height:10px;overflow:hidden"><div style="width:' + pct + '%;height:100%;background:linear-gradient(90deg,#e76e8a,#e8c56a,#8fd694)"></div></div>' +
-    '<p class="muted" style="font-size:11px;margin-top:6px">' + nivel + '</p>' +
-    '<p class="muted" style="font-size:11px">Marca lo que YA tienes activo. Se guarda <b>privado y local</b>. Meta sana: 9/12. Repite 1 vez por luna.</p></div>' +
+    '<div class="menstrual-card su-68a1a9"><h4>✅ Mi escudo digital: ' + pts + '/' + tot + ' (' + pct + '%)</h4>' +
+    '<div class="su-ab9537"><div style="width:' + pct + '%;height:100%;background:linear-gradient(90deg,#e76e8a,#e8c56a,#8fd694)"></div></div>' +
+    '<p class="muted su-e13d76">' + nivel + '</p>' +
+    '<p class="muted su-11a508">Marca lo que YA tienes activo. Se guarda <b>privado y local</b>. Meta sana: 9/12. Repite 1 vez por luna.</p></div>' +
     CHECKS.map(function (c) {
       var on = !!s.checks[c.id];
-      return '<label class="check-row" style="align-items:flex-start;border:1px solid var(--line);border-radius:8px;padding:8px;margin-bottom:6px;cursor:pointer">' +
-        '<input type="checkbox" data-chk="' + c.id + '"' + (on ? ' checked' : '') + ' style="margin-top:3px"> ' +
-        '<span><b>' + esc(c.n) + '</b><br><span class="muted" style="font-size:11px">' + esc(c.d) + '</span></span></label>';
+      return '<label class="check-row su-2f4cbf">' +
+        '<input type="checkbox" data-chk="' + c.id + '"' + (on ? ' checked' : '') + ' class="su-c00d39"> ' +
+        '<span><b>' + esc(c.n) + '</b><br><span class="muted su-11a508">' + esc(c.d) + '</span></span></label>';
     }).join('') +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-top:8px"><span id="ciberChkStats" class="muted" style="font-size:11px">' + pts + ' de ' + tot + ' activos</span>' +
-    '<span style="display:flex;gap:8px"><button type="button" id="ciberChkShare" class="btn" style="width:auto">📤 Compartir</button>' +
-    '<button type="button" id="ciberChkReset" class="btn" style="width:auto;color:#e76e8a">↺ Reiniciar</button></span></div>';
+    '<div class="dlg-actions su-efea1d"><span id="ciberChkStats" class="muted su-11a508">' + pts + ' de ' + tot + ' activos</span>' +
+    '<span class="su-a76d59"><button type="button" id="ciberChkShare" class="btn su-30e741">📤 Compartir</button>' +
+    '<button type="button" id="ciberChkReset" class="btn su-b4edd1">↺ Reiniciar</button></span></div>';
   box.querySelectorAll('[data-chk]').forEach(function (c) {
     c.onchange = function () {
       var st = store();
@@ -391,20 +391,20 @@ function renderAyuda() {
     }).join('') +
     '<div class="si-card"><h4>📞 Dónde pedir ayuda en Chile (anota en papel)</h4>' +
     RECURSOS.map(function (r) {
-      return '<p style="font-size:12px"><b>' + esc(r.n) + '</b> <span class="chip" style="font-size:10px">' + esc(r.tag) + '</span><br><span class="muted">' + esc(r.d) + '</span></p>';
+      return '<p class="su-6cb285"><b>' + esc(r.n) + '</b> <span class="chip su-0d5be0">' + esc(r.tag) + '</span><br><span class="muted">' + esc(r.d) + '</span></p>';
     }).join('') + '</div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>📓 Bitácora privada (solo en tu celu)</h4>' +
-    '<p class="muted" style="font-size:11px">Anota qué pasó para la denuncia y para no olvidar: fecha, canal, qué te pidieron, cuánto, pantallazo guardado. <b>No anotes claves aquí.</b></p>' +
+    '<div class="menstrual-card su-d2c171"><h4>📓 Bitácora privada (solo en tu celu)</h4>' +
+    '<p class="muted su-11a508">Anota qué pasó para la denuncia y para no olvidar: fecha, canal, qué te pidieron, cuánto, pantallazo guardado. <b>No anotes claves aquí.</b></p>' +
     '<div class="conv-row"><label>Fecha <input type="date" id="ciberIncFecha"></label><label>Tipo <select id="ciberIncTipo"><option>WhatsApp robado</option><option>Link falso / phishing</option><option>Llamada falsa banco</option><option>Bono/premio falso</option><option>Voz clonada</option><option>QR / compra-venta</option><option>Otro</option></select></label></div>' +
     '<div class="conv-row"><label>Monto / daño <input type="text" id="ciberIncMonto" placeholder="ej: $0, solo susto / $120.000" maxlength="30"></label>' +
-    '<label class="check-row" style="align-self:flex-end"><input type="checkbox" id="ciberIncDen"> Denuncié (PDI/*4242)</label></div>' +
+    '<label class="check-row su-ffd20f"><input type="checkbox" id="ciberIncDen"> Denuncié (PDI/*4242)</label></div>' +
     '<label>Qué pasó <input type="text" id="ciberIncTxt" placeholder="ej: SMS banco-seguro.top, no abrí / abrí y cambié clave" maxlength="120"></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="ciberIncAdd" class="btn btn-accent" style="width:auto">+ Guardar registro</button>' +
-    '<button type="button" id="ciberIncCancel" class="btn hidden" style="width:auto">Cancelar</button></div>' +
-    '<div id="ciberIncList" class="habits-list" style="margin-top:8px;max-height:220px"></div>' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-top:8px"><span id="ciberIncStats" class="muted" style="font-size:11px"></span>' +
-    '<span style="display:flex;gap:8px"><button type="button" id="ciberIncShare" class="btn" style="width:auto">📤 Compartir</button>' +
-    '<button type="button" id="ciberIncClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar</button></span></div></div>';
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="ciberIncAdd" class="btn btn-accent su-30e741">+ Guardar registro</button>' +
+    '<button type="button" id="ciberIncCancel" class="btn hidden su-30e741">Cancelar</button></div>' +
+    '<div id="ciberIncList" class="habits-list su-ebf445"></div>' +
+    '<div class="dlg-actions su-efea1d"><span id="ciberIncStats" class="muted su-11a508"></span>' +
+    '<span class="su-a76d59"><button type="button" id="ciberIncShare" class="btn su-30e741">📤 Compartir</button>' +
+    '<button type="button" id="ciberIncClear" class="btn su-214f75">🗑 Borrar</button></span></div></div>';
   if ($('ciberIncFecha') && !$('ciberIncFecha').value) $('ciberIncFecha').value = todayKey();
   $('ciberIncAdd').onclick = function () {
     var t = clean($('ciberIncTxt').value, 120);
@@ -436,11 +436,11 @@ function renderIncidentes() {
   var st = $('ciberIncStats');
   if (!dd.length) { box.innerHTML = '<p class="muted">Sin registros. Ojalá siga así 🍀.</p>'; if (st) st.textContent = '0 registros'; return; }
   box.innerHTML = dd.map(function (r) {
-    return '<div class="habit-item"><div style="display:flex;justify-content:space-between;gap:8px"><span><b>' + esc(r.tipo) + '</b> <span class="muted" style="font-size:11px">· ' + r.fecha + '</span></span>' +
-      '<span class="chip" style="font-size:10px">' + (r.den ? '✅ denunciado' : '⚠️ sin denuncia') + '</span></div>' +
-      '<div class="muted" style="font-size:11px;margin-top:4px">' + esc(r.txt) + (r.monto ? ' · ' + esc(r.monto) : '') + '</div>' +
-      '<div style="display:flex;gap:6px;margin-top:6px"><button class="btn" style="width:auto;font-size:11px" data-edit="' + r.id + '">✏️</button>' +
-      '<button class="btn" style="width:auto;font-size:11px;color:#e76e8a" data-del="' + r.id + '">✕</button></div></div>';
+    return '<div class="habit-item"><div class="su-c78530"><span><b>' + esc(r.tipo) + '</b> <span class="muted su-11a508">· ' + r.fecha + '</span></span>' +
+      '<span class="chip su-0d5be0">' + (r.den ? '✅ denunciado' : '⚠️ sin denuncia') + '</span></div>' +
+      '<div class="muted su-cdff1d">' + esc(r.txt) + (r.monto ? ' · ' + esc(r.monto) : '') + '</div>' +
+      '<div class="su-30b926"><button class="btn su-337714" data-edit="' + r.id + '">✏️</button>' +
+      '<button class="btn su-9b8fb7" data-del="' + r.id + '">✕</button></div></div>';
   }).join('');
   if (st) st.textContent = dd.length + ' registros · ' + dd.filter(function (r) { return r.den; }).length + ' denunciados';
   box.querySelectorAll('[data-del]').forEach(function (b) { b.onclick = function () { if (!confirm('¿Borrar registro?')) return; var d2 = store().incidentes; var i = d2.findIndex(function (x) { return x.id === b.getAttribute('data-del'); }); if (i >= 0) d2.splice(i, 1); save(); renderAyuda(); }; });

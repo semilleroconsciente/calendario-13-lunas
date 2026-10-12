@@ -61,10 +61,10 @@ function makeDialog(id, title, sub, bodyHTML) {
   var d = document.createElement('dialog');
   d.id = id;
   d.innerHTML = '<form method="dialog">' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
-    '<h3 style="margin:0;color:var(--accent)">' + title + '</h3>' +
+    '<div class="dlg-actions su-d2d053">' +
+    '<h3 class="su-ee0cfe">' + title + '</h3>' +
     '<button type="button" data-close class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    (sub ? '<p class="muted" style="line-height:1.5">' + sub + '</p>' : '') +
+    (sub ? '<p class="muted su-77e2fe">' + sub + '</p>' : '') +
     bodyHTML +
     '<div class="dlg-actions"><button type="button" data-close class="btn">Cerrar</button></div></form>';
   document.body.appendChild(d);
@@ -120,14 +120,14 @@ var MOTORES = [
 function rowCard(c) {
   if (c.txt) {
     return '<div class="si-card"><h4>' + c.ico + ' ' + esc(c.n) + '</h4>' +
-      '<p style="line-height:1.5">' + esc(c.txt) + '</p></div>';
+      '<p class="su-77e2fe">' + esc(c.txt) + '</p></div>';
   }
   return '<div class="si-card"><h4>' + c.ico + ' ' + esc(c.n) + '</h4>' +
     (c.para ? '<p><b>Para:</b> ' + esc(c.para) + '</p>' : '') +
     (c.mat ? '<p><b>Necesitas:</b> ' + esc(c.mat) + '</p>' : '') +
     '<p><b>Cómo:</b> ' + esc(c.como) + '</p>' +
     (c.nota ? '<p class="muted">' + esc(c.nota) + '</p>' : '') +
-    (c.cuidado ? '<p style="font-size:11px;color:#e8c56a">⚠️ ' + esc(c.cuidado) + '</p>' : '') + '</div>';
+    (c.cuidado ? '<p class="su-d33357">⚠️ ' + esc(c.cuidado) + '</p>' : '') + '</div>';
 }
 function switchTab(name) {
   ['Guia', 'Bici', 'Moto', 'Auto', 'Motores', 'Taller'].forEach(function (t) {
@@ -145,30 +145,30 @@ function buildDialog() {
   var motoresHTML = MOTORES.map(rowCard).join('');
 
   var body =
-    '<div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">' +
-    '<button type="button" id="tabMecGuia" class="btn btn-accent" style="width:auto">🧰 Guías básicas</button>' +
-    '<button type="button" id="tabMecBici" class="btn" style="width:auto">🚲 Bicicleta</button>' +
-    '<button type="button" id="tabMecMoto" class="btn" style="width:auto">🏍️ Moto</button>' +
-    '<button type="button" id="tabMecAuto" class="btn" style="width:auto">🚗 Auto</button>' +
-    '<button type="button" id="tabMecMotores" class="btn" style="width:auto">⚙️ Motores</button>' +
-    '<button type="button" id="tabMecTaller" class="btn" style="width:auto">📓 Mi taller</button></div>' +
+    '<div class="timer-tabs su-4dca21">' +
+    '<button type="button" id="tabMecGuia" class="btn btn-accent su-30e741">🧰 Guías básicas</button>' +
+    '<button type="button" id="tabMecBici" class="btn su-30e741">🚲 Bicicleta</button>' +
+    '<button type="button" id="tabMecMoto" class="btn su-30e741">🏍️ Moto</button>' +
+    '<button type="button" id="tabMecAuto" class="btn su-30e741">🚗 Auto</button>' +
+    '<button type="button" id="tabMecMotores" class="btn su-30e741">⚙️ Motores</button>' +
+    '<button type="button" id="tabMecTaller" class="btn su-30e741">📓 Mi taller</button></div>' +
     '<div id="mecGuia">' + guiaHTML +
-    '<div class="menstrual-card" style="margin-top:10px;border-color:var(--gold)"><h4>🧰 Regla de oro</h4><p class="muted" style="font-size:12px">Limpio + apretado + lubricado + a nivel resuelve el 80%. Lo que huela a bencina, eche humo raro o frene mal: se revisa HOY, no “después del viaje”.</p></div></div>' +
-    '<div id="mecBici" class="hidden"><div class="conv-row"><label style="flex:1">🔍 Filtrar <input type="text" id="mecBiciQ" placeholder="pinchazo, freno, cambio, cadena..."></label></div><div class="mec-list" id="mecBiciList" style="margin-top:8px;display:flex;flex-direction:column;gap:8px">' + biciHTML + '</div></div>' +
-    '<div id="mecMoto" class="hidden"><div class="conv-row"><label style="flex:1">🔍 Filtrar <input type="text" id="mecMotoQ" placeholder="cadena, aceite, bujía, freno..."></label></div><div class="mec-list" id="mecMotoList" style="margin-top:8px;display:flex;flex-direction:column;gap:8px">' + motoHTML + '</div></div>' +
-    '<div id="mecAuto" class="hidden"><div class="conv-row"><label style="flex:1">🔍 Filtrar <input type="text" id="mecAutoQ" placeholder="batería, rueda, temperatura, aceite..."></label></div><div class="mec-list" id="mecAutoList" style="margin-top:8px;display:flex;flex-direction:column;gap:8px">' + autoHTML + '</div></div>' +
-    '<div id="mecMotores" class="hidden"><div class="conv-row"><label style="flex:1">🔍 Filtrar <input type="text" id="mecMotoresQ" placeholder="2T, diésel, bote, eléctrico..."></label></div><div class="mec-list" id="mecMotoresList" style="margin-top:8px;display:flex;flex-direction:column;gap:8px">' + motoresHTML + '</div></div>' +
+    '<div class="menstrual-card su-51d56a"><h4>🧰 Regla de oro</h4><p class="muted su-6cb285">Limpio + apretado + lubricado + a nivel resuelve el 80%. Lo que huela a bencina, eche humo raro o frene mal: se revisa HOY, no “después del viaje”.</p></div></div>' +
+    '<div id="mecBici" class="hidden"><div class="conv-row"><label class="su-97445a">🔍 Filtrar <input type="text" id="mecBiciQ" placeholder="pinchazo, freno, cambio, cadena..."></label></div><div class="mec-list su-bf3828" id="mecBiciList">' + biciHTML + '</div></div>' +
+    '<div id="mecMoto" class="hidden"><div class="conv-row"><label class="su-97445a">🔍 Filtrar <input type="text" id="mecMotoQ" placeholder="cadena, aceite, bujía, freno..."></label></div><div class="mec-list su-bf3828" id="mecMotoList">' + motoHTML + '</div></div>' +
+    '<div id="mecAuto" class="hidden"><div class="conv-row"><label class="su-97445a">🔍 Filtrar <input type="text" id="mecAutoQ" placeholder="batería, rueda, temperatura, aceite..."></label></div><div class="mec-list su-bf3828" id="mecAutoList">' + autoHTML + '</div></div>' +
+    '<div id="mecMotores" class="hidden"><div class="conv-row"><label class="su-97445a">🔍 Filtrar <input type="text" id="mecMotoresQ" placeholder="2T, diésel, bote, eléctrico..."></label></div><div class="mec-list su-bf3828" id="mecMotoresList">' + motoresHTML + '</div></div>' +
     '<div id="mecTaller" class="hidden">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>➕ Anotar mantención</h4>' +
+    '<div class="menstrual-card su-68a1a9"><h4>➕ Anotar mantención</h4>' +
     '<div class="conv-row"><label>Fecha <input type="date" id="mecFecha"></label><label>Vehículo <select id="mecVeh"><option>Bicicleta</option><option>Moto</option><option>Auto</option><option>Motor / Bote / Generador</option><option>Otro</option></select></label></div>' +
     '<div class="conv-row"><label>Nombre <input type="text" id="mecNombre" placeholder="ej: Bici trek, YBR 125, V16, Motosierra" maxlength="40"></label><label>Tipo <select id="mecTipo"><option>Aceite / lubricación</option><option>Frenos</option><option>Transmisión / cadena</option><option>Neumático / rueda</option><option>Eléctrico / batería / bujía</option><option>Refrigeración</option><option>Filtros</option><option>Reparación</option><option>Revisión general</option></select></label></div>' +
     '<div class="conv-row"><label>Km / horas <input type="text" id="mecKm" placeholder="ej: 45.200 km / 120 h" maxlength="20"></label><label>Costo $ <input type="number" id="mecCosto" min="0" step="500" placeholder="ej: 15000"></label></div>' +
     '<label>Detalle <input type="text" id="mecDetalle" placeholder="qué se hizo, repuesto, próxima fecha..." maxlength="120"></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start;margin-top:8px"><button type="button" id="mecAdd" class="btn btn-accent" style="width:auto">+ Guardar</button></div></div>' +
-    '<div class="conv-row" style="margin-top:8px"><label style="flex:2">🔍 Buscar <input type="text" id="mecLogQ" placeholder="bici, freno, aceite..."></label><label>Filtrar <select id="mecLogF"><option value="">Todo</option><option>Bicicleta</option><option>Moto</option><option>Auto</option><option>Motor / Bote / Generador</option><option>Otro</option></select></label></div>' +
-    '<div id="mecResumen" class="menstrual-card" style="margin-top:8px"></div>' +
-    '<div id="mecLog" class="habits-list" style="margin-top:8px;max-height:280px"></div>' +
-    '<div class="dlg-actions" style="justify-content:space-between;align-items:center;margin-top:8px"><span id="mecStats" class="muted" style="font-size:11px"></span><span style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" id="mecShare" class="btn" style="width:auto">📤 Compartir</button><button type="button" id="mecClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar</button></span></div></div>';
+    '<div class="dlg-actions su-8f9e27"><button type="button" id="mecAdd" class="btn btn-accent su-30e741">+ Guardar</button></div></div>' +
+    '<div class="conv-row su-8a77e5"><label class="su-4b3de7">🔍 Buscar <input type="text" id="mecLogQ" placeholder="bici, freno, aceite..."></label><label>Filtrar <select id="mecLogF"><option value="">Todo</option><option>Bicicleta</option><option>Moto</option><option>Auto</option><option>Motor / Bote / Generador</option><option>Otro</option></select></label></div>' +
+    '<div id="mecResumen" class="menstrual-card su-8a77e5"></div>' +
+    '<div id="mecLog" class="habits-list su-9daa59"></div>' +
+    '<div class="dlg-actions su-cc4a4c"><span id="mecStats" class="muted su-11a508"></span><span class="su-3de8f9"><button type="button" id="mecShare" class="btn su-30e741">📤 Compartir</button><button type="button" id="mecClear" class="btn su-214f75">🗑 Borrar</button></span></div></div>';
 
   makeDialog('mecanicaDialog', '🔧 Mecánica — Bicicleta · Moto · Auto · Motores',
     'Guías básicas + fichas por vehículo + tu bitácora. Vive en <b>🏡 Hogar y Vida Práctica > 🔧 Energía y Taller</b>, junto a ⚡ Consumo eléctrico y 🔧 Bitácora Taller. Todo <b>privado y local</b>, 100% offline.',
@@ -195,18 +195,18 @@ function renderLog() {
   var res = $('mecResumen'), st = $('mecStats');
   var tot = data.reduce(function (a, r) { return a + (+r.costo || 0); }, 0);
   if (res) {
-    res.innerHTML = '<h4>📊 Resumen</h4><p class="muted" style="font-size:12px">' + data.length + ' registro(s) · 💰 $' + tot.toLocaleString('es-CL') + ' total' +
+    res.innerHTML = '<h4>📊 Resumen</h4><p class="muted su-6cb285">' + data.length + ' registro(s) · 💰 $' + tot.toLocaleString('es-CL') + ' total' +
       (data.length ? '<br>Último: ' + esc(data.slice().sort(function (a, b) { return (b.fecha || '').localeCompare(a.fecha || ''); })[0].fecha || '') : '') + '</p>';
   }
   if (!list.length) {
-    box.innerHTML = '<p class="muted" style="font-size:11px;text-align:center">Sin registros' + (data.length ? ' para este filtro.' : '. Anota tu primera mantención arriba.') + '</p>';
+    box.innerHTML = '<p class="muted su-e201a8">Sin registros' + (data.length ? ' para este filtro.' : '. Anota tu primera mantención arriba.') + '</p>';
     if (st) st.textContent = data.length ? data.length + ' en total' : '';
     return;
   }
   box.innerHTML = list.slice().sort(function (a, b) { return (b.fecha || '').localeCompare(a.fecha || ''); }).slice(0, 80).map(function (r) {
     var ico = r.veh === 'Bicicleta' ? '🚲' : r.veh === 'Moto' ? '🏍️' : r.veh === 'Auto' ? '🚗' : r.veh.indexOf('Motor') === 0 ? '⚙️' : '🔧';
-    return '<div class="hora-item"><span style="font-size:12px">' + ico + ' <b>' + esc(r.nombre || r.veh || 'Vehículo') + '</b> · ' + esc(r.tipo || '') +
-      '<br><span class="muted" style="font-size:10px">' + esc(r.fecha || '') + ' · ' + esc(r.veh || '') + (r.km ? ' · ' + esc(r.km) : '') + (r.costo ? ' · $' + (+r.costo).toLocaleString('es-CL') : '') + (r.detalle ? ' · ' + esc(r.detalle) : '') + '</span></span>' +
+    return '<div class="hora-item"><span class="su-6cb285">' + ico + ' <b>' + esc(r.nombre || r.veh || 'Vehículo') + '</b> · ' + esc(r.tipo || '') +
+      '<br><span class="muted su-0d5be0">' + esc(r.fecha || '') + ' · ' + esc(r.veh || '') + (r.km ? ' · ' + esc(r.km) : '') + (r.costo ? ' · $' + (+r.costo).toLocaleString('es-CL') : '') + (r.detalle ? ' · ' + esc(r.detalle) : '') + '</span></span>' +
       '<button type="button" class="btn btn-icon mec-del" data-k="' + esc(r.id) + '">✕</button></div>';
   }).join('');
   box.querySelectorAll('.mec-del').forEach(function (x) {

@@ -75,10 +75,10 @@ function makeDialog(id, title, sub, bodyHTML) {
   var d = document.createElement('dialog');
   d.id = id;
   d.innerHTML = '<form method="dialog">' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
-    '<h3 style="margin:0;color:var(--accent)">' + title + '</h3>' +
+    '<div class="dlg-actions su-d2d053">' +
+    '<h3 class="su-ee0cfe">' + title + '</h3>' +
     '<button type="button" data-close class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    (sub ? '<p class="muted" style="line-height:1.5">' + sub + '</p>' : '') +
+    (sub ? '<p class="muted su-77e2fe">' + sub + '</p>' : '') +
     bodyHTML +
     '<div class="dlg-actions"><button type="button" data-close class="btn">Cerrar</button></div></form>';
   document.body.appendChild(d);
@@ -311,102 +311,102 @@ var VBT_LUNAS = [
 function famChips() {
   return Object.keys(VBT_FAMS).map(function (k) {
     var f = VBT_FAMS[k];
-    return '<button type="button" class="btn vbt-fam" data-fam="' + k + '" style="width:auto;font-size:11px">' + f.ico + ' ' + esc(f.n) + '</button>';
+    return '<button type="button" class="btn vbt-fam su-337714" data-fam="' + k + '">' + f.ico + ' ' + esc(f.n) + '</button>';
   }).join('');
 }
 function buildDialog() {
   var sutGrid = VBT_SUTRAS.map(function (it) {
     var f = VBT_FAMS[it.fam];
-    return '<button type="button" class="btn vbt-sutra-card" data-sutra="' + it.id + '" data-fam="' + it.fam + '" style="text-align:left;height:auto;padding:8px">' +
-      '<b style="font-size:11px">' + esc(it.n) + '</b><br>' +
-      '<span class="muted" style="font-size:10px">' + f.ico + ' ' + esc(f.n) + '</span></button>';
+    return '<button type="button" class="btn vbt-sutra-card su-440899" data-sutra="' + it.id + '" data-fam="' + it.fam + '">' +
+      '<b class="su-11a508">' + esc(it.n) + '</b><br>' +
+      '<span class="muted su-0d5be0">' + f.ico + ' ' + esc(f.n) + '</span></button>';
   }).join('');
 
   var testHTML = VBT_TEST.map(function (q, i) {
     var opts = VBT_LIKERT.map(function (o) {
-      return '<label class="check-row" style="margin:0;font-size:12px"><input type="radio" name="vbtQ' + i + '" value="' + o.v + '"> ' + o.t + '</label>';
+      return '<label class="check-row su-a16b97"><input type="radio" name="vbtQ' + i + '" value="' + o.v + '"> ' + o.t + '</label>';
     }).join('');
-    return '<div class="menstrual-card" style="margin-bottom:8px"><b style="font-size:12px">' + (i + 1) + '. ' + esc(q.txt) + '</b>' +
-      '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:6px">' + opts + '</div></div>';
+    return '<div class="menstrual-card su-fdf33f"><b class="su-6cb285">' + (i + 1) + '. ' + esc(q.txt) + '</b>' +
+      '<div class="su-8fd176">' + opts + '</div></div>';
   }).join('');
 
   var practHTML = VBT_PRACTICAS.map(function (p) {
     return '<div class="menstrual-card"><h4>' + p.ico + ' ' + esc(p.n) + '</h4>' +
-      '<p class="muted" style="font-size:11px">⏱ ' + esc(p.tiempo) + '</p>' +
-      '<p style="font-size:12px">' + esc(p.pasos) + '</p>' +
-      '<p class="muted" style="font-size:12px">💡 ' + esc(p.tip) + '</p>' +
-      '<button type="button" class="btn vbt-pract-add" data-p="' + esc(p.n) + '" style="width:auto">+ Anotar en mi diario de hoy</button></div>';
+      '<p class="muted su-11a508">⏱ ' + esc(p.tiempo) + '</p>' +
+      '<p class="su-6cb285">' + esc(p.pasos) + '</p>' +
+      '<p class="muted su-6cb285">💡 ' + esc(p.tip) + '</p>' +
+      '<button type="button" class="btn vbt-pract-add su-30e741" data-p="' + esc(p.n) + '">+ Anotar en mi diario de hoy</button></div>';
   }).join('');
 
   var body =
-    '<div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">' +
-    '<button type="button" id="tabVbtGuia" class="btn btn-accent" style="width:auto">📖 Guía</button>' +
-    '<button type="button" id="tabVbtSutras" class="btn" style="width:auto">📜 112 Sutras</button>' +
-    '<button type="button" id="tabVbtPract" class="btn" style="width:auto">🛠️ Prácticas</button>' +
-    '<button type="button" id="tabVbtTest" class="btn" style="width:auto">📝 Test de puerta</button>' +
-    '<button type="button" id="tabVbtCamino" class="btn" style="width:auto">🌱 Mi Camino</button></div>' +
+    '<div class="timer-tabs su-4dca21">' +
+    '<button type="button" id="tabVbtGuia" class="btn btn-accent su-30e741">📖 Guía</button>' +
+    '<button type="button" id="tabVbtSutras" class="btn su-30e741">📜 112 Sutras</button>' +
+    '<button type="button" id="tabVbtPract" class="btn su-30e741">🛠️ Prácticas</button>' +
+    '<button type="button" id="tabVbtTest" class="btn su-30e741">📝 Test de puerta</button>' +
+    '<button type="button" id="tabVbtCamino" class="btn su-30e741">🌱 Mi Camino</button></div>' +
 
     '<div id="vbtGuia">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🕉️ ¿Qué es el Vigyan Bhairav Tantra?</h4>' +
-    '<p class="muted" style="font-size:12px;line-height:1.6"><b>Vigyan</b> = conocer penetrando · <b>Bhairava</b> = la conciencia vasta y terrible-amorosa (Shiva) · <b>Tantra</b> = tejido, método. El texto es un diálogo: la diosa <b>Devi (Parvati)</b> pregunta “¿qué es lo real, amado?” y <b>Bhairava (Shiva)</b> responde no con teoría sino con <b>112 puertas de meditación</b>: “prueba esto y mira”. Es del linaje tántrico de Cachemira (siglos VII-X aprox.), breve, poético y práctico.</p>' +
-    '<p class="muted" style="font-size:12px;line-height:1.6">Su idea en una línea: <b>lo sagrado está en lo ordinario</b> —el aire, el bostezo, la ola, el abrazo, el susto— si lo miras con presencia total. No promete poderes: promete dejar de estar dormido en tu propio día.</p></div>' +
-    '<div class="fishing-grid" style="margin-top:10px">' +
+    '<div class="menstrual-card su-68a1a9"><h4>🕉️ ¿Qué es el Vigyan Bhairav Tantra?</h4>' +
+    '<p class="muted su-616df7"><b>Vigyan</b> = conocer penetrando · <b>Bhairava</b> = la conciencia vasta y terrible-amorosa (Shiva) · <b>Tantra</b> = tejido, método. El texto es un diálogo: la diosa <b>Devi (Parvati)</b> pregunta “¿qué es lo real, amado?” y <b>Bhairava (Shiva)</b> responde no con teoría sino con <b>112 puertas de meditación</b>: “prueba esto y mira”. Es del linaje tántrico de Cachemira (siglos VII-X aprox.), breve, poético y práctico.</p>' +
+    '<p class="muted su-616df7">Su idea en una línea: <b>lo sagrado está en lo ordinario</b> —el aire, el bostezo, la ola, el abrazo, el susto— si lo miras con presencia total. No promete poderes: promete dejar de estar dormido en tu propio día.</p></div>' +
+    '<div class="fishing-grid su-d2c171">' +
     '<div class="menstrual-card"><h4>🗺️ El mapa: 7 familias (112 puertas)</h4>' +
-    '<p class="muted" style="font-size:12px"><b>🌬️ Respiro y pausa (1-16):</b> la pausa entre aires. <b>⚡ Energía y centro (17-30):</b> hormigueo, latido, calor. <b>🔔 Sonido y silencio (31-46):</b> seguir el sonido hasta el cero. <b>🌌 Luz, sombra y espacio (47-64):</b> oscuridad, cielo, horizonte. <b>🤲 Cuerpo y sentidos (65-82):</b> comer, caminar, abrazar. <b>💭 Mente, sueño e imagen (83-97):</b> nubes, sueños, “¿quién se da cuenta?”. <b>💛 Corazón y asombro (98-112):</b> gracias, perdón, entrega. No se hacen en orden: se elige 1 y se vive semanas.</p></div>' +
+    '<p class="muted su-6cb285"><b>🌬️ Respiro y pausa (1-16):</b> la pausa entre aires. <b>⚡ Energía y centro (17-30):</b> hormigueo, latido, calor. <b>🔔 Sonido y silencio (31-46):</b> seguir el sonido hasta el cero. <b>🌌 Luz, sombra y espacio (47-64):</b> oscuridad, cielo, horizonte. <b>🤲 Cuerpo y sentidos (65-82):</b> comer, caminar, abrazar. <b>💭 Mente, sueño e imagen (83-97):</b> nubes, sueños, “¿quién se da cuenta?”. <b>💛 Corazón y asombro (98-112):</b> gracias, perdón, entrega. No se hacen en orden: se elige 1 y se vive semanas.</p></div>' +
     '<div class="menstrual-card"><h4>📚 Cómo leer los 112 sin enredarse</h4>' +
-    '<p class="muted" style="font-size:12px">1) Haz el <b>test de puerta</b> 📝 o elige la familia que más te tiró. 2) Toma <b>1 solo sutra madre</b> por 1-2 semanas (ej: el 1, el 31, el 65 o el 98). 3) 5-10 min diarios bastan. 4) Anota 1 línea en tu diario. 5) Si no pasa nada, cambia de puerta sin culpa: el texto mismo dice que hay 112 porque somos distintos. Atajo: <b>1 → 31 → 65 → 83 → 98 → 112</b> (una por familia).</p></div></div>' +
+    '<p class="muted su-6cb285">1) Haz el <b>test de puerta</b> 📝 o elige la familia que más te tiró. 2) Toma <b>1 solo sutra madre</b> por 1-2 semanas (ej: el 1, el 31, el 65 o el 98). 3) 5-10 min diarios bastan. 4) Anota 1 línea en tu diario. 5) Si no pasa nada, cambia de puerta sin culpa: el texto mismo dice que hay 112 porque somos distintos. Atajo: <b>1 → 31 → 65 → 83 → 98 → 112</b> (una por familia).</p></div></div>' +
     '<details class="menstrual-details"><summary>🚶 ¿Cómo practicar sin gurú? (rutina mínima)</summary>' +
-    '<p class="muted" style="font-size:12px"><b>Mañana:</b> 3 min de tu puerta (pausa, escucha o sentido) + 1 STOP. <b>Día:</b> 1 asombro + 1 baño de sentido. <b>Noche:</b> mano al corazón o luna interior + 1 línea de diario. <b>Por luna:</b> 1 sutra madre nuevo + releer diario. Sin posturas raras, sin aguantar el aire hasta doler, sin pagar caro por “iniciaciones exprés”.</p></details>' +
+    '<p class="muted su-6cb285"><b>Mañana:</b> 3 min de tu puerta (pausa, escucha o sentido) + 1 STOP. <b>Día:</b> 1 asombro + 1 baño de sentido. <b>Noche:</b> mano al corazón o luna interior + 1 línea de diario. <b>Por luna:</b> 1 sutra madre nuevo + releer diario. Sin posturas raras, sin aguantar el aire hasta doler, sin pagar caro por “iniciaciones exprés”.</p></details>' +
     '<details class="menstrual-details"><summary>⚠️ Cuidados (léeme)</summary>' +
-    '<p class="muted" style="font-size:12px">✅ Sabiduría educativa, no religión ni terapia. ✅ Retenciones y energías: <b>suave siempre</b>; si mareas, duele o angustia, abre ojos, camina, toma agua y detente. ✅ Unión amorosa (sutra 70): solo adultos, con consentimiento y cuidado; nada reemplaza respeto y conversación. ✅ No reemplaza médico, terapeuta ni red: con pena, ansiedad fuerte o crisis pide apoyo (CESFAM, *4141 en Chile 24 h). Desconfía de quien cobre obediencia o “poderes”.</p></details>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>🌙 Tantra × 13 lunas (Penco)</h4><div id="vbtLunasBox"></div>' +
-    '<p class="muted" style="font-size:11px;margin-top:6px">Puentes dentro de la app: 🌬️ <b>Respiración</b> (pausa) · 🎯 <b>Disciplina</b> (volver al centro) · 📿 <b>Métodos</b> (ficha Tantra) · 💭 <b>Sueños</b> (puerta 85) · 📓 <b>Gratitud</b> (puerta 99).</p></div>' +
+    '<p class="muted su-6cb285">✅ Sabiduría educativa, no religión ni terapia. ✅ Retenciones y energías: <b>suave siempre</b>; si mareas, duele o angustia, abre ojos, camina, toma agua y detente. ✅ Unión amorosa (sutra 70): solo adultos, con consentimiento y cuidado; nada reemplaza respeto y conversación. ✅ No reemplaza médico, terapeuta ni red: con pena, ansiedad fuerte o crisis pide apoyo (CESFAM, *4141 en Chile 24 h). Desconfía de quien cobre obediencia o “poderes”.</p></details>' +
+    '<div class="menstrual-card su-d2c171"><h4>🌙 Tantra × 13 lunas (Penco)</h4><div id="vbtLunasBox"></div>' +
+    '<p class="muted su-e13d76">Puentes dentro de la app: 🌬️ <b>Respiración</b> (pausa) · 🎯 <b>Disciplina</b> (volver al centro) · 📿 <b>Métodos</b> (ficha Tantra) · 💭 <b>Sueños</b> (puerta 85) · 📓 <b>Gratitud</b> (puerta 99).</p></div>' +
     '</div>' +
 
     '<div id="vbtSutras" class="hidden">' +
-    '<div class="conv-row"><label style="flex:2">Buscar <input type="text" id="vbtQ" placeholder="ej: pausa, sonido, abrazo, sueño, luna, perdón..." maxlength="40"></label></div>' +
-    '<div style="display:flex;gap:6px;flex-wrap:wrap;margin:8px 0"><button type="button" class="btn vbt-fam" data-fam="todas" style="width:auto;font-size:11px">🌐 Todas (112)</button>' + famChips() + '</div>' +
-    '<div id="vbtCount" class="muted" style="font-size:11px"></div>' +
-    '<div id="vbtGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-top:8px;max-height:300px;overflow-y:auto">' + sutGrid + '</div>' +
-    '<div id="vbtDetalle" class="menstrual-card" style="margin-top:10px;border-color:var(--gold)"><p class="muted">Toca un sutra para ver su ficha completa 👆 (empezar por 1, 31, 65, 98 u 112 es buena idea).</p></div></div>' +
+    '<div class="conv-row"><label class="su-4b3de7">Buscar <input type="text" id="vbtQ" placeholder="ej: pausa, sonido, abrazo, sueño, luna, perdón..." maxlength="40"></label></div>' +
+    '<div class="su-6306c3"><button type="button" class="btn vbt-fam su-337714" data-fam="todas">🌐 Todas (112)</button>' + famChips() + '</div>' +
+    '<div id="vbtCount" class="muted su-11a508"></div>' +
+    '<div id="vbtGrid" class="su-2dfbd5">' + sutGrid + '</div>' +
+    '<div id="vbtDetalle" class="menstrual-card su-51d56a"><p class="muted">Toca un sutra para ver su ficha completa 👆 (empezar por 1, 31, 65, 98 u 112 es buena idea).</p></div></div>' +
 
     '<div id="vbtPract" class="hidden">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🌬️ Pausa guiada — 3 minutos</h4>' +
-    '<p class="muted" style="font-size:12px">Inhala 4 · pausa 2 · exhala 4 · pausa 2. El botón marca el tiempo; al terminar anota tu brecha del día.</p>' +
-    '<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><button type="button" id="vbtRespiraBtn" class="btn btn-accent" style="width:auto">▶ Pausar ahora (3 min)</button>' +
-    '<span id="vbtRespiraMsg" class="muted" style="font-size:12px"></span></div>' +
-    '<div class="conv-row" style="margin-top:8px"><label>Mi sutra madre de estas semanas <input type="text" id="vbtSutraHoy" placeholder="ej: 1 · la pausa entre dos respiros" maxlength="80"></label></div>' +
+    '<div class="menstrual-card su-68a1a9"><h4>🌬️ Pausa guiada — 3 minutos</h4>' +
+    '<p class="muted su-6cb285">Inhala 4 · pausa 2 · exhala 4 · pausa 2. El botón marca el tiempo; al terminar anota tu brecha del día.</p>' +
+    '<div class="su-58703f"><button type="button" id="vbtRespiraBtn" class="btn btn-accent su-30e741">▶ Pausar ahora (3 min)</button>' +
+    '<span id="vbtRespiraMsg" class="muted su-6cb285"></span></div>' +
+    '<div class="conv-row su-8a77e5"><label>Mi sutra madre de estas semanas <input type="text" id="vbtSutraHoy" placeholder="ej: 1 · la pausa entre dos respiros" maxlength="80"></label></div>' +
     '<div class="conv-row"><label>Lo que noté hoy… <input type="text" id="vbtNotoHoy" placeholder="ej: la pausa de abajo me calma más" maxlength="140"></label>' +
     '<label>Mi brecha (minutos de presencia)… <input type="text" id="vbtMinHoy" placeholder="ej: 5 min pausa + 1 STOP" maxlength="100"></label></div>' +
-    '<div class="dlg-actions" style="justify-content:flex-start;flex-wrap:wrap;gap:8px"><button type="button" id="vbtPractSave" class="btn btn-accent" style="width:auto">💾 Guardar día de práctica</button>' +
-    '<button type="button" id="vbtGoRespira" class="btn" style="width:auto">🌬️ Ir a Respiración</button></div></div>' +
+    '<div class="dlg-actions su-41efc8"><button type="button" id="vbtPractSave" class="btn btn-accent su-30e741">💾 Guardar día de práctica</button>' +
+    '<button type="button" id="vbtGoRespira" class="btn su-30e741">🌬️ Ir a Respiración</button></div></div>' +
     practHTML + '</div>' +
 
     '<div id="vbtTest" class="hidden">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>📝 Test: ¿cuál es tu puerta? (20 afirmaciones)</h4>' +
-    '<p class="muted" style="font-size:12px">Responde según <b>cómo eres casi siempre</b>. Escala: Nunca (0) · A veces (1) · A menudo (2) · Muy cierto (3). ~5 minutos. Mide tu puerta natural <b>🌬️ Respiro · 🔔 Sonido · 🤲 Cuerpo · 💭 Mente · 💛 Corazón</b> + tu <b>nivel de dispersión 🌪️</b> (F). <b>No es diagnóstico</b>: es brújula para elegir por dónde entrar.</p>' +
-    '<div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" id="vbtTestReset" class="btn" style="width:auto">↺ Limpiar</button>' +
-    '<button type="button" id="vbtTestCalc" class="btn btn-accent" style="width:auto">📊 Ver mi resultado</button></div>' +
-    '<div id="vbtProgreso" class="muted" style="font-size:11px;margin-top:6px"></div></div>' +
-    '<div id="vbtTestBox" style="margin-top:10px">' + testHTML + '</div>' +
-    '<div id="vbtResultado" class="menstrual-card hidden" style="margin-top:10px;border-color:var(--gold)"></div></div>' +
+    '<div class="menstrual-card su-68a1a9"><h4>📝 Test: ¿cuál es tu puerta? (20 afirmaciones)</h4>' +
+    '<p class="muted su-6cb285">Responde según <b>cómo eres casi siempre</b>. Escala: Nunca (0) · A veces (1) · A menudo (2) · Muy cierto (3). ~5 minutos. Mide tu puerta natural <b>🌬️ Respiro · 🔔 Sonido · 🤲 Cuerpo · 💭 Mente · 💛 Corazón</b> + tu <b>nivel de dispersión 🌪️</b> (F). <b>No es diagnóstico</b>: es brújula para elegir por dónde entrar.</p>' +
+    '<div class="su-3de8f9"><button type="button" id="vbtTestReset" class="btn su-30e741">↺ Limpiar</button>' +
+    '<button type="button" id="vbtTestCalc" class="btn btn-accent su-30e741">📊 Ver mi resultado</button></div>' +
+    '<div id="vbtProgreso" class="muted su-e13d76"></div></div>' +
+    '<div id="vbtTestBox" class="su-d2c171">' + testHTML + '</div>' +
+    '<div id="vbtResultado" class="menstrual-card hidden su-51d56a"></div></div>' +
 
     '<div id="vbtCamino" class="hidden">' +
-    '<div class="menstrual-grid"><div class="menstrual-card" style="border-color:var(--gold)"><h4>🌱 Mi puerta</h4>' +
+    '<div class="menstrual-grid"><div class="menstrual-card su-68a1a9"><h4>🌱 Mi puerta</h4>' +
     '<div class="conv-row"><label>Mi puerta natural <select id="vbtMiPuerta"><option value="">— sin definir —</option><option value="R">🌬️ Respiro · La pausa</option><option value="S">🔔 Sonido · El silencio</option><option value="C">🤲 Cuerpo · Los sentidos</option><option value="M">💭 Mente · Sueño e imagen</option><option value="G">💛 Corazón · Asombro</option></select></label></div>' +
-    '<div id="vbtMiPuertaBox" style="margin-top:6px"></div></div>' +
+    '<div id="vbtMiPuertaBox" class="su-fe7b49"></div></div>' +
     '<div class="menstrual-card"><h4>📓 Diario de la brecha</h4>' +
     '<div class="conv-row"><label>Fecha <input type="date" id="vbtDiaFecha"></label></div>' +
     '<label>Hoy en mi práctica… (sutra + lo notado) <input type="text" id="vbtDiaTxt" placeholder="ej: s31 seguir el sonido: el silencio posterior duró más" maxlength="140"></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="vbtDiaAdd" class="btn btn-accent" style="width:auto">+ Guardar hoy</button></div>' +
-    '<div id="vbtDiaList" class="habits-list" style="margin-top:8px;max-height:220px"></div></div></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>🕉️ Mis días de práctica (racha de presencia)</h4><div id="vbtPractsBox"></div></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>🕘 Historial de tests</h4><div id="vbtHistBox"></div></div>' +
-    '<div class="dlg-actions" style="justify-content:space-between;align-items:center;margin-top:8px;flex-wrap:wrap;gap:8px">' +
-    '<span id="vbtStats" class="muted" style="font-size:11px"></span>' +
-    '<span style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" id="vbtShare" class="btn" style="width:auto">📤 Compartir</button>' +
-    '<button type="button" id="vbtToNote" class="btn" style="width:auto">📝 Llevar a nota de hoy</button>' +
-    '<button type="button" id="vbtClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar todo</button></span></div></div>';
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="vbtDiaAdd" class="btn btn-accent su-30e741">+ Guardar hoy</button></div>' +
+    '<div id="vbtDiaList" class="habits-list su-ebf445"></div></div></div>' +
+    '<div class="menstrual-card su-d2c171"><h4>🕉️ Mis días de práctica (racha de presencia)</h4><div id="vbtPractsBox"></div></div>' +
+    '<div class="menstrual-card su-d2c171"><h4>🕘 Historial de tests</h4><div id="vbtHistBox"></div></div>' +
+    '<div class="dlg-actions su-a1935c">' +
+    '<span id="vbtStats" class="muted su-11a508"></span>' +
+    '<span class="su-3de8f9"><button type="button" id="vbtShare" class="btn su-30e741">📤 Compartir</button>' +
+    '<button type="button" id="vbtToNote" class="btn su-30e741">📝 Llevar a nota de hoy</button>' +
+    '<button type="button" id="vbtClear" class="btn su-214f75">🗑 Borrar todo</button></span></div></div>';
 
   makeDialog('vigyanDialog', '🕉️ Vigyan Bhairav · las 112 puertas',
     'Devi pregunta y Bhairava responde con 112 meditaciones: elige 1 puerta (aire, sonido, cuerpo, mente o corazón) y vívela semanas. Todo <b>privado y local</b>.',
@@ -430,15 +430,15 @@ function renderDetalle(id) {
   var prev = num > 1 ? 's' + (num - 1) : null;
   var next = num < 112 ? 's' + (num + 1) : null;
   box.innerHTML =
-    '<h4 style="color:var(--gold)">' + esc(t.n) + '</h4>' +
-    '<p class="muted" style="font-size:11px">' + f.ico + ' Familia: <b>' + esc(f.n) + '</b> · ' + esc(f.desc) + '</p>' +
-    '<p style="font-size:12px;line-height:1.6">' + esc(t.idea) + '</p>' +
+    '<h4 class="su-e39eba">' + esc(t.n) + '</h4>' +
+    '<p class="muted su-11a508">' + f.ico + ' Familia: <b>' + esc(f.n) + '</b> · ' + esc(f.desc) + '</p>' +
+    '<p class="su-616df7">' + esc(t.idea) + '</p>' +
     '<div class="si-card"><h4>✏️ Práctica de hoy</h4><p>' + esc(t.practica) + '</p></div>' +
-    '<div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">' +
-    '<button type="button" class="btn" id="vbtFavBtn" style="width:auto">' + (fav ? '★ Quitar de favoritas' : '☆ Marcar favorita') + '</button>' +
-    '<button type="button" class="btn btn-accent" id="vbtHoyBtn" style="width:auto">✓ Practicar este hoy</button>' +
-    (prev ? '<button type="button" class="btn" id="vbtPrevBtn" style="width:auto">◀ ' + (num - 1) + '</button>' : '') +
-    (next ? '<button type="button" class="btn" id="vbtNextBtn" style="width:auto">' + (num + 1) + ' ▶</button>' : '') + '</div>';
+    '<div class="su-67b198">' +
+    '<button type="button" class="btn su-30e741" id="vbtFavBtn">' + (fav ? '★ Quitar de favoritas' : '☆ Marcar favorita') + '</button>' +
+    '<button type="button" class="btn btn-accent su-30e741" id="vbtHoyBtn">✓ Practicar este hoy</button>' +
+    (prev ? '<button type="button" class="btn su-30e741" id="vbtPrevBtn">◀ ' + (num - 1) + '</button>' : '') +
+    (next ? '<button type="button" class="btn su-30e741" id="vbtNextBtn">' + (num + 1) + ' ▶</button>' : '') + '</div>';
   var fb = $('vbtFavBtn');
   if (fb) fb.onclick = function () {
     var d = store();
@@ -511,23 +511,23 @@ function showResultado(sc) {
   var disTxt = dis <= 5 ? 'Serena: te dispersas poco. Sostén con 1 puerta diaria.' : dis <= 9 ? 'Media: dispersión frecuente. 1 STOP + 1 puerta corta cada día.' : 'Alta: mucha fuga mental. Parte por lo más corporal (puertas 65, 73 o 1) + caminata, sin exigirte todo.';
   box.classList.remove('hidden');
   box.innerHTML = '<h4>📊 Tu brújula (sin guardar)</h4>' +
-    '<p class="muted" style="font-size:11px">Dispersión (F): máximo 15 — mientras más alto, más fuga mental. Puertas: puntaje por afinidad.</p>' +
+    '<p class="muted su-11a508">Dispersión (F): máximo 15 — mientras más alto, más fuga mental. Puertas: puntaje por afinidad.</p>' +
     arr.map(function (a) {
       var c = VBT_PUERTAS[a.k];
       var pct = Math.round(a.p / max * 100);
       var isTop = dom === a.k;
-      return '<div style="display:flex;align-items:center;gap:8px;margin:4px 0">' +
-        '<span style="min-width:150px;font-size:12px"><b>' + c.ico + ' ' + esc(c.nombre) + '</b></span>' +
-        '<span style="flex:1;background:var(--panel);border:1px solid var(--line);border-radius:6px;height:14px;position:relative;overflow:hidden">' +
+      return '<div class="su-0d84b3">' +
+        '<span class="su-b53707"><b>' + c.ico + ' ' + esc(c.nombre) + '</b></span>' +
+        '<span class="su-2982dd">' +
         '<span style="display:block;height:100%;width:' + pct + '%;background:' + (isTop ? 'var(--gold)' : 'var(--accent)') + ';opacity:' + (isTop ? '1' : '.55') + '"></span></span>' +
-        '<b style="min-width:30px;text-align:right">' + a.p + '</b></div>';
+        '<b class="su-803c87">' + a.p + '</b></div>';
     }).join('') +
-    '<div class="si-card" style="margin-top:8px"><h4>' + VBT_PUERTAS[dom].ico + ' Tu puerta: ' + esc(VBT_PUERTAS[dom].nombre) + ' <span class="muted" style="font-size:11px">(sutras ' + esc(VBT_PUERTAS[dom].sutras) + ')</span></h4>' +
+    '<div class="si-card su-8a77e5"><h4>' + VBT_PUERTAS[dom].ico + ' Tu puerta: ' + esc(VBT_PUERTAS[dom].nombre) + ' <span class="muted su-11a508">(sutras ' + esc(VBT_PUERTAS[dom].sutras) + ')</span></h4>' +
     '<p>' + esc(VBT_PUERTAS[dom].desc) + '</p><p><b>Entrena así:</b> ' + esc(VBT_PUERTAS[dom].entrena) + '</p>' +
     '<p class="muted">🌪️ Dispersión: <b>' + dis + '/15</b> — ' + esc(disTxt) + '</p></div>' +
-    '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"><button type="button" class="btn btn-accent" id="vbtSaveTest" style="width:auto">💾 Guardar este test</button>' +
-    '<button type="button" class="btn" id="vbtSetPuerta" style="width:auto">✓ Mi puerta: ' + esc(VBT_PUERTAS[dom].nombre) + '</button>' +
-    '<button type="button" class="btn" id="vbtReadSutra" style="width:auto">📖 Ir a mi primer sutra</button></div>';
+    '<div class="su-ac5453"><button type="button" class="btn btn-accent su-30e741" id="vbtSaveTest">💾 Guardar este test</button>' +
+    '<button type="button" class="btn su-30e741" id="vbtSetPuerta">✓ Mi puerta: ' + esc(VBT_PUERTAS[dom].nombre) + '</button>' +
+    '<button type="button" class="btn su-30e741" id="vbtReadSutra">📖 Ir a mi primer sutra</button></div>';
   var sv = $('vbtSaveTest');
   if (sv) sv.onclick = function () {
     var d = store();
@@ -554,9 +554,9 @@ function syncMiPuerta() {
 function renderMiPuertaBox() {
   var box = $('vbtMiPuertaBox'); if (!box) return;
   var k = store().miPuerta || '';
-  if (!k || !VBT_PUERTAS[k]) { box.innerHTML = '<p class="muted" style="font-size:12px">Aún sin definir. Haz el test 📝 o elígela arriba: es tu entrada, no tu jaula (las 112 siguen abiertas).</p>'; return; }
+  if (!k || !VBT_PUERTAS[k]) { box.innerHTML = '<p class="muted su-6cb285">Aún sin definir. Haz el test 📝 o elígela arriba: es tu entrada, no tu jaula (las 112 siguen abiertas).</p>'; return; }
   var c = VBT_PUERTAS[k];
-  box.innerHTML = '<div class="chip" style="display:block;white-space:normal;line-height:1.5"><b>' + c.ico + ' ' + esc(c.nombre) + '</b> <span class="muted" style="font-size:11px">(sutras ' + esc(c.sutras) + ')</span><br>' +
+  box.innerHTML = '<div class="chip su-d7c8b3"><b>' + c.ico + ' ' + esc(c.nombre) + '</b> <span class="muted su-11a508">(sutras ' + esc(c.sutras) + ')</span><br>' +
     '<span class="muted">' + esc(c.desc) + '<br><b>Entrena:</b> ' + esc(c.entrena) + '</span></div>';
 }
 function rachaPracts() {
@@ -576,12 +576,12 @@ function renderPracts() {
   var box = $('vbtPractsBox'); if (!box) return;
   var d = store().practs || [];
   var ult7 = d.slice().sort(function (a, b) { return b.fecha.localeCompare(a.fecha); }).slice(0, 7);
-  box.innerHTML = '<p class="muted" style="font-size:11px">🕉️ Racha: <b>' + rachaPracts() + ' días</b> · ' + d.length + ' día(s) de práctica.</p>' +
+  box.innerHTML = '<p class="muted su-11a508">🕉️ Racha: <b>' + rachaPracts() + ' días</b> · ' + d.length + ' día(s) de práctica.</p>' +
     (ult7.length ? ult7.map(function (r) {
-      return '<div class="hora-item" style="align-items:flex-start"><span style="font-size:11px"><b>' + esc(r.fecha) + '</b><br>' +
+      return '<div class="hora-item su-0486f7"><span class="su-11a508"><b>' + esc(r.fecha) + '</b><br>' +
         (r.sutra ? '📜 ' + esc(r.sutra) + '<br>' : '') + (r.noto ? '👁 ' + esc(r.noto) + '<br>' : '') + (r.minutos ? '⏱ ' + esc(r.minutos) : '') + '</span>' +
         '<button type="button" class="btn btn-icon vbt-pract-del" data-id="' + r.id + '">✕</button></div>';
-    }).join('') : '<p class="muted" style="font-size:11px;text-align:center">Sin días aún. Guarda tu primer día de práctica arriba 🕉️.</p>');
+    }).join('') : '<p class="muted su-e201a8">Sin días aún. Guarda tu primer día de práctica arriba 🕉️.</p>');
   box.querySelectorAll('.vbt-pract-del').forEach(function (x) {
     x.onclick = function () { var e = store(); e.practs = e.practs.filter(function (r) { return r.id !== x.dataset.id; }); save(); renderPracts(); renderStats(); };
   });
@@ -590,9 +590,9 @@ function renderDiario() {
   var box = $('vbtDiaList'); if (!box) return;
   var d = store().diario || {};
   var keys = Object.keys(d).sort().reverse().slice(0, 30);
-  if (!keys.length) { box.innerHTML = '<p class="muted" style="font-size:11px;text-align:center">Sin registros. 1 línea basta: sutra + lo notado.</p>'; return; }
+  if (!keys.length) { box.innerHTML = '<p class="muted su-e201a8">Sin registros. 1 línea basta: sutra + lo notado.</p>'; return; }
   box.innerHTML = keys.map(function (k) {
-    return '<div class="hora-item" style="align-items:flex-start"><span style="font-size:11px"><b>' + esc(k) + '</b><br>' + esc(d[k]) + '</span>' +
+    return '<div class="hora-item su-0486f7"><span class="su-11a508"><b>' + esc(k) + '</b><br>' + esc(d[k]) + '</span>' +
       '<button type="button" class="btn btn-icon vbt-dia-del" data-k="' + esc(k) + '">✕</button></div>';
   }).join('');
   box.querySelectorAll('.vbt-dia-del').forEach(function (x) {
@@ -602,9 +602,9 @@ function renderDiario() {
 function renderHist() {
   var box = $('vbtHistBox'); if (!box) return;
   var t = (store().tests || []).slice().reverse().slice(0, 10);
-  if (!t.length) { box.innerHTML = '<p class="muted" style="font-size:11px">Sin tests guardados. Responde y pulsa “💾 Guardar este test”.</p>'; return; }
+  if (!t.length) { box.innerHTML = '<p class="muted su-11a508">Sin tests guardados. Responde y pulsa “💾 Guardar este test”.</p>'; return; }
   box.innerHTML = t.map(function (r) {
-    return '<div class="hora-item"><span style="font-size:11px"><b>' + esc(r.fecha) + '</b> · 🌬️' + r.R + ' 🔔' + r.S + ' 🤲' + r.C + ' 💭' + r.M + ' 💛' + r.G + ' · puerta <b>' + esc(r.dom || '') + '</b> · dispersión ' + esc(String(r.F)) + '/15</span>' +
+    return '<div class="hora-item"><span class="su-11a508"><b>' + esc(r.fecha) + '</b> · 🌬️' + r.R + ' 🔔' + r.S + ' 🤲' + r.C + ' 💭' + r.M + ' 💛' + r.G + ' · puerta <b>' + esc(r.dom || '') + '</b> · dispersión ' + esc(String(r.F)) + '/15</span>' +
       '<button type="button" class="btn btn-icon vbt-hist-del" data-id="' + r.id + '">✕</button></div>';
   }).join('');
   box.querySelectorAll('.vbt-hist-del').forEach(function (x) {

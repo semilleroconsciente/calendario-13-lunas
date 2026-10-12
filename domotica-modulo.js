@@ -65,10 +65,10 @@ function makeDialog(id, title, sub, bodyHTML) {
   var d = document.createElement('dialog');
   d.id = id;
   d.innerHTML = '<form method="dialog">' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
-    '<h3 style="margin:0;color:var(--accent)">' + title + '</h3>' +
+    '<div class="dlg-actions su-d2d053">' +
+    '<h3 class="su-ee0cfe">' + title + '</h3>' +
     '<button type="button" data-close class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    (sub ? '<p class="muted" style="line-height:1.5">' + sub + '</p>' : '') +
+    (sub ? '<p class="muted su-77e2fe">' + sub + '</p>' : '') +
     bodyHTML +
     '<div class="dlg-actions"><button type="button" data-close class="btn">Cerrar</button></div></form>';
   document.body.appendChild(d);
@@ -148,11 +148,11 @@ var ESTADOS = ['😍 OK', '🙂 Intermitente', '🛠️ Revisar', '🔋 Sin pila
 function rowCard(c) {
   if (c.txt) {
     return '<div class="si-card"><h4>' + c.ico + ' ' + esc(c.n) + '</h4>' +
-      '<p style="line-height:1.5">' + esc(c.txt) + '</p></div>';
+      '<p class="su-77e2fe">' + esc(c.txt) + '</p></div>';
   }
   if (c.pasos) {
     return '<div class="si-card"><h4>' + c.ico + ' ' + esc(c.n) + '</h4>' +
-      '<p class="muted" style="font-size:11px">' + esc(c.dif || '') + (c.costo ? ' · 💰 ' + esc(c.costo) : '') + '</p>' +
+      '<p class="muted su-11a508">' + esc(c.dif || '') + (c.costo ? ' · 💰 ' + esc(c.costo) : '') + '</p>' +
       '<p><b>Necesitas:</b> ' + esc(c.mat) + '</p>' +
       '<p><b>Paso a paso:</b> ' + esc(c.pasos) + '</p>' +
       (c.tip ? '<p class="muted">💡 ' + esc(c.tip) + '</p>' : '') + '</div>';
@@ -162,7 +162,7 @@ function rowCard(c) {
     (c.mat ? '<p><b>Necesitas:</b> ' + esc(c.mat) + '</p>' : '') +
     '<p><b>Cómo:</b> ' + esc(c.como) + '</p>' +
     (c.nota ? '<p class="muted">' + esc(c.nota) + '</p>' : '') +
-    (c.cuidado ? '<p style="font-size:11px;color:#e8c56a">⚠️ ' + esc(c.cuidado) + '</p>' : '') + '</div>';
+    (c.cuidado ? '<p class="su-d33357">⚠️ ' + esc(c.cuidado) + '</p>' : '') + '</div>';
 }
 function switchTab(name) {
   ['Guia', 'Luces', 'Seg', 'Energia', 'Proy', 'Casa'].forEach(function (t) {
@@ -180,51 +180,51 @@ function buildDialog() {
   var proyHTML = PROYECTOS.map(rowCard).join('');
 
   var body =
-    '<div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">' +
-    '<button type="button" id="tabDomGuia" class="btn btn-accent" style="width:auto">🏠 Guía</button>' +
-    '<button type="button" id="tabDomLuces" class="btn" style="width:auto">💡 Iluminación</button>' +
-    '<button type="button" id="tabDomSeg" class="btn" style="width:auto">🛡️ Seguridad</button>' +
-    '<button type="button" id="tabDomEnergia" class="btn" style="width:auto">⚡ Energía</button>' +
-    '<button type="button" id="tabDomProy" class="btn" style="width:auto">🛠️ Proyectos</button>' +
-    '<button type="button" id="tabDomCasa" class="btn" style="width:auto">📓 Mi casa</button></div>' +
+    '<div class="timer-tabs su-4dca21">' +
+    '<button type="button" id="tabDomGuia" class="btn btn-accent su-30e741">🏠 Guía</button>' +
+    '<button type="button" id="tabDomLuces" class="btn su-30e741">💡 Iluminación</button>' +
+    '<button type="button" id="tabDomSeg" class="btn su-30e741">🛡️ Seguridad</button>' +
+    '<button type="button" id="tabDomEnergia" class="btn su-30e741">⚡ Energía</button>' +
+    '<button type="button" id="tabDomProy" class="btn su-30e741">🛠️ Proyectos</button>' +
+    '<button type="button" id="tabDomCasa" class="btn su-30e741">📓 Mi casa</button></div>' +
 
     '<div id="domGuia">' + guiaHTML +
-    '<div class="menstrual-card" style="margin-top:10px;border-color:var(--gold)"><h4>🧭 Por dónde partir hoy</h4><p class="muted" style="font-size:12px">1) Elige 1 dolor (patio prendido, portón abierto, cuenta alta). 2) Haz el proyecto N°1–8 que lo resuelve. 3) Anótalo en 📓 Mi casa. 4) Cuando domines 3 equipos, recién piensa en Home Assistant. Lo simple que funciona le gana a lo avanzado a medias.</p></div></div>' +
+    '<div class="menstrual-card su-51d56a"><h4>🧭 Por dónde partir hoy</h4><p class="muted su-6cb285">1) Elige 1 dolor (patio prendido, portón abierto, cuenta alta). 2) Haz el proyecto N°1–8 que lo resuelve. 3) Anótalo en 📓 Mi casa. 4) Cuando domines 3 equipos, recién piensa en Home Assistant. Lo simple que funciona le gana a lo avanzado a medias.</p></div></div>' +
 
-    '<div id="domLuces" class="hidden"><div class="conv-row"><label style="flex:1">🔍 Filtrar <input type="text" id="domLucesQ" placeholder="patio, relé, sensor, temporizador..."></label></div><div id="domLucesList" style="margin-top:8px;display:flex;flex-direction:column;gap:8px">' + lucesHTML + '</div></div>' +
-    '<div id="domSeg" class="hidden"><div class="conv-row"><label style="flex:1">🔍 Filtrar <input type="text" id="domSegQ" placeholder="humo, gas, agua, cámara, puerta..."></label></div><div id="domSegList" style="margin-top:8px;display:flex;flex-direction:column;gap:8px">' + segHTML + '</div></div>' +
-    '<div id="domEnergia" class="hidden"><div class="conv-row"><label style="flex:1">🔍 Filtrar <input type="text" id="domEnergiaQ" placeholder="vampiro, freezer, humedad, corte, calefón..."></label></div><div id="domEnergiaList" style="margin-top:8px;display:flex;flex-direction:column;gap:8px">' + eneHTML + '</div></div>' +
-    '<div id="domProy" class="hidden"><div class="menstrual-card"><h4>🛠️ 8 proyectos para hacer en casa</h4><p class="muted" style="font-size:11px">Costos referenciales ferretería Biobío 2026. Si algo va al tablero o a gas: técnico autorizado.</p></div><div id="domProyList" style="margin-top:8px;display:flex;flex-direction:column;gap:8px">' + proyHTML + '</div></div>' +
+    '<div id="domLuces" class="hidden"><div class="conv-row"><label class="su-97445a">🔍 Filtrar <input type="text" id="domLucesQ" placeholder="patio, relé, sensor, temporizador..."></label></div><div id="domLucesList" class="su-bf3828">' + lucesHTML + '</div></div>' +
+    '<div id="domSeg" class="hidden"><div class="conv-row"><label class="su-97445a">🔍 Filtrar <input type="text" id="domSegQ" placeholder="humo, gas, agua, cámara, puerta..."></label></div><div id="domSegList" class="su-bf3828">' + segHTML + '</div></div>' +
+    '<div id="domEnergia" class="hidden"><div class="conv-row"><label class="su-97445a">🔍 Filtrar <input type="text" id="domEnergiaQ" placeholder="vampiro, freezer, humedad, corte, calefón..."></label></div><div id="domEnergiaList" class="su-bf3828">' + eneHTML + '</div></div>' +
+    '<div id="domProy" class="hidden"><div class="menstrual-card"><h4>🛠️ 8 proyectos para hacer en casa</h4><p class="muted su-11a508">Costos referenciales ferretería Biobío 2026. Si algo va al tablero o a gas: técnico autorizado.</p></div><div id="domProyList" class="su-bf3828">' + proyHTML + '</div></div>' +
 
     '<div id="domCasa" class="hidden">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>➕ Anotar equipo</h4>' +
-    '<div class="conv-row"><label style="flex:2">Equipo * <input type="text" id="domNombre" placeholder="ej: Foco patio, Sensor portón, Cámara entrada" maxlength="50"></label>' +
+    '<div class="menstrual-card su-68a1a9"><h4>➕ Anotar equipo</h4>' +
+    '<div class="conv-row"><label class="su-4b3de7">Equipo * <input type="text" id="domNombre" placeholder="ej: Foco patio, Sensor portón, Cámara entrada" maxlength="50"></label>' +
     '<label>Tipo <select id="domTipo">' + TIPOS_DISP.map(function (t) { return '<option>' + esc(t) + '</option>'; }).join('') + '</select></label></div>' +
     '<div class="conv-row"><label>Lugar <input type="text" id="domLugar" placeholder="ej: patio, cocina, pieza abuela" maxlength="30"></label>' +
     '<label>Red / IP <input type="text" id="domRed" placeholder="ej: Casa_2.4G / 192.168.1.50" maxlength="30"></label>' +
     '<label>Estado <select id="domEstado">' + ESTADOS.map(function (t) { return '<option>' + esc(t) + '</option>'; }).join('') + '</select></label></div>' +
     '<label>Nota (pila, clave, vencimiento...) <input type="text" id="domNota" placeholder="ej: pila CR2450 cambiada ene 2026, detector vence 2032" maxlength="120"></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start;margin-top:8px"><button type="button" id="domAdd" class="btn btn-accent" style="width:auto">+ Guardar equipo</button></div></div>' +
+    '<div class="dlg-actions su-8f9e27"><button type="button" id="domAdd" class="btn btn-accent su-30e741">+ Guardar equipo</button></div></div>' +
 
-    '<div class="menstrual-card" style="margin-top:8px"><h4>🤖 Automatización (si → entonces)</h4>' +
-    '<div class="conv-row"><label style="flex:2">Si pasa esto <input type="text" id="domAutoSi" placeholder="ej: portón abre de noche" maxlength="60"></label>' +
-    '<label style="flex:2">Entonces haz esto <input type="text" id="domAutoHz" placeholder="ej: prende foco patio 3 min + avisa" maxlength="60"></label></div>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="domAutoAdd" class="btn" style="width:auto">+ Guardar automatización</button></div>' +
-    '<div id="domAutoList" style="margin-top:8px"></div></div>' +
+    '<div class="menstrual-card su-8a77e5"><h4>🤖 Automatización (si → entonces)</h4>' +
+    '<div class="conv-row"><label class="su-4b3de7">Si pasa esto <input type="text" id="domAutoSi" placeholder="ej: portón abre de noche" maxlength="60"></label>' +
+    '<label class="su-4b3de7">Entonces haz esto <input type="text" id="domAutoHz" placeholder="ej: prende foco patio 3 min + avisa" maxlength="60"></label></div>' +
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="domAutoAdd" class="btn su-30e741">+ Guardar automatización</button></div>' +
+    '<div id="domAutoList" class="su-8a77e5"></div></div>' +
 
-    '<div class="menstrual-card" style="margin-top:8px"><h4>🧰 Bitácora (fallas y mantención)</h4>' +
-    '<div class="conv-row"><label>Fecha <input type="date" id="domBitFecha"></label><label style="flex:2">Qué pasó / qué hice <input type="text" id="domBitTxt" placeholder="ej: sensor portón sin wifi, acerqué repetidor, OK" maxlength="120"></label></div>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="domBitAdd" class="btn" style="width:auto">+ Guardar en bitácora</button></div>' +
-    '<div id="domBitList" class="habits-list" style="margin-top:8px;max-height:220px"></div></div>' +
+    '<div class="menstrual-card su-8a77e5"><h4>🧰 Bitácora (fallas y mantención)</h4>' +
+    '<div class="conv-row"><label>Fecha <input type="date" id="domBitFecha"></label><label class="su-4b3de7">Qué pasó / qué hice <input type="text" id="domBitTxt" placeholder="ej: sensor portón sin wifi, acerqué repetidor, OK" maxlength="120"></label></div>' +
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="domBitAdd" class="btn su-30e741">+ Guardar en bitácora</button></div>' +
+    '<div id="domBitList" class="habits-list su-ebf445"></div></div>' +
 
-    '<div class="menstrual-card" style="margin-top:8px"><h4>✅ Chequeo casa inteligente y segura</h4><p class="muted" style="font-size:11px">12 puntos. Meta sana: 9/12. Repite 1 vez por luna (menguante).</p><div id="domCheckList"></div>' +
-    '<div style="background:var(--panel);border-radius:6px;height:10px;overflow:hidden;margin-top:8px"><div id="domCheckBar" style="width:0%;height:100%;background:linear-gradient(90deg,#e76e8a,#e8c56a,#8fd694)"></div></div>' +
-    '<p class="muted" style="font-size:11px;margin-top:6px" id="domCheckTxt"></p></div>' +
+    '<div class="menstrual-card su-8a77e5"><h4>✅ Chequeo casa inteligente y segura</h4><p class="muted su-11a508">12 puntos. Meta sana: 9/12. Repite 1 vez por luna (menguante).</p><div id="domCheckList"></div>' +
+    '<div class="su-241b37"><div id="domCheckBar" class="su-75fe76"></div></div>' +
+    '<p class="muted su-e13d76" id="domCheckTxt"></p></div>' +
 
-    '<div class="conv-row" style="margin-top:8px"><label style="flex:2">🔍 Buscar en mi casa <input type="text" id="domQ" placeholder="patio, cámara, pila..."></label></div>' +
-    '<div id="domResumen" class="menstrual-card" style="margin-top:8px"></div>' +
-    '<div id="domLog" style="margin-top:8px;display:flex;flex-direction:column;gap:8px"></div>' +
-    '<div class="dlg-actions" style="justify-content:space-between;align-items:center;margin-top:8px"><span id="domStats" class="muted" style="font-size:11px"></span><span style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" id="domShare" class="btn" style="width:auto">📤 Compartir</button><button type="button" id="domClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar</button></span></div></div>';
+    '<div class="conv-row su-8a77e5"><label class="su-4b3de7">🔍 Buscar en mi casa <input type="text" id="domQ" placeholder="patio, cámara, pila..."></label></div>' +
+    '<div id="domResumen" class="menstrual-card su-8a77e5"></div>' +
+    '<div id="domLog" class="su-bf3828"></div>' +
+    '<div class="dlg-actions su-cc4a4c"><span id="domStats" class="muted su-11a508"></span><span class="su-3de8f9"><button type="button" id="domShare" class="btn su-30e741">📤 Compartir</button><button type="button" id="domClear" class="btn su-214f75">🗑 Borrar</button></span></div></div>';
 
   makeDialog('domoticaDialog', '🏠 Domótica — casa que ayuda y avisa',
     'Iluminación, sensores, energía y 8 proyectos paso a paso + tu inventario. Vive en <b>🏡 Hogar y Vida Práctica > 🔧 Energía y Taller</b>, junto a ⚡ Consumo eléctrico y 🔧 Mecánica. Todo <b>privado y local</b>, 100% offline. 220V Chile: ante la duda, eléctrico SEC.',
@@ -242,9 +242,9 @@ function renderChecks() {
   var s = store();
   box.innerHTML = CHECKS.map(function (c) {
     var on = !!s.checks[c.id];
-    return '<label class="check-row" style="align-items:flex-start;border:1px solid var(--line);border-radius:8px;padding:8px;margin-bottom:6px;cursor:pointer">' +
-      '<input type="checkbox" data-dchk="' + c.id + '"' + (on ? ' checked' : '') + ' style="margin-top:3px"> ' +
-      '<span><b>' + esc(c.n) + '</b><br><span class="muted" style="font-size:11px">' + esc(c.d) + '</span></span></label>';
+    return '<label class="check-row su-2f4cbf">' +
+      '<input type="checkbox" data-dchk="' + c.id + '"' + (on ? ' checked' : '') + ' class="su-c00d39"> ' +
+      '<span><b>' + esc(c.n) + '</b><br><span class="muted su-11a508">' + esc(c.d) + '</span></span></label>';
   }).join('');
   var pts = puntaje(), tot = CHECKS.length, pct = Math.round(pts / tot * 100);
   var bar = $('domCheckBar'), txt = $('domCheckTxt');
@@ -274,25 +274,25 @@ function renderCasa() {
   var res = $('domResumen'), st = $('domStats');
   var mal = m.dispositivos.filter(function (r) { return (r.estado || '').indexOf('OK') < 0; }).length;
   if (res) {
-    res.innerHTML = '<h4>📊 Resumen</h4><p class="muted" style="font-size:12px">' + m.dispositivos.length + ' equipo(s) · ' +
+    res.innerHTML = '<h4>📊 Resumen</h4><p class="muted su-6cb285">' + m.dispositivos.length + ' equipo(s) · ' +
       m.autos.length + ' automatización(es) · ' + m.bitacora.length + ' nota(s) bitácora' +
       (mal ? ' · ⚠️ ' + mal + ' por revisar' : ' · 🟢 todo OK') +
       ' · ✅ chequeo ' + puntaje() + '/' + CHECKS.length + '</p>';
   }
   if (!list.length) {
-    box.innerHTML = '<p class="muted" style="font-size:11px;text-align:center">' + (m.dispositivos.length ? 'Sin resultados para ese filtro.' : 'Sin equipos aún. Anota el primero arriba: ej “Foco patio”.') + '</p>';
+    box.innerHTML = '<p class="muted su-e201a8">' + (m.dispositivos.length ? 'Sin resultados para ese filtro.' : 'Sin equipos aún. Anota el primero arriba: ej “Foco patio”.') + '</p>';
   } else {
     box.innerHTML = list.slice().sort(function (a, b) { return String(a.nombre).localeCompare(String(b.nombre)); }).slice(0, 80).map(function (r) {
       var ico = (r.tipo || '📦').split(' ')[0];
       return '<div class="si-card"><h4>' + esc(ico + ' ' + (r.nombre || 'Equipo')) + '</h4>' +
-        '<p style="display:flex;gap:6px;flex-wrap:wrap"><span class="chip" style="font-size:10px">' + esc(r.tipo || '') + '</span>' +
-        (r.lugar ? '<span class="chip" style="font-size:10px">📍 ' + esc(r.lugar) + '</span>' : '') +
-        (r.red ? '<span class="chip" style="font-size:10px">📶 ' + esc(r.red) + '</span>' : '') +
-        (r.estado ? '<span class="chip" style="font-size:10px">' + esc(r.estado) + '</span>' : '') + '</p>' +
+        '<p class="su-6157e8"><span class="chip su-0d5be0">' + esc(r.tipo || '') + '</span>' +
+        (r.lugar ? '<span class="chip su-0d5be0">📍 ' + esc(r.lugar) + '</span>' : '') +
+        (r.red ? '<span class="chip su-0d5be0">📶 ' + esc(r.red) + '</span>' : '') +
+        (r.estado ? '<span class="chip su-0d5be0">' + esc(r.estado) + '</span>' : '') + '</p>' +
         (r.nota ? '<p class="muted">' + esc(r.nota) + '</p>' : '') +
-        '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">' +
-        '<button type="button" class="btn dom-ok" data-k="' + esc(r.id) + '" style="width:auto;font-size:11px">✅ OK</button>' +
-        '<button type="button" class="btn dom-del" data-k="' + esc(r.id) + '" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕</button></div></div>';
+        '<div class="su-c158a9">' +
+        '<button type="button" class="btn dom-ok su-337714" data-k="' + esc(r.id) + '">✅ OK</button>' +
+        '<button type="button" class="btn dom-del su-fd834a" data-k="' + esc(r.id) + '">✕</button></div></div>';
     }).join('');
     box.querySelectorAll('.dom-del').forEach(function (x) {
       x.onclick = function () {
@@ -317,9 +317,9 @@ function renderCasa() {
 function renderAutos() {
   var box = $('domAutoList'); if (!box) return;
   var m = store();
-  if (!m.autos.length) { box.innerHTML = '<p class="muted" style="font-size:11px">Sin automatizaciones. Ej: Si “portón abre de noche” → “prende patio 3 min”.</p>'; return; }
+  if (!m.autos.length) { box.innerHTML = '<p class="muted su-11a508">Sin automatizaciones. Ej: Si “portón abre de noche” → “prende patio 3 min”.</p>'; return; }
   box.innerHTML = m.autos.map(function (r) {
-    return '<div class="hora-item"><span style="font-size:12px">🤖 Si <b>' + esc(r.si) + '</b> → ' + esc(r.hz) + ' <span class="muted">· ' + esc(r.fecha || '') + '</span></span>' +
+    return '<div class="hora-item"><span class="su-6cb285">🤖 Si <b>' + esc(r.si) + '</b> → ' + esc(r.hz) + ' <span class="muted">· ' + esc(r.fecha || '') + '</span></span>' +
       '<button type="button" class="btn btn-icon dom-auto-del" data-k="' + esc(r.id) + '">✕</button></div>';
   }).join('');
   box.querySelectorAll('.dom-auto-del').forEach(function (x) {
@@ -334,9 +334,9 @@ function renderBit() {
   var box = $('domBitList'); if (!box) return;
   var m = store();
   var data = (m.bitacora || []).slice().sort(function (a, b) { return (b.fecha || '').localeCompare(a.fecha || ''); });
-  if (!data.length) { box.innerHTML = '<p class="muted" style="font-size:11px">Sin notas. Anota fallas y arreglos: te ahorra repetir errores.</p>'; return; }
+  if (!data.length) { box.innerHTML = '<p class="muted su-11a508">Sin notas. Anota fallas y arreglos: te ahorra repetir errores.</p>'; return; }
   box.innerHTML = data.slice(0, 60).map(function (r) {
-    return '<div class="hora-item"><span style="font-size:12px">📝 <b>' + esc(r.fecha || '') + '</b> · ' + esc(r.txt || '') + '</span>' +
+    return '<div class="hora-item"><span class="su-6cb285">📝 <b>' + esc(r.fecha || '') + '</b> · ' + esc(r.txt || '') + '</span>' +
       '<button type="button" class="btn btn-icon dom-bit-del" data-k="' + esc(r.id) + '">✕</button></div>';
   }).join('');
   box.querySelectorAll('.dom-bit-del').forEach(function (x) {

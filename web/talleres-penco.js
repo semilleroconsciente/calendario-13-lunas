@@ -157,21 +157,21 @@ function asegurarPanel() {
   if (!panel.dataset.tpeOk) {
     panel.dataset.tpeOk = '1';
     panel.innerHTML =
-      '<p class="muted" style="font-size:11px;line-height:1.55">Sección abierta: aquí se juntan los talleres y actividades que <b>actualmente se realizan en la comuna</b>. Agrega cada ficha en ➕ Agregar <b>solo con horario y lugar verificados</b> y llévala a tu día con <b>📌 Calendario</b>. Queda <b>privado y local</b>.</p>' +
-      '<div class="timer-tabs" style="margin:8px 0 10px;flex-wrap:wrap">' +
-      '<button type="button" id="tabTpeTalleres" class="btn btn-accent" style="width:auto">📚 Talleres</button>' +
-      '<button type="button" id="tabTpeActividades" class="btn" style="width:auto">🎉 Actividades</button>' +
-      '<button type="button" id="tabTpeMios" class="btn" style="width:auto">⭐ Mis inscritos</button>' +
-      '<button type="button" id="tabTpeAgregar" class="btn" style="width:auto">➕ Agregar</button>' +
+      '<p class="muted su-b6db47">Sección abierta: aquí se juntan los talleres y actividades que <b>actualmente se realizan en la comuna</b>. Agrega cada ficha en ➕ Agregar <b>solo con horario y lugar verificados</b> y llévala a tu día con <b>📌 Calendario</b>. Queda <b>privado y local</b>.</p>' +
+      '<div class="timer-tabs su-525c61">' +
+      '<button type="button" id="tabTpeTalleres" class="btn btn-accent su-30e741">📚 Talleres</button>' +
+      '<button type="button" id="tabTpeActividades" class="btn su-30e741">🎉 Actividades</button>' +
+      '<button type="button" id="tabTpeMios" class="btn su-30e741">⭐ Mis inscritos</button>' +
+      '<button type="button" id="tabTpeAgregar" class="btn su-30e741">➕ Agregar</button>' +
       '</div>' +
-      '<div id="tpeHoyBox" class="menstrual-card" style="border-color:var(--gold)"></div>' +
-      '<div class="menstrual-card" style="margin-top:10px"><h4>🔍 Buscar y filtrar</h4>' +
-      '<div class="conv-row"><label style="flex:2">Buscar <input type="text" id="tpeSearch" placeholder="ej: cueca, fútbol, huerta, Lirquén..." maxlength="60" autocomplete="off"></label>' +
+      '<div id="tpeHoyBox" class="menstrual-card su-68a1a9"></div>' +
+      '<div class="menstrual-card su-d2c171"><h4>🔍 Buscar y filtrar</h4>' +
+      '<div class="conv-row"><label class="su-4b3de7">Buscar <input type="text" id="tpeSearch" placeholder="ej: cueca, fútbol, huerta, Lirquén..." maxlength="60" autocomplete="off"></label>' +
       '<label>Categoría <select id="tpeCat"><option value="todas">Todas</option></select></label></div>' +
-      '<label class="check-row" style="margin-top:6px"><input type="checkbox" id="tpeGratis"> Solo gratuitos</label></div>' +
-      '<div id="tpeList" style="margin-top:10px"></div>' +
-      '<div id="tpeFormBox" class="menstrual-card hidden" style="margin-top:10px;border-color:var(--gold)"></div>' +
-      '<div id="tpeMiosBox" class="hidden" style="margin-top:10px"></div>';
+      '<label class="check-row su-fe7b49"><input type="checkbox" id="tpeGratis"> Solo gratuitos</label></div>' +
+      '<div id="tpeList" class="su-d2c171"></div>' +
+      '<div id="tpeFormBox" class="menstrual-card hidden su-51d56a"></div>' +
+      '<div id="tpeMiosBox" class="hidden su-d2c171"></div>';
     var sel = $('tpeCat');
     if (sel) Object.keys(CATS).forEach(function (k) { var o = document.createElement('option'); o.value = k; o.textContent = CATS[k]; sel.appendChild(o); });
     var bT = $('tabTpeTalleres'), bA = $('tabTpeActividades'), bM = $('tabTpeMios'), bG = $('tabTpeAgregar');
@@ -192,22 +192,22 @@ function asegurarPanel() {
 /* ---------- renders ---------- */
 function cardHTML(t) {
   var ins = store().inscripciones.filter(function (x) { return x.tallerId === t.id; }).length;
-  var html = '<div class="si-card" style="padding:10px 12px;border-color:#d4af3766">' +
-    '<h4 style="font-size:13px">' + esc(t.icon || (t.tipo === 'actividad' ? '🎉' : '🎨')) + ' ' + esc(t.nombre) + '</h4>' +
-    '<p class="muted" style="font-size:10px">' + esc(nombreCat(t.cat)) + ' · ' + esc(t.tipo === 'actividad' ? 'Actividad' : 'Taller') + (t.oficial ? ' · base comunal' : ' · mío') + (ins ? ' · ⭐ ' + ins + ' en calendario' : '') + '</p>' +
-    '<p style="font-size:12px;line-height:1.5">' + esc(t.desc || '') + '</p>' +
-    '<p class="muted" style="font-size:11px;line-height:1.6">📍 ' + esc(t.lugar || 'Por confirmar') + '<br>🗓️ ' + esc(t.dias || '') + (t.hora ? ' · 🕐 ' + esc(t.hora) : '') + '<br>👥 ' + esc(t.edad || 'Todo público') + ' · 💰 ' + esc(t.costo || 'Por confirmar') + (t.org ? '<br>🏛️ ' + esc(t.org) : '') + (t.contacto ? '<br>📞 ' + esc(t.contacto) : '') + '</p>' +
-    '<div class="conv-row" style="align-items:flex-end">' +
+  var html = '<div class="si-card su-df4827">' +
+    '<h4 class="su-5e0faa">' + esc(t.icon || (t.tipo === 'actividad' ? '🎉' : '🎨')) + ' ' + esc(t.nombre) + '</h4>' +
+    '<p class="muted su-0d5be0">' + esc(nombreCat(t.cat)) + ' · ' + esc(t.tipo === 'actividad' ? 'Actividad' : 'Taller') + (t.oficial ? ' · base comunal' : ' · mío') + (ins ? ' · ⭐ ' + ins + ' en calendario' : '') + '</p>' +
+    '<p class="su-37e316">' + esc(t.desc || '') + '</p>' +
+    '<p class="muted su-b439ab">📍 ' + esc(t.lugar || 'Por confirmar') + '<br>🗓️ ' + esc(t.dias || '') + (t.hora ? ' · 🕐 ' + esc(t.hora) : '') + '<br>👥 ' + esc(t.edad || 'Todo público') + ' · 💰 ' + esc(t.costo || 'Por confirmar') + (t.org ? '<br>🏛️ ' + esc(t.org) : '') + (t.contacto ? '<br>📞 ' + esc(t.contacto) : '') + '</p>' +
+    '<div class="conv-row su-7fed8e">' +
     '<label>Fecha <input type="date" data-tpe-fecha="' + t.id + '" value="' + esc(todayKey()) + '"></label>' +
-    '<label>Hora <input type="time" data-tpe-hora="' + t.id + '" value="' + esc(t.hora || '10:00') + '" style="max-width:110px"></label>' +
-    '<label class="check-row" style="margin:0;white-space:nowrap" title="Avisar a esa hora"><input type="checkbox" data-tpe-aviso="' + t.id + '"> 🔔</label>' +
-    '<button type="button" class="btn btn-accent" data-tpe-add="' + t.id + '" style="width:auto">📌 Calendario</button>' +
+    '<label>Hora <input type="time" data-tpe-hora="' + t.id + '" value="' + esc(t.hora || '10:00') + '" class="su-91245b"></label>' +
+    '<label class="check-row su-988f60" title="Avisar a esa hora"><input type="checkbox" data-tpe-aviso="' + t.id + '"> 🔔</label>' +
+    '<button type="button" class="btn btn-accent su-30e741" data-tpe-add="' + t.id + '">📌 Calendario</button>' +
     '</div>';
   if (!t.oficial) {
-    html += '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">' +
-      '<button type="button" class="btn" data-tpe-edit="' + t.id + '" style="width:auto;font-size:11px">✏️ Editar</button>' +
-      '<button type="button" class="btn" data-tpe-share="' + t.id + '" style="width:auto;font-size:11px">📤 Compartir</button>' +
-      '<button type="button" class="btn" data-tpe-del="' + t.id + '" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕ Borrar</button></div>';
+    html += '<div class="su-c158a9">' +
+      '<button type="button" class="btn su-337714" data-tpe-edit="' + t.id + '">✏️ Editar</button>' +
+      '<button type="button" class="btn su-337714" data-tpe-share="' + t.id + '">📤 Compartir</button>' +
+      '<button type="button" class="btn su-fd834a" data-tpe-del="' + t.id + '">✕ Borrar</button></div>';
   }
   html += '</div>';
   return html;
@@ -259,10 +259,10 @@ function renderForm() {
   box.classList.toggle('hidden', tabActual !== 'agregar');
   if (tabActual !== 'agregar') return;
   box.innerHTML = '<h4>' + (ed ? '✏️ Editar taller / actividad' : '➕ Agregar taller o actividad de la comuna') + '</h4>' +
-    '<p class="muted" style="font-size:11px">Suma lo que se hace hoy en Penco: talleres municipales, de JJVV, clubes, iglesia, CESFAM, colectivos. Queda en tu dispositivo.</p>' +
+    '<p class="muted su-11a508">Suma lo que se hace hoy en Penco: talleres municipales, de JJVV, clubes, iglesia, CESFAM, colectivos. Queda en tu dispositivo.</p>' +
     '<div class="conv-row"><label>Tipo * <select id="tpeFTipo"><option value="taller"' + ((ed ? ed.tipo : 'taller') === 'taller' ? ' selected' : '') + '>📚 Taller (recurrente)</option><option value="actividad"' + ((ed && ed.tipo === 'actividad') ? ' selected' : '') + '>🎉 Actividad (puntual)</option></select></label>' +
     '<label>Categoría <select id="tpeFCat">' + Object.keys(CATS).map(function (k) { return '<option value="' + k + '"' + ((ed ? ed.cat : 'cultura') === k ? ' selected' : '') + '>' + esc(CATS[k]) + '</option>'; }).join('') + '</select></label>' +
-    '<label>Icono <input type="text" id="tpeFIcon" maxlength="4" style="width:70px;text-align:center" value="' + v('icon', '🎨') + '"></label></div>' +
+    '<label>Icono <input type="text" id="tpeFIcon" maxlength="4" class="su-745e46" value="' + v('icon', '🎨') + '"></label></div>' +
     '<label>Nombre * <input type="text" id="tpeFNombre" placeholder="ej: Taller de cueca / Feria Lirquén" maxlength="60" value="' + v('nombre', '') + '"></label>' +
     '<label>Descripción <input type="text" id="tpeFDesc" placeholder="qué se hace, para quién, qué llevar" maxlength="140" value="' + v('desc', '') + '"></label>' +
     '<div class="conv-row"><label>Organiza <input type="text" id="tpeFOrg" placeholder="ej: DIDECO, JJVV Cerro Verde" maxlength="40" value="' + v('org', '') + '"></label>' +
@@ -272,8 +272,8 @@ function renderForm() {
     '<div class="conv-row"><label>Edad <input type="text" id="tpeFEdad" placeholder="ej: 6–12, 60+, todo público" maxlength="30" value="' + v('edad', 'Todo público') + '"></label>' +
     '<label>Costo <input type="text" id="tpeFCosto" placeholder="ej: Gratuito, $5.000" maxlength="30" value="' + v('costo', 'Gratuito') + '"></label></div>' +
     '<label>Contacto <input type="text" id="tpeFContacto" placeholder="ej: 41 226 1020 / @cuenta" maxlength="60" value="' + v('contacto', '') + '"></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="tpeFSave" class="btn btn-accent" style="width:auto">' + (ed ? '↻ Actualizar' : '+ Guardar') + '</button>' +
-    (ed ? '<button type="button" id="tpeFCancel" class="btn" style="width:auto">Cancelar</button>' : '') + '</div>';
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="tpeFSave" class="btn btn-accent su-30e741">' + (ed ? '↻ Actualizar' : '+ Guardar') + '</button>' +
+    (ed ? '<button type="button" id="tpeFCancel" class="btn su-30e741">Cancelar</button>' : '') + '</div>';
   $('tpeFSave').onclick = function () {
     var nombre = clean(($('tpeFNombre') || {}).value, 60).trim();
     if (!nombre) { alert('Ponle nombre al taller o actividad'); return; }
@@ -300,19 +300,19 @@ function renderMios() {
   box.classList.toggle('hidden', tabActual !== 'mios');
   if (tabActual !== 'mios') return;
   if (!st.inscripciones.length) {
-    box.innerHTML = '<div class="menstrual-card"><h4>⭐ Mis inscritos</h4><p class="muted" style="font-size:11px">Aún no agregas nada al calendario. Ve a 📚 Talleres o 🎉 Actividades, elige fecha/hora y pulsa <b>📌 Calendario</b>.</p></div>';
+    box.innerHTML = '<div class="menstrual-card"><h4>⭐ Mis inscritos</h4><p class="muted su-11a508">Aún no agregas nada al calendario. Ve a 📚 Talleres o 🎉 Actividades, elige fecha/hora y pulsa <b>📌 Calendario</b>.</p></div>';
     return;
   }
   var arr = st.inscripciones.slice().sort(function (a, b) { return String(a.fecha).localeCompare(String(b.fecha)) || String(a.hora).localeCompare(String(b.hora)); });
-  box.innerHTML = '<div class="menstrual-card" style="border-color:var(--gold)"><h4>⭐ Mis inscritos · ' + arr.length + '</h4>' +
-    '<p class="muted" style="font-size:11px">Ya están como compromisos 🕐 en tu calendario. Aquí los ves todos juntos.</p>' +
+  box.innerHTML = '<div class="menstrual-card su-68a1a9"><h4>⭐ Mis inscritos · ' + arr.length + '</h4>' +
+    '<p class="muted su-11a508">Ya están como compromisos 🕐 en tu calendario. Aquí los ves todos juntos.</p>' +
     arr.map(function (r) {
-      return '<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center"><span><b>' + esc(r.nombre) + '</b><br><span class="muted" style="font-size:11px">📅 ' + esc(r.fecha) + ' · 🕐 ' + esc(r.hora) + (r.notify ? ' · 🔔' : '') + (r.lugar ? ' · 📍 ' + esc(r.lugar) : '') + '</span></span>' +
-        '<span style="display:flex;gap:6px;flex:0 0 auto"><button type="button" class="btn" data-insgo="' + r.id + '" style="width:auto;font-size:11px" title="Ir a ese día">📅</button>' +
-        '<button type="button" class="btn" data-insdel="' + r.id + '" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕</button></span></div>';
+      return '<div class="habit-item su-13313b"><span><b>' + esc(r.nombre) + '</b><br><span class="muted su-11a508">📅 ' + esc(r.fecha) + ' · 🕐 ' + esc(r.hora) + (r.notify ? ' · 🔔' : '') + (r.lugar ? ' · 📍 ' + esc(r.lugar) : '') + '</span></span>' +
+        '<span class="su-0c0cb1"><button type="button" class="btn su-337714" data-insgo="' + r.id + '" title="Ir a ese día">📅</button>' +
+        '<button type="button" class="btn su-fd834a" data-insdel="' + r.id + '">✕</button></span></div>';
     }).join('') +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-top:8px"><button type="button" id="tpeInsShare" class="btn" style="width:auto">📤 Compartir mi lista</button>' +
-    '<button type="button" id="tpeInsClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar lista</button></div></div>';
+    '<div class="dlg-actions su-efea1d"><button type="button" id="tpeInsShare" class="btn su-30e741">📤 Compartir mi lista</button>' +
+    '<button type="button" id="tpeInsClear" class="btn su-214f75">🗑 Borrar lista</button></div></div>';
   box.querySelectorAll('[data-insdel]').forEach(function (b) {
     b.onclick = function () {
       if (!confirm('¿Quitar de Mis inscritos? (El compromiso del día se conserva; bórralo en el día si quieres)')) return;
@@ -372,8 +372,8 @@ function render() {
       var deHoy = st.inscripciones.filter(function (x) { return x.fecha === hk; });
       var ds = diaSemanaEs(new Date());
       var sug = todos().filter(function (t) { return (t.dias || '').toLowerCase().indexOf(ds) >= 0; }).slice(0, 3);
-      hoy.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:center"><span><b>🎨 Hoy — ' + esc((function () { try { return cal.fmtFull.format(new Date()); } catch (e) { return hk; } })()) + '</b></span><span class="chip">' + (deHoy.length ? deHoy.length + ' en calendario' : 'Sin inscritos hoy') + '</span></div>' +
-        (deHoy.length ? deHoy.map(function (r) { return '<div class="chip" style="display:block;margin-top:6px">🕐 ' + esc(r.hora) + ' · <b>' + esc(r.nombre) + '</b>' + (r.lugar ? ' · ' + esc(r.lugar) : '') + '</div>'; }).join('') : '<p class="muted" style="font-size:11px;margin-top:6px">Hoy no tienes talleres en el calendario.' + (sug.length ? ' Sugerencia por día de semana: <b>' + esc(sug.map(function (s) { return s.nombre; }).join(' · ')) + '</b>.' : ' ¡Agrega uno abajo!') + '</p>');
+      hoy.innerHTML = '<div class="su-13313b"><span><b>🎨 Hoy — ' + esc((function () { try { return cal.fmtFull.format(new Date()); } catch (e) { return hk; } })()) + '</b></span><span class="chip">' + (deHoy.length ? deHoy.length + ' en calendario' : 'Sin inscritos hoy') + '</span></div>' +
+        (deHoy.length ? deHoy.map(function (r) { return '<div class="chip su-b8ea88">🕐 ' + esc(r.hora) + ' · <b>' + esc(r.nombre) + '</b>' + (r.lugar ? ' · ' + esc(r.lugar) : '') + '</div>'; }).join('') : '<p class="muted su-e13d76">Hoy no tienes talleres en el calendario.' + (sug.length ? ' Sugerencia por día de semana: <b>' + esc(sug.map(function (s) { return s.nombre; }).join(' · ')) + '</b>.' : ' ¡Agrega uno abajo!') + '</p>');
     } catch (e) {}
   }
   renderLista();
@@ -394,9 +394,9 @@ function renderLista() {
   var titulo = tipo === 'actividad' ? '🎉 Actividades en la comuna' : '📚 Talleres en la comuna';
   var vacia = todos().length === 0;
   var html = '<div class="menstrual-card"><h4>' + titulo + ' · ' + list.length + '</h4>' +
-    '<p class="muted" style="font-size:10px">En cada ficha elige fecha/hora y pulsa <b>📌 Calendario</b> para llevarla a tu día.</p>' +
+    '<p class="muted su-0d5be0">En cada ficha elige fecha/hora y pulsa <b>📌 Calendario</b> para llevarla a tu día.</p>' +
     (list.length ? list.map(cardHTML).join('') : (vacia
-      ? '<p class="muted" style="font-size:11px;line-height:1.55">Sección recién abierta: aún no hay fichas. Suma la primera en <b>➕ Agregar</b> con horario y lugar verificados (Casa de la Cultura, DIDECO, CESFAM, Biblioteca, OMIL, Deporte Municipal o tu sede/club).</p>'
+      ? '<p class="muted su-b6db47">Sección recién abierta: aún no hay fichas. Suma la primera en <b>➕ Agregar</b> con horario y lugar verificados (Casa de la Cultura, DIDECO, CESFAM, Biblioteca, OMIL, Deporte Municipal o tu sede/club).</p>'
       : '<p class="muted">Sin resultados. Prueba otra búsqueda o agrega la ficha en ➕ Agregar.</p>')) + '</div>';
   box.innerHTML = html;
   bindCards(box);

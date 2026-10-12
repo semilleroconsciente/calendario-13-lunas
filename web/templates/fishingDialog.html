@@ -1,36 +1,36 @@
 <dialog id="fishingDialog">
     <form method="dialog">
-      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
-        <h3 style="margin:0;color:var(--accent)">🎣 Pesca — Penco / Golfo de Arauco</h3>
+      <div class="dlg-actions su-d2d053">
+        <h3 class="su-ee0cfe">🎣 Pesca — Penco / Golfo de Arauco</h3>
         <button type="button" id="fishingCloseTop" class="btn btn-icon" title="Cerrar" aria-label="Cerrar">✕</button>
       </div>
-      <p class="muted" style="line-height:1.5">Pesca artesanal de caletas Lirquén, Penco y Talcahuano. Datos para orilla, kayak y bote. <b>Respeta vedas y tallas</b> — pesca es sustento, no depredación.</p>
-      <div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">
-        <button type="button" id="tabPescaHoy" class="btn btn-accent" style="width:auto">🎣 Pesca hoy</button>
-        <button type="button" id="tabPescaHistoria" class="btn" style="width:auto">📜 Historia</button>
+      <p class="muted su-77e2fe">Pesca artesanal de caletas Lirquén, Penco y Talcahuano. Datos para orilla, kayak y bote. <b>Respeta vedas y tallas</b> — pesca es sustento, no depredación.</p>
+      <div class="timer-tabs su-4dca21">
+        <button type="button" id="tabPescaHoy" class="btn btn-accent su-30e741">🎣 Pesca hoy</button>
+        <button type="button" id="tabPescaHistoria" class="btn su-30e741">📜 Historia</button>
       </div>
       <div id="pescaHoyPanel">
-      <div id="fishingTodayBox" class="menstrual-card" style="border-color:var(--gold)"></div>
-      <div id="fishingLunaBox" class="menstrual-card" style="margin-top:10px"></div>
-      <div class="fishing-grid" style="margin-top:10px">
+      <div id="fishingTodayBox" class="menstrual-card su-68a1a9"></div>
+      <div id="fishingLunaBox" class="menstrual-card su-d2c171"></div>
+      <div class="fishing-grid su-d2c171">
         <div class="menstrual-card">
           <h4>🐟 Especies locales</h4>
           <div id="fishingSpeciesBox"></div>
         </div>
         <div class="menstrual-card">
           <h4>🌓 Influencia lunar</h4>
-          <p class="muted" style="font-size:11px">Luna nueva/llena → mareas vivas, más movimiento → peces comen más. Cuarto creciente/menguante → intermedio.</p>
-          <div id="fishingMoonBox" class="chip" style="display:block;white-space:normal"></div>
+          <p class="muted su-11a508">Luna nueva/llena → mareas vivas, más movimiento → peces comen más. Cuarto creciente/menguante → intermedio.</p>
+          <div id="fishingMoonBox" class="chip su-f5ce59"></div>
         </div>
       </div>
-      <div class="menstrual-card" style="margin-top:10px">
+      <div class="menstrual-card su-d2c171">
         <h4>🎯 Tips Penco</h4>
-        <p class="muted" style="font-size:11px">• Mejor 2h antes/después de pleamar (ver 🌊 Mareas). • Amanecer y atardecer = pique. • Con luna clara, usa señuelo oscuro; con luna oscura, claro. • Lleva linterna roja, no blanca. • Si hay viento sur fuerte, no salgas.</p>
-        <p class="muted" style="font-size:10px">Fuentes: Sernapesca vedas, SHOA mareas, saberes caleta Lirquén. Verifica siempre norma vigente en sernapesca.cl</p>
+        <p class="muted su-11a508">• Mejor 2h antes/después de pleamar (ver 🌊 Mareas). • Amanecer y atardecer = pique. • Con luna clara, usa señuelo oscuro; con luna oscura, claro. • Lleva linterna roja, no blanca. • Si hay viento sur fuerte, no salgas.</p>
+        <p class="muted su-0d5be0">Fuentes: Sernapesca vedas, SHOA mareas, saberes caleta Lirquén. Verifica siempre norma vigente en sernapesca.cl</p>
       </div>
-      <div class="menstrual-card" style="margin-top:10px">
+      <div class="menstrual-card su-d2c171">
         <h4>📓 Bitácora de pesca — registro personal</h4>
-        <p class="muted" style="font-size:11px">Queda <b>privado y local</b> por usuario. Registra salida, especie, kilos, marea y lugar para aprender de tu mar.</p>
+        <p class="muted su-11a508">Queda <b>privado y local</b> por usuario. Registra salida, especie, kilos, marea y lugar para aprender de tu mar.</p>
         <div class="conv-row">
           <label>Fecha <input type="date" id="fishLogDate"></label>
           <label>Lugar <input type="text" id="fishLogPlace" placeholder="ej: Lirquén, Playa negra" maxlength="30"></label>
@@ -44,21 +44,21 @@
           <label>Clima <input type="text" id="fishLogWeather" placeholder="ej: nublado sur" maxlength="30"></label>
         </div>
         <label>Notas <input type="text" id="fishLogNotes" placeholder="carnada, señuelo, aprendizaje" maxlength="80"></label>
-        <div class="dlg-actions" style="justify-content:flex-start">
-          <button type="button" id="fishLogAdd" class="btn btn-accent" style="width:auto">+ Guardar salida</button>
-          <button type="button" id="fishLogCancelEdit" class="btn hidden" style="width:auto">Cancelar</button>
+        <div class="dlg-actions su-59a5a8">
+          <button type="button" id="fishLogAdd" class="btn btn-accent su-30e741">+ Guardar salida</button>
+          <button type="button" id="fishLogCancelEdit" class="btn hidden su-30e741">Cancelar</button>
         </div>
-        <div id="fishLogList" class="habits-list" style="margin-top:10px"></div>
-        <div class="dlg-actions" style="justify-content:space-between;align-items:center;margin-top:8px">
-          <span id="fishLogStats" class="muted" style="font-size:11px"></span>
-          <span style="display:flex;gap:8px">
-            <button type="button" id="fishLogShare" class="btn" style="width:auto">📤 Compartir</button>
-            <button type="button" id="fishLogClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar todo</button>
+        <div id="fishLogList" class="habits-list su-d2c171"></div>
+        <div class="dlg-actions su-cc4a4c">
+          <span id="fishLogStats" class="muted su-11a508"></span>
+          <span class="su-a76d59">
+            <button type="button" id="fishLogShare" class="btn su-30e741">📤 Compartir</button>
+            <button type="button" id="fishLogClear" class="btn su-214f75">🗑 Borrar todo</button>
           </span>
         </div>
       </div>
       </div>
-      <div id="pescaHistoriaPanel" class="hidden" style="margin-top:10px"></div>
+      <div id="pescaHistoriaPanel" class="hidden su-d2c171"></div>
       <div class="dlg-actions"><button type="button" id="fishingClose" class="btn">Cerrar</button></div>
     </form>
   </dialog>

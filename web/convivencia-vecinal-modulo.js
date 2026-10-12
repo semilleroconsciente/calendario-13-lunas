@@ -171,7 +171,7 @@ function buildDialog() {
 
   var escHTML = ESCALERA.map(function (c, i) {
     return '<div class="si-card"><h4>' + c.ico + ' ' + esc(c.n) + '</h4><p>' + c.txt + '</p>' +
-      '<div class="dlg-actions" style="justify-content:flex-start;margin-top:6px"><button type="button" class="btn" data-esc-copy="' + i + '" style="width:auto;font-size:11px">📋 Copiar frase</button></div></div>';
+      '<div class="dlg-actions su-8a0a91"><button type="button" class="btn su-337714" data-esc-copy="' + i + '">📋 Copiar frase</button></div></div>';
   }).join('');
   var prinHTML = PRINCIPIOS.map(function (c) {
     return '<div class="si-card"><h4>' + c.ico + ' ' + esc(c.n) + '</h4><p>' + esc(c.txt) + '</p></div>';
@@ -186,101 +186,101 @@ function buildDialog() {
     return '<div class="si-card"><h4>' + esc(c.n) + '</h4><p>' + esc(c.txt) + '</p></div>';
   }).join('');
   var recHTML = RECURSOS.map(function (c) {
-    return '<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center;gap:8px"><span><b style="font-size:12px">' + c.ico + ' ' + esc(c.n) + '</b><br><span style="font-size:11px"><b>' + esc(c.dato) + '</b></span><br><span class="muted" style="font-size:11px">' + esc(c.nota) + '</span></span>' +
-      '<button type="button" class="btn" data-rec-copy="' + esc(c.n + ' · ' + c.dato) + '" style="width:auto" title="Copiar">📋</button></div>';
+    return '<div class="habit-item su-e84fc1"><span><b class="su-6cb285">' + c.ico + ' ' + esc(c.n) + '</b><br><span class="su-11a508"><b>' + esc(c.dato) + '</b></span><br><span class="muted su-11a508">' + esc(c.nota) + '</span></span>' +
+      '<button type="button" class="btn su-30e741" data-rec-copy="' + esc(c.n + ' · ' + c.dato) + '" title="Copiar">📋</button></div>';
   }).join('');
   var fichaBtns = FICHAS.map(function (f) {
-    return '<button type="button" class="btn" data-ficha="' + f.id + '" style="width:auto"> ' + f.ico + ' ' + esc(f.nombre) + '</button>';
+    return '<button type="button" class="btn su-30e741" data-ficha="' + f.id + '"> ' + f.ico + ' ' + esc(f.nombre) + '</button>';
   }).join('');
 
   d.innerHTML =
     '<form method="dialog">' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
-      '<h3 style="margin:0;color:var(--accent)">🏘️ Convivencia Vecinal — Penco</h3>' +
+    '<div class="dlg-actions su-d2d053">' +
+      '<h3 class="su-ee0cfe">🏘️ Convivencia Vecinal — Penco</h3>' +
       '<button type="button" data-close class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    '<p class="muted" style="line-height:1.5">Vivir pegados sin pelearse es un oficio. Escalera, fichas por tema, palabras para hablar difícil y bitácora privada. Todo <b>offline</b> y <b>local</b>. Orientación general, no asesoría legal.</p>' +
-    '<div id="convivHoyBox" class="menstrual-card" style="border-color:var(--gold)"></div>' +
-    '<div class="timer-tabs" style="margin:10px 0;flex-wrap:wrap">' +
-      '<button type="button" id="tabConvivGuia" class="btn btn-accent" style="width:auto">📖 Guía</button>' +
-      '<button type="button" id="tabConvivFichas" class="btn" style="width:auto">🗂️ Fichas</button>' +
-      '<button type="button" id="tabConvivHablar" class="btn" style="width:auto">🗣️ Conversar</button>' +
-      '<button type="button" id="tabConvivBitacora" class="btn" style="width:auto">📓 Bitácora</button>' +
-      '<button type="button" id="tabConvivLuna" class="btn" style="width:auto">🌙 Ritual</button>' +
-      '<button type="button" id="tabConvivRecursos" class="btn" style="width:auto">📞 Recursos</button>' +
+    '<p class="muted su-77e2fe">Vivir pegados sin pelearse es un oficio. Escalera, fichas por tema, palabras para hablar difícil y bitácora privada. Todo <b>offline</b> y <b>local</b>. Orientación general, no asesoría legal.</p>' +
+    '<div id="convivHoyBox" class="menstrual-card su-68a1a9"></div>' +
+    '<div class="timer-tabs su-ca7e11">' +
+      '<button type="button" id="tabConvivGuia" class="btn btn-accent su-30e741">📖 Guía</button>' +
+      '<button type="button" id="tabConvivFichas" class="btn su-30e741">🗂️ Fichas</button>' +
+      '<button type="button" id="tabConvivHablar" class="btn su-30e741">🗣️ Conversar</button>' +
+      '<button type="button" id="tabConvivBitacora" class="btn su-30e741">📓 Bitácora</button>' +
+      '<button type="button" id="tabConvivLuna" class="btn su-30e741">🌙 Ritual</button>' +
+      '<button type="button" id="tabConvivRecursos" class="btn su-30e741">📞 Recursos</button>' +
     '</div>' +
 
     '<div id="convivPanelGuia">' +
-      '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🪜 La escalera: nunca partas por el peldaño 4</h4><p class="muted" style="font-size:11px">Hablar → carta → mediación → institucional. Cada peldaño deja registro para el siguiente. Saltarse pasos quiebra el barrio y debilita tu caso.</p></div>' +
-      '<div class="discipline-grid" style="margin-top:8px">' + escHTML + '</div>' +
-      '<h4 style="margin:10px 0 6px;color:var(--gold)">💛 Principios que evitan el 90% de los juicios</h4>' +
+      '<div class="menstrual-card su-68a1a9"><h4>🪜 La escalera: nunca partas por el peldaño 4</h4><p class="muted su-11a508">Hablar → carta → mediación → institucional. Cada peldaño deja registro para el siguiente. Saltarse pasos quiebra el barrio y debilita tu caso.</p></div>' +
+      '<div class="discipline-grid su-8a77e5">' + escHTML + '</div>' +
+      '<h4 class="su-121e69">💛 Principios que evitan el 90% de los juicios</h4>' +
       '<div class="discipline-grid">' + prinHTML + '</div>' +
-      '<div class="menstrual-card" style="margin-top:10px"><h4>✅ Mi compromiso vecinal</h4>' +
-        '<p class="muted" style="font-size:11px">Se guarda por usuario en este dispositivo.</p>' +
+      '<div class="menstrual-card su-d2c171"><h4>✅ Mi compromiso vecinal</h4>' +
+        '<p class="muted su-11a508">Se guarda por usuario en este dispositivo.</p>' +
         '<div id="convivGuiaChecks">' +
           '<label class="check-row"><input type="checkbox" data-guia="diario"> Llevo bitácora 7 días antes de reclamar</label>' +
           '<label class="check-row"><input type="checkbox" data-guia="dia"> Hablo de día y en calma (no de noche ni con rabia)</label>' +
           '<label class="check-row"><input type="checkbox" data-guia="uno"> 1 tema por vez + 1 pedido concreto</label>' +
           '<label class="check-row"><input type="checkbox" data-guia="carta"> Si no resulta, envío carta breve y guardo copia</label>' +
           '<label class="check-row"><input type="checkbox" data-guia="mediacion"> Pido mediación antes de denunciar</label>' +
-        '</div><div class="dlg-actions" style="justify-content:flex-start;margin-top:8px"><span id="convivGuiaStats" class="muted" style="font-size:11px"></span></div></div>' +
+        '</div><div class="dlg-actions su-8f9e27"><span id="convivGuiaStats" class="muted su-11a508"></span></div></div>' +
     '</div>' +
 
     '<div id="convivPanelFichas" class="hidden">' +
-      '<div class="menstrual-card"><h4>🗂️ Elige tu tema</h4><div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">' + fichaBtns + '</div></div>' +
-      '<div id="convivFichaBox" style="margin-top:10px"></div>' +
+      '<div class="menstrual-card"><h4>🗂️ Elige tu tema</h4><div class="su-c158a9">' + fichaBtns + '</div></div>' +
+      '<div id="convivFichaBox" class="su-d2c171"></div>' +
     '</div>' +
 
     '<div id="convivPanelHablar" class="hidden">' +
-      '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🗣️ CNV en 4 frases (observo · siento · necesito · pido)</h4><p class="muted" style="font-size:11px">Comunicación No Violenta adaptada a pasillo y patio. Sin jerga: hechos, cuerpo, necesidad y pedido chico.</p></div>' +
-      '<div class="discipline-grid" style="margin-top:8px">' + cnvHTML + '</div>' +
-      '<div class="menstrual-card" style="margin-top:10px"><h4>✍️ Arma tu frase (y cópiala)</h4>' +
+      '<div class="menstrual-card su-68a1a9"><h4>🗣️ CNV en 4 frases (observo · siento · necesito · pido)</h4><p class="muted su-11a508">Comunicación No Violenta adaptada a pasillo y patio. Sin jerga: hechos, cuerpo, necesidad y pedido chico.</p></div>' +
+      '<div class="discipline-grid su-8a77e5">' + cnvHTML + '</div>' +
+      '<div class="menstrual-card su-d2c171"><h4>✍️ Arma tu frase (y cópiala)</h4>' +
         '<div class="conv-row"><label>Vi / escuché <input type="text" id="cnvHecho" placeholder="ej: música con bajo ayer de 23:30 a 2:00" maxlength="90"></label></div>' +
         '<div class="conv-row"><label>Me siento <input type="text" id="cnvSiento" placeholder="ej: agotada, me cuesta dormir" maxlength="60"></label>' +
         '<label>Necesito <input type="text" id="cnvNecesito" placeholder="ej: dormir porque entro a las 7" maxlength="60"></label></div>' +
         '<div class="conv-row"><label>¿Podrías? <input type="text" id="cnvPide" placeholder="ej: bajar el bajo desde las 23:00 y lo revisamos el lunes" maxlength="90"></label></div>' +
-        '<div id="cnvPreview" class="chip" style="display:block;white-space:normal;line-height:1.5;margin-top:6px">Escribe arriba y ve tu frase aquí…</div>' +
-        '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="cnvCopy" class="btn" style="width:auto">📋 Copiar frase</button><button type="button" id="cnvToBitacora" class="btn" style="width:auto">📓 Llevar a bitácora</button></div>' +
-        '<p class="muted" style="font-size:11px;margin-top:6px">' + esc(CNV_ERRORES) + '</p></div>' +
-      '<div class="menstrual-card" style="margin-top:10px"><h4>🪑 La silla de la escucha (12 min, sin pelear)</h4><div class="discipline-grid" style="margin-top:6px">' + sillaHTML + '</div></div>' +
-      '<div class="menstrual-card" style="margin-top:10px"><h4>📝 Generador de acta de acuerdo</h4><p class="muted" style="font-size:11px">Acta simple entre vecinos (no es escritura pública, pero ordena y sirve en mediación). Completa, previsualiza, guarda en bitácora y comparte.</p>' +
+        '<div id="cnvPreview" class="chip su-b43fca">Escribe arriba y ve tu frase aquí…</div>' +
+        '<div class="dlg-actions su-59a5a8"><button type="button" id="cnvCopy" class="btn su-30e741">📋 Copiar frase</button><button type="button" id="cnvToBitacora" class="btn su-30e741">📓 Llevar a bitácora</button></div>' +
+        '<p class="muted su-e13d76">' + esc(CNV_ERRORES) + '</p></div>' +
+      '<div class="menstrual-card su-d2c171"><h4>🪑 La silla de la escucha (12 min, sin pelear)</h4><div class="discipline-grid su-fe7b49">' + sillaHTML + '</div></div>' +
+      '<div class="menstrual-card su-d2c171"><h4>📝 Generador de acta de acuerdo</h4><p class="muted su-11a508">Acta simple entre vecinos (no es escritura pública, pero ordena y sirve en mediación). Completa, previsualiza, guarda en bitácora y comparte.</p>' +
         '<div class="conv-row"><label>Lugar <input type="text" id="actaLugar" placeholder="ej: Penco, Cerro Verde" maxlength="40"></label><label>Fecha <input type="date" id="actaFecha"></label></div>' +
         '<div class="conv-row"><label>Parte A <input type="text" id="actaA" placeholder="ej: Ana — casa 12" maxlength="40"></label><label>Parte B <input type="text" id="actaB" placeholder="ej: Pedro — casa 14" maxlength="40"></label></div>' +
         '<div class="conv-row"><label>Tema <input type="text" id="actaTema" placeholder="ej: ruidos nocturnos" maxlength="60"></label><label>Revisión <input type="date" id="actaRev"></label></div>' +
         '<label>Acuerdos (1 por línea) <input type="text" id="actaLista" placeholder="ej: bajar volumen desde 23:00 entre semana | avisar por WhatsApp si hay fiesta" maxlength="200"></label>' +
-        '<div id="actaPreview" class="chip" style="display:block;white-space:normal;line-height:1.55;margin-top:6px;font-size:11px">El acta aparecerá aquí…</div>' +
-        '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="actaSave" class="btn btn-accent" style="width:auto">💾 Guardar acuerdo</button><button type="button" id="actaShare" class="btn" style="width:auto">📤 Compartir</button></div></div>' +
+        '<div id="actaPreview" class="chip su-5c9e75">El acta aparecerá aquí…</div>' +
+        '<div class="dlg-actions su-59a5a8"><button type="button" id="actaSave" class="btn btn-accent su-30e741">💾 Guardar acuerdo</button><button type="button" id="actaShare" class="btn su-30e741">📤 Compartir</button></div></div>' +
     '</div>' +
 
     '<div id="convivPanelBitacora" class="hidden">' +
-      '<div class="menstrual-card"><h4>📓 Bitácora privada — incidentes, conversas y acuerdos</h4><p class="muted" style="font-size:11px">Solo en este dispositivo. Sin bitácora no hay mediación que funcione: fecha + hecho + foto + acuerdo.</p>' +
+      '<div class="menstrual-card"><h4>📓 Bitácora privada — incidentes, conversas y acuerdos</h4><p class="muted su-11a508">Solo en este dispositivo. Sin bitácora no hay mediación que funcione: fecha + hecho + foto + acuerdo.</p>' +
         '<div class="conv-row"><label>Fecha <input type="date" id="convFecha"></label><label>Tema <select id="convTipo"><option value="ruidos">🔊 Ruidos</option><option value="mascotas">🐕 Mascotas</option><option value="linderos">🌳 Linderos/árboles</option><option value="basura">🗑️ Basura</option><option value="estacionamiento">🚗 Estacionamiento</option><option value="agua">💧 Agua/filtración</option><option value="otro">📌 Otro</option></select></label></div>' +
         '<div class="conv-row"><label>¿Con quién? <input type="text" id="convQuien" placeholder="ej: casa 14, depto 302" maxlength="40"></label><label>Peldaño <select id="convEscalon"><option value="hablar">🗣️ Hablé</option><option value="carta">✉️ Carta</option><option value="mediacion">🤝 Mediación</option><option value="institucional">🏛️ Institucional</option></select></label></div>' +
         '<div class="conv-row"><label>Estado <select id="convEstado"><option value="abierto">🔴 Abierto</option><option value="hablado">🟡 Hablado</option><option value="acuerdo">🟢 Acuerdo</option><option value="cerrado">✅ Cerrado</option></select></label></div>' +
         '<label>¿Qué pasó? (hecho + hora + efecto) <input type="text" id="convRelato" placeholder="ej: 12/9 música 23:30–2:00, no dormí, entro a las 7" maxlength="160"></label>' +
-        '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="convAdd" class="btn btn-accent" style="width:auto">+ Guardar en bitácora</button><button type="button" id="convCancel" class="btn hidden" style="width:auto">Cancelar</button></div></div>' +
-      '<div class="menstrual-card" style="margin-top:10px"><h4>🧾 Incidentes <span id="convIncCount" class="muted" style="font-size:11px"></span></h4><div id="convIncLog" class="habits-list" style="max-height:240px"></div></div>' +
-      '<div class="menstrual-card" style="margin-top:10px"><h4>🤝 Acuerdos <span id="convAcuCount" class="muted" style="font-size:11px"></span></h4><div id="convAcuLog" class="habits-list" style="max-height:240px"></div>' +
-        '<div class="dlg-actions" style="justify-content:space-between;margin-top:8px"><span style="display:flex;gap:8px"><button type="button" id="convShare" class="btn" style="width:auto">📤 Compartir bitácora</button><button type="button" id="convClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar</button></span></div></div>' +
+        '<div class="dlg-actions su-59a5a8"><button type="button" id="convAdd" class="btn btn-accent su-30e741">+ Guardar en bitácora</button><button type="button" id="convCancel" class="btn hidden su-30e741">Cancelar</button></div></div>' +
+      '<div class="menstrual-card su-d2c171"><h4>🧾 Incidentes <span id="convIncCount" class="muted su-11a508"></span></h4><div id="convIncLog" class="habits-list su-5701fb"></div></div>' +
+      '<div class="menstrual-card su-d2c171"><h4>🤝 Acuerdos <span id="convAcuCount" class="muted su-11a508"></span></h4><div id="convAcuLog" class="habits-list su-5701fb"></div>' +
+        '<div class="dlg-actions su-efea1d"><span class="su-a76d59"><button type="button" id="convShare" class="btn su-30e741">📤 Compartir bitácora</button><button type="button" id="convClear" class="btn su-214f75">🗑 Borrar</button></span></div></div>' +
     '</div>' +
 
     '<div id="convivPanelLuna" class="hidden">' +
-      '<div id="convivLunaBox" class="menstrual-card" style="border-color:var(--gold)"></div>' +
-      '<div class="discipline-grid" style="margin-top:8px">' + ritualHTML + '</div>' +
-      '<div class="menstrual-card" style="margin-top:10px"><h4>🌙 Mi ritual de 10 min antes de hablar</h4>' +
-        '<p class="muted" style="font-size:11px;line-height:1.6">1) Apaga el celu 10 min. 2) Respira 4-4-6 ×4. 3) Lee tu frase CNV en voz alta. 4) Pregúntate: “¿qué sí puedo ceder?”. 5) Define tu mínimo (ej: volumen bajo entre semana) y tu máximo (ej: cortarlo todo). 6) Anda de día, con testigo si hay tensión.</p>' +
+      '<div id="convivLunaBox" class="menstrual-card su-68a1a9"></div>' +
+      '<div class="discipline-grid su-8a77e5">' + ritualHTML + '</div>' +
+      '<div class="menstrual-card su-d2c171"><h4>🌙 Mi ritual de 10 min antes de hablar</h4>' +
+        '<p class="muted su-b439ab">1) Apaga el celu 10 min. 2) Respira 4-4-6 ×4. 3) Lee tu frase CNV en voz alta. 4) Pregúntate: “¿qué sí puedo ceder?”. 5) Define tu mínimo (ej: volumen bajo entre semana) y tu máximo (ej: cortarlo todo). 6) Anda de día, con testigo si hay tensión.</p>' +
         '<label>Mi intención para esta conversa <input type="text" id="convIntencion" placeholder="ej: dormir tranquila sin pelear con mi vecino" maxlength="120"></label>' +
-        '<div id="convivRitualChecks" style="display:flex;flex-direction:column;gap:6px;margin-top:8px">' +
+        '<div id="convivRitualChecks" class="su-5e3875">' +
           '<label class="check-row"><input type="checkbox" data-ritual="respire"> Respiré 4-4-6 antes de hablar</label>' +
           '<label class="check-row"><input type="checkbox" data-ritual="frase"> Llevé mi frase escrita (no improvisé con rabia)</label>' +
           '<label class="check-row"><input type="checkbox" data-ritual="dia"> Hablé de día y con calma</label>' +
           '<label class="check-row"><input type="checkbox" data-ritual="acta"> Dejé acuerdo escrito + fecha de revisión</label>' +
-        '</div><div class="dlg-actions" style="justify-content:flex-start;margin-top:8px"><span id="convivRitualStats" class="muted" style="font-size:11px"></span></div></div>' +
+        '</div><div class="dlg-actions su-8f9e27"><span id="convivRitualStats" class="muted su-11a508"></span></div></div>' +
     '</div>' +
 
     '<div id="convivPanelRecursos" class="hidden">' +
-      '<div class="menstrual-card" style="border-color:var(--gold)"><h4>📞 A dónde ir en Penco (en orden)</h4><p class="muted" style="font-size:11px">1) Habla → 2) JJ.VV./DIDECO mediación → 3) institucional. Lleva siempre: cédula, bitácora con fechas, fotos y carta/acta. Pide folio de todo.</p></div>' +
-      '<div class="menstrual-card" style="margin-top:10px">' + recHTML + '</div>' +
-      '<div class="menstrual-card" style="margin-top:10px"><p class="muted" style="font-size:11px">📚 Leyes para leer el encabezado: <b>Ley 19.418</b> (juntas de vecinos y organizaciones comunitarias) y <b>Ley 19.537 de Copropiedad</b> actualizada por la <b>Ley 21.442</b> (condominios). Pide el texto vigente en DIDECO/OIRS o chileatiende.cl. Esta app orienta, no reemplaza asesoría legal.</p></div>' +
+      '<div class="menstrual-card su-68a1a9"><h4>📞 A dónde ir en Penco (en orden)</h4><p class="muted su-11a508">1) Habla → 2) JJ.VV./DIDECO mediación → 3) institucional. Lleva siempre: cédula, bitácora con fechas, fotos y carta/acta. Pide folio de todo.</p></div>' +
+      '<div class="menstrual-card su-d2c171">' + recHTML + '</div>' +
+      '<div class="menstrual-card su-d2c171"><p class="muted su-11a508">📚 Leyes para leer el encabezado: <b>Ley 19.418</b> (juntas de vecinos y organizaciones comunitarias) y <b>Ley 19.537 de Copropiedad</b> actualizada por la <b>Ley 21.442</b> (condominios). Pide el texto vigente en DIDECO/OIRS o chileatiende.cl. Esta app orienta, no reemplaza asesoría legal.</p></div>' +
     '</div>' +
 
     '<div class="dlg-actions"><button type="button" data-close class="btn">Cerrar</button></div></form>';
@@ -309,7 +309,7 @@ function paintHoy() {
     : l.luna <= 6 ? 'Pewü: mejor luna para podas acordadas y limpieza compartida. Propón minga.'
     : l.luna <= 9 ? 'Walüng: fiestas y ruidos suben. Acuerda horarios de verano antes de diciembre.'
     : 'Rimü: cierra acuerdos antes del viento sur. Agradece lo cumplido y suelta el resto.';
-  b.innerHTML = '<h4>🌙 ' + esc(txt) + '</h4><p class="muted" style="font-size:12px">' + esc(rec) + '</p>';
+  b.innerHTML = '<h4>🌙 ' + esc(txt) + '</h4><p class="muted su-6cb285">' + esc(rec) + '</p>';
   var lb = $('convivLunaBox');
   if (lb) {
     var fase = !l ? 'Sin luna ubicada: prepara tu frase igual (hecho + sentir + necesitar + pedir).'
@@ -317,7 +317,7 @@ function paintHoy() {
       : l.dia <= 14 ? '🌒→🌕 Creciente a llena: habla ahora si lo venías pateando. Lleva testigo si hay tensión.'
       : l.dia <= 21 ? '🌕 Llena: escucha y sella. Lee el acta en voz alta y firma.'
       : '🌘 Menguante: revisa y cierra. ¿Se cumplió? Agradece o sube 1 peldaño sin rencor.';
-    lb.innerHTML = '<h4>🌙 Ritual según tu luna de hoy</h4><p style="font-size:12px">' + esc(fase) + '</p><p class="muted" style="font-size:11px">Regla de oro: de noche no toques puertas con rabia. Anota, respira, duerme. Habla de día.</p>';
+    lb.innerHTML = '<h4>🌙 Ritual según tu luna de hoy</h4><p class="su-6cb285">' + esc(fase) + '</p><p class="muted su-11a508">Regla de oro: de noche no toques puertas con rabia. Anota, respira, duerme. Habla de día.</p>';
   }
 }
 
@@ -333,14 +333,14 @@ function renderFicha() {
     b.classList.toggle('btn-accent', b.getAttribute('data-ficha') === fichaSel);
   });
   box.innerHTML =
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>' + f.ico + ' ' + esc(f.nombre) + '</h4>' +
-    '<p class="muted" style="font-size:11px"><b>Norma (orientación):</b> ' + esc(f.norma) + '</p></div>' +
-    '<div class="si-card" style="margin-top:8px"><h4>🪜 Qué hacer, en orden</h4><ol style="font-size:12px;line-height:1.6;margin:4px 0 0 18px">' +
+    '<div class="menstrual-card su-68a1a9"><h4>' + f.ico + ' ' + esc(f.nombre) + '</h4>' +
+    '<p class="muted su-11a508"><b>Norma (orientación):</b> ' + esc(f.norma) + '</p></div>' +
+    '<div class="si-card su-8a77e5"><h4>🪜 Qué hacer, en orden</h4><ol class="su-acb0f0">' +
     f.pasos.map(function (p) { return '<li>' + esc(p) + '</li>'; }).join('') + '</ol></div>' +
-    '<div class="si-card"><h4>💬 Qué decir (cópiala y adaptala)</h4><p style="font-size:12px">“' + esc(f.decir) + '”</p>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="fichaCopyFrase" class="btn" style="width:auto;font-size:11px">📋 Copiar frase</button><button type="button" id="fichaToBitacora" class="btn" style="width:auto;font-size:11px">📓 Anotar este tema</button></div></div>' +
-    '<div class="si-card"><h4>🚫 Lo que NO hay que hacer</h4><p class="muted" style="font-size:12px">' + esc(f.nohacer) + '</p>' +
-    '<p class="muted" style="font-size:11px">📍 <b>Dónde ir:</b> ' + esc(f.donde) + '</p></div>';
+    '<div class="si-card"><h4>💬 Qué decir (cópiala y adaptala)</h4><p class="su-6cb285">“' + esc(f.decir) + '”</p>' +
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="fichaCopyFrase" class="btn su-337714">📋 Copiar frase</button><button type="button" id="fichaToBitacora" class="btn su-337714">📓 Anotar este tema</button></div></div>' +
+    '<div class="si-card"><h4>🚫 Lo que NO hay que hacer</h4><p class="muted su-6cb285">' + esc(f.nohacer) + '</p>' +
+    '<p class="muted su-11a508">📍 <b>Dónde ir:</b> ' + esc(f.donde) + '</p></div>';
   var c1 = $('fichaCopyFrase');
   if (c1) c1.onclick = async function () { await share(f.ico + ' Frase ' + f.nombre, f.decir); };
   var c2 = $('fichaToBitacora');
@@ -374,11 +374,11 @@ function renderIncidentes() {
   var data = (s.incidentes || []).slice().sort(function (a, b) { return String(b.fecha).localeCompare(String(a.fecha)); });
   var ct = $('convIncCount');
   if (ct) ct.textContent = '· ' + data.length;
-  if (!data.length) { box.innerHTML = '<p class="muted" style="font-size:11px;text-align:center">Sin registros. Guarda el primero arriba: fecha + hecho + peldaño.</p>'; return; }
+  if (!data.length) { box.innerHTML = '<p class="muted su-e201a8">Sin registros. Guarda el primero arriba: fecha + hecho + peldaño.</p>'; return; }
   box.innerHTML = data.map(function (r) {
-    return '<div class="hora-item"><span style="font-size:12px"><b>' + esc(TIPO_N[r.tipo] || r.tipo || '') + '</b> · ' + esc(r.fecha || '') + ' ' + esc(EST_N[r.estado] || '') +
-      '<br><span class="muted" style="font-size:10px">' + esc(ESC_N[r.escalon] || '') + (r.quien ? ' · ' + esc(r.quien) : '') + (r.relato ? ' · ' + esc(r.relato) : '') + '</span></span>' +
-      '<span style="display:flex;gap:4px"><button type="button" class="btn btn-icon conv-edit" data-k="' + esc(r.id) + '" title="Editar">✎</button>' +
+    return '<div class="hora-item"><span class="su-6cb285"><b>' + esc(TIPO_N[r.tipo] || r.tipo || '') + '</b> · ' + esc(r.fecha || '') + ' ' + esc(EST_N[r.estado] || '') +
+      '<br><span class="muted su-0d5be0">' + esc(ESC_N[r.escalon] || '') + (r.quien ? ' · ' + esc(r.quien) : '') + (r.relato ? ' · ' + esc(r.relato) : '') + '</span></span>' +
+      '<span class="su-74cac9"><button type="button" class="btn btn-icon conv-edit" data-k="' + esc(r.id) + '" title="Editar">✎</button>' +
       '<button type="button" class="btn btn-icon conv-del" data-k="' + esc(r.id) + '" title="Borrar">✕</button></span></div>';
   }).join('');
   box.querySelectorAll('.conv-del').forEach(function (x) {
@@ -415,11 +415,11 @@ function renderAcuerdos() {
   var data = (s.acuerdos || []).slice().sort(function (a, b) { return String(b.fecha).localeCompare(String(a.fecha)); });
   var ct = $('convAcuCount');
   if (ct) ct.textContent = '· ' + data.length;
-  if (!data.length) { box.innerHTML = '<p class="muted" style="font-size:11px;text-align:center">Sin acuerdos. Créalo en 🗣️ Conversar → acta, o se guardan aquí.</p>'; return; }
+  if (!data.length) { box.innerHTML = '<p class="muted su-e201a8">Sin acuerdos. Créalo en 🗣️ Conversar → acta, o se guardan aquí.</p>'; return; }
   box.innerHTML = data.map(function (r) {
-    return '<div class="hora-item"><span style="font-size:12px"><b>📝 ' + esc(r.tema || 'Acuerdo') + '</b> · ' + esc(r.fecha || '') + (r.cumplido ? ' ✅' : '') +
-      '<br><span class="muted" style="font-size:10px">' + esc(r.partes || '') + (r.revision ? ' · rev: ' + esc(r.revision) : '') + (r.texto ? '<br>' + esc(String(r.texto).slice(0, 140)) : '') + '</span></span>' +
-      '<span style="display:flex;gap:4px"><button type="button" class="btn btn-icon acu-ok" data-k="' + esc(r.id) + '" title="Marcar cumplido">✓</button>' +
+    return '<div class="hora-item"><span class="su-6cb285"><b>📝 ' + esc(r.tema || 'Acuerdo') + '</b> · ' + esc(r.fecha || '') + (r.cumplido ? ' ✅' : '') +
+      '<br><span class="muted su-0d5be0">' + esc(r.partes || '') + (r.revision ? ' · rev: ' + esc(r.revision) : '') + (r.texto ? '<br>' + esc(String(r.texto).slice(0, 140)) : '') + '</span></span>' +
+      '<span class="su-74cac9"><button type="button" class="btn btn-icon acu-ok" data-k="' + esc(r.id) + '" title="Marcar cumplido">✓</button>' +
       '<button type="button" class="btn btn-icon acu-del" data-k="' + esc(r.id) + '" title="Borrar">✕</button></span></div>';
   }).join('');
   box.querySelectorAll('.acu-del').forEach(function (x) {

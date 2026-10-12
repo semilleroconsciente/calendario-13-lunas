@@ -218,19 +218,19 @@ function asegurarPanel() {
   if (!panel.dataset.muniOk) {
     panel.dataset.muniOk = '1';
     panel.innerHTML =
-      '<p class="muted" style="font-size:11px;line-height:1.55">La <b>Municipalidad</b>: dónde queda, quiénes son, qué dirección resuelve qué, y qué llevar a cada trámite. Marca tu avance en <b>⭐ Mis trámites</b> y lleva vencimientos al calendario con <b>📌</b>. Todo queda <b>privado y local</b>.</p>' +
-      '<div class="timer-tabs" style="margin:8px 0 10px;flex-wrap:wrap">' +
-      '<button type="button" id="tabMuniMuni" class="btn btn-accent" style="width:auto">🏛️ Municipio</button>' +
-      '<button type="button" id="tabMuniDir" class="btn" style="width:auto">📂 Direcciones</button>' +
-      '<button type="button" id="tabMuniTra" class="btn" style="width:auto">🧾 Trámites</button>' +
-      '<button type="button" id="tabMuniSal" class="btn" style="width:auto">🏥 Salud y Educación</button>' +
-      '<button type="button" id="tabMuniEme" class="btn" style="width:auto">🚨 Emergencias</button>' +
-      '<button type="button" id="tabMuniHist" class="btn" style="width:auto">📜 Historia</button>' +
-      '<button type="button" id="tabMuniMios" class="btn" style="width:auto">⭐ Mis trámites</button>' +
+      '<p class="muted su-b6db47">La <b>Municipalidad</b>: dónde queda, quiénes son, qué dirección resuelve qué, y qué llevar a cada trámite. Marca tu avance en <b>⭐ Mis trámites</b> y lleva vencimientos al calendario con <b>📌</b>. Todo queda <b>privado y local</b>.</p>' +
+      '<div class="timer-tabs su-525c61">' +
+      '<button type="button" id="tabMuniMuni" class="btn btn-accent su-30e741">🏛️ Municipio</button>' +
+      '<button type="button" id="tabMuniDir" class="btn su-30e741">📂 Direcciones</button>' +
+      '<button type="button" id="tabMuniTra" class="btn su-30e741">🧾 Trámites</button>' +
+      '<button type="button" id="tabMuniSal" class="btn su-30e741">🏥 Salud y Educación</button>' +
+      '<button type="button" id="tabMuniEme" class="btn su-30e741">🚨 Emergencias</button>' +
+      '<button type="button" id="tabMuniHist" class="btn su-30e741">📜 Historia</button>' +
+      '<button type="button" id="tabMuniMios" class="btn su-30e741">⭐ Mis trámites</button>' +
       '</div>' +
-      '<div class="menstrual-card" style="margin-top:0"><h4>🔍 Buscar en Municipalidad</h4>' +
-      '<div class="conv-row"><label style="flex:2">Buscar <input type="text" id="muniSearch" placeholder="ej: licencia, OIRS, CESFAM, patente, *4157, 1891..." maxlength="60" autocomplete="off"></label></div></div>' +
-      '<div id="muniBody" style="margin-top:10px"></div>';
+      '<div class="menstrual-card su-d46224"><h4>🔍 Buscar en Municipalidad</h4>' +
+      '<div class="conv-row"><label class="su-4b3de7">Buscar <input type="text" id="muniSearch" placeholder="ej: licencia, OIRS, CESFAM, patente, *4157, 1891..." maxlength="60" autocomplete="off"></label></div></div>' +
+      '<div id="muniBody" class="su-d2c171"></div>';
     var map = { tabMuniMuni: 'muni', tabMuniDir: 'dir', tabMuniTra: 'tra', tabMuniSal: 'sal', tabMuniEme: 'eme', tabMuniHist: 'hist', tabMuniMios: 'mios' };
     Object.keys(map).forEach(function (id) {
       var b = $(id);
@@ -251,23 +251,23 @@ function matchQ() {
 /* ---------- renders por pestaña ---------- */
 function renderSede(d) {
   var s = d.sede, a = d.autoridades;
-  var html = '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🏛️ ' + esc(s.nombre) + '</h4>' +
-    '<p style="font-size:12px;line-height:1.6">📍 ' + esc(s.direccion) + '<br>📞 ' + esc(s.fono) + '<br>📮 ' + esc(s.oirs) + '<br>🌐 ' + esc(s.web) + '<br>🕐 ' + esc(s.horario) + '</p>' +
-    '<p class="muted" style="font-size:11px">' + esc(s.nota) + '</p>' +
-    '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">' +
-    '<button type="button" class="btn" data-muni-share-sede style="width:auto;font-size:11px">📤 Compartir contacto</button></div></div>';
-  html += '<div class="menstrual-card" style="margin-top:10px"><h4>👤 Alcalde · ' + esc(a.alcalde.periodo) + '</h4>' +
-    '<p style="font-size:12px"><b>' + esc(a.alcalde.nombre) + '</b><br><span class="muted" style="font-size:11px">📮 ' + esc(a.alcalde.correo) + ' · ' + esc(a.alcalde.oficina) + '</span></p></div>';
-  html += '<div class="menstrual-card" style="margin-top:10px"><h4>🗳️ Concejo Municipal · 6</h4>' +
-    '<div style="display:flex;gap:6px;flex-wrap:wrap">' + a.concejo.map(function (c) {
+  var html = '<div class="menstrual-card su-68a1a9"><h4>🏛️ ' + esc(s.nombre) + '</h4>' +
+    '<p class="su-616df7">📍 ' + esc(s.direccion) + '<br>📞 ' + esc(s.fono) + '<br>📮 ' + esc(s.oirs) + '<br>🌐 ' + esc(s.web) + '<br>🕐 ' + esc(s.horario) + '</p>' +
+    '<p class="muted su-11a508">' + esc(s.nota) + '</p>' +
+    '<div class="su-c158a9">' +
+    '<button type="button" class="btn su-337714" data-muni-share-sede>📤 Compartir contacto</button></div></div>';
+  html += '<div class="menstrual-card su-d2c171"><h4>👤 Alcalde · ' + esc(a.alcalde.periodo) + '</h4>' +
+    '<p class="su-6cb285"><b>' + esc(a.alcalde.nombre) + '</b><br><span class="muted su-11a508">📮 ' + esc(a.alcalde.correo) + ' · ' + esc(a.alcalde.oficina) + '</span></p></div>';
+  html += '<div class="menstrual-card su-d2c171"><h4>🗳️ Concejo Municipal · 6</h4>' +
+    '<div class="su-6157e8">' + a.concejo.map(function (c) {
       return '<span class="chip"><b>' + esc(c.nombre) + '</b> · ' + esc(c.pacto) + '</span>';
     }).join('') + '</div>' +
-    '<p class="muted" style="font-size:11px;margin-top:6px">' + esc(a.notaConcejo) + '</p></div>';
-  html += '<div class="menstrual-card" style="margin-top:10px"><h4>🙋 Participación</h4>' +
-    '<p class="muted" style="font-size:11px">' + esc(d.participacion.concejo) + '</p>' +
-    '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">' + d.participacion.fondos.map(function (f) { return '<span class="chip">🎯 ' + esc(f) + '</span>'; }).join('') + '</div>' +
-    '<p class="muted" style="font-size:11px;margin-top:6px">💡 ' + esc(d.participacion.consejo) + '</p></div>';
-  html += '<p class="muted" style="font-size:10px;margin-top:8px">Fuentes: ' + esc(d.fuentes) + ' · Actualizado ' + esc(d.actualizado || '') + '. Verifica vigencia antes de ir.</p>';
+    '<p class="muted su-e13d76">' + esc(a.notaConcejo) + '</p></div>';
+  html += '<div class="menstrual-card su-d2c171"><h4>🙋 Participación</h4>' +
+    '<p class="muted su-11a508">' + esc(d.participacion.concejo) + '</p>' +
+    '<div class="su-c158a9">' + d.participacion.fondos.map(function (f) { return '<span class="chip">🎯 ' + esc(f) + '</span>'; }).join('') + '</div>' +
+    '<p class="muted su-e13d76">💡 ' + esc(d.participacion.consejo) + '</p></div>';
+  html += '<p class="muted su-a953a7">Fuentes: ' + esc(d.fuentes) + ' · Actualizado ' + esc(d.actualizado || '') + '. Verifica vigencia antes de ir.</p>';
   return html;
 }
 
@@ -279,12 +279,12 @@ function renderDirecciones(d) {
   });
   if (!list.length) return '<p class="muted">Sin resultados. Prueba “licencia”, “DIDECO”, “tránsito”, “aseo”...</p>';
   return '<div class="menstrual-card"><h4>📂 Direcciones y unidades · ' + list.length + '</h4>' +
-    '<p class="muted" style="font-size:10px">Anexos: antepone <b>41-226</b> al número (ej 1452 → 41-2261452). Datos de penco.cl; confirma por OIRS.</p>' +
+    '<p class="muted su-0d5be0">Anexos: antepone <b>41-226</b> al número (ej 1452 → 41-2261452). Datos de penco.cl; confirma por OIRS.</p>' +
     list.map(function (x) {
-      return '<div class="si-card" style="padding:8px 10px"><h4 style="font-size:12px">' + esc(x.icon || '📂') + ' ' + esc(x.nombre) + '</h4>' +
-        '<p class="muted" style="font-size:11px">👤 ' + esc(x.director) + ' · 📞 ' + esc(x.contacto) + '<br>📍 ' + esc(x.direccion) + '</p>' +
-        '<p style="font-size:11px">' + esc(x.funcion) + '</p>' +
-        (x.unidades && x.unidades.length ? '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px">' + x.unidades.map(function (u) { return '<span class="chip" style="font-size:10px">' + esc(u) + '</span>'; }).join('') + '</div>' : '') + '</div>';
+      return '<div class="si-card su-cfa1ec"><h4 class="su-6cb285">' + esc(x.icon || '📂') + ' ' + esc(x.nombre) + '</h4>' +
+        '<p class="muted su-11a508">👤 ' + esc(x.director) + ' · 📞 ' + esc(x.contacto) + '<br>📍 ' + esc(x.direccion) + '</p>' +
+        '<p class="su-11a508">' + esc(x.funcion) + '</p>' +
+        (x.unidades && x.unidades.length ? '<div class="su-8af0ed">' + x.unidades.map(function (u) { return '<span class="chip su-0d5be0">' + esc(u) + '</span>'; }).join('') + '</div>' : '') + '</div>';
     }).join('') + '</div>';
 }
 
@@ -293,21 +293,21 @@ function tramiteCard(t) {
   var hecho = !!st.hechos[t.id];
   var nota = st.notas[t.id] || '';
   var html = '<div class="si-card" style="padding:10px 12px;border-color:#d4af3766' + (hecho ? ';opacity:.85' : '') + '">' +
-    '<h4 style="font-size:13px">' + (hecho ? '✅ ' : esc(t.icon || '🧾') + ' ') + esc(t.nombre) + '</h4>' +
-    '<p class="muted" style="font-size:11px;line-height:1.6">📍 ' + esc(t.donde) + '<br>🗓️ ' + esc(t.cuando) + ' · 💰 ' + esc(t.costo || 'Consultar') + '</p>' +
-    '<p style="font-size:12px"><b>Requisitos:</b></p><ul style="font-size:11px;margin:2px 0 6px 18px;line-height:1.5">' +
+    '<h4 class="su-5e0faa">' + (hecho ? '✅ ' : esc(t.icon || '🧾') + ' ') + esc(t.nombre) + '</h4>' +
+    '<p class="muted su-b439ab">📍 ' + esc(t.donde) + '<br>🗓️ ' + esc(t.cuando) + ' · 💰 ' + esc(t.costo || 'Consultar') + '</p>' +
+    '<p class="su-6cb285"><b>Requisitos:</b></p><ul class="su-3e8e6a">' +
     (t.requisitos || []).map(function (r) { return '<li>' + esc(r) + '</li>'; }).join('') + '</ul>' +
-    (t.tip ? '<p class="muted" style="font-size:11px">💡 ' + esc(t.tip) + '</p>' : '') +
-    '<label style="font-size:11px">📝 Mi nota <input type="text" data-muni-nota="' + esc(t.id) + '" placeholder="ej: folio 1234, hora pedida..." maxlength="80" value="' + esc(nota) + '"></label>' +
-    '<div class="conv-row" style="align-items:flex-end;margin-top:6px">' +
+    (t.tip ? '<p class="muted su-11a508">💡 ' + esc(t.tip) + '</p>' : '') +
+    '<label class="su-11a508">📝 Mi nota <input type="text" data-muni-nota="' + esc(t.id) + '" placeholder="ej: folio 1234, hora pedida..." maxlength="80" value="' + esc(nota) + '"></label>' +
+    '<div class="conv-row su-7c1cbb">' +
     '<label>Fecha <input type="date" data-muni-fecha="' + esc(t.id) + '" value="' + esc(todayKey()) + '"></label>' +
-    '<label>Hora <input type="time" data-muni-hora="' + esc(t.id) + '" value="09:00" style="max-width:110px"></label>' +
-    '<label class="check-row" style="margin:0;white-space:nowrap"><input type="checkbox" data-muni-aviso="' + esc(t.id) + '"> 🔔</label>' +
-    '<button type="button" class="btn btn-accent" data-muni-add="' + esc(t.id) + '" style="width:auto">📌 Calendario</button>' +
+    '<label>Hora <input type="time" data-muni-hora="' + esc(t.id) + '" value="09:00" class="su-91245b"></label>' +
+    '<label class="check-row su-988f60"><input type="checkbox" data-muni-aviso="' + esc(t.id) + '"> 🔔</label>' +
+    '<button type="button" class="btn btn-accent su-30e741" data-muni-add="' + esc(t.id) + '">📌 Calendario</button>' +
     '</div>' +
-    '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">' +
-    '<button type="button" class="btn" data-muni-hecho="' + esc(t.id) + '" style="width:auto;font-size:11px">' + (hecho ? '↩️ Reabrir' : '☑️ Marcar hecho') + '</button>' +
-    '<button type="button" class="btn" data-muni-share="' + esc(t.id) + '" style="width:auto;font-size:11px">📤 Compartir</button></div></div>';
+    '<div class="su-c158a9">' +
+    '<button type="button" class="btn su-337714" data-muni-hecho="' + esc(t.id) + '">' + (hecho ? '↩️ Reabrir' : '☑️ Marcar hecho') + '</button>' +
+    '<button type="button" class="btn su-337714" data-muni-share="' + esc(t.id) + '">📤 Compartir</button></div></div>';
   return html;
 }
 
@@ -319,13 +319,13 @@ function renderTramites(d) {
   if (q) list = list.filter(function (t) {
     return ((t.nombre || '') + ' ' + (t.donde || '') + ' ' + (t.cuando || '') + ' ' + ((t.requisitos || []).join(' '))).toLowerCase().indexOf(q) >= 0;
   });
-  var html = '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🧾 Trámites · ' + list.length + '</h4>' +
-    '<p class="muted" style="font-size:11px">Guarda fecha con <b>📌 Calendario</b> (queda como compromiso 🕐 en tu día) y marca <b>☑️ Hecho</b> cuando lo termines. Tu nota queda privada.</p></div>';
-  html += '<div class="menstrual-card" style="margin-top:10px"><h4>➕ Agregar mi trámite</h4>' +
-    '<div class="conv-row"><label style="flex:2">Nombre * <input type="text" id="muniMioNombre" placeholder="ej: Renovar permiso auto" maxlength="60"></label>' +
+  var html = '<div class="menstrual-card su-68a1a9"><h4>🧾 Trámites · ' + list.length + '</h4>' +
+    '<p class="muted su-11a508">Guarda fecha con <b>📌 Calendario</b> (queda como compromiso 🕐 en tu día) y marca <b>☑️ Hecho</b> cuando lo termines. Tu nota queda privada.</p></div>';
+  html += '<div class="menstrual-card su-d2c171"><h4>➕ Agregar mi trámite</h4>' +
+    '<div class="conv-row"><label class="su-4b3de7">Nombre * <input type="text" id="muniMioNombre" placeholder="ej: Renovar permiso auto" maxlength="60"></label>' +
     '<label>Dónde <input type="text" id="muniMioDonde" placeholder="ej: Freire 510" maxlength="50"></label></div>' +
     '<label>Requisitos / notas <input type="text" id="muniMioReq" placeholder="qué llevar, folio, horario..." maxlength="120"></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="muniMioAdd" class="btn btn-accent" style="width:auto">+ Guardar trámite</button></div></div>';
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="muniMioAdd" class="btn btn-accent su-30e741">+ Guardar trámite</button></div></div>';
   html += list.length ? list.map(tramiteCard).join('') : '<p class="muted">Sin resultados.</p>';
   return html;
 }
@@ -334,21 +334,21 @@ function renderSalud(d) {
   var q = matchQ();
   var list = (d.salud || []).slice();
   if (q) list = list.filter(function (x) { return ((x.nombre || '') + ' ' + (x.dir || '')).toLowerCase().indexOf(q) >= 0; });
-  var html = '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🏥 Salud municipal (DAS)</h4>' +
-    '<p class="muted" style="font-size:11px">Urgencia 24 h: Hospital Penco-Lirquén. Para horas: SOME de tu CESFAM o Portal Paciente. Lleva carnet + carnet de control.</p>' +
+  var html = '<div class="menstrual-card su-68a1a9"><h4>🏥 Salud municipal (DAS)</h4>' +
+    '<p class="muted su-11a508">Urgencia 24 h: Hospital Penco-Lirquén. Para horas: SOME de tu CESFAM o Portal Paciente. Lleva carnet + carnet de control.</p>' +
     list.map(function (x) {
-      return '<div class="si-card" style="padding:8px 10px"><h4 style="font-size:12px">🏥 ' + esc(x.nombre) + '</h4>' +
-        '<p class="muted" style="font-size:11px">📍 ' + esc(x.dir) + ' · 📞 ' + esc(x.fono) + '<br>🕐 ' + esc(x.horario) + '</p></div>';
+      return '<div class="si-card su-cfa1ec"><h4 class="su-6cb285">🏥 ' + esc(x.nombre) + '</h4>' +
+        '<p class="muted su-11a508">📍 ' + esc(x.dir) + ' · 📞 ' + esc(x.fono) + '<br>🕐 ' + esc(x.horario) + '</p></div>';
     }).join('') + '</div>';
   var edu = (d.direcciones || []).filter(function (x) { return x.id === 'educacion'; })[0];
   if (edu && (!q || 'educacion dem escuela liceo beca preuniversitario'.indexOf(q) >= 0)) {
-    html += '<div class="menstrual-card" style="margin-top:10px"><h4>📚 Educación municipal (DEM)</h4>' +
-      '<p style="font-size:12px"><b>' + esc(edu.nombre) + '</b> — ' + esc(edu.director) + '<br><span class="muted" style="font-size:11px">📍 ' + esc(edu.direccion) + ' · 📞 ' + esc(edu.contacto) + '</span></p>' +
-      '<p style="font-size:11px">' + esc(edu.funcion) + '</p>' +
-      '<div style="display:flex;gap:6px;flex-wrap:wrap">' + (edu.unidades || []).map(function (u) { return '<span class="chip" style="font-size:10px">' + esc(u) + '</span>'; }).join('') + '</div></div>';
+    html += '<div class="menstrual-card su-d2c171"><h4>📚 Educación municipal (DEM)</h4>' +
+      '<p class="su-6cb285"><b>' + esc(edu.nombre) + '</b> — ' + esc(edu.director) + '<br><span class="muted su-11a508">📍 ' + esc(edu.direccion) + ' · 📞 ' + esc(edu.contacto) + '</span></p>' +
+      '<p class="su-11a508">' + esc(edu.funcion) + '</p>' +
+      '<div class="su-6157e8">' + (edu.unidades || []).map(function (u) { return '<span class="chip su-0d5be0">' + esc(u) + '</span>'; }).join('') + '</div></div>';
   }
-  html += '<div class="menstrual-card" style="margin-top:10px"><h4>💊 Farmacia + 🐾 Veterinario</h4>' +
-    '<p style="font-size:11px">💊 Farmacia Municipal: receta vigente + inscripción CESFAM, precio costo.<br>🐾 Veterinario Municipal: +56 9 4401 1613, con hora y operativos de esterilización.</p></div>';
+  html += '<div class="menstrual-card su-d2c171"><h4>💊 Farmacia + 🐾 Veterinario</h4>' +
+    '<p class="su-11a508">💊 Farmacia Municipal: receta vigente + inscripción CESFAM, precio costo.<br>🐾 Veterinario Municipal: +56 9 4401 1613, con hora y operativos de esterilización.</p></div>';
   return html;
 }
 
@@ -356,13 +356,13 @@ function renderEmerg(d) {
   var q = matchQ();
   var list = (d.emergencias || []).slice();
   if (q) list = list.filter(function (x) { return ((x.nombre || '') + ' ' + (x.numero || '')).toLowerCase().indexOf(q) >= 0; });
-  var html = '<div class="menstrual-card" style="border-color:#ff6b6b"><h4 style="color:#ff6b6b">🚨 Emergencias — llama primero, avisa después</h4>' +
+  var html = '<div class="menstrual-card su-55637b"><h4 class="su-0562fa">🚨 Emergencias — llama primero, avisa después</h4>' +
     list.map(function (x) {
-      return '<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center"><span><b>' + esc(x.nombre) + '</b><br><span class="muted" style="font-size:11px">📞 <b>' + esc(x.numero) + '</b> · ' + esc(x.nota || '') + '</span></span>' +
-        '<button type="button" class="btn" data-muni-tel="' + esc(x.numero) + '" style="width:auto" title="Copiar número">📋</button></div>';
+      return '<div class="habit-item su-13313b"><span><b>' + esc(x.nombre) + '</b><br><span class="muted su-11a508">📞 <b>' + esc(x.numero) + '</b> · ' + esc(x.nota || '') + '</span></span>' +
+        '<button type="button" class="btn su-30e741" data-muni-tel="' + esc(x.numero) + '" title="Copiar número">📋</button></div>';
     }).join('') + '</div>';
-  html += '<div class="menstrual-card" style="margin-top:10px"><h4>🌊 Tsunami / marejada (Penco costero)</h4>' +
-    '<p class="muted" style="font-size:11px;line-height:1.55">• Si tiembla fuerte y no te puedes poner de pie → evacúa a pie a cota alta (cerro) sin esperar alarma.<br>• Punto de encuentro familiar acordado de antemano.<br>• Mochila: agua, remedios, linterna, documentos, abrigo.<br>• Info oficial: SENAPRED + SHOA + Protección Civil 41-2261305. Ver sección 🌊🚨 Evacuación Tsunami.</p></div>';
+  html += '<div class="menstrual-card su-d2c171"><h4>🌊 Tsunami / marejada (Penco costero)</h4>' +
+    '<p class="muted su-b6db47">• Si tiembla fuerte y no te puedes poner de pie → evacúa a pie a cota alta (cerro) sin esperar alarma.<br>• Punto de encuentro familiar acordado de antemano.<br>• Mochila: agua, remedios, linterna, documentos, abrigo.<br>• Info oficial: SENAPRED + SHOA + Protección Civil 41-2261305. Ver sección 🌊🚨 Evacuación Tsunami.</p></div>';
   return html;
 }
 
@@ -375,22 +375,22 @@ function renderHistoriaMuni(d) {
   if (q) eras = eras.filter(function (e) {
     return ((e.t || '') + ' ' + (e.cuando || '') + ' ' + (e.d || '')).toLowerCase().indexOf(q) >= 0;
   });
-  var html = '<p class="muted" style="font-size:11px;line-height:1.55">' + h.intro + '</p>';
+  var html = '<p class="muted su-b6db47">' + h.intro + '</p>';
   html += eras.map(function (e, i) {
     return '<div class="menstrual-card" style="margin-top:10px' + (i === 0 ? ';border-color:var(--gold)' : '') + '">' +
       '<h4>' + esc(e.t) + '</h4>' +
-      '<p class="muted" style="font-size:10px;margin:2px 0 6px">' + esc(e.cuando) + '</p>' +
-      '<p style="font-size:12px;line-height:1.55">' + esc(e.d) + '</p></div>';
+      '<p class="muted su-2c4c6c">' + esc(e.cuando) + '</p>' +
+      '<p class="su-afb724">' + esc(e.d) + '</p></div>';
   }).join('');
   if (h.alcaldes && h.alcaldes.length && (!q || 'alcalde'.indexOf(q) >= 0 || h.alcaldes.join(' ').toLowerCase().indexOf(q) >= 0)) {
-    html += '<div class="menstrual-card" style="margin-top:10px"><h4>🗳️ Alcaldes de Penco (resumen)</h4>' +
-      '<div style="display:flex;gap:6px;flex-wrap:wrap">' + h.alcaldes.map(function (a) { return '<span class="chip" style="font-size:10px">' + esc(a) + '</span>'; }).join('') + '</div></div>';
+    html += '<div class="menstrual-card su-d2c171"><h4>🗳️ Alcaldes de Penco (resumen)</h4>' +
+      '<div class="su-6157e8">' + h.alcaldes.map(function (a) { return '<span class="chip su-0d5be0">' + esc(a) + '</span>'; }).join('') + '</div></div>';
   }
   if (h.sede && (!q || h.sede.toLowerCase().indexOf(q) >= 0)) {
-    html += '<div class="menstrual-card" style="margin-top:10px"><h4>📍 Sedes municipales</h4>' +
-      '<p style="font-size:11px;line-height:1.55">' + esc(h.sede) + '</p></div>';
+    html += '<div class="menstrual-card su-d2c171"><h4>📍 Sedes municipales</h4>' +
+      '<p class="su-b6db47">' + esc(h.sede) + '</p></div>';
   }
-  html += '<p class="muted" style="font-size:10px;margin-top:8px">Fuentes: ' + esc(d.fuentes || '') + '</p>';
+  html += '<p class="muted su-a953a7">Fuentes: ' + esc(d.fuentes || '') + '</p>';
   return html;
 }
 
@@ -398,30 +398,30 @@ function renderMios(d) {
   var st = storeMuni();
   var hechos = d.tramites.filter(function (t) { return st.hechos[t.id]; });
   var avisos = st.avisos.slice().sort(function (a, b) { return String(a.fecha).localeCompare(String(b.fecha)); });
-  var html = '<div class="menstrual-card" style="border-color:var(--gold)"><h4>⭐ Mis trámites · ' + hechos.length + ' hechos · ' + avisos.length + ' en calendario · ' + st.mios.length + ' propios</h4>' +
-    '<p class="muted" style="font-size:11px">Tus vencimientos ya están como compromisos 🕐 en tu calendario. Aquí los ves todos juntos.</p>';
+  var html = '<div class="menstrual-card su-68a1a9"><h4>⭐ Mis trámites · ' + hechos.length + ' hechos · ' + avisos.length + ' en calendario · ' + st.mios.length + ' propios</h4>' +
+    '<p class="muted su-11a508">Tus vencimientos ya están como compromisos 🕐 en tu calendario. Aquí los ves todos juntos.</p>';
   if (hechos.length) {
-    html += '<p class="muted" style="font-size:11px">✅ Hechos:</p>' + hechos.map(function (t) {
-      return '<div class="chip" style="display:block;margin-top:4px">✅ <b>' + esc(t.nombre) + '</b>' + (st.notas[t.id] ? ' · ' + esc(st.notas[t.id]) : '') + '</div>';
+    html += '<p class="muted su-11a508">✅ Hechos:</p>' + hechos.map(function (t) {
+      return '<div class="chip su-6f28f3">✅ <b>' + esc(t.nombre) + '</b>' + (st.notas[t.id] ? ' · ' + esc(st.notas[t.id]) : '') + '</div>';
     }).join('');
   } else {
-    html += '<p class="muted" style="font-size:11px">Aún no marcas hechos. Ve a 🧾 Trámites y pulsa ☑️.</p>';
+    html += '<p class="muted su-11a508">Aún no marcas hechos. Ve a 🧾 Trámites y pulsa ☑️.</p>';
   }
   if (avisos.length) {
-    html += '<div style="margin-top:8px">' + avisos.map(function (r) {
-      return '<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center"><span><b>' + esc(r.nombre) + '</b><br><span class="muted" style="font-size:11px">📅 ' + esc(r.fecha) + ' · 🕐 ' + esc(r.hora) + (r.notify ? ' · 🔔' : '') + (r.detalle ? ' · ' + esc(r.detalle) : '') + '</span></span>' +
-        '<button type="button" class="btn" data-muni-avdel="' + r.id + '" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕</button></div>';
+    html += '<div class="su-8a77e5">' + avisos.map(function (r) {
+      return '<div class="habit-item su-13313b"><span><b>' + esc(r.nombre) + '</b><br><span class="muted su-11a508">📅 ' + esc(r.fecha) + ' · 🕐 ' + esc(r.hora) + (r.notify ? ' · 🔔' : '') + (r.detalle ? ' · ' + esc(r.detalle) : '') + '</span></span>' +
+        '<button type="button" class="btn su-fd834a" data-muni-avdel="' + r.id + '">✕</button></div>';
     }).join('') + '</div>';
   }
   if (st.mios.length) {
-    html += '<p class="muted" style="font-size:11px;margin-top:8px">📌 Mis trámites propios:</p>' + st.mios.map(function (t) {
-      return '<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center"><span><b>' + esc(t.icon || '📌') + ' ' + esc(t.nombre) + '</b>' + (st.hechos[t.id] ? ' ✅' : '') + '<br><span class="muted" style="font-size:11px">' + esc(t.donde || '') + '</span></span>' +
-        '<span style="display:flex;gap:6px"><button type="button" class="btn" data-muni-hecho="' + esc(t.id) + '" style="width:auto;font-size:11px">☑️</button>' +
-        '<button type="button" class="btn" data-muni-miodel="' + esc(t.id) + '" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕</button></span></div>';
+    html += '<p class="muted su-e6fe60">📌 Mis trámites propios:</p>' + st.mios.map(function (t) {
+      return '<div class="habit-item su-13313b"><span><b>' + esc(t.icon || '📌') + ' ' + esc(t.nombre) + '</b>' + (st.hechos[t.id] ? ' ✅' : '') + '<br><span class="muted su-11a508">' + esc(t.donde || '') + '</span></span>' +
+        '<span class="su-49cd09"><button type="button" class="btn su-337714" data-muni-hecho="' + esc(t.id) + '">☑️</button>' +
+        '<button type="button" class="btn su-fd834a" data-muni-miodel="' + esc(t.id) + '">✕</button></span></div>';
     }).join('');
   }
-  html += '<div class="dlg-actions" style="justify-content:space-between;margin-top:8px"><button type="button" id="muniShareAll" class="btn" style="width:auto">📤 Compartir mi lista</button>' +
-    '<button type="button" id="muniClearAll" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar lista</button></div></div>';
+  html += '<div class="dlg-actions su-efea1d"><button type="button" id="muniShareAll" class="btn su-30e741">📤 Compartir mi lista</button>' +
+    '<button type="button" id="muniClearAll" class="btn su-214f75">🗑 Borrar lista</button></div></div>';
   return html;
 }
 

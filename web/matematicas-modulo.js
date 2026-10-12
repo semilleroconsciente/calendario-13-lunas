@@ -77,10 +77,10 @@ function makeDialog(id, title, sub, bodyHTML) {
   var d = document.createElement('dialog');
   d.id = id;
   d.innerHTML = '<form method="dialog">' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
-    '<h3 style="margin:0;color:var(--accent)">' + title + '</h3>' +
+    '<div class="dlg-actions su-d2d053">' +
+    '<h3 class="su-ee0cfe">' + title + '</h3>' +
     '<button type="button" data-close class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    (sub ? '<p class="muted" style="line-height:1.5">' + sub + '</p>' : '') +
+    (sub ? '<p class="muted su-77e2fe">' + sub + '</p>' : '') +
     bodyHTML +
     '<div class="dlg-actions"><button type="button" data-close class="btn">Cerrar</button></div></form>';
   document.body.appendChild(d);
@@ -491,7 +491,7 @@ function paintQ() {
   var t = $('matQTxt');
   if (t) {
     if (Q.a == null && !Q.txt) t.textContent = 'Elige nivel y toca “🎲 Nueva pregunta” para empezar. Con ⏎ compruebas sin usar el mouse.';
-    else t.innerHTML = '¿Cuánto es <b style="font-size:20px">' + qEnunciado() + '</b>? (' + Q.ok + '/' + Q.meta + ')';
+    else t.innerHTML = '¿Cuánto es <b class="su-b9199e">' + qEnunciado() + '</b>? (' + Q.ok + '/' + Q.meta + ')';
   }
   var st = $('matQStats');
   if (st) {
@@ -591,12 +591,12 @@ function renderAva() {
     return '<span title="' + esc(L.nombre) + ': ' + st + '/3"> ' + L.ico + ' ' + '★'.repeat(st) + '☆'.repeat(3 - st) + '</span>';
   }).join(' ');
   var logs = (m.logs || []).slice().sort(function (a, b) { return (b.fecha || '').localeCompare(a.fecha || ''); }).slice(0, 30);
-  box.innerHTML = '<p class="muted" style="font-size:11px">🎮 Partidas: <b>' + (s.played || 0) + '</b> · 🏆 mejor: <b>' + (s.best || 0) + '</b> · 🔥 racha días: <b>' + (s.streak || 0) + '</b> · ✨ XP: <b>' + xp + '</b> · 🎚️ nivel: <b>' + cur + '/' + LEVELS.length + ' ' + LEVELS[cur - 1].ico + ' ' + esc(LEVELS[cur - 1].nombre) + '</b></p>' +
-    '<div style="background:var(--panel);border-radius:6px;height:10px;overflow:hidden"><div style="width:' + (nxt ? Math.min(100, Math.round(xp / nxt.req * 100)) : 100) + '%;height:100%;background:linear-gradient(90deg,#7ab8ff,#e8c56a,#8fd694)"></div></div>' +
-    '<p class="muted" style="font-size:11px;margin-top:6px">' + starRow + (nxt ? ' · siguiente: ' + nxt.ico + ' ' + esc(nxt.nombre) + ' con ' + nxt.req + ' XP (faltan ' + (nxt.req - xp) + ')' : ' · ¡nivel máximo ☀️!') + '</p>' +
+  box.innerHTML = '<p class="muted su-11a508">🎮 Partidas: <b>' + (s.played || 0) + '</b> · 🏆 mejor: <b>' + (s.best || 0) + '</b> · 🔥 racha días: <b>' + (s.streak || 0) + '</b> · ✨ XP: <b>' + xp + '</b> · 🎚️ nivel: <b>' + cur + '/' + LEVELS.length + ' ' + LEVELS[cur - 1].ico + ' ' + esc(LEVELS[cur - 1].nombre) + '</b></p>' +
+    '<div class="su-ab9537"><div style="width:' + (nxt ? Math.min(100, Math.round(xp / nxt.req * 100)) : 100) + '%;height:100%;background:linear-gradient(90deg,#7ab8ff,#e8c56a,#8fd694)"></div></div>' +
+    '<p class="muted su-e13d76">' + starRow + (nxt ? ' · siguiente: ' + nxt.ico + ' ' + esc(nxt.nombre) + ' con ' + nxt.req + ' XP (faltan ' + (nxt.req - xp) + ')' : ' · ¡nivel máximo ☀️!') + '</p>' +
     (logs.length ? logs.map(function (r) {
       var tag = r.tipo === 'quiz' ? '🔢 Quiz' : r.tipo === 'adivinanza' ? '🎯 Adivinanza' : r.tipo === 'basica' ? '📚 Básica' : r.tipo === 'media' ? '🎒 Media' : r.tipo === 'superior' ? '🎓 Superior' : '📝 Práctica';
-      return '<div class="habit-item" style="display:flex;justify-content:space-between;gap:8px;align-items:center"><span><b>' + esc(r.fecha || '') + '</b> · ' + esc(tag) + ' · ' + esc(r.detalle || '') + '</span><button class="btn" style="width:auto;font-size:11px;color:#e76e8a" data-del="' + r.id + '">✕</button></div>';
+      return '<div class="habit-item su-6bf84b"><span><b>' + esc(r.fecha || '') + '</b> · ' + esc(tag) + ' · ' + esc(r.detalle || '') + '</span><button class="btn su-9b8fb7" data-del="' + r.id + '">✕</button></div>';
     }).join('') : '<p class="muted">Sin registros aún. Juega una partida en 🔢 Práctica y aquí verás tu avance por lunas.</p>');
   box.querySelectorAll('[data-del]').forEach(function (b) {
     b.onclick = function () {
@@ -614,16 +614,16 @@ function rowCard(c) {
 }
 function buildDialog() {
   var body =
-    '<div class="timer-tabs" style="flex-wrap:wrap;margin-bottom:10px">' +
-    '<button type="button" id="tabMatGuia" class="btn btn-accent" style="width:auto">📖 Guía</button>' +
-    '<button type="button" id="tabMatCalc" class="btn" style="width:auto">🧮 Calculadora</button>' +
-    '<button type="button" id="tabMatPract" class="btn" style="width:auto">🔢 Práctica</button>' +
-    '<button type="button" id="tabMatGeo" class="btn" style="width:auto">📐 Geometría</button>' +
-    '<button type="button" id="tabMatHogar" class="btn" style="width:auto">🏠 Hogar</button>' +
-    '<button type="button" id="tabMatBas" class="btn" style="width:auto">📚 Básica</button>' +
-    '<button type="button" id="tabMatMed" class="btn" style="width:auto">🎒 Media</button>' +
-    '<button type="button" id="tabMatSup" class="btn" style="width:auto">🎓 Superior</button>' +
-    '<button type="button" id="tabMatAva" class="btn" style="width:auto">📓 Mi avance</button></div>' +
+    '<div class="timer-tabs su-dd1da5">' +
+    '<button type="button" id="tabMatGuia" class="btn btn-accent su-30e741">📖 Guía</button>' +
+    '<button type="button" id="tabMatCalc" class="btn su-30e741">🧮 Calculadora</button>' +
+    '<button type="button" id="tabMatPract" class="btn su-30e741">🔢 Práctica</button>' +
+    '<button type="button" id="tabMatGeo" class="btn su-30e741">📐 Geometría</button>' +
+    '<button type="button" id="tabMatHogar" class="btn su-30e741">🏠 Hogar</button>' +
+    '<button type="button" id="tabMatBas" class="btn su-30e741">📚 Básica</button>' +
+    '<button type="button" id="tabMatMed" class="btn su-30e741">🎒 Media</button>' +
+    '<button type="button" id="tabMatSup" class="btn su-30e741">🎓 Superior</button>' +
+    '<button type="button" id="tabMatAva" class="btn su-30e741">📓 Mi avance</button></div>' +
 
     /* GUIA */
     '<div id="matGuia">' +
@@ -634,35 +634,35 @@ function buildDialog() {
     rowCard({ h: '🎚️ 10 niveles: avanza sin miedo', p: '<b>🌱 1 Semilla (1–10):</b> sumas y restas para partir. <b>🌿 2 Brote (1–20):</b> + tablas 2, 3 y 5. <b>🌳 3 Árbol (1–30):</b> × ÷ de verdad. <b>🌙 4 Luna (1–50):</b> mixto + % y fracciones. <b>☀️ 5 Kimche (1–100):</b> vida real (IVA, interés, geometría).<br><b>🌊 6 Lafken:</b> fracciones y decimales (1/2 + 1/4, mitad de algo). <b>⛰️ 7 Pewen:</b> % mentales, descuentos y regla de 3. <b>🦉 8 Kuyam:</b> áreas y perímetros mentales. <b>🌌 9 Wenu:</b> potencias, √ exacta y ecuaciones x + a = b. <b>🔥 10 Newen:</b> TODO mezclado hasta 200, el desafío sabio.<br>Ganas <b>+10 XP por buena</b> (+5 racha ≥3, +5 desde N4, +5 desde N6, +5 desde N9, +5 extra en retos ★), <b>+20–40 XP al cumplir la meta</b> (más en niveles altos) y <b>★ hasta 3 por nivel</b>. Desbloqueos: 60 · 150 · 300 · 500 · 800 · 1200 · 1700 · 2300 · 3000 XP.' }) +
     rowCard({ h: '💡 Si te equivocas', p: 'El error es dato, no fracaso. En el quiz la respuesta correcta aparece al tiro para que aprendas. Si un tema te supera (divisiones largas, fracciones), baja un nivel y vuelve en 2 lunas. Y si quieres compañía: 🧠 Estudio y 🧩 Memoria del mismo grupo Aprender.' }) +
     rowCard({ h: '🎓 Ruta por etapa educativa', p: '<b>📚 Básica (1°–8°):</b> números, 4 operaciones, fracciones, decimales, % y geometría base. <b>🎒 Media (I–IV):</b> ecuaciones, funciones, trigonometría y probabilidad (puente PAES). <b>🎓 Superior:</b> derivadas, integrales, matrices, interés compuesto y estadística. Cada etapa trae <b>guía + herramientas + quiz con XP</b> que suma a tus mismos niveles y a 📓 Mi avance.' }) +
-    '<div class="dlg-actions" style="justify-content:flex-start;flex-wrap:wrap"><button type="button" id="matGoCalc" class="btn btn-accent" style="width:auto">🧮 Ir a la calculadora →</button> <button type="button" id="matGoPract" class="btn" style="width:auto">🔢 Practicar 10 min →</button> <button type="button" id="matGoBas" class="btn" style="width:auto">📚 Básica →</button> <button type="button" id="matGoMed" class="btn" style="width:auto">🎒 Media →</button> <button type="button" id="matGoSup" class="btn" style="width:auto">🎓 Superior →</button></div>' +
+    '<div class="dlg-actions su-117179"><button type="button" id="matGoCalc" class="btn btn-accent su-30e741">🧮 Ir a la calculadora →</button> <button type="button" id="matGoPract" class="btn su-30e741">🔢 Practicar 10 min →</button> <button type="button" id="matGoBas" class="btn su-30e741">📚 Básica →</button> <button type="button" id="matGoMed" class="btn su-30e741">🎒 Media →</button> <button type="button" id="matGoSup" class="btn su-30e741">🎓 Superior →</button></div>' +
     '</div>' +
 
     /* CALC */
     '<div id="matCalc" class="hidden">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🧮 Calculadora de bolsillo</h4>' +
+    '<div class="menstrual-card su-68a1a9"><h4>🧮 Calculadora de bolsillo</h4>' +
     '<label class="mat-expr-label">Expresión <input type="text" id="matExpr" class="mat-expr" placeholder="ej: 2500*3 · 15000-19% · 10%3 (módulo)" autocomplete="off" inputmode="decimal"></label>' +
-    '<div class="dlg-actions mat-calc-actions"><button type="button" id="matCalcGo" class="btn btn-accent" style="width:auto">Calcular</button><button type="button" id="matCalcClear" class="btn" style="width:auto">Limpiar</button></div>' +
+    '<div class="dlg-actions mat-calc-actions"><button type="button" id="matCalcGo" class="btn btn-accent su-30e741">Calcular</button><button type="button" id="matCalcClear" class="btn su-30e741">Limpiar</button></div>' +
     '<div id="matCalcRes" class="chip mat-calc-res">Escribe y calcula. % solo = porcentaje (50% → 0,5). Tras + o − usa el total (200+10% → 220).</div>' +
     '<div class="mat-calc-pad">' +
     ['7', '8', '9', '/', '4', '5', '6', '*', '1', '2', '3', '-', '0', '.', '%', '+', '(', ')', 'C', '='].map(function (k) { var lbl = (k === 'C' ? '⌫' : k); var cls = 'btn mat-pad-btn' + ((k === '/' || k === '*' || k === '-' || k === '+' || k === '%' || k === '(' || k === ')') ? ' mat-op' : '') + (k === '=' ? ' btn-accent' : ''); return '<button type="button" class="' + cls + '" data-pad="' + k + '">' + lbl + '</button>'; }).join('') +
     '</div></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>📏 Porcentaje y regla de 3</h4>' +
-    '<div class="conv-row"><label>% de <input type="number" id="matPctBase" placeholder="ej: 15000"></label><label>% <input type="number" id="matPctP" placeholder="ej: 19"></label><label style="align-self:flex-end"><button type="button" id="matPctGo" class="btn btn-accent" style="width:auto">%</button></label></div>' +
-    '<div id="matPctRes" class="chip" style="display:block;white-space:normal">Ej: 19% de 15000 = 2850.</div>' +
-    '<div class="conv-row" style="margin-top:8px"><label>Si <input type="number" id="matR3a" placeholder="4 kg"></label><label>cuestan <input type="number" id="matR3b" placeholder="$6000"></label><label>¿cuánto <input type="number" id="matR3c" placeholder="7 kg">? </label><label style="align-self:flex-end"><button type="button" id="matR3Go" class="btn btn-accent" style="width:auto">Regla 3</button></label></div>' +
-    '<div id="matR3Res" class="chip" style="display:block;white-space:normal">Proporción directa: (b×c)/a.</div></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>🍰 Fracciones + MCD/MCM + primos</h4>' +
-    '<div class="conv-row"><label>a/b <input type="text" id="matFr1" placeholder="ej: 3/4"></label><label>op <select id="matFrOp"><option value="+">+</option><option value="-">−</option><option value="*">×</option><option value="/">÷</option></select></label><label>c/d <input type="text" id="matFr2" placeholder="ej: 1/2"></label><label style="align-self:flex-end"><button type="button" id="matFrGo" class="btn btn-accent" style="width:auto">=</button></label></div>' +
-    '<div id="matFrRes" class="chip" style="display:block;white-space:normal">Ej: 3/4 + 1/2 = 5/4 = 1,25.</div>' +
-    '<div class="conv-row" style="margin-top:8px"><label>N1 <input type="number" id="matMc1" placeholder="12"></label><label>N2 <input type="number" id="matMc2" placeholder="18"></label><label style="align-self:flex-end"><button type="button" id="matMcGo" class="btn" style="width:auto">MCD/MCM</button></label><label style="align-self:flex-end"><button type="button" id="matPrimoGo" class="btn" style="width:auto">¿Primo N1?</button></label></div>' +
-    '<div id="matMcRes" class="chip" style="display:block;white-space:normal">MCD divide, MCM multiplica en común.</div></div>' +
+    '<div class="menstrual-card su-d2c171"><h4>📏 Porcentaje y regla de 3</h4>' +
+    '<div class="conv-row"><label>% de <input type="number" id="matPctBase" placeholder="ej: 15000"></label><label>% <input type="number" id="matPctP" placeholder="ej: 19"></label><label class="su-ffd20f"><button type="button" id="matPctGo" class="btn btn-accent su-30e741">%</button></label></div>' +
+    '<div id="matPctRes" class="chip su-f5ce59">Ej: 19% de 15000 = 2850.</div>' +
+    '<div class="conv-row su-8a77e5"><label>Si <input type="number" id="matR3a" placeholder="4 kg"></label><label>cuestan <input type="number" id="matR3b" placeholder="$6000"></label><label>¿cuánto <input type="number" id="matR3c" placeholder="7 kg">? </label><label class="su-ffd20f"><button type="button" id="matR3Go" class="btn btn-accent su-30e741">Regla 3</button></label></div>' +
+    '<div id="matR3Res" class="chip su-f5ce59">Proporción directa: (b×c)/a.</div></div>' +
+    '<div class="menstrual-card su-d2c171"><h4>🍰 Fracciones + MCD/MCM + primos</h4>' +
+    '<div class="conv-row"><label>a/b <input type="text" id="matFr1" placeholder="ej: 3/4"></label><label>op <select id="matFrOp"><option value="+">+</option><option value="-">−</option><option value="*">×</option><option value="/">÷</option></select></label><label>c/d <input type="text" id="matFr2" placeholder="ej: 1/2"></label><label class="su-ffd20f"><button type="button" id="matFrGo" class="btn btn-accent su-30e741">=</button></label></div>' +
+    '<div id="matFrRes" class="chip su-f5ce59">Ej: 3/4 + 1/2 = 5/4 = 1,25.</div>' +
+    '<div class="conv-row su-8a77e5"><label>N1 <input type="number" id="matMc1" placeholder="12"></label><label>N2 <input type="number" id="matMc2" placeholder="18"></label><label class="su-ffd20f"><button type="button" id="matMcGo" class="btn su-30e741">MCD/MCM</button></label><label class="su-ffd20f"><button type="button" id="matPrimoGo" class="btn su-30e741">¿Primo N1?</button></label></div>' +
+    '<div id="matMcRes" class="chip su-f5ce59">MCD divide, MCM multiplica en común.</div></div>' +
     '</div>' +
 
     /* PRACT */
     '<div id="matPract" class="hidden">' +
-    '<div class="menstrual-card mat-level-card" style="border-color:var(--gold)"><h4>🎚️ Mis niveles — elige tu desafío</h4>' +
-    '<div id="matLvlXP" class="muted" style="font-size:11px;margin-bottom:6px">✨ 0 XP</div>' +
-    '<div style="background:var(--panel);border-radius:6px;height:10px;overflow:hidden;margin-bottom:8px"><div id="matLvlBar" style="width:0%;height:100%;background:linear-gradient(90deg,#7ab8ff,#e8c56a,#8fd694)"></div></div>' +
+    '<div class="menstrual-card mat-level-card su-68a1a9"><h4>🎚️ Mis niveles — elige tu desafío</h4>' +
+    '<div id="matLvlXP" class="muted su-2b0446">✨ 0 XP</div>' +
+    '<div class="su-be6f1f"><div id="matLvlBar" class="su-0bbd63"></div></div>' +
     '<div class="mat-level-grid">' +
     '<button type="button" class="btn mat-lvl-btn" data-lvl="1"></button>' +
     '<button type="button" class="btn mat-lvl-btn" data-lvl="2"></button>' +
@@ -675,142 +675,142 @@ function buildDialog() {
     '<button type="button" class="btn mat-lvl-btn" data-lvl="9"></button>' +
     '<button type="button" class="btn mat-lvl-btn" data-lvl="10"></button>' +
     '</div>' +
-    '<div id="matLvlDesc" class="chip mat-calc-res" style="margin-top:8px"></div></div>' +
-    '<div class="menstrual-card" style="margin-top:10px;border-color:var(--gold)"><h4>🔢 Quiz relámpago — cumple la meta y gana XP</h4>' +
+    '<div id="matLvlDesc" class="chip mat-calc-res su-8a77e5"></div></div>' +
+    '<div class="menstrual-card su-51d56a"><h4>🔢 Quiz relámpago — cumple la meta y gana XP</h4>' +
     '<div class="conv-row"><label>Operación <select id="matQOp"><option value="todo">Todas del nivel</option><option value="+">Sumas</option><option value="-">Restas</option><option value="×">Multiplicación</option><option value="÷">División</option><option value="tablas">Tablas ×</option></select></label>' +
     '<label>Nivel <select id="matQNivel"><option value="1">1 🌱 Semilla (1–10)</option><option value="2">2 🌿 Brote (1–20)</option><option value="3">3 🌳 Árbol (1–30)</option><option value="4">4 🌙 Luna (1–50)</option><option value="5">5 ☀️ Kimche (1–100)</option><option value="6">6 🌊 Lafken (fracciones)</option><option value="7">7 ⛰️ Pewen (% y proporción)</option><option value="8">8 🦉 Kuyam (geometría)</option><option value="9">9 🌌 Wenu (potencias)</option><option value="10">10 🔥 Newen (todo 1–200)</option></select></label>' +
     '<label>Tabla <select id="matQTabla"><option value="0">Al azar</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select></label></div>' +
     '<div class="conv-row"><label>Meta <select id="matQMeta"><option value="5">5 buenas</option><option value="10" selected>10 buenas</option><option value="20">20 buenas</option></select></label>' +
-    '<label style="align-self:flex-end"><button type="button" id="matQNew" class="btn btn-accent" style="width:auto">🎲 Empezar / saltar</button></label></div>' +
-    '<div id="matQTxt" style="font-size:14px;margin:8px 0">Elige nivel y toca “Empezar”.</div>' +
-    '<div style="background:var(--panel);border-radius:6px;height:10px;overflow:hidden"><div id="matQBar" style="width:0%;height:100%;background:linear-gradient(90deg,#7ab8ff,#e8c56a,#8fd694)"></div></div>' +
-    '<div class="conv-row" style="margin-top:8px"><label style="flex:2">Tu respuesta <input type="text" id="matQResp" inputmode="decimal" placeholder="número" autocomplete="off"></label><label style="align-self:flex-end"><button type="button" id="matQCheck" class="btn btn-accent" style="width:auto">Comprobar ⏎</button></label></div>' +
-    '<div id="matQFb" class="muted" style="font-size:12px;min-height:20px"></div>' +
-    '<div id="matQStats" class="muted" style="font-size:11px"></div></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4 id="matAdvTitle">🎯 Adivina el número (1–100)</h4>' +
-    '<p class="muted" style="font-size:11px">Pienso uno según tu nivel, tú lo adivinas. Te digo “más alto / más bajo”. Ideal para lógica y paciencia.</p>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="matAdvNew" class="btn" style="width:auto">🎲 Nuevo juego</button></div>' +
-    '<div class="conv-row" style="margin-top:8px"><label style="flex:2">Tu intento <input type="number" id="matAdvIn" min="1" max="100" placeholder="1–100"></label><label style="align-self:flex-end"><button type="button" id="matAdvGo" class="btn btn-accent" style="width:auto">Probar</button></label></div>' +
-    '<div id="matAdvFb" class="muted" style="font-size:12px"></div><div id="matAdvCount" class="muted" style="font-size:11px"></div></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>🌙 Reto 13 lunas</h4>' +
-    '<p class="muted" style="font-size:11px">¿Cuántos días hay en 13 lunas de 28 días? ¿Y en medio ciclo (13 × 14)? Escríbelo y comprueba en 🧮.</p>' +
-    '<div class="conv-row"><label>13 × 28 = <input type="text" id="matReto" placeholder="tu respuesta"></label><label style="align-self:flex-end"><button type="button" id="matRetoGo" class="btn" style="width:auto">Comprobar</button></label></div>' +
-    '<div id="matRetoFb" class="muted" style="font-size:12px"></div></div>' +
+    '<label class="su-ffd20f"><button type="button" id="matQNew" class="btn btn-accent su-30e741">🎲 Empezar / saltar</button></label></div>' +
+    '<div id="matQTxt" class="su-bb4117">Elige nivel y toca “Empezar”.</div>' +
+    '<div class="su-ab9537"><div id="matQBar" class="su-0bbd63"></div></div>' +
+    '<div class="conv-row su-8a77e5"><label class="su-4b3de7">Tu respuesta <input type="text" id="matQResp" inputmode="decimal" placeholder="número" autocomplete="off"></label><label class="su-ffd20f"><button type="button" id="matQCheck" class="btn btn-accent su-30e741">Comprobar ⏎</button></label></div>' +
+    '<div id="matQFb" class="muted su-9d0bd3"></div>' +
+    '<div id="matQStats" class="muted su-11a508"></div></div>' +
+    '<div class="menstrual-card su-d2c171"><h4 id="matAdvTitle">🎯 Adivina el número (1–100)</h4>' +
+    '<p class="muted su-11a508">Pienso uno según tu nivel, tú lo adivinas. Te digo “más alto / más bajo”. Ideal para lógica y paciencia.</p>' +
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="matAdvNew" class="btn su-30e741">🎲 Nuevo juego</button></div>' +
+    '<div class="conv-row su-8a77e5"><label class="su-4b3de7">Tu intento <input type="number" id="matAdvIn" min="1" max="100" placeholder="1–100"></label><label class="su-ffd20f"><button type="button" id="matAdvGo" class="btn btn-accent su-30e741">Probar</button></label></div>' +
+    '<div id="matAdvFb" class="muted su-6cb285"></div><div id="matAdvCount" class="muted su-11a508"></div></div>' +
+    '<div class="menstrual-card su-d2c171"><h4>🌙 Reto 13 lunas</h4>' +
+    '<p class="muted su-11a508">¿Cuántos días hay en 13 lunas de 28 días? ¿Y en medio ciclo (13 × 14)? Escríbelo y comprueba en 🧮.</p>' +
+    '<div class="conv-row"><label>13 × 28 = <input type="text" id="matReto" placeholder="tu respuesta"></label><label class="su-ffd20f"><button type="button" id="matRetoGo" class="btn su-30e741">Comprobar</button></label></div>' +
+    '<div id="matRetoFb" class="muted su-6cb285"></div></div>' +
     '</div>' +
 
     /* GEO */
     '<div id="matGeo" class="hidden">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>📐 Áreas y perímetros</h4>' +
+    '<div class="menstrual-card su-68a1a9"><h4>📐 Áreas y perímetros</h4>' +
     '<div class="conv-row"><label>Figura <select id="matGeoFig"><option value="cuad">Cuadrado (lado)</option><option value="rect">Rectángulo (base × alto)</option><option value="tri">Triángulo (base × altura)</option><option value="circ">Círculo (radio)</option></select></label>' +
     '<label>A / base / lado / radio <input type="number" id="matGeoA" placeholder="ej: 5" step="any"></label>' +
     '<label>B / alto (si pide) <input type="number" id="matGeoB" placeholder="ej: 3" step="any"></label></div>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="matGeoGo" class="btn btn-accent" style="width:auto">Calcular</button></div>' +
-    '<div id="matGeoRes" class="chip" style="display:block;white-space:normal">Ej: cuadrado lado 5 → área 25, perímetro 20.</div></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>🧊 Volúmenes + Pitágoras</h4>' +
-    '<div class="conv-row"><label>Cubo (arista) <input type="number" id="matCub" placeholder="ej: 2" step="any"></label><label style="align-self:flex-end"><button type="button" id="matCubGo" class="btn" style="width:auto">Cubo</button></label></div>' +
-    '<div class="conv-row"><label>Cilindro r <input type="number" id="matCilR" placeholder="ej: 1" step="any"></label><label>h <input type="number" id="matCilH" placeholder="ej: 3" step="any"></label><label style="align-self:flex-end"><button type="button" id="matCilGo" class="btn" style="width:auto">Cilindro</button></label></div>' +
-    '<div class="conv-row"><label>Cateto a <input type="number" id="matPitA" placeholder="3" step="any"></label><label>Cateto b <input type="number" id="matPitB" placeholder="4" step="any"></label><label style="align-self:flex-end"><button type="button" id="matPitGo" class="btn" style="width:auto">Hipotenusa</button></label></div>' +
-    '<div id="matVolRes" class="chip" style="display:block;white-space:normal">3-4-5 es el triángulo más famoso: 3²+4²=5².</div></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>🏡 Mi terreno / pieza (Penco)</h4>' +
-    '<div class="conv-row"><label>Largo (m) <input type="number" id="matTerL" placeholder="ej: 12" step="any"></label><label>Ancho (m) <input type="number" id="matTerA" placeholder="ej: 8" step="any"></label><label style="align-self:flex-end"><button type="button" id="matTerGo" class="btn btn-accent" style="width:auto">Medir</button></label></div>' +
-    '<div class="conv-row"><label>Rendimiento pintura (m²/L) <input type="number" id="matPinR" value="10" step="any"></label><label>Manos <input type="number" id="matPinM" value="2" min="1" max="4"></label><label style="align-self:flex-end"><button type="button" id="matPinGo" class="btn" style="width:auto">🎨 Pintura muros (perímetro × 2,4m)</button></label></div>' +
-    '<div id="matTerRes" class="chip" style="display:block;white-space:normal">Te da m², perímetro (cerco) y litros de pintura estimados.</div></div>' +
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="matGeoGo" class="btn btn-accent su-30e741">Calcular</button></div>' +
+    '<div id="matGeoRes" class="chip su-f5ce59">Ej: cuadrado lado 5 → área 25, perímetro 20.</div></div>' +
+    '<div class="menstrual-card su-d2c171"><h4>🧊 Volúmenes + Pitágoras</h4>' +
+    '<div class="conv-row"><label>Cubo (arista) <input type="number" id="matCub" placeholder="ej: 2" step="any"></label><label class="su-ffd20f"><button type="button" id="matCubGo" class="btn su-30e741">Cubo</button></label></div>' +
+    '<div class="conv-row"><label>Cilindro r <input type="number" id="matCilR" placeholder="ej: 1" step="any"></label><label>h <input type="number" id="matCilH" placeholder="ej: 3" step="any"></label><label class="su-ffd20f"><button type="button" id="matCilGo" class="btn su-30e741">Cilindro</button></label></div>' +
+    '<div class="conv-row"><label>Cateto a <input type="number" id="matPitA" placeholder="3" step="any"></label><label>Cateto b <input type="number" id="matPitB" placeholder="4" step="any"></label><label class="su-ffd20f"><button type="button" id="matPitGo" class="btn su-30e741">Hipotenusa</button></label></div>' +
+    '<div id="matVolRes" class="chip su-f5ce59">3-4-5 es el triángulo más famoso: 3²+4²=5².</div></div>' +
+    '<div class="menstrual-card su-d2c171"><h4>🏡 Mi terreno / pieza (Penco)</h4>' +
+    '<div class="conv-row"><label>Largo (m) <input type="number" id="matTerL" placeholder="ej: 12" step="any"></label><label>Ancho (m) <input type="number" id="matTerA" placeholder="ej: 8" step="any"></label><label class="su-ffd20f"><button type="button" id="matTerGo" class="btn btn-accent su-30e741">Medir</button></label></div>' +
+    '<div class="conv-row"><label>Rendimiento pintura (m²/L) <input type="number" id="matPinR" value="10" step="any"></label><label>Manos <input type="number" id="matPinM" value="2" min="1" max="4"></label><label class="su-ffd20f"><button type="button" id="matPinGo" class="btn su-30e741">🎨 Pintura muros (perímetro × 2,4m)</button></label></div>' +
+    '<div id="matTerRes" class="chip su-f5ce59">Te da m², perímetro (cerco) y litros de pintura estimados.</div></div>' +
     '</div>' +
 
     /* HOGAR */
     '<div id="matHogar" class="hidden">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🍲 Escalar receta</h4>' +
-    '<div class="conv-row"><label>Porciones receta <input type="number" id="matRecBase" placeholder="ej: 4"></label><label>Quiero <input type="number" id="matRecQuiero" placeholder="ej: 6"></label><label>Cantidad ingrediente <input type="number" id="matRecCant" placeholder="ej: 2 tazas" step="any"></label><label style="align-self:flex-end"><button type="button" id="matRecGo" class="btn btn-accent" style="width:auto">Escalar</button></label></div>' +
-    '<div id="matRecRes" class="chip" style="display:block;white-space:normal">Factor = quiero / base. Multiplica cada ingrediente.</div></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>🏷️ Descuento y precio con IVA</h4>' +
-    '<div class="conv-row"><label>Precio <input type="number" id="matDescP" placeholder="ej: 20000"></label><label>Descuento % <input type="number" id="matDescD" placeholder="ej: 15"></label><label style="align-self:flex-end"><button type="button" id="matDescGo" class="btn btn-accent" style="width:auto">Aplicar</button></label></div>' +
-    '<div class="conv-row"><label>Neto (sin IVA) <input type="number" id="matIvaN" placeholder="ej: 10000"></label><label style="align-self:flex-end"><button type="button" id="matIvaGo" class="btn" style="width:auto">+19% IVA</button></label></div>' +
-    '<div id="matDescRes" class="chip" style="display:block;white-space:normal">IVA Chile 19%: total = neto × 1,19.</div></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>💰 Interés simple + dividir cuentas</h4>' +
-    '<div class="conv-row"><label>Capital $ <input type="number" id="matIntC" placeholder="ej: 100000"></label><label>Tasa % mensual <input type="number" id="matIntT" placeholder="ej: 2" step="any"></label><label>Meses <input type="number" id="matIntM" placeholder="ej: 6"></label><label style="align-self:flex-end"><button type="button" id="matIntGo" class="btn" style="width:auto">Interés</button></label></div>' +
-    '<div class="conv-row"><label>Total a dividir $ <input type="number" id="matDivT" placeholder="ej: 45000"></label><label>Personas <input type="number" id="matDivP" placeholder="ej: 3"></label><label style="align-self:flex-end"><button type="button" id="matDivGo" class="btn" style="width:auto">Dividir</button></label></div>' +
-    '<div id="matIntRes" class="chip" style="display:block;white-space:normal">Interés simple: I = C × i × t. Dividir: total / personas.</div>' +
-    '<p class="muted" style="font-size:11px;margin-top:8px">Puentes: 💰 Finanzas para tu presupuesto, 📏 Conversión para unidades y ⚡ Consumo eléctrico para kWh. Encuéntralos con 🔍 Buscar.</p></div>' +
+    '<div class="menstrual-card su-68a1a9"><h4>🍲 Escalar receta</h4>' +
+    '<div class="conv-row"><label>Porciones receta <input type="number" id="matRecBase" placeholder="ej: 4"></label><label>Quiero <input type="number" id="matRecQuiero" placeholder="ej: 6"></label><label>Cantidad ingrediente <input type="number" id="matRecCant" placeholder="ej: 2 tazas" step="any"></label><label class="su-ffd20f"><button type="button" id="matRecGo" class="btn btn-accent su-30e741">Escalar</button></label></div>' +
+    '<div id="matRecRes" class="chip su-f5ce59">Factor = quiero / base. Multiplica cada ingrediente.</div></div>' +
+    '<div class="menstrual-card su-d2c171"><h4>🏷️ Descuento y precio con IVA</h4>' +
+    '<div class="conv-row"><label>Precio <input type="number" id="matDescP" placeholder="ej: 20000"></label><label>Descuento % <input type="number" id="matDescD" placeholder="ej: 15"></label><label class="su-ffd20f"><button type="button" id="matDescGo" class="btn btn-accent su-30e741">Aplicar</button></label></div>' +
+    '<div class="conv-row"><label>Neto (sin IVA) <input type="number" id="matIvaN" placeholder="ej: 10000"></label><label class="su-ffd20f"><button type="button" id="matIvaGo" class="btn su-30e741">+19% IVA</button></label></div>' +
+    '<div id="matDescRes" class="chip su-f5ce59">IVA Chile 19%: total = neto × 1,19.</div></div>' +
+    '<div class="menstrual-card su-d2c171"><h4>💰 Interés simple + dividir cuentas</h4>' +
+    '<div class="conv-row"><label>Capital $ <input type="number" id="matIntC" placeholder="ej: 100000"></label><label>Tasa % mensual <input type="number" id="matIntT" placeholder="ej: 2" step="any"></label><label>Meses <input type="number" id="matIntM" placeholder="ej: 6"></label><label class="su-ffd20f"><button type="button" id="matIntGo" class="btn su-30e741">Interés</button></label></div>' +
+    '<div class="conv-row"><label>Total a dividir $ <input type="number" id="matDivT" placeholder="ej: 45000"></label><label>Personas <input type="number" id="matDivP" placeholder="ej: 3"></label><label class="su-ffd20f"><button type="button" id="matDivGo" class="btn su-30e741">Dividir</button></label></div>' +
+    '<div id="matIntRes" class="chip su-f5ce59">Interés simple: I = C × i × t. Dividir: total / personas.</div>' +
+    '<p class="muted su-e6fe60">Puentes: 💰 Finanzas para tu presupuesto, 📏 Conversión para unidades y ⚡ Consumo eléctrico para kWh. Encuéntralos con 🔍 Buscar.</p></div>' +
     '</div>' +
 
     /* BASICA 1-8 Chile */
     '<div id="matBas" class="hidden">' +
     rowCard({ h: '📚 Básica 1°–8° · mapa rápido (Chile)', p: '<b>1°–2°:</b> números hasta 1.000, suma y resta, mitades y dobles, medir con regla. <b>3°–4°:</b> tablas ×÷, fracciones 1/2 1/4 3/4, perímetro, gráficos de barras. <b>5°–6°:</b> decimales, % de 10/25/50, MCM/MCD, áreas de cuadrado y rectángulo. <b>7°–8°:</b> enteros (+/−), potencias, proporciones, álgebra intro (x + 5 = 12). Parte por tu ciclo y sube: todo suma XP igual que 🔢 Práctica.' }) +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>✏️ Quiz Básica — gana XP (+15 por buena)</h4>' +
+    '<div class="menstrual-card su-68a1a9"><h4>✏️ Quiz Básica — gana XP (+15 por buena)</h4>' +
     '<div class="conv-row"><label>Tema <select id="matEBTema"><option value="todo">Todo mezclado</option><option value="op">4 operaciones</option><option value="frac">Fracciones</option><option value="dec">Decimales</option><option value="pct">Porcentajes</option><option value="geo">Geometría base</option><option value="prob">Problemas (feria/hogar)</option></select></label>' +
-    '<label style="align-self:flex-end"><button type="button" id="matEBNew" class="btn btn-accent" style="width:auto">🎲 Nueva</button></label></div>' +
-    '<div id="matEBTxt" style="font-size:14px;margin:8px 0">Toca “🎲 Nueva” para partir.</div>' +
-    '<div class="conv-row" style="margin-top:8px"><label style="flex:2">Tu respuesta <input type="text" id="matEBResp" inputmode="decimal" placeholder="número" autocomplete="off"></label><label style="align-self:flex-end"><button type="button" id="matEBCheck" class="btn btn-accent" style="width:auto">Comprobar ⏎</button></label></div>' +
-    '<div id="matEBFb" class="muted" style="font-size:12px;min-height:20px"></div>' +
-    '<div id="matEBStats" class="muted" style="font-size:11px"></div></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>🔢 Valor posicional (descomponer)</h4>' +
-    '<div class="conv-row"><label style="flex:2">Número <input type="text" id="matEBNum" inputmode="numeric" placeholder="ej: 3.457"></label><label style="align-self:flex-end"><button type="button" id="matEBGo" class="btn btn-accent" style="width:auto">Descomponer</button></label></div>' +
-    '<div id="matEBRes" class="chip" style="display:block;white-space:normal">Ej: 3.457 = 3UM + 4C + 5D + 7U.</div></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>➗ División con resto + redondeo</h4>' +
-    '<div class="conv-row"><label>Dividendo <input type="number" id="matEBD1" placeholder="ej: 47"></label><label>Divisor <input type="number" id="matEBD2" placeholder="ej: 6"></label><label style="align-self:flex-end"><button type="button" id="matEBDGo" class="btn" style="width:auto">Dividir</button></label></div>' +
-    '<div id="matEBDRes" class="chip" style="display:block;white-space:normal">Te da cociente y resto (ej: 47 ÷ 6 = 7 resto 5).</div>' +
-    '<div class="conv-row" style="margin-top:8px"><label>Número <input type="text" id="matEBR1" placeholder="ej: 3,476"></label><label>Decimales <input type="number" id="matEBR2" value="2" min="0" max="4"></label><label style="align-self:flex-end"><button type="button" id="matEBRGo" class="btn" style="width:auto">Redondear</button></label></div>' +
-    '<div id="matEBRRes" class="chip" style="display:block;white-space:normal">Ej: 3,476 a 2 decimales → 3,48.</div></div>' +
+    '<label class="su-ffd20f"><button type="button" id="matEBNew" class="btn btn-accent su-30e741">🎲 Nueva</button></label></div>' +
+    '<div id="matEBTxt" class="su-bb4117">Toca “🎲 Nueva” para partir.</div>' +
+    '<div class="conv-row su-8a77e5"><label class="su-4b3de7">Tu respuesta <input type="text" id="matEBResp" inputmode="decimal" placeholder="número" autocomplete="off"></label><label class="su-ffd20f"><button type="button" id="matEBCheck" class="btn btn-accent su-30e741">Comprobar ⏎</button></label></div>' +
+    '<div id="matEBFb" class="muted su-9d0bd3"></div>' +
+    '<div id="matEBStats" class="muted su-11a508"></div></div>' +
+    '<div class="menstrual-card su-d2c171"><h4>🔢 Valor posicional (descomponer)</h4>' +
+    '<div class="conv-row"><label class="su-4b3de7">Número <input type="text" id="matEBNum" inputmode="numeric" placeholder="ej: 3.457"></label><label class="su-ffd20f"><button type="button" id="matEBGo" class="btn btn-accent su-30e741">Descomponer</button></label></div>' +
+    '<div id="matEBRes" class="chip su-f5ce59">Ej: 3.457 = 3UM + 4C + 5D + 7U.</div></div>' +
+    '<div class="menstrual-card su-d2c171"><h4>➗ División con resto + redondeo</h4>' +
+    '<div class="conv-row"><label>Dividendo <input type="number" id="matEBD1" placeholder="ej: 47"></label><label>Divisor <input type="number" id="matEBD2" placeholder="ej: 6"></label><label class="su-ffd20f"><button type="button" id="matEBDGo" class="btn su-30e741">Dividir</button></label></div>' +
+    '<div id="matEBDRes" class="chip su-f5ce59">Te da cociente y resto (ej: 47 ÷ 6 = 7 resto 5).</div>' +
+    '<div class="conv-row su-8a77e5"><label>Número <input type="text" id="matEBR1" placeholder="ej: 3,476"></label><label>Decimales <input type="number" id="matEBR2" value="2" min="0" max="4"></label><label class="su-ffd20f"><button type="button" id="matEBRGo" class="btn su-30e741">Redondear</button></label></div>' +
+    '<div id="matEBRRes" class="chip su-f5ce59">Ej: 3,476 a 2 decimales → 3,48.</div></div>' +
     '</div>' +
 
     /* MEDIA I-IV Chile + PAES */
     '<div id="matMed" class="hidden">' +
     rowCard({ h: '🎒 Media I–IV · mapa rápido (Chile + PAES)', p: '<b>I°:</b> racionales, potencias y raíces, álgebra (factorizar, productos notables). <b>II°:</b> ecuación cuadrática, función lineal y afín, trigonometría en triángulo rectángulo. <b>III°:</b> probabilidad, estadística, geometría analítica (distancia/pendiente). <b>IV°:</b> funciones, repaso PAES: sin calculadora primero, luego verifica aquí. Todo con ejemplo resuelto en cada herramienta.' }) +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>✏️ Quiz Media — gana XP (+20 por buena)</h4>' +
+    '<div class="menstrual-card su-68a1a9"><h4>✏️ Quiz Media — gana XP (+20 por buena)</h4>' +
     '<div class="conv-row"><label>Tema <select id="matEMTema"><option value="todo">Todo mezclado</option><option value="ecu1">Ecuación lineal</option><option value="ecu2">Ecuación cuadrática</option><option value="func">Función lineal</option><option value="pot">Potencias y raíces</option><option value="trig">Trigonometría exacta</option><option value="analit">Distancia y pendiente</option></select></label>' +
-    '<label style="align-self:flex-end"><button type="button" id="matEMNew" class="btn btn-accent" style="width:auto">🎲 Nueva</button></label></div>' +
-    '<div id="matEMTxt" style="font-size:14px;margin:8px 0">Toca “🎲 Nueva” para partir.</div>' +
-    '<div class="conv-row" style="margin-top:8px"><label style="flex:2">Tu respuesta <input type="text" id="matEMResp" inputmode="decimal" placeholder="número" autocomplete="off"></label><label style="align-self:flex-end"><button type="button" id="matEMCheck" class="btn btn-accent" style="width:auto">Comprobar ⏎</button></label></div>' +
-    '<div id="matEMFb" class="muted" style="font-size:12px;min-height:20px"></div>' +
-    '<div id="matEMStats" class="muted" style="font-size:11px"></div></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>🟰 Ecuación lineal ax + b = 0 y cuadrática ax² + bx + c = 0</h4>' +
-    '<div class="conv-row"><label>a <input type="text" id="matEMa" placeholder="ej: 2"></label><label>b <input type="text" id="matEMb" placeholder="ej: -8"></label><label style="align-self:flex-end"><button type="button" id="matEMGo" class="btn btn-accent" style="width:auto">Resolver lineal</button></label></div>' +
-    '<div id="matEMRes" class="chip" style="display:block;white-space:normal">Ej: 2x − 8 = 0 → x = 4.</div>' +
-    '<div class="conv-row" style="margin-top:8px"><label>a <input type="text" id="matECa" placeholder="ej: 1"></label><label>b <input type="text" id="matECb" placeholder="ej: -5"></label><label>c <input type="text" id="matECc" placeholder="ej: 6"></label><label style="align-self:flex-end"><button type="button" id="matECGo" class="btn" style="width:auto">Resolver cuadrática</button></label></div>' +
-    '<div id="matECRes" class="chip" style="display:block;white-space:normal">Con discriminante Δ = b² − 4ac y raíces reales cuando Δ ≥ 0.</div></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>📈 Función lineal f(x) = mx + n + trigonometría</h4>' +
-    '<div class="conv-row"><label>m <input type="text" id="matEMm" placeholder="ej: 3"></label><label>n <input type="text" id="matEMn" placeholder="ej: 2"></label><label>x <input type="text" id="matEMx" placeholder="ej: 4"></label><label style="align-self:flex-end"><button type="button" id="matEMfGo" class="btn" style="width:auto">Evaluar f(x)</button></label></div>' +
-    '<div id="matEMfRes" class="chip" style="display:block;white-space:normal">Ej: f(x)=3x+2 con x=4 → 14. Pendiente m = subida/avance.</div>' +
-    '<div class="conv-row" style="margin-top:8px"><label>Ángulo (°) <input type="number" id="matEMAng" placeholder="30 / 45 / 60"></label><label style="align-self:flex-end"><button type="button" id="matEMTrigGo" class="btn" style="width:auto">sen · cos · tan</button></label></div>' +
-    '<div id="matEMTrigRes" class="chip" style="display:block;white-space:normal">Exactos de memoria: sen30°=0,5 · cos60°=0,5 · tan45°=1.</div></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>📍 Distancia y pendiente entre 2 puntos</h4>' +
-    '<div class="conv-row"><label>x1 <input type="text" id="matEMx1" placeholder="1"></label><label>y1 <input type="text" id="matEMy1" placeholder="2"></label><label>x2 <input type="text" id="matEMx2" placeholder="4"></label><label>y2 <input type="text" id="matEMy2" placeholder="6"></label><label style="align-self:flex-end"><button type="button" id="matEMDPGo" class="btn" style="width:auto">Calcular</button></label></div>' +
-    '<div id="matEMDPRes" class="chip" style="display:block;white-space:normal">d = √[(x2−x1)²+(y2−y1)²] · m = (y2−y1)/(x2−x1).</div></div>' +
+    '<label class="su-ffd20f"><button type="button" id="matEMNew" class="btn btn-accent su-30e741">🎲 Nueva</button></label></div>' +
+    '<div id="matEMTxt" class="su-bb4117">Toca “🎲 Nueva” para partir.</div>' +
+    '<div class="conv-row su-8a77e5"><label class="su-4b3de7">Tu respuesta <input type="text" id="matEMResp" inputmode="decimal" placeholder="número" autocomplete="off"></label><label class="su-ffd20f"><button type="button" id="matEMCheck" class="btn btn-accent su-30e741">Comprobar ⏎</button></label></div>' +
+    '<div id="matEMFb" class="muted su-9d0bd3"></div>' +
+    '<div id="matEMStats" class="muted su-11a508"></div></div>' +
+    '<div class="menstrual-card su-d2c171"><h4>🟰 Ecuación lineal ax + b = 0 y cuadrática ax² + bx + c = 0</h4>' +
+    '<div class="conv-row"><label>a <input type="text" id="matEMa" placeholder="ej: 2"></label><label>b <input type="text" id="matEMb" placeholder="ej: -8"></label><label class="su-ffd20f"><button type="button" id="matEMGo" class="btn btn-accent su-30e741">Resolver lineal</button></label></div>' +
+    '<div id="matEMRes" class="chip su-f5ce59">Ej: 2x − 8 = 0 → x = 4.</div>' +
+    '<div class="conv-row su-8a77e5"><label>a <input type="text" id="matECa" placeholder="ej: 1"></label><label>b <input type="text" id="matECb" placeholder="ej: -5"></label><label>c <input type="text" id="matECc" placeholder="ej: 6"></label><label class="su-ffd20f"><button type="button" id="matECGo" class="btn su-30e741">Resolver cuadrática</button></label></div>' +
+    '<div id="matECRes" class="chip su-f5ce59">Con discriminante Δ = b² − 4ac y raíces reales cuando Δ ≥ 0.</div></div>' +
+    '<div class="menstrual-card su-d2c171"><h4>📈 Función lineal f(x) = mx + n + trigonometría</h4>' +
+    '<div class="conv-row"><label>m <input type="text" id="matEMm" placeholder="ej: 3"></label><label>n <input type="text" id="matEMn" placeholder="ej: 2"></label><label>x <input type="text" id="matEMx" placeholder="ej: 4"></label><label class="su-ffd20f"><button type="button" id="matEMfGo" class="btn su-30e741">Evaluar f(x)</button></label></div>' +
+    '<div id="matEMfRes" class="chip su-f5ce59">Ej: f(x)=3x+2 con x=4 → 14. Pendiente m = subida/avance.</div>' +
+    '<div class="conv-row su-8a77e5"><label>Ángulo (°) <input type="number" id="matEMAng" placeholder="30 / 45 / 60"></label><label class="su-ffd20f"><button type="button" id="matEMTrigGo" class="btn su-30e741">sen · cos · tan</button></label></div>' +
+    '<div id="matEMTrigRes" class="chip su-f5ce59">Exactos de memoria: sen30°=0,5 · cos60°=0,5 · tan45°=1.</div></div>' +
+    '<div class="menstrual-card su-d2c171"><h4>📍 Distancia y pendiente entre 2 puntos</h4>' +
+    '<div class="conv-row"><label>x1 <input type="text" id="matEMx1" placeholder="1"></label><label>y1 <input type="text" id="matEMy1" placeholder="2"></label><label>x2 <input type="text" id="matEMx2" placeholder="4"></label><label>y2 <input type="text" id="matEMy2" placeholder="6"></label><label class="su-ffd20f"><button type="button" id="matEMDPGo" class="btn su-30e741">Calcular</button></label></div>' +
+    '<div id="matEMDPRes" class="chip su-f5ce59">d = √[(x2−x1)²+(y2−y1)²] · m = (y2−y1)/(x2−x1).</div></div>' +
     '</div>' +
 
     /* SUPERIOR */
     '<div id="matSup" class="hidden">' +
     rowCard({ h: '🎓 Superior · mapa rápido (técnica y universidad)', p: '<b>Cálculo:</b> derivada = ritmo de cambio, integral = área acumulada. <b>Álgebra lineal:</b> matrices 2×2 para sistemas y transformaciones. <b>Estadística:</b> media, mediana y desviación para leer datos reales. <b>Finanzas:</b> interés compuesto y anualidades (CAE, créditos). <b>Lógica:</b> ∧ ∨ ¬ para programar y argumentar. Todo offline y con pasos visibles.' }) +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>✏️ Quiz Superior — gana XP (+25 por buena)</h4>' +
+    '<div class="menstrual-card su-68a1a9"><h4>✏️ Quiz Superior — gana XP (+25 por buena)</h4>' +
     '<div class="conv-row"><label>Tema <select id="matSQTema"><option value="todo">Todo mezclado</option><option value="der">Derivadas</option><option value="int">Integrales</option><option value="mat">Matrices (det)</option><option value="fin">Interés compuesto</option><option value="est">Promedios</option><option value="log">Lógica (1=V,0=F)</option></select></label>' +
-    '<label style="align-self:flex-end"><button type="button" id="matSQNew" class="btn btn-accent" style="width:auto">🎲 Nueva</button></label></div>' +
-    '<div id="matSQTXT" style="font-size:14px;margin:8px 0">Toca “🎲 Nueva” para partir.</div>' +
-    '<div class="conv-row" style="margin-top:8px"><label style="flex:2">Tu respuesta <input type="text" id="matSQResp" inputmode="decimal" placeholder="número" autocomplete="off"></label><label style="align-self:flex-end"><button type="button" id="matSQCheck" class="btn btn-accent" style="width:auto">Comprobar ⏎</button></label></div>' +
-    '<div id="matSQFb" class="muted" style="font-size:12px;min-height:20px"></div>' +
-    '<div id="matSQStats" class="muted" style="font-size:11px"></div></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>Δ Derivada de ax³ + bx² + cx + d (y valor en x₀)</h4>' +
-    '<div class="conv-row"><label>a <input type="text" id="matSUa" placeholder="ej: 2"></label><label>b <input type="text" id="matSUb" placeholder="ej: -3"></label><label>c <input type="text" id="matSUc" placeholder="ej: 4"></label><label>d <input type="text" id="matSUd" placeholder="ej: 1"></label><label>x₀ <input type="text" id="matSUx0" placeholder="ej: 2"></label><label style="align-self:flex-end"><button type="button" id="matSUDevGo" class="btn btn-accent" style="width:auto">Derivar</button></label></div>' +
-    '<div id="matSUDevRes" class="chip" style="display:block;white-space:normal">Ej: 2x³−3x²+4x+1 → f′ = 6x²−6x+4 · f′(2) = 16.</div></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>∫ Integral definida de ax² + bx + c entre L1 y L2</h4>' +
-    '<div class="conv-row"><label>a <input type="text" id="matSUiA" placeholder="ej: 3"></label><label>b <input type="text" id="matSUiB" placeholder="ej: 2"></label><label>c <input type="text" id="matSUiC" placeholder="ej: 1"></label><label>L1 <input type="text" id="matSUiL1" placeholder="ej: 0"></label><label>L2 <input type="text" id="matSUiL2" placeholder="ej: 2"></label><label style="align-self:flex-end"><button type="button" id="matSUiGo" class="btn" style="width:auto">Integrar</button></label></div>' +
-    '<div id="matSUiRes" class="chip" style="display:block;white-space:normal">Antiderivada: (a/3)x³ + (b/2)x² + cx, evaluada L2 − L1.</div></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>🔢 Matrices 2×2: suma, producto y determinantes</h4>' +
+    '<label class="su-ffd20f"><button type="button" id="matSQNew" class="btn btn-accent su-30e741">🎲 Nueva</button></label></div>' +
+    '<div id="matSQTXT" class="su-bb4117">Toca “🎲 Nueva” para partir.</div>' +
+    '<div class="conv-row su-8a77e5"><label class="su-4b3de7">Tu respuesta <input type="text" id="matSQResp" inputmode="decimal" placeholder="número" autocomplete="off"></label><label class="su-ffd20f"><button type="button" id="matSQCheck" class="btn btn-accent su-30e741">Comprobar ⏎</button></label></div>' +
+    '<div id="matSQFb" class="muted su-9d0bd3"></div>' +
+    '<div id="matSQStats" class="muted su-11a508"></div></div>' +
+    '<div class="menstrual-card su-d2c171"><h4>Δ Derivada de ax³ + bx² + cx + d (y valor en x₀)</h4>' +
+    '<div class="conv-row"><label>a <input type="text" id="matSUa" placeholder="ej: 2"></label><label>b <input type="text" id="matSUb" placeholder="ej: -3"></label><label>c <input type="text" id="matSUc" placeholder="ej: 4"></label><label>d <input type="text" id="matSUd" placeholder="ej: 1"></label><label>x₀ <input type="text" id="matSUx0" placeholder="ej: 2"></label><label class="su-ffd20f"><button type="button" id="matSUDevGo" class="btn btn-accent su-30e741">Derivar</button></label></div>' +
+    '<div id="matSUDevRes" class="chip su-f5ce59">Ej: 2x³−3x²+4x+1 → f′ = 6x²−6x+4 · f′(2) = 16.</div></div>' +
+    '<div class="menstrual-card su-d2c171"><h4>∫ Integral definida de ax² + bx + c entre L1 y L2</h4>' +
+    '<div class="conv-row"><label>a <input type="text" id="matSUiA" placeholder="ej: 3"></label><label>b <input type="text" id="matSUiB" placeholder="ej: 2"></label><label>c <input type="text" id="matSUiC" placeholder="ej: 1"></label><label>L1 <input type="text" id="matSUiL1" placeholder="ej: 0"></label><label>L2 <input type="text" id="matSUiL2" placeholder="ej: 2"></label><label class="su-ffd20f"><button type="button" id="matSUiGo" class="btn su-30e741">Integrar</button></label></div>' +
+    '<div id="matSUiRes" class="chip su-f5ce59">Antiderivada: (a/3)x³ + (b/2)x² + cx, evaluada L2 − L1.</div></div>' +
+    '<div class="menstrual-card su-d2c171"><h4>🔢 Matrices 2×2: suma, producto y determinantes</h4>' +
     '<div class="conv-row"><label>A11 <input type="text" id="matSMa" placeholder="1"></label><label>A12 <input type="text" id="matSMb" placeholder="2"></label><label>A21 <input type="text" id="matSMc" placeholder="3"></label><label>A22 <input type="text" id="matSMd" placeholder="4"></label></div>' +
-    '<div class="conv-row"><label>B11 <input type="text" id="matSMe" placeholder="5"></label><label>B12 <input type="text" id="matSMf" placeholder="6"></label><label>B21 <input type="text" id="matSMg" placeholder="7"></label><label>B22 <input type="text" id="matSMh" placeholder="8"></label><label style="align-self:flex-end"><span style="display:flex;gap:6px;flex-wrap:wrap"><button type="button" id="matSMAdd" class="btn" style="width:auto">A+B</button><button type="button" id="matSMMul" class="btn" style="width:auto">A×B</button><button type="button" id="matSMDet" class="btn" style="width:auto">det A y det B</button></span></label></div>' +
-    '<div id="matSMRes" class="chip" style="display:block;white-space:normal">det = a·d − b·c. Si det ≠ 0 la matriz tiene inversa.</div></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>💰 Interés compuesto + estadística de lista</h4>' +
-    '<div class="conv-row"><label>Capital $ <input type="number" id="matSUC" placeholder="ej: 100000"></label><label>Tasa % por período <input type="text" id="matSUT" placeholder="ej: 5"></label><label>Períodos <input type="number" id="matSUN" placeholder="ej: 3"></label><label style="align-self:flex-end"><button type="button" id="matSUIntGo" class="btn" style="width:auto">Monto</button></label></div>' +
-    '<div id="matSUIntRes" class="chip" style="display:block;white-space:normal">M = C·(1+i)ⁿ. Compara con interés simple de 🏠 Hogar.</div>' +
-    '<div class="conv-row" style="margin-top:8px"><label style="flex:2">Lista (separa con comas) <input type="text" id="matSUList" placeholder="ej: 4, 7, 7, 9, 13"></label><label style="align-self:flex-end"><button type="button" id="matSUStatGo" class="btn" style="width:auto">Analizar</button></label></div>' +
-    '<div id="matSUStatRes" class="chip" style="display:block;white-space:normal">Te da n, media, mediana, mín, máx y desviación.</div></div>' +
+    '<div class="conv-row"><label>B11 <input type="text" id="matSMe" placeholder="5"></label><label>B12 <input type="text" id="matSMf" placeholder="6"></label><label>B21 <input type="text" id="matSMg" placeholder="7"></label><label>B22 <input type="text" id="matSMh" placeholder="8"></label><label class="su-ffd20f"><span class="su-6157e8"><button type="button" id="matSMAdd" class="btn su-30e741">A+B</button><button type="button" id="matSMMul" class="btn su-30e741">A×B</button><button type="button" id="matSMDet" class="btn su-30e741">det A y det B</button></span></label></div>' +
+    '<div id="matSMRes" class="chip su-f5ce59">det = a·d − b·c. Si det ≠ 0 la matriz tiene inversa.</div></div>' +
+    '<div class="menstrual-card su-d2c171"><h4>💰 Interés compuesto + estadística de lista</h4>' +
+    '<div class="conv-row"><label>Capital $ <input type="number" id="matSUC" placeholder="ej: 100000"></label><label>Tasa % por período <input type="text" id="matSUT" placeholder="ej: 5"></label><label>Períodos <input type="number" id="matSUN" placeholder="ej: 3"></label><label class="su-ffd20f"><button type="button" id="matSUIntGo" class="btn su-30e741">Monto</button></label></div>' +
+    '<div id="matSUIntRes" class="chip su-f5ce59">M = C·(1+i)ⁿ. Compara con interés simple de 🏠 Hogar.</div>' +
+    '<div class="conv-row su-8a77e5"><label class="su-4b3de7">Lista (separa con comas) <input type="text" id="matSUList" placeholder="ej: 4, 7, 7, 9, 13"></label><label class="su-ffd20f"><button type="button" id="matSUStatGo" class="btn su-30e741">Analizar</button></label></div>' +
+    '<div id="matSUStatRes" class="chip su-f5ce59">Te da n, media, mediana, mín, máx y desviación.</div></div>' +
     '</div>' +
 
     /* AVA */
     '<div id="matAva" class="hidden">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>📓 Mi avance matemático</h4>' +
-    '<div class="conv-row"><label style="flex:2">¿Qué practiqué hoy? <input type="text" id="matLogTxt" placeholder="ej: tablas del 7, 8/10 buenas" maxlength="80"></label><label style="align-self:flex-end"><button type="button" id="matLogAdd" class="btn btn-accent" style="width:auto">+ Guardar</button></label></div>' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-top:8px"><span id="matAvaStats" class="muted" style="font-size:11px"></span><span style="display:flex;gap:8px"><button type="button" id="matAvaShare" class="btn" style="width:auto">📤 Compartir</button><button type="button" id="matAvaClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar</button></span></div></div>' +
-    '<div id="matAvaBox" class="habits-list" style="margin-top:10px;max-height:300px"></div>' +
+    '<div class="menstrual-card su-68a1a9"><h4>📓 Mi avance matemático</h4>' +
+    '<div class="conv-row"><label class="su-4b3de7">¿Qué practiqué hoy? <input type="text" id="matLogTxt" placeholder="ej: tablas del 7, 8/10 buenas" maxlength="80"></label><label class="su-ffd20f"><button type="button" id="matLogAdd" class="btn btn-accent su-30e741">+ Guardar</button></label></div>' +
+    '<div class="dlg-actions su-efea1d"><span id="matAvaStats" class="muted su-11a508"></span><span class="su-a76d59"><button type="button" id="matAvaShare" class="btn su-30e741">📤 Compartir</button><button type="button" id="matAvaClear" class="btn su-214f75">🗑 Borrar</button></span></div></div>' +
+    '<div id="matAvaBox" class="habits-list su-e50587"></div>' +
     '</div>';
 
   makeDialog('matematicasDialog', '🔢 Matemáticas — pensar con las manos',
@@ -853,7 +853,7 @@ function etapaQuiz(prefix, genFn, baseXP, label) {
     var t = $(prefix + 'Txt'), st = $(prefix + 'Stats');
     if (t) {
       if (!S.asked) t.textContent = 'Toca “🎲 Nueva” para partir.';
-      else t.innerHTML = '¿Cuánto es <b style="font-size:20px">' + S.txt + '</b>? (✅ ' + S.ok + '/' + S.total + ')';
+      else t.innerHTML = '¿Cuánto es <b class="su-b9199e">' + S.txt + '</b>? (✅ ' + S.ok + '/' + S.total + ')';
     }
     if (st) st.textContent = '✅ ' + S.ok + '/' + S.total + ' · 🔥 racha ' + S.racha + ' · ' + label + ' · +' + baseXP + ' XP por buena';
   }

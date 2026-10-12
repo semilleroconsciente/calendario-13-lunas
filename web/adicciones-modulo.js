@@ -78,10 +78,10 @@
     var d = document.createElement('dialog');
     d.id = id;
     d.innerHTML = '<form method="dialog">' +
-      '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
-      '<h3 style="margin:0;color:var(--accent)">' + title + '</h3>' +
+      '<div class="dlg-actions su-d2d053">' +
+      '<h3 class="su-ee0cfe">' + title + '</h3>' +
       '<button type="button" data-close class="btn btn-icon" title="Cerrar">✕</button></div>' +
-      (sub ? '<p class="muted" style="line-height:1.5">' + sub + '</p>' : '') +
+      (sub ? '<p class="muted su-77e2fe">' + sub + '</p>' : '') +
       bodyHTML +
       '<div class="dlg-actions"><button type="button" data-close class="btn">Cerrar</button></div></form>';
     document.body.appendChild(d);
@@ -305,7 +305,7 @@
         <h4>🤒 Abstinencia: qué esperar</h4>
         <p>Al reducir o dejar, el cuerpo protesta unos días. Esto es lo habitual:</p>
         ${ABSTINENCIA.map(function (a) {
-          return '<p style="margin-top:8px"><b>' + a.sust + ':</b> ' + a.espera + '<br><span style="color:#e76e8a">' + a.alarma + '</span></p>';
+          return '<p class="su-8a77e5"><b>' + a.sust + ':</b> ' + a.espera + '<br><span class="su-a861ba">' + a.alarma + '</span></p>';
         }).join('')}
       </div>
       <div class="si-card">
@@ -324,7 +324,7 @@
         4) Retoma el registro al día siguiente.<br>
         5) Si se repite seguido, pide ayuda profesional: es cuidado, no fracaso.</p>
       </div>
-      <div class="si-card" style="border-color:var(--gold)">
+      <div class="si-card su-68a1a9">
         <h4>⚠️ Importante</h4>
         <p>Esta sección es <b>educativa y de apoyo</b>. No diagnostica ni reemplaza tratamiento profesional. Si tú o alguien que conoces necesita ayuda, contacta a un profesional de salud mental o a las líneas de ayuda en la pestaña <b>Recursos</b>.</p>
       </div>
@@ -352,7 +352,7 @@
     }).join('');
 
     el.innerHTML = `
-      <div class="menstrual-card" style="border-color:var(--gold)">
+      <div class="menstrual-card su-68a1a9">
         <h4>📅 Registro de hoy — ${hoy}</h4>
         <div class="conv-row">
           <label>Sustancia / conducta
@@ -368,9 +368,9 @@
           </label>
         </div>
         <div class="conv-row">
-          <label>Intensidad antojo (1-10) <input type="range" id="adiIntensidad" min="1" max="10" value="5" style="width:120px"><span id="adiIntensidadV" class="chip">5</span></label>
+          <label>Intensidad antojo (1-10) <input type="range" id="adiIntensidad" min="1" max="10" value="5" class="su-465bfe"><span id="adiIntensidadV" class="chip">5</span></label>
           <label>Hora <input type="time" id="adiHora" value="${new Date().toTimeString().slice(0,5)}"></label>
-          <label>Gasto evitado ($) <input type="number" id="adiGasto" min="0" step="500" placeholder="ej: 5000" style="max-width:120px"></label>
+          <label>Gasto evitado ($) <input type="number" id="adiGasto" min="0" step="500" placeholder="ej: 5000" class="su-bbc1fe"></label>
         </div>
         <label>Disparador / situación
           <input type="text" id="adiDisparador" placeholder="ej: estrés trabajo, aburrimiento, reunión social" maxlength="80">
@@ -381,14 +381,14 @@
         <label>Nota
           <textarea id="adiNota" rows="2" placeholder="¿Cómo te sientes? ¿Qué aprendiste?" maxlength="300"></textarea>
         </label>
-        <div class="dlg-actions" style="justify-content:flex-start">
-          <button type="button" id="adiCheckSave" class="btn btn-accent" style="width:auto">+ Guardar registro</button>
-          <button type="button" id="adiCheckCancel" class="btn hidden" style="width:auto">Cancelar</button>
+        <div class="dlg-actions su-59a5a8">
+          <button type="button" id="adiCheckSave" class="btn btn-accent su-30e741">+ Guardar registro</button>
+          <button type="button" id="adiCheckCancel" class="btn hidden su-30e741">Cancelar</button>
         </div>
       </div>
       <div class="menstrual-card">
         <h4>📊 Historial (últimos 30 días)</h4>
-        <label>Filtrar <select id="adiFiltroSel" style="max-width:220px">
+        <label>Filtrar <select id="adiFiltroSel" class="su-27af89">
           <option value="todas">Todas</option>${sustOptions}
         </select></label>
         <div id="adiHistorial"></div>
@@ -477,13 +477,13 @@
       var extra = (c.disparador ? ' · ⚡ ' + esc(c.disparador) : '') +
         (c.alternativa ? ' · ✅ ' + esc(c.alternativa) : '') +
         (c.gasto ? ' · 💰 $' + Number(c.gasto).toLocaleString('es-CL') : '');
-      return '<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--line)">' +
-        '<span style="flex:1">' + esc(sustNombre(c.sustancia)) + ' <span class="muted">' + c.fecha + (c.hora ? ' ' + esc(c.hora) : '') + '</span><br>' +
+      return '<div class="su-dc5f39">' +
+        '<span class="su-97445a">' + esc(sustNombre(c.sustancia)) + ' <span class="muted">' + c.fecha + (c.hora ? ' ' + esc(c.hora) : '') + '</span><br>' +
         '<span style="color:' + estadoColor + ';font-weight:600">' + estadoTxt + '</span>' +
-        '<span class="muted" style="font-size:11px">' + extra + '</span></span>' +
-        '<span style="display:flex;gap:4px;flex:0 0 auto">' +
-        '<button type="button" class="btn" data-adi-edit="' + c.ts + '" style="width:auto;font-size:11px">✏️</button>' +
-        '<button type="button" class="btn" data-adi-del="' + c.ts + '" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕</button>' +
+        '<span class="muted su-11a508">' + extra + '</span></span>' +
+        '<span class="su-3a76ac">' +
+        '<button type="button" class="btn su-337714" data-adi-edit="' + c.ts + '">✏️</button>' +
+        '<button type="button" class="btn su-fd834a" data-adi-del="' + c.ts + '">✕</button>' +
         '</span></div>';
     }).join('');
     el.innerHTML = rows;
@@ -516,7 +516,7 @@
       return '<div class="si-card">' +
         '<h4>' + t.icono + ' ' + t.nombre + '</h4>' +
         '<p>' + t.desc + '</p>' +
-        '<ol style="margin:8px 0;padding-left:20px">' +
+        '<ol class="su-c57eab">' +
         t.pasos.map(function (p) { return '<li>' + p + '</li>'; }).join('') +
         '</ol>' +
         '</div>';
@@ -532,10 +532,10 @@
       return '<div class="si-card">' +
         '<h4>' + icono + ' ' + r.nombre + '</h4>' +
         '<p>' + r.desc + '</p>' +
-        '<p style="color:var(--gold);font-weight:600">' + r.contacto + '</p>' +
+        '<p class="su-2af27e">' + r.contacto + '</p>' +
         '</div>';
     }).join('') +
-    '<div class="si-card" style="border-color:#e76e8a">' +
+    '<div class="si-card su-006fa0">' +
     '<h4>🆘 Si estás en crisis</h4>' +
     '<p>• Si hay riesgo inmediato: <b>131 (SAMU)</b> o <b>133 (Carabineros)</b><br>' +
     '• Si es crisis emocional: <b>*4141</b> o <b>135</b><br>' +
@@ -585,8 +585,8 @@
       e.logros.forEach(function (x) { if (x.id === l.id) got = x; });
       var esNuevo = nuevos.some(function (x) { return x.id === l.id; });
       return '<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--line);' + (got ? '' : 'opacity:0.45') + '">' +
-        '<span>' + l.icono + ' ' + l.nombre + (esNuevo ? ' <b style="color:var(--gold)">¡nuevo!</b>' : '') + '</span>' +
-        '<span class="muted" style="font-size:11px">' + (got ? got.fecha : '🔒') + '</span></div>';
+        '<span>' + l.icono + ' ' + l.nombre + (esNuevo ? ' <b class="su-e39eba">¡nuevo!</b>' : '') + '</span>' +
+        '<span class="muted su-11a508">' + (got ? got.fecha : '🔒') + '</span></div>';
     }).join('');
 
     /* Gráfico últimos 30 días: verde libre, amarillo antojo, rojo recaída */
@@ -611,31 +611,31 @@
     })();
 
     el.innerHTML = `
-      <div class="menstrual-card" style="border-color:var(--gold)">
+      <div class="menstrual-card su-68a1a9">
         <h4>📈 Tu progreso</h4>
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px;margin:12px 0">
-          <div style="text-align:center;padding:12px;background:var(--panel);border-radius:8px">
-            <div style="font-size:28px;font-weight:700;color:var(--gold)">${racha}</div>
-            <div class="muted" style="font-size:11px">Racha sin recaídas (días)</div>
+        <div class="su-c7fa0f">
+          <div class="su-598170">
+            <div class="su-9521dc">${racha}</div>
+            <div class="muted su-11a508">Racha sin recaídas (días)</div>
           </div>
-          <div style="text-align:center;padding:12px;background:var(--panel);border-radius:8px">
-            <div style="font-size:28px;font-weight:700;color:var(--accent)">${mejor}</div>
-            <div class="muted" style="font-size:11px">Mejor racha</div>
+          <div class="su-598170">
+            <div class="su-9e9586">${mejor}</div>
+            <div class="muted su-11a508">Mejor racha</div>
           </div>
-          <div style="text-align:center;padding:12px;background:var(--panel);border-radius:8px">
-            <div style="font-size:28px;font-weight:700;color:#8fd694">${total}</div>
-            <div class="muted" style="font-size:11px">Días registrados</div>
+          <div class="su-598170">
+            <div class="su-17a608">${total}</div>
+            <div class="muted su-11a508">Días registrados</div>
           </div>
-          <div style="text-align:center;padding:12px;background:var(--panel);border-radius:8px">
-            <div style="font-size:28px;font-weight:700;color:#7ab8ff">${pct}%</div>
-            <div class="muted" style="font-size:11px">Días libres</div>
+          <div class="su-598170">
+            <div class="su-3bad23">${pct}%</div>
+            <div class="muted su-11a508">Días libres</div>
           </div>
-          <div style="text-align:center;padding:12px;background:var(--panel);border-radius:8px">
-            <div style="font-size:24px;font-weight:700;color:#e8c56a">$${ahorro.toLocaleString('es-CL')}</div>
-            <div class="muted" style="font-size:11px">Gasto evitado</div>
+          <div class="su-598170">
+            <div class="su-84ea8b">$${ahorro.toLocaleString('es-CL')}</div>
+            <div class="muted su-11a508">Gasto evitado</div>
           </div>
         </div>
-        <div class="conv-row" style="justify-content:space-around">
+        <div class="conv-row su-8df786">
           <span>✅ Libres: <b>${libres}</b></span>
           <span>⚡ Antojos: <b>${antojos}</b></span>
           <span>⚠️ Recaídas: <b>${recaidas}</b></span>
@@ -643,25 +643,25 @@
       </div>
       <div class="menstrual-card">
         <h4>📊 Últimos 30 días</h4>
-        <p class="muted" style="font-size:10px">🟩 libre · 🟨 antojo resistido · 🟥 recaída · ⬛ sin registro (pasa el cursor o toca cada barra)</p>
-        <div style="display:flex;gap:2px;align-items:flex-end;margin-top:8px">${chartBars}</div>
+        <p class="muted su-0d5be0">🟩 libre · 🟨 antojo resistido · 🟥 recaída · ⬛ sin registro (pasa el cursor o toca cada barra)</p>
+        <div class="su-bbae43">${chartBars}</div>
       </div>
       <div class="menstrual-card">
         <h4>⚡ Mis disparadores frecuentes</h4>
         ${dispTop.length ? dispTop.map(function (t) {
-          return '<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--line)"><span>' + esc(t) + '</span><span class="chip">×' + dispCount[t] + '</span></div>';
+          return '<div class="su-aa92a4"><span>' + esc(t) + '</span><span class="chip">×' + dispCount[t] + '</span></div>';
         }).join('') : '<p class="muted">Aún sin datos. Registra el disparador de cada día para descubrir tus patrones.</p>'}
       </div>
-      <div class="menstrual-card" style="border-color:var(--gold)">
+      <div class="menstrual-card su-68a1a9">
         <h4>🏅 Logros</h4>
         ${logrosHtml}
       </div>
       <div class="menstrual-card">
         <h4>📤 Exportar / Compartir</h4>
-        <p class="muted" style="font-size:11px">Comparte tu progreso con tu terapeuta o red de apoyo. Todo se mantiene local y privado.</p>
-        <div class="dlg-actions" style="justify-content:flex-start">
-          <button type="button" id="adiShare" class="btn" style="width:auto">📤 Compartir resumen</button>
-          <button type="button" id="adiClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar todo</button>
+        <p class="muted su-11a508">Comparte tu progreso con tu terapeuta o red de apoyo. Todo se mantiene local y privado.</p>
+        <div class="dlg-actions su-59a5a8">
+          <button type="button" id="adiShare" class="btn su-30e741">📤 Compartir resumen</button>
+          <button type="button" id="adiClear" class="btn su-214f75">🗑 Borrar todo</button>
         </div>
       </div>
     `;
@@ -704,13 +704,13 @@
       return '<option value="' + t.id + '"' + (p.etapa === t.id ? ' selected' : '') + '>' + t.nombre + ' — ' + t.desc + '</option>';
     }).join('');
     var redRows = e.red.length ? e.red.map(function (r) {
-      return '<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center">' +
-        '<span><b>' + esc(r.nombre) + '</b><br><span class="muted" style="font-size:11px">' + esc(r.rol || 'Apoyo') + (r.tel ? ' · 📞 ' + esc(r.tel) : '') + '</span></span>' +
-        '<button type="button" class="btn" data-red-del="' + r.id + '" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕</button></div>';
-    }).join('') : '<p class="muted" style="font-size:11px">Sin contactos aún. Agrega al menos 1 persona de confianza.</p>';
+      return '<div class="habit-item su-13313b">' +
+        '<span><b>' + esc(r.nombre) + '</b><br><span class="muted su-11a508">' + esc(r.rol || 'Apoyo') + (r.tel ? ' · 📞 ' + esc(r.tel) : '') + '</span></span>' +
+        '<button type="button" class="btn su-fd834a" data-red-del="' + r.id + '">✕</button></div>';
+    }).join('') : '<p class="muted su-11a508">Sin contactos aún. Agrega al menos 1 persona de confianza.</p>';
     el.innerHTML =
-      '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🧭 Mi plan personal</h4>' +
-      '<p class="muted" style="font-size:11px">Tu plan es tu brújula en los momentos difíciles. Revísalo cada luna. Queda privado en tu dispositivo.</p>' +
+      '<div class="menstrual-card su-68a1a9"><h4>🧭 Mi plan personal</h4>' +
+      '<p class="muted su-11a508">Tu plan es tu brújula en los momentos difíciles. Revísalo cada luna. Queda privado en tu dispositivo.</p>' +
       '<div class="conv-row"><label>Mi meta <select id="adiPlanMeta">' +
       '<option value="abstinencia"' + (p.meta === 'abstinencia' ? ' selected' : '') + '>Dejar por completo (abstinencia)</option>' +
       '<option value="reduccion"' + (p.meta === 'reduccion' ? ' selected' : '') + '>Reducir frecuencia/cantidad</option>' +
@@ -719,14 +719,14 @@
       '<label>Mi etapa del cambio <select id="adiPlanEtapa"><option value="">— Elegir —</option>' + etapaOpts + '</select></label></div>' +
       '<label>Mis motivos para cambiar (léelos cuando el antojo apriete) <textarea id="adiPlanMotivos" rows="3" maxlength="600" placeholder="ej: mi salud, mis hijos, mi dinero, mi tranquilidad...">' + esc(p.motivos || '') + '</textarea></label>' +
       '<label>Mi plan de emergencia (qué haré paso a paso ante un antojo fuerte) <textarea id="adiPlanEmerg" rows="3" maxlength="600" placeholder="ej: 1) Salgo a caminar 10 min 2) Llamo a... 3) Releo mis motivos 4) Si sigue, llamo a *4141">' + esc(p.emergencia || '') + '</textarea></label>' +
-      '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="adiPlanSave" class="btn btn-accent" style="width:auto">💾 Guardar mi plan</button></div></div>' +
+      '<div class="dlg-actions su-59a5a8"><button type="button" id="adiPlanSave" class="btn btn-accent su-30e741">💾 Guardar mi plan</button></div></div>' +
       '<div class="menstrual-card"><h4>🤝 Mi red de apoyo</h4>' +
-      '<p class="muted" style="font-size:11px">Personas a quienes puedo acudir. Incluye al menos un contacto fuera de tu círculo de consumo.</p>' +
+      '<p class="muted su-11a508">Personas a quienes puedo acudir. Incluye al menos un contacto fuera de tu círculo de consumo.</p>' +
       '<div class="conv-row"><label>Nombre <input type="text" id="adiRedNom" maxlength="40" placeholder="ej: María"></label>' +
       '<label>Rol <input type="text" id="adiRedRol" maxlength="30" placeholder="ej: hermana, amigo, terapeuta"></label>' +
       '<label>Teléfono <input type="text" id="adiRedTel" maxlength="20" placeholder="ej: +56 9 ..."></label></div>' +
-      '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="adiRedAdd" class="btn" style="width:auto">+ Agregar contacto</button></div>' +
-      '<div style="margin-top:8px">' + redRows + '</div></div>';
+      '<div class="dlg-actions su-59a5a8"><button type="button" id="adiRedAdd" class="btn su-30e741">+ Agregar contacto</button></div>' +
+      '<div class="su-8a77e5">' + redRows + '</div></div>';
     var ps = $('adiPlanSave');
     if (ps) ps.onclick = function () {
       var ex = store();
@@ -766,21 +766,21 @@
     var e = store();
     var qs = EVAL_PREGUNTAS.map(function (q, i) {
       var opts = EVAL_OPCIONES.map(function (o, v) {
-        return '<label class="check-row" style="font-size:12px"><input type="radio" name="adiEv' + i + '" value="' + v + '"' + (v === 0 ? ' checked' : '') + '> ' + o + '</label>';
+        return '<label class="check-row su-6cb285"><input type="radio" name="adiEv' + i + '" value="' + v + '"' + (v === 0 ? ' checked' : '') + '> ' + o + '</label>';
       }).join('');
-      return '<div class="si-card"><h4 style="font-size:12px">' + (i + 1) + '. ' + q + '</h4>' + opts + '</div>';
+      return '<div class="si-card"><h4 class="su-6cb285">' + (i + 1) + '. ' + q + '</h4>' + opts + '</div>';
     }).join('');
     var hist = e.evals.slice().sort(function (a, b) { return b.fecha.localeCompare(a.fecha); }).slice(0, 10);
     var histHtml = hist.length ? hist.map(function (h) {
       var col = h.nivel === 'alto' ? '#e76e8a' : h.nivel === 'moderado' ? '#e8c56a' : '#8fd694';
-      return '<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--line)">' +
+      return '<div class="su-aa92a4">' +
         '<span>' + h.fecha + '</span><span style="color:' + col + ';font-weight:700">' + h.puntaje + ' pts · ' + h.nivel + '</span></div>';
     }).join('') : '<p class="muted">Sin evaluaciones aún.</p>';
     el.innerHTML =
       '<div class="menstrual-card"><h4>📋 Autoevaluación orientativa</h4>' +
-      '<p class="muted" style="font-size:11px">Responde pensando en los <b>últimos 3 meses</b>. No es un diagnóstico: es una brújula para saber si conviene pedir apoyo profesional.</p>' +
+      '<p class="muted su-11a508">Responde pensando en los <b>últimos 3 meses</b>. No es un diagnóstico: es una brújula para saber si conviene pedir apoyo profesional.</p>' +
       qs +
-      '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="adiEvCalc" class="btn btn-accent" style="width:auto">Ver mi resultado</button></div>' +
+      '<div class="dlg-actions su-59a5a8"><button type="button" id="adiEvCalc" class="btn btn-accent su-30e741">Ver mi resultado</button></div>' +
       '<div id="adiEvRes"></div></div>' +
       '<div class="menstrual-card"><h4>📊 Mis evaluaciones</h4>' + histHtml + '</div>';
     var cb = $('adiEvCalc');
@@ -816,11 +816,11 @@
     var d = document.createElement('dialog');
     d.id = 'adiccionesDialog';
     d.innerHTML = '<form method="dialog">' +
-      '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
-      '<h3 style="margin:0;color:var(--accent)">🌿 Adicciones — Apoyo y Registro</h3>' +
+      '<div class="dlg-actions su-d2d053">' +
+      '<h3 class="su-ee0cfe">🌿 Adicciones — Apoyo y Registro</h3>' +
       '<button type="button" data-close class="btn btn-icon" title="Cerrar">✕</button></div>' +
-      '<p class="muted" style="line-height:1.5">Herramienta de apoyo para el proceso de recuperación. Educativa, local y privada. No reemplaza tratamiento profesional.</p>' +
-      '<div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">' +
+      '<p class="muted su-77e2fe">Herramienta de apoyo para el proceso de recuperación. Educativa, local y privada. No reemplaza tratamiento profesional.</p>' +
+      '<div class="timer-tabs su-4dca21">' +
       '<button type="button" class="btn btn-accent" data-tab="guia">📖 Guía</button>' +
       '<button type="button" class="btn" data-tab="plan">🧭 Plan</button>' +
       '<button type="button" class="btn" data-tab="registro">📝 Registro</button>' +

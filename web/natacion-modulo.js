@@ -63,10 +63,10 @@ function makeDialog(id, title, sub, bodyHTML) {
   var d = document.createElement('dialog');
   d.id = id;
   d.innerHTML = '<form method="dialog">' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
-    '<h3 style="margin:0;color:var(--accent)">' + title + '</h3>' +
+    '<div class="dlg-actions su-d2d053">' +
+    '<h3 class="su-ee0cfe">' + title + '</h3>' +
     '<button type="button" data-close class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    (sub ? '<p class="muted" style="line-height:1.5">' + sub + '</p>' : '') +
+    (sub ? '<p class="muted su-77e2fe">' + sub + '</p>' : '') +
     bodyHTML +
     '<div class="dlg-actions"><button type="button" data-close class="btn">Cerrar</button></div></form>';
   document.body.appendChild(d);
@@ -125,14 +125,14 @@ var SEGURIDAD = [
 function rowCard(c) {
   if (c.txt) {
     return '<div class="si-card"><h4>' + c.ico + ' ' + esc(c.n) + '</h4>' +
-      '<p style="line-height:1.5">' + esc(c.txt) + '</p></div>';
+      '<p class="su-77e2fe">' + esc(c.txt) + '</p></div>';
   }
   return '<div class="si-card"><h4>' + c.ico + ' ' + esc(c.n) + '</h4>' +
     (c.para ? '<p><b>Para:</b> ' + esc(c.para) + '</p>' : '') +
     (c.mat ? '<p><b>Necesitas:</b> ' + esc(c.mat) + '</p>' : '') +
     '<p><b>Cómo:</b> ' + esc(c.como) + '</p>' +
     (c.nota ? '<p class="muted">' + esc(c.nota) + '</p>' : '') +
-    (c.cuidado ? '<p style="font-size:11px;color:#e8c56a">⚠️ ' + esc(c.cuidado) + '</p>' : '') + '</div>';
+    (c.cuidado ? '<p class="su-d33357">⚠️ ' + esc(c.cuidado) + '</p>' : '') + '</div>';
 }
 function switchTab(name) {
   ['Aprende', 'Estilos', 'Mar', 'Planes', 'Seguridad', 'Bitacora'].forEach(function (t) {
@@ -150,33 +150,33 @@ function buildDialog() {
   var segHTML = SEGURIDAD.map(rowCard).join('');
 
   var body =
-    '<div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">' +
-    '<button type="button" id="tabNatAprende" class="btn btn-accent" style="width:auto">🏊 Aprende</button>' +
-    '<button type="button" id="tabNatEstilos" class="btn" style="width:auto">🏊‍♀️ Estilos</button>' +
-    '<button type="button" id="tabNatMar" class="btn" style="width:auto">🌊 Mar Penco</button>' +
-    '<button type="button" id="tabNatPlanes" class="btn" style="width:auto">🏋️ Planes</button>' +
-    '<button type="button" id="tabNatSeguridad" class="btn" style="width:auto">🛟 Seguridad</button>' +
-    '<button type="button" id="tabNatBitacora" class="btn" style="width:auto">📓 Mi bitácora</button></div>' +
+    '<div class="timer-tabs su-4dca21">' +
+    '<button type="button" id="tabNatAprende" class="btn btn-accent su-30e741">🏊 Aprende</button>' +
+    '<button type="button" id="tabNatEstilos" class="btn su-30e741">🏊‍♀️ Estilos</button>' +
+    '<button type="button" id="tabNatMar" class="btn su-30e741">🌊 Mar Penco</button>' +
+    '<button type="button" id="tabNatPlanes" class="btn su-30e741">🏋️ Planes</button>' +
+    '<button type="button" id="tabNatSeguridad" class="btn su-30e741">🛟 Seguridad</button>' +
+    '<button type="button" id="tabNatBitacora" class="btn su-30e741">📓 Mi bitácora</button></div>' +
     '<div id="natAprende">' + aprendeHTML +
-    '<div class="menstrual-card" style="margin-top:10px;border-color:var(--gold)"><h4>🏊 Regla de oro</h4><p class="muted" style="font-size:12px">Piscina primero, mar después. Flotar 1 min + 25 m sin ayuda = tu licencia para empezar en mar calmo, con boya y compañía. Lo apurado se ahoga; lo progresivo nada años.</p></div></div>' +
-    '<div id="natEstilos" class="hidden"><div class="conv-row"><label style="flex:1">🔍 Filtrar <input type="text" id="natEstilosQ" placeholder="crol, espalda, pecho, mariposa..."></label></div><div id="natEstilosList" style="margin-top:8px;display:flex;flex-direction:column;gap:8px">' + estilosHTML + '</div></div>' +
+    '<div class="menstrual-card su-51d56a"><h4>🏊 Regla de oro</h4><p class="muted su-6cb285">Piscina primero, mar después. Flotar 1 min + 25 m sin ayuda = tu licencia para empezar en mar calmo, con boya y compañía. Lo apurado se ahoga; lo progresivo nada años.</p></div></div>' +
+    '<div id="natEstilos" class="hidden"><div class="conv-row"><label class="su-97445a">🔍 Filtrar <input type="text" id="natEstilosQ" placeholder="crol, espalda, pecho, mariposa..."></label></div><div id="natEstilosList" class="su-bf3828">' + estilosHTML + '</div></div>' +
     '<div id="natMar" class="hidden">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🌊 Hoy en Penco</h4><p class="muted" style="font-size:12px">Antes de salir revisa <b>🌊 Mareas</b> y <b>🌤️ Clima</b> en la app: pleamar ±2 h + mañana sin sur fuerte = ventana ideal. Luna nueva/llena = más corriente: mejor mirar que nadar si eres nivel 0–1.</p></div>' +
-    '<div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">' + marHTML + '</div></div>' +
-    '<div id="natPlanes" class="hidden"><div class="conv-row"><label style="flex:1">🔍 Filtrar <input type="text" id="natPlanesQ" placeholder="nivel, series, respiración..."></label></div><div id="natPlanesList" style="margin-top:8px;display:flex;flex-direction:column;gap:8px">' + planesHTML + '</div></div>' +
-    '<div id="natSeguridad" class="hidden"><div style="display:flex;flex-direction:column;gap:8px">' + segHTML + '</div>' +
-    '<div class="menstrual-card" style="margin-top:10px;border-color:var(--gold)"><h4>🚨 Emergencias</h4><p class="muted" style="font-size:12px">Armada 137 · Bomberos 132 · SAMU 131 · Portería CESFAM Penco. RCP paso a paso en 🩹 Primeros Auxilios de la app. Ante la duda, llama: prefieren un aviso de más que un rescate tarde.</p></div></div>' +
+    '<div class="menstrual-card su-68a1a9"><h4>🌊 Hoy en Penco</h4><p class="muted su-6cb285">Antes de salir revisa <b>🌊 Mareas</b> y <b>🌤️ Clima</b> en la app: pleamar ±2 h + mañana sin sur fuerte = ventana ideal. Luna nueva/llena = más corriente: mejor mirar que nadar si eres nivel 0–1.</p></div>' +
+    '<div class="su-a22da5">' + marHTML + '</div></div>' +
+    '<div id="natPlanes" class="hidden"><div class="conv-row"><label class="su-97445a">🔍 Filtrar <input type="text" id="natPlanesQ" placeholder="nivel, series, respiración..."></label></div><div id="natPlanesList" class="su-bf3828">' + planesHTML + '</div></div>' +
+    '<div id="natSeguridad" class="hidden"><div class="su-be2653">' + segHTML + '</div>' +
+    '<div class="menstrual-card su-51d56a"><h4>🚨 Emergencias</h4><p class="muted su-6cb285">Armada 137 · Bomberos 132 · SAMU 131 · Portería CESFAM Penco. RCP paso a paso en 🩹 Primeros Auxilios de la app. Ante la duda, llama: prefieren un aviso de más que un rescate tarde.</p></div></div>' +
     '<div id="natBitacora" class="hidden">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>➕ Anotar sesión</h4>' +
+    '<div class="menstrual-card su-68a1a9"><h4>➕ Anotar sesión</h4>' +
     '<div class="conv-row"><label>Fecha <input type="date" id="natFecha"></label><label>Lugar <select id="natLugar"><option>Piscina</option><option>Playa Penco centro</option><option>Lirquén</option><option>Playa Negra</option><option>La Cata</option><option>Otro mar/río</option><option>Casa (movilidad/respiración)</option></select></label></div>' +
     '<div class="conv-row"><label>Estilo <select id="natEstilo"><option>Aprendiendo (flotar/patada)</option><option>Crol</option><option>Espalda</option><option>Pecho</option><option>Mariposa</option><option>Combinado</option></select></label><label>Nivel esfuerzo <select id="natEsfuerzo"><option>Suave</option><option>Medio</option><option>Fuerte</option></select></label></div>' +
     '<div class="conv-row"><label>Distancia (m) <input type="number" id="natDist" min="0" step="25" placeholder="ej: 400"></label><label>Tiempo (min) <input type="number" id="natTiempo" min="0" step="5" placeholder="ej: 30"></label></div>' +
     '<label>Notas <input type="text" id="natDetalle" placeholder="cómo me sentí, qué practiqué, mar calmo/picado..." maxlength="120"></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start;margin-top:8px"><button type="button" id="natAdd" class="btn btn-accent" style="width:auto">+ Guardar sesión</button></div></div>' +
-    '<div class="conv-row" style="margin-top:8px"><label style="flex:2">🔍 Buscar <input type="text" id="natLogQ" placeholder="crol, lirquén, mar..."></label><label>Filtrar <select id="natLogF"><option value="">Todo</option><option>Piscina</option><option>Playa Penco centro</option><option>Lirquén</option><option>Playa Negra</option><option>La Cata</option><option>Otro mar/río</option><option>Casa (movilidad/respiración)</option></select></label></div>' +
-    '<div id="natResumen" class="menstrual-card" style="margin-top:8px"></div>' +
-    '<div id="natLog" class="habits-list" style="margin-top:8px;max-height:280px"></div>' +
-    '<div class="dlg-actions" style="justify-content:space-between;align-items:center;margin-top:8px"><span id="natStats" class="muted" style="font-size:11px"></span><span style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" id="natShare" class="btn" style="width:auto">📤 Compartir</button><button type="button" id="natClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar</button></span></div></div>';
+    '<div class="dlg-actions su-8f9e27"><button type="button" id="natAdd" class="btn btn-accent su-30e741">+ Guardar sesión</button></div></div>' +
+    '<div class="conv-row su-8a77e5"><label class="su-4b3de7">🔍 Buscar <input type="text" id="natLogQ" placeholder="crol, lirquén, mar..."></label><label>Filtrar <select id="natLogF"><option value="">Todo</option><option>Piscina</option><option>Playa Penco centro</option><option>Lirquén</option><option>Playa Negra</option><option>La Cata</option><option>Otro mar/río</option><option>Casa (movilidad/respiración)</option></select></label></div>' +
+    '<div id="natResumen" class="menstrual-card su-8a77e5"></div>' +
+    '<div id="natLog" class="habits-list su-9daa59"></div>' +
+    '<div class="dlg-actions su-cc4a4c"><span id="natStats" class="muted su-11a508"></span><span class="su-3de8f9"><button type="button" id="natShare" class="btn su-30e741">📤 Compartir</button><button type="button" id="natClear" class="btn su-214f75">🗑 Borrar</button></span></div></div>';
 
   makeDialog('natacionDialog', '🏊 Natación — Aprende · Estilos · Mar Penco · Planes',
     'De cero a 1000 m, con seguridad penqueña: flotar, respirar, 4 estilos, corrientes, frío y tu bitácora. Vive en <b>💚 Cuerpo & Salud > 🛟 Cuidado</b>, junto a 💪 Entrenamientos. Todo <b>privado y local</b>, 100% offline.',
@@ -211,20 +211,20 @@ function renderLog() {
   var totM = data.reduce(function (a, r) { return a + (+r.dist || 0); }, 0);
   var totMin = data.reduce(function (a, r) { return a + (+r.tiempo || 0); }, 0);
   if (res) {
-    res.innerHTML = '<h4>📊 Resumen</h4><p class="muted" style="font-size:12px">' + data.length + ' sesión(es) · 🏊 ' + totM.toLocaleString('es-CL') + ' m · ⏱ ' + totMin + ' min' +
+    res.innerHTML = '<h4>📊 Resumen</h4><p class="muted su-6cb285">' + data.length + ' sesión(es) · 🏊 ' + totM.toLocaleString('es-CL') + ' m · ⏱ ' + totMin + ' min' +
       (totM && totMin ? ' · ritmo medio ' + esc(fmtRitmo(totM, totMin)) : '') +
       (data.length ? '<br>Última: ' + esc(data.slice().sort(function (a, b) { return (b.fecha || '').localeCompare(a.fecha || ''); })[0].fecha || '') : '') + '</p>';
   }
   if (!list.length) {
-    box.innerHTML = '<p class="muted" style="font-size:11px;text-align:center">Sin registros' + (data.length ? ' para este filtro.' : '. Anota tu primera sesión arriba: hasta “floté 20 seg” cuenta.') + '</p>';
+    box.innerHTML = '<p class="muted su-e201a8">Sin registros' + (data.length ? ' para este filtro.' : '. Anota tu primera sesión arriba: hasta “floté 20 seg” cuenta.') + '</p>';
     if (st) st.textContent = data.length ? data.length + ' en total' : '';
     return;
   }
   box.innerHTML = list.slice().sort(function (a, b) { return (b.fecha || '').localeCompare(a.fecha || ''); }).slice(0, 80).map(function (r) {
     var ico = (r.lugar || '').indexOf('Casa') === 0 ? '🏠' : (r.lugar === 'Piscina' ? '🏊' : '🌊');
     var rit = fmtRitmo(r.dist, r.tiempo);
-    return '<div class="hora-item"><span style="font-size:12px">' + ico + ' <b>' + esc(r.estilo || 'Sesión') + '</b> · ' + esc(r.lugar || '') +
-      '<br><span class="muted" style="font-size:10px">' + esc(r.fecha || '') + (r.dist ? ' · ' + (+r.dist).toLocaleString('es-CL') + ' m' : '') + (r.tiempo ? ' · ' + esc(String(r.tiempo)) + ' min' : '') + (rit ? ' · ' + esc(rit) : '') + (r.esfuerzo ? ' · ' + esc(r.esfuerzo) : '') + (r.detalle ? ' · ' + esc(r.detalle) : '') + '</span></span>' +
+    return '<div class="hora-item"><span class="su-6cb285">' + ico + ' <b>' + esc(r.estilo || 'Sesión') + '</b> · ' + esc(r.lugar || '') +
+      '<br><span class="muted su-0d5be0">' + esc(r.fecha || '') + (r.dist ? ' · ' + (+r.dist).toLocaleString('es-CL') + ' m' : '') + (r.tiempo ? ' · ' + esc(String(r.tiempo)) + ' min' : '') + (rit ? ' · ' + esc(rit) : '') + (r.esfuerzo ? ' · ' + esc(r.esfuerzo) : '') + (r.detalle ? ' · ' + esc(r.detalle) : '') + '</span></span>' +
       '<button type="button" class="btn btn-icon nat-del" data-k="' + esc(r.id) + '">✕</button></div>';
   }).join('');
   box.querySelectorAll('.nat-del').forEach(function (x) {

@@ -19,6 +19,8 @@
     "check:min": "node scripts/minify.cjs --check",
     "build:tpl": "node scripts/build-templates.cjs --fix",
     "check:tpl": "node scripts/build-templates.cjs --check",
+    "csp:fase2": "node scripts/csp-fase2.cjs --fix",
+    "check:csp2": "node scripts/csp-fase2.cjs --check",
     "check:perf": "node scripts/perf-budget.cjs",
     "check:donate": "node scripts/check-donate.cjs",
     "check:web": "node scripts/sync-web.cjs",
@@ -26,7 +28,7 @@
     "check:syntax": "node scripts/check-syntax.cjs",
     "check:size": "node scripts/check-size.cjs",
     "lint:commits": "node scripts/lint-commits.cjs",
-    "test": "npm run build:tpl && npm run build:min && node --test \"tests/*.test.js\" && npm run check:tpl && npm run check:min && npm run check:perf && npm run check:manifest && npm run check:sw && npm run check:web && npm run check:donate && npm run check:syntax"
+    "test": "npm run csp:fase2 && npm run build:tpl && npm run build:min && node --test \"tests/*.test.js\" && npm run check:csp2 && npm run check:tpl && npm run check:min && npm run check:perf && npm run check:manifest && npm run check:sw && npm run check:web && npm run check:donate && npm run check:syntax"
   },
   "license": "MIT",
   "type": "commonjs",
@@ -41,6 +43,7 @@
       "preload.js",
       "index.html",
       "styles.css",
+      "styles-csp.css",
       "splash.css",
       "web-api.js",
       "storage-idb.js",

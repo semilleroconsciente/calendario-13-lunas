@@ -73,10 +73,10 @@ function makeDialog(id, title, sub, bodyHTML) {
   var d = document.createElement('dialog');
   d.id = id;
   d.innerHTML = '<form method="dialog">' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
-    '<h3 style="margin:0;color:var(--accent)">' + title + '</h3>' +
+    '<div class="dlg-actions su-d2d053">' +
+    '<h3 class="su-ee0cfe">' + title + '</h3>' +
     '<button type="button" data-close class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    (sub ? '<p class="muted" style="line-height:1.5">' + sub + '</p>' : '') +
+    (sub ? '<p class="muted su-77e2fe">' + sub + '</p>' : '') +
     bodyHTML +
     '<div class="dlg-actions"><button type="button" data-close class="btn">Cerrar</button></div></form>';
   document.body.appendChild(d);
@@ -260,94 +260,94 @@ var TAO_LUNAS = [
    ============================================================ */
 function buildDialog() {
   var txGrid = TAO_TEXTOS.map(function (it) {
-    return '<button type="button" class="btn tao-tx-card" data-tx="' + it.id + '" style="text-align:left;height:auto;padding:10px">' +
+    return '<button type="button" class="btn tao-tx-card su-1c48e1" data-tx="' + it.id + '">' +
       '<b>' + it.ico + ' ' + esc(it.cap) + '</b><br>' +
-      '<span class="muted" style="font-size:11px">' + esc(it.tag.split(' ').slice(0, 3).join(' · ')) + '</span></button>';
+      '<span class="muted su-11a508">' + esc(it.tag.split(' ').slice(0, 3).join(' · ')) + '</span></button>';
   }).join('');
 
   var testHTML = TAO_TEST.map(function (q, i) {
     var opts = TAO_LIKERT.map(function (o) {
-      return '<label class="check-row" style="margin:0;font-size:12px"><input type="radio" name="taoQ' + i + '" value="' + o.v + '"> ' + o.t + '</label>';
+      return '<label class="check-row su-a16b97"><input type="radio" name="taoQ' + i + '" value="' + o.v + '"> ' + o.t + '</label>';
     }).join('');
-    return '<div class="menstrual-card" style="margin-bottom:8px"><b style="font-size:12px">' + (i + 1) + '. ' + esc(q.txt) + '</b>' +
-      '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:6px">' + opts + '</div></div>';
+    return '<div class="menstrual-card su-fdf33f"><b class="su-6cb285">' + (i + 1) + '. ' + esc(q.txt) + '</b>' +
+      '<div class="su-8fd176">' + opts + '</div></div>';
   }).join('');
 
   var practHTML = TAO_PRACTICAS.map(function (p) {
     return '<div class="menstrual-card"><h4>' + p.ico + ' ' + esc(p.n) + '</h4>' +
-      '<p class="muted" style="font-size:11px">⏱ ' + esc(p.tiempo) + '</p>' +
-      '<p style="font-size:12px">' + esc(p.pasos) + '</p>' +
-      '<p class="muted" style="font-size:12px">💡 ' + esc(p.tip) + '</p>' +
-      '<button type="button" class="btn tao-pract-add" data-p="' + esc(p.n) + '" style="width:auto">+ Anotar en mi diario de hoy</button></div>';
+      '<p class="muted su-11a508">⏱ ' + esc(p.tiempo) + '</p>' +
+      '<p class="su-6cb285">' + esc(p.pasos) + '</p>' +
+      '<p class="muted su-6cb285">💡 ' + esc(p.tip) + '</p>' +
+      '<button type="button" class="btn tao-pract-add su-30e741" data-p="' + esc(p.n) + '">+ Anotar en mi diario de hoy</button></div>';
   }).join('');
 
   var body =
-    '<div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">' +
-    '<button type="button" id="tabTaoGuia" class="btn btn-accent" style="width:auto">📖 Guía</button>' +
-    '<button type="button" id="tabTaoTextos" class="btn" style="width:auto">📜 12 Textos</button>' +
-    '<button type="button" id="tabTaoPract" class="btn" style="width:auto">🛠️ Prácticas</button>' +
-    '<button type="button" id="tabTaoTest" class="btn" style="width:auto">📝 Test yin-yang</button>' +
-    '<button type="button" id="tabTaoCamino" class="btn" style="width:auto">🌱 Mi Tao</button></div>' +
+    '<div class="timer-tabs su-4dca21">' +
+    '<button type="button" id="tabTaoGuia" class="btn btn-accent su-30e741">📖 Guía</button>' +
+    '<button type="button" id="tabTaoTextos" class="btn su-30e741">📜 12 Textos</button>' +
+    '<button type="button" id="tabTaoPract" class="btn su-30e741">🛠️ Prácticas</button>' +
+    '<button type="button" id="tabTaoTest" class="btn su-30e741">📝 Test yin-yang</button>' +
+    '<button type="button" id="tabTaoCamino" class="btn su-30e741">🌱 Mi Tao</button></div>' +
 
     '<div id="taoGuia">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>☯️ ¿Qué es el Tao?</h4>' +
-    '<p class="muted" style="font-size:12px;line-height:1.6">Tao (道) significa <b>camino</b>: el curso natural de la vida, como el agua que baja al mar sin que nadie la empuje. Nace en la China antigua con <b>Lao Tsé</b> (el viejo sabio del <i>Tao Te Ching</i>, 81 poemas cortos) y <b>Zhuangzi</b> (cuentos con humor: mariposas, pescadores, carpinteros). No es religión ni club: es un <b>arte de vivir simple</b> —hacer menos y mejor, ceder a tiempo, contentarse.</p>' +
-    '<p class="muted" style="font-size:12px;line-height:1.6">Idea de una línea: <b>deja de pelear con la corriente</b>. Mira dónde fuerzas, suelta un control, haz lo mínimo eficaz y deja que la vida haga su parte.</p></div>' +
-    '<div class="fishing-grid" style="margin-top:10px">' +
+    '<div class="menstrual-card su-68a1a9"><h4>☯️ ¿Qué es el Tao?</h4>' +
+    '<p class="muted su-616df7">Tao (道) significa <b>camino</b>: el curso natural de la vida, como el agua que baja al mar sin que nadie la empuje. Nace en la China antigua con <b>Lao Tsé</b> (el viejo sabio del <i>Tao Te Ching</i>, 81 poemas cortos) y <b>Zhuangzi</b> (cuentos con humor: mariposas, pescadores, carpinteros). No es religión ni club: es un <b>arte de vivir simple</b> —hacer menos y mejor, ceder a tiempo, contentarse.</p>' +
+    '<p class="muted su-616df7">Idea de una línea: <b>deja de pelear con la corriente</b>. Mira dónde fuerzas, suelta un control, haz lo mínimo eficaz y deja que la vida haga su parte.</p></div>' +
+    '<div class="fishing-grid su-d2c171">' +
     '<div class="menstrual-card"><h4>🗺️ El mapa en 6 piezas</h4>' +
-    '<p class="muted" style="font-size:12px"><b>1) Tao:</b> el fondo que sostiene todo (no se explica, se vive). <b>2) Yin-yang ☯️:</b> todo viene en pares (noche-día, blando-duro); la salud es alternarlos. <b>3) Wu wei 🪶:</b> actuar sin forzar, como remar a favor. <b>4) Te 🤲:</b> la virtud que brota sola cuando sigues el Tao (no la que se presume). <b>5) Pu 🪵:</b> el tronco sin tallar: simple, natural, sin adornos. <b>6) 3 tesoros:</b> compasión, sencillez y no creerse primero.</p></div>' +
+    '<p class="muted su-6cb285"><b>1) Tao:</b> el fondo que sostiene todo (no se explica, se vive). <b>2) Yin-yang ☯️:</b> todo viene en pares (noche-día, blando-duro); la salud es alternarlos. <b>3) Wu wei 🪶:</b> actuar sin forzar, como remar a favor. <b>4) Te 🤲:</b> la virtud que brota sola cuando sigues el Tao (no la que se presume). <b>5) Pu 🪵:</b> el tronco sin tallar: simple, natural, sin adornos. <b>6) 3 tesoros:</b> compasión, sencillez y no creerse primero.</p></div>' +
     '<div class="menstrual-card"><h4>📚 Los sabios en 1 minuto</h4>' +
-    '<p class="muted" style="font-size:12px"><b>Lao Tsé</b> ("viejo maestro", s. VI a.C. según la leyenda) deja 81 capítulos cortos para gobernar y vivir sin agotarse. <b>Zhuangzi</b> (s. IV a.C.) los cuenta con risa: sueña que es mariposa y despierta sin saber si es hombre o mariposa —¿tan serio es tu "yo"? Después vienen el <b>I Ching</b> (libro de cambios, yin-yang en movimiento), la medicina china y el tai chi: el mismo Tao en cuerpo y estaciones. Puerta de entrada: Cap. 1, 8, 11 y 48 de esta sección.</p></div></div>' +
+    '<p class="muted su-6cb285"><b>Lao Tsé</b> ("viejo maestro", s. VI a.C. según la leyenda) deja 81 capítulos cortos para gobernar y vivir sin agotarse. <b>Zhuangzi</b> (s. IV a.C.) los cuenta con risa: sueña que es mariposa y despierta sin saber si es hombre o mariposa —¿tan serio es tu "yo"? Después vienen el <b>I Ching</b> (libro de cambios, yin-yang en movimiento), la medicina china y el tai chi: el mismo Tao en cuerpo y estaciones. Puerta de entrada: Cap. 1, 8, 11 y 48 de esta sección.</p></div></div>' +
     '<details class="menstrual-details"><summary>🚶 ¿Cómo practicar sin maestro? (rutina mínima)</summary>' +
-    '<p class="muted" style="font-size:12px"><b>Mañana:</b> wu wei del día (marca 🌊/🪨) + 1 paso hormiga. <b>Día:</b> pausa yin-yang x3 + té consciente + 1 no-hacer. <b>Noche:</b> soltar la noche 3 min + 1 línea en tu diario. <b>Por luna:</b> 1 texto madre + 1 cajón vaciado + releer diario. 15 min diarios bastan; lo simple, repetido, cambia la corriente.</p></details>' +
+    '<p class="muted su-6cb285"><b>Mañana:</b> wu wei del día (marca 🌊/🪨) + 1 paso hormiga. <b>Día:</b> pausa yin-yang x3 + té consciente + 1 no-hacer. <b>Noche:</b> soltar la noche 3 min + 1 línea en tu diario. <b>Por luna:</b> 1 texto madre + 1 cajón vaciado + releer diario. 15 min diarios bastan; lo simple, repetido, cambia la corriente.</p></details>' +
     '<details class="menstrual-details"><summary>⚠️ Cuidados (léeme)</summary>' +
-    '<p class="muted" style="font-size:12px">✅ Esto es <b>sabiduría educativa</b>, no religión ni terapia. ✅ Sin rituales raros ni maestros que cobren caro u obediencia: desconfía de gurúes exprés del "Tao". ✅ El Tao no reemplaza médico, terapeuta ni red: con pena, ansiedad fuerte o crisis, pide apoyo (CESFAM, *4141 en Chile 24 h). Si un ejercicio te desborda, detente, camina, toma agua y conversa.</p></details>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>🌙 Tao × 13 lunas (Penco)</h4><div id="taoLunasBox"></div>' +
-    '<p class="muted" style="font-size:11px;margin-top:6px">Puentes dentro de la app: 🌬️ <b>Respiración</b> (técnicas) · 🎯 <b>Disciplina</b> (forzar vs fluir) · 📿 <b>Métodos</b> (ficha Tao) · 📓 <b>Gratitud</b> (contentarse).</p></div>' +
+    '<p class="muted su-6cb285">✅ Esto es <b>sabiduría educativa</b>, no religión ni terapia. ✅ Sin rituales raros ni maestros que cobren caro u obediencia: desconfía de gurúes exprés del "Tao". ✅ El Tao no reemplaza médico, terapeuta ni red: con pena, ansiedad fuerte o crisis, pide apoyo (CESFAM, *4141 en Chile 24 h). Si un ejercicio te desborda, detente, camina, toma agua y conversa.</p></details>' +
+    '<div class="menstrual-card su-d2c171"><h4>🌙 Tao × 13 lunas (Penco)</h4><div id="taoLunasBox"></div>' +
+    '<p class="muted su-e13d76">Puentes dentro de la app: 🌬️ <b>Respiración</b> (técnicas) · 🎯 <b>Disciplina</b> (forzar vs fluir) · 📿 <b>Métodos</b> (ficha Tao) · 📓 <b>Gratitud</b> (contentarse).</p></div>' +
     '</div>' +
 
     '<div id="taoTextos" class="hidden">' +
-    '<div class="conv-row"><label style="flex:2">Buscar <input type="text" id="taoQ" placeholder="ej: agua, vacío, fama, difícil, nombre, ceder..." maxlength="40"></label></div>' +
-    '<div id="taoTxGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-top:8px">' + txGrid + '</div>' +
-    '<div id="taoDetalle" class="menstrual-card" style="margin-top:10px;border-color:var(--gold)"><p class="muted">Toca un texto para ver su ficha completa 👆</p></div></div>' +
+    '<div class="conv-row"><label class="su-4b3de7">Buscar <input type="text" id="taoQ" placeholder="ej: agua, vacío, fama, difícil, nombre, ceder..." maxlength="40"></label></div>' +
+    '<div id="taoTxGrid" class="su-1e9d45">' + txGrid + '</div>' +
+    '<div id="taoDetalle" class="menstrual-card su-51d56a"><p class="muted">Toca un texto para ver su ficha completa 👆</p></div></div>' +
 
     '<div id="taoPract" class="hidden">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🌊 Respiración del agua — 3 minutos</h4>' +
-    '<p class="muted" style="font-size:12px">Inhala 4, exhala 6, como olas. El botón te marca el tiempo; al terminar anota tu wu wei del día.</p>' +
-    '<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><button type="button" id="taoRespiraBtn" class="btn btn-accent" style="width:auto">▶ Respirar ahora (3 min)</button>' +
-    '<span id="taoRespiraMsg" class="muted" style="font-size:12px"></span></div>' +
-    '<div class="conv-row" style="margin-top:8px"><label>Hoy fuerzo en… <input type="text" id="taoFuerzoHoy" placeholder="ej: quiero que mi hijo coma todo ya" maxlength="140"></label></div>' +
+    '<div class="menstrual-card su-68a1a9"><h4>🌊 Respiración del agua — 3 minutos</h4>' +
+    '<p class="muted su-6cb285">Inhala 4, exhala 6, como olas. El botón te marca el tiempo; al terminar anota tu wu wei del día.</p>' +
+    '<div class="su-58703f"><button type="button" id="taoRespiraBtn" class="btn btn-accent su-30e741">▶ Respirar ahora (3 min)</button>' +
+    '<span id="taoRespiraMsg" class="muted su-6cb285"></span></div>' +
+    '<div class="conv-row su-8a77e5"><label>Hoy fuerzo en… <input type="text" id="taoFuerzoHoy" placeholder="ej: quiero que mi hijo coma todo ya" maxlength="140"></label></div>' +
     '<div class="conv-row"><label>Lo suelto / achico así… <input type="text" id="taoSueltoHoy" placeholder="ej: le sirvo menos y sin pelear" maxlength="140"></label>' +
     '<label>Mi mínimo eficaz… <input type="text" id="taoMinimoHoy" placeholder="ej: caminar 10 min + 1 cajón" maxlength="100"></label></div>' +
-    '<div class="dlg-actions" style="justify-content:flex-start;flex-wrap:wrap;gap:8px"><button type="button" id="taoPractSave" class="btn btn-accent" style="width:auto">💾 Guardar día Tao</button>' +
-    '<button type="button" id="taoGoRespira" class="btn" style="width:auto">🌬️ Ir a Respiración</button></div></div>' +
+    '<div class="dlg-actions su-41efc8"><button type="button" id="taoPractSave" class="btn btn-accent su-30e741">💾 Guardar día Tao</button>' +
+    '<button type="button" id="taoGoRespira" class="btn su-30e741">🌬️ Ir a Respiración</button></div></div>' +
     practHTML + '</div>' +
 
     '<div id="taoTest" class="hidden">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>📝 Test: ¿fluyes o fuerzas? (20 afirmaciones)</h4>' +
-    '<p class="muted" style="font-size:12px">Responde según <b>cómo eres casi siempre</b>. Escala: Nunca (0) · A veces (1) · A menudo (2) · Muy cierto (3). ~5 minutos. Mide tu <b>Yin 🌙 · Yang ☀️ · Wu wei 💧</b> + tu <b>nivel de forzar/control 🪨</b> (F). <b>No es diagnóstico</b>: es un espejo para equilibrarte.</p>' +
-    '<div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" id="taoTestReset" class="btn" style="width:auto">↺ Limpiar</button>' +
-    '<button type="button" id="taoTestCalc" class="btn btn-accent" style="width:auto">📊 Ver mi resultado</button></div>' +
-    '<div id="taoProgreso" class="muted" style="font-size:11px;margin-top:6px"></div></div>' +
-    '<div id="taoTestBox" style="margin-top:10px">' + testHTML + '</div>' +
-    '<div id="taoResultado" class="menstrual-card hidden" style="margin-top:10px;border-color:var(--gold)"></div></div>' +
+    '<div class="menstrual-card su-68a1a9"><h4>📝 Test: ¿fluyes o fuerzas? (20 afirmaciones)</h4>' +
+    '<p class="muted su-6cb285">Responde según <b>cómo eres casi siempre</b>. Escala: Nunca (0) · A veces (1) · A menudo (2) · Muy cierto (3). ~5 minutos. Mide tu <b>Yin 🌙 · Yang ☀️ · Wu wei 💧</b> + tu <b>nivel de forzar/control 🪨</b> (F). <b>No es diagnóstico</b>: es un espejo para equilibrarte.</p>' +
+    '<div class="su-3de8f9"><button type="button" id="taoTestReset" class="btn su-30e741">↺ Limpiar</button>' +
+    '<button type="button" id="taoTestCalc" class="btn btn-accent su-30e741">📊 Ver mi resultado</button></div>' +
+    '<div id="taoProgreso" class="muted su-e13d76"></div></div>' +
+    '<div id="taoTestBox" class="su-d2c171">' + testHTML + '</div>' +
+    '<div id="taoResultado" class="menstrual-card hidden su-51d56a"></div></div>' +
 
     '<div id="taoCamino" class="hidden">' +
-    '<div class="menstrual-grid"><div class="menstrual-card" style="border-color:var(--gold)"><h4>🌱 Mi forma</h4>' +
+    '<div class="menstrual-grid"><div class="menstrual-card su-68a1a9"><h4>🌱 Mi forma</h4>' +
     '<div class="conv-row"><label>Mi forma dominante <select id="taoMiForma"><option value="">— sin definir —</option><option value="Y">🌙 Yin · Luna receptiva</option><option value="G">☀️ Yang · Sol activo</option><option value="W">💧 Agua · Wu wei</option></select></label></div>' +
-    '<div id="taoMiFormaBox" style="margin-top:6px"></div></div>' +
+    '<div id="taoMiFormaBox" class="su-fe7b49"></div></div>' +
     '<div class="menstrual-card"><h4>📓 Diario del Tao</h4>' +
     '<div class="conv-row"><label>Fecha <input type="date" id="taoDiaFecha"></label></div>' +
     '<label>Hoy en mi Tao… (forcé / solté / mínimo eficaz) <input type="text" id="taoDiaTxt" placeholder="ej: forcé la siesta; solté el control; caminé 10 min" maxlength="140"></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="taoDiaAdd" class="btn btn-accent" style="width:auto">+ Guardar hoy</button></div>' +
-    '<div id="taoDiaList" class="habits-list" style="margin-top:8px;max-height:220px"></div></div></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>🌊 Mis días Tao (racha de fluir)</h4><div id="taoPractsBox"></div></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>🕘 Historial de tests</h4><div id="taoHistBox"></div></div>' +
-    '<div class="dlg-actions" style="justify-content:space-between;align-items:center;margin-top:8px;flex-wrap:wrap;gap:8px">' +
-    '<span id="taoStats" class="muted" style="font-size:11px"></span>' +
-    '<span style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" id="taoShare" class="btn" style="width:auto">📤 Compartir</button>' +
-    '<button type="button" id="taoToNote" class="btn" style="width:auto">📝 Llevar a nota de hoy</button>' +
-    '<button type="button" id="taoClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar todo</button></span></div></div>';
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="taoDiaAdd" class="btn btn-accent su-30e741">+ Guardar hoy</button></div>' +
+    '<div id="taoDiaList" class="habits-list su-ebf445"></div></div></div>' +
+    '<div class="menstrual-card su-d2c171"><h4>🌊 Mis días Tao (racha de fluir)</h4><div id="taoPractsBox"></div></div>' +
+    '<div class="menstrual-card su-d2c171"><h4>🕘 Historial de tests</h4><div id="taoHistBox"></div></div>' +
+    '<div class="dlg-actions su-a1935c">' +
+    '<span id="taoStats" class="muted su-11a508"></span>' +
+    '<span class="su-3de8f9"><button type="button" id="taoShare" class="btn su-30e741">📤 Compartir</button>' +
+    '<button type="button" id="taoToNote" class="btn su-30e741">📝 Llevar a nota de hoy</button>' +
+    '<button type="button" id="taoClear" class="btn su-214f75">🗑 Borrar todo</button></span></div></div>';
 
   makeDialog('taoDialog', '☯️ Tao',
     'Yin-yang, wu wei y simpleza para la vida común: suelta un control, haz lo mínimo eficaz y vuelve a tu raíz. En Penco, en tu casa, hoy. Todo <b>privado y local</b>.',
@@ -367,15 +367,15 @@ function renderDetalle(id) {
   var e = store();
   var fav = e.favs.indexOf(id) >= 0;
   box.innerHTML =
-    '<h4 style="color:var(--gold)">' + t.ico + ' ' + esc(t.cap) + '</h4>' +
-    '<blockquote class="dlg-quote" style="font-size:12px">' + esc(t.texto) + '</blockquote>' +
-    '<p style="font-size:12px;line-height:1.6">' + esc(t.idea) + '</p>' +
-    '<p style="font-size:12px">🧰 <b>¿Cuándo sirve?</b> ' + esc(t.sirve) + '</p>' +
+    '<h4 class="su-e39eba">' + t.ico + ' ' + esc(t.cap) + '</h4>' +
+    '<blockquote class="dlg-quote su-6cb285">' + esc(t.texto) + '</blockquote>' +
+    '<p class="su-616df7">' + esc(t.idea) + '</p>' +
+    '<p class="su-6cb285">🧰 <b>¿Cuándo sirve?</b> ' + esc(t.sirve) + '</p>' +
     '<div class="si-card"><h4>✏️ Práctica de hoy</h4><p>' + esc(t.practica) + '</p><p class="muted">Pregunta que despierta: <i>' + esc(t.pregunta) + '</i></p></div>' +
-    '<p class="muted" style="font-size:12px">⚠️ Trampa típica: ' + esc(t.trampa) + '</p>' +
-    '<div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">' +
-    '<button type="button" class="btn" id="taoFavBtn" style="width:auto">' + (fav ? '★ Quitar de favoritas' : '☆ Marcar favorita') + '</button>' +
-    '<button type="button" class="btn btn-accent" id="taoHoyBtn" style="width:auto">✓ Vivir este hoy</button></div>';
+    '<p class="muted su-6cb285">⚠️ Trampa típica: ' + esc(t.trampa) + '</p>' +
+    '<div class="su-67b198">' +
+    '<button type="button" class="btn su-30e741" id="taoFavBtn">' + (fav ? '★ Quitar de favoritas' : '☆ Marcar favorita') + '</button>' +
+    '<button type="button" class="btn btn-accent su-30e741" id="taoHoyBtn">✓ Vivir este hoy</button></div>';
   var fb = $('taoFavBtn');
   if (fb) fb.onclick = function () {
     var d = store();
@@ -427,23 +427,23 @@ function showResultado(sc) {
   var forzaTxt = forza <= 5 ? 'Liviano: fuerzas poco. Sostén con 1 wu wei diario.' : forza <= 9 ? 'Medio: control frecuente. Suelta 1 control + respira 4-6 cada día.' : 'Pesado: mucho empuje y control. Parte por 1 resta (Cap. 48) + 1 caminata, sin exigirte todo.';
   box.classList.remove('hidden');
   box.innerHTML = '<h4>📊 Tu espejo (sin guardar)</h4>' +
-    '<p class="muted" style="font-size:11px">Máximo por forma: 15 (5 preguntas × 3). Forzar (F): máximo 15 — mientras más alto, más empuje.</p>' +
+    '<p class="muted su-11a508">Máximo por forma: 15 (5 preguntas × 3). Forzar (F): máximo 15 — mientras más alto, más empuje.</p>' +
     arr.map(function (a) {
       var c = TAO_FORMAS[a.k];
       var pct = Math.round(a.p / max * 100);
       var isTop = dom === a.k;
-      return '<div style="display:flex;align-items:center;gap:8px;margin:4px 0">' +
-        '<span style="min-width:150px;font-size:12px"><b>' + c.ico + ' ' + esc(c.nombre) + '</b></span>' +
-        '<span style="flex:1;background:var(--panel);border:1px solid var(--line);border-radius:6px;height:14px;position:relative;overflow:hidden">' +
+      return '<div class="su-0d84b3">' +
+        '<span class="su-b53707"><b>' + c.ico + ' ' + esc(c.nombre) + '</b></span>' +
+        '<span class="su-2982dd">' +
         '<span style="display:block;height:100%;width:' + pct + '%;background:' + (isTop ? 'var(--gold)' : 'var(--accent)') + ';opacity:' + (isTop ? '1' : '.55') + '"></span></span>' +
-        '<b style="min-width:30px;text-align:right">' + a.p + '</b></div>';
+        '<b class="su-803c87">' + a.p + '</b></div>';
     }).join('') +
-    '<div class="si-card" style="margin-top:8px"><h4>' + TAO_FORMAS[dom].ico + ' Tu forma fuerte: ' + esc(TAO_FORMAS[dom].nombre) + '</h4>' +
+    '<div class="si-card su-8a77e5"><h4>' + TAO_FORMAS[dom].ico + ' Tu forma fuerte: ' + esc(TAO_FORMAS[dom].nombre) + '</h4>' +
     '<p>' + esc(TAO_FORMAS[dom].desc) + '</p><p><b>Entrena así:</b> ' + esc(TAO_FORMAS[dom].entrena) + '</p>' +
     '<p class="muted">🪨 Nivel de forzar: <b>' + forza + '/15</b> — ' + esc(forzaTxt) + '</p></div>' +
-    '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"><button type="button" class="btn btn-accent" id="taoSaveTest" style="width:auto">💾 Guardar este test</button>' +
-    '<button type="button" class="btn" id="taoSetForma" style="width:auto">✓ Mi forma: ' + esc(TAO_FORMAS[dom].nombre) + '</button>' +
-    '<button type="button" class="btn" id="taoReadTx" style="width:auto">📖 Leer texto que me sirve</button></div>';
+    '<div class="su-ac5453"><button type="button" class="btn btn-accent su-30e741" id="taoSaveTest">💾 Guardar este test</button>' +
+    '<button type="button" class="btn su-30e741" id="taoSetForma">✓ Mi forma: ' + esc(TAO_FORMAS[dom].nombre) + '</button>' +
+    '<button type="button" class="btn su-30e741" id="taoReadTx">📖 Leer texto que me sirve</button></div>';
   var sv = $('taoSaveTest');
   if (sv) sv.onclick = function () {
     var d = store();
@@ -471,9 +471,9 @@ function syncMiForma() {
 function renderMiFormaBox() {
   var box = $('taoMiFormaBox'); if (!box) return;
   var k = store().miForma || '';
-  if (!k || !TAO_FORMAS[k]) { box.innerHTML = '<p class="muted" style="font-size:12px">Aún sin definir. Haz el test 📝 o elígela arriba: es tu punto de partida, no tu jaula.</p>'; return; }
+  if (!k || !TAO_FORMAS[k]) { box.innerHTML = '<p class="muted su-6cb285">Aún sin definir. Haz el test 📝 o elígela arriba: es tu punto de partida, no tu jaula.</p>'; return; }
   var c = TAO_FORMAS[k];
-  box.innerHTML = '<div class="chip" style="display:block;white-space:normal;line-height:1.5"><b>' + c.ico + ' ' + esc(c.nombre) + '</b><br>' +
+  box.innerHTML = '<div class="chip su-d7c8b3"><b>' + c.ico + ' ' + esc(c.nombre) + '</b><br>' +
     '<span class="muted">' + esc(c.desc) + '<br><b>Entrena:</b> ' + esc(c.entrena) + '</span></div>';
 }
 function rachaPracts() {
@@ -493,12 +493,12 @@ function renderPracts() {
   var box = $('taoPractsBox'); if (!box) return;
   var d = store().practs || [];
   var ult7 = d.slice().sort(function (a, b) { return b.fecha.localeCompare(a.fecha); }).slice(0, 7);
-  box.innerHTML = '<p class="muted" style="font-size:11px">🌊 Racha: <b>' + rachaPracts() + ' días</b> · ' + d.length + ' día(s) Tao · fuerzo → suelto → mínimo eficaz.</p>' +
+  box.innerHTML = '<p class="muted su-11a508">🌊 Racha: <b>' + rachaPracts() + ' días</b> · ' + d.length + ' día(s) Tao · fuerzo → suelto → mínimo eficaz.</p>' +
     (ult7.length ? ult7.map(function (r) {
-      return '<div class="hora-item" style="align-items:flex-start"><span style="font-size:11px"><b>' + esc(r.fecha) + '</b><br>' +
+      return '<div class="hora-item su-0486f7"><span class="su-11a508"><b>' + esc(r.fecha) + '</b><br>' +
         (r.fuerzo ? '🪨 ' + esc(r.fuerzo) + '<br>' : '') + (r.suelto ? '🪶 ' + esc(r.suelto) + '<br>' : '') + (r.minimo ? '🌱 ' + esc(r.minimo) : '') + '</span>' +
         '<button type="button" class="btn btn-icon tao-pract-del" data-id="' + r.id + '">✕</button></div>';
-    }).join('') : '<p class="muted" style="font-size:11px;text-align:center">Sin días aún. Guarda tu primer día Tao arriba ☯️.</p>');
+    }).join('') : '<p class="muted su-e201a8">Sin días aún. Guarda tu primer día Tao arriba ☯️.</p>');
   box.querySelectorAll('.tao-pract-del').forEach(function (x) {
     x.onclick = function () { var e = store(); e.practs = e.practs.filter(function (r) { return r.id !== x.dataset.id; }); save(); renderPracts(); renderStats(); };
   });
@@ -507,9 +507,9 @@ function renderDiario() {
   var box = $('taoDiaList'); if (!box) return;
   var d = store().diario || {};
   var keys = Object.keys(d).sort().reverse().slice(0, 30);
-  if (!keys.length) { box.innerHTML = '<p class="muted" style="font-size:11px;text-align:center">Sin registros. 3 líneas bastan: forcé + solté + mínimo eficaz.</p>'; return; }
+  if (!keys.length) { box.innerHTML = '<p class="muted su-e201a8">Sin registros. 3 líneas bastan: forcé + solté + mínimo eficaz.</p>'; return; }
   box.innerHTML = keys.map(function (k) {
-    return '<div class="hora-item" style="align-items:flex-start"><span style="font-size:11px"><b>' + esc(k) + '</b><br>' + esc(d[k]) + '</span>' +
+    return '<div class="hora-item su-0486f7"><span class="su-11a508"><b>' + esc(k) + '</b><br>' + esc(d[k]) + '</span>' +
       '<button type="button" class="btn btn-icon tao-dia-del" data-k="' + esc(k) + '">✕</button></div>';
   }).join('');
   box.querySelectorAll('.tao-dia-del').forEach(function (x) {
@@ -519,9 +519,9 @@ function renderDiario() {
 function renderHist() {
   var box = $('taoHistBox'); if (!box) return;
   var t = (store().tests || []).slice().reverse().slice(0, 10);
-  if (!t.length) { box.innerHTML = '<p class="muted" style="font-size:11px">Sin tests guardados. Responde y pulsa “💾 Guardar este test”.</p>'; return; }
+  if (!t.length) { box.innerHTML = '<p class="muted su-11a508">Sin tests guardados. Responde y pulsa “💾 Guardar este test”.</p>'; return; }
   box.innerHTML = t.map(function (r) {
-    return '<div class="hora-item"><span style="font-size:11px"><b>' + esc(r.fecha) + '</b> · 🌙' + r.Y + ' ☀️' + r.G + ' 💧' + r.W + ' · fuerte <b>' + esc(r.dom || '') + '</b> · forzar ' + esc(String(r.F)) + '/15</span>' +
+    return '<div class="hora-item"><span class="su-11a508"><b>' + esc(r.fecha) + '</b> · 🌙' + r.Y + ' ☀️' + r.G + ' 💧' + r.W + ' · fuerte <b>' + esc(r.dom || '') + '</b> · forzar ' + esc(String(r.F)) + '/15</span>' +
       '<button type="button" class="btn btn-icon tao-hist-del" data-id="' + r.id + '">✕</button></div>';
   }).join('');
   box.querySelectorAll('.tao-hist-del').forEach(function (x) {

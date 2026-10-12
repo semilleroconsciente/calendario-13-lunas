@@ -237,21 +237,21 @@ function asegurarPanel() {
   if (!panel.dataset.iglOk) {
     panel.dataset.iglOk = '1';
     panel.innerHTML =
-      '<p class="muted" style="font-size:11px;line-height:1.55">Fe y comunidad en Penco: <b>3 parroquias + 8 capillas + monasterio verificados</b> + red evangélica y tus fichas con horario confirmado. Elige fecha/hora y llévala a tu día con <b>📌 Calendario</b>. Revisa también <b>📜 Historia</b>. Queda <b>privado y local</b>.</p>' +
-      '<div class="timer-tabs" style="margin:8px 0 10px;flex-wrap:wrap">' +
-      '<button type="button" id="tabIglTodas" class="btn btn-accent" style="width:auto">⛪ Todas</button>' +
-      '<button type="button" id="tabIglCat" class="btn" style="width:auto">⛪ Católicas</button>' +
-      '<button type="button" id="tabIglEva" class="btn" style="width:auto">🙏 Evangélicas</button>' +
-      '<button type="button" id="tabIglHis" class="btn" style="width:auto">📜 Historia</button>' +
-      '<button type="button" id="tabIglVis" class="btn" style="width:auto">📌 Mis visitas</button>' +
-      '<button type="button" id="tabIglAgr" class="btn" style="width:auto">➕ Agregar</button>' +
+      '<p class="muted su-b6db47">Fe y comunidad en Penco: <b>3 parroquias + 8 capillas + monasterio verificados</b> + red evangélica y tus fichas con horario confirmado. Elige fecha/hora y llévala a tu día con <b>📌 Calendario</b>. Revisa también <b>📜 Historia</b>. Queda <b>privado y local</b>.</p>' +
+      '<div class="timer-tabs su-525c61">' +
+      '<button type="button" id="tabIglTodas" class="btn btn-accent su-30e741">⛪ Todas</button>' +
+      '<button type="button" id="tabIglCat" class="btn su-30e741">⛪ Católicas</button>' +
+      '<button type="button" id="tabIglEva" class="btn su-30e741">🙏 Evangélicas</button>' +
+      '<button type="button" id="tabIglHis" class="btn su-30e741">📜 Historia</button>' +
+      '<button type="button" id="tabIglVis" class="btn su-30e741">📌 Mis visitas</button>' +
+      '<button type="button" id="tabIglAgr" class="btn su-30e741">➕ Agregar</button>' +
       '</div>' +
-      '<div class="menstrual-card" style="margin-top:10px"><h4>🔍 Buscar</h4>' +
+      '<div class="menstrual-card su-d2c171"><h4>🔍 Buscar</h4>' +
       '<label>Buscar <input type="text" id="iglSearch" placeholder="ej: Carmen, Lirquén, capilla, Cerro Verde, Primer Agua, culto..." maxlength="60" autocomplete="off"></label></div>' +
-      '<div id="iglList" style="margin-top:10px"></div>' +
-      '<div id="iglHisBox" style="margin-top:10px"></div>' +
-      '<div id="iglFormBox" class="menstrual-card hidden" style="margin-top:10px;border-color:var(--gold)"></div>' +
-      '<div id="iglVisBox" class="hidden" style="margin-top:10px"></div>';
+      '<div id="iglList" class="su-d2c171"></div>' +
+      '<div id="iglHisBox" class="su-d2c171"></div>' +
+      '<div id="iglFormBox" class="menstrual-card hidden su-51d56a"></div>' +
+      '<div id="iglVisBox" class="hidden su-d2c171"></div>';
     var bT = $('tabIglTodas'), bC = $('tabIglCat'), bE = $('tabIglEva'), bH = $('tabIglHis'), bV = $('tabIglVis'), bA = $('tabIglAgr');
     if (bT) bT.onclick = function () { tabActual = 'todas'; render(); };
     if (bC) bC.onclick = function () { tabActual = 'catolica'; render(); };
@@ -267,22 +267,22 @@ function asegurarPanel() {
 
 function cardHTML(t) {
   var nvis = store().visitas.filter(function (x) { return x.iglesiaId === t.id; }).length;
-  var html = '<div class="si-card" style="padding:10px 12px;border-color:#d4af3766">' +
-    '<h4 style="font-size:13px">' + esc(t.icon || '⛪') + ' ' + esc(t.nombre) + '</h4>' +
-    '<p class="muted" style="font-size:10px">' + esc(CREDOS[t.credo] || CREDOS.otra) + (t.tipo ? ' · ' + esc(t.tipo) : '') + ' · ' + esc(t.sector || '') + (t.oficial ? ' · base verificada' : ' · mía') + (nvis ? ' · 📌 ' + nvis + ' en calendario' : '') + '</p>' +
-    '<p style="font-size:12px;line-height:1.5">' + esc(t.desc || '') + '</p>' +
-    '<p class="muted" style="font-size:11px;line-height:1.6">📍 ' + esc(t.direccion || 'Por confirmar') + '<br>🕐 ' + esc(t.horario || 'Por confirmar') + (t.contacto ? '<br>📞 ' + esc(t.contacto) : '') + '</p>' +
-    '<div class="conv-row" style="align-items:flex-end">' +
+  var html = '<div class="si-card su-df4827">' +
+    '<h4 class="su-5e0faa">' + esc(t.icon || '⛪') + ' ' + esc(t.nombre) + '</h4>' +
+    '<p class="muted su-0d5be0">' + esc(CREDOS[t.credo] || CREDOS.otra) + (t.tipo ? ' · ' + esc(t.tipo) : '') + ' · ' + esc(t.sector || '') + (t.oficial ? ' · base verificada' : ' · mía') + (nvis ? ' · 📌 ' + nvis + ' en calendario' : '') + '</p>' +
+    '<p class="su-37e316">' + esc(t.desc || '') + '</p>' +
+    '<p class="muted su-b439ab">📍 ' + esc(t.direccion || 'Por confirmar') + '<br>🕐 ' + esc(t.horario || 'Por confirmar') + (t.contacto ? '<br>📞 ' + esc(t.contacto) : '') + '</p>' +
+    '<div class="conv-row su-7fed8e">' +
     '<label>Fecha <input type="date" data-igl-fecha="' + t.id + '" value="' + esc(todayKey()) + '"></label>' +
-    '<label>Hora <input type="time" data-igl-hora="' + t.id + '" value="10:00" style="max-width:110px"></label>' +
-    '<label class="check-row" style="margin:0;white-space:nowrap" title="Avisar a esa hora"><input type="checkbox" data-igl-aviso="' + t.id + '"> 🔔</label>' +
-    '<button type="button" class="btn btn-accent" data-igl-add="' + t.id + '" style="width:auto">📌 Calendario</button>' +
+    '<label>Hora <input type="time" data-igl-hora="' + t.id + '" value="10:00" class="su-91245b"></label>' +
+    '<label class="check-row su-988f60" title="Avisar a esa hora"><input type="checkbox" data-igl-aviso="' + t.id + '"> 🔔</label>' +
+    '<button type="button" class="btn btn-accent su-30e741" data-igl-add="' + t.id + '">📌 Calendario</button>' +
     '</div>';
   if (!t.oficial) {
-    html += '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">' +
-      '<button type="button" class="btn" data-igl-edit="' + t.id + '" style="width:auto;font-size:11px">✏️ Editar</button>' +
-      '<button type="button" class="btn" data-igl-share="' + t.id + '" style="width:auto;font-size:11px">📤 Compartir</button>' +
-      '<button type="button" class="btn" data-igl-del="' + t.id + '" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕ Borrar</button></div>';
+    html += '<div class="su-c158a9">' +
+      '<button type="button" class="btn su-337714" data-igl-edit="' + t.id + '">✏️ Editar</button>' +
+      '<button type="button" class="btn su-337714" data-igl-share="' + t.id + '">📤 Compartir</button>' +
+      '<button type="button" class="btn su-fd834a" data-igl-del="' + t.id + '">✕ Borrar</button></div>';
   }
   html += '</div>';
   return html;
@@ -334,17 +334,17 @@ function renderForm() {
   box.classList.toggle('hidden', tabActual !== 'agregar');
   if (tabActual !== 'agregar') return;
   box.innerHTML = '<h4>' + (ed ? '✏️ Editar iglesia / capilla' : '➕ Agregar iglesia, capilla o casa de oración') + '</h4>' +
-    '<p class="muted" style="font-size:11px">Solo con <b>dirección y horario verificados</b> (afiche, puerta del templo o contacto directo). Queda en tu dispositivo.</p>' +
+    '<p class="muted su-11a508">Solo con <b>dirección y horario verificados</b> (afiche, puerta del templo o contacto directo). Queda en tu dispositivo.</p>' +
     '<div class="conv-row"><label>Credo * <select id="iglFCre"><option value="catolica">⛪ Católica</option><option value="evangelica">🙏 Evangélica</option><option value="otra">🕊️ Otra</option></select></label>' +
     '<label>Sector <select id="iglFSec">' + SECTORES.map(function (s) { return '<option>' + esc(s) + '</option>'; }).join('') + '</select></label>' +
-    '<label>Icono <input type="text" id="iglFIcon" maxlength="4" style="width:70px;text-align:center" value="' + v('icon', '⛪') + '"></label></div>' +
+    '<label>Icono <input type="text" id="iglFIcon" maxlength="4" class="su-745e46" value="' + v('icon', '⛪') + '"></label></div>' +
     '<label>Nombre * <input type="text" id="iglFNom" placeholder="ej: Capilla Santa María de Lirquén" maxlength="60" value="' + v('nombre', '') + '"></label>' +
     '<label>Dirección * <input type="text" id="iglFDir" placeholder="ej: Calle 123, Lirquén" maxlength="60" value="' + v('direccion', '') + '"></label>' +
     '<label>Horario misas / cultos * <input type="text" id="iglFHora" placeholder="ej: Dom 11:00 y 19:00 / Culto mié 20:00" maxlength="80" value="' + v('horario', '') + '"></label>' +
     '<label>Descripción <input type="text" id="iglFDesc" placeholder="ej: Capilla de barrio, fiesta patronal en diciembre" maxlength="140" value="' + v('desc', '') + '"></label>' +
     '<label>Contacto <input type="text" id="iglFCon" placeholder="ej: +56 9 ... / correo / @cuenta" maxlength="60" value="' + v('contacto', '') + '"></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="iglFSave" class="btn btn-accent" style="width:auto">' + (ed ? '↻ Actualizar' : '+ Guardar') + '</button>' +
-    (ed ? '<button type="button" id="iglFCancel" class="btn" style="width:auto">Cancelar</button>' : '') + '</div>';
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="iglFSave" class="btn btn-accent su-30e741">' + (ed ? '↻ Actualizar' : '+ Guardar') + '</button>' +
+    (ed ? '<button type="button" id="iglFCancel" class="btn su-30e741">Cancelar</button>' : '') + '</div>';
   if (ed) { try { $('iglFCre').value = ed.credo || 'catolica'; $('iglFSec').value = ed.sector || SECTORES[0]; } catch (e) {} }
   $('iglFSave').onclick = function () {
     var nombre = clean(($('iglFNom') || {}).value, 60).trim();
@@ -373,17 +373,17 @@ function renderVisitas() {
   box.classList.toggle('hidden', tabActual !== 'visitas');
   if (tabActual !== 'visitas') return;
   if (!st.visitas.length) {
-    box.innerHTML = '<div class="menstrual-card"><h4>📌 Mis visitas</h4><p class="muted" style="font-size:11px">Aún no llevas nada al calendario. En ⛪ Todas elige fecha/hora y pulsa <b>📌 Calendario</b>.</p></div>';
+    box.innerHTML = '<div class="menstrual-card"><h4>📌 Mis visitas</h4><p class="muted su-11a508">Aún no llevas nada al calendario. En ⛪ Todas elige fecha/hora y pulsa <b>📌 Calendario</b>.</p></div>';
     return;
   }
   var arr = st.visitas.slice().sort(function (a, b) { return String(a.fecha).localeCompare(String(b.fecha)) || String(a.hora).localeCompare(String(b.hora)); });
-  box.innerHTML = '<div class="menstrual-card" style="border-color:var(--gold)"><h4>📌 Mis visitas · ' + arr.length + '</h4>' +
+  box.innerHTML = '<div class="menstrual-card su-68a1a9"><h4>📌 Mis visitas · ' + arr.length + '</h4>' +
     arr.map(function (r) {
-      return '<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center"><span><b>' + esc(r.nombre) + '</b><br><span class="muted" style="font-size:11px">📅 ' + esc(r.fecha) + ' · 🕐 ' + esc(r.hora) + (r.notify ? ' · 🔔' : '') + (r.lugar ? ' · 📍 ' + esc(r.lugar) : '') + '</span></span>' +
-        '<button type="button" class="btn" data-igldel="' + r.id + '" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕</button></div>';
+      return '<div class="habit-item su-13313b"><span><b>' + esc(r.nombre) + '</b><br><span class="muted su-11a508">📅 ' + esc(r.fecha) + ' · 🕐 ' + esc(r.hora) + (r.notify ? ' · 🔔' : '') + (r.lugar ? ' · 📍 ' + esc(r.lugar) : '') + '</span></span>' +
+        '<button type="button" class="btn su-fd834a" data-igldel="' + r.id + '">✕</button></div>';
     }).join('') +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-top:8px"><button type="button" id="iglVisShare" class="btn" style="width:auto">📤 Compartir mi lista</button>' +
-    '<button type="button" id="iglVisClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar lista</button></div></div>';
+    '<div class="dlg-actions su-efea1d"><button type="button" id="iglVisShare" class="btn su-30e741">📤 Compartir mi lista</button>' +
+    '<button type="button" id="iglVisClear" class="btn su-214f75">🗑 Borrar lista</button></div></div>';
   box.querySelectorAll('[data-igldel]').forEach(function (b) {
     b.onclick = function () {
       if (!confirm('¿Quitar de Mis visitas? (El compromiso del día se conserva)')) return;
@@ -426,14 +426,14 @@ function renderHistoria() {
     if (!q) return true;
     return ((e.t || '') + ' ' + (e.f || '') + ' ' + (e.d || '')).toLowerCase().indexOf(q) >= 0;
   });
-  var html = '<div class="menstrual-card" style="border-color:var(--gold)"><h4>📜 Historia de las iglesias en Penco · ' + eras.length + ' hitos</h4>' +
-    '<p class="muted" style="font-size:11px;line-height:1.55">De la primera iglesia de 1550 y 160 años de obispado en Penco a las 3 parroquias, 8 capillas y el monasterio de hoy. Usa el buscador 🔍 para filtrar (ej: 1751, redentoristas, Lirquén).</p>' +
+  var html = '<div class="menstrual-card su-68a1a9"><h4>📜 Historia de las iglesias en Penco · ' + eras.length + ' hitos</h4>' +
+    '<p class="muted su-b6db47">De la primera iglesia de 1550 y 160 años de obispado en Penco a las 3 parroquias, 8 capillas y el monasterio de hoy. Usa el buscador 🔍 para filtrar (ej: 1751, redentoristas, Lirquén).</p>' +
     eras.map(function (e) {
-      return '<div class="si-card" style="padding:8px 10px"><h4 style="font-size:12px">' + esc(e.t) + '</h4>' +
-        '<p class="muted" style="font-size:10px;margin:2px 0 6px">' + esc(e.f) + '</p>' +
-        '<p style="font-size:12px;line-height:1.55">' + e.d + '</p></div>';
+      return '<div class="si-card su-cfa1ec"><h4 class="su-6cb285">' + esc(e.t) + '</h4>' +
+        '<p class="muted su-2c4c6c">' + esc(e.f) + '</p>' +
+        '<p class="su-afb724">' + e.d + '</p></div>';
     }).join('') + '</div>';
-  html += '<p class="muted" style="font-size:10px;margin-top:8px">' + esc(FUENTES_IGLESIAS) + '</p>';
+  html += '<p class="muted su-a953a7">' + esc(FUENTES_IGLESIAS) + '</p>';
   box.innerHTML = html;
 }
 function renderLista() {
@@ -449,9 +449,9 @@ function renderLista() {
   });
   var titulo = tabActual === 'catolica' ? '⛪ Católicas' : tabActual === 'evangelica' ? '🙏 Evangélicas' : '⛪ Iglesias de Penco';
   var html = '<div class="menstrual-card"><h4>' + titulo + ' · ' + list.length + '</h4>' +
-    '<p class="muted" style="font-size:10px">3 parroquias + 8 capillas + monasterio verificados + guía evangélica + tus fichas. En cada ficha elige fecha/hora y pulsa <b>📌 Calendario</b>.</p>' +
+    '<p class="muted su-0d5be0">3 parroquias + 8 capillas + monasterio verificados + guía evangélica + tus fichas. En cada ficha elige fecha/hora y pulsa <b>📌 Calendario</b>.</p>' +
     (list.length ? list.map(cardHTML).join('') : '<p class="muted">Sin resultados. Si es tu iglesia evangélica o capilla de barrio, súmala en <b>➕ Agregar</b> con horario verificado.</p>') + '</div>';
-  html += '<p class="muted" style="font-size:10px;margin-top:8px">' + esc(FUENTES_IGLESIAS) + '</p>';
+  html += '<p class="muted su-a953a7">' + esc(FUENTES_IGLESIAS) + '</p>';
   box.innerHTML = html;
   bindCards(box);
 }

@@ -95,20 +95,20 @@ function buildDialog() {
   dlg.id = 'qrSyncDialog';
   dlg.innerHTML =
     '<form method="dialog">' +
-      '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
-        '<h3 style="margin:0;color:var(--accent)">📲 Traspaso QR — PC ↔ celular</h3>' +
+      '<div class="dlg-actions su-d2d053">' +
+        '<h3 class="su-ee0cfe">📲 Traspaso QR — PC ↔ celular</h3>' +
         '<button type="button" id="qrCloseTop" class="btn btn-icon" title="Cerrar" aria-label="Cerrar">✕</button>' +
       '</div>' +
-      '<p class="muted" style="line-height:1.5">Pasa <b>todos tus datos</b> (igual que 💾 Respaldo) entre tus propios dispositivos: ' +
+      '<p class="muted su-77e2fe">Pasa <b>todos tus datos</b> (igual que 💾 Respaldo) entre tus propios dispositivos: ' +
       'sin internet, sin cuentas y sin servidores — los datos viajan solo de <b>pantalla a cámara</b>.</p>' +
-      '<div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">' +
-        '<button type="button" id="qrTabSend" class="btn btn-accent" style="width:auto">📤 Enviar</button>' +
-        '<button type="button" id="qrTabRecv" class="btn" style="width:auto">📥 Recibir</button>' +
+      '<div class="timer-tabs su-4dca21">' +
+        '<button type="button" id="qrTabSend" class="btn btn-accent su-30e741">📤 Enviar</button>' +
+        '<button type="button" id="qrTabRecv" class="btn su-30e741">📥 Recibir</button>' +
       '</div>' +
       '<div id="qrSendPanel">' +
-        '<p class="muted" style="font-size:11px">Genera la secuencia de QRs con tus datos. En el otro dispositivo abre 📲 Traspaso QR → 📥 Recibir y apunta la cámara a esta pantalla.</p>' +
-        '<div class="dlg-actions" style="justify-content:flex-start">' +
-          '<button type="button" id="qrGen" class="btn btn-accent" style="width:auto">▶ Generar QRs</button>' +
+        '<p class="muted su-11a508">Genera la secuencia de QRs con tus datos. En el otro dispositivo abre 📲 Traspaso QR → 📥 Recibir y apunta la cámara a esta pantalla.</p>' +
+        '<div class="dlg-actions su-59a5a8">' +
+          '<button type="button" id="qrGen" class="btn btn-accent su-30e741">▶ Generar QRs</button>' +
         '</div>' +
         '<div id="qrSendBox" class="qr-send-box hidden">' +
           '<img id="qrImg" alt="Código QR con parte de tus datos">' +
@@ -116,31 +116,31 @@ function buildDialog() {
             '<button type="button" id="qrPrev" class="btn btn-icon" title="Anterior">◀</button>' +
             '<span id="qrCount" class="qr-count">QR 1 de 1</span>' +
             '<button type="button" id="qrNext" class="btn btn-icon" title="Siguiente">▶</button>' +
-            '<button type="button" id="qrAuto" class="btn" style="width:auto" title="Avanzar solo para escanear seguido">▶ Auto</button>' +
+            '<button type="button" id="qrAuto" class="btn su-30e741" title="Avanzar solo para escanear seguido">▶ Auto</button>' +
           '</div>' +
-          '<p class="muted" id="qrSendInfo" style="font-size:11px;margin-top:8px"></p>' +
+          '<p class="muted su-e6fe60" id="qrSendInfo"></p>' +
         '</div>' +
       '</div>' +
       '<div id="qrRecvPanel" class="hidden">' +
-        '<p class="muted" style="font-size:11px">Apunta la cámara a la pantalla del otro dispositivo. Las partes se reciben en cualquier orden y suena un beep por cada una.</p>' +
-        '<div class="dlg-actions" style="justify-content:flex-start">' +
-          '<button type="button" id="qrCamStart" class="btn btn-accent" style="width:auto">📷 Abrir cámara</button>' +
-          '<button type="button" id="qrCamStop" class="btn hidden" style="width:auto">⏹ Detener</button>' +
+        '<p class="muted su-11a508">Apunta la cámara a la pantalla del otro dispositivo. Las partes se reciben en cualquier orden y suena un beep por cada una.</p>' +
+        '<div class="dlg-actions su-59a5a8">' +
+          '<button type="button" id="qrCamStart" class="btn btn-accent su-30e741">📷 Abrir cámara</button>' +
+          '<button type="button" id="qrCamStop" class="btn hidden su-30e741">⏹ Detener</button>' +
         '</div>' +
         '<video id="qrVideo" playsinline muted class="hidden"></video>' +
         '<div id="qrRecvProg" class="hidden">' +
           '<div id="qrCells" class="qr-grid"></div>' +
-          '<div id="qrRecvCount" class="qr-count" style="text-align:left;min-width:0">0 de 0 partes</div>' +
+          '<div id="qrRecvCount" class="qr-count su-0f79ef">0 de 0 partes</div>' +
         '</div>' +
         '<div id="qrStatus" class="qr-status"></div>' +
-        '<div id="qrConfirm" class="hidden" style="margin-top:10px">' +
+        '<div id="qrConfirm" class="hidden su-d2c171">' +
           '<div class="menstrual-card">' +
             '<h4>✅ Respaldo recibido completo</h4>' +
-            '<p id="qrSummary" style="font-size:12px;line-height:1.6;margin:6px 0"></p>' +
+            '<p id="qrSummary" class="su-a55e1b"></p>' +
             '<p class="qr-warn">⚠️ Importar <b>reemplaza TODOS los datos de este dispositivo</b> (todos los usuarios). Consejo: haz primero 💾 Respaldo si aquí ya tienes cosas.</p>' +
-            '<div class="dlg-actions" style="justify-content:flex-start;margin-top:8px">' +
-              '<button type="button" id="qrImport" class="btn btn-accent" style="width:auto">✅ Importar ahora</button>' +
-              '<button type="button" id="qrDiscard" class="btn" style="width:auto">Descartar</button>' +
+            '<div class="dlg-actions su-8f9e27">' +
+              '<button type="button" id="qrImport" class="btn btn-accent su-30e741">✅ Importar ahora</button>' +
+              '<button type="button" id="qrDiscard" class="btn su-30e741">Descartar</button>' +
             '</div>' +
           '</div>' +
         '</div>' +

@@ -18,16 +18,20 @@ const ROOT = path.join(__dirname, '..');
 const PORT = 8137;
 const BASE = `http://localhost:${PORT}`;
 
-// Presupuesto: holgura ~15% sobre lo medido hoy (index 29K, JS ~4825K raw,
-// CSS ~95K, gzip total ~1530K, TTFB local ~5ms). Si un cambio lo supera, la
-// respuesta es partir/diferir (ver docs/arquitectura.md), no subir el techo.
+// Presupuesto: holgura ~10% sobre lo medido en v1.8 (index 29K, JS ~4830K
+// raw, CSS con styles-csp ~170K, gzip total ~1540K, TTFB local ~25ms,
+// CORE 303: 91 min + fuentes + 55 templates + screenshots + datos).
+// Recuento v1.8: el crecimiento vino de funciones aprobadas (7 core-*,
+// pwa-install, styles-csp, templates, screenshots). Si un cambio lo supera,
+// la respuesta es partir/diferir (o sacar templates sueltos del CORE:
+// solo son respaldo fetch del bundle), no subir el techo a ciegas.
 const BUDGET = {
   'index.html KB': 60,
-  'JS total raw KB': 5200,
-  'CSS total raw KB': 120,
-  'gzip total KB': 1700,
+  'JS total raw KB': 5300,
+  'CSS total raw KB': 200,
+  'gzip total KB': 1750,
   'TTFB index ms': 500,
-  'entradas SW CORE': 300,
+  'entradas SW CORE': 340,
 };
 
 function get(p, gzip) {

@@ -133,8 +133,8 @@ var HISTORIA_BOSQUE = {
 };
 
 function chip(sp) {
-  if (sp.cat) return '<span class="chip chip-bosque" data-bosque="' + esc(sp.n) + '" style="cursor:pointer" title="Toca para cargarla en el formulario">🌿 ' + esc(sp.n) + '</span>';
-  return '<span class="chip" style="font-size:10px;opacity:.8">' + esc(sp.n) + '</span>';
+  if (sp.cat) return '<span class="chip chip-bosque su-3b6a3a" data-bosque="' + esc(sp.n) + '" title="Toca para cargarla en el formulario">🌿 ' + esc(sp.n) + '</span>';
+  return '<span class="chip su-90aee4">' + esc(sp.n) + '</span>';
 }
 
 /* ============================================================
@@ -268,16 +268,16 @@ function renderBosqueHistoria() {
   var box = $('bosqueHistoriaPanel');
   if (!box) return;
   var g = dynHistBosque();
-  var html = '<p class="muted" style="font-size:11px;line-height:1.55">' + g.intro + '</p>';
+  var html = '<p class="muted su-b6db47">' + g.intro + '</p>';
   html += g.eras.map(function (e, i) {
     return '<div class="menstrual-card" style="margin-top:10px' + (i === 0 ? ';border-color:var(--gold)' : '') + '">' +
       '<h4>' + esc(e.t) + '</h4>' +
-      '<p class="muted" style="font-size:10px;margin:2px 0 6px">' + esc(e.cuando) + '</p>' +
-      '<p style="font-size:12px;line-height:1.55">' + e.d + '</p>' +
-      '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">' + e.sp.map(chip).join('') + '</div>' +
-      '<p class="muted" style="font-size:11px;margin-top:6px">🔎 ' + e.hoy + '</p></div>';
+      '<p class="muted su-2c4c6c">' + esc(e.cuando) + '</p>' +
+      '<p class="su-afb724">' + e.d + '</p>' +
+      '<div class="su-c158a9">' + e.sp.map(chip).join('') + '</div>' +
+      '<p class="muted su-e13d76">🔎 ' + e.hoy + '</p></div>';
   }).join('');
-  html += '<p class="muted" style="font-size:10px;margin-top:8px">' + esc(g.fuentes) + '</p>';
+  html += '<p class="muted su-a953a7">' + esc(g.fuentes) + '</p>';
   box.innerHTML = html;
   box.querySelectorAll('[data-bosque]').forEach(function (el) {
     el.onclick = function () {
@@ -290,43 +290,43 @@ function renderBosqueHistoria() {
 
 function ecoCustomCard(r) {
   var cons = String(r.con || '').split(',').map(function (s) { return s.trim(); }).filter(Boolean);
-  return '<div class="si-card" style="padding:8px 10px;border-color:#a9d18e55"><h4 style="font-size:12px">' + esc(r.icon || '🌱') + ' ' + esc(r.nombre) +
-    ' <span class="chip" style="font-size:9px;background:#a9d18e22;color:#a9d18e;border-color:#a9d18e55">mía</span></h4>' +
-    (r.cient ? '<p class="muted" style="font-size:10px">' + esc(r.cient) + '</p>' : '') +
-    (r.rol ? '<p style="font-size:11px">' + esc(r.rol) + '</p>' : '') +
-    (cons.length ? '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px"><span class="muted" style="font-size:10px">Acompaña a:</span>' + cons.map(chipAcompan).join('') + '</div>' : '') +
-    '<div style="display:flex;gap:6px;margin-top:6px"><button type="button" class="btn" data-ecodel="' + r.id + '" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕ Borrar</button></div></div>';
+  return '<div class="si-card su-a3194a"><h4 class="su-6cb285">' + esc(r.icon || '🌱') + ' ' + esc(r.nombre) +
+    ' <span class="chip su-421073">mía</span></h4>' +
+    (r.cient ? '<p class="muted su-0d5be0">' + esc(r.cient) + '</p>' : '') +
+    (r.rol ? '<p class="su-11a508">' + esc(r.rol) + '</p>' : '') +
+    (cons.length ? '<div class="su-8af0ed"><span class="muted su-0d5be0">Acompaña a:</span>' + cons.map(chipAcompan).join('') + '</div>' : '') +
+    '<div class="su-30b926"><button type="button" class="btn su-fd834a" data-ecodel="' + r.id + '">✕ Borrar</button></div></div>';
 }
 function ecoAddForm(clave) {
-  return '<details style="border:1px dashed var(--gold);border-radius:10px;padding:8px 10px;margin-top:8px"><summary style="cursor:pointer;font-size:12px;color:var(--gold)"><b>➕ Agregar especie en este grupo</b></summary>' +
-    '<div class="conv-row" style="margin-top:8px"><label style="flex:2">Nombre * <input type="text" id="ecoN-' + clave + '" placeholder="ej: Loica, Palito, Murta" maxlength="40"></label>' +
-    '<label>Icono <input type="text" id="ecoI-' + clave + '" placeholder="🌱" maxlength="4" style="width:60px;text-align:center"></label></div>' +
+  return '<details class="su-c8c413"><summary class="su-d9db22"><b>➕ Agregar especie en este grupo</b></summary>' +
+    '<div class="conv-row su-8a77e5"><label class="su-4b3de7">Nombre * <input type="text" id="ecoN-' + clave + '" placeholder="ej: Loica, Palito, Murta" maxlength="40"></label>' +
+    '<label>Icono <input type="text" id="ecoI-' + clave + '" placeholder="🌱" maxlength="4" class="su-4a6a2f"></label></div>' +
     '<label>Nombre científico (opcional) <input type="text" id="ecoC-' + clave + '" placeholder="ej: Sturnella loyca" maxlength="50"></label>' +
     '<label>Qué hace / rol <input type="text" id="ecoR-' + clave + '" placeholder="ej: Canta al amanecer y come semillas" maxlength="120"></label>' +
     '<label>Acompaña a (separa con comas) <input type="text" id="ecoW-' + clave + '" placeholder="ej: Maqui, Quebradas" maxlength="80"></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" class="btn btn-accent" data-ecoadd="' + clave + '" style="width:auto">+ Guardar especie</button></div></details>';
+    '<div class="dlg-actions su-59a5a8"><button type="button" class="btn btn-accent su-30e741" data-ecoadd="' + clave + '">+ Guardar especie</button></div></details>';
 }
 function renderAcompan() {
   var box = $('bosqueAcompanPanel');
   if (!box) return;
   var g = dynAcompan();
   var customs = getEcoCustom();
-  var html = '<p class="muted" style="font-size:11px;line-height:1.55">' + g.intro + '</p>';
+  var html = '<p class="muted su-b6db47">' + g.intro + '</p>';
   html += g.grupos.map(function (gr) {
     var items = gr.items.map(function (it) {
-      return '<div class="si-card" style="padding:8px 10px"><h4 style="font-size:12px">' + esc(it.n) + '</h4>' +
-        '<p style="font-size:11px">' + esc(it.r) + '</p>' +
-        '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px"><span class="muted" style="font-size:10px">Acompaña a:</span>' +
+      return '<div class="si-card su-cfa1ec"><h4 class="su-6cb285">' + esc(it.n) + '</h4>' +
+        '<p class="su-11a508">' + esc(it.r) + '</p>' +
+        '<div class="su-8af0ed"><span class="muted su-0d5be0">Acompaña a:</span>' +
         it.con.map(chipAcompan).join('') + '</div></div>';
     }).join('');
     var mias = customs.filter(function (x) { return x.grupo === gr.clave; }).map(ecoCustomCard).join('');
     var nBase = gr.items.length, nMias = customs.filter(function (x) { return x.grupo === gr.clave; }).length;
-    return '<div class="menstrual-card" style="margin-top:10px"><h4>' + esc(gr.t) + ' <span class="muted" style="font-size:11px">· ' + nBase + (nMias ? ' + <b>' + nMias + ' mías</b>' : '') + '</span></h4>' +
-      '<p class="muted" style="font-size:11px">' + gr.d + '</p>' + items + mias + ecoAddForm(gr.clave) +
-      '<p class="muted" style="font-size:11px;margin-top:6px">💡 ' + gr.nota + '</p></div>';
+    return '<div class="menstrual-card su-d2c171"><h4>' + esc(gr.t) + ' <span class="muted su-11a508">· ' + nBase + (nMias ? ' + <b>' + nMias + ' mías</b>' : '') + '</span></h4>' +
+      '<p class="muted su-11a508">' + gr.d + '</p>' + items + mias + ecoAddForm(gr.clave) +
+      '<p class="muted su-e13d76">💡 ' + gr.nota + '</p></div>';
   }).join('');
-  html += '<div class="menstrual-card" style="margin-top:10px;border-color:var(--gold)"><p style="font-size:12px">' + g.cierre + '</p>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="acompanGoAves" class="btn" style="width:auto">🦅 Ir a Aves</button></div></div>';
+  html += '<div class="menstrual-card su-51d56a"><p class="su-6cb285">' + g.cierre + '</p>' +
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="acompanGoAves" class="btn su-30e741">🦅 Ir a Aves</button></div></div>';
   box.innerHTML = html;
   box.querySelectorAll('[data-bosque]').forEach(function (el) {
     el.onclick = function () {
@@ -366,8 +366,8 @@ function chipAcompan(nombre) {
     var cat = (typeof BOSQUE_CATALOG !== 'undefined') ? BOSQUE_CATALOG : ((window.pencoData || {}).BOSQUE_NATIVO_PENCO || []);
     enCat = cat.some(function (b) { return b.nombre === nombre; });
   } catch (e) {}
-  if (enCat) return '<span class="chip chip-bosque" data-bosque="' + esc(nombre) + '" style="cursor:pointer" title="Toca para cargarla en el formulario">🌿 ' + esc(nombre) + '</span>';
-  return '<span class="chip" style="font-size:10px;opacity:.8">' + esc(nombre) + '</span>';
+  if (enCat) return '<span class="chip chip-bosque su-3b6a3a" data-bosque="' + esc(nombre) + '" title="Toca para cargarla en el formulario">🌿 ' + esc(nombre) + '</span>';
+  return '<span class="chip su-90aee4">' + esc(nombre) + '</span>';
 }
 
 var bosqueTab = 'actual';
@@ -411,17 +411,17 @@ function mejorarBosqueHoy() {
     var div = document.createElement('div');
     div.id = 'bosqueHoyPlus';
     div.innerHTML =
-      '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">' +
+      '<div class="su-0ad856">' +
       '<span class="chip">📓 ' + entries.length + ' registros</span>' +
       '<span class="chip">🌱 ' + plant + ' plantaciones</span>' +
       '<span class="chip">🌿 ' + Object.keys(spp).length + ' especies distintas</span></div>' +
-      '<div class="menstrual-card" style="margin-top:8px;background:var(--panel)"><h4 style="font-size:11px;color:var(--gold)">⭐ Destacado: ' + esc(dest.t) + '</h4>' +
-      '<p class="muted" style="font-size:11px">' + esc(dest.d) + '</p>' +
-      '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">' +
-      dest.sp.map(function (n) { return '<span class="chip chip-bosque" data-bosque="' + esc(n) + '" style="cursor:pointer" title="Toca para cargarla en el formulario">🌿 ' + esc(n) + '</span>'; }).join('') +
-      '</div><div class="dlg-actions" style="justify-content:flex-start;margin-top:6px">' +
-      '<button type="button" id="bhoyGoForm" class="btn" style="width:auto;font-size:11px">📓 Ir a la bitácora</button>' +
-      '<button type="button" id="bhoyGoHist" class="btn" style="width:auto;font-size:11px">📜 Ver historia</button></div></div>';
+      '<div class="menstrual-card su-afef99"><h4 class="su-49f9d7">⭐ Destacado: ' + esc(dest.t) + '</h4>' +
+      '<p class="muted su-11a508">' + esc(dest.d) + '</p>' +
+      '<div class="su-c158a9">' +
+      dest.sp.map(function (n) { return '<span class="chip chip-bosque su-3b6a3a" data-bosque="' + esc(n) + '" title="Toca para cargarla en el formulario">🌿 ' + esc(n) + '</span>'; }).join('') +
+      '</div><div class="dlg-actions su-8a0a91">' +
+      '<button type="button" id="bhoyGoForm" class="btn su-337714">📓 Ir a la bitácora</button>' +
+      '<button type="button" id="bhoyGoHist" class="btn su-337714">📜 Ver historia</button></div></div>';
     todayBox.appendChild(div);
     div.querySelectorAll('[data-bosque]').forEach(function (el) {
       el.onclick = function () {
@@ -438,7 +438,7 @@ function mejorarBosqueHoy() {
   var catBox = $('bosqueCatalogBox');
   if (catBox && !$('bosqueCatFilter')) {
     var row = document.createElement('div');
-    row.innerHTML = '<input type="text" id="bosqueCatFilter" placeholder="🔍 Filtrar especies... (ej: fruto, quebra, melifero)" autocomplete="off" value="' + esc(bosqueCatQ) + '" style="margin-bottom:6px">';
+    row.innerHTML = '<input type="text" id="bosqueCatFilter" placeholder="🔍 Filtrar especies... (ej: fruto, quebra, melifero)" autocomplete="off" value="' + esc(bosqueCatQ) + '" class="su-4e420a">';
     catBox.insertBefore(row, catBox.firstChild);
     var inp = $('bosqueCatFilter');
     var aplicar = function () {

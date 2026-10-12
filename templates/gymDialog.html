@@ -1,23 +1,23 @@
 <dialog id="gymDialog">
     <form method="dialog">
-      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
-        <h3 style="margin:0;color:var(--accent)">💪 Entrenamientos</h3>
+      <div class="dlg-actions su-d2d053">
+        <h3 class="su-ee0cfe">💪 Entrenamientos</h3>
         <button type="button" id="gymCloseTop" class="btn btn-icon" title="Cerrar" aria-label="Cerrar">✕</button>
       </div>
-      <p class="muted" style="line-height:1.5">Elige cómo empezar: <b>1) crea tu plan</b> ✨, <b>2) prueba una idea</b> 🔍 o <b>3) anota tu rutina</b> ➕. Todo queda <b>privado y local</b> por usuario.</p>
-      <div class="timer-tabs" style="margin-bottom:8px;flex-wrap:wrap" title="Filtrar por tipo de entrenamiento">
-        <span class="muted" style="font-size:11px;align-self:center">Tipo de idea:</span>
-        <button type="button" id="tabGymGym" class="btn btn-accent" style="width:auto">🏋️ Gym</button>
-        <button type="button" id="tabGymFisio" class="btn" style="width:auto">🩹 Terapia</button>
-        <button type="button" id="tabGymCalis" class="btn" style="width:auto">🤸 Calistenia</button>
-        <button type="button" id="tabGymVarias" class="btn" style="width:auto">🌿 Prácticas</button>
+      <p class="muted su-77e2fe">Elige cómo empezar: <b>1) crea tu plan</b> ✨, <b>2) prueba una idea</b> 🔍 o <b>3) anota tu rutina</b> ➕. Todo queda <b>privado y local</b> por usuario.</p>
+      <div class="timer-tabs su-861e1a" title="Filtrar por tipo de entrenamiento">
+        <span class="muted su-82b8dd">Tipo de idea:</span>
+        <button type="button" id="tabGymGym" class="btn btn-accent su-30e741">🏋️ Gym</button>
+        <button type="button" id="tabGymFisio" class="btn su-30e741">🩹 Terapia</button>
+        <button type="button" id="tabGymCalis" class="btn su-30e741">🤸 Calistenia</button>
+        <button type="button" id="tabGymVarias" class="btn su-30e741">🌿 Prácticas</button>
       </div>
       <!-- Filtros de lugar y edad: ahora en 2 selects compactos junto a las ideas (PASO 2), sin opción de piscina -->
-      <div class="menstrual-card" style="margin-bottom:10px;border-color:#e8c56a88">
-        <h4 style="color:var(--gold);margin:0 0 4px">✨ PASO 1 — Tu plan en 1 minuto: quién eres y tu objetivo</h4>
-        <p class="muted" style="font-size:11px;line-height:1.5;margin:0 0 8px">Elige <b>quién eres</b>, tu <b>nivel</b> y tu <b>objetivo</b>: te armamos un plan de 1 a 8 semanas con calentamiento, parte principal, cierre y progresión, según tu lugar. 100% local, sin cuentas.</p>
+      <div class="menstrual-card su-be201d">
+        <h4 class="su-0ef51f">✨ PASO 1 — Tu plan en 1 minuto: quién eres y tu objetivo</h4>
+        <p class="muted su-1ef8b7">Elige <b>quién eres</b>, tu <b>nivel</b> y tu <b>objetivo</b>: te armamos un plan de 1 a 8 semanas con calentamiento, parte principal, cierre y progresión, según tu lugar. 100% local, sin cuentas.</p>
         <div class="conv-row">
-          <label style="flex:1">Soy
+          <label class="su-97445a">Soy
             <select id="gymPlanAge">
               <option value="nino69">🧒 6-9 años</option>
               <option value="nino1012">🧒 10-12 años</option>
@@ -34,14 +34,14 @@
               <option value="mayor">👴 60+ años</option>
             </select>
           </label>
-          <label style="flex:1">Nivel
+          <label class="su-97445a">Nivel
             <select id="gymPlanLevel">
               <option value="principiante" selected>🌱 Principiante</option>
               <option value="intermedio">⚡ Intermedio</option>
               <option value="avanzado">🔥 Avanzado</option>
             </select>
           </label>
-          <label style="flex:1">Objetivo
+          <label class="su-97445a">Objetivo
             <select id="gymPlanGoal">
               <option value="bajar_peso" selected>🔥 Bajar peso / moverme más</option>
               <option value="musculo">💪 Ganar músculo / fuerza</option>
@@ -53,7 +53,7 @@
           </label>
         </div>
         <div class="conv-row">
-          <label style="flex:1">Lugar disponible
+          <label class="su-97445a">Lugar disponible
             <select id="gymPlanPlace">
               <option value="casa" selected>🏠 Casa</option>
               <option value="gimnasio">🏋️ Gimnasio</option>
@@ -92,16 +92,16 @@
           </label>
           <label>Hora <input type="time" id="gymPlanHour" value="18:00"></label>
         </div>
-        <div class="dlg-actions" style="justify-content:flex-start;margin:6px 0">
-          <button type="button" id="gymPlanGen" class="btn btn-accent" style="width:auto">✨ Generar mi plan</button>
-          <button type="button" id="gymPlanAdd" class="btn hidden" style="width:auto">📅 Agregar plan a mi calendario</button>
+        <div class="dlg-actions su-442279">
+          <button type="button" id="gymPlanGen" class="btn btn-accent su-30e741">✨ Generar mi plan</button>
+          <button type="button" id="gymPlanAdd" class="btn hidden su-30e741">📅 Agregar plan a mi calendario</button>
         </div>
-        <div id="gymPlanOut" class="chip" style="display:block;white-space:normal;font-size:11px;line-height:1.6">Ejemplo: 🧑 30-44 · 🌱 principiante · 🔥 bajar peso · 🏠 casa · 3×30′ · 4 sem → Fullbody + Cardio + Core, con calentamiento, cierre y progresión. Pulsa “Generar mi plan”.</div>
+        <div id="gymPlanOut" class="chip su-56f94c">Ejemplo: 🧑 30-44 · 🌱 principiante · 🔥 bajar peso · 🏠 casa · 3×30′ · 4 sem → Fullbody + Cardio + Core, con calentamiento, cierre y progresión. Pulsa “Generar mi plan”.</div>
       </div>
-      <h4 style="color:var(--gold);margin:12px 0 4px">🔍 PASO 2 — Ideas para probar: filtra y toca una tarjeta</h4>
-      <p class="muted" style="font-size:11px;margin:0 0 6px">Arriba elige el <b>tipo</b> (Gym, Terapia, Calistenia, Prácticas). Aquí filtra por <b>lugar</b> y <b>edad</b>. Tocar una tarjeta la carga en el formulario del PASO 3.</p>
-      <div class="conv-row" style="margin-bottom:8px">
-        <label style="flex:1">📍 Lugar
+      <h4 class="su-b81828">🔍 PASO 2 — Ideas para probar: filtra y toca una tarjeta</h4>
+      <p class="muted su-3f3db0">Arriba elige el <b>tipo</b> (Gym, Terapia, Calistenia, Prácticas). Aquí filtra por <b>lugar</b> y <b>edad</b>. Tocar una tarjeta la carga en el formulario del PASO 3.</p>
+      <div class="conv-row su-fdf33f">
+        <label class="su-97445a">📍 Lugar
           <select id="gymPlaceFilter">
             <option value="todos">📍 Todos</option>
             <option value="casa">🏠 Casa</option>
@@ -114,7 +114,7 @@
             <option value="otro">📌 Otro</option>
           </select>
         </label>
-        <label style="flex:1">👥 Edad
+        <label class="su-97445a">👥 Edad
           <select id="gymAge">
             <option value="todos">👥 Todas</option>
             <option value="nino69">🧒 6-9</option>
@@ -133,12 +133,12 @@
           </select>
         </label>
       </div>
-      <div id="gymSuggestionsBox" class="menstrual-card" style="max-height:240px;overflow-y:auto"></div>
-      <details style="margin-top:10px">
-        <summary style="cursor:pointer;color:var(--gold);font-weight:bold;font-size:13px">➕ PASO 3 — Agregar rutina manual (opcional)</summary>
-        <p class="muted" style="font-size:11px;margin:6px 0">Solo si quieres crear una rutina a mano. Si tocaste una idea arriba, sus datos ya están cargados: elige día/hora y pulsa agregar.</p>
-      <div class="conv-row" style="margin-top:10px">
-        <label style="flex:2">Rutina <input type="text" id="gymName" placeholder="ej: Push - Pecho/Hombro/Tríceps, Movilidad hombro, Yoga suave" maxlength="50"></label>
+      <div id="gymSuggestionsBox" class="menstrual-card su-667945"></div>
+      <details class="su-d2c171">
+        <summary class="su-5aa621">➕ PASO 3 — Agregar rutina manual (opcional)</summary>
+        <p class="muted su-2aad63">Solo si quieres crear una rutina a mano. Si tocaste una idea arriba, sus datos ya están cargados: elige día/hora y pulsa agregar.</p>
+      <div class="conv-row su-d2c171">
+        <label class="su-4b3de7">Rutina <input type="text" id="gymName" placeholder="ej: Push - Pecho/Hombro/Tríceps, Movilidad hombro, Yoga suave" maxlength="50"></label>
         <label>Tipo
           <select id="gymCategory">
             <option value="gym">🏋️ Gym</option>
@@ -156,25 +156,25 @@
       <div class="conv-row">
         <label>Inicio <input type="time" id="gymStart" value="07:00"></label>
         <label>Fin <input type="time" id="gymEnd" value="08:30"></label>
-        <label>Color <input type="color" id="gymColor" value="#e76e8a" style="height:36px;padding:2px;width:60px"></label>
+        <label>Color <input type="color" id="gymColor" value="#e76e8a" class="su-ac97bc"></label>
       </div>
       <label>Ejercicios / Detalle (series x reps - peso / descanso) <textarea id="gymExercises" rows="3" placeholder="ej:&#10;Press banca 4x8 60kg 90s&#10;Fondos 3x12 45s&#10;Plancha 3x45s"></textarea></label>
       <div class="conv-row">
-        <label style="flex:2">Lugar <input type="text" id="gymPlace" list="gymPlaceList" placeholder="ej: Casa, Gimnasio, Playa, Bosque, Multicancha" maxlength="40"></label>
+        <label class="su-4b3de7">Lugar <input type="text" id="gymPlace" list="gymPlaceList" placeholder="ej: Casa, Gimnasio, Playa, Bosque, Multicancha" maxlength="40"></label>
         <datalist id="gymPlaceList"><option value="Casa"></option><option value="Gimnasio Penco"></option><option value="Playa Penco"></option><option value="Bosque"></option><option value="Multicancha"></option><option value="Plaza / Parque"></option><option value="Costanera"></option><option value="Casa / Patio"></option><option value="Box"></option></datalist>
-        <button type="button" id="gymAdd" class="btn btn-accent" style="width:auto;align-self:flex-end">+ Agregar al calendario</button>
-        <button type="button" id="gymUpdate" class="btn hidden" style="width:auto;align-self:flex-end">↻ Actualizar</button>
-        <button type="button" id="gymCancel" class="btn hidden" style="width:auto;align-self:flex-end">Cancelar</button>
+        <button type="button" id="gymAdd" class="btn btn-accent su-4ed52d">+ Agregar al calendario</button>
+        <button type="button" id="gymUpdate" class="btn hidden su-4ed52d">↻ Actualizar</button>
+        <button type="button" id="gymCancel" class="btn hidden su-4ed52d">Cancelar</button>
       </div>
-      <p class="muted" style="font-size:10px;margin:4px 0 0">En Penco no hay piscina pública: usa Casa, Gimnasio, Playa, Bosque, Multicancha, Plaza o Costanera.</p>
+      <p class="muted su-32206a">En Penco no hay piscina pública: usa Casa, Gimnasio, Playa, Bosque, Multicancha, Plaza o Costanera.</p>
       </details>
-      <h4 style="color:var(--gold);margin:12px 0 4px">📅 Mi semana — hoy y calendario</h4>
-      <div id="gymTodayBox" class="menstrual-card" style="margin-top:10px"></div>
+      <h4 class="su-b81828">📅 Mi semana — hoy y calendario</h4>
+      <div id="gymTodayBox" class="menstrual-card su-d2c171"></div>
       <div id="gymWeekGrid" class="schedule-week"></div>
-      <h4 style="color:var(--gold);margin:12px 0 4px">📋 Mis rutinas y progreso</h4>
-      <div id="gymList" class="habits-list" style="margin-top:10px"></div>
-      <div id="gymPlacesBox" class="menstrual-card" style="margin-top:10px"></div>
-      <div id="gymStatsBox" class="menstrual-card" style="margin-top:10px"></div>
+      <h4 class="su-b81828">📋 Mis rutinas y progreso</h4>
+      <div id="gymList" class="habits-list su-d2c171"></div>
+      <div id="gymPlacesBox" class="menstrual-card su-d2c171"></div>
+      <div id="gymStatsBox" class="menstrual-card su-d2c171"></div>
       <div class="dlg-actions"><button type="button" id="gymClose" class="btn">Cerrar</button></div>
     </form>
   </dialog>

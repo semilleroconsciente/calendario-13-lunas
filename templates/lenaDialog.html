@@ -1,21 +1,21 @@
 <dialog id="lenaDialog">
     <form method="dialog">
-      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
-        <h3 style="margin:0;color:var(--accent)">🪵 Leña & Pellet — calculadora Penco</h3>
+      <div class="dlg-actions su-d2d053">
+        <h3 class="su-ee0cfe">🪵 Leña & Pellet — calculadora Penco</h3>
         <button type="button" id="lenaCloseTop" class="btn btn-icon" title="Cerrar" aria-label="Cerrar">✕</button>
       </div>
-      <p class="muted" style="line-height:1.5">Invierno Pukem: la leña húmeda contamina y rinde la mitad. Calcula <b>$ por kWh</b> para elegir. Estimación educativa.</p>
+      <p class="muted su-77e2fe">Invierno Pukem: la leña húmeda contamina y rinde la mitad. Calcula <b>$ por kWh</b> para elegir. Estimación educativa.</p>
       <div class="conv-row">
         <label>Combustible <select id="lenaTipo"><option value="eucalipto">Eucalipto (seco)</option><option value="pino">Pino / Aromo</option><option value="humeda">Leña húmeda &gt;30%</option><option value="pellet">Pellet (bolsa 15kg)</option><option value="parafina">Parafina / Kerosene</option></select></label>
         <label>Cantidad <input type="number" id="lenaCant" min="0" step="0.5" placeholder="ej: 100"></label>
         <label>Unidad <select id="lenaUnidad"><option value="kg">kg</option><option value="m3">m³ estéreo</option><option value="bolsa">bolsas 15kg</option><option value="litro">litros</option></select></label>
       </div>
       <div class="conv-row">
-        <label style="flex:1">Precio total pagado $ <input type="number" id="lenaPrecio" min="0" step="500" placeholder="ej: 45000"></label>
-        <button type="button" id="lenaCalc" class="btn btn-accent" style="width:auto;align-self:flex-end">🧮 Calcular</button>
+        <label class="su-97445a">Precio total pagado $ <input type="number" id="lenaPrecio" min="0" step="500" placeholder="ej: 45000"></label>
+        <button type="button" id="lenaCalc" class="btn btn-accent su-4ed52d">🧮 Calcular</button>
       </div>
-      <div id="lenaResult" class="menstrual-card" style="margin-top:10px"></div>
-      <div class="menstrual-card" style="margin-top:10px;background:var(--panel)"><h4>🔥 Tips Penco</h4><p class="muted" style="font-size:11px;line-height:1.5">Leña seca (&lt;25% humedad, 2 grietas en punta, suena hueco) rinde casi el doble y hace menos humo (ver 🌬️ Aire). Guarda bajo techo con ventilación, no directo al suelo. Limpia cañón mensual en invierno. Nunca quemes pintado/MDF ni basura.</p></div>
+      <div id="lenaResult" class="menstrual-card su-d2c171"></div>
+      <div class="menstrual-card su-4adf8c"><h4>🔥 Tips Penco</h4><p class="muted su-a6c665">Leña seca (&lt;25% humedad, 2 grietas en punta, suena hueco) rinde casi el doble y hace menos humo (ver 🌬️ Aire). Guarda bajo techo con ventilación, no directo al suelo. Limpia cañón mensual en invierno. Nunca quemes pintado/MDF ni basura.</p></div>
       <div class="dlg-actions"><button type="button" id="lenaClose" class="btn">Cerrar</button></div>
     </form>
   </dialog>

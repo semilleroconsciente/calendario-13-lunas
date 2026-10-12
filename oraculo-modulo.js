@@ -65,10 +65,10 @@ function makeDialog(id, title, sub, bodyHTML) {
   var d = document.createElement('dialog');
   d.id = id;
   d.innerHTML = '<form method="dialog">' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
-    '<h3 style="margin:0;color:var(--accent)">' + title + '</h3>' +
+    '<div class="dlg-actions su-d2d053">' +
+    '<h3 class="su-ee0cfe">' + title + '</h3>' +
     '<button type="button" data-close class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    (sub ? '<p class="muted" style="line-height:1.5">' + sub + '</p>' : '') +
+    (sub ? '<p class="muted su-77e2fe">' + sub + '</p>' : '') +
     bodyHTML +
     '<div class="dlg-actions"><button type="button" data-close class="btn">Cerrar</button></div></form>';
   document.body.appendChild(d);
@@ -139,29 +139,29 @@ var POS4 = ['🌱 Semilla · qué sembrar', '🌊 Marea · qué fluir', '🌳 Bo
 /* ---------- dialogo ---------- */
 function cartaHTML(c, pos) {
   var fav = store().favs.indexOf('O' + c.n) >= 0;
-  return '<div class="menstrual-card" style="border-color:var(--gold)">' +
-    (pos ? '<p class="muted" style="font-size:11px;margin:0 0 4px">📍 ' + esc(pos) + '</p>' : '') +
-    '<h4>' + esc(c.icon + ' ' + c.n + ' · ' + c.nombre) + ' <span class="chip" style="font-size:10px">' + esc(c.el) + '</span></h4>' +
-    '<p style="font-size:12px"><b>Clave:</b> ' + esc(c.clave) + '</p>' +
-    '<p style="font-size:12px">💬 ' + esc(c.mensaje) + '</p>' +
-    '<p class="muted" style="font-size:11px">🌱 <b>Ritual:</b> ' + esc(c.ritual) + '<br>❓ <i>' + esc(c.pregunta) + '</i><br>⚖️ Respuesta: <b>' + esc(c.sino) + '</b></p>' +
+  return '<div class="menstrual-card su-68a1a9">' +
+    (pos ? '<p class="muted su-61e7f6">📍 ' + esc(pos) + '</p>' : '') +
+    '<h4>' + esc(c.icon + ' ' + c.n + ' · ' + c.nombre) + ' <span class="chip su-0d5be0">' + esc(c.el) + '</span></h4>' +
+    '<p class="su-6cb285"><b>Clave:</b> ' + esc(c.clave) + '</p>' +
+    '<p class="su-6cb285">💬 ' + esc(c.mensaje) + '</p>' +
+    '<p class="muted su-11a508">🌱 <b>Ritual:</b> ' + esc(c.ritual) + '<br>❓ <i>' + esc(c.pregunta) + '</i><br>⚖️ Respuesta: <b>' + esc(c.sino) + '</b></p>' +
     '</div>';
 }
 
 function buildDialog() {
   var mazoHTML = MAZO.map(function (c) {
-    return '<div class="si-card ora-carta" data-q="' + esc((c.n + ' ' + c.nombre + ' ' + c.el + ' ' + c.clave + ' ' + c.mensaje).toLowerCase()) + '" data-n="' + c.n + '" style="cursor:pointer">' +
-      '<h4>' + c.icon + ' ' + c.n + ' · ' + esc(c.nombre) + '</h4><p class="muted" style="font-size:11px">' + esc(c.el) + ' · ' + esc(c.clave) + '</p></div>';
+    return '<div class="si-card ora-carta su-3b6a3a" data-q="' + esc((c.n + ' ' + c.nombre + ' ' + c.el + ' ' + c.clave + ' ' + c.mensaje).toLowerCase()) + '" data-n="' + c.n + '">' +
+      '<h4>' + c.icon + ' ' + c.n + ' · ' + esc(c.nombre) + '</h4><p class="muted su-11a508">' + esc(c.el) + ' · ' + esc(c.clave) + '</p></div>';
   }).join('');
 
   var body =
-    '<div class="timer-tabs" style="margin:12px 0 10px;flex-wrap:wrap">' +
-    '<button type="button" id="tabOraGuia" class="btn btn-accent" style="width:auto">🧭 Guía</button>' +
-    '<button type="button" id="tabOraMazo" class="btn" style="width:auto">🌬️ Mazo (36)</button>' +
-    '<button type="button" id="tabOraTiradas" class="btn" style="width:auto">✨ Tiradas</button>' +
-    '<button type="button" id="tabOraDiario" class="btn" style="width:auto">📓 Diario</button></div>' +
+    '<div class="timer-tabs su-f7ad78">' +
+    '<button type="button" id="tabOraGuia" class="btn btn-accent su-30e741">🧭 Guía</button>' +
+    '<button type="button" id="tabOraMazo" class="btn su-30e741">🌬️ Mazo (36)</button>' +
+    '<button type="button" id="tabOraTiradas" class="btn su-30e741">✨ Tiradas</button>' +
+    '<button type="button" id="tabOraDiario" class="btn su-30e741">📓 Diario</button></div>' +
 
-    '<div id="oraHoyBox" class="menstrual-card" style="border-color:var(--gold);margin-bottom:10px"></div>' +
+    '<div id="oraHoyBox" class="menstrual-card su-39553d"></div>' +
 
     /* GUIA */
     '<div id="oraGuia">' +
@@ -177,34 +177,34 @@ function buildDialog() {
 
     /* MAZO */
     '<div id="oraMazo" class="hidden">' +
-    '<input type="search" id="oraQ" placeholder="🔍 Buscar carta... ej: luna, mar, calma, abuela" style="display:block;width:100%;margin:0 0 10px;background:var(--card);border:1px solid var(--line);color:var(--text);border-radius:8px;padding:8px">' +
-    '<p class="muted" style="font-size:11px">Mazo propio de 36 cartas: 🌑 Luna (1–4, 25–26, 33, 35) · 🌊 Mar y agua (5–8, 29) · 🌳 Bosque y tierra (10–17, 23–24, 30, 36) · 🏡 Hogar y linaje (20–22, 28, 32, 34) · 🤝 Comunidad y cielo (9, 18–19, 27, 31). Toca una para ver su mensaje completo.</p>' +
+    '<input type="search" id="oraQ" placeholder="🔍 Buscar carta... ej: luna, mar, calma, abuela" class="su-3d4207">' +
+    '<p class="muted su-11a508">Mazo propio de 36 cartas: 🌑 Luna (1–4, 25–26, 33, 35) · 🌊 Mar y agua (5–8, 29) · 🌳 Bosque y tierra (10–17, 23–24, 30, 36) · 🏡 Hogar y linaje (20–22, 28, 32, 34) · 🤝 Comunidad y cielo (9, 18–19, 27, 31). Toca una para ver su mensaje completo.</p>' +
     '<div class="discipline-grid" id="oraMazoGrid">' + mazoHTML + '</div>' +
-    '<div id="oraDetalle" style="margin-top:10px"></div></div>' +
+    '<div id="oraDetalle" class="su-d2c171"></div></div>' +
 
     /* TIRADAS */
     '<div id="oraTiradas" class="hidden">' +
-    '<div class="menstrual-card" style="margin-bottom:10px"><h4>✨ Nueva consulta</h4>' +
+    '<div class="menstrual-card su-761d3a"><h4>✨ Nueva consulta</h4>' +
     '<label>Tu tema o pregunta <input type="text" id="oraPregunta" placeholder="ej: esta semana con mi trabajo en la feria" maxlength="140"></label>' +
-    '<div class="conv-row" style="margin-top:8px"><label>Tipo de consulta <select id="oraTipo"><option value="mensaje">🌅 Mensaje del día (1)</option><option value="cme">🧘 Cuerpo · Mente · Espíritu (3)</option><option value="lunar">🌙 Cruz lunar (4)</option><option value="respuesta">⚖️ Respuesta (1 + sí/no/espera)</option></select></label></div>' +
-    '<div class="dlg-actions" style="justify-content:flex-start;margin-top:8px"><button type="button" id="oraTirar" class="btn btn-accent" style="width:auto">✨ Sacar carta(s)</button></div></div>' +
+    '<div class="conv-row su-8a77e5"><label>Tipo de consulta <select id="oraTipo"><option value="mensaje">🌅 Mensaje del día (1)</option><option value="cme">🧘 Cuerpo · Mente · Espíritu (3)</option><option value="lunar">🌙 Cruz lunar (4)</option><option value="respuesta">⚖️ Respuesta (1 + sí/no/espera)</option></select></label></div>' +
+    '<div class="dlg-actions su-8f9e27"><button type="button" id="oraTirar" class="btn btn-accent su-30e741">✨ Sacar carta(s)</button></div></div>' +
     '<div id="oraTiradaBox"></div>' +
-    '<div class="menstrual-card hidden" id="oraGuardarBox" style="margin-top:10px"><h4>💾 Guardar esta consulta</h4>' +
+    '<div class="menstrual-card hidden su-d2c171" id="oraGuardarBox"><h4>💾 Guardar esta consulta</h4>' +
     '<label>Mi frase clave / nota <input type="text" id="oraNota" placeholder="ej: mi brasa es el taller; la riego 20 min hoy" maxlength="160"></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start;margin-top:8px"><button type="button" id="oraGuardar" class="btn btn-accent" style="width:auto">💾 Guardar en diario</button></div></div>' +
+    '<div class="dlg-actions su-8f9e27"><button type="button" id="oraGuardar" class="btn btn-accent su-30e741">💾 Guardar en diario</button></div></div>' +
     '</div>' +
 
     /* DIARIO */
     '<div id="oraDiario" class="hidden">' +
-    '<div class="menstrual-card" style="margin-bottom:10px"><h4>📓 Diario del oráculo</h4>' +
+    '<div class="menstrual-card su-761d3a"><h4>📓 Diario del oráculo</h4>' +
     '<div class="conv-row"><label>Fecha <input type="date" id="oraDiaFecha"></label></div>' +
     '<label>Reflexión del día <input type="text" id="oraDiaTxt" placeholder="ej: La Vertiente me pidió llorar; lo hice y dormí mejor" maxlength="200"></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start;margin-top:8px"><button type="button" id="oraDiaAdd" class="btn btn-accent" style="width:auto">+ Guardar reflexión</button></div></div>' +
+    '<div class="dlg-actions su-8f9e27"><button type="button" id="oraDiaAdd" class="btn btn-accent su-30e741">+ Guardar reflexión</button></div></div>' +
     '<div id="oraHistBox"></div>' +
-    '<div class="dlg-actions" style="justify-content:space-between;align-items:center;margin-top:8px;flex-wrap:wrap">' +
-    '<span id="oraStats" class="muted" style="font-size:11px"></span>' +
-    '<span style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" id="oraShare" class="btn" style="width:auto">📤 Compartir</button>' +
-    '<button type="button" id="oraClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar todo</button></span></div>' +
+    '<div class="dlg-actions su-3851d4">' +
+    '<span id="oraStats" class="muted su-11a508"></span>' +
+    '<span class="su-3de8f9"><button type="button" id="oraShare" class="btn su-30e741">📤 Compartir</button>' +
+    '<button type="button" id="oraClear" class="btn su-214f75">🗑 Borrar todo</button></span></div>' +
     '</div>';
 
   makeDialog('oraculoDialog', '🌬️ Oráculo — mensajes del territorio',
@@ -219,9 +219,9 @@ function renderHoy() {
   var k = todayKey();
   var c = MAZO[hashStr('oraculo-' + k) % MAZO.length];
   box.innerHTML = '<h4>🌅 Mensaje de hoy · ' + esc(k) + '</h4>' +
-    '<p style="font-size:13px"><b>' + esc(c.icon + ' ' + c.nombre) + '</b> — ' + esc(c.clave) + '</p>' +
-    '<p class="muted" style="font-size:11px">💬 ' + esc(c.mensaje) + '</p>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="oraHoyVer" class="btn" style="width:auto">Ver mensaje completo</button></div>';
+    '<p class="su-5e0faa"><b>' + esc(c.icon + ' ' + c.nombre) + '</b> — ' + esc(c.clave) + '</p>' +
+    '<p class="muted su-11a508">💬 ' + esc(c.mensaje) + '</p>' +
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="oraHoyVer" class="btn su-30e741">Ver mensaje completo</button></div>';
   var v = $('oraHoyVer');
   if (v) v.onclick = function () { switchTab('Mazo'); renderDetalle(c.n); };
 }
@@ -231,8 +231,8 @@ function renderDetalle(n) {
   var e = store();
   var fav = e.favs.indexOf('O' + n) >= 0;
   box.innerHTML = cartaHTML(c, null) +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="oraFav" class="btn" style="width:auto">' + (fav ? '⭐ En favoritos ✓' : '☆ Marcar favorita') + '</button>' +
-    '<button type="button" id="oraLlevar" class="btn" style="width:auto">📝 Llevar a nota de hoy</button></div>';
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="oraFav" class="btn su-30e741">' + (fav ? '⭐ En favoritos ✓' : '☆ Marcar favorita') + '</button>' +
+    '<button type="button" id="oraLlevar" class="btn su-30e741">📝 Llevar a nota de hoy</button></div>';
   $('oraFav').onclick = function () {
     var s = store(); var k = 'O' + n; var i = s.favs.indexOf(k);
     if (i >= 0) s.favs.splice(i, 1); else s.favs.push(k);
@@ -264,11 +264,11 @@ function renderTirada(pos) {
   TIRADA.cartas.forEach(function (c, i) { html += cartaHTML(c, (pos && pos[i]) || ('Carta ' + (i + 1))); });
   if (TIRADA.tipo === 'respuesta') {
     var c0 = TIRADA.cartas[0];
-    html += '<div class="menstrual-card" style="border-color:var(--gold)"><h4>⚖️ Respuesta del oráculo</h4><p style="font-size:13px"><b>' + esc(c0.icon + ' ' + c0.nombre + ':</b> ' + c0.sino) + '</p></div>';
+    html += '<div class="menstrual-card su-68a1a9"><h4>⚖️ Respuesta del oráculo</h4><p class="su-5e0faa"><b>' + esc(c0.icon + ' ' + c0.nombre + ':</b> ' + c0.sino) + '</p></div>';
   }
   if (TIRADA.cartas.length > 1) {
     var hilo = TIRADA.cartas.map(function (c) { return c.nombre; }).join(' → ');
-    html += '<div class="si-card"><h4>🧵 Hilo de la consulta</h4><p class="muted" style="font-size:11px">' + esc(hilo) + '. Léelas como una frase corrida: ¿qué historia te cuentan juntas?</p></div>';
+    html += '<div class="si-card"><h4>🧵 Hilo de la consulta</h4><p class="muted su-11a508">' + esc(hilo) + '. Léelas como una frase corrida: ¿qué historia te cuentan juntas?</p></div>';
   }
   box.innerHTML = html;
   if (gb) gb.classList.remove('hidden');
@@ -302,17 +302,17 @@ function renderHist() {
   lista.slice(0, 30).forEach(function (l) {
     var cartas = l.cartas.map(function (c) { return esc(c.nombre); }).join(' · ');
     html += '<div class="si-card"><h4>🌬️ ' + esc(l.fecha) + ' · ' + esc(nombreTirada(l.tipo)) + '</h4>' +
-      '<p class="muted" style="font-size:11px">❓ ' + esc(l.pregunta) + '</p>' +
-      '<p style="font-size:12px"><b>' + cartas + '</b></p>' +
-      (l.nota ? '<p style="font-size:12px">📝 ' + esc(l.nota) + '</p>' : '') +
-      '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" class="btn ora-del" data-id="' + l.id + '" style="width:auto;font-size:11px">🗑 Borrar</button></div></div>';
+      '<p class="muted su-11a508">❓ ' + esc(l.pregunta) + '</p>' +
+      '<p class="su-6cb285"><b>' + cartas + '</b></p>' +
+      (l.nota ? '<p class="su-6cb285">📝 ' + esc(l.nota) + '</p>' : '') +
+      '<div class="dlg-actions su-59a5a8"><button type="button" class="btn ora-del su-337714" data-id="' + l.id + '">🗑 Borrar</button></div></div>';
   });
   if (notas.length) {
-    html += '<div class="menstrual-card" style="margin-top:10px"><h4>💭 Reflexiones (' + notas.length + ')</h4>' +
-      notas.slice(0, 20).map(function (k) { return '<p style="font-size:12px"><b>' + esc(k) + ':</b> ' + esc(s.diario[k]) + '</p>'; }).join('') + '</div>';
+    html += '<div class="menstrual-card su-d2c171"><h4>💭 Reflexiones (' + notas.length + ')</h4>' +
+      notas.slice(0, 20).map(function (k) { return '<p class="su-6cb285"><b>' + esc(k) + ':</b> ' + esc(s.diario[k]) + '</p>'; }).join('') + '</div>';
   }
-  var favs = (s.favs || []).map(function (k) { var c = cartaPorN(+String(k).slice(1)); return c ? ('<span class="chip" style="margin:2px">⭐ ' + esc(c.nombre) + '</span>') : ''; }).join('');
-  if (favs) html += '<div class="menstrual-card" style="margin-top:10px"><h4>⭐ Favoritas</h4><div>' + favs + '</div></div>';
+  var favs = (s.favs || []).map(function (k) { var c = cartaPorN(+String(k).slice(1)); return c ? ('<span class="chip su-30bba7">⭐ ' + esc(c.nombre) + '</span>') : ''; }).join('');
+  if (favs) html += '<div class="menstrual-card su-d2c171"><h4>⭐ Favoritas</h4><div>' + favs + '</div></div>';
   box.innerHTML = html;
   box.querySelectorAll('.ora-del').forEach(function (b) {
     b.onclick = function () {

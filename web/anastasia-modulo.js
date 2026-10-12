@@ -74,10 +74,10 @@ function makeDialog(id, title, sub, bodyHTML) {
   var d = document.createElement('dialog');
   d.id = id;
   d.innerHTML = '<form method="dialog">' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
-    '<h3 style="margin:0;color:var(--accent)">' + title + '</h3>' +
+    '<div class="dlg-actions su-d2d053">' +
+    '<h3 class="su-ee0cfe">' + title + '</h3>' +
     '<button type="button" data-close class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    (sub ? '<p class="muted" style="line-height:1.5">' + sub + '</p>' : '') +
+    (sub ? '<p class="muted su-77e2fe">' + sub + '</p>' : '') +
     bodyHTML +
     '<div class="dlg-actions"><button type="button" data-close class="btn">Cerrar</button></div></form>';
   document.body.appendChild(d);
@@ -379,104 +379,104 @@ var ANA_LUNAS = [
    ============================================================ */
 function buildDialog() {
   var libroGrid = ANA_LIBROS.map(function (it) {
-    return '<button type="button" class="btn ana-lib-card" data-lib="' + it.id + '" style="text-align:left;height:auto;padding:10px">' +
+    return '<button type="button" class="btn ana-lib-card su-1c48e1" data-lib="' + it.id + '">' +
       '<b>' + it.ico + ' ' + esc(it.n) + '</b><br>' +
-      '<span class="muted" style="font-size:11px">' + esc(it.tag.split(' ').slice(0, 3).join(' · ')) + '</span></button>';
+      '<span class="muted su-11a508">' + esc(it.tag.split(' ').slice(0, 3).join(' · ')) + '</span></button>';
   }).join('');
 
   var sabGrid = ANA_SABERES.map(function (it) {
-    return '<button type="button" class="btn ana-sab-card" data-sab="' + it.id + '" style="text-align:left;height:auto;padding:10px">' +
+    return '<button type="button" class="btn ana-sab-card su-1c48e1" data-sab="' + it.id + '">' +
       '<b>' + it.ico + ' ' + esc(it.cap) + '</b><br>' +
-      '<span class="muted" style="font-size:11px">' + esc(it.libro) + '</span></button>';
+      '<span class="muted su-11a508">' + esc(it.libro) + '</span></button>';
   }).join('');
 
   var testHTML = ANA_TEST.map(function (q, i) {
     var opts = ANA_LIKERT.map(function (o) {
-      return '<label class="check-row" style="margin:0;font-size:12px"><input type="radio" name="anaQ' + i + '" value="' + o.v + '"> ' + o.t + '</label>';
+      return '<label class="check-row su-a16b97"><input type="radio" name="anaQ' + i + '" value="' + o.v + '"> ' + o.t + '</label>';
     }).join('');
-    return '<div class="menstrual-card" style="margin-bottom:8px"><b style="font-size:12px">' + (i + 1) + '. ' + esc(q.txt) + '</b>' +
-      '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:6px">' + opts + '</div></div>';
+    return '<div class="menstrual-card su-fdf33f"><b class="su-6cb285">' + (i + 1) + '. ' + esc(q.txt) + '</b>' +
+      '<div class="su-8fd176">' + opts + '</div></div>';
   }).join('');
 
   var practHTML = ANA_PRACTICAS.map(function (p) {
     return '<div class="menstrual-card"><h4>' + p.ico + ' ' + esc(p.n) + '</h4>' +
-      '<p class="muted" style="font-size:11px">⏱ ' + esc(p.tiempo) + '</p>' +
-      '<p style="font-size:12px">' + esc(p.pasos) + '</p>' +
-      '<p class="muted" style="font-size:12px">💡 ' + esc(p.tip) + '</p>' +
-      '<button type="button" class="btn ana-pract-add" data-p="' + esc(p.n) + '" style="width:auto">+ Anotar en mi diario de hoy</button></div>';
+      '<p class="muted su-11a508">⏱ ' + esc(p.tiempo) + '</p>' +
+      '<p class="su-6cb285">' + esc(p.pasos) + '</p>' +
+      '<p class="muted su-6cb285">💡 ' + esc(p.tip) + '</p>' +
+      '<button type="button" class="btn ana-pract-add su-30e741" data-p="' + esc(p.n) + '">+ Anotar en mi diario de hoy</button></div>';
   }).join('');
 
   var body =
-    '<div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">' +
-    '<button type="button" id="tabAnaGuia" class="btn btn-accent" style="width:auto">📖 Guía</button>' +
-    '<button type="button" id="tabAnaLibros" class="btn" style="width:auto">📚 Libros y Saberes</button>' +
-    '<button type="button" id="tabAnaPract" class="btn" style="width:auto">🛠️ Prácticas</button>' +
-    '<button type="button" id="tabAnaTest" class="btn" style="width:auto">📝 Test del Espacio</button>' +
-    '<button type="button" id="tabAnaCamino" class="btn" style="width:auto">🌱 Mi Espacio</button></div>' +
+    '<div class="timer-tabs su-4dca21">' +
+    '<button type="button" id="tabAnaGuia" class="btn btn-accent su-30e741">📖 Guía</button>' +
+    '<button type="button" id="tabAnaLibros" class="btn su-30e741">📚 Libros y Saberes</button>' +
+    '<button type="button" id="tabAnaPract" class="btn su-30e741">🛠️ Prácticas</button>' +
+    '<button type="button" id="tabAnaTest" class="btn su-30e741">📝 Test del Espacio</button>' +
+    '<button type="button" id="tabAnaCamino" class="btn su-30e741">🌱 Mi Espacio</button></div>' +
 
     '<div id="anaGuia">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🌲 ¿Quién es Anastasia?</h4>' +
-    '<p class="muted" style="font-size:12px;line-height:1.6">En 1994 el empresario <b>Vladimir Megre</b> sube el río Ob (Siberia) buscando el <b>cedro resonante</b> del que le habló un anciano: un árbol que zumba cargado de energía y sana. En la taiga conoce a <b>Anastasia</b> (nacida en 1969), criada casi sola entre abuelo, bisabuelo y animales, descendiente de los <b>vedas rusos</b>: cultura que vivió miles de años en el bosque recordando cómo co-crear con la naturaleza. En 3 días le muestra sexo sagrado, parto sin miedo, educación viva y el <b>Espacio de Amor</b>. Megre vuelve cambiado: deja el negocio y escribe en Moscú, sin plata, el primer libro. Sin más publicidad que el boca a boca, la serie vende <b>+10 millones</b> solo en Rusia y se traduce a <b>20 idiomas</b>.</p>' +
-    '<p class="muted" style="font-size:12px;line-height:1.6">Idea de una línea: <b>tu pensamiento crea, tu tierra responde</b>. Ordena tu imagen, siembra con amor y cría sin miedo: el bosque hace el resto.</p></div>' +
-    '<div class="fishing-grid" style="margin-top:10px">' +
+    '<div class="menstrual-card su-68a1a9"><h4>🌲 ¿Quién es Anastasia?</h4>' +
+    '<p class="muted su-616df7">En 1994 el empresario <b>Vladimir Megre</b> sube el río Ob (Siberia) buscando el <b>cedro resonante</b> del que le habló un anciano: un árbol que zumba cargado de energía y sana. En la taiga conoce a <b>Anastasia</b> (nacida en 1969), criada casi sola entre abuelo, bisabuelo y animales, descendiente de los <b>vedas rusos</b>: cultura que vivió miles de años en el bosque recordando cómo co-crear con la naturaleza. En 3 días le muestra sexo sagrado, parto sin miedo, educación viva y el <b>Espacio de Amor</b>. Megre vuelve cambiado: deja el negocio y escribe en Moscú, sin plata, el primer libro. Sin más publicidad que el boca a boca, la serie vende <b>+10 millones</b> solo en Rusia y se traduce a <b>20 idiomas</b>.</p>' +
+    '<p class="muted su-616df7">Idea de una línea: <b>tu pensamiento crea, tu tierra responde</b>. Ordena tu imagen, siembra con amor y cría sin miedo: el bosque hace el resto.</p></div>' +
+    '<div class="fishing-grid su-d2c171">' +
     '<div class="menstrual-card"><h4>🗺️ El mapa en 6 piezas</h4>' +
-    '<p class="muted" style="font-size:12px"><b>1) Cedro resonante 🌲:</b> árbol-antena que limpia aire y ánimo. <b>2) Espacio de Amor 💚:</b> lugar creado con amor donde la familia crece con la naturaleza. <b>3) Hacienda 1 ha 🏡:</b> bosque + huerto + agua + casa, heredable. <b>4) Pensamiento-imagen 💭:</b> lo que riegas con atención, crece. <b>5) Palabra viva 🗣️:</b> hablar que siembra, no que envenena. <b>6) Libro del Linaje 📖:</b> tu historia escrita para tus nietos.</p></div>' +
+    '<p class="muted su-6cb285"><b>1) Cedro resonante 🌲:</b> árbol-antena que limpia aire y ánimo. <b>2) Espacio de Amor 💚:</b> lugar creado con amor donde la familia crece con la naturaleza. <b>3) Hacienda 1 ha 🏡:</b> bosque + huerto + agua + casa, heredable. <b>4) Pensamiento-imagen 💭:</b> lo que riegas con atención, crece. <b>5) Palabra viva 🗣️:</b> hablar que siembra, no que envenena. <b>6) Libro del Linaje 📖:</b> tu historia escrita para tus nietos.</p></div>' +
     '<div class="menstrual-card"><h4>📚 Cómo leer la saga (10 libros)</h4>' +
-    '<p class="muted" style="font-size:12px">Parte por <b>1 Anastasia + 2 Cedros + 3 Espacio del Amor</b>: ahí está todo. Sigue con <b>4 Co-creación y 5 Quiénes somos</b> si te gusta la historia. <b>6 Linaje, 7 Energía, 8 Nueva Civilización / Ritos y 10 Anasta</b> son para vivirlo (escuela, huerta, fiesta). Lee de a poco: 10 páginas diarias + 1 práctica valen más que devorarlos.</p></div></div>' +
+    '<p class="muted su-6cb285">Parte por <b>1 Anastasia + 2 Cedros + 3 Espacio del Amor</b>: ahí está todo. Sigue con <b>4 Co-creación y 5 Quiénes somos</b> si te gusta la historia. <b>6 Linaje, 7 Energía, 8 Nueva Civilización / Ritos y 10 Anasta</b> son para vivirlo (escuela, huerta, fiesta). Lee de a poco: 10 páginas diarias + 1 práctica valen más que devorarlos.</p></div></div>' +
     '<details class="menstrual-details"><summary>🚶 ¿Cómo practicar sin grupo ni gurú? (rutina mínima)</summary>' +
-    '<p class="muted" style="font-size:12px"><b>Mañana:</b> saludo descalzo + imagen clara del día. <b>Día:</b> 1 m² de paraíso + comida viva sin tele + 0 quejas. <b>Noche:</b> soltar el sistema 3 min + 1 línea en tu diario. <b>Por luna:</b> 1 saber madre + 1 árbol + 1 carta al linaje. 15 min diarios bastan; lo simple, repetido, hace bosque.</p></details>' +
+    '<p class="muted su-6cb285"><b>Mañana:</b> saludo descalzo + imagen clara del día. <b>Día:</b> 1 m² de paraíso + comida viva sin tele + 0 quejas. <b>Noche:</b> soltar el sistema 3 min + 1 línea en tu diario. <b>Por luna:</b> 1 saber madre + 1 árbol + 1 carta al linaje. 15 min diarios bastan; lo simple, repetido, hace bosque.</p></details>' +
     '<details class="menstrual-details"><summary>⚠️ Cuidados (léeme)</summary>' +
-    '<p class="muted" style="font-size:12px">✅ Esto es <b>literatura y sabiduría educativa</b>, no religión ni terapia. ✅ Nadie serio te pide plata grande, obediencia ni irte al bosque lejos de tu familia: desconfía de “anastasianos” que cobren caro o separen. ✅ El parto en casa, dejar medicamentos o sacar niños del colegio son decisiones delicadas: consúltalas con matrona, médico y red (CESFAM, *4141 en Chile 24 h). Si un ejercicio te desborda, detente, camina, toma agua y conversa.</p></details>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>🌙 Anastasia × 13 lunas (Penco)</h4><div id="anaLunasBox"></div>' +
-    '<p class="muted" style="font-size:11px;margin-top:6px">Puentes dentro de la app: 🌱 <b>Siembra lunar</b> (fecha) · 🌳 <b>Bosque Nativo</b> (tu árbol) · 🌿 <b>Lawen</b> (botiquín) · 📓 <b>Gratitud</b> (bendecir) · 🎯 <b>Disciplina</b> (imagen → acto).</p></div>' +
+    '<p class="muted su-6cb285">✅ Esto es <b>literatura y sabiduría educativa</b>, no religión ni terapia. ✅ Nadie serio te pide plata grande, obediencia ni irte al bosque lejos de tu familia: desconfía de “anastasianos” que cobren caro o separen. ✅ El parto en casa, dejar medicamentos o sacar niños del colegio son decisiones delicadas: consúltalas con matrona, médico y red (CESFAM, *4141 en Chile 24 h). Si un ejercicio te desborda, detente, camina, toma agua y conversa.</p></details>' +
+    '<div class="menstrual-card su-d2c171"><h4>🌙 Anastasia × 13 lunas (Penco)</h4><div id="anaLunasBox"></div>' +
+    '<p class="muted su-e13d76">Puentes dentro de la app: 🌱 <b>Siembra lunar</b> (fecha) · 🌳 <b>Bosque Nativo</b> (tu árbol) · 🌿 <b>Lawen</b> (botiquín) · 📓 <b>Gratitud</b> (bendecir) · 🎯 <b>Disciplina</b> (imagen → acto).</p></div>' +
     '</div>' +
 
     '<div id="anaLibros" class="hidden">' +
-    '<div class="conv-row"><label style="flex:2">Buscar <input type="text" id="anaQ" placeholder="ej: cedro, amor, semilla, escuela, sistema, Anasta..." maxlength="40"></label></div>' +
-    '<h4 style="margin:10px 0 6px">📚 Los 10 libros (toca para ver su llave)</h4>' +
-    '<div id="anaLibGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-top:8px">' + libroGrid + '</div>' +
-    '<h4 style="margin:12px 0 6px">🌲 Los 12 saberes madre (lo esencial para vivirlo)</h4>' +
-    '<div id="anaSabGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-top:8px">' + sabGrid + '</div>' +
-    '<div id="anaDetalle" class="menstrual-card" style="margin-top:10px;border-color:var(--gold)"><p class="muted">Toca un libro o un saber para ver su ficha completa 👆</p></div></div>' +
+    '<div class="conv-row"><label class="su-4b3de7">Buscar <input type="text" id="anaQ" placeholder="ej: cedro, amor, semilla, escuela, sistema, Anasta..." maxlength="40"></label></div>' +
+    '<h4 class="su-d45094">📚 Los 10 libros (toca para ver su llave)</h4>' +
+    '<div id="anaLibGrid" class="su-1e9d45">' + libroGrid + '</div>' +
+    '<h4 class="su-eabef5">🌲 Los 12 saberes madre (lo esencial para vivirlo)</h4>' +
+    '<div id="anaSabGrid" class="su-1e9d45">' + sabGrid + '</div>' +
+    '<div id="anaDetalle" class="menstrual-card su-51d56a"><p class="muted">Toca un libro o un saber para ver su ficha completa 👆</p></div></div>' +
 
     '<div id="anaPract" class="hidden">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🤫 Silencio de taiga — 3 minutos</h4>' +
-    '<p class="muted" style="font-size:12px">Como en el bosque: escucha todo a la vez, siente tus pies en la tierra. El botón te marca el tiempo; al terminar anota tu día de Espacio.</p>' +
-    '<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><button type="button" id="anaSilencioBtn" class="btn btn-accent" style="width:auto">▶ Silencio ahora (3 min)</button>' +
-    '<span id="anaSilencioMsg" class="muted" style="font-size:12px"></span></div>' +
-    '<div class="conv-row" style="margin-top:8px"><label>Hoy sembré / cuidé… <input type="text" id="anaSembreHoy" placeholder="ej: semilla de poroto en boca + regué mi m² descalzo" maxlength="140"></label></div>' +
+    '<div class="menstrual-card su-68a1a9"><h4>🤫 Silencio de taiga — 3 minutos</h4>' +
+    '<p class="muted su-6cb285">Como en el bosque: escucha todo a la vez, siente tus pies en la tierra. El botón te marca el tiempo; al terminar anota tu día de Espacio.</p>' +
+    '<div class="su-58703f"><button type="button" id="anaSilencioBtn" class="btn btn-accent su-30e741">▶ Silencio ahora (3 min)</button>' +
+    '<span id="anaSilencioMsg" class="muted su-6cb285"></span></div>' +
+    '<div class="conv-row su-8a77e5"><label>Hoy sembré / cuidé… <input type="text" id="anaSembreHoy" placeholder="ej: semilla de poroto en boca + regué mi m² descalzo" maxlength="140"></label></div>' +
     '<div class="conv-row"><label>Hoy soñé / imaginé… <input type="text" id="anaSoneHoy" placeholder="ej: leí mi imagen: casa con huerto y niños riendo" maxlength="140"></label>' +
     '<label>Hoy amé / agradecí… <input type="text" id="anaAmeHoy" placeholder="ej: comida viva sin tele + 0 quejas con mi hijo" maxlength="100"></label></div>' +
-    '<div class="dlg-actions" style="justify-content:flex-start;flex-wrap:wrap;gap:8px"><button type="button" id="anaPractSave" class="btn btn-accent" style="width:auto">💾 Guardar día de Espacio</button>' +
-    '<button type="button" id="anaGoSiembra" class="btn" style="width:auto">🌱 Ir a Siembra</button>' +
-    '<button type="button" id="anaGoBosque" class="btn" style="width:auto">🌳 Ir a Bosque</button></div></div>' +
+    '<div class="dlg-actions su-41efc8"><button type="button" id="anaPractSave" class="btn btn-accent su-30e741">💾 Guardar día de Espacio</button>' +
+    '<button type="button" id="anaGoSiembra" class="btn su-30e741">🌱 Ir a Siembra</button>' +
+    '<button type="button" id="anaGoBosque" class="btn su-30e741">🌳 Ir a Bosque</button></div></div>' +
     practHTML + '</div>' +
 
     '<div id="anaTest" class="hidden">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>📝 Test: ¿cómo está tu Espacio? (20 afirmaciones)</h4>' +
-    '<p class="muted" style="font-size:12px">Responde según <b>cómo vives casi siempre</b>. Escala: Nunca (0) · A veces (1) · A menudo (2) · Muy cierto (3). ~5 minutos. Mide tu <b>Jardinero 🌱 · Soñador 💭 · Creador 💚</b> + tu <b>nivel de prisa/sistema ⛓️</b> (X). <b>No es diagnóstico</b>: es un espejo para elegir por dónde empezar.</p>' +
-    '<div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" id="anaTestReset" class="btn" style="width:auto">↺ Limpiar</button>' +
-    '<button type="button" id="anaTestCalc" class="btn btn-accent" style="width:auto">📊 Ver mi resultado</button></div>' +
-    '<div id="anaProgreso" class="muted" style="font-size:11px;margin-top:6px"></div></div>' +
-    '<div id="anaTestBox" style="margin-top:10px">' + testHTML + '</div>' +
-    '<div id="anaResultado" class="menstrual-card hidden" style="margin-top:10px;border-color:var(--gold)"></div></div>' +
+    '<div class="menstrual-card su-68a1a9"><h4>📝 Test: ¿cómo está tu Espacio? (20 afirmaciones)</h4>' +
+    '<p class="muted su-6cb285">Responde según <b>cómo vives casi siempre</b>. Escala: Nunca (0) · A veces (1) · A menudo (2) · Muy cierto (3). ~5 minutos. Mide tu <b>Jardinero 🌱 · Soñador 💭 · Creador 💚</b> + tu <b>nivel de prisa/sistema ⛓️</b> (X). <b>No es diagnóstico</b>: es un espejo para elegir por dónde empezar.</p>' +
+    '<div class="su-3de8f9"><button type="button" id="anaTestReset" class="btn su-30e741">↺ Limpiar</button>' +
+    '<button type="button" id="anaTestCalc" class="btn btn-accent su-30e741">📊 Ver mi resultado</button></div>' +
+    '<div id="anaProgreso" class="muted su-e13d76"></div></div>' +
+    '<div id="anaTestBox" class="su-d2c171">' + testHTML + '</div>' +
+    '<div id="anaResultado" class="menstrual-card hidden su-51d56a"></div></div>' +
 
     '<div id="anaCamino" class="hidden">' +
-    '<div class="menstrual-grid"><div class="menstrual-card" style="border-color:var(--gold)"><h4>🌱 Mi vía</h4>' +
+    '<div class="menstrual-grid"><div class="menstrual-card su-68a1a9"><h4>🌱 Mi vía</h4>' +
     '<div class="conv-row"><label>Mi vía dominante <select id="anaMiVia"><option value="">— sin definir —</option><option value="J">🌱 Jardinero · Manos en tierra</option><option value="S">💭 Soñador · Imagen clara</option><option value="C">💚 Creador · Amor que hace</option></select></label></div>' +
-    '<div id="anaMiViaBox" style="margin-top:6px"></div></div>' +
+    '<div id="anaMiViaBox" class="su-fe7b49"></div></div>' +
     '<div class="menstrual-card"><h4>📓 Diario del Espacio</h4>' +
     '<div class="conv-row"><label>Fecha <input type="date" id="anaDiaFecha"></label></div>' +
     '<label>Hoy en mi Espacio… (sembré + soñé + amé) <input type="text" id="anaDiaTxt" placeholder="ej: regué mi m², leí mi imagen, cociné vivo sin tele" maxlength="140"></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="anaDiaAdd" class="btn btn-accent" style="width:auto">+ Guardar hoy</button></div>' +
-    '<div id="anaDiaList" class="habits-list" style="margin-top:8px;max-height:220px"></div></div></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>🌲 Mis días de Espacio (racha de Amor)</h4><div id="anaPractsBox"></div></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>🕘 Historial de tests</h4><div id="anaHistBox"></div></div>' +
-    '<div class="dlg-actions" style="justify-content:space-between;align-items:center;margin-top:8px;flex-wrap:wrap;gap:8px">' +
-    '<span id="anaStats" class="muted" style="font-size:11px"></span>' +
-    '<span style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" id="anaShare" class="btn" style="width:auto">📤 Compartir</button>' +
-    '<button type="button" id="anaToNote" class="btn" style="width:auto">📝 Llevar a nota de hoy</button>' +
-    '<button type="button" id="anaClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar todo</button></span></div></div>';
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="anaDiaAdd" class="btn btn-accent su-30e741">+ Guardar hoy</button></div>' +
+    '<div id="anaDiaList" class="habits-list su-ebf445"></div></div></div>' +
+    '<div class="menstrual-card su-d2c171"><h4>🌲 Mis días de Espacio (racha de Amor)</h4><div id="anaPractsBox"></div></div>' +
+    '<div class="menstrual-card su-d2c171"><h4>🕘 Historial de tests</h4><div id="anaHistBox"></div></div>' +
+    '<div class="dlg-actions su-a1935c">' +
+    '<span id="anaStats" class="muted su-11a508"></span>' +
+    '<span class="su-3de8f9"><button type="button" id="anaShare" class="btn su-30e741">📤 Compartir</button>' +
+    '<button type="button" id="anaToNote" class="btn su-30e741">📝 Llevar a nota de hoy</button>' +
+    '<button type="button" id="anaClear" class="btn su-214f75">🗑 Borrar todo</button></span></div></div>';
 
   makeDialog('anastasiaDialog', '🌲 Anastasia · Cedros Resonantes',
     'El Espacio de Amor de Vladimir Megre para la vida común: siembra con amor, sueña claro y cría sin miedo. En Penco, en tu casa, hoy. Todo <b>privado y local</b>.',
@@ -494,11 +494,11 @@ function renderDetalleLibro(id) {
   var box = $('anaDetalle'); if (!box) return;
   var t = anaLibro(id); if (!t) return;
   box.innerHTML =
-    '<h4 style="color:var(--gold)">' + t.ico + ' ' + esc(t.n) + '</h4>' +
-    '<p style="font-size:12px;line-height:1.6">' + esc(t.resumen) + '</p>' +
+    '<h4 class="su-e39eba">' + t.ico + ' ' + esc(t.n) + '</h4>' +
+    '<p class="su-616df7">' + esc(t.resumen) + '</p>' +
     '<div class="si-card"><h4>🔑 Llave para hoy</h4><p>' + esc(t.llave) + '</p></div>' +
-    '<div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">' +
-    '<button type="button" class="btn btn-accent" id="anaLeerBtn" style="width:auto">✓ Leer este esta luna</button></div>';
+    '<div class="su-67b198">' +
+    '<button type="button" class="btn btn-accent su-30e741" id="anaLeerBtn">✓ Leer este esta luna</button></div>';
   var hb = $('anaLeerBtn');
   if (hb) hb.onclick = function () {
     var k = todayKey();
@@ -515,26 +515,26 @@ function renderDetalle(id) {
   var fav = e.favs.indexOf(id) >= 0;
   function sec(ico, tit, val) {
     if (!val) return '';
-    return '<div class="si-card" style="margin-top:8px"><h4>' + ico + ' ' + tit + '</h4><p>' + esc(val) + '</p></div>';
+    return '<div class="si-card su-8a77e5"><h4>' + ico + ' ' + tit + '</h4><p>' + esc(val) + '</p></div>';
   }
   box.innerHTML =
-    '<h4 style="color:var(--gold)">' + t.ico + ' ' + esc(t.cap) + ' <span class="muted" style="font-size:11px">· ' + esc(t.libro) + '</span></h4>' +
-    '<blockquote class="dlg-quote" style="font-size:12px">' + esc(t.texto) + '</blockquote>' +
-    '<p style="font-size:12px;line-height:1.6">' + esc(t.idea) + '</p>' +
+    '<h4 class="su-e39eba">' + t.ico + ' ' + esc(t.cap) + ' <span class="muted su-11a508">· ' + esc(t.libro) + '</span></h4>' +
+    '<blockquote class="dlg-quote su-6cb285">' + esc(t.texto) + '</blockquote>' +
+    '<p class="su-616df7">' + esc(t.idea) + '</p>' +
     sec('📖', 'Lo que cuenta el libro', t.historia) +
     sec('⚙️', 'Cómo funciona según Anastasia', t.como) +
-    '<p style="font-size:12px">🧰 <b>¿Cuándo sirve?</b> ' + esc(t.sirve) + '</p>' +
+    '<p class="su-6cb285">🧰 <b>¿Cuándo sirve?</b> ' + esc(t.sirve) + '</p>' +
     '<div class="si-card"><h4>✏️ Práctica de hoy</h4><p>' + esc(t.practica) + '</p>' +
-    (t.pasos ? '<p style="margin-top:6px"><b>Paso a paso:</b><br>' + esc(t.pasos) + '</p>' : '') +
+    (t.pasos ? '<p class="su-fe7b49"><b>Paso a paso:</b><br>' + esc(t.pasos) + '</p>' : '') +
     '<p class="muted">Pregunta que despierta: <i>' + esc(t.pregunta) + '</i></p></div>' +
     sec('🗣️', 'Frases para decir en voz alta', t.frases) +
     sec('🌱', 'Señal de que avanza', t.senal) +
     sec('📍', 'En Penco (adáptalo así)', t.penco) +
     sec('🔗', 'Sigue en la app', t.puente) +
-    '<p class="muted" style="font-size:12px">⚠️ Trampa típica: ' + esc(t.trampa) + '</p>' +
-    '<div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">' +
-    '<button type="button" class="btn" id="anaFavBtn" style="width:auto">' + (fav ? '★ Quitar de favoritas' : '☆ Marcar favorita') + '</button>' +
-    '<button type="button" class="btn btn-accent" id="anaHoyBtn" style="width:auto">✓ Vivir este hoy</button></div>';
+    '<p class="muted su-6cb285">⚠️ Trampa típica: ' + esc(t.trampa) + '</p>' +
+    '<div class="su-67b198">' +
+    '<button type="button" class="btn su-30e741" id="anaFavBtn">' + (fav ? '★ Quitar de favoritas' : '☆ Marcar favorita') + '</button>' +
+    '<button type="button" class="btn btn-accent su-30e741" id="anaHoyBtn">✓ Vivir este hoy</button></div>';
   var fb = $('anaFavBtn');
   if (fb) fb.onclick = function () {
     var d = store();
@@ -591,23 +591,23 @@ function showResultado(sc) {
   var sisTxt = sistema <= 5 ? 'Liviano: el sistema te roba poco. Sostén con 1 práctica diaria.' : sistema <= 9 ? 'Medio: prisa y ruido frecuentes. 1 ayuno de noticias + caminata te cambian la luna.' : 'Pesado: mucho sistema y poca tierra. Parte por 1 semilla + 1 silencio, sin exigirte todo.';
   box.classList.remove('hidden');
   box.innerHTML = '<h4>📊 Tu espejo (sin guardar)</h4>' +
-    '<p class="muted" style="font-size:11px">Máximo por vía: 15 (5 preguntas × 3). Sistema (X): máximo 15 — mientras más alto, más prisa y ruido.</p>' +
+    '<p class="muted su-11a508">Máximo por vía: 15 (5 preguntas × 3). Sistema (X): máximo 15 — mientras más alto, más prisa y ruido.</p>' +
     arr.map(function (a) {
       var c = ANA_VIAS[a.k];
       var pct = Math.round(a.p / max * 100);
       var isTop = dom === a.k;
-      return '<div style="display:flex;align-items:center;gap:8px;margin:4px 0">' +
-        '<span style="min-width:150px;font-size:12px"><b>' + c.ico + ' ' + esc(c.nombre) + '</b></span>' +
-        '<span style="flex:1;background:var(--panel);border:1px solid var(--line);border-radius:6px;height:14px;position:relative;overflow:hidden">' +
+      return '<div class="su-0d84b3">' +
+        '<span class="su-b53707"><b>' + c.ico + ' ' + esc(c.nombre) + '</b></span>' +
+        '<span class="su-2982dd">' +
         '<span style="display:block;height:100%;width:' + pct + '%;background:' + (isTop ? 'var(--gold)' : 'var(--accent)') + ';opacity:' + (isTop ? '1' : '.55') + '"></span></span>' +
-        '<b style="min-width:30px;text-align:right">' + a.p + '</b></div>';
+        '<b class="su-803c87">' + a.p + '</b></div>';
     }).join('') +
-    '<div class="si-card" style="margin-top:8px"><h4>' + ANA_VIAS[dom].ico + ' Tu vía fuerte: ' + esc(ANA_VIAS[dom].nombre) + '</h4>' +
+    '<div class="si-card su-8a77e5"><h4>' + ANA_VIAS[dom].ico + ' Tu vía fuerte: ' + esc(ANA_VIAS[dom].nombre) + '</h4>' +
     '<p>' + esc(ANA_VIAS[dom].desc) + '</p><p><b>Entrena así:</b> ' + esc(ANA_VIAS[dom].entrena) + '</p>' +
     '<p class="muted">⛓️ Nivel de sistema: <b>' + sistema + '/15</b> — ' + esc(sisTxt) + '</p></div>' +
-    '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"><button type="button" class="btn btn-accent" id="anaSaveTest" style="width:auto">💾 Guardar este test</button>' +
-    '<button type="button" class="btn" id="anaSetVia" style="width:auto">✓ Mi vía: ' + esc(ANA_VIAS[dom].nombre) + '</button>' +
-    '<button type="button" class="btn" id="anaReadSab" style="width:auto">📖 Leer saber que me sirve</button></div>';
+    '<div class="su-ac5453"><button type="button" class="btn btn-accent su-30e741" id="anaSaveTest">💾 Guardar este test</button>' +
+    '<button type="button" class="btn su-30e741" id="anaSetVia">✓ Mi vía: ' + esc(ANA_VIAS[dom].nombre) + '</button>' +
+    '<button type="button" class="btn su-30e741" id="anaReadSab">📖 Leer saber que me sirve</button></div>';
   var sv = $('anaSaveTest');
   if (sv) sv.onclick = function () {
     var d = store();
@@ -635,9 +635,9 @@ function syncMiVia() {
 function renderMiViaBox() {
   var box = $('anaMiViaBox'); if (!box) return;
   var k = store().miVia || '';
-  if (!k || !ANA_VIAS[k]) { box.innerHTML = '<p class="muted" style="font-size:12px">Aún sin definir. Haz el test 📝 o elígela arriba: es tu punto de partida, no tu jaula.</p>'; return; }
+  if (!k || !ANA_VIAS[k]) { box.innerHTML = '<p class="muted su-6cb285">Aún sin definir. Haz el test 📝 o elígela arriba: es tu punto de partida, no tu jaula.</p>'; return; }
   var c = ANA_VIAS[k];
-  box.innerHTML = '<div class="chip" style="display:block;white-space:normal;line-height:1.5"><b>' + c.ico + ' ' + esc(c.nombre) + '</b><br>' +
+  box.innerHTML = '<div class="chip su-d7c8b3"><b>' + c.ico + ' ' + esc(c.nombre) + '</b><br>' +
     '<span class="muted">' + esc(c.desc) + '<br><b>Entrena:</b> ' + esc(c.entrena) + '</span></div>';
 }
 function rachaPracts() {
@@ -657,12 +657,12 @@ function renderPracts() {
   var box = $('anaPractsBox'); if (!box) return;
   var d = store().practs || [];
   var ult7 = d.slice().sort(function (a, b) { return b.fecha.localeCompare(a.fecha); }).slice(0, 7);
-  box.innerHTML = '<p class="muted" style="font-size:11px">💚 Racha: <b>' + rachaPracts() + ' días</b> · ' + d.length + ' día(s) de Espacio · sembré → soñé → amé.</p>' +
+  box.innerHTML = '<p class="muted su-11a508">💚 Racha: <b>' + rachaPracts() + ' días</b> · ' + d.length + ' día(s) de Espacio · sembré → soñé → amé.</p>' +
     (ult7.length ? ult7.map(function (r) {
-      return '<div class="hora-item" style="align-items:flex-start"><span style="font-size:11px"><b>' + esc(r.fecha) + '</b><br>' +
+      return '<div class="hora-item su-0486f7"><span class="su-11a508"><b>' + esc(r.fecha) + '</b><br>' +
         (r.sembre ? '🌱 ' + esc(r.sembre) + '<br>' : '') + (r.sone ? '💭 ' + esc(r.sone) + '<br>' : '') + (r.ame ? '💚 ' + esc(r.ame) : '') + '</span>' +
         '<button type="button" class="btn btn-icon ana-pract-del" data-id="' + r.id + '">✕</button></div>';
-    }).join('') : '<p class="muted" style="font-size:11px;text-align:center">Sin días aún. Guarda tu primer día de Espacio arriba 🌲.</p>');
+    }).join('') : '<p class="muted su-e201a8">Sin días aún. Guarda tu primer día de Espacio arriba 🌲.</p>');
   box.querySelectorAll('.ana-pract-del').forEach(function (x) {
     x.onclick = function () { var e = store(); e.practs = e.practs.filter(function (r) { return r.id !== x.dataset.id; }); save(); renderPracts(); renderStats(); };
   });
@@ -671,9 +671,9 @@ function renderDiario() {
   var box = $('anaDiaList'); if (!box) return;
   var d = store().diario || {};
   var keys = Object.keys(d).sort().reverse().slice(0, 30);
-  if (!keys.length) { box.innerHTML = '<p class="muted" style="font-size:11px;text-align:center">Sin registros. 3 líneas bastan: sembré + soñé + amé.</p>'; return; }
+  if (!keys.length) { box.innerHTML = '<p class="muted su-e201a8">Sin registros. 3 líneas bastan: sembré + soñé + amé.</p>'; return; }
   box.innerHTML = keys.map(function (k) {
-    return '<div class="hora-item" style="align-items:flex-start"><span style="font-size:11px"><b>' + esc(k) + '</b><br>' + esc(d[k]) + '</span>' +
+    return '<div class="hora-item su-0486f7"><span class="su-11a508"><b>' + esc(k) + '</b><br>' + esc(d[k]) + '</span>' +
       '<button type="button" class="btn btn-icon ana-dia-del" data-k="' + esc(k) + '">✕</button></div>';
   }).join('');
   box.querySelectorAll('.ana-dia-del').forEach(function (x) {
@@ -683,9 +683,9 @@ function renderDiario() {
 function renderHist() {
   var box = $('anaHistBox'); if (!box) return;
   var t = (store().tests || []).slice().reverse().slice(0, 10);
-  if (!t.length) { box.innerHTML = '<p class="muted" style="font-size:11px">Sin tests guardados. Responde y pulsa “💾 Guardar este test”.</p>'; return; }
+  if (!t.length) { box.innerHTML = '<p class="muted su-11a508">Sin tests guardados. Responde y pulsa “💾 Guardar este test”.</p>'; return; }
   box.innerHTML = t.map(function (r) {
-    return '<div class="hora-item"><span style="font-size:11px"><b>' + esc(r.fecha) + '</b> · 🌱' + r.J + ' 💭' + r.S + ' 💚' + r.C + ' · fuerte <b>' + esc(r.dom || '') + '</b> · sistema ' + esc(String(r.X)) + '/15</span>' +
+    return '<div class="hora-item"><span class="su-11a508"><b>' + esc(r.fecha) + '</b> · 🌱' + r.J + ' 💭' + r.S + ' 💚' + r.C + ' · fuerte <b>' + esc(r.dom || '') + '</b> · sistema ' + esc(String(r.X)) + '/15</span>' +
       '<button type="button" class="btn btn-icon ana-hist-del" data-id="' + r.id + '">✕</button></div>';
   }).join('');
   box.querySelectorAll('.ana-hist-del').forEach(function (x) {

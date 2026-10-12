@@ -38,7 +38,7 @@ function fuentes() {
     if (EXCLUIR.has(e.name)) continue;
     if (e.name.endsWith('.min.js') || e.name.endsWith('.min.css')) continue;
     if (e.name.endsWith('.js')) out.push({ src: e.name, out: 'min/' + e.name.replace(/\.js$/, '.min.js'), loader: 'js' });
-    else if (e.name === 'styles.css' || e.name === 'splash.css') out.push({ src: e.name, out: 'min/' + e.name.replace(/\.css$/, '.min.css'), loader: 'css' });
+    else if (e.name.endsWith('.css')) out.push({ src: e.name, out: 'min/' + e.name.replace(/\.css$/, '.min.css'), loader: 'css' });
   }
   return out.sort((a, b) => a.src.localeCompare(b.src));
 }

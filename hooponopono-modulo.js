@@ -92,10 +92,10 @@ function makeDialog(id, title, sub, bodyHTML) {
   var d = document.createElement('dialog');
   d.id = id;
   d.innerHTML = '<form method="dialog">' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
-    '<h3 style="margin:0;color:var(--accent)">' + title + '</h3>' +
+    '<div class="dlg-actions su-d2d053">' +
+    '<h3 class="su-ee0cfe">' + title + '</h3>' +
     '<button type="button" data-close class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    (sub ? '<p class="muted" style="line-height:1.5">' + sub + '</p>' : '') +
+    (sub ? '<p class="muted su-77e2fe">' + sub + '</p>' : '') +
     bodyHTML +
     '<div class="dlg-actions"><button type="button" data-close class="btn">Cerrar</button></div></form>';
   document.body.appendChild(d);
@@ -180,18 +180,18 @@ function renderFrases() {
     var isFav = e.fav === f.id;
     return '<div class="menstrual-card" style="border-color:' + f.color + '66">' +
       '<h4 style="color:' + f.color + '">' + f.ico + ' ' + esc(f.n) + (isFav ? ' ⭐' : '') + '</h4>' +
-      '<p style="font-size:12px;line-height:1.55"><b>Qué es:</b> ' + esc(f.que) + '<br><b>Cuándo:</b> ' + esc(f.cuando) + '<br><b>Cómo:</b> ' + esc(f.como) + '</p>' +
-      '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">' +
-      '<button type="button" class="btn" style="width:auto;font-size:11px" data-pract="' + esc(f.id) + '">🧘 Practicar</button>' +
-      '<button type="button" class="btn" style="width:auto;font-size:11px" data-voz="' + esc(f.id) + '">🔊 Escuchar</button>' +
-      '<button type="button" class="btn" style="width:auto;font-size:11px" data-fav="' + esc(f.id) + '">' + (isFav ? '⭐ Favorita' : '☆ Marcar') + '</button>' +
+      '<p class="su-afb724"><b>Qué es:</b> ' + esc(f.que) + '<br><b>Cuándo:</b> ' + esc(f.cuando) + '<br><b>Cómo:</b> ' + esc(f.como) + '</p>' +
+      '<div class="su-c158a9">' +
+      '<button type="button" class="btn su-337714" data-pract="' + esc(f.id) + '">🧘 Practicar</button>' +
+      '<button type="button" class="btn su-337714" data-voz="' + esc(f.id) + '">🔊 Escuchar</button>' +
+      '<button type="button" class="btn su-337714" data-fav="' + esc(f.id) + '">' + (isFav ? '⭐ Favorita' : '☆ Marcar') + '</button>' +
       '</div></div>';
   }).join('') +
   '<div class="menstrual-card"><h4>🧰 Herramientas de limpieza (Morrnah)</h4>' +
-  '<p class="muted" style="font-size:11px">Palabras-gatillo que se repiten sin analizar. Elige una y úsala 1–3 minutos ante el tema difícil.</p>' +
+  '<p class="muted su-11a508">Palabras-gatillo que se repiten sin analizar. Elige una y úsala 1–3 minutos ante el tema difícil.</p>' +
   HO_TOOLS.map(function (t) {
-    return '<div class="habit-item" style="margin:6px 0"><b style="font-size:12px">' + esc(t.n) + '</b><br><span class="muted" style="font-size:11px">' + esc(t.desc) + '</span><br>' +
-      '<button type="button" class="btn" style="width:auto;font-size:11px;margin-top:4px" data-tool="' + esc(t.n) + '">🧘 Limpiar con esta</button></div>';
+    return '<div class="habit-item su-c1fafc"><b class="su-6cb285">' + esc(t.n) + '</b><br><span class="muted su-11a508">' + esc(t.desc) + '</span><br>' +
+      '<button type="button" class="btn su-d2fb07" data-tool="' + esc(t.n) + '">🧘 Limpiar con esta</button></div>';
   }).join('') + '</div>';
   box.querySelectorAll('[data-pract]').forEach(function (b) { b.onclick = function () { irALimpieza(b.getAttribute('data-pract'), null); }; });
   box.querySelectorAll('[data-tool]').forEach(function (b) { b.onclick = function () { irALimpieza('te amo', b.getAttribute('data-tool')); }; });
@@ -308,14 +308,14 @@ function renderSit() {
   });
   box.innerHTML = fil.length ? fil.map(function (r) {
     var col = r.estado === 'liberado' ? '#8fd694' : (r.estado === 'en proceso' ? '#e8c56a' : '#c9a9c9');
-    return '<div class="habit-item"><div style="display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap"><span><b>' + esc(r.titulo) + '</b></span>' +
+    return '<div class="habit-item"><div class="su-34136d"><span><b>' + esc(r.titulo) + '</b></span>' +
       '<span class="chip" style="font-size:10px;border-color:' + col + '55;color:' + col + '">' + esc(r.estado || 'pendiente') + ' · ' + (r.inten || 0) + '/10</span></div>' +
-      '<div class="muted" style="font-size:11px;margin-top:4px">' + (r.persona ? '👤 ' + esc(r.persona) + ' · ' : '') + (r.area ? '🏷️ ' + esc(r.area) + ' · ' : '') + esc(lunaTxt(r.fecha) || '') + (r.nota ? '<br>📝 ' + esc(r.nota) : '') + '</div>' +
-      '<div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap">' +
-      '<button class="btn" style="width:auto;font-size:11px" data-limp="' + r.id + '">🧘 Limpiar</button>' +
-      '<button class="btn" style="width:auto;font-size:11px" data-next="' + r.id + '">⏭ ' + (r.estado === 'pendiente' ? 'en proceso' : r.estado === 'en proceso' ? 'liberado' : 'reabrir') + '</button>' +
-      '<button class="btn" style="width:auto;font-size:11px" data-edit="' + r.id + '">✏️</button>' +
-      '<button class="btn" style="width:auto;font-size:11px;color:#e76e8a" data-del="' + r.id + '">✕</button></div></div>';
+      '<div class="muted su-cdff1d">' + (r.persona ? '👤 ' + esc(r.persona) + ' · ' : '') + (r.area ? '🏷️ ' + esc(r.area) + ' · ' : '') + esc(lunaTxt(r.fecha) || '') + (r.nota ? '<br>📝 ' + esc(r.nota) : '') + '</div>' +
+      '<div class="su-faf7a9">' +
+      '<button class="btn su-337714" data-limp="' + r.id + '">🧘 Limpiar</button>' +
+      '<button class="btn su-337714" data-next="' + r.id + '">⏭ ' + (r.estado === 'pendiente' ? 'en proceso' : r.estado === 'en proceso' ? 'liberado' : 'reabrir') + '</button>' +
+      '<button class="btn su-337714" data-edit="' + r.id + '">✏️</button>' +
+      '<button class="btn su-9b8fb7" data-del="' + r.id + '">✕</button></div></div>';
   }).join('') : '<p class="muted">Inventario vacío. Anota 1 situación que quieras limpiar: lo que se nombra, se puede soltar.</p>';
   var st = $('hoSitStats');
   if (st) st.textContent = d.length + ' situaciones · ' + d.filter(function (r) { return r.estado === 'liberado'; }).length + ' liberadas 🌺';
@@ -337,9 +337,9 @@ function renderSes() {
   box.innerHTML = d.length ? d.slice(0, 40).map(function (r) {
     var f = fraseById(r.frase);
     return '<div class="habit-item"><b>🌺 ' + esc(r.fecha) + '</b> · ' + f.ico + ' ' + esc(r.frase) + (r.tool ? ' + ' + esc(r.tool) : '') + ' · ×' + (+r.reps || 0) +
-      '<br><span class="muted" style="font-size:11px">📌 ' + esc(r.titulo || 'libre') + ' · ' + r.antes + '→' + r.despues + '/10 · ' + esc(lunaTxt(r.fecha)) + '</span>' +
-      (r.insight ? '<p style="font-size:12px">💡 ' + esc(r.insight) + '</p>' : '') +
-      '<div style="display:flex;gap:6px;margin-top:4px"><button class="btn" style="width:auto;font-size:11px" data-share="' + r.id + '">📤</button><button class="btn" style="width:auto;font-size:11px;color:#e76e8a" data-del="' + r.id + '">✕</button></div></div>';
+      '<br><span class="muted su-11a508">📌 ' + esc(r.titulo || 'libre') + ' · ' + r.antes + '→' + r.despues + '/10 · ' + esc(lunaTxt(r.fecha)) + '</span>' +
+      (r.insight ? '<p class="su-6cb285">💡 ' + esc(r.insight) + '</p>' : '') +
+      '<div class="su-90237f"><button class="btn su-337714" data-share="' + r.id + '">📤</button><button class="btn su-9b8fb7" data-del="' + r.id + '">✕</button></div></div>';
   }).join('') : '<p class="muted">Sin sesiones aún. Ve a 🧘 Limpieza y regala 3 minutos a tu paz de hoy.</p>';
   box.querySelectorAll('[data-del]').forEach(function (b) { b.onclick = function () { if (!confirm('¿Borrar sesión?')) return; var dd = store().ses; var i = dd.findIndex(function (x) { return x.id === b.getAttribute('data-del'); }); if (i >= 0) dd.splice(i, 1); persistStore(); save(); renderSes(); renderAva(); }; });
   box.querySelectorAll('[data-share]').forEach(function (b) { b.onclick = function () { var dd = store().ses; var r = dd.find(function (x) { return x.id === b.getAttribute('data-share'); }); if (r) share('🌺 Mi limpieza ' + r.fecha, '📌 ' + (r.titulo || '') + '\n' + r.frase + ' ×' + r.reps + ' (' + r.antes + '→' + r.despues + '/10)' + (r.insight ? '\n💡 ' + r.insight : '')); }; });
@@ -357,10 +357,10 @@ function renderAva() {
   var porFrase = {};
   ses.forEach(function (r) { porFrase[r.frase] = (porFrase[r.frase] || 0) + 1; });
   var topFrase = Object.keys(porFrase).sort(function (a, b) { return porFrase[b] - porFrase[a]; })[0] || '—';
-  box.innerHTML = '<p class="muted" style="font-size:11px">🌺 Situaciones liberadas: <b>' + lib + '/' + inv.length + '</b> (' + pct + '%)</p>' +
-    '<div style="background:var(--panel);border-radius:6px;height:10px;overflow:hidden"><div style="width:' + pct + '%;height:100%;background:linear-gradient(90deg,#7ab8ff,#c9a9c9,#e8c56a,#e76e8a)"></div></div>' +
-    '<p class="muted" style="font-size:11px;margin-top:6px">🧘 ' + ses.length + ' sesiones · 🔁 ×' + vidaReps + ' repeticiones de vida · 🔥 racha ' + rachaDias() + ' días · frase más usada: <b>' + esc(topFrase) + '</b></p>' +
-    '<p class="muted" style="font-size:11px">Ritmo sugerido: 1 limpieza corta al día (3–5 min). Luna menguante → soltar; luna nueva → sembrar paz. Lo que vuelve se limpia de nuevo, sin culpa.</p>';
+  box.innerHTML = '<p class="muted su-11a508">🌺 Situaciones liberadas: <b>' + lib + '/' + inv.length + '</b> (' + pct + '%)</p>' +
+    '<div class="su-ab9537"><div style="width:' + pct + '%;height:100%;background:linear-gradient(90deg,#7ab8ff,#c9a9c9,#e8c56a,#e76e8a)"></div></div>' +
+    '<p class="muted su-e13d76">🧘 ' + ses.length + ' sesiones · 🔁 ×' + vidaReps + ' repeticiones de vida · 🔥 racha ' + rachaDias() + ' días · frase más usada: <b>' + esc(topFrase) + '</b></p>' +
+    '<p class="muted su-11a508">Ritmo sugerido: 1 limpieza corta al día (3–5 min). Luna menguante → soltar; luna nueva → sembrar paz. Lo que vuelve se limpia de nuevo, sin culpa.</p>';
 }
 function renderAll() { try { renderFrases(); } catch (e) {} try { renderLimpieza(); } catch (e) {} try { renderSit(); } catch (e) {} try { renderSes(); } catch (e) {} try { renderAva(); } catch (e) {} }
 
@@ -370,13 +370,13 @@ function renderAll() { try { renderFrases(); } catch (e) {} try { renderLimpieza
 function buildDialog() {
   makeDialog('hooponoponoDialog', '🌺 Ho\'oponopono — limpiar memorias, volver al amor',
     'Práctica hawaiana de <b>reconciliación y perdón</b>: asumes tu parte, limpias la memoria y vuelves a la paz. 4 frases, 3 minutos, 1 situación a la vez. Todo queda <b>privado y local</b>.',
-    '<div class="timer-tabs" style="flex-wrap:wrap;margin-bottom:10px">' +
-    '<button type="button" id="tabHoGuia" class="btn btn-accent" style="width:auto">📖 Guía</button>' +
-    '<button type="button" id="tabHoFrases" class="btn" style="width:auto">💗 4 Frases</button>' +
-    '<button type="button" id="tabHoLimp" class="btn" style="width:auto">🧘 Limpieza</button>' +
-    '<button type="button" id="tabHoSit" class="btn" style="width:auto">📋 Situaciones</button>' +
-    '<button type="button" id="tabHoSes" class="btn" style="width:auto">📓 Sesiones</button>' +
-    '<button type="button" id="tabHoAva" class="btn" style="width:auto">📊 Mi avance</button></div>' +
+    '<div class="timer-tabs su-dd1da5">' +
+    '<button type="button" id="tabHoGuia" class="btn btn-accent su-30e741">📖 Guía</button>' +
+    '<button type="button" id="tabHoFrases" class="btn su-30e741">💗 4 Frases</button>' +
+    '<button type="button" id="tabHoLimp" class="btn su-30e741">🧘 Limpieza</button>' +
+    '<button type="button" id="tabHoSit" class="btn su-30e741">📋 Situaciones</button>' +
+    '<button type="button" id="tabHoSes" class="btn su-30e741">📓 Sesiones</button>' +
+    '<button type="button" id="tabHoAva" class="btn su-30e741">📊 Mi avance</button></div>' +
 
     '<div id="hoGuia">' +
       '<div class="si-card"><h4>🌺 ¿Qué es Ho\'oponopono?</h4><p><b>Ho\'oponopono</b> significa «corregir un error» en hawaiano. Es el arte familiar de <b>hacer lo correcto</b>: cuando algo duele, no buscas culpables afuera; limpias la memoria que se activó <b>en ti</b>. No cambias al otro: cambias la carga con que lo miras. El resultado es paz, y desde la paz decides mejor.</p></div>' +
@@ -386,61 +386,61 @@ function buildDialog() {
       '<div class="si-card"><h4>🕯️ Práctica de 5 minutos (paso a paso)</h4><p><b>1)</b> Elige 1 situación (empieza con intensidad ≤6).<br><b>2)</b> Mano al pecho, 3 respiraciones lentas.<br><b>3)</b> Nombra: «esto que siento con ___».<br><b>4)</b> Repite las 4 frases en ronda 5–10 min (o temporizador de aquí).<br><b>5)</b> Mide del 0 al 10: ¿bajó 1–2 puntos? Suficiente por hoy.<br><b>6)</b> Cierra con «gracias», agua y 1 frase de aprendizaje.</p></div>' +
       '<div class="si-card"><h4>🌙 Ho\'oponopono y tus 13 lunas</h4><p><b>Menguante</b> → ideal para soltar rencores y culpas (limpieza profunda). <b>Nueva</b> → siembra paz: limpia y luego escribe tu intención. <b>Llena</b> → lo pendiente se ve claro: buena noche para «gracias». <b>Creciente</b> → practica «te amo» preventivo cada mañana. Cada sesión queda marcada con su luna en 📓 Sesiones.</p></div>' +
       '<div class="si-card"><h4>⚠️ Cuidados</h4><p>No es para justificar daño ni para quedarte en un vínculo violento: <b>limpias dentro y actúas fuera</b> (límites, denuncia, apoyo). Si un recuerdo te desborda, detente y pide ayuda: *4141 (Chile, 24h), CESFAM o terapeuta. No reemplaza tratamiento médico o psicológico: lo acompaña.</p></div>' +
-      '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="hoGoFrases" class="btn btn-accent" style="width:auto">💗 Conocer las 4 frases →</button> <button type="button" id="hoGoLimp" class="btn" style="width:auto">🧘 Limpiar ahora →</button></div>' +
+      '<div class="dlg-actions su-59a5a8"><button type="button" id="hoGoFrases" class="btn btn-accent su-30e741">💗 Conocer las 4 frases →</button> <button type="button" id="hoGoLimp" class="btn su-30e741">🧘 Limpiar ahora →</button></div>' +
     '</div>' +
 
     '<div id="hoFrases" class="hidden"><div id="hoFrasesGrid"></div></div>' +
 
     '<div id="hoLimp" class="hidden">' +
-      '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🧘 Limpieza guiada</h4>' +
-      '<div class="conv-row"><label style="flex:2">📌 Situación <select id="hoLimpSit"></select></label><label>📅 Fecha <input type="date" id="hoLimpFecha"></label></div>' +
+      '<div class="menstrual-card su-68a1a9"><h4>🧘 Limpieza guiada</h4>' +
+      '<div class="conv-row"><label class="su-4b3de7">📌 Situación <select id="hoLimpSit"></select></label><label>📅 Fecha <input type="date" id="hoLimpFecha"></label></div>' +
       '<div class="conv-row"><label>💗 Frase <select id="hoLimpFrase"><option value="lo siento">💧 Lo siento</option><option value="perdoname">🤲 Perdóname</option><option value="gracias">🙏 Gracias</option><option value="te amo">💗 Te amo</option></select></label>' +
-      '<label style="flex:2">🧰 Herramienta <select id="hoLimpTool"><option value="">— solo frase —</option>' + HO_TOOLS.map(function (t) { return '<option>' + t.n + '</option>'; }).join('') + '</select></label></div>' +
-      '<div id="hoLimpFavBox" style="margin:6px 0"></div>' +
-      '<div class="menstrual-card" style="background:var(--panel);text-align:center"><div style="font-size:11px" class="muted">CONTADOR DE REPETICIONES (meta dulce: 108)</div>' +
-      '<div id="hoCountNum" style="font-size:44px;font-weight:800;color:var(--gold)">0</div>' +
-      '<div style="background:var(--panel);border-radius:6px;height:8px;overflow:hidden;margin:6px 0"><div id="hoCountBar" style="width:0%;height:100%;background:linear-gradient(90deg,#7ab8ff,#e8c56a,#e76e8a)"></div></div>' +
-      '<div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap"><button type="button" id="hoPlus1" class="btn btn-accent" style="width:auto;font-size:15px">+1 💗</button>' +
-      '<button type="button" id="hoPlus7" class="btn" style="width:auto">+7</button><button type="button" id="hoPlus21" class="btn" style="width:auto">+21</button>' +
-      '<button type="button" id="hoZero" class="btn" style="width:auto">↺ 0</button><button type="button" id="hoVozLimp" class="btn" style="width:auto">🔊 Guía por voz</button></div>' +
-      '<div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:8px"><button type="button" id="hoT1" class="btn" style="width:auto">⏱ 1 min</button>' +
-      '<button type="button" id="hoT5" class="btn" style="width:auto">⏱ 5 min</button><button type="button" id="hoT10" class="btn" style="width:auto">⏱ 10 min</button>' +
-      '<button type="button" id="hoTStop" class="btn" style="width:auto">⏹ Detener</button></div>' +
-      '<div id="hoTimerLabel" class="muted" style="font-size:11px;margin-top:6px">⏱ Temporizador listo: 1, 5 o 10 min de repetición suave.</div></div>' +
-      '<div class="conv-row" style="margin-top:8px"><label>Carga antes (0–10) <input type="number" id="hoAntes" min="0" max="10" value="6" style="width:80px"></label>' +
-      '<label>Carga después (0–10) <input type="number" id="hoDespues" min="0" max="10" value="4" style="width:80px"></label>' +
-      '<label style="flex:1">Repeticiones manuales <input type="number" id="hoReps" min="0" value="0" style="width:90px"></label></div>' +
+      '<label class="su-4b3de7">🧰 Herramienta <select id="hoLimpTool"><option value="">— solo frase —</option>' + HO_TOOLS.map(function (t) { return '<option>' + t.n + '</option>'; }).join('') + '</select></label></div>' +
+      '<div id="hoLimpFavBox" class="su-c1fafc"></div>' +
+      '<div class="menstrual-card su-7c1198"><div class="su-11a508" class="muted">CONTADOR DE REPETICIONES (meta dulce: 108)</div>' +
+      '<div id="hoCountNum" class="su-5f3293">0</div>' +
+      '<div class="su-98b660"><div id="hoCountBar" class="su-bbba19"></div></div>' +
+      '<div class="su-e376dd"><button type="button" id="hoPlus1" class="btn btn-accent su-e2cc6b">+1 💗</button>' +
+      '<button type="button" id="hoPlus7" class="btn su-30e741">+7</button><button type="button" id="hoPlus21" class="btn su-30e741">+21</button>' +
+      '<button type="button" id="hoZero" class="btn su-30e741">↺ 0</button><button type="button" id="hoVozLimp" class="btn su-30e741">🔊 Guía por voz</button></div>' +
+      '<div class="su-daa93d"><button type="button" id="hoT1" class="btn su-30e741">⏱ 1 min</button>' +
+      '<button type="button" id="hoT5" class="btn su-30e741">⏱ 5 min</button><button type="button" id="hoT10" class="btn su-30e741">⏱ 10 min</button>' +
+      '<button type="button" id="hoTStop" class="btn su-30e741">⏹ Detener</button></div>' +
+      '<div id="hoTimerLabel" class="muted su-e13d76">⏱ Temporizador listo: 1, 5 o 10 min de repetición suave.</div></div>' +
+      '<div class="conv-row su-8a77e5"><label>Carga antes (0–10) <input type="number" id="hoAntes" min="0" max="10" value="6" class="su-8573ba"></label>' +
+      '<label>Carga después (0–10) <input type="number" id="hoDespues" min="0" max="10" value="4" class="su-8573ba"></label>' +
+      '<label class="su-97445a">Repeticiones manuales <input type="number" id="hoReps" min="0" value="0" class="su-581be4"></label></div>' +
       '<label>💡 Insight / aprendizaje <input type="text" id="hoInsight" placeholder="ej: no era rabia, era pena; suelto y pongo límite con amor" maxlength="300"></label>' +
-      '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="hoGuardarSes" class="btn btn-accent" style="width:auto">🌺 Guardar sesión</button></div>' +
-      '<p class="muted" style="font-size:11px">Tip: si no tienes situación, haz limpieza libre con «te amo, gracias» antes de dormir. Suma igual a tu racha.</p></div>' +
+      '<div class="dlg-actions su-59a5a8"><button type="button" id="hoGuardarSes" class="btn btn-accent su-30e741">🌺 Guardar sesión</button></div>' +
+      '<p class="muted su-11a508">Tip: si no tienes situación, haz limpieza libre con «te amo, gracias» antes de dormir. Suma igual a tu racha.</p></div>' +
     '</div>' +
 
     '<div id="hoSit" class="hidden">' +
-      '<div class="menstrual-card" style="border-color:var(--gold)"><h4>➕ ¿Qué quiero limpiar?</h4>' +
-      '<div class="conv-row"><label style="flex:2">Situación * <input type="text" id="hoSitTitulo" placeholder="ej: pelea con mi hermano por la herencia" maxlength="60"></label><label>Con / por <input type="text" id="hoSitPersona" placeholder="ej: hermano, mamá, yo" maxlength="30"></label></div>' +
+      '<div class="menstrual-card su-68a1a9"><h4>➕ ¿Qué quiero limpiar?</h4>' +
+      '<div class="conv-row"><label class="su-4b3de7">Situación * <input type="text" id="hoSitTitulo" placeholder="ej: pelea con mi hermano por la herencia" maxlength="60"></label><label>Con / por <input type="text" id="hoSitPersona" placeholder="ej: hermano, mamá, yo" maxlength="30"></label></div>' +
       '<div class="conv-row"><label>Área <select id="hoSitArea">' + HO_AREAS.map(function (a) { return '<option>' + a + '</option>'; }).join('') + '</select></label>' +
-      '<label>Carga (0–10) <input type="number" id="hoSitInten" min="0" max="10" value="6" style="width:80px"></label>' +
+      '<label>Carga (0–10) <input type="number" id="hoSitInten" min="0" max="10" value="6" class="su-8573ba"></label>' +
       '<label>Estado <select id="hoSitEstado"><option>pendiente</option><option>en proceso</option><option>liberado</option></select></label></div>' +
       '<label>Nota <input type="text" id="hoSitNota" placeholder="ej: me aprieta el pecho cuando lo recuerdo" maxlength="120"></label>' +
-      '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="hoSitAdd" class="btn btn-accent" style="width:auto">+ Agregar</button><button type="button" id="hoSitCancel" class="btn hidden" style="width:auto">Cancelar</button></div></div>' +
-      '<div class="conv-row" style="margin-top:10px"><label style="flex:2">🔍 Buscar <input type="text" id="hoSitQ" placeholder="persona, tema..." autocomplete="off"></label>' +
+      '<div class="dlg-actions su-59a5a8"><button type="button" id="hoSitAdd" class="btn btn-accent su-30e741">+ Agregar</button><button type="button" id="hoSitCancel" class="btn hidden su-30e741">Cancelar</button></div></div>' +
+      '<div class="conv-row su-d2c171"><label class="su-4b3de7">🔍 Buscar <input type="text" id="hoSitQ" placeholder="persona, tema..." autocomplete="off"></label>' +
       '<label>Estado <select id="hoSitF"><option value="todas">Todas</option><option value="pendiente">Pendientes</option><option value="en proceso">En proceso</option><option value="liberado">Liberadas</option></select></label></div>' +
-      '<div id="hoSitList" class="habits-list" style="margin-top:8px;max-height:300px"></div>' +
-      '<div class="dlg-actions" style="justify-content:space-between;margin-top:8px"><span id="hoSitStats" class="muted" style="font-size:11px"></span>' +
-      '<span style="display:flex;gap:8px"><button type="button" id="hoSitShare" class="btn" style="width:auto">📤 Compartir</button><button type="button" id="hoSitClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar liberadas</button></span></div>' +
+      '<div id="hoSitList" class="habits-list su-8c96f6"></div>' +
+      '<div class="dlg-actions su-efea1d"><span id="hoSitStats" class="muted su-11a508"></span>' +
+      '<span class="su-a76d59"><button type="button" id="hoSitShare" class="btn su-30e741">📤 Compartir</button><button type="button" id="hoSitClear" class="btn su-214f75">🗑 Borrar liberadas</button></span></div>' +
     '</div>' +
 
     '<div id="hoSes" class="hidden">' +
-      '<div class="menstrual-card" style="border-color:var(--gold)"><h4>📓 Mis sesiones de limpieza</h4>' +
-      '<p class="muted" style="font-size:11px">Cada limpieza cuenta, aunque baje solo 1 punto. La constancia limpia más que la intensidad.</p>' +
-      '<div id="hoSesList" class="habits-list" style="max-height:320px"></div>' +
-      '<div class="dlg-actions" style="justify-content:space-between;margin-top:8px"><span id="hoSesStats" class="muted" style="font-size:11px"></span>' +
-      '<span style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" id="hoSesToNote" class="btn" style="width:auto">📝 Llevar a nota de hoy</button>' +
-      '<button type="button" id="hoSesShareAll" class="btn" style="width:auto">📤 Compartir</button>' +
-      '<button type="button" id="hoSesClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar</button></span></div></div>' +
+      '<div class="menstrual-card su-68a1a9"><h4>📓 Mis sesiones de limpieza</h4>' +
+      '<p class="muted su-11a508">Cada limpieza cuenta, aunque baje solo 1 punto. La constancia limpia más que la intensidad.</p>' +
+      '<div id="hoSesList" class="habits-list su-0aced6"></div>' +
+      '<div class="dlg-actions su-efea1d"><span id="hoSesStats" class="muted su-11a508"></span>' +
+      '<span class="su-3de8f9"><button type="button" id="hoSesToNote" class="btn su-30e741">📝 Llevar a nota de hoy</button>' +
+      '<button type="button" id="hoSesShareAll" class="btn su-30e741">📤 Compartir</button>' +
+      '<button type="button" id="hoSesClear" class="btn su-214f75">🗑 Borrar</button></span></div></div>' +
     '</div>' +
 
-    '<div id="hoAva" class="hidden"><div id="hoAvaBox" class="menstrual-card" style="border-color:var(--gold)"></div>' +
+    '<div id="hoAva" class="hidden"><div id="hoAvaBox" class="menstrual-card su-68a1a9"></div>' +
       '<div class="si-card"><h4>🌙 Cierre de luna (ritual de 3 líneas)</h4><p>Cada fin de luna responde en tu cuaderno o en 📝 nota del día:<br><b>1)</b> ¿Qué limpié esta luna?<br><b>2)</b> ¿Qué paz gané?<br><b>3)</b> ¿Qué dejo en esta luna?<br>Termina con 7 «te amo, gracias».</p></div></div>');
 }
 
@@ -456,7 +456,7 @@ function puenteMetodos() {
       if (!dlg || !dlg.open) return;
       if (v === 'hoponopono' && !$('hoOpenFromMetodos')) {
         var fab = document.createElement('div');
-        fab.innerHTML = '<button type="button" id="hoOpenFromMetodos" class="btn btn-accent" style="width:auto;margin-top:8px">🌺 Abrir mi Ho\'oponopono completo</button>';
+        fab.innerHTML = '<button type="button" id="hoOpenFromMetodos" class="btn btn-accent su-e182f0">🌺 Abrir mi Ho\'oponopono completo</button>';
         var f = dlg.querySelector('form') || dlg;
         f.appendChild(fab);
         var nb = $('hoOpenFromMetodos');

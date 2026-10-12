@@ -1,74 +1,74 @@
 <dialog id="timerDialog">
     <form method="dialog">
-      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
-        <h3 style="margin:0;color:var(--accent)">⏱ Tiempo — Reloj, Hora mundial y Temporizadores</h3>
+      <div class="dlg-actions su-d2d053">
+        <h3 class="su-ee0cfe">⏱ Tiempo — Reloj, Hora mundial y Temporizadores</h3>
         <button type="button" id="timerCloseTop" class="btn btn-icon" title="Cerrar" aria-label="Cerrar">✕</button>
       </div>
-      <div class="timer-tabs" style="flex-wrap:wrap">
-        <button type="button" id="tabClock" class="btn btn-accent" style="width:auto">🕐 Reloj</button>
-        <button type="button" id="tabWorld" class="btn" style="width:auto">🌍 Hora mundial</button>
-        <button type="button" id="tabChrono" class="btn" style="width:auto">Cronómetro</button>
-        <button type="button" id="tabCount" class="btn" style="width:auto">Temporizador</button>
-        <button type="button" id="tabGuide" class="btn" style="width:auto">📖 Guía</button>
+      <div class="timer-tabs su-62da06">
+        <button type="button" id="tabClock" class="btn btn-accent su-30e741">🕐 Reloj</button>
+        <button type="button" id="tabWorld" class="btn su-30e741">🌍 Hora mundial</button>
+        <button type="button" id="tabChrono" class="btn su-30e741">Cronómetro</button>
+        <button type="button" id="tabCount" class="btn su-30e741">Temporizador</button>
+        <button type="button" id="tabGuide" class="btn su-30e741">📖 Guía</button>
       </div>
       <div id="clockPanel">
         <div id="localClockDisplay" class="timer-display">--:--:--</div>
-        <p id="localClockDate" style="text-align:center;margin:8px 0 2px;font-weight:700">—</p>
-        <p id="localClockZone" class="muted" style="text-align:center;margin:0 0 8px">—</p>
-        <div class="preset-row" style="justify-content:center">
+        <p id="localClockDate" class="su-76f2cd">—</p>
+        <p id="localClockZone" class="muted su-84b3e8">—</p>
+        <div class="preset-row su-03c4bb">
           <span class="chip" id="localUtcChip">UTC —</span>
           <span class="chip" id="localUnixChip">—</span>
         </div>
-        <p class="muted" style="text-align:center;margin-top:8px">Hora del dispositivo. Si viajas, verifica la zona horaria del sistema.</p>
+        <p class="muted su-ee028e">Hora del dispositivo. Si viajas, verifica la zona horaria del sistema.</p>
       </div>
       <div id="worldPanel" class="hidden">
-        <div class="conv-row" style="justify-content:center;flex-wrap:wrap">
-          <label>Añadir país/ciudad <select id="worldAddSelect" style="max-width:230px"></select></label>
-          <button type="button" id="worldAddBtn" class="btn btn-accent" style="width:auto">＋ Añadir</button>
-          <button type="button" id="worldResetBtn" class="btn" style="width:auto" title="Volver a la lista por defecto">↺ Por defecto</button>
+        <div class="conv-row su-6f743a">
+          <label>Añadir país/ciudad <select id="worldAddSelect" class="su-2a7298"></select></label>
+          <button type="button" id="worldAddBtn" class="btn btn-accent su-30e741">＋ Añadir</button>
+          <button type="button" id="worldResetBtn" class="btn su-30e741" title="Volver a la lista por defecto">↺ Por defecto</button>
         </div>
         <div id="worldList" class="world-grid"></div>
-        <h4 style="margin:12px 0 6px;color:var(--gold)">🔁 Conversor de hora</h4>
-        <div class="conv-row" style="flex-wrap:wrap;justify-content:center">
-          <label>Hora <input type="time" id="convTime" value="12:00" style="width:110px"></label>
-          <label>Desde <select id="convFrom" style="max-width:170px"></select></label>
-          <label>Hacia <select id="convTo" style="max-width:170px"></select></label>
-          <button type="button" id="convCalcBtn" class="btn btn-accent" style="width:auto">Convertir</button>
+        <h4 class="su-4a7e56">🔁 Conversor de hora</h4>
+        <div class="conv-row su-849d1a">
+          <label>Hora <input type="time" id="convTime" value="12:00" class="su-607468"></label>
+          <label>Desde <select id="convFrom" class="su-132d31"></select></label>
+          <label>Hacia <select id="convTo" class="su-132d31"></select></label>
+          <button type="button" id="convCalcBtn" class="btn btn-accent su-30e741">Convertir</button>
         </div>
         <div id="convResult" class="world-conv-result">Elige hora y zonas para convertir.</div>
-        <p class="muted" style="text-align:center;margin-top:8px">Funciona sin internet: usa la hora de tu dispositivo y zonas IANA.</p>
+        <p class="muted su-ee028e">Funciona sin internet: usa la hora de tu dispositivo y zonas IANA.</p>
       </div>
       <div id="chronoPanel" class="hidden">
         <div id="chronoDisplay" class="timer-display">00:00:00.0</div>
-        <div class="dlg-actions" style="justify-content:center">
-          <button type="button" id="chronoStart" class="btn btn-accent" style="width:auto">▶ Iniciar</button>
-          <button type="button" id="chronoLap" class="btn" style="width:auto">◉ Vuelta</button>
-          <button type="button" id="chronoReset" class="btn" style="width:auto">↺ Reiniciar</button>
+        <div class="dlg-actions su-03c4bb">
+          <button type="button" id="chronoStart" class="btn btn-accent su-30e741">▶ Iniciar</button>
+          <button type="button" id="chronoLap" class="btn su-30e741">◉ Vuelta</button>
+          <button type="button" id="chronoReset" class="btn su-30e741">↺ Reiniciar</button>
         </div>
         <div id="chronoLaps" class="chrono-laps"></div>
       </div>
       <div id="countPanel" class="hidden">
-        <div class="conv-row" style="justify-content:center">
-          <label>Horas <input type="number" id="countH" min="0" max="99" value="0" style="width:70px"></label>
-          <label>Minutos <input type="number" id="countM" min="0" max="59" value="5" style="width:70px"></label>
-          <label>Segundos <input type="number" id="countS" min="0" max="59" value="0" style="width:70px"></label>
+        <div class="conv-row su-03c4bb">
+          <label>Horas <input type="number" id="countH" min="0" max="99" value="0" class="su-ec6626"></label>
+          <label>Minutos <input type="number" id="countM" min="0" max="59" value="5" class="su-ec6626"></label>
+          <label>Segundos <input type="number" id="countS" min="0" max="59" value="0" class="su-ec6626"></label>
         </div>
-        <div class="preset-row" style="justify-content:center">
-          <button type="button" class="btn" style="width:auto" data-count-preset="1">1 min</button>
-          <button type="button" class="btn" style="width:auto" data-count-preset="5">5 min</button>
-          <button type="button" class="btn" style="width:auto" data-count-preset="10">10 min</button>
-          <button type="button" class="btn" style="width:auto" data-count-preset="15">15 min</button>
-          <button type="button" class="btn" style="width:auto" data-count-preset="25">🍅 25</button>
-          <button type="button" class="btn" style="width:auto" data-count-preset="30">30 min</button>
-          <button type="button" class="btn" style="width:auto" data-count-preset="60">1 h</button>
+        <div class="preset-row su-03c4bb">
+          <button type="button" class="btn su-30e741" data-count-preset="1">1 min</button>
+          <button type="button" class="btn su-30e741" data-count-preset="5">5 min</button>
+          <button type="button" class="btn su-30e741" data-count-preset="10">10 min</button>
+          <button type="button" class="btn su-30e741" data-count-preset="15">15 min</button>
+          <button type="button" class="btn su-30e741" data-count-preset="25">🍅 25</button>
+          <button type="button" class="btn su-30e741" data-count-preset="30">30 min</button>
+          <button type="button" class="btn su-30e741" data-count-preset="60">1 h</button>
         </div>
         <div id="countDisplay" class="timer-display">00:05:00</div>
-        <div class="dlg-actions" style="justify-content:center">
-          <button type="button" id="countStart" class="btn btn-accent" style="width:auto">▶ Iniciar</button>
-          <button type="button" id="countPause" class="btn" style="width:auto">⏸ Pausa</button>
-          <button type="button" id="countReset" class="btn" style="width:auto">↺ Reiniciar</button>
+        <div class="dlg-actions su-03c4bb">
+          <button type="button" id="countStart" class="btn btn-accent su-30e741">▶ Iniciar</button>
+          <button type="button" id="countPause" class="btn su-30e741">⏸ Pausa</button>
+          <button type="button" id="countReset" class="btn su-30e741">↺ Reiniciar</button>
         </div>
-        <p class="muted" style="text-align:center;margin-top:8px">Sonará y vibrará al terminar. Mantén la ventana abierta.</p>
+        <p class="muted su-ee028e">Sonará y vibrará al terminar. Mantén la ventana abierta.</p>
       </div>
       <div id="guidePanel" class="hidden">
         <div class="tz-hero">
@@ -118,7 +118,7 @@
         <details class="tz-item">
           <summary><span class="tz-num">4</span><span class="tz-ico">📊</span><span class="tz-title">Tabla rápida desde Chile continental</span></summary>
           <div class="tz-body">
-            <p class="muted" style="margin-top:0">Desfases <b>habituales</b> (pueden variar ±1 h por horario de verano):</p>
+            <p class="muted su-d46224">Desfases <b>habituales</b> (pueden variar ±1 h por horario de verano):</p>
             <div class="tz-table-wrap"><table class="tz-table">
               <tr><th>Destino</th><th>Dif.</th><th>Si en Penco son 12:00…</th></tr>
               <tr><td>🇦🇷 Buenos Aires</td><td>0 a +1 h</td><td>12:00 – 13:00</td></tr>
@@ -163,7 +163,7 @@
             <p class="muted"><b>Tiempo Unix</b> (chip ⏱ del Reloj): segundos desde 1970-01-01 00:00 UTC. Si dos personas comparan su Unix y coinciden, hablan del <b>mismo instante</b> aunque sus relojes marquen distinto.</p>
           </div>
         </details>
-        <div class="tz-callout tip" style="text-align:center">💡 Tip: deja fijas tus 4–6 ciudades frecuentes con <b>＋ Añadir</b>; quedan guardadas en el dispositivo.</div>
+        <div class="tz-callout tip su-91a870">💡 Tip: deja fijas tus 4–6 ciudades frecuentes con <b>＋ Añadir</b>; quedan guardadas en el dispositivo.</div>
       </div>
       <div class="dlg-actions"><button type="button" id="timerClose" class="btn">Cerrar</button></div>
     </form>

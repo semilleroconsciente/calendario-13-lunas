@@ -64,10 +64,10 @@ function makeDialog(id, title, sub, bodyHTML) {
   var d = document.createElement('dialog');
   d.id = id;
   d.innerHTML = '<form method="dialog">' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
-    '<h3 style="margin:0;color:var(--accent)">' + title + '</h3>' +
+    '<div class="dlg-actions su-d2d053">' +
+    '<h3 class="su-ee0cfe">' + title + '</h3>' +
     '<button type="button" data-close class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    (sub ? '<p class="muted" style="line-height:1.5">' + sub + '</p>' : '') +
+    (sub ? '<p class="muted su-77e2fe">' + sub + '</p>' : '') +
     bodyHTML +
     '<div class="dlg-actions"><button type="button" data-close class="btn">Cerrar</button></div></form>';
   document.body.appendChild(d);
@@ -188,39 +188,39 @@ var POS_CUERPO = ['Cuerpo · qué sostener', 'Mente · qué aclarar', 'Espíritu
 /* ---------- dialogo ---------- */
 function cartaHTML(c, inv, pos) {
   var d = detalleCarta(c);
-  return '<div class="menstrual-card" style="border-color:var(--gold)">' +
-    (pos ? '<p class="muted" style="font-size:11px;margin:0 0 4px">📍 ' + esc(pos) + '</p>' : '') +
-    '<h4>' + esc(d.titulo) + (inv ? ' <span class="chip" style="font-size:10px">↺ invertida</span>' : '') + '</h4>' +
-    '<p style="font-size:12px"><b>Clave:</b> ' + esc(inv ? d.inv : d.clave) + '</p>' +
-    '<p style="font-size:12px"><b>☀️ En luz:</b> ' + esc(d.luz) + '</p>' +
-    '<p style="font-size:12px"><b>🌑 En sombra:</b> ' + esc(d.sombra) + '</p>' +
-    '<p class="muted" style="font-size:11px"><b>💞 Amor:</b> ' + esc(d.amor) + '<br><b>💼 Trabajo:</b> ' + esc(d.trabajo) + '<br><b>🧭 Consejo:</b> ' + esc(d.consejo) + '<br><b>❓ Pregunta:</b> <i>' + esc(d.pregunta) + '</i></p>' +
+  return '<div class="menstrual-card su-68a1a9">' +
+    (pos ? '<p class="muted su-61e7f6">📍 ' + esc(pos) + '</p>' : '') +
+    '<h4>' + esc(d.titulo) + (inv ? ' <span class="chip su-0d5be0">↺ invertida</span>' : '') + '</h4>' +
+    '<p class="su-6cb285"><b>Clave:</b> ' + esc(inv ? d.inv : d.clave) + '</p>' +
+    '<p class="su-6cb285"><b>☀️ En luz:</b> ' + esc(d.luz) + '</p>' +
+    '<p class="su-6cb285"><b>🌑 En sombra:</b> ' + esc(d.sombra) + '</p>' +
+    '<p class="muted su-11a508"><b>💞 Amor:</b> ' + esc(d.amor) + '<br><b>💼 Trabajo:</b> ' + esc(d.trabajo) + '<br><b>🧭 Consejo:</b> ' + esc(d.consejo) + '<br><b>❓ Pregunta:</b> <i>' + esc(d.pregunta) + '</i></p>' +
     '</div>';
 }
 
 function buildDialog() {
   var mayoresHTML = MAYORES.map(function (m) {
-    return '<div class="si-card tar-may" data-q="' + esc((m.n + ' ' + m.nombre + ' ' + m.clave).toLowerCase()) + '" data-n="' + m.n + '" style="cursor:pointer">' +
-      '<h4>' + m.icon + ' ' + m.n + ' · ' + esc(m.nombre) + '</h4><p class="muted" style="font-size:11px">' + esc(m.clave) + '</p></div>';
+    return '<div class="si-card tar-may su-3b6a3a" data-q="' + esc((m.n + ' ' + m.nombre + ' ' + m.clave).toLowerCase()) + '" data-n="' + m.n + '">' +
+      '<h4>' + m.icon + ' ' + m.n + ' · ' + esc(m.nombre) + '</h4><p class="muted su-11a508">' + esc(m.clave) + '</p></div>';
   }).join('');
 
   var palosHTML = PALOS.map(function (p) {
-    var nums = NUMEROS.map(function (r) { return '<span class="chip tar-menor" data-palo="' + p.id + '" data-rango="' + r.n + '" style="cursor:pointer;margin:2px">' + p.icon + ' ' + r.n + '</span>'; }).join('');
-    var figs = FIGURAS.map(function (r) { return '<span class="chip tar-menor" data-palo="' + p.id + '" data-rango="' + r.n + '" style="cursor:pointer;margin:2px;border-color:var(--gold)">' + p.icon + ' ' + r.n + '</span>'; }).join('');
-    return '<div class="menstrual-card" style="margin-bottom:10px"><h4>' + p.icon + ' ' + p.nombre + ' · ' + p.elemento + '</h4>' +
-      '<p class="muted" style="font-size:11px">' + esc(p.clave) + ' Ámbito: ' + esc(p.ambito) + '.</p>' +
-      '<div>' + nums + '</div><div style="margin-top:6px">' + figs + '</div></div>';
+    var nums = NUMEROS.map(function (r) { return '<span class="chip tar-menor su-ccc94a" data-palo="' + p.id + '" data-rango="' + r.n + '">' + p.icon + ' ' + r.n + '</span>'; }).join('');
+    var figs = FIGURAS.map(function (r) { return '<span class="chip tar-menor su-98378b" data-palo="' + p.id + '" data-rango="' + r.n + '">' + p.icon + ' ' + r.n + '</span>'; }).join('');
+    return '<div class="menstrual-card su-761d3a"><h4>' + p.icon + ' ' + p.nombre + ' · ' + p.elemento + '</h4>' +
+      '<p class="muted su-11a508">' + esc(p.clave) + ' Ámbito: ' + esc(p.ambito) + '.</p>' +
+      '<div>' + nums + '</div><div class="su-fe7b49">' + figs + '</div></div>';
   }).join('');
 
   var body =
-    '<div class="timer-tabs" style="margin:12px 0 10px;flex-wrap:wrap">' +
-    '<button type="button" id="tabTarGuia" class="btn btn-accent" style="width:auto">🧭 Guía</button>' +
-    '<button type="button" id="tabTarMayores" class="btn" style="width:auto">🌟 Mayores (22)</button>' +
-    '<button type="button" id="tabTarMenores" class="btn" style="width:auto">🃏 Menores (56)</button>' +
-    '<button type="button" id="tabTarTiradas" class="btn" style="width:auto">🔮 Tiradas</button>' +
-    '<button type="button" id="tabTarDiario" class="btn" style="width:auto">📓 Diario</button></div>' +
+    '<div class="timer-tabs su-f7ad78">' +
+    '<button type="button" id="tabTarGuia" class="btn btn-accent su-30e741">🧭 Guía</button>' +
+    '<button type="button" id="tabTarMayores" class="btn su-30e741">🌟 Mayores (22)</button>' +
+    '<button type="button" id="tabTarMenores" class="btn su-30e741">🃏 Menores (56)</button>' +
+    '<button type="button" id="tabTarTiradas" class="btn su-30e741">🔮 Tiradas</button>' +
+    '<button type="button" id="tabTarDiario" class="btn su-30e741">📓 Diario</button></div>' +
 
-    '<div id="tarHoyBox" class="menstrual-card" style="border-color:var(--gold);margin-bottom:10px"></div>' +
+    '<div id="tarHoyBox" class="menstrual-card su-39553d"></div>' +
 
     /* GUIA */
     '<div id="tarGuia">' +
@@ -238,40 +238,40 @@ function buildDialog() {
 
     /* MAYORES */
     '<div id="tarMayores" class="hidden">' +
-    '<input type="search" id="tarQ" placeholder="🔍 Buscar arcano... ej: amor, cambio, 13" style="display:block;width:100%;margin:0 0 10px;background:var(--card);border:1px solid var(--line);color:var(--text);border-radius:8px;padding:8px">' +
+    '<input type="search" id="tarQ" placeholder="🔍 Buscar arcano... ej: amor, cambio, 13" class="su-3d4207">' +
     '<div class="discipline-grid" id="tarMayGrid">' + mayoresHTML + '</div>' +
-    '<div id="tarMayDetalle" style="margin-top:10px"></div></div>' +
+    '<div id="tarMayDetalle" class="su-d2c171"></div></div>' +
 
     /* MENORES */
     '<div id="tarMenores" class="hidden">' +
     '<div class="si-card"><h4>🃏 Los 56 menores: sistema simple</h4><p><b>Palo</b> = área de vida · <b>Número (As–10)</b> = momento del ciclo · <b>Figura</b> = persona o modo de actuar. Toca cualquier carta para ver su lectura. Las 56 salen también en las tiradas.</p></div>' +
     palosHTML +
-    '<div id="tarMenorDetalle" style="margin-top:10px"></div></div>' +
+    '<div id="tarMenorDetalle" class="su-d2c171"></div></div>' +
 
     /* TIRADAS */
     '<div id="tarTiradas" class="hidden">' +
-    '<div class="menstrual-card" style="margin-bottom:10px"><h4>🔮 Nueva tirada</h4>' +
+    '<div class="menstrual-card su-761d3a"><h4>🔮 Nueva tirada</h4>' +
     '<label>Tu pregunta <input type="text" id="tarPregunta" placeholder="ej: ¿qué necesito ver sobre mi trabajo esta luna?" maxlength="140"></label>' +
-    '<div class="conv-row" style="margin-top:8px"><label>Tipo de tirada <select id="tarTipo"><option value="dia">🌅 Carta del día (1)</option><option value="p3">🔀 Pasado · Presente · Futuro (3)</option><option value="cruz">✚ Cruz de consejo (5)</option><option value="sino">⚖️ Sí / No (1 + veredicto)</option></select></label>' +
-    '<label class="check-row" style="align-self:end"><input type="checkbox" id="tarInv" checked> ↺ con invertidas</label></div>' +
-    '<div class="dlg-actions" style="justify-content:flex-start;margin-top:8px"><button type="button" id="tarTirar" class="btn btn-accent" style="width:auto">🔀 Barajar y tirar</button></div></div>' +
+    '<div class="conv-row su-8a77e5"><label>Tipo de tirada <select id="tarTipo"><option value="dia">🌅 Carta del día (1)</option><option value="p3">🔀 Pasado · Presente · Futuro (3)</option><option value="cruz">✚ Cruz de consejo (5)</option><option value="sino">⚖️ Sí / No (1 + veredicto)</option></select></label>' +
+    '<label class="check-row su-53cf90"><input type="checkbox" id="tarInv" checked> ↺ con invertidas</label></div>' +
+    '<div class="dlg-actions su-8f9e27"><button type="button" id="tarTirar" class="btn btn-accent su-30e741">🔀 Barajar y tirar</button></div></div>' +
     '<div id="tarTiradaBox"></div>' +
-    '<div class="menstrual-card hidden" id="tarGuardarBox" style="margin-top:10px"><h4>💾 Guardar esta lectura</h4>' +
+    '<div class="menstrual-card hidden su-d2c171" id="tarGuardarBox"><h4>💾 Guardar esta lectura</h4>' +
     '<label>Mi frase clave / nota <input type="text" id="tarNota" placeholder="ej: soltar el control y avanzar un paso hoy" maxlength="160"></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start;margin-top:8px"><button type="button" id="tarGuardar" class="btn btn-accent" style="width:auto">💾 Guardar en diario</button></div></div>' +
+    '<div class="dlg-actions su-8f9e27"><button type="button" id="tarGuardar" class="btn btn-accent su-30e741">💾 Guardar en diario</button></div></div>' +
     '</div>' +
 
     /* DIARIO */
     '<div id="tarDiario" class="hidden">' +
-    '<div class="menstrual-card" style="margin-bottom:10px"><h4>📓 Diario de tarot</h4>' +
+    '<div class="menstrual-card su-761d3a"><h4>📓 Diario de tarot</h4>' +
     '<div class="conv-row"><label>Fecha <input type="date" id="tarDiaFecha"></label></div>' +
     '<label>Reflexión del día <input type="text" id="tarDiaTxt" placeholder="ej: La Torre me recordó soltar el proyecto que ya cayó" maxlength="200"></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start;margin-top:8px"><button type="button" id="tarDiaAdd" class="btn btn-accent" style="width:auto">+ Guardar reflexión</button></div></div>' +
+    '<div class="dlg-actions su-8f9e27"><button type="button" id="tarDiaAdd" class="btn btn-accent su-30e741">+ Guardar reflexión</button></div></div>' +
     '<div id="tarHistBox"></div>' +
-    '<div class="dlg-actions" style="justify-content:space-between;align-items:center;margin-top:8px;flex-wrap:wrap">' +
-    '<span id="tarStats" class="muted" style="font-size:11px"></span>' +
-    '<span style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" id="tarShare" class="btn" style="width:auto">📤 Compartir</button>' +
-    '<button type="button" id="tarClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar todo</button></span></div>' +
+    '<div class="dlg-actions su-3851d4">' +
+    '<span id="tarStats" class="muted su-11a508"></span>' +
+    '<span class="su-3de8f9"><button type="button" id="tarShare" class="btn su-30e741">📤 Compartir</button>' +
+    '<button type="button" id="tarClear" class="btn su-214f75">🗑 Borrar todo</button></span></div>' +
     '</div>';
 
   makeDialog('tarotDialog', '🔮 Tarot — espejo de 78 cartas',
@@ -288,9 +288,9 @@ function renderHoy() {
   var c = m[idx];
   var d = detalleCarta(c);
   box.innerHTML = '<h4>🌅 Carta de hoy · ' + esc(k) + '</h4>' +
-    '<p style="font-size:13px"><b>' + esc(d.titulo) + '</b> — ' + esc(d.clave) + '</p>' +
-    '<p class="muted" style="font-size:11px">' + esc(d.consejo) + ' <i>' + esc(d.pregunta) + '</i></p>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="tarHoyVer" class="btn" style="width:auto">Ver ficha completa</button></div>';
+    '<p class="su-5e0faa"><b>' + esc(d.titulo) + '</b> — ' + esc(d.clave) + '</p>' +
+    '<p class="muted su-11a508">' + esc(d.consejo) + ' <i>' + esc(d.pregunta) + '</i></p>' +
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="tarHoyVer" class="btn su-30e741">Ver ficha completa</button></div>';
   var v = $('tarHoyVer');
   if (v) v.onclick = function () {
     if (c.tipo === 'mayor') { switchTab('Mayores'); renderDetalleMayor(c.ref.n); }
@@ -305,8 +305,8 @@ function renderDetalleMayor(n) {
   var e = store();
   var fav = e.favs.indexOf('M' + n) >= 0;
   box.innerHTML = cartaHTML({ tipo: 'mayor', ref: m }, false, null) +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="tarFavM" class="btn" style="width:auto">' + (fav ? '⭐ En favoritos ✓' : '☆ Marcar favorita') + '</button>' +
-    '<button type="button" id="tarLlevarM" class="btn" style="width:auto">📝 Llevar a nota de hoy</button></div>';
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="tarFavM" class="btn su-30e741">' + (fav ? '⭐ En favoritos ✓' : '☆ Marcar favorita') + '</button>' +
+    '<button type="button" id="tarLlevarM" class="btn su-30e741">📝 Llevar a nota de hoy</button></div>';
   $('tarFavM').onclick = function () {
     var s = store(); var k = 'M' + n; var i = s.favs.indexOf(k);
     if (i >= 0) s.favs.splice(i, 1); else s.favs.push(k);
@@ -319,7 +319,7 @@ function renderDetalleMenor(paloId, rango) {
   var box = $('tarMenorDetalle'); if (!box) return;
   var c = { tipo: 'menor', palo: paloId, rango: rango, nombre: rango + ' de ' + paloDe(paloId).nombre, icon: paloDe(paloId).icon };
   box.innerHTML = cartaHTML(c, false, null) +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="tarLlevarMen" class="btn" style="width:auto">📝 Llevar a nota de hoy</button></div>';
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="tarLlevarMen" class="btn su-30e741">📝 Llevar a nota de hoy</button></div>';
   $('tarLlevarMen').onclick = function () { var t = cartaMenorTexto(paloId, rango); llevarANota('🃏 ' + t.texto); };
   try { box.scrollIntoView({ block: 'nearest' }); } catch (e) {}
 }
@@ -365,7 +365,7 @@ function veredictoSino() {
   var txt = sombra
     ? '⚖️ <b>Tendencia: NO / aún no.</b> La carta pide pausa, ajuste o esperar una luna antes de decidir.'
     : '⚖️ <b>Tendencia: SÍ.</b> La carta acompaña avanzar con conciencia y un paso concreto hoy.';
-  return '<div class="menstrual-card" style="border-color:var(--gold)"><h4>⚖️ Veredicto oracular</h4><p style="font-size:12px">' + txt + '</p><p class="muted" style="font-size:11px">El sí/no es una brújula, no una sentencia: úsalo para aclarar tu deseo real más que para obedecer.</p></div>';
+  return '<div class="menstrual-card su-68a1a9"><h4>⚖️ Veredicto oracular</h4><p class="su-6cb285">' + txt + '</p><p class="muted su-11a508">El sí/no es una brújula, no una sentencia: úsalo para aclarar tu deseo real más que para obedecer.</p></div>';
 }
 function guardarLectura() {
   var nota = clean((($('tarNota') || {}).value || '').trim(), 160);
@@ -394,14 +394,14 @@ function renderHist() {
   lista.slice(0, 30).forEach(function (l) {
     var cartas = l.cartas.map(function (c) { return esc(c.nombre) + (c.inv ? ' ↺' : ''); }).join(' · ');
     html += '<div class="si-card"><h4>🔮 ' + esc(l.fecha) + ' · ' + esc(nombreTirada(l.tipo)) + '</h4>' +
-      '<p class="muted" style="font-size:11px">❓ ' + esc(l.pregunta) + '</p>' +
-      '<p style="font-size:12px"><b>' + cartas + '</b></p>' +
-      (l.nota ? '<p style="font-size:12px">📝 ' + esc(l.nota) + '</p>' : '') +
-      '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" class="btn tar-del" data-id="' + l.id + '" style="width:auto;font-size:11px">🗑 Borrar</button></div></div>';
+      '<p class="muted su-11a508">❓ ' + esc(l.pregunta) + '</p>' +
+      '<p class="su-6cb285"><b>' + cartas + '</b></p>' +
+      (l.nota ? '<p class="su-6cb285">📝 ' + esc(l.nota) + '</p>' : '') +
+      '<div class="dlg-actions su-59a5a8"><button type="button" class="btn tar-del su-337714" data-id="' + l.id + '">🗑 Borrar</button></div></div>';
   });
   if (notas.length) {
-    html += '<div class="menstrual-card" style="margin-top:10px"><h4>💭 Reflexiones (' + notas.length + ')</h4>' +
-      notas.slice(0, 20).map(function (k) { return '<p style="font-size:12px"><b>' + esc(k) + ':</b> ' + esc(s.diario[k]) + '</p>'; }).join('') + '</div>';
+    html += '<div class="menstrual-card su-d2c171"><h4>💭 Reflexiones (' + notas.length + ')</h4>' +
+      notas.slice(0, 20).map(function (k) { return '<p class="su-6cb285"><b>' + esc(k) + ':</b> ' + esc(s.diario[k]) + '</p>'; }).join('') + '</div>';
   }
   box.innerHTML = html;
   box.querySelectorAll('.tar-del').forEach(function (b) {

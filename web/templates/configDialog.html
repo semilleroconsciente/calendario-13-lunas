@@ -1,13 +1,13 @@
 <dialog id="configDialog">
     <form method="dialog">
       <div class="dlg-actions config-topbar">
-        <h3 style="margin:0;color:var(--accent)">⚙️ Ajustes</h3>
+        <h3 class="su-ee0cfe">⚙️ Ajustes</h3>
         <span class="config-topbar-btns">
-          <button type="button" id="configCloseTopSave" class="btn btn-accent" style="width:auto">Guardar y cerrar</button>
+          <button type="button" id="configCloseTopSave" class="btn btn-accent su-30e741">Guardar y cerrar</button>
           <button type="button" id="configCloseTop" class="btn btn-icon" title="Cerrar" aria-label="Cerrar">✕</button>
         </span>
       </div>
-      <p class="muted" style="line-height:1.5">Todo lo esencial en un solo lugar: usuario, búsqueda, ciclo, tema y letra. Se guarda automáticamente por usuario.</p>
+      <p class="muted su-77e2fe">Todo lo esencial en un solo lugar: usuario, búsqueda, ciclo, tema y letra. Se guarda automáticamente por usuario.</p>
       <div class="config-mobile">
         <div class="config-group">
           <h5>👤 Usuario</h5>
@@ -39,9 +39,9 @@
         </div>
         <div class="config-group">
           <h5>🏠 Pantalla de inicio</h5>
-          <p class="muted" style="font-size:11px;margin-bottom:8px">Elige qué vista se abre al iniciar y qué información muestra la vista ◉ Hoy. Se guarda por usuario.</p>
-          <label class="muted" style="font-size:11px;display:block;margin-bottom:4px">Vista inicial al abrir
-            <select id="cfgHomeView" aria-label="Vista inicial al abrir" style="margin-top:4px">
+          <p class="muted su-245797">Elige qué vista se abre al iniciar y qué información muestra la vista ◉ Hoy. Se guarda por usuario.</p>
+          <label class="muted su-9a5149">Vista inicial al abrir
+            <select id="cfgHomeView" aria-label="Vista inicial al abrir" class="su-96ad60">
               <option value="auto">Automática — Hoy en celular, Luna en PC</option>
               <option value="hoy">◉ Hoy — día actual</option>
               <option value="luna">🌙 Luna actual (28 días)</option>
@@ -51,7 +51,7 @@
               <option value="completa">📋 Vista completa</option>
             </select>
           </label>
-          <p class="muted" style="font-size:11px;margin:8px 0 4px">Información visible en ◉ Hoy (marca lo que quieras ver):</p>
+          <p class="muted su-5c43de">Información visible en ◉ Hoy (marca lo que quieras ver):</p>
           <label class="check-row"><input type="checkbox" data-home="frase" checked> 💬 Frase del día</label>
           <label class="check-row"><input type="checkbox" data-home="solLuna" checked> ☀️🌙 Sol y luna de hoy</label>
           <label class="check-row"><input type="checkbox" data-home="notas" checked> 📝 Notas del día</label>
@@ -86,36 +86,36 @@
           <label class="check-row"><input type="checkbox" data-home="emergencia" checked> 🚨 Emergencia Penco</label>
           <label class="check-row"><input type="checkbox" data-home="comunidad" checked> 🤝 Comunidad hoy (minga/trueque)</label>
           <label class="check-row"><input type="checkbox" data-home="energia" checked> 🔧 Energía y hogar</label>
-          <button type="button" id="cfgHomeReset" class="btn" style="width:100%;margin-top:8px">↺ Mostrar toda la información</button>
+          <button type="button" id="cfgHomeReset" class="btn su-3cfbdf">↺ Mostrar toda la información</button>
         </div>
         <div class="config-group">
           <h5>📌 Acceso directo</h5>
-          <p class="muted" style="font-size:11px;margin-bottom:8px">Crea el ícono del calendario en el escritorio (solo versión de escritorio PC).</p>
-          <button type="button" id="cfgShortcutBtn" class="btn" style="width:100%">📌 Crear acceso directo en el escritorio</button>
+          <p class="muted su-245797">Crea el ícono del calendario en el escritorio (solo versión de escritorio PC).</p>
+          <button type="button" id="cfgShortcutBtn" class="btn su-046678">📌 Crear acceso directo en el escritorio</button>
         </div>
         <div class="config-group config-font-group">
           <h5>🔠 Tamaño de letra</h5>
-          <p class="muted" style="font-size:11px;margin-bottom:8px">Se aplica a todo el calendario y se guarda por usuario:</p>
+          <p class="muted su-245797">Se aplica a todo el calendario y se guarda por usuario:</p>
           <div class="font-pills" role="group" aria-label="Tamaño de letra">
-            <button type="button" class="btn font-pill" data-font="m" aria-pressed="true"><span class="fp-a" style="font-size:15px">A</span><small>Normal</small></button>
-            <button type="button" class="btn font-pill" data-font="l" aria-pressed="false"><span class="fp-a" style="font-size:17px">A</span><small>Grande</small></button>
-            <button type="button" class="btn font-pill" data-font="xl" aria-pressed="false"><span class="fp-a" style="font-size:19px">A</span><small>Muy grande</small></button>
-            <button type="button" class="btn font-pill" data-font="xxl" aria-pressed="false"><span class="fp-a" style="font-size:21px">A</span><small>Enorme</small></button>
-            <button type="button" class="btn font-pill" data-font="3xl" aria-pressed="false"><span class="fp-a" style="font-size:23px">A</span><small>Gigante</small></button>
-            <button type="button" class="btn font-pill" data-font="4xl" aria-pressed="false"><span class="fp-a" style="font-size:25px">A</span><small>Colosal</small></button>
+            <button type="button" class="btn font-pill" data-font="m" aria-pressed="true"><span class="fp-a su-de0080">A</span><small>Normal</small></button>
+            <button type="button" class="btn font-pill" data-font="l" aria-pressed="false"><span class="fp-a su-2b99ca">A</span><small>Grande</small></button>
+            <button type="button" class="btn font-pill" data-font="xl" aria-pressed="false"><span class="fp-a su-94aa03">A</span><small>Muy grande</small></button>
+            <button type="button" class="btn font-pill" data-font="xxl" aria-pressed="false"><span class="fp-a su-a3ba3b">A</span><small>Enorme</small></button>
+            <button type="button" class="btn font-pill" data-font="3xl" aria-pressed="false"><span class="fp-a su-fe575c">A</span><small>Gigante</small></button>
+            <button type="button" class="btn font-pill" data-font="4xl" aria-pressed="false"><span class="fp-a su-c0eb4b">A</span><small>Colosal</small></button>
           </div>
         </div>
         <div class="config-group">
           <h5>👁️ Modos de vista</h5>
-          <p class="muted" style="font-size:11px;margin-bottom:8px">Se pueden combinar y se guardan por usuario:</p>
-          <label class="check-row"><input type="checkbox" data-modo="lectura"> 📖 Modo lectura <span class="muted" style="font-size:10px">— letra aireada, ideal cuentos y guías</span></label>
-          <label class="check-row"><input type="checkbox" data-modo="noche"> 🌙 Modo noche tenue <span class="muted" style="font-size:10px">— oscurece y baja el brillo</span></label>
-          <label class="check-row"><input type="checkbox" data-modo="contraste"> 🔆 Alto contraste <span class="muted" style="font-size:10px">— texto más marcado</span></label>
-          <label class="check-row"><input type="checkbox" data-modo="luzSuave"> 🔴 Filtro noche / cuida el sueño <span class="muted" style="font-size:10px">— quita luz azul fuerte de noche</span></label>
+          <p class="muted su-245797">Se pueden combinar y se guardan por usuario:</p>
+          <label class="check-row"><input type="checkbox" data-modo="lectura"> 📖 Modo lectura <span class="muted su-0d5be0">— letra aireada, ideal cuentos y guías</span></label>
+          <label class="check-row"><input type="checkbox" data-modo="noche"> 🌙 Modo noche tenue <span class="muted su-0d5be0">— oscurece y baja el brillo</span></label>
+          <label class="check-row"><input type="checkbox" data-modo="contraste"> 🔆 Alto contraste <span class="muted su-0d5be0">— texto más marcado</span></label>
+          <label class="check-row"><input type="checkbox" data-modo="luzSuave"> 🔴 Filtro noche / cuida el sueño <span class="muted su-0d5be0">— quita luz azul fuerte de noche</span></label>
         </div>
         <div class="config-group">
           <h5>👥 Perfiles</h5>
-          <p class="muted" style="font-size:11px;margin-bottom:8px">Un toque aplica un conjunto de secciones <b>y</b> su pantalla de inicio (vista + bloques de ◉ Hoy). Después puedes afinar arriba:</p>
+          <p class="muted su-245797">Un toque aplica un conjunto de secciones <b>y</b> su pantalla de inicio (vista + bloques de ◉ Hoy). Después puedes afinar arriba:</p>
           <div class="preset-grid">
             <button type="button" class="btn config-preset" data-preset="todo">Todo</button>
             <button type="button" class="btn config-preset" data-preset="esencial">Esencial</button>
@@ -254,11 +254,11 @@
         </div>
       </details>
       <div class="config-group config-donate">
-        <button type="button" id="cfgDonateBtn" class="btn btn-accent" style="width:100%">❤ Aporte voluntario — donar</button>
+        <button type="button" id="cfgDonateBtn" class="btn btn-accent su-046678">❤ Aporte voluntario — donar</button>
       </div>
       <div class="dlg-actions config-bottombar">
-        <button type="button" id="configClose" class="btn btn-accent" style="width:auto">Guardar y cerrar</button>
-        <button type="button" id="configReset" class="btn" style="width:auto">↺ Restablecer todo</button>
+        <button type="button" id="configClose" class="btn btn-accent su-30e741">Guardar y cerrar</button>
+        <button type="button" id="configReset" class="btn su-30e741">↺ Restablecer todo</button>
       </div>
     </form>
   </dialog>

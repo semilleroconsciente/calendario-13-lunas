@@ -26,7 +26,7 @@ function esc(s) {
   });
 }
 function birdChip(nombre) {
-  return '<span class="chip" data-ave="' + esc(nombre) + '" style="cursor:pointer" title="Toca para cargarla en el formulario">🦅 ' + esc(nombre) + '</span>';
+  return '<span class="chip su-3b6a3a" data-ave="' + esc(nombre) + '" title="Toca para cargarla en el formulario">🦅 ' + esc(nombre) + '</span>';
 }
 function bosqueChip(nombre) {
   var enCat = false;
@@ -34,8 +34,8 @@ function bosqueChip(nombre) {
     var cat = (typeof BOSQUE_CATALOG !== 'undefined') ? BOSQUE_CATALOG : ((window.pencoData || {}).BOSQUE_NATIVO_PENCO || []);
     enCat = cat.some(function (b) { return b.nombre === nombre; });
   } catch (e) {}
-  if (enCat) return '<span class="chip chip-bosque" data-bosque-go="' + esc(nombre) + '" style="cursor:pointer" title="Ver en Bosque Nativo">🌿 ' + esc(nombre) + '</span>';
-  return '<span class="chip" style="font-size:10px;opacity:.85">🌿 ' + esc(nombre) + '</span>';
+  if (enCat) return '<span class="chip chip-bosque su-3b6a3a" data-bosque-go="' + esc(nombre) + '" title="Ver en Bosque Nativo">🌿 ' + esc(nombre) + '</span>';
+  return '<span class="chip su-4681a0">🌿 ' + esc(nombre) + '</span>';
 }
 function wireBirdChips(scope) {
   if (!scope || !scope.querySelectorAll) return;
@@ -214,42 +214,42 @@ function avesBosqueDelRecord(id) {
 }
 function avesBosqueCustomCard(r) {
   var arb = String(r.arboles || '').split(',').map(function (s) { return s.trim(); }).filter(Boolean);
-  return '<div class="si-card" style="padding:8px 10px;border-color:#a9d18e55"><h4 style="font-size:12px">' + birdChip(r.nombre) +
-    ' <span class="chip" style="font-size:9px;background:#a9d18e22;color:#a9d18e;border-color:#a9d18e55">mía</span></h4>' +
-    (r.rol ? '<p style="font-size:11px;margin:4px 0">' + esc(r.rol) + '</p>' : '') +
-    (arb.length ? '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px"><span class="muted" style="font-size:10px">Vive de:</span>' + arb.map(bosqueChip).join('') + '</div>' : '') +
-    '<div style="display:flex;gap:6px;margin-top:6px"><button type="button" class="btn" data-avesbdel="' + r.id + '" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕ Borrar</button></div></div>';
+  return '<div class="si-card su-a3194a"><h4 class="su-6cb285">' + birdChip(r.nombre) +
+    ' <span class="chip su-421073">mía</span></h4>' +
+    (r.rol ? '<p class="su-48eb2e">' + esc(r.rol) + '</p>' : '') +
+    (arb.length ? '<div class="su-8af0ed"><span class="muted su-0d5be0">Vive de:</span>' + arb.map(bosqueChip).join('') + '</div>' : '') +
+    '<div class="su-30b926"><button type="button" class="btn su-fd834a" data-avesbdel="' + r.id + '">✕ Borrar</button></div></div>';
 }
 function avesBosqueAddForm(clave) {
-  return '<details style="border:1px dashed var(--gold);border-radius:10px;padding:8px 10px;margin-top:8px"><summary style="cursor:pointer;font-size:12px;color:var(--gold)"><b>➕ Agregar especie en esta sección</b></summary>' +
-    '<div class="conv-row" style="margin-top:8px"><label style="flex:2">Nombre * <input type="text" id="avesbN-' + clave + '" placeholder="ej: Pitío, Bandurrilla" maxlength="40"></label></div>' +
+  return '<details class="su-c8c413"><summary class="su-d9db22"><b>➕ Agregar especie en esta sección</b></summary>' +
+    '<div class="conv-row su-8a77e5"><label class="su-4b3de7">Nombre * <input type="text" id="avesbN-' + clave + '" placeholder="ej: Pitío, Bandurrilla" maxlength="40"></label></div>' +
     '<label>Qué hace / rol <input type="text" id="avesbR-' + clave + '" placeholder="ej: Canta al amanecer entre boldos" maxlength="120"></label>' +
     '<label>Vive de (árboles, separa con comas) <input type="text" id="avesbW-' + clave + '" placeholder="ej: Boldo, Maqui" maxlength="80"></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" class="btn btn-accent" data-avesbadd="' + clave + '" style="width:auto">+ Guardar especie</button></div></details>';
+    '<div class="dlg-actions su-59a5a8"><button type="button" class="btn btn-accent su-30e741" data-avesbadd="' + clave + '">+ Guardar especie</button></div></details>';
 }
 function renderAvesBosque() {
   var box = $('avesBosquePanel');
   if (!box) return;
   var g = dynAvesBosque();
-  var html = '<p class="muted" style="font-size:11px;line-height:1.55">' + g.intro + '</p>';
+  var html = '<p class="muted su-b6db47">' + g.intro + '</p>';
   var customs = getAvesBosqueCustom();
   html += g.grupos.map(function (gr) {
     var items = gr.items.map(function (it) {
-      return '<div class="si-card" style="padding:8px 10px"><h4 style="font-size:12px">' + birdChip(it.n) + '</h4>' +
-        '<p style="font-size:11px;margin:4px 0">' + esc(it.rol) + '</p>' +
-        (it.n === 'Chucao' ? '<div style="margin:4px 0"><button type="button" class="btn btn-chucao-sound" style="width:auto;font-size:11px">🔊 Escuchar canto</button></div>' : '') +
-        '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px"><span class="muted" style="font-size:10px">Vive de:</span>' +
+      return '<div class="si-card su-cfa1ec"><h4 class="su-6cb285">' + birdChip(it.n) + '</h4>' +
+        '<p class="su-48eb2e">' + esc(it.rol) + '</p>' +
+        (it.n === 'Chucao' ? '<div class="su-557d84"><button type="button" class="btn btn-chucao-sound su-337714">🔊 Escuchar canto</button></div>' : '') +
+        '<div class="su-8af0ed"><span class="muted su-0d5be0">Vive de:</span>' +
         it.arboles.map(bosqueChip).join('') + '</div></div>';
     }).join('');
     var mias = customs.filter(function (x) { return x.grupo === gr.clave; }).map(avesBosqueCustomCard).join('');
     var nMias = customs.filter(function (x) { return x.grupo === gr.clave; }).length;
-    return '<div class="menstrual-card" style="margin-top:10px"><h4>' + esc(gr.t) +
-      (nMias ? ' <span class="muted" style="font-size:11px">· + <b>' + nMias + ' mías</b></span>' : '') + '</h4>' +
-      '<p class="muted" style="font-size:11px">' + esc(gr.d) + '</p>' + items + mias + avesBosqueAddForm(gr.clave) + '</div>';
+    return '<div class="menstrual-card su-d2c171"><h4>' + esc(gr.t) +
+      (nMias ? ' <span class="muted su-11a508">· + <b>' + nMias + ' mías</b></span>' : '') + '</h4>' +
+      '<p class="muted su-11a508">' + esc(gr.d) + '</p>' + items + mias + avesBosqueAddForm(gr.clave) + '</div>';
   }).join('');
-  html += '<div class="menstrual-card" style="margin-top:10px;border-color:var(--gold)"><p style="font-size:12px">🌱 ' + esc(g.cierre) + '</p>' +
-    '<p class="muted" style="font-size:11px">💡 ' + esc(g.nota) + '</p>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="avesGoBosque" class="btn" style="width:auto">🌳 Ir a Bosque Nativo</button></div></div>';
+  html += '<div class="menstrual-card su-51d56a"><p class="su-6cb285">🌱 ' + esc(g.cierre) + '</p>' +
+    '<p class="muted su-11a508">💡 ' + esc(g.nota) + '</p>' +
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="avesGoBosque" class="btn su-30e741">🌳 Ir a Bosque Nativo</button></div></div>';
   box.innerHTML = html;
   wireBirdChips(box);
   box.querySelectorAll('.btn-chucao-sound').forEach(function (btn) {
@@ -320,30 +320,30 @@ function renderAvesAvistadas() {
     return !vistas.some(function (v) { return String(v).toLowerCase() === low; });
   });
   var totalInd = vistas.reduce(function (s, k) { return s + porSp[k].ind; }, 0);
-  var html = '<div class="menstrual-card" style="border-color:var(--gold)"><h4>📊 Tus especies avistadas</h4>' +
-    '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">' +
+  var html = '<div class="menstrual-card su-68a1a9"><h4>📊 Tus especies avistadas</h4>' +
+    '<div class="su-c158a9">' +
     '<span class="chip">' + entries.length + ' avistamientos</span>' +
     '<span class="chip">' + vistas.length + ' especies distintas</span>' +
     '<span class="chip">' + totalInd + ' individuos</span>' +
     '<span class="chip">📖 ' + cat.length + ' en catálogo</span></div>' +
-    '<p class="muted" style="font-size:11px;margin-top:6px">Privado y local por usuario. Toca una especie para cargarla en el formulario y sumar un nuevo avistamiento.</p>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="avGoForm" class="btn" style="width:auto;font-size:11px">📓 Ir a la bitácora</button></div></div>';
+    '<p class="muted su-e13d76">Privado y local por usuario. Toca una especie para cargarla en el formulario y sumar un nuevo avistamiento.</p>' +
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="avGoForm" class="btn su-337714">📓 Ir a la bitácora</button></div></div>';
   if (!vistas.length) {
-    html += '<div class="menstrual-card" style="margin-top:10px"><p style="font-size:12px">Aún sin avistamientos. Registra el primero en 🦅 Aves hoy y aparecerá aquí con fecha, lugar y conteo.</p></div>';
+    html += '<div class="menstrual-card su-d2c171"><p class="su-6cb285">Aún sin avistamientos. Registra el primero en 🦅 Aves hoy y aparecerá aquí con fecha, lugar y conteo.</p></div>';
   } else {
-    html += '<div class="menstrual-card" style="margin-top:10px"><h4>✅ Vistas (' + vistas.length + ')</h4>' +
+    html += '<div class="menstrual-card su-d2c171"><h4>✅ Vistas (' + vistas.length + ')</h4>' +
       vistas.map(function (k) {
         var v = porSp[k];
         var lugs = Object.keys(v.lugares).slice(0, 2).join(' · ');
-        return '<div class="si-card" style="padding:8px 10px"><h4 style="font-size:12px">' + birdChip(k) +
-          ' <span class="chip" style="font-size:9px">×' + v.n + ' · ' + v.ind + ' ind.</span></h4>' +
-          '<p class="muted" style="font-size:10px">Última: ' + esc(v.ultima || '—') + (lugs ? ' · ' + esc(lugs) : '') + '</p></div>';
+        return '<div class="si-card su-cfa1ec"><h4 class="su-6cb285">' + birdChip(k) +
+          ' <span class="chip su-fb2957">×' + v.n + ' · ' + v.ind + ' ind.</span></h4>' +
+          '<p class="muted su-0d5be0">Última: ' + esc(v.ultima || '—') + (lugs ? ' · ' + esc(lugs) : '') + '</p></div>';
       }).join('') + '</div>';
   }
   if (noVistas.length) {
-    html += '<div class="menstrual-card" style="margin-top:10px"><h4>🔭 Por avistar (' + noVistas.length + ')</h4>' +
-      '<p class="muted" style="font-size:11px">Del catálogo aún no registradas en tu bitácora:</p>' +
-      '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">' + noVistas.map(birdChip).join('') + '</div></div>';
+    html += '<div class="menstrual-card su-d2c171"><h4>🔭 Por avistar (' + noVistas.length + ')</h4>' +
+      '<p class="muted su-11a508">Del catálogo aún no registradas en tu bitácora:</p>' +
+      '<div class="su-c158a9">' + noVistas.map(birdChip).join('') + '</div></div>';
   }
   box.innerHTML = html;
   wireBirdChips(box);
@@ -356,15 +356,15 @@ function renderAvesHistoria() {
   var box = $('avesHistoriaPanel');
   if (!box) return;
   var g = dynHistAves();
-  var html = '<p class="muted" style="font-size:11px;line-height:1.55">' + g.intro + '</p>';
+  var html = '<p class="muted su-b6db47">' + g.intro + '</p>';
   html += g.eras.map(function (e, i) {
     return '<div class="menstrual-card" style="margin-top:10px' + (i === 0 ? ';border-color:var(--gold)' : '') + '">' +
       '<h4>' + esc(e.t) + '</h4>' +
-      '<p class="muted" style="font-size:10px;margin:2px 0 6px">' + esc(e.cuando) + '</p>' +
-      '<p style="font-size:12px;line-height:1.55">' + e.d + '</p>' +
-      '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">' + e.sp.map(birdChip).join('') + '</div></div>';
+      '<p class="muted su-2c4c6c">' + esc(e.cuando) + '</p>' +
+      '<p class="su-afb724">' + e.d + '</p>' +
+      '<div class="su-c158a9">' + e.sp.map(birdChip).join('') + '</div></div>';
   }).join('');
-  html += '<p class="muted" style="font-size:10px;margin-top:8px">' + esc(g.fuentes) + '</p>';
+  html += '<p class="muted su-a953a7">' + esc(g.fuentes) + '</p>';
   box.innerHTML = html;
   wireBirdChips(box);
 }
@@ -388,7 +388,7 @@ function mejorarAvesHoy() {
   var catBox = $('birdsCatalogBox');
   if (catBox && !$('avesCatFilter')) {
     var row = document.createElement('div');
-    row.innerHTML = '<input type="text" id="avesCatFilter" placeholder="🔍 Filtrar... (ej: bosque, humedal, canto)" autocomplete="off" value="' + esc(avesCatQ) + '" style="margin-bottom:6px">';
+    row.innerHTML = '<input type="text" id="avesCatFilter" placeholder="🔍 Filtrar... (ej: bosque, humedal, canto)" autocomplete="off" value="' + esc(avesCatQ) + '" class="su-4e420a">';
     catBox.insertBefore(row, catBox.firstChild);
     var inp = $('avesCatFilter');
     var aplicar = function () {
@@ -404,10 +404,10 @@ function mejorarAvesHoy() {
   if (todayBox && !$('avesHoyPlus')) {
     var div = document.createElement('div');
     div.id = 'avesHoyPlus';
-    div.innerHTML = '<div class="dlg-actions" style="justify-content:flex-start;margin-top:8px">' +
-      '<button type="button" id="ahoyGoBosque" class="btn" style="width:auto;font-size:11px">🌳 Aves del bosque</button>' +
-      '<button type="button" id="ahoyGoVistas" class="btn" style="width:auto;font-size:11px">📊 Mis avistadas</button>' +
-      '<button type="button" id="ahoyGoHist" class="btn" style="width:auto;font-size:11px">📜 Historia</button></div>';
+    div.innerHTML = '<div class="dlg-actions su-8f9e27">' +
+      '<button type="button" id="ahoyGoBosque" class="btn su-337714">🌳 Aves del bosque</button>' +
+      '<button type="button" id="ahoyGoVistas" class="btn su-337714">📊 Mis avistadas</button>' +
+      '<button type="button" id="ahoyGoHist" class="btn su-337714">📜 Historia</button></div>';
     todayBox.appendChild(div);
     var b1 = $('ahoyGoBosque'); if (b1) b1.onclick = function () { switchAvesTab('bosque'); };
     var b2 = $('ahoyGoVistas'); if (b2) b2.onclick = function () { switchAvesTab('avistadas'); };

@@ -338,7 +338,7 @@ function renderTop() {
   var dif = difById(G.dif);
   box.innerHTML =
     '<div class="sk-diff">' + DIFS.map(function (d) {
-      return '<button type="button" class="btn' + (d.id === G.dif ? ' btn-accent' : '') + '" data-dif="' + d.id + '" style="width:auto;font-size:11px">' + d.n + '</button>';
+      return '<button type="button" class="btn' + (d.id === G.dif ? ' btn-accent' : '') + ' su-337714" data-dif="' + d.id + '">' + d.n + '</button>';
     }).join('') + '</div>' +
     '<div class="sk-top">' +
     '<span class="sk-stat" id="skTime">⏱️ <b>' + fmtTime(G.seconds) + '</b></span>' +
@@ -346,7 +346,7 @@ function renderTop() {
     '<span class="sk-stat">💡 Pistas <b>' + G.hints + '</b></span>' +
     '<span class="sk-stat">📊 <b>' + progressPct() + '%</b></span>' +
     '</div>' +
-    '<p class="muted" style="font-size:11px;margin:4px 0">' + esc(dif.d) + '</p>';
+    '<p class="muted su-48eb2e">' + esc(dif.d) + '</p>';
   box.querySelectorAll('[data-dif]').forEach(function (b) {
     b.onclick = function () {
       if (!G || G.dif === b.getAttribute('data-dif')) return;
@@ -412,14 +412,14 @@ function renderPad() {
   }
   box.innerHTML = h + '</div>' +
     '<div class="sk-tools">' +
-    '<button type="button" class="btn' + (G.notesMode ? ' btn-accent' : '') + '" id="skNotesBtn" style="width:auto;font-size:12px">✏️ Borrador: ' + (G.notesMode ? 'ON' : 'OFF') + '</button>' +
-    '<button type="button" class="btn" id="skEraseBtn" style="width:auto;font-size:12px">🧽 Borrar</button>' +
-    '<button type="button" class="btn" id="skHintBtn" style="width:auto;font-size:12px">💡 Pista (' + G.hints + ')</button>' +
+    '<button type="button" class="btn' + (G.notesMode ? ' btn-accent' : '') + ' su-115a53" id="skNotesBtn">✏️ Borrador: ' + (G.notesMode ? 'ON' : 'OFF') + '</button>' +
+    '<button type="button" class="btn su-115a53" id="skEraseBtn">🧽 Borrar</button>' +
+    '<button type="button" class="btn su-115a53" id="skHintBtn">💡 Pista (' + G.hints + ')</button>' +
     '</div>' +
     '<div class="sk-tools">' +
-    '<button type="button" class="btn" id="skRestartBtn" style="width:auto;font-size:12px">🔁 Reiniciar</button>' +
-    '<button type="button" class="btn" id="skNewBtn" style="width:auto;font-size:12px">🎲 Nuevo tablero</button>' +
-    '<button type="button" class="btn" id="skSolveBtn" style="width:auto;font-size:12px" title="Muestra la solución (cuenta como no ganado)">👁️ Ver solución</button>' +
+    '<button type="button" class="btn su-115a53" id="skRestartBtn">🔁 Reiniciar</button>' +
+    '<button type="button" class="btn su-115a53" id="skNewBtn">🎲 Nuevo tablero</button>' +
+    '<button type="button" class="btn su-115a53" id="skSolveBtn" title="Muestra la solución (cuenta como no ganado)">👁️ Ver solución</button>' +
     '</div>';
   box.querySelectorAll('[data-num]').forEach(function (b) {
     b.onclick = function () { enterNumber(parseInt(b.getAttribute('data-num'), 10)); };
@@ -453,13 +453,13 @@ function renderLuna() {
   var f = lunaFaseAprox();
   var tip = LUNA_TIPS[f.idx] || LUNA_TIPS[4];
   box.innerHTML = '<b>🌙 Consejo lunar · iluminación ' + f.ilum + '%</b><br>' +
-    '<span style="color:var(--gold)">' + esc(tip.f) + '</span> — ' + esc(tip.t);
+    '<span class="su-e39eba">' + esc(tip.f) + '</span> — ' + esc(tip.t);
 }
 function renderAprender() {
   var box = $('skLearnBox');
   if (!box) return;
   box.innerHTML = REGLAS.map(function (r) {
-    return '<div class="si-card" style="border-left:3px solid var(--gold)"><h4>' + esc(r.t) + '</h4><p>' + esc(r.d) + '</p></div>';
+    return '<div class="si-card su-63ba3c"><h4>' + esc(r.t) + '</h4><p>' + esc(r.d) + '</p></div>';
   }).join('') + TECNICAS.map(function (t) {
     return '<div class="si-card"><h4>🔢 ' + esc(t.n) + '</h4><p>' + esc(t.d) + '</p></div>';
   }).join('');
@@ -471,18 +471,18 @@ function renderHistPanel() {
   var hist = getHistory().slice().sort(function (a, b) { return (b.ts || 0) - (a.ts || 0); }).slice(0, 20);
   var mejor = DIFS.map(function (d) {
     var m = st.mejor && st.mejor[d.id];
-    return '<span class="chip" style="font-size:10px">' + d.n + ': ' + (m ? fmtTime(m) : '—') + '</span>';
+    return '<span class="chip su-0d5be0">' + d.n + ': ' + (m ? fmtTime(m) : '—') + '</span>';
   }).join(' ');
   box.innerHTML =
     '<div class="menstrual-card"><h4>📊 Mis números</h4>' +
-    '<p class="muted" style="font-size:12px">' + st.ganadas + ' ganados de ' + st.jugadas + ' jugados · racha actual: ' + (st.racha || 0) + '</p>' +
-    '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px"><span class="muted" style="font-size:11px">⏱️ Mejor tiempo:</span>' + mejor + '</div></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>🕘 Últimas partidas</h4>' +
-    (hist.length ? '<div class="habits-list" style="margin-top:6px">' + hist.map(function (r) {
-      return '<div class="habit-item" style="font-size:12px">' + (r.won ? '🏆' : '💥') + ' <b>' + esc(difById(r.dif).n) + '</b> · ' + fmtTime(r.seconds) + ' · ' + r.errors + ' errores · ' + esc(r.fecha || '') + '</div>';
-    }).join('') + '</div>' : '<p class="muted" style="font-size:12px">Aún sin partidas terminadas. ¡Completa tu primer tablero!</p>') +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-top:8px"><button type="button" class="btn" id="skHistShare" style="width:auto;font-size:11px">📤 Compartir</button>' +
-    '<button type="button" class="btn" id="skHistClear" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar</button></div></div>';
+    '<p class="muted su-6cb285">' + st.ganadas + ' ganados de ' + st.jugadas + ' jugados · racha actual: ' + (st.racha || 0) + '</p>' +
+    '<div class="su-c158a9"><span class="muted su-11a508">⏱️ Mejor tiempo:</span>' + mejor + '</div></div>' +
+    '<div class="menstrual-card su-d2c171"><h4>🕘 Últimas partidas</h4>' +
+    (hist.length ? '<div class="habits-list su-fe7b49">' + hist.map(function (r) {
+      return '<div class="habit-item su-6cb285">' + (r.won ? '🏆' : '💥') + ' <b>' + esc(difById(r.dif).n) + '</b> · ' + fmtTime(r.seconds) + ' · ' + r.errors + ' errores · ' + esc(r.fecha || '') + '</div>';
+    }).join('') + '</div>' : '<p class="muted su-6cb285">Aún sin partidas terminadas. ¡Completa tu primer tablero!</p>') +
+    '<div class="dlg-actions su-efea1d"><button type="button" class="btn su-337714" id="skHistShare">📤 Compartir</button>' +
+    '<button type="button" class="btn su-fd834a" id="skHistClear">🗑 Borrar</button></div></div>';
   var sh = $('skHistShare');
   if (sh) sh.onclick = function () {
     if (!hist.length) return alert('Sin partidas aún');
@@ -653,20 +653,20 @@ function buildDialog() {
   d.id = 'sudokuDialog';
   d.innerHTML =
     '<form method="dialog">' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
-    '<h3 style="margin:0;color:var(--accent)">🔢 Sudoku</h3>' +
+    '<div class="dlg-actions su-d2d053">' +
+    '<h3 class="su-ee0cfe">🔢 Sudoku</h3>' +
     '<button type="button" data-close class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    '<p class="muted" style="line-height:1.5">El clásico puzzle 9×9 con solución única, 4 niveles y borrador. Todo queda <b>privado y local</b> en tu usuario.</p>' +
-    '<div id="skLunaBox" class="menstrual-card" style="border-color:var(--gold);margin-bottom:10px"></div>' +
-    '<div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">' +
-    '<button type="button" id="tabSkJugar" class="btn btn-accent" style="width:auto">🔢 Jugar</button>' +
-    '<button type="button" id="tabSkAprender" class="btn" style="width:auto">📚 Aprender</button>' +
-    '<button type="button" id="tabSkRegistros" class="btn" style="width:auto">🏆 Mis registros</button>' +
+    '<p class="muted su-77e2fe">El clásico puzzle 9×9 con solución única, 4 niveles y borrador. Todo queda <b>privado y local</b> en tu usuario.</p>' +
+    '<div id="skLunaBox" class="menstrual-card su-39553d"></div>' +
+    '<div class="timer-tabs su-4dca21">' +
+    '<button type="button" id="tabSkJugar" class="btn btn-accent su-30e741">🔢 Jugar</button>' +
+    '<button type="button" id="tabSkAprender" class="btn su-30e741">📚 Aprender</button>' +
+    '<button type="button" id="tabSkRegistros" class="btn su-30e741">🏆 Mis registros</button>' +
     '</div>' +
     '<div id="skPanelJugar"><div class="sk-wrap"><div id="skTop"></div><div id="skBoard"></div>' +
-    '<div id="skMsg" class="chip" style="display:block;white-space:normal;margin-top:8px;line-height:1.5"></div>' +
+    '<div id="skMsg" class="chip su-34bf23"></div>' +
     '<div id="skPad"></div></div></div>' +
-    '<div id="skPanelAprender" class="hidden"><div id="skLearnBox" style="display:flex;flex-direction:column;gap:8px"></div></div>' +
+    '<div id="skPanelAprender" class="hidden"><div id="skLearnBox" class="su-be2653"></div></div>' +
     '<div id="skPanelRegistros" class="hidden"><div id="skHistBox"></div></div>' +
     '<div class="dlg-actions"><button type="button" data-close class="btn">Cerrar</button></div></form>';
   // ancho como ajedrez

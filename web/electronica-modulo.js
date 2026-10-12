@@ -66,10 +66,10 @@ function makeDialog(id, title, sub, bodyHTML) {
   var d = document.createElement('dialog');
   d.id = id;
   d.innerHTML = '<form method="dialog">' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
-    '<h3 style="margin:0;color:var(--accent)">' + title + '</h3>' +
+    '<div class="dlg-actions su-d2d053">' +
+    '<h3 class="su-ee0cfe">' + title + '</h3>' +
     '<button type="button" data-close class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    (sub ? '<p class="muted" style="line-height:1.5">' + sub + '</p>' : '') +
+    (sub ? '<p class="muted su-77e2fe">' + sub + '</p>' : '') +
     bodyHTML +
     '<div class="dlg-actions"><button type="button" data-close class="btn">Cerrar</button></div></form>';
   document.body.appendChild(d);
@@ -151,17 +151,17 @@ var ESTADOS = ['😍 OK', '🙂 Funciona con maña', '🛠️ Para reparar', '�
 function rowCard(c) {
   if (c.txt) {
     return '<div class="si-card"><h4>' + c.ico + ' ' + esc(c.n) + '</h4>' +
-      (c.formula ? '<p class="chip" style="display:inline-block;font-family:monospace">' + esc(c.formula) + '</p>' : '') +
-      '<p style="line-height:1.5">' + esc(c.txt) + '</p></div>';
+      (c.formula ? '<p class="chip su-35ccc1">' + esc(c.formula) + '</p>' : '') +
+      '<p class="su-77e2fe">' + esc(c.txt) + '</p></div>';
   }
   if (c.formula && !c.mat) {
     return '<div class="si-card"><h4>' + c.ico + ' ' + esc(c.n) + '</h4>' +
-      '<p class="chip" style="display:inline-block;font-family:monospace">' + esc(c.formula) + '</p>' +
-      '<p style="line-height:1.5">' + esc(c.txt) + '</p></div>';
+      '<p class="chip su-35ccc1">' + esc(c.formula) + '</p>' +
+      '<p class="su-77e2fe">' + esc(c.txt) + '</p></div>';
   }
   if (c.pasos) {
     return '<div class="si-card"><h4>' + c.ico + ' ' + esc(c.n) + '</h4>' +
-      '<p class="muted" style="font-size:11px">' + esc(c.dif || '') + (c.costo ? ' · 💰 ' + esc(c.costo) : '') + '</p>' +
+      '<p class="muted su-11a508">' + esc(c.dif || '') + (c.costo ? ' · 💰 ' + esc(c.costo) : '') + '</p>' +
       '<p><b>Necesitas:</b> ' + esc(c.mat) + '</p>' +
       '<p><b>Paso a paso:</b> ' + esc(c.pasos) + '</p>' +
       (c.tip ? '<p class="muted">💡 ' + esc(c.tip) + '</p>' : '') + '</div>';
@@ -171,7 +171,7 @@ function rowCard(c) {
     (c.mat ? '<p><b>Necesitas:</b> ' + esc(c.mat) + '</p>' : '') +
     '<p><b>Cómo:</b> ' + esc(c.como) + '</p>' +
     (c.nota ? '<p class="muted">' + esc(c.nota) + '</p>' : '') +
-    (c.cuidado ? '<p style="font-size:11px;color:#e8c56a">⚠️ ' + esc(c.cuidado) + '</p>' : '') + '</div>';
+    (c.cuidado ? '<p class="su-d33357">⚠️ ' + esc(c.cuidado) + '</p>' : '') + '</div>';
 }
 function switchTab(name) {
   ['Guia', 'Comp', 'Circ', 'Proy', 'Medir', 'Banco'].forEach(function (t) {
@@ -197,7 +197,7 @@ function calcOhm() {
   if (!isFinite(v) || !isFinite(i) || !isFinite(r) || r <= 0) { out.innerHTML = '⚠️ Revisa los valores (R debe ser > 0).'; return; }
   var p = v * i;
   out.innerHTML = 'V = <b>' + v.toFixed(2) + ' V</b> · I = <b>' + (i * 1000).toFixed(1) + ' mA</b> · R = <b>' + (r >= 1000 ? (r / 1000).toFixed(2) + ' kΩ' : r.toFixed(1) + ' Ω') + '</b> · P = <b>' + p.toFixed(2) + ' W</b>' +
-    (p > 0.2 ? '<br><span style="color:#e8c56a">⚠️ Usa resistencia de ' + (p * 2 < 1 ? '1/2W o 1W' : Math.ceil(p * 2) + 'W') + ' (doble de ' + p.toFixed(2) + 'W).</span>' : '<br>✅ Con 1/4W basta.');
+    (p > 0.2 ? '<br><span class="su-7c91e2">⚠️ Usa resistencia de ' + (p * 2 < 1 ? '1/2W o 1W' : Math.ceil(p * 2) + 'W') + ' (doble de ' + p.toFixed(2) + 'W).</span>' : '<br>✅ Con 1/4W basta.');
 }
 function calcLed() {
   var vs = parseFloat(($('elecLedVs') || {}).value);
@@ -232,67 +232,67 @@ function buildDialog() {
   var medirHTML = MEDIR.map(rowCard).join('');
 
   var body =
-    '<div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">' +
-    '<button type="button" id="tabElecGuia" class="btn btn-accent" style="width:auto">📘 Guía base</button>' +
-    '<button type="button" id="tabElecComp" class="btn" style="width:auto">🔌 Componentes</button>' +
-    '<button type="button" id="tabElecCirc" class="btn" style="width:auto">📐 Circuitos</button>' +
-    '<button type="button" id="tabElecProy" class="btn" style="width:auto">🛠️ Proyectos</button>' +
-    '<button type="button" id="tabElecMedir" class="btn" style="width:auto">📏 Medir</button>' +
-    '<button type="button" id="tabElecBanco" class="btn" style="width:auto">📓 Mi banco</button></div>' +
+    '<div class="timer-tabs su-4dca21">' +
+    '<button type="button" id="tabElecGuia" class="btn btn-accent su-30e741">📘 Guía base</button>' +
+    '<button type="button" id="tabElecComp" class="btn su-30e741">🔌 Componentes</button>' +
+    '<button type="button" id="tabElecCirc" class="btn su-30e741">📐 Circuitos</button>' +
+    '<button type="button" id="tabElecProy" class="btn su-30e741">🛠️ Proyectos</button>' +
+    '<button type="button" id="tabElecMedir" class="btn su-30e741">📏 Medir</button>' +
+    '<button type="button" id="tabElecBanco" class="btn su-30e741">📓 Mi banco</button></div>' +
 
     '<div id="elecGuia">' + guiaHTML +
-    '<div class="menstrual-card" style="margin-top:10px;border-color:var(--gold)"><h4>🧭 Regla de oro</h4><p class="muted" style="font-size:12px">Mide sin energía (Ω, continuidad, diodo) y con energía solo voltaje en BAJA tensión. Lo que huela a quemado, esté hinchado o lleve 220V adentro: se revisa con técnico, no con coraje.</p></div></div>' +
+    '<div class="menstrual-card su-51d56a"><h4>🧭 Regla de oro</h4><p class="muted su-6cb285">Mide sin energía (Ω, continuidad, diodo) y con energía solo voltaje en BAJA tensión. Lo que huela a quemado, esté hinchado o lleve 220V adentro: se revisa con técnico, no con coraje.</p></div></div>' +
 
-    '<div id="elecComp" class="hidden"><div class="conv-row"><label style="flex:1">🔍 Filtrar <input type="text" id="elecCompQ" placeholder="led, fusible, pila, transistor..."></label></div><div id="elecCompList" style="margin-top:8px;display:flex;flex-direction:column;gap:8px">' + compHTML + '</div></div>' +
+    '<div id="elecComp" class="hidden"><div class="conv-row"><label class="su-97445a">🔍 Filtrar <input type="text" id="elecCompQ" placeholder="led, fusible, pila, transistor..."></label></div><div id="elecCompList" class="su-bf3828">' + compHTML + '</div></div>' +
 
     '<div id="elecCirc" class="hidden">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🧮 Calculadora Ohm (offline)</h4>' +
-    '<p class="muted" style="font-size:11px">Escribe 2 valores, deja el tercero vacío. I en amperes (ej 0.015 = 15mA).</p>' +
+    '<div class="menstrual-card su-68a1a9"><h4>🧮 Calculadora Ohm (offline)</h4>' +
+    '<p class="muted su-11a508">Escribe 2 valores, deja el tercero vacío. I en amperes (ej 0.015 = 15mA).</p>' +
     '<div class="conv-row"><label>V (volts) <input type="number" id="elecOhmV" step="0.1" placeholder="ej: 5"></label><label>I (amp) <input type="number" id="elecOhmI" step="0.001" placeholder="ej: 0.015"></label><label>R (ohm) <input type="number" id="elecOhmR" step="1" placeholder="ej: 220"></label></div>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="elecOhmGo" class="btn btn-accent" style="width:auto">Calcular</button></div>' +
-    '<div id="elecOhmOut" class="chip" style="display:block;white-space:normal;margin-top:6px">—</div></div>' +
-    '<div class="menstrual-card" style="margin-top:8px"><h4>💡 Resistencia para LED</h4>' +
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="elecOhmGo" class="btn btn-accent su-30e741">Calcular</button></div>' +
+    '<div id="elecOhmOut" class="chip su-e75717">—</div></div>' +
+    '<div class="menstrual-card su-8a77e5"><h4>💡 Resistencia para LED</h4>' +
     '<div class="conv-row"><label>Fuente Vs <input type="number" id="elecLedVs" step="0.1" value="12"></label><label>LED Vf <select id="elecLedVf"><option value="1.8">Rojo 1.8V</option><option value="2">Verde/amarillo 2V</option><option value="3" selected>Blanco/azul 3V</option></select></label><label>mA <input type="number" id="elecLedI" step="1" value="15"></label></div>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="elecLedGo" class="btn btn-accent" style="width:auto">Calcular R</button></div>' +
-    '<div id="elecLedOut" class="chip" style="display:block;white-space:normal;margin-top:6px">—</div></div>' +
-    '<div class="menstrual-card" style="margin-top:8px"><h4>⚖️ Divisor de voltaje</h4>' +
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="elecLedGo" class="btn btn-accent su-30e741">Calcular R</button></div>' +
+    '<div id="elecLedOut" class="chip su-e75717">—</div></div>' +
+    '<div class="menstrual-card su-8a77e5"><h4>⚖️ Divisor de voltaje</h4>' +
     '<div class="conv-row"><label>Vin <input type="number" id="elecDivVin" step="0.1" value="12"></label><label>R1 (kΩ) <input type="number" id="elecDivR1" step="0.1" value="10"></label><label>R2 (kΩ) <input type="number" id="elecDivR2" step="0.1" value="4.7"></label></div>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="elecDivGo" class="btn btn-accent" style="width:auto">Calcular Vout</button></div>' +
-    '<div id="elecDivOut" class="chip" style="display:block;white-space:normal;margin-top:6px">—</div></div>' +
-    '<div style="margin-top:8px;display:flex;flex-direction:column;gap:8px">' + circHTML + '</div></div>' +
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="elecDivGo" class="btn btn-accent su-30e741">Calcular Vout</button></div>' +
+    '<div id="elecDivOut" class="chip su-e75717">—</div></div>' +
+    '<div class="su-bf3828">' + circHTML + '</div></div>' +
 
-    '<div id="elecProy" class="hidden"><div class="menstrual-card"><h4>🛠️ 8 proyectos para la casa</h4><p class="muted" style="font-size:11px">Costos referenciales ferretería Biobío 2026. Todo en baja tensión; si algo toca 220V o tablero: técnico SEC.</p></div><div style="margin-top:8px;display:flex;flex-direction:column;gap:8px">' + proyHTML + '</div></div>' +
+    '<div id="elecProy" class="hidden"><div class="menstrual-card"><h4>🛠️ 8 proyectos para la casa</h4><p class="muted su-11a508">Costos referenciales ferretería Biobío 2026. Todo en baja tensión; si algo toca 220V o tablero: técnico SEC.</p></div><div class="su-bf3828">' + proyHTML + '</div></div>' +
 
     '<div id="elecMedir" class="hidden">' + medirHTML +
-    '<div class="menstrual-card" style="margin-top:10px;border-color:var(--gold)"><h4>🧰 Chuleta multímetro</h4><p class="muted" style="font-size:12px">V⎓ = voltaje DC · •))) = continuidad/pito · Ω = resistencia (sin energía) · ▶| = diodo/LED · A = corriente (en SERIE, con cuidado). Negro siempre en COM.</p></div></div>' +
+    '<div class="menstrual-card su-51d56a"><h4>🧰 Chuleta multímetro</h4><p class="muted su-6cb285">V⎓ = voltaje DC · •))) = continuidad/pito · Ω = resistencia (sin energía) · ▶| = diodo/LED · A = corriente (en SERIE, con cuidado). Negro siempre en COM.</p></div></div>' +
 
     '<div id="elecBanco" class="hidden">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>➕ Anotar repuesto / herramienta</h4>' +
-    '<div class="conv-row"><label style="flex:2">Qué es * <input type="text" id="elecNombre" placeholder="ej: Resistencias 220Ω, ESP32, Fuente 12V 2A" maxlength="50"></label>' +
+    '<div class="menstrual-card su-68a1a9"><h4>➕ Anotar repuesto / herramienta</h4>' +
+    '<div class="conv-row"><label class="su-4b3de7">Qué es * <input type="text" id="elecNombre" placeholder="ej: Resistencias 220Ω, ESP32, Fuente 12V 2A" maxlength="50"></label>' +
     '<label>Tipo <select id="elecTipo">' + TIPOS_INV.map(function (t) { return '<option>' + esc(t) + '</option>'; }).join('') + '</select></label></div>' +
     '<div class="conv-row"><label>Cantidad <input type="text" id="elecCant" placeholder="ej: 10, 1 pack" maxlength="20"></label>' +
     '<label>Dónde está <input type="text" id="elecLugar" placeholder="ej: caja 2, banco, mochila" maxlength="30"></label>' +
     '<label>Estado <select id="elecEstado">' + ESTADOS.map(function (t) { return '<option>' + esc(t) + '</option>'; }).join('') + '</select></label></div>' +
     '<label>Nota <input type="text" id="elecNota" placeholder="ej: comprado ene 2026, sirve para LEDs" maxlength="120"></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start;margin-top:8px"><button type="button" id="elecAdd" class="btn btn-accent" style="width:auto">+ Guardar</button></div></div>' +
+    '<div class="dlg-actions su-8f9e27"><button type="button" id="elecAdd" class="btn btn-accent su-30e741">+ Guardar</button></div></div>' +
 
-    '<div class="menstrual-card" style="margin-top:8px"><h4>🔧 Bitácora de reparaciones</h4>' +
-    '<div class="conv-row"><label>Fecha <input type="date" id="elecBitFecha"></label><label style="flex:2">Equipo * <input type="text" id="elecBitEquipo" placeholder="ej: Parlante BT, Linterna, Cargador" maxlength="50"></label></div>' +
+    '<div class="menstrual-card su-8a77e5"><h4>🔧 Bitácora de reparaciones</h4>' +
+    '<div class="conv-row"><label>Fecha <input type="date" id="elecBitFecha"></label><label class="su-4b3de7">Equipo * <input type="text" id="elecBitEquipo" placeholder="ej: Parlante BT, Linterna, Cargador" maxlength="50"></label></div>' +
     '<div class="conv-row"><label>Falla <input type="text" id="elecBitFalla" placeholder="ej: no prende, parpadea, no carga" maxlength="60"></label>' +
     '<label>Solución <input type="text" id="elecBitSol" placeholder="ej: cable quebrado, fusible T2A, soldadura fría" maxlength="60"></label></div>' +
     '<div class="conv-row"><label>Costo $ <input type="number" id="elecBitCosto" min="0" step="500" placeholder="ej: 2000"></label>' +
     '<label>Resultado <select id="elecBitRes"><option>✅ Reparado</option><option>🙂 Funciona con maña</option><option>🔁 En proceso</option><option>♻️ Jubilado / donante</option></select></label></div>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="elecBitAdd" class="btn" style="width:auto">+ Guardar reparación</button></div>' +
-    '<div id="elecBitList" class="habits-list" style="margin-top:8px;max-height:220px"></div></div>' +
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="elecBitAdd" class="btn su-30e741">+ Guardar reparación</button></div>' +
+    '<div id="elecBitList" class="habits-list su-ebf445"></div></div>' +
 
-    '<div class="menstrual-card" style="margin-top:8px"><h4>✅ Chequeo banco electrónico</h4><p class="muted" style="font-size:11px">12 puntos. Meta sana: 9/12. Repite 1 vez por luna (menguante).</p><div id="elecCheckList"></div>' +
-    '<div style="background:var(--panel);border-radius:6px;height:10px;overflow:hidden;margin-top:8px"><div id="elecCheckBar" style="width:0%;height:100%;background:linear-gradient(90deg,#e76e8a,#e8c56a,#8fd694)"></div></div>' +
-    '<p class="muted" style="font-size:11px;margin-top:6px" id="elecCheckTxt"></p></div>' +
+    '<div class="menstrual-card su-8a77e5"><h4>✅ Chequeo banco electrónico</h4><p class="muted su-11a508">12 puntos. Meta sana: 9/12. Repite 1 vez por luna (menguante).</p><div id="elecCheckList"></div>' +
+    '<div class="su-241b37"><div id="elecCheckBar" class="su-75fe76"></div></div>' +
+    '<p class="muted su-e13d76" id="elecCheckTxt"></p></div>' +
 
-    '<div class="conv-row" style="margin-top:8px"><label style="flex:2">🔍 Buscar en mi banco <input type="text" id="elecQ" placeholder="led, esp32, fuente..."></label></div>' +
-    '<div id="elecResumen" class="menstrual-card" style="margin-top:8px"></div>' +
-    '<div id="elecLog" style="margin-top:8px;display:flex;flex-direction:column;gap:8px"></div>' +
-    '<div class="dlg-actions" style="justify-content:space-between;align-items:center;margin-top:8px"><span id="elecStats" class="muted" style="font-size:11px"></span><span style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" id="elecShare" class="btn" style="width:auto">📤 Compartir</button><button type="button" id="elecClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar</button></span></div></div>';
+    '<div class="conv-row su-8a77e5"><label class="su-4b3de7">🔍 Buscar en mi banco <input type="text" id="elecQ" placeholder="led, esp32, fuente..."></label></div>' +
+    '<div id="elecResumen" class="menstrual-card su-8a77e5"></div>' +
+    '<div id="elecLog" class="su-bf3828"></div>' +
+    '<div class="dlg-actions su-cc4a4c"><span id="elecStats" class="muted su-11a508"></span><span class="su-3de8f9"><button type="button" id="elecShare" class="btn su-30e741">📤 Compartir</button><button type="button" id="elecClear" class="btn su-214f75">🗑 Borrar</button></span></div></div>';
 
   makeDialog('electronicaDialog', '🔌 Electrónica — mide, repara y crea en baja tensión',
     'Componentes, circuitos, 8 proyectos y tu banco + bitácora. Vive en <b>🏡 Hogar y Vida Práctica > 🔧 Energía y Taller</b>, junto a ⚡ Consumo eléctrico, 🔧 Mecánica y 🏠 Domótica. Todo <b>privado y local</b>, 100% offline. 220V y tablero: solo eléctrico SEC.',
@@ -310,9 +310,9 @@ function renderChecks() {
   var s = store();
   box.innerHTML = CHECKS.map(function (c) {
     var on = !!s.checks[c.id];
-    return '<label class="check-row" style="align-items:flex-start;border:1px solid var(--line);border-radius:8px;padding:8px;margin-bottom:6px;cursor:pointer">' +
-      '<input type="checkbox" data-echk="' + c.id + '"' + (on ? ' checked' : '') + ' style="margin-top:3px"> ' +
-      '<span><b>' + esc(c.n) + '</b><br><span class="muted" style="font-size:11px">' + esc(c.d) + '</span></span></label>';
+    return '<label class="check-row su-2f4cbf">' +
+      '<input type="checkbox" data-echk="' + c.id + '"' + (on ? ' checked' : '') + ' class="su-c00d39"> ' +
+      '<span><b>' + esc(c.n) + '</b><br><span class="muted su-11a508">' + esc(c.d) + '</span></span></label>';
   }).join('');
   var pts = puntaje(), tot = CHECKS.length, pct = Math.round(pts / tot * 100);
   var bar = $('elecCheckBar'), txt = $('elecCheckTxt');
@@ -345,26 +345,26 @@ function renderBanco() {
   var totRep = m.bitacora.filter(function (r) { return (r.res || '').indexOf('Reparado') >= 0; }).length;
   var gasto = m.bitacora.reduce(function (a, r) { return a + (+r.costo || 0); }, 0);
   if (res) {
-    res.innerHTML = '<h4>📊 Resumen</h4><p class="muted" style="font-size:12px">' + m.inventario.length + ' repuesto(s)' +
+    res.innerHTML = '<h4>📊 Resumen</h4><p class="muted su-6cb285">' + m.inventario.length + ' repuesto(s)' +
       ' · 🔧 ' + m.bitacora.length + ' reparación(es) (' + totRep + ' OK)' +
       (gasto ? ' · 💰 $' + gasto.toLocaleString('es-CL') + ' en repuestos' : '') +
       (mal ? ' · ⚠️ ' + mal + ' por revisar/comprar' : ' · 🟢 todo OK') +
       ' · ✅ chequeo ' + puntaje() + '/' + CHECKS.length + '</p>';
   }
   if (!list.length) {
-    box.innerHTML = '<p class="muted" style="font-size:11px;text-align:center">' + (m.inventario.length ? 'Sin resultados para ese filtro.' : 'Sin repuestos aún. Anota el primero arriba: ej “Resistencias 220Ω”.') + '</p>';
+    box.innerHTML = '<p class="muted su-e201a8">' + (m.inventario.length ? 'Sin resultados para ese filtro.' : 'Sin repuestos aún. Anota el primero arriba: ej “Resistencias 220Ω”.') + '</p>';
   } else {
     box.innerHTML = list.slice().sort(function (a, b) { return String(a.nombre).localeCompare(String(b.nombre)); }).slice(0, 80).map(function (r) {
       var ico = (r.tipo || '📦').split(' ')[0];
       return '<div class="si-card"><h4>' + esc(ico + ' ' + (r.nombre || 'Repuesto')) + '</h4>' +
-        '<p style="display:flex;gap:6px;flex-wrap:wrap"><span class="chip" style="font-size:10px">' + esc(r.tipo || '') + '</span>' +
-        (r.cant ? '<span class="chip" style="font-size:10px">× ' + esc(r.cant) + '</span>' : '') +
-        (r.lugar ? '<span class="chip" style="font-size:10px">📍 ' + esc(r.lugar) + '</span>' : '') +
-        (r.estado ? '<span class="chip" style="font-size:10px">' + esc(r.estado) + '</span>' : '') + '</p>' +
+        '<p class="su-6157e8"><span class="chip su-0d5be0">' + esc(r.tipo || '') + '</span>' +
+        (r.cant ? '<span class="chip su-0d5be0">× ' + esc(r.cant) + '</span>' : '') +
+        (r.lugar ? '<span class="chip su-0d5be0">📍 ' + esc(r.lugar) + '</span>' : '') +
+        (r.estado ? '<span class="chip su-0d5be0">' + esc(r.estado) + '</span>' : '') + '</p>' +
         (r.nota ? '<p class="muted">' + esc(r.nota) + '</p>' : '') +
-        '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">' +
-        '<button type="button" class="btn elec-ok" data-k="' + esc(r.id) + '" style="width:auto;font-size:11px">✅ OK</button>' +
-        '<button type="button" class="btn elec-del" data-k="' + esc(r.id) + '" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕</button></div></div>';
+        '<div class="su-c158a9">' +
+        '<button type="button" class="btn elec-ok su-337714" data-k="' + esc(r.id) + '">✅ OK</button>' +
+        '<button type="button" class="btn elec-del su-fd834a" data-k="' + esc(r.id) + '">✕</button></div></div>';
     }).join('');
     box.querySelectorAll('.elec-del').forEach(function (x) {
       x.onclick = function () {
@@ -388,10 +388,10 @@ function renderBit() {
   var box = $('elecBitList'); if (!box) return;
   var m = store();
   var data = (m.bitacora || []).slice().sort(function (a, b) { return (b.fecha || '').localeCompare(a.fecha || ''); });
-  if (!data.length) { box.innerHTML = '<p class="muted" style="font-size:11px">Sin reparaciones. Anota la primera arriba: te ahorra repetir errores.</p>'; return; }
+  if (!data.length) { box.innerHTML = '<p class="muted su-11a508">Sin reparaciones. Anota la primera arriba: te ahorra repetir errores.</p>'; return; }
   box.innerHTML = data.slice(0, 60).map(function (r) {
-    return '<div class="hora-item"><span style="font-size:12px">🔧 <b>' + esc(r.equipo || '') + '</b> · ' + esc(r.res || '') +
-      '<br><span class="muted" style="font-size:10px">' + esc(r.fecha || '') + (r.falla ? ' · falla: ' + esc(r.falla) : '') + (r.sol ? ' → ' + esc(r.sol) : '') + (r.costo ? ' · $' + (+r.costo).toLocaleString('es-CL') : '') + '</span></span>' +
+    return '<div class="hora-item"><span class="su-6cb285">🔧 <b>' + esc(r.equipo || '') + '</b> · ' + esc(r.res || '') +
+      '<br><span class="muted su-0d5be0">' + esc(r.fecha || '') + (r.falla ? ' · falla: ' + esc(r.falla) : '') + (r.sol ? ' → ' + esc(r.sol) : '') + (r.costo ? ' · $' + (+r.costo).toLocaleString('es-CL') : '') + '</span></span>' +
       '<button type="button" class="btn btn-icon elec-bit-del" data-k="' + esc(r.id) + '">✕</button></div>';
   }).join('');
   box.querySelectorAll('.elec-bit-del').forEach(function (x) {

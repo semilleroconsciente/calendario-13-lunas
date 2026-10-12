@@ -402,115 +402,115 @@ function makeDialog() {
   if (old) old.remove();
 
   var fortGrid = VIA_FORTS.map(function (f) {
-    return '<button type="button" class="btn via-fort-card" data-fort="' + f.id + '" data-v="' + f.v + '" style="text-align:left;height:auto;padding:10px">' +
+    return '<button type="button" class="btn via-fort-card su-1c48e1" data-fort="' + f.id + '" data-v="' + f.v + '">' +
       '<b>' + f.ico + ' ' + esc(f.n) + '</b><br>' +
-      '<span class="muted" style="font-size:10px">' + esc(virtudNombre(f.v)) + '</span></button>';
+      '<span class="muted su-0d5be0">' + esc(virtudNombre(f.v)) + '</span></button>';
   }).join('');
 
   var testHTML = VIA_TEST.map(function (q, i) {
     var f = fortById(q.f);
     var opts = VIA_LIKERT.map(function (o) {
-      return '<label class="check-row" style="margin:0;font-size:11px;white-space:nowrap"><input type="radio" name="viaQ' + i + '" value="' + o.v + '"> ' + o.t + '</label>';
+      return '<label class="check-row su-7a728b"><input type="radio" name="viaQ' + i + '" value="' + o.v + '"> ' + o.t + '</label>';
     }).join('');
-    return '<div class="menstrual-card" style="margin-bottom:8px"><b style="font-size:12px">' + (i + 1) + '. ' + esc(q.txt) + '</b>' +
-      '<span class="muted" style="font-size:10px"> · ' + (f ? esc(f.ico + ' ' + f.n) : '') + '</span>' +
-      '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:6px">' + opts + '</div></div>';
+    return '<div class="menstrual-card su-fdf33f"><b class="su-6cb285">' + (i + 1) + '. ' + esc(q.txt) + '</b>' +
+      '<span class="muted su-0d5be0"> · ' + (f ? esc(f.ico + ' ' + f.n) : '') + '</span>' +
+      '<div class="su-8fd176">' + opts + '</div></div>';
   }).join('');
 
   var body =
-    '<div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">' +
-    '<button type="button" id="tabViaGuia" class="btn btn-accent" style="width:auto">📖 Guia</button>' +
-    '<button type="button" id="tabViaFort" class="btn" style="width:auto">🌟 24 Fortalezas</button>' +
-    '<button type="button" id="tabViaTest" class="btn" style="width:auto">📝 Test (48)</button>' +
-    '<button type="button" id="tabViaFirma" class="btn" style="width:auto">💎 Mis firma</button>' +
-    '<button type="button" id="tabViaDiario" class="btn" style="width:auto">🌱 Diario & Puentes</button></div>' +
+    '<div class="timer-tabs su-4dca21">' +
+    '<button type="button" id="tabViaGuia" class="btn btn-accent su-30e741">📖 Guia</button>' +
+    '<button type="button" id="tabViaFort" class="btn su-30e741">🌟 24 Fortalezas</button>' +
+    '<button type="button" id="tabViaTest" class="btn su-30e741">📝 Test (48)</button>' +
+    '<button type="button" id="tabViaFirma" class="btn su-30e741">💎 Mis firma</button>' +
+    '<button type="button" id="tabViaDiario" class="btn su-30e741">🌱 Diario & Puentes</button></div>' +
 
-    '<div id="viaStreak" class="menstrual-card" style="border-color:var(--gold);margin-bottom:10px"></div>' +
+    '<div id="viaStreak" class="menstrual-card su-39553d"></div>' +
 
     /* GUIA */
     '<div id="viaGuia">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🌟 Modelo VIA: lo mejor de ti, con nombre</h4>' +
-    '<p class="muted" style="font-size:12px;line-height:1.6">El <b>Modelo VIA</b> (Values in Action, Peterson & Seligman) estudio lo que hace florecer a las personas en todas las culturas: encontro <b>6 virtudes</b> universales y <b>24 fortalezas de caracter</b> —capacidades morales y practicas que se pueden <b>medir, entrenar y poner al servicio</b>. No habla de dones raros: habla de tu curiosidad, tu amabilidad, tu perseverancia de todos los dias.</p>' +
-    '<p class="muted" style="font-size:12px;line-height:1.6">La gracia: en vez de pelear contra tus defectos, <b>usas tus fortalezas firma (top 5)</b> para sostener habitos, trabajar, cuidar y sanar. La ciencia muestra que usar tu firma de forma nueva cada semana sube el bienestar y baja la depre leve. Aqui lo hacemos a la pencona: chico, diario y en comunidad.</p></div>' +
+    '<div class="menstrual-card su-68a1a9"><h4>🌟 Modelo VIA: lo mejor de ti, con nombre</h4>' +
+    '<p class="muted su-616df7">El <b>Modelo VIA</b> (Values in Action, Peterson & Seligman) estudio lo que hace florecer a las personas en todas las culturas: encontro <b>6 virtudes</b> universales y <b>24 fortalezas de caracter</b> —capacidades morales y practicas que se pueden <b>medir, entrenar y poner al servicio</b>. No habla de dones raros: habla de tu curiosidad, tu amabilidad, tu perseverancia de todos los dias.</p>' +
+    '<p class="muted su-616df7">La gracia: en vez de pelear contra tus defectos, <b>usas tus fortalezas firma (top 5)</b> para sostener habitos, trabajar, cuidar y sanar. La ciencia muestra que usar tu firma de forma nueva cada semana sube el bienestar y baja la depre leve. Aqui lo hacemos a la pencona: chico, diario y en comunidad.</p></div>' +
     '<div class="menstrual-card"><h4>🦉🔥💞⚖️🌊🌟 Las 6 virtudes (con sus fortalezas)</h4><div id="viaVirtBox"></div></div>' +
     '<div class="discipline-grid">' +
     '<div class="discipline-card"><h4>🧭 Como usar esta seccion</h4><p>1) Lee la <b>Guia</b> una vez. 2) Explora las <b>24 Fortalezas</b> y marca tus favoritas ☆. 3) Haz el <b>Test (48)</b> pensando en como eres casi siempre (~8 min). 4) Revisa <b>Mis firma</b>: tu top 5 + 1 a cultivar. 5) Registra en <b>Diario</b> 1 uso diario y relee cada luna.</p></div>' +
     '<div class="discipline-card"><h4>🚫 Mitos que frenan</h4><p>• “Tengo que tenerlas todas altas” → no: <b>el perfil disparejo es lo normal</b>; se trabaja con el top y se riega 1 baja.<br>• “Mi baja es mi defecto” → es una fortaleza dormida, no una falla.<br>• “El test me etiqueta” → es una foto de hoy; tu firma se confirma usandola.<br>• “Esto reemplaza terapia” → no: si hay sufrimiento fuerte, pide ayuda (CESFAM / *4141).</p></div>' +
     '</div>' +
-    '<div class="si-card" style="border-left:3px solid #8fd694"><h4>🌱 Regla de oro VIA</h4><p><b>Usa tu top en lo dificil + riega 1 baja con micro-practica.</b> Ejemplo: si tu firma es Amabilidad y tu desafio es ordenar la casa, invita a alguien y ordenan juntas (firma al servicio). Si te falta Autorregulacion, ponle pausa de 10 min con respiracion.</p></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>🌙 VIA x 13 lunas x kume mongen</h4><div id="viaLunasBox"></div>' +
-    '<p class="muted" style="font-size:11px;margin-top:6px">Como el <i>kume mongen</i>: floreces ubicada/o —en tu cuerpo, tu familia, tu territorio— y devuelves algo. Tus fortalezas penconas pueden ser cuidar la quebrada (prudencia), amasar para la veci (amabilidad), enseñar mapuzugun (amor por aprender).</p></div>' +
+    '<div class="si-card su-e056f0"><h4>🌱 Regla de oro VIA</h4><p><b>Usa tu top en lo dificil + riega 1 baja con micro-practica.</b> Ejemplo: si tu firma es Amabilidad y tu desafio es ordenar la casa, invita a alguien y ordenan juntas (firma al servicio). Si te falta Autorregulacion, ponle pausa de 10 min con respiracion.</p></div>' +
+    '<div class="menstrual-card su-d2c171"><h4>🌙 VIA x 13 lunas x kume mongen</h4><div id="viaLunasBox"></div>' +
+    '<p class="muted su-e13d76">Como el <i>kume mongen</i>: floreces ubicada/o —en tu cuerpo, tu familia, tu territorio— y devuelves algo. Tus fortalezas penconas pueden ser cuidar la quebrada (prudencia), amasar para la veci (amabilidad), enseñar mapuzugun (amor por aprender).</p></div>' +
     '</div>' +
 
     /* FORTALEZAS */
     '<div id="viaFort" class="hidden">' +
-    '<div class="conv-row"><label style="flex:2">Buscar <input type="text" id="viaQ" placeholder="ej: perdon, risa, valentia, equipo..." maxlength="40"></label>' +
+    '<div class="conv-row"><label class="su-4b3de7">Buscar <input type="text" id="viaQ" placeholder="ej: perdon, risa, valentia, equipo..." maxlength="40"></label>' +
     '<label>Virtud <select id="viaVirtF"><option value="">Todas</option>' + VIA_VIRTUDES.map(function (v) { return '<option value="' + v.id + '">' + v.ico + ' ' + esc(v.nombre) + '</option>'; }).join('') + '</select></label></div>' +
-    '<div id="viaFortGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-top:8px">' + fortGrid + '</div>' +
-    '<div id="viaDetalle" class="menstrual-card" style="margin-top:10px;border-color:var(--gold)"><p class="muted">Toca una fortaleza para ver su ficha completa (luz, exceso, practica pencona) 👆</p></div></div>' +
+    '<div id="viaFortGrid" class="su-1e9d45">' + fortGrid + '</div>' +
+    '<div id="viaDetalle" class="menstrual-card su-51d56a"><p class="muted">Toca una fortaleza para ver su ficha completa (luz, exceso, practica pencona) 👆</p></div></div>' +
 
     /* TEST */
     '<div id="viaTest" class="hidden">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>📝 Test breve (48 afirmaciones)</h4>' +
-    '<p class="muted" style="font-size:12px">Responde segun <b>como eres casi siempre</b>, no como te gustaria ser. Escala 1 (casi nunca) a 5 (casi siempre). ~8 minutos. <b>No es diagnostico</b>: es un espejo para descubrir tu top 5 y tu fortaleza a regar.</p>' +
-    '<div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" id="viaTestReset" class="btn" style="width:auto">↺ Limpiar</button>' +
-    '<button type="button" id="viaTestCalc" class="btn btn-accent" style="width:auto">📊 Ver mi resultado</button></div>' +
-    '<div id="viaProgreso" class="muted" style="font-size:11px;margin-top:6px"></div></div>' +
-    '<div style="margin-top:10px">' + testHTML + '</div>' +
-    '<div id="viaResultado" class="menstrual-card hidden" style="margin-top:10px;border-color:var(--gold)"></div></div>' +
+    '<div class="menstrual-card su-68a1a9"><h4>📝 Test breve (48 afirmaciones)</h4>' +
+    '<p class="muted su-6cb285">Responde segun <b>como eres casi siempre</b>, no como te gustaria ser. Escala 1 (casi nunca) a 5 (casi siempre). ~8 minutos. <b>No es diagnostico</b>: es un espejo para descubrir tu top 5 y tu fortaleza a regar.</p>' +
+    '<div class="su-3de8f9"><button type="button" id="viaTestReset" class="btn su-30e741">↺ Limpiar</button>' +
+    '<button type="button" id="viaTestCalc" class="btn btn-accent su-30e741">📊 Ver mi resultado</button></div>' +
+    '<div id="viaProgreso" class="muted su-e13d76"></div></div>' +
+    '<div class="su-d2c171">' + testHTML + '</div>' +
+    '<div id="viaResultado" class="menstrual-card hidden su-51d56a"></div></div>' +
 
     /* FIRMA */
     '<div id="viaFirma" class="hidden">' +
-    '<div class="menstrual-grid"><div class="menstrual-card" style="border-color:var(--gold)"><h4>💎 Mis fortalezas firma (top 5)</h4>' +
+    '<div class="menstrual-grid"><div class="menstrual-card su-68a1a9"><h4>💎 Mis fortalezas firma (top 5)</h4>' +
     '<div id="viaFirmaBox"></div>' +
-    '<div class="conv-row" style="margin-top:8px"><label>Desafio actual <input type="text" id="viaDesafio" placeholder="ej: ordenar la casa, vender pan, estudiar" maxlength="80"></label></div>' +
-    '<div id="viaUsoBox" style="margin-top:6px"></div></div>' +
+    '<div class="conv-row su-8a77e5"><label>Desafio actual <input type="text" id="viaDesafio" placeholder="ej: ordenar la casa, vender pan, estudiar" maxlength="80"></label></div>' +
+    '<div id="viaUsoBox" class="su-fe7b49"></div></div>' +
     '<div class="menstrual-card"><h4>🌱 A regar (mi baja elegida)</h4>' +
     '<div class="conv-row"><label>Fortaleza a cultivar <select id="viaRegar"></select></label></div>' +
-    '<div id="viaRegarBox" style="margin-top:6px"></div>' +
-    '<div class="conv-row" style="margin-top:8px"><label>Mis 5 firma (edita si el test no te reconoce) <input type="text" id="viaFirmaEdit" placeholder="ej: gratitud, amabilidad, humor..." maxlength="120"></label></div>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="viaFirmaSave" class="btn btn-accent" style="width:auto">💾 Guardar mi firma</button></div></div></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>🕘 Historial de tests</h4><div id="viaHistBox"></div></div></div>' +
+    '<div id="viaRegarBox" class="su-fe7b49"></div>' +
+    '<div class="conv-row su-8a77e5"><label>Mis 5 firma (edita si el test no te reconoce) <input type="text" id="viaFirmaEdit" placeholder="ej: gratitud, amabilidad, humor..." maxlength="120"></label></div>' +
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="viaFirmaSave" class="btn btn-accent su-30e741">💾 Guardar mi firma</button></div></div></div>' +
+    '<div class="menstrual-card su-d2c171"><h4>🕘 Historial de tests</h4><div id="viaHistBox"></div></div></div>' +
 
     /* DIARIO & PUENTES */
     '<div id="viaDiario" class="hidden">' +
-    '<div class="menstrual-grid"><div class="menstrual-card" style="border-color:var(--gold)"><h4>📓 Uso de hoy — 1 minuto</h4>' +
+    '<div class="menstrual-grid"><div class="menstrual-card su-68a1a9"><h4>📓 Uso de hoy — 1 minuto</h4>' +
     '<div class="conv-row"><label>Fecha <input type="date" id="viaDiaFecha"></label>' +
     '<label>Fortaleza usada <select id="viaDiaFort"></select></label></div>' +
     '<label>Como la use hoy… <input type="text" id="viaDiaTxt" placeholder="ej: use mi perseverancia y termine el informe" maxlength="140"></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="viaDiaAdd" class="btn btn-accent" style="width:auto">+ Guardar hoy</button></div>' +
-    '<div id="viaDiaList" class="habits-list" style="margin-top:8px;max-height:220px"></div></div>' +
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="viaDiaAdd" class="btn btn-accent su-30e741">+ Guardar hoy</button></div>' +
+    '<div id="viaDiaList" class="habits-list su-ebf445"></div></div>' +
     '<div class="menstrual-card"><h4>🔗 Puentes: tu firma caminando con el calendario</h4>' +
-    '<p class="muted" style="font-size:11px">Tu firma no vive encerrada: usala donde ya estas trabajando. Toca y el calendario te lleva (cierra este dialogo y abre el modulo).</p>' +
-    '<div style="display:flex;gap:6px;flex-wrap:wrap">' +
-    '<button type="button" class="btn via-go" data-go="btnGratitud" style="width:auto;font-size:11px">📓 Gratitud (riega 🙏)</button>' +
-    '<button type="button" class="btn via-go" data-go="btnHabits" style="width:auto;font-size:11px">✅ Habitos (sostiene 🎯⛰️)</button>' +
-    '<button type="button" class="btn via-go" data-go="btnIkigai" style="width:auto;font-size:11px">🌸 Ikigai (firma → proposito)</button>' +
-    '<button type="button" class="btn via-go" data-go="btnEneagrama" style="width:auto;font-size:11px">🔺 Eneagrama (firma vs patron)</button>' +
-    '<button type="button" class="btn via-go" data-go="btnPsico" style="width:auto;font-size:11px">🪞 Autoconocimiento</button>' +
-    '<button type="button" class="btn via-go" data-go="btnPsicologia" style="width:auto;font-size:11px">🧠 Psicologia (TCC + tests)</button>' +
-    '<button type="button" class="btn via-go" data-go="btnDiscipline" style="width:auto;font-size:11px">🎯 Disciplina (foco 5 min)</button>' +
-    '<button type="button" class="btn via-go" data-go="btnBreath" style="width:auto;font-size:11px">🌬️ Respiracion (pausa sabia)</button>' +
-    '<button type="button" class="btn via-go" data-go="btnBuenVivir" style="width:auto;font-size:11px">🌎 Buen Vivir (firma al territorio)</button>' +
+    '<p class="muted su-11a508">Tu firma no vive encerrada: usala donde ya estas trabajando. Toca y el calendario te lleva (cierra este dialogo y abre el modulo).</p>' +
+    '<div class="su-6157e8">' +
+    '<button type="button" class="btn via-go su-337714" data-go="btnGratitud">📓 Gratitud (riega 🙏)</button>' +
+    '<button type="button" class="btn via-go su-337714" data-go="btnHabits">✅ Habitos (sostiene 🎯⛰️)</button>' +
+    '<button type="button" class="btn via-go su-337714" data-go="btnIkigai">🌸 Ikigai (firma → proposito)</button>' +
+    '<button type="button" class="btn via-go su-337714" data-go="btnEneagrama">🔺 Eneagrama (firma vs patron)</button>' +
+    '<button type="button" class="btn via-go su-337714" data-go="btnPsico">🪞 Autoconocimiento</button>' +
+    '<button type="button" class="btn via-go su-337714" data-go="btnPsicologia">🧠 Psicologia (TCC + tests)</button>' +
+    '<button type="button" class="btn via-go su-337714" data-go="btnDiscipline">🎯 Disciplina (foco 5 min)</button>' +
+    '<button type="button" class="btn via-go su-337714" data-go="btnBreath">🌬️ Respiracion (pausa sabia)</button>' +
+    '<button type="button" class="btn via-go su-337714" data-go="btnBuenVivir">🌎 Buen Vivir (firma al territorio)</button>' +
     '</div>' +
-    '<div class="si-card" style="margin-top:8px"><h4>🧭 Idea de cruce rapido</h4><p id="viaCruceTxt">Haz el test y vuelve: aqui aparecera como usar tu firma nº1 en tu desafio de hoy.</p></div>' +
+    '<div class="si-card su-8a77e5"><h4>🧭 Idea de cruce rapido</h4><p id="viaCruceTxt">Haz el test y vuelve: aqui aparecera como usar tu firma nº1 en tu desafio de hoy.</p></div>' +
     '</div></div>' +
-    '<div class="dlg-actions" style="justify-content:space-between;align-items:center;margin-top:8px;flex-wrap:wrap;gap:8px">' +
-    '<span id="viaStats" class="muted" style="font-size:11px"></span>' +
-    '<span style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" id="viaShare" class="btn" style="width:auto">📤 Compartir</button>' +
-    '<button type="button" id="viaExport" class="btn" style="width:auto">📥 Exportar</button>' +
-    '<button type="button" id="viaToNote" class="btn" style="width:auto">📝 Llevar a nota de hoy</button>' +
-    '<button type="button" id="viaClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar todo</button></span></div></div>';
+    '<div class="dlg-actions su-a1935c">' +
+    '<span id="viaStats" class="muted su-11a508"></span>' +
+    '<span class="su-3de8f9"><button type="button" id="viaShare" class="btn su-30e741">📤 Compartir</button>' +
+    '<button type="button" id="viaExport" class="btn su-30e741">📥 Exportar</button>' +
+    '<button type="button" id="viaToNote" class="btn su-30e741">📝 Llevar a nota de hoy</button>' +
+    '<button type="button" id="viaClear" class="btn su-214f75">🗑 Borrar todo</button></span></div></div>';
 
   var old2 = $('viaDialog');
   if (old2) old2.remove();
   var d = document.createElement('dialog');
   d.id = 'viaDialog';
   d.innerHTML = '<form method="dialog">' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
-    '<h3 style="margin:0;color:var(--accent)">🌟 Fortalezas VIA — lo mejor de ti en accion</h3>' +
+    '<div class="dlg-actions su-d2d053">' +
+    '<h3 class="su-ee0cfe">🌟 Fortalezas VIA — lo mejor de ti en accion</h3>' +
     '<button type="button" data-close class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    '<p class="muted" style="line-height:1.5">6 virtudes x 24 fortalezas (Peterson & Seligman). Guia + fichas + test + firma + diario. Todo <b>privado y local</b> por usuario. <b>Educativo: no diagnostica.</b></p>' +
+    '<p class="muted su-77e2fe">6 virtudes x 24 fortalezas (Peterson & Seligman). Guia + fichas + test + firma + diario. Todo <b>privado y local</b> por usuario. <b>Educativo: no diagnostica.</b></p>' +
     body +
     '<div class="dlg-actions"><button type="button" data-close class="btn">Cerrar</button></div></form>';
   document.body.appendChild(d);
@@ -523,10 +523,10 @@ function renderVirtBox() {
   var box = $('viaVirtBox'); if (!box) return;
   box.innerHTML = VIA_VIRTUDES.map(function (v) {
     var fs = VIA_FORTS.filter(function (f) { return f.v === v.id; });
-    return '<div class="si-card" style="padding:6px 10px"><b style="font-size:12px">' + v.ico + ' ' + esc(v.nombre) + '</b>' +
-      '<p class="muted" style="font-size:11px;margin:2px 0">' + esc(v.desc) + '</p>' +
-      '<div style="display:flex;gap:4px;flex-wrap:wrap">' + fs.map(function (f) {
-        return '<button type="button" class="chip via-jump" data-fort="' + f.id + '" style="font-size:10px;cursor:pointer;color:var(--text,#e8ecff)">' + f.ico + ' ' + esc(f.n) + '</button>';
+    return '<div class="si-card su-7aab68"><b class="su-6cb285">' + v.ico + ' ' + esc(v.nombre) + '</b>' +
+      '<p class="muted su-541e41">' + esc(v.desc) + '</p>' +
+      '<div class="su-d18560">' + fs.map(function (f) {
+        return '<button type="button" class="chip via-jump su-d80e8b" data-fort="' + f.id + '">' + f.ico + ' ' + esc(f.n) + '</button>';
       }).join('') + '</div></div>';
   }).join('');
   box.querySelectorAll('.via-jump').forEach(function (b) {
@@ -543,16 +543,16 @@ function renderDetalle(id) {
   var e = store();
   var fav = e.favs.indexOf(id) >= 0;
   box.innerHTML =
-    '<h4 style="color:var(--gold)">' + t.ico + ' ' + esc(t.n) + ' <span class="muted">· ' + esc(virtudNombre(t.v)) + '</span></h4>' +
-    '<p style="font-size:12px"><b>Que es:</b> ' + esc(t.que) + '</p>' +
-    '<p class="muted" style="font-size:12px"><b>Se nota cuando:</b> ' + esc(t.senal) + '</p>' +
-    '<div class="fishing-grid"><div><p style="font-size:12px">🌟 <b>En luz:</b><br>· ' + t.luz.map(esc).join('<br>· ') + '</p></div>' +
-    '<div><p style="font-size:12px">🌑 <b>En exceso (sombra):</b><br>' + esc(t.exceso) + '</p>' +
-    '<p style="font-size:12px">🌱 <b>Penco:</b> ' + esc(t.penco) + '</p></div></div>' +
+    '<h4 class="su-e39eba">' + t.ico + ' ' + esc(t.n) + ' <span class="muted">· ' + esc(virtudNombre(t.v)) + '</span></h4>' +
+    '<p class="su-6cb285"><b>Que es:</b> ' + esc(t.que) + '</p>' +
+    '<p class="muted su-6cb285"><b>Se nota cuando:</b> ' + esc(t.senal) + '</p>' +
+    '<div class="fishing-grid"><div><p class="su-6cb285">🌟 <b>En luz:</b><br>· ' + t.luz.map(esc).join('<br>· ') + '</p></div>' +
+    '<div><p class="su-6cb285">🌑 <b>En exceso (sombra):</b><br>' + esc(t.exceso) + '</p>' +
+    '<p class="su-6cb285">🌱 <b>Penco:</b> ' + esc(t.penco) + '</p></div></div>' +
     '<div class="si-card"><h4>✏️ Practica 5 min</h4><p>' + esc(t.practica) + '</p><p class="muted">Pregunta sabia: <i>' + esc(t.pregunta) + '</i></p></div>' +
-    '<div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">' +
-    '<button type="button" class="btn" id="viaFavBtn" style="width:auto">' + (fav ? '★ Quitar de favoritas' : '☆ Marcar favorita') + '</button>' +
-    '<button type="button" class="btn btn-accent" id="viaUseBtn" style="width:auto">🌱 Usarla hoy</button></div>';
+    '<div class="su-67b198">' +
+    '<button type="button" class="btn su-30e741" id="viaFavBtn">' + (fav ? '★ Quitar de favoritas' : '☆ Marcar favorita') + '</button>' +
+    '<button type="button" class="btn btn-accent su-30e741" id="viaUseBtn">🌱 Usarla hoy</button></div>';
   var fb = $('viaFavBtn');
   if (fb) fb.onclick = function () {
     var dd = store();
@@ -615,21 +615,21 @@ function showResultado(res, saved) {
   var max = 5;
   box.classList.remove('hidden');
   box.innerHTML = '<h4>📊 Tu resultado ' + (saved ? '(guardado ✓)' : '(sin guardar)') + '</h4>' +
-    '<p class="muted" style="font-size:11px">Promedio por fortaleza (1-5, 2 preguntas c/u). Tu <b>top 5 = tus firma</b>. La mas baja = tu riego de esta luna (sin culpa: es dormida, no defecto).</p>' +
+    '<p class="muted su-11a508">Promedio por fortaleza (1-5, 2 preguntas c/u). Tu <b>top 5 = tus firma</b>. La mas baja = tu riego de esta luna (sin culpa: es dormida, no defecto).</p>' +
     arr.map(function (a, idx) {
       var f = fortById(a.id);
       var pct = Math.round(a.avg / max * 100);
       var isTop = idx < 5;
-      return '<div style="display:flex;align-items:center;gap:8px;margin:4px 0">' +
-        '<span style="min-width:150px;font-size:11px"><b>' + f.ico + ' ' + esc(f.n) + '</b>' + (isTop ? ' 💎' : '') + '</span>' +
-        '<span style="flex:1;background:var(--panel);border:1px solid var(--line);border-radius:6px;height:14px;overflow:hidden"><span style="display:block;height:100%;width:' + pct + '%;background:' + (isTop ? 'var(--gold)' : 'var(--accent)') + ';opacity:' + (isTop ? '1' : '.55') + '"></span></span>' +
-        '<b style="min-width:36px;text-align:right">' + a.avg.toFixed(1) + '</b>' +
+      return '<div class="su-0d84b3">' +
+        '<span class="su-731e05"><b>' + f.ico + ' ' + esc(f.n) + '</b>' + (isTop ? ' 💎' : '') + '</span>' +
+        '<span class="su-b248e0"><span style="display:block;height:100%;width:' + pct + '%;background:' + (isTop ? 'var(--gold)' : 'var(--accent)') + ';opacity:' + (isTop ? '1' : '.55') + '"></span></span>' +
+        '<b class="su-0331f8">' + a.avg.toFixed(1) + '</b>' +
         '<button type="button" class="btn btn-icon via-ver" data-id="' + a.id + '" title="Ver ficha">👁</button></div>';
     }).join('') +
-    '<div class="si-card" style="margin-top:8px"><h4>💎 Tus firma: ' + top.map(function (a) { var f = fortById(a.id); return f.ico + ' ' + f.n; }).join(' · ') + '</h4>' +
+    '<div class="si-card su-8a77e5"><h4>💎 Tus firma: ' + top.map(function (a) { var f = fortById(a.id); return f.ico + ' ' + f.n; }).join(' · ') + '</h4>' +
     '<p>🌱 A regar: <b>' + fortById(low.id).ico + ' ' + esc(fortById(low.id).n) + '</b> (' + low.avg.toFixed(1) + '/5): ' + esc(fortById(low.id).practica) + '</p></div>' +
-    '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"><button type="button" class="btn btn-accent" id="viaSaveTest" style="width:auto">💾 Guardar (firma + historial)</button>' +
-    '<button type="button" class="btn" id="viaReadTop" style="width:auto">📖 Leer mi firma nº1</button></div>';
+    '<div class="su-ac5453"><button type="button" class="btn btn-accent su-30e741" id="viaSaveTest">💾 Guardar (firma + historial)</button>' +
+    '<button type="button" class="btn su-30e741" id="viaReadTop">📖 Leer mi firma nº1</button></div>';
   box.querySelectorAll('.via-ver').forEach(function (b) {
     b.onclick = function () { switchTab('Fort'); renderDetalle(b.dataset.id); };
   });
@@ -671,14 +671,14 @@ function syncFirmaUI() {
   var box = $('viaFirmaBox');
   if (box) {
     if (!dd.firma || !dd.firma.length) {
-      box.innerHTML = '<p class="muted" style="font-size:12px">Aun sin firma. Haz el test 📝 o escribe tus 5 abajo a mano (vale igual: tu te conoces).</p>';
+      box.innerHTML = '<p class="muted su-6cb285">Aun sin firma. Haz el test 📝 o escribe tus 5 abajo a mano (vale igual: tu te conoces).</p>';
     } else {
-      box.innerHTML = '<div style="display:flex;gap:6px;flex-wrap:wrap">' + dd.firma.map(function (id, i) {
+      box.innerHTML = '<div class="su-6157e8">' + dd.firma.map(function (id, i) {
         var f = fortById(id);
         if (!f) return '';
-        return '<button type="button" class="chip via-firma-jump" data-id="' + id + '" style="font-size:11px;border-color:var(--gold);cursor:pointer;color:var(--text,#e8ecff)" title="Ver ficha">' + (i + 1) + '. ' + f.ico + ' <b>' + esc(f.n) + '</b></button>';
+        return '<button type="button" class="chip via-firma-jump su-9fbcbd" data-id="' + id + '" title="Ver ficha">' + (i + 1) + '. ' + f.ico + ' <b>' + esc(f.n) + '</b></button>';
       }).join('') + '</div>' +
-      '<p class="muted" style="font-size:11px;margin-top:6px">Toca una para leer su ficha. Tu nº1 es tu motor: usala primero en tu desafio.</p>';
+      '<p class="muted su-e13d76">Toca una para leer su ficha. Tu nº1 es tu motor: usala primero en tu desafio.</p>';
       box.querySelectorAll('.via-firma-jump').forEach(function (b) {
         b.onclick = function () { switchTab('Fort'); renderDetalle(b.dataset.id); };
       });
@@ -695,18 +695,18 @@ function renderRegarBox() {
   var id = sel ? sel.value : null;
   var f = (id && fortById(id)) || null;
   if (!f) { box.innerHTML = ''; return; }
-  box.innerHTML = '<div class="chip" style="display:block;white-space:normal;line-height:1.6">🌱 <b>' + f.ico + ' ' + esc(f.n) + '</b> (' + esc(virtudNombre(f.v)) + ')<br><span class="muted">Micro-practica: ' + esc(f.practica) + '</span></div>';
+  box.innerHTML = '<div class="chip su-8c0a82">🌱 <b>' + f.ico + ' ' + esc(f.n) + '</b> (' + esc(virtudNombre(f.v)) + ')<br><span class="muted">Micro-practica: ' + esc(f.practica) + '</span></div>';
 }
 function renderUsoBox() {
   var box = $('viaUsoBox'); if (!box) return;
   var dd = store();
   var des = (($('viaDesafio') || {}).value || '').trim();
-  if (!dd.firma || !dd.firma.length) { box.innerHTML = '<p class="muted" style="font-size:11px">Cuando tengas tu firma, aqui veras como usarla en tu desafio.</p>'; return; }
+  if (!dd.firma || !dd.firma.length) { box.innerHTML = '<p class="muted su-11a508">Cuando tengas tu firma, aqui veras como usarla en tu desafio.</p>'; return; }
   var rows = dd.firma.slice(0, 5).map(function (id, i) {
     var f = fortById(id);
     if (!f) return '';
     var uso = VIA_USOS[id] || ('Usa tu ' + f.n + ' hoy en algo concreto.');
-    return '<div class="si-card" style="padding:6px 10px"><b style="font-size:12px">' + (i + 1) + '. ' + f.ico + ' ' + esc(f.n) + '</b><p class="muted" style="font-size:11px;margin:2px 0 0">' + esc(uso) + (des ? ' → Desafio: “' + esc(des) + '”.' : '') + '</p></div>';
+    return '<div class="si-card su-7aab68"><b class="su-6cb285">' + (i + 1) + '. ' + f.ico + ' ' + esc(f.n) + '</b><p class="muted su-aa314c">' + esc(uso) + (des ? ' → Desafio: “' + esc(des) + '”.' : '') + '</p></div>';
   }).join('');
   box.innerHTML = rows;
   var ct = $('viaCruceTxt');
@@ -734,19 +734,19 @@ function renderStreak() {
   var f = (e.firma || []).map(function (id) { var x = fortById(id); return x ? x.ico : ''; }).join(' ');
   b.innerHTML = '<b>🌟 Racha:</b> ' + streak() + ' dias · <b>' + nd + '</b> dias de diario · <b>' + nt + '</b> tests' +
     (f ? ' · firma: ' + f : '') +
-    '<span class="muted" style="font-size:11px"> — 1 uso diario vale mas que 1 test al ano</span>';
+    '<span class="muted su-11a508"> — 1 uso diario vale mas que 1 test al ano</span>';
 }
 function renderDiario() {
   var box = $('viaDiaList'); if (!box) return;
   var d = store().diario || {};
   var keys = Object.keys(d).sort().reverse().slice(0, 30);
-  if (!keys.length) { box.innerHTML = '<p class="muted" style="font-size:11px;text-align:center">Sin registros. Anota 1 uso al dia (1 linea basta).</p>'; return; }
+  if (!keys.length) { box.innerHTML = '<p class="muted su-e201a8">Sin registros. Anota 1 uso al dia (1 linea basta).</p>'; return; }
   box.innerHTML = keys.map(function (k) {
     var r = d[k];
     var txt = typeof r === 'string' ? r : (r.txt || '');
     var fid = (r && r.fort) || '';
     var f = fid ? fortById(fid) : null;
-    return '<div class="hora-item" style="align-items:flex-start"><span style="font-size:11px"><b>' + esc(k) + '</b>' + (f ? ' · ' + f.ico + ' ' + esc(f.n) : '') + '<br>' + esc(txt) + '</span>' +
+    return '<div class="hora-item su-0486f7"><span class="su-11a508"><b>' + esc(k) + '</b>' + (f ? ' · ' + f.ico + ' ' + esc(f.n) : '') + '<br>' + esc(txt) + '</span>' +
       '<button type="button" class="btn btn-icon via-dia-del" data-k="' + esc(k) + '">✕</button></div>';
   }).join('');
   box.querySelectorAll('.via-dia-del').forEach(function (x) {
@@ -756,11 +756,11 @@ function renderDiario() {
 function renderHist() {
   var box = $('viaHistBox'); if (!box) return;
   var t = store().tests || [];
-  if (!t.length) { box.innerHTML = '<p class="muted" style="font-size:11px">Sin tests guardados. Responde el test y pulsa “💾 Guardar”.</p>'; return; }
+  if (!t.length) { box.innerHTML = '<p class="muted su-11a508">Sin tests guardados. Responde el test y pulsa “💾 Guardar”.</p>'; return; }
   box.innerHTML = t.slice().reverse().slice(0, 10).map(function (r) {
     var tops = (r.top || []).slice(0, 3).map(function (id) { var f = fortById(id); return f ? f.ico + ' ' + f.n : id; }).join(' · ');
     var lf = r.low ? fortById(r.low) : null;
-    return '<div class="hora-item"><span style="font-size:11px"><b>' + esc(r.fecha || '') + '</b> · ' + esc(tops) + (lf ? ' · 🌱 ' + esc(lf.n) : '') + '</span>' +
+    return '<div class="hora-item"><span class="su-11a508"><b>' + esc(r.fecha || '') + '</b> · ' + esc(tops) + (lf ? ' · 🌱 ' + esc(lf.n) : '') + '</span>' +
       '<button type="button" class="btn btn-icon via-hist-del" data-id="' + r.id + '" title="Borrar">✕</button></div>';
   }).join('');
   box.querySelectorAll('.via-hist-del').forEach(function (x) {

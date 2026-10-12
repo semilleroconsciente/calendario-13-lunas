@@ -1,21 +1,21 @@
 <dialog id="mealDialog">
     <form method="dialog">
-      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
-        <h3 style="margin:0;color:var(--accent)">🥗 Planificador de comidas</h3>
+      <div class="dlg-actions su-d2d053">
+        <h3 class="su-ee0cfe">🥗 Planificador de comidas</h3>
         <button type="button" id="mealCloseTop" class="btn btn-icon" title="Cerrar" aria-label="Cerrar">✕</button>
       </div>
-      <p class="muted" style="line-height:1.5">Planifica por día. Queda <b>privado y local</b> por usuario y se refleja en la luna (puntos 🥗 en el calendario). Conecta con 🛒 Compras y con tu meta nutricional.</p>
-      <div class="timer-tabs" style="margin-bottom:10px">
-        <button type="button" id="tabMealPlan" class="btn btn-accent" style="width:auto">🥗 Plan</button>
-        <button type="button" id="tabMealCalc" class="btn" style="width:auto">🧮 Calculadora</button>
-        <button type="button" id="tabMealMenus" class="btn" style="width:auto">🍽️ Menús sugeridos</button>
-        <button type="button" id="tabMealRecetas" class="btn" style="width:auto">🍳 Recetas</button>
+      <p class="muted su-77e2fe">Planifica por día. Queda <b>privado y local</b> por usuario y se refleja en la luna (puntos 🥗 en el calendario). Conecta con 🛒 Compras y con tu meta nutricional.</p>
+      <div class="timer-tabs su-761d3a">
+        <button type="button" id="tabMealPlan" class="btn btn-accent su-30e741">🥗 Plan</button>
+        <button type="button" id="tabMealCalc" class="btn su-30e741">🧮 Calculadora</button>
+        <button type="button" id="tabMealMenus" class="btn su-30e741">🍽️ Menús sugeridos</button>
+        <button type="button" id="tabMealRecetas" class="btn su-30e741">🍳 Recetas</button>
       </div>
       <div id="mealPlanPanel">
         <div class="conv-row">
           <label>Fecha <input type="date" id="mealDate"></label>
-          <button type="button" id="mealToday" class="btn" style="width:auto;align-self:flex-end">Hoy</button>
-          <button type="button" id="mealClearDay" class="btn" style="width:auto;align-self:flex-end">Limpiar día</button>
+          <button type="button" id="mealToday" class="btn su-4ed52d">Hoy</button>
+          <button type="button" id="mealClearDay" class="btn su-4ed52d">Limpiar día</button>
         </div>
         <div class="meal-grid">
           <label>Desayuno <input type="text" id="mealBreakfast" placeholder="ej: Avena con berries" maxlength="80"></label>
@@ -24,22 +24,22 @@
           <label>Colación / Snack <input type="text" id="mealSnack" placeholder="ej: Yogur, fruta" maxlength="80"></label>
         </div>
         <label>Notas <input type="text" id="mealNotes" placeholder="ej: sin gluten, con lo cosechado" maxlength="80"></label>
-        <div class="dlg-actions" style="justify-content:flex-start">
-          <button type="button" id="mealSave" class="btn btn-accent" style="width:auto">💾 Guardar día</button>
-          <button type="button" id="mealToShopping" class="btn" style="width:auto">🛒 → Lista</button>
+        <div class="dlg-actions su-59a5a8">
+          <button type="button" id="mealSave" class="btn btn-accent su-30e741">💾 Guardar día</button>
+          <button type="button" id="mealToShopping" class="btn su-30e741">🛒 → Lista</button>
         </div>
-        <div id="mealWeekBox" class="menstrual-card" style="margin-top:10px"></div>
-        <div id="mealLunaBox" class="menstrual-card" style="margin-top:10px"></div>
-        <div id="mealNutritionBox" class="menstrual-card" style="margin-top:10px"></div>
-        <div id="mealCompareBox" class="menstrual-card" style="margin-top:10px"></div>
-        <div id="mealSuggestionsBox" class="menstrual-card" style="margin-top:10px"></div>
+        <div id="mealWeekBox" class="menstrual-card su-d2c171"></div>
+        <div id="mealLunaBox" class="menstrual-card su-d2c171"></div>
+        <div id="mealNutritionBox" class="menstrual-card su-d2c171"></div>
+        <div id="mealCompareBox" class="menstrual-card su-d2c171"></div>
+        <div id="mealSuggestionsBox" class="menstrual-card su-d2c171"></div>
       </div>
       <div id="mealCalcPanel" class="hidden">
-        <div class="menstrual-card" style="border-color:var(--gold);background:linear-gradient(135deg,var(--panel),var(--card))">
-          <h4 style="color:var(--gold)">🧮 Calculadora nutricional — Mifflin-St Jeor</h4>
-          <p class="muted" style="font-size:11px">Estimación basada en edad, peso, altura, sexo y actividad. No es diagnóstico médico. Útil para planificar tu plan en Penco.</p>
+        <div class="menstrual-card su-bcee4f">
+          <h4 class="su-e39eba">🧮 Calculadora nutricional — Mifflin-St Jeor</h4>
+          <p class="muted su-11a508">Estimación basada en edad, peso, altura, sexo y actividad. No es diagnóstico médico. Útil para planificar tu plan en Penco.</p>
         </div>
-        <div class="menstrual-card" style="margin-top:10px">
+        <div class="menstrual-card su-d2c171">
           <h4>Datos personales (privado y local)</h4>
           <div class="conv-row">
             <label>Sexo
@@ -54,7 +54,7 @@
             <label>Altura cm <input type="number" id="calcAltura" min="100" max="250" placeholder="ej: 165"></label>
           </div>
           <div class="conv-row">
-            <label style="flex:1">Actividad
+            <label class="su-97445a">Actividad
               <select id="calcActividad">
                 <option value="1.2">Sedentaria — poco o nada ejercicio</option>
                 <option value="1.375">Ligera — 1-3 días/semana</option>
@@ -83,30 +83,30 @@
               </select>
             </label>
           </div>
-          <div class="dlg-actions" style="justify-content:flex-start;margin-top:8px">
-            <button type="button" id="calcCalcular" class="btn btn-accent" style="width:auto">🧮 Calcular</button>
-            <button type="button" id="calcGuardar" class="btn" style="width:auto">💾 Guardar perfil</button>
-            <span id="calcStatus" class="muted" style="font-size:11px;align-self:center"></span>
+          <div class="dlg-actions su-8f9e27">
+            <button type="button" id="calcCalcular" class="btn btn-accent su-30e741">🧮 Calcular</button>
+            <button type="button" id="calcGuardar" class="btn su-30e741">💾 Guardar perfil</button>
+            <span id="calcStatus" class="muted su-82b8dd"></span>
           </div>
         </div>
-        <div id="calcResultado" class="menstrual-card" style="margin-top:10px"></div>
-        <div id="calcDetalle" class="menstrual-card hidden" style="margin-top:10px"></div>
+        <div id="calcResultado" class="menstrual-card su-d2c171"></div>
+        <div id="calcDetalle" class="menstrual-card hidden su-d2c171"></div>
       </div>
       <div id="mealMenusPanel" class="hidden">
-        <div id="menusResumen" class="menstrual-card" style="border-color:var(--gold)"></div>
-        <div id="menusLista" style="margin-top:10px"></div>
-        <div class="menstrual-card" style="margin-top:10px">
+        <div id="menusResumen" class="menstrual-card su-68a1a9"></div>
+        <div id="menusLista" class="su-d2c171"></div>
+        <div class="menstrual-card su-d2c171">
           <h4>🔄 Cómo usar</h4>
-          <p class="muted" style="font-size:11px;line-height:1.5">1) Calcula tu meta en 🧮 Calculadora y guarda. 2) Aquí ves menús que se acercan a tu meta (ej. 1800-2600 kcal) con ingredientes de feria Penco. 3) Toca <b>“Cargar en plan de hoy”</b> y se copia a 🥗 Plan. Luego ajusta porciones y guarda.</p>
-          <p class="muted" style="font-size:10px">Menús son plantillas; adapta alergias, presupuesto y temporada. Si tienes condición médica, consulta profesional.</p>
+          <p class="muted su-a6c665">1) Calcula tu meta en 🧮 Calculadora y guarda. 2) Aquí ves menús que se acercan a tu meta (ej. 1800-2600 kcal) con ingredientes de feria Penco. 3) Toca <b>“Cargar en plan de hoy”</b> y se copia a 🥗 Plan. Luego ajusta porciones y guarda.</p>
+          <p class="muted su-0d5be0">Menús son plantillas; adapta alergias, presupuesto y temporada. Si tienes condición médica, consulta profesional.</p>
         </div>
       </div>
       <div id="mealRecetasPanel" class="hidden">
-        <div class="menstrual-card" style="border-color:var(--gold)">
-          <h4 style="color:var(--gold)">🍳 Recetas — cocina Penco y saludable</h4>
-          <p class="muted" style="font-size:11px">Base chilena económica + saludables. Guarda favoritas ⭐, crea las tuyas, cárgalas al plan 🥗 o mándalas a 🛒.</p>
+        <div class="menstrual-card su-68a1a9">
+          <h4 class="su-e39eba">🍳 Recetas — cocina Penco y saludable</h4>
+          <p class="muted su-11a508">Base chilena económica + saludables. Guarda favoritas ⭐, crea las tuyas, cárgalas al plan 🥗 o mándalas a 🛒.</p>
           <div class="conv-row">
-            <label style="flex:2">Buscar <input type="text" id="recSearch" placeholder="ej: lentejas, avena, sin carne..." maxlength="60"></label>
+            <label class="su-4b3de7">Buscar <input type="text" id="recSearch" placeholder="ej: lentejas, avena, sin carne..." maxlength="60"></label>
             <label>Categoría
               <select id="recCat">
                 <option value="">Todas</option>
@@ -134,16 +134,16 @@
                 <option value="$$">$$ medio</option>
               </select>
             </label>
-            <label style="align-self:flex-end;flex-direction:row;align-items:center;gap:6px"><input type="checkbox" id="recSoloFav" style="width:auto"> ⭐ Solo favoritas</label>
-            <label style="align-self:flex-end;flex-direction:row;align-items:center;gap:6px"><input type="checkbox" id="recSoloMias" style="width:auto"> 📝 Solo mías</label>
+            <label class="su-6372ad"><input type="checkbox" id="recSoloFav" class="su-30e741"> ⭐ Solo favoritas</label>
+            <label class="su-6372ad"><input type="checkbox" id="recSoloMias" class="su-30e741"> 📝 Solo mías</label>
           </div>
-          <p class="muted" id="recCount" style="font-size:11px;margin:6px 0 0"></p>
+          <p class="muted su-1db776" id="recCount"></p>
         </div>
-        <div id="recetasLista" style="margin-top:10px"></div>
-        <div class="menstrual-card" style="margin-top:10px">
+        <div id="recetasLista" class="su-d2c171"></div>
+        <div class="menstrual-card su-d2c171">
           <h4>📝 Mi receta</h4>
           <div class="conv-row">
-            <label style="flex:2">Nombre <input type="text" id="recNombre" placeholder="ej: Charquicán de la abuela" maxlength="60"></label>
+            <label class="su-4b3de7">Nombre <input type="text" id="recNombre" placeholder="ej: Charquicán de la abuela" maxlength="60"></label>
             <label>Categoría
               <select id="recNuevaCat">
                 <option value="Almuerzo">Almuerzo</option>
@@ -153,15 +153,15 @@
                 <option value="Postre">Postre</option>
               </select>
             </label>
-            <label>Tiempo min <input type="number" id="recTiempoN" min="5" max="240" step="5" placeholder="30" style="width:80px"></label>
+            <label>Tiempo min <input type="number" id="recTiempoN" min="5" max="240" step="5" placeholder="30" class="su-8573ba"></label>
           </div>
           <label>Ingredientes (uno por línea) <textarea id="recIng" rows="3" placeholder="2 tazas de lentejas&#10;1 cebolla picada&#10;1 zanahoria rallada"></textarea></label>
-          <div style="height:6px"></div>
+          <div class="su-cc3d9d"></div>
           <label>Pasos (uno por línea) <textarea id="recPasos" rows="3" placeholder="1. Remoja lentejas 4h&#10;2. Sofríe cebolla y zanahoria&#10;3. Cocina 25 min y sirve"></textarea></label>
-          <div class="dlg-actions" style="justify-content:flex-start;margin-top:8px">
-            <button type="button" id="recGuardar" class="btn btn-accent" style="width:auto">💾 Guardar mi receta</button>
-            <button type="button" id="recLimpiar" class="btn" style="width:auto">Limpiar</button>
-            <span id="recStatus" class="muted" style="font-size:11px;align-self:center"></span>
+          <div class="dlg-actions su-8f9e27">
+            <button type="button" id="recGuardar" class="btn btn-accent su-30e741">💾 Guardar mi receta</button>
+            <button type="button" id="recLimpiar" class="btn su-30e741">Limpiar</button>
+            <span id="recStatus" class="muted su-82b8dd"></span>
           </div>
         </div>
       </div>

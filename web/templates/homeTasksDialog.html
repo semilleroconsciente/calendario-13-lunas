@@ -1,27 +1,27 @@
 <dialog id="homeTasksDialog">
     <form method="dialog">
-      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
-        <h3 style="margin:0;color:var(--accent)">🏠 Tareas del Hogar — organización por áreas</h3>
+      <div class="dlg-actions su-d2d053">
+        <h3 class="su-ee0cfe">🏠 Tareas del Hogar — organización por áreas</h3>
         <button type="button" id="homeTasksCloseTop" class="btn btn-icon" title="Cerrar" aria-label="Cerrar">✕</button>
       </div>
-      <p class="muted" style="line-height:1.5">Organiza <b>limpieza, ropa, cocina, baño y mantenimiento</b> con frecuencia, prioridad y responsable. Todo queda <b>privado y local</b> por usuario. Marca a diario y ve avance por semana y por <b>luna de 28 días</b>. Días con tareas aparecen con 🏠 en el calendario.</p>
+      <p class="muted su-77e2fe">Organiza <b>limpieza, ropa, cocina, baño y mantenimiento</b> con frecuencia, prioridad y responsable. Todo queda <b>privado y local</b> por usuario. Marca a diario y ve avance por semana y por <b>luna de 28 días</b>. Días con tareas aparecen con 🏠 en el calendario.</p>
 
-      <div id="homeTasksResumen" class="menstrual-card" style="border-color:var(--gold);background:linear-gradient(135deg,var(--panel),var(--card))"></div>
+      <div id="homeTasksResumen" class="menstrual-card su-bcee4f"></div>
 
-      <div class="timer-tabs" style="margin:12px 0 10px;flex-wrap:wrap">
-        <button type="button" id="tabHomeTareas" class="btn btn-accent" style="width:auto">📋 Tareas</button>
-        <button type="button" id="tabHomeSemana" class="btn" style="width:auto">🗓️ Semana</button>
-        <button type="button" id="tabHomePlantillas" class="btn" style="width:auto">🧹 Plantillas</button>
-        <button type="button" id="tabHomeStats" class="btn" style="width:auto">📊 Luna & Consejos</button>
-        <button type="button" id="tabHomeDiogenes" class="btn" style="width:auto">🧠 Orden & Diógenes</button>
+      <div class="timer-tabs su-f7ad78">
+        <button type="button" id="tabHomeTareas" class="btn btn-accent su-30e741">📋 Tareas</button>
+        <button type="button" id="tabHomeSemana" class="btn su-30e741">🗓️ Semana</button>
+        <button type="button" id="tabHomePlantillas" class="btn su-30e741">🧹 Plantillas</button>
+        <button type="button" id="tabHomeStats" class="btn su-30e741">📊 Luna & Consejos</button>
+        <button type="button" id="tabHomeDiogenes" class="btn su-30e741">🧠 Orden & Diógenes</button>
       </div>
 
       <!-- TAB TAREAS -->
       <div id="homeTasksTareasPanel">
-        <div class="menstrual-card" style="border-color:var(--gold)">
+        <div class="menstrual-card su-68a1a9">
           <h4>➕ Nueva tarea</h4>
           <div class="conv-row">
-            <label style="flex:2">Tarea <input type="text" id="homeTaskName" placeholder="ej: Barrer living, Lavar baño, Sacar basura, Regar plantas" maxlength="50"></label>
+            <label class="su-4b3de7">Tarea <input type="text" id="homeTaskName" placeholder="ej: Barrer living, Lavar baño, Sacar basura, Regar plantas" maxlength="50"></label>
             <label>Área
               <select id="homeTaskArea">
                 <option value="Cocina">🍳 Cocina</option>
@@ -67,28 +67,28 @@
             <label>Fecha puntual <input type="date" id="homeTaskDate"></label>
           </div>
           <label>Notas <input type="text" id="homeTaskNotes" placeholder="ej: con desinfectante, antes de las 10h" maxlength="80"></label>
-          <div class="dlg-actions" style="justify-content:flex-start">
-            <button type="button" id="homeTaskAdd" class="btn btn-accent" style="width:auto">+ Agregar tarea</button>
-            <button type="button" id="homeTaskUpdate" class="btn hidden" style="width:auto">↻ Actualizar</button>
-            <button type="button" id="homeTaskCancel" class="btn hidden" style="width:auto">Cancelar</button>
+          <div class="dlg-actions su-59a5a8">
+            <button type="button" id="homeTaskAdd" class="btn btn-accent su-30e741">+ Agregar tarea</button>
+            <button type="button" id="homeTaskUpdate" class="btn hidden su-30e741">↻ Actualizar</button>
+            <button type="button" id="homeTaskCancel" class="btn hidden su-30e741">Cancelar</button>
           </div>
         </div>
 
-        <div class="conv-row" style="margin-top:10px;align-items:center;flex-wrap:wrap">
-          <label style="flex:1">🔍 Filtrar <input type="text" id="homeTaskFilter" placeholder="buscar por nombre, área o responsable"></label>
+        <div class="conv-row su-89fe6a">
+          <label class="su-97445a">🔍 Filtrar <input type="text" id="homeTaskFilter" placeholder="buscar por nombre, área o responsable"></label>
           <label>Área <select id="homeTaskFilterArea"><option value="">Todas</option><option value="Cocina">Cocina</option><option value="Baño">Baño</option><option value="Habitaciones">Habitaciones</option><option value="Living/Comedor">Living</option><option value="Ropa">Ropa</option><option value="Patio/Jardín">Patio</option><option value="Mantenimiento">Mantenimiento</option><option value="General">General</option></select></label>
           <label>Estado <select id="homeTaskFilterStatus"><option value="">Todas</option><option value="pendientes">Solo pendientes hoy</option><option value="hechas">Hechas hoy</option></select></label>
         </div>
 
-        <div id="homeTasksTodayBox" class="menstrual-card" style="margin-top:10px"></div>
-        <div id="homeTasksList" class="habits-list" style="margin-top:10px;max-height:320px"></div>
-        <div class="dlg-actions" style="justify-content:space-between;align-items:center;margin-top:8px">
-          <span id="homeTasksStats" class="muted" style="font-size:11px"></span>
-          <span style="display:flex;gap:8px;flex-wrap:wrap">
-            <button type="button" id="homeTasksShare" class="btn" style="width:auto">📤 Compartir</button>
-            <button type="button" id="homeTasksExport" class="btn" style="width:auto">📥 Exportar CSV</button>
-            <button type="button" id="homeTasksClearDone" class="btn" style="width:auto">✓ Limpiar hechas hoy</button>
-            <button type="button" id="homeTasksClearAll" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Vaciar</button>
+        <div id="homeTasksTodayBox" class="menstrual-card su-d2c171"></div>
+        <div id="homeTasksList" class="habits-list su-68d14f"></div>
+        <div class="dlg-actions su-cc4a4c">
+          <span id="homeTasksStats" class="muted su-11a508"></span>
+          <span class="su-3de8f9">
+            <button type="button" id="homeTasksShare" class="btn su-30e741">📤 Compartir</button>
+            <button type="button" id="homeTasksExport" class="btn su-30e741">📥 Exportar CSV</button>
+            <button type="button" id="homeTasksClearDone" class="btn su-30e741">✓ Limpiar hechas hoy</button>
+            <button type="button" id="homeTasksClearAll" class="btn su-214f75">🗑 Vaciar</button>
           </span>
         </div>
       </div>
@@ -96,90 +96,90 @@
       <!-- TAB SEMANA -->
       <div id="homeTasksSemanaPanel" class="hidden">
         <div id="homeTasksWeekGrid" class="schedule-week"></div>
-        <div id="homeTasksWeekList" class="menstrual-card" style="margin-top:10px"></div>
-        <p class="muted" style="font-size:10px;margin-top:6px">La semana muestra tareas diarias + las semanales/quincenales/mensuales que caen hoy. Marca ✓ en 📋 Tareas para reflejar aquí.</p>
+        <div id="homeTasksWeekList" class="menstrual-card su-d2c171"></div>
+        <p class="muted su-d47a97">La semana muestra tareas diarias + las semanales/quincenales/mensuales que caen hoy. Marca ✓ en 📋 Tareas para reflejar aquí.</p>
       </div>
 
       <!-- TAB PLANTILLAS -->
       <div id="homeTasksPlantillasPanel" class="hidden">
-        <div class="menstrual-card" style="background:linear-gradient(135deg,var(--panel),var(--card));border-color:var(--gold)">
-          <h4 style="color:var(--gold)">🧹 Plantillas — carga con un toque</h4>
-          <p class="muted" style="font-size:11px">Toque una tarjeta para cargar sus tareas al formulario (luego elige frecuencia/responsable y agrega una por una). Basadas en método <b>FlyLady + 15 min</b> adaptado a casa pencona (humedad, viento sur, mareas).</p>
+        <div class="menstrual-card su-7baee2">
+          <h4 class="su-e39eba">🧹 Plantillas — carga con un toque</h4>
+          <p class="muted su-11a508">Toque una tarjeta para cargar sus tareas al formulario (luego elige frecuencia/responsable y agrega una por una). Basadas en método <b>FlyLady + 15 min</b> adaptado a casa pencona (humedad, viento sur, mareas).</p>
         </div>
-        <div id="homeTasksTemplates" style="margin-top:10px"></div>
-        <div class="menstrual-card" style="margin-top:10px">
+        <div id="homeTasksTemplates" class="su-d2c171"></div>
+        <div class="menstrual-card su-d2c171">
           <h4>⚡ Acciones rápidas</h4>
-          <div style="display:flex;gap:8px;flex-wrap:wrap">
-            <button type="button" id="homeTasksLoadBase" class="btn btn-accent" style="width:auto">🏠 Cargar kit básico (10 tareas)</button>
-            <button type="button" id="homeTasksLoadWeekly" class="btn" style="width:auto">🗓️ Cargar rutina semanal completa</button>
+          <div class="su-3de8f9">
+            <button type="button" id="homeTasksLoadBase" class="btn btn-accent su-30e741">🏠 Cargar kit básico (10 tareas)</button>
+            <button type="button" id="homeTasksLoadWeekly" class="btn su-30e741">🗓️ Cargar rutina semanal completa</button>
           </div>
-          <p class="muted" style="font-size:10px;margin-top:6px">Evita duplicar: si ya tienes “Lavar loza”, no la agregues de nuevo.</p>
+          <p class="muted su-d47a97">Evita duplicar: si ya tienes “Lavar loza”, no la agregues de nuevo.</p>
         </div>
       </div>
 
       <!-- TAB STATS -->
       <div id="homeTasksStatsPanel" class="hidden">
-        <div id="homeTasksLunaBox" class="menstrual-card" style="border-color:var(--gold)"></div>
-        <div id="homeTasksAreasBox" class="menstrual-card" style="margin-top:10px"></div>
-        <div class="menstrual-card" style="margin-top:10px">
+        <div id="homeTasksLunaBox" class="menstrual-card su-68a1a9"></div>
+        <div id="homeTasksAreasBox" class="menstrual-card su-d2c171"></div>
+        <div class="menstrual-card su-d2c171">
           <h4>💡 Método 3×15 + consejos Penco</h4>
-          <div class="help-grid" style="margin-top:6px">
-            <div class="help-card"><h4>🔄 Rutina diaria 15+15+5</h4><p style="font-size:11px"><b>Mañana 15:</b> camas + ventilar 5 min (humedad Penco) + loza desayuno<br><b>Tarde 15:</b> barrido rápido + baño express<br><b>Noche 5:</b> dejar cocina lista (mise en place mañana)</p></div>
-            <div class="help-card"><h4>📅 Semana por zonas</h4><p style="font-size:11px"><b>Lun:</b> Habitaciones + ropa<br><b>Mar:</b> Baños profundo<br><b>Mié:</b> Cocina a fondo<br><b>Jue:</b> Living + polvo<br><b>Vie:</b> Patio/jardín + compras<br><b>Sáb:</b> Mantenimiento ligero<br><b>Dom:</b> Descanso / repaso 15 min</p></div>
-            <div class="help-card"><h4>🌧️ Anti-humedad Penco</h4><p style="font-size:11px">Ventila 10 min aunque llueva (efecto chimenea), revisa sellos ventana, aspira moho con mascarilla, usa deshumidificador casero (sal gruesa) en closet. Luna Pukem: revisa techo antes de invierno.</p></div>
-            <div class="help-card"><h4>👥 Reparto equitativo</h4><p style="font-size:11px">Asigna responsable rotativo por semana (ej: “Baño — Semana 1: Yo, 2: Pareja”). Usa “Responsable: Rotativo” y cambia el nombre cada luna. Niños: tareas de 5 min con checklist visual.</p></div>
+          <div class="help-grid su-fe7b49">
+            <div class="help-card"><h4>🔄 Rutina diaria 15+15+5</h4><p class="su-11a508"><b>Mañana 15:</b> camas + ventilar 5 min (humedad Penco) + loza desayuno<br><b>Tarde 15:</b> barrido rápido + baño express<br><b>Noche 5:</b> dejar cocina lista (mise en place mañana)</p></div>
+            <div class="help-card"><h4>📅 Semana por zonas</h4><p class="su-11a508"><b>Lun:</b> Habitaciones + ropa<br><b>Mar:</b> Baños profundo<br><b>Mié:</b> Cocina a fondo<br><b>Jue:</b> Living + polvo<br><b>Vie:</b> Patio/jardín + compras<br><b>Sáb:</b> Mantenimiento ligero<br><b>Dom:</b> Descanso / repaso 15 min</p></div>
+            <div class="help-card"><h4>🌧️ Anti-humedad Penco</h4><p class="su-11a508">Ventila 10 min aunque llueva (efecto chimenea), revisa sellos ventana, aspira moho con mascarilla, usa deshumidificador casero (sal gruesa) en closet. Luna Pukem: revisa techo antes de invierno.</p></div>
+            <div class="help-card"><h4>👥 Reparto equitativo</h4><p class="su-11a508">Asigna responsable rotativo por semana (ej: “Baño — Semana 1: Yo, 2: Pareja”). Usa “Responsable: Rotativo” y cambia el nombre cada luna. Niños: tareas de 5 min con checklist visual.</p></div>
           </div>
         </div>
-        <div class="menstrual-card" style="margin-top:10px">
+        <div class="menstrual-card su-d2c171">
           <h4>📏 Regla 2-minutos</h4>
-          <p class="muted" style="font-size:11px;line-height:1.5">Si toma &lt;2 min (colgar chaqueta, enjuagar taza, guardar zapatos) hazlo ahora. Evita “montaña de pendientes” y deja la luna fluida.</p>
+          <p class="muted su-a6c665">Si toma &lt;2 min (colgar chaqueta, enjuagar taza, guardar zapatos) hazlo ahora. Evita “montaña de pendientes” y deja la luna fluida.</p>
         </div>
       </div>
 
       <!-- TAB DIOGENES / ACUMULACIÓN -->
       <div id="homeTasksDiogenesPanel" class="hidden">
-        <div class="menstrual-card" style="border-color:var(--gold);background:linear-gradient(135deg,var(--panel),var(--card))">
-          <h4 style="color:var(--gold)">🧠 Orden progresivo — combatir acumulación y síndrome de Diógenes</h4>
-          <p class="muted" style="font-size:11px;line-height:1.5">Guía compasiva y práctica para cuando <b>cuesta botar, se acumula o la casa se vuelve difícil de habitar</b>. No es diagnóstico ni reemplaza ayuda profesional. Avanza <b>de a poco, sin culpa</b>: 15 min por día. Todo tu avance queda <b>privado y local</b>.</p>
-          <div id="diogenesProgress" style="margin-top:8px"></div>
+        <div class="menstrual-card su-bcee4f">
+          <h4 class="su-e39eba">🧠 Orden progresivo — combatir acumulación y síndrome de Diógenes</h4>
+          <p class="muted su-a6c665">Guía compasiva y práctica para cuando <b>cuesta botar, se acumula o la casa se vuelve difícil de habitar</b>. No es diagnóstico ni reemplaza ayuda profesional. Avanza <b>de a poco, sin culpa</b>: 15 min por día. Todo tu avance queda <b>privado y local</b>.</p>
+          <div id="diogenesProgress" class="su-8a77e5"></div>
         </div>
-        <div id="diogenesChecklist" class="menstrual-card" style="margin-top:10px"></div>
-        <div class="menstrual-card" style="margin-top:10px">
+        <div id="diogenesChecklist" class="menstrual-card su-d2c171"></div>
+        <div class="menstrual-card su-d2c171">
           <h4>📶 Niveles de acumulación — ubícate sin juzgarte</h4>
-          <div class="help-grid" style="margin-top:6px">
-            <div class="help-card"><h4>Nivel 1 · Desorden leve</h4><p style="font-size:11px">Cosas fuera de lugar, pero cocina/baño/cama usables. <b>Acción:</b> rutina 15+15+5 y regla 1 entra / 1 sale.</p></div>
-            <div class="help-card"><h4>Nivel 2 · Acumulación visible</h4><p style="font-size:11px">Pilitas en living/piezas, cuesta limpiar fondo. <b>Acción:</b> método caja-4 por zona, 1 zona por semana.</p></div>
-            <div class="help-card"><h4>Nivel 3 · Habitación bloqueada</h4><p style="font-size:11px">Una pieza/baño poco usable, olor/humedad, plagas leves. <b>Acción:</b> plan 28 días + pedir apoyo (familia/CESFAM). No hacerlo solo.</p></div>
-            <div class="help-card"><h4>Nivel 4-5 · Riesgo sanitario</h4><p style="font-size:11px">Cocina/baño inutilizables, basura orgánica, heces/plagas, riesgo incendio. <b>Acción:</b> ayuda profesional ya (CESFAM, municipio, Salud Responde 600 360 7777). No es flojera: es salud.</p></div>
+          <div class="help-grid su-fe7b49">
+            <div class="help-card"><h4>Nivel 1 · Desorden leve</h4><p class="su-11a508">Cosas fuera de lugar, pero cocina/baño/cama usables. <b>Acción:</b> rutina 15+15+5 y regla 1 entra / 1 sale.</p></div>
+            <div class="help-card"><h4>Nivel 2 · Acumulación visible</h4><p class="su-11a508">Pilitas en living/piezas, cuesta limpiar fondo. <b>Acción:</b> método caja-4 por zona, 1 zona por semana.</p></div>
+            <div class="help-card"><h4>Nivel 3 · Habitación bloqueada</h4><p class="su-11a508">Una pieza/baño poco usable, olor/humedad, plagas leves. <b>Acción:</b> plan 28 días + pedir apoyo (familia/CESFAM). No hacerlo solo.</p></div>
+            <div class="help-card"><h4>Nivel 4-5 · Riesgo sanitario</h4><p class="su-11a508">Cocina/baño inutilizables, basura orgánica, heces/plagas, riesgo incendio. <b>Acción:</b> ayuda profesional ya (CESFAM, municipio, Salud Responde 600 360 7777). No es flojera: es salud.</p></div>
           </div>
-          <p class="muted" style="font-size:10px;margin-top:6px">Si hay menores, mayores postrados o animales afectados, pide ayuda hoy aunque dé vergüenza. En Chile puedes partir por tu CESFAM Penco / Lirquén.</p>
+          <p class="muted su-d47a97">Si hay menores, mayores postrados o animales afectados, pide ayuda hoy aunque dé vergüenza. En Chile puedes partir por tu CESFAM Penco / Lirquén.</p>
         </div>
-        <div class="menstrual-card" style="margin-top:10px">
+        <div class="menstrual-card su-d2c171">
           <h4>🧰 Estrategias que sí funcionan</h4>
-          <div class="help-grid" style="margin-top:6px">
-            <div class="help-card"><h4>📦 Caja-4 (20 min)</h4><p style="font-size:11px">Toma 4 bolsas/cajas: <b>1 Quedarse · 2 Donar/vender · 3 Reciclar · 4 Basura</b>. Solo una repisa o 1 m² por vez. Foto antes/después para ver avance.</p></div>
-            <div class="help-card"><h4>⏱️ 15 min + timer</h4><p style="font-size:11px">Pon ⏱ Tiempo del calendario 15 min. Para cuando suene, aunque quede a medias. Frecuencia le gana a intensidad y evita crisis de angustia.</p></div>
-            <div class="help-card"><h4>🔁 1 entra / 2 salen</h4><p style="font-size:11px">Por cada cosa nueva que entra, salen 2 (donar/reciclar). Frena compras: lista 72h — si en 3 días no lo necesitas, no lo compres.</p></div>
-            <div class="help-card"><h4>❓ 5 preguntas filtro</h4><p style="font-size:11px">1 ¿Lo usé el último año? 2 ¿Tengo otro igual? 3 ¿Ocupa lugar de vivir? 4 ¿Lo guardaría si me cambio a 1 pieza? 5 ¿Me da paz o culpa? Si hay 2+ “no”, suéltalo con foto de recuerdo.</p></div>
-            <div class="help-card"><h4>🗺️ Por zonas, no por ganas</h4><p style="font-size:11px"><b>Sem 1:</b> salida (puerta/pasillo) <b>Sem 2:</b> cocina/mesa <b>Sem 3:</b> baño <b>Sem 4:</b> dormitorio/cama. Una zona por luna si es mucho.</p></div>
-            <div class="help-card"><h4>🤝 Sin vergüenza, con compañía</h4><p style="font-size:11px">No ordenes con quien critica. Invita a 1 persona amable 1 hora. Turnos: uno sostiene bolsa, otro decide. Agradece en 📓 Gratitud cada avance.</p></div>
+          <div class="help-grid su-fe7b49">
+            <div class="help-card"><h4>📦 Caja-4 (20 min)</h4><p class="su-11a508">Toma 4 bolsas/cajas: <b>1 Quedarse · 2 Donar/vender · 3 Reciclar · 4 Basura</b>. Solo una repisa o 1 m² por vez. Foto antes/después para ver avance.</p></div>
+            <div class="help-card"><h4>⏱️ 15 min + timer</h4><p class="su-11a508">Pon ⏱ Tiempo del calendario 15 min. Para cuando suene, aunque quede a medias. Frecuencia le gana a intensidad y evita crisis de angustia.</p></div>
+            <div class="help-card"><h4>🔁 1 entra / 2 salen</h4><p class="su-11a508">Por cada cosa nueva que entra, salen 2 (donar/reciclar). Frena compras: lista 72h — si en 3 días no lo necesitas, no lo compres.</p></div>
+            <div class="help-card"><h4>❓ 5 preguntas filtro</h4><p class="su-11a508">1 ¿Lo usé el último año? 2 ¿Tengo otro igual? 3 ¿Ocupa lugar de vivir? 4 ¿Lo guardaría si me cambio a 1 pieza? 5 ¿Me da paz o culpa? Si hay 2+ “no”, suéltalo con foto de recuerdo.</p></div>
+            <div class="help-card"><h4>🗺️ Por zonas, no por ganas</h4><p class="su-11a508"><b>Sem 1:</b> salida (puerta/pasillo) <b>Sem 2:</b> cocina/mesa <b>Sem 3:</b> baño <b>Sem 4:</b> dormitorio/cama. Una zona por luna si es mucho.</p></div>
+            <div class="help-card"><h4>🤝 Sin vergüenza, con compañía</h4><p class="su-11a508">No ordenes con quien critica. Invita a 1 persona amable 1 hora. Turnos: uno sostiene bolsa, otro decide. Agradece en 📓 Gratitud cada avance.</p></div>
           </div>
         </div>
-        <div class="menstrual-card" style="margin-top:10px">
+        <div class="menstrual-card su-d2c171">
           <h4>🌙 Plan 28 días (una luna) — anti-acumulación</h4>
-          <p class="muted" style="font-size:11px"><b>Días 1-7 Salida despejada:</b> pasillo + puerta + 1 bolsa diaria (basura/reciclaje). Ventilar 10 min.<br><b>Días 8-14 Cocina viva:</b> mesa libre para comer, 1 cajón por día, vencidos a basura, frascos a ♻️ Reciclaje.<br><b>Días 15-21 Baño seguro:</b> piso visible, vencidos/medicamentos al punto limpio, 1 toalla por persona.<br><b>Días 22-28 Cama y ropa:</b> cama usable, 1 bolsa ropa donar, suelo dormitorio visible. Celebra y repite próxima luna.</p>
-          <p class="muted" style="font-size:10px">Regla de oro: nunca saques todo de golpe (“montaña”). Siempre por pedacitos con bolsas listas y destino decidido (donar/reciclar/botar) el mismo día.</p>
+          <p class="muted su-11a508"><b>Días 1-7 Salida despejada:</b> pasillo + puerta + 1 bolsa diaria (basura/reciclaje). Ventilar 10 min.<br><b>Días 8-14 Cocina viva:</b> mesa libre para comer, 1 cajón por día, vencidos a basura, frascos a ♻️ Reciclaje.<br><b>Días 15-21 Baño seguro:</b> piso visible, vencidos/medicamentos al punto limpio, 1 toalla por persona.<br><b>Días 22-28 Cama y ropa:</b> cama usable, 1 bolsa ropa donar, suelo dormitorio visible. Celebra y repite próxima luna.</p>
+          <p class="muted su-0d5be0">Regla de oro: nunca saques todo de golpe (“montaña”). Siempre por pedacitos con bolsas listas y destino decidido (donar/reciclar/botar) el mismo día.</p>
         </div>
-        <div class="menstrual-card" style="margin-top:10px">
+        <div class="menstrual-card su-d2c171">
           <h4>♻️ Destinos en Penco — que no vuelva a entrar</h4>
-          <p class="muted" style="font-size:11px;line-height:1.5">• <b>Reciclaje:</b> usa ♻️ Reciclaje & Ferias del calendario (punto limpio, vidrio/plástico/papel).<br>• <b>Donar:</b> ferias Lirquén/Penco, ropa limpia en bolsa rotulada, muebles por redes vecinales el mismo día.<br>• <b>Basura voluminosa:</b> operativos municipales — consulta en DIDECO Penco, no acumules “para llevarlo después”.<br>• <b>Peligrosos:</b> medicamentos vencidos a farmacia/CESFAM, pilas y aceite a punto limpio, nunca al desagüe.<br>• <b>Plagas/hongos:</b> mascarilla + guantes + ventilación. Si hay fecas de ratón o moho negro extenso, no limpies solo: pide apoyo sanitario.</p>
+          <p class="muted su-a6c665">• <b>Reciclaje:</b> usa ♻️ Reciclaje & Ferias del calendario (punto limpio, vidrio/plástico/papel).<br>• <b>Donar:</b> ferias Lirquén/Penco, ropa limpia en bolsa rotulada, muebles por redes vecinales el mismo día.<br>• <b>Basura voluminosa:</b> operativos municipales — consulta en DIDECO Penco, no acumules “para llevarlo después”.<br>• <b>Peligrosos:</b> medicamentos vencidos a farmacia/CESFAM, pilas y aceite a punto limpio, nunca al desagüe.<br>• <b>Plagas/hongos:</b> mascarilla + guantes + ventilación. Si hay fecas de ratón o moho negro extenso, no limpies solo: pide apoyo sanitario.</p>
         </div>
-        <div class="menstrual-card" style="margin-top:10px;border-color:#e76e8a">
-          <h4 style="color:#e76e8a">🆘 Cuándo pedir ayuda profesional (Chile)</h4>
-          <p class="muted" style="font-size:11px;line-height:1.5">• No puedes usar cocina, baño o cama hace semanas.<br>• Angustia fuerte al botar, llanto o bloqueo.<br>• Familia/conflicto, riesgo incendio, plagas, mal olor persistente.<br>• Eres mayor, estás solo/a o cuidas a otro.<br><b>Dónde partir:</b> CESFAM Penco / Lirquén (hora salud mental), <b>Salud Responde 600 360 7777</b> (24h), SENAMA 800 400 035 (mayores), 149 Fono Familia si hay riesgo. Si hay peligro inmediato: 131 SAMU / 132 Bomberos / 133 Carabineros.</p>
-          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
-            <button type="button" id="diogenesShare" class="btn" style="width:auto">📤 Compartir mi avance</button>
-            <button type="button" id="diogenesReset" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">↺ Reiniciar checklist</button>
+        <div class="menstrual-card su-791d1a">
+          <h4 class="su-a861ba">🆘 Cuándo pedir ayuda profesional (Chile)</h4>
+          <p class="muted su-a6c665">• No puedes usar cocina, baño o cama hace semanas.<br>• Angustia fuerte al botar, llanto o bloqueo.<br>• Familia/conflicto, riesgo incendio, plagas, mal olor persistente.<br>• Eres mayor, estás solo/a o cuidas a otro.<br><b>Dónde partir:</b> CESFAM Penco / Lirquén (hora salud mental), <b>Salud Responde 600 360 7777</b> (24h), SENAMA 800 400 035 (mayores), 149 Fono Familia si hay riesgo. Si hay peligro inmediato: 131 SAMU / 132 Bomberos / 133 Carabineros.</p>
+          <div class="su-ac5453">
+            <button type="button" id="diogenesShare" class="btn su-30e741">📤 Compartir mi avance</button>
+            <button type="button" id="diogenesReset" class="btn su-214f75">↺ Reiniciar checklist</button>
           </div>
         </div>
       </div>

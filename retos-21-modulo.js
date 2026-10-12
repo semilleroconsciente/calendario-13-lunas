@@ -65,10 +65,10 @@ function makeDialog(id, title, sub, bodyHTML) {
   var d = document.createElement('dialog');
   d.id = id;
   d.innerHTML = '<form method="dialog">' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
-    '<h3 style="margin:0;color:var(--accent)">' + title + '</h3>' +
+    '<div class="dlg-actions su-d2d053">' +
+    '<h3 class="su-ee0cfe">' + title + '</h3>' +
     '<button type="button" data-close class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    (sub ? '<p class="muted" style="line-height:1.5">' + sub + '</p>' : '') +
+    (sub ? '<p class="muted su-77e2fe">' + sub + '</p>' : '') +
     bodyHTML +
     '<div class="dlg-actions"><button type="button" data-close class="btn">Cerrar</button></div></form>';
   document.body.appendChild(d);
@@ -452,15 +452,15 @@ function renderHead() {
   var box = $('r21head');
   if (!box) return;
   if (!s.activos.length && !s.archivo.length) {
-    box.innerHTML = '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🔥 ¿Por qué 21 días?</h4>' +
-      '<p class="muted" style="font-size:11px;line-height:1.6">Tres semanas alcanzan para instalar un hábito: la 1ª cuesta, la 2ª fluye, la 3ª se queda. Elige un reto del catálogo, ponle fecha y hora, márcalo cada día y <b>llévalo al calendario</b> para no olvidarlo. Si fallas un día, retoma al siguiente: la regla es <b>nunca fallar dos veces seguidas</b>.</p></div>';
+    box.innerHTML = '<div class="menstrual-card su-68a1a9"><h4>🔥 ¿Por qué 21 días?</h4>' +
+      '<p class="muted su-b439ab">Tres semanas alcanzan para instalar un hábito: la 1ª cuesta, la 2ª fluye, la 3ª se queda. Elige un reto del catálogo, ponle fecha y hora, márcalo cada día y <b>llévalo al calendario</b> para no olvidarlo. Si fallas un día, retoma al siguiente: la regla es <b>nunca fallar dos veces seguidas</b>.</p></div>';
     return;
   }
   var tot = 0, n = 0, racha = 0;
   s.activos.forEach(function (r) { tot += pct(r); n++; racha = Math.max(racha, rachaActual(r)); });
   var prom = n ? Math.round(tot / n) : 0;
-  box.innerHTML = '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🔥 Tu fuego: ' + s.activos.length + ' activo(s) · promedio ' + prom + '% · mejor racha ' + racha + ' 🔥</h4>' + barHTML(prom) +
-    '<p class="muted" style="font-size:11px">Marca el día de hoy en 🚀 Mis retos o en 📅 Día a día. Lleva tus días al calendario con 📌.</p></div>';
+  box.innerHTML = '<div class="menstrual-card su-68a1a9"><h4>🔥 Tu fuego: ' + s.activos.length + ' activo(s) · promedio ' + prom + '% · mejor racha ' + racha + ' 🔥</h4>' + barHTML(prom) +
+    '<p class="muted su-11a508">Marca el día de hoy en 🚀 Mis retos o en 📅 Día a día. Lleva tus días al calendario con 📌.</p></div>';
 }
 function renderTabs() {
   ['Catalogo', 'Mis', 'Detalle', 'Crear', 'Guia'].forEach(function (t) {
@@ -485,7 +485,7 @@ function renderCatalogo() {
   var fbox = $('r21catFilter');
   if (fbox && !fbox.dataset.built) {
     fbox.dataset.built = '1';
-    fbox.innerHTML = CATS.map(function (c) { return '<button type="button" class="btn r21-f" data-c="' + esc(c) + '" style="width:auto;font-size:11px">' + esc(c) + '</button>'; }).join('');
+    fbox.innerHTML = CATS.map(function (c) { return '<button type="button" class="btn r21-f su-337714" data-c="' + esc(c) + '">' + esc(c) + '</button>'; }).join('');
     fbox.querySelectorAll('.r21-f').forEach(function (b) {
       b.onclick = function () { catFilter = b.dataset.c; renderCatalogo(); };
     });
@@ -493,24 +493,24 @@ function renderCatalogo() {
   if (fbox) fbox.querySelectorAll('.r21-f').forEach(function (b) {
     b.classList.toggle('btn-accent', b.dataset.c === catFilter);
   });
-  if (!list.length) { box.innerHTML = '<p class="muted" style="text-align:center">Sin retos en esta categoría.</p>'; return; }
+  if (!list.length) { box.innerHTML = '<p class="muted su-91a870">Sin retos en esta categoría.</p>'; return; }
   box.innerHTML = list.map(function (x) {
     var p = x.p;
     var prev = previewId === p.id;
     var dias = (p.dias || []).slice(0, 21);
     return '<div class="si-card"><h4>' + esc(p.icono + ' ' + p.nombre) + '</h4>' +
-      '<p style="display:flex;gap:6px;flex-wrap:wrap"><span class="chip" style="font-size:10px">' + esc(p.cat) + '</span>' +
-      '<span class="chip" style="font-size:10px">21 días</span>' +
-      '<span class="chip" style="font-size:10px">⏰ ' + esc(p.hora || '10:00') + '</span></p>' +
+      '<p class="su-6157e8"><span class="chip su-0d5be0">' + esc(p.cat) + '</span>' +
+      '<span class="chip su-0d5be0">21 días</span>' +
+      '<span class="chip su-0d5be0">⏰ ' + esc(p.hora || '10:00') + '</span></p>' +
       '<p class="muted">' + esc(p.desc || '') + '</p>' +
-      (prev ? '<div style="margin:6px 0;font-size:11px;line-height:1.7">' +
+      (prev ? '<div class="su-521ff7">' +
         dias.map(function (d, i) {
           var f = faseDe(i + 1);
           return '<div>· <b>D' + (i + 1) + '</b> <span class="muted">(' + esc(f.nombre) + ')</span> — ' + esc(d.t) + '</div>';
         }).join('') + '</div>' : '') +
-      '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">' +
-      '<button type="button" class="btn r21-prev" data-k="' + esc(p.id) + '" style="width:auto;font-size:11px">' + (prev ? '🙈 Ocultar plan' : '👁️ Ver plan 21 días') + '</button>' +
-      '<button type="button" class="btn btn-accent r21-start" data-k="' + esc(p.id) + '" style="width:auto;font-size:11px">▶ Empezar</button>' +
+      '<div class="su-c158a9">' +
+      '<button type="button" class="btn r21-prev su-337714" data-k="' + esc(p.id) + '">' + (prev ? '🙈 Ocultar plan' : '👁️ Ver plan 21 días') + '</button>' +
+      '<button type="button" class="btn btn-accent r21-start su-337714" data-k="' + esc(p.id) + '">▶ Empezar</button>' +
       '</div></div>';
   }).join('');
   box.querySelectorAll('.r21-prev').forEach(function (b) {
@@ -547,7 +547,7 @@ function renderMis() {
   if (!box) return;
   var s = store();
   if (!s.activos.length) {
-    box.innerHTML = '<p class="muted" style="text-align:center">Sin retos activos. Elige uno en 📋 Catálogo o crea el tuyo en ➕ Crear.</p>';
+    box.innerHTML = '<p class="muted su-91a870">Sin retos activos. Elige uno en 📋 Catálogo o crea el tuyo en ➕ Crear.</p>';
     var ab = $('r21archBox');
     if (ab) ab.innerHTML = s.archivo.length ? archivadosHTML(s) : '';
     return;
@@ -559,19 +559,19 @@ function renderMis() {
     var estado = hoy < 1 ? '⏳ Empieza el ' + r.inicio : hoy > 21 ? (h >= 21 ? '🌸 ¡Completado!' : '🏁 Terminó: ' + h + '/21') : '📅 Hoy es el día ' + hoy + '/21';
     var tareaHoy = hoy >= 1 && hoy <= 21 ? tareaCorta(r, hoy) : '—';
     return '<div class="si-card"><h4>' + esc(r.icono + ' ' + r.nombre) + '</h4>' +
-      '<p style="display:flex;gap:6px;flex-wrap:wrap"><span class="chip" style="font-size:10px">' + esc(r.cat || '') + '</span>' +
-      '<span class="chip" style="font-size:10px">📅 ' + esc(r.inicio) + ' → ' + esc(addDays(r.inicio, 20)) + '</span>' +
-      '<span class="chip" style="font-size:10px">⏰ ' + esc(r.hora) + '</span>' +
-      '<span class="chip" style="font-size:10px">🔥 racha ' + ra + '</span></p>' +
-      '<p style="font-size:12px"><b>' + h + '/21 · ' + p + '%</b> — ' + esc(estado) + '</p>' + barHTML(p) +
-      (hoy >= 1 && hoy <= 21 ? '<p style="font-size:11px">👉 Hoy: <b>' + esc(tareaHoy) + '</b> ' + (r.checks[hoy] ? '✅' : '') + '</p>' : '') +
-      '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">' +
-      (hoy >= 1 && hoy <= 21 ? '<button type="button" class="btn btn-accent r21-today" data-k="' + esc(r.id) + '" data-d="' + hoy + '" style="width:auto;font-size:11px">' + (r.checks[hoy] ? '↩️ Desmarcar hoy' : '✅ Marcar hoy') + '</button>' : '') +
-      '<button type="button" class="btn r21-open" data-k="' + esc(r.id) + '" style="width:auto;font-size:11px">📅 Abrir día a día</button>' +
-      '<button type="button" class="btn r21-cal" data-k="' + esc(r.id) + '" style="width:auto;font-size:11px">📌 Llevar al calendario</button>' +
-      '<button type="button" class="btn r21-share" data-k="' + esc(r.id) + '" style="width:auto;font-size:11px">📤</button>' +
-      '<button type="button" class="btn r21-arch" data-k="' + esc(r.id) + '" style="width:auto;font-size:11px">🗄️ Archivar</button>' +
-      '<button type="button" class="btn r21-del" data-k="' + esc(r.id) + '" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕</button>' +
+      '<p class="su-6157e8"><span class="chip su-0d5be0">' + esc(r.cat || '') + '</span>' +
+      '<span class="chip su-0d5be0">📅 ' + esc(r.inicio) + ' → ' + esc(addDays(r.inicio, 20)) + '</span>' +
+      '<span class="chip su-0d5be0">⏰ ' + esc(r.hora) + '</span>' +
+      '<span class="chip su-0d5be0">🔥 racha ' + ra + '</span></p>' +
+      '<p class="su-6cb285"><b>' + h + '/21 · ' + p + '%</b> — ' + esc(estado) + '</p>' + barHTML(p) +
+      (hoy >= 1 && hoy <= 21 ? '<p class="su-11a508">👉 Hoy: <b>' + esc(tareaHoy) + '</b> ' + (r.checks[hoy] ? '✅' : '') + '</p>' : '') +
+      '<div class="su-c158a9">' +
+      (hoy >= 1 && hoy <= 21 ? '<button type="button" class="btn btn-accent r21-today su-337714" data-k="' + esc(r.id) + '" data-d="' + hoy + '">' + (r.checks[hoy] ? '↩️ Desmarcar hoy' : '✅ Marcar hoy') + '</button>' : '') +
+      '<button type="button" class="btn r21-open su-337714" data-k="' + esc(r.id) + '">📅 Abrir día a día</button>' +
+      '<button type="button" class="btn r21-cal su-337714" data-k="' + esc(r.id) + '">📌 Llevar al calendario</button>' +
+      '<button type="button" class="btn r21-share su-337714" data-k="' + esc(r.id) + '">📤</button>' +
+      '<button type="button" class="btn r21-arch su-337714" data-k="' + esc(r.id) + '">🗄️ Archivar</button>' +
+      '<button type="button" class="btn r21-del su-fd834a" data-k="' + esc(r.id) + '">✕</button>' +
       '</div></div>';
   }).join('');
   box.querySelectorAll('.r21-today').forEach(function (b) {
@@ -628,22 +628,22 @@ function renderMis() {
   if (ab2) ab2.innerHTML = s.archivo.length ? archivadosHTML(s) : '';
 }
 function archivadosHTML(s) {
-  return '<div class="menstrual-card" style="margin-top:10px"><h4>🗄️ Archivados (' + s.archivo.length + ')</h4>' +
+  return '<div class="menstrual-card su-d2c171"><h4>🗄️ Archivados (' + s.archivo.length + ')</h4>' +
     s.archivo.slice().reverse().slice(0, 20).map(function (r) {
-      return '<div style="font-size:11px;padding:4px 0;border-bottom:1px dashed #ffffff22">' + esc(r.icono + ' ' + r.nombre) +
+      return '<div class="su-cf4a10">' + esc(r.icono + ' ' + r.nombre) +
         ' · ' + hechos(r) + '/21 (' + pct(r) + '%)' +
-        ' <button type="button" class="btn r21-unarch" data-k="' + esc(r.id) + '" style="width:auto;font-size:10px;padding:2px 8px">↩️ Reactivar</button></div>';
+        ' <button type="button" class="btn r21-unarch su-9f0529" data-k="' + esc(r.id) + '">↩️ Reactivar</button></div>';
     }).join('') + '</div>';
 }
 function renderDetalle() {
   var box = $('r21detBox');
   if (!box) return;
   var s = store();
-  if (!s.activos.length) { box.innerHTML = '<p class="muted" style="text-align:center">Sin retos activos.</p>'; return; }
+  if (!s.activos.length) { box.innerHTML = '<p class="muted su-91a870">Sin retos activos.</p>'; return; }
   if (!selId || !getReto(selId) || !s.activos.some(function (r) { return r.id === selId; })) selId = s.activos[0].id;
   var r = getReto(selId);
   // selector
-  var sel = '<div class="conv-row"><label style="flex:2">Reto <select id="r21sel">' +
+  var sel = '<div class="conv-row"><label class="su-4b3de7">Reto <select id="r21sel">' +
     s.activos.map(function (x) { return '<option value="' + esc(x.id) + '"' + (x.id === selId ? ' selected' : '') + '>' + esc(x.icono + ' ' + x.nombre + ' (' + hechos(x) + '/21)') + '</option>'; }).join('') +
     '</select></label><label>Inicio <input type="date" id="r21inicio" value="' + esc(r.inicio) + '"></label>' +
     '<label>Hora <input type="time" id="r21hora" value="' + esc(r.hora) + '"></label></div>';
@@ -652,27 +652,27 @@ function renderDetalle() {
     var n = i + 1, f = fechaDeDia(r, n), e = estadoDia(r, n);
     var cls = e === 'hecho' ? 'hecho' : e === 'hoy' ? 'hoy' : e === 'pendiente-atrasado' ? 'atras' : '';
     var mark = e === 'hecho' ? '✅' : e === 'hoy' ? '👉' : '⭕';
-    var nota = r.notas[n] ? '<div class="muted" style="font-size:10px">📝 ' + esc(r.notas[n]) + '</div>' : '';
+    var nota = r.notas[n] ? '<div class="muted su-0d5be0">📝 ' + esc(r.notas[n]) + '</div>' : '';
     return '<div class="r21-day ' + cls + '"><div><b>' + mark + ' D' + n + '</b> · ' + esc(f.slice(5)) + ' ' + faseChip(n) + '</div>' +
-      '<div style="margin:4px 0"><b>' + esc(d.t) + '</b></div>' +
-      (d.d ? '<div class="muted" style="font-size:10px">' + esc(d.d) + '</div>' : '') + nota +
-      '<div style="display:flex;gap:4px;margin-top:6px;flex-wrap:wrap">' +
-      '<button type="button" class="btn r21-chk" data-d="' + n + '" style="width:auto;font-size:10px;padding:2px 8px">' + (e === 'hecho' ? '↩️' : '✓') + '</button>' +
-      '<button type="button" class="btn r21-one" data-d="' + n + '" title="Llevar este día al calendario" style="width:auto;font-size:10px;padding:2px 8px">📌</button>' +
-      '<button type="button" class="btn r21-note" data-d="' + n + '" title="Nota del día" style="width:auto;font-size:10px;padding:2px 8px">📝</button>' +
+      '<div class="su-557d84"><b>' + esc(d.t) + '</b></div>' +
+      (d.d ? '<div class="muted su-0d5be0">' + esc(d.d) + '</div>' : '') + nota +
+      '<div class="su-e239a1">' +
+      '<button type="button" class="btn r21-chk su-9f0529" data-d="' + n + '">' + (e === 'hecho' ? '↩️' : '✓') + '</button>' +
+      '<button type="button" class="btn r21-one su-9f0529" data-d="' + n + '" title="Llevar este día al calendario">📌</button>' +
+      '<button type="button" class="btn r21-note su-9f0529" data-d="' + n + '" title="Nota del día">📝</button>' +
       '</div></div>';
   }).join('') + '</div>';
   var L = logrosDe(r);
   box.innerHTML = sel +
-    '<div class="menstrual-card" style="border-color:var(--gold);margin-top:8px"><h4>' + esc(r.icono + ' ' + r.nombre) + ' · ' + hechos(r) + '/21 (' + pct(r) + '%)</h4>' + barHTML(pct(r)) +
-    '<p class="muted" style="font-size:11px">📅 ' + esc(r.inicio + ' · ' + fmtFecha(r.inicio)) + ' → ' + esc(addDays(r.inicio, 20) + ' · ' + fmtFecha(addDays(r.inicio, 20))) +
+    '<div class="menstrual-card su-435dbc"><h4>' + esc(r.icono + ' ' + r.nombre) + ' · ' + hechos(r) + '/21 (' + pct(r) + '%)</h4>' + barHTML(pct(r)) +
+    '<p class="muted su-11a508">📅 ' + esc(r.inicio + ' · ' + fmtFecha(r.inicio)) + ' → ' + esc(addDays(r.inicio, 20) + ' · ' + fmtFecha(addDays(r.inicio, 20))) +
     ' · ⏰ ' + esc(r.hora) + (r.conAviso ? ' · 🔔 con aviso' : '') + ' · 🔥 racha ' + rachaActual(r) + '</p>' +
-    '<p style="font-size:11px">' + L.map(function (l) { return (l.ok ? '✅ ' : '⭕ ') + esc(l.label); }).join('<br>') + '</p>' +
-    '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">' +
-    '<button type="button" id="r21all" class="btn btn-accent" style="width:auto;font-size:11px">📌 Llevar los 21 días</button>' +
-    '<button type="button" id="r21rest" class="btn" style="width:auto;font-size:11px">📌 Llevar lo que falta</button>' +
-    '<button type="button" id="r21un" class="btn" style="width:auto;font-size:11px">🗑 Quitar del calendario</button>' +
-    '<button type="button" id="r21share2" class="btn" style="width:auto;font-size:11px">📤 Compartir</button>' +
+    '<p class="su-11a508">' + L.map(function (l) { return (l.ok ? '✅ ' : '⭕ ') + esc(l.label); }).join('<br>') + '</p>' +
+    '<div class="su-c158a9">' +
+    '<button type="button" id="r21all" class="btn btn-accent su-337714">📌 Llevar los 21 días</button>' +
+    '<button type="button" id="r21rest" class="btn su-337714">📌 Llevar lo que falta</button>' +
+    '<button type="button" id="r21un" class="btn su-337714">🗑 Quitar del calendario</button>' +
+    '<button type="button" id="r21share2" class="btn su-337714">📤 Compartir</button>' +
     '</div></div>' + grid;
   var sEl = $('r21sel');
   if (sEl) sEl.onchange = function () { selId = sEl.value; renderDetalle(); };
@@ -734,15 +734,15 @@ function renderGuia() {
   if (!box || box.dataset.done) return;
   box.dataset.done = '1';
   box.innerHTML =
-    '<div class="help-grid" style="margin-top:8px">' +
-    '<div class="help-card"><h4>🌱 Días 1-7 · Siembra</h4><p style="font-size:11px">Empieza ridículamente fácil. El objetivo es no fallar: mismo lugar, misma hora, misma señal (ej: después del desayuno).</p></div>' +
-    '<div class="help-card"><h4>🌿 Días 8-14 · Brote</h4><p style="font-size:11px">Sube la dosis. Si un día cuesta, haz la mitad pero no lo saltes: la constancia pesa más que la intensidad.</p></div>' +
-    '<div class="help-card"><h4>🌸 Días 15-21 · Florece</h4><p style="font-size:11px">Tu mejor versión. Planifica cómo seguirá después del día 21 (mantención 2-3 veces por semana).</p></div>' +
-    '<div class="help-card"><h4>📌 Calendario</h4><p style="font-size:11px">Lleva los 21 días con hora y 🔔. Cada marca del calendario es tu compromiso visible día a día.</p></div>' +
-    '<div class="help-card"><h4>📏 Regla de oro</h4><p style="font-size:11px">Nunca falles dos veces seguidas. Un tropiezo es un dato; dos seguidos son una nueva costumbre.</p></div>' +
-    '<div class="help-card"><h4>🏆 Logros</h4><p style="font-size:11px">🚀 partir · 🌱 3 días · 🌿 7 días · 🌳 14 días · 🌸 21 días · 🔥 racha de 7. Compártelos con tu gente.</p></div>' +
+    '<div class="help-grid su-8a77e5">' +
+    '<div class="help-card"><h4>🌱 Días 1-7 · Siembra</h4><p class="su-11a508">Empieza ridículamente fácil. El objetivo es no fallar: mismo lugar, misma hora, misma señal (ej: después del desayuno).</p></div>' +
+    '<div class="help-card"><h4>🌿 Días 8-14 · Brote</h4><p class="su-11a508">Sube la dosis. Si un día cuesta, haz la mitad pero no lo saltes: la constancia pesa más que la intensidad.</p></div>' +
+    '<div class="help-card"><h4>🌸 Días 15-21 · Florece</h4><p class="su-11a508">Tu mejor versión. Planifica cómo seguirá después del día 21 (mantención 2-3 veces por semana).</p></div>' +
+    '<div class="help-card"><h4>📌 Calendario</h4><p class="su-11a508">Lleva los 21 días con hora y 🔔. Cada marca del calendario es tu compromiso visible día a día.</p></div>' +
+    '<div class="help-card"><h4>📏 Regla de oro</h4><p class="su-11a508">Nunca falles dos veces seguidas. Un tropiezo es un dato; dos seguidos son una nueva costumbre.</p></div>' +
+    '<div class="help-card"><h4>🏆 Logros</h4><p class="su-11a508">🚀 partir · 🌱 3 días · 🌿 7 días · 🌳 14 días · 🌸 21 días · 🔥 racha de 7. Compártelos con tu gente.</p></div>' +
     '</div>' +
-    '<p class="muted" style="font-size:11px;margin-top:8px">Consejo de salud: estos retos son hábitos generales de bienestar, no tratamiento médico. Si tienes una condición de salud, consulta a tu CESFAM antes de retos físicos o alimentarios.</p>';
+    '<p class="muted su-e6fe60">Consejo de salud: estos retos son hábitos generales de bienestar, no tratamiento médico. Si tienes una condición de salud, consulta a tu CESFAM antes de retos físicos o alimentarios.</p>';
 }
 function render() {
   renderHead(); renderTabs(); renderCatalogo(); renderMis(); renderDetalle(); renderCrear(); renderGuia();
@@ -754,29 +754,29 @@ function build() {
   makeDialog('retos21Dialog', '🔥 Retos de 21 días',
     'Elige un reto, ponle fecha y hora, márcalo cada día y <b>llévalo al calendario</b> para no olvidarlo. Todo queda <b>privado y local</b> por usuario.',
     '<div id="r21head"></div>' +
-    '<div class="timer-tabs" style="margin:10px 0;flex-wrap:wrap">' +
-    '<button type="button" id="tabR21Catalogo" class="btn btn-accent" style="width:auto">📋 Catálogo</button>' +
-    '<button type="button" id="tabR21Mis" class="btn" style="width:auto">🚀 Mis retos</button>' +
-    '<button type="button" id="tabR21Detalle" class="btn" style="width:auto">📅 Día a día</button>' +
-    '<button type="button" id="tabR21Crear" class="btn" style="width:auto">➕ Crear</button>' +
-    '<button type="button" id="tabR21Guia" class="btn" style="width:auto">🏆 Guía</button>' +
+    '<div class="timer-tabs su-ca7e11">' +
+    '<button type="button" id="tabR21Catalogo" class="btn btn-accent su-30e741">📋 Catálogo</button>' +
+    '<button type="button" id="tabR21Mis" class="btn su-30e741">🚀 Mis retos</button>' +
+    '<button type="button" id="tabR21Detalle" class="btn su-30e741">📅 Día a día</button>' +
+    '<button type="button" id="tabR21Crear" class="btn su-30e741">➕ Crear</button>' +
+    '<button type="button" id="tabR21Guia" class="btn su-30e741">🏆 Guía</button>' +
     '</div>' +
-    '<div id="r21CatalogoPanel"><div id="r21catFilter" style="display:flex;gap:6px;flex-wrap:wrap"></div><div id="r21catBox" class="r21-cat"></div></div>' +
+    '<div id="r21CatalogoPanel"><div id="r21catFilter" class="su-6157e8"></div><div id="r21catBox" class="r21-cat"></div></div>' +
     '<div id="r21MisPanel" class="hidden"><div id="r21misBox"></div><div id="r21archBox"></div></div>' +
     '<div id="r21DetallePanel" class="hidden"><div id="r21detBox"></div></div>' +
     '<div id="r21CrearPanel" class="hidden"><div class="menstrual-card">' +
     '<h4>➕ Crea tu propio reto</h4>' +
-    '<div class="conv-row"><label style="flex:2">Nombre <input type="text" id="r21cNombre" placeholder="ej: Tender la cama, 10 min de sol" maxlength="50"></label>' +
-    '<label>Icono <input type="text" id="r21cIcono" placeholder="🔥" maxlength="4" style="width:80px;text-align:center"></label></div>' +
+    '<div class="conv-row"><label class="su-4b3de7">Nombre <input type="text" id="r21cNombre" placeholder="ej: Tender la cama, 10 min de sol" maxlength="50"></label>' +
+    '<label>Icono <input type="text" id="r21cIcono" placeholder="🔥" maxlength="4" class="su-ef1212"></label></div>' +
     '<label>¿Por qué te importa? (tu motivo) <input type="text" id="r21cMotivo" placeholder="ej: despertar con la casa en calma" maxlength="80"></label>' +
-    '<div class="timer-tabs" style="margin:8px 0"><button type="button" id="r21cModoH" class="btn btn-accent" style="width:auto;font-size:11px">🔁 Un hábito diario</button>' +
-    '<button type="button" id="r21cModoL" class="btn" style="width:auto;font-size:11px">📝 Lista de 21 tareas</button></div>' +
+    '<div class="timer-tabs su-f5554e"><button type="button" id="r21cModoH" class="btn btn-accent su-337714">🔁 Un hábito diario</button>' +
+    '<button type="button" id="r21cModoL" class="btn su-337714">📝 Lista de 21 tareas</button></div>' +
     '<div id="r21cHabBox"><label>Acción diaria (se repite 21 días) <input type="text" id="r21cAccion" placeholder="ej: Meditar 5 min después de despertar" maxlength="80"></label></div>' +
     '<div id="r21cListBox" class="hidden"><label>Pega tus 21 tareas (una por línea) <textarea id="r21cLista" rows="6" placeholder="Día 1: ...&#10;Día 2: ..."></textarea></label></div>' +
     '<div class="conv-row"><label>Inicio <input type="date" id="r21cFecha"></label>' +
     '<label>Hora <input type="time" id="r21cHora" value="10:00"></label>' +
-    '<label class="check-row" style="align-self:end"><input type="checkbox" id="r21cAviso"> 🔔 aviso</label></div>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="r21cGo" class="btn btn-accent" style="width:auto">🔥 Crear y empezar</button></div>' +
+    '<label class="check-row su-53cf90"><input type="checkbox" id="r21cAviso"> 🔔 aviso</label></div>' +
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="r21cGo" class="btn btn-accent su-30e741">🔥 Crear y empezar</button></div>' +
     '</div></div>' +
     '<div id="r21GuiaPanel" class="hidden"><div id="r21guiaBox"></div></div>');
 }

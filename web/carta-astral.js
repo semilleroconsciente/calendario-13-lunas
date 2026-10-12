@@ -346,7 +346,7 @@ function buildWheel(carta, titulo) {
   });
   if (carta.conHora) {
     var pa = polar(C, C, Rp, ang(carta.asc));
-    h += '<text x="' + pa[0].toFixed(1) + '" y="' + (pa[1] + 5).toFixed(1) + '" text-anchor="middle" class="cw-pl" style="fill:#fff">AC</text>';
+    h += '<text x="' + pa[0].toFixed(1) + '" y="' + (pa[1] + 5).toFixed(1) + '" text-anchor="middle" class="cw-pl su-4906e4">AC</text>';
   }
   h += '<text x="180" y="176" text-anchor="middle" class="cw-title">' + esc((titulo || 'Carta Natal').slice(0, 22)) + '</text>';
   h += '<text x="180" y="190" text-anchor="middle" class="cw-sub">casas iguales · trópico</text>';
@@ -438,26 +438,26 @@ function pintarResultado() {
   var asps = c.aspects.length ? c.aspects.map(function (a) {
     return '<div class="ca-row"><span>' + a.p1.g + ' ' + esc(a.p1.nombre) + ' <b style="color:' + a.asp.c + '">' + a.asp.g + '</b> ' + a.p2.g + ' ' + esc(a.p2.nombre) + '</span><span class="muted">' + a.asp.n + ' · orbe ' + a.orbe.toFixed(1) + '°</span></div>';
   }).join('') : '<p class="muted">Sin aspectos mayores con orbes estándar.</p>';
-  var detalle = c.planetas.map(function (x) { return '<div class="si-card"><h4 style="font-size:12px">' + x.g + ' ' + esc(x.nombre) + ' en ' + esc(x.signo.n) + '</h4><p style="font-size:11px">' + planetaLinea(x) + '</p></div>'; }).join('');
+  var detalle = c.planetas.map(function (x) { return '<div class="si-card"><h4 class="su-6cb285">' + x.g + ' ' + esc(x.nombre) + ' en ' + esc(x.signo.n) + '</h4><p class="su-11a508">' + planetaLinea(x) + '</p></div>'; }).join('');
   box.innerHTML =
-    '<div class="menstrual-card ca-hero"><div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">' +
-    '<div style="flex:1;min-width:220px"><h4 style="margin:0 0 4px">☉ ' + esc(p.nombre) + ' · ' + esc(p.signoSol || '') + '</h4>' +
+    '<div class="menstrual-card ca-hero"><div class="su-009cb1">' +
+    '<div class="su-6c0d09"><h4 class="su-58d955">☉ ' + esc(p.nombre) + ' · ' + esc(p.signoSol || '') + '</h4>' +
     '<div class="ca-big">' + sol.signo.g + ' Sol en ' + esc(sol.signo.n) + ' · ' + luna.signo.g + ' Luna en ' + esc(luna.signo.n) + (c.asc != null ? ' · AC ' + signOf(c.asc).s.g + ' ' + esc(signOf(c.asc).s.n) : '') + '</div>' +
-    '<p class="muted" style="font-size:11px;margin:4px 0 0">' + esc(p.fecha) + (p.horaDesc ? ' · hora desconocida' : ' · ' + esc(p.hora)) + ' · ' + esc(p.ciudad) + ' (' + c.lat.toFixed(2) + ', ' + c.lng.toFixed(2) + ')</p></div>' +
+    '<p class="muted su-954796">' + esc(p.fecha) + (p.horaDesc ? ' · hora desconocida' : ' · ' + esc(p.hora)) + ' · ' + esc(p.ciudad) + ' (' + c.lat.toFixed(2) + ', ' + c.lng.toFixed(2) + ')</p></div>' +
     '<div class="ca-wheel-wrap">' + buildWheel(c, p.nombre) + '</div></div></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>🌟 Lectura base</h4>' +
+    '<div class="menstrual-card su-d2c171"><h4>🌟 Lectura base</h4>' +
     '<div class="si-card"><h4>☉ Sol — identidad</h4><p>' + interpSol(sol) + '</p></div>' +
     '<div class="si-card"><h4>☽ Luna — refugio</h4><p>' + interpLuna(luna) + '</p></div>' +
     '<div class="si-card"><h4>AC Ascendente — puerta</h4><p>' + interpAsc(c) + '</p></div></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>🪐 Planetas en signos y casas</h4><div class="ca-table">' + tabla + '</div>' +
+    '<div class="menstrual-card su-d2c171"><h4>🪐 Planetas en signos y casas</h4><div class="ca-table">' + tabla + '</div>' +
     '<div class="ca-legend muted">℞ = retrógrado aparente · casas iguales (cúspide 1 = ASC) · zodiaco tropical</div></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>🏠 Casas (iguales)</h4><div class="ca-table">' + casas + '</div></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>🔗 Aspectos mayores</h4><div class="ca-table">' + asps + '</div></div>' +
-    '<details class="menstrual-details"><summary>📖 Detalle planeta por planeta</summary><div style="margin-top:8px">' + detalle + '</div></details>' +
-    '<div class="dlg-actions" style="justify-content:flex-start;flex-wrap:wrap">' +
-    '<button type="button" id="caShare" class="btn" style="width:auto">📤 Compartir texto</button>' +
-    '<button type="button" id="caCopy" class="btn" style="width:auto">📋 Copiar</button></div>' +
-    '<p class="muted" style="font-size:10px">Cálculo aproximado offline (±1° planetas; Luna y ASC sensibles a hora). Zodiaco tropical, casas iguales. Si la hora es aproximada, toma el ASC con calma y prioriza Sol, Luna y planetas. Nada sale de este dispositivo.</p>';
+    '<div class="menstrual-card su-d2c171"><h4>🏠 Casas (iguales)</h4><div class="ca-table">' + casas + '</div></div>' +
+    '<div class="menstrual-card su-d2c171"><h4>🔗 Aspectos mayores</h4><div class="ca-table">' + asps + '</div></div>' +
+    '<details class="menstrual-details"><summary>📖 Detalle planeta por planeta</summary><div class="su-8a77e5">' + detalle + '</div></details>' +
+    '<div class="dlg-actions su-117179">' +
+    '<button type="button" id="caShare" class="btn su-30e741">📤 Compartir texto</button>' +
+    '<button type="button" id="caCopy" class="btn su-30e741">📋 Copiar</button></div>' +
+    '<p class="muted su-0d5be0">Cálculo aproximado offline (±1° planetas; Luna y ASC sensibles a hora). Zodiaco tropical, casas iguales. Si la hora es aproximada, toma el ASC con calma y prioriza Sol, Luna y planetas. Nada sale de este dispositivo.</p>';
   p.signoSol = sol.signo.n;
   var bs = $('caShare');
   if (bs) bs.onclick = function () {
@@ -491,7 +491,7 @@ function renderCartaPanel() {
   var tc = $('tabAstroCarta'); if (tc) tc.classList.add('btn-accent');
   var tC = $('tabAstroCielo'); if (tC) tC.classList.remove('btn-accent');
   var todayBox = $('astroTodayBox');
-  if (todayBox) todayBox.innerHTML = '<h4 style="color:var(--gold)">✨ Carta Natal — trópico · casas iguales</h4><p class="muted" style="font-size:11px">Ingresa nacimiento y calcula Sol, Luna, Ascendente, planetas, casas y aspectos. Todo queda <b>local y privado</b>. Sin hora exacta igual obtienes planetas en signos.</p>';
+  if (todayBox) todayBox.innerHTML = '<h4 class="su-e39eba">✨ Carta Natal — trópico · casas iguales</h4><p class="muted su-11a508">Ingresa nacimiento y calcula Sol, Luna, Ascendente, planetas, casas y aspectos. Todo queda <b>local y privado</b>. Sin hora exacta igual obtienes planetas en signos.</p>';
   var list = $('astroList'); if (!list) return;
   var st = getStore();
   var ult = st.ultimo || {};
@@ -500,13 +500,13 @@ function renderCartaPanel() {
     ? st.perfiles.map(function (p) { return '<option value="' + p.id + '">' + esc(p.nombre) + ' · ' + esc(p.fecha) + '</option>'; }).join('')
     : '<option value="">— sin perfiles guardados —</option>';
   list.innerHTML =
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>📝 Datos de nacimiento</h4>' +
-    '<div class="conv-row"><label style="flex:2">Nombre <input type="text" id="caNombre" maxlength="40" placeholder="ej: Ayelén" value="' + esc(ult.nombre || '') + '"></label>' +
+    '<div class="menstrual-card su-68a1a9"><h4>📝 Datos de nacimiento</h4>' +
+    '<div class="conv-row"><label class="su-4b3de7">Nombre <input type="text" id="caNombre" maxlength="40" placeholder="ej: Ayelén" value="' + esc(ult.nombre || '') + '"></label>' +
     '<label>Fecha <input type="date" id="caFecha" value="' + esc(ult.fecha || '') + '"></label></div>' +
     '<div class="conv-row"><label>Hora <input type="time" id="caHora" value="' + esc(ult.hora || '') + '"></label>' +
-    '<label class="check-row" style="align-self:end"><input type="checkbox" id="caHoraDesc"' + (ult.horaDesc ? ' checked' : '') + '> Hora desconocida</label></div>' +
-    '<p class="muted" style="font-size:10px;margin:2px 0 6px">La hora exacta define Ascendente y casas. Si no la sabes, márcalo: igual verás planetas en signos.</p>' +
-    '<div class="conv-row"><label style="flex:2">Ciudad <select id="caCiudad">' + ciudadOpts + '</select></label>' +
+    '<label class="check-row su-53cf90"><input type="checkbox" id="caHoraDesc"' + (ult.horaDesc ? ' checked' : '') + '> Hora desconocida</label></div>' +
+    '<p class="muted su-2c4c6c">La hora exacta define Ascendente y casas. Si no la sabes, márcalo: igual verás planetas en signos.</p>' +
+    '<div class="conv-row"><label class="su-4b3de7">Ciudad <select id="caCiudad">' + ciudadOpts + '</select></label>' +
     '<label>Zona <select id="caZona">' +
     '<option value="auto"' + ((!ult.zona || ult.zona === 'auto') ? ' selected' : '') + '>Auto (Stgo DST)</option>' +
     '<option value="America/Santiago"' + (ult.zona === 'America/Santiago' ? ' selected' : '') + '>America/Santiago</option>' +
@@ -517,13 +517,13 @@ function renderCartaPanel() {
     '</select></label></div>' +
     '<div class="conv-row"><label>Latitud <input type="number" id="caLat" step="0.0001" min="-90" max="90" value="' + (ult.lat != null ? ult.lat : -36.7319) + '"></label>' +
     '<label>Longitud <input type="number" id="caLng" step="0.0001" min="-180" max="180" value="' + (ult.lng != null ? ult.lng : -72.9925) + '"></label></div>' +
-    '<div class="dlg-actions" style="justify-content:flex-start;flex-wrap:wrap">' +
-    '<button type="button" id="caCalc" class="btn btn-accent" style="width:auto">✨ Calcular carta</button>' +
-    '<button type="button" id="caSave" class="btn" style="width:auto">💾 Calcular y guardar perfil</button></div>' +
-    '<div class="conv-row" style="margin-top:8px"><label style="flex:2">Perfiles guardados <select id="caPerfilSel">' + perfOpts + '</select></label>' +
-    '<span style="display:flex;gap:6px;align-self:end"><button type="button" id="caLoad" class="btn" style="width:auto">Cargar</button>' +
-    '<button type="button" id="caDel" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">Borrar</button></span></div>' +
-    '</div><div id="caResult" style="margin-top:10px"></div>';
+    '<div class="dlg-actions su-117179">' +
+    '<button type="button" id="caCalc" class="btn btn-accent su-30e741">✨ Calcular carta</button>' +
+    '<button type="button" id="caSave" class="btn su-30e741">💾 Calcular y guardar perfil</button></div>' +
+    '<div class="conv-row su-8a77e5"><label class="su-4b3de7">Perfiles guardados <select id="caPerfilSel">' + perfOpts + '</select></label>' +
+    '<span class="su-21f53c"><button type="button" id="caLoad" class="btn su-30e741">Cargar</button>' +
+    '<button type="button" id="caDel" class="btn su-214f75">Borrar</button></span></div>' +
+    '</div><div id="caResult" class="su-d2c171"></div>';
   var ciu = $('caCiudad');
   if (ciu) ciu.onchange = function () {
     var c = null;

@@ -1,23 +1,23 @@
 <dialog id="talesDialog">
     <form method="dialog">
-      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
-        <h3 style="margin:0;color:var(--accent)">📖 Cuentos Lunares — para niñas y niños</h3>
+      <div class="dlg-actions su-d2d053">
+        <h3 class="su-ee0cfe">📖 Cuentos Lunares — para niñas y niños</h3>
         <button type="button" id="talesCloseTop" class="btn btn-icon" title="Cerrar" aria-label="Cerrar">✕</button>
       </div>
-      <p class="muted" style="line-height:1.5">13 lunas, 13 cuentos cuidados de Penco. Lee uno por luna antes de dormir. Toca la luna para leerlo — ahora puedes <b>editar cada cuento</b> a tu gusto; queda privado por usuario.</p>
+      <p class="muted su-77e2fe">13 lunas, 13 cuentos cuidados de Penco. Lee uno por luna antes de dormir. Toca la luna para leerlo — ahora puedes <b>editar cada cuento</b> a tu gusto; queda privado por usuario.</p>
       <div id="talesGrid" class="discipline-grid"></div>
-      <div id="talesReader" class="menstrual-card hidden" style="margin-top:10px"></div>
-      <div id="talesEditBox" class="menstrual-card hidden" style="margin-top:10px">
-        <h4 style="color:var(--gold)">✏️ Editar cuento — Luna <span id="talesEditLuna"></span></h4>
+      <div id="talesReader" class="menstrual-card hidden su-d2c171"></div>
+      <div id="talesEditBox" class="menstrual-card hidden su-d2c171">
+        <h4 class="su-e39eba">✏️ Editar cuento — Luna <span id="talesEditLuna"></span></h4>
         <label>Título <input type="text" id="talesEditTitle" maxlength="60"></label>
         <label>Cuento <textarea id="talesEditText" rows="6" placeholder="Escribe tu versión..."></textarea></label>
         <label>Moraleja <input type="text" id="talesEditMoral" maxlength="80" placeholder="ej: Cada semilla tiene su tiempo"></label>
-        <div class="dlg-actions" style="justify-content:flex-start">
-          <button type="button" id="talesSave" class="btn btn-accent" style="width:auto">💾 Guardar cuento</button>
-          <button type="button" id="talesRestore" class="btn" style="width:auto">↺ Restaurar original</button>
-          <button type="button" id="talesCancelEdit" class="btn" style="width:auto">Cancelar</button>
+        <div class="dlg-actions su-59a5a8">
+          <button type="button" id="talesSave" class="btn btn-accent su-30e741">💾 Guardar cuento</button>
+          <button type="button" id="talesRestore" class="btn su-30e741">↺ Restaurar original</button>
+          <button type="button" id="talesCancelEdit" class="btn su-30e741">Cancelar</button>
         </div>
-        <p class="muted" style="font-size:11px;margin-top:6px">Se guarda solo para tu usuario actual. Usa “Restaurar” para volver al original.</p>
+        <p class="muted su-e13d76">Se guarda solo para tu usuario actual. Usa “Restaurar” para volver al original.</p>
       </div>
       <div class="dlg-actions"><button type="button" id="talesClose" class="btn">Cerrar</button></div>
     </form>

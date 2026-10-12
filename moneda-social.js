@@ -124,76 +124,76 @@ function ensureDialog() {
     return '<div class="si-card"><h4>' + c.ico + ' ' + esc(c.n) + '</h4><p>' + c.txt + '</p></div>';
   }).join('');
   var acuHTML = ACUERDOS_BASE.map(function (a) {
-    return '<label class="check-row" style="align-items:flex-start"><input type="checkbox" data-acuerdo="' + a.id + '"> <span><b>' + esc(a.n) + '</b><br><span class="muted" style="font-size:11px">' + esc(a.d) + '</span></span></label>';
+    return '<label class="check-row su-0486f7"><input type="checkbox" data-acuerdo="' + a.id + '"> <span><b>' + esc(a.n) + '</b><br><span class="muted su-11a508">' + esc(a.d) + '</span></span></label>';
   }).join('');
   d.innerHTML =
     '<form method="dialog">' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
-    '<h3 style="margin:0;color:var(--accent)">🪙 Moneda Social — Penco</h3>' +
+    '<div class="dlg-actions su-d2d053">' +
+    '<h3 class="su-ee0cfe">🪙 Moneda Social — Penco</h3>' +
     '<button type="button" id="monCloseTop" class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    '<p class="muted" style="line-height:1.5">Unidad de cuenta propia del territorio para intercambiar sin depender solo del peso. Los tratos se cierran <b>en persona</b>; aquí vive el <b>registro privado y local</b> por usuario.</p>' +
-    '<div id="monHoyBox" class="menstrual-card" style="border-color:var(--gold)"></div>' +
-    '<div class="timer-tabs" style="margin:10px 0;flex-wrap:wrap">' +
-    '<button type="button" id="tabMonGuia" class="btn btn-accent" style="width:auto">📖 Guía</button>' +
-    '<button type="button" id="tabMonBilletera" class="btn" style="width:auto">🪙 Mi Billetera</button>' +
-    '<button type="button" id="tabMonOfertas" class="btn" style="width:auto">📋 Ofertas y Pedidos</button>' +
-    '<button type="button" id="tabMonTx" class="btn" style="width:auto">💸 Transacciones</button>' +
-    '<button type="button" id="tabMonAcuerdos" class="btn" style="width:auto">🤝 Acuerdos</button>' +
+    '<p class="muted su-77e2fe">Unidad de cuenta propia del territorio para intercambiar sin depender solo del peso. Los tratos se cierran <b>en persona</b>; aquí vive el <b>registro privado y local</b> por usuario.</p>' +
+    '<div id="monHoyBox" class="menstrual-card su-68a1a9"></div>' +
+    '<div class="timer-tabs su-ca7e11">' +
+    '<button type="button" id="tabMonGuia" class="btn btn-accent su-30e741">📖 Guía</button>' +
+    '<button type="button" id="tabMonBilletera" class="btn su-30e741">🪙 Mi Billetera</button>' +
+    '<button type="button" id="tabMonOfertas" class="btn su-30e741">📋 Ofertas y Pedidos</button>' +
+    '<button type="button" id="tabMonTx" class="btn su-30e741">💸 Transacciones</button>' +
+    '<button type="button" id="tabMonAcuerdos" class="btn su-30e741">🤝 Acuerdos</button>' +
     '</div>' +
     '<div id="monPanelGuia"><div class="discipline-grid">' + guiaHTML + '</div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>🏪 Conexión con Economía Local</h4><div id="monEcoBox"></div></div></div>' +
+    '<div class="menstrual-card su-d2c171"><h4>🏪 Conexión con Economía Local</h4><div id="monEcoBox"></div></div></div>' +
     '<div id="monPanelBilletera" class="hidden">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🪙 Mi cuenta</h4>' +
-    '<div class="conv-row"><label style="flex:2">Mi nombre (pila) * <input type="text" id="monNombre" placeholder="ej: Rosa" maxlength="30"></label>' +
+    '<div class="menstrual-card su-68a1a9"><h4>🪙 Mi cuenta</h4>' +
+    '<div class="conv-row"><label class="su-4b3de7">Mi nombre (pila) * <input type="text" id="monNombre" placeholder="ej: Rosa" maxlength="30"></label>' +
     '<label>Moneda <input type="text" id="monUnidad" placeholder="ej: Lafken" maxlength="20"></label>' +
-    '<label>Símbolo <input type="text" id="monSimb" placeholder="ej: Lf" maxlength="6" style="width:80px"></label></div>' +
-    '<div class="conv-row"><label>Saldo inicial <input type="number" id="monInicial" step="0.5" style="width:110px" value="0"></label>' +
-    '<label>Tope negativo (confianza) <input type="number" id="monTope" step="1" style="width:110px" value="-50"></label></div>' +
-    '<p class="muted" style="font-size:11px">El tope negativo es cuánto puedes quedar "en rojo" participando: pedir primero también es parte de la red.</p>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="monCuentaSave" class="btn btn-accent" style="width:auto">💾 Guardar mi cuenta</button></div></div>' +
-    '<div id="monBalanceBox" class="menstrual-card" style="margin-top:10px"></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>📜 Historial de movimientos</h4><div id="monHistList" class="habits-list" style="max-height:240px"></div>' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-top:8px"><span id="monHistCount" class="muted" style="font-size:11px"></span>' +
-    '<span style="display:flex;gap:8px"><button type="button" id="monHistShare" class="btn" style="width:auto">📤 Compartir</button>' +
-    '<button type="button" id="monHistClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar</button></span></div></div>' +
+    '<label>Símbolo <input type="text" id="monSimb" placeholder="ej: Lf" maxlength="6" class="su-8573ba"></label></div>' +
+    '<div class="conv-row"><label>Saldo inicial <input type="number" id="monInicial" step="0.5" class="su-607468" value="0"></label>' +
+    '<label>Tope negativo (confianza) <input type="number" id="monTope" step="1" class="su-607468" value="-50"></label></div>' +
+    '<p class="muted su-11a508">El tope negativo es cuánto puedes quedar "en rojo" participando: pedir primero también es parte de la red.</p>' +
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="monCuentaSave" class="btn btn-accent su-30e741">💾 Guardar mi cuenta</button></div></div>' +
+    '<div id="monBalanceBox" class="menstrual-card su-d2c171"></div>' +
+    '<div class="menstrual-card su-d2c171"><h4>📜 Historial de movimientos</h4><div id="monHistList" class="habits-list su-5701fb"></div>' +
+    '<div class="dlg-actions su-efea1d"><span id="monHistCount" class="muted su-11a508"></span>' +
+    '<span class="su-a76d59"><button type="button" id="monHistShare" class="btn su-30e741">📤 Compartir</button>' +
+    '<button type="button" id="monHistClear" class="btn su-214f75">🗑 Borrar</button></span></div></div>' +
     '</div>' +
     '<div id="monPanelOfertas" class="hidden">' +
     '<div class="menstrual-card"><h4>🔍 Buscar ofertas y pedidos</h4>' +
-    '<div class="conv-row"><label style="flex:2">Buscar <input type="text" id="monOfSearch" placeholder="ej: pan, clases, flete, cuidado..." maxlength="60" autocomplete="off"></label>' +
+    '<div class="conv-row"><label class="su-4b3de7">Buscar <input type="text" id="monOfSearch" placeholder="ej: pan, clases, flete, cuidado..." maxlength="60" autocomplete="off"></label>' +
     '<label>Ver <select id="monOfFiltro"><option value="todas">Todo</option><option value="ofrezco">🙌 Ofrezco</option><option value="necesito">🙏 Necesito</option><option value="trueque">🔄 Con trueque</option></select></label></div>' +
-    '<p class="muted" style="font-size:11px;margin:4px 0 0" id="monOfCount"></p></div>' +
-    '<div id="monOfList" style="margin-top:10px"></div>' +
-    '<div class="menstrual-card" style="margin-top:10px;border-color:var(--gold)"><h4>➕ Publicar oferta o pedido</h4>' +
+    '<p class="muted su-954796" id="monOfCount"></p></div>' +
+    '<div id="monOfList" class="su-d2c171"></div>' +
+    '<div class="menstrual-card su-51d56a"><h4>➕ Publicar oferta o pedido</h4>' +
     '<div class="conv-row"><label>Tipo <select id="monOfTipo"><option value="ofrezco">🙌 Ofrezco</option><option value="necesito">🙏 Necesito</option></select></label>' +
     '<label>Categoría <select id="monOfCat"><option>🥘 Alimentos</option><option>🔧 Oficios</option><option>📚 Clases y cursos</option><option>💚 Cuidados</option><option>🏠 Hogar</option><option>🌾 Huerta y campo</option><option>🎨 Arte</option><option>🚐 Transporte</option><option>📌 Otro</option></select></label></div>' +
     '<label>Título * <input type="text" id="monOfTitulo" placeholder="ej: Pan amasado los sábados / Necesito ayuda con techo" maxlength="60"></label>' +
     '<label>Detalle <input type="text" id="monOfDetalle" placeholder="cantidad, días, lugar de entrega" maxlength="120"></label>' +
     '<div class="conv-row"><label>Precio (en moneda) <input type="text" id="monOfPrecio" placeholder="ej: 5 / a convenir" maxlength="20"></label>' +
-    '<label class="check-row" style="margin:0;align-self:flex-end"><input type="checkbox" id="monOfTrueque"> 🔄 También trueque</label>' +
-    '<label class="check-row" style="margin:0;align-self:flex-end"><input type="checkbox" id="monOfMixto"> 💵 Mixto ($ + moneda)</label></div>' +
-    '<div class="dlg-actions" style="justify-content:flex-start;margin-top:8px"><button type="button" id="monOfSave" class="btn btn-accent" style="width:auto">+ Publicar</button>' +
-    '<button type="button" id="monOfCancel" class="btn hidden" style="width:auto">Cancelar</button></div></div>' +
+    '<label class="check-row su-70c149"><input type="checkbox" id="monOfTrueque"> 🔄 También trueque</label>' +
+    '<label class="check-row su-70c149"><input type="checkbox" id="monOfMixto"> 💵 Mixto ($ + moneda)</label></div>' +
+    '<div class="dlg-actions su-8f9e27"><button type="button" id="monOfSave" class="btn btn-accent su-30e741">+ Publicar</button>' +
+    '<button type="button" id="monOfCancel" class="btn hidden su-30e741">Cancelar</button></div></div>' +
     '</div>' +
     '<div id="monPanelTx" class="hidden">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>💸 Registrar pago / cobro</h4>' +
-    '<p class="muted" style="font-size:11px">Positivo (+) = recibí moneda · Negativo (−) = pagué moneda. Ej: recibí 10 por pan → +10; pagué 8 por corte → −8.</p>' +
+    '<div class="menstrual-card su-68a1a9"><h4>💸 Registrar pago / cobro</h4>' +
+    '<p class="muted su-11a508">Positivo (+) = recibí moneda · Negativo (−) = pagué moneda. Ej: recibí 10 por pan → +10; pagué 8 por corte → −8.</p>' +
     '<div class="conv-row"><label>Fecha <input type="date" id="monTxFecha"></label>' +
     '<label>Contraparte <input type="text" id="monTxCon" placeholder="ej: Marta (pan)" maxlength="40"></label></div>' +
-    '<div class="conv-row"><label style="flex:2">Concepto * <input type="text" id="monTxConcepto" placeholder="ej: 6 panes amasados / clase de guitarra" maxlength="80"></label>' +
-    '<label>Monto * <input type="number" id="monTxMonto" step="0.5" placeholder="+10 / −8" style="width:120px"></label></div>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="monTxSave" class="btn btn-accent" style="width:auto">+ Registrar</button>' +
-    '<button type="button" id="monTxCancel" class="btn hidden" style="width:auto">Cancelar</button></div></div>' +
-    '<div id="monTxList" style="margin-top:10px"></div>' +
+    '<div class="conv-row"><label class="su-4b3de7">Concepto * <input type="text" id="monTxConcepto" placeholder="ej: 6 panes amasados / clase de guitarra" maxlength="80"></label>' +
+    '<label>Monto * <input type="number" id="monTxMonto" step="0.5" placeholder="+10 / −8" class="su-465bfe"></label></div>' +
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="monTxSave" class="btn btn-accent su-30e741">+ Registrar</button>' +
+    '<button type="button" id="monTxCancel" class="btn hidden su-30e741">Cancelar</button></div></div>' +
+    '<div id="monTxList" class="su-d2c171"></div>' +
     '</div>' +
     '<div id="monPanelAcuerdos" class="hidden">' +
-    '<div class="menstrual-card"><h4>✅ Acuerdos de la red (checklist)</h4><div id="monAcuerdosBox" style="display:flex;flex-direction:column;gap:8px;margin-top:8px">' + acuHTML + '</div>' +
-    '<div class="dlg-actions" style="justify-content:flex-start;margin-top:8px"><span id="monAcuerdosStats" class="muted" style="font-size:11px"></span></div></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>🤝 Tratos cerrados en feria / asamblea</h4>' +
-    '<p class="muted" style="font-size:11px">Anota los tratos importantes de la red (compromisos, fondo común, trueques grandes). Quedan privados en tu dispositivo.</p>' +
+    '<div class="menstrual-card"><h4>✅ Acuerdos de la red (checklist)</h4><div id="monAcuerdosBox" class="su-a22da5">' + acuHTML + '</div>' +
+    '<div class="dlg-actions su-8f9e27"><span id="monAcuerdosStats" class="muted su-11a508"></span></div></div>' +
+    '<div class="menstrual-card su-d2c171"><h4>🤝 Tratos cerrados en feria / asamblea</h4>' +
+    '<p class="muted su-11a508">Anota los tratos importantes de la red (compromisos, fondo común, trueques grandes). Quedan privados en tu dispositivo.</p>' +
     '<div class="conv-row"><label>Fecha <input type="date" id="monTrFecha"></label>' +
-    '<label style="flex:2">Trato * <input type="text" id="monTrato" placeholder="ej: Feria sábado: vendí 10 panes a la red" maxlength="80"></label></div>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="monTratoAdd" class="btn btn-accent" style="width:auto">+ Guardar trato</button></div>' +
-    '<div id="monTratosList" class="habits-list" style="margin-top:10px;max-height:220px"></div></div>' +
+    '<label class="su-4b3de7">Trato * <input type="text" id="monTrato" placeholder="ej: Feria sábado: vendí 10 panes a la red" maxlength="80"></label></div>' +
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="monTratoAdd" class="btn btn-accent su-30e741">+ Guardar trato</button></div>' +
+    '<div id="monTratosList" class="habits-list su-90a939"></div></div>' +
     '</div>' +
     '<div class="dlg-actions"><button type="button" id="monClose" class="btn">Cerrar</button></div></form>';
   document.body.appendChild(d);
@@ -219,9 +219,9 @@ function paintHoy() {
     var bal = balance();
     var nOf = store().ofertas.length;
     var color = bal < (Number(c.tope) || -50) ? '#e76e8a' : (bal < 0 ? '#e8c56a' : '#8fd694');
-    b.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px"><span><b>🪙 ' + esc(c.unidad || 'Moneda social') + (c.nombre ? ' · ' + esc(c.nombre) : '') + '</b></span>' +
+    b.innerHTML = '<div class="su-49710b"><span><b>🪙 ' + esc(c.unidad || 'Moneda social') + (c.nombre ? ' · ' + esc(c.nombre) : '') + '</b></span>' +
       '<span class="chip" style="border-color:' + color + '55;color:' + color + '">Balance: ' + esc(fmtMonto(bal, c.simb)) + '</span></div>' +
-      '<p class="muted" style="font-size:11px;margin:4px 0 0">' + nOf + ' oferta(s)/pedido(s) · ' + store().txs.length + ' transacción(es)' +
+      '<p class="muted su-954796">' + nOf + ' oferta(s)/pedido(s) · ' + store().txs.length + ' transacción(es)' +
       (!c.nombre ? ' · 👆 Abre tu cuenta en <b>Mi Billetera</b> para partir.' : '') + '</p>';
   } catch (e) {}
 }
@@ -232,12 +232,12 @@ function paintEcoBox() {
     if (window.NegociosPenco && typeof window.NegociosPenco.list === 'function') {
       var list = window.NegociosPenco.list().filter(function (t) { return t.moneda; });
       box.innerHTML = list.length
-        ? '<p style="font-size:12px">🏪 <b>' + list.length + '</b> ficha(s) de Economía Local aceptan moneda social: <b>' + esc(list.slice(0, 5).map(function (t) { return t.nombre; }).join(' · ')) + '</b>' + (list.length > 5 ? ' y más.' : '.') + '</p><div style="margin-top:6px"><button type="button" id="monGoEco" class="btn" style="width:auto;font-size:11px">🏪 Ver Economía Local</button></div>'
-        : '<p class="muted" style="font-size:11px">Aún no hay fichas con 🪙 en Economía Local. Cuando un negocio acepte la moneda, márcalo ahí y aparecerá aquí.</p><div style="margin-top:6px"><button type="button" id="monGoEco" class="btn" style="width:auto;font-size:11px">🏪 Ir a Economía Local</button></div>';
+        ? '<p class="su-6cb285">🏪 <b>' + list.length + '</b> ficha(s) de Economía Local aceptan moneda social: <b>' + esc(list.slice(0, 5).map(function (t) { return t.nombre; }).join(' · ')) + '</b>' + (list.length > 5 ? ' y más.' : '.') + '</p><div class="su-fe7b49"><button type="button" id="monGoEco" class="btn su-337714">🏪 Ver Economía Local</button></div>'
+        : '<p class="muted su-11a508">Aún no hay fichas con 🪙 en Economía Local. Cuando un negocio acepte la moneda, márcalo ahí y aparecerá aquí.</p><div class="su-fe7b49"><button type="button" id="monGoEco" class="btn su-337714">🏪 Ir a Economía Local</button></div>';
       var go = $('monGoEco');
       if (go) go.onclick = function () { try { window.NegociosPenco.open('dir'); } catch (e) {} };
     } else {
-      box.innerHTML = '<p class="muted" style="font-size:11px">Instala también 🏪 Economía Local para ver aquí qué negocios aceptan la moneda.</p>';
+      box.innerHTML = '<p class="muted su-11a508">Instala también 🏪 Economía Local para ver aquí qué negocios aceptan la moneda.</p>';
     }
   } catch (e) {}
 }
@@ -258,19 +258,19 @@ function paintBilletera() {
     var entradas = store().txs.filter(function (t) { return Number(t.monto) > 0; }).reduce(function (a, t) { return a + Number(t.monto); }, 0);
     var salidas = store().txs.filter(function (t) { return Number(t.monto) < 0; }).reduce(function (a, t) { return a + Math.abs(Number(t.monto)); }, 0);
     box.innerHTML = '<h4>📊 Balance</h4>' +
-      '<p style="font-size:16px"><b style="color:' + color + '">' + esc(fmtMonto(bal, c.simb)) + ' ' + esc(c.unidad || '') + '</b></p>' +
-      '<p class="muted" style="font-size:11px">Inicial ' + esc(fmtMonto(c.inicial, c.simb)) + ' · Recibido +' + esc(fmtMonto(entradas, '')) + ' · Entregado −' + esc(fmtMonto(salidas, '')) + ' · Tope ' + esc(fmtMonto(tope, c.simb)) + '</p>' +
-      '<p style="font-size:12px">' + estado + '</p>';
+      '<p class="su-1444c6"><b style="color:' + color + '">' + esc(fmtMonto(bal, c.simb)) + ' ' + esc(c.unidad || '') + '</b></p>' +
+      '<p class="muted su-11a508">Inicial ' + esc(fmtMonto(c.inicial, c.simb)) + ' · Recibido +' + esc(fmtMonto(entradas, '')) + ' · Entregado −' + esc(fmtMonto(salidas, '')) + ' · Tope ' + esc(fmtMonto(tope, c.simb)) + '</p>' +
+      '<p class="su-6cb285">' + estado + '</p>';
   }
   var hist = $('monHistList');
   if (hist) {
     var txs = store().txs.slice().sort(function (a, b) { return String(b.fecha).localeCompare(String(a.fecha)); });
-    if (!txs.length) hist.innerHTML = '<p class="muted" style="font-size:11px;text-align:center">Sin movimientos. Registra el primero en 💸 Transacciones.</p>';
+    if (!txs.length) hist.innerHTML = '<p class="muted su-e201a8">Sin movimientos. Registra el primero en 💸 Transacciones.</p>';
     else hist.innerHTML = txs.map(function (t) {
       var m = Number(t.monto) || 0;
       var col = m >= 0 ? '#8fd694' : '#e8a06a';
-      return '<div class="hora-item"><span style="font-size:12px"><b style="color:' + col + '">' + (m >= 0 ? '+' : '') + esc(fmtMonto(m, c.simb)) + '</b> · ' + esc(t.concepto || '') +
-        '<br><span class="muted" style="font-size:10px">' + esc(t.fecha || '') + (t.contraparte ? ' · ' + esc(t.contraparte) : '') + '</span></span></div>';
+      return '<div class="hora-item"><span class="su-6cb285"><b style="color:' + col + '">' + (m >= 0 ? '+' : '') + esc(fmtMonto(m, c.simb)) + '</b> · ' + esc(t.concepto || '') +
+        '<br><span class="muted su-0d5be0">' + esc(t.fecha || '') + (t.contraparte ? ' · ' + esc(t.contraparte) : '') + '</span></span></div>';
     }).join('');
   }
   var hc = $('monHistCount');
@@ -280,15 +280,15 @@ function paintBilletera() {
 function ofCard(o) {
   var c = cuenta();
   var tipoChip = o.tipo === 'ofrezco' ? '🙌 Ofrezco' : '🙏 Necesito';
-  return '<div class="si-card" style="padding:10px 12px"><h4 style="font-size:13px">' + tipoChip + ' · ' + esc(o.titulo) + '</h4>' +
-    '<p class="muted" style="font-size:10px">' + esc(o.cat || '') + (o.precio ? ' · 💰 ' + esc(o.precio) + ' ' + esc(c.simb || '') : '') + (o.trueque ? ' · 🔄 trueque' : '') + (o.mixto ? ' · 💵 mixto' : '') + '</p>' +
-    (o.detalle ? '<p style="font-size:12px">' + esc(o.detalle) + '</p>' : '') +
-    '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">' +
-    '<button type="button" class="btn btn-accent" data-of-cal="' + o.id + '" style="width:auto;font-size:11px">📌 Feria al calendario</button>' +
-    '<button type="button" class="btn" data-of-tx="' + o.id + '" style="width:auto;font-size:11px">💸 Registrar trato</button>' +
-    '<button type="button" class="btn" data-of-share="' + o.id + '" style="width:auto;font-size:11px">📤 Compartir</button>' +
-    '<button type="button" class="btn" data-of-edit="' + o.id + '" style="width:auto;font-size:11px">✏️</button>' +
-    '<button type="button" class="btn" data-of-del="' + o.id + '" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕</button></div></div>';
+  return '<div class="si-card su-2285bd"><h4 class="su-5e0faa">' + tipoChip + ' · ' + esc(o.titulo) + '</h4>' +
+    '<p class="muted su-0d5be0">' + esc(o.cat || '') + (o.precio ? ' · 💰 ' + esc(o.precio) + ' ' + esc(c.simb || '') : '') + (o.trueque ? ' · 🔄 trueque' : '') + (o.mixto ? ' · 💵 mixto' : '') + '</p>' +
+    (o.detalle ? '<p class="su-6cb285">' + esc(o.detalle) + '</p>' : '') +
+    '<div class="su-c158a9">' +
+    '<button type="button" class="btn btn-accent su-337714" data-of-cal="' + o.id + '">📌 Feria al calendario</button>' +
+    '<button type="button" class="btn su-337714" data-of-tx="' + o.id + '">💸 Registrar trato</button>' +
+    '<button type="button" class="btn su-337714" data-of-share="' + o.id + '">📤 Compartir</button>' +
+    '<button type="button" class="btn su-337714" data-of-edit="' + o.id + '">✏️</button>' +
+    '<button type="button" class="btn su-fd834a" data-of-del="' + o.id + '">✕</button></div></div>';
 }
 
 function paintOfertas() {
@@ -306,7 +306,7 @@ function paintOfertas() {
   if (!list.length) {
     box.innerHTML = store().ofertas.length
       ? '<p class="muted">Sin resultados. Prueba otra búsqueda.</p>'
-      : '<p class="muted" style="font-size:11px;line-height:1.55">Aún no hay ofertas ni pedidos. Publica la primera abajo: 1 oferta y 1 pedido por persona es la semilla de la red. 🌱</p>';
+      : '<p class="muted su-b6db47">Aún no hay ofertas ni pedidos. Publica la primera abajo: 1 oferta y 1 pedido por persona es la semilla de la red. 🌱</p>';
     return;
   }
   var ord = list.slice().sort(function (a, b) {
@@ -394,14 +394,14 @@ function paintTx() {
   var box = $('monTxList'); if (!box) return;
   var c = cuenta();
   var txs = store().txs.slice().sort(function (a, b) { return String(b.fecha).localeCompare(String(a.fecha)); });
-  if (!txs.length) { box.innerHTML = '<p class="muted" style="font-size:11px">Sin transacciones. Registra la primera arriba.</p>'; return; }
+  if (!txs.length) { box.innerHTML = '<p class="muted su-11a508">Sin transacciones. Registra la primera arriba.</p>'; return; }
   box.innerHTML = '<div class="menstrual-card"><h4>💸 Transacciones · ' + txs.length + '</h4>' + txs.map(function (t) {
     var m = Number(t.monto) || 0;
     var col = m >= 0 ? '#8fd694' : '#e8a06a';
-    return '<div class="habit-item" style="display:flex;justify-content:space-between;gap:8px;align-items:center"><span><b style="color:' + col + '">' + (m >= 0 ? '+' : '') + esc(fmtMonto(m, c.simb)) + '</b> · ' + esc(t.concepto || '') +
-      '<br><span class="muted" style="font-size:11px">' + esc(t.fecha || '') + (t.contraparte ? ' · ' + esc(t.contraparte) : '') + '</span></span>' +
-      '<span style="display:flex;gap:6px;flex:0 0 auto"><button type="button" class="btn" data-txedit="' + t.id + '" style="width:auto;font-size:11px">✏️</button>' +
-      '<button type="button" class="btn" data-txdel="' + t.id + '" style="width:auto;font-size:11px;color:#e76e8a">✕</button></span></div>';
+    return '<div class="habit-item su-6bf84b"><span><b style="color:' + col + '">' + (m >= 0 ? '+' : '') + esc(fmtMonto(m, c.simb)) + '</b> · ' + esc(t.concepto || '') +
+      '<br><span class="muted su-11a508">' + esc(t.fecha || '') + (t.contraparte ? ' · ' + esc(t.contraparte) : '') + '</span></span>' +
+      '<span class="su-0c0cb1"><button type="button" class="btn su-337714" data-txedit="' + t.id + '">✏️</button>' +
+      '<button type="button" class="btn su-9b8fb7" data-txdel="' + t.id + '">✕</button></span></div>';
   }).join('') + '</div>';
   box.querySelectorAll('[data-txdel]').forEach(function (b) {
     b.onclick = function () {
@@ -441,9 +441,9 @@ function paintAcuerdos() {
   var box = $('monTratosList');
   if (box) {
     var tr = store().tratos.slice().sort(function (a, b) { return String(b.fecha).localeCompare(String(a.fecha)); });
-    if (!tr.length) box.innerHTML = '<p class="muted" style="font-size:11px;text-align:center">Sin tratos anotados. Guarda el primero arriba después de tu feria.</p>';
+    if (!tr.length) box.innerHTML = '<p class="muted su-e201a8">Sin tratos anotados. Guarda el primero arriba después de tu feria.</p>';
     else box.innerHTML = tr.map(function (r) {
-      return '<div class="hora-item"><span style="font-size:12px">🤝 <b>' + esc(r.texto || '') + '</b><br><span class="muted" style="font-size:10px">' + esc(r.fecha || '') + '</span></span>' +
+      return '<div class="hora-item"><span class="su-6cb285">🤝 <b>' + esc(r.texto || '') + '</b><br><span class="muted su-0d5be0">' + esc(r.fecha || '') + '</span></span>' +
         '<button type="button" class="btn btn-icon mon-trato-del" data-k="' + esc(r.id) + '">✕</button></div>';
     }).join('');
     box.querySelectorAll('.mon-trato-del').forEach(function (x) {

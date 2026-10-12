@@ -65,10 +65,10 @@ function makeDialog(id, title, sub, bodyHTML) {
   var d = document.createElement('dialog');
   d.id = id;
   d.innerHTML = '<form method="dialog">' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
-    '<h3 style="margin:0;color:var(--accent)">' + title + '</h3>' +
+    '<div class="dlg-actions su-d2d053">' +
+    '<h3 class="su-ee0cfe">' + title + '</h3>' +
     '<button type="button" data-close class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    (sub ? '<p class="muted" style="line-height:1.5">' + sub + '</p>' : '') +
+    (sub ? '<p class="muted su-77e2fe">' + sub + '</p>' : '') +
     bodyHTML +
     '<div class="dlg-actions"><button type="button" data-close class="btn">Cerrar</button></div></form>';
   document.body.appendChild(d);
@@ -180,35 +180,35 @@ function buildNdDialog() {
   var testsHTML = ND_TESTS.map(function (t) {
     var itemsHTML = t.items.map(function (q, j) {
       var opts = t.opts.map(function (o, v) {
-        return '<label style="display:flex;gap:6px;align-items:center;font-size:12px;margin:3px 0;color:var(--text)"><input type="radio" name="t_' + t.id + '_' + j + '" value="' + v + '" style="accent-color:var(--gold)"> ' + esc(o) + '</label>';
+        return '<label class="su-61e399"><input type="radio" name="t_' + t.id + '_' + j + '" value="' + v + '" class="su-df8100"> ' + esc(o) + '</label>';
       }).join('');
-      return '<div class="si-card" style="margin-bottom:8px"><p style="margin-bottom:6px"><b>' + (j + 1) + '.</b> ' + esc(q) + '</p>' + opts + '</div>';
+      return '<div class="si-card su-fdf33f"><p class="su-4e420a"><b>' + (j + 1) + '.</b> ' + esc(q) + '</p>' + opts + '</div>';
     }).join('');
-    return '<div class="menstrual-card" style="margin-bottom:10px"><h4>' + t.ico + ' ' + esc(t.nombre) + '</h4>' +
-      '<p class="muted" style="font-size:11px">' + esc(t.desc) + '</p>' + itemsHTML +
-      '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">' +
-      '<button type="button" class="btn btn-accent nd-tcalc" data-test="' + t.id + '" style="width:auto">Ver mi resultado</button>' +
-      '<button type="button" class="btn nd-treset" data-test="' + t.id + '" style="width:auto">Limpiar</button></div>' +
-      '<div id="res_' + t.id + '" style="margin-top:8px"></div></div>';
+    return '<div class="menstrual-card su-761d3a"><h4>' + t.ico + ' ' + esc(t.nombre) + '</h4>' +
+      '<p class="muted su-11a508">' + esc(t.desc) + '</p>' + itemsHTML +
+      '<div class="su-ac5453">' +
+      '<button type="button" class="btn btn-accent nd-tcalc su-30e741" data-test="' + t.id + '">Ver mi resultado</button>' +
+      '<button type="button" class="btn nd-treset su-30e741" data-test="' + t.id + '">Limpiar</button></div>' +
+      '<div id="res_' + t.id + '" class="su-8a77e5"></div></div>';
   }).join('');
 
   var sensChips = ND_SENS.map(function (e) {
-    return '<label class="check-row" style="margin:2px 8px 2px 0;font-size:12px"><input type="checkbox" class="nd-sens" value="' + esc(e) + '"> ' + esc(e) + '</label>';
+    return '<label class="check-row su-d16943"><input type="checkbox" class="nd-sens" value="' + esc(e) + '"> ' + esc(e) + '</label>';
   }).join('');
 
   var fortChips = ND_FORTS.map(function (e) {
-    return '<label class="check-row" style="margin:2px 8px 2px 0;font-size:12px"><input type="checkbox" class="nd-fort" value="' + esc(e) + '"> ' + esc(e) + '</label>';
+    return '<label class="check-row su-d16943"><input type="checkbox" class="nd-fort" value="' + esc(e) + '"> ' + esc(e) + '</label>';
   }).join('');
 
   var body =
-    '<div class="timer-tabs" style="margin:12px 0 10px;flex-wrap:wrap">' +
-    '<button type="button" id="tabNdGuia" class="btn btn-accent" style="width:auto">🧭 Guía</button>' +
-    '<button type="button" id="tabNdPerfiles" class="btn" style="width:auto">🧩 Perfiles</button>' +
-    '<button type="button" id="tabNdApoyos" class="btn" style="width:auto">🧰 Apoyos</button>' +
-    '<button type="button" id="tabNdTests" class="btn" style="width:auto">📝 Tests</button>' +
-    '<button type="button" id="tabNdPlan" class="btn" style="width:auto">🌈 Mi plan</button></div>' +
+    '<div class="timer-tabs su-f7ad78">' +
+    '<button type="button" id="tabNdGuia" class="btn btn-accent su-30e741">🧭 Guía</button>' +
+    '<button type="button" id="tabNdPerfiles" class="btn su-30e741">🧩 Perfiles</button>' +
+    '<button type="button" id="tabNdApoyos" class="btn su-30e741">🧰 Apoyos</button>' +
+    '<button type="button" id="tabNdTests" class="btn su-30e741">📝 Tests</button>' +
+    '<button type="button" id="tabNdPlan" class="btn su-30e741">🌈 Mi plan</button></div>' +
 
-    '<div id="ndTop" class="menstrual-card" style="border-color:var(--gold);margin-bottom:10px"></div>' +
+    '<div id="ndTop" class="menstrual-card su-39553d"></div>' +
 
     /* 1) GUIA */
     '<div id="ndGuia">' +
@@ -217,13 +217,13 @@ function buildNdDialog() {
     '<div class="discipline-card"><h4>💬 Lenguaje que cuida</h4><p>• Pregunta cómo nombrarse: muchas personas prefieren <b>"soy autista"</b> (identidad) sobre "tengo autismo".<br>• Di <b>"persona con TDAH / dislexia"</b> o como ella prefiera.<br>• Evita: "enfermito", "normal vs anormal", "le falta esforzarse".<br>• Habla de <b>apoyos y barreras</b>, no de fallas.</p></div>' +
     '<div class="discipline-card"><h4>🚫 Mitos neuro</h4><p>• "Se cura con disciplina" → se <b>apoya</b> con diseño del entorno.<br>• "Si mira a los ojos no es autista" → el espectro es amplio.<br>• "TDAH es de niños" → sigue en adultos, sobre todo mujeres.<br>• "Un test online diagnostica" → solo orienta; diagnostica un equipo clínico.</p></div>' +
     '</div>' +
-    '<div class="si-card" style="border-left:3px solid #e8c56a"><h4>🧭 Cómo usar esta sección</h4><p>1) Lee 1 <b>perfil</b> que te resuene. 2) Prueba 1 <b>apoyo</b> 7 días. 3) Si quieres, haz un <b>test breve</b>. 4) Arma <b>Mi plan</b> y muéstralo a quien te apoya. Si interfiere con estudio, trabajo o vínculos, pide hora en <b>CESFAM / PIE / neurología</b>.</p></div>' +
-    '<div class="si-card" style="border-left:3px solid #e76e8a"><h4>⚖️ Derechos y red en Chile</h4><p>Ley TEA 21.545 · PIE en escuelas · credencial de discapacidad y Registro (COMPIN/SENADIS) · CESFAM deriva a neurología/psiquiatría/psicología · Salud Responde <b>600 360 7777</b> · crisis <b>*4141</b> (24h, gratis).</p></div>' +
+    '<div class="si-card su-3fd46e"><h4>🧭 Cómo usar esta sección</h4><p>1) Lee 1 <b>perfil</b> que te resuene. 2) Prueba 1 <b>apoyo</b> 7 días. 3) Si quieres, haz un <b>test breve</b>. 4) Arma <b>Mi plan</b> y muéstralo a quien te apoya. Si interfiere con estudio, trabajo o vínculos, pide hora en <b>CESFAM / PIE / neurología</b>.</p></div>' +
+    '<div class="si-card su-7266f7"><h4>⚖️ Derechos y red en Chile</h4><p>Ley TEA 21.545 · PIE en escuelas · credencial de discapacidad y Registro (COMPIN/SENADIS) · CESFAM deriva a neurología/psiquiatría/psicología · Salud Responde <b>600 360 7777</b> · crisis <b>*4141</b> (24h, gratis).</p></div>' +
     '</div>' +
 
     /* 2) PERFILES */
     '<div id="ndPerfiles" class="hidden">' +
-    '<input type="search" id="ndQ" placeholder="🔍 Buscar perfil... ej: atención, lectura, sensorial, tics" style="display:block;width:100%;margin:0 0 10px;background:var(--card);border:1px solid var(--line);color:var(--text);border-radius:8px;padding:8px">' +
+    '<input type="search" id="ndQ" placeholder="🔍 Buscar perfil... ej: atención, lectura, sensorial, tics" class="su-3d4207">' +
     '<div class="discipline-grid" id="ndGrid">' + perfHTML + '</div></div>' +
 
     /* 3) APOYOS */
@@ -235,29 +235,29 @@ function buildNdDialog() {
     '<div id="ndTests" class="hidden">' +
     '<div class="si-card"><h4>📝 Screenings breves (orientativos, no diagnóstico)</h4><p>Piensa en los <b>últimos 6 meses</b> (TDAH) o <b>últimas semanas</b> (autismo). Si el resultado es medio/alto, lleva ejemplos concretos a tu CESFAM o PIE. Nada sale de este dispositivo.</p></div>' +
     testsHTML +
-    '<div class="menstrual-card"><h4>📊 Mi historial</h4><div id="ndHist" class="habits-list" style="max-height:200px"></div><div class="dlg-actions" style="justify-content:flex-end;margin-top:8px"><button type="button" id="ndTestsClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar mis screenings</button></div></div>' +
+    '<div class="menstrual-card"><h4>📊 Mi historial</h4><div id="ndHist" class="habits-list su-b4992a"></div><div class="dlg-actions su-ded8e2"><button type="button" id="ndTestsClear" class="btn su-214f75">🗑 Borrar mis screenings</button></div></div>' +
     '</div>' +
 
     /* 5) MI PLAN */
     '<div id="ndPlan" class="hidden">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🌈 Mi tarjeta de acceso</h4>' +
-    '<p class="muted" style="font-size:11px;margin:6px 0 4px">Lo que me sobrecarga (marca):</p>' +
-    '<div style="display:flex;flex-wrap:wrap">' + sensChips + '</div>' +
-    '<p class="muted" style="font-size:11px;margin:6px 0 4px">Mis fortalezas (marca):</p>' +
-    '<div style="display:flex;flex-wrap:wrap">' + fortChips + '</div>' +
-    '<div class="conv-row" style="margin-top:8px"><label>Sobrecarga hoy 1-10 <input type="range" id="ndSob" min="1" max="10" value="4" style="width:100%"></label><span id="ndSobV" class="chip" style="min-width:44px;text-align:center">4</span></div>' +
+    '<div class="menstrual-card su-68a1a9"><h4>🌈 Mi tarjeta de acceso</h4>' +
+    '<p class="muted su-db6a1e">Lo que me sobrecarga (marca):</p>' +
+    '<div class="su-2fb621">' + sensChips + '</div>' +
+    '<p class="muted su-db6a1e">Mis fortalezas (marca):</p>' +
+    '<div class="su-2fb621">' + fortChips + '</div>' +
+    '<div class="conv-row su-8a77e5"><label>Sobrecarga hoy 1-10 <input type="range" id="ndSob" min="1" max="10" value="4" class="su-046678"></label><span id="ndSobV" class="chip su-78a96b">4</span></div>' +
     '<div class="conv-row"><label>Señales de que me saturo <input type="text" id="ndSenales" placeholder="ej: me tapo oídos, me pongo irritable" maxlength="120"></label>' +
     '<label>Lo que me calma <input type="text" id="ndCalma" placeholder="ej: audífonos + rincón oscuro 10 min" maxlength="120"></label></div>' +
     '<div class="conv-row"><label>Persona apoyo <input type="text" id="ndApoyo" placeholder="ej: mamá 9xxxxxxx, profe jefe" maxlength="80"></label>' +
     '<label>Mi frase para pedir pausa <input type="text" id="ndFrase" placeholder="ej: necesito 5 min fuera, vuelvo" maxlength="80"></label></div>' +
     '<label>Mi rutina que funciona <textarea id="ndRutina" rows="2" placeholder="ej: llego, audífonos, lista de 3, temporizador 20 min..." maxlength="300"></textarea></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start;flex-wrap:wrap"><button type="button" id="ndSave" class="btn btn-accent" style="width:auto">💾 Guardar mi plan</button>' +
-    '<button type="button" id="ndToNote" class="btn" style="width:auto">📝 Llevar a nota de hoy</button></div>' +
-    '<div class="dlg-actions" style="justify-content:space-between;align-items:center;margin-top:8px"><span class="muted" style="font-size:11px">Tu tarjeta queda privada y local.</span>' +
-    '<span style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" id="ndShare" class="btn" style="width:auto">📤 Compartir</button>' +
-    '<button type="button" id="ndExport" class="btn" style="width:auto">📥 Exportar</button>' +
-    '<button type="button" id="ndClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar plan</button></span></div>' +
-    '<div id="ndView" style="margin-top:8px"></div></div>' +
+    '<div class="dlg-actions su-117179"><button type="button" id="ndSave" class="btn btn-accent su-30e741">💾 Guardar mi plan</button>' +
+    '<button type="button" id="ndToNote" class="btn su-30e741">📝 Llevar a nota de hoy</button></div>' +
+    '<div class="dlg-actions su-cc4a4c"><span class="muted su-11a508">Tu tarjeta queda privada y local.</span>' +
+    '<span class="su-3de8f9"><button type="button" id="ndShare" class="btn su-30e741">📤 Compartir</button>' +
+    '<button type="button" id="ndExport" class="btn su-30e741">📥 Exportar</button>' +
+    '<button type="button" id="ndClear" class="btn su-214f75">🗑 Borrar plan</button></span></div>' +
+    '<div id="ndView" class="su-8a77e5"></div></div>' +
     '</div>';
 
   makeDialog('neurodiversidadDialog', '🌈 Neurodiversidad',
@@ -275,15 +275,15 @@ function renderNdTop() {
   var p = (psi().neuro || {}).perfil || {};
   b.innerHTML = '<b>🌈 Tu espacio neuro:</b> <b>' + ND_PERFILES.length + '</b> perfiles · <b>' + ND_APOYOS.length + '</b> apoyos · <b>' + t + '</b> screenings' +
     (p.guardado ? ' · ✅ tarjeta lista (' + esc(p.fecha || '') + ')' : ' · ○ sin tarjeta aún') +
-    '<span class="muted" style="font-size:11px"> — cada subsección es corta: avanza por pestañas</span>';
+    '<span class="muted su-11a508"> — cada subsección es corta: avanza por pestañas</span>';
 }
 function renderNdHist() {
   var box = $('ndHist'); if (!box) return;
   var t = ndTests().slice().reverse().slice(0, 10);
   box.innerHTML = t.length ? t.map(function (r) {
-    return '<div class="hora-item"><span style="font-size:11px"><b>' + esc(r.fecha) + '</b> · ' + esc(r.nombre) + ': <b>' + esc(String(r.puntaje)) + '</b> — ' + esc(r.nivel) + '</span>' +
+    return '<div class="hora-item"><span class="su-11a508"><b>' + esc(r.fecha) + '</b> · ' + esc(r.nombre) + ': <b>' + esc(String(r.puntaje)) + '</b> — ' + esc(r.nivel) + '</span>' +
       '<button type="button" class="btn btn-icon nd-tdel" data-k="' + esc(r.id) + '">✕</button></div>';
-  }).join('') : '<p class="muted" style="font-size:11px;text-align:center">Sin screenings aún. Responde uno arriba: solo orienta, no diagnostica.</p>';
+  }).join('') : '<p class="muted su-e201a8">Sin screenings aún. Responde uno arriba: solo orienta, no diagnostica.</p>';
   box.querySelectorAll('.nd-tdel').forEach(function (x) {
     x.onclick = function () { var e = psi(); e.tests = (e.tests || []).filter(function (r) { return r.id !== x.dataset.k; }); save(); renderNdTop(); renderNdHist(); };
   });
@@ -291,8 +291,8 @@ function renderNdHist() {
 function renderNdPlan() {
   var view = $('ndView'); if (!view) return;
   var p = (psi().neuro || {}).perfil || {};
-  if (!p.guardado) { view.innerHTML = '<p class="muted" style="font-size:11px;text-align:center">Sin plan aún. Marca y guarda arriba: será tu tarjeta para mostrar a familia, escuela o trabajo.</p>'; return; }
-  view.innerHTML = '<div class="si-card" style="border-color:var(--gold)"><h4>🌈 Mi tarjeta de acceso · ' + esc(p.fecha || '') + '</h4>' +
+  if (!p.guardado) { view.innerHTML = '<p class="muted su-e201a8">Sin plan aún. Marca y guarda arriba: será tu tarjeta para mostrar a familia, escuela o trabajo.</p>'; return; }
+  view.innerHTML = '<div class="si-card su-68a1a9"><h4>🌈 Mi tarjeta de acceso · ' + esc(p.fecha || '') + '</h4>' +
     '<p><b>Me sobrecarga:</b> ' + esc((p.sens || []).join(', ') || '—') + ' · hoy ' + esc(String(p.sobrecarga == null ? '-' : p.sobrecarga)) + '/10</p>' +
     '<p><b>Mis fortalezas:</b> ' + esc((p.forts || []).join(', ') || '—') + '</p>' +
     (p.senales ? '<p><b>Señales de saturación:</b> ' + esc(p.senales) + '</p>' : '') +
@@ -430,8 +430,8 @@ function setup() {
       if (!def) return;
       var r = calcNdTest(def);
       var box = $('res_' + def.id);
-      if (!r.ok) { if (box) box.innerHTML = '<p class="muted" style="font-size:12px">Responde todas las preguntas para ver tu resultado.</p>'; return; }
-      if (box) box.innerHTML = '<div class="si-card" style="border-color:var(--gold)"><h4>Resultado: ' + esc(String(r.puntaje)) + '</h4><p>' + esc(r.nivel) + '</p><p class="muted" style="font-size:11px">Educativo, no diagnóstico. Si te preocupa, conversa con alguien de confianza o pide hora en tu CESFAM.</p></div>';
+      if (!r.ok) { if (box) box.innerHTML = '<p class="muted su-6cb285">Responde todas las preguntas para ver tu resultado.</p>'; return; }
+      if (box) box.innerHTML = '<div class="si-card su-68a1a9"><h4>Resultado: ' + esc(String(r.puntaje)) + '</h4><p>' + esc(r.nivel) + '</p><p class="muted su-11a508">Educativo, no diagnóstico. Si te preocupa, conversa con alguien de confianza o pide hora en tu CESFAM.</p></div>';
       var e = psi();
       e.tests.push({ id: uid('pt'), fecha: todayKey(), tipo: def.id, nombre: def.nombre, puntaje: r.puntaje, nivel: r.nivel, respuestas: r.vals || [] });
       save('Test guardado ✓'); ndRefresh();

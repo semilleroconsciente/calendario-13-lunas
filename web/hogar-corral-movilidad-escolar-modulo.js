@@ -73,10 +73,10 @@ function makeDialog(id, title, sub, bodyHTML) {
   var d = document.createElement('dialog');
   d.id = id;
   d.innerHTML = '<form method="dialog">' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
-    '<h3 style="margin:0;color:var(--accent)">' + title + '</h3>' +
+    '<div class="dlg-actions su-d2d053">' +
+    '<h3 class="su-ee0cfe">' + title + '</h3>' +
     '<button type="button" data-close class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    (sub ? '<p class="muted" style="line-height:1.5">' + sub + '</p>' : '') +
+    (sub ? '<p class="muted su-77e2fe">' + sub + '</p>' : '') +
     bodyHTML +
     '<div class="dlg-actions"><button type="button" data-close class="btn">Cerrar</button></div></form>';
   document.body.appendChild(d);
@@ -168,34 +168,34 @@ function haceDiasKey(n) {
 
 function corBuild() {
   var body =
-    '<div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">' +
-    '<button type="button" id="tabCorResumen" class="btn btn-accent" style="width:auto">🏡 Resumen</button>' +
-    '<button type="button" id="tabCorAnimales" class="btn" style="width:auto">🐔 Animales</button>' +
-    '<button type="button" id="tabCorBitacora" class="btn" style="width:auto">📓 Bitácora</button>' +
-    '<button type="button" id="tabCorGuia" class="btn" style="width:auto">📖 Guía</button></div>' +
+    '<div class="timer-tabs su-4dca21">' +
+    '<button type="button" id="tabCorResumen" class="btn btn-accent su-30e741">🏡 Resumen</button>' +
+    '<button type="button" id="tabCorAnimales" class="btn su-30e741">🐔 Animales</button>' +
+    '<button type="button" id="tabCorBitacora" class="btn su-30e741">📓 Bitácora</button>' +
+    '<button type="button" id="tabCorGuia" class="btn su-30e741">📖 Guía</button></div>' +
     '<div id="corResumen"></div>' +
     '<div id="corAnimales" class="hidden">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>➕ <span id="corFormTitle">Nuevo animal / lote</span></h4>' +
-    '<div class="conv-row"><label style="flex:2">Nombre o lote * <input type="text" id="corNombre" placeholder="ej: Coloradas x6, Conejos engorda, Chanchito" maxlength="40"></label>' +
+    '<div class="menstrual-card su-68a1a9"><h4>➕ <span id="corFormTitle">Nuevo animal / lote</span></h4>' +
+    '<div class="conv-row"><label class="su-4b3de7">Nombre o lote * <input type="text" id="corNombre" placeholder="ej: Coloradas x6, Conejos engorda, Chanchito" maxlength="40"></label>' +
     '<label>Especie <select id="corEsp">' + COR_ESPECIES.map(function (t) { return '<option>' + esc(t) + '</option>'; }).join('') + '</select></label></div>' +
     '<div class="conv-row"><label>Cantidad <input type="number" id="corCant" min="1" step="1" value="1"></label>' +
     '<label>Ingreso <input type="date" id="corIngreso"></label>' +
     '<label>Estado <select id="corEstado">' + COR_ESTADOS.map(function (t) { return '<option>' + esc(t) + '</option>'; }).join('') + '</select></label></div>' +
     '<label>Nota <input type="text" id="corNota" placeholder="ej: criolla, comprada en feria, lote marzo" maxlength="100"></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start;margin-top:8px"><button type="button" id="corAdd" class="btn btn-accent" style="width:auto">+ Guardar</button>' +
-    '<button type="button" id="corCancel" class="btn hidden" style="width:auto">Cancelar</button></div></div>' +
-    '<div id="corList" style="margin-top:8px;display:flex;flex-direction:column;gap:8px"></div></div>' +
+    '<div class="dlg-actions su-8f9e27"><button type="button" id="corAdd" class="btn btn-accent su-30e741">+ Guardar</button>' +
+    '<button type="button" id="corCancel" class="btn hidden su-30e741">Cancelar</button></div></div>' +
+    '<div id="corList" class="su-bf3828"></div></div>' +
     '<div id="corBitacora" class="hidden">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>➕ Anotar: puestas / kilos / manejo</h4>' +
+    '<div class="menstrual-card su-68a1a9"><h4>➕ Anotar: puestas / kilos / manejo</h4>' +
     '<div class="conv-row"><label>Fecha <input type="date" id="corFecha"></label>' +
-    '<label style="flex:2">Tipo <select id="corTipo">' + COR_TIPOS.map(function (t) { return '<option>' + esc(t) + '</option>'; }).join('') + '</select></label>' +
+    '<label class="su-4b3de7">Tipo <select id="corTipo">' + COR_TIPOS.map(function (t) { return '<option>' + esc(t) + '</option>'; }).join('') + '</select></label>' +
     '<label>Cantidad <input type="number" id="corRegCant" min="0" step="0.5" value="1"></label></div>' +
-    '<div class="conv-row"><label style="flex:2">Animal / lote <select id="corRegLote"></select></label>' +
-    '<label class="check-row" style="margin:0;align-self:flex-end"><input type="checkbox" id="corRegCal"> 📌 Al calendario</label></div>' +
+    '<div class="conv-row"><label class="su-4b3de7">Animal / lote <select id="corRegLote"></select></label>' +
+    '<label class="check-row su-70c149"><input type="checkbox" id="corRegCal"> 📌 Al calendario</label></div>' +
     '<label>Nota <input type="text" id="corRegNota" placeholder="ej: 6 huevos hoy, 2 kg maíz, faena conejo 2,3 kg" maxlength="100"></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start;margin-top:8px"><button type="button" id="corRegAdd" class="btn btn-accent" style="width:auto">+ Anotar en bitácora</button></div></div>' +
-    '<div class="conv-row" style="margin-top:8px"><label style="flex:2">🔍 Buscar <input type="text" id="corQ" placeholder="nota, lote..."></label></div>' +
-    '<div id="corRegList" style="margin-top:8px;display:flex;flex-direction:column;gap:8px"></div></div>' +
+    '<div class="dlg-actions su-8f9e27"><button type="button" id="corRegAdd" class="btn btn-accent su-30e741">+ Anotar en bitácora</button></div></div>' +
+    '<div class="conv-row su-8a77e5"><label class="su-4b3de7">🔍 Buscar <input type="text" id="corQ" placeholder="nota, lote..."></label></div>' +
+    '<div id="corRegList" class="su-bf3828"></div></div>' +
     '<div id="corGuia" class="hidden">' +
     '<div class="si-card"><h4>🌾 Alimentación por especie (base Penco)</h4><p><b>Gallina ponedora:</b> ~110–120 g/día de mezcla (maíz chancado + trigo + afrecho + conchuela para cáscara dura) + pasto/restos de verdura + agua siempre. 1 ponedora ≈ 1 huevo cada 26 h en buena época.<br><b>Conejo engorda:</b> heno a libre disposición + pellet/conejo + agua en bebedero (no plato). Engorda 30–90 días hasta 2–2,5 kg.<br><b>Chanchito traspatio:</b> 1–2 kg/día según tamaño (harinilla + afrecho + restos cocidos de cocina, NUNCA basura cruda ni carne cruda) + agua limpia. Ceba 5–6 meses hasta 80–100 kg.<br><span class="muted">Guarda el alimento en tarro hermético: la humedad de Penco lo honguea. Anota los kilos en 📓 Bitácora → 🌾 Alimento.</span></p></div>' +
     '<div class="si-card"><h4>🔄 Ciclo productivo (para planificar)</h4><p><b>Gallinas:</b> rompen postura ~18–20 semanas · peak 26–40 semanas · postura útil hasta ~72 semanas (luego baja; decide recambio). 1 gallina sana: 250–300 huevos/año. Pelecha en Rimü (otoño): baja postura, sube proteína.<br><b>Conejos:</b> destete 30 días · engorda hasta 70–90 días · faena 2–2,5 kg. Separa machos a los 60 días.<br><b>Chancho:</b> destete 45 días · recría 2 meses · ceba 3–4 meses. Faena casera con frío (Rimü/Pukem) y ayuda experta la primera vez.<br>Usa <b>📌 Al calendario</b> en Bitácora para marcar faenas, vacunas y recambios.</p></div>' +
@@ -222,17 +222,17 @@ function corRender() {
   var gallinas = st.animales.filter(function (x) { return (x.esp || '').indexOf('Gallina') >= 0; }).reduce(function (a, x) { return a + (parseInt(x.cant) || 0); }, 0);
   box.innerHTML =
     '<div class="fishing-grid">' +
-    '<div class="menstrual-card"><h4>🐔 Mi corral</h4><p style="font-size:22px;color:var(--gold)"><b>' + nAn + '</b> <span style="font-size:12px">animales en ' + st.animales.length + ' lote(s)</span></p>' +
-    '<p class="muted" style="font-size:11px">' + (st.animales.length ? st.animales.map(function (x) { return esc(x.nombre + ' ×' + x.cant); }).slice(0, 4).join(' · ') : 'Anota tu primer lote en 🐔 Animales.') + '</p></div>' +
-    '<div class="menstrual-card"><h4>🥚 Puestas</h4><p style="font-size:22px;color:var(--gold)"><b>' + h7 + '</b> <span style="font-size:12px">/ 7 días</span> · <b>' + h28 + '</b> <span style="font-size:12px">/ 28 días</span></p>' +
-    '<p class="muted" style="font-size:11px">' + gallinas + ' gallinas aprox · 🌾 ' + ali28 + ' kg alimento / 28 d' + (bajas ? ' · ⚠️ ' + bajas + ' bajas' : '') + '</p></div></div>' +
-    ((enfermos.length || sinPost.length) ? '<div class="menstrual-card" style="margin-top:10px"><h4>⚠️ Ojo esta semana</h4><p class="muted" style="font-size:11px">' +
+    '<div class="menstrual-card"><h4>🐔 Mi corral</h4><p class="su-f3dba9"><b>' + nAn + '</b> <span class="su-6cb285">animales en ' + st.animales.length + ' lote(s)</span></p>' +
+    '<p class="muted su-11a508">' + (st.animales.length ? st.animales.map(function (x) { return esc(x.nombre + ' ×' + x.cant); }).slice(0, 4).join(' · ') : 'Anota tu primer lote en 🐔 Animales.') + '</p></div>' +
+    '<div class="menstrual-card"><h4>🥚 Puestas</h4><p class="su-f3dba9"><b>' + h7 + '</b> <span class="su-6cb285">/ 7 días</span> · <b>' + h28 + '</b> <span class="su-6cb285">/ 28 días</span></p>' +
+    '<p class="muted su-11a508">' + gallinas + ' gallinas aprox · 🌾 ' + ali28 + ' kg alimento / 28 d' + (bajas ? ' · ⚠️ ' + bajas + ' bajas' : '') + '</p></div></div>' +
+    ((enfermos.length || sinPost.length) ? '<div class="menstrual-card su-d2c171"><h4>⚠️ Ojo esta semana</h4><p class="muted su-11a508">' +
       enfermos.slice(0, 5).map(function (x) { return esc('🤒 ' + x.nombre + ' — revisar hoy'); }).join('<br>') +
       (enfermos.length && sinPost.length ? '<br>' : '') +
       sinPost.slice(0, 5).map(function (x) { return esc('🚫 ' + x.nombre + ' sin postura — revisa luz/edad/pelecha'); }).join('<br>') + '</p></div>' : '') +
-    '<div class="dlg-actions" style="justify-content:flex-start;margin-top:8px"><button type="button" id="corGoAdd" class="btn" style="width:auto">➕ Anotar lote</button>' +
-    '<button type="button" id="corGoReg" class="btn" style="width:auto">📓 Anotar puesta/kilos</button>' +
-    '<button type="button" id="corShare" class="btn" style="width:auto">📤 Compartir</button></div>';
+    '<div class="dlg-actions su-8f9e27"><button type="button" id="corGoAdd" class="btn su-30e741">➕ Anotar lote</button>' +
+    '<button type="button" id="corGoReg" class="btn su-30e741">📓 Anotar puesta/kilos</button>' +
+    '<button type="button" id="corShare" class="btn su-30e741">📤 Compartir</button></div>';
   var g = $('corGoAdd'); if (g) g.onclick = function () { corSwitch('Animales'); };
   var gr = $('corGoReg'); if (gr) gr.onclick = function () { corSwitch('Bitacora'); };
   var sh = $('corShare'); if (sh) sh.onclick = function () {
@@ -245,16 +245,16 @@ function corRender() {
   if (lb) {
     var arr = st.animales.slice();
     lb.innerHTML = arr.length ? arr.map(function (x) {
-      return '<div class="si-card"><h4>' + esc((x.esp || '🐔').split(' ')[0] + ' ' + x.nombre) + ' <span class="chip" style="font-size:10px">×' + esc(String(x.cant)) + '</span></h4>' +
-        '<p style="display:flex;gap:6px;flex-wrap:wrap"><span class="chip" style="font-size:10px">' + esc(x.esp || '') + '</span>' +
-        (x.estado ? '<span class="chip" style="font-size:10px">' + esc(x.estado) + '</span>' : '') +
-        (x.ingreso ? '<span class="chip" style="font-size:10px">📥 ' + esc(x.ingreso) + '</span>' : '') + '</p>' +
+      return '<div class="si-card"><h4>' + esc((x.esp || '🐔').split(' ')[0] + ' ' + x.nombre) + ' <span class="chip su-0d5be0">×' + esc(String(x.cant)) + '</span></h4>' +
+        '<p class="su-6157e8"><span class="chip su-0d5be0">' + esc(x.esp || '') + '</span>' +
+        (x.estado ? '<span class="chip su-0d5be0">' + esc(x.estado) + '</span>' : '') +
+        (x.ingreso ? '<span class="chip su-0d5be0">📥 ' + esc(x.ingreso) + '</span>' : '') + '</p>' +
         (x.nota ? '<p class="muted">' + esc(x.nota) + '</p>' : '') +
-        '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">' +
-        '<button type="button" class="btn cor-e" data-k="' + esc(x.id) + '" style="width:auto;font-size:11px">✏️ Editar</button>' +
-        '<button type="button" class="btn cor-huevo" data-k="' + esc(x.id) + '" style="width:auto;font-size:11px">🥚 +1 hoy</button>' +
-        '<button type="button" class="btn cor-d" data-k="' + esc(x.id) + '" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕</button></div></div>';
-    }).join('') : '<p class="muted" style="font-size:11px;text-align:center">Sin lotes. Ej: “Coloradas x6” 🐔.</p>';
+        '<div class="su-c158a9">' +
+        '<button type="button" class="btn cor-e su-337714" data-k="' + esc(x.id) + '">✏️ Editar</button>' +
+        '<button type="button" class="btn cor-huevo su-337714" data-k="' + esc(x.id) + '">🥚 +1 hoy</button>' +
+        '<button type="button" class="btn cor-d su-fd834a" data-k="' + esc(x.id) + '">✕</button></div></div>';
+    }).join('') : '<p class="muted su-e201a8">Sin lotes. Ej: “Coloradas x6” 🐔.</p>';
     lb.querySelectorAll('.cor-e').forEach(function (b) {
       b.onclick = function () {
         var f = null; corStore().animales.forEach(function (x) { if (x.id === b.dataset.k) f = x; });
@@ -295,11 +295,11 @@ function corRender() {
     if (q) list = list.filter(function (x) { return ((x.nota || '') + ' ' + (x.lote || '') + ' ' + (x.tipo || '')).toLowerCase().indexOf(q) >= 0; });
     rl.innerHTML = list.length ? list.map(function (r) {
       return '<div class="si-card"><h4>' + esc(r.tipo + ' · ' + r.cant) + '</h4>' +
-        '<p style="display:flex;gap:6px;flex-wrap:wrap"><span class="chip" style="font-size:10px">📅 ' + esc(r.fecha) + '</span>' +
-        (r.lote ? '<span class="chip" style="font-size:10px">🐔 ' + esc(r.lote) + '</span>' : '') + '</p>' +
+        '<p class="su-6157e8"><span class="chip su-0d5be0">📅 ' + esc(r.fecha) + '</span>' +
+        (r.lote ? '<span class="chip su-0d5be0">🐔 ' + esc(r.lote) + '</span>' : '') + '</p>' +
         (r.nota ? '<p class="muted">' + esc(r.nota) + '</p>' : '') +
-        '<div style="display:flex;gap:6px;margin-top:6px"><button type="button" class="btn cor-rd" data-k="' + esc(r.id) + '" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕ Borrar</button></div></div>';
-    }).join('') : '<p class="muted" style="font-size:11px;text-align:center">Sin registros. Anota la puesta de hoy 🥚.</p>';
+        '<div class="su-30b926"><button type="button" class="btn cor-rd su-fd834a" data-k="' + esc(r.id) + '">✕ Borrar</button></div></div>';
+    }).join('') : '<p class="muted su-e201a8">Sin registros. Anota la puesta de hoy 🥚.</p>';
     rl.querySelectorAll('.cor-rd').forEach(function (b) {
       b.onclick = function () {
         if (!confirm('¿Borrar registro?')) return;
@@ -340,22 +340,22 @@ function movSwitch(t) {
 }
 function movBuild() {
   var body =
-    '<div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">' +
-    '<button type="button" id="tabMovResumen" class="btn btn-accent" style="width:auto">🏡 Resumen</button>' +
-    '<button type="button" id="tabMovLineas" class="btn" style="width:auto">🚌 Líneas</button>' +
-    '<button type="button" id="tabMovViajes" class="btn" style="width:auto">📌 Mis viajes</button>' +
-    '<button type="button" id="tabMovGuia" class="btn" style="width:auto">📖 Guía</button></div>' +
+    '<div class="timer-tabs su-4dca21">' +
+    '<button type="button" id="tabMovResumen" class="btn btn-accent su-30e741">🏡 Resumen</button>' +
+    '<button type="button" id="tabMovLineas" class="btn su-30e741">🚌 Líneas</button>' +
+    '<button type="button" id="tabMovViajes" class="btn su-30e741">📌 Mis viajes</button>' +
+    '<button type="button" id="tabMovGuia" class="btn su-30e741">📖 Guía</button></div>' +
     '<div id="movResumen"></div>' +
     '<div id="movLineas" class="hidden"></div>' +
     '<div id="movViajes" class="hidden">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>📌 Guardar viaje / punto de encuentro</h4>' +
+    '<div class="menstrual-card su-68a1a9"><h4>📌 Guardar viaje / punto de encuentro</h4>' +
     '<div class="conv-row"><label>Fecha <input type="date" id="movFecha"></label>' +
     '<label>Hora <input type="time" id="movHora" value="07:30"></label></div>' +
-    '<div class="conv-row"><label style="flex:2">Destino / motivo * <input type="text" id="movMotivo" placeholder="ej: UdeC 08:30, práctica, turno" maxlength="60"></label>' +
-    '<label class="check-row" style="margin:0;align-self:flex-end"><input type="checkbox" id="movAviso"> 🔔</label></div>' +
+    '<div class="conv-row"><label class="su-4b3de7">Destino / motivo * <input type="text" id="movMotivo" placeholder="ej: UdeC 08:30, práctica, turno" maxlength="60"></label>' +
+    '<label class="check-row su-70c149"><input type="checkbox" id="movAviso"> 🔔</label></div>' +
     '<label>Punto encuentro <input type="text" id="movPunto" placeholder="ej: Plaza Penco 07:25, paradero Lirquén" maxlength="80"></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start;margin-top:8px"><button type="button" id="movAdd" class="btn btn-accent" style="width:auto">📌 Llevar al calendario</button></div></div>' +
-    '<div id="movList" style="margin-top:8px;display:flex;flex-direction:column;gap:8px"></div></div>' +
+    '<div class="dlg-actions su-8f9e27"><button type="button" id="movAdd" class="btn btn-accent su-30e741">📌 Llevar al calendario</button></div></div>' +
+    '<div id="movList" class="su-bf3828"></div></div>' +
     '<div id="movGuia" class="hidden">' +
     '<div class="si-card"><h4>⏰ Cómo leer las frecuencias (clave diaria)</h4><p>No hay horario fijo publicado: la micro pasa <b>por frecuencia</b>. En punta (07:00–09:00 y 17:30–20:00) calcula <b>8–15 min</b>; resto del día <b>15–30 min</b>; domingo <b>25–40 min</b>. Para llegar a las 08:30 a Conce, toma la de <b>07:15–07:30</b> desde Penco (taco de Ruta 150). Verifica en vivo con <b>Moovit</b> o preguntando en paradero. Si un chofer te dice “voy solo hasta X”, no discutas: baja y toma la siguiente.</p></div>' +
     '<div class="si-card"><h4>💰 Costos y combos (edita tus valores en Resumen)</h4><p>Urbano Penco–Lirquén: <b>~$500</b> (ref. BioBioChile 2026). Penco–Conce interurbano: <b>variable (~$900–$1.100)</b> — cambia por combustible, edítalo cuando suba. <b>Combos que ahorran:</b> ida+vuelta del día (2 pasajes, sin trasbordo) · semanal 10 viajes (Lun–Vie) · mensual ~44 viajes + 4 urbanos. Con TNE (pase escolar) pagas rebajado: llévala siempre y carga antes del lunes. Si fallas 1 micro en punta, el combo se rompe: sal 1 frecuencia antes.</p></div>' +
@@ -377,13 +377,13 @@ function movRender() {
     '<div class="menstrual-card"><h4>🎫 Mis tarifas (editables)</h4>' +
     '<div class="conv-row"><label>Penco–Conce $ <input type="number" id="movPasaje" min="0" step="50" value="' + pas + '"></label>' +
     '<label>Urbano $ <input type="number" id="movUrbano" min="0" step="50" value="' + urb + '"></label></div>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="movSaveTar" class="btn btn-accent" style="width:auto">💾 Guardar tarifas</button></div>' +
-    '<p class="muted" style="font-size:10px">Fuente base: urbano $500 (BioBioChile) · interurbano variable, verifica en micro.</p></div>' +
-    '<div class="menstrual-card"><h4>🧮 Combos con tus valores</h4><p style="font-size:14px">🔁 Ida+vuelta: <b>' + fmt(idaV) + '</b><br>📅 Semanal (10+2): <b>' + fmt(sem) + '</b><br>🗓️ Mensual (~44+8): <b>' + fmt(mes) + '</b></p>' +
-    '<p class="muted" style="font-size:11px">' + st.viajes.length + ' viaje(s) guardados en 📌 Mis viajes</p></div></div>' +
-    '<div class="dlg-actions" style="justify-content:flex-start;margin-top:8px"><button type="button" id="movGoLin" class="btn" style="width:auto">🚌 Ver líneas</button>' +
-    '<button type="button" id="movGoVia" class="btn" style="width:auto">📌 Guardar viaje</button>' +
-    '<button type="button" id="movShare" class="btn" style="width:auto">📤 Compartir</button></div>';
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="movSaveTar" class="btn btn-accent su-30e741">💾 Guardar tarifas</button></div>' +
+    '<p class="muted su-0d5be0">Fuente base: urbano $500 (BioBioChile) · interurbano variable, verifica en micro.</p></div>' +
+    '<div class="menstrual-card"><h4>🧮 Combos con tus valores</h4><p class="su-433de3">🔁 Ida+vuelta: <b>' + fmt(idaV) + '</b><br>📅 Semanal (10+2): <b>' + fmt(sem) + '</b><br>🗓️ Mensual (~44+8): <b>' + fmt(mes) + '</b></p>' +
+    '<p class="muted su-11a508">' + st.viajes.length + ' viaje(s) guardados en 📌 Mis viajes</p></div></div>' +
+    '<div class="dlg-actions su-8f9e27"><button type="button" id="movGoLin" class="btn su-30e741">🚌 Ver líneas</button>' +
+    '<button type="button" id="movGoVia" class="btn su-30e741">📌 Guardar viaje</button>' +
+    '<button type="button" id="movShare" class="btn su-30e741">📤 Compartir</button></div>';
   var sv = $('movSaveTar');
   if (sv) sv.onclick = function () {
     st.config.pasaje = Math.max(0, parseInt(($('movPasaje') || {}).value) || 0);
@@ -399,19 +399,19 @@ function movRender() {
   if (lb) {
     lb.innerHTML = MOV_LINEAS.map(function (l) {
       return '<div class="si-card"><h4>🚌 ' + esc(l.nombre) + '</h4>' +
-        '<p style="font-size:12px;line-height:1.6">📍 ' + esc(l.recorrido) + '<br>🔁 ' + esc(l.frec) + '<br>🕐 ' + esc(l.hora) + ' · ⏱️ ' + esc(l.tiempo) + '</p>' +
+        '<p class="su-616df7">📍 ' + esc(l.recorrido) + '<br>🔁 ' + esc(l.frec) + '<br>🕐 ' + esc(l.hora) + ' · ⏱️ ' + esc(l.tiempo) + '</p>' +
         '<p class="muted">' + esc(l.nota) + '</p></div>';
     }).join('') +
-    '<p class="muted" style="font-size:10px">Frecuencias base 2026 (Moovit + prensa local). No son horario fijo: verifica el día en paradero.</p>';
+    '<p class="muted su-0d5be0">Frecuencias base 2026 (Moovit + prensa local). No son horario fijo: verifica el día en paradero.</p>';
   }
   var ll = $('movList');
   if (ll) {
     var arr = st.viajes.slice().sort(function (a, b) { return String(b.fecha).localeCompare(String(a.fecha)); }).slice(0, 40);
     ll.innerHTML = arr.length ? arr.map(function (v) {
       return '<div class="si-card"><h4>📌 ' + esc(v.fecha + ' ' + v.hora) + '</h4>' +
-        '<p style="font-size:12px"><b>' + esc(v.motivo) + '</b>' + (v.punto ? '<br><span class="muted">📍 ' + esc(v.punto) + '</span>' : '') + '</p>' +
-        '<div style="margin-top:6px"><button type="button" class="btn mov-d" data-k="' + esc(v.id) + '" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕ Borrar</button></div></div>';
-    }).join('') : '<p class="muted" style="font-size:11px;text-align:center">Sin viajes. Guarda el de mañana con 📌.</p>';
+        '<p class="su-6cb285"><b>' + esc(v.motivo) + '</b>' + (v.punto ? '<br><span class="muted">📍 ' + esc(v.punto) + '</span>' : '') + '</p>' +
+        '<div class="su-fe7b49"><button type="button" class="btn mov-d su-fd834a" data-k="' + esc(v.id) + '">✕ Borrar</button></div></div>';
+    }).join('') : '<p class="muted su-e201a8">Sin viajes. Guarda el de mañana con 📌.</p>';
     ll.querySelectorAll('.mov-d').forEach(function (b) {
       b.onclick = function () {
         if (!confirm('¿Borrar viaje? (queda el compromiso ya creado en el día)')) return;
@@ -503,24 +503,24 @@ function escSwitch(t) {
 }
 function escBuild() {
   var body =
-    '<div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">' +
-    '<button type="button" id="tabEscFeriados" class="btn btn-accent" style="width:auto">🎉 Feriados</button>' +
-    '<button type="button" id="tabEscCalendario" class="btn" style="width:auto">📚 Calendario</button>' +
-    '<button type="button" id="tabEscColegios" class="btn" style="width:auto">🏫 Colegios</button>' +
-    '<button type="button" id="tabEscMios" class="btn" style="width:auto">⭐ Mis fechas</button>' +
-    '<button type="button" id="tabEscGuia" class="btn" style="width:auto">📖 Guía</button></div>' +
+    '<div class="timer-tabs su-4dca21">' +
+    '<button type="button" id="tabEscFeriados" class="btn btn-accent su-30e741">🎉 Feriados</button>' +
+    '<button type="button" id="tabEscCalendario" class="btn su-30e741">📚 Calendario</button>' +
+    '<button type="button" id="tabEscColegios" class="btn su-30e741">🏫 Colegios</button>' +
+    '<button type="button" id="tabEscMios" class="btn su-30e741">⭐ Mis fechas</button>' +
+    '<button type="button" id="tabEscGuia" class="btn su-30e741">📖 Guía</button></div>' +
     '<div id="escFeriados"></div>' +
     '<div id="escCalendario" class="hidden"></div>' +
     '<div id="escColegios" class="hidden"></div>' +
     '<div id="escMios" class="hidden">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>➕ Mi fecha (matrícula, reunión, prueba...)</h4>' +
-    '<div class="conv-row"><label style="flex:2">Qué * <input type="text" id="escNombre" placeholder="ej: Matrícula 3º básico, reunión apoderados" maxlength="60"></label>' +
+    '<div class="menstrual-card su-68a1a9"><h4>➕ Mi fecha (matrícula, reunión, prueba...)</h4>' +
+    '<div class="conv-row"><label class="su-4b3de7">Qué * <input type="text" id="escNombre" placeholder="ej: Matrícula 3º básico, reunión apoderados" maxlength="60"></label>' +
     '<label>Fecha <input type="date" id="escFecha"></label></div>' +
     '<div class="conv-row"><label>Dónde <input type="text" id="escDonde" placeholder="ej: Escuela, DEMRE, DAEM Penco" maxlength="60"></label>' +
     '<label>Hora <input type="time" id="escHora" value="10:00"></label>' +
-    '<label class="check-row" style="margin:0;align-self:flex-end"><input type="checkbox" id="escAviso"> 🔔</label></div>' +
-    '<div class="dlg-actions" style="justify-content:flex-start;margin-top:8px"><button type="button" id="escAdd" class="btn btn-accent" style="width:auto">📌 Guardar + llevar al calendario</button></div></div>' +
-    '<div id="escMiList" style="margin-top:8px;display:flex;flex-direction:column;gap:8px"></div></div>' +
+    '<label class="check-row su-70c149"><input type="checkbox" id="escAviso"> 🔔</label></div>' +
+    '<div class="dlg-actions su-8f9e27"><button type="button" id="escAdd" class="btn btn-accent su-30e741">📌 Guardar + llevar al calendario</button></div></div>' +
+    '<div id="escMiList" class="su-bf3828"></div></div>' +
     '<div id="escGuia" class="hidden">' +
     '<div class="si-card"><h4>📝 Matrículas SAE sin estrés</h4><p>Postulación escolar (SAE) aprox <b>ago–oct</b> en sistemadeadmisionescolar.cl con Clave Única. Junta: certificado nacimiento, notas, informe personalidad. Penco: DAEM orienta presencial. Marca tu fecha en ⭐ Mis fechas con 📌 (te crea el compromiso en el día). Si quedas sin vacante: lista de espera + segunda postulación, no te quedes callada/o.</p></div>' +
     '<div class="si-card"><h4>🎓 PAES paso a paso (Admisión 2027)</h4><p><b>1 jun–22 jul 2026:</b> inscripción (sin prórroga). <b>15–17 jun:</b> PAES Invierno · resultados 17 jul (te sirven para decidir si repites). <b>24 sep:</b> oferta definitiva carreras. <b>30 nov–2 dic:</b> PAES Regular. <b>4 ene 2027:</b> puntajes · <b>4–7 ene:</b> postulación · <b>18 ene:</b> selección · <b>19–28 ene:</b> matrículas. Lleva cada una con 📌 desde 📚 Calendario. Obliga: Competencia Lectora + M1; M2 gratis si marcas ambas.</p></div>' +
@@ -534,10 +534,10 @@ function escBuild() {
 function escRender() {
   var fb = $('escFeriados'); if (!fb) return;
   var st = escStore();
-  fb.innerHTML = '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🎉 Feriados nacionales (ya en tu calendario como 📅)</h4>' +
-    '<p class="muted" style="font-size:11px">Fijos: 01-01 · 05-01 · 05-21 · 06-21 · 06-29 · 07-16 · 08-15 · 09-18/19 · 10-12 · 10-31 · 11-01 · 12-08 · 12-25. Movibles: Semana Santa (abajo). Regionales Arica/Chillán no incluidos.</p></div>' +
+  fb.innerHTML = '<div class="menstrual-card su-68a1a9"><h4>🎉 Feriados nacionales (ya en tu calendario como 📅)</h4>' +
+    '<p class="muted su-11a508">Fijos: 01-01 · 05-01 · 05-21 · 06-21 · 06-29 · 07-16 · 08-15 · 09-18/19 · 10-12 · 10-31 · 11-01 · 12-08 · 12-25. Movibles: Semana Santa (abajo). Regionales Arica/Chillán no incluidos.</p></div>' +
     ESC_FERIADOS.map(function (f) {
-      return '<div class="hora-item"><span style="font-size:12px"><b>' + esc(f.n) + '</b> <span class="muted">· ' + esc(f.md + ' · ' + f.t) + '</span></span></div>';
+      return '<div class="hora-item"><span class="su-6cb285"><b>' + esc(f.n) + '</b> <span class="muted">· ' + esc(f.md + ' · ' + f.t) + '</span></span></div>';
     }).join('');
   var cb = $('escCalendario');
   if (cb) {
@@ -545,9 +545,9 @@ function escRender() {
       var hecho = st.hechos['base' + i];
       return '<div class="si-card"><h4>' + (hecho ? '✅ ' : '') + esc(c.n) + '</h4>' +
         '<p class="muted">📅 ' + esc(c.f) + ' · ' + esc(c.d) + '</p>' +
-        '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">' +
-        '<button type="button" class="btn esc-cal" data-k="' + i + '" style="width:auto;font-size:11px">📌 Al calendario</button>' +
-        '<button type="button" class="btn esc-hecho" data-k="base' + i + '" style="width:auto;font-size:11px">' + (hecho ? '↩ Pendiente' : '☑️ Hecho') + '</button></div></div>';
+        '<div class="su-c158a9">' +
+        '<button type="button" class="btn esc-cal su-337714" data-k="' + i + '">📌 Al calendario</button>' +
+        '<button type="button" class="btn esc-hecho su-337714" data-k="base' + i + '">' + (hecho ? '↩ Pendiente' : '☑️ Hecho') + '</button></div></div>';
     }).join('');
     cb.querySelectorAll('.esc-cal').forEach(function (b) {
       b.onclick = function () {
@@ -578,19 +578,19 @@ function escRender() {
     var grp = function (dep) {
       var items = list.filter(function (c) { return c.dep === dep; });
       if (!items.length) return '';
-      return '<div class="menstrual-card" style="margin-top:8px"><h4>' + esc(dep === 'Municipal' ? '🏛️ Municipales (DEM Penco)' : dep === 'Part. subvencionado' ? '🤝 Particulares subvencionados' : esc(dep)) + ' · ' + items.length + '</h4>' +
+      return '<div class="menstrual-card su-8a77e5"><h4>' + esc(dep === 'Municipal' ? '🏛️ Municipales (DEM Penco)' : dep === 'Part. subvencionado' ? '🤝 Particulares subvencionados' : esc(dep)) + ' · ' + items.length + '</h4>' +
         items.map(function (c) {
-          return '<div class="hora-item"><span style="font-size:12px"><b>' + esc(c.n) + '</b><br><span class="muted" style="font-size:10px">' + esc(c.nivel || '') + (c.dir ? ' · 📍 ' + esc(c.dir) : '') + '</span></span>' +
-            (c.web ? '<a class="btn" style="width:auto;font-size:11px;text-decoration:none" href="' + esc(c.web) + '" target="_blank" rel="noopener">🔗 Sitio</a>' : '<span class="muted" style="font-size:10px">ver en SAE</span>') + '</div>';
+          return '<div class="hora-item"><span class="su-6cb285"><b>' + esc(c.n) + '</b><br><span class="muted su-0d5be0">' + esc(c.nivel || '') + (c.dir ? ' · 📍 ' + esc(c.dir) : '') + '</span></span>' +
+            (c.web ? '<a class="btn su-b24d9d" href="' + esc(c.web) + '" target="_blank" rel="noopener">🔗 Sitio</a>' : '<span class="muted su-0d5be0">ver en SAE</span>') + '</div>';
         }).join('') + '</div>';
     };
     col.innerHTML =
-      '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🏫 Establecimientos educacionales — Penco</h4>' +
-      '<p class="muted" style="font-size:11px">Red municipal DEM + particulares subvencionados. Toca 🔗 para web/Facebook. Sin link = busca el nombre en <b>sistemadeadmisionescolar.cl</b> o <b>educapenco.cl</b>. Verifica vacantes y horarios en terreno.</p>' +
-      '<div class="conv-row"><label style="flex:2">🔍 Buscar <input type="text" id="escColeQ" placeholder="ej: liceo, lirquén, básica, media..." maxlength="40" autocomplete="off"></label></div>' +
-      '<p class="muted" style="font-size:11px;margin:4px 0 0">' + list.length + ' / ' + ESC_COLEGIOS.length + ' establecimientos</p></div>' +
+      '<div class="menstrual-card su-68a1a9"><h4>🏫 Establecimientos educacionales — Penco</h4>' +
+      '<p class="muted su-11a508">Red municipal DEM + particulares subvencionados. Toca 🔗 para web/Facebook. Sin link = busca el nombre en <b>sistemadeadmisionescolar.cl</b> o <b>educapenco.cl</b>. Verifica vacantes y horarios en terreno.</p>' +
+      '<div class="conv-row"><label class="su-4b3de7">🔍 Buscar <input type="text" id="escColeQ" placeholder="ej: liceo, lirquén, básica, media..." maxlength="40" autocomplete="off"></label></div>' +
+      '<p class="muted su-954796">' + list.length + ' / ' + ESC_COLEGIOS.length + ' establecimientos</p></div>' +
       grp('Municipal') + grp('Part. subvencionado') +
-      '<p class="muted" style="font-size:10px;margin-top:8px">Fuentes: penco.cl/nuestra-comuna + educapenco.cl + sitios oficiales 2026. Postulación: SAE sistemadeadmisionescolar.cl (ago–oct). DEM: Los Carrera 230 · 41-2261308.</p>';
+      '<p class="muted su-a953a7">Fuentes: penco.cl/nuestra-comuna + educapenco.cl + sitios oficiales 2026. Postulación: SAE sistemadeadmisionescolar.cl (ago–oct). DEM: Los Carrera 230 · 41-2261308.</p>';
     var qi = $('escColeQ');
     if (qi) { qi.value = escColeQ || ''; qi.addEventListener('input', function () { escColeQ = qi.value; var pos = qi.selectionStart; escRender(); var nq = $('escColeQ'); if (nq) { try { nq.focus(); nq.setSelectionRange(pos, pos); } catch (e) {} } }); }
   }
@@ -601,10 +601,10 @@ function escRender() {
       var h = st.hechos[m.id];
       return '<div class="si-card' + (h ? '" style="opacity:.65' : '') + '"><h4>' + (h ? '✅ ' : '📌 ') + esc(m.nombre) + '</h4>' +
         '<p class="muted">📅 ' + esc(m.fecha + (m.hora ? ' ' + m.hora : '')) + (m.donde ? ' · 📍 ' + esc(m.donde) : '') + '</p>' +
-        '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">' +
-        '<button type="button" class="btn esc-mh" data-k="' + esc(m.id) + '" style="width:auto;font-size:11px">' + (h ? '↩ Pendiente' : '☑️ Hecho') + '</button>' +
-        '<button type="button" class="btn esc-md" data-k="' + esc(m.id) + '" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕</button></div></div>';
-    }).join('') : '<p class="muted" style="font-size:11px;text-align:center">Sin fechas propias. Ej: “Matrícula 2027”.</p>';
+        '<div class="su-c158a9">' +
+        '<button type="button" class="btn esc-mh su-337714" data-k="' + esc(m.id) + '">' + (h ? '↩ Pendiente' : '☑️ Hecho') + '</button>' +
+        '<button type="button" class="btn esc-md su-fd834a" data-k="' + esc(m.id) + '">✕</button></div></div>';
+    }).join('') : '<p class="muted su-e201a8">Sin fechas propias. Ej: “Matrícula 2027”.</p>';
     ml.querySelectorAll('.esc-mh').forEach(function (b) {
       b.onclick = function () {
         var k = b.dataset.k;

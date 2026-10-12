@@ -323,20 +323,20 @@ function makeDialog() {
   var d = document.createElement('dialog');
   d.id = 'iaDialog';
   d.innerHTML = '<form method="dialog">' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
-    '<h3 style="margin:0;color:var(--accent)">🤖 Inteligencia Artificial — usala a tu favor</h3>' +
+    '<div class="dlg-actions su-d2d053">' +
+    '<h3 class="su-ee0cfe">🤖 Inteligencia Artificial — usala a tu favor</h3>' +
     '<button type="button" data-close class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    '<p class="muted" style="line-height:1.5">Guia practica y territorial: <b>pedir bien, verificar siempre y cuidar tus datos</b>. 100% offline: esta seccion no se conecta a ninguna IA, te prepara para usar la de tu celu o PC con criterio penqueno. <b>9 pestanas, 32 prompts, 14 modelos (cerrados + abiertos + OpenCode) y 8 proyectos.</b></p>' +
-    '<div class="timer-tabs" style="flex-wrap:wrap;margin-bottom:10px">' +
-    '<button type="button" id="tabIAGuia" class="btn btn-accent" style="width:auto">📖 Guia</button>' +
-    '<button type="button" id="tabIAPrompts" class="btn" style="width:auto">💬 Prompts</button>' +
-    '<button type="button" id="tabIAUsos" class="btn" style="width:auto">🛠️ Usos</button>' +
-    '<button type="button" id="tabIAModelos" class="btn" style="width:auto">🤖 Modelos</button>' +
-    '<button type="button" id="tabIACrear" class="btn" style="width:auto">🎨 Crear</button>' +
-    '<button type="button" id="tabIASegura" class="btn" style="width:auto">🛡️ Uso seguro</button>' +
-    '<button type="button" id="tabIATaller" class="btn" style="width:auto">🧪 Taller</button>' +
-    '<button type="button" id="tabIAProy" class="btn" style="width:auto">🚀 Proyectos</button>' +
-    '<button type="button" id="tabIAGlos" class="btn" style="width:auto">📚 Glosario</button></div>' +
+    '<p class="muted su-77e2fe">Guia practica y territorial: <b>pedir bien, verificar siempre y cuidar tus datos</b>. 100% offline: esta seccion no se conecta a ninguna IA, te prepara para usar la de tu celu o PC con criterio penqueno. <b>9 pestanas, 32 prompts, 14 modelos (cerrados + abiertos + OpenCode) y 8 proyectos.</b></p>' +
+    '<div class="timer-tabs su-dd1da5">' +
+    '<button type="button" id="tabIAGuia" class="btn btn-accent su-30e741">📖 Guia</button>' +
+    '<button type="button" id="tabIAPrompts" class="btn su-30e741">💬 Prompts</button>' +
+    '<button type="button" id="tabIAUsos" class="btn su-30e741">🛠️ Usos</button>' +
+    '<button type="button" id="tabIAModelos" class="btn su-30e741">🤖 Modelos</button>' +
+    '<button type="button" id="tabIACrear" class="btn su-30e741">🎨 Crear</button>' +
+    '<button type="button" id="tabIASegura" class="btn su-30e741">🛡️ Uso seguro</button>' +
+    '<button type="button" id="tabIATaller" class="btn su-30e741">🧪 Taller</button>' +
+    '<button type="button" id="tabIAProy" class="btn su-30e741">🚀 Proyectos</button>' +
+    '<button type="button" id="tabIAGlos" class="btn su-30e741">📚 Glosario</button></div>' +
     '<div id="iaGuia"></div>' +
     '<div id="iaPrompts" class="hidden"></div>' +
     '<div id="iaUsos" class="hidden"></div>' +
@@ -362,20 +362,20 @@ function renderGuia() {
   var box = $('iaGuia'); if (!box) return;
   box.innerHTML =
     '<div class="si-card"><h4>🤖 ¿Que es (en simple)?</h4><p>Es como un <b>vecino muy leido pero que a veces inventa</b>: conversas por texto, te resume, redacta, explica y te da ideas en segundos. Sirve para <b>borradores, planes, estudio y cartas</b>. No sirve como <b>oraculo</b>: no sabe tu tierra, no ve tu huerta, no conoce la ultima ordenanza. Tu pones el contexto de Penco y el juicio final.</p>' +
-    '<p class="muted" style="font-size:11px">¿Donde esta la IA que uso? En tu celu/PC: WhatsApp (Meta AI), navegador (Gemini, ChatGPT, Copilot, Perplexity) o apps sin internet (ver 🤖 Modelos). Esta app solo te entrena: no manda nada a la nube.</p></div>' +
+    '<p class="muted su-11a508">¿Donde esta la IA que uso? En tu celu/PC: WhatsApp (Meta AI), navegador (Gemini, ChatGPT, Copilot, Perplexity) o apps sin internet (ver 🤖 Modelos). Esta app solo te entrena: no manda nada a la nube.</p></div>' +
     REGLAS.map(function (r) {
       return '<div class="si-card"><h4>' + r.ico + ' ' + esc(r.n) + '</h4><p>' + r.txt + '</p></div>';
     }).join('') +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🎯 Metodo C.R.I.A. (pegado al refri)</h4>' +
-    METODO_CRIA.map(function (m) { return '<p style="font-size:12px"><b>' + esc(m.l) + ':</b> ' + esc(m.t) + '</p>'; }).join('') +
-    '<div class="si-card" style="margin-top:8px"><h4>Flojo vs CRIA (3 ejemplos reales)</h4>' +
-    EJEMPLOS_CRIA.map(function (e) { return '<p style="font-size:12px"><b>' + esc(e.tema) + '</b><br><span class="muted">❌ ' + esc(e.flojo) + '</span><br>✅ ' + esc(e.cria) + '</p>'; }).join('') + '</div>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="iaGoPrompts" class="btn btn-accent" style="width:auto">💬 Ir a prompts copiables →</button> ' +
-    '<button type="button" id="iaGoModelos" class="btn" style="width:auto">🤖 ¿Cual IA me conviene? →</button></div></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>🚫 6 errores que todos cometemos</h4>' +
-    ERRORES.map(function (e) { return '<p style="font-size:12px"><b>❌ ' + esc(e.f) + '</b><br><span class="muted">' + esc(e.por) + '</span><br>✅ ' + esc(e.fix) + '</p>'; }).join('') + '</div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>❓ Preguntas de la junta (toca para abrir)</h4>' +
-    FAQ.map(function (f) { return '<details style="margin:6px 0"><summary style="font-size:12px;cursor:pointer"><b>' + esc(f.q) + '</b></summary><p class="muted" style="font-size:12px">' + esc(f.a) + '</p></details>'; }).join('') + '</div>';
+    '<div class="menstrual-card su-68a1a9"><h4>🎯 Metodo C.R.I.A. (pegado al refri)</h4>' +
+    METODO_CRIA.map(function (m) { return '<p class="su-6cb285"><b>' + esc(m.l) + ':</b> ' + esc(m.t) + '</p>'; }).join('') +
+    '<div class="si-card su-8a77e5"><h4>Flojo vs CRIA (3 ejemplos reales)</h4>' +
+    EJEMPLOS_CRIA.map(function (e) { return '<p class="su-6cb285"><b>' + esc(e.tema) + '</b><br><span class="muted">❌ ' + esc(e.flojo) + '</span><br>✅ ' + esc(e.cria) + '</p>'; }).join('') + '</div>' +
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="iaGoPrompts" class="btn btn-accent su-30e741">💬 Ir a prompts copiables →</button> ' +
+    '<button type="button" id="iaGoModelos" class="btn su-30e741">🤖 ¿Cual IA me conviene? →</button></div></div>' +
+    '<div class="menstrual-card su-d2c171"><h4>🚫 6 errores que todos cometemos</h4>' +
+    ERRORES.map(function (e) { return '<p class="su-6cb285"><b>❌ ' + esc(e.f) + '</b><br><span class="muted">' + esc(e.por) + '</span><br>✅ ' + esc(e.fix) + '</p>'; }).join('') + '</div>' +
+    '<div class="menstrual-card su-d2c171"><h4>❓ Preguntas de la junta (toca para abrir)</h4>' +
+    FAQ.map(function (f) { return '<details class="su-c1fafc"><summary class="su-dbfa94"><b>' + esc(f.q) + '</b></summary><p class="muted su-6cb285">' + esc(f.a) + '</p></details>'; }).join('') + '</div>';
   var g = $('iaGoPrompts');
   if (g) g.onclick = function () { switchTab('Prompts'); renderAll(); };
   var gm = $('iaGoModelos');
@@ -416,30 +416,30 @@ function renderPrompts() {
   var catNames = { huerta: '🌱 Huerta', cocina: '🍽️ Cocina', estudio: '📚 Estudio', trabajo: '💼 Trabajo', interior: '🪞 Interior', hogar: '🏠 Hogar', territorio: '🌊 Territorio', comunidad: '🤝 Comunidad', crear: '🎨 Crear', emergencia: '🆘 Emergencia' };
   box.innerHTML =
     '<div class="si-card"><h4>💬 Biblioteca: toca 📋 para copiar (32 prompts)</h4><p>Reemplaza los <b>[brackets]</b> con tus datos ANONIMOS antes de pegar en tu chat de IA. Parte por 1 solo prompt hoy. ¿No sabes por donde partir? Usa el <b>constructor C.R.I.A.</b> de abajo.</p>' +
-    '<div class="conv-row"><label style="flex:2">🔍 Filtrar <input type="text" id="iaPCat" placeholder="ej: cv, feria, huerta, entrevista..." autocomplete="off"></label></div><div id="iaPList"></div></div>' +
-    '<div class="menstrual-card" style="margin-top:10px;border-color:var(--gold)"><h4>🧩 Constructor C.R.I.A. (arma tu pedido perfecto)</h4>' +
-    '<p class="muted" style="font-size:11px">Completa 4 casilleros y te armo el prompt listo para copiar. Ejemplo guiado incluido.</p>' +
+    '<div class="conv-row"><label class="su-4b3de7">🔍 Filtrar <input type="text" id="iaPCat" placeholder="ej: cv, feria, huerta, entrevista..." autocomplete="off"></label></div><div id="iaPList"></div></div>' +
+    '<div class="menstrual-card su-51d56a"><h4>🧩 Constructor C.R.I.A. (arma tu pedido perfecto)</h4>' +
+    '<p class="muted su-11a508">Completa 4 casilleros y te armo el prompt listo para copiar. Ejemplo guiado incluido.</p>' +
     '<label>C — Contexto (quien eres, que tienes) <input type="text" id="iaCctx" maxlength="200" placeholder="ej: soy de Penco, 2 ninos, poco presupuesto, solo feria"></label>' +
     '<label>R — Rol (a quien le pides que sea) <input type="text" id="iaCrol" maxlength="120" placeholder="ej: cocinera chilena practica"></label>' +
     '<label>I — Instruccion (que + formato + limite) <input type="text" id="iaCins" maxlength="250" placeholder="ej: dame 3 almuerzos de 25 min en tabla con kilos, max 150 palabras"></label>' +
     '<label>A — Ajuste (que te pregunte / versiones) <input type="text" id="iaCaju" maxlength="200" placeholder="ej: despues preguntame lo que te falte y dame version sin fritura"></label>' +
-    '<div id="iaCOut" class="chip" style="display:block;white-space:pre-wrap;margin-top:8px">Aqui aparece tu prompt armado…</div>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="iaCGen" class="btn btn-accent" style="width:auto">✨ Armar prompt</button> ' +
-    '<button type="button" id="iaCCopy" class="btn" style="width:auto">📋 Copiar</button> ' +
-    '<button type="button" id="iaCSave" class="btn" style="width:auto">⭐ Guardar</button></div></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>🔎 Evaluador: ¿mi prompt es bueno? (0-100)</h4>' +
-    '<p class="muted" style="font-size:11px">Pega tu pedido y te digo que le falta, sin mandar nada a internet: todo se revisa aqui mismo.</p>' +
+    '<div id="iaCOut" class="chip su-b02938">Aqui aparece tu prompt armado…</div>' +
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="iaCGen" class="btn btn-accent su-30e741">✨ Armar prompt</button> ' +
+    '<button type="button" id="iaCCopy" class="btn su-30e741">📋 Copiar</button> ' +
+    '<button type="button" id="iaCSave" class="btn su-30e741">⭐ Guardar</button></div></div>' +
+    '<div class="menstrual-card su-d2c171"><h4>🔎 Evaluador: ¿mi prompt es bueno? (0-100)</h4>' +
+    '<p class="muted su-11a508">Pega tu pedido y te digo que le falta, sin mandar nada a internet: todo se revisa aqui mismo.</p>' +
     '<label>Tu pedido <textarea id="iaEvalIn" rows="2" maxlength="800" placeholder="Pega aqui tu prompt, ej: hazme un menu..."></textarea></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="iaEvalBtn" class="btn btn-accent" style="width:auto">🔎 Evaluar</button></div>' +
-    '<div id="iaEvalOut" style="margin-top:8px"></div></div>' +
-    '<div class="menstrual-card" style="margin-top:10px;border-color:var(--gold)"><h4>⭐ Mis prompts (guardados aqui, privados)</h4>' +
-    '<div class="conv-row"><label style="flex:2">Titulo <input type="text" id="iaMyPT" placeholder="ej: menu feria quincena" maxlength="40"></label></div>' +
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="iaEvalBtn" class="btn btn-accent su-30e741">🔎 Evaluar</button></div>' +
+    '<div id="iaEvalOut" class="su-8a77e5"></div></div>' +
+    '<div class="menstrual-card su-51d56a"><h4>⭐ Mis prompts (guardados aqui, privados)</h4>' +
+    '<div class="conv-row"><label class="su-4b3de7">Titulo <input type="text" id="iaMyPT" placeholder="ej: menu feria quincena" maxlength="40"></label></div>' +
     '<label>Prompt <textarea id="iaMyPX" rows="2" placeholder="Pega o escribe tu mejor version CRIA..." maxlength="800"></textarea></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="iaMyPAdd" class="btn btn-accent" style="width:auto">+ Guardar mi prompt</button></div>' +
-    '<div id="iaMyPList" class="habits-list" style="margin-top:8px;max-height:240px"></div>' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-top:8px"><span id="iaMyPStats" class="muted" style="font-size:11px"></span>' +
-    '<span style="display:flex;gap:8px"><button type="button" id="iaMyPShare" class="btn" style="width:auto">📤 Compartir</button>' +
-    '<button type="button" id="iaMyPClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar</button></span></div></div>';
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="iaMyPAdd" class="btn btn-accent su-30e741">+ Guardar mi prompt</button></div>' +
+    '<div id="iaMyPList" class="habits-list su-614525"></div>' +
+    '<div class="dlg-actions su-efea1d"><span id="iaMyPStats" class="muted su-11a508"></span>' +
+    '<span class="su-a76d59"><button type="button" id="iaMyPShare" class="btn su-30e741">📤 Compartir</button>' +
+    '<button type="button" id="iaMyPClear" class="btn su-214f75">🗑 Borrar</button></span></div></div>';
 
   function paintList(filter) {
     var q = String(filter || '').toLowerCase();
@@ -448,11 +448,11 @@ function renderPrompts() {
       var items = cats[c].map(function (p, i) { p._gi = c + ':' + i; return p; })
         .filter(function (p) { return !q || (p.t + ' ' + p.p + ' ' + c).toLowerCase().indexOf(q) >= 0; });
       if (!items.length) return '';
-      return '<div class="menstrual-card" style="margin-top:8px"><h4>📌 ' + esc(catNames[c] || c) + ' (' + items.length + ')</h4>' +
+      return '<div class="menstrual-card su-8a77e5"><h4>📌 ' + esc(catNames[c] || c) + ' (' + items.length + ')</h4>' +
         items.map(function (p) {
-          return '<div class="habit-item"><b>' + p.ico + ' ' + esc(p.t) + '</b><p class="muted" style="font-size:11px;white-space:pre-wrap;margin:6px 0">' + esc(p.p) + '</p>' +
-            '<div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn" style="width:auto;font-size:11px" data-copy="' + p._gi + '">📋 Copiar</button>' +
-            '<button class="btn" style="width:auto;font-size:11px" data-savep="' + p._gi + '">⭐ Guardar en mis prompts</button></div></div>';
+          return '<div class="habit-item"><b>' + p.ico + ' ' + esc(p.t) + '</b><p class="muted su-fd5fa1">' + esc(p.p) + '</p>' +
+            '<div class="su-6157e8"><button class="btn su-337714" data-copy="' + p._gi + '">📋 Copiar</button>' +
+            '<button class="btn su-337714" data-savep="' + p._gi + '">⭐ Guardar en mis prompts</button></div></div>';
         }).join('') + '</div>';
     }).join('') || '<p class="muted">Sin resultados. Prueba “feria”, “cv” o “cuento”.</p>';
     $('iaPList').innerHTML = html;
@@ -497,19 +497,19 @@ function renderPrompts() {
     var col = ev.pts >= 80 ? '#8fd694' : (ev.pts >= 50 ? '#e8c56a' : '#e76e8a');
     $('iaEvalOut').innerHTML =
       '<p><b>Puntaje: ' + ev.pts + '/100</b></p>' +
-      '<div style="background:var(--panel);border-radius:6px;height:8px;overflow:hidden;margin:6px 0"><div style="width:' + ev.pts + '%;height:100%;background:' + col + '"></div></div>' +
-      ev.checks.map(function (c) { return '<p style="font-size:12px">' + (c.ok ? '✅' : '⬜') + ' ' + esc(c.label) + '</p>'; }).join('') +
-      (ev.tips.length ? '<p style="font-size:12px"><b>Para subir nota:</b><br>· ' + ev.tips.map(esc).join('<br>· ') + '</p>' : '<p style="font-size:12px">✅ Listo para pegar. Itera 2 vueltas y verifica datos duros.</p>');
+      '<div class="su-98b660"><div style="width:' + ev.pts + '%;height:100%;background:' + col + '"></div></div>' +
+      ev.checks.map(function (c) { return '<p class="su-6cb285">' + (c.ok ? '✅' : '⬜') + ' ' + esc(c.label) + '</p>'; }).join('') +
+      (ev.tips.length ? '<p class="su-6cb285"><b>Para subir nota:</b><br>· ' + ev.tips.map(esc).join('<br>· ') + '</p>' : '<p class="su-6cb285">✅ Listo para pegar. Itera 2 vueltas y verifica datos duros.</p>');
   };
 
   function paintMine() {
     var lb = $('iaMyPList'); if (!lb) return;
     var m = store().prompts.slice().sort(function (a, b) { return (b.fecha || '').localeCompare(a.fecha || ''); });
     lb.innerHTML = m.length ? m.map(function (r) {
-      return '<div class="habit-item"><b>⭐ ' + esc(r.t) + '</b> <span class="muted" style="font-size:10px">' + esc(r.fecha || '') + '</span>' +
-        '<p class="muted" style="font-size:11px;white-space:pre-wrap">' + esc(r.x) + '</p>' +
-        '<div style="display:flex;gap:6px"><button class="btn" style="width:auto;font-size:11px" data-cp="' + r.id + '">📋</button>' +
-        '<button class="btn" style="width:auto;font-size:11px;color:#e76e8a" data-del="' + r.id + '">✕</button></div></div>';
+      return '<div class="habit-item"><b>⭐ ' + esc(r.t) + '</b> <span class="muted su-0d5be0">' + esc(r.fecha || '') + '</span>' +
+        '<p class="muted su-4dbc08">' + esc(r.x) + '</p>' +
+        '<div class="su-49cd09"><button class="btn su-337714" data-cp="' + r.id + '">📋</button>' +
+        '<button class="btn su-9b8fb7" data-del="' + r.id + '">✕</button></div></div>';
     }).join('') : '<p class="muted">Vacio. Guarda aqui los que te resulten: tu biblioteca personal vale oro.</p>';
     var st = $('iaMyPStats');
     if (st) st.textContent = m.length + ' prompts propios';
@@ -553,9 +553,9 @@ function renderUsos() {
   box.innerHTML = '<div class="si-card"><h4>🛠️ La IA por rincon del calendario (12 areas)</h4><p>Cada area tiene su <b>uso estrella, un ejemplo copiable y su cuidado</b>. La IA propone, el territorio dispone. Toca 📋 para llevarte el ejemplo.</p></div>' +
     USOS.map(function (u, i) {
       return '<div class="si-card"><h4>' + esc(u.a) + '</h4><p><b>Uso:</b> ' + esc(u.u) + '</p>' +
-        '<p class="muted" style="font-size:11px"><b>Ejemplo:</b> ' + esc(u.e) + '</p>' +
-        '<p style="font-size:11px"><b>⚠️ Cuidado:</b> ' + esc(u.c) + '</p>' +
-        '<div style="display:flex;gap:6px"><button class="btn" style="width:auto;font-size:11px" data-uej="' + i + '">📋 Copiar ejemplo</button></div></div>';
+        '<p class="muted su-11a508"><b>Ejemplo:</b> ' + esc(u.e) + '</p>' +
+        '<p class="su-11a508"><b>⚠️ Cuidado:</b> ' + esc(u.c) + '</p>' +
+        '<div class="su-49cd09"><button class="btn su-337714" data-uej="' + i + '">📋 Copiar ejemplo</button></div></div>';
     }).join('');
   box.querySelectorAll('[data-uej]').forEach(function (b) {
     b.onclick = function () { var u = USOS[+b.getAttribute('data-uej')]; if (u) copyTxt(u.e); };
@@ -565,19 +565,19 @@ function renderUsos() {
 function renderModelos() {
   var box = $('iaModelos'); if (!box) return;
   box.innerHTML = '<div class="si-card"><h4>🤖 ¿Cual IA uso? (comparativa honesta 2026: cerradas + abiertas)</h4><p>Todas sirven, pero <b>no todas sirven para lo mismo</b>. Las <b>cerradas</b> (ChatGPT, Gemini, Claude) rinden mas con internet; las <b>abiertas</b> (Llama, Mistral, DeepSeek, Qwen, Gemma) se pueden usar <b>en tu equipo, sin mandar tus datos</b> via Ollama. Y <b>OpenCode</b> es el ayudante abierto que trabaja con tus archivos. Parte por la que ya tienes.</p></div>' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🔓 Abierto vs cerrado (en 30 segundos)</h4><p class="muted" style="font-size:12px"><b>Cerrado:</b> solo lo usas por su web/app, tus palabras viajan a su nube. Mas capaz, menos privado.<br><b>Abierto (pesos abiertos):</b> puedes descargarlo (Ollama) y correrlo en tu PC/celu: <b>nada sale</b>, funciona sin internet, gratis para siempre. Un poco mas basico.<br><b>OpenCode:</b> programa abierto que conecta esos modelos con tus archivos: les dice “arregla esta carta / ordena estas fotos” y lo hace.</p></div>' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🧭 Buscador: ¿cual me conviene?</h4>' +
+    '<div class="menstrual-card su-68a1a9"><h4>🔓 Abierto vs cerrado (en 30 segundos)</h4><p class="muted su-6cb285"><b>Cerrado:</b> solo lo usas por su web/app, tus palabras viajan a su nube. Mas capaz, menos privado.<br><b>Abierto (pesos abiertos):</b> puedes descargarlo (Ollama) y correrlo en tu PC/celu: <b>nada sale</b>, funciona sin internet, gratis para siempre. Un poco mas basico.<br><b>OpenCode:</b> programa abierto que conecta esos modelos con tus archivos: les dice “arregla esta carta / ordena estas fotos” y lo hace.</p></div>' +
+    '<div class="menstrual-card su-68a1a9"><h4>🧭 Buscador: ¿cual me conviene?</h4>' +
     '<div class="conv-row"><label>Quiero <select id="iaModPara"><option value="rapida">una duda rapida por WhatsApp</option><option value="estudio">estudiar / resumir textos</option><option value="cartas">redactar cartas, CV, actas</option><option value="fuentes">respuestas con fuentes y links</option><option value="campo">usar sin internet (campo/cerro)</option><option value="negocio">vender / negocio</option><option value="codigo">arreglar/crear archivos y codigo (OpenCode)</option><option value="abierto">maxima privacidad con modelo abierto</option></select></label>' +
     '<label>Internet <select id="iaModNet"><option value="pocos">tengo pocos datos</option><option value="wifi">tengo wifi</option><option value="nada">a veces no tengo nada</option></select></label></div>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="iaModBtn" class="btn btn-accent" style="width:auto">✨ Recomiendame</button></div>' +
-    '<div id="iaModOut" class="chip" style="display:block;white-space:normal;margin-top:8px">Responde arriba y te digo por donde partir…</div></div>' +
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="iaModBtn" class="btn btn-accent su-30e741">✨ Recomiendame</button></div>' +
+    '<div id="iaModOut" class="chip su-7600c4">Responde arriba y te digo por donde partir…</div></div>' +
     MODELOS.map(function (m) {
       return '<div class="si-card"><h4>' + m.ico + ' ' + esc(m.n) + '</h4>' +
-        '<p style="font-size:12px"><b>📍 Donde:</b> ' + esc(m.donde) + '<br><b>💰 Costo:</b> ' + esc(m.costo) + '<br><b>🌐 Internet:</b> ' + esc(m.red) + '<br><b>👁️ Privacidad:</b> ' + esc(m.priv) + '</p>' +
-        '<p style="font-size:12px"><b>✅ Ideal:</b> ' + esc(m.ideal) + '</p>' +
-        '<p class="muted" style="font-size:11px"><b>⚠️ Cuidado:</b> ' + esc(m.cuidado) + '</p></div>';
+        '<p class="su-6cb285"><b>📍 Donde:</b> ' + esc(m.donde) + '<br><b>💰 Costo:</b> ' + esc(m.costo) + '<br><b>🌐 Internet:</b> ' + esc(m.red) + '<br><b>👁️ Privacidad:</b> ' + esc(m.priv) + '</p>' +
+        '<p class="su-6cb285"><b>✅ Ideal:</b> ' + esc(m.ideal) + '</p>' +
+        '<p class="muted su-11a508"><b>⚠️ Cuidado:</b> ' + esc(m.cuidado) + '</p></div>';
     }).join('') +
-    '<div class="menstrual-card"><h4>💡 Regla de cambio (no te marees)</h4><p class="muted" style="font-size:12px">Si tu IA actual te da respuestas utiles y cortas, <b>no la cambies</b>: mejora tus prompts (pestana 💬). Cambia solo si: se acaba el limite justo en la prueba, inventa muchos links, necesitas <b>privacidad total (Ollama local)</b> o quieres <b>trabajar con archivos (OpenCode)</b>. Dominar 1 bien vale mas que probar 14 mal. Ruta sugerida: 1) chat facil (Meta AI/Gemini) → 2) probar abiertos en HuggingChat → 3) Ollama local → 4) OpenCode + Ollama.</p></div>';
+    '<div class="menstrual-card"><h4>💡 Regla de cambio (no te marees)</h4><p class="muted su-6cb285">Si tu IA actual te da respuestas utiles y cortas, <b>no la cambies</b>: mejora tus prompts (pestana 💬). Cambia solo si: se acaba el limite justo en la prueba, inventa muchos links, necesitas <b>privacidad total (Ollama local)</b> o quieres <b>trabajar con archivos (OpenCode)</b>. Dominar 1 bien vale mas que probar 14 mal. Ruta sugerida: 1) chat facil (Meta AI/Gemini) → 2) probar abiertos en HuggingChat → 3) Ollama local → 4) OpenCode + Ollama.</p></div>';
   if ($('iaModBtn')) $('iaModBtn').onclick = function () {
     var para = ($('iaModPara') || {}).value || 'rapida';
     var net = ($('iaModNet') || {}).value || 'pocos';
@@ -600,13 +600,13 @@ function renderCrear() {
   box.innerHTML = '<div class="si-card"><h4>🎨 Crear con IA (sin perder lo propio)</h4><p>La IA es <b>ayudante, no autora</b>: tu pones la idea, el saber y la cara; ella ordena, propone y varia. Todo lo que publiques <b>revisalo, corrigelo y mencionalo</b>.</p></div>' +
     CREAR.map(function (g, i) {
       return '<div class="si-card"><h4>' + esc(g.t) + '</h4>' +
-        '<p style="font-size:12px"><b>Paso a paso:</b><br>' + g.pasos.map(esc).join('<br>') + '</p>' +
-        '<p class="muted" style="font-size:11px;white-space:pre-wrap"><b>Prompt base:</b> ' + esc(g.prompt) + '</p>' +
-        '<p style="font-size:11px"><b>⛔ No:</b> ' + esc(g.no) + '</p>' +
-        '<div style="display:flex;gap:6px"><button class="btn" style="width:auto;font-size:11px" data-cr="' + i + '">📋 Copiar prompt</button></div></div>';
+        '<p class="su-6cb285"><b>Paso a paso:</b><br>' + g.pasos.map(esc).join('<br>') + '</p>' +
+        '<p class="muted su-4dbc08"><b>Prompt base:</b> ' + esc(g.prompt) + '</p>' +
+        '<p class="su-11a508"><b>⛔ No:</b> ' + esc(g.no) + '</p>' +
+        '<div class="su-49cd09"><button class="btn su-337714" data-cr="' + i + '">📋 Copiar prompt</button></div></div>';
     }).join('') +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>⚖️ Derechos en 4 lineas (para no meter las patas)</h4>' +
-    '<p class="muted" style="font-size:12px">1) Lo que creas con IA lo puedes usar, pero <b>revisa las reglas de la app</b> (algunas piden mencion).<br>2) <b>No vendas</b> fotos de personas falsas como reales, ni copies textos/fotos ajenas.<br>3) Si es para negocio, <b>tu foto y medidas reales</b> mandan: la IA adorna, no inventa stock.<br>4) Agrega siempre: <b>“hecho con apoyo de IA, revisado por mi”</b>: da confianza vecinal.</p></div>';
+    '<div class="menstrual-card su-68a1a9"><h4>⚖️ Derechos en 4 lineas (para no meter las patas)</h4>' +
+    '<p class="muted su-6cb285">1) Lo que creas con IA lo puedes usar, pero <b>revisa las reglas de la app</b> (algunas piden mencion).<br>2) <b>No vendas</b> fotos de personas falsas como reales, ni copies textos/fotos ajenas.<br>3) Si es para negocio, <b>tu foto y medidas reales</b> mandan: la IA adorna, no inventa stock.<br>4) Agrega siempre: <b>“hecho con apoyo de IA, revisado por mi”</b>: da confianza vecinal.</p></div>';
   box.querySelectorAll('[data-cr]').forEach(function (b) {
     b.onclick = function () { var g = CREAR[+b.getAttribute('data-cr')]; if (g) copyTxt(g.prompt); };
   });
@@ -619,13 +619,13 @@ function renderSegura() {
       return '<div class="si-card"><h4>' + r.ico + ' ' + esc(r.n) + '</h4><p><b>El problema:</b> ' + esc(r.q) + '</p>' +
         '<p><b>✅ Defensa:</b><br>' + r.h.map(function (h, i) { return (i + 1) + ') ' + h; }).join('<br>') + '</p></div>';
     }).join('') +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🤐 Antes de pegar, anonimiza (30 seg)</h4>' +
-    '<p class="muted" style="font-size:11px">“Mi hija Antonia, 3°B colegio X, RUT 12.345…” → “Una nina de 9, materia matematicas”. “Gano 650 en pesquera Y” → “Sueldo medio, trabajo por turnos”. La herramienta tapa lo comun: <b>tu revisas lo que quede</b>.</p>' +
-    '<div class="conv-row"><label style="flex:2">Pegalo peligroso <input type="text" id="iaAnonIn" placeholder="ej: vivo en calle X 123, Penco..." maxlength="200"></label></div>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="iaAnonBtn" class="btn btn-accent" style="width:auto">🛡️ Anonimizar</button> ' +
-    '<button type="button" id="iaAnonCopy" class="btn" style="width:auto">📋 Copiar segura</button></div>' +
-    '<div id="iaAnonOut" class="chip" style="display:block;white-space:normal;margin-top:8px">Aqui aparece tu version segura…</div>' +
-    '<p class="muted" style="font-size:11px;margin-top:6px">✅ Lista rapida antes de pegar: ¿sin RUT? ¿sin direccion exacta? ¿sin nombres de ninos/colegio? ¿sin patente/foto carnet? ¿sin cuenta/clave?</p></div>';
+    '<div class="menstrual-card su-68a1a9"><h4>🤐 Antes de pegar, anonimiza (30 seg)</h4>' +
+    '<p class="muted su-11a508">“Mi hija Antonia, 3°B colegio X, RUT 12.345…” → “Una nina de 9, materia matematicas”. “Gano 650 en pesquera Y” → “Sueldo medio, trabajo por turnos”. La herramienta tapa lo comun: <b>tu revisas lo que quede</b>.</p>' +
+    '<div class="conv-row"><label class="su-4b3de7">Pegalo peligroso <input type="text" id="iaAnonIn" placeholder="ej: vivo en calle X 123, Penco..." maxlength="200"></label></div>' +
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="iaAnonBtn" class="btn btn-accent su-30e741">🛡️ Anonimizar</button> ' +
+    '<button type="button" id="iaAnonCopy" class="btn su-30e741">📋 Copiar segura</button></div>' +
+    '<div id="iaAnonOut" class="chip su-7600c4">Aqui aparece tu version segura…</div>' +
+    '<p class="muted su-e13d76">✅ Lista rapida antes de pegar: ¿sin RUT? ¿sin direccion exacta? ¿sin nombres de ninos/colegio? ¿sin patente/foto carnet? ¿sin cuenta/clave?</p></div>';
   function anonimizar(v) {
     var out = String(v || '');
     out = out.replace(/\b\d{1,2}\.\d{3}\.\d{3}-[\dkK]\b/g, '[RUT]')
@@ -662,22 +662,22 @@ function renderTaller() {
   box.innerHTML =
     '<div class="si-card"><h4>🧪 8 ejercicios (1 por dia, 10-30 min)</h4><p>Hazlos en orden: cada uno deja 1 registro en tu bitacora. La gracia no es “saber de IA”, es <b>pedir mejor y verificar siempre</b>. Del 6 al 8 son nivel avanzado: duelos, crear y ensenar.</p></div>' +
     TALLER.map(function (t) { return '<div class="si-card"><h4>' + esc(t.n) + '</h4><p>' + esc(t.p) + '</p></div>'; }).join('') +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>✅ Mi chequeo IA (' + done + '/' + CHECKS.length + ')</h4>' +
-    '<div style="background:var(--panel);border-radius:6px;height:8px;overflow:hidden;margin:6px 0"><div style="width:' + Math.round(done / CHECKS.length * 100) + '%;height:100%;background:linear-gradient(90deg,#7ab8ff,#e8c56a,#8fd694)"></div></div>' +
+    '<div class="menstrual-card su-68a1a9"><h4>✅ Mi chequeo IA (' + done + '/' + CHECKS.length + ')</h4>' +
+    '<div class="su-98b660"><div style="width:' + Math.round(done / CHECKS.length * 100) + '%;height:100%;background:linear-gradient(90deg,#7ab8ff,#e8c56a,#8fd694)"></div></div>' +
     '<div id="iaChecksBox">' + CHECKS.map(function (c) {
-      return '<label class="check-row" style="font-size:12px"><input type="checkbox" data-chk="' + c.id + '"' + (st.checks[c.id] ? ' checked' : '') + '> ' + esc(c.t) + '</label>';
+      return '<label class="check-row su-6cb285"><input type="checkbox" data-chk="' + c.id + '"' + (st.checks[c.id] ? ' checked' : '') + '> ' + esc(c.t) + '</label>';
     }).join('') + '</div></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>📓 Bitacora de experimentos (privada)</h4>' +
-    '<p class="muted" style="font-size:11px">Que pedi, que me dio, que verifique y que aprendi. 3 lineas bastan. Promedio alto = prompts que sirven: guardalos en ⭐.</p>' +
+    '<div class="menstrual-card su-d2c171"><h4>📓 Bitacora de experimentos (privada)</h4>' +
+    '<p class="muted su-11a508">Que pedi, que me dio, que verifique y que aprendi. 3 lineas bastan. Promedio alto = prompts que sirven: guardalos en ⭐.</p>' +
     '<div class="conv-row"><label>Fecha <input type="date" id="iaExpDate" value="' + todayKey() + '"></label>' +
     '<label>Nota /10 <select id="iaExpNota"><option>3</option><option>5</option><option selected>7</option><option>8</option><option>10</option></select></label></div>' +
     '<label>Pedi <input type="text" id="iaExpP" placeholder="ej: menu feria con CRIA" maxlength="80"></label>' +
     '<label>Aprendi <input type="text" id="iaExpA" placeholder="ej: con formato tabla sirve; invento precios" maxlength="80"></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="iaExpAdd" class="btn btn-accent" style="width:auto">+ Guardar experimento</button></div>' +
-    '<div id="iaExpList" class="habits-list" style="margin-top:8px;max-height:220px"></div>' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-top:8px"><span id="iaExpStats" class="muted" style="font-size:11px"></span>' +
-    '<span style="display:flex;gap:8px"><button type="button" id="iaExpShare" class="btn" style="width:auto">📤 Compartir</button>' +
-    '<button type="button" id="iaExpClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar</button></span></div></div>';
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="iaExpAdd" class="btn btn-accent su-30e741">+ Guardar experimento</button></div>' +
+    '<div id="iaExpList" class="habits-list su-ebf445"></div>' +
+    '<div class="dlg-actions su-efea1d"><span id="iaExpStats" class="muted su-11a508"></span>' +
+    '<span class="su-a76d59"><button type="button" id="iaExpShare" class="btn su-30e741">📤 Compartir</button>' +
+    '<button type="button" id="iaExpClear" class="btn su-214f75">🗑 Borrar</button></span></div></div>';
   box.querySelectorAll('[data-chk]').forEach(function (c) {
     c.onchange = function () {
       var s = store();
@@ -694,8 +694,8 @@ function renderTaller() {
     var m = store().exps.slice().sort(function (a, b) { return (b.fecha || '').localeCompare(a.fecha || ''); });
     lb.innerHTML = m.length ? m.slice(0, 30).map(function (r) {
       return '<div class="habit-item"><b>🧪 ' + esc(r.fecha) + '</b> · nota ' + esc(r.nota) + '/10' +
-        '<br><span style="font-size:12px">Pedi: ' + esc(r.p) + '</span><br><span class="muted" style="font-size:11px">Aprendi: ' + esc(r.a) + '</span>' +
-        '<div style="display:flex;gap:6px;margin-top:4px"><button class="btn" style="width:auto;font-size:11px;color:#e76e8a" data-del="' + r.id + '">✕</button></div></div>';
+        '<br><span class="su-6cb285">Pedi: ' + esc(r.p) + '</span><br><span class="muted su-11a508">Aprendi: ' + esc(r.a) + '</span>' +
+        '<div class="su-90237f"><button class="btn su-9b8fb7" data-del="' + r.id + '">✕</button></div></div>';
     }).join('') : '<p class="muted">Sin experimentos. Guarda el primero hoy: vale mas 1 prueba que 10 videos.</p>';
     var s2 = $('iaExpStats');
     if (s2) s2.textContent = m.length + ' experimentos' + (m.length ? (' · promedio ' + (m.reduce(function (a, r) { return a + (+r.nota || 0); }, 0) / m.length).toFixed(1) + '/10') : '');
@@ -732,20 +732,20 @@ function renderProy() {
   var st = store();
   var doneIds = Object.keys(st.proys || {}).filter(function (k) { return st.proys[k]; });
   box.innerHTML = '<div class="si-card"><h4>🚀 8 proyectos territoriales (del chat a la accion)</h4><p>Cada proyecto trae <b>pasos, prompt copiable y entrega concreta</b>. Marca ✅ cuando termines: el progreso queda guardado. Parte por 1 solo.</p>' +
-    '<p class="muted" style="font-size:11px">Avance: <b>' + doneIds.length + '/' + PROYS.length + '</b></p>' +
-    '<div style="background:var(--panel);border-radius:6px;height:8px;overflow:hidden;margin:6px 0"><div style="width:' + Math.round(doneIds.length / PROYS.length * 100) + '%;height:100%;background:linear-gradient(90deg,#7ab8ff,#e8c56a,#8fd694)"></div></div></div>' +
+    '<p class="muted su-11a508">Avance: <b>' + doneIds.length + '/' + PROYS.length + '</b></p>' +
+    '<div class="su-98b660"><div style="width:' + Math.round(doneIds.length / PROYS.length * 100) + '%;height:100%;background:linear-gradient(90deg,#7ab8ff,#e8c56a,#8fd694)"></div></div></div>' +
     PROYS.map(function (p) {
       var done = !!(st.proys && st.proys[p.id]);
       return '<div class="si-card" style="' + (done ? 'opacity:.75;border-color:#8fd694' : '') + '"><h4>' + p.ico + ' ' + esc(p.n) + ' ' + (done ? '✅' : '') + '</h4>' +
-        '<p class="muted" style="font-size:11px">⏱ ' + esc(p.tiempo) + ' · 👥 ' + esc(p.para) + '</p>' +
-        '<p style="font-size:12px"><b>Pasos:</b><br>' + p.pasos.map(function (s, i) { return (i + 1) + ') ' + s; }).join('<br>') + '</p>' +
-        '<p class="muted" style="font-size:11px;white-space:pre-wrap"><b>Prompt base:</b> ' + esc(p.prompt) + '</p>' +
-        '<p style="font-size:12px"><b>🎁 Entrega:</b> ' + esc(p.entrega) + '</p>' +
-        '<div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn" style="width:auto;font-size:11px" data-pcopy="' + p.id + '">📋 Copiar prompt</button>' +
-        '<button class="btn ' + (done ? '' : 'btn-accent') + '" style="width:auto;font-size:11px" data-pdone="' + p.id + '">' + (done ? '↩ Reabrir' : '✅ Marcar terminado') + '</button></div></div>';
+        '<p class="muted su-11a508">⏱ ' + esc(p.tiempo) + ' · 👥 ' + esc(p.para) + '</p>' +
+        '<p class="su-6cb285"><b>Pasos:</b><br>' + p.pasos.map(function (s, i) { return (i + 1) + ') ' + s; }).join('<br>') + '</p>' +
+        '<p class="muted su-4dbc08"><b>Prompt base:</b> ' + esc(p.prompt) + '</p>' +
+        '<p class="su-6cb285"><b>🎁 Entrega:</b> ' + esc(p.entrega) + '</p>' +
+        '<div class="su-6157e8"><button class="btn su-337714" data-pcopy="' + p.id + '">📋 Copiar prompt</button>' +
+        '<button class="btn ' + (done ? '' : 'btn-accent') + ' su-337714" data-pdone="' + p.id + '">' + (done ? '↩ Reabrir' : '✅ Marcar terminado') + '</button></div></div>';
     }).join('') +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-top:8px"><span class="muted" style="font-size:11px">Tip: el proyecto 8 (plan familiar) protege a toda la casa.</span>' +
-    '<button type="button" id="iaProyShare" class="btn" style="width:auto">📤 Compartir avance</button></div>';
+    '<div class="dlg-actions su-efea1d"><span class="muted su-11a508">Tip: el proyecto 8 (plan familiar) protege a toda la casa.</span>' +
+    '<button type="button" id="iaProyShare" class="btn su-30e741">📤 Compartir avance</button></div>';
   box.querySelectorAll('[data-pcopy]').forEach(function (b) {
     b.onclick = function () {
       var p = PROYS.find(function (x) { return x.id === b.getAttribute('data-pcopy'); });
@@ -774,18 +774,18 @@ function renderGlos() {
   var best = 0;
   try { best = store().quizBest || 0; } catch (e) {}
   box.innerHTML = '<div class="si-card"><h4>📚 Glosario en chileno (' + GLOS.length + ' palabras)</h4><p>Si entiendes estas ' + GLOS.length + ', entiendes el 90% de lo que hablan de IA. Sin humo tecnico. Busca arriba.</p></div>' +
-    '<div class="menstrual-card"><div class="conv-row"><label style="flex:2">🔍 Buscar <input type="text" id="iaGlosQ" placeholder="ej: prompt, alucinacion..." autocomplete="off"></label></div><div id="iaGlosBox">' + GLOS.map(function (g) {
-      return '<p style="font-size:12px;margin:6px 0"><b>' + esc(g[0]) + ':</b> <span class="muted">' + esc(g[1]) + '</span></p>';
+    '<div class="menstrual-card"><div class="conv-row"><label class="su-4b3de7">🔍 Buscar <input type="text" id="iaGlosQ" placeholder="ej: prompt, alucinacion..." autocomplete="off"></label></div><div id="iaGlosBox">' + GLOS.map(function (g) {
+      return '<p class="su-f9928b"><b>' + esc(g[0]) + ':</b> <span class="muted">' + esc(g[1]) + '</span></p>';
     }).join('') + '</div></div>' +
-    '<div class="menstrual-card" style="margin-top:10px;border-color:var(--gold)"><h4>🧠 Quiz: ¿usas IA con criterio? (' + QUIZ.length + ' casos · mejor: ' + best + '/' + QUIZ.length + ')</h4>' +
+    '<div class="menstrual-card su-51d56a"><h4>🧠 Quiz: ¿usas IA con criterio? (' + QUIZ.length + ' casos · mejor: ' + best + '/' + QUIZ.length + ')</h4>' +
     '<div id="iaQuizBox"><p class="muted">' + QUIZ.length + ' situaciones reales. Toca empezar: 3 minutos.</p></div>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="iaQuizStart" class="btn btn-accent" style="width:auto">▶ Empezar quiz</button></div></div>';
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="iaQuizStart" class="btn btn-accent su-30e741">▶ Empezar quiz</button></div></div>';
   if ($('iaGlosQ')) $('iaGlosQ').oninput = function () {
     var q = ($('iaGlosQ').value || '').toLowerCase();
     $('iaGlosBox').innerHTML = GLOS.filter(function (g) {
       return !q || (g[0] + ' ' + g[1]).toLowerCase().indexOf(q) >= 0;
     }).map(function (g) {
-      return '<p style="font-size:12px;margin:6px 0"><b>' + esc(g[0]) + ':</b> <span class="muted">' + esc(g[1]) + '</span></p>';
+      return '<p class="su-f9928b"><b>' + esc(g[0]) + ':</b> <span class="muted">' + esc(g[1]) + '</span></p>';
     }).join('') || '<p class="muted">Sin resultados. Prueba con “prompt” o “datos”.</p>';
   };
   if ($('iaQuizStart')) $('iaQuizStart').onclick = function () { quizIdx = 0; quizPts = 0; paintQuiz(); };
@@ -795,17 +795,17 @@ function renderGlos() {
       var s = store();
       if (quizPts > (s.quizBest || 0)) { s.quizBest = quizPts; save('Record quiz 🧠'); }
       qb.innerHTML = '<p><b>Resultado: ' + quizPts + '/' + QUIZ.length + '</b> ' + (quizPts === QUIZ.length ? '🟢 ¡Criterio total! Ensenale a tu familia.' : (quizPts >= 7 ? '🟡 Bien, repasa Uso seguro.' : '🔴 Lee la Guia y el Uso seguro con calma y repite.')) + '</p>' +
-        '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="iaQuizAgain" class="btn" style="width:auto">🔁 Repetir</button>' +
-        '<button type="button" id="iaQuizShare" class="btn" style="width:auto">📤 Compartir</button></div>';
+        '<div class="dlg-actions su-59a5a8"><button type="button" id="iaQuizAgain" class="btn su-30e741">🔁 Repetir</button>' +
+        '<button type="button" id="iaQuizShare" class="btn su-30e741">📤 Compartir</button></div>';
       $('iaQuizAgain').onclick = function () { quizIdx = 0; quizPts = 0; paintQuiz(); };
       $('iaQuizShare').onclick = function () { share('🤖 Mi quiz IA: ' + quizPts + '/' + QUIZ.length, quizPts === QUIZ.length ? 'Uso la IA con criterio: contexto, verificacion y datos cuidados.' : 'Aprendiendo a usar la IA con criterio en Penco.'); };
       return;
     }
     var q = QUIZ[quizIdx];
-    qb.innerHTML = '<p style="font-size:12px"><b>' + (quizIdx + 1) + '/' + QUIZ.length + '.</b> ' + esc(q.q) + '</p>' +
+    qb.innerHTML = '<p class="su-6cb285"><b>' + (quizIdx + 1) + '/' + QUIZ.length + '.</b> ' + esc(q.q) + '</p>' +
       q.opts.map(function (o, i) {
-        return '<button type="button" class="btn" style="width:100%;margin-top:6px;text-align:left;white-space:normal" data-opt="' + i + '">' + esc(o) + '</button>';
-      }).join('') + '<p class="muted" style="font-size:11px;margin-top:6px">Puntos: ' + quizPts + '</p>';
+        return '<button type="button" class="btn su-94b908" data-opt="' + i + '">' + esc(o) + '</button>';
+      }).join('') + '<p class="muted su-e13d76">Puntos: ' + quizPts + '</p>';
     qb.querySelectorAll('[data-opt]').forEach(function (b) {
       b.onclick = function () {
         var i = +b.getAttribute('data-opt');

@@ -49,7 +49,7 @@ function renderDlgHoras() {
   // ordenar por hora exacta
   const sorted = [...cell.agenda].sort((a,b)=> getAgendaTime(a).localeCompare(getAgendaTime(b)) || (a.id||'').localeCompare(b.id||''));
   if (!sorted.length) {
-    grid.innerHTML = '<p class="muted" style="font-size:11px;padding:8px;border:1px dashed var(--line);border-radius:8px;text-align:center">Sin compromisos aún. Agrega uno a cualquier hora abajo (ej 08:37).</p>';
+    grid.innerHTML = '<p class="muted su-b33ae9">Sin compromisos aún. Agrega uno a cualquier hora abajo (ej 08:37).</p>';
     return;
   }
   // agrupar por hora exacta (HH:MM)
@@ -58,8 +58,8 @@ function renderDlgHoras() {
   const times = Object.keys(byTime).sort();
   grid.innerHTML = times.map(t=>{
     const items = byTime[t];
-    return `<div class="hora-block"><div class="hora-label">🕐 ${t} <span class="muted" style="font-size:10px">· ${items.length} ${items.length===1?'compromiso':'compromisos'}</span></div>` +
-      items.map(it=>`<div class="hora-item"><span class="hora-text">${escapeHtml(it.text)}</span><span class="hora-actions"><span class="chip" style="font-size:10px;padding:2px 6px">${it.notify?'🔔':'🔕'}</span><button type="button" class="btn btn-icon hora-notify" data-id="${it.id}" title="${it.notify?'Desactivar':'Activar'} notificación">${it.notify?'🔔':'🔕'}</button><button type="button" class="btn btn-icon hora-del" data-id="${it.id}" title="Eliminar">✕</button></span></div>`).join('') + `</div>`;
+    return `<div class="hora-block"><div class="hora-label">🕐 ${t} <span class="muted su-0d5be0">· ${items.length} ${items.length===1?'compromiso':'compromisos'}</span></div>` +
+      items.map(it=>`<div class="hora-item"><span class="hora-text">${escapeHtml(it.text)}</span><span class="hora-actions"><span class="chip su-427a96">${it.notify?'🔔':'🔕'}</span><button type="button" class="btn btn-icon hora-notify" data-id="${it.id}" title="${it.notify?'Desactivar':'Activar'} notificación">${it.notify?'🔔':'🔕'}</button><button type="button" class="btn btn-icon hora-del" data-id="${it.id}" title="Eliminar">✕</button></span></div>`).join('') + `</div>`;
   }).join('');
   grid.querySelectorAll('.hora-del').forEach(b=> b.onclick=()=>{
     const id=b.dataset.id;
@@ -265,7 +265,7 @@ function openDayDialog(lunaN, diaN) {
         + '<div class="dlg-sun-row"><span class="chip">🌙 Sale <b>' + (moon.rise ? cal.fmtTime.format(new Date(moon.rise)) : '--') + '</b></span>'
         + '<span class="chip">🌘 Se pone <b>' + (moon.set ? cal.fmtTime.format(new Date(moon.set)) : '--') + '</b></span></div>'
         + '<div class="dlg-sun-row"><span class="chip">' + moonIcon + ' Fase <b>' + escapeHtml(faseTxt) + '</b></span></div>'
-        + '<p class="muted" style="font-size:10px;margin:6px 0 0">Penco · hora local · aprox. ±15 min según lugar de observación.</p>';
+        + '<p class="muted su-cb3213">Penco · hora local · aprox. ±15 min según lugar de observación.</p>';
     }
   }catch(e){}
 

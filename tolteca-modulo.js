@@ -73,10 +73,10 @@ function makeDialog(id, title, sub, bodyHTML) {
   var d = document.createElement('dialog');
   d.id = id;
   d.innerHTML = '<form method="dialog">' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
-    '<h3 style="margin:0;color:var(--accent)">' + title + '</h3>' +
+    '<div class="dlg-actions su-d2d053">' +
+    '<h3 class="su-ee0cfe">' + title + '</h3>' +
     '<button type="button" data-close class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    (sub ? '<p class="muted" style="line-height:1.5">' + sub + '</p>' : '') +
+    (sub ? '<p class="muted su-77e2fe">' + sub + '</p>' : '') +
     bodyHTML +
     '<div class="dlg-actions"><button type="button" data-close class="btn">Cerrar</button></div></form>';
   document.body.appendChild(d);
@@ -205,95 +205,95 @@ var TOL_LUNAS = [
    ============================================================ */
 function buildDialog() {
   var acGrid = TOL_ACUERDOS.map(function (it) {
-    return '<button type="button" class="btn tol-ac-card" data-ac="' + it.id + '" style="text-align:left;height:auto;padding:10px">' +
+    return '<button type="button" class="btn tol-ac-card su-1c48e1" data-ac="' + it.id + '">' +
       '<b>' + it.ico + ' ' + esc(it.n) + '</b><br>' +
-      '<span class="muted" style="font-size:11px">' + esc(it.tag.split(' ').slice(0, 3).join(' · ')) + '</span></button>';
+      '<span class="muted su-11a508">' + esc(it.tag.split(' ').slice(0, 3).join(' · ')) + '</span></button>';
   }).join('');
 
   var testHTML = TOL_TEST.map(function (q, i) {
     var opts = TOL_LIKERT.map(function (o) {
-      return '<label class="check-row" style="margin:0;font-size:12px"><input type="radio" name="tolQ' + i + '" value="' + o.v + '"> ' + o.t + '</label>';
+      return '<label class="check-row su-a16b97"><input type="radio" name="tolQ' + i + '" value="' + o.v + '"> ' + o.t + '</label>';
     }).join('');
-    return '<div class="menstrual-card" style="margin-bottom:8px"><b style="font-size:12px">' + (i + 1) + '. ' + esc(q.txt) + '</b>' +
-      '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:6px">' + opts + '</div></div>';
+    return '<div class="menstrual-card su-fdf33f"><b class="su-6cb285">' + (i + 1) + '. ' + esc(q.txt) + '</b>' +
+      '<div class="su-8fd176">' + opts + '</div></div>';
   }).join('');
 
   var practHTML = TOL_PRACTICAS.map(function (p) {
     return '<div class="menstrual-card"><h4>' + p.ico + ' ' + esc(p.n) + '</h4>' +
-      '<p class="muted" style="font-size:11px">⏱ ' + esc(p.tiempo) + '</p>' +
-      '<p style="font-size:12px">' + esc(p.pasos) + '</p>' +
-      '<p class="muted" style="font-size:12px">💡 ' + esc(p.tip) + '</p>' +
-      '<button type="button" class="btn tol-pract-add" data-p="' + esc(p.n) + '" style="width:auto">+ Anotar en mi diario de hoy</button></div>';
+      '<p class="muted su-11a508">⏱ ' + esc(p.tiempo) + '</p>' +
+      '<p class="su-6cb285">' + esc(p.pasos) + '</p>' +
+      '<p class="muted su-6cb285">💡 ' + esc(p.tip) + '</p>' +
+      '<button type="button" class="btn tol-pract-add su-30e741" data-p="' + esc(p.n) + '">+ Anotar en mi diario de hoy</button></div>';
   }).join('');
 
   var body =
-    '<div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">' +
-    '<button type="button" id="tabTolGuia" class="btn btn-accent" style="width:auto">📖 Guía</button>' +
-    '<button type="button" id="tabTolAcuerdos" class="btn" style="width:auto">🤝 5 Acuerdos</button>' +
-    '<button type="button" id="tabTolPract" class="btn" style="width:auto">🛠️ Prácticas</button>' +
-    '<button type="button" id="tabTolTest" class="btn" style="width:auto">📝 Test guerrero</button>' +
-    '<button type="button" id="tabTolCamino" class="btn" style="width:auto">🌱 Mi camino</button></div>' +
+    '<div class="timer-tabs su-4dca21">' +
+    '<button type="button" id="tabTolGuia" class="btn btn-accent su-30e741">📖 Guía</button>' +
+    '<button type="button" id="tabTolAcuerdos" class="btn su-30e741">🤝 5 Acuerdos</button>' +
+    '<button type="button" id="tabTolPract" class="btn su-30e741">🛠️ Prácticas</button>' +
+    '<button type="button" id="tabTolTest" class="btn su-30e741">📝 Test guerrero</button>' +
+    '<button type="button" id="tabTolCamino" class="btn su-30e741">🌱 Mi camino</button></div>' +
 
     '<div id="tolGuia">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🦅 ¿Qué son las prácticas toltecas?</h4>' +
-    '<p class="muted" style="font-size:12px;line-height:1.6">Tolteca = <b>artista y hombre/mujer de conocimiento</b> del México antiguo. Lo que hoy practicamos viene sobre todo del linaje de <b>don Juan Matus</b> contado por <b>Carlos Castaneda</b> (<i>Las enseñanzas de don Juan, Viaje a Ixtlán, El arte de ensoñar</i>…), más la síntesis simple de <b>don Miguel Ruiz</b> (<i>Los Cuatro Acuerdos</i>). No es religión ni club: es un <b>camino del guerrero en la vida diaria</b> —cazar tus rutinas, soñar con atención y soltar lo que te roba energía.</p>' +
-    '<p class="muted" style="font-size:12px;line-height:1.6">Idea de una línea: <b>deja de gastarte en lo que no importa</b>. Recapitulando el pasado, acechándote en el presente y ensoñando el futuro recuperas energía para vivir impecable: decir, hacer y soltar a tiempo.</p></div>' +
-    '<div class="fishing-grid" style="margin-top:10px">' +
+    '<div class="menstrual-card su-68a1a9"><h4>🦅 ¿Qué son las prácticas toltecas?</h4>' +
+    '<p class="muted su-616df7">Tolteca = <b>artista y hombre/mujer de conocimiento</b> del México antiguo. Lo que hoy practicamos viene sobre todo del linaje de <b>don Juan Matus</b> contado por <b>Carlos Castaneda</b> (<i>Las enseñanzas de don Juan, Viaje a Ixtlán, El arte de ensoñar</i>…), más la síntesis simple de <b>don Miguel Ruiz</b> (<i>Los Cuatro Acuerdos</i>). No es religión ni club: es un <b>camino del guerrero en la vida diaria</b> —cazar tus rutinas, soñar con atención y soltar lo que te roba energía.</p>' +
+    '<p class="muted su-616df7">Idea de una línea: <b>deja de gastarte en lo que no importa</b>. Recapitulando el pasado, acechándote en el presente y ensoñando el futuro recuperas energía para vivir impecable: decir, hacer y soltar a tiempo.</p></div>' +
+    '<div class="fishing-grid su-d2c171">' +
     '<div class="menstrual-card"><h4>🗺️ El mapa en 6 piezas</h4>' +
-    '<p class="muted" style="font-size:12px"><b>1) Tonal y nagual:</b> lo conocido (tu mundo ordenado) y lo desconocido (todo lo demás). El guerrero honra ambos. <b>2) Punto de encaje:</b> donde "sintonizas" tu realidad; se mueve con no-haceres, silencio y ensueño. <b>3) 3 artes:</b> acecho (actuar sobrio), ensueño (atención soñando), intento (dirigir energía). <b>4) 4 enemigos:</b> miedo → claridad → poder → vejez/cansancio. Cada victoria pide humildad. <b>5) Impecabilidad:</b> hacer tu máximo, nada más. <b>6) Muerte aliada:</b> te recuerda lo esencial.</p></div>' +
+    '<p class="muted su-6cb285"><b>1) Tonal y nagual:</b> lo conocido (tu mundo ordenado) y lo desconocido (todo lo demás). El guerrero honra ambos. <b>2) Punto de encaje:</b> donde "sintonizas" tu realidad; se mueve con no-haceres, silencio y ensueño. <b>3) 3 artes:</b> acecho (actuar sobrio), ensueño (atención soñando), intento (dirigir energía). <b>4) 4 enemigos:</b> miedo → claridad → poder → vejez/cansancio. Cada victoria pide humildad. <b>5) Impecabilidad:</b> hacer tu máximo, nada más. <b>6) Muerte aliada:</b> te recuerda lo esencial.</p></div>' +
     '<div class="menstrual-card"><h4>📚 El linaje en 1 minuto</h4>' +
-    '<p class="muted" style="font-size:12px">Don Juan Matus (yaqui, Sonora) enseña a Castaneda (antropólogo, años 60-70) 13 años: <b>plantas, acecho, ensueño, intento</b>. Su compañero <b>don Genaro</b> muestra el nagual con humor. Décadas después, <b>Ruiz</b> resume la ética en 4 (+1) acuerdos y <b>Víctor Sánchez / Theun Mares</b> ordenan el acecho para gente común. Lee el original si te engancha: <i>Viaje a Ixtlán</i> es la mejor puerta.</p></div></div>' +
+    '<p class="muted su-6cb285">Don Juan Matus (yaqui, Sonora) enseña a Castaneda (antropólogo, años 60-70) 13 años: <b>plantas, acecho, ensueño, intento</b>. Su compañero <b>don Genaro</b> muestra el nagual con humor. Décadas después, <b>Ruiz</b> resume la ética en 4 (+1) acuerdos y <b>Víctor Sánchez / Theun Mares</b> ordenan el acecho para gente común. Lee el original si te engancha: <i>Viaje a Ixtlán</i> es la mejor puerta.</p></div></div>' +
     '<details class="menstrual-details"><summary>🚶 ¿Cómo practicar sin grupo? (rutina mínima)</summary>' +
-    '<p class="muted" style="font-size:12px"><b>Mañana:</b> intención del día + 1 no-hacer. <b>Día:</b> acecho x3 (gatillo + acto + acuerdo) y silencio 3 min. <b>Noche:</b> recapitulación de 10 min + anotar sueños al despertar. <b>Por luna:</b> 1 acuerdo madre + 1 borrado de historia + releer diario. 15-20 min diarios bastan; la constancia mueve el punto de encaje.</p></details>' +
+    '<p class="muted su-6cb285"><b>Mañana:</b> intención del día + 1 no-hacer. <b>Día:</b> acecho x3 (gatillo + acto + acuerdo) y silencio 3 min. <b>Noche:</b> recapitulación de 10 min + anotar sueños al despertar. <b>Por luna:</b> 1 acuerdo madre + 1 borrado de historia + releer diario. 15-20 min diarios bastan; la constancia mueve el punto de encaje.</p></details>' +
     '<details class="menstrual-details"><summary>⚠️ Cuidados (léeme)</summary>' +
-    '<p class="muted" style="font-size:12px">✅ Esto es <b>autoconocimiento educativo</b>, no terapia ni religión. ✅ Las plantas de poder del relato <b>NO se practican aquí</b>: el camino que proponemos es sobrio (respiración, acecho, ensueño, silencio). ❌ Ningún linaje serio pide plata grande, obediencia ciega ni sexo/secretos. Desconfía de "chamanes" exprés. ✅ Con trauma, duelo fresco o crisis, practica acompañado (terapeuta, CESFAM, *4141 en Chile 24 h). Si un ejercicio te desborda, detente, camina, toma agua y conversa.</p></details>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>🌙 Toltecas × 13 lunas</h4><div id="tolLunasBox"></div>' +
-    '<p class="muted" style="font-size:11px;margin-top:6px">Puentes dentro de la app: 🔁 <b>Recapitulación</b> (inventario largo) · 💭 <b>Diario Sueños</b> (bitácora madre) · 🛤️ <b>Cuarto Camino</b> (recuerdo de sí) · 📿 <b>Métodos</b> (ficha tolteca).</p></div>' +
+    '<p class="muted su-6cb285">✅ Esto es <b>autoconocimiento educativo</b>, no terapia ni religión. ✅ Las plantas de poder del relato <b>NO se practican aquí</b>: el camino que proponemos es sobrio (respiración, acecho, ensueño, silencio). ❌ Ningún linaje serio pide plata grande, obediencia ciega ni sexo/secretos. Desconfía de "chamanes" exprés. ✅ Con trauma, duelo fresco o crisis, practica acompañado (terapeuta, CESFAM, *4141 en Chile 24 h). Si un ejercicio te desborda, detente, camina, toma agua y conversa.</p></details>' +
+    '<div class="menstrual-card su-d2c171"><h4>🌙 Toltecas × 13 lunas</h4><div id="tolLunasBox"></div>' +
+    '<p class="muted su-e13d76">Puentes dentro de la app: 🔁 <b>Recapitulación</b> (inventario largo) · 💭 <b>Diario Sueños</b> (bitácora madre) · 🛤️ <b>Cuarto Camino</b> (recuerdo de sí) · 📿 <b>Métodos</b> (ficha tolteca).</p></div>' +
     '</div>' +
 
     '<div id="tolAcuerdos" class="hidden">' +
-    '<div class="conv-row"><label style="flex:2">Buscar <input type="text" id="tolQ" placeholder="ej: palabra, personal, suponer, máximo, escéptico..." maxlength="40"></label></div>' +
-    '<div id="tolAcGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-top:8px">' + acGrid + '</div>' +
-    '<div id="tolDetalle" class="menstrual-card" style="margin-top:10px;border-color:var(--gold)"><p class="muted">Toca un acuerdo para ver su ficha completa 👆</p></div></div>' +
+    '<div class="conv-row"><label class="su-4b3de7">Buscar <input type="text" id="tolQ" placeholder="ej: palabra, personal, suponer, máximo, escéptico..." maxlength="40"></label></div>' +
+    '<div id="tolAcGrid" class="su-1e9d45">' + acGrid + '</div>' +
+    '<div id="tolDetalle" class="menstrual-card su-51d56a"><p class="muted">Toca un acuerdo para ver su ficha completa 👆</p></div></div>' +
 
     '<div id="tolPract" class="hidden">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🤫 Silencio guiado — 3 minutos</h4>' +
-    '<p class="muted" style="font-size:12px">Fija la mirada suave, escucha todo a la vez, siente el cuerpo. El botón te marca el tiempo; al terminar anota tu acecho del día.</p>' +
-    '<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><button type="button" id="tolSilencioBtn" class="btn btn-accent" style="width:auto">▶ Silencio ahora (3 min)</button>' +
-    '<span id="tolSilencioMsg" class="muted" style="font-size:12px"></span></div>' +
-    '<div class="conv-row" style="margin-top:8px"><label>Acecho de hoy (gatillo → acto → acuerdo) <input type="text" id="tolAcechoHoy" placeholder="ej: taco → respiré, no toqué bocina → no personal" maxlength="140"></label></div>' +
+    '<div class="menstrual-card su-68a1a9"><h4>🤫 Silencio guiado — 3 minutos</h4>' +
+    '<p class="muted su-6cb285">Fija la mirada suave, escucha todo a la vez, siente el cuerpo. El botón te marca el tiempo; al terminar anota tu acecho del día.</p>' +
+    '<div class="su-58703f"><button type="button" id="tolSilencioBtn" class="btn btn-accent su-30e741">▶ Silencio ahora (3 min)</button>' +
+    '<span id="tolSilencioMsg" class="muted su-6cb285"></span></div>' +
+    '<div class="conv-row su-8a77e5"><label>Acecho de hoy (gatillo → acto → acuerdo) <input type="text" id="tolAcechoHoy" placeholder="ej: taco → respiré, no toqué bocina → no personal" maxlength="140"></label></div>' +
     '<div class="conv-row"><label>Ensueño de anoche <input type="text" id="tolEnsuenoHoy" placeholder="ej: soñé mar revuelto + manos; señal: soltar control" maxlength="140"></label>' +
     '<label>No-hacer de hoy <input type="text" id="tolNoHacerHoy" placeholder="ej: caminé otra ruta sin celu" maxlength="100"></label></div>' +
-    '<div class="dlg-actions" style="justify-content:flex-start;flex-wrap:wrap;gap:8px"><button type="button" id="tolPractSave" class="btn btn-accent" style="width:auto">💾 Guardar día guerrero</button>' +
-    '<button type="button" id="tolGoRecap" class="btn" style="width:auto">🔁 Ir a Recapitulación</button>' +
-    '<button type="button" id="tolGoSuenos" class="btn" style="width:auto">💭 Ir a Diario Sueños</button></div></div>' +
+    '<div class="dlg-actions su-41efc8"><button type="button" id="tolPractSave" class="btn btn-accent su-30e741">💾 Guardar día guerrero</button>' +
+    '<button type="button" id="tolGoRecap" class="btn su-30e741">🔁 Ir a Recapitulación</button>' +
+    '<button type="button" id="tolGoSuenos" class="btn su-30e741">💭 Ir a Diario Sueños</button></div></div>' +
     practHTML + '</div>' +
 
     '<div id="tolTest" class="hidden">' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>📝 Test: ¿qué guerrero eres? (20 afirmaciones)</h4>' +
-    '<p class="muted" style="font-size:12px">Responde según <b>cómo eres casi siempre</b>. Escala: Nunca (0) · A veces (1) · A menudo (2) · Muy cierto (3). ~5 minutos. Mide tus 3 artes (Acecho · Ensueño · Intento) + <b>nivel de diálogo interno</b> (S). <b>No es diagnóstico</b>: es un espejo para elegir por dónde empezar.</p>' +
-    '<div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" id="tolTestReset" class="btn" style="width:auto">↺ Limpiar</button>' +
-    '<button type="button" id="tolTestCalc" class="btn btn-accent" style="width:auto">📊 Ver mi resultado</button></div>' +
-    '<div id="tolProgreso" class="muted" style="font-size:11px;margin-top:6px"></div></div>' +
-    '<div id="tolTestBox" style="margin-top:10px">' + testHTML + '</div>' +
-    '<div id="tolResultado" class="menstrual-card hidden" style="margin-top:10px;border-color:var(--gold)"></div></div>' +
+    '<div class="menstrual-card su-68a1a9"><h4>📝 Test: ¿qué guerrero eres? (20 afirmaciones)</h4>' +
+    '<p class="muted su-6cb285">Responde según <b>cómo eres casi siempre</b>. Escala: Nunca (0) · A veces (1) · A menudo (2) · Muy cierto (3). ~5 minutos. Mide tus 3 artes (Acecho · Ensueño · Intento) + <b>nivel de diálogo interno</b> (S). <b>No es diagnóstico</b>: es un espejo para elegir por dónde empezar.</p>' +
+    '<div class="su-3de8f9"><button type="button" id="tolTestReset" class="btn su-30e741">↺ Limpiar</button>' +
+    '<button type="button" id="tolTestCalc" class="btn btn-accent su-30e741">📊 Ver mi resultado</button></div>' +
+    '<div id="tolProgreso" class="muted su-e13d76"></div></div>' +
+    '<div id="tolTestBox" class="su-d2c171">' + testHTML + '</div>' +
+    '<div id="tolResultado" class="menstrual-card hidden su-51d56a"></div></div>' +
 
     '<div id="tolCamino" class="hidden">' +
-    '<div class="menstrual-grid"><div class="menstrual-card" style="border-color:var(--gold)"><h4>🌱 Mi arte</h4>' +
+    '<div class="menstrual-grid"><div class="menstrual-card su-68a1a9"><h4>🌱 Mi arte</h4>' +
     '<div class="conv-row"><label>Mi arte dominante <select id="tolMiArte"><option value="">— sin definir —</option><option value="A">🐾 Acecho</option><option value="E">🌙 Ensueño</option><option value="I">🔥 Intento</option></select></label></div>' +
-    '<div id="tolMiArteBox" style="margin-top:6px"></div></div>' +
+    '<div id="tolMiArteBox" class="su-fe7b49"></div></div>' +
     '<div class="menstrual-card"><h4>📓 Diario del guerrero</h4>' +
     '<div class="conv-row"><label>Fecha <input type="date" id="tolDiaFecha"></label></div>' +
     '<label>Hoy en mi camino… (acecho + ensueño + acuerdo) <input type="text" id="tolDiaTxt" placeholder="ej: no supuse con mi hija, pregunté; soñé río; acuerdo: máximo" maxlength="140"></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="tolDiaAdd" class="btn btn-accent" style="width:auto">+ Guardar hoy</button></div>' +
-    '<div id="tolDiaList" class="habits-list" style="margin-top:8px;max-height:220px"></div></div></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>🌀 Mis días guerreros (racha de impecabilidad)</h4><div id="tolPractsBox"></div></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>🕘 Historial de tests</h4><div id="tolHistBox"></div></div>' +
-    '<div class="dlg-actions" style="justify-content:space-between;align-items:center;margin-top:8px;flex-wrap:wrap;gap:8px">' +
-    '<span id="tolStats" class="muted" style="font-size:11px"></span>' +
-    '<span style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" id="tolShare" class="btn" style="width:auto">📤 Compartir</button>' +
-    '<button type="button" id="tolToNote" class="btn" style="width:auto">📝 Llevar a nota de hoy</button>' +
-    '<button type="button" id="tolClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar todo</button></span></div></div>';
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="tolDiaAdd" class="btn btn-accent su-30e741">+ Guardar hoy</button></div>' +
+    '<div id="tolDiaList" class="habits-list su-ebf445"></div></div></div>' +
+    '<div class="menstrual-card su-d2c171"><h4>🌀 Mis días guerreros (racha de impecabilidad)</h4><div id="tolPractsBox"></div></div>' +
+    '<div class="menstrual-card su-d2c171"><h4>🕘 Historial de tests</h4><div id="tolHistBox"></div></div>' +
+    '<div class="dlg-actions su-a1935c">' +
+    '<span id="tolStats" class="muted su-11a508"></span>' +
+    '<span class="su-3de8f9"><button type="button" id="tolShare" class="btn su-30e741">📤 Compartir</button>' +
+    '<button type="button" id="tolToNote" class="btn su-30e741">📝 Llevar a nota de hoy</button>' +
+    '<button type="button" id="tolClear" class="btn su-214f75">🗑 Borrar todo</button></span></div></div>';
 
   makeDialog('toltecaDialog', '🦅 Prácticas Toltecas — el camino del guerrero',
     'Acecho, ensueño e intento para la vida común: recupera energía, cumple tu palabra y sueña con atención. Sin grupo ni humo: en Penco, en tu casa, hoy. Todo <b>privado y local</b>.',
@@ -313,14 +313,14 @@ function renderDetalle(id) {
   var e = store();
   var fav = e.favs.indexOf(id) >= 0;
   box.innerHTML =
-    '<h4 style="color:var(--gold)">' + t.ico + ' ' + esc(t.n) + '</h4>' +
-    '<p style="font-size:12px;line-height:1.6">' + esc(t.idea) + '</p>' +
-    '<p style="font-size:12px">🧰 <b>¿Cuándo sirve?</b> ' + esc(t.sirve) + '</p>' +
+    '<h4 class="su-e39eba">' + t.ico + ' ' + esc(t.n) + '</h4>' +
+    '<p class="su-616df7">' + esc(t.idea) + '</p>' +
+    '<p class="su-6cb285">🧰 <b>¿Cuándo sirve?</b> ' + esc(t.sirve) + '</p>' +
     '<div class="si-card"><h4>✏️ Práctica de hoy</h4><p>' + esc(t.practica) + '</p><p class="muted">Pregunta que despierta: <i>' + esc(t.pregunta) + '</i></p></div>' +
-    '<p class="muted" style="font-size:12px">⚠️ Trampa típica: ' + esc(t.trampa) + '</p>' +
-    '<div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">' +
-    '<button type="button" class="btn" id="tolFavBtn" style="width:auto">' + (fav ? '★ Quitar de favoritas' : '☆ Marcar favorita') + '</button>' +
-    '<button type="button" class="btn btn-accent" id="tolHoyBtn" style="width:auto">✓ Trabajar este hoy</button></div>';
+    '<p class="muted su-6cb285">⚠️ Trampa típica: ' + esc(t.trampa) + '</p>' +
+    '<div class="su-67b198">' +
+    '<button type="button" class="btn su-30e741" id="tolFavBtn">' + (fav ? '★ Quitar de favoritas' : '☆ Marcar favorita') + '</button>' +
+    '<button type="button" class="btn btn-accent su-30e741" id="tolHoyBtn">✓ Trabajar este hoy</button></div>';
   var fb = $('tolFavBtn');
   if (fb) fb.onclick = function () {
     var d = store();
@@ -372,23 +372,23 @@ function showResultado(sc) {
   var dialTxt = dial <= 5 ? 'Quieto: hay silencio disponible. Sostén con 3 min diarios.' : dial <= 9 ? 'Medio: parloteo frecuente. Silencio + caminata te cambian la luna.' : 'Ruidoso: la mente manda. Parte por 1 silencio + 1 no-hacer, sin exigirte todo.';
   box.classList.remove('hidden');
   box.innerHTML = '<h4>📊 Tu espejo (sin guardar)</h4>' +
-    '<p class="muted" style="font-size:11px">Máximo por arte: 15 (5 preguntas × 3). Diálogo (S): máximo 15 — mientras más alto, más ruido.</p>' +
+    '<p class="muted su-11a508">Máximo por arte: 15 (5 preguntas × 3). Diálogo (S): máximo 15 — mientras más alto, más ruido.</p>' +
     arr.map(function (a) {
       var c = TOL_ARTES[a.k];
       var pct = Math.round(a.p / max * 100);
       var isTop = dom === a.k;
-      return '<div style="display:flex;align-items:center;gap:8px;margin:4px 0">' +
-        '<span style="min-width:150px;font-size:12px"><b>' + c.ico + ' ' + esc(c.nombre) + '</b></span>' +
-        '<span style="flex:1;background:var(--panel);border:1px solid var(--line);border-radius:6px;height:14px;position:relative;overflow:hidden">' +
+      return '<div class="su-0d84b3">' +
+        '<span class="su-b53707"><b>' + c.ico + ' ' + esc(c.nombre) + '</b></span>' +
+        '<span class="su-2982dd">' +
         '<span style="display:block;height:100%;width:' + pct + '%;background:' + (isTop ? 'var(--gold)' : 'var(--accent)') + ';opacity:' + (isTop ? '1' : '.55') + '"></span></span>' +
-        '<b style="min-width:30px;text-align:right">' + a.p + '</b></div>';
+        '<b class="su-803c87">' + a.p + '</b></div>';
     }).join('') +
-    '<div class="si-card" style="margin-top:8px"><h4>' + TOL_ARTES[dom].ico + ' Tu arte fuerte: ' + esc(TOL_ARTES[dom].nombre) + '</h4>' +
+    '<div class="si-card su-8a77e5"><h4>' + TOL_ARTES[dom].ico + ' Tu arte fuerte: ' + esc(TOL_ARTES[dom].nombre) + '</h4>' +
     '<p>' + esc(TOL_ARTES[dom].desc) + '</p><p><b>Entrena así:</b> ' + esc(TOL_ARTES[dom].entrena) + '</p>' +
     '<p class="muted">🌀 Diálogo interno: <b>' + dial + '/15</b> — ' + esc(dialTxt) + '</p></div>' +
-    '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"><button type="button" class="btn btn-accent" id="tolSaveTest" style="width:auto">💾 Guardar este test</button>' +
-    '<button type="button" class="btn" id="tolSetArte" style="width:auto">✓ Mi arte: ' + esc(TOL_ARTES[dom].nombre) + '</button>' +
-    '<button type="button" class="btn" id="tolReadAc" style="width:auto">📖 Leer acuerdo que me sirve</button></div>';
+    '<div class="su-ac5453"><button type="button" class="btn btn-accent su-30e741" id="tolSaveTest">💾 Guardar este test</button>' +
+    '<button type="button" class="btn su-30e741" id="tolSetArte">✓ Mi arte: ' + esc(TOL_ARTES[dom].nombre) + '</button>' +
+    '<button type="button" class="btn su-30e741" id="tolReadAc">📖 Leer acuerdo que me sirve</button></div>';
   var sv = $('tolSaveTest');
   if (sv) sv.onclick = function () {
     var d = store();
@@ -415,9 +415,9 @@ function syncMiArte() {
 function renderMiArteBox() {
   var box = $('tolMiArteBox'); if (!box) return;
   var k = store().miArte || '';
-  if (!k || !TOL_ARTES[k]) { box.innerHTML = '<p class="muted" style="font-size:12px">Aún sin definir. Haz el test 📝 o elígelo arriba: es tu punto de partida, no tu jaula.</p>'; return; }
+  if (!k || !TOL_ARTES[k]) { box.innerHTML = '<p class="muted su-6cb285">Aún sin definir. Haz el test 📝 o elígelo arriba: es tu punto de partida, no tu jaula.</p>'; return; }
   var c = TOL_ARTES[k];
-  box.innerHTML = '<div class="chip" style="display:block;white-space:normal;line-height:1.5"><b>' + c.ico + ' ' + esc(c.nombre) + '</b><br>' +
+  box.innerHTML = '<div class="chip su-d7c8b3"><b>' + c.ico + ' ' + esc(c.nombre) + '</b><br>' +
     '<span class="muted">' + esc(c.desc) + '<br><b>Entrena:</b> ' + esc(c.entrena) + '</span></div>';
 }
 function rachaPracts() {
@@ -437,12 +437,12 @@ function renderPracts() {
   var box = $('tolPractsBox'); if (!box) return;
   var d = store().practs || [];
   var ult7 = d.slice().sort(function (a, b) { return b.fecha.localeCompare(a.fecha); }).slice(0, 7);
-  box.innerHTML = '<p class="muted" style="font-size:11px">🔥 Racha: <b>' + rachaPracts() + ' días</b> · ' + d.length + ' día(s) guerrero(s) · acecho + ensueño + no-hacer.</p>' +
+  box.innerHTML = '<p class="muted su-11a508">🔥 Racha: <b>' + rachaPracts() + ' días</b> · ' + d.length + ' día(s) guerrero(s) · acecho + ensueño + no-hacer.</p>' +
     (ult7.length ? ult7.map(function (r) {
-      return '<div class="hora-item" style="align-items:flex-start"><span style="font-size:11px"><b>' + esc(r.fecha) + '</b><br>' +
+      return '<div class="hora-item su-0486f7"><span class="su-11a508"><b>' + esc(r.fecha) + '</b><br>' +
         (r.acecho ? '🐾 ' + esc(r.acecho) + '<br>' : '') + (r.ensueno ? '🌙 ' + esc(r.ensueno) + '<br>' : '') + (r.nohacer ? '🌀 ' + esc(r.nohacer) : '') + '</span>' +
         '<button type="button" class="btn btn-icon tol-pract-del" data-id="' + r.id + '">✕</button></div>';
-    }).join('') : '<p class="muted" style="font-size:11px;text-align:center">Sin días aún. Guarda tu primer día guerrero arriba 🦅.</p>');
+    }).join('') : '<p class="muted su-e201a8">Sin días aún. Guarda tu primer día guerrero arriba 🦅.</p>');
   box.querySelectorAll('.tol-pract-del').forEach(function (x) {
     x.onclick = function () { var e = store(); e.practs = e.practs.filter(function (r) { return r.id !== x.dataset.id; }); save(); renderPracts(); renderStats(); };
   });
@@ -451,9 +451,9 @@ function renderDiario() {
   var box = $('tolDiaList'); if (!box) return;
   var d = store().diario || {};
   var keys = Object.keys(d).sort().reverse().slice(0, 30);
-  if (!keys.length) { box.innerHTML = '<p class="muted" style="font-size:11px;text-align:center">Sin registros. 3 líneas bastan: acecho + ensueño + acuerdo.</p>'; return; }
+  if (!keys.length) { box.innerHTML = '<p class="muted su-e201a8">Sin registros. 3 líneas bastan: acecho + ensueño + acuerdo.</p>'; return; }
   box.innerHTML = keys.map(function (k) {
-    return '<div class="hora-item" style="align-items:flex-start"><span style="font-size:11px"><b>' + esc(k) + '</b><br>' + esc(d[k]) + '</span>' +
+    return '<div class="hora-item su-0486f7"><span class="su-11a508"><b>' + esc(k) + '</b><br>' + esc(d[k]) + '</span>' +
       '<button type="button" class="btn btn-icon tol-dia-del" data-k="' + esc(k) + '">✕</button></div>';
   }).join('');
   box.querySelectorAll('.tol-dia-del').forEach(function (x) {
@@ -463,9 +463,9 @@ function renderDiario() {
 function renderHist() {
   var box = $('tolHistBox'); if (!box) return;
   var t = (store().tests || []).slice().reverse().slice(0, 10);
-  if (!t.length) { box.innerHTML = '<p class="muted" style="font-size:11px">Sin tests guardados. Responde y pulsa “💾 Guardar este test”.</p>'; return; }
+  if (!t.length) { box.innerHTML = '<p class="muted su-11a508">Sin tests guardados. Responde y pulsa “💾 Guardar este test”.</p>'; return; }
   box.innerHTML = t.map(function (r) {
-    return '<div class="hora-item"><span style="font-size:11px"><b>' + esc(r.fecha) + '</b> · 🐾' + r.A + ' 🌙' + r.E + ' 🔥' + r.I + ' · fuerte <b>' + esc(r.dom || '') + '</b> · diálogo ' + esc(String(r.S)) + '/15</span>' +
+    return '<div class="hora-item"><span class="su-11a508"><b>' + esc(r.fecha) + '</b> · 🐾' + r.A + ' 🌙' + r.E + ' 🔥' + r.I + ' · fuerte <b>' + esc(r.dom || '') + '</b> · diálogo ' + esc(String(r.S)) + '/15</span>' +
       '<button type="button" class="btn btn-icon tol-hist-del" data-id="' + r.id + '">✕</button></div>';
   }).join('');
   box.querySelectorAll('.tol-hist-del').forEach(function (x) {

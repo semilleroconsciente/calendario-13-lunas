@@ -1,26 +1,26 @@
 <dialog id="espiritualDialog">
     <form method="dialog">
-      <div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">
-        <h3 style="margin:0;color:var(--accent)">🕉️ Prácticas Espirituales — luz, agua, tierra y noche</h3>
+      <div class="dlg-actions su-d2d053">
+        <h3 class="su-ee0cfe">🕉️ Prácticas Espirituales — luz, agua, tierra y noche</h3>
         <button type="button" id="espiritualCloseTop" class="btn btn-icon" title="Cerrar" aria-label="Cerrar">✕</button>
       </div>
-      <p class="muted" style="line-height:1.5">Rituales simples de <b>sol, agua, tierra, noche e interior</b> para ordenar energía y sueño en Penco. Elige 1–2, hazlas 7 días seguidos y registra tu racha 🔥. No es consejo médico: si tienes condición fotosensible, cardiovascular, embarazo o tomas remedios, consulta antes.</p>
-      <div id="espiritualTodayBox" class="menstrual-card" style="border-color:var(--gold)"></div>
+      <p class="muted su-77e2fe">Rituales simples de <b>sol, agua, tierra, noche e interior</b> para ordenar energía y sueño en Penco. Elige 1–2, hazlas 7 días seguidos y registra tu racha 🔥. No es consejo médico: si tienes condición fotosensible, cardiovascular, embarazo o tomas remedios, consulta antes.</p>
+      <div id="espiritualTodayBox" class="menstrual-card su-68a1a9"></div>
       <div class="esp-filters">
-        <label style="flex:2">🔎 Buscar <input type="search" id="espSearch" placeholder="ej: dormir, gratitud, frío..." maxlength="40"></label>
+        <label class="su-4b3de7">🔎 Buscar <input type="search" id="espSearch" placeholder="ej: dormir, gratitud, frío..." maxlength="40"></label>
         <label>Categoría <select id="espFilterCat"><option value="todas">Todas</option><option value="luz">🌅 Luz</option><option value="agua">💧 Agua</option><option value="tierra">🦶 Tierra</option><option value="noche">🌙 Noche</option><option value="respiro">🌬️ Respiro</option><option value="interior">🕯️ Interior</option></select></label>
         <label>Nivel <select id="espFilterNivel"><option value="todos">Todos</option><option value="Todos">Todos ★</option><option value="Principiante">Principiante</option><option value="Intermedio">Intermedio</option><option value="Mía">Mías</option></select></label>
       </div>
-      <div class="timer-tabs" style="margin:10px 0;flex-wrap:wrap">
-        <button type="button" id="espTabPracticas" class="btn btn-accent" style="width:auto">🕉️ Prácticas</button>
-        <button type="button" id="espTabKit" class="btn" style="width:auto">🎒 Kit &amp; Recursos</button>
-        <button type="button" id="espTabRegistro" class="btn" style="width:auto">📓 Mi Registro</button>
+      <div class="timer-tabs su-ca7e11">
+        <button type="button" id="espTabPracticas" class="btn btn-accent su-30e741">🕉️ Prácticas</button>
+        <button type="button" id="espTabKit" class="btn su-30e741">🎒 Kit &amp; Recursos</button>
+        <button type="button" id="espTabRegistro" class="btn su-30e741">📓 Mi Registro</button>
       </div>
       <div id="espPracticasPanel">
-        <div class="menstrual-card" style="margin-bottom:10px;text-align:center">
-          <h4 style="color:var(--gold)">⏱ Temporizador de práctica</h4>
-          <div class="conv-row" style="align-items:flex-end">
-            <label style="flex:1">Práctica
+        <div class="menstrual-card su-bb54bb">
+          <h4 class="su-e39eba">⏱ Temporizador de práctica</h4>
+          <div class="conv-row su-7fed8e">
+            <label class="su-97445a">Práctica
               <select id="espTimerPractice">
                 <option value="amanecer">🌅 Sol amanecer</option>
                 <option value="atardecer">🌇 Sol atardecer</option>
@@ -38,37 +38,37 @@
               </select>
             </label>
           </div>
-          <div id="espTimerDisplay" class="timer-display" style="margin-top:8px">02:00</div>
-          <div class="dlg-actions" style="justify-content:center;margin-top:8px">
-            <button type="button" id="espTimerStart" class="btn btn-accent" style="width:auto">▶ Iniciar</button>
-            <button type="button" id="espTimerPause" class="btn" style="width:auto">⏸ Pausa</button>
-            <button type="button" id="espTimerReset" class="btn" style="width:auto">↺ Reset</button>
-            <button type="button" id="espTimerDone" class="btn" style="width:auto" title="Marca la práctica del temporizador como hecha hoy">✅ Marcar hecha</button>
+          <div id="espTimerDisplay" class="timer-display su-8a77e5">02:00</div>
+          <div class="dlg-actions su-11c684">
+            <button type="button" id="espTimerStart" class="btn btn-accent su-30e741">▶ Iniciar</button>
+            <button type="button" id="espTimerPause" class="btn su-30e741">⏸ Pausa</button>
+            <button type="button" id="espTimerReset" class="btn su-30e741">↺ Reset</button>
+            <button type="button" id="espTimerDone" class="btn su-30e741" title="Marca la práctica del temporizador como hecha hoy">✅ Marcar hecha</button>
           </div>
-          <p class="muted" style="font-size:11px;margin-top:6px">Deja el celu a un lado, solo escucha el aviso final. Al terminar suena 🔔.</p>
+          <p class="muted su-e13d76">Deja el celu a un lado, solo escucha el aviso final. Al terminar suena 🔔.</p>
         </div>
         <div id="espiritualCards"></div>
-        <div class="menstrual-card" style="margin-top:10px">
+        <div class="menstrual-card su-d2c171">
           <h4>➕ Agregar mi práctica</h4>
-          <p class="muted" style="font-size:11px">Crea tu propia práctica (ej: reiki, oración, epew, caminata consciente). Aparece en las tarjetas, en ✅ Hoy y en el temporizador.</p>
+          <p class="muted su-11a508">Crea tu propia práctica (ej: reiki, oración, epew, caminata consciente). Aparece en las tarjetas, en ✅ Hoy y en el temporizador.</p>
           <div class="conv-row">
-            <label style="flex:2">Nombre * <input type="text" id="espCustomName" placeholder="ej: Oración de la mañana" maxlength="40"></label>
-            <label>Icono <input type="text" id="espCustomIcon" placeholder="🕯️" maxlength="4" style="width:70px;text-align:center"></label>
-            <label>Minutos <input type="number" id="espCustomMins" min="1" max="120" value="5" style="width:70px"></label>
-            <label>Categoría <select id="espCustomCat" style="width:110px"><option value="interior">🕯️ Interior</option><option value="luz">🌅 Luz</option><option value="agua">💧 Agua</option><option value="tierra">🦶 Tierra</option><option value="noche">🌙 Noche</option><option value="respiro">🌬️ Respiro</option></select></label>
+            <label class="su-4b3de7">Nombre * <input type="text" id="espCustomName" placeholder="ej: Oración de la mañana" maxlength="40"></label>
+            <label>Icono <input type="text" id="espCustomIcon" placeholder="🕯️" maxlength="4" class="su-745e46"></label>
+            <label>Minutos <input type="number" id="espCustomMins" min="1" max="120" value="5" class="su-ec6626"></label>
+            <label>Categoría <select id="espCustomCat" class="su-607468"><option value="interior">🕯️ Interior</option><option value="luz">🌅 Luz</option><option value="agua">💧 Agua</option><option value="tierra">🦶 Tierra</option><option value="noche">🌙 Noche</option><option value="respiro">🌬️ Respiro</option></select></label>
           </div>
           <label>Descripción corta (opcional) <input type="text" id="espCustomDesc" placeholder="ej: 5 min de gratitud antes de salir" maxlength="80"></label>
-          <div class="dlg-actions" style="justify-content:flex-start">
-            <button type="button" id="espCustomAdd" class="btn btn-accent" style="width:auto">+ Guardar práctica</button>
+          <div class="dlg-actions su-59a5a8">
+            <button type="button" id="espCustomAdd" class="btn btn-accent su-30e741">+ Guardar práctica</button>
           </div>
         </div>
-        <div class="menstrual-card" style="margin-top:10px">
+        <div class="menstrual-card su-d2c171">
           <h4>🔗 Conecta con el calendario</h4>
-          <p class="muted" style="font-size:12px">🌞 <b>Ritmo Circadiano</b> explica tu cortisol/melatonina y genera tu plan diario · 📸 <b>Hora Dorada</b> da salida/puesta exacta · 🌬️ <b>Respiración</b> guía 4-7-8 y caja · 💭 <b>Sueños</b> para diario onírico · ✅ <b>Hábitos</b> para racha larga.</p>
-          <div class="dlg-actions" style="justify-content:flex-start">
-            <button type="button" id="espGoCircadian" class="btn" style="width:auto">🌞 Ritmo Circadiano</button>
-            <button type="button" id="espGoGolden" class="btn" style="width:auto">📸 Hora Dorada</button>
-            <button type="button" id="espGoBreath" class="btn" style="width:auto">🌬️ Respiración</button>
+          <p class="muted su-6cb285">🌞 <b>Ritmo Circadiano</b> explica tu cortisol/melatonina y genera tu plan diario · 📸 <b>Hora Dorada</b> da salida/puesta exacta · 🌬️ <b>Respiración</b> guía 4-7-8 y caja · 💭 <b>Sueños</b> para diario onírico · ✅ <b>Hábitos</b> para racha larga.</p>
+          <div class="dlg-actions su-59a5a8">
+            <button type="button" id="espGoCircadian" class="btn su-30e741">🌞 Ritmo Circadiano</button>
+            <button type="button" id="espGoGolden" class="btn su-30e741">📸 Hora Dorada</button>
+            <button type="button" id="espGoBreath" class="btn su-30e741">🌬️ Respiración</button>
           </div>
         </div>
       </div>
@@ -79,29 +79,29 @@
         <div class="si-card"><h4>🦶 Dónde hacer grounding en Penco</h4><p>Playa Negra / Lirquén (arena húmeda de orilla), pasto de plaza o patio sin barnizar, tierra de huerta, roca costera seca con pies secos (solo bajamar y sin oleaje). 10–20 min descalzo, respira lento. Lleva bolsa para basura y vuelve con todo.</p></div>
         <div class="si-card"><h4>🧊 Ducha fría sin sufrir (protocolo)</h4><p>Termina tu ducha tibia normal con <b>15–30 seg fría</b> (piernas → brazos → pecho, cara al final). Respira por nariz, no aguantes aire. Sube 15 seg por semana hasta 1–3 min. Toalla a mano, pieza temperada. <b>No hagas</b> si tienes hipertensión descompensada, corazón, embarazo, fiebre o te mareas — usa tibia-fresca.</p></div>
         <div class="si-card"><h4>⚠️ Seguridad sol (lee esto)</h4><p><b>Nunca mires el sol fijo ni con lentes/bino­culares.</b> Amanecer/atardecer = luz suave mirando al horizonte con parpadeo normal, 2–10 min. Mediodía (11:00–16:30 en verano) = piel protegida, sombra y gorro. Piel muy blanca, lunares raros, remedios fotosensibles o post-operatorio: solo luz indirecta + consulta. Si arde, pica o mareas → sombra + agua.</p></div>
-        <div class="menstrual-card" style="margin-top:10px">
+        <div class="menstrual-card su-d2c171">
           <h4>✅ Checklist para imprimir / copiar</h4>
-          <p class="muted" style="font-size:11px">Copia y pega en tu cuaderno o comparte por WhatsApp.</p>
-          <div class="dlg-actions" style="justify-content:flex-start">
-            <button type="button" id="espCopyKit" class="btn" style="width:auto">📋 Copiar checklist</button>
-            <button type="button" id="espShareKit" class="btn" style="width:auto">📤 Compartir</button>
+          <p class="muted su-11a508">Copia y pega en tu cuaderno o comparte por WhatsApp.</p>
+          <div class="dlg-actions su-59a5a8">
+            <button type="button" id="espCopyKit" class="btn su-30e741">📋 Copiar checklist</button>
+            <button type="button" id="espShareKit" class="btn su-30e741">📤 Compartir</button>
           </div>
-          <p id="espKitStatus" class="muted" style="font-size:11px;margin-top:6px"></p>
+          <p id="espKitStatus" class="muted su-e13d76"></p>
         </div>
       </div>
       <div id="espRegistroPanel" class="hidden">
-        <div id="espTodayChecks" class="menstrual-card" style="border-color:var(--gold)"></div>
-        <div class="conv-row" style="margin-top:10px">
-          <label style="flex:2">Nota de hoy (ej: “amanecer con neblina, 5 min, me sentí calmo”) <input type="text" id="espNoteInput" placeholder="cómo estuvo tu práctica hoy..." maxlength="120"></label>
-          <button type="button" id="espNoteSave" class="btn btn-accent" style="width:auto;align-self:flex-end">💾 Guardar</button>
+        <div id="espTodayChecks" class="menstrual-card su-68a1a9"></div>
+        <div class="conv-row su-d2c171">
+          <label class="su-4b3de7">Nota de hoy (ej: “amanecer con neblina, 5 min, me sentí calmo”) <input type="text" id="espNoteInput" placeholder="cómo estuvo tu práctica hoy..." maxlength="120"></label>
+          <button type="button" id="espNoteSave" class="btn btn-accent su-4ed52d">💾 Guardar</button>
         </div>
-        <div id="espStatsBox" class="menstrual-card" style="margin-top:10px"></div>
-        <div id="espLogBox" class="habits-list" style="margin-top:10px;max-height:240px"></div>
-        <div class="dlg-actions" style="justify-content:space-between;align-items:center;margin-top:8px">
-          <span style="display:flex;gap:8px;flex-wrap:wrap">
-            <button type="button" id="espAgendar" class="btn" style="width:auto">🕐 Agendar hoy</button>
-            <button type="button" id="espShareLog" class="btn" style="width:auto">📤 Compartir semana</button>
-            <button type="button" id="espClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar</button>
+        <div id="espStatsBox" class="menstrual-card su-d2c171"></div>
+        <div id="espLogBox" class="habits-list su-62f8f6"></div>
+        <div class="dlg-actions su-cc4a4c">
+          <span class="su-3de8f9">
+            <button type="button" id="espAgendar" class="btn su-30e741">🕐 Agendar hoy</button>
+            <button type="button" id="espShareLog" class="btn su-30e741">📤 Compartir semana</button>
+            <button type="button" id="espClear" class="btn su-214f75">🗑 Borrar</button>
           </span>
         </div>
       </div>

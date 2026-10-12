@@ -63,10 +63,10 @@ function makeDialog(id, title, sub, bodyHTML) {
   var d = document.createElement('dialog');
   d.id = id;
   d.innerHTML = '<form method="dialog">' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
-    '<h3 style="margin:0;color:var(--accent)">' + title + '</h3>' +
+    '<div class="dlg-actions su-d2d053">' +
+    '<h3 class="su-ee0cfe">' + title + '</h3>' +
     '<button type="button" data-close class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    (sub ? '<p class="muted" style="line-height:1.5">' + sub + '</p>' : '') +
+    (sub ? '<p class="muted su-77e2fe">' + sub + '</p>' : '') +
     bodyHTML +
     '<div class="dlg-actions"><button type="button" data-close class="btn">Cerrar</button></div></form>';
   document.body.appendChild(d);
@@ -176,24 +176,24 @@ function buildDialog() {
     var mats = matsArr.map(function (m) { return '<li>' + esc(m) + '</li>'; }).join('');
     var pasos = s.como.split('. ').map(function (p, i) { return p ? '<li>' + esc(p.trim()) + '</li>' : ''; }).join('');
     return '<div class="si-card"><h4>' + s.ico + ' ' + esc(s.n) + '</h4>' +
-      '<p><span class="chip" style="font-size:10px">' + esc(s.tag) + '</span></p>' +
+      '<p><span class="chip su-0d5be0">' + esc(s.tag) + '</span></p>' +
       '<p><b>Para:</b> ' + esc(s.para) + '</p>' +
-      '<p><b>Materiales (ferretería/semillería Penco):</b></p><ol style="font-size:12px;margin:4px 0 4px 18px">' + mats + '</ol>' +
-      '<p><b>Paso a paso:</b></p><ol style="font-size:12px;margin:4px 0 4px 18px;line-height:1.6">' + pasos + '</ol>' +
-      '<p class="muted" style="font-size:11px">🔄 <b>Mantención:</b> ' + esc(s.mant) + '</p>' +
-      '<p style="font-size:11px;color:#e8c56a">⚠️ ' + esc(s.cuidado) + '</p>' +
-      '<div style="display:flex;gap:6px;margin-top:6px"><button type="button" class="btn hidro-use" data-n="' + esc(s.n) + '" style="width:auto;font-size:11px">➕ Usar este sistema en Mi cultivo</button></div></div>';
+      '<p><b>Materiales (ferretería/semillería Penco):</b></p><ol class="su-495dd4">' + mats + '</ol>' +
+      '<p><b>Paso a paso:</b></p><ol class="su-024838">' + pasos + '</ol>' +
+      '<p class="muted su-11a508">🔄 <b>Mantención:</b> ' + esc(s.mant) + '</p>' +
+      '<p class="su-d33357">⚠️ ' + esc(s.cuidado) + '</p>' +
+      '<div class="su-30b926"><button type="button" class="btn hidro-use su-337714" data-n="' + esc(s.n) + '">➕ Usar este sistema en Mi cultivo</button></div></div>';
   }).join('');
 
   var culHTML = CULTIVOS.map(function (c) {
     return '<div class="si-card"><h4>' + c.ico + ' ' + esc(c.n) + '</h4>' +
-      '<p style="display:flex;gap:6px;flex-wrap:wrap"><span class="chip" style="font-size:10px">pH ' + esc(c.ph) + '</span>' +
-      '<span class="chip" style="font-size:10px">EC ' + esc(c.ec) + '</span>' +
-      '<span class="chip" style="font-size:10px">⏱ ' + esc(c.dias) + ' días</span>' +
-      '<span class="chip" style="font-size:10px">🌙 ' + esc(c.luna) + '</span></p>' +
+      '<p class="su-6157e8"><span class="chip su-0d5be0">pH ' + esc(c.ph) + '</span>' +
+      '<span class="chip su-0d5be0">EC ' + esc(c.ec) + '</span>' +
+      '<span class="chip su-0d5be0">⏱ ' + esc(c.dias) + ' días</span>' +
+      '<span class="chip su-0d5be0">🌙 ' + esc(c.luna) + '</span></p>' +
       '<p><b>Sistema:</b> ' + esc(c.sis) + '</p>' +
       '<p class="muted">' + esc(c.nota) + '</p>' +
-      '<div style="display:flex;gap:6px;margin-top:6px"><button type="button" class="btn hidro-crop" data-n="' + esc(c.n) + '" style="width:auto;font-size:11px">➕ Cultivar este en Mi cultivo</button></div></div>';
+      '<div class="su-30b926"><button type="button" class="btn hidro-crop su-337714" data-n="' + esc(c.n) + '">➕ Cultivar este en Mi cultivo</button></div></div>';
   }).join('');
 
   var nutHTML = NUTRIENTES.map(function (n) {
@@ -215,38 +215,38 @@ function buildDialog() {
   }).join('');
 
   var body =
-    '<div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">' +
-    '<button type="button" id="tabHidroGuia" class="btn btn-accent" style="width:auto">📖 Guía</button>' +
-    '<button type="button" id="tabHidroSistemas" class="btn" style="width:auto">🔧 Sistemas</button>' +
-    '<button type="button" id="tabHidroCultivos" class="btn" style="width:auto">🌱 Cultivos</button>' +
-    '<button type="button" id="tabHidroSolucion" class="btn" style="width:auto">⚗️ Solución</button>' +
-    '<button type="button" id="tabHidroLuna" class="btn" style="width:auto">🌙 Luna & Clima</button>' +
-    '<button type="button" id="tabHidroCultivo" class="btn" style="width:auto">📓 Mi cultivo</button></div>' +
+    '<div class="timer-tabs su-4dca21">' +
+    '<button type="button" id="tabHidroGuia" class="btn btn-accent su-30e741">📖 Guía</button>' +
+    '<button type="button" id="tabHidroSistemas" class="btn su-30e741">🔧 Sistemas</button>' +
+    '<button type="button" id="tabHidroCultivos" class="btn su-30e741">🌱 Cultivos</button>' +
+    '<button type="button" id="tabHidroSolucion" class="btn su-30e741">⚗️ Solución</button>' +
+    '<button type="button" id="tabHidroLuna" class="btn su-30e741">🌙 Luna & Clima</button>' +
+    '<button type="button" id="tabHidroCultivo" class="btn su-30e741">📓 Mi cultivo</button></div>' +
     '<div id="hidroGuia">' + guiaHTML + '</div>' +
-    '<div id="hidroSistemas" class="hidden"><div class="conv-row"><label style="flex:1">🔍 Filtrar <input type="text" id="hidroFilterSis" placeholder="kratky, bomba, balcón, tomate..."></label></div><div id="hidroSisList" style="margin-top:8px;display:flex;flex-direction:column;gap:8px">' + sisHTML + '</div></div>' +
-    '<div id="hidroCultivos" class="hidden"><div class="conv-row"><label style="flex:1">🔍 Filtrar <input type="text" id="hidroFilterCul" placeholder="lechuga, ají, frutilla..."></label></div><div id="hidroCulList" style="margin-top:8px;display:flex;flex-direction:column;gap:8px">' + culHTML + '</div></div>' +
+    '<div id="hidroSistemas" class="hidden"><div class="conv-row"><label class="su-97445a">🔍 Filtrar <input type="text" id="hidroFilterSis" placeholder="kratky, bomba, balcón, tomate..."></label></div><div id="hidroSisList" class="su-bf3828">' + sisHTML + '</div></div>' +
+    '<div id="hidroCultivos" class="hidden"><div class="conv-row"><label class="su-97445a">🔍 Filtrar <input type="text" id="hidroFilterCul" placeholder="lechuga, ají, frutilla..."></label></div><div id="hidroCulList" class="su-bf3828">' + culHTML + '</div></div>' +
     '<div id="hidroSolucion" class="hidden">' + nutHTML +
-    '<div class="menstrual-card" style="margin-top:10px;border-color:var(--gold)"><h4>🧮 Calculadora de dosis</h4>' +
+    '<div class="menstrual-card su-51d56a"><h4>🧮 Calculadora de dosis</h4>' +
     '<div class="conv-row"><label>Litros del estanque <input type="number" id="hidroLitros" min="1" max="500" value="10" step="1"></label>' +
     '<label>Dosis (ml/L de A y de B) <input type="number" id="hidroDosis" min="0.5" max="5" value="2" step="0.5"></label></div>' +
-    '<div id="hidroCalcOut" class="conv-result" style="margin-top:8px">—</div>' +
-    '<p class="muted" style="font-size:11px;margin-top:6px">Disuelve primero A en un balde con agua, revuelve, luego B en otro balde. Nunca mezcles A+B concentrados directo: se cortan.</p></div>' +
-    '<div style="margin-top:10px"><h4 style="color:var(--gold);font-size:13px;margin-bottom:6px">🩺 Diagnóstico rápido</h4>' + diagHTML + '</div></div>' +
-    '<div id="hidroLuna" class="hidden"><div id="hidroHoyBox" class="menstrual-card" style="border-color:var(--gold)"></div>' +
-    '<div style="margin-top:8px;display:flex;flex-direction:column;gap:8px">' + lunaHTML + '</div>' +
-    '<div style="margin-top:10px"><h4 style="color:var(--gold);font-size:13px;margin-bottom:6px">🌦️ Penco por estación</h4>' + climaHTML + '</div></div>' +
+    '<div id="hidroCalcOut" class="conv-result su-8a77e5">—</div>' +
+    '<p class="muted su-e13d76">Disuelve primero A en un balde con agua, revuelve, luego B en otro balde. Nunca mezcles A+B concentrados directo: se cortan.</p></div>' +
+    '<div class="su-d2c171"><h4 class="su-f1a3d0">🩺 Diagnóstico rápido</h4>' + diagHTML + '</div></div>' +
+    '<div id="hidroLuna" class="hidden"><div id="hidroHoyBox" class="menstrual-card su-68a1a9"></div>' +
+    '<div class="su-bf3828">' + lunaHTML + '</div>' +
+    '<div class="su-d2c171"><h4 class="su-f1a3d0">🌦️ Penco por estación</h4>' + climaHTML + '</div></div>' +
     '<div id="hidroCultivo" class="hidden">' +
-    '<div id="hidroAlerta" class="menstrual-card hidden" style="border-color:#e76e8a"></div>' +
-    '<div class="menstrual-card" style="border-color:var(--gold)"><h4>➕ Nuevo control</h4>' +
+    '<div id="hidroAlerta" class="menstrual-card hidden su-006fa0"></div>' +
+    '<div class="menstrual-card su-68a1a9"><h4>➕ Nuevo control</h4>' +
     '<div class="conv-row"><label>Fecha <input type="date" id="hidroFecha"></label><label>Sistema <select id="hidroSistema"><option>Kratky (sin bomba)</option><option>Balsa flotante</option><option>Mecha</option><option>NFT en PVC</option><option>Goteo en sustrato</option><option>Torre vertical</option></select></label></div>' +
     '<div class="conv-row"><label>Cultivo <input type="text" id="hidroCult" placeholder="ej: Lechuga" maxlength="30"></label><label>Etapa <select id="hidroEtapa"><option>Almácigo</option><option>Trasplante</option><option>Crecimiento</option><option>Flor / Fruto</option><option>Cosecha</option></select></label></div>' +
     '<div class="conv-row"><label>pH <input type="number" id="hidroPH" min="3" max="9" step="0.1" placeholder="ej: 6.0"></label><label>EC (mS/cm) <input type="number" id="hidroEC" min="0" max="5" step="0.1" placeholder="ej: 1.2"></label><label>T° agua <input type="number" id="hidroTemp" min="0" max="40" step="0.5" placeholder="ej: 20"></label></div>' +
-    '<div class="conv-row"><label style="flex:1">Cambio de agua <select id="hidroCambio"><option value="no">No (relleno / control)</option><option value="relleno">Rellené nivel</option><option value="total">Recambio total</option></select></label></div>' +
+    '<div class="conv-row"><label class="su-97445a">Cambio de agua <select id="hidroCambio"><option value="no">No (relleno / control)</option><option value="relleno">Rellené nivel</option><option value="total">Recambio total</option></select></label></div>' +
     '<label>Notas <input type="text" id="hidroNota" placeholder="ej: raíz blanca, bajó 2 L, día de sur" maxlength="100"></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start;margin-top:8px"><button type="button" id="hidroAdd" class="btn btn-accent" style="width:auto">+ Guardar control</button></div></div>' +
-    '<div id="hidroResumen" class="menstrual-card" style="margin-top:10px"></div>' +
-    '<div id="hidroLog" class="habits-list" style="margin-top:10px;max-height:260px"></div>' +
-    '<div class="dlg-actions" style="justify-content:space-between;align-items:center;margin-top:8px"><span id="hidroStats" class="muted" style="font-size:11px"></span><span style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" id="hidroShare" class="btn" style="width:auto">📤 Compartir</button><button type="button" id="hidroExport" class="btn" style="width:auto">📥 Exportar</button><button type="button" id="hidroClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar</button></span></div></div>';
+    '<div class="dlg-actions su-8f9e27"><button type="button" id="hidroAdd" class="btn btn-accent su-30e741">+ Guardar control</button></div></div>' +
+    '<div id="hidroResumen" class="menstrual-card su-d2c171"></div>' +
+    '<div id="hidroLog" class="habits-list su-d36145"></div>' +
+    '<div class="dlg-actions su-cc4a4c"><span id="hidroStats" class="muted su-11a508"></span><span class="su-3de8f9"><button type="button" id="hidroShare" class="btn su-30e741">📤 Compartir</button><button type="button" id="hidroExport" class="btn su-30e741">📥 Exportar</button><button type="button" id="hidroClear" class="btn su-214f75">🗑 Borrar</button></span></div></div>';
 
   makeDialog('hidroDialog', '💧 Hidroponía — cultiva sin tierra en Penco',
     'Del balde Kratky al tubo NFT: hojas todo el año con 90% menos agua. <b>Raíz blanca + pH 6.0 = todo bien.</b> Todo queda <b>privado y local</b>.',
@@ -256,13 +256,13 @@ function buildDialog() {
 /* ---------------- BITÁCORA ---------------- */
 function chipPH(ph) {
   if (ph == null || isNaN(ph)) return '';
-  if (ph >= 5.5 && ph <= 6.5) return ' <span class="chip" style="font-size:10px;color:#8fd694;border-color:#8fd69455">pH ' + ph + ' ✓</span>';
-  return ' <span class="chip" style="font-size:10px;color:#e76e8a;border-color:#e76e8a55">pH ' + ph + ' ⚠</span>';
+  if (ph >= 5.5 && ph <= 6.5) return ' <span class="chip su-b143aa">pH ' + ph + ' ✓</span>';
+  return ' <span class="chip su-b0ce0c">pH ' + ph + ' ⚠</span>';
 }
 function chipEC(ec) {
   if (ec == null || isNaN(ec)) return '';
-  if (ec >= 0.8 && ec <= 2.4) return ' <span class="chip" style="font-size:10px;color:#8fc7e8;border-color:#8fc7e855">EC ' + ec + '</span>';
-  return ' <span class="chip" style="font-size:10px;color:#e8c56a;border-color:#e8c56a55">EC ' + ec + ' ⚠</span>';
+  if (ec >= 0.8 && ec <= 2.4) return ' <span class="chip su-03ea6b">EC ' + ec + '</span>';
+  return ' <span class="chip su-8d684a">EC ' + ec + ' ⚠</span>';
 }
 function renderLog() {
   var box = $('hidroLog'); if (!box) return;
@@ -270,17 +270,17 @@ function renderLog() {
   var data = h.logs || [];
   var res = $('hidroResumen'), st = $('hidroStats'), al = $('hidroAlerta');
   if (!data.length) {
-    box.innerHTML = '<p class="muted" style="font-size:11px;text-align:center">Sin controles. Guarda el primero arriba: fecha + pH + EC.</p>';
-    if (res) res.innerHTML = '<h4>📊 Tu cultivo</h4><p class="muted" style="font-size:11px">Con 2+ controles verás promedios de pH/EC y días desde el último recambio.</p>';
+    box.innerHTML = '<p class="muted su-e201a8">Sin controles. Guarda el primero arriba: fecha + pH + EC.</p>';
+    if (res) res.innerHTML = '<h4>📊 Tu cultivo</h4><p class="muted su-11a508">Con 2+ controles verás promedios de pH/EC y días desde el último recambio.</p>';
     if (st) st.textContent = '';
     if (al) al.classList.add('hidden');
     return;
   }
   var s = data.slice().sort(function (a, b) { return (b.fecha || '').localeCompare(a.fecha || ''); });
   box.innerHTML = s.map(function (r) {
-    return '<div class="hora-item"><span style="font-size:12px"><b>' + esc(r.cultivo || 'Cultivo') + '</b> · ' + esc(r.sistema || '') +
+    return '<div class="hora-item"><span class="su-6cb285"><b>' + esc(r.cultivo || 'Cultivo') + '</b> · ' + esc(r.sistema || '') +
       chipPH(r.ph) + chipEC(r.ec) +
-      '<br><span class="muted" style="font-size:10px">' + esc(r.fecha || '') + ' · ' + esc(r.etapa || '') +
+      '<br><span class="muted su-0d5be0">' + esc(r.fecha || '') + ' · ' + esc(r.etapa || '') +
       (r.temp != null ? ' · ' + r.temp + '°C' : '') +
       (r.cambio === 'total' ? ' · 🔄 recambio' : r.cambio === 'relleno' ? ' · 💧 relleno' : '') +
       (r.nota ? ' · ' + esc(r.nota) : '') + '</span></span>' +
@@ -306,11 +306,11 @@ function renderLog() {
   else if (diasRecambio != null) consejo += '💧 Último recambio hace ' + diasRecambio + ' días. Ideal cada 14–21. ';
   else consejo += '💧 Aún no registras recambio total: anota el próximo como "Recambio total". ';
   if (!consejo) consejo = 'Todo en rango. Sigue midiendo 2 veces por semana.';
-  if (res) res.innerHTML = '<h4>📊 Tu cultivo (' + data.length + ' controles)</h4><p style="font-size:12px">pH prom: <b>' + (aPH != null ? aPH : '–') + '</b> (ideal 5.5–6.5) · EC prom: <b>' + (aEC != null ? aEC : '–') + '</b></p><p class="muted" style="font-size:11px">' + esc(consejo) + '</p>';
+  if (res) res.innerHTML = '<h4>📊 Tu cultivo (' + data.length + ' controles)</h4><p class="su-6cb285">pH prom: <b>' + (aPH != null ? aPH : '–') + '</b> (ideal 5.5–6.5) · EC prom: <b>' + (aEC != null ? aEC : '–') + '</b></p><p class="muted su-11a508">' + esc(consejo) + '</p>';
   if (st) st.textContent = data.length + ' control(es)';
   if (al) {
     var malo = conPH.length && (aPH < 5.2 || aPH > 6.8);
-    if (malo) { al.classList.remove('hidden'); al.innerHTML = '<h4>⚠️ Revisa tu pH</h4><p class="muted" style="font-size:11px">Promedio ' + aPH + ' bloquea nutrientes aunque tengas comida. Corrige hoy a 6.0 (ver pestaña ⚗️ Solución).</p>'; }
+    if (malo) { al.classList.remove('hidden'); al.innerHTML = '<h4>⚠️ Revisa tu pH</h4><p class="muted su-11a508">Promedio ' + aPH + ' bloquea nutrientes aunque tengas comida. Corrige hoy a 6.0 (ver pestaña ⚗️ Solución).</p>'; }
     else al.classList.add('hidden');
   }
 }
@@ -320,7 +320,7 @@ function paintHoy() {
   var l = lunaDeHoy();
   var txt = l ? ('Hoy · Luna ' + l.luna + ' · día ' + l.dia) : ('Hoy · ' + todayKey());
   var rec = !l ? 'Mide pH y EC 2 veces por semana.' : l.luna <= 3 ? 'Pukem: protege del frío, baja EC un poco, prioriza hoja. Lava y parte sistemas nuevos.' : l.luna <= 6 ? 'Pewü: siembra grande de hoja + almácigos de tomate. Sube EC progresivo.' : l.luna <= 9 ? 'Walüng: sombrea estanques (agua bajo 26°), revisa nivel a diario. Cosecha hoja externa.' : 'Rimü: últimos frutos, siembra otoñal, limpieza anual con vinagre.';
-  b.innerHTML = '<h4>🌙 ' + esc(txt) + '</h4><p class="muted" style="font-size:12px">' + esc(rec) + '</p>';
+  b.innerHTML = '<h4>🌙 ' + esc(txt) + '</h4><p class="muted su-6cb285">' + esc(rec) + '</p>';
   if ($('hidroFecha') && !$('hidroFecha').value) $('hidroFecha').value = todayKey();
 }
 
@@ -329,7 +329,7 @@ function paintCalc() {
   var L = parseFloat(($('hidroLitros') || {}).value), D = parseFloat(($('hidroDosis') || {}).value);
   if (isNaN(L) || isNaN(D) || L <= 0 || D <= 0) { out.textContent = '—'; return; }
   var ml = Math.round(L * D * 10) / 10;
-  out.innerHTML = 'Agrega <b>' + ml + ' ml de A</b> + <b>' + ml + ' ml de B</b> en ' + L + ' L <span class="muted" style="font-size:11px">(disueltos por separado)</span>';
+  out.innerHTML = 'Agrega <b>' + ml + ' ml de A</b> + <b>' + ml + ' ml de B</b> en ' + L + ' L <span class="muted su-11a508">(disueltos por separado)</span>';
 }
 
 function filtrar(inputId, listId) {

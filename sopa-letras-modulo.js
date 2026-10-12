@@ -356,7 +356,7 @@ function renderTemas() {
   var box = $('spTemas');
   if (!box || !G) return;
   box.innerHTML = TEMAS.map(function (t) {
-    return '<button type="button" class="btn' + (t.id === G.tema ? ' btn-accent' : '') + '" data-tema="' + t.id + '" style="width:auto;font-size:11px" title="' + esc(t.d) + '">' + t.n + '</button>';
+    return '<button type="button" class="btn' + (t.id === G.tema ? ' btn-accent' : '') + ' su-337714" data-tema="' + t.id + '" title="' + esc(t.d) + '">' + t.n + '</button>';
   }).join('');
   box.querySelectorAll('[data-tema]').forEach(function (b) {
     b.onclick = function () {
@@ -370,9 +370,9 @@ function renderTemas() {
   });
   var db = $('spDifs');
   if (db) {
-    db.innerHTML = '<span class="muted" style="font-size:11px">Dificultad:</span>' + DIFS.map(function (d) {
+    db.innerHTML = '<span class="muted su-11a508">Dificultad:</span>' + DIFS.map(function (d) {
       return '<button type="button" class="sp-dif' + (d.id === G.dif ? ' on' : '') + '" data-dif="' + d.id + '" title="' + esc(d.desc) + '">' + d.n + '</button>';
-    }).join('') + '<span class="muted" style="font-size:10px">' + esc(difById(G.dif).desc) + '</span>';
+    }).join('') + '<span class="muted su-0d5be0">' + esc(difById(G.dif).desc) + '</span>';
     db.querySelectorAll('[data-dif]').forEach(function (b) {
       b.onclick = function () {
         var id = b.getAttribute('data-dif');
@@ -398,7 +398,7 @@ function renderTop() {
     '<span class="sp-stat">' + difById(G.dif).n + '</span>' +
     '</div>' +
     '<div class="sp-prog" role="progressbar" aria-valuenow="' + pct + '" aria-valuemin="0" aria-valuemax="100"><i style="width:' + pct + '%"></i></div>' +
-    '<p class="muted" style="font-size:11px;margin:4px 0">' + esc(t.n) + ' — ' + esc(t.d) + ' · Arrastra el dedo o toca inicio y fin.</p>';
+    '<p class="muted su-48eb2e">' + esc(t.n) + ' — ' + esc(t.d) + ' · Arrastra el dedo o toca inicio y fin.</p>';
 }
 function renderBoard() {
   var box = $('spBoard');
@@ -551,17 +551,17 @@ function renderWords() {
     var pista = tema.hints && tema.hints[w.w] ? ' <small>· ' + esc(tema.hints[w.w]) + '</small>' : '';
     var st = w.found
       ? ' style="border-left-color:' + w.color + ';background:' + w.color + '33;border-color:' + w.color + '"'
-      : (w.hint ? '' : ' style="border-left-color:var(--line)"');
+      : (w.hint ? '' : ' class="su-f18572"');
     h += '<span class="sp-word' + (w.found ? ' done' : '') + (w.hint && !w.found ? ' hint' : '') + '"' + st + '>' +
       (w.found ? '✅ ' : (w.hint ? '💡 ' : '')) + w.w + pista + '</span>';
   });
   box.innerHTML = h + '</div>' +
     '<div class="sp-tools">' +
-    '<button type="button" class="btn" id="spHint" style="width:auto;font-size:12px">💡 Pista (' + G.hintsLeft + ')</button>' +
-    '<button type="button" class="btn" id="spCancel" style="width:auto;font-size:12px">✖️ Cancelar</button>' +
-    '<button type="button" class="btn" id="spNew" style="width:auto;font-size:12px">🎲 Nueva</button>' +
-    '<button type="button" class="btn" id="spShare" style="width:auto;font-size:12px">📤 Compartir</button>' +
-    '<button type="button" class="btn" id="spSolve" style="width:auto;font-size:12px" title="Muestra todas (no cuenta como victoria)">👁️ Ver</button>' +
+    '<button type="button" class="btn su-115a53" id="spHint">💡 Pista (' + G.hintsLeft + ')</button>' +
+    '<button type="button" class="btn su-115a53" id="spCancel">✖️ Cancelar</button>' +
+    '<button type="button" class="btn su-115a53" id="spNew">🎲 Nueva</button>' +
+    '<button type="button" class="btn su-115a53" id="spShare">📤 Compartir</button>' +
+    '<button type="button" class="btn su-115a53" id="spSolve" title="Muestra todas (no cuenta como victoria)">👁️ Ver</button>' +
     '</div>';
   $('spHint').onclick = useHint;
   $('spCancel').onclick = function () { G.anchor = null; G.hover = null; renderBoard(); persistCurrent(); };
@@ -589,13 +589,13 @@ function renderLuna() {
   var f = lunaFaseAprox();
   var tip = LUNA_TIPS[f.idx] || LUNA_TIPS[4];
   box.innerHTML = '<b>🌙 Consejo lunar · iluminación ' + f.ilum + '%</b><br>' +
-    '<span style="color:var(--gold)">' + esc(tip.f) + '</span> — ' + esc(tip.t);
+    '<span class="su-e39eba">' + esc(tip.f) + '</span> — ' + esc(tip.t);
 }
 function renderAprender() {
   var box = $('spLearnBox');
   if (!box) return;
   box.innerHTML =
-    '<div class="si-card" style="border-left:3px solid var(--gold)"><h4>🔎 ¿Qué es?</h4><p>Palabras escondidas entre letras revueltas. Según la dificultad: 🌱 8×8 con 6 palabras (→ ↓), 🌊 12×12 con 10 (8 direcciones), 🔥 14×14 con 13 (8 direcciones). Todo de Penco: mar, mapuzugun, bosque y luna.</p></div>' +
+    '<div class="si-card su-63ba3c"><h4>🔎 ¿Qué es?</h4><p>Palabras escondidas entre letras revueltas. Según la dificultad: 🌱 8×8 con 6 palabras (→ ↓), 🌊 12×12 con 10 (8 direcciones), 🔥 14×14 con 13 (8 direcciones). Todo de Penco: mar, mapuzugun, bosque y luna.</p></div>' +
     '<div class="si-card"><h4>👆 Cómo jugar</h4><p>1) <b>Arrastra</b> el dedo desde la primera a la última letra, o toca inicio y fin. 2) Si es correcta se pinta con su color y se tacha. 3) Toca el inicio de nuevo para cancelar. Cada palabra trae su <b>significado</b> al lado.</p></div>' +
     '<div class="si-card"><h4>💡 Estrategia</h4><p>Busca letras raras (K, W, J, Ñ, X). Barre por filas → columnas → diagonales. La 💡 Pista te dice dirección (→ ↓ ↘) e ilumina las 2 primeras letras. En fácil solo hay 2 direcciones: ideal para niños.</p></div>' +
     '<div class="si-card"><h4>🌙 Dato lunar</h4><p>Las sopas entrenan atención y vocabulario: ideales para aprender mapuzugun jugando, en familia, una luna a la vez.</p></div>';
@@ -609,20 +609,20 @@ function renderHistPanel() {
   TEMAS.forEach(function (t) {
     DIFS.forEach(function (d) {
       var m = st.mejor && (st.mejor[t.id + ':' + d.id] || (d.id === 'normal' && st.mejor[t.id]));
-      mejor.push('<span class="chip" style="font-size:10px">' + t.n + ' ' + d.n + ': ' + (m ? fmtTime(m) : '—') + '</span>');
+      mejor.push('<span class="chip su-0d5be0">' + t.n + ' ' + d.n + ': ' + (m ? fmtTime(m) : '—') + '</span>');
     });
   });
   mejor = mejor.join(' ');
   box.innerHTML =
     '<div class="menstrual-card"><h4>📊 Mis números</h4>' +
-    '<p class="muted" style="font-size:12px">' + st.ganadas + ' completadas de ' + st.jugadas + ' jugadas · racha actual: ' + (st.racha || 0) + '</p>' +
-    '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px"><span class="muted" style="font-size:11px">⏱️ Mejor tiempo:</span>' + mejor + '</div></div>' +
-    '<div class="menstrual-card" style="margin-top:10px"><h4>🕘 Últimas sopas</h4>' +
-    (hist.length ? '<div class="habits-list" style="margin-top:6px">' + hist.map(function (r) {
-      return '<div class="habit-item" style="font-size:12px">' + (r.won ? '🏆' : '👁️') + ' <b>' + esc(temaById(r.tema).n) + '</b> · ' + esc(difById(r.dif || 'normal').n) + ' · ' + (r.halladas || 0) + '/' + (r.total || 0) + ' · ' + fmtTime(r.seconds) + ' · ' + esc(r.fecha || '') + '</div>';
-    }).join('') + '</div>' : '<p class="muted" style="font-size:12px">Aún sin sopas terminadas. ¡Encuentra tus primeras palabras!</p>') +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-top:8px"><button type="button" class="btn" id="spHistShare" style="width:auto;font-size:11px">📤 Compartir</button>' +
-    '<button type="button" class="btn" id="spHistClear" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar</button></div></div>';
+    '<p class="muted su-6cb285">' + st.ganadas + ' completadas de ' + st.jugadas + ' jugadas · racha actual: ' + (st.racha || 0) + '</p>' +
+    '<div class="su-c158a9"><span class="muted su-11a508">⏱️ Mejor tiempo:</span>' + mejor + '</div></div>' +
+    '<div class="menstrual-card su-d2c171"><h4>🕘 Últimas sopas</h4>' +
+    (hist.length ? '<div class="habits-list su-fe7b49">' + hist.map(function (r) {
+      return '<div class="habit-item su-6cb285">' + (r.won ? '🏆' : '👁️') + ' <b>' + esc(temaById(r.tema).n) + '</b> · ' + esc(difById(r.dif || 'normal').n) + ' · ' + (r.halladas || 0) + '/' + (r.total || 0) + ' · ' + fmtTime(r.seconds) + ' · ' + esc(r.fecha || '') + '</div>';
+    }).join('') + '</div>' : '<p class="muted su-6cb285">Aún sin sopas terminadas. ¡Encuentra tus primeras palabras!</p>') +
+    '<div class="dlg-actions su-efea1d"><button type="button" class="btn su-337714" id="spHistShare">📤 Compartir</button>' +
+    '<button type="button" class="btn su-fd834a" id="spHistClear">🗑 Borrar</button></div></div>';
   var sh = $('spHistShare');
   if (sh) sh.onclick = function () {
     if (!hist.length) return alert('Sin partidas aún');
@@ -747,11 +747,11 @@ function showWin() {
   var key = G.tema + ':' + G.dif;
   var best = st.mejor && st.mejor[key] ? fmtTime(st.mejor[key]) : fmtTime(G.seconds);
   var html = '<div class="sp-win"><div class="sp-confetti">🎉🏆🎉</div><div class="big">🏆</div>' +
-    '<h3 style="margin:6px 0;color:var(--accent)">¡Sopa completa!</h3>' +
+    '<h3 class="su-3d3b78">¡Sopa completa!</h3>' +
     '<p class="muted">' + esc(temaById(G.tema).n) + ' · ' + difById(G.dif).n + ' · ⏱️ ' + fmtTime(G.seconds) + (G.conAyuda ? ' (con ayuda)' : ' (sin ayuda 🌟)') + '<br>Mejor en este nivel: ' + best + ' · Racha: ' + (st.racha || 0) + '</p>' +
-    '<div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:10px">' +
-    '<button type="button" class="btn btn-accent" id="spWinNew" style="width:auto">🎲 Nueva sopa</button>' +
-    '<button type="button" class="btn" id="spWinShare" style="width:auto">📤 Compartir</button>' +
+    '<div class="su-255b87">' +
+    '<button type="button" class="btn btn-accent su-30e741" id="spWinNew">🎲 Nueva sopa</button>' +
+    '<button type="button" class="btn su-30e741" id="spWinShare">📤 Compartir</button>' +
     '</div></div>';
   var msg = $('spMsg');
   if (msg) msg.innerHTML = html;
@@ -806,20 +806,20 @@ function buildDialog() {
   d.id = 'sopaDialog';
   d.innerHTML =
     '<form method="dialog">' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
-    '<h3 style="margin:0;color:var(--accent)">🔎 Sopa de Letras</h3>' +
+    '<div class="dlg-actions su-d2d053">' +
+    '<h3 class="su-ee0cfe">🔎 Sopa de Letras</h3>' +
     '<button type="button" data-close class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    '<p class="muted" style="line-height:1.5">Encuentra las palabras escondidas de Penco. Arrastra o toca inicio y fin. 3 dificultades. Todo queda <b>privado y local</b> en tu usuario.</p>' +
-    '<div id="spLunaBox" class="menstrual-card" style="border-color:var(--gold);margin-bottom:10px"></div>' +
-    '<div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">' +
-    '<button type="button" id="tabSpJugar" class="btn btn-accent" style="width:auto">🔎 Jugar</button>' +
-    '<button type="button" id="tabSpAprender" class="btn" style="width:auto">📚 Aprender</button>' +
-    '<button type="button" id="tabSpRegistros" class="btn" style="width:auto">🏆 Mis registros</button>' +
+    '<p class="muted su-77e2fe">Encuentra las palabras escondidas de Penco. Arrastra o toca inicio y fin. 3 dificultades. Todo queda <b>privado y local</b> en tu usuario.</p>' +
+    '<div id="spLunaBox" class="menstrual-card su-39553d"></div>' +
+    '<div class="timer-tabs su-4dca21">' +
+    '<button type="button" id="tabSpJugar" class="btn btn-accent su-30e741">🔎 Jugar</button>' +
+    '<button type="button" id="tabSpAprender" class="btn su-30e741">📚 Aprender</button>' +
+    '<button type="button" id="tabSpRegistros" class="btn su-30e741">🏆 Mis registros</button>' +
     '</div>' +
     '<div id="spPanelJugar"><div class="sp-wrap"><div id="spTemas" class="sp-temas"></div><div id="spDifs" class="sp-difs"></div><div id="spTop"></div><div id="spBoard"></div>' +
-    '<div id="spMsg" class="chip sp-msg" style="display:block;white-space:normal"></div><div id="spLive" class="sp-live" aria-live="polite"></div>' +
+    '<div id="spMsg" class="chip sp-msg su-f5ce59"></div><div id="spLive" class="sp-live" aria-live="polite"></div>' +
     '<div id="spWords"></div></div></div>' +
-    '<div id="spPanelAprender" class="hidden"><div id="spLearnBox" style="display:flex;flex-direction:column;gap:8px"></div></div>' +
+    '<div id="spPanelAprender" class="hidden"><div id="spLearnBox" class="su-be2653"></div></div>' +
     '<div id="spPanelRegistros" class="hidden"><div id="spHistBox"></div></div>' +
     '<div class="dlg-actions"><button type="button" data-close class="btn">Cerrar</button></div></form>';
   d.style.width = '680px';

@@ -59,10 +59,10 @@
     var d = document.createElement('dialog');
     d.id = id;
     d.innerHTML = '<form method="dialog">' +
-      '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
-      '<h3 style="margin:0;color:var(--accent)">' + title + '</h3>' +
+      '<div class="dlg-actions su-d2d053">' +
+      '<h3 class="su-ee0cfe">' + title + '</h3>' +
       '<button type="button" data-close class="btn btn-icon" title="Cerrar">✕</button></div>' +
-      (sub ? '<p class="muted" style="line-height:1.5">' + sub + '</p>' : '') +
+      (sub ? '<p class="muted su-77e2fe">' + sub + '</p>' : '') +
       bodyHTML +
       '<div class="dlg-actions"><button type="button" data-close class="btn">Cerrar</button></div></form>';
     document.body.appendChild(d);
@@ -497,27 +497,27 @@
   function renderKinGuia() {
     var box = $('kinGuiaBox'); if (!box) return;
     var coloresHTML = COLORES.map(function (c) {
-      return '<div class="si-card" style="border-left:3px solid ' + c.color + '"><h4 style="font-size:12px">' + esc(c.nombre) + '</h4><p style="font-size:11px">' + esc(c.desc) + '</p></div>';
+      return '<div class="si-card" style="border-left:3px solid ' + c.color + '"><h4 class="su-6cb285">' + esc(c.nombre) + '</h4><p class="su-11a508">' + esc(c.desc) + '</p></div>';
     }).join('');
     var dirsHTML = DIRECCIONES.map(function (d) {
-      return '<div class="si-card" style="border-left:3px solid ' + d.color + '"><h4 style="font-size:12px">' + esc(d.nombre) + '</h4><p style="font-size:11px">' + esc(d.desc) + '</p></div>';
+      return '<div class="si-card" style="border-left:3px solid ' + d.color + '"><h4 class="su-6cb285">' + esc(d.nombre) + '</h4><p class="su-11a508">' + esc(d.desc) + '</p></div>';
     }).join('');
     var plasHTML = PLASMAS.map(function (p) {
-      return '<div class="habit-item" style="align-items:flex-start"><div><b>' + esc(p.nombre) + '</b> · ' + esc(p.dia) + '<br><span class="muted" style="font-size:11px">Chakra: ' + esc(p.chakra) + ' · Mantra: ' + esc(p.mantra) + ' — ' + esc(p.practica) + '</span></div></div>';
+      return '<div class="habit-item su-0486f7"><div><b>' + esc(p.nombre) + '</b> · ' + esc(p.dia) + '<br><span class="muted su-11a508">Chakra: ' + esc(p.chakra) + ' · Mantra: ' + esc(p.mantra) + ' — ' + esc(p.practica) + '</span></div></div>';
     }).join('');
     var gloHTML = GLOSARIO.map(function (g) {
-      return '<div class="habit-item" style="align-items:flex-start"><div><b>' + esc(g.t) + ':</b> <span style="font-size:11px">' + esc(g.d) + '</span></div></div>';
+      return '<div class="habit-item su-0486f7"><div><b>' + esc(g.t) + ':</b> <span class="su-11a508">' + esc(g.d) + '</span></div></div>';
     }).join('');
     box.innerHTML =
       '<div class="si-card"><h4>¿Qué es el kin maya?</h4><p>El <b>kin maya</b> es tu firma en el calendario sagrado <b>Tzolkin</b> de 260 días (20 sellos × 13 tonos). Cada día tiene una energía única. Tu kin natal revela tu <b>sello</b> (qué energía) y tu <b>tono</b> (cómo actúa): propósito, forma de actuar y camino de evolución.</p></div>' +
       '<div class="si-card"><h4>¿Cómo se calcula? (Dreamspell canónico)</h4><p>Referencia oficial: <b>26-07-1987 = Kin 34</b> (Mago Galáctico Blanco). Se cuentan los días hasta tu fecha, <b>sin contar los 29 de febrero</b> (día 0.0 Hunab Ku, sin kin), y se aplica módulo 260. Verificado: 26-07-2013 = Kin 164 y 21-12-2012 = Kin 207.</p></div>' +
-      '<div class="si-card"><h4>Cómo usar esta sección</h4><p style="font-size:12px">1️⃣ Ve a <b>☀️ Hoy</b> para tu energía diaria (afirmación + práctica).<br>2️⃣ Calcula tu kin en <b>Mi kin</b> (oráculo + onda natal + retorno).<br>3️⃣ Explora <b>Sellos</b> y <b>Tonos</b> tocando cada tarjeta para ver luz, sombra y pregunta.<br>4️⃣ Compara vínculos en <b>Sinastría</b> y registra en <b>Diario</b> cómo viviste el día.</p></div>' +
+      '<div class="si-card"><h4>Cómo usar esta sección</h4><p class="su-6cb285">1️⃣ Ve a <b>☀️ Hoy</b> para tu energía diaria (afirmación + práctica).<br>2️⃣ Calcula tu kin en <b>Mi kin</b> (oráculo + onda natal + retorno).<br>3️⃣ Explora <b>Sellos</b> y <b>Tonos</b> tocando cada tarjeta para ver luz, sombra y pregunta.<br>4️⃣ Compara vínculos en <b>Sinastría</b> y registra en <b>Diario</b> cómo viviste el día.</p></div>' +
       '<div class="si-card"><h4>29 de febrero: 0.0 Hunab Ku</h4><p>El 29-feb no tiene kin ni avanza la cuenta. Quienes nacen ese día eligen el kin del 28-feb o del 1-mar. Así el ciclo solar-galáctico de 52 años se mantiene perfecto.</p></div>' +
       '<div class="menstrual-card"><h4>🎨 Los 4 colores / razas raíz</h4>' + coloresHTML + '</div>' +
-      '<div class="menstrual-card" style="margin-top:10px"><h4>🧭 Las direcciones</h4>' + dirsHTML + '</div>' +
-      '<div class="menstrual-card" style="margin-top:10px"><h4>🌈 Los 7 plasmas radiales (semana de 13 lunas)</h4><p class="muted" style="font-size:11px">Cada luna de 28 días trae 4 vueltas de estos 7 plasmas. Úsalos como ritual semanal junto a tu kin.</p>' + plasHTML + '</div>' +
-      '<div class="menstrual-card" style="margin-top:10px"><h4>📖 Glosario mínimo</h4>' + gloHTML + '</div>' +
-      '<div class="si-card" style="border-left:3px solid var(--gold)"><h4>🙏 Oración a las 7 direcciones</h4><p>Rezo diario de apertura (Este · Norte · Oeste · Sur · Arriba · Abajo · Centro) con cierre <b>¡Ah Yum Hunab K\u2019u Evam Maya E Ma Ho!</b> La tienes completa en la pestaña <b>🙏 Oración</b>: recítala al amanecer antes de ver tu kin del día.</p></div>';
+      '<div class="menstrual-card su-d2c171"><h4>🧭 Las direcciones</h4>' + dirsHTML + '</div>' +
+      '<div class="menstrual-card su-d2c171"><h4>🌈 Los 7 plasmas radiales (semana de 13 lunas)</h4><p class="muted su-11a508">Cada luna de 28 días trae 4 vueltas de estos 7 plasmas. Úsalos como ritual semanal junto a tu kin.</p>' + plasHTML + '</div>' +
+      '<div class="menstrual-card su-d2c171"><h4>📖 Glosario mínimo</h4>' + gloHTML + '</div>' +
+      '<div class="si-card su-63ba3c"><h4>🙏 Oración a las 7 direcciones</h4><p>Rezo diario de apertura (Este · Norte · Oeste · Sur · Arriba · Abajo · Centro) con cierre <b>¡Ah Yum Hunab K\u2019u Evam Maya E Ma Ho!</b> La tienes completa en la pestaña <b>🙏 Oración</b>: recítala al amanecer antes de ver tu kin del día.</p></div>';
   }
 
   function detalleSelloDialog(num) {
@@ -527,14 +527,14 @@
     var kins = [];
     for (var n = 1; n <= 260; n++) { if (((n - 1) % 20) + 1 === num) kins.push(n); }
     var body = '<div class="si-card" style="border-left:3px solid ' + s.color + '">' +
-      '<p style="font-size:12px"><b>Color:</b> ' + esc(s.colorNombre) + ' · <b>Dirección:</b> ' + esc(s.direccion) + ' · <b>Familia:</b> ' + esc(s.familia) + (fam ? ' (' + esc(fam.mision) + ')' : '') + '</p>' +
-      '<p style="font-size:12px"><b>Poder:</b> ' + esc(s.poder) + ' · <b>Raza:</b> ' + esc(s.raza) + '</p>' +
-      '<p style="font-size:12px">' + esc(s.desc) + '</p></div>' +
-      '<div class="menstrual-card"><h4>💬 Afirmación</h4><p style="font-size:12px"><i>' + esc(g.afirma || '') + '</i></p></div>' +
-      '<div class="menstrual-card" style="margin-top:8px"><h4>☯ Luz y sombra</h4><p style="font-size:12px">☀️ <b>Luz:</b> ' + esc(g.luz || '') + '<br>🌑 <b>Sombra:</b> ' + esc(g.sombra || '') + '</p>' +
-      '<p style="font-size:12px;margin-top:4px">❓ <b>Pregunta:</b> ' + esc(g.pregunta || '') + '<br>👣 <b>Práctica:</b> ' + esc(g.practica || '') + '</p></div>' +
-      '<div class="menstrual-card" style="margin-top:8px"><h4>🌀 Los 13 kins con este sello</h4><p style="font-size:11px">' + kins.map(function (k) { return 'Kin ' + k; }).join(' · ') + '</p>' +
-      '<p class="muted" style="font-size:11px">Toca un kin en la pestaña Tzolkin para ver su tono y onda.</p></div>';
+      '<p class="su-6cb285"><b>Color:</b> ' + esc(s.colorNombre) + ' · <b>Dirección:</b> ' + esc(s.direccion) + ' · <b>Familia:</b> ' + esc(s.familia) + (fam ? ' (' + esc(fam.mision) + ')' : '') + '</p>' +
+      '<p class="su-6cb285"><b>Poder:</b> ' + esc(s.poder) + ' · <b>Raza:</b> ' + esc(s.raza) + '</p>' +
+      '<p class="su-6cb285">' + esc(s.desc) + '</p></div>' +
+      '<div class="menstrual-card"><h4>💬 Afirmación</h4><p class="su-6cb285"><i>' + esc(g.afirma || '') + '</i></p></div>' +
+      '<div class="menstrual-card su-8a77e5"><h4>☯ Luz y sombra</h4><p class="su-6cb285">☀️ <b>Luz:</b> ' + esc(g.luz || '') + '<br>🌑 <b>Sombra:</b> ' + esc(g.sombra || '') + '</p>' +
+      '<p class="su-70179e">❓ <b>Pregunta:</b> ' + esc(g.pregunta || '') + '<br>👣 <b>Práctica:</b> ' + esc(g.practica || '') + '</p></div>' +
+      '<div class="menstrual-card su-8a77e5"><h4>🌀 Los 13 kins con este sello</h4><p class="su-11a508">' + kins.map(function (k) { return 'Kin ' + k; }).join(' · ') + '</p>' +
+      '<p class="muted su-11a508">Toca un kin en la pestaña Tzolkin para ver su tono y onda.</p></div>';
     var d = makeDialog('kinSelloDlg', s.num + ' · ' + s.n + ' (' + s.maya + ')', esc(s.cualidad), body);
     openDlg('kinSelloDlg');
   }
@@ -550,11 +550,11 @@
     box.innerHTML = (fil.length ? fil.map(function (s) {
       var g = SELLO_GUIA[s.num] || {};
       return '<div class="si-card" data-sello="' + s.num + '" style="border-left:3px solid ' + s.color + ';cursor:pointer" title="Toca para ver detalle">' +
-        '<h4 style="font-size:13px"><span style="color:' + s.color + '">●</span> ' + s.num + ' · ' + esc(s.n) + ' (' + esc(s.maya) + ')</h4>' +
-        '<p style="font-size:11px"><b>Color:</b> ' + esc(s.colorNombre) + ' · <b>Dirección:</b> ' + esc(s.direccion) + ' · <b>Familia:</b> ' + esc(s.familia) + '</p>' +
-        '<p style="font-size:11px"><b>Poder:</b> ' + esc(s.poder) + ' · <b>Raza:</b> ' + esc(s.raza) + '</p>' +
-        '<p style="font-size:11px;margin-top:4px">' + esc(s.desc) + '</p>' +
-        '<p style="font-size:11px;margin-top:4px"><i>“' + esc(g.afirma || '') + '”</i><br><span class="muted">❓ ' + esc(g.pregunta || '') + ' · Toca para luz/sombra/práctica →</span></p>' +
+        '<h4 class="su-5e0faa"><span style="color:' + s.color + '">●</span> ' + s.num + ' · ' + esc(s.n) + ' (' + esc(s.maya) + ')</h4>' +
+        '<p class="su-11a508"><b>Color:</b> ' + esc(s.colorNombre) + ' · <b>Dirección:</b> ' + esc(s.direccion) + ' · <b>Familia:</b> ' + esc(s.familia) + '</p>' +
+        '<p class="su-11a508"><b>Poder:</b> ' + esc(s.poder) + ' · <b>Raza:</b> ' + esc(s.raza) + '</p>' +
+        '<p class="su-cdff1d">' + esc(s.desc) + '</p>' +
+        '<p class="su-cdff1d"><i>“' + esc(g.afirma || '') + '”</i><br><span class="muted">❓ ' + esc(g.pregunta || '') + ' · Toca para luz/sombra/práctica →</span></p>' +
         '</div>';
     }).join('') : '<p class="muted">Sin resultados.</p>');
     try {
@@ -569,10 +569,10 @@
     box.innerHTML = TONOS.map(function (t) {
       var g = TONO_GUIA[t.num] || {};
       return '<div class="si-card" style="border-left:3px solid ' + t.color + '">' +
-        '<h4 style="font-size:13px"><span style="color:' + t.color + '">●</span> ' + t.num + ' · ' + esc(t.nombre) + '</h4>' +
-        '<p style="font-size:11px"><b>Poder:</b> ' + esc(t.poder) + ' · <b>Acción:</b> ' + esc(t.accion) + '</p>' +
-        '<p style="font-size:11px">' + esc(t.desc) + '</p>' +
-        '<p style="font-size:11px;margin-top:4px">❓ <b>Pregunta:</b> ' + esc(g.pregunta || '') + '<br>👣 <b>Práctica:</b> ' + esc(g.practica || '') + '<br><i>' + esc(g.meditacion || '') + '</i></p>' +
+        '<h4 class="su-5e0faa"><span style="color:' + t.color + '">●</span> ' + t.num + ' · ' + esc(t.nombre) + '</h4>' +
+        '<p class="su-11a508"><b>Poder:</b> ' + esc(t.poder) + ' · <b>Acción:</b> ' + esc(t.accion) + '</p>' +
+        '<p class="su-11a508">' + esc(t.desc) + '</p>' +
+        '<p class="su-cdff1d">❓ <b>Pregunta:</b> ' + esc(g.pregunta || '') + '<br>👣 <b>Práctica:</b> ' + esc(g.practica || '') + '<br><i>' + esc(g.meditacion || '') + '</i></p>' +
         '</div>';
     }).join('');
   }
@@ -582,10 +582,10 @@
     box.innerHTML = FAMILIAS.map(function (f) {
       var sellos = f.sellos.map(function (n) { return SELLOS[n - 1]; });
       return '<div class="si-card" style="border-left:3px solid ' + f.color + '">' +
-        '<h4 style="font-size:13px"><span style="color:' + f.color + '">●</span> Familia ' + esc(f.nombre) + '</h4>' +
-        '<p style="font-size:11px"><b>Misión:</b> ' + esc(f.mision) + '</p>' +
-        '<p style="font-size:11px">' + esc(f.desc) + '</p>' +
-        '<p style="font-size:11px;margin-top:4px"><b>Sellos:</b> ' + sellos.map(function (s) { return esc(s.n); }).join(', ') + '</p>' +
+        '<h4 class="su-5e0faa"><span style="color:' + f.color + '">●</span> Familia ' + esc(f.nombre) + '</h4>' +
+        '<p class="su-11a508"><b>Misión:</b> ' + esc(f.mision) + '</p>' +
+        '<p class="su-11a508">' + esc(f.desc) + '</p>' +
+        '<p class="su-cdff1d"><b>Sellos:</b> ' + sellos.map(function (s) { return esc(s.n); }).join(', ') + '</p>' +
         '</div>';
     }).join('');
   }
@@ -596,19 +596,19 @@
     var kinHoy = calcKinMaya(hoy);
     var html = '';
     if (kinHoy && kinHoy.hunabKu) {
-      html += '<div class="menstrual-card" style="border-color:var(--gold)"><h4>Hoy: 0.0 Hunab Ku</h4><p style="font-size:12px">' + esc(kinHoy.nota) + '</p></div>';
+      html += '<div class="menstrual-card su-68a1a9"><h4>Hoy: 0.0 Hunab Ku</h4><p class="su-6cb285">' + esc(kinHoy.nota) + '</p></div>';
     } else if (kinHoy) {
       var posEnCastillo = ((kinHoy.kin - 1) % 52) + 1;
-      html += '<div class="menstrual-card" style="border-color:var(--gold)"><h4>Tu castillo hoy</h4>' +
-        '<p style="font-size:13px"><b>Kin de hoy:</b> ' + kinHoy.kin + ' (' + esc(kinHoy.sello.n) + ' ' + esc(kinHoy.tono.nombre) + ')</p>' +
-        '<p style="font-size:13px"><b>Castillo:</b> ' + kinHoy.castillo + '/5 ' + esc(kinHoy.castilloNombre) + ' · <b>Posición:</b> ' + posEnCastillo + '/52</p>' +
-        '<p class="muted" style="font-size:11px">El castillo es un ciclo de 52 días (4 ondas). Cada castillo tiene un tema mayor y representa una etapa de evolución.</p></div>';
+      html += '<div class="menstrual-card su-68a1a9"><h4>Tu castillo hoy</h4>' +
+        '<p class="su-5e0faa"><b>Kin de hoy:</b> ' + kinHoy.kin + ' (' + esc(kinHoy.sello.n) + ' ' + esc(kinHoy.tono.nombre) + ')</p>' +
+        '<p class="su-5e0faa"><b>Castillo:</b> ' + kinHoy.castillo + '/5 ' + esc(kinHoy.castilloNombre) + ' · <b>Posición:</b> ' + posEnCastillo + '/52</p>' +
+        '<p class="muted su-11a508">El castillo es un ciclo de 52 días (4 ondas). Cada castillo tiene un tema mayor y representa una etapa de evolución.</p></div>';
     }
-    html += '<div class="menstrual-card" style="margin-top:10px"><h4>Los 5 castillos</h4>';
+    html += '<div class="menstrual-card su-d2c171"><h4>Los 5 castillos</h4>';
     html += CASTILLOS.map(function (c) {
       return '<div class="si-card" style="border-left:3px solid ' + c.color + '">' +
-        '<h4 style="font-size:13px"><span style="color:' + c.color + '">●</span> ' + c.num + ' · ' + esc(c.nombre) + ' (kin ' + c.desde + '-' + c.hasta + ')</h4>' +
-        '<p style="font-size:11px">' + esc(c.desc) + '</p>' +
+        '<h4 class="su-5e0faa"><span style="color:' + c.color + '">●</span> ' + c.num + ' · ' + esc(c.nombre) + ' (kin ' + c.desde + '-' + c.hasta + ')</h4>' +
+        '<p class="su-11a508">' + esc(c.desc) + '</p>' +
         '</div>';
     }).join('');
     html += '</div>';
@@ -640,45 +640,45 @@
       var det = (kk && !kk.hunabKu) ? (' · Kin ' + kk.kin) : '';
       return '<option value="' + esc(p.id) + '">' + esc(p.nombre || p.fecha) + ' (' + esc(p.fecha) + det + ')</option>';
     }).join('');
-    var html = '<div class="menstrual-card" style="border-color:var(--gold)"><h4>⭐ Mi kin</h4>' +
-      '<p class="muted" style="font-size:11px">Tu firma galáctica natal. Guárdala una vez y úsala en Hoy, Sinastría y Diario. Dreamspell canónico: 26-07-1987 = Kin 34 · 29-feb = 0.0 Hunab Ku.</p>' +
-      '<div class="conv-row"><label style="flex:1">Nombre (opcional) <input type="text" id="kinNombre" placeholder="ej: Ana" maxlength="30" value="' + esc(data.nombre || '') + '"></label>' +
+    var html = '<div class="menstrual-card su-68a1a9"><h4>⭐ Mi kin</h4>' +
+      '<p class="muted su-11a508">Tu firma galáctica natal. Guárdala una vez y úsala en Hoy, Sinastría y Diario. Dreamspell canónico: 26-07-1987 = Kin 34 · 29-feb = 0.0 Hunab Ku.</p>' +
+      '<div class="conv-row"><label class="su-97445a">Nombre (opcional) <input type="text" id="kinNombre" placeholder="ej: Ana" maxlength="30" value="' + esc(data.nombre || '') + '"></label>' +
       '<label>Fecha de nacimiento <input type="date" id="kinFechaNac" value="' + esc(data.fechaNac) + '"></label></div>' +
-      '<div class="dlg-actions" style="justify-content:flex-start;flex-wrap:wrap;gap:6px">' +
-      '<button type="button" id="kinCalcBtn" class="btn btn-accent" style="width:auto">Calcular</button>' +
-      '<button type="button" id="kinAddPerf" class="btn" style="width:auto">💾 Guardar perfil</button></div>' +
-      ((data.perfiles || []).length ? '<div class="conv-row" style="margin-top:6px"><label style="flex:1">Perfiles guardados <select id="kinPerfSel"><option value="">— elegir —</option>' + perfOpts + '</select></label>' +
-      '<button type="button" id="kinPerfLoad" class="btn" style="width:auto">Cargar</button>' +
-      '<button type="button" id="kinPerfDel" class="btn" style="width:auto">✕</button></div>' : '') +
+      '<div class="dlg-actions su-1a6bc0">' +
+      '<button type="button" id="kinCalcBtn" class="btn btn-accent su-30e741">Calcular</button>' +
+      '<button type="button" id="kinAddPerf" class="btn su-30e741">💾 Guardar perfil</button></div>' +
+      ((data.perfiles || []).length ? '<div class="conv-row su-fe7b49"><label class="su-97445a">Perfiles guardados <select id="kinPerfSel"><option value="">— elegir —</option>' + perfOpts + '</select></label>' +
+      '<button type="button" id="kinPerfLoad" class="btn su-30e741">Cargar</button>' +
+      '<button type="button" id="kinPerfDel" class="btn su-30e741">✕</button></div>' : '') +
       '</div>';
 
     // ---- 2. Estado vacío ----
     if (!kin) {
-      html += '<div class="menstrual-card" style="margin-top:10px"><h4>👆 Empieza aquí</h4>' +
-        '<p style="font-size:12px">Ingresa tu fecha arriba y pulsa <b>Calcular</b>. Verás tu sello, tono, oráculo, onda, ciclos y guía práctica.</p>' +
-        '<div class="dlg-actions" style="justify-content:flex-start;flex-wrap:wrap;gap:6px">' +
-        '<button type="button" class="btn" style="width:auto" data-ej="hoy">Probar con hoy</button>' +
-        '<button type="button" class="btn" style="width:auto" data-ej="1987-07-26">Ejemplo Kin 34</button>' +
-        '<button type="button" class="btn" style="width:auto" data-ej="2012-12-21">Ejemplo Kin 207</button></div></div>';
-      html += '<div class="menstrual-card" style="margin-top:10px"><h4>🔎 Calculadora libre (cualquier fecha)</h4>' +
-        '<div class="conv-row"><label style="flex:1">Fecha <input type="date" id="kinLibreFecha" value="' + esc(data.fechaLibre || '') + '"></label>' +
-        '<button type="button" id="kinLibreGo" class="btn" style="width:auto">Ver kin</button></div><div id="kinLibreRes"></div></div>';
-      html += '<div class="menstrual-card" style="margin-top:10px"><h4>Historial de cálculos</h4><div id="kinHistorial"></div></div>';
+      html += '<div class="menstrual-card su-d2c171"><h4>👆 Empieza aquí</h4>' +
+        '<p class="su-6cb285">Ingresa tu fecha arriba y pulsa <b>Calcular</b>. Verás tu sello, tono, oráculo, onda, ciclos y guía práctica.</p>' +
+        '<div class="dlg-actions su-1a6bc0">' +
+        '<button type="button" class="btn su-30e741" data-ej="hoy">Probar con hoy</button>' +
+        '<button type="button" class="btn su-30e741" data-ej="1987-07-26">Ejemplo Kin 34</button>' +
+        '<button type="button" class="btn su-30e741" data-ej="2012-12-21">Ejemplo Kin 207</button></div></div>';
+      html += '<div class="menstrual-card su-d2c171"><h4>🔎 Calculadora libre (cualquier fecha)</h4>' +
+        '<div class="conv-row"><label class="su-97445a">Fecha <input type="date" id="kinLibreFecha" value="' + esc(data.fechaLibre || '') + '"></label>' +
+        '<button type="button" id="kinLibreGo" class="btn su-30e741">Ver kin</button></div><div id="kinLibreRes"></div></div>';
+      html += '<div class="menstrual-card su-d2c171"><h4>Historial de cálculos</h4><div id="kinHistorial"></div></div>';
       box.innerHTML = html;
       renderKinHistorial();
       wireKinCalcBase(data);
       return;
     }
     if (kin.hunabKu) {
-      html += '<div class="menstrual-card" style="margin-top:10px;border-color:var(--gold)"><h4>0.0 Hunab Ku ✦</h4><p style="font-size:12px">' + esc(kin.nota) + '</p>' +
-        '<p class="muted" style="font-size:11px">Naciste un día fuera del tiempo. Elige el kin del 28-feb o del 1-mar como tu firma de trabajo: calcúlalos en la calculadora libre de abajo.</p></div>';
-      html += '<div class="menstrual-card" style="margin-top:10px"><h4>🔎 Calculadora libre (cualquier fecha)</h4>' +
-        '<div class="conv-row"><label style="flex:1">Fecha <input type="date" id="kinLibreFecha" value="' + esc(data.fechaLibre || '') + '"></label>' +
-        '<button type="button" id="kinLibreGo" class="btn" style="width:auto">Ver kin</button></div><div id="kinLibreRes"></div></div>';
-      html += '<div class="menstrual-card" style="margin-top:10px"><h4>Nota personal</h4>' +
+      html += '<div class="menstrual-card su-51d56a"><h4>0.0 Hunab Ku ✦</h4><p class="su-6cb285">' + esc(kin.nota) + '</p>' +
+        '<p class="muted su-11a508">Naciste un día fuera del tiempo. Elige el kin del 28-feb o del 1-mar como tu firma de trabajo: calcúlalos en la calculadora libre de abajo.</p></div>';
+      html += '<div class="menstrual-card su-d2c171"><h4>🔎 Calculadora libre (cualquier fecha)</h4>' +
+        '<div class="conv-row"><label class="su-97445a">Fecha <input type="date" id="kinLibreFecha" value="' + esc(data.fechaLibre || '') + '"></label>' +
+        '<button type="button" id="kinLibreGo" class="btn su-30e741">Ver kin</button></div><div id="kinLibreRes"></div></div>';
+      html += '<div class="menstrual-card su-d2c171"><h4>Nota personal</h4>' +
         '<textarea id="kinNota" rows="3" placeholder="¿Qué significa tu kin para ti? ¿Cómo lo vives?" maxlength="500">' + esc(data.nota) + '</textarea>' +
-        '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="kinNotaSave" class="btn btn-accent" style="width:auto">Guardar nota</button></div></div>';
-      html += '<div class="menstrual-card" style="margin-top:10px"><h4>Historial de cálculos</h4><div id="kinHistorial"></div></div>';
+        '<div class="dlg-actions su-59a5a8"><button type="button" id="kinNotaSave" class="btn btn-accent su-30e741">Guardar nota</button></div></div>';
+      html += '<div class="menstrual-card su-d2c171"><h4>Historial de cálculos</h4><div id="kinHistorial"></div></div>';
       box.innerHTML = html;
       renderKinHistorial();
       wireKinCalcBase(data);
@@ -702,65 +702,65 @@
       // ---- 3. Ficha hero ----
       html += '<div class="menstrual-card" style="margin-top:10px;border-color:' + kin.sello.color + ';text-align:center">' +
         '<div style="font-size:42px;font-weight:800;color:' + kin.sello.color + ';line-height:1">' + kin.kin + '</div>' +
-        '<h4 style="margin:4px 0">' + quien + ' kin: ' + esc(kin.sello.n) + ' ' + esc(kin.tono.nombre) + (portal ? ' · <span style="color:var(--gold)">Portal ✦</span>' : '') + '</h4>' +
-        '<p style="font-size:12px"><b>' + esc(kin.sello.n) + '</b> (' + esc(kin.sello.maya) + ') · <b>' + esc(kin.tono.nombre) + '</b> · Onda ' + kin.onda + ' de ' + esc(kin.ondaSello) + ' · ' + esc(cast.nombre) + '</p>' +
-        '<p style="font-size:13px"><i>' + esc(afirmacionKin(kin)) + '</i></p>' +
-        '<div class="dlg-actions" style="justify-content:center;margin-top:8px;flex-wrap:wrap;gap:6px">' +
-        '<button type="button" id="kinShareBtn" class="btn btn-accent" style="width:auto">📤 Compartir</button>' +
-        '<button type="button" id="kinCopyBtn" class="btn" style="width:auto">📋 Copiar</button>' +
-        '<button type="button" id="kinVerTz" class="btn" style="width:auto">🌀 Ver en Tzolkin</button>' +
-        '<button type="button" id="kinLlevarHoy" class="btn" style="width:auto">📝 Llevar a nota de hoy</button></div></div>';
+        '<h4 class="su-557d84">' + quien + ' kin: ' + esc(kin.sello.n) + ' ' + esc(kin.tono.nombre) + (portal ? ' · <span class="su-e39eba">Portal ✦</span>' : '') + '</h4>' +
+        '<p class="su-6cb285"><b>' + esc(kin.sello.n) + '</b> (' + esc(kin.sello.maya) + ') · <b>' + esc(kin.tono.nombre) + '</b> · Onda ' + kin.onda + ' de ' + esc(kin.ondaSello) + ' · ' + esc(cast.nombre) + '</p>' +
+        '<p class="su-5e0faa"><i>' + esc(afirmacionKin(kin)) + '</i></p>' +
+        '<div class="dlg-actions su-19a5c6">' +
+        '<button type="button" id="kinShareBtn" class="btn btn-accent su-30e741">📤 Compartir</button>' +
+        '<button type="button" id="kinCopyBtn" class="btn su-30e741">📋 Copiar</button>' +
+        '<button type="button" id="kinVerTz" class="btn su-30e741">🌀 Ver en Tzolkin</button>' +
+        '<button type="button" id="kinLlevarHoy" class="btn su-30e741">📝 Llevar a nota de hoy</button></div></div>';
 
       // ---- 4. Tu energía en detalle ----
-      html += '<div class="menstrual-card" style="margin-top:10px"><h4>🔍 Tu energía en detalle</h4>' +
-        '<div class="habit-item" style="align-items:flex-start"><div style="font-size:12px"><b>Sello ' + kin.sello.num + '/20 · ' + esc(kin.sello.n) + ' (' + esc(kin.sello.maya) + '):</b> ' + esc(kin.sello.poder) + ' · ' + esc(kin.sello.cualidad) + '<br><span class="muted">' + esc(kin.sello.desc) + '</span><br>☀️ Luz: ' + esc(gNat.luz || '') + ' · 🌑 Sombra: ' + esc(gNat.sombra || '') + '<br>❓ ' + esc(gNat.pregunta || '') + ' · 👣 ' + esc(gNat.practica || '') + '</div></div>' +
-        '<div class="habit-item" style="align-items:flex-start"><div style="font-size:12px"><b>Tono ' + kin.tono.num + '/13 · ' + esc(kin.tono.nombre) + ':</b> ' + esc(kin.tono.poder) + ' / ' + esc(kin.tono.accion) + '<br><span class="muted">' + esc(kin.tono.desc) + '</span><br>❓ ' + esc(tgNat.pregunta || '') + ' · 👣 ' + esc(tgNat.practica || '') + ' · <i>' + esc(tgNat.meditacion || '') + '</i></div></div>' +
-        '<p style="font-size:12px">🎨 <b>' + esc(kin.sello.colorNombre) + '</b> (' + esc(kin.sello.direccion) + ') · ' + esc(kin.sello.raza) + ' · 👪 <b>Familia ' + esc(familia ? familia.nombre : '') + '</b> — ' + esc(familia ? familia.mision : '') + '</p>' +
-        '<div class="dlg-actions" style="justify-content:flex-start;flex-wrap:wrap;gap:6px">' +
-        '<button type="button" id="kinGoOnda" class="btn" style="width:auto">🌊 Ver mi onda</button>' +
-        '<button type="button" id="kinGoCastillo" class="btn" style="width:auto">🏰 Ver mi castillo</button>' +
-        '<button type="button" id="kinGoSinas" class="btn" style="width:auto">💞 Comparar en Sinastría</button></div></div>';
+      html += '<div class="menstrual-card su-d2c171"><h4>🔍 Tu energía en detalle</h4>' +
+        '<div class="habit-item su-0486f7"><div class="su-6cb285"><b>Sello ' + kin.sello.num + '/20 · ' + esc(kin.sello.n) + ' (' + esc(kin.sello.maya) + '):</b> ' + esc(kin.sello.poder) + ' · ' + esc(kin.sello.cualidad) + '<br><span class="muted">' + esc(kin.sello.desc) + '</span><br>☀️ Luz: ' + esc(gNat.luz || '') + ' · 🌑 Sombra: ' + esc(gNat.sombra || '') + '<br>❓ ' + esc(gNat.pregunta || '') + ' · 👣 ' + esc(gNat.practica || '') + '</div></div>' +
+        '<div class="habit-item su-0486f7"><div class="su-6cb285"><b>Tono ' + kin.tono.num + '/13 · ' + esc(kin.tono.nombre) + ':</b> ' + esc(kin.tono.poder) + ' / ' + esc(kin.tono.accion) + '<br><span class="muted">' + esc(kin.tono.desc) + '</span><br>❓ ' + esc(tgNat.pregunta || '') + ' · 👣 ' + esc(tgNat.practica || '') + ' · <i>' + esc(tgNat.meditacion || '') + '</i></div></div>' +
+        '<p class="su-6cb285">🎨 <b>' + esc(kin.sello.colorNombre) + '</b> (' + esc(kin.sello.direccion) + ') · ' + esc(kin.sello.raza) + ' · 👪 <b>Familia ' + esc(familia ? familia.nombre : '') + '</b> — ' + esc(familia ? familia.mision : '') + '</p>' +
+        '<div class="dlg-actions su-1a6bc0">' +
+        '<button type="button" id="kinGoOnda" class="btn su-30e741">🌊 Ver mi onda</button>' +
+        '<button type="button" id="kinGoCastillo" class="btn su-30e741">🏰 Ver mi castillo</button>' +
+        '<button type="button" id="kinGoSinas" class="btn su-30e741">💞 Comparar en Sinastría</button></div></div>';
 
       // ---- 5. Oráculo explicado ----
       if (orac) {
-        html += '<div class="menstrual-card" style="margin-top:10px"><h4>🌀 Oráculo de la 5ª fuerza</h4>' +
-          '<p class="muted" style="font-size:11px">Tu kin desplegado en 5 poderes. Análogo y antípoda comparten tu tono; el oculto lo espeja (' + kin.tono.num + ' + ' + orac.oculto.tono.num + ' = 14). Toca 🔍 para ver cada kin en el Tzolkin.</p>';
+        html += '<div class="menstrual-card su-d2c171"><h4>🌀 Oráculo de la 5ª fuerza</h4>' +
+          '<p class="muted su-11a508">Tu kin desplegado en 5 poderes. Análogo y antípoda comparten tu tono; el oculto lo espeja (' + kin.tono.num + ' + ' + orac.oculto.tono.num + ' = 14). Toca 🔍 para ver cada kin en el Tzolkin.</p>';
         html += ['destino', 'analogo', 'antipoda', 'oculto', 'guia'].map(function (key) {
           var o = orac[key];
           var rol = ORACULO_ROL[key] || {};
           var extra = key === 'guia' && o.propio ? ' — guiado por tu propio poder duplicado' : '';
-          return '<div class="habit-item" style="align-items:flex-start"><div style="font-size:12px"><b>' + esc(rol.titulo || o.rol) + ':</b> Kin ' + o.kin + ' · ' + esc(o.sello.n) + ' ' + esc(o.tono.nombre) + extra +
+          return '<div class="habit-item su-0486f7"><div class="su-6cb285"><b>' + esc(rol.titulo || o.rol) + ':</b> Kin ' + o.kin + ' · ' + esc(o.sello.n) + ' ' + esc(o.tono.nombre) + extra +
             '<br><span class="muted">' + esc(rol.txt || '') + '</span><br><span class="muted">' + esc(o.sello.poder) + ' · ' + esc(o.sello.cualidad) + '</span></div>' +
-            '<button type="button" class="btn" style="width:auto" data-oratz="' + o.kin + '">🔍</button></div>';
+            '<button type="button" class="btn su-30e741" data-oratz="' + o.kin + '">🔍</button></div>';
         }).join('') + '</div>';
       }
 
       // ---- 6. Onda natal ----
-      html += '<div class="menstrual-card" style="margin-top:10px"><h4>🌊 Onda ' + kin.onda + ' de ' + esc(kin.ondaSello) + ' (tu onda natal)</h4>' +
-        '<p style="font-size:12px"><b>Misión:</b> ' + esc(ondaInfo.mision || '') + ' · <b>Poder:</b> ' + esc(ondaInfo.poder || '') + '</p>' +
-        '<p class="muted" style="font-size:11px">' + esc(ondaInfo.leccion || '') + ' Vas en la posición <b>' + posOnda + '/13</b> (tu tono). ❓ ' + esc(ondaInfo.pregunta || '') + '</p>' +
-        '<table style="width:100%;font-size:11px;border-collapse:collapse">' +
-        '<tr style="text-align:left"><th style="padding:4px">Tono</th><th style="padding:4px">Kin</th><th style="padding:4px">Sello</th></tr>' +
+      html += '<div class="menstrual-card su-d2c171"><h4>🌊 Onda ' + kin.onda + ' de ' + esc(kin.ondaSello) + ' (tu onda natal)</h4>' +
+        '<p class="su-6cb285"><b>Misión:</b> ' + esc(ondaInfo.mision || '') + ' · <b>Poder:</b> ' + esc(ondaInfo.poder || '') + '</p>' +
+        '<p class="muted su-11a508">' + esc(ondaInfo.leccion || '') + ' Vas en la posición <b>' + posOnda + '/13</b> (tu tono). ❓ ' + esc(ondaInfo.pregunta || '') + '</p>' +
+        '<table class="su-a635bd">' +
+        '<tr class="su-6be0d8"><th class="su-2f0ad3">Tono</th><th class="su-2f0ad3">Kin</th><th class="su-2f0ad3">Sello</th></tr>' +
         ondaKins.map(function (w, idx) {
           var yo = (w.kin === kin.kin);
-          return '<tr style="border-top:1px solid var(--line)' + (yo ? ';background:rgba(232,197,106,.12)' : '') + '"><td style="padding:4px">' + (idx + 1) + ' ' + esc(w.tono.nombre) + (yo ? ' ◀ tú' : '') + '</td><td style="padding:4px">' + w.kin + (esPortal(w.kin) ? ' ✦' : '') + '</td><td style="padding:4px;color:' + w.sello.color + '">' + esc(w.sello.n) + '</td></tr>';
+          return '<tr style="border-top:1px solid var(--line)' + (yo ? ';background:rgba(232,197,106,.12)' : '') + '"><td class="su-2f0ad3">' + (idx + 1) + ' ' + esc(w.tono.nombre) + (yo ? ' ◀ tú' : '') + '</td><td class="su-2f0ad3">' + w.kin + (esPortal(w.kin) ? ' ✦' : '') + '</td><td style="padding:4px;color:' + w.sello.color + '">' + esc(w.sello.n) + '</td></tr>';
         }).join('') + '</table></div>';
 
       // ---- 7. Ciclos y retornos ----
       var v = vueltasTzolkin(data.fechaNac, todayKey());
-      html += '<div class="menstrual-card" style="margin-top:10px"><h4>♻️ Tus ciclos</h4>';
-      if (v) html += '<p style="font-size:12px">🎡 Has vivido <b>' + v.vueltas + ' vueltas completas</b> al Tzolkin (' + v.efectivos + ' días galácticos)' + (portal ? ' · tu kin es <b>portal</b>: cada retorno se siente fuerte.' : '') + '</p>';
-      if (ret) html += '<p style="font-size:12px">🔁 <b>Próximo retorno galáctico:</b> ' + esc(ret.fecha) + ' (en <b>' + ret.dias + ' días</b> vuelve tu mismo kin: tu “cumpleaños maya”).</p>';
-      else html += '<p class="muted" style="font-size:11px">No se pudo calcular el próximo retorno.</p>';
+      html += '<div class="menstrual-card su-d2c171"><h4>♻️ Tus ciclos</h4>';
+      if (v) html += '<p class="su-6cb285">🎡 Has vivido <b>' + v.vueltas + ' vueltas completas</b> al Tzolkin (' + v.efectivos + ' días galácticos)' + (portal ? ' · tu kin es <b>portal</b>: cada retorno se siente fuerte.' : '') + '</p>';
+      if (ret) html += '<p class="su-6cb285">🔁 <b>Próximo retorno galáctico:</b> ' + esc(ret.fecha) + ' (en <b>' + ret.dias + ' días</b> vuelve tu mismo kin: tu “cumpleaños maya”).</p>';
+      else html += '<p class="muted su-11a508">No se pudo calcular el próximo retorno.</p>';
       try {
         var anioH = new Date().getFullYear();
         var filas = [];
         for (var a = anioH; a <= anioH + 2; a++) {
           var ka = kinDelAnio(data.fechaNac, a);
-          if (ka && !ka.hunabKu) filas.push('<div class="habit-item"><div style="font-size:12px"><b>' + a + ':</b> Kin ' + ka.kin + ' · ' + esc(ka.sello.n) + ' ' + esc(ka.tono.nombre) + (a === anioH ? ' ◀ este año' : '') + '</div></div>');
+          if (ka && !ka.hunabKu) filas.push('<div class="habit-item"><div class="su-6cb285"><b>' + a + ':</b> Kin ' + ka.kin + ' · ' + esc(ka.sello.n) + ' ' + esc(ka.tono.nombre) + (a === anioH ? ' ◀ este año' : '') + '</div></div>');
         }
-        html += '<p style="font-size:12px;margin-top:6px"><b>🎂 Tu kin de cumpleaños (año gregoriano):</b></p>' + filas.join('') +
-          '<p class="muted" style="font-size:11px">Cada cumpleaños caes en un kin distinto: es tu “tono del año”. El ciclo completo fecha+kin se repite cada 52 años.</p>';
+        html += '<p class="su-2b0979"><b>🎂 Tu kin de cumpleaños (año gregoriano):</b></p>' + filas.join('') +
+          '<p class="muted su-11a508">Cada cumpleaños caes en un kin distinto: es tu “tono del año”. El ciclo completo fecha+kin se repite cada 52 años.</p>';
       } catch (eAnio) {}
       html += '</div>';
 
@@ -773,41 +773,41 @@
         if (hoyK.castillo === kin.castillo) rel.push('mismo castillo');
         var famHoy = familiaDeSello(hoyK.sello.num);
         if (famHoy && familia && famHoy.nombre === familia.nombre) rel.push('misma familia ' + famHoy.nombre);
-        html += '<div class="menstrual-card" style="margin-top:10px"><h4>📍 Hoy y tu kin</h4>' +
-          '<p style="font-size:12px"><b>Hoy:</b> ' + firmaCorta(hoyK) + ' · Onda ' + hoyK.onda + ' · Castillo ' + hoyK.castillo + '</p>' +
-          (rel.length ? '<p style="font-size:12px"><b>Sincronías (' + rel.length + '):</b> ' + esc(rel.join(' · ')) + '.</p>' : '<p class="muted" style="font-size:11px">Hoy no coincide sello, tono, onda ni castillo.</p>') +
-          '<p style="font-size:12px"><b>Consejo:</b> ' + esc(consejoSincronia(rel.length)) + '</p></div>';
+        html += '<div class="menstrual-card su-d2c171"><h4>📍 Hoy y tu kin</h4>' +
+          '<p class="su-6cb285"><b>Hoy:</b> ' + firmaCorta(hoyK) + ' · Onda ' + hoyK.onda + ' · Castillo ' + hoyK.castillo + '</p>' +
+          (rel.length ? '<p class="su-6cb285"><b>Sincronías (' + rel.length + '):</b> ' + esc(rel.join(' · ')) + '.</p>' : '<p class="muted su-11a508">Hoy no coincide sello, tono, onda ni castillo.</p>') +
+          '<p class="su-6cb285"><b>Consejo:</b> ' + esc(consejoSincronia(rel.length)) + '</p></div>';
       }
 
       // ---- 9. Guía práctica + ritual ----
-      html += '<div class="menstrual-card" style="margin-top:10px"><h4>🌱 Guía práctica de tu kin</h4>' +
-        '<p style="font-size:12px">💬 <b>Afirmación:</b> <i>' + esc(afirmacionKin(kin)) + '</i><br>' +
+      html += '<div class="menstrual-card su-d2c171"><h4>🌱 Guía práctica de tu kin</h4>' +
+        '<p class="su-6cb285">💬 <b>Afirmación:</b> <i>' + esc(afirmacionKin(kin)) + '</i><br>' +
         '👣 <b>Acción:</b> ' + esc(practicaKin(kin)) + '<br>' +
         '❓ <b>Preguntas:</b> ' + esc(gNat.pregunta || '') + ' / ' + esc(tgNat.pregunta || '') + '<br>' +
         '☀️ <b>Luz:</b> ' + esc(gNat.luz || kin.sello.cualidad) + ' · 🌑 <b>Sombra:</b> ' + esc(gNat.sombra || 'forzar o retener esa energía') + '.</p>' +
-        '<p class="muted" style="font-size:11px">⏱️ <b>Ritual de 1 minuto:</b> lee tu afirmación en voz alta → respira 3 veces → haz hoy un gesto mínimo de ' + esc(kin.sello.poder.toLowerCase()) + '.</p></div>';
+        '<p class="muted su-11a508">⏱️ <b>Ritual de 1 minuto:</b> lee tu afirmación en voz alta → respira 3 veces → haz hoy un gesto mínimo de ' + esc(kin.sello.poder.toLowerCase()) + '.</p></div>';
 
       // ---- 10. Calculadora libre ----
-      html += '<div class="menstrual-card" style="margin-top:10px"><h4>🔎 Calculadora libre (cualquier fecha)</h4>' +
-        '<div class="conv-row"><label style="flex:1">Fecha <input type="date" id="kinLibreFecha" value="' + esc(data.fechaLibre || '') + '"></label>' +
-        '<button type="button" id="kinLibreGo" class="btn" style="width:auto">Ver kin</button></div><div id="kinLibreRes"></div></div>';
+      html += '<div class="menstrual-card su-d2c171"><h4>🔎 Calculadora libre (cualquier fecha)</h4>' +
+        '<div class="conv-row"><label class="su-97445a">Fecha <input type="date" id="kinLibreFecha" value="' + esc(data.fechaLibre || '') + '"></label>' +
+        '<button type="button" id="kinLibreGo" class="btn su-30e741">Ver kin</button></div><div id="kinLibreRes"></div></div>';
     })();
 
-    html += '<div class="menstrual-card" style="margin-top:10px"><h4>💌 Nota personal</h4>' +
-      '<p class="muted" style="font-size:11px">¿Qué significa tu kin para ti? ¿Cuándo lo ves en acción? ¿Cuál es su sombra en ti?</p>' +
+    html += '<div class="menstrual-card su-d2c171"><h4>💌 Nota personal</h4>' +
+      '<p class="muted su-11a508">¿Qué significa tu kin para ti? ¿Cuándo lo ves en acción? ¿Cuál es su sombra en ti?</p>' +
       '<textarea id="kinNota" rows="3" placeholder="Ej: Soy Luna Cristal: me cuesta fluir cuando..." maxlength="500">' + esc(data.nota) + '</textarea>' +
-      '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="kinNotaSave" class="btn btn-accent" style="width:auto">Guardar nota</button></div></div>';
+      '<div class="dlg-actions su-59a5a8"><button type="button" id="kinNotaSave" class="btn btn-accent su-30e741">Guardar nota</button></div></div>';
     if ((data.perfiles || []).length) {
-      html += '<div class="menstrual-card" style="margin-top:10px"><h4>👪 Perfiles guardados</h4>' +
+      html += '<div class="menstrual-card su-d2c171"><h4>👪 Perfiles guardados</h4>' +
         data.perfiles.map(function (p) {
           var kk = calcKinMaya(p.fecha);
           var det = (kk && !kk.hunabKu) ? ('Kin ' + kk.kin + ' · ' + kk.sello.n + ' ' + kk.tono.nombre) : 'Hunab Ku';
           return '<div class="habit-item"><div><b>' + esc(p.nombre || p.fecha) + '</b> · ' + esc(p.fecha) + ' · ' + esc(det) + '</div>' +
-            '<span style="display:flex;gap:6px"><button type="button" class="btn" style="width:auto" data-perfload="' + esc(p.id) + '">Cargar</button>' +
-            '<button type="button" class="btn" style="width:auto" data-perfdel="' + esc(p.id) + '">✕</button></span></div>';
+            '<span class="su-49cd09"><button type="button" class="btn su-30e741" data-perfload="' + esc(p.id) + '">Cargar</button>' +
+            '<button type="button" class="btn su-30e741" data-perfdel="' + esc(p.id) + '">✕</button></span></div>';
         }).join('') + '</div>';
     }
-    html += '<div class="menstrual-card" style="margin-top:10px"><h4>🕘 Historial de cálculos</h4><div id="kinHistorial"></div></div>';
+    html += '<div class="menstrual-card su-d2c171"><h4>🕘 Historial de cálculos</h4><div id="kinHistorial"></div></div>';
     box.innerHTML = html;
     renderKinHistorial();
     wireKinCalcBase(data, kin);
@@ -928,8 +928,8 @@
       var kk = calcKinMaya(f);
       var dd = getKinData(); dd.fechaLibre = f; save();
       if (!kk) { r.innerHTML = '<p class="muted">Fecha no válida.</p>'; return; }
-      if (kk.hunabKu) { r.innerHTML = '<p style="font-size:12px"><b>0.0 Hunab Ku</b>: ' + esc(kk.nota) + '</p>'; return; }
-      r.innerHTML = '<p style="font-size:12px;margin-top:6px"><b>' + firmaLarga(kk) + '</b>' + (esPortal(kk.kin) ? ' · <span style="color:var(--gold)">Portal ✦</span>' : '') +
+      if (kk.hunabKu) { r.innerHTML = '<p class="su-6cb285"><b>0.0 Hunab Ku</b>: ' + esc(kk.nota) + '</p>'; return; }
+      r.innerHTML = '<p class="su-2b0979"><b>' + firmaLarga(kk) + '</b>' + (esPortal(kk.kin) ? ' · <span class="su-e39eba">Portal ✦</span>' : '') +
         '<br><span class="muted">' + esc(afirmacionKin(kk)) + '</span></p>';
     };
     var sh = $('kinShareBtn');
@@ -970,13 +970,13 @@
     var counts = {};
     h.forEach(function (r) { var k = String(r.kin); counts[k] = (counts[k] || 0) + 1; });
     var top = Object.keys(counts).sort(function (a, b) { return counts[b] - counts[a]; }).slice(0, 3);
-    box.innerHTML = '<p class="muted" style="font-size:11px">Más consultados: ' + top.map(function (k) { return 'Kin ' + esc(k) + ' (×' + counts[k] + ')'; }).join(' · ') + '</p>' +
+    box.innerHTML = '<p class="muted su-11a508">Más consultados: ' + top.map(function (k) { return 'Kin ' + esc(k) + ' (×' + counts[k] + ')'; }).join(' · ') + '</p>' +
       h.map(function (r) {
         var det = (r.sello || r.tono) ? ' · ' + esc(r.sello || '') + ' ' + esc(r.tono || '') : '';
-        return '<div class="habit-item"><div><b>' + esc(r.fecha) + '</b> · Kin ' + esc(String(r.kin)) + det + ' <span class="muted" style="font-size:11px">· ' + esc(r.cuando || '') + '</span></div>' +
-          '<button type="button" class="btn" style="width:auto" data-kinfecha="' + esc(r.fecha) + '">Ver</button></div>';
+        return '<div class="habit-item"><div><b>' + esc(r.fecha) + '</b> · Kin ' + esc(String(r.kin)) + det + ' <span class="muted su-11a508">· ' + esc(r.cuando || '') + '</span></div>' +
+          '<button type="button" class="btn su-30e741" data-kinfecha="' + esc(r.fecha) + '">Ver</button></div>';
       }).join('') +
-      '<div class="dlg-actions" style="justify-content:flex-end"><button type="button" id="kinHistClear" class="btn" style="width:auto">🗑 Borrar historial</button></div>';
+      '<div class="dlg-actions su-455f8c"><button type="button" id="kinHistClear" class="btn su-30e741">🗑 Borrar historial</button></div>';
     try {
       box.querySelectorAll('[data-kinfecha]').forEach(function (b) {
         b.onclick = function () {
@@ -1001,33 +1001,33 @@
     var hoy = todayKey();
     var k = calcKinMaya(hoy);
     if (!k) { box.innerHTML = '<p class="muted">No se pudo calcular hoy.</p>'; return; }
-    if (k.hunabKu) { box.innerHTML = '<div class="menstrual-card" style="border-color:var(--gold)"><h4>Hoy: 0.0 Hunab Ku ✦</h4><p style="font-size:12px">' + esc(k.nota) + '</p><p class="muted" style="font-size:11px">Día fuera del tiempo: medita, perdona, no firmes nada importante.</p></div>'; return; }
+    if (k.hunabKu) { box.innerHTML = '<div class="menstrual-card su-68a1a9"><h4>Hoy: 0.0 Hunab Ku ✦</h4><p class="su-6cb285">' + esc(k.nota) + '</p><p class="muted su-11a508">Día fuera del tiempo: medita, perdona, no firmes nada importante.</p></div>'; return; }
     var g = SELLO_GUIA[k.sello.num] || {};
     var tg = TONO_GUIA[k.tono.num] || {};
     var fam = familiaDeSello(k.sello.num);
     var orac = oraculoDe(k);
     var l = lunaDeFecha(hoy);
     var plasma = l ? plasmaDeLunaDia(l.dia) : null;
-    var html = '<div class="menstrual-card" style="border-color:' + k.sello.color + '"><h4>☀️ Hoy · ' + esc(hoy) + ' ' + (esPortal(k.kin) ? '· <span style="color:var(--gold)">Portal galáctico ✦</span>' : '') + '</h4>' +
-      '<p style="font-size:15px"><b>Kin ' + k.kin + ' · ' + esc(k.sello.n) + ' (' + esc(k.sello.maya) + ') ' + esc(k.tono.nombre) + '</b></p>' +
-      '<p style="font-size:12px"><b>Onda ' + k.onda + ' de ' + esc(k.ondaSello) + '</b> · <b>Castillo:</b> ' + esc(k.castilloNombre) + ' · <b>Familia:</b> ' + esc(fam ? fam.nombre : '') + '</p>' +
-      (l ? '<p style="font-size:12px"><b>' + esc(lunaTxt(hoy)) + '</b>' + (plasma ? ' · <b>Plasma ' + esc(plasma.nombre) + '</b> (' + esc(plasma.chakra) + ' · ' + esc(plasma.mantra) + ')' : '') + '</p>' : '') +
-      (esPortal(k.kin) ? '<p style="font-size:11px;color:var(--gold)"><b>Día portal:</b> energía intensa. Medita, respira, evita decisiones en caliente.</p>' : '') + '</div>' +
-      '<div class="menstrual-card" style="margin-top:10px;border-color:var(--gold)"><h4>💬 Afirmación de hoy</h4>' +
-      '<p style="font-size:13px"><i>' + esc(afirmacionKin(k)) + '</i></p>' +
-      '<p style="font-size:12px;margin-top:6px">❓ <b>Pregunta:</b> ' + esc(g.pregunta || '') + ' · ' + esc(tg.pregunta || '') + '</p>' +
-      '<p style="font-size:12px">👣 <b>Práctica:</b> ' + esc(practicaKin(k)) + '</p>' +
-      '<p class="muted" style="font-size:11px">☀️ Luz: ' + esc(g.luz || '') + ' · 🌑 Sombra: ' + esc(g.sombra || '') + '</p>' +
-      '<div class="dlg-actions" style="justify-content:flex-start;flex-wrap:wrap;gap:6px;margin-top:8px">' +
-      '<button type="button" id="kinHoyShare" class="btn btn-accent" style="width:auto">📤 Compartir</button>' +
-      '<button type="button" id="kinHoyCopy" class="btn" style="width:auto">📋 Copiar</button>' +
-      '<button type="button" id="kinHoyLlevar" class="btn" style="width:auto">📝 Llevar a nota de hoy</button></div></div>';
+    var html = '<div class="menstrual-card" style="border-color:' + k.sello.color + '"><h4>☀️ Hoy · ' + esc(hoy) + ' ' + (esPortal(k.kin) ? '· <span class="su-e39eba">Portal galáctico ✦</span>' : '') + '</h4>' +
+      '<p class="su-de0080"><b>Kin ' + k.kin + ' · ' + esc(k.sello.n) + ' (' + esc(k.sello.maya) + ') ' + esc(k.tono.nombre) + '</b></p>' +
+      '<p class="su-6cb285"><b>Onda ' + k.onda + ' de ' + esc(k.ondaSello) + '</b> · <b>Castillo:</b> ' + esc(k.castilloNombre) + ' · <b>Familia:</b> ' + esc(fam ? fam.nombre : '') + '</p>' +
+      (l ? '<p class="su-6cb285"><b>' + esc(lunaTxt(hoy)) + '</b>' + (plasma ? ' · <b>Plasma ' + esc(plasma.nombre) + '</b> (' + esc(plasma.chakra) + ' · ' + esc(plasma.mantra) + ')' : '') + '</p>' : '') +
+      (esPortal(k.kin) ? '<p class="su-49f9d7"><b>Día portal:</b> energía intensa. Medita, respira, evita decisiones en caliente.</p>' : '') + '</div>' +
+      '<div class="menstrual-card su-51d56a"><h4>💬 Afirmación de hoy</h4>' +
+      '<p class="su-5e0faa"><i>' + esc(afirmacionKin(k)) + '</i></p>' +
+      '<p class="su-2b0979">❓ <b>Pregunta:</b> ' + esc(g.pregunta || '') + ' · ' + esc(tg.pregunta || '') + '</p>' +
+      '<p class="su-6cb285">👣 <b>Práctica:</b> ' + esc(practicaKin(k)) + '</p>' +
+      '<p class="muted su-11a508">☀️ Luz: ' + esc(g.luz || '') + ' · 🌑 Sombra: ' + esc(g.sombra || '') + '</p>' +
+      '<div class="dlg-actions su-ac8f42">' +
+      '<button type="button" id="kinHoyShare" class="btn btn-accent su-30e741">📤 Compartir</button>' +
+      '<button type="button" id="kinHoyCopy" class="btn su-30e741">📋 Copiar</button>' +
+      '<button type="button" id="kinHoyLlevar" class="btn su-30e741">📝 Llevar a nota de hoy</button></div></div>';
     if (orac) {
-      html += '<div class="menstrual-card" style="margin-top:10px"><h4>🌀 Oráculo del día (5ª fuerza)</h4>' +
+      html += '<div class="menstrual-card su-d2c171"><h4>🌀 Oráculo del día (5ª fuerza)</h4>' +
         ['destino', 'analogo', 'antipoda', 'oculto', 'guia'].map(function (key) {
           var o = orac[key];
-          return '<div class="habit-item" style="align-items:flex-start"><div><b>' + esc(o.rol) + ':</b> Kin ' + o.kin + ' · ' + esc(o.sello.n) + ' ' + esc(o.tono.nombre) +
-            '<br><span class="muted" style="font-size:11px">' + esc(o.sello.poder) + '</span></div></div>';
+          return '<div class="habit-item su-0486f7"><div><b>' + esc(o.rol) + ':</b> Kin ' + o.kin + ' · ' + esc(o.sello.n) + ' ' + esc(o.tono.nombre) +
+            '<br><span class="muted su-11a508">' + esc(o.sello.poder) + '</span></div></div>';
         }).join('') + '</div>';
     }
     box.innerHTML = html;
@@ -1062,24 +1062,24 @@
     var opts = ONDA_INFO.map(function (o, i) {
       return '<option value="' + (i + 1) + '"' + ((i + 1) === sel ? ' selected' : '') + '>Onda ' + (i + 1) + ' · ' + esc(o.sello) + ((i + 1) === ondaHoy ? ' ◀ hoy' : '') + '</option>';
     }).join('');
-    var html = '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🌊 Ondas encantadas (20 × 13 días)</h4>' +
-      '<div class="conv-row"><label style="flex:1">Elige onda <select id="kinOndaSel">' + opts + '</select></label></div>' +
-      '<p class="muted" style="font-size:11px">Cada onda la rige un sello y recorre los 13 tonos. La onda de hoy es la <b>' + ondaHoy + ' de ' + esc(ONDAS[ondaHoy - 1]) + '</b>.</p></div>' +
+    var html = '<div class="menstrual-card su-68a1a9"><h4>🌊 Ondas encantadas (20 × 13 días)</h4>' +
+      '<div class="conv-row"><label class="su-97445a">Elige onda <select id="kinOndaSel">' + opts + '</select></label></div>' +
+      '<p class="muted su-11a508">Cada onda la rige un sello y recorre los 13 tonos. La onda de hoy es la <b>' + ondaHoy + ' de ' + esc(ONDAS[ondaHoy - 1]) + '</b>.</p></div>' +
       '<div class="menstrual-card" style="margin-top:10px;border-color:' + (SELLOS.filter(function (s) { return s.n === info.sello; })[0] || {}).color + '"><h4>Onda ' + sel + ' de ' + esc(info.sello) + (sel === ondaHoy ? ' ◀ estás aquí' : '') + '</h4>' +
-      '<p style="font-size:12px"><b>Misión:</b> ' + esc(info.mision) + ' · <b>Poder:</b> ' + esc(info.poder) + '</p>' +
-      '<p style="font-size:12px"><b>Lección:</b> ' + esc(info.leccion) + '</p>' +
-      '<p class="muted" style="font-size:11px">❓ Pregunta de la onda: <b>' + esc(info.pregunta) + '</b></p>' +
-      '<table style="width:100%;font-size:11px;border-collapse:collapse;margin-top:6px">' +
-      '<tr style="text-align:left"><th style="padding:4px">Tono</th><th style="padding:4px">Kin</th><th style="padding:4px">Firma</th><th style="padding:4px"></th></tr>' +
+      '<p class="su-6cb285"><b>Misión:</b> ' + esc(info.mision) + ' · <b>Poder:</b> ' + esc(info.poder) + '</p>' +
+      '<p class="su-6cb285"><b>Lección:</b> ' + esc(info.leccion) + '</p>' +
+      '<p class="muted su-11a508">❓ Pregunta de la onda: <b>' + esc(info.pregunta) + '</b></p>' +
+      '<table class="su-55a4d7">' +
+      '<tr class="su-6be0d8"><th class="su-2f0ad3">Tono</th><th class="su-2f0ad3">Kin</th><th class="su-2f0ad3">Firma</th><th class="su-2f0ad3"></th></tr>' +
       kins.map(function (w, idx) {
         var yo = kinHoy && !kinHoy.hunabKu && w.kin === kinHoy.kin;
-        return '<tr style="border-top:1px solid var(--line)' + (yo ? ';background:rgba(232,197,106,.12)' : '') + '"><td style="padding:4px">' + (idx + 1) + ' ' + esc(w.tono.nombre) + '</td><td style="padding:4px">' + w.kin + (esPortal(w.kin) ? ' ✦' : '') + '</td><td style="padding:4px;color:' + w.sello.color + '">' + esc(w.sello.n) + '</td><td style="padding:4px">' + (yo ? '◀ hoy' : '') + '</td></tr>';
+        return '<tr style="border-top:1px solid var(--line)' + (yo ? ';background:rgba(232,197,106,.12)' : '') + '"><td class="su-2f0ad3">' + (idx + 1) + ' ' + esc(w.tono.nombre) + '</td><td class="su-2f0ad3">' + w.kin + (esPortal(w.kin) ? ' ✦' : '') + '</td><td style="padding:4px;color:' + w.sello.color + '">' + esc(w.sello.n) + '</td><td class="su-2f0ad3">' + (yo ? '◀ hoy' : '') + '</td></tr>';
       }).join('') + '</table></div>';
     if (kinHoy && !kinHoy.hunabKu) {
       var posEnOnda = ((kinHoy.kin - 1) % 13) + 1;
-      html += '<div class="menstrual-card" style="margin-top:10px"><h4>📍 Tú hoy en la onda</h4>' +
-        '<p style="font-size:12px"><b>Kin ' + kinHoy.kin + ' (' + esc(kinHoy.sello.n) + ' ' + esc(kinHoy.tono.nombre) + ')</b> · posición ' + posEnOnda + '/13 de la onda ' + ondaHoy + '.</p>' +
-        '<p class="muted" style="font-size:11px">Tono ' + kinHoy.tono.num + ' = ' + esc(kinHoy.tono.poder) + ' / ' + esc(kinHoy.tono.accion) + '. Pregunta: ' + esc((TONO_GUIA[kinHoy.tono.num] || {}).pregunta || '') + '</p></div>';
+      html += '<div class="menstrual-card su-d2c171"><h4>📍 Tú hoy en la onda</h4>' +
+        '<p class="su-6cb285"><b>Kin ' + kinHoy.kin + ' (' + esc(kinHoy.sello.n) + ' ' + esc(kinHoy.tono.nombre) + ')</b> · posición ' + posEnOnda + '/13 de la onda ' + ondaHoy + '.</p>' +
+        '<p class="muted su-11a508">Tono ' + kinHoy.tono.num + ' = ' + esc(kinHoy.tono.poder) + ' / ' + esc(kinHoy.tono.accion) + '. Pregunta: ' + esc((TONO_GUIA[kinHoy.tono.num] || {}).pregunta || '') + '</p></div>';
     }
     box.innerHTML = html;
     var s = $('kinOndaSel'); if (s) s.onchange = function () { renderKinOnda(); };
@@ -1091,11 +1091,11 @@
     var prox = proximosKins(30, todayKey()).filter(function (r) { return r.kin && !r.kin.hunabKu && esPortal(r.kin.kin); });
     var lista = GAP_KINS.map(function (n) { return 'Kin ' + n; }).join(' · ');
     var html = '<div class="si-card"><h4>✦ ¿Qué es un portal galáctico (GAP)?</h4><p>Son <b>52 kins de activación intensa</b>: columnas centrales del Tzolkin donde la energía entra más fuerte. Días para <b>meditar, crear y observar</b>; evita firmar o discutir en caliente. Si tu kin natal es portal, eres “puerta”: activas a otros con tu presencia.</p></div>' +
-      '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🔜 Próximos portales (30 días)</h4>' +
+      '<div class="menstrual-card su-68a1a9"><h4>🔜 Próximos portales (30 días)</h4>' +
       (prox.length ? prox.map(function (r) {
         return '<div class="habit-item"><div><b>' + esc(r.fecha) + '</b> · Kin ' + r.kin.kin + ' · ' + esc(r.kin.sello.n) + ' ' + esc(r.kin.tono.nombre) + '</div></div>';
       }).join('') : '<p class="muted">Sin portales en los próximos 30 días (raro: revisa tu fecha).</p>') + '</div>' +
-      '<div class="menstrual-card" style="margin-top:10px"><h4>📜 Los 52 kins portal</h4><p style="font-size:11px">' + esc(lista) + '</p></div>';
+      '<div class="menstrual-card su-d2c171"><h4>📜 Los 52 kins portal</h4><p class="su-11a508">' + esc(lista) + '</p></div>';
     box.innerHTML = html;
   }
 
@@ -1108,20 +1108,20 @@
     var fB = d.sinasB || hoy;
     var kA = fA ? calcKinMaya(fA) : null;
     var kB = fB ? calcKinMaya(fB) : null;
-    var html = '<div class="menstrual-card" style="border-color:var(--gold)"><h4>💞 Sinastría galáctica</h4>' +
-      '<p class="muted" style="font-size:11px">Compara dos firmas: pareja, hijo, socio, amigo. No es “compatible o no”: muestra dónde fluyen y dónde se enseñan.</p>' +
+    var html = '<div class="menstrual-card su-68a1a9"><h4>💞 Sinastría galáctica</h4>' +
+      '<p class="muted su-11a508">Compara dos firmas: pareja, hijo, socio, amigo. No es “compatible o no”: muestra dónde fluyen y dónde se enseñan.</p>' +
       '<div class="conv-row"><label>Persona 1 <input type="date" id="kinSinasA" value="' + esc(fA) + '"></label>' +
       '<label>Persona 2 <input type="date" id="kinSinasB" value="' + esc(fB) + '"></label></div>' +
-      '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="kinSinasGo" class="btn btn-accent" style="width:auto">Comparar</button></div></div>';
+      '<div class="dlg-actions su-59a5a8"><button type="button" id="kinSinasGo" class="btn btn-accent su-30e741">Comparar</button></div></div>';
     if (kA && !kA.hunabKu && kB && !kB.hunabKu) {
       var c = compatKins(kA, kB);
-      html += '<div class="menstrual-card" style="margin-top:10px"><h4>' + firmaCorta(kA) + ' × ' + firmaCorta(kB) + '</h4>' +
-        '<p style="font-size:13px"><b>' + esc(c.nivel) + '</b> (' + c.puntos + ' pts)</p>' +
-        c.notas.map(function (n) { return '<div class="habit-item" style="align-items:flex-start"><div style="font-size:12px">' + esc(n) + '</div></div>'; }).join('') +
-        '<p class="muted" style="font-size:11px;margin-top:6px">Consejo: el Antípoda no es enemigo: es el maestro. El Análogo es el mejor aliado para proyectos.</p>' +
-        '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="kinSinasShare" class="btn" style="width:auto">📤 Compartir</button></div></div>';
+      html += '<div class="menstrual-card su-d2c171"><h4>' + firmaCorta(kA) + ' × ' + firmaCorta(kB) + '</h4>' +
+        '<p class="su-5e0faa"><b>' + esc(c.nivel) + '</b> (' + c.puntos + ' pts)</p>' +
+        c.notas.map(function (n) { return '<div class="habit-item su-0486f7"><div class="su-6cb285">' + esc(n) + '</div></div>'; }).join('') +
+        '<p class="muted su-e13d76">Consejo: el Antípoda no es enemigo: es el maestro. El Análogo es el mejor aliado para proyectos.</p>' +
+        '<div class="dlg-actions su-59a5a8"><button type="button" id="kinSinasShare" class="btn su-30e741">📤 Compartir</button></div></div>';
     } else if ((kA && kA.hunabKu) || (kB && kB.hunabKu)) {
-      html += '<div class="menstrual-card" style="margin-top:10px"><p style="font-size:12px">Una de las fechas es 29-feb (0.0 Hunab Ku): usa 28-feb o 1-mar para comparar.</p></div>';
+      html += '<div class="menstrual-card su-d2c171"><p class="su-6cb285">Una de las fechas es 29-feb (0.0 Hunab Ku): usa 28-feb o 1-mar para comparar.</p></div>';
     }
     box.innerHTML = html;
     var go = $('kinSinasGo');
@@ -1146,23 +1146,23 @@
     var hoyK = calcKinMaya(todayKey());
     var data = getKinData();
     var mio = data.fechaNac ? calcKinMaya(data.fechaNac) : null;
-    var html = '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🌀 Tzolkin 260: busca tu kin</h4>' +
-      '<div class="conv-row"><label style="flex:1">Kin 1–260 o fecha <input type="text" id="kinTzolkinQ" placeholder="ej: 34, 207 o 1990-05-17" value="' + esc(q) + '"></label>' +
-      '<button type="button" id="kinTzolkinGo" class="btn btn-accent" style="width:auto">Ver</button></div>' +
+    var html = '<div class="menstrual-card su-68a1a9"><h4>🌀 Tzolkin 260: busca tu kin</h4>' +
+      '<div class="conv-row"><label class="su-97445a">Kin 1–260 o fecha <input type="text" id="kinTzolkinQ" placeholder="ej: 34, 207 o 1990-05-17" value="' + esc(q) + '"></label>' +
+      '<button type="button" id="kinTzolkinGo" class="btn btn-accent su-30e741">Ver</button></div>' +
       '<div id="kinTzolkinRes"></div></div>';
-    html += '<div class="menstrual-card" style="margin-top:10px"><h4>Matriz 13 tonos × 20 sellos</h4>' +
-      '<p class="muted" style="font-size:11px">Toca un kin para ver su firma. ✦ = portal · <span style="color:var(--gold)">dorado = hoy</span>' + (mio && !mio.hunabKu ? ' · <span style="color:#7ab8ff">azul = tu kin</span>' : '') + '.</p>' +
-      '<div style="overflow-x:auto"><table style="border-collapse:collapse;font-size:10px;min-width:560px">';
-    html += '<tr><th style="padding:3px">Tono \\ Sello</th>' + SELLOS.map(function (s) { return '<th style="padding:3px" title="' + esc(s.n) + '">' + s.num + '</th>'; }).join('') + '</tr>';
+    html += '<div class="menstrual-card su-d2c171"><h4>Matriz 13 tonos × 20 sellos</h4>' +
+      '<p class="muted su-11a508">Toca un kin para ver su firma. ✦ = portal · <span class="su-e39eba">dorado = hoy</span>' + (mio && !mio.hunabKu ? ' · <span class="su-721a46">azul = tu kin</span>' : '') + '.</p>' +
+      '<div class="su-0ddf06"><table class="su-ee75bd">';
+    html += '<tr><th class="su-cda68d">Tono \\ Sello</th>' + SELLOS.map(function (s) { return '<th class="su-cda68d" title="' + esc(s.n) + '">' + s.num + '</th>'; }).join('') + '</tr>';
     for (var t = 1; t <= 13; t++) {
-      html += '<tr><td style="padding:3px"><b>' + t + '</b></td>';
+      html += '<tr><td class="su-cda68d"><b>' + t + '</b></td>';
       for (var sN = 1; sN <= 20; sN++) {
         var kn = kinPorSelloTono(sN, t);
         var isHoy = hoyK && !hoyK.hunabKu && hoyK.kin === kn;
         var isMio = mio && !mio.hunabKu && mio.kin === kn;
         var bg = isHoy ? 'background:rgba(232,197,106,.35);' : isMio ? 'background:rgba(122,184,255,.3);' : '';
         var dot = esPortal(kn) ? '✦' : '';
-        html += '<td style="padding:3px;border:1px solid var(--line);text-align:center;' + bg + '"><button type="button" data-tzkin="' + kn + '" style="background:none;border:none;cursor:pointer;font-size:10px;color:var(--text)" title="Kin ' + kn + '">' + kn + dot + '</button></td>';
+        html += '<td style="padding:3px;border:1px solid var(--line);text-align:center;' + bg + '"><button type="button" data-tzkin="' + kn + '" class="su-7a69be" title="Kin ' + kn + '">' + kn + dot + '</button></td>';
       }
       html += '</tr>';
     }
@@ -1174,7 +1174,7 @@
           var kn = parseInt(b.getAttribute('data-tzkin'), 10);
           var kc = kinCompleto(kn);
           var r = $('kinTzolkinRes'); if (!r || !kc) return;
-          r.innerHTML = '<p style="font-size:12px;margin-top:8px"><b>' + firmaLarga(kc) + '</b>' + (esPortal(kn) ? ' · <span style="color:var(--gold)">Portal ✦</span>' : '') + '<br><span class="muted">' + esc(afirmacionKin(kc)) + '</span></p>';
+          r.innerHTML = '<p class="su-b0cc7e"><b>' + firmaLarga(kc) + '</b>' + (esPortal(kn) ? ' · <span class="su-e39eba">Portal ✦</span>' : '') + '<br><span class="muted">' + esc(afirmacionKin(kc)) + '</span></p>';
           try { r.scrollIntoView({ block: 'nearest' }); } catch (e) {}
         };
       });
@@ -1186,14 +1186,14 @@
       var kc = null;
       if (/^\d{1,3}$/.test(v)) kc = kinCompleto(parseInt(v, 10));
       else if (/^\d{4}-\d{2}-\d{2}$/.test(v)) kc = calcKinMaya(v);
-      if (!kc || kc.hunabKu) { r.innerHTML = '<p class="muted" style="font-size:12px">Kin no válido (1–260 o fecha YYYY-MM-DD).</p>'; return; }
-      r.innerHTML = '<p style="font-size:12px;margin-top:8px"><b>' + firmaLarga(kc) + '</b>' + (esPortal(kc.kin) ? ' · <span style="color:var(--gold)">Portal ✦</span>' : '') + '<br><span class="muted">' + esc(afirmacionKin(kc)) + ' ' + esc(practicaKin(kc)) + '</span></p>';
+      if (!kc || kc.hunabKu) { r.innerHTML = '<p class="muted su-6cb285">Kin no válido (1–260 o fecha YYYY-MM-DD).</p>'; return; }
+      r.innerHTML = '<p class="su-b0cc7e"><b>' + firmaLarga(kc) + '</b>' + (esPortal(kc.kin) ? ' · <span class="su-e39eba">Portal ✦</span>' : '') + '<br><span class="muted">' + esc(afirmacionKin(kc)) + ' ' + esc(practicaKin(kc)) + '</span></p>';
     };
     if (_kinVerTz >= 1 && _kinVerTz <= 260) {
       var kc2 = kinCompleto(_kinVerTz);
       var r2 = $('kinTzolkinRes');
       if (kc2 && r2) {
-        r2.innerHTML = '<p style="font-size:12px;margin-top:8px"><b>' + firmaLarga(kc2) + '</b>' + (esPortal(kc2.kin) ? ' · <span style="color:var(--gold)">Portal ✦</span>' : '') + '<br><span class="muted">' + esc(afirmacionKin(kc2)) + ' ' + esc(practicaKin(kc2)) + '</span></p>';
+        r2.innerHTML = '<p class="su-b0cc7e"><b>' + firmaLarga(kc2) + '</b>' + (esPortal(kc2.kin) ? ' · <span class="su-e39eba">Portal ✦</span>' : '') + '<br><span class="muted">' + esc(afirmacionKin(kc2)) + ' ' + esc(practicaKin(kc2)) + '</span></p>';
         try { var qi = $('kinTzolkinQ'); if (qi) qi.value = String(_kinVerTz); } catch (e) {}
       }
       _kinVerTz = 0;
@@ -1211,16 +1211,16 @@
     var counts = {};
     d.diario.forEach(function (r) { counts[r.kin] = (counts[r.kin] || 0) + 1; });
     var top = Object.keys(counts).sort(function (a, b) { return counts[b] - counts[a]; }).slice(0, 5);
-    var html = '<div class="menstrual-card" style="border-color:var(--gold)"><h4>📓 ¿Cómo viviste el kin de hoy?</h4>' +
-      '<p style="font-size:12px"><b>' + esc(hoy) + '</b> · ' + esc(firmaCorta(k)) + '</p>' +
+    var html = '<div class="menstrual-card su-68a1a9"><h4>📓 ¿Cómo viviste el kin de hoy?</h4>' +
+      '<p class="su-6cb285"><b>' + esc(hoy) + '</b> · ' + esc(firmaCorta(k)) + '</p>' +
       '<div class="conv-row"><label>Energía (1–5) <select id="kinDiaPts">' + [5, 4, 3, 2, 1].map(function (n) { return '<option value="' + n + '"' + (ex && ex.pts === n ? ' selected' : '') + '>' + n + '</option>'; }).join('') + '</select></label></div>' +
       '<label>Nota <input type="text" id="kinDiaNota" placeholder="¿Cómo se expresó el sello/tono hoy?" maxlength="140" value="' + esc(ex ? ex.nota : '') + '"></label>' +
-      '<div class="dlg-actions" style="justify-content:flex-start;margin-top:6px"><button type="button" id="kinDiaSave" class="btn btn-accent" style="width:auto">Guardar hoy</button></div>' +
-      (top.length ? '<p class="muted" style="font-size:11px;margin-top:6px">Tus kins más vividos: ' + top.map(function (n) { return 'Kin ' + n + ' (×' + counts[n] + ')'; }).join(' · ') + '</p>' : '') + '</div>';
-    html += '<div class="menstrual-card" style="margin-top:10px"><h4>Historial (' + d.diario.length + ')</h4>' +
+      '<div class="dlg-actions su-8a0a91"><button type="button" id="kinDiaSave" class="btn btn-accent su-30e741">Guardar hoy</button></div>' +
+      (top.length ? '<p class="muted su-e13d76">Tus kins más vividos: ' + top.map(function (n) { return 'Kin ' + n + ' (×' + counts[n] + ')'; }).join(' · ') + '</p>' : '') + '</div>';
+    html += '<div class="menstrual-card su-d2c171"><h4>Historial (' + d.diario.length + ')</h4>' +
       (d.diario.length ? d.diario.slice().reverse().slice(0, 30).map(function (r) {
-        return '<div class="habit-item"><div><b>' + esc(r.fecha) + '</b> · Kin ' + esc(String(r.kin)) + ' · ' + '★'.repeat(r.pts) + '<br><span class="muted" style="font-size:11px">' + esc(r.nota || '') + '</span></div>' +
-          '<button type="button" class="btn" style="width:auto" data-diadel="' + esc(r.fecha) + '">✕</button></div>';
+        return '<div class="habit-item"><div><b>' + esc(r.fecha) + '</b> · Kin ' + esc(String(r.kin)) + ' · ' + '★'.repeat(r.pts) + '<br><span class="muted su-11a508">' + esc(r.nota || '') + '</span></div>' +
+          '<button type="button" class="btn su-30e741" data-diadel="' + esc(r.fecha) + '">✕</button></div>';
       }).join('') : '<p class="muted">Aún sin registros. Guarda cómo viviste hoy y vuelve mañana.</p>') + '</div>';
     box.innerHTML = html;
     var sv = $('kinDiaSave');
@@ -1247,26 +1247,26 @@
   function renderKinLunas() {
     var box = $('kinLunasBox'); if (!box) return;
     var hoy = todayKey();
-    var html = '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🌙 Kin maya y las 13 lunas</h4>' +
-      '<p class="muted" style="font-size:11px">El Tzolkin (260 días) y las 13 lunas (364 días) se entrelazan: cada día lunar tiene su kin. Aquí van los próximos 28 días desde hoy con su luna, plasma y kin.</p></div>';
+    var html = '<div class="menstrual-card su-68a1a9"><h4>🌙 Kin maya y las 13 lunas</h4>' +
+      '<p class="muted su-11a508">El Tzolkin (260 días) y las 13 lunas (364 días) se entrelazan: cada día lunar tiene su kin. Aquí van los próximos 28 días desde hoy con su luna, plasma y kin.</p></div>';
     var l = lunaDeFecha(hoy);
     if (l) {
       var plasma = plasmaDeLunaDia(l.dia);
-      html += '<div class="menstrual-card" style="margin-top:10px"><h4>' + esc(lunaTxt(hoy)) + '</h4>' +
-        (plasma ? '<p style="font-size:12px"><b>Plasma ' + esc(plasma.nombre) + '</b> · ' + esc(plasma.chakra) + ' · mantra ' + esc(plasma.mantra) + '<br><span class="muted">' + esc(plasma.practica) + '</span></p>' : '') + '</div>';
+      html += '<div class="menstrual-card su-d2c171"><h4>' + esc(lunaTxt(hoy)) + '</h4>' +
+        (plasma ? '<p class="su-6cb285"><b>Plasma ' + esc(plasma.nombre) + '</b> · ' + esc(plasma.chakra) + ' · mantra ' + esc(plasma.mantra) + '<br><span class="muted">' + esc(plasma.practica) + '</span></p>' : '') + '</div>';
     } else {
-      html += '<div class="menstrual-card" style="margin-top:10px"><p class="muted" style="font-size:11px">Hoy estás fuera de luna mapeada: igual puedes leer los kins de los próximos días.</p></div>';
+      html += '<div class="menstrual-card su-d2c171"><p class="muted su-11a508">Hoy estás fuera de luna mapeada: igual puedes leer los kins de los próximos días.</p></div>';
     }
-    html += '<div class="menstrual-card" style="margin-top:10px"><h4>Próximos 28 días: luna + kin</h4><table style="width:100%;font-size:11px;border-collapse:collapse">' +
-      '<tr style="text-align:left"><th style="padding:4px">Fecha</th><th style="padding:4px">Luna</th><th style="padding:4px">Kin</th><th style="padding:4px">Firma</th></tr>';
+    html += '<div class="menstrual-card su-d2c171"><h4>Próximos 28 días: luna + kin</h4><table class="su-a635bd">' +
+      '<tr class="su-6be0d8"><th class="su-2f0ad3">Fecha</th><th class="su-2f0ad3">Luna</th><th class="su-2f0ad3">Kin</th><th class="su-2f0ad3">Firma</th></tr>';
     proximosKins(28, hoy).forEach(function (r, i) {
       var lt = lunaTxt(r.fecha);
-      var f = (r.kin && !r.kin.hunabKu) ? ('<b>' + r.kin.kin + (esPortal(r.kin.kin) ? ' ✦' : '') + '</b></td><td style="padding:4px;color:' + r.kin.sello.color + '">' + esc(r.kin.sello.n) + ' ' + esc(r.kin.tono.nombre)) : ('0.0 Hunab Ku</td><td style="padding:4px">—');
-      html += '<tr style="border-top:1px solid var(--line)' + (i === 0 ? ';background:rgba(232,197,106,.12)' : '') + '"><td style="padding:4px">' + (i === 0 ? 'Hoy ' : '') + esc(r.fecha.slice(5)) + '</td><td style="padding:4px">' + esc(lt || '—') + '</td><td style="padding:4px">' + f + '</td></tr>';
+      var f = (r.kin && !r.kin.hunabKu) ? ('<b>' + r.kin.kin + (esPortal(r.kin.kin) ? ' ✦' : '') + '</b></td><td style="padding:4px;color:' + r.kin.sello.color + '">' + esc(r.kin.sello.n) + ' ' + esc(r.kin.tono.nombre)) : ('0.0 Hunab Ku</td><td class="su-2f0ad3">—');
+      html += '<tr style="border-top:1px solid var(--line)' + (i === 0 ? ';background:rgba(232,197,106,.12)' : '') + '"><td class="su-2f0ad3">' + (i === 0 ? 'Hoy ' : '') + esc(r.fecha.slice(5)) + '</td><td class="su-2f0ad3">' + esc(lt || '—') + '</td><td class="su-2f0ad3">' + f + '</td></tr>';
     });
     html += '</table></div>';
-    html += '<div class="menstrual-card" style="margin-top:10px"><h4>Guía de lectura</h4>' +
-      '<p style="font-size:11px">• <b>Kin natal:</b> tu esencia fija (pestaña Mi kin).<br>• <b>Kin del día:</b> la energía del momento (pestaña Hoy).<br>• <b>Plasma:</b> el ritual semanal (Dali→Silio).<br>• <b>Portal ✦:</b> día intenso: medita antes de actuar.</p></div>';
+    html += '<div class="menstrual-card su-d2c171"><h4>Guía de lectura</h4>' +
+      '<p class="su-11a508">• <b>Kin natal:</b> tu esencia fija (pestaña Mi kin).<br>• <b>Kin del día:</b> la energía del momento (pestaña Hoy).<br>• <b>Plasma:</b> el ritual semanal (Dali→Silio).<br>• <b>Portal ✦:</b> día intenso: medita antes de actuar.</p></div>';
     box.innerHTML = html;
   }
 
@@ -1299,16 +1299,16 @@
       '<p>Rezo de apertura del día en la tradición del sincronario de 13 lunas (Ley del Tiempo). Se recita al amanecer, de cara a cada dirección, para alinear mente y naturaleza antes de consultar tu kin del día.</p></div>';
     html += ORACION_DIRECCIONES.map(function (d) {
       return '<div class="si-card" style="border-left:3px solid ' + d.color + '">' +
-        '<h4 style="font-size:13px">' + d.icon + ' ' + esc(d.desde) + ', ' + esc(d.casa) + '</h4>' +
-        '<p style="font-size:12px"><i>' + esc(d.texto) + '</i></p></div>';
+        '<h4 class="su-5e0faa">' + d.icon + ' ' + esc(d.desde) + ', ' + esc(d.casa) + '</h4>' +
+        '<p class="su-6cb285"><i>' + esc(d.texto) + '</i></p></div>';
     }).join('');
-    html += '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🌟 Cierre tradicional</h4>' +
-      '<p style="font-size:14px"><b>' + esc(ORACION_CIERRE) + '</b></p>' +
-      '<p class="muted" style="font-size:11px">«' + esc(ORACION_CIERRE_TRAD) + '»</p>' +
-      '<div class="dlg-actions" style="justify-content:flex-start;flex-wrap:wrap;gap:6px">' +
-      '<button type="button" id="ora7Share" class="btn btn-accent" style="width:auto">📤 Compartir</button>' +
-      '<button type="button" id="ora7Copy" class="btn" style="width:auto">📋 Copiar</button>' +
-      '<button type="button" id="ora7Llevar" class="btn" style="width:auto">📝 Llevar a nota de hoy</button></div></div>';
+    html += '<div class="menstrual-card su-68a1a9"><h4>🌟 Cierre tradicional</h4>' +
+      '<p class="su-433de3"><b>' + esc(ORACION_CIERRE) + '</b></p>' +
+      '<p class="muted su-11a508">«' + esc(ORACION_CIERRE_TRAD) + '»</p>' +
+      '<div class="dlg-actions su-1a6bc0">' +
+      '<button type="button" id="ora7Share" class="btn btn-accent su-30e741">📤 Compartir</button>' +
+      '<button type="button" id="ora7Copy" class="btn su-30e741">📋 Copiar</button>' +
+      '<button type="button" id="ora7Llevar" class="btn su-30e741">📝 Llevar a nota de hoy</button></div></div>';
     box.innerHTML = html;
     var sh = $('ora7Share');
     if (sh) sh.onclick = function () { share('Oración 7 direcciones', textoOracionPlano()); };
@@ -1356,25 +1356,25 @@
   function buildDialog() {
     makeDialog('kinMayaDialog', 'Kin Maya — Tzolkin y sincronización',
       'El <b>kin maya</b> es tu firma energética en el calendario sagrado de 260 días. Descubre tu sello solar, tu tono galáctico y cómo se sincroniza con las 13 lunas. Todo queda <b>privado y local</b>.',
-      '<div class="timer-tabs" style="flex-wrap:wrap;margin-bottom:10px">' +
-      '<button type="button" id="tabKinGuia" class="btn btn-accent" style="width:auto">Guía</button>' +
-      '<button type="button" id="tabKinHoy" class="btn" style="width:auto">☀️ Hoy</button>' +
-      '<button type="button" id="tabKinSellos" class="btn" style="width:auto">Sellos</button>' +
-      '<button type="button" id="tabKinTonos" class="btn" style="width:auto">Tonos</button>' +
-      '<button type="button" id="tabKinFamilias" class="btn" style="width:auto">Familias</button>' +
-      '<button type="button" id="tabKinCastillo" class="btn" style="width:auto">Castillo</button>' +
-      '<button type="button" id="tabKinCalculo" class="btn" style="width:auto">Mi kin</button>' +
-      '<button type="button" id="tabKinOnda" class="btn" style="width:auto">🌊 Ondas</button>' +
-      '<button type="button" id="tabKinPortales" class="btn" style="width:auto">✦ Portales</button>' +
-      '<button type="button" id="tabKinSinas" class="btn" style="width:auto">💞 Sinastría</button>' +
-      '<button type="button" id="tabKinTzolkin" class="btn" style="width:auto">🌀 Tzolkin</button>' +
-      '<button type="button" id="tabKinLunas" class="btn" style="width:auto">Lunas</button>' +
-      '<button type="button" id="tabKinDiario" class="btn" style="width:auto">📓 Diario</button>' +
-      '<button type="button" id="tabKinOracion" class="btn" style="width:auto">🙏 Oración</button></div>' +
+      '<div class="timer-tabs su-dd1da5">' +
+      '<button type="button" id="tabKinGuia" class="btn btn-accent su-30e741">Guía</button>' +
+      '<button type="button" id="tabKinHoy" class="btn su-30e741">☀️ Hoy</button>' +
+      '<button type="button" id="tabKinSellos" class="btn su-30e741">Sellos</button>' +
+      '<button type="button" id="tabKinTonos" class="btn su-30e741">Tonos</button>' +
+      '<button type="button" id="tabKinFamilias" class="btn su-30e741">Familias</button>' +
+      '<button type="button" id="tabKinCastillo" class="btn su-30e741">Castillo</button>' +
+      '<button type="button" id="tabKinCalculo" class="btn su-30e741">Mi kin</button>' +
+      '<button type="button" id="tabKinOnda" class="btn su-30e741">🌊 Ondas</button>' +
+      '<button type="button" id="tabKinPortales" class="btn su-30e741">✦ Portales</button>' +
+      '<button type="button" id="tabKinSinas" class="btn su-30e741">💞 Sinastría</button>' +
+      '<button type="button" id="tabKinTzolkin" class="btn su-30e741">🌀 Tzolkin</button>' +
+      '<button type="button" id="tabKinLunas" class="btn su-30e741">Lunas</button>' +
+      '<button type="button" id="tabKinDiario" class="btn su-30e741">📓 Diario</button>' +
+      '<button type="button" id="tabKinOracion" class="btn su-30e741">🙏 Oración</button></div>' +
       '<div id="kinGuia"><div id="kinGuiaBox"></div></div>' +
       '<div id="kinHoy" class="hidden"><div id="kinHoyBox"></div></div>' +
       '<div id="kinSellos" class="hidden">' +
-      '<div class="conv-row" style="margin-bottom:8px"><label style="flex:1">Buscar sello <input type="text" id="kinSellosQ" placeholder="nombre, cualidad, color, pregunta..." autocomplete="off"></label></div>' +
+      '<div class="conv-row su-fdf33f"><label class="su-97445a">Buscar sello <input type="text" id="kinSellosQ" placeholder="nombre, cualidad, color, pregunta..." autocomplete="off"></label></div>' +
       '<div id="kinSellosBox"></div></div>' +
       '<div id="kinTonos" class="hidden"><div id="kinTonosBox"></div></div>' +
       '<div id="kinFamilias" class="hidden"><div id="kinFamiliasBox"></div></div>' +
@@ -1383,7 +1383,7 @@
       '<div id="kinOnda" class="hidden"><div id="kinOndaBox"></div></div>' +
       '<div id="kinPortales" class="hidden"><div id="kinPortalesBox"></div></div>' +
       '<div id="kinSinas" class="hidden"><div id="kinSinasBox"></div></div>' +
-      '<div id="kinTzolkin" class="hidden"><div class="conv-row" style="margin-bottom:8px"></div><div id="kinTzolkinBox"></div></div>' +
+      '<div id="kinTzolkin" class="hidden"><div class="conv-row su-fdf33f"></div><div id="kinTzolkinBox"></div></div>' +
       '<div id="kinLunas" class="hidden"><div id="kinLunasBox"></div></div>' +
       '<div id="kinDiario" class="hidden"><div id="kinDiarioBox"></div></div>' +
       '<div id="kinOracion" class="hidden"><div id="kinOracionBox"></div></div>');

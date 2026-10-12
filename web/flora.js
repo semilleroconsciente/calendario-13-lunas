@@ -175,9 +175,9 @@ function allFloraSpecies() {
     .concat(getFloraCustom().map(function (f) { return normFlora(f, true); }));
 }
 function origenChip(f) {
-  if (f.origen === 'endemica') return '<span class="chip" style="font-size:9px;background:#e8c56a22;color:var(--gold);border-color:#e8c56a55">🌿 Endémica</span>';
-  if (f.origen === 'introducida') return '<span class="chip" style="font-size:9px;background:#e76e8a22;color:#e76e8a;border-color:#e76e8a55">⚠️ Introducida</span>';
-  return '<span class="chip" style="font-size:9px;background:#a9d18e22;color:#a9d18e;border-color:#a9d18e55">🌱 Nativa</span>';
+  if (f.origen === 'endemica') return '<span class="chip su-545ca3">🌿 Endémica</span>';
+  if (f.origen === 'introducida') return '<span class="chip su-1b377e">⚠️ Introducida</span>';
+  return '<span class="chip su-421073">🌱 Nativa</span>';
 }
 function matchFiltro(f) {
   if (floraFiltro === 'nativas') return f.origen !== 'introducida';
@@ -224,11 +224,11 @@ function renderFloraHoy() {
     var nNat = FB.filter(function (f) { return f.origen !== 'introducida'; }).length;
     var nOrn = FB.filter(function (f) { return f.orn && f.origen !== 'introducida'; }).length;
     var nInt = FB.filter(function (f) { return f.origen === 'introducida'; }).length;
-    todayBox.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">' +
-      '<span style="font-size:14px"><b>🌸 Hoy — ' + esc(k) + '</b></span>' +
-      '<span class="chip" style="background:var(--gold);color:#10142c">' + hoy + ' hoy · ' + entries.length + ' total · ' + Object.keys(spp).length + ' especies</span></div>' +
-      '<p class="muted" style="font-size:11px;margin-top:6px">' + dynFloraIntro() + '</p>' +
-      '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">' +
+    todayBox.innerHTML = '<div class="su-24ce67">' +
+      '<span class="su-433de3"><b>🌸 Hoy — ' + esc(k) + '</b></span>' +
+      '<span class="chip su-e4aba6">' + hoy + ' hoy · ' + entries.length + ' total · ' + Object.keys(spp).length + ' especies</span></div>' +
+      '<p class="muted su-e13d76">' + dynFloraIntro() + '</p>' +
+      '<div class="su-c158a9">' +
       '<span class="chip">🌱 ' + nNat + ' nativas</span>' +
       '<span class="chip">🏵️ ' + nOrn + ' ornamentales</span>' +
       '<span class="chip">⚠️ ' + nInt + ' introducidas (cuidado)</span></div>';
@@ -254,21 +254,21 @@ function renderFloraHoy() {
   var nMine = getFloraCustom().length;
   var fBtn = function (id, label) {
     var on = floraFiltro === id;
-    return '<button type="button" data-flf="' + id + '" class="btn' + (on ? ' btn-accent' : '') + '" style="width:auto;font-size:11px">' + label + '</button>';
+    return '<button type="button" data-flf="' + id + '" class="btn' + (on ? ' btn-accent' : '') + ' su-337714">' + label + '</button>';
   };
   var html = '<div class="fl-filters">' +
     fBtn('todas', '🌸 Todas') + fBtn('nativas', '🌱 Nativas') + fBtn('orn', '🏵️ Ornamentales') + fBtn('intro', '⚠️ Introducidas') + '</div>';
-  html += '<input type="text" id="floraCatFilter" placeholder="🔍 Filtrar... (ej: sol, sombra, picaflor, maceta)" autocomplete="off" value="' + esc(floraCatQ) + '" style="margin-bottom:6px">';
-  html += '<p class="muted" style="font-size:10px;margin:2px 0 6px">' + dynFloraBase().length + ' base' + (nMine ? ' + <b>' + nMine + ' mías</b>' : '') + ' · mostrando ' + list.length + ' · toca una para cargarla en la bitácora.</p>';
+  html += '<input type="text" id="floraCatFilter" placeholder="🔍 Filtrar... (ej: sol, sombra, picaflor, maceta)" autocomplete="off" value="' + esc(floraCatQ) + '" class="su-4e420a">';
+  html += '<p class="muted su-2c4c6c">' + dynFloraBase().length + ' base' + (nMine ? ' + <b>' + nMine + ' mías</b>' : '') + ' · mostrando ' + list.length + ' · toca una para cargarla en la bitácora.</p>';
   if (!list.length) html += '<p class="muted">Sin resultados. Prueba con "sol", "sombra", "picaflor" o "maceta" — o agrégala abajo.</p>';
   html += '<div class="fishing-species">' + list.map(function (f) {
-    var mineChip = f.mine ? '<span class="chip" style="font-size:9px;background:#a9d18e22;color:#a9d18e;border-color:#a9d18e55">mía</span>' : '';
-    var ornChip = (f.orn && f.origen !== 'introducida') ? '<span class="chip" style="font-size:9px;background:#e8c56a22;color:var(--gold);border-color:#e8c56a55">🏵️ Ornamental</span>' : '';
+    var mineChip = f.mine ? '<span class="chip su-421073">mía</span>' : '';
+    var ornChip = (f.orn && f.origen !== 'introducida') ? '<span class="chip su-545ca3">🏵️ Ornamental</span>' : '';
     var border = f.origen === 'introducida' ? ';border-color:#e76e8a44;opacity:.92' : (f.mine ? ';border-color:#a9d18e55' : (f.orn ? ';border-color:#e8c56a55' : ''));
     var card = '<div class="fishing-species-item fl-card" style="cursor:pointer' + border + '" data-flora="' + esc(f.nombre) + '">' +
       '<div class="fl-head"><b class="fl-name">' + (f.origen === 'introducida' ? '⚠️ ' : '🌸 ') + esc(f.nombre) + '</b>' + mineChip + '</div>' +
       (f.cient ? '<div class="fl-sci">' + esc(f.cient) + '</div>' : '') +
-      '<div class="fl-chips">' + origenChip(f) + ornChip + (f.tipo ? '<span class="chip" style="font-size:9px">' + esc(f.tipo) + '</span>' : '') + '</div>' +
+      '<div class="fl-chips">' + origenChip(f) + ornChip + (f.tipo ? '<span class="chip su-fb2957">' + esc(f.tipo) + '</span>' : '') + '</div>' +
       ((f.hab || f.epoca) ? '<div class="fl-hab">' + esc([f.hab, f.epoca].filter(Boolean).join(' · ')) + '</div>' : '') +
       (f.nota ? '<div class="fl-nota">' + esc(f.nota) + '</div>' : '');
     if (f.orn && f.origen !== 'introducida' && (f.luz || f.riego || f.multi || f.jardin)) {
@@ -277,14 +277,14 @@ function renderFloraHoy() {
     }
     return card + '</div>';
   }).join('') + '</div>';
-  html += '<details style="border:1px dashed var(--gold);border-radius:10px;padding:8px 10px;margin-top:6px"><summary style="cursor:pointer;font-size:12px;color:var(--gold)"><b>➕ Agregar especie</b></summary>' +
-    '<div class="conv-row" style="margin-top:8px"><label style="flex:2">Especie * <input type="text" id="floraSpName" placeholder="ej: Huilmo, Calle-calle" maxlength="30"></label></div>' +
-    '<div class="conv-row"><label style="flex:2">Nombre científico <input type="text" id="floraSpCient" placeholder="ej: Sisyrinchium striatum" maxlength="40"></label><label>Tipo <input type="text" id="floraSpTipo" placeholder="ej: Hierba flor" maxlength="24"></label></div>' +
+  html += '<details class="su-9cf9f9"><summary class="su-d9db22"><b>➕ Agregar especie</b></summary>' +
+    '<div class="conv-row su-8a77e5"><label class="su-4b3de7">Especie * <input type="text" id="floraSpName" placeholder="ej: Huilmo, Calle-calle" maxlength="30"></label></div>' +
+    '<div class="conv-row"><label class="su-4b3de7">Nombre científico <input type="text" id="floraSpCient" placeholder="ej: Sisyrinchium striatum" maxlength="40"></label><label>Tipo <input type="text" id="floraSpTipo" placeholder="ej: Hierba flor" maxlength="24"></label></div>' +
     '<div class="conv-row"><label>Origen <select id="floraSpOrigen"><option value="nativa">🌱 Nativa</option><option value="endemica">🌿 Endémica</option><option value="introducida">⚠️ Introducida</option></select></label>' +
-    '<label style="justify-content:flex-end">🏵️ Ornamental <input type="checkbox" id="floraSpOrn" checked style="width:auto"></label></div>' +
-    '<div class="conv-row"><label style="flex:2">Dónde la viste <input type="text" id="floraSpHab" placeholder="ej: Borde estero Penco" maxlength="50"></label><label>Época <input type="text" id="floraSpEpoca" placeholder="ej: Pewü" maxlength="25"></label></div>' +
+    '<label class="su-455f8c">🏵️ Ornamental <input type="checkbox" id="floraSpOrn" checked class="su-30e741"></label></div>' +
+    '<div class="conv-row"><label class="su-4b3de7">Dónde la viste <input type="text" id="floraSpHab" placeholder="ej: Borde estero Penco" maxlength="50"></label><label>Época <input type="text" id="floraSpEpoca" placeholder="ej: Pewü" maxlength="25"></label></div>' +
     '<label>Nota / jardín <input type="text" id="floraSpNota" placeholder="ej: Sol, poco riego, división en otoño" maxlength="100"></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="floraSpAdd" class="btn btn-accent" style="width:auto">+ Guardar especie</button></div></details>';
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="floraSpAdd" class="btn btn-accent su-30e741">+ Guardar especie</button></div></details>';
   catBox.innerHTML = html;
   catBox.querySelectorAll('[data-flf]').forEach(function (b) {
     b.onclick = function () { floraFiltro = b.getAttribute('data-flf'); renderFloraHoy(); };
@@ -356,9 +356,9 @@ function renderFloraLog() {
   if (!data.length) { box.innerHTML = '<p class="muted">Sin registros. Observa una nativa del estero o planta una ornamental en tu patio y anótala: fecha, lugar y foto valen ciencia.</p>'; if (stats) stats.textContent = '0 registros'; return; }
   var sorted = data.slice().sort(function (a, b) { return (b.date + (b.time || '')).localeCompare(a.date + (a.time || '')); });
   box.innerHTML = sorted.slice(0, 80).map(function (it) {
-    return '<div class="habit-item" style="display:flex;justify-content:space-between;align-items:center"><span><b>' + esc(it.species) + '</b> · <span class="chip" style="font-size:10px">' + esc(it.kind || 'observación') + '</span>' + (it.qty ? ' · ' + esc(it.qty) : '') + ' — ' + esc(it.place || '—') +
-      '<br><span class="muted" style="font-size:11px">' + esc(it.date) + ' ' + esc(it.time || '') + ' · ' + esc(lunaTxt(it.date)) + '</span><br><span class="muted" style="font-size:11px">' + esc(it.notes || '') + '</span></span>' +
-      '<span style="display:flex;gap:6px;flex:0 0 auto"><button data-id="' + it.id + '" class="btn flora-share" style="width:auto;font-size:11px" title="Compartir">📤</button><button data-id="' + it.id + '" class="btn flora-edit" style="width:auto;font-size:11px">✏️</button><button data-id="' + it.id + '" class="btn flora-del" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55">✕</button></span></div>';
+    return '<div class="habit-item su-13313b"><span><b>' + esc(it.species) + '</b> · <span class="chip su-0d5be0">' + esc(it.kind || 'observación') + '</span>' + (it.qty ? ' · ' + esc(it.qty) : '') + ' — ' + esc(it.place || '—') +
+      '<br><span class="muted su-11a508">' + esc(it.date) + ' ' + esc(it.time || '') + ' · ' + esc(lunaTxt(it.date)) + '</span><br><span class="muted su-11a508">' + esc(it.notes || '') + '</span></span>' +
+      '<span class="su-0c0cb1"><button data-id="' + it.id + '" class="btn flora-share su-337714" title="Compartir">📤</button><button data-id="' + it.id + '" class="btn flora-edit su-337714">✏️</button><button data-id="' + it.id + '" class="btn flora-del su-fd834a">✕</button></span></div>';
   }).join('');
   var set = {};
   data.forEach(function (x) { set[String(x.species || '').toLowerCase()] = 1; });
@@ -398,37 +398,37 @@ function renderFloraLinks() {
   if (!box) return;
   var mine = [];
   try { mine = getFloraLinks() || []; } catch (e) {}
-  var html = '<div class="menstrual-card" style="border-color:var(--gold)"><h4>🔗 Links de interés — flora nativa cuenca estero Penco</h4>' +
-    '<p class="muted" style="font-size:11px">Referencias abiertas para comparar tus observaciones y elegir nativas para el jardín. El primero es el registro publicado de la cuenca.</p>';
+  var html = '<div class="menstrual-card su-68a1a9"><h4>🔗 Links de interés — flora nativa cuenca estero Penco</h4>' +
+    '<p class="muted su-11a508">Referencias abiertas para comparar tus observaciones y elegir nativas para el jardín. El primero es el registro publicado de la cuenca.</p>';
   html += dynFloraLinks().map(function (l, i) {
     var btn = i === 0 ? '🔗 Abrir registro (Zenodo)' : '🔗 Abrir';
-    return '<div class="si-card" style="padding:8px 10px"><h4 style="font-size:12px">📚 ' + esc(l.titulo) + '</h4>' +
-      '<p class="muted" style="font-size:11px">👤 ' + esc(l.autor) + '</p>' +
-      '<p style="font-size:11px">' + esc(l.nota) + '</p>' +
-      '<div class="dlg-actions" style="justify-content:flex-start;margin-top:6px"><a class="btn btn-accent" style="width:auto;text-decoration:none" href="' + esc(l.url) + '" target="_blank" rel="noopener">' + btn + '</a>' +
-      '<button type="button" class="btn" style="width:auto" data-copy="' + esc(l.url) + '">📋 Copiar enlace</button></div>' +
-      '<p class="muted" style="font-size:10px;margin-top:4px;word-break:break-all">' + esc(l.url) + '</p></div>';
+    return '<div class="si-card su-cfa1ec"><h4 class="su-6cb285">📚 ' + esc(l.titulo) + '</h4>' +
+      '<p class="muted su-11a508">👤 ' + esc(l.autor) + '</p>' +
+      '<p class="su-11a508">' + esc(l.nota) + '</p>' +
+      '<div class="dlg-actions su-8a0a91"><a class="btn btn-accent su-7ab949" href="' + esc(l.url) + '" target="_blank" rel="noopener">' + btn + '</a>' +
+      '<button type="button" class="btn su-30e741" data-copy="' + esc(l.url) + '">📋 Copiar enlace</button></div>' +
+      '<p class="muted su-785912">' + esc(l.url) + '</p></div>';
   }).join('');
-  html += '<div class="dlg-actions" style="justify-content:flex-start;margin-top:8px;flex-wrap:wrap">' +
-    '<button type="button" id="floraGoBosque" class="btn" style="width:auto;font-size:11px">🌳 Ir a Bosque Nativo</button>' +
-    '<button type="button" id="floraGoLawen" class="btn" style="width:auto;font-size:11px">🌿 Ir a Lawen Herbario</button>' +
-    '<button type="button" id="floraGoAves" class="btn" style="width:auto;font-size:11px">🦅 Ir a Aves</button></div></div>';
-  html += '<div class="menstrual-card" style="margin-top:10px"><h4>➕ Mis enlaces (privados)</h4>' +
-    '<p class="muted" style="font-size:11px">Guarda guías, PDFs o fotos de referencia. Quedan solo en tu usuario.</p>' +
+  html += '<div class="dlg-actions su-5010dc">' +
+    '<button type="button" id="floraGoBosque" class="btn su-337714">🌳 Ir a Bosque Nativo</button>' +
+    '<button type="button" id="floraGoLawen" class="btn su-337714">🌿 Ir a Lawen Herbario</button>' +
+    '<button type="button" id="floraGoAves" class="btn su-337714">🦅 Ir a Aves</button></div></div>';
+  html += '<div class="menstrual-card su-d2c171"><h4>➕ Mis enlaces (privados)</h4>' +
+    '<p class="muted su-11a508">Guarda guías, PDFs o fotos de referencia. Quedan solo en tu usuario.</p>' +
     '<label>Título * <input type="text" id="floraLinkTitle" placeholder="ej: Guía de helechos de Chile" maxlength="80"></label>' +
     '<label>URL * <input type="url" id="floraLinkUrl" placeholder="https://..." maxlength="300"></label>' +
     '<label>Nota <input type="text" id="floraLinkNota" placeholder="ej: Clave para distinguir Blechnum" maxlength="120"></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="floraLinkAdd" class="btn btn-accent" style="width:auto">+ Guardar enlace</button></div>';
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="floraLinkAdd" class="btn btn-accent su-30e741">+ Guardar enlace</button></div>';
   if (mine.length) {
-    html += '<div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">' + mine.map(function (l) {
-      return '<div class="si-card" style="padding:8px 10px;border-style:dashed"><h4 style="font-size:12px">🔗 ' + esc(l.titulo) + ' <span class="chip" style="font-size:9px">mío</span></h4>' +
-        (l.nota ? '<p class="muted" style="font-size:11px">' + esc(l.nota) + '</p>' : '') +
-        '<div class="dlg-actions" style="justify-content:flex-start;margin-top:4px"><a class="btn" style="width:auto;font-size:11px;text-decoration:none" href="' + esc(l.url) + '" target="_blank" rel="noopener">Abrir</a>' +
-        '<button type="button" class="btn" style="width:auto;font-size:11px" data-copy="' + esc(l.url) + '">📋 Copiar</button>' +
-        '<button type="button" class="btn" style="width:auto;font-size:11px;color:#e76e8a;border-color:#e76e8a55" data-linkdel="' + l.id + '">✕ Borrar</button></div></div>';
+    html += '<div class="su-a22da5">' + mine.map(function (l) {
+      return '<div class="si-card su-2bc779"><h4 class="su-6cb285">🔗 ' + esc(l.titulo) + ' <span class="chip su-fb2957">mío</span></h4>' +
+        (l.nota ? '<p class="muted su-11a508">' + esc(l.nota) + '</p>' : '') +
+        '<div class="dlg-actions su-2357e7"><a class="btn su-b24d9d" href="' + esc(l.url) + '" target="_blank" rel="noopener">Abrir</a>' +
+        '<button type="button" class="btn su-337714" data-copy="' + esc(l.url) + '">📋 Copiar</button>' +
+        '<button type="button" class="btn su-fd834a" data-linkdel="' + l.id + '">✕ Borrar</button></div></div>';
     }).join('') + '</div>';
   } else {
-    html += '<p class="muted" style="font-size:11px;margin-top:6px">Aún no guardas enlaces propios.</p>';
+    html += '<p class="muted su-e13d76">Aún no guardas enlaces propios.</p>';
   }
   html += '</div>';
   box.innerHTML = html;
@@ -472,35 +472,35 @@ function ensureFloraDialog() {
   d.id = 'floraDialog';
   d.innerHTML =
     '<form method="dialog">' +
-    '<div class="dlg-actions" style="justify-content:space-between;margin-bottom:10px">' +
-    '<h3 style="margin:0;color:var(--accent)">🌸 Flora nativa y ornamental — estero Penco</h3>' +
+    '<div class="dlg-actions su-d2d053">' +
+    '<h3 class="su-ee0cfe">🌸 Flora nativa y ornamental — estero Penco</h3>' +
     '<button type="button" id="floraCloseTop" class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    '<p class="muted" style="line-height:1.5">Nativas de la cuenca del estero Penco (Biobío, Chile) + jardín con ornamentales nativas. Registro <b>privado y local</b> por usuario. En el cerro observa sin arrancar; en casa prefiere nativas.</p>' +
-    '<div class="timer-tabs" style="margin-bottom:10px;flex-wrap:wrap">' +
-    '<button type="button" id="tabFloraHoy" class="btn btn-accent" style="width:auto">🌸 Flora hoy</button>' +
-    '<button type="button" id="tabFloraBit" class="btn" style="width:auto">📓 Bitácora</button>' +
-    '<button type="button" id="tabFloraLinks" class="btn" style="width:auto">🔗 Links de interés</button></div>' +
-    '<div id="floraHoyPanel"><div id="floraTodayBox" class="menstrual-card" style="border-color:var(--gold)"></div>' +
-    '<div class="fishing-grid" style="margin-top:10px"><div class="menstrual-card"><h4>🌱 Especies nativas + 🏵️ ornamentales</h4><div id="floraCatalogBox" class="fishing-species"></div></div>' +
-    '<div class="menstrual-card"><h4>🌙 Luna, observación y jardín</h4><p class="muted" style="font-size:11px">Llena: mejor luz y aroma para identificar flores. Menguante: semilla madura en papel + división de matas. Nueva: ordena fotos y planifica qué nativa plantar en Pukem.</p>' +
-    '<div id="floraMoonBox" class="chip" style="display:block;white-space:normal"></div>' +
-    '<div class="menstrual-card" style="margin-top:8px;background:var(--panel)"><h4 style="font-size:11px">🏵️ Jardín nativo en Penco</h4><p class="muted" style="font-size:11px">• Sol y sequía: azulillo, añañuca, chagual, cortadera. • Sombra húmeda: chilco, nalca, helechos, culantrillo. • Picaflores: chilco + tabaco del diablo. • Compra en vivero nativo, no extraigas del cerro ni del estero.</p></div>' +
-    '<div class="menstrual-card" style="margin-top:8px;background:var(--panel)"><h4 style="font-size:11px">⚠️ Buen vivir</h4><p class="muted" style="font-size:11px">• Foto antes que muestra. • No arranques raíz ni cortes matas. • Menta y mora solo en maceta o plato: son invasoras del estero. • Lava calzado si vienes de otro estero.</p></div></div></div></div>' +
-    '<div id="floraBitPanel" class="hidden"><div class="menstrual-card" style="margin-top:10px"><h4>📓 Bitácora — salidas y jardín</h4>' +
+    '<p class="muted su-77e2fe">Nativas de la cuenca del estero Penco (Biobío, Chile) + jardín con ornamentales nativas. Registro <b>privado y local</b> por usuario. En el cerro observa sin arrancar; en casa prefiere nativas.</p>' +
+    '<div class="timer-tabs su-4dca21">' +
+    '<button type="button" id="tabFloraHoy" class="btn btn-accent su-30e741">🌸 Flora hoy</button>' +
+    '<button type="button" id="tabFloraBit" class="btn su-30e741">📓 Bitácora</button>' +
+    '<button type="button" id="tabFloraLinks" class="btn su-30e741">🔗 Links de interés</button></div>' +
+    '<div id="floraHoyPanel"><div id="floraTodayBox" class="menstrual-card su-68a1a9"></div>' +
+    '<div class="fishing-grid su-d2c171"><div class="menstrual-card"><h4>🌱 Especies nativas + 🏵️ ornamentales</h4><div id="floraCatalogBox" class="fishing-species"></div></div>' +
+    '<div class="menstrual-card"><h4>🌙 Luna, observación y jardín</h4><p class="muted su-11a508">Llena: mejor luz y aroma para identificar flores. Menguante: semilla madura en papel + división de matas. Nueva: ordena fotos y planifica qué nativa plantar en Pukem.</p>' +
+    '<div id="floraMoonBox" class="chip su-f5ce59"></div>' +
+    '<div class="menstrual-card su-afef99"><h4 class="su-11a508">🏵️ Jardín nativo en Penco</h4><p class="muted su-11a508">• Sol y sequía: azulillo, añañuca, chagual, cortadera. • Sombra húmeda: chilco, nalca, helechos, culantrillo. • Picaflores: chilco + tabaco del diablo. • Compra en vivero nativo, no extraigas del cerro ni del estero.</p></div>' +
+    '<div class="menstrual-card su-afef99"><h4 class="su-11a508">⚠️ Buen vivir</h4><p class="muted su-11a508">• Foto antes que muestra. • No arranques raíz ni cortes matas. • Menta y mora solo en maceta o plato: son invasoras del estero. • Lava calzado si vienes de otro estero.</p></div></div></div></div>' +
+    '<div id="floraBitPanel" class="hidden"><div class="menstrual-card su-d2c171"><h4>📓 Bitácora — salidas y jardín</h4>' +
     '<div class="conv-row"><label>Fecha <input type="date" id="floraDate"></label><label>Hora <input type="time" id="floraTime" value="09:00"></label>' +
     '<label>Lugar <input type="text" id="floraPlace" placeholder="ej: Estero Penco, Quebrada Honda, mi patio" maxlength="30"></label></div>' +
     '<div class="conv-row"><label>Especie <input type="text" id="floraSpecies" placeholder="ej: Chilco, Azulillo, Calle-calle" maxlength="30"></label>' +
     '<label>Tipo <select id="floraKind"><option value="observación">Observación</option><option value="floración">Floración</option><option value="fruto/semilla">Fruto / semilla</option><option value="plantación ornamental">Plantación ornamental</option><option value="riego/poda/cuidado">Riego / poda / cuidado</option><option value="recolección">Recolección (con medida)</option><option value="foto">Solo foto</option></select></label>' +
     '<label>Cantidad <input type="text" id="floraQty" placeholder="ej: 1 mata, 5 fotos, 3 plantines" maxlength="20"></label></div>' +
     '<label>Notas <input type="text" id="floraNotes" placeholder="ej: patio norte, semisombra, llegó picaflor" maxlength="80"></label>' +
-    '<div class="dlg-actions" style="justify-content:flex-start"><button type="button" id="floraAdd" class="btn btn-accent" style="width:auto">+ Guardar registro</button>' +
-    '<button type="button" id="floraCancelEdit" class="btn hidden" style="width:auto">Cancelar</button></div>' +
-    '<div id="floraLogBox" class="habits-list" style="margin-top:10px;max-height:240px"></div>' +
-    '<div class="dlg-actions" style="justify-content:space-between;align-items:center;margin-top:8px"><span id="floraStats" class="muted" style="font-size:11px"></span>' +
-    '<span style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" id="floraShare" class="btn" style="width:auto">📤 Compartir</button>' +
-    '<button type="button" id="floraExport" class="btn" style="width:auto">📥 Exportar</button>' +
-    '<button type="button" id="floraClear" class="btn" style="width:auto;color:#e76e8a;border-color:#e76e8a55">🗑 Borrar</button></span></div></div></div>' +
-    '<div id="floraLinksPanel" class="hidden" style="margin-top:10px"></div>' +
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="floraAdd" class="btn btn-accent su-30e741">+ Guardar registro</button>' +
+    '<button type="button" id="floraCancelEdit" class="btn hidden su-30e741">Cancelar</button></div>' +
+    '<div id="floraLogBox" class="habits-list su-62f8f6"></div>' +
+    '<div class="dlg-actions su-cc4a4c"><span id="floraStats" class="muted su-11a508"></span>' +
+    '<span class="su-3de8f9"><button type="button" id="floraShare" class="btn su-30e741">📤 Compartir</button>' +
+    '<button type="button" id="floraExport" class="btn su-30e741">📥 Exportar</button>' +
+    '<button type="button" id="floraClear" class="btn su-214f75">🗑 Borrar</button></span></div></div></div>' +
+    '<div id="floraLinksPanel" class="hidden su-d2c171"></div>' +
     '<div class="dlg-actions"><button type="button" id="floraClose" class="btn">Cerrar</button></div></form>';
   document.body.appendChild(d);
   return d;
