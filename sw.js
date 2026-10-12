@@ -1,6 +1,6 @@
 ﻿// Service Worker — Calendario 13 Lunas (offline-first, tolerante a versiones ?v=)
 // v55
-const CACHE = 'cal13-v68-offline';
+const CACHE = 'cal13-v69-offline';
 
 // Lista completa de archivos que usa index.html (bare + con ?v=).
 // Si se agrega un JS nuevo en index.html, agregarlo aquí también (bare y ?v=).
@@ -47,6 +47,7 @@ const CORE = [
   './templates/bosqueDialog.html',
   './templates/breathDialog.html',
   './templates/circadianDialog.html',
+  './templates/claveDialog.html',
   './templates/compostDialog.html',
   './templates/comunaDialog.html',
   './templates/configDialog.html',
@@ -71,6 +72,7 @@ const CORE = [
   './templates/helpDialog.html',
   './templates/homeTasksDialog.html',
   './templates/iglesiasDialog.html',
+  './templates/instalarDialog.html',
   './templates/intermarealDialog.html',
   './templates/lawenDialog.html',
   './templates/lenaDialog.html',

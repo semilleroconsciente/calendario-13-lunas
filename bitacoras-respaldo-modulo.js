@@ -268,7 +268,7 @@ function hayCrypto() {
     return !!(window.crypto && window.crypto.subtle && window.TextEncoder);
   } catch (e) { return false; }
 }
-function pedirClave(confirmar) {
+function pedirClavePrompt(confirmar) {
   try {
     var c1 = prompt('Contraseña para ' + (confirmar ? 'cifrar el respaldo' : 'descifrar el respaldo') + ' (mín. 8 caracteres):');
     if (c1 == null || c1 === '') return null;
@@ -280,6 +280,73 @@ function pedirClave(confirmar) {
     return c1;
   } catch (e) { return null; }
 }
+// Diálogo propio (templates/claveDialog.html, ya inyectado por el bundle);
+// fallback a prompt() si el diálogo no existe (modo degradado).
+// El wiring se hace una sola vez; pedirClave solo arma modo + promesa.
+var _claveRes = null;
+function claveWiring(dlg) {
+  if (!dlg) return false;
+  if (dlg._cal13wired) return true;
+  try {
+    dlg._cal13wired = true;
+    dlg.querySelector('#claveCancel').onclick = function () {
+      var r = _claveRes; _claveRes = null;
+      try { dlg.close(); } catch (e) {}
+      if (r) r(null);
+    };
+    dlg.querySelector('#claveOk').onclick = function () {
+      var r = _claveRes;
+      var a = dlg.querySelector('#clavePass1').value || '';
+      var b = dlg.querySelector('#clavePass2').value || '';
+      var err = dlg.querySelector('#claveErr');
+      if (!a || a.length < 8) {
+        if (err) { err.textContent = 'Mínimo 8 caracteres.'; err.hidden = false; }
+        return;
+      }
+      var soloUna = dlg.querySelector('#claveWrap2').style.display === 'none';
+      if (!soloUna && b !== a) {
+        if (err) { err.textContent = 'No coinciden.'; err.hidden = false; }
+        return;
+      }
+      _claveRes = null;
+      try { dlg.close(); } catch (e) {}
+      if (r) r(a);
+    };
+    return true;
+  } catch (e) { return false; }
+}
+function pedirClave(confirmar) {
+  function conDialogo(dlg) {
+    if (!claveWiring(dlg)) return pedirClavePrompt(confirmar);
+    return new Promise(function (res) {
+      _claveRes = res;
+      try {
+        var desc = dlg.querySelector('#claveDesc');
+        if (desc) desc.textContent = confirmar
+          ? 'Protege este respaldo con contraseña (la necesitarás para restaurarlo).'
+          : 'Este respaldo está cifrado. Ingresa su contraseña.';
+        dlg.querySelector('#claveWrap2').style.display = confirmar ? '' : 'none';
+        dlg.querySelector('#claveErr').hidden = true;
+        dlg.querySelector('#clavePass1').value = '';
+        dlg.querySelector('#clavePass2').value = '';
+        if (!dlg.open) dlg.showModal();
+        dlg.querySelector('#clavePass1').focus();
+      } catch (e) { _claveRes = null; res(pedirClavePrompt(confirmar)); }
+    });
+  }
+  try {
+    var dlg = document.getElementById('claveDialog');
+    if (dlg) return conDialogo(dlg);
+    if (window.cal13tpl && window.cal13tpl.asegurar) {
+      return window.cal13tpl.asegurar('claveDialog').then(function (d) {
+        return d ? conDialogo(d) : pedirClavePrompt(confirmar);
+      });
+    }
+  } catch (e) {}
+  return Promise.resolve(pedirClavePrompt(confirmar));
+}
+// Hook testeable (smoke): window.cal13clavePedir(true|false) -> Promise<string|null>
+try { window.cal13clavePedir = pedirClave; } catch (e) {}
 function b64deBytes(bytes) {
   var s = '';
   for (var i = 0; i < bytes.length; i++) s += String.fromCharCode(bytes[i]);
@@ -333,7 +400,7 @@ async function exportGroup(id) {
   if (confirm('¿Cifrar «' + g.titulo + '» con contraseña?\nAceptar = cifrada (recomendado) · Cancelar = en claro.')) {
     if (!hayCrypto()) { alert('Este navegador no soporta WebCrypto: se exporta en claro.'); }
     else {
-      var clave = pedirClave(true);
+      var clave = await pedirClave(true);
       if (!clave) return false;
       try {
         p = await cifrarPayload(p, clave);
@@ -411,7 +478,7 @@ async function importGroup(id) {
     /* Respaldo cifrado: pide clave y continúa con el flujo normal. */
     if (d && d.tipo === CIFRADO_TIPO) {
       if (!hayCrypto()) { alert('Este respaldo está cifrado y el navegador no soporta WebCrypto.'); return false; }
-      var clave = pedirClave(false);
+      var clave = await pedirClave(false);
       if (!clave) return false;
       try { d = await descifrarPayload(d, clave); }
       catch (e) { alert('Contraseña incorrecta o archivo dañado.'); return false; }

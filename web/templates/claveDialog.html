@@ -1,0 +1,15 @@
+<dialog id="claveDialog" aria-label="Contraseña del respaldo">
+  <h3>🔐 Contraseña del respaldo</h3>
+  <p class="muted" id="claveDesc">Protege este respaldo con contraseña.</p>
+  <label class="clave-lab">Contraseña (mín. 8 caracteres)
+    <input type="password" id="clavePass1" autocomplete="new-password" minlength="8">
+  </label>
+  <label class="clave-lab" id="claveWrap2">Repite la contraseña
+    <input type="password" id="clavePass2" autocomplete="new-password">
+  </label>
+  <p class="clave-err" id="claveErr" hidden></p>
+  <div class="clave-btns">
+    <button type="button" class="btn" id="claveCancel">Cancelar</button>
+    <button type="button" class="btn btn-accent" id="claveOk">Aceptar</button>
+  </div>
+</dialog>

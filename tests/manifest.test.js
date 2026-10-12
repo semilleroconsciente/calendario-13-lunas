@@ -63,7 +63,7 @@ describe('manifest + cableado', () => {
     for (const f of ['storage-idb.js', 'renderer.js', 'nuevos-modulos.js', 'styles.css']) {
       assert.ok(!(pkg.build.files || []).includes(f), 'build.files aún lleva fuente slimmeada: ' + f);
     }
-    for (const s of ['build:sw', 'check:sw', 'check:donate', 'movil:build', 'check:size', 'build:min', 'check:min', 'build:tpl', 'check:tpl', 'check:perf', 'csp:fase2', 'check:csp2']) {
+    for (const s of ['build:sw', 'check:sw', 'check:donate', 'movil:build', 'check:size', 'build:min', 'check:min', 'build:tpl', 'check:tpl', 'check:perf', 'csp:fase2', 'check:csp2', 'lighthouse']) {
       assert.ok(pkg.scripts[s], 'script ausente: ' + s);
     }
     assert.ok((pkg.devDependencies || {}).esbuild, 'falta devDep esbuild (minificación)');
