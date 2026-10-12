@@ -83,7 +83,7 @@ body {
 #phaseChips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
 .chip {
   background: var(--panel); border: 1px solid var(--line); border-radius: 8px;
-  padding: 5px 11px; font-size: 13px;
+  padding: 5px 11px; font-size: 13px; line-height: 1.4;
 }
 .chip b { color: var(--gold); }
 
@@ -248,7 +248,9 @@ dialog {
 }
 dialog::backdrop { background: rgba(4, 6, 16, 0.7); }
 dialog h3 { color: var(--accent); margin-bottom: 2px; }
-.muted { color: var(--muted); font-size: 13px; margin-bottom: 14px; }
+.muted { color: var(--muted); font-size: 13px; margin-bottom: 14px; line-height: 1.55; }
+dialog .muted { max-width: 65ch; }
+dialog label { line-height: 1.4; }
 .dlg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 
 .dlg-quote {
@@ -532,7 +534,7 @@ body[data-theme="medianoche"] { --bg:#050508; --bg2:#0a0a10; --panel:#141418; --
 .tz-table tr.next-day td { background: #8fb8ff0d; }
 @media (max-width: 560px) { .tz-chile { grid-template-columns: 1fr; } .tz-diff-grid, .tz-steps { grid-template-columns: 1fr; } .tz-body { padding-left: 12px; } }
 
-#convertDialog, #timerDialog, #ekadashiDialog, #siembraDialog, #menstrualDialog, #medicDialog, #nutriDialog, #habitsDialog, #donateDialog, #helpDialog, #circadianDialog, #goldenDialog, #disciplineDialog, #dreamsDialog, #mealDialog, #shoppingDialog, #financeDialog, #energyDialog, #breathDialog, #scheduleDialog, #fishingDialog, #gymDialog, #birdsDialog, #intermarealDialog, #bosqueDialog, #floraDialog, #astroDialog, #comunaDialog, #talleresPencoDialog, #firstAidDialog, #animalCareDialog, #violenceDialog, #homeTasksDialog, #espiritualDialog, #psicoDialog, #metodosDialog, #ajedrezDialog, #actoresDialog { width: 520px; max-width: 96vw; max-height: 88vh; overflow-y: auto; }
+#convertDialog, #timerDialog, #ekadashiDialog, #siembraDialog, #menstrualDialog, #medicDialog, #nutriDialog, #habitsDialog, #donateDialog, #helpDialog, #circadianDialog, #goldenDialog, #disciplineDialog, #dreamsDialog, #mealDialog, #shoppingDialog, #financeDialog, #energyDialog, #breathDialog, #scheduleDialog, #fishingDialog, #gymDialog, #birdsDialog, #intermarealDialog, #bosqueDialog, #floraDialog, #astroDialog, #comunaDialog, #talleresPencoDialog, #firstAidDialog, #animalCareDialog, #violenceDialog, #homeTasksDialog, #espiritualDialog, #psicoDialog, #metodosDialog, #ajedrezDialog, #actoresDialog, #aireDialog, #lenaDialog, #lawenDialog, #compostDialog, #muniDialog, #englishDialog, #guitarDialog, #memoryDialog, #mapuDialog, #talesDialog, #crianzaDialog { width: 520px; max-width: 96vw; max-height: 88vh; overflow-y: auto; }
 #helpDialog, #disciplineDialog, #dreamsDialog, #breathDialog, #scheduleDialog, #fishingDialog, #birdsDialog, #intermarealDialog, #bosqueDialog, #floraDialog, #astroDialog, #comunaDialog, #talleresPencoDialog, #studyDialog, #firstAidDialog, #animalCareDialog, #violenceDialog, #homeTasksDialog, #espiritualDialog, #psicoDialog, #metodosDialog, #vozDialog, #ajedrezDialog, #actoresDialog { width: 680px; }
 /* ♟️ Ajedrez */
 .aj-wrap { max-width: 440px; margin: 0 auto; }
@@ -593,10 +595,11 @@ body[data-theme="medianoche"] { --bg:#050508; --bg2:#0a0a10; --panel:#141418; --
 .esp-check { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); cursor: pointer; font-size: 13px; transition: background .15s; }
 .esp-check.done { background: var(--card-hover); border-color: var(--gold); }
 .esp-check input { accent-color: var(--gold); width: 16px; height: 16px; }
-.help-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.help-card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 12px; }
-.help-card h4 { color: var(--gold); margin-bottom: 6px; font-size: 13px; }
-.help-card p { font-size: 13px; color: var(--text); margin-bottom: 6px; line-height: 1.45; }
+.help-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.help-card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px; overflow-wrap: break-word; }
+.help-card h4 { color: var(--gold); margin-bottom: 8px; font-size: 13.5px; line-height: 1.4; }
+.help-card p { font-size: 13px; color: var(--text); margin-bottom: 8px; line-height: 1.6; }
+@media (max-width:720px){ .help-grid{ grid-template-columns:1fr; } }
 .discipline-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 @media (max-width:560px){ .discipline-grid{ grid-template-columns:1fr; } }
 .discipline-card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 12px; }
