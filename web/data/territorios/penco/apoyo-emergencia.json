@@ -77,10 +77,11 @@
     "recursos": [
       { "nombre": "Dupla psicosocial / Salud mental CESFAM", "dato": "Pide hora en SOME de tu CESFAM (Penco 41-2723960 · Lirquén 41-2688321)", "nota": "Atención gratuita; derivan a terapia si la necesitas. Retoma controles de salud mental la primera semana." },
       { "nombre": "Salud Responde", "dato": "600 360 7777 (24 h, gratis)", "nota": "Orientación de salud y contención telefónica para ti o para ayudar a otro." },
-      { "nombre": "Prevención del suicidio *4141", "dato": "*4141 desde celular (24 h, gratis)", "nota": "Si tú o alguien cercano lo está pasando mal: llama ahora, no esperes." },
+      { "nombre": "Prevención del suicidio *4141", "dato": "*4141 desde celular o fijo (24 h, gratis)", "nota": "Si tú o alguien cercano lo está pasando mal: llama ahora, no esperes." },
+      { "nombre": "SENDA 1412", "dato": "1412 Fono Drogas y Alcohol (24 h, gratis, anónimo)", "nota": "Orientación en consumo de alcohol y otras drogas, para ti o tu familia." },
       { "nombre": "Fono Niños y Adolescentes", "dato": "147 de Carabineros (24 h)", "nota": "Orientación para niños, adolescentes y adultos que los cuidan." },
       { "nombre": "Fono Familia", "dato": "149 de Carabineros (24 h)", "nota": "Violencia dentro de la familia: orientación y derivación." },
-      { "nombre": "Violencia contra la mujer", "dato": "1455 de SernamEG (24 h)", "nota": "Orientación confidencial. El estrés post-desastre puede aumentar la violencia: habla a tiempo." },
+      { "nombre": "Violencia contra la mujer", "dato": "1455 SERNAMEG (lun-dom 8:00-24:00; WhatsApp +56 9 9700 7000)", "nota": "Orientación confidencial. El estrés post-desastre puede aumentar la violencia: habla a tiempo. Fuera de horario: 149 o 133." },
       { "nombre": "Apoyo municipal y comunitario", "dato": "DIDECO 41-2261432 · tu JJVV y escuela", "nota": "Dupla psicosocial en terreno tras emergencias, ollas comunes, redes vecinales. No enfrentes todo en soledad." },
       { "nombre": "Duelo por pérdidas", "dato": "Sección 🕊️ Duelo de esta misma app", "nota": "Personas, mascotas y la casa también se duelan. Date permiso." },
       { "nombre": "Quien cuida también se cuida", "dato": "Túrnate, duerme, come y pide relevo", "nota": "No puedes sostener a otros con el cuerpo vacío. Descansa sin culpa." }

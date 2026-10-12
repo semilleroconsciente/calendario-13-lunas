@@ -415,7 +415,7 @@ function buildDialog() {
       '<div class="si-card"><h4>🎯 El pilotaje en 5 minutos (paso a paso)</h4><p><b>1)</b> Elige 1 intención (empieza con carga ≤6).<br><b>2)</b> Siéntate, 3 respiraciones lentas.<br><b>3)</b> Lee tu secuencia 7–21 veces mirándola o de memoria.<br><b>4)</b> Visualiza 30 segundos la <b>escena final</b> (no el problema).<br><b>5)</b> Mide 0–10: ¿bajó 1–2 puntos? Suficiente por hoy.<br><b>6)</b> Anota <b>1 acción concreta</b> (llamar, ordenar, postular) y hazla hoy. Sin acción, el número es solo adorno.</p></div>' +
       '<div class="si-card"><h4>🔮 La esfera plateada (técnica clásica)</h4><p>Imagina una <b>esfera de luz plateada</b> frente a ti. Mete dentro tu tema + la secuencia escrita en luz. Mírala 1–3 min mientras repites. Al terminar, imagina que la esfera se eleva y se disuelve: “entrego y actúo”. Sirve para no rumiar: concentras, sueltas, actúas.</p></div>' +
       '<div class="si-card"><h4>🌙 Grabovoi y tus 13 lunas</h4><p><b>Menguante</b> → ordenar, pagar, soltar (741, 318 798). <b>Nueva</b> → sembrar intención del ciclo (123 4814). <b>Llena</b> → ver claro y agradecer (777, 8888). <b>Creciente</b> → trabajo y estudios (714…, 497 241). Cada sesión queda marcada con su luna en 📓 Sesiones.</p></div>' +
-      '<div class="si-card"><h4>⚠️ Contexto honesto y cuidados</h4><p>Las secuencias <b>no tienen respaldo científico</b> y Grabovoi es una figura controvertida (fue condenado en Rusia en 2008 por fraude). Úsalo como <b>concentración y calma</b>, nunca como reemplazo de medicina, terapia o decisiones económicas: <b>no abandones tratamientos, no entregues dinero por “activaciones”, no te endeudes por promesas</b>. Si un tema te desborda: *4141 (Chile, 24h), CESFAM o profesional. Si algo te pide plata a cambio de “normar”, aléjate.</p></div>' +
+      '<div class="si-card"><h4>⚠️ Contexto honesto y cuidados</h4><p><b>Contenido educativo y de concentración/meditación: no es terapia ni promesa médica o económica.</b> Las secuencias <b>no tienen respaldo científico</b> y Grabovoi es una figura controvertida (fue condenado en Rusia en 2008 por fraude). Úsalo como <b>concentración y calma</b>, nunca como reemplazo de medicina, terapia o decisiones económicas: <b>no abandones tratamientos, no entregues dinero por “activaciones”, no te endeudes por promesas</b>. Si un tema te desborda: <b>*4141</b> (24 h), tu <b>CESFAM</b> o profesional. Si algo te pide plata a cambio de “normar”, aléjate.</p></div>' +
       '<div class="dlg-actions su-59a5a8"><button type="button" id="gbGoSec" class="btn btn-accent su-30e741">🔢 Ver secuencias →</button> <button type="button" id="gbGoPil" class="btn su-30e741">🎯 Pilotar ahora →</button></div>' +
     '</div>' +
 
@@ -520,7 +520,7 @@ function setup() {
         var btn = document.createElement('button');
         btn.id = 'btnGrabovoi'; btn.className = 'btn'; btn.type = 'button';
         btn.textContent = '🌌 Grabovoi';
-        try { btn.setAttribute('data-sub', 'interior'); } catch (eS) {}
+        try { btn.setAttribute('data-sub', 'tradiciones'); } catch (eS) {}
         btn.setAttribute('data-keywords', 'grabovoi graboboi grigori gravoboi secuencias numericas pilotaje realidad esfera plateada concentracion numeros foco norma 741 dinero abundancia norma armonia meditacion');
         var ref = g.querySelector('#btnSilva') || g.querySelector('#btnHooponopono') || g.querySelector('#btnRecap');
         if (ref && ref.nextSibling) g.insertBefore(btn, ref.nextSibling);
@@ -533,7 +533,7 @@ function setup() {
         var curN = curG && curG.getAttribute ? curG.getAttribute('data-group') : null;
         if (curN && curN !== 'linaje') {
           var gd = document.querySelector('.action-group[data-group="linaje"] .group-btns');
-          if (gd) { gd.appendChild(cur); try { cur.setAttribute('data-sub', 'interior'); } catch (eS) {} }
+          if (gd) { gd.appendChild(cur); try { cur.setAttribute('data-sub', 'tradiciones'); } catch (eS) {} }
         }
       } catch (eM) {}
     }
@@ -543,13 +543,13 @@ function setup() {
     if (typeof ALL_BTNS !== 'undefined' && ALL_BTNS.indexOf('btnGrabovoi') < 0) ALL_BTNS.push('btnGrabovoi');
   } catch (e) {}
   try {
-    if (typeof BTN_HOME !== 'undefined') BTN_HOME.btnGrabovoi = ['linaje', 'interior'];
+    if (typeof BTN_HOME !== 'undefined') BTN_HOME.btnGrabovoi = ['linaje', 'tradiciones'];
   } catch (e) {}
   try {
-    if (typeof BTN_ORDER !== 'undefined' && BTN_ORDER['linaje|interior'] && BTN_ORDER['linaje|interior'].indexOf('btnGrabovoi') < 0) {
-      var oi = BTN_ORDER['linaje|interior'].indexOf('btnSilva');
-      if (oi >= 0) BTN_ORDER['linaje|interior'].splice(oi + 1, 0, 'btnGrabovoi');
-      else BTN_ORDER['linaje|interior'].push('btnGrabovoi');
+    if (typeof BTN_ORDER !== 'undefined' && BTN_ORDER['linaje|tradiciones'] && BTN_ORDER['linaje|tradiciones'].indexOf('btnGrabovoi') < 0) {
+      var oi = BTN_ORDER['linaje|tradiciones'].indexOf('btnSilva');
+      if (oi >= 0) BTN_ORDER['linaje|tradiciones'].splice(oi + 1, 0, 'btnGrabovoi');
+      else BTN_ORDER['linaje|tradiciones'].push('btnGrabovoi');
     }
   } catch (e) {}
   try {

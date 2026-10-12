@@ -349,7 +349,7 @@ function setup() {
         var btn = document.createElement('button');
         btn.id = 'btnOraculo'; btn.className = 'btn'; btn.type = 'button';
         btn.textContent = '🌬️ Oráculo';
-        try { btn.setAttribute('data-sub', 'interior'); } catch (eS) {}
+        try { btn.setAttribute('data-sub', 'oraculos'); } catch (eS) {}
         btn.setAttribute('data-keywords', 'oraculo cartas mensaje territorio luna mar bosque consejo ritual respuesta sino cuerpo mente espiritu');
         var ref = $('btnTarot') || $('btnKinMaya') || $('btnEneagrama');
         if (ref && ref.parentNode === g) g.insertBefore(btn, ref.nextSibling);
@@ -362,7 +362,7 @@ function setup() {
         var curN = curG && curG.getAttribute ? curG.getAttribute('data-group') : null;
         if (curN && curN !== 'linaje') {
           var gd = document.querySelector('.action-group[data-group="linaje"] .group-btns');
-          if (gd) { gd.appendChild(cur); try { cur.setAttribute('data-sub', 'interior'); } catch (eS2) {} }
+          if (gd) { gd.appendChild(cur); try { cur.setAttribute('data-sub', 'oraculos'); } catch (eS2) {} }
         }
       } catch (eM) {}
     }

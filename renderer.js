@@ -43,16 +43,16 @@ const HOME_VIEWS = ['auto', 'hoy', 'luna', 'semanaLunar', 'mes', 'semana', 'comp
 // 'todo' y 'adulto' muestran todo. El resto muestra lo esencial de su rol.
 const HOME_PRESETS = {
   todo: { startView: 'auto', show: Object.keys(HOME_BLOCKS_DEFAULT) },
-  esencial: { startView: 'hoy', show: ['frase','solLuna','notas','agenda','habitos','animo','clima','mareas','gratitud','disciplina','respiracion','emergencia','comunidad'] },
-  adolescente: { startView: 'hoy', show: ['frase','solLuna','notas','agenda','habitos','animo','suenos','estudio','cuentos','disciplina','respiracion','gratitud','horario','entreno','ciclo','clima','mareas','familia'] },
+  esencial: { startView: 'hoy', show: ['frase','solLuna','notas','agenda','habitos','animo','clima','mareas','gratitud','disciplina','respiracion','horario','emergencia','comunidad'] },
+  adolescente: { startView: 'hoy', show: ['frase','solLuna','notas','agenda','habitos','animo','suenos','estudio','cuentos','disciplina','respiracion','gratitud','horario','entreno','ciclo','clima','mareas','familia','energia','emergencia','comunidad'] },
   adulto: { startView: 'auto', show: Object.keys(HOME_BLOCKS_DEFAULT) },
-  mayor: { startView: 'hoy', show: ['frase','solLuna','notas','agenda','habitos','animo','suenos','comidas','medicina','ciclo','clima','mareas','gratitud','espiritual','ritmo','familia','emergencia','energia','cuentos'] },
-  estudiante: { startView: 'hoy', show: ['frase','solLuna','notas','agenda','habitos','animo','suenos','disciplina','horario','estudio','cuentos','gratitud','respiracion','finanzas','clima','energia'] },
-  agricultor: { startView: 'luna', show: ['frase','solLuna','notas','agenda','clima','mareas','siembra','huerta','bosque','aves','compras','finanzas','ritmo','ekadashi','comunidad','energia','tareas'] },
-  pescador: { startView: 'luna', show: ['frase','solLuna','notas','agenda','clima','mareas','pesca','bosque','aves','ritmo','ekadashi','emergencia','comunidad','tareas'] },
-  salud: { startView: 'hoy', show: ['frase','solLuna','notas','agenda','habitos','animo','suenos','comidas','disciplina','respiracion','ciclo','clima','gratitud','entreno','medicina','espiritual','ritmo','energia','emergencia'] },
-  deportista: { startView: 'hoy', show: ['frase','solLuna','notas','agenda','habitos','animo','comidas','disciplina','entreno','medicina','clima','mareas','ritmo','energia','respiracion'] },
-  docente: { startView: 'hoy', show: ['frase','solLuna','notas','agenda','habitos','animo','estudio','cuentos','horario','familia','gratitud','clima','comunidad','siembra','huerta'] }
+  mayor: { startView: 'hoy', show: ['frase','solLuna','notas','agenda','habitos','animo','suenos','comidas','tareas','compras','medicina','ciclo','clima','mareas','gratitud','espiritual','ritmo','familia','emergencia','energia','cuentos','comunidad'] },
+  estudiante: { startView: 'hoy', show: ['frase','solLuna','notas','agenda','habitos','animo','suenos','disciplina','horario','estudio','cuentos','gratitud','respiracion','finanzas','clima','energia','emergencia','comunidad'] },
+  agricultor: { startView: 'luna', show: ['frase','solLuna','notas','agenda','clima','mareas','siembra','huerta','bosque','aves','compras','finanzas','ritmo','ekadashi','comunidad','energia','tareas','emergencia'] },
+  pescador: { startView: 'luna', show: ['frase','solLuna','notas','agenda','clima','mareas','pesca','bosque','aves','ritmo','ekadashi','emergencia','comunidad','tareas','disciplina','respiracion','energia'] },
+  salud: { startView: 'hoy', show: ['frase','solLuna','notas','agenda','habitos','animo','suenos','comidas','disciplina','respiracion','ciclo','clima','gratitud','horario','entreno','medicina','espiritual','ritmo','energia','emergencia','familia','comunidad'] },
+  deportista: { startView: 'hoy', show: ['frase','solLuna','notas','agenda','habitos','animo','suenos','comidas','disciplina','entreno','medicina','clima','mareas','ritmo','energia','respiracion','gratitud','horario','emergencia','comunidad'] },
+  docente: { startView: 'hoy', show: ['frase','solLuna','notas','agenda','habitos','animo','estudio','cuentos','horario','familia','gratitud','clima','comunidad','siembra','huerta','disciplina','energia','emergencia'] }
 };
 function homeBlocksForPreset(name) {
   const p = HOME_PRESETS[name];
@@ -85,6 +85,7 @@ function setupHomeConfig() {
       DATA.config = DATA.config || {};
       DATA.config.home = DATA.config.home || {};
       DATA.config.home.startView = HOME_VIEWS.includes(sel.value) ? sel.value : 'auto';
+      try { if (typeof markPerfilPersonalizado === 'function') markPerfilPersonalizado(); } catch (e) {}
       scheduleSave('Pantalla de inicio guardada ✓');
     };
   }
@@ -96,6 +97,7 @@ function setupHomeConfig() {
       DATA.config.home = DATA.config.home || {};
       DATA.config.home.blocks = DATA.config.home.blocks || {};
       DATA.config.home.blocks[cb.dataset.home] = cb.checked;
+      try { if (typeof markPerfilPersonalizado === 'function') markPerfilPersonalizado(); } catch (e) {}
       scheduleSave('Pantalla de inicio guardada ✓');
       try { if (viewMode === 'hoy') renderTodayView(); } catch (e) {}
     };
@@ -108,11 +110,68 @@ function setupHomeConfig() {
       DATA.config = DATA.config || {};
       DATA.config.home = DATA.config.home || {};
       DATA.config.home.blocks = Object.assign({}, HOME_BLOCKS_DEFAULT);
+      try { if (typeof markPerfilPersonalizado === 'function') markPerfilPersonalizado(); } catch (e) {}
       scheduleSave('Pantalla de inicio guardada ✓');
       syncHomeConfigUI();
       try { if (viewMode === 'hoy') renderTodayView(); } catch (e2) {}
     };
   }
+}
+// === 👥 PERFIL ÚNICO (🏠 Pantalla de inicio manda: vista + bloques + secciones) ===
+// Se guarda en DATA.config.perfil. Cualquier ajuste manual pasa a 'personalizado'.
+function getPerfilGuardado() {
+  try { return (DATA.config && DATA.config.perfil) || ''; } catch (e) { return ''; }
+}
+function detectPerfil() {
+  try {
+    const vis = getVisibleConfig();
+    const home = getHomeConfig();
+    const names = Object.keys(PRESETS);
+    for (const n of names) {
+      const preset = PRESETS[n] || {};
+      const isAll = (n === 'todo' || n === 'adulto');
+      let ok = true;
+      for (const k of ALL_BTNS) {
+        const want = isAll ? true : !!preset[k];
+        if (!!vis[k] !== want) { ok = false; break; }
+      }
+      if (!ok) continue;
+      const hp = (typeof homeBlocksForPreset === 'function') ? homeBlocksForPreset(n) : null;
+      if (!hp) continue;
+      if (home.startView !== hp.startView) continue;
+      for (const k of Object.keys(HOME_BLOCKS_DEFAULT)) {
+        if (!!home.blocks[k] !== !!hp.blocks[k]) { ok = false; break; }
+      }
+      if (ok) return n;
+    }
+  } catch (e) {}
+  return 'personalizado';
+}
+function getPerfilActual() {
+  const g = getPerfilGuardado();
+  if (g && g !== 'personalizado') return g;
+  return detectPerfil();
+}
+function syncPerfilUI() {
+  try {
+    const actual = getPerfilActual();
+    const lbl = $('cfgPerfilActual');
+    if (lbl) lbl.textContent = actual === 'personalizado' ? 'Personalizado ⚙️' : actual;
+    document.querySelectorAll('#configDialog .config-preset').forEach(b => {
+      b.classList.toggle('btn-accent', b.dataset.preset === actual);
+    });
+  } catch (e) {}
+}
+function markPerfilPersonalizado() {
+  try {
+    DATA.config = DATA.config || {};
+    if (DATA.config.perfil !== 'personalizado') {
+      DATA.config.perfil = 'personalizado';
+      try { syncPerfilUI(); } catch (e) {}
+    } else {
+      try { syncPerfilUI(); } catch (e) {}
+    }
+  } catch (e) {}
 }
 // Aplica la vista inicial elegida por el usuario al abrir la app.
 // 'auto' = Hoy en celular, Luna actual en PC. En PC la vista Hoy también se muestra si se elige.
@@ -1150,9 +1209,9 @@ async function createDesktopShortcut() {
     } else alert(msg);
   } catch (e) { alert('No se pudo crear el acceso directo en esta versión'); }
 }
+// Lo técnico vive en ⚙️ Ajustes (antes en Comunidad > App). Se mantiene
+// compatibilidad: si los botones antiguos existen (caché vieja), siguen funcionando.
 if (_btnShortcut) _btnShortcut.onclick = createDesktopShortcut;
-const _cfgShortcutBtn = $('cfgShortcutBtn');
-if (_cfgShortcutBtn) _cfgShortcutBtn.onclick = createDesktopShortcut;
 
 const TIDES_TALCAHUANO = {
   '08-19': [{ h: '03:02', a: '1.58m', t: 'pleamar' }, { h: '09:27', a: '0.90m', t: 'bajamar' }, { h: '15:02', a: '1.30m', t: 'pleamar' }, { h: '21:03', a: '0.84m', t: 'bajamar' }],
@@ -1812,8 +1871,17 @@ async function exportPDF(fullCycle) {
     setTimeout(() => { $('statusMsg').textContent = ''; }, 2500);
   }
 }
-$('btnPdfLuna').onclick = () => exportPDF(false);
-$('btnPdfCiclo').onclick = () => exportPDF(true);
+function bindPdfButtons() {
+  const pairs = [['btnPdfLuna', false], ['btnPdfCiclo', true], ['cfgPdfLunaBtn', false], ['cfgPdfCicloBtn', true]];
+  pairs.forEach(([id, ciclo]) => {
+    try {
+      const el = typeof $ === 'function' ? $(id) : document.getElementById(id);
+      if (el && !el.dataset.pdfBound) { el.dataset.pdfBound = '1'; el.onclick = () => exportPDF(ciclo); }
+    } catch (e) {}
+  });
+}
+try { bindPdfButtons(); } catch (e) {}
+setTimeout(function () { try { bindPdfButtons(); } catch (e) {} }, 1200);
 
 $('btnToday').onclick = () => {
   try{ if(isMobileWidth()){ showMobileView('hoy'); return; } }catch(e){}
@@ -1876,14 +1944,25 @@ function runSearch(q) {
 }
 $('searchClose').onclick = () => $('searchDialog').close();
 
-$('btnBackup').onclick = async () => {
+async function doBackup() {
   const r = await window.api.backupSave(JSON.stringify(DATA, null, 1));
+  try { window.cal13backupDone && window.cal13backupDone(); } catch (e) {}
   $('statusMsg').textContent = r ? 'Respaldo guardado ✓' : 'Cancelado';
   setTimeout(() => { $('statusMsg').textContent = ''; }, 2500);
-};
+}
+function bindBackupButtons() {
+  ['btnBackup', 'cfgBackupBtn'].forEach((id) => {
+    try {
+      const el = typeof $ === 'function' ? $(id) : document.getElementById(id);
+      if (el && !el.dataset.backupBound) { el.dataset.backupBound = '1'; el.onclick = doBackup; }
+    } catch (e) {}
+  });
+}
+try { bindBackupButtons(); } catch (e) {}
+setTimeout(function () { try { bindBackupButtons(); } catch (e) {} }, 1200);
 
 // Aplica un respaldo JSON (string) con la validación de siempre.
-// La usan 📥 Restaurar (archivo) y 📲 Traspaso QR (qr-sync-modulo.js).
+// La usan 📥 Restaurar (archivo, en ⚙️ Ajustes) y 📲 Traspaso QR (qr-sync-modulo.js, en ⚙️ Ajustes).
 // Acepta 2 formatos:
 //  - Respaldo TOTAL {usuarios, notas}: reemplaza todo (como antes).
 //  - Bitácora INDIVIDUAL {tipo:'bitacora-individual', grupo, datos}:
@@ -1937,12 +2016,23 @@ async function applyBackupJSON(j) {
   }
 }
 
-$('btnRestore').onclick = async () => {
+async function doRestore() {
   const j = await window.api.backupOpen();
   if (!j) return;
   await applyBackupJSON(j);
-};
+}
+function bindRestoreButtons() {
+  ['btnRestore', 'cfgRestoreBtn'].forEach((id) => {
+    try {
+      const el = typeof $ === 'function' ? $(id) : document.getElementById(id);
+      if (el && !el.dataset.restoreBound) { el.dataset.restoreBound = '1'; el.onclick = doRestore; }
+    } catch (e) {}
+  });
+}
+try { bindRestoreButtons(); } catch (e) {}
+setTimeout(function () { try { bindRestoreButtons(); } catch (e) {} }, 1200);
 try { window.applyBackupJSON = applyBackupJSON; } catch {}
+try { window.cal13doBackup = doBackup; window.cal13doRestore = doRestore; } catch {}
 
 function updateRemindBtn() {
   const on = !!(DATA.config && DATA.config.recordar);
@@ -4582,7 +4672,7 @@ function setupDonateDialog(){
     const set = (id,val)=>{ const el=$(id); if(el) el.textContent = val||'— por definir —'; };
     const mp=$('donateMPLink'), pp=$('donatePaypalLink');
     const fallbackMP='https://link.mercadopago.cl/semilleroconsciente';
-    const fallbackPP='https://www.paypal.com/donate?business=semilleroconsciente@gmail.com';
+    const fallbackPP='https://paypal.me/semilleroconsciente';
     if(mp){
       const url = (d.mercadopago && String(d.mercadopago).trim()) || fallbackMP;
       mp.href = url;
@@ -4602,11 +4692,31 @@ function setupDonateDialog(){
       pp.onclick = e=>{ e.stopPropagation(); e.preventDefault(); openExternalLink(url); };
     }
     const flow=$('donateFlowLink'), kf=$('donateKofiLink');
-    if(flow){ flow.href = d.flow||'#'; flow.target = d.flow ? '_blank' : ''; flow.rel = 'noopener noreferrer'; flow.style.opacity = d.flow? '1':'0.45'; flow.style.pointerEvents = d.flow? 'auto':'none'; if(d.flow) flow.onclick = e=>{ e.stopPropagation(); e.preventDefault(); openExternalLink(d.flow); }; }
-    if(kf){ kf.href = d.kofi||'#'; kf.target = d.kofi ? '_blank' : ''; kf.rel = 'noopener noreferrer'; kf.style.opacity = d.kofi? '1':'0.45'; kf.style.pointerEvents = d.kofi? 'auto':'none'; if(kf && d.kofi) kf.onclick = e=>{ e.stopPropagation(); e.preventDefault(); openExternalLink(d.kofi); }; }
-    $('donateDialog').showModal();
+    const toggleCard=(linkEl,has)=>{ try{ const card=linkEl&&linkEl.closest?linkEl.closest('.donate-card'):null; if(card) card.style.display=has?'':'none'; }catch(e){} };
+    if(flow){ const has=!!(d.flow&&String(d.flow).trim()); flow.href = has?d.flow:'#'; flow.target = has ? '_blank' : ''; flow.rel = 'noopener noreferrer'; if(has) flow.onclick = e=>{ e.stopPropagation(); e.preventDefault(); openExternalLink(d.flow); }; toggleCard(flow,has); }
+    if(kf){ const has=!!(d.kofi&&String(d.kofi).trim()); kf.href = has?d.kofi:'#'; kf.target = has ? '_blank' : ''; kf.rel = 'noopener noreferrer'; if(has) kf.onclick = e=>{ e.stopPropagation(); e.preventDefault(); openExternalLink(d.kofi); }; toggleCard(kf,has); }
+    try{
+      const dlg=$('donateDialog');
+      const mpUrl = (mp&&mp.href)||fallbackMP, ppUrl=(pp&&pp.href)||fallbackPP;
+      if(dlg){
+        const cops=dlg.querySelectorAll('.donate-copy');
+        if(cops[0]) cops[0].setAttribute('data-copy', mpUrl);
+        if(cops[1]) cops[1].setAttribute('data-copy', ppUrl);
+        const g2=dlg.querySelector('.donate-grid-2'); if(g2){ const anyVisible=[flow,kf].some(a=>{ try{ const c=a&&a.closest?a.closest('.donate-card'):null; return c&&c.style.display!=='none'; }catch(e){ return false; } }); g2.style.display=anyVisible?'':'none'; }
+      }
+    }catch(e){}
+    const dlgEl=$('donateDialog'); if(dlgEl&&!dlgEl.open) dlgEl.showModal(); try{ dlgEl.scrollTop=0; }catch(e){}
   };
   const ct=$('donateCloseTop'), cb=$('donateClose'); if(ct) ct.onclick=()=>$('donateDialog').close(); if(cb) cb.onclick=()=>$('donateDialog').close();
+  try{
+    document.addEventListener('click', async (e)=>{
+      const b=e.target&&e.target.closest?e.target.closest('.donate-copy'):null; if(!b) return;
+      e.preventDefault(); e.stopPropagation();
+      const txt=b.getAttribute('data-copy')||'';
+      try{ await navigator.clipboard.writeText(txt); }catch(err){ try{ const ta=document.createElement('textarea'); ta.value=txt; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); }catch(e2){} }
+      const old=b.textContent; b.textContent='✓ ¡Copiado!'; setTimeout(()=>{ b.textContent=old; },1400);
+    });
+  }catch(e){}
 }
 setTimeout(setupDonateDialog, 800);
 
@@ -4633,49 +4743,77 @@ setTimeout(setupHelpDialog, 850);
 // Incluye botones base + los inyectados por nuevos-modulos.js (Agua, Bodega, Nudos,
 // Taller, Trueque, Minga, Rutinas, Fertilidad, Derechos). NUEVOS_BTNS los re-agrega
 // con push si faltan (no-op si ya están), así los perfiles siempre los conocen.
-const ALL_BTNS = ["btnTides","btnFishing","btnBirds","btnIntermareal","btnBosque","btnWeather","btnSiembra","btnAstro","btnComuna","btnIglesias","btnEkadashi","btnMenstrual","btnMedic","btnNutri","btnHabits","btnMeal","btnShopping","btnFinance","btnHomeTasks","btnDiscipline","btnDreams","btnBreath","btnGratitud","btnSchedule","btnGym","btnCircadian","btnGolden","btnEspiritual","btnCompost","btnLawen","btnFirstAid","btnAnimalCare","btnViolence","btnEvac","btnConvert","btnEnergy","btnLena","btnTimer","btnRemind","btnBackup","btnRestore","btnShortcut","btnPdfLuna","btnPdfCiclo","btnDonate","btnHelp","btnStudy","btnTales","btnVozAbuelos","btnMemory","btnMapu","btnEnglish","btnGuitar","btnPsico","btnMetodos","btnAgua","btnBodega","btnNudos","btnTaller","btnTrueque","btnMinga","btnFerti","btnDerechos","btnCrianza","btnArbolFull","btnRecap","btnDueloFull","btnEneagrama","btnCuartoCamino","btnAjedrez","btnMatematicas","btnSudoku","btnCrucigrama","btnSopa","btnFlora","btnPsicologia","btnAdolescencia","btnJuventud","btnAdultez","btnClimaterio","btnVejez","btnElectrocultura","btnMecanica","btnDespensa","btnCloset","btnHerramientas","btnAdicciones","btnKinMaya","btnTarot","btnOraculo","btnAnfibios","btnApoyo","btnMuni","btnBomberos","btnConstelaciones","btnIkigai","btnVIA","btnSilva","btnGrabovoi","btnEstoicismo","btnHooponopono","btnTao","btnTolteca","btnVigyan","btnNatacion","btnHuerta","btnHidroponia","btnKayak","btnBallenas","btnMeli","btnHongos","btnSenderos","btnFuego","btnDomotica","btnNeurodiversidad","btnPelo","btnRituales","btnFenologia","btnCorral","btnMovilidad","btnEscolar","btnQRSync","btnActores"];
-// === REORGANIZACIÓN 7 GRUPOS (2026-09): grupo + subgrupo destino de cada botón ===
+const ALL_BTNS = ["btnTides","btnFishing","btnBirds","btnIntermareal","btnBosque","btnWeather","btnSiembra","btnAstro","btnComuna","btnIglesias","btnEkadashi","btnMenstrual","btnMedic","btnNutri","btnHabits","btnMeal","btnShopping","btnFinance","btnHomeTasks","btnDiscipline","btnDreams","btnBreath","btnGratitud","btnSchedule","btnGym","btnCircadian","btnGolden","btnEspiritual","btnCompost","btnLawen","btnFirstAid","btnAnimalCare","btnViolence","btnEvac","btnConvert","btnEnergy","btnLena","btnTimer","btnRemind","btnDonate","btnHelp","btnStudy","btnTales","btnVozAbuelos","btnMemory","btnMapu","btnEnglish","btnGuitar","btnPsico","btnMetodos","btnAgua","btnBodega","btnNudos","btnTaller","btnTrueque","btnMinga","btnFerti","btnDerechos","btnCrianza","btnArbolFull","btnRecap","btnDueloFull","btnEneagrama","btnCuartoCamino","btnAjedrez","btnMatematicas","btnSudoku","btnCrucigrama","btnSopa","btnFlora","btnPsicologia","btnAdolescencia","btnJuventud","btnAdultez","btnClimaterio","btnVejez","btnElectrocultura","btnMecanica","btnDespensa","btnCloset","btnHerramientas","btnAdicciones","btnKinMaya","btnTarot","btnNumerologia","btnOraculo","btnAnfibios","btnApoyo","btnMuni","btnBomberos","btnConstelaciones","btnIkigai","btnVIA","btnSilva","btnGrabovoi","btnEstoicismo","btnHooponopono","btnTao","btnTolteca","btnVigyan","btnAnastasia","btnAmi","btnNatacion","btnHuerta","btnHidroponia","btnKayak","btnBallenas","btnMeli","btnHongos","btnSenderos","btnFuego","btnDomotica","btnNeurodiversidad","btnPelo","btnRituales","btnFenologia","btnCorral","btnMovilidad","btnEscolar","btnActores","btnNegocios","btnRedGuia","btnRedMeshtastic","btnRedDiagnostico","btnRedRadio","btnRedNodos","btnConvivGuia","btnConvivFichas","btnConvivHablar","btnConvivBitacora","btnConvivLuna","btnConvivRecursos","btnCiberGuia","btnCiberClaves","btnCiberEstafas","btnCiberPriv","btnCiberChequeo","btnCiberAyuda","btnOpenGuia","btnOpenLicencias","btnOpenProgramas","btnOpenProyecto","btnOpenAportar","btnOpenQuiz"];
+// NOTA: lo técnico (Respaldo, Restaurar, Traspaso QR, PDF luna/ciclo, Acceso directo)
+// vive en ⚙️ Ajustes con botones propios (cfg*Btn), siempre visibles: no forma parte
+// de ALL_BTNS ni de la visibilidad por secciones. Se mantienen las claves antiguas
+// en DATA.config.visible por compatibilidad, pero se ignoran.
+// === REORGANIZACIÓN 7 GRUPOS (2026-10): grupo + subgrupo destino de cada botón ===
 // Dinámicos que aún no existen en el DOM se mueven cuando se inyectan.
+// Taxonomía pedida por la comunidad:
+//  Mi Día: Organizar + Registrar · Territorio: mar + tierra (+Fenología) + cielo + penco
+//  Cuerpo: ciclos + etapas (Adolescencia/Juventud/Adultez/Vejez) + cuidado
+//  Aprender: estudio + idiomas + musica + juegos + infancias
+//  Interior: conocerse + practicas + tradiciones + oraculos + sosten
+//  Hogar: casa + energia + familia · Comunidad: red + red-comunitaria + convivencia + ciber + abierto + emergencia
 const BTN_HOME = {
   btnHabits:['dia','organizar'],btnDiscipline:['dia','organizar'],btnSchedule:['dia','organizar'],btnTimer:['dia','organizar'],btnRemind:['dia','organizar'],
   btnGratitud:['dia','registrar'],btnDreams:['dia','registrar'],btnBreath:['dia','registrar'],
   btnTides:['territorio','mar'],btnFishing:['territorio','mar'],btnIntermareal:['territorio','mar'],btnNudos:['territorio','mar'],btnKayak:['territorio','mar'],btnBallenas:['territorio','mar'],
-  btnHuerta:['territorio','tierra'],btnSiembra:['territorio','tierra'],btnBosque:['territorio','tierra'],btnCompost:['territorio','tierra'],btnAgua:['territorio','tierra'],btnHidroponia:['territorio','tierra'],btnElectrocultura:['territorio','tierra'],btnFlora:['territorio','tierra'],btnLawen:['territorio','tierra'],btnBirds:['territorio','tierra'],btnAnfibios:['territorio','tierra'],btnMeli:['territorio','tierra'],btnHongos:['territorio','tierra'],btnSenderos:['territorio','tierra'],btnFuego:['territorio','tierra'],
+  btnHuerta:['territorio','tierra'],btnSiembra:['territorio','tierra'],btnBosque:['territorio','tierra'],btnCompost:['territorio','tierra'],btnAgua:['territorio','tierra'],btnHidroponia:['territorio','tierra'],btnElectrocultura:['territorio','tierra'],btnFlora:['territorio','tierra'],btnLawen:['territorio','tierra'],btnBirds:['territorio','tierra'],btnAnfibios:['territorio','tierra'],btnMeli:['territorio','tierra'],btnHongos:['territorio','tierra'],btnSenderos:['territorio','tierra'],btnFuego:['territorio','tierra'],btnFenologia:['territorio','tierra'],
   btnWeather:['territorio','cielo'],btnAstro:['territorio','cielo'],btnGolden:['territorio','cielo'],btnCircadian:['territorio','cielo'],btnEkadashi:['territorio','cielo'],
-  btnComuna:['territorio','penco'],btnIglesias:['territorio','penco'],btnMuni:['territorio','penco'],btnBomberos:['territorio','penco'],btnActores:['territorio','penco'],
-  btnMenstrual:['cuerpo','ciclos'],btnFerti:['cuerpo','ciclos'],btnJuventud:['cuerpo','ciclos'],btnClimaterio:['cuerpo','ciclos'],
+  btnComuna:['territorio','penco'],btnIglesias:['territorio','penco'],btnMuni:['territorio','penco'],btnBomberos:['territorio','penco'],btnActores:['territorio','penco'],btnNegocios:['territorio','penco'],
+  btnMenstrual:['cuerpo','ciclos'],btnFerti:['cuerpo','ciclos'],btnClimaterio:['cuerpo','ciclos'],
+  btnAdolescencia:['cuerpo','etapas'],btnJuventud:['cuerpo','etapas'],btnAdultez:['cuerpo','etapas'],btnVejez:['cuerpo','etapas'],
   btnMedic:['cuerpo','cuidado'],btnNutri:['cuerpo','cuidado'],btnGym:['cuerpo','cuidado'],btnNatacion:['cuerpo','cuidado'],btnPelo:['cuerpo','cuidado'],btnRituales:['cuerpo','cuidado'],
-  btnStudy:['aprender','estudio'],btnMemory:['aprender','estudio'],btnMapu:['aprender','estudio'],btnEnglish:['aprender','estudio'],btnGuitar:['aprender','estudio'],btnMatematicas:['aprender','estudio'],
+  btnStudy:['aprender','estudio'],btnMemory:['aprender','estudio'],btnMatematicas:['aprender','estudio'],
+  btnMapu:['aprender','idiomas'],btnEnglish:['aprender','idiomas'],
+  btnGuitar:['aprender','musica'],
   btnAjedrez:['aprender','juegos'],btnSudoku:['aprender','juegos'],btnCrucigrama:['aprender','juegos'],btnSopa:['aprender','juegos'],
-  btnTales:['aprender','infancias'],btnCrianza:['aprender','infancias'],btnAdolescencia:['aprender','infancias'],
-  btnPsico:['linaje','interior'],btnPsicologia:['linaje','interior'],btnEneagrama:['linaje','interior'],btnIkigai:['linaje','interior'],btnVIA:['linaje','interior'],btnMetodos:['linaje','interior'],btnCuartoCamino:['linaje','interior'],btnHooponopono:['linaje','interior'],btnSilva:['linaje','interior'],btnGrabovoi:['linaje','interior'],btnNeurodiversidad:['linaje','interior'],btnRecap:['linaje','interior'],btnTolteca:['linaje','interior'],btnTao:['linaje','interior'],btnVigyan:['linaje','interior'],btnEstoicismo:['linaje','interior'],btnEspiritual:['linaje','interior'],btnFenologia:['linaje','interior'],btnDueloFull:['linaje','interior'],btnAdicciones:['linaje','interior'],btnKinMaya:['linaje','interior'],btnTarot:['linaje','interior'],btnOraculo:['linaje','interior'],
-  btnArbolFull:['linaje','familia'],btnVozAbuelos:['linaje','familia'],btnConstelaciones:['linaje','familia'],btnAdultez:['linaje','familia'],btnVejez:['linaje','familia'],
+  btnTales:['aprender','infancias'],btnCrianza:['aprender','infancias'],
+  btnPsico:['linaje','conocerse'],btnPsicologia:['linaje','conocerse'],btnEneagrama:['linaje','conocerse'],btnVIA:['linaje','conocerse'],btnIkigai:['linaje','conocerse'],btnNeurodiversidad:['linaje','conocerse'],btnEspiritual:['linaje','practicas'],btnTao:['linaje','practicas'],btnRecap:['linaje','practicas'],btnTolteca:['linaje','practicas'],btnEstoicismo:['linaje','practicas'],btnCuartoCamino:['linaje','practicas'],btnHooponopono:['linaje','practicas'],btnMetodos:['linaje','tradiciones'],btnSilva:['linaje','tradiciones'],btnGrabovoi:['linaje','tradiciones'],btnVigyan:['linaje','tradiciones'],btnAnastasia:['linaje','tradiciones'],btnAmi:['linaje','tradiciones'],btnKinMaya:['linaje','oraculos'],btnTarot:['linaje','oraculos'],btnNumerologia:['linaje','oraculos'],btnOraculo:['linaje','oraculos'],btnDueloFull:['linaje','sosten'],btnAdicciones:['linaje','sosten'],
+  btnArbolFull:['hogar','familia'],btnVozAbuelos:['hogar','familia'],btnConstelaciones:['hogar','familia'],
   btnMeal:['hogar','casa'],btnShopping:['hogar','casa'],btnFinance:['hogar','casa'],btnHomeTasks:['hogar','casa'],btnBodega:['hogar','casa'],btnDespensa:['hogar','casa'],btnCloset:['hogar','casa'],btnCorral:['hogar','casa'],btnMovilidad:['hogar','casa'],btnEscolar:['hogar','casa'],
   btnEnergy:['hogar','energia'],btnLena:['hogar','energia'],btnTaller:['hogar','energia'],btnHerramientas:['hogar','energia'],btnMecanica:['hogar','energia'],btnDomotica:['hogar','energia'],btnConvert:['hogar','energia'],
   btnTrueque:['comunidad','red'],btnMinga:['comunidad','red'],btnDerechos:['comunidad','red'],btnAnimalCare:['comunidad','red'],
-  btnFirstAid:['comunidad','emergencia'],btnViolence:['comunidad','emergencia'],btnEvac:['comunidad','emergencia'],btnApoyo:['comunidad','emergencia'],
-  btnBackup:['comunidad','app'],btnRestore:['comunidad','app'],btnQRSync:['comunidad','app'],btnShortcut:['comunidad','app'],btnPdfLuna:['comunidad','app'],btnPdfCiclo:['comunidad','app'],btnDonate:['comunidad','app']
+  // btnDonate vive FUERA de los grupos (CTA final tras Comunidad): sin BTN_HOME
+  // para que reordenarAcciones no lo devuelva a comunidad|red. Sigue en ALL_BTNS/PRESETS.
+  btnRedGuia:['comunidad','red-comunitaria'],btnRedMeshtastic:['comunidad','red-comunitaria'],btnRedDiagnostico:['comunidad','red-comunitaria'],btnRedRadio:['comunidad','red-comunitaria'],btnRedNodos:['comunidad','red-comunitaria'],
+  btnConvivGuia:['comunidad','convivencia-vecinal'],btnConvivFichas:['comunidad','convivencia-vecinal'],btnConvivHablar:['comunidad','convivencia-vecinal'],btnConvivBitacora:['comunidad','convivencia-vecinal'],btnConvivLuna:['comunidad','convivencia-vecinal'],btnConvivRecursos:['comunidad','convivencia-vecinal'],
+  btnCiberGuia:['comunidad','ciberseguridad'],btnCiberClaves:['comunidad','ciberseguridad'],btnCiberEstafas:['comunidad','ciberseguridad'],btnCiberPriv:['comunidad','ciberseguridad'],btnCiberChequeo:['comunidad','ciberseguridad'],btnCiberAyuda:['comunidad','ciberseguridad'],
+  btnOpenGuia:['comunidad','codigo-abierto'],btnOpenLicencias:['comunidad','codigo-abierto'],btnOpenProgramas:['comunidad','codigo-abierto'],btnOpenProyecto:['comunidad','codigo-abierto'],btnOpenAportar:['comunidad','codigo-abierto'],btnOpenQuiz:['comunidad','codigo-abierto'],
+  btnFirstAid:['comunidad','emergencia'],btnViolence:['comunidad','emergencia'],btnEvac:['comunidad','emergencia'],btnApoyo:['comunidad','emergencia']
 };
 // Orden de botones dentro de cada subgrupo (los no listados van al final en orden de llegada)
 const BTN_ORDER = {
   'dia|organizar':['btnHabits','btnDiscipline','btnSchedule','btnTimer','btnRemind'],
   'dia|registrar':['btnGratitud','btnDreams','btnBreath'],
   'territorio|mar':['btnTides','btnFishing','btnIntermareal','btnNudos','btnKayak','btnBallenas'],
-  'territorio|tierra':['btnHuerta','btnSiembra','btnBosque','btnCompost','btnAgua','btnHidroponia','btnElectrocultura','btnFlora','btnLawen','btnBirds','btnAnfibios','btnMeli','btnHongos','btnSenderos','btnFuego'],
+  'territorio|tierra':['btnHuerta','btnSiembra','btnBosque','btnCompost','btnAgua','btnHidroponia','btnElectrocultura','btnFlora','btnLawen','btnBirds','btnAnfibios','btnMeli','btnHongos','btnSenderos','btnFuego','btnFenologia'],
   'territorio|cielo':['btnWeather','btnAstro','btnGolden','btnCircadian','btnEkadashi'],
-  'territorio|penco':['btnComuna','btnIglesias','btnMuni','btnBomberos','btnActores'],
-  'cuerpo|ciclos':['btnMenstrual','btnFerti','btnJuventud','btnClimaterio'],
+  'territorio|penco':['btnComuna','btnIglesias','btnMuni','btnBomberos','btnActores','btnNegocios'],
+  'cuerpo|ciclos':['btnMenstrual','btnFerti','btnClimaterio'],
+  'cuerpo|etapas':['btnAdolescencia','btnJuventud','btnAdultez','btnVejez'],
   'cuerpo|cuidado':['btnMedic','btnNutri','btnGym','btnNatacion','btnPelo','btnRituales'],
-  'aprender|estudio':['btnStudy','btnMemory','btnMapu','btnEnglish','btnGuitar','btnMatematicas'],
+  'aprender|estudio':['btnStudy','btnMemory','btnMatematicas'],
+  'aprender|idiomas':['btnMapu','btnEnglish'],
+  'aprender|musica':['btnGuitar'],
   'aprender|juegos':['btnAjedrez','btnSudoku','btnCrucigrama','btnSopa'],
-  'aprender|infancias':['btnTales','btnCrianza','btnAdolescencia'],
-  'linaje|interior':['btnPsico','btnPsicologia','btnEneagrama','btnIkigai','btnVIA','btnMetodos','btnCuartoCamino','btnHooponopono','btnSilva','btnGrabovoi','btnNeurodiversidad','btnRecap','btnTolteca','btnTao','btnVigyan','btnEstoicismo','btnEspiritual','btnFenologia','btnDueloFull','btnAdicciones','btnKinMaya','btnTarot','btnOraculo'],
-  'linaje|familia':['btnArbolFull','btnVozAbuelos','btnConstelaciones','btnAdultez','btnVejez'],
+  'aprender|infancias':['btnTales','btnCrianza'],
+  'linaje|conocerse':['btnPsico','btnPsicologia','btnEneagrama','btnVIA','btnIkigai','btnNeurodiversidad'],
+  'linaje|practicas':['btnEspiritual','btnTao','btnRecap','btnTolteca','btnEstoicismo','btnCuartoCamino','btnHooponopono'],
+  'linaje|tradiciones':['btnMetodos','btnSilva','btnGrabovoi','btnVigyan','btnAnastasia','btnAmi'],
+  'linaje|oraculos':['btnKinMaya','btnTarot','btnNumerologia','btnOraculo'],
+  'linaje|sosten':['btnDueloFull','btnAdicciones'],
   'hogar|casa':['btnMeal','btnShopping','btnFinance','btnHomeTasks','btnBodega','btnDespensa','btnCloset','btnCorral','btnMovilidad','btnEscolar'],
   'hogar|energia':['btnEnergy','btnLena','btnTaller','btnHerramientas','btnMecanica','btnDomotica','btnConvert'],
+  'hogar|familia':['btnArbolFull','btnVozAbuelos','btnConstelaciones'],
   'comunidad|red':['btnTrueque','btnMinga','btnDerechos','btnAnimalCare'],
-  'comunidad|emergencia':['btnFirstAid','btnViolence','btnEvac','btnApoyo'],
-  'comunidad|app':['btnBackup','btnRestore','btnQRSync','btnShortcut','btnPdfLuna','btnPdfCiclo','btnDonate']
+  'comunidad|red-comunitaria':['btnRedGuia','btnRedMeshtastic','btnRedDiagnostico','btnRedRadio','btnRedNodos'],
+  'comunidad|convivencia-vecinal':['btnConvivGuia','btnConvivFichas','btnConvivHablar','btnConvivBitacora','btnConvivLuna','btnConvivRecursos'],
+  'comunidad|ciberseguridad':['btnCiberGuia','btnCiberClaves','btnCiberEstafas','btnCiberPriv','btnCiberChequeo','btnCiberAyuda'],
+  'comunidad|codigo-abierto':['btnOpenGuia','btnOpenLicencias','btnOpenProgramas','btnOpenProyecto','btnOpenAportar','btnOpenQuiz'],
+  'comunidad|emergencia':['btnFirstAid','btnViolence','btnEvac','btnApoyo']
 };
 // Red de seguridad (2026-10): registra botones/checkboxes tardíos (módulos
 // diferidos) en ALL_BTNS + BTN_HOME + PRESETS.todo/adulto, para que
@@ -4766,16 +4904,25 @@ function reordenarAcciones(){
 }
 const PRESETS = {
   todo: Object.fromEntries(ALL_BTNS.map(k=>[k,true])),
-  esencial: {btnWeather:true,btnTides:true,btnAstro:true,btnSiembra:true,btnEkadashi:true,btnCircadian:true,btnGolden:true,btnHabits:true,btnBreath:true,btnDreams:true,btnGratitud:true,btnMeal:true,btnShopping:true,btnFinance:true,btnHomeTasks:true,btnCrianza:true,btnTales:true,btnFirstAid:true,btnEvac:true,btnApoyo:true,btnTimer:true,btnRemind:true,btnBackup:true,btnRestore:true,btnShortcut:true,btnPdfLuna:true,btnPdfCiclo:true,btnHelp:true,btnDonate:true},
-  adolescente: {btnHabits:true,btnDiscipline:true,btnStudy:true,btnSchedule:true,btnMemory:true,btnAjedrez:true,btnMatematicas:true,btnSudoku:true,btnCrucigrama:true,btnSopa:true,btnMapu:true,btnEnglish:true,btnGuitar:true,btnTales:true,btnCrianza:true,btnAdolescencia:true,btnJuventud:true,btnVozAbuelos:true,btnDreams:true,btnBreath:true,btnGratitud:true,btnPsico:true,btnPsicologia:true,btnMetodos:true,btnRecap:true,btnDueloFull:true,btnEneagrama:true,btnCuartoCamino:true,btnKinMaya:true,btnTarot:true,btnOraculo:true,btnGym:true,btnNatacion:true,btnNutri:true,btnCircadian:true,btnMeal:true,btnFinance:true,btnConvert:true,btnTimer:true,btnRemind:true,btnFirstAid:true,btnViolence:true,btnHelp:true,btnDonate:true},
+  // Esencial: día completo + cielo completo + mar/tierra básicos + casa básica + infancias + emergencia completa.
+  esencial: {btnHabits:true,btnDiscipline:true,btnSchedule:true,btnTimer:true,btnRemind:true,btnGratitud:true,btnDreams:true,btnBreath:true,btnWeather:true,btnAstro:true,btnGolden:true,btnCircadian:true,btnEkadashi:true,btnTides:true,btnSiembra:true,btnMeal:true,btnShopping:true,btnFinance:true,btnHomeTasks:true,btnTales:true,btnCrianza:true,btnFirstAid:true,btnViolence:true,btnEvac:true,btnApoyo:true,btnHelp:true,btnDonate:true},
+  // Adolescente: día completo + cuerpo en cambio + aprender sin infancias (excepción: solo Cuentos, sin Crianza) + conocerse/oráculos/sostén completos + Recap + familia completa + casa básica + cielo parcial + emergencia completa.
+  adolescente: {btnHabits:true,btnDiscipline:true,btnSchedule:true,btnTimer:true,btnRemind:true,btnGratitud:true,btnDreams:true,btnBreath:true,btnMenstrual:true,btnFerti:true,btnAdolescencia:true,btnJuventud:true,btnNutri:true,btnGym:true,btnNatacion:true,btnPelo:true,btnStudy:true,btnMemory:true,btnMatematicas:true,btnMapu:true,btnEnglish:true,btnGuitar:true,btnAjedrez:true,btnSudoku:true,btnCrucigrama:true,btnSopa:true,btnTales:true,btnPsico:true,btnPsicologia:true,btnEneagrama:true,btnVIA:true,btnIkigai:true,btnNeurodiversidad:true,btnKinMaya:true,btnTarot:true,btnNumerologia:true,btnOraculo:true,btnDueloFull:true,btnAdicciones:true,btnRecap:true,btnArbolFull:true,btnVozAbuelos:true,btnConstelaciones:true,btnMeal:true,btnShopping:true,btnFinance:true,btnHomeTasks:true,btnConvert:true,btnWeather:true,btnAstro:true,btnCircadian:true,btnFirstAid:true,btnViolence:true,btnEvac:true,btnApoyo:true,btnHelp:true,btnDonate:true},
   adulto: Object.fromEntries(ALL_BTNS.map(k=>[k,true])),
-  mayor: {btnWeather:true,btnTides:true,btnAstro:true,btnSiembra:true,btnEkadashi:true,btnMedic:true,btnNutri:true,btnLawen:true,btnHabits:true,btnBreath:true,btnDreams:true,btnGratitud:true,btnMemory:true,btnSudoku:true,btnTales:true,btnCrianza:true,btnVozAbuelos:true,btnArbolFull:true,btnConstelaciones:true,btnAdultez:true,btnVejez:true,btnClimaterio:true,btnRecap:true,btnDueloFull:true,btnAdicciones:true,btnGym:true,btnNatacion:true,btnCircadian:true,btnGolden:true,btnEspiritual:true,btnCuartoCamino:true,btnKinMaya:true,btnTarot:true,btnOraculo:true,btnMeal:true,btnShopping:true,btnHomeTasks:true,btnCorral:true,btnMovilidad:true,btnFirstAid:true,btnAnimalCare:true,btnViolence:true,btnEvac:true,btnApoyo:true,btnRemind:true,btnTimer:true,btnEnergy:true,btnLena:true,btnConvert:true,btnPdfLuna:true,btnPdfCiclo:true,btnBackup:true,btnHelp:true,btnDonate:true},
-  estudiante: {btnWeather:true,btnSiembra:true,btnAstro:true,btnHabits:true,btnDiscipline:true,btnStudy:true,btnSchedule:true,btnMemory:true,btnAjedrez:true,btnMatematicas:true,btnSudoku:true,btnCrucigrama:true,btnSopa:true,btnMapu:true,btnEnglish:true,btnGuitar:true,btnTales:true,btnVozAbuelos:true,btnAdolescencia:true,btnPsico:true,btnPsicologia:true,btnMetodos:true,btnEneagrama:true,btnCuartoCamino:true,btnKinMaya:true,btnTarot:true,btnOraculo:true,btnDreams:true,btnBreath:true,btnGratitud:true,btnConvert:true,btnTimer:true,btnRemind:true,btnPdfLuna:true,btnPdfCiclo:true,btnBackup:true,btnHelp:true,btnDonate:true},
-  agricultor: {btnWeather:true,btnTides:true,btnAstro:true,btnBirds:true,btnAnfibios:true,btnSiembra:true,btnHuerta:true,btnHidroponia:true,btnElectrocultura:true,btnBosque:true,btnCompost:true,btnAgua:true,btnFlora:true,btnBodega:true,btnLawen:true,btnGolden:true,btnCircadian:true,btnEkadashi:true,btnIntermareal:true,btnComuna:true,btnMuni:true,btnTrueque:true,btnMinga:true,btnTaller:true,btnHerramientas:true,btnNudos:true,btnCorral:true,btnMeal:true,btnShopping:true,btnFinance:true,btnRemind:true,btnTimer:true,btnPdfLuna:true,btnPdfCiclo:true,btnBackup:true,btnHelp:true,btnDonate:true},
-  pescador: {btnWeather:true,btnTides:true,btnAstro:true,btnIntermareal:true,btnFishing:true,btnBirds:true,btnAnfibios:true,btnSiembra:true,btnHuerta:true,btnBosque:true,btnAgua:true,btnGolden:true,btnCircadian:true,btnComuna:true,btnMuni:true,btnNudos:true,btnTaller:true,btnTrueque:true,btnMinga:true,btnFirstAid:true,btnEvac:true,btnApoyo:true,btnMeal:true,btnRemind:true,btnTimer:true,btnHelp:true,btnDonate:true},
-  salud: {btnMenstrual:true,btnMedic:true,btnNutri:true,btnLawen:true,btnFerti:true,btnJuventud:true,btnClimaterio:true,btnAdultez:true,btnVejez:true,btnHabits:true,btnGym:true,btnNatacion:true,btnCircadian:true,btnBreath:true,btnDreams:true,btnGratitud:true,btnEspiritual:true,btnDueloFull:true,btnAdicciones:true,btnRecap:true,btnPsico:true,btnPsicologia:true,btnNeurodiversidad:true,btnMetodos:true,btnEneagrama:true,btnCuartoCamino:true,btnKinMaya:true,btnTarot:true,btnOraculo:true,btnEkadashi:true,btnCompost:true,btnHuerta:true,btnMeal:true,btnShopping:true,btnSchedule:true,btnCrianza:true,btnVozAbuelos:true,btnFirstAid:true,btnAnimalCare:true,btnViolence:true,btnEvac:true,btnApoyo:true,btnRemind:true,btnTimer:true,btnHelp:true,btnDonate:true},
-  deportista: {btnWeather:true,btnTides:true,btnHabits:true,btnDiscipline:true,btnGym:true,btnNatacion:true,btnNutri:true,btnCircadian:true,btnBreath:true,btnEspiritual:true,btnDreams:true,btnGratitud:true,btnMeal:true,btnShopping:true,btnFinance:true,btnTimer:true,btnRemind:true,btnEnergy:true,btnConvert:true,btnFirstAid:true,btnEvac:true,btnHelp:true,btnDonate:true},
-  docente: {btnWeather:true,btnSiembra:true,btnHuerta:true,btnBosque:true,btnBirds:true,btnCompost:true,btnEkadashi:true,btnHabits:true,btnDiscipline:true,btnStudy:true,btnSchedule:true,btnMemory:true,btnAjedrez:true,btnMatematicas:true,btnSudoku:true,btnCrucigrama:true,btnSopa:true,btnArbolFull:true,btnRecap:true,btnMapu:true,btnEnglish:true,btnGuitar:true,btnTales:true,btnVozAbuelos:true,btnCrianza:true,btnAdolescencia:true,btnGratitud:true,btnPsico:true,btnPsicologia:true,btnMetodos:true,btnEneagrama:true,btnCuartoCamino:true,btnKinMaya:true,btnTarot:true,btnOraculo:true,btnConvert:true,btnTimer:true,btnRemind:true,btnPdfLuna:true,btnPdfCiclo:true,btnBackup:true,btnHelp:true,btnDonate:true}
+  // Mayor: día completo + cuerpo (climaterio/adultez/vejez + cuidado completo) + estudio+juegos+infancias + sostén+oráculos completos + Espiritual/Recap + cielo completo + tierra de autoconsumo + penco servicios + familia completa + casa apoyada + red vecinal + emergencia completa.
+  mayor: {btnHabits:true,btnDiscipline:true,btnSchedule:true,btnTimer:true,btnRemind:true,btnGratitud:true,btnDreams:true,btnBreath:true,btnClimaterio:true,btnAdultez:true,btnVejez:true,btnMedic:true,btnNutri:true,btnGym:true,btnNatacion:true,btnPelo:true,btnRituales:true,btnStudy:true,btnMemory:true,btnMatematicas:true,btnAjedrez:true,btnSudoku:true,btnCrucigrama:true,btnSopa:true,btnTales:true,btnCrianza:true,btnEspiritual:true,btnRecap:true,btnKinMaya:true,btnTarot:true,btnNumerologia:true,btnOraculo:true,btnDueloFull:true,btnAdicciones:true,btnWeather:true,btnAstro:true,btnGolden:true,btnCircadian:true,btnEkadashi:true,btnTides:true,btnSiembra:true,btnHuerta:true,btnBosque:true,btnCompost:true,btnLawen:true,btnComuna:true,btnIglesias:true,btnMuni:true,btnBomberos:true,btnArbolFull:true,btnVozAbuelos:true,btnConstelaciones:true,btnMeal:true,btnShopping:true,btnHomeTasks:true,btnCorral:true,btnMovilidad:true,btnEnergy:true,btnLena:true,btnConvert:true,btnTrueque:true,btnMinga:true,btnAnimalCare:true,btnFirstAid:true,btnViolence:true,btnEvac:true,btnApoyo:true,btnHelp:true,btnDonate:true},
+  // Estudiante: día completo + aprender completo + Eneagrama/VIA/Ikigai+Recap+Métodos + cuerpo joven + cielo parcial + casa básica + Convert + VozAbuelos + ciber básico + emergencia completa.
+  estudiante: {btnHabits:true,btnDiscipline:true,btnSchedule:true,btnTimer:true,btnRemind:true,btnGratitud:true,btnDreams:true,btnBreath:true,btnStudy:true,btnMemory:true,btnMatematicas:true,btnMapu:true,btnEnglish:true,btnGuitar:true,btnAjedrez:true,btnSudoku:true,btnCrucigrama:true,btnSopa:true,btnEneagrama:true,btnVIA:true,btnIkigai:true,btnRecap:true,btnMetodos:true,btnAdolescencia:true,btnJuventud:true,btnNutri:true,btnGym:true,btnNatacion:true,btnWeather:true,btnAstro:true,btnCircadian:true,btnMeal:true,btnShopping:true,btnFinance:true,btnHomeTasks:true,btnConvert:true,btnVozAbuelos:true,btnCiberGuia:true,btnCiberClaves:true,btnCiberEstafas:true,btnCiberPriv:true,btnFirstAid:true,btnViolence:true,btnEvac:true,btnApoyo:true,btnHelp:true,btnDonate:true},
+  // Agricultor: tierra completa + cielo completo + mar de riego/marea + penco + casa productiva + energía sin domótica + VozAbuelos + red completa + día (organizar + gratitud) + emergencia de campo.
+  agricultor: {btnHuerta:true,btnSiembra:true,btnBosque:true,btnCompost:true,btnAgua:true,btnHidroponia:true,btnElectrocultura:true,btnFlora:true,btnLawen:true,btnBirds:true,btnAnfibios:true,btnMeli:true,btnHongos:true,btnSenderos:true,btnFuego:true,btnFenologia:true,btnWeather:true,btnAstro:true,btnGolden:true,btnCircadian:true,btnEkadashi:true,btnTides:true,btnIntermareal:true,btnComuna:true,btnMuni:true,btnMeal:true,btnShopping:true,btnFinance:true,btnHomeTasks:true,btnBodega:true,btnDespensa:true,btnCorral:true,btnEnergy:true,btnLena:true,btnTaller:true,btnHerramientas:true,btnMecanica:true,btnConvert:true,btnVozAbuelos:true,btnTrueque:true,btnMinga:true,btnDerechos:true,btnAnimalCare:true,btnHabits:true,btnDiscipline:true,btnSchedule:true,btnTimer:true,btnRemind:true,btnGratitud:true,btnFirstAid:true,btnEvac:true,btnApoyo:true,btnHelp:true,btnDonate:true},
+  // Pescador: mar completo + cielo completo + ribera + penco costero + casa base + taller/mecánica + Trueque/Minga + día (organizar + gratitud/respiración) + cuerpo activo + emergencia completa.
+  pescador: {btnTides:true,btnFishing:true,btnIntermareal:true,btnNudos:true,btnKayak:true,btnBallenas:true,btnWeather:true,btnAstro:true,btnGolden:true,btnCircadian:true,btnEkadashi:true,btnBosque:true,btnBirds:true,btnAnfibios:true,btnAgua:true,btnFenologia:true,btnComuna:true,btnMuni:true,btnBomberos:true,btnMeal:true,btnShopping:true,btnFinance:true,btnTaller:true,btnMecanica:true,btnConvert:true,btnTrueque:true,btnMinga:true,btnHabits:true,btnDiscipline:true,btnSchedule:true,btnTimer:true,btnRemind:true,btnGratitud:true,btnBreath:true,btnNutri:true,btnGym:true,btnNatacion:true,btnFirstAid:true,btnViolence:true,btnEvac:true,btnApoyo:true,btnHelp:true,btnDonate:true},
+  // Salud: cuerpo completo sin adolescencia + día completo + conocerse/oráculos/sostén + Espiritual/Recap/Métodos + memoria y juegos + cielo de ritmo + tierra de autoconsumo + casa base + VozAbuelos + Minga/AnimalCare + emergencia completa.
+  salud: {btnMenstrual:true,btnFerti:true,btnClimaterio:true,btnJuventud:true,btnAdultez:true,btnVejez:true,btnMedic:true,btnNutri:true,btnGym:true,btnNatacion:true,btnPelo:true,btnRituales:true,btnHabits:true,btnDiscipline:true,btnSchedule:true,btnTimer:true,btnRemind:true,btnGratitud:true,btnDreams:true,btnBreath:true,btnPsico:true,btnPsicologia:true,btnEneagrama:true,btnVIA:true,btnIkigai:true,btnNeurodiversidad:true,btnEspiritual:true,btnRecap:true,btnMetodos:true,btnKinMaya:true,btnTarot:true,btnNumerologia:true,btnOraculo:true,btnDueloFull:true,btnAdicciones:true,btnMemory:true,btnAjedrez:true,btnSudoku:true,btnCrucigrama:true,btnSopa:true,btnWeather:true,btnCircadian:true,btnEkadashi:true,btnHuerta:true,btnCompost:true,btnLawen:true,btnMeal:true,btnShopping:true,btnHomeTasks:true,btnVozAbuelos:true,btnMinga:true,btnAnimalCare:true,btnFirstAid:true,btnViolence:true,btnEvac:true,btnApoyo:true,btnHelp:true,btnDonate:true},
+  // Deportista: día completo + cuidado completo + Juventud/Adultez + Weather/Tides/Circadian + casa de rendimiento + Energy/Convert + VIA/Ikigai/Espiritual + emergencia completa.
+  deportista: {btnHabits:true,btnDiscipline:true,btnSchedule:true,btnTimer:true,btnRemind:true,btnGratitud:true,btnDreams:true,btnBreath:true,btnJuventud:true,btnAdultez:true,btnMedic:true,btnNutri:true,btnGym:true,btnNatacion:true,btnPelo:true,btnRituales:true,btnWeather:true,btnTides:true,btnCircadian:true,btnMeal:true,btnShopping:true,btnFinance:true,btnEnergy:true,btnConvert:true,btnVIA:true,btnIkigai:true,btnEspiritual:true,btnFirstAid:true,btnViolence:true,btnEvac:true,btnApoyo:true,btnHelp:true,btnDonate:true},
+  // Docente: aprender completo + familia completa + casa con Escolar/Movilidad + conocerse parcial + Recap/Métodos/Duelo + día completo + tierra educativa + Adolescencia/Juventud + Trueque/Minga/Derechos + ciber básico + emergencia completa.
+  docente: {btnStudy:true,btnMemory:true,btnMatematicas:true,btnMapu:true,btnEnglish:true,btnGuitar:true,btnAjedrez:true,btnSudoku:true,btnCrucigrama:true,btnSopa:true,btnTales:true,btnCrianza:true,btnArbolFull:true,btnVozAbuelos:true,btnConstelaciones:true,btnMeal:true,btnShopping:true,btnFinance:true,btnHomeTasks:true,btnEscolar:true,btnMovilidad:true,btnPsico:true,btnPsicologia:true,btnEneagrama:true,btnVIA:true,btnIkigai:true,btnRecap:true,btnMetodos:true,btnDueloFull:true,btnHabits:true,btnDiscipline:true,btnSchedule:true,btnTimer:true,btnRemind:true,btnGratitud:true,btnDreams:true,btnBreath:true,btnWeather:true,btnCircadian:true,btnSiembra:true,btnHuerta:true,btnBosque:true,btnCompost:true,btnBirds:true,btnFenologia:true,btnAdolescencia:true,btnJuventud:true,btnTrueque:true,btnMinga:true,btnDerechos:true,btnCiberGuia:true,btnCiberClaves:true,btnCiberEstafas:true,btnCiberPriv:true,btnFirstAid:true,btnViolence:true,btnEvac:true,btnApoyo:true,btnConvert:true,btnHelp:true,btnDonate:true}
 };
 function getVisibleConfig(){
   const c = (DATA.config && DATA.config.visible) || {};
@@ -4871,7 +5018,8 @@ function updateGroupCounts(){
     const total = g.querySelectorAll('.group-btns .btn').length;
     const visible = g.querySelectorAll('.group-btns .btn:not(.hidden-by-config):not(.hidden-by-search)').length;
     const c = g.querySelector('.ag-count');
-    if(c) c.textContent = `(${visible}/${total})`;
+    // Conteos ocultos por preferencia: no mostrar (visible/total) en móvil ni PC.
+    if(c) c.textContent = '';
     // ocultar grupo vacío por config (no por búsqueda)
     const hasVisible = g.querySelectorAll('.group-btns .btn:not(.hidden-by-config)').length > 0;
     g.style.display = hasVisible ? '' : 'none';
@@ -4936,17 +5084,12 @@ function applySubLabel(labelEl){
     if(!labelEl.hasAttribute('tabindex')) labelEl.setAttribute('tabindex','0');
     if(!labelEl.hasAttribute('role')) labelEl.setAttribute('role','button');
     if(!labelEl.title) labelEl.title = 'Toca para desplegar / ocultar';
-    // contador (visible/total) como en secciones principales
+    // contador oculto por preferencia: no mostrar (visible/total) en móvil ni PC.
+    // Si existía de una versión anterior, se elimina para que no quede rastro.
     let cnt = labelEl.querySelector ? labelEl.querySelector('.sub-count') : null;
-    if(!cnt){
-      cnt = document.createElement('span');
-      cnt.className = 'sub-count';
-      labelEl.appendChild(cnt);
-    }
+    if(cnt){ try{ cnt.remove(); }catch(e){} cnt = null; }
     const btns = getSubButtons(labelEl);
-    const total = btns.length;
     const visConf = btns.filter(b=>!b.classList.contains('hidden-by-config') && !b.classList.contains('hidden-by-search')).length;
-    if(cnt) cnt.textContent = total ? `(${visConf}/${total})` : '';
     // estado colapsado (persistido). Durante búsqueda se suspende para mostrar coincidencias.
     const searching = !!(window.__subSearchActive);
     let collapsed = isSubCollapsed(group, sub);
@@ -5087,6 +5230,7 @@ function setupConfigDialog(){
     syncConfigMirrors();
     try { syncHomeConfigUI(); setupHomeConfig(); } catch (e) {}
     try { syncModosVistaUI(); setupModosVista(); } catch (e) {}
+    try { syncPerfilUI(); } catch (e) {}
     $('configDialog').showModal();
   };
   try { setupHomeConfig(); syncHomeConfigUI(); } catch (e) {}
@@ -5145,10 +5289,33 @@ function setupConfigDialog(){
       setTimeout(()=>{ try{ $('btnDonate').click(); }catch(err2){ try{ $('donateDialog').showModal(); }catch(e){} } }, 120);
     };
   }
+  // Lo técnico vive en ⚙️ Ajustes: enlaza los botones del grupo 💾 Respaldo, PDF y acceso.
+  try { bindBackupButtons(); } catch (e) {}
+  try { bindRestoreButtons(); } catch (e) {}
+  try { bindPdfButtons(); } catch (e) {}
+  try {
+    const sc = $('cfgShortcutBtn');
+    if (sc && !sc.dataset.bound) { sc.dataset.bound = '1'; sc.onclick = createDesktopShortcut; }
+  } catch (e) {}
+  try {
+    const qr = $('cfgQRSyncBtn');
+    if (qr && !qr.dataset.bound) {
+      qr.dataset.bound = '1';
+      qr.onclick = (e) => {
+        try { e.preventDefault(); e.stopPropagation(); } catch (e2) {}
+        try {
+          const b = $('btnQRSync');
+          if (b) { b.click(); return; }
+        } catch (e3) {}
+        try { window.cal13qrOpen && window.cal13qrOpen(); } catch (e4) {}
+      };
+    }
+  } catch (e) {}
   document.querySelectorAll('#configDialog input[data-btn]').forEach(cb=>{
     cb.onchange=()=>{
       DATA.config=DATA.config||{}; DATA.config.visible=DATA.config.visible||{};
       DATA.config.visible[cb.dataset.btn]=cb.checked;
+      try { markPerfilPersonalizado(); } catch (e) {}
       scheduleSave(); applyVisibility();
     };
   });
@@ -5161,6 +5328,7 @@ function setupConfigDialog(){
       const vis={}; ALL_BTNS.forEach(k=> vis[k]= isAll ? true : (preset[k] ? true : false));
       // si preset no define, dejar false
       DATA.config.visible=vis;
+      DATA.config.perfil=b.dataset.preset;
       // v1.6.0: el perfil también ajusta la pantalla de inicio (vista + bloques ◉ Hoy).
       try{
         const hp = (typeof homeBlocksForPreset==='function') ? homeBlocksForPreset(b.dataset.preset) : null;
@@ -5173,6 +5341,7 @@ function setupConfigDialog(){
       }catch(e){}
       scheduleSave('Perfil aplicado: secciones + inicio ✓');
       document.querySelectorAll('#configDialog input[data-btn]').forEach(cb=> cb.checked=!!vis[cb.dataset.btn]);
+      try{ syncPerfilUI(); }catch(e){}
       applyVisibility();
       try{ if (viewMode === 'hoy') renderTodayView(); }catch(e){}
     };
@@ -5188,10 +5357,16 @@ function setupConfigDialog(){
   });
   const reset=$('configReset'); if(reset) reset.onclick=()=>{
     DATA.config=DATA.config||{}; DATA.config.visible=Object.fromEntries(ALL_BTNS.map(k=>[k,true]));
+    DATA.config.perfil='todo';
+    DATA.config.home=DATA.config.home||{};
+    DATA.config.home.startView='auto';
+    DATA.config.home.blocks=Object.assign({}, HOME_BLOCKS_DEFAULT);
     DATA.config.modos={ lectura: false, noche: false, contraste: false, luzSuave: false };
     DATA.config.secciones={};
     scheduleSave();
     document.querySelectorAll('#configDialog input[data-btn]').forEach(cb=> cb.checked=true);
+    try{ syncHomeConfigUI(); }catch(e){}
+    try{ syncPerfilUI(); }catch(e){}
     applyVisibility();
     try{ if(typeof applySecciones==='function') applySecciones(); }catch(e){}
   };
@@ -7432,7 +7607,7 @@ function renderViolencePanel(tab){
       <div class="help-card"><h4>📋 Dónde y cómo denunciar</h4><p class="su-a6c665"><b>Opciones:</b><br>• <b>133 Carabineros / 149 Fono Familia</b> (comisaría más cercana)<br>• <b>PDI 134</b> (si prefieres no ir a comisaría)<br>• <b>Fiscalía Concepción</b> (causa penal)<br>• <b>Tribunal de Familia Concepción</b> (medidas protección, pensión, cuidado hijos) — 41 274 4000<br><b>Lleva:</b> carnet, relato escrito con fechas, pruebas (fotos, audios, capturas), constatación lesiones (SAR), testigos (nombre/tel). No necesitas abogado para denunciar. Puedes ir acompañada/o.</p></div>
       <div class="help-card"><h4>⚖️ Qué pasa después — medidas</h4><p class="su-a6c665"><b>Juez puede ordenar en 24h:</b> salida del agresor del hogar, prohibición acercarse (200-500m), no porte armas, entrega de hijos a ti, pensión provisoria, rondas Carabineros. Incumplir es delito. Si hay niños, Tribunal dicta protección. Causa penal (lesiones/amenazas) va a Fiscalía. Centro Mujer te acompaña gratis a audiencias.</p></div>
       <div class="help-card"><h4>🏥 Salud — hora segura y gratuita</h4><p class="su-a6c665"><b>CESFAM/SAR Penco:</b> 41 272 6350 / 41 272 6000 · Matrona, psicólogo/a, trabajador social — pide <b>hora por VIF</b> (reserva confidencial).<br><b>Hospital Penco-Lirquén:</b> 41 272 6300 urgencias.<br><b>SERNAMEG Centro Mujer Conce:</b> 41 246 7700 (terapia, jurídica, grupo apoyo, casa acogida).<br><b>Salud Responde 600 360 7777</b> orientación.</p></div>
-      <div class="help-card"><h4>💜 Apoyo psicosocial gratuito</h4><p class="su-a6c665"><b>1455 SERNAMEG (24h)</b> + WhatsApp +56 9 9700 7000 (chat silencioso).<br><b>149 Fono Familia Carabineros</b> (24h VIF).<br><b>800 104 008 Fono VIF</b> (ex 800 104 008).<br><b>Centro Hombre</b> que quiere cambiar (SERNAMEG) — derivación si agresor pide ayuda.<br><b>Fundación Honra, Miles, Corporación Humanas</b> — redes Bío-Bío.<br>En Penco: <b>Of. Mujer DIDECO 41 226 1020</b> + <b>Of. Niñez 41 226 1020</b> + <b>Programa SENDA Previene Penco</b>.</p></div>
+      <div class="help-card"><h4>💜 Apoyo psicosocial gratuito</h4><p class="su-a6c665"><b>1455 SERNAMEG</b> (lun-dom 8:00-24:00) + WhatsApp +56 9 9700 7000 (mismo horario, chat silencioso). Fuera de horario: <b>149</b> o <b>133</b>.<br><b>149 Fono Familia Carabineros</b> (24h VIF).<br><b>800 104 008</b> Fono VIF (orientación).<br><b>Centro Hombre</b> que quiere cambiar (SERNAMEG) — derivación si agresor pide ayuda.<br><b>Fundación Honra, Miles, Corporación Humanas</b> — redes Bío-Bío.<br>En Penco: <b>Of. Mujer DIDECO 41 226 1020</b> + <b>Of. Niñez 41 226 1020</b> + <b>Programa SENDA Previene Penco</b>.</p></div>
     </div>
     <div class="menstrual-card su-0d015f"><h4>📄 Constatación de lesiones ≠ denuncia automática (pero ayuda mucho)</h4><p class="muted su-a6c665">Puedes pedir en SAR/Hospital “constatación por VIF” solo para dejar registro médico (fecha, lesiones, firma). Te dan copia. No obliga a denunciar, pero es prueba clave si denuncias después (plazo lesiones leves 6 meses). Pide que describan todo, incluso hematomas pequeños y estado emocional.</p></div>
     <details class="menstrual-details su-d2c171" open><summary>🗓️ Si no quieres denunciar ahora — igual puedes avanzar</summary><p class="muted su-a6c665">• Ve a 1455/Centro Mujer solo para conversar (confidencial).<br>• Actualiza plan de seguridad.<br>• Busca terapia en CESFAM.<br>• Documenta. <br><b>No hay plazo único para todo:</b> lesiones/coacción 6 meses, amenazas/abusos sexuales hasta años, pero entre más pronto, más pruebas. Si cambias de opinión, puedes denunciar cuando estés lista/o.</p></details>`;

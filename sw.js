@@ -1,6 +1,8 @@
 ﻿// Service Worker — Calendario 13 Lunas (offline-first, tolerante a versiones ?v=)
+// Copyright (C) 2026 Semillero Consciente. Licencia: GNU GPLv3 o posterior (ver COPYING).
+// SPDX-License-Identifier: GPL-3.0-or-later
 // v55
-const CACHE = 'cal13-v69-offline';
+const CACHE = 'cal13-v73-offline';
 
 // Lista completa de archivos que usa index.html (bare + con ?v=).
 // Si se agrega un JS nuevo en index.html, agregarlo aquí también (bare y ?v=).
@@ -13,6 +15,9 @@ const CORE = [
   './icon-512.png',
   './icon-512-maskable.png',
   './assets/notify.mp3',
+  './COPYING',
+  './LICENSE.md',
+  './LICENCIA-CONTENIDO-CC-BY-NC-SA-4.0.md',
   './data/territorios/index.json',
   './data/territorios/penco/actores.json',
   './data/territorios/penco/apoyo-emergencia.json',
@@ -165,6 +170,8 @@ const CORE = [
   './min/cuerpo-luna-rituales-fenologia-modulo.min.js?v=1',
   './min/data.min.js',
   './min/data.min.js?v=8',
+  './min/dialogo-tamano.min.js',
+  './min/dialogo-tamano.min.js?v=1',
   './min/domotica-modulo.min.js',
   './min/domotica-modulo.min.js?v=1',
   './min/electrocultura-modulo.min.js',
@@ -243,6 +250,8 @@ const CORE = [
   './min/open-source-modulo.min.js?v=2',
   './min/oraculo-modulo.min.js',
   './min/oraculo-modulo.min.js?v=1',
+  './min/orden-herramientas-modulo.min.js',
+  './min/orden-herramientas-modulo.min.js?v=1',
   './min/penco-guia.min.js',
   './min/penco-guia.min.js?v=1',
   './min/pesca-historia.min.js',
@@ -278,7 +287,7 @@ const CORE = [
   './min/styles-csp.min.css',
   './min/styles-csp.min.css?v=1',
   './min/styles.min.css',
-  './min/styles.min.css?v=12',
+  './min/styles.min.css?v=13',
   './min/sudoku-modulo.min.js',
   './min/sudoku-modulo.min.js?v=1',
   './min/talleres-penco.min.js',

@@ -61,6 +61,7 @@ function staticEntries() {
     './', './index.html', './manifest.json', './donate.json',
     './icon-192.png', './icon-512.png', './icon-512-maskable.png',
     './assets/notify.mp3',
+    './COPYING', './LICENSE.md', './LICENCIA-CONTENIDO-CC-BY-NC-SA-4.0.md',
     './data/territorios/index.json',
   ];
   try {

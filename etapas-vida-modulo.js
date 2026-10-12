@@ -624,25 +624,29 @@ var NEW_BTNS = [
 
 function injectButtons() {
   try {
-    var HOME = { btnJuventud: ['cuerpo', 'ciclos'], btnClimaterio: ['cuerpo', 'ciclos'], btnAdultez: ['linaje', 'familia'], btnVejez: ['linaje', 'familia'] };
+    var HOME = { btnJuventud: ['cuerpo', 'etapas'], btnClimaterio: ['cuerpo', 'ciclos'], btnAdultez: ['cuerpo', 'etapas'], btnVejez: ['cuerpo', 'etapas'] };
     ETAPAS_CONF.forEach(function (cf) {
       if ($(cf.btn)) {
-        // migrar a su grupo nuevo si quedó en un grupo viejo
+        // migrar a su grupo/sub nuevo si quedó en una ubicación vieja
+        // (p. ej. Juventud en cuerpo|ciclos, Adultez/Vejez en hogar|familia)
         try {
           var home = HOME[cf.btn];
           if (home) {
             var cur = $(cf.btn);
             var curG = cur.closest ? cur.closest('.action-group') : null;
             var curName = curG && curG.getAttribute ? curG.getAttribute('data-group') : null;
-            if (curName && curName !== home[0]) {
+            var curSub = cur.dataset ? (cur.dataset.sub || cur.getAttribute('data-sub')) : cur.getAttribute('data-sub');
+            if (curName && (curName !== home[0] || curSub !== home[1])) {
               var gd = document.querySelector('.action-group[data-group="' + home[0] + '"] .group-btns');
-              if (gd) { gd.appendChild(cur); try { cur.setAttribute('data-sub', home[1]); } catch (eS) {} }
+              if (gd && curName !== home[0]) gd.appendChild(cur);
+              try { cur.setAttribute('data-sub', home[1]); if (cur.dataset) cur.dataset.sub = home[1]; } catch (eS) {}
             }
+            try { if (typeof BTN_HOME !== 'undefined') BTN_HOME[cf.btn] = home; } catch (eH) {}
           }
         } catch (eM) {}
         return;
       }
-      var home2 = HOME[cf.btn] || ['linaje', 'familia'];
+      var home2 = HOME[cf.btn] || ['hogar', 'familia'];
       var g = document.querySelector('.action-group[data-group="' + home2[0] + '"] .group-btns');
       if (!g) g = document.querySelector('.action-group[data-group="hogar"] .group-btns');
       if (!g) return;
@@ -687,8 +691,8 @@ function injectConfigChecks() {
       if (!h) return;
       var t = h.textContent || '';
       var esCuerpo = (t.indexOf('Cuerpo') >= 0);
-      var esLinaje = (t.indexOf('Linaje') >= 0 || t.indexOf('Interior') >= 0);
-      if (!esCuerpo && !esLinaje) return;
+      var esHogar = (t.indexOf('Hogar') >= 0);
+      if (!esCuerpo && !esHogar) return;
       ETAPAS_CONF.forEach(function (cf) {
         if (gr.querySelector('input[data-btn="' + cf.btn + '"]')) return;
         var lab = document.createElement('label');

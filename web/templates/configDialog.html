@@ -39,7 +39,21 @@
         </div>
         <div class="config-group">
           <h5>🏠 Pantalla de inicio</h5>
-          <p class="muted su-245797">Elige qué vista se abre al iniciar y qué información muestra la vista ◉ Hoy. Se guarda por usuario.</p>
+          <p class="muted su-245797">Un <b>perfil manda</b>: define a la vez la vista inicial, los bloques de ◉ Hoy <b>y</b> las secciones visibles. Elige uno y luego afina a mano si quieres (quedará como <i>Personalizado</i>).</p>
+          <p class="muted su-9a5149">👥 Perfil actual: <b id="cfgPerfilActual">—</b></p>
+          <div class="preset-grid">
+            <button type="button" class="btn config-preset" data-preset="todo">Todo</button>
+            <button type="button" class="btn config-preset" data-preset="esencial">Esencial</button>
+            <button type="button" class="btn config-preset" data-preset="adolescente">Adolescente</button>
+            <button type="button" class="btn config-preset" data-preset="adulto">Adulto</button>
+            <button type="button" class="btn config-preset" data-preset="mayor">Mayor</button>
+            <button type="button" class="btn config-preset" data-preset="estudiante">Estudiante</button>
+            <button type="button" class="btn config-preset" data-preset="agricultor">Agricultor</button>
+            <button type="button" class="btn config-preset" data-preset="pescador">Pescador</button>
+            <button type="button" class="btn config-preset" data-preset="salud">Salud</button>
+            <button type="button" class="btn config-preset" data-preset="deportista">Deportista</button>
+            <button type="button" class="btn config-preset" data-preset="docente">Docente</button>
+          </div>
           <label class="muted su-9a5149">Vista inicial al abrir
             <select id="cfgHomeView" aria-label="Vista inicial al abrir" class="su-96ad60">
               <option value="auto">Automática — Hoy en celular, Luna en PC</option>
@@ -51,35 +65,41 @@
               <option value="completa">📋 Vista completa</option>
             </select>
           </label>
-          <p class="muted su-5c43de">Información visible en ◉ Hoy (marca lo que quieras ver):</p>
+          <details class="config-home-blocks" id="cfgHomeBlocks">
+          <summary class="muted su-5c43de">Información visible en ◉ Hoy (34 bloques) — la define el perfil</summary>
+          <p class="muted su-245797">Marca lo que quieras ver en ◉ Hoy. Cambiar algo pasa a <i>Personalizado</i>.</p>
+          <p class="muted su-0d5be0">📝 Día a día</p>
           <label class="check-row"><input type="checkbox" data-home="frase" checked> 💬 Frase del día</label>
           <label class="check-row"><input type="checkbox" data-home="solLuna" checked> ☀️🌙 Sol y luna de hoy</label>
           <label class="check-row"><input type="checkbox" data-home="notas" checked> 📝 Notas del día</label>
           <label class="check-row"><input type="checkbox" data-home="agenda" checked> 🕐 Compromisos</label>
           <label class="check-row"><input type="checkbox" data-home="habitos" checked> ✅ Hábitos de hoy</label>
           <label class="check-row"><input type="checkbox" data-home="animo" checked> 😊 Estado de ánimo</label>
-          <label class="check-row"><input type="checkbox" data-home="suenos" checked> 💭 Sueños</label>
-          <label class="check-row"><input type="checkbox" data-home="comidas" checked> 🥗 Comidas de hoy</label>
-          <label class="check-row"><input type="checkbox" data-home="tareas" checked> 🏠 Tareas hogar de hoy</label>
-          <label class="check-row"><input type="checkbox" data-home="compras" checked> 🛒 Compras pendientes</label>
-          <label class="check-row"><input type="checkbox" data-home="finanzas" checked> 💰 Finanzas del día</label>
           <label class="check-row"><input type="checkbox" data-home="disciplina" checked> 🎯 Disciplina / intención</label>
           <label class="check-row"><input type="checkbox" data-home="respiracion" checked> 🌬️ Respiración</label>
-          <label class="check-row"><input type="checkbox" data-home="ciclo" checked> 🌸 Ciclo</label>
-          <label class="check-row"><input type="checkbox" data-home="clima" checked> 🌤️ Clima</label>
-          <label class="check-row"><input type="checkbox" data-home="mareas" checked> 🌊 Mareas</label>
           <label class="check-row"><input type="checkbox" data-home="gratitud" checked> 📓 Gratitud diaria</label>
+          <label class="check-row"><input type="checkbox" data-home="suenos" checked> 💭 Sueños</label>
           <label class="check-row"><input type="checkbox" data-home="horario" checked> 📚 Horario de hoy</label>
+          <p class="muted su-0d5be0">💚 Cuerpo y energía interior</p>
+          <label class="check-row"><input type="checkbox" data-home="comidas" checked> 🥗 Comidas de hoy</label>
           <label class="check-row"><input type="checkbox" data-home="entreno" checked> 💪 Entrenamiento de hoy</label>
           <label class="check-row"><input type="checkbox" data-home="medicina" checked> 💊 Medicina de hoy</label>
-          <label class="check-row"><input type="checkbox" data-home="siembra" checked> 🌱 Consejo siembra lunar</label>
+          <label class="check-row"><input type="checkbox" data-home="ciclo" checked> 🌸 Ciclo</label>
           <label class="check-row"><input type="checkbox" data-home="espiritual" checked> 🕉️ Práctica espiritual</label>
           <label class="check-row"><input type="checkbox" data-home="ritmo" checked> 🌞 Ritmo + hora dorada</label>
-          <label class="check-row"><input type="checkbox" data-home="ekadashi" checked> 📿 Ekadashi / ayuno</label>
+          <p class="muted su-0d5be0">🌊 Territorio y cielo</p>
+          <label class="check-row"><input type="checkbox" data-home="clima" checked> 🌤️ Clima</label>
+          <label class="check-row"><input type="checkbox" data-home="mareas" checked> 🌊 Mareas</label>
+          <label class="check-row"><input type="checkbox" data-home="siembra" checked> 🌱 Consejo siembra lunar</label>
           <label class="check-row"><input type="checkbox" data-home="pesca" checked> 🎣 Pesca hoy</label>
           <label class="check-row"><input type="checkbox" data-home="bosque" checked> 🌳 Bosque hoy</label>
           <label class="check-row"><input type="checkbox" data-home="aves" checked> 🦅 Aves hoy</label>
           <label class="check-row"><input type="checkbox" data-home="huerta" checked> 🥬 Huerta hoy (+ compost)</label>
+          <label class="check-row"><input type="checkbox" data-home="ekadashi" checked> 📿 Ekadashi / ayuno</label>
+          <p class="muted su-0d5be0">🏡 Hogar y comunidad</p>
+          <label class="check-row"><input type="checkbox" data-home="tareas" checked> 🏠 Tareas hogar de hoy</label>
+          <label class="check-row"><input type="checkbox" data-home="compras" checked> 🛒 Compras pendientes</label>
+          <label class="check-row"><input type="checkbox" data-home="finanzas" checked> 💰 Finanzas del día</label>
           <label class="check-row"><input type="checkbox" data-home="estudio" checked> 🧠 Estudio hoy (+ Kimün)</label>
           <label class="check-row"><input type="checkbox" data-home="cuentos" checked> 📖 Cuento de la luna (+ abuelos)</label>
           <label class="check-row"><input type="checkbox" data-home="familia" checked> 🌳 Familia y linaje</label>
@@ -87,10 +107,217 @@
           <label class="check-row"><input type="checkbox" data-home="comunidad" checked> 🤝 Comunidad hoy (minga/trueque)</label>
           <label class="check-row"><input type="checkbox" data-home="energia" checked> 🔧 Energía y hogar</label>
           <button type="button" id="cfgHomeReset" class="btn su-3cfbdf">↺ Mostrar toda la información</button>
+          </details>
+          <details class="config-group config-advanced" id="cfgSeccionesDetails">
+        <summary class="muted">Secciones visibles (las define el perfil)</summary>
+          <p class="muted su-245797">Las marca el perfil elegido arriba. Afinar a mano pasa a Personalizado.</p>
+        <div class="config-grid">
+          <div class="config-group">
+            <h5>📅 Mi Día</h5>
+            <label class="check-row"><input type="checkbox" data-btn="btnHabits"> ✅ Hábitos</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnDiscipline"> 🎯 Disciplina</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnSchedule"> 📚 Horario</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnTimer"> ⏱ Tiempo</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnRemind"> 🔔 Recordatorios</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnGratitud"> 📓 Gratitud Diaria</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnDreams"> 💭 Sueños</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnBreath"> 🌬️ Respiración</label>
+          </div>
+          <div class="config-group">
+            <h5>🌊 Territorio Penco</h5>
+            <p class="muted su-0d5be0">⚓ Costa y mar</p>
+            <label class="check-row"><input type="checkbox" data-btn="btnTides"> 🌊 Mareas</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnFishing"> 🎣 Pesca</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnIntermareal"> 🦀 Intermareal</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnNudos"> 🪢 Nudos y Redes</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnKayak"> 🛶 Kayak</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnBallenas"> 🐋 Ballenas</label>
+            <p class="muted su-0d5be0">🌱 Huerta, tierra y bosque</p>
+            <label class="check-row"><input type="checkbox" data-btn="btnHuerta"> 🥬 Huerta</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnSiembra"> 🌱 Siembra lunar</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnBosque"> 🌳 Bosque Nativo</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnCompost"> 🪱 Compost y Suelo</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnAgua"> 💧 Agua</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnHidroponia"> 💧 Hidroponía</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnElectrocultura"> ⚡ Electrocultura</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnFlora"> 🌸 Flora</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnLawen"> 🌿 Lawen Herbario</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnBirds"> 🦅 Aves</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnAnfibios"> 🐸 Anfibios</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnMeli"> 🐝 Melí</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnHongos"> 🍄 Hongos</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnSenderos"> 🚶 Senderos</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnFuego"> 🔥 Fuego</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnFenologia"> 🌼 Fenología</label>
+            <p class="muted su-0d5be0">🌙 Cielo y ritmo natural</p>
+            <label class="check-row"><input type="checkbox" data-btn="btnWeather"> 🌤️ Clima</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnAstro"> 🔭 Astro</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnGolden"> 📸 Hora Dorada</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnCircadian"> 🌞 Ritmo Circadiano</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnEkadashi"> 📿 Ekadashi</label>
+            <p class="muted su-0d5be0">🎉 Comuna y servicios</p>
+            <label class="check-row"><input type="checkbox" data-btn="btnComuna"> 🎉 Penco</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnIglesias"> ⛪ Iglesias</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnMuni"> 🏛️ Municipalidad</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnBomberos"> 🚒 Bomberos</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnActores"> 🛡️ Actores del territorio</label>
+          </div>
+          <div class="config-group">
+            <h5>💚 Cuerpo & Salud</h5>
+            <p class="muted su-0d5be0">🌸 Ciclos</p>
+            <label class="check-row"><input type="checkbox" data-btn="btnMenstrual"> 🌸 Ciclo</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnFerti"> 🌱 Fertilidad Natural</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnClimaterio"> 🔥 Climaterio</label>
+            <p class="muted su-0d5be0">🌿 Etapas de vida</p>
+            <label class="check-row"><input type="checkbox" data-btn="btnAdolescencia"> 🧒 Adolescencia</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnJuventud"> 🌱 Juventud</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnAdultez"> 🧑 Adultez</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnVejez"> 👵 Vejez</label>
+            <p class="muted su-0d5be0">🛟 Cuidado y movimiento</p>
+            <label class="check-row"><input type="checkbox" data-btn="btnMedic"> 🌿 Medicina</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnNutri"> 🥗 Nutrición</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnGym"> 💪 Entrenamientos</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnNatacion"> 🏊 Natación</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnPelo"> 💇 Cuidado del pelo</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnRituales"> 🌙 Rituales corporales</label>
+          </div>
+          <div class="config-group">
+            <h5>🧠 Aprender, Crear y Jugar</h5>
+            <p class="muted su-0d5be0">📚 Estudio y herramientas mentales</p>
+            <label class="check-row"><input type="checkbox" data-btn="btnStudy"> 🧠 Estudio</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnMemory"> 🧩 Entrena la memoria</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnMatematicas"> 🔢 Matemáticas</label>
+            <p class="muted su-0d5be0">🗣️ Idiomas y cultura</p>
+            <label class="check-row"><input type="checkbox" data-btn="btnMapu"> 🗣️ Kimün Mapuzugun</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnEnglish"> 🔤 Inglés</label>
+            <p class="muted su-0d5be0">🎶 Música y creación</p>
+            <label class="check-row"><input type="checkbox" data-btn="btnGuitar"> 🎶 Instrumentos</label>
+            <p class="muted su-0d5be0">🎮 Juegos</p>
+            <label class="check-row"><input type="checkbox" data-btn="btnAjedrez"> ♟️ Ajedrez</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnSudoku"> 🔢 Sudoku</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnCrucigrama"> 📝 Crucigrama</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnSopa"> 🔤 Sopa de Letras</label>
+            <p class="muted su-0d5be0">🧒 Infancias y crianza</p>
+            <label class="check-row"><input type="checkbox" data-btn="btnTales"> 📖 Cuentos</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnCrianza"> 👶 Crianza</label>
+          </div>
+          <div class="config-group">
+            <h5>🪞 Interior, Linaje y Memoria</h5>
+            <p class="muted su-0d5be0">🪞 Autoconocimiento</p>
+            <label class="check-row"><input type="checkbox" data-btn="btnPsico"> 🪞 Autoconocimiento</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnPsicologia"> 🧠 Psicología</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnEneagrama"> 🔺 Eneagrama</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnVIA"> 🌟 Fortalezas VIA</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnIkigai"> 🌸 Ikigai</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnNeurodiversidad"> 🧩 Neurodiversidad</label>
+            <p class="muted su-0d5be0">🌅 Presencia y prácticas personales</p>
+            <label class="check-row"><input type="checkbox" data-btn="btnEspiritual"> 🕉️ Prácticas Espirituales</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnTao"> ☯️ Tao</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnRecap"> 🔁 Recapitulación</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnTolteca"> 🦅 Prácticas Toltecas</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnEstoicismo"> 🏛️ Estoicismo</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnCuartoCamino"> 🛤️ Cuarto Camino</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnHooponopono"> 🌺 Ho'oponopono</label>
+            <p class="muted su-0d5be0">📿 Métodos y corrientes</p>
+            <label class="check-row"><input type="checkbox" data-btn="btnMetodos"> 📿 Métodos</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnSilva"> 🧠 Método Silva</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnGrabovoi"> 🌌 Grabovoi</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnVigyan"> 🕉️ Tantra · 112 meditaciones</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnAnastasia"> 🌲 Anastasia</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnAmi"> 🛸 Ami</label>
+            <p class="muted su-0d5be0">🔮 Oráculos y sistemas simbólicos</p>
+            <label class="check-row"><input type="checkbox" data-btn="btnKinMaya"> 🌟 Kin Maya</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnTarot"> 🔮 Tarot</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnNumerologia"> 🔢 Numerología</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnOraculo"> 🌬️ Oráculo</label>
+            <p class="muted su-0d5be0">🤲 Acompañamiento</p>
+            <label class="check-row"><input type="checkbox" data-btn="btnDueloFull"> 🕊️ Duelo</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnAdicciones"> 🌿 Adicciones</label>
+          </div>
+          <div class="config-group">
+            <h5>🏡 Hogar y Vida Práctica</h5>
+            <p class="muted su-0d5be0">🍽️ Casa y organización</p>
+            <label class="check-row"><input type="checkbox" data-btn="btnMeal"> 🥗 Comidas</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnShopping"> 🛒 Compras</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnFinance"> 💰 Finanzas</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnHomeTasks"> 🏠 Tareas del Hogar</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnBodega"> 🫙 La Bodega</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnDespensa"> 🥫 Despensa</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnCloset"> 👕 Clóset</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnCorral"> 🐔 Corral</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnMovilidad"> 🚌 Movilidad</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnEscolar"> 🎒 Escolar</label>
+            <p class="muted su-0d5be0">🔧 Energía y herramientas</p>
+            <label class="check-row"><input type="checkbox" data-btn="btnEnergy"> ⚡ Consumo Eléctrico</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnLena"> 🪵 Leña y Pellet</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnTaller"> 🛠️ Bitácora Taller</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnHerramientas"> 🧰 Herramientas</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnMecanica"> 🚗 Mecánica</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnDomotica"> 🏠 Domótica</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnConvert"> 📏 Conversión</label>
+            <p class="muted su-0d5be0">🌳 Familia y legado</p>
+            <label class="check-row"><input type="checkbox" data-btn="btnArbolFull"> 🌳 Árbol Genealógico</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnVozAbuelos"> 🗣️ Voces de los Abuelos</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnConstelaciones"> 🌳 Constelaciones Familiares</label>
+          </div>
+          <div class="config-group">
+            <h5>🤝 Comunidad</h5>
+            <p class="muted su-0d5be0">🤝 Red y colaboración</p>
+            <label class="check-row"><input type="checkbox" data-btn="btnTrueque"> 🔄 Trueque y Feria</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnMinga"> 🤲 Minga · Red de Apoyo</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnDerechos"> 📜 Derechos y Deberes</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnAnimalCare"> 🐾 Cuidado Animal</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnDonate"> ❤ Aporte Voluntario</label>
+            <p class="muted su-0d5be0">📡 Red Comunitaria</p>
+            <label class="check-row"><input type="checkbox" data-btn="btnRedGuia"> 📡 Guía Red</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnRedMeshtastic"> 📻 Meshtastic</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnRedDiagnostico"> 🔍 Diagnóstico</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnRedRadio"> 🎙️ Curso / Licencia de radio</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnRedNodos"> 🛰️ Mis Nodos</label>
+            <p class="muted su-0d5be0">🏘️ Convivencia Vecinal</p>
+            <label class="check-row"><input type="checkbox" data-btn="btnConvivGuia"> 📘 Guía base</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnConvivFichas"> 🗂️ Fichas de conflicto</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnConvivHablar"> 💬 Conversar + acta</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnConvivBitacora"> 📓 Bitácora</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnConvivLuna"> 🌙 Ritual lunar</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnConvivRecursos"> 🧰 Recursos</label>
+            <p class="muted su-0d5be0">🛡️ Ciberseguridad</p>
+            <label class="check-row"><input type="checkbox" data-btn="btnCiberGuia"> 📘 Guía base</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnCiberClaves"> 🔑 Claves seguras</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnCiberEstafas"> ⚠️ Estafas y fraudes</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnCiberPriv"> 🔒 Privacidad</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnCiberChequeo"> 🛡️ Chequeo escudo</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnCiberAyuda"> 🆘 Ayuda y denuncia</label>
+            <p class="muted su-0d5be0">💻 Código Abierto</p>
+            <label class="check-row"><input type="checkbox" data-btn="btnOpenGuia"> 📖 Qué es lo libre</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnOpenLicencias"> 📜 Licencias</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnOpenProgramas"> 💿 Programas libres</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnOpenProyecto"> 🌙 Este proyecto GPL</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnOpenAportar"> 🤲 Aportar</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnOpenQuiz"> ❓ Soberanía + quiz</label>
+            <p class="muted su-0d5be0">🚨 Emergencias y apoyo</p>
+            <label class="check-row"><input type="checkbox" data-btn="btnFirstAid"> 🩹 Primeros Auxilios</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnViolence"> 🟣 Violencia Doméstica</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnEvac"> 🌊🚨 Evacuación Tsunami</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnApoyo"> 🆘 Apoyo Emergencia</label>
+            <label class="check-row"><input type="checkbox" data-btn="btnHelp"> ❓ Guía</label>
+          </div>
+        </div>
+      </details>
         </div>
         <div class="config-group">
-          <h5>📌 Acceso directo</h5>
-          <p class="muted su-245797">Crea el ícono del calendario en el escritorio (solo versión de escritorio PC).</p>
+          <h5>💾 Respaldo, PDF y acceso</h5>
+          <p class="muted su-245797">Todo lo técnico vive aquí: guarda o recupera tus datos, imprime la luna o el ciclo, pasa datos a otro dispositivo o crea el ícono de escritorio.</p>
+          <div class="conv-row">
+            <button type="button" id="cfgBackupBtn" class="btn su-046678">💾 Respaldo</button>
+            <button type="button" id="cfgRestoreBtn" class="btn su-046678">📥 Restaurar</button>
+            <button type="button" id="cfgQRSyncBtn" class="btn su-046678">📲 Traspaso QR</button>
+          </div>
+          <div class="conv-row">
+            <button type="button" id="cfgPdfLunaBtn" class="btn su-046678">📄 PDF luna</button>
+            <button type="button" id="cfgPdfCicloBtn" class="btn su-046678">📚 PDF ciclo</button>
+          </div>
+          <p class="muted su-245797">Ícono del calendario en el escritorio (solo versión de escritorio PC).</p>
           <button type="button" id="cfgShortcutBtn" class="btn su-046678">📌 Crear acceso directo en el escritorio</button>
         </div>
         <div class="config-group config-font-group">
@@ -113,146 +340,8 @@
           <label class="check-row"><input type="checkbox" data-modo="contraste"> 🔆 Alto contraste <span class="muted su-0d5be0">— texto más marcado</span></label>
           <label class="check-row"><input type="checkbox" data-modo="luzSuave"> 🔴 Filtro noche / cuida el sueño <span class="muted su-0d5be0">— quita luz azul fuerte de noche</span></label>
         </div>
-        <div class="config-group">
-          <h5>👥 Perfiles</h5>
-          <p class="muted su-245797">Un toque aplica un conjunto de secciones <b>y</b> su pantalla de inicio (vista + bloques de ◉ Hoy). Después puedes afinar arriba:</p>
-          <div class="preset-grid">
-            <button type="button" class="btn config-preset" data-preset="todo">Todo</button>
-            <button type="button" class="btn config-preset" data-preset="esencial">Esencial</button>
-            <button type="button" class="btn config-preset" data-preset="adolescente">Adolescente</button>
-            <button type="button" class="btn config-preset" data-preset="adulto">Adulto</button>
-            <button type="button" class="btn config-preset" data-preset="mayor">Mayor</button>
-            <button type="button" class="btn config-preset" data-preset="estudiante">Estudiante</button>
-            <button type="button" class="btn config-preset" data-preset="agricultor">Agricultor</button>
-            <button type="button" class="btn config-preset" data-preset="pescador">Pescador</button>
-            <button type="button" class="btn config-preset" data-preset="salud">Salud</button>
-            <button type="button" class="btn config-preset" data-preset="deportista">Deportista</button>
-            <button type="button" class="btn config-preset" data-preset="docente">Docente</button>
-          </div>
-        </div>
       </div>
-      <details class="config-group config-advanced">
-        <summary class="muted">Secciones visibles (avanzado)</summary>
-        <div class="config-grid">
-          <div class="config-group">
-            <h5>📅 Mi Día</h5>
-            <label class="check-row"><input type="checkbox" data-btn="btnHabits"> ✅ Hábitos</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnDiscipline"> 🎯 Disciplina</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnSchedule"> 📚 Horario</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnTimer"> ⏱ Tiempo</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnRemind"> 🔔 Recordatorios</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnGratitud"> 📓 Gratitud Diaria</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnDreams"> 💭 Sueños</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnBreath"> 🌬️ Respiración</label>
-          </div>
-          <div class="config-group">
-            <h5>🌊 Territorio Penco</h5>
-            <label class="check-row"><input type="checkbox" data-btn="btnTides"> 🌊 Mareas</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnFishing"> 🎣 Pesca</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnIntermareal"> 🦀 Intermareal</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnNudos"> 🪢 Nudos y Redes</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnSiembra"> 🌱 Siembra lunar</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnCompost"> 🪱 Compost & Suelo</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnAgua"> 💧 Agua</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnBosque"> 🌳 Bosque Nativo</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnFlora"> 🌸 Flora</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnBirds"> 🦅 Aves</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnAnfibios"> 🐸 Anfibios</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnLawen"> 🌿 Lawen Herbario</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnElectrocultura"> ⚡ Electrocultura</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnWeather"> 🌤️ Clima</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnAstro"> 🔭 Astro</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnGolden"> 📸 Hora Dorada</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnCircadian"> 🌞 Ritmo Circadiano</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnEkadashi"> 📿 Ekadashi</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnComuna"> 🎉 Penco</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnMuni"> 🏛️ Municipalidad</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnBomberos"> 🚒 Bomberos</label>
-          </div>
-          <div class="config-group">
-            <h5>💚 Cuerpo & Salud</h5>
-            <label class="check-row"><input type="checkbox" data-btn="btnMenstrual"> 🌸 Ciclo</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnFerti"> 🤰 Fertilidad Natural</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnJuventud"> 🌅 Juventud</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnClimaterio"> 🔥 Climaterio</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnMedic"> 🌿 Medicina</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnGym"> 💪 Entrenamientos</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnNutri"> 🥗 Nutrición</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnNatacion"> 🏊 Natación</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnPelo"> 💇 Luna y Corte</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnRituales"> 🧂 Rituales Salud</label>
-          </div>
-          <div class="config-group">
-            <h5>🧠 Aprender, Crear y Jugar</h5>
-            <label class="check-row"><input type="checkbox" data-btn="btnStudy"> 🧠 Estudio</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnMemory"> 🧩 Memoria</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnMapu"> 🗣️ Kimün Mapuzugun</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnEnglish"> 🔤 Inglés</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnGuitar"> 🎶 Instrumentos</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnAjedrez"> ♟️ Ajedrez</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnSudoku"> 🔢 Sudoku</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnTales"> 📖 Cuentos</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnCrianza"> 🧒 Crianza</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnAdolescencia"> 🌱 Adolescencia</label>
-          </div>
-          <div class="config-group">
-            <h5>🪞 Interior, Linaje y Memoria</h5>
-            <label class="check-row"><input type="checkbox" data-btn="btnPsico"> 🪞 Autoconocimiento</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnPsicologia"> 🧠 Psicología</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnEneagrama"> 🔺 Eneagrama</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnMetodos"> 📿 Métodos</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnNeurodiversidad"> 🌈 Neurodiversidad</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnRecap"> 🔁 Recapitulación</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnEspiritual"> 🕉️ Prácticas Espirituales</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnKinMaya"> 🌟 Kin Maya</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnTarot"> 🔮 Tarot</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnOraculo"> 🌬️ Oráculo</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnDueloFull"> 🕊️ Duelo</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnFenologia"> 📜 Fenología</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnArbolFull"> 🌳 Árbol Genealógico</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnVozAbuelos"> 🗣️ Voz de los Abuelos</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnAdultez"> 🏠 Adultez</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnVejez"> 🦉 Vejez Sabia</label>
-          </div>
-          <div class="config-group">
-            <h5>🏡 Hogar y Vida Práctica</h5>
-            <label class="check-row"><input type="checkbox" data-btn="btnMeal"> 🥗 Comidas</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnShopping"> 🛒 Compras</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnFinance"> 💰 Finanzas</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnHomeTasks"> 🏠 Tareas Hogar</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnBodega"> 🍯 La Bodega</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnDespensa"> 🥫 Mi Despensa</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnCloset"> 👗 Mi Clóset</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnEnergy"> ⚡ Consumo eléctrico</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnLena"> 🪵 Leña & Pellet</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnTaller"> 🔧 Bitácora Taller</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnHerramientas"> 🧰 Mis Herramientas</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnMecanica"> 🔧 Mecánica</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnCorral"> 🐔 Mi Corral</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnMovilidad"> 🚌 Movilidad Penco–Conce</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnEscolar"> 📚 Escuela y Feriados</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnConvert"> 📏 Conversión</label>
-          </div>
-          <div class="config-group">
-            <h5>🤝 Comunidad, Emergencia y Sistema</h5>
-            <label class="check-row"><input type="checkbox" data-btn="btnTrueque"> 🔄 Trueque y Feria</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnMinga"> 🤝 Minga · Red de Apoyo</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnDerechos"> ⚖️ Derechos y Deberes</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnAnimalCare"> 🐾 Cuidado Animal</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnFirstAid"> 🩹 Primeros Auxilios</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnViolence"> 🟣 Violencia Doméstica</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnEvac"> 🌊🚨 Evacuación Tsunami</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnApoyo"> 🆘 Apoyo Emergencia</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnBackup"> 💾 Respaldo</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnRestore"> 📥 Restaurar</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnShortcut"> 📌 Acceso directo</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnPdfLuna"> 📄 PDF luna</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnPdfCiclo"> 📚 PDF ciclo</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnHelp"> ❓ Guía</label>
-            <label class="check-row"><input type="checkbox" data-btn="btnDonate"> ❤ Aporte voluntario</label>
-          </div>
-        </div>
-      </details>
+      
       <div class="config-group config-donate">
         <button type="button" id="cfgDonateBtn" class="btn btn-accent su-046678">❤ Aporte voluntario — donar</button>
       </div>

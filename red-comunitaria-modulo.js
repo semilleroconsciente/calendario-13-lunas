@@ -491,14 +491,18 @@ function ensureSection() {
       if (old) { try { old.remove(); } catch (eR) { try { old.parentNode.removeChild(old); } catch (eR2) {} } }
     });
   } catch (e) {}
-  // 2b) Crear (o reutilizar) el apartado único, justo antes de App para no tapar Respaldo
+  // 2b) Crear (o reutilizar) el apartado único al final de Comunidad
+  // (lo técnico vive en ⚙️ Ajustes: ya no hay sub-grupo App que reservar).
+  // Limpia el sub-label App heredado de versiones anteriores si existiera.
+  try {
+    var appLab = box.querySelector('.sub-label[data-sub="app"]');
+    if (appLab) { try { appLab.remove(); } catch (eR) { try { appLab.parentNode.removeChild(appLab); } catch (eR2) {} } }
+  } catch (e) {}
   var lab = box.querySelector('.sub-label[data-sub="' + SUB_LABEL.id + '"]');
   if (!lab) {
     lab = document.createElement('span');
     lab.className = 'sub-label'; lab.setAttribute('data-sub', SUB_LABEL.id); lab.textContent = SUB_LABEL.label;
-    var appLab = box.querySelector('.sub-label[data-sub="app"]');
-    if (appLab && appLab.parentNode === box) box.insertBefore(lab, appLab);
-    else box.appendChild(lab);
+    box.appendChild(lab);
   } else if (!lab.textContent || lab.textContent.indexOf('Red Comunitaria') < 0) {
     lab.textContent = SUB_LABEL.label;
   }

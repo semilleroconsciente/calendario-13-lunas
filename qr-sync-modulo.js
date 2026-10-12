@@ -6,7 +6,8 @@
    - Enviar: JSON -> gzip -> base64 -> N QRs (qr-codec.js + qrcode-lib.js)
    - Recibir: cámara + jsQR -> reensamblar -> misma validación de
      Restaurar (applyBackupJSON en renderer.js).
-   Patrón: botón inyectado en Comunidad > App + <dialog> propio.
+   Patrón: botón 📲 Traspaso QR en ⚙️ Ajustes > 💾 Respaldo, PDF y acceso
+   + <dialog> propio. (Antes en Comunidad > App; lo técnico vive en Ajustes.)
    ============================================================ */
 (function () {
 'use strict';
@@ -20,50 +21,37 @@ function esc(s) {
 }
 function codec() { return window.Cal13QRcodec || null; }
 
-/* ---------- registro del botón (igual que otros módulos) ---------- */
+/* ---------- registro: lo técnico vive en ⚙️ Ajustes, siempre visible ----------
+   Ya no forma parte de las secciones visibles (ALL_BTNS/PRESETS): el botón
+   📲 Traspaso QR se enlaza directo al diálogo de Ajustes (cfgQRSyncBtn). */
 function registerBtn() {
-  var id = 'btnQRSync';
-  try { if (typeof ALL_BTNS !== 'undefined' && ALL_BTNS.push && ALL_BTNS.indexOf(id) < 0) ALL_BTNS.push(id); } catch (e) {}
-  try {
-    if (typeof PRESETS !== 'undefined') {
-      Object.keys(PRESETS).forEach(function (k) {
-        var p = PRESETS[k];
-        if (p && typeof p === 'object' && p.btnBackup && p[id] === undefined) p[id] = true;
-      });
-    }
-  } catch (e) {}
-  try { if (typeof reordenarAcciones === 'function') reordenarAcciones(); } catch (e) {}
   try { if (typeof updateGroupCounts === 'function') updateGroupCounts(); } catch (e) {}
-  try { if (typeof applyVisibility === 'function') applyVisibility(); } catch (e) {}
 }
 
 function injectBtn() {
-  if ($('btnQRSync')) return $('btnQRSync');
-  var g = document.querySelector('.action-group[data-group="comunidad"] .group-btns');
-  if (!g) return null;
-  var b = document.createElement('button');
-  b.id = 'btnQRSync'; b.className = 'btn'; b.type = 'button';
-  b.textContent = '📲 Traspaso QR';
-  b.setAttribute('data-sub', 'app');
-  b.setAttribute('data-keywords', 'qr traspaso pasar datos celular telefono pc compartir sincronizar camara pantalla exportar importar respaldo backup');
-  var ref = $('btnRestore');
-  if (ref && ref.parentNode === g) {
-    if (ref.nextSibling) g.insertBefore(b, ref.nextSibling); else g.appendChild(b);
-  } else g.appendChild(b);
-  b.onclick = openDlg;
-  return b;
+  // El botón real es cfgQRSyncBtn (⚙️ Ajustes > 💾 Respaldo, PDF y acceso).
+  // Compatibilidad: si existe un btnQRSync antiguo en Comunidad (caché vieja),
+  // se enlaza para que siga abriendo el diálogo.
+  try {
+    var cfg = $('cfgQRSyncBtn');
+    if (cfg && !cfg.dataset.qrBound) { cfg.dataset.qrBound = '1'; cfg.onclick = openDlg; }
+  } catch (e) {}
+  var legacy = $('btnQRSync');
+  if (legacy && !legacy.dataset.qrBound) {
+    try { legacy.dataset.qrBound = '1'; legacy.onclick = openDlg; } catch (e) {}
+  }
+  return $('cfgQRSyncBtn') || legacy;
 }
 
 function injectConfigChk() {
+  // Sin checkbox de sección: Traspaso QR siempre visible en ⚙️ Ajustes.
+  // Limpia el checkbox heredado de versiones anteriores si existiera.
   try {
-    if (document.querySelector('#configDialog input[data-btn="btnQRSync"]')) return;
-    var ref = document.querySelector('#configDialog input[data-btn="btnRestore"]');
-    if (!ref) return;
-    var lab = document.createElement('label');
-    lab.className = 'check-row';
-    lab.innerHTML = '<input type="checkbox" data-btn="btnQRSync" checked> 📲 Traspaso QR';
-    var refLab = ref.closest ? ref.closest('label') : ref.parentNode;
-    refLab.parentNode.insertBefore(lab, refLab.nextSibling);
+    var old = document.querySelector('#configDialog input[data-btn="btnQRSync"]');
+    if (old) {
+      var lab = (old.closest && old.closest('label')) || old.parentNode;
+      if (lab && lab.parentNode) lab.parentNode.removeChild(lab);
+    }
   } catch (e) {}
 }
 
@@ -390,11 +378,19 @@ async function doImport() {
 /* ---------- init (patrón de los demás módulos) ---------- */
 var _tries = 0;
 function init() {
-  if (!document.querySelector('.action-group[data-group]')) { if (_tries++ < 40) setTimeout(init, 500); return; }
+  if (!document.getElementById('configDialog') && !document.querySelector('.action-group[data-group]')) { if (_tries++ < 40) setTimeout(init, 500); return; }
   injectCSS();
   injectBtn();
   injectConfigChk();
   registerBtn();
+  try { window.cal13qrOpen = openDlg; } catch (e) {}
+  // Los botones de Ajustes se inyectan con el diálogo: reintenta el enlace
+  // cuando el diálogo ya existe (templates-bundled es eager, pero por seguridad).
+  var _rb = 0;
+  (function rebind() {
+    try { injectBtn(); } catch (e) {}
+    if (!document.getElementById('cfgQRSyncBtn') && _rb++ < 20) setTimeout(rebind, 500);
+  })();
 }
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
 else init();

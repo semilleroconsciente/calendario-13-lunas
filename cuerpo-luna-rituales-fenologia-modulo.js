@@ -1,24 +1,24 @@
 /* ============================================================
    CUERPO + INTERIOR · LUNA, RITUALES Y FENOLOGÍA
    Calendario 13 Lunas (Penco · Bío-Bío)
-   - Botón btnPelo (💇 Luna y Corte) en Cuerpo & Salud > Cuidado:
+   - Botón btnPelo (💇 Cuidado del pelo) en Cuerpo & Salud > Cuidado y movimiento:
      calendario lunar de cortes según la tradición (creciente =
      crecimiento, llena = volumen, menguante = dura más, nueva =
      descanso). Diálogo peloDialog: Hoy / Calendario / Mis
      cortes / Guía. Las fases exactas se marcan con 💇 en el
      calendario principal y tus cortes con ✂️.
      userData().peloLunar = { cortes: [] }
-   - Botón btnRituales (🧂 Rituales Salud) en Cuerpo & Salud >
-     Cuidado: desintoxicación suave, ayuno intermitente guiado
+   - Botón btnRituales (🌙 Rituales corporales) en Cuerpo & Salud >
+     Cuidado y movimiento: desintoxicación suave, ayuno intermitente guiado
      por fases (nueva = iniciar) y pausas digitales en menguante.
      Ligero y opcional, SIN promesas médicas, con
      contraindicaciones claras. Diálogo ritualDialog:
      Hoy / Ayuno / Pausa digital / Mis registros / Guía.
      userData().ritualesSalud = { regs: [] }
-   - Botón btnFenologia (📜 Fenología) en Interior, Linaje y
-     Memoria > Interior: almanaque vivo de Penco — primeras
-     floraciones, llegadas, lluvias. Une 🦅 Aves, 🌳 Bosque,
-     🌸 Flora, 🎣 Pesca y 🦀 Intermareal: tus observaciones
+   - Botón btnFenologia (🌼 Fenología) en Territorio Penco >
+     Huerta, tierra y bosque (trasladada desde Interior): almanaque vivo
+     de Penco — primeras floraciones, llegadas, lluvias. Une 🦅 Aves,
+     🌳 Bosque, 🌸 Flora, 🎣 Pesca y 🦀 Intermareal: tus observaciones
      aquí se marcan con 📜 en el calendario. Diálogo
      fenoDialog: Almanaque / Registrar / Mis obs / Guía.
      userData().fenologia = { obs: [] }
@@ -528,7 +528,17 @@ function injectBtn(group, sub, id, txt, kw, refSel) {
   try {
     var g = document.querySelector('.action-group[data-group="' + group + '"] .group-btns');
     if (!g) return;
-    if ($(id)) { try { $(id).setAttribute('data-sub', sub); } catch (e2) {} return; }
+    if ($(id)) {
+      try {
+        var cur = $(id);
+        var curG = cur.closest ? cur.closest('.action-group') : null;
+        var curName = curG && curG.getAttribute ? curG.getAttribute('data-group') : null;
+        if (curName && curName !== group) g.appendChild(cur);
+        cur.setAttribute('data-sub', sub);
+        if (cur.dataset) cur.dataset.sub = sub;
+      } catch (e2) {}
+      return;
+    }
     var btn = document.createElement('button');
     btn.id = id; btn.className = 'btn'; btn.type = 'button';
     btn.textContent = txt;
@@ -578,12 +588,12 @@ function registerBtn(group, sub, id, label, matchTitle) {
 }
 
 function setup() {
-  injectBtn('cuerpo', 'cuidado', 'btnPelo', '💇 Luna y Corte', 'pelo corte peluqueria peluquero luna creciente llena menguante nueva volumen crecimiento despunte tinte barba chasquilla calendario lunar 2026');
-  injectBtn('cuerpo', 'cuidado', 'btnRituales', '🧂 Rituales Salud', 'ritual ayuno intermitente detox desintoxicacion pausa digital menguante nueva fases salud preventiva agua infusion dieta liviana cena ligera ekadashi');
-  injectBtn('linaje', 'interior', 'btnFenologia', '📜 Fenología', 'fenologia primeras observacion almanaque chilco totora golondrina chorlo ballena lluvia floracion llegada naturaleza territorio memoria colectiva picaflor maqui humedal rocuant', '.sub-label[data-sub="familia"]');
-  registerBtn('cuerpo', 'cuidado', 'btnPelo', '💇 Luna y Corte', 'Cuerpo');
-  registerBtn('cuerpo', 'cuidado', 'btnRituales', '🧂 Rituales Salud', 'Cuerpo');
-  registerBtn('linaje', 'interior', 'btnFenologia', '📜 Fenología', 'Interior');
+  injectBtn('cuerpo', 'cuidado', 'btnPelo', '💇 Cuidado del pelo', 'pelo corte peluqueria peluquero luna creciente llena menguante nueva volumen crecimiento despunte tinte barba chasquilla calendario lunar 2026');
+  injectBtn('cuerpo', 'cuidado', 'btnRituales', '🌙 Rituales corporales', 'ritual ayuno intermitente detox desintoxicacion pausa digital menguante nueva fases salud preventiva agua infusion dieta liviana cena ligera ekadashi');
+  injectBtn('territorio', 'tierra', 'btnFenologia', '🌼 Fenología', 'fenologia primeras observacion almanaque chilco totora golondrina chorlo ballena lluvia floracion llegada naturaleza territorio memoria colectiva picaflor maqui humedal rocuant', '.sub-label[data-sub="tierra"]');
+  registerBtn('cuerpo', 'cuidado', 'btnPelo', '💇 Cuidado del pelo', 'Cuerpo');
+  registerBtn('cuerpo', 'cuidado', 'btnRituales', '🌙 Rituales corporales', 'Cuerpo');
+  registerBtn('territorio', 'tierra', 'btnFenologia', '🌼 Fenología', 'Territorio');
   try { if (typeof reordenarAcciones === 'function') reordenarAcciones(); } catch (e) {}
   try { if (typeof updateGroupCounts === 'function') updateGroupCounts(); } catch (e) {}
   try { if (typeof applyVisibility === 'function') applyVisibility(); } catch (e) {}

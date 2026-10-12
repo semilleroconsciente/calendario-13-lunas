@@ -128,22 +128,24 @@
     { id: 'cinta', nombre: 'La cinta completa', icono: '🎬', desc: 'El antojo te muestra solo el primer minuto placentero. Reproduce la película entera hasta el final.', pasos: ['Imagina que consumes: el primer momento', 'Sigue la película: ¿qué pasa 1 hora después?', '¿Y al día siguiente? ¿Culpa, gasto, malestar?', '¿Qué pierdes de tu racha y tus motivos?', 'Elige con la película completa, no con el tráiler'] },
     { id: 'balanza', nombre: 'Balanza decisional', icono: '⚖️', desc: 'Pon por escrito pros y contras de consumir y de no consumir. Lo escrito pesa más que lo pensado.', pasos: ['Divide una hoja en 4: pro/consumir, contra/consumir, pro/no consumir, contra/no consumir', 'Llena cada cuadrante con honestidad', 'Lee en voz alta la columna "contra consumir"', 'Guarda la hoja y reléela en cada antojo fuerte'] },
     { id: 'abc', nombre: 'Diario ABC del antojo', icono: '📝', desc: 'Antecedente → Creencia/Conducta → Consecuencia. Detecta tu cadena para cortarla antes.', pasos: ['A: ¿Qué pasó justo antes? (lugar, hora, emoción, compañía)', 'B: ¿Qué pensamiento apareció? ("solo una vez", "me lo merezco")', 'C: ¿Qué hiciste y cómo terminó?', 'Marca el eslabón más fácil de cambiar mañana', 'Regístralo en 📝 Registro con su disparador'] },
-    { id: 'llamada', nombre: 'Llamada de 5 minutos', icono: '📞', desc: 'Pedir ayuda a tiempo es la técnica más eficaz y la menos usada.', pasos: ['Elige 1 persona de tu red de apoyo (pestaña 🧭 Plan)', 'Avisa: "tengo un antojo fuerte, ¿me acompañas 5 min?"', 'No necesitas explicar todo: basta con no estar a solas', 'Si nadie responde, llama a *4141 o escribe tu plan de emergencia'] },
+    { id: 'llamada', nombre: 'Llamada de 5 minutos', icono: '📞', desc: 'Pedir ayuda a tiempo es la técnica más eficaz y la menos usada.', pasos: ['Elige 1 persona de tu red de apoyo (pestaña 🧭 Plan)', 'Avisa: "tengo un antojo fuerte, ¿me acompañas 5 min?"', 'No necesitas explicar todo: basta con no estar a solas', 'Si nadie responde, llama a 1412 SENDA (24 h) o a *4141 si hay crisis'] },
     { id: 'autocompasion', nombre: 'Autocompasión tras la caída', icono: '💛', desc: 'Castigarte aumenta el riesgo de seguir consumiendo. Trátate como tratarías a un amigo.', pasos: ['Respira y di: "esto es un momento difícil, no una sentencia"', 'Recuerda: una recaída es un dato, no tu identidad', 'Haz el Diario ABC de lo ocurrido sin insultarte', 'Retoma el registro al día siguiente, la racha se reconstruye', 'Si se repite, pide ayuda profesional: no es fracaso, es cuidado'] }
   ];
 
   var RECURSOS = [
-    { nombre: 'Línea Libre *4141', desc: 'Consejo y orientación en adicciones (SENDA)', contacto: 'Marca *4141 desde cualquier celular', tipo: 'telefono' },
+    { nombre: 'SENDA 1412', desc: 'Fono Drogas y Alcohol: orientación en adicciones (gratuito, anónimo, 24 h)', contacto: 'Marca 1412 desde cualquier teléfono', tipo: 'telefono' },
+    { nombre: 'Prevención del suicidio *4141', desc: 'Crisis de salud mental asociada al suicidio (MINSAL, gratuito, 24 h)', contacto: 'Marca *4141 desde celular o teléfono fijo', tipo: 'telefono' },
+    { nombre: 'Salud Responde 600 360 7777', desc: 'Orientación de salud y contención (MINSAL, 24 h)', contacto: '600 360 7777', tipo: 'telefono' },
     { nombre: 'SENDA', desc: 'Servicio Nacional para la Prevención y Rehabilitación del Consumo de Drogas y Alcohol', contacto: 'www.senda.gob.cl', tipo: 'web' },
-    { nombre: 'FONASA Salud Mental', desc: 'Atención de salud mental y adicciones', contacto: '600 360 7777', tipo: 'telefono' },
-    { nombre: 'SAMU / Emergencias', desc: 'Emergencias médicas', contacto: '131', tipo: 'emergencia' },
+    { nombre: 'SAMU / Emergencias', desc: 'Emergencias médicas (no respira, inconsciente, convulsión >5 min, hemorragia masiva)', contacto: '131', tipo: 'emergencia' },
     { nombre: 'Bomberos', desc: 'Emergencias y rescate', contacto: '132', tipo: 'emergencia' },
     { nombre: 'Carabineros', desc: 'Seguridad y emergencias', contacto: '133', tipo: 'emergencia' },
+    { nombre: 'Fono Familia 149', desc: 'Violencia intrafamiliar: orientación y derivación (Carabineros, 24 h)', contacto: '149', tipo: 'telefono' },
+    { nombre: 'Violencia contra la mujer 1455', desc: 'Orientación SERNAMEG (lun-dom 8:00-24:00; WhatsApp +56 9 9700 7000)', contacto: '1455', tipo: 'telefono' },
     { nombre: 'Hospital de Penco', desc: 'Atención de urgencia', contacto: 'Av. Manuel Rodríguez s/n', tipo: 'presencial' },
     { nombre: 'COSAM Penco', desc: 'Centro de Salud Mental Comunitario', contacto: 'Consulta en CESFAM', tipo: 'presencial' },
     { nombre: 'AA (Alcohólicos Anónimos)', desc: 'Grupo de apoyo mutuo', contacto: 'www.alcoholicos-anonimos.org', tipo: 'web' },
     { nombre: 'NA (Narcóticos Anónimos)', desc: 'Grupo de apoyo mutuo', contacto: 'www.na.org', tipo: 'web' },
-    { nombre: 'Línea de la Esperanza', desc: 'Apoyo emocional y prevención del suicidio', contacto: '135', tipo: 'telefono' },
     { nombre: 'Salud Mental Chile', desc: 'Información y recursos de salud mental', contacto: 'www.saludmental.gob.cl', tipo: 'web' }
   ];
 
@@ -151,12 +153,12 @@
      ante síntomas intensos se debe buscar atención médica. */
   var ABSTINENCIA = [
     { sust: 'Alcohol', espera: 'Ansiedad, insomnio, temblores, sudoración, náuseas en las primeras 6-48 h. Los síntomas suelen bajar en 5-7 días.', alarma: '🚨 Confusión grave, convulsiones, alucinaciones o fiebre alta pueden ser delirium tremens: URGENCIA médica (131). Nunca dejes el alcohol de golpe sin supervisión si tomas a diario hace tiempo.' },
-    { sust: 'Tabaco / Nicotina', espera: 'Irritabilidad, ansiedad, dificultad para concentrarse y fuerte deseo de fumar los primeros 3-7 días. Mejora mucho en 2-4 semanas.', alarma: '🚨 No suele ser peligroso, pero si hay depresión intensa o ideas suicidas, pide ayuda: *4141 o 135.' },
+    { sust: 'Tabaco / Nicotina', espera: 'Irritabilidad, ansiedad, dificultad para concentrarse y fuerte deseo de fumar los primeros 3-7 días. Mejora mucho en 2-4 semanas.', alarma: '🚨 No suele ser peligroso, pero si hay depresión intensa o ideas suicidas, pide ayuda hoy: *4141 (24 h) o 600 360 7777.' },
     { sust: 'Cannabis', espera: 'Irritabilidad, insomnio, sueños vívidos, baja del apetito y ansiedad durante 1-2 semanas.', alarma: '🚨 Si la ansiedad o el ánimo bajo no ceden en semanas, consulta en tu CESFAM o COSAM.' },
-    { sust: 'Estimulantes (cocaína, pasta base, metanfetaminas)', espera: 'Bajón de ánimo, cansancio extremo, aumento del apetito y del sueño, antojos intensos por días o semanas.', alarma: '🚨 Depresión profunda o ideas suicidas requieren ayuda inmediata: 135 o *4141. El consumo por vía fumada o inyectada suma riesgos respiratorios e infecciosos: consulta médica.' },
+    { sust: 'Estimulantes (cocaína, pasta base, metanfetaminas)', espera: 'Bajón de ánimo, cansancio extremo, aumento del apetito y del sueño, antojos intensos por días o semanas.', alarma: '🚨 Depresión profunda o ideas suicidas requieren ayuda inmediata: *4141 (24 h). El consumo por vía fumada o inyectada suma riesgos respiratorios e infecciosos: consulta médica. Orientación en drogas: 1412 SENDA (24 h).' },
     { sust: 'Benzodiacepinas / Fármacos', espera: 'Ansiedad de rebote, insomnio, irritabilidad. La suspensión brusca puede provocar convulsiones.', alarma: '🚨 Nunca suspendas de golpe sin indicación médica: la reducción debe ser gradual y supervisada. Urgencia al 131 ante convulsiones.' },
     { sust: 'Opioides', espera: 'Dolor muscular, escalofríos, náuseas, diarrea, insomnio y ansiedad intensa por 5-10 días.', alarma: '🚨 Aunque rara vez mortal en sí, la deshidratación y las recaídas con sobredosis sí lo son. Busca acompañamiento médico (CESFAM, SENDA).' },
-    { sust: 'Conductas (juego, pantallas, comida, compras)', espera: 'Inquietud, aburrimiento, irritabilidad y pensamientos repetidos sobre la conducta durante días o semanas.', alarma: '🚨 Si hay deudas impagables, robos para jugar o atracones con vómitos frecuentes, pide ayuda profesional cuanto antes: *4141.' }
+    { sust: 'Conductas (juego, pantallas, comida, compras)', espera: 'Inquietud, aburrimiento, irritabilidad y pensamientos repetidos sobre la conducta durante días o semanas.', alarma: '🚨 Si hay deudas impagables, robos para jugar o atracones con vómitos frecuentes, pide ayuda profesional cuanto antes: 1412 SENDA o tu CESFAM. Crisis: *4141 (24 h).' }
   ];
 
   var EVAL_PREGUNTAS = [
@@ -537,8 +539,10 @@
     }).join('') +
     '<div class="si-card su-006fa0">' +
     '<h4>🆘 Si estás en crisis</h4>' +
-    '<p>• Si hay riesgo inmediato: <b>131 (SAMU)</b> o <b>133 (Carabineros)</b><br>' +
-    '• Si es crisis emocional: <b>*4141</b> o <b>135</b><br>' +
+    '<p>• Riesgo inmediato (sobredosis, confusión, convulsión, ideas de daño): <b>131 (SAMU)</b> o <b>133 (Carabineros)</b><br>' +
+    '• Crisis de salud mental: <b>*4141</b> prevención del suicidio (24 h, gratis, celu y fijo)<br>' +
+    '• Drogas/alcohol: <b>1412</b> SENDA (24 h, gratis, anónimo)<br>' +
+    '• Dudas de salud: <b>600 360 7777</b> Salud Responde (24 h)<br>' +
     '• No estás solo/a. Pedir ayuda es un acto de valentía.</p>' +
     '</div>';
   }
@@ -718,7 +722,7 @@
       '</select></label>' +
       '<label>Mi etapa del cambio <select id="adiPlanEtapa"><option value="">— Elegir —</option>' + etapaOpts + '</select></label></div>' +
       '<label>Mis motivos para cambiar (léelos cuando el antojo apriete) <textarea id="adiPlanMotivos" rows="3" maxlength="600" placeholder="ej: mi salud, mis hijos, mi dinero, mi tranquilidad...">' + esc(p.motivos || '') + '</textarea></label>' +
-      '<label>Mi plan de emergencia (qué haré paso a paso ante un antojo fuerte) <textarea id="adiPlanEmerg" rows="3" maxlength="600" placeholder="ej: 1) Salgo a caminar 10 min 2) Llamo a... 3) Releo mis motivos 4) Si sigue, llamo a *4141">' + esc(p.emergencia || '') + '</textarea></label>' +
+      '<label>Mi plan de emergencia (qué haré paso a paso ante un antojo fuerte) <textarea id="adiPlanEmerg" rows="3" maxlength="600" placeholder="ej: 1) Salgo a caminar 10 min 2) Llamo a... 3) Releo mis motivos 4) Si sigue, llamo a 1412">' + esc(p.emergencia || '') + '</textarea></label>' +
       '<div class="dlg-actions su-59a5a8"><button type="button" id="adiPlanSave" class="btn btn-accent su-30e741">💾 Guardar mi plan</button></div></div>' +
       '<div class="menstrual-card"><h4>🤝 Mi red de apoyo</h4>' +
       '<p class="muted su-11a508">Personas a quienes puedo acudir. Incluye al menos un contacto fuera de tu círculo de consumo.</p>' +
@@ -794,8 +798,8 @@
       var msg = nivel === 'bajo'
         ? 'Señales bajas. Sigue cuidándote: mantén tu registro y tu red de apoyo.'
         : nivel === 'moderado'
-          ? 'Señales moderadas. Sería bueno conversarlo con alguien de confianza o un profesional (CESFAM, *4141). Tu plan y tus técnicas son clave ahora.'
-          : 'Señales altas. Te recomendamos pedir apoyo profesional pronto: *4141 (SENDA), tu CESFAM o COSAM Penco. Pedir ayuda es un acto de valentía, no de fracaso.';
+          ? 'Señales moderadas. Sería bueno conversarlo con alguien de confianza o un profesional (CESFAM, 1412 SENDA). Tu plan y tus técnicas son clave ahora.'
+          : 'Señales altas. Te recomendamos pedir apoyo profesional pronto: 1412 SENDA (24 h), tu CESFAM o COSAM Penco. Crisis: *4141 (24 h). Pedir ayuda es un acto de valentía, no de fracaso.';
       var col = nivel === 'alto' ? '#e76e8a' : nivel === 'moderado' ? '#e8c56a' : '#8fd694';
       var box = $('adiEvRes');
       if (box) box.innerHTML = '<div class="si-card" style="border-color:' + col + '"><h4>Resultado: ' + total + ' / 24 · nivel ' + nivel + '</h4><p>' + msg + '</p></div>';
@@ -819,7 +823,7 @@
       '<div class="dlg-actions su-d2d053">' +
       '<h3 class="su-ee0cfe">🌿 Adicciones — Apoyo y Registro</h3>' +
       '<button type="button" data-close class="btn btn-icon" title="Cerrar">✕</button></div>' +
-      '<p class="muted su-77e2fe">Herramienta de apoyo para el proceso de recuperación. Educativa, local y privada. No reemplaza tratamiento profesional.</p>' +
+      '<p class="muted su-77e2fe">Herramienta de apoyo para el proceso de recuperación. <b>Contenido educativo: no diagnostica ni reemplaza tratamiento profesional.</b> No suspendas medicamentos ni dejes tratamientos sin indicación médica. Todo queda <b>local y privado</b>. Urgencia: <b>131</b> · Crisis: <b>*4141</b> (24 h) · Drogas/alcohol: <b>1412</b> SENDA (24 h).</p>' +
       '<div class="timer-tabs su-4dca21">' +
       '<button type="button" class="btn btn-accent" data-tab="guia">📖 Guía</button>' +
       '<button type="button" class="btn" data-tab="plan">🧭 Plan</button>' +
@@ -871,8 +875,8 @@
           var btn = document.createElement('button');
           btn.id = 'btnAdicciones'; btn.className = 'btn'; btn.type = 'button';
           btn.textContent = '🌿 Adicciones';
-          try { btn.setAttribute('data-sub', 'interior'); } catch (eS) {}
-          btn.setAttribute('data-keywords', 'adicciones adiccion alcohol tabaco drogas recuperacion rehabilitacion senda abstinencia antojo recaida racha apoyo ayuda tratamiento *4141 juego apuestas pantallas comida compras plan motivos red apoyo autoevaluacion test disparador gasto ahorro logro pasta base farmacos videojuegos pornografia halt cinta balanza diario emergencia crisis');
+          try { btn.setAttribute('data-sub', 'sosten'); } catch (eS) {}
+          btn.setAttribute('data-keywords', 'adicciones adiccion alcohol tabaco drogas recuperacion rehabilitacion senda 1412 abstinencia antojo recaida racha apoyo ayuda tratamiento *4141 juego apuestas pantallas comida compras plan motivos red apoyo autoevaluacion test disparador gasto ahorro logro pasta base farmacos videojuegos pornografia halt cinta balanza diario emergencia crisis');
           g.appendChild(btn);
         }
       }

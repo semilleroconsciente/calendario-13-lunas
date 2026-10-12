@@ -374,16 +374,16 @@ function gotoBtn(id) {
 }
 
 function setup() {
-  /* 1) inyectar botón en grupo Aprender > Infancias */
+  /* 1) inyectar botón en grupo Cuerpo > Etapas de vida (trasladada desde Aprender) */
   try {
     if (!$('btnAdolescencia')) {
-      var g = document.querySelector('.action-group[data-group="aprender"] .group-btns');
-      if (!g) g = document.querySelector('.action-group[data-group="linaje"] .group-btns');
+      var g = document.querySelector('.action-group[data-group="cuerpo"] .group-btns');
+      if (!g) g = document.querySelector('.action-group[data-group="aprender"] .group-btns');
       if (g) {
         var btn = document.createElement('button');
         btn.id = 'btnAdolescencia'; btn.className = 'btn'; btn.type = 'button';
-        btn.textContent = '🌱 Adolescencia';
-        try { btn.setAttribute('data-sub', 'infancias'); } catch (eS) {}
+        btn.textContent = '🧒 Adolescencia';
+        try { btn.setAttribute('data-sub', 'etapas'); } catch (eS) {}
         btn.setAttribute('data-keywords', 'adolescencia teen joven pubertad liceo vocacion paES bullying autoestima consentimiento pololeo redes grooming cambios cuerpo emociones estudio futuro amigos presion grupo alcohol drogas sENDA sueno higiene ciclo');
         g.appendChild(btn);
       }
@@ -392,17 +392,21 @@ function setup() {
         var curA = $('btnAdolescencia');
         var curGA = curA.closest ? curA.closest('.action-group') : null;
         var curNA = curGA && curGA.getAttribute ? curGA.getAttribute('data-group') : null;
-        if (curNA && curNA !== 'aprender') {
-          var gdA = document.querySelector('.action-group[data-group="aprender"] .group-btns');
-          if (gdA) { gdA.appendChild(curA); try { curA.setAttribute('data-sub', 'infancias'); } catch (eS) {} }
+        if (curNA && curNA !== 'cuerpo') {
+          var gdA = document.querySelector('.action-group[data-group="cuerpo"] .group-btns');
+          if (gdA) { gdA.appendChild(curA); try { curA.setAttribute('data-sub', 'etapas'); } catch (eS) {} }
+        } else {
+          try { curA.setAttribute('data-sub', 'etapas'); } catch (eS2) {}
         }
       } catch (eM) {}
     }
   } catch (e) {}
-  /* 2) registrar en ALL_BTNS + PRESETS + visibilidad */
+  /* 2) registrar en ALL_BTNS + BTN_HOME/BTN_ORDER + PRESETS + visibilidad */
   try {
     if (typeof ALL_BTNS !== 'undefined' && ALL_BTNS.indexOf('btnAdolescencia') < 0) ALL_BTNS.push('btnAdolescencia');
   } catch (e) {}
+  try { if (typeof BTN_HOME !== 'undefined') BTN_HOME.btnAdolescencia = ['cuerpo', 'etapas']; } catch (eH) {}
+  try { if (typeof BTN_ORDER !== 'undefined' && BTN_ORDER['cuerpo|etapas'] && BTN_ORDER['cuerpo|etapas'].indexOf('btnAdolescencia') < 0) BTN_ORDER['cuerpo|etapas'].unshift('btnAdolescencia'); } catch (eO) {}
   try {
     if (typeof PRESETS !== 'undefined') {
       Object.keys(PRESETS).forEach(function (p) { if (PRESETS[p]) PRESETS[p].btnAdolescencia = true; });
@@ -413,16 +417,16 @@ function setup() {
   try { if (typeof updateGroupCounts === 'function') updateGroupCounts(); } catch (e) {}
   try { if (typeof applyVisibility === 'function') applyVisibility(); } catch (e) {}
   try { if (typeof reordenarAcciones === 'function') reordenarAcciones(); } catch (e) {}
-  /* 3) checkbox en configDialog (grupo Aprender) */
+  /* 3) checkbox en configDialog (grupo Cuerpo) */
   try {
     if (!document.querySelector('#configDialog input[data-btn="btnAdolescencia"]')) {
       var groups = document.querySelectorAll('#configDialog .config-group');
       groups.forEach(function (gr) {
         var h = gr.querySelector('h5');
-        if (h && h.textContent.indexOf('Aprender') >= 0) {
+        if (h && h.textContent.indexOf('Cuerpo') >= 0) {
           var lab = document.createElement('label');
           lab.className = 'check-row';
-          lab.innerHTML = '<input type="checkbox" data-btn="btnAdolescencia"> 🌱 Adolescencia';
+          lab.innerHTML = '<input type="checkbox" data-btn="btnAdolescencia"> 🧒 Adolescencia';
           gr.appendChild(lab);
           try {
             var vis = (typeof getVisibleConfig === 'function') ? getVisibleConfig() : null;

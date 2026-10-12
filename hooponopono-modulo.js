@@ -487,7 +487,7 @@ function setup() {
         var btn = document.createElement('button');
         btn.id = 'btnHooponopono'; btn.className = 'btn'; btn.type = 'button';
         btn.textContent = "🌺 Ho'oponopono";
-        try { btn.setAttribute('data-sub', 'interior'); } catch (eS) {}
+        try { btn.setAttribute('data-sub', 'practicas'); } catch (eS) {}
         btn.setAttribute('data-keywords', "hooponopono ho'oponopono hoponopono hawaii perdon gracias te amo lo siento perdoname limpieza memorias morrnah hew len responsabilidad paz reconciliacion soltar rencor culpa miedo duelo");
         var ref = g.querySelector('#btnCuartoCamino') || g.querySelector('#btnRecap') || g.querySelector('#btnMetodos');
         if (ref && ref.nextSibling) g.insertBefore(btn, ref.nextSibling);
@@ -500,7 +500,7 @@ function setup() {
         var curN = curG && curG.getAttribute ? curG.getAttribute('data-group') : null;
         if (curN && curN !== 'linaje') {
           var gd = document.querySelector('.action-group[data-group="linaje"] .group-btns');
-          if (gd) { gd.appendChild(cur); try { cur.setAttribute('data-sub', 'interior'); } catch (eS) {} }
+          if (gd) { gd.appendChild(cur); try { cur.setAttribute('data-sub', 'practicas'); } catch (eS) {} }
         }
       } catch (eM) {}
     }
@@ -510,13 +510,13 @@ function setup() {
     if (typeof ALL_BTNS !== 'undefined' && ALL_BTNS.indexOf('btnHooponopono') < 0) ALL_BTNS.push('btnHooponopono');
   } catch (e) {}
   try {
-    if (typeof BTN_HOME !== 'undefined') BTN_HOME.btnHooponopono = ['linaje', 'interior'];
+    if (typeof BTN_HOME !== 'undefined') BTN_HOME.btnHooponopono = ['linaje', 'practicas'];
   } catch (e) {}
   try {
-    if (typeof BTN_ORDER !== 'undefined' && BTN_ORDER['linaje|interior'] && BTN_ORDER['linaje|interior'].indexOf('btnHooponopono') < 0) {
-      var oi = BTN_ORDER['linaje|interior'].indexOf('btnCuartoCamino');
-      if (oi >= 0) BTN_ORDER['linaje|interior'].splice(oi + 1, 0, 'btnHooponopono');
-      else BTN_ORDER['linaje|interior'].push('btnHooponopono');
+    if (typeof BTN_ORDER !== 'undefined' && BTN_ORDER['linaje|practicas'] && BTN_ORDER['linaje|practicas'].indexOf('btnHooponopono') < 0) {
+      var oi = BTN_ORDER['linaje|practicas'].indexOf('btnCuartoCamino');
+      if (oi >= 0) BTN_ORDER['linaje|practicas'].splice(oi + 1, 0, 'btnHooponopono');
+      else BTN_ORDER['linaje|practicas'].push('btnHooponopono');
     }
   } catch (e) {}
   try {

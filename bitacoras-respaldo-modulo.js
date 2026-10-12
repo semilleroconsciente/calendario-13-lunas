@@ -10,10 +10,10 @@
      su propio archivo JSON:
        { app, tipo:'bitacora-individual', grupo, titulo,
          usuario:{id,nombre}, fecha, datos:{ clave: valor } }
-   - El botón 📥 Restaurar general (renderer.js) también acepta
-     este formato y lo fusiona sin borrar el resto.
-   Patrón del proyecto: botón inyectado en Comunidad > App +
-   <dialog> propio + registro en ALL_BTNS/PRESETS.
+    - El botón 📥 Restaurar general (en ⚙️ Ajustes, renderer.js) también acepta
+      este formato y lo fusiona sin borrar el resto.
+    Patrón del proyecto: botones técnicos en ⚙️ Ajustes +
+    <dialog> propio (Comunidad queda para red, emergencia y cuidado animal).
    ============================================================ */
 (function () {
 'use strict';

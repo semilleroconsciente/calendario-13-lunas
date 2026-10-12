@@ -545,10 +545,10 @@ try { window.openConstel = openConstel; } catch (e) {}
 
 /* ---------- setup ---------- */
 function setup() {
-  /* 1) inyectar botón en Linaje > Familia (tras VozAbuelos si existe) */
+  /* 1) inyectar botón en Hogar > Familia (tras VozAbuelos si existe) */
   try {
     if (!$('btnConstelaciones')) {
-      var g = document.querySelector('.action-group[data-group="linaje"] .group-btns');
+      var g = document.querySelector('.action-group[data-group="hogar"] .group-btns');
       if (g) {
         var btn = document.createElement('button');
         btn.id = 'btnConstelaciones'; btn.className = 'btn'; btn.type = 'button';
@@ -568,8 +568,8 @@ function setup() {
         var cur = $('btnConstelaciones');
         var curG = cur.closest ? cur.closest('.action-group') : null;
         var curN = curG && curG.getAttribute ? curG.getAttribute('data-group') : null;
-        if (curN && curN !== 'linaje') {
-          var gd = document.querySelector('.action-group[data-group="linaje"] .group-btns');
+        if (curN && curN !== 'hogar') {
+          var gd = document.querySelector('.action-group[data-group="hogar"] .group-btns');
           if (gd) { gd.appendChild(cur); try { cur.setAttribute('data-sub', 'familia'); } catch (eS) {} }
         }
       } catch (eM) {}
@@ -580,13 +580,13 @@ function setup() {
     if (typeof ALL_BTNS !== 'undefined' && ALL_BTNS.indexOf('btnConstelaciones') < 0) ALL_BTNS.push('btnConstelaciones');
   } catch (e) {}
   try {
-    if (typeof BTN_HOME !== 'undefined') BTN_HOME.btnConstelaciones = ['linaje', 'familia'];
+    if (typeof BTN_HOME !== 'undefined') BTN_HOME.btnConstelaciones = ['hogar', 'familia'];
   } catch (e) {}
   try {
-    if (typeof BTN_ORDER !== 'undefined' && BTN_ORDER['linaje|familia'] && BTN_ORDER['linaje|familia'].indexOf('btnConstelaciones') < 0) {
-      var oi = BTN_ORDER['linaje|familia'].indexOf('btnVozAbuelos');
-      if (oi >= 0) BTN_ORDER['linaje|familia'].splice(oi + 1, 0, 'btnConstelaciones');
-      else BTN_ORDER['linaje|familia'].push('btnConstelaciones');
+    if (typeof BTN_ORDER !== 'undefined' && BTN_ORDER['hogar|familia'] && BTN_ORDER['hogar|familia'].indexOf('btnConstelaciones') < 0) {
+      var oi = BTN_ORDER['hogar|familia'].indexOf('btnVozAbuelos');
+      if (oi >= 0) BTN_ORDER['hogar|familia'].splice(oi + 1, 0, 'btnConstelaciones');
+      else BTN_ORDER['hogar|familia'].push('btnConstelaciones');
     }
   } catch (e) {}
   try {
@@ -599,13 +599,13 @@ function setup() {
   try { if (typeof updateGroupCounts === 'function') updateGroupCounts(); } catch (e) {}
   try { if (typeof applyVisibility === 'function') applyVisibility(); } catch (e) {}
   try { if (typeof reordenarAcciones === 'function') reordenarAcciones(); } catch (e) {}
-  /* 3) checkbox en configDialog (grupo Linaje) */
+  /* 3) checkbox en configDialog (grupo Hogar) */
   try {
     if (!document.querySelector('#configDialog input[data-btn="btnConstelaciones"]')) {
       var groups = document.querySelectorAll('#configDialog .config-group');
       groups.forEach(function (gr) {
         var h = gr.querySelector('h5');
-        if (h && h.textContent.indexOf('Linaje') >= 0) {
+        if (h && h.textContent.indexOf('Hogar') >= 0) {
           var lab = document.createElement('label');
           lab.className = 'check-row';
           lab.innerHTML = '<input type="checkbox" data-btn="btnConstelaciones"> 🌳 Constelaciones Familiares';
@@ -688,7 +688,7 @@ function setup() {
   var ga = $('constGoArbol');
   if (ga) ga.onclick = function () { try { var r = $('btnArbolFull'); if (r) r.click(); else alert('Abre 🌳 Árbol Genealógico desde Familia'); } catch (e) {} };
   var gd = $('constGoDuelo');
-  if (gd) gd.onclick = function () { try { var r2 = $('btnDueloFull'); if (r2) r2.click(); else alert('Abre 🕊️ Duelo desde Interior'); } catch (e) {} };
+  if (gd) gd.onclick = function () { try { var r2 = $('btnDueloFull'); if (r2) r2.click(); else alert('Abre 🕊️ Duelo desde Sostén'); } catch (e) {} };
 
   var tc = $('constTestCalc');
   if (tc) tc.onclick = function () {

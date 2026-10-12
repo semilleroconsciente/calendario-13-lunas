@@ -1,6 +1,6 @@
 /* ============================================================
    CONVIVENCIA VECINAL — Calendario 13 Lunas (Penco · Bío-Bío)
-   Sección: Comunidad, Emergencia y Sistema > 🏘️ Convivencia Vecinal
+   Sección: Comunidad > 🏘️ Convivencia Vecinal
    Botones (sub "convivencia-vecinal"):
      btnConvivGuia, btnConvivFichas, btnConvivHablar,
      btnConvivBitacora, btnConvivLuna, btnConvivRecursos
@@ -635,9 +635,7 @@ function ensureSection() {
   if (!lab) {
     lab = document.createElement('span');
     lab.className = 'sub-label'; lab.setAttribute('data-sub', SUB_LABEL.id); lab.textContent = SUB_LABEL.label;
-    var appLab = box.querySelector('.sub-label[data-sub="app"]');
-    if (appLab && appLab.parentNode === box) box.insertBefore(lab, appLab);
-    else box.appendChild(lab);
+    box.appendChild(lab);
   } else if (!lab.textContent || lab.textContent.indexOf('Convivencia') < 0) {
     lab.textContent = SUB_LABEL.label;
   }
@@ -654,12 +652,10 @@ function ensureSection() {
   });
   try {
     var anchor = lab.nextSibling;
-    var appLab2 = box.querySelector('.sub-label[data-sub="app"]');
     BTNS.forEach(function (b) {
       var el = document.getElementById(b.id);
       if (!el) return;
-      if (appLab2) box.insertBefore(el, appLab2);
-      else box.insertBefore(el, anchor);
+      box.insertBefore(el, anchor);
     });
     box.insertBefore(lab, document.getElementById(BTNS[0].id));
   } catch (eO) {}

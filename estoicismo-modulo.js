@@ -612,7 +612,7 @@ function setup() {
         var btn = document.createElement('button');
         btn.id = 'btnEstoicismo'; btn.className = 'btn'; btn.type = 'button';
         btn.textContent = '🏛️ Estoicismo';
-        try { btn.setAttribute('data-sub', 'interior'); } catch (eS) {}
+        try { btn.setAttribute('data-sub', 'practicas'); } catch (eS) {}
         btn.setAttribute('data-keywords', 'estoicismo estoico seneca epicteto marco aurelio zenon meditaciones manual cartas virtud sabiduria justicia coraje templanza control dicotomia obstaculo memento mori amor fati premeditacion examen ira tiempo deber suficiente calma caracter firmeza serenidad');
         var ref = g.querySelector('#btnTao') || g.querySelector('#btnTolteca') || g.querySelector('#btnRecap');
         if (ref && ref.nextSibling) g.insertBefore(btn, ref.nextSibling);
@@ -625,7 +625,7 @@ function setup() {
         var curN = curG && curG.getAttribute ? curG.getAttribute('data-group') : null;
         if (curN && curN !== 'linaje') {
           var gd = document.querySelector('.action-group[data-group="linaje"] .group-btns');
-          if (gd) { gd.appendChild(cur); try { cur.setAttribute('data-sub', 'interior'); } catch (eS) {} }
+          if (gd) { gd.appendChild(cur); try { cur.setAttribute('data-sub', 'practicas'); } catch (eS) {} }
         }
       } catch (eM) {}
     }
@@ -635,13 +635,13 @@ function setup() {
     if (typeof ALL_BTNS !== 'undefined' && ALL_BTNS.indexOf('btnEstoicismo') < 0) ALL_BTNS.push('btnEstoicismo');
   } catch (e) {}
   try {
-    if (typeof BTN_HOME !== 'undefined') BTN_HOME.btnEstoicismo = ['linaje', 'interior'];
+    if (typeof BTN_HOME !== 'undefined') BTN_HOME.btnEstoicismo = ['linaje', 'practicas'];
   } catch (e) {}
   try {
-    if (typeof BTN_ORDER !== 'undefined' && BTN_ORDER['linaje|interior'] && BTN_ORDER['linaje|interior'].indexOf('btnEstoicismo') < 0) {
-      var oi = BTN_ORDER['linaje|interior'].indexOf('btnTao');
-      if (oi >= 0) BTN_ORDER['linaje|interior'].splice(oi + 1, 0, 'btnEstoicismo');
-      else BTN_ORDER['linaje|interior'].push('btnEstoicismo');
+    if (typeof BTN_ORDER !== 'undefined' && BTN_ORDER['linaje|practicas'] && BTN_ORDER['linaje|practicas'].indexOf('btnEstoicismo') < 0) {
+      var oi = BTN_ORDER['linaje|practicas'].indexOf('btnTao');
+      if (oi >= 0) BTN_ORDER['linaje|practicas'].splice(oi + 1, 0, 'btnEstoicismo');
+      else BTN_ORDER['linaje|practicas'].push('btnEstoicismo');
     }
   } catch (e) {}
   try {

@@ -1,3 +1,6 @@
+// Calendario de las 13 Lunas · Mari Küla Küyen — Copyright (C) 2026 Semillero Consciente.
+// CÓDIGO bajo GNU GPLv3 o posterior (ver COPYING). Sin garantía.
+// SPDX-License-Identifier: GPL-3.0-or-later
 const { contextBridge, ipcRenderer } = require('electron');
 
 contextBridge.exposeInMainWorld('api', {

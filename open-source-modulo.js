@@ -1,5 +1,11 @@
 /* ============================================================
    OPEN SOURCE / CODIGO ABIERTO — Calendario 13 Lunas (Penco)
+   Licencia dual del proyecto:
+     - CODIGO (Web, APK, .exe): GNU GPLv3 o posterior (ver COPYING).
+     - CONTENIDO CREATIVO (diseno, textos, ilustraciones de las
+       lunas): CC BY-NC-SA 4.0 (ver LICENCIA-CONTENIDO-CC-BY-NC-SA-4.0.md
+       y LICENSE.md).
+   SPDX-License-Identifier: GPL-3.0-or-later
    Seccion: Comunidad, Emergencia y Sistema > sub "codigo-abierto"
    Botones:
      btnOpenGuia, btnOpenLicencias, btnOpenProgramas,
@@ -7,7 +13,9 @@
    Dialogo openSourceDialog con 6 pestanas:
      1) Guia: que es, 4 libertades, gratis vs libre, por que
         importa en Penco, mitos, metodo L.E.E.R.
-     2) Licencias: MIT, GPL, Apache, MPL, CC, dominio publico.
+      2) Licencias: GPLv3 (codigo del proyecto), CC BY-NC-SA 4.0
+         (contenido del proyecto), mas MIT, Apache, MPL y dominio
+         publico como referencia.
         Comparativa + "cual elijo" + licencia de este proyecto.
      3) Programas libres: catalogo territorial por necesidad
         (sistema, oficina, mapas, diseno, audio, video, nube,
@@ -78,15 +86,15 @@ var MITOS = [
   { m: '“Open source = gratis y malo”', r: 'Falso. Libre habla de <b>libertad, no de precio</b>. Firefox, Linux, VLC o este mismo Calendario son libres y de calidad profesional. Se sostienen con aportes, servicios y comunidad, no con candados.' },
   { m: '“Es solo para programadores”', r: 'Falso. La mayoría de los aportes son <b>sin código</b>: probar, reportar un error con foto, traducir, escribir una guía, dibujar un icono, enseñar a usarlo en la sede. Ver pestaña Aportar.' },
   { m: '“Si es abierto, me roban los datos”', r: 'Al revés: al ser abierto se puede <b>auditar</b>. Este Calendario guarda todo <b>en tu dispositivo</b> (sin nube obligatoria). Lo cerrado no se puede revisar: hay que creerle a la empresa.' },
-  { m: '“Puedo tomar lo libre y venderlo como mío cerrado”', r: 'Depende de la <b>licencia</b> (ver pestaña Licencias). MIT permite casi todo con atribución; GPL exige mantener abierto lo derivado. Libre no es “sin reglas”.' }
+  { m: '“Puedo tomar lo libre y venderlo como mío cerrado”', r: 'Depende de la <b>licencia</b> (ver pestaña Licencias). Apache/MIT permiten casi todo con atribución; <b>GPL (la del código de este Calendario) exige mantener abierto lo derivado</b>. Libre no es “sin reglas”.' }
 ];
 
 var LICENCIAS = [
-  { id: 'mit', ico: '🪶', nombre: 'MIT (la de este Calendario)', tipo: 'Permisiva · corta (2 párrafos)', permite: 'Usar, copiar, modificar, vender y cerrar derivados, con crédito al autor.', exige: 'Mantener el aviso de licencia y autoría en las copias.', ideal: 'Proyectos comunitarios que quieren máxima difusión y réplica (como este).', ojo: 'Alguien puede tomar tu trabajo y no devolver mejoras. Se acepta a cambio de simplicidad.' },
+  { id: 'gpl', ico: '🔁', nombre: 'GPL v3 (la del CODIGO de este Calendario)', tipo: 'Recíproca: lo derivado sigue libre', permite: 'Usar, estudiar, modificar y compartir; vender servicios y copias.', exige: 'Si distribuyes una versión modificada, <b>debes publicar tu código fuente</b> con la misma licencia GPLv3 y marcar tus cambios. Ver archivo COPYING.', ideal: 'Bienes comunes que nadie pueda apropiarse: este Calendario (Web, APK, .exe) usa GPLv3.', ojo: 'Copyleft fuerte: no puedes cerrar el código derivado. Es la protección del bien común.' },
+  { id: 'cc', ico: '🎨', nombre: 'CC BY-NC-SA 4.0 (el CONTENIDO de este Calendario)', tipo: 'Para diseño, textos e ilustraciones de las lunas', permite: 'Compartir y adaptar con <b>crédito (BY)</b>, solo en usos <b>no comerciales (NC)</b>.', exige: 'Dar crédito + indicar cambios + compartir tu adaptación con la <b>misma licencia (SA)</b>. Pedir permiso para uso comercial.', ideal: 'Relatos de las lunas, guías, cuentos, ilustraciones e iconos propios de este proyecto.', ojo: 'NC impide la explotación comercial sin permiso; SA mantiene libre lo derivado creativo.' },
+  { id: 'mit', ico: '🪶', nombre: 'MIT', tipo: 'Permisiva · corta (2 párrafos)', permite: 'Usar, copiar, modificar, vender y cerrar derivados, con crédito al autor.', exige: 'Mantener el aviso de licencia y autoría en las copias.', ideal: 'Proyectos que quieren máxima difusión aceptando que alguien no devuelva mejoras.', ojo: 'Permite cerrar derivados: por eso este proyecto NO la usa para su código (usa GPLv3).' },
   { id: 'apache', ico: '🛡️', nombre: 'Apache 2.0', tipo: 'Permisiva + patentes', permite: 'Lo mismo que MIT, más protección expresa de patentes.', exige: 'Aviso de licencia + registrar cambios importantes + atribución.', ideal: 'Proyectos con empresas/instituciones (protege de demandas de patentes).', ojo: 'Texto más largo que MIT; hay que documentar cambios.' },
-  { id: 'gpl', ico: '🔁', nombre: 'GPL v3 (copyleft fuerte)', tipo: 'Recíproca: lo derivado sigue libre', permite: 'Usar, modificar y compartir; vender servicios y copias.', exige: 'Si distribuyes una versión modificada, <b>debes publicar tu código</b> con la misma licencia.', ideal: 'Bienes comunes que nadie pueda apropiarse (ej: un sistema de riego comunitario).', ojo: 'Algunas empresas la evitan por la obligación de liberar derivados.' },
   { id: 'mpl', ico: '🧩', nombre: 'MPL 2.0 (copyleft por archivo)', tipo: 'Intermedia archivo por archivo', permite: 'Mezclar con código cerrado a nivel de proyecto.', exige: 'Los <b>archivos MPL modificados</b> se liberan; el resto puede ir cerrado.', ideal: 'Bibliotecas que quieren mejoras devueltas sin “contagiar” todo el proyecto.', ojo: 'Hay que marcar qué archivos son MPL.' },
-  { id: 'cc', ico: '🎨', nombre: 'Creative Commons (contenidos, NO software)', tipo: 'Para textos, fotos, música, guías', permite: 'Según variante: BY (crédito), SA (compartir igual), NC (no comercial), ND (sin derivados).', exige: 'Respetar la combinación elegida (ej: BY-SA = crédito + compartir igual).', ideal: 'Guías del Calendario, fotos de aves, recetas, cuentos, mapas. Recomendada: <b>CC BY-SA</b>.', ojo: 'NC suena tentador pero frena réplicas (una cooperativa no podría usarlo). Úsalo con criterio.' },
   { id: 'dominio', ico: '🌍', nombre: 'Dominio público (CC0 / Unlicense)', tipo: 'Sin restricciones', permite: 'Todo, sin siquiera pedir crédito (aunque darlo es buena práctica).', exige: 'Nada (verifica que la obra sea realmente tuya para liberarla).', ideal: 'Datos abiertos, plantillas, saberes que quieres regalar sin fricción.', ojo: 'Irreversible: una vez liberado, no puedes retractarte.' }
 ];
 
@@ -108,7 +116,7 @@ var PROGRAMAS = [
   { cat: 'Aprender y crear', n: 'Moodle / Kolibri', ico: '🏫', para: 'Aula offline: cursos del taller, Kimün Mapuzugun, manuales, sin internet.', reemplaza: 'Plataformas con suscripción', dato: 'Kolibri corre en un celu/PC viejo como “escuela de bolsillo”.', links: [{ t: 'Moodle', u: 'https://moodle.org' }, { t: 'Kolibri', u: 'https://learningequality.org/kolibri/' }] },
   { cat: 'Aprender y crear', n: 'Blender', ico: '🧱', para: '3D, animación y hasta planos simples del invernadero o la sede.', reemplaza: 'Software 3D propietario', dato: 'Exige PC medio; hay miles de tutoriales en español.', links: [{ t: 'Blender', u: 'https://www.blender.org' }] },
   { cat: 'Campo y datos', n: 'QField / ODK Collect', ico: '🌱', para: 'Ficha en terreno sin señal: árboles, pozos, daños tras temporal; luego se sincroniza.', reemplaza: 'Papel que se moja y se pierde', dato: 'Combina con OpenStreetMap y QGIS: catastro comunitario completo.', links: [{ t: 'QField', u: 'https://qfield.org' }, { t: 'ODK', u: 'https://getodk.org' }] },
-  { cat: 'Este ecosistema', n: 'Este Calendario 13 Lunas (MIT)', ico: '🌙', para: 'Calendario lunar + 60 herramientas territoriales, offline y privado. El código ES la lección.', reemplaza: '5 apps sueltas con publicidad', dato: 'Ver pestaña “Este proyecto”: archicos .js por tema, datos en data/territorios/.', links: [] }
+  { cat: 'Este ecosistema', n: 'Este Calendario 13 Lunas (GPLv3 + CC BY-NC-SA 4.0)', ico: '🌙', para: 'Calendario lunar + 60 herramientas territoriales, offline y privado. El código ES la lección.', reemplaza: '5 apps sueltas con publicidad', dato: 'Ver pestaña “Este proyecto”: código GPLv3 + contenido CC BY-NC-SA 4.0. Archivos .js por tema, datos en data/territorios/.', links: [] }
 ];
 
 var ARQUITECTURA = [
@@ -121,7 +129,7 @@ var ARQUITECTURA = [
 ];
 
 var REPLICA = [
-  { t: '1 · Copia la base', d: 'Copia toda la carpeta del proyecto con otro nombre (ej: calendario-mi-comuna). Todo es MIT: puedes hacerlo libremente manteniendo el aviso de autoría.' },
+  { t: '1 · Copia la base', d: 'Copia toda la carpeta del proyecto con otro nombre (ej: calendario-mi-comuna). El código es GPLv3 y el contenido CC BY-NC-SA 4.0: puedes hacerlo libremente manteniendo el crédito y la misma licencia dual (ver LICENSE.md).' },
   { t: '2 · Cambia el territorio', d: 'Edita data/territorios/penco/*.json con tus sectores, fiestas, mareas y teléfonos (muni, CESFAM, bomberos). Parte por territorio.json y eventos.json.' },
   { t: '3 · Ajusta la portada', d: 'En index.html cambia título, brand (“Mari Küla Küyen” → tu nombre local) y coordenadas/clima si tu zona no es costa del Bío-Bío.' },
   { t: '4 · Suma o quita módulos', d: 'En el cargador MODS (index.html ~línea 4344) comenta los que no necesites y agrega los tuyos (copia open-source-modulo.js como plantilla: es el más comentado).' },
@@ -134,7 +142,7 @@ var SIN_CODIGO = [
   { n: 'Escribir y traducir', ico: '✍️', d: 'Mejora un texto confuso, traduce al mapuzugun o crea una guía de 1 página para tu sector. Contenido = aporte.' },
   { n: 'Enseñar en terreno', ico: '🙋', d: 'Haz un taller de 30 min en tu JJ.VV. con esta sección abierta. Anota dudas: son la lista de mejoras.' },
   { n: 'Datos del territorio', ico: '🗺️', d: 'Aporta teléfonos vigentes, fechas de fiestas, puntos de encuentro, especies vistas. Los .json viven de eso.' },
-  { n: 'Diseño y difusión', ico: '🎨', d: 'Iconos, afiches, videos cortos explicando una herramienta. Todo con licencia CC BY-SA para reutilizar.' },
+  { n: 'Diseño y difusión', ico: '🎨', d: 'Iconos, afiches, videos cortos explicando una herramienta. El contenido propio va con licencia CC BY-NC-SA 4.0 para reutilizar (con crédito, sin uso comercial y compartiendo igual).' },
   { n: 'Validar saberes', ico: '🌿', d: 'En Lawen/Huerta/Bosque: confirma o corrige con tu experiencia (“en mi sector la siembra va 2 semanas después”).' }
 ];
 
@@ -149,7 +157,7 @@ var CHEQUEO = [
   { id: 'o1', n: 'Uso al menos 2 programas libres a diario', d: 'Navegador libre, oficina libre, mapas offline… Cuenta lo que ya usas.' },
   { id: 'o2', n: 'Sé explicar las 4 libertades en 1 minuto', d: 'Usar, estudiar, compartir, mejorar. Si puedes contarlo, puedes enseñarlo.' },
   { id: 'o3', n: 'Distingo gratis vs libre', d: 'WhatsApp es gratis pero cerrado; Firefox es libre (y también gratis). El precio no define la libertad.' },
-  { id: 'o4', n: 'Reviso la licencia antes de copiar', d: 'MIT/Apache/CC: sé qué puedo hacer y qué crédito debo dar.' },
+  { id: 'o4', n: 'Reviso la licencia antes de copiar', d: 'GPL/CC: sé qué puedo hacer y qué crédito debo dar (código GPLv3 + contenido CC BY-NC-SA 4.0 en este proyecto).' },
   { id: 'o5', n: 'Mi respaldo no depende de una sola empresa', d: 'Copia local + 💾 Respaldo de la app, no solo “la nube” de un gigante.' },
   { id: 'o6', n: 'Compartí algo libre este mes', d: 'Pasaste el Calendario en pendrive, enseñaste Firefox, agregaste tu sede al mapa.' },
   { id: 'o7', n: 'Reporté o propuse 1 mejora', d: 'Un error con foto, una idea escrita, un dato corregido. Quedó en tu bitácora.' },
@@ -176,8 +184,9 @@ var GLOSARIO = [
 var QUIZ = [
   { q: '¿Qué significa que un programa sea “libre” (open source)?', opts: ['Que es gratis y puedo piratearlo', 'Que tengo las 4 libertades: usar, estudiar, compartir y mejorar', 'Que no tiene dueño ni reglas'], ok: 1, por: 'Libre = libertad (las 4), no precio. Y sí tiene reglas: su licencia.' },
   { q: 'Encuentras un programa “gratis” pero sin código ni licencia. ¿Es open source?', opts: ['Sí, si no pagué es libre', 'No: sin fuente y sin licencia no hay libertades garantizadas', 'Sí, si lo compartió un amigo'], ok: 1, por: 'Gratis ≠ libre. Sin fuente no puedes estudiarlo; sin licencia no puedes compartirlo legalmente.' },
-  { q: 'Quieres adaptar este Calendario (MIT) a tu comuna y compartirlo. ¿Qué debes hacer?', opts: ['Pedir permiso al autor y pagar', 'Copiar libremente manteniendo el aviso MIT de autoría', 'No se puede: es de Penco'], ok: 1, por: 'MIT lo permite expresamente: copia, adapta y comparte conservando el crédito.' },
+  { q: 'Quieres adaptar este Calendario (código GPLv3) a tu comuna y compartirlo. ¿Qué debes hacer?', opts: ['Pedir permiso al autor y pagar', 'Copiar libremente manteniendo el crédito y publicando tu versión también como GPLv3', 'No se puede: es de Penco'], ok: 1, por: 'GPLv3 lo permite expresamente: copia, adapta y comparte conservando el crédito y la misma licencia (copyleft).' },
   { q: 'Mejoras un programa GPL y lo distribuyes en tu organización. ¿Qué exige la GPL?', opts: ['Nada, me quedo el código', 'Publicar mi versión modificada también como GPL', 'Pagar al autor original'], ok: 1, por: 'Copyleft: lo derivado distribuido debe seguir libre con la misma licencia.' },
+  { q: 'Quieres usar una ilustración de las lunas (CC BY-NC-SA 4.0) en un afiche que vas a VENDER. ¿Qué debes hacer?', opts: ['Usarla igual: lo libre es gratis para todo', 'Pedir permiso previo: el NC prohíbe el uso comercial sin autorización', 'Cambiarle los colores y ya es mía'], ok: 1, por: 'CC BY-NC-SA 4.0: el componente NC exige permiso para usos comerciales. Los usos comunitarios/educativos sin fines de lucro sí están permitidos.' },
   { q: '¿Cuál es un aporte válido SIN saber programar?', opts: ['Ninguno, solo programadores aportan', 'Reportar un error con foto y pasos para repetirlo', 'Compartir mi clave para que otro arregle'], ok: 1, por: 'Reportar, probar, traducir, enseñar y corregir datos son aportes centrales.' },
   { q: '¿Qué formato garantiza abrir tus archivos en 20 años?', opts: ['Un formato cerrado de una sola empresa', 'Un estándar abierto (.odt, .pdf, .json, .csv)', 'Una captura de pantalla'], ok: 1, por: 'Estándares abiertos sin dueño = futuro legible. Lo cerrado puede volverse ilegible.' },
   { q: 'Tu JJ.VV. quiere mapa offline sin dar datos a una empresa. ¿Qué recomiendas?', opts: ['Google Maps con cuenta obligatoria', 'OpenStreetMap + Organic Maps con mapa descargado', 'Foto del mapa de papel por WhatsApp'], ok: 1, por: 'OSM es libre, offline y comunitario: la sede puede agregar sus propios puntos.' },
@@ -203,7 +212,7 @@ function makeDialog() {
     '<div class="dlg-actions su-d2d053">' +
     '<h3 class="su-ee0cfe">🌐 Código Abierto — el saber se comparte</h3>' +
     '<button type="button" data-close class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    '<p class="muted su-77e2fe">Por qué existe lo libre, qué puedes usar gratis y legal en Penco, cómo funciona <b>esta misma app (licencia MIT)</b> y cómo aportar aunque no programes. Todo <b>offline y privado</b>.</p>' +
+    '<p class="muted su-77e2fe">Por qué existe lo libre, qué puedes usar gratis y legal en Penco, cómo funciona <b>esta misma app (código GPLv3 + contenido CC BY-NC-SA 4.0)</b> y cómo aportar aunque no programes. Todo <b>offline y privado</b>.</p>' +
     '<div id="osProgress" class="muted su-245797"></div>' +
     '<div class="timer-tabs su-dd1da5">' +
     '<button type="button" id="tabOsGuia" class="btn btn-accent su-30e741">📖 Guía</button>' +
@@ -243,7 +252,7 @@ function paintProgress() {
 function renderGuia() {
   var box = $('osGuia'); if (!box) return;
   box.innerHTML =
-    '<div class="si-card"><h4>🌐 ¿Qué es el código abierto? (en 1 minuto)</h4><p>Es saber con la <b>receta a la vista</b>: cualquier persona puede usar, copiar, estudiar y mejorar un programa o una guía. Como la cocina de la abuela que comparte la receta en vez de venderla envasada y secreta. Este Calendario es así: <b>licencia MIT</b>, funciona sin internet y tus datos quedan en tu aparato.</p>' +
+    '<div class="si-card"><h4>🌐 ¿Qué es el código abierto? (en 1 minuto)</h4><p>Es saber con la <b>receta a la vista</b>: cualquier persona puede usar, copiar, estudiar y mejorar un programa o una guía. Como la cocina de la abuela que comparte la receta en vez de venderla envasada y secreta. Este Calendario es así: <b>código GPLv3 + contenido CC BY-NC-SA 4.0</b> (ver LICENSE.md), funciona sin internet y tus datos quedan en tu aparato.</p>' +
     '<p><b>Método L.E.E.R.</b> ante cualquier programa: <b>L</b>ibre ¿o solo gratis? · <b>E</b>studia quién lo hace y qué pide a cambio · <b>E</b>xporta: ¿puedo sacar mis datos? · <b>R</b>eparte: ¿puedo compartirlo legal con mi vecina?</p></div>' +
     LIBERTADES.map(function (r) {
       return '<div class="si-card"><h4>' + r.ico + ' ' + esc(r.n) + '</h4><p>' + r.txt + '</p></div>';
@@ -257,12 +266,12 @@ function renderGuia() {
   if (g) g.onclick = function () { switchTab('Programas'); renderAll(); };
 }
 
-var licSel = 'mit';
+var licSel = 'gpl';
 function renderLicencias() {
   var box = $('osLicencias'); if (!box) return;
   var sel = LICENCIAS.filter(function (l) { return l.id === licSel; })[0] || LICENCIAS[0];
   box.innerHTML =
-    '<div class="si-card"><h4>⚖️ Licencias en simple: el permiso escrito</h4><p>Sin licencia clara, todo es “reservado”. Con licencia libre, el autor <b>regala libertades por escrito</b>. Toca cada una para ver qué permite, qué exige y cuándo conviene. <b>Este proyecto usa MIT</b> (package.json → "license": "MIT").</p></div>' +
+    '<div class="si-card"><h4>⚖️ Licencias en simple: el permiso escrito</h4><p>Sin licencia clara, todo es “reservado”. Con licencia libre, el autor <b>regala libertades por escrito</b>. Toca cada una para ver qué permite, qué exige y cuándo conviene. <b>Este proyecto usa licencia dual</b>: código <b>GPLv3</b> (package.json → "license": "GPL-3.0-or-later", archivo COPYING) + contenido creativo <b>CC BY-NC-SA 4.0</b> (diseño, textos, ilustraciones — ver LICENSE.md).</p></div>' +
     '<div class="timer-tabs su-62da06">' + LICENCIAS.map(function (l) {
       return '<button type="button" data-lic="' + l.id + '" class="btn' + (l.id === licSel ? ' btn-accent' : '') + ' su-30e741">' + l.ico + ' ' + esc(l.nombre.split(' (')[0]) + '</button>';
     }).join('') + '</div>' +
@@ -272,14 +281,14 @@ function renderLicencias() {
     '<p><b>📋 Exige:</b> ' + sel.exige + '</p>' +
     '<p><b>🎯 Ideal para:</b> ' + sel.ideal + '</p>' +
     '<p class="muted su-11a508"><b>⚠️ Ojo:</b> ' + sel.ojo + '</p></div>' +
-    '<div class="si-card"><h4>🤔 ¿Cuál elijo para lo mío?</h4><p>• <b>Quiero máxima difusión</b> (guía, app comunitaria) → <b>MIT o CC BY-SA</b>.<br>• <b>Me da miedo que una empresa se lo apropie</b> → <b>GPL</b> (código) o <b>CC BY-SA</b> (contenido).<br>• <b>Es biblioteca para que otros la usen</b> → <b>Apache 2.0 o MPL</b>.<br>• <b>Son datos/plantillas para regalar</b> → <b>CC0</b>.<br>• <b>No sé aún</b> → parte con MIT (código) / CC BY-SA (contenido): simples y compatibles con casi todo.</p>' +
-    '<p class="muted su-11a508">Regla de oro: la licencia se escribe en 1 archivo (LICENSE o encabezado) + se nombra en la portada. Sin archivo, no vale.</p></div>' +
-    '<div class="dlg-actions su-59a5a8"><button type="button" id="osCopyMit" class="btn su-30e741">📋 Copiar aviso MIT de este proyecto</button></div>';
+    '<div class="si-card"><h4>🤔 ¿Cuál elijo para lo mío?</h4><p>• <b>Quiero máxima difusión</b> (guía, app comunitaria) → <b>MIT o CC BY</b>.<br>• <b>Me da miedo que alguien se lo apropie o lo venda cerrado</b> → <b>GPL</b> (código, como este proyecto) o <b>CC BY-NC-SA</b> (contenido, como este proyecto).<br>• <b>Es biblioteca para que otros la usen</b> → <b>Apache 2.0 o MPL</b>.<br>• <b>Son datos/plantillas para regalar</b> → <b>CC0</b>.<br>• <b>No sé aún</b> → parte con GPL (código) / CC BY-NC-SA (contenido) si quieres proteger el bien común, como este Calendario.</p>' +
+    '<p class="muted su-11a508">Regla de oro: la licencia se escribe en archivos (COPYING + LICENSE.md o encabezado) + se nombra en la portada. Sin archivo, no vale.</p></div>' +
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="osCopyMit" class="btn su-30e741">📋 Copiar aviso de licencia dual de este proyecto</button></div>';
   box.querySelectorAll('[data-lic]').forEach(function (b) {
     b.onclick = function () { licSel = b.getAttribute('data-lic'); markSeen('lic-' + licSel); renderLicencias(); };
   });
   var c = $('osCopyMit');
-  if (c) c.onclick = function () { share('Aviso MIT — Calendario 13 Lunas', 'Calendario de las 13 Lunas — Mari Küla Küyen (Penco). Licencia MIT: puedes usar, copiar, modificar y compartir, manteniendo este aviso de autoría.'); };
+  if (c) c.onclick = function () { share('Licencia dual — Calendario 13 Lunas', 'Calendario de las 13 Lunas — Mari Küla Küyen (Penco), © 2026 Semillero Consciente. CÓDIGO: GNU GPLv3 o posterior (ver COPYING). CONTENIDO (diseño, textos, ilustraciones): CC BY-NC-SA 4.0 (https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es). Puedes usar, copiar y adaptar manteniendo el crédito y la misma licencia. Sin garantía.'); };
 }
 
 var progQ = '', progCat = 'todas';
@@ -340,8 +349,8 @@ function renderProgramas() {
 function renderProyecto() {
   var box = $('osProyecto'); if (!box) return;
   box.innerHTML =
-    '<div class="si-card"><h4>🌙 Esta app ES la lección (licencia MIT)</h4><p>El <b>Calendario de las 13 Lunas</b> es código abierto: puedes leer cada archivo, copiarlo y adaptarlo a tu comuna manteniendo el crédito. Funciona <b>offline-first</b>, guarda todo <b>en tu dispositivo</b> y cada tema es un archivo <b>*-modulo.js</b> independiente —incluida esta sección que estás leyendo (<b>open-source-modulo.js</b>).</p>' +
-    '<p class="muted su-11a508">package.json → "license": "MIT" · "version": "1.6.0" · Sin cuentas · Sin rastreo · Funciona con doble clic.</p></div>' +
+    '<div class="si-card"><h4>🌙 Esta app ES la lección (GPLv3 + CC BY-NC-SA 4.0)</h4><p>El <b>Calendario de las 13 Lunas</b> es libre con licencia dual: el <b>código</b> (Web, APK, .exe) bajo <b>GNU GPLv3</b> y el <b>contenido creativo</b> (diseño, textos, ilustraciones de las lunas) bajo <b>CC BY-NC-SA 4.0</b>. Puedes leer cada archivo, copiarlo y adaptarlo a tu comuna manteniendo el crédito y la misma licencia. Funciona <b>offline-first</b>, guarda todo <b>en tu dispositivo</b> y cada tema es un archivo <b>*-modulo.js</b> independiente —incluida esta sección que estás leyendo (<b>open-source-modulo.js</b>).</p>' +
+    '<p class="muted su-11a508">package.json → "license": "GPL-3.0-or-later" · COPYING (GPLv3) + LICENSE.md (dual) incluidos · Sin cuentas · Sin rastreo · Funciona con doble clic.</p></div>' +
     '<div class="si-card"><h4>🧩 Anatomía (¿dónde está cada cosa?)</h4>' + ARQUITECTURA.map(function (a) {
       return '<p><b>' + a.ico + ' ' + esc(a.n) + ':</b> ' + a.d + '</p>';
     }).join('') + '</div>' +
@@ -354,7 +363,7 @@ function renderProyecto() {
   var g = $('osGoAportar');
   if (g) g.onclick = function () { switchTab('Aportar'); renderAll(); };
   var sp = $('osShareProj');
-  if (sp) sp.onclick = function () { share('🌙 Calendario 13 Lunas — código abierto (MIT)', 'Calendario de las 13 Lunas (Penco): app offline, privada y de código abierto (MIT). Léelo, cópialo y adaptalo a tu comuna. Pestaña 🌐 Código Abierto → Este proyecto.'); };
+  if (sp) sp.onclick = function () { share('🌙 Calendario 13 Lunas — libre (GPLv3 + CC BY-NC-SA 4.0)', 'Calendario de las 13 Lunas (Penco): app offline, privada y libre. Código GPLv3 + contenido CC BY-NC-SA 4.0. Léelo, cópialo y adaptalo a tu comuna. Pestaña 🌐 Código Abierto → Este proyecto.'); };
 }
 
 function renderAportar() {
@@ -447,7 +456,7 @@ function renderQuiz() {
   html += '<div class="si-card"><h4>📚 Glosario mínimo (12 palabras)</h4>' + GLOSARIO.map(function (g) {
     return '<p><b>' + esc(g.t) + ':</b> <span class="muted">' + esc(g.d) + '</span></p>';
   }).join('') + '</div>';
-  html += '<div class="menstrual-card su-68a1a9"><h4>🧠 Quiz: ¿cachai lo libre? (mejor: ' + (s.quizBest || 0) + '/' + QUIZ.length + ')</h4><div id="osQuizBox"><p class="muted">8 preguntas, 3 minutos. Toca empezar.</p></div>' +
+  html += '<div class="menstrual-card su-68a1a9"><h4>🧠 Quiz: ¿cachai lo libre? (mejor: ' + (s.quizBest || 0) + '/' + QUIZ.length + ')</h4><div id="osQuizBox"><p class="muted">' + QUIZ.length + ' preguntas, unos minutos. Toca empezar.</p></div>' +
     '<div class="dlg-actions su-59a5a8"><button type="button" id="osQuizStart" class="btn btn-accent su-30e741">▶ Empezar quiz</button></div></div>';
   box.innerHTML = html;
   box.querySelectorAll('[data-oscheck]').forEach(function (c) {
@@ -506,9 +515,9 @@ function renderAll() {
 /* ---------------- SETUP: integra en Comunidad ---------------- */
 var BTNS = [
   { id: 'btnOpenGuia', label: '📖 Qué es lo libre', tab: 'Guia', kw: 'open source codigo abierto libre gratis libertades leer programa auditar soberania digital que es compartir' },
-  { id: 'btnOpenLicencias', label: '⚖️ Licencias', tab: 'Licencias', kw: 'licencia mit gpl apache cc creative commons dominio publico permiso copiar vender atribuir copyleft' },
+  { id: 'btnOpenLicencias', label: '⚖️ Licencias', tab: 'Licencias', kw: 'licencia gpl gplv3 cc by-nc-sa creative commons copyleft codigo contenido permiso copiar compartir atribuir no comercial' },
   { id: 'btnOpenProgramas', label: '🧰 Programas libres', tab: 'Programas', kw: 'programas gratis linux libreoffice firefox mapas offline osm qgis gimp kdenlive audacity signal jitsi nextcloud bitwarden' },
-  { id: 'btnOpenProyecto', label: '🌙 Este proyecto MIT', tab: 'Proyecto', kw: 'proyecto calendario mit replicar comuna archivos modulo offline arquitectura github clonar' },
+  { id: 'btnOpenProyecto', label: '🌙 Este proyecto GPL', tab: 'Proyecto', kw: 'proyecto calendario gplv3 cc replicar comuna archivos modulo offline arquitectura github clonar licencia dual' },
   { id: 'btnOpenAportar', label: '🤝 Aportar', tab: 'Aportar', kw: 'aportar contribuir ayudar reportar idea taller codigo voluntariado bitacora checklist como ayudo' },
   { id: 'btnOpenQuiz', label: '🧠 Soberanía + quiz', tab: 'Quiz', kw: 'soberania chequeo quiz glosario prueba puntaje dependencia autonomia' }
 ];

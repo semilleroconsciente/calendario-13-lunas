@@ -1,60 +1,75 @@
-<dialog id="donateDialog">
-    <form method="dialog">
-      <div class="dlg-actions su-d2d053">
-        <h3 class="su-ee0cfe">❤ Aporte voluntario — Mari Küla Küyen</h3>
+<dialog id="donateDialog" class="donate-dialog">
+    <form method="dialog" class="donate-form">
+      <div class="dlg-actions donate-topbar">
+        <h3>❤️ Aporte Voluntario</h3>
         <button type="button" id="donateCloseTop" class="btn btn-icon" title="Cerrar" aria-label="Cerrar">✕</button>
       </div>
-      <p class="muted su-afef7d">Esta herramienta es gratuita, de código abierto y sin publicidad. Nació en Penco para acompañar tu vida entre lunas, mareas y bosque, y hoy también cuida tu bienestar interior, tu estudio y tu conexión con el territorio. Si te sirve en tu huerta, en la caleta, en tu proceso personal o en tu aula, tu aporte voluntario ayuda a:</p>
-      <ul class="muted su-8cdc5a">
-        <li>Mantener el servidor y los dominios activos.</li>
-        <li>Seguir mejorando la app (nuevos módulos, más territorios, sincronización segura).</li>
-        <li>Sostener este trabajo independiente y artesanal.</li>
-      </ul>
-      <p class="muted su-afef7d"><b>Todo aporte es voluntario y profundamente agradecido.</b><br>¡Küme mañum — muchas gracias desde la Bahía de Concepción! 🌙</p>
+
+      <div class="donate-hero">
+        <div class="donate-moons" aria-hidden="true">🌑 🌒 🌓 🌔 🌕 🌖 🌗 🌘 🌑</div>
+        <p class="donate-kicker">Mari Küla Küyen · 13 Lunas · Penco</p>
+        <h4 class="donate-title">Sostengamos junt@s este calendario libre</h4>
+        <p class="donate-sub">100% gratuito · código abierto · sin publicidad. Nació en Penco entre lunas, mareas y bosque, y hoy acompaña tu huerta, tu caleta, tu aula y tu mundo interior.</p>
+        <div class="donate-badges">
+          <span class="donate-badge">🌙 Sin suscripción</span>
+          <span class="donate-badge">🔒 Pago seguro</span>
+          <span class="donate-badge">🤲 100% voluntario</span>
+        </div>
+      </div>
+
+      <div class="donate-impact">
+        <div class="donate-impact-item"><span>🛰️</span><div><b>Servidores y dominios</b><small>para que siga en línea</small></div></div>
+        <div class="donate-impact-item"><span>🌱</span><div><b>Nuevos módulos</b><small>territorios y sincronía</small></div></div>
+        <div class="donate-impact-item"><span>🧺</span><div><b>Trabajo artesanal</b><small>independiente y comunitario</small></div></div>
+      </div>
+
+      <h4 class="donate-section-title">💳 Formas de apoyar</h4>
       <div class="donate-grid">
-        <div class="donate-card">
-          <h4>🛒 Mercado Pago</h4>
-          <p class="muted su-6cb285">Link directo verificado:</p>
-          <a id="donateMPLink" href="https://link.mercadopago.cl/semilleroconsciente" target="_blank" rel="noopener noreferrer" class="btn su-14ce7a">Pagar con Mercado Pago</a>
-           <p class="muted su-e13d76">https://link.mercadopago.cl/semilleroconsciente</p>
-         </div>
-         <div class="donate-card">
-           <h4>🌍 PayPal — Internacional</h4>
-           <p class="muted su-6cb285">Correo PayPal verificado:</p>
-           <a id="donatePaypalLink" href="https://www.paypal.com/donate?business=semilleroconsciente@gmail.com" target="_blank" rel="noopener noreferrer" class="btn su-32f0ea">Donar con PayPal</a>
-          <p class="muted su-e13d76">semilleroconsciente@gmail.com</p>
+        <div class="donate-card donate-mp">
+          <div class="donate-card-top"><span class="donate-ico">🇨🇱</span><div><h4>Mercado Pago</h4><small>Chile · link verificado</small></div></div>
+          <a id="donateMPLink" href="https://link.mercadopago.cl/semilleroconsciente" target="_blank" rel="noopener noreferrer" class="btn donate-btn-mp">👉 Pagar con Mercado Pago</a>
+          <button type="button" class="donate-copy" data-copy="https://link.mercadopago.cl/semilleroconsciente">📋 Copiar link</button>
+          <p class="donate-url">link.mercadopago.cl/semilleroconsciente</p>
+        </div>
+        <div class="donate-card donate-pp">
+          <div class="donate-card-top"><span class="donate-ico">🌍</span><div><h4>PayPal</h4><small>Internacional · correo verificado</small></div></div>
+          <a id="donatePaypalLink" href="https://paypal.me/semilleroconsciente" target="_blank" rel="noopener noreferrer" class="btn donate-btn-pp">👉 Donar con PayPal</a>
+          <button type="button" class="donate-copy" data-copy="https://paypal.me/semilleroconsciente">📋 Copiar link</button>
+          <p class="donate-url">paypal.me/semilleroconsciente</p>
         </div>
       </div>
-      <div class="donate-grid su-d2c171">
-        <div class="donate-card su-bcee4f">
-          <h4>🗺️ ¿Quieres el calendario para tu territorio?</h4>
-          <p class="muted su-37e316">Este calendario nació para <b>Penco · Bío-Bío</b>, pero puedo adaptarlo a <b>tu comuna, valle o bioregión</b> (toponimia, mareas, siembra, fiestas y lunas locales).</p>
-          <p class="muted su-11a508">Previa consulta — es un trabajo artesanal y territorial.</p>
-          <a href="mailto:semilleroconsciente@gmail.com?subject=Calendario%20para%20mi%20territorio%20-%20consulta&body=Hola%20Semillero%2C%0A%0AMe%20interesa%20adaptar%20el%20calendario%20a%20mi%20territorio%3A%0A-%20Comuna%2Fterritorio%3A%0A-%20Regi%C3%B3n%2Fpa%C3%ADs%3A%0A-%20Qu%C3%A9%20elementos%20te%20gustaria%20incluir%3A%20(mareas%2C%20siembra%2C%20fiestas%2C%20lunas)%0A%0AGracias%21" class="btn btn-accent su-10b899">✉️ Consultar por correo</a>
-          <p class="muted su-e13d76"><b>semilleroconsciente@gmail.com</b></p>
+
+      <div class="donate-grid donate-grid-2">
+        <div class="donate-card donate-flow">
+          <div class="donate-card-top"><span class="donate-ico">⚡</span><div><h4>Flow</h4><small>Transferencia Chile</small></div></div>
+          <a id="donateFlowLink" href="#" class="btn donate-btn-flow">Ir a Flow</a>
+          <p class="donate-url muted">Se activa si está configurado</p>
         </div>
-        <div class="donate-card su-93fb05">
-          <h4>💡 Opiniones e ideas para mejorar</h4>
-          <p class="muted su-37e316">¿Tienes una idea, corrección o sugerencia?</p>
-          <p class="muted su-11a508">Tu opinión hace crecer el calendario. Escríbeme y respondo personalmente. ¡Toda idea es bienvenida!</p>
-          <a href="mailto:semilleroconsciente@gmail.com?subject=Idea%20para%20mejorar%20el%20Calendario%2013%20Lunas&body=Hola%20Semillero%2C%0A%0AMi%20idea%2Fopini%C3%B3n%20para%20el%20calendario%3A%0A%0A-%20Qu%C3%A9%20mejoraria%3A%0A-%20Qu%C3%A9%20te%20gusta%20m%C3%A1s%3A%0A%0AGracias%20por%20este%20trabajo%20colectivo%20!" class="btn su-14cc23">💬 Enviar idea / opinión</a>
-          <p class="muted su-e13d76"><b>semilleroconsciente@gmail.com</b> · Respuesta en 2-3 días</p>
+        <div class="donate-card donate-kofi">
+          <div class="donate-card-top"><span class="donate-ico">☕</span><div><h4>Ko-fi</h4><small>Regala un cafecito</small></div></div>
+          <a id="donateKofiLink" href="#" class="btn donate-btn-kofi">Invitar un Ko-fi</a>
+          <p class="donate-url muted">Se activa si está configurado</p>
         </div>
       </div>
-      <div class="donate-grid su-d2c171">
-        <div class="donate-card su-d4a007">
-          <h4>🎨 ¿Necesitas una versión personalizada?</h4>
-          <p class="muted su-37e316">Si necesitas una versión del calendario a medida para tu contexto personal (familia, proyecto, emprendimiento, escuela, práctica espiritual o terapéutica) o para tu organización (comunidad, junta de vecinos, municipio, ONG, empresa, centro de salud o educativo).</p>
-          <p class="muted su-a6c665">Se puede personalizar y dejarlo a tu medida.</p>
-          <p class="muted su-11a508">Trabajo artesanal, por encargo y a precio justo — escríbeme y lo conversamos sin compromiso.</p>
-          <a href="mailto:semilleroconsciente@gmail.com?subject=Versi%C3%B3n%20personalizada%20del%20calendario%20-%20solicitud&body=Hola%20Semillero%2C%0A%0AMe%20interesa%20una%20versi%C3%B3n%20personalizada%20del%20calendario%2013%20Lunas%3A%0A%0A-%20Tipo%3A%20(personal%20%2F%20organizaci%C3%B3n)%0A-%20Nombre%20persona%20u%20organizaci%C3%B3n%3A%0A-%20Contexto%20%2F%20para%20qu%C3%A9%20la%20necesito%3A%0A-%20Qu%C3%A9%20me%20gustar%C3%ADa%20personalizar%3A%20(logo%20y%20colores%2C%20efem%C3%A9rides%2C%20mareas%2Fsiembra%20de%20mi%20zona%2C%20m%C3%B3dulos%2C%20idioma)%0A-%20Plazo%20ideal%3A%0A%0AGracias%20!" class="btn btn-accent su-10b899">✨ Solicitar versión personalizada</a>
-          <p class="muted su-e13d76"><b>semilleroconsciente@gmail.com</b> · Asunto sugerido: Versión personalizada</p>
+
+      <p class="donate-thanks">Todo aporte es <b>voluntario, seguro y profundamente agradecido</b>.<br>¡Küme mañum! (Muchas gracias) desde la Bahía de Concepción 🌙</p>
+
+      <div class="donate-extra-grid">
+        <div class="donate-extra">
+          <h4>🗺️ ¿Lo quieres para tu territorio?</h4>
+          <p class="muted">Adaptamos el calendario a tu comuna, valle o bioregión: toponimia, mareas, siembras y fiestas propias. También para escuelas, municipios, comunidades y emprendimientos.</p>
+          <p class="donate-price">Artesanal · profesional · precio justo.</p>
+          <a href="mailto:semilleroconsciente@gmail.com?subject=Versi%C3%B3n%20personalizada&body=Hola%20Semillero%2C%0A%0AMe%20interesa%20una%20versi%C3%B3n%20personalizada%20del%20calendario%20(Asunto%3A%20%22Versi%C3%B3n%20personalizada%22)%3A%0A%0A-%20Tipo%3A%20(territorio%20%2F%20escuela%20%2F%20organizaci%C3%B3n%20%2F%20emprendimiento)%0A-%20Comuna%2Fterritorio%3A%0A%0ALo%20conversamos%20sin%20compromiso.%20%C2%A1Gracias!" class="btn btn-accent donate-extra-btn">✉️ Pedir versión personalizada</a>
+        </div>
+        <div class="donate-extra">
+          <h4>💡 Tu voz hace crecer el bosque</h4>
+          <p class="muted">¿Una idea, corrección o sugerencia? Somos código abierto y crecemos con la comunidad.</p>
+          <a href="mailto:semilleroconsciente@gmail.com?subject=Idea%20para%20mejorar%20el%20Calendario%2013%20Lunas&body=Hola%20Semillero%2C%0A%0AMi%20idea%2Fopini%C3%B3n%20para%20el%20calendario%3A%0A%0A-%20Qu%C3%A9%20mejoraria%3A%0A-%20Qu%C3%A9%20te%20gusta%20m%C3%A1s%3A%0A%0AGracias%20por%20este%20trabajo%20colectivo%20!" class="btn donate-extra-btn2">💬 Enviar mi idea</a>
+          <p class="donate-contact">📬 <a href="mailto:semilleroconsciente@gmail.com">semilleroconsciente@gmail.com</a><br><small>Respondemos en 2-3 días · talleres y colaboraciones bienvenidas</small></p>
         </div>
       </div>
-      <div class="menstrual-card su-3a1732">
-        <p class="muted su-8659fe">📬 <b>Contacto directo:</b> <a href="mailto:semilleroconsciente@gmail.com" class="su-e39eba">semilleroconsciente@gmail.com</a> · Para territorios, colaboraciones, talleres o simplemente saludar. ¡Küme mañum!</p>
-      </div>
-      <p class="su-3133a6">Gracias por valorar este calendario hecho a mano en Penco, entre mareas y lunas. Cada aporte, grande o pequeño, sostiene este trabajo independiente y lo mantiene libre y sin publicidad para todos. <br><b>¡Küme mañum — muchas gracias!</b></p>
-      <div class="dlg-actions"><button type="button" id="donateClose" class="btn">Cerrar</button></div>
+
+      <p class="donate-foot">Hecho a mano en Penco, entre mareas y lunas. Cada aporte —grande o pequeño— lo mantiene libre para tod@s. <b>¡Küme mañum! 🌙</b></p>
+      <div class="dlg-actions donate-closebar"><button type="button" id="donateClose" class="btn">Cerrar</button></div>
     </form>
   </dialog>

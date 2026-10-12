@@ -611,7 +611,7 @@ function setup() {
         var btn = document.createElement('button');
         btn.id = 'btnTao'; btn.className = 'btn'; btn.type = 'button';
         btn.textContent = '☯️ Tao';
-        try { btn.setAttribute('data-sub', 'interior'); } catch (eS) {}
+        try { btn.setAttribute('data-sub', 'practicas'); } catch (eS) {}
         btn.setAttribute('data-keywords', 'tao lao tse laozi zhuangzi chuang tzu tao te ching i ching yin yang wu wei te pu tres tesoros agua bambu fluir soltar control respiracion 4-6 te consciente caminata lenta no hacer fama contento impermanencia cambio equilibrio');
         var ref = g.querySelector('#btnTolteca') || g.querySelector('#btnRecap');
         if (ref && ref.nextSibling) g.insertBefore(btn, ref.nextSibling);
@@ -624,7 +624,7 @@ function setup() {
         var curN = curG && curG.getAttribute ? curG.getAttribute('data-group') : null;
         if (curN && curN !== 'linaje') {
           var gd = document.querySelector('.action-group[data-group="linaje"] .group-btns');
-          if (gd) { gd.appendChild(cur); try { cur.setAttribute('data-sub', 'interior'); } catch (eS) {} }
+          if (gd) { gd.appendChild(cur); try { cur.setAttribute('data-sub', 'practicas'); } catch (eS) {} }
         }
       } catch (eM) {}
     }
@@ -634,13 +634,13 @@ function setup() {
     if (typeof ALL_BTNS !== 'undefined' && ALL_BTNS.indexOf('btnTao') < 0) ALL_BTNS.push('btnTao');
   } catch (e) {}
   try {
-    if (typeof BTN_HOME !== 'undefined') BTN_HOME.btnTao = ['linaje', 'interior'];
+    if (typeof BTN_HOME !== 'undefined') BTN_HOME.btnTao = ['linaje', 'practicas'];
   } catch (e) {}
   try {
-    if (typeof BTN_ORDER !== 'undefined' && BTN_ORDER['linaje|interior'] && BTN_ORDER['linaje|interior'].indexOf('btnTao') < 0) {
-      var oi = BTN_ORDER['linaje|interior'].indexOf('btnTolteca');
-      if (oi >= 0) BTN_ORDER['linaje|interior'].splice(oi + 1, 0, 'btnTao');
-      else BTN_ORDER['linaje|interior'].push('btnTao');
+    if (typeof BTN_ORDER !== 'undefined' && BTN_ORDER['linaje|practicas'] && BTN_ORDER['linaje|practicas'].indexOf('btnTao') < 0) {
+      var oi = BTN_ORDER['linaje|practicas'].indexOf('btnTolteca');
+      if (oi >= 0) BTN_ORDER['linaje|practicas'].splice(oi + 1, 0, 'btnTao');
+      else BTN_ORDER['linaje|practicas'].push('btnTao');
     }
   } catch (e) {}
   try {

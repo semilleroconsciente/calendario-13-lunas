@@ -721,7 +721,7 @@ function setup() {
         var btn = document.createElement('button');
         btn.id = 'btnAmi'; btn.className = 'btn'; btn.type = 'button';
         btn.textContent = '🛸 Ami';
-        try { btn.setAttribute('data-sub', 'interior'); } catch (eS) {}
+        try { btn.setAttribute('data-sub', 'tradiciones'); } catch (eS) {}
         btn.setAttribute('data-keywords', 'ami niño estrellas barrios pedrito ofir vinka victor perlita kia amor medida 750 mundos evolucionados federacion hermanos mayores escuela amor ecologia planeta mision semilla corazon miedo ego familia abuelita trabajo alegria unidad cuento infantil lectura niños');
         var ref = g.querySelector('#btnAnastasia') || g.querySelector('#btnTao') || g.querySelector('#btnTolteca');
         if (ref && ref.nextSibling) g.insertBefore(btn, ref.nextSibling);
@@ -734,7 +734,7 @@ function setup() {
         var curN = curG && curG.getAttribute ? curG.getAttribute('data-group') : null;
         if (curN && curN !== 'linaje') {
           var gd = document.querySelector('.action-group[data-group="linaje"] .group-btns');
-          if (gd) { gd.appendChild(cur); try { cur.setAttribute('data-sub', 'interior'); } catch (eS) {} }
+          if (gd) { gd.appendChild(cur); try { cur.setAttribute('data-sub', 'tradiciones'); } catch (eS) {} }
         }
       } catch (eM) {}
     }
@@ -744,13 +744,13 @@ function setup() {
     if (typeof ALL_BTNS !== 'undefined' && ALL_BTNS.indexOf('btnAmi') < 0) ALL_BTNS.push('btnAmi');
   } catch (e) {}
   try {
-    if (typeof BTN_HOME !== 'undefined') BTN_HOME.btnAmi = ['linaje', 'interior'];
+    if (typeof BTN_HOME !== 'undefined') BTN_HOME.btnAmi = ['linaje', 'tradiciones'];
   } catch (e) {}
   try {
-    if (typeof BTN_ORDER !== 'undefined' && BTN_ORDER['linaje|interior'] && BTN_ORDER['linaje|interior'].indexOf('btnAmi') < 0) {
-      var oi = BTN_ORDER['linaje|interior'].indexOf('btnAnastasia');
-      if (oi >= 0) BTN_ORDER['linaje|interior'].splice(oi + 1, 0, 'btnAmi');
-      else BTN_ORDER['linaje|interior'].push('btnAmi');
+    if (typeof BTN_ORDER !== 'undefined' && BTN_ORDER['linaje|tradiciones'] && BTN_ORDER['linaje|tradiciones'].indexOf('btnAmi') < 0) {
+      var oi = BTN_ORDER['linaje|tradiciones'].indexOf('btnAnastasia');
+      if (oi >= 0) BTN_ORDER['linaje|tradiciones'].splice(oi + 1, 0, 'btnAmi');
+      else BTN_ORDER['linaje|tradiciones'].push('btnAmi');
     }
   } catch (e) {}
   try {

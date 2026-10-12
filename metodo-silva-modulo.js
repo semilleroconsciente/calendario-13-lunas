@@ -521,7 +521,7 @@ function setup() {
         var btn = document.createElement('button');
         btn.id = 'btnSilva'; btn.className = 'btn'; btn.type = 'button';
         btn.textContent = '🧠 Método Silva';
-        try { btn.setAttribute('data-sub', 'interior'); } catch (eS) {}
+        try { btn.setAttribute('data-sub', 'tradiciones'); } catch (eS) {}
         btn.setAttribute('data-keywords', 'silva metodo silva jose silva ultramind mind control alfa theta beta 321 pantalla mental espejo mente tres dedos vaso agua despertar laboratorio asesores programar visualizar concentracion memoria examen entrevista dormir suenos');
         var ref = g.querySelector('#btnHooponopono') || g.querySelector('#btnCuartoCamino') || g.querySelector('#btnMetodos');
         if (ref && ref.nextSibling) g.insertBefore(btn, ref.nextSibling);
@@ -534,7 +534,7 @@ function setup() {
         var curN = curG && curG.getAttribute ? curG.getAttribute('data-group') : null;
         if (curN && curN !== 'linaje') {
           var gd = document.querySelector('.action-group[data-group="linaje"] .group-btns');
-          if (gd) { gd.appendChild(cur); try { cur.setAttribute('data-sub', 'interior'); } catch (eS) {} }
+          if (gd) { gd.appendChild(cur); try { cur.setAttribute('data-sub', 'tradiciones'); } catch (eS) {} }
         }
       } catch (eM) {}
     }
@@ -544,13 +544,13 @@ function setup() {
     if (typeof ALL_BTNS !== 'undefined' && ALL_BTNS.indexOf('btnSilva') < 0) ALL_BTNS.push('btnSilva');
   } catch (e) {}
   try {
-    if (typeof BTN_HOME !== 'undefined') BTN_HOME.btnSilva = ['linaje', 'interior'];
+    if (typeof BTN_HOME !== 'undefined') BTN_HOME.btnSilva = ['linaje', 'tradiciones'];
   } catch (e) {}
   try {
-    if (typeof BTN_ORDER !== 'undefined' && BTN_ORDER['linaje|interior'] && BTN_ORDER['linaje|interior'].indexOf('btnSilva') < 0) {
-      var oi = BTN_ORDER['linaje|interior'].indexOf('btnHooponopono');
-      if (oi >= 0) BTN_ORDER['linaje|interior'].splice(oi + 1, 0, 'btnSilva');
-      else BTN_ORDER['linaje|interior'].push('btnSilva');
+    if (typeof BTN_ORDER !== 'undefined' && BTN_ORDER['linaje|tradiciones'] && BTN_ORDER['linaje|tradiciones'].indexOf('btnSilva') < 0) {
+      var oi = BTN_ORDER['linaje|tradiciones'].indexOf('btnHooponopono');
+      if (oi >= 0) BTN_ORDER['linaje|tradiciones'].splice(oi + 1, 0, 'btnSilva');
+      else BTN_ORDER['linaje|tradiciones'].push('btnSilva');
     }
   } catch (e) {}
   try {

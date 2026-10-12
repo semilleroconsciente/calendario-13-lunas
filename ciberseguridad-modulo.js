@@ -1,6 +1,6 @@
 /* ============================================================
    CIBERSEGURIDAD — Calendario 13 Lunas (Penco · Bío-Bío)
-   Sección: Comunidad, Emergencia y Sistema > 🛡️ Ciberseguridad
+   Sección: Comunidad > 🛡️ Ciberseguridad
    Botones (sub "ciberseguridad"):
      btnCiberGuia, btnCiberClaves, btnCiberEstafas,
      btnCiberPriv, btnCiberChequeo, btnCiberAyuda
@@ -72,7 +72,7 @@ var REGLAS = [
   { n: 'El código que llega es tuyo', ico: '🔐', txt: 'El SMS/WhatsApp con <b>código de 6 dígitos</b> es la llave de tu cuenta. <b>Nunca se dicta, nunca se reenvía, nunca se fotografía.</b> Ni el banco, ni “soporte”, ni tu hijo, ni Carabineros te lo van a pedir. Quien pide el código, quiere robarte la cuenta. Corta y bloquea.' },
   { n: 'Verifica por otro camino', ico: '📞', txt: '¿Te escribió “tu banco / tu hijo / la municipalidad”? <b>No respondas en el mismo chat.</b> Llama al número que ya tenías guardado, pregunta en persona o escribe a la cuenta oficial. 2 minutos de verificación ahorran meses de Calvario. En Penco: pregunta en la JJ.VV. o en el CESFAM si el “operativo / bono” existe.' },
   { n: 'Menos datos = menos robo', ico: '🤐', txt: 'No publiques RUT, dirección exacta, fotos de tus hijos con uniforme, ni que “quedó la casa sola”. Configura WhatsApp y redes en <b>privado</b> (ver pestaña 🔒 Privacidad). Lo que subes, lo puede usar un estafador para imitarte con IA.' },
-  { n: 'Respaldo y 2 pasos siempre', ico: '🛡️', txt: 'Activa la <b>verificación en 2 pasos</b> en WhatsApp, Gmail y banco (ver pestaña 🔑 Claves). Haz <b>respaldo</b> (ver 💾 Respaldo de la app) 1 vez por luna: si te roban el celu, recuperas fotos y chats sin pagar rescate.' }
+  { n: 'Respaldo y 2 pasos siempre', ico: '🛡️', txt: 'Activa la <b>verificación en 2 pasos</b> en WhatsApp, Gmail y banco (ver pestaña 🔑 Claves). Haz <b>respaldo</b> (ver 💾 Respaldo en ⚙️ Ajustes) 1 vez por luna: si te roban el celu, recuperas fotos y chats sin pagar rescate.' }
 ];
 
 var CLAVES_MALAS = ['123456', 'password', 'qwerty', 'penco123', 'colocolo', 'teamo', 'fecha de nacimiento', 'misma clave en todo'];
@@ -132,7 +132,7 @@ var CHECKS = [
   { id: 'cbloqueo', n: 'Celu con bloqueo + borrado remoto', d: 'PIN/huella + “Encontrar mi dispositivo” activo. Anota tu IMEI (*#06#) en papel guardado.' },
   { id: 'cactualiza', n: 'Celu y apps actualizados', d: 'Las actualizaciones tapan agujeros. Activa actualización automática con wifi.' },
   { id: 'cpermisos', n: 'Permisos de apps revisados', d: 'Linterna no necesita tu ubicación ni tus contactos. Quita permisos raros (ver pestaña Privacidad).' },
-  { id: 'crespaldo', n: 'Respaldo al día (1 vez por luna)', d: 'Fotos + chats a salvo. Usa 💾 Respaldo de la app. Si te roban el celu, no pierdes tu historia.' },
+  { id: 'crespaldo', n: 'Respaldo al día (1 vez por luna)', d: 'Fotos + chats a salvo. Usa 💾 Respaldo en ⚙️ Ajustes. Si te roban el celu, no pierdes tu historia.' },
   { id: 'canti_urg', n: 'Regla familiar anti-urgencia', d: 'Acordaron palabra secreta + “llamar al número de siempre”. Los niños y abuelos la conocen.' },
   { id: 'cno_link', n: 'No abro links de banco/bono por SMS/WhatsApp', d: 'Entro escribiendo yo la dirección o por la app. El link urgente se borra.' },
   { id: 'cwifi', n: 'Sin banca en wifi pública / prestada', d: 'Plaza, bus o vecino: solo mirar. Banco y claves solo con datos propios o wifi de casa.' },
@@ -334,7 +334,7 @@ function renderPriv() {
     '<div class="si-card"><h4>📍 Ubicación: solo cuando se usa</h4><p>Pon ubicación en <b>“solo con la app en uso”</b>, nunca “siempre”. Quita el historial de Google Maps si no lo usas. En fotos, desactiva “guardar ubicación” si las compartes en grupos grandes. En citas de compra-venta: junta en lugar público, de día, sin mandar tu ubicación en vivo.</p></div>' +
     '<div class="si-card"><h4>☕ Wifi pública: mirar sí, banco no</h4><p>Plaza, bus, consultorio: sirve para mirar noticias, <b>no para banco ni claves</b>. Un wifi falso “Municipalidad_Gratis” puede leer lo que escribes. Regla: banco y pagos solo con <b>datos propios o wifi de casa con clave</b>. Si te prestan wifi, que tenga clave y la cambien 1 vez al año.</p></div>' +
     '<div class="si-card"><h4>👣 Huella digital: lo gratis también cobra</h4><p>Cada “test divertido” (qué famoso eres, tu casa ideal) que pide tu Facebook te perfila para estafas dirigidas. Antes de autorizar con Google/Facebook en una app: ¿la necesito? Usa <b>correo distinto</b> para juegos/concursos y el serio para banco/Estado. Revisa sesiones abiertas 1 vez por luna y cierra las viejas.</p></div>' +
-    '<div class="si-card"><h4>💾 Respaldo: tu red de seguridad</h4><p>Activa copia de fotos + chats (Google Fotos / iCloud + copia de WhatsApp). Además usa <b>💾 Respaldo</b> del calendario para tus notas. Prueba restaurar 1 vez: un respaldo que nunca se probó, no es respaldo. Guarda el correo de recuperación en papel.</p></div>';
+    '<div class="si-card"><h4>💾 Respaldo: tu red de seguridad</h4><p>Activa copia de fotos + chats (Google Fotos / iCloud + copia de WhatsApp). Además usa <b>💾 Respaldo</b> del calendario (en ⚙️ Ajustes) para tus notas. Prueba restaurar 1 vez: un respaldo que nunca se probó, no es respaldo. Guarda el correo de recuperación en papel.</p></div>';
 }
 
 function puntajeChequeo() {
@@ -477,9 +477,7 @@ function ensureSection() {
   if (!lab) {
     lab = document.createElement('span');
     lab.className = 'sub-label'; lab.setAttribute('data-sub', SUB_LABEL.id); lab.textContent = SUB_LABEL.label;
-    var appLab = box.querySelector('.sub-label[data-sub="app"]');
-    if (appLab && appLab.parentNode === box) box.insertBefore(lab, appLab);
-    else box.appendChild(lab);
+    box.appendChild(lab);
   } else if (!lab.textContent || lab.textContent.indexOf('Ciberseguridad') < 0) {
     lab.textContent = SUB_LABEL.label;
   }
@@ -496,12 +494,10 @@ function ensureSection() {
   });
   try {
     var anchor = lab.nextSibling;
-    var appLab2 = box.querySelector('.sub-label[data-sub="app"]');
     BTNS.forEach(function (b) {
       var el = document.getElementById(b.id);
       if (!el) return;
-      if (appLab2) box.insertBefore(el, appLab2);
-      else box.insertBefore(el, anchor);
+      box.insertBefore(el, anchor);
     });
     box.insertBefore(lab, document.getElementById(BTNS[0].id));
   } catch (eO) {}

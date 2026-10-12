@@ -331,7 +331,7 @@ function setup() {
         var btn = document.createElement('button');
         btn.id = 'btnPsicologia'; btn.className = 'btn'; btn.type = 'button';
         btn.textContent = '🧠 Psicología';
-        try { btn.setAttribute('data-sub', 'interior'); } catch (eS) {}
+        try { btn.setAttribute('data-sub', 'conocerse'); } catch (eS) {}
         btn.setAttribute('data-keywords', 'psicologia mente ansiedad depresion estres autoestima test phq apego vinculo emociones tcc act dbt terapia trauma duelo autoayuda salud mental *4141');
         g.appendChild(btn);
       }
@@ -342,7 +342,7 @@ function setup() {
         var curNP = curGP && curGP.getAttribute ? curGP.getAttribute('data-group') : null;
         if (curNP && curNP !== 'linaje') {
           var gdP = document.querySelector('.action-group[data-group="linaje"] .group-btns');
-          if (gdP) { gdP.appendChild(curP); try { curP.setAttribute('data-sub', 'interior'); } catch (eS) {} }
+          if (gdP) { gdP.appendChild(curP); try { curP.setAttribute('data-sub', 'conocerse'); } catch (eS) {} }
         }
       } catch (eM) {}
     }

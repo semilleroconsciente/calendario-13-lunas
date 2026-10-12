@@ -71,9 +71,9 @@ Complementos: reloj en vivo (America/Santiago), panel de mareas, clima, fases lu
 | **Territorio** | Mar, Tierra, Cielo, Penco | Mareas, pesca, intermareal, nudos, kayak, ballenas, huerta, siembra, bosque, compost, hidroponía, electrocultura, flora, lawen, aves, melí, hongos, senderos, fuego, clima, astro, hora dorada, circadiano, Ekadashi, guía de la comuna, municipalidad, bomberos, actores |
 | **Cuerpo** | Ciclos, Cuidado | Menstrual, fertilidad, juventud, climaterio, botiquín, nutrición (con menús sugeridos por kcal/proteína), gimnasio |
 | **Aprender** | Estudio, Juegos, Infancias | Estudio, memoria, mapudungun, inglés, guitarra (con tablatura), ajedrez, sudoku, crucigrama, sopa de letras, cuentos, crianza (Montessori, Waldorf, Pikler, Reggio, crianza respetuosa), adolescencia |
-| **Linaje** | Interior, Familia | Psicología, eneagrama, métodos, neurodiversidad, recapitulación, espiritualidad, duelo, árbol genealógico, voces de abuelos, adultez, vejez |
-| **Hogar** | Casa, Energía | Comidas, compras, finanzas, tareas del hogar, bodega, despensa, clóset, energía, leña, taller, herramientas, mecánica, conversor |
-| **Comunidad** | Red, Emergencia, App | Trueque, minga, derechos, cuidado animal, primeros auxilios, violencia, evacuación, respaldo, restaurar, acceso directo, PDF luna/ciclo, donaciones |
+| **Linaje** | Conocerse, Prácticas diarias, Tradiciones, Oráculos, Sostén | Psicología, eneagrama, fortalezas VIA, ikigai, neurodiversidad, tao, recapitulación, toltecas, estoicismo, cuarto camino, ho'oponopono, métodos, silva, grabovoi, tantra, anastasia, ami, kin maya, tarot, numerología, oráculo, duelo, adicciones, fenología |
+| **Hogar** | Casa, Energía, Familia | Comidas, compras, finanzas, tareas del hogar, bodega, despensa, clóset, energía, leña, taller, herramientas, mecánica, conversor, árbol genealógico, voces de abuelos, constelaciones familiares, adultez, vejez |
+| **Comunidad** | Red Penco, Emergencia | Trueque, minga, derechos, moneda social, red comunitaria, cuidado animal, primeros auxilios, violencia, evacuación, apoyo emergencia, donaciones (lo técnico —respaldo, restaurar, PDF luna/ciclo, acceso directo, traspaso QR— vive en ⚙️ Ajustes) |
 
 ---
 

@@ -31,7 +31,18 @@
     "lint:commits": "node scripts/lint-commits.cjs",
     "test": "npm run csp:fase2 && npm run build:tpl && npm run build:min && node --test \"tests/*.test.js\" && npm run check:csp2 && npm run check:tpl && npm run check:min && npm run check:perf && npm run check:manifest && npm run check:sw && npm run check:web && npm run check:donate && npm run check:syntax"
   },
-  "license": "MIT",
+  "license": "GPL-3.0-or-later",
+  "author": "Semillero Consciente <semilleroconsciente@gmail.com>",
+  "licenses": [
+    {
+      "type": "GPL-3.0-or-later",
+      "url": "https://www.gnu.org/licenses/gpl-3.0.html"
+    },
+    {
+      "type": "CC-BY-NC-SA-4.0 (contenido creativo: diseño, textos, ilustraciones)",
+      "url": "https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es"
+    }
+  ],
   "type": "commonjs",
   "build": {
     "appId": "cl.penco.calendario13lunas",
@@ -40,6 +51,9 @@
       "output": "dist-empaquetado"
     },
     "files": [
+      "COPYING",
+      "LICENSE.md",
+      "LICENCIA-CONTENIDO-CC-BY-NC-SA-4.0.md",
       "main.js",
       "preload.js",
       "index.html",

@@ -342,7 +342,7 @@ function setup() {
       var btn = document.createElement('button');
       btn.id = 'btnNeurodiversidad'; btn.className = 'btn'; btn.type = 'button';
       btn.textContent = '🌈 Neurodiversidad';
-      try { btn.setAttribute('data-sub', 'interior'); } catch (eS) {}
+      try { btn.setAttribute('data-sub', 'conocerse'); } catch (eS) {}
       btn.setAttribute('data-keywords', 'neurodiversidad neurodivergente autismo tea tdah dislexia discalculia disgrafia sensorial tourette tics dispraxia altas capacidades aq asrs pie inclusion apoyos tarjeta acceso ley tea meltdown shutdown stimming');
       placeButton(btn);
     } else {
@@ -352,7 +352,7 @@ function setup() {
         var gn = gp && gp.getAttribute ? gp.getAttribute('data-group') : null;
         if (gn && gn !== 'linaje') placeButton(cur);
         else placeButton(cur);
-        try { cur.setAttribute('data-sub', 'interior'); } catch (eS) {}
+        try { cur.setAttribute('data-sub', 'conocerse'); } catch (eS) {}
       } catch (eM) {}
     }
   } catch (e) {}

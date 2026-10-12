@@ -744,7 +744,7 @@ function setup() {
         var btn = document.createElement('button');
         btn.id = 'btnAnastasia'; btn.className = 'btn'; btn.type = 'button';
         btn.textContent = '🌲 Anastasia';
-        try { btn.setAttribute('data-sub', 'interior'); } catch (eS) {}
+        try { btn.setAttribute('data-sub', 'tradiciones'); } catch (eS) {}
         btn.setAttribute('data-keywords', 'anastasia megre cedros resonantes rusia taiga siberia espacio amor hacienda familiar hectarea semilla boca pensamiento imagen palabra viva concepcion parto crianza escuela Tekos comida viva piñon sistema vedas Anasta linaje co-creacion');
         var ref = g.querySelector('#btnTao') || g.querySelector('#btnTolteca');
         if (ref && ref.nextSibling) g.insertBefore(btn, ref.nextSibling);
@@ -757,7 +757,7 @@ function setup() {
         var curN = curG && curG.getAttribute ? curG.getAttribute('data-group') : null;
         if (curN && curN !== 'linaje') {
           var gd = document.querySelector('.action-group[data-group="linaje"] .group-btns');
-          if (gd) { gd.appendChild(cur); try { cur.setAttribute('data-sub', 'interior'); } catch (eS) {} }
+          if (gd) { gd.appendChild(cur); try { cur.setAttribute('data-sub', 'tradiciones'); } catch (eS) {} }
         }
       } catch (eM) {}
     }
@@ -767,13 +767,13 @@ function setup() {
     if (typeof ALL_BTNS !== 'undefined' && ALL_BTNS.indexOf('btnAnastasia') < 0) ALL_BTNS.push('btnAnastasia');
   } catch (e) {}
   try {
-    if (typeof BTN_HOME !== 'undefined') BTN_HOME.btnAnastasia = ['linaje', 'interior'];
+    if (typeof BTN_HOME !== 'undefined') BTN_HOME.btnAnastasia = ['linaje', 'tradiciones'];
   } catch (e) {}
   try {
-    if (typeof BTN_ORDER !== 'undefined' && BTN_ORDER['linaje|interior'] && BTN_ORDER['linaje|interior'].indexOf('btnAnastasia') < 0) {
-      var oi = BTN_ORDER['linaje|interior'].indexOf('btnTao');
-      if (oi >= 0) BTN_ORDER['linaje|interior'].splice(oi + 1, 0, 'btnAnastasia');
-      else BTN_ORDER['linaje|interior'].push('btnAnastasia');
+    if (typeof BTN_ORDER !== 'undefined' && BTN_ORDER['linaje|tradiciones'] && BTN_ORDER['linaje|tradiciones'].indexOf('btnAnastasia') < 0) {
+      var oi = BTN_ORDER['linaje|tradiciones'].indexOf('btnTao');
+      if (oi >= 0) BTN_ORDER['linaje|tradiciones'].splice(oi + 1, 0, 'btnAnastasia');
+      else BTN_ORDER['linaje|tradiciones'].push('btnAnastasia');
     }
   } catch (e) {}
   try {

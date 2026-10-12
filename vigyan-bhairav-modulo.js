@@ -698,7 +698,7 @@ function setup() {
         var btn = document.createElement('button');
         btn.id = 'btnVigyan'; btn.className = 'btn'; btn.type = 'button';
         btn.textContent = '🕉️ Tantra · 112 meditaciones';
-        try { btn.setAttribute('data-sub', 'interior'); } catch (eS) {}
+        try { btn.setAttribute('data-sub', 'tradiciones'); } catch (eS) {}
         btn.setAttribute('data-keywords', 'vigyan bhairav tantra shiva devi parvati cachemira 112 sutras dharanas meditacion respiracion pausa mantra om silencio vacio energia kundalini luz oscuridad cuerpo sentidos sueño corazon asombro presencia spanda hamsa dvadashanta nada shunya');
         var ref = g.querySelector('#btnTao') || g.querySelector('#btnTolteca') || g.querySelector('#btnRecap');
         if (ref && ref.nextSibling) g.insertBefore(btn, ref.nextSibling);
@@ -711,7 +711,7 @@ function setup() {
         var curN = curG && curG.getAttribute ? curG.getAttribute('data-group') : null;
         if (curN && curN !== 'linaje') {
           var gd = document.querySelector('.action-group[data-group="linaje"] .group-btns');
-          if (gd) { gd.appendChild(cur); try { cur.setAttribute('data-sub', 'interior'); } catch (eS) {} }
+          if (gd) { gd.appendChild(cur); try { cur.setAttribute('data-sub', 'tradiciones'); } catch (eS) {} }
         }
       } catch (eM) {}
     }
@@ -721,13 +721,13 @@ function setup() {
     if (typeof ALL_BTNS !== 'undefined' && ALL_BTNS.indexOf('btnVigyan') < 0) ALL_BTNS.push('btnVigyan');
   } catch (e) {}
   try {
-    if (typeof BTN_HOME !== 'undefined') BTN_HOME.btnVigyan = ['linaje', 'interior'];
+    if (typeof BTN_HOME !== 'undefined') BTN_HOME.btnVigyan = ['linaje', 'tradiciones'];
   } catch (e) {}
   try {
-    if (typeof BTN_ORDER !== 'undefined' && BTN_ORDER['linaje|interior'] && BTN_ORDER['linaje|interior'].indexOf('btnVigyan') < 0) {
-      var oi = BTN_ORDER['linaje|interior'].indexOf('btnTao');
-      if (oi >= 0) BTN_ORDER['linaje|interior'].splice(oi + 1, 0, 'btnVigyan');
-      else BTN_ORDER['linaje|interior'].push('btnVigyan');
+    if (typeof BTN_ORDER !== 'undefined' && BTN_ORDER['linaje|tradiciones'] && BTN_ORDER['linaje|tradiciones'].indexOf('btnVigyan') < 0) {
+      var oi = BTN_ORDER['linaje|tradiciones'].indexOf('btnTao');
+      if (oi >= 0) BTN_ORDER['linaje|tradiciones'].splice(oi + 1, 0, 'btnVigyan');
+      else BTN_ORDER['linaje|tradiciones'].push('btnVigyan');
     }
   } catch (e) {}
   try {

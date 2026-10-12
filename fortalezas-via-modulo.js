@@ -828,7 +828,7 @@ function ensureButton() {
         var btn = document.createElement('button');
         btn.id = 'btnVIA'; btn.className = 'btn'; btn.type = 'button';
         btn.textContent = '🌟 Fortalezas VIA';
-        try { btn.setAttribute('data-sub', 'interior'); } catch (eS) {}
+        try { btn.setAttribute('data-sub', 'conocerse'); } catch (eS) {}
         btn.setAttribute('data-keywords', 'fortalezas via virtudes caracter firma test valores accion peterson seligman sabiduria coraje humanidad justicia templanza trascendencia creatividad curiosidad juicio aprender perspectiva valentia perseverancia honestidad entusiasmo amor amabilidad inteligencia social equipo equidad liderazgo perdon humildad prudencia autorregulacion belleza gratitud esperanza humor espiritualidad bienestar florecer usar top regar');
         var ref = $('btnIkigai') || $('btnEneagrama') || $('btnMetodos');
         if (ref && ref.parentNode === g) {
@@ -843,7 +843,7 @@ function ensureButton() {
         var nm = grp && grp.getAttribute ? grp.getAttribute('data-group') : null;
         if (nm && nm !== 'linaje') {
           var gd = document.querySelector('.action-group[data-group="linaje"] .group-btns');
-          if (gd) { gd.appendChild(cur); try { cur.setAttribute('data-sub', 'interior'); } catch (eS2) {} }
+          if (gd) { gd.appendChild(cur); try { cur.setAttribute('data-sub', 'conocerse'); } catch (eS2) {} }
         }
       } catch (eM) {}
     }

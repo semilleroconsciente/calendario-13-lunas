@@ -557,7 +557,7 @@ function setup() {
         var btn = document.createElement('button');
         btn.id = 'btnEneagrama'; btn.className = 'btn'; btn.type = 'button';
         btn.textContent = '🔺 Eneagrama';
-        try { btn.setAttribute('data-sub', 'interior'); } catch (eS) {}
+        try { btn.setAttribute('data-sub', 'conocerse'); } catch (eS) {}
         btn.setAttribute('data-keywords', 'eneagrama eneatipo personalidad test autoconocimiento reforma ayudador triunfador artista investigador leal entusiasta desafiador pacificador alas flechas subtipo instinto virtud pasion');
         g.appendChild(btn);
       }
@@ -568,7 +568,7 @@ function setup() {
         var curNE = curGE && curGE.getAttribute ? curGE.getAttribute('data-group') : null;
         if (curNE && curNE !== 'linaje') {
           var gdE = document.querySelector('.action-group[data-group="linaje"] .group-btns');
-          if (gdE) { gdE.appendChild(curE); try { curE.setAttribute('data-sub', 'interior'); } catch (eS) {} }
+          if (gdE) { gdE.appendChild(curE); try { curE.setAttribute('data-sub', 'conocerse'); } catch (eS) {} }
         }
       } catch (eM) {}
     }

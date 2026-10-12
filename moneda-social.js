@@ -638,9 +638,7 @@ function ensureSection() {
   if (!lab) {
     lab = document.createElement('span');
     lab.className = 'sub-label'; lab.setAttribute('data-sub', 'red'); lab.textContent = '🤝 Red Penco';
-    var appLab = box.querySelector('.sub-label[data-sub="app"]');
-    if (appLab && appLab.parentNode === box) box.insertBefore(lab, appLab);
-    else box.appendChild(lab);
+    box.appendChild(lab);
   }
   var el = $(BTN_ID);
   if (!el) {

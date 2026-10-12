@@ -1,4 +1,10 @@
 <!DOCTYPE html>
+<!-- Calendario de las 13 Lunas · Mari Küla Küyen (Penco, Chile)
+     Copyright (C) 2026 Semillero Consciente <semilleroconsciente@gmail.com>
+     CÓDIGO (Web, APK, .exe): GNU GPLv3 o posterior — ver COPYING.
+     CONTENIDO CREATIVO (diseño, textos, ilustraciones): CC BY-NC-SA 4.0
+     (https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es).
+     Ver LICENSE.md. SPDX-License-Identifier: GPL-3.0-or-later -->
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -6,7 +12,7 @@
   <meta name="theme-color" content="#0b1026">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; font-src 'self'; connect-src 'self' https://api.open-meteo.com https://air-quality-api.open-meteo.com; object-src 'none'; base-uri 'self'; form-action 'self'">
   <title>Calendario de las 13 Lunas</title>
-  <link rel="stylesheet" href="min/styles.min.css?v=12">
+  <link rel="stylesheet" href="min/styles.min.css?v=13">
   <link rel="stylesheet" href="min/styles-csp.min.css?v=1">
   <link rel="stylesheet" href="min/splash.min.css?v=1">
   <link rel="manifest" href="manifest.json">
@@ -90,13 +96,13 @@
       <details class="action-group" data-group="dia">
         <summary>📅 Mi Día <span class="ag-count"></span></summary>
         <div class="group-btns">
-          <span class="sub-label" data-sub="organizar">🗂️ Organizar hoy</span>
+          <span class="sub-label" data-sub="organizar">🗂️ Organizar</span>
           <button id="btnHabits" class="btn" data-sub="organizar" data-keywords="habitos rutina racha disciplina">✅ Hábitos</button>
           <button id="btnDiscipline" class="btn" data-sub="organizar" data-keywords="disciplina pomodoro procrastinar foco">🎯 Disciplina</button>
           <button id="btnSchedule" class="btn" data-sub="organizar" data-keywords="horario clases estudio semana">📚 Horario</button>
           <button id="btnTimer" class="btn" data-sub="organizar" data-keywords="tiempo timer cronometro pomodoro reloj hora mundial paises huso horario temporizador guia zonas horarias utc jet lag">⏱ Tiempo</button>
           <button id="btnRemind" class="btn" data-sub="organizar" data-keywords="recordatorio notificacion luna fase">🔔 Recordatorios</button>
-          <span class="sub-label" data-sub="registrar">✍️ Registrar hoy</span>
+          <span class="sub-label" data-sub="registrar">✍️ Registrar</span>
           <button id="btnGratitud" class="btn" data-sub="registrar" data-keywords="gratitud diario gracias wenu bienestar animo positivo racha">📓 Gratitud Diaria</button>
           <button id="btnDreams" class="btn" data-sub="registrar" data-keywords="sueños diario onirico rem dormir pewma">💭 Diario Sueños</button>
           <button id="btnBreath" class="btn" data-sub="registrar" data-keywords="respiracion 478 caja cuadrada ansiedad calma sueño foco energia coherente suspiro diafragma">🌬️ Respiración</button>
@@ -105,28 +111,42 @@
       <details class="action-group" data-group="territorio">
         <summary>🌊 Territorio Penco <span class="ag-count"></span></summary>
         <div class="group-btns">
-          <span class="sub-label" data-sub="mar">⚓ Costa y Mar</span>
+          <span class="sub-label" data-sub="mar">⚓ Costa y mar</span>
           <button id="btnTides" class="btn" data-sub="mar" data-keywords="mareas shoa talcahuano pleamar bajamar">🌊 Mareas</button>
           <button id="btnFishing" class="btn" data-sub="mar" data-keywords="pesca peces artesanal lirquen golfo arauco historia caleta san pedro wampo veda">🎣 Pesca</button>
           <button id="btnIntermareal" class="btn" data-sub="mar" data-keywords="intermareal roquerio poza marea baja cochayuyo luche lapa chorito jaiba algas mariscos cosecha sostenible">🦀 Intermareal</button>
-          <span class="sub-label" data-sub="tierra">🌱 Tierra y Monte</span>
+          <button id="btnNudos" class="btn" data-sub="mar" data-keywords="nudos amarras redes pesca ballestrinque as de guia pescador kayak camping entutorado tejer reparar">🪢 Nudos y Redes</button>
+          <button id="btnKayak" class="btn" data-sub="mar" data-keywords="kayak remo mar bahia travesia seguridad chaleco viento marea remada palada">🛶 Kayak</button>
+          <button id="btnBallenas" class="btn" data-sub="mar" data-keywords="ballenas fauna marina trempulcahue franca austral piloto delfin lobo marino pinguino avistamiento golfo arauco bahia mirador temporada">🐋 Ballenas</button>
+          <span class="sub-label" data-sub="tierra">🌱 Huerta, tierra y bosque</span>
+          <button id="btnHuerta" class="btn" data-sub="tierra" data-keywords="huerta bancal cultivo lechuga tomate riego mulch temporada">🥬 Huerta</button>
           <button id="btnSiembra" class="btn" data-sub="tierra" data-keywords="siembra cosecha huerta semilla semillas semillero inventario recuento stock luna banco estratificacion multiplicacion esqueje almácigo trafkintu">🌱 Siembra lunar</button>
           <button id="btnBosque" class="btn" data-sub="tierra" data-keywords="bosque nativo arbol canelo boldo peumo arrayan quillay maiten avellano reforestacion semilla hongo maqui trihue laurelia naranjillo citronella keule gomortega historia acompanantes micorriza sotobosque picaflor dispersor quintral quila diguene changle loyo polinizador ecosistema animales insectos mamifero chingue zorro abejorro mariposa">🌳 Bosque Nativo</button>
-          <button id="btnCompost" class="btn" data-sub="tierra" data-keywords="compost suelo humus vermicompostera bocashi tierra ph arcilla abono menguante">🪱 Compost & Suelo</button>
+          <button id="btnCompost" class="btn" data-sub="tierra" data-keywords="compost suelo humus vermicompostera bocashi tierra ph arcilla abono menguante">🪱 Compost y Suelo</button>
+          <button id="btnAgua" class="btn" data-sub="tierra" data-keywords="agua lluvia estanque pozo milimetros reserva litros sequia corte rio riego goteo mulch cosecha techo potabilizar cloro filtro ahorro essbio emergencia">💧 Agua</button>
+          <button id="btnHidroponia" class="btn" data-sub="tierra" data-keywords="hidroponia hidroponía cultivo sin suelo nft raiz flotante solucion nutritiva ph ec lechuga">💧 Hidroponía</button>
+          <button id="btnElectrocultura" class="btn" data-sub="tierra" data-keywords="electrocultura antena cobre espiral magnetismo cosecha experimento huerta">⚡ Electrocultura</button>
+          <button id="btnFlora" class="btn" data-sub="tierra" data-keywords="flora flores nativas chilco maqui boldo polinizacion jardin semilla">🌸 Flora</button>
           <button id="btnLawen" class="btn" data-sub="tierra" data-keywords="lawen herbario hierba matico boldo maqui canelo bailahuen manzanilla medicina natural remedio planta">🌿 Lawen Herbario</button>
           <button id="btnBirds" class="btn" data-sub="tierra" data-keywords="aves pajaro observacion humedal rocuant bosque nativo chucao tenca diuca historia avistadas">🦅 Aves</button>
           <button id="btnAnfibios" class="btn" data-sub="tierra" data-keywords="anfibios rana sapo ranita darwin cuatro ojos canto coro nocturno renacuajo humedal estero quebrada charco observacion rana chilena esmeralda invasora africana xenopus">🐸 Anfibios</button>
-          <span class="sub-label" data-sub="cielo">🌙 Cielo y Ritmo</span>
+          <button id="btnMeli" class="btn" data-sub="tierra" data-keywords="meli abejas apicultura miel colmena chito abejorro melipona cera varroa cosecha menguante creciente polinizacion">🐝 Melí</button>
+          <button id="btnHongos" class="btn" data-sub="tierra" data-keywords="hongos micologia setas changle loyo digueñe callampa pino suillus amanita toxico recoleccion otoño rimu">🍄 Hongos</button>
+          <button id="btnSenderos" class="btn" data-sub="tierra" data-keywords="senderos ruta cerro verde borde costero quebrada humedal caminata trekking distancia dificultad hora dorada mirador">🚶 Senderos</button>
+          <button id="btnFuego" class="btn" data-sub="tierra" data-keywords="fuego incendio forestal walung verano evacuacion defensa vivienda conaf bomberos humo quemas desmalezado mochila">🔥 Fuego</button>
+          <button id="btnFenologia" class="btn" data-sub="tierra" data-keywords="fenologia primeras observacion almanaque chilco totora golondrina chorlo ballena lluvia floracion naturaleza territorio memoria colectiva">🌼 Fenología</button>
+          <span class="sub-label" data-sub="cielo">🌙 Cielo y ritmo natural</span>
           <button id="btnWeather" class="btn" data-sub="cielo" data-keywords="clima tiempo viento lluvia temperatura aire calidad humo ventilacion sol uv radiacion playa exposicion">🌤️ Clima</button>
           <button id="btnAstro" class="btn" data-sub="cielo" data-keywords="astro astronomia eclipse meteoros superluna carta natal astral zodiaco horoscopo signo ascendente">🔭 Astro</button>
           <button id="btnGolden" class="btn" data-sub="cielo" data-keywords="hora dorada fotografia sol salida puesta">📸 Hora Dorada</button>
           <button id="btnCircadian" class="btn" data-sub="cielo" data-keywords="circadiano ritmo rutina plan mi plan hora despertar sueño melatonina cortisol ciclo energia descanso">🌞 Ritmo Circadiano</button>
           <button id="btnEkadashi" class="btn" data-sub="cielo" data-keywords="ekadashi ayuno lunar tithi">📿 Ekadashi</button>
-          <span class="sub-label" data-sub="penco">🎉 Penco</span>
+          <span class="sub-label" data-sub="penco">🎉 Comuna y servicios</span>
           <button id="btnComuna" class="btn" data-sub="penco" data-keywords="penco comuna fiesta evento aniversario talleres actividades curso taller inscripcion calendario guia historia sectores lirquen cosmito cerro verde primer agua casa cultura dideco cesfam biblioteca deporte futbol yoga cueca guitarra huerta manualidades digital mapuzugun cocina oficio">🎉 Penco</button>
           <button id="btnIglesias" class="btn" data-sub="penco" data-keywords="iglesia iglesias parroquia capilla misa culto evangelica catolica carmen purisima redentor lirquen ovalle ohiggins penco fe culto">⛪ Iglesias</button>
           <button id="btnMuni" class="btn" data-sub="penco" data-keywords="municipalidad muni alcalde concejo dideco transito licencia permiso circulacion patente oirs tramite cesfam cecosf hospital farmacia veterinario emergencia 4157 samu bomberos carabineros secplan dom obras finanzas control juridica juzgado policia local omil rsh registro social tolva aseo fondeve beca historia municipal villa ciudad comuna autonoma">🏛️ Municipalidad</button>
           <button id="btnBomberos" class="btn" data-sub="penco" data-keywords="bomberos 132 incendio fuego emergencia primera segunda tercera cuarta compañia cuartel lirquen cosmito voluntario brigada detector extintor deshollinar plan escape forestal grifo historia 1927">🚒 Bomberos</button>
+          <button id="btnActores" class="btn" data-sub="penco" data-keywords="actores territorio guardianes organizacion red apoyo comunidad">🛡️ Actores del territorio</button>
         </div>
       </details>
       <details class="action-group" data-group="cuerpo">
@@ -134,97 +154,161 @@
         <div class="group-btns">
           <span class="sub-label" data-sub="ciclos">🌸 Ciclos</span>
           <button id="btnMenstrual" class="btn" data-sub="ciclos" data-keywords="ciclo menstrual periodo fertil ovulacion mujer">🌸 Ciclo</button>
-          <span class="sub-label" data-sub="cuidado">🛟 Cuidado</span>
+          <button id="btnFerti" class="btn" data-sub="ciclos" data-keywords="fertilidad ciclo sintotermico temperatura basal moco cervical ovulacion embarazo planificacion familiar natural">🌱 Fertilidad Natural</button>
+          <button id="btnClimaterio" class="btn" data-sub="ciclos" data-keywords="climaterio menopausia perimenopausia sofoco hueso animo terapia hormonal">🔥 Climaterio</button>
+          <span class="sub-label" data-sub="etapas">🌿 Etapas de vida</span>
+          <button id="btnAdolescencia" class="btn" data-sub="etapas" data-keywords="adolescencia teen joven pubertad liceo vocacion autoestima consentimiento emociones estudio futuro">🧒 Adolescencia</button>
+          <button id="btnJuventud" class="btn" data-sub="etapas" data-keywords="juventud joven adulto 20 30 trabajo primer empleo universidad independencia proyecto vida">🌱 Juventud</button>
+          <button id="btnAdultez" class="btn" data-sub="etapas" data-keywords="adultez adulto mediana edad trabajo salud preventiva pension vivienda deuda">🧑 Adultez</button>
+          <button id="btnVejez" class="btn" data-sub="etapas" data-keywords="vejez sabia mayor 60 cuidado memoria legado descanso">👵 Vejez</button>
+          <span class="sub-label" data-sub="cuidado">🛟 Cuidado y movimiento</span>
           <button id="btnMedic" class="btn" data-sub="cuidado" data-keywords="medicina medicamento hierba matico natural basica botiquin historia seguridad alergia dosis">🌿 Medicina</button>
-          <button id="btnGym" class="btn" data-sub="cuidado" data-keywords="entrenamientos gym gimnasio terapia fisica fisioterapia calistenia practicas varias rutina ejercicio movilidad kine casa playa bosque multicancha plaza parque costanera lugar">💪 Entrenamientos</button>
           <button id="btnNutri" class="btn" data-sub="cuidado" data-keywords="nutricion nutrición comer sano plato saludable dieta vitaminas minerales proteinas fibra agua sellos menu alimentacion">🥗 Nutrición</button>
+          <button id="btnGym" class="btn" data-sub="cuidado" data-keywords="entrenamientos gym gimnasio terapia fisica fisioterapia calistenia practicas varias rutina ejercicio movilidad kine casa playa bosque multicancha plaza parque costanera lugar">💪 Entrenamientos</button>
           <button id="btnNatacion" class="btn" data-sub="cuidado" data-keywords="natacion nadar nado piscina pileta mar playa flotar flotacion respiracion crol espalda pecho mariposa corriente retorno ahogamiento seguridad agua traje boya aprender clases calambre hipotermia">🏊 Natación</button>
+          <button id="btnPelo" class="btn" data-sub="cuidado" data-keywords="pelo corte peluqueria luna creciente llena menguante volumen crecimiento tinte">💇 Cuidado del pelo</button>
+          <button id="btnRituales" class="btn" data-sub="cuidado" data-keywords="ritual ayuno intermitente detox pausa digital menguante salud preventiva agua infusion ekadashi">🌙 Rituales corporales</button>
         </div>
       </details>
       <details class="action-group" data-group="aprender">
         <summary>🧠 Aprender, Crear y Jugar <span class="ag-count"></span></summary>
         <div class="group-btns">
-          <span class="sub-label" data-sub="estudio">📚 Estudio e Idiomas</span>
+          <span class="sub-label" data-sub="estudio">📚 Estudio y herramientas mentales</span>
           <button id="btnStudy" class="btn" data-sub="estudio" data-keywords="estudio mnemotecnia lectura feynman cornell mapa mental blurting pomodoro plan semanal prueba examen vispera ansiedad foco memoria repeticion espaciada SQ3R">🧠 Estudio</button>
-          <button id="btnMemory" class="btn" data-sub="estudio" data-keywords="memoria pares loci atencion secuencia simon palabras numeros schulte distinto">🧩 Memoria</button>
-          <button id="btnMapu" class="btn" data-sub="estudio" data-keywords="mapuzugun mapuche kimun kimün palabra idioma numero saludo quiz luna intermedio avanzado frases verbos gramatica">🗣️ Kimün Mapuzugun</button>
-          <button id="btnEnglish" class="btn" data-sub="estudio" data-keywords="ingles english idioma levels a1 a2 b1 b2 c1 basic intermediate advanced quiz vocabulary grammar frases verbos">Ingles</button>
-          <button id="btnGuitar" class="btn" data-sub="estudio" data-keywords="instrumentos musica guitarra ukelele flauta quena teclado piano cajon percusion canto voz acordes principiante intermedio avanzado practica afinador metronomo cejilla fingerpicking escalas canciones ritmo rasgueo">🎶 Instrumentos</button>
+          <button id="btnMemory" class="btn" data-sub="estudio" data-keywords="memoria pares loci atencion secuencia simon palabras numeros schulte distinto entrena">🧩 Entrena la memoria</button>
+          <button id="btnMatematicas" class="btn" data-sub="estudio" data-keywords="matematicas calculo geometria fracciones quiz paes numero">🔢 Matemáticas</button>
+          <span class="sub-label" data-sub="idiomas">🗣️ Idiomas y cultura</span>
+          <button id="btnMapu" class="btn" data-sub="idiomas" data-keywords="mapuzugun mapuche kimun kimün palabra idioma numero saludo quiz luna intermedio avanzado frases verbos gramatica">🗣️ Kimün Mapuzugun</button>
+          <button id="btnEnglish" class="btn" data-sub="idiomas" data-keywords="ingles english idioma levels a1 a2 b1 b2 c1 basic intermediate advanced quiz vocabulary grammar frases verbos">🔤 Inglés</button>
+          <span class="sub-label" data-sub="musica">🎶 Música y creación</span>
+          <button id="btnGuitar" class="btn" data-sub="musica" data-keywords="instrumentos musica guitarra ukelele flauta quena teclado piano cajon percusion canto voz acordes principiante intermedio avanzado practica afinador metronomo cejilla fingerpicking escalas canciones ritmo rasgueo">🎶 Instrumentos</button>
           <span class="sub-label" data-sub="juegos">🎮 Juegos</span>
-          <span class="sub-label" data-sub="infancias">🧒 Infancias</span>
+          <button id="btnAjedrez" class="btn" data-sub="juegos" data-keywords="ajedrez jaque mate apertura tactica elo puzzle">♟️ Ajedrez</button>
+          <button id="btnSudoku" class="btn" data-sub="juegos" data-keywords="sudoku numero puzzle logica">🔢 Sudoku</button>
+          <button id="btnCrucigrama" class="btn" data-sub="juegos" data-keywords="crucigrama palabras letras definicion puzzle">📝 Crucigrama</button>
+          <button id="btnSopa" class="btn" data-sub="juegos" data-keywords="sopa letras palabras buscar puzzle">🔤 Sopa de Letras</button>
+          <span class="sub-label" data-sub="infancias">🧒 Infancias y crianza</span>
           <button id="btnTales" class="btn" data-sub="infancias" data-keywords="cuentos infantil niños luna historia epew">📖 Cuentos</button>
+          <button id="btnCrianza" class="btn" data-sub="infancias" data-keywords="crianza infantil niños pedagogia montessori waldorf disciplina positiva juego infancia">👶 Crianza</button>
         </div>
       </details>
       <details class="action-group" data-group="linaje">
         <summary>🪞 Interior, Linaje y Memoria <span class="ag-count"></span></summary>
         <div class="group-btns">
-          <span class="sub-label" data-sub="interior">🔥 Interior</span>
-          <button id="btnPsico" class="btn" data-sub="interior" data-keywords="psicoanalisis autoconocimiento sombra jung inconsciente sueños terapia cognitivo conductual tcc gestalt silla vacia eneagrama mbti big five fortalezas via journaling diario estoico senecca marco aurelio mayeutica socrates mindfulness vipassana atma vichara quien soy bioenergetica feldenkrais cuerpo arte escritura salud mental">🪞 Autoconocimiento</button>
-          <button id="btnEneagrama" class="btn" data-sub="interior" data-keywords="eneagrama eneatipo personalidad test autoconocimiento fortalezas via firma reformador ayudador triunfador artista investigador leal entusiasta desafiador pacificador alas flechas subtipo instinto virtud pasion">🔺 Eneagrama</button>
-          <button id="btnIkigai" class="btn" data-sub="interior" data-keywords="ikigai proposito sentido vida razon ser japones okinawa diagrama venn pasion mision vocacion profesion brujula amor talento mundo pago microaccion flujo moai pilares reglas fortalezas via firma">🌸 Ikigai</button>
-          <button id="btnVIA" class="btn" data-sub="interior" data-keywords="fortalezas via virtudes caracter firma test valores accion peterson seligman sabiduria coraje humanidad justicia templanza trascendencia creatividad curiosidad juicio aprender perspectiva valentia perseverancia honestidad entusiasmo amor amabilidad inteligencia social equipo equidad liderazgo perdon humildad prudencia autorregulacion belleza gratitud esperanza humor espiritualidad bienestar florecer">🌟 Fortalezas VIA</button>
-          <button id="btnMetodos" class="btn" data-sub="interior" data-keywords="metodos visiones estoicismo tao tolteca budismo yogananda gurdjieff grinberg jung freud psicoanalisis frankl logoterapia sentido zen zazen patanjali ashtanga grof transpersonal hermetismo kybalion cuatro acuerdos wu wei kriya cuarto camino sintergia arquetipos filosofia espiritualidad conny mendez metafisica decreto ikigai proposito gnosis interior reiki usui energia manos gokai hoponopono ho'oponopono hawaii perdon gracias te amo limpieza guerrero mito castaneda don juan ixtlan genaro camino guerrero hombre conocimiento modo guerrero">📿 Métodos</button>
-          <button id="btnCuartoCamino" class="btn" data-sub="interior" data-keywords="cuarto camino gurdjieff ouspensky recuerdo de si auto observacion identificacion consideracion amortiguadores ley de tres ley de siete octavas eneagrama stop despertar sueno esencia personalidad centros hombre numero 4 escuela presencia atencion">🛤️ Cuarto Camino</button>
-          <button id="btnHooponopono" class="btn" data-sub="interior" data-keywords="hooponopono ho'oponopono hoponopono hawaii perdon gracias te amo lo siento perdoname limpieza memorias morrnah hew len responsabilidad paz reconciliacion soltar rencor culpa miedo duelo">🌺 Ho'oponopono</button>
-          <button id="btnSilva" class="btn" data-sub="interior" data-keywords="silva metodo silva jose silva ultramind mind control alfa theta beta 321 pantalla mental espejo mente tres dedos vaso agua despertar laboratorio asesores programar visualizar concentracion memoria examen entrevista dormir suenos">🧠 Método Silva</button>
-          <button id="btnGrabovoi" class="btn" data-sub="interior" data-keywords="grabovoi graboboi grigori gravoboi secuencias numericas pilotaje realidad esfera plateada concentracion numeros foco norma 741 dinero abundancia armonia meditacion">🌌 Grabovoi</button>
-          <button id="btnRecap" class="btn" data-sub="interior" data-keywords="recapitulacion recapitular tolteca castaneda repaso vida perdon soltar energia ensueño acecho inventario liberacion">🔁 Recapitulación</button>
-          <button id="btnTolteca" class="btn" data-sub="interior" data-keywords="tolteca toltecas castaneda don juan ixtlan cuatro acuerdos ruiz acecho ensueno intento recapitulacion no hacer punto encaje tonal nagual dialogo interno silencio impecabilidad muerte consejera tirano guerrero">🦅 Prácticas Toltecas</button>
-          <button id="btnTao" class="btn" data-sub="interior" data-keywords="tao lao tse laozi zhuangzi tao te ching yin yang wu wei te pu tres tesoros agua bambu fluir soltar control respiracion 4-6 te consciente no hacer fama contento equilibrio">☯️ Tao</button>
-          <button id="btnAnastasia" class="btn" data-sub="interior" data-keywords="anastasia megre cedros resonantes rusia taiga espacio amor hacienda hectarea semilla pensamiento crianza Tekos Anasta">🌲 Anastasia</button>
-          <button id="btnAmi" class="btn" data-sub="interior" data-keywords="ami niño estrellas barrios pedrito ofir vinka victor perlita kia amor medida 750 mundos evolucionados federacion escuela amor ecologia mision semilla">🛸 Ami</button>
-          <button id="btnVigyan" class="btn" data-sub="interior" data-keywords="vigyan bhairav tantra shiva devi parvati cachemira 112 sutras dharanas meditacion respiracion pausa mantra om silencio vacio energia luz oscuridad cuerpo sentidos sueño corazon asombro presencia">🕉️ Tantra · 112 meditaciones</button>
-          <button id="btnEstoicismo" class="btn" data-sub="interior" data-keywords="estoicismo estoico seneca epicteto marco aurelio zenon meditaciones manual cartas virtud sabiduria justicia coraje templanza control dicotomia obstaculo memento mori amor fati premeditacion examen ira tiempo deber suficiente calma caracter firmeza serenidad">🏛️ Estoicismo</button>
-          <button id="btnEspiritual" class="btn" data-sub="interior" data-keywords="practicas espirituales sol amanecer atardecer agua solarizada ducha fria grounding earthing luz roja noche ritual meditacion sungazing">🕉️ Prácticas Espirituales</button>
-          <button id="btnKinMaya" class="btn" data-sub="interior" data-keywords="kin maya tzolkin sello solar tono galactico onda encantada 260 dias calendario sagrado sincronizacion">🌟 Kin Maya</button>
-          <button id="btnTarot" class="btn" data-sub="interior" data-keywords="tarot cartas arcanos mayores menores tirada lectura cruz consejo pasado presente futuro sino espejo rider waite">🔮 Tarot</button>
-          <button id="btnNumerologia" class="btn" data-sub="interior" data-keywords="numerologia numero camino vida destino expresion alma personalidad año personal mes dia ciclos compatibilidad pareja pinaculos desafios madurez karmico maestro 11 22 33">🔢 Numerología</button>
-          <button id="btnOraculo" class="btn" data-sub="interior" data-keywords="oraculo cartas mensaje territorio luna mar bosque ritual respuesta consejo cuerpo mente espiritu">🌬️ Oráculo</button>
-          <button id="btnDueloFull" class="btn" data-sub="interior" data-keywords="duelo luto perdida partida difunto despedida ritual memoria consuelo tristeza acompañamiento guia etapas">🕊️ Duelo</button>
-          <button id="btnAdicciones" class="btn" data-sub="interior" data-keywords="adicciones adiccion alcohol tabaco drogas recuperacion rehabilitacion senda abstinencia antojo recaida racha apoyo ayuda tratamiento *4141 juego apuestas pantallas comida compras">🌿 Adicciones</button>
-          <span class="sub-label" data-sub="familia">🌳 Familia</span>
-          <button id="btnArbolFull" class="btn" data-sub="familia" data-keywords="arbol genealogico familia ancestro linaje kupalme bisabuelo abuelo padre madre hijo honra generacion memoria">🌳 Árbol Genealógico</button>
-          <button id="btnVozAbuelos" class="btn" data-sub="familia" data-keywords="voz abuelos abuela abuelo sabiduria receta historia consejo grabar audio testimonio legado familia territorio cuento transmitir oral">🗣️ Voz de los Abuelos</button>
-          <button id="btnConstelaciones" class="btn" data-sub="familia" data-keywords="constelaciones familiares hellinger sistema familiar ordenes amor pertenencia jerarquia equilibrio asentir genograma parentificacion lealtad honrar ancestros devolucion frase sanadora lugar hijo exclusion">🌳 Constelaciones Familiares</button>
+          <span class="sub-label" data-sub="conocerse">🪞 Autoconocimiento</span>
+          <button id="btnPsico" class="btn" data-sub="conocerse" data-keywords="psicoanalisis autoconocimiento sombra jung inconsciente sueños terapia cognitivo conductual tcc gestalt silla vacia eneagrama mbti big five fortalezas via journaling diario estoico senecca marco aurelio mayeutica socrates mindfulness vipassana atma vichara quien soy bioenergetica feldenkrais cuerpo arte escritura salud mental">🪞 Autoconocimiento</button>
+          <button id="btnPsicologia" class="btn" data-sub="conocerse" data-keywords="psicologia terapia salud mental emociones conducta autoestima">🧠 Psicología</button>
+          <button id="btnEneagrama" class="btn" data-sub="conocerse" data-keywords="eneagrama eneatipo personalidad test autoconocimiento fortalezas via firma reformador ayudador triunfador artista investigador leal entusiasta desafiador pacificador alas flechas subtipo instinto virtud pasion">🔺 Eneagrama</button>
+          <button id="btnVIA" class="btn" data-sub="conocerse" data-keywords="fortalezas via virtudes caracter firma test valores accion peterson seligman sabiduria coraje humanidad justicia templanza trascendencia creatividad curiosidad juicio aprender perspectiva valentia perseverancia honestidad entusiasmo amor amabilidad inteligencia social equipo equidad liderazgo perdon humildad prudencia autorregulacion belleza gratitud esperanza humor espiritualidad bienestar florecer">🌟 Fortalezas VIA</button>
+          <button id="btnIkigai" class="btn" data-sub="conocerse" data-keywords="ikigai proposito sentido vida razon ser japones okinawa diagrama venn pasion mision vocacion profesion brujula amor talento mundo pago microaccion flujo moai pilares reglas fortalezas via firma">🌸 Ikigai</button>
+          <button id="btnNeurodiversidad" class="btn" data-sub="conocerse" data-keywords="neurodiversidad tea tdah dislexia inclusion apoyo sensorial">🧩 Neurodiversidad</button>
+          <span class="sub-label" data-sub="practicas">🌅 Presencia y prácticas personales</span>
+          <button id="btnEspiritual" class="btn" data-sub="practicas" data-keywords="practicas espirituales sol amanecer atardecer agua solarizada ducha fria grounding earthing luz roja noche ritual meditacion sungazing">🕉️ Prácticas Espirituales</button>
+          <button id="btnTao" class="btn" data-sub="practicas" data-keywords="tao lao tse laozi zhuangzi tao te ching yin yang wu wei te pu tres tesoros agua bambu fluir soltar control respiracion 4-6 te consciente no hacer fama contento equilibrio">☯️ Tao</button>
+          <button id="btnRecap" class="btn" data-sub="practicas" data-keywords="recapitulacion recapitular tolteca castaneda repaso vida perdon soltar energia ensueño acecho inventario liberacion">🔁 Recapitulación</button>
+          <button id="btnTolteca" class="btn" data-sub="practicas" data-keywords="tolteca toltecas castaneda don juan ixtlan cuatro acuerdos ruiz acecho ensueno intento recapitulacion no hacer punto encaje tonal nagual dialogo interno silencio impecabilidad muerte consejera tirano guerrero">🦅 Prácticas Toltecas</button>
+          <button id="btnEstoicismo" class="btn" data-sub="practicas" data-keywords="estoicismo estoico seneca epicteto marco aurelio zenon meditaciones manual cartas virtud sabiduria justicia coraje templanza control dicotomia obstaculo memento mori amor fati premeditacion examen ira tiempo deber suficiente calma caracter firmeza serenidad">🏛️ Estoicismo</button>
+          <button id="btnCuartoCamino" class="btn" data-sub="practicas" data-keywords="cuarto camino gurdjieff ouspensky recuerdo de si auto observacion identificacion consideracion amortiguadores ley de tres ley de siete octavas eneagrama stop despertar sueno esencia personalidad centros hombre numero 4 escuela presencia atencion">🛤️ Cuarto Camino</button>
+          <button id="btnHooponopono" class="btn" data-sub="practicas" data-keywords="hooponopono ho'oponopono hoponopono hawaii perdon gracias te amo lo siento perdoname limpieza memorias morrnah hew len responsabilidad paz reconciliacion soltar rencor culpa miedo duelo">🌺 Ho'oponopono</button>
+          <span class="sub-label" data-sub="tradiciones">📿 Métodos y corrientes</span>
+          <button id="btnMetodos" class="btn" data-sub="tradiciones" data-keywords="metodos visiones estoicismo tao tolteca budismo yogananda gurdjieff grinberg jung freud psicoanalisis frankl logoterapia sentido zen zazen patanjali ashtanga grof transpersonal hermetismo kybalion cuatro acuerdos wu wei kriya cuarto camino sintergia arquetipos filosofia espiritualidad conny mendez metafisica decreto ikigai proposito gnosis interior reiki usui energia manos gokai hoponopono ho'oponopono hawaii perdon gracias te amo limpieza guerrero mito castaneda don juan ixtlan genaro camino guerrero hombre conocimiento modo guerrero">📿 Métodos</button>
+          <button id="btnSilva" class="btn" data-sub="tradiciones" data-keywords="silva metodo silva jose silva ultramind mind control alfa theta beta 321 pantalla mental espejo mente tres dedos vaso agua despertar laboratorio asesores programar visualizar concentracion memoria examen entrevista dormir suenos">🧠 Método Silva</button>
+          <button id="btnGrabovoi" class="btn" data-sub="tradiciones" data-keywords="grabovoi graboboi grigori gravoboi secuencias numericas pilotaje realidad esfera plateada concentracion numeros foco norma 741 dinero abundancia armonia meditacion">🌌 Grabovoi</button>
+          <button id="btnVigyan" class="btn" data-sub="tradiciones" data-keywords="vigyan bhairav tantra shiva devi parvati cachemira 112 sutras dharanas meditacion respiracion pausa mantra om silencio vacio energia luz oscuridad cuerpo sentidos sueño corazon asombro presencia">🕉️ Tantra · 112 meditaciones</button>
+          <button id="btnAnastasia" class="btn" data-sub="tradiciones" data-keywords="anastasia megre cedros resonantes rusia taiga espacio amor hacienda hectarea semilla pensamiento crianza Tekos Anasta">🌲 Anastasia</button>
+          <button id="btnAmi" class="btn" data-sub="tradiciones" data-keywords="ami niño estrellas barrios pedrito ofir vinka victor perlita kia amor medida 750 mundos evolucionados federacion escuela amor ecologia mision semilla">🛸 Ami</button>
+          <span class="sub-label" data-sub="oraculos">🔮 Oráculos y sistemas simbólicos</span>
+          <button id="btnKinMaya" class="btn" data-sub="oraculos" data-keywords="kin maya tzolkin sello solar tono galactico onda encantada 260 dias calendario sagrado sincronizacion">🌟 Kin Maya</button>
+          <button id="btnTarot" class="btn" data-sub="oraculos" data-keywords="tarot cartas arcanos mayores menores tirada lectura cruz consejo pasado presente futuro sino espejo rider waite">🔮 Tarot</button>
+          <button id="btnNumerologia" class="btn" data-sub="oraculos" data-keywords="numerologia numero camino vida destino expresion alma personalidad año personal mes dia ciclos compatibilidad pareja pinaculos desafios madurez karmico maestro 11 22 33">🔢 Numerología</button>
+          <button id="btnOraculo" class="btn" data-sub="oraculos" data-keywords="oraculo cartas mensaje territorio luna mar bosque ritual respuesta consejo cuerpo mente espiritu">🌬️ Oráculo</button>
+          <span class="sub-label" data-sub="sosten">🤲 Acompañamiento</span>
+          <button id="btnDueloFull" class="btn" data-sub="sosten" data-keywords="duelo luto perdida partida difunto despedida ritual memoria consuelo tristeza acompañamiento guia etapas">🕊️ Duelo</button>
+          <button id="btnAdicciones" class="btn" data-sub="sosten" data-keywords="adicciones adiccion alcohol tabaco drogas recuperacion rehabilitacion senda abstinencia antojo recaida racha apoyo ayuda tratamiento *4141 juego apuestas pantallas comida compras">🌿 Adicciones</button>
         </div>
       </details>
       <details class="action-group" data-group="hogar">
         <summary>🏡 Hogar y Vida Práctica <span class="ag-count"></span></summary>
         <div class="group-btns">
-          <span class="sub-label" data-sub="casa">🍽️ Casa</span>
+          <span class="sub-label" data-sub="casa">🍽️ Casa y organización</span>
           <button id="btnMeal" class="btn" data-sub="casa" data-keywords="comida meal plan cena almuerzo">🥗 Comidas</button>
           <button id="btnShopping" class="btn" data-sub="casa" data-keywords="compras lista supermercado verduras">🛒 Compras</button>
           <button id="btnFinance" class="btn" data-sub="casa" data-keywords="finanzas gastos dinero presupuesto ahorro deuda ingreso egreso plata billetera">💰 Finanzas</button>
-          <button id="btnHomeTasks" class="btn" data-sub="casa" data-keywords="tareas hogar limpieza casa organizacion quehaceres rutina habitaciones baño cocina ropa mantenimiento orden diogenes acumulacion acumulador desorden tirar botar soltar apego">🏠 Tareas Hogar</button>
-          <span class="sub-label" data-sub="energia">🔧 Energía y Taller</span>
-          <button id="btnEnergy" class="btn" data-sub="energia" data-keywords="energia consumo electrico luz kwh watts tarifa electrodomestico ohm ley ohm potencia voltaje corriente resistencia calculadora electrica solar fotovoltaica panel">⚡ Consumo eléctrico</button>
-          <button id="btnLena" class="btn" data-sub="energia" data-keywords="leña pellet calefaccion estufa bosca invierno kwh humedad eucalipto pino calculadora termica">🪵 Leña & Pellet</button>
+          <button id="btnHomeTasks" class="btn" data-sub="casa" data-keywords="tareas hogar limpieza casa organizacion quehaceres rutina habitaciones baño cocina ropa mantenimiento orden diogenes acumulacion acumulador desorden tirar botar soltar apego">🏠 Tareas del Hogar</button>
+          <button id="btnBodega" class="btn" data-sub="casa" data-keywords="bodega conservas fermentos mermelada chucrut kombucha deshidratado frasco caducidad">🫙 La Bodega</button>
+          <button id="btnDespensa" class="btn" data-sub="casa" data-keywords="despensa alimentos mercaderia alacena refrigerador stock vencimiento provisiones cocina">🥫 Despensa</button>
+          <button id="btnCloset" class="btn" data-sub="casa" data-keywords="closet ropero ropa vestir calzado donar temporada hogar">👕 Clóset</button>
+          <button id="btnCorral" class="btn" data-sub="casa" data-keywords="corral gallinas huevos pollo conejo traspatio gallinero campo">🐔 Corral</button>
+          <button id="btnMovilidad" class="btn" data-sub="casa" data-keywords="movilidad micro bus penco concepcion lirquen ruta horario pasaje tne viaje paradero">🚌 Movilidad</button>
+          <button id="btnEscolar" class="btn" data-sub="casa" data-keywords="escuela escolar feriado matricula paes vacaciones sae colegio liceo junaeb tne">🎒 Escolar</button>
+          <span class="sub-label" data-sub="energia">🔧 Energía y herramientas</span>
+          <button id="btnEnergy" class="btn" data-sub="energia" data-keywords="energia consumo electrico luz kwh watts tarifa electrodomestico ohm ley ohm potencia voltaje corriente resistencia calculadora electrica solar fotovoltaica panel">⚡ Consumo Eléctrico</button>
+          <button id="btnLena" class="btn" data-sub="energia" data-keywords="leña pellet calefaccion estufa bosca invierno kwh humedad eucalipto pino calculadora termica">🪵 Leña y Pellet</button>
+          <button id="btnTaller" class="btn" data-sub="energia" data-keywords="taller reparacion mantenimiento herramienta bicicleta aceite afilado">🛠️ Bitácora Taller</button>
+          <button id="btnHerramientas" class="btn" data-sub="energia" data-keywords="herramientas taladro sierra martillo mantenimiento taller">🧰 Herramientas</button>
+          <button id="btnMecanica" class="btn" data-sub="energia" data-keywords="mecanica auto motor freno aceite mantencion">🚗 Mecánica</button>
+          <button id="btnDomotica" class="btn" data-sub="energia" data-keywords="domotica casa inteligente sensor automatizacion luz wifi">🏠 Domótica</button>
           <button id="btnConvert" class="btn" data-sub="energia" data-keywords="conversion unidades peso longitud tiempo velocidad energia potencia presion datos angulo">📏 Conversión</button>
+          <span class="sub-label" data-sub="familia">🌳 Familia y legado</span>
+          <button id="btnArbolFull" class="btn" data-sub="familia" data-keywords="arbol genealogico familia ancestro linaje kupalme bisabuelo abuelo padre madre hijo honra generacion memoria">🌳 Árbol Genealógico</button>
+          <button id="btnVozAbuelos" class="btn" data-sub="familia" data-keywords="voz abuelos abuela abuelo sabiduria receta historia consejo grabar audio testimonio legado familia territorio cuento transmitir oral">🗣️ Voces de los Abuelos</button>
+          <button id="btnConstelaciones" class="btn" data-sub="familia" data-keywords="constelaciones familiares hellinger sistema familiar ordenes amor pertenencia jerarquia equilibrio asentir genograma parentificacion lealtad honrar ancestros devolucion frase sanadora lugar hijo exclusion">🌳 Constelaciones Familiares</button>
         </div>
       </details>
       <details class="action-group" data-group="comunidad">
-        <summary>🤝 Comunidad, Emergencia y Sistema <span class="ag-count"></span></summary>
+        <summary>🤝 Comunidad <span class="ag-count"></span></summary>
         <div class="group-btns">
-          <span class="sub-label" data-sub="red">🤝 Red Penco</span>
+          <span class="sub-label" data-sub="red">🤝 Red y colaboración</span>
+          <button id="btnTrueque" class="btn" data-sub="red" data-keywords="trueque feria intercambio economia circular vecino feria libre penco reciclaje">🔄 Trueque y Feria</button>
+          <button id="btnMinga" class="btn" data-sub="red" data-keywords="minga red apoyo comunidad ayuda techo cosecha tormenta vecino">🤲 Minga · Red de Apoyo</button>
+          <button id="btnDerechos" class="btn" data-sub="red" data-keywords="derechos deberes constitucion ciudadano reclamo denuncia sernac trabajo salud educacion consumidor">📜 Derechos y Deberes</button>
           <button id="btnAnimalCare" class="btn" data-sub="red" data-keywords="cuidado animal veterinaria mascota perro gato tenencia responsable esterilizacion vacuna antirrabica comuna animal perdido maltrato">🐾 Cuidado Animal</button>
-          <span class="sub-label" data-sub="emergencia">🚨 Emergencia</span>
+          <span class="sub-label" data-sub="red-comunitaria">📡 Red Comunitaria</span>
+          <button id="btnRedGuia" class="btn" data-sub="red-comunitaria" data-keywords="red comunitaria guia malla penco emergencia organizacion roles">📡 Guía Red</button>
+          <button id="btnRedMeshtastic" class="btn" data-sub="red-comunitaria" data-keywords="meshtastic lora mesh malla radio nodo antena 915 longfast firmware">📻 Meshtastic</button>
+          <button id="btnRedDiagnostico" class="btn" data-sub="red-comunitaria" data-keywords="diagnostico alcance snr rssi señal cobertura bateria antena chequeo red">🔍 Diagnóstico</button>
+          <button id="btnRedRadio" class="btn" data-sub="red-comunitaria" data-keywords="radioaficionado curso licencia subtel examen handy vhf uhf repetidora">🎙️ Curso / Licencia de radio</button>
+          <button id="btnRedNodos" class="btn" data-sub="red-comunitaria" data-keywords="nodos bitacora registro equipos sector mapa red emergencia">🛰️ Mis Nodos</button>
+          <span class="sub-label" data-sub="convivencia-vecinal">🏘️ Convivencia Vecinal</span>
+          <button id="btnConvivGuia" class="btn" data-sub="convivencia-vecinal" data-keywords="convivencia vecinal guia dialogo mediacion vecino barrio">📘 Guía base</button>
+          <button id="btnConvivFichas" class="btn" data-sub="convivencia-vecinal" data-keywords="fichas conflicto ruidos mascotas basura estacionamiento medianero">🗂️ Fichas de conflicto</button>
+          <button id="btnConvivHablar" class="btn" data-sub="convivencia-vecinal" data-keywords="conversar comunicacion no violenta acta acuerdo dialogo">💬 Conversar + acta</button>
+          <button id="btnConvivBitacora" class="btn" data-sub="convivencia-vecinal" data-keywords="bitacora incidentes registro acuerdos seguimiento vecinal">📓 Bitácora</button>
+          <button id="btnConvivLuna" class="btn" data-sub="convivencia-vecinal" data-keywords="ritual lunar conversacion dificil luna nueva llena intencion calma">🌙 Ritual lunar</button>
+          <button id="btnConvivRecursos" class="btn" data-sub="convivencia-vecinal" data-keywords="recursos dideco junta vecinos mediacion juzgado policia local">🧰 Recursos</button>
+          <span class="sub-label" data-sub="ciberseguridad">🛡️ Ciberseguridad</span>
+          <button id="btnCiberGuia" class="btn" data-sub="ciberseguridad" data-keywords="ciberseguridad guia seguridad digital internet">📘 Guía base</button>
+          <button id="btnCiberClaves" class="btn" data-sub="ciberseguridad" data-keywords="claves contraseña 2fa doble factor gestor banco gmail whatsapp">🔑 Claves seguras</button>
+          <button id="btnCiberEstafas" class="btn" data-sub="ciberseguridad" data-keywords="estafa fraude phishing smishing vishing whatsapp falso banco bono">⚠️ Estafas y fraudes</button>
+          <button id="btnCiberPriv" class="btn" data-sub="ciberseguridad" data-keywords="privacidad permisos ubicacion fotos menores wifi datos personales">🔒 Privacidad</button>
+          <button id="btnCiberChequeo" class="btn" data-sub="ciberseguridad" data-keywords="chequeo escudo diagnostico revision proteccion">🛡️ Chequeo escudo</button>
+          <button id="btnCiberAyuda" class="btn" data-sub="ciberseguridad" data-keywords="ayuda denuncia pdi sernac banco cuenta hackeo robo celular">🆘 Ayuda y denuncia</button>
+          <span class="sub-label" data-sub="codigo-abierto">💻 Código Abierto</span>
+          <button id="btnOpenGuia" class="btn" data-sub="codigo-abierto" data-keywords="codigo abierto libre soberania digital compartir programa">📖 Qué es lo libre</button>
+          <button id="btnOpenLicencias" class="btn" data-sub="codigo-abierto" data-keywords="licencia gpl creative commons copyleft permiso compartir">📜 Licencias</button>
+          <button id="btnOpenProgramas" class="btn" data-sub="codigo-abierto" data-keywords="programas libres linux libreoffice firefox mapas offline signal">💿 Programas libres</button>
+          <button id="btnOpenProyecto" class="btn" data-sub="codigo-abierto" data-keywords="proyecto calendario gpl replicar comuna modulo github">🌙 Este proyecto GPL</button>
+          <button id="btnOpenAportar" class="btn" data-sub="codigo-abierto" data-keywords="aportar contribuir ayudar reportar idea taller codigo voluntariado">🤲 Aportar</button>
+          <button id="btnOpenQuiz" class="btn" data-sub="codigo-abierto" data-keywords="soberania quiz prueba autonomia dependencia glosario">❓ Soberanía + quiz</button>
+          <span class="sub-label" data-sub="emergencia">🚨 Emergencias y apoyo</span>
           <button id="btnFirstAid" class="btn" data-sub="emergencia" data-keywords="primeros auxilios emergencia salud rcp hemorragia quemadura fractura atragantamiento heimlich botiquin samu bomberos carabineros">🩹 Primeros Auxilios</button>
           <button id="btnViolence" class="btn" data-sub="emergencia" data-keywords="violencia domestica intrafamiliar vif violencia genero mujer pareja fisica psicologica sexual economica vicaria digital denuncia 149 1455 sernameg carabineros">🟣 Violencia Doméstica</button>
           <button id="btnEvac" class="btn" data-sub="emergencia" data-keywords="evacuacion tsunami sismo terremoto cerro mochila plan familiar senapred shoa armada cota inundacion punto encuentro">🌊🚨 Evacuación Tsunami</button>
           <button id="btnApoyo" class="btn" data-sub="emergencia" data-keywords="apoyo damnificado emergencia incendio fibe catastro albergue beneficio reconstruccion subsidio costo cero dideco oirs contencion duelo mochila plan ayuda social senapred chileatiende">🆘 Apoyo Emergencia</button>
-          <span class="sub-label" data-sub="app">⚙️ App</span>
-          <button id="btnBackup" class="btn" data-sub="app" data-keywords="respaldo backup guardar exportar">💾 Respaldo</button>
-          <button id="btnRestore" class="btn" data-sub="app" data-keywords="restaurar importar backup json">📥 Restaurar</button>
-          <button id="btnShortcut" class="btn" data-sub="app" data-keywords="acceso directo escritorio pwa instalar">📌 Acceso directo</button>
-          <button id="btnPdfLuna" class="btn" data-sub="app" data-keywords="pdf luna imprimir exportar">📄 PDF luna</button>
-          <button id="btnPdfCiclo" class="btn" data-sub="app" data-keywords="pdf ciclo completo imprimir">📚 PDF ciclo</button>
-          <button id="btnDonate" class="btn btn-accent su-30e741" data-sub="app" data-keywords="aporte donar mercadopago paypal personalizado organizacion encargo medida territorio">❤ Aporte voluntario</button>
         </div>
       </details>
     </footer>
 
+    <div class="donate-cta">
+      <button id="btnDonate" class="btn btn-accent" data-keywords="aporte donar aporte voluntario mercadopago paypal donacion colaborar sostener proyecto"><span class="donate-heart">❤</span> Aporte Voluntario · Sostén este calendario libre<span class="donate-cta-sub">100% gratuito y sin publicidad · tu ayuda lo mantiene vivo 🌙</span></button>
+    </div>
+
     <section id="weatherPanel" class="hidden"></section>
     <section id="tidesPanel" class="hidden"></section>
+
+    <footer id="licFooter" aria-label="Licencias del proyecto">
+      <p class="muted">© 2026 Semillero Consciente (Penco) · Código: GNU GPLv3+ · Contenido: CC BY-NC-SA 4.0 · <a href="LICENSE.md">Licencias</a></p>
+    </footer>
   </main>
 
   
@@ -367,6 +451,7 @@
   <script defer src="min/core-dialogo-dia.min.js?v=1"></script>
   <script defer src="min/core-clima.min.js?v=1"></script>
   <script defer src="min/renderer.min.js?v=16"></script>
+  <script defer src="min/dialogo-tamano.min.js?v=1"></script>
   <script defer src="min/nuevos-modulos.min.js?v=9"></script>
   <!-- Modulos no criticos: carga diferida tras la primera pintura (CSP fase 1: archivos externos). -->
   <script defer src="boot-modulos.js?v=1"></script>

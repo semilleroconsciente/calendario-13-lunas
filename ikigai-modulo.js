@@ -500,7 +500,7 @@ function ensureButton() {
         var btn = document.createElement('button');
         btn.id = 'btnIkigai'; btn.className = 'btn'; btn.type = 'button';
         btn.textContent = '🌸 Ikigai';
-        try { btn.setAttribute('data-sub', 'interior'); } catch (eS) {}
+        try { btn.setAttribute('data-sub', 'conocerse'); } catch (eS) {}
         btn.setAttribute('data-keywords', 'ikigai proposito sentido vida razon ser japones okinawa diagrama venn pasion mision vocacion profesion brujula amor talento mundo pago microaccion flujo moai pilares reglas');
         var ref = $('btnEneagrama') || $('btnMetodos');
         if (ref && ref.parentNode === g) {
@@ -515,7 +515,7 @@ function ensureButton() {
         var nm = grp && grp.getAttribute ? grp.getAttribute('data-group') : null;
         if (nm && nm !== 'linaje') {
           var gd = document.querySelector('.action-group[data-group="linaje"] .group-btns');
-          if (gd) { gd.appendChild(cur); try { cur.setAttribute('data-sub', 'interior'); } catch (eS2) {} }
+          if (gd) { gd.appendChild(cur); try { cur.setAttribute('data-sub', 'conocerse'); } catch (eS2) {} }
         }
       } catch (eM) {}
     }
