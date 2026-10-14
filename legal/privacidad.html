@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<!-- Calendario 13 Lunas · Política de Privacidad v1.0 (2026-10-14)
+     Ley 19.628 + Ley 21.719 (Chile). SPDX-License-Identifier: GPL-3.0-or-later -->
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta name="description" content="Política de Privacidad del Calendario de las 13 Lunas. Tus datos viven en tu dispositivo. Sin cuentas, sin rastreo. Ley 19.628 y Ley 21.719 Chile.">
+<link rel="canonical" href="https://calendario-13-lunas.pages.dev/legal/privacidad.html">
+<title>Política de Privacidad · Calendario de las 13 Lunas</title>
+<style>
+:root{color-scheme:dark light}
+body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;max-width:46rem;margin:0 auto;padding:1.2rem;line-height:1.6;background:#0b1026;color:#e8ecff}
+a{color:#e8c56a}header,footer{border-bottom:1px solid #e8c56a44;padding-bottom:.6rem;margin-bottom:1rem}
+footer{border:0;margin-top:2rem;font-size:.9rem;color:#aab}h1{font-size:1.5rem}h2{font-size:1.15rem;margin-top:1.6rem;color:#e8c56a}
+.card{background:#161e3f;border:1px solid #e8c56a33;border-radius:10px;padding:.8rem 1rem;margin:.8rem 0}
+table{width:100%;border-collapse:collapse;font-size:.92rem}th,td{border:1px solid #e8c56a33;padding:.45rem;text-align:left;vertical-align:top}
+small{color:#aab}@media(prefers-color-scheme:light){body{background:#faf8f2;color:#222}a{color:#8a5a00}.card{background:#fff;border-color:#ddd}th,td{border-color:#ddd}small,footer{color:#666}}
+</style>
+</head>
+<body>
+<header>
+<p><a href="../index.html">← Volver al Calendario</a></p>
+<h1>🔒 Política de Privacidad</h1>
+<p><small>v1.0 · Vigente desde 2026-10-14 · Responsable: Semillero Consciente, Penco, Chile · semilleroconsciente@gmail.com</small></p>
+<div class="card"><b>Resumen en 20 segundos:</b> no tenemos cuentas, no te rastreamos, no vendemos datos. Tus bitácoras (hábitos, sueños, ciclo, finanzas, audios…) se guardan <b>solo en tu aparato</b>. Solo salen datos a internet si consultas clima/mareas o donas (a sus proveedores). Puedes borrar todo en 1 clic.</div>
+</header>
+
+<h2>1. Marco legal chileno</h2>
+<p>Tratamos datos según la <b>Ley 19.628</b> sobre Protección de la Vida Privada y la <b>Ley 21.719</b> (Agencia de Protección de Datos, exigible desde 01-12-2026): licitud, finalidad, proporcionalidad, seguridad, transparencia y derechos ARCOP (Acceso, Rectificación, Cancelación/Supresión, Oposición y Portabilidad). Si nos visitas desde la UE, aplicamos además los principios del RGPD por cortesía.</p>
+
+<h2>2. Qué datos existen y dónde viven</h2>
+<table>
+<tr><th>Dato</th><th>Dónde vive</th><th>Sale a internet</th></tr>
+<tr><td>Tus bitácoras: notas, hábitos, gratitud, sueños, ciclo/fertilidad, finanzas, árbol, audios Voz Abuelos, chequeos</td><td><b>Solo tu dispositivo</b> (IndexedDB + respaldo localStorage <code>cal13-data</code>)</td><td><b>No.</b> Solo si TÚ exportas/respaldas manualmente</td></tr>
+<tr><td>Preferencia de guía inicial (<code>cal13-onboarding-v1</code>), caché clima</td><td>Tu navegador</td><td>No</td></tr>
+<tr><td>Consulta clima / calidad aire</td><td>Tu IP + comuna aproximada van a <b>Open-Meteo</b></td><td>Sí, a open-meteo.com bajo su política</td></tr>
+<tr><td>Donación</td><td>La procesan <b>MercadoPago / PayPal</b></td><td>Sí, bajo sus políticas. Nosotros no vemos tu tarjeta</td></tr>
+<tr><td>Visita web</td><td>Logs técnicos de <b>Cloudflare Pages</b> (hosting) y GitHub (updates Electron)</td><td>Sí, tráfico estándar</td></tr>
+</table>
+<p><b>No usamos</b> cookies de rastreo, analytics, fingerprint, geolocalización GPS obligatoria ni notificaciones con datos personales.</p>
+
+<h2>3. Base de licitud y finalidad</h2>
+<p>Tratamos lo mínimo para <b>prestarte la app offline que pediste</b> (ejecución del servicio + tu consentimiento al usarla y guardar bitácoras). JAMÁS para publicidad, perfilamiento ni venta. Los datos sensibles (salud, ciclo, creencias) <b>nunca salen de tu dispositivo por nuestra parte</b>; si los registras, es solo para tu uso privado.</p>
+
+<h2>4. Terceros (encargados / fuentes)</h2>
+<ul>
+<li><b>Open-Meteo</b> (api.open-meteo.com): clima y aire. Recibe IP y coordenadas aproximadas de Penco. <a href="https://open-meteo.com/en/terms">Términos</a>.</li>
+<li><b>Cloudflare Pages</b> (hosting): entrega la web, logs de seguridad.</li>
+<li><b>MercadoPago / PayPal</b>: donaciones. Ven lo que tú les entregas en su sitio.</li>
+<li><b>GitHub</b>: descargas/updates del .exe/APK.</li>
+<li><b>SHOA / Municipalidad</b> y otros enlaces: son fuentes informativas, no reciben tus bitácoras.</li>
+</ul>
+
+<h2>5. Tus derechos (ARCOP) — cómo ejercerlos</h2>
+<p>Como casi todo vive en tu aparato, el ejercicio más rápido es directo:</p>
+<ul>
+<li><b>Acceso/portabilidad:</b> en la app usa <i>Comunidad → Respaldo → Exportar</i> (JSON en tu poder).</li>
+<li><b>Supresión:</b> <i>Respaldo → Borrar todos mis datos</i> + limpiar caché del navegador / desinstalar APK. Eso elimina lo que controlamos.</li>
+<li><b>Rectificación/oposición:</b> edita o deja de usar el módulo correspondiente.</li>
+</ul>
+<p>Para datos que estén en terceros (p. ej. donación), debes ejercer ante ellos. Para reclamos ante nosotros: <b>semilleroconsciente@gmail.com</b> con asunto "Dato personal". Respondemos en <b>15 días hábiles</b> (estándar Ley 21.719). Si no quedas conforme, puedes reclamar ante la <b>Agencia de Protección de Datos</b> (desde dic-2026) o tribunales.</p>
+
+<h2>6. Niños, niñas y adolescentes</h2>
+<p>La app es familiar. Menores de 14 años deben usarla <b>con un adulto responsable</b>. No solicitamos datos de NNA en servidores; si un adulto registra datos de un NNA (p. ej. escolar, árbol), lo hace bajo su responsabilidad y solo en local. Aplicamos el interés superior del NNA (Ley 21.430).</p>
+
+<h2>7. Seguridad</h2>
+<p>Offline-first + código abierto auditable + CSP estricta + sin cuentas = superficie mínima. Límites: si prestas tu celu o no bloqueas pantalla, tus bitácoras locales quedan expuestas; el respaldo exportado (JSON/QR) queda bajo tu custodia. Te recomendamos bloqueo + respaldo mensual en pendrive (no en nube pública para temas sensibles como ciclo o violencia).</p>
+
+<h2>8. Conservación</h2>
+<p>Conservamos <b>nada en servidor propio</b>. En tu dispositivo, tus datos se conservan hasta que los borres. Los cachés de clima rotan en horas. Los logs de Cloudflare los retiene el proveedor según su política.</p>
+
+<h2>9. Cambios a esta política</h2>
+<p>Versionamos cada cambio (v1.0, v1.1…) con fecha aquí y aviso en la app. Si el cambio es material te pediremos nueva lectura. La versión vigente es siempre esta URL.</p>
+
+<footer>
+<p><a href="./terminos.html">Términos</a> · <a href="./cookies.html">Almacenamiento local</a> · <a href="../LICENSE.md">Licencias</a> · <a href="../index.html">Calendario</a></p>
+<p><small>© 2026 Semillero Consciente · Este texto es informativo y no constituye asesoría legal. Validado con Ley 19.628 / 21.719 a oct-2026; se recomienda revisión anual por abogado.</small></p>
+</footer>
+</body>
+</html>

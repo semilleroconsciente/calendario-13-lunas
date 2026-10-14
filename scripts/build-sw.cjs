@@ -71,6 +71,7 @@ function staticEntries() {
     './assets/cuentos/luna07.mp3',
     './assets/cuentos/luna11.mp3',
     './COPYING', './LICENSE.md', './LICENCIA-CONTENIDO-CC-BY-NC-SA-4.0.md',
+    './legal/terminos.html', './legal/privacidad.html', './legal/cookies.html',
     './data/territorios/index.json',
   ];
   try {

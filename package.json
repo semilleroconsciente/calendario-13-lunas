@@ -69,6 +69,7 @@
       "icon-512.png",
       "icon-512-maskable.png",
       "templates/*.html",
+      "legal/*.html",
       "screenshots/*.png",
       "min/**/*",
       "assets/**/*"

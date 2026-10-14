@@ -95,6 +95,7 @@
     'min/recetas-naturales-modulo.min.js?v=1',
     'min/accesibilidad-modulo.min.js?v=1',
     'min/onboarding-modulo.min.js?v=1',
+    'min/legal-modulo.min.js?v=1',
     'min/auto-backup-modulo.min.js?v=1',
     'min/orden-herramientas-modulo.min.js?v=1'
   ];

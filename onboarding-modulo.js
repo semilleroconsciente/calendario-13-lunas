@@ -3,7 +3,7 @@
 // diálogo secuencial: Hoy → Luna → Bitácora → Respaldo. Sin dependencias.
 (function () {
   'use strict';
-  var KEY = 'cal13-onboarding-v1';
+  var KEY = 'cal13-onboarding-v2';
   function seen() { try { return localStorage.getItem(KEY) === '1'; } catch (e) { return true; } }
   function mark() { try { localStorage.setItem(KEY, '1'); } catch (e) {} }
 
@@ -11,6 +11,7 @@
     { t: '◉ Hoy', i: '🌅🧭', d: 'El botón «Ir a hoy» te lleva a la luna y el día actual. El reloj vive en hora de Penco (America/Santiago).' },
     { t: '🌙 Luna', i: '🌑🌒🌓🌔🌕', d: 'Cada luna tiene 28 días con fase e iluminación. Las 4 vistas (Luna, Semana lunar, Mes, Semana) cambian arriba de la grilla.' },
     { t: '📓 Bitácora', i: '📓✍️🔔', d: 'Toca cualquier día para abrir su ficha: notas, compromisos con 🔔, ánimo y frase del día. Todo queda privado y local.' },
+    { t: '⚖️ Legal', i: '⚖️🔒', d: 'Lee Términos y Privacidad en el pie de página o en Comunidad → ⚖️ Legal. Salud y emergencias son solo orientación: verifica SHOA/SENAPRED y llama al 131/132/133 si lo necesitas.' },
     { t: '💾 Respaldo', i: '💾🤝', d: 'En Comunidad → App: «Respaldo» exporta tus datos y «Restaurar» los recupera. Haz uno hoy y repite cada luna.' }
   ];
 

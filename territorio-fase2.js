@@ -5,7 +5,7 @@
      2. 🐋 Ballenas y fauna marina migratoria (btnBallenas)
      3. 🍄 Micología del bosque (btnHongos)
      4. 🚶 Senderos de Penco (btnSenderos)
-     5. 🛶 Kayak y remo (btnKayak)
+      5. ⛵ Navegación menor (btnKayak)
      6. 💧 Captación de agua de lluvia (dentro de Agua, btnAgua)
      7. 🔥 Temporada de incendios Walüng (btnFuego)
    Patrón: botón inyectado en Territorio + <dialog> propio +
@@ -1093,34 +1093,57 @@ function wireSenderos() {
 window.SenderosPenco = { tab: switchSenTab, renderHoy: renderSenHoy, renderLog: renderSenLog, list: getSenderos, rutas: SENDEROS };
 
 /* ============================================================
-   5. 🛶 KAYAK Y REMO
-   Ya existen mareas y pesca; faltaba quien rema. Ventanas
-   seguras por marea/viento, puntos de lanzamiento en
-   Lirquén/Penco y checklist de seguridad. Usa los datos SHOA
-   que ya consume 🌊 Mareas (pleamar/bajamar) + 🌤️ Clima.
+   5. ⛵ NAVEGACIÓN MENOR (ex "Kayak y remo", mismo btnKayak)
+   Bahía Concepción: kayak, canoa/wampo, SUP, botes a remo o
+   motor pequeño y vela menor. Ventanas seguras por
+   marea/viento, puntos de lanzamiento en Lirquén/Penco,
+   reglas por tipo de embarcación, seguridad y mantención.
+   Usa los datos SHOA que ya consume 🌊 Mareas
+   (pleamar/bajamar) + 🌤️ Clima.
    ⚠️ Si hay viento sur fuerte o marejada, NO se sale.
+   ID de botón y claves (kayakLog/kayakCheck) se conservan
+   para no romper bitácoras ni respaldos existentes.
    ============================================================ */
-var KAYAK_PUNTOS = [
-  { nombre: 'Caleta Lirquén (varadero)', uso: 'Lanzamiento principal', nota: 'Pregunta a pescadores por tráfico de botes. Salida al amanecer con mar calmo. Estaciona sin bloquear varadero.' },
-  { nombre: 'Playa de Penco (centro)', uso: 'Lanzamiento familiar', nota: 'Olas suaves con buen tiempo. Ideal para practicar remo corto 1–2 h. Ojo con bañistas en Walüng.' },
-  { nombre: 'Playa Negra (solo expertos)', uso: 'Travesía corta', nota: 'Roca + corriente. Solo con bajamar, mar calmo y compañía. Casco si hay oleaje.' },
-  { nombre: 'Borde interior bahía (aguas calmas)', uso: 'Ruta protegida del sur', nota: 'Cuando el sur pega afuera, el interior se mantiene remable. Vuelve antes de que cambie el viento.' }
+var NAVES_MENORES = [
+  { id: 'kayak', ico: '🛶', n: 'Kayak (travesía / sit-on-top)', bahia: 'El más versátil en la bahía: borde interior, Lirquén–Penco, pesca embarcada.', limite: 'No salir con sur > 20 nudos ni marejada SHOA. Olas < 0,5 m para iniciarse.', equipo: 'Chaleco siempre, remo de repuesto o pala dividida, achicador, falda/cubre, cabo de remolque 10 m, silbato, funda estanca.', aprende: 'Reingreso (dar vuelta el kayak y subir desde el agua) + remolque a compañero. Practícalo en orilla antes de alejarte.', cuida: 'Enjuague dulce tras cada salida, guarda a la sombra (el sol quiebra el plástico), revisa tapones y escotillas.' },
+  { id: 'sup', ico: '🏄', n: 'SUP (tabla con remo)', bahia: 'Ideal para amanecer calmo y borde interior. De pie ves delfines y cardumen.', limite: 'Solo con calma (< 12 nudos) y sin corriente viva. Con sur, ni intentarlo: la tabla es una vela.', equipo: 'Leash al tobillo SIEMPRE, chaleco o cinturón flotante, remo ajustado a tu altura, quilla puesta, funda estanca.', aprende: 'Caer a sotavento, subir por el centro de rodillas, remar de ambos lados cada 4–5 paladas. Vuelve con viento de frente primero.', cuida: 'Inflable: 12–15 PSI según marca, no lo dejes al sol inflado al máximo. Rígida: funda y canto protegido.' },
+  { id: 'bote', ico: '🚤', n: 'Bote / panga / chalupa (remo o motor pequeño)', bahia: 'El bote pescador de caleta Lirquén: pesca, traslado, faena. Respeta su canal y varadero.', limite: 'Motor < 10 HP igual exige aviso, chaleco y revisión. Con marejada o niebla espesa, quédate en tierra.', equipo: 'Chalecos para TODOS a bordo, achicador/bomba, remo de repuesto, ancla con 3× de cabo respecto al fondo, luces si es de noche, bidón extra y tapones.', aprende: 'Nudos: as de guía + vuelta de ancla (ver 🪢 Nudos). Fondeo por proa al viento, nunca de costado a la ola.', cuida: 'Motor: agua dulce al circuito, bujía y filtro por luna. Casco: achica, seca y revisa vía de agua. Varado: cuñas y nunca bajo el bote sin apoyo.' },
+  { id: 'vela', ico: '⛵', n: 'Vela menor (optimist, laser, vela artesanal)', bahia: 'Tardes de terral suave en el interior de la bahía. La mejor escuela de viento.', limite: 'Solo con viento leve–moderado (8–15 nudos) y sin tráfico de naves mayores. Primeras veces con instructor o lancha de apoyo.', equipo: 'Chaleco, adrizamiento practicado (dar vuelta el velero), cabo de remolque, cuchillo de cabo, silbato, escota sin nudos en la mano.', aprende: 'Rumbos: ceñida, través, popa. Virada por avante y trasluchada controlada. Regla de oro: escota en la mano, nunca amarrada al cuerpo.', cuida: 'Enjuague de velas y herrajes, mástil desarmado a la sombra, casco seco boca abajo. Revisa obenques y timón antes de cada salida.' },
+  { id: 'canoa', ico: '🛶', n: 'Canoa / wampo y embarcaciones tradicionales', bahia: 'Remo de pie o arrodillado, estable para pesca y travesía corta en aguas calmas.', limite: 'Aguas protegidas y sin oleaje. Carga baja y centrada; si entra agua, a orilla de inmediato.', equipo: 'Chaleco, remo simple de repuesto, achicador, cuerda de proa, bolsa estanca.', aprende: 'Remada en J para ir recto, cambio de lado sin balancear. Entrada y salida desde orilla baja, nunca desde roca alta.', cuida: 'Madera: seca a la sombra, aceite o barniz por temporada. Revisa costuras y filtraciones cada luna.' }
 ];
-var KAYAK_CHECK = [
+var NAV_VIENTO = [
+  { n: 'SUP', ok: 'Calma a brisa (< 12 nudos)', no: 'Sur moderado o más' },
+  { n: 'Kayak / canoa', ok: 'Hasta ~15 nudos con experiencia', no: 'Sur fuerte (> 20 nudos) o marejada' },
+  { n: 'Vela menor', ok: '8–15 nudos, terral suave', no: 'Calma total (no aprendes) ni temporal' },
+  { n: 'Bote a remo', ok: 'Calma, interior de bahía', no: 'Viento en contra + corriente viva' },
+  { n: 'Bote a motor', ok: 'Parte con mar calmo y buena luz', no: 'Niebla espesa, noche sin luces, marejada' }
+];
+var NAV_PUNTOS = [
+  { nombre: 'Caleta Lirquén (varadero)', uso: 'Lanzamiento principal · kayak, bote, SUP', nota: 'Pregunta a pescadores por tráfico de botes. Salida al amanecer con mar calmo. Estaciona sin bloquear varadero ni canal de salida.' },
+  { nombre: 'Playa de Penco (centro)', uso: 'Lanzamiento familiar · kayak y SUP', nota: 'Olas suaves con buen tiempo. Ideal para practicar remo corto 1–2 h. Ojo con bañistas en Walüng.' },
+  { nombre: 'Playa Negra (solo expertos)', uso: 'Travesía corta · kayak', nota: 'Roca + corriente. Solo con bajamar, mar calmo y compañía. Casco si hay oleaje.' },
+  { nombre: 'Borde interior bahía (aguas calmas)', uso: 'Ruta protegida del sur · todas las naves', nota: 'Cuando el sur pega afuera, el interior se mantiene navegable. Vuelve antes de que cambie el viento.' },
+  { nombre: 'Rampa / muelle caleta (botes y vela)', uso: 'Botes a motor y vela menor', nota: 'Embarca con calzado cerrado, motor abajo solo en agua. La vela se arma en tierra y se bota ya aparejada. Respeta turno de rampa.' }
+];
+var KAYAK_PUNTOS = NAV_PUNTOS;
+var NAV_CHECK = [
   { id: 'chaleco', t: 'Chaleco puesto y ajustado (siempre, sin excusa)' },
   { id: 'clima', t: 'Revisé 🌤️ Clima + 🌊 Mareas: sin sur fuerte ni marejada SHOA' },
-  { id: 'aviso', t: 'Avisé a alguien: ruta + hora de vuelta' },
+  { id: 'aviso', t: 'Avisé a alguien: embarcación usada + ruta + hora de vuelta' },
   { id: 'compa', t: 'No salgo solo/a (o aviso reforzado + ruta corta)' },
   { id: 'agua', t: 'Agua + gorro + bloqueador + ropa seca en bolsa estanca' },
   { id: 'cuerda', t: 'Cabo, silbato, linterna y celular en funda estanca' },
-  { id: 'faldon', t: 'Reviso casco/faldón, tapones y achicador antes de lanzar' }
+  { id: 'casco', t: 'Reviso casco/faldón/tapones/achicador (kayak) o ancla/luces/motor (bote) o jarcia/timón/adrizamiento (vela) antes de lanzar' },
+  { id: 'trafico', t: 'Miré tráfico de bahía: canal de Lirquén y naves mayores libres, distancia a botes pescadores' },
+  { id: 'limite', t: 'Mi embarcación está dentro de su límite de viento de hoy (ver tabla: SUP < 12 nudos, kayak < 15–20, vela 8–15)' }
 ];
+var KAYAK_CHECK = NAV_CHECK;
 function getKayak() { var a = store('kayakLog', []); return Array.isArray(a) ? a : []; }
 function getKayakCheck() { var o = store('kayakCheck', {}); return (o && typeof o === 'object') ? o : {}; }
 var kayTab = 'hoy';
 function switchKayTab(t) {
   kayTab = t;
-  [['hoy', 'kayHoyPanel', 'tabKayHoy'], ['bit', 'kayBitPanel', 'tabKayBit']].forEach(function (x) {
+  [['hoy', 'kayHoyPanel', 'tabKayHoy'], ['naves', 'kayNavesPanel', 'tabKayNaves'], ['seg', 'kaySegPanel', 'tabKaySeg'], ['cuidado', 'kayCuidadoPanel', 'tabKayCuidado'], ['bit', 'kayBitPanel', 'tabKayBit']].forEach(function (x) {
     var p = $(x[1]); if (p) p.classList.toggle('hidden', x[0] !== t);
     var b = $(x[2]); if (b) b.classList.toggle('btn-accent', x[0] === t);
   });
@@ -1133,10 +1156,10 @@ function renderKayHoy() {
     var k = todayKey(), data = getKayak();
     var hoy = data.filter(function (x) { return x.date === k; }).length;
     box.innerHTML = '<div class="su-24ce67">' +
-      '<span class="su-433de3"><b>🛶 Hoy — ' + esc(k) + '</b></span>' +
+      '<span class="su-433de3"><b>⛵ Hoy — ' + esc(k) + '</b></span>' +
       '<span class="chip su-e4aba6">' + hoy + ' hoy · ' + data.length + ' salidas</span></div>' +
       '<p class="muted su-e13d76">Ventana ideal: <b>2h antes/después de pleamar + amanecer + sin sur fuerte</b>. Revisa 🌊 Mareas y 🌤️ Clima ahora. ' + esc(lunaTxt(k)) + '</p>' +
-      '<p class="muted su-11a508">🌙 Luna nueva/llena = mareas vivas (más corriente): solo rutas protegidas y cortas.</p>';
+      '<p class="muted su-11a508">🌙 Luna nueva/llena = mareas vivas (más corriente): solo rutas protegidas y cortas. Elige tu embarcación en la pestaña <b>⛵ Embarcaciones</b> y respeta su límite de viento.</p>';
   }
   var pb = $('kayPuntosBox');
   if (pb) {
@@ -1163,11 +1186,65 @@ function renderKayHoy() {
     });
   }
 }
+function kayNaveNombre(id) {
+  var n = NAVES_MENORES.filter(function (x) { return x.id === id; })[0];
+  return n ? (n.ico + ' ' + n.n) : '🛶 Kayak (travesía / sit-on-top)';
+}
+function renderKayNaves() {
+  var box = $('kayNavesBox');
+  if (!box) return;
+  box.innerHTML = NAVES_MENORES.map(function (n) {
+    return '<div class="si-card su-cfa1ec"><h4 class="su-6cb285">' + esc(n.ico + ' ' + n.n) + '</h4>' +
+      '<p class="su-11a508">🌊 En bahía: ' + esc(n.bahia) + '</p>' +
+      '<p class="su-11a508">💨 Límite: <b>' + esc(n.limite) + '</b></p>' +
+      '<p class="su-11a508">🎒 Equipo: ' + esc(n.equipo) + '</p>' +
+      '<p class="su-11a508">📚 Aprende primero: ' + esc(n.aprende) + '</p>' +
+      '<p class="muted su-11a508">🧽 Cuidado: ' + esc(n.cuida) + '</p></div>';
+  }).join('') +
+  '<div class="menstrual-card su-d2c171"><h4>💨 ¿Con qué viento salgo hoy?</h4>' +
+  NAV_VIENTO.map(function (v) {
+    return '<p class="su-11a508">• <b>' + esc(v.n) + ':</b> ✅ ' + esc(v.ok) + ' · ⛔ ' + esc(v.no) + '</p>';
+  }).join('') + '</div>';
+}
+function renderKaySeg() {
+  var box = $('kaySegBox');
+  if (!box) return;
+  box.innerHTML =
+    '<div class="si-card su-cfa1ec"><h4 class="su-6cb285">⚓ Tráfico de bahía — tú eres el más chico</h4>' +
+    '<p class="su-11a508">• Naves mayores, remolcadores y pesqueros <b>tienen preferencia y no te ven</b>: cruza el canal de Lirquén de forma perpendicular, rápido y en grupo, nunca lo bordees remando.</p>' +
+    '<p class="su-11a508">• Distancia a botes pescadores y redes: <b>50 m o más</b>. Si levantan redes, no cortes por popa.</p>' +
+    '<p class="su-11a508">• De noche o con niebla: <b>luz blanca visible 360°</b> + chaleco con reflectante. Sin luz, no se sale.</p></div>' +
+    '<div class="si-card su-cfa1ec"><h4 class="su-6cb285">📋 Capitanía y reglas mínimas (Talcahuano)</h4>' +
+    '<p class="su-11a508">• Botes a motor y veleros se <b>matriculan</b> y su patrón rinde examen ante la Autoridad Marítima. Kayak y SUP no matriculan, pero el chaleco y el aviso de salida son igual de obligatorios.</p>' +
+    '<p class="su-11a508">• Avisa siempre: <b>quién sale, en qué embarcación, ruta y hora de vuelta</b>. Si cambias de plan, avisa de nuevo.</p>' +
+    '<p class="su-11a508">• Alcohol y mar no se mezclan: <b>cero alcohol al mando</b> de cualquier embarcación.</p></div>' +
+    '<div class="si-card su-cfa1ec"><h4 class="su-6cb285">🆘 Hombre al agua e hipotermia</h4>' +
+    '<p class="su-11a508">• <b>Kayak/SUP:</b> practica el reingreso en orilla. Si caes lejos: quédate con tu embarcación (flota y te hace visible), silba 3 veces, nada solo si la orilla está a < 100 m y sin corriente.</p>' +
+    '<p class="su-11a508">• <b>Bote:</b> motor apagado antes de ayudar, lanza por sotavento, sube por popa o escala. Fondea para no derivar.</p>' +
+    '<p class="su-11a508">• <b>Vela:</b> escota libre, virada para volver al caído, motor/apoyo si hay tráfico. Practica el adrizamiento con apoyo antes de salir solo.</p>' +
+    '<p class="su-11a508">• El agua de la bahía <b>está fría todo el año</b>: con temblor incontrolable o dedos agarrotados, sal del agua, abriga y termina la salida. Traje de neopreno de septiembre a mayo si pasas horas en el agua.</p></div>';
+}
+function renderKayCuidado() {
+  var box = $('kayCuidadoBox');
+  if (!box) return;
+  box.innerHTML =
+    '<div class="si-card su-cfa1ec"><h4 class="su-6cb285">🧽 Después de cada salida (todas)</h4>' +
+    '<p class="su-11a508">• Enjuague con agua dulce (casco, remos, chalecos, cabos). Seca a la sombra: el sol pudre plásticos, PVC y costuras.</p>' +
+    '<p class="su-11a508">• Guarda bajo techo o con funda, boca abajo o de canto. Nunca sobre el techo del auto por días: se deforma.</p></div>' +
+    '<div class="si-card su-cfa1ec"><h4 class="su-6cb285">🔧 Por material</h4>' +
+    '<p class="su-11a508">• <b>Plástico/fibra:</b> revisa golpes y filtraciones cada luna; repara con kit (fibra + resina) o parche térmico.</p>' +
+    '<p class="su-11a508">• <b>Inflables (SUP/bote PVC):</b> guarda desinflado al 80% en lugar fresco, válvula limpia, kit de pinchazos a mano.</p>' +
+    '<p class="su-11a508">• <b>Madera (canoa/bote):</b> seca completa, lija y barniz/aceite por temporada. Revisa clavos y calafateo.</p>' +
+    '<p class="su-11a508">• <b>Vela:</b> vela seca antes de guardar (el hongo la rompe), cabos aduja­dos, herrajes con vaselina.</p>' +
+    '<p class="su-11a508">• <b>Motor pequeño:</b> bencina fresca + aceite de mezcla, bujía de repuesto, agua dulce al refrigerar, bidón amarrado.</p></div>' +
+    '<div class="si-card su-cfa1ec"><h4 class="su-6cb285">🌙 Revisión por luna (5 minutos)</h4>' +
+    '<p class="su-11a508">Palpa cabos, prueba silbato y linterna, infla chalecos, revisa tapones y achicador. 5 minutos salvan una salida. Nudos de remolque y fondeo en 🪢 Nudos y Redes.</p></div>';
+}
 function kayShareText(arr) {
-  if (!arr.length) return 'Bitácora de kayak — Penco/Lirquén · sin salidas aún';
-  var t = '🛶 Bitácora de kayak — Penco/Lirquén\n' + arr.length + ' salidas\n\n';
+  if (!arr.length) return 'Bitácora de navegación menor — Penco/Lirquén · sin salidas aún';
+  var t = '⛵ Bitácora de navegación menor — Penco/Lirquén\n' + arr.length + ' salidas\n\n';
   arr.slice().sort(function (a, b) { return (a.date + (a.time || '')).localeCompare(b.date + (b.time || '')); }).forEach(function (e) {
-    t += '• ' + e.date + ' ' + (e.time || '') + ' · ' + (e.route || '—') + ' · ' + (e.cond || '—');
+    t += '• ' + e.date + ' ' + (e.time || '') + ' · ' + kayNaveNombre(e.nave || 'kayak') + ' · ' + (e.route || '—') + ' · ' + (e.cond || '—');
     if (e.notes) t += ' — ' + e.notes;
     t += '\n';
   });
@@ -1176,10 +1253,10 @@ function kayShareText(arr) {
 function renderKayLog() {
   var data = getKayak();
   logListRender('kayLogBox', 'kayStats', data, function (it) {
-    return '<div class="habit-item su-13313b"><span><b>' + esc(it.route || 'Remada') + '</b> — ' + esc(it.cond || '—') +
-      '<br><span class="muted su-11a508">' + esc(it.date) + ' ' + esc(it.time || '') + ' · ' + esc(lunaTxt(it.date)) + '</span><br><span class="muted su-11a508">' + esc(it.notes || '') + '</span></span>' +
+    return '<div class="habit-item su-13313b"><span><b>' + esc(it.route || 'Salida') + '</b> — ' + esc(it.cond || '—') +
+      '<br><span class="muted su-11a508">' + esc(kayNaveNombre(it.nave || 'kayak')) + ' · ' + esc(it.date) + ' ' + esc(it.time || '') + ' · ' + esc(lunaTxt(it.date)) + '</span><br><span class="muted su-11a508">' + esc(it.notes || '') + '</span></span>' +
       '<span class="su-0c0cb1"><button data-id="' + it.id + '" class="btn kay-del su-fd834a">✕</button></span></div>';
-  }, 'Sin salidas. Marca primero todo el checklist y anota tu primera remada corta con marea y viento.');
+  }, 'Sin salidas. Marca primero todo el checklist y anota tu primera salida corta con marea y viento.');
   var box = $('kayLogBox');
   if (!box || !data.length) return;
   box.querySelectorAll('.kay-del').forEach(function (b) {
@@ -1199,24 +1276,34 @@ function ensureKayDialog() {
   d.innerHTML =
     '<form method="dialog">' +
     '<div class="dlg-actions su-d2d053">' +
-    '<h3 class="su-ee0cfe">🛶 Kayak y remo — Penco / Lirquén</h3>' +
+    '<h3 class="su-ee0cfe">⛵ Navegación menor — Penco / Lirquén</h3>' +
     '<button type="button" id="kayCloseTop" class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    '<p class="muted su-77e2fe">Ventanas por <b>marea + viento</b>, puntos de lanzamiento y checklist. Si el sur pega o hay marejada: <b>no se sale</b>.</p>' +
+    '<p class="muted su-77e2fe">Kayak, SUP, botes y vela menor: ventanas por <b>marea + viento</b>, puntos de lanzamiento y checklist. Si el sur pega o hay marejada: <b>no se sale</b>.</p>' +
     '<div class="timer-tabs su-4dca21">' +
-    '<button type="button" id="tabKayHoy" class="btn btn-accent su-30e741">🛶 Hoy + checklist</button>' +
-    '<button type="button" id="tabKayBit" class="btn su-30e741">📓 Bitácora remadas</button></div>' +
+    '<button type="button" id="tabKayHoy" class="btn btn-accent su-30e741">⛵ Hoy + checklist</button>' +
+    '<button type="button" id="tabKayNaves" class="btn su-30e741">🛶 Embarcaciones</button>' +
+    '<button type="button" id="tabKaySeg" class="btn su-30e741">⚓ Seguridad</button>' +
+    '<button type="button" id="tabKayCuidado" class="btn su-30e741">🧽 Cuidado</button>' +
+    '<button type="button" id="tabKayBit" class="btn su-30e741">📓 Bitácora salidas</button></div>' +
     '<div id="kayHoyPanel"><div id="kayTodayBox" class="menstrual-card su-68a1a9"></div>' +
     '<div class="menstrual-card su-d2c171"><h4>✅ Checklist — todo marcado o no sales</h4><div id="kayCheckBox"></div>' +
     '<div class="dlg-actions su-a6fc0a">' +
     '<button type="button" id="kayGoTides" class="btn su-337714">🌊 Ver Mareas</button>' +
-    '<button type="button" id="kayGoWeather" class="btn su-337714">🌤️ Ver Clima</button></div></div>' +
+    '<button type="button" id="kayGoWeather" class="btn su-337714">🌤️ Ver Clima</button>' +
+    '<button type="button" id="kayGoNudos" class="btn su-337714">🪢 Ver Nudos</button></div></div>' +
     '<div class="menstrual-card su-d2c171"><h4>📍 Puntos de lanzamiento</h4><div id="kayPuntosBox" class="su-be2653"></div></div></div>' +
-    '<div id="kayBitPanel" class="hidden"><div class="menstrual-card su-d2c171"><h4>📓 Bitácora — remadas</h4>' +
-    '<div class="conv-row"><label>Fecha <input type="date" id="kayDate"></label><label>Hora <input type="time" id="kayTime" value="08:00"></label>' +
+    '<div id="kayNavesPanel" class="hidden"><div class="menstrual-card su-68a1a9"><h4>🛶⛵ Embarcaciones — qué usar y cuándo</h4>' +
+    '<p class="muted su-11a508">Cada embarcación tiene su viento y su equipo. Parte por la más simple (SUP o kayak en calma) y sube de nivel con compañía.</p></div>' +
+    '<div id="kayNavesBox" class="su-be2653"></div></div>' +
+    '<div id="kaySegPanel" class="hidden"><div id="kaySegBox" class="su-be2653"></div></div>' +
+    '<div id="kayCuidadoPanel" class="hidden"><div id="kayCuidadoBox" class="su-be2653"></div></div>' +
+    '<div id="kayBitPanel" class="hidden"><div class="menstrual-card su-d2c171"><h4>📓 Bitácora — salidas</h4>' +
+    '<div class="conv-row"><label>Embarcación <select id="kayNave"><option value="kayak">🛶 Kayak</option><option value="sup">🏄 SUP</option><option value="bote">🚤 Bote / panga</option><option value="vela">⛵ Vela menor</option><option value="canoa">🛶 Canoa / wampo</option></select></label>' +
+    '<label>Fecha <input type="date" id="kayDate"></label><label>Hora <input type="time" id="kayTime" value="08:00"></label>' +
     '<label>Ruta <input type="text" id="kayRoute" placeholder="ej: Lirquén–Penco interior" maxlength="40"></label></div>' +
     '<div class="conv-row"><label>Marea / viento <input type="text" id="kayCond" placeholder="ej: pleamar 08:20, calma" maxlength="40"></label></div>' +
     '<label>Notas <input type="text" id="kayNotes" placeholder="ej: 1 h, delfines, vuelta antes del sur" maxlength="80"></label>' +
-    '<div class="dlg-actions su-59a5a8"><button type="button" id="kayAdd" class="btn btn-accent su-30e741">+ Guardar remada</button></div>' +
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="kayAdd" class="btn btn-accent su-30e741">+ Guardar salida</button></div>' +
     '<div id="kayLogBox" class="habits-list su-62f8f6"></div>' +
     '<div class="dlg-actions su-cc4a4c"><span id="kayStats" class="muted su-11a508"></span>' +
     '<span class="su-3de8f9"><button type="button" id="kayShare" class="btn su-30e741">📤 Compartir</button>' +
@@ -1235,13 +1322,21 @@ function wireKayak() {
   if (g && !$('btnKayak')) {
     b0 = document.createElement('button');
     b0.id = 'btnKayak'; b0.className = 'btn'; b0.type = 'button';
-    b0.textContent = '🛶 Kayak';
+    b0.textContent = '⛵ Navegación menor';
     b0.setAttribute('data-sub', 'mar');
-    b0.setAttribute('data-keywords', 'kayak remo canoa bote lanzamiento lirquen penco marea viento sur seguridad chaleco travesia bahia');
+    b0.setAttribute('data-keywords', 'navegacion menor kayak sup canoa wampo bote panga chalupa vela velero optimist laser remo motor lanzamiento lirquen penco marea viento sur seguridad chaleco travesia bahia fondeo adrizamiento leash');
     var ref = $('btnIntermareal');
     if (ref && ref.parentNode === g) g.insertBefore(b0, ref.nextSibling);
     else g.appendChild(b0);
   }
+  // Si el botón ya existía (index.html), actualiza su etiqueta al nuevo nombre.
+  try {
+    var pre = $('btnKayak');
+    if (pre && pre.textContent.indexOf('Navegaci') < 0) {
+      pre.textContent = '⛵ Navegación menor';
+      pre.setAttribute('data-keywords', 'navegacion menor kayak sup canoa wampo bote panga chalupa vela velero optimist laser remo motor lanzamiento lirquen penco marea viento sur seguridad chaleco travesia bahia fondeo adrizamiento leash');
+    }
+  } catch (e0) {}
   ensureKayDialog();
   registerBtn('btnKayak');
   var btn = $('btnKayak');
@@ -1249,15 +1344,18 @@ function wireKayak() {
     btn.dataset.w = '1';
     btn.onclick = function () {
       switchKayTab(kayTab || 'hoy');
-      renderKayHoy(); renderKayLog();
+      renderKayHoy(); renderKayNaves(); renderKaySeg(); renderKayCuidado(); renderKayLog();
       var d = $('kayDate');
       if (d && !d.value) d.value = todayKey();
       openDlg('kayDialog');
     };
   }
-  var t1 = $('tabKayHoy'), t2 = $('tabKayBit');
+  var t1 = $('tabKayHoy'), t2 = $('tabKayBit'), tn = $('tabKayNaves'), ts = $('tabKaySeg'), tc = $('tabKayCuidado');
   if (t1 && !t1.dataset.w) { t1.dataset.w = '1'; t1.onclick = function () { switchKayTab('hoy'); }; }
   if (t2 && !t2.dataset.w) { t2.dataset.w = '1'; t2.onclick = function () { switchKayTab('bit'); }; }
+  if (tn && !tn.dataset.w) { tn.dataset.w = '1'; tn.onclick = function () { switchKayTab('naves'); renderKayNaves(); }; }
+  if (ts && !ts.dataset.w) { ts.dataset.w = '1'; ts.onclick = function () { switchKayTab('seg'); renderKaySeg(); }; }
+  if (tc && !tc.dataset.w) { tc.dataset.w = '1'; tc.onclick = function () { switchKayTab('cuidado'); renderKayCuidado(); }; }
   var ct = $('kayCloseTop'), cb = $('kayClose');
   if (ct && !ct.dataset.w) { ct.dataset.w = '1'; ct.onclick = function () { closeDlg('kayDialog'); }; }
   if (cb && !cb.dataset.w) { cb.dataset.w = '1'; cb.onclick = function () { closeDlg('kayDialog'); }; }
@@ -1270,10 +1368,11 @@ function wireKayak() {
       if (!date || !route) { alert('Fecha y ruta son obligatorias'); return; }
       getKayak().push({
         id: uid('ka'), date: date, time: ($('kayTime') || {}).value || '08:00',
+        nave: (($('kayNave') || {}).value || 'kayak'),
         route: route, cond: clean(($('kayCond') || {}).value || '', 40),
         notes: clean(($('kayNotes') || {}).value || '', 80)
       });
-      save('Remada guardada 🛶');
+      save('Salida guardada ⛵');
       $('kayRoute').value = ''; $('kayNotes').value = '';
       renderKayLog(); renderKayHoy();
     };
@@ -1282,7 +1381,7 @@ function wireKayak() {
   if (clear && !clear.dataset.w) {
     clear.dataset.w = '1';
     clear.onclick = function () {
-      if (!confirm('¿Borrar toda la bitácora de kayak?')) return;
+      if (!confirm('¿Borrar toda la bitácora de navegación menor?')) return;
       store('kayakLog', []).length = 0;
       save(); renderKayLog(); renderKayHoy();
     };
@@ -1293,7 +1392,7 @@ function wireKayak() {
     sh.onclick = function () {
       var d = getKayak();
       if (!d.length) { alert('Sin registros'); return; }
-      share('🛶 Mis remadas — Penco/Lirquén', kayShareText(d));
+      share('⛵ Mis salidas — Penco/Lirquén', kayShareText(d));
     };
   }
   var ex = $('kayExport');
@@ -1305,18 +1404,19 @@ function wireKayak() {
       var blob = new Blob([kayShareText(d)], { type: 'text/plain;charset=utf-8' });
       var a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
-      a.download = 'remadas-kayak-penco.txt';
+      a.download = 'navegacion-menor-penco.txt';
       document.body.appendChild(a); a.click();
       setTimeout(function () { try { URL.revokeObjectURL(a.href); a.remove(); } catch (e) {} }, 800);
     };
   }
-  var gt = $('kayGoTides'), gw = $('kayGoWeather'), gf = $('kayGoFish'), gb = $('kayGoBal');
+  var gt = $('kayGoTides'), gw = $('kayGoWeather'), gf = $('kayGoFish'), gb = $('kayGoBal'), gn = $('kayGoNudos');
   if (gt && !gt.dataset.w) { gt.dataset.w = '1'; gt.onclick = function () { gotoBtn('btnTides', 'kayDialog'); }; }
   if (gw && !gw.dataset.w) { gw.dataset.w = '1'; gw.onclick = function () { gotoBtn('btnWeather', 'kayDialog'); }; }
   if (gf && !gf.dataset.w) { gf.dataset.w = '1'; gf.onclick = function () { gotoBtn('btnFishing', 'kayDialog'); }; }
   if (gb && !gb.dataset.w) { gb.dataset.w = '1'; gb.onclick = function () { gotoBtn('btnBallenas', 'kayDialog'); }; }
+  if (gn && !gn.dataset.w) { gn.dataset.w = '1'; gn.onclick = function () { gotoBtn('btnNudos', 'kayDialog'); }; }
 }
-window.KayakPenco = { tab: switchKayTab, renderHoy: renderKayHoy, renderLog: renderKayLog, list: getKayak, puntos: KAYAK_PUNTOS };
+window.KayakPenco = { tab: switchKayTab, renderHoy: renderKayHoy, renderNaves: renderKayNaves, renderSeg: renderKaySeg, renderCuidado: renderKayCuidado, renderLog: renderKayLog, list: getKayak, puntos: NAV_PUNTOS, naves: NAVES_MENORES };
 
 /* ============================================================
    6. 💧 CAPTACIÓN DE AGUA DE LLUVIA (dentro de Agua)

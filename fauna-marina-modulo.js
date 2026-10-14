@@ -489,7 +489,7 @@ function renderGuia() {
     '<button type="button" class="btn fm-go su-337714" data-go="btnIntermareal">🦀 Intermareal</button>' +
     '<button type="button" class="btn fm-go su-337714" data-go="btnBallenas">🐋 Ballenas</button>' +
     '<button type="button" class="btn fm-go su-337714" data-go="btnBirds">🦅 Aves</button>' +
-    '<button type="button" class="btn fm-go su-337714" data-go="btnKayak">🛶 Kayak</button>' +
+    '<button type="button" class="btn fm-go su-337714" data-go="btnKayak">⛵ Navegación menor</button>' +
     '<button type="button" class="btn fm-go su-337714" data-go="btnTides">🌊 Mareas</button>' +
     '</div></div>';
 }

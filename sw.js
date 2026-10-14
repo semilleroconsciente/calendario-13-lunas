@@ -2,7 +2,7 @@
 // Copyright (C) 2026 Semillero Consciente. Licencia: GNU GPLv3 o posterior (ver COPYING).
 // SPDX-License-Identifier: GPL-3.0-or-later
 // v55
-const CACHE = 'cal13-v89-offline';
+const CACHE = 'cal13-v91-offline';
 
 // Lista completa de archivos que usa index.html (bare + con ?v=).
 // Si se agrega un JS nuevo en index.html, agregarlo aquí también (bare y ?v=).
@@ -28,6 +28,9 @@ const CORE = [
   './COPYING',
   './LICENSE.md',
   './LICENCIA-CONTENIDO-CC-BY-NC-SA-4.0.md',
+  './legal/terminos.html',
+  './legal/privacidad.html',
+  './legal/cookies.html',
   './data/territorios/index.json',
   './data/territorios/penco/actores.json',
   './data/territorios/penco/apoyo-emergencia.json',
@@ -250,6 +253,8 @@ const CORE = [
   './min/jsqr-lib.min.js?v=1',
   './min/kin-maya-modulo.min.js',
   './min/kin-maya-modulo.min.js?v=3',
+  './min/legal-modulo.min.js',
+  './min/legal-modulo.min.js?v=1',
   './min/linaje-modulos.min.js',
   './min/linaje-modulos.min.js?v=1',
   './min/matematicas-modulo.min.js',

@@ -70,7 +70,7 @@ var GROUPS = [
   { id: 'anfibios', titulo: '🐸 Bitácora anfibios', keys: ['anfibios'] },
   { id: 'apicola', titulo: '🐝 Bitácora apícola (meli)', keys: ['meliLog', 'meliCustom'] },
   { id: 'ballenas', titulo: '🐋 Bitácora ballenas', keys: ['ballenaLog'] },
-  { id: 'hongos', titulo: '🍄 Bitácora hongos / senderos / kayak', keys: ['hongoLog', 'senderoLog', 'kayakLog', 'kayakCheck', 'captaCfg', 'fuegoCheck'] },
+  { id: 'hongos', titulo: '🍄 Bitácora hongos / senderos / navegación menor', keys: ['hongoLog', 'senderoLog', 'kayakLog', 'kayakCheck', 'captaCfg', 'fuegoCheck'] },
   { id: 'menstrual', titulo: '🌸 Ciclo menstrual', keys: ['menstrual'] },
   { id: 'suenos', titulo: '💭 Diario de sueños', keys: ['suenosLog'] },
   { id: 'meditacion', titulo: '🧘 Bitácora meditación / respiración', keys: ['meditaLog', 'breathLog', 'transicionLog'] },

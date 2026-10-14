@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<!-- Calendario 13 Lunas · Almacenamiento local y cookies v1.0 (2026-10-14)
+     SPDX-License-Identifier: GPL-3.0-or-later -->
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta name="description" content="Política de almacenamiento local del Calendario 13 Lunas: sin cookies de rastreo, solo guardado en tu dispositivo (IndexedDB, localStorage, Service Worker).">
+<link rel="canonical" href="https://calendario-13-lunas.pages.dev/legal/cookies.html">
+<title>Almacenamiento local · Calendario de las 13 Lunas</title>
+<style>
+:root{color-scheme:dark light}
+body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;max-width:46rem;margin:0 auto;padding:1.2rem;line-height:1.6;background:#0b1026;color:#e8ecff}
+a{color:#e8c56a}header,footer{border-bottom:1px solid #e8c56a44;padding-bottom:.6rem;margin-bottom:1rem}
+footer{border:0;margin-top:2rem;font-size:.9rem;color:#aab}h1{font-size:1.5rem}h2{font-size:1.15rem;margin-top:1.6rem;color:#e8c56a}
+.card{background:#161e3f;border:1px solid #e8c56a33;border-radius:10px;padding:.8rem 1rem;margin:.8rem 0}
+table{width:100%;border-collapse:collapse;font-size:.92rem}th,td{border:1px solid #e8c56a33;padding:.45rem;text-align:left;vertical-align:top}
+code{background:#0006;padding:.1rem .3rem;border-radius:4px}small{color:#aab}
+@media(prefers-color-scheme:light){body{background:#faf8f2;color:#222}a{color:#8a5a00}.card{background:#fff;border-color:#ddd}th,td{border-color:#ddd}code{background:#eee}small,footer{color:#666}}
+</style>
+</head>
+<body>
+<header>
+<p><a href="../index.html">← Volver al Calendario</a></p>
+<h1>🍪 Almacenamiento local (sin cookies de rastreo)</h1>
+<p><small>v1.0 · Vigente desde 2026-10-14</small></p>
+<div class="card"><b>Lo esencial:</b> esta app <b>no usa cookies de terceros ni analytics</b>. Todo se guarda <b>en tu dispositivo</b> para funcionar offline. Nada de esto se envía a nuestros servidores (no tenemos).</div>
+</header>
+
+<h2>1. Qué guardamos en tu aparato</h2>
+<table>
+<tr><th>Tecnología</th><th>Claves / uso</th><th>Para qué</th></tr>
+<tr><td><b>IndexedDB</b> (<code>cal13idb</code>)</td><td>Bitácoras, hábitos, aportes, respaldos</td><td>Tus registros privados, offline, con cuota amplia</td></tr>
+<tr><td><b>localStorage</b></td><td><code>cal13-data</code>, <code>cal13-onboarding-v1</code>, <code>climaPencoCacheV1</code>, <code>airePencoCacheV1</code></td><td>Tus datos + guía inicial + caché de clima por horas</td></tr>
+<tr><td><b>Cache API / Service Worker</b> (<code>sw.js</code>)</td><td>Archivos de la app (HTML/JS/CSS/imágenes)</td><td>Abrir sin internet; se actualiza con cada versión</td></tr>
+</table>
+
+<h2>2. Lo que NO hacemos</h2>
+<ul>
+<li>Sin cookies publicitarias, sin píxeles, sin fingerprint.</li>
+<li>Sin geolocalización GPS obligatoria (el clima usa Penco por defecto).</li>
+<li>Sin envío automático de tus bitácoras a ninguna nube.</li>
+</ul>
+
+<h2>3. Terceros que sí pueden usar sus propias cookies</h2>
+<p>Solo si TÚ los visitas: <b>Open-Meteo</b> (clima), <b>MercadoPago / PayPal</b> (donar), <b>GitHub / Cloudflare</b> (descargas/hosting). Revisa sus políticas; puedes bloquear cookies de terceros en tu navegador y la app seguirá funcionando offline.</p>
+
+<h2>4. Cómo ver, borrar o exportar</h2>
+<ul>
+<li><b>Exportar:</b> app → Comunidad → Respaldo → Exportar (te llevas tu JSON).</li>
+<li><b>Borrar todo:</b> Respaldo → Borrar datos + en tu navegador: <i>Ajustes → Privacidad → Borrar datos del sitio</i>. En Android: <i>Ajustes → Apps → 13 Lunas → Almacenamiento → Borrar</i>.</li>
+<li><b>Clima:</b> se recalcula solo; borrar <code>climaPencoCacheV1</code> fuerza dato fresco.</li>
+</ul>
+
+<h2>5. Consentimiento</h2>
+<p>Al usar la app y guardar tu primera nota aceptas este almacenamiento local (Ley 19.628 art. 4 y Ley 21.719). Puedes revocar dejando de guardar y borrando los datos; la app base seguirá abriendo (sin tus registros).</p>
+
+<footer>
+<p><a href="./terminos.html">Términos</a> · <a href="./privacidad.html">Privacidad</a> · <a href="../LICENSE.md">Licencias</a> · <a href="../index.html">Calendario</a></p>
+<p><small>© 2026 Semillero Consciente · Código GPLv3+ · Contenido CC BY-NC-SA 4.0</small></p>
+</footer>
+</body>
+</html>
