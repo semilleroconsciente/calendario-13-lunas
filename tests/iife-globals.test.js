@@ -23,12 +23,12 @@ const EXCLUIR = new Set([
 ]);
 
 // Colisiones CONOCIDAS a la fecha (documentadas, no nuevas):
-// renderer.js (núcleo, carga primero) define estos helpers y los módulos
-// de respaldo/QR los redefinen al cargarse después (ganan los módulos).
-// Meta: eliminar el duplicado en renderer.js y vaciar esta lista.
+// P2-A (2026-10-13): applyBitacoraJSON/applyBackupJSON eran FALSOS POSITIVOS
+// del detector windowAssigns (contaba `window.X ===` como asignación).
+// Tras corregir el regex, solo queda la redefinición INTENCIONAL por diseño:
+// data.js expone el fallback embebido y territorio.js lo reemplaza por el
+// territorio activo (window.pencoData = pd).
 const CONOCIDAS = {
-  applyBitacoraJSON: ['renderer.js', 'bitacoras-respaldo-modulo.js'],
-  applyBackupJSON: ['renderer.js', 'qr-sync-modulo.js'],
   // data.js expone el fallback embebido y territorio.js lo reemplaza por el
   // territorio activo (window.pencoData = pd). Redefinición por diseño.
   pencoData: ['data.js', 'territorio.js'],
@@ -185,9 +185,12 @@ function globalesDe(sb) {
 // detección dinámica: sin esto, una REDEFINICIÓN (el caso que rompe en
 // silencio) es invisible, porque el global ya existe y el diff por archivo
 // solo ve globales *nuevos*.
+// P2-A: excluye comparaciones (==, ===, !==) y arrow (=>): antes
+// `typeof window.X === 'function'` contaba como definición (falso positivo
+// applyBackupJSON/applyBitacoraJSON). Solo `=` simple cuenta.
 function windowAssigns(codigo) {
   const set = new Set();
-  const re = /(?:window|globalThis)\.([A-Za-z0-9_$]+)\s*=/g;
+  const re = /(?<![=!<>-])(?:window|globalThis)\.([A-Za-z0-9_$]+)\s*=(?![=>])/g;
   let m;
   while ((m = re.exec(codigo))) set.add(m[1]);
   return set;

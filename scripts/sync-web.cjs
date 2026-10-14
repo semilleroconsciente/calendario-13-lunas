@@ -80,7 +80,7 @@ const ELECTRON_ONLY = new Set(['main.js', 'preload.js', 'capacitor.config.js']);
 const WEB_EXT = ['.js', '.css'];
 const needInWeb = rootOnly.filter((f) => {
   if (ELECTRON_ONLY.has(f) || f.startsWith('docs/') || f.startsWith('scripts/')) return false;
-  if (f === '_headers' || f === 'manifest.json') return true;
+  if (f === '_headers' || f === 'manifest.json' || f === 'robots.txt' || f === 'sitemap.xml') return true;
   // min/ (salida de build:min) sí se despliega en web/ para PWA y Android.
   if (f.startsWith('min/')) return WEB_EXT.includes(path.extname(f)) || f.endsWith('.hashes.json');
   // templates/*.html: fuentes de diálogos; el bundle las embebe, pero el

@@ -31,7 +31,7 @@ describe('manifest + cableado', () => {
     assert.ok(html.includes('min/storage-idb.min.js?v=1'), 'falta storage-idb minificado');
     assert.ok(html.includes('boot-modulos.js?v=1'), 'falta boot-modulos diferido (CSP fase 1)');
     assert.ok(html.includes('sw-registro.js?v=1'), 'falta sw-registro diferido (CSP fase 1)');
-    assert.ok(!/<script(?![^>]*src)/.test(html), 'queda <script> inline en index.html');
+    assert.ok(!/<script(?![^>]*src)(?![^>]*type="application\/ld\+json")/.test(html), 'queda <script> inline en index.html');
     // MODS vive en boot-modulos.js desde la CSP fase 1 (no en index.html).
     const boot = read('boot-modulos.js');
     for (const mod of ['min/accesibilidad-modulo.min.js?v=1', 'min/onboarding-modulo.min.js?v=1', 'min/auto-backup-modulo.min.js?v=1']) {

@@ -7,6 +7,7 @@ const path = require('path');
 const ROOT = path.join(__dirname, '..');
 const LIMITS = {
   'renderer.js': 1150 * 1024,
+  'renderer-territorio-vivo.js': 150 * 1024,
   'nuevos-modulos.js': 450 * 1024,
   'index.html': 450 * 1024,
   'styles.css': 150 * 1024,

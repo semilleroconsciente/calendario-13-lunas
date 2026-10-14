@@ -11,13 +11,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#0b1026">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; font-src 'self'; connect-src 'self' https://api.open-meteo.com https://air-quality-api.open-meteo.com; object-src 'none'; base-uri 'self'; form-action 'self'">
-  <title>Calendario de las 13 Lunas</title>
+  <meta name="description" content="Calendario de las 13 Lunas — Mari Küla Küyen. 13 lunas x 28 días, siembra lunar, mareas SHOA Penco-Talcahuano, clima, territorio Bío-Bío. PWA offline, 100% libre (GPLv3).">
+  <meta name="author" content="Semillero Consciente — Penco, Chile">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://calendario-13-lunas.pages.dev/">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_CL">
+  <meta property="og:title" content="Calendario de las 13 Lunas — Mari Küla Küyen">
+  <meta property="og:description" content="13 lunas x 28 días, siembra lunar, mareas SHOA, bosque nativo y vida comunitaria en Penco. PWA offline sin publicidad.">
+  <meta property="og:url" content="https://calendario-13-lunas.pages.dev/">
+  <meta property="og:image" content="https://calendario-13-lunas.pages.dev/screenshots/desktop-1280x720.png">
+  <meta property="og:image:width" content="1280">
+  <meta property="og:image:height" content="720">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Calendario de las 13 Lunas — Mari Küla Küyen">
+  <meta name="twitter:description" content="Calendario lunar 13x28, siembra, mareas y territorio Penco. Offline y libre.">
+  <meta name="twitter:image" content="https://calendario-13-lunas.pages.dev/screenshots/desktop-1280x720.png">
+  <title>Calendario de las 13 Lunas · Mari Küla Küyen — Penco</title>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Calendario de las 13 Lunas","alternateName":"Mari Küla Küyen","description":"Calendario de 13 lunas x 28 días con siembra lunar, mareas SHOA y memoria territorial de Penco, Bío-Bío. PWA offline.","url":"https://calendario-13-lunas.pages.dev/","inLanguage":"es-CL","operatingSystem":"Web, Android, Windows","license":"https://www.gnu.org/licenses/gpl-3.0.html","author":{"@type":"Organization","name":"Semillero Consciente","email":"semilleroconsciente@gmail.com"},"offers":{"@type":"Offer","price":"0","priceCurrency":"CLP"}}</script>
   <link rel="stylesheet" href="min/styles.min.css?v=13">
   <link rel="stylesheet" href="min/styles-csp.min.css?v=1">
   <link rel="stylesheet" href="min/splash.min.css?v=1">
   <link rel="manifest" href="manifest.json">
   <link rel="preconnect" href="https://api.open-meteo.com">
   <link rel="preconnect" href="https://air-quality-api.open-meteo.com">
+  <link rel="preload" href="min/renderer.min.js?v=16" as="script" fetchpriority="high">
 </head>
 <body>
   <div id="bootSplash" aria-hidden="true"><div class="boot-box"><div class="boot-spin"></div><div class="boot-title">Calendario de las 13 Lunas</div><div class="boot-sub">Cargando calendario...</div></div></div>
@@ -66,10 +84,10 @@
 
     <section id="viewBar" aria-label="Cambiar vista del calendario">
       <div class="view-switch" role="tablist" aria-label="Vistas">
-        <button type="button" id="viewLuna" class="btn btn-accent view-btn" role="tab" aria-selected="true" title="Vista por defecto: luna de 28 días (13 lunas)">🌙 Luna</button>
-        <button type="button" id="viewSemanaLunar" class="btn view-btn" role="tab" aria-selected="false" title="Semana lunar: bloques 01-07, 08-14, 15-21 y 22-28 de la luna, con fase e iluminación">🌗 Semana lunar</button>
-        <button type="button" id="viewMes" class="btn view-btn" role="tab" aria-selected="false" title="Vista mensual gregoriana">📅 Mes</button>
-        <button type="button" id="viewSemana" class="btn view-btn" role="tab" aria-selected="false" title="Vista semanal gregoriana (lunes a domingo) con número de semana ISO">🗓️ Semana</button>
+        <button type="button" id="viewLuna" class="btn btn-accent view-btn" role="tab" aria-selected="true" title="Vista por defecto: luna de 28 días (13 lunas)" aria-label="Vista lunar de 28 días">🌙 Luna</button>
+        <button type="button" id="viewSemanaLunar" class="btn view-btn" role="tab" aria-selected="false" title="Semana lunar: bloques 01-07, 08-14, 15-21 y 22-28 de la luna, con fase e iluminación" aria-label="Vista de semana lunar">🌗 Semana lunar</button>
+        <button type="button" id="viewMes" class="btn view-btn" role="tab" aria-selected="false" title="Vista mensual gregoriana" aria-label="Vista de mes gregoriano">📅 Mes</button>
+        <button type="button" id="viewSemana" class="btn view-btn" role="tab" aria-selected="false" title="Vista semanal gregoriana (lunes a domingo) con número de semana ISO" aria-label="Vista de semana gregoriana">🗓️ Semana</button>
       </div>
       <div id="viewNav" class="view-nav hidden">
         <button type="button" id="viewPrev" class="btn btn-icon" title="Anterior" aria-label="Anterior">◀</button>
@@ -432,12 +450,12 @@
   
 
   <nav id="mobileDock" aria-label="Navegación móvil">
-    <button type="button" id="dockHoy" class="dock-btn" title="Día de hoy">◉<small>Hoy</small></button>
-    <button type="button" id="dockLuna" class="dock-btn" title="Vista mensual lunar (28 días)">🌙<small>Luna</small></button>
-    <button type="button" id="dockTools" class="dock-btn" title="Herramientas">🧰<small>Herram.</small></button>
-    <button type="button" id="dockGuia" class="dock-btn" title="Guía">❓<small>Guía</small></button>
-    <button type="button" id="dockConf" class="dock-btn" title="Personalizar">⚙️<small>Ajustes</small></button>
-    <button type="button" id="dockFull" class="dock-btn" title="Vista completa">🖥️<small>Completa</small></button>
+    <button type="button" id="dockHoy" class="dock-btn" title="Día de hoy" aria-label="Ir al día de hoy">◉<small>Hoy</small></button>
+    <button type="button" id="dockLuna" class="dock-btn" title="Vista mensual lunar (28 días)" aria-label="Vista lunar de 28 días">🌙<small>Luna</small></button>
+    <button type="button" id="dockTools" class="dock-btn" title="Herramientas" aria-label="Abrir herramientas">🧰<small>Herram.</small></button>
+    <button type="button" id="dockGuia" class="dock-btn" title="Guía" aria-label="Abrir guía de uso">❓<small>Guía</small></button>
+    <button type="button" id="dockConf" class="dock-btn" title="Personalizar" aria-label="Abrir ajustes y personalización">⚙️<small>Ajustes</small></button>
+    <button type="button" id="dockFull" class="dock-btn" title="Vista completa" aria-label="Ver vista completa de escritorio">🖥️<small>Completa</small></button>
   </nav>
 
   <script defer src="min/web-api.min.js?v=9"></script>
@@ -449,6 +467,7 @@
   <script defer src="min/cal.min.js?v=9"></script>
   <script defer src="min/templates-bundled.min.js?v=1"></script>
   <script defer src="min/core-bootstrap.min.js?v=1"></script>
+  <script defer src="min/core-sanitize.min.js?v=1"></script>
   <script defer src="min/core-audio.min.js?v=1"></script>
   <script defer src="min/core-themes.min.js?v=1"></script>
   <script defer src="min/core-storage.min.js?v=1"></script>
@@ -456,6 +475,7 @@
   <script defer src="min/core-dialogo-dia.min.js?v=1"></script>
   <script defer src="min/core-clima.min.js?v=1"></script>
   <script defer src="min/renderer.min.js?v=16"></script>
+  <script defer src="min/renderer-territorio-vivo.min.js?v=1"></script>
   <script defer src="min/dialogo-tamano.min.js?v=1"></script>
   <script defer src="min/nuevos-modulos.min.js?v=9"></script>
   <!-- Modulos no criticos: carga diferida tras la primera pintura (CSP fase 1: archivos externos). -->

@@ -21,10 +21,14 @@
 body {
   display: flex;
   height: 100vh;
+  height: 100dvh;
   overflow: hidden;
   font-family: 'Segoe UI', system-ui, sans-serif;
   background: radial-gradient(ellipse at 70% -10%, #1a2450 0%, var(--bg) 55%);
   color: var(--text);
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
 }
 
 #sidebar {
@@ -68,7 +72,7 @@ body {
 .moon-btn.dft .num { color: #c9a0dc; }
 .sidebar-foot { margin-top: 18px; font-size: 11px; color: var(--muted); word-break: break-all; }
 
-#main { flex: 1; min-width: 0; overflow-y: auto; padding: 22px 28px 40px; }
+#main { flex: 1; min-width: 0; overflow-y: auto; padding: 22px 28px calc(40px + env(safe-area-inset-bottom)); }
 
 #lunaHeader { margin-bottom: 18px; }
 .lh-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
@@ -534,7 +538,7 @@ body[data-theme="medianoche"] { --bg:#050508; --bg2:#0a0a10; --panel:#141418; --
 .tz-table tr.next-day td { background: #8fb8ff0d; }
 @media (max-width: 560px) { .tz-chile { grid-template-columns: 1fr; } .tz-diff-grid, .tz-steps { grid-template-columns: 1fr; } .tz-body { padding-left: 12px; } }
 
-#convertDialog, #timerDialog, #ekadashiDialog, #siembraDialog, #menstrualDialog, #medicDialog, #nutriDialog, #habitsDialog, #donateDialog, #helpDialog, #circadianDialog, #goldenDialog, #disciplineDialog, #dreamsDialog, #mealDialog, #shoppingDialog, #financeDialog, #energyDialog, #breathDialog, #scheduleDialog, #fishingDialog, #gymDialog, #birdsDialog, #intermarealDialog, #bosqueDialog, #floraDialog, #astroDialog, #comunaDialog, #talleresPencoDialog, #firstAidDialog, #animalCareDialog, #violenceDialog, #homeTasksDialog, #espiritualDialog, #psicoDialog, #metodosDialog, #ajedrezDialog, #actoresDialog, #aireDialog, #lenaDialog, #lawenDialog, #compostDialog, #muniDialog, #englishDialog, #guitarDialog, #memoryDialog, #mapuDialog, #talesDialog, #crianzaDialog { width: 520px; max-width: 96vw; max-height: 88vh; overflow-y: auto; }
+#convertDialog, #timerDialog, #ekadashiDialog, #siembraDialog, #menstrualDialog, #medicDialog, #nutriDialog, #habitsDialog, #donateDialog, #helpDialog, #circadianDialog, #goldenDialog, #disciplineDialog, #dreamsDialog, #mealDialog, #shoppingDialog, #financeDialog, #energyDialog, #breathDialog, #scheduleDialog, #fishingDialog, #gymDialog, #birdsDialog, #intermarealDialog, #bosqueDialog, #floraDialog, #astroDialog, #comunaDialog, #talleresPencoDialog, #firstAidDialog, #animalCareDialog, #violenceDialog, #homeTasksDialog, #espiritualDialog, #psicoDialog, #metodosDialog, #ajedrezDialog, #actoresDialog, #aireDialog, #lenaDialog, #lawenDialog, #compostDialog, #muniDialog, #englishDialog, #guitarDialog, #memoryDialog, #mapuDialog, #talesDialog, #taleLunaDialog, #crianzaDialog { width: 520px; max-width: 96vw; max-height: 88vh; overflow-y: auto; }
 #helpDialog, #disciplineDialog, #dreamsDialog, #breathDialog, #scheduleDialog, #fishingDialog, #birdsDialog, #intermarealDialog, #bosqueDialog, #floraDialog, #astroDialog, #comunaDialog, #talleresPencoDialog, #studyDialog, #firstAidDialog, #animalCareDialog, #violenceDialog, #homeTasksDialog, #espiritualDialog, #psicoDialog, #metodosDialog, #vozDialog, #ajedrezDialog, #actoresDialog { width: 680px; }
 /* ♟️ Ajedrez */
 .aj-wrap { max-width: 440px; margin: 0 auto; }
@@ -618,6 +622,43 @@ body[data-theme="medianoche"] { --bg:#050508; --bg2:#0a0a10; --panel:#141418; --
 .fishing-species { display: flex; flex-direction: column; gap: 6px; max-height: 260px; overflow-y: auto; }
 .fishing-species-item { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; font-size: 11px; line-height: 1.4; }
 .fishing-species-item b { color: var(--gold); }
+/* === Bosque nativo: especies + ecosistema === */
+.bosque-sp-toolbar { display: flex; flex-direction: column; gap: 8px; margin-bottom: 8px; }
+.bosque-sp-counts { display: flex; flex-wrap: wrap; gap: 6px; }
+#bosqueCatFilter, #ecoFilter { width: 100%; padding: 9px 10px; border-radius: 8px; border: 1px solid var(--line); background: var(--bg2); color: var(--text); font-size: 13px; }
+.bosque-sp-filters { display: flex; flex-wrap: wrap; gap: 8px; align-items: end; font-size: 12px; color: var(--muted); }
+.bosque-sp-filters select { padding: 6px 8px; border-radius: 8px; border: 1px solid var(--line); background: var(--bg2); color: var(--text); font-size: 12px; }
+.bosque-sp-check { display: flex; align-items: center; gap: 6px; }
+.bosque-sp-hint { font-size: 11px; }
+.bosque-sp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; max-height: 340px; overflow-y: auto; padding-right: 2px; }
+.bosque-sp-card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 10px 11px; font-size: 12px; line-height: 1.45; cursor: pointer; transition: transform .12s ease, border-color .12s ease; }
+.bosque-sp-card:hover { border-color: var(--gold); transform: translateY(-1px); }
+.bosque-sp-card:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.bosque-sp-card.is-prot { border-color: #e8c56a88; box-shadow: inset 0 0 0 1px #e8c56a33; }
+.bosque-sp-card.eco-mia, .bosque-sp-card.mia { border-style: dashed; }
+.bosque-sp-top { display: flex; gap: 8px; align-items: flex-start; }
+.bosque-sp-ico { font-size: 26px; line-height: 1; }
+.bosque-sp-card b, .eco-card b { color: var(--gold); }
+.bosque-sp-cient, .eco-cient { font-size: 11px; }
+.bosque-sp-tags { display: flex; flex-wrap: wrap; gap: 4px; margin: 6px 0; }
+.bosque-sp-prot { border-color: #e8c56a88; }
+.bosque-sp-meta { font-size: 11px; color: var(--text); opacity: .92; }
+.bosque-sp-sem { font-size: 11px; color: var(--accent); margin-top: 2px; }
+.bosque-sp-det { margin-top: 4px; font-size: 11px; }
+.bosque-sp-det summary { cursor: pointer; color: var(--muted); }
+.bosque-sp-actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.bosque-sp-actions .btn { font-size: 11px; padding: 5px 9px; }
+.eco-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 8px 0; }
+.eco-card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 9px 10px; font-size: 12px; line-height: 1.45; }
+.eco-card-top { display: flex; gap: 8px; align-items: flex-start; margin-bottom: 4px; }
+.eco-ico { font-size: 24px; line-height: 1; }
+.eco-rol { margin: 2px 0; }
+.eco-temp { font-size: 11px; }
+.eco-cons { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; margin-top: 4px; font-size: 11px; }
+.eco-mia { border-style: dashed; border-color: var(--gold); }
+#ecoIndex { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
+#ecoIndex .chip { text-decoration: none; }
+@media (max-width: 640px) { .bosque-sp-grid, .eco-grid, .fishing-grid { grid-template-columns: 1fr; } }
 .breath-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
 .breath-card { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; cursor: pointer; font-size: 12px; line-height: 1.4; }
 .breath-card.sel { border-color: var(--gold); background: var(--card-hover); outline: 2px solid var(--gold); }
@@ -1442,3 +1483,23 @@ body[data-force-mobile="1"][data-mview="luna"] #lunaPager, body[data-force-mobil
 body[data-force-mobile="1"] .dow-row.dow-week { display: none !important; }
 body[data-force-mobile="1"] .week-grid { grid-template-columns: 1fr !important; gap: 6px !important; }
 body[data-force-mobile="1"] #btnVistaCelular { width: 100%; margin-bottom: 8px; }
+/* === Cuentos lunares: mini-reproductor === */
+.tales-head { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.tales-head h4 { margin: 0; }
+.tales-player { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 6px 8px; margin: 6px 0; }
+.tales-player .tales-play { white-space: nowrap; }
+.tales-player .tales-stop.hidden { display: none; }
+.tales-player .tales-seek { flex: 1 1 140px; min-width: 120px; accent-color: var(--gold); cursor: pointer; }
+.tales-player .tales-seek:disabled { opacity: .5; cursor: default; }
+.tales-player .tales-time { font-size: 12px; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.tales-player .tales-rate { background: var(--card); color: var(--text); border: 1px solid var(--line); border-radius: 8px; padding: 2px 4px; font-size: 12px; }
+.tales-player .tales-status { font-size: 12px; flex-basis: 100%; }
+.tales-player .tales-status .btn { margin: 2px 4px 2px 0; padding: 2px 8px; font-size: 12px; }
+.tales-card:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+/* === Cuento lunar en ventana === */
+#taleLunaDialog { width: 560px; }
+#taleLunaTexto { font-size: 15px; line-height: 1.75; white-space: pre-line; }
+#taleLunaMeta { margin-bottom: 4px; }
+#taleLunaPlayer { margin: 8px 0; }
+#taleLunaPlayer .tales-player { margin: 0; }
+#taleLunaView.hidden, #taleLunaEditBox.hidden { display: none; }

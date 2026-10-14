@@ -39,7 +39,11 @@ function createWindow() {
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
-      nodeIntegration: false
+      nodeIntegration: false,
+      sandbox: true,
+      webSecurity: true,
+      allowRunningInsecureContent: false,
+      enableWebSQL: false
     }
   });
   // Muestra en cuanto hay algo que pintar (no espera a los 50+ scripts diferidos).
@@ -165,6 +169,16 @@ ipcMain.handle('openExternal', async (_e, url) => {
   try { await shell.openExternal(url); return true; } catch { return false; }
 });
 
+function sanitizePdfHtml(html) {
+  // Sanea el HTML antes de cargarlo en la ventana oculta de impresión:
+  // elimina scripts/iframes/objects y handlers javascript: (las notas del
+  // usuario pueden contenerlos). No es render fiel al 100%, es impresión segura.
+  let s = String(html || '');
+  s = s.replace(/<script[\s\S]*?<\/script\s*>/gi, '').replace(/<style[\s\S]*?<\/style\s*>/gi, '').replace(/<(iframe|object|embed|link|meta|base|form)[\s\S]*?<\/\1\s*>/gi, '').replace(/<(iframe|object|embed|link|meta|base|form)(\s[^>]*)?\/?>/gi, '');
+  s = s.replace(/\son[a-z]+\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi, '').replace(/(href|src|action)\s*=\s*("|')\s*javascript:[^"']*\2/gi, '$1=$2#$2');
+  return s;
+}
+
 ipcMain.handle('export:pdf', async (_e, html) => {
   const { canceled, filePath } = await dialog.showSaveDialog(win, {
     title: 'Exportar calendario a PDF',
@@ -172,8 +186,19 @@ ipcMain.handle('export:pdf', async (_e, html) => {
     filters: [{ name: 'PDF', extensions: ['pdf'] }]
   });
   if (canceled || !filePath) return null;
-  const pdfWin = new BrowserWindow({ show: false, webPreferences: { offscreen: true } });
-  await pdfWin.loadURL('data:text/html;charset=utf-8,' + encodeURIComponent(html));
+  const pdfWin = new BrowserWindow({
+    show: false,
+    webPreferences: {
+      offscreen: true,
+      contextIsolation: true,
+      nodeIntegration: false,
+      sandbox: true,
+      webSecurity: true,
+      allowRunningInsecureContent: false,
+      javascript: false
+    }
+  });
+  await pdfWin.loadURL('data:text/html;charset=utf-8,' + encodeURIComponent(sanitizePdfHtml(html)));
   await new Promise(r => setTimeout(r, 600));
   const pdf = await pdfWin.webContents.printToPDF({
     landscape: false,

@@ -31,7 +31,7 @@ http.createServer((req, res) => {
   const CSP = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; font-src 'self'; connect-src 'self' https://api.open-meteo.com https://air-quality-api.open-meteo.com; object-src 'none'; base-uri 'self'; form-action 'self'";
   const sec = {
     'X-Content-Type-Options': 'nosniff',
-    'X-Frame-Options': 'DENY',
+    'X-Frame-Options': 'SAMEORIGIN',
     'Referrer-Policy': 'strict-origin-when-cross-origin',
     'Content-Security-Policy': CSP,
     // microfono/camara en (self): los usan Voz de los Abuelos (audio) y QR-sync (video).
@@ -62,7 +62,13 @@ http.createServer((req, res) => {
     if (req.method === 'HEAD') { res.writeHead(200, headers); return res.end(); }
     const acceptEnc = req.headers['accept-encoding'] || '';
     const compressible = ['.html','.css','.js','.json','.svg'].includes(ext);
-    if (compressible && acceptEnc.includes('gzip')) {
+    // P2-C: prefiere brotli (más denso que gzip) si el cliente lo acepta.
+    if (compressible && acceptEnc.includes('br')) {
+      headers['Content-Encoding'] = 'br';
+      delete headers['Content-Length'];
+      res.writeHead(200, headers);
+      fs.createReadStream(file).pipe(zlib.createBrotliCompress()).pipe(res);
+    } else if (compressible && acceptEnc.includes('gzip')) {
       headers['Content-Encoding'] = 'gzip';
       delete headers['Content-Length'];
       res.writeHead(200, headers);
@@ -72,4 +78,4 @@ http.createServer((req, res) => {
       fs.createReadStream(file).pipe(res);
     }
   });
-}).listen(8137, '0.0.0.0', () => console.log('Calendario web: http://localhost:8137  (seguro, gzip, anti-traversal)'));
+}).listen(8137, '0.0.0.0', () => console.log('Calendario web: http://localhost:8137  (seguro, brotli+gzip, anti-traversal)'));

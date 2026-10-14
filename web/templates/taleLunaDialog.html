@@ -1,0 +1,30 @@
+<dialog id="taleLunaDialog">
+    <form method="dialog">
+      <div class="dlg-actions su-d2d053">
+        <h3 id="taleLunaTitle" class="su-ee0cfe">🌙 Cuento</h3>
+        <button type="button" id="taleLunaCloseTop" class="btn btn-icon" title="Cerrar" aria-label="Cerrar">✕</button>
+      </div>
+      <p id="taleLunaMeta" class="muted su-77e2fe"></p>
+      <div id="taleLunaPlayer"></div>
+      <div id="taleLunaView">
+        <p id="taleLunaTexto" class="su-a46e7d"></p>
+        <p class="su-c6ec8a"><b>Moraleja:</b> <i id="taleLunaMoral"></i></p>
+        <div class="dlg-actions su-d6c2a3">
+          <button type="button" id="taleLunaEditBtn" class="btn btn-accent su-30e741">✏️ Editar este cuento</button>
+        </div>
+      </div>
+      <div id="taleLunaEditBox" class="menstrual-card hidden su-d2c171">
+        <h4 class="su-e39eba">✏️ Editar cuento — Luna <span id="taleLunaEditN"></span></h4>
+        <label>Título <input type="text" id="taleLunaEditTitle" maxlength="60"></label>
+        <label>Cuento <textarea id="taleLunaEditText" rows="6" placeholder="Escribe tu versión..."></textarea></label>
+        <label>Moraleja <input type="text" id="taleLunaEditMoral" maxlength="80" placeholder="ej: Cada semilla tiene su tiempo"></label>
+        <div class="dlg-actions su-59a5a8">
+          <button type="button" id="taleLunaSave" class="btn btn-accent su-30e741">💾 Guardar cuento</button>
+          <button type="button" id="taleLunaRestore" class="btn su-30e741">↺ Restaurar original</button>
+          <button type="button" id="taleLunaCancelEdit" class="btn su-30e741">Cancelar</button>
+        </div>
+        <p class="muted su-e13d76">Se guarda solo para tu usuario actual. Usa “Restaurar” para volver al original.</p>
+      </div>
+      <div class="dlg-actions"><button type="button" id="taleLunaClose" class="btn">Cerrar</button></div>
+    </form>
+  </dialog>

@@ -21,7 +21,7 @@ const MODE = process.argv.includes('--check') ? 'check' : 'fix';
 
 const SKIP_DIRS = new Set(['.git', 'node_modules', 'dist-empaquetado', 'android', '.vscode', 'min', 'web']);
 const SKIP_FILES = new Set(['templates-bundled.js', 'sw.js']); // generado / worker
-const BASELINE_DINAMICOS = 210; // techo: no se agregan estilos dinámicos nuevos (v1.8.0: +6 por Energía/Descanso, core-calendario y cableado renderer; resto intacto)
+const BASELINE_DINAMICOS = 211; // techo: no se agregan estilos dinámicos nuevos (v1.8.0: 211 tras Auditoría 2026-10-13: +1 por Energía/Descanso/módulos; ver check:csp2)
 
 function esDinamico(v) { return /[+`${]/.test(v); }
 function hash(v) { return crypto.createHash('sha1').update(v).digest('hex').slice(0, 6); }

@@ -29,7 +29,7 @@
     "check:syntax": "node scripts/check-syntax.cjs",
     "check:size": "node scripts/check-size.cjs",
     "lint:commits": "node scripts/lint-commits.cjs",
-    "test": "npm run csp:fase2 && npm run build:tpl && npm run build:min && node --test \"tests/*.test.js\" && npm run check:csp2 && npm run check:tpl && npm run check:min && npm run check:perf && npm run check:manifest && npm run check:sw && npm run check:web && npm run check:donate && npm run check:syntax"
+    "test": "npm run csp:fase2 && npm run build:tpl && npm run build:min && node --test \"tests/*.test.js\" && npm run check:csp2 && npm run check:tpl && npm run check:min && npm run check:perf && npm run check:manifest && npm run check:sw && npm run check:web && npm run check:donate && npm run check:syntax && npm run lint:commits"
   },
   "license": "GPL-3.0-or-later",
   "author": "Semillero Consciente <semilleroconsciente@gmail.com>",
@@ -93,7 +93,7 @@
   },
   "devDependencies": {
     "@capacitor/assets": "^3.0.5",
-    "electron": "^43.4.1",
+    "electron": "^43.7.10",
     "electron-builder": "^26.x",
     "esbuild": "^0.28.2",
     "typescript": "^7.0.2"
@@ -103,5 +103,8 @@
     "@capacitor/cli": "^6.2.2",
     "@capacitor/core": "^6.2.2",
     "electron-updater": "^6.8.9"
+  },
+  "overrides": {
+    "tar": "^7.5.2"
   }
 }

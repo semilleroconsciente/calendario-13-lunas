@@ -55,6 +55,26 @@ var MULTIPLICACION = [
     pasos: '1) Dobla una rama baja hasta el suelo sin quebrarla. 2) Haz un pequeño corte en la zona enterrada. 3) Tapa con tierra y fija con piedra. 4) Separa cuando tenga raíz propia.',
     sirve: 'Romero, parra, grosella, jazmín.',
     error: 'Rama muy vieja y rígida: se quiebra al doblarla.' },
+  { t: '🎈 Acodo aéreo', luna: 'Creciente de primavera',
+    epoca: 'Pewü (primavera): Sep–Nov en Penco',
+    pasos: '1) Elige rama sana de 1–2 años y anilla la corteza (2–3 cm) sin cortar el leño. 2) Cubre con musgo o tierra de hoja húmeda y envuelve con bolsa plástica atada en ambos extremos. 3) Mantén húmedo (inyecta agua con jeringa si se seca). 4) Corta bajo las raíces a los 2–3 meses y planta en bolsa a la sombra.',
+    sirve: 'Higuera, limonero, parra, membrillo, romero leñoso, grosella.',
+    error: 'Dejar secar el musgo o anillar hasta el leño: la rama muere sin enraizar.' },
+  { t: '🌱 Hijuelos y sierpes', luna: 'Menguante de otoño',
+    epoca: 'Rimü–Pukem (otoño–invierno)',
+    pasos: '1) Ubica el hijo que sale al pie de la madre con raíz propia. 2) Corta el cordón con pala afilada dejando buen pan de raíz. 3) Replanta de inmediato a la misma profundidad. 4) Riega y acolcha.',
+    sirve: 'Frambuesa, alcachofa, ruibarbo, platanera enana, menta corrida.',
+    error: 'Sacar hijuelos sin raíz o en pleno verano: no afirman.' },
+  { t: '🍑 Injerto (púa y yema)', luna: 'Menguante de fines de invierno',
+    epoca: 'Fines de Pukem (ago–sep): savia por despertar',
+    pasos: '1) Patrón sano de 1 año + púa con 2–3 yemas de la variedad que quieres. 2) Une cambium con cambium (hendidura o inglés) y ata firme. 3) Sella con cera o cinta. 4) Quita los brotes del patrón que compitan con el injerto.',
+    sirve: 'Manzano, peral, ciruelo, cerezo, parra, higuera.',
+    error: 'Unir maderas secas o dejar entrar aire al corte: el injerto no prende.' },
+  { t: '🍃 Esqueje de hoja y raíz', luna: 'Creciente templada',
+    epoca: 'Primavera–verano bajo techo',
+    pasos: '1) Hoja: entierra el pecíolo en mezcla húmeda (suculentas, hierbas). 2) Raíz: trozos de 5 cm de raíz gruesa en horizontal, cubiertos liviano. 3) Sombra luminosa y humedad constante. 4) Trasplanta cuando el brote tenga raíces firmes.',
+    sirve: 'Menta, frambuesa (raíz), topinambur (rizoma), suculentas, hierba luisa.',
+    error: 'Enterrar trozos muy chicos o regar en exceso: se pudren antes de brotar.' },
   { t: '🥔 Tubérculo y bulbo', luna: 'Menguante',
     epoca: 'Fines de invierno (papa, ajo) · otoño (cebolla)',
     pasos: '1) Papa: trozos con 2 ojos, oreados 2 días. 2) Ajo: diente con punta arriba a 5 cm. 3) Aporca tierra a medida que crece. 4) Cosecha cuando el follaje se seca.',
@@ -224,7 +244,7 @@ function setupSemillero() {
   try {
     var btn = $('btnSiembra');
     if (btn && btn.dataset && btn.dataset.keywords && btn.dataset.keywords.indexOf('semillero') < 0)
-      btn.dataset.keywords += ' semillero banco estratificacion multiplicacion esqueje acodo division estolon tuberculo almácigo germinacion guia';
+      btn.dataset.keywords += ' semillero banco estratificacion multiplicacion esqueje acodo acodo-aereo aereo division estolon hijuelo injerto tuberculo almácigo germinacion guia';
   } catch (e) {}
   if (!window._semilleroWrapped) {
     window._semilleroWrapped = true;

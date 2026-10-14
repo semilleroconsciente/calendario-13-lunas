@@ -61,9 +61,11 @@
     'min/ia-modulo.min.js?v=4',
     'min/hidroponia-modulo.min.js?v=2',
     'min/huerta-modulo.min.js?v=1',
+    'min/permacultura-modulo.min.js?v=1',
     'min/mecanica-modulo.min.js?v=1',
     'min/domotica-modulo.min.js?v=1',
     'min/electronica-modulo.min.js?v=1',
+    'min/electricidad-modulo.min.js?v=1',
     'min/plantas-modulo.min.js?v=1',
     'min/hogar-despensa-closet-modulo.min.js?v=1',
     'min/hogar-herramientas-modulo.min.js?v=1',
@@ -106,21 +108,36 @@
     try { document.body.appendChild(s); }
     catch (e) { cb(false); }
   }
-  // Secuencial a proposito: los modulos se ejecutan en el mismo orden
-  // en que aparecen en MODS (igual que antes). La mejora: un reintento
-  // por modulo ante red inestable y reporte visible de los que fallen.
-  function seq(i) {
-    if (i >= MODS.length) { reportMods(); return; }
-    loadOne(MODS[i], function (ok) {
-      if (ok) { seq(i + 1); return; }
+  // Paralelo limitado (4 en vuelo): los <script> usan async=false, asi el
+  // navegador los EJECUTA en orden de inserción aunque los descargue en
+  // paralelo. Un fallo ya no bloquea la cadena: cada módulo reintenta 1 vez
+  // y la cola avanza. ~4x más rápido que secuencial en 4G.
+  var MAX_PAR = 4;
+  function loadWithRetry(src, cb) {
+    loadOne(src, function (ok) {
+      if (ok) { cb(true); return; }
       setTimeout(function () {
-        loadOne(MODS[i], function (ok2) {
-          if (!ok2) failedMods.push(MODS[i]);
-          seq(i + 1);
-        });
+        loadOne(src, function (ok2) { cb(ok2); });
       }, 1000);
     });
   }
+  function pool() {
+    var idx = 0, done = 0;
+    if (!MODS.length) { reportMods(); return; }
+    function next() {
+      if (idx >= MODS.length) return;
+      var my = idx++;
+      var src = MODS[my];
+      loadWithRetry(src, function (ok) {
+        if (!ok) failedMods.push(src);
+        done++;
+        if (done >= MODS.length) { reportMods(); return; }
+        next();
+      });
+    }
+    for (var k = 0; k < Math.min(MAX_PAR, MODS.length); k++) next();
+  }
+  function seq(i) { pool(); }
   function reportMods() {
     try {
       if (!failedMods.length) return;
@@ -143,7 +160,7 @@
       el.appendChild(t); el.appendChild(b);
     } catch (e) {}
   }
-  function kick() { if (started) return; started = true; seq(0); }
+  function kick() { if (started) return; started = true; pool(); }
   try {
     if ('requestIdleCallback' in window) requestIdleCallback(kick, { timeout: 2500 });
     else if (document.readyState === 'complete') setTimeout(kick, 600);

@@ -2,7 +2,7 @@
 // Copyright (C) 2026 Semillero Consciente. Licencia: GNU GPLv3 o posterior (ver COPYING).
 // SPDX-License-Identifier: GPL-3.0-or-later
 // v55
-const CACHE = 'cal13-v78-offline';
+const CACHE = 'cal13-v88-offline';
 
 // Lista completa de archivos que usa index.html (bare + con ?v=).
 // Si se agrega un JS nuevo en index.html, agregarlo aquí también (bare y ?v=).
@@ -11,10 +11,20 @@ const CORE = [
   './index.html',
   './manifest.json',
   './donate.json',
+  './robots.txt',
+  './sitemap.xml',
   './icon-192.png',
   './icon-512.png',
   './icon-512-maskable.png',
   './assets/notify.mp3',
+  './assets/cuentos/luna01.mp3',
+  './assets/cuentos/luna02.mp3',
+  './assets/cuentos/luna03.mp3',
+  './assets/cuentos/luna04.mp3',
+  './assets/cuentos/luna05.mp3',
+  './assets/cuentos/luna06.mp3',
+  './assets/cuentos/luna07.mp3',
+  './assets/cuentos/luna11.mp3',
   './COPYING',
   './LICENSE.md',
   './LICENCIA-CONTENIDO-CC-BY-NC-SA-4.0.md',
@@ -98,6 +108,7 @@ const CORE = [
   './templates/shoppingDialog.html',
   './templates/siembraDialog.html',
   './templates/studyDialog.html',
+  './templates/taleLunaDialog.html',
   './templates/talesDialog.html',
   './templates/timerDialog.html',
   './templates/userDialog.html',
@@ -161,6 +172,8 @@ const CORE = [
   './min/core-clima.min.js?v=1',
   './min/core-dialogo-dia.min.js',
   './min/core-dialogo-dia.min.js?v=1',
+  './min/core-sanitize.min.js',
+  './min/core-sanitize.min.js?v=1',
   './min/core-storage.min.js',
   './min/core-storage.min.js?v=1',
   './min/core-themes.min.js',
@@ -177,6 +190,8 @@ const CORE = [
   './min/dialogo-tamano.min.js?v=1',
   './min/domotica-modulo.min.js',
   './min/domotica-modulo.min.js?v=1',
+  './min/electricidad-modulo.min.js',
+  './min/electricidad-modulo.min.js?v=1',
   './min/electrocultura-modulo.min.js',
   './min/electrocultura-modulo.min.js?v=1',
   './min/electronica-modulo.min.js',
@@ -265,6 +280,8 @@ const CORE = [
   './min/orden-herramientas-modulo.min.js?v=1',
   './min/penco-guia.min.js',
   './min/penco-guia.min.js?v=1',
+  './min/permacultura-modulo.min.js',
+  './min/permacultura-modulo.min.js?v=1',
   './min/pesca-historia.min.js',
   './min/pesca-historia.min.js?v=1',
   './min/plantas-modulo.min.js',
@@ -283,6 +300,8 @@ const CORE = [
   './min/recetas-naturales-modulo.min.js?v=1',
   './min/red-comunitaria-modulo.min.js',
   './min/red-comunitaria-modulo.min.js?v=1',
+  './min/renderer-territorio-vivo.min.js',
+  './min/renderer-territorio-vivo.min.js?v=1',
   './min/renderer.min.js',
   './min/renderer.min.js?v=16',
   './min/retos-21-modulo.min.js',

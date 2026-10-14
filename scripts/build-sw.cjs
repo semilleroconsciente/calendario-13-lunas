@@ -59,8 +59,17 @@ function staticEntries() {
   // Datos + estáticos que no salen en <script> pero el SW debe precachear.
   const files = [
     './', './index.html', './manifest.json', './donate.json',
+    './robots.txt', './sitemap.xml',
     './icon-192.png', './icon-512.png', './icon-512-maskable.png',
     './assets/notify.mp3',
+    './assets/cuentos/luna01.mp3',
+    './assets/cuentos/luna02.mp3',
+    './assets/cuentos/luna03.mp3',
+    './assets/cuentos/luna04.mp3',
+    './assets/cuentos/luna05.mp3',
+    './assets/cuentos/luna06.mp3',
+    './assets/cuentos/luna07.mp3',
+    './assets/cuentos/luna11.mp3',
     './COPYING', './LICENSE.md', './LICENCIA-CONTENIDO-CC-BY-NC-SA-4.0.md',
     './data/territorios/index.json',
   ];

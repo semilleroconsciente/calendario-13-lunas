@@ -144,77 +144,161 @@ function chip(sp) {
    ver todos los días; registra lo que observes en la bitácora.
    ============================================================ */
 var ACOMPANANTES = {
-  intro: 'Un árbol nativo nunca está solo: bajo sus raíces trabajan <b>hongos</b>, en sus ramas comen y siembran <b>aves</b>, a sus pies crece el <b>sotobosque</b> y sus flores alimentan <b>polinizadores</b>. Esta es la compañía del bosque penqueño.',
+  intro: 'Un árbol nativo nunca está solo: es una <b>red viva en 4 capas</b> — <b>dosel</b> (árboles nodriza que dan sombra), <b>sotobosque</b> (arbustos y quila que guardan humedad), <b>suelo vivo</b> (hongos, micorrizas y lombrices que alimentan raíces) y <b>quebrada</b> (agua que conecta todo). En sus ramas comen y siembran <b>aves</b>, sus flores alimentan <b>polinizadores</b>, de noche patrullan <b>animales</b> y entre la hojarasca trabajan <b>insectos, arácnidos y libélulas</b>. Esta es la compañía completa del bosque penqueño, con <b>cuándo y dónde mirar</b> cada grupo.',
   grupos: [
     {
       clave: 'hongos',
-      t: '🍄 Hongos compañeros', d: 'Reciclan la hojarasca y, como <b>micorrizas</b>, conectan sus hilos a las raíces de peumo, boldo y roble: intercambian agua y nutrientes por azúcares. Sin hongos, el bosque se empobrece.',
+      t: '🍄 Hongos compañeros', d: 'Reciclan la hojarasca y, como <b>micorrizas</b>, conectan sus hilos a las raíces de peumo, boldo y roble: intercambian agua y nutrientes por azúcares. Sin hongos, el bosque se empobrece. <b>Temporada fuerte: otoño (Abr–Jun)</b> tras las primeras lluvias.',
       items: [
-        { n: 'Digüeñe (Cyttaria espinosae)', r: 'Crece sobre robles y hualos; fruto otoñal comestible muy querido.', con: ['Roble / Hualo (Nothofagus)'] },
-        { n: 'Changle (Ramaria)', r: 'Ramitas doradas del suelo otoñal; vive asociado al bosque nativo.', con: ['Roble / Hualo (Nothofagus)', 'Avellano'] },
-        { n: 'Loyo (Boletus loyo)', r: 'Grande y carnoso, micorrícico de Nothofagus. Solo si 100% seguro.', con: ['Roble / Hualo (Nothofagus)'] },
-        { n: 'Ostra (Pleurotus ostreatus)', r: 'En troncos caídos: recicladora que ablanda la madera muerta.', con: ['Árboles caídos'] }
+        { n: 'Digüeñe', cient: 'Cyttaria espinosae', icon: '🍄', r: 'Crece sobre robles y hualos; fruto otoñal comestible muy querido. Se corta, no se arranca. En Penco solo donde quede roble/hualo (relicto N. obliqua–keule, hoy escaso).', temp: 'Abr–May', con: ['Roble / Hualo (Nothofagus)', 'Avellano'] },
+        { n: 'Changle', cient: 'Ramaria spp.', icon: '🪸', r: 'Ramitas doradas del suelo otoñal; vive asociado al bosque nativo. Indicador de suelo sano. En Penco solo donde quede roble/hualo o quebrada bien conservada.', temp: 'Abr–Jun', con: ['Roble / Hualo (Nothofagus)', 'Avellano'] },
+        { n: 'Loyo', cient: 'Boletus loyo', icon: '🍄', r: 'Grande y carnoso, micorrícico de Nothofagus. Solo si 100% seguro: tiene dobles tóxicos. En Penco muy localizado (requiere roble).', temp: 'Abr–Jun', con: ['Roble / Hualo (Nothofagus)'] },
+        { n: 'Gargal', cient: 'Grifola gargal · endémico', icon: '🍄', r: 'Hongo endémico en madera muerta de roble viejo (Ñuble al sur; Penco es su límite norte). Aquí no lo esperes: si lo ves en un tronco añoso, foto y bitácora, gran noticia.', temp: 'Abr–May', con: ['Roble / Hualo (Nothofagus)', 'Quebradas húmedas'] },
+        { n: 'Ostra', cient: 'Pleurotus ostreatus', icon: '🦪', r: 'En troncos caídos: recicladora que ablanda la madera muerta y abre casa a insectos.', temp: 'Todo el año (más en otoño)', con: ['Árboles caídos', 'Hojarasca y troncos'] },
+        { n: 'Pique / Suillus (de pino)', cient: 'Suillus spp.', icon: '⚠️', r: 'Sale bajo pinos introducidos, no bajo nativo. Sirve para distinguir: donde hay pique, hay plantación que fragmenta.', temp: 'Abr–Jun', con: ['Pino / Eucalipto (introducidos)'] }
       ],
-      nota: 'Regla de oro: <b>cosecha con tijera o cuchillo, deja el micelio</b> y lleva canasto aireado. Si dudas, foto y bitácora.'
+      nota: 'Regla de oro: <b>cosecha con tijera o cuchillo, deja el micelio</b>, lleva canasto aireado y nunca arranques todo. Si dudas, foto y bitácora.'
     },
     {
       clave: 'aves',
-      t: '🐦 Aves que siembran y polinizan', d: 'Las aves son las grandes <b>sembradoras</b> del bosque: comen fruto y devuelven semilla lejos, lista para germinar. El <b>picaflor chico</b> poliniza las flores colgantes.',
+      t: '🐦 Aves que siembran y polinizan', d: 'Las aves son las grandes <b>sembradoras</b> del bosque: comen fruto y devuelven semilla lejos, lista para germinar. El <b>picaflor chico</b> poliniza las flores colgantes. <b>Mira al amanecer</b>, tras la lluvia.',
       items: [
-        { n: 'Zorzal', r: 'Dispersa maqui, arrayán y quillay por todo el cerro.', con: ['Maqui', 'Arrayán', 'Quillay'] },
-        { n: 'Tenca', r: 'Imitadora; come frutos y mueve semillas entre quebradas.', con: ['Maqui', 'Maitén'] },
-        { n: 'Fío-Fío', r: 'Migrador que reparte semillas de mirtáceas en primavera.', con: ['Arrayán'] },
-        { n: 'Chucao (Scelorchilus rubecula)', r: 'Dueño del canto del sotobosque húmedo: su “chu-ca-o” fuerte anuncia la lluvia. Escarba la hojarasca buscando insectos y es gran noticia verlo.', con: ['Quebradas húmedas', 'Quila', 'Hojarasca'] },
-        { n: 'Picaflor chico (Sephanoides sephaniodes)', r: 'Poliniza copihue y quintral flor por flor.', con: ['Copihue'] }
+        { n: 'Zorzal', cient: 'Turdus falcklandii', icon: '🐦', r: 'Dispersa maqui, arrayán y quillay por todo el cerro. Su canto anuncia lluvia.', temp: 'Todo el año', con: ['Maqui', 'Arrayán', 'Quillay'] },
+        { n: 'Tenca', cient: 'Mimus thenca · endémica', icon: '🎶', r: 'Imitadora; come frutos y mueve semillas entre quebradas.', temp: 'Todo el año', con: ['Maqui', 'Maitén'] },
+        { n: 'Fío-Fío', cient: 'Elaenia albiceps', icon: '🐦', r: 'Migrador que reparte semillas de mirtáceas en primavera. Llega con el pewü.', temp: 'Sep–Mar', con: ['Arrayán'] },
+        { n: 'Rayadito', cient: 'Aphrastura spinicauda', icon: '🐦', r: 'Trepa troncos de canelo y arrayán buscando insectos. Muy fiel a su quebrada.', temp: 'Todo el año', con: ['Canelo', 'Arrayán'] },
+        { n: 'Torcaza', cient: 'Patagioenas araucana', icon: '🕊️', r: 'Paloma nativa de bandadas otoñales; siembra peumo y boldo a distancia.', temp: 'Mar–Jun (bandadas)', con: ['Peumo', 'Boldo'] },
+        { n: 'Carpintero chico', cient: 'Veniliornis lignarius', icon: '🐦', r: 'Golpea troncos viejos buscando larvas; abre huecos que luego usan otras aves.', temp: 'Todo el año', con: ['Árboles caídos', 'Roble / Hualo (Nothofagus)'] },
+        { n: 'Chucao', cient: 'Scelorchilus rubecula', icon: '🐦', r: 'Dueño del canto del sotobosque húmedo (Colchagua–Aysén; confirmado en Nonguén, junto a Penco). Raro al norte: solo en quebradas grandes y densas con quila; si lo oyes en Penco, gran noticia.', temp: 'Todo el año (más vocal en invierno)', con: ['Quebradas húmedas', 'Quila', 'Hojarasca'] },
+        { n: 'Picaflor chico', cient: 'Sephanoides sephaniodes', icon: '🐝', r: 'Poliniza copihue y quintral flor por flor. El más austral del mundo.', temp: 'Sep–Abr', con: ['Copihue'] }
       ],
-      nota: '¿Viste quién comió qué? Anótalo en 🦅 Aves y en la bitácora del bosque: es ciencia ciudadana.'
+      nota: '¿Viste quién comió qué? Anótalo en 🦅 Aves y en la bitácora del bosque: es ciencia ciudadana. Binoculares y silencio valen más que suerte.'
     },
     {
       clave: 'sotobosque',
-      t: '🌿 Sotobosque que acompaña', d: 'Bajo el dosel vive otra selva en miniatura: da <b>refugio</b>, guarda la <b>humedad</b> y afirma el suelo.',
+      t: '🌿 Sotobosque que acompaña', d: 'Bajo el dosel vive otra selva en miniatura: da <b>refugio</b>, guarda la <b>humedad</b> y afirma el suelo. <b>No se limpia “para ordenar”</b>: es la despensa y la cuna del bosque.',
       items: [
-        { n: 'Quila / Colihue (Chusquea quila)', r: 'Bambú nativo: refugio de aves y brotes comestibles en primavera.', con: ['Quebradas húmedas'] },
-        { n: 'Helechos', r: 'Alfombran lo sombrío e indican aire y suelo sanos.', con: ['Canelo', 'Arrayán'] },
-        { n: 'Michay (Berberis spp.)', r: 'Arbusto espinudo de flor amarilla y baya ácida para aves.', con: ['Boldo', 'Peumo'] },
-        { n: 'Quintral (Tristerix corymbosus)', r: 'Hemiparásito de flores rojas que el picaflor adora; en el bosque templado lo siembra el monito del monte en las ramas.', con: ['Maitén', 'Árboles altos'] }
+        { n: 'Quila / Colihue', cient: 'Chusquea quila', icon: '🎋', r: 'Bambú nativo: refugio de aves y brotes comestibles en primavera. Marca quebrada sana.', temp: 'Brotes Sep–Nov', con: ['Quebradas húmedas', 'Canelo'] },
+        { n: 'Chilco', cient: 'Fuchsia magellanica', icon: '🌺', r: 'Flor colgante roja favorita del picaflor. Sus bayas alimentan zorzales en verano.', temp: 'Flor Nov–Mar', con: ['Quebradas húmedas', 'Canelo', 'Arrayán'] },
+        { n: 'Murta / Murtilla', cient: 'Ugni molinae', icon: '🫐', r: 'Arbusto de baya aromática (Dic–Mar). Melífero y comestible con medida.', temp: 'Fruto Dic–Mar', con: ['Boldo', 'Peumo', 'Quillay'] },
+        { n: 'Michay', cient: 'Berberis spp.', icon: '🌼', r: 'Arbusto espinudo de flor amarilla y baya ácida para aves. Cerco vivo natural.', temp: 'Flor Sep–Nov', con: ['Boldo', 'Peumo'] },
+        { n: 'Helechos', cient: 'varias spp.', icon: '🌿', r: 'Alfombran lo sombrío e indican aire y suelo sanos. Donde hay helecho, hay agua cerca.', temp: 'Todo el año', con: ['Canelo', 'Arrayán'] },
+        { n: 'Quintral', cient: 'Tristerix corymbosus', icon: '❤️', r: 'Hemiparásito de flores rojas que el picaflor adora; lo siembra el monito del monte en las ramas.', temp: 'Flor May–Oct', con: ['Maitén', 'Árboles altos', 'Maqui'] }
       ],
-      nota: 'No limpies el sotobosque “para ordenar”: es la despensa y la cuna del bosque.'
+      nota: 'Si plantas nativo, planta su compañía: quila a la sombra, chilco junto al agua, michay al sol.'
     },
     {
       clave: 'polinizadores',
-      t: '🐝 Polinizadores', d: 'Sin ellos no hay fruto ni semilla. Las flores de <b>boldo, quillay, canelo y arrayán</b> son melíferas y los llaman cada primavera.',
+      t: '🐝 Polinizadores', d: 'Sin ellos no hay fruto ni semilla. Las flores de <b>boldo, quillay, canelo y arrayán</b> son melíferas y los llaman cada primavera. <b>Mira entre 10–15 h</b> en días tibios.',
       items: [
-        { n: 'Abejas nativas (ej. Caupolicana)', r: 'Endémicas de Chile; visitan las flores del esclerófilo.', con: ['Quillay', 'Boldo'] },
-        { n: 'Abejorros y moscas florícolas', r: 'Polinizan en días fríos cuando las abejas salen poco.', con: ['Canelo', 'Arrayán'] },
-        { n: 'Mariposas nocturnas', r: 'Visitan las flores blancas y perfumadas de la noche.', con: ['Trihue / Laurel'] }
+        { n: 'Abejas nativas', cient: 'Caupolicana spp. · endémicas', icon: '🐝', r: 'Endémicas de Chile; visitan las flores del esclerófilo. Nidifican en suelo: no pises taludes arenosos.', temp: 'Sep–Mar', con: ['Quillay', 'Boldo'] },
+        { n: 'Abejorros y moscas florícolas', cient: 'varias spp.', icon: '🐝', r: 'Polinizan en días fríos cuando las abejas salen poco. Clave en invierno tardío.', temp: 'Jul–Oct', con: ['Canelo', 'Arrayán', 'Boldo'] },
+        { n: 'Escarabajos florícolas', cient: 'Coleoptera', icon: '🪲', r: 'Visitan flores blancas de boldo y trihue; sus larvas reciclan madera muerta.', temp: 'Oct–Ene', con: ['Boldo', 'Trihue / Laurel'] },
+        { n: 'Mariposas nocturnas', cient: 'Lepidoptera nocturno', icon: '🦋', r: 'Visitan las flores blancas y perfumadas de la noche (trihue, jazmines nativos).', temp: 'Noches tibias Oct–Mar', con: ['Trihue / Laurel'] },
+        { n: 'Picaflor chico (en flores)', cient: 'Sephanoides sephaniodes', icon: '🐦', r: 'El mejor polinizador de flores tubulares: copihue, chilco y quintral dependen de él.', temp: 'Sep–Abr', con: ['Copihue', 'Chilco'] }
       ],
-      nota: 'Si plantas nativo, planta también su compañía: flores escalonadas de invierno a verano.'
+      nota: 'Si plantas nativo, planta también su compañía: flores escalonadas de invierno a verano (boldo → quillay → arrayán → murta).'
+    },
+    {
+      clave: 'suelo',
+      t: '🪱 Suelo vivo y micorrizas', d: 'Bajo tus pies hay otra red: <b>hilos de micorriza</b> que conectan árbol con árbol, lombrices que airean y musgos que guardan agua. <b>Un suelo pisoteado o quemado tarda años en volver.</b>',
+      items: [
+        { n: 'Red de micorrizas', cient: 'hongos micorrícicos', icon: '🕸️', r: 'Hilos blancos bajo la hojarasca que llevan agua a peumo y boldo. No escarbes sin necesidad.', temp: 'Todo el año', con: ['Peumo', 'Boldo', 'Quillay'] },
+        { n: 'Lombriz nativa', cient: 'varias spp.', icon: '🪱', r: 'Airea y fertiliza sin pedir nada. Donde hay lombriz, la tierra huele a bosque.', temp: 'Invierno–primavera', con: ['Hojarasca y troncos'] },
+        { n: 'Musgos', cient: 'Bryophyta', icon: '🟢', r: 'Esponjas que guardan lluvia para el verano. Alfombran rocas y troncos norte-sombríos.', temp: 'Todo el año', con: ['Canelo', 'Arrayán', 'Quebradas húmedas'] },
+        { n: 'Líquenes barba de viejo', cient: 'Usnea spp.', icon: '🧔', r: 'Indican aire limpio: si desaparecen, el aire empeoró. No los arranques.', temp: 'Todo el año', con: ['Árboles altos', 'Quebradas húmedas'] },
+        { n: 'Chanchitos de tierra', cient: 'Isopoda nativo', icon: '🦐', r: 'Reciclan hojas duras de boldo y peumo. Los niños los aman: míralos y devuélvelos.', temp: 'Todo el año', con: ['Hojarasca y troncos'] }
+      ],
+      nota: 'Cuida el suelo: camina por sendero, no compactes con bici/moto y nunca quemes hojarasca.'
+    },
+    {
+      clave: 'agua',
+      t: '💧 Agua y quebrada', d: 'La quebrada es la <b>vena del bosque</b>: trae anfibios, libélulas y aves pescadoras. <b>Si la quebrada canta, el bosque está vivo.</b> No laves, no represes, no desvíes.',
+      items: [
+        { n: 'Rana chilena', cient: 'Calyptocephalella gayi · vulnerable', icon: '🐸', r: 'Anfibio grande y chileno, en retroceso. Solo mirar y no tocar: su piel respira.', temp: 'Sep–Mar (noches)', con: ['Esteros y vertientes', 'Quebradas húmedas'] },
+        { n: 'Sapito de cuatro ojos', cient: 'Pleurodema thaul', icon: '🐸', r: 'Canta tras la lluvia en pozas temporales. Sus “cuatro ojos” son manchas defensivas.', temp: 'Invierno–primavera', con: ['Esteros y vertientes'] },
+        { n: 'Libélulas y matapiojos', cient: 'Odonata', icon: '🪰', r: 'Patrullan esteros comiendo zancudos. Donde hay libélulas, el agua está sana.', temp: 'Oct–Mar', con: ['Esteros y vertientes'] },
+        { n: 'Martín pescador', cient: 'Megaceryle torquata', icon: '🐦', r: 'Pesca en esteros limpios del borde bosque. Verlo es buena señal del agua.', temp: 'Todo el año', con: ['Esteros y vertientes', 'Arrayán'] },
+        { n: 'Berro y totora de orilla', cient: 'varias spp.', icon: '🌾', r: 'Filtran el agua y dan casa a renacuajos. No los arranques: afirman la orilla.', temp: 'Todo el año', con: ['Esteros y vertientes'] }
+      ],
+      nota: 'Una quebrada sana se escucha antes de verse. Si el agua huele mal o va lechosa, anótalo en la bitácora y avisa.'
+    },
+    {
+      clave: 'dosel',
+      t: '🌳 Dosel y árboles nodriza', d: 'Los grandes <b>crían a los chicos</b>: bajo un peumo o quillay madre hay sombra, humedad y micorriza lista para que germine lo nuevo. <b>Planta siempre a la sombra de una nodriza.</b>',
+      items: [
+        { n: 'Peumo nodriza', cient: 'Cryptocarya alba', icon: '🌳', r: 'Copa densa que cría arrayán, canelo joven y chilco bajo ella. Fruto que alimenta torcazas.', temp: 'Fruto Mar–May', con: ['Peumo', 'Arrayán', 'Canelo'] },
+        { n: 'Quillay nodriza', cient: 'Quillaja saponaria', icon: '🌳', r: 'Aguanta sol y da media-sombra donde prende boldo y maitén. Melífero clave.', temp: 'Flor Nov–Ene', con: ['Quillay', 'Boldo', 'Maitén'] },
+        { n: 'Arrayán refugio', cient: 'Luma apiculata', icon: '🟠', r: 'Tronco frío y corteza que guarda agua; bajo él viven helechos y musgos.', temp: 'Fruto Feb–Abr', con: ['Arrayán', 'Canelo'] },
+        { n: 'Olivillo costero', cient: 'Aextoxicon punctatum', icon: '🌳', r: 'Relicto laurifolio de quebrada (30°–43°S, costa): donde está, el bosque antiguo resistió. En Penco escaso y puntual. Solo observar.', temp: 'Todo el año', con: ['Quebradas húmedas', 'Canelo', 'Lingue'] }
+      ],
+      nota: 'Busca la nodriza antes de plantar: hoyo 40×40 a 1–2 m del tronco madre, lado sur, con compost y acolchado.'
     },
     {
       clave: 'animales',
-      t: '🦊 Animales del bosque', d: 'Los que caminan de noche y al atardecer: <b>remueven el suelo, controlan roedores e insectos</b> y siembran a su paso. Son esquivos: si ves uno, anótalo, es gran noticia.',
+      t: '🦊 Animales del bosque', d: 'Los que caminan de noche y al atardecer: <b>remueven el suelo, controlan roedores e insectos</b> y siembran a su paso. Son esquivos: si ves uno, anótalo, es gran noticia. <b>Mira huellas al barro blando tras la lluvia.</b>',
       items: [
-        { n: 'Chingue (Conepatus chinga)', r: 'Zorrillo común que remueve el suelo buscando insectos y dispersa semillas.', con: ['Sotobosque', 'Quebradas'] },
-        { n: 'Zorro chilla / culpeo (Lycalopex)', r: 'Visita los bordes del bosque y controla ratones y conejos.', con: ['Praderas y bordes'] },
-        { n: 'Monito del monte (Dromiciops gliroides)', r: 'Marsupial nocturno de los bosques templados más conservados; siembra el quintral en las ramas.', con: ['Quintral (Tristerix corymbosus)'] },
-        { n: 'Lagartijas y culebra de cola larga', r: 'Controlan insectos entre rocas y claros. Se observan de lejos, sin molestar.', con: ['Roqueríos y claros'] }
+        { n: 'Chingue', cient: 'Conepatus chinga', icon: '🦨', r: 'Zorrillo común que remueve el suelo buscando insectos y dispersa semillas.', temp: 'Atardeceres', con: ['Sotobosque', 'Quebradas'] },
+        { n: 'Zorro chilla / culpeo', cient: 'Lycalopex spp.', icon: '🦊', r: 'Visita los bordes del bosque y controla ratones y conejos. Huye del perro suelto.', temp: 'Noche y amanecer', con: ['Praderas y bordes'] },
+        { n: 'Pudú', cient: 'Pudu puda · vulnerable', icon: '🦌', r: 'Ciervo enano (Curicó–Aysén; 233 registros en Nonguén, junto a Penco). Hoy muy raro en Penco fragmentado, posible de paso. Ver uno es premio mayor: silencio y distancia.', temp: 'Amanecer / atardecer', con: ['Quebradas húmedas', 'Quila'] },
+        { n: 'Güiña', cient: 'Leopardus guigna tigrillo · vulnerable', icon: '🐈', r: 'Gato silvestre nocturno (Coquimbo–Aysén; persiste en cerros periurbanos de Concepción con presa y refugio). Muy esquiva en Penco: solo cámara trampa o huella.', temp: 'Noche', con: ['Quebradas húmedas', 'Árboles altos'] },
+        { n: 'Monito del monte', cient: 'Dromiciops gliroides', icon: '🐭', r: 'Marsupial nocturno (Maule–Los Lagos; confirmado en Nonguén). Penco está cerca de su límite norte: solo en quebradas conservadas con quila y árboles viejos. Hiberna en invierno.', temp: 'Noches tibias Oct–Abr', con: ['Quintral (Tristerix corymbosus)'] },
+        { n: 'Lagartijas y culebra de cola larga', cient: 'varias spp.', icon: '🦎', r: 'Controlan insectos entre rocas y claros. Se observan de lejos, sin molestar.', temp: 'Días tibios Sep–Mar', con: ['Roqueríos y claros'] }
       ],
-      nota: 'Mira huellas, fecas y senderos: el bosque se lee también sin ver al animal.'
+      nota: 'Mira huellas, fecas y senderos: el bosque se lee también sin ver al animal. Nunca alimentes fauna: la enfermas.'
+    },
+    {
+      clave: 'noche',
+      t: '🦉 Noche del bosque', d: 'De noche el bosque cambia de turno: <b>cazan los silenciosos</b> y abren las flores blancas. <b>Apaga la linterna un rato</b> y escucha 5 minutos: la noche te cuenta cómo está el bosque.',
+      items: [
+        { n: 'Concón', cient: 'Strix rufipes', icon: '🦉', r: 'Búho del bosque nativo; caza ratones entre canelos. Su ulular grave es inconfundible.', temp: 'Noches todo el año', con: ['Canelo', 'Quebradas húmedas', 'Árboles altos'] },
+        { n: 'Murciélago cola corta', cient: 'varias spp.', icon: '🦇', r: 'Come zancudos y polillas por cientos cada noche. No temas: te cuida.', temp: 'Noches tibias', con: ['Quebradas húmedas', 'Árboles altos'] },
+        { n: 'Monito del monte (de noche)', cient: 'Dromiciops gliroides', icon: '🌙', r: 'Trepa de noche buscando insectos y quintral. Ojos grandes que brillan con frontal rojo.', temp: 'Noches Oct–Abr', con: ['Quintral (Tristerix corymbosus)'] },
+        { n: 'Mariposas nocturnas y polillas', cient: 'Lepidoptera nocturno', icon: '🦋', r: 'Polinizan flores blancas de trihue. No las toques: el polvo de sus alas es su abrigo.', temp: 'Noches tibias', con: ['Trihue / Laurel'] },
+        { n: 'Luciérnaga del Gran Concepción', cient: 'Phanophorus perspicax (Elateridae)', icon: '✨', r: 'Las nuestras no son Lampyridae sino escarabajos bioluminiscentes (saltapericos): la hembra destella desde la hojarasca y el macho vuela bajo. Danza ~3 semanas entre enero y febrero, 1 hora tras la puesta de sol. Apaga toda luz para verlas.', temp: 'Ene–Feb, tras la puesta de sol', con: ['Quebradas húmedas', 'Hojarasca y troncos'] }
+      ],
+      nota: 'De noche: luz roja suave, voz baja y sendero marcado. Nunca uses flash directo a los ojos.'
     },
     {
       clave: 'insectos',
-      t: '🐛 Insectos e invertebrados', d: 'Los más pequeños y los más trabajadores: <b>polinizan, reciclan y alimentan</b> a todo el resto de la red.',
+      t: '🐛 Insectos e invertebrados', d: 'Los más pequeños y los más trabajadores: <b>polinizan, reciclan y alimentan</b> a todo el resto de la red. <b>Da vuelta un tronco, mira y devuélvelo igual.</b>',
       items: [
-        { n: 'Abejorro chileno (Bombus dahlbomii)', r: 'Polinizador grande y peludo, en retroceso: si lo ves, no lo molestes.', con: ['Quillay', 'Boldo', 'Canelo'] },
-        { n: 'Mariposas diurnas', r: 'Sus orugas comen hojas nativas y las adultas polinizan flores.', con: ['Flores del sotobosque'] },
-        { n: 'Chinitas (Eriopis spp.)', r: 'Devoran pulgones que atacan los brotes nuevos.', con: ['Brotes y renovales'] },
-        { n: 'Caracol negro', r: 'Reciclador nocturno de la hojarasca húmeda.', con: ['Hojarasca y troncos'] },
-        { n: 'Libélulas', r: 'Patrullan esteros y quebradas comiendo zancudos.', con: ['Esteros y vertientes'] }
+        { n: 'Abejorro chileno', cient: 'Bombus dahlbomii · en retroceso', icon: '🐝', r: 'Polinizador grande y peludo, en retroceso: si lo ves, no lo molestes. Foto y bitácora.', temp: 'Oct–Mar', con: ['Quillay', 'Boldo', 'Canelo'] },
+        { n: 'Mariposas diurnas', cient: 'varias spp.', icon: '🦋', r: 'Sus orugas comen hojas nativas y las adultas polinizan flores. Oruga no es plaga: es futura mariposa.', temp: 'Oct–Abr', con: ['Flores del sotobosque', 'Michay'] },
+        { n: 'Chinitas', cient: 'Eriopis spp.', icon: '🐞', r: 'Devoran pulgones que atacan los brotes nuevos. Guardianas del vivero.', temp: 'Sep–Mar', con: ['Brotes y renovales'] },
+        { n: 'Caracol negro', cient: 'Macrocyclis peruvianus', icon: '🐌', r: 'Reciclador nocturno de la hojarasca húmeda. Sale tras la lluvia.', temp: 'Noches húmedas', con: ['Hojarasca y troncos'] },
+        { n: 'Palote / chinchemollo', cient: 'Phasmatodea', icon: '🦗', r: 'Maestro del camuflaje en boldo y maqui. Si lo encuentras, devuélvelo a su rama.', temp: 'Nov–Mar', con: ['Boldo', 'Maqui'] },
+        { n: 'Libélulas (del suelo al agua)', cient: 'Odonata', icon: '🪰', r: 'Patrullan esteros y quebradas comiendo zancudos. Sus larvas viven en el agua limpia.', temp: 'Oct–Mar', con: ['Esteros y vertientes'] }
       ],
-      nota: 'Una quebrada con libélulas y abejorros es una quebrada sana.'
+      nota: 'Una quebrada con libélulas y abejorros es una quebrada sana. Sin insectos no hay aves.'
+    },
+    {
+      clave: 'aracnidos',
+      t: '🕷️ Arácnidos del bosque', d: 'Cazadores silenciosos de <b>8 patas</b> (no son insectos): <b>controlan moscas, zancudos y polillas</b> sin pedir nada. Casi todos son inofensivos si no los aprietas: <b>mira, no toques</b>. Levanta un tronco, mira y devuélvelo igual.',
+      items: [
+        { n: 'Araña lobo', cient: 'Lycosidae · cazadora de suelo', icon: '🕷️', r: 'Corre por la hojarasca cazando insectos; carga a sus crías en el lomo. Inofensiva si no se aprieta.', temp: 'Todo el año', con: ['Hojarasca y troncos', 'Sotobosque'] },
+        { n: 'Araña tejedora de bosque', cient: 'Araneidae · tela orbicular', icon: '🕸️', r: 'Teje su red entre arbustos y quila; atrapa zancudos y polillas. Su tela con rocío matinal delata quebrada sana.', temp: 'Oct–Mar', con: ['Flores del sotobosque', 'Quebradas húmedas', 'Quila'] },
+        { n: 'Opiliones (segadores)', cient: 'Opiliones · sin veneno', icon: '🕷️', r: 'Parecen arañas de patas larguísimas; no tienen veneno ni tejen tela. Reciclan bichos muertos bajo troncos húmedos.', temp: 'Noches húmedas', con: ['Hojarasca y troncos', 'Quebradas húmedas'] },
+        { n: 'Ácaros del suelo', cient: 'Acari · microscópicos', icon: '🔬', r: 'Diminutos recicladores de la hojarasca junto a lombrices y chanchitos. No se ven a ojo, pero sin ellos el suelo se empobrece.', temp: 'Todo el año', con: ['Hojarasca y troncos', 'Peumo', 'Boldo'] },
+        { n: 'Araña pollito', cient: 'Grammostola rosea · Theraphosidae', icon: '🕷️', r: 'Tarántula chilena (Coquimbo–Biobío: Penco es su límite sur). Vive en cuevas bajo piedras de roqueríos secos, no en quebrada húmeda. Dócil pero con pelos urticantes: solo mirar, nunca manipular.', temp: 'Todo el año (más activa en calor)', con: ['Roqueríos y claros', 'Praderas y bordes'] }
+      ],
+      nota: 'Araña no es plaga: es guardiana. Nunca fumigues el bosque; si una entra a tu casa, vaso y papel y devuélvela al cerro.'
+    },
+    {
+      clave: 'amenazas',
+      t: '⚠️ Amenazas y cómo ayudar', d: 'El bosque también tiene sus <b>heridas</b>: invasoras, perros sueltos, fuego y basura. <b>Ver la amenaza a tiempo es cuidarlo.</b> Todo esto se anota en la bitácora como <b>limpieza / control invasoras</b>.',
+      items: [
+        { n: 'Zarza mora', cient: 'Rubus spp. · invasora', icon: '⚠️', r: 'Cierra senderos y ahoga renovales. Se controla con arranque de raíz en invierno, nunca solo con machete.', temp: 'Todo el año', con: ['Praderas y bordes', 'Quebradas'] },
+        { n: 'Pino / eucalipto invasor', cient: 'Pinus, Eucalyptus · introducidos', icon: '🌲', r: 'Secan napas y acidifican suelo; sus renuevos se arrancan chicos en menguante. No plantes más.', temp: 'Renuevos en invierno', con: ['Pino / Eucalipto (introducidos)'] },
+        { n: 'Rata negra', cient: 'Rattus rattus · introducida', icon: '🐀', r: 'Depreda semillas de keule y huevos de aves. No dejes basura ni comida en el cerro.', temp: 'Todo el año', con: ['Keule', 'Hojarasca y troncos'] },
+        { n: 'Perro suelto / gato asilvestrado', cient: 'introducidos', icon: '🐕', r: 'Persiguen pudú, güiña y aves que nidifican bajo. Lleva tu perro con correa o déjalo en casa.', temp: 'Todo el año', con: ['Praderas y bordes', 'Quebradas'] },
+        { n: 'Fuego y basura', cient: 'amenaza humana', icon: '🔥', r: 'Una colilla o fogata basta para perder quebradas enteras. Vuelve con toda tu basura, incluida la orgánica.', temp: 'Verano crítico', con: ['Roqueríos y claros', 'Praderas y bordes'] },
+        { n: 'Erosión y compactación', cient: 'suelo herido', icon: '⛰️', r: 'Atajos en bici/moto y pisoteo abren cárcavas. Camina por sendero marcado y no abras nuevos.', temp: 'Invierno (barro)', con: ['Senderos', 'Quebradas'] }
+      ],
+      nota: 'Si ves amenaza, no la ignores: foto + bitácora + jornada vecinal. Un cerro limpio entre todos dura.'
     }
   ],
-  cierre: 'Todo esto cabe en tu bitácora: hongos, aves, flores y frutos tienen tipo de registro. <b>Observar la red completa es cuidar el bosque completo.</b>'
+  cierre: 'Todo esto cabe en tu bitácora: <b>observación</b> para lo que veas, <b>hongos</b> para lo que coseches con medida, <b>plantación</b> para lo que restaures y <b>limpieza</b> para amenazas. <b>Observar la red completa es cuidar el bosque completo.</b> Prueba el juego: ¿viste hoy algo de cada capa — dosel, sotobosque, suelo y quebrada?'
 };
 
 /* Especies agregadas por el usuario en cada grupo del Ecosistema (clave ecoCustom, por usuario) */
@@ -288,13 +372,27 @@ function renderBosqueHistoria() {
   });
 }
 
+var ecoQ = '';
+function ecoNorm(s) { try { return String(s == null ? '' : s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''); } catch (e) { return String(s == null ? '' : s).toLowerCase(); } }
+function ecoCard(it) {
+  var cons = Array.isArray(it.con) ? it.con : String(it.con || '').split(',').map(function (s) { return s.trim(); }).filter(Boolean);
+  var icon = it.icon || '🌱';
+  return '<div class="eco-card" data-eco-card>' +
+    '<div class="eco-card-top"><span class="eco-ico">' + esc(icon) + '</span>' +
+    '<div><b>' + esc(it.n) + '</b>' +
+    (it.cient ? '<br><span class="muted eco-cient"><i>' + esc(it.cient) + '</i></span>' : '') + '</div></div>' +
+    '<p class="eco-rol">' + esc(it.r) + '</p>' +
+    (it.temp ? '<p class="muted eco-temp">📅 ' + esc(it.temp) + '</p>' : '') +
+    (cons.length ? '<div class="eco-cons"><span class="muted su-0d5be0">Acompaña a:</span> ' + cons.map(chipAcompan).join('') + '</div>' : '') +
+    '</div>';
+}
 function ecoCustomCard(r) {
   var cons = String(r.con || '').split(',').map(function (s) { return s.trim(); }).filter(Boolean);
-  return '<div class="si-card su-a3194a"><h4 class="su-6cb285">' + esc(r.icon || '🌱') + ' ' + esc(r.nombre) +
-    ' <span class="chip su-421073">mía</span></h4>' +
-    (r.cient ? '<p class="muted su-0d5be0">' + esc(r.cient) + '</p>' : '') +
-    (r.rol ? '<p class="su-11a508">' + esc(r.rol) + '</p>' : '') +
-    (cons.length ? '<div class="su-8af0ed"><span class="muted su-0d5be0">Acompaña a:</span>' + cons.map(chipAcompan).join('') + '</div>' : '') +
+  return '<div class="eco-card eco-mia" data-eco-card><div class="eco-card-top"><span class="eco-ico">' + esc(r.icon || '🌱') + '</span>' +
+    '<div><b>' + esc(r.nombre) + '</b> <span class="chip su-421073">mía</span>' +
+    (r.cient ? '<br><span class="muted eco-cient"><i>' + esc(r.cient) + '</i></span>' : '') + '</div></div>' +
+    (r.rol ? '<p class="eco-rol">' + esc(r.rol) + '</p>' : '') +
+    (cons.length ? '<div class="eco-cons"><span class="muted su-0d5be0">Acompaña a:</span> ' + cons.map(chipAcompan).join('') + '</div>' : '') +
     '<div class="su-30b926"><button type="button" class="btn su-fd834a" data-ecodel="' + r.id + '">✕ Borrar</button></div></div>';
 }
 function ecoAddForm(clave) {
@@ -311,23 +409,41 @@ function renderAcompan() {
   if (!box) return;
   var g = dynAcompan();
   var customs = getEcoCustom();
+  var totalBase = 0;
+  g.grupos.forEach(function (gr) { totalBase += (gr.items || []).length; });
   var html = '<p class="muted su-b6db47">' + g.intro + '</p>';
+  html += '<div class="menstrual-card su-68a1a9"><div class="su-0ad856">' +
+    '<span class="chip">🌱 ' + g.grupos.length + ' grupos</span>' +
+    '<span class="chip">🐾 ' + totalBase + ' especies</span>' +
+    (customs.length ? '<span class="chip">⭐ +' + customs.length + ' mías</span>' : '') + '</div>' +
+    '<input type="text" id="ecoFilter" placeholder="🔍 Buscar en el ecosistema... (ej: picaflor, quebrada, noche)" autocomplete="off" value="' + esc(ecoQ) + '" class="su-4e420a">' +
+    '<div class="su-c158a9" id="ecoIndex">' +
+    g.grupos.map(function (gr, i) { return '<a href="#eco-gr-' + esc(gr.clave) + '" class="chip" data-ecoindex="' + i + '">' + esc(gr.t.split(' ')[0]) + ' ' + esc(gr.clave) + '</a>'; }).join('') +
+    '</div>' +
+    '<p class="muted su-e13d76">Toca un chip de especie del catálogo para cargarlo en tu bitácora. Lo tuyo se guarda privado por usuario.</p></div>';
   html += g.grupos.map(function (gr) {
-    var items = gr.items.map(function (it) {
-      return '<div class="si-card su-cfa1ec"><h4 class="su-6cb285">' + esc(it.n) + '</h4>' +
-        '<p class="su-11a508">' + esc(it.r) + '</p>' +
-        '<div class="su-8af0ed"><span class="muted su-0d5be0">Acompaña a:</span>' +
-        it.con.map(chipAcompan).join('') + '</div></div>';
-    }).join('');
+    var items = (gr.items || []).map(ecoCard).join('');
     var mias = customs.filter(function (x) { return x.grupo === gr.clave; }).map(ecoCustomCard).join('');
-    var nBase = gr.items.length, nMias = customs.filter(function (x) { return x.grupo === gr.clave; }).length;
-    return '<div class="menstrual-card su-d2c171"><h4>' + esc(gr.t) + ' <span class="muted su-11a508">· ' + nBase + (nMias ? ' + <b>' + nMias + ' mías</b>' : '') + '</span></h4>' +
-      '<p class="muted su-11a508">' + gr.d + '</p>' + items + mias + ecoAddForm(gr.clave) +
+    var nBase = (gr.items || []).length, nMias = customs.filter(function (x) { return x.grupo === gr.clave; }).length;
+    return '<div class="menstrual-card su-d2c171" id="eco-gr-' + esc(gr.clave) + '"><h4>' + esc(gr.t) + ' <span class="muted su-11a508">· ' + nBase + (nMias ? ' + <b>' + nMias + ' mías</b>' : '') + '</span></h4>' +
+      '<p class="muted su-11a508">' + gr.d + '</p><div class="eco-grid">' + items + mias + '</div>' + ecoAddForm(gr.clave) +
       '<p class="muted su-e13d76">💡 ' + gr.nota + '</p></div>';
   }).join('');
   html += '<div class="menstrual-card su-51d56a"><p class="su-6cb285">' + g.cierre + '</p>' +
-    '<div class="dlg-actions su-59a5a8"><button type="button" id="acompanGoAves" class="btn su-30e741">🦅 Ir a Aves</button></div></div>';
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="acompanGoAves" class="btn su-30e741">🦅 Ir a Aves</button><button type="button" id="acompanGoBosque" class="btn su-30e741">🌿 Ir a Especies nativas</button></div></div>';
   box.innerHTML = html;
+  var f = $('ecoFilter');
+  if (f) {
+    var aplicarEco = function () {
+      ecoQ = (f.value || '').toLowerCase();
+      var q = ecoNorm(f.value || '');
+      box.querySelectorAll('[data-eco-card]').forEach(function (it) {
+        it.style.display = (!q || ecoNorm(it.textContent).indexOf(q) >= 0) ? '' : 'none';
+      });
+    };
+    f.addEventListener('input', aplicarEco);
+    if (ecoQ) aplicarEco();
+  }
   box.querySelectorAll('[data-bosque]').forEach(function (el) {
     el.onclick = function () {
       var inp = $('bosqueSpecies');
@@ -359,6 +475,8 @@ function renderAcompan() {
     try { var d = $('bosqueDialog'); if (d) d.close(); } catch (e) {}
     setTimeout(function () { try { $('btnBirds').click(); } catch (e2) {} }, 150);
   };
+  var gb = $('acompanGoBosque');
+  if (gb) gb.onclick = function () { try { switchBosqueTab('actual'); } catch (e) {} };
 }
 function chipAcompan(nombre) {
   var enCat = false;
@@ -434,22 +552,22 @@ function mejorarBosqueHoy() {
     var gh = $('bhoyGoHist');
     if (gh) gh.onclick = function () { try { switchBosqueTab('historia'); } catch (e) {} };
   }
-  /* 2) filtro de búsqueda en el catálogo */
-  var catBox = $('bosqueCatalogBox');
-  if (catBox && !$('bosqueCatFilter')) {
-    var row = document.createElement('div');
-    row.innerHTML = '<input type="text" id="bosqueCatFilter" placeholder="🔍 Filtrar especies... (ej: fruto, quebra, melifero)" autocomplete="off" value="' + esc(bosqueCatQ) + '" class="su-4e420a">';
-    catBox.insertBefore(row, catBox.firstChild);
-    var inp = $('bosqueCatFilter');
-    var aplicar = function () {
-      bosqueCatQ = (inp.value || '').toLowerCase();
-      catBox.querySelectorAll('.fishing-species-item').forEach(function (it) {
-        it.style.display = (!bosqueCatQ || it.textContent.toLowerCase().indexOf(bosqueCatQ) >= 0) ? '' : 'none';
+  /* 2) compat: el catálogo nuevo ya trae su propio filtro; solo se aplica el texto guardado si existe input viejo */
+  try {
+    var catBox = $('bosqueCatalogBox');
+    if (catBox && bosqueCatQ) {
+      var q = ecoNorm(bosqueCatQ);
+      catBox.querySelectorAll('.bosque-sp-card, .fishing-species-item').forEach(function (it) {
+        it.style.display = (!q || ecoNorm(it.textContent).indexOf(q) >= 0) ? '' : 'none';
       });
-    };
-    inp.addEventListener('input', aplicar);
-    if (bosqueCatQ) aplicar();
-  }
+      var cnt = $('bosqueSpCount');
+      if (cnt) {
+        var vis = 0;
+        catBox.querySelectorAll('.bosque-sp-card').forEach(function (it) { if (it.style.display !== 'none') vis++; });
+        if (vis) cnt.textContent = vis + ' visibles';
+      }
+    }
+  } catch (e2) {}
 }
 
 function setupBosqueHistoria() {
@@ -470,7 +588,7 @@ function setupBosqueHistoria() {
   try {
     var _bk = $('btnBosque');
     if (_bk && _bk.dataset && _bk.dataset.keywords && _bk.dataset.keywords.indexOf('micorriza') < 0)
-      _bk.dataset.keywords += ' acompanantes micorriza sotobosque picaflor dispersor quintral quila diguene changle loyo hongos red polinizador zorzal tenca chucao semilla';
+      _bk.dataset.keywords += ' acompanantes micorriza sotobosque picaflor dispersor quintral quila diguene changle loyo gargal hongos red polinizador zorzal tenca chucao torcaza rayadito pudu guina concon suelo quebrada rana nodriza chilco murta noche amenaza zarza semilla aracnidos arana opilion libelula luciernaga matapiojos tejedora lobo pollito grammostola phanophorus elateridae saltaperico';
   } catch (e) {}
   try {
     if (typeof renderBosqueDialog === 'function' && !window._bhoyWrapped) {

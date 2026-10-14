@@ -83,6 +83,21 @@ var NAT_MULTI = [
     pasos: '1) Dobla una rama baja hasta el suelo sin quebrarla. 2) Hiérela levemente y tápala con tierra de hoja. 3) Fija con una piedra y mantén húmedo. 4) Separa cuando tenga raíz propia (una temporada).',
     sirve: 'Maqui, Arrayán, Avellano (sierpes), Copihue (con cuidado, sin extraer).',
     error: 'Separar antes de tiempo: la planta hija no sobrevive.' },
+  { t: '🎈 Acodo aéreo nativo', luna: 'Creciente de primavera',
+    epoca: 'Pewü (primavera): Sep–Nov',
+    pasos: '1) Elige rama sana de 1–2 años que no alcance el suelo. 2) Anilla la corteza (2–3 cm) sin dañar el leño. 3) Envuelve con musgo o tierra de hoja húmeda en bolsa plástica atada en ambos extremos. 4) Mantén húmedo, corta bajo las raíces a los 2–4 meses y cría en bolsa a la sombra una temporada.',
+    sirve: 'Canelo, Arrayán, Avellano, Maqui añoso, arbustos que ya no se pueden doblar.',
+    error: 'Hacerlo en verano seco sin riego o en especie protegida sin permiso: se pierde la rama.' },
+  { t: '🌱 Sierpes e hijuelos de raíz', luna: 'Menguante de otoño con lluvia',
+    epoca: 'Rimü–Pukem (otoño–invierno)',
+    pasos: '1) Ubica el brote al pie de la madre con raíz propia. 2) Corta con pala afilada dejando buen pan de raíz. 3) Replanta altiro a la misma profundidad y acolcha con hojas. 4) Riega aunque llueva y marca con tutor.',
+    sirve: 'Avellano, Maqui, Arrayán, Lingue joven, Naranjillo.',
+    error: 'Arrancar el hijuelo a tirones o dejar la raíz al aire: no afirma.' },
+  { t: '🪵 Estaca leñosa invernal', luna: 'Menguante de invierno',
+    epoca: 'Pukem (invierno): madera dormida',
+    pasos: '1) Corta estacas de 20–30 cm de madera del año, del grosor de un lápiz. 2) Entierra 2/3 en arena + tierra de hoja a la sombra. 3) Mantén apenas húmedo todo el invierno. 4) Trasplanta en primavera cuando brote con fuerza.',
+    sirve: 'Maqui, Arrayán, arbustos del sotobosque (no sirve para peumo ni avellana de semilla recalcitrante).',
+    error: 'Estaca fina, verde o plantada al revés: no brota.' },
   { t: '🌧️ Trasplante en Pukem', luna: 'Menguante con lluvia',
     epoca: 'Pukem (invierno): suelo blando y lluvias',
     pasos: '1) Hoyo de 40×40 con compost al fondo. 2) Planta al atardecer, al mismo nivel del cuello. 3) Acolcha con hojas y riega aunque llueva. 4) Marca con tutor y protege de conejos/rozos.',
@@ -176,7 +191,7 @@ function bsemBancoHtml() {
 }
 
 function bsemMultiHtml() {
-  return '<p class="muted su-b6db47">El nativo se multiplica sobre todo por <b>semilla en su época</b>, pero también por esqueje, acodo y trasplante en Pukem. Respeta vedas y categorías de protección.</p>' +
+  return '<p class="muted su-b6db47">El nativo se multiplica sobre todo por <b>semilla en su época</b>, pero también por esqueje, estaca, acodo simple y aéreo, sierpes y trasplante en Pukem. Respeta vedas y categorías de protección.</p>' +
     NAT_MULTI.map(function (m) {
       return '<div class="menstrual-card su-d2c171"><h4>' + esc(m.t) +
         ' <span class="chip su-fb2957">🌙 ' + esc(m.luna) + '</span></h4>' +
@@ -320,7 +335,7 @@ function setupBosqueSemillero() {
   try {
     var btn = $('btnBosque');
     if (btn && btn.dataset && btn.dataset.keywords && btn.dataset.keywords.indexOf('semillero') < 0)
-      btn.dataset.keywords += ' semillero nativo banco semillas recolecta estratificacion multiplicacion esqueje recalcitrante vivero';
+      btn.dataset.keywords += ' semillero nativo banco semillas recolecta estratificacion multiplicacion esqueje estaca acodo acodo-aereo aereo sierpe hijuelo recalcitrante vivero';
   } catch (e2) {}
   wireBosqueTabs();
   /* seguro tardío: si otro setup recableó después, se repone */

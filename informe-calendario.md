@@ -1,7 +1,7 @@
 # Informe — Calendario de las 13 Lunas · Mari Küla Küyen
 
-**Fecha del informe:** 1 de octubre de 2026
-**Versión de la app:** 1.3.0 · **Ubicación de referencia:** Penco, Bío-Bío, Chile (36.73° S, 72.99° O)
+**Fecha del informe:** 13 de octubre de 2026 (actualizado; original 1 de octubre de 2026)
+**Versión de la app:** 1.8.0 · **Ubicación de referencia:** Penco, Bío-Bío, Chile (36.73° S, 72.99° O)
 **Repositorio:** Git (último commit `f8f72d8`), copia desplegable en `web/`
 
 ---
@@ -160,3 +160,10 @@ El proyecto es funcionalmente rico y técnicamente coherente: arquitectura de m�
 - **Higiene (#13, #14, #17, #18):** `fuente_docx.txt`→`docs/`, `test-astro.js`→`scripts/manual/` (+ comentario en test); `scripts/check-donate.cjs`, `scripts/check-size.cjs` (techos: renderer 1150, nuevos 450, index 450, css 150 KB), `scripts/lint-commits.cjs` (avisa, no bloquea); `docs/arquitectura.md` con plan de partición; `movil:build` documenta el APK (sync+gradle); `build:win-nsis` como alternativa al portable.
 - **Contraste (#19):** `--muted #9aa3c7→#b9c1e4` (raíz + tema noche) + `:focus-visible` dorado + `skip-link` visible al enfocar.
 - **Tests (#6):** `manifest.test.js` (6), `territorio.test.js` (2), `idb-fallback.test.js` (1). `npm test` = unit + manifest + sw + web + donate + sintaxis (105 archivos). Todo en verde (34/34).
+
+### Addendum — 13 de octubre de 2026 (auditoría integral + correcciones)
+- **Seguridad:** `core-sanitize.js` reescrito (era no-op `return String(html)`): ahora allowlist real (`SCRIPT/STYLE/IFRAME/OBJECT/EMBED/LINK/META/BASE/FORM` eliminados, `on*`/`style`/`javascript:` strip, URLs `http/https/mailto/tel/relativas` + DOMPurify si existe). `main.js export:pdf` sanea HTML (`sanitizePdfHtml`) + `javascript:false` en la ventana oculta. `web/server.js` `X-Frame-Options: DENY→SAMEORIGIN` (igual que `_headers`). `package.json` suma `overrides.tar ^7.5.2` (mitiga GHSA path-traversal de `@capacitor/cli@6`; migración a Capacitor 8 queda como tarea mayor).
+- **Rendimiento:** `boot-modulos.js` pasa de secuencial a pool paralelo ×4 (los `<script async=false>` conservan orden de ejecución; ~4× más rápido, un fallo ya no bloquea la cadena). Tamaños actuales: `renderer.js 785 KB`, `nuevos-modulos.js 360 KB`, `index.html 47 KB`, `styles.css 110 KB`, JS raw 4808 KB / gzip 1604 KB (bajo techo, pero techo descriptivo: partir `renderer.js` sigue pendiente, ver `docs/arquitectura.md`).
+- **Higiene:** `lint-commits.cjs` suma modo `--strict` (falla si HEAD trivial; normal sigue avisando) y `npm test` ahora incluye `lint:commits`. Informe actualizado a v1.8.0.
+- **SEO/PWA:** `robots.txt` + `sitemap.xml` creados, `<title>` con Penco, `aria-label` limpio (sin emoji) en dock + vistas + pager, disclaimer salud en templates médicos (`medicDialog.html`, `psicologia`/`menstrual` vía renderer).
+- **Tests:** `66/66 pass`, sintaxis 235 archivos OK.
