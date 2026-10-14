@@ -84,6 +84,7 @@
     'min/negocios-penco.min.js?v=2',
     'min/moneda-social.min.js?v=1',
     'min/finanzas-negocio-modulo.min.js?v=1',
+    'min/humedal-rocuant-andalien-modulo.min.js?v=1',
     'min/territorio-fase2.min.js?v=1',
     'min/qrcode-lib.min.js?v=1',
     'min/jsqr-lib.min.js?v=1',
