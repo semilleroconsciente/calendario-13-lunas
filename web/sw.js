@@ -2,7 +2,7 @@
 // Copyright (C) 2026 Semillero Consciente. Licencia: GNU GPLv3 o posterior (ver COPYING).
 // SPDX-License-Identifier: GPL-3.0-or-later
 // v55
-const CACHE = 'cal13-v100-offline';
+const CACHE = 'cal13-v102-offline';
 
 // Lista completa de archivos que usa index.html (bare + con ?v=).
 // Si se agrega un JS nuevo en index.html, agregarlo aquí también (bare y ?v=).
@@ -16,6 +16,8 @@ const CORE = [
   './icon-192.png',
   './icon-512.png',
   './icon-512-maskable.png',
+  './min/anime-v4.min.js',
+  './min/anime-v4.min.js?v=1',
   './assets/notify.mp3',
   './assets/cuentos/luna01.mp3',
   './assets/cuentos/luna02.mp3',
@@ -151,6 +153,10 @@ const CORE = [
   './min/auto-backup-modulo.min.js?v=1',
   './min/aves-historia.min.js',
   './min/aves-historia.min.js?v=1',
+  './min/bienvenida-modulo.min.js',
+  './min/bienvenida-modulo.min.js?v=1',
+  './min/bienvenida.min.css',
+  './min/bienvenida.min.css?v=1',
   './min/bitacoras-respaldo-modulo.min.js',
   './min/bitacoras-respaldo-modulo.min.js?v=1',
   './min/bomberos-penco.min.js',

@@ -26,12 +26,16 @@ const BASE = `http://localhost:${PORT}`;
 // Techo 380 con holgura ~3%: si un cambio lo supera, la respuesta es
 // partir/diferir (o sacar templates sueltos del CORE: solo son respaldo
 // fetch del bundle), no subir el techo a ciegas.
+// Recuento 2026-10-15 (bienvenida primera vez): anime.js v4 UMD (116K raw /
+// 42K gzip) va LAZY + precacheado en SW (no penaliza el arranque); solo el
+// módulo (~14K raw / ~5K gzip) y su CSS (~3K/1K) cargan en cada boot.
+// Techo gzip 1770 (+20K: +6K reales del feature, resto holgura).
 // Incluye el módulo Club 5 AM (+2 entradas bare+versionada).
 const BUDGET = {
   'index.html KB': 60,
   'JS total raw KB': 5300,
   'CSS total raw KB': 200,
-  'gzip total KB': 1750,
+  'gzip total KB': 1770,
   'TTFB index ms': 500,
   'entradas SW CORE': 380,
 };

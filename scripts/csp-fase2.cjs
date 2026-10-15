@@ -20,7 +20,7 @@ const CSS_OUT = path.join(ROOT, 'styles-csp.css');
 const MODE = process.argv.includes('--check') ? 'check' : 'fix';
 
 const SKIP_DIRS = new Set(['.git', 'node_modules', 'dist-empaquetado', 'android', '.vscode', 'min', 'web']);
-const SKIP_FILES = new Set(['templates-bundled.js', 'sw.js']); // generado / worker
+const SKIP_FILES = new Set(['templates-bundled.js', 'sw.js', 'anime-v4.js']); // generado / worker / bundle tercero vendored (UMD anime.js v4, solo bienvenida lazy)
 const BASELINE_DINAMICOS = 211; // techo: no se agregan estilos dinámicos nuevos (v1.8.0: 211 tras Auditoría 2026-10-13: +1 por Energía/Descanso/módulos; ver check:csp2)
 
 function esDinamico(v) { return /[+`${]/.test(v); }
