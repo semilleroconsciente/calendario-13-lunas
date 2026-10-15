@@ -69,9 +69,14 @@ function staticEntries() {
     './assets/cuentos/luna05.mp3',
     './assets/cuentos/luna06.mp3',
     './assets/cuentos/luna07.mp3',
+    './assets/cuentos/luna08.mp3',
+    './assets/cuentos/luna09.mp3',
+    './assets/cuentos/luna10.mp3',
     './assets/cuentos/luna11.mp3',
+    './assets/cuentos/luna12.mp3',
+    './assets/cuentos/luna13.mp3',
     './COPYING', './LICENSE.md', './LICENCIA-CONTENIDO-CC-BY-NC-SA-4.0.md',
-    './legal/terminos.html', './legal/privacidad.html', './legal/cookies.html',
+    './legal/licencias.html', './legal/terminos.html', './legal/privacidad.html', './legal/cookies.html',
     './data/territorios/index.json',
   ];
   try {

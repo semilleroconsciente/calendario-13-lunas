@@ -3,6 +3,25 @@
 // === VISTAS: LUNA (defecto) / MES / SEMANA / DÍA ===
 let viewMode = 'luna'; // luna = 13 lunas (defecto) | mes | semana | dia
 let viewDateMs = Date.now(); // pivote gregoriano para mes/semana/día
+// Lista del Diario de Sueños para la vista móvil (Hoy). getSuenos() vive dentro
+// del IIFE de nuevos-modulos.js y NO es global: se lee vía window.SuenosPenco
+// (puente) y, como respaldo, directo de userData().suenosLog (misma clave del
+// store). Devuelve siempre el arreglo vivo para poder hacer push + scheduleSave.
+function todaySuenosList(){
+  try{
+    if(typeof window!=='undefined' && window.SuenosPenco && typeof window.SuenosPenco.get==='function'){
+      const a = window.SuenosPenco.get(); if(Array.isArray(a)) return a;
+    }
+  }catch(e){}
+  try{
+    if(typeof getSuenos==='function'){ const b = getSuenos(); if(Array.isArray(b)) return b; }
+  }catch(e){}
+  try{
+    const u = (typeof userData==='function') ? userData() : null;
+    if(u){ if(!Array.isArray(u.suenosLog)) u.suenosLog = []; return u.suenosLog; }
+  }catch(e){}
+  return [];
+}
 let _lunaByKeyCache = null;
 function rebuildLunaByKey(){
   _lunaByKeyCache = {};
@@ -324,7 +343,7 @@ function renderTodayView(){
     + '<button type="button" id="todayMoodMain" class="today-mood-main"><span class="tm-ico">'+sug.e+'</span><span>'+(cur?escapeHtml(cur.n)+' · toca para cambiar':'Sugerencia: '+sug.e+' · '+escapeHtml(sug.n))+'</span></button>'
     + '<div id="todayMoodPicker" class="today-mood-picker hidden"></div></div>')
     + (hb.suenos === false ? '' : '<div class="today-card"><h3>💭 Diario de Sueños</h3>'
-    + (function(){ try{ const dd=(typeof getSuenos==='function'?getSuenos():[]).filter(function(r){return r.fecha===key;}); return dd.length? '<p class="muted su-11a508">'+dd.length+' sueño(s) hoy en tu Diario · último: «'+escapeHtml((dd[dd.length-1].titulo||dd[dd.length-1].texto||'').slice(0,120))+'»</p>' : '<p class="muted su-11a508">Sin sueños hoy en tu Diario. Anota aunque sea una palabra — queda aparte, no en notas.</p>'; }catch(e){ return ''; } })()
+    + (function(){ try{ const dd=(typeof todaySuenosList==='function'?todaySuenosList():[]).filter(function(r){return r.fecha===key;}); return dd.length? '<p class="muted su-11a508">'+dd.length+' sueño(s) hoy en tu Diario · último: «'+escapeHtml((dd[dd.length-1].titulo||dd[dd.length-1].texto||'').slice(0,120))+'»</p>' : '<p class="muted su-11a508">Sin sueños hoy en tu Diario. Anota aunque sea una palabra — queda aparte, no en notas.</p>'; }catch(e){ return ''; } })()
     + '<textarea id="todayDreamText" class="today-note" rows="2" placeholder="Anoche soñé... (se guarda en tu Diario)"></textarea>'
     + '<div class="su-67b198"><button type="button" id="todayDreamSave" class="btn btn-accent su-1ce0dc">💾 Guardar en Diario</button><button type="button" id="todayDreamOpen" class="btn su-1ce0dc">📓 Abrir Diario</button></div></div>')
     + (hb.comidas === false ? '' : '<div class="today-card"><h3>🥗 Comidas de hoy</h3>'
@@ -676,10 +695,9 @@ function renderTodayView(){
         const t=(($('todayDreamText')||{}).value||'').trim();
         if(!t) return alert('Escribe tu sueño primero');
         const txt=sanitizeText(t,800);
-        if(typeof getSuenos==='function'){
-          getSuenos().push({ id:'su'+Date.now().toString(36)+Math.random().toString(36).slice(2,4), fecha:key, titulo:txt.split(/\n|。|\./)[0].slice(0,60)||'Sueño', tipo:'🌊 Común', texto:txt, arq:'', emo:'', viv:0, msg:'', luc:false });
-          scheduleSave('Sueño guardado en tu Diario ✓');
-        }
+        todaySuenosList().push({ id:'su'+Date.now().toString(36)+Math.random().toString(36).slice(2,4), fecha:key, titulo:txt.split(/\n|。|\./)[0].slice(0,60)||'Sueño', tipo:'🌊 Común', texto:txt, arq:'', emo:'', viv:0, msg:'', luc:false });
+        scheduleSave('Sueño guardado en tu Diario ✓');
+        try{ if(typeof window!=='undefined' && window.SuenosPenco && typeof window.SuenosPenco.render==='function') window.SuenosPenco.render(); }catch(e){}
         renderTodayView();
       }catch(e){}
     };

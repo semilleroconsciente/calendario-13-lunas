@@ -4675,7 +4675,7 @@ function setupSeccionesToggle(){
         if(!!g.open === has) return; // sin cambios (p. ej. restauración inicial)
         if(g.open) DATA.config.secciones[k] = true;
         else delete DATA.config.secciones[k];
-        scheduleSave();
+        scheduleSave('', { silent: true });
       }catch(e2){}
     }, true);
     applySecciones();
@@ -6418,9 +6418,7 @@ setTimeout(setupDreamsDialog, 865);
 
 
 // === CUENTOS LUNARES ===
-// Para agregar más audios a futuro basta agregar una línea aquí:
-//   8: 'assets/cuentos/luna08.mp3',
-// y subir el mp3 a assets/cuentos/. Todo lo demás (botón, progreso, voz) es automático.
+// Audios: assets/cuentos/luna01.mp3 … luna13.mp3 (13 lunas completas).
 const TALES_AUDIO = {
   1: 'assets/cuentos/luna01.mp3',
   2: 'assets/cuentos/luna02.mp3',
@@ -6429,7 +6427,12 @@ const TALES_AUDIO = {
   5: 'assets/cuentos/luna05.mp3',
   6: 'assets/cuentos/luna06.mp3',
   7: 'assets/cuentos/luna07.mp3',
-  11: 'assets/cuentos/luna11.mp3'
+  8: 'assets/cuentos/luna08.mp3',
+  9: 'assets/cuentos/luna09.mp3',
+  10: 'assets/cuentos/luna10.mp3',
+  11: 'assets/cuentos/luna11.mp3',
+  12: 'assets/cuentos/luna12.mp3',
+  13: 'assets/cuentos/luna13.mp3'
 };
 const DEFAULT_TALES = [
   { n:1, nombre:'We Tripantü Küyen', titulo:'El fuego que no se apaga', texto:'En la noche más larga, la machi Rayén reunió a los niños alrededor del fogón de Penco. Afuera llovía fuerte sobre el golfo y las olas golpeaban Lirquén. “Esta luna guarda el fuego —dijo—. No es para quemar, sino para recordar”. Les entregó a cada uno una semilla de peumo: “Guárdenla seca, oscura y sin apuro. Como el sol ahora, parece dormida, pero late”. El niño Antü guardó la suya en una cajita de quila. Cada noche la miraba antes de dormir, aprendiendo la paciencia del invierno. En esa espera, comprendió que guardar también es sembrar.', moral:'Paciencia y cuidado — lo que se guarda con amor, brota a su tiempo.', audio:'assets/cuentos/luna01.mp3' },

@@ -382,6 +382,10 @@ var NEGOCIOS_BASE = [
     direccion: 'Borde costero (confirmar base en su Instagram)', horario: 'Salidas y clases (ver Instagram)', contacto: 'Por confirmar (escribir por Instagram)', redes: 'Instagram: @clubkayakpenco',
     desc: 'Kayak de mar en la Bahía de Concepción: salidas y formación con seguridad. Revisa 🌊 Mareas antes de salir. (Cuenta aportada por la comunidad — verifica base y horarios en su Instagram)',
     precio: 'Según salida', moneda: false, trueque: false },
+  { id: 'u-agarayoga', tipo: 'oficio', icon: '🧘', nombre: 'Agara Yoga Chile', rubro: 'salud', sector: 'Online (Penco)',
+    direccion: 'Online + presenciales (confirmar en su Instagram)', horario: 'Clases y actividades (ver Instagram)', contacto: 'Por confirmar (escribir por Instagram)', redes: 'Instagram: @agarayogachile — https://www.instagram.com/agarayogachile/',
+    desc: 'Yoga y bienestar: clases y prácticas. (Cuenta aportada por la comunidad — verifica horarios, modalidad y valores en su Instagram)',
+    precio: 'A convenir', moneda: false, trueque: false },
   /* ---- BONO PATRIMONIAL VERIFICADO EN PRENSA ---- */
   { id: 'b-riffo', tipo: 'negocio', icon: '🥖', nombre: 'Panadería Riffo — conejito dulce patrimonial', rubro: 'alimentos', sector: 'Penco Centro',
     direccion: 'Pleno centro de Penco, a metros de la playa y la Plaza (2° local en Lirquén)', horario: 'Lun–Vie colaciones + fin de semana (confirmar)', contacto: 'Por confirmar', redes: '',

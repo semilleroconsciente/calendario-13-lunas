@@ -2,7 +2,7 @@
 // Copyright (C) 2026 Semillero Consciente. Licencia: GNU GPLv3 o posterior (ver COPYING).
 // SPDX-License-Identifier: GPL-3.0-or-later
 // v55
-const CACHE = 'cal13-v91-offline';
+const CACHE = 'cal13-v93-offline';
 
 // Lista completa de archivos que usa index.html (bare + con ?v=).
 // Si se agrega un JS nuevo en index.html, agregarlo aquí también (bare y ?v=).
@@ -24,10 +24,16 @@ const CORE = [
   './assets/cuentos/luna05.mp3',
   './assets/cuentos/luna06.mp3',
   './assets/cuentos/luna07.mp3',
+  './assets/cuentos/luna08.mp3',
+  './assets/cuentos/luna09.mp3',
+  './assets/cuentos/luna10.mp3',
   './assets/cuentos/luna11.mp3',
+  './assets/cuentos/luna12.mp3',
+  './assets/cuentos/luna13.mp3',
   './COPYING',
   './LICENSE.md',
   './LICENCIA-CONTENIDO-CC-BY-NC-SA-4.0.md',
+  './legal/licencias.html',
   './legal/terminos.html',
   './legal/privacidad.html',
   './legal/cookies.html',

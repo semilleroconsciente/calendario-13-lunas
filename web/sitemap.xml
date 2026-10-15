@@ -26,6 +26,11 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://calendario-13-lunas.pages.dev/legal/licencias.html</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
     <loc>https://calendario-13-lunas.pages.dev/legal/terminos.html</loc>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
