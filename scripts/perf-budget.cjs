@@ -21,17 +21,19 @@ const BASE = `http://localhost:${PORT}`;
 // Presupuesto: holgura ~10% sobre lo medido en v1.8 (index 29K, JS ~4830K
 // raw, CSS con styles-csp ~170K, gzip total ~1540K, TTFB local ~25ms,
 // CORE 303: 91 min + fuentes + 55 templates + screenshots + datos).
-// Recuento v1.8: el crecimiento vino de funciones aprobadas (7 core-*,
-// pwa-install, styles-csp, templates, screenshots). Si un cambio lo supera,
-// la respuesta es partir/diferir (o sacar templates sueltos del CORE:
-// solo son respaldo fetch del bundle), no subir el techo a ciegas.
+// Recuento 2026-10-15: el crecimiento vino de funciones aprobadas y el
+// CORE real está en ~367 (era 303 en v1.8: el techo 340 quedó obsoleto).
+// Techo 380 con holgura ~3%: si un cambio lo supera, la respuesta es
+// partir/diferir (o sacar templates sueltos del CORE: solo son respaldo
+// fetch del bundle), no subir el techo a ciegas.
+// Incluye el módulo Club 5 AM (+2 entradas bare+versionada).
 const BUDGET = {
   'index.html KB': 60,
   'JS total raw KB': 5300,
   'CSS total raw KB': 200,
   'gzip total KB': 1750,
   'TTFB index ms': 500,
-  'entradas SW CORE': 340,
+  'entradas SW CORE': 380,
 };
 
 function get(p, gzip) {

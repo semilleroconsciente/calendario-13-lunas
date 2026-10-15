@@ -50,6 +50,7 @@
     'min/psicologia-modulo.min.js?v=1',
     'min/adicciones-modulo.min.js?v=2',
     'min/retos-21-modulo.min.js?v=1',
+    'min/club-5am-modulo.min.js?v=1',
     'min/neurodiversidad-modulo.min.js?v=1',
     'min/kin-maya-modulo.min.js?v=3',
     'min/tarot-modulo.min.js?v=1',
