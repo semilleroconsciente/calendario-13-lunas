@@ -42,6 +42,8 @@
     'min/ajedrez-modulo.min.js?v=1',
     'min/dama-modulo.min.js?v=1',
     'min/matematicas-modulo.min.js?v=1',
+    'min/idiomas-modulo.min.js?v=1',
+    'min/portugues-modulo.min.js?v=1',
     'min/sudoku-modulo.min.js?v=1',
     'min/crucigrama-modulo.min.js?v=1',
     'min/sopa-letras-modulo.min.js?v=2',

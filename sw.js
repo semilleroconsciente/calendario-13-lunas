@@ -2,7 +2,7 @@
 // Copyright (C) 2026 Semillero Consciente. Licencia: GNU GPLv3 o posterior (ver COPYING).
 // SPDX-License-Identifier: GPL-3.0-or-later
 // v55
-const CACHE = 'cal13-v102-offline';
+const CACHE = 'cal13-v106-offline';
 
 // Lista completa de archivos que usa index.html (bare + con ?v=).
 // Si se agrega un JS nuevo en index.html, agregarlo aquí también (bare y ?v=).
@@ -261,6 +261,8 @@ const CORE = [
   './min/ia-modulo.min.js?v=4',
   './min/ics-modulo.min.js',
   './min/ics-modulo.min.js?v=1',
+  './min/idiomas-modulo.min.js',
+  './min/idiomas-modulo.min.js?v=1',
   './min/iglesias-penco.min.js',
   './min/iglesias-penco.min.js?v=1',
   './min/ikigai-modulo.min.js',
@@ -311,6 +313,8 @@ const CORE = [
   './min/pesca-historia.min.js?v=1',
   './min/plantas-modulo.min.js',
   './min/plantas-modulo.min.js?v=1',
+  './min/portugues-modulo.min.js',
+  './min/portugues-modulo.min.js?v=1',
   './min/psicologia-modulo.min.js',
   './min/psicologia-modulo.min.js?v=1',
   './min/pwa-install.min.js',
@@ -369,6 +373,8 @@ const CORE = [
   './min/voz-abuelos.min.js?v=1',
   './min/web-api.min.js',
   './min/web-api.min.js?v=9',
+  './min/zoom-calendario.min.js',
+  './min/zoom-calendario.min.js?v=1',
   './sw-registro.js',
   './sw-registro.js?v=1',
 ];

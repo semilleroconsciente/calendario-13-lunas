@@ -1307,15 +1307,25 @@ html[data-font="4xl"] dialog { max-width: calc((100vw - 24px) / 1.48) !important
   .today-note { min-height: 150px; font-size: 14px; line-height: 1.6; }
   .today-agenda-list { display: flex; flex-direction: column; gap: 6px; margin-bottom: 8px; }
   .today-agenda-item {
-    display: flex; align-items: center; gap: 8px;
+    display: flex; align-items: flex-start; gap: 8px;
     background: var(--panel); border: 1px solid var(--line); border-radius: 8px;
-    padding: 8px 10px; font-size: 13px;
+    padding: 8px 10px; font-size: 13px; min-width: 0; max-width: 100%;
   }
-  .today-agenda-item .hh { color: var(--gold); font-weight: 700; font-variant-numeric: tabular-nums; }
-  .today-agenda-item .tx { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .today-add { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
-  .today-add input[type="time"] { max-width: 104px; }
-  .today-add input[type="text"] { flex: 1; min-width: 120px; }
+  .today-agenda-item .hh { color: var(--gold); font-weight: 700; font-variant-numeric: tabular-nums; flex: 0 0 auto; }
+  .today-agenda-item .tx { flex: 1; min-width: 0; max-width: 100%; overflow-wrap: break-word; word-break: break-word; white-space: normal; overflow: visible; text-overflow: clip; line-height: 1.45; }
+  .today-add { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; min-width: 0; }
+  .today-add input[type="time"] { max-width: 104px; flex: 0 0 auto; }
+  .today-add input[type="text"] { flex: 1 1 140px; min-width: 0; max-width: 100%; }
+  /* Salvaguardas anti-corte en Hoy (pantallas angostas): nada con ancho fijo
+     puede empujar texto fuera de pantalla; todo envuelve dentro de la tarjeta. */
+  body[data-mview="hoy"] #todayView, #todayView { min-width: 0; max-width: 100%; overflow-x: clip; }
+  .today-hero { min-width: 0; max-width: 100%; overflow-wrap: break-word; }
+  .today-hero .t-now { overflow-wrap: break-word; word-break: break-word; line-height: 1.6; }
+  .today-card { min-width: 0; max-width: 100%; overflow-wrap: break-word; }
+  .today-sun .chip, .today-card .chip { max-width: 100%; overflow-wrap: break-word; word-break: break-word; white-space: normal; }
+  .today-mood-main { min-width: 0; max-width: 100%; }
+  .today-mood-main span:last-child { min-width: 0; overflow-wrap: break-word; white-space: normal; }
+  .today-card .today-add input[type="text"], .today-card .today-add select { flex: 1 1 160px; min-width: 0; max-width: 100%; }
 }
 /* Paginador entre lunas en móvil: barra fija con fondo */
 @media (max-width: 920px) {
@@ -1407,15 +1417,25 @@ body[data-mview="hoy"] #tidesPanel { display: none; }
 #todayView .today-note { min-height: 150px; font-size: 14px; line-height: 1.6; }
 #todayView .today-agenda-list { display: flex; flex-direction: column; gap: 6px; margin-bottom: 8px; }
 #todayView .today-agenda-item {
-  display: flex; align-items: center; gap: 8px;
+  display: flex; align-items: flex-start; gap: 8px;
   background: var(--panel); border: 1px solid var(--line); border-radius: 8px;
-  padding: 8px 10px; font-size: 13px;
+  padding: 8px 10px; font-size: 13px; min-width: 0; max-width: 100%;
 }
-#todayView .today-agenda-item .hh { color: var(--gold); font-weight: 700; font-variant-numeric: tabular-nums; }
-#todayView .today-agenda-item .tx { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-#todayView .today-add { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
-#todayView .today-add input[type="time"] { max-width: 104px; }
-#todayView .today-add input[type="text"] { flex: 1; min-width: 120px; }
+#todayView .today-agenda-item .hh { color: var(--gold); font-weight: 700; font-variant-numeric: tabular-nums; flex: 0 0 auto; }
+#todayView .today-agenda-item .tx { flex: 1; min-width: 0; max-width: 100%; overflow-wrap: break-word; word-break: break-word; white-space: normal; overflow: visible; text-overflow: clip; line-height: 1.45; }
+#todayView .today-add { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; min-width: 0; }
+#todayView .today-add input[type="time"] { max-width: 104px; flex: 0 0 auto; }
+#todayView .today-add input[type="text"] { flex: 1 1 140px; min-width: 0; max-width: 100%; }
+#todayView { min-width: 0; max-width: 100%; overflow-x: clip; }
+#todayView .today-hero, #todayView .today-card { min-width: 0; max-width: 100%; overflow-wrap: break-word; }
+#todayView .today-hero .t-now { overflow-wrap: break-word; word-break: break-word; line-height: 1.6; }
+#todayView .today-sun .chip, #todayView .today-card .chip { max-width: 100%; overflow-wrap: break-word; word-break: break-word; white-space: normal; }
+#todayView .hora-item { align-items: flex-start; min-width: 0; max-width: 100%; }
+#todayView .hora-item > span:first-child { flex: 1; min-width: 0; overflow-wrap: break-word; word-break: break-word; white-space: normal; line-height: 1.45; }
+@media (max-width: 480px) {
+  #todayView .today-add input[type="text"], #todayView .today-add select,
+  .today-card .today-add input[type="text"], .today-card .today-add select { flex: 1 1 100%; min-width: 0; max-width: 100%; }
+}
 /* === Nuevos modulos (14 secciones) === */
 #forrajeDialog, #bodegaDialog, #despensaDialog, #closetDialog, #herramientasDialog, #plantasDialog, #trafDialog, #aguaDialog, #nudosDialog, #tallerDialog, #mecanicaDialog, #truequeDialog, #mingaDialog, #cieloDialog, #epewDialog, #rutinaDialog, #fertiDialog { width: 680px; max-width: 96vw; max-height: 88vh; overflow-y: auto; }
 #forrajeFichas .lawen-card, #nudosList .si-card { margin: 0; }
@@ -1507,6 +1527,27 @@ body[data-modo-noche="1"] dialog { filter: brightness(0.92); }
   }
   .dlg-resize-handle:hover { background: var(--card-hover); opacity: 1; }
   body.dlg-resizing, body.dlg-resizing * { cursor: nwse-resize !important; user-select: none !important; }
+}
+
+/* === Zoom del calendario en PC (zoom-calendario.js): Ctrl+rueda ===
+   Solo PC: puntero fino + ancho > 920px. En móvil no aparece nada. */
+#calZoomBadge { display: none; }
+@media (pointer: fine) and (min-width: 921px) {
+  #gridWrap { position: relative; }
+  #calZoomBadge {
+    display: flex; align-items: center; gap: 8px;
+    position: fixed; right: 22px; bottom: 18px; z-index: 70;
+    background: var(--panel); border: 1px solid var(--gold); color: var(--text);
+    border-radius: 10px; padding: 8px 10px; font-size: 13px; font-weight: 700;
+    box-shadow: 0 4px 16px rgba(0,0,0,.4);
+    opacity: 0; pointer-events: none; transition: opacity .18s;
+  }
+  #calZoomBadge.show { opacity: 1; pointer-events: auto; }
+  #calZoomBadge .cal-zoom-btn {
+    padding: 4px 9px; border-radius: 7px; border: 1px solid var(--line);
+    background: var(--card); color: var(--text); cursor: pointer; font-size: 12px; font-weight: 700;
+  }
+  #calZoomBadge .cal-zoom-btn:hover { background: var(--card-hover); border-color: var(--gold); }
 }
 
 /* === Mi Dia — Rutinas por horario (manana/tarde/noche) === */

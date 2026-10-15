@@ -94,6 +94,18 @@
     } catch (e) { return false; }
   }
 
+  // ¿PC o celular? Espeja isMobileWidth() de core-calendario.js (920px).
+  // En PC la bienvenida debe dejar la vista de PC (🌙 Luna); en celular la
+  // de Hoy. Si renderer no cargó, se decide por matchMedia/ancho.
+  function esPC() {
+    try { if (typeof isMobileWidth === 'function') return !isMobileWidth(); } catch (e) {}
+    try {
+      if (document.body && document.body.dataset && document.body.dataset.forceMobile === '1') return false;
+      if (window.matchMedia) return !window.matchMedia('(max-width: 920px)').matches;
+      return (window.innerWidth || 9999) > 920;
+    } catch (e) { return true; }
+  }
+
   // Aplica preset replicando renderer.js sin depender de sus const internas
   // (const de scope global clásico no son visibles como window.*; se usa
   // homeBlocksForPreset() para vista + bloques ◉ Hoy y se deja visible todo
@@ -121,6 +133,9 @@
             DATA.config.home = DATA.config.home || {};
             DATA.config.home.startView = hp.startView;
             DATA.config.home.blocks = hp.blocks;
+            // En PC no se entra en Hoy (vista de celular): 'auto' resuelve a
+            // 🌙 Luna en PC y a ◉ Hoy en celular (ver applyStartView).
+            if (esPC() && DATA.config.home.startView === 'hoy') DATA.config.home.startView = 'auto';
           }
         }
       } catch (e3) {}
@@ -319,7 +334,9 @@
       try {
         for (var i = 0; i < PRESETS.length; i++) if (PRESETS[i].id === elegido) pnom = PRESETS[i].nom;
       } catch (e) {}
-      overlay.querySelector('#bvResumen').textContent = 'Perfil «' + pnom + '» aplicado: tu pantalla ◉ Hoy ya muestra lo esencial para ti.';
+      overlay.querySelector('#bvResumen').textContent = esPC()
+        ? 'Perfil «' + pnom + '» aplicado: entraste en la vista de PC (🌙 Luna) con lo esencial para ti.'
+        : 'Perfil «' + pnom + '» aplicado: tu pantalla ◉ Hoy ya muestra lo esencial para ti.';
     } catch (e) {}
     // celebración: pulso de lunas (stagger from center, patrón examples/stagger)
     try {
@@ -508,6 +525,13 @@
           var el = document.getElementById('statusMsg');
           if (el) el.textContent = '✓ Perfil listo — busca funciones con 🔍 (Ctrl+K).';
         } catch (e) {}
+        // En PC se entra en la vista de PC (🌙 Luna), no en Hoy.
+        try {
+          if (esPC() && typeof applyStartView === 'function') {
+            var inf = (typeof todayInfo === 'function') ? todayInfo() : null;
+            applyStartView(inf);
+          }
+        } catch (e2) {}
       } else {
         // Sin perfil: ceder a la guía inicial existente tras cerrar.
         setTimeout(function () {
