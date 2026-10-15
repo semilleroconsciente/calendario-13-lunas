@@ -4,9 +4,93 @@
         <h3 class="su-ee0cfe">📿 Ekadashi — ayuno lunar</h3>
         <button type="button" id="ekadashiCloseTop" class="btn btn-icon" title="Cerrar" aria-label="Cerrar">✕</button>
       </div>
-      <p class="muted">Dos veces por mes lunar, el día 11 de la quincena clara y oscura. Tradición de ayuno y claridad para cuerpo y mente.</p>
-      <div id="ekadashiIntro" class="su-0cbf9f"></div>
-      <div id="ekadashiList"></div>
+      <div class="timer-tabs eka-tabs su-a2761b">
+        <button type="button" id="tabEkaResumen" data-eka-tab="resumen" class="btn eka-tab btn-accent su-43351a">📖 Resumen</button>
+        <button type="button" id="tabEkaAyuno" data-eka-tab="ayuno" class="btn eka-tab">🍵 Ayuno</button>
+        <button type="button" id="tabEkaHistoria" data-eka-tab="historia" class="btn eka-tab">📜 Historia</button>
+        <button type="button" id="tabEkaFechas" data-eka-tab="fechas" class="btn eka-tab">📅 Fechas</button>
+        <button type="button" id="tabEkaPractica" data-eka-tab="practica" class="btn eka-tab">🧘 Práctica</button>
+      </div>
+      <div id="ekaPanelResumen" data-eka-panel="resumen">
+        <p class="su-9c571d"><b>📿 ¿Qué es Ekadashi?</b> En sánscrito <i>eka-dasha</i> = once. Es el <b>día 11</b> de cada quincena lunar: <b>Shukla</b> (creciente) y <b>Krishna</b> (menguante), dos veces por mes lunar.</p>
+        <p class="muted su-e13d76">Cálculo astronómico: elongación Sol-Luna / 12° = tithi. Mostramos el día en que el tithi 11 ó 26 cae al amanecer en America/Santiago (±1 día según linaje).</p>
+        <div id="ekaNextBox" class="menstrual-card su-68a1a9"></div>
+        <div class="su-2a51d0">
+          <div class="su-5cc4d8"><b class="su-e39eba">🌙 ¿Por qué importa?</b><p class="muted su-954796">La luna mueve mareas y tu agua interna. Ekadashi es un <b>recordatorio</b> para aligerar digestión y mente.</p><button type="button" class="btn" data-eka-goto="ayuno">Ver guía de ayuno →</button></div>
+          <div class="su-5cc4d8"><b class="su-e39eba">📜 ¿De dónde viene?</b><p class="muted su-954796">Día querido por Vishnu; la diosa Ekadashi vence al demonio Murdanava; Krishna lo explica a Yudhishthira.</p><button type="button" class="btn" data-eka-goto="historia">Leer historia →</button></div>
+        </div>
+        <div class="si-card"><h4>🥗 Práctica en 4 pasos (resumen)</h4><p><b>1. Víspera (Dashami):</b> cena liviana antes de las 20:00.<br><b>2. Ekadashi:</b> sin granos/legumbres/carnes/alcohol. Fruta, verdura, agua, infusiones.<br><b>3. Actitud:</b> calma, caminata, meditar 10 min.<br><b>4. Parana (Dwadashi):</b> rompe tras el amanecer con agua + fruta.</p><button type="button" class="btn" data-eka-goto="practica">Ver práctica completa →</button></div>
+        <div class="conv-row">
+          <button type="button" class="btn btn-accent su-4ed52d" data-eka-goto="fechas">📅 Ver mis fechas</button>
+        </div>
+      </div>
+      <div id="ekaPanelAyuno" data-eka-panel="ayuno" class="hidden">
+        <p><b>🍵 El ayuno no es castigo, es descanso.</b> Toca tu nivel y se ilumina su tarjeta. Sin culpa: el Nivel 1 ya es Ekadashi.</p>
+        <div class="ek-nivel-pick">
+          <button type="button" class="ek-nivel-btn" data-eka-nivel="1"><span class="ek-nivel-ico">🌱</span>1 · Suave</button>
+          <button type="button" class="ek-nivel-btn" data-eka-nivel="2"><span class="ek-nivel-ico">🍎</span>2 · Fruta</button>
+          <button type="button" class="ek-nivel-btn" data-eka-nivel="3"><span class="ek-nivel-ico">💧</span>3 · Líquidos</button>
+          <button type="button" class="ek-nivel-btn" data-eka-nivel="4"><span class="ek-nivel-ico">🌑</span>4 · Nirjala</button>
+        </div>
+        <p id="ekaNivelTag" class="ek-nivel-tag">Elige tu nivel arriba 👆</p>
+        <div class="ek-niveles">
+          <div class="ek-nivel ek-n1" data-eka-nivel-card="1"><div class="ek-nivel-head"><span class="ek-nivel-num">1</span><b>🌱 Suave</b><span class="chip">si trabajas o cuidas</span></div><p>Sin carnes, alcohol ni ultraprocesados. Fruta + verdura cocida + frutos secos.</p><p class="ek-come">Come: papas, zapallo, fruta, nueces, yogur.</p></div>
+          <div class="ek-nivel ek-n2" data-eka-nivel-card="2"><div class="ek-nivel-head"><span class="ek-nivel-num">2</span><b>🍎 Phalahara</b><span class="chip">el clásico</span></div><p>Solo fruta, frutos secos, leche/yogur si toleras, agua e infusiones.</p><p class="ek-come">Sin: arroz, pan, fideos, porotos, lentejas, avena ni mote.</p></div>
+          <div class="ek-nivel ek-n3" data-eka-nivel-card="3"><div class="ek-nivel-head"><span class="ek-nivel-num">3</span><b>💧 Líquidos</b><span class="chip">con experiencia</span></div><p>Agua, limón/miel, manzanilla, boldo, matico, jugos colados. Sin trabajo físico exigente.</p></div>
+          <div class="ek-nivel ek-n4" data-eka-nivel-card="4"><div class="ek-nivel-head"><span class="ek-nivel-num">4</span><b>🌑 Nirjala</b><span class="chip">solo con guía</span></div><p>Sin agua ni comida de amanecer a amanecer, 1 vez/año. No lo intentes sin preparación.</p></div>
+        </div>
+        <div class="ek-sino">
+          <div class="ek-si"><h4>✅ SÍ</h4><ul><li>Frutas, papas, camote, zapallo, zanahoria</li><li>Maní, nuez, almendra, leche, yogur</li><li>Miel, agua, limonada, infusiones</li></ul></div>
+          <div class="ek-no"><h4>🚫 NO</h4><ul><li>Arroz, pan, fideos, avena, mote, quinoa</li><li>Porotos, lentejas, garbanzos, soya</li><li>Carnes, embutidos, huevo, alcohol, frituras</li></ul></div>
+        </div>
+        <div class="ek-timeline">
+          <div class="ek-step"><b>🌙 Dashami · víspera antes de las 20:00</b><p>Cena liviana: sopa + fruta. Prepara lo de mañana.</p></div>
+          <div class="ek-step"><b>☀️ Ekadashi · tu nivel elegido</b><p>Agua tibia + limón al amanecer, medita 10–20 min, come ligero solo con hambre real.</p></div>
+          <div class="ek-step"><b>🌅 Dwadashi · parana 2–3 h tras amanecer</b><p>Rompe con agua + fruta + cocido suave. Sin atracón.</p></div>
+        </div>
+        <div class="ek-menu"><h4>🧺 Menú ejemplo Penco</h4>
+          <div class="ek-menu-row"><b>🌅 Mañana</b><span>agua tibia + manzana + nueces</span></div>
+          <div class="ek-menu-row"><b>☀️ Mediodía</b><span>papas con zapallo + manzanilla</span></div>
+          <div class="ek-menu-row"><b>🌿 Tarde</b><span>plátano + yogur</span></div>
+          <div class="ek-menu-row"><b>🌙 Noche</b><span>sopa colada o boldo/matico</span></div>
+        </div>
+        <div class="ek-warn"><h4>⚠️ Precauciones + dudas</h4><p>Sin ayuno total con embarazo, lactancia, diabetes con insulina, TCA o remedios con comida: usa Nivel 1. Remedios se toman igual con agua. Mate/café suave sí; alcohol no. Mareo fuerte o hipoglicemia: rompe con fruta + agua y retoma otro mes, sin culpa.</p></div>
+        <div class="conv-row">
+          <button type="button" class="btn" data-eka-goto="resumen">← Resumen</button>
+          <button type="button" class="btn" data-eka-goto="practica">Práctica →</button>
+        </div>
+      </div>
+      <div id="ekaPanelHistoria" data-eka-panel="historia" class="hidden">
+        <p class="su-edfca6"><b>📜 Origen.</b> <i>Eka+dasha</i> = once. Puranas (Padma, Garuda, Skanda) lo llaman el día querido por <b>Vishnu</b>.</p>
+        <p class="su-edfca6"><b>La diosa Ekadashi.</b> El demonio Murdanava no podía ser vencido. Vishnu descansó en una cueva; Murdanava entró a matarlo y de la respiración de Vishnu nació una joven luminosa que lo derrotó. Vishnu la nombró <b>Ekadashi</b>: quien ayune en su día hallará claridad.</p>
+        <p class="su-edfca6"><b>Krishna y Yudhishthira</b> (Mahabharata) narran cada Ekadashi con su nombre y fruto — origen de la lista actual.</p>
+        <div class="si-card"><h4>🌙 Los 24 del año</h4><p><b>Ene–Feb:</b> Putrada · Shat-tila · Jaya · Vijaya<br><b>Mar–Abr:</b> Amalaki · Papmochani · Kamada · Varuthini<br><b>May–Jun:</b> Mohini · Apara · ⭐ <b>Nirjala</b> · Yogini<br><b>Jul–Ago:</b> ⭐ <b>Devshayani</b> (Vishnu duerme) · Kamika · Pavitropana · Aja<br><b>Sep–Oct:</b> Parivartini · Indira · Papankusha · Rama<br><b>Nov–Dic:</b> ⭐ <b>Devutthana</b> (Vishnu despierta) · Utpanna · Mokshada · Saphala</p></div>
+        <p class="su-db4e5c"><b>Símbolo:</b> 5 sentidos + 5 acciones + mente = 11. Ekadashi = gobernar los once.</p>
+        <p class="muted su-1b014d">Chaitanya (s. XVI) y Gandhi lo practicaron. Aquí lo unimos a las 13 lunas y la marea. 📚 Padma Purana, Garuda Purana, Ekadashi Mahatmya.</p>
+        <div class="conv-row">
+          <button type="button" class="btn" data-eka-goto="ayuno">← Ayuno</button>
+          <button type="button" class="btn" data-eka-goto="fechas">Fechas →</button>
+        </div>
+      </div>
+      <div id="ekaPanelFechas" data-eka-panel="fechas" class="hidden">
+        <p class="muted">Tus Ekadashis del ciclo, calculados al amanecer de Penco. Por defecto ves <b>3 lunas</b>; abre el ciclo completo si quieres planificar.</p>
+        <div class="su-b90b2d">Mostrando solo <b>3 lunas</b> contando la actual: <span id="ekadashiScope"></span> · <a href="#" id="ekadashiShowAll" class="su-a80552">ver ciclo completo</a></div>
+        <div id="ekadashiList"></div>
+        <div class="conv-row">
+          <button type="button" class="btn" data-eka-goto="practica">🧘 Cómo vivirlo →</button>
+        </div>
+      </div>
+      <div id="ekaPanelPractica" data-eka-panel="practica" class="hidden">
+        <p class="muted">El ayuno sostiene la mente solo si el día tiene forma. Elige 3 de estos 5 y repítelos en cada Ekadashi.</p>
+        <div class="si-card"><h4>🌙 Víspera (Dashami)</h4><p>☐ Cena liviana antes de las 20:00 (sopa + fruta). ☐ Prepara fruta/agua/infusiones para mañana. ☐ Acuéstate 30 min antes, sin pantallas en cama.</p></div>
+        <div class="si-card"><h4>☀️ Día Ekadashi</h4><p>☐ Agua tibia + limón al amanecer. ☐ Medita o respira 10–20 min (usa 🌬️ Respiración). ☐ Caminata 10–20 min sin audífonos. ☐ Come ligero solo con hambre real (Nivel 1–2). ☐ 1 línea en tu cuaderno: ¿qué quiero aclarar?</p></div>
+        <div class="si-card"><h4>🌅 Parana (Dwadashi)</h4><p>☐ Rompe 2–3 h tras el amanecer: agua + fruta + cocido suave. ☐ Sin atracón: la mitad de lo que crees. ☐ Agradece en voz alta 1 cosa que se aclaró.</p></div>
+        <div class="si-card"><h4>🆘 Si cuesta + puentes</h4><p class="muted">Mareo/hambre fuerte: sube un nivel (de líquidos a phalahara), toma agua con miel y descansa; se rompe sin culpa. Trabajo físico o turno: Nivel 1 siempre. Puentes: 🌙 Contemplación lunar + 📵 Ayuno digital 2 h + ✍️ Escritura del alma + 🌅 Sol de amanecer. Sin ayuno total con embarazo, lactancia, diabetes con insulina, TCA o remedios con comida.</p></div>
+        <div class="conv-row">
+          <button type="button" class="btn" data-eka-goto="fechas">← Fechas</button>
+          <button type="button" class="btn btn-accent su-4ed52d" data-eka-goto="resumen">📖 Resumen</button>
+        </div>
+      </div>
       <div class="dlg-actions su-2d7d27">
         <span id="ekadashiHint" class="muted su-a16b97"></span>
         <button type="button" id="ekadashiClose" class="btn">Cerrar</button>

@@ -86,10 +86,7 @@ function injectCSS() {
     '.sl-corner.tl{top:4px;left:5px;text-align:left}',
     '.sl-corner.br{bottom:4px;right:5px;transform:rotate(180deg);text-align:left}',
     '.sl-tools{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}',
-    '.sl-tools-main{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}',
-    '.sl-tools-main .btn{font-size:18px;padding:8px 4px;min-height:44px}',
-    '.sl-tools-more{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:6px}',
-    '.sl-tools-more .btn{font-size:11px;min-height:38px}',
+    '.sl-tools-mini{display:none}',
     '.sl-extra{margin-top:8px;border:1px solid var(--line);border-radius:8px;padding:6px 9px;font-size:11.5px;color:var(--muted)}',
     '.sl-extra summary{cursor:pointer;font-weight:700}',
     '.sl-msg{min-height:20px;font-size:12px;margin-top:6px}',
@@ -113,6 +110,11 @@ function injectCSS() {
     '.sl-col .sl-card:not(:last-child) .sl-corner.tl{font-size:13px}',
     '.sl-slot,.sl-col .sl-slot{border-radius:6px;border-width:1.5px}',
     '.sl-stat{font-size:10px;padding:3px 7px}',
+    '.sl-tools-full{display:none}',
+    '.sl-tools-mini{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}',
+    '.sl-tools-mini .btn{font-size:18px;padding:8px 4px;min-height:44px}',
+    '.sl-tools-more{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:6px}',
+    '.sl-tools-more .btn{font-size:11px;min-height:38px}',
     '.sl-msg{font-size:11px}',
     '.sl-extra{font-size:11px}',
     '}'
@@ -505,13 +507,13 @@ function renderTop() {
     if (G.stock.length) {
       stockBox.innerHTML = '<button type="button" class="sl-card down" data-act="stock" aria-label="Mazo: pedir carta">🂠<br><small>' + G.stock.length + '</small></button>';
     } else {
-      stockBox.innerHTML = '<button type="button" class="sl-slot" data-act="stock" aria-label="Reciclar descarte" style="aspect-ratio:5/7;width:100%">' +
+      stockBox.innerHTML = '<button type="button" class="sl-slot su-b2f0eb" data-act="stock" aria-label="Reciclar descarte">' +
         (G.waste.length ? '<span class="sl-ghost">♻️</span>' : '<span class="sl-ghost">·</span>') + '</button>';
     }
   }
   if (wasteBox) {
     var c = top(G.waste);
-    wasteBox.innerHTML = c ? cardHTML(c, (SEL && SEL.from === 'waste' ? ' sel' : '')) : '<div class="sl-slot" style="aspect-ratio:5/7;width:100%"><span class="sl-ghost">·</span></div>';
+    wasteBox.innerHTML = c ? cardHTML(c, (SEL && SEL.from === 'waste' ? ' sel' : '')) : '<div class="sl-slot su-b2f0eb"><span class="sl-ghost">·</span></div>';
     var wb = wasteBox.querySelector('.sl-card');
     if (wb) wb.setAttribute('data-act', 'waste');
   }
@@ -519,7 +521,7 @@ function renderTop() {
     var el = $('slF' + f);
     if (!el) continue;
     var t2 = top(G.fnd[f]);
-    el.innerHTML = t2 ? cardHTML(t2, '') : '<div class="sl-slot" data-act="fnd" data-f="' + f + '" style="aspect-ratio:5/7;width:100%"><span class="sl-ghost">' + PALOS[f] + '</span></div>';
+    el.innerHTML = t2 ? cardHTML(t2, '') : '<div class="sl-slot su-b2f0eb" data-act="fnd" data-f="' + f + '"><span class="sl-ghost">' + PALOS[f] + '</span></div>';
     var fb = el.querySelector('.sl-card');
     if (fb) { fb.setAttribute('data-act', 'fnd-card'); fb.setAttribute('data-f', String(f)); }
   }
@@ -533,7 +535,7 @@ function renderCols() {
     var col = G.tab[t];
     var dest = SEL && SEL.dest === t ? ' sl-dest' : '';
     h += '<div class="sl-col' + dest + '" data-col="' + t + '">';
-    if (!col.length) h += '<div class="sl-slot" style="width:100%;aspect-ratio:5/7"><span class="sl-ghost">' + (t + 1) + '</span></div>';
+    if (!col.length) h += '<div class="sl-slot su-3d4914"><span class="sl-ghost">' + (t + 1) + '</span></div>';
     for (var i = 0; i < col.length; i++) {
       var sel = SEL && SEL.from === 'tab' && SEL.t === t && SEL.n === i;
       var hint = HINT && HINT.from === 'tab' && HINT.t === t && HINT.n === i;
@@ -569,13 +571,13 @@ function renderMsg() {
   if (MSG === 'win') {
     m.innerHTML = '<div class="sl-win">🏆 <b>¡Ganaste el Solitario!</b><br>' +
       '<span class="muted">' + G.score + ' pts · ' + G.moves + ' movimientos · ' + fmtTime(G.seconds) + ' · modo ' + G.draw + ' carta(s)</span><br>' +
-      '<div class="sl-tools" style="justify-content:center"><button type="button" class="btn btn-accent" data-act="new">🂡 Nueva partida</button>' +
+      '<div class="sl-tools su-03c4bb"><button type="button" class="btn btn-accent" data-act="new">🂡 Nueva partida</button>' +
       '<button type="button" class="btn" data-act="share">📤 Compartir</button></div></div>';
   } else if (MSG) {
     m.innerHTML = '<span class="chip">' + esc(MSG) + '</span>';
   } else {
     var options = G.stock.length ? 'Toca el mazo 🂠 para pedir carta.' : (G.waste.length || hasMoves() ? 'Toca una carta y luego su destino. Doble toque = a la fundación.' : 'Sin movimientos: recicla ♻️, deshaz ↩️ o parte de nuevo.');
-    m.innerHTML = '<span class="muted" style="font-size:11px">' + esc(options) + '</span>';
+    m.innerHTML = '<span class="muted su-11a508">' + esc(options) + '</span>';
   }
   bindMsg(m);
 }
@@ -722,23 +724,31 @@ function buildDialog() {
     '<button type="button" id="tabSlReg" class="btn su-30e741">📊 Registros</button></div>' +
     '<div id="slPanelJugar"><div class="sl-wrap">' +
     '<div id="slBar" class="sl-top sl-bar"></div>' +
-    '<div id="slBoard"><div class="sl-row"><div class="sl-pile"><div id="slStock" style="flex:1"></div><div id="slWaste" style="flex:1"></div></div>' +
-    '<div class="sl-pile sl-fnd"><div id="slF0" style="flex:1"></div><div id="slF1" style="flex:1"></div><div id="slF2" style="flex:1"></div><div id="slF3" style="flex:1"></div></div></div>' +
+    '<div id="slBoard"><div class="sl-row"><div class="sl-pile"><div id="slStock" class="su-97445a"></div><div id="slWaste" class="su-97445a"></div></div>' +
+    '<div class="sl-pile sl-fnd"><div id="slF0" class="su-97445a"></div><div id="slF1" class="su-97445a"></div><div id="slF2" class="su-97445a"></div><div id="slF3" class="su-97445a"></div></div></div>' +
     '<div id="slCols" class="sl-cols"></div>' +
     '<div id="slMsg" class="sl-msg"></div>' +
-    '<div class="sl-tools sl-tools-main">' +
-    '<button type="button" id="slUndo" class="btn su-337714" title="Deshacer jugada" aria-label="Deshacer jugada">↩️</button>' +
-    '<button type="button" id="slHint" class="btn su-337714" title="Pista" aria-label="Pista">💡</button>' +
-    '<button type="button" id="slAuto" class="btn su-337714" title="Auto-terminar" aria-label="Auto-terminar">✨</button>' +
-    '<button type="button" id="slMore" class="btn su-337714" title="Más opciones" aria-label="Más opciones">⋯</button>' +
-    '</div>' +
-    '<div id="slMoreBox" class="sl-tools sl-tools-more hidden">' +
+    '<div id="slToolsFull" class="sl-tools sl-tools-full">' +
     '<button type="button" id="slNew1" class="btn btn-accent su-337714">🂡 Nueva (1)</button>' +
     '<button type="button" id="slNew3" class="btn su-337714">🂡 Nueva (3)</button>' +
+    '<button type="button" id="slUndo" class="btn su-337714">↩️ Deshacer</button>' +
+    '<button type="button" id="slHint" class="btn su-337714">💡 Pista</button>' +
+    '<button type="button" id="slAuto" class="btn su-337714">✨ Auto-terminar</button>' +
     '<button type="button" id="slShare" class="btn su-337714">📤 Compartir</button>' +
     '</div>' +
-    '<details id="slExtra" class="sl-extra"><summary>🌙 Consejo lunar e instrucciones</summary><div id="slLuna" class="chip su-8c0a82" style="margin:6px 0"></div>' +
-    '<p class="muted" style="margin:0">Toca una carta y luego su destino · doble toque sube a la fundación.</p></details>' +
+    '<div class="sl-tools sl-tools-mini">' +
+    '<button type="button" id="slUndoM" class="btn su-337714" title="Deshacer jugada" aria-label="Deshacer jugada">↩️</button>' +
+    '<button type="button" id="slHintM" class="btn su-337714" title="Pista" aria-label="Pista">💡</button>' +
+    '<button type="button" id="slAutoM" class="btn su-337714" title="Auto-terminar" aria-label="Auto-terminar">✨</button>' +
+    '<button type="button" id="slMoreM" class="btn su-337714" title="Más opciones" aria-label="Más opciones">⋯</button>' +
+    '</div>' +
+    '<div id="slMoreBoxM" class="sl-tools sl-tools-more hidden">' +
+    '<button type="button" id="slNew1M" class="btn btn-accent su-337714">🂡 Nueva (1)</button>' +
+    '<button type="button" id="slNew3M" class="btn su-337714">🂡 Nueva (3)</button>' +
+    '<button type="button" id="slShareM" class="btn su-337714">📤 Compartir</button>' +
+    '</div>' +
+    '<details id="slExtra" class="sl-extra"><summary>🌙 Consejo lunar e instrucciones</summary><div id="slLuna" class="chip su-8c0a82 su-c1fafc"></div>' +
+    '<p class="muted su-116966">Toca una carta y luego su destino · doble toque sube a la fundación.</p></details>' +
     '</div></div>' +
     '<div id="slPanelAprender" class="hidden">' +
     '<div class="si-card"><h4>🎯 Objetivo</h4><p>Lleva las <b>52 cartas a las 4 fundaciones</b> (una por palo ♠♥♦♣), del <b>As al Rey</b> en orden. Ganaste cuando las 4 casas llegan al Rey.</p></div>' +
@@ -753,15 +763,22 @@ function buildDialog() {
   $('tabSlReg').onclick = function () { switchTab('reg'); renderRegs(); };
   $('slNew1').onclick = function () { newGame(1); };
   $('slNew3').onclick = function () { newGame(3); };
+  function shareGame() {
+    share('🂡 Solitario Klondike', 'Solitario · modo ' + (G ? G.draw : DRAW_MODE) + ' carta(s)\n🏆 ' + (G ? G.score : 0) + ' pts · 👣 ' + (G ? G.moves : 0) + ' movs · ⏱ ' + fmtTime(G ? G.seconds : 0) + '\nCalendario 13 Lunas · Penco');
+  }
   $('slUndo').onclick = function () { undo(); };
   $('slHint').onclick = function () { hint(); };
   $('slAuto').onclick = function () { autoFinish(); };
-  $('slMore').onclick = function () {
-    var box = $('slMoreBox');
+  $('slShare').onclick = shareGame;
+  $('slUndoM').onclick = function () { undo(); };
+  $('slHintM').onclick = function () { hint(); };
+  $('slAutoM').onclick = function () { autoFinish(); };
+  $('slNew1M').onclick = function () { newGame(1); };
+  $('slNew3M').onclick = function () { newGame(3); };
+  $('slShareM').onclick = shareGame;
+  $('slMoreM').onclick = function () {
+    var box = $('slMoreBoxM');
     if (box) box.classList.toggle('hidden');
-  };
-  $('slShare').onclick = function () {
-    share('🂡 Solitario Klondike', 'Solitario · modo ' + (G ? G.draw : DRAW_MODE) + ' carta(s)\n🏆 ' + (G ? G.score : 0) + ' pts · 👣 ' + (G ? G.moves : 0) + ' movs · ⏱ ' + fmtTime(G ? G.seconds : 0) + '\nCalendario 13 Lunas · Penco');
   };
   return d;
 }
@@ -817,7 +834,7 @@ function openSolitario() {
   switchTab('jugar');
   try { if (!d.open) d.showModal(); } catch (e) { try { d.showModal(); } catch (e2) {} }
   try {
-    var mb = $('slMoreBox');
+    var mb = $('slMoreBoxM');
     if (mb) mb.classList.add('hidden');
     var xt = $('slExtra');
     if (xt) xt.removeAttribute('open');

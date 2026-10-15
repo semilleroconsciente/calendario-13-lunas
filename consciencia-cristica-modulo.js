@@ -317,7 +317,7 @@ function renderPalabras() {
   var box = $('cxPalGrid'); if (!box) return;
   box.innerHTML = CC_PALABRAS.map(function (p) {
     return '<div class="menstrual-card" style="border-color:' + p.color + '55">' +
-      '<h4 style="color:' + p.color + '">' + p.ico + ' ' + esc(p.n) + ' <span class="muted" style="font-size:11px">· ' + esc(p.cita) + '</span></h4>' +
+      '<h4 style="color:' + p.color + '">' + p.ico + ' ' + esc(p.n) + ' <span class="muted su-11a508">· ' + esc(p.cita) + '</span></h4>' +
       '<p class="su-afb724"><b>Dice:</b> ' + esc(p.dice) + '<br><b>Para qué:</b> ' + esc(p.sirve) + '<br><b>Práctica:</b> ' + esc(p.practica) + '</p>' +
       '<div class="su-c158a9">' +
       '<button type="button" class="btn su-337714" data-pal="' + esc(p.n) + '">🧘 Orar</button>' +

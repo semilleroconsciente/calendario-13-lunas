@@ -321,6 +321,84 @@ input::placeholder, textarea::placeholder { color: var(--muted); opacity: 1; }
 .eka-tabs .eka-tab { font-size: 12px; padding: 6px 10px; white-space: nowrap; }
 @media (max-width:600px){ .eka-tabs .eka-tab{ flex:1 1 45%; } }
 
+/* === Ayuno Ekadashi: niveles, sí/no, línea de tiempo y menú === */
+#ekaNextBox .ek-card {
+  background: var(--card); border: 1px solid var(--line); border-radius: 10px;
+  padding: 10px 14px; margin-bottom: 8px;
+}
+#ekaNextBox .ek-card.today { outline: 2px solid var(--gold); }
+#ekaNextBox .ek-card h4 { color: var(--gold); font-size: 14px; }
+#ekaNextBox .ek-card .ek-meta { font-size: 12px; color: var(--muted); }
+.ek-nivel-pick { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0; }
+.ek-nivel-btn {
+  flex: 1 1 22%; min-width: 70px; border: 1px solid var(--line); background: var(--card);
+  color: var(--text); border-radius: 12px; padding: 8px 4px; cursor: pointer;
+  font-size: 12px; font-weight: 600; display: flex; flex-direction: column;
+  align-items: center; gap: 2px;
+}
+.ek-nivel-btn .ek-nivel-ico { font-size: 20px; }
+.ek-nivel-btn:hover { background: var(--card-hover); }
+.ek-nivel-btn.sel { outline: 2px solid var(--gold); background: var(--card-hover); }
+.ek-nivel-tag { font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+.ek-niveles { display: grid; gap: 8px; margin-bottom: 10px; }
+.ek-nivel {
+  background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+  padding: 10px 12px 10px 14px; border-left: 5px solid var(--muted);
+}
+.ek-nivel.ek-n1 { border-left-color: #8fd694; }
+.ek-nivel.ek-n2 { border-left-color: #e8c56a; }
+.ek-nivel.ek-n3 { border-left-color: #7ab8ff; }
+.ek-nivel.ek-n4 { border-left-color: #8a6fd8; }
+.ek-nivel.sel { outline: 2px solid var(--gold); background: var(--card-hover); }
+.ek-nivel-head { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+.ek-nivel-num {
+  width: 26px; height: 26px; border-radius: 50%; flex: none;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700; color: #10142c;
+}
+.ek-n1 .ek-nivel-num { background: #8fd694; }
+.ek-n2 .ek-nivel-num { background: #e8c56a; }
+.ek-n3 .ek-nivel-num { background: #7ab8ff; }
+.ek-n4 .ek-nivel-num { background: #8a6fd8; color: #f2f0ff; }
+.ek-nivel-head b { font-size: 14px; }
+.ek-nivel-head .chip { margin-left: auto; font-size: 11px; }
+.ek-nivel p { font-size: 13px; margin: 2px 0; }
+.ek-nivel .ek-come { font-size: 12px; color: var(--muted); }
+.ek-sino { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+.ek-si, .ek-no {
+  background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+  padding: 10px 12px; border-top: 4px solid #8fd694;
+}
+.ek-no { border-top-color: #e0685c; }
+.ek-si h4, .ek-no h4 { font-size: 13px; margin-bottom: 6px; }
+.ek-si ul, .ek-no ul { margin: 0 0 0 16px; padding: 0; font-size: 12px; }
+.ek-si li, .ek-no li { margin-bottom: 3px; }
+@media (max-width:600px){ .ek-sino{ grid-template-columns: 1fr; } }
+.ek-timeline { margin: 0 0 10px 4px; padding-left: 18px; border-left: 2px solid var(--line); display: grid; gap: 10px; }
+.ek-step { position: relative; }
+.ek-step::before {
+  content: ""; position: absolute; left: -25px; top: 2px;
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--gold); border: 2px solid var(--panel);
+}
+.ek-step b { font-size: 13px; }
+.ek-step p { font-size: 12px; color: var(--muted); margin: 2px 0 0; }
+.ek-menu {
+  background: linear-gradient(135deg, var(--panel), var(--card));
+  border: 1px solid var(--gold); border-radius: 12px;
+  padding: 10px 14px; margin-bottom: 10px;
+}
+.ek-menu h4 { color: var(--gold); margin-bottom: 6px; }
+.ek-menu-row { display: flex; gap: 8px; font-size: 12px; padding: 3px 0; }
+.ek-menu-row b { min-width: 74px; }
+.ek-menu-row span { color: var(--muted); }
+.ek-warn {
+  background: var(--card); border: 1px solid #e0685c; border-radius: 12px;
+  padding: 10px 14px; margin-bottom: 10px;
+}
+.ek-warn h4 { color: #e0685c; margin-bottom: 4px; }
+.ek-warn p { font-size: 12px; color: var(--muted); margin: 0; }
+
 #siembraContent .si-card, #siembraHarvestBox .si-card {
   background: var(--card); border: 1px solid var(--line); border-radius: 10px;
   padding: 10px 14px; margin-bottom: 10px;

@@ -1871,12 +1871,21 @@ function setupRutina() {
       if (ri >= 0) ALL_BTNS.splice(ri, 1);
     }
   } catch (e0) {}
-  // precargar hora guardada al abrir la pestaña Mi plan
+  // precargar hora guardada al abrir la pestaña Mi plan (tab + botones data-ritmo="plan")
   try {
+    var preloadRut = function () { try { var rh = $('rutHora'); if (rh) rh.value = getRutina().despierta || '07:00'; } catch (e) {} };
     var tp = $('tabRitmoPlan');
     if (tp && !tp.dataset.rutB) {
       tp.dataset.rutB = '1';
-      tp.addEventListener('click', function () { try { $('rutHora').value = getRutina().despierta || '07:00'; } catch (e) {} });
+      tp.addEventListener('click', preloadRut);
+    }
+    var cd = $('circadianDialog');
+    if (cd && !cd.dataset.rutB2) {
+      cd.dataset.rutB2 = '1';
+      cd.addEventListener('click', function (ev) {
+        var b = ev.target && ev.target.closest ? ev.target.closest('[data-ritmo="plan"]') : null;
+        if (b) preloadRut();
+      });
     }
   } catch (e0) {}
   if (!$('rutGen') || !$('rutHora') || !$('rutPlan')) return;

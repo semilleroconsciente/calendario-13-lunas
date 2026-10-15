@@ -980,9 +980,79 @@ function enviarMareasAlDia() {
   } catch (e) { try { alert('No se pudo agregar la marea al día.'); } catch (e2) {} }
 }
 
-$('btnEkadashi').onclick = () => { renderEkadashi(); $('ekadashiDialog').showModal(); };
+// === EKADASHI (5 subsecciones sin scroll: Resumen/Ayuno/Historia/Fechas/Práctica) ===
+$('btnEkadashi').onclick = () => { window._ekaTab='resumen'; renderEkadashi(); try{ $('ekadashiDialog').showModal(); }catch(e){} };
 $('ekadashiClose').onclick = () => $('ekadashiDialog').close();
 if ($('ekadashiCloseTop')) $('ekadashiCloseTop').onclick = () => $('ekadashiDialog').close();
+
+function ekaTab(name){
+  const valid=['resumen','ayuno','historia','fechas','practica'];
+  if(valid.indexOf(name)<0) name='resumen';
+  window._ekaTab=name;
+  const panels={resumen:'ekaPanelResumen',ayuno:'ekaPanelAyuno',historia:'ekaPanelHistoria',fechas:'ekaPanelFechas',practica:'ekaPanelPractica'};
+  const tabs={resumen:'tabEkaResumen',ayuno:'tabEkaAyuno',historia:'tabEkaHistoria',fechas:'tabEkaFechas',practica:'tabEkaPractica'};
+  for(const k of valid){
+    const p=$(panels[k]); if(p) p.classList.toggle('hidden',k!==name);
+    const b=$(tabs[k]); if(b) b.classList.toggle('btn-accent',k===name);
+  }
+  try{ const d=$('ekadashiDialog'); if(d) d.scrollTop=0; }catch(e){}
+}
+function renderEkadashiNext(){
+  const box=$('ekaNextBox'); if(!box) return;
+  let list=[];
+  try{ list=ekadashiListForCycle(); }catch(e){ list=[]; }
+  if(!list.length){ box.innerHTML='<p class="muted">Sin Ekadashis en este ciclo (revisa el cálculo).</p>'; return; }
+  const tk=cal.fmtKey.format(new Date());
+  const up=list.filter(it=>cal.fmtKey.format(new Date(it.dd.noonMs))>=tk).slice(0,2);
+  if(!up.length){ box.innerHTML='<p class="muted">Ciclo completado: revisa las fechas del próximo ciclo.</p>'; return; }
+  box.innerHTML='<h4 class="su-e39eba">📅 Próximo Ekadashi</h4>'+up.map(it=>{
+    const key=cal.fmtKey.format(new Date(it.dd.noonMs));
+    const isToday=key===tk;
+    const left=Math.max(0,Math.round((it.dd.noonMs-Date.now())/86400000));
+    const tag=isToday?' · ¡hoy!':(left<=1?' · mañana':(' · en '+left+' días'));
+    return `<div class="ek-card${isToday?' today':''}"><h4>${cal.weekdayName(it.dd.noonMs)} ${cal.fmtFull.format(new Date(it.dd.noonMs))} <span class="ek-badge ${it.badge}">${it.paksha}</span> <span class="su-ea96ac">· tithi ${it.tithi}</span>${tag}</h4><div class="ek-meta">Luna ${it.dd.luna} · Día ${it.dd.diaN}</div></div>`;
+  }).join('')+'<button type="button" class="btn" data-eka-goto="fechas">Ver todas las fechas →</button>';
+}
+function ekaGetNivel(){ try{ return localStorage.getItem('ekaNivel')||''; }catch(e){ return ''; } }
+function ekaSetNivel(n){ try{ localStorage.setItem('ekaNivel',n); }catch(e){} ekaPaintNivel(); }
+function ekaPaintNivel(){
+  const cur=ekaGetNivel();
+  const names={1:'Suave',2:'Phalahara',3:'Líquidos',4:'Nirjala'};
+  try{
+    const root=$('ekadashiDialog')||document;
+    root.querySelectorAll('[data-eka-nivel]').forEach(b=>b.classList.toggle('sel',b.getAttribute('data-eka-nivel')===cur));
+    root.querySelectorAll('[data-eka-nivel-card]').forEach(c=>c.classList.toggle('sel',c.getAttribute('data-eka-nivel-card')===cur));
+    const tag=$('ekaNivelTag');
+    if(tag) tag.textContent=cur?('Tu nivel: '+cur+' · '+names[cur]+' ✓ (se guarda en este dispositivo)'):'Elige tu nivel arriba 👆';
+  }catch(e){}
+}
+function setupEkadashiTabs(){
+  try{
+    const dlg=$('ekadashiDialog');
+    const root=dlg||document;
+    if(root && !root.dataset.ekaBound){
+      root.dataset.ekaBound='1';
+      root.addEventListener('click',(e)=>{
+        const nv=e.target&&e.target.closest?e.target.closest('[data-eka-nivel]'):null;
+        if(nv){ e.preventDefault(); ekaSetNivel(nv.getAttribute('data-eka-nivel')); return; }
+        const t=e.target&&e.target.closest?e.target.closest('[data-eka-tab]'):null;
+        if(t){ e.preventDefault(); ekaTab(t.getAttribute('data-eka-tab')); return; }
+        const g=e.target&&e.target.closest?e.target.closest('[data-eka-goto]'):null;
+        if(g){ e.preventDefault(); ekaTab(g.getAttribute('data-eka-goto')); }
+      });
+    }
+  }catch(e){}
+  try{
+    window.abrirEkadashi=function(t){
+      window._ekaTab=t||'resumen';
+      renderEkadashi();
+      const d=$('ekadashiDialog');
+      try{ if(d && !d.open) d.showModal(); }catch(e){ try{ d.showModal(); }catch(e2){} }
+      ekaTab(window._ekaTab);
+    };
+  }catch(e){}
+}
+setTimeout(setupEkadashiTabs, 860);
 
 function ekadashiListForCycle() {
   const list = [];
@@ -1004,97 +1074,9 @@ function getEkadashiVisibleKeys() {
 }
 
 function renderEkadashi() {
-  const intro = $('ekadashiIntro');
-  intro.innerHTML = `
-    <div class="eka-tabs su-a2761b">
-      <button type="button" data-eka-tab="resumen" class="btn eka-tab su-43351a">📖 Resumen</button>
-      <button type="button" data-eka-tab="ayuno" class="btn eka-tab">🍵 Ayuno</button>
-      <button type="button" data-eka-tab="historia" class="btn eka-tab">📜 Historia</button>
-      <button type="button" data-eka-tab="fechas" class="btn eka-tab">📅 Fechas ↓</button>
-    </div>
-    <div data-eka-panel="resumen">
-      <div class="su-389104">
-        <p class="su-9c571d"><b>📿 ¿Qué es Ekadashi?</b> En sánscrito <i>eka-dasha</i> = once. Es el <b>día 11</b> de cada quincena lunar: <b class="su-529a5a">Shukla</b> (creciente) y <b class="su-671f21">Krishna</b> (menguante).</p>
-        <p class="muted su-e13d76">Cálculo astronómico: elongación Sol-Luna /12° = tithi. Mostramos el día que el tithi 11 ó 26 cae al amanecer en America/Santiago.</p>
-      </div>
-      <div class="su-2a51d0">
-        <div class="su-5cc4d8"><b class="su-e39eba">🌙 ¿Por qué importa?</b><p class="muted su-954796">La luna mueve mareas y tu agua interna. Ekadashi es un <b>recordatorio</b> para aligerar digestión y mente. <a href="#" data-eka-goto="ayuno" class="su-a80552">Ver guía de ayuno →</a></p></div>
-        <div class="su-5cc4d8"><b class="su-e39eba">📜 ¿De dónde viene?</b><p class="muted su-954796">Día querido por Vishnu, diosa que vence al demonio Murdanava, Krishna lo explica a Yudhishthira. <a href="#" data-eka-goto="historia" class="su-a80552">Leer historia →</a></p></div>
-      </div>
-      <details class="su-4e7955"><summary class="su-49b201">🥗 Práctica en 4 pasos (resumen)</summary>
-        <ol class="su-74b498">
-          <li><b>Víspera (Dashami):</b> cena liviana antes de las 20:00.</li>
-          <li><b>Ekadashi:</b> sin granos/legumbres/carnes/alcohol. Fruta, verdura, agua, infusiones.</li>
-          <li><b>Actitud:</b> calma, caminata, meditar 10 min.</li>
-          <li><b>Parana (Dwadashi):</b> rompe tras el amanecer con agua + fruta.</li>
-        </ol>
-      </details>
-      <details class="su-4e7955"><summary class="su-49b201">⚠️ Precauciones</summary>
-        <p class="muted su-1db776">Sin ayuno total si hay embarazo, lactancia, diabetes insulino-dependiente, TCA o medicación con comida. Adapta o consulta. Precisión ±1 día según linaje.</p>
-      </details>
-    </div>
-    <div data-eka-panel="ayuno" class="su-6b99de">
-      <div class="su-3fc5a8">
-      <p class="su-46a625"><b>🍵 El ayuno no es castigo, es descanso.</b> Elige tu nivel sin culpa:</p>
-      <div class="su-2a51d0">
-        <div class="su-1a720d"><b class="su-e430b4">🌱 Nivel 1 — Suave</b><p class="muted su-954796">Sin carnes, alcohol ni ultraprocesados. Fruta + verdura cocida + frutos secos. Ideal si trabajas o cuidas a otros.</p></div>
-        <div class="su-1a720d"><b class="su-bb34f9">🍎 Nivel 2 — Phalahara</b><p class="muted su-954796">Solo fruta, frutos secos, leche/yogur si toleras, agua e infusiones. Sin arroz, pan, fideos, porotos, lentejas, avena ni mote.</p></div>
-        <div class="su-1a720d"><b class="su-3ff3c2">💧 Nivel 3 — Líquidos</b><p class="muted su-954796">Agua, limón/miel, manzanilla, boldo, matico, jugos colados. Solo con experiencia y sin trabajo físico exigente.</p></div>
-        <div class="su-1a720d"><b class="su-4c8285">🌑 Nivel 4 — Nirjala</b><p class="muted su-954796">Sin agua ni comida de amanecer a amanecer. <b>Solo con guía</b> (1 vez/año). No lo intentes sin preparación.</p></div>
-      </div>
-      <div class="su-2a51d0">
-        <div class="su-90e0b8"><b class="su-e430b4">✅ SÍ</b><ul class="su-b3588d"><li>Frutas, papas, camote, zapallo, zanahoria</li><li>Maní, nuez, almendra, leche, yogur</li><li>Miel, agua, limonada, infusiones</li></ul></div>
-        <div class="su-e90bf0"><b class="su-4c8285">🚫 NO</b><ul class="su-b3588d"><li>Arroz, pan, fideos, avena, mote, quinoa</li><li>Porotos, lentejas, garbanzos, soya</li><li>Carnes, embutidos, huevo, alcohol, frituras</li></ul></div>
-      </div>
-      <b class="su-a40df9">🕰️ Horario (America/Santiago)</b>
-      <ol class="su-4f29fd">
-        <li><b>Dashami:</b> cena liviana antes de las 20:00 (sopa + fruta).</li>
-        <li><b>Ekadashi:</b> agua tibia + limón al amanecer, medita 10–20 min, come ligero solo con hambre real.</li>
-        <li><b>Dwadashi (parana):</b> rompe 2–3 h tras el amanecer con agua + fruta + cocido suave.</li>
-      </ol>
-      <b class="su-a40df9">🧺 Ejemplo Penco</b>
-      <p class="muted su-a6c067">Mañana: agua tibia + manzana + nueces · Mediodía: papas con zapallo + manzanilla · Tarde: plátano + yogur · Noche: sopa colada o boldo/matico.</p>
-      </div>
-    </div>
-    <div data-eka-panel="historia" class="su-6b99de">
-      <div class="su-b54cc2">
-      <p class="su-edfca6"><b>📜 Origen.</b> <i>Eka+dasha</i> = once. Puranas (Padma, Garuda, Skanda) lo llaman el día querido por <b>Vishnu</b>.</p>
-      <p class="su-edfca6"><b>La diosa Ekadashi.</b> El demonio Murdanava no podía ser vencido. Vishnu descansó en una cueva; Murdanava entró a matarlo y de la respiración de Vishnu nació una joven luminosa que lo derrotó. Vishnu la nombró <b>Ekadashi</b>: quien ayune en su día hallará claridad.</p>
-      <p class="su-edfca6"><b>Krishna y Yudhishthira</b> (Mahabharata) narran cada Ekadashi con su nombre y fruto — origen de la lista actual.</p>
-      <b class="su-8188d6">🌙 Los 24 del año</b>
-      <div class="su-071f4d">
-        <b>Ene–Feb:</b> Putrada · Shat-tila · Jaya · Vijaya<br>
-        <b>Mar–Abr:</b> Amalaki · Papmochani · Kamada · Varuthini<br>
-        <b>May–Jun:</b> Mohini · Apara · ⭐ <b>Nirjala</b> · Yogini<br>
-        <b>Jul–Ago:</b> ⭐ <b>Devshayani</b> (Vishnu duerme) · Kamika · Pavitropana · Aja<br>
-        <b>Sep–Oct:</b> Parivartini · Indira · Papankusha · Rama<br>
-        <b>Nov–Dic:</b> ⭐ <b>Devutthana</b> (Vishnu despierta) · Utpanna · Mokshada · Saphala
-      </div>
-      <p class="su-db4e5c"><b>Símbolo:</b> 5 sentidos + 5 acciones + mente = 11. Ekadashi = gobernar los once.</p>
-      <p class="muted su-1b014d">Chaitanya (s. XVI) y Gandhi lo practicaron. Aquí lo unimos a las 13 lunas y la marea. 📚 Padma Purana, Garuda Purana, Ekadashi Mahatmya.</p>
-      </div>
-    </div>
-    <div class="su-b90b2d">Mostrando solo <b>3 lunas</b> contando la actual: <span id="ekadashiScope"></span> · <a href="#" id="ekadashiShowAll" class="su-a80552">ver ciclo completo</a></div>`;
-  (function wireEkaTabs(){
-    const tabs = intro.querySelectorAll('[data-eka-tab]');
-    const panels = intro.querySelectorAll('[data-eka-panel]');
-    function paint(active){
-      tabs.forEach(b=>{
-        const on = b.getAttribute('data-eka-tab')===active;
-        b.style.borderColor = on ? 'var(--gold)' : '';
-        b.style.background = on ? 'var(--gold)' : '';
-        b.style.color = on ? '#10142c' : '';
-        b.style.fontWeight = on ? '700' : '';
-      });
-      panels.forEach(p=>{ p.style.display = p.getAttribute('data-eka-panel')===active ? '' : 'none'; });
-    }
-    function gotoTab(name){
-      if(name==='fechas'){ paint('resumen'); const lst=$('ekadashiList'); if(lst){ lst.scrollIntoView({behavior:'smooth',block:'start'}); } return; }
-      paint(name);
-    }
-    tabs.forEach(b=>{ b.onclick=(e)=>{ e.preventDefault(); gotoTab(b.getAttribute('data-eka-tab')); }; });
-    intro.querySelectorAll('[data-eka-goto]').forEach(a=>{ a.onclick=(e)=>{ e.preventDefault(); gotoTab(a.getAttribute('data-eka-goto')); }; });
-  })();
+  ekaTab(window._ekaTab||'resumen');
+  renderEkadashiNext();
+  ekaPaintNivel();
   const list = ekadashiListForCycle();
   const byLuna = {};
   for (const item of list) {
@@ -9255,29 +9237,45 @@ function renderCircadianDialog(){
   renderCircadianChart(idx);
 }
 function ritmoTab(t){
-  const plan=(t==='plan');
-  const pa=$('ritmoAhoraPanel'), pp=$('ritmoPlanPanel');
-  if(pa) pa.classList.toggle('hidden',plan);
-  if(pp) pp.classList.toggle('hidden',!plan);
-  const ta=$('tabRitmoAhora'), tp=$('tabRitmoPlan');
-  if(ta) ta.classList.toggle('btn-accent',!plan);
-  if(tp) tp.classList.toggle('btn-accent',plan);
-  if(!plan){ renderCircadianDialog(); setTimeout(()=> renderCircadianChart(getCircadianPhase((()=>{ const d=new Date().toLocaleString('en-GB',{timeZone:'America/Santiago',hour:'2-digit',minute:'2-digit',hour12:false}); const [hh,mm]=d.split(':').map(Number); return hh+mm/60; })())),100); }
+  const order=['ahora','fases','bases','desfase','plan'];
+  if(t!=='ahora'&&t!=='fases'&&t!=='bases'&&t!=='desfase'&&t!=='plan') t='ahora';
+  const panels={ahora:'ritmoAhoraPanel',fases:'ritmoFasesPanel',bases:'ritmoBasesPanel',desfase:'ritmoDesfasePanel',plan:'ritmoPlanPanel'};
+  const tabs={ahora:'tabRitmoAhora',fases:'tabRitmoFases',bases:'tabRitmoBases',desfase:'tabRitmoDesfase',plan:'tabRitmoPlan'};
+  for(const k of order){
+    const p=$(panels[k]); if(p) p.classList.toggle('hidden',k!==t);
+    const b=$(tabs[k]); if(b) b.classList.toggle('btn-accent',k===t);
+  }
+  try{ const d=$('circadianDialog'); if(d&&d.open) d.scrollTop=0; }catch(e){}
+  if(t==='ahora'){ renderCircadianDialog(); setTimeout(()=> renderCircadianChart(getCircadianPhase((()=>{ const d=new Date().toLocaleString('en-GB',{timeZone:'America/Santiago',hour:'2-digit',minute:'2-digit',hour12:false}); const [hh,mm]=d.split(':').map(Number); return hh+mm/60; })())),100); }
 }
 function setupCircadianDialog(){
   const btn=$('btnCircadian'); if(btn) btn.onclick=()=>{ ritmoTab('ahora'); renderCircadianDialog(); $('circadianDialog').showModal(); setTimeout(()=> renderCircadianChart(getCircadianPhase((()=>{ const d=new Date().toLocaleString('en-GB',{timeZone:'America/Santiago',hour:'2-digit',minute:'2-digit',hour12:false}); const [hh,mm]=d.split(':').map(Number); return hh+mm/60; })())),100); };
-  const ta=$('tabRitmoAhora'), tp=$('tabRitmoPlan');
-  if(ta && !ta.dataset.bound){ ta.dataset.bound='1'; ta.addEventListener('click',()=>ritmoTab('ahora')); }
-  if(tp && !tp.dataset.bound){ tp.dataset.bound='1'; tp.addEventListener('click',()=>ritmoTab('plan')); }
+  const pairs=[['tabRitmoAhora','ahora'],['tabRitmoFases','fases'],['tabRitmoBases','bases'],['tabRitmoDesfase','desfase'],['tabRitmoPlan','plan']];
+  for(const [id,key] of pairs){
+    const el=$(id);
+    if(el && !el.dataset.bound){ el.dataset.bound='1'; el.addEventListener('click',()=>ritmoTab(key)); }
+  }
+  // Botones internos data-ritmo="fases|bases|desfase|plan|ahora" (evitan scroll largo)
+  try{
+    const dlg=$('circadianDialog');
+    const root=dlg||document;
+    if(root && !root.dataset.ritmoBound){
+      root.dataset.ritmoBound='1';
+      root.addEventListener('click',(e)=>{
+        const b=e.target&&e.target.closest?e.target.closest('[data-ritmo]'):null;
+        if(b){ e.preventDefault(); ritmoTab(b.getAttribute('data-ritmo')); }
+      });
+    }
+  }catch(e){}
   const ct=$('circadianCloseTop'), cb=$('circadianClose'); if(ct) ct.onclick=()=>$('circadianDialog').close(); if(cb) cb.onclick=()=>$('circadianDialog').close();
-  // API global: abrirRitmoCircadiano('ahora'|'plan') — usada por puentes (adolescencia, etapas)
+  // API global: abrirRitmoCircadiano('ahora'|'fases'|'bases'|'desfase'|'plan') — usada por puentes (adolescencia, etapas)
   try{
     window.abrirRitmoCircadiano=function(t){
       ritmoTab(t||'ahora');
       renderCircadianDialog();
       const d=$('circadianDialog');
       try{ if(d && !d.open) d.showModal(); }catch(e){ try{ d.showModal(); }catch(e2){} }
-      if((t||'ahora')==='plan'){ const r=$('tabRitmoPlan'); if(r) r.click(); }
+      ritmoTab(t||'ahora');
     };
   }catch(e){}
 }
