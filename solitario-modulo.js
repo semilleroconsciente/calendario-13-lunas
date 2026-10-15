@@ -52,7 +52,10 @@ function injectCSS() {
     '#solitarioDialog{width:min(680px,98vw);max-width:98vw}',
     '.sl-wrap{max-width:680px;width:100%;margin:0 auto}',
     '.sl-top{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:8px}',
-    '.sl-stat{font-size:11px;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:4px 9px;color:var(--text)}',
+    '.sl-bar{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}',
+    '.sl-bar::-webkit-scrollbar{display:none}',
+    '.sl-bar .sl-stat{flex:0 0 auto}',
+    '.sl-stat{font-size:11px;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:4px 9px;color:var(--text);white-space:nowrap}',
     '.sl-stat b{color:var(--gold)}',
     '.sl-row{display:flex;gap:8px;justify-content:space-between;margin-bottom:10px}',
     '.sl-pile{flex:1;min-width:0;display:flex;gap:6px}',
@@ -83,21 +86,35 @@ function injectCSS() {
     '.sl-corner.tl{top:4px;left:5px;text-align:left}',
     '.sl-corner.br{bottom:4px;right:5px;transform:rotate(180deg);text-align:left}',
     '.sl-tools{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}',
-    '.sl-msg{min-height:22px;font-size:12px;margin-top:8px}',
+    '.sl-tools-main{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}',
+    '.sl-tools-main .btn{font-size:18px;padding:8px 4px;min-height:44px}',
+    '.sl-tools-more{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:6px}',
+    '.sl-tools-more .btn{font-size:11px;min-height:38px}',
+    '.sl-extra{margin-top:8px;border:1px solid var(--line);border-radius:8px;padding:6px 9px;font-size:11.5px;color:var(--muted)}',
+    '.sl-extra summary{cursor:pointer;font-weight:700}',
+    '.sl-msg{min-height:20px;font-size:12px;margin-top:6px}',
     '.sl-win{text-align:center;padding:14px;border:1px solid var(--gold);border-radius:12px;background:rgba(232,197,106,.1);margin-top:10px}',
     '@media (max-width:600px){',
-    '#solitarioDialog{width:98vw;max-width:98vw;padding:12px 8px calc(14px + env(safe-area-inset-bottom))}',
+    '#solitarioDialog{width:100vw;max-width:100vw;height:100dvh;max-height:100dvh;margin:0;border-radius:0;padding:8px 6px calc(10px + env(safe-area-inset-bottom))}',
+    '#solitarioDialog>form{max-width:560px;margin:0 auto}',
+    '#solitarioDialog>form>p.muted{display:none}',
+    '#solitarioDialog h3{font-size:15px}',
+    '#solitarioDialog .timer-tabs{display:flex;gap:4px}',
+    '#solitarioDialog .timer-tabs .btn{flex:1;font-size:11px;padding:7px 4px}',
+    '#solitarioDialog>form>.dlg-actions:last-child{display:none}',
     '.sl-wrap{max-width:100%}',
-    '.sl-row{gap:6px;margin-bottom:8px}',
-    '.sl-pile{gap:4px}',
-    '.sl-cols{gap:4px}',
-    '.sl-col{padding:1px;gap:2px;min-height:100px}',
-    '.sl-card{border-radius:7px;font-size:clamp(14px,4.6vw,17px)}',
+    '.sl-top{margin-bottom:6px}',
+    '.sl-row{gap:4px;margin-bottom:6px}',
+    '.sl-pile{gap:3px}',
+    '.sl-cols{gap:3px}',
+    '.sl-col{padding:1px;gap:2px;min-height:90px;border-radius:6px}',
+    '.sl-card{border-radius:6px;font-size:clamp(15px,5vw,18px);box-shadow:0 1px 3px rgba(0,0,0,.4)}',
     '.sl-col .sl-card:not(:last-child){min-height:26px;padding:2px 4px}',
-    '.sl-col .sl-card:not(:last-child) .sl-corner.tl{font-size:12.5px}',
-    '.sl-slot,.sl-col .sl-slot{border-radius:7px}',
+    '.sl-col .sl-card:not(:last-child) .sl-corner.tl{font-size:13px}',
+    '.sl-slot,.sl-col .sl-slot{border-radius:6px;border-width:1.5px}',
     '.sl-stat{font-size:10px;padding:3px 7px}',
-    '.sl-tools .btn{flex:1 1 30%;font-size:11px;padding:8px 6px;min-height:38px}',
+    '.sl-msg{font-size:11px}',
+    '.sl-extra{font-size:11px}',
     '}'
   ].join('\n');
   document.head.appendChild(st);
@@ -704,20 +721,25 @@ function buildDialog() {
     '<button type="button" id="tabSlAprender" class="btn su-30e741">📖 Aprender</button>' +
     '<button type="button" id="tabSlReg" class="btn su-30e741">📊 Registros</button></div>' +
     '<div id="slPanelJugar"><div class="sl-wrap">' +
-    '<div id="slLuna" class="chip su-8c0a82" style="margin-bottom:8px"></div>' +
-    '<div id="slBar" class="sl-top"></div>' +
+    '<div id="slBar" class="sl-top sl-bar"></div>' +
     '<div id="slBoard"><div class="sl-row"><div class="sl-pile"><div id="slStock" style="flex:1"></div><div id="slWaste" style="flex:1"></div></div>' +
     '<div class="sl-pile sl-fnd"><div id="slF0" style="flex:1"></div><div id="slF1" style="flex:1"></div><div id="slF2" style="flex:1"></div><div id="slF3" style="flex:1"></div></div></div>' +
     '<div id="slCols" class="sl-cols"></div>' +
     '<div id="slMsg" class="sl-msg"></div>' +
-    '<div class="sl-tools">' +
+    '<div class="sl-tools sl-tools-main">' +
+    '<button type="button" id="slUndo" class="btn su-337714" title="Deshacer jugada" aria-label="Deshacer jugada">↩️</button>' +
+    '<button type="button" id="slHint" class="btn su-337714" title="Pista" aria-label="Pista">💡</button>' +
+    '<button type="button" id="slAuto" class="btn su-337714" title="Auto-terminar" aria-label="Auto-terminar">✨</button>' +
+    '<button type="button" id="slMore" class="btn su-337714" title="Más opciones" aria-label="Más opciones">⋯</button>' +
+    '</div>' +
+    '<div id="slMoreBox" class="sl-tools sl-tools-more hidden">' +
     '<button type="button" id="slNew1" class="btn btn-accent su-337714">🂡 Nueva (1)</button>' +
     '<button type="button" id="slNew3" class="btn su-337714">🂡 Nueva (3)</button>' +
-    '<button type="button" id="slUndo" class="btn su-337714">↩️ Deshacer</button>' +
-    '<button type="button" id="slHint" class="btn su-337714">💡 Pista</button>' +
-    '<button type="button" id="slAuto" class="btn su-337714">✨ Auto-terminar</button>' +
     '<button type="button" id="slShare" class="btn su-337714">📤 Compartir</button>' +
-    '</div></div></div>' +
+    '</div>' +
+    '<details id="slExtra" class="sl-extra"><summary>🌙 Consejo lunar e instrucciones</summary><div id="slLuna" class="chip su-8c0a82" style="margin:6px 0"></div>' +
+    '<p class="muted" style="margin:0">Toca una carta y luego su destino · doble toque sube a la fundación.</p></details>' +
+    '</div></div>' +
     '<div id="slPanelAprender" class="hidden">' +
     '<div class="si-card"><h4>🎯 Objetivo</h4><p>Lleva las <b>52 cartas a las 4 fundaciones</b> (una por palo ♠♥♦♣), del <b>As al Rey</b> en orden. Ganaste cuando las 4 casas llegan al Rey.</p></div>' +
     '<div class="si-card"><h4>🂠 Reparto</h4><p>7 columnas: la 1ª con 1 carta, la 2ª con 2… la 7ª con 7. Solo la última de cada columna parte boca arriba. El resto es el mazo.</p></div>' +
@@ -734,6 +756,10 @@ function buildDialog() {
   $('slUndo').onclick = function () { undo(); };
   $('slHint').onclick = function () { hint(); };
   $('slAuto').onclick = function () { autoFinish(); };
+  $('slMore').onclick = function () {
+    var box = $('slMoreBox');
+    if (box) box.classList.toggle('hidden');
+  };
   $('slShare').onclick = function () {
     share('🂡 Solitario Klondike', 'Solitario · modo ' + (G ? G.draw : DRAW_MODE) + ' carta(s)\n🏆 ' + (G ? G.score : 0) + ' pts · 👣 ' + (G ? G.moves : 0) + ' movs · ⏱ ' + fmtTime(G ? G.seconds : 0) + '\nCalendario 13 Lunas · Penco');
   };
@@ -787,8 +813,15 @@ function openSolitario() {
       persist();
     }
   }
-  switchTab(TAB || 'jugar');
+  TAB = 'jugar';
+  switchTab('jugar');
   try { if (!d.open) d.showModal(); } catch (e) { try { d.showModal(); } catch (e2) {} }
+  try {
+    var mb = $('slMoreBox');
+    if (mb) mb.classList.add('hidden');
+    var xt = $('slExtra');
+    if (xt) xt.removeAttribute('open');
+  } catch (e3) {}
 }
 
 /* ================= SETUP ================= */
