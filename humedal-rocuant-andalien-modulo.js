@@ -257,16 +257,16 @@ function renderHoy() {
   }
   var d = getData();
   box.innerHTML =
-    '<div class="menstrual-card su-68a1a9" style="border-top:4px solid #4db6ac">' +
-    '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px">' +
-    '<span class="chip" style="background:#0b1026;color:#9ff0d8">🌾 Rocuant-Andalién · Talcahuano–Penco</span>' +
-    '<span class="chip" style="background:#e8c56a;color:#10142c">1.377,2 ha HU · 3° del país</span>' +
+    '<div class="menstrual-card su-68a1a9 su-ead3fa">' +
+    '<div class="su-2c76a2">' +
+    '<span class="chip su-4261fc">🌾 Rocuant-Andalién · Talcahuano–Penco</span>' +
+    '<span class="chip su-0e62e3">1.377,2 ha HU · 3° del país</span>' +
     '<span class="chip">🦩 IBA · RHRAP 2023</span>' +
     (lt ? '<span class="chip">' + esc(lt) + '</span>' : '') + '</div>' +
-    '<h4 style="margin:2px 0">🌾 Hoy en el humedal</h4>' +
-    '<p class="su-6750b2" style="font-size:1.02em"><b>' + esc(c.t) + '</b></p>' +
+    '<h4 class="su-66dc28">🌾 Hoy en el humedal</h4>' +
+    '<p class="su-6750b2 su-c53a70"><b>' + esc(c.t) + '</b></p>' +
     '<p class="muted su-83cb86">' + esc(c.d) + '</p>' +
-    (tideTxt ? '<p class="muted su-11a508" style="background:#ffffff10;border-radius:8px;padding:6px 8px">🌊 Mareas hoy (Talcahuano): <b>' + esc(tideTxt) + '</b> — pleamar concentra limícolas en bordes; bajamar los dispersa a comer. Ventana ideal: <b>2 h antes/después de pleamar</b>.</p>' : '') +
+    (tideTxt ? '<p class="muted su-11a508 su-5810cb">🌊 Mareas hoy (Talcahuano): <b>' + esc(tideTxt) + '</b> — pleamar concentra limícolas en bordes; bajamar los dispersa a comer. Ventana ideal: <b>2 h antes/después de pleamar</b>.</p>' : '') +
     '<p class="muted su-11a508">🌙 Luna viva: con <b>nueva/llena</b> hay mareas vivas; de noche nublada y tibia, coros de sapito de cuatro ojos en el borde dulce.</p>' +
     '<p class="muted su-b439ab">📓 Llevas <b>' + d.avist.length + '</b> avistamientos · <b>' + d.reportes.length + '</b> reportes · <b>' + d.mingas.length + '</b> mingas. Cada fecha suma al expediente vivo.</p></div>';
 }
@@ -275,9 +275,9 @@ function renderConocer() {
   var box = $('humConBox');
   if (!box) return;
   box.innerHTML =
-    '<div class="menstrual-card" style="border-top:4px solid #4db6ac"><h4>🌾 ' + esc(FICHA.nombre) + '</h4>' +
-    '<div style="display:flex;gap:6px;flex-wrap:wrap;margin:6px 0">' +
-    '<span class="chip" style="background:#4db6ac;color:#10142c"><b>1.377,2 ha</b>&nbsp;humedal urbano</span>' +
+    '<div class="menstrual-card su-ead3fa"><h4>🌾 ' + esc(FICHA.nombre) + '</h4>' +
+    '<div class="su-38c0a4">' +
+    '<span class="chip su-b0b544"><b>1.377,2 ha</b>&nbsp;humedal urbano</span>' +
     '<span class="chip"><b>~2.955 ha</b>&nbsp;sistema (GEF 2020)</span>' +
     '<span class="chip">🦩 <b>120+</b> aves · IBA 52</span>' +
     '<span class="chip">🌎 RHRAP · 1% pilpilén + zarapito</span></div>' +
@@ -285,9 +285,9 @@ function renderConocer() {
     '<p class="su-49f9d7">📐 ' + esc(FICHA.superficie) + '</p>' +
     '<p class="su-49f9d7">📜 ' + esc(FICHA.figura) + '</p>' +
     '<p class="muted su-83cb86">🏞️ ' + esc(FICHA.ambientes) + '</p>' +
-    '<p class="muted su-d47a97" style="font-size:.85em">Fuentes: MMA Res. 1.154/2026 (D.O. 10-03-2026, rect. 2.293/2026) · GEF Humedales Costeros · Manomet/RHRAP 2023 · Portal MMA ficha 192.</p></div>' +
+    '<p class="muted su-d47a97 su-ae4019">Fuentes: MMA Res. 1.154/2026 (D.O. 10-03-2026, rect. 2.293/2026) · GEF Humedales Costeros · Manomet/RHRAP 2023 · Portal MMA ficha 192.</p></div>' +
     '<div class="menstrual-card su-d2c171"><h4>💚 Por qué te cuida (servicios)</h4>' +
-    SERVICIOS.map(function (s) { return '<div class="si-card su-7aab68" style="border-left:4px solid #4db6ac"><b>' + esc(s.t) + '</b><p class="muted su-11a508">' + esc(s.d) + '</p></div>'; }).join('') + '</div>' +
+    SERVICIOS.map(function (s) { return '<div class="si-card su-7aab68 su-055ce6"><b>' + esc(s.t) + '</b><p class="muted su-11a508">' + esc(s.d) + '</p></div>'; }).join('') + '</div>' +
     '<div class="menstrual-card"><h4>🗓️ Ciclo anual del humedal</h4>' +
     CICLO_ANUAL.map(function (c, ix) { return '<div class="si-card su-cfa1ec" style="border-left:4px solid ' + ['#e8c56a', '#e8c56a', '#a9d18e', '#7fb3d5', '#4db6ac', '#e76e8a'][ix % 6] + '"><b class="su-6750b2">' + esc(c.m) + ' — ' + esc(c.t) + '</b><p class="muted su-11a508">' + esc(c.d) + '</p></div>'; }).join('') + '</div>';
 }
@@ -295,20 +295,20 @@ function renderConocer() {
 var humVidaCat = '';
 function humCardAve(e) {
   var badge = '';
-  if (e.estado) badge += ' <span class="chip" style="background:#e76e8a;color:#fff">' + esc(e.estado) + '</span>';
-  if (e.censo) badge += ' <span class="chip" style="background:#0b1026;color:#9ff0d8">' + esc(e.censo) + '</span>';
-  if (e.mine) badge += ' <span class="chip" style="background:#a9d18e;color:#10142c">mía</span>';
+  if (e.estado) badge += ' <span class="chip su-6cf74d">' + esc(e.estado) + '</span>';
+  if (e.censo) badge += ' <span class="chip su-4261fc">' + esc(e.censo) + '</span>';
+  if (e.mine) badge += ' <span class="chip su-8323db">mía</span>';
   var emblema = /EMBLEMA|RHRAP/.test(e.tipo + ' ' + (e.estado || '')) ? ' style="border:2px solid #e8c56a"' : (e.mine ? ' style="border:2px dashed #a9d18e"' : '');
-  return '<div class="si-card su-7aab68"' + emblema + '><b class="su-6cb285" style="font-size:1.03em">' + (e.ico || '🦩') + ' ' + esc(e.nombre) + '</b><br><span class="muted su-4adef8"><i>' + esc(e.cient || '—') + '</i></span><br>' +
+  return '<div class="si-card su-7aab68"' + emblema + '><b class="su-6cb285 su-6cc0e6">' + (e.ico || '🦩') + ' ' + esc(e.nombre) + '</b><br><span class="muted su-4adef8"><i>' + esc(e.cient || '—') + '</i></span><br>' +
     '<span class="chip su-fb2957">' + esc(e.tipo || 'Ave') + '</span>' + badge +
-    '<p class="muted su-11a508" style="margin-top:4px">' + esc(e.nota || '') + '</p>' +
-    '<div style="display:flex;gap:6px;flex-wrap:wrap"><button type="button" class="btn hum-cargar su-337714" data-n="' + esc(e.nombre) + '">📓 Cargar en bitácora</button>' +
+    '<p class="muted su-11a508 su-96ad60">' + esc(e.nota || '') + '</p>' +
+    '<div class="su-6157e8"><button type="button" class="btn hum-cargar su-337714" data-n="' + esc(e.nombre) + '">📓 Cargar en bitácora</button>' +
     (e.mine && e.id ? '<button type="button" class="btn hum-spdel su-fd834a" data-id="' + e.id + '" title="Borrar mi especie">✕ Borrar</button>' : '') + '</div></div>';
 }
 function humCardFF(e) {
   return '<div class="si-card su-cfa1ec" style="border-left:4px solid ' + (e.mine ? '#a9d18e' : '#7fb3d5') + '"><b class="su-6cb285">' + (e.ico || '🌾') + ' ' + esc(e.nombre) + '</b> <span class="muted su-4adef8"><i>' + esc(e.cient || '—') + '</i></span><br>' +
-    '<span class="chip">' + esc(e.grupo || e.tipo || 'Vecino') + '</span>' + (e.mine ? ' <span class="chip" style="background:#a9d18e;color:#10142c">mía</span>' : '') +
-    '<p class="muted su-11a508" style="margin-top:4px">' + esc(e.nota || '') + '</p>' +
+    '<span class="chip">' + esc(e.grupo || e.tipo || 'Vecino') + '</span>' + (e.mine ? ' <span class="chip su-8323db">mía</span>' : '') +
+    '<p class="muted su-11a508 su-96ad60">' + esc(e.nota || '') + '</p>' +
     (e.mine && e.id ? '<button type="button" class="btn hum-spdel su-fd834a" data-id="' + e.id + '" title="Borrar mi especie">✕ Borrar</button>' : '') + '</div>';
 }
 
@@ -338,24 +338,24 @@ function renderVida() {
   var showFlora = (!humVidaCat || humVidaCat === 'flo' || humVidaCat === 'fau');
   var cats = [['', '✨ Todas'], ['mig', '🦩 Migratorias'], ['res', '🦆 Residentes'], ['rap', '🦅 Rapaces'], ['flo', '🌾 Flora'], ['fau', '🦦 Fauna']];
   box.innerHTML =
-    '<div class="menstrual-card" style="border-top:4px solid #e8c56a"><h4>🦩 Vida confirmada del humedal</h4>' +
+    '<div class="menstrual-card su-896c2f"><h4>🦩 Vida confirmada del humedal</h4>' +
     '<p class="muted su-11a508"><b>' + AVES_DESTACADAS.length + ' aves</b> + <b>' + FLORA_FAUNA.length + ' flora/fauna</b> con ficha MMA · GEF · eBird. Censo GEF 16-feb-2023: <b>56 spp. / 2.673 ind.</b> en un día (tagua 1.261 · cuello negro 236 · Franklin 180 · yeco 127).</p>' +
-    '<div style="display:flex;gap:6px;flex-wrap:wrap;margin:6px 0">' +
+    '<div class="su-38c0a4">' +
     cats.map(function (c) { return '<button type="button" class="btn hum-cat' + (humVidaCat === c[0] ? ' btn-accent' : '') + '" data-cat="' + c[0] + '">' + c[1] + '</button>'; }).join('') + '</div>' +
     '<div class="conv-row"><label class="su-4b3de7">Buscar <input type="text" id="humVidaFilter2" placeholder="ej: pilpilén, rayador, sosa, coipo..." maxlength="40" value="' + esc(($('humVidaFilter') || {}).value || '') + '"></label></div></div>' +
     '<h4>🦩 Aves (' + aves.length + ' de ' + avesTodas.length + (nMine ? ' · ⭐ ' + getCustom().filter(function (x) { return x.kind === "ave"; }).length + ' mías' : '') + ')</h4>' +
     '<div class="su-14b4b5">' + aves.map(humCardAve).join('') + (aves.length ? '' : '<p class="muted">Sin coincidencias. Prueba “migratoria”, “residente” o limpia el filtro.</p>') + '</div>' +
     (showFlora ? '<h4>🌾🦦 Flora y fauna (' + resto.length + ' de ' + ffTodas.length + (nMine ? ' · ⭐ ' + getCustom().filter(function (x) { return x.kind !== "ave"; }).length + ' mías' : '') + ')</h4>' +
     '<div class="su-14b4b5">' + resto.map(humCardFF).join('') + (resto.length ? '' : '<p class="muted">Sin coincidencias en flora/fauna.</p>') + '</div>' : '') +
-    '<details class="menstrual-card" style="border:2px dashed #a9d18e"><summary><b>➕ Agregar mi especie</b> <span class="muted">— queda privada en tu celular' + (nMine ? ' · llevas ' + nMine : '') + '</span></summary>' +
+    '<details class="menstrual-card su-e39201"><summary><b>➕ Agregar mi especie</b> <span class="muted">— queda privada en tu celular' + (nMine ? ' · llevas ' + nMine : '') + '</span></summary>' +
     '<div class="conv-row"><label class="su-4b3de7">Nombre * <input type="text" id="humSpName" placeholder="ej: Garza blanca, Junco negro" maxlength="40"></label>' +
     '<label>Clase <select id="humSpKind"><option value="ave-mig">🦩 Ave migratoria</option><option value="ave-res">🦆 Ave residente</option><option value="ave-rap">🦅 Ave rapaz</option><option value="flo">🌾 Flora / alga</option><option value="fau">🦦 Fauna (mamífero, pez, anfibio...)</option></select></label></div>' +
     '<div class="conv-row"><label>Nombre científico <input type="text" id="humSpCient" placeholder="ej: Ardea alba" maxlength="50"></label>' +
-    '<label>Icono <input type="text" id="humSpIco" placeholder="🦩" maxlength="4" style="max-width:70px"></label></div>' +
+    '<label>Icono <input type="text" id="humSpIco" placeholder="🦩" maxlength="4" class="su-460bb7"></label></div>' +
     '<label>Nota (dónde la viste, qué hacía) <input type="text" id="humSpNota" placeholder="ej: 3 en canal norte, comiendo con bajamar" maxlength="120"></label>' +
     '<div class="dlg-actions su-59a5a8"><button type="button" id="humSpAdd" class="btn btn-accent su-30e741">+ Guardar mi especie</button></div>' +
-    '<p class="muted" style="font-size:.85em">Se suma al catálogo con borde ⭐ y al filtro/buscador. Tócala con “📓 Cargar” para llevarla a tu bitácora.</p></details>' +
-    '<div class="menstrual-card"><p class="muted su-d47a97" style="font-size:.85em">✅ Verificado: MMA ficha 192 (pilpilén, gaviotín, coscoroba, cuello negro, botón de oro, coipo, sosa, Franklin, pantano) · MMA 10-03-2026 (pico recto, rayador, pitotoy, pelícano) · GEF censo feb-2023 + informe límites (pocha, sapitos, llinto, juncos, pelillo) · RHRAP 2023 (Isla Reyes: 1% pilpilén + zarapito, 120 parejas) · eBird Isla Reyes (chorlo semipalmado, pimpollo). Taxonomía eBird/Clements 2022.</p></div>';
+    '<p class="muted su-ae4019">Se suma al catálogo con borde ⭐ y al filtro/buscador. Tócala con “📓 Cargar” para llevarla a tu bitácora.</p></details>' +
+    '<div class="menstrual-card"><p class="muted su-d47a97 su-ae4019">✅ Verificado: MMA ficha 192 (pilpilén, gaviotín, coscoroba, cuello negro, botón de oro, coipo, sosa, Franklin, pantano) · MMA 10-03-2026 (pico recto, rayador, pitotoy, pelícano) · GEF censo feb-2023 + informe límites (pocha, sapitos, llinto, juncos, pelillo) · RHRAP 2023 (Isla Reyes: 1% pilpilén + zarapito, 120 parejas) · eBird Isla Reyes (chorlo semipalmado, pimpollo). Taxonomía eBird/Clements 2022.</p></div>';
   box.querySelectorAll('.hum-cat').forEach(function (b) {
     b.onclick = function () { humVidaCat = b.getAttribute('data-cat'); renderVida(); };
   });

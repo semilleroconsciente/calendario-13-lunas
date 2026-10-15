@@ -4233,7 +4233,7 @@ setTimeout(setupHelpDialog, 850);
 // Incluye botones base + los inyectados por nuevos-modulos.js (Agua, Bodega, Nudos,
 // Taller, Trueque, Minga, Rutinas, Fertilidad, Derechos). NUEVOS_BTNS los re-agrega
 // con push si faltan (no-op si ya están), así los perfiles siempre los conocen.
-const ALL_BTNS = ["btnTides","btnFishing","btnBirds","btnIntermareal","btnBosque","btnWeather","btnSiembra","btnAstro","btnComuna","btnIglesias","btnEkadashi","btnMenstrual","btnMedic","btnNutri","btnHabits","btnRutinas","btnMeal","btnShopping","btnFinance","btnHomeTasks","btnDiscipline","btnDreams","btnBreath","btnGratitud","btnSchedule","btnGym","btnCircadian","btnGolden","btnEspiritual","btnEspiritu","btnCompost","btnLawen","btnFirstAid","btnAnimalCare","btnViolence","btnEvac","btnConvert","btnEnergy","btnLena","btnTimer","btnRemind","btnDonate","btnHelp","btnStudy","btnTales","btnVozAbuelos","btnMemory","btnMapu","btnEnglish","btnGuitar","btnPsico","btnMetodos","btnAgua","btnBodega","btnNudos","btnTaller","btnTrueque","btnMinga","btnFerti","btnDerechos","btnCrianza","btnArbolFull","btnRecap","btnDueloFull","btnEneagrama","btnCuartoCamino","btnAjedrez","btnMatematicas","btnSudoku","btnCrucigrama","btnSopa","btnFlora","btnPsicologia","btnAdolescencia","btnJuventud","btnAdultez","btnClimaterio","btnVejez","btnElectrocultura","btnMecanica","btnDespensa","btnCloset","btnHerramientas","btnAdicciones","btnKinMaya","btnTarot","btnNumerologia","btnOraculo","btnAnfibios","btnApoyo","btnMuni","btnBomberos","btnConstelaciones","btnIkigai","btnVIA","btnSilva","btnGrabovoi","btnEstoicismo","btnHooponopono","btnTao","btnTolteca","btnVigyan","btnAnastasia","btnAmi","btnNatacion","btnHuerta","btnHidroponia","btnKayak","btnBallenas","btnMeli","btnHongos","btnSenderos","btnFuego","btnDomotica","btnNeurodiversidad","btnPelo","btnRituales","btnFenologia","btnCorral","btnMovilidad","btnEscolar","btnActores","btnNegocios","btnRedGuia","btnRedMeshtastic","btnRedDiagnostico","btnRedRadio","btnRedNodos","btnConvivGuia","btnConvivFichas","btnConvivHablar","btnConvivBitacora","btnConvivLuna","btnConvivRecursos","btnCiberGuia","btnCiberClaves","btnCiberEstafas","btnCiberPriv","btnCiberChequeo","btnCiberAyuda","btnOpenGuia","btnOpenLicencias","btnOpenProgramas","btnOpenProyecto","btnOpenAportar","btnOpenQuiz"];
+const ALL_BTNS = ["btnTides","btnFishing","btnBirds","btnIntermareal","btnBosque","btnWeather","btnSiembra","btnAstro","btnComuna","btnIglesias","btnEkadashi","btnMenstrual","btnMedic","btnNutri","btnHabits","btnRutinas","btnMeal","btnShopping","btnFinance","btnHomeTasks","btnDiscipline","btnDreams","btnBreath","btnGratitud","btnSchedule","btnGym","btnCircadian","btnGolden","btnEspiritual","btnEspiritu","btnCompost","btnLawen","btnFirstAid","btnAnimalCare","btnViolence","btnEvac","btnConvert","btnEnergy","btnLena","btnTimer","btnRemind","btnDonate","btnHelp","btnStudy","btnTales","btnVozAbuelos","btnMemory","btnMapu","btnEnglish","btnGuitar","btnPsico","btnMetodos","btnAgua","btnBodega","btnNudos","btnTaller","btnTrueque","btnMinga","btnFerti","btnDerechos","btnCrianza","btnArbolFull","btnRecap","btnDueloFull","btnEneagrama","btnCuartoCamino","btnAjedrez","btnDama","btnMatematicas","btnSudoku","btnCrucigrama","btnSopa","btnSolitario","btnFlora","btnPsicologia","btnAdolescencia","btnJuventud","btnAdultez","btnClimaterio","btnVejez","btnElectrocultura","btnMecanica","btnDespensa","btnCloset","btnHerramientas","btnAdicciones","btnKinMaya","btnTarot","btnNumerologia","btnOraculo","btnAnfibios","btnApoyo","btnMuni","btnBomberos","btnConstelaciones","btnIkigai","btnVIA","btnSilva","btnGrabovoi","btnEstoicismo","btnHooponopono","btnTao","btnTolteca","btnVigyan","btnAnastasia","btnAmi","btnNatacion","btnHuerta","btnHidroponia","btnKayak","btnBallenas","btnMeli","btnHongos","btnSenderos","btnFuego","btnDomotica","btnNeurodiversidad","btnPelo","btnRituales","btnFenologia","btnCorral","btnMovilidad","btnEscolar","btnActores","btnNegocios","btnRedGuia","btnRedMeshtastic","btnRedDiagnostico","btnRedRadio","btnRedNodos","btnConvivGuia","btnConvivFichas","btnConvivHablar","btnConvivBitacora","btnConvivLuna","btnConvivRecursos","btnCiberGuia","btnCiberClaves","btnCiberEstafas","btnCiberPriv","btnCiberChequeo","btnCiberAyuda","btnOpenGuia","btnOpenLicencias","btnOpenProgramas","btnOpenProyecto","btnOpenAportar","btnOpenQuiz"];
 // NOTA: lo técnico (Respaldo, Restaurar, Traspaso QR, PDF luna/ciclo, Acceso directo)
 // vive en ⚙️ Ajustes con botones propios (cfg*Btn), siempre visibles: no forma parte
 // de ALL_BTNS ni de la visibilidad por secciones. Se mantienen las claves antiguas
@@ -4259,7 +4259,7 @@ const BTN_HOME = {
   btnStudy:['aprender','estudio'],btnMemory:['aprender','estudio'],btnMatematicas:['aprender','estudio'],
   btnMapu:['aprender','idiomas'],btnEnglish:['aprender','idiomas'],
   btnGuitar:['aprender','musica'],
-  btnAjedrez:['aprender','juegos'],btnSudoku:['aprender','juegos'],btnCrucigrama:['aprender','juegos'],btnSopa:['aprender','juegos'],
+  btnAjedrez:['aprender','juegos'],btnDama:['aprender','juegos'],btnSudoku:['aprender','juegos'],btnCrucigrama:['aprender','juegos'],btnSopa:['aprender','juegos'],btnSolitario:['aprender','juegos'],
   btnTales:['aprender','infancias'],btnCrianza:['aprender','infancias'],
   btnPsico:['linaje','conocerse'],btnPsicologia:['linaje','conocerse'],btnEneagrama:['linaje','conocerse'],btnVIA:['linaje','conocerse'],btnIkigai:['linaje','conocerse'],btnNeurodiversidad:['linaje','conocerse'],btnEspiritual:['linaje','practicas'],btnEspiritu:['linaje','practicas'],btnTao:['linaje','practicas'],btnRecap:['linaje','practicas'],btnTolteca:['linaje','practicas'],btnEstoicismo:['linaje','practicas'],btnCuartoCamino:['linaje','practicas'],btnHooponopono:['linaje','practicas'],btnMetodos:['linaje','tradiciones'],btnSilva:['linaje','tradiciones'],btnGrabovoi:['linaje','tradiciones'],btnVigyan:['linaje','tradiciones'],btnAnastasia:['linaje','tradiciones'],btnAmi:['linaje','tradiciones'],btnKinMaya:['linaje','oraculos'],btnTarot:['linaje','oraculos'],btnNumerologia:['linaje','oraculos'],btnOraculo:['linaje','oraculos'],btnDueloFull:['linaje','sosten'],btnAdicciones:['linaje','sosten'],
   btnArbolFull:['hogar','familia'],btnVozAbuelos:['hogar','familia'],btnConstelaciones:['hogar','familia'],
@@ -4288,7 +4288,7 @@ const BTN_ORDER = {
   'aprender|estudio':['btnStudy','btnMemory','btnMatematicas'],
   'aprender|idiomas':['btnMapu','btnEnglish'],
   'aprender|musica':['btnGuitar'],
-  'aprender|juegos':['btnAjedrez','btnSudoku','btnCrucigrama','btnSopa'],
+  'aprender|juegos':['btnAjedrez','btnDama','btnSudoku','btnCrucigrama','btnSopa','btnSolitario'],
   'aprender|infancias':['btnTales','btnCrianza'],
   'linaje|conocerse':['btnPsico','btnPsicologia','btnEneagrama','btnVIA','btnIkigai','btnNeurodiversidad'],
   'linaje|practicas':['btnEspiritual','btnEspiritu','btnTao','btnRecap','btnTolteca','btnEstoicismo','btnCuartoCamino','btnHooponopono'],
@@ -4397,22 +4397,22 @@ const PRESETS = {
   // Esencial: día completo + cielo completo + mar/tierra básicos + casa básica + infancias + emergencia completa.
   esencial: {btnHabits:true,btnRutinas:true,btnDiscipline:true,btnSchedule:true,btnTimer:true,btnRemind:true,btnGratitud:true,btnDreams:true,btnBreath:true,btnWeather:true,btnAstro:true,btnGolden:true,btnCircadian:true,btnEkadashi:true,btnTides:true,btnSiembra:true,btnMeal:true,btnShopping:true,btnFinance:true,btnHomeTasks:true,btnTales:true,btnCrianza:true,btnFirstAid:true,btnViolence:true,btnEvac:true,btnApoyo:true,btnHelp:true,btnDonate:true},
   // Adolescente: día completo + cuerpo en cambio + aprender sin infancias (excepción: solo Cuentos, sin Crianza) + conocerse/oráculos/sostén completos + Recap + familia completa + casa básica + cielo parcial + emergencia completa.
-  adolescente: {btnHabits:true,btnRutinas:true,btnDiscipline:true,btnSchedule:true,btnTimer:true,btnRemind:true,btnGratitud:true,btnDreams:true,btnBreath:true,btnMenstrual:true,btnFerti:true,btnAdolescencia:true,btnJuventud:true,btnNutri:true,btnGym:true,btnNatacion:true,btnPelo:true,btnStudy:true,btnMemory:true,btnMatematicas:true,btnMapu:true,btnEnglish:true,btnGuitar:true,btnAjedrez:true,btnSudoku:true,btnCrucigrama:true,btnSopa:true,btnTales:true,btnPsico:true,btnPsicologia:true,btnEneagrama:true,btnVIA:true,btnIkigai:true,btnNeurodiversidad:true,btnKinMaya:true,btnTarot:true,btnNumerologia:true,btnOraculo:true,btnDueloFull:true,btnAdicciones:true,btnRecap:true,btnArbolFull:true,btnVozAbuelos:true,btnConstelaciones:true,btnMeal:true,btnShopping:true,btnFinance:true,btnHomeTasks:true,btnConvert:true,btnWeather:true,btnAstro:true,btnCircadian:true,btnFirstAid:true,btnViolence:true,btnEvac:true,btnApoyo:true,btnHelp:true,btnDonate:true},
+  adolescente: {btnHabits:true,btnRutinas:true,btnDiscipline:true,btnSchedule:true,btnTimer:true,btnRemind:true,btnGratitud:true,btnDreams:true,btnBreath:true,btnMenstrual:true,btnFerti:true,btnAdolescencia:true,btnJuventud:true,btnNutri:true,btnGym:true,btnNatacion:true,btnPelo:true,btnStudy:true,btnMemory:true,btnMatematicas:true,btnMapu:true,btnEnglish:true,btnGuitar:true,btnAjedrez:true,btnDama:true,btnSudoku:true,btnCrucigrama:true,btnSopa:true,btnSolitario:true,btnTales:true,btnPsico:true,btnPsicologia:true,btnEneagrama:true,btnVIA:true,btnIkigai:true,btnNeurodiversidad:true,btnKinMaya:true,btnTarot:true,btnNumerologia:true,btnOraculo:true,btnDueloFull:true,btnAdicciones:true,btnRecap:true,btnArbolFull:true,btnVozAbuelos:true,btnConstelaciones:true,btnMeal:true,btnShopping:true,btnFinance:true,btnHomeTasks:true,btnConvert:true,btnWeather:true,btnAstro:true,btnCircadian:true,btnFirstAid:true,btnViolence:true,btnEvac:true,btnApoyo:true,btnHelp:true,btnDonate:true},
   adulto: Object.fromEntries(ALL_BTNS.map(k=>[k,true])),
   // Mayor: día completo + cuerpo (climaterio/adultez/vejez + cuidado completo) + estudio+juegos+infancias + sostén+oráculos completos + Espiritual/Recap + cielo completo + tierra de autoconsumo + penco servicios + familia completa + casa apoyada + red vecinal + emergencia completa.
-  mayor: {btnHabits:true,btnRutinas:true,btnDiscipline:true,btnSchedule:true,btnTimer:true,btnRemind:true,btnGratitud:true,btnDreams:true,btnBreath:true,btnClimaterio:true,btnAdultez:true,btnVejez:true,btnMedic:true,btnNutri:true,btnGym:true,btnNatacion:true,btnPelo:true,btnRituales:true,btnStudy:true,btnMemory:true,btnMatematicas:true,btnAjedrez:true,btnSudoku:true,btnCrucigrama:true,btnSopa:true,btnTales:true,btnCrianza:true,btnEspiritual:true,btnEspiritu:true,btnRecap:true,btnKinMaya:true,btnTarot:true,btnNumerologia:true,btnOraculo:true,btnDueloFull:true,btnAdicciones:true,btnWeather:true,btnAstro:true,btnGolden:true,btnCircadian:true,btnEkadashi:true,btnTides:true,btnSiembra:true,btnHuerta:true,btnBosque:true,btnCompost:true,btnLawen:true,btnComuna:true,btnIglesias:true,btnMuni:true,btnBomberos:true,btnArbolFull:true,btnVozAbuelos:true,btnConstelaciones:true,btnMeal:true,btnShopping:true,btnHomeTasks:true,btnCorral:true,btnMovilidad:true,btnEnergy:true,btnLena:true,btnConvert:true,btnTrueque:true,btnMinga:true,btnAnimalCare:true,btnFirstAid:true,btnViolence:true,btnEvac:true,btnApoyo:true,btnHelp:true,btnDonate:true},
+  mayor: {btnHabits:true,btnRutinas:true,btnDiscipline:true,btnSchedule:true,btnTimer:true,btnRemind:true,btnGratitud:true,btnDreams:true,btnBreath:true,btnClimaterio:true,btnAdultez:true,btnVejez:true,btnMedic:true,btnNutri:true,btnGym:true,btnNatacion:true,btnPelo:true,btnRituales:true,btnStudy:true,btnMemory:true,btnMatematicas:true,btnAjedrez:true,btnDama:true,btnSudoku:true,btnCrucigrama:true,btnSopa:true,btnSolitario:true,btnTales:true,btnCrianza:true,btnEspiritual:true,btnEspiritu:true,btnRecap:true,btnKinMaya:true,btnTarot:true,btnNumerologia:true,btnOraculo:true,btnDueloFull:true,btnAdicciones:true,btnWeather:true,btnAstro:true,btnGolden:true,btnCircadian:true,btnEkadashi:true,btnTides:true,btnSiembra:true,btnHuerta:true,btnBosque:true,btnCompost:true,btnLawen:true,btnComuna:true,btnIglesias:true,btnMuni:true,btnBomberos:true,btnArbolFull:true,btnVozAbuelos:true,btnConstelaciones:true,btnMeal:true,btnShopping:true,btnHomeTasks:true,btnCorral:true,btnMovilidad:true,btnEnergy:true,btnLena:true,btnConvert:true,btnTrueque:true,btnMinga:true,btnAnimalCare:true,btnFirstAid:true,btnViolence:true,btnEvac:true,btnApoyo:true,btnHelp:true,btnDonate:true},
   // Estudiante: día completo + aprender completo + Eneagrama/VIA/Ikigai+Recap+Métodos + cuerpo joven + cielo parcial + casa básica + Convert + VozAbuelos + ciber básico + emergencia completa.
-  estudiante: {btnHabits:true,btnRutinas:true,btnDiscipline:true,btnSchedule:true,btnTimer:true,btnRemind:true,btnGratitud:true,btnDreams:true,btnBreath:true,btnStudy:true,btnMemory:true,btnMatematicas:true,btnMapu:true,btnEnglish:true,btnGuitar:true,btnAjedrez:true,btnSudoku:true,btnCrucigrama:true,btnSopa:true,btnEneagrama:true,btnVIA:true,btnIkigai:true,btnRecap:true,btnMetodos:true,btnAdolescencia:true,btnJuventud:true,btnNutri:true,btnGym:true,btnNatacion:true,btnWeather:true,btnAstro:true,btnCircadian:true,btnMeal:true,btnShopping:true,btnFinance:true,btnHomeTasks:true,btnConvert:true,btnVozAbuelos:true,btnCiberGuia:true,btnCiberClaves:true,btnCiberEstafas:true,btnCiberPriv:true,btnFirstAid:true,btnViolence:true,btnEvac:true,btnApoyo:true,btnHelp:true,btnDonate:true},
+  estudiante: {btnHabits:true,btnRutinas:true,btnDiscipline:true,btnSchedule:true,btnTimer:true,btnRemind:true,btnGratitud:true,btnDreams:true,btnBreath:true,btnStudy:true,btnMemory:true,btnMatematicas:true,btnMapu:true,btnEnglish:true,btnGuitar:true,btnAjedrez:true,btnDama:true,btnSudoku:true,btnCrucigrama:true,btnSopa:true,btnSolitario:true,btnEneagrama:true,btnVIA:true,btnIkigai:true,btnRecap:true,btnMetodos:true,btnAdolescencia:true,btnJuventud:true,btnNutri:true,btnGym:true,btnNatacion:true,btnWeather:true,btnAstro:true,btnCircadian:true,btnMeal:true,btnShopping:true,btnFinance:true,btnHomeTasks:true,btnConvert:true,btnVozAbuelos:true,btnCiberGuia:true,btnCiberClaves:true,btnCiberEstafas:true,btnCiberPriv:true,btnFirstAid:true,btnViolence:true,btnEvac:true,btnApoyo:true,btnHelp:true,btnDonate:true},
   // Agricultor: tierra completa + cielo completo + mar de riego/marea + penco + casa productiva + energía sin domótica + VozAbuelos + red completa + día (organizar + gratitud) + emergencia de campo.
   agricultor: {btnHuerta:true,btnSiembra:true,btnBosque:true,btnCompost:true,btnAgua:true,btnHidroponia:true,btnElectrocultura:true,btnFlora:true,btnLawen:true,btnBirds:true,btnAnfibios:true,btnMeli:true,btnHongos:true,btnSenderos:true,btnFuego:true,btnFenologia:true,btnWeather:true,btnAstro:true,btnGolden:true,btnCircadian:true,btnEkadashi:true,btnTides:true,btnIntermareal:true,btnComuna:true,btnMuni:true,btnMeal:true,btnShopping:true,btnFinance:true,btnHomeTasks:true,btnBodega:true,btnDespensa:true,btnCorral:true,btnEnergy:true,btnLena:true,btnTaller:true,btnHerramientas:true,btnMecanica:true,btnConvert:true,btnVozAbuelos:true,btnTrueque:true,btnMinga:true,btnDerechos:true,btnAnimalCare:true,btnHabits:true,btnRutinas:true,btnDiscipline:true,btnSchedule:true,btnTimer:true,btnRemind:true,btnGratitud:true,btnFirstAid:true,btnEvac:true,btnApoyo:true,btnHelp:true,btnDonate:true},
   // Pescador: mar completo + cielo completo + ribera + penco costero + casa base + taller/mecánica + Trueque/Minga + día (organizar + gratitud/respiración) + cuerpo activo + emergencia completa.
   pescador: {btnTides:true,btnFishing:true,btnIntermareal:true,btnNudos:true,btnKayak:true,btnBallenas:true,btnWeather:true,btnAstro:true,btnGolden:true,btnCircadian:true,btnEkadashi:true,btnBosque:true,btnBirds:true,btnAnfibios:true,btnAgua:true,btnFenologia:true,btnComuna:true,btnMuni:true,btnBomberos:true,btnMeal:true,btnShopping:true,btnFinance:true,btnTaller:true,btnMecanica:true,btnConvert:true,btnTrueque:true,btnMinga:true,btnHabits:true,btnRutinas:true,btnDiscipline:true,btnSchedule:true,btnTimer:true,btnRemind:true,btnGratitud:true,btnBreath:true,btnNutri:true,btnGym:true,btnNatacion:true,btnFirstAid:true,btnViolence:true,btnEvac:true,btnApoyo:true,btnHelp:true,btnDonate:true},
   // Salud: cuerpo completo sin adolescencia + día completo + conocerse/oráculos/sostén + Espiritual/Recap/Métodos + memoria y juegos + cielo de ritmo + tierra de autoconsumo + casa base + VozAbuelos + Minga/AnimalCare + emergencia completa.
-  salud: {btnMenstrual:true,btnFerti:true,btnClimaterio:true,btnJuventud:true,btnAdultez:true,btnVejez:true,btnMedic:true,btnNutri:true,btnGym:true,btnNatacion:true,btnPelo:true,btnRituales:true,btnHabits:true,btnRutinas:true,btnDiscipline:true,btnSchedule:true,btnTimer:true,btnRemind:true,btnGratitud:true,btnDreams:true,btnBreath:true,btnPsico:true,btnPsicologia:true,btnEneagrama:true,btnVIA:true,btnIkigai:true,btnNeurodiversidad:true,btnEspiritual:true,btnEspiritu:true,btnRecap:true,btnMetodos:true,btnKinMaya:true,btnTarot:true,btnNumerologia:true,btnOraculo:true,btnDueloFull:true,btnAdicciones:true,btnMemory:true,btnAjedrez:true,btnSudoku:true,btnCrucigrama:true,btnSopa:true,btnWeather:true,btnCircadian:true,btnEkadashi:true,btnHuerta:true,btnCompost:true,btnLawen:true,btnMeal:true,btnShopping:true,btnHomeTasks:true,btnVozAbuelos:true,btnMinga:true,btnAnimalCare:true,btnFirstAid:true,btnViolence:true,btnEvac:true,btnApoyo:true,btnHelp:true,btnDonate:true},
+  salud: {btnMenstrual:true,btnFerti:true,btnClimaterio:true,btnJuventud:true,btnAdultez:true,btnVejez:true,btnMedic:true,btnNutri:true,btnGym:true,btnNatacion:true,btnPelo:true,btnRituales:true,btnHabits:true,btnRutinas:true,btnDiscipline:true,btnSchedule:true,btnTimer:true,btnRemind:true,btnGratitud:true,btnDreams:true,btnBreath:true,btnPsico:true,btnPsicologia:true,btnEneagrama:true,btnVIA:true,btnIkigai:true,btnNeurodiversidad:true,btnEspiritual:true,btnEspiritu:true,btnRecap:true,btnMetodos:true,btnKinMaya:true,btnTarot:true,btnNumerologia:true,btnOraculo:true,btnDueloFull:true,btnAdicciones:true,btnMemory:true,btnAjedrez:true,btnDama:true,btnSudoku:true,btnCrucigrama:true,btnSopa:true,btnSolitario:true,btnWeather:true,btnCircadian:true,btnEkadashi:true,btnHuerta:true,btnCompost:true,btnLawen:true,btnMeal:true,btnShopping:true,btnHomeTasks:true,btnVozAbuelos:true,btnMinga:true,btnAnimalCare:true,btnFirstAid:true,btnViolence:true,btnEvac:true,btnApoyo:true,btnHelp:true,btnDonate:true},
   // Deportista: día completo + cuidado completo + Juventud/Adultez + Weather/Tides/Circadian + casa de rendimiento + Energy/Convert + VIA/Ikigai/Espiritual + emergencia completa.
   deportista: {btnHabits:true,btnRutinas:true,btnDiscipline:true,btnSchedule:true,btnTimer:true,btnRemind:true,btnGratitud:true,btnDreams:true,btnBreath:true,btnJuventud:true,btnAdultez:true,btnMedic:true,btnNutri:true,btnGym:true,btnNatacion:true,btnPelo:true,btnRituales:true,btnWeather:true,btnTides:true,btnCircadian:true,btnMeal:true,btnShopping:true,btnFinance:true,btnEnergy:true,btnConvert:true,btnVIA:true,btnIkigai:true,btnEspiritual:true,btnEspiritu:true,btnFirstAid:true,btnViolence:true,btnEvac:true,btnApoyo:true,btnHelp:true,btnDonate:true},
   // Docente: aprender completo + familia completa + casa con Escolar/Movilidad + conocerse parcial + Recap/Métodos/Duelo + día completo + tierra educativa + Adolescencia/Juventud + Trueque/Minga/Derechos + ciber básico + emergencia completa.
-  docente: {btnStudy:true,btnMemory:true,btnMatematicas:true,btnMapu:true,btnEnglish:true,btnGuitar:true,btnAjedrez:true,btnSudoku:true,btnCrucigrama:true,btnSopa:true,btnTales:true,btnCrianza:true,btnArbolFull:true,btnVozAbuelos:true,btnConstelaciones:true,btnMeal:true,btnShopping:true,btnFinance:true,btnHomeTasks:true,btnEscolar:true,btnMovilidad:true,btnPsico:true,btnPsicologia:true,btnEneagrama:true,btnVIA:true,btnIkigai:true,btnRecap:true,btnMetodos:true,btnDueloFull:true,btnHabits:true,btnRutinas:true,btnDiscipline:true,btnSchedule:true,btnTimer:true,btnRemind:true,btnGratitud:true,btnDreams:true,btnBreath:true,btnWeather:true,btnCircadian:true,btnSiembra:true,btnHuerta:true,btnBosque:true,btnCompost:true,btnBirds:true,btnFenologia:true,btnAdolescencia:true,btnJuventud:true,btnTrueque:true,btnMinga:true,btnDerechos:true,btnCiberGuia:true,btnCiberClaves:true,btnCiberEstafas:true,btnCiberPriv:true,btnFirstAid:true,btnViolence:true,btnEvac:true,btnApoyo:true,btnConvert:true,btnHelp:true,btnDonate:true}
+  docente: {btnStudy:true,btnMemory:true,btnMatematicas:true,btnMapu:true,btnEnglish:true,btnGuitar:true,btnAjedrez:true,btnDama:true,btnSudoku:true,btnCrucigrama:true,btnSopa:true,btnSolitario:true,btnTales:true,btnCrianza:true,btnArbolFull:true,btnVozAbuelos:true,btnConstelaciones:true,btnMeal:true,btnShopping:true,btnFinance:true,btnHomeTasks:true,btnEscolar:true,btnMovilidad:true,btnPsico:true,btnPsicologia:true,btnEneagrama:true,btnVIA:true,btnIkigai:true,btnRecap:true,btnMetodos:true,btnDueloFull:true,btnHabits:true,btnRutinas:true,btnDiscipline:true,btnSchedule:true,btnTimer:true,btnRemind:true,btnGratitud:true,btnDreams:true,btnBreath:true,btnWeather:true,btnCircadian:true,btnSiembra:true,btnHuerta:true,btnBosque:true,btnCompost:true,btnBirds:true,btnFenologia:true,btnAdolescencia:true,btnJuventud:true,btnTrueque:true,btnMinga:true,btnDerechos:true,btnCiberGuia:true,btnCiberClaves:true,btnCiberEstafas:true,btnCiberPriv:true,btnFirstAid:true,btnViolence:true,btnEvac:true,btnApoyo:true,btnConvert:true,btnHelp:true,btnDonate:true}
 };
 function getVisibleConfig(){
   const c = (DATA.config && DATA.config.visible) || {};
@@ -9335,8 +9335,10 @@ function setupGoldenDialog(){
 }
 setTimeout(setupGoldenDialog, 870);
 
-// === PRÁCTICAS ESPIRITUALES: sol, agua, tierra, noche e interior ===
-const ESP_CATS = { luz:'🌅 Luz', agua:'💧 Agua', tierra:'🦶 Tierra', noche:'🌙 Noche', respiro:'🌬️ Respiro', interior:'🕯️ Interior' };
+// === PRÁCTICAS ESPIRITUALES: sol, agua, tierra, noche, respiro, cuerpo, vínculo, territorio e interior ===
+// Guía: 1–2 prácticas x 7 días > 13 prácticas x 1 día. Niveles: Todos / Principiante / Intermedio.
+// Seguridad: sol nunca fijo, ducha fría con resguardos, grounding solo en lugar seguro, noche abrigada.
+const ESP_CATS = { luz:'🌅 Luz', agua:'💧 Agua', tierra:'🦶 Tierra', noche:'🌙 Noche', respiro:'🌬️ Respiro', cuerpo:'🧍 Cuerpo', vinculo:'❤️ Vínculo', territorio:'🌿 Territorio', interior:'🕯️ Interior' };
 const ESP_PRACTICES = [
   { id:'amanecer', cat:'luz', icon:'🌅', nombre:'Sol de amanecer', sub:'luz suave que despierta cortisol bueno', nivel:'Principiante', tiempo:'2–10 min', horario:'Salida del sol ±60 min', mats:'Solo tu cuerpo · opcional manta, cuaderno', cuidado:'Nunca mires fijo al sol. Mira al horizonte, parpadea normal. Si arde o mareas, cierra ojos y sombra.', benef:'Energía estable, ánimo y horario de sueño.',
     pasos:['Sal en los primeros 60 min tras la salida (ver hora de hoy arriba).','Párate o siéntate mirando al horizonte, no al disco directo.','Respira por nariz 4 tiempos inhala / 6 exhala, hombros sueltos.','Quédate 2 min (día 1–3), sube a 5–10 min en 2 semanas.','Termina con 3 respiraciones profundas + vaso de agua.'] , mins:5 },
@@ -9363,9 +9365,99 @@ const ESP_PRACTICES = [
   { id:'intencion', cat:'interior', icon:'🕯️', nombre:'Oración / Intención', sub:'1 frase que ordena el día', nivel:'Todos', tiempo:'2 min', horario:'Al despertar o al encender vela', mats:'Vela opcional · tu fe o palabras propias', cuidado:'A tu manera: rezo, epew, misa, nguillatun o silencio. Sin dogma.', benef:'Sentido, protección, foco.',
     pasos:['Párate frente a luz/ventana o enciende vela.','Di tu frase (ej: “hoy actúo con calma y coraje”).','Repite 3 veces lento, mano al corazón.','Pide por 1 persona que lo necesite.','Sopla/apaga y parte el día.'], mins:2 },
   { id:'decreto', cat:'interior', icon:'✨', nombre:'Decreto y visualización', sub:'ordena mente + cuerpo', nivel:'Intermedio', tiempo:'5 min', horario:'Mañana con sol suave', mats:'Espejo o cuaderno · temporizador', cuidado:'Lenguaje en positivo y presente. Si afirmación te tensa, bájale: “avanzo un paso”.', benef:'Autoestima, dirección.',
-    pasos:['Elige 1 decreto (ej: “soy calma que actúa”).','Mírate o escríbelo 3 veces.','Visualiza 60 seg: tú haciendo eso hoy.','Respira 4/6 y sonríe leve 30 seg.','Cierra: “hecho está, actúo ahora”.'], mins:5 }
+    pasos:['Elige 1 decreto (ej: “soy calma que actúa”).','Mírate o escríbelo 3 veces.','Visualiza 60 seg: tú haciendo eso hoy.','Respira 4/6 y sonríe leve 30 seg.','Cierra: “hecho está, actúo ahora”.'], mins:5, puente:'Puente con ✨ Espíritu (Luz 8 · palabra) y 🌬️ Respiración.' },
+  { id:'saludo_sol', cat:'cuerpo', icon:'🧍', nombre:'Saludo al sol suave', sub:'4 movimientos + respiración, sin exigir', nivel:'Principiante', tiempo:'5–8 min', horario:'Mañana con luz suave', mats:'Manta o piso temperado · ropa cómoda', cuidado:'Sin dolor: si duele rodilla/espalda/cuello, achica el rango o hazlo en silla. Embarazo/post-operatorio: solo movimientos sentada + respiración.', benef:'Despierta articulaciones, ánimo y respiración.',
+    pasos:['De pie o sentada: 3 respiraciones 4/6 soltando hombros.','Brazos al cielo inhalando + bajan exhalando (x3).','Inclinación lateral suave a cada lado (x2, 20 seg).','Giro de hombros atrás + cuello lento sí/no (1 min).','Manos al corazón: intención del día en 1 frase + 3 respiraciones.'], mins:5, puente:'Puente con 💪 Entrenamientos (movilidad) y 🌅 Sol de amanecer.' },
+  { id:'mate_ritual', cat:'interior', icon:'🧉', nombre:'Mate / infusión ritual', sub:'5 min sin pantalla para partir el día', nivel:'Todos', tiempo:'5 min', horario:'Mañana o atardecer', mats:'Mate, té de boldo/menta o agua tibia · ventana', cuidado:'Yerba/mate con hipertensión o insomnio: usa versión suave o agua tibia. No tomes hirviendo.', benef:'Pausa, presencia y gratitud cotidiana.',
+    pasos:['Prepara tu mate/infusión sin apuro ni celu.','Siéntate frente a ventana/luz 5 min.','Primer sorbo: nombra 1 cosa que agradeces.','Toma lento: siente calor, olor y sabor (3 sorbos conscientes).','Cierra con tu intención: “hoy mi 1 importante es…”.'], mins:5, puente:'Puente con 🙏 Gratitud 3 líneas y 🕯️ Oración / Intención.' },
+  { id:'pausa_stop', cat:'respiro', icon:'⏸️', nombre:'Pausa STOP 1 min', sub:'corta el automático en caliente', nivel:'Todos', tiempo:'1 min', horario:'Cuando sube la tensión', mats:'Nada · donde estés', cuidado:'Si estás en crisis de angustia, suma mirar un punto fijo + pies en tierra. Si se repite, pide apoyo.', benef:'No reaccionar en caliente, volver al centro.',
+    pasos:['S · Stop: detente, suelta manos y mandíbula.','T · Toma aire: inhala 4 / exhala 6 (x3).','O · Observa: “¿qué siento? ¿qué necesito?”.','P · Prosigue: elige 1 paso chico y amable.','Si puedes, anota 1 línea en tu nota de hoy.'], mins:1, puente:'Puente con 🌬️ Respiración guiada y 🧘 Silencio 5 min.' },
+  { id:'resp_478', cat:'respiro', icon:'😮‍💨', nombre:'Respiración 4-7-8 nocturna', sub:'apaga revoluciones para dormir', nivel:'Principiante', tiempo:'4 ciclos (3–4 min)', horario:'En cama, con luz ya apagada', mats:'Cama · oscuridad · sin celu', cuidado:'Sentada/o si te mareas. No fuerces retención: si molesta, usa 4/6 simple. No manejes ni cocines mientras la haces.', benef:'Conciliar sueño, soltar vueltas mentales.',
+    pasos:['Acuéstate, lengua tras dientes superiores, boca suave.','Inhala por nariz contando 4.','Aguanta contando 7 (suave, sin apretar).','Exhala por boca contando 8.','Repite 4 ciclos y deja que el cuerpo se rinda al sueño.'], mins:4, puente:'Puente con 🌬️ Respiración (4-7-8) y 🔴 Luz roja de noche.' },
+  { id:'caminata', cat:'tierra', icon:'🚶', nombre:'Caminata consciente 100 pasos', sub:'pies + respiro, sin audífonos', nivel:'Principiante', tiempo:'10–20 min', horario:'Mañana o atardecer', mats:'Zapatillas cómodas · calle/plaza/playa segura', cuidado:'Elige ruta conocida, iluminada y sin tráfico. Noche en Penco: lleva compañía o quédate en patio/plaza. Dolor de rodilla/cadera: acorta a 5 min.', benef:'Mente despejada, cuerpo activado.',
+    pasos:['Sal sin audífonos, celu en bolsillo.','Primeros 100 pasos: solo siente pies (talón-planta-dedos).','Luego coordina: inhala 4 pasos / exhala 6 pasos.','Cada 5 min nombra 3 cosas que ves/oyes/hueles.','Último minuto: 3 gratitudes caminando lento.'], mins:12, puente:'Puente con 🦶 Grounding y 🌅 Sol de atardecer.' },
+  { id:'bosque_humedal', cat:'territorio', icon:'🌳', nombre:'Baño de bosque / humedal', sub:'15 min de silencio verde en Penco', nivel:'Principiante', tiempo:'15–30 min', horario:'Mañana (aves) o atardecer suave', mats:'Manta chica · bolsa basura · agua · gorro', cuidado:'No entres a humedal de noche ni con lluvia fuerte. Playa/roquerío solo con bajamar y sin oleaje. No hagas fuego. Lleva tu basura + 1 ajena.', benef:'Calma profunda, asombro y pertenencia.',
+    pasos:['Elige: humedal Rocuant-Andalién (mirador), Playa Negra/Lirquén, plaza añososa o tu huerta.','Al llegar saluda en voz baja: “mari mari, permiso” + 3 respiraciones.','Camina 10 min ultra lento, sin hablar ni fotos.','Siéntate 5 min: escucha 5 sonidos y mira 5 verdes/azules.','Al salir agradece + recoge 1 basura ajena.'], mins:15, puente:'Puente con 🌿 Elementales (✨ Espíritu) y 🦅 Aves.' },
+  { id:'limpieza_ofrenda', cat:'territorio', icon:'🤲', nombre:'Limpieza + ofrenda viva', sub:'10 min que sanan tu lugar', nivel:'Todos', tiempo:'10 min', horario:'En tu salida a playa/cerro/barrio', mats:'Bolsa + guantes · ofrenda solo biodegradable', cuidado:'Guantes siempre con vidrios/jeringas: no toques directo. Marea alta/oleaje/viento fuerte: solo mirador. Ofrenda jamás plástico, vidrio ni vela.', benef:'Servicio concreto, espíritu encendido.',
+    pasos:['Lleva bolsa y guantes a tu paseo habitual.','Recoge 1 bolsa de basura ajena (10 min basta).','Separa vidrio/latas con cuidado.','Deja ofrenda viva: flor, semilla nativa o agua limpia.','Cierra: “gracias lafken/mapu” + anota tu 🤲 en el registro.'], mins:10, puente:'Puente con 🤝 Minga y ✨ Espíritu (Servicio de 10 min).' },
+  { id:'estrellas', cat:'noche', icon:'🌌', nombre:'Cielo y estrellas 5 min', sub:'perspectiva que aquieta', nivel:'Todos', tiempo:'5 min', horario:'Noche despejada', mats:'Manta · lugar oscuro y seguro', cuidado:'Abrígate (Penco enfría). Lugar seguro e iluminado cerca de casa; no salgas sola/o a cerro/playa de noche.', benef:'Soltar control, confianza y asombro.',
+    pasos:['Busca tu ventana/patio más oscuro y seguro.','Mira el cielo 1 min sin buscar nada.','3 respiraciones 4/6: “hice mi parte; suelto el resto”.','Nombra 1 constelación o inventa tu figura + pide 1 guía.','Entra a oscuridad total y duerme.'], mins:5, puente:'Puente con 🌙 Contemplación lunar y ✨ Espíritu (Entrega).' },
+  { id:'ayuno_digital', cat:'noche', icon:'📵', nombre:'Ayuno digital 2 h', sub:'suelta pantalla, recupera noche', nivel:'Todos', tiempo:'2 h (20:30 → dormir)', horario:'Tarde-noche', mats:'Caja/cajón para el celu · libro/cuaderno/vela', cuidado:'Si esperas llamada urgente (turno, cuidado), deja sonido solo para ese contacto. No es castigo: si un día no sale, retoma sin culpa.', benef:'Sueño, conversación y calma en casa.',
+    pasos:['A las 20:30 pon celu en modo noche + cajón (fuera del dormitorio si puedes).','Avisa en casa: “2 h sin pantalla”.','Reemplaza: ducha tibia + lectura + mate + conversación.','Si pica la mano, 3 respiraciones + escribe qué querías mirar.','Al acostarte: oscuridad total + 1 gratitud.'], mins:5, puente:'Puente con 🔴 Luz roja de noche y 📵 Hábitos.' },
+  { id:'escritura', cat:'interior', icon:'✍️', nombre:'Escritura del alma 10 min', sub:'suelta sin corregir', nivel:'Todos', tiempo:'10 min', horario:'Mañana o noche', mats:'Cuaderno privado + lápiz', cuidado:'Escribe para ti, no para mostrar. Si aparece herida grande, detente y pide compañía (no sigas sola/o de noche). Privado: guarda donde nadie lo lea.', benef:'Ordenar emoción, escucharte.',
+    pasos:['Pon temporizador 10 min.','Escribe sin parar: “hoy mi espíritu está… necesito… agradezco…”.','Sin corregir ni releer mientras escribes.','Al sonar relee y subraya 1 joya (1 frase).','Cierra el cuaderno: “ya me escuché, sigo liviana/o”.'], mins:10, puente:'Puente con 💭 Sueños y 🪞 Autoconocimiento.' },
+  { id:'carta_perdon', cat:'vinculo', icon:'💧', nombre:'Carta que libera', sub:'suelta 1 piedra (no se envía)', nivel:'Intermedio', tiempo:'15 min', horario:'Tarde tranquila, 1 vez por luna', mats:'Papel + lápiz · lugar privado', cuidado:'Herida grave/trauma/violencia: hazlo acompañada/o (terapeuta, guía, CESFAM). Si te desborda, pausa, camina, toma agua. No la envíes en caliente.', benef:'Soltar rencor, dormir liviano.',
+    pasos:['Elige 1 herida chica-mediana (no la más dura primero).','Escribe: qué pasó / qué sentí / qué necesité / qué suelto hoy.','Léela en voz alta a solas, lento.','Quémala con cuidado o guárdala cerrada 1 luna.','Cierra con 3 respiraciones + 1 acto amable contigo.'], mins:15, puente:'Puente con 🌺 Ho’oponopono y ✨ Espíritu (Perdonar suelta).' },
+  { id:'servicio_10', cat:'vinculo', icon:'🤲', nombre:'Servicio de 10 minutos', sub:'minga chica sin foto', nivel:'Todos', tiempo:'10 min', horario:'1 vez por semana', mats:'Nada · tu barrio', cuidado:'Servicio acotado y alegre: 10–30 min. Si te quema o te endeuda, achícalo. Sin foto ni deuda: dar no compra cariño.', benef:'Sentido, red vecinal, calorcito.',
+    pasos:['Elige 1 acto: acompañar 10 min, limpiar vereda, llevar sopa, reparar algo, visitar.','Avisa simple: “te acompaño 10 min”.','Hazlo presente, sin celu.','Al terminar anota cómo quedó tu pecho (1 línea).','Márcalo 🤲 en tu registro.'], mins:10, puente:'Puente con 🤝 Minga/Trueque y ✨ Espíritu (Servir enciende).' },
+  { id:'abrazo_20', cat:'vinculo', icon:'❤️', nombre:'Amor concreto 1 acto', sub:'abrazo 20 seg o escucha 10 min', nivel:'Todos', tiempo:'1–10 min', horario:'En casa, hoy', mats:'Nada · tu gente', cuidado:'Amor que respeta: pregunta antes de abrazar (“¿te abrazo?”). Con niñas/os: escucha a su altura, sin interrogar.', benef:'Casa tibia, vínculo real.',
+    pasos:['Elige 1 persona de tu casa hoy.','Opción A: abrazo de 20 seg, respirando juntos.','Opción B: escucha 10 min sin celu ni consejo.','Nombra: “te quiero, gracias por…”.','Anota cómo quedó el ambiente.'], mins:5, puente:'Puente con ✨ Espíritu (Amar es practicar) y 🧒 Crianza.' },
+  { id:'canto_rezo', cat:'interior', icon:'🎶', nombre:'Canto / frase madre', sub:'10 repeticiones que te habitan', nivel:'Todos', tiempo:'3–5 min', horario:'Al despertar y al acostarte', mats:'Tu voz · tu fe o palabras propias', cuidado:'Elige frase que calme, no que exija (“avanzo paso a paso” mejor que “soy perfecta/o”). Si cantar te emociona mucho, respira y sigue suave.', benef:'Ánimo parejo, foco, consuelo.',
+    pasos:['Elige 1 frase madre (“estoy sostenida/o”, “paso a paso”, “chaltu may”).','Repítela 10 veces lento, mano al corazón.','Súmale tarareo/canto 1 min si quieres.','Dedícala a 1 persona que la necesite.','Vívela hoy en 1 acto chico.'], mins:3, puente:'Puente con ✨ Espíritu (La palabra crea) y 🌺 Ho’oponopono.' }
 ];
 let ESP_FILTER = { q:'', cat:'todas', nivel:'todos' };
+// === PROGRAMAS 7 DÍAS: rutas guiadas 1 paso x día (repite la que te sirva) ===
+const ESP_PROGRAMAS = [
+  { id:'amanecer7', icon:'🌅', nombre:'Amanecer vivo · 7 días', meta:'5–10 min en la mañana · energía y horario', dias:[
+    { p:'amanecer', txt:'Día 1 · 2 min de sol suave + 3 respiraciones 4/6.' },
+    { p:'saludo_sol', txt:'Día 2 · suma saludo suave 5 min tras el sol.' },
+    { p:'respiracion', txt:'Día 3 · 4 ciclos 4/6 frente a la luz.' },
+    { p:'mate_ritual', txt:'Día 4 · mate/infusión sin pantalla + 1 gratitud.' },
+    { p:'ducha', txt:'Día 5 · cierra ducha con 15–30 seg fría.' },
+    { p:'caminata', txt:'Día 6 · 100 pasos conscientes en tu cuadra.' },
+    { p:'gratitud', txt:'Día 7 · escribe 3 líneas y celebra tu semana 🔥.' } ] },
+  { id:'noche7', icon:'🌙', nombre:'Noche calma · 7 días', meta:'5 min en la noche · soltar y dormir', dias:[
+    { p:'ayuno_digital', txt:'Día 1 · celu al cajón desde las 20:30.' },
+    { p:'luzroja', txt:'Día 2 · solo luz roja/vela + brillo mínimo.' },
+    { p:'resp_478', txt:'Día 3 · 4 ciclos 4-7-8 ya acostada/o.' },
+    { p:'luna', txt:'Día 4 · mira luna/cielo + 1 línea suelto/agradezco.' },
+    { p:'estrellas', txt:'Día 5 · 5 min de cielo: “suelto el resto”.' },
+    { p:'escritura', txt:'Día 6 · escribe 10 min sin corregir.' },
+    { p:'silencio', txt:'Día 7 · 5 min de silencio + gratitud final.' } ] },
+  { id:'corazon7', icon:'❤️', nombre:'Corazón en vínculo · 7 días', meta:'1 acto chico x día · casa y barrio', dias:[
+    { p:'intencion', txt:'Día 1 · tu frase madre x3 + pide por 1 persona.' },
+    { p:'canto_rezo', txt:'Día 2 · repite tu frase 10 veces mañana y noche.' },
+    { p:'abrazo_20', txt:'Día 3 · abrazo 20 seg o escucha 10 min.' },
+    { p:'gratitud', txt:'Día 4 · agradece en voz alta mirando a los ojos.' },
+    { p:'hoponopono', txt:'Día 5 · 4 frases x3 ante 1 roce.' },
+    { p:'carta_perdon', txt:'Día 6 · carta que libera (chica, no se envía).' },
+    { p:'servicio_10', txt:'Día 7 · 10 min de servicio sin foto 🤲.' } ] },
+  { id:'tierra7', icon:'🌿', nombre:'Tierra y mar · 7 días', meta:'10–20 min fuera · Penco te sostiene', dias:[
+    { p:'grounding', txt:'Día 1 · 10 min descalza/o en pasto/arena segura.' },
+    { p:'caminata', txt:'Día 2 · caminata 100 pasos sin audífonos.' },
+    { p:'bosque_humedal', txt:'Día 3 · visita silenciosa 15 min (mirador).' },
+    { p:'limpieza_ofrenda', txt:'Día 4 · 1 bolsa ajena + ofrenda biodegradable.' },
+    { p:'agua', txt:'Día 5 · carga tu botella 30–60 min y bebe consciente.' },
+    { p:'atardecer', txt:'Día 6 · sol de atardecer + 3 gratitudes.' },
+    { p:'pausa_stop', txt:'Día 7 · STOP 1 min en tu lugar favorito + cierra.' } ] }
+];
+function espProgramaDetalle(id){
+  try{ return ESP_PROGRAMAS.find(x=>x.id===id)||null; }catch(e){ return null; }
+}
+function renderEspProgramas(){
+  const box=$('espProgramasBox'); if(!box) return;
+  const k=espTodayKey(); const d=getEspiritualData();
+  const cur=(d.done[k]&&typeof d.done[k]==='object')? d.done[k] : {};
+  box.innerHTML=ESP_PROGRAMAS.map(pr=>{
+    const hechas=pr.dias.filter(x=>cur[x.p]).length;
+    return `<details class="esp-card"><summary class="esp-card-head"><span class="esp-icon">${pr.icon}</span>
+      <div class="esp-titles"><div class="esp-name">${escapeHtml(pr.nombre)} ${hechas?`<span class="chip su-0d5be0">${hechas}/${pr.dias.length} hoy</span>`:''}</div><div class="esp-sub">${escapeHtml(pr.meta)}</div></div>
+      <span class="chip esp-level">7 días</span></summary>
+      <div class="esp-body"><ol class="esp-steps">${pr.dias.map(x=>{
+        const p=getAllEspPractices().find(y=>y.id===x.p);
+        const done=!!cur[x.p];
+        return `<li>${done?'✅ ':''}<b>${p?p.icon+' '+escapeHtml(p.nombre):escapeHtml(x.p)}</b> — ${escapeHtml(x.txt)} <button type="button" class="btn esp-prog-go su-337714" data-id="${x.p}">▶ Ir</button></li>`;
+      }).join('')}</ol>
+      <p class="muted su-11a508">Consejo: haz 1 día x día, en orden. Si fallas, retoma donde quedaste sin culpa. Marca ✅ cada práctica al hacerla.</p></div></details>`;
+  }).join('');
+  box.querySelectorAll('.esp-prog-go').forEach(b=> b.onclick=()=>{
+    const sel=$('espTimerPractice'); if(sel) sel.value=b.dataset.id;
+    const f=getAllEspPractices().find(x=>x.id===b.dataset.id);
+    const mm=$('espTimerMinutes'); if(mm&&f) mm.value=String(f.mins||5);
+    espTimerReset(); espTimerStart();
+    const dd=$('espTimerDisplay'); if(dd) dd.scrollIntoView({behavior:'smooth', block:'center'});
+  });
+}
 function getEspiritualData(){
   const u=userData();
   if(!u.espiritual) u.espiritual={ done:{}, notes:{}, custom:[] };
@@ -9393,7 +9485,7 @@ function espCustomDel(pid){
     d.custom=(d.custom||[]).filter(x=>x.id!==pid);
     Object.keys(d.done||{}).forEach(k=>{ if(d.done[k]&&d.done[k][pid]) delete d.done[k][pid]; });
     scheduleSave('Práctica borrada');
-    renderEspTimerOptions(); renderEspiritualTodayBox(); renderEspiritualCards(); renderEspTodayChecks(); renderEspStats(); renderEspLog();
+    renderEspTimerOptions(); renderEspiritualTodayBox(); renderEspiritualCards(); renderEspProgramas(); renderEspTodayChecks(); renderEspStats(); renderEspLog();
   }catch(e){}
 }
 function espTodayKey(){ try{ return cal.fmtKey.format(new Date()); }catch(e){ const d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); } }
@@ -9414,11 +9506,11 @@ function espSuggestToday(){
     const cur=(d.done[k]&&typeof d.done[k]==='object')? d.done[k] : {};
     const all=getAllEspPractices();
     let pool=[];
-    if(h<9) pool=['amanecer','respiracion','intencion','gratitud','ducha'];
-    else if(h<12) pool=['agua','grounding','respiracion','decreto'];
-    else if(h<18) pool=['agua','grounding','hoponopono','silencio'];
-    else if(h<20) pool=['atardecer','gratitud','hoponopono'];
-    else pool=['luna','luzroja','silencio','gratitud'];
+    if(h<9) pool=['amanecer','saludo_sol','respiracion','pausa_stop','intencion','canto_rezo','gratitud','mate_ritual','ducha'];
+    else if(h<12) pool=['agua','grounding','caminata','respiracion','saludo_sol','decreto','mate_ritual'];
+    else if(h<18) pool=['agua','grounding','caminata','bosque_humedal','limpieza_ofrenda','hoponopono','carta_perdon','silencio','pausa_stop','servicio_10'];
+    else if(h<20) pool=['atardecer','caminata','gratitud','abrazo_20','hoponopono','escritura','canto_rezo'];
+    else pool=['luna','estrellas','luzroja','ayuno_digital','silencio','resp_478','gratitud','escritura'];
     pool=pool.filter(id=>!cur[id]);
     if(!pool.length) pool=all.filter(p=>!cur[p.id]).map(p=>p.id);
     if(!pool.length) pool=all.map(p=>p.id);
@@ -9433,7 +9525,7 @@ function espFilteredPractices(){
     if(ESP_FILTER.cat!=='todas' && (p.cat||'interior')!==ESP_FILTER.cat) return false;
     if(ESP_FILTER.nivel!=='todos' && (p.nivel||'Todos')!==ESP_FILTER.nivel) return false;
     if(!q) return true;
-    return ((p.nombre||'')+' '+(p.sub||'')+' '+(p.benef||'')+' '+(ESP_CATS[p.cat]||'')).toLowerCase().includes(q);
+    return ((p.nombre||'')+' '+(p.sub||'')+' '+(p.benef||'')+' '+(p.puente||'')+' '+(p.horario||'')+' '+((p.pasos||[]).join(' '))+' '+(ESP_CATS[p.cat]||'')).toLowerCase().includes(q);
   });
 }
 function renderEspiritualTodayBox(){
@@ -9442,7 +9534,7 @@ function renderEspiritualTodayBox(){
   const k=espTodayKey();
   const d=getEspiritualData();
   const doneToday=(d.done[k]&&typeof d.done[k]==='object')? Object.keys(d.done[k]).filter(pid=>d.done[k][pid]).length : 0;
-  const totalP=getAllEspPractices().length||13;
+  const totalP=getAllEspPractices().length||27;
   const pct=Math.min(100, Math.round(doneToday/Math.max(1,totalP)*100));
   const sug=espSuggestToday();
   const nowStr=new Intl.DateTimeFormat('es-CL',{timeZone:'America/Santiago',hour:'2-digit',minute:'2-digit'}).format(new Date());
@@ -9464,7 +9556,7 @@ function renderEspiritualCards(){
   const s=espSunToday();
   const k=espTodayKey(); const dd=getEspiritualData();
   const curDone=(dd.done[k]&&typeof dd.done[k]==='object')? dd.done[k] : {};
-  const horaTxt={ amanecer:`${s.riseT} → +60 min`, atardecer:`−60 min → ${s.setT}`, agua:'10:00–14:00', ducha:'mañana', grounding:'mañana/tarde', luzroja:'20:30 → dormir', respiracion:`con amanecer ${s.riseT}`, luna:'noche', silencio:'amanecer/noche', gratitud:'mañana/noche 3 min', hoponopono:'cuando lo necesites', intencion:'al despertar', decreto:'mañana' };
+  const horaTxt={ amanecer:`${s.riseT} → +60 min`, atardecer:`−60 min → ${s.setT}`, agua:'10:00–14:00', ducha:'mañana', grounding:'mañana/tarde', luzroja:'20:30 → dormir', respiracion:`con amanecer ${s.riseT}`, luna:'noche', silencio:'amanecer/noche', gratitud:'mañana/noche 3 min', hoponopono:'cuando lo necesites', intencion:'al despertar', decreto:'mañana', saludo_sol:'mañana con luz suave', mate_ritual:'mañana o atardecer', pausa_stop:'cuando lo necesites', resp_478:'en cama, noche', caminata:'mañana/tarde', bosque_humedal:'mañana o atardecer', limpieza_ofrenda:'en tu salida', estrellas:'noche despejada', ayuno_digital:'20:30 → dormir', escritura:'mañana o noche', carta_perdon:'1 vez por luna', servicio_10:'1 vez por semana', abrazo_20:'en casa, hoy', canto_rezo:'despertar y acostarte' };
   const all=espFilteredPractices();
   const totalAll=getAllEspPractices().length;
   if(!all.length){ box.innerHTML='<p class="muted su-8fd210">Sin resultados. Prueba otra palabra o limpia los filtros. <button type="button" class="btn su-337714" id="espClearF">Limpiar filtros</button></p>'; const cf=$('espClearF'); if(cf) cf.onclick=()=>{ ESP_FILTER={q:'',cat:'todas',nivel:'todos'}; renderEspFilters(); renderEspiritualCards(); }; return; }
@@ -9481,6 +9573,7 @@ function renderEspiritualCards(){
         <div class="esp-meta"><span class="esp-pill gold">⏱ ${escapeHtml(p.tiempo)}</span><span class="esp-pill green">🕐 ${escapeHtml(horaTxt[p.id]||p.horario)}</span><span class="esp-pill">🎒 ${escapeHtml(p.mats)}</span>${p.benef?`<span class="esp-pill su-8fb65a">💛 ${escapeHtml(p.benef)}</span>`:''}</div>
         <ol class="esp-steps">${(p.pasos||[]).map(st2=>`<li>${escapeHtml(st2)}</li>`).join('')}</ol>
         <p class="esp-pill red su-116966">⚠️ ${escapeHtml(p.cuidado)}</p>
+        ${p.puente?`<p class="muted su-11a508">🔗 ${escapeHtml(p.puente)}</p>`:''}
         <div class="esp-actions">
           <button type="button" class="btn ${done?'':'btn-accent'} esp-done su-337714" data-id="${p.id}">${done?'✅ Hecha hoy (quitar)':'✅ Hice esta hoy'}</button>
           <button type="button" class="btn esp-timer su-337714" data-id="${p.id}" data-mins="${p.mins}">⏱ ${p.mins} min</button>
@@ -9511,7 +9604,7 @@ function espMarkDone(pid, val){
   if(!d.done[k]||typeof d.done[k]!=='object') d.done[k]={};
   d.done[k][pid]= val===undefined ? !d.done[k][pid] : !!val;
   scheduleSave('Guardado ✓');
-  renderEspiritualTodayBox(); renderEspTodayChecks(); renderEspStats(); renderEspLog();
+  renderEspiritualTodayBox(); renderEspiritualCards(); renderEspProgramas(); renderEspTodayChecks(); renderEspStats(); renderEspLog();
   try{ if(currentView&&currentView.tipo==='luna') renderLuna(); }catch(e){}
 }
 function renderEspTodayChecks(){
@@ -9557,7 +9650,7 @@ function renderEspStats(){
     return `<span class="esp-pill ${c7>0?'gold':''}">${p.icon} ${escapeHtml(p.nombre)}: <b>${c7}/7</b>${st>1?` · 🔥${st}`:''}</span>`;
   }).join('');
   box.innerHTML=`<h4>📊 Últimos 7 días: <b>${totalWeek}</b> prácticas</h4><div class="esp-bars">${bars}</div><div class="esp-meta su-8a77e5">${rows}</div>
-  <p class="muted su-e13d76">Consejo: la racha se construye con 1–2 prácticas diarias, no con las 13. Si fallas un día, retoma al siguiente sin culpa.</p>`;
+  <p class="muted su-e13d76">Consejo: la racha se construye con 1–2 prácticas diarias, no con las ${getAllEspPractices().length}. Si fallas un día, retoma al siguiente sin culpa.</p>`;
 }
 function renderEspLog(){
   const box=$('espLogBox'); if(!box) return;
@@ -9581,9 +9674,11 @@ function espAgendar(pid){
     if(!ref||ref.luna==='dft'){ alert('Hoy está fuera del ciclo visible; igual puedes usar ⏱ y ✅.'); return; }
     let defH='07:00';
     if(pid==='atardecer'){ try{ defH=espSunToday().setT||'19:00'; const [h,m]=defH.split(':').map(Number); const dd=new Date(); dd.setHours(h,Math.max(0,m-30)); defH=String(dd.getHours()).padStart(2,'0')+':'+String(dd.getMinutes()).padStart(2,'0'); }catch(e){} }
-    else if(pid==='amanecer'){ try{ defH=espSunToday().riseT||'07:00'; }catch(e){} }
-    else if(pid==='luzroja') defH='20:30';
+    else if(pid==='amanecer'||pid==='saludo_sol'){ try{ defH=espSunToday().riseT||'07:00'; }catch(e){} }
+    else if(pid==='luzroja'||pid==='ayuno_digital') defH='20:30';
     else if(pid==='ducha') defH='08:00';
+    else if(pid==='luna'||pid==='estrellas'||pid==='resp_478') defH='22:00';
+    else if(pid==='mate_ritual'||pid==='caminata'||pid==='bosque_humedal') defH='09:00';
     const cell=dayCell(ref.luna, ref.diaN);
     if(!Array.isArray(cell.agenda)) cell.agenda=[];
     cell.agenda.push({ id:'e'+Date.now()+Math.random().toString(36).slice(2,4), hour:parseInt(defH.slice(0,2),10), minute:parseInt(defH.slice(3,5),10), time:defH, text:label, notify:false, notified:false });
@@ -9593,7 +9688,7 @@ function espAgendar(pid){
 }
 function espKitText(){
   const s=espSunToday();
-  return `🕉️ MI KIT ESPIRITUAL — Penco\nHoy salida ${s.riseT} · puesta ${s.setT}\n\nKIT: botella vidrio 1L + tapa · vaso · toalla + chalas · manta/cojín · ampolleta roja E27 5-7W · antifaz/cortina · cuaderno + lápiz · termo agua\n\nRUTINA MÍNIMA:\n🌅 Sol amanecer ${s.riseT} (+60min) 2-10 min, sin mirar fijo\n💧 Agua solar 30min-4h en vidrio, beber en 24h\n🦶 Grounding 10-20 min descalzo\n🧊 Ducha: cierra 15-30 seg frío, sube semanal\n🌇 Sol atardecer -60min ${s.setT}\n🔴 Roja desde 20:30, dormir oscuro total\n\n⚠️ Nunca sol fijo ni mediodía sin protección. Ducha fría no con corazón/hipertensión/embarazo/fiebre.`;
+  return `🕉️ MI KIT ESPIRITUAL — Penco\nHoy salida ${s.riseT} · puesta ${s.setT}\n\nKIT: botella vidrio 1L + tapa · vaso · toalla + chalas · manta/cojín · ampolleta roja E27 5–7W · antifaz/cortina · cuaderno + lápiz · termo agua · bolsa + guantes (limpieza)\n\nRUTINA MÍNIMA (elige 2):\n🌅 Sol amanecer ${s.riseT} (+60min) 2-10 min, sin mirar fijo\n🧍 Saludo suave 5 min tras el sol\n💧 Agua solar 30min-4h en vidrio, beber en 24h\n🦶 Grounding 10-20 min descalzo / 🚶 100 pasos conscientes\n🧊 Ducha: cierra 15-30 seg frío, sube semanal\n🌇 Sol atardecer -60min ${s.setT} + 3 gratitudes\n⏸️ STOP 1 min cuando sube tensión · 😮‍💨 4-7-8 en cama\n🔴 Roja desde 20:30, 📵 ayuno digital 2h, dormir oscuro total\n🤲 1 servicio 10 min/semana · 🌿 1 limpieza/ofrenda en tu salida\n\nPROGRAMAS 7 DÍAS: Amanecer vivo · Noche calma · Corazón en vínculo · Tierra y mar (ver pestaña 🌱 Programas).\n\n⚠️ Nunca sol fijo ni mediodía sin protección. Ducha fría no con corazón/hipertensión/embarazo/fiebre. Grounding/playa solo lugar seguro.`;
 }
 // Timer
 let espTimerTotal=120, espTimerLeft=120, espTimerInt=null;
@@ -9612,19 +9707,20 @@ function espTimerStart(){
       alert('⏱ Práctica terminada. ¡Bien! Quedó marcada ✅'); }
   },1000);
 }
-function renderEspiritualAll(){ renderEspTimerOptions(); renderEspFilters(); renderEspiritualTodayBox(); renderEspiritualCards(); renderEspTodayChecks(); renderEspStats(); renderEspLog(); espTimerPaint(); }
+function renderEspiritualAll(){ renderEspTimerOptions(); renderEspFilters(); renderEspiritualTodayBox(); renderEspiritualCards(); renderEspProgramas(); renderEspTodayChecks(); renderEspStats(); renderEspLog(); espTimerPaint(); }
 function setupEspiritualDialog(){
   const btn=$('btnEspiritual'); if(btn) btn.onclick=()=>{ renderEspiritualAll(); $('espiritualDialog').showModal(); };
   const ct=$('espiritualCloseTop'), cb=$('espiritualClose'); if(ct) ct.onclick=()=>$('espiritualDialog').close(); if(cb) cb.onclick=()=>$('espiritualDialog').close();
-  const tP=$('espTabPracticas'), tK=$('espTabKit'), tR=$('espTabRegistro');
-  const pP=$('espPracticasPanel'), pK=$('espKitPanel'), pR=$('espRegistroPanel');
+  const tP=$('espTabPracticas'), tK=$('espTabKit'), tR=$('espTabRegistro'), tG=$('espTabProgramas');
+  const pP=$('espPracticasPanel'), pK=$('espKitPanel'), pR=$('espRegistroPanel'), pG=$('espProgramasPanel');
   function tab(which){
     if(!pP) return;
-    pP.classList.toggle('hidden', which!=='p'); pK.classList.toggle('hidden', which!=='k'); pR.classList.toggle('hidden', which!=='r');
-    tP.classList.toggle('btn-accent', which==='p'); tK.classList.toggle('btn-accent', which==='k'); tR.classList.toggle('btn-accent', which==='r');
+    pP.classList.toggle('hidden', which!=='p'); if(pK) pK.classList.toggle('hidden', which!=='k'); if(pR) pR.classList.toggle('hidden', which!=='r'); if(pG) pG.classList.toggle('hidden', which!=='g');
+    if(tP) tP.classList.toggle('btn-accent', which==='p'); if(tK) tK.classList.toggle('btn-accent', which==='k'); if(tR) tR.classList.toggle('btn-accent', which==='r'); if(tG) tG.classList.toggle('btn-accent', which==='g');
+    if(which==='g'){ renderEspProgramas(); }
     if(which!=='p'&&which==='r'){ renderEspTodayChecks(); renderEspStats(); renderEspLog(); }
   }
-  if(tP) tP.onclick=()=>tab('p'); if(tK) tK.onclick=()=>tab('k'); if(tR) tR.onclick=()=>tab('r');
+  if(tP) tP.onclick=()=>tab('p'); if(tK) tK.onclick=()=>tab('k'); if(tR) tR.onclick=()=>tab('r'); if(tG) tG.onclick=()=>tab('g');
   const fQ=$('espSearch'); if(fQ) fQ.oninput=()=>{ ESP_FILTER.q=fQ.value||''; renderEspiritualCards(); };
   const fC=$('espFilterCat'); if(fC) fC.onchange=()=>{ ESP_FILTER.cat=fC.value||'todas'; renderEspiritualCards(); };
   const fN=$('espFilterNivel'); if(fN) fN.onchange=()=>{ ESP_FILTER.nivel=fN.value||'todos'; renderEspiritualCards(); };
@@ -9656,13 +9752,16 @@ function setupEspiritualDialog(){
     d.custom.push({ id:'c'+Date.now(), cat:catSel, icon, nombre, sub:desc, nivel:'Mía', tiempo:mins+' min', horario:'a tu hora', mats:'lo que tengas', cuidado:'A tu ritmo, sin forzar. Si hay mareo o malestar, pausa.', benef:'Mi intención personal.', pasos:['Prepara tu espacio: '+desc+'.','Pon el temporizador en '+mins+' min y empieza.','Hazla 7 días seguidos y marca ✅ cada día.'], mins, custom:true });
     scheduleSave('Práctica guardada 🕉️');
     $('espCustomName').value=''; $('espCustomDesc').value='';
-    renderEspTimerOptions(); renderEspiritualTodayBox(); renderEspiritualCards(); renderEspTodayChecks(); renderEspStats();
+    renderEspTimerOptions(); renderEspiritualTodayBox(); renderEspiritualCards(); renderEspProgramas(); renderEspTodayChecks(); renderEspStats();
   };
   const ck=$('espCopyKit'); if(ck) ck.onclick=async()=>{ try{ await navigator.clipboard.writeText(espKitText()); $('espKitStatus').textContent='Copiado ✓ pégalo donde quieras'; }catch(e){ $('espKitStatus').textContent='No se pudo copiar'; } setTimeout(()=>{ $('espKitStatus').textContent=''; },2000); };
   const sk=$('espShareKit'); if(sk) sk.onclick=async()=>{ await shareText('Kit Espiritual', espKitText()); };
   const g1=$('espGoCircadian'); if(g1) g1.onclick=()=>{ try{ $('espiritualDialog').close(); }catch(e){} setTimeout(()=>{ const b=$('btnCircadian'); if(b) b.click(); },150); };
   const g2=$('espGoGolden'); if(g2) g2.onclick=()=>{ try{ $('espiritualDialog').close(); }catch(e){} setTimeout(()=>{ const b=$('btnGolden'); if(b) b.click(); },150); };
   const g3=$('espGoBreath'); if(g3) g3.onclick=()=>{ try{ $('espiritualDialog').close(); }catch(e){} setTimeout(()=>{ const b=$('btnBreath'); if(b) b.click(); },150); };
+  const g4=$('espGoEspiritu'); if(g4) g4.onclick=()=>{ try{ $('espiritualDialog').close(); }catch(e){} setTimeout(()=>{ try{ if(typeof openEspiritu==='function') openEspiritu(); else { const b=$('btnEspiritu'); if(b) b.click(); } }catch(e){} },180); };
+  const g5=$('espGoGratitud'); if(g5) g5.onclick=()=>{ try{ $('espiritualDialog').close(); }catch(e){} setTimeout(()=>{ const b=$('btnGratitud'); if(b) b.click(); },150); };
+  const g6=$('espGoMinga'); if(g6) g6.onclick=()=>{ try{ $('espiritualDialog').close(); }catch(e){} setTimeout(()=>{ const b=$('btnMinga'); if(b) b.click(); },150); };
 }
 setTimeout(setupEspiritualDialog, 880);
 

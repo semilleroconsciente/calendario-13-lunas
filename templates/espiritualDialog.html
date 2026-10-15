@@ -1,22 +1,28 @@
 <dialog id="espiritualDialog">
     <form method="dialog">
       <div class="dlg-actions su-d2d053">
-        <h3 class="su-ee0cfe">🕉️ Prácticas Espirituales — luz, agua, tierra y noche</h3>
+        <h3 class="su-ee0cfe">🕉️ Prácticas Espirituales — luz, agua, tierra, cuerpo, vínculo y noche</h3>
         <button type="button" id="espiritualCloseTop" class="btn btn-icon" title="Cerrar" aria-label="Cerrar">✕</button>
       </div>
-      <p class="muted su-77e2fe">Rituales simples de <b>sol, agua, tierra, noche e interior</b> para ordenar energía y sueño en Penco. Elige 1–2, hazlas 7 días seguidos y registra tu racha 🔥. No es consejo médico: si tienes condición fotosensible, cardiovascular, embarazo o tomas remedios, consulta antes.</p>
+      <p class="muted su-77e2fe"><b>27 prácticas</b> en <b>9 caminos</b> (luz, agua, tierra, noche, respiro, cuerpo, vínculo, territorio e interior) + <b>4 programas de 7 días</b> para ordenar energía y sueño en Penco. Elige 1–2, hazlas 7 días seguidos y registra tu racha 🔥. Laico y sin dogma: tu fe manda. No es consejo médico: si tienes condición fotosensible, cardiovascular, embarazo o tomas remedios, consulta antes.</p>
       <div id="espiritualTodayBox" class="menstrual-card su-68a1a9"></div>
       <div class="esp-filters">
-        <label class="su-4b3de7">🔎 Buscar <input type="search" id="espSearch" placeholder="ej: dormir, gratitud, frío..." maxlength="40"></label>
-        <label>Categoría <select id="espFilterCat"><option value="todas">Todas</option><option value="luz">🌅 Luz</option><option value="agua">💧 Agua</option><option value="tierra">🦶 Tierra</option><option value="noche">🌙 Noche</option><option value="respiro">🌬️ Respiro</option><option value="interior">🕯️ Interior</option></select></label>
+        <label class="su-4b3de7">🔎 Buscar <input type="search" id="espSearch" placeholder="ej: dormir, gratitud, frío, abrazo, perdón..." maxlength="40"></label>
+        <label>Categoría <select id="espFilterCat"><option value="todas">Todas</option><option value="luz">🌅 Luz</option><option value="agua">💧 Agua</option><option value="tierra">🦶 Tierra</option><option value="noche">🌙 Noche</option><option value="respiro">🌬️ Respiro</option><option value="cuerpo">🧍 Cuerpo</option><option value="vinculo">❤️ Vínculo</option><option value="territorio">🌿 Territorio</option><option value="interior">🕯️ Interior</option></select></label>
         <label>Nivel <select id="espFilterNivel"><option value="todos">Todos</option><option value="Todos">Todos ★</option><option value="Principiante">Principiante</option><option value="Intermedio">Intermedio</option><option value="Mía">Mías</option></select></label>
       </div>
       <div class="timer-tabs su-ca7e11">
         <button type="button" id="espTabPracticas" class="btn btn-accent su-30e741">🕉️ Prácticas</button>
+        <button type="button" id="espTabProgramas" class="btn su-30e741">🌱 Programas 7 días</button>
         <button type="button" id="espTabKit" class="btn su-30e741">🎒 Kit &amp; Recursos</button>
         <button type="button" id="espTabRegistro" class="btn su-30e741">📓 Mi Registro</button>
       </div>
       <div id="espPracticasPanel">
+        <div class="menstrual-card su-68a1a9">
+          <h4 class="su-e39eba">🌱 ¿Cómo partir? (60 segundos)</h4>
+          <p class="muted su-6cb285"><b>Tengo 1 min:</b> ⏸️ Pausa STOP o ❤️ 1 acto de amor concreto. <b>Tengo 5 min:</b> 🌅 Sol de amanecer + 🌬️ 4 respiraciones, o 🧘 Silencio 5 min. <b>Tengo 15 min:</b> 🚶 Caminata 100 pasos o 🌳 Baño de bosque/humedal. <b>Regla de oro:</b> 1–2 prácticas × 7 días seguidos &gt; 27 prácticas × 1 día. Si fallas, retoma sin látigo.</p>
+          <p class="muted su-6cb285"><b>Niveles:</b> Todos ★ = cualquiera, en cualquier estado · Principiante = guiada paso a paso · Intermedio = pide constancia (ducha fría, carta, decreto). <b>¿Ansiedad, duelo o insomnio fuerte?</b> parte por STOP + 4/6 + gratitud, y pide apoyo (CESFAM, *4141 24 h) si se repite.</p>
+        </div>
         <div class="menstrual-card su-bb54bb">
           <h4 class="su-e39eba">⏱ Temporizador de práctica</h4>
           <div class="conv-row su-7fed8e">
@@ -28,13 +34,20 @@
                 <option value="ducha">🧊 Ducha fría</option>
                 <option value="grounding">🦶 Grounding</option>
                 <option value="respiracion">🌬️ Respiración al sol</option>
+                <option value="pausa_stop">⏸️ Pausa STOP 1 min</option>
+                <option value="resp_478">😮‍💨 Respiración 4-7-8</option>
+                <option value="saludo_sol">🧍 Saludo al sol suave</option>
+                <option value="caminata">🚶 Caminata consciente</option>
                 <option value="luna">🌙 Contemplación lunar</option>
+                <option value="estrellas">🌌 Cielo y estrellas</option>
                 <option value="silencio">🧘 Silencio / Meditación</option>
+                <option value="abrazo_20">❤️ Amor concreto</option>
+                <option value="servicio_10">🤲 Servicio 10 min</option>
               </select>
             </label>
             <label>Minutos
               <select id="espTimerMinutes">
-                <option value="1">1</option><option value="2" selected>2</option><option value="5">5</option><option value="10">10</option><option value="15">15</option><option value="20">20</option><option value="30">30</option>
+                <option value="1">1</option><option value="2" selected>2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="10">10</option><option value="12">12</option><option value="15">15</option><option value="20">20</option><option value="30">30</option>
               </select>
             </label>
           </div>
@@ -45,7 +58,7 @@
             <button type="button" id="espTimerReset" class="btn su-30e741">↺ Reset</button>
             <button type="button" id="espTimerDone" class="btn su-30e741" title="Marca la práctica del temporizador como hecha hoy">✅ Marcar hecha</button>
           </div>
-          <p class="muted su-e13d76">Deja el celu a un lado, solo escucha el aviso final. Al terminar suena 🔔.</p>
+          <p class="muted su-e13d76">Deja el celu a un lado, solo escucha el aviso final. Al terminar suena 🔔 y queda marcada ✅ (menos Luz roja, que se marca manual).</p>
         </div>
         <div id="espiritualCards"></div>
         <div class="menstrual-card su-d2c171">
@@ -55,7 +68,7 @@
             <label class="su-4b3de7">Nombre * <input type="text" id="espCustomName" placeholder="ej: Oración de la mañana" maxlength="40"></label>
             <label>Icono <input type="text" id="espCustomIcon" placeholder="🕯️" maxlength="4" class="su-745e46"></label>
             <label>Minutos <input type="number" id="espCustomMins" min="1" max="120" value="5" class="su-ec6626"></label>
-            <label>Categoría <select id="espCustomCat" class="su-607468"><option value="interior">🕯️ Interior</option><option value="luz">🌅 Luz</option><option value="agua">💧 Agua</option><option value="tierra">🦶 Tierra</option><option value="noche">🌙 Noche</option><option value="respiro">🌬️ Respiro</option></select></label>
+            <label>Categoría <select id="espCustomCat" class="su-607468"><option value="interior">🕯️ Interior</option><option value="luz">🌅 Luz</option><option value="agua">💧 Agua</option><option value="tierra">🦶 Tierra</option><option value="noche">🌙 Noche</option><option value="respiro">🌬️ Respiro</option><option value="cuerpo">🧍 Cuerpo</option><option value="vinculo">❤️ Vínculo</option><option value="territorio">🌿 Territorio</option></select></label>
           </div>
           <label>Descripción corta (opcional) <input type="text" id="espCustomDesc" placeholder="ej: 5 min de gratitud antes de salir" maxlength="80"></label>
           <div class="dlg-actions su-59a5a8">
@@ -64,24 +77,38 @@
         </div>
         <div class="menstrual-card su-d2c171">
           <h4>🔗 Conecta con el calendario</h4>
-          <p class="muted su-6cb285">🌞 <b>Ritmo Circadiano</b> explica tu cortisol/melatonina y genera tu plan diario · 📸 <b>Hora Dorada</b> da salida/puesta exacta · 🌬️ <b>Respiración</b> guía 4-7-8 y caja · 💭 <b>Sueños</b> para diario onírico · ✅ <b>Hábitos</b> para racha larga.</p>
+          <p class="muted su-6cb285">🌞 <b>Ritmo Circadiano</b> explica tu cortisol/melatonina · 📸 <b>Hora Dorada</b> da salida/puesta exacta · 🌬️ <b>Respiración</b> guía 4-7-8 y caja · ✨ <b>Espíritu</b> con 12 luces y test · 📓 <b>Gratitud</b> para racha larga · 🤝 <b>Minga</b> para servicio vecinal.</p>
           <div class="dlg-actions su-59a5a8">
             <button type="button" id="espGoCircadian" class="btn su-30e741">🌞 Ritmo Circadiano</button>
             <button type="button" id="espGoGolden" class="btn su-30e741">📸 Hora Dorada</button>
             <button type="button" id="espGoBreath" class="btn su-30e741">🌬️ Respiración</button>
+            <button type="button" id="espGoEspiritu" class="btn su-30e741">✨ Espíritu</button>
+            <button type="button" id="espGoGratitud" class="btn su-30e741">📓 Gratitud</button>
+            <button type="button" id="espGoMinga" class="btn su-30e741">🤝 Minga</button>
           </div>
         </div>
       </div>
+      <div id="espProgramasPanel" class="hidden">
+        <div class="menstrual-card su-68a1a9">
+          <h4 class="su-e39eba">🌱 4 programas de 7 días (elige 1)</h4>
+          <p class="muted su-6cb285">No hagas los 4 a la vez: <b>elige el que más te pide el cuerpo hoy</b> y haz 1 día × día. Cada día abre su práctica con ▶ y al terminar queda ✅. Si un día no sale, repítelo mañana.</p>
+          <p class="muted su-6cb285">🌅 <b>Amanecer vivo:</b> si despiertas apagada/o o con horario corrido · 🌙 <b>Noche calma:</b> si la mente no se apaga o duermes mal · ❤️ <b>Corazón en vínculo:</b> si la casa está fría o hay roces · 🌿 <b>Tierra y mar:</b> si pasas todo el día entre cemento y pantallas.</p>
+        </div>
+        <div id="espProgramasBox"></div>
+        <div class="si-card"><h4>📏 ¿Cómo se ve una semana bien hecha?</h4><p><b>Mínimo que transforma:</b> 1 luz (amanecer o atardecer) + 1 respiro (STOP o 4/6) + 1 interior (gratitud o silencio) + 1 vínculo o territorio a la semana. <b>Avanzado:</b> suma ducha fría progresiva + ayuno digital 2 h + servicio 10 min. Marca todo en 📓 Mi Registro y mira tu 🔥.</p></div>
+      </div>
       <div id="espKitPanel" class="hidden">
-        <div class="si-card"><h4>🎒 Kit mínimo (una sola compra, dura años)</h4><p>Botella de <b>vidrio transparente o azul</b> 1L con tapa · vaso/taza · toalla + chalas firmes · manta o cojín para suelo · <b>ampolleta roja cálida</b> E27 5–7W + lámpara velador · antifaz o cortina oscura · cuaderno “sol/luna” + lápiz · termo con agua · bloqueador solo si estarás &gt;20 min al sol fuerte.</p></div>
-        <div class="si-card"><h4>🔴 Cómo dejar luz roja en la noche (paso a paso)</h4><p>1) Cambia el velador por ampolleta <b>roja/ámbar 590–660nm, 5–7W</b> (ferretería o tienda led, pide “luz cálida roja E27”). 2) Desde las <b>20:30–21:00</b> apaga blancos/techo y deja solo roja. 3) Activa <b>modo noche + brillo mínimo</b> en celu/PC. 4) Si ves tele, baja brillo y aléjate. 5) Al dormir: <b>oscuridad total</b> (apaga roja también). Alternativa $0: vela + celular guardado.</p></div>
+        <div class="si-card"><h4>🎒 Kit mínimo (una sola compra, dura años)</h4><p>Botella de <b>vidrio transparente o azul</b> 1L con tapa · vaso/taza · toalla + chalas firmes · manta o cojín para suelo · <b>ampolleta roja cálida</b> E27 5–7W + lámpara velador · antifaz o cortina oscura · cuaderno “sol/luna” + lápiz · termo con agua · <b>bolsa + guantes</b> para limpieza · bloqueador solo si estarás &gt;20 min al sol fuerte.</p></div>
+        <div class="si-card"><h4>🔴 Cómo dejar luz roja en la noche (paso a paso)</h4><p>1) Cambia el velador por ampolleta <b>roja/ámbar 590–660nm, 5–7W</b> (ferretería o tienda led, pide “luz cálida roja E27”). 2) Desde las <b>20:30–21:00</b> apaga blancos/techo y deja solo roja. 3) Activa <b>modo noche + brillo mínimo</b> en celu/PC. 4) Si ves tele, baja brillo y aléjate. 5) Al dormir: <b>oscuridad total</b> (apaga roja también). Alternativa $0: vela + celular guardado. Súmale <b>📵 ayuno digital 2 h</b>: celu al cajón, reemplaza con ducha tibia + lectura + conversación.</p></div>
         <div class="si-card"><h4>💧 Cómo cargar agua con sol (2 métodos)</h4><p><b>Rápido (30–60 min):</b> llena botella vidrio ¾, tapa sin apretar, ponla al sol directo de mañana, trae adentro. <b>Profundo (3–4 h):</b> misma botella al sol de 10:00–14:00, luego guarda a la sombra y bebe en el día. Lava la botella a diario, no uses plástico al sol, no guardes más de 24 h. Si hay smog/polvo, enjuaga la botella por fuera.</p></div>
-        <div class="si-card"><h4>🦶 Dónde hacer grounding en Penco</h4><p>Playa Negra / Lirquén (arena húmeda de orilla), pasto de plaza o patio sin barnizar, tierra de huerta, roca costera seca con pies secos (solo bajamar y sin oleaje). 10–20 min descalzo, respira lento. Lleva bolsa para basura y vuelve con todo.</p></div>
+        <div class="si-card"><h4>🦶 Dónde hacer grounding en Penco</h4><p>Playa Negra / Lirquén (arena húmeda de orilla), pasto de plaza o patio sin barnizar, tierra de huerta, roca costera seca con pies secos (solo bajamar y sin oleaje). 10–20 min descalzo, respira lento. Lleva bolsa para basura y vuelve con todo. Alternativa con zapatillas: 🚶 <b>caminata 100 pasos</b> sintiendo talón-planta-dedos.</p></div>
         <div class="si-card"><h4>🧊 Ducha fría sin sufrir (protocolo)</h4><p>Termina tu ducha tibia normal con <b>15–30 seg fría</b> (piernas → brazos → pecho, cara al final). Respira por nariz, no aguantes aire. Sube 15 seg por semana hasta 1–3 min. Toalla a mano, pieza temperada. <b>No hagas</b> si tienes hipertensión descompensada, corazón, embarazo, fiebre o te mareas — usa tibia-fresca.</p></div>
+        <div class="si-card"><h4>⏸️ STOP + 😮‍💨 4-7-8 (las 2 de bolsillo)</h4><p><b>STOP 1 min (de día):</b> Stop (suelta manos) → Toma aire 4/6 x3 → Observa (“¿qué siento? ¿qué necesito?”) → Prosigue con 1 paso chico. <b>4-7-8 (de noche, en cama):</b> inhala 4 → aguanta 7 suave → exhala 8, x4 ciclos. Si retener molesta, vuelve a 4/6 simple.</p></div>
+        <div class="si-card"><h4>🌿 Visita con respeto (regla de 3)</h4><p>1) <b>Saluda y pide permiso</b> (“mari mari, permiso”) al entrar a playa, humedal, bosque o cerro. 2) <b>Deja mejor:</b> recoge al menos 1 basura ajena (con guantes). 3) <b>Ofrenda solo biodegradable</b> (flor, semilla, agua limpia): nunca vidrio, vela, plástico ni comida con sal. Con viento, marea alta o fuego: <b>solo mirador</b>.</p></div>
         <div class="si-card"><h4>⚠️ Seguridad sol (lee esto)</h4><p><b>Nunca mires el sol fijo ni con lentes/bino­culares.</b> Amanecer/atardecer = luz suave mirando al horizonte con parpadeo normal, 2–10 min. Mediodía (11:00–16:30 en verano) = piel protegida, sombra y gorro. Piel muy blanca, lunares raros, remedios fotosensibles o post-operatorio: solo luz indirecta + consulta. Si arde, pica o mareas → sombra + agua.</p></div>
         <div class="menstrual-card su-d2c171">
           <h4>✅ Checklist para imprimir / copiar</h4>
-          <p class="muted su-11a508">Copia y pega en tu cuaderno o comparte por WhatsApp.</p>
+          <p class="muted su-11a508">Copia y pega en tu cuaderno o comparte por WhatsApp (incluye rutina mínima + programas 7 días).</p>
           <div class="dlg-actions su-59a5a8">
             <button type="button" id="espCopyKit" class="btn su-30e741">📋 Copiar checklist</button>
             <button type="button" id="espShareKit" class="btn su-30e741">📤 Compartir</button>
