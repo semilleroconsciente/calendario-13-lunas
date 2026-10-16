@@ -1652,3 +1652,41 @@ body[data-force-mobile="1"] #btnVistaCelular { width: 100%; margin-bottom: 8px; 
   #todayView .today-add input[type="number"],
   #todayView .today-add select { flex: 1 1 100%; }
 }
+/* === FIX móvil: Hoy sin corte lateral (pantallas angostas y letra agrandada) ===
+   Todo lo de Hoy queda limitado al ancho real del viewport con border-box y
+   el texto envuelve siempre (incluso con zoom de tamaño de letra). Solo móvil:
+   el PC no se toca. */
+@media (max-width: 920px) {
+  html, body { width: 100%; max-width: 100%; overflow-x: hidden; }
+  #main { width: 100%; max-width: 100%; box-sizing: border-box; }
+  #todayView { width: 100%; max-width: 100%; }
+  #todayView .today-hero, #todayView .today-card { width: 100%; max-width: 100%; box-sizing: border-box; }
+  #todayView .today-hero .t-now { font-size: 11px; overflow-wrap: anywhere; word-break: break-word; }
+  #todayView .today-hero .t-now b { white-space: nowrap; }
+  #todayView .today-hero h2 { font-size: 19px; line-height: 1.25; overflow-wrap: break-word; word-break: break-word; }
+  #todayView .today-hero .t-sub { overflow-wrap: break-word; word-break: break-word; }
+  #todayView .today-quote { overflow-wrap: anywhere; word-break: break-word; }
+  #todayView .today-quote span { overflow-wrap: anywhere; word-break: break-word; }
+  #todayView .today-sun { gap: 6px; }
+  #todayView .today-sun .chip { flex: 1 1 auto; min-width: 0; font-size: 12px; }
+  #todayView input[type="text"], #todayView input[type="number"], #todayView select, #todayView textarea { width: 100%; max-width: 100%; box-sizing: border-box; }
+  #todayView .today-add > * { min-width: 0; }
+  #todayView .today-add input[type="time"] { width: auto; }
+  #mobileDock { max-width: 100vw; box-sizing: border-box; }
+  #mobileDock .dock-btn { min-width: 0; font-size: 18px; }
+  #mobileDock .dock-btn small { font-size: 9px; }
+}
+@media (max-width: 380px) {
+  #main { padding-left: 8px; padding-right: 8px; }
+  #todayView .today-hero, #todayView .today-card { padding: 12px 10px; }
+  #todayView .today-sun .chip { flex: 1 1 100%; }
+}
+/* Espejo para "Vista celular" forzada en PC: mismas guardas anti-corte. */
+body[data-force-mobile="1"] #todayView .today-hero, body[data-force-mobile="1"] #todayView .today-card { width: 100%; max-width: 100%; box-sizing: border-box; }
+body[data-force-mobile="1"] #todayView .today-hero .t-now { font-size: 11px; overflow-wrap: anywhere; word-break: break-word; }
+body[data-force-mobile="1"] #todayView .today-hero .t-now b { white-space: nowrap; }
+body[data-force-mobile="1"] #todayView .today-hero h2 { font-size: 19px; overflow-wrap: break-word; word-break: break-word; }
+body[data-force-mobile="1"] #todayView .today-quote { overflow-wrap: anywhere; word-break: break-word; }
+body[data-force-mobile="1"] #todayView .today-sun .chip { flex: 1 1 auto; min-width: 0; }
+body[data-force-mobile="1"] #todayView input[type="text"], body[data-force-mobile="1"] #todayView input[type="number"], body[data-force-mobile="1"] #todayView select, body[data-force-mobile="1"] #todayView textarea { width: 100%; max-width: 100%; box-sizing: border-box; }
+body[data-force-mobile="1"] #todayView .today-add input[type="time"] { width: auto; }
