@@ -4215,7 +4215,7 @@ setTimeout(setupHelpDialog, 850);
 // Incluye botones base + los inyectados por nuevos-modulos.js (Agua, Bodega, Nudos,
 // Taller, Trueque, Minga, Rutinas, Fertilidad, Derechos). NUEVOS_BTNS los re-agrega
 // con push si faltan (no-op si ya están), así los perfiles siempre los conocen.
-const ALL_BTNS = ["btnTides","btnFishing","btnBirds","btnIntermareal","btnBosque","btnWeather","btnSiembra","btnAstro","btnComuna","btnIglesias","btnEkadashi","btnMenstrual","btnMedic","btnNutri","btnHabits","btnRutinas","btnMeal","btnShopping","btnFinance","btnHomeTasks","btnDiscipline","btnDreams","btnBreath","btnGratitud","btnSchedule","btnGym","btnCircadian","btnGolden","btnEspiritual","btnEspiritu","btnCompost","btnLawen","btnFirstAid","btnAnimalCare","btnViolence","btnEvac","btnConvert","btnEnergy","btnLena","btnTimer","btnRemind","btnDonate","btnHelp","btnStudy","btnTales","btnVozAbuelos","btnMemory","btnIdiomas","btnMapu","btnEnglish","btnPortugues","btnChino","btnGuitar","btnUkelele","btnFlauta","btnTeclado","btnCajon","btnCanto","btnMusicaPractica","btnPsico","btnMetodos","btnAgua","btnBodega","btnNudos","btnTaller","btnTrueque","btnMinga","btnFerti","btnDerechos","btnCrianza","btnArbolFull","btnRecap","btnDueloFull","btnEneagrama","btnCuartoCamino","btnAjedrez","btnDama","btnMatematicas","btnSudoku","btnCrucigrama","btnSopa","btnSolitario","btnFlora","btnPsicologia","btnAdolescencia","btnJuventud","btnAdultez","btnClimaterio","btnVejez","btnElectrocultura","btnMecanica","btnDespensa","btnCloset","btnHerramientas","btnAdicciones","btnKinMaya","btnTarot","btnNumerologia","btnOraculo","btnAnfibios","btnApoyo","btnMuni","btnBomberos","btnConstelaciones","btnIkigai","btnVIA","btnSilva","btnGrabovoi","btnEstoicismo","btnHooponopono","btnTao","btnTolteca","btnVigyan","btnAnastasia","btnAmi","btnNatacion","btnHuerta","btnHidroponia","btnKayak","btnBallenas","btnMeli","btnHongos","btnSenderos","btnFuego","btnDomotica","btnNeurodiversidad","btnPelo","btnRituales","btnFenologia","btnCorral","btnMovilidad","btnEscolar","btnActores","btnNegocios","btnRedGuia","btnRedMeshtastic","btnRedDiagnostico","btnRedRadio","btnRedNodos","btnConvivGuia","btnConvivFichas","btnConvivHablar","btnConvivBitacora","btnConvivLuna","btnConvivRecursos","btnCiberGuia","btnCiberClaves","btnCiberEstafas","btnCiberPriv","btnCiberChequeo","btnCiberAyuda","btnOpenGuia","btnOpenLicencias","btnOpenProgramas","btnOpenProyecto","btnOpenAportar","btnOpenQuiz"];
+const ALL_BTNS = ["btnTides","btnFishing","btnBirds","btnIntermareal","btnBosque","btnWeather","btnSiembra","btnAstro","btnComuna","btnIglesias","btnEkadashi","btnMenstrual","btnMedic","btnNutri","btnHabits","btnRutinas","btnMeal","btnShopping","btnFinance","btnHomeTasks","btnDiscipline","btnDreams","btnBreath","btnGratitud","btnSchedule","btnGym","btnCircadian","btnGolden","btnEspiritual","btnEspiritu","btnCompost","btnLawen","btnFirstAid","btnAnimalCare","btnViolence","btnEvac","btnConvert","btnEnergy","btnLena","btnTimer","btnRemind","btnDonate","btnHelp","btnStudy","btnTales","btnVozAbuelos","btnMemory","btnIdiomas","btnMapu","btnEnglish","btnPortugues","btnChino","btnAprenderInstrumento","btnGuitar","btnUkelele","btnFlauta","btnTeclado","btnCajon","btnCanto","btnMusicaPractica","btnPsico","btnMetodos","btnAgua","btnBodega","btnNudos","btnTaller","btnTrueque","btnMinga","btnFerti","btnDerechos","btnCrianza","btnArbolFull","btnRecap","btnDueloFull","btnEneagrama","btnCuartoCamino","btnAjedrez","btnDama","btnMatematicas","btnSudoku","btnCrucigrama","btnSopa","btnSolitario","btnFlora","btnPsicologia","btnAdolescencia","btnJuventud","btnAdultez","btnClimaterio","btnVejez","btnElectrocultura","btnMecanica","btnDespensa","btnCloset","btnHerramientas","btnAdicciones","btnKinMaya","btnTarot","btnNumerologia","btnOraculo","btnAnfibios","btnApoyo","btnMuni","btnBomberos","btnConstelaciones","btnIkigai","btnVIA","btnSilva","btnGrabovoi","btnEstoicismo","btnHooponopono","btnTao","btnTolteca","btnVigyan","btnAnastasia","btnAmi","btnNatacion","btnHuerta","btnHidroponia","btnKayak","btnBallenas","btnMeli","btnHongos","btnSenderos","btnFuego","btnDomotica","btnNeurodiversidad","btnPelo","btnRituales","btnFenologia","btnCorral","btnMovilidad","btnEscolar","btnActores","btnNegocios","btnRedGuia","btnRedMeshtastic","btnRedDiagnostico","btnRedRadio","btnRedNodos","btnConvivGuia","btnConvivFichas","btnConvivHablar","btnConvivBitacora","btnConvivLuna","btnConvivRecursos","btnCiberGuia","btnCiberClaves","btnCiberEstafas","btnCiberPriv","btnCiberChequeo","btnCiberAyuda","btnOpenGuia","btnOpenLicencias","btnOpenProgramas","btnOpenProyecto","btnOpenAportar","btnOpenQuiz"];
 // NOTA: lo técnico (Respaldo, Restaurar, Traspaso QR, PDF luna/ciclo, Acceso directo)
 // vive en ⚙️ Ajustes con botones propios (cfg*Btn), siempre visibles: no forma parte
 // de ALL_BTNS ni de la visibilidad por secciones. Se mantienen las claves antiguas
@@ -4240,7 +4240,7 @@ const BTN_HOME = {
   btnMedic:['cuerpo','cuidado'],btnNutri:['cuerpo','cuidado'],btnGym:['cuerpo','cuidado'],btnNatacion:['cuerpo','cuidado'],btnPelo:['cuerpo','cuidado'],btnRituales:['cuerpo','cuidado'],
   btnStudy:['aprender','estudio'],btnMemory:['aprender','estudio'],btnMatematicas:['aprender','estudio'],
   btnIdiomas:['aprender','idiomas'],btnMapu:['aprender','idiomas'],btnEnglish:['aprender','idiomas'],btnPortugues:['aprender','idiomas'],btnChino:['aprender','idiomas'],
-  btnGuitar:['aprender','musica'],btnUkelele:['aprender','musica'],btnFlauta:['aprender','musica'],btnTeclado:['aprender','musica'],btnCajon:['aprender','musica'],btnCanto:['aprender','musica'],btnMusicaPractica:['aprender','musica'],
+  btnAprenderInstrumento:['aprender','musica'],btnGuitar:['aprender','musica'],btnUkelele:['aprender','musica'],btnFlauta:['aprender','musica'],btnTeclado:['aprender','musica'],btnCajon:['aprender','musica'],btnCanto:['aprender','musica'],btnMusicaPractica:['aprender','musica'],
   btnAjedrez:['aprender','juegos'],btnDama:['aprender','juegos'],btnSudoku:['aprender','juegos'],btnCrucigrama:['aprender','juegos'],btnSopa:['aprender','juegos'],btnSolitario:['aprender','juegos'],
   btnTales:['aprender','infancias'],btnCrianza:['aprender','infancias'],
   btnPsico:['linaje','conocerse'],btnPsicologia:['linaje','conocerse'],btnEneagrama:['linaje','conocerse'],btnVIA:['linaje','conocerse'],btnIkigai:['linaje','conocerse'],btnNeurodiversidad:['linaje','conocerse'],btnEspiritual:['linaje','practicas'],btnEspiritu:['linaje','practicas'],btnTao:['linaje','practicas'],btnRecap:['linaje','practicas'],btnTolteca:['linaje','practicas'],btnEstoicismo:['linaje','practicas'],btnCuartoCamino:['linaje','practicas'],btnHooponopono:['linaje','practicas'],btnMetodos:['linaje','tradiciones'],btnSilva:['linaje','tradiciones'],btnGrabovoi:['linaje','tradiciones'],btnVigyan:['linaje','tradiciones'],btnAnastasia:['linaje','tradiciones'],btnAmi:['linaje','tradiciones'],btnKinMaya:['linaje','oraculos'],btnTarot:['linaje','oraculos'],btnNumerologia:['linaje','oraculos'],btnOraculo:['linaje','oraculos'],btnDueloFull:['linaje','sosten'],btnAdicciones:['linaje','sosten'],
@@ -4269,7 +4269,7 @@ const BTN_ORDER = {
   'cuerpo|cuidado':['btnMedic','btnNutri','btnGym','btnNatacion','btnPelo','btnRituales'],
   'aprender|estudio':['btnStudy','btnMemory','btnMatematicas'],
   'aprender|idiomas':['btnIdiomas','btnMapu','btnEnglish','btnPortugues','btnChino'],
-  'aprender|musica':['btnGuitar','btnUkelele','btnFlauta','btnTeclado','btnCajon','btnCanto','btnMusicaPractica'],
+  'aprender|musica':['btnAprenderInstrumento','btnGuitar','btnUkelele','btnFlauta','btnTeclado','btnCajon','btnCanto','btnMusicaPractica'],
   'aprender|juegos':['btnAjedrez','btnDama','btnSudoku','btnCrucigrama','btnSopa','btnSolitario'],
   'aprender|infancias':['btnTales','btnCrianza'],
   'linaje|conocerse':['btnPsico','btnPsicologia','btnEneagrama','btnVIA','btnIkigai','btnNeurodiversidad'],
@@ -4379,12 +4379,12 @@ const PRESETS = {
   // Esencial: día completo + cielo completo + mar/tierra básicos + casa básica + infancias + emergencia completa.
   esencial: {btnHabits:true,btnRutinas:true,btnDiscipline:true,btnSchedule:true,btnTimer:true,btnRemind:true,btnGratitud:true,btnDreams:true,btnBreath:true,btnWeather:true,btnAstro:true,btnGolden:true,btnCircadian:true,btnEkadashi:true,btnTides:true,btnSiembra:true,btnMeal:true,btnShopping:true,btnFinance:true,btnHomeTasks:true,btnTales:true,btnCrianza:true,btnFirstAid:true,btnViolence:true,btnEvac:true,btnApoyo:true,btnHelp:true,btnDonate:true},
   // Adolescente: día completo + cuerpo en cambio + aprender sin infancias (excepción: solo Cuentos, sin Crianza) + conocerse/oráculos/sostén completos + Recap + familia completa + casa básica + cielo parcial + emergencia completa.
-  adolescente: {btnHabits:true,btnRutinas:true,btnDiscipline:true,btnSchedule:true,btnTimer:true,btnRemind:true,btnGratitud:true,btnDreams:true,btnBreath:true,btnMenstrual:true,btnFerti:true,btnAdolescencia:true,btnJuventud:true,btnNutri:true,btnGym:true,btnNatacion:true,btnPelo:true,btnStudy:true,btnMemory:true,btnMatematicas:true,btnIdiomas:true,btnMapu:true,btnEnglish:true,btnPortugues:true,btnChino:true,btnGuitar:true,btnUkelele:true,btnFlauta:true,btnTeclado:true,btnCajon:true,btnCanto:true,btnMusicaPractica:true,btnAjedrez:true,btnDama:true,btnSudoku:true,btnCrucigrama:true,btnSopa:true,btnSolitario:true,btnTales:true,btnPsico:true,btnPsicologia:true,btnEneagrama:true,btnVIA:true,btnIkigai:true,btnNeurodiversidad:true,btnKinMaya:true,btnTarot:true,btnNumerologia:true,btnOraculo:true,btnDueloFull:true,btnAdicciones:true,btnRecap:true,btnArbolFull:true,btnVozAbuelos:true,btnConstelaciones:true,btnMeal:true,btnShopping:true,btnFinance:true,btnHomeTasks:true,btnConvert:true,btnWeather:true,btnAstro:true,btnCircadian:true,btnFirstAid:true,btnViolence:true,btnEvac:true,btnApoyo:true,btnHelp:true,btnDonate:true},
+  adolescente: {btnHabits:true,btnRutinas:true,btnDiscipline:true,btnSchedule:true,btnTimer:true,btnRemind:true,btnGratitud:true,btnDreams:true,btnBreath:true,btnMenstrual:true,btnFerti:true,btnAdolescencia:true,btnJuventud:true,btnNutri:true,btnGym:true,btnNatacion:true,btnPelo:true,btnStudy:true,btnMemory:true,btnMatematicas:true,btnIdiomas:true,btnMapu:true,btnEnglish:true,btnPortugues:true,btnChino:true,btnAprenderInstrumento:true,btnGuitar:true,btnUkelele:true,btnFlauta:true,btnTeclado:true,btnCajon:true,btnCanto:true,btnMusicaPractica:true,btnAjedrez:true,btnDama:true,btnSudoku:true,btnCrucigrama:true,btnSopa:true,btnSolitario:true,btnTales:true,btnPsico:true,btnPsicologia:true,btnEneagrama:true,btnVIA:true,btnIkigai:true,btnNeurodiversidad:true,btnKinMaya:true,btnTarot:true,btnNumerologia:true,btnOraculo:true,btnDueloFull:true,btnAdicciones:true,btnRecap:true,btnArbolFull:true,btnVozAbuelos:true,btnConstelaciones:true,btnMeal:true,btnShopping:true,btnFinance:true,btnHomeTasks:true,btnConvert:true,btnWeather:true,btnAstro:true,btnCircadian:true,btnFirstAid:true,btnViolence:true,btnEvac:true,btnApoyo:true,btnHelp:true,btnDonate:true},
   adulto: Object.fromEntries(ALL_BTNS.map(k=>[k,true])),
   // Mayor: día completo + cuerpo (climaterio/adultez/vejez + cuidado completo) + estudio+juegos+infancias + sostén+oráculos completos + Espiritual/Recap + cielo completo + tierra de autoconsumo + penco servicios + familia completa + casa apoyada + red vecinal + emergencia completa.
   mayor: {btnHabits:true,btnRutinas:true,btnDiscipline:true,btnSchedule:true,btnTimer:true,btnRemind:true,btnGratitud:true,btnDreams:true,btnBreath:true,btnClimaterio:true,btnAdultez:true,btnVejez:true,btnMedic:true,btnNutri:true,btnGym:true,btnNatacion:true,btnPelo:true,btnRituales:true,btnStudy:true,btnMemory:true,btnMatematicas:true,btnAjedrez:true,btnDama:true,btnSudoku:true,btnCrucigrama:true,btnSopa:true,btnSolitario:true,btnTales:true,btnCrianza:true,btnEspiritual:true,btnEspiritu:true,btnRecap:true,btnKinMaya:true,btnTarot:true,btnNumerologia:true,btnOraculo:true,btnDueloFull:true,btnAdicciones:true,btnWeather:true,btnAstro:true,btnGolden:true,btnCircadian:true,btnEkadashi:true,btnTides:true,btnSiembra:true,btnHuerta:true,btnBosque:true,btnCompost:true,btnLawen:true,btnComuna:true,btnIglesias:true,btnMuni:true,btnBomberos:true,btnArbolFull:true,btnVozAbuelos:true,btnConstelaciones:true,btnMeal:true,btnShopping:true,btnHomeTasks:true,btnCorral:true,btnMovilidad:true,btnEnergy:true,btnLena:true,btnConvert:true,btnTrueque:true,btnMinga:true,btnAnimalCare:true,btnFirstAid:true,btnViolence:true,btnEvac:true,btnApoyo:true,btnHelp:true,btnDonate:true},
   // Estudiante: día completo + aprender completo + Eneagrama/VIA/Ikigai+Recap+Métodos + cuerpo joven + cielo parcial + casa básica + Convert + VozAbuelos + ciber básico + emergencia completa.
-  estudiante: {btnHabits:true,btnRutinas:true,btnDiscipline:true,btnSchedule:true,btnTimer:true,btnRemind:true,btnGratitud:true,btnDreams:true,btnBreath:true,btnStudy:true,btnMemory:true,btnMatematicas:true,btnIdiomas:true,btnMapu:true,btnEnglish:true,btnPortugues:true,btnChino:true,btnGuitar:true,btnUkelele:true,btnFlauta:true,btnTeclado:true,btnCajon:true,btnCanto:true,btnMusicaPractica:true,btnAjedrez:true,btnDama:true,btnSudoku:true,btnCrucigrama:true,btnSopa:true,btnSolitario:true,btnEneagrama:true,btnVIA:true,btnIkigai:true,btnRecap:true,btnMetodos:true,btnAdolescencia:true,btnJuventud:true,btnNutri:true,btnGym:true,btnNatacion:true,btnWeather:true,btnAstro:true,btnCircadian:true,btnMeal:true,btnShopping:true,btnFinance:true,btnHomeTasks:true,btnConvert:true,btnVozAbuelos:true,btnCiberGuia:true,btnCiberClaves:true,btnCiberEstafas:true,btnCiberPriv:true,btnFirstAid:true,btnViolence:true,btnEvac:true,btnApoyo:true,btnHelp:true,btnDonate:true},
+  estudiante: {btnHabits:true,btnRutinas:true,btnDiscipline:true,btnSchedule:true,btnTimer:true,btnRemind:true,btnGratitud:true,btnDreams:true,btnBreath:true,btnStudy:true,btnMemory:true,btnMatematicas:true,btnIdiomas:true,btnMapu:true,btnEnglish:true,btnPortugues:true,btnChino:true,btnAprenderInstrumento:true,btnGuitar:true,btnUkelele:true,btnFlauta:true,btnTeclado:true,btnCajon:true,btnCanto:true,btnMusicaPractica:true,btnAjedrez:true,btnDama:true,btnSudoku:true,btnCrucigrama:true,btnSopa:true,btnSolitario:true,btnEneagrama:true,btnVIA:true,btnIkigai:true,btnRecap:true,btnMetodos:true,btnAdolescencia:true,btnJuventud:true,btnNutri:true,btnGym:true,btnNatacion:true,btnWeather:true,btnAstro:true,btnCircadian:true,btnMeal:true,btnShopping:true,btnFinance:true,btnHomeTasks:true,btnConvert:true,btnVozAbuelos:true,btnCiberGuia:true,btnCiberClaves:true,btnCiberEstafas:true,btnCiberPriv:true,btnFirstAid:true,btnViolence:true,btnEvac:true,btnApoyo:true,btnHelp:true,btnDonate:true},
   // Agricultor: tierra completa + cielo completo + mar de riego/marea + penco + casa productiva + energía sin domótica + VozAbuelos + red completa + día (organizar + gratitud) + emergencia de campo.
   agricultor: {btnHuerta:true,btnSiembra:true,btnBosque:true,btnCompost:true,btnAgua:true,btnHidroponia:true,btnElectrocultura:true,btnFlora:true,btnLawen:true,btnBirds:true,btnAnfibios:true,btnMeli:true,btnHongos:true,btnSenderos:true,btnFuego:true,btnFenologia:true,btnWeather:true,btnAstro:true,btnGolden:true,btnCircadian:true,btnEkadashi:true,btnTides:true,btnIntermareal:true,btnComuna:true,btnMuni:true,btnMeal:true,btnShopping:true,btnFinance:true,btnHomeTasks:true,btnBodega:true,btnDespensa:true,btnCorral:true,btnEnergy:true,btnLena:true,btnTaller:true,btnHerramientas:true,btnMecanica:true,btnConvert:true,btnVozAbuelos:true,btnTrueque:true,btnMinga:true,btnDerechos:true,btnAnimalCare:true,btnHabits:true,btnRutinas:true,btnDiscipline:true,btnSchedule:true,btnTimer:true,btnRemind:true,btnGratitud:true,btnFirstAid:true,btnEvac:true,btnApoyo:true,btnHelp:true,btnDonate:true},
   // Pescador: mar completo + cielo completo + ribera + penco costero + casa base + taller/mecánica + Trueque/Minga + día (organizar + gratitud/respiración) + cuerpo activo + emergencia completa.
@@ -4394,7 +4394,7 @@ const PRESETS = {
   // Deportista: día completo + cuidado completo + Juventud/Adultez + Weather/Tides/Circadian + casa de rendimiento + Energy/Convert + VIA/Ikigai/Espiritual + emergencia completa.
   deportista: {btnHabits:true,btnRutinas:true,btnDiscipline:true,btnSchedule:true,btnTimer:true,btnRemind:true,btnGratitud:true,btnDreams:true,btnBreath:true,btnJuventud:true,btnAdultez:true,btnMedic:true,btnNutri:true,btnGym:true,btnNatacion:true,btnPelo:true,btnRituales:true,btnWeather:true,btnTides:true,btnCircadian:true,btnMeal:true,btnShopping:true,btnFinance:true,btnEnergy:true,btnConvert:true,btnVIA:true,btnIkigai:true,btnEspiritual:true,btnEspiritu:true,btnFirstAid:true,btnViolence:true,btnEvac:true,btnApoyo:true,btnHelp:true,btnDonate:true},
   // Docente: aprender completo + familia completa + casa con Escolar/Movilidad + conocerse parcial + Recap/Métodos/Duelo + día completo + tierra educativa + Adolescencia/Juventud + Trueque/Minga/Derechos + ciber básico + emergencia completa.
-  docente: {btnStudy:true,btnMemory:true,btnMatematicas:true,btnIdiomas:true,btnMapu:true,btnEnglish:true,btnPortugues:true,btnChino:true,btnGuitar:true,btnUkelele:true,btnFlauta:true,btnTeclado:true,btnCajon:true,btnCanto:true,btnMusicaPractica:true,btnAjedrez:true,btnDama:true,btnSudoku:true,btnCrucigrama:true,btnSopa:true,btnSolitario:true,btnTales:true,btnCrianza:true,btnArbolFull:true,btnVozAbuelos:true,btnConstelaciones:true,btnMeal:true,btnShopping:true,btnFinance:true,btnHomeTasks:true,btnEscolar:true,btnMovilidad:true,btnPsico:true,btnPsicologia:true,btnEneagrama:true,btnVIA:true,btnIkigai:true,btnRecap:true,btnMetodos:true,btnDueloFull:true,btnHabits:true,btnRutinas:true,btnDiscipline:true,btnSchedule:true,btnTimer:true,btnRemind:true,btnGratitud:true,btnDreams:true,btnBreath:true,btnWeather:true,btnCircadian:true,btnSiembra:true,btnHuerta:true,btnBosque:true,btnCompost:true,btnBirds:true,btnFenologia:true,btnAdolescencia:true,btnJuventud:true,btnTrueque:true,btnMinga:true,btnDerechos:true,btnCiberGuia:true,btnCiberClaves:true,btnCiberEstafas:true,btnCiberPriv:true,btnFirstAid:true,btnViolence:true,btnEvac:true,btnApoyo:true,btnConvert:true,btnHelp:true,btnDonate:true}
+  docente: {btnStudy:true,btnMemory:true,btnMatematicas:true,btnIdiomas:true,btnMapu:true,btnEnglish:true,btnPortugues:true,btnChino:true,btnAprenderInstrumento:true,btnGuitar:true,btnUkelele:true,btnFlauta:true,btnTeclado:true,btnCajon:true,btnCanto:true,btnMusicaPractica:true,btnAjedrez:true,btnDama:true,btnSudoku:true,btnCrucigrama:true,btnSopa:true,btnSolitario:true,btnTales:true,btnCrianza:true,btnArbolFull:true,btnVozAbuelos:true,btnConstelaciones:true,btnMeal:true,btnShopping:true,btnFinance:true,btnHomeTasks:true,btnEscolar:true,btnMovilidad:true,btnPsico:true,btnPsicologia:true,btnEneagrama:true,btnVIA:true,btnIkigai:true,btnRecap:true,btnMetodos:true,btnDueloFull:true,btnHabits:true,btnRutinas:true,btnDiscipline:true,btnSchedule:true,btnTimer:true,btnRemind:true,btnGratitud:true,btnDreams:true,btnBreath:true,btnWeather:true,btnCircadian:true,btnSiembra:true,btnHuerta:true,btnBosque:true,btnCompost:true,btnBirds:true,btnFenologia:true,btnAdolescencia:true,btnJuventud:true,btnTrueque:true,btnMinga:true,btnDerechos:true,btnCiberGuia:true,btnCiberClaves:true,btnCiberEstafas:true,btnCiberPriv:true,btnFirstAid:true,btnViolence:true,btnEvac:true,btnApoyo:true,btnConvert:true,btnHelp:true,btnDonate:true}
 };
 function getVisibleConfig(){
   const c = (DATA.config && DATA.config.visible) || {};
@@ -8183,265 +8183,6 @@ function setupEnglishDialog(){
   });
 }
 setTimeout(setupEnglishDialog, 888);
-
-// === GUITARRA — Principiante / Intermedio / Avanzado (offline, local por usuario) ===
-function getGuitarData(){
-  const u = userData();
-  if(!u.guitar) u.guitar = { level:'principiante', log:[], tuneRef:440 };
-  if(!Array.isArray(u.guitar.log)) u.guitar.log = [];
-  if(!u.guitar.level) u.guitar.level = 'principiante';
-  if(u.guitar.tuneRef !== 432 && u.guitar.tuneRef !== 440) u.guitar.tuneRef = 440;
-  return u.guitar;
-}
-let guitarEditingId = null;
-let guitarAudioCtx = null, guitarTuneNodes = null, guitarTuneTimer = null, guitarSeqTimers = [];
-let metroTimer = null, metroOn = false, metroBeat = 0;
-function guitarStats(){
-  const log = getGuitarData().log;
-  const totalMin = log.reduce((a,b)=> a + (+b.min||0), 0);
-  const days = [...new Set(log.map(x=>x.date))].sort();
-  let streak = 0;
-  const today = new Date(); today.setHours(0,0,0,0);
-  let cursor = new Date(today);
-  const daySet = new Set(days);
-  const fmt = d => d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
-  if(!daySet.has(fmt(cursor))){ cursor.setDate(cursor.getDate()-1); }
-  while(daySet.has(fmt(cursor))){ streak++; cursor.setDate(cursor.getDate()-1); }
-  return { total: log.length, totalMin, streak, days: days.length };
-}
-function renderGuitarStreak(){
-  const chip = $('guitarStreakChip'); if(!chip) return;
-  const s = guitarStats();
-  chip.textContent = `🔥 ${s.streak} día${s.streak===1?'':'s'} · ${s.totalMin} min total · ${s.total} prácticas`;
-}
-function renderGuitarLog(){
-  const box = $('pracList'); if(!box) return;
-  const data = getGuitarData().log;
-  const stats = $('pracStats');
-  if(!data.length){ box.innerHTML = '<p class="muted">Sin prácticas. Registra tus primeros 15 min arriba 👆</p>'; if(stats) stats.textContent = '0 prácticas'; renderGuitarStreak(); return; }
-  const sorted = [...data].sort((a,b)=> (b.date||'').localeCompare(a.date||''));
-  const INST_ICON = { guitarra:'🎸', ukelele:'🎸', flauta:'🪈', teclado:'🎹', cajon:'🥁', canto:'🎤' };
-  const INST_NAME = { guitarra:'Guitarra', ukelele:'Ukelele', flauta:'Flauta/Quena', teclado:'Teclado', cajon:'Cajón', canto:'Canto' };
-  box.innerHTML = sorted.slice(0,60).map(it=>{
-    const lv = it.level==='avanzado'?'🌳':it.level==='intermedio'?'🌿':'🌱';
-    const ii = INST_ICON[it.inst||'guitarra']||'🎸';
-    const nn = INST_NAME[it.inst||'guitarra']||'Guitarra';
-    return `<div class="habit-row"><span class="su-97445a">📅 <b>${escapeHtml(it.date||'')}</b> · ${ii} ${nn} · ${lv} ${escapeHtml(it.level||'')} · <b>${escapeHtml(String(it.min||0))} min</b><br><span class="muted su-11a508">${escapeHtml(it.detail||'')}</span></span><span class="su-74cac9"><button type="button" class="btn btn-icon prac-edit su-2760a5" data-id="${it.id}" title="Editar">✏️</button><button type="button" class="btn btn-icon prac-del su-2760a5" data-id="${it.id}" title="Borrar">✕</button></span></div>`;
-  }).join('');
-  const s = guitarStats();
-  if(stats) stats.textContent = `${s.total} prácticas · ${s.days} días distintos · ${s.totalMin} min · racha ${s.streak} 🔥`;
-  box.querySelectorAll('.prac-del').forEach(b=> b.onclick=()=>{
-    const d = getGuitarData(); d.log = d.log.filter(x=>String(x.id)!==String(b.dataset.id));
-    scheduleSave(); renderGuitarLog();
-  });
-  box.querySelectorAll('.prac-edit').forEach(b=> b.onclick=()=>{
-    const d = getGuitarData(); const it = d.log.find(x=>String(x.id)===String(b.dataset.id)); if(!it) return;
-    guitarEditingId = it.id;
-    $('pracDate').value = it.date||''; $('pracMinutes').value = it.min||15; $('pracLevel').value = it.level||'principiante'; $('pracDetail').value = it.detail||'';
-    const pi = $('pracInst'); if(pi) pi.value = it.inst||'guitarra';
-    $('pracAdd').textContent = '↻ Actualizar'; $('pracCancelEdit').classList.remove('hidden');
-  });
-  renderGuitarStreak();
-}
-function guitarPluckBuffer(freq, secs){
-  // Síntesis de cuerda pulsada (Karplus-Strong) con retardo fraccionario:
-  // el filtro promedio del algoritmo retrasa el loop ~0.5 muestra, y sin
-  // compensar la 1ra cuerda quedaba ~10 cents baja ("desafinada").
-  // Con delay = sr/freq - 0.5 el pitch queda exacto (<1 cent) en las 6.
-  const sr = guitarAudioCtx.sampleRate;
-  const len = Math.max(1024, Math.floor(sr * secs));
-  const buf = guitarAudioCtx.createBuffer(1, len, sr);
-  const d = buf.getChannelData(0);
-  const delay = sr / freq - 0.5;
-  const N = Math.max(2, Math.floor(delay));
-  const frac = Math.min(0.999, Math.max(0, delay - N));
-  const c0 = 0.5 * (1 - frac), c2 = 0.5 * frac;
-  for(let i=0;i<=N+1 && i<len;i++) d[i] = Math.random()*2-1;
-  const decay = freq < 120 ? 0.9975 : freq < 200 ? 0.9968 : 0.996;
-  for(let i=N+2;i<len;i++){
-    d[i] = decay * (c0*d[i-N] + 0.5*d[i-N-1] + c2*d[i-N-2]);
-  }
-  let peak = 0;
-  for(let i=0;i<len;i++){ const v = Math.abs(d[i]); if(v>peak) peak = v; }
-  const norm = peak > 0 ? 0.9/peak : 1;
-  const fade = Math.min(len, Math.floor(sr*0.05));
-  for(let i=0;i<len;i++){ d[i] *= norm; if(i > len-fade) d[i] *= (len-i)/fade; }
-  return buf;
-}
-function playGuitarTone(freq, secs){
-  try{
-    stopGuitarTone(true);
-    if(!guitarAudioCtx) guitarAudioCtx = new (window.AudioContext||window.webkitAudioContext)();
-    if(guitarAudioCtx.state==='suspended') guitarAudioCtx.resume();
-    secs = secs || 4;
-    const src = guitarAudioCtx.createBufferSource();
-    src.buffer = guitarPluckBuffer(freq, secs);
-    const lp = guitarAudioCtx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 5000;
-    const g = guitarAudioCtx.createGain(); g.gain.value = 0.9;
-    src.connect(lp); lp.connect(g); g.connect(guitarAudioCtx.destination);
-    src.start();
-    guitarTuneNodes = { o: src, g };
-    clearTimeout(guitarTuneTimer);
-    guitarTuneTimer = setTimeout(()=> stopGuitarTone(true), secs*1000+150);
-  }catch(e){ alert('Audio no disponible en este dispositivo'); }
-}
-function guitarRefRatio(){
-  return (getGuitarData().tuneRef === 432 ? 432 : 440) / 440;
-}
-function guitarRefLabel(){
-  return getGuitarData().tuneRef === 432 ? 'A432' : 'A440';
-}
-function renderGuitarTuneLabels(){
-  // data-f guarda la frecuencia base en A440; el label muestra la real según referencia
-  const r = guitarRefRatio();
-  document.querySelectorAll('.guitar-tune').forEach(b=>{
-    const base = parseFloat(b.dataset.f) || 0;
-    const s = b.dataset.s || '';
-    b.textContent = `${s} · ${Math.round(base*r)}Hz`;
-  });
-  const sel = $('guitarTuneRef'); if(sel) sel.value = getGuitarData().tuneRef === 432 ? '432' : '440';
-}
-function playGuitarAllSix(){
-  // Secuencia 6ta→1ra como al afinar una acústica de verdad, 1.4s entre cuerdas
-  const r = guitarRefRatio(), ref = guitarRefLabel();
-  const seq = [82.41*r, 110*r, 146.83*r, 196*r, 246.94*r, 329.63*r];
-  const names = ['6ta Mi grave','5ta La','4ta Re','3ra Sol','2da Si','1ra Mi agudo'];
-  stopGuitarTone(true);
-  const st = $('guitarTuneStatus');
-  seq.forEach((f, i)=>{
-    guitarSeqTimers.push(setTimeout(()=>{
-      playGuitarTone(f, 2.2);
-      if(st) st.textContent = `🔊 ${i+1}/6 · ${names[i]} (${f.toFixed(1)} Hz · ${ref}) — afina tu ${names[i].split(' ')[0]} cuerda y espera la siguiente…`;
-    }, i*1400));
-  });
-  guitarSeqTimers.push(setTimeout(()=>{ if(st) st.textContent = 'Toca una cuerda para escucharla 4 segundos (sonido de acústica).'; }, seq.length*1400));
-}
-function stopGuitarTone(silent){
-  try{ if(guitarTuneNodes){ try{ guitarTuneNodes.o.stop(); }catch{} try{ guitarTuneNodes.g.disconnect(); }catch{} guitarTuneNodes = null; } clearTimeout(guitarTuneTimer); }catch{}
-  try{ guitarSeqTimers.forEach(clearTimeout); guitarSeqTimers = []; }catch{}
-  if(!silent){ const st=$('guitarTuneStatus'); if(st) st.textContent='Toca una cuerda para escucharla 4 segundos (sonido de acústica).'; }
-}
-function metroClick(accent){
-  try{
-    if(!guitarAudioCtx) guitarAudioCtx = new (window.AudioContext||window.webkitAudioContext)();
-    if(guitarAudioCtx.state==='suspended') guitarAudioCtx.resume();
-    const o = guitarAudioCtx.createOscillator(), g = guitarAudioCtx.createGain();
-    o.type = 'square'; o.frequency.value = accent?1600:1000;
-    g.gain.setValueAtTime(0.25, guitarAudioCtx.currentTime);
-    g.gain.exponentialRampToValueAtTime(0.0001, guitarAudioCtx.currentTime+0.07);
-    o.connect(g); g.connect(guitarAudioCtx.destination); o.start(); o.stop(guitarAudioCtx.currentTime+0.08);
-  }catch{}
-}
-function metroStopFn(){
-  metroOn = false; clearInterval(metroTimer); metroTimer = null;
-  const b = $('metroStart'); if(b) b.textContent = '▶ Iniciar';
-  const beat = $('metroBeat'); if(beat) beat.textContent = '♪';
-}
-function setupGuitarDialog(){
-  function openGuitar(tab, instPrefill){
-    const g = getGuitarData();
-    const sel = $('guitarLevelSel'); if(sel) sel.value = g.level||'principiante';
-    renderGuitarTuneLabels();
-    const pd = $('pracDate'); if(pd && !pd.value){ try{ pd.value = cal.fmtKey.format(new Date()); }catch{ pd.valueAsDate = new Date(); } }
-    const pl = $('pracLevel'); if(pl) pl.value = g.level||'principiante';
-    const pi = $('pracInst'); if(pi && instPrefill) pi.value = instPrefill;
-    renderGuitarStreak(); renderGuitarLog();
-    if(!tab){
-      tab = g.level==='intermedio'?'i':g.level==='avanzado'?'a':'b';
-    }
-    showGuitarTab(tab);
-    $('guitarDialog').showModal();
-  }
-  window.openGuitar = openGuitar;
-  const btn = $('btnGuitar'); if(btn) btn.onclick=()=>openGuitar(null, 'guitarra');
-  const btnU = $('btnUkelele'); if(btnU) btnU.onclick=()=>openGuitar('u', 'ukelele');
-  const btnF = $('btnFlauta'); if(btnF) btnF.onclick=()=>openGuitar('f', 'flauta');
-  const btnT = $('btnTeclado'); if(btnT) btnT.onclick=()=>openGuitar('t', 'teclado');
-  const btnC = $('btnCajon'); if(btnC) btnC.onclick=()=>openGuitar('c', 'cajon');
-  const btnV = $('btnCanto'); if(btnV) btnV.onclick=()=>openGuitar('v', 'canto');
-  const btnP = $('btnMusicaPractica'); if(btnP) btnP.onclick=()=>openGuitar('p', null);
-  const ct=$('guitarCloseTop'), cb=$('guitarClose'); if(ct) ct.onclick=()=>{ metroStopFn(); stopGuitarTone(true); $('guitarDialog').close(); }; if(cb) cb.onclick=()=>{ metroStopFn(); stopGuitarTone(true); $('guitarDialog').close(); };
-  function showGuitarTab(t){
-    const tabs={ b:['tabGuiB','guitarBegPanel'], i:['tabGuiI','guitarIntPanel'], a:['tabGuiA','guitarAdvPanel'], u:['tabGuiU','guitarUkePanel'], f:['tabGuiF','guitarFlautaPanel'], t:['tabGuiT','guitarTeclaPanel'], c:['tabGuiC','guitarCajonPanel'], v:['tabGuiV','guitarCantoPanel'], p:['tabGuiP','guitarPracPanel'] };
-    Object.values(tabs).forEach(([bid,pid])=>{ const b=$(bid), p=$(pid); if(b) b.classList.remove('btn-accent'); if(p) p.classList.add('hidden'); });
-    const cur=tabs[t]; if(cur){ const b=$(cur[0]), p=$(cur[1]); if(b) b.classList.add('btn-accent'); if(p) p.classList.remove('hidden'); }
-    // Sincroniza selector cuando se navega a un nivel de Guitarra (evita doble fuente confusa)
-    const lvlSel=$('guitarLevelSel');
-    if(lvlSel){
-      if(t==='b') lvlSel.value='principiante';
-      else if(t==='i') lvlSel.value='intermedio';
-      else if(t==='a') lvlSel.value='avanzado';
-    }
-    try{ window._guiTab=t; }catch{}
-  }
-  window.showGuitarTab = showGuitarTab;
-  const tB=$('tabGuiB'), tI=$('tabGuiI'), tA=$('tabGuiA'), tP=$('tabGuiP');
-  const tU=$('tabGuiU'), tF=$('tabGuiF'), tT=$('tabGuiT'), tC=$('tabGuiC'), tV=$('tabGuiV');
-  function setGuitarLevel(lv, fromTab){
-    const g=getGuitarData(); g.level=lv;
-    const lvl=$('guitarLevelSel'); if(lvl) lvl.value=lv;
-    const pl=$('pracLevel'); if(pl && (fromTab || window._guiTab==='b' || window._guiTab==='i' || window._guiTab==='a' || !window._guiTab)) pl.value=lv;
-    scheduleSave();
-  }
-  if(tB) tB.onclick=()=>{ setGuitarLevel('principiante', true); showGuitarTab('b'); }; if(tI) tI.onclick=()=>{ setGuitarLevel('intermedio', true); showGuitarTab('i'); };
-  if(tA) tA.onclick=()=>{ setGuitarLevel('avanzado', true); showGuitarTab('a'); }; if(tP) tP.onclick=()=>showGuitarTab('p');
-  if(tU) tU.onclick=()=>showGuitarTab('u'); if(tF) tF.onclick=()=>showGuitarTab('f');
-  if(tT) tT.onclick=()=>showGuitarTab('t'); if(tC) tC.onclick=()=>showGuitarTab('c');
-  if(tV) tV.onclick=()=>showGuitarTab('v');
-  const lvl=$('guitarLevelSel'); if(lvl) lvl.onchange=()=>{ const v=lvl.value||'principiante'; setGuitarLevel(v, false); const cur=window._guiTab||'b'; if(cur==='b'||cur==='i'||cur==='a'||!cur) showGuitarTab(v==='principiante'?'b':v==='intermedio'?'i':'a'); };
-  // Afinador
-  document.querySelectorAll('.guitar-tune').forEach(b=> b.onclick=()=>{
-    const base=parseFloat(b.dataset.f), n=b.dataset.n||'';
-    const f = base * guitarRefRatio(), ref = guitarRefLabel();
-    playGuitarTone(f, 4);
-    const st=$('guitarTuneStatus'); if(st) st.textContent=`🔊 Sonando ${n} (${f.toFixed(1)} Hz · ${ref}, cuerda pulsada) — afina hasta que no se oigan "olas" entre tu cuerda y esta.`;
-  });
-  const tStop=$('guitarTuneStop'); if(tStop) tStop.onclick=()=>stopGuitarTone();
-  const tAll=$('guitarTuneAll'); if(tAll) tAll.onclick=()=>playGuitarAllSix();
-  const tRef=$('guitarTuneRef'); if(tRef) tRef.onchange=()=>{ const g=getGuitarData(); g.tuneRef=parseInt(tRef.value,10)===432?432:440; scheduleSave(); stopGuitarTone(true); renderGuitarTuneLabels(); };
-  // Metrónomo
-  const bpm=$('metroBpm'), bpmVal=$('metroBpmVal');
-  function updBpm(){ if(bpmVal&&bpm) bpmVal.textContent=bpm.value+' bpm'; }
-  if(bpm) bpm.oninput=()=>{ updBpm(); if(metroOn){ metroStopFn(); $('metroStart').click(); } };
-  updBpm();
-  const mStart=$('metroStart'); if(mStart) mStart.onclick=()=>{
-    if(metroOn){ metroStopFn(); return; }
-    const v=parseInt((bpm&&bpm.value)||80,10)||80;
-    metroOn=true; metroBeat=0; mStart.textContent='⏸ Pausar';
-    const beat=$('metroBeat');
-    const tick=()=>{ metroBeat++; const accent=(metroBeat%4===1); try{ metroClick(accent); }catch{} if(beat) beat.textContent=accent?'🔴 1 · 2 · 3 · 4':'🟡 '+(metroBeat%4||4)+' / 4'; };
-    tick(); metroTimer=setInterval(tick, 60000/v);
-  };
-  const mStop=$('metroStop'); if(mStop) mStop.onclick=metroStopFn;
-  // Bitácora
-  const add=$('pracAdd'); if(add) add.onclick=()=>{
-    const date=$('pracDate').value||(()=>{ try{ return cal.fmtKey.format(new Date()); }catch{ return new Date().toISOString().slice(0,10); } })();
-    const min=Math.max(1, Math.min(480, parseInt($('pracMinutes').value)||15));
-    const level=$('pracLevel').value||'principiante';
-    const inst=(($('pracInst')&&$('pracInst').value)||'guitarra');
-    const detail=$('pracDetail').value.trim();
-    if(!detail) return alert('Cuéntanos qué practicaste (ej: cambios C-G 70bpm)');
-    const d=getGuitarData();
-    if(guitarEditingId){
-      const idx=d.log.findIndex(x=>String(x.id)===String(guitarEditingId));
-      if(idx>=0) d.log[idx]={...d.log[idx], date, min, level, inst, detail};
-      guitarEditingId=null; add.textContent='+ Guardar práctica'; $('pracCancelEdit').classList.add('hidden');
-    } else d.log.push({ id: Date.now()+''+Math.floor(Math.random()*999), date, min, level, inst, detail });
-    scheduleSave(); $('pracDetail').value='';
-    renderGuitarLog();
-  };
-  const cancel=$('pracCancelEdit'); if(cancel) cancel.onclick=()=>{ guitarEditingId=null; $('pracAdd').textContent='+ Guardar práctica'; cancel.classList.add('hidden'); $('pracDetail').value=''; };
-  const clear=$('pracClear'); if(clear) clear.onclick=()=>{ if(!confirm('¿Borrar toda la bitácora de instrumentos?')) return; getGuitarData().log=[]; scheduleSave(); renderGuitarLog(); };
-  const share=$('pracShare'); if(share) share.onclick=async()=>{
-    const d=getGuitarData().log; if(!d.length) return alert('Sin prácticas para compartir');
-    const s=guitarStats();
-    const INST_NAME2 = { guitarra:'Guitarra', ukelele:'Ukelele', flauta:'Flauta/Quena', teclado:'Teclado', cajon:'Cajón', canto:'Canto' };
-    const lines=[...d].sort((a,b)=>(b.date||'').localeCompare(a.date||'')).slice(0,20).map(x=>`· ${x.date} — ${INST_NAME2[x.inst||'guitarra']||x.inst||'Guitarra'} ${x.level} ${x.min}min: ${x.detail}`);
-    await shareText('🎶 Mi práctica de instrumentos', `🎶 Instrumentos — ${s.total} prácticas · ${s.totalMin} min · racha ${s.streak} días 🔥\nNivel guitarra: ${getGuitarData().level}\n\n`+lines.join('\n'));
-  };
-  showGuitarTab('b');
-}
-setTimeout(setupGuitarDialog, 892);
 
 // === LAWEN — HERBARIO BÍO-BÍO (20 fichas) ===
 const LAWEN_PLANTS = [

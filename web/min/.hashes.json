@@ -73,13 +73,13 @@
  "qrcode-lib.js": "4c79be1679603ef9691b98a90617aa1e534e93ef",
  "recetas-naturales-modulo.js": "256f62179c5b2cb7c443b1061e870ec6f17d8b9b",
  "red-comunitaria-modulo.js": "e0df32d4b22cc34d91d18ef68a353012acb6a3e2",
- "renderer.js": "b3cec16073ca7f1d9fe8116ea22c2727aa72d617",
+ "renderer.js": "65f91b08e322c343f0545adf2f958e64e1db1c7d",
  "retos-21-modulo.js": "4e5d4f850e1eb8c93f3333066e86ae7f1176681b",
  "semillero-guias.js": "e4282729b55825255f28027dfb2d9a1f251e5507",
  "sopa-letras-modulo.js": "4abc59ff5a23a19ad1c117397f714bbb3ceb46e9",
  "splash.css": "89052a64d56ab0283a3635f0242b8fad2fe1ed11",
  "storage-idb.js": "d2c94e7c62696727bb71dcbbf660aa7ce15d8465",
- "styles.css": "0364708ceebd76b33d1f6fc36aa195180c7c7e34",
+ "styles.css": "daa8c743fe267e593a617be7296630d7aa200c21",
  "sudoku-modulo.js": "f029cbb57d6eb1eb60f9867faad54a910b2d40ce",
  "talleres-penco.js": "3f0e01b28aaa95151fd4f8c575bfe55061374e56",
  "tao-modulo.js": "8438032df0f7b32783d9bb62cfaea0b2313022cf",
@@ -90,7 +90,7 @@
  "vigyan-bhairav-modulo.js": "3c2886631285cd9b7c75cad630a0a04cc38cff73",
  "voz-abuelos.js": "b4cbaaf99fa011bdd788a5e8df0178d63c48632f",
  "web-api.js": "9d0c7f85b70099a1bfd5726e1bced189e09adec6",
- "templates-bundled.js": "9df9f22b6034ddd5472d791be2464bb3a50685a1",
+ "templates-bundled.js": "c702402739335b14ee7e0a3ce5b91d821d0bcf57",
  "pwa-install.js": "63062b343cb1c323e51fb013f5da8aac45594e6a",
  "core-audio.js": "27eaf5020dff98d80141991ebef2ff67a67c3bc2",
  "core-bootstrap.js": "b90389337c7c9ab2db10246bbe3ed7866b9528f2",
@@ -123,5 +123,6 @@
  "idiomas-modulo.js": "e349c19695b361a461e9b71bfdc0fc4023329a87",
  "portugues-modulo.js": "e1e4aa13f9520bf814af9d6c7ade2bd722c1fbc2",
  "zoom-calendario.js": "b53f0fe68e68a4df6dc84f4fd0042ead6fb00903",
- "chino-mandarin-modulo.js": "88580f23eb80db1af58aba442bf91b6705643165"
+ "chino-mandarin-modulo.js": "88580f23eb80db1af58aba442bf91b6705643165",
+ "musica-modulos.js": "bcec191d1e9693eca32c631576c0ceb684548575"
 }
