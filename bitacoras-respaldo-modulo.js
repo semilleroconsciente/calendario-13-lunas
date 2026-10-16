@@ -108,7 +108,7 @@ var GROUPS = [
   { id: 'espiritual', titulo: '✨ Prácticas (ikigai, tao, tolteca, estoicismo...)', keys: ['ikigai', 'tao', 'tolteca', 'estoicismo', 'espiritu', 'hooponopono', 'silva', 'grabovoi', 'vigyan', 'constel', 'kinMayaData', 'tarot', 'oraculo', 'matematicas'] },
   { id: 'juegos', titulo: '♟️ Juegos (ajedrez, sudoku, crucigrama, sopa)', keys: ['ajedrezPartidas', 'ajedrezStats', 'sudokuHistory', 'sudokuCurrent', 'sudokuStats', 'cruciHistory', 'cruciCurrent', 'cruciStats', 'sopaHistory', 'sopaCurrent', 'sopaStats'] },
   { id: 'territorio', titulo: '🗺️ Territorio Penco (relatos, sectores, trueque...)', keys: ['pencoSectorRelatos', 'truequeLog', 'mingaLog', 'nudosMios', 'nudosPract', 'epewMios', 'fertiLog', 'fertiMeta', 'derechosLog', 'deberesCheck', 'rolesHogar', 'acuerdosFam', 'ritualesFam', 'voluntades', 'mapaAnioTxt', 'saberes', 'circulos', 'tesoros', 'nombresLunares', 'vozAbuelos', 'buenVivir', 'rutinaCfg'] },
-  { id: 'penco-servicios', titulo: '🏛️ Penco servicios (muni, bomberos, iglesias...)', keys: ['muniPenco', 'bomberosPenco', 'iglesiasPenco', 'apoyoPenco', 'actores', 'negociosPenco', 'monedaSocial', 'talleresPenco'] }
+  { id: 'penco-servicios', titulo: '🏛️ Penco servicios (muni, bomberos, iglesias...)', keys: ['muniPenco', 'bomberosPenco', 'iglesiasPenco', 'apoyoPenco', 'actores', 'amenazas', 'negociosPenco', 'monedaSocial', 'talleresPenco'] }
 ];
 
 /* Claves que NO son bitácoras (config global, no por bitácora) */

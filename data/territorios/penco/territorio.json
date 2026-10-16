@@ -37,6 +37,7 @@
     "municipalidad": "municipalidad.json",
     "bomberos": "bomberos.json",
     "apoyo": "apoyo-emergencia.json",
-    "actores": "actores.json"
+    "actores": "actores.json",
+    "amenazas": "amenazas.json"
   }
 }

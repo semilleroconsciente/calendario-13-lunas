@@ -1,7 +1,7 @@
 /* ============================================================
    TERRITORIO FASE 2 — Calendario 13 Lunas (Penco · Bío-Bío)
    7 secciones nuevas dentro de Territorio Penco:
-     1. 🐝 Meliponicultura / Apicultura lunar (btnMeli)
+     1. 🐝 Abejas nativas solitarias + chito (btnMeli)
      2. 🐋 Ballenas y fauna marina migratoria (btnBallenas)
      3. 🍄 Micología del bosque (btnHongos)
      4. 🚶 Senderos de Penco (btnSenderos)
@@ -130,110 +130,119 @@ function logListRender(boxId, statsId, arr, rowFn, emptyTxt) {
 }
 
 /* ============================================================
-   1. 🐝 MELIPONICULTURA / APICULTURA LUNAR
-   Tradición real por fases: cosecha en menguante (menos pillaje
-   y miel más densa), inspección amplia en creciente (cría en
-   alza, espacio). En Penco lo concreto es Apis + protección del
-   chito (Bombus dahlbomii, nativo gigante en retroceso): al
-   chito NO se le cosecha, se le cuida.
+   1. 🐝 ABEJAS NATIVAS SOLITARIAS + CHITO (btnMeli)
+   Tiempo circular Mari Küla Küyen: observar, refugiar y
+   plantar en vez de cosechar. Chile tiene 450+ especies de
+   abejas nativas (Biobío: Chilicola, Centris, Eucerini):
+   polinizan la flora local mejor que la melífera, pasan el
+   invierno penquista en latencia y casi no pican.
+   Lo concreto en Penco: hoteles de insectos (colihue,
+   madera perforada, barro), jardín escalonado (añañuca,
+   maqui, chilco, suelda con suelda) y protección del chito
+   (Bombus dahlbomii, peligro crítico): cero pesticida y
+   cada avistamiento se reporta. Soberanía territorial por
+   el humedal Rocuant y los cerros.
    Complementa a Flora (floración) y Siembra (polinización).
    ============================================================ */
-/* Meli ampliada: + flora melifera Penco, manejo anual Pewu-Walung-Rimu-Pukem,
-   sanidad, checklist de inspeccion, calculadora de reserva invernal,
-   productos de la colmena y guia chito vs europeo. Bitacora extendida
-   (lugar/floracion + estado) compatible con registros antiguos. */
+/* Bitácora compatible hacia atrás: los registros apícolas
+   antiguos (miel kg) se siguen mostrando como legado; los
+   nuevos guardan N° de individuos (n), refugio/lugar, flor
+   visitada y estado. Claves locales sin cambios. */
 var MELI_ESPECIES = [
-  { nombre: 'Abeja melífera', cient: 'Apis mellifera', rol: '🍯 Productiva (introducida)', flor: 'Todo el año; pico Pewü–Walüng (chilco, maqui, boldo, quillay)', nota: 'La de cajón. Cosecha en menguante, revisa en creciente. 1–2 alzas por colmena en Penco urbano-rural.', orn: 'Cajón a 50 cm del suelo, piquera al norte, agua con piedras a 5 m.' },
-  { nombre: 'Chito / Abejorro chileno', cient: 'Bombus dahlbomii', rol: '🌿 Nativa protegida (NO cosechar)', flor: 'Pewü–Walüng (chilco, tabaco del diablo, chagual)', nota: 'El abejorro colorín gigante, en fuerte retroceso por el abejorro europeo. Si lo ves: foto + flor + fecha. No se toca el nido.', orn: 'Deja chilco y tabaco del diablo sin podar en flor; nada de insecticida de 10–16h.' },
-  { nombre: 'Abejorro europeo', cient: 'Bombus terrestris', rol: '⚠️ Introducido invasor', flor: 'Todo el año', nota: 'Desplaza al chito y rompe flores. No lo críes ni lo traslades. Anótalo si lo ves para distinguirlo del chito.', orn: 'Cola blanca + bandas amarillas (chito: todo colorín leonado).' },
-  { nombre: 'Abeja carpintera', cient: 'Xylocopa augusti', rol: '🌿 Nativa solitaria', flor: 'Pewü–Walüng', nota: 'Negra grande que perfora madera seca. No es plaga: tapa solo lo estructural y deja troncos viejos para nido.', orn: 'Hotel de insectos con troncos perforados a 1,5 m, cara norte.' },
-  { nombre: 'Abejitas verdes / Halíctidos', cient: 'Halictidae spp.', rol: '🌿 Nativas solitarias', flor: 'Pewü–Rimü (azulillo, añañuca, huilmo)', nota: 'Pequeñas verdes metálicas, grandes polinizadoras de jardín nativo. Anidan en suelo desnudo.', orn: 'Deja un parche de suelo sin mulch ni riego para sus nidos.' },
-  { nombre: 'Caupolicana', cient: 'Caupolicana gayi', rol: '🌿 Nativa solitaria', flor: 'Pewü (añañuca, huilmo, azulillo)', nota: 'Grande y peluda, de las primeras en volar en primavera. Anida en el suelo: no pises ni riegues su parche.', orn: 'Parche de tierra suelta y seca a pleno sol, sin mulch.' },
-  { nombre: 'Abeja cortadora de hojas', cient: 'Megachile chilensis', rol: '🌿 Nativa solitaria', flor: 'Pewü–Walüng (rosas, chilco, leguminosas)', nota: 'Corta círculos perfectos en las hojas para forrar su nido. Daño estético menor a cambio de gran polinización.', orn: 'Cañas huecas o bloques perforados (6–8 mm) bajo techo, cara norte.' },
-  { nombre: 'Abejita verde-bronce', cient: 'Corynura chloris', rol: '🌿 Nativa solitaria', flor: 'Pewü–Rimü (jardín y huerta)', nota: 'Chiquita y rápida, verde-bronce. Poliniza huerta y flores nativas todo el verano. Excelente vecina.', orn: 'Suelo desnudo + flores escalonadas de primavera a otoño.' },
-  { nombre: 'Carpintera chica', cient: 'Manuelia spp.', rol: '🌿 Nativa (endémica)', flor: 'Pewü–Walüng', nota: 'Pariente chica de la carpintera, endémica de Chile. Nidifica en ramitas y tallos secos.', orn: 'Deja podas delgadas apiladas bajo techo para sus nidos.' },
-  { nombre: 'Chaqueta amarilla', cient: 'Vespula germanica', rol: '⚠️ Avispa invasora (peligro)', flor: 'Rimü–Pukem (ataca piqueras)', nota: 'No es abeja: caza abejas y roba miel en otoño. Trampas a 10 m de la colmena, piquera reducida. Nada de insecticida amplio.', orn: 'Trampa botella con vinagre o chicha; ubícala lejos del cajón.' }
+  { nombre: 'Chito / Abejorro nativo', cient: 'Bombus dahlbomii', rol: '🧡 Nativa protegida · peligro crítico', flor: 'Pewü–Walüng (chilco, tabaco del diablo, chagual)', nota: 'El abejorro colorín gigante, polinizador clave en retroceso crítico. Si lo ves: foto + flor + fecha en bitácora. No se toca el nido jamás.', orn: 'Deja chilco y tabaco del diablo sin podar en flor; cero insecticida de 10–16h.' },
+  { nombre: 'Caupolicana', cient: 'Caupolicana gayi', rol: '🌿 Nativa solitaria (suelo)', flor: 'Pewü (añañuca, huilmo, azulillo)', nota: 'Grande y peluda, de las primeras en volar en primavera. Anida en el suelo: no pises ni riegues su parche.', orn: 'Parche de tierra suelta y seca a pleno sol, sin mulch.' },
+  { nombre: 'Chilicola', cient: 'Chilicola spp.', rol: '🌿 Nativa solitaria (tallos)', flor: 'Pewü–Walüng (maqui, boldo, jardín)', nota: 'Chiquita y delgada, común en el Biobío. Anida en tallos secos y ramitas: cada poda apilada es un barrio.', orn: 'Manojos de cañas de colihue de 2–4 mm bajo techo, cara norte.' },
+  { nombre: 'Centris', cient: 'Centris spp.', rol: '🌿 Nativa solitaria', flor: 'Pewü–Walüng (maqui, quillay, peumo)', nota: 'Robusta y veloz, presente en el Biobío. Busca aceites florales además de polen: necesita flora diversa.', orn: 'Jardín con 4+ especies en flor + parche de suelo desnudo.' },
+  { nombre: 'Eucerina de cuernos largos', cient: 'Eucerini spp.', rol: '🌿 Nativa solitaria', flor: 'Pewü–Rimü (añañuca, chilco, huerta)', nota: 'Machos de antenas larguísimas, grandes polinizadores de flores abiertas. Anidan en el suelo.', orn: 'Suelo desnudo sin riego + flores escalonadas primavera–otoño.' },
+  { nombre: 'Abejita verde-bronce', cient: 'Corynura chloris', rol: '🌿 Nativa solitaria (huerta)', flor: 'Pewü–Rimü (jardín y huerta)', nota: 'Chiquita y rápida, verde-bronce. Poliniza huerta y flores nativas todo el verano. Excelente vecina.', orn: 'Suelo desnudo + flores escalonadas de primavera a otoño.' },
+  { nombre: 'Abejitas verdes', cient: 'Halictidae spp.', rol: '🌿 Nativas solitarias (suelo)', flor: 'Pewü–Rimü (azulillo, añañuca, huilmo)', nota: 'Pequeñas verdes metálicas, grandes polinizadoras de jardín nativo. Anidan en suelo desnudo.', orn: 'Deja un parche de suelo sin mulch ni riego para sus nidos.' },
+  { nombre: 'Abeja cortadora de hojas', cient: 'Megachile chilensis', rol: '🌿 Nativa solitaria (cañas)', flor: 'Pewü–Walüng (chilco, leguminosas, rosas)', nota: 'Corta círculos perfectos en las hojas para forrar su nido. Daño estético menor a cambio de gran polinización.', orn: 'Cañas huecas o bloques perforados (6–8 mm) bajo techo, cara norte.' },
+  { nombre: 'Abeja carpintera', cient: 'Xylocopa augusti', rol: '🌿 Nativa solitaria (madera)', flor: 'Pewü–Walüng', nota: 'Negra grande que perfora madera seca. No es plaga: tapa solo lo estructural y deja troncos viejos para nido.', orn: 'Hotel con troncos perforados (8–10 mm) a 1,5 m, cara norte.' },
+  { nombre: 'Carpintera chica', cient: 'Manuelia spp.', rol: '🌿 Nativa endémica (ramitas)', flor: 'Pewü–Walüng', nota: 'Pariente chica de la carpintera, endémica de Chile. Nidifica en ramitas y tallos secos.', orn: 'Deja podas delgadas apiladas bajo techo para sus nidos.' },
+  { nombre: 'Abeja melífera', cient: 'Apis mellifera', rol: '🍯 Introducida (contexto)', flor: 'Todo el año; pico Pewü–Walüng', nota: 'La del cajón. No es el foco de esta sección: en exceso compite con las nativas por flor. Si tienes colmenas, que no saturen el barrio.', orn: 'Prioriza a las nativas: jardín escalonado + refugios antes que más cajones.' },
+  { nombre: 'Abejorro europeo', cient: 'Bombus terrestris', rol: '⚠️ Introducido invasor', flor: 'Todo el año', nota: 'Desplaza al chito y rompe flores. No lo críes ni lo traslades. Anótalo en bitácora para distinguirlo del chito.', orn: 'Cola blanca + bandas amarillas (chito: todo colorín leonado).' }
 ];
 var MELI_LUNA = [
-  { f: '🌑 Nueva', t: 'Descanso y taller', d: 'No abras colmenas. Repara cajones, funde cera, arma marcos, limpia bebederos. Planifica divisiones para la creciente que viene.' },
-  { f: '🌒 Creciente', t: 'Inspección y espacio', d: 'Revisión completa cada 7–10 días: postura, cría, espacio. Pon alza cuando 7/10 marcos estén llenos. Momento de divisiones y núcleos. Alimenta solo si no hay flujo (lluvia larga en Pukem).' },
-  { f: '🌕 Llena', t: 'Máxima actividad — manos fuera al mediodía', d: 'Pecoreo y defensa al máximo: no abras entre 11–16h. Observa piquera (polen entrando = cría sana). Marca floraciones para la bitácora de Flora.' },
-  { f: '🌖 Menguante', t: 'Cosecha y sanidad', d: 'COSECHA de miel (menos pillaje, miel más densa y operculada). Control de varroa, recambio de reina vieja, reducción de piquera si entra Pukem. Guarda miel en frasco ámbar + fecha + luna.' }
+  { f: '🌑 Nueva', t: 'Taller y siembra', d: 'No intervengas nidos. Arma hoteles (cañas de colihue, madera perforada, barro), apila podas y siembra bulbos. Planifica el jardín escalonado.' },
+  { f: '🌒 Creciente', t: 'Observar y plantar', d: 'Ventana de observación: 10–16h, a 1 m, sin atrapar. Planta y riega lo nuevo. Revisa bebederos (agua con piedras) y anota primeras emergencias de Pewü.' },
+  { f: '🌕 Llena', t: 'Pico de vuelo — manos fuera al mediodía', d: 'Máxima actividad de pecoreo: no te acerques a nidos entre 11–16h. Solo mira y anota flor visitada + hora en la bitácora.' },
+  { f: '🌖 Menguante', t: 'Revisión externa suave', d: 'Mira hoteles POR FUERA (orificios sellados con barro = celdas ocupadas: no abrir). Limpia solo celdas vacías y repone bebederos. Anota con su luna.' }
 ];
 var MELI_FLORA = [
-  { n: 'Chilco', f: 'Pewü–Walüng (oct–mar)', a: 'Néctar + polen', d: 'La número 1 de Penco: favorita del chito y de la melífera. No la podes en flor.' },
-  { n: 'Maqui', f: 'Pewü (sep–nov)', a: 'Polen temprano', d: 'Despierta la colmena tras Pukem; baya para la casa y flor para ellas.' },
-  { n: 'Boldo', f: 'Pewü (ago–oct)', a: 'Néctar temprano', d: 'Flor de fin de invierno: puente clave antes del maqui.' },
-  { n: 'Quillay', f: 'Walüng (nov–ene)', a: 'Gran flujo de néctar', d: 'Sostiene la cosecha de verano. Melífero clave del cerro.' },
-  { n: 'Peumo', f: 'Pewü (oct–nov)', a: 'Néctar abundante', d: 'Flor perfumada que llenan en semanas buenas de primavera.' },
-  { n: 'Arrayán', f: 'Walüng (dic–feb)', a: 'Néctar', d: 'Flor blanca espectacular, muy visitada en quebradas.' },
-  { n: 'Ulmo', f: 'Walüng (ene–feb)', a: 'Miel famosa', d: 'La miel de ulmo es la más cotizada del sur; si tienes uno cerca, cuídalo.' },
-  { n: 'Tineo / Tiaca', f: 'Walüng (dic–ene)', a: 'Néctar', d: 'Melífera de quebradas húmedas; suma flujo en pleno verano.' },
-  { n: 'Tabaco del diablo', f: 'Walüng (dic–mar)', a: 'Néctar para lengua larga', d: 'Trompeta roja solo para el chito. Déjala en pie en bordes y taludes.' },
-  { n: 'Chagual', f: 'Pewü–Walüng (oct–ene)', a: 'Néctar + agua', d: 'Bebedero natural en roqueríos; gran faro para nativas.' },
-  { n: 'Añañuca / Huilmo / Azulillo', f: 'Pewü–Walüng', a: 'Polen', d: 'Bulbos nativos para abejitas verdes y caupolicana. No los arranques.' },
-  { n: 'Diente de león + Trébol', f: 'Casi todo el año', a: 'Sostén en escasez', d: 'Despensa de emergencia. No los cortes al ras y cosecha lejos de caminos.' }
+  { n: 'Chilco', f: 'Pewü–Walüng (oct–mar)', a: 'Néctar + polen · chito y todas', d: 'La número 1 de Penco: favorita del chito y de las solitarias. No la podes en flor.' },
+  { n: 'Maqui', f: 'Pewü (sep–nov)', a: 'Polen temprano · Centris, Chilicola', d: 'Despierta a las nativas tras Pukem; baya para la casa y flor para ellas.' },
+  { n: 'Boldo', f: 'Pewü (ago–oct)', a: 'Néctar temprano · todas', d: 'Flor de fin de invierno: puente clave antes del maqui. Evolucionaron juntas.' },
+  { n: 'Añañuca', f: 'Rimü (feb–abr)', a: 'Polen otoñal · Caupolicana, halíctidos', d: 'Cierra la temporada con alimento cuando casi todo ya semilló. No arranques sus bulbos.' },
+  { n: 'Azulillo / Huilmo', f: 'Pewü (oct–nov)', a: 'Polen · Caupolicana, eucerinas', d: 'Bulbos nativos de primavera para las primeras emergencias. Marca dónde salen y no los pises.' },
+  { n: 'Suelda con suelda', f: 'Pewü–Walüng (oct–feb)', a: 'Néctar · chito y carpinteras', d: 'Trepadora del humedal Rocuant y quebradas: conecta tu jardín con el humedal. Ideal en cerco.' },
+  { n: 'Quillay', f: 'Walüng (nov–ene)', a: 'Gran flujo · todas', d: 'Sostiene el pico de verano. Melífero clave del cerro: si tienes uno cerca, cuídalo.' },
+  { n: 'Peumo', f: 'Pewü (oct–nov)', a: 'Néctar abundante · Centris', d: 'Flor perfumada que llenan en semanas buenas de primavera.' },
+  { n: 'Arrayán', f: 'Walüng (dic–feb)', a: 'Néctar · todas', d: 'Flor blanca espectacular, muy visitada en quebradas.' },
+  { n: 'Tabaco del diablo', f: 'Walüng (dic–mar)', a: 'Néctar lengua larga · chito', d: 'Trompeta roja solo para el chito. Déjala en pie en bordes y taludes.' },
+  { n: 'Chagual', f: 'Pewü–Walüng (oct–ene)', a: 'Néctar + agua · chito', d: 'Bebedero natural en roqueríos; gran faro para nativas.' },
+  { n: 'Diente de león + Trébol', f: 'Casi todo el año', a: 'Sostén en escasez · todas', d: 'Despensa de emergencia. No los cortes al ras y observa lejos de caminos.' }
 ];
 var MELI_ANUAL = [
-  { e: 'Pewü · Primavera (sep–nov)', t: 'Crecer y dividir', d: 'Revisión cada 7–10 días en creciente. Alza con 7/10 marcos llenos. Temporada de divisiones, núcleos y recambio de reina. Vigila enjambrazón: celdas reales = enjambre en días.' },
-  { e: 'Walüng · Verano (dic–feb)', t: 'Cosecha grande', d: 'Cosecha en menguante, solo marcos 80% operculados. Agua con piedras a 5 m + media-sombra. No abras de 11–16h. Ojo con pillaje: trabaja rápido y de tarde.' },
-  { e: 'Rimü · Otoño (mar–may)', t: 'Sanidad y reserva', d: 'Última cosecha leve. Control de varroa OBLIGATORIO tras cosechar. Deja 8–10 kg por colmena. Reduce piquera y repara techos antes de Pukem.' },
-  { e: 'Pukem · Invierno (jun–ago)', t: 'No abrir + taller', d: 'No abras: solo mira la piquera. Funde cera, arma marcos, repara cajones. Alimenta solo en emergencia (colmena liviana + lluvia eterna), con jarabe 2:1 de tarde.' }
+  { e: 'Pewü · Primavera (sep–nov)', t: 'Emergencia: no remover suelo', d: 'Las solitarias emergen de sus nidos en tierra y tallos. No piques ni riegues los parches de suelo desnudo. Instala hoteles (cara norte), planta maqui, boldo y azulillo, y pon bebederos con piedras.' },
+  { e: 'Walüng · Verano (dic–feb)', t: 'Pico de vuelo y chito', d: 'Agua con piedras a la sombra + cero insecticida de 10–16h. Observa y reporta al chito en chilco y tabaco del diablo. No abras celdas selladas ni toques nidos.' },
+  { e: 'Rimü · Otoño (mar–may)', t: 'Provisión y semilla', d: 'Deja tallos secos y cabezas semilladas en pie: son nidos y despensa. Siembra añañuca y limpia hoteles solo por fuera. Última revisión externa antes de Pukem.' },
+  { e: 'Pukem · Invierno (jun–ago)', t: 'Latencia: no cavar ni abrir', d: 'Están enterradas o en cavidades en latencia. No caves, no abras hoteles, no traslades nada. Taller: corta cañas de colihue, perfora maderas, acopia barro y dibuja el jardín del próximo Pewü.' }
 ];
 var MELI_SANIDAD = [
-  { p: 'Varroa destructor', s: 'Alas deformes, cría salteada, caída en piso sanitario.', h: 'Conteo con azúcar glas o piso sanitario. Trata tras la cosecha de Rimü (timol u oxálico según etiqueta; pide apoyo a un apicultor vecino).', v: 'Piso sanitario + recambio anual de reina + marcos zanganeros trampa.' },
-  { p: 'Pillaje', s: 'Pelea en piquera, abejas revisando rendijas, zumbido agresivo.', h: 'Reduce piquera a 2 cm, no derrames miel, trabaja de tarde y rápido.', v: 'Colmenas parejas en fuerza; jamás alimentar de día con olor.' },
-  { p: 'Chaqueta amarilla', s: 'Avispas cazando en la piquera en Rimü–Pukem.', h: 'Trampas de botella con vinagre o chicha a 10 m (lejos del cajón) y piquera reducida.', v: 'Colmenas fuertes y bien alimentadas; NO insecticida amplio: mata a las tuyas.' },
-  { p: 'Hormigas y humedad', s: 'Hilera subiendo al cajón, moho, olor a humedad.', h: 'Patas del caballete en agua o aceite, techo con pendiente, ventila sin enfriar la cría.', v: 'Cajón a 50 cm del suelo, pasto corto y techo con zinc.' },
-  { p: 'Huérfana / reina vieja', s: 'Sin huevos del día, solo zánganos, cría despareja.', h: 'En Pewü: mete un marco con huevos jóvenes para que críen reina, o une a otra colmena con diario perforado.', v: 'Marca la reina y recámbiala cada 2 temporadas.' }
+  { p: 'Pesticidas e insecticidas', s: 'Abejas lentas o muertas, flores sin visitas, fumigación vecinal o municipal.', h: 'Cero insecticida de 10–16h; prefiere control manual y purín de ortiga. Habla con vecinos y escuela: un día sin pesticida se anota en bitácora.', v: 'Jardín diverso + hoteles lejos de paltos o jardines fumigados; bebedero con agua limpia.' },
+  { p: 'Abejorro europeo invasor', s: 'Abejorro de cola blanca rompiendo flores, chito cada vez más escaso.', h: 'No lo críes ni lo traslades. Repórtalo en bitácora (foto + flor + fecha) para distinguirlo del chito.', v: 'Más chilco y tabaco del diablo (flores de trompeta que favorecen al chito).' },
+  { p: 'Pérdida de hábitat', s: 'Poda en plena flor, desmalezado total, relleno de bordes del humedal Rocuant, cerro sin flores.', h: 'Poda después de la flor, deja bordes vivos en el humedal y corredores de chilco en el cerro.', v: 'Cada jardín escalonado cuenta: 4+ especies con flor de primavera a otoño.' },
+  { p: 'Suelo sellado', s: 'Todo con mulch, riego y pasto corto: sin nidos en tierra, sin eucerinas ni caupolicanas.', h: 'Reserva 1 m² de tierra suelta, seca y a pleno sol, sin riego ni pisoteo. Marca el parche con palitos.', v: 'Nunca piques el parche en Pewü: ahí están emergiendo.' },
+  { p: 'Chaqueta amarilla y humedad en hoteles', s: 'Avispas rondando hoteles en Rimü–Pukem; cañas con moho u olor a humedad.', h: 'Trampa de botella con vinagre a 10 m del hotel (lejos de nidos) y techo con pendiente que no se llueva.', v: 'Hotel a 1,2–1,8 m, cara norte, maderas sin químicos y recambio anual de cañas vacías.' }
 ];
 var MELI_CHECKLIST = [
-  'Humo suave listo y traje claro puesto (nunca de noche ni con tormenta).',
-  'Observé la piquera 2 minutos antes de abrir: polen entrando, ánimo, chaquetas.',
-  'Marcos 1–2: reservas de miel y polen suficientes para la fecha.',
-  'Cría pareja: larvas nacaradas, sin olor agrio ni celdas hundidas.',
-  'Reina vista o huevos del día (uno por celda).',
-  'Espacio: si 7/10 marcos están llenos, pongo alza.',
-  'Sanidad: conteo de varroa, hormigas y humedad revisados.',
-  'Cierre suave sin aplastar abejas y todo anotado en la bitácora.'
+  'Ubiqué el hotel a 1,2–1,8 m, cara norte, con techo que no se llueva.',
+  'Usé cañas de colihue (2–10 mm) y madera perforada sin pintura ni químicos.',
+  'Sellé trasera con barro y dejé orificios limpios; nada de insecticida cerca.',
+  'Reservé 1 m² de suelo desnudo, seco y sin pisoteo para nidos en tierra.',
+  'Planté escalonado: hay flor de primavera a otoño (chilco + maqui + añañuca + suelda).',
+  'Puse bebedero con piedras a la sombra y lo repongo en Walüng.',
+  'Observo a 1 m, sin atrapar ni abrir celdas selladas (barro = ocupada).',
+  'Anoté cada avistamiento (foto + flor + fecha) y reporté al chito.'
 ];
 var MELI_PRODUCTOS = [
-  { n: '🍯 Miel', d: 'Cosecha en menguante solo marcos 80% operculados: es miel madura que no fermenta.', g: 'Frasco de vidrio o ámbar + etiqueta con fecha y luna. Reserva 8–10 kg por colmena para Pukem.' },
-  { n: '🕯️ Cera', d: 'Funde opérculos y marcos viejos en Pukem; renueva láminas cada año para evitar residuos.', g: 'Bloque a la sombra y en lugar fresco: se derrite al sol.' },
-  { n: '🌿 Propóleo', d: 'Raspa con espátula en Rimü; en tintura sirve para la casa. No saques todo: es su farmacia.', g: 'Frasco oscuro, seco y etiquetado.' },
-  { n: '🌼 Polen', d: 'Trampa solo 2–3 días por semana en Pewü–Walüng y seca a la sombra el mismo día.', g: 'Frasco hermético en lugar fresco; nunca dejes la trampa puesta: las debilita.' }
+  { n: '🌼 Polinización', d: 'Más flores cuajadas, más frutos y más semillas en huerta, jardín y cerro. Es el verdadero rendimiento: se mide en frutos, no en miel.', g: 'Cuenta frutos por rama antes y después de tu jardín: en un año verás la diferencia.' },
+  { n: '🌱 Banco vivo de semillas', d: 'Deja semillar chilco, añañuca y suelda: guarda e intercambia en el barrio. Cada sobrecito es bosque futuro.', g: 'Sobre de papel + nombre + fecha + luna de colecta, en lugar seco.' },
+  { n: '💧 Humedal y cerros vivos', d: 'Tu jardín escalonado conecta con el humedal Rocuant y los cerros: corredor de vuelo para el chito y las solitarias.', g: 'Suma bordes sin podar en flor y un bebedero: el corredor se usa solo.' },
+  { n: '🏫 Escuela y barrio', d: 'Un hotel en la escuela enseña más que mil láminas: las niñas y niños reportan avistamientos y cuidan el parche de suelo.', g: 'Taller de 1 hora: armar cañas + plantar + anotar la primera visita.' },
+  { n: '🗺️ Soberanía territorial', d: 'Cada avistamiento de chito con foto, flor y fecha es un dato de defensa del territorio: prueba viva de que el humedal y el cerro se cuidan.', g: 'Comparte tu bitácora con la red local (junta de vecinos, escuela, comité humedal).' }
 ];
 var MELI_CHITO = [
   { r: 'Color', ch: 'Todo colorín leonado, sin blanco', eu: 'Bandas amarillas + cola blanca' },
   { r: 'Tamaño', ch: 'Gigante (2–3 cm), zumbido grave', eu: 'Mediano (1,5–2 cm)' },
   { r: 'Flores', ch: 'Trompetas largas (chilco, tabaco del diablo)', eu: 'Todas; muerde la base y rompe la flor' },
-  { r: 'Qué hacer', ch: 'Foto + flor + fecha en bitácora; no tocar el nido', eu: 'Anotar para distinguir; no criar ni trasladar' }
+  { r: 'Qué hacer', ch: 'Foto + flor + fecha en bitácora; no tocar el nido jamás', eu: 'Anotar para distinguir; no criar ni trasladar' }
 ];
 var MELI_GUIA = [
-  { t: '🌎 Qué es la meliponicultura', d: 'Es la crianza de abejas nativas sin aguijón (tribu Meliponini): unas 500 especies en los trópicos del mundo, de México y Brasil al sudeste asiático y África. A diferencia de la apicultura, que trabaja con la abeja europea Apis mellifera, aquí cada cajón guarda una colonia de abejas originarias del lugar, con miel, cera y resinas propias. Su producto estrella es la miel de melipona: más líquida, ácida y aromática que la miel común, usada como alimento y remedio desde hace siglos.' },
-  { t: '🐝 Las abejas sin aguijón', d: 'Perdieron el aguijón hace millones de años: no pican, pero defienden el nido mordiendo, enredando el pelo o sellando intrusos con resina (algunas muerden fuerte, así que se trabaja con velo igual). Viven en colonias de cientos a pocos miles de obreras con su reina madre, y anidan en troncos huecos, bajo tierra o en muros. En vez de panales hexagonales guardan la miel en potes redondos de cerumen (cera mezclada con resina) y crían en discos o racimos. La entrada del nido es su firma: un tubo de cera y resina distinto en cada especie.' },
-  { t: '📜 Una tradición milenaria', d: 'Los mayas criaban a la xunán kab (Melipona beecheii) en troncos ahuecados hace más de 2000 años: su dios abeja aparece en los códices. En Brasil, guaraníes y otras naciones manejan uruçú, jataí y mandaçaia desde antes de la llegada europea. La miel pagaba tributos, sellaba alianzas y curaba; cada familia noble maya tenía sus colmenas. Hoy la meliponicultura renace como economía del bosque en pie: a más abejas, más selva.' },
-  { t: '🏠 La colmena por dentro', d: 'El nido silvestre vive en un tronco (jobón); la caja racional lo imita con módulos: nido abajo para la cría y alzas melarias arriba. Dentro verás el involucro (manto de cera que abriga la cría), los discos de cría horizontales, los potes de miel y polen, y el batumen (muros de resina que sellan el nido). La piquera es un tubo de entrada que las guardianas defienden de día y cierran de noche. Materiales: madera gruesa sin olor, nada de pintura tóxica, techo que no se llueva y base a salvo de hormigas.' },
-  { t: '🧬 Manejo básico', d: 'División: en época de flores se parte una colonia fuerte en dos mitades con cría, reina o celda real y potes de alimento; es como hacer un núcleo de Apis, pero en miniatura. Cosecha: solo potes maduros y sellados, con jeringa o bomba suave, dejando al menos la mitad para la colonia. Enemigos: la mosquita forídea (jorobada) que arruina colonias débiles, además de hormigas y humedad; la higiene y las colonias fuertes lo previenen. Regla de oro: jamás saquear nidos silvestres; los nidos se compran a criadores legales o se rescatan con permiso.' },
-  { t: '🌙 La luna también manda aquí', d: 'Las reglas lunares de esta sección sirven igual: divisiones y revisiones en creciente, cosecha en menguante (menos pillaje y miel más densa). Las meliponas vuelan con calor (sobre 18–20 °C): abre solo en horas tibias y soleadas, nunca con frío, lluvia ni de noche. Anota cada manejo en la bitácora con su luna: en un año verás el patrón de tu lugar.' },
-  { t: '⚠️ Dato clave para Chile', d: 'En Chile no hay abejas sin aguijón nativas: su mundo es tropical y subtropical, y el clima templado no las sostiene. Por eso en Penco la meliponicultura como tal no es viable al aire libre; aquí lo concreto es la apicultura (Apis) más la protección de nativas como el chito y las solitarias. Esta guía te forma igual: los principios (nido, división, cosecha suave, flora) son los mismos que usarás con tus cajones y hoteles. Y si viajas al norte cálido, a Brasil, México o Centroamérica, ya sabrás qué mirar.' },
-  { t: '💛 Tu versión penco', d: 'Aplica la meliponicultura en Penco así: un cajón Apis bien llevado (esta sección), un hotel de insectos para solitarias, chilco y tabaco del diablo para el chito, y cero insecticida de 10–16h. Cada avistamiento de chito en tu bitácora vale lo que un pote de miel yateí: es el bosque pidiendo casa.' }
+  { t: '🌀 Tiempo circular Mari Küla Küyen', d: 'Aquí el tiempo no es una línea de cosechas: es un círculo que repara. Observar en Pewü, acompañar en Walüng, dejar semillar en Rimü y no molestar en Pukem. Cuidar el humedal Rocuant y los cerros de Penco es cuidar la casa de las abejas; cuidar las abejas es devolverle vida al territorio.' },
+  { t: '🐝 Por qué abejas nativas solitarias', d: 'Chile tiene más de 450 especies de abejas nativas, varias presentes en el Biobío (Chilicola, Centris, Eucerini). No producen miel, pero son polinizadores mucho más eficientes para la flora nativa chilena: coevolucionaron con ella. Donde la melífera visita de paso, la nativa asegura el fruto.' },
+  { t: '🌿 Adaptación perfecta a Penco', d: 'Evolucionaron junto al maqui, el boldo y el chilco: saben exactamente cuándo florece cada uno. Pasan el invierno penquista en latencia, enterradas o en cavidades, sin ayuda externa. No hay que abrigarlas ni alimentarlas: solo no molestarlas.' },
+  { t: '✌️ Cero mantenimiento agresivo', d: 'No requieren alimentación artificial, no se les extrae nada, la gran mayoría no pica (son solitarias y no defensivas) y no compiten con la melífera: cada una tiene su flor y su horario. Ideal para patios, escuelas y bordes del humedal.' },
+  { t: '🏠 Hotel de insectos paso a paso', d: 'Marco de madera sin químicos con techo y cara al norte, a 1,2–1,8 m. Dentro: cañas de colihue de 2–10 mm con nudo atrás, bloques perforados de 6–10 mm y toques de barro. Orificio sellado con barro = celda ocupada: no se abre. Recambia cada año solo las cañas vacías.' },
+  { t: '🌸 Jardín polinizador escalonado', d: 'La regla penco: chilco + maqui + añañuca + suelda con suelda cubren de primavera a otoño. Suma boldo, quillay, tabaco del diablo y chagual para el chito, y deja trébol y diente de león como despensa. 4 especies mínimo siempre en flor.' },
+  { t: '🧡 Protege al chito (peligro crítico)', d: 'El abejorro nativo Bombus dahlbomii está en peligro crítico y es polinizador clave de la zona. Cero pesticidas de 10–16h, chilco y tabaco del diablo sin podar en flor, y reporta cada avistamiento con foto, flor y fecha. Reportar es soberanía territorial.' },
+  { t: '💛 Tu versión penco', d: 'Patio: un hotel + 1 m² de suelo desnudo + bebedero con piedras. Escuela: taller de cañas y bitácora de avistamientos. Borde del humedal Rocuant y cerros: corredores de chilco y suelda sin podar en flor. Cada registro en tu bitácora vale lo que un pote de miel: es el bosque pidiendo casa.' }
 ];
 var MELI_MELIPONAS = [
-  { n: 'Yateí / Jataí', c: 'Tetragonisca angustula', z: 'Sudamérica y Mesoamérica', d: 'La más criada del continente: mansa, rústica y gran polinizadora; miel clara y ácida.' },
-  { n: 'Xunán kab', c: 'Melipona beecheii', z: 'México y Centroamérica', d: 'La sagrada de los mayas; miel preciada y colonias longevas en jobón.' },
-  { n: 'Uruçú', c: 'Melipona scutellaris', z: 'Nordeste de Brasil', d: 'Grande y productiva; su miel alcanza los precios más altos del mundo.' },
-  { n: 'Mandaçaia', c: 'Melipona quadrifasciata', z: 'Brasil y norte argentino', d: 'Reina de bandas amarillas; ideal para aprender a dividir.' },
-  { n: 'Jandaíra', c: 'Melipona subnitida', z: 'Caatinga brasileña', d: 'Sobrevive sequías extremas guardando miel en potes grandes.' },
-  { n: 'Canudo / Tiúba', c: 'Scaptotrigona spp.', z: 'Trópico americano', d: 'Muy productiva pero defensiva (muerde); para meliponicultores con experiencia.' }
+  { n: 'Chilicola', c: 'Chilicola spp.', z: 'Biobío · tallos y ramitas', d: 'Diminutas y fieles al jardín: anidan en tallos secos. Manojos de colihue fino (2–4 mm).' },
+  { n: 'Centris', c: 'Centris spp.', z: 'Biobío · suelo y flores diversas', d: 'Robustas y veloces, buscan aceites florales. Necesitan jardín diverso + suelo desnudo.' },
+  { n: 'Eucerinas', c: 'Eucerini spp.', z: 'Biobío · suelo', d: 'Cuernos largos en los machos, grandes polinizadoras de flores abiertas primavera–otoño.' },
+  { n: 'Caupolicana', c: 'Caupolicana gayi', z: 'Biobío · suelo soleado', d: 'Grande y peluda, primera en volar en primavera (añañuca, huilmo, azulillo).' },
+  { n: 'Corynura', c: 'Corynura chloris', z: 'Biobío · suelo y huerta', d: 'Verde-bronce chiquita y rápida: poliniza huerta y jardín todo el verano.' },
+  { n: 'Manuelia', c: 'Manuelia spp.', z: 'Endémica · ramitas secas', d: 'Carpintera chica endémica de Chile: deja podas delgadas apiladas bajo techo.' }
 ];
 var MELI_VS_APIS = [
-  { r: 'Aguijón', m: 'No tienen: manejo liviano, ideal para patios y escuelas (velo igual)', a: 'Tiene: traje, humo y respeto obligatorios' },
-  { r: 'Colonia', m: 'Cientos a pocos miles de obreras', a: 'Decenas de miles de obreras' },
-  { r: 'Miel por año', m: '1 a 5 litros por colonia (escasa y valiosa)', a: '20 a 40 kg por colmena en buena zona' },
-  { r: 'Miel', m: 'Líquida, ácida y floral; se guarda refrigerada', a: 'Densa y estable; se guarda a temperatura ambiente' },
-  { r: 'Nido', m: 'Potes redondos de cerumen + discos de cría', a: 'Panales hexagonales de cera pura' },
-  { r: 'Clima', m: 'Tropical y subtropical con flores casi todo el año', a: 'Se adapta a templado con manejo invernal' }
+  { r: 'Defensa', m: 'Casi no pican: solitarias, sin colonia que defender; se observan a 1 m', a: 'Pica para defender la colmena: traje, humo y respeto obligatorios' },
+  { r: 'Organización', m: 'Solitarias: cada hembra hace su propio nido en suelo, tallos o madera', a: 'Colonias de decenas de miles de obreras con reina' },
+  { r: 'Producto', m: 'Sin miel: su fruto es la polinización (más frutos y semillas)', a: '20 a 40 kg de miel por colmena en buena zona' },
+  { r: 'Nido', m: 'Celdas en tierra, cañas o madera; sello de barro = ocupada, no abrir', a: 'Panales hexagonales de cera en cajones manejables' },
+  { r: 'Invierno', m: 'Latencia natural enterradas o en cavidades: no se interviene en Pukem', a: 'Requiere reserva de 8–10 kg y manejo invernal' },
+  { r: 'Rol en Penco', m: 'Conservar: refugio + jardín + reporte (soberanía territorial)', a: 'Producir con medida y sin saturar la flor nativa' }
 ];
 function getMeli() { var a = store('meliLog', []); return Array.isArray(a) ? a : []; }
 function getMeliCustom() { var a = store('meliCustom', []); return Array.isArray(a) ? a : []; }
@@ -251,6 +260,8 @@ function meliEstacion(mes) {
 }
 var meliTab = 'hoy', meliEditingId = null;
 var MELI_TABS = [['hoy', 'meliHoyPanel', 'tabMeliHoy'], ['guia', 'meliGuiaPanel', 'tabMeliGuia'], ['especies', 'meliEspPanel', 'tabMeliEsp'], ['flora', 'meliFloraPanel', 'tabMeliFlora'], ['manejo', 'meliManPanel', 'tabMeliMan'], ['bit', 'meliBitPanel', 'tabMeliBit']];
+var MELI_ACCIONES = ['avistamiento', 'avistamiento chito', 'hotel construido', 'revisión hotel (sin abrir)', 'siembra polinizadora', 'nido en suelo protegido', 'bebedero / agua', 'taller en escuela', 'día sin pesticida', 'reporte europeo / invasor', 'limpieza hotel (celdas vacías)'];
+var MELI_ESTADOS = ['activo', 'en flor', 'en nido', 'en latencia', 'solo avistamiento', 'vigilar', 'con amenaza'];
 function switchMeliTab(t) {
   meliTab = t;
   MELI_TABS.forEach(function (x) {
@@ -264,33 +275,38 @@ function switchMeliTab(t) {
   if (t === 'manejo') renderMeliManejo();
   if (t === 'bit') renderMeliLog();
 }
+function meliCount(it) {
+  if (it && it.n !== undefined && it.n !== null && String(it.n) !== '') return String(it.n);
+  return '';
+}
 function renderMeliHoy() {
   var box = $('meliTodayBox');
   if (box) {
     var k = todayKey(), data = getMeli();
     var hoy = data.filter(function (x) { return x.date === k; }).length;
-    var kg = data.reduce(function (a, r) { return a + (parseFloat(r.kg) || 0); }, 0);
-    var cos = data.filter(function (x) { return x.action === 'cosecha'; }).length;
     var chi = data.filter(function (x) { return x.action === 'avistamiento chito'; }).length;
+    var hot = data.filter(function (x) { return x.action === 'hotel construido' || x.action === 'revisión hotel (sin abrir)'; }).length;
+    var jar = data.filter(function (x) { return x.action === 'siembra polinizadora' || x.action === 'nido en suelo protegido'; }).length;
+    var leg = data.reduce(function (a, r) { return a + (parseFloat(r.kg) || 0); }, 0);
     var t = tithiHoy(), fase = faseManejo(t);
-    var consejo = fase === 'menguante' ? '🌖 <b>Menguante: ventana de COSECHA</b> — marcos operculados + humo suave + deja 8–10 kg por colmena para Pukem.'
-      : fase === 'creciente' ? '🌒 <b>Creciente: ventana de INSPECCIÓN</b> — revisa postura y espacio, pon alza si 7/10 marcos llenos.'
-      : fase === 'llena' ? '🌕 <b>Llena: observa, no abras al mediodía</b> — mira piquera y anota floración.'
-      : fase === 'nueva' ? '🌑 <b>Nueva: taller</b> — repara cajones, funde cera, arma marcos.'
-      : 'Mira la luna de hoy y elige: creciente = abrir, menguante = cosechar.';
+    var consejo = fase === 'menguante' ? '🌖 <b>Menguante: revisión externa suave</b> — mira hoteles por fuera, limpia solo celdas vacías y repone bebederos.'
+      : fase === 'creciente' ? '🌒 <b>Creciente: ventana de OBSERVACIÓN</b> — 10–16h, a 1 m, sin atrapar. Anota flor visitada + hora.'
+      : fase === 'llena' ? '🌕 <b>Llena: pico de vuelo, no intervengas al mediodía</b> — solo mira piqueras de hoteles y anota floración.'
+      : fase === 'nueva' ? '🌑 <b>Nueva: taller</b> — corta cañas de colihue, perfora maderas, acopia barro y siembra.'
+      : 'Mira la luna de hoy y elige: creciente = observar, menguante = revisar por fuera, nueva = taller.';
     box.innerHTML = '<div class="su-24ce67">' +
       '<span class="su-433de3"><b>🐝 Hoy — ' + esc(k) + '</b></span>' +
-      '<span class="chip su-e4aba6">' + hoy + ' hoy · ' + data.length + ' total · ' + kg.toFixed(1) + ' kg miel</span></div>' +
-      '<p class="muted su-e13d76">Cosecha en <b>menguante</b> · inspección en <b>creciente</b>. Al <b>chito no se le cosecha</b>: se protege. ' + esc(lunaTxt(k)) + (t >= 0 ? ' (tithi ' + t + ')' : '') + '</p>' +
+      '<span class="chip su-e4aba6">' + hoy + ' hoy · ' + data.length + ' total · 🧡 ' + chi + ' chitos</span></div>' +
+      '<p class="muted su-e13d76">Sin cosecha y sin apuro: <b>observar, refugiar y plantar</b>. Al <b>chito no se le toca</b>: se reporta. ' + esc(lunaTxt(k)) + (t >= 0 ? ' (tithi ' + t + ')' : '') + '</p>' +
       '<div class="chip su-e75717">' + consejo + '</div>' +
-      '<p class="muted su-e13d76">🍯 ' + cos + ' cosechas · 👀 ' + chi + ' avistamientos de chito</p>';
+      '<p class="muted su-e13d76">🏠 ' + hot + ' hoteles · 🌱 ' + jar + ' siembras y nidos' + (leg > 0 ? ' · 🍯 ' + leg.toFixed(1) + ' kg miel (registro apícola antiguo)' : '') + '</p>';
   }
   var eb = $('meliEstBox');
   if (eb) {
     var mes = (new Date()).getMonth() + 1;
     var est = meliEstacion(mes);
     eb.innerHTML = '<div class="si-card su-cfa1ec"><h4 class="su-6cb285">' + esc(est.e) + ' — ' + esc(est.t) + '</h4><p class="su-11a508">' + esc(est.d) + '</p></div>' +
-      '<p class="muted su-d47a97">Detalle por estación en la pestaña 🧰 Manejo.</p>';
+      '<p class="muted su-d47a97">Detalle por estación en la pestaña 🏠 Refugios.</p>';
   }
   var lb = $('meliLunaBox');
   if (lb) {
@@ -301,21 +317,20 @@ function renderMeliHoy() {
   var hb = $('meliColBox');
   if (hb) {
     var data2 = getMeli();
-    if (!data2.length) { hb.innerHTML = '<p class="muted">Sin colmenas aún. Guarda tu primera inspección en 📓 Bitácora y aquí verás el resumen por cajón.</p>'; }
+    if (!data2.length) { hb.innerHTML = '<p class="muted">Sin refugios aún. Guarda tu primer hotel o avistamiento en 📓 Bitácora y aquí verás el resumen por refugio.</p>'; }
     else {
       var por = {};
       data2.forEach(function (r) {
         var h = (r.hive || 'Sin nombre').trim() || 'Sin nombre';
-        if (!por[h]) por[h] = { n: 0, kg: 0, ult: '' };
+        if (!por[h]) por[h] = { n: 0, ult: '' };
         por[h].n++;
-        por[h].kg += parseFloat(r.kg) || 0;
         if (!por[h].ult || (r.date || '') > por[h].ult) por[h].ult = r.date || '';
       });
       var keys = Object.keys(por).sort();
       hb.innerHTML = '<div class="fishing-species">' + keys.slice(0, 12).map(function (h) {
         var p = por[h];
-        return '<div class="fishing-species-item"><b class="su-6cb285">🍯 ' + esc(h) + '</b>' +
-          '<div class="su-11a508">' + p.n + ' registros · ' + p.kg.toFixed(1) + ' kg miel</div>' +
+        return '<div class="fishing-species-item"><b class="su-6cb285">🏠 ' + esc(h) + '</b>' +
+          '<div class="su-11a508">' + p.n + ' registros</div>' +
           '<div class="muted su-3ba0db">Último: ' + esc(p.ult || '—') + ' ' + esc(lunaTxt(p.ult || '')) + '</div></div>';
       }).join('') + '</div>';
     }
@@ -328,7 +343,7 @@ function renderMeliEsp() {
     var meliMine = getMeliCustom().length;
     cb.innerHTML = '<p class="muted su-2c4c6c">' + MELI_ESPECIES.length + ' base' + (meliMine ? ' + <b>' + meliMine + ' mías</b>' : '') + ' · toca una para cargarla en la bitácora.</p>' +
       '<div class="fishing-species">' + meliList.map(function (f) {
-      var inv = /Introducido|invasor|invasora|peligro/i.test(f.rol || '');
+      var inv = /Introducido|invasor|peligro/i.test(f.rol || '');
       var border = inv ? ';border-color:#e76e8a44' : (f.mine ? ';border-color:#a9d18e55' : '');
       return '<div class="fishing-species-item" style="cursor:pointer' + border + '" data-meli="' + esc(f.nombre) + '">' +
         '<b class="su-6cb285">🐝 ' + esc(f.nombre) + '</b>' + (f.mine ? ' <span class="chip su-421073">mía</span>' : '') +
@@ -342,10 +357,10 @@ function renderMeliEsp() {
     '<details class="su-9cf9f9"><summary class="su-d9db22"><b>➕ Agregar especie</b></summary>' +
     '<div class="conv-row su-8a77e5"><label class="su-4b3de7">Especie * <input type="text" id="meliSpName" placeholder="ej: Abeja verde metálica" maxlength="40"></label></div>' +
     '<div class="conv-row"><label class="su-4b3de7">Nombre científico <input type="text" id="meliSpCient" placeholder="ej: Augochlora sp." maxlength="50"></label>' +
-    '<label>Rol <select id="meliSpRol"><option>🌿 Nativa solitaria</option><option>🌿 Nativa protegida (NO cosechar)</option><option>🍯 Productiva (introducida)</option><option>⚠️ Introducido invasor</option><option>⚠️ Avispa invasora (peligro)</option><option>🌿 Nativas solitarias</option><option>🌿 Nativa (endémica)</option></select></label></div>' +
+    '<label>Rol <select id="meliSpRol"><option>🌿 Nativa solitaria</option><option>🌿 Nativa solitaria (suelo)</option><option>🌿 Nativa solitaria (tallos)</option><option>🌿 Nativa solitaria (cañas)</option><option>🌿 Nativa solitaria (madera)</option><option>🌿 Nativa endémica (ramitas)</option><option>🧡 Nativa protegida · peligro crítico</option><option>🍯 Introducida (contexto)</option><option>⚠️ Introducido invasor</option></select></label></div>' +
     '<label>Flores que visita <input type="text" id="meliSpFlor" placeholder="ej: Pewü–Walüng (chilco, quillay)" maxlength="80"></label>' +
     '<label>Nota <input type="text" id="meliSpNota" placeholder="ej: Pequeña, anida en suelo, gran polinizadora" maxlength="120"></label>' +
-    '<label>Manejo / orn <input type="text" id="meliSpOrn" placeholder="ej: Deja parche de suelo sin mulch para nidos" maxlength="120"></label>' +
+    '<label>Refugio sugerido <input type="text" id="meliSpOrn" placeholder="ej: Deja parche de suelo sin mulch para nidos" maxlength="120"></label>' +
     '<div class="dlg-actions su-59a5a8"><button type="button" id="meliSpAdd" class="btn btn-accent su-30e741">+ Guardar especie</button></div></details>' +
     '<p class="muted su-d47a97">Toca una especie para cargarla en la bitácora.</p>';
     cb.querySelectorAll('[data-meli]').forEach(function (el) {
@@ -394,13 +409,13 @@ function renderMeliEsp() {
     ch.innerHTML = '<div class="si-card su-cfa1ec"><h4 class="su-6cb285">🧡 ¿Chito o europeo? Míralo así</h4>' +
       MELI_CHITO.map(function (r) {
         return '<p class="su-11a508"><b>' + esc(r.r) + ':</b> 🧡 chito: ' + esc(r.ch) + ' · europeo: ' + esc(r.eu) + '</p>';
-      }).join('') + '</div>';
+      }).join('') + '<p class="muted su-3ba0db">🧡 El chito está en peligro crítico: cada avistamiento con foto, flor y fecha es soberanía territorial.</p></div>';
   }
 }
 function renderMeliFlora() {
   var fb = $('meliFloraBox');
   if (fb) {
-    fb.innerHTML = '<p class="muted su-2c4c6c">' + MELI_FLORA.length + ' plantas que sostienen a tus abejas en Penco. Siembra escalonado: que siempre haya algo en flor.</p>' +
+    fb.innerHTML = '<p class="muted su-2c4c6c">' + MELI_FLORA.length + ' plantas que sostienen a tus abejas nativas en Penco. Siembra escalonado: que siempre haya algo en flor de primavera a otoño.</p>' +
       '<div class="fishing-species">' + MELI_FLORA.map(function (p) {
       return '<div class="fishing-species-item"><b class="su-6cb285">🌸 ' + esc(p.n) + '</b>' +
         '<div class="su-8d47b6">' + esc(p.f) + '</div>' +
@@ -408,7 +423,7 @@ function renderMeliFlora() {
         '<div class="muted su-3ba0db">' + esc(p.d) + '</div></div>';
     }).join('') + '</div>' +
     '<div class="si-card su-cfa1ec"><h4 class="su-6cb285">🌱 Para plantar este mes</h4>' +
-    '<p class="su-11a508">Regla simple: <b>chilco + quillay + tabaco del diablo + trébol</b> cubren casi todo el año. Marca en Flora cuándo abre cada flor y cruza el dato con tu bitácora de pecoreo.</p></div>';
+    '<p class="su-11a508">Regla penco: <b>chilco + maqui + añañuca + suelda con suelda</b> cubren casi todo el año. El chito agradece además <b>tabaco del diablo y chagual</b>. Marca en Flora cuándo abre cada flor y cruza el dato con tu bitácora de visitas.</p></div>';
   }
 }
 function renderMeliManejo() {
@@ -454,7 +469,7 @@ function renderMeliCheck() {
       var d = getMeliCheck();
       var k = c.getAttribute('data-chk');
       if (c.checked) d[k] = true; else delete d[k];
-      save('Checklist apícola actualizado 🐝');
+      save('Checklist de abejas nativas actualizado 🐝');
       paint();
     };
   });
@@ -462,37 +477,39 @@ function renderMeliCheck() {
 function meliCalcReserva() {
   var out = $('meliCalcOut');
   if (!out) return;
-  var n = parseInt(((($('meliCalcCol') || {}).value) || '0'), 10) || 0;
-  var kg = parseFloat(((($('meliCalcKg') || {}).value) || '0')) || 0;
-  if (n <= 0) { out.innerHTML = '<span class="chip">Pon cuántas colmenas invernan</span>'; return; }
-  var reserva = n * 9;
-  var exc = kg - reserva;
-  out.innerHTML = '<div class="chip su-e75717">❄️ Reserva Pukem: <b>' + reserva.toFixed(1) + ' kg</b> (' + n + ' × 9 kg)</div>' +
-    (exc >= 0
-      ? '<p class="su-11a508">Puedes cosechar hasta <b>' + exc.toFixed(1) + ' kg</b> y dejar el resto. Si dudas, deja 1 marco más por colmena.</p>'
-      : '<p class="su-11a508">⚠️ Te faltan <b>' + Math.abs(exc).toFixed(1) + ' kg</b>: no coseches y alimenta solo si la colmena está liviana.</p>');
+  var m2 = parseFloat(((($('meliCalcCol') || {}).value) || '0').toString().replace(',', '.')) || 0;
+  var hot = parseInt(((($('meliCalcKg') || {}).value) || '0'), 10) || 0;
+  if (m2 <= 0) { out.innerHTML = '<span class="chip">Pon los m² de tu jardín para planificar</span>'; return; }
+  var plantas = Math.ceil(m2 * 2);
+  var hotRec = Math.max(1, Math.ceil(m2 / 10));
+  var faltan = Math.max(0, hotRec - hot);
+  out.innerHTML = '<div class="chip su-e75717">🌱 Para ' + esc(String(m2)) + ' m²: <b>' + plantas + ' plantas</b> + <b>' + hotRec + ' hotel(es)</b></div>' +
+    (faltan > 0
+      ? '<p class="su-11a508">Te faltan <b>' + faltan + ' hotel(es)</b>: uno por cada 10 m² (mínimo 1). Suma además 1 bebedero con piedras a la sombra.</p>'
+      : '<p class="su-11a508">✅ Hoteles suficientes. Ahora asegura <b>4+ especies</b> (chilco + maqui + añañuca + suelda) para cubrir primavera–otoño.</p>');
 }
 function renderMeliGuia() {
   var gb = $('meliGuiaBox');
   if (!gb) return;
-  gb.innerHTML = '<p class="muted su-2c4c6c">La crianza de abejas nativas sin aguijón: tradición milenaria, miel medicinal y bosque vivo. Lee de corrido o por partes.</p>' +
+  gb.innerHTML = '<p class="muted su-2c4c6c">Conservación de abejas nativas solitarias y del chito en Penco: tiempo circular, refugio y jardín. Lee de corrido o por partes.</p>' +
     MELI_GUIA.map(function (s) {
       return '<div class="si-card su-cfa1ec"><h4 class="su-6cb285">' + esc(s.t) + '</h4><p class="su-11a508">' + esc(s.d) + '</p></div>';
     }).join('') +
-    '<div class="si-card su-cfa1ec"><h4 class="su-6cb285">⭐ Meliponas famosas del mundo</h4>' +
+    '<div class="si-card su-cfa1ec"><h4 class="su-6cb285">⭐ Géneros nativos presentes en el Biobío</h4>' +
     MELI_MELIPONAS.map(function (m) {
       return '<p class="su-11a508"><b>' + esc(m.n) + '</b> <span class="muted">(' + esc(m.c) + ' · ' + esc(m.z) + ')</span> — ' + esc(m.d) + '</p>';
     }).join('') + '</div>' +
-    '<div class="si-card su-cfa1ec"><h4 class="su-6cb285">⚖️ Meliponicultura vs apicultura</h4>' +
+    '<div class="si-card su-cfa1ec"><h4 class="su-6cb285">⚖️ Nativas solitarias vs melífera</h4>' +
     MELI_VS_APIS.map(function (r) {
-      return '<p class="su-11a508"><b>' + esc(r.r) + ':</b> 🐝 sin aguijón: ' + esc(r.m) + ' · 🍯 Apis: ' + esc(r.a) + '</p>';
+      return '<p class="su-11a508"><b>' + esc(r.r) + ':</b> 🐝 nativas: ' + esc(r.m) + ' · 🍯 melífera: ' + esc(r.a) + '</p>';
     }).join('') + '</div>';
 }
 function meliShareText(arr) {
-  if (!arr.length) return 'Bitácora apícola lunar — Penco · sin registros aún';
-  var t = '🐝 Bitácora apícola lunar — Penco\n' + arr.length + ' registros\n\n';
+  if (!arr.length) return 'Bitácora de abejas nativas — Penco · sin registros aún';
+  var t = '🐝 Bitácora de abejas nativas — Penco\n' + arr.length + ' registros\n\n';
   arr.slice().sort(function (a, b) { return (a.date + (a.time || '')).localeCompare(b.date + (b.time || '')); }).forEach(function (e) {
-    t += '• ' + e.date + ' ' + (e.time || '') + ' · ' + (e.hive || 'colmena') + ' · ' + e.species + ' (' + (e.action || '—') + ')' + (e.kg ? ' · ' + e.kg + ' kg' : '') + (e.estado && e.estado !== 'sana' ? ' · ' + e.estado : '') + (e.place ? ' · ' + e.place : '') + (e.flor ? ' · flor: ' + e.flor : '');
+    var cant = (e.n !== undefined && e.n !== null && String(e.n) !== '') ? ' ×' + e.n : (e.kg ? ' · ' + e.kg + ' kg (apícola antiguo)' : '');
+    t += '• ' + e.date + ' ' + (e.time || '') + ' · ' + (e.hive || 'refugio') + ' · ' + e.species + ' (' + (e.action || '—') + ')' + cant + (e.estado && e.estado !== 'activo' ? ' · ' + e.estado : '') + (e.place ? ' · ' + e.place : '') + (e.flor ? ' · flor: ' + e.flor : '');
     if (e.notes) t += ' — ' + e.notes;
     t += '\n';
   });
@@ -501,22 +518,22 @@ function meliShareText(arr) {
 function renderMeliLog() {
   var data = getMeli();
   logListRender('meliLogBox', 'meliStats', data, function (it) {
-    return '<div class="habit-item su-13313b"><span><b>' + esc(it.species) + '</b> · <span class="chip su-0d5be0">' + esc(it.action || '—') + '</span>' + (it.estado && it.estado !== 'sana' ? ' <span class="chip su-fb2957">' + esc(it.estado) + '</span>' : '') + (it.kg ? ' · 🍯 ' + esc(it.kg) + ' kg' : '') + ' — ' + esc(it.hive || '—') +
+    var cant = meliCount(it) ? ' ×' + esc(meliCount(it)) : (it.kg ? ' · 🍯 ' + esc(it.kg) + ' kg (antiguo)' : '');
+    return '<div class="habit-item su-13313b"><span><b>' + esc(it.species) + '</b> · <span class="chip su-0d5be0">' + esc(it.action || '—') + '</span>' + (it.estado && it.estado !== 'activo' ? ' <span class="chip su-fb2957">' + esc(it.estado) + '</span>' : '') + cant + ' — ' + esc(it.hive || '—') +
       ((it.place || it.flor) ? '<br><span class="muted su-11a508">📍 ' + esc(it.place || '—') + (it.flor ? ' · 🌸 ' + esc(it.flor) : '') + '</span>' : '') +
       '<br><span class="muted su-11a508">' + esc(it.date) + ' ' + esc(it.time || '') + ' · ' + esc(lunaTxt(it.date)) + '</span><br><span class="muted su-11a508">' + esc(it.notes || '') + '</span></span>' +
       '<span class="su-0c0cb1"><button data-id="' + it.id + '" class="btn meli-share su-337714">📤</button><button data-id="' + it.id + '" class="btn meli-edit su-337714">✏️</button><button data-id="' + it.id + '" class="btn meli-del su-fd834a">✕</button></span></div>';
-  }, 'Sin registros. Anota tu primera inspección o un avistamiento de chito: fecha, colmena/flor y luna valen manejo.');
+  }, 'Sin registros. Anota tu primer avistamiento o tu primer hotel: fecha, refugio/flor y luna valen conservación.');
   var box = $('meliLogBox');
   if (!box || !data.length) return;
-  var kg = data.reduce(function (a, r) { return a + (parseFloat(r.kg) || 0); }, 0);
-  var cos = data.filter(function (x) { return x.action === 'cosecha'; }).length;
   var chi = data.filter(function (x) { return x.action === 'avistamiento chito'; }).length;
+  var hot = data.filter(function (x) { return x.action === 'hotel construido' || x.action === 'revisión hotel (sin abrir)'; }).length;
   var st = $('meliStats');
-  if (st) st.textContent = data.length + ' registros · 🍯 ' + kg.toFixed(1) + ' kg miel · ' + cos + ' cosechas · 👀 ' + chi + ' chitos';
+  if (st) st.textContent = data.length + ' registros · 🧡 ' + chi + ' chitos · 🏠 ' + hot + ' hoteles';
   box.querySelectorAll('.meli-share').forEach(function (b) {
     b.onclick = function () {
       var it = getMeli().find(function (x) { return x.id === b.getAttribute('data-id'); });
-      if (it) share('🐝 ' + it.species + ' · ' + it.date, '🐝 ' + it.species + ' (' + (it.action || '') + ') · ' + it.date + '\n🍯 ' + (it.kg || '0') + ' kg · ' + (it.hive || '') + (it.place ? ' · ' + it.place : '') + '\n🌙 ' + lunaTxt(it.date) + '\n— Bitácora apícola · Mari Küla Küyen');
+      if (it) share('🐝 ' + it.species + ' · ' + it.date, '🐝 ' + it.species + ' (' + (it.action || '') + ') · ' + it.date + '\n' + (meliCount(it) ? '×' + meliCount(it) + ' · ' : '') + (it.hive || '') + (it.place ? ' · ' + it.place : '') + '\n🌙 ' + lunaTxt(it.date) + '\n— Bitácora de abejas nativas · Mari Küla Küyen');
     };
   });
   box.querySelectorAll('.meli-edit').forEach(function (b) {
@@ -525,17 +542,28 @@ function renderMeliLog() {
       if (!d) return;
       meliEditingId = d.id;
       $('meliDate').value = d.date; $('meliTime').value = d.time || '10:00'; $('meliHive').value = d.hive || '';
-      $('meliSpecies').value = d.species || ''; $('meliAction').value = d.action || 'inspección';
-      $('meliKg').value = d.kg || ''; $('meliNotes').value = d.notes || '';
+      $('meliSpecies').value = d.species || '';
+      var actSel = $('meliAction');
+      if (actSel) {
+        var found = false;
+        for (var i = 0; i < actSel.options.length; i++) { if (actSel.options[i].value === d.action || actSel.options[i].text === d.action) { actSel.selectedIndex = i; found = true; break; } }
+        if (!found && d.action) { var op = document.createElement('option'); op.value = d.action; op.text = d.action + ' (antiguo)'; actSel.appendChild(op); actSel.selectedIndex = actSel.options.length - 1; }
+      }
+      $('meliKg').value = (d.n !== undefined && d.n !== null) ? d.n : (d.kg || '');
+      $('meliNotes').value = d.notes || '';
       if ($('meliPlace')) $('meliPlace').value = d.place || '';
       if ($('meliFlor')) $('meliFlor').value = d.flor || '';
-      if ($('meliEstado')) $('meliEstado').value = d.estado || 'sana';
+      if ($('meliEstado')) {
+        var esSel = $('meliEstado'), ok = false;
+        for (var j = 0; j < esSel.options.length; j++) { if (esSel.options[j].value === d.estado || esSel.options[j].text === d.estado) { esSel.selectedIndex = j; ok = true; break; } }
+        if (!ok && d.estado) { var op2 = document.createElement('option'); op2.value = d.estado; op2.text = d.estado + ' (antiguo)'; esSel.appendChild(op2); esSel.selectedIndex = esSel.options.length - 1; }
+      }
       $('meliAdd').textContent = '↻ Actualizar'; $('meliCancelEdit').classList.remove('hidden');
     };
   });
   box.querySelectorAll('.meli-del').forEach(function (b) {
     b.onclick = function () {
-      if (!confirm('¿Eliminar registro apícola?')) return;
+      if (!confirm('¿Eliminar registro de abejas nativas?')) return;
       var arr = getMeli();
       var i = arr.findIndex(function (x) { return x.id === b.getAttribute('data-id'); });
       if (i >= 0) arr.splice(i, 1);
@@ -550,46 +578,46 @@ function ensureMeliDialog() {
   d.innerHTML =
     '<form method="dialog">' +
     '<div class="dlg-actions su-d2d053">' +
-    '<h3 class="su-ee0cfe">🐝 Apicultura lunar — Penco</h3>' +
+    '<h3 class="su-ee0cfe">🐝 Abejas nativas — Penco · Mari Küla Küyen</h3>' +
     '<button type="button" id="meliCloseTop" class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    '<p class="muted su-77e2fe">Cosecha en <b>menguante</b>, inspección en <b>creciente</b>. Protege al <b>chito</b> (no se cosecha). Registro <b>privado y local</b>.</p>' +
+    '<p class="muted su-77e2fe">Sin cosecha y sin apuro: <b>observar, refugiar y plantar</b>. Al <b>chito no se le toca</b>: se reporta. Registro <b>privado y local</b>.</p>' +
     '<div class="timer-tabs su-4dca21">' +
-    '<button type="button" id="tabMeliHoy" class="btn btn-accent su-30e741">🐝 Hoy lunar</button>' +
+    '<button type="button" id="tabMeliHoy" class="btn btn-accent su-30e741">🐝 Hoy circular</button>' +
     '<button type="button" id="tabMeliGuia" class="btn su-30e741">📖 Guía</button>' +
     '<button type="button" id="tabMeliEsp" class="btn su-30e741">🐝 Especies</button>' +
-    '<button type="button" id="tabMeliFlora" class="btn su-30e741">🌸 Flora</button>' +
-    '<button type="button" id="tabMeliMan" class="btn su-30e741">🧰 Manejo</button>' +
+    '<button type="button" id="tabMeliFlora" class="btn su-30e741">🌸 Jardín</button>' +
+    '<button type="button" id="tabMeliMan" class="btn su-30e741">🏠 Refugios</button>' +
     '<button type="button" id="tabMeliBit" class="btn su-30e741">📓 Bitácora</button></div>' +
     '<div id="meliHoyPanel"><div id="meliTodayBox" class="menstrual-card su-68a1a9"></div>' +
     '<div class="menstrual-card su-d2c171"><h4>🍂 Estación en Penco</h4><div id="meliEstBox" class="su-be2653"></div></div>' +
-    '<div class="menstrual-card su-d2c171"><h4>🌙 Calendario de manejo por luna</h4><div id="meliLunaBox" class="su-be2653"></div></div>' +
-    '<div class="menstrual-card"><h4>🍯 Mis colmenas</h4><div id="meliColBox" class="su-be2653"></div></div></div>' +
-    '<div id="meliGuiaPanel" class="hidden"><div class="menstrual-card su-68a1a9"><h4>📖 Qué es la meliponicultura — guía completa</h4><div id="meliGuiaBox"></div></div></div>' +
-    '<div id="meliEspPanel" class="hidden"><div class="menstrual-card"><h4>🐝 Catálogo local — productivas y nativas</h4><div id="meliCatalogBox"></div>' +
+    '<div class="menstrual-card su-d2c171"><h4>🌙 Calendario circular por luna</h4><div id="meliLunaBox" class="su-be2653"></div></div>' +
+    '<div class="menstrual-card"><h4>🏠 Mis refugios</h4><div id="meliColBox" class="su-be2653"></div></div></div>' +
+    '<div id="meliGuiaPanel" class="hidden"><div class="menstrual-card su-68a1a9"><h4>📖 Por qué abejas nativas — guía completa</h4><div id="meliGuiaBox"></div></div></div>' +
+    '<div id="meliEspPanel" class="hidden"><div class="menstrual-card"><h4>🐝 Catálogo Biobío — solitarias y chito</h4><div id="meliCatalogBox"></div>' +
     '<div id="meliChitoBox" class="su-be2653"></div>' +
-    '<p class="muted su-d47a97">⚠️ Si eres alérgico/a lleva adrenalina y avisa a tu red. Humo suave, traje claro, nunca abras con tormenta ni de noche.</p></div></div>' +
-    '<div id="meliFloraPanel" class="hidden"><div class="menstrual-card"><h4>🌸 Flora melífera de Penco</h4><div id="meliFloraBox"></div></div></div>' +
+    '<p class="muted su-d47a97">⚠️ La gran mayoría no pica: observa a 1 m, sin atrapar ni abrir celdas selladas. Si eres alérgico/a a picaduras, mantén tu plan de siempre y avisa a tu red.</p></div></div>' +
+    '<div id="meliFloraPanel" class="hidden"><div class="menstrual-card"><h4>🌸 Jardín polinizador escalonado de Penco</h4><div id="meliFloraBox"></div></div></div>' +
     '<div id="meliManPanel" class="hidden">' +
-    '<div class="menstrual-card su-d2c171"><h4>🍂 Manejo por estación (Pewü · Walüng · Rimü · Pukem)</h4><div id="meliAnualBox" class="su-be2653"></div></div>' +
-    '<div class="menstrual-card"><h4>🧾 Checklist de inspección (se guarda solo)</h4><div id="meliCheckBox" class="habits-list su-62f8f6"></div><p class="muted su-11a508" id="meliCheckProg"></p></div>' +
-    '<div class="menstrual-card"><h4>🩺 Sanidad: qué mirar y qué hacer</h4><div id="meliSanidadBox"></div></div>' +
-    '<div class="menstrual-card su-d2c171"><h4>❄️ Calculadora de reserva invernal</h4>' +
-    '<div class="conv-row"><label>Colmenas que invernan <input type="text" id="meliCalcCol" inputmode="numeric" placeholder="ej: 2" maxlength="3"></label>' +
-    '<label>Miel acopiada total (kg) <input type="text" id="meliCalcKg" inputmode="decimal" placeholder="ej: 25" maxlength="6"></label></div>' +
-    '<div class="dlg-actions su-59a5a8"><button type="button" id="meliCalcBtn" class="btn btn-accent su-30e741">= Calcular reserva</button></div>' +
+    '<div class="menstrual-card su-d2c171"><h4>🍂 Círculo del año (Pewü · Walüng · Rimü · Pukem)</h4><div id="meliAnualBox" class="su-be2653"></div></div>' +
+    '<div class="menstrual-card"><h4>🧾 Checklist de hotel y jardín (se guarda solo)</h4><div id="meliCheckBox" class="habits-list su-62f8f6"></div><p class="muted su-11a508" id="meliCheckProg"></p></div>' +
+    '<div class="menstrual-card"><h4>🩺 Amenazas: qué mirar y qué hacer</h4><div id="meliSanidadBox"></div></div>' +
+    '<div class="menstrual-card su-d2c171"><h4>🌱 Planificador de jardín polinizador</h4>' +
+    '<div class="conv-row"><label>Jardín (m²) <input type="text" id="meliCalcCol" inputmode="decimal" placeholder="ej: 6" maxlength="6"></label>' +
+    '<label>Hoteles ya instalados <input type="text" id="meliCalcKg" inputmode="numeric" placeholder="ej: 1" maxlength="3"></label></div>' +
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="meliCalcBtn" class="btn btn-accent su-30e741">= Planificar</button></div>' +
     '<div id="meliCalcOut" class="su-be2653"></div>' +
-    '<p class="muted su-11a508">Regla: 9 kg por colmena para pasar Pukem. Marco operculado estándar ≈ 2,5 kg.</p></div>' +
-    '<div class="menstrual-card"><h4>🏺 Productos de la colmena</h4><div id="meliProdBox" class="su-be2653"></div></div></div>' +
-    '<div id="meliBitPanel" class="hidden"><div class="menstrual-card su-d2c171"><h4>📓 Bitácora de colmenas</h4>' +
+    '<p class="muted su-11a508">Regla: 2 plantas por m² + 1 hotel por cada 10 m² (mínimo 1) + 4 especies mínimo en flor.</p></div>' +
+    '<div class="menstrual-card"><h4>🌼 Frutos de conservar (sin extraer)</h4><div id="meliProdBox" class="su-be2653"></div></div></div>' +
+    '<div id="meliBitPanel" class="hidden"><div class="menstrual-card su-d2c171"><h4>📓 Bitácora de avistamientos y refugios</h4>' +
     '<div class="conv-row"><label>Fecha <input type="date" id="meliDate"></label><label>Hora <input type="time" id="meliTime" value="10:00"></label>' +
-    '<label>Colmena / nido <input type="text" id="meliHive" placeholder="ej: Cajón 1, Nido chito quebrada" maxlength="30"></label></div>' +
-    '<div class="conv-row"><label>Especie <input type="text" id="meliSpecies" placeholder="ej: Melífera, Chito" maxlength="30"></label>' +
-    '<label>Acción <select id="meliAction"><option>inspección</option><option>cosecha</option><option>alimentación</option><option>control varroa</option><option>división / núcleo</option><option>avistamiento chito</option><option>captura de enjambre</option><option>cosecha cera / propóleo</option><option>reparación material</option></select></label>' +
-    '<label>Miel kg <input type="text" id="meliKg" placeholder="ej: 4.5" maxlength="10"></label></div>' +
-    '<div class="conv-row"><label>Lugar <input type="text" id="meliPlace" placeholder="ej: Cerro Verde, patio casa" maxlength="40"></label>' +
-    '<label>Floración <input type="text" id="meliFlor" placeholder="ej: Quillay a full, chilco" maxlength="40"></label>' +
-    '<label>Estado <select id="meliEstado"><option>sana</option><option>vigilar</option><option>huérfana (sin reina)</option><option>con varroa</option><option>enjambró</option><option>débil</option><option>solo avistamiento</option></select></label></div>' +
-    '<label>Notas <input type="text" id="meliNotes" placeholder="ej: 8 marcos llenos, puse alza, polen naranjo" maxlength="80"></label>' +
+    '<label>Refugio / nido <input type="text" id="meliHive" placeholder="ej: Hotel 1, parche suelo, nido chito quebrada" maxlength="30"></label></div>' +
+    '<div class="conv-row"><label>Especie <input type="text" id="meliSpecies" placeholder="ej: Chito, Caupolicana, Cortadora" maxlength="30"></label>' +
+    '<label>Acción <select id="meliAction"><option>avistamiento</option><option>avistamiento chito</option><option>hotel construido</option><option>revisión hotel (sin abrir)</option><option>siembra polinizadora</option><option>nido en suelo protegido</option><option>bebedero / agua</option><option>taller en escuela</option><option>día sin pesticida</option><option>reporte europeo / invasor</option><option>limpieza hotel (celdas vacías)</option></select></label>' +
+    '<label>N° individuos <input type="text" id="meliKg" placeholder="ej: 3" maxlength="10"></label></div>' +
+    '<div class="conv-row"><label>Lugar <input type="text" id="meliPlace" placeholder="ej: Cerro Verde, patio casa, borde humedal" maxlength="40"></label>' +
+    '<label>Flor visitada <input type="text" id="meliFlor" placeholder="ej: Chilco a full, tabaco del diablo" maxlength="40"></label>' +
+    '<label>Estado <select id="meliEstado"><option>activo</option><option>en flor</option><option>en nido</option><option>en latencia</option><option>solo avistamiento</option><option>vigilar</option><option>con amenaza</option></select></label></div>' +
+    '<label>Notas <input type="text" id="meliNotes" placeholder="ej: 3 celdas selladas, polen naranjo, foto lista" maxlength="80"></label>' +
     '<div class="dlg-actions su-59a5a8"><button type="button" id="meliAdd" class="btn btn-accent su-30e741">+ Guardar</button>' +
     '<button type="button" id="meliCancelEdit" class="btn hidden su-30e741">Cancelar</button></div>' +
     '<div id="meliLogBox" class="habits-list su-62f8f6"></div>' +
@@ -606,13 +634,18 @@ function ensureMeliDialog() {
   return d;
 }
 function wireMeli() {
-  injectTerrBtn('btnMeli', '🐝 Abejas', 'abejas apicultura miel colmena chito abejorro melipona cera varroa cosecha menguante creciente polinizacion flora melifera enjambre sanidad propoleo polen pillaje reina meliponicultura abeja sin aguijon yatei jatai urucu', 'btnFlora');
+  injectTerrBtn('btnMeli', '🐝 Abejas Nativas', 'abejas nativas solitarias chito abejorro bombus dahlbomii hotel insectos colihue canas barro jardin polinizador ananuca maqui chilco suelda boldo quillay tabaco diablo chagual azulillo huilmo centris chilicola caupolicana megachile xylocopa manuelia corynura halictidos eucerini terrestris europeo pesticida soberania humedal rocuant cerros circular menguante creciente flora polinizacion avistamiento refugio latencia pewu walung rimu pukem', 'btnFlora');
   ensureMeliDialog();
   registerBtn('btnMeli');
   var btn = $('btnMeli');
   if (btn && !btn.dataset.w) {
     btn.dataset.w = '1';
     btn.onclick = function () {
+      try {
+        var kw = btn.getAttribute('data-keywords') || '';
+        if (kw.indexOf('chito') < 0) btn.setAttribute('data-keywords', kw + ' chito abejorro nativo hotel jardin');
+      } catch (e) {}
+      try { if (btn.textContent !== '🐝 Abejas Nativas') btn.textContent = '🐝 Abejas Nativas'; } catch (e2) {}
       switchMeliTab(meliTab || 'hoy');
       renderMeliHoy(); renderMeliLog();
       var d = $('meliDate');
@@ -643,21 +676,22 @@ function wireMeli() {
         id: meliEditingId || uid('me'),
         date: date, time: ($('meliTime') || {}).value || '10:00',
         hive: clean(($('meliHive') || {}).value || '', 30),
-        species: species, action: ($('meliAction') || {}).value || 'inspección',
-        kg: clean(($('meliKg') || {}).value || '', 10),
+        species: species, action: ($('meliAction') || {}).value || 'avistamiento',
+        n: clean(($('meliKg') || {}).value || '', 10),
+        kg: '',
         place: clean(($('meliPlace') || {}).value || '', 40),
         flor: clean(($('meliFlor') || {}).value || '', 40),
-        estado: (($('meliEstado') || {}).value || 'sana'),
+        estado: (($('meliEstado') || {}).value || 'activo'),
         notes: clean(($('meliNotes') || {}).value || '', 80)
       };
       var arr = getMeli();
       if (meliEditingId) {
         var ix = arr.findIndex(function (x) { return x.id === meliEditingId; });
-        if (ix >= 0) arr[ix] = rec;
+        if (ix >= 0) { if (arr[ix].kg && !rec.n) rec.kg = arr[ix].kg; arr[ix] = rec; }
         meliEditingId = null; add.textContent = '+ Guardar';
         $('meliCancelEdit').classList.add('hidden');
       } else arr.push(rec);
-      save('Registro apícola guardado 🐝');
+      save('Registro de abejas nativas guardado 🐝');
       $('meliSpecies').value = ''; $('meliKg').value = ''; $('meliNotes').value = '';
       if ($('meliPlace')) $('meliPlace').value = ''; if ($('meliFlor')) $('meliFlor').value = '';
       renderMeliLog(); renderMeliHoy();
@@ -675,7 +709,7 @@ function wireMeli() {
   if (clear && !clear.dataset.w) {
     clear.dataset.w = '1';
     clear.onclick = function () {
-      if (!confirm('¿Borrar toda la bitácora apícola?')) return;
+      if (!confirm('¿Borrar toda la bitácora de abejas nativas?')) return;
       store('meliLog', []).length = 0;
       save(); renderMeliLog(); renderMeliHoy();
     };
@@ -686,7 +720,7 @@ function wireMeli() {
     sh.onclick = function () {
       var d = getMeli();
       if (!d.length) { alert('Sin registros'); return; }
-      share('🐝 Mi bitácora apícola — Penco', meliShareText(d));
+      share('🐝 Mi bitácora de abejas nativas — Penco', meliShareText(d));
     };
   }
   var ex = $('meliExport');
@@ -698,7 +732,7 @@ function wireMeli() {
       var blob = new Blob([meliShareText(d)], { type: 'text/plain;charset=utf-8' });
       var a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
-      a.download = 'bitacora-apicola-penco.txt';
+      a.download = 'bitacora-abejas-nativas-penco.txt';
       document.body.appendChild(a); a.click();
       setTimeout(function () { try { URL.revokeObjectURL(a.href); a.remove(); } catch (e) {} }, 800);
     };
@@ -708,7 +742,7 @@ function wireMeli() {
   if (gb && !gb.dataset.w) { gb.dataset.w = '1'; gb.onclick = function () { gotoBtn('btnBosque', 'meliDialog'); }; }
   if (gs && !gs.dataset.w) { gs.dataset.w = '1'; gs.onclick = function () { gotoBtn('btnSiembra', 'meliDialog'); }; }
 }
-window.MeliPenco = { tab: switchMeliTab, renderHoy: renderMeliHoy, renderEsp: renderMeliEsp, renderGuia: renderMeliGuia, renderFlora: renderMeliFlora, renderManejo: renderMeliManejo, renderLog: renderMeliLog, list: getMeli, especies: MELI_ESPECIES, luna: MELI_LUNA, flora: MELI_FLORA, anual: MELI_ANUAL, sanidad: MELI_SANIDAD, checklist: MELI_CHECKLIST, productos: MELI_PRODUCTOS, chito: MELI_CHITO, guia: MELI_GUIA, meliponas: MELI_MELIPONAS, vsApis: MELI_VS_APIS, customs: getMeliCustom, todas: allMeliSpecies };
+window.MeliPenco = { tab: switchMeliTab, renderHoy: renderMeliHoy, renderEsp: renderMeliEsp, renderGuia: renderMeliGuia, renderFlora: renderMeliFlora, renderManejo: renderMeliManejo, renderLog: renderMeliLog, list: getMeli, especies: MELI_ESPECIES, luna: MELI_LUNA, flora: MELI_FLORA, anual: MELI_ANUAL, sanidad: MELI_SANIDAD, checklist: MELI_CHECKLIST, productos: MELI_PRODUCTOS, chito: MELI_CHITO, guia: MELI_GUIA, meliponas: MELI_MELIPONAS, vsApis: MELI_VS_APIS, customs: getMeliCustom, todas: allMeliSpecies, acciones: MELI_ACCIONES, estados: MELI_ESTADOS };
 
 /* ============================================================
    2. 🐋 BALLENAS Y FAUNA MARINA MIGRATORIA

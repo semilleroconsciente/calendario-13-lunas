@@ -90,6 +90,7 @@
     'min/bomberos-penco.min.js?v=1',
     'min/apoyo-emergencia.min.js?v=1',
     'min/actores-territorio.min.js?v=1',
+    'min/amenazas-territorio.min.js?v=2',
     'min/negocios-penco.min.js?v=2',
     'min/moneda-social.min.js?v=1',
     'min/finanzas-negocio-modulo.min.js?v=1',

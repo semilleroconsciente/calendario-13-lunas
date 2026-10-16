@@ -2,7 +2,7 @@
 // Copyright (C) 2026 Semillero Consciente. Licencia: GNU GPLv3 o posterior (ver COPYING).
 // SPDX-License-Identifier: GPL-3.0-or-later
 // v55
-const CACHE = 'cal13-v110-offline';
+const CACHE = 'cal13-v112-offline';
 
 // Lista completa de archivos que usa index.html (bare + con ?v=).
 // Si se agrega un JS nuevo en index.html, agregarlo aquí también (bare y ?v=).
@@ -41,6 +41,7 @@ const CORE = [
   './legal/cookies.html',
   './data/territorios/index.json',
   './data/territorios/penco/actores.json',
+  './data/territorios/penco/amenazas.json',
   './data/territorios/penco/apoyo-emergencia.json',
   './data/territorios/penco/bomberos.json',
   './data/territorios/penco/consejos-bosque.json',
@@ -138,6 +139,8 @@ const CORE = [
   './min/adolescencia-modulo.min.js?v=1',
   './min/ajedrez-modulo.min.js',
   './min/ajedrez-modulo.min.js?v=1',
+  './min/amenazas-territorio.min.js',
+  './min/amenazas-territorio.min.js?v=2',
   './min/ami-modulo.min.js',
   './min/ami-modulo.min.js?v=1',
   './min/anastasia-modulo.min.js',

@@ -194,6 +194,7 @@ async function cargarTerritorio(id) {
   var apoyo = await opt('apoyo-emergencia.json');
   var consBosque = await opt('consejos-bosque.json');
   var actores = await opt('actores.json');
+  var amenazas = await opt('amenazas.json');
 
   // 3) normalizar con fallback a data.js
   function conOrigen(clave, valJson, valFb) {
@@ -267,6 +268,7 @@ async function cargarTerritorio(id) {
     bomberos: bomb || null,
     apoyo: apoyo || null,
     actores: actores || null,
+    amenazas: amenazas || null,
     donate: fb.DONATE
   };
 
@@ -372,6 +374,7 @@ api.listo = cargarTerritorio(idInicial).then(function (T) {
       bomberos: null,
       apoyo: null,
       actores: null,
+      amenazas: null,
       donate: fb.DONATE
     };
   } catch (e2) {}
