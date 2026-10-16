@@ -2,7 +2,7 @@
 // Copyright (C) 2026 Semillero Consciente. Licencia: GNU GPLv3 o posterior (ver COPYING).
 // SPDX-License-Identifier: GPL-3.0-or-later
 // v55
-const CACHE = 'cal13-v107-offline';
+const CACHE = 'cal13-v108-offline';
 
 // Lista completa de archivos que usa index.html (bare + con ?v=).
 // Si se agrega un JS nuevo en index.html, agregarlo aquí también (bare y ?v=).
@@ -171,6 +171,8 @@ const CORE = [
   './min/cal.min.js?v=9',
   './min/carta-astral.min.js',
   './min/carta-astral.min.js?v=1',
+  './min/chino-mandarin-modulo.min.js',
+  './min/chino-mandarin-modulo.min.js?v=1',
   './min/ciberseguridad-modulo.min.js',
   './min/ciberseguridad-modulo.min.js?v=1',
   './min/club-5am-modulo.min.js',
