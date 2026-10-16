@@ -1622,3 +1622,33 @@ body[data-force-mobile="1"] #btnVistaCelular { width: 100%; margin-bottom: 8px; 
 #taleLunaPlayer { margin: 8px 0; }
 #taleLunaPlayer .tales-player { margin: 0; }
 #taleLunaView.hidden, #taleLunaEditBox.hidden { display: none; }
+/* === Vista Hoy en celular: anti-corte de texto (~360px) ===
+   Causa: varios bloques internos no encogían (flex sin min-width:0,
+   textos con nowrap/ellipsis) y #todayView usa overflow-x:clip, así que
+   todo lo que sobresalía quedaba invisible sin scroll. Alcance #todayView
+   para no tocar PC fuera de Hoy. */
+#todayView .today-card p { min-width: 0; overflow-wrap: break-word; word-break: break-word; }
+#todayView .habit-today-item,
+#todayView .shop-item { min-width: 0; max-width: 100%; }
+#todayView .habit-today-item > span,
+#todayView .shop-item .shop-name,
+#todayView .shop-item > span { min-width: 0; max-width: 100%; overflow-wrap: break-word; word-break: break-word; white-space: normal; line-height: 1.45; }
+#todayView .habit-today-item input,
+#todayView .shop-item input { flex: 0 0 auto; }
+#todayView .rutina-head { flex-wrap: wrap; }
+#todayView .rutina-title { min-width: 0; flex: 1 1 160px; overflow-wrap: break-word; word-break: break-word; }
+#todayView .rutina-done { flex: 0 0 auto; }
+#todayView .hora-item { align-items: flex-start; }
+#todayView .hora-item .hora-text,
+#todayView .hora-item > span { flex: 1; min-width: 0; max-width: 100%; overflow: visible; text-overflow: clip; white-space: normal; overflow-wrap: break-word; word-break: break-word; line-height: 1.45; }
+#todayView .today-add input[type="number"],
+#todayView .today-add select,
+#todayView .today-add input[type="text"] { min-width: 0; max-width: 100%; }
+#todayView .su-8a77e5, #todayView .su-67b198, #todayView .su-3de8f9,
+#todayView .su-a7d4af, #todayView .su-a76d59 { display: flex; flex-wrap: wrap; gap: 6px; }
+#todayView .today-card .btn { min-width: 0; max-width: 100%; white-space: normal; }
+@media (max-width: 480px) {
+  #todayView .habits-today-grid { grid-template-columns: 1fr; }
+  #todayView .today-add input[type="number"],
+  #todayView .today-add select { flex: 1 1 100%; }
+}
