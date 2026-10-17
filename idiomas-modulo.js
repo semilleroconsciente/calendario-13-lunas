@@ -194,7 +194,7 @@ var RECURSOS = [
   ['📻 Radio y audio lento', 'Noticias lentas, cuentos con audio, canciones con letra. 1 audio repetido 7 días > 7 audios distintos.'],
   ['🤝 Intercambio real', 'Enseña español 15 min y recibe 15 min. Feria, junta de vecinos, iglesia, club: ofrece “intercambio”.'],
   ['📓 Cuaderno de luna', '1 página/día: 7 palabras + 3 frases + 1 error lindo. Relee cada luna llena.'],
-    ['🗣️ Aquí mismo', 'Usa 🗣️ Kimün Mapuzugun, 🔤 Inglés, 🇧🇷 Portugués, 🐉 Chino, 🪔 Hindi, 🇮🇹 Italiano, 🪆 Ruso y 🗾 Japonés del calendario: el método de esta sección funciona igual ahí.']
+    ['🗣️ Aquí mismo', 'Usa 🗣️ Kimün Mapuzugun, 🔤 Inglés, 🇧🇷 Portugués, 🐉 Chino, 🪔 Hindi, 🇮🇹 Italiano, 🪆 Ruso, 🗾 Japonés, 🏛️ Latín y 🕌 Árabe del calendario: el método de esta sección funciona igual ahí.']
 ];
 
 /* ---------------- ESTADO UI ---------------- */
@@ -255,7 +255,7 @@ function buildDialog() {
     '<div id="idiGram" class="hidden"></div>' +
     '<div id="idiPlan" class="hidden"></div>';
   makeDialog('idiomasDialog', '🌍 Aprende cualquier idioma — método completo',
-    'Un solo método para <b>cualquier idioma</b> (inglés, mapuzugun, portugués, francés, creole…): 20 min/día, 1 luna (28 días) por ciclo, 4 habilidades y repaso espaciado. Todo <b>privado, local y offline</b>. ¿Ya elegiste? Practica en 🗣️ <b>Kimün Mapuzugun</b>, 🔤 <b>Inglés</b> y 🇧🇷 <b>Portugués</b> del calendario.',
+    'Un solo método para <b>cualquier idioma</b> (inglés, mapuzugun, portugués, francés, creole…): 20 min/día, 1 luna (28 días) por ciclo, 4 habilidades y repaso espaciado. Todo <b>privado, local y offline</b>. ¿Ya elegiste? Practica en 🗣️ <b>Kimün Mapuzugun</b>, 🔤 <b>Inglés</b>, 🇧🇷 <b>Portugués</b> y 🏛️ <b>Latín</b> del calendario.',
     body);
 }
 function switchTab(t) {
@@ -296,7 +296,7 @@ function renderGuia() {
     '<div class="su-6157e8"><button type="button" class="btn su-30e741" data-go="btnMapu">🗣️ Ir a Kimün</button>' +
     '<button type="button" class="btn su-30e741" data-go="btnEnglish">🔤 Ir a Inglés</button>' +
     '<button type="button" class="btn su-30e741" data-go="btnPortugues">🇧🇷 Ir a Portugués</button>' +
-    '<button type="button" class="btn su-30e741" data-go="btnItaliano">🇮🇹 Ir a Italiano</button><button type="button" class="btn su-30e741" data-go="btnRuso">🪆 Ir a Ruso</button><button type="button" class="btn su-30e741" data-go="btnJapones">🗾 Ir a Japonés</button></div></div>' +
+    '<button type="button" class="btn su-30e741" data-go="btnItaliano">🇮🇹 Ir a Italiano</button><button type="button" class="btn su-30e741" data-go="btnRuso">🪆 Ir a Ruso</button><button type="button" class="btn su-30e741" data-go="btnJapones">🗾 Ir a Japonés</button><button type="button" class="btn su-30e741" data-go="btnLatin">🏛️ Ir a Latín</button><button type="button" class="btn su-30e741" data-go="btnArabe">🕌 Ir a Árabe</button></div></div>' +
     '</div>' +
     '<div class="si-card"><h4>🚫 6 errores que frenan (y su arreglo)</h4><p>' +
     ERRORES.map(function (e) { return '• ' + esc(e[0]) + '<br><span class="muted">' + esc(e[1]) + '</span>'; }).join('<br>') + '</p></div>' +

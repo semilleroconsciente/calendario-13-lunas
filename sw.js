@@ -2,7 +2,7 @@
 // Copyright (C) 2026 Semillero Consciente. Licencia: GNU GPLv3 o posterior (ver COPYING).
 // SPDX-License-Identifier: GPL-3.0-or-later
 // v55
-const CACHE = 'cal13-v122-offline';
+const CACHE = 'cal13-v124-offline';
 
 // Lista completa de archivos que usa index.html (bare + con ?v=).
 // Si se agrega un JS nuevo en index.html, agregarlo aquí también (bare y ?v=).
@@ -149,6 +149,8 @@ const CORE = [
   './min/anfibios-modulo.min.js?v=1',
   './min/apoyo-emergencia.min.js',
   './min/apoyo-emergencia.min.js?v=1',
+  './min/arabe-modulo.min.js',
+  './min/arabe-modulo.min.js?v=1',
   './min/astro.min.js',
   './min/astro.min.js?v=8',
   './min/auto-backup-modulo.min.js',
@@ -287,6 +289,8 @@ const CORE = [
   './min/jsqr-lib.min.js?v=1',
   './min/kin-maya-modulo.min.js',
   './min/kin-maya-modulo.min.js?v=3',
+  './min/latin-modulo.min.js',
+  './min/latin-modulo.min.js?v=1',
   './min/legal-modulo.min.js',
   './min/legal-modulo.min.js?v=1',
   './min/linaje-modulos.min.js',

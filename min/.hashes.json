@@ -127,9 +127,11 @@
  "basquetbol-modulo.js": "e951d8631b9359a698c08d61b780f19e7793e05a",
  "chino-mandarin-modulo.js": "8329f9d5b4790d0dfd430e417145fe9d43870b2f",
  "hindi-modulo.js": "35c466d557a0fa905f573a5d732ba0e25fa1463a",
- "idiomas-modulo.js": "62ab2f362c1893826c03d0c0543e8ea278c968b7",
+ "idiomas-modulo.js": "a2f5db86bb6dd3eabb4a710dbe0bcb708bce8adc",
  "italiano-modulo.js": "c6483c24e6d6629d23f47f6ef06f714537ef5613",
  "japones-modulo.js": "33a9e936e5d04062754cb85c57f84d8203067593",
  "portugues-modulo.js": "a82f188172b3a4d09dfaed63e7075693b6a8e3c2",
- "ruso-modulo.js": "907907a41a9ce2f812dd2544c9d023aa247971d8"
+ "ruso-modulo.js": "907907a41a9ce2f812dd2544c9d023aa247971d8",
+ "latin-modulo.js": "7de849ef351cbd5efd3123aafc806939e70e757f",
+ "arabe-modulo.js": "582f5f3269046a4520feb3733b10bc81ae00c64c"
 }
