@@ -554,7 +554,8 @@ body[data-theme="medianoche"] { --bg:#050508; --bg2:#0a0a10; --panel:#141418; --
 .conv-ref th { background: var(--panel); color: var(--gold); font-size: 10px; }
 .conv-ref td:first-child { text-align: left; color: var(--text); }
 
-.timer-tabs { display: flex; gap: 8px; margin-bottom: 12px; }
+.timer-tabs { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+.timer-tabs .btn { flex: 1 1 auto; min-width: 0; white-space: normal; line-height: 1.35; text-align: center; }
 .timer-display { font-size: 38px; font-weight: 800; text-align: center; letter-spacing: 2px; color: var(--gold); background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 12px; font-variant-numeric: tabular-nums; }
 .chrono-laps { margin-top: 10px; max-height: 140px; overflow-y: auto; display: flex; flex-direction: column; gap: 4px; }
 .chrono-lap { background: var(--card); border: 1px solid var(--line); border-radius: 6px; padding: 6px 10px; font-size: 12px; color: var(--text); }
@@ -1765,3 +1766,43 @@ body[data-theme="claro"][data-force-mobile="1"][data-mview="hoy"] #btnVolverPC {
 .today-card--sunmoon .chip--fase { border-color: var(--gold); background: rgba(232,197,106,.1); font-size: 13.5px; }
 .sunmoon-place { display: inline-block; margin: 8px 0 0; font-size: 11.5px; font-weight: 700; letter-spacing: .4px; color: var(--gold); border: 1px solid rgba(232,197,106,.5); border-radius: 999px; padding: 3px 12px; background: rgba(232,197,106,.08); }
 #todayView .today-card--sunmoon { background: linear-gradient(135deg, #1c2650 0%, #232d58 55%, #1b2447 100%); }
+/* === FIX móvil: diálogos sin scroll horizontal (Fútbol + todas las secciones) ===
+   Causa: .timer-tabs era flex sin wrap (6 pestañas en 1 fila > 360px) y varias
+   filas/cabeceras internas no encogían. Se envuelve todo a 2 por fila para que
+   se vea completo sin desplazarse. Solo móvil: PC intacto. */
+@media (max-width: 920px) {
+  dialog { box-sizing: border-box; overflow-x: hidden; }
+  dialog form { max-width: 100%; min-width: 0; overflow-x: hidden; box-sizing: border-box; }
+  .timer-tabs { gap: 6px; }
+  .timer-tabs .btn { flex: 1 1 45%; min-width: 0; font-size: 12px; padding: 8px 6px; }
+  .eka-tabs .eka-tab { flex: 1 1 45%; min-width: 0; }
+  .conv-row label { flex: 1 1 140px; min-width: 0; }
+  .conv-row label input, .conv-row label select { max-width: 100%; min-width: 0; }
+  .dlg-actions { flex-wrap: wrap; }
+  .dlg-actions .btn { min-width: 0; max-width: 100%; white-space: normal; }
+  .dlg-actions > span { display: flex; flex-wrap: wrap; gap: 6px; min-width: 0; max-width: 100%; }
+  .hora-item, .shop-item, .habit-today-item, .mens-hist-item, .dio-item { min-width: 0; max-width: 100%; flex-wrap: wrap; }
+  .hora-item > span:first-child, .hora-text { flex: 1; min-width: 0; white-space: normal; overflow-wrap: break-word; }
+  .tz-hero, .tz-item summary, .esp-card-head, .config-topbar-btns, .actions-toolbar, .user-row { flex-wrap: wrap; min-width: 0; }
+  .si-grid, .preset-grid, .font-pills, .horm-suggest-grid { grid-template-columns: 1fr; }
+  .circadian-grid { grid-template-columns: 1fr 1fr; }
+  .conv-table, .tz-table-wrap, .habit-heat { max-width: 100%; }
+  .wp-hrow, .habit-bars { max-width: 100%; overscroll-behavior-x: contain; }
+}
+/* Espejo para "Vista celular" forzada en PC */
+body[data-force-mobile="1"] dialog { box-sizing: border-box; overflow-x: hidden; }
+body[data-force-mobile="1"] dialog form { max-width: 100%; min-width: 0; overflow-x: hidden; box-sizing: border-box; }
+body[data-force-mobile="1"] .timer-tabs { gap: 6px; }
+body[data-force-mobile="1"] .timer-tabs .btn { flex: 1 1 45%; min-width: 0; font-size: 12px; padding: 8px 6px; }
+body[data-force-mobile="1"] .eka-tabs .eka-tab { flex: 1 1 45%; min-width: 0; }
+body[data-force-mobile="1"] .conv-row label { flex: 1 1 140px; min-width: 0; }
+body[data-force-mobile="1"] .conv-row label input, body[data-force-mobile="1"] .conv-row label select { max-width: 100%; min-width: 0; }
+body[data-force-mobile="1"] .dlg-actions { flex-wrap: wrap; }
+body[data-force-mobile="1"] .dlg-actions .btn { min-width: 0; max-width: 100%; white-space: normal; }
+body[data-force-mobile="1"] .dlg-actions > span { display: flex; flex-wrap: wrap; gap: 6px; min-width: 0; max-width: 100%; }
+body[data-force-mobile="1"] .hora-item, body[data-force-mobile="1"] .shop-item, body[data-force-mobile="1"] .habit-today-item, body[data-force-mobile="1"] .mens-hist-item, body[data-force-mobile="1"] .dio-item { min-width: 0; max-width: 100%; flex-wrap: wrap; }
+body[data-force-mobile="1"] .hora-item > span:first-child, body[data-force-mobile="1"] .hora-text { flex: 1; min-width: 0; white-space: normal; overflow-wrap: break-word; }
+body[data-force-mobile="1"] .tz-hero, body[data-force-mobile="1"] .tz-item summary, body[data-force-mobile="1"] .esp-card-head, body[data-force-mobile="1"] .config-topbar-btns, body[data-force-mobile="1"] .actions-toolbar, body[data-force-mobile="1"] .user-row { flex-wrap: wrap; min-width: 0; }
+body[data-force-mobile="1"] .si-grid, body[data-force-mobile="1"] .preset-grid, body[data-force-mobile="1"] .font-pills, body[data-force-mobile="1"] .horm-suggest-grid { grid-template-columns: 1fr; }
+body[data-force-mobile="1"] .conv-table, body[data-force-mobile="1"] .tz-table-wrap, body[data-force-mobile="1"] .habit-heat { max-width: 100%; }
+body[data-force-mobile="1"] .wp-hrow, body[data-force-mobile="1"] .habit-bars { max-width: 100%; overscroll-behavior-x: contain; }
