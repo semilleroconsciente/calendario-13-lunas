@@ -137,9 +137,16 @@ function toggleForceMobile(){
 }
 function setupVistaCelularBtn(){
   const b=$('btnVistaCelular');
-  if(!b || b.dataset.bound) return;
-  b.dataset.bound="1";
-  b.onclick=toggleForceMobile;
+  if(b && !b.dataset.bound){
+    b.dataset.bound="1";
+    b.onclick=toggleForceMobile;
+  }
+  // Botón pequeño persistente en Hoy (vista celular forzada en PC): la sidebar
+  // queda oculta con data-mview="hoy", así que este es el único retorno a PC.
+  try{
+    const pv=$('btnVolverPC');
+    if(pv && !pv.dataset.bound){ pv.dataset.bound="1"; pv.onclick=toggleForceMobile; }
+  }catch(e){}
   try{ if(localStorage.getItem('cal13-forceMobile')==="1") document.body.dataset.forceMobile="1"; }catch(e){}
   updateVistaCelularBtn();
   try{ if(isForceMobile() && !mobileSec){ mobileSec='hoy'; viewMode='hoy'; } }catch(e){}

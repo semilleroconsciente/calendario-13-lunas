@@ -1681,15 +1681,57 @@ body[data-force-mobile="1"] #btnVistaCelular { width: 100%; margin-bottom: 8px; 
   #todayView .today-hero, #todayView .today-card { padding: 12px 10px; }
   #todayView .today-sun .chip { flex: 1 1 100%; }
 }
-/* Espejo para "Vista celular" forzada en PC: mismas guardas anti-corte. */
-body[data-force-mobile="1"] #todayView .today-hero, body[data-force-mobile="1"] #todayView .today-card { width: 100%; max-width: 100%; box-sizing: border-box; }
-body[data-force-mobile="1"] #todayView .today-hero .t-now { font-size: 11px; overflow-wrap: anywhere; word-break: break-word; }
+/* Espejo para "Vista celular" forzada en PC: mismas guardas anti-corte + anti-ensanche.
+   Causa del ensanche en Hoy: el marco es max-width:420px pero #main/#todayView y
+   rejillas internas (habits minmax 180px, flex sin min-width:0) podían empujar el
+   ancho más allá del marco. Se confina todo al ancho del marco con border-box. */
+body[data-force-mobile="1"] { width: 100%; overflow-x: clip; }
+body[data-force-mobile="1"] #main { width: 100%; max-width: 100%; min-width: 0; box-sizing: border-box; overflow-x: clip; }
+body[data-force-mobile="1"] #todayView { width: 100%; max-width: 100%; min-width: 0; box-sizing: border-box; overflow-x: clip; }
+body[data-force-mobile="1"] #todayView .today-hero, body[data-force-mobile="1"] #todayView .today-card { width: 100%; max-width: 100%; min-width: 0; box-sizing: border-box; overflow-wrap: break-word; }
+body[data-force-mobile="1"] #todayView .today-hero .t-now { font-size: 11px; overflow-wrap: anywhere; word-break: break-word; line-height: 1.6; }
 body[data-force-mobile="1"] #todayView .today-hero .t-now b { white-space: nowrap; }
-body[data-force-mobile="1"] #todayView .today-hero h2 { font-size: 19px; overflow-wrap: break-word; word-break: break-word; }
+body[data-force-mobile="1"] #todayView .today-hero h2 { font-size: 19px; line-height: 1.25; overflow-wrap: break-word; word-break: break-word; }
+body[data-force-mobile="1"] #todayView .today-hero .t-sub { overflow-wrap: break-word; word-break: break-word; }
 body[data-force-mobile="1"] #todayView .today-quote { overflow-wrap: anywhere; word-break: break-word; }
-body[data-force-mobile="1"] #todayView .today-sun .chip { flex: 1 1 auto; min-width: 0; }
-body[data-force-mobile="1"] #todayView input[type="text"], body[data-force-mobile="1"] #todayView input[type="number"], body[data-force-mobile="1"] #todayView select, body[data-force-mobile="1"] #todayView textarea { width: 100%; max-width: 100%; box-sizing: border-box; }
-body[data-force-mobile="1"] #todayView .today-add input[type="time"] { width: auto; }
+body[data-force-mobile="1"] #todayView .today-quote span { overflow-wrap: anywhere; word-break: break-word; }
+body[data-force-mobile="1"] #todayView .today-sun { gap: 6px; }
+body[data-force-mobile="1"] #todayView .today-sun .chip { flex: 1 1 auto; min-width: 0; font-size: 12px; max-width: 100%; overflow-wrap: break-word; word-break: break-word; white-space: normal; }
+body[data-force-mobile="1"] #todayView .today-card .chip { max-width: 100%; overflow-wrap: break-word; word-break: break-word; white-space: normal; }
+body[data-force-mobile="1"] #todayView .today-card p { min-width: 0; overflow-wrap: break-word; word-break: break-word; }
+body[data-force-mobile="1"] #todayView .habits-today-grid { grid-template-columns: 1fr; }
+body[data-force-mobile="1"] #todayView .habit-today-item, body[data-force-mobile="1"] #todayView .shop-item { min-width: 0; max-width: 100%; }
+body[data-force-mobile="1"] #todayView .habit-today-item > span, body[data-force-mobile="1"] #todayView .shop-item .shop-name, body[data-force-mobile="1"] #todayView .shop-item > span { min-width: 0; max-width: 100%; overflow-wrap: break-word; word-break: break-word; white-space: normal; line-height: 1.45; }
+body[data-force-mobile="1"] #todayView .habit-today-item input, body[data-force-mobile="1"] #todayView .shop-item input { flex: 0 0 auto; }
+body[data-force-mobile="1"] #todayView .rutina-head { flex-wrap: wrap; }
+body[data-force-mobile="1"] #todayView .rutina-title { min-width: 0; flex: 1 1 160px; overflow-wrap: break-word; word-break: break-word; }
+body[data-force-mobile="1"] #todayView .rutina-done { flex: 0 0 auto; }
+body[data-force-mobile="1"] #todayView .hora-item { align-items: flex-start; min-width: 0; max-width: 100%; }
+body[data-force-mobile="1"] #todayView .hora-item .hora-text, body[data-force-mobile="1"] #todayView .hora-item > span { flex: 1; min-width: 0; max-width: 100%; overflow: visible; text-overflow: clip; white-space: normal; overflow-wrap: break-word; word-break: break-word; line-height: 1.45; }
+body[data-force-mobile="1"] #todayView .today-add, body[data-force-mobile="1"] #todayView .disc-row, body[data-force-mobile="1"] #todayView .su-8a77e5, body[data-force-mobile="1"] #todayView .su-67b198, body[data-force-mobile="1"] #todayView .su-3de8f9, body[data-force-mobile="1"] #todayView .su-a7d4af, body[data-force-mobile="1"] #todayView .su-a76d59 { min-width: 0; max-width: 100%; }
+body[data-force-mobile="1"] #todayView .today-add > *, body[data-force-mobile="1"] #todayView .disc-row > * { min-width: 0; max-width: 100%; }
+body[data-force-mobile="1"] #todayView .today-add input[type="text"], body[data-force-mobile="1"] #todayView .today-add select { flex: 1 1 100%; min-width: 0; max-width: 100%; }
+body[data-force-mobile="1"] #todayView .today-add input[type="number"] { flex: 1 1 100%; min-width: 0; max-width: 100%; }
+body[data-force-mobile="1"] #todayView .today-card .btn { min-width: 0; max-width: 100%; white-space: normal; }
+body[data-force-mobile="1"] #todayView input[type="text"], body[data-force-mobile="1"] #todayView input[type="number"], body[data-force-mobile="1"] #todayView select, body[data-force-mobile="1"] #todayView textarea { width: 100%; max-width: 100%; min-width: 0; box-sizing: border-box; }
+body[data-force-mobile="1"] #todayView .today-add input[type="time"] { width: auto; max-width: 100%; }
+body[data-force-mobile="1"] #todayView img, body[data-force-mobile="1"] #todayView table { max-width: 100%; }
+/* Botón pequeño persistente para volver a Vista PC desde Hoy (la sidebar queda
+   oculta en data-mview="hoy", así que el botón original no es alcanzable). */
+#btnVolverPC { display: none; }
+body[data-force-mobile="1"][data-mview="hoy"] #btnVolverPC {
+  display: inline-flex; align-items: center; gap: 4px;
+  position: fixed; top: 10px; left: 50%; transform: translateX(118px); z-index: 960;
+  font-size: 11px; font-weight: 700; line-height: 1; white-space: nowrap;
+  padding: 6px 11px; border-radius: 999px; cursor: pointer;
+  background: var(--panel); border: 1px solid var(--gold); color: var(--text);
+  box-shadow: 0 2px 12px rgba(0,0,0,.45); opacity: .95;
+}
+body[data-force-mobile="1"][data-mview="hoy"] #btnVolverPC:hover { background: var(--card-hover); }
+body[data-theme="claro"][data-force-mobile="1"][data-mview="hoy"] #btnVolverPC { background: rgba(255,251,240,.97); }
+@media (max-width: 440px) {
+  body[data-force-mobile="1"][data-mview="hoy"] #btnVolverPC { left: auto; right: 8px; transform: none; }
+}
 /* Hoy: disciplina compacta */
 .today-card--compact { padding: 8px 10px; }
 .today-card--compact h3 { font-size: 12px; margin-bottom: 6px; }

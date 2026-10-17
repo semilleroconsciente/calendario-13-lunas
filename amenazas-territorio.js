@@ -423,7 +423,7 @@ function wireCards(scope) {
   });
   (scope || document).querySelectorAll('[data-am-guard]').forEach(function (b) {
     b.onclick = function () {
-      try { if (window.ActoresTerritorio && typeof window.ActoresTerritorio.open === 'function') window.ActoresTerritorio.open(); else alert('Abre 🛡️ Guardianes del territorio'); } catch (e) {}
+      try { if (window.ActoresTerritorio && typeof window.ActoresTerritorio.open === 'function') window.ActoresTerritorio.open(); else alert('Abre 🛡️ Guardianxs del territorio'); } catch (e) {}
     };
   });
   (scope || document).querySelectorAll('[data-am-share]').forEach(function (b) {

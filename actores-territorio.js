@@ -1,5 +1,5 @@
 /* ============================================================
-   GUARDIANES DEL TERRITORIO — Calendario 13 Lunas (Penco · Bío-Bío)
+   GUARDIANXS DEL TERRITORIO — Calendario 13 Lunas (Penco · Bío-Bío)
    Apartado: Territorio > Penco (btnActores -> actoresDialog)
    - Directorio de organizaciones que defienden activamente el
      territorio (base verificable 2021-2026 en
@@ -111,7 +111,7 @@ function ensureDialog() {
   d.innerHTML =
     '<form method="dialog">' +
     '<div class="dlg-actions su-d2d053">' +
-    '<h3 class="su-ee0cfe">🛡️ Guardianes del Territorio — Penco</h3>' +
+    '<h3 class="su-ee0cfe">🛡️ Guardianxs del territorio — Penco</h3>' +
     '<button type="button" id="actoresCloseTop" class="btn btn-icon" title="Cerrar">✕</button></div>' +
     '<p class="muted su-77e2fe">Quiénes defienden activamente el territorio: humedal, bahía, agua, bosque y economía local. Base verificable 2021–2026 — <b>verifica vigencia</b> antes de contactar. Tus agregados y ⭐ quedan <b>privados y locales</b>.</p>' +
     '<div class="timer-tabs su-4dca21">' +
@@ -219,8 +219,8 @@ function wireCards(scope) {
       if (!a) return;
       var txt = '🛡️ ' + a.nombre + ' (' + (a.tipo || '') + ') — ' + (a.lucha || '');
       try {
-        if (window.InfoClave && typeof window.InfoClave.abrir === 'function') window.InfoClave.abrir('Guardianes', txt, {});
-        else if (typeof abrirInfoClave === 'function') abrirInfoClave('Guardianes', txt, {});
+        if (window.InfoClave && typeof window.InfoClave.abrir === 'function') window.InfoClave.abrir('Guardianxs del territorio', txt, {});
+        else if (typeof abrirInfoClave === 'function') abrirInfoClave('Guardianxs del territorio', txt, {});
         else alert(txt);
       } catch (e) { try { alert(txt); } catch (e2) {} }
     };
@@ -345,8 +345,8 @@ function ensureButton() {
     b.className = 'btn';
     b.type = 'button';
     b.setAttribute('data-sub', 'penco');
-    b.setAttribute('data-keywords', 'guardianes defensores territorio defensa organizaciones asamblea coordinadora humedal gnl minera tierras raras pesca lafken mujeres ong fundacion colectivo junta campana red apoyo sumarse contacto actores');
-    b.textContent = '🛡️ Guardianes';
+    b.setAttribute('data-keywords', 'guardianxs guardianes defensores territorio defensa organizaciones asamblea coordinadora humedal gnl minera tierras raras pesca lafken mujeres ong fundacion colectivo junta campana red apoyo sumarse contacto actores');
+    b.textContent = '🛡️ Guardianxs del territorio';
     var ref = $('btnBomberos');
     if (ref && ref.parentNode === g) {
       if (ref.nextSibling) g.insertBefore(b, ref.nextSibling);
@@ -364,7 +364,7 @@ function ensureCheckbox() {
   if (ref && ref.closest) {
     var lab = document.createElement('label');
     lab.className = 'check-row';
-     lab.innerHTML = '<input type="checkbox" data-btn="btnActores" checked> 🛡️ Guardianes';
+     lab.innerHTML = '<input type="checkbox" data-btn="btnActores" checked> 🛡️ Guardianxs del territorio';
     try {
       ref.closest('label').parentNode.insertBefore(lab, ref.closest('label').nextSibling);
       if (typeof applyVisibility === 'function') {

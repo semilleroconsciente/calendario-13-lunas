@@ -444,9 +444,9 @@ function renderDefensa() {
     '<div class="menstrual-card su-d2c171"><h4>⚠️ Amenazas (míralas, repórtalas)</h4>' +
     AMENAZAS.map(function (a) { return '<div class="si-card su-7aab68"><b>• ' + esc(a.t) + '</b><p class="muted su-11a508">' + esc(a.d) + '</p></div>'; }).join('') + '</div>' +
     '<div class="menstrual-card"><h4>🛡️ Quiénes cuidan + dónde denunciar</h4>' +
-    '<p class="muted su-11a508">• <b>ONG Defensa Ambiental / Red Humedales Biobío</b> — monitoreo y denuncia de rellenos (ver 🛡️ Actores).<br>• <b>Fundación Bandada</b> — defensa legal del humedal urbano.<br>• <b>GEF Humedales Costeros + Comité Técnico Local</b> — educación y salidas.<br>• <b>Fundación Cosmos + municipios</b> — parques de humedal.</p>' +
+    '<p class="muted su-11a508">• <b>ONG Defensa Ambiental / Red Humedales Biobío</b> — monitoreo y denuncia de rellenos (ver 🛡️ Guardianxs).<br>• <b>Fundación Bandada</b> — defensa legal del humedal urbano.<br>• <b>GEF Humedales Costeros + Comité Técnico Local</b> — educación y salidas.<br>• <b>Fundación Cosmos + municipios</b> — parques de humedal.</p>' +
     '<p class="su-49f9d7">📢 Denuncia: SMA (sma.gob.cl) con foto + fecha + georreferencia · SAG ante fauna herida · Sernapesca 800 320 032 (fauna marina) · CITUC +56 2 2635 3800 (intoxicación) · 133/132 emergencias.</p>' +
-    '<div class="dlg-actions su-59a5a8"><button type="button" id="humGoActores" class="btn btn-accent su-30e741">🛡️ Ir a Actores del territorio</button></div></div>';
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="humGoActores" class="btn btn-accent su-30e741">🛡️ Ir a Guardianxs del territorio</button></div></div>';
   var g = $('humGoActores');
   if (g && !g.dataset.w) { g.dataset.w = '1'; g.onclick = function () { try { $('humedalDialog').close(); } catch (e) {} setTimeout(function () { try { $('btnActores').click(); } catch (e2) {} }, 150); }; }
 }
