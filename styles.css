@@ -158,11 +158,11 @@ textarea {
 #actionSearch { flex:1; max-width:420px; padding:8px 12px; border-radius:10px; border:1px solid var(--line); background:var(--panel); color:var(--text); font-size:13px; }
 #actionSearch:focus { outline:2px solid var(--gold); border-color:var(--gold); }
 #actions { margin-top:12px; display:flex; flex-direction:column; gap:10px; max-width:1100px; }
-.donate-cta { margin:14px auto 6px; max-width:360px; border-radius:14px; padding:2px; background:linear-gradient(135deg,#e8c56a,#ff9a3c,#c9a0dc,#4da3ff); }
-.donate-cta .btn { width:100%; font-size:12.5px; line-height:1.35; padding:8px 10px; border:none; border-radius:12px; background:linear-gradient(135deg,#f0d488,#e8c56a 55%,#d4a947); color:#241a05; font-weight:700; letter-spacing:.2px; cursor:pointer; transition:transform .15s, box-shadow .15s, filter .15s; box-shadow:0 2px 10px #00000044; text-align:center; }
+.donate-cta { margin:8px auto 4px; max-width:190px; border-radius:10px; padding:1px; background:linear-gradient(135deg,#e8c56a,#ff9a3c,#c9a0dc,#4da3ff); }
+.donate-cta .btn { width:100%; font-size:10px; line-height:1.25; padding:5px 6px; border:none; border-radius:8px; background:linear-gradient(135deg,#f0d488,#e8c56a 55%,#d4a947); color:#241a05; font-weight:700; letter-spacing:.2px; cursor:pointer; transition:transform .15s, box-shadow .15s, filter .15s; box-shadow:0 2px 10px #00000044; text-align:center; }
 .donate-cta .btn:hover { transform:translateY(-1px); box-shadow:0 6px 18px #e8c56a55; filter:brightness(1.05); }
-.donate-cta .btn .donate-heart { display:inline-block; animation:donateBeat 1.6s ease-in-out infinite; margin-right:5px; }
-.donate-cta-sub { display:block; font-size:10px; font-weight:600; color:#5a4a1a; margin-top:2px; letter-spacing:.2px; }
+.donate-cta .btn .donate-heart { display:inline-block; animation:donateBeat 1.6s ease-in-out infinite; margin-right:4px; color:var(--donate-heart,#c81e3a); transition:color .3s; }
+.donate-cta-sub { display:block; font-size:8px; font-weight:600; color:#5a4a1a; margin-top:1px; letter-spacing:.2px; }
 @keyframes donateBeat { 0%,100%{transform:scale(1);} 12%{transform:scale(1.25);} 24%{transform:scale(1);} 36%{transform:scale(1.18);} 48%{transform:scale(1);} }
 .action-group { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:0; overflow:hidden; }
 .action-group[open] { background:var(--card); }

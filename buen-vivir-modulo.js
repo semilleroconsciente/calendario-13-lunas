@@ -3,12 +3,19 @@
    Apartado: Territorio > Buen Vivir (btnBuenVivir -> buenVivirDialog),
    pestañas: Visión | Pueblos | Práctica.
    Enfoque:
-     🌎 Ética de lo suficiente: Küme Mongen, Sumak Kawsay,
-        Ñande Reko, Vivir Bien kolla, Shiir Waras, Balu Wala,
-        Suma Qamaña — 7 miradas de los pueblos originarios.
-     🌱 Práctica pencona: compromisos cotidianos (agua, residuos,
-        consumo local, minga, nativo, energía, gratitud) con
-        puentes a los módulos del calendario.
+      🌎 Ética de lo suficiente: Küme Mongen, Sumak Kawsay,
+         Ñande Reko, Vivir Bien kolla, Shiir Waras, Balu Wala,
+         Suma Qamaña, Lekil Kuxlejal, Kawsak Sacha (Abya Yala)
+         + Ubuntu, Harambee, Teranga, Ujamaa, Sankofa (África)
+         + Sarvodaya, Tri Hita Karana, Satoyama, Gotong Royong,
+         Bayanihan (Asia) + Kaitiakitanga, Mālama ʻĀina, Vanua,
+         Caring for Country (Oceanía) + Hózhó, Séptima Generación,
+         Mitakuye Oyasin, Potlatch (Norteamérica) + Friluftsliv,
+         Lagom, Auzolan (Europa): 30 miradas de los pueblos
+         originarios del mundo.
+      🌱 Práctica pencona: compromisos cotidianos (agua, residuos,
+         consumo local, minga, nativo, energía, gratitud) con
+         puentes a los módulos del calendario.
    Todo local, sin red obligatoria. Se edita aquí mismo.
    ============================================================ */
 (function () {
@@ -69,20 +76,72 @@ var BV_PRINCIPIOS = [
 ];
 
 var BV_PUEBLOS = [
-  { nombre: 'Küme Mongen', pueblo: 'Pueblo Mapuche', sig: '“buen vivir”', ico: '🌎',
+  // ---- Abya Yala (América Latina) ----
+  { nombre: 'Küme Mongen', pueblo: 'Pueblo Mapuche', conti: 'Abya Yala', sig: '“buen vivir”', ico: '🌎',
     texto: 'Conexión profunda con la naturaleza, en equilibrio con las fuerzas y seres que la habitan. Armonía entre el agua, el territorio, la vida personal, familiar y comunitaria, la cultura y las energías espirituales. Reconstruir el Küme Mongen es reconstruir una sociedad con dignidad, solidaridad y reciprocidad para todos los pueblos. Es, ante todo, una lucha por amor a la vida.' },
-  { nombre: 'Sumak Kawsay', pueblo: 'Pueblo Kichwa · Ecuador', sig: '“vida plena en armonía”', ico: '🌎',
+  { nombre: 'Sumak Kawsay', pueblo: 'Pueblo Kichwa · Ecuador', conti: 'Abya Yala', sig: '“vida plena en armonía”', ico: '🌎',
     texto: 'Guía las relaciones dentro del Ayllu (comunidad) y entre la comunidad y la naturaleza. Vivir en equilibrio con los ríos, los bosques, las montañas, los espíritus protectores y los dioses: todo está interconectado y merece respeto.' },
-  { nombre: 'Ñande Reko', pueblo: 'Pueblo Guaraní', sig: '“nuestro modo de ser”', ico: '🌎',
+  { nombre: 'Ñande Reko', pueblo: 'Pueblo Guaraní', conti: 'Abya Yala', sig: '“nuestro modo de ser”', ico: '🌎',
     texto: 'Libertad, alegría comunitaria, reciprocidad y convite. Todo orientado a la búsqueda de la Tierra Sin Mal: un mundo justo, en paz y en plenitud.' },
-  { nombre: 'Vivir Bien', pueblo: 'Pueblo Kolla · Argentina', sig: 'crecer con la naturaleza', ico: '🌎',
+  { nombre: 'Vivir Bien', pueblo: 'Pueblo Kolla · Argentina', conti: 'Abya Yala', sig: 'crecer con la naturaleza', ico: '🌎',
     texto: 'Crecer con la naturaleza, no contra ella. Como dice el sabio Huanacuni: “El ser humano es tierra que anda”. La vida florece solo cuando se respeta ese vínculo sagrado.' },
-  { nombre: 'Shiir Waras', pueblo: 'Pueblo Shuar · Ecuador', sig: '“buen vivir”', ico: '🌎',
+  { nombre: 'Shiir Waras', pueblo: 'Pueblo Shuar · Ecuador', conti: 'Abya Yala', sig: '“buen vivir”', ico: '🌎',
     texto: 'Paz doméstica y vida armoniosa, en equilibrio con la familia, la comunidad y la naturaleza. Bienestar integral, tejido en el día a día.' },
-  { nombre: 'Balu Wala', pueblo: 'Pueblo Guna · Panamá y Colombia', sig: '“árbol de sal”', ico: '🌎',
+  { nombre: 'Balu Wala', pueblo: 'Pueblo Guna · Panamá y Colombia', conti: 'Abya Yala', sig: '“árbol de sal”', ico: '🌎',
     texto: 'Eje filosófico de la existencia guna: relación indisoluble entre humanidad, naturaleza y universo, fundada en el respeto, la equidad y la armonía. Guía las relaciones políticas, económicas y sociales, y fortalece la producción comunitaria y la calidad de vida colectiva, desde la memoria y el presente comunitario.' },
-  { nombre: 'Suma Qamaña', pueblo: 'Pueblos Aymara y Quechua · Andes', sig: '“vivir bien”', ico: '🌎',
-    texto: 'Paradigma andino: relacionalidad, complementariedad, ciclicidad, correspondencia y conciencia natural. La vida es un todo orgánico donde dialogan Jaqi (seres humanos), Wak’a (divinidades) y Sallqa (naturaleza silvestre). Con-vivir en armonía con la Tierra, el mundo espiritual y las futuras generaciones.' }
+  { nombre: 'Suma Qamaña', pueblo: 'Pueblos Aymara y Quechua · Andes', conti: 'Abya Yala', sig: '“vivir bien”', ico: '🌎',
+    texto: 'Paradigma andino: relacionalidad, complementariedad, ciclicidad, correspondencia y conciencia natural. La vida es un todo orgánico donde dialogan Jaqi (seres humanos), Wak’a (divinidades) y Sallqa (naturaleza silvestre). Con-vivir en armonía con la Tierra, el mundo espiritual y las futuras generaciones.' },
+  { nombre: 'Lekil Kuxlejal', pueblo: 'Pueblos Maya Tseltal y Tsotsil · Chiapas', conti: 'Abya Yala', sig: '“vida buena y justa para todos”', ico: '🌎',
+    texto: 'Vida buena que solo es buena si es compartida: tierra comunal, asamblea que decide, fiesta que une y trabajo que dignifica. Sin justicia y sin comunidad no hay bienestar verdadero.' },
+  { nombre: 'Kawsak Sacha', pueblo: 'Pueblo Kichwa amazónico · Sarayaku, Ecuador', conti: 'Abya Yala', sig: '“selva viviente”', ico: '🌎',
+    texto: 'La selva es un ser vivo y sagrado, con dueños y espíritus que la cuidan. Defender el territorio es defender la vida misma: el petróleo y la mina no entran donde la selva habla y enseña.' },
+  // ---- África ----
+  { nombre: 'Ubuntu', pueblo: 'Pueblos Zulú y Xhosa · Sudáfrica', conti: 'África', sig: '“soy porque somos”', ico: '🌍',
+    texto: '“Una persona es persona a través de otras personas”. La identidad y el bienestar nacen del vínculo: cuidar al otro, compartir lo que hay, perdonar y reparar. Sin comunidad no hay humanidad plena.' },
+  { nombre: 'Harambee', pueblo: 'Pueblos de Kenia', conti: 'África', sig: '“tiremos juntos”', ico: '🌍',
+    texto: 'Trabajo colectivo y ayuda mutua: toda la aldea levanta la casa, cosecha o enfrenta la dificultad. Nadie se salva solo; la fuerza está en tirar la cuerda al mismo tiempo y repartir el fruto.' },
+  { nombre: 'Teranga', pueblo: 'Pueblo Wolof · Senegal', conti: 'África', sig: '“hospitalidad que comparte”', ico: '🌍',
+    texto: 'El honor está en recibir bien: al visitante se le da techo, plato y palabra. Compartir comida y tiempo no empobrece, multiplica la alegría y teje paz entre familias y pueblos.' },
+  { nombre: 'Ujamaa', pueblo: 'Tanzania · legado de Nyerere', conti: 'África', sig: '“familia extendida”', ico: '🌍',
+    texto: 'La aldea como familia grande: tierra en común, decisiones en asamblea y economía al servicio de todos. Nadie avanza pisando al vecino; el desarrollo se mide en dignidad compartida.' },
+  { nombre: 'Sankofa', pueblo: 'Pueblo Akan · Ghana', conti: 'África', sig: '“vuelve y recoge lo olvidado”', ico: '🌍',
+    texto: 'El pájaro que mira atrás para avanzar: recoger la sabiduría de los ancestros antes de caminar al futuro. Quien olvida su raíz, pierde el camino; quien la honra, florece.' },
+  // ---- Asia ----
+  { nombre: 'Sarvodaya', pueblo: 'India · legado de Gandhi', conti: 'Asia', sig: '“bienestar de todos”', ico: '🌏',
+    texto: 'Que nadie quede atrás: vida simple, trabajo digno, no-violencia (ahimsa) y economía al servicio del último. El progreso verdadero se mide por la felicidad del más humilde.' },
+  { nombre: 'Tri Hita Karana', pueblo: 'Bali · Indonesia', conti: 'Asia', sig: '“tres causas de armonía”', ico: '🌏',
+    texto: 'Armonía en tres direcciones: con lo sagrado (Parahyangan), entre humanos (Pawongan) y con la naturaleza (Palemahan). Los arrozales subak se riegan por acuerdo comunitario y rito, no por competencia.' },
+  { nombre: 'Satoyama', pueblo: 'Japón rural', conti: 'Asia', sig: '“vivir entre monte y aldea”', ico: '🌏',
+    texto: 'Paisaje donde bosque, chacra, agua y aldea se cuidan en ciclo: leña medida, compost, bosque comestible y fiesta estacional. El humano es jardinero del equilibrio, no dueño del monte.' },
+  { nombre: 'Gotong Royong', pueblo: 'Java · Indonesia', conti: 'Asia', sig: '“cargar juntos la carga”', ico: '🌏',
+    texto: 'Ayuda mutua como deber cotidiano: reparar el camino, levantar la casa o preparar la fiesta entre todos. El peso repartido pesa menos y el mérito es del barrio entero.' },
+  { nombre: 'Bayanihan', pueblo: 'Filipinas', conti: 'Asia', sig: '“levantar la casa entre todos”', ico: '🌏',
+    texto: 'Todo el pueblo carga sobre sus hombros la casa del vecino para moverla a mejor suelo. Espíritu de heroísmo comunitario (bayani): servir sin esperar pago y celebrar después con mesa común.' },
+  // ---- Oceanía ----
+  { nombre: 'Kaitiakitanga', pueblo: 'Pueblo Maorí · Aotearoa (N. Zelanda)', conti: 'Oceanía', sig: '“guardianía viva”', ico: '🌊',
+    texto: 'Ser kaitiaki: guardián del río, del bosque y del mar, por las generaciones que vienen. El río es ancestro (tupuna), no recurso: si el agua enferma, la gente enferma. Cuidar es devolver el mauri (fuerza vital).' },
+  { nombre: 'Mālama ʻĀina', pueblo: 'Kānaka Maoli · Hawái', conti: 'Oceanía', sig: '“cuidar la tierra que alimenta”', ico: '🌊',
+    texto: 'La tierra (ʻāina) es la que da de comer y por eso es familia. Trabajar el taro, limpiar el estero y repartir la cosecha mantienen el aloha ʻāina: amor que se practica cuidando.' },
+  { nombre: 'Vanua', pueblo: 'Fiyi y Melanesia', conti: 'Oceanía', sig: '“tierra, gente y espíritu son uno”', ico: '🌊',
+    texto: 'Vanua no es solo suelo: es la trama viva entre tierra, mar, ancestros, comunidad y espíritu. Cuidar el arrecife y el taro es cuidar el nombre y el futuro del pueblo.' },
+  { nombre: 'Caring for Country', pueblo: 'Pueblos aborígenes · Australia', conti: 'Oceanía', sig: '“cuidar el Country”', ico: '🌊',
+    texto: 'El Country —tierra, agua, cielo, canto y ancestro— necesita su gente y su fuego bueno. Quemas cuidadas, lectura de huellas y ley viva: si el Country está sano, la gente está sana.' },
+  // ---- Norteamérica ----
+  { nombre: 'Hózhó', pueblo: 'Pueblo Diné (Navajo)', conti: 'Norteamérica', sig: '“belleza, equilibrio”', ico: '🦅',
+    texto: 'Caminar en belleza: salud, pensamiento, palabra y acto en equilibrio con la tierra, el cielo y la comunidad. La enfermedad es desarmonía; sanar es restaurar la relación con todo.' },
+  { nombre: 'Séptima Generación', pueblo: 'Haudenosaunee · noreste', conti: 'Norteamérica', sig: '“pensar siete generaciones”', ico: '🦅',
+    texto: 'Toda decisión debe cuidar a quienes nacerán siete generaciones después. El consejo escucha a los niños, a los ancianos y a la naturaleza antes de actuar: el futuro también vota.' },
+  { nombre: 'Mitakuye Oyasin', pueblo: 'Pueblo Lakota · llanuras', conti: 'Norteamérica', sig: '“todos somos parientes”', ico: '🦅',
+    texto: 'Oración y ley a la vez: el búfalo, el río, la piedra y el humano son familia. Nada se toma sin rezo ni se deja sin ofrenda; dañar a uno es dañarse a sí mismo.' },
+  { nombre: 'Potlatch', pueblo: 'Pueblos de la costa noroeste', conti: 'Norteamérica', sig: '“dar es ser rico”', ico: '🦅',
+    texto: 'Fiesta de reparto: quien más da, más honor recibe. Mantas, salmón y cantos circulan para equilibrar la comunidad. La riqueza guardada avergüenza; la riqueza repartida nombra jefes.' },
+  // ---- Europa ----
+  { nombre: 'Friluftsliv', pueblo: 'Pueblos nórdicos · Noruega', conti: 'Europa', sig: '“vida al aire libre”', ico: '🏔️',
+    texto: 'Vivir afuera, simple y cerca: caminar, esquiar, acampar y compartir cabaña sin lujo. El derecho de paso (allemannsretten) dice que la naturaleza es de todos si se pisa con respeto. Lo suficiente abriga igual.' },
+  { nombre: 'Lagom', pueblo: 'Suecia', conti: 'Europa', sig: '“ni mucho ni poco, lo justo”', ico: '🏔️',
+    texto: 'La medida sueca de lo suficiente: tomar lo que toca y dejar para el otro, en la mesa, en el trabajo y en el bosque. Equilibrio sin alarde que cuida al grupo y al recurso.' },
+  { nombre: 'Auzolan', pueblo: 'Euskal Herria · pueblo vasco', conti: 'Europa', sig: '“faena vecinal”', ico: '🏔️',
+    texto: 'Trabajo comunal de vecindad: arreglar el camino, la frontonera o el caserío entre todos, a mano vuelta. Lo que es de todos se cuida entre todos, con palabra y kaldero compartido.' }
 ];
 
 var BV_PRACTICAS = [
@@ -158,14 +217,41 @@ function renderBvVision() {
 function renderBvPueblos() {
   var box = $('bvPueblosPanel');
   if (!box) return;
-  box.innerHTML = '<div class="menstrual-card su-68a1a9"><h4>🌿 Siete miradas, un mismo horizonte</h4>' +
-    '<p class="muted su-11a508">Los pueblos originarios ofrecen caminos reales hacia el bien común. Toca tu compromiso en la pestaña 🌱 Práctica.</p></div>' +
-    BV_PUEBLOS.map(function (p) {
+  var orden = ['Abya Yala', 'África', 'Asia', 'Oceanía', 'Norteamérica', 'Europa'];
+  var icoConti = { 'Abya Yala': '🌎', 'África': '🌍', 'Asia': '🌏', 'Oceanía': '🌊', 'Norteamérica': '🦅', 'Europa': '🏔️' };
+  var grupos = {};
+  BV_PUEBLOS.forEach(function (p) {
+    var c = p.conti || 'Abya Yala';
+    if (!grupos[c]) grupos[c] = [];
+    grupos[c].push(p);
+  });
+  var html = '<div class="menstrual-card su-68a1a9"><h4>🌿 ' + BV_PUEBLOS.length + ' miradas, un mismo horizonte</h4>' +
+    '<p class="muted su-11a508">Los pueblos originarios de todos los continentes ofrecen caminos reales hacia el bien común. Toca tu compromiso en la pestaña 🌱 Práctica.</p>' +
+    '<div class="su-c158a9">' + orden.filter(function (c) { return grupos[c]; }).map(function (c) {
+      return '<span class="chip su-4d5ab7">' + (icoConti[c] || '🌐') + ' ' + esc(c) + ' · ' + grupos[c].length + '</span>';
+    }).join('') + '</div></div>';
+  orden.forEach(function (c) {
+    var arr = grupos[c];
+    if (!arr || !arr.length) return;
+    html += '<div class="menstrual-card su-68a1a9"><h4>' + (icoConti[c] || '🌐') + ' ' + esc(c) + ' · ' + arr.length + '</h4></div>';
+    html += arr.map(function (p) {
       return '<div class="si-card su-cfa1ec"><h4 class="su-6750b2">' + p.ico + ' ' + esc(p.nombre) + ' <span class="muted su-7e3a94">· ' + esc(p.pueblo) + '</span></h4>' +
         '<p class="su-49f9d7"><i>' + esc(p.sig) + '</i></p>' +
         '<p class="su-83cb86">' + esc(p.texto) + '</p></div>';
-    }).join('') +
-    '<div class="menstrual-card su-68a1a9"><p class="su-616df7">🌱 Como sociedad global, tenemos mucho que aprender de estas visiones: no solo una crítica al modelo actual, sino caminos profundos y sanadores hacia el bien común, la solidaridad activa y una vida digna para todos los seres.<br><b>Porque Vivir Bien es Vivir Juntos. ❤️🌱</b></p></div>';
+    }).join('');
+  });
+  // Por si algún pueblo futuro trae un continente no listado, se muestra igual.
+  Object.keys(grupos).forEach(function (c) {
+    if (orden.indexOf(c) >= 0) return;
+    html += '<div class="menstrual-card su-68a1a9"><h4>🌐 ' + esc(c) + '</h4></div>' +
+      grupos[c].map(function (p) {
+        return '<div class="si-card su-cfa1ec"><h4 class="su-6750b2">' + p.ico + ' ' + esc(p.nombre) + ' <span class="muted su-7e3a94">· ' + esc(p.pueblo) + '</span></h4>' +
+          '<p class="su-49f9d7"><i>' + esc(p.sig) + '</i></p>' +
+          '<p class="su-83cb86">' + esc(p.texto) + '</p></div>';
+      }).join('');
+  });
+  html += '<div class="menstrual-card su-68a1a9"><p class="su-616df7">🌱 Como sociedad global, tenemos mucho que aprender de estas visiones: no solo una crítica al modelo actual, sino caminos profundos y sanadores hacia el bien común, la solidaridad activa y una vida digna para todos los seres.<br><b>Porque Vivir Bien es Vivir Juntos. ❤️🌱</b></p></div>';
+  box.innerHTML = html;
 }
 
 function renderBvPractGuia() {
@@ -224,7 +310,7 @@ function ensureBvDialog() {
     '<div class="dlg-actions su-d2d053">' +
     '<h3 class="su-ee0cfe">🌎 Buen Vivir — Küme Mongen</h3>' +
     '<button type="button" id="bvCloseTop" class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    '<p class="muted su-77e2fe">Ética de lo suficiente para toda la comunidad 🙏🌎. Siete pueblos, un horizonte: <b>Vivir Bien es Vivir Juntos</b>. Tus compromisos quedan <b>privados y locales</b>.</p>' +
+    '<p class="muted su-77e2fe">Ética de lo suficiente para toda la comunidad 🙏🌎. Pueblos del mundo, un horizonte: <b>Vivir Bien es Vivir Juntos</b>. Tus compromisos quedan <b>privados y locales</b>.</p>' +
     '<div class="timer-tabs su-4dca21">' +
     '<button type="button" id="tabBvVision" class="btn btn-accent su-30e741">🌎 Visión</button>' +
     '<button type="button" id="tabBvPueblos" class="btn su-30e741">🌿 Pueblos</button>' +
@@ -268,7 +354,7 @@ function ensureBvButton() {
   b.id = 'btnBuenVivir';
   b.className = 'btn';
   b.setAttribute('data-sub', 'tierra');
-  b.setAttribute('data-keywords', 'buen vivir vivir bien kume mongen küme mongen sumak kawsay ñande reko suma qamaña shiir waras balu wala filosofia indigena originario mapuche kichwa guarani kolla shuar guna aymara quechua madre tierra nuke mapu ñuke mapu comunidad etica suficiente armonia tierra sin mal ayllu jaqi wak sallqa huanacuni');
+  b.setAttribute('data-keywords', 'buen vivir vivir bien kume mongen küme mongen sumak kawsay ñande reko suma qamaña shiir waras balu wala lekil kuxlejal kawsak sacha tseltal tsotsil maya sarayaku amazonia filosofia indigena originario mapuche kichwa guarani kolla shuar guna aymara quechua madre tierra nuke mapu ñuke mapu comunidad etica suficiente armonia tierra sin mal ayllu jaqi wak sallqa huanacuni ubuntu harambee teranga ujamaa sankofa akan africa sarvodaya tri hita karana satoyama gotong royong bayanihan asia kaitiakitanga malama aina vanua country aborigen oceania maori hawai hozho septima generacion mitakuye oyasin potlatch lakota norteamerica friluftsliv lagom auzolan europa');
   b.textContent = '🌎 Buen Vivir';
   var ref = $('btnFlora') || $('btnBosque');
   if (ref && ref.parentNode === g) {

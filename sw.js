@@ -2,7 +2,7 @@
 // Copyright (C) 2026 Semillero Consciente. Licencia: GNU GPLv3 o posterior (ver COPYING).
 // SPDX-License-Identifier: GPL-3.0-or-later
 // v55
-const CACHE = 'cal13-v125-offline';
+const CACHE = 'cal13-v127-offline';
 
 // Lista completa de archivos que usa index.html (bare + con ?v=).
 // Si se agrega un JS nuevo en index.html, agregarlo aquí también (bare y ?v=).
@@ -237,7 +237,7 @@ const CORE = [
   './min/estoicismo-modulo.min.js',
   './min/estoicismo-modulo.min.js?v=1',
   './min/etapas-vida-modulo.min.js',
-  './min/etapas-vida-modulo.min.js?v=1',
+  './min/etapas-vida-modulo.min.js?v=2',
   './min/fauna-marina-modulo.min.js',
   './min/fauna-marina-modulo.min.js?v=1',
   './min/feng-shui-modulo.min.js',
@@ -317,7 +317,7 @@ const CORE = [
   './min/neurodiversidad-modulo.min.js',
   './min/neurodiversidad-modulo.min.js?v=1',
   './min/nuevos-modulos.min.js',
-  './min/nuevos-modulos.min.js?v=9',
+  './min/nuevos-modulos.min.js?v=10',
   './min/numerologia-modulo.min.js',
   './min/numerologia-modulo.min.js?v=3',
   './min/onboarding-modulo.min.js',

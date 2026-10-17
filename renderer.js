@@ -4143,6 +4143,17 @@ function openExternalLink(url){
 }
 function setupDonateDialog(){
   const btn=$('btnDonate'); if(!btn) return;
+  try{
+    var _now=new Date();
+    var _start=new Date(_now.getFullYear(),0,0);
+    var _doy=Math.floor((_now-_start)/86400000);
+    var _hue=_doy%360;
+    var _col='hsl('+_hue+',70%,32%)';
+    var _heart=btn.querySelector?btn.querySelector('.donate-heart'):null;
+    if(_heart){ _heart.style.color=_col; }
+    else { btn.style.setProperty('--donate-heart',_col); }
+    btn.style.setProperty('--donate-heart',_col);
+  }catch(e){}
   btn.onclick= async ()=>{
     let d = await loadDonateConfig();
     d = d || (typeof DONATE!=='undefined'? DONATE : (window.pencoData&&window.pencoData.DONATE)) || {};

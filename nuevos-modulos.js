@@ -1826,7 +1826,9 @@ function paintTerritorial() {
   if (q) q.oninput = function () { $('mpTerrList').innerHTML = terrListHTML(q.value); bindTerrSpeaks($('mpTerrList')); };
 }
 function setupKimun() {
-  var old = $('kimunDialog'); if (old) old.remove();
+  // NOTA: no borrar kimunDialog aquí — ese ID es del Ciclo Kimün
+  // (etapas-vida-modulo.js / btnKimun). El antiguo diálogo territorial
+  // ya fue fusionado como pestaña tabMP7 dentro de Mapuzugun.
   var t1 = $('tabMP1'); if (!t1) return;
   if (!$('tabMP7')) {
     var b7 = document.createElement('button');

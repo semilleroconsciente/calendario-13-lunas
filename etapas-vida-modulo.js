@@ -7,6 +7,10 @@
      2) 🏠 Adultez (35-59) ........ btnAdultez / adultezDialog
      3) 🔥 Climaterio (45-64) ..... btnClimaterio / climaterioDialog
      4) 🦉 Vejez Sabia (60+) ...... btnVejez / vejezDialog
+     5) 🌀 Septenios (0-70+) ...... btnSeptenios / septeniosDialog
+     6) 🙏 Camino Lakota ............ btnLakota / lakotaDialog
+         Femenino (7 caminos Mujer Bufalo Blanco) + Masculino (7 etapas Wicasa)
+         Mapuche-Lafkenche (5 etapas Kimun) ......... btnKimun / kimunDialog
 
    Cada sección es completa e independiente, con 5 pestañas:
      Guía · Cuerpo & Salud · Mente & Vínculos · Vida práctica ·
@@ -328,8 +332,230 @@ var ETAPAS_CONF = [
   bridges: [['vejGoVoz', 'btnVozAbuelos'], ['vejGoArbol', 'btnArbolFull'], ['vejGoDuelo', 'btnDueloFull'], ['vejGoRutina', 'ritmoPlan', '🌞 Mi ritmo'], ['vejGoMemory', 'btnMemory'], ['vejGoGrat', 'btnGratitud']],
   bridgesLabel: '🔗 Sigue en tu calendario',
   bridgesTxt: 'Tu sabiduría y tus cuidados viven también en estas secciones.'
-}
-];
+},
+/* ============ 5) SEPTENIOS 0-70+ ============ */
+{
+  key: 'sep', btn: 'btnSeptenios', btnTxt: '🌀 Septenios',
+  dlg: 'septeniosDialog', title: '🌀 Septenios (ciclos de 7 años)',
+  sub: 'Mapa de la vida en ciclos de 7 años: <b>cada septenio trae un cuerpo, una tarea del alma y una crisis que abre la puerta al siguiente</b>. Sirve para ubicarte, entender tu momento y preparar el que viene. Todo <b>privado y local</b>. <b>Educativo: no reemplaza médico, terapeuta ni consejería.</b>',
+  kw: 'septenios septenio ciclos 7 siete anos antroposofia steiner biografia crisis nudo lunar saturno retorno 21 28 35 42 49 56 63 mision vocacion proposito edad etapas',
+  p: 'sep', tabNames: ['Guia', 'Cuerpo', 'Mente', 'Prac', 'Espacio'],
+  tabLabels: ['🧭 Guía', '🌗 Mapa 0-70+', '🧠 Mente', '🧰 Vida práctica', '📓 Mi espacio'],
+  intro: 'Etapa que las contiene a todas: de los 0 a los 70+ avanzamos por <b>septenios</b>. Cada 7 años madura una capa: primero el <b>cuerpo</b> (0-21), luego el <b>alma</b> (21-42) y después el <b>espíritu</b> (42 en adelante). Las crisis de los 21, 28, 35, 42 o 49 no son fallas: son <b>cambios de piel</b>. Ubica tu septenio abajo y trabaja solo ese: lo demás llega solo.',
+  fases: [
+    { n: '0–7 · Cuerpo y hogar', ico: '🌱', q: 'El niño aprende por imitación: lo que ve en casa lo vuelve cuerpo. Necesita calor, ritmo (dormir, comer, jugar a la misma hora), naturaleza y cuentos más que pantallas. Los dientes, el caminar y el hablar marcan el cierre.',
+      cuerpo: 'Ritmo fijo, juego libre afuera, comida casera y límites con cariño. Menos pantalla, más bosque y mar.',
+      mente: 'Mundo bueno: "el mundo es bueno". Si hay gritos o sustos seguidos, el cuerpo los guarda: calma y reparación rápida.',
+      tip: '🌙 Para padres: 1 cuento + 1 paseo por luna. Ver 🧒 Crianza del calendario.' },
+    { n: '7–14 · Sentir y aprender', ico: '🌸', q: 'Cambia los dientes, nace la memoria y el corazón pide belleza: música, arte, epew, deporte en equipo. La autoridad amorosa (profe, mamá, papá) enseña más que mil reglas. Pubertad anuncia el cierre.',
+      cuerpo: 'Dormir 10 h, moverse a diario, comida que sostenga el estirón. Ojo mochila y postura.',
+      mente: 'Mundo bello: "el mundo es bello". Burla o humillación duelen años: nombrar y reparar.',
+      tip: '🌙 1 oficio manual por luna (cocinar, tejer, sembrar, arreglar).' },
+    { n: '14–21 · Verdad e identidad', ico: '🔥', q: 'Despierta el juicio propio: ideales, amistades intensas, primer amor, liceo, vocación. Todo se cuestiona. Tarea: decir yo sin romper el nido. Ideal con grupo y adulto que escuche sin sermón.',
+      cuerpo: 'Sueño (crece de noche), deporte que descargue, cuidado de salud sexual y de consumos (ver 🌱 Adolescencia).',
+      mente: 'Mundo verdadero: "el mundo es verdadero". Comparación y rabia son materiales de identidad: canalizar en crear.',
+      tip: '🌙 Pregunta guía: ¿qué me indigna y qué quiero crear con eso?' },
+    { n: '21–28 · Alma sensible: salir al mundo', ico: '🛫', q: 'Independencia real: trabajo, estudios superiores, primera casa, pareja elegida. Todo se siente fuerte y se prueba. Nudo lunar ~18-19: ¿sigo el guion familiar o el mío? Ensayo barato vale oro.',
+      cuerpo: 'Trasnoche pasa cuenta: protege sueño y comida aunque apriete el bolsillo.',
+      mente: 'Hipersensibilidad + idealismo. Duelo de caminos + aprender a decir no sin culpa.',
+      tip: '🌙 1 oficio + 1 colchón de plata por luna. Ver 🌅 Juventud.' },
+    { n: '28–35 · Alma racional: ordenar', ico: '🧱', q: 'Retorno de Saturno (~28-30): la vida pide estructura. Pareja más estable, hijos o proyectos, deudas, oficio que rinde. Se cae lo prestado y queda lo propio. Crisis fértil: ¿esto lo elegí yo?',
+      cuerpo: 'Chequeos base, fuerza 2×/semana, menos alcohol. Espalda y rodillas piden técnica.',
+      mente: 'Exigencia y comparación. Se vale cambiar de rubro con datos, no con impulso.',
+      tip: '🌙 Fondo de emergencia de 1 mes, después 3. Ver 💰 Finanzas.' },
+    { n: '35–42 · Alma consciente: autenticidad', ico: '🪞', q: 'Pregunta grande: ¿esta vida es la mía? Cuerpo cambia, hijos crecen, padres envejecen, la pega pregunta sentido. Lo que no es tuyo pesa el doble. Revisar no es fracasar: es actualizar el mapa.',
+      cuerpo: 'Metabólico se mueve: exámenes al día + fuerza + sueño protegido. Ver 🏠 Adultez.',
+      mente: 'Duelo de juventud + ganas de verdad. Terapia, mentor o grupo ordenan más que un auto nuevo.',
+      tip: '🌙 Escribe: ¿qué sigo, qué cambio, qué suelto este año?' },
+    { n: '42–49 · Yo y misión', ico: '🌗', q: 'Nudo lunar ~37 y mitad del septenio: ¿para quién vivo lo que sé hacer? Climaterio en muchos cuerpos, hijos que se van, padres muy mayores. Tarea: poner tu don al servicio sin quemarte. Menos ego, más legado.',
+      cuerpo: 'Acompaña síntomas sin silencio (ver 🔥 Climaterio), fuerza, corazón y huesos.',
+      mente: 'Crisis de sentido fértil. Pareja se renegocia, amistades se podan, vocación se afina.',
+      tip: '🌙 1 enseñanza por luna: lo que sabes vale para otros.' },
+    { n: '49–56 · Cosecha y enseñanza', ico: '🌾', q: 'Lo sembrado se ve: oficio maduro, hijos adultos, quizás nietos. Tarea: enseñar y soltar poder. Si guardaste salud y vínculos, cosechas liviano. Si no, es tiempo de reparar: pedir perdón también es cosechar.',
+      cuerpo: 'Mantención programada: EMPA, vista, oído, dientes, equilibrio. Caminar + fuerza sostienen.',
+      mente: 'Miedo a "no servir" si baja el ritmo. Antídoto: rol de guía (minga, taller, historia).',
+      tip: '🌙 Graba 1 historia por luna (🗣️ Voz de los Abuelos).' },
+    { n: '56–63 · Sabiduría y soltar', ico: '🦉', q: 'Segundo retorno de Saturno (~58-60): suelta cargos, hereda mando, cuida energía. Tarea: ser faro, no tractor. Jubilación o segundo oficio por gusto. Casa y papeles en orden dan paz.',
+      cuerpo: 'Densitometría, colon, próstata/mama al día. Casa anticaídas + pastillero ordenado.',
+      mente: 'Duelos se juntan: 🕊️ Duelo + grupo + fe sostienen. Enseñar rejuvenece.',
+      tip: '🌙 Revisa con familia: ¿qué hago sola/o, en qué pido mano?' },
+    { n: '63+ · Legado y trascendencia', ico: '🕯️', q: 'Frágil y valiosa. Prioridad: confort, vínculo y decidir (dónde estar, quién cuida, qué tratamientos sí/no). Tarea: bendecir. Lo que perdonas y cuentas queda vivo en otros. Cuidados paliativos alivian, no apuran.',
+      cuerpo: 'Piel, hidratación, moverse a diario, dolor siempre tratado. Ver 🦉 Vejez Sabia.',
+      mente: 'Presencia más que palabras: mano, música, fotos, epew. La persona entiende cariño hasta el final.',
+      tip: '🌙 1 recuerdo grabado por luna: tu voz queda.' }
+  ],
+  mitos: '• "La crisis de los 40 es tontera" → es revisión real del alma: ignorarla la alarga, escucharla la acorta.<br>• "A los 30 deberías tener todo listo" → cada septenio tiene su tarea: apurar quema etapas.<br>• "Después de los 50 ya no cambias" → el espíritu madura hasta el final: se aprende a todo septenio.<br>• "Los astros mandan" → los ciclos orientan, no obligan: tú decides con datos y ayuda.',
+  uso: '1) Calcula tu septenio: <b>edad ÷ 7</b> (ej: 34 años = 5° septenio 28-35).<br>2) Lee solo <b>tu septenio + el anterior + el siguiente</b>.<br>3) Marca tu chequeo en <b>Mente</b> según tu semana.<br>4) Elige 1 tarea en <b>Vida práctica</b>.<br>5) Registra en <b>Mi espacio</b> cada luna: en 3 lunas verás tu patrón.',
+  familia: 'Para familias: cada integrante vive un septenio distinto y necesita trato distinto (juego, belleza, verdad, ensayo, estructura, sentido, legado). No pidas peras al manzano de 7 ni obediencia ciega al de 16. Pregunten en casa: "¿en qué septenio estás y qué necesitas?" y repartan cuidados según eso.',
+  cuerpoIntro: 'Cada septenio pide un cuidado distinto, pero la base es la misma: <b>dormir, moverse, comer real y chequearse</b>. Aquí el mapa por edad.',
+  cuerpo: [
+    { n: 'Ritmo: el remedio de todo septenio', ico: '🌙', txt: '0-7: misma hora para dormir/comer/jugar. 7-21: sueño largo (10 h y luego 8-9 h) + horarios de estudio. 21+: misma hora ±1 h, sin pantalla 30-45 min antes, cafeína hasta las 15:00. Turnos nocturnos: antifaz + tapones + luz fuerte al despertar. Dormir mal 3+ semanas: consulta CESFAM.' },
+    { n: 'Movimiento según década', ico: '🏃', txt: 'Niños: juego libre 2 h/día. 14-35: deporte + fuerza 2×/semana (sentadilla, plancha, remo). 35-55: caminar 30 min × 5 + fuerza + elongar. 55+: caminar 20-30 min + equilibrio (1 pie con apoyo, tai chi) + levantarse de silla. Dolor >2 semanas o caída: kine/CESFAM, no aguante. 💪 Entrenamientos del calendario.' },
+    { n: 'Comida que sostiene el ciclo', ico: '🥘', txt: 'Base Penco en todo septenio: legumbres 2-3 veces/semana, huevo, jurel/pollo, arroz/avena/papa + verdura de feria. Niños y estirón: proteína + leche si hay. 35+: menos sal/azúcar, más fibra y proteína. 60+: proteína diaria + 6-8 vasos de agua aunque no dé sed. Usa 🥗 Comidas para planificar.' },
+    { n: 'Chequeos por septenio', ico: '🩺', txt: '7-14: visión, dientes, vacunas. 14-21: salud sexual (matrona confidencial), dental, visión. 21-35: presión, peso, dental/visión anual; PAP cada 3 años (25-64). 35-55: EMPA gratis en CESFAM (presión, glicemia, colesterol) + mamografía (50-74) + próstata (50+, 45 con familia) + colon 45+. 55+: EMPA + crónicos + vista/oído/dental/pies anual.' },
+    { n: 'Salud sexual y fertilidad por edad', ico: '💛', txt: '14-21: consentimiento + preservativo + consejería (ver 🌱 Adolescencia). 21-35: planificar con datos (🤰 Fertilidad + 🌸 Ciclo): buscar o evitar con matrona. 35-49: perimenopausia y andropausia se acompañan (ver 🔥 Climaterio). 49+: deseo cambia, no se acaba: lubricación, tiempo y palabra.' },
+    { n: 'Tóxicos y remedios a cada edad', ico: '🚭', txt: '14-28: el riesgo es accidente, pelea y deuda: nunca manejar ni subirte con quien tomó, plan de vuelta antes de salir. 28+: alcohol poco o nada, tabaco cero (CESFAM ayuda: SENDA 1412). 50+: revisa remedios 1×/año (interacciones) + pastillero + lista a la vista. Vacunas: influenza anual + COVID según campaña.' }
+  ],
+  menteIntro: 'Cada septenio trae su pregunta y su nudo. <b>Nombrar + pedir + acordar</b>: esa es la herramienta.',
+  mente: [
+    { n: 'Nudos: 19, 28-30, 37, 58-60', ico: '🪢', txt: 'Alrededor de esas edades casi todos sienten tirón: cambio de casa, pega, pareja o sentido. No decidas grande en la semana más oscura: escribe 10 días, conversa con 2 personas que ya pasaron el tramo y decide en calma. Si hay ideas de daño: *4141 hoy mismo. La crisis pasa; la decisión apurada queda.' },
+    { n: 'Vocación: el hilo rojo', ico: '🧭', txt: 'Pregunta de todo septenio: ¿qué hago bien, qué me gusta y qué sirve en Bío-Bío? 14-21: prueba barato (talleres, oficios, voluntariado). 21-35: elige y profundiza (SENCE, CFT, oficio). 35-49: afina (enseña lo que sabes). 49+: hereda (forma a otro). 1 curso u oficio por año mantiene vivo el hilo. Ver 🎓 Oficios del calendario.' },
+    { n: 'Vínculos según septenio', ico: '🤝', txt: '0-14: padres y profes sostienen. 14-28: pares y primer amor enseñan límites (consentimiento siempre). 28-49: pareja e hijos piden renegociar plata y tareas cada luna. 49+: amistad y comunidad sostienen más que la familia ideal. Gritos, control o miedo nunca son "etapa": son violencia (1455 / 149).' },
+    { n: 'Ánimo y niebla por edad', ico: '🌧️', txt: '14-21: comparación feroz: limpia redes 1×/luna. 21-42: burnout (cansancio que no se va durmiendo 2+ semanas): quita 1 tarea, pon 1 límite, suma 1 recuperación diaria. 42+: niebla y llanto fácil pueden ser hormonales y vitales: registra 2 lunas y consulta. Tristeza 2+ semanas casi a diario: CESFAM / *4141.' },
+    { n: 'Pedir ayuda a tiempo', ico: '🫂', txt: 'Cada septenio tiene su adulto: matrona, profe, mentor de oficio, psicólogo CESFAM, grupo de pares, SENAMA 800 400 035 en vejez. Pedir hora cuesta 10 minutos; no pedirla cuesta meses. Vecinos: si ven a un niño o mayor solo o descuidado, avisen (CESFAM/Municipalidad).' }
+  ],
+  pracIntro: 'Tu biografía en 1 tarde: <b>calcula, ubica, elige 1 tarea y ritualiza cada 7</b>.',
+  prac: [
+    { n: 'Calcula tu septenio hoy', ico: '🔢', txt: 'Divide tu edad por 7 y redondea hacia arriba: 0-7 = 1°, 7-14 = 2°, 14-21 = 3°, 21-28 = 4°, 28-35 = 5°, 35-42 = 6°, 42-49 = 7°, 49-56 = 8°, 56-63 = 9°, 63-70 = 10°, 70+ = 11°. Ej: 34 años = 5° septenio (28-35). Anota: estoy en el año X de mi septenio (ej: 34 = año 7 del 5°: año de cierre y balance).' },
+    { n: 'Lee tu tríada (anterior + actual + siguiente)', ico: '📖', txt: 'Lee arriba tu septenio actual completo + el anterior (qué debí cerrar) + el siguiente (qué se anuncia). Preguntas: ¿qué del anterior me quedó pendiente? ¿qué de este me cuesta? ¿qué del siguiente me ilusiona? Escríbelo en 📓 Mi espacio en 5 líneas.' },
+    { n: 'Biografía en 1 página', ico: '📓', txt: 'Dibuja línea de 0 a tu edad, marca cada 7 y anota 1 hito + 1 aprendizaje por septenio (casa, escuela, pega, amor, pérdida, logro). Verás tu hilo rojo en 20 minutos. Guarda foto en tu diario. Para profundizar: 🔁 Recapitulación + 🌳 Árbol + 🗣️ Voz de los Abuelos del calendario.' },
+    { n: 'Ritual de cada 7 cumpleaños', ico: '🎂', txt: 'A los 7, 14, 21, 28, 35, 42, 49, 56, 63, 70: celebra distinto (no solo carrete). Propuesta Penco: caminata al amanecer + carta (qué suelto, qué agradezco, qué pido) + comida con tus 5 personas + 1 compromiso público chico. Los años intermedios: revisión de 30 min cada luna de tu cumpleaños.' },
+    { n: 'Plan del septenio (1 página)', ico: '🎯', txt: 'Elige 1 meta de cuerpo + 1 de alma + 1 de mundo para tu septenio actual. Ej (28-35): "fuerza 2×/semana + fondo 3 meses + curso oficio". Parte en chico: 1 paso por luna en 📓 Mi espacio (máx 3 metas). Lo chico cumplido 7 años te cambia la biografía.' },
+    { n: 'Puentes a tu etapa fina', ico: '🌉', txt: 'Septenios es el mapa; las etapas son el territorio fino: ve a 🌅 Juventud (20-39), 🏠 Adultez (35-59), 🔥 Climaterio (45-64) o 🦉 Vejez (60+) según tu edad para cuerpo, mente y papeles detallados. Abajo tienes los botones directos.' }
+  ],
+  espacioExtra: 'sentido',
+  espacioExtraLabel: 'Sentido de mi ciclo actual (1-10)',
+  bridges: [['sepGoJuventud', 'btnJuventud'], ['sepGoAdultez', 'btnAdultez'], ['sepGoClimaterio', 'btnClimaterio'], ['sepGoVejez', 'btnVejez'], ['sepGoDuelo', 'btnDueloFull'], ['sepGoGrat', 'btnGratitud']],
+  bridgesLabel: '🔗 Sigue en tu calendario',
+  bridgesTxt: 'Del mapa al territorio: baja a tu etapa detallada.'
+},
+/* ============ 6) CAMINO LAKOTA (femenino 7 + masculino 7) ============ */
+{
+  key: 'lak', btn: 'btnLakota', btnTxt: '🙏 Camino Lakota',
+  dlg: 'lakotaDialog', title: '🙏💗🌎 Camino Iniciatico de la Nacion Lakota',
+  sub: 'El mito sioux de la <b>Mujer Bufalo Blanco</b> describe las siete etapas que sigue la mujer en su camino hacia la autorrealizacion. Su origen es conocido como <b>EL CAMINO DE LA BELLEZA</b>: un ritual sagrado que dura toda la vida. Aqui estan la version <b>femenina (7 caminos)</b> y la <b>masculina (7 etapas)</b>, complementarias e igualmente sagradas. Todo <b>privado y local</b>. <b>Educativo: no reemplaza guia espiritual, medico, matrona ni terapia.</b>',
+  kw: 'lakota sioux mujer bufalo blanco camino belleza hija mujer madre recogedora ritualista maestra sabia hokshila koskalaka hanbleceya wicasa wakan tiospaye vision guerrero proveedor anciano legado virtudes complementariedad',
+  p: 'lak', tabNames: ['Guia', 'Fem', 'Masc', 'Prac', 'Espacio'],
+  tabLabels: ['🧽 Guia', '💗 Camino Femenino (7)', '🦅 Camino Masculino (7)', '🤝 Integracion', '📓 Mi espacio'],
+  guiaTitulo: '🙏 El Camino de la Belleza: ritual de toda la vida',
+  intro: 'Un mito sioux, el de la <b>Mujer Bufalo Blanco</b>, describe las <b>siete etapas que sigue la mujer en su camino hacia la autorrealizacion</b>. El origen del mito Lakota es conocido como <b>EL CAMINO DE LA BELLEZA</b> y es un ritual sagrado que dura toda la vida. No hay que quemar etapas: hay que vivir con entrega y aceptacion cada experiencia, sea aparentemente buena o mala, porque es lo que nos toca vivir. A menudo las grandes ensenanzas estan en las pequenas dificultades diarias.',
+  fases: [
+    { n: 'El mito de la Mujer Bufalo Blanco', ico: '🙏', q: 'La Mujer Bufalo Blanco trae la pipa sagrada y las siete ensenanzas: el camino femenino hacia la totalidad. Cada prueba o dificultad superada es un paso mas en el viaje hacia la totalidad.',
+      cuerpo: 'Origen oral Lakota: las versiones escritas modernas resumen la tradicion; honra la fuente y evita usar ceremonias sin guia nativa.',
+      mente: 'Lee primero el camino completo (femenino y masculino) y luego trabaja solo 1 camino por luna.',
+      tip: '🌙 Principio: el poder espiritual es para servir, no para dominar.' },
+    { n: 'El Camino de la Belleza', ico: '🌎', q: 'Belleza aqui significa equilibrio y armonia con todo lo existente: humildad, orden, respeto, dignidad y cuidado de toda criatura. El equilibrio que caracteriza al universo se vuelve parte profunda de quien camina.',
+      cuerpo: 'Equilibrio entre realidad interna y externa: esa es la base del ritual sagrado.',
+      mente: 'Sentido del humor incluido: la sabia y el anciano rien; la rigidez es senal de ego.',
+      tip: '🌙 Pregunta guia: lo que vivo hoy, me acerca o me aleja del equilibrio?' },
+    { n: 'Las dos vias son complementarias', ico: '🤝', q: 'El camino de la mujer se arraiga en crear, nutrir y transformar la vida desde su interior; el del hombre en proteger, proveer y buscar la vision para devolverla a la comunidad. Al final convergen: vivir en armonia (Wochekiye).',
+      cuerpo: 'Femenino: poder de dar vida y sostenerla. Masculino: poder de cuidar el circulo y traer vision.',
+      mente: 'Ninguno vale mas: sin cuidado no hay vida que sostener; sin vida no hay circulo que cuidar.',
+      tip: '🌙 En pareja o familia: preguntense en que camino esta cada uno y que necesita.' },
+    { n: 'Como caminar esta seccion (1 paso por luna)', ico: '🗺', q: 'No es un curso rapido: es un mapa de toda la vida. Ubica tu camino actual, lee su tarjeta completa, elige 1 practica chica y registrala en Mi espacio.',
+      cuerpo: 'Mujeres: atencion especial a madre y recogedora, las etapas mas exigentes del ego.',
+      mente: 'Hombres: atencion especial a vision (Hanbleceya) y a servicio sin ego (Wicasa Wakan).',
+      tip: '🌙 Relee cada luna: en 3 lunas veras tu patron.' }
+  ],
+  mitos: '&bull; "Lo espiritual se logra rapido" &rarr; es un ritual de toda la vida: apurar quema etapas.<br>&bull; "Hay que saltarse la maternidad o el sacrificio" &rarr; madre y recogedora son las pruebas mas dificiles y las que mas ensenan.<br>&bull; "El poder espiritual es para mandar" &rarr; es para servir sin danarse ni danar: sin equilibrio puede ser un desastre para la comunidad.<br>&bull; "Femenino y masculino compiten" &rarr; son complementarios e igualmente sagrados.',
+  uso: '1) Lee la <b>Guia</b> una vez.<br>2) Ubica tu camino actual en <b>Femenino o Masculino</b> y lee su tarjeta completa.<br>3) Elige <b>1 practica</b> en <b>Integracion</b>.<br>4) Registra en <b>Mi espacio</b> (animo, energia, conexion con tu camino + diario).<br>5) Relee cada luna: el avance se ve en meses, no en dias.',
+  familia: 'Para familias y parejas: cada integrante esta en un camino distinto. No exijan a la hija lo de la maestra, ni al joven lo del anciano. Acompanar es preguntar "que te toca vivir y que necesitas", repartir cuidados y sostener sin rescatar siempre. Si hay gritos, control, miedo o maltrato, eso no es "etapa": es violencia (149 / 1455 / 133).',
+  cuerpoTitulo: '💗 Camino Femenino: los 7 caminos de la Mujer Bufalo Blanco',
+  cuerpoIntro: 'Los siete caminos proporcionan a la mujer la fuerza, la disciplina y la profunda conexion que necesita para canalizar el poder espiritual sin causar dano a si misma ni a los demas. Le ayudan a desarrollar humildad, orden, respeto, dignidad y el sentido de cuidar a toda criatura. El camino de la madre y el de la recogedora son las etapas mas dificiles: sacrificio del ego y aprendizaje del amor no egoista.',
+  cuerpo: [
+    { n: '1. El Camino de la Hija', ico: '👧', txt: 'Desde el nacimiento hasta la aparicion de la primera regla. Todavia es una nina, fisica y psiquicamente dependiente, mentalmente receptiva, que absorbe todo tipo de ensenanza, ejemplo o estimulo que se le presenta. Si todas estas influencias exteriores son apropiadas, estructuradas y emocionalmente equilibradas, la nina desarrollara el equilibrio, respeto, dignidad y autoconfianza que luego necesitara como recursos para llevar una vida en armonia con todo lo existente.' },
+    { n: '2. El Camino de la Mujer', ico: '🌺', txt: 'Abarca los anos en que la mujer desarrolla la autoconfianza, aprendiendo a controlar su vida independiente de los adultos. Aprende a traves de la experiencia personal, desarrolla sus propias respuestas emocionales y mentales y elige sus relaciones. Empieza a explorar su sexualidad y a construir su espiritualidad. Son los anos en los que empieza a conocerse y, poco a poco, llega a ser una persona responsable y madura (en nuestra sociedad actual este periodo va desde la adolescencia hasta los 28-32 anos).' },
+    { n: '3. El Camino de la Madre', ico: '🤱', txt: 'Desde el punto de vista espiritual, el nacimiento de un hijo es el evento mas importante de la vida de una mujer; ya que entonces entra a formar parte de la comunidad espiritual femenina. Al cruzar la frontera entre la vida y la muerte con el parto es recibida en la comunidad de las matronas, donde inicia la verdadera ensenanza. Aprende la disciplina del sacrificio: cuerpo, tiempo, psique, conocimiento, vida social, condicion economica, relaciones y valores son puestos al servicio de los ninos. Este pasaje, ambivalente como ningun otro, la empuja a superar todos los limites que tenia previstos. Aprende a relacionarse en armonia con su mundo, armonizando sus necesidades individuales con las demandas externas; alcanza asi el poderoso equilibrio entre realidad interna y externa sobre el cual se basa este ritual sagrado. En el camino de la madre, la vida espiritual de la mujer pone sus raices y florece: en muchas culturas antiguas el dar a luz simbolizaba una iniciacion.' },
+    { n: '4. El Camino de la Recogedora', ico: '🌿', txt: 'Recoger es una disciplina que requiere respeto antes que nada; desarrolla poderes especiales de observacion y discernimiento en el conocimiento de las estaciones, del clima, de la astronomia y de la curacion. Armada unicamente de conocimiento, de intuicion y de oraciones, la mujer recolecta gran cantidad de plantas y de sustancias minerales para la cocina, la magia, la higiene y la cosmetica. La recogedora tiene que conocer perfectamente donde y cuando encontrar lo que necesita, la forma mas adecuada de conservar, almacenar, preparar las sustancias y utilizarlas en condiciones que resulten eficaces e inocuas.' },
+    { n: '5. El Camino de la Ritualista', ico: '🔥', txt: 'Una Mujer Medicina nativa nunca aplica el mismo remedio al mismo sintoma fisico en distintos pacientes, ya que trata al ser en su totalidad. Para ella hacer medicina es conocer al paciente, a su familia, su condicion espiritual, mental, fisica, ambiental y social, y como combinar todo esto en el proceso de curacion. Es muy consciente del espiritu que hay tras la planta, roca o cristal usados en el tratamiento, a los cuales hay que dar las gracias por la ayuda. Esta parte del trabajo se caracteriza por la tension espiritual, aunque no tan intensa como su primer parto, sus primeras reglas o su responsabilidad de mujer joven de aprender a respetar a los demas (humanos e inhumanos) y a si misma. Sin equilibrio, responsabilidad y consciencia puede suponer un desastre para la comunidad, porque el poder de la mujer es grande, y cuanto mas desarrolle la disciplina y la devocion, mas aumentara su poder. Quien sigue este camino ha de ser interiormente segura, estar profundamente preocupada por la vida espiritual del planeta y ser capaz de sacrificar su trabajo y su ego por el bien de la comunidad.' },
+    { n: '6. El Camino de la Maestra', ico: '🌕', txt: 'Aprendiendo, experimentando, alimentando y trabajando la mujer alcanza la edad en la cual se vuelve transmisora de sabiduria espiritual y social. Es compartiendo con los demas las tecnicas, las teorias y las experiencias que ha vivido como llega a ser una maestra. Entra en la menopausia tan profunda y madura como la fruta, como la flora. Si ha seguido los caminos con armonia entrara en el reino de lo sagrado como miembro de la comunidad cosmica, derecho ganado a traves de su trabajo, sacrificio y devocion. Puede elegir su campo: educacion, servicio publico o cualquier profesion, practicada de forma sana y espiritual; o ser abuela, con nietos, bisnietos u otros ninos ayudandoles a crecer. Gran parte de su ensenanza se transmite con el ejemplo; su presencia y esencia revitalizan y enriquecen la vida de su comunidad entera.' },
+    { n: '7. El Camino de la Sabia', ico: '🌟', txt: 'Alcanzada la vejez, la chamana entra en el periodo de la maestria, habiendo desarrollado una verdadera sabiduria. El sentido del equilibrio que caracteriza al universo es ahora parte profunda de ella, asi como el sentido del humor. Esta en contacto directo con hechos naturales y sobrenaturales, siendo capaz de aceptar sus directrices. Su trabajo ha trascendido su ser personal y privado, su familia; su comunidad se extiende ahora hacia las estrellas. Es un ser sagrado: es completa. Los siete caminos le dan fuerza, disciplina y conexion para canalizar el poder sin dano, con humildad, orden, respeto, dignidad y cuidado de toda criatura, y una profunda comprension de si misma en lo interior y lo exterior.' }
+  ],
+  menteTitulo: '🦅 Camino Masculino: las 7 etapas hacia el Wicasa Wakan',
+  menteIntro: 'No existe un unico texto espejo tan popularizado como el de los 7 caminos de la mujer, pero las ensenanzas orales Lakota describen el ciclo del hombre a traves de responsabilidad, ritos de paso y evolucion espiritual, para convertirlo en un Wicasa Wasaka (Hombre Fuerte) y, eventualmente, en un Wicasa Wakan (Hombre Santo).',
+  mente: [
+    { n: '1. El Camino del Nino (Hokshila)', ico: '👦', txt: 'Desde el nacimiento hasta la pubertad. El nino es moldeado por los hombres de la tribu (padres, abuelos, tios). Aprende humildad, obediencia, respeto por todos los seres vivos y las habilidades basicas de supervivencia, caza y observacion. Su mente es receptiva y se le ensena que la verdadera fuerza no es la agresividad, sino el autocontrol y la capacidad de escuchar.' },
+    { n: '2. El Camino del Joven (Koskalaka)', ico: '🦅', txt: 'Adolescencia y transicion: el joven debe encontrar su proposito. El rito fundamental es la Busqueda de Vision (Hanbleceya): ayuna y ora en soledad en un lugar elevado, desprendiendose de las comodidades fisicas para recibir una vision que le otorgue proposito de vida, nombre espiritual y conexion con sus guardianes. Deja de ser nino y empieza a forjar su identidad espiritual.' },
+    { n: '3. El Camino del Guerrero y Proveedor (Wicasa)', ico: '🛡', txt: 'Adultez joven y madura. Asume proteger y sustentar a su Tiospaye (familia y comunidad extendida). Aqui se forja el Wicasa Wasaka (Hombre de Caracter). Su valia no se mide solo por su habilidad fisica en la caza o la defensa, sino por su generosidad (Wacantognaka), su valentia moral y su disposicion a sacrificarse por el bien comun antes que por su propio ego.' },
+    { n: '4. El Camino del Lider y Consejero (Wicasa Tanka)', ico: '🏔', txt: 'Madurez consolidada. Probado su valor y ganado su lugar, se vuelve pilar de referencia. Su autoridad no se impone por la fuerza ni el titulo: se gana con ejemplo, justicia, calma y capacidad de mediar conflictos. Guia a los jovenes con experiencia practica y equilibrio emocional.' },
+    { n: '5. El Camino del Anciano (Wicahcala)', ico: '👴', txt: 'Vejez respetada. Deja la accion fisica intensa para volverse guardian de la historia oral, las canciones sagradas y las ensenanzas ancestrales. Su presencia aporta calma y su palabra tiene peso espiritual profundo. Es el abuelo que nutre con sabiduria, paciencia y humor a las nuevas generaciones, ensenando con el ejemplo de una vida bien vivida.' },
+    { n: '6. El Camino del Hombre Santo (Wicasa Wakan)', ico: '🔥', txt: 'El chaman o Hombre Medicina. Aunque el llamado puede llegar en cualquier momento, suele consolidarse aqui. Ha trascendido lo personal para servir de puente entre el mundo fisico y el espiritual (Wakan Tanka). Dedica su vida a sanar, interpretar visiones y dirigir ceremonias (Inipi, Danza del Sol) para mantener el equilibrio del mundo. Su poder es inmenso: debe estar libre de ego y entregado al servicio.' },
+    { n: '7. El Camino de la Trascendencia (El Legado)', ico: '🌌', txt: 'Completud del ciclo. Ha integrado las Siete Virtudes Sagradas: Sabiduria, Respeto, Amor, Humildad, Honestidad, Verdad y Valentia. Su vida es una ofrenda viva: comprende que sus acciones impactaran a las siete generaciones futuras. Su espiritu se prepara para volver al Gran Misterio en armonia, sin deudas con la comunidad ni con la tierra.' }
+  ],
+  pracTitulo: '🧰 Integracion: complementariedad y practica de una luna',
+  pracIntro: 'Femenino y masculino convergen en lo mismo: vivir en armonia (Wochekiye), sirviendo a la totalidad. Aqui lo bajas a tierra en 1 practica por luna.',
+  prac: [
+    { n: 'La complementariedad de los caminos', ico: '🤝', txt: 'Ambos caminos son complementarios e igualmente sagrados. El de la mujer se arraiga en crear, nutrir y transformar la vida desde su interior; el del hombre en proteger, proveer y buscar la vision para devolverla a la comunidad. Quien completa su camino converge en el mismo objetivo: armonia, habiendo aprendido que el verdadero poder espiritual no es para dominar, sino para servir.' },
+    { n: 'Las 7 virtudes (medicion semanal)', ico: '🌟', txt: 'Sabiduria, Respeto, Amor, Humildad, Honestidad, Verdad y Valentia. Elige 1 por semana y practica 1 acto concreto (ej: Humildad: pedir consejo; Verdad: decir lo incomodo con respeto; Valentia: pedir hora medica pendiente). Marca en Mi espacio cual practicaste.' },
+    { n: 'Las 7 generaciones (decision larga)', ico: '🌱', txt: 'Pregunta antes de decidir en grande: esto ayuda a mis hijos, nietos y a la tierra en 7 generaciones? Sirve para plata, casa, trabajo y conflictos. Lo rapido que dana el futuro sale caro: elige lo que nutre aunque cueste hoy.' },
+    { n: 'No quemar etapas (tu camino actual)', ico: '👣', txt: 'Ubicate: hija, mujer, madre, recogedora/ritualista, maestra, sabia; nino, joven, guerrero, lider, anciano, santo, legado. Lee solo tu camino + el anterior + el siguiente. Pregunta: que del anterior me falta cerrar? que de este me cuesta? que del siguiente me ilusiona? Escribelo en 5 lineas en Mi espacio.' },
+    { n: 'Ley del dar antes de recoger', ico: '🌾', txt: 'La aspirante a chamana da y da mucho tiempo antes de recoger, aunque solo sea poco, y todo lo que obtiene de su esfuerzo lo usa en alimentar y fomentar la vida. Practica: 1 servicio semanal sin vitrina (cuidar, cocinar, ensenar, limpiar) + 1 ofrenda de gratitud (oracion, tabaco simbolico, silencio, cuidado del agua). Da primero; el poder llega solo.' },
+    { n: 'Honrar la fuente (respeto cultural)', ico: '🙏', txt: 'Tradicion oral Lakota viva: este resumen educativo no reemplaza a sus portadores. Honra sin apropiarte: no dirijas ceremonias (Inipi, Temazcal, Danza del Sol, busqueda de vision) sin guia autorizada, no uses objetos sagrados como decoracion, nombra la fuente (Nacion Lakota, Mujer Bufalo Blanco) y, si puedes, aprende de voces nativas y apoya sus causas. En Penco: aplica el espiritu (servir, cuidar el agua y el bosque, escuchar a los mayores) sin copiar formas ajenas.' }
+  ],
+  espacioExtra: 'camino',
+  espacioExtraLabel: 'Conexion con mi camino hoy (1-10)',
+  bridges: [['lakGoJuventud', 'btnJuventud'], ['lakGoAdultez', 'btnAdultez'], ['lakGoClimaterio', 'btnClimaterio'], ['lakGoVejez', 'btnVejez'], ['lakGoSeptenios', 'btnSeptenios'], ['lakGoGrat', 'btnGratitud']],
+  bridgesLabel: '🔗 Sigue en tu calendario',
+  bridgesTxt: 'Tu camino se sostiene con etapas, ciclo y gratitud: baja a tu etapa detallada.'
+},
+/* ============ 7) CICLO DEL KIMUN (mapuche-lafkenche, 5 etapas) ============ */
+{
+  key: 'map', btn: 'btnKimun', btnTxt: '🌿 Ciclo Kimün',
+  dlg: 'kimunDialog', title: '🌿🌊 EL CICLO DEL KIMÜN: Las Etapas de la Vida Mapuche-Lafkenche',
+  sub: 'En el territorio de Penco, donde la tierra (<b>Mapu</b>) se encuentra con el mar (<b>Lafken</b>), la vida humana es un reflejo de los ciclos de la naturaleza. El <b>Kimün</b> (sabiduría ancestral) enseña que cada persona nace con un <b>Newen</b> (fuerza vital) único, que se transforma, madura y se entrega a la comunidad. Todo <b>privado y local</b>. <b>Educativo: no reemplaza guía espiritual, médico, matrona ni terapia.</b>',
+  kw: 'kimun mapuche lafkenche mapu lafken newen püñiñ chuchu weche wentru domo fucha kude püllü kimche lonko lof epew mapudungun ngenechen nor feleal wacantognaka penco bío-bío etapas vida ancestralidad',
+  p: 'kim', tabNames: ['Guia', 'Ciclo', 'Vida', 'Prac', 'Espacio'],
+  tabLabels: ['🧭 Guía', '🌿 El Ciclo (5 etapas)', '🌊 Vida en el Lafken', '🤝 Práctica', '📓 Mi espacio'],
+  guiaTitulo: '🌊 Mapu y Lafken: la vida como reflejo de la naturaleza',
+  intro: 'En el territorio de Penco, donde la tierra (<b>Mapu</b>) se encuentra con el mar (<b>Lafken</b>), la vida humana es un reflejo de los ciclos de la naturaleza. El <b>Kimün</b> (sabiduría ancestral) nos enseña que cada persona nace con un <b>Newen</b> (fuerza vital) único, y que a lo largo de la vida, este Newen se transforma, madura y se entrega a la comunidad. No hay prisa, pues cada luna y cada marea trae el momento justo para cada paso.',
+  fases: [
+    { n: 'El territorio: Mapu se encuentra con Lafken', ico: '🌊', q: 'Penco es borde: tierra y mar se tocan. Aquí la vida se lee en dos lenguajes a la vez: lo que pasa en la tierra (siembra, brote, tronco, raíz) y lo que pasa en el mar (mareas, lunas, corrientes). Quien aprende a mirar ambos, aprende a leer su propio momento.',
+      cuerpo: 'Tierra: semilla, brote, tronco firme, raíz profunda. Mar: cada luna y cada marea trae el momento justo.',
+      mente: 'Pregunta guía: ¿en qué orilla estoy hoy, en la de sembrar o en la de recoger?',
+      tip: '🌙 Mira una marea esta luna: anota cómo estaba tu ánimo con mar lleno y con mar bajo.' },
+    { n: 'Kimün y Newen: sabiduría y fuerza única', ico: '🔥', q: 'Kimün es la sabiduría ancestral que se hereda escuchando y practicando. Newen es tu fuerza vital única: nadie la tiene igual. A lo largo de la vida tu Newen se transforma (brote, flor, tronco, raíz) y al final se entrega: lo que aprendiste queda en la comunidad como Püllü.',
+      cuerpo: 'Tu tarea no es copiar a otro: es madurar tu propio Newen y ponerlo al servicio.',
+      mente: 'Compararse quema Newen: cada semilla tiene su luna para brotar.',
+      tip: '🌙 Nombra tu Newen en una palabra (ej: calma, risa, manos, escucha) y úsala una vez esta luna.' },
+    { n: 'Las 5 etapas de un vistazo', ico: '🌿', q: 'Püñiñ/Chuchu (semilla y brote: ser amado y observar) → Weche (florecimiento: aprender oficios y forjar carácter) → Wentru/Domó (tronco firme: sostener hogar y Lof) → Fucha/Kude (raíz profunda: guardar memoria y aconsejar) → Püllü (retorno: cuidar desde la memoria).',
+      cuerpo: 'Lee tu etapa completa en la pestaña El Ciclo y las vecinas (anterior + siguiente).',
+      mente: 'Cada etapa tiene su tarea; apurar es como arrancar un brote: lo mata.',
+      tip: '🌙 Ubícate hoy: ¿semilla, flor, tronco, raíz o memoria que cuida?' },
+    { n: 'Cómo caminar esta sección (1 paso por luna)', ico: '🗺️', q: 'No es un curso: es un mapa de toda la vida. Ubica tu etapa, lee su tarjeta, elige 1 práctica chica de la pestaña Práctica y regístrala en Mi espacio. Relee cada luna: el avance se ve en meses.',
+      cuerpo: 'Jóvenes (Weche): oficio + idioma + trabajo comunitario. Adultos: sostener sin quemarse.',
+      mente: 'Mayores (Fucha/Kude): contar historia + aconsejar. Duelo: el Püllü acompaña (ver 🕊️ Duelo).',
+      tip: '🌙 1 práctica por luna basta: lo chico cumplido sostiene lo grande.' }
+  ],
+  mitos: '• "La vejez es declive" → en el Kimün es la cúspide: el Fucha y la Kude son Kimche, lo más lúcido de la comunidad.<br>• "El niño debe producir pronto" → su única tarea es ser amado, protegido y observar: apurar quema el brote.<br>• "La muerte es el final" → es transformación: el Püllü sigue cuidando desde los sueños y las señales.<br>• "La mujer y el hombre compiten" → son pilares complementarios: jerarquía de responsabilidades compartidas, no de poder.',
+  uso: '1) Lee la <b>Guía</b> una vez.<br>2) Ubica tu etapa en <b>El Ciclo</b> y lee su tarjeta completa.<br>3) Elige <b>1 práctica</b> en la pestaña <b>Práctica</b>.<br>4) Registra en <b>Mi espacio</b> (ánimo, energía, conexión con tu Newen + diario).<br>5) Relee cada luna: en 3 lunas verás tu patrón.',
+  familia: 'Para familias: cada integrante vive una etapa distinta (semilla, flor, tronco, raíz). Al brote se le protege, a la flor se le enseña oficio, al tronco se le reparte la carga, a la raíz se le escucha. Pregunten en casa: "¿en qué etapa estás y qué necesitas?" Si hay gritos, control, miedo o maltrato, eso no es "etapa": es violencia (149 / 1455 / 133).',
+  cuerpoTitulo: '🌿 El Ciclo: las 5 etapas de la vida',
+  cuerpoIntro: 'Cada persona nace con un Newen único que se transforma, madura y se entrega a la comunidad. Estas son las 5 etapas: léelas todas una vez y luego trabaja solo la tuya.',
+  cuerpo: [
+    { n: '1. Püñiñ / Chuchu: La Semilla y el Brote (La Infancia)', ico: '🌱', txt: 'Desde el nacimiento hasta la primera infancia. El niño o niña es considerado un regalo de Ngenechen (la fuerza creadora). En esta etapa, su única tarea es ser amado, protegido y observar. Aprende escuchando los sonidos del viento, el mar y las voces de los mayores. Se le enseña el respeto (Nor feleal) por todos los seres vivos, comprendiendo que no es dueño de la naturaleza, sino parte de ella.' },
+    { n: '2. Weche: El Florecimiento (La Juventud)', ico: '🌸', txt: 'La adolescencia y la juventud. Es el tiempo en que el Newen físico se despierta con fuerza. El Weche Wentru (joven hombre) y la Weche Domó (joven mujer) comienzan a aprender los oficios, la pesca, la recolección, el idioma (Mapudungun) y las historias (Epew). Es una etapa de aprendizaje activo, donde se forja el carácter a través del trabajo comunitario y se comienza a escuchar el llamado del propio espíritu.' },
+    { n: '3. Wentru / Domó: El Tronco Firme (La Adultez)', ico: '🌳', txt: 'La plenitud de la vida. El hombre y la mujer asumen su rol complementario como pilares de la comunidad. No hay jerarquía de poder, sino de responsabilidades compartidas. Construyen el hogar, crían a los hijos, trabajan la tierra o el mar, y participan activamente en las decisiones del Lof. Es la etapa de la máxima entrega: su fuerza se pone al servicio del bienestar colectivo, practicando la generosidad (Wacantognaka) y la justicia.' },
+    { n: '4. Fucha / Kude: La Raíz Profunda (La Ancianidad)', ico: '🌾', txt: 'La vejez no es un declive, sino la cúspide del Kimün. El Fucha (anciano) y la Kude (anciana) se convierten en Kimche (personas sabias). Sus cuerpos pueden cansarse, pero su espíritu y su memoria están más lúcidos que nunca. Son los guardianes de la historia oral, los consejeros del Lonko (líder) y quienes interpretan las señales de las 13 lunas, el clima y las mareas. Su palabra es semilla; su presencia, un refugio de calma y orientación para las generaciones más jóvenes.' },
+    { n: '5. Püllü: El Retorno a la Memoria (La Ancestralidad)', ico: '✨', txt: 'El paso al mundo espiritual no es un final, sino una transformación. Al dejar el cuerpo físico, la persona se convierte en Püllü (espíritu ancestral). Desde allí, continúa cuidando a su familia y a su territorio, manifestándose en los sueños, en el canto de los pájaros o en la brisa marina. El ciclo se cierra para volver a comenzar, recordándonos que somos polvo de estrellas y sal del mar, eternos en la memoria de la tierra.' }
+  ],
+  menteTitulo: '🌊 Vida en el Lafken: lo que sostiene el ciclo',
+  menteIntro: 'El ciclo no se camina solo: lo sostienen el respeto, los oficios, la lengua, el Lof y la lectura de la naturaleza. Estas son sus raíces.',
+  mente: [
+    { n: 'Tu Newen: único y en transformación', ico: '🔥', txt: 'Naces con un Newen que nadie más tiene. De niño es brote (observar), de joven es flor (aprender haciendo), de adulto es tronco (sostener), de mayor es raíz (aconsejar) y después es memoria que cuida (Püllü). Si hoy te sientes débil, quizá estás cambiando de forma, no perdiendo fuerza: el tronco también fue brote.' },
+    { n: 'Nor feleal: respeto por todo ser vivo', ico: '🤲', txt: 'No eres dueño de la naturaleza: eres parte de ella. El respeto (Nor feleal) se practica pidiendo permiso (al agua, al bosque, a la persona), tomando solo lo necesario y devolviendo (limpiar, sembrar, cuidar). En Penco: no dejes basura en playa ni bosque, cuida el agua, saluda a los mayores. Lo que dañas afuera, lo dañas adentro.' },
+    { n: 'Oficios, pesca y recolección', ico: '🎣', txt: 'El Weche aprende haciendo: pesca, recolección, huerta, cocina, tejido, construcción, cuidado. Elige 1 oficio y practícalo 1 vez por luna con alguien que sepa (abuelo, vecina, taller). El carácter se forja en el trabajo comunitario: minga, ayuda al vecino, turno compartido. Ver 🎣 Pesca, 🌱 Huerta y 🧰 Oficios del calendario.' },
+    { n: 'Mapudungun y Epew: lengua e historias', ico: '🗣️', txt: 'La lengua guarda el Kimün: aprende 1 palabra por semana (mapu, lafken, küyen/luna, ko/agua, newen, kimün) y úsala en casa. Los Epew (historias) enseñan sin sermón: pide 1 historia a un mayor por luna y grá-bala si te deja (🗣️ Voz de los Abuelos). Contar es cuidar: lo que no se cuenta, se pierde.' },
+    { n: 'El Lof: decidir juntos', ico: '🤝', txt: 'El Lof es la comunidad que decide junta: nadie manda solo. En casa y barrio aplica lo mismo: reunión corta, todos hablan, se acuerda y se cumple. Adultos (tronco): participar en decisiones, repartir cargas por escrito, practicar generosidad y justicia. Liderar es servir, como el Lonko aconsejado por los Kimche.' },
+    { n: 'Lunas, clima, mareas y sueños', ico: '🌙', txt: 'Los mayores leen señales: las 13 lunas, el clima, las mareas y los sueños. Práctica simple: anota cada luna (llena/menguante) tu ánimo, tu sueño y 1 señal que viste (pájaro, viento, mar). En 3 lunas verás tu propio calendario. Si sueñas a quien partió y despiertas en paz, es Püllü que cuida: agradécelo. Duelo difícil o sueños que angustian semanas: 🕊️ Duelo y CESFAM acompañan.' }
+  ],
+  pracTitulo: '🧰 Práctica: tu paso de esta luna',
+  pracIntro: 'El Kimün se aprende haciendo, no leyendo. Elige 1 práctica por luna y márcala en Mi espacio.',
+  prac: [
+    { n: 'Ubica tu etapa hoy', ico: '📍', txt: '¿Semilla (Püñiñ), flor (Weche), tronco (Wentru/Domó), raíz (Fucha/Kude) o memoria que cuida (Püllü)? Lee tu tarjeta + la anterior (qué debo cerrar) + la siguiente (qué se anuncia). Escríbelo en 5 líneas en Mi espacio: qué cierro, qué me cuesta, qué me ilusiona.' },
+    { n: 'Una palabra en Mapudungun por semana', ico: '🗣️', txt: 'Semana 1: mapu (tierra), lafken (mar). Semana 2: küyen (luna), ko (agua). Semana 3: newen (fuerza), kimün (sabiduría). Semana 4: epew (historia), lof (comunidad). Úsalas en casa y enséñalas a un niño: quien enseña, aprende dos veces.' },
+    { n: 'Un oficio, una minga', ico: '🧤', txt: 'Practica 1 oficio esta luna (pescar, sembrar, cocinar, tejer, arreglar) con alguien que sepa, y participa en 1 trabajo comunitario (minga, limpieza de playa, ayuda a un mayor). El Weche se forja sirviendo; el tronco se honra sosteniendo.' },
+    { n: 'Escucha a una raíz', ico: '👂', txt: 'Visita o llama a un Fucha/Kude esta luna: 1 historia, 1 consejo, 1 receta. Pregunta por Penco antiguo, por las lunas, por su oficio. Graba su voz si acepta (🗣️ Voz de los Abuelos) o anota su historia en tu 🌳 Árbol. Su palabra es semilla: siémbrala contándola a otro.' },
+    { n: 'Cuida Mapu y Lafken', ico: '🌊', txt: '1 acción concreta: recoger basura en playa/bosque, cuidar el agua (reparar fuga, juntar lluvia), sembrar nativo, no sacar más marisco o leña de lo permitido. Pide permiso y da las gracias: Nor feleal en acto. Si ves daño grande (contaminación, extracción ilegal): avisa a la Municipalidad/Capitanía.' },
+    { n: 'Honrar la fuente (respeto cultural)', ico: '🙏', txt: 'El Kimün es sabiduría viva del pueblo Mapuche: este resumen educativo no reemplaza a sus portadores. Honra sin apropiarte: no dirijas ceremonias (Nguillatun, Machitún, Epew como rito) sin guía autorizada, no uses símbolos sagrados (Kultrun, Rewe) como decoración, nombra la fuente y aprende de voces mapuche. En Penco Lafkenche: aplica el espíritu (respeto, servicio, cuidado del agua y del borde costero) sin copiar formas ajenas.' }
+  ],
+  espacioExtra: 'newen',
+  espacioExtraLabel: 'Conexión con mi Newen hoy (1-10)',
+  bridges: [['kimGoJuventud', 'btnJuventud'], ['kimGoAdultez', 'btnAdultez'], ['kimGoVejez', 'btnVejez'], ['kimGoSeptenios', 'btnSeptenios'], ['kimGoLakota', 'btnLakota'], ['kimGoGrat', 'btnGratitud']],
+  bridgesLabel: '🔗 Sigue en tu calendario',
+  bridgesTxt: 'Tu ciclo se sostiene con etapas, memoria y gratitud: baja a tu etapa detallada.'
+}];
+
+
 
 /* Síntomas del climaterio (checklist del registro) */
 var CLI_SINTOMAS = ['bochorno día', 'sudor nocturno', 'insomnio', 'ánimo bajo/irritable', 'ansiedad', 'niebla mental/olvidos', 'sequedad vaginal', 'bajo deseo', 'dolor articular', 'palpitaciones', 'sequedad piel/cabello', 'orina frecuente/urgencia'];
@@ -402,17 +628,17 @@ function buildDialogFor(cf) {
     '</div>' +
 
     '<div id="' + p + cf.tabNames[1] + '" class="hidden">' +
-    '<div class="si-card"><h4>💪 Lo esencial</h4><p>' + cf.cuerpoIntro + '</p></div>' +
+    '<div class="si-card"><h4>' + esc(cf.cuerpoTitulo || '💪 Lo esencial') + '</h4><p>' + cf.cuerpoIntro + '</p></div>' +
     cards(cf.cuerpo) +
     '</div>' +
 
     '<div id="' + p + cf.tabNames[2] + '" class="hidden">' +
-    '<div class="si-card"><h4>🧠 Lo normal y lo que avisa</h4><p>' + cf.menteIntro + '</p></div>' +
+    '<div class="si-card"><h4>' + esc(cf.menteTitulo || '🧠 Lo normal y lo que avisa') + '</h4><p>' + cf.menteIntro + '</p></div>' +
     cards(cf.mente) +
     '</div>' +
 
     '<div id="' + p + cf.tabNames[3] + '" class="hidden">' +
-    '<div class="si-card"><h4>🧰 Papeles y decisiones</h4><p>' + cf.pracIntro + '</p></div>' +
+    '<div class="si-card"><h4>' + esc(cf.pracTitulo || '🧰 Papeles y decisiones') + '</h4><p>' + cf.pracIntro + '</p></div>' +
     cards(cf.prac) +
     '<div class="menstrual-card"><h4>' + esc(cf.bridgesLabel) + '</h4><p class="muted su-11a508">' + esc(cf.bridgesTxt) + '</p><div class="su-6157e8">' + bridgesBtns + '</div></div>' +
     '</div>' +
@@ -619,12 +845,15 @@ var NEW_BTNS = [
   { id: 'btnJuventud', txt: '🌅 Juventud', kw: '' },
   { id: 'btnAdultez', txt: '🏠 Adultez', kw: '' },
   { id: 'btnClimaterio', txt: '🔥 Climaterio', kw: '' },
-  { id: 'btnVejez', txt: '🦉 Vejez Sabia', kw: '' }
+  { id: 'btnVejez', txt: '🦉 Vejez Sabia', kw: '' },
+  { id: 'btnSeptenios', txt: '🌀 Septenios', kw: 'septenios septenio ciclos 7 siete anos biografia' },
+  { id: 'btnLakota', txt: '🙏 Camino Lakota', kw: 'lakota sioux bufalo blanco belleza wicasa vision' },
+  { id: 'btnKimun', txt: '🌿 Ciclo Kimün', kw: 'kimun mapuche lafkenche newen etapas' }
 ];
 
 function injectButtons() {
   try {
-    var HOME = { btnJuventud: ['cuerpo', 'etapas'], btnClimaterio: ['cuerpo', 'ciclos'], btnAdultez: ['cuerpo', 'etapas'], btnVejez: ['cuerpo', 'etapas'] };
+    var HOME = { btnJuventud: ['cuerpo', 'etapas'], btnClimaterio: ['cuerpo', 'ciclos'], btnAdultez: ['cuerpo', 'etapas'], btnVejez: ['cuerpo', 'etapas'], btnSeptenios: ['cuerpo', 'etapas'], btnLakota: ['cuerpo', 'etapas'], btnKimun: ['cuerpo', 'etapas'] };
     ETAPAS_CONF.forEach(function (cf) {
       if ($(cf.btn)) {
         // migrar a su grupo/sub nuevo si quedó en una ubicación vieja
@@ -670,9 +899,9 @@ function injectButtons() {
         Object.keys(PRESETS).forEach(function (pr) {
           if (!PRESETS[pr]) return;
           if (pr === 'todo' || pr === 'adulto') PRESETS[pr][cf.btn] = true;
-          else if (pr === 'adolescente' || pr === 'estudiante') PRESETS[pr][cf.btn] = (cf.key === 'juv' && pr === 'adolescente') ? true : false;
+          else if (pr === 'adolescente' || pr === 'estudiante') PRESETS[pr][cf.btn] = (cf.key === 'juv' || cf.key === 'sep') ? true : false;
           else if (pr === 'mayor') PRESETS[pr][cf.btn] = (cf.key !== 'juv');
-          else if (pr === 'salud') PRESETS[pr][cf.btn] = (cf.key === 'adu' || cf.key === 'cli' || cf.key === 'vej');
+          else if (pr === 'salud') PRESETS[pr][cf.btn] = (cf.key === 'adu' || cf.key === 'cli' || cf.key === 'vej' || cf.key === 'sep');
           else if (pr === 'docente') PRESETS[pr][cf.btn] = false;
           else if (PRESETS[pr] && !(cf.btn in PRESETS[pr])) PRESETS[pr][cf.btn] = true;
         });
