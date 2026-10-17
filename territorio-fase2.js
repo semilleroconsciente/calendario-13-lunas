@@ -455,7 +455,7 @@ function renderMeliCheck() {
   var done = getMeliCheck();
   box.innerHTML = MELI_CHECKLIST.map(function (c, i) {
     var k = 'p' + i;
-    return '<label class="habit-item su-13313b" style="cursor:pointer"><input type="checkbox" data-chk="' + k + '"' + (done[k] ? ' checked' : '') + '> <span>' + esc((i + 1) + '. ' + c) + '</span></label>';
+    return '<label class="habit-item su-13313b su-3b6a3a"><input type="checkbox" data-chk="' + k + '"' + (done[k] ? ' checked' : '') + '> <span>' + esc((i + 1) + '. ' + c) + '</span></label>';
   }).join('');
   var prog = $('meliCheckProg');
   var paint = function () {

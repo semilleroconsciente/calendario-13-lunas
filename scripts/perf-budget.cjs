@@ -31,13 +31,19 @@ const BASE = `http://localhost:${PORT}`;
 // módulo (~14K raw / ~5K gzip) y su CSS (~3K/1K) cargan en cada boot.
 // Techo gzip 1770 (+20K: +6K reales del feature, resto holgura).
 // Incluye el módulo Club 5 AM (+2 entradas bare+versionada).
+// Recuento 2026-10-16 (v1.9.0): oleada 13-16 oct ya fusionada (reiki,
+// consciencia-cristica, fauna-marina, dama, idiomas, portugues, chino-mandarin,
+// musica-modulos, solitario, club-5am, permacultura, electricidad, amenazas,
+// humedal-rocuant, legal, bienvenida + cuentos mp3 lazy). Medido: JS ~5423K
+// raw, gzip ~1818K, CORE 385. Techos con holgura ~3%: si un cambio los supera,
+// la respuesta es partir/diferir, no subir el techo a ciegas.
 const BUDGET = {
   'index.html KB': 60,
-  'JS total raw KB': 5300,
+  'JS total raw KB': 5600,
   'CSS total raw KB': 200,
-  'gzip total KB': 1770,
+  'gzip total KB': 1880,
   'TTFB index ms': 500,
-  'entradas SW CORE': 380,
+  'entradas SW CORE': 395,
 };
 
 function get(p, gzip) {

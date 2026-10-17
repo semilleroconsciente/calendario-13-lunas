@@ -512,4 +512,60 @@ Notas v1.8.0:
 
 ---
 
-*Última actualización: 2026-10-12 (v1.8.0) — Mantener esta guía junto a `LEEME.txt`.*
+## 21. Novedades 13–16 oct 2026 · territorio vivo + aprender + interior (v1.9.0)
+
+Mismo patrón §15: cada archivo auto-instalable inyecta su botón, crea su `<dialog>` y guarda en `userData().<clave>`. Cabecera de cada archivo = botón, diálogo, pestañas y clave de datos. Todo 100% offline (audios y mapas son archivos locales precacheados).
+
+### 21.1 Territorio vivo (Penco · Bío-Bío)
+
+| Herramienta | Archivo | Botón | Diálogo / contenido | Datos (`userData()`) |
+|---|---|---|---|---|
+| 🦭 Fauna Marina | `fauna-marina-modulo.js` | `btnFaunaMarina` (Territorio > Mar, junto a Ballenas) | `faunaMarinaDialog` — Hoy / Catálogo (cetáceos Golfo de Arauco, lobos + chungungo, pingüinos y aves marinas) / Bitácora / Historia / Guía. Puente con 🐦 Aves e 🦀 Intermareal | `faunaMarina { avistamientos, ... }` |
+| 🌾 Humedal Rocuant-Andalién | `humedal-rocuant-andalien-modulo.js` | `btnHumedal` (Territorio > Mar/Tierra) | `humedalDialog` — Hoy / Conocer / Vida / Visita / Defensa / Bitácora. Sistema Rocuant-Andalién-Vasco Da Gama (~1.500-2.000 ha, sitio IBA BirdLife, 120-160 especies) | `humedal { visitas, reportes, ... }` |
+| ⚠️ Amenazas del Territorio | `amenazas-territorio.js` | `btnAmenazas` (Territorio > Penco) | `amenazasDialog` — fichas por amenaza (extractiva/natural/urbana: nivel, zona, señales, qué hacer, dónde denunciar) + por sector (cruce con los 7 sectores de Penco) + Mis reportes vecinales (📌 al calendario) | `amenazas { siguiendo, reportes }` |
+| 🧱 Permacultura (hub) | `permacultura-modulo.js` | `btnPermacultura` (Territorio > Tierra, junto a Huerta) | `permaculturaDialog` — Guía (3 éticas, 12 principios, zonas, agua, luna) / Diseño / Mi sitio (zonas 0-5) / Sistemas / Tareas. Marco que une Huerta + Electrocultura + Compost | `permacultura { sitios, sistemas, tareas }` |
+| 📖 Bosque ampliado | `bosque-historia.js` + `data/territorios/penco/historia/*.json` | pestaña Historia en `bosqueDialog` | Linajes gondwánicos → restauración actual; especies del catálogo cargables a bitácora | `bosque` (bitácora existente) |
+
+Datos nuevos en `data/territorios/penco/`: `amenazas.json`, `especies/fauna-marina.json`, `historia/historia-fauna-marina.json` (+ ampliaciones en `historia-bosque.json`, `companeros-bosque.json`, `especies/bosque.json`, `territorio.json`). Todo con fallback embebido; paridad verificada por `scripts/validar-territorios.cjs`.
+
+### 21.2 Aprender: idiomas, música y juegos
+
+| Herramienta | Archivo | Botón | Diálogo / contenido | Datos |
+|---|---|---|---|---|
+| 🗣️ Método de idiomas | `idiomas-modulo.js` | `btnIdiomas` (Aprender > Idiomas, guía general) | `idiomasDialog` — Guía (CEFR, errores) / Método 28 días / Vocabulario / Escucha y habla (shadowing, TTS) / Gramática / Mi plan (racha, auto-test) | `idiomas { mazo, sesiones, plan }` |
+| 🇧🇷 Portugués | `portugues-modulo.js` | `btnPortugues` (junto a Mapuzugun/Inglés) | `portuguesDialog` — Palavra do dia (TTS pt-BR) / A1 / A2 / B1 / B2-C1 + Cultura (falsos amigos, música, capoeira) | `portugues { ... }` |
+| 🇨🇳 Chino Mandarín | `chino-mandarin-modulo.js` | `btnChino` (junto a los anteriores) | `chinoDialog` — Palabra del día (hanzi+pinyin+tono, TTS zh-CN) / HSK1-2 / HSK3 / HSK4-5 + Cultura (chengyu, trazos, té, Confucio/Tao) | `chino { ... }` |
+| 🎶 Música (8 secciones) | `musica-modulos.js` | `btnAprenderInstrumento` + `btnGuitar btnUkelele btnFlauta btnTeclado btnCajon btnCanto btnViolin btnMusicaPractica` | Método universal 28 días + 6 instrumentos completos (3 niveles c/u) + Herramientas (afinador, metrónomo, tap-tempo). Reemplaza el botón único “Instrumentos” | `musica { ... }` por instrumento |
+| ⚪ Damas chilenas | `dama-modulo.js` | `btnDama` (Aprender > Juegos) | Tablero jugable (2P o vs CPU 4 niveles), reglas chilenas (captura obligatoria, dama larga), 6 motivos + 8 puzzles + 6 salidas | `dama { stats, puzzles }` |
+| 🃏 Solitario Klondike | `solitario-modulo.js` | `btnSolitario` (Aprender > Juegos) | Klondike 52 cartas (modos 1/3 cartas, puntos, deshacer, pista, auto-terminar, partida guardada) + Aprender + registros | `solitario { stats, partida }` |
+| 📚 Cuentos narrados | `assets/cuentos/luna01-13.mp3` | dentro de `btnTales` | 13 audios (~10 MB total, offline precacheados): un cuento por luna | — (archivos, no datos) |
+
+### 21.3 Interior, día y hogar
+
+| Herramienta | Archivo | Botón | Diálogo / contenido | Datos |
+|---|---|---|---|---|
+| 🕊️ Reiki | `reiki-modulo.js` | `btnReiki` (Linaje > Prácticas, tras Ho'oponopono) | `reikiDialog` — Guía (Usui, niveles, ética) / Gokai (5 principios) / Posiciones (12 + 7 chakras) / Sesión / Registro | `reiki { practicas, sesiones }` |
+| ✝️ Consciencia Crística | `consciencia-cristica-modulo.js` | `btnCristica` (tras Reiki) | `cristicaDialog` — Guía (ecuménica) / 7 Pilares / 12 Palabras (bienaventuranzas + parábolas) / Oración / Examen / Registro | `cristica { ... }` |
+| 🌅 Club 5 AM | `club-5am-modulo.js` | `btnClub5am` (Mi Día > Organizar) | `club5amDialog` — Guía (20/20/20, 66 días) / Mi Victoria (checklist diario) / Reto 66 días (3 fases) / Descanso | `club5am { dias, racha }` |
+| 🎯 Retos ampliado | `retos-21-modulo.js` | `btnRetos21` (existe) | **12 plantillas** con plan día a día + Mis retos (duplicar, editar, archivar) + vista Día a día | `retos { ... }` (existente) |
+| 🔌 Electricidad (hub) | `electricidad-modulo.js` | `btnElectricidad` (Hogar > Energía, primero) | `electricidadDialog` — Guía base (qué toca técnico SEC) / Tablero / Circuitos / Boleta y consumo / Autonomía y cortes. No confundir con Electrónica (componentes) ni Domótica (casa inteligente) | `electricidad { circuitos, lecturas }` |
+| ⚖️ Legal y privacidad | `legal-modulo.js` + `legal/*.html` | `btnLegal` (Comunidad > Legal) | `legalDialog` — resumen + acciones (exportar respaldo, borrado local Ley 21.719). Textos completos standalone: `terminos.html`, `privacidad.html`, `cookies.html`, `licencias.html` (precacheados, footer de `index.html` los enlaza) | aceptación `cal13-legal-v1` |
+
+### 21.4 Base técnica y pulido
+
+- 👋 **Bienvenida primera vez** (`bienvenida-modulo.js` + `bienvenida.css`): pantalla 0 Bienvenida → 1 Perfil (nombre + preset) → 2 Listo. Solo en instalación fresca. Animación con `anime-v4.js` (UMD vendored, **lazy**, precacheado en SW, no penaliza el arranque).
+- 🔍 **Zoom calendario** (`zoom-calendario.js`): `Ctrl+rueda` sobre la grilla (solo PC, 60–180%), atajos `Ctrl+/-/0`, insignia flotante A−/A+/1:1. Persiste en `DATA.config.calZoom`.
+- 📱 **Vista celular en PC**: botón `btnVistaCelular` (emula 390px centrados) + insignia solo-PC en `styles.css`.
+- 🧱 **Renderer adelgazado**: `renderer-territorio-vivo.js` extraído (bitácoras Pesca/Aves/Intermareal/Bosque); `core-calendario.js` + `core-sanitize.js` como núcleos; `renderer.js` baja ~990 → ~830 KB.
+- 🔍 **SEO/PWA**: `robots.txt` + `sitemap.xml` ampliados, meta description/OG/Twitter, `schema.org` JSON-LD, `<title>` con Penco, `preload` de `renderer.min.js`, `aria-label` sin emoji.
+- 🛡️ **Pipeline**: techos sincerados a lo medido — CSP dinámicos 211→**229** (`scripts/csp-fase2.cjs`), perf JS 5300→**5600** / gzip 1770→**1880** / CORE 380→**395** (`scripts/perf-budget.cjs`). `npm test` verde: **77/77**, sintaxis **269** archivos.
+- 📦 Versiones: `package.json` raíz y `web/package.json` → **1.9.0**; `android/app/build.gradle` → `versionName "1.9.0"` (`versionCode 3`); `sw.js` → `cal13-v113-offline`; `min/` 127 fuentes; dependencias (Electron 43.7.10, `overrides.tar`).
+
+Notas v1.9.0:
+- Para recompilar todo: `npm test` (verifica) → `npm run build` (portable) → `npm run build:win-nsis` (instalador) → `npm run movil:build` (APK debug en `android/app/build/outputs/apk/debug/app-debug.apk`, copia a `dist-empaquetado/13-Lunas-offline-1.9.0.apk`).
+- Al agregar otro `*-modulo.js`: añádelo a `boot-modulos.js` (lista MODS), a `build.files` en `package.json`, y corre `npm run build:min` + `npm run build:sw` + `npm run sync:web -- --fix` (el SW sube CACHE solo).
+- Los mp3 de cuentos van en `assets/cuentos/` y viajan en `build.files` (`assets/**/*`) + precache SW; pesan ~10 MB: no meter más audio sin revisar `check:size` + `check:perf`.
+
+---
+
+*Última actualización: 2026-10-16 (v1.9.0) — Mantener esta guía junto a `LEEME.txt`.*

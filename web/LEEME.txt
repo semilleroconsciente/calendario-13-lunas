@@ -23,12 +23,16 @@ Opcion A - Netlify Drop (la mas facil):
 Opcion B - GitHub Pages:
   Sube el contenido de "web" a un repositorio y activa Pages.
 
-CONVERTIR LA WEB EN APK ANDROID (gratis)
-----------------------------------------
-1. Publica la web primero (Opcion A o B).
-2. Entra a https://www.pwabuilder.com
-3. Pega la URL de tu pagina y descarga el paquete Android/APK.
-   No requiere saber programar.
+APK ANDROID (version 1.9.0 incluida)
+--------------------------------------
+La carpeta "web" ya genera el APK nativo con Capacitor
+(offline total, sin pasar por PWABuilder):
+  - APK listo: dist-empaquetado/13-Lunas-offline-1.9.0.apk
+  - Para reconstruirlo: npm run movil:build
+    (sincroniza web/ -> android/ y compila con Gradle).
+  - Requiere Android SDK + JAVA_HOME configurado.
+  - Alternativa sin compilar: publica "web" (Opcion A o B)
+    y usa https://www.pwabuilder.com con la URL publica.
 
 NOTAS
 -----

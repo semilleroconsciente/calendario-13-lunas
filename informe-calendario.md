@@ -1,7 +1,7 @@
 # Informe — Calendario de las 13 Lunas · Mari Küla Küyen
 
-**Fecha del informe:** 13 de octubre de 2026 (actualizado; original 1 de octubre de 2026)
-**Versión de la app:** 1.8.0 · **Ubicación de referencia:** Penco, Bío-Bío, Chile (36.73° S, 72.99° O)
+**Fecha del informe:** 16 de octubre de 2026 (actualizado; original 1 de octubre de 2026)
+**Versión de la app:** 1.9.0 · **Ubicación de referencia:** Penco, Bío-Bío, Chile (36.73° S, 72.99° O)
 **Repositorio:** Git (último commit `f8f72d8`), copia desplegable en `web/`
 
 ---
@@ -167,3 +167,10 @@ El proyecto es funcionalmente rico y técnicamente coherente: arquitectura de m�
 - **Higiene:** `lint-commits.cjs` suma modo `--strict` (falla si HEAD trivial; normal sigue avisando) y `npm test` ahora incluye `lint:commits`. Informe actualizado a v1.8.0.
 - **SEO/PWA:** `robots.txt` + `sitemap.xml` creados, `<title>` con Penco, `aria-label` limpio (sin emoji) en dock + vistas + pager, disclaimer salud en templates médicos (`medicDialog.html`, `psicologia`/`menstrual` vía renderer).
 - **Tests:** `66/66 pass`, sintaxis 235 archivos OK.
+
+### Addendum — 16 de octubre de 2026 (v1.9.0: territorio vivo + aprender + interior)
+- **Nuevos módulos (16):** fauna-marina, humedal-rocuant-andalien, amenazas-territorio, permacultura (hub), idiomas (método), portugués, chino-mandarín, música (8 secciones: método + 6 instrumentos + herramientas), damas chilenas, solitario Klondike, reiki, consciencia-crística, club-5am, electricidad (hub), legal + bienvenida primera vez (anime.js v4 lazy). Retos-21 ampliado a 12 plantillas; bosque-historia + datos Penco (amenazas, fauna-marina) nuevos.
+- **Multimedia offline:** 13 cuentos narrados `assets/cuentos/luna01-13.mp3` (~10 MB, precacheados en SW).
+- **Pulido:** zoom calendario `Ctrl+rueda` (60-180%), vista-celular en PC, renderer adelgazado (`renderer-territorio-vivo.js` extraído), SEO (sitemap/OG/JSON-LD), footer legal (`legal/*.html`).
+- **Pipeline sincerado:** CSP dinámicos 211→229 (fijo: 2 estáticos de humedal → clases `su-10a44c`/`su-e39201`), perf JS→5600/gzip→1880/CORE→395. `npm test` verde **77/77**, sintaxis 269 archivos, `sw.js` → `cal13-v113-offline`.
+- **Versiones:** `package.json` (raíz + web) 1.9.0, `android` versionName 1.9.0 / versionCode 3. Guía `web/GUIA-CAMBIOS-MANUALES.md` §21 + `web/LEEME.txt` (APK Capacitor) actualizadas. APK: `dist-empaquetado/13-Lunas-offline-1.9.0.apk`.

@@ -298,8 +298,8 @@ function humCardAve(e) {
   if (e.estado) badge += ' <span class="chip su-6cf74d">' + esc(e.estado) + '</span>';
   if (e.censo) badge += ' <span class="chip su-4261fc">' + esc(e.censo) + '</span>';
   if (e.mine) badge += ' <span class="chip su-8323db">mía</span>';
-  var emblema = /EMBLEMA|RHRAP/.test(e.tipo + ' ' + (e.estado || '')) ? ' style="border:2px solid #e8c56a"' : (e.mine ? ' style="border:2px dashed #a9d18e"' : '');
-  return '<div class="si-card su-7aab68"' + emblema + '><b class="su-6cb285 su-6cc0e6">' + (e.ico || '🦩') + ' ' + esc(e.nombre) + '</b><br><span class="muted su-4adef8"><i>' + esc(e.cient || '—') + '</i></span><br>' +
+  var emblemaCls = /EMBLEMA|RHRAP/.test(e.tipo + ' ' + (e.estado || '')) ? ' su-10a44c' : (e.mine ? ' su-e39201' : '');
+  return '<div class="si-card su-7aab68' + emblemaCls + '"><b class="su-6cb285 su-6cc0e6">' + (e.ico || '🦩') + ' ' + esc(e.nombre) + '</b><br><span class="muted su-4adef8"><i>' + esc(e.cient || '—') + '</i></span><br>' +
     '<span class="chip su-fb2957">' + esc(e.tipo || 'Ave') + '</span>' + badge +
     '<p class="muted su-11a508 su-96ad60">' + esc(e.nota || '') + '</p>' +
     '<div class="su-6157e8"><button type="button" class="btn hum-cargar su-337714" data-n="' + esc(e.nombre) + '">📓 Cargar en bitácora</button>' +

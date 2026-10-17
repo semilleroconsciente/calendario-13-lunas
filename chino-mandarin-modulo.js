@@ -119,6 +119,7 @@ var zhTab = 'palabra';
 var zhQuizQ = null;
 var zhQuizLevel = 'todo';
 var zhQuizMode = 'significado';
+var zhShown = null; // palabra visible en "Palabra del día" (para 🎲 y 🔊 ejemplo)
 
 function getZhData() {
   try {
@@ -135,14 +136,220 @@ function zhDayIndex(n) {
     return s % n;
   } catch (e) { return 0; }
 }
-function zhSpeak(txt) {
+/* ---------------- AUDIO (TTS zh robusto) ----------------
+   Fallos que arregla:
+   - Antes solo ponía lang='zh-CN' sin elegir voz: en equipos sin voz
+     china instalada sonaba con voz española o quedaba mudo.
+   - Ahora: elige la mejor voz zh disponible, precarga voces async,
+     control 🐢 lento/normal, toggle ⏹ detener, hack resume de Chrome
+     y aviso con cómo instalar voz china si no hay ninguna. */
+var zhVoicesCache = null;
+var zhSlow = false;
+var zhResumeTimer = null;
+var zhSpeaking = false;
+var zhSpeakToken = 0;
+var zhOnlineAudio = null;
+function zhEnsureVoices() {
   try {
-    if (!('speechSynthesis' in window)) { alert('Este dispositivo no tiene voz disponible'); return; }
-    window.speechSynthesis.cancel();
-    var u = new SpeechSynthesisUtterance(String(txt || ''));
-    u.lang = 'zh-CN'; u.rate = 0.85; u.pitch = 1;
-    window.speechSynthesis.speak(u);
+    if (!('speechSynthesis' in window)) return [];
+    var vs = window.speechSynthesis.getVoices() || [];
+    if (vs && vs.length) zhVoicesCache = vs;
+    return vs && vs.length ? vs : (zhVoicesCache || []);
+  } catch (e) { return zhVoicesCache || []; }
+}
+try {
+  if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+    var zhWarm = function () { try { zhEnsureVoices(); } catch (e) {} };
+    try { zhWarm(); } catch (e) {}
+    try {
+      if (window.speechSynthesis && window.speechSynthesis.onvoiceschanged !== undefined) {
+        window.speechSynthesis.onvoiceschanged = function () { try { zhEnsureVoices(); zhRefreshVoiceStatus(); } catch (e) {} };
+      }
+    } catch (e) {}
+  }
+} catch (e) {}
+function zhPickVoice() {
+  var vs = zhEnsureVoices();
+  if (!vs || !vs.length) return null;
+  var score = function (v) {
+    var lang = String((v && v.lang) || '');
+    var name = String((v && v.name) || '').toLowerCase();
+    var l = lang.toLowerCase();
+    if (/^zh[-_]cn/i.test(lang)) return 100;
+    if (/^zh/i.test(l) && /mandarin|putonghua|普通|pǔ|xiaoxiao|yunjian|yaoyao|meimei|kangkang/i.test(name)) return 95;
+    if (/^zh/i.test(l) && /han|mei|lin|ting|hui|chinese/i.test(name)) return 90;
+    if (/^zh/i.test(l)) return 80;
+    if (/^cmn/i.test(l)) return 75;
+    if (/chinese|mandarin/i.test(name)) return 70;
+    return -1;
+  };
+  var best = null, bestScore = -1;
+  for (var i = 0; i < vs.length; i++) {
+    var s = score(vs[i]);
+    if (s > bestScore) { bestScore = s; best = vs[i]; }
+  }
+  return bestScore >= 0 ? best : null;
+}
+function zhHasZhVoice() { return !!zhPickVoice(); }
+function zhClearResume() {
+  try { if (zhResumeTimer) { clearInterval(zhResumeTimer); zhResumeTimer = null; } } catch (e) {}
+}
+function zhStop() {
+  try { zhSpeakToken++; } catch (e) {}
+  try { if ('speechSynthesis' in window) window.speechSynthesis.cancel(); } catch (e) {}
+  try { if (zhOnlineAudio) { zhOnlineAudio.pause(); try { zhOnlineAudio.src = ''; } catch (x) {} zhOnlineAudio = null; } } catch (e) {}
+  zhClearResume();
+  zhSpeaking = false;
+  try { zhPaintSpeakState(); } catch (e) {}
+}
+function zhVoiceStatus() {
+  try {
+    if (!('speechSynthesis' in window)) return { ok: false, msg: 'Este dispositivo no tiene voz disponible (speechSynthesis ausente).' };
+    var v = zhPickVoice();
+    if (v) return { ok: true, msg: '🔊 Voz: ' + (v.name || 'china') + ' (' + (v.lang || 'zh-CN') + ')' };
+    return { ok: false, msg: '⚠️ Sin voz china instalada: se intentará igual, pero puede sonar con acento raro o quedar mudo.' };
+  } catch (e) { return { ok: false, msg: '' }; }
+}
+function zhCountVoices() {
+  try {
+    var vs = zhEnsureVoices();
+    var n = vs ? vs.length : 0, zh = 0;
+    for (var i = 0; i < (vs || []).length; i++) {
+      var l = String((vs[i] && vs[i].lang) || '').toLowerCase();
+      var nm = String((vs[i] && vs[i].name) || '').toLowerCase();
+      if (/^zh|^cmn/.test(l) || /chinese|mandarin|putonghua/.test(nm)) zh++;
+    }
+    return { total: n, zh: zh };
+  } catch (e) { return { total: 0, zh: 0 }; }
+}
+function zhRefreshVoiceStatus() {
+  var el = $('zhVoiceStatus');
+  if (!el) return;
+  var st = zhVoiceStatus();
+  var c = zhCountVoices();
+  var info = ' <span class="muted">(' + c.zh + ' china(s) de ' + c.total + ' voces)</span>';
+  el.innerHTML = esc(st.msg) + info +
+    ' <button type="button" id="zhVoiceTest" class="btn su-337714">🔊 Probar voz</button>' +
+    ' <button type="button" id="zhOnlineTest" class="btn su-337714" title="Usa internet si tu equipo no tiene voz china">🌐 Oír online</button>' +
+    (st.ok ? '' : '<br><span class="muted">Sin voz china el audio local queda mudo: usa 🌐 Oír online (requiere internet) o instala voz china: <b>Windows:</b> Configuración → Hora e idioma → Voz → Agregar voz (Chino simplificado). <b>Android:</b> Ajustes → Idioma → Salida TTS → instalar chino. <b>iPhone:</b> Ajustes → Accesibilidad → Voces → Chino mandarín. Luego recarga.</span>');
+  try {
+    var bt = $('zhVoiceTest');
+    if (bt) bt.onclick = function (e) { try { e.preventDefault(); } catch (x) {} zhSpeak('你好', { forceLocal: true }); };
+    var on = $('zhOnlineTest');
+    if (on) on.onclick = function (e) { try { e.preventDefault(); } catch (x) {} zhSpeakOnline(zhShown ? zhShown.hz : '你好'); };
   } catch (e) {}
+}
+// Fallback online (requiere internet): TTS de Google para zh-CN.
+// Se usa cuando el equipo no tiene voz china instalada.
+function zhSpeakOnline(txt) {
+  var text = String(txt == null ? '' : txt).trim();
+  if (!text) return;
+  try { zhStop(); } catch (e) {}
+  try {
+    var url = 'https://translate.google.com/translate_tts?ie=UTF-8&tl=zh-CN&client=tw-ob&q=' + encodeURIComponent(text);
+    var a = new Audio(url);
+    zhOnlineAudio = a;
+    zhSpeaking = true;
+    try { zhPaintSpeakState(); } catch (e) {}
+    a.onended = function () { zhSpeaking = false; zhOnlineAudio = null; try { zhPaintSpeakState(); } catch (x) {} };
+    a.onerror = function () {
+      zhSpeaking = false; zhOnlineAudio = null;
+      try { zhPaintSpeakState(); } catch (x) {}
+      alert('No se pudo reproducir el audio online. Revisa tu conexión o instala una voz china en el dispositivo.');
+    };
+    var p = a.play();
+    if (p && p.catch) p.catch(function () {
+      zhSpeaking = false; zhOnlineAudio = null;
+      try { zhPaintSpeakState(); } catch (x) {}
+    });
+  } catch (e) { alert('No se pudo reproducir el audio online.'); }
+}
+function zhPaintSpeakState() {
+  try {
+    var btns = document.querySelectorAll('#chinoDialog .zh-speaking');
+    for (var i = 0; i < btns.length; i++) {
+      if (zhSpeaking) btns[i].classList.add('btn-accent');
+      else btns[i].classList.remove('btn-accent');
+    }
+  } catch (e) {}
+}
+function zhSpeak(txt, opts) {
+  opts = opts || {};
+  var text = String(txt == null ? '' : txt).trim();
+  if (!text) return;
+  if (opts.forceOnline) { zhSpeakOnline(text); return; }
+  try {
+    if (!('speechSynthesis' in window)) { zhSpeakOnline(text); return; }
+    // Sin voz china local el resultado suele ser mudo o con acento
+    // equivocado: ir directo al fallback online (salvo forceLocal).
+    if (!opts.forceLocal && !zhHasZhVoice()) { zhSpeakOnline(text); return; }
+    var my = ++zhSpeakToken;
+    // Cancela primero y habla con retardo: en Chrome hablar en el mismo
+    // tick que cancel() cancela también el utterance nuevo (silencio).
+    try { window.speechSynthesis.cancel(); } catch (e) {}
+    try { if (zhOnlineAudio) { zhOnlineAudio.pause(); zhOnlineAudio = null; } } catch (e) {}
+    zhClearResume();
+    zhSpeaking = false;
+    try { zhPaintSpeakState(); } catch (e) {}
+    setTimeout(function () {
+      if (my !== zhSpeakToken) return; // el usuario ya pidió otra cosa
+      try {
+        // Algunos Android/Edge exigen resume() tras un gesto táctil
+        try { if (window.speechSynthesis.paused) window.speechSynthesis.resume(); } catch (x) {}
+        var u = new SpeechSynthesisUtterance(text);
+        var voice = zhPickVoice();
+        if (voice) { try { u.voice = voice; } catch (e) {} }
+        u.lang = (voice && voice.lang) ? voice.lang : 'zh-CN';
+        var slow = (opts.slow != null) ? !!opts.slow : zhSlow;
+        u.rate = slow ? 0.55 : 0.8;
+        u.pitch = 1;
+        u.volume = 1;
+        zhSpeaking = true;
+        try { zhPaintSpeakState(); } catch (e) {}
+        var fellBack = false;
+        u.onend = function () { zhSpeaking = false; zhClearResume(); try { zhPaintSpeakState(); } catch (e) {} if (typeof opts.onend === 'function') { try { opts.onend(); } catch (x) {} } };
+        u.onerror = function (ev) {
+          zhSpeaking = false; zhClearResume();
+          try { zhPaintSpeakState(); } catch (e) {}
+          try { zhRefreshVoiceStatus(); } catch (e) {}
+          // Error real sin voz china → intenta online una vez
+          if (!fellBack && !opts.forceLocal && !zhHasZhVoice()) {
+            fellBack = true;
+            zhSpeakOnline(text);
+            return;
+          }
+          if (typeof opts.onerror === 'function') { try { opts.onerror(ev); } catch (x) {} }
+        };
+        window.speechSynthesis.speak(u);
+        // Hack Chrome: pausa utterances largos (~15s). Resume mientras hable.
+        try {
+          zhClearResume();
+          zhResumeTimer = setInterval(function () {
+            try {
+              if (window.speechSynthesis && window.speechSynthesis.speaking) {
+                window.speechSynthesis.resume();
+              } else { zhClearResume(); }
+            } catch (e) { zhClearResume(); }
+          }, 8000);
+        } catch (e) {}
+        try { zhRefreshVoiceStatus(); } catch (e) {}
+      } catch (e) {}
+    }, 120);
+  } catch (e) {}
+}
+// Habla solo la parte hanzi del ejemplo ("hanzi — español" / "hanzi. — ...")
+function zhSpeakExample(ex) {
+  var t = String(ex || '');
+  var cut = t.split('—')[0].split('—')[0];
+  // corta en "—" o ".—" típico de los ejemplos
+  cut = t.split('—')[0];
+  cut = cut.replace(/[.…。!！?？]+.*$/, '').trim();
+  // si quedó con caracteres latinos largos (ej: "lǚxíng: ..."), habla el hanzi igual
+  if (!cut) cut = t;
+  // si el ejemplo trae pinyin + hanzi mezclado, prioriza hanzi (rango CJK)
+  var m = cut.match(/[\u4e00-\u9fff\u3400-\u4dbf\u3000-\u303f\uff00-\uffef，。？！、…]+/g);
+  if (m && m.join(' ').length >= 2) cut = m.join(' ');
+  zhSpeak(cut);
 }
 function zhQuizPool() {
   if (zhQuizLevel === 'a1') return ZH_A1;
@@ -166,6 +373,7 @@ function zhCard(item, lv) {
 }
 
 function renderZhPanel(tab) {
+  try { zhStop(); } catch (e) {}
   zhTab = tab || zhTab;
   var ids = { palabra: 'tabZH1', a1: 'tabZH2', a2: 'tabZH3', b1: 'tabZH4', cultura: 'tabZH5', quiz: 'tabZH6' };
   Object.keys(ids).forEach(function (k) { var el = $(ids[k]); if (el) el.classList.toggle('btn-accent', k === zhTab); });
@@ -174,8 +382,15 @@ function renderZhPanel(tab) {
   var html = '';
   if (zhTab === 'palabra') {
     var all = allZh();
-    var w = all[zhDayIndex(all.length)];
-    var rel = [all[(zhDayIndex(all.length) + 7) % all.length], all[(zhDayIndex(all.length) + 13) % all.length]];
+    var dayIdx = zhDayIndex(all.length);
+    // Mantiene la palabra visible para que 🎲 sí cambie (antes siempre
+    // recalculaba el índice del día y mostraba la misma).
+    if (!zhShown || zhShown._day !== dayIdx || !zhShown._rand) {
+      var base = all[dayIdx];
+      zhShown = { hz: base.hz, py: base.py, es: base.es, ex: base.ex, _day: dayIdx };
+    }
+    var w = zhShown;
+    var rel = [all[(dayIdx + 7) % all.length], all[(dayIdx + 13) % all.length]];
     var fecha = '';
     try { fecha = cal.fmtDate.format(new Date()); } catch (e) { try { fecha = new Date().toLocaleDateString(); } catch (e2) { fecha = ''; } }
     html += '<div class="menstrual-card su-3fa1a8">' +
@@ -183,8 +398,13 @@ function renderZhPanel(tab) {
       '<div class="su-6adb68">' + esc(w.hz) + '</div>' +
       '<div class="su-cd8bd8"><b>' + esc(w.py) + '</b> · ' + esc(w.es) + '</div>' +
       '<p class="muted su-2b0979">“' + esc(w.ex) + '”</p>' +
-      '<div class="su-9bc2df"><button type="button" id="zhSpeakBtn" class="btn btn-accent su-30e741">🔊 Escuchar (中文)</button> ' +
-      '<button type="button" id="zhNextBtn" class="btn su-30e741">🎲 Otro hanzi</button></div></div>' +
+      '<div class="su-9bc2df"><button type="button" id="zhSpeakBtn" class="btn btn-accent su-30e741 zh-speaking">🔊 Escuchar (中文)</button> ' +
+      '<button type="button" id="zhOnlineBtn" class="btn su-30e741" title="Audio por internet (funciona aunque tu equipo no tenga voz china)">🌐 Online</button> ' +
+      '<button type="button" id="zhSlowBtn" class="btn su-30e741">🐢 Lento: ' + (zhSlow ? 'ON' : 'OFF') + '</button> ' +
+      '<button type="button" id="zhExBtn" class="btn su-30e741">🗣️ Oír ejemplo</button> ' +
+      '<button type="button" id="zhStopBtn" class="btn su-30e741">⏹ Detener</button> ' +
+      '<button type="button" id="zhNextBtn" class="btn su-30e741">🎲 Otro hanzi</button></div>' +
+      '<p id="zhVoiceStatus" class="muted su-11a508"></p></div>' +
       '<div class="help-grid su-d2c171">' +
       rel.map(function (r) { return '<div class="help-card"><h4>' + esc(r.hz) + ' <span class="muted">' + esc(r.py) + '</span></h4><p class="su-11a508">' + esc(r.es) + '<br><span class="muted">“' + esc(r.ex) + '”</span></p></div>'; }).join('') + '</div>' +
       '<div class="help-grid su-d2c171">' +
@@ -237,18 +457,51 @@ function renderZhPanel(tab) {
       '<div class="su-a8712a">' + lvBtn('todo', '🌎 Todo') + lvBtn('a1', '🌱 HSK 1') + lvBtn('a2', '🌿 HSK 2–3') + lvBtn('b1', '💬 HSK 4') + lvBtn('avanzado', '📜 HSK 5') + '</div>' +
       '<div class="su-a8712a">' + mdBtn('significado', '🇪🇸 Significado') + mdBtn('pinyin', '🎵 Pinyin') + '</div>' +
       '<div class="su-73ce29">“' + esc(q.w.hz) + '” <span class="muted su-11a508">' + (zhQuizMode === 'pinyin' ? '¿cómo se pronuncia?' : '¿qué significa?') + '</span></div>' +
-      '<button type="button" id="zhQuizSpeak" class="btn su-337714">🔊 Escuchar</button>' +
+      '<button type="button" id="zhQuizSpeak" class="btn su-337714 zh-speaking">🔊 Escuchar</button> ' +
+      '<button type="button" id="zhQuizOnline" class="btn su-337714" title="Audio por internet">🌐</button> ' +
+      '<button type="button" id="zhQuizSlow" class="btn su-337714">🐢 Lento: ' + (zhSlow ? 'ON' : 'OFF') + '</button> ' +
+      '<button type="button" id="zhQuizStop" class="btn su-337714">⏹</button>' +
+      '<p id="zhVoiceStatus" class="muted su-11a508"></p>' +
       '<div class="su-ae0e71">' + q.opts.map(function (o) { return '<button type="button" class="btn zh-opt su-046678" data-o="' + esc(o) + '">' + esc(o) + '</button>'; }).join('') + '</div>' +
       '<div id="zhQuizFb" class="su-ac1122"></div>' +
       '<p class="muted su-e13d76">Correctas ' + d.ok + '/' + d.total + ' · racha ' + d.streak + ' · nivel: <b>' + esc(zhQuizLevel) + '</b> · modo: <b>' + esc(zhQuizMode) + '</b> · banco: ' + zhQuizPool().length + ' hanzi/frases</p></div>';
   }
-  box.innerHTML = html + '<p class="muted su-a953a7">🔊 Toca cualquier tarjeta para oír en mandarín (zh-CN, voz del dispositivo). El quiz suma a tu racha local y privada.</p>';
+  box.innerHTML = html + '<p class="muted su-a953a7">🔊 Toca cualquier tarjeta para oír en mandarín (voz china del dispositivo). El quiz suma a tu racha local y privada.</p>';
+  try { zhEnsureVoices(); zhRefreshVoiceStatus(); } catch (e) {}
+  try { zhPaintSpeakState(); } catch (e) {}
   var sp = $('zhSpeakBtn');
-  if (sp) sp.onclick = function (e) { try { e.preventDefault(); } catch (x) {} var a = allZh(); zhSpeak(a[zhDayIndex(a.length)].hz); };
+  if (sp) sp.onclick = function (e) { try { e.preventDefault(); } catch (x) {} if (zhShown) zhSpeak(zhShown.hz); };
+  var onB = $('zhOnlineBtn');
+  if (onB) onB.onclick = function (e) { try { e.preventDefault(); } catch (x) {} if (zhShown) zhSpeakOnline(zhShown.hz); };
+  var sl = $('zhSlowBtn');
+  if (sl) sl.onclick = function (e) { try { e.preventDefault(); } catch (x) {} zhSlow = !zhSlow; sl.textContent = '🐢 Lento: ' + (zhSlow ? 'ON' : 'OFF'); if (zhShown) zhSpeak(zhShown.hz); };
+  var exB = $('zhExBtn');
+  if (exB) exB.onclick = function (e) { try { e.preventDefault(); } catch (x) {} if (zhShown) zhSpeakExample(zhShown.ex); };
+  var stB = $('zhStopBtn');
+  if (stB) stB.onclick = function (e) { try { e.preventDefault(); } catch (x) {} zhStop(); };
   var nx = $('zhNextBtn');
-  if (nx) nx.onclick = function () { renderZhPanel('palabra'); };
+  if (nx) nx.onclick = function () {
+    try {
+      var a = allZh();
+      var di = zhDayIndex(a.length);
+      var pick = a[Math.floor(Math.random() * a.length)];
+      var guard = 0;
+      while (zhShown && pick.hz === zhShown.hz && guard < 25) { guard++; pick = a[Math.floor(Math.random() * a.length)]; }
+      // Copia plana + _day del día actual para que el render la conserve
+      zhShown = { hz: pick.hz, py: pick.py, es: pick.es, ex: pick.ex, _day: di, _rand: 1 };
+      zhStop();
+      renderZhPanel('palabra');
+      if (zhShown) zhSpeak(zhShown.hz);
+    } catch (e) { try { renderZhPanel('palabra'); } catch (x) {} }
+  };
   var qs = $('zhQuizSpeak');
   if (qs) qs.onclick = function (e) { try { e.preventDefault(); } catch (x) {} if (zhQuizQ) zhSpeak(zhQuizQ.w.hz); };
+  var qo = $('zhQuizOnline');
+  if (qo) qo.onclick = function (e) { try { e.preventDefault(); } catch (x) {} if (zhQuizQ) zhSpeakOnline(zhQuizQ.w.hz); };
+  var qsl = $('zhQuizSlow');
+  if (qsl) qsl.onclick = function (e) { try { e.preventDefault(); } catch (x) {} zhSlow = !zhSlow; qsl.textContent = '🐢 Lento: ' + (zhSlow ? 'ON' : 'OFF'); if (zhQuizQ) zhSpeak(zhQuizQ.w.hz); };
+  var qst = $('zhQuizStop');
+  if (qst) qst.onclick = function (e) { try { e.preventDefault(); } catch (x) {} zhStop(); };
   box.querySelectorAll('.eng-word').forEach(function (b) {
     b.onclick = function (e) { try { e.preventDefault(); } catch (x) {} zhSpeak(b.getAttribute('data-w')); };
   });
@@ -300,14 +553,23 @@ function buildDialog() {
     '<div id="zhPanel"></div>' +
     '<div class="dlg-actions"><button type="button" data-close class="btn">Cerrar</button></div></form>';
   document.body.appendChild(d);
-  d.querySelectorAll('[data-close]').forEach(function (b) { b.onclick = function () { try { d.close(); } catch (e) {} }; });
+  d.querySelectorAll('[data-close]').forEach(function (b) { b.onclick = function () { try { zhStop(); } catch (e) {} try { d.close(); } catch (e2) {} }; });
+  try {
+    d.addEventListener('close', function () { try { zhStop(); } catch (e) {} });
+    d.addEventListener('cancel', function () { try { zhStop(); } catch (e) {} });
+  } catch (e) {}
 }
 
 function bindTabs() {
   var map = { tabZH1: 'palabra', tabZH2: 'a1', tabZH3: 'a2', tabZH4: 'b1', tabZH5: 'cultura', tabZH6: 'quiz' };
   Object.keys(map).forEach(function (id) {
     var el = $(id);
-    if (el) el.onclick = function () { if (map[id] !== 'quiz') zhQuizQ = null; renderZhPanel(map[id]); };
+    if (el) el.onclick = function () {
+      try { zhStop(); } catch (e) {}
+      if (map[id] !== 'quiz') zhQuizQ = null;
+      if (map[id] === 'palabra') zhShown = null; // volver a la palabra del día
+      renderZhPanel(map[id]);
+    };
   });
 }
 
@@ -400,6 +662,8 @@ function setup() {
     b.dataset.zhu = '1';
     b.addEventListener('click', function () {
       zhQuizQ = null;
+      zhShown = null;
+      try { zhEnsureVoices(); } catch (e) {}
       renderZhPanel('palabra');
       openDlg('chinoDialog');
     });
