@@ -1690,3 +1690,25 @@ body[data-force-mobile="1"] #todayView .today-quote { overflow-wrap: anywhere; w
 body[data-force-mobile="1"] #todayView .today-sun .chip { flex: 1 1 auto; min-width: 0; }
 body[data-force-mobile="1"] #todayView input[type="text"], body[data-force-mobile="1"] #todayView input[type="number"], body[data-force-mobile="1"] #todayView select, body[data-force-mobile="1"] #todayView textarea { width: 100%; max-width: 100%; box-sizing: border-box; }
 body[data-force-mobile="1"] #todayView .today-add input[type="time"] { width: auto; }
+/* Hoy: disciplina compacta */
+.today-card--compact { padding: 8px 10px; }
+.today-card--compact h3 { font-size: 12px; margin-bottom: 6px; }
+.today-card--compact .disc-mini { font-size: 13px; margin: 0 0 6px; line-height: 1.4; }
+.today-card--compact .disc-mini--muted { font-size: 12px; margin: 0 0 6px; }
+.today-card--compact .disc-row { display: flex; gap: 6px; align-items: center; }
+.today-card--compact .today-note--mini { min-height: 0; height: 32px; padding: 5px 8px; font-size: 13px; flex: 1 1 auto; }
+.today-card--compact .disc-btns { display: flex; gap: 4px; flex: 0 0 auto; }
+.today-card--compact .btn-sm { padding: 5px 8px; font-size: 14px; line-height: 1; min-height: 32px; }
+#todayView .today-card--compact { padding: 8px 10px; }
+/* Hoy: marea actual destacada (icono de dirección corregido) */
+.chip--now { border-color: var(--gold); box-shadow: 0 0 0 1px rgba(232,197,106,.35); font-weight: 700; }
+/* Hoy: Sol y luna embellecido */
+.today-card--sunmoon { background: linear-gradient(135deg, #1c2650 0%, #232d58 55%, #1b2447 100%); border: 1px solid rgba(232,197,106,.55); box-shadow: 0 2px 14px rgba(232,197,106,.12); }
+.today-card--sunmoon h3 { color: var(--accent); }
+.today-card--sunmoon .chip--sun { border-color: rgba(255,213,79,.5); background: rgba(255,213,79,.08); }
+.today-card--sunmoon .chip--sunset { border-color: rgba(255,138,101,.5); background: rgba(255,138,101,.08); }
+.today-card--sunmoon .chip--moonrise { border-color: rgba(144,202,249,.5); background: rgba(144,202,249,.08); }
+.today-card--sunmoon .chip--moonset { border-color: rgba(179,157,219,.5); background: rgba(179,157,219,.08); }
+.today-card--sunmoon .chip--fase { border-color: var(--gold); background: rgba(232,197,106,.1); font-size: 13.5px; }
+.sunmoon-place { display: inline-block; margin: 8px 0 0; font-size: 11.5px; font-weight: 700; letter-spacing: .4px; color: var(--gold); border: 1px solid rgba(232,197,106,.5); border-radius: 999px; padding: 3px 12px; background: rgba(232,197,106,.08); }
+#todayView .today-card--sunmoon { background: linear-gradient(135deg, #1c2650 0%, #232d58 55%, #1b2447 100%); }

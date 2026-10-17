@@ -7212,7 +7212,7 @@ function renderAstroDialog(tab){
     }catch(e){}
     todayBox.innerHTML=`<div class="su-13313b"><span><b>🔭 Hoy — ${cal.weekdayName(mensKeyToMs(todayKey))} ${cal.fmtFull.format(new Date(mensKeyToMs(todayKey)))}</b></span><span class="chip">${phaseTxt}</span></div>`
     + `<div class="su-0ad856"><span class="chip">🌙 Sale <b>${moonRiseTxt}</b></span><span class="chip">🌘 Se pone <b>${moonSetTxt}</b></span></div>`
-    + `<p class="muted su-32206a">Luna en Penco · hora local · aprox. ±15 min según lugar de observación.</p>`
+    + `<p class="muted su-32206a">📍 Penco · hora local · aprox. ±15 min según lugar de observación.</p>`
     + (todayEvents.length? todayEvents.map(e=> `<div class="chip su-d314e1">${e.icon} <b>${escapeHtml(e.nombre)}</b> — ${escapeHtml(e.desc)}</div>`).join('') : '<p class="muted su-e13d76">Hoy sin eclipse/lluvia destacada. Revisa fases arriba.</p>') + `<p class="muted su-e13d76">Penco: lat ${PENCO.lat}, lng ${PENCO.lng}. Cielo ideal: humedal Rocuant sin luces.</p>`;
   }
   const list=$('astroList'); if(!list) return;
