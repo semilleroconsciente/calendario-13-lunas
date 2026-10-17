@@ -50,6 +50,7 @@ function renderDlgHoras() {
   const sorted = [...cell.agenda].sort((a,b)=> getAgendaTime(a).localeCompare(getAgendaTime(b)) || (a.id||'').localeCompare(b.id||''));
   if (!sorted.length) {
     grid.innerHTML = '<p class="muted su-b33ae9">Sin compromisos aún. Agrega uno a cualquier hora abajo (ej 08:37).</p>';
+    try{ if(typeof renderDlgResumen==='function') renderDlgResumen(); }catch(e){}
     return;
   }
   // agrupar por hora exacta (HH:MM)
@@ -78,6 +79,7 @@ function renderDlgHoras() {
     it.notified=false;
     scheduleSave(); renderDlgHoras();
   });
+  try{ if(typeof renderDlgResumen==='function') renderDlgResumen(); }catch(e){}
 }
 function agendaCheckNotify() {
   if (typeof Notification==='undefined' || Notification.permission!=='granted') return;
@@ -222,6 +224,91 @@ function frasesPairDFT(year){
   return { base: defaultFraseDFT(), custom };
 }
 
+// === 📌 RESUMEN DEL DÍA (vista Luna y vista Completa) ===
+// Se muestra al elegir un día del mes: fecha, fase/iluminación, sol/luna,
+// compromisos, nota, ánimo, hábitos y conteos de ese día (sueños, comidas,
+// finanzas, tareas hogar, gratitud, ciclo). Solo lectura: el detalle se edita abajo.
+function renderDlgResumen() {
+  const box = $('dlgResumen');
+  if (!box || !editing) return;
+  try{
+    const cell = dayCell(editing.lunaN, editing.diaN);
+    const d = (typeof cycle!=='undefined' && cycle.days) ? cycle.days.find(x => x.luna === editing.lunaN && x.diaN === editing.diaN) : null;
+    if(!d) { box.innerHTML=''; return; }
+    const key = cal.fmtKey.format(new Date(d.noonMs));
+    const wd = cal.weekdayName(d.noonMs);
+    const fechaLarga = cal.fmtFull.format(new Date(d.noonMs));
+    // fase + iluminación
+    let moonIcon='🌙', illum=null, aproxFase='';
+    try{
+      moonIcon = window.astro.moonIcon(d.noonMs) || '🌙';
+      const mi = window.astro.moonInfo(d.noonMs);
+      illum = Math.round((mi.fraction||0)*100);
+      const nombres=['Luna nueva','Luna creciente','Cuarto creciente','Creciente gibosa','Luna llena','Menguante gibosa','Cuarto menguante','Luna menguante'];
+      aproxFase = nombres[Math.round((mi.phase||0)*8)%8] || '';
+    }catch(e){}
+    let evs=[];
+    try{ evs = (typeof phaseMap!=='undefined' && phaseMap[key]) ? phaseMap[key] : []; }catch(e){}
+    const faseTxt = evs.length
+      ? evs.map(e=>e.simbolo+' '+String(e.tipo||'').replace('-',' ')).join(' · ')
+      : (aproxFase||'Fase lunar');
+    // sol / luna horas
+    let sunRise='--', sunSet='--', moonRise='--', moonSet='--';
+    try{ const s=cal.sunForDay(d.noonMs); if(s.rise) sunRise=cal.fmtTime.format(new Date(s.rise)); if(s.set) sunSet=cal.fmtTime.format(new Date(s.set)); }catch(e){}
+    try{ const m=cal.moonForDay(d.noonMs); if(m.rise) moonRise=cal.fmtTime.format(new Date(m.rise)); if(m.set) moonSet=cal.fmtTime.format(new Date(m.set)); }catch(e){}
+    const efe = (typeof EFEMERIDES!=='undefined') ? (EFEMERIDES[key.slice(5)]||'') : '';
+    // agenda + nota (nota viva del textarea si ya se editó)
+    const agenda = (cell && Array.isArray(cell.agenda)) ? [...cell.agenda].sort((a,b)=> getAgendaTime(a).localeCompare(getAgendaTime(b))) : [];
+    let notaLive = (cell && cell.nota) ? cell.nota : '';
+    try{ const ta=$('fNota'); if(ta && typeof ta.value==='string' && ta.value!==undefined && document.activeElement===ta) notaLive = ta.value; else if(ta && ta.value) notaLive = ta.value || notaLive; }catch(e){}
+    notaLive = String(notaLive||'').trim();
+    const animoIdx = (typeof pendingMood==='number') ? pendingMood : ((cell && typeof cell.animo==='number') ? cell.animo : -1);
+    const animoTxt = (animoIdx>=0 && typeof MOODS!=='undefined' && MOODS[animoIdx]) ? MOODS[animoIdx].e+' '+MOODS[animoIdx].n : 'Sin registrar';
+    // hábitos de ese día
+    let habTxt='Sin hábitos creados';
+    try{
+      const hd=getHabitData();
+      if(hd && hd.list && hd.list.length){
+        const ent=(hd.entries && hd.entries[key]) || {};
+        const done=hd.list.filter(h=>ent[h.id]).length;
+        habTxt='✅ '+done+'/'+hd.list.length+' hábitos';
+      }
+    }catch(e){}
+    // extras de ese día (conteos, sin romper si el módulo no existe)
+    const extras=[];
+    try{ const arr=(typeof todaySuenosList==='function'?todaySuenosList():[]).filter(r=>r&&r.fecha===key); if(arr.length) extras.push('💭 '+arr.length+' sueño'+(arr.length>1?'s':'')); }catch(e){}
+    try{ if(typeof getMealData==='function'){ const em=getMealData().entries[key]; if(em&&(em.breakfast||em.lunch||em.dinner)) extras.push('🥗 Comidas'); } }catch(e){}
+    try{ if(typeof getFinanceData==='function'){ const n=getFinanceData().entries.filter(x=>x.date===key).length; if(n) extras.push('💰 '+n+' mov.'); } }catch(e){}
+    try{ if(typeof homeTasksForDate==='function'){ const list=homeTasksForDate(key); if(list.length){ let doneN=0; try{ const ht=getHomeTasksData(); const comp=(ht.completions&&ht.completions[key])||{}; doneN=list.filter(t=>comp[t.id]).length; }catch(e2){} extras.push('🏠 '+doneN+'/'+list.length+' tareas'); } } }catch(e){}
+    try{ if(typeof getGratitudData==='function'){ const g=getGratitudData().entries[key]; if(g&&((g.t1||g.t2||g.t3)||g.carta)) extras.push('📓 Gratitud ✓'); } }catch(e){}
+    try{ if(typeof getMensData==='function'){ if(getMensData().history.includes(key)) extras.push('🌸 Inicio ciclo'); } }catch(e){}
+    try{ if(typeof getBirdData==='function'){ const n=getBirdData().entries.filter(x=>x.date===key).length; if(n) extras.push('🦅 '+n+' aves'); } }catch(e){}
+    try{ const fv=(typeof getFishingLogData==='function'?getFishingLogData():null); const arr2=Array.isArray(fv)?fv:((fv&&fv.entries)||[]); const n=arr2.filter(x=>x.date===key).length; if(n) extras.push('🎣 '+n+' pesca'); }catch(e){}
+    const agendaPreview = agenda.length
+      ? agenda.slice(0,3).map(a=>escapeHtml(getAgendaTime(a)+' '+a.text)).join('<br>') + (agenda.length>3 ? '<br><span class="muted">+'+(agenda.length-3)+' más…</span>' : '')
+      : '<span class="muted">Sin compromisos</span>';
+    const notaPreview = notaLive
+      ? escapeHtml(notaLive.split('\n')[0].slice(0,140)) + (notaLive.length>140?'…':'')
+      : '<span class="muted">Sin nota — escribe abajo en 📝 Notas del día</span>';
+    box.innerHTML =
+      '<div class="dlg-resumen-card">'
+      + '<div class="dlg-resumen-title">📌 Resumen de este día</div>'
+      + '<div class="dlg-resumen-line"><b>'+escapeHtml(wd)+' '+escapeHtml(fechaLarga)+'</b> · Luna '+editing.lunaN+' · Día '+editing.diaN+'/28</div>'
+      + '<div class="dlg-sun-row"><span class="chip">'+moonIcon+' '+escapeHtml(faseTxt)+(illum!==null?' · <b>'+illum+'%</b>':'')+'</span></div>'
+      + '<div class="dlg-sun-row"><span class="chip">☀️ '+escapeHtml(sunRise)+' – '+escapeHtml(sunSet)+'</span>'
+      + '<span class="chip">🌙 '+escapeHtml(moonRise)+' – '+escapeHtml(moonSet)+'</span></div>'
+      + (efe ? '<div class="dlg-resumen-line">📅 '+escapeHtml(efe)+'</div>' : '')
+      + '<div class="dlg-resumen-grid">'
+      + '<div>🕐 <b>'+agenda.length+'</b> compromiso'+(agenda.length===1?'':'s')+'<br>'+agendaPreview+'</div>'
+      + '<div>📝 Nota<br>'+notaPreview+'</div>'
+      + '<div>😊 '+escapeHtml(animoTxt)+'<br>'+escapeHtml(habTxt)+'</div>'
+      + '</div>'
+      + (extras.length ? '<div class="dlg-sun-row">'+extras.map(t=>'<span class="chip">'+escapeHtml(t)+'</span>').join('')+'</div>' : '')
+      + '<p class="muted su-0d5be0">El detalle se edita abajo (compromisos, nota, hábitos, ánimo). Guardar día para verlo en la Luna.</p>'
+      + '</div>';
+  }catch(e){ try{ box.innerHTML=''; }catch(e2){} }
+}
+
 function openDayDialog(lunaN, diaN) {
   editing = { lunaN, diaN };
   const cell = dayCell(lunaN, diaN);
@@ -281,6 +368,7 @@ function openDayDialog(lunaN, diaN) {
     b.onclick = () => {
       pendingMood = pendingMood === i ? -1 : i;
       moodBox.querySelectorAll('.mood-btn').forEach((x, k) => x.classList.toggle('sel', k === pendingMood));
+      try{ renderDlgResumen(); }catch(e){}
     };
     moodBox.appendChild(b);
   });
@@ -292,11 +380,26 @@ function openDayDialog(lunaN, diaN) {
   } else ensureHourSel();
   // Notas del día (textarea libre) — mantener separado de compromisos por hora
   const notaEl = $('fNota');
-  if (notaEl) notaEl.value = cell.nota || '';
+  if (notaEl){
+    notaEl.value = cell.nota || '';
+    if(!notaEl.dataset.resumenBound){
+      notaEl.dataset.resumenBound='1';
+      notaEl.addEventListener('input', ()=>{ try{ renderDlgResumen(); }catch(e){} });
+    }
+  }
   $('dlgHourText').value = '';
   $('dlgHourNotify').checked = false;
   renderDlgHoras();
   try{ renderDlgHabits(); }catch(e){}
+  // Refrescar resumen cuando cambian hábitos en este diálogo (vista Luna y Completa usan el mismo diálogo)
+  try{
+    const habBox=$('dlgHabits');
+    if(habBox && !habBox.dataset.resumenBound){
+      habBox.dataset.resumenBound='1';
+      habBox.addEventListener('change', ()=>{ try{ renderDlgResumen(); }catch(e){} });
+    }
+  }catch(e){}
+  try{ renderDlgResumen(); }catch(e){}
   // botón menstrual en dialog día — ocultar si opción está desactivada en Personalizar
   const mensBtn = $('dlgMenstrual');
   if (mensBtn) {
@@ -316,6 +419,7 @@ function openDayDialog(lunaN, diaN) {
       mensBtn.textContent = md2.history.includes(dlgKey) ? '🌸 Quitar inicio ciclo' : '🌸 Marcar inicio ciclo';
       mensBtn.classList.toggle('btn-accent', md2.history.includes(dlgKey));
       try{ mensRefreshAll(); }catch(e){}
+      try{ renderDlgResumen(); }catch(e){}
       if (md2.showCal) renderLuna();
     };
   }

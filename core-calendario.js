@@ -317,13 +317,14 @@ function renderTodayView(){
     + (hb.frase === false ? '' : '<div class="today-card"><h3>💬 Frase del día</h3>'
     + (function(){ const b = fr ? (fr.base || (fr.t ? fr : null)) : null; return b ? '<p class="today-quote">«'+escapeHtml(b.t)+'»<span>— '+escapeHtml(b.a||'Anónimo')+'</span></p>' : '<p class="muted">Sin frase para hoy.</p>'; })()
     + '</div>')
-    + (hb.solLuna === false ? '' : '<div class="today-card today-card--sunmoon"><h3>☀️🌙 Sol y luna de hoy</h3>'
+    + ((hb.sol === false || hb.solLuna === false) ? '' : '<div class="today-card today-card--sunmoon today-card--sol"><h3>☀️ Sol de hoy</h3>'
     + '<div class="today-sun"><span class="chip chip--sun">☀️ Amanecer <b>'+(sun.rise?cal.fmtTime.format(new Date(sun.rise)):'--')+'</b></span>'
     + '<span class="chip chip--sunset">🌇 Atardecer <b>'+(sun.set?cal.fmtTime.format(new Date(sun.set)):'--')+'</b></span></div>'
-    + '<div class="su-83ca52"></div>'
+    + '<p class="sunmoon-place">📍 Penco · hora local · aprox. ±15 min.</p>'
+    + '</div>')
+    + ((hb.luna === false || hb.solLuna === false) ? '' : '<div class="today-card today-card--sunmoon today-card--luna"><h3>🌙 Luna de hoy</h3>'
     + '<div class="today-sun"><span class="chip chip--moonrise">🌙 Sale <b>'+(moon.rise?cal.fmtTime.format(new Date(moon.rise)):'--')+'</b></span>'
     + '<span class="chip chip--moonset">🌘 Se pone <b>'+(moon.set?cal.fmtTime.format(new Date(moon.set)):'--')+'</b></span></div>'
-    + '<p class="sunmoon-place">📍 Penco · hora local · aprox. ±15 min según lugar de observación.</p>'
     + '<div class="su-83ca52"></div>'
     + '<div class="today-sun"><span class="chip chip--fase">'+moonIcon+' Fase <b>'+escapeHtml(faseTxt)+'</b></span>'
     + '</div></div>')
