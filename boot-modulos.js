@@ -93,6 +93,7 @@
     'min/futbol-modulo.min.js?v=1',
     'min/basquetbol-modulo.min.js?v=1',
     'min/talleres-penco.min.js?v=1',
+    'min/educacion-penco.min.js?v=1',
     'min/iglesias-penco.min.js?v=1',
     'min/municipalidad-penco.min.js?v=1',
     'min/bomberos-penco.min.js?v=1',

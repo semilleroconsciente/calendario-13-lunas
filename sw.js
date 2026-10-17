@@ -2,7 +2,7 @@
 // Copyright (C) 2026 Semillero Consciente. Licencia: GNU GPLv3 o posterior (ver COPYING).
 // SPDX-License-Identifier: GPL-3.0-or-later
 // v55
-const CACHE = 'cal13-v124-offline';
+const CACHE = 'cal13-v125-offline';
 
 // Lista completa de archivos que usa index.html (bare + con ?v=).
 // Si se agrega un JS nuevo en index.html, agregarlo aquí también (bare y ?v=).
@@ -85,6 +85,7 @@ const CORE = [
   './templates/disciplineDialog.html',
   './templates/donateDialog.html',
   './templates/dreamsDialog.html',
+  './templates/educacionDialog.html',
   './templates/ekadashiDialog.html',
   './templates/energyDialog.html',
   './templates/englishDialog.html',
@@ -219,6 +220,8 @@ const CORE = [
   './min/dialogo-tamano.min.js?v=1',
   './min/domotica-modulo.min.js',
   './min/domotica-modulo.min.js?v=1',
+  './min/educacion-penco.min.js',
+  './min/educacion-penco.min.js?v=1',
   './min/electricidad-modulo.min.js',
   './min/electricidad-modulo.min.js?v=1',
   './min/electrocultura-modulo.min.js',
