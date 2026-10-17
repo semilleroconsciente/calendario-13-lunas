@@ -132,11 +132,32 @@ function portuDayIndex(n) {
     return s % n;
   } catch (e) { return 0; }
 }
+function portuVozLimpia(t) {
+  // "olá / oi" -> "olá, oi": evita que el locutor diga "barra".
+  t = String(t == null ? '' : t);
+  t = t.replace(/\s*\/\s*/g, ', ');
+  t = t.replace(/(\d)\s*[-‐‑‒–—―－]\s*(\d)/g, '$1 al $2');
+  t = t.replace(/[—–―─－]+/g, ', ');
+  t = t.replace(/\s*[:;：；]\s*/g, ', ');
+  t = t.replace(/[()（）\[\]{}<>«»]+/g, ', ');
+  t = t.replace(/["“”‘’'´`·•●◦▪|\\_#*+=~^°]+/g, ' ');
+  t = t.replace(/[〜~]+/g, ' ');
+  t = t.replace(/[…]+/g, ' ');
+  t = t.replace(/\.{2,}/g, '.');
+  t = t.replace(/\s*,\s*,\s*/g, ', ');
+  t = t.replace(/[ \t\u00a0]{2,}/g, ' ');
+  t = t.replace(/\s*,\s*/g, ', ').replace(/,{2,}/g, ',');
+  t = t.replace(/^[,\s]+|[,\s]+$/g, '').trim();
+  t = t.replace(/^,|,$/g, '').trim();
+  return t;
+}
 function portuSpeak(txt) {
   try {
     if (!('speechSynthesis' in window)) { alert('Este dispositivo no tiene voz disponible'); return; }
+    var limpio = portuVozLimpia(txt);
+    if (!limpio) limpio = String(txt || '');
     window.speechSynthesis.cancel();
-    var u = new SpeechSynthesisUtterance(String(txt || ''));
+    var u = new SpeechSynthesisUtterance(limpio);
     u.lang = 'pt-BR'; u.rate = 0.9; u.pitch = 1;
     window.speechSynthesis.speak(u);
   } catch (e) {}

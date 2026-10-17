@@ -234,8 +234,29 @@ function ruRefreshVoiceStatus() {
     if (on) on.onclick = function (e) { try { e.preventDefault(); } catch (x) {} ruSpeakOnline(ruShown ? ruShown.ru : 'привет'); };
   } catch (e) {}
 }
+function ruVozLimpia(t) {
+  // Evita que el locutor del PC diga "barra", "dos puntos", "guion", etc.
+  // "еда / хлеб" -> "еда, хлеб" (pausa en vez de "barra").
+  t = String(t == null ? '' : t);
+  t = t.replace(/\s*\/\s*/g, ', ');
+  t = t.replace(/(\d)\s*[-‐‑‒–—―－]\s*(\d)/g, '$1 al $2');
+  t = t.replace(/[—–―─－]+/g, ', ');
+  t = t.replace(/\s*[:;：；]\s*/g, ', ');
+  t = t.replace(/[()（）\[\]{}<>«»]+/g, ', ');
+  t = t.replace(/["“”‘’'´`·•●◦▪|\\_#*+=~^°]+/g, ' ');
+  t = t.replace(/[〜~]+/g, ' ');
+  t = t.replace(/[…]+/g, ' ');
+  t = t.replace(/\.{2,}/g, '.');
+  t = t.replace(/\s*,\s*,\s*/g, ', ');
+  t = t.replace(/[ \t\u00a0]{2,}/g, ' ');
+  t = t.replace(/\s*,\s*/g, ', ').replace(/,{2,}/g, ',');
+  t = t.replace(/^[,\s]+|[,\s]+$/g, '').trim();
+  t = t.replace(/^,|,$/g, '').trim();
+  return t;
+}
 function ruSpeakOnline(txt) {
-  var text = String(txt == null ? '' : txt).trim();
+  var text = ruVozLimpia(txt);
+  if (!text) text = String(txt == null ? '' : txt).trim();
   if (!text) return;
   try { ruStop(); } catch (e) {}
   try {
@@ -268,7 +289,8 @@ function ruPaintSpeakState() {
 }
 function ruSpeak(txt, opts) {
   opts = opts || {};
-  var text = String(txt == null ? '' : txt).trim();
+  var text = ruVozLimpia(txt);
+  if (!text) text = String(txt == null ? '' : txt).trim();
   if (!text) return;
   if (opts.forceOnline) { ruSpeakOnline(text); return; }
   try {

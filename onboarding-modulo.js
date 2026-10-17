@@ -4,8 +4,9 @@
 (function () {
   'use strict';
   var KEY = 'cal13-onboarding-v2';
-  function seen() { try { return localStorage.getItem(KEY) === '1'; } catch (e) { return true; } }
-  function mark() { try { localStorage.setItem(KEY, '1'); } catch (e) {} }
+  var seenMem = false;
+  function seen() { try { if (seenMem) return true; return localStorage.getItem(KEY) === '1'; } catch (e) { return seenMem; } }
+  function mark() { seenMem = true; try { localStorage.setItem(KEY, '1'); } catch (e) {} }
 
   var STEPS = [
     { t: '◉ Hoy', i: '🌅🧭', d: 'El botón «Ir a hoy» te lleva a la luna y el día actual. El reloj vive en hora de Penco (America/Santiago).' },

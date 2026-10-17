@@ -2,7 +2,7 @@
 // Copyright (C) 2026 Semillero Consciente. Licencia: GNU GPLv3 o posterior (ver COPYING).
 // SPDX-License-Identifier: GPL-3.0-or-later
 // v55
-const CACHE = 'cal13-v119-offline';
+const CACHE = 'cal13-v122-offline';
 
 // Lista completa de archivos que usa index.html (bare + con ?v=).
 // Si se agrega un JS nuevo en index.html, agregarlo aquí también (bare y ?v=).
@@ -155,6 +155,8 @@ const CORE = [
   './min/auto-backup-modulo.min.js?v=1',
   './min/aves-historia.min.js',
   './min/aves-historia.min.js?v=1',
+  './min/basquetbol-modulo.min.js',
+  './min/basquetbol-modulo.min.js?v=1',
   './min/bienvenida-modulo.min.js',
   './min/bienvenida-modulo.min.js?v=1',
   './min/bienvenida.min.css',
@@ -174,7 +176,7 @@ const CORE = [
   './min/carta-astral.min.js',
   './min/carta-astral.min.js?v=1',
   './min/chino-mandarin-modulo.min.js',
-  './min/chino-mandarin-modulo.min.js?v=2',
+  './min/chino-mandarin-modulo.min.js?v=3',
   './min/ciberseguridad-modulo.min.js',
   './min/ciberseguridad-modulo.min.js?v=1',
   './min/club-5am-modulo.min.js',
@@ -250,7 +252,7 @@ const CORE = [
   './min/hidroponia-modulo.min.js',
   './min/hidroponia-modulo.min.js?v=2',
   './min/hindi-modulo.min.js',
-  './min/hindi-modulo.min.js?v=1',
+  './min/hindi-modulo.min.js?v=2',
   './min/hogar-biblioteca-modulo.min.js',
   './min/hogar-biblioteca-modulo.min.js?v=1',
   './min/hogar-corral-movilidad-escolar-modulo.min.js',
@@ -270,7 +272,7 @@ const CORE = [
   './min/ics-modulo.min.js',
   './min/ics-modulo.min.js?v=1',
   './min/idiomas-modulo.min.js',
-  './min/idiomas-modulo.min.js?v=1',
+  './min/idiomas-modulo.min.js?v=2',
   './min/iglesias-penco.min.js',
   './min/iglesias-penco.min.js?v=1',
   './min/ikigai-modulo.min.js',
@@ -278,9 +280,9 @@ const CORE = [
   './min/info-clave.min.js',
   './min/info-clave.min.js?v=1',
   './min/italiano-modulo.min.js',
-  './min/italiano-modulo.min.js?v=1',
+  './min/italiano-modulo.min.js?v=2',
   './min/japones-modulo.min.js',
-  './min/japones-modulo.min.js?v=1',
+  './min/japones-modulo.min.js?v=2',
   './min/jsqr-lib.min.js',
   './min/jsqr-lib.min.js?v=1',
   './min/kin-maya-modulo.min.js',
@@ -328,7 +330,7 @@ const CORE = [
   './min/plantas-modulo.min.js',
   './min/plantas-modulo.min.js?v=1',
   './min/portugues-modulo.min.js',
-  './min/portugues-modulo.min.js?v=1',
+  './min/portugues-modulo.min.js?v=2',
   './min/psicologia-modulo.min.js',
   './min/psicologia-modulo.min.js?v=1',
   './min/pwa-install.min.js',
@@ -348,11 +350,11 @@ const CORE = [
   './min/renderer-territorio-vivo.min.js',
   './min/renderer-territorio-vivo.min.js?v=1',
   './min/renderer.min.js',
-  './min/renderer.min.js?v=17',
+  './min/renderer.min.js?v=18',
   './min/retos-21-modulo.min.js',
   './min/retos-21-modulo.min.js?v=1',
   './min/ruso-modulo.min.js',
-  './min/ruso-modulo.min.js?v=1',
+  './min/ruso-modulo.min.js?v=2',
   './min/semillero-guias.min.js',
   './min/semillero-guias.min.js?v=1',
   './min/solitario-modulo.min.js',

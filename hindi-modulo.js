@@ -241,7 +241,8 @@ function hiRefreshVoiceStatus() {
   } catch (e) {}
 }
 function hiSpeakOnline(txt) {
-  var text = String(txt == null ? '' : txt).trim();
+  var text = (typeof hiVozLimpia === 'function' ? hiVozLimpia(txt) : String(txt == null ? '' : txt).trim());
+  if (!text) text = String(txt == null ? '' : txt).trim();
   if (!text) return;
   try { hiStop(); } catch (e) {}
   try {
@@ -272,9 +273,29 @@ function hiPaintSpeakState() {
     }
   } catch (e) {}
 }
+function hiVozLimpia(t) {
+  // Evita que el locutor del PC diga "barra", "dos puntos", "guion", etc.
+  t = String(t == null ? '' : t);
+  t = t.replace(/\s*\/\s*/g, ', ');
+  t = t.replace(/(\d)\s*[-‐‑‒–—―－]\s*(\d)/g, '$1 al $2');
+  t = t.replace(/[—–―─－]+/g, ', ');
+  t = t.replace(/\s*[:;：；]\s*/g, ', ');
+  t = t.replace(/[()（）\[\]{}<>«»]+/g, ', ');
+  t = t.replace(/["“”‘’'´`·•●◦▪|\\_#*+=~^°]+/g, ' ');
+  t = t.replace(/[〜~]+/g, ' ');
+  t = t.replace(/[…]+/g, ' ');
+  t = t.replace(/\.{2,}/g, '.');
+  t = t.replace(/\s*,\s*,\s*/g, ', ');
+  t = t.replace(/[ \t\u00a0]{2,}/g, ' ');
+  t = t.replace(/\s*,\s*/g, ', ').replace(/,{2,}/g, ',');
+  t = t.replace(/^[,\s]+|[,\s]+$/g, '').trim();
+  t = t.replace(/^,|,$/g, '').trim();
+  return t;
+}
 function hiSpeak(txt, opts) {
   opts = opts || {};
-  var text = String(txt == null ? '' : txt).trim();
+  var text = hiVozLimpia(txt);
+  if (!text) text = String(txt == null ? '' : txt).trim();
   if (!text) return;
   if (opts.forceOnline) { hiSpeakOnline(text); return; }
   try {

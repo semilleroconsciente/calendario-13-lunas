@@ -62,8 +62,12 @@
     return animePromesa;
   }
 
-  function visto() { try { return localStorage.getItem(KEY) === '1'; } catch (e) { return true; } }
-  function marcar() { try { localStorage.setItem(KEY, '1'); } catch (e) {} }
+  // Memoria de sesión: si localStorage está bloqueado (WebView/APK con
+  // almacenamiento desactivado, file:// sin cookies), igual se muestra 1 vez
+  // por sesión en vez de nunca (web, APK y .exe comparten estas claves).
+  var vistoMem = false;
+  function visto() { try { if (vistoMem) return true; return localStorage.getItem(KEY) === '1'; } catch (e) { return vistoMem; } }
+  function marcar() { vistoMem = true; try { localStorage.setItem(KEY, '1'); } catch (e) {} }
   function marcarOnboarding() { try { localStorage.setItem(ONB_KEY, '1'); } catch (e) {} }
 
   function esc(s) {
@@ -91,7 +95,7 @@
         if (notas && JSON.stringify(notas).length > 2000) return false;
       } catch (e3) {}
       return true;
-    } catch (e) { return false; }
+    } catch (e) { return true; }
   }
 
   // ¿PC o celular? Espeja isMobileWidth() de core-calendario.js (920px).
