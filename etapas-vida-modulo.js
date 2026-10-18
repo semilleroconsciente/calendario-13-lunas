@@ -8,9 +8,15 @@
      3) 🔥 Climaterio (45-64) ..... btnClimaterio / climaterioDialog
      4) 🦉 Vejez Sabia (60+) ...... btnVejez / vejezDialog
      5) 🌀 Septenios (0-70+) ...... btnSeptenios / septeniosDialog
-     6) 🙏 Camino Lakota ............ btnLakota / lakotaDialog
-         Femenino (7 caminos Mujer Bufalo Blanco) + Masculino (7 etapas Wicasa)
-         Mapuche-Lafkenche (5 etapas Kimun) ......... btnKimun / kimunDialog
+      6) 🙏 Camino Lakota ............ btnLakota / lakotaDialog
+          Femenino (7 caminos Mujer Bufalo Blanco) + Masculino (7 etapas Wicasa)
+          Mapuche-Lafkenche (5 etapas Kimun) ......... btnKimun / kimunDialog
+      8) 🕉️ Ashramas Hindúes (4 ashramas) .. btnAshramas / ashramasDialog
+      9) 🏮 Décadas Confucio (6 décadas) .... btnConfucio / confucioDialog
+      10) ⛰️ Cosmovisión Andina (3 energías) . btnAndina / andinaDialog
+      11) 🧭 Estadios Jung (4 estadios) ...... btnJung / jungDialog
+      12) 🍀 Rueda Celta (4 estaciones) ...... btnCelta / celtaDialog
+      13) 🌙 Viaje Sufí (7 nafs) ............. btnSufi / sufiDialog
 
    Cada sección es completa e independiente, con 5 pestañas:
      Guía · Cuerpo & Salud · Mente & Vínculos · Vida práctica ·
@@ -553,7 +559,419 @@ var ETAPAS_CONF = [
   bridges: [['kimGoJuventud', 'btnJuventud'], ['kimGoAdultez', 'btnAdultez'], ['kimGoVejez', 'btnVejez'], ['kimGoSeptenios', 'btnSeptenios'], ['kimGoLakota', 'btnLakota'], ['kimGoGrat', 'btnGratitud']],
   bridgesLabel: '🔗 Sigue en tu calendario',
   bridgesTxt: 'Tu ciclo se sostiene con etapas, memoria y gratitud: baja a tu etapa detallada.'
-}];
+},
+/* ============ 8) LOS 4 ASHRAMAS HINDUES ============ */
+{
+  key: 'hin', btn: 'btnAshramas', btnTxt: '🕉️ Ashramas Hindúes',
+  dlg: 'ashramasDialog', title: '🕉️ La Cosmovisión Hindú: Los 4 Ashramas (Etapas del Alma)',
+  sub: 'El hinduismo tradicional divide la vida en <b>cuatro etapas de 25 años</b>, cada una con un <b>Dharma (deber sagrado)</b>. Aprende, sostiene, suelta y trasciende. Todo <b>privado y local</b>. <b>Educativo: no reemplaza guía espiritual, médico ni terapia.</b>',
+  kw: 'ashrama hindu india dharma brahmacharya grihastha vanaprastha sannyasa moksha vedas guru etapas alma deber',
+  p: 'hin', tabNames: ['Guia', 'Cuerpo', 'Mente', 'Prac', 'Espacio'],
+  tabLabels: ['🧭 Guía', '🕉️ Los 4 Ashramas', '🧠 Mente y Dharma', '🧰 Vida práctica', '📓 Mi espacio'],
+  guiaTitulo: '🕉️ El Dharma: tu deber según tu etapa',
+  intro: 'En la tradición hindú la vida humana (<b>100 años ideales</b>) se recorre en <b>4 ashramas</b> de ~25 años. Cada etapa tiene un <b>Dharma</b>: lo correcto para ese momento. Sufrimos cuando hacemos el deber de otra etapa (ej: querer retirarse a los 25 o acumular sin fin a los 70). Ubica tu ashrama y vive su tarea plena.',
+  fases: [
+    { n: 'Brahmacharya (0–25 · El Estudiante)', ico: '📚', q: 'Aprendizaje, disciplina, castidad y absorción de conocimientos de un maestro (Guru). El cuerpo y la mente se entrenan: estudio, celibato moderado, respeto y servicio al maestro. Lo que siembras aquí sostiene todo lo demás.',
+      cuerpo: 'Rutina, sueño, estudio diario, deporte y moderación. Energía joven canalizada en aprender.',
+      mente: 'Humildad del aprendiz: pregunta, escucha, practica. El ego de saberlo todo es el fracaso de esta etapa.',
+      tip: '🌙 1 aprendizaje + 1 disciplina por luna (ej: curso SENCE + dormir a la misma hora).' },
+    { n: 'Grihastha (25–50 · El Padre/Madre de Familia)', ico: '🏠', q: 'Vida en el mundo: matrimonio, crianza, trabajo, riqueza (Artha) y placer legítimo (Kama) al servicio del deber. Es el ashrama que sostiene a los otros tres: quien produce, alimenta, enseña y dona.',
+      cuerpo: 'Chequeos, fuerza, sostener sin quemarse. Ganar bien y gastar con medida.',
+      mente: 'Generosidad + límites: sostener a muchos sin perderse. Culpa se ordena repartiendo.',
+      tip: '🌙 1 meta de plata + 1 de familia por luna. Ver 🏠 Adultez.' },
+    { n: 'Vanaprastha (50–75 · El Retiro)', ico: '🌲', q: 'El que se va al bosque. Se delegan responsabilidades, se reduce el apego material y crece la reflexión, la meditación y el estudio espiritual. No es abandonar: es pasar de protagonista a consejero.',
+      cuerpo: 'Climaterio acompañado, caminar, huesos y corazón. Menos carga, más descanso.',
+      mente: 'Soltar poder y controlar menos. Enseñar lo aprendido: el legado empieza aquí.',
+      tip: '🌙 1 cosa delegada + 1 práctica contemplativa por luna.' },
+    { n: 'Sannyasa (75+ · La Renuncia)', ico: '🔥', q: 'Abandono de apegos mundanos para dedicar la vida a la liberación (Moksha) y la conexión con lo divino. Simplicidad total, bendecir y prepararse para trascender. Lo que perdonas y agradeces queda vivo en otros.',
+      cuerpo: 'Confort, vínculo, autonomía por capas. Dolor siempre tratado, nunca aguantado.',
+      mente: 'Paz y desapego amoroso: nada me posee, todo lo agradezco. Presencia más que palabras.',
+      tip: '🌙 1 recuerdo grabado + 1 perdón por luna. Ver 🦉 Vejez.' }
+  ],
+  mitos: '• "Espiritual es solo meditar" → en Grihastha lo espiritual es trabajar honrado y cuidar a tu gente.<br>• "Retirarse es fracasar" → Vanaprastha es graduarse: delegar es sabiduría, no derrota.<br>• "Renuncia es abandonar a la familia" → es soltar el control, no el amor: se bendice más cuando se posee menos.<br>• "Hay que apurar etapas" → cada ashrama prepara al siguiente: saltarse Grihastha deja raíces débiles.',
+  uso: '1) Lee la <b>Guía</b> y ubica tu ashrama por edad (0-25 / 25-50 / 50-75 / 75+).<br>2) Lee tu tarjeta en <b>Los 4 Ashramas</b> + la anterior y la siguiente.<br>3) Elige 1 práctica de <b>Dharma</b> en Mente.<br>4) Avanza 1 paso en <b>Vida práctica</b>.<br>5) Registra en <b>Mi espacio</b> cada luna.',
+  familia: 'Para familias: cada integrante vive un ashrama distinto. Al joven se le exige estudiar, al adulto sostener, al mayor aconsejar y al anciano bendecir. No pidan renuncia al joven ni acumulación al anciano. Pregunten: ¿en qué ashrama estás y qué necesitas?',
+  cuerpoTitulo: '🕉️ Los 4 Ashramas en detalle',
+  cuerpoIntro: 'Cada ashrama pide un cuerpo distinto. La base es la misma: <b>dormir, moverse, comer real y chequearse</b>. Aquí el mapa hindú aplicado a Penco.',
+  cuerpo: [
+    { n: 'Brahmacharya: cuerpo del aprendiz', ico: '📚', txt: 'Dormir 7-9 h, misma hora; moverse a diario (deporte + fuerza 2 veces/semana); comida casera barata (legumbres, huevo, jurel, avena); moderación de alcohol y pantallas. Celibato aquí significa enfoque: menos dispersión, más maestría. Salud sexual con matrona si corresponde.' },
+    { n: 'Grihastha: cuerpo que sostiene', ico: '🏠', txt: 'EMPA en CESFAM, presión, glicemia y colesterol al día; caminar 30 min por 5 días + fuerza; espalda y rodillas con técnica. Comer para rendir, no solo para llenar. Chequeos de mama/próstata/colon según edad. Dormir aunque haya guagua o turno: turnos de relevo.' },
+    { n: 'Vanaprastha: cuerpo que suelta carga', ico: '🌲', txt: 'Fuerza + equilibrio + caminar; calcio, vitamina D (sol de mañana) y proteína; densitometría y corazón al día. Acompaña síntomas del climaterio sin silencio (ver 🔥 Climaterio). Simplifica: menos peso cargado, más pausas.' },
+    { n: 'Sannyasa: cuerpo cuidado con ternura', ico: '🔥', txt: 'Moverse a diario sin exigirse, casa anticaídas, remedios ordenados en pastillero, ojos/oídos/dientes/pies al día, hidratación y proteína diaria. Todo dolor merece alivio. Autonomía el mayor tiempo posible, ayuda pedida sin culpa.' },
+    { n: 'Dharma del alimento (Ahimsa)', ico: '🥗', txt: 'Comer sattvico en lo posible: fresco, simple, compartido, sin violencia. En Penco: feria, legumbres, verduras, cocinar en casa 2 veces/semana, agradecer antes de comer. Alcohol poco o nada; tabaco cero. Lo simple repetido alivia más que lo caro una vez.' },
+    { n: 'Yoga y respiración por etapa', ico: '🧘', txt: 'Joven: práctica activa (saludos al sol, deporte). Adulto: 20 min de pausa (caminata + respiración 4-6). Retiro: meditación 10-20 min diarios + lectura sagrada. Renuncia: contemplación, silencio, mantra o gratitud. 🌬️ Respiración y 🕉️ Prácticas del calendario te ordenan.' }
+  ],
+  menteTitulo: '🧠 Dharma: lo correcto para tu momento',
+  menteIntro: 'El Dharma no es una regla externa: es <b>lo que tu etapa te pide</b>. Estas 5 llaves ordenan la mente y los vínculos.',
+  mente: [
+    { n: 'Los 4 fines (Purusharthas)', ico: '🎯', txt: 'Dharma (deber), Artha (riqueza bien habida), Kama (placer legítimo) y Moksha (liberación). Joven: Dharma de aprender. Adulto: Artha + Kama al servicio del Dharma (ganar y gozar sin dañar). Mayor: soltar Artha/Kama hacia Moksha. Pregunta guía: ¿esto que quiero, a qué fin sirve en mi etapa?' },
+    { n: 'Estudiante: humildad y Guru', ico: '🙏', txt: 'Elige un maestro u oficio y síguelo 1 año (taller, SENCE, mentor del barrio). Reglas: llega a la hora, anota, practica 25 min diarios, pregunta sin vergüenza. Compararte quema: compara tu hoy con tu hace 1 año.' },
+    { n: 'Padre/Madre: sostener sin quemarse', ico: '🥪', txt: 'Generación sándwich: hijos + padres + pega. Reparte por escrito quién cuida qué días, qué se paga y qué se externaliza. Tiempo propio 3 por 30 min/semana. Culpa no es amor: amor con relevo dura más. Ver 🏠 Adultez.' },
+    { n: 'Retiro: delegar y enseñar', ico: '🌾', txt: 'Haz lista de tus cargos (casa, pega, club, iglesia) y entrega 1 por luna con enseñanza incluida. Pasa de hacer a aconsejar. Duelo de protagonismo es normal: se cura enseñando. Graba 1 historia por luna (🗣️ Voz de los Abuelos).' },
+    { n: 'Renuncia: desapego amoroso', ico: '💛', txt: 'Práctica: cada luna elige 1 objeto, 1 rencor y 1 pendiente y suéltalos (donar, perdonar, cerrar). Medita o reza 10 min diarios. Bendice en vez de dirigir. Si hay tristeza 2+ semanas o ideas de daño: ayuda HOY (*4141 / CESFAM). El desapego sano da paz, no vacío.' }
+  ],
+  pracTitulo: '🧰 Tu Dharma esta luna',
+  pracIntro: 'El Dharma se practica, no se lee. <b>1 paso por luna</b> según tu ashrama.',
+  prac: [
+    { n: 'Ubica tu ashrama hoy', ico: '📍', txt: '0-25 estudiante, 25-50 familia, 50-75 retiro, 75+ renuncia. Lee tu tarjeta + anterior (qué debí cerrar) + siguiente (qué se anuncia). Escríbelo en 5 líneas en Mi espacio: qué cierro, qué me cuesta, qué me ilusiona.' },
+    { n: 'Si eres estudiante: 1 oficio', ico: '🎓', txt: 'Inscríbete en 1 curso (SENCE, oficio local) y practica 25 min/día (🍅 Pomodoro). Arma CV de 1 página y pide a 1 maestro que lo revise. Fondo chico: 1 mes de gastos. Ver 🌅 Juventud.' },
+    { n: 'Si sostienes familia: orden de plata', ico: '💰', txt: 'Presupuesto 50-30-20, fondo 3-6 meses, mata la deuda cara primero. Revisa AFP 1 vez/año. Reunión familiar 30 min/luna: plata, cuidados y tareas sobre la mesa. Usa 💰 Finanzas.' },
+    { n: 'Si vas al retiro: delega 1', ico: '🤝', txt: 'Elige 1 responsabilidad y entrégala este mes con manual chico (cómo se hace, a quién llamar). Reemplaza esa hora por contemplación: caminata, lectura, meditación. Casa envejezcante: antideslizante, luz, dormitorio abajo si puedes.' },
+    { n: 'Si eres mayor: simplifica y bendice', ico: '🕯️', txt: 'Carpeta en 1 lugar (carnet, remedios, contactos, voluntades). Dona lo que no usas. Llama o visita a 1 persona por semana para bendecirla (gracias concretas). Legado: 1 historia grabada por luna.' },
+    { n: 'Honrar la fuente', ico: '🙏', txt: 'Tradición viva de India: este resumen es educativo y no reemplaza maestros. Honra sin apropiarte: no dirijas ceremonias hindúes sin guía, nombra la fuente (Vedas, Upanishads, Bhagavad Gita) y, si puedes, aprende de voces de la tradición. Aplica el espíritu (deber, servicio, desapego) sin copiar formas ajenas.' }
+  ],
+  espacioExtra: 'dharma',
+  espacioExtraLabel: 'Vivo mi deber de etapa hoy (1-10)',
+  bridges: [['hinGoJuv', 'btnJuventud'], ['hinGoAdu', 'btnAdultez'], ['hinGoSep', 'btnSeptenios'], ['hinGoVejez', 'btnVejez'], ['hinGoLakota', 'btnLakota'], ['hinGoGrat', 'btnGratitud']],
+  bridgesLabel: '🔗 Sigue en tu calendario',
+  bridgesTxt: 'Tu ashrama se camina mejor con tu etapa chilena al lado.'
+},
+/* ============ 9) LAS 6 DECADAS DE CONFUCIO ============ */
+{
+  key: 'con', btn: 'btnConfucio', btnTxt: '🏮 Décadas Confucio',
+  dlg: 'confucioDialog', title: '🏮 La Sabiduría China: Las 6 Décadas de Confucio',
+  sub: 'En las <b>Analectas (2:4)</b> Confucio describe su maduración interior: <b>no logros externos, sino paz interna</b>. De los 15 a los 70, un mapa para ubicarte y preparar la década que viene. Todo <b>privado y local</b>. <b>Educativo.</b>',
+  kw: 'confucio china analectas decadas 15 30 40 50 60 70 aprendizaje firmeza dudas mandato cielo oido docil virtud sabiduria mandarin',
+  p: 'con', tabNames: ['Guia', 'Cuerpo', 'Mente', 'Prac', 'Espacio'],
+  tabLabels: ['🧭 Guía', '🏮 Las 6 Décadas', '🧠 Mente y Paz', '🧰 Vida práctica', '📓 Mi espacio'],
+  guiaTitulo: '🏮 Madurar por dentro, no solo por fuera',
+  intro: 'Confucio no lista cargos ni riquezas: lista <b>estados del corazón</b>. A los 15 aprender, a los 30 afirmarse, a los 40 soltar dudas, a los 50 conocer el mandato, a los 60 escuchar sin alterarse, a los 70 ser libre sin dañar. Es un espejo amable: ¿dónde estoy y qué me falta madurar?',
+  fases: [
+    { n: '15 · Puse el corazón en aprender', ico: '🌱', q: 'La semilla: curiosidad y disciplina. Sin amor por aprender, lo demás no brota. Tarea: estudiar con un maestro, leer, practicar a diario.',
+      cuerpo: 'Ritmo, sueño y deporte: el cuerpo joven aprende mejor moviéndose.',
+      mente: 'Humildad: no sé, quiero aprender. Pregunta más de lo que afirmas.',
+      tip: '🌙 25 min diarios de estudio real (🍅 Pomodoro).' },
+    { n: '30 · Me mantuve firme', ico: '🧱', q: 'Establecí principios y mi lugar en el mundo. Ya no todo vale: hay columna vertebral. Tarea: oficio, palabra cumplida, casa y vínculos estables.',
+      cuerpo: 'Chequeos base, fuerza, menos trasnoche. Sostener pide cuerpo.',
+      mente: 'Decir no sin culpa y sí con compromiso. Principios por escrito.',
+      tip: '🌙 1 principio practicado por luna (ej: puntualidad, ahorro).' },
+    { n: '40 · No tuve dudas', ico: '🔦', q: 'Claridad mental y emocional. Ya probaste, ya fallaste: sabes lo tuyo y lo que no. Las dudas opinan menos.',
+      cuerpo: 'Metabólico se mueve: exámenes + proteína + caminar.',
+      mente: 'Soltar caminos no tomados sin amargura. Lo elegido se honra.',
+      tip: '🌙 Escribe qué ya no dudas y qué sí: poda 1 duda.' },
+    { n: '50 · Conocí el mandato del cielo', ico: '🌌', q: 'Comprendí mi propósito y mi lugar en el universo. No todo depende de mí: hay un mandato mayor. Tarea: servir con lo aprendido, enseñar.',
+      cuerpo: 'Corazón y huesos piden mantención. Fuerza 2 veces/semana.',
+      mente: 'Aceptar lo que no controlo, responder por lo que sí. Serenidad.',
+      tip: '🌙 1 enseñanza entregada por luna.' },
+    { n: '60 · Mi oído se volvió dócil', ico: '👂', q: 'Capacidad de escuchar cualquier verdad sin juzgar ni alterarse. La crítica ya no te rompe: la escuchas, rescatas y sigues.',
+      cuerpo: 'Vista, oído, dientes al día. Escuchar también es salud.',
+      mente: 'Escucha activa: parafrasea antes de responder. El ego baja, la sabiduría sube.',
+      tip: '🌙 1 conversación difícil escuchada entera.' },
+    { n: '70 · Sigo mi corazón sin transgredir', ico: '🕊️', q: 'Libertad máxima: voluntad personal y ley universal son una sola. Haces lo que amas y eso mismo es lo correcto. Pocos llegan: es fruto de las 5 anteriores.',
+      cuerpo: 'Moverse, comer, vínculo diario. Autonomía con ayuda pedida.',
+      mente: 'Bendecir y soltar. El corazón manda y no daña.',
+      tip: '🌙 1 acto de puro gozo bueno por luna.' }
+  ],
+  mitos: '• "Madurar es tener éxito" → para Confucio madurar es tener paz, no títulos.<br>• "A los 40 no se duda nunca" → significa no ser esclavo de la duda, no no pensar.<br>• "Escuchar dócil es someterse" → es fortaleza: escuchas todo, eliges lo justo.<br>• "Libertad es hacer lo que quiero" → a los 70 la libertad es querer lo correcto.',
+  uso: '1) Ubica tu década por edad.<br>2) Lee tu década + anterior + siguiente.<br>3) Elige 1 virtud en <b>Mente</b>.<br>4) Haz 1 práctica en <b>Vida práctica</b>.<br>5) Registra en <b>Mi espacio</b> cada luna.',
+  familia: 'En casa conviven varias décadas: el de 15 necesita maestro, el de 30 necesita confianza, el de 50 necesita ser escuchado, el de 70 necesita libertad. Rito simple: una comida donde cada uno cuente qué aprendió este mes. Los mayores enseñan con ejemplo, no con sermón.',
+  cuerpoTitulo: '🏮 Cuerpo que sostiene cada década',
+  cuerpoIntro: 'La paz interna necesita base física. <b>Mismo cuerpo, distinto énfasis</b> por década.',
+  cuerpo: [
+    { n: '15-30: base del aprendiz firme', ico: '🌱', txt: 'Dormir 7-9 h, deporte + fuerza, comida casera, estudio con pausas. Menos scroll, más práctica. Salud sexual y dental al día. El cuerpo disciplinado ordena la mente.' },
+    { n: '30-40: sostener sin quemarse', ico: '🧱', txt: 'Caminar 150 min/semana + fuerza 2 veces; presión, peso, glicemia cada 1-2 años. Espalda con técnica. Dormir aunque haya pega e hijos: relevo y horarios.' },
+    { n: '40-50: claridad metabólica', ico: '🔦', txt: 'EMPA en CESFAM; lípidos, presión, PAP/mamografía o próstata según caso; proteína + fibra; alcohol poco. Niebla mental: registra sueño y estrés 2 lunas y consulta si no pasa.' },
+    { n: '50-60: mandato con corazón sano', ico: '❤️', txt: 'Corazón, huesos y sueño protegidos. Fuerza + equilibrio, calcio + vitamina D, sal moderada. Climaterio acompañado (ver 🔥 Climaterio). Enseñar rejuvenece.' },
+    { n: '60-70: oído y cuerpo finos', ico: '👂', txt: 'Audición, visión, dental y pies al día: 4 ladrones de autonomía. Caminar 20-30 min + fuerza liviana + equilibrio. Audífono y lentes se usan, no se guardan.' },
+    { n: '70+: libertad cuidada', ico: '🕊️', txt: 'Casa anticaídas, pastillero, controles crónicos, hidratación y compañía diaria. Moverse a diario, dolor siempre tratado. Autonomía por capas: solo en lo posible, acompañado en lo riesgoso.' }
+  ],
+  menteTitulo: '🧠 Las virtudes que dan paz',
+  menteIntro: 'Cada década entrena una virtud. <b>Practica solo la tuya</b> este mes.',
+  mente: [
+    { n: 'Aprender (15): amor al estudio', ico: '📖', txt: 'Pregunta guía: ¿qué aprendí esta luna? Técnica: 25 min diarios, 1 maestro, 1 cuaderno. Ren (benevolencia) empieza escuchando al que sabe.' },
+    { n: 'Firmeza (30): principios', ico: '🧱', txt: 'Escribe 3 principios (ej: cumplo mi palabra, no debo lo que no puedo pagar, cuido mi casa). Revísalos cada luna. Li (rito correcto): puntualidad, orden y palabra son espiritualidad diaria.' },
+    { n: 'Sin dudas (40): poda', ico: '✂️', txt: 'Lista lo que te divide (2 pegas, 2 amores, 2 rumbos) y elige con datos + 10-10-10. Lo no elegido se suelta con ritual (carta, conversación). Dudar menos es decidir mejor.' },
+    { n: 'Mandato (50): propósito', ico: '🌌', txt: 'Pregunta: ¿para quién sirve lo que sé hacer? Escribe tu mandato en 1 frase (ej: enseñar oficio a jóvenes de Penco). Sirve 2 h/mes (minga, taller, club). Yi (justicia) es hacer lo correcto aunque cueste.' },
+    { n: 'Oído dócil (60) y libertad (70)', ico: '💛', txt: 'Práctica semanal: escucha 10 min sin interrumpir, parafrasea, recién responde. En conflicto: qué es verdad en lo que dice, aunque duela. Libertad buena: haz 1 cosa que ames y que nutra a otro. Así voluntad y ley se vuelven una.' }
+  ],
+  pracTitulo: '🧰 Tu década esta luna',
+  pracIntro: 'Confucio se practica en lo chico. <b>1 virtud por luna</b>.',
+  prac: [
+    { n: 'Ubica tu década', ico: '📍', txt: '15 aprender, 30 firmeza, 40 sin dudas, 50 mandato, 60 oído, 70 libertad. Lee la tuya + anterior + siguiente. Anota en 5 líneas: qué aprendí, en qué soy firme, qué duda suelto.' },
+    { n: 'Rito de estudio (todas)', ico: '📚', txt: '15 min de lectura + 10 min de práctica enseñando a otro. Jóvenes: oficio/SENCE. Adultos: 1 curso/año. Mayores: enseñar 1 vez/luna. Quien enseña, aprende dos veces.' },
+    { n: 'Firmeza de plata y palabra', ico: '💰', txt: '30-50: presupuesto 50-30-20, fondo emergencia, deuda cara primero. Cumple 1 compromiso chico por semana (hora, pago, visita). La confianza se construye en chico.' },
+    { n: 'Poda de los 40', ico: '🌿', txt: 'Elige 1 cosa que soltar este mes (deuda chica, compromiso que enferma, red que resta). Conversación + carta + acto. Menos carga, más claridad.' },
+    { n: 'Servicio del mandato (50+)', ico: '🤝', txt: '2 h/mes de servicio fijo (taller, iglesia, club, huerta comunitaria). Enseña tu oficio a 1 joven. Graba 1 historia (🗣️ Voz de los Abuelos). Servir es el examen del mandato.' },
+    { n: 'Escucha y gozo (60-70+)', ico: '🫖', txt: 'Té o mate semanal con un mayor o un joven: solo escuchar. 1 paseo gozoso por luna (mar, bosque, feria) sin culpa. Honra la fuente: Analectas 2:4; respeta la tradición china viva sin caricaturizarla.' }
+  ],
+  espacioExtra: 'paz',
+  espacioExtraLabel: 'Paz interna hoy (1-10)',
+  bridges: [['conGoJuv', 'btnJuventud'], ['conGoAdu', 'btnAdultez'], ['conGoSep', 'btnSeptenios'], ['conGoVejez', 'btnVejez'], ['conGoKimun', 'btnKimun'], ['conGoGrat', 'btnGratitud']],
+  bridgesLabel: '🔗 Sigue en tu calendario',
+  bridgesTxt: 'Tu década se vive mejor con tu etapa chilena al lado.'
+},
+/* ============ 10) COSMOVISION ANDINA ============ */
+{
+  key: 'and', btn: 'btnAndina', btnTxt: '⛰️ Cosmovisión Andina',
+  dlg: 'andinaDialog', title: '⛰️ La Cosmovisión Andina (Quechua): Llankay, Yachay, Munay',
+  sub: 'En los Andes la vida no se mide por edad sino por <b>equilibrio de 3 energías al servicio del Ayllu (comunidad)</b>: <b>Llankay (hacer), Yachay (saber), Munay (amar)</b>. Joven predomina el cuerpo, adulto la mente, mayor el corazón. Todo <b>privado y local</b>. <b>Educativo.</b>',
+  kw: 'andina quechua llankay yachay munay ayllu apus pachamama ayni minka energia comunidad andes trabajo sabiduria amor',
+  p: 'and', tabNames: ['Guia', 'Cuerpo', 'Mente', 'Prac', 'Espacio'],
+  tabLabels: ['🧭 Guía', '⛰️ Las 3 Energías', '💛 Mente y Ayllu', '🧰 Vida práctica', '📓 Mi espacio'],
+  guiaTitulo: '⛰️ Crecer es equilibrar, no solo cumplir años',
+  intro: 'No hay edades fijas: hay <b>predominios</b>. De joven das brazos (<b>Llankay</b>), de adulto das cabeza (<b>Yachay</b>), de mayor das corazón (<b>Munay</b>). Persona plena = las 3 equilibradas al servicio del <b>Ayllu</b>. Pregunta guía: ¿qué energía me falta hoy?',
+  fases: [
+    { n: 'Llankay (Trabajo/Acción)', ico: '💪', q: 'Predomina en la juventud. Energía del cuerpo: servicio práctico, construcción, agricultura, esfuerzo por el bienestar común. Se aprende haciendo, no mirando. El flojo no es malo: está con energía dormida.',
+      cuerpo: 'Fuerza, resistencia, técnica para no lesionarse. Comer para rendir.',
+      mente: 'Orgullo del hacer bien: puntual, cumplidor, solidario. Ayni: hoy por ti, mañana por mí.',
+      tip: '🌙 1 trabajo concreto por el común al mes (minga, arreglo, huerta).' },
+    { n: 'Yachay (Sabiduría/Conocimiento)', ico: '🧠', q: 'Florece en la madurez. Energía de la mente y la memoria: guía, enseña oficios, resuelve conflictos, preserva historia oral. El que sabe y no enseña, enferma de saber guardado.',
+      cuerpo: 'Cuidar cabeza y corazón: dormir, pausas, chequeos. Enseñar cansa si no te cuidas.',
+      mente: 'Escuchar antes de aconsejar. Memoria: anotar para no olvidar.',
+      tip: '🌙 1 enseñanza entregada por luna.' },
+    { n: 'Munay (Amor/Voluntad superior)', ico: '💛', q: 'Se alcanza en la vejez. No es romance: es compasión profunda, bendecir, sanar con presencia, conectar con Apus y Pachamama desde la entrega total. El mayor que bendice sostiene al pueblo entero.',
+      cuerpo: 'Ternura: moverse suave, comer liviano, dormir y compañía.',
+      mente: 'Perdón y gratitud. Bendecir en vez de criticar.',
+      tip: '🌙 1 bendición consciente por semana.' }
+  ],
+  mitos: '• "Trabajo manual vale menos" → Llankay es sagrado: sin manos no hay comunidad.<br>• "Sabio es el que más habla" → Yachay escucha primero, habla justo.<br>• "Amor es solo pareja" → Munay es compasión por todo ser vivo.<br>• "Joven no puede tener Munay ni mayor Llankay" → predominan, no excluyen: todos usan las 3.',
+  uso: '1) Ubica tu energía predominante por momento vital.<br>2) Lee su tarjeta + las otras dos.<br>3) Marca tu equilibrio en <b>Mente</b>.<br>4) Haz 1 Ayni en <b>Vida práctica</b>.<br>5) Registra en <b>Mi espacio</b>.',
+  familia: 'Ayllu = familia extendida + vecinos + territorio. Reparto andino: jóvenes ponen brazos, adultos ponen cabeza y plata, mayores ponen consejo y bendición. Minga mensual ordena más que mil retos. Si hay gritos o control, eso no es tradición: es violencia (149 / 1455).',
+  cuerpoTitulo: '⛰️ Cuerpo al servicio del Ayllu',
+  cuerpoIntro: 'Cada energía pide un cuerpo. <b>Equilibra las 3</b> aunque predomine una.',
+  cuerpo: [
+    { n: 'Llankay: cuerpo fuerte y sano', ico: '💪', txt: 'Fuerza 2 veces/semana + caminar o trabajo activo; técnica (rodillas flectadas, peso pegado) para no lesionarse; comida que rinde (legumbre, huevo, papa, verdura). Dormir 7-8 h aunque haya turno. 💪 Entrenamientos del calendario.' },
+    { n: 'Yachay: cabeza cuidada', ico: '🧠', txt: 'Dormir, pausas cada 50 min, vista al día, presión/glicemia en EMPA. Anotar: agenda, lista, diario. Niebla 2+ semanas: registra y consulta. Enseñar con ejemplo y paciencia, no a gritos.' },
+    { n: 'Munay: cuerpo tierno', ico: '💛', txt: 'Movimiento suave diario (caminata, tai chi), comida liviana y agua, remedios ordenados, casa abrigada y sin caídas. Cariño también es medicina: mano, mate, música, paseo al mar.' },
+    { n: 'Pachamama: comer con respeto', ico: '🌽', txt: 'Cocinar simple, agradecer, no desperdiciar, compartir. Feria + huerta + trueque. Cuidar agua y semilla. En Penco: no dejar basura en playa/bosque, cuidar el borde costero.' },
+    { n: 'Apus y respiración', ico: '🏔️', txt: 'Subir cerro o mirar el mar 1 vez/luna: caminar lento, respirar 4-6, agradecer. El aire ordena la cabeza. Si subes, avisa ruta y lleva agua/abrigo. 🌬️ Respiración del calendario.' },
+    { n: 'Descanso y festejo', ico: '🎶', txt: 'Trabajar, sí; festejar, también. Música, baile y comida compartida recargan Llankay. Dormir la fiesta no la borra: planifica vuelta segura, sin manejar si tomaste.' }
+  ],
+  menteTitulo: '💛 Ayllu: nadie crece solo',
+  menteIntro: 'Las 3 energías solo maduran <b>en comunidad</b>. Estas llaves las equilibran.',
+  mente: [
+    { n: 'Ayni: reciprocidad', ico: '🤝', txt: 'Hoy por ti, mañana por mí. Anota favores dados y recibidos para equilibrar, no para cobrar. 1 Ayni semanal (cuidar, prestar herramienta, enseñar, cocinar). Quien solo recibe se seca; quien solo da se quema.' },
+    { n: 'Minka: trabajo común', ico: '🧤', txt: '1 minga mensual (limpieza, arreglo, huerta, ayuda a un mayor). Jóvenes brazos, adultos organización, mayores consejo y comida. Terminar con comida compartida: el cierre festeja el hacer.' },
+    { n: 'Yachay: enseñar y mediar', ico: '🗣️', txt: 'Si sabes algo, enséñalo 1 vez/luna (oficio, receta, historia). En conflicto: escucha a ambos, busca el bien del Ayllu, acuerda por escrito. Pedir perdón también es Yachay.' },
+    { n: 'Munay: bendecir y perdonar', ico: '🕯️', txt: 'Práctica diaria: agradece 3 cosas, bendice a 1 persona en silencio, suelta 1 rencor chico. Con mayores: pedir su bendición y consejo. Con la tierra: pedir permiso y dar las gracias (Nor feleal mapuche y respeto andino se abrazan).' },
+    { n: 'Equilibrio personal', ico: '⚖️', txt: 'Marca cada luna de 1 a 10 tus 3 energías. ¿Cuál está baja? Súbela con 1 acto chico (Llankay: arreglar algo; Yachay: aprender/enseñar 25 min; Munay: llamar y agradecer). Equilibrio imperfecto y constante vale más que perfección de un día.' }
+  ],
+  pracTitulo: '🧰 Tu Ayni esta luna',
+  pracIntro: 'La cosmovisión se hace con las manos. <b>1 Ayni + 1 aprendizaje + 1 bendición</b> por luna.',
+  prac: [
+    { n: 'Mide tus 3 energías', ico: '📊', txt: 'En Mi espacio puntúa Llankay, Yachay y Munay (1-10). Elige subir solo la más baja este mes. Relee en 3 lunas: verás tu ritmo.' },
+    { n: 'Llankay: 1 hacer concreto', ico: '🔨', txt: 'Arregla, siembra, cocina, pesca o construye algo útil para tu casa o vecino. Hazlo con técnica y termina. Foto del antes/después en tu diario: el hacer visible anima.' },
+    { n: 'Yachay: 1 saber compartido', ico: '📖', txt: 'Aprende 1 palabra quechua/mapudungun por semana (ej: ayllu, minka, newen, küyen) y úsala. Enseña 1 oficio 1 vez/luna. Pide 1 historia a un mayor y grábala si acepta.' },
+    { n: 'Munay: 1 amar que sana', ico: '💛', txt: 'Visita o llamada semanal a un mayor: solo escuchar y agradecer. Perdona 1 cosa chica por escrito (carta no enviada o conversación). Ofrenda simple a la tierra: limpiar, sembrar, cuidar agua.' },
+    { n: 'Minka mensual', ico: '🌊', txt: 'Súmate u organiza 1 trabajo común: limpieza de playa/bosque, ayuda a vecino, huerta comunitaria. Acuerda hora, tarea y cierre con comida. Niños y mayores también tienen rol: todos sirven.' },
+    { n: 'Honrar la fuente', ico: '🙏', txt: 'Sabiduría viva quechua-andina: resumen educativo, no reemplaza portadores. Honra sin apropiarte: no dirijas ceremonias andinas sin guía autorizada, nombra la fuente y aprende de voces andinas. Aplica el espíritu (reciprocidad, comunidad, cuidado de la tierra) en Penco sin copiar formas ajenas.' }
+  ],
+  espacioExtra: 'ayllu',
+  espacioExtraLabel: 'Equilibrio Llankay-Yachay-Munay hoy (1-10)',
+  bridges: [['andGoJuv', 'btnJuventud'], ['andGoAdu', 'btnAdultez'], ['andGoVejez', 'btnVejez'], ['andGoSep', 'btnSeptenios'], ['andGoKimun', 'btnKimun'], ['andGoGrat', 'btnGratitud']],
+  bridgesLabel: '🔗 Sigue en tu calendario',
+  bridgesTxt: 'Tus 3 energías se sostienen con etapas, comunidad y gratitud.'
+},
+/* ============ 11) LOS 4 ESTADIOS DE JUNG ============ */
+{
+  key: 'jun', btn: 'btnJung', btnTxt: '🧭 Estadios Jung',
+  dlg: 'jungDialog', title: '🧭 La Psicología Arquetípica (C.G. Jung): Los 4 Estadios de la Individuación',
+  sub: 'Jung, influido por mitos antiguos, propuso un camino de <b>maduración psicológica y espiritual</b>: <b>Atleta, Guerrero, Estadista y Espíritu</b>. Del cuerpo al alma, del yo al nosotros. Todo <b>privado y local</b>. <b>Educativo: no reemplaza terapia.</b>',
+  kw: 'jung psicologia arquetipo individuacion atleta guerrero estadista anima espiritu ego sombra inconsciente maduracion',
+  p: 'jun', tabNames: ['Guia', 'Cuerpo', 'Mente', 'Prac', 'Espacio'],
+  tabLabels: ['🧭 Guía', '🧭 Los 4 Estadios', '🧠 Mente y Sombra', '🧰 Vida práctica', '📓 Mi espacio'],
+  guiaTitulo: '🧭 Individuación: llegar a ser quien eres',
+  intro: 'Individuación = <b>integrar lo que soy</b> (luz y sombra) hasta volverse uno mismo, no copia. Cada estadio tiene su foco: <b>cuerpo, mente, corazón, alma</b>. No se salta: el Guerrero no integrado no puede ser buen Estadista; el Estadista apurado no llega a Espíritu. Ubica tu foco actual.',
+  fases: [
+    { n: 'El Atleta (Infancia/Juventud)', ico: '🏃', q: 'Foco en el cuerpo, desarrollo físico, competencia y exploración del mundo exterior. Tarea: conocer límites, jugar, probar, ganar y perder. Sin cuerpo vivido no hay mente firme.',
+      cuerpo: 'Deporte, juego, dormir y comer para crecer. Lesiones enseñan límites.',
+      mente: 'Comparación y grupo: normal. Canaliza en crear, no en destruir.',
+      tip: '🌙 1 deporte + 1 exploración nueva por luna.' },
+    { n: 'El Guerrero (Adultez temprana/media)', ico: '🛡️', q: 'Foco en mente, voluntad, carrera, protección de la familia y conquista de metas. Tarea: sostener, decidir, proveer. Riesgo: identificarme solo con el logro y quemarme.',
+      cuerpo: 'Fuerza, chequeos, dormir aunque haya pega. El guerrero dormido rinde el doble.',
+      mente: 'Disciplina + límites. La sombra del guerrero es control y orgullo.',
+      tip: '🌙 1 meta de proveer + 1 límite sano por luna.' },
+    { n: 'El Estadista / Ánima (Adultez madura)', ico: '💛', q: 'Foco en corazón y relaciones. Se busca significado, conexión emocional, mentoría y equilibrio entre éxito externo y paz interna. Integra lo femenino interno (ánima/animus): escucha, cuida, crea.',
+      cuerpo: 'Corazón, estrés y sueño: el cuerpo pide sentido, no solo rendimiento.',
+      mente: 'Mentoría, pareja renegociada, amistad profunda. Pregunta: ¿para quién sirve lo que sé?',
+      tip: '🌙 1 enseñanza + 1 conversación honesta por luna.' },
+    { n: 'El Espíritu (Vejez)', ico: '✨', q: 'Foco en el alma. Se trasciende el ego personal. La persona se vuelve canal de sabiduría, humor y compasión, preparándose para la trascendencia. Menos yo, más nosotros y más misterio.',
+      cuerpo: 'Ternura, paseo, contemplación. Dolor tratado, no aguantado.',
+      mente: 'Humor, perdón, gratitud y entrega. Bendecir es el último poder.',
+      tip: '🌙 1 historia + 1 perdón por luna.' }
+  ],
+  mitos: '• "Madurar es dejar de jugar" → cada estadio incluye al anterior: el Espíritu también ríe y se mueve.<br>• "Guerrero es solo hombre" → es energía disponible para todos: proveer y proteger.<br>• "Espiritual es evadirse" → en Jung lo espiritual integra: cuerpo, vínculo y sombra incluidos.<br>• "La crisis es fracaso" → es llamado del siguiente estadio: escúchala, no la tapes.',
+  uso: '1) Ubica tu estadio por momento vital.<br>2) Lee tu tarjeta + anterior + siguiente.<br>3) Trabaja 1 sombra en <b>Mente</b>.<br>4) Haz 1 acto en <b>Vida práctica</b>.<br>5) Registra en <b>Mi espacio</b>.',
+  familia: 'En casa hay atletas, guerreros, estadistas y espíritus a la vez. Al atleta ponle juego, al guerrero respeta su lucha y ponle límites, al estadista pídele consejo, al espíritu escúchalo. No exijan espíritu al adolescente ni atleta al anciano frágil.',
+  cuerpoTitulo: '🧭 Cuerpo en cada estadio',
+  cuerpoIntro: 'Cada foco pide un cuerpo. <b>El alma no flota sin base física</b>.',
+  cuerpo: [
+    { n: 'Atleta: cuerpo explorado', ico: '🏃', txt: 'Juego diario, deporte 3-5 veces/semana, fuerza 2 veces, dormir 8-9 h, comida que sostiene el estirón. Lesión: reposo + kine, no aguante. Salud sexual y dental al día.' },
+    { n: 'Guerrero: cuerpo que rinde', ico: '🛡️', txt: '150 min aeróbico + fuerza 2 veces/semana; EMPA, presión, glicemia; espalda con técnica; dormir 7-8 h. Alcohol poco, tabaco cero. El guerrero que duerme decide mejor.' },
+    { n: 'Estadista: cuerpo con sentido', ico: '💛', txt: 'Caminar + fuerza + equilibrio; corazón, huesos y sueño protegidos; pausas reales (sin pantalla). Estrés 2+ semanas: registra, comparte, consulta. Cuidarse es cuidar a los que guías.' },
+    { n: 'Espíritu: cuerpo templo sereno', ico: '✨', txt: 'Movimiento suave diario, casa segura, remedios ordenados, sentidos al día, hidratación y compañía. Contemplación: mirar mar/bosque, respirar, agradecer. Paseo lento también es práctica.' },
+    { n: 'Sueño y energía', ico: '😴', txt: 'Todos los estadios: misma hora ±1 h, sin pantalla 30-45 min antes, cafeína hasta las 15:00. Siesta 20 min máx antes de las 15:00. Insomnio 3+ semanas o ronquido con pausas: consulta.' },
+    { n: 'Comida que integra', ico: '🥗', txt: 'Base Penco en todo estadio: legumbre, huevo, pescado, verdura de feria, agua. Joven: comer para crecer. Adulto: proteína + fibra. Mayor: proteína diaria + 6-8 vasos aunque no dé sed. Cocinar acompañado abre el apetito.' }
+  ],
+  menteTitulo: '🧠 Sombra e integración',
+  menteIntro: 'Cada estadio tiene su <b>sombra</b> (lo negado). Integrarla es madurar. <b>1 sombra por luna</b>.',
+  mente: [
+    { n: 'Sombra del Atleta: comparación', ico: '🪞', txt: 'Si valgo solo si gano, pierdo siempre. Antídoto: compara tu hoy con tu hace 1 año; limpia redes 1 vez/luna; crea 1 antes de consumir 1 hora. Pregunta: ¿qué me enseña esta derrota?' },
+    { n: 'Sombra del Guerrero: control', ico: '⚔️', txt: 'Querer todo ya y a mi modo quema vínculos. Antídoto: delega 1, dice no a 1, pide ayuda en 1. Burnout (cansancio que no se va durmiendo 2+ semanas): quita 1 tarea, pon 1 límite, suma 1 recuperación diaria.' },
+    { n: 'Sombra del Estadista: complacer', ico: '🎭', txt: 'Quedar bien con todos traiciona a uno: tú. Antídoto: renegocia (pareja, pega, familia) por escrito; mentoría con límites de horario; duelo de juventud nombrado. Terapia/grupo ordena más que un auto nuevo.' },
+    { n: 'Sombra del Espíritu: evasión', ico: '☁️', txt: 'Usar lo espiritual para no pagar cuentas ni pedir perdón no es espíritu: es fuga. Antídoto: papeles en orden, perdones concretos, servicio semanal. Trascender incluye reparar.' },
+    { n: 'Diálogo con la sombra', ico: '🌗', txt: 'Técnica Jung simple: escribe 10 min qué te irrita del otro; subraya 3 frases que también son tuyas; elige 1 acto de integración esta luna. Si un recuerdo desborda: detente y pide apoyo (*4141 / CESFAM). 🔁 Recapitulación te ayuda.' }
+  ],
+  pracTitulo: '🧰 Tu estadio esta luna',
+  pracIntro: 'La individuación se practica en lo cotidiano. <b>1 acto por luna</b>.',
+  prac: [
+    { n: 'Ubica tu estadio', ico: '📍', txt: '¿Mi foco es cuerpo (atleta), logro (guerrero), vínculo (estadista) o alma (espíritu)? Lee tu tarjeta + anterior + siguiente. Escríbelo en 5 líneas: qué domino, qué me cuesta, qué se anuncia.' },
+    { n: 'Atleta: juega y prueba', ico: '⚽', txt: '1 deporte fijo + 1 prueba nueva por luna (taller, oficio, ruta). Anota qué aprendiste del cuerpo. Ver 🌱 Adolescencia o 🌅 Juventud para detalle.' },
+    { n: 'Guerrero: provee con límites', ico: '🧭', txt: '1 meta de proveer (plata, arreglo, cuidado) + 1 límite (hora de salida, 1 no). Revisa AFP/deudas 1 vez/luna. Plan B vivo: 1 curso/año. Ver 🏠 Adultez.' },
+    { n: 'Estadista: guía y vincula', ico: '🤝', txt: 'Enseña 1 vez/luna, ten 1 conversación honesta semanal (pareja/amigo/hijo), repara 1 vínculo pendiente. Pregunta guía: ¿para quién sirve lo que sé hacer?' },
+    { n: 'Espíritu: bendice y suelta', ico: '🕯️', txt: 'Graba 1 historia/luna, perdona 1 pendiente, sirve 2 h/mes. Simplifica 1 cosa material. Paseo contemplativo semanal. Ver 🦉 Vejez y 🕊️ Duelo.' },
+    { n: 'Sueños y señales', ico: '🌙', txt: 'Jung amaba los sueños: anota 1 sueño/semana (imagen + emoción + qué me dice). No interpretes literal: pregunta qué parte de mí habla. Si angustian semanas: acompáñalo con profesional.' }
+  ],
+  espacioExtra: 'integracion',
+  espacioExtraLabel: 'Integración cuerpo-mente-corazón-alma (1-10)',
+  bridges: [['junGoJuv', 'btnJuventud'], ['junGoAdu', 'btnAdultez'], ['junGoSep', 'btnSeptenios'], ['junGoClim', 'btnClimaterio'], ['junGoVejez', 'btnVejez'], ['junGoGrat', 'btnGratitud']],
+  bridgesLabel: '🔗 Sigue en tu calendario',
+  bridgesTxt: 'Tu estadio se camina mejor con tu etapa chilena al lado.'
+},
+/* ============ 12) LA RUEDA CELTA ============ */
+{
+  key: 'cel', btn: 'btnCelta', btnTxt: '🍀 Rueda Celta',
+  dlg: 'celtaDialog', title: '🍀 La Rueda Celta de la Vida (Las 4 Estaciones del Ser)',
+  sub: 'Los pueblos celtas vinculaban la vida al <b>ciclo agrícola y las estaciones</b>, muy afín a un <b>calendario de 13 lunas</b>: <b>Primavera, Verano, Otoño, Invierno</b>. Cada estación tiene su tarea y su fiesta. Todo <b>privado y local</b>. <b>Educativo.</b>',
+  kw: 'celta rueda estaciones primavera verano otono invierno imbolc beltane lughnasadh mabon samhain yule ancestro cosecha calendario agricola',
+  p: 'cel', tabNames: ['Guia', 'Cuerpo', 'Mente', 'Prac', 'Espacio'],
+  tabLabels: ['🧭 Guía', '🍀 Las 4 Estaciones', '🧠 Mente y Ciclo', '🧰 Vida práctica', '📓 Mi espacio'],
+  guiaTitulo: '🍀 Vivir como la tierra: sembrar, cosechar, soltar, descansar',
+  intro: 'La rueda no es recta: <b>gira</b>. A veces estás en primavera (nacer), otras en invierno (recoger). No hay estación mala: hay <b>estación negada</b> (querer cosechar sin sembrar, o producir sin descansar). Ubica tu estación y honra su tarea.',
+  fases: [
+    { n: 'Primavera (Imbolc/Beltane) · Niñez y Juventud', ico: '🌸', q: 'Brote, imaginación, aprendizaje y descubrimiento de la identidad. Todo es posible: se prueba, se juega, se pregunta. Tarea: sembrar bueno y cuidar el brote.',
+      cuerpo: 'Jugar, dormir mucho, comer para crecer. Proteger, no exigir producción.',
+      mente: 'Curiosidad + cuentos. El error es abono, no vergüenza.',
+      tip: '🌙 1 juego nuevo + 1 aprendizaje por luna.' },
+    { n: 'Verano (Lughnasadh) · Adultez Joven', ico: '☀️', q: 'Pasión, acción, primera cosecha, familia y comunidad. Energía alta: construir casa, oficio, amor. Tarea: trabajar y festejar lo logrado.',
+      cuerpo: 'Rendimiento con descanso. Fuerza, chequeos, dormir aunque haya fiesta.',
+      mente: 'Pasión con compromiso. Elegir y sostener.',
+      tip: '🌙 1 construcción + 1 festejo por luna.' },
+    { n: 'Otoño (Mabon) · Madurez', ico: '🍂', q: 'Reflexión, compartir la cosecha (sabiduría), enseñar a jóvenes y soltar lo que no sirve. Tarea: podar y repartir. Lo que no se suelta, se pudre.',
+      cuerpo: 'Mantención: corazón, huesos, sueño. Poda también de agenda.',
+      mente: 'Balance: qué guardo, qué suelto, a quién enseño.',
+      tip: '🌙 1 cosa soltada + 1 enseñanza por luna.' },
+    { n: 'Invierno (Samhain/Yule) · Ancianidad', ico: '❄️', q: 'Introspección, volverse Ancestro en vida, contar historias junto al fuego y honrar descanso y memoria. Tarea: recordar, bendecir y prepararse para renacer.',
+      cuerpo: 'Abrigo, descanso, compañía, remedios ordenados.',
+      mente: 'Memoria y duelo honrados. Presencia más que prisa.',
+      tip: '🌙 1 historia contada + 1 descanso real por luna.' }
+  ],
+  mitos: '• "Productivo es solo verano" → otoño reparte e invierno guarda: sin ellos no hay próxima siembra.<br>• "Soltar es perder" → podar fortalece: lo soltado abona.<br>• "Invierno es tristeza" → es recogimiento fértil: historias, fuego y memoria.<br>• "La rueda es superstición" → es lectura de la naturaleza: también la ciencia descansa por ciclos.',
+  uso: '1) Ubica tu estación por edad y por momento (puedes vivir un invierno a los 30).<br>2) Lee tu tarjeta + la anterior y siguiente.<br>3) Elige 1 práctica de <b>Mente</b>.<br>4) Celebra 1 fiesta chica en <b>Vida práctica</b>.<br>5) Registra en <b>Mi espacio</b>.',
+  familia: 'En casa hay 4 estaciones a la vez: al brote se le cuida, al verano se le acompaña el esfuerzo, al otoño se le pide consejo, al invierno se le escucha. Fiesta familiar por estación (comida + historia + agradecimiento) une más que mil retos.',
+  cuerpoTitulo: '🍀 Cuerpo en cada estación',
+  cuerpoIntro: 'La tierra enseña: <b>no se exige lo mismo en siembra que en cosecha</b>.',
+  cuerpo: [
+    { n: 'Primavera: cuerpo que brota', ico: '🌱', txt: 'Juego libre 2 h/día en niños; jóvenes deporte + fuerza; dormir 8-10 h; comida que sostiene el estirón. Vacunas, visión y dental al día. Menos pantalla, más bosque y mar.' },
+    { n: 'Verano: cuerpo que rinde', ico: '☀️', txt: '150 min aeróbico + fuerza 2 veces; EMPA, presión, glicemia; protector solar y agua; dormir 7-8 h. Fiesta sí, accidente no: plan de vuelta, sin manejar si tomaste.' },
+    { n: 'Otoño: cuerpo que poda', ico: '🍂', txt: 'Caminar + fuerza + elongar; corazón, colesterol y huesos al día; sal y azúcar moderadas; dormir protegido. Revisa remedios 1 vez/año. Soltar agenda también baja la presión.' },
+    { n: 'Invierno: cuerpo que descansa', ico: '🕯️', txt: 'Abrigo, luz y anticaídas en casa; movimiento suave diario; proteína + agua; remedios ordenados; compañía diaria. Todo dolor merece alivio. Paseo corto con sol de mañana levanta el ánimo.' },
+    { n: 'Comer de estación (Penco)', ico: '🥗', txt: 'Primavera: hojas y siembra. Verano: fruta y festejo. Otoño: cosecha y guarda (conservas, legumbres). Invierno: caldos y mate compartido. Feria + huerta + cocinar 2 veces/semana. Agradecer antes de comer.' },
+    { n: 'Lunas y mareas', ico: '🌙', txt: 'Como buen calendario lunar: siembra en creciente (proyectos), cosecha en llena (muestra y festeja), poda en menguante (suelta), descansa en nueva (duerme y planea). Anota ánimo y energía por luna 3 meses: verás tu propia rueda.' }
+  ],
+  menteTitulo: '🧠 Soltar, agradecer, recordar',
+  menteIntro: 'Cada estación entrena el corazón. <b>Practica la tuya</b>.',
+  mente: [
+    { n: 'Primavera: imaginar', ico: '🌸', txt: 'Pregunta: ¿qué quiero sembrar este año? Dibuja o escribe 3 brotes (oficio, vínculo, lugar). Protege 1 hora/semana de juego puro. El error se nombra y se riega distinto la próxima.' },
+    { n: 'Verano: comprometerse', ico: '🔥', txt: 'Elige 1 construcción (casa, pega, familia) y ponle fecha + 1 paso/luna. Festeja cada avance chico. Pasión sin compromiso quema; con compromiso alumbra.' },
+    { n: 'Otoño: podar y repartir', ico: '🍂', txt: 'Lista: qué guardo, qué suelto, a quién enseño. Suelta 1 cosa/mes (objeto, deuda chica, compromiso que enferma). Enseña 1 vez/luna. Pedir perdón también es cosecha.' },
+    { n: 'Invierno: recordar y honrar', ico: '🕯️', txt: 'Cuenta 1 historia/luna junto a la mesa (Penco antiguo, familia, oficio). Duelo honrado: ritual, visita, vela. Soledad 2+ semanas con desgano: pide compañía (*4141 / CESFAM). Recordar juntos calienta.' },
+    { n: 'La rueda personal', ico: '🎡', txt: 'Dibuja tu año en círculo: marca tus primaveras, veranos, otoños e inviernos (no solo por edad). Verás que ya giraste varias veces. Pregunta: ¿qué estación me toca honrar hoy?' }
+  ],
+  pracTitulo: '🧰 Tu estación esta luna',
+  pracIntro: 'La rueda se celebra, no solo se entiende. <b>1 fiesta chica + 1 tarea</b> por luna.',
+  prac: [
+    { n: 'Ubica tu estación', ico: '📍', txt: '¿Brotas, rindes, podas o descansas? Lee tu tarjeta + vecinas. Escríbelo en 5 líneas: qué siembro, qué cosecho, qué suelto, qué descanso.' },
+    { n: 'Fiesta de estación (Penco)', ico: '🎉', txt: 'Primavera: siembra algo (huerta, curso). Verano: muestra y festeja (comida, partido). Otoño: reparte (trueque, enseñanza). Invierno: recuerda (historias, fotos, 🗣️ Voz de los Abuelos). 1 festejo simple por estación une a la familia.' },
+    { n: 'Huerta y manos', ico: '🌱', txt: 'Siembra 1, cuida 1, cosecha 1, comparte 1. Sin patio: maceta, hierbas, almácigo. Niños: riegan. Adultos: construyen. Mayores: enseñan. Ver 🌱 Huerta del calendario.' },
+    { n: 'Poda de otoño', ico: '✂️', txt: 'Closet, papeles, deudas chicas, agenda: elige 1 y poda este mes. Dona lo bueno. Lo podado libera energía para lo que sí importa.' },
+    { n: 'Fuego de invierno', ico: '🔥', txt: '1 tarde de historias/mate sin pantalla por luna. Llama a 1 mayor. Revisa casa de invierno: techo, estufa limpia, abrigo, luz. Descansar también es producir el próximo brote.' },
+    { n: 'Honrar la fuente', ico: '🙏', txt: 'Tradición celta viva (Irlanda, Escocia, Gales, Bretaña): resumen educativo. Honra sin apropiarte: nombra la fuente (Imbolc, Beltane, Lughnasadh, Mabon, Samhain, Yule) y aprende de voces celtas si puedes. Aplica el espíritu (ciclos, tierra, comunidad) en el borde costero sin copiar ritos ajenos.' }
+  ],
+  espacioExtra: 'estacion',
+  espacioExtraLabel: 'Vivo mi estación hoy (1-10)',
+  bridges: [['celGoJuv', 'btnJuventud'], ['celGoAdu', 'btnAdultez'], ['celGoVejez', 'btnVejez'], ['celGoSep', 'btnSeptenios'], ['celGoKimun', 'btnKimun'], ['celGoGrat', 'btnGratitud']],
+  bridgesLabel: '🔗 Sigue en tu calendario',
+  bridgesTxt: 'Tu estación se vive mejor con tu etapa chilena al lado.'
+},
+/* ============ 13) EL VIAJE SUFI DEL NAFS ============ */
+{
+  key: 'suf', btn: 'btnSufi', btnTxt: '🌙 Viaje Sufí',
+  dlg: 'sufiDialog', title: '🌙 La Tradición Sufí: El Viaje del Nafs (El Alma)',
+  sub: 'En el misticismo islámico la vida es <b>alquimia interior</b> para purificar el <b>Nafs (ego o alma inferior)</b>: del alma que ordena el mal hasta el <b>alma en paz y perfecta</b>. Un mapa de 7 estaciones para ubicarte con compasión. Todo <b>privado y local</b>. <b>Educativo: no reemplaza guía espiritual ni terapia.</b>',
+  kw: 'sufi nafs islam misticismo ammara lawwama mulhima mutmainna radiya mardiya kamila alma ego purificacion dhikr corazon',
+  p: 'suf', tabNames: ['Guia', 'Cuerpo', 'Mente', 'Prac', 'Espacio'],
+  tabLabels: ['🧭 Guía', '🌙 Las 7 Estaciones', '💛 Mente y Corazón', '🧰 Vida práctica', '📓 Mi espacio'],
+  guiaTitulo: '🌙 Pulir el corazón: del impulso a la paz',
+  intro: 'Nafs = tu yo que desea, teme y se defiende. El viaje no es matarlo: es <b>educarlo hasta que confía</b>. Caer y volver es parte del camino: cada estación te espera sin condena. Ubica tu estación hoy con honestidad amable.',
+  fases: [
+    { n: '1. Nafs al-Ammarah · ordena el mal', ico: '🔥', q: 'Dominada por instintos y deseos. Reacciono, culpo, quiero ya. Todos pasamos por aquí: es el punto de partida, no una sentencia.',
+      cuerpo: 'Impulso se siente en el cuerpo: respiración corta, puño, prisa. Pausa y agua antes de actuar.',
+      mente: 'Nombrar sin golpearse: quiero, temo, envidio. Es información, no identidad.',
+      tip: '🌙 Regla de la pausa: 6 respiraciones antes de responder.' },
+    { n: '2. Nafs al-Lawwamah · se auto-acusa', ico: '🪞', q: 'Despierta la conciencia y el arrepentimiento. Me duele lo que hice: buena señal. Tarea: reparar, no flagelarse.',
+      cuerpo: 'Culpa tensa hombros y estómago: caminar, respirar, dormir ordenan.',
+      mente: 'Arrepentir + reparar 1 cosa concreta. Culpa que repara sana; culpa que rumia enferma.',
+      tip: '🌙 1 reparación chica por luna (perdón, pago, devolución).' },
+    { n: '3. Nafs al-Mulhimah · inspirada', ico: '💡', q: 'Comienza a recibir intuiciones divinas. Hay destellos: sueños, señales, ideas buenas. Tarea: discernir y anotar, no creerse iluminado.',
+      cuerpo: 'Inspiración llega con cuerpo descansado: duerme y pasea.',
+      mente: 'Anota y contrasta con un sabio o amigo recto. Lo verdadero da paz duradera.',
+      tip: '🌙 Cuaderno de intuiciones: 1 línea diaria.' },
+    { n: '4. Nafs al-Mutmainnah · en paz', ico: '🕊️', q: 'Encuentra serenidad y confianza en lo divino. Acepta lo que llega sin pelear con todo. Tarea: sostener la paz en lo cotidiano.',
+      cuerpo: 'Ritmo, respiración lenta, menos ruido. Paz también es dormir bien.',
+      mente: 'Gratitud diaria + confianza. Lo que no controlo lo entrego.',
+      tip: '🌙 3 gratitudes diarias (📓 Gratitud).' },
+    { n: '5. Nafs ar-Radiyah · complacida', ico: '💛', q: 'Acepta todo lo que viene con gratitud. No resignación amarga: contento activo. Hasta lo difícil trae enseñanza.',
+      cuerpo: 'Sonrisa, postura abierta, servicio. El cuerpo agradece moviéndose.',
+      mente: 'Reencuadre: ¿qué me enseña esto? Agradecer también lo que no elegí.',
+      tip: '🌙 1 queja transformada en gracias por semana.' },
+    { n: '6. Nafs al-Mardiyyah · complaciente', ico: '🤲', q: 'Se vuelve instrumento de la voluntad divina. Ya no busco mi brillo: sirvo. Tarea: servicio constante y discreto.',
+      cuerpo: 'Servicio con cuerpo cuidado: si me quemo no sirvo.',
+      mente: 'Intención pura: hago el bien aunque nadie mire. Ego vigilado con humor.',
+      tip: '🌙 1 servicio semanal sin vitrina.' },
+    { n: '7. Nafs al-Kamilah · perfecta/pura', ico: '✨', q: 'Completud y unidad. Pocos llegan establemente: es faro, no meta para presumir. Quien llega, guía con presencia silenciosa y compasión total.',
+      cuerpo: 'Simplicidad, descanso, naturaleza. El cuerpo es templo sereno.',
+      mente: 'Unidad: todo es signo. Bendecir a todos, incluso al que daña (a distancia sana).',
+      tip: '🌙 Bendice en silencio a 1 persona/día.' }
+  ],
+  mitos: '• "Nafs malo hay que matarlo" → se educa, no se mata: el deseo ordenado sirve.<br>• "Si caigo, volví a cero" → el viaje es espiral: cada vuelta sube con lo aprendido.<br>• "Paz es no sentir" → Mutmainnah siente todo y confía igual.<br>• "Santo no se equivoca" → el perfecto repara rápido y sin show.',
+  uso: '1) Ubica tu estación sin castigarte (hoy mando yo o mando mi impulso?).<br>2) Lee tu tarjeta + la siguiente.<br>3) Practica 1 herramienta de <b>Mente</b>.<br>4) Haz 1 acto en <b>Vida práctica</b>.<br>5) Registra en <b>Mi espacio</b>.',
+  familia: 'En casa hay varios nafs: el que explota, el que se culpa, el que repara. Norma sufí doméstica: pausa antes de gritar, reparación antes de dormir, gratitud en la mesa. Si hay gritos, control o miedo seguido, no es estación: es violencia (149 / 1455 / 133).',
+  cuerpoTitulo: '🌙 Cuerpo que ayuda al corazón',
+  cuerpoIntro: 'El Nafs se calma primero por el <b>cuerpo</b>: respiración, sueño, comida y movimiento.',
+  cuerpo: [
+    { n: 'Pausa de 6 respiraciones', ico: '🌬️', txt: 'Ammarah pide ya: inhala 4, exhala 6, 6 ciclos antes de responder, salir o comprar. Manos abiertas, pies en tierra, agua. 2 minutos evitan 2 meses de reparación. 🌬️ Respiración del calendario.' },
+    { n: 'Dormir para no reaccionar', ico: '😴', txt: 'Cansado soy otro: misma hora, sin pantalla 45 min, pieza fresca. Si Lawwamah te desvela (culpa nocturna): escribe mañana reparo con 1 frase y duerme. Insomnio 3+ semanas: consulta.' },
+    { n: 'Comer con medida', ico: '🥗', txt: 'Hambre e impulso son primos: horarios, proteína + fibra, agua antes que antojo, alcohol poco o nada. Ayuno solo si tu salud lo permite y con guía médica: no es castigo, es orden.' },
+    { n: 'Mover el impulso', ico: '🚶', txt: 'Rabia, ansiedad o deseo fuerte: camina 20 min, barre, arregla algo. El cuerpo tramita lo que la cabeza repite. 150 min/semana + fuerza 2 veces. El impulso pasado por piernas se vuelve idea.' },
+    { n: 'Corazón y chequeos', ico: '❤️', txt: 'Palpitaciones, presión alta u opresión seguidas: EMPA/CESFAM (presión, glicemia, corazón). Respiración no reemplaza control. Dolor al pecho, falta de aire o desmayo: 131.' },
+    { n: 'Limpieza y orden (Tahara)', ico: '💧', txt: 'Aseo, ropa limpia, casa ventilada y cama hecha ordenan el Nafs. 10 min diarios de orden + ducha consciente + 1 rincón bello. Lo de afuera sostiene lo de adentro.' }
+  ],
+  menteTitulo: '💛 Del reproche a la confianza',
+  menteIntro: 'Cada estación tiene su medicina. <b>Practica solo tu estación</b> este mes.',
+  mente: [
+    { n: 'Ammarah: nombrar el impulso', ico: '🏷️', txt: 'Di en voz baja: siento rabia/antojo/envidia, intensidad X/10, necesito Y. Escribe 3 líneas y espera 24 h para decidir en grande. Si rompes la promesa, repara sin golpearte y ajusta la regla.' },
+    { n: 'Lawwamah: reparar, no rumiar', ico: '🤝', txt: 'Repara 1: perdón concreto + acto (pagar, devolver, ayudar). Carta no enviada si no puedes hablar. Rumia 2+ semanas con insomnio o desgano: acompáñalo (CESFAM / 🔁 Recapitulación). Culpa que repara, se va.' },
+    { n: 'Mulhimah: discernir', ico: '🔦', txt: 'Anota intuición + fecha. Pregunta: ¿da paz duradera o euforia corta? ¿sirve a otros o solo a mi ego? Contrasta con 1 persona sabia. Lo verdadero se confirma en calma y en tiempo.' },
+    { n: 'Mutmainnah y Radiyah: gratitud', ico: '🕊️', txt: '3 gratitudes diarias + 1 queja transformada/semana + dhikr o frase que calme (10 min). Aceptar no es aguantar maltrato: lo injusto se nombra y se pone límite con serenidad. Paz con límites dura.' },
+    { n: 'Mardiyyah y Kamilah: servir', ico: '✨', txt: '1 servicio semanal discreto + bendición silenciosa diaria. Vigila el ego espiritual (contar lo bueno que hago lo desinfla). Guía con ejemplo: puntual, amable, cumplidor. El faro no grita: alumbra.' }
+  ],
+  pracTitulo: '🧰 Tu estación esta luna',
+  pracIntro: 'La alquimia se hace en lo diario. <b>1 práctica por estación</b>, de a 1 luna.',
+  prac: [
+    { n: 'Ubica tu estación hoy', ico: '📍', txt: '¿Ordeno mal (1), me acuso (2), intuyo (3), confío (4), agradezco todo (5), sirvo (6) o uno (7)? Lee tu tarjeta + siguiente. Anota en 5 líneas: dónde estoy, qué me saca, qué me devuelve.' },
+    { n: 'Regla de la pausa (1-2)', ico: '⏸️', txt: 'Pega en la puerta: respiro 6, tomo agua, respondo. Más caminata 20 min si hierve. Repara antes de dormir (mensaje, abrazo, orden). 1 semana de pausas cambia el clima de la casa.' },
+    { n: 'Cuaderno del corazón (3-4)', ico: '📓', txt: '1 línea diaria: impulso, intuición o gratitud. Revisa cada luna llena: verás tu espiral (caídas más cortas, paz más larga). Comparte 1 aprendizaje/semana con alguien de confianza.' },
+    { n: 'Servicio discreto (5-6)', ico: '🤲', txt: 'Elige 1 servicio fijo/semana (cuidar, cocinar, enseñar, limpiar) sin publicar. Hazlo excelente y en silencio. Si te pica contarlo, sonríe y sigue: el Nafs se pule en secreto.' },
+    { n: 'Noche de perdón (todas)', ico: '🌙', txt: 'Antes de dormir: a quién bendigo, a quién perdono, qué reparo mañana (1 frase cada una). Duelo o culpa vieja atorada: 🕊️ Duelo + 🔁 Recapitulación + CESFAM si pesa semanas.' },
+    { n: 'Honrar la fuente', ico: '🙏', txt: 'Tradición viva islámica-sufí: resumen educativo, no reemplaza maestros ni textos (Corán, Rumi, Al-Ghazali, Ibn Arabi). Honra sin apropiarte: no dirijas dhikr ni ceremonias sin guía autorizada, nombra la fuente y aprende de voces musulmanas. Aplica el espíritu (purificar intención, servir, agradecer) sin copiar formas ajenas.' }
+  ],
+  espacioExtra: 'pazcorazon',
+  espacioExtraLabel: 'Paz del corazón hoy (1-10)',
+  bridges: [['sufGoJuv', 'btnJuventud'], ['sufGoAdu', 'btnAdultez'], ['sufGoSep', 'btnSeptenios'], ['sufGoDuelo', 'btnDueloFull'], ['sufGoLakota', 'btnLakota'], ['sufGoGrat', 'btnGratitud']],
+  bridgesLabel: '🔗 Sigue en tu calendario',
+  bridgesTxt: 'Tu viaje interior se sostiene con etapas, duelo y gratitud.'
+}]
 
 
 
@@ -848,12 +1266,18 @@ var NEW_BTNS = [
   { id: 'btnVejez', txt: '🦉 Vejez Sabia', kw: '' },
   { id: 'btnSeptenios', txt: '🌀 Septenios', kw: 'septenios septenio ciclos 7 siete anos biografia' },
   { id: 'btnLakota', txt: '🙏 Camino Lakota', kw: 'lakota sioux bufalo blanco belleza wicasa vision' },
-  { id: 'btnKimun', txt: '🌿 Ciclo Kimün', kw: 'kimun mapuche lafkenche newen etapas' }
+  { id: 'btnKimun', txt: '🌿 Ciclo Kimün', kw: 'kimun mapuche lafkenche newen etapas' },
+  { id: 'btnAshramas', txt: '🕉️ Ashramas Hindúes', kw: 'ashrama hindu india dharma brahmacharya grihastha vanaprastha sannyasa' },
+  { id: 'btnConfucio', txt: '🏮 Décadas Confucio', kw: 'confucio china analectas decadas mandato cielo' },
+  { id: 'btnAndina', txt: '⛰️ Cosmovisión Andina', kw: 'andina quechua llankay yachay munay ayllu' },
+  { id: 'btnJung', txt: '🧭 Estadios Jung', kw: 'jung arquetipo individuacion atleta guerrero estadista espiritu' },
+  { id: 'btnCelta', txt: '🍀 Rueda Celta', kw: 'celta rueda estaciones imbolc beltane samhain mabon' },
+  { id: 'btnSufi', txt: '🌙 Viaje Sufí', kw: 'sufi nafs islam alma ego purificacion' }
 ];
 
 function injectButtons() {
   try {
-    var HOME = { btnJuventud: ['cuerpo', 'etapas'], btnClimaterio: ['cuerpo', 'ciclos'], btnAdultez: ['cuerpo', 'etapas'], btnVejez: ['cuerpo', 'etapas'], btnSeptenios: ['cuerpo', 'etapas'], btnLakota: ['cuerpo', 'etapas'], btnKimun: ['cuerpo', 'etapas'] };
+    var HOME = { btnJuventud: ['cuerpo', 'etapas'], btnClimaterio: ['cuerpo', 'ciclos'], btnAdultez: ['cuerpo', 'etapas'], btnVejez: ['cuerpo', 'etapas'], btnSeptenios: ['cuerpo', 'etapas'], btnLakota: ['cuerpo', 'etapas'], btnKimun: ['cuerpo', 'etapas'], btnAshramas: ['cuerpo', 'etapas'], btnConfucio: ['cuerpo', 'etapas'], btnAndina: ['cuerpo', 'etapas'], btnJung: ['cuerpo', 'etapas'], btnCelta: ['cuerpo', 'etapas'], btnSufi: ['cuerpo', 'etapas'] };
     ETAPAS_CONF.forEach(function (cf) {
       if ($(cf.btn)) {
         // migrar a su grupo/sub nuevo si quedó en una ubicación vieja

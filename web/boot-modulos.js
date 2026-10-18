@@ -67,7 +67,7 @@
     'min/numerologia-modulo.min.js?v=3',
     'min/oraculo-modulo.min.js?v=1',
     'min/adolescencia-modulo.min.js?v=1',
-    'min/etapas-vida-modulo.min.js?v=2',
+    'min/etapas-vida-modulo.min.js?v=3',
     'min/electrocultura-modulo.min.js?v=1',
     'min/red-comunitaria-modulo.min.js?v=1',
     'min/convivencia-vecinal-modulo.min.js?v=1',
