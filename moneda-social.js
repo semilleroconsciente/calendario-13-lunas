@@ -96,9 +96,9 @@ function store() {
 }
 function cuenta() {
   var c = store().cuenta;
-  if (!c) return { nombre: '', unidad: 'Lafken', simb: 'Lf', inicial: 0, tope: -50 };
-  if (c.unidad === undefined) c.unidad = 'Lafken';
-  if (c.simb === undefined) c.simb = 'Lf';
+  if (!c) return { nombre: '', unidad: 'Keule', simb: 'Ke', inicial: 0, tope: -50 };
+  if (c.unidad === undefined || c.unidad === 'Lafken') c.unidad = 'Keule';
+  if (c.simb === undefined || c.simb === 'Lf') c.simb = 'Ke';
   if (c.inicial === undefined || c.inicial === null) c.inicial = 0;
   if (c.tope === undefined || c.tope === null) c.tope = -50;
   return c;
@@ -145,8 +145,8 @@ function ensureDialog() {
     '<div id="monPanelBilletera" class="hidden">' +
     '<div class="menstrual-card su-68a1a9"><h4>🪙 Mi cuenta</h4>' +
     '<div class="conv-row"><label class="su-4b3de7">Mi nombre (pila) * <input type="text" id="monNombre" placeholder="ej: Rosa" maxlength="30"></label>' +
-    '<label>Moneda <input type="text" id="monUnidad" placeholder="ej: Lafken" maxlength="20"></label>' +
-    '<label>Símbolo <input type="text" id="monSimb" placeholder="ej: Lf" maxlength="6" class="su-8573ba"></label></div>' +
+    '<label>Moneda <input type="text" id="monUnidad" placeholder="ej: Keule" maxlength="20"></label>' +
+    '<label>Símbolo <input type="text" id="monSimb" placeholder="ej: Ke" maxlength="6" class="su-8573ba"></label></div>' +
     '<div class="conv-row"><label>Saldo inicial <input type="number" id="monInicial" step="0.5" class="su-607468" value="0"></label>' +
     '<label>Tope negativo (confianza) <input type="number" id="monTope" step="1" class="su-607468" value="-50"></label></div>' +
     '<p class="muted su-11a508">El tope negativo es cuánto puedes quedar "en rojo" participando: pedir primero también es parte de la red.</p>' +
@@ -245,8 +245,8 @@ function paintEcoBox() {
 function paintBilletera() {
   var c = cuenta();
   if ($('monNombre') && document.activeElement !== $('monNombre')) $('monNombre').value = c.nombre || '';
-  if ($('monUnidad') && document.activeElement !== $('monUnidad')) $('monUnidad').value = c.unidad || 'Lafken';
-  if ($('monSimb') && document.activeElement !== $('monSimb')) $('monSimb').value = c.simb || 'Lf';
+  if ($('monUnidad') && document.activeElement !== $('monUnidad')) $('monUnidad').value = c.unidad || 'Keule';
+  if ($('monSimb') && document.activeElement !== $('monSimb')) $('monSimb').value = c.simb || 'Ke';
   if ($('monInicial') && document.activeElement !== $('monInicial')) $('monInicial').value = c.inicial;
   if ($('monTope') && document.activeElement !== $('monTope')) $('monTope').value = c.tope;
   var box = $('monBalanceBox');
@@ -491,8 +491,8 @@ function wireOnce() {
     var nombre = clean(($('monNombre') || {}).value, 30).trim();
     s.cuenta = {
       nombre: nombre,
-      unidad: clean(($('monUnidad') || {}).value, 20).trim() || 'Lafken',
-      simb: clean(($('monSimb') || {}).value, 6).trim() || 'Lf',
+      unidad: clean(($('monUnidad') || {}).value, 20).trim() || 'Keule',
+      simb: clean(($('monSimb') || {}).value, 6).trim() || 'Ke',
       inicial: Number(($('monInicial') || {}).value) || 0,
       tope: ($('monTope') || {}).value === '' ? -50 : (Number($('monTope').value) || 0)
     };
@@ -647,7 +647,7 @@ function ensureSection() {
     box.appendChild(el);
   }
   el.textContent = '🪙 Moneda Social';
-  el.setAttribute('data-keywords', 'moneda social moneda comunitaria trueque intercambio feria billetera saldo balance oferta pedido trato pago cobro economia locallafken unidad cuenta red penco deuda confianza');
+  el.setAttribute('data-keywords', 'moneda social moneda comunitaria trueque intercambio feria billetera saldo balance oferta pedido trato pago cobro economia local keule unidad cuenta red penco deuda confianza');
   try { el.setAttribute('data-sub', 'red'); el.dataset.sub = 'red'; } catch (eS) {}
   try {
     var anchor = lab.nextSibling;
@@ -694,7 +694,7 @@ function setup() {
   try { if (typeof updateGroupCounts === 'function') updateGroupCounts(); } catch (e) {}
 }
 
-function unidad() { try { return cuenta().unidad || 'Lafken'; } catch (e) { return 'Lafken'; } }
+function unidad() { try { return cuenta().unidad || 'Keule'; } catch (e) { return 'Keule'; } }
 window.MonedaSocial = { open: open, tab: switchTab, store: store, balance: balance, unidad: unidad, cuenta: cuenta };
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function () { setTimeout(setup, 450); });
 else setTimeout(setup, 450);

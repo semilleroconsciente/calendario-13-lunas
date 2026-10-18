@@ -932,7 +932,7 @@ function monData() {
         ok: true,
         cuenta: (typeof window.MonedaSocial.cuenta === 'function') ? window.MonedaSocial.cuenta() : (s.cuenta || {}),
         balance: (typeof window.MonedaSocial.balance === 'function') ? window.MonedaSocial.balance() : 0,
-        unidad: (typeof window.MonedaSocial.unidad === 'function') ? window.MonedaSocial.unidad() : 'Lafken',
+        unidad: (typeof window.MonedaSocial.unidad === 'function') ? window.MonedaSocial.unidad() : 'Keule',
         ofertas: Array.isArray(s.ofertas) ? s.ofertas : [],
         txs: Array.isArray(s.txs) ? s.txs : [],
         tratos: Array.isArray(s.tratos) ? s.tratos : [],
@@ -940,7 +940,7 @@ function monData() {
       };
     }
   } catch (e) {}
-  return { ok: false, cuenta: {}, balance: 0, unidad: 'Lafken', ofertas: [], txs: [], tratos: [], acuerdos: {} };
+  return { ok: false, cuenta: {}, balance: 0, unidad: 'Keule', ofertas: [], txs: [], tratos: [], acuerdos: {} };
 }
 function monOpen(tab) {
   try {
@@ -954,8 +954,8 @@ function renderMoneda() {
   var m = monData();
   var conMoneda = todos().filter(function (t) { return t.moneda; });
   var c = m.cuenta || {};
-  var simb = c.simb || 'Lf';
-  var unidad = c.unidad || m.unidad || 'Lafken';
+  var simb = (c.simb === 'Lf' ? 'Ke' : (c.simb || 'Ke'));
+  var unidad = (c.unidad === 'Lafken' ? 'Keule' : (c.unidad || m.unidad || 'Keule'));
   var bal = Number(m.balance) || 0;
   var tope = (c.tope === undefined || c.tope === null) ? -50 : Number(c.tope);
   var colBal = bal < tope ? '#e76e8a' : (bal < 0 ? '#e8c56a' : '#8fd694');
@@ -973,7 +973,7 @@ function renderMoneda() {
       '<button type="button" class="btn btn-accent su-337714" data-mon-open="billetera">🪙 Abrir Moneda Social</button></div>';
   } else if (!c.nombre) {
     html += '<div class="menstrual-card su-f1b0fe"><h4>🪙 Mi billetera — sin cuenta aún</h4>' +
-      '<p class="muted su-b6db47">Aún no abres tu cuenta. Se abre en 1 minuto: nombre, moneda (ej: Lafken), símbolo y tope de confianza (sugerido −50 U).</p>' +
+      '<p class="muted su-b6db47">Aún no abres tu cuenta. Se abre en 1 minuto: nombre, moneda (ej: Keule), símbolo y tope de confianza (sugerido −50 U).</p>' +
       '<button type="button" class="btn btn-accent su-337714" data-mon-open="billetera">🪙 Crear mi cuenta</button></div>';
   } else {
     var entradas = m.txs.filter(function (t) { return Number(t.monto) > 0; }).reduce(function (a, t) { return a + Number(t.monto); }, 0);
