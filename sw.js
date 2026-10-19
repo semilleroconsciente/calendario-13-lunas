@@ -2,7 +2,7 @@
 // Copyright (C) 2026 Semillero Consciente. Licencia: GNU GPLv3 o posterior (ver COPYING).
 // SPDX-License-Identifier: GPL-3.0-or-later
 // v55
-const CACHE = 'cal13-v129-offline';
+const CACHE = 'cal13-v131-offline';
 
 // Lista completa de archivos que usa index.html (bare + con ?v=).
 // Si se agrega un JS nuevo en index.html, agregarlo aquí también (bare y ?v=).
@@ -158,6 +158,8 @@ const CORE = [
   './min/auto-backup-modulo.min.js?v=1',
   './min/aves-historia.min.js',
   './min/aves-historia.min.js?v=1',
+  './min/ayurveda-modulo.min.js',
+  './min/ayurveda-modulo.min.js?v=1',
   './min/basquetbol-modulo.min.js',
   './min/basquetbol-modulo.min.js?v=1',
   './min/bienvenida-modulo.min.js',
@@ -176,6 +178,8 @@ const CORE = [
   './min/buen-vivir-modulo.min.js?v=1',
   './min/cal.min.js',
   './min/cal.min.js?v=9',
+  './min/capoeira-modulo.min.js',
+  './min/capoeira-modulo.min.js?v=1',
   './min/carta-astral.min.js',
   './min/carta-astral.min.js?v=1',
   './min/chino-mandarin-modulo.min.js',
@@ -334,6 +338,8 @@ const CORE = [
   './min/permacultura-modulo.min.js?v=1',
   './min/pesca-historia.min.js',
   './min/pesca-historia.min.js?v=1',
+  './min/pingpong-modulo.min.js',
+  './min/pingpong-modulo.min.js?v=1',
   './min/plantas-modulo.min.js',
   './min/plantas-modulo.min.js?v=1',
   './min/portugues-modulo.min.js',
