@@ -3,14 +3,15 @@
    Sección completa dentro de Aprender > Idiomas y cultura:
    - Botón btnRuso (grupo aprender, sub idiomas, junto a
      Kimün Mapuzugun, Inglés, Portugués, Chino, Hindi e Italiano)
-   - Diálogo rusoDialog con 6 pestañas:
+   - Diálogo rusoDialog con 7 pestañas:
      1) ☀️ Palabra del día (cirílico rotativo + transliteración + TTS ru-RU)
      2) 🌱 A1 Supervivencia (20 tarjetas + это/у меня есть + mini-diálogo)
      3) 🌿 A2 Vida diaria (14 tarjetas + pasado + futuro + direcciones)
      4) 💬 B1 Viajar, trabajar y opinar (10 + casos + aspecto verbal)
      5) 📜 B2–C1 + Cultura (expresiones, fonética que cambia todo,
          casos ↔ preposiciones, acento libre, Maslenitsa, té, Dostoievski)
-     6) 🧩 Quiz por niveles + quiz de transliteración + racha local
+     6) 💬 Frases famosas (portada del día + tarjetas con audio y copiar)
+     7) 🧩 Quiz por niveles + quiz de transliteración + racha local
    - Todo local y privado por usuario:
      userData().ruso = { ok, total, streak, lastDay }
    - 100% offline. TTS usa la voz del dispositivo (speechSynthesis
@@ -95,6 +96,38 @@ var RU_B2C1 = [
   { ru: 'собеседование: моя сильная сторона…', tr: 'sabisedavanie: maya silnaia starana…', es: 'entrevista: mi fortaleza es…', ex: 'Я хорошо работаю в команде. — Trabajo bien en equipo.' },
   { ru: 'однако / кроме того', tr: 'adnaka / krome tavo', es: 'sin embargo / además (ensayo)', ex: 'Однако море — это жизнь. — Sin embargo, el mar es vida.' }
 ];
+var RU_FRASES = [
+  { ru: 'Повторение — мать учения', tr: 'paftarenie — mat uchenia', es: 'la repetición es madre del saber', ex: 'Proverbio — Repite 5 minutos al día.' },
+  { ru: 'Тише едешь — дальше будешь', tr: 'tishe edesh — dalshe budesh', es: 'despacio vas, lejos llegas', ex: 'Proverbio — Festina lente en ruso.' },
+  { ru: 'Ученье — свет, а неученье — тьма', tr: 'uchenie — svet, a neuchenie — tma', es: 'el saber es luz, la ignorancia oscuridad', ex: 'Proverbio — Fiat lux: estudia.' },
+  { ru: 'Век живи — век учись', tr: 'vek zhivi — vek uchis', es: 'vive un siglo, aprende un siglo', ex: 'Proverbio — Nunca dejes de aprender.' },
+  { ru: 'Делу время, потехе час', tr: 'delu vremia, patehe chas', es: 'al trabajo su hora, al juego su hora', ex: 'Proverbio — Ora et labora.' },
+  { ru: 'Капля камень точит', tr: 'kaplia kamen tochit', es: 'la gota horada la piedra', ex: 'Proverbio — Poco cada día vence.' },
+  { ru: 'Терпение и труд всё перетрут', tr: 'terpenie i trut fsio peretrut', es: 'paciencia y trabajo todo lo vencen', ex: 'Proverbio — Labor omnia vincit.' },
+  { ru: 'Одна голова хорошо, а две лучше', tr: 'adna galava harasho, a dve luchshe', es: 'una cabeza bien, dos mejor', ex: 'Proverbio — Pide consejo.' },
+  { ru: 'Не имей сто рублей, а имей сто друзей', tr: 'ne imei sto rublei, a imei sto druzei', es: 'mejor cien amigos que cien rublos', ex: 'Proverbio — La amistad vale más.' },
+  { ru: 'Сделал дело — гуляй смело', tr: 'sdelal dela — guliai smela', es: 'hecho el deber, pasea tranquilo', ex: 'Proverbio — Termina y descansa.' },
+  { ru: 'Любишь кататься — люби и саночки возить', tr: 'liubish katatsa — liubi i sanachki vazit', es: 'si te gusta el paseo, carga el trineo', ex: 'Proverbio — Todo gusto pide esfuerzo.' },
+  { ru: 'В гостях хорошо, а дома лучше', tr: 'f gastiaj harasho, a doma luchshe', es: 'de visita bien, en casa mejor', ex: 'Proverbio — Ubi bene, ibi patria.' },
+  { ru: 'Хлеб — всему голова', tr: 'jlep — fsemu galava', es: 'el pan es cabeza de todo', ex: 'Proverbio — Honra el pan diario.' },
+  { ru: 'Мир не без добрых людей', tr: 'mir ne bez dobryj liudei', es: 'el mundo no está sin buena gente', ex: 'Proverbio — Confía en tu comunidad.' },
+  { ru: 'Мороз и солнце; день чудесный!', tr: 'maros i solntse; den chudesny!', es: '¡helada y sol; día maravilloso!', ex: 'Pushkin — Poema de invierno para recitar.' },
+  { ru: 'Сказка ложь, да в ней намёк', tr: 'skaska losh, da v nei namiok', es: 'el cuento es mentira, pero trae moraleja', ex: 'Pushkin — Cada cuento enseña.' },
+  { ru: 'Все счастливые семьи похожи друг на друга', tr: 'fse schastlivye semji pahozhi', es: 'todas las familias felices se parecen', ex: 'Tolstoi, Anna Karenina — Inicio más famoso.' },
+  { ru: 'Красота спасёт мир', tr: 'krasata spasiot mir', es: 'la belleza salvará al mundo', ex: 'Dostoievski, El idiota — La belleza que une.' },
+  { ru: 'Поехали!', tr: 'paejali!', es: '¡vamos!', ex: 'Gagarin (1961) — Primera palabra en el espacio.' },
+  { ru: 'Тяжело в учении — легко в бою', tr: 'tiazholo v uchenii — legko v baiu', es: 'duro entrenar, fácil combatir', ex: 'Suvorov — Entrena fuerte, rinde fácil.' },
+  { ru: 'Береги честь смолоду', tr: 'beregi chest smoladu', es: 'cuida tu honor desde joven', ex: 'Pushkin, La hija del capitán — Tu nombre te precede.' },
+  { ru: 'Краткость — сестра таланта', tr: 'kratkast — sestra talanta', es: 'la brevedad es hermana del talento', ex: 'Chéjov — Di poco y claro.' },
+  { ru: 'Доверяй, но проверяй', tr: 'daveriai, no praveriai', es: 'confía, pero verifica', ex: 'Proverbio — Cum grano salis.' },
+  { ru: 'Лучше поздно, чем никогда', tr: 'luchshe pozdna, chem nikagda', es: 'mejor tarde que nunca', ex: 'Proverbio — Empieza hoy.' },
+  { ru: 'Дарёному коню в зубы не смотрят', tr: 'darianomu kaniu v zuby ne smatriat', es: 'a caballo regalado no se le miran dientes', ex: 'Proverbio — Agradece el regalo.' },
+  { ru: 'Человек — это звучит гордо!', tr: 'chelovek — eta zvuchit gorda!', es: '¡el Hombre suena orgulloso!', ex: 'Gorki — Dignidad humana.' },
+  { ru: 'С миру по нитке — голому рубаха', tr: 's miru pa nitke — golomu rubaja', es: 'de cada uno un hilo, al desnudo camisa', ex: 'Proverbio — Comunidad que viste.' },
+  { ru: 'Язык до Киева доведёт', tr: 'yazyk da Kieva davidiot', es: 'preguntando se llega lejos', ex: 'Proverbio — Pregunta sin miedo.' },
+  { ru: 'Без труда не выловишь и рыбку из пруда', tr: 'bez truda ne vylavish i rybku', es: 'sin esfuerzo ni un pez del estanque', ex: 'Proverbio nº1 — Trabaja y logra.' },
+  { ru: 'Давай, Россия! / Давай, Penco!', tr: 'davai, Rassia! / davai, Penco!', es: '¡vamos Rusia! ¡vamos Penco!', ex: 'Grito deportivo — Úsalo en el partido.' }
+];
 var RU_FON = [
   ['Ы — la vocal que no existe en español', 'ты (tú) ≠ ти. Pon la lengua como para decir “i” pero retrae el centro: sale un sonido entre i y u. Practica: мы, вы, ты, рыба (pez). Te entenderán aunque no salga perfecto el primer mes.'],
   ['Ь y Ъ — blando y duro (matan o salvan palabras)', 'мать (madre) ≠ мат (grosería) · сел (se sentó) ≠ съел (se comió). Ь ablanda la consonante anterior (como una “i” fantasma). Ъ separa: подъезд (entrada) se lee pad-YEZD.'],
@@ -115,7 +148,7 @@ var RU_CASOS = [
   ['📏 Regla de oro: orden flexible pero verbo al centro', 'SVO base (я люблю море), pero el caso permite jugar: море люблю я (al mar amo yo, poético). Empieza siempre SVO + preposiciones simples (в, на, с, к, о): el oído ordena el resto solo.']
 ];
 
-function allRu() { return RU_A1.concat(RU_A2, RU_B1, RU_B2C1); }
+function allRu() { return RU_A1.concat(RU_A2, RU_B1, RU_FRASES, RU_B2C1); }
 
 /* ---------------- ESTADO ---------------- */
 var ruTab = 'palabra';
@@ -357,6 +390,7 @@ function ruQuizPool() {
   if (ruQuizLevel === 'a1') return RU_A1;
   if (ruQuizLevel === 'a2') return RU_A2;
   if (ruQuizLevel === 'b1') return RU_B1;
+  if (ruQuizLevel === 'frases') return RU_FRASES;
   if (ruQuizLevel === 'avanzado') return RU_B2C1;
   return allRu();
 }
@@ -374,10 +408,11 @@ function ruCard(item, lv) {
     '<span class="muted su-11a508">“' + esc(item.ex) + '”</span></button>';
 }
 
+var ruFraseIdx = -1;
 function renderRuPanel(tab) {
   try { ruStop(); } catch (e) {}
   ruTab = tab || ruTab;
-  var ids = { palabra: 'tabRU1', a1: 'tabRU2', a2: 'tabRU3', b1: 'tabRU4', cultura: 'tabRU5', quiz: 'tabRU6' };
+  var ids = { palabra: 'tabRU1', a1: 'tabRU2', a2: 'tabRU3', b1: 'tabRU4', cultura: 'tabRU5', frases: 'tabRU7', quiz: 'tabRU6' };
   Object.keys(ids).forEach(function (k) { var el = $(ids[k]); if (el) el.classList.toggle('btn-accent', k === ruTab); });
   renderRuStreak();
   var box = $('ruPanel'); if (!box) return;
@@ -431,6 +466,9 @@ function renderRuPanel(tab) {
     html += '<div class="menstrual-card su-5b7cd0"><h4 class="su-399074">📜 B2–C1 Avanzado + Cultura viva</h4>' +
       '<p class="muted su-a6c665">Meta: entrevistas, proverbios y no pasar vergüenza con ты/вы ni con el acento. Gramática: <b>уже + pasado (ya…), если бы… бы (condicional), pasiva con был, indirecto con что, conectores однако/кроме того</b>.</p>' +
       '<div class="su-5e3875">' + RU_B2C1.map(function (x) { return ruCard(x, 'B2–C1'); }).join('') + '</div></div>' +
+      '<div class="menstrual-card su-4adf8c"><h4>💬 Frases famosas</h4>' +
+      '<p class="su-11a508">Las <b>30 frases famosas</b> tienen su propia pestaña: portada del día + tarjetas con 🔊 Escuchar y 📋 Copiar.</p>' +
+      '<div class="su-9bc2df"><button type="button" class="btn btn-accent su-30e741 ru-goto-frases">💬 Ver frases famosas →</button></div></div>' +
       '<div class="help-grid su-d2c171">' +
       '<div class="help-card"><h4>⚠️ 8 sonidos que salvan vidas</h4><p class="su-583677">' + RU_FON.map(function (r) { return '<b>' + esc(r[0]) + '</b><br><span class="muted">' + esc(r[1]) + '</span>'; }).join('<br><br>') + '</p></div>' +
       '<div class="help-card"><h4>🙋 Ты ↔ Вы + 6 casos ¿Cuál uso?</h4><p class="su-583677">' + RU_CASOS.map(function (r) { return '<b>' + esc(r[0]) + '</b><br><span class="muted">' + esc(r[1]) + '</span>'; }).join('<br><br>') + '</p></div></div>' +
@@ -438,6 +476,29 @@ function renderRuPanel(tab) {
       '<div class="help-card"><h4>🪆 Alfabeto en 1 minuto: lo que ya sabes</h4><p class="su-583677">Ya lees 12 letras: <b>А К М О Т (iguales)</b> + <b>В Е Н Х Р С (parecidas: ve, ye, en, ja, er, es)</b>. Solo 21 son nuevas, y 4 son parejas: <b>Б/б Д/д Л/л П/п</b>. En 28 días lees carteles de Penco… y de Moscú.</p></div>' +
       '<div class="help-card"><h4>🍵 Cultura para probar y celebrar</h4><p class="su-b439ab"><b>Probar:</b> té con limón (чай), borsch (борщ), pelmeni (пельмени): lee la receta en ruso y cocina.<br><b>Escuchar:</b> «Катюша», «Подмосковные вечера», 1 canción × 7 días.<br><b>Celebrar:</b> Maslenitsa (Масленица, semana de panqueques, fin del invierno) y Año Nuevo (Новый год, 31 dic, más grande que Navidad).<br><span class="muted">Sabios: Dostoievski (leer 1 página/día), la dacha (casa de campo) y el baño ruso (баня): el calendario también es ritual. Здравствуйте con sonrisa abre cualquier puerta.</span></p></div></div>' +
       '<div class="menstrual-card su-4adf8c"><h4>💼 Kit entrevista de trabajo</h4><p class="su-583677">— <b>Расскажите о себе.</b> (Cuénteme de usted.)<br>— <b>Я ответственный, хорошо работаю в команде.</b> (Soy responsable y trabajo bien en equipo.)<br>— <b>Моя сильная сторона… Моя цель…</b> (Mi fortaleza es… mi meta es…)<br><span class="muted">Cierra: «Спасибо за ваше время». (Gracias por su tiempo.)</span></p></div>';
+  } else if (ruTab === 'frases') {
+    if (ruFraseIdx < 0) ruFraseIdx = ruDayIndex(RU_FRASES.length);
+    var FDAY = RU_FRASES[ruFraseIdx % RU_FRASES.length];
+    var fdate = '';
+    try { fdate = cal.fmtDate.format(new Date()); } catch (e) { fdate = new Date().toLocaleDateString(); }
+    html += '<div class="menstrual-card su-3fa1a8">' +
+      '<p class="muted su-11a508">💬 FRASE DEL DÍA · ' + esc(fdate) + ' · ' + RU_FRASES.length + ' frases famosas</p>' +
+      '<div class="su-6adb68">' + '“' + esc(FDAY.ru) + '”</div>' +
+      '<div class="su-cd8bd8"><b>' + esc(FDAY.es) + '</b></div>' +
+      '<p class="su-11a508">🔤 <b>' + esc(FDAY.tr) + '</b></p>' +
+            '<p class="muted su-2b0979">“' + esc(FDAY.ex) + '”</p>' +
+      '<div class="su-9bc2df"><button type="button" class="btn btn-accent su-30e741 ru-hear" data-w="' + esc(FDAY.ru) + '">🔊 Escuchar</button> ' +
+      '<button type="button" id="ruFraseRnd" class="btn su-30e741">🎲 Otra frase</button></div></div>' +
+      RU_FRASES.map(function (x) {
+        return '<div class="menstrual-card su-4adf8c"><h4>“' + esc(x.ru) + '”</h4>' +
+          '<p><b>' + esc(x.es) + '</b>' +
+          '<br><span class="su-11a508">🔤 ' + esc(x.tr) + '</span>' +
+          '<br><span class="muted">“' + esc(x.ex) + '”</span></p>' +
+          '<div class="su-9bc2df"><button type="button" class="btn btn-accent su-30e741 ru-hear" data-w="' + esc(x.ru) + '">🔊 Escuchar</button> ' +
+          '<button type="button" class="btn su-30e741 ru-copy" data-w="' + esc(x.ru) + '|' + esc(x.es) + '">📋 Copiar</button></div></div>';
+      }).join('') +
+      '<div class="menstrual-card su-5a6934"><h4 class="su-752b1a">🗣️ ¿Cómo practicar?</h4>' +
+      '<p class="muted su-a6c665">1) <b>Escucha</b> la frase del día con 🔊 y repítela 3 veces en voz alta.<br>2) <b>Copia</b> tu favorita con 📋 y pégala en las Notas del día.<br>3) <b>Úsala hoy</b>: una frase al día son 365 al año.</p></div>';
   } else if (ruTab === 'quiz') {
     var d = getRuData();
     if (!ruQuizQ) {
@@ -454,7 +515,7 @@ function renderRuPanel(tab) {
     var lvBtn = function (v, l) { return '<button type="button" class="btn ru-lv' + (ruQuizLevel === v ? ' btn-accent' : '') + ' su-337714" data-lv="' + v + '">' + l + '</button>'; };
     var mdBtn = function (v, l) { return '<button type="button" class="btn ru-md' + (ruQuizMode === v ? ' btn-accent' : '') + ' su-337714" data-md="' + v + '">' + l + '</button>'; };
     html += '<div class="menstrual-card su-1f2df9"><h4 class="su-399074">🧩 Quiz por niveles</h4>' +
-      '<div class="su-a8712a">' + lvBtn('todo', '🌎 Todo') + lvBtn('a1', '🌱 A1') + lvBtn('a2', '🌿 A2') + lvBtn('b1', '💬 B1') + lvBtn('avanzado', '📜 B2–C1') + '</div>' +
+      '<div class="su-a8712a">' + lvBtn('todo', '🌎 Todo') + lvBtn('a1', '🌱 A1') + lvBtn('a2', '🌿 A2') + lvBtn('b1', '💬 B1') + lvBtn('frases', '💬 Frases') + lvBtn('avanzado', '📜 B2–C1') + '</div>' +
       '<div class="su-a8712a">' + mdBtn('significado', '🇪🇸 Significado') + mdBtn('translit', '🔤 Transliteración') + '</div>' +
       '<div class="su-73ce29">“' + esc(q.w.ru) + '” <span class="muted su-11a508">' + (ruQuizMode === 'translit' ? '¿cómo se pronuncia?' : '¿qué significa?') + '</span></div>' +
       '<button type="button" id="ruQuizSpeak" class="btn su-337714 ru-speaking">🔊 Escuchar</button> ' +
@@ -504,6 +565,26 @@ function renderRuPanel(tab) {
   box.querySelectorAll('.eng-word').forEach(function (b) {
     b.onclick = function (e) { try { e.preventDefault(); } catch (x) {} ruSpeak(b.getAttribute('data-w')); };
   });
+  box.querySelectorAll('.ru-hear').forEach(function (b) {
+    b.onclick = function (e) { try { e.preventDefault(); } catch (x) {} ruSpeak(b.getAttribute('data-w')); };
+  });
+  box.querySelectorAll('.ru-copy').forEach(function (b) {
+    b.onclick = function (e) {
+      try { e.preventDefault(); } catch (x) {}
+      var parts = (b.getAttribute('data-w') || '').split('|');
+      var txt = '💬 ' + (parts[0] || '') + ' = ' + (parts[1] || '');
+      try {
+        if (navigator.clipboard) navigator.clipboard.writeText(txt).then(function () { alert('Copiado: ' + txt); }, function () { alert(txt); });
+        else alert(txt);
+      } catch (err) { try { alert(txt); } catch (e2) {} }
+    };
+  });
+  box.querySelectorAll('.ru-goto-frases').forEach(function (b) {
+    b.onclick = function () { renderRuPanel('frases'); };
+  });
+  var frnd = $('ruFraseRnd');
+  if (frnd) frnd.onclick = function () { ruFraseIdx = Math.floor(Math.random() * RU_FRASES.length); renderRuPanel('frases'); };
+
   box.querySelectorAll('.ru-lv').forEach(function (b) {
     b.onclick = function () { ruQuizLevel = b.getAttribute('data-lv'); ruQuizQ = null; renderRuPanel('quiz'); };
   });
@@ -548,6 +629,7 @@ function buildDialog() {
     '<button type="button" id="tabRU3" class="btn su-30e741">🌿 A2</button>' +
     '<button type="button" id="tabRU4" class="btn su-30e741">💬 B1</button>' +
     '<button type="button" id="tabRU5" class="btn su-30e741">📜 B2–C1 + Cultura</button>' +
+    '<button type="button" id="tabRU7" class="btn su-30e741">💬 Frases famosas</button>' +
     '<button type="button" id="tabRU6" class="btn su-30e741">🧩 Quiz</button></div>' +
     '<div id="ruPanel"></div>' +
     '<div class="dlg-actions"><button type="button" data-close class="btn">Cerrar</button></div></form>';
@@ -560,7 +642,7 @@ function buildDialog() {
 }
 
 function bindTabs() {
-  var map = { tabRU1: 'palabra', tabRU2: 'a1', tabRU3: 'a2', tabRU4: 'b1', tabRU5: 'cultura', tabRU6: 'quiz' };
+  var map = { tabRU1: 'palabra', tabRU2: 'a1', tabRU3: 'a2', tabRU4: 'b1', tabRU5: 'cultura', tabRU6: 'quiz', tabRU7: 'frases' };
   Object.keys(map).forEach(function (id) {
     var el = $(id);
     if (el) el.onclick = function () {

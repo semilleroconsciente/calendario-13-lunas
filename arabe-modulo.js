@@ -4,7 +4,7 @@
    - Botón btnArabe (grupo aprender, sub idiomas, junto a
      Kimün Mapuzugun, Inglés, Portugués, Chino, Hindi, Italiano,
      Ruso, Japonés y Latín)
-   - Diálogo arabeDialog con 6 pestañas:
+   - Diálogo arabeDialog con 7 pestañas:
      1) ☀️ Palabra del día (árabe RTL + transliteración + TTS ar-SA)
      2) 🌱 A1 Supervivencia (20 tarjetas + pronombres + ser/estar + mini-diálogo)
      3) 🌿 A2 Vida diaria (14 tarjetas + pasado + futuro + direcciones)
@@ -12,7 +12,8 @@
      5) 📜 B2–C1 + Cultura (expresiones, fonética que cambia todo,
          raíz ↔ forma, sol/luna, Ramadán, hospitalidad, caligrafía,
          Fairuz/Umm Kulzum, zoco)
-     6) 🧩 Quiz por niveles + quiz de transliteración + racha local
+     6) 💬 Frases famosas (portada del día + tarjetas con audio y copiar)
+     7) 🧩 Quiz por niveles + quiz de transliteración + racha local
    - Todo local y privado por usuario:
      userData().arabe = { ok, total, streak, lastDay }
    - 100% offline. TTS usa la voz del dispositivo (speechSynthesis
@@ -98,6 +99,38 @@ var AR_B2C1 = [
   { ar: 'مُقَابَلَةُ عَمَل: نُقْطَةُ قُوَّتِي…', tr: 'muqabalat amal: nuqtat quwwati…', es: 'entrevista: mi fortaleza es…', ex: 'أَعْمَلُ جَيِّدًا فِي فَرِيق. — Trabajo bien en equipo.' },
   { ar: 'وَمَعَ ذَلِكَ / بِالْإِضَافَة', tr: 'wa maa zalika / bil-idafa', es: 'sin embargo / además (ensayo)', ex: 'وَمَعَ ذَلِكَ، اَلْبَحْرُ هُوَ الْحَيَاة. — Sin embargo, el mar es vida.' }
 ];
+var AR_FRASES = [
+  { ar: 'إِنَّ مَعَ الْعُسْرِ يُسْرًا', tr: 'inna maa al-usri yusraa', es: 'con la dificultad viene la facilidad', ex: 'Corán 94:6 — Tras lo duro, alivio: aguanta.' },
+  { ar: 'وَقُل رَّبِّ زِدْنِي عِلْمًا', tr: 'wa qul rabbi zidni ilmaa', es: '¡Señor, auméntame en saber!', ex: 'Corán 20:114 — Pide saber cada mañana.' },
+  { ar: 'خَيْرُ الْكَلَامِ مَا قَلَّ وَدَلَّ', tr: 'jayru al-kalaam maa qalla wa dalla', es: 'la mejor palabra es breve y clara', ex: 'Proverbio — Di poco y claro.' },
+  { ar: 'اَلصَّبْرُ مِفْتَاحُ الْفَرَج', tr: 'as-sabru miftaahu al-faray', es: 'la paciencia es llave del alivio', ex: 'Proverbio — Festina lente en árabe.' },
+  { ar: 'مَنْ جَدَّ وَجَدَ', tr: 'man yadda wayada', es: 'quien se esfuerza, encuentra', ex: 'Proverbio — Constancia mayor que talento.' },
+  { ar: 'اَلْعِلْمُ نُور', tr: 'al-ilmu nuur', es: 'el saber es luz', ex: 'Proverbio — Fiat lux: estudia.' },
+  { ar: 'اَلْوَقْتُ كَالسَّيْف', tr: 'al-waqtu kas-saif', es: 'el tiempo es como la espada', ex: 'Proverbio — Si no lo usas, te corta: úsalo.' },
+  { ar: 'فِي التَّأَنِّي السَّلَامَة', tr: 'fi at-taanni as-salaama', es: 'en la calma está la seguridad', ex: 'Proverbio — Despacio y seguro.' },
+  { ar: 'اَلِاتِّحَادُ قُوَّة', tr: 'al-ittihaadu quwwa', es: 'la unión es fuerza', ex: 'Proverbio — Junta vecinal fuerte.' },
+  { ar: 'اَلْجَارُ قَبْلَ الدَّار', tr: 'al-yaaru qabla ad-daar', es: 'el vecino antes que la casa', ex: 'Proverbio — Elige bien tu vecindario.' },
+  { ar: 'كُلُّ إِنَاءٍ بِمَا فِيهِ يَنْضَح', tr: 'kullu inaa bi-maa fihi yandah', es: 'cada vasija rezuma lo que contiene', ex: 'Proverbio — Das lo que llevas dentro.' },
+  { ar: 'اَلْكِتَابُ خَيْرُ جَلِيس', tr: 'al-kitaabu jayru yaliis', es: 'el libro es el mejor compañero', ex: 'Proverbio — Lee cada día.' },
+  { ar: 'اَلتَّكْرَارُ أُمُّ التَّعَلُّم', tr: 'at-takraaru ummu at-taallum', es: 'la repetición es madre del saber', ex: 'Proverbio — Repite 5 minutos.' },
+  { ar: 'أَوْلَادُكُمْ لَيْسُوا أَوْلَادَكُمْ', tr: 'aulaadukum laisuu aulaadakum', es: 'vuestros hijos no son vuestros hijos', ex: 'Gibran, El Profeta — Son flechas, no propiedad.' },
+  { ar: 'اَلْعَمَلُ هُوَ الْحُبُّ ظَاهِرًا', tr: 'al-amalu huwa al-hubbu zaahiraa', es: 'el trabajo es el amor visible', ex: 'Gibran — Trabaja con amor.' },
+  { ar: 'عَلَى قَدْرِ أَهْلِ الْعَزْمِ تَأْتِي الْعَزَائِم', tr: 'alaa qadri ahli al-azmi', es: 'según tu audacia, tus hazañas', ex: 'Al-Mutanabbi — Audaces fortuna iuvat.' },
+  { ar: 'مَا كُلُّ مَا يَتَمَنَّى الْمَرْءُ يُدْرِكُه', tr: 'maa kullu maa yatamannaa', es: 'no todo lo deseado se alcanza', ex: 'Al-Mutanabbi — Los vientos no siempre obedecen.' },
+  { ar: 'رُبَّ ضَارَّةٍ نَافِعَة', tr: 'rubba daarratin naafia', es: 'a veces el daño trae provecho', ex: 'Proverbio — Lo malo trae un bien.' },
+  { ar: 'اَلْقَنَاعَةُ كَنْزٌ لَا يَفْنَى', tr: 'al-qanaaatu kanzun laa yafnaa', es: 'el contento es tesoro inagotable', ex: 'Proverbio — Agradece lo que hay.' },
+  { ar: 'لِسَانُكَ حِصَانُك', tr: 'lisaanuka hisaanuk', es: 'tu lengua es tu caballo', ex: 'Proverbio — Cuida tus palabras.' },
+  { ar: 'مَنْ حَفَرَ حُفْرَةً لِأَخِيهِ وَقَعَ فِيهَا', tr: 'man hafara hufratan', es: 'quien cava fosa a su hermano, cae en ella', ex: 'Proverbio — No hagas daño: vuelve.' },
+  { ar: 'كَمَا تَزْرَعُ تَحْصُد', tr: 'kamaa tazrau tahsud', es: 'como siembres, cosecharás', ex: 'Proverbio de huerta — Siembra bien.' },
+  { ar: 'اَلْعَقْلُ زِينَة', tr: 'al-aqlu ziina', es: 'la razón es adorno', ex: 'Proverbio — Sapere aude: piensa.' },
+  { ar: 'أَعْطِنِي النَّايَ وَغَنِّ', tr: 'aatini an-naaya wa ghanni', es: 'dame la flauta y canta', ex: 'Gibran / Fairuz — Canta tus penas.' },
+  { ar: 'أَنْتَ عُمْرِي', tr: 'anta umri', es: 'tú eres mi vida', ex: 'Umm Kulzum — La canción árabe más famosa.' },
+  { ar: 'رَمَضَان كَرِيم', tr: 'ramadaan kariim', es: 'Ramadán generoso (feliz Ramadán)', ex: 'Saludo de Ramadán — Ayuno y generosidad.' },
+  { ar: 'كُلُّ عَامٍ وَأَنْتُمْ بِخَيْر', tr: 'kullu aam wa antum bijayr', es: 'felicidades cada año (feliz fiesta)', ex: 'Saludo de Eïd — Para las dos fiestas.' },
+  { ar: 'اَلسَّلَامُ عَلَيْكُمْ وَرَحْمَةُ الله', tr: 'as-salaamu alaykum', es: 'la paz y misericordia de Dios contigo', ex: 'Saludo — Responde: wa alaykum as-salaam.' },
+  { ar: 'أَهْلًا وَسَهْلًا', tr: 'ahlan wa sahlan', es: 'bienvenido (lit. familia y llanura)', ex: 'Bienvenida — Hospitalidad beduina.' },
+  { ar: 'يَلَّا يَا Penco!', tr: 'yalla yaa Penco!', es: '¡vamos Penco!', ex: 'Ánimo — Úsalo en el partido.' }
+];
 var AR_FON = [
   ['ع غ ح هـ — las 4 que no existen en español', 'ع (ain, desde la garganta: “a” estrangulada) ≠ أ (hamza, corte seco). غ (ghain, gárgara francesa) · ح (ha profunda, como empañar un vidrio) ≠ هـ (ha suave). Practica el par: عَلَم (bandera) vs أَلَم (dolor). Te entenderán aunque no salga perfecto el primer mes.'],
   ['ق ك — profunda vs suave', 'ق (qaf, “k” desde el fondo: قلب qalb, corazón) vs ك (kaf suave: كلب kalb, perro). Un punto de garganta cambia “corazón” por “perro”: marca la ق desde el día 1. Practica: قَمَر (luna) vs كَمَر… no, mejor قَهْوَة (café).'],
@@ -118,7 +151,7 @@ var AR_GRAM = [
   ['🙋 أنتَ/أنتِ + حضرتك — cuándo cuál', 'أنتَ (tú m) / أنتِ (tú f) / أنتم (ustedes): familia, pares, jóvenes. حضرتك / أستاذ (usted, Egipto/Levante) · Usted formal MSA: inicio con السلام + título. Con forma respetuosa nunca fallas: empieza SIEMPRE formal con mayores, clientes y profes.']
 ];
 
-function allAr() { return AR_A1.concat(AR_A2, AR_B1, AR_B2C1); }
+function allAr() { return AR_A1.concat(AR_A2, AR_B1, AR_FRASES, AR_B2C1); }
 
 /* ---------------- ESTADO ---------------- */
 var arTab = 'palabra';
@@ -357,6 +390,7 @@ function arQuizPool() {
   if (arQuizLevel === 'a1') return AR_A1;
   if (arQuizLevel === 'a2') return AR_A2;
   if (arQuizLevel === 'b1') return AR_B1;
+  if (arQuizLevel === 'frases') return AR_FRASES;
   if (arQuizLevel === 'avanzado') return AR_B2C1;
   return allAr();
 }
@@ -374,10 +408,11 @@ function arCard(item, lv) {
     '<span class="muted su-11a508">“' + esc(item.ex) + '”</span></button>';
 }
 
+var arFraseIdx = -1;
 function renderArPanel(tab) {
   try { arStop(); } catch (e) {}
   arTab = tab || arTab;
-  var ids = { palabra: 'tabAR1', a1: 'tabAR2', a2: 'tabAR3', b1: 'tabAR4', cultura: 'tabAR5', quiz: 'tabAR6' };
+  var ids = { palabra: 'tabAR1', a1: 'tabAR2', a2: 'tabAR3', b1: 'tabAR4', cultura: 'tabAR5', frases: 'tabAR7', quiz: 'tabAR6' };
   Object.keys(ids).forEach(function (k) { var el = $(ids[k]); if (el) el.classList.toggle('btn-accent', k === arTab); });
   renderArStreak();
   var box = $('arPanel'); if (!box) return;
@@ -431,6 +466,9 @@ function renderArPanel(tab) {
     html += '<div class="menstrual-card su-5b7cd0"><h4 class="su-399074">📜 B2–C1 Avanzado + Cultura viva</h4>' +
       '<p class="muted su-a6c665">Meta: entrevistas, proverbios y no pasar vergüenza con formalidad ni con ع/ح/ق. Gramática: <b>كان + قد (ya…), لو… لـ… (condicional), pasiva, indirecto con أنَّ, conectores ومع ذلك/بالإضافة</b>.</p>' +
       '<div class="su-5e3875">' + AR_B2C1.map(function (x) { return arCard(x, 'B2–C1'); }).join('') + '</div></div>' +
+      '<div class="menstrual-card su-4adf8c"><h4>💬 Frases famosas</h4>' +
+      '<p class="su-11a508">Las <b>30 frases famosas</b> tienen su propia pestaña: portada del día + tarjetas con 🔊 Escuchar y 📋 Copiar.</p>' +
+      '<div class="su-9bc2df"><button type="button" class="btn btn-accent su-30e741 ar-goto-frases">💬 Ver frases famosas →</button></div></div>' +
       '<div class="help-grid su-d2c171">' +
       '<div class="help-card"><h4>⚠️ 8 sonidos que salvan vidas</h4><p class="su-583677">' + AR_FON.map(function (r) { return '<b>' + esc(r[0]) + '</b><br><span class="muted">' + esc(r[1]) + '</span>'; }).join('<br><br>') + '</p></div>' +
       '<div class="help-card"><h4>🌳 Raíz + género + idafa ¿Cuál uso?</h4><p class="su-583677">' + AR_GRAM.map(function (r) { return '<b>' + esc(r[0]) + '</b><br><span class="muted">' + esc(r[1]) + '</span>'; }).join('<br><br>') + '</p></div></div>' +
@@ -438,6 +476,29 @@ function renderArPanel(tab) {
       '<div class="help-card"><h4>✍️ Alfabeto en 1 minuto: lo que ya puedes</h4><p class="su-583677">28 letras, todas con formas <b>inicial/media/final/aislada</b> pero la misma base. Ya distingues 6 fáciles: <b>ا ب ت ن م ل</b>. Solo cambian los puntos: <b>ب ت ث · ج ح خ · د ذ · ر ز · س ش · ص ض · ط ظ · ع غ · ف ق</b>. En 28 días copias tu nombre y lees carteles.</p></div>' +
       '<div class="help-card"><h4>🌙 Cultura para probar y celebrar</h4><p class="su-b439ab"><b>Probar:</b> té شَاي con menta, dátiles تَمْر, pan خبز: lee la receta en árabe y cocina.<br><b>Escuchar:</b> Fairuz («Atini al-nay»), Umm Kulzum («Alf leila»), 1 canción × 7 días.<br><b>Celebrar:</b> Ramadán (رَمَضَان, mes de ayuno y familia) y Eid al-Fitr (عيد الفطر, fiesta del desayuno).<br><span class="muted">Sabios: caligrafía (خط), zoco (سوق) y hospitalidad (ضيافة): decir أهلاً وسهلاً con sonrisa abre cualquier puerta.</span></p></div></div>' +
       '<div class="menstrual-card su-4adf8c"><h4>💼 Kit entrevista de trabajo</h4><p class="su-583677">— <b>حَدِّثْنَا عَنْ نَفْسِكَ.</b> (Cuénteme de usted.)<br>— <b>أَنَا مَسْؤُول وَأَعْمَلُ جَيِّدًا فِي فَرِيق.</b> (Soy responsable y trabajo bien en equipo.)<br>— <b>نُقْطَةُ قُوَّتِي… هَدَفِي…</b> (Mi fortaleza es… mi meta es…)<br><span class="muted">Cierra: «شُكْرًا لِوَقْتِكُم». (Gracias por su tiempo.)</span></p></div>';
+  } else if (arTab === 'frases') {
+    if (arFraseIdx < 0) arFraseIdx = arDayIndex(AR_FRASES.length);
+    var FDAY = AR_FRASES[arFraseIdx % AR_FRASES.length];
+    var fdate = '';
+    try { fdate = cal.fmtDate.format(new Date()); } catch (e) { fdate = new Date().toLocaleDateString(); }
+    html += '<div class="menstrual-card su-3fa1a8">' +
+      '<p class="muted su-11a508">💬 FRASE DEL DÍA · ' + esc(fdate) + ' · ' + AR_FRASES.length + ' frases famosas</p>' +
+      '<div class="su-6adb68" lang="ar" dir="rtl">' + '“' + esc(FDAY.ar) + '”</div>' +
+      '<div class="su-cd8bd8"><b>' + esc(FDAY.es) + '</b></div>' +
+      '<p class="su-11a508">🔤 <b>' + esc(FDAY.tr) + '</b></p>' +
+            '<p class="muted su-2b0979">“' + esc(FDAY.ex) + '”</p>' +
+      '<div class="su-9bc2df"><button type="button" class="btn btn-accent su-30e741 ar-hear" data-w="' + esc(FDAY.ar) + '">🔊 Escuchar</button> ' +
+      '<button type="button" id="arFraseRnd" class="btn su-30e741">🎲 Otra frase</button></div></div>' +
+      AR_FRASES.map(function (x) {
+        return '<div class="menstrual-card su-4adf8c"><h4 lang="ar" dir="rtl">“' + esc(x.ar) + '”</h4>' +
+          '<p><b>' + esc(x.es) + '</b>' +
+          '<br><span class="su-11a508">🔤 ' + esc(x.tr) + '</span>' +
+          '<br><span class="muted">“' + esc(x.ex) + '”</span></p>' +
+          '<div class="su-9bc2df"><button type="button" class="btn btn-accent su-30e741 ar-hear" data-w="' + esc(x.ar) + '">🔊 Escuchar</button> ' +
+          '<button type="button" class="btn su-30e741 ar-copy" data-w="' + esc(x.ar) + '|' + esc(x.es) + '">📋 Copiar</button></div></div>';
+      }).join('') +
+      '<div class="menstrual-card su-5a6934"><h4 class="su-752b1a">🗣️ ¿Cómo practicar?</h4>' +
+      '<p class="muted su-a6c665">1) <b>Escucha</b> la frase del día con 🔊 y repítela 3 veces en voz alta.<br>2) <b>Copia</b> tu favorita con 📋 y pégala en las Notas del día.<br>3) <b>Úsala hoy</b>: una frase al día son 365 al año.</p></div>';
   } else if (arTab === 'quiz') {
     var d = getArData();
     if (!arQuizQ) {
@@ -454,7 +515,7 @@ function renderArPanel(tab) {
     var lvBtn = function (v, l) { return '<button type="button" class="btn ar-lv' + (arQuizLevel === v ? ' btn-accent' : '') + ' su-337714" data-lv="' + v + '">' + l + '</button>'; };
     var mdBtn = function (v, l) { return '<button type="button" class="btn ar-md' + (arQuizMode === v ? ' btn-accent' : '') + ' su-337714" data-md="' + v + '">' + l + '</button>'; };
     html += '<div class="menstrual-card su-1f2df9"><h4 class="su-399074">🧩 Quiz por niveles</h4>' +
-      '<div class="su-a8712a">' + lvBtn('todo', '🌎 Todo') + lvBtn('a1', '🌱 A1') + lvBtn('a2', '🌿 A2') + lvBtn('b1', '💬 B1') + lvBtn('avanzado', '📜 B2–C1') + '</div>' +
+      '<div class="su-a8712a">' + lvBtn('todo', '🌎 Todo') + lvBtn('a1', '🌱 A1') + lvBtn('a2', '🌿 A2') + lvBtn('b1', '💬 B1') + lvBtn('frases', '💬 Frases') + lvBtn('avanzado', '📜 B2–C1') + '</div>' +
       '<div class="su-a8712a">' + mdBtn('significado', '🇪🇸 Significado') + mdBtn('translit', '🔤 Transliteración') + '</div>' +
       '<div class="su-73ce29" lang="ar" dir="rtl">“' + esc(q.w.ar) + '”</div><div class="muted su-11a508">' + esc(q.w.tr) + ' · ' + (arQuizMode === 'translit' ? '¿cómo se pronuncia?' : '¿qué significa?') + '</div>' +
       '<button type="button" id="arQuizSpeak" class="btn su-337714 ar-speaking">🔊 Escuchar</button> ' +
@@ -504,6 +565,26 @@ function renderArPanel(tab) {
   box.querySelectorAll('.eng-word').forEach(function (b) {
     b.onclick = function (e) { try { e.preventDefault(); } catch (x) {} arSpeak(b.getAttribute('data-w')); };
   });
+  box.querySelectorAll('.ar-hear').forEach(function (b) {
+    b.onclick = function (e) { try { e.preventDefault(); } catch (x) {} arSpeak(b.getAttribute('data-w')); };
+  });
+  box.querySelectorAll('.ar-copy').forEach(function (b) {
+    b.onclick = function (e) {
+      try { e.preventDefault(); } catch (x) {}
+      var parts = (b.getAttribute('data-w') || '').split('|');
+      var txt = '💬 ' + (parts[0] || '') + ' = ' + (parts[1] || '');
+      try {
+        if (navigator.clipboard) navigator.clipboard.writeText(txt).then(function () { alert('Copiado: ' + txt); }, function () { alert(txt); });
+        else alert(txt);
+      } catch (err) { try { alert(txt); } catch (e2) {} }
+    };
+  });
+  box.querySelectorAll('.ar-goto-frases').forEach(function (b) {
+    b.onclick = function () { renderArPanel('frases'); };
+  });
+  var frnd = $('arFraseRnd');
+  if (frnd) frnd.onclick = function () { arFraseIdx = Math.floor(Math.random() * AR_FRASES.length); renderArPanel('frases'); };
+
   box.querySelectorAll('.ar-lv').forEach(function (b) {
     b.onclick = function () { arQuizLevel = b.getAttribute('data-lv'); arQuizQ = null; renderArPanel('quiz'); };
   });
@@ -548,6 +629,7 @@ function buildDialog() {
     '<button type="button" id="tabAR3" class="btn su-30e741">🌿 A2</button>' +
     '<button type="button" id="tabAR4" class="btn su-30e741">💬 B1</button>' +
     '<button type="button" id="tabAR5" class="btn su-30e741">📜 B2–C1 + Cultura</button>' +
+    '<button type="button" id="tabAR7" class="btn su-30e741">💬 Frases famosas</button>' +
     '<button type="button" id="tabAR6" class="btn su-30e741">🧩 Quiz</button></div>' +
     '<div id="arPanel"></div>' +
     '<div class="dlg-actions"><button type="button" data-close class="btn">Cerrar</button></div></form>';
@@ -560,7 +642,7 @@ function buildDialog() {
 }
 
 function bindTabs() {
-  var map = { tabAR1: 'palabra', tabAR2: 'a1', tabAR3: 'a2', tabAR4: 'b1', tabAR5: 'cultura', tabAR6: 'quiz' };
+  var map = { tabAR1: 'palabra', tabAR2: 'a1', tabAR3: 'a2', tabAR4: 'b1', tabAR5: 'cultura', tabAR6: 'quiz', tabAR7: 'frases' };
   Object.keys(map).forEach(function (id) {
     var el = $(id);
     if (el) el.onclick = function () {

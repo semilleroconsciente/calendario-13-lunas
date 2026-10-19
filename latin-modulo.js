@@ -10,7 +10,7 @@
      2) 🌱 A1 Fundamenta (20 tarjetas + esse/habere + mini-diálogo)
      3) 🌿 A2 Vita cotidiana (14 tarjetas + perfecto + direcciones)
      4) 💬 B1 Iter, opus et opinio (10 + futuro/participios)
-     5) 🏛️ Frases latinas + pronunciación (22 frases célebres con
+     5) 🏛️ Frases latinas + pronunciación (82 frases célebres con
         guía fonética en español + B2–C1 + cultura romana)
      6) 🧩 Quiz por niveles + racha local
    - Todo local y privado por usuario:
@@ -122,7 +122,67 @@ var LA_FRASES = [
   { la: 'Mens sana in corpore sano', es: 'mente sana en cuerpo sano', pron: 'mens SA-na in KOR-po-re SA-no', ex: 'Juvenal — Entrena cuerpo y mente juntos.' },
   { la: 'Ars longa, vita brevis', es: 'el arte es largo, la vida breve', pron: 'ars LON-ga, UI-ta BRE-uis', ex: 'Hipocrates (en latin) — Aprende un oficio toda la vida.' },
   { la: 'Ex nihilo nihil fit', es: 'de la nada, nada sale', pron: 'eks NI-i-lo NI-il fit', ex: 'Lucrecio — Todo fruto pide semilla y trabajo.' },
-  { la: 'Vanitas vanitatum, omnia vanitas', es: 'vanidad de vanidades, todo es vanidad', pron: 'UA-ni-tas ua-ni-TA-tum, OM-ni-a UA-ni-tas', ex: 'Eclesiastes — Lo que no amas se vuelve humo.' }
+  { la: 'Vanitas vanitatum, omnia vanitas', es: 'vanidad de vanidades, todo es vanidad', pron: 'UA-ni-tas ua-ni-TA-tum, OM-ni-a UA-ni-tas', ex: 'Eclesiastes — Lo que no amas se vuelve humo.' },
+  { la: 'Acta non verba', es: 'hechos, no palabras', pron: 'AK-ta non UER-ba', ex: 'Lema de accion — Menos discurso y mas huerta, barrio y oficio.' },
+  { la: 'Ad infinitum', es: 'hasta el infinito (sin fin)', pron: 'ad in-fi-NI-tum', ex: 'Uso diario — Y asi ad infinitum: cuando algo se repite sin parar.' },
+  { la: 'Alma mater', es: 'madre nutricia (tu universidad o escuela)', pron: 'AL-ma MA-ter', ex: 'Vida universitaria — Mi alma mater: donde aprendi el oficio.' },
+  { la: 'Alter ego', es: 'otro yo (amigo del alma, doble)', pron: 'AL-ter E-go', ex: 'Ciceron — Un amigo es un alter ego: otro yo.' },
+  { la: 'Amor fati', es: 'ama tu destino', pron: 'a-MOR FA-ti', ex: 'Estoicos, Nietzsche — Ama lo que te toca y usalo para crecer.' },
+  { la: 'Aurea mediocritas', es: 'dorado punto medio (ni mucho ni poco)', pron: 'AU-re-a me-dio-KRI-tas', ex: 'Horacio — La felicidad esta en el justo medio, sin excesos.' },
+  { la: 'Aut vincere aut mori', es: 'o vencer o morir', pron: 'aut UIN-che-re aut MO-ri', ex: 'Grito romano — Compromiso total: darlo todo en lo importante.' },
+  { la: 'Bona fide', es: 'de buena fe (con honestidad)', pron: 'BO-na FI-de', ex: 'Derecho y tratos — Acuerdo bona fide: sin letra chica.' },
+  { la: 'Carpe noctem', es: 'aprovecha la noche', pron: 'KAR-pe NOK-tem', ex: 'Pareja de Carpe diem — De dia trabajar, de noche descansar y mirar estrellas.' },
+  { la: 'Citius, altius, fortius', es: 'mas rapido, mas alto, mas fuerte', pron: 'CHI-tsi-us AL-tsi-us FOR-tsi-us', ex: 'Lema olimpico — Ideal para deporte y natacion: superate cada dia.' },
+  { la: 'Conditio sine qua non', es: 'condicion sin la cual no (requisito esencial)', pron: 'kon-DI-tsi-o SI-ne kua non', ex: 'Derecho y vida — El agua es conditio sine qua non de la huerta.' },
+  { la: 'Cum grano salis', es: 'con un grano de sal (con criterio, sin creerse todo)', pron: 'kum GRA-no SA-lis', ex: 'Consejo romano — Toma las noticias cum grano salis: verifica.' },
+  { la: 'Deus ex machina', es: 'dios desde la maquina (solucion inesperada)', pron: 'DE-us eks MA-ki-na', ex: 'Teatro griego y romano — Cuando todo se arregla de golpe, como en las teleseries.' },
+  { la: 'E pluribus unum', es: 'de muchos, uno', pron: 'e PLU-ri-bus U-num', ex: 'Lema de union — Muchas familias, una comunidad: Penco unido.' },
+  { la: 'Ecce homo', es: 'he aqui el hombre', pron: 'E-che O-mo', ex: 'Evangelio de Juan 19:5 — Pilato presenta a Jesus: mira la humanidad.' },
+  { la: 'Exempli gratia (e.g.)', es: 'por ejemplo', pron: 'ek-SEM-pli GRA-tsi-a', ex: 'Uso diario — Cita asi: peces, exempli gratia, jurel y sardina.' },
+  { la: 'Fiat lux', es: 'hagase la luz', pron: 'FI-at luks', ex: 'Genesis 1:3 — Que se haga la luz: empezar algo nuevo con claridad.' },
+  { la: 'Finis coronat opus', es: 'el fin corona la obra', pron: 'FI-nis ko-RO-nat O-pus', ex: 'Refran romano — Termina lo que empiezas: el final le da sentido.' },
+  { la: 'Gaudeamus igitur', es: 'alegremonos pues', pron: 'gau-de-A-mus I-yi-tur', ex: 'Himno universitario — Gaudeamus igitur, iuvenes dum sumus: gocemos mientras somos jovenes.' },
+  { la: 'Habeas corpus', es: 'que tengas el cuerpo (derecho a no estar preso sin causa)', pron: 'a-BE-as KOR-pus', ex: 'Derecho — Nadie preso sin juicio justo: garantia basica.' },
+  { la: 'Historia magistra vitae', es: 'la historia es maestra de la vida', pron: 'is-TO-ri-a ma-YIS-tra UI-te', ex: 'Ciceron — Estudia el pasado de Penco para no repetir errores.' },
+  { la: 'Homo homini lupus', es: 'el hombre es lobo para el hombre', pron: 'O-mo O-mi-ni LU-pus', ex: 'Plauto, Hobbes — Si no nos cuidamos, nos danamos: elijamos cuidarnos.' },
+  { la: 'Homo sum, humani nihil a me alienum puto', es: 'soy humano, nada humano me es ajeno', pron: 'O-mo sum, u-MA-ni NI-il a me a-li-E-num PU-to', ex: 'Terencio — Todo lo humano me importa: empatia total.' },
+  { la: 'In hoc signo vinces', es: 'con este signo venceras', pron: 'in ok SIN-yo UIN-ches', ex: 'Constantino — Vision antes de la batalla: con tu emblema venceras.' },
+  { la: 'In medio stat virtus', es: 'la virtud esta en el medio', pron: 'in ME-di-o stat UIR-tus', ex: 'Aristoteles en latin — Ni flojo ni ansioso: el punto justo.' },
+  { la: 'In vino veritas', es: 'en el vino esta la verdad', pron: 'in UI-no UE-ri-tas', ex: 'Plinio — Con unas copas se suelta la lengua: escucha con humor.' },
+  { la: 'Scientia potentia est', es: 'el saber es poder', pron: 'shi-EN-tsi-a po-TEN-tsi-a est', ex: 'Bacon — Estudiar te hace libre: cada oficio es poder.' },
+  { la: 'Mea culpa', es: 'por mi culpa (reconozco mi error)', pron: 'ME-a KUL-pa', ex: 'Liturgia — Decir mea culpa arregla peleas en casa y en el trabajo.' },
+  { la: 'Medice, cura te ipsum', es: 'medico, curate a ti mismo', pron: 'ME-di-che, KU-ra te IP-sum', ex: 'Evangelio de Lucas 4:23 — Antes de aconsejar, ordena tu propia casa.' },
+  { la: 'Memento vivere', es: 'recuerda vivir', pron: 'me-MEN-to ui-UE-re', ex: 'Pareja de Memento mori — Recuerda que moriras, asi que vive hoy.' },
+  { la: 'Modus vivendi', es: 'modo de vivir (acuerdo para convivir)', pron: 'MO-dus ui-UEN-di', ex: 'Convivencia — Buscar un modus vivendi con vecinos y familia.' },
+  { la: 'Mors certa, hora incerta', es: 'la muerte es segura, la hora incierta', pron: 'mors CHER-ta, O-ra in-CHER-ta', ex: 'Medieval — Vive listo: haz hoy lo esencial.' },
+  { la: 'Ne quid nimis', es: 'nada en exceso', pron: 'ne kuid NI-mis', ex: 'Templo de Delfos — Ni mucho celular ni mucho trabajo: medida.' },
+  { la: 'Nil desperandum', es: 'nada hay que desesperar (no te rindas)', pron: 'nil des-pe-RAN-dum', ex: 'Horacio — Aunque llueva en Penco, nil desperandum: sigue.' },
+  { la: 'Noli me tangere', es: 'no me toques', pron: 'NO-li me TAN-ge-re', ex: 'Evangelio de Juan 20:17 — Jesus a Magdalena: respeta mi espacio y tiempo.' },
+  { la: 'Non ducor, duco', es: 'no soy guiado, yo guio', pron: 'non DU-kor, DU-ko', ex: 'Lema de liderazgo — No sigo la masa: yo marco el rumbo.' },
+  { la: 'Non scholae sed vitae discimus', es: 'no aprendemos para la escuela sino para la vida', pron: 'non SKO-le sed UI-te dis-CHI-mus', ex: 'Seneca — Estudia para la vida real, no solo para la prueba.' },
+  { la: 'Nosce te ipsum', es: 'conocete a ti mismo', pron: 'NOSH-che te IP-sum', ex: 'Delfos, Socrates — El primer viaje es hacia adentro.' },
+  { la: 'O tempora, o mores!', es: 'oh tiempos, oh costumbres!', pron: 'o TEM-po-ra, o MO-res', ex: 'Ciceron contra Catilina — Cuando todo cambia: exclamacion clasica.' },
+  { la: 'Tempora mutantur, et nos mutamur in illis', es: 'los tiempos cambian y nosotros cambiamos con ellos', pron: 'TEM-po-ra mu-TAN-tur, et nos mu-TA-mur in IL-lis', ex: 'Proverbio — Adaptate: cambia el barrio y cambiamos nosotros.' },
+  { la: 'Pacta sunt servanda', es: 'los pactos deben cumplirse', pron: 'PAK-ta sunt ser-UAN-da', ex: 'Derecho — Lo prometido se cumple: palabra empeñada.' },
+  { la: 'Panem et circenses', es: 'pan y circo', pron: 'PA-nem et chir-CHEN-ses', ex: 'Juvenal — Critica al pueblo que cambia derechos por entretencion.' },
+  { la: 'Pax vobiscum', es: 'la paz este con ustedes', pron: 'paks vo-BIS-kum', ex: 'Liturgia — Saludo de paz en misa y en casa.' },
+  { la: 'Post tenebras lux', es: 'despues de las tinieblas, la luz', pron: 'post TE-ne-bras luks', ex: 'Lema de esperanza — Tras la tormenta sale el sol en el Biobio.' },
+  { la: 'Quid pro quo', es: 'algo por algo (un favor por otro)', pron: 'kuid pro kuo', ex: 'Tratos — Te ayudo en la huerta quid pro quo: tu me ayudas manana.' },
+  { la: 'Quis custodiet ipsos custodes?', es: 'quien vigila a los vigilantes?', pron: 'kuis kus-TO-di-et IP-sos kus-TO-des', ex: 'Juvenal — Pregunta ciudadana: quien controla al poder.' },
+  { la: 'Quo vadis?', es: 'a donde vas?', pron: 'kuo UA-dis', ex: 'Tradicion de Pedro — Pregunta esencial: quo vadis con tu vida.' },
+  { la: 'Repetitio est mater studiorum', es: 'la repeticion es madre del estudio', pron: 're-pe-TI-tsi-o est MA-ter stu-di-O-rum', ex: 'Pedagogia — Repite 5 minutos al dia y se queda para siempre.' },
+  { la: 'Semper fidelis', es: 'siempre fiel', pron: 'SEM-per fi-DE-lis', ex: 'Lema militar y familiar — Semper fidelis a tu gente y tus valores.' },
+  { la: 'Senatus Populusque Romanus (SPQR)', es: 'el Senado y el Pueblo Romano', pron: 'se-NA-tus po-PU-lus-kue ro-MA-nus', ex: 'Roma — SPQR en estandartes y edificios: el pueblo manda.' },
+  { la: 'Sic semper tyrannis', es: 'asi siempre a los tiranos (asi caen)', pron: 'sik SEM-per ti-RAN-nis', ex: 'Lema contra dictadores — Ningun abuso dura para siempre.' },
+  { la: 'Sic parvis magna', es: 'lo grande nace de lo pequeño', pron: 'sik PAR-uis MAN-ya', ex: 'Lema marinero — De una semilla, un bosque: empieza chico.' },
+  { la: 'Suum cuique', es: 'a cada uno lo suyo', pron: 'SU-um KUI-kue', ex: 'Justicia — Suum cuique: paga justo y reparte justo.' },
+  { la: 'Tabula rasa', es: 'tabla rasa (empezar de cero)', pron: 'TA-bu-la RA-za', ex: 'Filosofia — Haz tabula rasa y parte de nuevo sin rencores.' },
+  { la: 'Urbi et orbi', es: 'a la ciudad y al mundo', pron: 'UR-bi et OR-bi', ex: 'Bendicion papal — Mensaje urbi et orbi: para todos, sin exclusion.' },
+  { la: 'Vae victis', es: 'ay de los vencidos', pron: 'ue UIK-tis', ex: 'Breno, jefe galo — El fuerte impone: por eso defiende a tu gente unida.' },
+  { la: 'Verba volant, scripta manent', es: 'las palabras vuelan, lo escrito queda', pron: 'UER-ba VO-lant, SKRIP-ta MA-nent', ex: 'Proverbio — Escribe tus acuerdos: lo escrito protege.' },
+  { la: 'Vox populi, vox Dei', es: 'voz del pueblo, voz de Dios', pron: 'voks PO-pu-li, voks DE-i', ex: 'Proverbio — Escucha a la comunidad: ahi habla lo sagrado.' },
+  { la: 'Dura lex, sed lex', es: 'dura es la ley, pero es la ley', pron: 'DU-ra leks, sed leks', ex: 'Derecho — Aunque cueste, la regla pareja nos cuida a todos.' },
+  { la: 'Gutta cavat lapidem', es: 'la gota horada la piedra (la constancia vence)', pron: 'GUT-ta KA-vat LA-pi-dem', ex: 'Ovidio — Poco cada dia: la gota diaria rompe la piedra.' }
 ];
 var LA_PRON = [
 /*__PART4__*/
@@ -248,7 +308,7 @@ function renderLatPanel(tab) {
       rel.map(function (r) { return '<div class="help-card"><h4>' + esc(latItemLa(r)) + '</h4><p class="su-11a508">' + esc(latItemEs(r)) + '<br>🗣️ ' + esc(r.pron || '') + '<br><span class="muted">“' + esc(r.ex) + '”</span></p></div>'; }).join('') + '</div>' +
       '<div class="help-grid su-d2c171">' +
       '<div class="help-card"><h4>🗣️ ¿Cómo practicar?</h4><p class="su-b439ab">1) <b>Escucha</b> con 🔊 y repite 3 veces en voz alta mirando la pronunciación.<br>2) <b>Escribe</b> 1 frase con la palabra en las Notas del día.<br>3) <b>Úsala hoy</b>: 1 palabra/día son ~365 al año.<br>Pasa a A2 cuando sepas 20 sin mirar.</p></div>' +
-      '<div class="help-card"><h4>📚 Niveles (CEFR adaptado)</h4><p class="su-b439ab">🌱 <b>A1:</b> sobrevivir (salve, gratias, domus).<br>🌿 <b>A2:</b> vida diaria (perfecto, futuro, foro).<br>💬 <b>B1:</b> viaje + trabajo + opinión.<br>🏛️ <b>Frases:</b> 22 sententiae con pronunciación.<br>📜 <b>B2–C1:</b> pasiva, gerundivo, indirecto + Roma.</p></div></div>';
+      '<div class="help-card"><h4>📚 Niveles (CEFR adaptado)</h4><p class="su-b439ab">🌱 <b>A1:</b> sobrevivir (salve, gratias, domus).<br>🌿 <b>A2:</b> vida diaria (perfecto, futuro, foro).<br>💬 <b>B1:</b> viaje + trabajo + opinión.<br>🏛️ <b>Frases:</b> 82 sententiae con pronunciación.<br>📜 <b>B2–C1:</b> pasiva, gerundivo, indirecto + Roma.</p></div></div>';
   } else if (latTab === 'a1') {
     html += '<div class="menstrual-card su-5a6934"><h4 class="su-752b1a">🌱 A1 Fundamenta — sobrevive en latín</h4>' +
       '<p class="muted su-a6c665">Meta: saludar, pedir agua y pan, contar 1–20. Gramática: <b>esse (ego sum / tu es), habere (habeo), unus/una/unum, mihi placet / mihi opus est, plural -i/-ae/-a</b>. Toca 🔊 en cada tarjeta (it-IT = pronunciación eclesiástica).</p>' +
@@ -268,7 +328,7 @@ function renderLatPanel(tab) {
       '<div class="menstrual-card su-4adf8c"><h4>🎭 Mini-diálogo: iter Concepcionem (viaje a Concepción)</h4><p class="su-583677">— <b>Tessera ad Concepcionem, amabo te.</b><br>— <b>Itus tantum an itus reditusque?</b> — <b>Itus reditusque, amabo te.</b><br>— <b>Hic multos annos habitas?</b> — <b>Hic quinque annos habitamus.</b><br><span class="muted">Practica con horarios, precios y hic + tiempo.</span></p></div>';
 /*__PART8__*/
   } else if (latTab === 'frases') {
-    html += '<div class="menstrual-card su-5b7cd0"><h4 class="su-399074">🏛️ Sententiae Latinae — 22 frases latinas con pronunciación</h4>' +
+    html += '<div class="menstrual-card su-5b7cd0"><h4 class="su-399074">🏛️ Sententiae Latinae — 82 frases latinas con pronunciación</h4>' +
       '<p class="muted su-a6c665">La subsección pedida: cada frase trae <b>latín + español + 🗣️ pronunciación eclesiástica</b> (la de colegios e iglesia en Chile) y su historia. Toca <b>🔊 Audire</b> para oírla con la voz del dispositivo (it-IT). Gramática B2–C1: <b>pluscuamperfecto (profectus eram), pasiva (purgatum est), indirecto (dixit se…), gerundivo (disputandum), conectores (tamen, praeterea)</b>.</p>' +
       '<div class="su-5e3875">' + LA_B2C1.map(function (x) { return latCard(x, 'B2–C1'); }).join('') + '</div></div>' +
       '<div class="si-card"><h4>🗣️ Pronunciación en 1 minuto (eclesiástica = suena como italiano)</h4><p>' +
@@ -357,7 +417,7 @@ function buildDialog() {
   d.innerHTML = '<form method="dialog">' +
     '<div class="dlg-actions su-d2d053"><h3 class="su-ee0cfe">🏛️ Latín — A1 a C1 + frases con pronunciación</h3>' +
     '<button type="button" data-close class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    '<p class="muted su-77e2fe">Aprende <b>latín por niveles + 22 frases célebres con su pronunciación</b>, como el Kimün, el Inglés o el Italiano: 1 verbum al día + grammatica + quiz. Toca 🔊 para oír (voz del dispositivo, it-IT = latín eclesiástico). Todo queda <b>local y privado</b> por usuario.</p>' +
+    '<p class="muted su-77e2fe">Aprende <b>latín por niveles + 82 frases célebres con su pronunciación</b>, como el Kimün, el Inglés o el Italiano: 1 verbum al día + grammatica + quiz. Toca 🔊 para oír (voz del dispositivo, it-IT = latín eclesiástico). Todo queda <b>local y privado</b> por usuario.</p>' +
     '<div id="latStreakBox" class="menstrual-card su-68a1a9"></div>' +
     '<div class="timer-tabs su-f7ad78">' +
     '<button type="button" id="tabLA1" class="btn btn-accent su-30e741">☀️ Verbum diei</button>' +

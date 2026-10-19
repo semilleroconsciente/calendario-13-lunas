@@ -1394,7 +1394,20 @@ body[data-mview="hoy"] #tidesPanel { display: none; }
 #todayView .today-hero {
   background: linear-gradient(135deg, var(--panel), var(--card));
   border: 1px solid var(--gold); border-radius: 14px; padding: 14px;
+  position: relative;
 }
+/* Botón discreto ↕ para ordenar bloques (no se muestra la barra al entrar) */
+#todayView .today-reorder-fab {
+  position: absolute; top: 8px; right: 8px;
+  width: 28px; height: 28px; padding: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px; line-height: 1;
+  color: var(--muted); background: transparent;
+  border: 1px solid transparent; border-radius: 8px;
+  opacity: .45; cursor: pointer;
+}
+#todayView .today-reorder-fab:hover { opacity: 1; border-color: var(--line); }
+#todayView .today-reorder-fab.active { opacity: 1; color: var(--gold); border-color: var(--gold); }
 #todayView .today-hero .t-now { font-size: 12px; color: var(--muted); }
 #todayView .today-hero .t-now b { color: var(--gold); font-size: 16px; font-variant-numeric: tabular-nums; letter-spacing: 1px; }
 #todayView .today-hero .t-penco {

@@ -3,14 +3,15 @@
    Sección completa dentro de Aprender > Idiomas y cultura:
    - Botón btnHindi (grupo aprender, sub idiomas, junto a
      Kimün Mapuzugun, Inglés, Portugués y Chino)
-   - Diálogo hindiDialog con 6 pestañas:
+   - Diálogo hindiDialog con 7 pestañas:
      1) ☀️ Palabra del día (devanagari rotativo + transliteración + TTS hi-IN)
      2) 🌱 A1 Supervivencia (20 tarjetas + है/हूँ + números + mini-diálogo)
      3) 🌿 A2 Vida diaria (14 tarjetas + pasado con ने + futuro + direcciones)
      4) 💬 B1 Viajar, trabajar y opinar (10 + postposiciones + formalidad आप)
      5) 📜 B2–C1 + Cultura (expresiones, tú/tum/aap, retroflejas que cambian
          todo, devanagari↔romano, orden SOV, Diwali/Holi, yoga, comida, cine)
-     6) 🧩 Quiz por niveles + quiz de transliteración + racha local
+     6) 💬 Frases famosas (portada del día + tarjetas con audio y copiar)
+     7) 🧩 Quiz por niveles + quiz de transliteración + racha local
    - Todo local y privado por usuario:
      userData().hindi = { ok, total, streak, lastDay }
    - 100% offline. TTS usa la voz del dispositivo (speechSynthesis
@@ -95,6 +96,38 @@ var HI_B2C1 = [
   { dv: 'इंटरव्यू: मेरी खूबी है…', tr: 'interview: meri khoobi hai…', es: 'entrevista: mi fortaleza es…', ex: 'मुझे टीम में काम करना आता है। — Soy buena trabajando en equipo.' },
   { dv: 'हालाँकि / इसके अलावा', tr: 'haalaanki / iske alaava', es: 'sin embargo / además (ensayo)', ex: 'हालाँकि, समुद्र ही जीवन है। — Sin embargo, el mar es vida.' }
 ];
+var HI_FRASES = [
+  { dv: 'अहिंसा परमो धर्मः', tr: 'ahinsaa paramo dharmah', es: 'la no violencia es el deber supremo', ex: 'Lema de Gandhi — Sin dañar: ni personas ni tierra.' },
+  { dv: 'सत्यमेव जयते', tr: 'satyameva jayate', es: 'solo la verdad triunfa', ex: 'Lema nacional de India — La verdad siempre vence.' },
+  { dv: 'वसुधैव कुटुम्बकम्', tr: 'vasudhaiva kutumbakam', es: 'el mundo es una sola familia', ex: 'Maha Upanishad — Todos somos familia.' },
+  { dv: 'कर्म करो, फल की चिंता मत करो', tr: 'karm karo, phal ki chinta mat karo', es: 'actúa sin apegarte al fruto', ex: 'Gita 2.47 — Haz tu deber, suelta el resultado.' },
+  { dv: 'मन के हारे हार, मन के जीते जीत', tr: 'man ke haare haar, man ke jeete jeet', es: 'si la mente pierde, pierdes; si gana, ganas', ex: 'Proverbio — Todo empieza en la mente.' },
+  { dv: 'जैसी करनी, वैसी भरनी', tr: 'jaisi karni, vaisi bharni', es: 'cosechas lo que siembras', ex: 'Proverbio — Cada acto vuelve.' },
+  { dv: 'करत करत अभ्यास के, जड़मति होत सुजान', tr: 'karat karat abhyaas ke, jadmati hot sujaan', es: 'practicando, hasta el torpe se hace sabio', ex: 'Kabir — La gota horada la piedra.' },
+  { dv: 'बूँद बूँद से घड़ा भरता है', tr: 'boond boond se ghada bharta hai', es: 'gota a gota se llena el cántaro', ex: 'Proverbio — Poco cada día llena todo.' },
+  { dv: 'जहाँ चाह, वहाँ राह', tr: 'jahaan chaah, vahaan raah', es: 'donde hay querer, hay camino', ex: 'Proverbio — Querer es poder.' },
+  { dv: 'एकता में बल है', tr: 'ektaa me bal hai', es: 'en la unidad hay fuerza', ex: 'Proverbio — Junta vecinal fuerte.' },
+  { dv: 'काल करे सो आज कर', tr: 'kaal kare so aaj kar', es: 'lo de mañana, hazlo hoy', ex: 'Kabir — Carpe diem: no postergues.' },
+  { dv: 'तुम खुद वह बदलाव बनो जो देखना चाहते हो', tr: 'tum khud vah badlaav bano', es: 'sé el cambio que quieres ver', ex: 'Gandhi — Empieza por ti.' },
+  { dv: 'मेरा जीवन ही मेरा संदेश है', tr: 'meraa jeevan hi meraa sandesh hai', es: 'mi vida es mi mensaje', ex: 'Gandhi — Vive lo que predicas.' },
+  { dv: 'जहाँ मन भयहीन है', tr: 'jahaan man bhayheen hai', es: 'donde la mente no tiene miedo', ex: 'Tagore, Gitanjali — A esa patria despierta.' },
+  { dv: 'अतिथि देवो भव', tr: 'atithi devo bhava', es: 'el invitado es como dios', ex: 'Upanishad — Atiende al visitante.' },
+  { dv: 'विद्या ददाति विनयम्', tr: 'vidyaa dadaati vinayam', es: 'el saber da humildad', ex: 'Proverbio sánscrito — Saber + humildad.' },
+  { dv: 'संतोषः परमं सुखम्', tr: 'santoshah paramam sukham', es: 'el contento es la felicidad suprema', ex: 'Proverbio — Agradece lo que hay.' },
+  { dv: 'परिश्रम ही सफलता की कुंजी है', tr: 'parishram hi safaltaa ki kunji hai', es: 'el esfuerzo es la llave del éxito', ex: 'Lema escolar — Estudia y practica.' },
+  { dv: 'नाच न जाने, आँगन टेढ़ा', tr: 'naach na jaane, aangan tedhaa', es: 'no sabe bailar y culpa al patio', ex: 'Proverbio — Sin excusas: practica.' },
+  { dv: 'जैसा देश, वैसा भेष', tr: 'jaisa desh, vaisa bhesh', es: 'según el país, la vestimenta', ex: 'Proverbio — Respeta la casa que te recibe.' },
+  { dv: 'मुसीबत में ही सच्चे मित्र की पहचान', tr: 'museebat me hi sachche mitra ki pehchaan', es: 'al amigo se conoce en la dificultad', ex: 'Proverbio — Amigos de verdad en lo duro.' },
+  { dv: 'अब पछताए होत क्या, जब चिड़िया चुग गई खेत', tr: 'ab pachhtaae hot kyaa', es: 'de qué sirve llorar con el campo comido', ex: 'Proverbio — No llores sobre leche derramada.' },
+  { dv: 'जो दूसरों के लिए गड्ढा खोदता है, खुद गिरता है', tr: 'jo doosron ke liye gaddhaa khodtaa hai', es: 'quien cava fosa a otros, cae en ella', ex: 'Proverbio — No hagas daño: vuelve.' },
+  { dv: 'योगः कर्मसु कौशलम्', tr: 'yogah karmasu kaushalam', es: 'el yoga es excelencia en la acción', ex: 'Gita — Haz cada oficio con maestría.' },
+  { dv: 'पढ़ोगे लिखोगे, बनोगे नवाब', tr: 'padhoge likhoge, banoge navaab', es: 'si estudias, serás grande', ex: 'Lema escolar de India — Estudia cada día.' },
+  { dv: 'सब्र का फल मीठा होता है', tr: 'sabr ka phal meethaa hotaa hai', es: 'el fruto de la paciencia es dulce', ex: 'Proverbio — Festina lente en hindi.' },
+  { dv: 'तमसो मा ज्योतिर्गमय', tr: 'tamaso maa jyotirgamaya', es: 'de la oscuridad, llévame a la luz', ex: 'Upanishad, canto de Diwali — Tras la noche, la luz.' },
+  { dv: 'जैसा बोओगे, वैसा काटोगे', tr: 'jaisaa booge, vaisaa kaatoge', es: 'como siembres, cosecharás', ex: 'Proverbio de huerta — Siembra bien.' },
+  { dv: 'माता-पिता की सेवा सबसे बड़ा धर्म है', tr: 'maataa-pitaa ki sevaa sabse badaa dharm hai', es: 'servir a padre y madre es el mayor deber', ex: 'Valor indio — Honra a tus viejos.' },
+  { dv: 'चक दे इंडिया!', tr: 'chak de India!', es: '¡vamos India!', ex: 'Grito deportivo (hockey, cricket) — ¡Vamos con todo!' }
+];
 var HI_RETRO = [
   ['ट ठ ड ढ ण — retroflejas (lengua al paladar)', 'त (dental, lengua a los dientes) ≠ ट (retrofleja, lengua atrás). ठंडा (frío) ≠ तंबू (carpa). Practica: ta-ta-ta moviendo la lengua 1 cm atrás.'],
   ['ख घ छ झ — aspiradas (con soplo)', 'क (k) + soplo = ख (kh). Gana/ghana: कान (oído) ≠ खान (mina). Pon un papel: debe moverse con ख घ छ झ, no con क ग च ज.'],
@@ -121,7 +154,7 @@ var HI_NAGARI = [
   ['📏 Regla de oro', 'Lee NAGARI + transliteración juntas (como aquí: devanagari + tr). Tapa una columna y recita la otra. En 28 días lees carteles de Penco… y de Delhi.']
 ];
 
-function allHi() { return HI_A1.concat(HI_A2, HI_B1, HI_B2C1); }
+function allHi() { return HI_A1.concat(HI_A2, HI_B1, HI_FRASES, HI_B2C1); }
 
 /* ---------------- ESTADO ---------------- */
 var hiTab = 'palabra';
@@ -362,6 +395,7 @@ function hiQuizPool() {
   if (hiQuizLevel === 'a1') return HI_A1;
   if (hiQuizLevel === 'a2') return HI_A2;
   if (hiQuizLevel === 'b1') return HI_B1;
+  if (hiQuizLevel === 'frases') return HI_FRASES;
   if (hiQuizLevel === 'avanzado') return HI_B2C1;
   return allHi();
 }
@@ -379,10 +413,11 @@ function hiCard(item, lv) {
     '<span class="muted su-11a508">“' + esc(item.ex) + '”</span></button>';
 }
 
+var hiFraseIdx = -1;
 function renderHiPanel(tab) {
   try { hiStop(); } catch (e) {}
   hiTab = tab || hiTab;
-  var ids = { palabra: 'tabHI1', a1: 'tabHI2', a2: 'tabHI3', b1: 'tabHI4', cultura: 'tabHI5', quiz: 'tabHI6' };
+  var ids = { palabra: 'tabHI1', a1: 'tabHI2', a2: 'tabHI3', b1: 'tabHI4', cultura: 'tabHI5', frases: 'tabHI7', quiz: 'tabHI6' };
   Object.keys(ids).forEach(function (k) { var el = $(ids[k]); if (el) el.classList.toggle('btn-accent', k === hiTab); });
   renderHiStreak();
   var box = $('hiPanel'); if (!box) return;
@@ -436,6 +471,9 @@ function renderHiPanel(tab) {
     html += '<div class="menstrual-card su-5b7cd0"><h4 class="su-399074">📜 B2–C1 Avanzado + Cultura viva</h4>' +
       '<p class="muted su-a6c665">Meta: entrevistas, proverbios y no pasar vergüenza con तू/तुम/आप. Gramática: <b>चुका था (ya…), होता… (condicional), pasiva con द्वारा, indirecto con कि, conectores हालाँकि/इसके अलावा</b>.</p>' +
       '<div class="su-5e3875">' + HI_B2C1.map(function (x) { return hiCard(x, 'B2–C1'); }).join('') + '</div></div>' +
+      '<div class="menstrual-card su-4adf8c"><h4>💬 Frases famosas</h4>' +
+      '<p class="su-11a508">Las <b>30 frases famosas</b> tienen su propia pestaña: portada del día + tarjetas con 🔊 Escuchar y 📋 Copiar.</p>' +
+      '<div class="su-9bc2df"><button type="button" class="btn btn-accent su-30e741 hi-goto-frases">💬 Ver frases famosas →</button></div></div>' +
       '<div class="help-grid su-d2c171">' +
       '<div class="help-card"><h4>⚠️ 8 sonidos que salvan vidas</h4><p class="su-583677">' + HI_RETRO.map(function (r) { return '<b>' + esc(r[0]) + '</b><br><span class="muted">' + esc(r[1]) + '</span>'; }).join('<br><br>') + '</p></div>' +
       '<div class="help-card"><h4>🙏 तू ↔ तुम ↔ आप ¿Cuál uso?</h4><p class="su-583677">' + HI_REGISTRO.map(function (r) { return '<b>' + esc(r[0]) + '</b><br><span class="muted">' + esc(r[1]) + '</span>'; }).join('<br><br>') + '</p></div></div>' +
@@ -443,6 +481,29 @@ function renderHiPanel(tab) {
       '<div class="help-card"><h4>🀄 देवनागरी ↔ Romano ¿Por dónde parto?</h4><p class="su-583677">' + HI_NAGARI.map(function (r) { return '<b>' + esc(r[0]) + '</b><br><span class="muted">' + esc(r[1]) + '</span>'; }).join('<br><br>') + '</p></div>' +
       '<div class="help-card"><h4>🪔 Cultura para probar y celebrar</h4><p class="su-b439ab"><b>Probar:</b> chai (चाय), dal (दाल), samosa (समोसा): lee la receta en hindi y cocina.<br><b>Escuchar:</b> bhajans, “Mile Sur Mera Tumhara”, 1 canción × 7 días.<br><b>Celebrar:</b> Diwali (दीवाली, fiesta de luces, oct/nov) y Holi (होली, fiesta de colores, marzo).<br><span class="muted">Sabios: yoga (योग), ayurveda y los Vedas: el calendario también es ritual. Namaste con 🙏 abre cualquier puerta.</span></p></div></div>' +
       '<div class="menstrual-card su-4adf8c"><h4>💼 Kit entrevista de trabajo</h4><p class="su-583677">— <b>कृपया अपना परिचय दीजिए।</b> (Preséntese, por favor.)<br>— <b>मैं ज़िम्मेदार हूँ, टीम में अच्छा काम करती हूँ।</b> (Soy responsable y trabajo bien en equipo.)<br>— <b>मेरी खूबी है… मेरा लक्ष्य है…</b> (Mi fortaleza es… mi meta es…)<br><span class="muted">Cierra: “आपके समय के लिए धन्यवाद।” (Gracias por su tiempo.)</span></p></div>';
+  } else if (hiTab === 'frases') {
+    if (hiFraseIdx < 0) hiFraseIdx = hiDayIndex(HI_FRASES.length);
+    var FDAY = HI_FRASES[hiFraseIdx % HI_FRASES.length];
+    var fdate = '';
+    try { fdate = cal.fmtDate.format(new Date()); } catch (e) { fdate = new Date().toLocaleDateString(); }
+    html += '<div class="menstrual-card su-3fa1a8">' +
+      '<p class="muted su-11a508">💬 FRASE DEL DÍA · ' + esc(fdate) + ' · ' + HI_FRASES.length + ' frases famosas</p>' +
+      '<div class="su-6adb68">' + '“' + esc(FDAY.dv) + '”</div>' +
+      '<div class="su-cd8bd8"><b>' + esc(FDAY.es) + '</b></div>' +
+      '<p class="su-11a508">🔤 <b>' + esc(FDAY.tr) + '</b></p>' +
+            '<p class="muted su-2b0979">“' + esc(FDAY.ex) + '”</p>' +
+      '<div class="su-9bc2df"><button type="button" class="btn btn-accent su-30e741 hi-hear" data-w="' + esc(FDAY.dv) + '">🔊 Escuchar</button> ' +
+      '<button type="button" id="hiFraseRnd" class="btn su-30e741">🎲 Otra frase</button></div></div>' +
+      HI_FRASES.map(function (x) {
+        return '<div class="menstrual-card su-4adf8c"><h4>“' + esc(x.dv) + '”</h4>' +
+          '<p><b>' + esc(x.es) + '</b>' +
+          '<br><span class="su-11a508">🔤 ' + esc(x.tr) + '</span>' +
+          '<br><span class="muted">“' + esc(x.ex) + '”</span></p>' +
+          '<div class="su-9bc2df"><button type="button" class="btn btn-accent su-30e741 hi-hear" data-w="' + esc(x.dv) + '">🔊 Escuchar</button> ' +
+          '<button type="button" class="btn su-30e741 hi-copy" data-w="' + esc(x.dv) + '|' + esc(x.es) + '">📋 Copiar</button></div></div>';
+      }).join('') +
+      '<div class="menstrual-card su-5a6934"><h4 class="su-752b1a">🗣️ ¿Cómo practicar?</h4>' +
+      '<p class="muted su-a6c665">1) <b>Escucha</b> la frase del día con 🔊 y repítela 3 veces en voz alta.<br>2) <b>Copia</b> tu favorita con 📋 y pégala en las Notas del día.<br>3) <b>Úsala hoy</b>: una frase al día son 365 al año.</p></div>';
   } else if (hiTab === 'quiz') {
     var d = getHiData();
     if (!hiQuizQ) {
@@ -459,7 +520,7 @@ function renderHiPanel(tab) {
     var lvBtn = function (v, l) { return '<button type="button" class="btn hi-lv' + (hiQuizLevel === v ? ' btn-accent' : '') + ' su-337714" data-lv="' + v + '">' + l + '</button>'; };
     var mdBtn = function (v, l) { return '<button type="button" class="btn hi-md' + (hiQuizMode === v ? ' btn-accent' : '') + ' su-337714" data-md="' + v + '">' + l + '</button>'; };
     html += '<div class="menstrual-card su-1f2df9"><h4 class="su-399074">🧩 Quiz por niveles</h4>' +
-      '<div class="su-a8712a">' + lvBtn('todo', '🌎 Todo') + lvBtn('a1', '🌱 A1') + lvBtn('a2', '🌿 A2') + lvBtn('b1', '💬 B1') + lvBtn('avanzado', '📜 B2–C1') + '</div>' +
+      '<div class="su-a8712a">' + lvBtn('todo', '🌎 Todo') + lvBtn('a1', '🌱 A1') + lvBtn('a2', '🌿 A2') + lvBtn('b1', '💬 B1') + lvBtn('frases', '💬 Frases') + lvBtn('avanzado', '📜 B2–C1') + '</div>' +
       '<div class="su-a8712a">' + mdBtn('significado', '🇪🇸 Significado') + mdBtn('translit', '🔤 Transliteración') + '</div>' +
       '<div class="su-73ce29">“' + esc(q.w.dv) + '” <span class="muted su-11a508">' + (hiQuizMode === 'translit' ? '¿cómo se pronuncia?' : '¿qué significa?') + '</span></div>' +
       '<button type="button" id="hiQuizSpeak" class="btn su-337714 hi-speaking">🔊 Escuchar</button> ' +
@@ -509,6 +570,26 @@ function renderHiPanel(tab) {
   box.querySelectorAll('.eng-word').forEach(function (b) {
     b.onclick = function (e) { try { e.preventDefault(); } catch (x) {} hiSpeak(b.getAttribute('data-w')); };
   });
+  box.querySelectorAll('.hi-hear').forEach(function (b) {
+    b.onclick = function (e) { try { e.preventDefault(); } catch (x) {} hiSpeak(b.getAttribute('data-w')); };
+  });
+  box.querySelectorAll('.hi-copy').forEach(function (b) {
+    b.onclick = function (e) {
+      try { e.preventDefault(); } catch (x) {}
+      var parts = (b.getAttribute('data-w') || '').split('|');
+      var txt = '💬 ' + (parts[0] || '') + ' = ' + (parts[1] || '');
+      try {
+        if (navigator.clipboard) navigator.clipboard.writeText(txt).then(function () { alert('Copiado: ' + txt); }, function () { alert(txt); });
+        else alert(txt);
+      } catch (err) { try { alert(txt); } catch (e2) {} }
+    };
+  });
+  box.querySelectorAll('.hi-goto-frases').forEach(function (b) {
+    b.onclick = function () { renderHiPanel('frases'); };
+  });
+  var frnd = $('hiFraseRnd');
+  if (frnd) frnd.onclick = function () { hiFraseIdx = Math.floor(Math.random() * HI_FRASES.length); renderHiPanel('frases'); };
+
   box.querySelectorAll('.hi-lv').forEach(function (b) {
     b.onclick = function () { hiQuizLevel = b.getAttribute('data-lv'); hiQuizQ = null; renderHiPanel('quiz'); };
   });
@@ -553,6 +634,7 @@ function buildDialog() {
     '<button type="button" id="tabHI3" class="btn su-30e741">🌿 A2</button>' +
     '<button type="button" id="tabHI4" class="btn su-30e741">💬 B1</button>' +
     '<button type="button" id="tabHI5" class="btn su-30e741">📜 B2–C1 + Cultura</button>' +
+    '<button type="button" id="tabHI7" class="btn su-30e741">💬 Frases famosas</button>' +
     '<button type="button" id="tabHI6" class="btn su-30e741">🧩 Quiz</button></div>' +
     '<div id="hiPanel"></div>' +
     '<div class="dlg-actions"><button type="button" data-close class="btn">Cerrar</button></div></form>';
@@ -565,7 +647,7 @@ function buildDialog() {
 }
 
 function bindTabs() {
-  var map = { tabHI1: 'palabra', tabHI2: 'a1', tabHI3: 'a2', tabHI4: 'b1', tabHI5: 'cultura', tabHI6: 'quiz' };
+  var map = { tabHI1: 'palabra', tabHI2: 'a1', tabHI3: 'a2', tabHI4: 'b1', tabHI5: 'cultura', tabHI6: 'quiz', tabHI7: 'frases' };
   Object.keys(map).forEach(function (id) {
     var el = $(id);
     if (el) el.onclick = function () {

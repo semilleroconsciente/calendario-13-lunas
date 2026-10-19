@@ -3,14 +3,15 @@
    Sección completa dentro de Aprender > Idiomas y cultura:
    - Botón btnPortugues (grupo aprender, sub idiomas, junto a
      Kimün Mapuzugun e Inglés)
-   - Diálogo portuguesDialog con 6 pestañas:
+   - Diálogo portuguesDialog con 7 pestañas:
      1) ☀️ Palavra do dia (palabra/frase rotativa + TTS pt-BR)
      2) 🌱 A1 Sobrevivência (20 tarjetas + ser/ter + mini-diálogo)
      3) 🌿 A2 Vida diária (14 tarjetas + passado + direções)
      4) 💬 B1 Viajar, trabalhar e opinar (10 + futuro/subjuntivo)
      5) 📜 B2–C1 + Cultura (expressões, falsos amigos, BR↔PT,
         pronúncia, música, comida, capoeira)
-     6) 🧩 Quiz por níveis + racha local
+     6) 💬 Frases famosas (portada del día + tarjetas con audio y copiar)
+     7) 🧩 Quiz por níveis + racha local
    - Todo local y privado por usuario:
      userData().portugues = { ok, total, streak, lastDay }
    - 100% offline. TTS usa la voz del dispositivo (speechSynthesis
@@ -94,6 +95,38 @@ var PT_B2C1 = [
   { pt: 'entrevista: meu ponto forte é…', es: 'entrevista: mi fortaleza es…', ex: 'Meu ponto forte é o trabalho em equipe. — Mi fortaleza es el trabajo en equipo.' },
   { pt: 'no entanto / além disso', es: 'sin embargo / además (ensayo)', ex: 'No entanto, o mar é vida. — Sin embargo, el mar es vida.' }
 ];
+var PT_FRASES = [
+  { pt: 'A pressa é inimiga da perfeição', es: 'la prisa es enemiga de la perfección', ex: 'Ditado clássico — Devagar e bem feito, como a feijoada.' },
+  { pt: 'Águas passadas não movem moinhos', es: 'aguas pasadas no mueven molinos', ex: 'Ditado — O que passou, passou: olha para frente.' },
+  { pt: 'Quem não tem cão, caça com gato', es: 'quien no tiene perro, caza con gato', ex: 'Ditado — Com o que tens à mão, resolve.' },
+  { pt: 'Em terra de cego, quem tem um olho é rei', es: 'en tierra de ciegos, el tuerto es rey', ex: 'Ditado — Um pouco de saber já ajuda muito.' },
+  { pt: 'A esperança é a última que morre', es: 'la esperanza es la última que muere', ex: 'Ditado — Enquanto há vida, há esperança.' },
+  { pt: 'Deus ajuda quem cedo madruga', es: 'Dios ayuda a quien madruga', ex: 'Ditado — Acordar cedo abre caminho (clube das 5h).' },
+  { pt: 'Quem semeia vento, colhe tempestade', es: 'quien siembra viento, cosecha tempestad', ex: 'Ditado — Cada ação tem consequência.' },
+  { pt: 'A união faz a força', es: 'la unión hace la fuerza', ex: 'Ditado — Juntos, bairro e família vencem.' },
+  { pt: 'Casa de ferreiro, espeto de pau', es: 'casa de herrero, cuchillo de palo', ex: 'Ditado — Nem sempre usamos em casa o que sabemos fazer.' },
+  { pt: 'A cavalo dado não se olham os dentes', es: 'a caballo regalado no se le miran los dientes', ex: 'Ditado — Aceita o presente com gratidão.' },
+  { pt: 'Quem não chora, não mama', es: 'quien no llora, no mama', ex: 'Ditado — Pede com clareza: quem cala, perde.' },
+  { pt: 'Para bom entendedor, meia palavra basta', es: 'a buen entendedor, pocas palabras', ex: 'Ditado — Escuta atenta entende rápido.' },
+  { pt: 'O saber não ocupa lugar', es: 'el saber no ocupa lugar', ex: 'Ditado — Estudar nunca pesa.' },
+  { pt: 'Antes tarde do que nunca', es: 'mejor tarde que nunca', ex: 'Ditado — Começa hoje, mesmo atrasado.' },
+  { pt: 'Quem tudo quer, tudo perde', es: 'quien todo lo quiere, todo lo pierde', ex: 'Ditado — Escolhe o essencial.' },
+  { pt: 'A mentira tem perna curta', es: 'la mentira tiene patas cortas', ex: 'Ditado — A verdade sempre alcança.' },
+  { pt: 'Cão que ladra não morde', es: 'perro que ladra no muerde', ex: 'Ditado — Quem ameaça muito, faz pouco.' },
+  { pt: 'Em boca fechada não entra mosca', es: 'en boca cerrada no entran moscas', ex: 'Ditado — Às vezes calar é sabedoria.' },
+  { pt: 'Filho de peixe, peixinho é', es: 'de tal palo, tal astilla', ex: 'Ditado — Os filhos seguem o exemplo.' },
+  { pt: 'Devagar se vai ao longe', es: 'despacio se llega lejos', ex: 'Ditado — Constância vence a pressa.' },
+  { pt: 'Tudo vale a pena se a alma não é pequena', es: 'todo vale la pena si el alma no es pequeña', ex: 'Fernando Pessoa — Sonha grande e age.' },
+  { pt: 'Liberdade é pouco; o que eu desejo ainda não tem nome', es: 'libertad es poco; lo que deseo aún no tiene nombre', ex: 'Clarice Lispector — Deseja além do óbvio.' },
+  { pt: 'Ao vencedor, as batatas!', es: '¡al vencedor, las papas!', ex: 'Machado de Assis, Quincas Borba — Ironia sobre o poder.' },
+  { pt: 'Quando você quer alguma coisa, todo o universo conspira', es: 'cuando quieres algo, todo el universo conspira', ex: 'Paulo Coelho, O Alquimista — Persiste no teu sonho.' },
+  { pt: 'Olha que coisa mais linda, mais cheia de graça', es: 'mira qué cosa más linda, más llena de gracia', ex: 'Tom Jobim e Vinicius, Garota de Ipanema — A bossa-nova que correu o mundo.' },
+  { pt: 'Apesar de você, amanhã há de ser outro dia', es: 'a pesar de ti, mañana será otro día', ex: 'Chico Buarque — Esperança contra a ditadura.' },
+  { pt: 'Ordem e Progresso', es: 'orden y progreso', ex: 'Lema da bandeira do Brasil — Ordem para progredir.' },
+  { pt: 'Quem planta, colhe', es: 'quien planta, cosecha', ex: 'Ditado da roça — Cada semente conta.' },
+  { pt: 'Ensinar é acordar para a vida', es: 'enseñar es despertar a la vida', ex: 'Cecília Meireles — Ensinar é despertar.' },
+  { pt: 'A felicidade é como a gota de orvalho numa pétala de flor', es: 'la felicidad es como gota de rocío en pétalo', ex: 'Vinicius de Moraes — Brilha pouco, mas brilha.' }
+];
 var PT_FALSOS = [
   ['🇪🇸 embarazada → 🇧🇷 grávida', 'embaraçada = avergonzada. “Estou embaraçada” NO es embarazo.'],
   ['🇪🇸 cena (escena) → 🇧🇷 cena = escena… ¡pero jantar = cena de noche!', '“Vamos jantar?” = ¿vamos a cenar? Cena también es escena: contexto manda.'],
@@ -166,10 +199,11 @@ function portuQuizPool() {
   if (portuQuizLevel === 'a1') return PT_A1;
   if (portuQuizLevel === 'a2') return PT_A2;
   if (portuQuizLevel === 'b1') return PT_B1;
+  if (portuQuizLevel === 'frases') return PT_FRASES;
   if (portuQuizLevel === 'avanzado') return PT_B2C1;
-  return PT_A1.concat(PT_A2, PT_B1, PT_B2C1);
+  return PT_A1.concat(PT_A2, PT_B1, PT_FRASES, PT_B2C1);
 }
-function portuAll() { return PT_A1.concat(PT_A2, PT_B1, PT_B2C1); }
+function portuAll() { return PT_A1.concat(PT_A2, PT_B1, PT_FRASES, PT_B2C1); }
 
 function renderPortuStreak() {
   var b = $('portuStreakBox'); if (!b) return;
@@ -184,9 +218,10 @@ function portuCard(item, lv) {
     '<span class="muted su-11a508">“' + esc(item.ex) + '”</span></button>';
 }
 
+var portuFraseIdx = -1;
 function renderPortuPanel(tab) {
   portuTab = tab || portuTab;
-  var ids = { palavra: 'tabPT1', a1: 'tabPT2', a2: 'tabPT3', b1: 'tabPT4', cultura: 'tabPT5', quiz: 'tabPT6' };
+  var ids = { palavra: 'tabPT1', a1: 'tabPT2', a2: 'tabPT3', b1: 'tabPT4', cultura: 'tabPT5', frases: 'tabPT7', quiz: 'tabPT6' };
   Object.keys(ids).forEach(function (k) { var el = $(ids[k]); if (el) el.classList.toggle('btn-accent', k === portuTab); });
   renderPortuStreak();
   var box = $('portuPanel'); if (!box) return;
@@ -231,6 +266,9 @@ function renderPortuPanel(tab) {
     html += '<div class="menstrual-card su-5b7cd0"><h4 class="su-399074">📜 B2–C1 Avançado + Cultura viva</h4>' +
       '<p class="muted su-a6c665">Meta: entrevistas, expressões e não passar vergonha com falsos amigos. Gramática: <b>mais-que-perfeito (tinha saído), condicional (teria passado), voz passiva, discurso indireto, conectores (no entanto, além disso)</b>.</p>' +
       '<div class="su-5e3875">' + PT_B2C1.map(function (x) { return portuCard(x, 'B2–C1'); }).join('') + '</div></div>' +
+      '<div class="menstrual-card su-4adf8c"><h4>💬 Frases famosas</h4>' +
+      '<p class="su-11a508">Las <b>30 frases famosas</b> tienen su propia pestaña: portada del día + tarjetas con 🔊 Escuchar y 📋 Copiar.</p>' +
+      '<div class="su-9bc2df"><button type="button" class="btn btn-accent su-30e741 portu-goto-frases">💬 Ver frases famosas →</button></div></div>' +
       '<div class="help-grid su-d2c171">' +
       '<div class="help-card"><h4>⚠️ 8 falsos amigos que salvam vidas</h4><p class="su-583677">' + PT_FALSOS.map(function (r) { return '<b>' + esc(r[0]) + '</b><br><span class="muted">' + esc(r[1]) + '</span>'; }).join('<br><br>') + '</p></div>' +
       '<div class="help-card"><h4>🇧🇷↔️🇵🇹 Brasil ou Portugal?</h4><p class="su-583677">' + PT_BRPT.map(function (r) { return '<b>' + esc(r[0]) + '</b><br><span class="muted">' + esc(r[1]) + '</span>'; }).join('<br><br>') + '</p></div></div>' +
@@ -238,6 +276,27 @@ function renderPortuPanel(tab) {
       '<div class="help-card"><h4>🗣️ Pronúncia em 1 minuto</h4><p class="su-b439ab"><b>ão</b> nasal: pão, coração (nariz vibra)<br><b>lh</b> ≈ li: filho (filiu) · <b>nh</b> ≈ ñ: vinho (viño)<br><b>r</b> inicial ≈ j: rato (jato) · <b>s</b> entre vogais = z: casa (caza)<br><b>o</b> final ≈ u: obrigado (obrigadu) · <b>e</b> final ≈ i: cidade (sidadji)<br><span class="muted">Fala devagar e nasalando: melhor que perfeito.</span></p></div>' +
       '<div class="help-card"><h4>🎶 Cultura para ouvir e provar</h4><p class="su-b439ab"><b>Ouvir:</b> Garota de Ipanema (bossa nova), Asa Branca (forró), Mas que Nada (samba). 1 música × 7 dias.<br><b>Provar:</b> feijoada, brigadeiro, pão de queijo — procura a receita e lê em português.<br><b>Ver:</b> capoeira (roda + berimbau): “jogar capoeira” não é lutar, é conversar com o corpo.<br><span class="muted">Festa junina (junho, como o We Tripantu) e carnaval: o calendário também é festa.</span></p></div></div>' +
       '<div class="menstrual-card su-4adf8c"><h4>💼 Kit entrevista de trabalho</h4><p class="su-583677">— <b>Fale um pouco sobre você.</b><br>— <b>Sou responsável e trabalho bem em equipe.</b><br>— <b>Meu ponto forte é… Meu objetivo é…</b><br><span class="muted">Fecha: “Obrigada pelo seu tempo.”</span></p></div>';
+  } else if (portuTab === 'frases') {
+    if (portuFraseIdx < 0) portuFraseIdx = portuDayIndex(PT_FRASES.length);
+    var FDAY = PT_FRASES[portuFraseIdx % PT_FRASES.length];
+    var fdate = '';
+    try { fdate = cal.fmtDate.format(new Date()); } catch (e) { fdate = new Date().toLocaleDateString(); }
+    html += '<div class="menstrual-card su-3fa1a8">' +
+      '<p class="muted su-11a508">💬 FRASE DEL DÍA · ' + esc(fdate) + ' · ' + PT_FRASES.length + ' frases famosas</p>' +
+      '<div class="su-6adb68">' + '“' + esc(FDAY.pt) + '”</div>' +
+      '<div class="su-cd8bd8"><b>' + esc(FDAY.es) + '</b></div>' +
+            '<p class="muted su-2b0979">“' + esc(FDAY.ex) + '”</p>' +
+      '<div class="su-9bc2df"><button type="button" class="btn btn-accent su-30e741 portu-hear" data-w="' + esc(FDAY.pt) + '">🔊 Escuchar</button> ' +
+      '<button type="button" id="portuFraseRnd" class="btn su-30e741">🎲 Otra frase</button></div></div>' +
+      PT_FRASES.map(function (x) {
+        return '<div class="menstrual-card su-4adf8c"><h4>“' + esc(x.pt) + '”</h4>' +
+          '<p><b>' + esc(x.es) + '</b>' +
+          '<br><span class="muted">“' + esc(x.ex) + '”</span></p>' +
+          '<div class="su-9bc2df"><button type="button" class="btn btn-accent su-30e741 portu-hear" data-w="' + esc(x.pt) + '">🔊 Escuchar</button> ' +
+          '<button type="button" class="btn su-30e741 portu-copy" data-w="' + esc(x.pt) + '|' + esc(x.es) + '">📋 Copiar</button></div></div>';
+      }).join('') +
+      '<div class="menstrual-card su-5a6934"><h4 class="su-752b1a">🗣️ ¿Cómo practicar?</h4>' +
+      '<p class="muted su-a6c665">1) <b>Escucha</b> la frase del día con 🔊 y repítela 3 veces en voz alta.<br>2) <b>Copia</b> tu favorita con 📋 y pégala en las Notas del día.<br>3) <b>Úsala hoy</b>: una frase al día son 365 al año.</p></div>';
   } else if (portuTab === 'quiz') {
     var d = getPortuData();
     if (!portuQuizQ) {
@@ -253,7 +312,7 @@ function renderPortuPanel(tab) {
     var q = portuQuizQ;
     var lvBtn = function (v, l) { return '<button type="button" class="btn portu-lv' + (portuQuizLevel === v ? ' btn-accent' : '') + ' su-337714" data-lv="' + v + '">' + l + '</button>'; };
     html += '<div class="menstrual-card su-1f2df9"><h4 class="su-399074">🧩 Quiz por níveis</h4>' +
-      '<div class="su-a8712a">' + lvBtn('todo', '🌎 Todo') + lvBtn('a1', '🌱 A1') + lvBtn('a2', '🌿 A2') + lvBtn('b1', '💬 B1') + lvBtn('avanzado', '📜 B2–C1') + '</div>' +
+      '<div class="su-a8712a">' + lvBtn('todo', '🌎 Todo') + lvBtn('a1', '🌱 A1') + lvBtn('a2', '🌿 A2') + lvBtn('b1', '💬 B1') + lvBtn('frases', '💬 Frases') + lvBtn('avanzado', '📜 B2–C1') + '</div>' +
       '<div class="su-73ce29">“' + esc(q.w.pt) + '”</div>' +
       '<button type="button" id="portuQuizSpeak" class="btn su-337714">🔊 Ouvir</button>' +
       '<div class="su-ae0e71">' + q.opts.map(function (o) { return '<button type="button" class="btn portu-opt su-046678" data-o="' + esc(o) + '">' + esc(o) + '</button>'; }).join('') + '</div>' +
@@ -270,6 +329,26 @@ function renderPortuPanel(tab) {
   box.querySelectorAll('.eng-word').forEach(function (b) {
     b.onclick = function (e) { try { e.preventDefault(); } catch (x) {} portuSpeak(b.getAttribute('data-w')); };
   });
+  box.querySelectorAll('.portu-hear').forEach(function (b) {
+    b.onclick = function (e) { try { e.preventDefault(); } catch (x) {} portuSpeak(b.getAttribute('data-w')); };
+  });
+  box.querySelectorAll('.portu-copy').forEach(function (b) {
+    b.onclick = function (e) {
+      try { e.preventDefault(); } catch (x) {}
+      var parts = (b.getAttribute('data-w') || '').split('|');
+      var txt = '💬 ' + (parts[0] || '') + ' = ' + (parts[1] || '');
+      try {
+        if (navigator.clipboard) navigator.clipboard.writeText(txt).then(function () { alert('Copiado: ' + txt); }, function () { alert(txt); });
+        else alert(txt);
+      } catch (err) { try { alert(txt); } catch (e2) {} }
+    };
+  });
+  box.querySelectorAll('.portu-goto-frases').forEach(function (b) {
+    b.onclick = function () { renderPortuPanel('frases'); };
+  });
+  var frnd = $('portuFraseRnd');
+  if (frnd) frnd.onclick = function () { portuFraseIdx = Math.floor(Math.random() * PT_FRASES.length); renderPortuPanel('frases'); };
+
   box.querySelectorAll('.portu-lv').forEach(function (b) {
     b.onclick = function () { portuQuizLevel = b.getAttribute('data-lv'); portuQuizQ = null; renderPortuPanel('quiz'); };
   });
@@ -309,6 +388,7 @@ function buildDialog() {
     '<button type="button" id="tabPT3" class="btn su-30e741">🌿 A2</button>' +
     '<button type="button" id="tabPT4" class="btn su-30e741">💬 B1</button>' +
     '<button type="button" id="tabPT5" class="btn su-30e741">📜 B2–C1 + Cultura</button>' +
+    '<button type="button" id="tabPT7" class="btn su-30e741">💬 Frases famosas</button>' +
     '<button type="button" id="tabPT6" class="btn su-30e741">🧩 Quiz</button></div>' +
     '<div id="portuPanel"></div>' +
     '<div class="dlg-actions"><button type="button" data-close class="btn">Cerrar</button></div></form>';
@@ -317,7 +397,7 @@ function buildDialog() {
 }
 
 function bindTabs() {
-  var map = { tabPT1: 'palavra', tabPT2: 'a1', tabPT3: 'a2', tabPT4: 'b1', tabPT5: 'cultura', tabPT6: 'quiz' };
+  var map = { tabPT1: 'palavra', tabPT2: 'a1', tabPT3: 'a2', tabPT4: 'b1', tabPT5: 'cultura', tabPT6: 'quiz', tabPT7: 'frases' };
   Object.keys(map).forEach(function (id) {
     var el = $(id);
     if (el) el.onclick = function () { if (map[id] !== 'quiz') portuQuizQ = null; renderPortuPanel(map[id]); };

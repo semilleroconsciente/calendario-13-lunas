@@ -2,7 +2,7 @@
 // Copyright (C) 2026 Semillero Consciente. Licencia: GNU GPLv3 o posterior (ver COPYING).
 // SPDX-License-Identifier: GPL-3.0-or-later
 // v55
-const CACHE = 'cal13-v128-offline';
+const CACHE = 'cal13-v129-offline';
 
 // Lista completa de archivos que usa index.html (bare + con ?v=).
 // Si se agrega un JS nuevo en index.html, agregarlo aquí también (bare y ?v=).
@@ -151,7 +151,7 @@ const CORE = [
   './min/apoyo-emergencia.min.js',
   './min/apoyo-emergencia.min.js?v=1',
   './min/arabe-modulo.min.js',
-  './min/arabe-modulo.min.js?v=1',
+  './min/arabe-modulo.min.js?v=2',
   './min/astro.min.js',
   './min/astro.min.js?v=8',
   './min/auto-backup-modulo.min.js',
@@ -179,7 +179,7 @@ const CORE = [
   './min/carta-astral.min.js',
   './min/carta-astral.min.js?v=1',
   './min/chino-mandarin-modulo.min.js',
-  './min/chino-mandarin-modulo.min.js?v=3',
+  './min/chino-mandarin-modulo.min.js?v=4',
   './min/ciberseguridad-modulo.min.js',
   './min/ciberseguridad-modulo.min.js?v=1',
   './min/club-5am-modulo.min.js',
@@ -257,7 +257,7 @@ const CORE = [
   './min/hidroponia-modulo.min.js',
   './min/hidroponia-modulo.min.js?v=2',
   './min/hindi-modulo.min.js',
-  './min/hindi-modulo.min.js?v=2',
+  './min/hindi-modulo.min.js?v=3',
   './min/hogar-biblioteca-modulo.min.js',
   './min/hogar-biblioteca-modulo.min.js?v=1',
   './min/hogar-corral-movilidad-escolar-modulo.min.js',
@@ -285,15 +285,15 @@ const CORE = [
   './min/info-clave.min.js',
   './min/info-clave.min.js?v=1',
   './min/italiano-modulo.min.js',
-  './min/italiano-modulo.min.js?v=2',
+  './min/italiano-modulo.min.js?v=3',
   './min/japones-modulo.min.js',
-  './min/japones-modulo.min.js?v=2',
+  './min/japones-modulo.min.js?v=3',
   './min/jsqr-lib.min.js',
   './min/jsqr-lib.min.js?v=1',
   './min/kin-maya-modulo.min.js',
   './min/kin-maya-modulo.min.js?v=3',
   './min/latin-modulo.min.js',
-  './min/latin-modulo.min.js?v=1',
+  './min/latin-modulo.min.js?v=2',
   './min/legal-modulo.min.js',
   './min/legal-modulo.min.js?v=1',
   './min/linaje-modulos.min.js',
@@ -337,7 +337,7 @@ const CORE = [
   './min/plantas-modulo.min.js',
   './min/plantas-modulo.min.js?v=1',
   './min/portugues-modulo.min.js',
-  './min/portugues-modulo.min.js?v=2',
+  './min/portugues-modulo.min.js?v=3',
   './min/psicologia-modulo.min.js',
   './min/psicologia-modulo.min.js?v=1',
   './min/pwa-install.min.js',
@@ -361,7 +361,7 @@ const CORE = [
   './min/retos-21-modulo.min.js',
   './min/retos-21-modulo.min.js?v=1',
   './min/ruso-modulo.min.js',
-  './min/ruso-modulo.min.js?v=2',
+  './min/ruso-modulo.min.js?v=3',
   './min/semillero-guias.min.js',
   './min/semillero-guias.min.js?v=1',
   './min/solitario-modulo.min.js',

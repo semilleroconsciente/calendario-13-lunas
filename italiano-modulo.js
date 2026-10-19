@@ -3,14 +3,15 @@
    Sección completa dentro de Aprender > Idiomas y cultura:
    - Botón btnItaliano (grupo aprender, sub idiomas, junto a
      Kimün Mapuzugun, Inglés, Portugués, Chino y Hindi)
-   - Diálogo italianoDialog con 6 pestañas:
+   - Diálogo italianoDialog con 7 pestañas:
      1) ☀️ Parola del giorno (palabra/frase rotativa + TTS it-IT)
      2) 🌱 A1 Sopravvivenza (20 tarjetas + essere/avere + mini-diálogo)
      3) 🌿 A2 Vita quotidiana (14 tarjetas + passato + direzioni)
      4) 💬 B1 Viaggiare, lavorare e opinare (10 + futuro/congiuntivo)
      5) 📜 B2–C1 + Cultura (espressioni, falsi amici, doppie,
         pronuncia, gesti, musica, cibo, arte)
-     6) 🧩 Quiz por niveles + racha local
+     6) 💬 Frases famosas (portada del día + tarjetas con audio y copiar)
+     7) 🧩 Quiz por niveles + racha local
    - Todo local y privado por usuario:
      userData().italiano = { ok, total, streak, lastDay }
    - 100% offline. TTS usa la voz del dispositivo (speechSynthesis
@@ -95,6 +96,38 @@ var IT_B2C1 = [
   { it: 'colloquio: il mio punto di forza è…', es: 'entrevista: mi fortaleza es…', ex: 'Il mio punto di forza è il lavoro di squadra. — Mi fortaleza es el trabajo en equipo.' },
   { it: 'tuttavia / inoltre', es: 'sin embargo / además (ensayo)', ex: 'Tuttavia, il mare è vita. — Sin embargo, el mar es vida.' }
 ];
+var IT_FRASES = [
+  { it: 'La dolce vita', es: 'la dulce vida', ex: 'Fellini (1960) — Gozar lo simple: familia, mesa y mar.' },
+  { it: 'Nel mezzo del cammin di nostra vita', es: 'a mitad del camino de nuestra vida', ex: 'Dante, Inferno I — El viaje empieza cuando te pierdes.' },
+  { it: 'Lasciate ogni speranza, voi ch’entrate', es: 'abandonad toda esperanza los que entráis', ex: 'Dante, Inferno III — Cartel del infierno: no entres al odio.' },
+  { it: 'La semplicità è l’ultima sofisticazione', es: 'la simplicidad es la máxima sofisticación', ex: 'Leonardo da Vinci — Hazlo simple y bello.' },
+  { it: 'Eppur si muove!', es: '¡y sin embargo se mueve!', ex: 'Galileo — La verdad se mueve aunque la nieguen.' },
+  { it: 'La vita è bella', es: 'la vida es bella', ex: 'Benigni / dicho popular — Aun difícil, la vida es bella.' },
+  { it: 'Chi dorme non piglia pesci', es: 'quien duerme no pesca', ex: 'Proverbio — Camarón que se duerme… madruga.' },
+  { it: 'Il mondo è bello perché è vario', es: 'el mundo es bello porque es variado', ex: 'Proverbio — Respeta lo distinto: ahí está la belleza.' },
+  { it: 'Sbagliando s’impara', es: 'equivocándose se aprende', ex: 'Proverbio — Errare humanum est, en italiano.' },
+  { it: 'L’erba del vicino è sempre più verde', es: 'el pasto del vecino siempre es más verde', ex: 'Proverbio — Cuida tu jardín en vez de mirar el ajeno.' },
+  { it: 'Chi trova un amico trova un tesoro', es: 'quien encuentra un amigo encuentra un tesoro', ex: 'Proverbio — La amistad vale oro.' },
+  { it: 'Ride bene chi ride ultimo', es: 'ríe bien quien ríe último', ex: 'Proverbio — La constancia ríe al final.' },
+  { it: 'Paese che vai, usanza che trovi', es: 'donde fueres, haz lo que vieres', ex: 'Proverbio — Respeta la casa que te recibe.' },
+  { it: 'L’abito non fa il monaco', es: 'el hábito no hace al monje', ex: 'Proverbio — No juzgues por la ropa.' },
+  { it: 'Tra il dire e il fare c’è di mezzo il mare', es: 'entre el decir y el hacer hay un mar', ex: 'Proverbio — Acta non verba: hazlo.' },
+  { it: 'Chi va piano va sano e va lontano', es: 'quien va despacio va sano y lejos', ex: 'Proverbio — Festina lente a la italiana.' },
+  { it: 'La gatta frettolosa fece i gattini ciechi', es: 'la gata apurada tuvo gatitos ciegos', ex: 'Proverbio — La prisa sale mal: con calma.' },
+  { it: 'A caval donato non si guarda in bocca', es: 'a caballo regalado no se le mira la boca', ex: 'Proverbio — Agradece el regalo.' },
+  { it: 'Finché c’è vita c’è speranza', es: 'mientras hay vida hay esperanza', ex: 'Proverbio — Dum spiro, spero en italiano.' },
+  { it: 'Volere è potere', es: 'querer es poder', ex: 'Proverbio — Con voluntad, todo oficio se aprende.' },
+  { it: 'La speranza è l’ultima a morire', es: 'la esperanza es la última en morir', ex: 'Proverbio — Sostén la esperanza hasta el final.' },
+  { it: 'Meglio un uovo oggi che una gallina domani', es: 'mejor un huevo hoy que una gallina mañana', ex: 'Proverbio — Carpe diem: asegura el hoy.' },
+  { it: 'Tutto fa brodo', es: 'todo hace caldo', ex: 'Proverbio — Todo suma: guarda cada resto.' },
+  { it: 'E il naufragar m’è dolce in questo mare', es: 'y naufragar me es dulce en este mar', ex: 'Leopardi, L’infinito — Perderse en lo inmenso también es bello.' },
+  { it: 'Vincerò!', es: '¡venceré!', ex: 'Puccini, Nessun dorma (Pavarotti) — Canta tu victoria antes de lograrla.' },
+  { it: 'Va, pensiero, sull’ali dorate', es: 'vuela, pensamiento, en alas doradas', ex: 'Verdi, Nabucco — El canto de los que extrañan su tierra.' },
+  { it: 'Il bambino è maestro dell’uomo', es: 'el niño es maestro del hombre', ex: 'Maria Montessori — Aprende mirando a los niños.' },
+  { it: 'La vita è una combinazione di magia e pasta', es: 'la vida es magia y pasta', ex: 'Atribuido a Fellini — Magia diaria + plato caliente.' },
+  { it: 'Non tutto il male viene per nuocere', es: 'no todo mal viene para dañar', ex: 'Proverbio — A veces lo malo trae un bien.' },
+  { it: 'Chi non risica non rosica', es: 'quien no se arriesga no consigue', ex: 'Proverbio toscano — Audaces fortuna iuvat.' }
+];
 var IT_FALSI = [
   ['🇪🇸 burro (asno) → 🇮🇹 burro = mantequilla', '“Pane e burro” = pan con mantequilla. Asno se dice asino. Pide burro en el desayuno sin miedo.'],
   ['🇪🇸 embarazada → 🇮🇹 incinta (no imbarazzata)', 'Imbarazzata = avergonzada. “Sono imbarazzata” NO es embarazo: es “estoy avergonzada”.'],
@@ -167,10 +200,11 @@ function itaQuizPool() {
   if (itaQuizLevel === 'a1') return IT_A1;
   if (itaQuizLevel === 'a2') return IT_A2;
   if (itaQuizLevel === 'b1') return IT_B1;
+  if (itaQuizLevel === 'frases') return IT_FRASES;
   if (itaQuizLevel === 'avanzado') return IT_B2C1;
-  return IT_A1.concat(IT_A2, IT_B1, IT_B2C1);
+  return IT_A1.concat(IT_A2, IT_B1, IT_FRASES, IT_B2C1);
 }
-function itaAll() { return IT_A1.concat(IT_A2, IT_B1, IT_B2C1); }
+function itaAll() { return IT_A1.concat(IT_A2, IT_B1, IT_FRASES, IT_B2C1); }
 
 function renderItaStreak() {
   var b = $('itaStreakBox'); if (!b) return;
@@ -185,9 +219,10 @@ function itaCard(item, lv) {
     '<span class="muted su-11a508">“' + esc(item.ex) + '”</span></button>';
 }
 
+var itaFraseIdx = -1;
 function renderItaPanel(tab) {
   itaTab = tab || itaTab;
-  var ids = { parola: 'tabIT1', a1: 'tabIT2', a2: 'tabIT3', b1: 'tabIT4', cultura: 'tabIT5', quiz: 'tabIT6' };
+  var ids = { parola: 'tabIT1', a1: 'tabIT2', a2: 'tabIT3', b1: 'tabIT4', cultura: 'tabIT5', frases: 'tabIT7', quiz: 'tabIT6' };
   Object.keys(ids).forEach(function (k) { var el = $(ids[k]); if (el) el.classList.toggle('btn-accent', k === itaTab); });
   renderItaStreak();
   var box = $('itaPanel'); if (!box) return;
@@ -232,6 +267,9 @@ function renderItaPanel(tab) {
     html += '<div class="menstrual-card su-5b7cd0"><h4 class="su-399074">📜 B2–C1 Avanzato + Cultura viva</h4>' +
       '<p class="muted su-a6c665">Meta: colloqui, espressioni e non fare brutte figure con i falsi amici. Grammatica: <b>trapassato prossimo (ero partito), condizionale passato (avrei fatto), voce passiva, discorso indiretto, connettori (tuttavia, inoltre)</b>.</p>' +
       '<div class="su-5e3875">' + IT_B2C1.map(function (x) { return itaCard(x, 'B2–C1'); }).join('') + '</div></div>' +
+      '<div class="menstrual-card su-4adf8c"><h4>💬 Frases famosas</h4>' +
+      '<p class="su-11a508">Las <b>30 frases famosas</b> tienen su propia pestaña: portada del día + tarjetas con 🔊 Escuchar y 📋 Copiar.</p>' +
+      '<div class="su-9bc2df"><button type="button" class="btn btn-accent su-30e741 ita-goto-frases">💬 Ver frases famosas →</button></div></div>' +
       '<div class="help-grid su-d2c171">' +
       '<div class="help-card"><h4>⚠️ 8 falsi amici che salvano la vita</h4><p class="su-583677">' + IT_FALSI.map(function (r) { return '<b>' + esc(r[0]) + '</b><br><span class="muted">' + esc(r[1]) + '</span>'; }).join('<br><br>') + '</p></div>' +
       '<div class="help-card"><h4>🇮🇹 Nord ↔ Sud + tu/Lei</h4><p class="su-583677">' + IT_NORDSUD.map(function (r) { return '<b>' + esc(r[0]) + '</b><br><span class="muted">' + esc(r[1]) + '</span>'; }).join('<br><br>') + '</p></div></div>' +
@@ -239,6 +277,27 @@ function renderItaPanel(tab) {
       '<div class="help-card"><h4>🗣️ Pronuncia in 1 minuto</h4><p class="su-b439ab"><b>gn</b> ≈ ñ: lasagna (lasania) · <b>gli</b> ≈ lli: figlio (fillio)<br><b>ch</b> = k dura: perché (perké) · <b>gh</b> = g dura: spaghetti<br><b>sc+e/i</b> = sh: scena (shena) · <b>sc+a/o/u</b> = sk: scala<br><b>z</b> = ts/dz: pizza (pit-tsa), zero (dzero)<br><b>doppie</b> allungano: pala/palla · caro/carro · ano/anno ⚠️<br><span class="muted">Parla piano e raddoppia: meglio lenta che piatta.</span></p></div>' +
       '<div class="help-card"><h4>🎶 Cultura da ascoltare e assaggiare</h4><p class="su-b439ab"><b>Ascoltare:</b> Volare (Modugno), Con te partirò (Bocelli), Bella Ciao. 1 canzone × 7 giorni.<br><b>Assaggiare:</b> pasta al ragù, pizza margherita, gelato artigianale — cerca la ricetta e leggila in italiano.<br><b>Vedere:</b> Carnevale di Venezia (maschere + gondole): “carnevale” non è festa qualsiasi, è teatro di strada.<br><span class="muted">Dante (Divina Commedia), Leonardo, l’opera: il calendario è anche arte.</span></p></div></div>' +
       '<div class="menstrual-card su-4adf8c"><h4>💼 Kit colloquio di lavoro</h4><p class="su-583677">— <b>Mi parli un po’ di Lei.</b><br>— <b>Sono responsabile e lavoro bene in squadra.</b><br>— <b>Il mio punto di forza è… Il mio obiettivo è…</b><br><span class="muted">Chiudi: “Grazie per il Suo tempo.”</span></p></div>';
+  } else if (itaTab === 'frases') {
+    if (itaFraseIdx < 0) itaFraseIdx = itaDayIndex(IT_FRASES.length);
+    var FDAY = IT_FRASES[itaFraseIdx % IT_FRASES.length];
+    var fdate = '';
+    try { fdate = cal.fmtDate.format(new Date()); } catch (e) { fdate = new Date().toLocaleDateString(); }
+    html += '<div class="menstrual-card su-3fa1a8">' +
+      '<p class="muted su-11a508">💬 FRASE DEL DÍA · ' + esc(fdate) + ' · ' + IT_FRASES.length + ' frases famosas</p>' +
+      '<div class="su-6adb68">' + '“' + esc(FDAY.it) + '”</div>' +
+      '<div class="su-cd8bd8"><b>' + esc(FDAY.es) + '</b></div>' +
+            '<p class="muted su-2b0979">“' + esc(FDAY.ex) + '”</p>' +
+      '<div class="su-9bc2df"><button type="button" class="btn btn-accent su-30e741 ita-hear" data-w="' + esc(FDAY.it) + '">🔊 Escuchar</button> ' +
+      '<button type="button" id="itaFraseRnd" class="btn su-30e741">🎲 Otra frase</button></div></div>' +
+      IT_FRASES.map(function (x) {
+        return '<div class="menstrual-card su-4adf8c"><h4>“' + esc(x.it) + '”</h4>' +
+          '<p><b>' + esc(x.es) + '</b>' +
+          '<br><span class="muted">“' + esc(x.ex) + '”</span></p>' +
+          '<div class="su-9bc2df"><button type="button" class="btn btn-accent su-30e741 ita-hear" data-w="' + esc(x.it) + '">🔊 Escuchar</button> ' +
+          '<button type="button" class="btn su-30e741 ita-copy" data-w="' + esc(x.it) + '|' + esc(x.es) + '">📋 Copiar</button></div></div>';
+      }).join('') +
+      '<div class="menstrual-card su-5a6934"><h4 class="su-752b1a">🗣️ ¿Cómo practicar?</h4>' +
+      '<p class="muted su-a6c665">1) <b>Escucha</b> la frase del día con 🔊 y repítela 3 veces en voz alta.<br>2) <b>Copia</b> tu favorita con 📋 y pégala en las Notas del día.<br>3) <b>Úsala hoy</b>: una frase al día son 365 al año.</p></div>';
   } else if (itaTab === 'quiz') {
     var d = getItaData();
     if (!itaQuizQ) {
@@ -254,7 +313,7 @@ function renderItaPanel(tab) {
     var q = itaQuizQ;
     var lvBtn = function (v, l) { return '<button type="button" class="btn ita-lv' + (itaQuizLevel === v ? ' btn-accent' : '') + ' su-337714" data-lv="' + v + '">' + l + '</button>'; };
     html += '<div class="menstrual-card su-1f2df9"><h4 class="su-399074">🧩 Quiz per livelli</h4>' +
-      '<div class="su-a8712a">' + lvBtn('todo', '🌎 Tutto') + lvBtn('a1', '🌱 A1') + lvBtn('a2', '🌿 A2') + lvBtn('b1', '💬 B1') + lvBtn('avanzado', '📜 B2–C1') + '</div>' +
+      '<div class="su-a8712a">' + lvBtn('todo', '🌎 Tutto') + lvBtn('a1', '🌱 A1') + lvBtn('a2', '🌿 A2') + lvBtn('b1', '💬 B1') + lvBtn('frases', '💬 Frasi') + lvBtn('avanzado', '📜 B2–C1') + '</div>' +
       '<div class="su-73ce29">“' + esc(q.w.it) + '”</div>' +
       '<button type="button" id="itaQuizSpeak" class="btn su-337714">🔊 Ascolta</button>' +
       '<div class="su-ae0e71">' + q.opts.map(function (o) { return '<button type="button" class="btn ita-opt su-046678" data-o="' + esc(o) + '">' + esc(o) + '</button>'; }).join('') + '</div>' +
@@ -271,6 +330,26 @@ function renderItaPanel(tab) {
   box.querySelectorAll('.eng-word').forEach(function (b) {
     b.onclick = function (e) { try { e.preventDefault(); } catch (x) {} itaSpeak(b.getAttribute('data-w')); };
   });
+  box.querySelectorAll('.ita-hear').forEach(function (b) {
+    b.onclick = function (e) { try { e.preventDefault(); } catch (x) {} itaSpeak(b.getAttribute('data-w')); };
+  });
+  box.querySelectorAll('.ita-copy').forEach(function (b) {
+    b.onclick = function (e) {
+      try { e.preventDefault(); } catch (x) {}
+      var parts = (b.getAttribute('data-w') || '').split('|');
+      var txt = '💬 ' + (parts[0] || '') + ' = ' + (parts[1] || '');
+      try {
+        if (navigator.clipboard) navigator.clipboard.writeText(txt).then(function () { alert('Copiado: ' + txt); }, function () { alert(txt); });
+        else alert(txt);
+      } catch (err) { try { alert(txt); } catch (e2) {} }
+    };
+  });
+  box.querySelectorAll('.ita-goto-frases').forEach(function (b) {
+    b.onclick = function () { renderItaPanel('frases'); };
+  });
+  var frnd = $('itaFraseRnd');
+  if (frnd) frnd.onclick = function () { itaFraseIdx = Math.floor(Math.random() * IT_FRASES.length); renderItaPanel('frases'); };
+
   box.querySelectorAll('.ita-lv').forEach(function (b) {
     b.onclick = function () { itaQuizLevel = b.getAttribute('data-lv'); itaQuizQ = null; renderItaPanel('quiz'); };
   });
@@ -310,6 +389,7 @@ function buildDialog() {
     '<button type="button" id="tabIT3" class="btn su-30e741">🌿 A2</button>' +
     '<button type="button" id="tabIT4" class="btn su-30e741">💬 B1</button>' +
     '<button type="button" id="tabIT5" class="btn su-30e741">📜 B2–C1 + Cultura</button>' +
+    '<button type="button" id="tabIT7" class="btn su-30e741">💬 Frases famosas</button>' +
     '<button type="button" id="tabIT6" class="btn su-30e741">🧩 Quiz</button></div>' +
     '<div id="itaPanel"></div>' +
     '<div class="dlg-actions"><button type="button" data-close class="btn">Cerrar</button></div></form>';
@@ -318,7 +398,7 @@ function buildDialog() {
 }
 
 function bindTabs() {
-  var map = { tabIT1: 'parola', tabIT2: 'a1', tabIT3: 'a2', tabIT4: 'b1', tabIT5: 'cultura', tabIT6: 'quiz' };
+  var map = { tabIT1: 'parola', tabIT2: 'a1', tabIT3: 'a2', tabIT4: 'b1', tabIT5: 'cultura', tabIT6: 'quiz', tabIT7: 'frases' };
   Object.keys(map).forEach(function (id) {
     var el = $(id);
     if (el) el.onclick = function () { if (map[id] !== 'quiz') itaQuizQ = null; renderItaPanel(map[id]); };

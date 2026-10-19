@@ -3,14 +3,15 @@
    Sección completa dentro de Aprender > Idiomas y cultura:
    - Botón btnChino (grupo aprender, sub idiomas, junto a
      Kimün Mapuzugun, Inglés y Portugués)
-   - Diálogo chinoDialog con 6 pestañas:
+   - Diálogo chinoDialog con 7 pestañas:
      1) ☀️ Palabra del día (hanzi rotativo + pinyin + tono + TTS zh-CN)
      2) 🌱 A1 Supervivencia (20 tarjetas + tonos + números + mini-diálogo)
      3) 🌿 A2 Vida diaria (14 tarjetas + pasado con le/guo + direcciones)
      4) 💬 B1 Viajar, trabajar y opinar (10 + 把/被 + futuro 要/会)
      5) 📜 B2–C1 + Cultura (chengyu, tonos que cambian todo, 简↔繁,
         orden de trazos, té, Año Nuevo, Confucio y Tao)
-     6) 🧩 Quiz por niveles + quiz de tonos + racha local
+     6) 💬 Frases famosas (portada del día + tarjetas con audio y copiar)
+     7) 🧩 Quiz por niveles + quiz de tonos + racha local
    - Todo local y privado por usuario:
      userData().chino = { ok, total, streak, lastDay }
    - 100% offline. TTS usa la voz del dispositivo (speechSynthesis
@@ -95,6 +96,38 @@ var ZH_B2C1 = [
   { hz: '面试：我的优点是…', py: 'miànshì: wǒ de yōudiǎn shì…', es: 'entrevista: mi fortaleza es…', ex: '我善于团队合作。— Soy buena trabajando en equipo.' },
   { hz: '然而 / 此外', py: 'rán ér / cǐwài', es: 'sin embargo / además (ensayo)', ex: '然而，大海就是生命。— Sin embargo, el mar es vida.' }
 ];
+var ZH_FRASES = [
+  { hz: '学而时习之', py: 'xué ér shí xí zhī', es: 'aprender y repasar a tiempo', ex: 'Confucio, Analectas — Repite 5 minutos al día y se queda.' },
+  { hz: '有朋自远方来', py: 'yǒu péng zì yuǎnfāng lái', es: 'tener amigos que vienen de lejos', ex: 'Confucio — Qué alegría recibir visitas: atiende bien.' },
+  { hz: '三人行，必有我师', py: 'sān rén xíng, bì yǒu wǒ shī', es: 'entre tres, siempre hay un maestro', ex: 'Confucio — De cada vecino se aprende algo.' },
+  { hz: '己所不欲，勿施于人', py: 'jǐ suǒ bú yù, wù shī yú rén', es: 'no hagas a otros lo que no quieres para ti', ex: 'Confucio — Regla de oro china.' },
+  { hz: '温故而知新', py: 'wēn gù ér zhī xīn', es: 'repasar lo viejo para entender lo nuevo', ex: 'Confucio — Repasa tus notas: ahí nace lo nuevo.' },
+  { hz: '道可道，非常道', py: 'dào kě dào, fēi cháng dào', es: 'el Tao que se nombra no es el Tao eterno', ex: 'Laozi, Tao Te Ching — Lo esencial no cabe en palabras.' },
+  { hz: '千里之行，始于足下', py: 'qiānlǐ zhī xíng, shǐ yú zúxià', es: 'un viaje de mil li empieza bajo tus pies', ex: 'Laozi — Empieza hoy con un paso chico.' },
+  { hz: '知足常乐', py: 'zhī zú cháng lè', es: 'quien se contenta, siempre alegre', ex: 'Proverbio — Agradece lo que hay.' },
+  { hz: '滴水穿石', py: 'dī shuǐ chuān shí', es: 'la gota horada la piedra', ex: 'Chengyu — Poco cada día vence lo duro.' },
+  { hz: '熟能生巧', py: 'shú néng shēng qiǎo', es: 'la práctica hace la maestría', ex: 'Chengyu — Repite el oficio hasta dominarlo.' },
+  { hz: '失败是成功之母', py: 'shībài shì chénggōng zhī mǔ', es: 'el fracaso es madre del éxito', ex: 'Proverbio — Cada error enseña.' },
+  { hz: '慢工出细活', py: 'màn gōng chū xì huó', es: 'trabajo lento, obra fina', ex: 'Proverbio — Festina lente en chino.' },
+  { hz: '团结就是力量', py: 'tuánjié jiùshì lìliàng', es: 'la unión es fuerza', ex: 'Lema — Junta vecinal fuerte.' },
+  { hz: '活到老，学到老', py: 'huó dào lǎo, xué dào lǎo', es: 'vive hasta viejo, aprende hasta viejo', ex: 'Proverbio — Nunca dejes de estudiar.' },
+  { hz: '好记性不如烂笔头', py: 'hǎo jìxìng bùrú làn bǐtóu', es: 'mejor lápiz flojo que buena memoria', ex: 'Proverbio — Escríbelo: lo escrito queda.' },
+  { hz: '一分耕耘，一分收获', py: 'yì fēn gēngyún, yì fēn shōuhuò', es: 'cada esfuerzo, su cosecha', ex: 'Proverbio de huerta — Siembra y cosecha.' },
+  { hz: '吃一堑，长一智', py: 'chī yí qiàn, zhǎng yí zhì', es: 'de cada caída, una sabiduría', ex: 'Proverbio — Tropezar enseña.' },
+  { hz: '万事开头难', py: 'wànshì kāitóu nán', es: 'todo comienzo es difícil', ex: 'Proverbio — Lo duro es partir: parte igual.' },
+  { hz: '心急吃不了热豆腐', py: 'xīnjí chī bù liǎo rè dòufu', es: 'ansioso no come tofu caliente', ex: 'Proverbio — Con calma se come mejor.' },
+  { hz: '读万卷书，行万里路', py: 'dú wàn juàn shū, xíng wàn lǐ lù', es: 'lee mil libros, viaja mil leguas', ex: 'Proverbio — Libro + camino: doble escuela.' },
+  { hz: '前事不忘，后事之师', py: 'qiánshì bú wàng, hòushì zhī shī', es: 'no olvides el pasado, maestro del futuro', ex: 'Proverbio — Historia magistra vitae.' },
+  { hz: '海内存知己，天涯若比邻', py: 'hǎi nèi cún zhījǐ, tiānyá ruò bǐlín', es: 'con amigos, el fin del mundo es vecindario', ex: 'Wang Bo — La amistad acorta distancias.' },
+  { hz: '春眠不觉晓', py: 'chūn mián bù jué xiǎo', es: 'en primavera duermo sin sentir el alba', ex: 'Meng Haoran — Poema de primavera para recitar.' },
+  { hz: '床前明月光', py: 'chuáng qián míng yuè guāng', es: 'luz de luna ante mi cama', ex: 'Li Bai — El poema más recitado de China.' },
+  { hz: '白日依山尽', py: 'bái rì yī shān jìn', es: 'el sol se pone tras las montañas', ex: 'Wang Zhihuan — Mira lejos para subir más.' },
+  { hz: '有志者事竟成', py: 'yǒu zhì zhě shì jìng chéng', es: 'quien tiene meta, lo logra', ex: 'Proverbio — Querer es poder.' },
+  { hz: '不入虎穴，焉得虎子', py: 'bú rù hǔxué, yān dé hǔzǐ', es: 'sin entrar a la cueva, no hay cachorro', ex: 'Chengyu — Audaces fortuna iuvat.' },
+  { hz: '一日之计在于晨', py: 'yí rì zhī jì zàiyú chén', es: 'el día se planea en la mañana', ex: 'Proverbio — Club 5am en chino: madruga.' },
+  { hz: '天下兴亡，匹夫有责', py: 'tiānxià xīngwáng, pǐfū yǒu zé', es: 'el destino del mundo es deber de cada uno', ex: 'Gu Yanwu — Tu barrio también te necesita.' },
+  { hz: '加油！', py: 'jiāyóu!', es: '¡vamos! ¡ánimo!', ex: 'Ánimo diario — Dilo antes de la prueba o el partido.' }
+];
 var ZH_TONOS = [
   ['mā (妈) 1er tono ─ alto y plano', 'mamá. Como cantar una nota sostenida: “maaa”.'],
   ['má (麻) 2º tono ↗ sube', 'cáñamo / adormecer. Como preguntar “¿sí?”: la voz sube.'],
@@ -112,7 +145,7 @@ var ZH_SIMPLI = [
   ['📏 Regla de oro', 'Aprende SIMPLIFICADO + pinyin primero (China continental, HSK, negocios). El tradicional llega solo con series de Taiwán/Hong Kong.']
 ];
 
-function allZh() { return ZH_A1.concat(ZH_A2, ZH_B1, ZH_B2C1); }
+function allZh() { return ZH_A1.concat(ZH_A2, ZH_B1, ZH_FRASES, ZH_B2C1); }
 
 /* ---------------- ESTADO ---------------- */
 var zhTab = 'palabra';
@@ -376,6 +409,7 @@ function zhQuizPool() {
   if (zhQuizLevel === 'a1') return ZH_A1;
   if (zhQuizLevel === 'a2') return ZH_A2;
   if (zhQuizLevel === 'b1') return ZH_B1;
+  if (zhQuizLevel === 'frases') return ZH_FRASES;
   if (zhQuizLevel === 'avanzado') return ZH_B2C1;
   return allZh();
 }
@@ -393,10 +427,11 @@ function zhCard(item, lv) {
     '<span class="muted su-11a508">“' + esc(item.ex) + '”</span></button>';
 }
 
+var zhFraseIdx = -1;
 function renderZhPanel(tab) {
   try { zhStop(); } catch (e) {}
   zhTab = tab || zhTab;
-  var ids = { palabra: 'tabZH1', a1: 'tabZH2', a2: 'tabZH3', b1: 'tabZH4', cultura: 'tabZH5', quiz: 'tabZH6' };
+  var ids = { palabra: 'tabZH1', a1: 'tabZH2', a2: 'tabZH3', b1: 'tabZH4', cultura: 'tabZH5', frases: 'tabZH7', quiz: 'tabZH6' };
   Object.keys(ids).forEach(function (k) { var el = $(ids[k]); if (el) el.classList.toggle('btn-accent', k === zhTab); });
   renderZhStreak();
   var box = $('zhPanel'); if (!box) return;
@@ -452,6 +487,9 @@ function renderZhPanel(tab) {
     html += '<div class="menstrual-card su-5b7cd0"><h4 class="su-399074">📜 B2–C1 Avanzado + Cultura viva</h4>' +
       '<p class="muted su-a6c665">Meta: entrevistas, chengyu y no pasar vergüenza con los tonos. Gramática: <b>把 (bǎ: objeto adelantado), 被 (bèi: pasiva), 已经…了 (ya…), discurso indirecto con 说</b>.</p>' +
       '<div class="su-5e3875">' + ZH_B2C1.map(function (x) { return zhCard(x, 'HSK 5'); }).join('') + '</div></div>' +
+      '<div class="menstrual-card su-4adf8c"><h4>💬 Frases famosas</h4>' +
+      '<p class="su-11a508">Las <b>30 frases famosas</b> tienen su propia pestaña: portada del día + tarjetas con 🔊 Escuchar y 📋 Copiar.</p>' +
+      '<div class="su-9bc2df"><button type="button" class="btn btn-accent su-30e741 zh-goto-frases">💬 Ver frases famosas →</button></div></div>' +
       '<div class="help-grid su-d2c171">' +
       '<div class="help-card"><h4>⚠️ 8 tonos que salvan vidas</h4><p class="su-583677">' + ZH_TONOS.map(function (r) { return '<b>' + esc(r[0]) + '</b><br><span class="muted">' + esc(r[1]) + '</span>'; }).join('<br><br>') + '</p></div>' +
       '<div class="help-card"><h4>🀄 简体 ↔ 繁體 ¿Simplificado o tradicional?</h4><p class="su-583677">' + ZH_SIMPLI.map(function (r) { return '<b>' + esc(r[0]) + '</b><br><span class="muted">' + esc(r[1]) + '</span>'; }).join('<br><br>') + '</p></div></div>' +
@@ -459,6 +497,29 @@ function renderZhPanel(tab) {
       '<div class="help-card"><h4>✍️ Orden de trazos en 1 minuto</h4><p class="su-b439ab"><b>1.</b> arriba → abajo · <b>2.</b> izquierda → derecha<br><b>3.</b> horizontal antes que vertical · <b>4.</b> afuera antes que adentro<br><b>5.</b> cierra al final: 国 se cierra con el último trazo.<br><span class="muted">Escribe el hanzi del día 5 veces con el dedo: el músculo recuerda.</span></p></div>' +
       '<div class="help-card"><h4>🍵 Cultura para probar y celebrar</h4><p class="su-b439ab"><b>Probar:</b> té verde (绿茶), dumplings (饺子), arroz frito (炒饭): lee la receta en chino y cocina.<br><b>Escuchar:</b> 茉莉花 (Jazmín), canciones infantiles 两只老虎: 1 canción × 7 días.<br><b>Celebrar:</b> Año Nuevo chino (春节, enero/febrero, como el We Tripantu) y Fiesta del Medio Otoño (中秋节, luna llena).<br><span class="muted">Sabios: Confucio (孔子: estudia y practica) y Laozi (老子: el Tao): el calendario también es filosofía.</span></p></div></div>' +
       '<div class="menstrual-card su-4adf8c"><h4>💼 Kit entrevista de trabajo</h4><p class="su-583677">— <b>请介绍一下你自己。</b> (Preséntate, por favor.)<br>— <b>我负责，善于团队合作。</b> (Soy responsable y trabajo bien en equipo.)<br>— <b>我的优点是…我的目标是…</b> (Mi fortaleza es… mi meta es…)<br><span class="muted">Cierra: “谢谢你的时间。” (Gracias por tu tiempo.)</span></p></div>';
+  } else if (zhTab === 'frases') {
+    if (zhFraseIdx < 0) zhFraseIdx = zhDayIndex(ZH_FRASES.length);
+    var FDAY = ZH_FRASES[zhFraseIdx % ZH_FRASES.length];
+    var fdate = '';
+    try { fdate = cal.fmtDate.format(new Date()); } catch (e) { fdate = new Date().toLocaleDateString(); }
+    html += '<div class="menstrual-card su-3fa1a8">' +
+      '<p class="muted su-11a508">💬 FRASE DEL DÍA · ' + esc(fdate) + ' · ' + ZH_FRASES.length + ' frases famosas</p>' +
+      '<div class="su-6adb68">' + '“' + esc(FDAY.hz) + '”</div>' +
+      '<div class="su-cd8bd8"><b>' + esc(FDAY.es) + '</b></div>' +
+      '<p class="su-11a508">🎵 <b>' + esc(FDAY.py) + '</b></p>' +
+            '<p class="muted su-2b0979">“' + esc(FDAY.ex) + '”</p>' +
+      '<div class="su-9bc2df"><button type="button" class="btn btn-accent su-30e741 zh-hear" data-w="' + esc(FDAY.hz) + '">🔊 Escuchar</button> ' +
+      '<button type="button" id="zhFraseRnd" class="btn su-30e741">🎲 Otra frase</button></div></div>' +
+      ZH_FRASES.map(function (x) {
+        return '<div class="menstrual-card su-4adf8c"><h4>“' + esc(x.hz) + '”</h4>' +
+          '<p><b>' + esc(x.es) + '</b>' +
+          '<br><span class="su-11a508">🎵 ' + esc(x.py) + '</span>' +
+          '<br><span class="muted">“' + esc(x.ex) + '”</span></p>' +
+          '<div class="su-9bc2df"><button type="button" class="btn btn-accent su-30e741 zh-hear" data-w="' + esc(x.hz) + '">🔊 Escuchar</button> ' +
+          '<button type="button" class="btn su-30e741 zh-copy" data-w="' + esc(x.hz) + '|' + esc(x.es) + '">📋 Copiar</button></div></div>';
+      }).join('') +
+      '<div class="menstrual-card su-5a6934"><h4 class="su-752b1a">🗣️ ¿Cómo practicar?</h4>' +
+      '<p class="muted su-a6c665">1) <b>Escucha</b> la frase del día con 🔊 y repítela 3 veces en voz alta.<br>2) <b>Copia</b> tu favorita con 📋 y pégala en las Notas del día.<br>3) <b>Úsala hoy</b>: una frase al día son 365 al año.</p></div>';
   } else if (zhTab === 'quiz') {
     var d = getZhData();
     if (!zhQuizQ) {
@@ -475,7 +536,7 @@ function renderZhPanel(tab) {
     var lvBtn = function (v, l) { return '<button type="button" class="btn zh-lv' + (zhQuizLevel === v ? ' btn-accent' : '') + ' su-337714" data-lv="' + v + '">' + l + '</button>'; };
     var mdBtn = function (v, l) { return '<button type="button" class="btn zh-md' + (zhQuizMode === v ? ' btn-accent' : '') + ' su-337714" data-md="' + v + '">' + l + '</button>'; };
     html += '<div class="menstrual-card su-1f2df9"><h4 class="su-399074">🧩 Quiz por niveles</h4>' +
-      '<div class="su-a8712a">' + lvBtn('todo', '🌎 Todo') + lvBtn('a1', '🌱 HSK 1') + lvBtn('a2', '🌿 HSK 2–3') + lvBtn('b1', '💬 HSK 4') + lvBtn('avanzado', '📜 HSK 5') + '</div>' +
+      '<div class="su-a8712a">' + lvBtn('todo', '🌎 Todo') + lvBtn('a1', '🌱 HSK 1') + lvBtn('a2', '🌿 HSK 2–3') + lvBtn('b1', '💬 HSK 4') + lvBtn('frases', '💬 Frases') + lvBtn('avanzado', '📜 HSK 5') + '</div>' +
       '<div class="su-a8712a">' + mdBtn('significado', '🇪🇸 Significado') + mdBtn('pinyin', '🎵 Pinyin') + '</div>' +
       '<div class="su-73ce29">“' + esc(q.w.hz) + '” <span class="muted su-11a508">' + (zhQuizMode === 'pinyin' ? '¿cómo se pronuncia?' : '¿qué significa?') + '</span></div>' +
       '<button type="button" id="zhQuizSpeak" class="btn su-337714 zh-speaking">🔊 Escuchar</button> ' +
@@ -526,6 +587,26 @@ function renderZhPanel(tab) {
   box.querySelectorAll('.eng-word').forEach(function (b) {
     b.onclick = function (e) { try { e.preventDefault(); } catch (x) {} zhSpeak(b.getAttribute('data-w')); };
   });
+  box.querySelectorAll('.zh-hear').forEach(function (b) {
+    b.onclick = function (e) { try { e.preventDefault(); } catch (x) {} zhSpeak(b.getAttribute('data-w')); };
+  });
+  box.querySelectorAll('.zh-copy').forEach(function (b) {
+    b.onclick = function (e) {
+      try { e.preventDefault(); } catch (x) {}
+      var parts = (b.getAttribute('data-w') || '').split('|');
+      var txt = '💬 ' + (parts[0] || '') + ' = ' + (parts[1] || '');
+      try {
+        if (navigator.clipboard) navigator.clipboard.writeText(txt).then(function () { alert('Copiado: ' + txt); }, function () { alert(txt); });
+        else alert(txt);
+      } catch (err) { try { alert(txt); } catch (e2) {} }
+    };
+  });
+  box.querySelectorAll('.zh-goto-frases').forEach(function (b) {
+    b.onclick = function () { renderZhPanel('frases'); };
+  });
+  var frnd = $('zhFraseRnd');
+  if (frnd) frnd.onclick = function () { zhFraseIdx = Math.floor(Math.random() * ZH_FRASES.length); renderZhPanel('frases'); };
+
   box.querySelectorAll('.zh-lv').forEach(function (b) {
     b.onclick = function () { zhQuizLevel = b.getAttribute('data-lv'); zhQuizQ = null; renderZhPanel('quiz'); };
   });
@@ -570,6 +651,7 @@ function buildDialog() {
     '<button type="button" id="tabZH3" class="btn su-30e741">🌿 HSK 2–3</button>' +
     '<button type="button" id="tabZH4" class="btn su-30e741">💬 HSK 4</button>' +
     '<button type="button" id="tabZH5" class="btn su-30e741">📜 HSK 5 + Cultura</button>' +
+    '<button type="button" id="tabZH7" class="btn su-30e741">💬 Frases famosas</button>' +
     '<button type="button" id="tabZH6" class="btn su-30e741">🧩 Quiz</button></div>' +
     '<div id="zhPanel"></div>' +
     '<div class="dlg-actions"><button type="button" data-close class="btn">Cerrar</button></div></form>';
@@ -582,7 +664,7 @@ function buildDialog() {
 }
 
 function bindTabs() {
-  var map = { tabZH1: 'palabra', tabZH2: 'a1', tabZH3: 'a2', tabZH4: 'b1', tabZH5: 'cultura', tabZH6: 'quiz' };
+  var map = { tabZH1: 'palabra', tabZH2: 'a1', tabZH3: 'a2', tabZH4: 'b1', tabZH5: 'cultura', tabZH6: 'quiz', tabZH7: 'frases' };
   Object.keys(map).forEach(function (id) {
     var el = $(id);
     if (el) el.onclick = function () {

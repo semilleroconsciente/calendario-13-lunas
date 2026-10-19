@@ -3,14 +3,15 @@
    Sección completa dentro de Aprender > Idiomas y cultura:
    - Botón btnJapones (grupo aprender, sub idiomas, junto a
      Kimün Mapuzugun, Inglés, Portugués, Chino, Hindi, Italiano y Ruso)
-   - Diálogo japonesDialog con 6 pestañas:
+   - Diálogo japonesDialog con 7 pestañas:
      1) ☀️ Palabra del día (kana+kanji rotativo + romaji + TTS ja-JP)
      2) 🌱 N5 Supervivencia (20 tarjetas + desu/masu + números + mini-diálogo)
      3) 🌿 N4 Vida diaria (14 tarjetas + pasado con mashita + direcciones)
      4) 💬 N3 Viajar, trabajar y opinar (10 + te-form + keigo básico)
      5) 📜 N2–N1 + Cultura (kotowaza, partículas que cambian todo,
         kana↔kanji, pitch accent, té, matsuri, haiku, omotenashi)
-     6) 🧩 Quiz por niveles + quiz de romaji + racha local
+     6) 💬 Frases famosas (portada del día + tarjetas con audio y copiar)
+     7) 🧩 Quiz por niveles + quiz de romaji + racha local
    - Todo local y privado por usuario:
      userData().japones = { ok, total, streak, lastDay }
    - 100% offline. TTS usa la voz del dispositivo (speechSynthesis
@@ -95,6 +96,38 @@ var JA_B2C1 = [
   { jp: '面接：私の強みは…', ro: 'mensetsu: watashi no tsuyomi wa…', es: 'entrevista: mi fortaleza es…', ex: 'チームワークが得意です。— Soy buena trabajando en equipo.' },
   { jp: 'しかし / さらに', ro: 'shikashi / sarani', es: 'sin embargo / además (ensayo)', ex: 'しかし、海は命です。— Sin embargo, el mar es vida.' }
 ];
+var JA_FRASES = [
+  { jp: '一期一会', ro: 'ichigo ichie', es: 'un encuentro, una sola vez', ex: 'Té zen — Cada encuentro es único: carpe diem japonés.' },
+  { jp: '七転び八起き', ro: 'nanakorobi yaoki', es: 'cae siete, levántate ocho', ex: 'Proverbio — No te rindas: levántate una más.' },
+  { jp: '継続は力なり', ro: 'keizoku wa chikara nari', es: 'continuar es poder', ex: 'Proverbio — La constancia vence.' },
+  { jp: '塵も積もれば山となる', ro: 'chiri mo tsumoreba yama to naru', es: 'el polvo acumulado se hace montaña', ex: 'Proverbio — Poco cada día hace montañas.' },
+  { jp: '急がば回れ', ro: 'isogaba maware', es: 'si tienes prisa, da el rodeo', ex: 'Proverbio — Festina lente: el atajo sale largo.' },
+  { jp: '石の上にも三年', ro: 'ishi no ue ni mo sannen', es: 'tres años sobre la piedra', ex: 'Proverbio — Aguanta 3 años y la piedra se calienta.' },
+  { jp: '雨降って地固まる', ro: 'ame futte ji katamaru', es: 'tras la lluvia, la tierra se afirma', ex: 'Proverbio — Tras la pelea, más unidos.' },
+  { jp: '郷に入っては郷に従え', ro: 'gou ni itte wa gou ni shitagae', es: 'al pueblo que fueres, obedece', ex: 'Proverbio — Respeta la casa que te recibe.' },
+  { jp: '猿も木から落ちる', ro: 'saru mo ki kara ochiru', es: 'hasta el mono cae del árbol', ex: 'Proverbio — Errare humanum est.' },
+  { jp: '蛙の子は蛙', ro: 'kaeru no ko wa kaeru', es: 'hijo de rana, rana', ex: 'Proverbio — De tal palo, tal astilla.' },
+  { jp: '和を以て貴しとなす', ro: 'wa o motte toutoshi to nasu', es: 'la armonía es lo supremo', ex: 'Shotoku (604) — La paz del grupo primero.' },
+  { jp: '一石二鳥', ro: 'isseki nichou', es: 'un tiro, dos pájaros', ex: 'Proverbio — Mata dos pájaros de un tiro.' },
+  { jp: '十人十色', ro: 'juunin toiro', es: 'diez personas, diez colores', ex: 'Proverbio — Sobre gustos hay colores.' },
+  { jp: '自業自得', ro: 'jigou jitoku', es: 'cosechas tus propios actos', ex: 'Proverbio budista — Tu karma vuelve.' },
+  { jp: '笑う門には福来る', ro: 'warau kado ni wa fuku kitaru', es: 'a la puerta que ríe llega la fortuna', ex: 'Proverbio — La alegría atrae suerte.' },
+  { jp: '古池や蛙飛び込む水の音', ro: 'furuike ya kawazu tobikomu mizu no oto', es: 'estanque viejo: salta una rana, sonido de agua', ex: 'Basho — El haiku más famoso del mundo.' },
+  { jp: '初心忘るべからず', ro: 'shoshin wasuru bekarazu', es: 'no olvides tu corazón de principiante', ex: 'Zeami — Guarda la humildad del inicio.' },
+  { jp: '吾唯足知', ro: 'ware tada taru o shiru', es: 'solo sé que me basta', ex: 'Templo Ryoanji — Contentarse es riqueza.' },
+  { jp: 'おもてなし', ro: 'omotenashi', es: 'hospitalidad de corazón', ex: 'Valor japonés — Atiende sin esperar nada.' },
+  { jp: 'もったいない', ro: 'mottainai', es: 'qué desperdicio (¡aprovéchalo!)', ex: 'Lema ecológico — No botes comida ni tiempo.' },
+  { jp: 'いただきます', ro: 'itadakimasu', es: 'recibo con gratitud (antes de comer)', ex: 'Costumbre — Agradece a quien cocinó.' },
+  { jp: 'ごちそうさまでした', ro: 'gochisousama deshita', es: 'gracias por el festín (después de comer)', ex: 'Costumbre — Cierra con gratitud.' },
+  { jp: '可愛い子には旅をさせよ', ro: 'kawaii ko ni wa tabi o saseyo', es: 'al hijo amado, mándalo de viaje', ex: 'Proverbio — Viajar cría fuerte.' },
+  { jp: '日進月歩', ro: 'nisshin geppo', es: 'progreso día a día, mes a mes', ex: 'Proverbio — Mejora 1% diario.' },
+  { jp: '花より団子', ro: 'hana yori dango', es: 'dango antes que flores', ex: 'Proverbio — Lo útil primero, con humor.' },
+  { jp: '残り物には福がある', ro: 'nokorimono ni wa fuku ga aru', es: 'en lo que queda hay fortuna', ex: 'Proverbio — Mejor tarde que nunca.' },
+  { jp: '千日の稽古を鍛とし', ro: 'sen nichi no keiko o tan to shi', es: 'mil días de práctica hacen el temple', ex: 'Musashi — Practica mil días.' },
+  { jp: '七夕：織姫と彦星', ro: 'tanabata: orihime to hikoboshi', es: 'fiesta de estrellas (7 de julio)', ex: 'Leyenda — Dos amantes se ven una vez al año.' },
+  { jp: '一富士二鷹三茄子', ro: 'ichi fuji, ni taka, san nasubi', es: '1º Fuji, 2º halcón, 3º berenjena (sueños)', ex: 'Año Nuevo — Los 3 mejores sueños.' },
+  { jp: 'がんばれ、ペンコ！', ro: 'ganbare, Penco!', es: '¡vamos Penco, dale!', ex: 'Ánimo — Úsalo en el partido o la prueba.' }
+];
 var JA_KANA = [
   ['🔤 ひらがな (hiragana) — lo primero', 'あいうえお・かきくけこ・さしすせそ… 46 signos base. Todo lo japonés se puede escribir SOLO en hiragana: domínalo antes que el katakana. Escribe あ 5 veces con el dedo: el músculo recuerda.'],
   ['🔤 カタカナ (katakana) — para lo de afuera', 'アイウエオ・カキクケコ… mismo sonido, trazo recto. Para チリ (Chile)、コーヒー (café)、パン (pan). Regla: palabra extranjera o ruido (ドン！) → katakana.'],
@@ -116,7 +149,7 @@ var JA_BUNPOU = [
   ['⚖️ SOV: sujeto-objeto-verbo SIEMPRE al final', 'わたしはお茶を飲みます (yo té bebo = yo bebo té). El verbo cierra: escucha hasta el final. Pregunta con か al final: 行きますか？ (¿vas?).']
 ];
 
-function allJa() { return JA_A1.concat(JA_A2, JA_B1, JA_B2C1); }
+function allJa() { return JA_A1.concat(JA_A2, JA_B1, JA_FRASES, JA_B2C1); }
 
 /* ---------------- ESTADO ---------------- */
 var jaTab = 'palabra';
@@ -357,6 +390,7 @@ function jaQuizPool() {
   if (jaQuizLevel === 'a1') return JA_A1;
   if (jaQuizLevel === 'a2') return JA_A2;
   if (jaQuizLevel === 'b1') return JA_B1;
+  if (jaQuizLevel === 'frases') return JA_FRASES;
   if (jaQuizLevel === 'avanzado') return JA_B2C1;
   return allJa();
 }
@@ -374,10 +408,11 @@ function jaCard(item, lv) {
     '<span class="muted su-11a508">“' + esc(item.ex) + '”</span></button>';
 }
 
+var jaFraseIdx = -1;
 function renderJaPanel(tab) {
   try { jaStop(); } catch (e) {}
   jaTab = tab || jaTab;
-  var ids = { palabra: 'tabJA1', a1: 'tabJA2', a2: 'tabJA3', b1: 'tabJA4', cultura: 'tabJA5', quiz: 'tabJA6' };
+  var ids = { palabra: 'tabJA1', a1: 'tabJA2', a2: 'tabJA3', b1: 'tabJA4', cultura: 'tabJA5', frases: 'tabJA7', quiz: 'tabJA6' };
   Object.keys(ids).forEach(function (k) { var el = $(ids[k]); if (el) el.classList.toggle('btn-accent', k === jaTab); });
   renderJaStreak();
   var box = $('jaPanel'); if (!box) return;
@@ -431,6 +466,9 @@ function renderJaPanel(tab) {
     html += '<div class="menstrual-card su-5b7cd0"><h4 class="su-399074">📜 N2–N1 Avanzado + Cultura viva</h4>' +
       '<p class="muted su-a6c665">Meta: entrevistas, kotowaza y no pasar vergüenza con は/が/を. Gramática: <b>〜ていた (ya…), 〜たら〜のに (condicional pasado), pasiva de beneficio 〜てもらう, indirecto と言っていました, conectores しかし/さらに</b>.</p>' +
       '<div class="su-5e3875">' + JA_B2C1.map(function (x) { return jaCard(x, 'N2–N1'); }).join('') + '</div></div>' +
+      '<div class="menstrual-card su-4adf8c"><h4>💬 Frases famosas</h4>' +
+      '<p class="su-11a508">Las <b>30 frases famosas</b> tienen su propia pestaña: portada del día + tarjetas con 🔊 Escuchar y 📋 Copiar.</p>' +
+      '<div class="su-9bc2df"><button type="button" class="btn btn-accent su-30e741 ja-goto-frases">💬 Ver frases famosas →</button></div></div>' +
       '<div class="help-grid su-d2c171">' +
       '<div class="help-card"><h4>⚠️ 8 llaves que salvan vidas</h4><p class="su-583677">' + JA_KANA.map(function (r) { return '<b>' + esc(r[0]) + '</b><br><span class="muted">' + esc(r[1]) + '</span>'; }).join('<br><br>') + '</p></div>' +
       '<div class="help-card"><h4>🧭 Partículas ↔ keigo ¿Qué uso?</h4><p class="su-583677">' + JA_BUNPOU.map(function (r) { return '<b>' + esc(r[0]) + '</b><br><span class="muted">' + esc(r[1]) + '</span>'; }).join('<br><br>') + '</p></div></div>' +
@@ -438,6 +476,29 @@ function renderJaPanel(tab) {
       '<div class="help-card"><h4>🍵 Cultura para probar y celebrar</h4><p class="su-b439ab"><b>Probar:</b> té verde (お茶)、onigiri (おにぎり)、miso (味噌): lee la receta en japonés y cocina.<br><b>Escuchar:</b> さくらさくら, canciones infantiles どんぐりころころ: 1 canción × 7 días.<br><b>Celebrar:</b> お正月 (Año Nuevo, enero, como el We Tripantu) y お花見 (hanami, ver cerezos en primavera).<br><span class="muted">Haiku (俳句), el té (茶道) y el respeto (おもてなし): el calendario también es ritual. Inclínate 🙇 al saludar: abre cualquier puerta.</span></p></div>' +
       '<div class="help-card"><h4>🎎 Contadores que sí se usan</h4><p class="su-b439ab"><b>〜つ</b> cosas: ひとつ、ふたつ、みっつ (1, 2, 3 cosas)<br><b>〜人</b> personas: 一人、二人 (hitori, futari = 1-2 irregulares)<br><b>〜枚</b> planos: 切符を一枚 (un pasaje)<br><b>〜本</b> largos: ビールを三本 (tres botellas)<br><span class="muted">Pide “una cosa” con ひとつ： en la feria te entienden siempre.</span></p></div></div>' +
       '<div class="menstrual-card su-4adf8c"><h4>💼 Kit entrevista de trabajo</h4><p class="su-583677">— <b>自己紹介をおねがいします。</b> (Preséntese, por favor.)<br>— <b>責任感があって、チームワークが得意です。</b> (Soy responsable y trabajo bien en equipo.)<br>— <b>私の強みは…目標は…</b> (Mi fortaleza es… mi meta es…)<br><span class="muted">Cierra: “お時間をありがとうございます。” (Gracias por su tiempo.)</span></p></div>';
+  } else if (jaTab === 'frases') {
+    if (jaFraseIdx < 0) jaFraseIdx = jaDayIndex(JA_FRASES.length);
+    var FDAY = JA_FRASES[jaFraseIdx % JA_FRASES.length];
+    var fdate = '';
+    try { fdate = cal.fmtDate.format(new Date()); } catch (e) { fdate = new Date().toLocaleDateString(); }
+    html += '<div class="menstrual-card su-3fa1a8">' +
+      '<p class="muted su-11a508">💬 FRASE DEL DÍA · ' + esc(fdate) + ' · ' + JA_FRASES.length + ' frases famosas</p>' +
+      '<div class="su-6adb68">' + '“' + esc(FDAY.jp) + '”</div>' +
+      '<div class="su-cd8bd8"><b>' + esc(FDAY.es) + '</b></div>' +
+      '<p class="su-11a508">🔤 <b>' + esc(FDAY.ro) + '</b></p>' +
+            '<p class="muted su-2b0979">“' + esc(FDAY.ex) + '”</p>' +
+      '<div class="su-9bc2df"><button type="button" class="btn btn-accent su-30e741 ja-hear" data-w="' + esc(FDAY.jp) + '">🔊 Escuchar</button> ' +
+      '<button type="button" id="jaFraseRnd" class="btn su-30e741">🎲 Otra frase</button></div></div>' +
+      JA_FRASES.map(function (x) {
+        return '<div class="menstrual-card su-4adf8c"><h4>“' + esc(x.jp) + '”</h4>' +
+          '<p><b>' + esc(x.es) + '</b>' +
+          '<br><span class="su-11a508">🔤 ' + esc(x.ro) + '</span>' +
+          '<br><span class="muted">“' + esc(x.ex) + '”</span></p>' +
+          '<div class="su-9bc2df"><button type="button" class="btn btn-accent su-30e741 ja-hear" data-w="' + esc(x.jp) + '">🔊 Escuchar</button> ' +
+          '<button type="button" class="btn su-30e741 ja-copy" data-w="' + esc(x.jp) + '|' + esc(x.es) + '">📋 Copiar</button></div></div>';
+      }).join('') +
+      '<div class="menstrual-card su-5a6934"><h4 class="su-752b1a">🗣️ ¿Cómo practicar?</h4>' +
+      '<p class="muted su-a6c665">1) <b>Escucha</b> la frase del día con 🔊 y repítela 3 veces en voz alta.<br>2) <b>Copia</b> tu favorita con 📋 y pégala en las Notas del día.<br>3) <b>Úsala hoy</b>: una frase al día son 365 al año.</p></div>';
   } else if (jaTab === 'quiz') {
     var d = getJaData();
     if (!jaQuizQ) {
@@ -454,7 +515,7 @@ function renderJaPanel(tab) {
     var lvBtn = function (v, l) { return '<button type="button" class="btn ja-lv' + (jaQuizLevel === v ? ' btn-accent' : '') + ' su-337714" data-lv="' + v + '">' + l + '</button>'; };
     var mdBtn = function (v, l) { return '<button type="button" class="btn ja-md' + (jaQuizMode === v ? ' btn-accent' : '') + ' su-337714" data-md="' + v + '">' + l + '</button>'; };
     html += '<div class="menstrual-card su-1f2df9"><h4 class="su-399074">🧩 Quiz por niveles</h4>' +
-      '<div class="su-a8712a">' + lvBtn('todo', '🌎 Todo') + lvBtn('a1', '🌱 N5') + lvBtn('a2', '🌿 N4') + lvBtn('b1', '💬 N3') + lvBtn('avanzado', '📜 N2–N1') + '</div>' +
+      '<div class="su-a8712a">' + lvBtn('todo', '🌎 Todo') + lvBtn('a1', '🌱 N5') + lvBtn('a2', '🌿 N4') + lvBtn('b1', '💬 N3') + lvBtn('frases', '💬 Frases') + lvBtn('avanzado', '📜 N2–N1') + '</div>' +
       '<div class="su-a8712a">' + mdBtn('significado', '🇪🇸 Significado') + mdBtn('romaji', '🔤 Romaji') + '</div>' +
       '<div class="su-73ce29">“' + esc(q.w.jp) + '” <span class="muted su-11a508">' + (jaQuizMode === 'romaji' ? '¿cómo se lee?' : '¿qué significa?') + '</span></div>' +
       '<button type="button" id="jaQuizSpeak" class="btn su-337714 ja-speaking">🔊 Escuchar</button> ' +
@@ -504,6 +565,26 @@ function renderJaPanel(tab) {
   box.querySelectorAll('.eng-word').forEach(function (b) {
     b.onclick = function (e) { try { e.preventDefault(); } catch (x) {} jaSpeak(b.getAttribute('data-w')); };
   });
+  box.querySelectorAll('.ja-hear').forEach(function (b) {
+    b.onclick = function (e) { try { e.preventDefault(); } catch (x) {} jaSpeak(b.getAttribute('data-w')); };
+  });
+  box.querySelectorAll('.ja-copy').forEach(function (b) {
+    b.onclick = function (e) {
+      try { e.preventDefault(); } catch (x) {}
+      var parts = (b.getAttribute('data-w') || '').split('|');
+      var txt = '💬 ' + (parts[0] || '') + ' = ' + (parts[1] || '');
+      try {
+        if (navigator.clipboard) navigator.clipboard.writeText(txt).then(function () { alert('Copiado: ' + txt); }, function () { alert(txt); });
+        else alert(txt);
+      } catch (err) { try { alert(txt); } catch (e2) {} }
+    };
+  });
+  box.querySelectorAll('.ja-goto-frases').forEach(function (b) {
+    b.onclick = function () { renderJaPanel('frases'); };
+  });
+  var frnd = $('jaFraseRnd');
+  if (frnd) frnd.onclick = function () { jaFraseIdx = Math.floor(Math.random() * JA_FRASES.length); renderJaPanel('frases'); };
+
   box.querySelectorAll('.ja-lv').forEach(function (b) {
     b.onclick = function () { jaQuizLevel = b.getAttribute('data-lv'); jaQuizQ = null; renderJaPanel('quiz'); };
   });
@@ -548,6 +629,7 @@ function buildDialog() {
     '<button type="button" id="tabJA3" class="btn su-30e741">🌿 N4</button>' +
     '<button type="button" id="tabJA4" class="btn su-30e741">💬 N3</button>' +
     '<button type="button" id="tabJA5" class="btn su-30e741">📜 N2–N1 + Cultura</button>' +
+    '<button type="button" id="tabJA7" class="btn su-30e741">💬 Frases famosas</button>' +
     '<button type="button" id="tabJA6" class="btn su-30e741">🧩 Quiz</button></div>' +
     '<div id="jaPanel"></div>' +
     '<div class="dlg-actions"><button type="button" data-close class="btn">Cerrar</button></div></form>';
@@ -560,7 +642,7 @@ function buildDialog() {
 }
 
 function bindTabs() {
-  var map = { tabJA1: 'palabra', tabJA2: 'a1', tabJA3: 'a2', tabJA4: 'b1', tabJA5: 'cultura', tabJA6: 'quiz' };
+  var map = { tabJA1: 'palabra', tabJA2: 'a1', tabJA3: 'a2', tabJA4: 'b1', tabJA5: 'cultura', tabJA6: 'quiz', tabJA7: 'frases' };
   Object.keys(map).forEach(function (id) {
     var el = $(id);
     if (el) el.onclick = function () {

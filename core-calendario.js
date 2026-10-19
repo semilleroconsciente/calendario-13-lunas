@@ -176,7 +176,7 @@ function scrollMobileTop(){
 function showMobileView(m){
   if(m==='guia'){ try{ ($('btnHelp')||{}).click ? $('btnHelp').click() : $('helpDialog').showModal(); }catch(e){} return; }
   if(m==='conf'){ try{ ($('btnConfig')||{}).click ? $('btnConfig').click() : $('configDialog').showModal(); }catch(e){} return; }
-  if(m==='hoy'){ mobileSec='hoy'; viewMode='hoy'; renderCurrentView(); scrollMobileTop(); return; }
+  if(m==='hoy'){ try{ window._todayReorderOn=false; }catch(e){} mobileSec='hoy'; viewMode='hoy'; renderCurrentView(); scrollMobileTop(); return; }
   if(m==='luna'){
     mobileSec='luna';
     if(viewMode==='hoy') viewMode='luna';
@@ -896,24 +896,35 @@ function persistTodayDomOrder(box){
 function setupTodayReorder(box){
   try{
     if(!box) return;
-    let bar=box.querySelector('.today-reorder-bar');
     const hero=box.querySelector('.today-hero');
-    if(!bar){
+    // Botón discreto en el encabezado: es lo único visible al entrar. La barra solo aparece al activarlo.
+    let fab=box.querySelector('#todayReorderFab');
+    if(hero&&!fab){
+      fab=document.createElement('button');
+      fab.type='button'; fab.id='todayReorderFab'; fab.className='today-reorder-fab';
+      fab.title='Ordenar bloques'; fab.setAttribute('aria-label','Ordenar bloques de Hoy');
+      fab.textContent='\u2195';
+      hero.appendChild(fab);
+    }
+    const on=!!(window._todayReorderOn);
+    if(fab){
+      fab.classList.toggle('active',on);
+      if(!fab.dataset.bound){ fab.dataset.bound='1'; fab.onclick=function(ev){ try{ if(ev){ ev.preventDefault(); ev.stopPropagation(); } }catch(e){} window._todayReorderOn=!window._todayReorderOn; try{ setupTodayReorder(box); }catch(e2){} }; };
+    }
+    let bar=box.querySelector('.today-reorder-bar');
+    if(!on&&bar){ try{ bar.remove(); }catch(e){} bar=null; }
+    box.classList.toggle('reordering',on);
+    if(on&&!bar){
       bar=document.createElement('div');
       bar.className='today-reorder-bar';
-      bar.innerHTML='<button type="button" id="todayReorderToggle" class="btn">\u2195 Ordenar bloques</button><span class="muted today-reorder-hint">Mueve el orden de Hoy. Queda guardado.</span><button type="button" id="todayReorderReset" class="btn hidden">\u21BA Restablecer</button>';
+      bar.innerHTML='<button type="button" id="todayReorderToggle" class="btn btn-accent">\u2713 Listo</button><span class="muted today-reorder-hint">Mueve con \u25B2 \u25BC o arrastra de \u280B\u280B. Queda guardado.</span><button type="button" id="todayReorderReset" class="btn">\u21BA Restablecer</button>';
       if(hero&&hero.nextSibling) box.insertBefore(bar,hero.nextSibling);
       else if(hero) box.appendChild(bar);
       else box.insertBefore(bar,box.firstChild);
     }
-    const toggle=bar.querySelector('#todayReorderToggle');
-    const reset=bar.querySelector('#todayReorderReset');
-    const on=!!(window._todayReorderOn);
-    box.classList.toggle('reordering',on);
-    if(toggle) toggle.textContent=(on?'\u2713 Listo':'\u2195 Ordenar bloques');
-    if(toggle) toggle.classList.toggle('btn-accent',on);
-    if(reset) reset.classList.toggle('hidden',!on);
-    if(toggle&&!toggle.dataset.bound){ toggle.dataset.bound='1'; toggle.onclick=function(){ try{ window._todayReorderOn=!window._todayReorderOn; setupTodayReorder(box); }catch(e){} }; }
+    const toggle=bar?bar.querySelector('#todayReorderToggle'):null;
+    const reset=bar?bar.querySelector('#todayReorderReset'):null;
+    if(toggle&&!toggle.dataset.bound){ toggle.dataset.bound='1'; toggle.onclick=function(){ try{ window._todayReorderOn=false; setupTodayReorder(box); }catch(e){} }; }
     if(reset&&!reset.dataset.bound){ reset.dataset.bound='1'; reset.onclick=function(){ try{ if(typeof resetHomeOrder==='function') resetHomeOrder(); window._todayReorderOn=true; if(typeof renderTodayView==='function') renderTodayView(); }catch(e){} }; }
     const cards=Array.from(box.querySelectorAll('.today-card[data-home]'));
     cards.forEach(function(card){
