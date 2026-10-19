@@ -2,7 +2,7 @@
 // Copyright (C) 2026 Semillero Consciente. Licencia: GNU GPLv3 o posterior (ver COPYING).
 // SPDX-License-Identifier: GPL-3.0-or-later
 // v55
-const CACHE = 'cal13-v131-offline';
+const CACHE = 'cal13-v134-offline';
 
 // Lista completa de archivos que usa index.html (bare + con ?v=).
 // Si se agrega un JS nuevo en index.html, agregarlo aquí también (bare y ?v=).
@@ -270,6 +270,8 @@ const CORE = [
   './min/hogar-despensa-closet-modulo.min.js?v=1',
   './min/hogar-herramientas-modulo.min.js',
   './min/hogar-herramientas-modulo.min.js?v=1',
+  './min/hombre-medicina-modulo.min.js',
+  './min/hombre-medicina-modulo.min.js?v=1',
   './min/hooponopono-modulo.min.js',
   './min/hooponopono-modulo.min.js?v=1',
   './min/huerta-modulo.min.js',
@@ -302,6 +304,8 @@ const CORE = [
   './min/legal-modulo.min.js?v=1',
   './min/linaje-modulos.min.js',
   './min/linaje-modulos.min.js?v=1',
+  './min/mantak-chia-modulo.min.js',
+  './min/mantak-chia-modulo.min.js?v=1',
   './min/matematicas-modulo.min.js',
   './min/matematicas-modulo.min.js?v=1',
   './min/mecanica-modulo.min.js',
@@ -310,6 +314,8 @@ const CORE = [
   './min/metodo-silva-modulo.min.js?v=1',
   './min/moneda-social.min.js',
   './min/moneda-social.min.js?v=1',
+  './min/mujer-medicina-modulo.min.js',
+  './min/mujer-medicina-modulo.min.js?v=1',
   './min/municipalidad-penco.min.js',
   './min/municipalidad-penco.min.js?v=1',
   './min/musica-modulos.min.js',
