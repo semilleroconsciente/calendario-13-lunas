@@ -59,8 +59,40 @@ function homeBlocksForPreset(name) {
   if (!p) return null;
   const out = {};
   Object.keys(HOME_BLOCKS_DEFAULT).forEach(k => { out[k] = p.show.indexOf(k) >= 0; });
-  return { startView: HOME_VIEWS.includes(p.startView) ? p.startView : 'auto', blocks: out };
+  return { startView: HOME_VIEWS.includes(p.startView) ? p.startView : 'auto', blocks: out, order: [...HOME_BLOCK_ORDER] };
 }
+// Orden por defecto de los bloques de ◉ Hoy (debe coincidir con el orden de render en core-calendario.js).
+const HOME_BLOCK_ORDER = ['frase','sol','luna','notas','agenda','habitos','rutinas','animo','suenos','comidas','tareas','compras','finanzas','disciplina','respiracion','ciclo','clima','mareas','gratitud','horario','entreno','medicina','siembra','espiritual','ritmo','ekadashi','pesca','bosque','aves','huerta','estudio','cuentos','familia','emergencia','comunidad','energia'];
+const HOME_BLOCK_LABELS = { frase:'💬 Frase del día', sol:'☀️ Sol de hoy', luna:'🌙 Luna de hoy', notas:'📝 Notas del día', agenda:'🕐 Compromisos', habitos:'✅ Hábitos de hoy', rutinas:'🌅 Rutinas por horario', animo:'😊 Estado de ánimo', suenos:'💭 Sueños', comidas:'🥗 Comidas de hoy', tareas:'🏠 Tareas hogar', compras:'🛒 Compras pendientes', finanzas:'💰 Finanzas del día', disciplina:'🎯 Disciplina', respiracion:'🌬️ Respiración', ciclo:'🌸 Ciclo', clima:'🌤️ Clima', mareas:'🌊 Mareas', gratitud:'📓 Gratitud diaria', horario:'📚 Horario de hoy', entreno:'💪 Entrenamiento', medicina:'💊 Medicina', siembra:'🌱 Consejo siembra lunar', espiritual:'🕉️ Práctica espiritual', ritmo:'🌞 Ritmo + hora dorada', ekadashi:'📿 Ekadashi / ayuno', pesca:'🎣 Pesca hoy', bosque:'🌳 Bosque hoy', aves:'🦅 Aves hoy', huerta:'🥬 Huerta hoy', estudio:'🧠 Estudio hoy', cuentos:'📖 Cuento de la luna', familia:'🌳 Familia y linaje', emergencia:'🚨 Emergencia Penco', comunidad:'🤝 Comunidad hoy', energia:'🔧 Energía y hogar' };
+function getHomeOrder() {
+  try {
+    const d = (DATA.config && DATA.config.home) || {};
+    const saved = Array.isArray(d.order) ? d.order.filter(k => HOME_BLOCK_ORDER.includes(k)) : [];
+    const seen = new Set(saved);
+    HOME_BLOCK_ORDER.forEach(k => { if (!seen.has(k)) saved.push(k); });
+    return saved;
+  } catch (e) { return [...HOME_BLOCK_ORDER]; }
+}
+function setHomeOrder(order) {
+  DATA.config = DATA.config || {};
+  DATA.config.home = DATA.config.home || {};
+  const clean = (Array.isArray(order) ? order : []).filter(k => HOME_BLOCK_ORDER.includes(k));
+  const seen = new Set(clean);
+  HOME_BLOCK_ORDER.forEach(k => { if (!seen.has(k)) clean.push(k); });
+  DATA.config.home.order = clean;
+  try { if (typeof markPerfilPersonalizado === 'function') markPerfilPersonalizado(); } catch (e) {}
+  try { if (typeof scheduleSave === 'function') scheduleSave('Orden de bloques guardado ✓'); } catch (e) {}
+  return clean;
+}
+function moveHomeBlock(key, delta) {
+  const order = getHomeOrder();
+  const i = order.indexOf(key);
+  const j = i + delta;
+  if (i < 0 || j < 0 || j >= order.length) return order;
+  const tmp = order[i]; order[i] = order[j]; order[j] = tmp;
+  return setHomeOrder(order);
+}
+function resetHomeOrder() { return setHomeOrder([...HOME_BLOCK_ORDER]); }
 function getHomeConfig() {
   const d = (DATA.config && DATA.config.home) || {};
   const blocks = Object.assign({}, HOME_BLOCKS_DEFAULT, d.blocks || {});
@@ -70,7 +102,8 @@ function getHomeConfig() {
     blocks.luna = !!d.blocks.solLuna;
   }
   const startView = HOME_VIEWS.includes(d.startView) ? d.startView : 'auto';
-  return { startView, blocks };
+  const order = getHomeOrder();
+  return { startView, blocks, order };
 }
 function syncHomeConfigUI() {
   try {
@@ -79,6 +112,44 @@ function syncHomeConfigUI() {
     if (sel) sel.value = home.startView;
     document.querySelectorAll('#configDialog input[data-home]').forEach(cb => {
       cb.checked = home.blocks[cb.dataset.home] !== false;
+    });
+    try { if (typeof paintHomeOrderUI === 'function') paintHomeOrderUI(); } catch (e2) {}
+  } catch (e) {}
+}
+// Lista de orden en ⚙️ Ajustes → 🏠 Pantalla de inicio (subir/bajar). Se repinta sola.
+function paintHomeOrderUI() {
+  try {
+    const box = $('cfgHomeOrderList');
+    if (!box) return;
+    const order = (typeof getHomeOrder === 'function') ? getHomeOrder() : Object.keys(HOME_BLOCKS_DEFAULT);
+    const home = getHomeConfig();
+    box.innerHTML = '';
+    order.forEach((key, idx) => {
+      const lbl = (typeof HOME_BLOCK_LABELS !== 'undefined' && HOME_BLOCK_LABELS[key]) || key;
+      const row = document.createElement('div');
+      row.className = 'home-order-row';
+      row.dataset.homeKey = key;
+      const vis = home.blocks[key] !== false ? '' : ' home-order-hidden';
+      row.innerHTML = '<span class="home-order-pos">' + (idx + 1) + '</span>'
+        + '<span class="home-order-name' + vis + '">' + lbl + (home.blocks[key] !== false ? '' : ' (oculto)') + '</span>'
+        + '<span class="home-order-btns"><button type="button" class="btn btn-icon" data-ord="up" title="Subir">▲</button>'
+        + '<button type="button" class="btn btn-icon" data-ord="down" title="Bajar">▼</button></span>';
+      box.appendChild(row);
+    });
+    box.querySelectorAll('button[data-ord]').forEach(btn => {
+      btn.onclick = (e) => {
+        e.preventDefault(); e.stopPropagation();
+        const row = btn.closest('.home-order-row');
+        if (!row) return;
+        const k = row.dataset.homeKey;
+        const delta = btn.dataset.ord === 'up' ? -1 : 1;
+        try {
+          if (typeof moveHomeBlock === 'function') moveHomeBlock(k, delta);
+          else return;
+        } catch (e2) { return; }
+        try { syncHomeConfigUI(); } catch (e3) {}
+        try { if (typeof viewMode !== 'undefined' && viewMode === 'hoy' && typeof renderTodayView === 'function') renderTodayView(); } catch (e4) {}
+      };
     });
   } catch (e) {}
 }
@@ -115,12 +186,22 @@ function setupHomeConfig() {
       DATA.config = DATA.config || {};
       DATA.config.home = DATA.config.home || {};
       DATA.config.home.blocks = Object.assign({}, HOME_BLOCKS_DEFAULT);
+      try { if (typeof resetHomeOrder === 'function') { DATA.config.home.order = [...HOME_BLOCK_ORDER]; } } catch (e0) {}
       try { if (typeof markPerfilPersonalizado === 'function') markPerfilPersonalizado(); } catch (e) {}
       scheduleSave('Pantalla de inicio guardada ✓');
       syncHomeConfigUI();
       try { if (viewMode === 'hoy') renderTodayView(); } catch (e2) {}
     };
   }
+  try { if (typeof paintHomeOrderUI === 'function') paintHomeOrderUI(); } catch (e3) {}
+  // Re-pintar la lista de orden cuando se abre el diálogo (los checkboxes estáticos ya existen).
+  try {
+    const dlg = $('configDialog');
+    if (dlg && !dlg.dataset.homeOrderBound) {
+      dlg.dataset.homeOrderBound = '1';
+      dlg.addEventListener('click', () => { try { paintHomeOrderUI(); } catch (e4) {} });
+    }
+  } catch (e5) {}
 }
 // === 👥 PERFIL ÚNICO (🏠 Pantalla de inicio manda: vista + bloques + secciones) ===
 // Se guarda en DATA.config.perfil. Cualquier ajuste manual pasa a 'personalizado'.
@@ -147,7 +228,15 @@ function detectPerfil() {
       for (const k of Object.keys(HOME_BLOCKS_DEFAULT)) {
         if (!!home.blocks[k] !== !!hp.blocks[k]) { ok = false; break; }
       }
-      if (ok) return n;
+      if (ok) {
+        // Un orden personalizado también marca Personalizado aunque el resto coincida.
+        try {
+          const ord = (typeof getHomeOrder === 'function') ? getHomeOrder() : [];
+          const def = (typeof HOME_BLOCK_ORDER !== 'undefined') ? HOME_BLOCK_ORDER : Object.keys(HOME_BLOCKS_DEFAULT);
+          if (ord.length !== def.length || ord.some((k, i) => k !== def[i])) continue;
+        } catch (e2) {}
+        return n;
+      }
     }
   } catch (e) {}
   return 'personalizado';
