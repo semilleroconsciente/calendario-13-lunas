@@ -10,7 +10,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#0b1026">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; font-src 'self'; connect-src 'self' https://api.open-meteo.com https://air-quality-api.open-meteo.com; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob: https://translate.google.com; font-src 'self'; connect-src 'self' https://api.open-meteo.com https://air-quality-api.open-meteo.com https://translate.google.com; object-src 'none'; base-uri 'self'; form-action 'self'">
   <meta name="description" content="Calendario de las 13 Lunas — Mari Küla Küyen. 13 lunas x 28 días, siembra lunar, mareas SHOA Penco-Talcahuano, clima, territorio Bío-Bío. PWA offline, 100% libre (GPLv3).">
   <meta name="author" content="Semillero Consciente — Penco, Chile">
   <meta name="robots" content="index, follow">
@@ -43,11 +43,11 @@
   <a href="#main" class="skip-link">Saltar al contenido</a>
   <aside id="sidebar" aria-label="Navegación lateral">
     <div class="brand">
-      <div class="brand-moons">🌑 🌒 🌓 🌔 🌕 🌖 🌗 🌘</div>
+      <div class="brand-moons" aria-hidden="true">🌑 🌒 🌓 🌔 🌕 🌖 🌗 🌘</div>
       <h1>Mari Küla Küyen</h1>
       <p class="brand-sub">Calendario de las 13 Lunas<br>Penco · Bío-Bío · Chile</p>
     </div>
-    <div id="liveClock" class="live-clock" title="Hora de Penco · America/Santiago">--:--:--</div>
+    <div id="liveClock" class="live-clock" title="Hora de Penco · America/Santiago" role="timer" aria-label="Hora actual de Penco">--:--:--</div>
     <button id="btnToday" class="btn btn-accent">◉ Ir a hoy</button>
     <button id="btnVistaCelular" class="btn" title="Activar vista de celular en PC — emula pantalla de 390px en el centro">📱 Vista celular</button>
     <div class="su-39c4d3">
@@ -98,9 +98,9 @@
       </div>
     </section>
 
-    <section id="gridWrap">
-      <div class="dow-row" id="dowRow"></div>
-      <div id="grid"><p class="muted su-6c5767">🌙 Cargando calendario…</p></div>
+    <section id="gridWrap" aria-label="Calendario">
+      <div class="dow-row" id="dowRow" aria-hidden="true"></div>
+      <div id="grid" role="group" aria-label="Días del calendario"><p class="muted su-6c5767">🌙 Cargando calendario…</p></div>
     </section>
 
     <section id="monthNoteWrap">
@@ -110,7 +110,7 @@
 
     <div class="actions-toolbar">
       <input type="search" id="actionSearch" placeholder="🔍 Buscar función... (Ctrl+K) — ej: mareas, siembra, hábitos" autocomplete="off" aria-label="Buscar funciones">
-      <span id="statusMsg"></span>
+      <span id="statusMsg" role="status" aria-live="polite"></span>
     </div>
     <footer id="actions">
       <details class="action-group" data-group="dia">

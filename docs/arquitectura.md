@@ -1,7 +1,7 @@
 # Arquitectura — partición del monolito (mejoras #1, #2, #20)
 
-Estado v1.8: `renderer.js` 990 KB/12.576 → **~830 KB/~10.200 líneas** tras
-extraer 7 módulos. `index.html` 421 → 29 KB (diálogos a `templates/`).
+Estado v1.9.0 rev. 20-oct: `src/renderer.js` ~813 KB/~10.400 líneas tras
+extraer 7 módulos + `renderer-territorio-vivo.js` + `core-sanitize.js`. `index.html` ~56 KB (diálogos a `templates/`, 59 diálogos en bundle). Fuentes en `src/` (142 archivos), runtime en `min/` (142 salidas).
 
 ## Lo extraído (scope top-level DESNUDO, sin IIFE)
 Sin IIFE a propósito: los archivos comparten scope global con el remanente,

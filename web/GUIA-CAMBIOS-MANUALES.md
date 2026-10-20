@@ -568,4 +568,37 @@ Notas v1.9.0:
 
 ---
 
-*Última actualización: 2026-10-16 (v1.9.0) — Mantener esta guía junto a `LEEME.txt`.*
+## 22. Revisión 20 oct 2026 · reorden `src/` + accesibilidad + techos sincerados (v1.9.0 rev. 20-oct)
+
+Sin herramientas nuevas visibles: orden + acceso + números al día. `package.json` sigue en **1.9.0**; se recompilan el portable y el APK con el mismo número.
+
+### 22.1 Reorden de fuentes a `src/` (142 archivos)
+
+- `git mv` raíz → `src/` de los 142 `.js/.css` fuente. Quedan en raíz solo los cargadores con scope propio: `boot-modulos.js`, `sw-registro.js`, `sw.js`, `main.js`, `preload.js`, `capacitor.config.js` (+ `index.html` y config).
+- Runtime intacto en `min/` (142 salidas `.min.js/css`): `index.html`, lista `MODS` y `CORE` del SW **sin cambios** (mismos `?v=`).
+- `scripts/paths.cjs` como fuente única de rutas; scripts y tests resuelven dual raíz/`src/` (no se rompe nada que importe por ruta vieja).
+- `csp-fase2.cjs`: preserva reglas `su-*` referenciadas (evita vaciar `styles-csp.css` en `--fix`).
+- `sync-web.cjs`: las fuentes viajan solo como `min/` (deploy slim); `src/` no se copia a `web/`; se podan espejos `web/*.js/css` con gemelo `.min` referenciado.
+
+### 22.2 Accesibilidad (teclado + lector de pantalla)
+
+- **Calendario** (`src/core-calendario.js`): tarjetas día/luna con `tabindex="0"` + `role="button"` + `aria-label` ("Luna N día D, fecha, N compromisos, con nota. Pulsa Enter para abrir"); `miniCardA11yLabel()` + `activateMiniCard()` (Enter/Espacio abren); `aria-live="polite"` en agenda, `aria-label` en hora/texto/notificar/monto/detalle/compras/gratitud/desayuno/almuerzo/cena/MIT, `aria-pressed` en ánimos y notificaciones, `aria-expanded`/`aria-controls` en selector de ánimo.
+- **Diálogo día** (`src/core-dialogo-dia.js`): botones notificar/eliminar con `aria-label` ("Activar/Desactivar notificación <texto>", "Eliminar compromiso <texto>") + `aria-pressed`; ánimos con `aria-label` + `aria-pressed` sincronizado.
+- **Tamaño diálogos** (`src/dialogo-tamano.js`): grip con teclado (flechas ±16px, `Shift` ±40px, `Enter` expande), límites `maxBounds()`, persiste `w/h/expanded`.
+- **Parches globales** (`src/accesibilidad-modulo.js`): `aria-expanded` en `<details>` sin `tabindex` artificial en `summary`; trampa de foco robusta (por geometría, no `offsetParent`); `showModal` guarda trigger + foco inicial y lo devuelve al cerrar; `aria-labelledby`/`aria-label` + `aria-modal` en cada `<dialog>`; `prefers-reduced-motion` apaga animación/transición/scroll.
+- **Base** (`src/styles.css`, `templates/`, `index.html`): foco `:focus-visible` 3px + `.day-card:focus-visible`; `.sr-only`; táctil mínimo 24px (`.btn-icon`) y 44px (`.mood-btn`, `.dock-btn`); `configDialog.html` `h5`→`h4` + `aria-labelledby="cfgTitle"`; `dayDialog.html` + `aria-describedby="dlgDate"` + labels en hora/texto/notificar; `index.html` `role="timer"` en reloj, `aria-label="Calendario"` + `role="group"` en grilla, `role="status"` en `#statusMsg`, decorativos con `aria-hidden`.
+
+### 22.3 Pipeline y números al día (20-oct)
+
+- ⚡ **Perf recuento real**: JS raw **6223 KB** / gzip **2088 KB** / SW CORE **416** → techos sincerados medido+~3% = **6400 / 2150 / 420** (`scripts/perf-budget.cjs`). Crecimiento atribuido: ~37 módulos aprobados post-v1.8. Política intacta: partir/diferir (alternativa documentada: sacar `templates/` del CORE si vuelve a apretar).
+- 🧩 `min/` **142 fuentes** (era 127); sintaxis **300** archivos OK; `npm test` verde **77/77** (17 suites).
+- 🛡️ CSP dinámicos **230** (`csp-fase2.cjs --check`); `check:tpl` 59 diálogos OK; `check:min` fresco; `check:manifest` + `check:web` + `check:donate` OK.
+- 📲 `sw.js` + `web/sw.js` → **`cal13-v135-offline`** (CORE bare + `?v` vigente, sin historial); `android` → `versionName "1.9.0"` (`versionCode 3`); `web/package.json` → 1.9.0.
+
+Notas rev. 20-oct:
+- Para recompilar todo: `npm test` (verifica y regenera `min/`+`templates`+CSP) → `npm run build` (portable `dist-empaquetado/Calendario 13 Lunas 1.9.0.exe`) → `npm run movil:build` (APK debug → copia a `dist-empaquetado/13-Lunas-offline-1.9.0.apk`).
+- Esta guía (§22) + `LEEME.txt` (fecha de recompilado) + `informe-calendario.md` (addendum 20-oct) + `README.md` (línea APK) quedan sincronizadas en el mismo commit de artefactos.
+
+---
+
+*Última actualización: 2026-10-20 (v1.9.0 rev. 20-oct) — Mantener esta guía junto a `LEEME.txt`.*

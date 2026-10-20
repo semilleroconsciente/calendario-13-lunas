@@ -2068,9 +2068,9 @@ openMensDialog = function(){ _origOpenMensDialog(); setTimeout(setupHormonalChar
 // === MEDICAMENTOS ===
 function getMedicData(){
   const u=userData();
-  if(!u.medicamentos) u.medicamentos={ list:[], notify:true };
+  if(!u.medicamentos) u.medicamentos={ list:[], notify:false };
   if(!Array.isArray(u.medicamentos.list)) u.medicamentos.list=[];
-  if(typeof u.medicamentos.notify!=='boolean') u.medicamentos.notify=true;
+  if(typeof u.medicamentos.notify!=='boolean') u.medicamentos.notify=false;
   return u.medicamentos;
 }
 let medicEditingId=null;
@@ -2140,13 +2140,13 @@ function renderMedicNextBox(){
 }
 function medicCheckNotify(){
   const farma=getMedicData(); const nat=getMedicNaturalData();
-  const hasFarma=farma.notify && farma.list.length; const hasNat=nat.list.length;
+  if(!farma.notify) return;
+  const hasFarma=farma.notify && farma.list.length; const hasNat=farma.notify && nat.list.length;
   if(!hasFarma && !hasNat) return;
   if(typeof Notification==='undefined'||Notification.permission!=='granted') return;
   const now=Date.now(); const all=[];
   if(farma.notify) farma.list.forEach(med=> medicNextDoses(med, now-60000, 2).forEach(t=> all.push({t,med, tipo:'💊'})));
-  else if(nat.list.length) { /* si solo natural, igual notifica si farma notify está on */ }
-  nat.list.forEach(med=> medicNextDoses(med, now-60000, 2).forEach(t=> all.push({t,med, tipo:'🌿'})));
+  if(farma.notify) nat.list.forEach(med=> medicNextDoses(med, now-60000, 2).forEach(t=> all.push({t,med, tipo:'🌿'})));
   all.forEach(o=>{ const diff=o.t-now; if(diff>=-60000 && diff<=60000){ const key='medic-last-'+o.med.id+'-'+o.t; if(localStorage.getItem(key)) return; try{ playNotifySound(); new Notification((o.tipo==='🌿'?'🌿 Natural':'💊 Medicamento'), {body:`${o.med.name} — ${o.med.dose||o.med.notes||''} · ${cal.fmtTime.format(new Date(o.t))}`, silent:false}); localStorage.setItem(key,'1'); }catch{} } });
 }
 function medicSwitchTab(which){

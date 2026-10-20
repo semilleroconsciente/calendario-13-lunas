@@ -1,7 +1,7 @@
-<dialog id="configDialog">
+<dialog id="configDialog" aria-labelledby="cfgTitle" aria-modal="true">
     <form method="dialog">
       <div class="dlg-actions config-topbar">
-        <h3 class="su-ee0cfe">⚙️ Ajustes</h3>
+        <h3 id="cfgTitle" class="su-ee0cfe">⚙️ Ajustes</h3>
         <span class="config-topbar-btns">
           <button type="button" id="configCloseTopSave" class="btn btn-accent su-30e741">Guardar y cerrar</button>
           <button type="button" id="configCloseTop" class="btn btn-icon" title="Cerrar" aria-label="Cerrar">✕</button>
@@ -10,7 +10,7 @@
       <p class="muted su-77e2fe">Todo lo esencial en un solo lugar: usuario, búsqueda, ciclo, tema y letra. Se guarda automáticamente por usuario.</p>
       <div class="config-mobile">
         <div class="config-group">
-          <h5>👤 Usuario</h5>
+          <h4>👤 Usuario</h4>
           <div class="user-row">
             <select id="userSel" aria-label="Usuario"></select>
             <button type="button" id="btnAddUser" class="btn btn-icon" title="Agregar usuario" aria-label="Agregar usuario">➕</button>
@@ -18,15 +18,15 @@
           </div>
         </div>
         <div class="config-group">
-          <h5>🔍 Buscar en notas</h5>
+          <h4>🔍 Buscar en notas</h4>
           <input type="text" id="searchBox" placeholder="palabra o frase... (Enter para buscar)" autocomplete="off" aria-label="Buscar en notas">
         </div>
         <div class="config-group">
-          <h5>📅 Ciclo (We Tripantu)</h5>
+          <h4>📅 Ciclo (We Tripantu)</h4>
           <select id="cycleSel" aria-label="Ciclo (We Tripantu)"></select>
         </div>
         <div class="config-group">
-          <h5>🎨 Tema de colores</h5>
+          <h4>🎨 Tema de colores</h4>
           <select id="themeSel" aria-label="Tema de colores">
             <option value="auto">Auto — según luna</option>
             <option value="noche">Noche — azul profundo</option>
@@ -38,7 +38,7 @@
           </select>
         </div>
         <div class="config-group">
-          <h5>🏠 Pantalla de inicio</h5>
+          <h4>🏠 Pantalla de inicio</h4>
           <p class="muted su-245797">Un <b>perfil manda</b>: define a la vez la vista inicial, los bloques de ◉ Hoy <b>y</b> las secciones visibles. Elige uno y luego afina a mano si quieres (quedará como <i>Personalizado</i>).</p>
           <p class="muted su-9a5149">👥 Perfil actual: <b id="cfgPerfilActual">—</b></p>
           <div class="preset-grid">
@@ -118,7 +118,7 @@
           <p class="muted su-245797">Las marca el perfil elegido arriba. Afinar a mano pasa a Personalizado.</p>
         <div class="config-grid">
           <div class="config-group">
-            <h5>📅 Mi Día</h5>
+            <h4>📅 Mi Día</h4>
             <label class="check-row"><input type="checkbox" data-btn="btnHabits"> ✅ Hábitos</label>
             <label class="check-row"><input type="checkbox" data-btn="btnRutinas"> 🌅 Rutinas</label>
             <label class="check-row"><input type="checkbox" data-btn="btnDiscipline"> 🎯 Disciplina</label>
@@ -130,7 +130,7 @@
             <label class="check-row"><input type="checkbox" data-btn="btnBreath"> 🌬️ Respiración</label>
           </div>
           <div class="config-group">
-            <h5>🌊 Territorio Penco</h5>
+            <h4>🌊 Territorio Penco</h4>
             <p class="muted su-0d5be0">⚓ Costa y mar</p>
             <label class="check-row"><input type="checkbox" data-btn="btnTides"> 🌊 Mareas</label>
             <label class="check-row"><input type="checkbox" data-btn="btnFishing"> 🎣 Pesca</label>
@@ -170,7 +170,7 @@
             <label class="check-row"><input type="checkbox" data-btn="btnActores"> 🛡️ Guardianxs del territorio</label>
           </div>
           <div class="config-group">
-            <h5>💚 Cuerpo & Salud</h5>
+            <h4>💚 Cuerpo & Salud</h4>
             <p class="muted su-0d5be0">🌸 Ciclos</p>
             <label class="check-row"><input type="checkbox" data-btn="btnMenstrual"> 🌸 Ciclo</label>
             <label class="check-row"><input type="checkbox" data-btn="btnFerti"> 🌱 Fertilidad Natural</label>
@@ -189,7 +189,7 @@
             <label class="check-row"><input type="checkbox" data-btn="btnRituales"> 🌙 Rituales corporales</label>
           </div>
           <div class="config-group">
-            <h5>🧠 Aprender, Crear y Jugar</h5>
+            <h4>🧠 Aprender, Crear y Jugar</h4>
             <p class="muted su-0d5be0">📚 Estudio y herramientas mentales</p>
             <label class="check-row"><input type="checkbox" data-btn="btnStudy"> 🧠 Estudio</label>
             <label class="check-row"><input type="checkbox" data-btn="btnMemory"> 🧩 Entrena la memoria</label>
@@ -220,7 +220,7 @@
             <label class="check-row"><input type="checkbox" data-btn="btnCrianza"> 👶 Crianza</label>
           </div>
           <div class="config-group">
-            <h5>🪞 Interior, Linaje y Memoria</h5>
+            <h4>🪞 Interior, Linaje y Memoria</h4>
             <p class="muted su-0d5be0">🪞 Autoconocimiento</p>
             <label class="check-row"><input type="checkbox" data-btn="btnPsico"> 🪞 Autoconocimiento</label>
             <label class="check-row"><input type="checkbox" data-btn="btnPsicologia"> 🧠 Psicología</label>
@@ -253,7 +253,7 @@
             <label class="check-row"><input type="checkbox" data-btn="btnAdicciones"> 🌿 Adicciones</label>
           </div>
           <div class="config-group">
-            <h5>🏡 Hogar y Vida Práctica</h5>
+            <h4>🏡 Hogar y Vida Práctica</h4>
             <p class="muted su-0d5be0">🍽️ Casa y organización</p>
             <label class="check-row"><input type="checkbox" data-btn="btnMeal"> 🥗 Comidas</label>
             <label class="check-row"><input type="checkbox" data-btn="btnShopping"> 🛒 Compras</label>
@@ -279,7 +279,7 @@
             <label class="check-row"><input type="checkbox" data-btn="btnConstelaciones"> 🌳 Constelaciones Familiares</label>
           </div>
           <div class="config-group">
-            <h5>🤝 Comunidad</h5>
+            <h4>🤝 Comunidad</h4>
             <p class="muted su-0d5be0">🤝 Red y colaboración</p>
             <label class="check-row"><input type="checkbox" data-btn="btnTrueque"> 🔄 Trueque y Feria</label>
             <label class="check-row"><input type="checkbox" data-btn="btnMinga"> 🤲 Minga · Red de Apoyo</label>
@@ -324,7 +324,7 @@
       </details>
         </div>
         <div class="config-group">
-          <h5>💾 Respaldo, PDF y acceso</h5>
+          <h4>💾 Respaldo, PDF y acceso</h4>
           <p class="muted su-245797">Todo lo técnico vive aquí: guarda o recupera tus datos, imprime la luna o el ciclo, pasa datos a otro dispositivo o crea el ícono de escritorio.</p>
           <div class="conv-row">
             <button type="button" id="cfgBackupBtn" class="btn su-046678">💾 Respaldo</button>
@@ -339,7 +339,7 @@
           <button type="button" id="cfgShortcutBtn" class="btn su-046678">📌 Crear acceso directo en el escritorio</button>
         </div>
         <div class="config-group config-font-group">
-          <h5>🔠 Tamaño de letra</h5>
+          <h4>🔠 Tamaño de letra</h4>
           <p class="muted su-245797">Se aplica a todo el calendario y se guarda por usuario:</p>
           <div class="font-pills" role="group" aria-label="Tamaño de letra">
             <button type="button" class="btn font-pill" data-font="m" aria-pressed="true"><span class="fp-a su-de0080">A</span><small>Normal</small></button>
@@ -351,7 +351,7 @@
           </div>
         </div>
         <div class="config-group">
-          <h5>👁️ Modos de vista</h5>
+          <h4>👁️ Modos de vista</h4>
           <p class="muted su-245797">Se pueden combinar y se guardan por usuario:</p>
           <label class="check-row"><input type="checkbox" data-modo="lectura"> 📖 Modo lectura <span class="muted su-0d5be0">— letra aireada, ideal cuentos y guías</span></label>
           <label class="check-row"><input type="checkbox" data-modo="noche"> 🌙 Modo noche tenue <span class="muted su-0d5be0">— oscurece y baja el brillo</span></label>

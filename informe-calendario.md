@@ -1,7 +1,7 @@
 # Informe — Calendario de las 13 Lunas · Mari Küla Küyen
 
-**Fecha del informe:** 16 de octubre de 2026 (actualizado; original 1 de octubre de 2026)
-**Versión de la app:** 1.9.0 · **Ubicación de referencia:** Penco, Bío-Bío, Chile (36.73° S, 72.99° O)
+**Fecha del informe:** 20 de octubre de 2026 (actualizado; original 1 de octubre de 2026)
+**Versión de la app:** 1.9.0 rev. 20-oct · **Ubicación de referencia:** Penco, Bío-Bío, Chile (36.73° S, 72.99° O)
 **Repositorio:** Git (último commit `f8f72d8`), copia desplegable en `web/`
 
 ---
@@ -167,6 +167,14 @@ El proyecto es funcionalmente rico y técnicamente coherente: arquitectura de m�
 - **Higiene:** `lint-commits.cjs` suma modo `--strict` (falla si HEAD trivial; normal sigue avisando) y `npm test` ahora incluye `lint:commits`. Informe actualizado a v1.8.0.
 - **SEO/PWA:** `robots.txt` + `sitemap.xml` creados, `<title>` con Penco, `aria-label` limpio (sin emoji) en dock + vistas + pager, disclaimer salud en templates médicos (`medicDialog.html`, `psicologia`/`menstrual` vía renderer).
 - **Tests:** `66/66 pass`, sintaxis 235 archivos OK.
+
+### Addendum — 20 de octubre de 2026 (v1.9.0 rev. 20-oct: reorden src/ + a11y + artefactos)
+
+- **Reorden:** fuentes raíz → `src/` (142 `.js/.css`); runtime intacto en `min/` (142 salidas). Quedan en raíz solo cargadores con scope propio (`boot-modulos.js`, `sw-registro.js`, `sw.js`, `main.js`, `preload.js`, `capacitor.config.js`). `scripts/paths.cjs` fuente única de rutas (dual raíz/src). `index.html`, lista `MODS` y `CORE` SW sin cambios de `?v`. `sync-web.cjs` deploy slim (`src/` no viaja a `web/`).
+- **Accesibilidad:** tarjetas día/luna focables (`tabindex` + `role=button` + `aria-label`, Enter/Espacio abren); `aria-pressed`/`aria-label` en ánimos, notificar, eliminar, hora, comidas, MIT, compras, gratitud; `aria-live` agenda, `aria-expanded` ánimo, `role=timer/group/status` en reloj/grilla/estado; grip de diálogos operable por teclado (flechas/`Shift`/Enter); `showModal` guarda/devuelve foco + trampa robusta + `aria-labelledby`; foco visible 3px, `.sr-only`, táctil 24/44px; `h5`→`h4` en Ajustes.
+- **Pipeline sincerado 20-oct:** JS 6223 KB / gzip 2088 KB / CORE 416 → techos 6400/2150/420; CSP dinámicos 230; `min/` 142 fuentes; sintaxis 300 archivos; `npm test` 77/77 verde; `sw.js` → `cal13-v135-offline`; `versionName 1.9.0 / versionCode 3`.
+- **Guías:** `web/GUIA-CAMBIOS-MANUALES.md` §22 + `web/LEEME.txt` (rev. 20-oct) + `README.md` (línea APK) actualizadas junto a los artefactos.
+- **Artefactos:** `dist-empaquetado/Calendario 13 Lunas 1.9.0.exe` (portable, recompilado) + `dist-empaquetado/13-Lunas-offline-1.9.0.apk` (debug, recompilado) con el mismo número de versión.
 
 ### Addendum — 16 de octubre de 2026 (v1.9.0: territorio vivo + aprender + interior)
 - **Nuevos módulos (16):** fauna-marina, humedal-rocuant-andalien, amenazas-territorio, permacultura (hub), idiomas (método), portugués, chino-mandarín, música (8 secciones: método + 6 instrumentos + herramientas), damas chilenas, solitario Klondike, reiki, consciencia-crística, club-5am, electricidad (hub), legal + bienvenida primera vez (anime.js v4 lazy). Retos-21 ampliado a 12 plantillas; bosque-historia + datos Penco (amenazas, fauna-marina) nuevos.

@@ -329,12 +329,12 @@ function renderTodayView(){
     + '<div class="today-sun"><span class="chip chip--fase">'+moonIcon+' Fase <b>'+escapeHtml(faseTxt)+'</b></span>'
     + '</div></div>')
     + (hb.notas === false ? '' : '<div class="today-card" data-home="notas"><h3>📝 Notas del día</h3>'
-    + '<textarea id="todayNote" class="today-note" rows="6" placeholder="tareas, ánimo, sueños, registros...">'+escapeHtml(nota)+'</textarea></div>')
+    + '<label class="sr-only" for="todayNote">Notas del día</label><textarea id="todayNote" class="today-note" rows="6" placeholder="tareas, ánimo, sueños, registros..." aria-label="Notas del día">'+escapeHtml(nota)+'</textarea></div>')
     + (hb.agenda === false ? '' : '<div class="today-card" data-home="agenda"><h3>🕐 Compromisos · '+agenda.length+'</h3>'
-    + '<div id="todayAgendaList" class="today-agenda-list"></div>'
+    + '<div id="todayAgendaList" class="today-agenda-list" aria-live="polite"></div>'
     + (isDFT
       ? '<p class="muted su-11a508">Los compromisos por hora viven en los días de luna. Este día es de cierre y reflexión.</p>'
-      : '<div class="today-add"><input type="time" id="todayHourSel" value="'+hh+'" step="60" aria-label="Hora"><input type="text" id="todayHourText" placeholder="Compromiso..." maxlength="80"><label class="check-row su-988f60"><input type="checkbox" id="todayHourNotify"> 🔔</label><button type="button" id="todayHourAdd" class="btn btn-accent su-30e741">+ Agregar</button></div>')
+      : '<div class="today-add"><input type="time" id="todayHourSel" value="'+hh+'" step="60" aria-label="Hora del compromiso"><input type="text" id="todayHourText" placeholder="Compromiso..." maxlength="80" aria-label="Texto del compromiso"><label class="check-row su-988f60"><input type="checkbox" id="todayHourNotify" aria-label="Activar notificación"> 🔔</label><button type="button" id="todayHourAdd" class="btn btn-accent su-30e741">+ Agregar</button></div>')
     + '<div class="su-83ca52"></div>'
     + '<div class="su-3de8f9">'
     + (isDFT ? '' : '<button type="button" id="todayMensBtn" class="btn su-1ce0dc">🌸 Inicio ciclo</button>')
@@ -351,25 +351,25 @@ function renderTodayView(){
     + '<div id="todayMoodPicker" class="today-mood-picker hidden"></div></div>')
     + (hb.suenos === false ? '' : '<div class="today-card" data-home="suenos"><h3>💭 Diario de Sueños</h3>'
     + (function(){ try{ const dd=(typeof todaySuenosList==='function'?todaySuenosList():[]).filter(function(r){return r.fecha===key;}); return dd.length? '<p class="muted su-11a508">'+dd.length+' sueño(s) hoy en tu Diario · último: «'+escapeHtml((dd[dd.length-1].titulo||dd[dd.length-1].texto||'').slice(0,120))+'»</p>' : '<p class="muted su-11a508">Sin sueños hoy en tu Diario. Anota aunque sea una palabra — queda aparte, no en notas.</p>'; }catch(e){ return ''; } })()
-    + '<textarea id="todayDreamText" class="today-note" rows="2" placeholder="Anoche soñé... (se guarda en tu Diario)"></textarea>'
+    + '<label class="sr-only" for="todayDreamText">Sueño de anoche</label><textarea id="todayDreamText" class="today-note" rows="2" placeholder="Anoche soñé... (se guarda en tu Diario)" aria-label="Sueño de anoche"></textarea>'
     + '<div class="su-67b198"><button type="button" id="todayDreamSave" class="btn btn-accent su-1ce0dc">💾 Guardar en Diario</button><button type="button" id="todayDreamOpen" class="btn su-1ce0dc">📓 Abrir Diario</button></div></div>')
     + (hb.comidas === false ? '' : '<div class="today-card" data-home="comidas"><h3>🥗 Comidas de hoy</h3>'
     + (function(){ try{ const e=(typeof getMealData==='function'?getMealData().entries[key]:null)||{}; const parts=[e.breakfast?('🌅 '+e.breakfast):'',e.lunch?('☀️ '+e.lunch):'',e.dinner?('🌙 '+e.dinner):''].filter(Boolean); return parts.length? '<p class="su-6cb285">'+escapeHtml(parts.join(' · ')).replace(/&quot;/g,'"')+'</p>' : '<p class="muted su-11a508">Sin plan de comidas hoy.</p>'; }catch(e){ return ''; } })()
-    + '<div class="today-add su-0de0c6"><input type="text" id="todayMealB" placeholder="🌅 Desayuno..." maxlength="80"><input type="text" id="todayMealL" placeholder="☀️ Almuerzo..." maxlength="80"><input type="text" id="todayMealD" placeholder="🌙 Cena..." maxlength="80"><div class="su-a76d59"><button type="button" id="todayMealSave" class="btn btn-accent su-1ce0dc">💾 Guardar</button><button type="button" id="todayMealOpen" class="btn su-1ce0dc">🥗 Abrir Comidas</button></div></div></div>')
+    + '<div class="today-add su-0de0c6"><input type="text" id="todayMealB" placeholder="🌅 Desayuno..." maxlength="80" aria-label="Desayuno"><input type="text" id="todayMealL" placeholder="☀️ Almuerzo..." maxlength="80" aria-label="Almuerzo"><input type="text" id="todayMealD" placeholder="🌙 Cena..." maxlength="80" aria-label="Cena"><div class="su-a76d59"><button type="button" id="todayMealSave" class="btn btn-accent su-1ce0dc">💾 Guardar</button><button type="button" id="todayMealOpen" class="btn su-1ce0dc">🥗 Abrir Comidas</button></div></div></div>')
     + (hb.tareas === false ? '' : '<div class="today-card" data-home="tareas"><h3>🏠 Tareas hogar de hoy</h3><div id="todayHomeTasksBox"></div><div class="su-8a77e5"><button type="button" id="todayHomeTasksOpen" class="btn su-046678">🏠 Abrir Tareas Hogar</button></div></div>')
-    + (hb.compras === false ? '' : '<div class="today-card" data-home="compras"><h3>🛒 Compras pendientes</h3><div id="todayShopBox"></div><div class="today-add"><input type="text" id="todayShopText" placeholder="Agregar (ej: pan)..." maxlength="60"><button type="button" id="todayShopAdd" class="btn btn-accent su-30e741">+ Agregar</button></div><div class="su-8a77e5"><button type="button" id="todayShopOpen" class="btn su-046678">🛒 Abrir Compras</button></div></div>')
-    + (hb.finanzas === false ? '' : '<div class="today-card" data-home="finanzas"><h3>💰 Finanzas del día</h3><div id="todayFinanceBox"></div><div class="today-add"><select id="todayFinTipo" class="su-30e741"><option value="gasto">Gasto</option><option value="ingreso">Ingreso</option></select><input type="number" id="todayFinMonto" placeholder="$ monto" min="0" class="su-91245b"><input type="text" id="todayFinDesc" placeholder="detalle..." maxlength="60"></div><div class="su-a7d4af"><button type="button" id="todayFinAdd" class="btn btn-accent su-1ce0dc">+ Agregar</button><button type="button" id="todayFinOpen" class="btn su-1ce0dc">💰 Abrir Finanzas</button></div></div>')
+    + (hb.compras === false ? '' : '<div class="today-card" data-home="compras"><h3>🛒 Compras pendientes</h3><div id="todayShopBox"></div><div class="today-add"><input type="text" id="todayShopText" placeholder="Agregar (ej: pan)..." maxlength="60" aria-label="Nuevo producto de compra"><button type="button" id="todayShopAdd" class="btn btn-accent su-30e741">+ Agregar</button></div><div class="su-8a77e5"><button type="button" id="todayShopOpen" class="btn su-046678">🛒 Abrir Compras</button></div></div>')
+    + (hb.finanzas === false ? '' : '<div class="today-card" data-home="finanzas"><h3>💰 Finanzas del día</h3><div id="todayFinanceBox"></div><div class="today-add"><select id="todayFinTipo" class="su-30e741" aria-label="Tipo de movimiento"><option value="gasto">Gasto</option><option value="ingreso">Ingreso</option></select><input type="number" id="todayFinMonto" placeholder="$ monto" min="0" class="su-91245b" aria-label="Monto"><input type="text" id="todayFinDesc" placeholder="detalle..." maxlength="60" aria-label="Detalle del movimiento"></div><div class="su-a7d4af"><button type="button" id="todayFinAdd" class="btn btn-accent su-1ce0dc">+ Agregar</button><button type="button" id="todayFinOpen" class="btn su-1ce0dc">💰 Abrir Finanzas</button></div></div>')
     + (hb.disciplina === false ? '' : '<div class="today-card today-card--compact" data-home="disciplina"><h3>🎯 Disciplina</h3>'
     + (function(){ try{ const t=(typeof discGetToday==='function'?discGetToday():null); const s=(typeof discCalcStats==='function'?discCalcStats():null); if(!t) return ''; if(t.mit) return '<p class="disc-mini">'+(t.done?'✅':'🎯')+' <b>'+escapeHtml(t.mit)+'</b><span class="muted"> · 🍅 '+((+t.pomodoros||0))+' · 🔥 '+(s?s.racha:0)+'</span></p>'; return '<p class="muted disc-mini--muted">Define tu MIT de hoy.</p>'; }catch(e){ return ''; } })()
-    + '<div class="disc-row"><input type="text" id="todayDiscMIT" class="today-disc-mit today-note--mini su-64e0df" placeholder="🎯 MIT de hoy..." maxlength="120">'
-    + '<div class="disc-btns"><button type="button" id="todayDiscSave" class="btn btn-accent btn-sm" title="Guardar MIT">💾</button><button type="button" id="todayDiscDone" class="btn btn-sm" title="Marcar hecho">✅</button><button type="button" id="todayDiscOpen" class="btn btn-sm" title="Abrir disciplina">🎯</button></div></div></div>')
+    + '<div class="disc-row"><input type="text" id="todayDiscMIT" class="today-disc-mit today-note--mini su-64e0df" placeholder="🎯 MIT de hoy..." maxlength="120" aria-label="Tarea más importante de hoy">'
+    + '<div class="disc-btns"><button type="button" id="todayDiscSave" class="btn btn-accent btn-sm" title="Guardar MIT" aria-label="Guardar MIT">💾</button><button type="button" id="todayDiscDone" class="btn btn-sm" title="Marcar hecho" aria-label="Marcar MIT como hecho">✅</button><button type="button" id="todayDiscOpen" class="btn btn-sm" title="Abrir disciplina" aria-label="Abrir disciplina">🎯</button></div></div></div>')
     + (hb.respiracion === false ? '' : '<div class="today-card" data-home="respiracion"><h3>🌬️ Respiración</h3><p class="muted su-11a508">Pausa de 1 minuto: 4-7-8 para calmar, caja 4-4-4-4 para enfocar.</p><div class="su-3de8f9"><button type="button" id="todayBreathOpen" class="btn btn-accent su-1ce0dc">🌬️ Respirar ahora</button></div></div>')
     + (hb.ciclo === false ? '' : '<div class="today-card" data-home="ciclo"><h3>🌸 Ciclo</h3><div id="todayCicloBox"></div><div class="su-67b198"><button type="button" id="todayCicloMark" class="btn su-1ce0dc">🌸 Marcar inicio hoy</button><button type="button" id="todayCicloOpen" class="btn su-1ce0dc">🌸 Abrir Ciclo</button></div></div>')
     + (hb.clima === false ? '' : '<div class="today-card" data-home="clima"><h3>🌤️ Clima · próximas 10 horas</h3><div id="todayClimaBox"><p class="muted su-11a508">Cargando pronóstico de Penco...</p></div><p class="muted su-cb3213">Fuente: Open-Meteo · Penco. Solo información.</p><div class="su-8a77e5"><button type="button" data-go="btnWeather" class="btn su-046678">🌤️ Abrir Clima</button></div></div>')
     + (hb.mareas === false ? '' : '<div class="today-card" data-home="mareas"><h3>🌊 Mareas</h3><div id="todayTideBox"><p class="muted su-11a508">Calculando mareas...</p></div><p class="muted su-cb3213">Fuente: SHOA Talcahuano. Solo información.</p><div class="su-8a77e5"><button type="button" data-go="btnTides" class="btn su-046678">🌊 Abrir Mareas</button></div></div>')
     + (hb.gratitud === false ? '' : '<div class="today-card" data-home="gratitud"><h3>📓 Gratitud diaria</h3><div id="todayGratBox">'
     + (function(){ try{ const e=(typeof getGratitudData==='function'?getGratitudData().entries[key]:null)||{}; const parts=[e.t1,e.t2,e.t3].filter(Boolean); let h=''; if(parts.length) h+='<p class="su-6cb285">✨ '+parts.map(function(p){return escapeHtml(p);}).join('<br>✨ ')+'</p>'; if(e.intencion) h+='<p class="muted su-11a508">🎯 '+escapeHtml(e.intencion)+'</p>'; if(!parts.length&&e.carta) h+='<p class="su-6cb285">💌 '+escapeHtml(String(e.carta).slice(0,120))+'</p>'; if(!h) return '<p class="muted su-11a508">Aún no registras gratitud hoy. Escribe una abajo.</p>'; return h; }catch(e){ return ''; } })()
-    + '</div><div class="today-add"><input type="text" id="todayGratInput" placeholder="Agradezco por..." maxlength="120"><button type="button" id="todayGratSave" class="btn btn-accent su-30e741">+ Guardar</button></div><div class="su-8a77e5"><button type="button" id="todayGratOpen" class="btn su-046678">📓 Abrir Gratitud</button></div></div>')
+    + '</div><div class="today-add"><input type="text" id="todayGratInput" placeholder="Agradezco por..." maxlength="120" aria-label="Agradezco por"><button type="button" id="todayGratSave" class="btn btn-accent su-30e741">+ Guardar</button></div><div class="su-8a77e5"><button type="button" id="todayGratOpen" class="btn su-046678">📓 Abrir Gratitud</button></div></div>')
     + (hb.horario === false ? '' : '<div class="today-card" data-home="horario"><h3>📚 Horario de hoy</h3><div id="todaySchedBox">'
     + (function(){ try{ const d=(typeof getScheduleData==='function'?getScheduleData():null); if(!d||!d.items||!d.items.length) return '<p class="muted su-11a508">Sin horario creado.</p>'; const wd=new Date().getDay(); const t=d.items.filter(function(x){return parseInt(x.day)===wd;}).sort(function(a,b){return String(a.start).localeCompare(String(b.start));}); if(!t.length) return '<p class="muted su-11a508">Hoy no tienes clases. ¡Aprovecha la luna!</p>'; return t.map(function(it){return '<div class="hora-item"><span class="su-11a508"><b>'+escapeHtml(it.subject)+'</b> '+escapeHtml(it.start)+'–'+escapeHtml(it.end)+(it.place?' · '+escapeHtml(it.place):'')+'</span></div>';}).join(''); }catch(e){ return ''; } })()
     + '</div><div class="su-8a77e5"><button type="button" id="todaySchedOpen" class="btn su-046678">📚 Abrir Horario</button></div></div>')
@@ -416,6 +416,8 @@ function renderTodayView(){
       b.type='button';
       b.className='mood-btn'+(i===animo?' sel':'');
       b.title=m.n; b.textContent=m.e;
+      b.setAttribute('aria-label', 'Ánimo: '+m.n);
+      b.setAttribute('aria-pressed', i===animo?'true':'false');
       b.onclick=()=>{
         animo = (animo===i) ? -1 : i;
         try{
@@ -427,7 +429,8 @@ function renderTodayView(){
     });
   };
   if(main && picker){
-    main.onclick=()=>{ picker.classList.toggle('hidden'); if(!picker.classList.contains('hidden') && !picker.innerHTML) paintPicker(); };
+    try{ main.setAttribute('aria-expanded', picker.classList.contains('hidden')?'false':'true'); main.setAttribute('aria-controls', 'todayMoodPicker'); }catch(e){}
+    main.onclick=()=>{ picker.classList.toggle('hidden'); try{ main.setAttribute('aria-expanded', picker.classList.contains('hidden')?'false':'true'); }catch(e){} if(!picker.classList.contains('hidden') && !picker.innerHTML) paintPicker(); };
   }
   // --- notas ---
   const noteEl = $('todayNote');
@@ -455,12 +458,15 @@ function renderTodayView(){
       row.innerHTML='<span class="hh">'+escapeHtml(t)+'</span><span class="tx">'+escapeHtml(it.text)+'</span>';
       const nb=document.createElement('button');
       nb.type='button'; nb.className='btn btn-icon'; nb.title='Notificación'; nb.textContent=it.notify?'🔔':'🔕';
+      nb.setAttribute('aria-label', (it.notify?'Desactivar':'Activar')+' notificación '+it.text);
+      nb.setAttribute('aria-pressed', it.notify?'true':'false');
       nb.onclick=async()=>{
         if(!it.notify){ try{ if(typeof Notification!=='undefined'&&Notification.permission!=='granted'&&Notification.requestPermission) await Notification.requestPermission(); }catch(e){} }
         it.notify=!it.notify; it.notified=false; scheduleSave(); paintAgenda();
       };
       const db=document.createElement('button');
       db.type='button'; db.className='btn btn-icon'; db.title='Eliminar'; db.textContent='✕';
+      db.setAttribute('aria-label', 'Eliminar compromiso '+it.text);
       db.onclick=()=>{
         try{
           const c=dayCell(lunaN,diaN);
@@ -1107,6 +1113,29 @@ function setupLunaPager(){
     }
   }catch(e){}
 }
+function miniCardA11yLabel(key, ref, dt, agenda, nota){
+  try{
+    const wd = cal.weekdayName(dt.getTime());
+    const fecha = cal.fmtDate.format(dt);
+    const luna = ref ? (ref.luna==='dft' ? 'Día Fuera del Tiempo' : ('Luna '+ref.luna+' día '+ref.diaN+' de 28')) : fecha;
+    let extra = '';
+    if(agenda && agenda.length) extra += ', '+agenda.length+' compromiso'+(agenda.length>1?'s':'');
+    if(nota) extra += ', con nota';
+    return wd+' '+fecha+', '+luna+extra+'. Pulsa Enter para abrir.';
+  }catch(e){ return 'Día '+key+'. Pulsa Enter para abrir.'; }
+}
+function activateMiniCard(key){
+  const ref=lunaMapForKey(key);
+  if(ref && ref.luna!=='dft'){
+    if(String(ref.y)!==String(currentCycleYear())){
+      try{ selectCycle(ref.y, ref.luna); }catch(e){}
+    }
+    openDayDialog(ref.luna, ref.diaN);
+  } else {
+    viewDateMs = new Date(key+'T12:00:00').getTime();
+    viewMode='semanaLunar'; renderCurrentView();
+  }
+}
 function miniDayCard(key, opts){
   opts = opts||{};
   const ref = lunaMapForKey(key);
@@ -1119,28 +1148,25 @@ function miniDayCard(key, opts){
   const lunaTxt = ref ? (ref.luna==='dft' ? '✷ DFT' : 'L'+ref.luna+'·D'+ref.diaN) : '';
   const dim = !!opts.dim;
   const wdFull = cal.weekdayName(dt.getTime());
-  return `<div class="day-card${isToday?' today':''}" data-key="${key}" style="${dim?'opacity:.45':''};cursor:pointer">
-    <div class="dc-day">${escapeHtml(wdFull)} ${dt.getDate()}/${dt.getMonth()+1}</div>
-    <div class="dc-head"><span class="dc-n">${dt.getDate()}</span><span class="dc-phases">${evs.map(e=>`<span class="dc-phase" title="${e.tipo}">${e.simbolo}</span>`).join('')}</span><span class="dc-date">${lunaTxt}</span></div>
-    <div class="dc-sun">${cal.weekdayName(dt.getTime()).slice(0,3)}</div>
-    ${agenda.length? `<div class="dc-clima">🕐 ${agenda.length} · ${escapeHtml(agenda.slice(0,2).map(a=>agendaTimeStr(a)+' '+a.text).join(' · '))}${agenda.length>2?' …':''}</div>`:''}
-    ${nota? `<div class="dc-note">${escapeHtml(nota.split('\n')[0])}</div>`:''}
+  const a11y = miniCardA11yLabel(key, ref, dt, agenda, nota);
+  return `<div class="day-card${isToday?' today':''}" data-key="${key}" style="${dim?'opacity:.45':''};cursor:pointer" tabindex="0" role="button" aria-label="${escapeHtml(a11y)}">
+    <div class="dc-day" aria-hidden="true">${escapeHtml(wdFull)} ${dt.getDate()}/${dt.getMonth()+1}</div>
+    <div class="dc-head" aria-hidden="true"><span class="dc-n">${dt.getDate()}</span><span class="dc-phases">${evs.map(e=>`<span class="dc-phase" title="${e.tipo}">${e.simbolo}</span>`).join('')}</span><span class="dc-date">${lunaTxt}</span></div>
+    <div class="dc-sun" aria-hidden="true">${cal.weekdayName(dt.getTime()).slice(0,3)}</div>
+    ${agenda.length? `<div class="dc-clima" aria-hidden="true">🕐 ${agenda.length} · ${escapeHtml(agenda.slice(0,2).map(a=>agendaTimeStr(a)+' '+a.text).join(' · '))}${agenda.length>2?' …':''}</div>`:''}
+    ${nota? `<div class="dc-note" aria-hidden="true">${escapeHtml(nota.split('\n')[0])}</div>`:''}
   </div>`;
 }
 function bindMiniCards(scope){
   (scope||document).querySelectorAll('.day-card[data-key]').forEach(c=>{
-    c.onclick=()=>{
-      const key=c.dataset.key;
-      const ref=lunaMapForKey(key);
-      if(ref && ref.luna!=='dft'){
-        if(String(ref.y)!==String(currentCycleYear())){
-          try{ selectCycle(ref.y, ref.luna); }catch(e){}
-        }
-        openDayDialog(ref.luna, ref.diaN);
-      } else {
-        viewDateMs = new Date(key+'T12:00:00').getTime();
-        viewMode='semanaLunar'; renderCurrentView();
-      }
+    if(!c.hasAttribute('tabindex')) c.setAttribute('tabindex','0');
+    if(!c.hasAttribute('role')) c.setAttribute('role','button');
+    if(!c.hasAttribute('aria-label')){
+      try{ c.setAttribute('aria-label', miniCardA11yLabel(c.dataset.key, lunaMapForKey(c.dataset.key), new Date(c.dataset.key+'T12:00:00'), [], '')); }catch(e){}
+    }
+    c.onclick=()=>activateMiniCard(c.dataset.key);
+    c.onkeydown=(e)=>{
+      if(e.key==='Enter'||e.key===' '){ e.preventDefault(); activateMiniCard(c.dataset.key); }
     };
   });
 }
@@ -1270,12 +1296,13 @@ function miniLunarCard(key, evMap, idx){
   const moon = moonDaily(key);
   const lunaTxt = ref ? (ref.luna==='dft' ? '✷ DFT' : 'L'+ref.luna+'·D'+ref.diaN) : '';
   const wd = cal.weekdayName(dt.getTime());
-  return `<div class="day-card${isToday?' today':''} su-3b6a3a" data-key="${key}" title="${escapeHtml(wd)} ${escapeHtml(key)} · ${moon.illum===null?'':moon.illum+'% iluminada'}">
-    <div class="dc-day">${escapeHtml(wd)} ${dt.getDate()}/${dt.getMonth()+1}</div>
-    <div class="dc-head"><span class="dc-n">${idx!==undefined? String(idx).padStart(2,'0') : dt.getDate()}</span><span class="dc-phases">${moon.icon} ${evs.map(e=>`<span class="dc-phase" title="${e.tipo}">${e.simbolo}</span>`).join('')}</span><span class="dc-date">${dt.getDate()}/${dt.getMonth()+1}</span></div>
-    <div class="dc-sun">${moon.illum===null?'🌙':moon.illum+'%'} · ${escapeHtml(wd.slice(0,3))}${lunaTxt? ' · '+lunaTxt:''}</div>
-    ${agenda.length? `<div class="dc-clima">🕐 ${agenda.length} · ${escapeHtml(agenda.slice(0,2).map(a=>agendaTimeStr(a)+' '+a.text).join(' · '))}${agenda.length>2?' …':''}</div>`:''}
-    ${nota? `<div class="dc-note">${escapeHtml(nota.split('\n')[0])}</div>`:''}
+  const a11yL = miniCardA11yLabel(key, ref, dt, agenda, nota);
+  return `<div class="day-card${isToday?' today':''} su-3b6a3a" data-key="${key}" title="${escapeHtml(wd)} ${escapeHtml(key)} · ${moon.illum===null?'':moon.illum+'% iluminada'}" tabindex="0" role="button" aria-label="${escapeHtml(a11yL)}">
+    <div class="dc-day" aria-hidden="true">${escapeHtml(wd)} ${dt.getDate()}/${dt.getMonth()+1}</div>
+    <div class="dc-head" aria-hidden="true"><span class="dc-n">${idx!==undefined? String(idx).padStart(2,'0') : dt.getDate()}</span><span class="dc-phases">${moon.icon} ${evs.map(e=>`<span class="dc-phase" title="${e.tipo}">${e.simbolo}</span>`).join('')}</span><span class="dc-date">${dt.getDate()}/${dt.getMonth()+1}</span></div>
+    <div class="dc-sun" aria-hidden="true">${moon.illum===null?'🌙':moon.illum+'%'} · ${escapeHtml(wd.slice(0,3))}${lunaTxt? ' · '+lunaTxt:''}</div>
+    ${agenda.length? `<div class="dc-clima" aria-hidden="true">🕐 ${agenda.length} · ${escapeHtml(agenda.slice(0,2).map(a=>agendaTimeStr(a)+' '+a.text).join(' · '))}${agenda.length>2?' …':''}</div>`:''}
+    ${nota? `<div class="dc-note" aria-hidden="true">${escapeHtml(nota.split('\n')[0])}</div>`:''}
   </div>`;
 }
 function applyLunarTema(){
@@ -1513,6 +1540,14 @@ function renderLuna() {
     card.className = 'day-card' + (key === todayKey ? ' today' : '') + (mensType ? ' mens-'+mensType : '') + hasHabits + hasGym;
     card.dataset.luna = meta.n;
     card.dataset.dia = d.diaN;
+    card.setAttribute('tabindex', '0');
+    card.setAttribute('role', 'button');
+    try{
+      const wdL = cal.weekdayName(d.noonMs);
+      const fechaL = cal.fmtDate.format(new Date(d.noonMs));
+      const nA = (cell.agenda||[]).length;
+      card.setAttribute('aria-label', 'Luna '+meta.n+' día '+d.diaN+' de 28, '+wdL+' '+fechaL+(nA?', '+nA+' compromisos':'')+(cell.nota?', con nota':'')+'. Pulsa Enter para abrir.');
+    }catch(e){ card.setAttribute('aria-label', 'Luna '+meta.n+' día '+d.diaN+'. Pulsa Enter para abrir.'); }
     card.innerHTML = `
       <div class="dc-head"><span class="dc-n">${String(d.diaN).padStart(2, '0')}</span><span class="dc-phases">${evs.map(e => `<span class="dc-phase" title="${e.tipo} ${cal.fmtTime.format(new Date(e.utcMs))}">${e.simbolo}</span>`).join('')}</span><span class="dc-date">${cal.fmtDate.format(new Date(d.noonMs))}</span></div>
       ${mensType ? `<div class="dc-mens ${mensType}">${mensLabel}</div>` : ''}
@@ -1536,6 +1571,7 @@ function renderLuna() {
       ${Array.isArray(cell.agenda)&&cell.agenda.length ? `<div class="dc-clima" title="${escapeHtml(cell.agenda.map(a=>getAgendaTime(a)+' '+a.text + (a.notify?' 🔔':'')).join(' · '))}">🕐 ${cell.agenda.length} compromiso${cell.agenda.length>1?'s':''} · ${escapeHtml(cell.agenda.slice(0,2).map(a=>getAgendaTime(a)+' '+a.text).join(' · '))}${cell.agenda.length>2?' …':''}</div>` : ''}
       ${cell.nota ? `<div class="dc-note">${escapeHtml(cell.nota.split('\n')[0])}</div>` : (Array.isArray(cell.agenda)&&cell.agenda.length ? `<div class="dc-note">${escapeHtml(cell.agenda[0].text.split('\n')[0])}</div>` : `<div class="dc-note"></div>`)}`;
     card.onclick = () => openDayDialog(meta.n, d.diaN);
+    card.onkeydown = (e) => { if(e.key==='Enter'||e.key===' '){ e.preventDefault(); openDayDialog(meta.n, d.diaN); } };
     grid.appendChild(card);
   }
 

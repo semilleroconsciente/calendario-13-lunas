@@ -1,4 +1,4 @@
-<dialog id="dayDialog" aria-labelledby="dlgTitle" aria-modal="true">
+<dialog id="dayDialog" aria-labelledby="dlgTitle" aria-describedby="dlgDate" aria-modal="true">
     <form method="dialog">
       <div class="dlg-actions su-d2d053">
         <h3 id="dlgTitle" class="su-116966">Día</h3>
@@ -18,8 +18,8 @@
         <div id="dlgHorasGrid" class="dlg-horas-grid"></div>
         <div class="dlg-horas-add">
           <input type="time" id="dlgHourSel" aria-label="Hora (cualquiera, ej 08:37)" value="08:00" step="60" class="su-91245b">
-          <input type="text" id="dlgHourText" placeholder="Compromiso / actividad..." maxlength="80">
-          <label class="check-row su-988f60" title="Activar notificación a esa hora"><input type="checkbox" id="dlgHourNotify"> 🔔</label>
+          <input type="text" id="dlgHourText" placeholder="Compromiso / actividad..." maxlength="80" aria-label="Texto del compromiso">
+          <label class="check-row su-988f60" title="Activar notificación a esa hora"><input type="checkbox" id="dlgHourNotify" aria-label="Activar notificación"> 🔔</label>
           <button type="button" id="dlgHourAdd" class="btn btn-accent su-30e741">+ Agregar</button>
         </div>
       </div>

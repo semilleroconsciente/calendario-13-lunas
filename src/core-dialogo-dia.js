@@ -60,7 +60,7 @@ function renderDlgHoras() {
   grid.innerHTML = times.map(t=>{
     const items = byTime[t];
     return `<div class="hora-block"><div class="hora-label">🕐 ${t} <span class="muted su-0d5be0">· ${items.length} ${items.length===1?'compromiso':'compromisos'}</span></div>` +
-      items.map(it=>`<div class="hora-item"><span class="hora-text">${escapeHtml(it.text)}</span><span class="hora-actions"><span class="chip su-427a96">${it.notify?'🔔':'🔕'}</span><button type="button" class="btn btn-icon hora-notify" data-id="${it.id}" title="${it.notify?'Desactivar':'Activar'} notificación">${it.notify?'🔔':'🔕'}</button><button type="button" class="btn btn-icon hora-del" data-id="${it.id}" title="Eliminar">✕</button></span></div>`).join('') + `</div>`;
+      items.map(it=>`<div class="hora-item"><span class="hora-text">${escapeHtml(it.text)}</span><span class="hora-actions"><span class="chip su-427a96" aria-hidden="true">${it.notify?'🔔':'🔕'}</span><button type="button" class="btn btn-icon hora-notify" data-id="${it.id}" title="${it.notify?'Desactivar':'Activar'} notificación" aria-label="${it.notify?'Desactivar':'Activar'} notificación ${escapeHtml(it.text)}" aria-pressed="${it.notify?'true':'false'}">${it.notify?'🔔':'🔕'}</button><button type="button" class="btn btn-icon hora-del" data-id="${it.id}" title="Eliminar ${escapeHtml(it.text)}" aria-label="Eliminar compromiso ${escapeHtml(it.text)}">✕</button></span></div>`).join('') + `</div>`;
   }).join('');
   grid.querySelectorAll('.hora-del').forEach(b=> b.onclick=()=>{
     const id=b.dataset.id;
@@ -365,9 +365,11 @@ function openDayDialog(lunaN, diaN) {
     b.className = 'mood-btn' + (i === pendingMood ? ' sel' : '');
     b.title = m.n;
     b.textContent = m.e;
+    b.setAttribute('aria-label', 'Ánimo: ' + m.n);
+    b.setAttribute('aria-pressed', i === pendingMood ? 'true' : 'false');
     b.onclick = () => {
       pendingMood = pendingMood === i ? -1 : i;
-      moodBox.querySelectorAll('.mood-btn').forEach((x, k) => x.classList.toggle('sel', k === pendingMood));
+      moodBox.querySelectorAll('.mood-btn').forEach((x, k) => { x.classList.toggle('sel', k === pendingMood); x.setAttribute('aria-pressed', k === pendingMood ? 'true' : 'false'); });
       try{ renderDlgResumen(); }catch(e){}
     };
     moodBox.appendChild(b);

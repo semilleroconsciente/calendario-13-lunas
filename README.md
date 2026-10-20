@@ -39,7 +39,7 @@ npm run movil:build     # APK Android → requiere Android SDK + JAVA_HOME
 npm run sync:web        # regenera la copia desplegable web/
 ```
 
-APK ya compilado (v1.9.0): `dist-empaquetado/13-Lunas-offline-1.9.0.apk`. Detalle en `web/LEEME.txt`.
+APK ya compilado (v1.9.0 rev. 20-oct-2026): `dist-empaquetado/13-Lunas-offline-1.9.0.apk` + portable `dist-empaquetado/Calendario 13 Lunas 1.9.0.exe`. Detalle en `web/LEEME.txt` y `web/GUIA-CAMBIOS-MANUALES.md` §22 (reorden `src/` 142 archivos + a11y teclado/lector + techos perf 6400/2150/420).
 
 ## Cómo adaptarlo a otra comuna
 

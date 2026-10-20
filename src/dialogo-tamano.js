@@ -130,8 +130,33 @@
     grip.type = 'button';
     grip.className = 'dlg-resize-handle';
     grip.textContent = '⤡';
-    grip.title = 'Arrastra para cambiar el tamaño (vale para todas las secciones)';
-    grip.setAttribute('aria-label', 'Cambiar tamaño de la sección');
+    grip.title = 'Arrastra o usa flechas para cambiar el tamaño (vale para todas las secciones)';
+    grip.setAttribute('aria-label', 'Cambiar tamaño de la sección (flechas para ajustar, Enter para agrandar)');
+    grip.addEventListener('keydown', function (ev) {
+      if (!isPC()) return;
+      var step = ev.shiftKey ? 40 : 16;
+      var handled = true;
+      try {
+        var r = dlg.getBoundingClientRect();
+        var b = maxBounds();
+        var w = r.width, h = r.height;
+        if (ev.key === 'ArrowRight') w += step;
+        else if (ev.key === 'ArrowLeft') w -= step;
+        else if (ev.key === 'ArrowDown') h += step;
+        else if (ev.key === 'ArrowUp') h -= step;
+        else if (ev.key === 'Enter') { expand.click(); return; }
+        else handled = false;
+        if (handled) {
+          ev.preventDefault(); ev.stopPropagation();
+          w = clamp(Math.round(w), MIN_W, b.w);
+          h = clamp(Math.round(h), MIN_H, b.h);
+          dlg.classList.remove('dlg-expanded');
+          dlg.style.width = w + 'px';
+          dlg.style.height = h + 'px';
+          persist({ w: w, h: h, expanded: false });
+        }
+      } catch (e) {}
+    });
 
     // Inserción: dentro del <form> si existe (respeta method=dialog), si no directo.
     var host = dlg.querySelector('form') || dlg;

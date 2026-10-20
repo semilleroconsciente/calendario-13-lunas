@@ -27,8 +27,8 @@ http.createServer((req, res) => {
   // (splash.css, boot-modulos.js, sw-registro.js son archivos externos),
   // asi que script-src es 'self' estricto. style-src conserva
   // 'unsafe-inline' por los ~1500 style="..." del HTML (fase 2).
-  // connect-src limita la red a open-meteo. Ver _headers (mismo valor).
-  const CSP = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; font-src 'self'; connect-src 'self' https://api.open-meteo.com https://air-quality-api.open-meteo.com; object-src 'none'; base-uri 'self'; form-action 'self'";
+  // connect-src limita la red a open-meteo + respaldo TTS online (translate.google.com). Ver _headers (mismo valor).
+  const CSP = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob: https://translate.google.com; font-src 'self'; connect-src 'self' https://api.open-meteo.com https://air-quality-api.open-meteo.com https://translate.google.com; object-src 'none'; base-uri 'self'; form-action 'self'";
   const sec = {
     'X-Content-Type-Options': 'nosniff',
     'X-Frame-Options': 'SAMEORIGIN',
