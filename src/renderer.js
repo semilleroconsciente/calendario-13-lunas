@@ -681,7 +681,36 @@ if(_tabM) _tabM.onclick=()=> renderSiembraContent('semillas');
 
 /* → renderer-territorio-vivo.js (extraído P2-B; misma scope global, defer posterior en index.html) */
 
-function generateIconPNG() {
+// Logo nuevo 13 Lunas (icono07.jpeg → logo-13-lunas.png): el acceso directo
+// usa el archivo real. El dibujo en canvas queda solo como respaldo
+// (p. ej. si el PNG aún no está en caché offline).
+function loadLogoPNG() {
+  return new Promise((resolve) => {
+    try {
+      const img = new Image();
+      img.onload = () => {
+        try {
+          const c = document.createElement('canvas');
+          c.width = c.height = 256;
+          c.getContext('2d').drawImage(img, 0, 0, 256, 256);
+          resolve(c.toDataURL('image/png').split(',')[1]);
+        } catch { resolve(null); }
+      };
+      img.onerror = () => resolve(null);
+      img.src = 'logo-13-lunas.png';
+    } catch { resolve(null); }
+  });
+}
+
+async function generateIconPNG() {
+  try {
+    const b64 = await loadLogoPNG();
+    if (b64) return b64;
+  } catch {}
+  return drawLegacyIconPNG();
+}
+
+function drawLegacyIconPNG() {
   const c = document.createElement('canvas');
   c.width = c.height = 256;
   const x = c.getContext('2d');
@@ -719,7 +748,7 @@ function generateIconPNG() {
 const _btnShortcut = $('btnShortcut');
 async function createDesktopShortcut() {
   try {
-    const pngB64 = generateIconPNG();
+    const pngB64 = await generateIconPNG();
     const res = await window.api.createShortcut(pngB64);
     const msg = (res && res.ok) ? 'Acceso directo creado ✓' : 'Error: ' + ((res && res.error) || 'no disponible en esta versión');
     const sm = $('statusMsg');

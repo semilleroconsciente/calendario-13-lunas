@@ -287,7 +287,13 @@ ipcMain.handle('shortcut:create', async (_e, pngB64) => {
     const desktop = app.getPath('desktop');
     const lnk = path.join(desktop, 'Calendario 13 Lunas.lnk');
     let iconPath = process.execPath;
-    if (pngB64) {
+    // El icon.ico empaquetado ya trae el logo nuevo (luna dorada 13 Lunas):
+    // se prefiere al PNG del renderer (versiones viejas dibujaban el logo
+    // anterior en canvas y lo sobrescribirían aquí).
+    const bundledIco = path.join(appDir, 'icon.ico');
+    if (fs.existsSync(bundledIco)) {
+      iconPath = bundledIco;
+    } else if (pngB64) {
       const png = Buffer.from(pngB64, 'base64');
       iconPath = path.join(appDir, 'icon.ico');
       fs.writeFileSync(iconPath, pngToIco(png));

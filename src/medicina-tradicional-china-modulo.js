@@ -608,7 +608,7 @@ function buildDialog() {
     '<div class="menstrual-card su-68a1a9"><h4>🧘 Baduanjin (八段锦 · 8 piezas del brocado)</h4>' +
     '<p class="muted su-6cb285">Qigong de 800 años: 8 movimientos + respiración lenta. De pie, ropa cómoda, 10-15 min. Si hay mareo, hipertensión no controlada o embarazo: solo piezas suaves (1, 3, 8) y sin forzar.</p>' +
     '<div class="dlg-actions su-41efc8"><button type="button" id="mtcQiBtn" class="btn su-30e741">🧘 Qigong 5 min</button> ' +
-    '<label class="su-6cb285">Piezas hoy <input type="number" id="mtcPiezas" min="1" max="8" value="8" style="width:4em"></label> ' +
+    '<label class="su-6cb285">Piezas hoy <input type="number" id="mtcPiezas" min="1" max="8" value="8" class="su-41470a"></label> ' +
     '<button type="button" id="mtcPractSave" class="btn btn-accent su-30e741">💾 Guardar día</button></div>' +
     '<span id="mtcQiMsg" class="muted su-6cb285"></span>' +
     '<div class="conv-row"><label>Nota <input type="text" id="mtcPractNota" placeholder="ej: 8 piezas suaves, hombros sueltos" maxlength="140"></label></div></div>' +

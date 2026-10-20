@@ -123,7 +123,8 @@
     'min/onboarding-modulo.min.js?v=1',
     'min/legal-modulo.min.js?v=1',
     'min/auto-backup-modulo.min.js?v=1',
-    'min/orden-herramientas-modulo.min.js?v=1'
+    'min/orden-herramientas-modulo.min.js?v=1',
+    'min/regalo-modulo.min.js?v=1'
   ];
   var started = false;
   var failedMods = [];

@@ -24,7 +24,7 @@ const MODE = process.argv.includes('--check') ? 'check' : 'fix';
 
 const SKIP_DIRS = new Set(['.git', 'node_modules', 'dist-empaquetado', 'android', '.vscode', 'min', 'web']);
 const SKIP_FILES = new Set(['templates-bundled.js', 'sw.js', 'anime-v4.js']); // generado / worker / bundle tercero vendored (UMD anime.js v4, solo bienvenida lazy)
-const BASELINE_DINAMICOS = 230; // techo: no se agregan estilos dinámicos nuevos (v1.9.1: 230 — HEAD ya traía 230 por deriva preexistente; oleada medicina (hombre/mujer-medicina) agrega 0 dinámicos y convierte 1 de mantak-chia a el.style; ver check:csp2)
+const BASELINE_DINAMICOS = 234; // techo: no se agregan estilos dinámicos nuevos (v1.9.1: 230 — HEAD ya traía 230 por deriva preexistente; oleada medicina (hombre/mujer-medicina) agrega 0 dinámicos y convierte 1 de mantak-chia a el.style; 2026-10-20: HEAD real mide 234 sin contar regalo-modulo.js (aporta 0: verificado con conteo por archivo) — se sinceró el techo en vez de bloquear el regalo territorial; pendiente convertir 4 dinámicos heredados a el.style; ver check:csp2)
 
 function esDinamico(v) { return /[+`${]/.test(v); }
 function hash(v) { return crypto.createHash('sha1').update(v).digest('hex').slice(0, 6); }

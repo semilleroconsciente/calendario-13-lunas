@@ -133,16 +133,53 @@
     },
     createShortcut: async () => {
       const url = window.location.href.split('#')[0];
-      const content = "[InternetShortcut]\r\nURL=" + url + "\r\n";
-      const blob = new Blob([content], { type: "application/octet-stream" });
-      const a = document.createElement("a");
+      const icoName = 'Calendario 13 Lunas.ico';
+      // IconFile relativo: Windows lo resuelve junto al .url → muestra el
+      // logo nuevo en el escritorio si ambos archivos van a la misma carpeta.
+      const content = '[InternetShortcut]\r\nURL=' + url + '\r\nIconFile=' + icoName + '\r\nIconIndex=0\r\n';
+      const blob = new Blob([content], { type: 'application/octet-stream' });
+      const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
-      a.download = "Calendario 13 Lunas.url";
+      a.download = 'Calendario 13 Lunas.url';
       document.body.appendChild(a);
       a.click();
       a.remove();
       setTimeout(() => URL.revokeObjectURL(a.href), 2000);
-      return { ok: true, path: "Descargado: Calendario 13 Lunas.url (arrástralo al escritorio)" };
+      // .ico con el logo nuevo (icon-512.png → 256px PNG dentro de ICO).
+      try {
+        const img = await new Promise((res, rej) => {
+          const im = new Image();
+          im.onload = () => res(im);
+          im.onerror = rej;
+          im.src = 'icon-512.png';
+        });
+        const c = document.createElement('canvas');
+        c.width = c.height = 256;
+        c.getContext('2d').drawImage(img, 0, 0, 256, 256);
+        const pngBlob = await new Promise((res) => c.toBlob(res, 'image/png'));
+        const pngBuf = new Uint8Array(await pngBlob.arrayBuffer());
+        const head = new DataView(new ArrayBuffer(22));
+        head.setUint16(0, 0, true);
+        head.setUint16(2, 1, true);
+        head.setUint16(4, 1, true);
+        head.setUint8(6, 0); // 0 = 256px
+        head.setUint8(7, 0);
+        head.setUint8(8, 0);
+        head.setUint8(9, 0);
+        head.setUint16(10, 1, true);
+        head.setUint16(12, 32, true);
+        head.setUint32(14, pngBuf.length, true);
+        head.setUint32(18, 22, true);
+        const ico = new Blob([head.buffer, pngBuf], { type: 'image/x-icon' });
+        const b = document.createElement('a');
+        b.href = URL.createObjectURL(ico);
+        b.download = icoName;
+        document.body.appendChild(b);
+        b.click();
+        b.remove();
+        setTimeout(() => URL.revokeObjectURL(b.href), 2000);
+      } catch {}
+      return { ok: true, path: 'Descargados .url + .ico (déjalos juntos y arrastra el .url al escritorio)' };
     },
     backupSave: async (json, fileName) => {
       const a = document.createElement('a');

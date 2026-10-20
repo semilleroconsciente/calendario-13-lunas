@@ -2,7 +2,7 @@
 // Copyright (C) 2026 Semillero Consciente. Licencia: GNU GPLv3 o posterior (ver COPYING).
 // SPDX-License-Identifier: GPL-3.0-or-later
 // v55
-const CACHE = 'cal13-v139-offline';
+const CACHE = 'cal13-v143-offline';
 const MEDIA_CACHE = 'cal13-media-v1';
 
 // Lista completa de archivos que usa index.html (bare + con ?v=).
@@ -355,6 +355,8 @@ const CORE = [
   './min/recetas-naturales-modulo.min.js?v=1',
   './min/red-comunitaria-modulo.min.js',
   './min/red-comunitaria-modulo.min.js?v=1',
+  './min/regalo-modulo.min.js',
+  './min/regalo-modulo.min.js?v=1',
   './min/reiki-modulo.min.js',
   './min/reiki-modulo.min.js?v=1',
   './min/renderer-territorio-vivo.min.js',
@@ -372,7 +374,7 @@ const CORE = [
   './min/sopa-letras-modulo.min.js',
   './min/sopa-letras-modulo.min.js?v=2',
   './min/splash.min.css',
-  './min/splash.min.css?v=1',
+  './min/splash.min.css?v=2',
   './min/storage-idb.min.js',
   './min/storage-idb.min.js?v=1',
   './min/styles-csp.min.css',
