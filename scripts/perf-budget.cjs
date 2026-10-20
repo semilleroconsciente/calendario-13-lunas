@@ -37,13 +37,24 @@ const BASE = `http://localhost:${PORT}`;
 // humedal-rocuant, legal, bienvenida + cuentos mp3 lazy). Medido: JS ~5423K
 // raw, gzip ~1818K, CORE 385. Techos con holgura ~3%: si un cambio los supera,
 // la respuesta es partir/diferir, no subir el techo a ciegas.
+// Recuento 2026-10-20 (reorden src/): ~37 módulos aprobados post-v1.8 ya
+// fusionados (oleadas medicina/juegos/territorio: ia, hombre/mujer-medicina,
+// mantak-chia, cuarto-camino, tao, estoicismo, tolteca, anastasia, ami,
+// ajedrez/dama/sudoku/crucigrama/sopa/solitario, 7 idiomas, música,
+// electrocultura, huerta/hidroponia/permacultura, domótica/electrónica/
+// mecánica,_renderer-territorio-vivo, zoom, pwa-install, legal/onboarding/
+// auto-backup/accesibilidad + actores/amenazas/negocios/humedal). Medido:
+// JS 6217K raw, gzip 2087K, CORE 407 (regenerado sin historial ?v=;
+// antes 416 con duplicados). Techos = medido + ~3% (6400/2150/420).
+// Sigue vigente: ante un exceso, partir/diferir (o sacar templates sueltos
+// del CORE: solo son respaldo fetch del bundle) antes que subir techos.
 const BUDGET = {
   'index.html KB': 60,
-  'JS total raw KB': 5600,
+  'JS total raw KB': 6400,
   'CSS total raw KB': 200,
-  'gzip total KB': 1880,
+  'gzip total KB': 2150,
   'TTFB index ms': 500,
-  'entradas SW CORE': 395,
+  'entradas SW CORE': 420,
 };
 
 function get(p, gzip) {
