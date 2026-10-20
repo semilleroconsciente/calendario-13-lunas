@@ -34,8 +34,13 @@ function parseAssets(html) {
   const modsHtml = html.match(/var MODS = \[([\s\S]*?)\];/);
   if (modsHtml) modsSrc.push(modsHtml[1]);
   try {
-    const boot = fs.readFileSync(path.join(ROOT, 'boot-modulos.js'), 'utf8');
-    const modsBoot = boot.match(/var MODS = \[([\s\S]*?)\];/);
+    // Paso 2 del reorden src/: boot-modulos.js queda en la raíz (cargador
+    // con scope propio), pero se acepta src/ como fallback tras la mudanza.
+    let boot = null;
+    for (const cand of ['boot-modulos.js', 'src/boot-modulos.js']) {
+      try { boot = fs.readFileSync(path.join(ROOT, cand), 'utf8'); break; } catch {}
+    }
+    const modsBoot = (boot || '').match(/var MODS = \[([\s\S]*?)\];/);
     if (modsBoot) modsSrc.push(modsBoot[1]);
   } catch {}
   {

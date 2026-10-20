@@ -26,21 +26,20 @@ const HASHES = path.join(MINDIR, '.hashes.json');
 const MODE = process.argv.includes('--check') ? 'check'
   : process.argv.includes('--revert') ? 'revert' : 'fix';
 
+// Paso 2 del reorden src/: las rutas viven en scripts/paths.cjs.
+// listarFuentes() es dual raíz+src/ (hoy src/ no existe → idéntico a antes).
+// La SALIDA (min/) no cambia: el runtime, el SW y los ?v= no se tocan.
+const { listarFuentes } = require('./paths.cjs');
+
 const EXCLUIR = new Set(['main.js', 'preload.js', 'capacitor.config.js', 'sw.js',
   'boot-modulos.js', 'sw-registro.js']);
 
 function sha1(s) { return crypto.createHash('sha1').update(s).digest('hex'); }
 
 function fuentes() {
-  const out = [];
-  for (const e of fs.readdirSync(ROOT, { withFileTypes: true })) {
-    if (!e.isFile()) continue;
-    if (EXCLUIR.has(e.name)) continue;
-    if (e.name.endsWith('.min.js') || e.name.endsWith('.min.css')) continue;
-    if (e.name.endsWith('.js')) out.push({ src: e.name, out: 'min/' + e.name.replace(/\.js$/, '.min.js'), loader: 'js' });
-    else if (e.name.endsWith('.css')) out.push({ src: e.name, out: 'min/' + e.name.replace(/\.css$/, '.min.css'), loader: 'css' });
-  }
-  return out.sort((a, b) => a.src.localeCompare(b.src));
+  // Dual raíz+src/: hoy src/ no existe y devuelve lo mismo que antes
+  // (barrido de la raíz). Tras la mudanza devolverá src/*.js.
+  return listarFuentes();
 }
 
 function loadHashes() {
@@ -68,6 +67,10 @@ if (MODE === 'revert') {
 }
 
 const entries = fuentes();
+// Índice por NOMBRE BASE ('X.js'): hoy src==='X.js'; tras la mudanza
+// src==='src/X.js' pero las refs en index.html/boot siguen diciendo 'X.js'.
+// Buscar por base hace el rewrite idempotente en ambos layouts.
+const porBase = new Map(entries.map((e) => [e.src.split('/').pop(), e]));
 const noms = new Set(entries.map((e) => e.src));
 
 // Reescritura de refs index.html + boot-modulos.js hacia min/ (idempotente).
@@ -79,13 +82,13 @@ function aMin(s) {
     if (m) s = s.split(`min/${m[1]}.min.${m[2]}`).join(name);
   }
   s = s.replace(/(src|href)="([A-Za-z0-9_.\-]+\.(?:js|css))(\?v=\d+)"/g, (m, attr, name, v) => {
-    if (!noms.has(name)) return m;
-    const e = entries.find((x) => x.src === name);
+    const e = porBase.get(name);
+    if (!e) return m;
     return `${attr}="${e.out}${v}"`;
   });
   // Bloque MODS: 'X.js?v=N' (boot-modulos.js)
   s = s.replace(/'([A-Za-z0-9_.\-]+\.js)(\?v=\d+)'/g, (m, name, v) => {
-    const e = entries.find((x) => x.src === name);
+    const e = porBase.get(name);
     return e ? `'${e.out}${v}'` : m;
   });
   return s;
@@ -155,11 +158,14 @@ if (MODE === 'check') {
 }
 
 for (const k of Object.keys(hashes)) {
-  if (!noms.has(k)) {
+  // Comparar por base: tras la mudanza la clave vieja 'X.js' y la nueva
+  // 'src/X.js' son la misma fuente (evita borrar min/ en la transición).
+  const baseK = k.split('/').pop();
+  if (!porBase.has(baseK)) {
     delete hashes[k];
     for (const d of [ROOT, path.join(ROOT, 'web')]) {
       for (const ext of ['.min.js', '.min.css']) {
-        const base = k.replace(/\.(js|css)$/, ext);
+        const base = baseK.replace(/\.(js|css)$/, ext);
         const p = path.join(d, 'min', base);
         if (fs.existsSync(p)) { fs.rmSync(p); console.log('  - excluido, eliminado: ' + path.relative(ROOT, p)); }
       }

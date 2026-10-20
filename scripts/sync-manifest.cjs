@@ -94,9 +94,17 @@ function cubiertoPorFiles(name) {
   return false;
 }
 const CORE_PAGE_FILES = new Set(['main.js', 'preload.js', 'sw.js']); // van en files pero no en index.html
+// Paso 2 del reorden src/: existencia dual (min/ y raíz hoy; src/ tras la mudanza).
+let _resolver = null;
+try { _resolver = require('./paths.cjs').resolverFuente; } catch { _resolver = null; }
+function existeFuente(name) {
+  if (fs.existsSync(path.join(ROOT, name))) return true;
+  if (_resolver) { try { if (_resolver(name.split('/').pop())) return true; } catch {} }
+  return false;
+}
 for (const [name] of refs) {
   if (!name.endsWith('.js') && !name.endsWith('.css')) continue;
-  if (!fs.existsSync(path.join(ROOT, name))) fail(`index.html referencia ${name} pero no existe en disco`);
+  if (!existeFuente(name)) fail(`index.html referencia ${name} pero no existe en disco`);
   else if (!cubiertoPorFiles(name)) fail(`${name} usado en index.html pero ausente en build.files de package.json (el portable no lo incluira)`);
 }
 for (const f of pkgFiles) {

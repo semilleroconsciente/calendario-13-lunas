@@ -7,8 +7,15 @@ const path = require('path');
 
 const ROOT = path.join(__dirname, '..');
 const files = [];
-for (const e of fs.readdirSync(ROOT, { withFileTypes: true })) {
-  if (e.isFile() && (e.name.endsWith('.js') || e.name.endsWith('.cjs'))) files.push(e.name);
+// Paso 2 del reorden src/: barrido dual raíz+src/ (hoy src/ no existe →
+// idéntico a antes; tras la mudanza también cubre las fuentes movidas).
+for (const dir of [ROOT, path.join(ROOT, 'src')]) {
+  let list = [];
+  try { list = fs.readdirSync(dir, { withFileTypes: true }); } catch { continue; }
+  const pref = dir === ROOT ? '' : 'src/';
+  for (const e of list) {
+    if (e.isFile() && (e.name.endsWith('.js') || e.name.endsWith('.cjs'))) files.push(pref + e.name);
+  }
 }
 for (const e of fs.readdirSync(path.join(ROOT, 'scripts'))) {
   if (e.endsWith('.cjs')) files.push('scripts/' + e);
