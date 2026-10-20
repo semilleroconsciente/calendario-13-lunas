@@ -11,6 +11,8 @@ const path = require('path');
 const vm = require('node:vm');
 
 const ROOT = path.join(__dirname, '..');
+// Paso 3 del reorden src/: las fuentes viven en src/ tras la mudanza.
+const { resolverFuente } = require('../scripts/paths.cjs');
 
 // ---------- DOM mínimo ----------
 function makeClassList(el) {
@@ -192,7 +194,7 @@ describe('tamaño de pestaña compartido (dialogo-tamano)', () => {
   it('arrastrar guarda y se aplica a todas las demás secciones', () => {
     const sb = makeSandbox();
     vm.createContext(sb);
-    const codigo = fs.readFileSync(path.join(ROOT, 'dialogo-tamano.js'), 'utf8');
+    const codigo = fs.readFileSync(resolverFuente('dialogo-tamano.js'), 'utf8');
     new vm.Script(codigo, { filename: 'dialogo-tamano.js' }).runInContext(sb);
 
     // 1) Abrir primera sección y arrastrar el tirador +120x+80.
@@ -237,7 +239,7 @@ describe('tamaño de pestaña compartido (dialogo-tamano)', () => {
   });
 
   it('tirador pequeño en la esquina (no tapa el Cerrar)', () => {
-    const css = fs.readFileSync(path.join(ROOT, 'styles.css'), 'utf8');
+    const css = fs.readFileSync(resolverFuente('styles.css'), 'utf8');
     const chunk = css.split('@media').find((c) => c.includes('.dlg-resize-handle {'));
     assert.ok(chunk, 'bloque .dlg-resize-handle en el media PC');
     const m = /\.dlg-resize-handle \{([^}]+)\}/.exec(chunk);

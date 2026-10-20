@@ -6,11 +6,13 @@ const assert = require('node:assert/strict');
 const fs = require('fs');
 const path = require('path');
 const vm = require('vm');
+// Paso 3 del reorden src/: core-sanitize.js vive en src/ tras la mudanza.
+const { resolverFuente } = require('../scripts/paths.cjs');
 
 function loadSanitize() {
   const sandbox = { window: {} };
   vm.createContext(sandbox);
-  vm.runInContext(fs.readFileSync(path.join(__dirname, '..', 'core-sanitize.js'), 'utf8'), sandbox, { filename: 'core-sanitize.js' });
+  vm.runInContext(fs.readFileSync(resolverFuente('core-sanitize.js'), 'utf8'), sandbox, { filename: 'core-sanitize.js' });
   return sandbox.window.sanitizeHTML;
 }
 

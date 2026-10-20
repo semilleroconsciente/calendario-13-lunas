@@ -19,7 +19,9 @@ const path = require('path');
 
 const ROOT = path.join(__dirname, '..');
 const TPLDIR = path.join(ROOT, 'templates');
-const BUNDLE = path.join(ROOT, 'templates-bundled.js');
+// Paso 3 del reorden src/: el bundle generado vive junto a las fuentes.
+const { existeSrc: _existeSrc } = require('./paths.cjs');
+const BUNDLE = path.join(ROOT, _existeSrc() ? path.join('src', 'templates-bundled.js') : 'templates-bundled.js');
 const MODE = process.argv.includes('--check') ? 'check' : 'fix';
 
 function leerTemplates() {

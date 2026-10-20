@@ -8,6 +8,8 @@ const path = require('path');
 const vm = require('vm');
 
 const ROOT = path.join(__dirname, '..');
+// Paso 3 del reorden src/: las fuentes viven en src/ tras la mudanza.
+const { resolverFuente } = require('../scripts/paths.cjs');
 
 function loadShim() {
   const store = {};
@@ -25,7 +27,7 @@ function loadShim() {
   Object.defineProperty(sandbox.localStorage, 'length', { get: () => keysOf().length });
   sandbox.window = sandbox;
   vm.createContext(sandbox);
-  vm.runInContext(fs.readFileSync(path.join(ROOT, 'storage-idb.js'), 'utf8'), sandbox);
+  vm.runInContext(fs.readFileSync(resolverFuente('storage-idb.js'), 'utf8'), sandbox);
   return sandbox.window.cal13idb;
 }
 // Los objetos cruzan el borde vm (prototipo de otro realm): se comparan

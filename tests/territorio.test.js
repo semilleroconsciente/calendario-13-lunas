@@ -8,6 +8,8 @@ const path = require('path');
 
 const ROOT = path.join(__dirname, '..');
 const TER = path.join(ROOT, 'data/territorios');
+// Paso 3 del reorden src/: data.js vive en src/ tras la mudanza.
+const { resolverFuente } = require('../scripts/paths.cjs');
 
 function walk(dir) {
   const out = [];
@@ -31,7 +33,7 @@ describe('datos territoriales', () => {
   });
 
   it('data.js trae fallback de las 13 lunas', () => {
-    const data = fs.readFileSync(path.join(ROOT, 'data.js'), 'utf8');
+    const data = fs.readFileSync(resolverFuente('data.js'), 'utf8');
     assert.ok(data.includes('We Tripantü'), 'data.js sin luna 1 (fallback roto)');
   });
 });

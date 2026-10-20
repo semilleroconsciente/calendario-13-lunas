@@ -1,7 +1,9 @@
 // Verificacion: JSON dinamico == datos embebidos (data.js)
 const fs = require('fs');
+// Paso 3 del reorden src/: data.js vive en src/ tras la mudanza.
+const { resolverFuente } = require('./paths.cjs');
 global.window = {};
-let src = fs.readFileSync('data.js', 'utf8');
+let src = fs.readFileSync(resolverFuente('data.js'), 'utf8');
 src = src.replace(/window\.pencoData\s*=.*/s, 'global.__pd = { PENCO, ESTACIONES, MOONS, DFT, INTRO, MOODS, EFEMERIDES, SIEMBRA, SIEMBRA_LUNAS, DONATE, AVES_PENCO, EVENTOS_ASTRONOMICOS, EVENTOS_COMUNA_PENCO, ASOCIACIONES_CULTIVOS, PREPARADOS_ORGANICOS, INTERMAREAL_PENCO, BOSQUE_NATIVO_PENCO, CONSEJOS_INTERMAREAL, CONSEJOS_BOSQUE };');
 eval(src);
 const pd = global.__pd;

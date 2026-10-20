@@ -8,6 +8,8 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.join(__dirname, '..');
+// Paso 3 del reorden src/: styles.css vive en src/ tras la mudanza.
+const { resolverFuente } = require('../scripts/paths.cjs');
 
 function lum(hex) {
   let h = hex.replace('#', '');
@@ -23,7 +25,7 @@ function ratio(a, b) {
 
 describe('contraste WCAG AA', () => {
   it('--muted sobre --bg ≥ 4.5:1 en todos los temas', () => {
-    const css = fs.readFileSync(path.join(ROOT, 'styles.css'), 'utf8');
+    const css = fs.readFileSync(resolverFuente('styles.css'), 'utf8');
     // Especificidad real: body[data-theme] (0,1,1) gana a [data-theme] (0,1,0)
     // sin importar el orden. Se respeta: body[] pisa, plano solo si no hay body[].
     const vars = {};

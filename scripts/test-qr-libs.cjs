@@ -4,7 +4,9 @@ const ROOT = path.join(__dirname, '..');
 
 // 1) qrcode-generator (en browser es global `var qrcode`; en Node la evaluamos sin exports/define)
 const fs = require('fs');
-const srcQR = fs.readFileSync(path.join(ROOT, 'qrcode-lib.js'), 'utf8');
+// Paso 3 del reorden src/: resolver dual raíz/src.
+const { resolverFuente } = require('./paths.cjs');
+const srcQR = fs.readFileSync(resolverFuente('qrcode-lib.js'), 'utf8');
 const qrcodeFn = new Function('module', 'exports', 'define', srcQR + '\n;return qrcode;')(undefined, undefined, undefined);
 if (!qrcodeFn) { console.log('FALLO: global qrcode no definido'); process.exit(1); }
 const q = qrcodeFn(0, 'M');

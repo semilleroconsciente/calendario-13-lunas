@@ -8,6 +8,8 @@ const path = require('path');
 const vm = require('node:vm');
 
 const ROOT = path.join(__dirname, '..');
+// Paso 3 del reorden src/: las fuentes viven en src/ tras la mudanza.
+const { resolverFuente } = require('../scripts/paths.cjs');
 
 function contexto() {
   const store = {};
@@ -29,8 +31,8 @@ function contexto() {
   sb.self = sb;
   sb.globalThis = sb;
   vm.createContext(sb);
-  vm.runInContext(fs.readFileSync(path.join(ROOT, 'storage-idb.js'), 'utf8'), sb, { filename: 'storage-idb.js' });
-  vm.runInContext(fs.readFileSync(path.join(ROOT, 'web-api.js'), 'utf8'), sb, { filename: 'web-api.js' });
+  vm.runInContext(fs.readFileSync(resolverFuente('storage-idb.js'), 'utf8'), sb, { filename: 'storage-idb.js' });
+  vm.runInContext(fs.readFileSync(resolverFuente('web-api.js'), 'utf8'), sb, { filename: 'web-api.js' });
   return { sb, store };
 }
 function j(v) { return JSON.stringify(v); }

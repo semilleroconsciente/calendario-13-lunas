@@ -13,6 +13,8 @@ const path = require('path');
 const vm = require('node:vm');
 
 const ROOT = path.join(__dirname, '..');
+// Paso 3 del reorden src/: las fuentes viven en src/ tras la mudanza.
+const { resolverFuente } = require('../scripts/paths.cjs');
 
 // Archivos con scope propio (no compiten por window en el navegador).
 const EXCLUIR = new Set([
@@ -59,9 +61,9 @@ function ordenCarga() {
   return orden.filter((f) => !EXCLUIR.has(f) && fs.existsSync(path.join(ROOT, f)));
 }
 
-// Núcleo (nombre base: vale fuente o gemelo .min).
+// Núcleo (nombre base: vale fuente en raíz o src/, o gemelo .min).
 function esNucleo(f) {
-  const base = f.replace(/^min\//, '').replace(/\.min\.js$/, '.js');
+  const base = f.replace(/^(min|src)\//, '').replace(/\.min\.js$/, '.js');
   return NUCLEO.has(base);
 }
 
@@ -203,14 +205,26 @@ describe('colisiones IIFE (vm)', () => {
     // Fuentes en el mismo orden relativo que los cableados (gemelo .min →
     // fuente). Las fuentes nunca se mezclan con sus gemelos en un mismo
     // contexto: sus const top-level colisionarían entre sí (falso positivo).
-    const aFuente = (f) => f.replace(/^min\//, '').replace(/\.min\.js$/, '.js');
+    // Tras el reorden src/ viven en src/ (resolver dual raíz/src).
+    const aFuente = (f) => f.replace(/^(min|src)\//, '').replace(/\.min\.js$/, '.js');
     const fuentes = [];
     for (const f of cableados) {
       const s = aFuente(f);
-      if (s !== f && fs.existsSync(path.join(ROOT, s)) && !fuentes.includes(s)) fuentes.push(s);
+      if (s === f) continue;
+      const r = resolverFuente(s);
+      if (!r) continue;
+      // path.relative da 'src\\x.js' en Windows: normalizar a '/' para que
+      // coincida con el barrido y no se cargue el mismo archivo dos veces.
+      const rel = path.relative(ROOT, r).split(path.sep).join('/');
+      if (!fuentes.includes(rel)) fuentes.push(rel);
     }
-    for (const f of fs.readdirSync(ROOT)) {
-      if (f.endsWith('.js') && !EXCLUIR.has(f) && !fuentes.includes(f) && !cableados.includes(f)) fuentes.push(f);
+    for (const dir of ['', 'src/']) {
+      let lista = [];
+      try { lista = fs.readdirSync(path.join(ROOT, dir)); } catch { continue; }
+      for (const f of lista) {
+        const rel = dir + f;
+        if (f.endsWith('.js') && !EXCLUIR.has(f) && !fuentes.includes(rel) && !cableados.includes(rel)) fuentes.push(rel);
+      }
     }
     // Rechazos asíncronos de los stubs (fetch stub, inits diferidos): se
     // capturan para informar, sin tumbar el runner por unhandledRejection.
@@ -270,7 +284,7 @@ describe('colisiones IIFE (vm)', () => {
     }
     // Fuente y gemelo .min definen lo mismo en contextos distintos: se
     // normaliza por archivo base; colisión = >1 archivo base distinto.
-    const base = (x) => x.replace(' (redeclara)', '').replace(/^min\//, '').replace(/\.min\.js$/, '.js');
+    const base = (x) => x.replace(' (redeclara)', '').replace(/^(min|src)\//, '').replace(/\.min\.js$/, '.js');
     const colisiones = [...define.entries()]
       .map(([g, fs2]) => [g, [...new Set(fs2.map(base))]])
       .filter(([, bases]) => bases.length > 1);

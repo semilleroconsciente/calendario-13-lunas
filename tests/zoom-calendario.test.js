@@ -9,6 +9,8 @@ const path = require('path');
 const vm = require('node:vm');
 
 const ROOT = path.join(__dirname, '..');
+// Paso 3 del reorden src/: las fuentes viven en src/ tras la mudanza.
+const { resolverFuente } = require('../scripts/paths.cjs');
 
 function makeStore() {
   const m = new Map();
@@ -90,7 +92,7 @@ function makeSandbox(pc) {
 
 function loadModule(sb) {
   vm.createContext(sb);
-  const codigo = fs.readFileSync(path.join(ROOT, 'zoom-calendario.js'), 'utf8');
+  const codigo = fs.readFileSync(resolverFuente('zoom-calendario.js'), 'utf8');
   new vm.Script(codigo, { filename: 'zoom-calendario.js' }).runInContext(sb);
 }
 
@@ -173,7 +175,7 @@ describe('zoom del calendario con Ctrl+rueda (zoom-calendario)', () => {
   it('index.html carga el módulo y styles.css trae la insignia solo en PC', () => {
     const html = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
     assert.ok(html.includes('zoom-calendario.min.js'), 'script zoom-calendario en index.html');
-    const css = fs.readFileSync(path.join(ROOT, 'styles.css'), 'utf8');
+    const css = fs.readFileSync(resolverFuente('styles.css'), 'utf8');
     assert.ok(css.includes('#calZoomBadge'), 'estilos de la insignia presentes');
     const chunk = css.split('@media').find((c) => c.includes('#calZoomBadge') && c.includes('pointer: fine'));
     assert.ok(chunk, '#calZoomBadge solo en el media PC (pointer:fine)');

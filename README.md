@@ -52,6 +52,14 @@ node scripts/nuevo-territorio.cjs maule "Maule"
 
 Los datos oficiales viven en `data/territorios/<id>/` (17 JSON: lunas, eventos, talleres, flora, aves, bosque, intermareal, cultivos…). Ver `scripts/validar-territorios.cjs`.
 
+## Estructura
+
+- `src/` — todo el código fuente (módulos `*-modulo.js`, `core-*.js`, `data.js`, `renderer.js`, CSS). Aquí se edita.
+- `min/` — salida generada por `npm run build:min` (esbuild). El runtime, el service worker y los `?v=` solo apuntan aquí.
+- Raíz — solo `index.html`, cargadores (`boot-modulos.js`, `sw-registro.js`), `sw.js`, `main.js`/`preload.js` (Electron) y config.
+- `web/` — copia desplegable (Pages/APK), se sincroniza con `npm run sync:web -- --fix`.
+- Rutas centralizadas en `scripts/paths.cjs` (los scripts y tests resuelven raíz o `src/`).
+
 ## Licencia (dual)
 
 - **Código** (HTML/CSS/JS, Electron, APK): **GPL-3.0-o-posterior** — ver `COPYING`.

@@ -47,7 +47,7 @@ Recomendación: hacerlo en la próxima tanda de contenido, 1 línea por template
 ## 5. Comandos de verificación
 
 ```
-npm run build:min -- --fix   # tras editar *-modulo.js
+npm run build:min -- --fix   # tras editar src/*-modulo.js
 npm run build:sw -- --fix    # tras tocar index.html / boot-modulos.js / legal/
 npm run sync:web -- --fix    # propaga a web/ (Capacitor + Pages)
 node scripts/minify.cjs --check && node scripts/build-sw.cjs && node scripts/sync-web.cjs && node scripts/check-syntax.cjs

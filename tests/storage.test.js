@@ -7,6 +7,8 @@ const assert = require('node:assert/strict');
 const fs = require('fs');
 const path = require('path');
 const vm = require('vm');
+// Paso 3 del reorden src/: web-api.js vive en src/ tras la mudanza.
+const { resolverFuente } = require('../scripts/paths.cjs');
 
 function loadApi(initial) {
   const store = { 'cal13-data': initial };
@@ -16,7 +18,7 @@ function loadApi(initial) {
   };
   const sandbox = { window: {}, localStorage };
   vm.createContext(sandbox);
-  vm.runInContext(fs.readFileSync(path.join(__dirname, '..', 'web-api.js'), 'utf8'), sandbox, { filename: 'web-api.js' });
+  vm.runInContext(fs.readFileSync(resolverFuente('web-api.js'), 'utf8'), sandbox, { filename: 'web-api.js' });
   return { api: sandbox.window.api, store };
 }
 

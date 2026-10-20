@@ -8,6 +8,9 @@ const path = require('path');
 
 const ROOT = path.join(__dirname, '..');
 const read = (f) => fs.readFileSync(path.join(ROOT, f), 'utf8');
+// Paso 3 del reorden src/: templates-bundled.js vive en src/ tras la mudanza.
+const { resolverFuente } = require('../scripts/paths.cjs');
+const readSrc = (f) => fs.readFileSync(resolverFuente(f), 'utf8');
 
 describe('manifest + cableado', () => {
   it('manifest.json: UTF-8 válido, sin mojibake', () => {
@@ -46,7 +49,7 @@ describe('manifest + cableado', () => {
     assert.ok(html.includes('id="dlgHost"'), 'falta #dlgHost para inyección');
     const dir = fs.readdirSync(path.join(ROOT, 'templates')).filter((f) => f.endsWith('.html'));
     assert.ok(dir.length >= 50, 'se esperaban 50+ templates, hay ' + dir.length);
-    const bundle = read('templates-bundled.js');
+    const bundle = readSrc('templates-bundled.js');
     assert.ok(bundle.includes('window.cal13tpl'), 'bundle sin window.cal13tpl');
     for (const f of dir) {
       const id = f.replace(/\.html$/, '');

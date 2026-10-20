@@ -79,6 +79,8 @@ if (webOnly.length) console.log('  solo-web (se respetan): ' + webOnly.slice(0, 
 const ELECTRON_ONLY = new Set(['main.js', 'preload.js', 'capacitor.config.js']);
 const WEB_EXT = ['.js', '.css'];
 const needInWeb = rootOnly.filter((f) => {
+  // Paso 3 del reorden src/: las fuentes viajan solo como min/ (deploy slim).
+  if (f.startsWith('src/')) return false;
   if (ELECTRON_ONLY.has(f) || f.startsWith('docs/') || f.startsWith('scripts/')) return false;
   if (f === '_headers' || f === 'manifest.json' || f === 'robots.txt' || f === 'sitemap.xml') return true;
   // Legal offline (Fase 1): paginas standalone para Términos/Privacidad/Cookies.

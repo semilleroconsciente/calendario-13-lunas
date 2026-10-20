@@ -4,7 +4,9 @@ const path = require('path');
 const ROOT = path.join(__dirname, '..');
 
 (async () => {
-  require(path.join(ROOT, 'qr-codec.js'));
+  // Paso 3 del reorden src/: resolver dual raíz/src.
+  const { resolverFuente } = require('./paths.cjs');
+  require(resolverFuente('qr-codec.js'));
   const C = globalThis.Cal13QRcodec;
   if (!C) { console.log('FALLO: Cal13QRcodec no expuesto'); process.exit(1); }
 

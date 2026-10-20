@@ -7,11 +7,13 @@ const assert = require('node:assert/strict');
 const path = require('path');
 
 const ROOT = path.join(__dirname, '..');
+// Paso 3 del reorden src/: las fuentes viven en src/ tras la mudanza.
+const { resolverFuente } = require('../scripts/paths.cjs');
 global.window = {};
-require(path.join(ROOT, 'astro.js'));
-require(path.join(ROOT, 'data.js'));
+require(resolverFuente('astro.js'));
+require(resolverFuente('data.js'));
 Object.assign(global, global.window.pencoData);
-require(path.join(ROOT, 'cal.js'));
+require(resolverFuente('cal.js'));
 const astro = global.window.astro;
 const cal = global.window.cal;
 const fmtKey = cal.fmtKey;

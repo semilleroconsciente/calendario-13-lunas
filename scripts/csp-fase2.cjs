@@ -16,7 +16,10 @@ const path = require('path');
 const crypto = require('crypto');
 
 const ROOT = path.join(__dirname, '..');
-const CSS_OUT = path.join(ROOT, 'styles-csp.css');
+// Paso 3 del reorden src/: el CSS generado vive junto a las fuentes
+// (src/ tras la mudanza, raíz antes). El walk recursivo ya lo encuentra.
+const { existeSrc } = require('./paths.cjs');
+const CSS_OUT = path.join(ROOT, existeSrc() ? path.join('src', 'styles-csp.css') : 'styles-csp.css');
 const MODE = process.argv.includes('--check') ? 'check' : 'fix';
 
 const SKIP_DIRS = new Set(['.git', 'node_modules', 'dist-empaquetado', 'android', '.vscode', 'min', 'web']);
@@ -49,10 +52,14 @@ function declaraciones(v) {
 
 const files = fuentes();
 const valores = new Map(); // valor -> {n, archivos:Set}
+// Clases su-* ya en uso (las estáticas que les dieron origen ya fueron
+// convertidas; regenerar solo desde style="..." las borraría).
+const usados = new Set();
 let dinamicos = 0;
 const dinPorArchivo = new Map();
 for (const f of files) {
   const s = fs.readFileSync(path.join(ROOT, f), 'utf8');
+  for (const m of s.matchAll(/\bsu-[0-9a-f]{6}\b/g)) usados.add(m[0]);
   const re = / style="([^"]*)"/g;
   let m;
   while ((m = re.exec(s))) {
@@ -86,11 +93,25 @@ if (MODE === 'check') {
 // --fix: genera styles-csp.css y reescribe.
 const claseDe = new Map();
 for (const v of valores.keys()) claseDe.set(v, 'su-' + hash(v));
+// Preservar reglas existentes aún referenciadas: sus style="..." de origen
+// ya no existen (fueron convertidos), pero las clases siguen en uso.
+// Sin esto, cada --fix con 0 estáticos vaciaría el CSS y rompería la UI.
+const generadas = new Set(claseDe.values());
+const heredadas = new Map(); // cls -> declaraciones (del CSS actual)
+try {
+  const viejo = fs.readFileSync(CSS_OUT, 'utf8');
+  for (const m of viejo.matchAll(/\.(su-[0-9a-f]{6})\{([^}]*)\}/g)) {
+    if (usados.has(m[1]) && !generadas.has(m[1]) && !heredadas.has(m[1])) heredadas.set(m[1], m[2]);
+  }
+} catch {}
 let css = '/* styles-csp.css — AUTO-GENERADO por scripts/csp-fase2.cjs. No editar a mano.\n'
-  + `   Utilidades de la migración CSP fase 2 (${valores.size} valores, !important\n`
+  + `   Utilidades de la migración CSP fase 2 (${claseDe.size + heredadas.size} valores, !important\n`
   + '   para preservar la precedencia del inline). Fuente: atributos style="..." */\n';
 for (const [v, cls] of [...claseDe.entries()].sort((a, b) => a[1].localeCompare(b[1]))) {
   css += `.${cls}{${declaraciones(v).join('')}}\n`;
+}
+for (const [cls, decls] of [...heredadas.entries()].sort((a, b) => a[0].localeCompare(b[0]))) {
+  css += `.${cls}{${decls}}\n`;
 }
 fs.writeFileSync(CSS_OUT, css, 'utf8');
 

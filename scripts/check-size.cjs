@@ -5,6 +5,8 @@
 const fs = require('fs');
 const path = require('path');
 const ROOT = path.join(__dirname, '..');
+// Paso 3 del reorden src/: los techos se miden por nombre base (raíz o src/).
+const { resolverFuente } = require('./paths.cjs');
 const LIMITS = {
   'renderer.js': 1150 * 1024,
   'renderer-territorio-vivo.js': 150 * 1024,
@@ -15,7 +17,8 @@ const LIMITS = {
 let fail = 0;
 for (const [f, max] of Object.entries(LIMITS)) {
   try {
-    const kb = fs.statSync(path.join(ROOT, f)).size;
+    const p = resolverFuente(f) || path.join(ROOT, f);
+    const kb = fs.statSync(p).size;
     const ok = kb <= max;
     if (!ok) fail = 1;
     console.log(`  ${ok ? '=' : 'x'} ${f}: ${Math.round(kb / 1024)} KB (techo ${Math.round(max / 1024)} KB)`);

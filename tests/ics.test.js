@@ -8,12 +8,14 @@ const assert = require('node:assert/strict');
 const fs = require('fs');
 const path = require('path');
 const vm = require('vm');
+// Paso 3 del reorden src/: ics-modulo.js vive en src/ tras la mudanza.
+const { resolverFuente } = require('../scripts/paths.cjs');
 
 function loadICS(stubs) {
   const sandbox = Object.assign({ window: {}, console }, stubs || {});
   vm.createContext(sandbox);
   vm.runInContext(
-    fs.readFileSync(path.join(__dirname, '..', 'ics-modulo.js'), 'utf8'),
+    fs.readFileSync(resolverFuente('ics-modulo.js'), 'utf8'),
     sandbox,
     { filename: 'ics-modulo.js' }
   );

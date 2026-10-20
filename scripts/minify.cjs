@@ -108,6 +108,16 @@ if (MODE === 'fix') {
 }
 
 const hashes = loadHashes();
+// Migración única raíz→src/: si la clave vieja 'X.js' existe y la fuente
+// ahora vive en 'src/X.js' con el MISMO contenido, se hereda el hash.
+// Así la mudanza no dispara una reconstrucción total de min/.
+for (const k of Object.keys(hashes)) {
+  if (!k.includes('/') && porBase.has(k)) {
+    const e = porBase.get(k);
+    if (e.src !== k && !(e.src in hashes)) hashes[e.src] = hashes[k];
+    delete hashes[k];
+  }
+}
 let staled = [];
 let hechos = 0, s0 = 0, s1 = 0, g0 = 0, g1 = 0, omitidos = [];
 
