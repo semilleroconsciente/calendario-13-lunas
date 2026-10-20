@@ -345,7 +345,7 @@ function ensureButton() {
     b.className = 'btn';
     b.type = 'button';
     b.setAttribute('data-sub', 'penco');
-    b.setAttribute('data-keywords', 'guardianxs guardianes defensores territorio defensa organizaciones asamblea coordinadora humedal gnl minera tierras raras pesca lafken mujeres ong fundacion colectivo junta campana red apoyo sumarse contacto actores');
+    b.setAttribute('data-keywords', 'guardianxs guardianes defensores territorio defensa organizaciones asamblea coordinadora humedal gnl minera tierras raras pesca lafken mujeres ong fundacion colectivo junta campaña campana red apoyo sumarse contacto actores');
     b.textContent = '🛡️ Guardianxs del territorio';
     var ref = $('btnBomberos');
     if (ref && ref.parentNode === g) {

@@ -102,20 +102,20 @@ var CC_IDEAS = [
   { id: 'sueno', n: 'El hombre dormido', ico: '😴', tag: 'sueno despertar piloto automatico',
     idea: 'Vivimos dormidos: reaccionamos en piloto automatico, sin darnos cuenta de que estamos vivos. Despertar no es metafora: es notar "estoy aqui, ahora".',
     sirve: 'Dias en que haces todo apurado y al final no recuerdas nada. Irritabilidad, olvidos, "me paso la semana volando".',
-    practica: '3 alarmas al dia (manana, mediodia, tarde): al sonar, frena 30 seg, mira tus manos, respira y di dentro: "estoy aqui".',
+    practica: '3 alarmas al dia (mañana, mediodia, tarde): al sonar, frena 30 seg, mira tus manos, respira y di dentro: "estoy aqui".',
     trampa: 'Creer que ya estas despierto porque lo leiste. El sueno se mide en actos, no en ideas.',
     pregunta: 'En este momento: ¿estoy aqui o estoy en mi cabeza?' },
-  { id: 'esencia', n: 'Esencia vs Personalidad', ico: '🌱', tag: 'esencia personalidad yo nino herida mascara',
-    idea: 'Esencia: lo que trajiste de nina/o (curiosidad, risa facil, llanto honesto). Personalidad: la mascara que aprendiste para que te quieran (portarse bien, callar, rendir). El trabajo es que la personalidad deje de tapar la esencia.',
+  { id: 'esencia', n: 'Esencia vs Personalidad', ico: '🌱', tag: 'esencia personalidad yo niño herida mascara',
+    idea: 'Esencia: lo que trajiste de niña/o (curiosidad, risa facil, llanto honesto). Personalidad: la mascara que aprendiste para que te quieran (portarse bien, callar, rendir). El trabajo es que la personalidad deje de tapar la esencia.',
     sirve: 'Sentir que actuas un personaje en el trabajo, la familia o la pareja. Cansancio de fingir.',
-    practica: 'Escribe 3 recuerdos de infancia donde eras TU sin esfuerzo. ¿Que hacia esa nina/o que hoy censuras?',
+    practica: 'Escribe 3 recuerdos de infancia donde eras TU sin esfuerzo. ¿Que hacia esa niña/o que hoy censuras?',
     trampa: 'Usarlo para culpar a los padres. Sirve para comprender, no para acusar.',
     pregunta: '¿Esto que hago sale de mi esencia o de mi miedo a no gustar?' },
   { id: 'centros', n: 'Los 3 cerebros (centros)', ico: '🧠', tag: 'centros intelectual emocional motor instintivo cuerpo',
     idea: 'Tenemos 3 cerebros: Intelectual (piensa), Emocional (siente) y Motor-Instintivo (se mueve, hambre, sueno, sexo). Cada uno tiene su atencion y su velocidad. Casi siempre uno manda y los otros obedecen.',
     sirve: 'Pensar sin parar (intelectual), ahogarte en emociones (emocional) o vivir solo haciendo sin sentir (motor).',
     practica: 'Hoy observa cada 3 horas: ¿que centro manda? Anotalo con I / E / M en tu diario.',
-    trampa: 'Decir "soy emocional" como etiqueta fija. Los centros rotan: hoy manda uno, manana otro.',
+    trampa: 'Decir "soy emocional" como etiqueta fija. Los centros rotan: hoy manda uno, mañana otro.',
     pregunta: '¿Quien habla ahora en mi: mi cabeza, mi corazon o mi cuerpo?' },
   { id: 'carruaje', n: 'El carruaje, el caballo y el cochero', ico: '🐴', tag: 'carruaje caballo cochero amo carro metafora cuerpo emocion mente conciencia',
     idea: 'La imagen madre de Gurdjieff: eres un carruaje (cuerpo) tirado por un caballo (emociones), manejado por un cochero (mente) que deberia llevar a un amo (tu conciencia, tu "yo" real). El problema: el cochero anda curado de charla, el caballo mal comido, el carro sin engrasar... y el amo ni va arriba: no hay nadie al mando.',
@@ -157,7 +157,7 @@ var CC_IDEAS = [
     idea: 'Quejarse, criticar, apurar o victimizarse contamina tu casa interna y la ajena. No es reprimir: es no derramarla sobre otros y transformarla dentro (respirar, caminar, escribir).',
     sirve: 'Ambiente pesado en casa, mañanas arruinadas por una rabia chica.',
     practica: 'Reto 24 h: cada queja que nazca, escribela en vez de decirla. Al final del dia lee y quema/rompe el papel.',
-    trampa: 'Tragarselo y explotar despues. Si hierve (9-10/10), muevete: camina, agua fria, habla manana en calma.',
+    trampa: 'Tragarselo y explotar despues. Si hierve (9-10/10), muevete: camina, agua fria, habla mañana en calma.',
     pregunta: '¿Esto que voy a decir alivia o solo contagia?' },
   { id: 'ley3', n: 'Ley de Tres: todo necesita 3 fuerzas', ico: '🔺', tag: 'ley de tres fuerzas activa pasiva neutralizante eneagrama',
     idea: 'Nada ocurre con 1 o 2 fuerzas: toda creacion une Activa (impulso), Pasiva (resistencia) y Neutralizante (contexto que une). Discutir es 2 fuerzas: falta la tercera (escuchar de verdad).',
@@ -190,7 +190,7 @@ var CC_IDEAS = [
     trampa: 'Quedarse solo en el test de personalidad y perderse el trabajo diario.',
     pregunta: '¿Mi tipo me ayuda a despertar o me da una excusa nueva?' },
   { id: 'yoes', n: 'Los muchos yoes (no hay unidad)', ico: '👥', tag: 'yoes muchos unidad yo soy contradictorio voces',
-    idea: 'No tienes UN yo: tienes cientas de voces que se turnan (el apurado, la victima, el simpaticos, el juez). Cada uno promete ("manana dieta") y otro lo rompe. Por eso "quiero y no quiero" a la vez. Verlos es el primer paso a una unidad real.',
+    idea: 'No tienes UN yo: tienes cientas de voces que se turnan (el apurado, la victima, el simpaticos, el juez). Cada uno promete ("mañana dieta") y otro lo rompe. Por eso "quiero y no quiero" a la vez. Verlos es el primer paso a una unidad real.',
     sirve: 'Propositos que duran 3 dias, cambios de opinion segun con quien estes, "no se quien soy".',
     practica: 'Caza de yoes: anota 3 yoes de hoy con nombre chistoso ("el apurado de la micro", "la ofendida"). Reirse de ellos ya es despegarse.',
     trampa: 'Creer que eres "el observador" siempre. El observador tambien se duerme: hay que invocarlo.',
@@ -214,15 +214,15 @@ var CC_IDEAS = [
     trampa: 'Forzar la atencion hasta doler la cabeza. Se invita, no se aprieta: 30 seg bastan.',
     pregunta: '¿En que nivel esta mi atencion ahora?' },
   { id: 'friccion', n: 'Friccion voluntaria (esfuerzo consciente)', ico: '⛰️', tag: 'friccion esfuerzo voluntario incomodidad sacrificio consciente choque',
-    idea: 'La presencia crece con roces elegidos: hacer lo incomodo pequeno a proposito (agua fria 30 seg, tender la cama odiada, decir lo pendiente con respeto). Sin queja y sin publico. La friccion mecanica (tacos, jefes) te duerme; la voluntaria te despierta.',
+    idea: 'La presencia crece con roces elegidos: hacer lo incomodo pequeño a proposito (agua fria 30 seg, tender la cama odiada, decir lo pendiente con respeto). Sin queja y sin publico. La friccion mecanica (tacos, jefes) te duerme; la voluntaria te despierta.',
     sirve: 'Vida demasiado comoda y dormida, o puro sufrimiento inutil que no ensena nada.',
-    practica: '1 friccion al dia, chica y secreta: elige en la manana, hazla sin contarlo, anotala de noche con ✓.',
+    practica: '1 friccion al dia, chica y secreta: elige en la mañana, hazla sin contarlo, anotala de noche con ✓.',
     trampa: 'Elegir fricciones heroicas y abandonar al dia 2. Chica y diaria le gana a grande y unica.',
-    pregunta: '¿Que incomodidad pequena elijo hoy?' },
+    pregunta: '¿Que incomodidad pequeña elijo hoy?' },
   { id: 'delegado', n: 'El delegado interior (mayordomo)', ico: '🧭', tag: 'delegado mayordomo steward proposito continuidad proposito guardian',
-    idea: 'Entre tus muchos yoes puedes nombrar un delegado: un yo-administrador que recuerda el proposito ("hoy practico") y llama a los otros al orden. No es otro jefe interno: es tu compromiso con voz. Se entrena cumpliendo lo pequeno.',
+    idea: 'Entre tus muchos yoes puedes nombrar un delegado: un yo-administrador que recuerda el proposito ("hoy practico") y llama a los otros al orden. No es otro jefe interno: es tu compromiso con voz. Se entrena cumpliendo lo pequeño.',
     sirve: 'Empezar y abandonar, depender del animo del dia, necesitar que otro te arriree.',
-    practica: 'Dale nombre a tu delegado ("la guardiana", "el puntual"). Cada manana dicta 1 orden del dia; cada noche le rinde cuentas en 2 lineas.',
+    practica: 'Dale nombre a tu delegado ("la guardiana", "el puntual"). Cada mañana dicta 1 orden del dia; cada noche le rinde cuentas en 2 lineas.',
     trampa: 'Convertirlo en juez cruel que insulta a los otros yoes. El delegado ordena con calma, no con latigo.',
     pregunta: '¿Que me ordeno hoy mi delegado?' }
 ];
@@ -233,16 +233,16 @@ var CC_PRACTICAS = [
     pasos: '1) Para todo (manos quietas, espalda recta). 2) Siente pies + manos + respiracion a la vez. 3) Mira alrededor como si fuera primera vez. 4) Pregunta: ¿donde estoy, como estoy? 5) Sigue con 1 cosa a la vez.',
     tip: 'El boton "Hacer STOP ahora" de esta pestana te guia con tiempo. Usalo cuando suene tu alarma o antes de entrar a casa.' },
   { id: 'recuerdo3', n: 'Recuerdo de si x3', ico: '🪞', tiempo: '3 x 30 seg al dia',
-    pasos: 'Manana / mediodia / tarde: 30 seg sintiendo "yo estoy aqui" mientras haces algo simple (te, micro, loza). Marca cada uno abajo: 0 a 3 al dia.',
+    pasos: 'Mañana / mediodia / tarde: 30 seg sintiendo "yo estoy aqui" mientras haces algo simple (te, micro, loza). Marca cada uno abajo: 0 a 3 al dia.',
     tip: 'Atado a habitos que ya existen (hervidor, semaforo, puerta) funciona 10x mejor que "cuando me acuerde".' },
   { id: 'centro-dia', n: 'Caza del centro dominante', ico: '🎯', tiempo: '3 registros al dia',
-    pasos: 'Manana, tarde y noche anota: I (cabeza parlotea), E (emocion manda) o M (puro hacer). Al final de la luna veras tu pelicula.',
+    pasos: 'Mañana, tarde y noche anota: I (cabeza parlotea), E (emocion manda) o M (puro hacer). Al final de la luna veras tu pelicula.',
     tip: 'Sin pelear con lo que salga. El dato repetido 7 dias es tu diagnostico real.' },
   { id: 'noqueja', n: '24 h sin derramar negatividad', ico: '🤐', tiempo: '1 dia por luna',
     pasos: 'Elige 1 dia: cada queja/critica/apuro se escribe (no se dice). Noche: lee, subraya el patron y rompe el papel. Celebra lo que SI lograste contener.',
     tip: 'Avisa en casa: "hoy practico no quejarme, ayudame". Conviertelo en juego, no en ley seca.' },
   { id: 'externa', n: 'Consideracion externa (1 acto)', ico: '💛', tiempo: '5 min',
-    pasos: 'Elige 1 roce de hoy. Escribe: ¿que dia tuvo el otro? ¿que necesitaba? Manana haz 1 acto que le aliviane (no que te luzca).',
+    pasos: 'Elige 1 roce de hoy. Escribe: ¿que dia tuvo el otro? ¿que necesitaba? Mañana haz 1 acto que le aliviane (no que te luzca).',
     tip: 'El perdon real a veces pide reparacion concreta: devolver, ordenar, llamar, pagar.' },
   { id: 'caminata', n: 'Atencion dividida caminando', ico: '🚶', tiempo: '10 min',
     pasos: 'Camina 10 min sintiendo pies + respiracion + entorno a la vez (3 focos). Cuando te pierdas en pensamientos, vuelve suave a los pies.',
@@ -251,7 +251,7 @@ var CC_PRACTICAS = [
     pasos: '1) ¿Cuando estuve presente hoy? 2) ¿Cuando me identifique? 3) ¿Que centro mando? 4) 1 agradecimiento. Escribelo en Mi trabajo.',
     tip: 'Es la recapitulacion tolteca en miniatura: si la haces 13 lunas seguidas, te conoces entera/o.' },
   { id: 'choque', n: 'Choque a mi octava caída', ico: '🥁', tiempo: '15 min por semana',
-    pasos: 'Elige 1 meta desviada. Detecta en que intervalo cayo (primer bajon o segundo). Agenda 1 choque: ayuda, plazo, lugar o companero.',
+    pasos: 'Elige 1 meta desviada. Detecta en que intervalo cayo (primer bajon o segundo). Agenda 1 choque: ayuda, plazo, lugar o compañero.',
     tip: 'Las octavas se salvan con choques externos agendados, no con culpa interna.' },
   { id: 'cazayoes', n: 'Caza de yoes del día', ico: '👥', tiempo: '5 min en la noche',
     pasos: 'Revisa tu dia y bautiza 3 yoes que aparecieron ("el apurado", "la ofendida", "el flojo simpatico"). Anota que queria cada uno y quien gano. Usa el registro de abajo: con risa, sin juicio.',
@@ -260,7 +260,7 @@ var CC_PRACTICAS = [
     pasos: 'Tarea manual simple + oidos al mundo (sonidos, pasos, agua). Cada vez que el locutor arranque una pelicula, suelta y vuelve a los sonidos. Cuenta cuantas vueltas diste: ese numero es tu parloteo.',
     tip: 'Ideal con audifonos... quitados. El silencio se escucha mejor lavando loza o caminando.' },
   { id: 'fricciondia', n: 'Fricción elegida del día', ico: '⛰️', tiempo: '5-10 min',
-    pasos: 'En la manana tu delegado elige 1 incomodidad chica (frio 30 seg, llamada pendiente, pieza ordenada, cama tendida). Hazla sin contarlo a nadie. De noche marca ✓ y 1 linea de como te dejo.',
+    pasos: 'En la mañana tu delegado elige 1 incomodidad chica (frio 30 seg, llamada pendiente, pieza ordenada, cama tendida). Hazla sin contarlo a nadie. De noche marca ✓ y 1 linea de como te dejo.',
     tip: 'Secreta y chica: si la publicas, la energia se va al aplauso en vez de a la presencia.' },
   { id: 'escucha', n: 'Escucha total (1 conversación)', ico: '👂', tiempo: '10 min, 1 vez al dia',
     pasos: 'Elige 1 conversacion y escucha sin preparar tu respuesta: mira, asiente, siente tus pies. Cuando notes que te fuiste a tu charla, vuelve. Al final resume lo que el otro dijo antes de opinar.',
@@ -314,7 +314,7 @@ var CC_LUNAS = [
   'Lunas 1-3 (Pukem · invierno): mirar adentro. Auto-observacion + revision nocturna + ayuno de charla. Pregunta: ¿que programa me maneja y que locutor me habla?',
   'Lunas 4-6 (Pewu · primavera): sembrar recuerdo de si x3 + caza de yoes 👥 + 1 acto de consideracion externa por semana. Nombra tu elenco y tu delegado.',
   'Lunas 7-9 (Walung · verano): probarse con gente. Reto 🤐 + 1 friccion elegida ⛰️ al dia + pedir 1 espejo (escuela). El roce muestra lo que el cojin esconde.',
-  'Lunas 10-13 (Rimu · otono): cosechar. Repetir el test, releer diario y yoes, marcar octavas salvadas y elegir 1 practica madre para el proximo ciclo.'
+  'Lunas 10-13 (Rimu · otoño): cosechar. Repetir el test, releer diario y yoes, marcar octavas salvadas y elegir 1 practica madre para el proximo ciclo.'
 ];
 
 /* ============================================================
@@ -363,7 +363,7 @@ function buildDialog() {
     '<details class="menstrual-details"><summary>🗓️ Programa de 1 luna (28 días, sin escuela)</summary>' +
     '<p class="muted su-6cb285"><b>Días 1-7 (cimientos):</b> STOP 🛑 1 vez al día + recuerdo de sí x3 atado a hábitos + revisión nocturna de 4 preguntas. Marca todo en 🛠️ Prácticas.<br><b>Días 8-14 (el elenco):</b> suma la caza de yoes 👥 (3 por noche) + ayuno de charla 🤫 5 min. Al final nombra tus 4-5 yoes estables.<br><b>Días 15-21 (el roce):</b> suma reto 🤐 24 h sin derramar + 1 acto de consideración externa 💛 + 1 fricción elegida ⛰️ al día. Pide 1 espejo (escuela 🏫).<br><b>Días 22-28 (cosecha):</b> repite el test 📝 y compara con el primero, relee tu diario y tus yoes, rescata 1 octava caída 🥁 con un choque agendado y elige tu práctica madre para la próxima luna.</p></details>' +
     '<details class="menstrual-details"><summary>🚶 ¿Cómo se practica sin escuela? (rutina mínima)</summary>' +
-    '<p class="muted su-6cb285"><b>Manana:</b> 1 STOP + intencion ("hoy me observo en ___"). <b>Día:</b> recuerdo de si x3 atado a hábitos + 1 no-queja escrita. <b>Noche:</b> revision 5 min (¿presente? ¿pegado? ¿qué centro mandó?). <b>Por luna:</b> 1 reto 🤐 de 24 h + 1 espejo (pedir senalamiento) + releer diario. 15 min diarios bastan; la constancia hace el camino.</p></details>' +
+    '<p class="muted su-6cb285"><b>Mañana:</b> 1 STOP + intencion ("hoy me observo en ___"). <b>Día:</b> recuerdo de si x3 atado a hábitos + 1 no-queja escrita. <b>Noche:</b> revision 5 min (¿presente? ¿pegado? ¿qué centro mandó?). <b>Por luna:</b> 1 reto 🤐 de 24 h + 1 espejo (pedir senalamiento) + releer diario. 15 min diarios bastan; la constancia hace el camino.</p></details>' +
     '<details class="menstrual-details"><summary>⚠️ Cuidados (léeme)</summary>' +
     '<p class="muted su-6cb285">✅ Esto es <b>autoconocimiento educativo</b>, no terapia ni religión. ✅ Si un ejercicio te desborda (angustia fuerte, disociación, llanto incontrolable), detente, camina, toma agua y conversa con alguien. ✅ Con trauma grave, duelo fresco o crisis de salud mental, practica acompañado (terapeuta, CESFAM, *4141 en Chile 24 h). ❌ Ninguna escuela seria te pide plata grande, obediencia ciega ni decisiones sobre pareja/salud. Desconfía de gurúes.</p></details>' +
     '<div class="menstrual-card su-d2c171"><h4>🌙 Cuarto Camino × 13 lunas</h4><div id="ccLunasBox"></div>' +

@@ -66,11 +66,11 @@ const ROOT = path.join(__dirname, '..');
   if (C.parseChunk(corrupt) !== null) { console.log('FALLO: acepto trozo corrupto'); process.exit(1); }
   console.log('Rechazo de trozo corrupto OK');
 
-  // 6) JSON pequeno (1 solo QR)
+  // 6) JSON pequeño (1 solo QR)
   const small = await C.encodeBackup(JSON.stringify({ usuarios: [{ id: 'a', nombre: 'A' }], notas: { a: { cycles: {} } }, actual: 'a' }));
-  if (small.total !== 1) { console.log('FALLO: JSON pequeno deberia ser 1 trozo, es', small.total); process.exit(1); }
+  if (small.total !== 1) { console.log('FALLO: JSON pequeño deberia ser 1 trozo, es', small.total); process.exit(1); }
   const smallBack = await C.decodeChunks(small.chunks);
-  if (JSON.parse(smallBack).actual !== 'a') { console.log('FALLO round-trip pequeno'); process.exit(1); }
+  if (JSON.parse(smallBack).actual !== 'a') { console.log('FALLO round-trip pequeño'); process.exit(1); }
   console.log('Round-trip de 1 solo QR OK');
 
   console.log('\nTODO OK — gzip:', C.hasGzip() ? 'disponible' : 'NO (fallback crudo)');

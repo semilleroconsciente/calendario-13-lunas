@@ -122,7 +122,7 @@ var MK_SONIDOS = [
     pasos: '1) Siéntate, lengua al paladar. 2) Sonríe con los ojos (que se achinen un poco). 3) Lleva esa sonrisa como luz tibia: frente → ojos → cara → cuello → corazón (agradece 3 latidos) → hígado → bazo → pulmones → riñones → ombligo 1 min. 4) Termina juntando manos al ombligo 30 seg.',
     cuando: 'Antes de todo: de cada práctica de esta sección, de comer, de dormir, de una conversación difícil.',
     trampa: 'Forzar una sonrisa falsa con la mandíbula apretada. Si no sale, solo afloja ojos y hombros: basta.' },
-  { id: 'pulmon', cap: 'Pulmones · SSSSSSS', ico: '🤍', tag: 'pulmon metal tristeza pena duelo piel respiracion otono sss',
+  { id: 'pulmon', cap: 'Pulmones · SSSSSSS', ico: '🤍', tag: 'pulmon metal tristeza pena duelo piel respiracion otoño sss',
     sonido: 'SSSSSSS (como el aire de un neumático, lengua tras los dientes)',
     organo: 'Pulmones + piel + nariz. Elemento Metal. Estación: otoño.',
     emo: 'Suelta: tristeza, pena, duelo atorado. Cultiva: valor, soltar con dignidad.',

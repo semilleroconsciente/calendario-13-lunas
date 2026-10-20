@@ -91,19 +91,19 @@ var RECOLECCION = [
   { n: 'Cochayuyo', c: 'Durvillaea antarctica', t: 'Alga parda', icon: '🌿', lunas: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], hab: 'Roquerio expuesto, Lirquen / Playa Negra', id: 'Fronda gruesa color pardo-verdoso, tallo (ulte) grueso, disco basal pegado a la roca. Olor a mar fresco.', tox: 'Sin toxicidad propia. PELIGRO: marea roja (no cosechar ni consumir si hay alerta Sernapesca) y contaminacion cerca de emisarios.', prep: 'Enjuague en agua de mar, secado al sol 2-3 dias colgado. Ulte: pelar, picar, ensalada o escabeche. Charquican de cochayuyo.', opt: 'Bajamares vivas (<0,6 m) de luna nueva/llena.' },
   { n: 'Luche', c: 'Pyropia spp.', t: 'Alga roja', icon: '🍃', lunas: [1, 2, 3, 11, 12, 13], hab: 'Rocas altas del intermareal', id: 'Lamina fina, casi transparente, verde-rojiza, pegada a la roca alta. Se recoge en invierno.', tox: 'Sin toxicidad. Evitar rocas con manchas de petroleo o espuma industrial.', prep: 'Enjuagar, secar a la sombra, tostar leve. Pan de luche, tortillas, sopas.', opt: 'Lunas 1-3 y 11-13 (Pukem), bajamar diurna.' },
   { n: 'Huiro negro', c: 'Lessonia nigrescens', t: 'Alga parda', icon: '🌊', lunas: [4, 5, 6, 7, 8, 9, 10], hab: 'Roquerio bajo y pozas', id: 'Matass oscuras ramificadas formando mini-bosques. No arrancar planta completa.', tox: 'Solo observacion y corte menor. Indicador de agua limpia.', prep: 'Corte de puntas tiernas, secado. Caldos minerales.', opt: 'Pewu-Walung, marea baja.' },
-  { n: 'Changle', c: 'Ramaria flava', t: 'Hongo', icon: '🍄', lunas: [10, 11, 12], hab: 'Suelo de bosque nativo / pino, Rimu (otono)', id: 'Ramitas amarillas como coral, base blanca. Olor suave a tierra. CONFUSION: Ramaria toxica (amarga, tonos anaranjados).', tox: 'TOXICO si es amargo o anaranjado. Regla: si no estas 100% seguro, NO comer. Probar solo un bocado cocido la primera vez.', prep: 'Solo ejemplar seguro: salteado, empanadas. Nunca crudo.', opt: 'Lunas 10-12, despues de lluvias.' },
-  { n: 'Loyo', c: 'Boletus loyo', t: 'Hongo', icon: '🍄', lunas: [10, 11, 12], hab: 'Bajo robles / bosque, otono', id: 'Sombrero cafe-rojizo, poros amarillos esponjosos (no laminas), pie grueso. No tiñe azul al corte.', tox: 'CONFUSION con boletos amargos (sabor picante) o que azulean: descartar.', prep: 'Secar en rebanadas (deshidratado), risottos, caldos.', opt: 'Lunas 10-12.' },
+  { n: 'Changle', c: 'Ramaria flava', t: 'Hongo', icon: '🍄', lunas: [10, 11, 12], hab: 'Suelo de bosque nativo / pino, Rimu (otoño)', id: 'Ramitas amarillas como coral, base blanca. Olor suave a tierra. CONFUSION: Ramaria toxica (amarga, tonos anaranjados).', tox: 'TOXICO si es amargo o anaranjado. Regla: si no estas 100% seguro, NO comer. Probar solo un bocado cocido la primera vez.', prep: 'Solo ejemplar seguro: salteado, empanadas. Nunca crudo.', opt: 'Lunas 10-12, despues de lluvias.' },
+  { n: 'Loyo', c: 'Boletus loyo', t: 'Hongo', icon: '🍄', lunas: [10, 11, 12], hab: 'Bajo robles / bosque, otoño', id: 'Sombrero cafe-rojizo, poros amarillos esponjosos (no laminas), pie grueso. No tiñe azul al corte.', tox: 'CONFUSION con boletos amargos (sabor picante) o que azulean: descartar.', prep: 'Secar en rebanadas (deshidratado), risottos, caldos.', opt: 'Lunas 10-12.' },
   { n: 'Digueñe', c: 'Cyttaria spp.', t: 'Hongo', icon: '⚪', lunas: [9, 10, 11], hab: 'Ramas de roble/hualle en primavera-otonio', id: 'Pelotitas blancas gomosas sobre ramas de hualle. Firme al tacto.', tox: 'Sin toxicidad conocida. Comer fresco, no guardar mas de 2 dias.', prep: 'Ensalada con cilantro y limon, salteado corto.', opt: 'Lunas 9-11.' },
-  { n: 'Maqui', c: 'Aristotelia chilensis', t: 'Fruto nativo', icon: '🫐', lunas: [7, 8], hab: 'Borde de bosque y quebradas', id: 'Baya negra pequena en racimo, mancha morada. Cosecha con tijera.', tox: 'Sin toxicidad. Dejar 30% para aves.', prep: 'Jugo, deshidratado, mermelada. Secar a la sombra.', opt: 'Lunas 7-8 (Walung).' },
+  { n: 'Maqui', c: 'Aristotelia chilensis', t: 'Fruto nativo', icon: '🫐', lunas: [7, 8], hab: 'Borde de bosque y quebradas', id: 'Baya negra pequeña en racimo, mancha morada. Cosecha con tijera.', tox: 'Sin toxicidad. Dejar 30% para aves.', prep: 'Jugo, deshidratado, mermelada. Secar a la sombra.', opt: 'Lunas 7-8 (Walung).' },
   { n: 'Avellana chilena', c: 'Gevuina avellana', t: 'Fruto nativo', icon: '🌰', lunas: [10, 11], hab: 'Bosque templado, vegas', id: 'Nuez redonda caida bajo el arbol (mar-may). No varear ramas.', tox: 'Sin toxicidad. Tostar solo las de consumo; las de semilla no se tuestan.', prep: 'Tostada, harina, conserva en miel.', opt: 'Lunas 10-11.' },
-  { n: 'Pinon (ngulliw)', c: 'Araucaria araucana', t: 'Fruto nativo', icon: '🌲', lunas: [10, 11, 12], hab: 'Precordillera (recoleccion con respeto)', id: 'Pinon maduro caido, cascara dura. Recoger del suelo, no trepar a cortar conos verdes.', tox: 'Sin toxicidad. Cocer bien (90 min).', prep: 'Cocido, harina tostada, mote de pinon.', opt: 'Lunas 10-12.' },
+  { n: 'Piñón (ngulliw)', c: 'Araucaria araucana', t: 'Fruto nativo', icon: '🌲', lunas: [10, 11, 12], hab: 'Precordillera (recoleccion con respeto)', id: 'Piñón maduro caido, cascara dura. Recoger del suelo, no trepar a cortar conos verdes.', tox: 'Sin toxicidad. Cocer bien (90 min).', prep: 'Cocido, harina tostada, mote de piñón.', opt: 'Lunas 10-12.' },
   { n: 'Rosa mosqueta', c: 'Rosa rubiginosa', t: 'Fruto', icon: '🔴', lunas: [10, 11, 12], hab: 'Cercos y bordes de camino', id: 'Fruto rojo-ovalado con pelillos internos (ur ticantes). Guantes para cosechar.', tox: 'Pelillos irritan: colar bien pulpa y te. Semilla no se mastica en exceso.', prep: 'Mermelada colada, te de cascara seca, aceite.', opt: 'Lunas 10-12, despues de primera helada (mas dulce).' },
   { n: 'Nalca / Pangue', c: 'Gunnera tinctoria', t: 'Planta', icon: '🌱', lunas: [4, 5, 6], hab: 'Vegas y esteros humedos', id: 'Hoja gigante como paraguas, peciolo grueso comestible (nalca). Raiz no se come.', tox: 'Peciolo seguro; hoja y raiz solo uso externo tradicional.', prep: 'Peciolo pelado, crudo con sal o ensalada.', opt: 'Lunas 4-6 (Pewu).' },
-  { n: 'Boldo', c: 'Peumus boldus', t: 'Lawen (hoja)', icon: '🍃', lunas: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], hab: 'Ladera, bosque esclerofilo', id: 'Hoja dura, aromatica, verde brillante. Recolectar 3-4 hojas por rama, nunca defoliar.', tox: 'Infusion suave ocasional. Evitar en embarazo y en exceso (aceite boldina). Max 1 taza/dia por 7 dias.', prep: 'Infusion digestiva: 1 hoja por taza, 5 min.', opt: 'Luna llena (maxima savia), manana.' },
-  { n: 'Matico', c: 'Buddleja globosa', t: 'Lawen (hoja)', icon: '🌿', lunas: [4, 5, 6, 7, 8], hab: 'Quebradas y cercos humedos', id: 'Hoja alargada rugosa, enves blanquecino, flor naranja en pompón.', tox: 'Uso externo seguro; interno suave y corto. Evitar embarazo.', prep: 'Lavados de heridas (infusion tibia), infusion leve.', opt: 'Luna llena, manana.' },
+  { n: 'Boldo', c: 'Peumus boldus', t: 'Lawen (hoja)', icon: '🍃', lunas: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], hab: 'Ladera, bosque esclerofilo', id: 'Hoja dura, aromatica, verde brillante. Recolectar 3-4 hojas por rama, nunca defoliar.', tox: 'Infusion suave ocasional. Evitar en embarazo y en exceso (aceite boldina). Max 1 taza/dia por 7 dias.', prep: 'Infusion digestiva: 1 hoja por taza, 5 min.', opt: 'Luna llena (maxima savia), mañana.' },
+  { n: 'Matico', c: 'Buddleja globosa', t: 'Lawen (hoja)', icon: '🌿', lunas: [4, 5, 6, 7, 8], hab: 'Quebradas y cercos humedos', id: 'Hoja alargada rugosa, enves blanquecino, flor naranja en pompón.', tox: 'Uso externo seguro; interno suave y corto. Evitar embarazo.', prep: 'Lavados de heridas (infusion tibia), infusion leve.', opt: 'Luna llena, mañana.' },
   { n: 'Bailahuen', c: 'Haplopappus spp.', t: 'Lawen', icon: '🌼', lunas: [5, 6, 7, 8], hab: 'Cerros asoleados', id: 'Arbusto resinoso, flor amarilla tipo margarita. Olor fuerte.', tox: 'Amargo potente: dosis baja. Evitar embarazo y uso prolongado.', prep: 'Infusion hepatica suave: pizca por taza.', opt: 'Luna llena.' },
   { n: 'Mora / Murra', c: 'Rubus spp.', t: 'Fruto', icon: '🫐', lunas: [7, 8, 9], hab: 'Cercos y quebradas', id: 'Mora negra brillante madura; roja = inmadura (acida).', tox: 'Sin toxicidad. Lavar por polvo de camino.', prep: 'Mermelada, jugo, deshidratada, chicha.', opt: 'Lunas 7-9.' },
-  { n: 'Hierbas de huerta asilvestrada', c: 'Menta / Melisa / Ortiga', t: 'Lawen', icon: '🌱', lunas: [4, 5, 6, 7, 8, 9], hab: 'Bordes de acequia y huerta', id: 'Menta: olor fresco, tallo cuadrado. Ortiga: pelos urticantes (guantes).', tox: 'Ortiga: no cruda (cocida pierde urticancia). Menta: evitar en reflujo severo.', prep: 'Infusiones, purin de ortiga para huerta, tortilla de ortiga cocida.', opt: 'Creciente-llena, manana.' }
+  { n: 'Hierbas de huerta asilvestrada', c: 'Menta / Melisa / Ortiga', t: 'Lawen', icon: '🌱', lunas: [4, 5, 6, 7, 8, 9], hab: 'Bordes de acequia y huerta', id: 'Menta: olor fresco, tallo cuadrado. Ortiga: pelos urticantes (guantes).', tox: 'Ortiga: no cruda (cocida pierde urticancia). Menta: evitar en reflujo severo.', prep: 'Infusiones, purin de ortiga para huerta, tortilla de ortiga cocida.', opt: 'Creciente-llena, mañana.' }
 ];
 var FENOLOGIA = {
   1: 'Pleno Pukem: luche en roca alta, cochayuyo con cuidado (marejadas), boldo para infusiones de invierno.',
@@ -115,9 +115,9 @@ var FENOLOGIA = {
   7: 'Walung: maqui, murra, hierbas en semilla (guardar semilla), cochayuyo de verano.',
   8: 'Pleno verano: maqui tardio, murra plena, avellana temprana, secado al sol.',
   9: 'Cierre verano: digueñes, murra tardia, rosa mosqueta verde (esperar helada).',
-  10: 'Rimu: pinones, avellanas, changles, loyos, rosa mosqueta, hongos tras lluvia.',
-  11: 'Otono medio: pinones, changle, loyo, rosa mosqueta dulce tras helada, boldo.',
-  12: 'Otono tardio: ultimos pinones y hongos, rosa mosqueta, luche temprano.',
+  10: 'Rimu: piñones, avellanas, changles, loyos, rosa mosqueta, hongos tras lluvia.',
+  11: 'Otoño medio: piñones, changle, loyo, rosa mosqueta dulce tras helada, boldo.',
+  12: 'Otoño tardio: ultimos piñones y hongos, rosa mosqueta, luche temprano.',
   13: 'Descanso: luche de invierno, cochayuyo observado (no cosecha grande), boldo, memoria y secado.'
 };
 var BODEGA_TIPOS = {
@@ -194,12 +194,12 @@ var REDES_TIPOS = [
   { n: 'Malla sombra / lona', d: 'No es red de pesca: se fija con tensor ajustable, no con nudo fijo. Deja gotero (curva hacia abajo) para la lluvia.' }
 ];
 var EPEW = [
-  { t: 'El zorro y el puma (epew)', energia: 'Luna Creciente · aprendizaje', txt: 'El zorro (gürü) se creia el mas vivo del monte y se burlaba del puma (pangi) por cazar de frente. Una tarde de hambre, el zorro quiso robar la presa del puma y cayo en su propia trampa de lazos. El puma, en vez de castigarlo, le mostro como cazar limpio: "El vivo de verdad deja carne para manana". Desde entonces el zorro caza al amanecer y deja siempre un resto para el que viene detras.' },
+  { t: 'El zorro y el puma (epew)', energia: 'Luna Creciente · aprendizaje', txt: 'El zorro (gürü) se creia el mas vivo del monte y se burlaba del puma (pangi) por cazar de frente. Una tarde de hambre, el zorro quiso robar la presa del puma y cayo en su propia trampa de lazos. El puma, en vez de castigarlo, le mostro como cazar limpio: "El vivo de verdad deja carne para mañana". Desde entonces el zorro caza al amanecer y deja siempre un resto para el que viene detras.' },
   { t: 'La Pincoya del Golfo (mito local)', energia: 'Luna Llena · celebracion', txt: 'Dicen en Lirquen y Penco que cuando la Pincoya baila mirando al mar, la pesca sera abundante y alegre; si baila mirando la costa, hay que guardar las redes. Los antiguos la saludaban antes de zarpar con un poco de muday derramado al agua. Si la ves en luna llena, comparte tu primera captura: el mar devuelve el doble.' },
   { t: 'El Caleuche en la bahia (mito local)', energia: 'Luna Nueva · misterio', txt: 'En noches sin luna, los pescadores del Golfo de Arauco hablan de un barco de luces que navega sin ruido: el Caleuche. No hay que seguirlo ni llamarlo; se le respeta. Los abuelos dicen que aparece cuando alguien saca mas de lo que necesita. Moraleja de mar: pesca lo justo y el barco de luces pasara de largo.' },
-  { t: 'El Trempulcahue (viaje de las almas)', energia: 'Luna Menguante · despedida y consejo', txt: 'Las ballenas (trempulcahue) llevan las almas de los justos hacia la isla del poniente. Por eso frente a Penco, cuando pasa una ballena en invierno, se hace silencio y se agradece. Ensenanza: vivir derecho para que, al partir, haya una ballena esperandonos.' },
+  { t: 'El Trempulcahue (viaje de las almas)', energia: 'Luna Menguante · despedida y consejo', txt: 'Las ballenas (trempulcahue) llevan las almas de los justos hacia la isla del poniente. Por eso frente a Penco, cuando pasa una ballena en invierno, se hace silencio y se agradece. Enseñanza: vivir derecho para que, al partir, haya una ballena esperandonos.' },
   { t: 'El Nguruvilu del estero (cuidado del agua)', energia: 'Luna Nueva · misterio', txt: 'En los esteros y pozas vive el Nguruvilu, zorro-serpiente de agua que enturbia donde hay desorden. Si el agua baja turbia sin lluvia, los antiguos limpiaban la orilla y pedian permiso antes de sacar agua. Moraleja: el agua se cuida en su casa, no solo en el vaso.' },
-  { t: 'La luciérnaga que guardo el fuego (epew)', energia: 'Luna Llena · celebracion', txt: 'Cuando se apago el fuego de la ruka en pleno Pukem, todos los animales tuvieron miedo de ir a buscarlo. Solo la pequena luciernaga (kudewallu) volo entre la lluvia con su lamparita. Trajo una brasa en su cola y por eso brilla hasta hoy. Moraleja: el mas pequeno puede guardar la luz de todos.' },
+  { t: 'La luciérnaga que guardo el fuego (epew)', energia: 'Luna Llena · celebracion', txt: 'Cuando se apago el fuego de la ruka en pleno Pukem, todos los animales tuvieron miedo de ir a buscarlo. Solo la pequeña luciernaga (kudewallu) volo entre la lluvia con su lamparita. Trajo una brasa en su cola y por eso brilla hasta hoy. Moraleja: el mas pequeño puede guardar la luz de todos.' },
   { t: 'Kai Kai y Treng Treng (epew de origen)', energia: 'Luna Nueva · misterio', txt: 'Hace mucho, la serpiente de agua Kai Kai quiso cubrirlo todo con el mar y la serpiente de cerro Treng Treng llamo a la gente a subir. Quienes subieron cantando y llevando semillas se salvaron sobre el cerro que crecia. Cuando el agua bajo, bajaron a sembrar de nuevo. Moraleja: frente a la subida del mar o la crecida, sube al alto, cuidate en comunidad y guarda semilla.' },
   { t: 'El zorro y la perdiz (epew)', energia: 'Luna Creciente · aprendizaje', txt: 'El zorro (gürü) cantaba tan feo que nadie queria casarse con el, y fue a pedir ayuda a la perdiz (sillo). La perdiz le cosio la boca con una aguja para dejarsela chiquita, y el zorro canto lindo por un dia. Pero se burlo sin pagarle, y cuando dormia junto al camino la perdiz le canto fuerte al oido: del susto grito ¡guak! y se le rompio la costura. Moraleja: no te burles de quien te ayuda y paga lo prometido.' },
   { t: 'El zorro y la bandurria machi (epew)', energia: 'Luna Creciente · aprendizaje', txt: 'La bandurria (rakimachi) hacia de machi y el zorro quiso aprender su canto para presumir. Imito su grito metalico en el humedal hasta quedarse afonico y espanto a todos los peces. La bandurria le dijo: "cada pico tiene su canto, el tuyo sirve para avisar, no para curar". Moraleja: no imites el oficio ajeno; descubre para que sirve tu propia voz.' },
@@ -207,8 +207,8 @@ var EPEW = [
   { t: 'Los dos primos: el zorro y el jote (epew)', energia: 'Luna Llena · celebracion', txt: 'El zorro y el jote (kanin) eran primos y el jote lo llevo en su espalda hasta una fiesta en el cielo (wenu mapu). El zorro se curo, se burlo del canto del jote y se quedo dormido; al despertar estaba solo. Bajo por un cordel que se corto y cayo a la tierra. Moraleja: si te llevan a lo alto, agradece y compórtate; el orgullo te deja caer.' },
   { t: 'El zorro y la lombriz (epew)', energia: 'Luna Creciente · aprendizaje', txt: 'El zorro andaba aburrido y se rio de la lombriz (piru) porque avanzaba lento. La desafio a una carrera monte arriba y la lombriz acepto sin pelear. Mientras el zorro dormia seguro bajo un boldo, la lombriz llego primero moviendose sin parar. Moraleja: la constancia chiquita le gana a la viveza dormida.' },
   { t: 'El gallo y el zorro (epew)', energia: 'Luna Menguante · despedida y consejo', txt: 'El zorro quiso comerse al gallo (alka) y lo invito a bajar del arbol con palabras dulces. El gallo le dijo: "bajo si esos dos perros que vienen corriendo son tus testigos". El zorro miro, vio a los perros de la casa y arranco sin despedirse. Moraleja: ante palabras muy dulces de un desconocido, mira bien quien viene detras.' },
-  { t: 'El Sumpall, dueno de las aguas (epew)', energia: 'Luna Nueva · misterio', txt: 'En lagunas, rios y en el mar vive el Sumpall, que cuida a quienes se portan bien en el agua. Si un nino se acerca solo o grita y ensucia, el agua se lo lleva un rato para asustarlo; si pide permiso y entra acompanado, el agua lo mece suave. Moraleja de Penco: nunca entres solo al agua, pide permiso y cuida la orilla.' },
-  { t: 'Mankian, el amigo del pewen (epew)', energia: 'Luna Llena · celebracion', txt: 'Mankian vivia cerca del pewen (araucaria) y cada otono recogia solo los pinones caidos, dejando la mitad para el bosque. Un invierno de hambre, el pewen dejo caer mas pinones justo en su camino y su familia no paso hambre. Los vecinos aprendieron: recoger del suelo con medida trae suerte. Moraleja: el bosque devuelve a quien recoge sin arrasar.' },
+  { t: 'El Sumpall, dueno de las aguas (epew)', energia: 'Luna Nueva · misterio', txt: 'En lagunas, rios y en el mar vive el Sumpall, que cuida a quienes se portan bien en el agua. Si un niño se acerca solo o grita y ensucia, el agua se lo lleva un rato para asustarlo; si pide permiso y entra acompanado, el agua lo mece suave. Moraleja de Penco: nunca entres solo al agua, pide permiso y cuida la orilla.' },
+  { t: 'Mankian, el amigo del pewen (epew)', energia: 'Luna Llena · celebracion', txt: 'Mankian vivia cerca del pewen (araucaria) y cada otoño recogia solo los piñones caidos, dejando la mitad para el bosque. Un invierno de hambre, el pewen dejo caer mas piñones justo en su camino y su familia no paso hambre. Los vecinos aprendieron: recoger del suelo con medida trae suerte. Moraleja: el bosque devuelve a quien recoge sin arrasar.' },
   { t: 'El condor y el zorro (epew)', energia: 'Luna Menguante · despedida y consejo', txt: 'El zorro (gürü) le dijo al condor (manke): "tu vuelas alto porque nadie te mira". Lo reto a traer comida sin ser visto. El condor bajo en silencio, tomo solo un resto de cordero y volvio sin espantar a nadie. El zorro, en cambio, entro ladrando y lo corrieron los perros. Moraleja: el grande de verdad se mueve sin ruido y toma solo lo justo.' }
 ];
 var KIMUN = [
@@ -216,11 +216,11 @@ var KIMUN = [
   ['Loica', 'Aves · pradera', 'Pecho rojo como el copihue; canta fuerte en Pewu.'],
   ['Bandurria', 'Aves · humedal', 'Cuello largo, grito metalico al volar en bandada.'],
   ['Pilpilen', 'Aves · playa', 'Blanco y negro, pico rojo; cuida sus nidos en la arena.'],
-  ['Fio-fio', 'Aves · bosque', 'Pequeno cantor que llega con la primavera.'],
+  ['Fio-fio', 'Aves · bosque', 'Pequeño cantor que llega con la primavera.'],
   ['Zorzal', 'Aves · jardin', 'Canta en invierno al amanecer; anuncia la luz que vuelve.'],
   ['Concon', 'Aves · bosque', 'Buho del bosque nativo; caza de noche sin ruido.'],
   ['Yeco', 'Aves · mar', 'Cormoran que seca sus alas al sol en las rocas.'],
-  ['Wampo', 'Mar · pesca', 'Canoa o bote pequeno de la caleta.'],
+  ['Wampo', 'Mar · pesca', 'Canoa o bote pequeño de la caleta.'],
   ['Chalupa / Lancha', 'Mar · pesca', 'Embarcacion artesanal del Golfo de Arauco.'],
   ['Kollof (cochayuyo)', 'Mar · algas', 'Alga grande; se corta la fronda, no la raiz.'],
   ['Luchi (luche)', 'Mar · algas', 'Alga fina de invierno; se recoge en bajamar.'],
@@ -232,14 +232,14 @@ var KIMUN = [
   ['Brote', 'Huerta', 'Pewu: tiempo de brotes y almácigos.'],
   ['Cosecha', 'Huerta', 'Walung-Rimu: cosechar y guardar con medida.'],
   ['Foye (canelo)', 'Bosque', 'Arbol sagrado; no se tala, se protege.'],
-  ['Pewen (araucaria)', 'Bosque', 'Da el pinon; se recoge del suelo con respeto.'],
+  ['Pewen (araucaria)', 'Bosque', 'Da el piñón; se recoge del suelo con respeto.'],
   ['Maqui', 'Bosque', 'Baya negra; dejar un tercio para las aves.'],
   ['Boldo', 'Bosque · lawen', 'Hoja digestiva; pocas hojas por rama.'],
   ['Fuego / Fogon', 'Casa', 'Kutral: centro de la ruka, se cuida siempre.'],
   ['Casa / Ruka', 'Casa', 'Se mantiene, se abriga y se comparte.'],
-  ['Minga', 'Comunidad', 'Trabajo colectivo: hoy por ti, manana por mi.'],
+  ['Minga', 'Comunidad', 'Trabajo colectivo: hoy por ti, mañana por mi.'],
   ['Trafkintu', 'Comunidad', 'Intercambio de semillas y saberes.'],
-  ['Muday', 'Comida', 'Bebida de trigo o pinon para celebrar y ofrendar.'],
+  ['Muday', 'Comida', 'Bebida de trigo o piñón para celebrar y ofrendar.'],
   ['Catuto', 'Comida', 'Pan de trigo cocido de la cocina mapuche.'],
   ['Mari mari', 'Saludo', 'Saludo: "hola, ¿como estas?" con respeto.'],
   ['Chaltu may', 'Agradecimiento', '"Muchas gracias" desde el corazon.'],
@@ -250,7 +250,7 @@ var KIMUN = [
   ['Antu (sol)', 'Cielo', 'El sol que marca el We Tripantu.'],
   ['Wangulen (estrella)', 'Cielo', 'Las estrellas que guian de noche.'],
   ['Choike (nandu del cielo)', 'Cielo', 'Constelacion del sur: la Cruz guia al caminante.'],
-  ['Wunelfe (lucero)', 'Cielo', 'Venus, estrella de la manana que abre el dia.']
+  ['Wunelfe (lucero)', 'Cielo', 'Venus, estrella de la mañana que abre el dia.']
 ];
 
 /* ---------- inyeccion de botones en grupos existentes ---------- */
@@ -667,7 +667,7 @@ function setupBodega() {
    Los datos viejos se migran una vez a semillasInv (con respaldo
    en trafkintuBackup) y la red de intercambios vive como bloque
    "Trafkintu" dentro de la pestana Mis Semillas. El formulario de
-   Mis Semillas se extiende con gramos / ano / germinacion / origen.
+   Mis Semillas se extiende con gramos / año / germinacion / origen.
    ============================================================ */
 function getTraf() { var a = store('trafkintu', []); return Array.isArray(a) ? a : []; }
 function migrateTrafToSemillas() {

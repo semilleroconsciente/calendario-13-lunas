@@ -107,7 +107,7 @@ var VIA_FORTS = [
     luz: ['Original y recursiva', 'Ve salidas donde otros ven muro', 'Juega y experimenta sin miedo al error'],
     exceso: 'Tantas ideas que no termina ninguna; desprecia lo simple que ya funciona.',
     practica: '5 min: toma 1 problema chico de hoy y escribe 3 soluciones locas + 1 aplicable. Prueba la aplicable.',
-    pregunta: '¿Que haria distinto un nino de 7 anos con esto?',
+    pregunta: '¿Que haria distinto un niño de 7 años con esto?',
     penco: 'Arreglar con retazos, trueque creativo, decorar la ramada con material reciclado.' },
   { id: 'curiosidad', v: 'sabiduria', ico: '🔭', n: 'Curiosidad', tag: 'explorar preguntar aprender descubrir interes',
     que: 'Interes vivo por el mundo: preguntar, explorar, husmear con respeto. Motor de todo aprendizaje.',
@@ -122,7 +122,7 @@ var VIA_FORTS = [
     senal: 'Escuchas pros y contras antes de opinar y cambias de idea si aparece buen dato.',
     luz: ['Objetiva y ponderada', 'No se deja llevar por el rumor', 'Decide con calma y fundamento'],
     exceso: 'Analisis-paralisis: tanto pensar que nunca decide; critica todo y no propone.',
-    practica: '5 min: ante 1 decision de hoy, lista 2 pros + 2 contras + “¿que diria mi yo de 80 anos?”. Decide.',
+    practica: '5 min: ante 1 decision de hoy, lista 2 pros + 2 contras + “¿que diria mi yo de 80 años?”. Decide.',
     pregunta: '¿Que evidencia tengo y que me falta?',
     penco: 'Decidir siembra segun luna y suelo real, no solo por costumbre.' },
   { id: 'aprender', v: 'sabiduria', ico: '📚', n: 'Amor por aprender', tag: 'estudio lectura oficio saber maestro',
@@ -156,7 +156,7 @@ var VIA_FORTS = [
     luz: ['Constante y trabajadora', 'Termina y entrega', 'Tolera la frustracion'],
     exceso: 'Terquedad: sigue aunque duela el cuerpo o ya no tenga sentido; se quema.',
     practica: '5 min: retoma 1 pendiente chico y terminalo entero hoy. Celebra marcandolo.',
-    pregunta: '¿Cual es el proximo paso mas pequeno que igual cuenta?',
+    pregunta: '¿Cual es el proximo paso mas pequeño que igual cuenta?',
     penco: 'Huerta por lunas, Habitos del calendario con racha, terminar la minga.' },
   { id: 'honestidad', v: 'coraje', ico: '🪞', n: 'Honestidad', tag: 'autenticidad verdad integridad sincero coherencia',
     que: 'Vivir en verdad: decir lo real con respeto y actuar como se habla.',
@@ -247,7 +247,7 @@ var VIA_FORTS = [
     luz: ['Previsora y cuidadosa', 'Evita accidentes y deudas', 'Piensa el despues'],
     exceso: 'Miedo disfrazado: tanta precaucion que nunca parte ni disfruta.',
     practica: '5 min: antes de 1 decision, pregunta “¿que puede salir mal y como lo cuido?” en 3 lineas.',
-    pregunta: '¿Que cuidaria mi yo de manana?',
+    pregunta: '¿Que cuidaria mi yo de mañana?',
     penco: 'Mareas SHOA antes de salir, leña seca, presupuesto de Finanzas.' },
   { id: 'autorregulacion', v: 'templanza', ico: '🎯', n: 'Autorregulacion', tag: 'autocontrol habitos disciplina impulsos orden',
     que: 'Manejar impulsos y emociones: ordenar habitos aunque cueste.',
@@ -363,7 +363,7 @@ var VIA_LUNAS = [
   { luna: 'Lunas 1-3 · Pukem (invierno)', tip: 'Mirar adentro: haz el test una vez y lee tu top 5. Riega Templanza (perdon, autorregulacion) con diario + respiracion. Ideal: gratitud y espiritualidad al calorcito.' },
   { luna: 'Lunas 4-6 · Pewu (primavera)', tip: 'Sembrar: elige 1 fortaleza firma y usala en 1 desafio nuevo (Sabiduria + Coraje). Prueba 28 dias: curiosidad + perseverancia.' },
   { luna: 'Lunas 7-9 · Walung (verano)', tip: 'Mostrarte: pon tu firma al servicio (Humanidad + Justicia). Minga, taller, feria: amabilidad + trabajo en equipo + liderazgo.' },
-  { luna: 'Lunas 10-13 · Rimu (otono)', tip: 'Cosechar y soltar: revisa tu diario. ¿Que fortaleza te salvo? ¿Cual te falta? Practica perdon + perspectiva e inventario.' }
+  { luna: 'Lunas 10-13 · Rimu (otoño)', tip: 'Cosechar y soltar: revisa tu diario. ¿Que fortaleza te salvo? ¿Cual te falta? Practica perdon + perspectiva e inventario.' }
 ];
 
 /* Practicas por fortaleza para “usar tu firma en un desafio” */

@@ -9,11 +9,11 @@
      2) Pilares (7 pilares: amor, perdon, humildad, verdad,
         servicio, unidad, gratitud: significado, vivirlo hoy,
         favorito, registro del dia)
-     3) Palabras (12 ensenanzas: bienaventuranzas + parabolas
+     3) Palabras (12 enseñanzas: bienaventuranzas + parabolas
         en lenguaje simple: que dicen, para que sirven,
         practicar, escuchar)
      4) Practica (oracion-contemplacion guiada: secuencias
-        manana/noche/perdon/servicio + paso a paso con
+        mañana/noche/perdon/servicio + paso a paso con
         temporizador + examen de amor + guardar sesion)
      5) Diario (intenciones y actos de amor: inventario,
         historial de practicas, compartir, llevar a nota)

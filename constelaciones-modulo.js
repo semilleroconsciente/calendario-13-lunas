@@ -128,7 +128,7 @@ var CONST_ORDENES = [
     practica: 'Elige 1 hecho pasado que aún peleas. Respira 4-6 y di: “fue así”. Nota qué se suelta en el pecho. Solo 1 por día.',
     trampa: 'Asentir a lo que sigue pasando (violencia actual, deuda activa). Lo pasado se asiente; lo presente se enfrenta y se pone límite.',
     pregunta: '¿Qué pasado sigo queriendo cambiar?' },
-  { id: 'lugar-hijo', n: 'Yo soy la hija / el hijo', ico: '🌱', tag: 'hijo hija lugar pequeno parentificacion cuidar padres',
+  { id: 'lugar-hijo', n: 'Yo soy la hija / el hijo', ico: '🌱', tag: 'hijo hija lugar pequeño parentificacion cuidar padres',
     frase: '“Soy tu hija. Tú eres la grande y yo la pequeña. Yo me encargo de mi vida.”',
     idea: 'El movimiento que más alivia: volver a ser hija o hijo. Muchas hijas se vuelven “madres de su madre” (parentificación): consuelan, pagan, deciden. El amor ciego dice “yo por ti”; el amor que sana dice “tú eres grande, yo soy pequeña”.',
     sirve: 'Cansancio de sostener a tus padres, culpa si disfrutas, no poder irte de la casa por dentro aunque vivas lejos.',

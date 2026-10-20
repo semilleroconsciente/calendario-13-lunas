@@ -11,8 +11,8 @@
         la FECHA se comparte con pestana Ciclos y queda pre-calculada)
      3) Nombre (destino/expresion, alma, personalidad,
         equilibrio, madurez por nombre, analisis letra x letra)
-     4) Ciclos (ano personal, mes personal, dia personal,
-        hora personal + calendario del ano + luna actual)
+     4) Ciclos (año personal, mes personal, dia personal,
+        hora personal + calendario del año + luna actual)
      5) Compatibilidad (dos caminos de vida o dos fechas,
         matriz 1-9/11/22 + consejo de vinculo)
      6) Mis registros (perfiles guardados, historial de
@@ -216,7 +216,7 @@ function pinaculoActual(keyNac, keyRef) {
   var idx = edad < 27 ? 0 : (edad < 36 ? 1 : (edad < 45 ? 2 : 3));
   // rangos clasicos aprox: 0-27 / 27-36 / 36-45 / 45+
   return { idx: idx, num: pin[idx], edad: edad, todos: pin,
-    rango: ['0-27 anos', '27-36 anos', '36-45 anos', '45 anos en adelante'][idx] };
+    rango: ['0-27 años', '27-36 años', '36-45 años', '45 años en adelante'][idx] };
 }
 function sintesisTexto(camN, destN, almaN, persN) {
   var c = numInfo(camN), d = destN != null ? numInfo(destN) : null,
@@ -251,7 +251,7 @@ function anoPersonal(keyNac, keyFecha) {
   if (pn.length < 3 || pf.length < 3) return null;
   function rd1(n) { while (n > 9) { var s = 0; while (n > 0) { s += n % 10; n = Math.floor(n / 10); } n = s; } return n; }
   var d = rd1(+pn[2]) + rd1(+pn[1]) + rd1(+pf[0]);
-  return reducir(d, false).final; // ano personal 1-9 (sin maestros)
+  return reducir(d, false).final; // año personal 1-9 (sin maestros)
 }
 function mesPersonal(anoP, keyFecha) {
   var pf = String(keyFecha || todayKey()).split('-');
@@ -270,9 +270,9 @@ function diaPersonal(anoP, mesP, keyFecha) {
    SIGNIFICADOS
    ============================================================ */
 var NUM_INFO = {
-  1: { n: 1, nombre: 'El Iniciador', icon: '\uD83D\uDD25', luz: 'Liderazgo, autonomia, iniciativa, foco.', sombra: 'Egoismo, impaciencia, autoritarismo si se desequilibra.', amor: 'Necesita admirar y espacio propio. Mejor con 3, 5 y 9.', trabajo: 'Emprender, liderar, abrir caminos.', practica: 'Empieza una cosa pendiente hoy, aunque sea en pequeno.', color: 'rojo', piedra: 'granate', dia: 'domingo' },
+  1: { n: 1, nombre: 'El Iniciador', icon: '\uD83D\uDD25', luz: 'Liderazgo, autonomia, iniciativa, foco.', sombra: 'Egoismo, impaciencia, autoritarismo si se desequilibra.', amor: 'Necesita admirar y espacio propio. Mejor con 3, 5 y 9.', trabajo: 'Emprender, liderar, abrir caminos.', practica: 'Empieza una cosa pendiente hoy, aunque sea en pequeño.', color: 'rojo', piedra: 'granate', dia: 'domingo' },
   2: { n: 2, nombre: 'El Cooperador', icon: '\uD83E\uDD1D', luz: 'Diplomacia, paciencia, escucha, tacto.', sombra: 'Hipersensibilidad, indecision, postergarse.', amor: 'Romantico y cuidador. Mejor con 4, 6 y 8.', trabajo: 'Mediar, acompanar, detallar, sanar equipos.', practica: 'Escucha completa a alguien sin interrumpir.', color: 'naranjo suave', piedra: 'cuarzo rosa', dia: 'lunes' },
-  3: { n: 3, nombre: 'El Creador', icon: '\uD83C\uDFA8', luz: 'Expresion, alegria, arte, comunicacion.', sombra: 'Dispersion, drama, hablar sin actuar.', amor: 'Chispa y juego. Mejor con 1, 5 y 7.', trabajo: 'Crear, comunicar, ensenar con humor.', practica: 'Escribe, dibuja o canta 10 minutos hoy.', color: 'amarillo', piedra: 'citrino', dia: 'martes' },
+  3: { n: 3, nombre: 'El Creador', icon: '\uD83C\uDFA8', luz: 'Expresion, alegria, arte, comunicacion.', sombra: 'Dispersion, drama, hablar sin actuar.', amor: 'Chispa y juego. Mejor con 1, 5 y 7.', trabajo: 'Crear, comunicar, enseñar con humor.', practica: 'Escribe, dibuja o canta 10 minutos hoy.', color: 'amarillo', piedra: 'citrino', dia: 'martes' },
   4: { n: 4, nombre: 'El Constructor', icon: '\uD83E\uDDF1', luz: 'Orden, constancia, trabajo serio, base solida.', sombra: 'Rigidez, terquedad, workaholism.', amor: 'Leal y estable. Mejor con 2, 6 y 8.', trabajo: 'Construir sistemas, oficios, tierra y numeros.', practica: 'Ordena un cajon o termina un tramite pendiente.', color: 'verde', piedra: 'jade', dia: 'miercoles' },
   5: { n: 5, nombre: 'El Libre', icon: '\uD83C\uDF2C\uFE0F', luz: 'Libertad, cambio, viaje, adaptacion.', sombra: 'Excesos, inquietud, huir del compromiso.', amor: 'Pasional y libre. Mejor con 1, 3 y 7.', trabajo: 'Ventas, movimiento, medios, aventura.', practica: 'Cambia una rutina: otro camino, otra comida.', color: 'turquesa', piedra: 'aguamarina', dia: 'jueves' },
   6: { n: 6, nombre: 'El Cuidador', icon: '\uD83D\uDC9A', luz: 'Hogar, servicio, belleza, responsabilidad amorosa.', sombra: 'Control “por tu bien”, culpa, sobrecarga.', amor: 'Comprometido y familiar. Mejor con 2, 4 y 8.', trabajo: 'Cuidar, educar, salud, comunidad.', practica: 'Arregla algo de tu hogar y agradece en voz alta.', color: 'rosado', piedra: 'cuarzo rosa', dia: 'viernes' },
@@ -281,7 +281,7 @@ var NUM_INFO = {
   9: { n: 9, nombre: 'El Humanitario', icon: '\uD83D\uDD4A\uFE0F', luz: 'Compasion, cierre, arte mayor, servicio al mundo.', sombra: 'Drama del salvador, apego al pasado.', amor: 'Amor universal. Mejor con 1, 3 y 7.', trabajo: 'Arte, sanacion, causas, docencia.', practica: 'Suelta algo hoy: dona, perdona o cierra.', color: 'blanco', piedra: 'selenita', dia: 'domingo' },
   11: { n: 11, nombre: 'El Iluminador (maestro)', icon: '\u2728', luz: 'Intuicion alta, inspiracion, canal espiritual.', sombra: 'Ansiedad, nerviosismo, “mucho voltaje”.', amor: 'Conexion de alma. Pide calma y verdad.', trabajo: 'Guiar, inspirar, crear con sentido.', practica: 'Anota tu corazonada y verifica en 3 dias.', color: 'plateado', piedra: 'labradorita', dia: 'lunes' },
   22: { n: 22, nombre: 'El Gran Constructor (maestro)', icon: '\uD83C\uDFDB\uFE0F', luz: 'Sueno grande vuelto obra concreta para muchos.', sombra: 'Presion enorme, autoexigencia, colapso.', amor: 'Socio de proyecto de vida. Pide equipo.', trabajo: 'Grandes obras, territorio, organizacion.', practica: 'Baja tu sueno a 3 pasos con fecha.', color: 'dorado profundo', piedra: 'obsidiana dorada', dia: 'miercoles' },
-  33: { n: 33, nombre: 'El Sanador (maestro)', icon: '\uD83D\uDC9B', luz: 'Amor que sana, servicio desinteresado.', sombra: 'Martirio, cargar a todos, olvidar el cuerpo.', amor: 'Amor devocional. Pide limites sanos.', trabajo: 'Sanar, ensenar, cuidar comunidad.', practica: 'Sirve 1 hora sin esperar nada a cambio.', color: 'rosa dorado', piedra: 'cuarzo maestro', dia: 'viernes' }
+  33: { n: 33, nombre: 'El Sanador (maestro)', icon: '\uD83D\uDC9B', luz: 'Amor que sana, servicio desinteresado.', sombra: 'Martirio, cargar a todos, olvidar el cuerpo.', amor: 'Amor devocional. Pide limites sanos.', trabajo: 'Sanar, enseñar, cuidar comunidad.', practica: 'Sirve 1 hora sin esperar nada a cambio.', color: 'rosa dorado', piedra: 'cuarzo maestro', dia: 'viernes' }
 };
 var KARMI = {
   13: 'Deuda 13: transformar el “atajo” en disciplina. Clave: orden diario, terminar lo empezado.',

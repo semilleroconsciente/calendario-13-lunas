@@ -76,13 +76,13 @@ var LA_A2 = [
 ];
 /*__PART2__*/
 var LA_B1 = [
-  { la: 'hic quinque annos habitamus', es: 'vivimos aqui desde hace 5 anos', pron: 'hik KUIN-kue AN-nos a-bi-TA-mus', ex: 'Numquam nivem vidi. — Nunca he visto nieve.' },
+  { la: 'hic quinque annos habitamus', es: 'vivimos aqui desde hace 5 años', pron: 'hik KUIN-kue AN-nos a-bi-TA-mus', ex: 'Numquam nivem vidi. — Nunca he visto nieve.' },
   { la: 'si pluet, domi manebimus', es: 'si llueve, nos quedamos (si + futuro)', pron: 'si PLU-et, DO-mi ma-ne-BI-mus', ex: 'Si studueris, disces. — Si estudias, aprenderas.' },
   { la: 'quaerere / curare / noli desperare', es: 'buscar / cuidar / no desesperes', pron: 'kue-RE-re / ku-RA-re / NO-li des-pe-RA-re', ex: 'Noli desperare! — No te rindas!' },
   { la: 'iter: tessera ad Concepcionem', es: 'viajes: un pasaje a Concepcion', pron: 'TES-se-ra ad kon-chep-tsi-O-nem', ex: 'Tessera ad Concepcionem, amabo te. — Un pasaje a Concepcion, por favor.' },
   { la: 'opus: horti curator sum', es: 'trabajo: estoy a cargo de la huerta', pron: 'OR-ti ku-RA-tor sum', ex: 'Horti curator sum. — Estoy a cargo de la huerta.' },
   { la: 'opinio: censeo / meo iudicio', es: 'opinion: creo que / en mi opinion', pron: 'CHEN-se-o / ME-o yu-DI-chi-o', ex: 'Censeo bonam ideam esse. — Creo que es buena idea.' },
-  { la: 'olim + imperfectum (ludbam)', es: 'solia + verbo (imperfecto: ludebam)', pron: 'O-lim + im-per-FEK-tum', ex: 'Parva cithara ludebam. — De nina tocaba guitarra.' },
+  { la: 'olim + imperfectum (ludbam)', es: 'solia + verbo (imperfecto: ludebam)', pron: 'O-lim + im-per-FEK-tum', ex: 'Parva cithara ludebam. — De niña tocaba guitarra.' },
   { la: 'ergo / quia / etiamsi', es: 'asi que / porque / aunque', pron: 'ER-go / KUI-a / et-YAM-si', ex: 'Frigus erat, ergo domi mansimus. — Hacia frio, asi que nos quedamos.' },
   { la: 'valetudo: caput mihi dolet', es: 'salud: me duele la cabeza', pron: 'KA-put MI-i DO-let', ex: 'Medico mihi opus est. — Necesito una hora medica.' },
   { la: 'epistula: cura ut valeas / amplector', es: 'correo: cuidate / un abrazo', pron: 'KU-ra ut UA-le-as / am-PLEK-tor', ex: 'Cura ut valeas, Ana. — Cuidate, Ana.' }
@@ -101,7 +101,7 @@ var LA_B2C1 = [
 ];
 /*__PART3__*/
 var LA_FRASES = [
-  { la: 'Carpe diem', es: 'aprovecha el dia (no lo dejes pasar)', pron: 'KAR-pe DI-em', ex: 'Horacio, Odas — Carpe diem, quam minimum credula postero. — Aprovecha hoy, no confies en manana.' },
+  { la: 'Carpe diem', es: 'aprovecha el dia (no lo dejes pasar)', pron: 'KAR-pe DI-em', ex: 'Horacio, Odas — Carpe diem, quam minimum credula postero. — Aprovecha hoy, no confies en mañana.' },
   { la: 'Veni, vidi, vici', es: 'vine, vi, venci', pron: 'UE-ni, UI-di, UI-chi', ex: 'Julio Cesar (Zela, 47 a.C.) — Tres verbos perfectos: victoria rapidisima.' },
   { la: 'Alea iacta est', es: 'la suerte esta echada', pron: 'A-le-a YAK-ta est', ex: 'Cesar al cruzar el Rubicon — Dicho antes de una decision sin retorno.' },
   { la: 'Cogito, ergo sum', es: 'pienso, luego existo', pron: 'KO-yi-to, ER-go sum', ex: 'Descartes — Base de la filosofia moderna: si dudo, existo.' },
@@ -167,7 +167,7 @@ var LA_FRASES = [
   { la: 'Panem et circenses', es: 'pan y circo', pron: 'PA-nem et chir-CHEN-ses', ex: 'Juvenal — Critica al pueblo que cambia derechos por entretencion.' },
   { la: 'Pax vobiscum', es: 'la paz este con ustedes', pron: 'paks vo-BIS-kum', ex: 'Liturgia — Saludo de paz en misa y en casa.' },
   { la: 'Post tenebras lux', es: 'despues de las tinieblas, la luz', pron: 'post TE-ne-bras luks', ex: 'Lema de esperanza — Tras la tormenta sale el sol en el Biobio.' },
-  { la: 'Quid pro quo', es: 'algo por algo (un favor por otro)', pron: 'kuid pro kuo', ex: 'Tratos — Te ayudo en la huerta quid pro quo: tu me ayudas manana.' },
+  { la: 'Quid pro quo', es: 'algo por algo (un favor por otro)', pron: 'kuid pro kuo', ex: 'Tratos — Te ayudo en la huerta quid pro quo: tu me ayudas mañana.' },
   { la: 'Quis custodiet ipsos custodes?', es: 'quien vigila a los vigilantes?', pron: 'kuis kus-TO-di-et IP-sos kus-TO-des', ex: 'Juvenal — Pregunta ciudadana: quien controla al poder.' },
   { la: 'Quo vadis?', es: 'a donde vas?', pron: 'kuo UA-dis', ex: 'Tradicion de Pedro — Pregunta esencial: quo vadis con tu vida.' },
   { la: 'Repetitio est mater studiorum', es: 'la repeticion es madre del estudio', pron: 're-pe-TI-tsi-o est MA-ter stu-di-O-rum', ex: 'Pedagogia — Repite 5 minutos al dia y se queda para siempre.' },
@@ -196,7 +196,7 @@ var LA_PRON = [
 var LA_NORTE = [
 /*__PART5__*/
   ['Clasico (Cesar) o eclesiastico (Iglesia): entiende los dos', 'Clasico: ueni, uidi, uiki (todo con K, U). Eclesiastico: UE-ni, UI-di, UI-chi (con CH, Y). Este modulo usa el eclesiastico porque es el de los colegios, misas y canciones en Chile.'],
-  ['Casos: el final de la palabra dice su funcion', 'Rosa (sujeto), rosam (objeto), rosae (de la rosa). No memorices tablas: mira el final y el contexto, como hacen los ninos.'],
+  ['Casos: el final de la palabra dice su funcion', 'Rosa (sujeto), rosam (objeto), rosae (de la rosa). No memorices tablas: mira el final y el contexto, como hacen los niños.'],
   ['Tres verbos abren el 50% del dia: esse, habere, facere', 'sum / es / est (soy-eres-es), habeo (tengo), facio (hago). Con esos tres + quiero (volo) y voy (eo) ya conversas.'],
   ['El latin vive en tu espanol', 'Mas del 60% de tus palabras vienen del latin: mare-mar, panis-pan, mater-madre, nox-noche. Cada palabra latina te regala 5 en espanol.'],
   ['Roma en Penco: derecho, calendario, republca', 'Senado, republica, calendario, justicia, medicina, universidad: Roma invento las palabras que usas en la muni, la escuela y el consultorio.']

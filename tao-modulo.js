@@ -160,7 +160,7 @@ var TAO_TEXTOS = [
     practica: 'Resta 1: elige 1 cosa que hoy NO harás (revisar 10 veces, contestar al tiro, ordenar perfecto) y haz lo mínimo eficaz.',
     trampa: 'Tirarse a vaguear y culpar al Tao. Wu wei es soltar el forcejeo, no la responsabilidad.',
     pregunta: '¿Qué puedo restar hoy para que lo importante fluya?' },
-  { id: 'cap63', cap: 'Cap. 63 · Lo difícil se vuelve fácil', ico: '🐜', tag: 'pequeno dificil facil empezar pasos constancia',
+  { id: 'cap63', cap: 'Cap. 63 · Lo difícil se vuelve fácil', ico: '🐜', tag: 'pequeño dificil facil empezar pasos constancia',
     texto: '“Haz lo difícil cuando aún es fácil; haz lo grande cuando aún es pequeño. El sabio no hace grandes hazañas y por eso logra lo grande.”',
     idea: 'Todo lo grande fue chico: la deuda se paga por cuotas, el bosque por semillas, la pelea se evita con una frase a tiempo. Empieza chico y temprano.',
     sirve: 'Metas que asustan (ordenar la casa, estudiar, pagar, sembrar, entrenar).',

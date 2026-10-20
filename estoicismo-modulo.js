@@ -152,7 +152,7 @@ var EST_TEXTOS = [
     practica: 'STOP 2 min: Sal (aire), Toma 4-6 (respira), Observa el hecho pelado, Procede con 1 frase justa.',
     trampa: 'Tragarse la rabia y explotar después. La pausa es para responder justo, no para acumular.',
     pregunta: '¿Qué pasó de verdad, sin mi cuento?' },
-  { id: 'vista', cap: '9 · La vista desde arriba', ico: '🦅', tag: 'vista arriba perspectiva cosmopolis universo pequeno',
+  { id: 'vista', cap: '9 · La vista desde arriba', ico: '🦅', tag: 'vista arriba perspectiva cosmopolis universo pequeño',
     texto: '“Mira desde lo alto: ciudades, mares y tus problemas se achican. Eres parte de un todo.” — Marco Aurelio',
     idea: 'Sube tu mirada: tu cuadra, Penco, Chile, el planeta girando. Tu drama de hoy es una ola chica en un mar grande. Eso calma el ego y abre compasión.',
     sirve: 'Vergüenza, dramas, creerse el centro, miedo al qué dirán.',
