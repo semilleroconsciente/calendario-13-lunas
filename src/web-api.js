@@ -88,8 +88,18 @@
       return JSON.stringify(o);
     } catch { return blobJson; }
   }
+  var isHttpUrl = function (u) {
+    try { var p = new URL(String(u), window.location.href).protocol; return p === 'http:' || p === 'https:'; }
+    catch (e) { return false; }
+  };
+  var sanitizePrintHtml = function (html) {
+    var s = String(html || '');
+    s = s.replace(/<script[\s\S]*?<\/script\s*>/gi, '').replace(/<(iframe|object|embed|link|meta|base|form)[\s\S]*?<\/\1\s*>/gi, '').replace(/<(iframe|object|embed|link|meta|base|form)(\s[^>]*)?\/?>/gi, '');
+    s = s.replace(/\son[a-z]+\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi, '').replace(/(href|src|action)\s*=\s*("|')\s*javascript:[^"']*\2/gi, '$1=$2#$2');
+    return s;
+  };
   window.api = {
-    openExternal: async (url) => { try { window.open(url, '_blank', 'noopener,noreferrer'); return true; } catch { window.location.href = url; return false; } },
+    openExternal: async (url) => { if (!isHttpUrl(url)) return false; try { window.open(url, '_blank', 'noopener,noreferrer'); return true; } catch { return false; } },
     loadData: async () => {
       // IndexedDB primero (cuota amplia, asíncrono); localStorage como fallback.
       try {
@@ -116,7 +126,7 @@
       const w = window.open('', '_blank');
       if (!w) return null;
       w.document.open();
-      w.document.write(html);
+      w.document.write(sanitizePrintHtml(html));
       w.document.close();
       setTimeout(() => { try { w.focus(); w.print(); } catch {} }, 900);
       return 'impresion';
@@ -137,7 +147,14 @@
     backupSave: async (json, fileName) => {
       const a = document.createElement('a');
       a.href = URL.createObjectURL(new Blob([json], { type: 'application/json' }));
-      a.download = (fileName || 'respaldo-calendario-13-lunas.json');
+      if (!fileName) {
+        try {
+          const d = new Date();
+          const p = (n) => String(n).padStart(2, '0');
+          fileName = 'respaldo-calendario-13-lunas-' + d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()) + '-' + p(d.getHours()) + p(d.getMinutes()) + '.json';
+        } catch (e) { fileName = 'respaldo-calendario-13-lunas.json'; }
+      }
+      a.download = fileName;
       a.click();
       return 'descargado';
     },
@@ -177,9 +194,12 @@
       i.click();
     }),
     imageSave: async (dataUrl, suggestedName) => {
-      const fileName = suggestedName || 'calendario-13-lunas.png';
+      const fileName = String(suggestedName || 'calendario-13-lunas.png').replace(/[\\/:*?"<>|]/g, '-').slice(0, 120) || 'calendario-13-lunas.png';
       try {
+        const s = String(dataUrl || '');
+        if (!s.startsWith('data:image/')) return null;
         const blob = await (await fetch(dataUrl)).blob();
+        if (!blob || !blob.type.startsWith('image/')) return null;
         const file = new File([blob], fileName, { type: 'image/png' });
         if (navigator.canShare && navigator.canShare({ files: [file] })) {
           await navigator.share({ files: [file], title: fileName.replace(/\.png$/i, '') });

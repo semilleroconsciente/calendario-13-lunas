@@ -66,24 +66,14 @@ function staticEntries() {
     './', './index.html', './manifest.json', './donate.json',
     './robots.txt', './sitemap.xml',
     './icon-192.png', './icon-512.png', './icon-512-maskable.png',
+    './logo-13-lunas.png',
     // Bienvenida primera vez: anime.js v4 UMD se carga LAZY (no va en
     // index.html para no penalizar el arranque), pero se precachea para que
     // la primera apertura offline también anime con el timeline completo.
     './min/anime-v4.min.js', './min/anime-v4.min.js?v=1',
     './assets/notify.mp3',
-    './assets/cuentos/luna01.mp3',
-    './assets/cuentos/luna02.mp3',
-    './assets/cuentos/luna03.mp3',
-    './assets/cuentos/luna04.mp3',
-    './assets/cuentos/luna05.mp3',
-    './assets/cuentos/luna06.mp3',
-    './assets/cuentos/luna07.mp3',
-    './assets/cuentos/luna08.mp3',
-    './assets/cuentos/luna09.mp3',
-    './assets/cuentos/luna10.mp3',
-    './assets/cuentos/luna11.mp3',
-    './assets/cuentos/luna12.mp3',
-    './assets/cuentos/luna13.mp3',
+    // Cuentos luna01..13.mp3 (~9 MB): NO precache — runtime-cache bajo demanda
+    // (ver sw.js rama MEDIA). Recorta ~60% de la primera instalación.
     './COPYING', './LICENSE.md', './LICENCIA-CONTENIDO-CC-BY-NC-SA-4.0.md',
     './legal/licencias.html', './legal/terminos.html', './legal/privacidad.html', './legal/cookies.html',
     './data/territorios/index.json',

@@ -23,12 +23,12 @@ Opcion A - Netlify Drop (la mas facil):
 Opcion B - GitHub Pages:
   Sube el contenido de "web" a un repositorio y activa Pages.
 
-APK ANDROID (version 1.9.0 rev. 20-oct-2026 incluida)
+APK ANDROID (version 1.9.1 rev. 20-oct-2026 incluida)
 --------------------------------------
 La carpeta "web" ya genera el APK nativo con Capacitor
 (offline total, sin pasar por PWABuilder):
-  - APK listo: dist-empaquetado/13-Lunas-offline-1.9.0.apk
-    (recompilado 2026-10-20, versionName 1.9.0 / versionCode 3)
+  - APK listo: dist-empaquetado/13-Lunas-offline-1.9.1.apk
+    (recompilado 2026-10-20, versionName 1.9.1 / versionCode 4)
   - EXE Windows: dist-empaquetado/Calendario 13 Lunas 1.9.0.exe
     (portable, recompilado 2026-10-20 con fuentes src/ + parches a11y)
   - Para reconstruirlo: npm run movil:build

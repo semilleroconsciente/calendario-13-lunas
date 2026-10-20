@@ -48,6 +48,7 @@ body {
 }
 
 .brand h1 { font-size: 20px; color: var(--gold); letter-spacing: 1px; }
+.brand-logo { display: block; width: 120px; height: 120px; margin: 0 auto 8px; border-radius: 50%; object-fit: cover; border: 2px solid var(--gold); box-shadow: 0 0 18px #e8c56a44; }
 .brand-moons { text-align: center; font-size: 15px; letter-spacing: 4px; margin-bottom: 6px; }
 .brand-sub { color: var(--muted); font-size: 12px; margin-top: 4px; line-height: 1.4; }
 
@@ -783,8 +784,40 @@ body[data-theme="medianoche"] { --bg:#050508; --bg2:#0a0a10; --panel:#141418; --
 .preset-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
 .preset-grid .btn { font-size: 12px; padding: 8px 6px; }
 .config-preset { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* Perfiles como tarjetas: icono + nombre + bajada, activo dorado */
+.preset-grid-cards { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+.preset-card { display: flex; gap: 10px; align-items: center; text-align: left; padding: 10px 12px !important; border-radius: 12px; white-space: normal; overflow: visible; }
+.preset-card .pc-ico { font-size: 20px; line-height: 1; }
+.preset-card .pc-txt { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.preset-card .pc-txt b { font-size: 13px; }
+.preset-card .pc-txt small { font-size: 11px; color: var(--muted); }
+.preset-card.btn-accent { outline: 2px solid var(--gold); }
+.preset-card.preset-esencial:not(.btn-accent) { border-color: var(--gold); }
+/* Herramientas visibles: buscador + contadores + tarjetas por grupo */
+.vg-total { font-weight: 800; color: var(--gold); }
+.vg-toolbar { display: flex; flex-direction: column; gap: 8px; margin: 8px 0 10px; position: sticky; top: 0; z-index: 2; background: var(--card); padding: 8px; border: 1px solid var(--line); border-radius: 10px; }
+.vg-search { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+.vg-search input { flex: 1; padding: 10px; border-radius: 8px; border: 1px solid var(--line); background: var(--bg2); color: var(--text); font-size: 13px; }
+.vg-quick { display: flex; gap: 6px; flex-wrap: wrap; }
+.vg-quick .btn { font-size: 12px; padding: 8px 10px; }
+.config-grid-tools { grid-template-columns: 1fr 1fr; }
+.vg-card { display: flex; flex-direction: column; }
+.vg-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.vg-head h4 { margin: 0 !important; }
+.vg-count { font-size: 11px; font-weight: 800; color: var(--gold); background: var(--bg2); border: 1px solid var(--line); border-radius: 99px; padding: 2px 8px; white-space: nowrap; }
+.vg-mini { display: flex; gap: 6px; margin: 6px 0; }
+.vg-mini .btn { font-size: 11px; padding: 4px 8px; }
+.vg-card label.check-row { background: var(--bg2); border: 1px solid var(--line); border-radius: 8px; padding: 7px 8px; }
+.vg-card label.check-row:has(input:checked) { border-color: var(--gold); }
+.vg-card label.check-row input { width: 18px; height: 18px; }
+@media (max-width: 640px) { .preset-grid-cards, .config-grid-tools { grid-template-columns: 1fr; } }
 .config-advanced { margin-top: 12px; }
-.config-advanced summary { cursor: pointer; font-size: 12px; }
+.config-advanced summary, .config-home-blocks summary { cursor: pointer; font-size: 13px; font-weight: 700; padding: 10px 12px; border-radius: 10px; background: var(--bg2); border: 1px solid var(--line); list-style: none; }
+.config-advanced summary::-webkit-details-marker, .config-home-blocks summary::-webkit-details-marker { display: none; }
+.config-home-blocks summary::before { content: '▸ '; color: var(--gold); }
+.config-home-blocks[open] summary::before { content: '▾ '; }
+.config-advanced summary::before { content: '▸ '; color: var(--gold); }
+.config-advanced[open] summary::before { content: '▾ '; }
 .config-donate { margin-top: 12px; padding: 0; border: none; background: transparent; }
 .config-bottombar { justify-content: flex-end; margin-top: 12px; }
 .mens-pred-grid { display: flex; flex-direction: column; gap: 8px; }

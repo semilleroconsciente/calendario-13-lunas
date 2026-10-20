@@ -34,6 +34,9 @@
   <link rel="stylesheet" href="min/splash.min.css?v=1">
   <link rel="stylesheet" href="min/bienvenida.min.css?v=1">
   <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+  <link rel="apple-touch-icon" href="icon-192.png">
   <link rel="preconnect" href="https://api.open-meteo.com">
   <link rel="preconnect" href="https://air-quality-api.open-meteo.com">
   <link rel="preload" href="min/renderer.min.js?v=19" as="script" fetchpriority="high">
@@ -43,7 +46,7 @@
   <a href="#main" class="skip-link">Saltar al contenido</a>
   <aside id="sidebar" aria-label="Navegación lateral">
     <div class="brand">
-      <div class="brand-moons" aria-hidden="true">🌑 🌒 🌓 🌔 🌕 🌖 🌗 🌘</div>
+      <img class="brand-logo" src="logo-13-lunas.png" alt="Logotipo 13 Lunas — luna dorada" width="120" height="120" fetchpriority="high">
       <h1>Mari Küla Küyen</h1>
       <p class="brand-sub">Calendario de las 13 Lunas<br>Penco · Bío-Bío · Chile</p>
     </div>
@@ -198,6 +201,7 @@
           <button id="btnMedic" class="btn" data-sub="cuidado" data-keywords="medicina medicamento hierba matico natural basica botiquin historia seguridad alergia dosis">🌿 Medicina</button>
           <button id="btnNutri" class="btn" data-sub="cuidado" data-keywords="nutricion nutrición comer sano plato saludable dieta vitaminas minerales proteinas fibra agua sellos menu alimentacion">🥗 Nutrición</button>
           <button id="btnAyurveda" class="btn" data-sub="cuidado" data-keywords="ayurveda dosha vata pitta kapha agni ama dinacharya kitchari ghee chai leche dorada abhyanga rutina digestion india charaka">🪷 Ayurveda</button>
+          <button id="btnMTC" class="btn" data-sub="cuidado" data-keywords="medicina china mtc zhongyi yin yang qi wuxing cinco elementos madera fuego tierra metal agua zang fu reloj organos baduanjin qigong acupresion hegu zusanli congee">☯️ Medicina China</button>
           <button id="btnGym" class="btn" data-sub="cuidado" data-keywords="entrenamientos gym gimnasio terapia fisica fisioterapia calistenia practicas varias rutina ejercicio movilidad kine casa playa bosque multicancha plaza parque costanera lugar">💪 Entrenamientos</button>
           <button id="btnNatacion" class="btn" data-sub="cuidado" data-keywords="natacion nadar nado piscina pileta mar playa flotar flotacion respiracion crol espalda pecho mariposa corriente retorno ahogamiento seguridad agua traje boya aprender clases calambre hipotermia">🏊 Natación</button>
           <button id="btnPelo" class="btn" data-sub="cuidado" data-keywords="pelo corte peluqueria luna creciente llena menguante volumen crecimiento tinte">💇 Cuidado del pelo</button>

@@ -2,7 +2,8 @@
 // Copyright (C) 2026 Semillero Consciente. Licencia: GNU GPLv3 o posterior (ver COPYING).
 // SPDX-License-Identifier: GPL-3.0-or-later
 // v55
-const CACHE = 'cal13-v135-offline';
+const CACHE = 'cal13-v139-offline';
+const MEDIA_CACHE = 'cal13-media-v1';
 
 // Lista completa de archivos que usa index.html (bare + con ?v=).
 // Si se agrega un JS nuevo en index.html, agregarlo aquí también (bare y ?v=).
@@ -16,22 +17,10 @@ const CORE = [
   './icon-192.png',
   './icon-512.png',
   './icon-512-maskable.png',
+  './logo-13-lunas.png',
   './min/anime-v4.min.js',
   './min/anime-v4.min.js?v=1',
   './assets/notify.mp3',
-  './assets/cuentos/luna01.mp3',
-  './assets/cuentos/luna02.mp3',
-  './assets/cuentos/luna03.mp3',
-  './assets/cuentos/luna04.mp3',
-  './assets/cuentos/luna05.mp3',
-  './assets/cuentos/luna06.mp3',
-  './assets/cuentos/luna07.mp3',
-  './assets/cuentos/luna08.mp3',
-  './assets/cuentos/luna09.mp3',
-  './assets/cuentos/luna10.mp3',
-  './assets/cuentos/luna11.mp3',
-  './assets/cuentos/luna12.mp3',
-  './assets/cuentos/luna13.mp3',
   './COPYING',
   './LICENSE.md',
   './LICENCIA-CONTENIDO-CC-BY-NC-SA-4.0.md',
@@ -310,6 +299,8 @@ const CORE = [
   './min/matematicas-modulo.min.js?v=1',
   './min/mecanica-modulo.min.js',
   './min/mecanica-modulo.min.js?v=1',
+  './min/medicina-tradicional-china-modulo.min.js',
+  './min/medicina-tradicional-china-modulo.min.js?v=1',
   './min/metodo-silva-modulo.min.js',
   './min/metodo-silva-modulo.min.js?v=1',
   './min/moneda-social.min.js',
@@ -448,8 +439,9 @@ self.addEventListener('activate', (e) => {
       const hasIndex =
         (await c.match('./index.html')) || (await c.match('./'));
       const keys = await caches.keys();
+      const keep = new Set([CACHE, MEDIA_CACHE]);
       if (hasIndex) {
-        await Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k)));
+        await Promise.all(keys.filter((k) => !keep.has(k)).map((k) => caches.delete(k)));
       } else {
         for (const k of keys) {
           if (k === CACHE) continue;
@@ -524,6 +516,32 @@ self.addEventListener('fetch', (e) => {
         return new Response('<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><body style="background:#0b1026;color:#e8ecff;font-family:system-ui;padding:24px"><h3>Sin conexión</h3><p>Abre la app una vez con internet para activar el modo offline.</p><button onclick="location.reload()" style="padding:10px 18px;border-radius:8px;border:0;background:#e8c56a;font-weight:700">Reintentar</button>', {
           headers: { 'Content-Type': 'text/html; charset=utf-8' }
         });
+      })()
+    );
+    return;
+  }
+
+  // 1b) Audio pesado (cuentos lunaXX.mp3, ~9 MB): runtime-cache bajo demanda.
+  //     No precacheado: se guarda en MEDIA_CACHE al reproducirse por primera
+  //     vez con internet; offline posterior sirve desde caché.
+  if (url.pathname.endsWith('.mp3') && url.pathname.includes('/cuentos/')) {
+    e.respondWith(
+      (async () => {
+        const hit = await caches.match(req);
+        if (hit) return hit;
+        try {
+          const net = await fetch(req);
+          if (net && net.ok) {
+            const mc = await caches.open(MEDIA_CACHE);
+            mc.put(req, net.clone()).catch(() => {});
+            return net;
+          }
+          return net;
+        } catch (_) {
+          const mediaHit = await caches.match(req);
+          if (mediaHit) return mediaHit;
+          return new Response('', { status: 504, statusText: 'Audio offline sin caché' });
+        }
       })()
     );
     return;

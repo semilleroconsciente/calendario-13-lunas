@@ -110,25 +110,37 @@
     } catch (e) { return true; }
   }
 
-  // Aplica preset replicando renderer.js sin depender de sus const internas
-  // (const de scope global clásico no son visibles como window.*; se usa
-  // homeBlocksForPreset() para vista + bloques ◉ Hoy y se deja visible todo
-  // para no esconder nada por error; el ajuste fino vive en ⚙️ Personalizar).
+  // Aplica preset replicando renderer.js (visible + home). Usa window.PRESETS /
+  // visibleFromPreset() cuando están listos; si no, fallback local Esencial.
+  // Así "Esencial" deja pocas herramientas y "Todo" las muestra todas.
+  var ESENCIAL_FALLBACK = { btnHabits:1, btnRutinas:1, btnDiscipline:1, btnSchedule:1, btnTimer:1, btnRemind:1, btnGratitud:1, btnDreams:1, btnBreath:1, btnWeather:1, btnAstro:1, btnGolden:1, btnCircadian:1, btnEkadashi:1, btnTides:1, btnSiembra:1, btnMeal:1, btnShopping:1, btnFinance:1, btnHomeTasks:1, btnTales:1, btnCrianza:1, btnFirstAid:1, btnViolence:1, btnEvac:1, btnApoyo:1, btnHelp:1, btnDonate:1 };
   function aplicarPresetSeguro(nombre) {
     try {
       if (typeof DATA === 'undefined' || !DATA) return;
       DATA.config = DATA.config || {};
       var esTodo = (nombre === 'todo' || nombre === 'adulto');
+      var vis = null;
       try {
-        if (typeof ALL_BTNS !== 'undefined' && ALL_BTNS && ALL_BTNS.forEach) {
-          var vis = {};
-          ALL_BTNS.forEach(function (k) { vis[k] = esTodo ? true : true; });
-          // Sin acceso al mapa del preset, el filtrado fino lo hará el
-          // usuario en ⚙️ Personalizar; el home sí queda filtrado abajo.
-          // Para no esconder nada por error, se dejan visibles.
-          DATA.config.visible = vis;
+        if (typeof visibleFromPreset === 'function') {
+          vis = visibleFromPreset(nombre);
+        } else if (typeof window !== 'undefined' && window.PRESETS && window.PRESETS[nombre]) {
+          var preset = window.PRESETS[nombre];
+          vis = {};
+          var keys = (typeof ALL_BTNS !== 'undefined' && ALL_BTNS) ? ALL_BTNS : Object.keys(ESENCIAL_FALLBACK);
+          keys.forEach(function (k) { vis[k] = esTodo ? true : !!preset[k]; });
         }
-      } catch (e2) {}
+      } catch (e2) { vis = null; }
+      if (!vis) {
+        vis = {};
+        try {
+          var keys2 = (typeof ALL_BTNS !== 'undefined' && ALL_BTNS && ALL_BTNS.forEach) ? ALL_BTNS : Object.keys(ESENCIAL_FALLBACK);
+          var fb = (typeof window !== 'undefined' && window.PRESETS && window.PRESETS.esencial) ? window.PRESETS.esencial : ESENCIAL_FALLBACK;
+          keys2.forEach(function (k) { vis[k] = esTodo ? true : !!fb[k]; });
+        } catch (e3) {
+          Object.keys(ESENCIAL_FALLBACK).forEach(function (k) { vis[k] = esTodo ? true : true; });
+        }
+      }
+      DATA.config.visible = vis;
       DATA.config.perfil = nombre;
       try {
         if (typeof homeBlocksForPreset === 'function') {

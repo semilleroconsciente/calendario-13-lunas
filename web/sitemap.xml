@@ -6,26 +6,6 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://calendario-13-lunas.pages.dev/#hoy</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://calendario-13-lunas.pages.dev/#mareas</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://calendario-13-lunas.pages.dev/#siembra</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://calendario-13-lunas.pages.dev/#habitos</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
     <loc>https://calendario-13-lunas.pages.dev/legal/licencias.html</loc>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>

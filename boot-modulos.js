@@ -93,6 +93,7 @@
     'min/cuerpo-luna-rituales-fenologia-modulo.min.js?v=1',
     'min/energia-descanso-modulo.min.js?v=1',
     'min/ayurveda-modulo.min.js?v=1',
+    'min/medicina-tradicional-china-modulo.min.js?v=1',
     'min/natacion-modulo.min.js?v=1',
     'min/futbol-modulo.min.js?v=1',
     'min/basquetbol-modulo.min.js?v=1',
@@ -169,7 +170,7 @@
     try {
       if (!failedMods.length) return;
       var el = document.getElementById('statusMsg');
-      if (!el) return;
+      if (!el) { try { console.warn('[boot-modulos] fallaron:', failedMods.join(', ')); } catch {} return; }
       el.innerHTML = '';
       var t = document.createElement('span');
       t.textContent = '⚠ ' + failedMods.length + ' módulo(s) no cargaron (' +
@@ -185,7 +186,7 @@
         })(0);
       };
       el.appendChild(t); el.appendChild(b);
-    } catch (e) {}
+    } catch (e) { try { console.warn('[boot-modulos] reportMods:', e && e.message); } catch {} }
   }
   function kick() { if (started) return; started = true; pool(); }
   try {
@@ -193,6 +194,7 @@
     else if (document.readyState === 'complete') setTimeout(kick, 600);
     else window.addEventListener('load', function () { setTimeout(kick, 600); });
   } catch (e) {
+    try { console.warn('[boot-modulos] kick:', e && e.message); } catch {}
     window.addEventListener('load', function () { setTimeout(kick, 600); });
   }
   // Red de seguridad: si el nucleo pinto el calendario pero no oculto el
@@ -205,8 +207,8 @@
       var sp = document.getElementById('bootSplash');
       if (sp && g && g.children.length) {
         sp.classList.add('done');
-        setTimeout(function () { try { sp.remove(); } catch (e2) {} }, 400);
+        setTimeout(function () { try { sp.remove(); } catch (e2) { try { console.warn('[boot-modulos] splash:', e2 && e2.message); } catch {} } }, 400);
       }
-    } catch (e) {}
+    } catch (e) { try { console.warn('[boot-modulos] watchdog:', e && e.message); } catch {} }
   }, 15000);
 })();

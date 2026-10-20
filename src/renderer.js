@@ -114,6 +114,7 @@ function syncHomeConfigUI() {
       cb.checked = home.blocks[cb.dataset.home] !== false;
     });
     try { if (typeof paintHomeOrderUI === 'function') paintHomeOrderUI(); } catch (e2) {}
+    try { if (typeof updateHomeCount === 'function') updateHomeCount(); } catch (e3) {}
   } catch (e) {}
 }
 // Lista de orden en ⚙️ Ajustes → 🏠 Pantalla de inicio (subir/bajar). Se repinta sola.
@@ -175,6 +176,7 @@ function setupHomeConfig() {
       DATA.config.home.blocks[cb.dataset.home] = cb.checked;
       try { if (typeof markPerfilPersonalizado === 'function') markPerfilPersonalizado(); } catch (e) {}
       scheduleSave('Pantalla de inicio guardada ✓');
+      try { if (typeof updateHomeCount === 'function') updateHomeCount(); } catch (e2) {}
       try { if (viewMode === 'hoy') renderTodayView(); } catch (e) {}
     };
   });
@@ -1444,8 +1446,15 @@ function runSearch(q) {
 }
 $('searchClose').onclick = () => $('searchDialog').close();
 
+function backupFileName() {
+  try {
+    const d = new Date();
+    const p = (n) => String(n).padStart(2, '0');
+    return 'respaldo-calendario-13-lunas-' + d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()) + '-' + p(d.getHours()) + p(d.getMinutes()) + '.json';
+  } catch (e) { return 'respaldo-calendario-13-lunas.json'; }
+}
 async function doBackup() {
-  const r = await window.api.backupSave(JSON.stringify(DATA, null, 1));
+  const r = await window.api.backupSave(JSON.stringify(DATA, null, 1), backupFileName());
   try { window.cal13backupDone && window.cal13backupDone(); } catch (e) {}
   $('statusMsg').textContent = r ? 'Respaldo guardado ✓' : 'Cancelado';
   setTimeout(() => { $('statusMsg').textContent = ''; }, 2500);
@@ -4225,10 +4234,13 @@ async function loadDonateConfig(){
 }
 function openExternalLink(url){
   if(!url || url==='#') return false;
+  let ok = false;
+  try { ok = /^(https?:)?\/\//i.test(String(url)) || /^(http|https):/i.test(String(url)); } catch { ok = false; }
+  if (!ok) { try { new URL(String(url)); ok = /^https?:$/.test(new URL(String(url)).protocol); } catch { ok = false; } }
+  if (!ok) return false;
   try{ if(window.api && window.api.openExternal){ window.api.openExternal(url); return true; } }catch(e){}
   try{ window.open(url, '_blank', 'noopener,noreferrer'); return true; }catch(e){}
-  window.location.href = url;
-  return true;
+  return false;
 }
 function setupDonateDialog(){
   const btn=$('btnDonate'); if(!btn) return;
@@ -4251,7 +4263,8 @@ function setupDonateDialog(){
     const fallbackMP='https://link.mercadopago.cl/semilleroconsciente';
     const fallbackPP='https://paypal.me/semilleroconsciente';
     if(mp){
-      const url = (d.mercadopago && String(d.mercadopago).trim()) || fallbackMP;
+      const raw = (d.mercadopago && String(d.mercadopago).trim()) || fallbackMP;
+      const url = /^https:\/\//i.test(raw) ? raw : fallbackMP;
       mp.href = url;
       mp.target = '_blank';
       mp.rel = 'noopener noreferrer';
@@ -4260,7 +4273,8 @@ function setupDonateDialog(){
       mp.onclick = e=>{ e.stopPropagation(); e.preventDefault(); openExternalLink(url); };
     }
     if(pp){
-      const url = (d.paypal && String(d.paypal).trim()) || fallbackPP;
+      const raw2 = (d.paypal && String(d.paypal).trim()) || fallbackPP;
+      const url = /^https:\/\//i.test(raw2) ? raw2 : fallbackPP;
       pp.href = url;
       pp.target = '_blank';
       pp.rel = 'noopener noreferrer';
@@ -4270,8 +4284,8 @@ function setupDonateDialog(){
     }
     const flow=$('donateFlowLink'), kf=$('donateKofiLink');
     const toggleCard=(linkEl,has)=>{ try{ const card=linkEl&&linkEl.closest?linkEl.closest('.donate-card'):null; if(card) card.style.display=has?'':'none'; }catch(e){} };
-    if(flow){ const has=!!(d.flow&&String(d.flow).trim()); flow.href = has?d.flow:'#'; flow.target = has ? '_blank' : ''; flow.rel = 'noopener noreferrer'; if(has) flow.onclick = e=>{ e.stopPropagation(); e.preventDefault(); openExternalLink(d.flow); }; toggleCard(flow,has); }
-    if(kf){ const has=!!(d.kofi&&String(d.kofi).trim()); kf.href = has?d.kofi:'#'; kf.target = has ? '_blank' : ''; kf.rel = 'noopener noreferrer'; if(has) kf.onclick = e=>{ e.stopPropagation(); e.preventDefault(); openExternalLink(d.kofi); }; toggleCard(kf,has); }
+    if(flow){ const rawF = d.flow&&String(d.flow).trim(); const has=/^https:\/\//i.test(rawF||''); flow.href = has?rawF:'#'; flow.target = has ? '_blank' : ''; flow.rel = 'noopener noreferrer'; if(has) flow.onclick = e=>{ e.stopPropagation(); e.preventDefault(); openExternalLink(rawF); }; toggleCard(flow,has); }
+    if(kf){ const rawK = d.kofi&&String(d.kofi).trim(); const has=/^https:\/\//i.test(rawK||''); kf.href = has?rawK:'#'; kf.target = has ? '_blank' : ''; kf.rel = 'noopener noreferrer'; if(has) kf.onclick = e=>{ e.stopPropagation(); e.preventDefault(); openExternalLink(rawK); }; toggleCard(kf,has); }
     try{
       const dlg=$('donateDialog');
       const mpUrl = (mp&&mp.href)||fallbackMP, ppUrl=(pp&&pp.href)||fallbackPP;
@@ -4502,10 +4516,37 @@ const PRESETS = {
   // Docente: aprender completo + familia completa + casa con Escolar/Movilidad + conocerse parcial + Recap/Métodos/Duelo + día completo + tierra educativa + Adolescencia/Juventud + Trueque/Minga/Derechos + ciber básico + emergencia completa.
   docente: {btnStudy:true,btnMemory:true,btnMatematicas:true,btnIdiomas:true,btnMapu:true,btnEnglish:true,btnPortugues:true,btnChino:true,btnHindi:true,btnAprenderInstrumento:true,btnGuitar:true,btnUkelele:true,btnFlauta:true,btnTeclado:true,btnCajon:true,btnCanto:true,btnMusicaPractica:true,btnAjedrez:true,btnDama:true,btnSudoku:true,btnCrucigrama:true,btnSopa:true,btnSolitario:true,btnTales:true,btnCrianza:true,btnEducacion:true,btnArbolFull:true,btnVozAbuelos:true,btnConstelaciones:true,btnMeal:true,btnShopping:true,btnFinance:true,btnHomeTasks:true,btnEscolar:true,btnMovilidad:true,btnPsico:true,btnPsicologia:true,btnEneagrama:true,btnVIA:true,btnIkigai:true,btnRecap:true,btnMetodos:true,btnDueloFull:true,btnHabits:true,btnRutinas:true,btnDiscipline:true,btnSchedule:true,btnTimer:true,btnRemind:true,btnGratitud:true,btnDreams:true,btnBreath:true,btnWeather:true,btnCircadian:true,btnSiembra:true,btnHuerta:true,btnBosque:true,btnCompost:true,btnBirds:true,btnFenologia:true,btnAdolescencia:true,btnJuventud:true,btnTrueque:true,btnMinga:true,btnDerechos:true,btnCiberGuia:true,btnCiberClaves:true,btnCiberEstafas:true,btnCiberPriv:true,btnFirstAid:true,btnViolence:true,btnEvac:true,btnApoyo:true,btnConvert:true,btnHelp:true,btnDonate:true}
 };
-function getVisibleConfig(){
-  const c = (DATA.config && DATA.config.visible) || {};
-  const out={}; ALL_BTNS.forEach(k=> out[k]= c[k]!==false );
+try { if (typeof window !== 'undefined') window.PRESETS = PRESETS; } catch (e) {}
+// Construye mapa visible completo desde un preset: lo listado = true, resto = false.
+// 'todo'/'adulto' = todo visible. Desconocido = esencial (no intimidar en 1er uso).
+function visibleFromPreset(name) {
+  const out = {};
+  try {
+    const isAll = (name === 'todo' || name === 'adulto');
+    const preset = (typeof PRESETS !== 'undefined' && PRESETS[name]) || null;
+    ALL_BTNS.forEach(k => {
+      out[k] = isAll ? true : (preset ? !!preset[k] : !!PRESETS.esencial[k]);
+    });
+  } catch (e) {}
   return out;
+}
+function getVisibleConfig(){
+  try {
+    const c = DATA.config && DATA.config.visible;
+    // Instalación fresca (sin clave visible): Esencial por defecto, no todo.
+    if (!c || typeof c !== 'object' || Object.keys(c).length === 0) {
+      const out = {};
+      ALL_BTNS.forEach(k => { out[k] = !!PRESETS.esencial[k]; });
+      return out;
+    }
+    const out = {};
+    ALL_BTNS.forEach(k => { out[k] = c[k] !== false; });
+    return out;
+  } catch (e) {
+    const out = {};
+    try { ALL_BTNS.forEach(k => { out[k] = !!PRESETS.esencial[k]; }); } catch (e2) {}
+    return out;
+  }
 }
 function applyVisibility(){
   try{ if(typeof registerLateButtons==='function') registerLateButtons(); }catch(e){}
@@ -4834,9 +4875,15 @@ function setupConfigDialog(){
     try { syncHomeConfigUI(); setupHomeConfig(); } catch (e) {}
     try { syncModosVistaUI(); setupModosVista(); } catch (e) {}
     try { syncPerfilUI(); } catch (e) {}
+    try { setupVisibleTools(); updateVisibleCount(); } catch (e) {}
+    try { setupHomeTools(); updateHomeCount(); } catch (e) {}
+    // Cerradas por defecto: ni Hoy ni Herramientas se abren solas.
+    try { const hb=$('cfgHomeBlocks'); if(hb) hb.open=false; } catch (e) {}
+    try { const sb=$('cfgSeccionesDetails'); if(sb) sb.open=false; } catch (e) {}
     $('configDialog').showModal();
   };
   try { setupHomeConfig(); syncHomeConfigUI(); } catch (e) {}
+  try { setupHomeTools(); updateHomeCount(); } catch (e) {}
   try { setupModosVista(); syncModosVistaUI(); applyModosVista(); } catch (e) {}
   const ct=$('configCloseTop'), cb=$('configClose'), cts=$('configCloseTopSave');
   if(ct) ct.onclick=()=>$('configDialog').close();
@@ -4920,6 +4967,7 @@ function setupConfigDialog(){
       DATA.config.visible[cb.dataset.btn]=cb.checked;
       try { markPerfilPersonalizado(); } catch (e) {}
       scheduleSave(); applyVisibility();
+      try { updateVisibleCount(); } catch (e) {}
     };
   });
   document.querySelectorAll('.config-preset').forEach(b=>{
@@ -4967,23 +5015,270 @@ function setupConfigDialog(){
     };
   });
   const reset=$('configReset'); if(reset) reset.onclick=()=>{
-    DATA.config=DATA.config||{}; DATA.config.visible=Object.fromEntries(ALL_BTNS.map(k=>[k,true]));
-    DATA.config.perfil='todo';
+    DATA.config=DATA.config||{}; DATA.config.visible=visibleFromPreset('esencial');
+    DATA.config.perfil='esencial';
     DATA.config.home=DATA.config.home||{};
-    DATA.config.home.startView='auto';
-    DATA.config.home.blocks=Object.assign({}, HOME_BLOCKS_DEFAULT);
+    try {
+      const hp0 = (typeof homeBlocksForPreset==='function') ? homeBlocksForPreset('esencial') : null;
+      if (hp0) { DATA.config.home.startView=hp0.startView; DATA.config.home.blocks=hp0.blocks; }
+      else { DATA.config.home.startView='hoy'; DATA.config.home.blocks=Object.assign({}, HOME_BLOCKS_DEFAULT); }
+    } catch (e) { DATA.config.home.startView='hoy'; }
     DATA.config.modos={ lectura: false, noche: false, contraste: false, luzSuave: false };
     DATA.config.secciones={};
-    scheduleSave();
-    document.querySelectorAll('#configDialog input[data-btn]').forEach(cb=> cb.checked=true);
+    scheduleSave('Volvimos a lo esencial ✨');
+    const vis=getVisibleConfig();
+    document.querySelectorAll('#configDialog input[data-btn]').forEach(cb=> cb.checked=!!vis[cb.dataset.btn]);
     try{ syncHomeConfigUI(); }catch(e){}
     try{ syncPerfilUI(); }catch(e){}
+    try{ updateVisibleCount(); }catch(e){}
     applyVisibility();
     try{ if(typeof applySecciones==='function') applySecciones(); }catch(e){}
   };
+  // === ✨ HERRAMIENTAS VISIBLES (Ajustes → Secciones visibles) ===
+  try { setupVisibleTools(); } catch (e) {}
 }
 
 setTimeout(setupConfigDialog, 860);
+
+// === ✨ HERRAMIENTAS VISIBLES: contador + buscador + todo/nada por grupo ===
+function updateVisibleCount(){
+  try {
+    const vis = (typeof getVisibleConfig==='function') ? getVisibleConfig() : {};
+    const total = (typeof ALL_BTNS!=='undefined') ? ALL_BTNS.length : 0;
+    let n = 0;
+    try { Object.keys(vis).forEach(k=>{ if(vis[k]) n++; }); } catch (e) {}
+    const txt = n + ' de ' + total + ' activas';
+    const lbl = $('cfgVisibleCount');
+    if (lbl) lbl.textContent = txt;
+    const top = $('cfgVisibleCountTop');
+    if (top) top.textContent = txt;
+    document.querySelectorAll('#configDialog .config-group[data-vgroup]').forEach(gr=>{
+      try {
+        const boxes = gr.querySelectorAll('input[data-btn]');
+        let vn = 0;
+        boxes.forEach(cb=>{ if(cb.checked) vn++; });
+        const c = gr.querySelector('.vg-count');
+        if (c) c.textContent = vn + '/' + boxes.length;
+      } catch (e) {}
+    });
+  } catch (e) {}
+}
+try { if (typeof window!=='undefined') window.updateVisibleCount = updateVisibleCount; } catch (e) {}
+function setupVisibleTools(){
+  try {
+    const dlg = $('configDialog');
+    if (!dlg || dlg.dataset.vtoolsBound) { try { updateVisibleCount(); } catch (e) {} return; }
+    dlg.dataset.vtoolsBound = '1';
+    const paint = ()=>{ try { updateVisibleCount(); } catch (e) {} };
+    // Refrescar conteo al abrir / cambiar cualquier checkbox
+    dlg.addEventListener('toggle', paint, true);
+    dlg.addEventListener('click', ()=>{ setTimeout(paint, 50); });
+    dlg.addEventListener('change', (e)=>{
+      try {
+        if (e.target && e.target.matches && e.target.matches('input[data-btn]')) {
+          setTimeout(paint, 30);
+        }
+      } catch (e2) {}
+    });
+    // Buscador de herramientas
+    const search = $('cfgVisibleSearch');
+    if (search && !search.dataset.bound) {
+      search.dataset.bound = '1';
+      search.addEventListener('input', ()=>{
+        const q = (search.value||'').toLowerCase().trim();
+        document.querySelectorAll('#configDialog .config-group[data-vgroup]').forEach(gr=>{
+          let visN = 0;
+          gr.querySelectorAll('label.check-row').forEach(lb=>{
+            const txt = (lb.textContent||'').toLowerCase();
+            const show = !q || txt.includes(q);
+            lb.style.display = show ? '' : 'none';
+            if (show) visN++;
+          });
+          gr.style.display = visN ? '' : 'none';
+          const empty = gr.querySelector('.vg-empty');
+          if (empty) empty.hidden = visN !== 0;
+        });
+      });
+      search.addEventListener('keydown', (e)=>{
+        if (e.key==='Escape') { search.value=''; search.dispatchEvent(new Event('input')); }
+      });
+    }
+    // Acciones rápidas: esencial / todo / nada
+    const bindQuick = (id, fn)=>{
+      const b = $(id);
+      if (b && !b.dataset.bound) {
+        b.dataset.bound = '1';
+        b.onclick = (e)=>{ try { e.preventDefault(); e.stopPropagation(); } catch (e2) {} fn(); };
+      }
+    };
+    bindQuick('cfgShowEsencial', ()=>{
+      DATA.config=DATA.config||{}; DATA.config.visible=visibleFromPreset('esencial'); DATA.config.perfil='esencial';
+      try {
+        const hp = homeBlocksForPreset('esencial');
+        if (hp) { DATA.config.home=DATA.config.home||{}; DATA.config.home.startView=hp.startView; DATA.config.home.blocks=hp.blocks; try{ syncHomeConfigUI(); }catch(e){} }
+      } catch (e) {}
+      scheduleSave('Perfil Esencial aplicado ✨');
+      const vis=getVisibleConfig();
+      document.querySelectorAll('#configDialog input[data-btn]').forEach(cb=> cb.checked=!!vis[cb.dataset.btn]);
+      try{ syncPerfilUI(); }catch(e){} applyVisibility(); paint();
+      try{ if (viewMode==='hoy' && typeof renderTodayView==='function') renderTodayView(); }catch(e){}
+    });
+    bindQuick('cfgShowTodo', ()=>{
+      DATA.config=DATA.config||{}; DATA.config.visible=visibleFromPreset('todo'); DATA.config.perfil='todo';
+      scheduleSave('Todo visible 🌙');
+      const vis=getVisibleConfig();
+      document.querySelectorAll('#configDialog input[data-btn]').forEach(cb=> cb.checked=!!vis[cb.dataset.btn]);
+      try{ syncPerfilUI(); }catch(e){} applyVisibility(); paint();
+    });
+    bindQuick('cfgHideTodo', ()=>{
+      DATA.config=DATA.config||{}; DATA.config.visible={}; DATA.config.perfil='personalizado';
+      scheduleSave('Todo oculto — marca lo tuyo ✓');
+      document.querySelectorAll('#configDialog input[data-btn]').forEach(cb=> cb.checked=false);
+      try{ syncPerfilUI(); }catch(e){} applyVisibility(); paint();
+    });
+    // Todo / nada por grupo
+    document.querySelectorAll('#configDialog [data-vall]').forEach(b=>{
+      if (b.dataset.bound) return;
+      b.dataset.bound = '1';
+      b.onclick = (e)=>{
+        try { e.preventDefault(); e.stopPropagation(); } catch (e2) {}
+        const g = b.getAttribute('data-vall');
+        const want = b.getAttribute('data-vmode') === 'on';
+        document.querySelectorAll('#configDialog .config-group[data-vgroup="'+g+'"] input[data-btn]').forEach(cb=>{
+          cb.checked = want;
+          try {
+            DATA.config=DATA.config||{}; DATA.config.visible=DATA.config.visible||{};
+            DATA.config.visible[cb.dataset.btn]=cb.checked;
+          } catch (e3) {}
+        });
+        try{ markPerfilPersonalizado(); }catch(e){}
+        scheduleSave(want ? 'Grupo activado ✓' : 'Grupo ocultado ✓');
+        applyVisibility(); paint();
+      };
+    });
+    paint();
+  } catch (e) {}
+}
+try { if (typeof window!=='undefined') window.setupVisibleTools = setupVisibleTools; } catch (e) {}
+
+// === ◉ HOY: contador + buscador + todo/nada por grupo (igual que Herramientas) ===
+function updateHomeCount(){
+  try {
+    const home = (typeof getHomeConfig==='function') ? getHomeConfig() : null;
+    const blocks = (home && home.blocks) || {};
+    const keys = (typeof HOME_BLOCK_ORDER!=='undefined') ? HOME_BLOCK_ORDER : Object.keys(blocks);
+    let n = 0;
+    keys.forEach(k=>{ if (blocks[k] !== false) n++; });
+    const txt = n + ' de ' + keys.length + ' visibles';
+    const lbl = $('cfgHomeCount');
+    if (lbl) lbl.textContent = txt;
+    document.querySelectorAll('#configDialog .config-group[data-hgroup]').forEach(gr=>{
+      try {
+        const boxes = gr.querySelectorAll('input[data-home]');
+        let vn = 0;
+        boxes.forEach(cb=>{ if (cb.checked) vn++; });
+        const c = gr.querySelector('.vg-count');
+        if (c) c.textContent = vn + '/' + boxes.length;
+      } catch (e) {}
+    });
+  } catch (e) {}
+}
+try { if (typeof window!=='undefined') window.updateHomeCount = updateHomeCount; } catch (e) {}
+function applyHomeBlocksMap(map){
+  try {
+    DATA.config = DATA.config || {};
+    DATA.config.home = DATA.config.home || {};
+    DATA.config.home.blocks = DATA.config.home.blocks || {};
+    Object.keys(map).forEach(k=>{ DATA.config.home.blocks[k] = !!map[k]; });
+    const vis = getHomeConfig().blocks;
+    document.querySelectorAll('#configDialog input[data-home]').forEach(cb=>{ cb.checked = vis[cb.dataset.home] !== false; });
+    try { markPerfilPersonalizado(); } catch (e) {}
+    scheduleSave('Bloques de Hoy guardados ✓');
+    try { syncHomeConfigUI(); } catch (e) {}
+    try { if (typeof viewMode!=='undefined' && viewMode==='hoy' && typeof renderTodayView==='function') renderTodayView(); } catch (e) {}
+  } catch (e) {}
+}
+function setupHomeTools(){
+  try {
+    const dlg = $('configDialog');
+    if (!dlg) return;
+    if (!dlg.dataset.htoolsBound) {
+      dlg.dataset.htoolsBound = '1';
+      const search = $('cfgHomeSearch');
+      if (search) {
+        search.addEventListener('input', ()=>{
+          const q = (search.value||'').toLowerCase().trim();
+          document.querySelectorAll('#configDialog .config-group[data-hgroup]').forEach(gr=>{
+            let visN = 0;
+            gr.querySelectorAll('label.check-row').forEach(lb=>{
+              const txt = (lb.textContent||'').toLowerCase();
+              const show = !q || txt.includes(q);
+              lb.style.display = show ? '' : 'none';
+              if (show) visN++;
+            });
+            gr.style.display = visN ? '' : 'none';
+          });
+        });
+        search.addEventListener('keydown', (e)=>{
+          if (e.key==='Escape') { search.value=''; search.dispatchEvent(new Event('input')); }
+        });
+      }
+      const bindQuick = (id, fn)=>{
+        const b = $(id);
+        if (b && !b.dataset.bound) {
+          b.dataset.bound = '1';
+          b.onclick = (e)=>{ try { e.preventDefault(); e.stopPropagation(); } catch (e2) {} fn(); };
+        }
+      };
+      bindQuick('cfgHomeEsencial', ()=>{
+        try {
+          const hp = (typeof homeBlocksForPreset==='function') ? homeBlocksForPreset('esencial') : null;
+          if (hp && hp.blocks) applyHomeBlocksMap(hp.blocks);
+        } catch (e) {}
+      });
+      bindQuick('cfgHomeTodo', ()=>{
+        try {
+          const all = {};
+          const keys = (typeof HOME_BLOCK_ORDER!=='undefined') ? HOME_BLOCK_ORDER : Object.keys((getHomeConfig()||{}).blocks||{});
+          keys.forEach(k=>{ all[k] = true; });
+          applyHomeBlocksMap(all);
+        } catch (e) {}
+      });
+      bindQuick('cfgHomeNada', ()=>{
+        try {
+          const none = {};
+          const keys = (typeof HOME_BLOCK_ORDER!=='undefined') ? HOME_BLOCK_ORDER : Object.keys((getHomeConfig()||{}).blocks||{});
+          keys.forEach(k=>{ none[k] = false; });
+          applyHomeBlocksMap(none);
+        } catch (e) {}
+      });
+      document.querySelectorAll('#configDialog [data-hall]').forEach(b=>{
+        if (b.dataset.hbound) return;
+        b.dataset.hbound = '1';
+        b.onclick = (e)=>{
+          try { e.preventDefault(); e.stopPropagation(); } catch (e2) {}
+          const g = b.getAttribute('data-hall');
+          const want = b.getAttribute('data-hmode') === 'on';
+          const map = {};
+          document.querySelectorAll('#configDialog .config-group[data-hgroup="'+g+'"] input[data-home]').forEach(cb=>{
+            cb.checked = want;
+            map[cb.dataset.home] = want;
+          });
+          try {
+            DATA.config=DATA.config||{}; DATA.config.home=DATA.config.home||{}; DATA.config.home.blocks=DATA.config.home.blocks||{};
+            Object.keys(map).forEach(k=>{ DATA.config.home.blocks[k]=map[k]; });
+          } catch (e3) {}
+          try{ markPerfilPersonalizado(); }catch(e){}
+          scheduleSave(want ? 'Grupo activado ✓' : 'Grupo ocultado ✓');
+          try { syncHomeConfigUI(); } catch (e) {}
+          try { if (typeof viewMode!=='undefined' && viewMode==='hoy' && typeof renderTodayView==='function') renderTodayView(); } catch (e) {}
+        };
+      });
+    }
+    try { updateHomeCount(); } catch (e) {}
+  } catch (e) {}
+}
+try { if (typeof window!=='undefined') window.setupHomeTools = setupHomeTools; } catch (e) {}
 
 // === BÚSQUEDA DE ACCIONES (Command Palette light) ===
 function setupActionSearch(){
@@ -10366,12 +10661,18 @@ if ($('btnTimer')) {
     DATA.notas = { u1: { cycles: DATA.cycles || {} } };
     delete DATA.cycles;
     // Primera configuración (instalación fresca, vale para web/APK/.exe):
-    // ◉ Hoy con las 20 casillas pedidas y el resto desmarcado.
+    // Perfil Esencial: pocas herramientas visibles para no intimidar.
+    // ◉ Hoy con bloques esenciales + secciones visibles esenciales.
     try{
       const hp0 = (typeof homeBlocksForPreset === 'function') ? homeBlocksForPreset('esencial') : null;
+      DATA.config = DATA.config || {};
+      DATA.config.perfil = 'esencial';
+      if (typeof visibleFromPreset === 'function') {
+        DATA.config.visible = visibleFromPreset('esencial');
+      } else if (!DATA.config.visible) {
+        try { DATA.config.visible = Object.fromEntries(ALL_BTNS.map(k => [k, !!PRESETS.esencial[k]])); } catch (e2) {}
+      }
       if(hp0){
-        DATA.config = DATA.config || {};
-        DATA.config.perfil = 'esencial';
         DATA.config.home = DATA.config.home || {};
         DATA.config.home.startView = hp0.startView;
         DATA.config.home.blocks = hp0.blocks;

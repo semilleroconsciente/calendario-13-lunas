@@ -30,6 +30,12 @@ function todayStamp() {
   var d = new Date();
   return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
 }
+/* Nombre sugerido con fecha y HORA local: YYYY-MM-DD-HHmm (seguro para archivos). */
+function dateTimeStamp() {
+  var d = new Date();
+  function p(n) { return String(n).padStart(2, '0'); }
+  return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()) + '-' + p(d.getHours()) + p(d.getMinutes());
+}
 function curUser() {
   try {
     var u = (typeof userData === 'function') ? userData() : null;
@@ -238,7 +244,7 @@ function fileNameFor(g) {
     .replace(/[óòö]/g, 'o').replace(/[úùü]/g, 'u').replace(/ñ/g, 'n')
     .replace(/[^a-z0-9-_]+/g, '-').replace(/-+/g, '-').slice(0, 24) || 'usuario';
   var safeG = String(g.id).replace(/^key:/, '').replace(/[^a-zA-Z0-9-_]+/g, '-').slice(0, 32) || 'bitacora';
-  return 'bitacora-' + safeG + '-' + safeU + '-' + todayStamp() + '.json';
+  return 'bitacora-' + safeG + '-' + safeU + '-' + dateTimeStamp() + '.json';
 }
 
 async function downloadJSON(obj, fileName) {

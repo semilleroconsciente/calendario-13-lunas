@@ -39,21 +39,21 @@
         </div>
         <div class="config-group">
           <h4>🏠 Pantalla de inicio</h4>
-          <p class="muted su-245797">Un <b>perfil manda</b>: define a la vez la vista inicial, los bloques de ◉ Hoy <b>y</b> las secciones visibles. Elige uno y luego afina a mano si quieres (quedará como <i>Personalizado</i>).</p>
-          <p class="muted su-9a5149">👥 Perfil actual: <b id="cfgPerfilActual">—</b></p>
-          <div class="preset-grid">
-            <button type="button" class="btn config-preset" data-preset="todo">Todo</button>
-            <button type="button" class="btn config-preset" data-preset="esencial">Esencial</button>
-            <button type="button" class="btn config-preset" data-preset="adolescente">Adolescente</button>
-            <button type="button" class="btn config-preset" data-preset="adulto">Adulto</button>
-            <button type="button" class="btn config-preset" data-preset="mayor">Mayor</button>
-            <button type="button" class="btn config-preset" data-preset="estudiante">Estudiante</button>
-            <button type="button" class="btn config-preset" data-preset="agricultor">Agricultor</button>
-            <button type="button" class="btn config-preset" data-preset="pescador">Pescador</button>
-            <button type="button" class="btn config-preset" data-preset="salud">Salud</button>
-            <button type="button" class="btn config-preset" data-preset="deportista">Deportista</button>
-            <button type="button" class="btn config-preset" data-preset="docente">Docente</button>
-            <button type="button" class="btn config-preset" data-preset="personalizado">Personalizado</button>
+          <p class="muted su-245797">Un <b>perfil manda</b>: define a la vez la vista inicial, los bloques de ◉ Hoy <b>y</b> las secciones visibles. Elige uno y luego afina a mano si quieres (quedará como <i>Personalizado</i>). <b>Recién llegas:</b> quédate en <b>✨ Esencial</b>, verás poquito y claro.</p>
+          <p class="muted su-9a5149">👥 Perfil actual: <b id="cfgPerfilActual">—</b> · <span id="cfgVisibleCountTop" class="muted">—</span></p>
+          <div class="preset-grid preset-grid-cards">
+            <button type="button" class="btn config-preset preset-card preset-esencial" data-preset="esencial"><span class="pc-ico">✨</span><span class="pc-txt"><b>Esencial</b><small>Lo justo · 28 herramientas</small></span></button>
+            <button type="button" class="btn config-preset preset-card" data-preset="todo"><span class="pc-ico">🌙</span><span class="pc-txt"><b>Todo</b><small>Calendario completo</small></span></button>
+            <button type="button" class="btn config-preset preset-card" data-preset="adolescente"><span class="pc-ico">🧒</span><span class="pc-txt"><b>Adolescente</b><small>Estudio + ánimo</small></span></button>
+            <button type="button" class="btn config-preset preset-card" data-preset="adulto"><span class="pc-ico">🧑</span><span class="pc-txt"><b>Adulto</b><small>Todo, vista auto</small></span></button>
+            <button type="button" class="btn config-preset preset-card" data-preset="mayor"><span class="pc-ico">👵</span><span class="pc-txt"><b>Mayor</b><small>Calma + salud</small></span></button>
+            <button type="button" class="btn config-preset preset-card" data-preset="estudiante"><span class="pc-ico">📚</span><span class="pc-txt"><b>Estudiante</b><small>Estudio + foco</small></span></button>
+            <button type="button" class="btn config-preset preset-card" data-preset="agricultor"><span class="pc-ico">🌱</span><span class="pc-txt"><b>Agricultor</b><small>Luna + huerta</small></span></button>
+            <button type="button" class="btn config-preset preset-card" data-preset="pescador"><span class="pc-ico">🎣</span><span class="pc-txt"><b>Pescador</b><small>Mareas + mar</small></span></button>
+            <button type="button" class="btn config-preset preset-card" data-preset="salud"><span class="pc-ico">💚</span><span class="pc-txt"><b>Salud</b><small>Cuerpo + energía</small></span></button>
+            <button type="button" class="btn config-preset preset-card" data-preset="deportista"><span class="pc-ico">💪</span><span class="pc-txt"><b>Deportista</b><small>Entreno + ritmo</small></span></button>
+            <button type="button" class="btn config-preset preset-card" data-preset="docente"><span class="pc-ico">🍎</span><span class="pc-txt"><b>Docente</b><small>Aula + familia</small></span></button>
+            <button type="button" class="btn config-preset preset-card" data-preset="personalizado"><span class="pc-ico">⚙️</span><span class="pc-txt"><b>Personalizado</b><small>Lo mío, a mano</small></span></button>
           </div>
           <label class="muted su-9a5149">Vista inicial al abrir
             <select id="cfgHomeView" aria-label="Vista inicial al abrir" class="su-96ad60">
@@ -66,31 +66,48 @@
               <option value="completa">📋 Vista completa</option>
             </select>
           </label>
-          <details class="config-home-blocks" id="cfgHomeBlocks">
-          <summary class="muted su-5c43de">Información visible en ◉ Hoy (36 bloques) — la define el perfil</summary>
-          <p class="muted su-245797">Marca lo que quieras ver en ◉ Hoy. Cambiar algo pasa a <i>Personalizado</i>.</p>
-          <p class="muted su-0d5be0">📝 Día a día</p>
+          <details class="config-group config-advanced config-home-blocks" id="cfgHomeBlocks">
+          <summary class="muted">◉ Información visible en Hoy <span id="cfgHomeCount" class="vg-total">—</span></summary>
+          <p class="muted su-245797">Elige qué tarjetas muestra ◉ Hoy. <b>✨ Esencial</b> es lo recomendado; <b>🌙 Todo</b> muestra los 36 bloques. Cambiar algo pasa a <i>Personalizado</i>.</p>
+          <div class="vg-toolbar">
+            <label class="vg-search">🔍 <input type="search" id="cfgHomeSearch" placeholder="Filtrar bloques… ej: luna, clima, compras" autocomplete="off" aria-label="Filtrar bloques de Hoy"></label>
+            <div class="vg-quick">
+              <button type="button" id="cfgHomeEsencial" class="btn btn-accent">✨ Esencial</button>
+              <button type="button" id="cfgHomeTodo" class="btn">🌙 Todo</button>
+              <button type="button" id="cfgHomeNada" class="btn btn-icon" title="Ocultar todo">🚫</button>
+            </div>
+          </div>
+          <div class="config-grid config-grid-tools">
+          <div class="config-group vg-card" data-hgroup="dia-hoy">
+            <div class="vg-head"><h4>📝 Día a día</h4><span class="vg-count">—</span></div>
+            <div class="vg-mini"><button type="button" class="btn btn-icon" data-hall="dia-hoy" data-hmode="on" title="Activar todo Día a día">Todo</button><button type="button" class="btn btn-icon" data-hall="dia-hoy" data-hmode="off" title="Ocultar todo Día a día">Nada</button></div>
           <label class="check-row"><input type="checkbox" data-home="frase" checked> 💬 Frase del día</label>
           <label class="check-row"><input type="checkbox" data-home="sol" checked> ☀️ Sol de hoy</label>
           <label class="check-row"><input type="checkbox" data-home="luna" checked> 🌙 Luna de hoy</label>
           <label class="check-row"><input type="checkbox" data-home="notas" checked> 📝 Notas del día</label>
           <label class="check-row"><input type="checkbox" data-home="agenda" checked> 🕐 Compromisos</label>
           <label class="check-row"><input type="checkbox" data-home="habitos" checked> ✅ Hábitos de hoy</label>
-          <label class="check-row"><input type="checkbox" data-home="rutinas" checked> 🌅 Rutinas por horario (mañana · tarde · noche)</label>
+          <label class="check-row"><input type="checkbox" data-home="rutinas" checked> 🌅 Rutinas por horario</label>
           <label class="check-row"><input type="checkbox" data-home="animo" checked> 😊 Estado de ánimo</label>
           <label class="check-row"><input type="checkbox" data-home="disciplina" checked> 🎯 Disciplina / intención</label>
           <label class="check-row"><input type="checkbox" data-home="respiracion" checked> 🌬️ Respiración</label>
           <label class="check-row"><input type="checkbox" data-home="gratitud" checked> 📓 Gratitud diaria</label>
           <label class="check-row"><input type="checkbox" data-home="suenos" checked> 💭 Sueños</label>
           <label class="check-row"><input type="checkbox" data-home="horario" checked> 📚 Horario de hoy</label>
-          <p class="muted su-0d5be0">💚 Cuerpo y energía interior</p>
+          </div>
+          <div class="config-group vg-card" data-hgroup="cuerpo-hoy">
+            <div class="vg-head"><h4>💚 Cuerpo y energía</h4><span class="vg-count">—</span></div>
+            <div class="vg-mini"><button type="button" class="btn btn-icon" data-hall="cuerpo-hoy" data-hmode="on" title="Activar todo Cuerpo">Todo</button><button type="button" class="btn btn-icon" data-hall="cuerpo-hoy" data-hmode="off" title="Ocultar todo Cuerpo">Nada</button></div>
           <label class="check-row"><input type="checkbox" data-home="comidas" checked> 🥗 Comidas de hoy</label>
           <label class="check-row"><input type="checkbox" data-home="entreno" checked> 💪 Entrenamiento de hoy</label>
           <label class="check-row"><input type="checkbox" data-home="medicina" checked> 💊 Medicina de hoy</label>
           <label class="check-row"><input type="checkbox" data-home="ciclo" checked> 🌸 Ciclo</label>
           <label class="check-row"><input type="checkbox" data-home="espiritual" checked> 🕉️ Práctica espiritual</label>
           <label class="check-row"><input type="checkbox" data-home="ritmo" checked> 🌞 Ritmo + hora dorada</label>
-          <p class="muted su-0d5be0">🌊 Territorio y cielo</p>
+          </div>
+          <div class="config-group vg-card" data-hgroup="territorio-hoy">
+            <div class="vg-head"><h4>🌊 Territorio y cielo</h4><span class="vg-count">—</span></div>
+            <div class="vg-mini"><button type="button" class="btn btn-icon" data-hall="territorio-hoy" data-hmode="on" title="Activar todo Territorio">Todo</button><button type="button" class="btn btn-icon" data-hall="territorio-hoy" data-hmode="off" title="Ocultar todo Territorio">Nada</button></div>
           <label class="check-row"><input type="checkbox" data-home="clima" checked> 🌤️ Clima</label>
           <label class="check-row"><input type="checkbox" data-home="mareas" checked> 🌊 Mareas</label>
           <label class="check-row"><input type="checkbox" data-home="siembra" checked> 🌱 Consejo siembra lunar</label>
@@ -99,7 +116,10 @@
           <label class="check-row"><input type="checkbox" data-home="aves" checked> 🦅 Aves hoy</label>
           <label class="check-row"><input type="checkbox" data-home="huerta" checked> 🥬 Huerta hoy (+ compost)</label>
           <label class="check-row"><input type="checkbox" data-home="ekadashi" checked> 📿 Ekadashi / ayuno</label>
-          <p class="muted su-0d5be0">🏡 Hogar y comunidad</p>
+          </div>
+          <div class="config-group vg-card" data-hgroup="hogar-hoy">
+            <div class="vg-head"><h4>🏡 Hogar y comunidad</h4><span class="vg-count">—</span></div>
+            <div class="vg-mini"><button type="button" class="btn btn-icon" data-hall="hogar-hoy" data-hmode="on" title="Activar todo Hogar">Todo</button><button type="button" class="btn btn-icon" data-hall="hogar-hoy" data-hmode="off" title="Ocultar todo Hogar">Nada</button></div>
           <label class="check-row"><input type="checkbox" data-home="tareas" checked> 🏠 Tareas hogar de hoy</label>
           <label class="check-row"><input type="checkbox" data-home="compras" checked> 🛒 Compras pendientes</label>
           <label class="check-row"><input type="checkbox" data-home="finanzas" checked> 💰 Finanzas del día</label>
@@ -109,16 +129,27 @@
           <label class="check-row"><input type="checkbox" data-home="emergencia" checked> 🚨 Emergencia Penco</label>
           <label class="check-row"><input type="checkbox" data-home="comunidad" checked> 🤝 Comunidad hoy (minga/trueque)</label>
           <label class="check-row"><input type="checkbox" data-home="energia" checked> 🔧 Energía y hogar</label>
+          </div>
+          </div>
           <p class="muted su-245797">↕ Orden de bloques en ◉ Hoy: sube o baja cada bloque. También puedes moverlos directo en la vista Hoy con el botón ↕ de la esquina del encabezado de Hoy. El orden queda guardado por usuario.</p>
           <div id="cfgHomeOrderList" class="home-order-list"></div>
           <button type="button" id="cfgHomeReset" class="btn su-3cfbdf">↺ Mostrar toda la información</button>
           </details>
           <details class="config-group config-advanced" id="cfgSeccionesDetails">
-        <summary class="muted">Secciones visibles (las define el perfil)</summary>
-          <p class="muted su-245797">Las marca el perfil elegido arriba. Afinar a mano pasa a Personalizado.</p>
-        <div class="config-grid">
-          <div class="config-group">
-            <h4>📅 Mi Día</h4>
+        <summary class="muted">🛠️ Herramientas visibles <span id="cfgVisibleCount" class="vg-total">—</span></summary>
+          <p class="muted su-245797">Marca lo que quieres ver. <b>✨ Esencial</b> es lo recomendado para partir; <b>🌙 Todo</b> muestra las 140+. Afinar a mano pasa a <i>Personalizado</i>.</p>
+        <div class="vg-toolbar">
+          <label class="vg-search">🔍 <input type="search" id="cfgVisibleSearch" placeholder="Filtrar herramientas… ej: huerta, luna, guitarra" autocomplete="off" aria-label="Filtrar herramientas visibles"></label>
+          <div class="vg-quick">
+            <button type="button" id="cfgShowEsencial" class="btn btn-accent">✨ Esencial</button>
+            <button type="button" id="cfgShowTodo" class="btn">🌙 Todo</button>
+            <button type="button" id="cfgHideTodo" class="btn btn-icon" title="Ocultar todo">🚫</button>
+          </div>
+        </div>
+        <div class="config-grid config-grid-tools">
+          <div class="config-group vg-card" data-vgroup="dia">
+            <div class="vg-head"><h4>📅 Mi Día</h4><span class="vg-count">—</span></div>
+            <div class="vg-mini"><button type="button" class="btn btn-icon" data-vall="dia" data-vmode="on" title="Activar todo Mi Día">Todo</button><button type="button" class="btn btn-icon" data-vall="dia" data-vmode="off" title="Ocultar todo Mi Día">Nada</button></div>
             <label class="check-row"><input type="checkbox" data-btn="btnHabits"> ✅ Hábitos</label>
             <label class="check-row"><input type="checkbox" data-btn="btnRutinas"> 🌅 Rutinas</label>
             <label class="check-row"><input type="checkbox" data-btn="btnDiscipline"> 🎯 Disciplina</label>
@@ -129,8 +160,9 @@
             <label class="check-row"><input type="checkbox" data-btn="btnDreams"> 💭 Sueños</label>
             <label class="check-row"><input type="checkbox" data-btn="btnBreath"> 🌬️ Respiración</label>
           </div>
-          <div class="config-group">
-            <h4>🌊 Territorio Penco</h4>
+          <div class="config-group vg-card" data-vgroup="territorio">
+            <div class="vg-head"><h4>🌊 Territorio Penco</h4><span class="vg-count">—</span></div>
+            <div class="vg-mini"><button type="button" class="btn btn-icon" data-vall="territorio" data-vmode="on" title="Activar todo Territorio">Todo</button><button type="button" class="btn btn-icon" data-vall="territorio" data-vmode="off" title="Ocultar todo Territorio">Nada</button></div>
             <p class="muted su-0d5be0">⚓ Costa y mar</p>
             <label class="check-row"><input type="checkbox" data-btn="btnTides"> 🌊 Mareas</label>
             <label class="check-row"><input type="checkbox" data-btn="btnFishing"> 🎣 Pesca</label>
@@ -169,8 +201,9 @@
             <label class="check-row"><input type="checkbox" data-btn="btnBomberos"> 🚒 Bomberos</label>
             <label class="check-row"><input type="checkbox" data-btn="btnActores"> 🛡️ Guardianxs del territorio</label>
           </div>
-          <div class="config-group">
-            <h4>💚 Cuerpo & Salud</h4>
+          <div class="config-group vg-card" data-vgroup="cuerpo">
+            <div class="vg-head"><h4>💚 Cuerpo & Salud</h4><span class="vg-count">—</span></div>
+            <div class="vg-mini"><button type="button" class="btn btn-icon" data-vall="cuerpo" data-vmode="on" title="Activar todo Cuerpo">Todo</button><button type="button" class="btn btn-icon" data-vall="cuerpo" data-vmode="off" title="Ocultar todo Cuerpo">Nada</button></div>
             <p class="muted su-0d5be0">🌸 Ciclos</p>
             <label class="check-row"><input type="checkbox" data-btn="btnMenstrual"> 🌸 Ciclo</label>
             <label class="check-row"><input type="checkbox" data-btn="btnFerti"> 🌱 Fertilidad Natural</label>
@@ -188,8 +221,9 @@
             <label class="check-row"><input type="checkbox" data-btn="btnPelo"> 💇 Cuidado del pelo</label>
             <label class="check-row"><input type="checkbox" data-btn="btnRituales"> 🌙 Rituales corporales</label>
           </div>
-          <div class="config-group">
-            <h4>🧠 Aprender, Crear y Jugar</h4>
+          <div class="config-group vg-card" data-vgroup="aprender">
+            <div class="vg-head"><h4>🧠 Aprender, Crear y Jugar</h4><span class="vg-count">—</span></div>
+            <div class="vg-mini"><button type="button" class="btn btn-icon" data-vall="aprender" data-vmode="on" title="Activar todo Aprender">Todo</button><button type="button" class="btn btn-icon" data-vall="aprender" data-vmode="off" title="Ocultar todo Aprender">Nada</button></div>
             <p class="muted su-0d5be0">📚 Estudio y herramientas mentales</p>
             <label class="check-row"><input type="checkbox" data-btn="btnStudy"> 🧠 Estudio</label>
             <label class="check-row"><input type="checkbox" data-btn="btnMemory"> 🧩 Entrena la memoria</label>
@@ -219,8 +253,9 @@
             <label class="check-row"><input type="checkbox" data-btn="btnTales"> 📖 Cuentos</label>
             <label class="check-row"><input type="checkbox" data-btn="btnCrianza"> 👶 Crianza</label>
           </div>
-          <div class="config-group">
-            <h4>🪞 Interior, Linaje y Memoria</h4>
+          <div class="config-group vg-card" data-vgroup="linaje">
+            <div class="vg-head"><h4>🪞 Interior, Linaje y Memoria</h4><span class="vg-count">—</span></div>
+            <div class="vg-mini"><button type="button" class="btn btn-icon" data-vall="linaje" data-vmode="on" title="Activar todo Interior">Todo</button><button type="button" class="btn btn-icon" data-vall="linaje" data-vmode="off" title="Ocultar todo Interior">Nada</button></div>
             <p class="muted su-0d5be0">🪞 Autoconocimiento</p>
             <label class="check-row"><input type="checkbox" data-btn="btnPsico"> 🪞 Autoconocimiento</label>
             <label class="check-row"><input type="checkbox" data-btn="btnPsicologia"> 🧠 Psicología</label>
@@ -252,8 +287,9 @@
             <label class="check-row"><input type="checkbox" data-btn="btnDueloFull"> 🕊️ Duelo</label>
             <label class="check-row"><input type="checkbox" data-btn="btnAdicciones"> 🌿 Adicciones</label>
           </div>
-          <div class="config-group">
-            <h4>🏡 Hogar y Vida Práctica</h4>
+          <div class="config-group vg-card" data-vgroup="hogar">
+            <div class="vg-head"><h4>🏡 Hogar y Vida Práctica</h4><span class="vg-count">—</span></div>
+            <div class="vg-mini"><button type="button" class="btn btn-icon" data-vall="hogar" data-vmode="on" title="Activar todo Hogar">Todo</button><button type="button" class="btn btn-icon" data-vall="hogar" data-vmode="off" title="Ocultar todo Hogar">Nada</button></div>
             <p class="muted su-0d5be0">🍽️ Casa y organización</p>
             <label class="check-row"><input type="checkbox" data-btn="btnMeal"> 🥗 Comidas</label>
             <label class="check-row"><input type="checkbox" data-btn="btnShopping"> 🛒 Compras</label>
@@ -278,8 +314,9 @@
             <label class="check-row"><input type="checkbox" data-btn="btnVozAbuelos"> 🗣️ Voces de los Abuelos</label>
             <label class="check-row"><input type="checkbox" data-btn="btnConstelaciones"> 🌳 Constelaciones Familiares</label>
           </div>
-          <div class="config-group">
-            <h4>🤝 Comunidad</h4>
+          <div class="config-group vg-card" data-vgroup="comunidad">
+            <div class="vg-head"><h4>🤝 Comunidad</h4><span class="vg-count">—</span></div>
+            <div class="vg-mini"><button type="button" class="btn btn-icon" data-vall="comunidad" data-vmode="on" title="Activar todo Comunidad">Todo</button><button type="button" class="btn btn-icon" data-vall="comunidad" data-vmode="off" title="Ocultar todo Comunidad">Nada</button></div>
             <p class="muted su-0d5be0">🤝 Red y colaboración</p>
             <label class="check-row"><input type="checkbox" data-btn="btnTrueque"> 🔄 Trueque y Feria</label>
             <label class="check-row"><input type="checkbox" data-btn="btnMinga"> 🤲 Minga · Red de Apoyo</label>

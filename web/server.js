@@ -28,10 +28,11 @@ http.createServer((req, res) => {
   // asi que script-src es 'self' estricto. style-src conserva
   // 'unsafe-inline' por los ~1500 style="..." del HTML (fase 2).
   // connect-src limita la red a open-meteo + respaldo TTS online (translate.google.com). Ver _headers (mismo valor).
-  const CSP = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob: https://translate.google.com; font-src 'self'; connect-src 'self' https://api.open-meteo.com https://air-quality-api.open-meteo.com https://translate.google.com; object-src 'none'; base-uri 'self'; form-action 'self'";
+  const CSP = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob: https://translate.google.com; font-src 'self'; connect-src 'self' https://api.open-meteo.com https://air-quality-api.open-meteo.com https://translate.google.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'";
   const sec = {
     'X-Content-Type-Options': 'nosniff',
     'X-Frame-Options': 'SAMEORIGIN',
+    'Strict-Transport-Security': 'max-age=31536000; includeSubDomains',
     'Referrer-Policy': 'strict-origin-when-cross-origin',
     'Content-Security-Policy': CSP,
     // microfono/camara en (self): los usan Voz de los Abuelos (audio) y QR-sync (video).
@@ -40,7 +41,10 @@ http.createServer((req, res) => {
   if (req.method !== 'GET' && req.method !== 'HEAD') {
     res.writeHead(405, sec); return res.end('Method Not Allowed');
   }
-  let p = decodeURIComponent(req.url.split('?')[0]);
+  let raw = (req.url || '/').split('?')[0];
+  let p;
+  try { p = decodeURIComponent(raw); }
+  catch { res.writeHead(400, sec); return res.end('Bad Request'); }
   if (p === '/') p = '/index.html';
   // bloquear traversal y query raro
   if (!isSafe(p) || p.includes('\0')) { res.writeHead(403, sec); return res.end('Forbidden'); }
@@ -78,4 +82,4 @@ http.createServer((req, res) => {
       fs.createReadStream(file).pipe(res);
     }
   });
-}).listen(8137, '0.0.0.0', () => console.log('Calendario web: http://localhost:8137  (seguro, brotli+gzip, anti-traversal)'));
+}).listen(8137, '127.0.0.1', () => console.log('Calendario web: http://localhost:8137  (solo local, brotli+gzip, anti-traversal)'));

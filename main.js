@@ -49,10 +49,10 @@ function createWindow() {
   // Muestra en cuanto hay algo que pintar (no espera a los 50+ scripts diferidos).
   win.once('ready-to-show', () => { try { win.show(); } catch {} });
   win.setMenuBarVisibility(false);
-  // Abrir links externos en navegador por defecto
-  win.webContents.setWindowOpenHandler(({ url }) => { shell.openExternal(url); return { action: 'deny' }; });
+  // Abrir links externos en navegador por defecto (solo http/https)
+  win.webContents.setWindowOpenHandler(({ url }) => { if (!isHttpUrl(url)) return { action: 'deny' }; try { shell.openExternal(url); } catch {} return { action: 'deny' }; });
   win.webContents.on('will-navigate', (e, url) => {
-    if (url !== win.webContents.getURL()) { e.preventDefault(); shell.openExternal(url); }
+    if (url !== win.webContents.getURL()) { e.preventDefault(); if (isHttpUrl(url)) { try { shell.openExternal(url); } catch {} } }
   });
   win.loadFile('index.html');
 }
@@ -211,8 +211,15 @@ ipcMain.handle('export:pdf', async (_e, html) => {
   return filePath;
 });
 
+function defaultBackupName() {
+  try {
+    const d = new Date();
+    const p = (n) => String(n).padStart(2, '0');
+    return 'respaldo-calendario-13-lunas-' + d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()) + '-' + p(d.getHours()) + p(d.getMinutes()) + '.json';
+  } catch { return 'respaldo-calendario-13-lunas.json'; }
+}
 ipcMain.handle('backup:save', async (_e, json, fileName) => {
-  const safe = String(fileName || 'respaldo-calendario-13-lunas.json').replace(/[\\/:*?"<>|]/g, '-').slice(0, 120) || 'respaldo-calendario-13-lunas.json';
+  const safe = String(fileName || defaultBackupName()).replace(/[\\/:*?"<>|]/g, '-').slice(0, 120) || defaultBackupName();
   const { canceled, filePath } = await dialog.showSaveDialog(win, {
     title: 'Guardar respaldo de notas',
     defaultPath: path.join(app.getPath('documents'), safe),
@@ -257,14 +264,20 @@ ipcMain.handle('ics:open', async () => {
 });
 
 ipcMain.handle('image:save', async (_e, dataUrl, suggestedName) => {
-  const safeName = suggestedName || 'calendario-13-lunas.png';
+  const safeName = String(suggestedName || 'calendario-13-lunas.png').replace(/[\\/:*?"<>|]/g, '-').slice(0, 120) || 'calendario-13-lunas.png';
   const { canceled, filePath } = await dialog.showSaveDialog(win, {
     title: 'Guardar imagen del día',
     defaultPath: path.join(app.getPath('pictures'), safeName),
     filters: [{ name: 'PNG', extensions: ['png'] }]
   });
   if (canceled || !filePath) return null;
-  fs.writeFileSync(filePath, Buffer.from(dataUrl.split(',')[1], 'base64'));
+  try {
+    const s = String(dataUrl || '');
+    if (!s.startsWith('data:image/png;base64,')) return null;
+    const b64 = s.split(',')[1];
+    if (!b64 || !/^[A-Za-z0-9+/=]+$/.test(b64.slice(0, 100))) return null;
+    fs.writeFileSync(filePath, Buffer.from(b64, 'base64'));
+  } catch { return null; }
   return filePath;
 });
 
