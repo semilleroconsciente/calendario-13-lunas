@@ -101,6 +101,7 @@
     'min/pingpong-modulo.min.js?v=1',
     'min/talleres-penco.min.js?v=1',
     'min/educacion-penco.min.js?v=1',
+    'min/biblioteca-penco.min.js?v=1',
     'min/iglesias-penco.min.js?v=1',
     'min/municipalidad-penco.min.js?v=1',
     'min/bomberos-penco.min.js?v=1',
@@ -123,8 +124,7 @@
     'min/onboarding-modulo.min.js?v=1',
     'min/legal-modulo.min.js?v=1',
     'min/auto-backup-modulo.min.js?v=1',
-    'min/orden-herramientas-modulo.min.js?v=1',
-    'min/regalo-modulo.min.js?v=1'
+    'min/orden-herramientas-modulo.min.js?v=1'
   ];
   var started = false;
   var failedMods = [];

@@ -11,7 +11,7 @@
  "src/astro.js": "633f087c62ceed84835648418a1aba9da5104aa0",
  "src/auto-backup-modulo.js": "f63b3dd0a8e80ea9a24d73c0346d732eb44f02e9",
  "src/aves-historia.js": "e91d4cfbc02299d29d05149e95a994a49817a448",
- "src/bitacoras-respaldo-modulo.js": "88184128cd01eac73b509f5985efce559e8feeb6",
+ "src/bitacoras-respaldo-modulo.js": "47d7c100cb33c0a022557ef11a9077e7cd60d519",
  "src/bomberos-penco.js": "9e04ac48677369eee06927a1a766a860afb61719",
  "src/bosque-historia.js": "ada1eb5974a0cafa2be0b2c9bae0fc941ef298ae",
  "src/bosque-semillero.js": "d846fe314d0dcc6149c7b72a6030b2d7c85d0c21",
@@ -79,7 +79,7 @@
  "src/sopa-letras-modulo.js": "7e2d7ccb424402d705432ff804f6364a178ea704",
  "src/splash.css": "08fe890171593fe4056a5ad4538e25fc0977b596",
  "src/storage-idb.js": "093631f55421f9dbcf61d3f7b51298471114b937",
- "src/styles.css": "f3a72eb275229c2fffb6ac5ec89468541e3ca543",
+ "src/styles.css": "b8118b4c92f845199eaa9dbe79b06c439cb653a8",
  "src/sudoku-modulo.js": "16284e256f05fa032eab5224fae9fd0523f64cb7",
  "src/talleres-penco.js": "3f0e01b28aaa95151fd4f8c575bfe55061374e56",
  "src/tao-modulo.js": "b3d2f925671cd1503611cb00809c41fbeffa79f9",
@@ -90,7 +90,7 @@
  "src/vigyan-bhairav-modulo.js": "545777382fe80140099645906f8231b2a70d16b4",
  "src/voz-abuelos.js": "34e1799cef7f3578cde7259abae166d52cfc55c8",
  "src/web-api.js": "13bd2ba6889f7d3e3530ea0cf05d5391473bfb03",
- "src/templates-bundled.js": "a56d5f8be597ac364ef3ee157360eaa9ac88d0b4",
+ "src/templates-bundled.js": "b0a28f9eac95f706235d9aacbe8a50a7b9aeff4a",
  "src/pwa-install.js": "91421eb6f7db0a8fa40a944860aa458dc5ca98b1",
  "src/core-audio.js": "481a11fac3039bf8c67e36380df51f02b447525c",
  "src/core-bootstrap.js": "6dbc724a0cea526831bc8e9543c151e7ba553c83",
@@ -99,7 +99,7 @@
  "src/core-storage.js": "b7756cab323fe6ed3da530cebea1b52a8ca314c1",
  "src/core-themes.js": "b3875b8bcacf327e944d0ee2a8d5f500dab407db",
  "src/core-clima.js": "49c30e677a8160bb66e3d6d388954ab50c6f3c44",
- "src/styles-csp.css": "e97573ebeb28a8798ed194a4cc27348526e17731",
+ "src/styles-csp.css": "aa694c86c61bf5af40c343201f9539e57c00e20e",
  "src/dialogo-tamano.js": "19fd8e8b056a6925d78812f9af6adeeff15c31d3",
  "src/orden-herramientas-modulo.js": "e7a04565757f8270b81fb7546c57f82b98e1772e",
  "src/ics-modulo.js": "d0845d94d9a867ebb2c4ee8733af0f4cfd79e127",
@@ -142,5 +142,5 @@
  "src/hombre-medicina-modulo.js": "0d4cb66342c02366f451b3e322223e50128c5b29",
  "src/mujer-medicina-modulo.js": "0102722973d2b188bc354bce5ebd41b1614d1fa4",
  "src/medicina-tradicional-china-modulo.js": "e0893ac24ddc92b597c2a35fb219f2fda1447c79",
- "src/regalo-modulo.js": "16270afcbf0931e7b0093bee30b2caac01b03b6e"
+ "src/biblioteca-penco.js": "2e2b7bc52844d25dd658cb525b04d3bb831bf023"
 }

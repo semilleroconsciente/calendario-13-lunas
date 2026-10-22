@@ -8,9 +8,12 @@
     "build:win": "electron-builder --win portable",
     "build:win-nsis": "electron-builder --win nsis",
     "build": "electron-builder --win portable",
-    "movil:sync": "cap sync android",
+    "movil:sync": "cap sync",
     "movil:apk": "cap sync android && cd android && gradlew assembleDebug",
     "movil:build": "npm run sync:web -- --fix && cap sync android && cd android && gradlew assembleDebug",
+    "movil:ios": "cap sync ios",
+    "movil:ios:build": "npm run sync:web -- --fix && cap sync ios",
+    "movil:open:ios": "cap open ios",
     "check:manifest": "node scripts/sync-manifest.cjs",
     "sync:manifest": "node scripts/sync-manifest.cjs --fix",
     "build:sw": "node scripts/build-sw.cjs --fix",
@@ -68,6 +71,7 @@
       "icon-192.png",
       "icon-512.png",
       "icon-512-maskable.png",
+      "apple-touch-icon.png",
       "templates/*.html",
       "legal/*.html",
       "screenshots/*.png",
@@ -103,9 +107,13 @@
     "@capacitor/android": "^6.2.2",
     "@capacitor/cli": "^6.2.2",
     "@capacitor/core": "^6.2.2",
+    "@capacitor/ios": "^6.2.2",
     "electron-updater": "^6.8.9"
   },
   "overrides": {
-    "tar": "^7.5.2"
+    "tar": "^7.5.2",
+    "@capacitor/cli": {
+      "tar": "^6.2.1"
+    }
   }
 }

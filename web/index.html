@@ -28,7 +28,7 @@
   <meta name="twitter:description" content="Calendario lunar 13x28, siembra, mareas y territorio Penco. Offline y libre.">
   <meta name="twitter:image" content="https://calendario-13-lunas.pages.dev/screenshots/desktop-1280x720.png">
   <title>Calendario de las 13 Lunas · Mari Küla Küyen — Penco</title>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Calendario de las 13 Lunas","alternateName":"Mari Küla Küyen","description":"Calendario de 13 lunas x 28 días con siembra lunar, mareas SHOA y memoria territorial de Penco, Bío-Bío. PWA offline.","url":"https://calendario-13-lunas.pages.dev/","inLanguage":"es-CL","operatingSystem":"Web, Android, Windows","license":"https://www.gnu.org/licenses/gpl-3.0.html","author":{"@type":"Organization","name":"Semillero Consciente","email":"semilleroconsciente@gmail.com"},"offers":{"@type":"Offer","price":"0","priceCurrency":"CLP"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Calendario de las 13 Lunas","alternateName":"Mari Küla Küyen","description":"Calendario de 13 lunas x 28 días con siembra lunar, mareas SHOA y memoria territorial de Penco, Bío-Bío. PWA offline.","url":"https://calendario-13-lunas.pages.dev/","inLanguage":"es-CL","operatingSystem":"Web, Android, iOS, Windows","license":"https://www.gnu.org/licenses/gpl-3.0.html","author":{"@type":"Organization","name":"Semillero Consciente","email":"semilleroconsciente@gmail.com"},"offers":{"@type":"Offer","price":"0","priceCurrency":"CLP"}}</script>
   <link rel="stylesheet" href="min/styles.min.css?v=16">
   <link rel="stylesheet" href="min/styles-csp.min.css?v=1">
   <link rel="stylesheet" href="min/splash.min.css?v=2">
@@ -36,7 +36,11 @@
   <link rel="manifest" href="manifest.json">
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
   <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
-  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="13 Lunas">
   <link rel="preconnect" href="https://api.open-meteo.com">
   <link rel="preconnect" href="https://air-quality-api.open-meteo.com">
   <link rel="preload" href="icon-192.png" as="image" fetchpriority="high">
@@ -170,6 +174,7 @@
           <span class="sub-label" data-sub="penco">🎉 Comuna y servicios</span>
           <button id="btnComuna" class="btn" data-sub="penco" data-keywords="penco comuna fiesta evento aniversario talleres actividades curso taller inscripcion calendario guia historia sectores lirquen cosmito cerro verde primer agua casa cultura dideco cesfam biblioteca deporte futbol yoga cueca guitarra huerta manualidades digital mapuzugun cocina oficio">🎉 Penco</button>
           <button id="btnEducacion" class="btn" data-sub="penco" data-keywords="educacion escuela colegio liceo jardin sala cuna parvulo basica media tecnico profesional rbd sae matricula tne junaeb preuniversitario dem pencopolitano rios chile italia vipla lynch montt campbell ethel forjadores conquistadores primer agua stowhas refugio alafken alborada historia educacional">📚 Educación</button>
+          <button id="btnBiblioPenco" class="btn" data-sub="penco" data-keywords="biblioteca biblioteca penco libro lectura prestamo socio carnet kamishibai cuentacuentos rayo cesa poesia museo biblio redes bpdigital catalogo cultura casa cultura n33 033 rincon infantil juvenil feria manufactura historia biblioteca">📚 Biblioteca</button>
           <button id="btnIglesias" class="btn" data-sub="penco" data-keywords="iglesia iglesias parroquia capilla misa culto evangelica catolica carmen purisima redentor lirquen ovalle ohiggins penco fe culto">⛪ Iglesias</button>
           <button id="btnMuni" class="btn" data-sub="penco" data-keywords="municipalidad muni alcalde concejo dideco transito licencia permiso circulacion patente oirs tramite cesfam cecosf hospital farmacia veterinario emergencia 4157 samu bomberos carabineros secplan dom obras finanzas control juridica juzgado policia local omil rsh registro social tolva aseo fondeve beca historia municipal villa ciudad comuna autonoma">🏛️ Municipalidad</button>
           <button id="btnBomberos" class="btn" data-sub="penco" data-keywords="bomberos 132 incendio fuego emergencia primera segunda tercera cuarta compañia cuartel lirquen cosmito voluntario brigada detector extintor deshollinar plan escape forestal grifo historia 1927">🚒 Bomberos</button>

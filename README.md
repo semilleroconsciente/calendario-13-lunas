@@ -36,8 +36,29 @@ node web/server.js      # web local en puerto 8137
 npm test                # verifica todo (sintaxis, plantillas, SW, PWA, tamaños)
 npm run build:win       # .exe portable → dist-empaquetado/
 npm run movil:build     # APK Android → requiere Android SDK + JAVA_HOME
+npm run movil:ios:build # prepara ios/ → compilar en Xcode (requiere Mac)
 npm run sync:web        # regenera la copia desplegable web/
 ```
+
+## iOS / iPhone
+
+**Opción 1 — PWA (sin Mac, inmediata):** en Safari abre la URL publicada
+(`https://calendario-13-lunas.pages.dev/`) y usa
+`Compartir > Añadir a pantalla de inicio`. Funciona offline (service worker +
+`apple-touch-icon.png` 180px ya incluidos).
+
+**Opción 2 — App nativa (requiere Mac + Xcode + cuenta Apple Developer):**
+
+```bash
+npm run movil:ios:build   # sincroniza web/ → ios/ (ya incluye ios/ en este repo)
+npm run movil:open:ios    # abre ios/App/App.xcworkspace en Xcode
+```
+
+En Xcode: elige tu Team en `Signing & Capabilities`, ajusta el número de
+versión si publicas, `Product > Archive` y sube a TestFlight / App Store.
+Bundle ID: `cl.penco.calendario13lunas` · nombre: `13 Lunas`.
+`pod install` y la compilación solo corren en macOS; en Windows
+`npx cap sync ios` copia los assets y deja el proyecto listo para llevarlo al Mac.
 
 APK ya compilado (v1.9.1 rev. 20-oct-2026): `dist-empaquetado/13-Lunas-offline-1.9.1.apk` + portable `dist-empaquetado/Calendario 13 Lunas 1.9.0.exe`. Detalle en `web/LEEME.txt` y `web/GUIA-CAMBIOS-MANUALES.md` §22 (reorden `src/` 142 archivos + a11y teclado/lector + techos perf 6400/2150/420).
 

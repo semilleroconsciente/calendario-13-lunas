@@ -37,8 +37,24 @@ La carpeta "web" ya genera el APK nativo con Capacitor
   - Alternativa sin compilar: publica "web" (Opcion A o B)
     y usa https://www.pwabuilder.com con la URL publica.
 
+IPHONE / iOS
+-----------
+Opcion rapida (sin compilar, recomendada):
+1. En Safari abre la direccion publica de la app
+   (ej: https://calendario-13-lunas.pages.dev/).
+2. Toca Compartir > "Anadir a pantalla de inicio".
+3. Funciona sin internet (PWA offline con icono propio).
+
+Opcion App Store (requiere Mac con Xcode + cuenta Apple Developer):
+1. En el computador con el codigo fuente: npm run movil:ios:build
+2. Copia la carpeta "ios" al Mac y abre ios/App/App.xcworkspace
+3. En Xcode configura tu Team (Signing & Capabilities),
+   Product > Archive y sube a TestFlight / App Store.
+   Bundle ID: cl.penco.calendario13lunas - nombre: 13 Lunas.
+
 NOTAS
 -----
 - Las notas y mareas se guardan en el navegador de cada dispositivo
   (no se sincronizan con la version de escritorio).
 - En el celular usa "Agregar a pantalla de inicio" del navegador.
+- En iPhone debe hacerse desde Safari (Chrome iOS no permite instalar PWA).

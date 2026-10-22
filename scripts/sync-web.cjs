@@ -17,7 +17,7 @@ const ROOT = path.join(__dirname, '..');
 const WEB = path.join(ROOT, 'web');
 const FIX = process.argv.includes('--fix');
 
-const SKIP_DIRS = new Set(['.git', 'node_modules', 'dist-empaquetado', 'android', '.vscode']);
+const SKIP_DIRS = new Set(['.git', 'node_modules', 'dist-empaquetado', 'android', 'ios', '.vscode']);
 const SKIP_FILES = new Set(['donate.json']);
 
 // Deploy slim: un .js raíz con gemelo min/ REFERENCIADO (solo vía min/) no se
@@ -83,6 +83,8 @@ const needInWeb = rootOnly.filter((f) => {
   if (f.startsWith('src/')) return false;
   if (ELECTRON_ONLY.has(f) || f.startsWith('docs/') || f.startsWith('scripts/')) return false;
   if (f === '_headers' || f === 'manifest.json' || f === 'robots.txt' || f === 'sitemap.xml') return true;
+  // Iconos PWA/iOS en la raíz (apple-touch-icon 180px para "Añadir a inicio").
+  if (f === 'apple-touch-icon.png' || f === 'icon-192.png' || f === 'icon-512.png' || f === 'icon-512-maskable.png') return true;
   // Legal offline (Fase 1): paginas standalone para Términos/Privacidad/Cookies.
   // Deben viajar a web/ para Pages + Capacitor (webDir) y al SW.
   if (f.startsWith('legal/') && f.endsWith('.html')) return true;

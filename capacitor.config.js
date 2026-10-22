@@ -8,5 +8,9 @@ module.exports = {
   },
   android: {
     allowMixedContent: false
+  },
+  ios: {
+    contentInset: 'always',
+    allowsLinkPreview: false
   }
 };

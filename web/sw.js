@@ -2,7 +2,7 @@
 // Copyright (C) 2026 Semillero Consciente. Licencia: GNU GPLv3 o posterior (ver COPYING).
 // SPDX-License-Identifier: GPL-3.0-or-later
 // v55
-const CACHE = 'cal13-v143-offline';
+const CACHE = 'cal13-v147-offline';
 const MEDIA_CACHE = 'cal13-media-v1';
 
 // Lista completa de archivos que usa index.html (bare + con ?v=).
@@ -17,6 +17,7 @@ const CORE = [
   './icon-192.png',
   './icon-512.png',
   './icon-512-maskable.png',
+  './apple-touch-icon.png',
   './logo-13-lunas.png',
   './min/anime-v4.min.js',
   './min/anime-v4.min.js?v=1',
@@ -60,6 +61,7 @@ const CORE = [
   './templates/animalCareDialog.html',
   './templates/apoyoDialog.html',
   './templates/astroDialog.html',
+  './templates/biblioPencoDialog.html',
   './templates/birdsDialog.html',
   './templates/bomberosDialog.html',
   './templates/bosqueDialog.html',
@@ -151,6 +153,8 @@ const CORE = [
   './min/ayurveda-modulo.min.js?v=1',
   './min/basquetbol-modulo.min.js',
   './min/basquetbol-modulo.min.js?v=1',
+  './min/biblioteca-penco.min.js',
+  './min/biblioteca-penco.min.js?v=1',
   './min/bienvenida-modulo.min.js',
   './min/bienvenida-modulo.min.js?v=1',
   './min/bienvenida.min.css',
@@ -355,8 +359,6 @@ const CORE = [
   './min/recetas-naturales-modulo.min.js?v=1',
   './min/red-comunitaria-modulo.min.js',
   './min/red-comunitaria-modulo.min.js?v=1',
-  './min/regalo-modulo.min.js',
-  './min/regalo-modulo.min.js?v=1',
   './min/reiki-modulo.min.js',
   './min/reiki-modulo.min.js?v=1',
   './min/renderer-territorio-vivo.min.js',

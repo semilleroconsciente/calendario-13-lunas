@@ -66,6 +66,7 @@ function staticEntries() {
     './', './index.html', './manifest.json', './donate.json',
     './robots.txt', './sitemap.xml',
     './icon-192.png', './icon-512.png', './icon-512-maskable.png',
+    './apple-touch-icon.png',
     './logo-13-lunas.png',
     // Bienvenida primera vez: anime.js v4 UMD se carga LAZY (no va en
     // index.html para no penalizar el arranque), pero se precachea para que
