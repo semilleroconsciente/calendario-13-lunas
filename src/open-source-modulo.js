@@ -21,8 +21,8 @@
         (sistema, oficina, mapas, diseno, audio, video, nube,
         seguridad) con buscador + ficha "para que / reemplaza a".
      4) Este proyecto: anatomia del Calendario 13 Lunas
-        (archivos, offline-first, datos locales), como replicar
-        la app para otra comuna, mapa de modulos.
+        (archivos, offline-first, datos locales), invitacion a la
+        comunidad para replicarla en otra comuna y hacerla crecer.
      5) Aportar: contribuir sin saber programar + con codigo,
         checklist primer aporte, bitacora local de aportes,
         plantillas copiar/pegar (reporte, idea, nuevo modulo).
@@ -123,18 +123,23 @@ var ARQUITECTURA = [
   { n: 'index.html', ico: '🏠', d: 'La casa: estructura, grupos de botones (Mi Día, Territorio, Comunidad…) y el cargador diferido de módulos (línea ~4344). Agregar un botón aquí es opcional: los módulos se auto-inyectan.' },
   { n: 'styles.css + renderer.js + cal.js', ico: '🧱', d: 'Paredes y motor: estilos, dibujo de las 13 lunas y navegación. No tocar para un aporte normal.' },
   { n: '*-modulo.js (uno por tema)', ico: '🧩', d: 'Piezas: cada herramienta es un archivo independiente (ej: este archivo, ia-modulo.js, ciberseguridad-modulo.js). Patrón: datos arriba + diálogo + ensureSection + registro en ALL_BTNS/BTN_HOME.' },
-  { n: 'data/territorios/penco/*.json', ico: '🗺️', d: 'El territorio en datos: lunas, eventos, talleres, especies, actores. Para replicar en otra comuna se copian y reescriben estos JSON.' },
+  { n: 'data/territorios/penco/*.json', ico: '🗺️', d: 'El territorio en datos: lunas, eventos, talleres, especies, actores. Para llevarlo a otra comuna, entra a la comunidad: ahí te guiamos para copiar y reescribir estos JSON sin romper nada.' },
   { n: 'userData local (sin nube)', ico: '🔒', d: 'Tus bitácoras viven en tu perfil del dispositivo (Electron userData / localStorage web). Nada se envía fuera. Respaldo en 💾 Respaldo.' },
   { n: 'sw.js + manifest + package.json', ico: '📦', d: 'Offline y empaque: service worker para web, manifiesto instalable, y lista de archivos para el .exe portable y Android.' }
 ];
 
+var COMUNIDAD_CAL = {
+  whatsapp: 'https://chat.whatsapp.com/GjY8HaN7YlQ5efaVhrrdXp',
+  telegram: 'https://t.me/+N00Hp6jwdOBmYWUx',
+  github: 'https://github.com/semilleroconsciente/calendario-13-lunas',
+  email: 'semilleroconsciente@gmail.com'
+};
+
 var REPLICA = [
-  { t: '1 · Copia la base', d: 'Copia toda la carpeta del proyecto con otro nombre (ej: calendario-mi-comuna). El código es GPLv3 y el contenido CC BY-NC-SA 4.0: puedes hacerlo libremente manteniendo el crédito y la misma licencia dual (ver LICENSE.md).' },
-  { t: '2 · Cambia el territorio', d: 'Edita data/territorios/penco/*.json con tus sectores, fiestas, mareas y teléfonos (muni, CESFAM, bomberos). Parte por territorio.json y eventos.json.' },
-  { t: '3 · Ajusta la portada', d: 'En index.html cambia título, brand (“Mari Küla Küyen” → tu nombre local) y coordenadas/clima si tu zona no es costa del Bío-Bío.' },
-  { t: '4 · Suma o quita módulos', d: 'En el cargador MODS (index.html ~línea 4344) comenta los que no necesites y agrega los tuyos (copia open-source-modulo.js como plantilla: es el más comentado).' },
-  { t: '5 · Registra el service worker', d: 'Agrega tu archivo nuevo en sw.js (lista CORE, bare + ?v=) o la versión web no funcionará offline.' },
-  { t: '6 · Empaqueta y comparte', d: 'Prueba en navegador (doble clic a index.html), luego npm run build:win para el portable. Comparte el .zip + una hoja “qué cambié” (ver plantilla en Aportar).' }
+  { t: '1 · Entra a la comunidad', d: 'No lo hagas en soledad. Entra al <b>WhatsApp o Telegram del Calendario</b>: ahí están las personas que ya lo mantienen, responden dudas y te dan la bienvenida a tu comuna.' },
+  { t: '2 · Recibe las instrucciones guiadas', d: 'En la comunidad recibes <b>paso a paso cómo replicar el Calendario en tu comuna</b> (qué copiar, qué datos cambiar, cómo probar y cómo compartir), sin necesidad de saber programar al inicio.' },
+  { t: '3 · Adapta con acompañamiento', d: 'Con ayuda de la comunidad adaptas nombres, fiestas, mareas, teléfonos y especies de tu territorio. Si te trabas, preguntas y alguien te apaña.' },
+  { t: '4 · Ayuda a hacerlo crecer y mejorar', d: 'Comparte lo que aprendiste, reporta errores, trae datos de tu comuna o enseña a otros. Cada réplica <b>mejora el Calendario para todas las comunas</b> (código GPLv3 + contenido CC BY-NC-SA 4.0, siempre con crédito).' }
 ];
 
 var SIN_CODIGO = [
@@ -354,9 +359,16 @@ function renderProyecto() {
     '<div class="si-card"><h4>🧩 Anatomía (¿dónde está cada cosa?)</h4>' + ARQUITECTURA.map(function (a) {
       return '<p><b>' + a.ico + ' ' + esc(a.n) + ':</b> ' + a.d + '</p>';
     }).join('') + '</div>' +
-    '<div class="si-card"><h4>🗺️ Cómo replicarla para otra comuna (6 pasos)</h4>' + REPLICA.map(function (r) {
+    '<div class="si-card"><h4>🗺️ Llévalo a tu comuna con la comunidad 🌱</h4><p>¿Quieres este Calendario en <b>tu comuna</b>? No lo hagas en soledad: <b>entra a la comunidad del Calendario</b>. Ahí recibes <b>todas las instrucciones paso a paso</b> para replicarlo, con acompañamiento de quienes ya lo mantienen, <b>y nos ayudas a hacerlo crecer y mejorar</b> para todas las comunas.</p>' +
+    REPLICA.map(function (r) {
       return '<p><b>' + esc(r.t) + ':</b> ' + r.d + '</p>';
-    }).join('') + '</div>' +
+    }).join('') +
+    '<div class="dlg-actions su-117179">' +
+    '<a href="' + COMUNIDAD_CAL.whatsapp + '" target="_blank" rel="noopener" class="btn btn-accent su-30e741">💬 Entrar al WhatsApp</a> ' +
+    '<a href="' + COMUNIDAD_CAL.telegram + '" target="_blank" rel="noopener" class="btn su-30e741">✈️ Entrar al Telegram</a></div>' +
+    '<p class="muted su-11a508">Al entrar preséntate: “Hola, soy de [tu comuna] y quiero replicar el Calendario”. Te pasamos la guía completa y te acompañamos. También puedes escribir a ' + esc(COMUNIDAD_CAL.email) + ' o ver el código en GitHub.</p>' +
+    '<div class="dlg-actions su-117179">' +
+    '<a href="' + COMUNIDAD_CAL.github + '" target="_blank" rel="noopener" class="btn su-abb0f2">🌐 Ver comunidad en GitHub</a></div></div>' +
     '<div class="si-card"><h4>🔗 Puentes con otras secciones</h4><p>• <b>🛡️ Ciberseguridad:</b> verifica links, usa gestor de claves y 2 pasos antes de publicar tu réplica.<br>• <b>🤖 IA (módulo Aprender):</b> pide a la IA “explícame este .js como si tuviera 12 años” o “redacta la guía de mi comuna”.<br>• <b>📡 Red Comunitaria:</b> comparte la app en pendrive o Mesh sin internet.<br>• <b>💾 Respaldo:</b> exporta tus bitácoras antes de experimentar con copias.</p></div>' +
     '<div class="dlg-actions su-59a5a8"><button type="button" id="osGoAportar" class="btn btn-accent su-30e741">🤝 Quiero aportar →</button> ' +
     '<button type="button" id="osShareProj" class="btn su-30e741">📤 Compartir el proyecto</button></div>';
