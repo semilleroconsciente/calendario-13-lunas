@@ -43,39 +43,68 @@ async function share(title, text) {
   } catch (e) { try { alert(text); } catch (e2) {} }
 }
 
-/* ================= ESTILOS ================= */
+/* ================= ESTILOS (pantalla completa estilo foto, sin scroll) ================= */
 function injectCSS() {
-  if ($('sudokuStyles')) return;
-  var st = document.createElement('style');
+  var st = $('sudokuStyles');
+  if (st) { try { st.remove(); } catch (e) {} }
+  st = document.createElement('style');
   st.id = 'sudokuStyles';
   st.textContent = [
-    '.sk-wrap{max-width:430px;margin:0 auto}',
-    '.sk-top{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:8px}',
-    '.sk-stat{font-size:11px;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:4px 9px;color:var(--text)}',
-    '.sk-stat b{color:var(--gold)}',
-    '.sk-board{display:grid;grid-template-columns:repeat(9,1fr);border:3px solid var(--gold);border-radius:10px;overflow:hidden;background:var(--panel);touch-action:manipulation}',
-    '.sk-cell{aspect-ratio:1;border:0;padding:0;cursor:pointer;position:relative;display:flex;align-items:center;justify-content:center;background:transparent;color:var(--text);font-weight:700;font-size:clamp(15px,4.4vw,22px);font-variant-numeric:tabular-nums;border-right:1px solid rgba(140,150,190,.22);border-bottom:1px solid rgba(140,150,190,.22)}',
+    '#sudokuDialog.sk-full{width:100vw!important;max-width:100vw!important;height:100dvh!important;max-height:100dvh!important;max-height:100vh!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;background:var(--bg2)}',
+    '#sudokuDialog.sk-full::backdrop{background:rgba(4,6,16,.7)}',
+    '#sudokuDialog.sk-full>form{height:100dvh;max-height:100dvh;display:flex;flex-direction:column;overflow:hidden;margin:0;padding:0;max-width:none}',
+    '.sk-appbar{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 14px 4px}',
+    '.sk-appbar h3{margin:0;font-size:17px}',
+    '.sk-close{border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:50%;width:34px;height:34px;font-size:15px;cursor:pointer;flex:0 0 auto}',
+    '.sk-meta{display:flex;align-items:flex-start;justify-content:space-between;text-align:center;padding:4px 20px 6px;font-size:12px;color:var(--muted)}',
+    '.sk-meta .v{font-size:15px;font-weight:800;color:var(--text);margin-top:2px;font-variant-numeric:tabular-nums}',
+    '.sk-meta .v b{color:var(--text)}',
+    '.sk-pause{border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:50%;width:30px;height:30px;cursor:pointer;margin-left:6px;vertical-align:middle}',
+    '.sk-tabsmini{display:flex;gap:6px;justify-content:center;padding:0 12px 6px}',
+    '.sk-tabsmini .btn{padding:5px 10px;font-size:12px;width:auto}',
+    '.sk-play{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;overflow:hidden;padding:0 12px 8px;gap:6px}',
+    '.sk-difrow{display:flex;gap:6px;align-items:center;justify-content:center;width:min(96vw,460px)}',
+    '.sk-difrow select{flex:1;background:var(--card);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:6px 8px;font-size:13px}',
+    '.sk-difrow .btn{padding:6px 10px;font-size:12px;width:auto;white-space:nowrap}',
+    '.sk-wrap{width:min(96vw,460px);margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:6px;min-height:0;flex:1}',
+    '.sk-top{display:none}',
+    '.sk-board{display:grid;grid-template-columns:repeat(9,1fr);border:3px solid var(--gold);border-radius:10px;overflow:hidden;background:var(--panel);touch-action:manipulation;width:min(94vw,44dvh,440px);margin:0 auto}',
+    '.sk-cell{aspect-ratio:1;border:0;padding:0;cursor:pointer;position:relative;display:flex;align-items:center;justify-content:center;background:#fff;color:#1a2340;font-weight:700;font-size:clamp(15px,4.6vw,22px);font-variant-numeric:tabular-nums;border-right:1px solid #d5dae6;border-bottom:1px solid #d5dae6}',
+    'html[data-theme="dark"] .sk-cell,body[data-modo-noche="1"] .sk-cell{background:var(--panel);color:var(--text);border-right:1px solid rgba(140,150,190,.22);border-bottom:1px solid rgba(140,150,190,.22)}',
     '.sk-cell:nth-child(3n):not(:nth-child(9n)){border-right:2px solid var(--gold)}',
     '.sk-cell:nth-child(n+19):nth-child(-n+27),.sk-cell:nth-child(n+46):nth-child(-n+54){border-bottom:2px solid var(--gold)}',
     '.sk-cell:nth-child(9n){border-right:0}',
     '.sk-cell:nth-child(n+73){border-bottom:0}',
-    '.sk-given{color:var(--text);background:rgba(232,197,106,.07)}',
-    '.sk-user{color:#7ab8ff}',
-    '.sk-sel{background:rgba(232,197,106,.35)!important;outline:2px solid var(--gold);outline-offset:-2px}',
-    '.sk-peer{background:rgba(232,197,106,.12)}',
-    '.sk-same{background:rgba(122,184,255,.22)}',
-    '.sk-err{background:rgba(231,76,60,.35)!important;color:#ff9a9a}',
+    '.sk-given{background:#f1f3f8!important;color:#111a33!important}',
+    'html[data-theme="dark"] .sk-given,body[data-modo-noche="1"] .sk-given{background:rgba(232,197,106,.07)!important;color:var(--text)!important}',
+    '.sk-user{color:#2f7cf6!important}',
+    '.sk-sel{background:#cfe0ff!important;outline:2px solid #2f7cf6;outline-offset:-2px}',
+    '.sk-peer{background:#eef3ff!important}',
+    'html[data-theme="dark"] .sk-peer,body[data-modo-noche="1"] .sk-peer{background:rgba(232,197,106,.12)!important}',
+    'html[data-theme="dark"] .sk-sel,body[data-modo-noche="1"] .sk-sel{background:rgba(232,197,106,.35)!important;outline-color:var(--gold)}',
+    '.sk-same{background:#dbe7ff!important;color:#1c5fd6!important}',
+    '.sk-err{background:rgba(231,76,60,.4)!important;color:#c81e1e!important}',
     '.sk-hintflash{animation:skflash 1s ease 2}',
     '@keyframes skflash{0%,100%{background:transparent}50%{background:rgba(143,214,148,.5)}}',
-    '.sk-notes{position:absolute;inset:1px;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);font-size:clamp(6px,1.8vw,9px);font-weight:600;color:#9aa3c7;line-height:1;pointer-events:none}',
+    '.sk-notes{position:absolute;inset:1px;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);font-size:clamp(6px,1.8vw,9px);font-weight:600;color:#8a93b2;line-height:1;pointer-events:none}',
     '.sk-notes span{display:flex;align-items:center;justify-content:center}',
-    '.sk-pad{display:grid;grid-template-columns:repeat(9,1fr);gap:5px;margin-top:10px}',
-    '.sk-key{border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:9px;padding:9px 0;font-size:17px;font-weight:800;cursor:pointer;position:relative}',
-    '.sk-key small{display:block;font-size:9px;color:var(--gold);font-weight:700}',
-    '.sk-key:active{transform:scale(.95)}',
-    '.sk-key.done{opacity:.35}',
-    '.sk-tools{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}',
-    '.sk-diff{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}'
+    '.sk-msgline{font-size:11px;color:var(--muted);min-height:14px;text-align:center}',
+    '.sk-toolbar{display:flex;justify-content:space-between;width:min(94vw,440px);padding:2px 6px 0}',
+    '.sk-tool{border:0;background:transparent;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;cursor:pointer;min-width:64px;position:relative;padding:6px 4px}',
+    '.sk-tool .ico{font-size:21px;line-height:1;position:relative;display:inline-block}',
+    '.sk-tool.on{color:#2f7cf6}',
+    '.sk-tool:disabled{opacity:.35}',
+    '.sk-badge{position:absolute;top:0;right:12px;background:#6b7280;color:#fff;font-size:9px;font-weight:800;border-radius:8px;padding:1px 6px}',
+    '.sk-badge.blue{background:#2f7cf6}',
+    '.sk-numpad{display:flex;justify-content:space-between;width:min(96vw,460px);padding:2px 4px 0}',
+    '.sk-num{border:0;background:transparent;color:#2f7cf6;font-size:clamp(26px,8vw,36px);font-weight:400;cursor:pointer;flex:1;position:relative;padding:4px 0;line-height:1.1;font-variant-numeric:tabular-nums}',
+    '.sk-num small{display:block;font-size:9px;color:var(--muted);font-weight:700}',
+    '.sk-num:active{transform:scale(.92)}',
+    '.sk-num.done{opacity:.25}',
+    '.sk-subtools{display:flex;gap:6px;justify-content:center;width:min(96vw,460px);padding-bottom:2px}',
+    '.sk-subtools .btn{padding:5px 9px;font-size:11px;width:auto}',
+    '#skPanelAprender,#skPanelRegistros{overflow-y:auto;max-height:calc(100dvh - 150px);padding:0 14px 16px}',
+    '@media (max-height:700px){.sk-board{width:min(94vw,40dvh,400px)}.sk-num{font-size:clamp(22px,7vw,30px)}.sk-tool .ico{font-size:18px}}'
   ].join('\n');
   document.head.appendChild(st);
 }
@@ -230,8 +259,41 @@ function lunaFaseAprox() {
 
 /* ================= ESTADO ================= */
 var TAB = 'jugar';
-var G = null; // {puzzle,solution,cur,given,notes,sel,errors,hints,seconds,dif,notesMode,over,won,timerOn}
+var G = null; // {puzzle,solution,cur,given,notes,sel,errors,hints,seconds,dif,notesMode,over,won,timerOn,undo}
 var timerInt = null;
+function fechaCorta() {
+  try {
+    var d = new Date();
+    var dd = String(d.getDate()).padStart(2, '0');
+    var mm = ['ENE','FEB','MAR','ABR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DIC'][d.getMonth()];
+    return dd + ' ' + mm;
+  } catch (e) { return ''; }
+}
+function pushUndo() {
+  if (!G) return;
+  if (!G.undo) G.undo = [];
+  G.undo.push({
+    cur: G.cur.slice(),
+    notes: G.notes.map(function (s) { return Array.from(s); }),
+    errors: G.errors, hints: G.hints
+  });
+  if (G.undo.length > 200) G.undo.shift();
+}
+function doUndo() {
+  if (!G || !G.undo || !G.undo.length) return;
+  var p = G.undo.pop();
+  G.cur = p.cur.slice();
+  G.notes = p.notes.map(function (a) { return new Set(a); });
+  G.errors = p.errors; G.hints = p.hints;
+  if (G.errors < 3 && !G.won) { G.over = false; G.timerOn = true; startTimer(); }
+  persistCurrent(); renderAll();
+}
+function togglePause() {
+  if (!G || G.won) return;
+  G.timerOn = !G.timerOn;
+  if (G.timerOn) startTimer();
+  renderMeta();
+}
 
 function statsDef() { return { jugadas: 0, ganadas: 0, mejor: {}, racha: 0 }; }
 function getStats() {
@@ -270,7 +332,7 @@ function newGame(difId, keepStats) {
     puzzle: gen.puzzle, solution: gen.solution, cur: gen.puzzle.slice(),
     given: gen.puzzle.map(function (v) { return v !== 0; }),
     notes: notes, sel: -1, errors: 0, hints: 3, seconds: 0,
-    dif: dif.id, notesMode: false, over: false, won: false, timerOn: true
+    dif: dif.id, notesMode: false, over: false, won: false, timerOn: true, undo: []
   };
   if (!keepStats) {
     try { var st = getStats(); st.jugadas++; var u = userData(); u.sudokuStats = st; } catch (e) {}
@@ -291,7 +353,7 @@ function restoreGame(sv) {
     given: sv.given.slice(), notes: notes, sel: -1,
     errors: sv.errors || 0, hints: (sv.hints == null ? 3 : sv.hints),
     seconds: sv.seconds || 0, dif: sv.dif || 'facil',
-    notesMode: false, over: !!sv.over, won: !!sv.won, timerOn: !sv.over && !sv.won
+    notesMode: false, over: !!sv.over, won: !!sv.won, timerOn: !sv.over && !sv.won, undo: []
   };
   if (G.timerOn) startTimer();
   renderAll();
@@ -310,7 +372,7 @@ function startTimer() {
     if (!dlg || !dlg.open) return;
     G.seconds++;
     var el = $('skTime');
-    if (el) el.innerHTML = '⏱️ <b>' + fmtTime(G.seconds) + '</b>';
+    if (el) el.textContent = fmtTime(G.seconds);
     if (G.seconds % 15 === 0) persistCurrent();
   }, 1000);
 }
@@ -330,32 +392,42 @@ function conflictsAt(i, val) {
   return false;
 }
 function renderAll() {
-  renderTop(); renderBoard(); renderPad(); renderHistPanel();
+  renderMeta(); renderTop(); renderBoard(); renderPad(); renderHistPanel();
+}
+function renderMeta() {
+  var box = $('skMeta');
+  if (!box || !G) return;
+  var st = getStats();
+  var total = st.ganadas || 0;
+  box.innerHTML =
+    '<div><div>Fecha</div><div class="v">' + esc(fechaCorta()) + '</div></div>' +
+    '<div><div>🏆 Todos los tiempos</div><div class="v">' + total + '</div></div>' +
+    '<div><div>Tiempo</div><div class="v"><span id="skTime">' + fmtTime(G.seconds) + '</span>' +
+    '<button type="button" class="sk-pause" id="skPauseBtn" title="Pausar / continuar">⏸</button></div>' +
+    '<div style="font-size:11px">❌ ' + G.errors + '/3 · 📊 ' + progressPct() + '%</div></div>';
+  var pb = $('skPauseBtn');
+  if (pb) {
+    pb.textContent = G.timerOn ? '⏸' : '▶';
+    pb.onclick = togglePause;
+  }
 }
 function renderTop() {
   var box = $('skTop');
   if (!box || !G) return;
-  var dif = difById(G.dif);
+  // Fila compacta de dificultad + nuevo (no ocupa scroll)
   box.innerHTML =
-    '<div class="sk-diff">' + DIFS.map(function (d) {
-      return '<button type="button" class="btn' + (d.id === G.dif ? ' btn-accent' : '') + ' su-337714" data-dif="' + d.id + '">' + d.n + '</button>';
-    }).join('') + '</div>' +
-    '<div class="sk-top">' +
-    '<span class="sk-stat" id="skTime">⏱️ <b>' + fmtTime(G.seconds) + '</b></span>' +
-    '<span class="sk-stat">❌ Errores <b>' + G.errors + '/3</b></span>' +
-    '<span class="sk-stat">💡 Pistas <b>' + G.hints + '</b></span>' +
-    '<span class="sk-stat">📊 <b>' + progressPct() + '%</b></span>' +
-    '</div>' +
-    '<p class="muted su-48eb2e">' + esc(dif.d) + '</p>';
-  box.querySelectorAll('[data-dif]').forEach(function (b) {
-    b.onclick = function () {
-      if (!G || G.dif === b.getAttribute('data-dif')) return;
-      if (G && !G.over && !G.won && progressPct() > 5) {
-        if (!confirm('¿Empezar un tablero nuevo en ' + difById(b.getAttribute('data-dif')).n + '? Se pierde el avance actual.')) return;
-      }
-      newGame(b.getAttribute('data-dif'));
-    };
-  });
+    '<div class="sk-difrow"><select id="skDifSel" aria-label="Dificultad">' +
+    DIFS.map(function (d) { return '<option value="' + d.id + '"' + (d.id === G.dif ? ' selected' : '') + '>' + esc(d.n) + '</option>'; }).join('') +
+    '</select><button type="button" class="btn" id="skNewTop">🎲 Nuevo</button></div>';
+  $('skDifSel').onchange = function (e) {
+    var v = e.target.value;
+    if (!G || G.dif === v) return;
+    if (!G.over && !G.won && progressPct() > 5) {
+      if (!confirm('¿Empezar un tablero nuevo en ' + difById(v).n + '? Se pierde el avance actual.')) { e.target.value = G.dif; return; }
+    }
+    newGame(v);
+  };
+  $('skNewTop').onclick = function () { newGame(G.dif); };
 }
 function renderBoard() {
   var box = $('skBoard');
@@ -390,9 +462,10 @@ function renderBoard() {
   });
   var msg = $('skMsg');
   if (msg) {
-    if (G.won) msg.innerHTML = '🏆 <b>¡Sudoku completo!</b> ' + esc(difById(G.dif).n) + ' en ' + fmtTime(G.seconds) + ' con ' + G.errors + ' errores.';
-    else if (G.over) msg.innerHTML = '💥 <b>3 errores.</b> Puedes seguir practicando en modo libre o empezar un tablero nuevo.';
-    else msg.innerHTML = G.sel >= 0 ? 'Celda seleccionada: fila ' + (Math.floor(G.sel / 9) + 1) + ', columna ' + ((G.sel % 9) + 1) + '. Escribe con el teclado numérico o el teclado físico.' : 'Toca una celda vacía y escribe un número del 1 al 9.';
+    if (G.won) msg.textContent = '🏆 ¡Sudoku completo! ' + difById(G.dif).n + ' en ' + fmtTime(G.seconds) + ' · ' + G.errors + ' errores.';
+    else if (G.over) msg.textContent = '💥 3 errores. Sigue en modo libre o pulsa 🎲 Nuevo.';
+    else if (!G.timerOn) msg.textContent = '⏸ Pausado. Pulsa ▶ para continuar.';
+    else msg.textContent = G.sel >= 0 ? 'Fila ' + (Math.floor(G.sel / 9) + 1) + ' · Columna ' + ((G.sel % 9) + 1) + ' — toca un número' : 'Toca una celda vacía y escribe un número';
   }
 }
 function remainingCounts() {
@@ -406,20 +479,21 @@ function renderPad() {
   var box = $('skPad');
   if (!box || !G) return;
   var left = remainingCounts();
-  var h = '<div class="sk-pad">';
+  var canUndo = !!(G.undo && G.undo.length);
+  var h = '<div class="sk-toolbar">' +
+    '<button type="button" class="sk-tool" id="skUndoBtn"' + (canUndo ? '' : ' disabled') + '><span class="ico">↩</span><span>Deshacer</span></button>' +
+    '<button type="button" class="sk-tool" id="skEraseBtn"><span class="ico">🧽</span><span>Borrar</span></button>' +
+    '<button type="button" class="sk-tool' + (G.notesMode ? ' on' : '') + '" id="skNotesBtn"><span class="ico">✏️' +
+    '<span class="sk-badge">' + (G.notesMode ? 'ON' : 'OFF') + '</span></span><span>Notas</span></button>' +
+    '<button type="button" class="sk-tool" id="skHintBtn"><span class="ico">💡<span class="sk-badge blue">' + G.hints + '</span></span><span>Sugerencia</span></button>' +
+    '</div><div class="sk-numpad">';
   for (var n = 1; n <= 9; n++) {
-    h += '<button type="button" class="sk-key' + (left[n] <= 0 ? ' done' : '') + '" data-num="' + n + '">' + n + '<small>' + left[n] + '</small></button>';
+    h += '<button type="button" class="sk-num' + (left[n] <= 0 ? ' done' : '') + '" data-num="' + n + '">' + n + '<small>' + left[n] + '</small></button>';
   }
   box.innerHTML = h + '</div>' +
-    '<div class="sk-tools">' +
-    '<button type="button" class="btn' + (G.notesMode ? ' btn-accent' : '') + ' su-115a53" id="skNotesBtn">✏️ Borrador: ' + (G.notesMode ? 'ON' : 'OFF') + '</button>' +
-    '<button type="button" class="btn su-115a53" id="skEraseBtn">🧽 Borrar</button>' +
-    '<button type="button" class="btn su-115a53" id="skHintBtn">💡 Pista (' + G.hints + ')</button>' +
-    '</div>' +
-    '<div class="sk-tools">' +
-    '<button type="button" class="btn su-115a53" id="skRestartBtn">🔁 Reiniciar</button>' +
-    '<button type="button" class="btn su-115a53" id="skNewBtn">🎲 Nuevo tablero</button>' +
-    '<button type="button" class="btn su-115a53" id="skSolveBtn" title="Muestra la solución (cuenta como no ganado)">👁️ Ver solución</button>' +
+    '<div class="sk-subtools">' +
+    '<button type="button" class="btn" id="skRestartBtn">🔁 Reiniciar</button>' +
+    '<button type="button" class="btn" id="skSolveBtn" title="Muestra la solución (cuenta como no ganado)">👁️ Solución</button>' +
     '</div>';
   box.querySelectorAll('[data-num]').forEach(function (b) {
     b.onclick = function () { enterNumber(parseInt(b.getAttribute('data-num'), 10)); };
@@ -427,9 +501,12 @@ function renderPad() {
   $('skNotesBtn').onclick = function () { G.notesMode = !G.notesMode; renderPad(); };
   $('skEraseBtn').onclick = eraseCell;
   $('skHintBtn').onclick = useHint;
+  var ub = $('skUndoBtn');
+  if (ub) ub.onclick = doUndo;
   $('skRestartBtn').onclick = function () {
     if (!G) return;
     if (!confirm('¿Reiniciar este tablero? Se borra tu avance pero se mantiene el puzzle.')) return;
+    pushUndo();
     for (var i = 0; i < 81; i++) {
       if (!G.given[i]) { G.cur[i] = 0; G.notes[i] = new Set(); }
     }
@@ -437,10 +514,10 @@ function renderPad() {
     G.over = false; G.won = false; G.timerOn = true;
     persistCurrent(); startTimer(); renderAll();
   };
-  $('skNewBtn').onclick = function () { newGame(G.dif); };
   $('skSolveBtn').onclick = function () {
     if (!G) return;
     if (!confirm('¿Ver la solución? El tablero se completa pero no contará como victoria.')) return;
+    pushUndo();
     G.cur = G.solution.slice();
     for (var i = 0; i < 81; i++) G.notes[i] = new Set();
     G.over = true; G.won = false; G.timerOn = false;
@@ -506,6 +583,7 @@ function selectCell(i) {
 }
 function enterNumber(n) {
   if (!G || G.won) return;
+  if (!G.timerOn && !G.over) { renderBoard(); return; }
   if (G.sel < 0) {
     var first = -1;
     for (var k = 0; k < 81; k++) if (!G.given[k] && !G.cur[k]) { first = k; break; }
@@ -516,19 +594,22 @@ function enterNumber(n) {
   if (G.given[i]) return;
   if (G.over) { // modo libre tras derrota: solo permite correctos
     if (G.solution[i] !== n) { flashHint(i); return; }
+    pushUndo();
     G.cur[i] = n; G.notes[i] = new Set();
     clearNotesFromPeers(i, n);
-    renderBoard(); renderPad(); persistCurrent(); checkWin();
+    renderBoard(); renderPad(); renderMeta(); persistCurrent(); checkWin();
     return;
   }
   if (G.notesMode) {
     if (G.cur[i]) return;
+    pushUndo();
     if (G.notes[i].has(n)) G.notes[i].delete(n); else G.notes[i].add(n);
-    renderBoard(); persistCurrent();
+    renderBoard(); renderPad(); persistCurrent();
     return;
   }
   if (G.cur[i] === n) { renderBoard(); return; }
   if (n !== G.solution[i]) {
+    pushUndo();
     G.errors++;
     G.cur[i] = n; // muestra el error en rojo
     G.notes[i] = new Set();
@@ -537,7 +618,7 @@ function enterNumber(n) {
       G.over = true; G.timerOn = false;
       recordResult(false);
     }
-    renderTop(); renderBoard(); renderPad(); persistCurrent();
+    renderMeta(); renderBoard(); renderPad(); persistCurrent();
     // limpia el número erróneo tras 900ms para seguir intentando
     (function (cell, expected) {
       setTimeout(function () {
@@ -550,11 +631,12 @@ function enterNumber(n) {
     })(i, n);
     return;
   }
+  pushUndo();
   G.cur[i] = n;
   G.notes[i] = new Set();
   clearNotesFromPeers(i, n);
   autoAdvance();
-  renderTop(); renderBoard(); renderPad(); persistCurrent(); checkWin();
+  renderMeta(); renderBoard(); renderPad(); persistCurrent(); checkWin();
 }
 function clearNotesFromPeers(i, n) {
   var ps = peersOf(i);
@@ -574,9 +656,11 @@ function autoAdvance() {
 }
 function eraseCell() {
   if (!G || G.sel < 0 || G.given[G.sel] || G.won) return;
+  if (!G.cur[G.sel] && (!G.notes[G.sel] || !G.notes[G.sel].size)) return;
+  pushUndo();
   G.cur[G.sel] = 0;
   G.notes[G.sel] = new Set();
-  renderBoard(); renderPad(); persistCurrent();
+  renderBoard(); renderPad(); renderMeta(); persistCurrent();
 }
 function useHint() {
   if (!G || G.won) return;
@@ -584,13 +668,14 @@ function useHint() {
   var empties = [];
   for (var i = 0; i < 81; i++) if (!G.given[i] && G.cur[i] !== G.solution[i]) empties.push(i);
   if (!empties.length) return;
+  pushUndo();
   var pick = G.sel >= 0 && empties.indexOf(G.sel) >= 0 ? G.sel : empties[Math.floor(Math.random() * empties.length)];
   G.cur[pick] = G.solution[pick];
   G.notes[pick] = new Set();
   clearNotesFromPeers(pick, G.cur[pick]);
   G.hints--;
   G.sel = pick;
-  renderTop(); renderBoard(); renderPad(); persistCurrent(); checkWin();
+  renderMeta(); renderBoard(); renderPad(); persistCurrent(); checkWin();
   flashHint(pick);
 }
 function flashHint(i) {
@@ -641,38 +726,39 @@ function switchTab(t) {
     var p = $('skPanel' + k.charAt(0).toUpperCase() + k.slice(1));
     if (p) p.classList.toggle('hidden', k !== t);
   });
+  var meta = $('skMeta');
+  if (meta) meta.style.display = (t === 'jugar') ? '' : 'none';
   if (t === 'jugar') renderAll();
-  if (t === 'aprender') renderAprender();
+  if (t === 'aprender') { renderAprender(); renderLuna(); }
   if (t === 'registros') renderHistPanel();
 }
 function buildDialog() {
   injectCSS();
   var old = $('sudokuDialog');
-  if (old) return old;
+  if (old && !old.querySelector('#skMeta')) { try { old.remove(); } catch (e) {} old = null; }
+  if (old) { old.classList.add('sk-full'); return old; }
   var d = document.createElement('dialog');
   d.id = 'sudokuDialog';
+  d.className = 'sk-full';
+  try { d.dataset.dlgSizeBound = '1'; } catch (e) {}
   d.innerHTML =
     '<form method="dialog">' +
-    '<div class="dlg-actions su-d2d053">' +
-    '<h3 class="su-ee0cfe">🔢 Sudoku</h3>' +
-    '<button type="button" data-close class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    '<p class="muted su-77e2fe">El clásico puzzle 9×9 con solución única, 4 niveles y borrador. Todo queda <b>privado y local</b> en tu usuario.</p>' +
-    '<div id="skLunaBox" class="menstrual-card su-39553d"></div>' +
-    '<div class="timer-tabs su-4dca21">' +
-    '<button type="button" id="tabSkJugar" class="btn btn-accent su-30e741">🔢 Jugar</button>' +
-    '<button type="button" id="tabSkAprender" class="btn su-30e741">📚 Aprender</button>' +
-    '<button type="button" id="tabSkRegistros" class="btn su-30e741">🏆 Mis registros</button>' +
-    '</div>' +
-    '<div id="skPanelJugar"><div class="sk-wrap"><div id="skTop"></div><div id="skBoard"></div>' +
-    '<div id="skMsg" class="chip su-34bf23"></div>' +
-    '<div id="skPad"></div></div></div>' +
-    '<div id="skPanelAprender" class="hidden"><div id="skLearnBox" class="su-be2653"></div></div>' +
+    '<div class="sk-appbar">' +
+    '<button type="button" data-close class="sk-close" title="Cerrar" aria-label="Cerrar">✕</button>' +
+    '<h3>🔢 Sudoku</h3>' +
+    '<div class="sk-tabsmini">' +
+    '<button type="button" id="tabSkJugar" class="btn btn-accent">Jugar</button>' +
+    '<button type="button" id="tabSkAprender" class="btn">Aprender</button>' +
+    '<button type="button" id="tabSkRegistros" class="btn">🏆</button>' +
+    '</div></div>' +
+    '<div id="skMeta" class="sk-meta"></div>' +
+    '<div id="skPanelJugar" class="sk-play"><div class="sk-wrap"><div id="skTop"></div><div id="skBoard"></div>' +
+    '<div id="skMsg" class="sk-msgline"></div>' +
+    '<div id="skPad" style="width:100%;display:flex;flex-direction:column;align-items:center;gap:4px"></div></div></div>' +
+    '<div id="skPanelAprender" class="hidden"><div id="skLunaBox" class="menstrual-card"></div><div id="skLearnBox"></div></div>' +
     '<div id="skPanelRegistros" class="hidden"><div id="skHistBox"></div></div>' +
-    '<div class="dlg-actions"><button type="button" data-close class="btn">Cerrar</button></div></form>';
-  // ancho como ajedrez
-  d.style.width = '680px';
-  d.style.maxWidth = '96vw';
-  d.style.maxHeight = '88vh';
+    '</form>';
+  d.removeAttribute('style');
   document.body.appendChild(d);
   d.querySelectorAll('[data-close]').forEach(function (b) {
     b.onclick = function () {
@@ -701,6 +787,14 @@ function buildDialog() {
 }
 function openSudoku() {
   var d = buildDialog();
+  try {
+    d.classList.add('sk-full');
+    d.classList.remove('dlg-resizable', 'dlg-expanded');
+    d.dataset.dlgSizeBound = '1';
+    d.style.width = ''; d.style.height = '';
+    var ex = d.querySelector('.dlg-expand-btn'); if (ex && ex.parentNode) ex.parentNode.removeChild(ex);
+    var gr = d.querySelector('.dlg-resize-handle'); if (gr && gr.parentNode) gr.parentNode.removeChild(gr);
+  } catch (e) {}
   renderLuna();
   renderAprender();
   if (!G) {
