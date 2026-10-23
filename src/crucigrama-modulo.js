@@ -43,46 +43,60 @@ async function share(title, text) {
   } catch (e) { try { alert(text); } catch (e2) {} }
 }
 
-/* ================= ESTILOS ================= */
+/* ================= ESTILOS (pantalla completa sin scroll: tablero / letras / pistas) ================= */
 function injectCSS() {
-  if ($('cruciStyles')) return;
-  var st = document.createElement('style');
+  var st = $('cruciStyles');
+  if (st) { try { st.remove(); } catch (e) {} }
+  st = document.createElement('style');
   st.id = 'cruciStyles';
   st.textContent = [
-    '.cr-wrap{max-width:520px;margin:0 auto}',
-    '.cr-temas{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}',
-    '.cr-top{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:8px}',
-    '.cr-stat{font-size:11px;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:4px 9px;color:var(--text)}',
+    '#cruciDialog.cr-full{width:100vw!important;max-width:100vw!important;height:100dvh!important;max-height:100dvh!important;max-height:100vh!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;background:var(--bg2)}',
+    '#cruciDialog.cr-full::backdrop{background:rgba(4,6,16,.7)}',
+    '#cruciDialog.cr-full>form{height:100dvh;max-height:100dvh;display:flex;flex-direction:column;overflow:hidden;margin:0;padding:0;max-width:none}',
+    '.cr-appbar{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 14px 4px}',
+    '.cr-appbar h3{margin:0;font-size:17px}',
+    '.cr-close{border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:50%;width:34px;height:34px;font-size:15px;cursor:pointer;flex:0 0 auto}',
+    '.cr-tabsmini{display:flex;gap:6px}',
+    '.cr-tabsmini .btn{padding:5px 10px;font-size:12px;width:auto}',
+    '.cr-play{flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden;padding:0 12px 8px}',
+    '.cr-wrap{width:min(96vw,520px);margin:0 auto;display:flex;flex-direction:column;gap:5px;flex:1;min-height:0;overflow:hidden}',
+    '.cr-temas{display:flex;gap:6px}',
+    '.cr-temas select{flex:1;min-width:0;background:var(--card);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:6px 8px;font-size:13px}',
+    '.cr-difs{display:flex;align-items:center;gap:6px}',
+    '.cr-difs select{flex:0 0 auto;background:var(--card);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:5px 8px;font-size:12px}',
+    '.cr-top{display:flex;flex-direction:column;gap:4px}',
+    '.cr-toprow{display:flex;gap:6px;flex-wrap:wrap;align-items:center}',
+    '.cr-stat{font-size:11px;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:3px 8px;color:var(--text);white-space:nowrap}',
     '.cr-stat b{color:var(--gold)}',
-    '.cr-board{display:grid;gap:2px;background:transparent;touch-action:manipulation;justify-content:center}',
-    '.cr-cell{position:relative;aspect-ratio:1;border:0;padding:0;border-radius:5px;background:var(--card);border:1px solid var(--line);color:var(--text);font-weight:800;font-size:clamp(12px,3.4vw,18px);cursor:pointer;display:flex;align-items:center;justify-content:center;text-transform:uppercase;min-width:0}',
+    '.cr-prog{height:6px;background:var(--panel);border:1px solid var(--line);border-radius:99px;overflow:hidden}',
+    '.cr-prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),#8fd694);transition:width .35s ease}',
+    '.cr-live{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted)}',
+    '.cr-live input{accent-color:var(--gold);width:15px;height:15px}',
+    '.cr-board{display:grid;gap:2px;background:transparent;touch-action:manipulation;justify-content:center;width:min(94vw,32dvh,360px);margin:0 auto}',
+    '.cr-cell{position:relative;aspect-ratio:1;border:0;padding:0;border-radius:5px;background:var(--card);border:1px solid var(--line);color:var(--text);font-weight:800;font-size:clamp(11px,2.6vw,15px);cursor:pointer;display:flex;align-items:center;justify-content:center;text-transform:uppercase;min-width:0;min-height:0}',
     '.cr-cell .cr-num{position:absolute;top:1px;left:3px;font-size:8px;font-weight:700;color:var(--gold);line-height:1;pointer-events:none}',
     '.cr-black{background:transparent;border:0;cursor:default;box-shadow:none}',
     '.cr-active{background:rgba(232,197,106,.38)!important;outline:2px solid var(--gold);outline-offset:-2px}',
     '.cr-word{background:rgba(232,197,106,.14)}',
     '.cr-err{background:rgba(231,76,60,.45)!important;color:#ffb0b0}',
     '.cr-ok{color:#8fd694}',
-    '.cr-clues{display:grid;gap:8px;margin-top:10px}',
-    '@media(min-width:560px){.cr-clues{grid-template-columns:1fr 1fr}}',
-    '.cr-clue-list{display:flex;flex-direction:column;gap:4px;max-height:190px;overflow:auto}',
-    '.cr-clue{text-align:left;font-size:12px;background:var(--panel);border:1px solid var(--line);color:var(--text);border-radius:8px;padding:6px 8px;cursor:pointer;line-height:1.35}',
+    '.cr-cur{font-size:11px;line-height:1.35;text-align:center;min-height:16px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}',
+    '.cr-kb{display:grid;grid-template-columns:repeat(9,1fr);gap:3px;width:100%}',
+    '.cr-key{border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:7px;padding:6px 0;font-size:13px;font-weight:800;cursor:pointer}',
+    '.cr-key:active{transform:scale(.94)}',
+    '.cr-tools{display:flex;gap:5px;flex-wrap:wrap;justify-content:center}',
+    '.cr-tools .btn{padding:5px 9px;font-size:11px;width:auto}',
+    '.cr-clues{flex:1;min-height:70px;display:grid;grid-template-columns:1fr 1fr;gap:6px;overflow:hidden;margin-top:2px}',
+    '.cr-clues .menstrual-card{margin:0;padding:6px;display:flex;flex-direction:column;min-height:0;overflow:hidden}',
+    '.cr-clues h4{margin:0 0 4px;font-size:12px}',
+    '.cr-clue-list{display:flex;flex-direction:column;gap:4px;overflow-y:auto;min-height:0;flex:1;-webkit-overflow-scrolling:touch}',
+    '.cr-clue{text-align:left;font-size:11px;background:var(--panel);border:1px solid var(--line);color:var(--text);border-radius:8px;padding:5px 7px;cursor:pointer;line-height:1.3;flex:0 0 auto}',
     '.cr-clue b{color:var(--gold)}',
     '.cr-clue.sel{border-color:var(--gold);background:rgba(232,197,106,.14)}',
     '.cr-clue.done{opacity:.55;text-decoration:line-through}',
-    '.cr-kb{display:grid;grid-template-columns:repeat(9,1fr);gap:4px;margin-top:10px}',
-    '.cr-key{border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:8px;padding:8px 0;font-size:14px;font-weight:800;cursor:pointer}',
-    '.cr-key:active{transform:scale(.94)}',
-    '.cr-tools{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}',
-    '.cr-cur{font-size:12px;line-height:1.5;margin-top:8px}',
-    '.cr-difs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;align-items:center}',
-    '.cr-dif{font-size:11px;font-weight:800;border:1px solid var(--line);background:var(--panel);color:var(--text);border-radius:20px;padding:5px 12px;cursor:pointer}',
-    '.cr-dif.on{background:var(--gold);border-color:var(--gold);color:#222}',
-    '.cr-prog{height:8px;background:var(--panel);border:1px solid var(--line);border-radius:99px;overflow:hidden;margin:6px 0 8px}',
-    '.cr-prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),#8fd694);transition:width .35s ease}',
-    '.cr-live{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);margin-top:6px}',
-    '.cr-live input{accent-color:var(--gold);width:16px;height:16px}',
     '.cr-win{text-align:center;padding:14px 10px}',
-    '.cr-win .big{font-size:44px}'
+    '#crPanelAprender,#crPanelRegistros{overflow-y:auto;max-height:calc(100dvh - 130px);padding:0 14px 16px}',
+    '@media (max-height:700px){.cr-board{width:min(94vw,28dvh,320px)}.cr-key{padding:5px 0;font-size:12px}.cr-cur{display:none}}'
   ].join('\n');
   document.head.appendChild(st);
 }
@@ -551,35 +565,30 @@ function renderAll() {
 function renderTemas() {
   var box = $('crTemas');
   if (!box || !G) return;
-  box.innerHTML = TEMAS.map(function (t) {
-    return '<button type="button" class="btn' + (t.id === G.tema ? ' btn-accent' : '') + ' su-337714" data-tema="' + t.id + '" title="' + esc(t.d) + '">' + t.n + '</button>';
-  }).join('');
-  box.querySelectorAll('[data-tema]').forEach(function (b) {
-    b.onclick = function () {
-      var id = b.getAttribute('data-tema');
-      if (G && G.tema === id) return;
-      if (G && !G.won && progressPct() > 5) {
-        if (!confirm('¿Empezar un crucigrama nuevo de ' + temaById(id).n + '? Se pierde el avance actual.')) return;
-      }
-      newGame(id, G.dif);
-    };
-  });
+  box.innerHTML = '<select id="crTemaSel" aria-label="Tema">' +
+    TEMAS.map(function (t) { return '<option value="' + t.id + '"' + (t.id === G.tema ? ' selected' : '') + '>' + esc(t.n) + '</option>'; }).join('') +
+    '</select><select id="crDifSel" aria-label="Dificultad">' +
+    DIFS.map(function (d) { return '<option value="' + d.id + '"' + (d.id === G.dif ? ' selected' : '') + '>' + esc(d.n) + '</option>'; }).join('') +
+    '</select><button type="button" class="btn" id="crNewTop" title="Nuevo tablero">🎲</button>';
+  $('crTemaSel').onchange = function (e) {
+    var id = e.target.value;
+    if (G && G.tema === id) return;
+    if (G && !G.won && progressPct() > 5) {
+      if (!confirm('¿Empezar un crucigrama nuevo de ' + temaById(id).n + '? Se pierde el avance actual.')) { e.target.value = G.tema; return; }
+    }
+    newGame(id, G.dif);
+  };
+  $('crDifSel').onchange = function (e) {
+    var id = e.target.value;
+    if (G.dif === id) return;
+    if (G && !G.won && progressPct() > 5) {
+      if (!confirm('¿Cambiar a ' + difById(id).n + '? Se genera un tablero nuevo.')) { e.target.value = G.dif; return; }
+    }
+    newGame(G.tema, id);
+  };
+  $('crNewTop').onclick = function () { newGame(G.tema, G.dif); };
   var db = $('crDifs');
-  if (db) {
-    db.innerHTML = '<span class="muted su-11a508">Dificultad:</span>' + DIFS.map(function (d) {
-      return '<button type="button" class="cr-dif' + (d.id === G.dif ? ' on' : '') + '" data-dif="' + d.id + '" title="' + esc(d.desc) + '">' + d.n + '</button>';
-    }).join('') + '<span class="muted su-0d5be0">' + esc(difById(G.dif).desc) + '</span>';
-    db.querySelectorAll('[data-dif]').forEach(function (b) {
-      b.onclick = function () {
-        var id = b.getAttribute('data-dif');
-        if (G.dif === id) return;
-        if (G && !G.won && progressPct() > 5) {
-          if (!confirm('¿Cambiar a ' + difById(id).n + '? Se genera un tablero nuevo.')) return;
-        }
-        newGame(G.tema, id);
-      };
-    });
-  }
+  if (db) db.innerHTML = '';
 }
 function doneWords() {
   if (!G) return 0;
@@ -588,19 +597,18 @@ function doneWords() {
 function renderTop() {
   var box = $('crTop');
   if (!box || !G) return;
-  var t = temaById(G.tema);
   var pct = progressPct();
   box.innerHTML =
     '<div class="cr-top">' +
+    '<div class="cr-toprow">' +
     '<span class="cr-stat" id="crTime">⏱️ <b>' + fmtTime(G.seconds) + '</b></span>' +
-    '<span class="cr-stat">💡 Pistas <b>' + G.hints + '</b></span>' +
+    '<span class="cr-stat">💡 <b>' + G.hints + '</b></span>' +
     '<span class="cr-stat">📊 <b>' + pct + '%</b></span>' +
     '<span class="cr-stat">📝 <b>' + doneWords() + '/' + G.placements.length + '</b></span>' +
-    '<span class="cr-stat">' + difById(G.dif).n + '</span>' +
+    '<label class="cr-live"><input type="checkbox" id="crLiveCk"' + (G.live ? ' checked' : '') + '> En vivo</label>' +
     '</div>' +
     '<div class="cr-prog" role="progressbar" aria-valuenow="' + pct + '" aria-valuemin="0" aria-valuemax="100"><i style="width:' + pct + '%"></i></div>' +
-    '<p class="muted su-48eb2e">' + esc(t.n) + ' — ' + esc(t.d) + '</p>' +
-    '<label class="cr-live"><input type="checkbox" id="crLiveCk"' + (G.live ? ' checked' : '') + '> Revisar en vivo (marca errores al escribir)</label>';
+    '</div>';
   var ck = $('crLiveCk');
   if (ck) ck.onchange = function () { G.live = !!ck.checked; errFlash = null; persistCurrent(); renderBoard(); };
 }
@@ -714,6 +722,10 @@ function renderClues() {
       }
     };
   });
+  try {
+    var sel = box.querySelector('.cr-clue.sel');
+    if (sel && sel.scrollIntoView) sel.scrollIntoView({ block: 'nearest' });
+  } catch (e) {}
 }
 var KB = 'ABCDEFGHIJKLMNÑOPQRSTUVWXYZ'.split('');
 function renderPad() {
@@ -1085,37 +1097,37 @@ function switchTab(t) {
     if (p) p.classList.toggle('hidden', k !== t);
   });
   if (t === 'jugar') renderAll();
-  if (t === 'aprender') renderAprender();
+  if (t === 'aprender') { renderAprender(); renderLuna(); }
   if (t === 'registros') renderHistPanel();
 }
 function buildDialog() {
   injectCSS();
   var old = $('cruciDialog');
-  if (old) return old;
+  if (old && !old.querySelector('#crTemaSel')) { try { old.remove(); } catch (e) {} old = null; }
+  if (old) { try { old.classList.add('cr-full'); } catch (e) {} return old; }
   var d = document.createElement('dialog');
   d.id = 'cruciDialog';
+  d.className = 'cr-full';
+  try { d.dataset.dlgSizeBound = '1'; } catch (e) {}
   d.innerHTML =
     '<form method="dialog">' +
-    '<div class="dlg-actions su-d2d053">' +
-    '<h3 class="su-ee0cfe">📝 Crucigrama</h3>' +
-    '<button type="button" data-close class="btn btn-icon" title="Cerrar">✕</button></div>' +
-    '<p class="muted su-77e2fe">Palabras cruzadas de Penco: mar, mapuzugun, bosque y luna. Cada tablero es distinto. Todo queda <b>privado y local</b> en tu usuario.</p>' +
-    '<div id="crLunaBox" class="menstrual-card su-39553d"></div>' +
-    '<div class="timer-tabs su-4dca21">' +
-    '<button type="button" id="tabCrJugar" class="btn btn-accent su-30e741">📝 Jugar</button>' +
-    '<button type="button" id="tabCrAprender" class="btn su-30e741">📚 Aprender</button>' +
-    '<button type="button" id="tabCrRegistros" class="btn su-30e741">🏆 Mis registros</button>' +
-    '</div>' +
-    '<div id="crPanelJugar"><div class="cr-wrap"><div id="crTemas" class="cr-temas"></div><div id="crDifs" class="cr-difs"></div><div id="crTop"></div><div id="crBoard"></div>' +
-    '<div id="crCur" class="chip cr-cur su-f5ce59"></div>' +
+    '<div class="cr-appbar">' +
+    '<button type="button" data-close class="cr-close" title="Cerrar" aria-label="Cerrar">✕</button>' +
+    '<h3>📝 Crucigrama</h3>' +
+    '<div class="cr-tabsmini">' +
+    '<button type="button" id="tabCrJugar" class="btn btn-accent">Jugar</button>' +
+    '<button type="button" id="tabCrAprender" class="btn">Aprender</button>' +
+    '<button type="button" id="tabCrRegistros" class="btn">🏆</button>' +
+    '</div></div>' +
+    '<div id="crPanelJugar" class="cr-play"><div class="cr-wrap"><div id="crTemas" class="cr-temas"></div><div id="crDifs" class="cr-difs"></div><div id="crTop"></div><div id="crBoard"></div>' +
+    '<div id="crCur" class="cr-cur"></div>' +
+    '<div id="crPad"></div>' +
     '<div id="crClues"></div>' +
-    '<div id="crPad"></div></div></div>' +
-    '<div id="crPanelAprender" class="hidden"><div id="crLearnBox" class="su-be2653"></div></div>' +
+    '</div></div>' +
+    '<div id="crPanelAprender" class="hidden"><div id="crLunaBox" class="menstrual-card"></div><div id="crLearnBox"></div></div>' +
     '<div id="crPanelRegistros" class="hidden"><div id="crHistBox"></div></div>' +
-    '<div class="dlg-actions"><button type="button" data-close class="btn">Cerrar</button></div></form>';
-  d.style.width = '680px';
-  d.style.maxWidth = '96vw';
-  d.style.maxHeight = '88vh';
+    '</form>';
+  d.removeAttribute('style');
   document.body.appendChild(d);
   d.querySelectorAll('[data-close]').forEach(function (b) {
     b.onclick = function () {
@@ -1158,6 +1170,14 @@ function buildDialog() {
 }
 function openCruci() {
   var d = buildDialog();
+  try {
+    d.classList.add('cr-full');
+    d.classList.remove('dlg-resizable', 'dlg-expanded');
+    d.dataset.dlgSizeBound = '1';
+    d.style.width = ''; d.style.height = '';
+    var ex = d.querySelector('.dlg-expand-btn'); if (ex && ex.parentNode) ex.parentNode.removeChild(ex);
+    var gr = d.querySelector('.dlg-resize-handle'); if (gr && gr.parentNode) gr.parentNode.removeChild(gr);
+  } catch (e) {}
   renderLuna();
   renderAprender();
   if (!G) {
