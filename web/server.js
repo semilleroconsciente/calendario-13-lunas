@@ -28,7 +28,7 @@ http.createServer((req, res) => {
   // asi que script-src es 'self' estricto. style-src conserva
   // 'unsafe-inline' por los ~1500 style="..." del HTML (fase 2).
   // connect-src limita la red a open-meteo + respaldo TTS online (translate.google.com). Ver _headers (mismo valor).
-  const CSP = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob: https://translate.google.com; font-src 'self'; connect-src 'self' https://api.open-meteo.com https://air-quality-api.open-meteo.com https://translate.google.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'";
+  const CSP = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob: https://translate.google.com; font-src 'self'; connect-src 'self' https://api.open-meteo.com https://air-quality-api.open-meteo.com https://translate.google.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests";
   const sec = {
     'X-Content-Type-Options': 'nosniff',
     'X-Frame-Options': 'SAMEORIGIN',
@@ -36,7 +36,11 @@ http.createServer((req, res) => {
     'Referrer-Policy': 'strict-origin-when-cross-origin',
     'Content-Security-Policy': CSP,
     // microfono/camara en (self): los usan Voz de los Abuelos (audio) y QR-sync (video).
-    'Permissions-Policy': 'geolocation=(), microphone=(self), camera=(self)'
+    'Permissions-Policy': 'geolocation=(), microphone=(self), camera=(self)',
+    // Aislamiento: la app no necesita popups cross-origin ni recursos externos.
+    'Cross-Origin-Opener-Policy': 'same-origin',
+    'Cross-Origin-Resource-Policy': 'same-origin',
+    'X-Permitted-Cross-Domain-Policies': 'none'
   };
   if (req.method !== 'GET' && req.method !== 'HEAD') {
     res.writeHead(405, sec); return res.end('Method Not Allowed');

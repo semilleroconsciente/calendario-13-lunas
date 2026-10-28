@@ -3,10 +3,14 @@
 // Descarga Chrome vía npx la primera vez (lento); en CI se cachea con npm.
 // El gate duro de CI es check:perf (rápido, sin deps); esto es la validación
 // de render real (LCP, TBT) con umbral documentado.
-const { spawn } = require('child_process');
+const { spawn, execFile } = require('child_process');
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
+
+// Pin exacto: evita descarga-ejecución flotante (Shai-Hulud / A08 integrity failure).
+// Para subir versión: cambiar aquí + package-lock + CI SHA-pin.
+const LIGHTHOUSE_PIN = 'lighthouse@12.8.2';
 
 const ROOT = path.join(__dirname, '..');
 const args = process.argv.slice(2);
@@ -61,15 +65,18 @@ async function main() {
   try {
     await esperaServer(srv);
     const lhArgs = [
-      '-y', 'lighthouse@12', `http://localhost:${PORT}/`,
+      LIGHTHOUSE_PIN, `http://localhost:${PORT}/`,
       `--preset=${PRESET}`, '--only-categories=performance',
       '--chrome-flags=--headless=new --no-sandbox --disable-gpu',
       '--output=json', `--output-path=${OUT}`, '--quiet',
     ];
+    // Validación estricta: OUT/PORT son internos (no argv crudo) y sin shell.
+    if (!/^[\w./\\:-]+$/.test(OUT) || !Number.isInteger(PORT)) throw new Error('ruta/puerto inválido');
     console.log('  i lighthouse (' + PRESET + '), esto tarda 1-3 min la primera vez…');
     const env = { ...process.env, CHROME_PATH: chrome };
     const code = await new Promise((res) => {
-      const p = spawn('npx -y lighthouse@12 ' + lhArgs.slice(1).map((a) => `"${a}"`).join(' '), { stdio: 'inherit', shell: true, env });
+      // Sin shell:true: argv separado, sin interpolación. npx --yes con pin exacto.
+      const p = execFile(process.platform === 'win32' ? 'npx.cmd' : 'npx', ['--yes', ...lhArgs], { stdio: 'inherit', env });
       p.on('close', res);
       p.on('error', (e) => { console.log('  x spawn: ' + e.message); res(127); });
     });

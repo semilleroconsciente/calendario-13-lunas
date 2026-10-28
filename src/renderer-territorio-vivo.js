@@ -221,6 +221,127 @@ function renderBirdsDialog(){
   }
   renderBirdsLog();
 }
+// === Exportación ciencia ciudadana: eBird (Record Format) + iNaturalist ===
+// eBird: https://support.ebird.org/en/support/solutions/articles/48000907878
+//   Record Format = 19 columnas SIN encabezado, coma como delimitador,
+//   sin comillas ni saltos de línea, fecha MM/DD/YYYY. Protocolo Incidental
+//   (ideal para bitácora oportunista: no exige duración/distancia).
+// iNat: https://www.inaturalist.org/observations/import#csv_import
+//   8 columnas CON encabezado: Taxon,Date observed,Description,Place name,
+//   Latitude,Longitude,Tags,Geoprivacy. Cita CSV estándar (comillas OK).
+function sciExportCoords(){
+  try{
+    var p=(window.pencoData&&window.pencoData.PENCO)||(typeof PENCO!=='undefined'?PENCO:null);
+    if(p&&(isFinite(p.lat)||isFinite(p.latitude))&&(isFinite(p.lng)||isFinite(p.lng===undefined?p.lon:p.lng))){
+      var la=isFinite(p.lat)?p.lat:p.latitude, lo=isFinite(p.lng)?p.lng:p.lon;
+      if(isFinite(la)&&isFinite(lo)) return { lat:la, lng:lo };
+    }
+  }catch(e){}
+  return { lat:-36.73194, lng:-72.9925 };
+}
+function sciEBirdCell(s){
+  return String(s==null?'':s).replace(/["\r\n]+/g,' ').replace(/,/g,';').trim();
+}
+function sciEBirdDate(iso){
+  var p=String(iso||'').split('-');
+  if(p.length!==3||!p[0]||!p[1]||!p[2]) return String(iso||'');
+  return p[1]+'/'+p[2]+'/'+p[0];
+}
+function sciFindCient(nombre, catalog){
+  if(!nombre||!catalog) return '';
+  var q=String(nombre).trim().toLowerCase();
+  for(var i=0;i<catalog.length;i++){
+    var b=catalog[i];
+    if(b&&b.nombre&&String(b.nombre).toLowerCase()===q&&b.cient) return String(b.cient);
+  }
+  return '';
+}
+function sciSplitCient(cient){
+  var parts=String(cient||'').trim().split(/\s+/);
+  if(parts.length>=2) return { genus:parts[0], species:parts.slice(1).join(' ') };
+  return { genus:'', species:'' };
+}
+function sciCsvDownload(filename, text){
+  var blob=new Blob(["\uFEFF"+text],{type:'text/csv;charset=utf-8'});
+  var url=URL.createObjectURL(blob); var a=document.createElement('a');
+  a.href=url; a.download=filename; document.body.appendChild(a); a.click();
+  setTimeout(function(){ try{document.body.removeChild(a);}catch(e){} URL.revokeObjectURL(url); },400);
+}
+function sciINatCell(s){
+  s=String(s==null?'':s);
+  if(/[",\r\n]/.test(s)) return '"'+s.replace(/"/g,'""')+'"';
+  return s;
+}
+function exportBirdsEBird(){
+  var arr=getBirdData().entries;
+  if(!arr.length) return alert('Sin datos para exportar');
+  var co=sciExportCoords();
+  var lines=arr.slice().sort(function(a,b){return (a.date+a.time).localeCompare(b.date+b.time);}).map(function(r){
+    var cient=sciFindCient(r.species, getAllBirdsCatalog());
+    var gs=sciSplitCient(cient);
+    var luna=null; try{ luna=mensLunaForKey(r.date); }catch(e){}
+    var comments=sciEBirdCell(((r.activity||'')+(r.notes?' '+r.notes:''))+(luna?' Luna '+luna.luna+'d'+luna.dia:''));
+    var sub=sciEBirdCell('Mari Kula Kuyen Penco'+(luna?' Luna '+luna.luna+' d'+luna.dia:''));
+    return [
+      sciEBirdCell(r.species||''), sciEBirdCell(gs.genus), sciEBirdCell(gs.species),
+      sciEBirdCell(r.count||'X'), comments,
+      sciEBirdCell(r.place||'Penco — Humedal Rocuant'),
+      co.lat, co.lng, sciEBirdDate(r.date), sciEBirdCell(r.time||''),
+      'BI','CL','Incidental','1','','N','','',
+      sub
+    ].join(',');
+  });
+  sciCsvDownload('ebird-penco-'+cal.fmtKey.format(new Date())+'.csv', lines.join('\n')+'\n');
+  alert('🦅 CSV eBird listo (Record Format, sin encabezado).\nSúbelo en eBird > Submit > Import Data > Record Format.\nRevisa especie y lugar en el paso de limpieza.');
+}
+function exportBirdsINat(){
+  var arr=getBirdData().entries;
+  if(!arr.length) return alert('Sin datos para exportar');
+  var co=sciExportCoords();
+  var rows=[['Taxon','Date observed','Description','Place name','Latitude','Longitude','Tags','Geoprivacy'].join(',')];
+  arr.slice().sort(function(a,b){return (a.date+a.time).localeCompare(b.date+b.time);}).forEach(function(r){
+    var cient=sciFindCient(r.species, getAllBirdsCatalog());
+    var luna=null; try{ luna=mensLunaForKey(r.date); }catch(e){}
+    var desc=((r.activity||'avistamiento')+(r.notes?' · '+r.notes:''))+(luna?' · Luna '+luna.luna+' d'+luna.dia:'');
+    var priv=(String(r.activity||'').toLowerCase().indexOf('nido')>=0)?'obscured':'';
+    rows.push([
+      sciINatCell(cient||r.species||''),
+      sciINatCell(((r.date||'')+' '+(r.time||'')).trim()),
+      sciINatCell(desc),
+      sciINatCell(r.place||'Penco, Bio-Bio, CL'),
+      co.lat, co.lng,
+      sciINatCell('penco,13-lunas,aves'),
+      priv
+    ].join(','));
+  });
+  sciCsvDownload('inat-aves-penco-'+cal.fmtKey.format(new Date())+'.csv', rows.join('\n')+'\n');
+  alert('🌿 CSV iNaturalist listo (con encabezado).\nSúbelo en iNaturalist > Observations > Import > CSV import.');
+}
+function exportBosqueINat(){
+  var arr=getBosqueData().entries;
+  if(!arr.length) return alert('Sin datos para exportar');
+  var co=sciExportCoords();
+  var protRe=/proteg|peligro|vulnerable|permiso|conaf|monumento|ley|observar/i;
+  var rows=[['Taxon','Date observed','Description','Place name','Latitude','Longitude','Tags','Geoprivacy'].join(',')];
+  arr.slice().sort(function(a,b){return (a.date+a.time).localeCompare(b.date+b.time);}).forEach(function(r){
+    var cient=sciFindCient(r.species, BOSQUE_CATALOG.concat(getBosqueCustom()));
+    var luna=null; try{ luna=mensLunaForKey(r.date); }catch(e){}
+    var desc=((r.action||'observación')+(r.qty?' ('+r.qty+')':'')+(r.notes?' · '+r.notes:''))+(luna?' · Luna '+luna.luna+' d'+luna.dia:'');
+    var cat=(BOSQUE_CATALOG.concat(getBosqueCustom()).filter(function(b){return b&&String(b.nombre).toLowerCase()===String(r.species||'').toLowerCase();})[0]||{});
+    var priv=protRe.test(String((cat.nota||'')+' '+(cat.epoca||'')+' '+(cat.tipo||'')))?'obscured':'';
+    rows.push([
+      sciINatCell(cient||r.species||''),
+      sciINatCell(((r.date||'')+' '+(r.time||'')).trim()),
+      sciINatCell(desc),
+      sciINatCell(r.place||'Penco, Bio-Bio, CL'),
+      co.lat, co.lng,
+      sciINatCell('penco,13-lunas,bosque-nativo'),
+      priv
+    ].join(','));
+  });
+  sciCsvDownload('inat-bosque-penco-'+cal.fmtKey.format(new Date())+'.csv', rows.join('\n')+'\n');
+  alert('🌿 CSV iNaturalist listo (con encabezado).\nEspecies protegidas van como “obscured”.\nSúbelo en iNaturalist > Observations > Import > CSV import.');
+}
 function renderBirdsLog(){
   const box=$('birdsLogBox'); if(!box) return;
   const data=getBirdData().entries;
@@ -274,6 +395,8 @@ function setupBirdsDialog(){
     const blob=new Blob([txt],{type:'text/csv'});
     const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='aves-penco-'+cal.fmtKey.format(new Date())+'.csv'; a.click(); URL.revokeObjectURL(url);
   };
+  const expEBird=$('birdsExportEBird'); if(expEBird) expEBird.onclick=()=>{ try{ exportBirdsEBird(); }catch(e){ alert('No se pudo exportar eBird: '+(e&&e.message||e)); } };
+  const expINat=$('birdsExportINat'); if(expINat) expINat.onclick=()=>{ try{ exportBirdsINat(); }catch(e){ alert('No se pudo exportar iNat: '+(e&&e.message||e)); } };
 }
 setTimeout(setupBirdsDialog, 570);
 
@@ -637,5 +760,6 @@ function setupBosqueDialog(){
     const blob=new Blob([txt],{type:'text/csv'});
     const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='bosque-nativo-penco-'+cal.fmtKey.format(new Date())+'.csv'; a.click(); URL.revokeObjectURL(url);
   };
+  const expINat=$('bosqueExportINat'); if(expINat) expINat.onclick=()=>{ try{ exportBosqueINat(); }catch(e){ alert('No se pudo exportar iNat: '+(e&&e.message||e)); } };
 }
 setTimeout(setupBosqueDialog, 576);

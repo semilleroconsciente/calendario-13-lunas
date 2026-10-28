@@ -3,10 +3,13 @@
   "short_name": "13 Lunas",
   "description": "Calendario de las 13 Lunas - Mari Küla Küyen - Penco, Bío-Bío, Chile. 13 lunas × 28 días, siembra, mareas y territorio.",
   "lang": "es",
+  "id": "./",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone"],
   "orientation": "any",
+  "prefer_related_applications": false,
   "background_color": "#0b1026",
   "theme_color": "#0b1026",
   "categories": [

@@ -404,7 +404,7 @@ function renderMeta() {
     '<div><div>🏆 Todos los tiempos</div><div class="v">' + total + '</div></div>' +
     '<div><div>Tiempo</div><div class="v"><span id="skTime">' + fmtTime(G.seconds) + '</span>' +
     '<button type="button" class="sk-pause" id="skPauseBtn" title="Pausar / continuar">⏸</button></div>' +
-    '<div style="font-size:11px">❌ ' + G.errors + '/3 · 📊 ' + progressPct() + '%</div></div>';
+    '<div class="su-11a508">❌ ' + G.errors + '/3 · 📊 ' + progressPct() + '%</div></div>';
   var pb = $('skPauseBtn');
   if (pb) {
     pb.textContent = G.timerOn ? '⏸' : '▶';
@@ -754,7 +754,7 @@ function buildDialog() {
     '<div id="skMeta" class="sk-meta"></div>' +
     '<div id="skPanelJugar" class="sk-play"><div class="sk-wrap"><div id="skTop"></div><div id="skBoard"></div>' +
     '<div id="skMsg" class="sk-msgline"></div>' +
-    '<div id="skPad" style="width:100%;display:flex;flex-direction:column;align-items:center;gap:4px"></div></div></div>' +
+    '<div id="skPad" class="su-55f9c0"></div></div></div>' +
     '<div id="skPanelAprender" class="hidden"><div id="skLunaBox" class="menstrual-card"></div><div id="skLearnBox"></div></div>' +
     '<div id="skPanelRegistros" class="hidden"><div id="skHistBox"></div></div>' +
     '</form>';

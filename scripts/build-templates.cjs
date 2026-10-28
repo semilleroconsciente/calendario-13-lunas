@@ -81,7 +81,12 @@ function jsString(s) {
 
 function generarBundle(map) {
   const entradas = [...map.entries()].map(([id, block]) => {
+    if (!/^[A-Za-z0-9_-]+$/.test(id)) throw new Error(`id de template inválido: ${id}`);
     if (block.includes('</script')) throw new Error(`templates/${id}.html contiene </script> (rompería el bundle)`);
+    // Build-time guard: los templates son estáticos; ningún on* ni javascript: debe colarse.
+    // Si falla aquí, es que un template trae JS inline (CSP script-src 'self').
+    if (/\son[a-z]+\s*=/i.test(block)) throw new Error(`templates/${id}.html contiene handler on* (usa addEventListener en el módulo)`);
+    if (/javascript\s*:/i.test(block)) throw new Error(`templates/${id}.html contiene javascript: (usa https:)`);
     return `    ${JSON.stringify(id)}: ${jsString(block)}`;
   });
   return `// templates-bundled.js — AUTO-GENERADO por scripts/build-templates.cjs. No editar a mano.
@@ -106,9 +111,16 @@ ${entradas.join(',\n')}
   function inyectar(id) {
     try {
       if (inyectados[id]) return document.getElementById(id);
+      // Allowlist: evita path traversal templates/../../etc.
+      if (!/^[A-Za-z0-9_-]+$/.test(String(id))) return null;
       var html = HTML[id];
       if (html == null) return null;
       var t = document.createElement('template');
+      // Defensa en profundidad: si core-sanitize cargó antes, filtra el HTML
+      // estático (sin costo: los templates no traen script/on* por el guard de build).
+      try {
+        if (typeof window !== 'undefined' && typeof window.sanitizeHTML === 'function') html = window.sanitizeHTML(html);
+      } catch (e) {}
       t.innerHTML = html;
       var dlg = t.content.firstElementChild;
       if (!dlg) return null;
@@ -129,9 +141,15 @@ ${entradas.join(',\n')}
       d = inyectar(id);
       if (d) return Promise.resolve(d);
       if (/^https?:$/.test(location.protocol)) {
+        if (!/^[A-Za-z0-9_-]+$/.test(String(id))) return Promise.resolve(null);
         return fetch('templates/' + encodeURIComponent(id) + '.html', { cache: 'force-cache' })
           .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.text(); })
           .then(function (html) {
+            try {
+              if (typeof window !== 'undefined' && typeof window.sanitizeHTML === 'function') html = window.sanitizeHTML(html);
+            } catch (e) {}
+            // Bloquea inyección remota: si el fetch trae script/on*, se descarta.
+            if (/<script/i.test(html) || /\son[a-z]+\s*=/i.test(html) || /javascript\s*:/i.test(html)) return null;
             var t = document.createElement('template');
             t.innerHTML = html;
             var dlg = t.content.firstElementChild;

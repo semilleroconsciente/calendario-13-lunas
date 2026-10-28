@@ -340,12 +340,19 @@ async function finishRecv() {
     var arr = [];
     for (var i = 1; i <= recvTotal; i++) arr.push(recvChunks[i]);
     var json = await c.decodeChunks(arr);
+    if (json.length > 15 * 1024 * 1024) { setStatus('❌ QR demasiado grande. Toca Descartar.'); return; }
     var d = JSON.parse(json); // solo para previsualizar; la validación real la hace applyBackupJSON
     recvJSON = json;
-    var names = (d.usuarios || []).map(function (u) { return esc(u.nombre || u.id); }).join(', ');
+    // QR es input de atacante (pantalla ajena): esc + topes de largo, sin HTML crudo.
+    var users = Array.isArray(d.usuarios) ? d.usuarios.slice(0, 20) : [];
+    var names = users.map(function (u) { return esc(String((u && (u.nombre || u.id)) || '').slice(0, 40)); }).join(', ');
     var kb = Math.round(json.length / 1024);
-    $('qrSummary').innerHTML = '👤 <b>' + (d.usuarios ? d.usuarios.length : 0) + '</b> usuario(s): ' + (names || '—') +
+    var html = '👤 <b>' + users.length + '</b> usuario(s): ' + (names || '—') +
       '<br>📦 Tamaño: ' + kb + ' KB · recibido en ' + recvTotal + ' QRs';
+    try {
+      if (typeof window.setSafeHTML === 'function') window.setSafeHTML($('qrSummary'), html);
+      else $('qrSummary').textContent = '👤 ' + users.length + ' usuario(s): ' + users.map(function (u) { return String((u && (u.nombre || u.id)) || '').slice(0, 40); }).join(', ') + ' · ' + kb + ' KB';
+    } catch (e) { $('qrSummary').textContent = '✔ Secuencia completa (' + kb + ' KB)'; }
     $('qrConfirm').classList.remove('hidden');
     setStatus('✅ Secuencia completa. Revisa y confirma abajo.');
   } catch (e) {
