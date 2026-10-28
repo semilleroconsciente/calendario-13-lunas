@@ -94,12 +94,12 @@
  "src/pwa-install.js": "91421eb6f7db0a8fa40a944860aa458dc5ca98b1",
  "src/core-audio.js": "481a11fac3039bf8c67e36380df51f02b447525c",
  "src/core-bootstrap.js": "6dbc724a0cea526831bc8e9543c151e7ba553c83",
- "src/core-calendario.js": "35ad5329f8e0e271b11b7cf165a4f8c08987f023",
+ "src/core-calendario.js": "304985ac3837bb3ed9cc5736ffe57fbc0db9bf8c",
  "src/core-dialogo-dia.js": "7cb3b93ef096c43c8aef05dccdd3a381f703bd2d",
  "src/core-storage.js": "b7756cab323fe6ed3da530cebea1b52a8ca314c1",
  "src/core-themes.js": "b3875b8bcacf327e944d0ee2a8d5f500dab407db",
  "src/core-clima.js": "49c30e677a8160bb66e3d6d388954ab50c6f3c44",
- "src/styles-csp.css": "469fec26a6efe4ff7eff23e60c392f10d3c08529",
+ "src/styles-csp.css": "76a4d3e3c22bddfbffad7e305dd76c4e40f9627d",
  "src/dialogo-tamano.js": "19fd8e8b056a6925d78812f9af6adeeff15c31d3",
  "src/orden-herramientas-modulo.js": "e7a04565757f8270b81fb7546c57f82b98e1772e",
  "src/ics-modulo.js": "d0845d94d9a867ebb2c4ee8733af0f4cfd79e127",
@@ -142,5 +142,6 @@
  "src/hombre-medicina-modulo.js": "0d4cb66342c02366f451b3e322223e50128c5b29",
  "src/mujer-medicina-modulo.js": "0102722973d2b188bc354bce5ebd41b1614d1fa4",
  "src/medicina-tradicional-china-modulo.js": "e0893ac24ddc92b597c2a35fb219f2fda1447c79",
- "src/biblioteca-penco.js": "2e2b7bc52844d25dd658cb525b04d3bb831bf023"
+ "src/biblioteca-penco.js": "2e2b7bc52844d25dd658cb525b04d3bb831bf023",
+ "src/enlaces-relacionados-modulo.js": "1d087f630654cabec579a94117f6f483d7b65476"
 }

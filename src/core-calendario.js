@@ -1084,8 +1084,7 @@ function paintLunaPager(){
     if(currentView.tipo==='dft'){ label.textContent = '✷ DFT · Fuera del Tiempo'; }
     else {
       const n = currentView.luna;
-      const name = (typeof MOONS!=='undefined' && MOONS[n-1]) ? MOONS[n-1].nombre : '';
-      label.textContent = 'Luna ' + n + '/13' + (name ? ' · ' + name : '');
+      label.textContent = 'Luna ' + n + '/13';
     }
   }catch(e){}
 }
