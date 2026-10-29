@@ -1,11 +1,11 @@
 /* ============================================================
-   RETOS — Calendario 13 Lunas (Penco · Bío-Bío)
+   DESAFÍOS — Calendario 13 Lunas (Penco · Bío-Bío)
    Sección completa e independiente:
-   - Botón btnRetos21 (🔥 Retos) en Mi Día > Organizar
-   - Diálogo retos21Dialog (id histórico, título "🔥 Retos") con 5 pestañas:
+   - Botón btnRetos21 (🔥 Desafíos) en Mi Día > Organizar
+   - Diálogo retos21Dialog (id histórico, título "🔥 Desafíos") con 5 pestañas:
      1) 📋 Catálogo (12 plantillas con plan día a día y progresión en 3 fases)
-     2) 🚀 Mis retos (activos, progreso, racha, archivar, duplicar, editar)
-     3) 📅 Día a día (detalle del reto: grilla N días, check diario,
+     2) 🚀 Mis desafíos (activos, progreso, racha, archivar, duplicar, editar)
+     3) 📅 Día a día (detalle del desafío: grilla N días, check diario,
         notas, editar tarea, llevar días al calendario)
      4) ➕ Armar plan (constructor a medida: duración 3-90 días,
         hábito / lista / progresivo / combinado + plantillas propias)
@@ -13,7 +13,7 @@
    - Duración flexible: 7 · 14 · 21 · 30 · 66 o personalizada (3-90).
      Fases adaptativas por tercios: 🌱 Siembra · 🌿 Brote · 🌸 Florece.
    - Calendario: llevar los N días, lo que falta o un día suelto como
-     agenda [Reto xxxxx] con hora y aviso 🔔; también quitar del
+     agenda [Desafío xxxxx] con hora y aviso 🔔; también quitar del
      calendario (reconoce tags antiguos [R21 xxxxx]). Todo con
      lunaMapForKey, válido dentro del ciclo de 13 lunas visible.
    - Todo local y privado por usuario: userData().retos
@@ -148,7 +148,7 @@ function pushAgenda(fechaKey, hora, texto, conAviso) {
   if (!ya) r.cell.agenda.push({ id: 'a' + Date.now() + Math.random().toString(36).slice(2, 5), hour: hh, minute: mm, time: hhmm, text: texto, notify: !!conAviso, notified: false });
   return { ok: true };
 }
-// tag corto (últimos 5 del id) sirve para borrar tanto [R21 x] antiguos como [Reto x] nuevos
+// tag corto (últimos 5 del id) sirve para borrar tanto [R21 x] antiguos como [Desafío x] nuevos
 function tagCorto(reto) { return String(reto.id || '').slice(-5); }
 
 /* ---------- store (migra retos21 -> retos) ---------- */
@@ -165,7 +165,7 @@ function store() {
     var norm = function (r) {
       if (!r.checks) r.checks = {};
       if (!r.notas) r.notas = {};
-      if (!r.tag) r.tag = '[Reto ' + String(r.id || 'x').slice(-5) + ']';
+      if (!r.tag) r.tag = '[Desafío ' + String(r.id || 'x').slice(-5) + ']';
       if (!r.hora) r.hora = '10:00';
       if (!r.inicio) r.inicio = todayKey();
       if (!r.total) r.total = (r.dias && r.dias.length) ? r.dias.length : 21;
@@ -197,7 +197,7 @@ function faseDe(n, total) {
   var t = tercios(total);
   if (n <= t.t1) return { n: 1, nombre: '🌱 Siembra', desc: 'Suave: instala el hábito sin pelear.' };
   if (n <= t.t2) return { n: 2, nombre: '🌿 Brote', desc: 'Sube la exigencia de a poco.' };
-  return { n: 3, nombre: '🌸 Florece', desc: 'Consolida: tu mejor versión del reto.' };
+  return { n: 3, nombre: '🌸 Florece', desc: 'Consolida: tu mejor versión del desafío.' };
 }
 function fechaDeDia(reto, n) { return addDays(reto.inicio, n - 1); }
 function diaNumHoy(reto) { return diffDays(reto.inicio, todayKey()) + 1; }
@@ -227,7 +227,7 @@ function estadoDia(reto, n) {
   return 'pendiente';
 }
 
-/* ---------- catálogo: 12 retos con progresión real ---------- */
+/* ---------- catálogo: 12 desafíos con progresión real ---------- */
 function D(t, d) { return { t: t, d: d || '' }; }
 function buildCatalogo() {
   var vasos = [4, 4, 5, 5, 6, 6, 7, 6, 7, 7, 8, 8, 8, 9, 8, 8, 9, 9, 10, 10, 10];
@@ -430,7 +430,7 @@ function empezarReto(plantillaId, inicio, hora, conAviso, duracion) {
   var id = uid('rto');
   var baseDias = p ? p.dias : (custom.dias || []);
   var r = {
-    id: id, tag: '[Reto ' + id.slice(-5) + ']',
+    id: id, tag: '[Desafío ' + id.slice(-5) + ']',
     plantillaId: plantillaId,
     nombre: p ? p.nombre : custom.nombre,
     icono: p ? p.icono : (custom.icono || '🔥'),
@@ -446,7 +446,7 @@ function empezarReto(plantillaId, inicio, hora, conAviso, duracion) {
   var hp = r.hora.split(':');
   r.hora = String(hp[0]).padStart(2, '0') + ':' + String(hp[1]).padStart(2, '0');
   store().activos.push(r);
-  save('Reto iniciado 🔥');
+  save('Desafío iniciado 🔥');
   selId = id;
   return r;
 }
@@ -454,7 +454,7 @@ function crearRetoMedida(opts) {
   var total = clampDur(opts.total || 21);
   var id = uid('rto');
   var r = {
-    id: id, tag: '[Reto ' + id.slice(-5) + ']',
+    id: id, tag: '[Desafío ' + id.slice(-5) + ']',
     plantillaId: null,
     nombre: clean(opts.nombre, 50),
     icono: clean(opts.icono, 4) || '🔥',
@@ -468,7 +468,7 @@ function crearRetoMedida(opts) {
     motivo: clean(opts.motivo || '', 120)
   };
   store().activos.push(r);
-  save('Reto creado 🔥');
+  save('Desafío creado 🔥');
   selId = id;
   return r;
 }
@@ -542,13 +542,13 @@ function duplicarReto(reto) {
   var id = uid('rto');
   var copia = JSON.parse(JSON.stringify(reto));
   copia.id = id;
-  copia.tag = '[Reto ' + id.slice(-5) + ']';
+  copia.tag = '[Desafío ' + id.slice(-5) + ']';
   copia.nombre = clean(reto.nombre + ' (copia)', 50);
   copia.inicio = todayKey();
   copia.checks = {}; copia.notas = {};
   copia.creado = todayKey();
   s.activos.push(copia);
-  save('Reto duplicado 🔁');
+  save('Desafío duplicado 🔁');
   selId = id;
   render();
 }
@@ -561,7 +561,7 @@ function logrosDe(reto) {
   on(h >= Math.min(3, T), '🌱 3 días: semilla');
   on(h >= t.t1, '🌿 Siembra completa (' + t.t1 + ' días)');
   on(h >= t.t2, '🌳 Brote completo (' + t.t2 + ' días)');
-  on(h >= T, '🌸 ¡reto completado! (' + T + '/' + T + ')');
+  on(h >= T, '🌸 ¡desafío completado! (' + T + '/' + T + ')');
   on(rachaActual(reto) >= Math.min(7, T), '🔥 Racha de ' + Math.min(7, T));
   return L;
 }
@@ -596,15 +596,15 @@ function renderHead() {
   var box = $('r21head');
   if (!box) return;
   if (!s.activos.length && !s.archivo.length) {
-    box.innerHTML = '<div class="menstrual-card su-68a1a9"><h4>🔥 ¿Por qué retos?</h4>' +
-      '<p class="muted su-b439ab">Un reto es un plan corto con fecha, hora y marca diaria: elige una plantilla del catálogo o <b>arma tu propio plan a medida</b> (duración, progresión y tareas). La regla es <b>nunca fallar dos veces seguidas</b>. Llévalo al calendario con 📌 para no olvidarlo.</p></div>';
+    box.innerHTML = '<div class="menstrual-card su-68a1a9"><h4>🔥 ¿Por qué desafíos?</h4>' +
+      '<p class="muted su-b439ab">Un desafío es un plan corto con fecha, hora y marca diaria: elige una plantilla del catálogo o <b>arma tu propio plan a medida</b> (duración, progresión y tareas). La regla es <b>nunca fallar dos veces seguidas</b>. Llévalo al calendario con 📌 para no olvidarlo.</p></div>';
     return;
   }
   var tot = 0, n = 0, racha = 0, checks = 0;
   s.activos.forEach(function (r) { tot += pct(r); n++; racha = Math.max(racha, rachaActual(r)); checks += hechos(r); });
   var prom = n ? Math.round(tot / n) : 0;
   box.innerHTML = '<div class="menstrual-card su-68a1a9"><h4>🔥 Tu fuego: ' + s.activos.length + ' activo(s) · promedio ' + prom + '% · mejor racha ' + racha + ' 🔥 · ' + checks + ' ✓ totales</h4>' + barHTML(prom) +
-    '<p class="muted su-11a508">Marca el día de hoy en 🚀 Mis retos o en 📅 Día a día. Lleva tus días al calendario con 📌. Crea los tuyos en ➕ Armar plan.</p></div>';
+    '<p class="muted su-11a508">Marca el día de hoy en 🚀 Mis desafíos o en 📅 Día a día. Lleva tus días al calendario con 📌. Crea los tuyos en ➕ Armar plan.</p></div>';
 }
 function renderTabs() {
   ['Catalogo', 'Mis', 'Detalle', 'Crear', 'Guia'].forEach(function (t) {
@@ -649,7 +649,7 @@ function renderCatalogo() {
     var qkeep = $('r21q');
     if (qkeep && qkeep.value !== catQuery) qkeep.value = catQuery;
   }
-  if (!list.length) { box.innerHTML = '<p class="muted su-91a870">Sin retos en esta categoría. Prueba en ➕ Armar plan crear el tuyo a medida.</p>'; return; }
+  if (!list.length) { box.innerHTML = '<p class="muted su-91a870">Sin desafíos en esta categoría. Prueba en ➕ Armar plan crear el tuyo a medida.</p>'; return; }
   box.innerHTML = list.map(function (x) {
     var p = x.p;
     var prev = previewId === p.id;
@@ -689,7 +689,7 @@ function openStart(plantillaId) {
   }
   var horaDef = (base && base.hora) || (custom && custom.hora) || '10:00';
   var baseLen = (base ? base.dias.length : (custom.dias || []).length) || 21;
-  var d = makeDialog('r21startDialog', '▶ Empezar reto',
+  var d = makeDialog('r21startDialog', '▶ Empezar desafío',
     'Elige fecha, duración y hora. Si acortas, se toman los primeros días; si alargas, el plan se continúa.',
     '<div class="conv-row"><label>Inicio <input type="date" id="r21sFecha" value="' + esc(todayKey()) + '"></label>' +
     '<label>Hora <input type="time" id="r21sHora" value="' + esc(horaDef) + '"></label></div>' +
@@ -698,7 +698,7 @@ function openStart(plantillaId) {
     '<label class="su-4b3de7">Otra <input type="number" id="r21sCustom" min="3" max="90" value="' + baseLen + '" class="su-ef1212"></label></div></div>' +
     '<label class="check-row su-53cf90"><input type="checkbox" id="r21sAviso" checked> 🔔 aviso en el calendario</label>' +
     '<p class="muted su-11a508">Base: ' + baseLen + ' días. La progresión 🌱→🌿→🌸 se recalcula a tu duración.</p>' +
-    '<div class="dlg-actions su-59a5a8"><button type="button" id="r21sGo" class="btn btn-accent su-30e741">🔥 Crear reto</button></div>');
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="r21sGo" class="btn btn-accent su-30e741">🔥 Crear desafío</button></div>');
   var selDur = baseLen;
   d.querySelectorAll('.r21sd').forEach(function (b) {
     if (b.dataset.def) { b.classList.add('btn-accent'); selDur = +b.dataset.v; }
@@ -726,10 +726,10 @@ function openStart(plantillaId) {
     var av = !!($('r21sAviso') || {}).checked;
     try { d.close(); } catch (e) {}
     var r = empezarReto(plantillaId, f, h, av, dur);
-    if (!r) { alert('No se pudo crear el reto.'); return; }
+    if (!r) { alert('No se pudo crear el desafío.'); return; }
     tab = 'Detalle';
     render();
-    var llevar = confirm('🔥 ¡Reto creado (' + dur + ' días)! ¿Llevar los días al calendario ahora?\nAceptar = Sí · Cancelar = lo marco yo después');
+    var llevar = confirm('🔥 ¡Desafío creado (' + dur + ' días)! ¿Llevar los días al calendario ahora?\nAceptar = Sí · Cancelar = lo marco yo después');
     if (llevar) llevarTodo(r);
   };
 }
@@ -739,7 +739,7 @@ function renderMis() {
   var s = store();
   var ab = $('r21archBox');
   if (!s.activos.length) {
-    box.innerHTML = '<p class="muted su-91a870">Sin retos activos. Elige uno en 📋 Catálogo o arma el tuyo en ➕ Armar plan.</p>';
+    box.innerHTML = '<p class="muted su-91a870">Sin desafíos activos. Elige uno en 📋 Catálogo o arma el tuyo en ➕ Armar plan.</p>';
     if (ab) ab.innerHTML = s.archivo.length ? archivadosHTML(s) : '';
     return;
   }
@@ -809,7 +809,7 @@ function renderMis() {
     b.onclick = function () {
       var r = getReto(b.dataset.k); if (!r) return;
       var T = totalDias(r);
-      share('🔥 Reto: ' + r.nombre, r.icono + ' ' + r.nombre + '\n📅 ' + r.inicio + ' → ' + addDays(r.inicio, T - 1) + ' (' + T + ' días)\n✅ ' + hechos(r) + '/' + T + ' (' + pct(r) + '%) · 🔥 racha ' + rachaActual(r));
+      share('🔥 Desafío: ' + r.nombre, r.icono + ' ' + r.nombre + '\n📅 ' + r.inicio + ' → ' + addDays(r.inicio, T - 1) + ' (' + T + ' días)\n✅ ' + hechos(r) + '/' + T + ' (' + pct(r) + '%) · 🔥 racha ' + rachaActual(r));
     };
   });
   box.querySelectorAll('.r21-arch').forEach(function (b) {
@@ -826,10 +826,10 @@ function renderMis() {
   });
   box.querySelectorAll('.r21-del').forEach(function (b) {
     b.onclick = function () {
-      if (!confirm('¿Borrar este reto? (Se conservan tus notas del calendario)')) return;
+      if (!confirm('¿Borrar este desafío? (Se conservan tus notas del calendario)')) return;
       var st = store();
       st.activos = st.activos.filter(function (x) { return x.id !== b.dataset.k; });
-      save('Reto borrado');
+      save('Desafío borrado');
       if (selId === b.dataset.k) selId = null;
       render();
     };
@@ -861,12 +861,12 @@ function renderDetalle() {
     };
   });
   var s = store();
-  if (!s.activos.length) { box.innerHTML = '<p class="muted su-91a870">Sin retos activos.</p>'; return; }
+  if (!s.activos.length) { box.innerHTML = '<p class="muted su-91a870">Sin desafíos activos.</p>'; return; }
   if (!selId || !getReto(selId) || !s.activos.some(function (r) { return r.id === selId; })) selId = s.activos[0].id;
   var r = getReto(selId);
   var T = totalDias(r);
   // selector
-  var sel = '<div class="conv-row"><label class="su-4b3de7">Reto <select id="r21sel">' +
+  var sel = '<div class="conv-row"><label class="su-4b3de7">Desafío <select id="r21sel">' +
     s.activos.map(function (x) { return '<option value="' + esc(x.id) + '"' + (x.id === selId ? ' selected' : '') + '>' + esc(x.icono + ' ' + x.nombre + ' (' + hechos(x) + '/' + totalDias(x) + ')') + '</option>'; }).join('') +
     '</select></label><label>Inicio <input type="date" id="r21inicio" value="' + esc(r.inicio) + '"></label>' +
     '<label>Hora <input type="time" id="r21hora" value="' + esc(r.hora) + '"></label></div>';
@@ -965,7 +965,7 @@ function renderDetalle() {
   if (bs) bs.onclick = function () {
     var lines = ['🔥 ' + r.icono + ' ' + r.nombre + ' (' + hechos(r) + '/' + T + ' · ' + pct(r) + '%)'];
     for (var n = 1; n <= T; n++) lines.push((r.checks[n] ? '✅' : '⭕') + ' D' + n + ' ' + fechaDeDia(r, n) + ': ' + tareaCorta(r, n));
-    share('🔥 Reto: ' + r.nombre, lines.join('\n'));
+    share('🔥 Desafío: ' + r.nombre, lines.join('\n'));
   };
 }
 
@@ -1152,7 +1152,7 @@ function bindArmar() {
   var go = $('r21cGo');
   if (go) go.onclick = function () {
     var b = leerFormBase();
-    if (!b.nombre) { alert('Ponle un nombre a tu reto.'); return; }
+    if (!b.nombre) { alert('Ponle un nombre a tu desafío.'); return; }
     if (!validKey(b.fecha)) { alert('Fecha inválida'); return; }
     var hh = b.hora; if (!validHora(hh)) hh = '10:00';
     var r = construirDiasPreview();
@@ -1163,12 +1163,12 @@ function bindArmar() {
     store().customs.push({ id: tplId, nombre: b.nombre, icono: b.icono, cat: b.cat, desc: b.motivo || 'Plan a medida.', hora: hh, dias: r.dias });
     var reto = crearRetoMedida({ nombre: b.nombre, icono: b.icono, cat: b.cat, motivo: b.motivo, total: total, inicio: b.fecha, hora: hh, conAviso: b.aviso, dias: r.dias });
     reto.plantillaId = tplId;
-    save('Reto creado 🔥');
+    save('Desafío creado 🔥');
     try { $('r21cNombre').value = ''; $('r21cAccion').value = ''; $('r21cLista').value = ''; $('r21cMotivo').value = ''; } catch (e) {}
     renderTpls(); renderCatalogo();
     tab = 'Detalle';
     render();
-    var llevar = confirm('🔥 ¡Reto creado (' + total + ' días)! ¿Llevar los días al calendario?');
+    var llevar = confirm('🔥 ¡Desafío creado (' + total + ' días)! ¿Llevar los días al calendario?');
     if (llevar) llevarTodo(reto);
   };
 }
@@ -1190,7 +1190,7 @@ function renderTpls() {
   });
   box.querySelectorAll('.r21td').forEach(function (b) {
     b.onclick = function () {
-      if (!confirm('¿Borrar esta plantilla? (Tus retos ya creados no se borran)')) return;
+      if (!confirm('¿Borrar esta plantilla? (Tus desafíos ya creados no se borran)')) return;
       var st = store();
       st.customs = st.customs.filter(function (x) { return x.id !== b.dataset.k; });
       save('Plantilla borrada');
@@ -1235,7 +1235,7 @@ function renderGuia() {
     '<div class="help-card"><h4>📏 Regla de oro</h4><p class="su-11a508">Nunca falles dos veces seguidas. Un tropiezo es un dato; dos seguidos son una nueva costumbre. Puedes duplicar 🔁, renombrar ✏️ y editar cada tarea.</p></div>' +
     '<div class="help-card"><h4>🏆 Logros</h4><p class="su-11a508">🚀 partir · 🌱 3 días · 🌿 siembra · 🌳 brote · 🌸 completar · 🔥 racha. Compártelos con tu gente.</p></div>' +
     '</div>' +
-    '<p class="muted su-e6fe60">Consejo de salud: estos retos son hábitos generales de bienestar, no tratamiento médico. Si tienes una condición de salud, consulta a tu CESFAM antes de retos físicos o alimentarios.</p>';
+    '<p class="muted su-e6fe60">Consejo de salud: estos desafíos son hábitos generales de bienestar, no tratamiento médico. Si tienes una condición de salud, consulta a tu CESFAM antes de desafíos físicos o alimentarios.</p>';
 }
 function render() {
   renderHead(); renderTabs(); renderCatalogo(); renderMis(); renderDetalle(); renderCrear(); renderGuia();
@@ -1246,12 +1246,12 @@ function render() {
 /* ---------- diálogo ---------- */
 function build() {
   cssOnce();
-  makeDialog('retos21Dialog', '🔥 Retos',
+  makeDialog('retos21Dialog', '🔥 Desafíos',
     'Elige una plantilla, ponle duración y fecha, márcalo cada día y <b>llévalo al calendario</b>. O arma tu <b>plan a medida</b> en ➕. Todo queda <b>privado y local</b> por usuario.',
     '<div id="r21head"></div>' +
     '<div class="timer-tabs su-ca7e11">' +
     '<button type="button" id="tabR21Catalogo" class="btn btn-accent su-30e741">📋 Catálogo</button>' +
-    '<button type="button" id="tabR21Mis" class="btn su-30e741">🚀 Mis retos</button>' +
+    '<button type="button" id="tabR21Mis" class="btn su-30e741">🚀 Mis desafíos</button>' +
     '<button type="button" id="tabR21Detalle" class="btn su-30e741">📅 Día a día</button>' +
     '<button type="button" id="tabR21Crear" class="btn su-30e741">➕ Armar plan</button>' +
     '<button type="button" id="tabR21Guia" class="btn su-30e741">🏆 Guía</button>' +
@@ -1339,8 +1339,8 @@ function registerBtn(group, sub, id, label, matchTitle) {
 }
 
 function setup() {
-  injectBtn('dia', 'organizar', 'btnRetos21', '🔥 Retos', 'reto retos desafio desafios habito habitos disciplina constancia racha progresion fases siembra brote florece calendario agregar recordar meta cambio transformacion plan planes medida personalizado desafio 21');
-  registerBtn('dia', 'organizar', 'btnRetos21', '🔥 Retos', 'Mi D');
+  injectBtn('dia', 'organizar', 'btnRetos21', '🔥 Desafíos', 'reto retos desafio desafios habito habitos disciplina constancia racha progresion fases siembra brote florece calendario agregar recordar meta cambio transformacion plan planes medida personalizado desafio 21');
+  registerBtn('dia', 'organizar', 'btnRetos21', '🔥 Desafíos', 'Mi D');
   try { if (typeof reordenarAcciones === 'function') reordenarAcciones(); } catch (e) {}
   try { if (typeof updateGroupCounts === 'function') updateGroupCounts(); } catch (e) {}
   try { if (typeof applyVisibility === 'function') applyVisibility(); } catch (e) {}

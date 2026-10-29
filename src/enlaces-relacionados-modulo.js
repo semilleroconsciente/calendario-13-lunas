@@ -44,7 +44,7 @@ var POR_SUB = {
   /* 🌊 Territorio Penco */
   'mar': {
     in: ['btnTides', 'btnFishing', 'btnIntermareal', 'btnNudos', 'btnKayak', 'btnBallenas', 'btnFaunaMarina', 'btnWeather'],
-    ex: [['⚓ SHOA · Mareas oficiales', 'https://www.shoa.cl'], ['🐟 Sernapesca · Vedas y marea roja', 'https://www.sernapesca.cl'], ['🌊 Directemar · Seguridad náutica', 'https://www.directemar.cl']]
+    ex: [['🌊 Tabla de mareas · Penco', 'https://tablademareas.com/cl/biobio/penco#_mareas'], ['🐟 Sernapesca · Vedas y marea roja', 'https://www.sernapesca.cl'], ['🌊 Directemar · Seguridad náutica', 'https://www.directemar.cl']]
   },
   'tierra': {
     in: ['btnHuerta', 'btnSiembra', 'btnBosque', 'btnCompost', 'btnAgua', 'btnHidroponia', 'btnFlora', 'btnLawen', 'btnBirds', 'btnMeli', 'btnHongos', 'btnFenologia', 'btnSenderos'],
@@ -61,11 +61,11 @@ var POR_SUB = {
   /* 💚 Cuerpo & Salud */
   'ciclos': {
     in: ['btnMenstrual', 'btnFerti', 'btnClimaterio', 'btnMujerMedicina', 'btnLawen', 'btnMedic'],
-    ex: [['💚 MINSAL · Salud sexual', 'https://www.minsal.cl'], ['📘 Chile Crece Contigo', 'https://www.chilecrececontigo.cl']]
+    ex: [['💚 MINSAL · Salud sexual', 'https://www.minsal.cl'], ['📘 Chile Crece Contigo', 'https://www.crececontigo.gob.cl']]
   },
   'etapas': {
     in: ['btnAdolescencia', 'btnJuventud', 'btnAdultez', 'btnVejez', 'btnSeptenios', 'btnKimun', 'btnCrianza', 'btnArbolFull'],
-    ex: [['🧒 Chile Crece Contigo', 'https://www.chilecrececontigo.cl'], ['👵 SENAMA · Personas mayores', 'https://www.senama.gob.cl']]
+    ex: [['🧒 Chile Crece Contigo', 'https://www.crececontigo.gob.cl'], ['👵 SENAMA · Personas mayores', 'https://www.senama.gob.cl']]
   },
   'cuidado': {
     in: ['btnMedic', 'btnNutri', 'btnAyurveda', 'btnMTC', 'btnGym', 'btnNatacion', 'btnPelo', 'btnRituales', 'btnEnergia', 'btnLawen', 'btnBreath'],
@@ -94,7 +94,7 @@ var POR_SUB = {
   },
   'infancias': {
     in: ['btnTales', 'btnCrianza', 'btnAdolescencia', 'btnVozAbuelos', 'btnMapu'],
-    ex: [['🧒 Chile Crece Contigo · Cuentos', 'https://www.chilecrececontigo.cl'], ['📚 BPDigital infantil', 'https://www.bpdigital.cl']]
+    ex: [['🧒 Chile Crece Contigo · Cuentos', 'https://www.crececontigo.gob.cl'], ['📚 BPDigital infantil', 'https://www.bpdigital.cl']]
   },
   /* 🪞 Interior, Linaje y Memoria */
   'conocerse': {
@@ -128,7 +128,7 @@ var POR_SUB = {
   },
   'familia': {
     in: ['btnArbolFull', 'btnVozAbuelos', 'btnConstelaciones', 'btnCrianza', 'btnTales'],
-    ex: [['📜 Registro Civil · Partidas y certificados', 'https://www.registrocivil.cl'], ['🧒 Chile Crece Contigo', 'https://www.chilecrececontigo.cl']]
+    ex: [['📜 Registro Civil · Partidas y certificados', 'https://www.registrocivil.cl'], ['🧒 Chile Crece Contigo', 'https://www.crececontigo.gob.cl']]
   },
   /* 🤝 Comunidad */
   'red': {
@@ -160,7 +160,7 @@ var POR_SUB = {
 /* ---------- Ajustes finos por botón (sección por sección) ---------- */
 /* Si un botón está aquí, sus listas reemplazan a las del sub-grupo */
 var POR_BTN = {
-  'btnTides': { in: ['btnFishing', 'btnIntermareal', 'btnKayak', 'btnWeather', 'btnEvac', 'btnGolden'], ex: [['⚓ SHOA · Tabla de mareas Talcahuano', 'https://www.shoa.cl'], ['🌊 Meteochile · Oleaje', 'https://www.meteochile.gob.cl']] },
+  'btnTides': { in: ['btnFishing', 'btnIntermareal', 'btnKayak', 'btnWeather', 'btnEvac', 'btnGolden'], ex: [['🌊 Tabla de mareas · Penco', 'https://tablademareas.com/cl/biobio/penco#_mareas'], ['🌊 Meteochile · Oleaje', 'https://www.meteochile.gob.cl']] },
   'btnFishing': { in: ['btnTides', 'btnIntermareal', 'btnFaunaMarina', 'btnNudos', 'btnKayak'], ex: [['🐟 Sernapesca · Vedas y tallas', 'https://www.sernapesca.cl'], ['⚓ SHOA · Mareas', 'https://www.shoa.cl']] },
   'btnIntermareal': { in: ['btnTides', 'btnFishing', 'btnFaunaMarina', 'btnLawen', 'btnFenologia'], ex: [['🦀 Sernapesca · Marea roja', 'https://www.sernapesca.cl'], ['🔎 iNaturalist · Registra tu hallazgo', 'https://www.inaturalist.org']] },
   'btnKayak': { in: ['btnTides', 'btnWeather', 'btnNudos', 'btnFishing', 'btnFirstAid'], ex: [['⚓ Directemar · Seguridad náutica', 'https://www.directemar.cl'], ['🌤️ Meteochile · Viento y oleaje', 'https://www.meteochile.gob.cl']] },

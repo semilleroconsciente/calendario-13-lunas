@@ -113,7 +113,7 @@
   // Aplica preset replicando renderer.js (visible + home). Usa window.PRESETS /
   // visibleFromPreset() cuando están listos; si no, fallback local Esencial.
   // Así "Esencial" deja pocas herramientas y "Todo" las muestra todas.
-  var ESENCIAL_FALLBACK = { btnHabits:1, btnRutinas:1, btnDiscipline:1, btnSchedule:1, btnTimer:1, btnRemind:1, btnGratitud:1, btnDreams:1, btnBreath:1, btnWeather:1, btnAstro:1, btnGolden:1, btnCircadian:1, btnEkadashi:1, btnTides:1, btnSiembra:1, btnMeal:1, btnShopping:1, btnFinance:1, btnHomeTasks:1, btnTales:1, btnCrianza:1, btnFirstAid:1, btnViolence:1, btnEvac:1, btnApoyo:1, btnHelp:1, btnDonate:1 };
+  var ESENCIAL_FALLBACK = { btnHabits:1, btnRutinas:1, btnDiscipline:1, btnSchedule:1, btnTimer:1, btnRemind:1, btnGratitud:1, btnDreams:1, btnBreath:1, btnWeather:1, btnAstro:1, btnGolden:1, btnCircadian:1, btnEkadashi:1, btnTides:1, btnFishing:1, btnIntermareal:1, btnNudos:1, btnKayak:1, btnBallenas:1, btnFaunaMarina:1, btnHuerta:1, btnSiembra:1, btnBosque:1, btnCompost:1, btnAgua:1, btnHidroponia:1, btnElectrocultura:1, btnFlora:1, btnLawen:1, btnBirds:1, btnAnfibios:1, btnMeli:1, btnHongos:1, btnSenderos:1, btnFuego:1, btnFenologia:1, btnComuna:1, btnEducacion:1, btnBiblioPenco:1, btnIglesias:1, btnMuni:1, btnBomberos:1, btnActores:1, btnAmenazas:1, btnNegocios:1, btnMeal:1, btnShopping:1, btnFinance:1, btnHomeTasks:1, btnTales:1, btnCrianza:1, btnFirstAid:1, btnViolence:1, btnEvac:1, btnApoyo:1, btnHelp:1, btnDonate:1 };
   function aplicarPresetSeguro(nombre) {
     try {
       if (typeof DATA === 'undefined' || !DATA) return;

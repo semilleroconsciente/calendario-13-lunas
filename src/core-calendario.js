@@ -317,6 +317,7 @@ function renderTodayView(){
     + (hb.frase === false ? '' : '<div class="today-card" data-home="frase"><h3>💬 Frase del día</h3>'
     + (function(){ const b = fr ? (fr.base || (fr.t ? fr : null)) : null; return b ? '<p class="today-quote">«'+escapeHtml(b.t)+'»<span>— '+escapeHtml(b.a||'Anónimo')+'</span></p>' : '<p class="muted">Sin frase para hoy.</p>'; })()
     + '</div>')
+    + (hb.cumple === false ? '' : '<div class="today-card" data-home="cumple"><h3>🎂 Cumpleaños</h3><div id="todayCumpleBody"><p class="muted su-11a508">🎈 Agrega a tu gente en 🎂 Cumpleaños y avísales a tiempo.</p></div><div class="su-67b198"><button type="button" data-go="btnCumple" class="btn su-1ce0dc">🎂 Abrir Cumpleaños</button></div></div>')
     + ((hb.sol === false || hb.solLuna === false) ? '' : '<div class="today-card today-card--sunmoon today-card--sol" data-home="sol"><h3>☀️ Sol de hoy</h3>'
     + '<div class="today-sun"><span class="chip chip--sun">☀️ Amanecer <b>'+(sun.rise?cal.fmtTime.format(new Date(sun.rise)):'--')+'</b></span>'
     + '<span class="chip chip--sunset">🌇 Atardecer <b>'+(sun.set?cal.fmtTime.format(new Date(sun.set)):'--')+'</b></span></div>'
@@ -1539,6 +1540,7 @@ function renderLuna() {
     card.className = 'day-card' + (key === todayKey ? ' today' : '') + (mensType ? ' mens-'+mensType : '') + hasHabits + hasGym;
     card.dataset.luna = meta.n;
     card.dataset.dia = d.diaN;
+    card.dataset.key = key;
     card.setAttribute('tabindex', '0');
     card.setAttribute('role', 'button');
     try{

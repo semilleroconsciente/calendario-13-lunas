@@ -47,10 +47,11 @@ body {
   overflow-y: auto;
 }
 
-.brand h1 { font-size: 20px; color: var(--gold); letter-spacing: 1px; }
+.brand { text-align: center; }
+.brand h1 { font-size: 20px; color: var(--gold); letter-spacing: 1px; text-align: center; }
 .brand-logo { display: block; width: 120px; height: 120px; margin: 0 auto 8px; border-radius: 50%; object-fit: cover; border: 2px solid var(--gold); box-shadow: 0 0 18px #e8c56a44; }
 .brand-moons { text-align: center; font-size: 15px; letter-spacing: 4px; margin-bottom: 6px; }
-.brand-sub { color: var(--muted); font-size: 12px; margin-top: 4px; line-height: 1.4; }
+.brand-sub { color: var(--muted); font-size: 12px; margin-top: 4px; line-height: 1.4; text-align: center; }
 
 .cycle-label { display: block; margin: 16px 0 4px; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); }
 .user-row { display: flex; gap: 6px; }
@@ -1581,31 +1582,39 @@ body[data-modo-noche="1"] dialog { filter: brightness(0.92); }
 /* Práctica: opciones bloqueadas se ven apagadas */
 #matematicasDialog select option:disabled { color: var(--muted); }
 
-/* === Secciones agrandables en PC (dialogo-tamano.js) ===
-   Solo PC: puntero fino + ancho > 920px. En móvil no aparece nada. */
-.dlg-expand-btn, .dlg-resize-handle { display: none; }
+/* === Secciones con tamaño nativo en PC (dialogo-tamano.js) ===
+   Solo el resize nativo de la esquina inferior derecha; sin botones extra.
+   Solo la ✕ de cerrar queda flotante en la misma posición (siempre visible
+   al bajar el scroll); el título se desplaza normal. */
+.dlg-expand-btn, .dlg-resize-handle { display: none !important; }
+/* Cabecera normal: título a la izquierda, ✕ a la derecha en su sitio */
+dialog > form > .dlg-actions:first-child,
+dialog > .dlg-actions:first-child { align-items: center; }
+dialog > form > .dlg-actions:first-child > h3,
+dialog > .dlg-actions:first-child > h3 { flex: 1 1 auto; min-width: 0; margin: 0; }
+/* Solo la ✕ flotante: fija en la esquina superior derecha del diálogo.
+   La posición exacta (top/right) la calcula dialogo-tamano.js desde el
+   rect del diálogo para que quede siempre en el mismo lugar; los valores
+   base la dejan persistente aun antes del cálculo. */
+.dlg-close-float {
+  position: fixed; top: 10px; right: 10px; z-index: 60;
+  width: 34px; height: 34px; border-radius: 9px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  box-shadow: 0 2px 12px rgba(0,0,0,.45);
+  margin: 0;
+}
+/* Appbars de juegos a pantalla completa: su panel interno ya desplaza,
+   la barra queda arriba sin flotar. */
+.sk-appbar, .cr-appbar {
+  position: sticky; top: 0; z-index: 30;
+  background: var(--bg2);
+}
 @media (pointer: fine) and (min-width: 921px) {
-  dialog.dlg-resizable { position: relative; resize: both; overflow: auto; padding-bottom: 44px; }
+  /* border-box: el ancho/alto incluyen padding+borde → el tamaño aplicado
+     es el mismo que mide el navegador, sin deriva que agrande solo. */
+  dialog.dlg-resizable { position: relative; box-sizing: border-box; resize: both; overflow: auto; }
   dialog.dlg-resizable > form, dialog.dlg-resizable form { min-height: 100%; }
-  dialog.dlg-expanded { border-color: var(--gold); box-shadow: 0 12px 60px rgba(0,0,0,.55); }
-  .dlg-expand-btn {
-    display: inline-flex; align-items: center; justify-content: center;
-    position: absolute; top: 10px; right: 52px; z-index: 5;
-    width: 34px; height: 34px; border-radius: 9px;
-    border: 1px solid var(--line); background: var(--panel); color: var(--gold);
-    font-size: 16px; cursor: pointer; padding: 0;
-  }
-  .dlg-expand-btn:hover { background: var(--card-hover); border-color: var(--gold); }
-  .dlg-resize-handle {
-    display: inline-flex; align-items: center; justify-content: center;
-    position: sticky; float: right; bottom: 6px; right: 6px; z-index: 6;
-    width: 30px; height: 30px; border-radius: 9px; margin-top: 6px;
-    border: 1px solid var(--gold); background: var(--panel); color: var(--gold);
-    font-size: 15px; cursor: nwse-resize; padding: 0; touch-action: none; user-select: none;
-    box-shadow: 0 2px 12px rgba(0,0,0,.4); opacity: .8;
-  }
-  .dlg-resize-handle:hover { background: var(--card-hover); opacity: 1; }
-  body.dlg-resizing, body.dlg-resizing * { cursor: nwse-resize !important; user-select: none !important; }
 }
 
 /* === Zoom del calendario en PC (zoom-calendario.js): Ctrl+rueda ===

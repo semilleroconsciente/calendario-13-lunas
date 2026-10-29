@@ -2,7 +2,7 @@
 // Copyright (C) 2026 Semillero Consciente. Licencia: GNU GPLv3 o posterior (ver COPYING).
 // SPDX-License-Identifier: GPL-3.0-or-later
 // v55
-const CACHE = 'cal13-v148-offline';
+const CACHE = 'cal13-v151-offline';
 const MEDIA_CACHE = 'cal13-media-v1';
 
 // Lista completa de archivos que usa index.html (bare + con ?v=).
@@ -209,12 +209,14 @@ const CORE = [
   './min/cuarto-camino-modulo.min.js?v=1',
   './min/cuerpo-luna-rituales-fenologia-modulo.min.js',
   './min/cuerpo-luna-rituales-fenologia-modulo.min.js?v=1',
+  './min/cumpleanos-modulo.min.js',
+  './min/cumpleanos-modulo.min.js?v=1',
   './min/dama-modulo.min.js',
   './min/dama-modulo.min.js?v=1',
   './min/data.min.js',
   './min/data.min.js?v=8',
   './min/dialogo-tamano.min.js',
-  './min/dialogo-tamano.min.js?v=1',
+  './min/dialogo-tamano.min.js?v=2',
   './min/domotica-modulo.min.js',
   './min/domotica-modulo.min.js?v=1',
   './min/educacion-penco.min.js',
@@ -384,7 +386,7 @@ const CORE = [
   './min/styles-csp.min.css',
   './min/styles-csp.min.css?v=1',
   './min/styles.min.css',
-  './min/styles.min.css?v=16',
+  './min/styles.min.css?v=17',
   './min/sudoku-modulo.min.js',
   './min/sudoku-modulo.min.js?v=1',
   './min/talleres-penco.min.js',

@@ -3949,7 +3949,7 @@ function setupClimaMareasDialog() {
     if (tp && tb && tp.parentNode !== tb) tb.appendChild(tp);
   } catch (e) {}
   try { addKw('btnWeather', 'clima dialogo ventana pronostico'); } catch (e) {}
-  try { addKw('btnTides', 'mareas dialogo ventana shoa'); } catch (e) {}
+  try { addKw('btnTides', 'mareas dialogo ventana tablademareas penco'); } catch (e) {}
   var bW = $('btnWeather');
   if (bW && !bW.dataset.dlgWrapped) {
     bW.dataset.dlgWrapped = '1';

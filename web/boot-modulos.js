@@ -90,6 +90,7 @@
     'min/hogar-corral-movilidad-escolar-modulo.min.js?v=1',
     'min/hogar-biblioteca-modulo.min.js?v=1',
     'min/feng-shui-modulo.min.js?v=1',
+    'min/cumpleanos-modulo.min.js?v=1',
     'min/cuerpo-luna-rituales-fenologia-modulo.min.js?v=1',
     'min/energia-descanso-modulo.min.js?v=1',
     'min/ayurveda-modulo.min.js?v=1',

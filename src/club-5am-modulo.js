@@ -9,7 +9,7 @@
         adaptación a Penco, cuidados y a quién NO le sirve)
      2) 🌅 Mi Victoria (checklist diario 20/20/20: moverse,
         reflexionar, crecer + hora de despertar + nota)
-     3) 🔥 Reto 66 días (grilla de 66 días en 3 fases:
+     3) 🔥 Desafío 66 días (grilla de 66 días en 3 fases:
         destrucción, instalación, integración + racha)
      4) 😴 Descanso (calculadora de hora de acostarse según
         hora de despertar + ritual nocturno + registro)
@@ -160,7 +160,7 @@ var BLOQUES = [
   { id: 'reflect', ico: '🪞', n: '05:20–05:40 · Reflexionar', desc: '20 min de silencio: ordenar la mente antes que el mundo la desordene.',
     ideas: ['Escribir 1 página: lo que siento, lo que quiero, lo que agradezco', 'Meditar o rezar 10 min + gratitud escrita (3 cosas)', 'Releer tu ikigai o tu carta de honra y anotar 1 intención', 'Respiración 4-7-8: 6 ciclos + 5 min de silencio mirando el cielo', 'Diario de sueños (pewma): anotar lo soñado antes que se borre'] },
   { id: 'grow', ico: '🌱', n: '05:40–06:00 · Crecer', desc: '20 min de aprender: una idea diaria que te hace más capaz.',
-    ideas: ['Leer 10–15 páginas de un libro que te forme', 'Estudiar mapuzugun: 5 palabras nuevas en voz alta', 'Escuchar un audio o clase corta y anotar 1 idea aplicable', 'Repasar tu oficio: practicar 1 técnica 20 min', 'Leer tu reto de 21 días y planificar el paso de hoy'] }
+    ideas: ['Leer 10–15 páginas de un libro que te forme', 'Estudiar mapuzugun: 5 palabras nuevas en voz alta', 'Escuchar un audio o clase corta y anotar 1 idea aplicable', 'Repasar tu oficio: practicar 1 técnica 20 min', 'Leer tu desafío de 21 días y planificar el paso de hoy'] }
 ];
 var RITUAL_NOCHE = [
   { id: 'pantallas', t: '📵 Pantallas fuera 1 h antes', d: 'Celular a cargar fuera del dormitorio. Nada de noticias ni redes en cama.' },
@@ -271,7 +271,7 @@ function renderHead() {
   var prom = tot ? Math.round(vic / tot * 100) : 0;
   var h66 = s.inicio66 ? hechos66() : 0;
   box.innerHTML = '<div class="menstrual-card su-68a1a9"><h4>🌅 ' + vic + ' victoriosa(s) · ' + prom + '% de tus mañanas · 🔥 racha ' + r + '</h4>' + barHTML(prom) +
-    '<p class="muted su-11a508">' + (s.inicio66 ? '🔥 Reto 66: ' + h66 + '/66 días desde el ' + esc(s.inicio66) + '. ' : 'Sin reto 66 activo. ') +
+    '<p class="muted su-11a508">' + (s.inicio66 ? '🔥 Desafío 66: ' + h66 + '/66 días desde el ' + esc(s.inicio66) + '. ' : 'Sin desafío 66 activo. ') +
     'Despertador habitual: ⏰ ' + esc(s.cfg.wake) + ' · Acostarse sugerido: 😴 ' + esc(horaAcostarse(s.cfg.wake, s.cfg.dormirHoras)) + '</p></div>';
 }
 
@@ -297,7 +297,7 @@ function renderGuia() {
     '<p>En invierno amanece tarde y hace frío: parte con luz encendida, zapatillas al lado de la cama y movimiento <b>dentro de la casa</b> (escaleras, baile, sentadillas). En verano aprovecha el borde costero: caminar mirando el mar a las 5 es gratis y no necesita gym. Si trabajas por turnos o te acuestas pasada la medianoche, <b>mueve tu “5 AM”</b>: levántate 1 hora antes de lo habitual, sea a las 5, las 6 o las 7. El número importa menos que el ritual.</p></div>' +
     '<div class="si-card"><h4>⚠️ Cuidados (léeme)</h4>' +
     '<p>Esto <b>no es para dormir menos</b>: necesitas 7–9 h igual. Si debes levantarte a las 5, acuéstate ~21:30–22:00. <b>No lo hagas así no más</b> si estás embarazada, con depresión o insomnio severo, con enfermedad al corazón, tomando medicamentos que dan sueño, o si eres adolescente (necesitan 8–10 h). En esos casos consulta tu CESFAM y adapta la hora. Si sientes somnolencia manejando o en el trabajo, duerme más: la constancia rinde solo con descanso real.</p></div>' +
-    '<div class="dlg-actions su-59a5a8"><button type="button" id="c5goVic" class="btn btn-accent su-30e741">🌅 Marcar mi victoria de hoy →</button> <button type="button" id="c5goReto" class="btn su-30e741">🔥 Partir el reto 66 →</button></div>';
+    '<div class="dlg-actions su-59a5a8"><button type="button" id="c5goVic" class="btn btn-accent su-30e741">🌅 Marcar mi victoria de hoy →</button> <button type="button" id="c5goReto" class="btn su-30e741">🔥 Partir el desafío 66 →</button></div>';
   if ($('c5goVic')) $('c5goVic').onclick = function () { tab = 'Victoria'; render(); };
   if ($('c5goReto')) $('c5goReto').onclick = function () { tab = 'Reto'; render(); };
 }
@@ -373,16 +373,16 @@ function renderReto() {
   if (!box) return;
   var s = store();
   if (!s.inicio66) {
-    box.innerHTML = '<div class="menstrual-card su-68a1a9"><h4>🔥 El reto de los 66 días</h4>' +
-      '<p class="muted su-b439ab">Un día victorioso (3/3) = 1 día del reto. El método dice que un hábito nuevo necesita <b>66 días mínimo</b>: 22 para romper la resistencia, 22 para instalar y 22 para integrar. ¿Partimos?</p>' +
+    box.innerHTML = '<div class="menstrual-card su-68a1a9"><h4>🔥 El desafío de los 66 días</h4>' +
+      '<p class="muted su-b439ab">Un día victorioso (3/3) = 1 día del desafío. El método dice que un hábito nuevo necesita <b>66 días mínimo</b>: 22 para romper la resistencia, 22 para instalar y 22 para integrar. ¿Partimos?</p>' +
       '<div class="conv-row"><label>📅 Parto el <input type="date" id="c5retoInicio" value="' + esc(todayKey()) + '"></label></div>' +
-      '<div class="dlg-actions su-59a5a8"><button type="button" id="c5retoGo" class="btn btn-accent su-30e741">🔥 Partir mi reto 66</button></div></div>' +
+      '<div class="dlg-actions su-59a5a8"><button type="button" id="c5retoGo" class="btn btn-accent su-30e741">🔥 Partir mi desafío 66</button></div></div>' +
       FASES66.map(function (f) { return '<div class="si-card"><h4>' + esc(f.nombre) + '</h4><p>' + esc(f.desc) + '</p></div>'; }).join('');
     if ($('c5retoGo')) $('c5retoGo').onclick = function () {
       var f = ($('c5retoInicio') || {}).value || todayKey();
       if (!validKey(f)) { alert('Fecha inválida'); return; }
       s.inicio66 = f;
-      save('🔥 ¡Reto 66 iniciado!');
+      save('🔥 ¡Desafío 66 iniciado!');
       renderReto(); renderHead();
     };
     return;
@@ -399,12 +399,12 @@ function renderReto() {
       '<br><span class="chip" style="font-size:9px;border-color:' + col + '55">' + esc(f.nombre.split('(')[0]) + '</span>' +
       '<div><button type="button" class="btn su-9f0529" data-c66="' + n + '">' + (s.checks66[n] ? '↩️' : '✓') + '</button></div></div>';
   }
-  box.innerHTML = '<div class="menstrual-card su-435dbc"><h4>🔥 Reto 66 · ' + h + '/66 (' + p + '%) · 🔥 racha ' + racha66() + '</h4>' + barHTML(p) +
+  box.innerHTML = '<div class="menstrual-card su-435dbc"><h4>🔥 Desafío 66 · ' + h + '/66 (' + p + '%) · 🔥 racha ' + racha66() + '</h4>' + barHTML(p) +
     '<p class="muted su-11a508">📅 ' + esc(s.inicio66) + ' → ' + esc(addDays(s.inicio66, 65)) + ' · hoy es el día ' + hoyN + '/66 · ' + esc(fase66(hoyN).nombre) + '</p>' +
     '<p class="su-11a508">' + esc(fase66(hoyN).desc) + '</p>' +
     '<div class="su-c158a9"><button type="button" id="c5retoSync" class="btn su-337714">🔄 Sincronizar con mis victorias</button>' +
     '<button type="button" id="c5retoCal" class="btn su-337714">📌 Llevar lo que falta al calendario</button>' +
-    '<button type="button" id="c5retoReset" class="btn su-337714">🗑 Reiniciar reto</button></div></div>' +
+    '<button type="button" id="c5retoReset" class="btn su-337714">🗑 Reiniciar desafío</button></div></div>' +
     '<div class="c5-grid">' + grid + '</div>';
   box.querySelectorAll('[data-c66]').forEach(function (b) {
     b.onclick = function () {
@@ -431,7 +431,7 @@ function renderReto() {
       var fk = addDays(s.inicio66, n4 - 1);
       var rr = celdaPara(fk);
       if (rr.error || rr.dft) { fuera++; continue; }
-      var txt = clean('[5AM] 🔥 Reto 66 · Día ' + n4 + '/66 (' + fase66(n4).nombre.split('(')[0].trim() + ')', 80);
+      var txt = clean('[5AM] 🔥 Desafío 66 · Día ' + n4 + '/66 (' + fase66(n4).nombre.split('(')[0].trim() + ')', 80);
       var ya = rr.cell.agenda.some(function (a) { return String(a.text || '').indexOf('[5AM]') >= 0 && String(a.text || '').indexOf('Día ' + n4 + '/66') >= 0; });
       if (!ya) {
         var hp = String(s.cfg.wake || '05:00').split(':');
@@ -444,9 +444,9 @@ function renderReto() {
     try { alert('📌 Agregados: ' + ok + (fuera ? ' · fuera del ciclo visible: ' + fuera : '')); } catch (e) {}
   };
   if ($('c5retoReset')) $('c5retoReset').onclick = function () {
-    if (!confirm('¿Reiniciar el reto 66? (Tus mañanas guardadas se conservan)')) return;
+    if (!confirm('¿Reiniciar el desafío 66? (Tus mañanas guardadas se conservan)')) return;
     s.inicio66 = ''; s.checks66 = {};
-    save('Reto reiniciado');
+    save('Desafío reiniciado');
     renderReto(); renderHead();
   };
 }
@@ -507,7 +507,7 @@ function renderProgreso() {
   box.innerHTML =
     '<div class="menstrual-card su-435dbc"><h4>📊 Tu constancia</h4>' +
     '<p class="muted su-11a508">🌅 ' + keys.length + ' mañanas registradas · 🏆 ' + vic + ' victorias 3/3 · 🔥 racha ' + racha() + ' · ⭐ promedio ' + esc(promTxt) + '</p>' +
-    (s.inicio66 ? '<p class="muted su-11a508">🔥 Reto 66: ' + hechos66() + '/66 (' + Math.round(hechos66() / 66 * 100) + '%) · ' + esc(fase66(Math.min(Math.max(diffDays(s.inicio66, todayKey()) + 1, 1), 66)).nombre) + '</p>' : '') +
+    (s.inicio66 ? '<p class="muted su-11a508">🔥 Desafío 66: ' + hechos66() + '/66 (' + Math.round(hechos66() / 66 * 100) + '%) · ' + esc(fase66(Math.min(Math.max(diffDays(s.inicio66, todayKey()) + 1, 1), 66)).nombre) + '</p>' : '') +
     '<p class="muted su-11a508">😴 Últimas noches: ' + esc(sueTxt) + '</p>' +
     '<div class="su-c158a9"><button type="button" id="c5proShare" class="btn su-337714">📤 Compartir mi constancia</button>' +
     '<button type="button" id="c5proClear" class="btn su-337714">🗑 Borrar mis datos</button></div></div>' +
@@ -519,7 +519,7 @@ function renderProgreso() {
       : '<p class="muted">Sin mañanas aún. Tu primera victoria te espera en 🌅 Mi Victoria.</p>');
   if ($('c5proShare')) $('c5proShare').onclick = function () {
     share('🌅 Mi Club 5 AM',
-      '🏆 ' + vic + ' victorias · 🔥 racha ' + racha() + ' · ⭐ ' + promTxt + (s.inicio66 ? '\n🔥 Reto 66: ' + hechos66() + '/66' : '') + '\n“La primera hora del día es el timón de la jornada.”');
+      '🏆 ' + vic + ' victorias · 🔥 racha ' + racha() + ' · ⭐ ' + promTxt + (s.inicio66 ? '\n🔥 Desafío 66: ' + hechos66() + '/66' : '') + '\n“La primera hora del día es el timón de la jornada.”');
   };
   if ($('c5proClear')) $('c5proClear').onclick = function () {
     if (!confirm('¿Borrar todos tus datos del Club 5 AM?')) return;
@@ -541,7 +541,7 @@ function build() {
     '<div class="timer-tabs su-ca7e11">' +
     '<button type="button" id="tabC5Guia" class="btn btn-accent su-30e741">📖 Guía</button>' +
     '<button type="button" id="tabC5Victoria" class="btn su-30e741">🌅 Mi Victoria</button>' +
-    '<button type="button" id="tabC5Reto" class="btn su-30e741">🔥 Reto 66</button>' +
+    '<button type="button" id="tabC5Reto" class="btn su-30e741">🔥 Desafío 66</button>' +
     '<button type="button" id="tabC5Descanso" class="btn su-30e741">😴 Descanso</button>' +
     '<button type="button" id="tabC5Progreso" class="btn su-30e741">📊 Progreso</button>' +
     '</div>' +
@@ -611,7 +611,7 @@ function registerBtn(group, sub, id, label, matchTitle) {
 }
 
 function setup() {
-  injectBtn('dia', 'organizar', 'btnClub5am', '🌅 Club 5 AM', 'club cinco 5 mañana madrugada despertar temprano habito rutina victoria 20 20 sharma hora victoriosa moverse reflexionar crecer reto 66 sesenta seis dormir descanso constancia disciplina');
+  injectBtn('dia', 'organizar', 'btnClub5am', '🌅 Club 5 AM', 'club cinco 5 mañana madrugada despertar temprano habito rutina victoria 20 20 sharma hora victoriosa moverse reflexionar crecer reto 66 sesenta seis dormir descanso constancia disciplina desafio desafio66');
   registerBtn('dia', 'organizar', 'btnClub5am', '🌅 Club 5 AM', 'Mi D');
   try { if (typeof reordenarAcciones === 'function') reordenarAcciones(); } catch (e) {}
   try { if (typeof updateGroupCounts === 'function') updateGroupCounts(); } catch (e) {}

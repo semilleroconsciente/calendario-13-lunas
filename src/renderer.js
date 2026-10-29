@@ -32,27 +32,28 @@ try{
 
 // === 🏠 PANTALLA DE INICIO PERSONALIZABLE (⚙️ Personalizar) ===
 // Guarda por usuario en DATA.config.home = { startView, blocks:{...} }
-// v1.9.0: 36 bloques (Sol y Luna separados). Los 10 nuevos (pesca, bosque, aves, huerta, estudio,
+// v1.9.0: 36 bloques (Sol y Luna separados). v1.9.1: 37 bloques (+cumpleaños 🎂,
+// fijo en 3ª posición tras hero y frase). Los 10 nuevos (pesca, bosque, aves, huerta, estudio,
 // cuentos, familia, emergencia, comunidad, energia) son tarjetas-resumen con
 // botón "Abrir" hacia su módulo. Cada perfil (👥 Perfiles) trae su propia
 // pantalla de inicio (HOME_PRESETS): al tocar un perfil se aplican secciones
 // visibles + vista inicial + bloques de ◉ Hoy. Luego puedes afinar a mano.
-const HOME_BLOCKS_DEFAULT = { frase: true, sol: true, luna: true, notas: true, agenda: true, habitos: true, rutinas: true, animo: true, suenos: true, comidas: true, tareas: true, compras: true, finanzas: true, disciplina: true, respiracion: true, ciclo: true, clima: true, mareas: true, gratitud: true, horario: true, entreno: true, medicina: true, siembra: true, espiritual: true, ritmo: true, ekadashi: true, pesca: true, bosque: true, aves: true, huerta: true, estudio: true, cuentos: true, familia: true, emergencia: true, comunidad: true, energia: true };
+const HOME_BLOCKS_DEFAULT = { frase: true, cumple: true, sol: true, luna: true, notas: true, agenda: true, habitos: true, rutinas: true, animo: true, suenos: true, comidas: true, tareas: true, compras: true, finanzas: true, disciplina: true, respiracion: true, ciclo: true, clima: true, mareas: true, gratitud: true, horario: true, entreno: true, medicina: true, siembra: true, espiritual: true, ritmo: true, ekadashi: true, pesca: true, bosque: true, aves: true, huerta: true, estudio: true, cuentos: true, familia: true, emergencia: true, comunidad: true, energia: true };
 const HOME_VIEWS = ['auto', 'hoy', 'luna', 'semanaLunar', 'mes', 'semana', 'completa'];
 // Pantalla de inicio sugerida por perfil (lista de bloques visibles + vista).
 // 'todo' y 'adulto' muestran todo. El resto muestra lo esencial de su rol.
 const HOME_PRESETS = {
   todo: { startView: 'auto', show: Object.keys(HOME_BLOCKS_DEFAULT) },
-  esencial: { startView: 'hoy', show: ['frase','sol','luna','notas','habitos','respiracion','suenos','horario','espiritual','ritmo','clima','mareas','siembra','bosque','aves','huerta','compras','finanzas','familia','emergencia'] },
-  adolescente: { startView: 'hoy', show: ['frase','sol','luna','notas','agenda','habitos','rutinas','animo','suenos','estudio','cuentos','disciplina','respiracion','gratitud','horario','entreno','ciclo','clima','mareas','familia','energia','emergencia','comunidad'] },
+  esencial: { startView: 'hoy', show: ['frase','cumple','sol','luna','notas','habitos','respiracion','suenos','horario','espiritual','ritmo','clima','mareas','pesca','siembra','bosque','aves','huerta','compras','finanzas','familia','emergencia'] },
+  adolescente: { startView: 'hoy', show: ['frase','cumple','sol','luna','notas','agenda','habitos','rutinas','animo','suenos','estudio','cuentos','disciplina','respiracion','gratitud','horario','entreno','ciclo','clima','mareas','familia','energia','emergencia','comunidad'] },
   adulto: { startView: 'auto', show: Object.keys(HOME_BLOCKS_DEFAULT) },
-  mayor: { startView: 'hoy', show: ['frase','sol','luna','notas','agenda','habitos','rutinas','animo','suenos','comidas','tareas','compras','medicina','ciclo','clima','mareas','gratitud','espiritual','ritmo','familia','emergencia','energia','cuentos','comunidad'] },
-  estudiante: { startView: 'hoy', show: ['frase','sol','luna','notas','agenda','habitos','rutinas','animo','suenos','disciplina','horario','estudio','cuentos','gratitud','respiracion','finanzas','clima','energia','emergencia','comunidad'] },
-  agricultor: { startView: 'luna', show: ['frase','sol','luna','notas','agenda','rutinas','clima','mareas','siembra','huerta','bosque','aves','compras','finanzas','ritmo','ekadashi','comunidad','energia','tareas','emergencia'] },
-  pescador: { startView: 'luna', show: ['frase','sol','luna','notas','agenda','rutinas','clima','mareas','pesca','bosque','aves','ritmo','ekadashi','emergencia','comunidad','tareas','disciplina','respiracion','energia'] },
-  salud: { startView: 'hoy', show: ['frase','sol','luna','notas','agenda','habitos','rutinas','animo','suenos','comidas','disciplina','respiracion','ciclo','clima','gratitud','horario','entreno','medicina','espiritual','ritmo','energia','emergencia','familia','comunidad'] },
-  deportista: { startView: 'hoy', show: ['frase','sol','luna','notas','agenda','habitos','rutinas','animo','suenos','comidas','disciplina','entreno','medicina','clima','mareas','ritmo','energia','respiracion','gratitud','horario','emergencia','comunidad'] },
-  docente: { startView: 'hoy', show: ['frase','sol','luna','notas','agenda','habitos','rutinas','animo','estudio','cuentos','horario','familia','gratitud','clima','comunidad','siembra','huerta','disciplina','energia','emergencia'] }
+  mayor: { startView: 'hoy', show: ['frase','cumple','sol','luna','notas','agenda','habitos','rutinas','animo','suenos','comidas','tareas','compras','medicina','ciclo','clima','mareas','gratitud','espiritual','ritmo','familia','emergencia','energia','cuentos','comunidad'] },
+  estudiante: { startView: 'hoy', show: ['frase','cumple','sol','luna','notas','agenda','habitos','rutinas','animo','suenos','disciplina','horario','estudio','cuentos','gratitud','respiracion','finanzas','clima','energia','emergencia','comunidad'] },
+  agricultor: { startView: 'luna', show: ['frase','cumple','sol','luna','notas','agenda','rutinas','clima','mareas','siembra','huerta','bosque','aves','compras','finanzas','ritmo','ekadashi','comunidad','energia','tareas','emergencia'] },
+  pescador: { startView: 'luna', show: ['frase','cumple','sol','luna','notas','agenda','rutinas','clima','mareas','pesca','bosque','aves','ritmo','ekadashi','emergencia','comunidad','tareas','disciplina','respiracion','energia'] },
+  salud: { startView: 'hoy', show: ['frase','cumple','sol','luna','notas','agenda','habitos','rutinas','animo','suenos','comidas','disciplina','respiracion','ciclo','clima','gratitud','horario','entreno','medicina','espiritual','ritmo','energia','emergencia','familia','comunidad'] },
+  deportista: { startView: 'hoy', show: ['frase','cumple','sol','luna','notas','agenda','habitos','rutinas','animo','suenos','comidas','disciplina','entreno','medicina','clima','mareas','ritmo','energia','respiracion','gratitud','horario','emergencia','comunidad'] },
+  docente: { startView: 'hoy', show: ['frase','cumple','sol','luna','notas','agenda','habitos','rutinas','animo','estudio','cuentos','horario','familia','gratitud','clima','comunidad','siembra','huerta','disciplina','energia','emergencia'] }
 };
 function homeBlocksForPreset(name) {
   const p = HOME_PRESETS[name];
@@ -62,23 +63,34 @@ function homeBlocksForPreset(name) {
   return { startView: HOME_VIEWS.includes(p.startView) ? p.startView : 'auto', blocks: out, order: [...HOME_BLOCK_ORDER] };
 }
 // Orden por defecto de los bloques de ◉ Hoy (debe coincidir con el orden de render en core-calendario.js).
-const HOME_BLOCK_ORDER = ['frase','sol','luna','notas','agenda','habitos','rutinas','animo','suenos','comidas','tareas','compras','finanzas','disciplina','respiracion','ciclo','clima','mareas','gratitud','horario','entreno','medicina','siembra','espiritual','ritmo','ekadashi','pesca','bosque','aves','huerta','estudio','cuentos','familia','emergencia','comunidad','energia'];
-const HOME_BLOCK_LABELS = { frase:'💬 Frase del día', sol:'☀️ Sol de hoy', luna:'🌙 Luna de hoy', notas:'📝 Notas del día', agenda:'🕐 Compromisos', habitos:'✅ Hábitos de hoy', rutinas:'🌅 Rutinas por horario', animo:'😊 Estado de ánimo', suenos:'💭 Sueños', comidas:'🥗 Comidas de hoy', tareas:'🏠 Tareas hogar', compras:'🛒 Compras pendientes', finanzas:'💰 Finanzas del día', disciplina:'🎯 Disciplina', respiracion:'🌬️ Respiración', ciclo:'🌸 Ciclo', clima:'🌤️ Clima', mareas:'🌊 Mareas', gratitud:'📓 Gratitud diaria', horario:'📚 Horario de hoy', entreno:'💪 Entrenamiento', medicina:'💊 Medicina', siembra:'🌱 Consejo siembra lunar', espiritual:'🕉️ Práctica espiritual', ritmo:'🌞 Ritmo + hora dorada', ekadashi:'📿 Ekadashi / ayuno', pesca:'🎣 Pesca hoy', bosque:'🌳 Bosque hoy', aves:'🦅 Aves hoy', huerta:'🥬 Huerta hoy', estudio:'🧠 Estudio hoy', cuentos:'📖 Cuento de la luna', familia:'🌳 Familia y linaje', emergencia:'🚨 Emergencia Penco', comunidad:'🤝 Comunidad hoy', energia:'🔧 Energía y hogar' };
+const HOME_BLOCK_ORDER = ['frase','cumple','sol','luna','notas','agenda','habitos','rutinas','animo','suenos','comidas','tareas','compras','finanzas','disciplina','respiracion','ciclo','clima','mareas','gratitud','horario','entreno','medicina','siembra','espiritual','ritmo','ekadashi','pesca','bosque','aves','huerta','estudio','cuentos','familia','emergencia','comunidad','energia'];
+const HOME_BLOCK_LABELS = { frase:'💬 Frase del día', cumple:'🎂 Cumpleaños', sol:'☀️ Sol de hoy', luna:'🌙 Luna de hoy', notas:'📝 Notas del día', agenda:'🕐 Compromisos', habitos:'✅ Hábitos de hoy', rutinas:'🌅 Rutinas por horario', animo:'😊 Estado de ánimo', suenos:'💭 Sueños', comidas:'🥗 Comidas de hoy', tareas:'🏠 Tareas hogar', compras:'🛒 Compras pendientes', finanzas:'💰 Finanzas del día', disciplina:'🎯 Disciplina', respiracion:'🌬️ Respiración', ciclo:'🌸 Ciclo', clima:'🌤️ Clima', mareas:'🌊 Mareas', gratitud:'📓 Gratitud diaria', horario:'📚 Horario de hoy', entreno:'💪 Entrenamiento', medicina:'💊 Medicina', siembra:'🌱 Consejo siembra lunar', espiritual:'🕉️ Práctica espiritual', ritmo:'🌞 Ritmo + hora dorada', ekadashi:'📿 Ekadashi / ayuno', pesca:'🎣 Pesca hoy', bosque:'🌳 Bosque hoy', aves:'🦅 Aves hoy', huerta:'🥬 Huerta hoy', estudio:'🧠 Estudio hoy', cuentos:'📖 Cuento de la luna', familia:'🌳 Familia y linaje', emergencia:'🚨 Emergencia Penco', comunidad:'🤝 Comunidad hoy', energia:'🔧 Energía y hogar' };
+// Inserta bloques nuevos en su posición por defecto (no al final),
+// para que un bloque nuevo (ej: 🎂 cumpleaños en 3ª posición) aparezca
+// donde corresponde también en órdenes ya guardados por el usuario.
+function mergeMissingHomeKeys(arr) {
+  const seen = new Set(arr);
+  HOME_BLOCK_ORDER.forEach(k => {
+    if (seen.has(k)) return;
+    seen.add(k);
+    const di = HOME_BLOCK_ORDER.indexOf(k);
+    const at = arr.findIndex(s => HOME_BLOCK_ORDER.indexOf(s) > di);
+    if (at < 0) arr.push(k); else arr.splice(at, 0, k);
+  });
+  return arr;
+}
 function getHomeOrder() {
   try {
     const d = (DATA.config && DATA.config.home) || {};
     const saved = Array.isArray(d.order) ? d.order.filter(k => HOME_BLOCK_ORDER.includes(k)) : [];
-    const seen = new Set(saved);
-    HOME_BLOCK_ORDER.forEach(k => { if (!seen.has(k)) saved.push(k); });
-    return saved;
+    return mergeMissingHomeKeys(saved);
   } catch (e) { return [...HOME_BLOCK_ORDER]; }
 }
 function setHomeOrder(order) {
   DATA.config = DATA.config || {};
   DATA.config.home = DATA.config.home || {};
   const clean = (Array.isArray(order) ? order : []).filter(k => HOME_BLOCK_ORDER.includes(k));
-  const seen = new Set(clean);
-  HOME_BLOCK_ORDER.forEach(k => { if (!seen.has(k)) clean.push(k); });
+  mergeMissingHomeKeys(clean);
   DATA.config.home.order = clean;
   try { if (typeof markPerfilPersonalizado === 'function') markPerfilPersonalizado(); } catch (e) {}
   try { if (typeof scheduleSave === 'function') scheduleSave('Orden de bloques guardado ✓'); } catch (e) {}
@@ -934,9 +946,9 @@ function renderTidesPanel3() {
   }catch(e){}
   const moonIc=(function(){ try{ return window.astro.moonIcon(now.getTime())||'🌙'; }catch(e){ return '🌙'; } })();
 
-  let html = '<div class="tp-head"><b>🌊 Mareas — Penco · Bahía de Concepción</b><span class="muted">SHOA · Talcahuano (15 km, misma bahía) · 7 días · hora local America/Santiago</span>'
-    +'<span class="su-3de8f9"><button type="button" id="tidesToDayBtn" class="btn btn-accent su-c4b37a" title="Agregar la marea actual y las 2 siguientes a la pantalla del día de hoy">📌 Al día: actual + 2</button>'
-    +'<a class="btn su-7ab949" href="https://www.shoa.cl/php/mareas.php" target="_blank" rel="noopener" title="Tabla oficial SHOA">🌐 SHOA oficial</a></span></div>';
+  let html = '<div class="tp-head"><b>🌊 Mareas — Penco · Bahía de Concepción</b><span class="muted">Talcahuano (15 km, misma bahía) · 7 días · hora local America/Santiago</span>'
+    +'<span class="su-3de8f9">'
+    +'<a class="btn su-7ab949" href="https://tablademareas.com/cl/biobio/penco#_mareas" target="_blank" rel="noopener" title="Tabla de mareas de Penco">🌊 Tabla de mareas Penco</a></span></div>';
 
   // 1) AHORA
   html += '<div class="tide-grid2">'
@@ -990,7 +1002,7 @@ function renderTidesPanel3() {
         html+='<tr'+hl+'><td>'+t.h+'</td><td>'+t.a+'</td><td>'+icon+' '+t.t+'</td><td class="tide-ventana">'+tideVentana(t)+'</td></tr>';
       }
       html+='</tbody></table>';
-      if(isEstimated) html+='<p class="muted su-46d1cc">* Estimada por ciclo lunar (~50 min/día desde tabla SHOA 19–28 ago). Contrasta con <a href="https://www.shoa.cl/php/mareas.php" target="_blank" rel="noopener">shoa.cl</a> antes de navegar o bajar a roquerío.</p>';
+      if(isEstimated) html+='<p class="muted su-46d1cc">* Estimada por ciclo lunar (~50 min/día desde tabla SHOA 19–28 ago). Contrasta con <a href="https://tablademareas.com/cl/biobio/penco#_mareas" target="_blank" rel="noopener">tablademareas.com · Penco</a> antes de navegar o bajar a roquerío.</p>';
     }
     html+='<div class="su-ac5453">'
       +'<button type="button" class="btn su-30e741" data-tide-send-day="'+skey+'">📌 Llevar este día al calendario</button>'
@@ -1027,12 +1039,8 @@ function renderTidesPanel3() {
     +'<div><b>🦅 Aves Rocuant</b><br><span class="muted">Pleamar concentra limícolas; amanecer = canto. Ver 🦅 Aves.</span></div>'
     +'</div></div>';
 
-  html+='<p class="muted su-eced32">Fuente: tabla SHOA Talcahuano precargada 19–28 ago + estimación lunar el resto del año (*est.). Para navegación, buceo o faena: confirma siempre en <a href="https://www.shoa.cl/php/mareas.php" target="_blank" rel="noopener">shoa.cl → Mareas</a> · Avisos de marejada: <a href="https://www.directemar.cl/" target="_blank" rel="noopener">Directemar</a> · Marea roja/vedas: <a href="https://www.sernapesca.cl/" target="_blank" rel="noopener">sernapesca.cl</a> · Emergencia: <a href="https://www.senapred.cl/" target="_blank" rel="noopener">Senapred</a> 137 Armada.</p>';
+  html+='<p class="muted su-eced32">Fuente: tabla SHOA Talcahuano precargada 19–28 ago + estimación lunar el resto del año (*est.). Para navegación, buceo o faena: confirma siempre en <a href="https://tablademareas.com/cl/biobio/penco#_mareas" target="_blank" rel="noopener">tablademareas.com · Penco</a> · Avisos de marejada: <a href="https://www.directemar.cl/" target="_blank" rel="noopener">Directemar</a> · Marea roja/vedas: <a href="https://www.sernapesca.cl/" target="_blank" rel="noopener">sernapesca.cl</a> · Emergencia: <a href="https://www.senapred.cl/" target="_blank" rel="noopener">Senapred</a> 137 Armada.</p>';
   panel.innerHTML = html;
-  try {
-    const toDayBtn = $('tidesToDayBtn');
-    if (toDayBtn) toDayBtn.onclick = () => enviarMareasAlDia();
-  } catch (e) {}
   try{
     panel.querySelectorAll('[data-tide-day]').forEach(b=>{
       b.onclick=()=>{ window._tideSelOffset=+b.getAttribute('data-tide-day'); try{ renderTidesPanel3(); }catch(e){} };
@@ -1067,42 +1075,6 @@ function renderTidesPanel3() {
       };
     });
   }catch(e){}
-}
-
-// Guarda la marea actual + las 2 siguientes en la pantalla del día de hoy.
-function enviarMareasAlDia() {
-  try {
-    const todayKey = cal.fmtKey.format(new Date());
-    const ahoraHM = cal.fmtTime.format(new Date());
-    const now = new Date();
-    const keyOf = (diff) => { const d = new Date(now.getTime()); d.setDate(d.getDate() + diff); return cal.fmtKey.format(d); };
-    const hoy = (getTidesForKey(todayKey.slice(5)).tides) || [];
-    const ayer = (getTidesForKey(keyOf(-1).slice(5)).tides) || [];
-    const man = (getTidesForKey(keyOf(1).slice(5)).tides) || [];
-    let res = { actual: null, siguientes: [] };
-    if (window.InfoClave && typeof window.InfoClave.mareasActuales === 'function') {
-      res = window.InfoClave.mareasActuales(ahoraHM, hoy, ayer, man);
-    } else {
-      res.siguientes = hoy.slice(0, 3).map(t => ({ h: t.h, a: t.a, t: t.t, dia: 0 }));
-    }
-    if (!res.actual && !res.siguientes.length) { alert('Sin pronóstico de mareas para hoy.'); return; }
-    const fmt = (window.InfoClave && window.InfoClave.textoMarea) || ((mm) => (mm.t === 'pleamar' ? '⬆️' : '⬇️') + ' ' + mm.t + ' ' + mm.h + (mm.a ? ' · ' + mm.a : ''));
-    const fechaCorta = cal.fmtDate.format(new Date());
-    let texto = '🌊 Mareas Talcahuano ' + fechaCorta + ': ';
-    texto += res.actual ? 'actual ' + fmt(res.actual) : 'sin marea actual aún';
-    res.siguientes.forEach((s) => { texto += ' → ' + fmt(s); });
-    if (window.InfoClave && typeof window.InfoClave.guardarEnDia === 'function') {
-      window.InfoClave.guardarEnDia('Mareas', texto, todayKey, 'nota');
-    } else {
-      const ref = lunaMapForKey(todayKey);
-      if (!ref || ref.luna === 'dft') { alert('Hoy es DFT: las mareas no aplican igual.'); return; }
-      const cell = dayCell(ref.luna, ref.diaN);
-      const linea = '[Mareas] ' + texto;
-      cell.nota = cell.nota ? cell.nota + '\n' + linea : linea;
-      scheduleSave('Agregado al día ✓');
-      renderCurrentView();
-    }
-  } catch (e) { try { alert('No se pudo agregar la marea al día.'); } catch (e2) {} }
 }
 
 // === EKADASHI (5 subsecciones sin scroll: Resumen/Ayuno/Historia/Fechas/Práctica) ===
@@ -4363,7 +4335,7 @@ setTimeout(setupHelpDialog, 850);
 // Incluye botones base + los inyectados por nuevos-modulos.js (Agua, Bodega, Nudos,
 // Taller, Trueque, Minga, Rutinas, Fertilidad, Derechos). NUEVOS_BTNS los re-agrega
 // con push si faltan (no-op si ya están), así los perfiles siempre los conocen.
-const ALL_BTNS = ["btnTides","btnFishing","btnBirds","btnIntermareal","btnBosque","btnWeather","btnSiembra","btnAstro","btnComuna","btnEducacion","btnIglesias","btnEkadashi","btnMenstrual","btnMedic","btnNutri","btnHabits","btnRutinas","btnMeal","btnShopping","btnFinance","btnHomeTasks","btnDiscipline","btnDreams","btnBreath","btnGratitud","btnSchedule","btnGym","btnCircadian","btnGolden","btnEspiritual","btnEspiritu","btnCompost","btnLawen","btnFirstAid","btnAnimalCare","btnViolence","btnEvac","btnConvert","btnEnergy","btnLena","btnTimer","btnRemind","btnDonate","btnHelp","btnStudy","btnTales","btnVozAbuelos","btnMemory","btnIdiomas","btnMapu","btnEnglish","btnPortugues","btnChino","btnHindi","btnAprenderInstrumento","btnGuitar","btnUkelele","btnFlauta","btnTeclado","btnCajon","btnCanto","btnMusicaPractica","btnPsico","btnMetodos","btnAgua","btnBodega","btnNudos","btnTaller","btnTrueque","btnMinga","btnFerti","btnDerechos","btnCrianza","btnArbolFull","btnRecap","btnDueloFull","btnEneagrama","btnCuartoCamino","btnAjedrez","btnDama","btnMatematicas","btnSudoku","btnCrucigrama","btnSopa","btnSolitario","btnFlora","btnPsicologia","btnAdolescencia","btnJuventud","btnAdultez","btnClimaterio","btnVejez","btnElectrocultura","btnMecanica","btnDespensa","btnCloset","btnHerramientas","btnAdicciones","btnKinMaya","btnTarot","btnNumerologia","btnOraculo","btnAnfibios","btnApoyo","btnMuni","btnBomberos","btnConstelaciones","btnIkigai","btnVIA","btnSilva","btnGrabovoi","btnEstoicismo","btnHooponopono","btnTao","btnTolteca","btnVigyan","btnAnastasia","btnAmi","btnNatacion","btnHuerta","btnHidroponia","btnKayak","btnBallenas","btnMeli","btnHongos","btnSenderos","btnFuego","btnDomotica","btnNeurodiversidad","btnPelo","btnRituales","btnFenologia","btnCorral","btnMovilidad","btnEscolar","btnActores","btnAmenazas","btnNegocios","btnRedGuia","btnRedMeshtastic","btnRedDiagnostico","btnRedRadio","btnRedNodos","btnConvivGuia","btnConvivFichas","btnConvivHablar","btnConvivBitacora","btnConvivLuna","btnConvivRecursos","btnCiberGuia","btnCiberClaves","btnCiberEstafas","btnCiberPriv","btnCiberChequeo","btnCiberAyuda","btnOpenGuia","btnOpenLicencias","btnOpenProgramas","btnOpenProyecto","btnOpenAportar","btnOpenQuiz","btnFutbol","btnBasquetbol"];
+const ALL_BTNS = ["btnTides","btnFishing","btnBirds","btnIntermareal","btnBosque","btnWeather","btnSiembra","btnAstro","btnComuna","btnEducacion","btnIglesias","btnEkadashi","btnMenstrual","btnMedic","btnNutri","btnHabits","btnRutinas","btnMeal","btnShopping","btnFinance","btnHomeTasks","btnDiscipline","btnDreams","btnBreath","btnGratitud","btnSchedule","btnGym","btnCircadian","btnGolden","btnEspiritual","btnEspiritu","btnCompost","btnLawen","btnFirstAid","btnAnimalCare","btnViolence","btnEvac","btnConvert","btnEnergy","btnLena","btnTimer","btnRemind","btnDonate","btnHelp","btnStudy","btnTales","btnVozAbuelos","btnMemory","btnIdiomas","btnMapu","btnEnglish","btnPortugues","btnChino","btnHindi","btnAprenderInstrumento","btnGuitar","btnUkelele","btnFlauta","btnTeclado","btnCajon","btnCanto","btnMusicaPractica","btnPsico","btnMetodos","btnAgua","btnBodega","btnNudos","btnTaller","btnTrueque","btnMinga","btnFerti","btnDerechos","btnCrianza","btnArbolFull","btnRecap","btnDueloFull","btnEneagrama","btnCuartoCamino","btnAjedrez","btnDama","btnMatematicas","btnSudoku","btnCrucigrama","btnSopa","btnSolitario","btnFlora","btnPsicologia","btnAdolescencia","btnJuventud","btnAdultez","btnClimaterio","btnVejez","btnElectrocultura","btnMecanica","btnDespensa","btnCloset","btnHerramientas","btnAdicciones","btnKinMaya","btnTarot","btnNumerologia","btnOraculo","btnAnfibios","btnApoyo","btnMuni","btnBomberos","btnConstelaciones","btnIkigai","btnVIA","btnSilva","btnGrabovoi","btnEstoicismo","btnHooponopono","btnTao","btnTolteca","btnVigyan","btnAnastasia","btnAmi","btnNatacion","btnHuerta","btnHidroponia","btnKayak","btnBallenas","btnMeli","btnHongos","btnSenderos","btnFuego","btnDomotica","btnNeurodiversidad","btnPelo","btnRituales","btnFenologia","btnCorral","btnMovilidad","btnEscolar","btnActores","btnAmenazas","btnNegocios","btnRedGuia","btnRedMeshtastic","btnRedDiagnostico","btnRedRadio","btnRedNodos","btnConvivGuia","btnConvivFichas","btnConvivHablar","btnConvivBitacora","btnConvivLuna","btnConvivRecursos","btnCiberGuia","btnCiberClaves","btnCiberEstafas","btnCiberPriv","btnCiberChequeo","btnCiberAyuda","btnOpenGuia","btnOpenLicencias","btnOpenProgramas","btnOpenProyecto","btnOpenAportar","btnOpenQuiz","btnFutbol","btnBasquetbol","btnCumple","btnFaunaMarina","btnBiblioPenco"];
 // NOTA: lo técnico (Respaldo, Restaurar, Traspaso QR, PDF luna/ciclo, Acceso directo)
 // vive en ⚙️ Ajustes con botones propios (cfg*Btn), siempre visibles: no forma parte
 // de ALL_BTNS ni de la visibilidad por secciones. Se mantienen las claves antiguas
@@ -4379,10 +4351,10 @@ const ALL_BTNS = ["btnTides","btnFishing","btnBirds","btnIntermareal","btnBosque
 const BTN_HOME = {
   btnHabits:['dia','organizar'],btnRutinas:['dia','organizar'],btnDiscipline:['dia','organizar'],btnSchedule:['dia','organizar'],btnTimer:['dia','organizar'],btnRemind:['dia','organizar'],
   btnGratitud:['dia','registrar'],btnDreams:['dia','registrar'],btnBreath:['dia','registrar'],
-  btnTides:['territorio','mar'],btnFishing:['territorio','mar'],btnIntermareal:['territorio','mar'],btnNudos:['territorio','mar'],btnKayak:['territorio','mar'],btnBallenas:['territorio','mar'],
+  btnTides:['territorio','mar'],btnFishing:['territorio','mar'],btnIntermareal:['territorio','mar'],btnNudos:['territorio','mar'],btnKayak:['territorio','mar'],btnBallenas:['territorio','mar'],btnFaunaMarina:['territorio','mar'],
   btnHuerta:['territorio','tierra'],btnSiembra:['territorio','tierra'],btnBosque:['territorio','tierra'],btnCompost:['territorio','tierra'],btnAgua:['territorio','tierra'],btnHidroponia:['territorio','tierra'],btnElectrocultura:['territorio','tierra'],btnFlora:['territorio','tierra'],btnLawen:['territorio','tierra'],btnBirds:['territorio','tierra'],btnAnfibios:['territorio','tierra'],btnMeli:['territorio','tierra'],btnHongos:['territorio','tierra'],btnSenderos:['territorio','tierra'],btnFuego:['territorio','tierra'],btnFenologia:['territorio','tierra'],
   btnWeather:['territorio','cielo'],btnAstro:['territorio','cielo'],btnGolden:['territorio','cielo'],btnCircadian:['territorio','cielo'],btnEkadashi:['territorio','cielo'],
-  btnComuna:['territorio','penco'],btnEducacion:['territorio','penco'],btnIglesias:['territorio','penco'],btnMuni:['territorio','penco'],btnBomberos:['territorio','penco'],btnActores:['territorio','penco'],btnAmenazas:['territorio','penco'],btnNegocios:['territorio','penco'],
+  btnComuna:['territorio','penco'],btnEducacion:['territorio','penco'],btnBiblioPenco:['territorio','penco'],btnIglesias:['territorio','penco'],btnMuni:['territorio','penco'],btnBomberos:['territorio','penco'],btnActores:['territorio','penco'],btnAmenazas:['territorio','penco'],btnNegocios:['territorio','penco'],
   btnMenstrual:['cuerpo','ciclos'],btnFerti:['cuerpo','ciclos'],btnClimaterio:['cuerpo','ciclos'],
   btnAdolescencia:['cuerpo','etapas'],btnJuventud:['cuerpo','etapas'],btnAdultez:['cuerpo','etapas'],btnVejez:['cuerpo','etapas'],btnSeptenios:['cuerpo','etapas'],btnLakota:['cuerpo','etapas'],btnKimun:['cuerpo','etapas'],btnAshramas:['cuerpo','etapas'],btnConfucio:['cuerpo','etapas'],btnAndina:['cuerpo','etapas'],btnJung:['cuerpo','etapas'],btnCelta:['cuerpo','etapas'],btnSufi:['cuerpo','etapas'],
   btnMedic:['cuerpo','cuidado'],btnNutri:['cuerpo','cuidado'],btnGym:['cuerpo','cuidado'],btnNatacion:['cuerpo','cuidado'],btnPelo:['cuerpo','cuidado'],btnRituales:['cuerpo','cuidado'],btnFutbol:['cuerpo','deportes'],btnBasquetbol:['cuerpo','deportes'],
@@ -4392,7 +4364,7 @@ const BTN_HOME = {
   btnAjedrez:['aprender','juegos'],btnDama:['aprender','juegos'],btnSudoku:['aprender','juegos'],btnCrucigrama:['aprender','juegos'],btnSopa:['aprender','juegos'],btnSolitario:['aprender','juegos'],
   btnTales:['aprender','infancias'],btnCrianza:['aprender','infancias'],
   btnPsico:['linaje','conocerse'],btnPsicologia:['linaje','conocerse'],btnEneagrama:['linaje','conocerse'],btnVIA:['linaje','conocerse'],btnIkigai:['linaje','conocerse'],btnNeurodiversidad:['linaje','conocerse'],btnEspiritual:['linaje','practicas'],btnEspiritu:['linaje','practicas'],btnTao:['linaje','practicas'],btnRecap:['linaje','practicas'],btnTolteca:['linaje','practicas'],btnEstoicismo:['linaje','practicas'],btnCuartoCamino:['linaje','practicas'],btnHooponopono:['linaje','practicas'],btnMetodos:['linaje','tradiciones'],btnSilva:['linaje','tradiciones'],btnGrabovoi:['linaje','tradiciones'],btnVigyan:['linaje','tradiciones'],btnAnastasia:['linaje','tradiciones'],btnAmi:['linaje','tradiciones'],btnKinMaya:['linaje','oraculos'],btnTarot:['linaje','oraculos'],btnNumerologia:['linaje','oraculos'],btnOraculo:['linaje','oraculos'],btnDueloFull:['linaje','sosten'],btnAdicciones:['linaje','sosten'],
-  btnArbolFull:['hogar','familia'],btnVozAbuelos:['hogar','familia'],btnConstelaciones:['hogar','familia'],
+  btnArbolFull:['hogar','familia'],btnVozAbuelos:['hogar','familia'],btnConstelaciones:['hogar','familia'],btnCumple:['hogar','familia'],
   btnMeal:['hogar','casa'],btnShopping:['hogar','casa'],btnFinance:['hogar','casa'],btnHomeTasks:['hogar','casa'],btnBodega:['hogar','casa'],btnDespensa:['hogar','casa'],btnCloset:['hogar','casa'],btnCorral:['hogar','casa'],btnMovilidad:['hogar','casa'],btnEscolar:['hogar','casa'],
   btnEnergy:['hogar','energia'],btnLena:['hogar','energia'],btnTaller:['hogar','energia'],btnHerramientas:['hogar','energia'],btnMecanica:['hogar','energia'],btnDomotica:['hogar','energia'],btnConvert:['hogar','energia'],
   btnTrueque:['comunidad','red'],btnMinga:['comunidad','red'],btnDerechos:['comunidad','red'],btnAnimalCare:['comunidad','red'],
@@ -4408,10 +4380,10 @@ const BTN_HOME = {
 const BTN_ORDER = {
   'dia|organizar':['btnHabits','btnRutinas','btnDiscipline','btnSchedule','btnTimer','btnRemind'],
   'dia|registrar':['btnGratitud','btnDreams','btnBreath'],
-  'territorio|mar':['btnTides','btnFishing','btnIntermareal','btnNudos','btnKayak','btnBallenas'],
+  'territorio|mar':['btnTides','btnFishing','btnIntermareal','btnNudos','btnKayak','btnBallenas','btnFaunaMarina'],
   'territorio|tierra':['btnHuerta','btnSiembra','btnBosque','btnCompost','btnAgua','btnHidroponia','btnElectrocultura','btnFlora','btnLawen','btnBirds','btnAnfibios','btnMeli','btnHongos','btnSenderos','btnFuego','btnFenologia'],
   'territorio|cielo':['btnWeather','btnAstro','btnGolden','btnCircadian','btnEkadashi'],
-  'territorio|penco':['btnComuna','btnEducacion','btnIglesias','btnMuni','btnBomberos','btnActores','btnAmenazas','btnNegocios'],
+  'territorio|penco':['btnComuna','btnEducacion','btnBiblioPenco','btnIglesias','btnMuni','btnBomberos','btnActores','btnAmenazas','btnNegocios'],
   'cuerpo|ciclos':['btnMenstrual','btnFerti','btnClimaterio'],
   'cuerpo|etapas':['btnAdolescencia','btnJuventud','btnAdultez','btnVejez','btnSeptenios','btnLakota','btnKimun','btnAshramas','btnConfucio','btnAndina','btnJung','btnCelta','btnSufi'],
   'cuerpo|cuidado':['btnMedic','btnNutri','btnGym','btnNatacion','btnPelo','btnRituales'],
@@ -4428,7 +4400,7 @@ const BTN_ORDER = {
   'linaje|sosten':['btnDueloFull','btnAdicciones'],
   'hogar|casa':['btnMeal','btnShopping','btnFinance','btnHomeTasks','btnBodega','btnDespensa','btnCloset','btnCorral','btnMovilidad','btnEscolar'],
   'hogar|energia':['btnEnergy','btnLena','btnTaller','btnHerramientas','btnMecanica','btnDomotica','btnConvert'],
-  'hogar|familia':['btnArbolFull','btnVozAbuelos','btnConstelaciones'],
+  'hogar|familia':['btnArbolFull','btnVozAbuelos','btnConstelaciones','btnCumple'],
   'comunidad|red':['btnTrueque','btnMinga','btnDerechos','btnAnimalCare'],
   'comunidad|red-comunitaria':['btnRedGuia','btnRedMeshtastic','btnRedDiagnostico','btnRedRadio','btnRedNodos'],
   'comunidad|convivencia-vecinal':['btnConvivGuia','btnConvivFichas','btnConvivHablar','btnConvivBitacora','btnConvivLuna','btnConvivRecursos'],
@@ -4525,13 +4497,13 @@ function reordenarAcciones(){
 }
 const PRESETS = {
   todo: Object.fromEntries(ALL_BTNS.map(k=>[k,true])),
-  // Esencial: día completo + cielo completo + mar/tierra básicos + casa básica + infancias + emergencia completa.
-  esencial: {btnHabits:true,btnRutinas:true,btnDiscipline:true,btnSchedule:true,btnTimer:true,btnRemind:true,btnGratitud:true,btnDreams:true,btnBreath:true,btnWeather:true,btnAstro:true,btnGolden:true,btnCircadian:true,btnEkadashi:true,btnTides:true,btnSiembra:true,btnMeal:true,btnShopping:true,btnFinance:true,btnHomeTasks:true,btnTales:true,btnCrianza:true,btnFirstAid:true,btnViolence:true,btnEvac:true,btnApoyo:true,btnHelp:true,btnDonate:true},
+  // Esencial (1ª apertura): día completo + TODO Territorio Penco (mar+tierra+cielo+penco) + casa básica + infancias + emergencia completa.
+  esencial: {btnHabits:true,btnRutinas:true,btnDiscipline:true,btnSchedule:true,btnTimer:true,btnRemind:true,btnGratitud:true,btnDreams:true,btnBreath:true,btnWeather:true,btnAstro:true,btnGolden:true,btnCircadian:true,btnEkadashi:true,btnTides:true,btnFishing:true,btnIntermareal:true,btnNudos:true,btnKayak:true,btnBallenas:true,btnFaunaMarina:true,btnHuerta:true,btnSiembra:true,btnBosque:true,btnCompost:true,btnAgua:true,btnHidroponia:true,btnElectrocultura:true,btnFlora:true,btnLawen:true,btnBirds:true,btnAnfibios:true,btnMeli:true,btnHongos:true,btnSenderos:true,btnFuego:true,btnFenologia:true,btnComuna:true,btnEducacion:true,btnBiblioPenco:true,btnIglesias:true,btnMuni:true,btnBomberos:true,btnActores:true,btnAmenazas:true,btnNegocios:true,btnMeal:true,btnShopping:true,btnFinance:true,btnHomeTasks:true,btnTales:true,btnCrianza:true,btnCumple:true,btnFirstAid:true,btnViolence:true,btnEvac:true,btnApoyo:true,btnHelp:true,btnDonate:true},
   // Adolescente: día completo + cuerpo en cambio + aprender sin infancias (excepción: solo Cuentos, sin Crianza) + conocerse/oráculos/sostén completos + Recap + familia completa + casa básica + cielo parcial + emergencia completa.
-  adolescente: {btnHabits:true,btnRutinas:true,btnDiscipline:true,btnSchedule:true,btnTimer:true,btnRemind:true,btnGratitud:true,btnDreams:true,btnBreath:true,btnMenstrual:true,btnFerti:true,btnAdolescencia:true,btnJuventud:true,btnNutri:true,btnGym:true,btnNatacion:true,btnPelo:true,btnFutbol:true,btnBasquetbol:true,btnStudy:true,btnMemory:true,btnMatematicas:true,btnIdiomas:true,btnMapu:true,btnEnglish:true,btnPortugues:true,btnChino:true,btnHindi:true,btnAprenderInstrumento:true,btnGuitar:true,btnUkelele:true,btnFlauta:true,btnTeclado:true,btnCajon:true,btnCanto:true,btnMusicaPractica:true,btnAjedrez:true,btnDama:true,btnSudoku:true,btnCrucigrama:true,btnSopa:true,btnSolitario:true,btnTales:true,btnEducacion:true,btnPsico:true,btnPsicologia:true,btnEneagrama:true,btnVIA:true,btnIkigai:true,btnNeurodiversidad:true,btnKinMaya:true,btnTarot:true,btnNumerologia:true,btnOraculo:true,btnDueloFull:true,btnAdicciones:true,btnRecap:true,btnArbolFull:true,btnVozAbuelos:true,btnConstelaciones:true,btnMeal:true,btnShopping:true,btnFinance:true,btnHomeTasks:true,btnConvert:true,btnWeather:true,btnAstro:true,btnCircadian:true,btnFirstAid:true,btnViolence:true,btnEvac:true,btnApoyo:true,btnHelp:true,btnDonate:true},
+  adolescente: {btnHabits:true,btnRutinas:true,btnDiscipline:true,btnSchedule:true,btnTimer:true,btnRemind:true,btnGratitud:true,btnDreams:true,btnBreath:true,btnMenstrual:true,btnFerti:true,btnAdolescencia:true,btnJuventud:true,btnNutri:true,btnGym:true,btnNatacion:true,btnPelo:true,btnFutbol:true,btnBasquetbol:true,btnStudy:true,btnMemory:true,btnMatematicas:true,btnIdiomas:true,btnMapu:true,btnEnglish:true,btnPortugues:true,btnChino:true,btnHindi:true,btnAprenderInstrumento:true,btnGuitar:true,btnUkelele:true,btnFlauta:true,btnTeclado:true,btnCajon:true,btnCanto:true,btnMusicaPractica:true,btnAjedrez:true,btnDama:true,btnSudoku:true,btnCrucigrama:true,btnSopa:true,btnSolitario:true,btnTales:true,btnEducacion:true,btnPsico:true,btnPsicologia:true,btnEneagrama:true,btnVIA:true,btnIkigai:true,btnNeurodiversidad:true,btnKinMaya:true,btnTarot:true,btnNumerologia:true,btnOraculo:true,btnDueloFull:true,btnAdicciones:true,btnRecap:true,btnArbolFull:true,btnVozAbuelos:true,btnConstelaciones:true,btnCumple:true,btnMeal:true,btnShopping:true,btnFinance:true,btnHomeTasks:true,btnConvert:true,btnWeather:true,btnAstro:true,btnCircadian:true,btnFirstAid:true,btnViolence:true,btnEvac:true,btnApoyo:true,btnHelp:true,btnDonate:true},
   adulto: Object.fromEntries(ALL_BTNS.map(k=>[k,true])),
   // Mayor: día completo + cuerpo (climaterio/adultez/vejez + cuidado completo) + estudio+juegos+infancias + sostén+oráculos completos + Espiritual/Recap + cielo completo + tierra de autoconsumo + penco servicios + familia completa + casa apoyada + red vecinal + emergencia completa.
-  mayor: {btnHabits:true,btnRutinas:true,btnDiscipline:true,btnSchedule:true,btnTimer:true,btnRemind:true,btnGratitud:true,btnDreams:true,btnBreath:true,btnClimaterio:true,btnAdultez:true,btnVejez:true,btnMedic:true,btnNutri:true,btnGym:true,btnNatacion:true,btnPelo:true,btnRituales:true,btnStudy:true,btnMemory:true,btnMatematicas:true,btnAjedrez:true,btnDama:true,btnSudoku:true,btnCrucigrama:true,btnSopa:true,btnSolitario:true,btnTales:true,btnCrianza:true,btnEspiritual:true,btnEspiritu:true,btnRecap:true,btnKinMaya:true,btnTarot:true,btnNumerologia:true,btnOraculo:true,btnDueloFull:true,btnAdicciones:true,btnWeather:true,btnAstro:true,btnGolden:true,btnCircadian:true,btnEkadashi:true,btnTides:true,btnSiembra:true,btnHuerta:true,btnBosque:true,btnCompost:true,btnLawen:true,btnComuna:true,btnEducacion:true,btnIglesias:true,btnMuni:true,btnBomberos:true,btnArbolFull:true,btnVozAbuelos:true,btnConstelaciones:true,btnMeal:true,btnShopping:true,btnHomeTasks:true,btnCorral:true,btnMovilidad:true,btnEnergy:true,btnLena:true,btnConvert:true,btnTrueque:true,btnMinga:true,btnAnimalCare:true,btnFirstAid:true,btnViolence:true,btnEvac:true,btnApoyo:true,btnHelp:true,btnDonate:true},
+  mayor: {btnHabits:true,btnRutinas:true,btnDiscipline:true,btnSchedule:true,btnTimer:true,btnRemind:true,btnGratitud:true,btnDreams:true,btnBreath:true,btnClimaterio:true,btnAdultez:true,btnVejez:true,btnMedic:true,btnNutri:true,btnGym:true,btnNatacion:true,btnPelo:true,btnRituales:true,btnStudy:true,btnMemory:true,btnMatematicas:true,btnAjedrez:true,btnDama:true,btnSudoku:true,btnCrucigrama:true,btnSopa:true,btnSolitario:true,btnTales:true,btnCrianza:true,btnEspiritual:true,btnEspiritu:true,btnRecap:true,btnKinMaya:true,btnTarot:true,btnNumerologia:true,btnOraculo:true,btnDueloFull:true,btnAdicciones:true,btnWeather:true,btnAstro:true,btnGolden:true,btnCircadian:true,btnEkadashi:true,btnTides:true,btnSiembra:true,btnHuerta:true,btnBosque:true,btnCompost:true,btnLawen:true,btnComuna:true,btnEducacion:true,btnIglesias:true,btnMuni:true,btnBomberos:true,btnArbolFull:true,btnVozAbuelos:true,btnConstelaciones:true,btnCumple:true,btnMeal:true,btnShopping:true,btnHomeTasks:true,btnCorral:true,btnMovilidad:true,btnEnergy:true,btnLena:true,btnConvert:true,btnTrueque:true,btnMinga:true,btnAnimalCare:true,btnFirstAid:true,btnViolence:true,btnEvac:true,btnApoyo:true,btnHelp:true,btnDonate:true},
   // Estudiante: día completo + aprender completo + Eneagrama/VIA/Ikigai+Recap+Métodos + cuerpo joven + cielo parcial + casa básica + Convert + VozAbuelos + ciber básico + emergencia completa.
   estudiante: {btnHabits:true,btnRutinas:true,btnDiscipline:true,btnSchedule:true,btnTimer:true,btnRemind:true,btnGratitud:true,btnDreams:true,btnBreath:true,btnStudy:true,btnMemory:true,btnMatematicas:true,btnIdiomas:true,btnMapu:true,btnEnglish:true,btnPortugues:true,btnChino:true,btnHindi:true,btnAprenderInstrumento:true,btnGuitar:true,btnUkelele:true,btnFlauta:true,btnTeclado:true,btnCajon:true,btnCanto:true,btnMusicaPractica:true,btnAjedrez:true,btnDama:true,btnSudoku:true,btnCrucigrama:true,btnSopa:true,btnSolitario:true,btnEducacion:true,btnEneagrama:true,btnVIA:true,btnIkigai:true,btnRecap:true,btnMetodos:true,btnAdolescencia:true,btnJuventud:true,btnNutri:true,btnGym:true,btnNatacion:true,btnFutbol:true,btnBasquetbol:true,btnWeather:true,btnAstro:true,btnCircadian:true,btnMeal:true,btnShopping:true,btnFinance:true,btnHomeTasks:true,btnConvert:true,btnVozAbuelos:true,btnCiberGuia:true,btnCiberClaves:true,btnCiberEstafas:true,btnCiberPriv:true,btnFirstAid:true,btnViolence:true,btnEvac:true,btnApoyo:true,btnHelp:true,btnDonate:true},
   // Agricultor: tierra completa + cielo completo + mar de riego/marea + penco + casa productiva + energía sin domótica + VozAbuelos + red completa + día (organizar + gratitud) + emergencia de campo.
@@ -4543,7 +4515,7 @@ const PRESETS = {
   // Deportista: día completo + cuidado completo + Juventud/Adultez + Weather/Tides/Circadian + casa de rendimiento + Energy/Convert + VIA/Ikigai/Espiritual + emergencia completa.
   deportista: {btnHabits:true,btnRutinas:true,btnDiscipline:true,btnSchedule:true,btnTimer:true,btnRemind:true,btnGratitud:true,btnDreams:true,btnBreath:true,btnJuventud:true,btnAdultez:true,btnMedic:true,btnNutri:true,btnGym:true,btnNatacion:true,btnPelo:true,btnRituales:true,btnFutbol:true,btnBasquetbol:true,btnWeather:true,btnTides:true,btnCircadian:true,btnMeal:true,btnShopping:true,btnFinance:true,btnEnergy:true,btnConvert:true,btnVIA:true,btnIkigai:true,btnEspiritual:true,btnEspiritu:true,btnFirstAid:true,btnViolence:true,btnEvac:true,btnApoyo:true,btnHelp:true,btnDonate:true},
   // Docente: aprender completo + familia completa + casa con Escolar/Movilidad + conocerse parcial + Recap/Métodos/Duelo + día completo + tierra educativa + Adolescencia/Juventud + Trueque/Minga/Derechos + ciber básico + emergencia completa.
-  docente: {btnStudy:true,btnMemory:true,btnMatematicas:true,btnIdiomas:true,btnMapu:true,btnEnglish:true,btnPortugues:true,btnChino:true,btnHindi:true,btnAprenderInstrumento:true,btnGuitar:true,btnUkelele:true,btnFlauta:true,btnTeclado:true,btnCajon:true,btnCanto:true,btnMusicaPractica:true,btnAjedrez:true,btnDama:true,btnSudoku:true,btnCrucigrama:true,btnSopa:true,btnSolitario:true,btnTales:true,btnCrianza:true,btnEducacion:true,btnArbolFull:true,btnVozAbuelos:true,btnConstelaciones:true,btnMeal:true,btnShopping:true,btnFinance:true,btnHomeTasks:true,btnEscolar:true,btnMovilidad:true,btnPsico:true,btnPsicologia:true,btnEneagrama:true,btnVIA:true,btnIkigai:true,btnRecap:true,btnMetodos:true,btnDueloFull:true,btnHabits:true,btnRutinas:true,btnDiscipline:true,btnSchedule:true,btnTimer:true,btnRemind:true,btnGratitud:true,btnDreams:true,btnBreath:true,btnWeather:true,btnCircadian:true,btnSiembra:true,btnHuerta:true,btnBosque:true,btnCompost:true,btnBirds:true,btnFenologia:true,btnAdolescencia:true,btnJuventud:true,btnTrueque:true,btnMinga:true,btnDerechos:true,btnCiberGuia:true,btnCiberClaves:true,btnCiberEstafas:true,btnCiberPriv:true,btnFirstAid:true,btnViolence:true,btnEvac:true,btnApoyo:true,btnConvert:true,btnHelp:true,btnDonate:true}
+  docente: {btnStudy:true,btnMemory:true,btnMatematicas:true,btnIdiomas:true,btnMapu:true,btnEnglish:true,btnPortugues:true,btnChino:true,btnHindi:true,btnAprenderInstrumento:true,btnGuitar:true,btnUkelele:true,btnFlauta:true,btnTeclado:true,btnCajon:true,btnCanto:true,btnMusicaPractica:true,btnAjedrez:true,btnDama:true,btnSudoku:true,btnCrucigrama:true,btnSopa:true,btnSolitario:true,btnTales:true,btnCrianza:true,btnEducacion:true,btnArbolFull:true,btnVozAbuelos:true,btnConstelaciones:true,btnCumple:true,btnMeal:true,btnShopping:true,btnFinance:true,btnHomeTasks:true,btnEscolar:true,btnMovilidad:true,btnPsico:true,btnPsicologia:true,btnEneagrama:true,btnVIA:true,btnIkigai:true,btnRecap:true,btnMetodos:true,btnDueloFull:true,btnHabits:true,btnRutinas:true,btnDiscipline:true,btnSchedule:true,btnTimer:true,btnRemind:true,btnGratitud:true,btnDreams:true,btnBreath:true,btnWeather:true,btnCircadian:true,btnSiembra:true,btnHuerta:true,btnBosque:true,btnCompost:true,btnBirds:true,btnFenologia:true,btnAdolescencia:true,btnJuventud:true,btnTrueque:true,btnMinga:true,btnDerechos:true,btnCiberGuia:true,btnCiberClaves:true,btnCiberEstafas:true,btnCiberPriv:true,btnFirstAid:true,btnViolence:true,btnEvac:true,btnApoyo:true,btnConvert:true,btnHelp:true,btnDonate:true}
 };
 try { if (typeof window !== 'undefined') window.PRESETS = PRESETS; } catch (e) {}
 // Construye mapa visible completo desde un preset: lo listado = true, resto = false.
