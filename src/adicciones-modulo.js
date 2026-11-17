@@ -474,14 +474,13 @@
       return;
     }
     var rows = checks.map(function (c) {
-      var estadoColor = c.estado === 'libre' ? '#8fd694' : c.estado === 'antojo' ? '#e8c56a' : c.estado === 'recaida' ? '#e76e8a' : '#7ab8ff';
       var estadoTxt = c.estado === 'libre' ? 'Libre' : c.estado === 'antojo' ? 'Antojo' : c.estado === 'recaida' ? 'Recaída' : 'Observación';
       var extra = (c.disparador ? ' · ⚡ ' + esc(c.disparador) : '') +
         (c.alternativa ? ' · ✅ ' + esc(c.alternativa) : '') +
         (c.gasto ? ' · 💰 $' + Number(c.gasto).toLocaleString('es-CL') : '');
       return '<div class="su-dc5f39">' +
-        '<span class="su-97445a">' + esc(sustNombre(c.sustancia)) + ' <span class="muted">' + c.fecha + (c.hora ? ' ' + esc(c.hora) : '') + '</span><br>' +
-        '<span style="color:' + estadoColor + ';font-weight:600">' + estadoTxt + '</span>' +
+        '<span class="su-97445a">' + esc(sustNombre(c.sustancia)) + ' <span class="muted">' + esc(c.fecha) + (c.hora ? ' ' + esc(c.hora) : '') + '</span><br>' +
+        '<span class="adi-estado adi-estado-' + esc(c.estado || 'obs') + '">' + esc(estadoTxt) + '</span>' +
         '<span class="muted su-11a508">' + extra + '</span></span>' +
         '<span class="su-3a76ac">' +
         '<button type="button" class="btn su-337714" data-adi-edit="' + c.ts + '">✏️</button>' +
@@ -532,9 +531,9 @@
     el.innerHTML = RECURSOS.map(function (r) {
       var icono = r.tipo === 'emergencia' ? '🚨' : r.tipo === 'telefono' ? '📞' : r.tipo === 'web' ? '🌐' : '📍';
       return '<div class="si-card">' +
-        '<h4>' + icono + ' ' + r.nombre + '</h4>' +
-        '<p>' + r.desc + '</p>' +
-        '<p class="su-2af27e">' + r.contacto + '</p>' +
+        '<h4>' + icono + ' ' + esc(r.nombre) + '</h4>' +
+        '<p>' + esc(r.desc) + '</p>' +
+        '<p class="su-2af27e">' + esc(r.contacto) + '</p>' +
         '</div>';
     }).join('') +
     '<div class="si-card su-006fa0">' +
@@ -802,7 +801,7 @@
           : 'Señales altas. Te recomendamos pedir apoyo profesional pronto: 1412 SENDA (24 h), tu CESFAM o COSAM Penco. Crisis: *4141 (24 h). Pedir ayuda es un acto de valentía, no de fracaso.';
       var col = nivel === 'alto' ? '#e76e8a' : nivel === 'moderado' ? '#e8c56a' : '#8fd694';
       var box = $('adiEvRes');
-      if (box) box.innerHTML = '<div class="si-card" style="border-color:' + col + '"><h4>Resultado: ' + total + ' / 24 · nivel ' + nivel + '</h4><p>' + msg + '</p></div>';
+      if (box) box.innerHTML = '<div class="si-card adi-nivel-' + nivel + '"><h4>Resultado: ' + total + ' / 24 · nivel ' + esc(nivel) + '</h4><p>' + esc(msg) + '</p></div>';
       var ex = store();
       ex.evals.push({ fecha: todayKey(), puntaje: total, nivel: nivel });
       save('Evaluación guardada 📋');

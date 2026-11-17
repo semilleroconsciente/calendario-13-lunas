@@ -1,60 +1,59 @@
+'use strict';
+// ============================================================================
 // tests/ics.test.js — importar/exportar compromisos (.ics, RFC 5545).
-// Cubre: roundtrip build->parse, escape/plegado, DTSTART (flotante,
-// TZID, UTC->America/Santiago, solo-fecha), RRULE simple, evento de
-// varios días, e inserción sin duplicar (applyEvents con stubs).
-// Uso: node --test "tests/*.test.js" (o npm test)
+//
+// Cubre: roundtrip build->parse, escape/plegado, DTSTART (flotante, TZID,
+// UTC->America/Santiago, solo-fecha), RRULE simple, evento de varios días
+// e inserción sin duplicar (applyEvents con stubs).
+// Uso: node --test tests/  (o npm test)
+// ============================================================================
 const { describe, it } = require('node:test');
 const assert = require('node:assert/strict');
-const fs = require('fs');
-const path = require('path');
-const vm = require('vm');
-// Paso 3 del reorden src/: ics-modulo.js vive en src/ tras la mudanza.
-const { resolverFuente } = require('../scripts/paths.cjs');
+const vm = require('node:vm');
+const { leerFuente, igualJSON } = require('./helpers.cjs');
 
-function loadICS(stubs) {
+function cargarICS(stubs) {
   const sandbox = Object.assign({ window: {}, console }, stubs || {});
   vm.createContext(sandbox);
-  vm.runInContext(
-    fs.readFileSync(resolverFuente('ics-modulo.js'), 'utf8'),
-    sandbox,
-    { filename: 'ics-modulo.js' }
-  );
+  vm.runInContext(leerFuente('ics-modulo.js'), sandbox, { filename: 'ics-modulo.js' });
   return sandbox.window.Cal13ICS;
 }
 
-const ICS = loadICS();
+const ICS = cargarICS();
 
+// Primer bloque VEVENT (o el del UID pedido).
 function vevent(ics, uid) {
-  const blocks = ics.split('BEGIN:VEVENT').slice(1);
-  if (!uid) return blocks[0];
-  return blocks.find((b) => b.includes('UID:' + uid));
+  const bloques = ics.split('BEGIN:VEVENT').slice(1);
+  if (!uid) return bloques[0];
+  return bloques.find((b) => b.includes('UID:' + uid));
 }
 
-// Los arrays vienen del realm vm: se comparan tras pasar a JSON.
-function eqArr(actual, expected) {
-  assert.deepEqual(JSON.parse(JSON.stringify(actual)), expected);
-}
-
-describe('ics: buildICS', () => {
-  it('genera VCALENDAR válido con un evento', () => {
+// --- Suite: buildICS ---------------------------------------------------------
+describe('ICS: buildICS (generación)', () => {
+  it('genera un VCALENDAR válido con un evento', () => {
     const ics = ICS.buildICS([{
-      uid: 'a1', dateKey: '2026-07-04', time: '08:37',
-      summary: 'Reunión junta de vecinos', description: 'Luna 2 · Día 5 de 28 — Calendario 13 Lunas · Penco', alarm: true,
+      uid: 'a1',
+      dateKey: '2026-07-04',
+      time: '08:37',
+      summary: 'Reunión junta de vecinos',
+      description: 'Luna 2 · Día 5 de 28 — Calendario 13 Lunas · Penco',
+      alarm: true,
     }]);
-    assert.ok(ics.includes('BEGIN:VCALENDAR'));
-    assert.ok(ics.includes('END:VCALENDAR'));
-    assert.ok(ics.includes('METHOD:PUBLISH'));
-    assert.ok(ics.includes('PRODID:-//Semillero Consciente//Calendario 13 Lunas//ES'));
+    assert.ok(ics.includes('BEGIN:VCALENDAR'), 'falta BEGIN:VCALENDAR');
+    assert.ok(ics.includes('END:VCALENDAR'), 'falta END:VCALENDAR');
+    assert.ok(ics.includes('METHOD:PUBLISH'), 'falta METHOD:PUBLISH');
+    assert.ok(ics.includes('PRODID:-//Semillero Consciente//Calendario 13 Lunas//ES'), 'PRODID inesperado');
+
     const ev = vevent(ics, 'a1@calendario-13-lunas');
-    assert.ok(ev, 'evento con UID esperado');
-    assert.ok(ev.includes('DTSTART;TZID=America/Santiago:20260704T083700'));
+    assert.ok(ev, 'evento con UID esperado no encontrado');
+    assert.ok(ev.includes('DTSTART;TZID=America/Santiago:20260704T083700'), 'DTSTART inesperado');
     assert.ok(ev.includes('DTEND;TZID=America/Santiago:20260704T093700'), 'fin = inicio + 60 min');
-    assert.ok(ev.includes('SUMMARY:Reunión junta de vecinos'));
-    assert.ok(ev.includes('BEGIN:VALARM') && ev.includes('TRIGGER:-PT15M'), '🔔 genera alarma');
-    assert.ok(/DTSTAMP:\d{8}T\d{6}Z/.test(ev));
+    assert.ok(ev.includes('SUMMARY:Reunión junta de vecinos'), 'SUMMARY inesperado');
+    assert.ok(ev.includes('BEGIN:VALARM') && ev.includes('TRIGGER:-PT15M'), '[alarma] genera VALARM');
+    assert.ok(/DTSTAMP:\d{8}T\d{6}Z/.test(ev), 'DTSTAMP con formato UTC');
   });
 
-  it('fin cruza la medianoche al día siguiente', () => {
+  it('el fin cruza la medianoche al día siguiente', () => {
     const ics = ICS.buildICS([{ uid: 'x', dateKey: '2026-07-04', time: '23:30', summary: 'Turno' }]);
     assert.ok(vevent(ics, 'x@').includes('DTEND;TZID=America/Santiago:20260705T003000'));
   });
@@ -64,35 +63,36 @@ describe('ics: buildICS', () => {
       { uid: 'b', dateKey: '2026-07-05', time: '10:00', summary: 'B' },
       { uid: 'a', dateKey: '2026-07-04', time: '10:00', summary: 'A' },
     ]);
-    assert.ok(!ics.includes('VALARM'));
-    assert.ok(ics.indexOf('SUMMARY:A') < ics.indexOf('SUMMARY:B'));
+    assert.ok(!ics.includes('VALARM'), 'VALARM sin alarma pedida');
+    assert.ok(ics.indexOf('SUMMARY:A') < ics.indexOf('SUMMARY:B'), 'eventos desordenados');
   });
 
-  it('escapa ; , \\ y saltos de línea (roundtrip)', () => {
+  it('escapa "; , \\" y saltos de línea (roundtrip)', () => {
     const sum = 'Taller; siembra, trasplante \\ y mate\nsegunda línea';
     const ics = ICS.buildICS([{ uid: 'e', dateKey: '2026-07-04', time: '10:00', summary: sum }]);
-    assert.ok(ics.includes('Taller\\; siembra\\, trasplante \\\\ y mate\\nsegunda línea'));
+    assert.ok(ics.includes('Taller\\; siembra\\, trasplante \\\\ y mate\\nsegunda línea'), 'escape RFC 5545 roto');
     const back = ICS.parseICS(ics);
     assert.equal(back.events.length, 1);
     assert.equal(back.events[0].summary, sum);
   });
 
   it('pliega líneas largas y las recupera intactas (tope 80 de la agenda)', () => {
-    const sum = 'Horario de riego del semillero comunitario del cerro verde con todas las familias del sector norte y sur'.repeat(2);
-    const ics = ICS.buildICS([{ uid: 'l', dateKey: '2026-07-04', time: '10:00', summary: sum }]);
+    const base = 'Horario de riego del semillero comunitario del cerro verde con todas las familias del sector norte y sur';
+    const ics = ICS.buildICS([{ uid: 'l', dateKey: '2026-07-04', time: '10:00', summary: base.repeat(2) }]);
     assert.ok(ics.includes('\r\n '), 'hay plegado CRLF+espacio');
     const back = ICS.parseICS(ics);
-    assert.equal(back.events[0].summary, sum.slice(0, 80));
+    assert.equal(back.events[0].summary, base.repeat(2).slice(0, 80));
   });
 });
 
-describe('ics: parseICS', () => {
+// --- Suite: parseICS ---------------------------------------------------------
+describe('ICS: parseICS (lectura)', () => {
   it('lee flotante, TZID y fecha sola', () => {
-    const ics = 'BEGIN:VCALENDAR\r\nVERSION:2.0\r\n' +
-      'BEGIN:VEVENT\r\nUID:1\r\nDTSTART:20260704T083700\r\nSUMMARY:Flotante\r\nEND:VEVENT\r\n' +
-      'BEGIN:VEVENT\r\nUID:2\r\nDTSTART;TZID=America/Santiago:20260705T140500\r\nSUMMARY:Con zona\r\nEND:VEVENT\r\n' +
-      'BEGIN:VEVENT\r\nUID:3\r\nDTSTART;VALUE=DATE:20260706\r\nSUMMARY:Día completo\r\nEND:VEVENT\r\n' +
-      'END:VCALENDAR\r\n';
+    const ics = 'BEGIN:VCALENDAR\r\nVERSION:2.0\r\n'
+      + 'BEGIN:VEVENT\r\nUID:1\r\nDTSTART:20260704T083700\r\nSUMMARY:Flotante\r\nEND:VEVENT\r\n'
+      + 'BEGIN:VEVENT\r\nUID:2\r\nDTSTART;TZID=America/Santiago:20260705T140500\r\nSUMMARY:Con zona\r\nEND:VEVENT\r\n'
+      + 'BEGIN:VEVENT\r\nUID:3\r\nDTSTART;VALUE=DATE:20260706\r\nSUMMARY:Día completo\r\nEND:VEVENT\r\n'
+      + 'END:VCALENDAR\r\n';
     const r = ICS.parseICS(ics);
     assert.equal(r.events.length, 3);
     assert.deepEqual([r.events[0].dateKey, r.events[0].time], ['2026-07-04', '08:37']);
@@ -102,7 +102,7 @@ describe('ics: parseICS', () => {
   });
 
   it('convierte DTSTART UTC (...Z) a hora de Penco', () => {
-    // 2026-07-04 12:37 UTC = 08:37 en America/Santiago (invierno, UTC-4)
+    // 2026-07-04 12:37 UTC = 08:37 en America/Santiago (invierno, UTC-4).
     const ics = 'BEGIN:VCALENDAR\r\nBEGIN:VEVENT\r\nUID:z\r\nDTSTART:20260704T123700Z\r\nSUMMARY:Zulu\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n';
     const r = ICS.parseICS(ics);
     assert.equal(r.events.length, 1);
@@ -110,21 +110,21 @@ describe('ics: parseICS', () => {
       timeZone: 'America/Santiago', year: 'numeric', month: '2-digit', day: '2-digit',
       hour: '2-digit', minute: '2-digit', hour12: false,
     });
-    const p = {};
-    for (const part of f.formatToParts(new Date(Date.UTC(2026, 6, 4, 12, 37)))) p[part.type] = part.value;
-    const hh = p.hour === '24' ? '00' : p.hour;
-    assert.equal(r.events[0].dateKey, `${p.year}-${p.month}-${p.day}`);
-    assert.equal(r.events[0].time, `${hh}:${p.minute}`);
+    const partes = {};
+    for (const p of f.formatToParts(new Date(Date.UTC(2026, 6, 4, 12, 37)))) partes[p.type] = p.value;
+    const hh = partes.hour === '24' ? '00' : partes.hour;
+    assert.equal(r.events[0].dateKey, `${partes.year}-${partes.month}-${partes.day}`);
+    assert.equal(r.events[0].time, `${hh}:${partes.minute}`);
   });
 
   it('expande RRULE semanal con COUNT (taller semanal)', () => {
     const ics = 'BEGIN:VCALENDAR\r\nBEGIN:VEVENT\r\nUID:w\r\nDTSTART:20260706T100000\r\nRRULE:FREQ=WEEKLY;COUNT=3\r\nSUMMARY:Taller\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n';
     const r = ICS.parseICS(ics);
     assert.equal(r.events.length, 3);
-    eqArr(r.events.map((e) => e.dateKey), ['2026-07-06', '2026-07-13', '2026-07-20']);
+    igualJSON(r.events.map((e) => e.dateKey), ['2026-07-06', '2026-07-13', '2026-07-20']);
   });
 
-  it('recurrente sin COUNT ni UNTIL importa solo la primera instancia', () => {
+  it('la recurrente sin COUNT ni UNTIL importa solo la primera instancia', () => {
     const ics = 'BEGIN:VCALENDAR\r\nBEGIN:VEVENT\r\nUID:w\r\nDTSTART:20260706T100000\r\nRRULE:FREQ=WEEKLY\r\nSUMMARY:Sin fin\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n';
     const r = ICS.parseICS(ics);
     assert.equal(r.events.length, 1);
@@ -132,29 +132,30 @@ describe('ics: parseICS', () => {
     assert.equal(r.skipped, 0);
   });
 
-  it('evento de varios días crea un compromiso por día', () => {
+  it('el evento de varios días crea un compromiso por día', () => {
     const ics = 'BEGIN:VCALENDAR\r\nBEGIN:VEVENT\r\nUID:m\r\nDTSTART;VALUE=DATE:20260706\r\nDTEND;VALUE=DATE:20260708\r\nSUMMARY:Fiesta\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n';
     const r = ICS.parseICS(ics);
-    eqArr(r.events.map((e) => e.dateKey), ['2026-07-06', '2026-07-07']);
+    igualJSON(r.events.map((e) => e.dateKey), ['2026-07-06', '2026-07-07']);
   });
 
-  it('sin DTSTART se omite y archivo vacío no rompe', () => {
+  it('sin DTSTART se omite y el archivo vacío no rompe', () => {
     const r = ICS.parseICS('BEGIN:VCALENDAR\r\nBEGIN:VEVENT\r\nUID:s\r\nSUMMARY:Sin fecha\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n');
     assert.equal(r.events.length, 0);
     assert.equal(r.skipped, 1);
-    eqArr(ICS.parseICS('').events, []);
-    eqArr(ICS.parseICS(null).events, []);
+    igualJSON(ICS.parseICS('').events, []);
+    igualJSON(ICS.parseICS(null).events, []);
   });
 });
 
-describe('ics: applyEvents (con stubs)', () => {
-  function loadWithStubs() {
+// --- Suite: applyEvents ------------------------------------------------------
+describe('ICS: applyEvents (inserción con stubs)', () => {
+  function cargarConStubs() {
     const store = { cycles: {} };
     return {
-      api: loadICS({
+      api: cargarICS({
         CYCLE_YEARS: [2026],
         cal: {
-          buildCycle: (y) => ({
+          buildCycle: () => ({
             days: [
               { luna: 1, diaN: 1, noonMs: Date.UTC(2026, 5, 21, 12) },
               { luna: 'dft', diaN: 1, noonMs: Date.UTC(2027, 5, 20, 12) },
@@ -174,7 +175,7 @@ describe('ics: applyEvents (con stubs)', () => {
   }
 
   it('inserta, no duplica, e informa fuera-rango y DFT', () => {
-    const { api, store } = loadWithStubs();
+    const { api, store } = cargarConStubs();
     const evs = [
       { uid: 'a', dateKey: '2026-06-21', time: '10:00', summary: 'Minga' },
       { uid: 'b', dateKey: '2030-01-01', time: '10:00', summary: 'Lejos' },
@@ -184,10 +185,12 @@ describe('ics: applyEvents (con stubs)', () => {
     assert.equal(r1.added, 1);
     assert.equal(r1.fuera, 1);
     assert.equal(r1.dft, 1);
-    const cell = store.cycles['2026'].moons['1'].days[1];
-    assert.equal(cell.agenda.length, 1);
-    assert.equal(cell.agenda[0].text, 'Minga');
-    assert.equal(cell.agenda[0].time, '10:00');
+
+    const celda = store.cycles['2026'].moons['1'].days[1];
+    assert.equal(celda.agenda.length, 1);
+    assert.equal(celda.agenda[0].text, 'Minga');
+    assert.equal(celda.agenda[0].time, '10:00');
+
     const r2 = api.applyEvents([evs[0]]);
     assert.equal(r2.added, 0);
     assert.equal(r2.dup, 1);

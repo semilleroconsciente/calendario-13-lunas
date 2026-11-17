@@ -1,42 +1,28 @@
-// tests/idb-fallback.test.js — mejora #5 (IndexedDB con fallback).
-// Sin indexedDB en el entorno, storage-idb.js debe degradar a localStorage
-// y mantener roundtrip get/set.
+'use strict';
+// ============================================================================
+// tests/idb-fallback.test.js — IndexedDB con degradado (mejora #5).
+//
+// Sin indexedDB en el entorno, storage-idb.js baja a localStorage y mantiene
+// el roundtrip get/set, las bitácoras y la migración por grupos.
+// Uso: node --test tests/  (o npm test)
+// ============================================================================
 const { describe, it } = require('node:test');
 const assert = require('node:assert/strict');
-const fs = require('fs');
-const path = require('path');
-const vm = require('vm');
+const vm = require('node:vm');
+const { leerFuente, memoriaStorage, igualJSON } = require('./helpers.cjs');
 
-const ROOT = path.join(__dirname, '..');
-// Paso 3 del reorden src/: las fuentes viven en src/ tras la mudanza.
-const { resolverFuente } = require('../scripts/paths.cjs');
-
-function loadShim() {
-  const store = {};
-  const keysOf = () => Object.keys(store);
-  const sandbox = {
-    window: {},
-    localStorage: {
-      getItem: (k) => (k in store ? store[k] : null),
-      setItem: (k, v) => { store[k] = String(v); },
-      removeItem: (k) => { delete store[k]; },
-      clear: () => { for (const k of keysOf()) delete store[k]; },
-      key: (i) => keysOf()[i] || null,
-    },
-  };
-  Object.defineProperty(sandbox.localStorage, 'length', { get: () => keysOf().length });
+function cargarShim() {
+  const sandbox = { window: {}, localStorage: memoriaStorage() };
   sandbox.window = sandbox;
   vm.createContext(sandbox);
-  vm.runInContext(fs.readFileSync(resolverFuente('storage-idb.js'), 'utf8'), sandbox);
+  vm.runInContext(leerFuente('storage-idb.js'), sandbox, { filename: 'storage-idb.js' });
   return sandbox.window.cal13idb;
 }
-// Los objetos cruzan el borde vm (prototipo de otro realm): se comparan
-// por JSON para no pelear con deepStrictEqual entre realms.
-function j(v) { return JSON.stringify(v); }
 
-describe('storage-idb fallback', () => {
-  it('sin indexedDB: backend localstorage + roundtrip', async () => {
-    const idb = loadShim();
+// --- Suite -------------------------------------------------------------------
+describe('storage-idb con fallback a localStorage', () => {
+  it('sin indexedDB usa el backend localstorage con roundtrip', async () => {
+    const idb = cargarShim();
     assert.ok(idb, 'window.cal13idb no expuesto');
     await idb.set('k1', 'hola');
     assert.equal(await idb.get('k1'), 'hola');
@@ -45,43 +31,47 @@ describe('storage-idb fallback', () => {
     assert.equal(await idb.get('k1'), null);
   });
 
-  it('store bitacoras en fallback: guardar/leer/listar/contar/borrar', async () => {
-    const idb = loadShim();
+  it('bitácoras en fallback: guardar, leer, listar, contar y borrar', async () => {
+    const idb = cargarShim();
     assert.equal(await idb.bitacorasContar(), 0);
     await idb.bitacoraGuardar('calendario', { titulo: 'Calendario', keys: { ciclo: [1, 2] } });
     await idb.bitacoraGuardar('pesca', { titulo: 'Pesca', keys: {} });
     assert.equal(await idb.bitacorasContar(), 2);
+
     const leida = await idb.bitacoraLeer('calendario');
     assert.equal(leida.titulo, 'Calendario');
-    assert.equal(j(leida.keys), j({ ciclo: [1, 2] }));
+    igualJSON(leida.keys, { ciclo: [1, 2] });
+
     const lista = await idb.bitacorasListar();
     assert.deepEqual([...lista.map((x) => x.id)].sort(), ['calendario', 'pesca']);
+
     await idb.bitacoraBorrar('pesca');
     assert.equal(await idb.bitacoraLeer('pesca'), null);
     assert.equal(await idb.bitacorasContar(), 1);
   });
 
-  it('info(): forma + latencia medida aunque sea fallback', async () => {
-    const idb = loadShim();
+  it('info() trae forma y latencia medida aunque sea fallback', async () => {
+    const idb = cargarShim();
     const info = await idb.info();
     assert.equal(info.backend, 'localstorage');
     assert.ok(typeof info.latenciaMs === 'number' && info.latenciaMs >= 0, 'sin latenciaMs');
     assert.ok('quota' in info && 'usage' in info, 'sin cuota/uso');
   });
 
-  it('migrarGruposDesdeUserData: parte por grupos sin borrar origen', async () => {
-    const idb = loadShim();
+  it('migrarGruposDesdeUserData parte por grupos sin borrar el origen', async () => {
+    const idb = cargarShim();
     const userData = { ciclo: 'x', notas: 'y', otra: 'z' };
     const grupos = [
-      { id: 'calendario', titulo: 'Calendario', keys: ['ciclo', 'notas'] },
+      { id: 'cal', titulo: 'Calendario', keys: ['ciclo', 'notas'] },
       { id: 'vacio', titulo: 'Vacío', keys: ['inexistente'] },
     ];
     const rep = await idb.migrarGruposDesdeUserData(userData, grupos);
     assert.equal(rep.migrados, 1);
     assert.equal(rep.claves, 2);
-    assert.ok(rep.bytes > 0);
-    assert.deepEqual(userData, { ciclo: 'x', notas: 'y', otra: 'z' });
-    const g = await idb.bitacoraLeer('calendario');
-    assert.equal(j(g.keys), j({ ciclo: 'x', notas: 'y' }));
+    assert.ok(rep.bytes > 0, 'sin bytes migrados');
+    assert.deepEqual(userData, { ciclo: 'x', notas: 'y', otra: 'z' }, 'el origen no debe mutar');
+
+    const g = await idb.bitacoraLeer('cal');
+    igualJSON(g.keys, { ciclo: 'x', notas: 'y' });
   });
 });

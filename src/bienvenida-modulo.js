@@ -6,6 +6,7 @@
   'use strict';
   var KEY = 'cal13-bienvenida-v1';
   var ONB_KEY = 'cal13-onboarding-v2';
+  var AUTO_KEY = 'cal13-bienvenida-auto';
   var MOONS = ['🌑', '🌒', '🌒', '🌓', '🌓', '🌔', '🌕', '🌖', '🌗', '🌗', '🌘', '🌘', '🌑'];
   var FRASES = [
     '“13 lunas × 28 días = 364 días para sembrar, cuidar y recordar.”',
@@ -69,6 +70,14 @@
   function visto() { try { if (vistoMem) return true; return localStorage.getItem(KEY) === '1'; } catch (e) { return vistoMem; } }
   function marcar() { vistoMem = true; try { localStorage.setItem(KEY, '1'); } catch (e) {} }
   function marcarOnboarding() { try { localStorage.setItem(ONB_KEY, '1'); } catch (e) {} }
+  function autoPermitido() {
+    try {
+      var v = localStorage.getItem(AUTO_KEY);
+      if (v === '0') return false;
+      return true;
+    } catch (e) { return true; }
+  }
+  function fijarAuto(on) { try { localStorage.setItem(AUTO_KEY, on ? '1' : '0'); } catch (e) {} }
 
   function esc(s) {
     return (s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -212,10 +221,10 @@
       '<div class="bv-lunas-count" id="bvCount" aria-live="polite"></div>' +
       '<div class="bv-steps">' +
       '<section class="bv-step active" data-step="0" aria-label="Bienvenida">' +
-      '<h3>🌙 ¡Bienvenid@ a tu calendario lunar!</h3>' +
-      '<p>Las <b>13 lunas</b> ordenan tu siembra, tus mareas y tu memoria.' +
-      ' Todo queda <b>privado en tu dispositivo</b>, sin cuentas ni publicidad.</p>' +
-      '<p class="bv-hint">Te tomará 20 segundos crear tu perfil inicial.</p>' +
+      '<h3>🌙 Te damos la bienvenida a tu calendario lunar</h3>' +
+      '<p>Las <b>13 lunas de 28 días</b> ordenan tu siembra, tus mareas y tu memoria.' +
+      ' Todo queda <b>privado en tu dispositivo</b>: sin cuentas, sin publicidad y sin conexión obligatoria.</p>' +
+      '<p class="bv-hint">Crea tu perfil en 20 segundos para empezar.</p>' +
       '<div class="bv-actions"><button type="button" class="btn btn-accent" data-a="ir-perfil">Crear mi perfil →</button></div>' +
       '</section>' +
       '<section class="bv-step" data-step="1" aria-label="Crear perfil inicial">' +
@@ -223,7 +232,7 @@
       '<div class="bv-field"><label for="bvNombre">¿Cómo te llamamos?</label>' +
       '<input type="text" id="bvNombre" maxlength="30" placeholder="ej: Mamá, Esteban, Semillero…" autocomplete="off">' +
       '<div class="bv-err" id="bvErr" aria-live="polite"></div></div>' +
-      '<div class="bv-field"><label>Elige tu perfil (define tu pantalla de inicio)</label>' +
+      '<div class="bv-field"><label>Elige tu perfil: define tu pantalla de inicio</label>' +
       '<div class="bv-presets" role="group" aria-label="Perfiles">' + presetsHtml + '</div></div>' +
       '<div class="bv-actions"><button type="button" class="btn" data-a="atras">← Atrás</button>' +
       '<button type="button" class="btn btn-accent" data-a="crear">Guardar y entrar ✓</button></div>' +
@@ -231,12 +240,12 @@
       '<section class="bv-step" data-step="2" aria-label="Listo">' +
       '<div class="bv-ok" aria-hidden="true">🌕</div>' +
       '<h3 id="bvHola">¡Listo!</h3>' +
-      '<p id="bvResumen">Tu calendario ya está preparado.</p>' +
+      '<p id="bvResumen">Tu calendario ya está preparado con tu perfil.</p>' +
       '<div class="bv-actions"><button type="button" class="btn btn-accent" data-a="entrar">¡Empezar! ✓</button></div>' +
       '</section>' +
       '</div>' +
       '<div class="bv-dots" aria-hidden="true"><span class="bv-dot on"></span><span class="bv-dot"></span><span class="bv-dot"></span></div>' +
-      '<button type="button" class="bv-skip" data-a="omitir">Explorar sin crear perfil</button>' +
+      '<button type="button" class="bv-skip" data-a="omitir">Explorar sin crear perfil por ahora</button>' +
       '<div class="bv-frase" id="bvFrase" aria-live="polite"></div>' +
       '</div>';
     document.body.appendChild(overlay);
@@ -330,7 +339,7 @@
     var err = overlay.querySelector('#bvErr');
     var nombre = limpiarNombre(inp ? inp.value : '');
     if (!nombre) {
-      if (err) err.textContent = 'Escribe tu nombre (2 a 30 letras) para continuar.';
+      if (err) err.textContent = 'Escribe cómo te llamamos para continuar (hasta 30 letras).';
       try {
         var a = A();
         if (a && a.animate && !reduceMotion) a.animate(inp, { x: [0, -9, 9, -6, 6, 0], duration: 380, ease: 'outQuad' });
@@ -351,7 +360,7 @@
         for (var i = 0; i < PRESETS.length; i++) if (PRESETS[i].id === elegido) pnom = PRESETS[i].nom;
       } catch (e) {}
       overlay.querySelector('#bvResumen').textContent = esPC()
-        ? 'Perfil «' + pnom + '» aplicado: entraste en la vista de PC (🌙 Luna) con lo esencial para ti.'
+        ? 'Perfil «' + pnom + '» aplicado: entras en la vista de PC (🌙 Luna) con lo esencial para ti.'
         : 'Perfil «' + pnom + '» aplicado: tu pantalla ◉ Hoy ya muestra lo esencial para ti.';
     } catch (e) {}
     // celebración: pulso de lunas (stagger from center, patrón examples/stagger)
@@ -563,7 +572,7 @@
   function esperarLista() {
     // La precarga lazy arranca ya: cuando se muestre (~1s después), anime
     // suele estar listo y la entrada usa el timeline completo.
-    try { if (!visto()) precargarAnime(); } catch (e) {}
+    try { if (!visto() && autoPermitido()) precargarAnime(); } catch (e) {}
     var intentos = 0;
     var t = setInterval(function () {
       intentos++;
@@ -574,13 +583,13 @@
         if (lista) {
           clearInterval(t);
           setTimeout(function () {
-            if (!visto() && datosFrescos()) mostrar();
+            if (!visto() && datosFrescos() && autoPermitido()) mostrar();
           }, 700);
         } else if (intentos > 40) {
           clearInterval(t);
           // Sin núcleo (fallo parcial): no bloquear; reintentar una vez tarde.
           setTimeout(function () {
-            try { if (!visto() && datosFrescos()) mostrar(); } catch (e) {}
+            try { if (!visto() && datosFrescos() && autoPermitido()) mostrar(); } catch (e) {}
           }, 8000);
         }
       } catch (e) { clearInterval(t); }
@@ -588,7 +597,57 @@
     setTimeout(function () { try { clearInterval(t); } catch (e) {} }, 30000);
   }
 
-  window.cal13bienvenida = { show: function () { construir(); mostrar(); }, version: 1 };
+  // ⚙️ Ajustes: botón para volver a ver la bienvenida + interruptor auto.
+  // Auto-contenido aquí (no toca renderer.js): delegación en document para
+  // sobrevivir a la inyección eager de templates-bundled.js.
+  function sincronizarAjustesBienvenida() {
+    try {
+      var auto = document.getElementById('cfgBienvenidaAuto');
+      if (auto) {
+        auto.checked = autoPermitido();
+        if (!auto.dataset.bvBound) {
+          auto.dataset.bvBound = '1';
+          auto.addEventListener('change', function () { fijarAuto(!!auto.checked); });
+        }
+      }
+    } catch (e) {}
+  }
+  function abrirBienvenidaDesdeAjustes() {
+    try {
+      var dlg = document.getElementById('configDialog');
+      if (dlg && dlg.open) dlg.close();
+      else if (dlg && dlg.close) { try { dlg.close(); } catch (e) {} }
+    } catch (e) {}
+    setTimeout(function () { try { construir(); mostrar(); } catch (e2) {} }, 150);
+  }
+  try {
+    document.addEventListener('click', function (ev) {
+      try {
+        var t = ev.target && ev.target.closest ? ev.target.closest('#cfgBienvenidaBtn, #btnConfig') : null;
+        if (!t) return;
+        if (t.id === 'btnConfig') {
+          setTimeout(sincronizarAjustesBienvenida, 100);
+        } else if (t.id === 'cfgBienvenidaBtn') {
+          if (ev.preventDefault) ev.preventDefault();
+          if (ev.stopPropagation) ev.stopPropagation();
+          abrirBienvenidaDesdeAjustes();
+        }
+      } catch (e) {}
+    });
+  } catch (e) {}
+  // Por si el diálogo ya está en DOM (eager): sincroniza al cargar.
+  try {
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function () { setTimeout(sincronizarAjustesBienvenida, 1200); });
+    else setTimeout(sincronizarAjustesBienvenida, 1200);
+  } catch (e) {}
+
+  window.cal13bienvenida = {
+    show: function () { construir(); mostrar(); },
+    abrir: function () { construir(); mostrar(); },
+    auto: autoPermitido,
+    fijarAuto: fijarAuto,
+    version: 2
+  };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', esperarLista);
   else esperarLista();
 })();

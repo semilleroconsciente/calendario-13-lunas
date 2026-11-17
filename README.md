@@ -33,7 +33,8 @@ node web/server.js      # web local en puerto 8137
 ## Cómo compilar
 
 ```bash
-npm test                # verifica todo (sintaxis, plantillas, SW, PWA, tamaños)
+npm test                # verifica todo; regenera min/, plantillas y SW (escribe archivos)
+npm run test:ci         # solo lectura: pruebas + verificadores (CI)
 npm run build:win       # .exe portable → dist-empaquetado/
 npm run movil:build     # APK Android → requiere Android SDK + JAVA_HOME
 npm run movil:ios:build # prepara ios/ → compilar en Xcode (requiere Mac)
@@ -60,7 +61,7 @@ Bundle ID: `cl.penco.calendario13lunas` · nombre: `13 Lunas`.
 `pod install` y la compilación solo corren en macOS; en Windows
 `npx cap sync ios` copia los assets y deja el proyecto listo para llevarlo al Mac.
 
-APK ya compilado (v1.9.1 rev. 20-oct-2026): `dist-empaquetado/13-Lunas-offline-1.9.1.apk` + portable `dist-empaquetado/Calendario 13 Lunas 1.9.0.exe`. Detalle en `web/LEEME.txt` y `web/GUIA-CAMBIOS-MANUALES.md` §22 (reorden `src/` 142 archivos + a11y teclado/lector + techos perf 6400/2150/420).
+APK ya compilado (v1.9.1 rev. 20-oct-2026): `dist-empaquetado/13-Lunas-offline-1.9.1.apk` + portable `dist-empaquetado/Calendario 13 Lunas 1.9.0.exe` (build anterior; el próximo `npm run build:win` usa la versión 1.9.1 de `package.json`). Detalle en `web/LEEME.txt` y `web/GUIA-CAMBIOS-MANUALES.md` §22 (reorden `src/` 142 archivos + a11y teclado/lector + techos perf 6400/2150/420).
 
 ## Cómo adaptarlo a otra comuna
 

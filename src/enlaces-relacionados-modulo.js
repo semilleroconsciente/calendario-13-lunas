@@ -228,7 +228,7 @@ function construirBloque(btnId) {
     }).join('');
     h += '</div>';
   }
-  h += '<p class="muted su-11a508" style="margin:.4em 0 0">💡 Consejo: los botones de arriba abren la sección sin perder tu lugar.</p>';
+  h += '<p class="muted su-11a508 su-d98690">💡 Consejo: los botones de arriba abren la sección sin perder tu lugar.</p>';
   wrap.innerHTML = h;
   wrap.querySelectorAll('[data-ir]').forEach(function (b) {
     b.addEventListener('click', function () {

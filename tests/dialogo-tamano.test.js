@@ -1,149 +1,143 @@
-// tests/dialogo-tamano.test.js — verifica que el tamaño dejado con el
-// resize NATIVO (esquina inferior derecha) se guarde cuando se quiera y se
-// aplique a CUALQUIER ventana, sin botones extra, y que SOLO la ✕ de cerrar
-// quede persistente (flotante en la misma posición).
+'use strict';
+// ============================================================================
+// tests/dialogo-tamano.test.js — tamaño compartido con resize nativo.
+//
+// Verifica que el tamaño dejado con el resize NATIVO (esquina inferior
+// derecha) se guarde cuando corresponda y se aplique a CUALQUIER ventana,
+// sin botones extra, y que SOLO la [x] de cerrar quede persistente (flotante
+// en la misma posición).
 //
 // Carga dialogo-tamano.js en un contexto `vm` con un DOM mínimo y simula:
 // abrir → fijar tamaño vía __dlgSize → abrir otras ventanas.
+// Uso: node --test tests/  (o npm test)
+// ============================================================================
 const { describe, it } = require('node:test');
 const assert = require('node:assert/strict');
-const fs = require('fs');
-const path = require('path');
 const vm = require('node:vm');
+const { leerFuente, memoriaStorage } = require('./helpers.cjs');
 
-const ROOT = path.join(__dirname, '..');
-// Paso 3 del reorden src/: las fuentes viven en src/ tras la mudanza.
-const { resolverFuente } = require('../scripts/paths.cjs');
-
-// ---------- DOM mínimo ----------
+// --- DOM mínimo --------------------------------------------------------------
 // OJO: las clases se crean FRESCAS por sandbox (makeMini). Si se compartieran,
-// el parcheo de `showModal` que hace el módulo sobre
-// `HTMLDialogElement.prototype` cruzaría datos entre tests (cada `vm`
-// compartiría el prototipo). En la app real hay un solo contexto y no pasa.
+// el parcheo de `showModal` que hace el módulo sobre `HTMLDialogElement.prototype`
+// cruzaría datos entre tests (cada `vm` compartiría el prototipo). En la app
+// real hay un solo contexto y no pasa.
 function makeMini() {
-function makeClassList(el) {
-  return {
-    add: (...cs) => cs.forEach((c) => el._cls.add(c)),
-    remove: (...cs) => cs.forEach((c) => el._cls.delete(c)),
-    contains: (c) => el._cls.has(c),
-    toggle: (c, f) => {
-      const on = f === undefined ? !el._cls.has(c) : !!f;
-      if (on) el._cls.add(c); else el._cls.delete(c);
-      return on;
-    },
-  };
-}
-
-class MiniEl {
-  constructor(tag) {
-    this.tagName = String(tag || 'div').toUpperCase();
-    this.children = [];
-    this.parentNode = null;
-    this._cls = new Set();
-    this.classList = makeClassList(this);
-    this.dataset = {};
-    this.style = {};
-    this._listeners = {};
-    this.textContent = '';
-    this.title = '';
-    this.open = false;
-    let cn = '';
-    Object.defineProperty(this, 'className', {
-      get: () => cn,
-      set: (v) => { cn = String(v || ''); this._cls = new Set(cn.split(/\s+/).filter(Boolean)); },
-    });
-    Object.defineProperty(this, 'nextSibling', { get: () => null });
-  }
-  appendChild(c) { c.parentNode = this; this.children.push(c); return c; }
-  removeChild(c) {
-    const i = this.children.indexOf(c);
-    if (i >= 0) this.children.splice(i, 1);
-    c.parentNode = null;
-    return c;
-  }
-  setAttribute(k, v) { this['attr:' + k] = String(v); }
-  getAttribute(k) { return Object.prototype.hasOwnProperty.call(this, 'attr:' + k) ? this['attr:' + k] : null; }
-  hasAttribute(k) {
-    if (k === 'open') return !!this.open;
-    return Object.prototype.hasOwnProperty.call(this, 'attr:' + k);
-  }
-  removeAttribute(k) { delete this['attr:' + k]; }
-  addEventListener(t, fn) { (this._listeners[t] = this._listeners[t] || []).push(fn); }
-  removeEventListener(t, fn) {
-    const a = this._listeners[t] || [];
-    const i = a.indexOf(fn);
-    if (i >= 0) a.splice(i, 1);
-  }
-  dispatch(t, ev) {
-    const e = Object.assign({ type: t, target: this, preventDefault: () => {}, stopPropagation: () => {} }, ev || {});
-    (this._listeners[t] || []).slice().forEach((fn) => fn.call(this, e));
-    return e;
-  }
-  getBoundingClientRect() {
-    const px = (v, d) => {
-      const m = /^(-?\d+(?:\.\d+)?)px$/.exec(String(v || ''));
-      return m ? +m[1] : d;
+  function makeClassList(el) {
+    return {
+      add: (...cs) => cs.forEach((c) => el._cls.add(c)),
+      remove: (...cs) => cs.forEach((c) => el._cls.delete(c)),
+      contains: (c) => el._cls.has(c),
+      toggle: (c, f) => {
+        const on = f === undefined ? !el._cls.has(c) : Boolean(f);
+        if (on) el._cls.add(c); else el._cls.delete(c);
+        return on;
+      },
     };
-    const w = px(this.style.width, 600);
-    const h = px(this.style.height, 400);
-    const top = 100, left = 340;
-    return { width: w, height: h, x: left, y: top, top, left, right: left + w, bottom: top + h };
   }
-  _walk(out, test) {
-    if (test(this)) out.push(this);
-    this.children.forEach((c) => c._walk(out, test));
-    return out;
-  }
-  _matchSimple(sel) {
-    const s = sel.trim();
-    if (s.startsWith('.')) return this._cls.has(s.slice(1));
-    const m = /^([a-z][a-z0-9]*)(?:\.([a-z0-9_-]+))?$/i.exec(s);
-    if (!m) return false;
-    if (this.tagName !== m[1].toUpperCase()) return false;
-    if (m[2] && !this._cls.has(m[2])) return false;
-    return true;
-  }
-  querySelectorAll(sel) {
-    const out = [];
-    sel.split(',').map((p) => p.trim()).forEach((part) => {
-      let m = /^:scope > (.+)$/.exec(part);
-      if (m) {
-        this.children.forEach((c) => { if (c._matchSimple(m[1]) && !out.includes(c)) out.push(c); });
-        return;
-      }
-      m = /^([a-z]+) > (.+)$/i.exec(part);
-      if (m) {
-        this._walk([], (n) => n.tagName === m[1].toUpperCase()).forEach((f) => {
-          f.children.forEach((c) => { if (c._matchSimple(m[2]) && !out.includes(c)) out.push(c); });
-        });
-        return;
-      }
-      this._walk(out, (n) => n._matchSimple(part) && !out.includes(n));
-    });
-    return out;
-  }
-  querySelector(sel) { return this.querySelectorAll(sel)[0] || null; }
-  setPointerCapture() {}
-  click() { this.dispatch('click', {}); }
-}
 
-class MiniDialog extends MiniEl {
-  constructor() { super('dialog'); }
-  showModal() { this.open = true; }
-}
+  class MiniEl {
+    constructor(tag) {
+      this.tagName = String(tag || 'div').toUpperCase();
+      this.children = [];
+      this.parentNode = null;
+      this._cls = new Set();
+      this.classList = makeClassList(this);
+      this.dataset = {};
+      this.style = {};
+      this._listeners = {};
+      this.textContent = '';
+      this.title = '';
+      this.open = false;
+      let cn = '';
+      Object.defineProperty(this, 'className', {
+        get: () => cn,
+        set: (v) => { cn = String(v || ''); this._cls = new Set(cn.split(/\s+/).filter(Boolean)); },
+      });
+      Object.defineProperty(this, 'nextSibling', { get: () => null });
+    }
+    appendChild(c) { c.parentNode = this; this.children.push(c); return c; }
+    removeChild(c) {
+      const i = this.children.indexOf(c);
+      if (i >= 0) this.children.splice(i, 1);
+      c.parentNode = null;
+      return c;
+    }
+    setAttribute(k, v) { this['attr:' + k] = String(v); }
+    getAttribute(k) { return Object.prototype.hasOwnProperty.call(this, 'attr:' + k) ? this['attr:' + k] : null; }
+    hasAttribute(k) {
+      if (k === 'open') return Boolean(this.open);
+      return Object.prototype.hasOwnProperty.call(this, 'attr:' + k);
+    }
+    removeAttribute(k) { delete this['attr:' + k]; }
+    addEventListener(t, fn) { (this._listeners[t] = this._listeners[t] || []).push(fn); }
+    removeEventListener(t, fn) {
+      const a = this._listeners[t] || [];
+      const i = a.indexOf(fn);
+      if (i >= 0) a.splice(i, 1);
+    }
+    dispatch(t, ev) {
+      const e = Object.assign({ type: t, target: this, preventDefault: () => {}, stopPropagation: () => {} }, ev || {});
+      (this._listeners[t] || []).slice().forEach((fn) => fn.call(this, e));
+      return e;
+    }
+    getBoundingClientRect() {
+      const px = (v, d) => {
+        const m = /^(-?\d+(?:\.\d+)?)px$/.exec(String(v || ''));
+        return m ? +m[1] : d;
+      };
+      const w = px(this.style.width, 600);
+      const h = px(this.style.height, 400);
+      const top = 100;
+      const left = 340;
+      return { width: w, height: h, x: left, y: top, top, left, right: left + w, bottom: top + h };
+    }
+    _walk(out, test) {
+      if (test(this)) out.push(this);
+      this.children.forEach((c) => c._walk(out, test));
+      return out;
+    }
+    _matchSimple(sel) {
+      const s = sel.trim();
+      if (s.startsWith('.')) return this._cls.has(s.slice(1));
+      const m = /^([a-z][a-z0-9]*)(?:\.([a-z0-9_-]+))?$/i.exec(s);
+      if (!m) return false;
+      if (this.tagName !== m[1].toUpperCase()) return false;
+      if (m[2] && !this._cls.has(m[2])) return false;
+      return true;
+    }
+    querySelectorAll(sel) {
+      const out = [];
+      sel.split(',').map((p) => p.trim()).forEach((part) => {
+        let m = /^:scope > (.+)$/.exec(part);
+        if (m) {
+          this.children.forEach((c) => { if (c._matchSimple(m[1]) && !out.includes(c)) out.push(c); });
+          return;
+        }
+        m = /^([a-z]+) > (.+)$/i.exec(part);
+        if (m) {
+          this._walk([], (n) => n.tagName === m[1].toUpperCase()).forEach((f) => {
+            f.children.forEach((c) => { if (c._matchSimple(m[2]) && !out.includes(c)) out.push(c); });
+          });
+          return;
+        }
+        this._walk(out, (n) => n._matchSimple(part) && !out.includes(n));
+      });
+      return out;
+    }
+    querySelector(sel) { return this.querySelectorAll(sel)[0] || null; }
+    setPointerCapture() {}
+    click() { this.dispatch('click', {}); }
+  }
+
+  class MiniDialog extends MiniEl {
+    constructor() { super('dialog'); }
+    showModal() { this.open = true; }
+  }
 
   return { MiniEl, MiniDialog };
 }
 
-function makeStore() {
-  const m = new Map();
-  return {
-    getItem: (k) => (m.has(String(k)) ? m.get(String(k)) : null),
-    setItem: (k, v) => { m.set(String(k), String(v)); },
-    removeItem: (k) => { m.delete(String(k)); },
-  };
-}
-
+// --- Sandbox -----------------------------------------------------------------
 function makeSandbox() {
   const { MiniEl, MiniDialog } = makeMini();
   const savedCalls = [];
@@ -151,10 +145,10 @@ function makeSandbox() {
     console,
     innerWidth: 1280,
     innerHeight: 800,
-    localStorage: makeStore(),
+    localStorage: memoriaStorage(),
     matchMedia: () => ({ matches: true, addEventListener: () => {}, removeEventListener: () => {} }),
     getComputedStyle: () => ({ getPropertyValue: () => '' }),
-    setTimeout: (fn) => 0,
+    setTimeout: () => 0,
     clearTimeout: () => {},
     addEventListener: () => {},
     MutationObserver: class { observe() {} disconnect() {} },
@@ -183,6 +177,16 @@ function makeSandbox() {
   sb.__MiniEl = MiniEl;
   sb.__MiniDialog = MiniDialog;
   return sb;
+}
+
+function cargarModulo(sb) {
+  const codigo = leerFuente('dialogo-tamano.js');
+  // Sin botones legacy en el código (solo limpieza de restos antiguos).
+  assert.ok(!codigo.includes("className = 'dlg-expand-btn'"), 'no crea botón agrandar');
+  assert.ok(!codigo.includes("className = 'dlg-resize-handle'"), 'no crea tirador custom');
+  assert.ok(!codigo.includes("textContent = '⛶'"), 'sin icono de agrandar');
+  new vm.Script(codigo, { filename: 'dialogo-tamano.js' }).runInContext(sb);
+  return codigo;
 }
 
 function makeDialog(sb, id) {
@@ -215,16 +219,12 @@ function makeDialog(sb, id) {
   return dlg;
 }
 
-describe('tamaño de sección nativo compartido (dialogo-tamano)', () => {
-  it('solo resize nativo: el tamaño se cambia cuando se quiera y vale para cualquier ventana', () => {
+// --- Suite -------------------------------------------------------------------
+describe('Tamaño de sección nativo compartido (dialogo-tamano)', () => {
+  it('solo resize nativo: el tamaño se fija cuando se quiera y vale para cualquier ventana', () => {
     const sb = makeSandbox();
     vm.createContext(sb);
-    const codigo = fs.readFileSync(resolverFuente('dialogo-tamano.js'), 'utf8');
-    // Sin botones legacy en el código (solo limpieza de restos antiguos).
-    assert.ok(!codigo.includes("className = 'dlg-expand-btn'"), 'no crea botón agrandar');
-    assert.ok(!codigo.includes("className = 'dlg-resize-handle'"), 'no crea tirador custom');
-    assert.ok(!codigo.includes("textContent = '⛶'"), 'sin icono ⛶');
-    new vm.Script(codigo, { filename: 'dialogo-tamano.js' }).runInContext(sb);
+    cargarModulo(sb);
 
     // 1) Abrir primera ventana: NO hay botones extra, sí clase resizable.
     const dlgA = makeDialog(sb, 'dlgA');
@@ -233,7 +233,7 @@ describe('tamaño de sección nativo compartido (dialogo-tamano)', () => {
     assert.equal(dlgA.querySelector('.dlg-expand-btn'), null, 'sin botón agrandar');
     assert.ok(dlgA.classList.contains('dlg-resizable'), 'clase dlg-resizable para resize nativo');
 
-    // 2) Cambiar el tamaño cuando se quiera (vía API que invoca el
+    // 2) Fijar el tamaño cuando se quiera (vía API que invoca el
     // ResizeObserver con debounce al soltar el tirador nativo).
     assert.ok(sb.__dlgSize, 'API __dlgSize expuesta');
     sb.__dlgSize.setAndBroadcast({ w: 720, h: 480 });
@@ -254,18 +254,18 @@ describe('tamaño de sección nativo compartido (dialogo-tamano)', () => {
     dlgC.showModal();
     assert.equal(dlgC.style.width, '720px', 'tercera ventana hereda ancho');
 
-    // 5) Cambiar de nuevo el tamaño re-aplica a TODAS las abiertas.
+    // 5) Fijar de nuevo el tamaño re-aplica a TODAS las abiertas.
     sb.__dlgSize.setAndBroadcast({ w: 800, h: 500 });
-    assert.equal(dlgA.style.width, '800px', 'primera actualizada al re-cambiar');
-    assert.equal(dlgB.style.width, '800px', 'segunda actualizada al re-cambiar');
-    assert.equal(dlgC.style.height, '500px', 'tercera actualizada al re-cambiar');
+    assert.equal(dlgA.style.width, '800px', 'primera actualizada al re-fijar');
+    assert.equal(dlgB.style.width, '800px', 'segunda actualizada al re-fijar');
+    assert.equal(dlgC.style.height, '500px', 'tercera actualizada al re-fijar');
     assert.deepEqual({ ...sb.__dlgSize.getSaved() }, { w: 800, h: 500 });
   });
 
   it('no se agranda solo: el eco del apply propio no se re-guarda', () => {
     const sb = makeSandbox();
     vm.createContext(sb);
-    const codigo = fs.readFileSync(resolverFuente('dialogo-tamano.js'), 'utf8');
+    const codigo = leerFuente('dialogo-tamano.js');
     new vm.Script(codigo, { filename: 'dialogo-tamano.js' }).runInContext(sb);
     assert.ok(sb.__dlgSize.checkResize, 'API checkResize expuesta');
 
@@ -295,7 +295,7 @@ describe('tamaño de sección nativo compartido (dialogo-tamano)', () => {
   it('arrastrar la esquina (gesto real) sí se guarda para todas', () => {
     const sb = makeSandbox();
     vm.createContext(sb);
-    const codigo = fs.readFileSync(resolverFuente('dialogo-tamano.js'), 'utf8');
+    const codigo = leerFuente('dialogo-tamano.js');
     new vm.Script(codigo, { filename: 'dialogo-tamano.js' }).runInContext(sb);
     const dlgA = makeDialog(sb, 'dlgA');
     dlgA.showModal();
@@ -314,7 +314,7 @@ describe('tamaño de sección nativo compartido (dialogo-tamano)', () => {
     const savesTrasGesto = sb.__savedCalls.length;
 
     // Cambio programático (contenido) sin gesto: NO se guarda, solo re-marca.
-    // (la persona ya soltó e hizo otra pulsación: el gesto anterior caducó)
+    // (La persona ya soltó e hizo otra pulsación: el gesto anterior caducó.)
     sb.__dlgSize._testPressElsewhere();
     dlgA.style.width = '950px';
     dlgA.style.height = '620px';
@@ -331,7 +331,7 @@ describe('tamaño de sección nativo compartido (dialogo-tamano)', () => {
   it('abrir y cerrar repetido no agranda ni guarda nada solo', () => {
     const sb = makeSandbox();
     vm.createContext(sb);
-    const codigo = fs.readFileSync(resolverFuente('dialogo-tamano.js'), 'utf8');
+    const codigo = leerFuente('dialogo-tamano.js');
     new vm.Script(codigo, { filename: 'dialogo-tamano.js' }).runInContext(sb);
     const dlg = makeDialog(sb, 'dlgOC');
     dlg.showModal();
@@ -355,10 +355,10 @@ describe('tamaño de sección nativo compartido (dialogo-tamano)', () => {
     assert.equal(sb.__savedCalls.length, savesTrasElegir, 'sin guardados extra en los ciclos');
   });
 
-  it('solo la ✕ es persistente: flotante en la misma posición, el título no', () => {
+  it('solo la [x] es persistente: flotante en la misma posición, el título no', () => {
     const sb = makeSandbox();
     vm.createContext(sb);
-    const codigo = fs.readFileSync(resolverFuente('dialogo-tamano.js'), 'utf8');
+    const codigo = leerFuente('dialogo-tamano.js');
     new vm.Script(codigo, { filename: 'dialogo-tamano.js' }).runInContext(sb);
     const dlg = makeDialog(sb, 'dlgX');
     dlg.showModal();
@@ -366,7 +366,7 @@ describe('tamaño de sección nativo compartido (dialogo-tamano)', () => {
     const floats = dlg.querySelectorAll('.dlg-close-float');
     assert.equal(floats.length, 1, 'un solo elemento persistente');
     const x = floats[0];
-    assert.equal(x.textContent, '✕', 'el persistente es la ✕ de cerrar');
+    assert.equal(x.textContent, '✕', 'el persistente es la [x] de cerrar');
     // Misma posición: top/right fijados desde el rect del diálogo.
     assert.ok(/^\d+px$/.test(x.style.top || ''), 'top fijado en la misma posición');
     assert.ok(/^\d+px$/.test(x.style.right || ''), 'right fijado en la misma posición');
@@ -374,20 +374,20 @@ describe('tamaño de sección nativo compartido (dialogo-tamano)', () => {
     const h3 = dlg.querySelector('h3');
     assert.ok(!h3.classList.contains('dlg-close-float'), 'el título no es flotante');
 
-    // CSS: solo la ✕ es fixed; la cabecera NO es sticky.
-    const css = fs.readFileSync(resolverFuente('styles.css'), 'utf8');
+    // CSS: solo la [x] es fixed; la cabecera NO es sticky.
+    const css = leerFuente('styles.css');
     assert.ok(css.includes('.dlg-close-float'), 'regla .dlg-close-float presente');
     const fIdx = css.indexOf('.dlg-close-float');
     const fZone = css.slice(fIdx, fIdx + 400);
-    assert.ok(fZone.includes('position: fixed') || fZone.includes('position:fixed'), 'la ✕ es fixed');
+    assert.ok(fZone.includes('position: fixed') || fZone.includes('position:fixed'), 'la [x] es fixed');
     const headRule = /\.dlg-actions:first-child[^{]*\{[^}]*position:\s*sticky/s.test(css);
-    assert.ok(!headRule, 'la cabecera completa NO es sticky (solo la ✕)');
+    assert.ok(!headRule, 'la cabecera completa NO es sticky (solo la [x])');
   });
 
   it('limpia botones legacy si existían y resetea', () => {
     const sb = makeSandbox();
     vm.createContext(sb);
-    const codigo = fs.readFileSync(resolverFuente('dialogo-tamano.js'), 'utf8');
+    const codigo = leerFuente('dialogo-tamano.js');
     new vm.Script(codigo, { filename: 'dialogo-tamano.js' }).runInContext(sb);
     const dlg = makeDialog(sb, 'dlgY');
     // Simula restos de versión anterior.
@@ -405,8 +405,8 @@ describe('tamaño de sección nativo compartido (dialogo-tamano)', () => {
     assert.deepEqual({ ...sb.DATA.config.dialogSize }, { w: 0, h: 0 });
   });
 
-  it('CSS: resize nativo en la esquina + botones extra ocultos', () => {
-    const css = fs.readFileSync(resolverFuente('styles.css'), 'utf8');
+  it('CSS: resize nativo en la esquina y botones extra ocultos', () => {
+    const css = leerFuente('styles.css');
     assert.ok(css.includes('.dlg-expand-btn, .dlg-resize-handle'), 'regla de ocultado legacy');
     assert.ok(css.includes('display: none !important'), 'botones extra siempre ocultos');
     const pcChunk = css.split('@media').find((c) => c.includes('dialog.dlg-resizable'));

@@ -1252,7 +1252,7 @@ $('userSave').onclick = () => {
 $('fUserName').addEventListener('keydown', e => {
   if (e.key === 'Enter') { e.preventDefault(); $('userSave').click(); }
 });
-$('btnDelUser').onclick = () => {
+$('btnDelUser').onclick = async () => {
   if (DATA.usuarios.length <= 1) {
     $('statusMsg').textContent = 'Debe existir al menos un usuario';
     setTimeout(() => { $('statusMsg').textContent = ''; }, 2500);
@@ -1260,10 +1260,24 @@ $('btnDelUser').onclick = () => {
   }
   const u = DATA.usuarios.find(x => x.id === DATA.actual);
   if (!confirm(`¿Eliminar al usuario "${u.nombre}" y todas sus notas? Esta acción no se puede deshacer.`)) return;
-  DATA.usuarios = DATA.usuarios.filter(x => x.id !== DATA.actual);
-  delete DATA.notas[u.id];
-  DATA.actual = DATA.usuarios[0].id;
-  scheduleSave();
+  // Borrado coordinado: datos + store de bitácoras + espejos localStorage.
+  if (window.cal13perfiles && typeof window.cal13perfiles.eliminarPerfil === 'function') {
+    const r = await window.cal13perfiles.eliminarPerfil(u.id, DATA);
+    if (!r || !r.ok) {
+      $('statusMsg').textContent = r && r.motivo === 'guardado'
+        ? '⚠ No se pudo eliminar: falló el guardado. El perfil sigue intacto.'
+        : '⚠ Perfil eliminado, pero quedaron datos sin limpiar. Revisa Bitácoras.';
+      setTimeout(() => { $('statusMsg').textContent = ''; }, 6000);
+      buildSidebar();
+      return;
+    }
+  } else {
+    // Fallback mínimo si core-storage no cargó (no debería ocurrir).
+    DATA.usuarios = DATA.usuarios.filter(x => x.id !== u.id);
+    delete DATA.notas[u.id];
+    DATA.actual = DATA.usuarios[0].id;
+    await saveNow();
+  }
   buildSidebar();
   selectCycle(currentCycleYear(), currentView.tipo === 'dft' ? 'dft' : currentView.luna);
 };
@@ -1455,10 +1469,22 @@ function backupFileName() {
   } catch (e) { return 'respaldo-calendario-13-lunas.json'; }
 }
 async function doBackup() {
-  const r = await window.api.backupSave(JSON.stringify(DATA, null, 1), backupFileName());
-  try { window.cal13backupDone && window.cal13backupDone(); } catch (e) {}
-  $('statusMsg').textContent = r ? 'Respaldo guardado ✓' : 'Cancelado';
+  let r = null;
+  try {
+    const esquema = (window.cal13schema && window.cal13schema.SCHEMA_VERSION) || 1;
+    const payload = JSON.stringify(Object.assign({}, DATA, { schema: esquema }), null, 1);
+    r = await window.api.backupSave(payload, backupFileName());
+  } catch (e) {
+    r = null;
+  }
+  // Solo se reinicia el recordatorio si la exportación devolvió un resultado
+  // válido. Cancelar o fallar no debe marcar el respaldo como hecho.
+  if (r) {
+    try { window.cal13backupDone && window.cal13backupDone(); } catch (e) {}
+  }
+  $('statusMsg').textContent = r ? 'Respaldo guardado ✓' : 'Cancelado o no se pudo guardar';
   setTimeout(() => { $('statusMsg').textContent = ''; }, 2500);
+  return !!r;
 }
 function bindBackupButtons() {
   ['btnBackup', 'cfgBackupBtn'].forEach((id) => {
@@ -1480,8 +1506,13 @@ setTimeout(function () { try { bindBackupButtons(); } catch (e) {} }, 1200);
 // Devuelve true si el respaldo se aplicó.
 async function applyBackupJSON(j) {
   try {
-    const d = JSON.parse(j);
+    let d = JSON.parse(j);
     if (d && d.tipo === 'bitacora-individual' && d.datos && typeof d.datos === 'object') {
+      if (d.schema && window.cal13schema && d.schema > window.cal13schema.SCHEMA_VERSION) {
+        $('statusMsg').textContent = '⚠ Bitácora de una versión más nueva. Actualiza la app; no se modificó nada.';
+        setTimeout(() => { $('statusMsg').textContent = ''; }, 6000);
+        return false;
+      }
       if (typeof window.applyBitacoraJSON === 'function') {
         const ok = await window.applyBitacoraJSON(j);
         if (ok) {
@@ -1494,12 +1525,31 @@ async function applyBackupJSON(j) {
       const u = userData();
       const keys = Array.isArray(d.claves) && d.claves.length ? d.claves : Object.keys(d.datos);
       keys.forEach(k => { if (d.datos[k] !== undefined) u[k] = d.datos[k]; });
-      await window.api.saveData(JSON.stringify(DATA));
+      const okGuardado = await window.api.saveData(JSON.stringify(DATA));
+      if (!okGuardado) {
+        $('statusMsg').textContent = '⚠ No se pudo guardar la bitácora importada';
+        setTimeout(() => { $('statusMsg').textContent = ''; }, 4000);
+        return false;
+      }
       buildSidebar();
       selectCycle(currentCycleYear(), currentView.tipo === 'dft' ? 'dft' : currentView.luna);
       $('statusMsg').textContent = 'Bitácora «' + (d.titulo || d.grupo || '') + '» restaurada ✓ (las demás intactas)';
       setTimeout(() => { $('statusMsg').textContent = ''; }, 2500);
       return true;
+    }
+    // Migración/validación del esquema antes de tocar DATA. Un archivo de una
+    // versión futura o con invariantes rotas se rechaza sin modificar nada.
+    if (window.cal13schema && typeof window.cal13schema.migrarYValidar === 'function') {
+      const rev = window.cal13schema.migrarYValidar(d, d.schema);
+      if (!rev.ok) {
+        const futuro = rev.errores.indexOf('schema-futuro') >= 0;
+        $('statusMsg').textContent = futuro
+          ? '⚠ El respaldo es de una versión más nueva. Actualiza la app; no se modificó nada.'
+          : '⚠ Respaldo inválido: ' + rev.errores.slice(0, 3).join(', ');
+        setTimeout(() => { $('statusMsg').textContent = ''; }, 6000);
+        return false;
+      }
+      d = rev.data;
     }
     if (!d.usuarios || !Array.isArray(d.usuarios) || !d.notas || typeof d.notas !== 'object') throw new Error('formato');
     if (d.usuarios.length === 0 || d.usuarios.length > 50) throw new Error('usuarios');
@@ -1508,11 +1558,27 @@ async function applyBackupJSON(j) {
     if (size > 5 * 1024 * 1024) throw new Error('tamaño');
     // sanitizar nombres
     d.usuarios = d.usuarios.map(u => ({ id: String(u.id).slice(0,40), nombre: sanitizeText(u.nombre, 30) }));
+    const DATA_ANTERIOR = DATA;
     DATA = d;
     if (!DATA.notas[DATA.actual]) DATA.actual = DATA.usuarios[0].id;
     // limpiar fotos legacy si existen en respaldo antiguo
     try { for (const uid of Object.keys(DATA.notas)) { const cycles = DATA.notas[uid].cycles||{}; for (const ck of Object.keys(cycles)) { const c = cycles[ck]; for (const mk of Object.keys(c.moons||{})) { for (const dk of Object.keys(c.moons[mk].days||{})) delete c.moons[mk].days[dk].foto; } } } } catch {}
-    await window.api.saveData(JSON.stringify(DATA));
+    // Restauración coordinada: limpia grupos antiguos del store y verifica la
+    // lectura de vuelta. Si falla, se recupera el estado anterior en memoria.
+    let okRestaurado = false;
+    try {
+      okRestaurado = (typeof window.api.replaceData === 'function')
+        ? await window.api.replaceData(JSON.stringify(DATA))
+        : await window.api.saveData(JSON.stringify(DATA));
+    } catch (e) { okRestaurado = false; }
+    if (!okRestaurado) {
+      DATA = DATA_ANTERIOR;
+      buildSidebar();
+      selectCycle(currentCycleYear(), currentView.tipo === 'dft' ? 'dft' : currentView.luna);
+      $('statusMsg').textContent = '⚠ No se pudo restaurar: se conservó el estado anterior';
+      setTimeout(() => { $('statusMsg').textContent = ''; }, 5000);
+      return false;
+    }
     buildSidebar();
     selectCycle(currentCycleYear(), currentView.tipo === 'dft' ? 'dft' : currentView.luna);
     $('statusMsg').textContent = 'Respaldo restaurado ✓';
@@ -4335,7 +4401,7 @@ setTimeout(setupHelpDialog, 850);
 // Incluye botones base + los inyectados por nuevos-modulos.js (Agua, Bodega, Nudos,
 // Taller, Trueque, Minga, Rutinas, Fertilidad, Derechos). NUEVOS_BTNS los re-agrega
 // con push si faltan (no-op si ya están), así los perfiles siempre los conocen.
-const ALL_BTNS = ["btnTides","btnFishing","btnBirds","btnIntermareal","btnBosque","btnWeather","btnSiembra","btnAstro","btnComuna","btnEducacion","btnIglesias","btnEkadashi","btnMenstrual","btnMedic","btnNutri","btnHabits","btnRutinas","btnMeal","btnShopping","btnFinance","btnHomeTasks","btnDiscipline","btnDreams","btnBreath","btnGratitud","btnSchedule","btnGym","btnCircadian","btnGolden","btnEspiritual","btnEspiritu","btnCompost","btnLawen","btnFirstAid","btnAnimalCare","btnViolence","btnEvac","btnConvert","btnEnergy","btnLena","btnTimer","btnRemind","btnDonate","btnHelp","btnStudy","btnTales","btnVozAbuelos","btnMemory","btnIdiomas","btnMapu","btnEnglish","btnPortugues","btnChino","btnHindi","btnAprenderInstrumento","btnGuitar","btnUkelele","btnFlauta","btnTeclado","btnCajon","btnCanto","btnMusicaPractica","btnPsico","btnMetodos","btnAgua","btnBodega","btnNudos","btnTaller","btnTrueque","btnMinga","btnFerti","btnDerechos","btnCrianza","btnArbolFull","btnRecap","btnDueloFull","btnEneagrama","btnCuartoCamino","btnAjedrez","btnDama","btnMatematicas","btnSudoku","btnCrucigrama","btnSopa","btnSolitario","btnFlora","btnPsicologia","btnAdolescencia","btnJuventud","btnAdultez","btnClimaterio","btnVejez","btnElectrocultura","btnMecanica","btnDespensa","btnCloset","btnHerramientas","btnAdicciones","btnKinMaya","btnTarot","btnNumerologia","btnOraculo","btnAnfibios","btnApoyo","btnMuni","btnBomberos","btnConstelaciones","btnIkigai","btnVIA","btnSilva","btnGrabovoi","btnEstoicismo","btnHooponopono","btnTao","btnTolteca","btnVigyan","btnAnastasia","btnAmi","btnNatacion","btnHuerta","btnHidroponia","btnKayak","btnBallenas","btnMeli","btnHongos","btnSenderos","btnFuego","btnDomotica","btnNeurodiversidad","btnPelo","btnRituales","btnFenologia","btnCorral","btnMovilidad","btnEscolar","btnActores","btnAmenazas","btnNegocios","btnRedGuia","btnRedMeshtastic","btnRedDiagnostico","btnRedRadio","btnRedNodos","btnConvivGuia","btnConvivFichas","btnConvivHablar","btnConvivBitacora","btnConvivLuna","btnConvivRecursos","btnCiberGuia","btnCiberClaves","btnCiberEstafas","btnCiberPriv","btnCiberChequeo","btnCiberAyuda","btnOpenGuia","btnOpenLicencias","btnOpenProgramas","btnOpenProyecto","btnOpenAportar","btnOpenQuiz","btnFutbol","btnBasquetbol","btnCumple","btnFaunaMarina","btnBiblioPenco"];
+const ALL_BTNS = ["btnTides","btnFishing","btnBirds","btnIntermareal","btnBosque","btnWeather","btnSiembra","btnAstro","btnComuna","btnEducacion","btnIglesias","btnEkadashi","btnMenstrual","btnMedic","btnNutri","btnHabits","btnRutinas","btnMeal","btnShopping","btnFinance","btnHomeTasks","btnDiscipline","btnDreams","btnBreath","btnGratitud","btnSchedule","btnGym","btnCircadian","btnGolden","btnEspiritual","btnEspiritu","btnCompost","btnLawen","btnFirstAid","btnAnimalCare","btnViolence","btnEvac","btnConvert","btnEnergy","btnLena","btnTimer","btnRemind","btnDonate","btnHelp","btnStudy","btnTales","btnVozAbuelos","btnMemory","btnIdiomas","btnMapu","btnEnglish","btnPortugues","btnChino","btnHindi","btnAprenderInstrumento","btnGuitar","btnUkelele","btnFlauta","btnTeclado","btnCajon","btnCanto","btnMusicaPractica","btnArte","btnDibujo","btnPintura","btnFoto","btnManualidades","btnPsico","btnMetodos","btnAgua","btnBodega","btnNudos","btnTaller","btnTrueque","btnMinga","btnFerti","btnDerechos","btnCrianza","btnArbolFull","btnRecap","btnDueloFull","btnEneagrama","btnCuartoCamino","btnAjedrez","btnDama","btnMatematicas","btnSudoku","btnCrucigrama","btnSopa","btnSolitario","btnFlora","btnPsicologia","btnAdolescencia","btnJuventud","btnAdultez","btnClimaterio","btnVejez","btnElectrocultura","btnMecanica","btnDespensa","btnCloset","btnHerramientas","btnAdicciones","btnKinMaya","btnTarot","btnNumerologia","btnOraculo","btnAnfibios","btnApoyo","btnMuni","btnBomberos","btnConstelaciones","btnIkigai","btnVIA","btnSilva","btnGrabovoi","btnEstoicismo","btnHooponopono","btnTao","btnTolteca","btnVigyan","btnAnastasia","btnAmi","btnNatacion","btnHuerta","btnHidroponia","btnKayak","btnBallenas","btnMeli","btnHongos","btnSenderos","btnFuego","btnDomotica","btnNeurodiversidad","btnPelo","btnRituales","btnFenologia","btnCorral","btnMovilidad","btnEscolar","btnActores","btnAmenazas","btnNegocios","btnRedGuia","btnRedMeshtastic","btnRedDiagnostico","btnRedRadio","btnRedNodos","btnConvivGuia","btnConvivFichas","btnConvivHablar","btnConvivBitacora","btnConvivLuna","btnConvivRecursos","btnCiberGuia","btnCiberClaves","btnCiberEstafas","btnCiberPriv","btnCiberChequeo","btnCiberAyuda","btnOpenGuia","btnOpenLicencias","btnOpenProgramas","btnOpenProyecto","btnOpenAportar","btnOpenQuiz","btnFutbol","btnBasquetbol","btnCumple","btnFaunaMarina","btnBiblioPenco"];
 // NOTA: lo técnico (Respaldo, Restaurar, Traspaso QR, PDF luna/ciclo, Acceso directo)
 // vive en ⚙️ Ajustes con botones propios (cfg*Btn), siempre visibles: no forma parte
 // de ALL_BTNS ni de la visibilidad por secciones. Se mantienen las claves antiguas
@@ -4345,7 +4411,7 @@ const ALL_BTNS = ["btnTides","btnFishing","btnBirds","btnIntermareal","btnBosque
 // Taxonomía pedida por la comunidad:
 //  Mi Día: Organizar + Registrar · Territorio: mar + tierra (+Fenología) + cielo + penco
 //  Cuerpo: ciclos + etapas (Adolescencia/Juventud/Adultez/Vejez) + cuidado
-//  Aprender: estudio + idiomas + musica + juegos + infancias
+//  Aprender: estudio + idiomas + musica + arte + juegos + infancias
 //  Interior: conocerse + practicas + tradiciones + oraculos + sosten
 //  Hogar: casa + energia + familia · Comunidad: red + red-comunitaria + convivencia + ciber + abierto + emergencia
 const BTN_HOME = {
@@ -4361,6 +4427,7 @@ const BTN_HOME = {
   btnStudy:['aprender','estudio'],btnMemory:['aprender','estudio'],btnMatematicas:['aprender','estudio'],
   btnIdiomas:['aprender','idiomas'],btnMapu:['aprender','idiomas'],btnEnglish:['aprender','idiomas'],btnPortugues:['aprender','idiomas'],btnChino:['aprender','idiomas'],btnHindi:['aprender','idiomas'],
   btnAprenderInstrumento:['aprender','musica'],btnGuitar:['aprender','musica'],btnUkelele:['aprender','musica'],btnFlauta:['aprender','musica'],btnTeclado:['aprender','musica'],btnCajon:['aprender','musica'],btnCanto:['aprender','musica'],btnMusicaPractica:['aprender','musica'],
+  btnArte:['aprender','arte'],btnDibujo:['aprender','arte'],btnPintura:['aprender','arte'],btnFoto:['aprender','arte'],btnManualidades:['aprender','arte'],
   btnAjedrez:['aprender','juegos'],btnDama:['aprender','juegos'],btnSudoku:['aprender','juegos'],btnCrucigrama:['aprender','juegos'],btnSopa:['aprender','juegos'],btnSolitario:['aprender','juegos'],
   btnTales:['aprender','infancias'],btnCrianza:['aprender','infancias'],
   btnPsico:['linaje','conocerse'],btnPsicologia:['linaje','conocerse'],btnEneagrama:['linaje','conocerse'],btnVIA:['linaje','conocerse'],btnIkigai:['linaje','conocerse'],btnNeurodiversidad:['linaje','conocerse'],btnEspiritual:['linaje','practicas'],btnEspiritu:['linaje','practicas'],btnTao:['linaje','practicas'],btnRecap:['linaje','practicas'],btnTolteca:['linaje','practicas'],btnEstoicismo:['linaje','practicas'],btnCuartoCamino:['linaje','practicas'],btnHooponopono:['linaje','practicas'],btnMetodos:['linaje','tradiciones'],btnSilva:['linaje','tradiciones'],btnGrabovoi:['linaje','tradiciones'],btnVigyan:['linaje','tradiciones'],btnAnastasia:['linaje','tradiciones'],btnAmi:['linaje','tradiciones'],btnKinMaya:['linaje','oraculos'],btnTarot:['linaje','oraculos'],btnNumerologia:['linaje','oraculos'],btnOraculo:['linaje','oraculos'],btnDueloFull:['linaje','sosten'],btnAdicciones:['linaje','sosten'],
@@ -4391,6 +4458,7 @@ const BTN_ORDER = {
   'aprender|estudio':['btnStudy','btnMemory','btnMatematicas'],
   'aprender|idiomas':['btnIdiomas','btnMapu','btnEnglish','btnPortugues','btnChino','btnHindi'],
   'aprender|musica':['btnAprenderInstrumento','btnGuitar','btnUkelele','btnFlauta','btnTeclado','btnCajon','btnCanto','btnMusicaPractica'],
+  'aprender|arte':['btnArte','btnDibujo','btnPintura','btnFoto','btnManualidades'],
   'aprender|juegos':['btnAjedrez','btnDama','btnSudoku','btnCrucigrama','btnSopa','btnSolitario'],
   'aprender|infancias':['btnTales','btnCrianza'],
   'linaje|conocerse':['btnPsico','btnPsicologia','btnEneagrama','btnVIA','btnIkigai','btnNeurodiversidad'],
@@ -4500,12 +4568,12 @@ const PRESETS = {
   // Esencial (1ª apertura): día completo + TODO Territorio Penco (mar+tierra+cielo+penco) + casa básica + infancias + emergencia completa.
   esencial: {btnHabits:true,btnRutinas:true,btnDiscipline:true,btnSchedule:true,btnTimer:true,btnRemind:true,btnGratitud:true,btnDreams:true,btnBreath:true,btnWeather:true,btnAstro:true,btnGolden:true,btnCircadian:true,btnEkadashi:true,btnTides:true,btnFishing:true,btnIntermareal:true,btnNudos:true,btnKayak:true,btnBallenas:true,btnFaunaMarina:true,btnHuerta:true,btnSiembra:true,btnBosque:true,btnCompost:true,btnAgua:true,btnHidroponia:true,btnElectrocultura:true,btnFlora:true,btnLawen:true,btnBirds:true,btnAnfibios:true,btnMeli:true,btnHongos:true,btnSenderos:true,btnFuego:true,btnFenologia:true,btnComuna:true,btnEducacion:true,btnBiblioPenco:true,btnIglesias:true,btnMuni:true,btnBomberos:true,btnActores:true,btnAmenazas:true,btnNegocios:true,btnMeal:true,btnShopping:true,btnFinance:true,btnHomeTasks:true,btnTales:true,btnCrianza:true,btnCumple:true,btnFirstAid:true,btnViolence:true,btnEvac:true,btnApoyo:true,btnHelp:true,btnDonate:true},
   // Adolescente: día completo + cuerpo en cambio + aprender sin infancias (excepción: solo Cuentos, sin Crianza) + conocerse/oráculos/sostén completos + Recap + familia completa + casa básica + cielo parcial + emergencia completa.
-  adolescente: {btnHabits:true,btnRutinas:true,btnDiscipline:true,btnSchedule:true,btnTimer:true,btnRemind:true,btnGratitud:true,btnDreams:true,btnBreath:true,btnMenstrual:true,btnFerti:true,btnAdolescencia:true,btnJuventud:true,btnNutri:true,btnGym:true,btnNatacion:true,btnPelo:true,btnFutbol:true,btnBasquetbol:true,btnStudy:true,btnMemory:true,btnMatematicas:true,btnIdiomas:true,btnMapu:true,btnEnglish:true,btnPortugues:true,btnChino:true,btnHindi:true,btnAprenderInstrumento:true,btnGuitar:true,btnUkelele:true,btnFlauta:true,btnTeclado:true,btnCajon:true,btnCanto:true,btnMusicaPractica:true,btnAjedrez:true,btnDama:true,btnSudoku:true,btnCrucigrama:true,btnSopa:true,btnSolitario:true,btnTales:true,btnEducacion:true,btnPsico:true,btnPsicologia:true,btnEneagrama:true,btnVIA:true,btnIkigai:true,btnNeurodiversidad:true,btnKinMaya:true,btnTarot:true,btnNumerologia:true,btnOraculo:true,btnDueloFull:true,btnAdicciones:true,btnRecap:true,btnArbolFull:true,btnVozAbuelos:true,btnConstelaciones:true,btnCumple:true,btnMeal:true,btnShopping:true,btnFinance:true,btnHomeTasks:true,btnConvert:true,btnWeather:true,btnAstro:true,btnCircadian:true,btnFirstAid:true,btnViolence:true,btnEvac:true,btnApoyo:true,btnHelp:true,btnDonate:true},
+  adolescente: {btnHabits:true,btnRutinas:true,btnDiscipline:true,btnSchedule:true,btnTimer:true,btnRemind:true,btnGratitud:true,btnDreams:true,btnBreath:true,btnMenstrual:true,btnFerti:true,btnAdolescencia:true,btnJuventud:true,btnNutri:true,btnGym:true,btnNatacion:true,btnPelo:true,btnFutbol:true,btnBasquetbol:true,btnStudy:true,btnMemory:true,btnMatematicas:true,btnIdiomas:true,btnMapu:true,btnEnglish:true,btnPortugues:true,btnChino:true,btnHindi:true,btnAprenderInstrumento:true,btnGuitar:true,btnUkelele:true,btnFlauta:true,btnTeclado:true,btnCajon:true,btnCanto:true,btnMusicaPractica:true,btnArte:true,btnDibujo:true,btnPintura:true,btnFoto:true,btnManualidades:true,btnAjedrez:true,btnDama:true,btnSudoku:true,btnCrucigrama:true,btnSopa:true,btnSolitario:true,btnTales:true,btnEducacion:true,btnPsico:true,btnPsicologia:true,btnEneagrama:true,btnVIA:true,btnIkigai:true,btnNeurodiversidad:true,btnKinMaya:true,btnTarot:true,btnNumerologia:true,btnOraculo:true,btnDueloFull:true,btnAdicciones:true,btnRecap:true,btnArbolFull:true,btnVozAbuelos:true,btnConstelaciones:true,btnCumple:true,btnMeal:true,btnShopping:true,btnFinance:true,btnHomeTasks:true,btnConvert:true,btnWeather:true,btnAstro:true,btnCircadian:true,btnFirstAid:true,btnViolence:true,btnEvac:true,btnApoyo:true,btnHelp:true,btnDonate:true},
   adulto: Object.fromEntries(ALL_BTNS.map(k=>[k,true])),
   // Mayor: día completo + cuerpo (climaterio/adultez/vejez + cuidado completo) + estudio+juegos+infancias + sostén+oráculos completos + Espiritual/Recap + cielo completo + tierra de autoconsumo + penco servicios + familia completa + casa apoyada + red vecinal + emergencia completa.
   mayor: {btnHabits:true,btnRutinas:true,btnDiscipline:true,btnSchedule:true,btnTimer:true,btnRemind:true,btnGratitud:true,btnDreams:true,btnBreath:true,btnClimaterio:true,btnAdultez:true,btnVejez:true,btnMedic:true,btnNutri:true,btnGym:true,btnNatacion:true,btnPelo:true,btnRituales:true,btnStudy:true,btnMemory:true,btnMatematicas:true,btnAjedrez:true,btnDama:true,btnSudoku:true,btnCrucigrama:true,btnSopa:true,btnSolitario:true,btnTales:true,btnCrianza:true,btnEspiritual:true,btnEspiritu:true,btnRecap:true,btnKinMaya:true,btnTarot:true,btnNumerologia:true,btnOraculo:true,btnDueloFull:true,btnAdicciones:true,btnWeather:true,btnAstro:true,btnGolden:true,btnCircadian:true,btnEkadashi:true,btnTides:true,btnSiembra:true,btnHuerta:true,btnBosque:true,btnCompost:true,btnLawen:true,btnComuna:true,btnEducacion:true,btnIglesias:true,btnMuni:true,btnBomberos:true,btnArbolFull:true,btnVozAbuelos:true,btnConstelaciones:true,btnCumple:true,btnMeal:true,btnShopping:true,btnHomeTasks:true,btnCorral:true,btnMovilidad:true,btnEnergy:true,btnLena:true,btnConvert:true,btnTrueque:true,btnMinga:true,btnAnimalCare:true,btnFirstAid:true,btnViolence:true,btnEvac:true,btnApoyo:true,btnHelp:true,btnDonate:true},
   // Estudiante: día completo + aprender completo + Eneagrama/VIA/Ikigai+Recap+Métodos + cuerpo joven + cielo parcial + casa básica + Convert + VozAbuelos + ciber básico + emergencia completa.
-  estudiante: {btnHabits:true,btnRutinas:true,btnDiscipline:true,btnSchedule:true,btnTimer:true,btnRemind:true,btnGratitud:true,btnDreams:true,btnBreath:true,btnStudy:true,btnMemory:true,btnMatematicas:true,btnIdiomas:true,btnMapu:true,btnEnglish:true,btnPortugues:true,btnChino:true,btnHindi:true,btnAprenderInstrumento:true,btnGuitar:true,btnUkelele:true,btnFlauta:true,btnTeclado:true,btnCajon:true,btnCanto:true,btnMusicaPractica:true,btnAjedrez:true,btnDama:true,btnSudoku:true,btnCrucigrama:true,btnSopa:true,btnSolitario:true,btnEducacion:true,btnEneagrama:true,btnVIA:true,btnIkigai:true,btnRecap:true,btnMetodos:true,btnAdolescencia:true,btnJuventud:true,btnNutri:true,btnGym:true,btnNatacion:true,btnFutbol:true,btnBasquetbol:true,btnWeather:true,btnAstro:true,btnCircadian:true,btnMeal:true,btnShopping:true,btnFinance:true,btnHomeTasks:true,btnConvert:true,btnVozAbuelos:true,btnCiberGuia:true,btnCiberClaves:true,btnCiberEstafas:true,btnCiberPriv:true,btnFirstAid:true,btnViolence:true,btnEvac:true,btnApoyo:true,btnHelp:true,btnDonate:true},
+  estudiante: {btnHabits:true,btnRutinas:true,btnDiscipline:true,btnSchedule:true,btnTimer:true,btnRemind:true,btnGratitud:true,btnDreams:true,btnBreath:true,btnStudy:true,btnMemory:true,btnMatematicas:true,btnIdiomas:true,btnMapu:true,btnEnglish:true,btnPortugues:true,btnChino:true,btnHindi:true,btnAprenderInstrumento:true,btnGuitar:true,btnUkelele:true,btnFlauta:true,btnTeclado:true,btnCajon:true,btnCanto:true,btnMusicaPractica:true,btnArte:true,btnDibujo:true,btnPintura:true,btnFoto:true,btnManualidades:true,btnAjedrez:true,btnDama:true,btnSudoku:true,btnCrucigrama:true,btnSopa:true,btnSolitario:true,btnEducacion:true,btnEneagrama:true,btnVIA:true,btnIkigai:true,btnRecap:true,btnMetodos:true,btnAdolescencia:true,btnJuventud:true,btnNutri:true,btnGym:true,btnNatacion:true,btnFutbol:true,btnBasquetbol:true,btnWeather:true,btnAstro:true,btnCircadian:true,btnMeal:true,btnShopping:true,btnFinance:true,btnHomeTasks:true,btnConvert:true,btnVozAbuelos:true,btnCiberGuia:true,btnCiberClaves:true,btnCiberEstafas:true,btnCiberPriv:true,btnFirstAid:true,btnViolence:true,btnEvac:true,btnApoyo:true,btnHelp:true,btnDonate:true},
   // Agricultor: tierra completa + cielo completo + mar de riego/marea + penco + casa productiva + energía sin domótica + VozAbuelos + red completa + día (organizar + gratitud) + emergencia de campo.
   agricultor: {btnHuerta:true,btnSiembra:true,btnBosque:true,btnCompost:true,btnAgua:true,btnHidroponia:true,btnElectrocultura:true,btnFlora:true,btnLawen:true,btnBirds:true,btnAnfibios:true,btnMeli:true,btnHongos:true,btnSenderos:true,btnFuego:true,btnFenologia:true,btnWeather:true,btnAstro:true,btnGolden:true,btnCircadian:true,btnEkadashi:true,btnTides:true,btnIntermareal:true,btnComuna:true,btnMuni:true,btnMeal:true,btnShopping:true,btnFinance:true,btnHomeTasks:true,btnBodega:true,btnDespensa:true,btnCorral:true,btnEnergy:true,btnLena:true,btnTaller:true,btnHerramientas:true,btnMecanica:true,btnConvert:true,btnVozAbuelos:true,btnTrueque:true,btnMinga:true,btnDerechos:true,btnAnimalCare:true,btnHabits:true,btnRutinas:true,btnDiscipline:true,btnSchedule:true,btnTimer:true,btnRemind:true,btnGratitud:true,btnFirstAid:true,btnEvac:true,btnApoyo:true,btnHelp:true,btnDonate:true},
   // Pescador: mar completo + cielo completo + ribera + penco costero + casa base + taller/mecánica + Trueque/Minga + día (organizar + gratitud/respiración) + cuerpo activo + emergencia completa.
@@ -4515,7 +4583,7 @@ const PRESETS = {
   // Deportista: día completo + cuidado completo + Juventud/Adultez + Weather/Tides/Circadian + casa de rendimiento + Energy/Convert + VIA/Ikigai/Espiritual + emergencia completa.
   deportista: {btnHabits:true,btnRutinas:true,btnDiscipline:true,btnSchedule:true,btnTimer:true,btnRemind:true,btnGratitud:true,btnDreams:true,btnBreath:true,btnJuventud:true,btnAdultez:true,btnMedic:true,btnNutri:true,btnGym:true,btnNatacion:true,btnPelo:true,btnRituales:true,btnFutbol:true,btnBasquetbol:true,btnWeather:true,btnTides:true,btnCircadian:true,btnMeal:true,btnShopping:true,btnFinance:true,btnEnergy:true,btnConvert:true,btnVIA:true,btnIkigai:true,btnEspiritual:true,btnEspiritu:true,btnFirstAid:true,btnViolence:true,btnEvac:true,btnApoyo:true,btnHelp:true,btnDonate:true},
   // Docente: aprender completo + familia completa + casa con Escolar/Movilidad + conocerse parcial + Recap/Métodos/Duelo + día completo + tierra educativa + Adolescencia/Juventud + Trueque/Minga/Derechos + ciber básico + emergencia completa.
-  docente: {btnStudy:true,btnMemory:true,btnMatematicas:true,btnIdiomas:true,btnMapu:true,btnEnglish:true,btnPortugues:true,btnChino:true,btnHindi:true,btnAprenderInstrumento:true,btnGuitar:true,btnUkelele:true,btnFlauta:true,btnTeclado:true,btnCajon:true,btnCanto:true,btnMusicaPractica:true,btnAjedrez:true,btnDama:true,btnSudoku:true,btnCrucigrama:true,btnSopa:true,btnSolitario:true,btnTales:true,btnCrianza:true,btnEducacion:true,btnArbolFull:true,btnVozAbuelos:true,btnConstelaciones:true,btnCumple:true,btnMeal:true,btnShopping:true,btnFinance:true,btnHomeTasks:true,btnEscolar:true,btnMovilidad:true,btnPsico:true,btnPsicologia:true,btnEneagrama:true,btnVIA:true,btnIkigai:true,btnRecap:true,btnMetodos:true,btnDueloFull:true,btnHabits:true,btnRutinas:true,btnDiscipline:true,btnSchedule:true,btnTimer:true,btnRemind:true,btnGratitud:true,btnDreams:true,btnBreath:true,btnWeather:true,btnCircadian:true,btnSiembra:true,btnHuerta:true,btnBosque:true,btnCompost:true,btnBirds:true,btnFenologia:true,btnAdolescencia:true,btnJuventud:true,btnTrueque:true,btnMinga:true,btnDerechos:true,btnCiberGuia:true,btnCiberClaves:true,btnCiberEstafas:true,btnCiberPriv:true,btnFirstAid:true,btnViolence:true,btnEvac:true,btnApoyo:true,btnConvert:true,btnHelp:true,btnDonate:true}
+  docente: {btnStudy:true,btnMemory:true,btnMatematicas:true,btnIdiomas:true,btnMapu:true,btnEnglish:true,btnPortugues:true,btnChino:true,btnHindi:true,btnAprenderInstrumento:true,btnGuitar:true,btnUkelele:true,btnFlauta:true,btnTeclado:true,btnCajon:true,btnCanto:true,btnMusicaPractica:true,btnArte:true,btnDibujo:true,btnPintura:true,btnFoto:true,btnManualidades:true,btnAjedrez:true,btnDama:true,btnSudoku:true,btnCrucigrama:true,btnSopa:true,btnSolitario:true,btnTales:true,btnCrianza:true,btnEducacion:true,btnArbolFull:true,btnVozAbuelos:true,btnConstelaciones:true,btnCumple:true,btnMeal:true,btnShopping:true,btnFinance:true,btnHomeTasks:true,btnEscolar:true,btnMovilidad:true,btnPsico:true,btnPsicologia:true,btnEneagrama:true,btnVIA:true,btnIkigai:true,btnRecap:true,btnMetodos:true,btnDueloFull:true,btnHabits:true,btnRutinas:true,btnDiscipline:true,btnSchedule:true,btnTimer:true,btnRemind:true,btnGratitud:true,btnDreams:true,btnBreath:true,btnWeather:true,btnCircadian:true,btnSiembra:true,btnHuerta:true,btnBosque:true,btnCompost:true,btnBirds:true,btnFenologia:true,btnAdolescencia:true,btnJuventud:true,btnTrueque:true,btnMinga:true,btnDerechos:true,btnCiberGuia:true,btnCiberClaves:true,btnCiberEstafas:true,btnCiberPriv:true,btnFirstAid:true,btnViolence:true,btnEvac:true,btnApoyo:true,btnConvert:true,btnHelp:true,btnDonate:true}
 };
 try { if (typeof window !== 'undefined') window.PRESETS = PRESETS; } catch (e) {}
 // Construye mapa visible completo desde un preset: lo listado = true, resto = false.
@@ -10654,7 +10722,49 @@ if ($('btnTimer')) {
 }
 
 (async function init() {
-  try { DATA = JSON.parse(await window.api.loadData()); } catch { DATA = {}; }
+  let errorCarga = null;
+  try {
+    var crudo = await window.api.loadData();
+    try {
+      if (window.cal13cifrado && window.cal13cifrado.esCifrado(crudo)) {
+        var pw0 = (window.cal13cifrado.clave && window.cal13cifrado.clave()) || null;
+        if (!pw0) throw new Error('cifrado-requiere-clave');
+        crudo = await window.cal13cifrado.descifrarTexto(pw0, crudo);
+      }
+    } catch (eC) { throw eC; }
+    DATA = JSON.parse(crudo || '{}');
+  } catch (e) {
+    DATA = {};
+    errorCarga = e;
+  }
+  if (errorCarga) {
+    // No crear un perfil nuevo ni guardar: eso sobrescribiría el archivo que
+    // no pudimos leer (datos corruptos o esquema de una versión futura).
+    window.cal13NoGuardar = true;
+    const motivo = String((errorCarga && errorCarga.message) || errorCarga);
+    const esFuturo = motivo.indexOf('schema-futuro') >= 0;
+    const esCifrado = motivo.indexOf('cifrado-requiere-clave') >= 0 || motivo.indexOf('clave-incorrecta') >= 0;
+    const texto = esFuturo
+      ? '⚠ Estos datos son de una versión más nueva. Actualiza la app; no se modificó nada.'
+      : esCifrado
+        ? '🔒 Datos cifrados: ingresa tu contraseña para desbloquear. Sin la clave no se puede leer ni sobrescribir nada.'
+        : '⚠ No se pudieron leer los datos guardados. No se sobrescribió nada; restaura un respaldo.';
+    try { window.__cal13LoadError = motivo; } catch {}
+    try { if ($('statusMsg')) $('statusMsg').textContent = texto; } catch {}
+    try {
+      const sp = $('bootSplash');
+      if (sp) {
+        sp.innerHTML = '';
+        const box = document.createElement('div');
+        box.style.cssText = 'max-width:520px;margin:0 auto;padding:24px;text-align:center;line-height:1.5';
+        const h = document.createElement('h2'); h.textContent = 'No se pudo cargar el calendario';
+        const p = document.createElement('p'); p.textContent = texto;
+        box.appendChild(h); box.appendChild(p);
+        sp.appendChild(box);
+      }
+    } catch (e2) {}
+    return;
+  }
   if (!DATA.cycles && !DATA.usuarios) DATA.cycles = {};
   if (!DATA.usuarios) {
     DATA.usuarios = [{ id: 'u1', nombre: 'Principal' }];
@@ -10683,6 +10793,11 @@ if ($('btnTimer')) {
   }
   if (!DATA.notas) DATA.notas = {};
   if (!DATA.notas[DATA.actual]) DATA.notas[DATA.actual] = { cycles: {} };
+  // Normaliza invariantes (notas por usuario, cycles, actual) sin descartar
+  // datos. La validación estricta se aplica a importaciones/restauraciones.
+  if (window.cal13schema && typeof window.cal13schema.normalizar === 'function') {
+    try { DATA = window.cal13schema.normalizar(DATA); } catch (e) {}
+  }
 
   const now = new Date();
   const thisYear = now.getFullYear();

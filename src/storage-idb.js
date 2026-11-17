@@ -24,9 +24,45 @@
   var FLAG_GRUPOS = 'cal13-idb-grupos'; // kv: {v, at, grupos:[{id,keys}]}
   var mem = {}; // último recurso (navegación privada sin localStorage)
 
+  // Los espejos devuelven el backend real usado: 'localstorage' (durable),
+  // 'memoria' (solo proceso) o false (no se pudo escribir). Así web-api puede
+  // distinguir guardado persistido, degradado y temporal en vez de asumir éxito.
   function lsGet(k) { try { return localStorage.getItem(k); } catch (e) { return (k in mem) ? mem[k] : null; } }
-  function lsSet(k, v) { try { localStorage.setItem(k, v); } catch (e) { try { mem[k] = v; } catch (_) {} } }
-  function lsDel(k) { try { localStorage.removeItem(k); } catch (e) { try { delete mem[k]; } catch (_) {} } }
+  function lsSet(k, v) {
+    try { localStorage.setItem(k, v); return 'localstorage'; }
+    catch (e) { try { mem[k] = v; return 'memoria'; } catch (_) { return false; } }
+  }
+  function lsDel(k) {
+    try { localStorage.removeItem(k); return 'localstorage'; }
+    catch (e) { try { delete mem[k]; return 'memoria'; } catch (_) { return false; } }
+  }
+  // Contrato de resultado para escrituras. `ok` solo es true si hay una copia
+  // durable confirmada (IDB o localStorage). `temporal` marca memoria volátil.
+  function resultadoEscritura(idbConfirmado, espejo) {
+    if (idbConfirmado) {
+      return { ok: true, backend: 'indexeddb', degradado: espejo !== 'localstorage', espejo: espejo };
+    }
+    if (espejo === 'localstorage') {
+      return { ok: true, backend: 'localstorage', degradado: true, espejo: espejo, idb: false };
+    }
+    return { ok: false, backend: 'memoria', temporal: true, degradado: true, espejo: espejo || false, idb: false };
+  }
+  // Para borrados: solo se declara éxito si TODOS los almacenes que podían
+  // contener el registro quedaron limpios. Si el espejo localStorage falla,
+  // el dato podría reaparecer al caer a ese backend: se reporta parcial.
+  function resultadoBorrado(idbConfirmado, espejo) {
+    if (idbConfirmado && espejo === 'localstorage') {
+      return { ok: true, backend: 'indexeddb', espejo: espejo };
+    }
+    if (idbConfirmado) {
+      return { ok: false, backend: 'indexeddb', parcial: true, degradado: true, espejo: espejo };
+    }
+    if (idbOk === false) {
+      if (espejo === 'localstorage') return { ok: true, backend: 'localstorage', espejo: espejo };
+      return { ok: false, backend: 'localstorage', parcial: true, degradado: true, espejo: espejo };
+    }
+    return { ok: false, backend: 'parcial', parcial: true, espejo: espejo };
+  }
   function lsKeys(pref) {
     var out = [];
     try {
@@ -86,20 +122,28 @@
       }).catch(function () { return lsGet(k); });
     },
     set: function (k, v) {
-      lsSet(k, v); // espejo síncrono: arranque instantáneo aunque IDB tarde
+      var espejo = lsSet(k, v); // espejo síncrono: arranque instantáneo aunque IDB tarde
       return enStore(KV, 'readwrite', function (s, res, rej) {
         var r = s.put(String(v), k);
         r.onsuccess = function () { res(true); };
         r.onerror = function () { rej(r.error); };
-      }).catch(function () { return true; });
+      }).then(function () {
+        return resultadoEscritura(true, espejo);
+      }).catch(function () {
+        return resultadoEscritura(false, espejo);
+      });
     },
     del: function (k) {
-      lsDel(k);
+      var espejo = lsDel(k);
       return enStore(KV, 'readwrite', function (s, res, rej) {
         var r = s.delete(k);
         r.onsuccess = function () { res(true); };
         r.onerror = function () { rej(r.error); };
-      }).catch(function () { return true; });
+      }).then(function () {
+        return resultadoBorrado(true, espejo);
+      }).catch(function () {
+        return resultadoBorrado(false, espejo);
+      });
     },
     // Cuota y latencia reales: estimate() + roundtrip de sonda en 'kv'.
     info: function () {
@@ -136,12 +180,16 @@
         rev: (registro && registro.rev) || 1,
         updatedAt: ahoraIso()
       };
-      lsSet(BIT_PREFIJO + rec.id, JSON.stringify(rec));
+      var espejo = lsSet(BIT_PREFIJO + rec.id, JSON.stringify(rec));
       return enStore(BIT, 'readwrite', function (s, res, rej) {
         var r = s.put(rec);
         r.onsuccess = function () { res(true); };
         r.onerror = function () { rej(r.error); };
-      }).catch(function () { return true; });
+      }).then(function () {
+        return resultadoEscritura(true, espejo);
+      }).catch(function () {
+        return resultadoEscritura(false, espejo);
+      });
     },
     bitacoraLeer: function (id) {
       function espejo() {
@@ -157,12 +205,16 @@
       }).catch(espejo);
     },
     bitacoraBorrar: function (id) {
-      lsDel(BIT_PREFIJO + id);
+      var espejo = lsDel(BIT_PREFIJO + id);
       return enStore(BIT, 'readwrite', function (s, res, rej) {
         var r = s.delete(String(id));
         r.onsuccess = function () { res(true); };
         r.onerror = function () { rej(r.error); };
-      }).catch(function () { return true; });
+      }).then(function () {
+        return resultadoBorrado(true, espejo);
+      }).catch(function () {
+        return resultadoBorrado(false, espejo);
+      });
     },
     bitacorasListar: function () {
       return enStore(BIT, 'readonly', function (s, res, rej) {

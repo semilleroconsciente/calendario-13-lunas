@@ -1593,9 +1593,10 @@ function renderDFT() {
   $('monthNoteWrap').style.display = '';
   seasonChip($('seasonChip'), 'RIMU');
   $('seasonChip').textContent = '✷ Día Fuera del Tiempo';
-  const dftDay = cycle.days.find(d => d.luna === 'dft');
+  const dftDays = cycle.days.filter(d => d.luna === 'dft');
+  const dftDay = dftDays[0];
   const prev = MOONS[12];
-  $('lunaTitle').textContent = DFT.titulo;
+  $('lunaTitle').textContent = dftDays.length > 1 ? DFT.titulo + ' · doble (año bisiesto)' : DFT.titulo;
   $('lunaMeta').innerHTML =
     `${cal.weekdayName(dftDay.noonMs)} ${cal.fmtFull.format(new Date(dftDay.noonMs))} — tras ${prev.nombre}`;
   $('lunaDesc').textContent = '';
@@ -1615,22 +1616,35 @@ function renderDFT() {
   const key = cal.fmtKey.format(new Date(dftDay.noonMs));
   const evs = phaseMap[key] || [];
   const frDft = (typeof defaultFraseDFT === 'function') ? defaultFraseDFT() : (window.fraseDFT || (window.frases ? window.frases[364] : null));
-  grid.innerHTML = `
-    <div class="day-card today su-04391f">
-      <div class="dc-head"><span class="dc-n">365</span><span class="dc-date">${cal.fmtDate.format(new Date(dftDay.noonMs))}</span></div>
-      <div class="dc-sun">☀ ${sun.rise ? cal.fmtTime.format(new Date(sun.rise)) : '--'} – ${sun.set ? cal.fmtTime.format(new Date(sun.set)) : '--'}</div>
-      <div class="dc-moon" title="Salida y puesta de la luna en Penco (aprox.)">🌙 ${dftMoonRise} – ${dftMoonSet}</div>
-      ${frDft ? `<blockquote class="dlg-quote">«${escapeHtml(frDft.t)}»<span class="q-a">— ${escapeHtml(frDft.a || 'Anónimo')}</span></blockquote>` : ''}
-      <div class="su-8c6175">${DFT.texto1}</div>
-      <p class="su-f14b16"><b>${DFT.sub2}</b></p>
-      <p class="su-6424e2">${DFT.texto2}</p>
-      <p class="su-6424e2">${DFT.texto3}</p>
-      <p class="su-f14b16"><b>${DFT.sub3}</b></p>
-      <p class="su-6424e2">${DFT.texto4}</p>
-      <p class="su-f3e545">${DFT.texto5}</p>
-      <p class="su-6424e2">${DFT.texto6}</p>
-      ${evs.map(e => `<div class="dc-tide su-8a77e5">${e.simbolo} ${e.tipo.replace('-', ' ')} · ${cal.fmtTime.format(new Date(e.utcMs))}</div>`).join('')}
-    </div>`;
+  var cardsHtml = dftDays.map(function (dd, idx) {
+    var s2 = cal.sunForDay(dd.noonMs);
+    var mr = '--', ms2 = '--';
+    try {
+      var dm = cal.moonForDay(dd.noonMs);
+      if (dm.rise) mr = cal.fmtTime.format(new Date(dm.rise));
+      if (dm.set) ms2 = cal.fmtTime.format(new Date(dm.set));
+    } catch (e2) {}
+    var k2 = cal.fmtKey.format(new Date(dd.noonMs));
+    var ev2 = phaseMap[k2] || [];
+    var num = (idx === 0 && dftDays.length > 1) ? '365' : (dftDays.length > 1 ? '366' : '365');
+    var tag = (dd.bisiesto) ? ' · 20-jun bisiesto' : '';
+    return '<div class="day-card today su-04391f">'
+      + '<div class="dc-head"><span class="dc-n">' + num + '</span><span class="dc-date">' + escapeHtml(cal.fmtDate.format(new Date(dd.noonMs))) + tag + '</span></div>'
+      + '<div class="dc-sun">☀ ' + (s2.rise ? cal.fmtTime.format(new Date(s2.rise)) : '--') + ' – ' + (s2.set ? cal.fmtTime.format(new Date(s2.set)) : '--') + '</div>'
+      + '<div class="dc-moon" title="Salida y puesta de la luna en Penco (aprox.)">🌙 ' + mr + ' – ' + ms2 + '</div>'
+      + (frDft && idx === 0 ? '<blockquote class="dlg-quote">«' + escapeHtml(frDft.t) + '»<span class="q-a">— ' + escapeHtml(frDft.a || 'Anónimo') + '</span></blockquote>' : '')
+      + '<div class="su-8c6175">' + DFT.texto1 + '</div>'
+      + '<p class="su-f14b16"><b>' + DFT.sub2 + '</b></p>'
+      + '<p class="su-6424e2">' + DFT.texto2 + '</p>'
+      + '<p class="su-6424e2">' + DFT.texto3 + '</p>'
+      + '<p class="su-f14b16"><b>' + DFT.sub3 + '</b></p>'
+      + '<p class="su-6424e2">' + DFT.texto4 + '</p>'
+      + '<p class="su-f3e545">' + DFT.texto5 + '</p>'
+      + '<p class="su-6424e2">' + DFT.texto6 + '</p>'
+      + ev2.map(function (e) { return '<div class="dc-tide su-8a77e5">' + e.simbolo + ' ' + String(e.tipo).replace('-', ' ') + ' · ' + cal.fmtTime.format(new Date(e.utcMs)) + '</div>'; }).join('')
+      + '</div>';
+  }).join('');
+  grid.innerHTML = cardsHtml;
 
   const mnLabel = document.querySelector('#monthNoteWrap label');
   mnLabel.textContent = 'REFLEXIÓN DEL CICLO COMPLETO';
@@ -1644,7 +1658,7 @@ function renderDFT() {
 
   const nextY = currentCycleYear() + 1;
   const footer = document.createElement('div');
-  footer.style.cssText = 'margin-top:14px;color:var(--gold);font-size:15px';
+  footer.className = 'dft-footer';
   footer.textContent = `Nuevo We Tripantu: 21 jun ${nextY} — comienza un nuevo ciclo de 13 lunas`;
   grid.appendChild(footer);
 }

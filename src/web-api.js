@@ -3,27 +3,40 @@
 // abrir index.html por http(s) o file:// sin preload: guarda en localStorage.
 (function () {
   if (window.api) return;
-  // Sobre versionado: {app:'cal13', v:1, savedAt, data:{...}}.
-  // La app (renderer) sigue viendo solo el JSON de DATA: este borde envuelve
-  // al guardar y desenvuelve al cargar. Legado (sin sobre) pasa tal cual.
-  // Misma convencion en main.js (data:load/data:save) para Electron.
+  // Sobre versionado: {app:'cal13', v:1, schema:N, savedAt, data:{...}}.
+  // v = versión del contenedor; schema = versión del esquema de DATA
+  // (data-schema.js). La app sigue viendo solo el JSON de DATA.
   var isEnvelope = function (o) {
     return o && typeof o === 'object' && o.app === 'cal13' && typeof o.v === 'number' && ('data' in o);
+  };
+  var schemaVersion = function () {
+    try {
+      if (window.cal13schema && typeof window.cal13schema.SCHEMA_VERSION === 'number') {
+        return window.cal13schema.SCHEMA_VERSION;
+      }
+    } catch (e) {}
+    return 1;
   };
   var wrapData = function (json) {
     try {
       var o = JSON.parse(json);
       if (isEnvelope(o)) return json;
-      return JSON.stringify({ app: 'cal13', v: 1, savedAt: new Date().toISOString(), data: o });
+      return JSON.stringify({ app: 'cal13', v: 1, schema: schemaVersion(), savedAt: new Date().toISOString(), data: o });
     } catch (e) { return json; }
   };
+  // Lectura estricta: un contenedor de una versión futura o un JSON corrupto
+  // no se devuelven como si fueran datos válidos. El llamador debe abortar sin
+  // sobrescribir el archivo original.
   var unwrapData = function (stored) {
     if (!stored) return '{}';
-    try {
-      var o = JSON.parse(stored);
-      if (isEnvelope(o)) return JSON.stringify(o.data === undefined ? {} : o.data);
-      return stored;
-    } catch (e) { return stored; }
+    var o;
+    try { o = JSON.parse(stored); }
+    catch (e) { throw new Error('datos-corruptos'); }
+    if (isEnvelope(o)) {
+      if (typeof o.schema === 'number' && o.schema > schemaVersion()) throw new Error('schema-futuro');
+      return JSON.stringify(o.data === undefined ? {} : o.data);
+    }
+    return stored;
   };
   // Migración total a IndexedDB (v1.8): las bitácoras (grupos registrados por
   // bitacoras-respaldo-modulo vía cal13idb.registrarGrupos) viven en el store
@@ -58,7 +71,10 @@
             if (u && Object.prototype.hasOwnProperty.call(u, k)) { keys[k] = u[k]; n++; }
           }
           if (!n) continue;
-          await window.cal13idb.bitacoraGuardar(uid + ':' + g.id, { titulo: g.id, keys });
+          const r = await window.cal13idb.bitacoraGuardar(uid + ':' + g.id, { titulo: g.id, keys });
+          // Solo adelgazar el blob si la copia en el store quedó confirmada.
+          // Antes se borraba aunque la escritura fallara (pérdida silenciosa).
+          if (!r || !r.ok) continue;
           for (const k of Object.keys(keys)) { try { delete u[k]; } catch {} }
         }
       }
@@ -88,6 +104,28 @@
       return JSON.stringify(o);
     } catch { return blobJson; }
   }
+  // Estado real de la última escritura, para que la UI no anuncie éxito
+  // cuando solo hay una copia en memoria o cuando el fallback es degradado.
+  var publicarEstado = function (estado) {
+    estado = estado || { ok: false, backend: 'desconocido' };
+    try { window.api.lastSaveState = estado; } catch (e) {}
+    try {
+      window.dispatchEvent(new CustomEvent('cal13:persistencia', { detail: estado }));
+    } catch (e) {}
+    return !!estado.ok;
+  };
+  var canon = function (v) {
+    if (Array.isArray(v)) return v.map(canon);
+    if (v && typeof v === 'object') {
+      var o = {};
+      Object.keys(v).sort().forEach(function (k) { o[k] = canon(v[k]); });
+      return o;
+    }
+    return v;
+  };
+  var mismoJSON = function (a, b) {
+    try { return JSON.stringify(canon(a)) === JSON.stringify(canon(b)); } catch (e) { return false; }
+  };
   var isHttpUrl = function (u) {
     try { var p = new URL(String(u), window.location.href).protocol; return p === 'http:' || p === 'https:'; }
     catch (e) { return false; }
@@ -109,32 +147,190 @@
     openExternal: async (url) => { if (!isHttpUrl(url)) return false; try { window.open(url, '_blank', 'noopener,noreferrer'); return true; } catch { return false; } },
     loadData: async () => {
       // IndexedDB primero (cuota amplia, asíncrono); localStorage como fallback.
+      // Un JSON corrupto o un esquema futuro se propaga como error: el
+      // llamador NO debe crear datos vacíos ni sobrescribir el original.
+      // Si el blob está cifrado (CAL13ENC1.), se requiere la clave en memoria.
+      var crudo = null;
+      var errorIdb = null;
       try {
-        if (window.cal13idb) {
-          const blob = unwrapData(await window.cal13idb.get('cal13-data') || '{}');
-          return await overlayGruposDesdeStore(blob);
+        if (window.cal13idb) crudo = await window.cal13idb.get('cal13-data');
+      } catch (e) { errorIdb = e; }
+      if (crudo === null || crudo === undefined || crudo === '') {
+        try { crudo = localStorage.getItem('cal13-data'); } catch (e) {}
+      }
+      if (!crudo) {
+        if (errorIdb) throw errorIdb;
+        return '{}';
+      }
+      try {
+        if (window.cal13cifrado && window.cal13cifrado.esCifrado(crudo)) {
+          var pw = (window.cal13cifrado.clave && window.cal13cifrado.clave()) || null;
+          if (!pw) { var err = new Error('cifrado-requiere-clave'); throw err; }
+          crudo = await window.cal13cifrado.descifrarTexto(pw, crudo);
         }
-      } catch {}
-      try { return unwrapData(localStorage.getItem('cal13-data') || '{}'); } catch { return '{}'; }
+      } catch (e) {
+        throw e;
+      }
+      const blob = unwrapData(crudo);
+      return await overlayGruposDesdeStore(blob);
     },
     saveData: async (json) => {
+      // Si la carga inicial falló (datos corruptos o esquema futuro), no se
+      // permite sobrescribir el almacenamiento con un estado vacío/nuevo.
+      if (window.cal13NoGuardar) {
+        return publicarEstado({ ok: false, backend: 'bloqueado', motivo: 'carga-fallida' });
+      }
+      // Blob ya cifrado (vía core-storage en Electron): guardar opaco.
+      try {
+        if (window.cal13cifrado && window.cal13cifrado.esCifrado(json)) {
+          var enc0 = String(json);
+          try {
+            if (window.cal13idb) {
+              const r0 = await window.cal13idb.set('cal13-data', enc0);
+              if (r0 && r0.ok) return publicarEstado(r0);
+            }
+          } catch (e0) {}
+          try {
+            localStorage.setItem('cal13-data', enc0);
+            return publicarEstado({ ok: true, backend: 'localstorage', degradado: true });
+          } catch (e1) {
+            return publicarEstado({ ok: false, backend: 'memoria', temporal: true });
+          }
+        }
+      } catch (e00) {}
       var wrapped = wrapData(json);
+      var alRest = wrapped;
+      try {
+        // Cifrado at-rest: se parte en claro y se cifra el resultado.
+        if (window.cal13cifrado && window.cal13cifrado.hayClave && window.cal13cifrado.hayClave()) {
+          var pw2 = window.cal13cifrado.clave();
+          var slim0 = await partirGruposAlStore(wrapped);
+          alRest = await window.cal13cifrado.cifrarTexto(pw2, slim0);
+          try {
+            if (window.cal13idb) {
+              const r = await window.cal13idb.set('cal13-data', alRest);
+              if (r && r.ok) return publicarEstado({ ok: true, backend: r.backend || 'indexeddb', degradado: false, cifrado: true });
+            }
+          } catch (e2) {}
+          try {
+            localStorage.setItem('cal13-data', alRest);
+            return publicarEstado({ ok: true, backend: 'localstorage', degradado: true, cifrado: true });
+          } catch (e3) {
+            return publicarEstado({ ok: false, backend: 'memoria', temporal: true });
+          }
+        }
+      } catch (e4) { return publicarEstado({ ok: false, backend: 'error', motivo: 'cifrado' }); }
       try {
         if (window.cal13idb) {
           const slim = await partirGruposAlStore(wrapped);
-          await window.cal13idb.set('cal13-data', slim);
-          return true;
+          const r = await window.cal13idb.set('cal13-data', slim);
+          if (r && r.ok) return publicarEstado(r);
+          // Sin copia durable en IDB ni espejo: último intento directo en LS.
+          if (r && r.temporal) {
+            try {
+              localStorage.setItem('cal13-data', wrapped);
+              return publicarEstado({ ok: true, backend: 'localstorage', degradado: true });
+            } catch (e) {
+              return publicarEstado({ ok: false, backend: 'memoria', temporal: true });
+            }
+          }
+          return publicarEstado(r);
         }
-      } catch {}
-      try { localStorage.setItem('cal13-data', wrapped); return true; } catch { return false; }
+      } catch (e) {}
+      try {
+        localStorage.setItem('cal13-data', wrapped);
+        return publicarEstado({ ok: true, backend: 'localstorage', degradado: true });
+      } catch (e) {
+        return publicarEstado({ ok: false, backend: 'memoria', temporal: true });
+      }
+    },
+    // Restauración coordinada: además de escribir el blob, elimina registros
+    // del store de bitácoras que no pertenecen al estado restaurado. Sin esto,
+    // overlayGruposDesdeStore reinyectaba datos antiguos al volver a cargar.
+    replaceData: async (json) => {
+      var wrapped = wrapData(json);
+      var nuevo;
+      try {
+        var env = JSON.parse(wrapped);
+        if (env && typeof env.schema === 'number' && window.cal13schema &&
+            env.schema > window.cal13schema.SCHEMA_VERSION) {
+          return publicarEstado({ ok: false, backend: 'error', motivo: 'schema-futuro' });
+        }
+        nuevo = (env && env.data !== undefined) ? env.data : env;
+      } catch (e) {
+        return publicarEstado({ ok: false, backend: 'error', motivo: 'json' });
+      }
+      var anterior = null;
+      try { anterior = await window.api.loadData(); }
+      catch (e) {
+        // No se puede verificar el estado anterior: no se toca el store.
+        return publicarEstado({ ok: false, backend: 'error', motivo: (e && e.message) || 'lectura-previa' });
+      }
+      var restaurarAnterior = async function () {
+        if (anterior) { try { await window.api.saveData(anterior); } catch (e) {} }
+      };
+      // 1) Borrar grupos del store que no existen en el respaldo (por usuario
+      //    ausente o porque ninguna de sus claves está en el estado nuevo).
+      try {
+        if (window.cal13idb && window.cal13idb.bitacorasListar) {
+          const lista = await window.cal13idb.bitacorasListar();
+          const notas = (nuevo && nuevo.notas) || {};
+          for (const item of lista) {
+            const rec = await window.cal13idb.bitacoraLeer(item.id);
+            const uid = String(item.id).split(':')[0];
+            const claves = (rec && rec.keys) || {};
+            const presente = notas[uid] && Object.keys(claves).some(function (k) {
+              return Object.prototype.hasOwnProperty.call(notas[uid], k);
+            });
+            if (!presente) {
+              const r = await window.cal13idb.bitacoraBorrar(item.id);
+              if (!r || !r.ok) throw new Error('borrar:' + item.id);
+            }
+          }
+        }
+      } catch (e) {
+        await restaurarAnterior();
+        return publicarEstado({ ok: false, backend: 'error', motivo: 'restauracion-limpieza' });
+      }
+      // 2) Escribir el estado nuevo y verificar lectura de vuelta.
+      var ok = await window.api.saveData(json);
+      if (!ok) { await restaurarAnterior(); return false; }
+      try {
+        const leido = JSON.parse(await window.api.loadData() || '{}');
+        if (!mismoJSON(leido, nuevo)) {
+          await restaurarAnterior();
+          return publicarEstado({ ok: false, backend: 'error', motivo: 'verificacion' });
+        }
+      } catch (e) {
+        await restaurarAnterior();
+        return publicarEstado({ ok: false, backend: 'error', motivo: 'verificacion' });
+      }
+      return publicarEstado({
+        ok: true,
+        backend: (window.cal13idb && window.cal13idb.backend && window.cal13idb.backend() === 'indexeddb') ? 'indexeddb' : 'localstorage',
+        restaurado: true
+      });
     },
     dataPath: async () => 'Guardado en este navegador (almacenamiento local)',
     exportPDF: async (html) => {
-      const w = window.open('', '_blank');
+      const w = window.open('', '_blank', 'noopener,noreferrer');
       if (!w) return null;
+      try { w.opener = null; } catch {}
       w.document.open();
-      w.document.write(sanitizePrintHtml(html));
-      w.document.close();
+      // Sin document.write con string crudo: se parsea via template y se
+      // inserta ya sanitizado para reducir tabnabbing/XSS.
+      var doc = w.document;
+      try {
+        var tpl = doc.createElement('template');
+        tpl.innerHTML = sanitizePrintHtml(html);
+        doc.open();
+        doc.write('<!DOCTYPE html><html><head><title>Calendario 13 Lunas</title></head><body></body></html>');
+        doc.close();
+        while (doc.body.firstChild) doc.body.removeChild(doc.body.firstChild);
+        while (tpl.content.firstChild) doc.body.appendChild(tpl.content.firstChild);
+      } catch (e) {
+        try { w.document.open(); w.document.write(sanitizePrintHtml(html)); w.document.close(); } catch {}
+      }
       setTimeout(() => { try { w.focus(); w.print(); } catch {} }, 900);
       return 'impresion';
     },

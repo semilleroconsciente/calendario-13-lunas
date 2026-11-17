@@ -20,6 +20,8 @@ function utcNoon(y, m0, d) { return Date.UTC(y, m0, d, 12, 0, 0); }
 
 function weTripantuUTC(year) { return utcNoon(year, 5, 21); }
 
+function esBisiesto(gregYear) { return (gregYear % 4 === 0 && gregYear % 100 !== 0) || gregYear % 400 === 0; }
+
 function buildCycle(year) {
   const start = weTripantuUTC(year);
   const days = [];
@@ -29,7 +31,13 @@ function buildCycle(year) {
       days.push({ luna, diaN: dia, noonMs: ms });
     }
   }
+  // CAL-01 (doble DFT en bisiesto): el ciclo 21-jun Y → 20-jun Y+1 contiene el
+  // 29-feb cuando Y+1 es bisiesto, por lo que dura 366 días. Se agrega un
+  // segundo DFT (diaN 2) para el 20-jun sin mover el inicio fijo del 21-jun.
   days.push({ luna: 'dft', diaN: 1, noonMs: start + 364 * 86400000 });
+  if (esBisiesto(year + 1)) {
+    days.push({ luna: 'dft', diaN: 2, noonMs: start + 365 * 86400000, bisiesto: true });
+  }
   return { year, start, days };
 }
 
@@ -50,9 +58,13 @@ function phasesByDay(fromMs, toMs) {
 }
 
 function sunForDay(noonMs) {
-  const { y, m, d } = santiagoParts(noonMs);
-  const base = Date.UTC(y, m - 1, d, 12, 0, 0);
-  return window.astro.sunTimes(base, PENCO.lat, PENCO.lng);
+  try {
+    const { y, m, d } = santiagoParts(noonMs);
+    const base = Date.UTC(y, m - 1, d, 12, 0, 0);
+    var lat = (typeof PENCO !== 'undefined' && PENCO && isFinite(PENCO.lat)) ? PENCO.lat : -36.67;
+    var lng = (typeof PENCO !== 'undefined' && PENCO && isFinite(PENCO.lng)) ? PENCO.lng : -72.97;
+    return window.astro.sunTimes(base, lat, lng);
+  } catch (e) { return { rise: null, set: null }; }
 }
 
 // Salida y puesta de la luna para el día calendario (America/Santiago) que contiene noonMs.
@@ -91,4 +103,4 @@ function moonForDay(noonMs) {
   return out;
 }
 
-window.cal = { TZ, buildCycle, weTripantuUTC, santiagoParts, weekdayName, phasesByDay, sunForDay, moonForDay, fmtTime, fmtDate, fmtFull, fmtKey };
+window.cal = { TZ, buildCycle, weTripantuUTC, esBisiesto, santiagoParts, weekdayName, phasesByDay, sunForDay, moonForDay, fmtTime, fmtDate, fmtFull, fmtKey };

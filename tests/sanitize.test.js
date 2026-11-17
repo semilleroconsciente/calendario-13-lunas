@@ -1,54 +1,57 @@
-// tests/sanitize.test.js — core-sanitize.js: allowlist real (no no-op).
-// Garantiza: scripts/iframes/handlers/javascript: se eliminan, formato básico
-// sobrevive, URLs seguras pasan. Uso: node --test "tests/*.test.js"
+'use strict';
+// ============================================================================
+// tests/sanitize.test.js — core-sanitize.js como allowlist real (no no-op).
+//
+// Garantiza: scripts/iframes/handlers/javascript: se eliminan, el formato
+// básico sobrevive y las URLs seguras pasan.
+// Uso: node --test tests/  (o npm test)
+// ============================================================================
 const { describe, it } = require('node:test');
 const assert = require('node:assert/strict');
-const fs = require('fs');
-const path = require('path');
-const vm = require('vm');
-// Paso 3 del reorden src/: core-sanitize.js vive en src/ tras la mudanza.
-const { resolverFuente } = require('../scripts/paths.cjs');
+const vm = require('node:vm');
+const { leerFuente } = require('./helpers.cjs');
 
-function loadSanitize() {
+function cargarSanitize() {
   const sandbox = { window: {} };
   vm.createContext(sandbox);
-  vm.runInContext(fs.readFileSync(resolverFuente('core-sanitize.js'), 'utf8'), sandbox, { filename: 'core-sanitize.js' });
+  vm.runInContext(leerFuente('core-sanitize.js'), sandbox, { filename: 'core-sanitize.js' });
   return sandbox.window.sanitizeHTML;
 }
 
-const sanitizeHTML = loadSanitize();
+const sanitizeHTML = cargarSanitize();
 
+// --- Suite -------------------------------------------------------------------
 describe('sanitizeHTML (core-sanitize.js)', () => {
-  it('elimina <script> y su contenido', () => {
+  it('elimina <script> y su contenido, conserva el texto', () => {
     const out = sanitizeHTML('<p>Hola</p><script>alert(1)</script>');
-    assert.ok(!/script/i.test(out));
-    assert.ok(/Hola/.test(out));
+    assert.ok(!/script/i.test(out), 'quedó rastro de script');
+    assert.ok(/Hola/.test(out), 'se perdió el texto sano');
   });
 
   it('elimina iframe/object/embed', () => {
     const out = sanitizeHTML('a<iframe src="https://evil.test"></iframe>b');
-    assert.ok(!/iframe/i.test(out));
+    assert.ok(!/iframe/i.test(out), 'quedó rastro de iframe');
   });
 
-  it('quita handlers on* (onclick, onerror)', () => {
+  it('quita los handlers on* (onclick, onerror)', () => {
     const out = sanitizeHTML('<b onclick="alert(1)">x</b><img onerror="alert(2)">');
-    assert.ok(!/onclick/i.test(out));
-    assert.ok(!/onerror/i.test(out));
+    assert.ok(!/onclick/i.test(out), 'quedó onclick');
+    assert.ok(!/onerror/i.test(out), 'quedó onerror');
   });
 
-  it('neutraliza javascript: en href', () => {
+  it('neutraliza javascript: en los href', () => {
     const out = sanitizeHTML('<a href="javascript:alert(1)">click</a>');
-    assert.ok(!/javascript:/i.test(out));
+    assert.ok(!/javascript:/i.test(out), 'quedó javascript:');
   });
 
-  it('conserva formato básico y links seguros', () => {
+  it('conserva el formato básico y los links seguros', () => {
     const out = sanitizeHTML('<b>negrita</b> <a href="https://example.com">ok</a>');
-    assert.ok(/negrita/.test(out));
-    assert.ok(/https:\/\/example\.com/.test(out));
+    assert.ok(/negrita/.test(out), 'se perdió el formato');
+    assert.ok(/https:\/\/example\.com/.test(out), 'se perdió el link seguro');
   });
 
-  it('no es no-op: el HTML peligroso cambia', () => {
+  it('no es no-op: el HTML peligroso siempre cambia', () => {
     const evil = '<svg onload=alert(1)><script>alert(2)</script>';
-    assert.notEqual(sanitizeHTML(evil), evil);
+    assert.notEqual(sanitizeHTML(evil), evil, 'el sanitizador devolvió el input intacto');
   });
 });

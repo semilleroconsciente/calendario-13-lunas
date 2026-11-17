@@ -63,6 +63,35 @@ function doSave(msg) {
   } catch (e) {}
 }
 
+/* Identidad del archivo frente al perfil activo. Un respaldo individual
+   guarda {usuario:{id,nombre}}; importarlo a otro perfil no puede ser
+   silencioso (los datos son personales y sensibles). */
+function identidadImportacion(d) {
+  var destino = curUserMeta();
+  var origen = (d && d.usuario && d.usuario.id) ? String(d.usuario.id) : '';
+  var origenNombre = (d && d.usuario && d.usuario.nombre) ? String(d.usuario.nombre) : origen;
+  return {
+    origen: origen,
+    origenNombre: origenNombre,
+    destino: destino.id,
+    destinoNombre: destino.nombre,
+    coincide: !origen || origen === destino.id
+  };
+}
+function avisoIdentidad(d) {
+  var inf = identidadImportacion(d);
+  if (inf.coincide) return '';
+  return '\n\n⚠ El archivo pertenece al perfil «' + inf.origenNombre + '» (' + inf.origen + ').' +
+    '\nSe importará en el perfil activo «' + inf.destinoNombre + '» (' + inf.destino + ').';
+}
+function confirmarIdentidad(d) {
+  var inf = identidadImportacion(d);
+  if (inf.coincide) return true;
+  return confirm('El archivo pertenece al perfil «' + inf.origenNombre + '» (' + inf.origen + ').' +
+    '\nLo vas a importar en el perfil «' + inf.destinoNombre + '» (' + inf.destino + ').' +
+    '\n\n¿Continuar? Los datos se aplicarán al perfil activo.');
+}
+
 /* ---------- REGISTRO: cada bitácora = grupo de claves ----------
    keys: claves exactas dentro de userData(). Si un módulo guarda
    varias claves, van juntas en el mismo grupo para no partirlo. */
@@ -228,6 +257,7 @@ function buildPayload(g) {
     app: 'calendario-13-lunas',
     tipo: 'bitacora-individual',
     version: 1,
+    schema: (window.cal13schema && window.cal13schema.SCHEMA_VERSION) || 1,
     grupo: g.id,
     titulo: g.titulo,
     claves: g.keys,
@@ -436,15 +466,19 @@ function validatePayload(d, g) {
   if (!d || typeof d !== 'object') throw new Error('formato');
   if (d.tipo !== 'bitacora-individual') throw new Error('no-es-bitacora-individual');
   if (!d.datos || typeof d.datos !== 'object') throw new Error('sin-datos');
+  if (d.usuario && typeof d.usuario !== 'object') throw new Error('usuario');
+  if (d.schema && window.cal13schema && d.schema > window.cal13schema.SCHEMA_VERSION) throw new Error('schema-futuro');
   var size = JSON.stringify(d).length;
   if (size > 5 * 1024 * 1024) throw new Error('muy-grande (máx 5 MB)');
   if (g && d.grupo && d.grupo !== g.id && g.id.indexOf('key:') !== 0) throw new Error('grupo-distinto');
   return true;
 }
 
-async function applyPayload(d) {
+// opts.identidadConfirmada: el llamador ya mostró origen/destino al usuario.
+async function applyPayload(d, opts) {
   var g = findGroup(d.grupo) || { id: d.grupo, titulo: d.titulo || d.grupo, keys: d.claves || Object.keys(d.datos || {}) };
   validatePayload(d, g);
+  if (!(opts && opts.identidadConfirmada) && !confirmarIdentidad(d)) throw new Error('cancelado');
   var u = curUser();
   if (!u) throw new Error('sin-usuario');
   /* Independencia: solo se escriben las claves de ESTA bitácora */
@@ -455,7 +489,14 @@ async function applyPayload(d) {
       catch (e) { u[k] = d.datos[k]; }
     }
   });
-  doSave('Bitácora importada ✓');
+  // Confirmar persistencia antes de informar éxito. saveNow serializa y
+  // devuelve el resultado real del borde (IDB/localStorage/Electron).
+  if (typeof window.cal13saveNow === 'function') {
+    var ok = await window.cal13saveNow('Bitácora importada ✓');
+    if (!ok) throw new Error('guardado');
+  } else {
+    doSave('Bitácora importada ✓');
+  }
   try { refreshList(); } catch (e) {}
   return g;
 }
@@ -504,15 +545,15 @@ async function importGroup(id) {
       d = sub;
     }
     if (d.grupo && d.grupo !== g.id) {
-      if (!confirm('El archivo es de «' + (d.titulo || d.grupo) + '» y estás en «' + g.titulo + '».\n¿Importarlo igual (solo sus claves, sin tocar esta bitácora)?')) return false;
+      if (!confirm('El archivo es de «' + (d.titulo || d.grupo) + '» y estás en «' + g.titulo + '».\n¿Importarlo igual (solo sus claves, sin tocar esta bitácora)?' + avisoIdentidad(d))) return false;
       var gg = findGroup(d.grupo);
-      if (gg) { await applyPayload(d); alert('✅ «' + (d.titulo || d.grupo) + '» importada (' + countGroup(gg) + ' registros). Las demás bitácoras no se tocaron.'); return true; }
-      await applyPayload(d);
+      if (gg) { await applyPayload(d, { identidadConfirmada: true }); alert('✅ «' + (d.titulo || d.grupo) + '» importada (' + countGroup(gg) + ' registros). Las demás bitácoras no se tocaron.'); return true; }
+      await applyPayload(d, { identidadConfirmada: true });
       alert('✅ Bitácora importada. Las demás no se tocaron.');
       return true;
     }
-    if (!confirm('Importar «' + g.titulo + '» desde archivo?\nSe REEMPLAZA solo esta bitácora. Las demás quedan intactas.')) return false;
-    await applyPayload(d);
+    if (!confirm('Importar «' + g.titulo + '» desde archivo?\nSe REEMPLAZA solo esta bitácora. Las demás quedan intactas.' + avisoIdentidad(d))) return false;
+    await applyPayload(d, { identidadConfirmada: true });
     alert('✅ «' + g.titulo + '» importada. Las demás bitácoras no se tocaron.');
     return true;
   } catch (e) {

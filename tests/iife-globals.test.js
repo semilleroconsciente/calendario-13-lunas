@@ -1,21 +1,23 @@
-// tests/iife-globals.test.js — mejora: colisiones IIFE con 90 módulos.
+'use strict';
+// ============================================================================
+// tests/iife-globals.test.js — colisiones IIFE entre los ~90 módulos.
 //
-// Cada módulo debe vivir en su IIFE y exponer 1 namespace en window.
-// Un top-level fugado (var/function fuera del IIFE, o asignación sin
-// declarar en modo sloppy) rompe otro módulo en silencio: el último
-// script cargado gana. Este test carga cada .js raíz en un contexto `vm`
-// con stubs de navegador, registra qué globales agrega cada archivo y
-// falla si dos archivos definen el mismo global (salvo allowlist).
+// Cada módulo debe vivir en su IIFE y exponer 1 namespace en window. Un
+// top-level fugado (var/function fuera del IIFE, o asignación sin declarar en
+// modo sloppy) rompe otro módulo en silencio: el último script cargado gana.
+// Este test carga cada .js en un contexto `vm` con stubs de navegador,
+// registra qué globales agrega cada archivo y falla si dos archivos definen
+// el mismo global (salvo allowlist).
+// Uso: node --test tests/  (o npm test)
+// ============================================================================
 const { describe, it } = require('node:test');
 const assert = require('node:assert/strict');
-const fs = require('fs');
-const path = require('path');
+const fs = require('node:fs');
+const path = require('node:path');
 const vm = require('node:vm');
+const { ROOT, resolverFuente, memoriaStorage, info, aviso } = require('./helpers.cjs');
 
-const ROOT = path.join(__dirname, '..');
-// Paso 3 del reorden src/: las fuentes viven en src/ tras la mudanza.
-const { resolverFuente } = require('../scripts/paths.cjs');
-
+// --- Exclusiones ---------------------------------------------------------------
 // Archivos con scope propio (no compiten por window en el navegador).
 const EXCLUIR = new Set([
   'main.js', // Node/Electron (require)
@@ -26,22 +28,31 @@ const EXCLUIR = new Set([
 
 // Colisiones CONOCIDAS a la fecha (documentadas, no nuevas):
 // P2-A (2026-10-13): applyBitacoraJSON/applyBackupJSON eran FALSOS POSITIVOS
-// del detector windowAssigns (contaba `window.X ===` como asignación).
-// Tras corregir el regex, solo queda la redefinición INTENCIONAL por diseño:
+// del detector windowAssigns (contaba `window.X ===` como asignación). Tras
+// corregir el regex, solo queda la redefinición INTENCIONAL por diseño:
 // data.js expone el fallback embebido y territorio.js lo reemplaza por el
 // territorio activo (window.pencoData = pd).
 const CONOCIDAS = {
-  // data.js expone el fallback embebido y territorio.js lo reemplaza por el
-  // territorio activo (window.pencoData = pd). Redefinición por diseño.
+  // Redefinición por diseño (fallback -> territorio activo).
   pencoData: ['data.js', 'territorio.js'],
 };
 
+// Núcleo que debe cargar limpio en el sandbox (sin throw de ningún tipo); en
+// el resto de módulos un throw no-ReferenceError se reporta como aviso (suele
+// ser API real ausente en el stub, no fuga de globals).
+const NUCLEO = new Set([
+  'web-api.js', 'storage-idb.js', 'astro.js', 'data.js', 'territorio.js',
+  'frases.js', 'cal.js', 'renderer.js', 'nuevos-modulos.js',
+  'boot-modulos.js', 'sw-registro.js',
+]);
+
+// --- Orden de carga ------------------------------------------------------------
+// Mismo orden que el navegador: defer de index.html + MODS de boot. SOLO lo
+// cableado (con build:min son los .min): las fuentes originales no se cargan
+// en runtime y no deben mezclarse aquí (sus const top-level colisionarían con
+// sus gemelos .min). Las fuentes se revisan igual en fase A (contexto fresco
+// por archivo: fugados + núcleo roto).
 function ordenCarga() {
-  // Mismo orden que el navegador: defer de index.html + MODS de boot.
-  // SOLO lo cableado (con build:min son los .min): las fuentes originales
-  // no se cargan en runtime y no deben mezclarse aquí (sus const top-level
-  // colisionarían con sus gemelos .min). Las fuentes se revisan igual en
-  // fase A (contexto fresco por archivo: fugados + núcleo roto).
   const html = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
   const orden = [];
   const re = /<script[^>]+src="([^"]+\.js)(?:\?v=\d+)?"/g;
@@ -57,7 +68,7 @@ function ordenCarga() {
         if (!orden.includes(base)) orden.push(base);
       }
     }
-  } catch {}
+  } catch { /* stub: sin MODS no hay orden extra */ }
   return orden.filter((f) => !EXCLUIR.has(f) && fs.existsSync(path.join(ROOT, f)));
 }
 
@@ -67,21 +78,10 @@ function esNucleo(f) {
   return NUCLEO.has(base);
 }
 
-function memoriaStore() {
-  const m = new Map();
-  return {
-    getItem: (k) => (m.has(String(k)) ? m.get(String(k)) : null),
-    setItem: (k, v) => { m.set(String(k), String(v)); },
-    removeItem: (k) => { m.delete(String(k)); },
-    clear: () => m.clear(),
-    get length() { return m.size; },
-    key: (i) => [...m.keys()][i] || null,
-  };
-}
-
+// --- Stubs de navegador ----------------------------------------------------------
 function makeEl(tag) {
   // Elemento stub: no-ops encadenables; navegación → null (termina loops).
-  const el = {
+  return {
     tagName: String(tag || 'div').toUpperCase(),
     id: '', className: '', textContent: '', innerHTML: '', value: '',
     dataset: {},
@@ -98,16 +98,18 @@ function makeEl(tag) {
     showModal: () => {}, close: () => {},
     getContext: () => null, play: () => Promise.resolve(), pause: () => {},
   };
-  return el;
 }
 
 function makeSandbox() {
-  const store = memoriaStore();
   const noop = () => {};
   const porId = new Map();
   const getById = (id) => {
     const k = String(id);
-    if (!porId.has(k)) { const el = makeEl('div'); el.id = k; porId.set(k, el); }
+    if (!porId.has(k)) {
+      const el = makeEl('div');
+      el.id = k;
+      porId.set(k, el);
+    }
     return porId.get(k);
   };
   const sb = {
@@ -122,8 +124,8 @@ function makeSandbox() {
     screen: { width: 1024, height: 768 },
     location: { protocol: 'https:', href: 'https://test/', search: '', reload: noop },
     navigator: { userAgent: 'node-vm-test', onLine: true, language: 'es' },
-    localStorage: store,
-    sessionStorage: memoriaStore(),
+    localStorage: memoriaStorage(),
+    sessionStorage: memoriaStorage(),
     fetch: () => Promise.reject(new Error('fetch stub (vm)')),
     matchMedia: () => ({ matches: false, addEventListener: noop, removeEventListener: noop }),
     getComputedStyle: () => ({ getPropertyValue: () => '' }),
@@ -168,15 +170,6 @@ function makeSandbox() {
   return sb;
 }
 
-// Núcleo que debe cargar limpio en el sandbox (sin throw de ningún tipo);
-// en el resto de módulos un throw no-ReferenceError se reporta como aviso
-// (suele ser API real ausente en el stub, no fuga de globals).
-const NUCLEO = new Set([
-  'web-api.js', 'storage-idb.js', 'astro.js', 'data.js', 'territorio.js',
-  'frases.js', 'cal.js', 'renderer.js', 'nuevos-modulos.js',
-  'boot-modulos.js', 'sw-registro.js',
-]);
-
 const BASE_KEYS = new Set(Object.getOwnPropertyNames(makeSandbox()));
 
 function globalesDe(sb) {
@@ -198,10 +191,12 @@ function windowAssigns(codigo) {
   return set;
 }
 
-describe('colisiones IIFE (vm)', () => {
+// --- Suite -----------------------------------------------------------------------
+describe('Colisiones IIFE entre módulos (vm)', () => {
   it('ningún archivo agrega globales que choquen con otro módulo', () => {
     const cableados = ordenCarga();
     assert.ok(cableados.length > 80, 'se esperaban 80+ .js cableados, fueron ' + cableados.length);
+
     // Fuentes en el mismo orden relativo que los cableados (gemelo .min →
     // fuente). Las fuentes nunca se mezclan con sus gemelos en un mismo
     // contexto: sus const top-level colisionarían entre sí (falso positivo).
@@ -213,19 +208,22 @@ describe('colisiones IIFE (vm)', () => {
       if (s === f) continue;
       const r = resolverFuente(s);
       if (!r) continue;
-      // path.relative da 'src\\x.js' en Windows: normalizar a '/' para que
+      // path.relative da 'src\x.js' en Windows: normalizar a '/' para que
       // coincida con el barrido y no se cargue el mismo archivo dos veces.
       const rel = path.relative(ROOT, r).split(path.sep).join('/');
       if (!fuentes.includes(rel)) fuentes.push(rel);
     }
     for (const dir of ['', 'src/']) {
       let lista = [];
-      try { lista = fs.readdirSync(path.join(ROOT, dir)); } catch { continue; }
+      try {
+        lista = fs.readdirSync(path.join(ROOT, dir));
+      } catch { /* stub: directorio ausente en este layout */ continue; }
       for (const f of lista) {
         const rel = dir + f;
         if (f.endsWith('.js') && !EXCLUIR.has(f) && !fuentes.includes(rel) && !cableados.includes(rel)) fuentes.push(rel);
       }
     }
+
     // Rechazos asíncronos de los stubs (fetch stub, inits diferidos): se
     // capturan para informar, sin tumbar el runner por unhandledRejection.
     // (En el navegador esos globals sí existen por el orden de carga.)
@@ -249,6 +247,7 @@ describe('colisiones IIFE (vm)', () => {
     } finally {
       process.removeListener('unhandledRejection', asyncH);
     }
+
     function correrEn(sb, f, fugados, rotosNucleo, avisos, define) {
       const antes = new Set(globalesDe(sb));
       const codigo = fs.readFileSync(path.join(ROOT, f), 'utf8');
@@ -282,6 +281,7 @@ describe('colisiones IIFE (vm)', () => {
         if (arr[arr.length - 1] !== f) arr.push(f);
       }
     }
+
     // Fuente y gemelo .min definen lo mismo en contextos distintos: se
     // normaliza por archivo base; colisión = >1 archivo base distinto.
     const base = (x) => x.replace(' (redeclara)', '').replace(/^(min|src)\//, '').replace(/\.min\.js$/, '.js');
@@ -295,10 +295,11 @@ describe('colisiones IIFE (vm)', () => {
         inesperadas.push(`${g}: ${lista.join(' ↔ ')}`);
       }
     }
-    if (fugados.length) console.log('  ~ posibles fugados:\n    ' + fugados.join('\n    '));
-    if (avisos.length) console.log(`  ~ ${avisos.length} módulo(s) no cargan en stub (API real ausente, se revisan igual):\n    ` + avisos.join('\n    '));
-    console.log(`  i globals rastreados: ${define.size} en ${fuentes.length} fuentes + ${cableados.length} cableados`);
-    if (asyncErrs.size) console.log('  ~ rechazos async en stub (orden de carga los evita en navegador):\n    ' + [...asyncErrs].join('\n    '));
+
+    if (fugados.length) aviso('posibles fugados:\n    ' + fugados.join('\n    '));
+    if (avisos.length) aviso(`${avisos.length} módulo(s) no cargan en stub (API real ausente, se revisan igual):\n    ` + avisos.join('\n    '));
+    info(`globals rastreados: ${define.size} en ${fuentes.length} fuentes + ${cableados.length} cableados`);
+    if (asyncErrs.size) aviso('rechazos async en stub (el orden de carga los evita en navegador):\n    ' + [...asyncErrs].join('\n    '));
     assert.deepEqual(fugados, [], 'top-level fugados (ReferenceError en carga)');
     assert.deepEqual(rotosNucleo, [], 'archivos del núcleo que no cargan en el sandbox');
     assert.deepEqual(inesperadas, [], 'colisiones de globales entre módulos');

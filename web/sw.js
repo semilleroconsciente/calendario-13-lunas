@@ -2,7 +2,7 @@
 // Copyright (C) 2026 Semillero Consciente. Licencia: GNU GPLv3 o posterior (ver COPYING).
 // SPDX-License-Identifier: GPL-3.0-or-later
 // v55
-const CACHE = 'cal13-v151-offline';
+const CACHE = 'cal13-v154-offline';
 const MEDIA_CACHE = 'cal13-media-v1';
 
 // Lista completa de archivos que usa index.html (bare + con ?v=).
@@ -143,6 +143,8 @@ const CORE = [
   './min/apoyo-emergencia.min.js?v=1',
   './min/arabe-modulo.min.js',
   './min/arabe-modulo.min.js?v=2',
+  './min/arte-modulo.min.js',
+  './min/arte-modulo.min.js?v=1',
   './min/astro.min.js',
   './min/astro.min.js?v=8',
   './min/auto-backup-modulo.min.js',
@@ -193,6 +195,8 @@ const CORE = [
   './min/core-bootstrap.min.js?v=1',
   './min/core-calendario.min.js',
   './min/core-calendario.min.js?v=1',
+  './min/core-cifrado.min.js',
+  './min/core-cifrado.min.js?v=1',
   './min/core-clima.min.js',
   './min/core-clima.min.js?v=1',
   './min/core-dialogo-dia.min.js',
@@ -213,6 +217,8 @@ const CORE = [
   './min/cumpleanos-modulo.min.js?v=1',
   './min/dama-modulo.min.js',
   './min/dama-modulo.min.js?v=1',
+  './min/data-schema.min.js',
+  './min/data-schema.min.js?v=1',
   './min/data.min.js',
   './min/data.min.js?v=8',
   './min/dialogo-tamano.min.js',

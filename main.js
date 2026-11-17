@@ -102,6 +102,7 @@ app.whenReady().then(() => {
 app.on('window-all-closed', () => app.quit());
 
 const dataFile = () => path.join(app.getPath('userData'), 'calendario-data.json');
+const SCHEMA_VERSION = 1;
 
 function isEnvelope(o) {
   return o && typeof o === 'object' && o.app === 'cal13' && typeof o.v === 'number' && ('data' in o);
@@ -109,14 +110,45 @@ function isEnvelope(o) {
 
 ipcMain.handle('data:load', async () => {
   // Desenvuelve el sobre versionado (ver web-api.js); legado pasa tal cual.
+  // Un esquema futuro se rechaza: el renderer no debe crear datos vacíos ni
+  // sobrescribir el archivo original.
+  // ELECTRON-01: si el principal está corrupto, se intenta el .bak (último
+  // guardado bueno) y se marca recuperación para aviso en UI.
+  const leer = (p) => {
+    const raw = fs.readFileSync(p, 'utf8');
+    // Blob cifrado opaco (CAL13ENC1.): se devuelve tal cual para que el
+    // renderer lo descifre con la clave en memoria.
+    if (typeof raw === 'string' && raw.indexOf('CAL13ENC1.') === 0) return { raw, recuperado: p !== dataFile() };
+    let o = null;
+    try { o = JSON.parse(raw); } catch (e) { o = null; }
+    if (isEnvelope(o)) {
+      if (typeof o.schema === 'number' && o.schema > SCHEMA_VERSION) throw new Error('schema-futuro');
+      return { raw: JSON.stringify(o.data === undefined ? {} : o.data), recuperado: p !== dataFile() };
+    }
+    if (o === null && raw.trim() !== '{}' && raw.trim() !== '') throw new Error('datos-corruptos');
+    return { raw, recuperado: p !== dataFile() };
+  };
   try {
-    const raw = fs.readFileSync(dataFile(), 'utf8');
     try {
-      const o = JSON.parse(raw);
-      if (isEnvelope(o)) return JSON.stringify(o.data === undefined ? {} : o.data);
-    } catch {}
-    return raw;
-  } catch {
+      const r = leer(dataFile());
+      if (r.recuperado) { try { console.warn('[datos] cargado desde .bak'); } catch {} }
+      return r.raw;
+    } catch (e1) {
+      if (e1 && e1.message === 'schema-futuro') throw e1;
+      const bak = dataFile() + '.bak';
+      if (fs.existsSync(bak)) {
+        try {
+          const r2 = leer(bak);
+          try { console.warn('[datos] principal corrupto, recuperado desde .bak'); } catch {}
+          return r2.raw;
+        } catch (e2) {
+          if (e2 && e2.message === 'schema-futuro') throw e2;
+        }
+      }
+      throw e1;
+    }
+  } catch (e) {
+    if (e && (e.message === 'schema-futuro' || e.message === 'datos-corruptos')) throw e;
     return '{}';
   }
 });
@@ -132,6 +164,7 @@ ipcMain.handle('data:save', async (_e, json) => {
     try {
       const o = JSON.parse(str);
       if (o && typeof o === 'object' && o.app === 'cal13' && !('data' in o)) return false;
+      if (isEnvelope(o) && typeof o.schema === 'number' && o.schema > SCHEMA_VERSION) return false;
     } catch {}
     const file = dataFile();
     const tmp = file + '.tmp';

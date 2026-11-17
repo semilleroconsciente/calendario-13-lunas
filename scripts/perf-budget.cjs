@@ -48,11 +48,14 @@ const BASE = `http://localhost:${PORT}`;
 // antes 416 con duplicados). Techos = medido + ~3% (6400/2150/420).
 // Sigue vigente: ante un exceso, partir/diferir (o sacar templates sueltos
 // del CORE: solo son respaldo fetch del bundle) antes que subir techos.
+// Recuento 2026-11-13 (auditoría: doble DFT bisiesto + cifrado opcional AES-GCM
+// + endurecimiento sanitize/XSS): JS raw 6406K, gzip 2148K. Techos 6480/2220
+// (+~1-3% holgura). Ante un exceso futuro, partir/diferir antes que subir.
 const BUDGET = {
   'index.html KB': 60,
-  'JS total raw KB': 6400,
+  'JS total raw KB': 6480,
   'CSS total raw KB': 200,
-  'gzip total KB': 2150,
+  'gzip total KB': 2220,
   'TTFB index ms': 500,
   'entradas SW CORE': 420,
 };

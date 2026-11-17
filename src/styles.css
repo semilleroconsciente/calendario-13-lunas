@@ -191,6 +191,12 @@ textarea {
 /* Conteos de secciones ocultos por preferencia (móvil y PC): no mostrar (visible/total). */
 .ag-count, .sub-count { display:none !important; }
 #statusMsg { color: #8fd694; font-size: 13px; margin-left: 4px; }
+#territorioAviso {
+  margin: 10px 0 0; padding: 10px 14px; border: 1px solid #b8860b;
+  border-radius: 10px; background: rgba(184, 134, 11, .12);
+  color: inherit; font-size: 13px; line-height: 1.45;
+}
+#territorioAviso[hidden] { display: none !important; }
 .btn.hidden-by-search, .btn.hidden-by-config { display:none !important; }
 
 #tidesPanel {
@@ -762,6 +768,16 @@ body[data-theme="medianoche"] { --bg:#050508; --bg2:#0a0a10; --panel:#141418; --
 .si-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
 .si-card { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; font-size: 12px; line-height: 1.5; }
 .si-card h4 { color: var(--gold); font-size: 12px; margin: 0 0 4px; }
+/* Adicciones: estados sin style inline (CSP fase 2) */
+.adi-estado { font-weight: 600; }
+.adi-estado-libre { color: #8fd694; }
+.adi-estado-antojo { color: #e8c56a; }
+.adi-estado-recaida { color: #e76e8a; }
+.adi-estado-obs { color: #7ab8ff; }
+.adi-nivel-bajo { border-color: #8fd694; }
+.adi-nivel-moderado { border-color: #e8c56a; }
+.adi-nivel-alto { border-color: #e76e8a; }
+.dft-footer { margin-top: 14px; color: var(--gold); font-size: 15px; }
 .schedule-week { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-top: 10px; }
 .schedule-day { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 6px; min-height: 90px; }
 .schedule-day b { display: block; font-size: 11px; color: var(--gold); text-transform: uppercase; letter-spacing: 0.5px; }

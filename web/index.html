@@ -71,6 +71,7 @@
   </aside>
 
   <main id="main">
+    <div id="territorioAviso" role="status" aria-live="polite" hidden></div>
     <section id="todayView" class="hidden" aria-label="Hoy"></section>
     <header id="lunaHeader">
       <div class="lh-top">
@@ -243,6 +244,12 @@
           <button id="btnCanto" class="btn" data-sub="musica" data-keywords="canto voz vocalizacion afinacion respiracion canciones practica">🎤 Canto</button>
           <button id="btnViolin" class="btn" data-sub="musica" data-keywords="violin musica arco afinacion quintas escala melodias postura cuerdas practica estrellita">🎻 Violín</button>
           <button id="btnMusicaPractica" class="btn" data-sub="musica" data-keywords="herramientas musicales afinador metronomo referencia afinacion guitarra ukelele violin practica ensayo herramientas tap tempo acordes cifrado ritmo">🎧 Herramientas</button>
+          <span class="sub-label" data-sub="arte">🎨 Arte y creación visual</span>
+          <button id="btnArte" class="btn" data-sub="arte" data-keywords="arte crear dibujo pintura fotografia manualidades collage fanzine acuarela tempera acrilico color composicion bitacora serie postal feria">🎨 Aprende Arte</button>
+          <button id="btnDibujo" class="btn" data-sub="arte" data-keywords="dibujo lapiz grafito sombreado retrato perspectiva encaje proporcion mano cara cuerpo dibujar">✏️ Dibujo</button>
+          <button id="btnPintura" class="btn" data-sub="arte" data-keywords="pintura acuarela tempera acrilico pincel color mezcla paleta paisaje bote mar cuadro mural">🖌️ Pintura</button>
+          <button id="btnFoto" class="btn" data-sub="arte" data-keywords="fotografia foto celular camara luz composicion tercios retrato paisaje serie hora dorada edicion">📸 Fotografía</button>
+          <button id="btnManualidades" class="btn" data-sub="arte" data-keywords="manualidades collage fanzine reciclaje carton regalo feria trueque lettering bordado tijera cola">✂️ Manualidades</button>
           <span class="sub-label" data-sub="juegos">🎮 Juegos</span>
           <button id="btnAjedrez" class="btn" data-sub="juegos" data-keywords="ajedrez jaque mate apertura tactica elo puzzle">♟️ Ajedrez</button>
           <button id="btnDama" class="btn" data-sub="juegos" data-keywords="damas dama corona captura obligatoria tablero fichas reina salto tactica estrategia chilenas">👑 Damas</button>
@@ -510,12 +517,14 @@
   <script defer src="min/storage-idb.min.js?v=1"></script>
   <script defer src="min/astro.min.js?v=8"></script>
   <script defer src="min/data.min.js?v=8"></script>
+  <script defer src="min/data-schema.min.js?v=1"></script>
   <script defer src="min/territorio.min.js?v=1"></script>
   <script defer src="min/frases.min.js?v=8"></script>
   <script defer src="min/cal.min.js?v=9"></script>
   <script defer src="min/templates-bundled.min.js?v=1"></script>
   <script defer src="min/core-bootstrap.min.js?v=1"></script>
   <script defer src="min/core-sanitize.min.js?v=1"></script>
+  <script defer src="min/core-cifrado.min.js?v=1"></script>
   <script defer src="min/core-audio.min.js?v=1"></script>
   <script defer src="min/core-themes.min.js?v=1"></script>
   <script defer src="min/core-storage.min.js?v=1"></script>

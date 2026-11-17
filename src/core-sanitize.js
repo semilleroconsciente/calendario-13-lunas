@@ -19,7 +19,8 @@ function isSafeUrl(u) {
     var p = (/^([a-zA-Z][a-zA-Z0-9+.-]*):/.exec(v) || [])[1];
     if (!p) return true; // relativa
     p = p.toLowerCase();
-    return p === 'http' || p === 'https' || p === 'mailto' || p === 'tel';
+    if (p === 'http' || p === 'https' || p === 'mailto' || p === 'tel') return true;
+    return false; // bloquea data:, blob:, javascript:, vbscript:, file:, etc.
   } catch (e) { return false; }
 }
 function cleanNode(root) {
@@ -29,7 +30,7 @@ function cleanNode(root) {
     var n = walker.currentNode;
     if (n.nodeType === 8) { toRemove.push(n); continue; }
     var tag = (n.tagName || '').toUpperCase();
-    if (tag === 'SCRIPT' || tag === 'STYLE' || tag === 'IFRAME' || tag === 'OBJECT' || tag === 'EMBED' || tag === 'LINK' || tag === 'META' || tag === 'BASE' || tag === 'FORM') {
+    if (tag === 'SCRIPT' || tag === 'STYLE' || tag === 'IFRAME' || tag === 'OBJECT' || tag === 'EMBED' || tag === 'LINK' || tag === 'META' || tag === 'BASE' || tag === 'FORM' || tag === 'SVG' || tag === 'MATH' || tag === 'VIDEO' || tag === 'AUDIO' || tag === 'SOURCE' || tag === 'TRACK' || tag === 'CANVAS' || tag === 'DIALOG') {
       toRemove.push(n); continue;
     }
     if (!ALLOWED_TAGS[tag]) {
@@ -43,8 +44,8 @@ function cleanNode(root) {
     for (var i = 0; i < attrs.length; i++) {
       var an = (attrs[i].name || '').toLowerCase();
       var av = attrs[i].value;
-      if (an.slice(0, 2) === 'on' || an === 'style' || an === 'formaction' || an === 'xlink:href' || an.indexOf('data:text/html') === 0) { try { n.removeAttribute(attrs[i].name); } catch (e) {} continue; }
-      if (an === 'href' || an === 'src' || an === 'action' || an === 'cite' || an === 'data') {
+      if (an.slice(0, 2) === 'on' || an === 'style' || an === 'formaction' || an === 'srcdoc' || an === 'srcset' || an === 'poster' || an === 'background' || an === 'lowsrc' || an === 'dynsrc' || an === 'xlink:href' || an.indexOf('data:text/html') === 0) { try { n.removeAttribute(attrs[i].name); } catch (e) {} continue; }
+      if (an === 'href' || an === 'src' || an === 'action' || an === 'cite' || an === 'data' || an === 'poster' || an === 'srcset' || an === 'background') {
         if (!isSafeUrl(av)) { try { n.removeAttribute(attrs[i].name); } catch (e) {} }
         continue;
       }
@@ -73,7 +74,7 @@ function sanitizeHTML(html) {
   // Sin DOM (Node/tests): strip conservador por regex (scripts + handlers + js:).
   // OJO: primero pares <x>...</x> completos, luego aperturas sueltas; un solo
   // regex perezoso con alternativa `>` deja el `</iframe>` huérfano.
-  return src.replace(/<script[\s\S]*?<\/script\s*>/gi, '').replace(/<style[\s\S]*?<\/style\s*>/gi, '').replace(/<(iframe|object|embed|link|meta|base|form)[\s\S]*?<\/\1\s*>/gi, '').replace(/<(iframe|object|embed|link|meta|base|form)(\s[^>]*)?\/?>/gi, '').replace(/\son[a-z]+\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi, '').replace(/(href|src|action)\s*=\s*("|')\s*javascript:[^"']*\2/gi, '$1=$2#$2');
+  return src.replace(/<script[\s\S]*?<\/script\s*>/gi, '').replace(/<style[\s\S]*?<\/style\s*>/gi, '').replace(/<(iframe|object|embed|link|meta|base|form|svg|math|video|audio|source|track|canvas|dialog)[\s\S]*?<\/\1\s*>/gi, '').replace(/<(iframe|object|embed|link|meta|base|form|svg|math|video|audio|source|track|canvas|dialog)(\s[^>]*)?\/?>/gi, '').replace(/\son[a-z]+\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi, '').replace(/\s(style|srcset|poster|background|formaction|srcdoc)\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi, '').replace(/(href|src|action|cite|data)\s*=\s*("|')\s*(javascript|data:|blob:|vbscript|file:)[^"']*\2/gi, '$1=$2#$2');
 }
 function setSafeHTML(el, html) {
   if (!el) return;

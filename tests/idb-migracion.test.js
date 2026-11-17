@@ -1,52 +1,37 @@
+'use strict';
+// ============================================================================
 // tests/idb-migracion.test.js — migración total a IndexedDB (v1.8).
+//
 // web-api parte las claves de bitácora al store propio (uid:grupo) y el blob
 // se adelgaza; al cargar se superponen. Sin grupos registrados: legado.
+// Uso: node --test tests/  (o npm test)
+// ============================================================================
 const { describe, it } = require('node:test');
 const assert = require('node:assert/strict');
-const fs = require('fs');
-const path = require('path');
 const vm = require('node:vm');
+const { leerFuente, memoriaStorage, ordenarClaves } = require('./helpers.cjs');
 
-const ROOT = path.join(__dirname, '..');
-// Paso 3 del reorden src/: las fuentes viven en src/ tras la mudanza.
-const { resolverFuente } = require('../scripts/paths.cjs');
-
-function contexto() {
-  const store = {};
-  const keysOf = () => Object.keys(store);
+function crearContexto() {
+  const store = memoriaStorage();
   const sb = {
     console,
-    localStorage: {
-      getItem: (k) => (k in store ? store[k] : null),
-      setItem: (k, v) => { store[k] = String(v); },
-      removeItem: (k) => { delete store[k]; },
-      clear: () => { for (const k of keysOf()) delete store[k]; },
-      key: (i) => keysOf()[i] || null,
-    },
+    localStorage: store,
     document: { createElement: () => null, body: null },
     navigator: {},
   };
-  Object.defineProperty(sb.localStorage, 'length', { get: () => keysOf().length });
   sb.window = sb;
   sb.self = sb;
   sb.globalThis = sb;
   vm.createContext(sb);
-  vm.runInContext(fs.readFileSync(resolverFuente('storage-idb.js'), 'utf8'), sb, { filename: 'storage-idb.js' });
-  vm.runInContext(fs.readFileSync(resolverFuente('web-api.js'), 'utf8'), sb, { filename: 'web-api.js' });
+  vm.runInContext(leerFuente('storage-idb.js'), sb, { filename: 'storage-idb.js' });
+  vm.runInContext(leerFuente('web-api.js'), sb, { filename: 'web-api.js' });
   return { sb, store };
 }
-function j(v) { return JSON.stringify(v); }
-// Orden-insensible (el overlay reinserta claves al final): ordena recursivo.
-function norm(v) {
-  if (Array.isArray(v)) return v.map(norm);
-  if (v && typeof v === 'object') {
-    const o = {};
-    for (const k of Object.keys(v).sort()) o[k] = norm(v[k]);
-    return o;
-  }
-  return v;
-}
 
+// JSON canónico (orden de claves irrelevante: el overlay reinserta al final).
+const canon = (v) => JSON.stringify(ordenarClaves(v));
+
+// --- Datos testigo -----------------------------------------------------------
 const DATA = {
   actual: 'u1',
   config: { theme: 'noche' },
@@ -60,37 +45,41 @@ const GRUPOS = [
   { id: 'pes', keys: ['fishingLog', 'birds'] },
 ];
 
-describe('migración IDB total', () => {
-  it('save adelgaza el blob y load restaura (roundtrip)', async () => {
-    const { sb, store } = contexto();
+// --- Suite -------------------------------------------------------------------
+describe('Migración total a IndexedDB', () => {
+  it('save adelgaza el blob y load restaura el DATA (roundtrip)', async () => {
+    const { sb, store } = crearContexto();
     assert.ok(sb.window.api, 'window.api no expuesto');
     assert.equal(await sb.window.cal13idb.registrarGrupos(GRUPOS), 2);
-    assert.equal(await sb.window.api.saveData(j(DATA)), true);
-    const blob = JSON.parse(store['cal13-data']);
+    assert.equal(await sb.window.api.saveData(canon(DATA)), true);
+
+    const blob = JSON.parse(store.getItem('cal13-data'));
     const du1 = blob.data.notas.u1;
-    assert.ok(!('cycles' in du1) && !('fishingLog' in du1), 'blob no se adelgazó: ' + j(Object.keys(du1)));
+    assert.ok(!('cycles' in du1) && !('fishingLog' in du1), 'blob no se adelgazó: ' + Object.keys(du1));
     assert.equal(du1.suelto, 'queda');
     assert.equal(blob.data.config.theme, 'noche');
+
     const rec = await sb.window.cal13idb.bitacoraLeer('u1:cal');
-    assert.equal(j(rec.keys), j({ cycles: { '2026': { n: 1 } } }));
-    const out = j(norm(JSON.parse(await sb.window.api.loadData())));
-    assert.equal(out, j(norm(DATA)), 'load no restauró el DATA original');
+    assert.equal(canon(rec.keys), canon({ cycles: { '2026': { n: 1 } } }));
+
+    const out = canon(JSON.parse(await sb.window.api.loadData()));
+    assert.equal(out, canon(DATA), 'load no restauró el DATA original');
   });
 
-  it('sin grupos registrados: blob completo (legado)', async () => {
-    const { sb, store } = contexto();
-    assert.equal(await sb.window.api.saveData(j(DATA)), true);
-    const blob = JSON.parse(store['cal13-data']);
+  it('sin grupos registrados guarda el blob completo (legado)', async () => {
+    const { sb, store } = crearContexto();
+    assert.equal(await sb.window.api.saveData(canon(DATA)), true);
+    const blob = JSON.parse(store.getItem('cal13-data'));
     assert.ok('cycles' in blob.data.notas.u1, 'legado debió conservar cycles');
-    assert.equal(j(JSON.parse(await sb.window.api.loadData())), j(DATA));
+    assert.equal(canon(JSON.parse(await sb.window.api.loadData())), canon(DATA));
   });
 
-  it('store ausente pero blob con claves: no se pierde nada', async () => {
-    const { sb } = contexto();
+  it('con store ausente pero blob con claves no se pierde nada', async () => {
+    const { sb } = crearContexto();
     await sb.window.cal13idb.registrarGrupos(GRUPOS);
     // Blob viejo (pre-migración) con todo adentro y store vacío.
     sb.localStorage.setItem('cal13-data', JSON.stringify({ app: 'cal13', v: 1, data: DATA }));
-    const out = j(norm(JSON.parse(await sb.window.api.loadData())));
-    assert.equal(out, j(norm(DATA)), 'blob pre-migración debe leerse intacto');
+    const out = canon(JSON.parse(await sb.window.api.loadData()));
+    assert.equal(out, canon(DATA), 'el blob pre-migración debe leerse intacto');
   });
 });

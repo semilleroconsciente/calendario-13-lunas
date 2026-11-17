@@ -55,6 +55,7 @@
     'min/latin-modulo.min.js?v=2',
     'min/arabe-modulo.min.js?v=2',
     'min/musica-modulos.min.js?v=1',
+    'min/arte-modulo.min.js?v=1',
     'min/sudoku-modulo.min.js?v=1',
     'min/crucigrama-modulo.min.js?v=1',
     'min/sopa-letras-modulo.min.js?v=2',

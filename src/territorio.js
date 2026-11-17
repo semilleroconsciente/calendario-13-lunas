@@ -103,6 +103,10 @@ function mutarEnElLugar(nombre, valor) {
   try {
     var ref = refDataJs(nombre);
     if (ref === undefined) ref = window[nombre];
+    // Si el fallback ES el mismo objeto global (snapshotFallback devuelve la
+    // referencia de data.js), vaciarlo para rellenarlo consigo mismo lo deja
+    // vacío. No hay nada que mutar: ya es el valor correcto.
+    if (ref === valor) return true;
     if (Array.isArray(valor) && Array.isArray(ref)) {
       ref.length = 0;
       valor.forEach(function (v) { ref.push(v); });
@@ -147,21 +151,37 @@ function snapshotFallback() {
 }
 
 async function cargarTerritorio(id) {
+  var solicitado = id;
   var root = BASE + id + '/';
   var T = {
     id: id,
+    solicitado: solicitado,
     root: root,
     meta: null,
     datos: {},
-    origen: {} // 'json' | 'fallback' por clave, util para debug
+    origen: {}, // 'json' | 'fallback' por clave, util para debug
+    degradado: false,
+    motivo: ''
   };
 
-  // 1) indice para saber el default (no bloquea si falla)
+  // 1) indice para saber el default y validar el id solicitado
   var defecto = 'penco';
+  var disponibles = [];
   try {
     var idx = await cargarJSON(BASE + 'index.json');
     if (idx && idx.default) defecto = String(idx.default);
+    if (idx && Array.isArray(idx.disponibles)) disponibles = idx.disponibles.map(String);
   } catch (e) {}
+  // Un id no listado no debe mezclarse en silencio con Penco: se vuelve al
+  // default y queda marcado como degradado para que la UI pueda avisarlo.
+  if (disponibles.length && disponibles.indexOf(id) < 0) {
+    T.degradado = true;
+    T.motivo = 'territorio-no-listado';
+    id = defecto;
+    T.id = id;
+    root = BASE + id + '/';
+    T.root = root;
+  }
 
   // 2) archivos del territorio (cada uno opcional: si falta, fallback)
   async function opt(rel) {
@@ -169,7 +189,12 @@ async function cargarTerritorio(id) {
     catch (e) { return undefined; }
   }
   var fb = snapshotFallback();
-  var meta = (await opt('territorio.json')) || {};
+  var metaJson = await opt('territorio.json');
+  if (!metaJson) {
+    T.degradado = true;
+    T.motivo = T.motivo || 'sin-territorio-json';
+  }
+  var meta = metaJson || {};
   var lunas = (await opt('lunas.json')) || {};
   var aves = await opt('especies/aves.json');
   var bosque = await opt('especies/bosque.json');
@@ -222,6 +247,13 @@ async function cargarTerritorio(id) {
   var ASOC = conOrigen('ASOCIACIONES_CULTIVOS', asoc, fb.ASOCIACIONES_CULTIVOS);
   var PREP = conOrigen('PREPARADOS_ORGANICOS', prep, fb.PREPARADOS_ORGANICOS);
 
+  // Fallback por archivo: queda registrado en T.origen y marca el territorio
+  // como degradado. No se presenta como si todo viniera del territorio pedido.
+  var clavesFallback = Object.keys(T.origen).filter(function (k) { return T.origen[k] === 'fallback'; });
+  if (clavesFallback.length) {
+    T.degradado = true;
+    T.motivo = T.motivo || ('fallback:' + clavesFallback.join(','));
+  }
   T.meta = {
     id: meta.id || id,
     nombre: meta.nombre || id,
@@ -229,7 +261,11 @@ async function cargarTerritorio(id) {
     region: meta.region || '',
     lugar: meta.lugar || ((INTRO && INTRO.lugar) || ''),
     descripcion: meta.descripcion || '',
-    defectoIndice: defecto
+    defectoIndice: defecto,
+    solicitado: solicitado,
+    efectivo: id,
+    degradado: T.degradado,
+    motivo: T.motivo
   };
 
   T.datos = {
@@ -317,6 +353,29 @@ try {
   idInicial = actualId('penco');
 } catch (e) {}
 
+/* Aviso visible y persistente cuando el territorio cargado no es exactamente
+   el solicitado o algún archivo cayó al respaldo integrado. Sin esto la
+   degradación solo era visible en consola (TERR-01). */
+function mostrarAviso() {
+  try {
+    var el = document.getElementById('territorioAviso');
+    if (!el) return;
+    if (!api.degradado) {
+      el.hidden = true;
+      el.textContent = '';
+      return;
+    }
+    var nombre = (api.meta && api.meta.nombre) || api.id || 'el territorio por defecto';
+    var pedido = (api.solicitado && api.solicitado !== api.id)
+      ? ' (solicitaste «' + api.solicitado + '»)'
+      : '';
+    var motivo = api.motivo ? ' [' + api.motivo + ']' : '';
+    el.textContent = '⚠ Mostrando ' + nombre + pedido +
+      '. Algunos datos provienen del respaldo integrado' + motivo + '.';
+    el.hidden = false;
+  } catch (e) {}
+}
+
 var api = {
   id: idInicial,
   datos: null,
@@ -340,14 +399,24 @@ api.listo = cargarTerritorio(idInicial).then(function (T) {
   api.meta = T.meta;
   api.id = T.id;
   api.origen = T.origen;
+  api.solicitado = T.solicitado;
+  api.degradado = !!T.degradado;
+  api.motivo = T.motivo || '';
+  mostrarAviso();
   try {
-    document.dispatchEvent(new CustomEvent('territorio:listo', { detail: { id: T.id, meta: T.meta } }));
+    document.dispatchEvent(new CustomEvent('territorio:listo', {
+      detail: { id: T.id, meta: T.meta, solicitado: T.solicitado, degradado: api.degradado, motivo: api.motivo }
+    }));
   } catch (e) {}
   // Re-render seguro: los dialogos leen window.pencoData / Territorio
   // en cada apertura, asi que no forzamos nada aqui.
   return T;
 }).catch(function (err) {
-  // Ultimo recurso: exponer fallback embebido para que la app no muera
+  // Ultimo recurso: exponer fallback embebido para que la app no muera.
+  // Queda marcado: no es el territorio solicitado, es el respaldo Penco.
+  api.degradado = true;
+  api.motivo = 'error-carga';
+  mostrarAviso();
   try {
     var fb = snapshotFallback();
     api.datos = {

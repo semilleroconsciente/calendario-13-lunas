@@ -31,28 +31,20 @@
       b.textContent = '💾 Respaldar ahora';
       b.onclick = function () {
         try {
-          // Lo técnico vive en ⚙️ Ajustes (cfgBackupBtn); compat con btnBackup antiguo.
+          // El recordatorio lo marca doBackup() solo si la exportación devolvió
+          // un resultado válido; aquí no se adelanta la fecha.
           var r = document.getElementById('cfgBackupBtn') || document.getElementById('btnBackup');
-          if (r) { r.click(); window.cal13backupDone(); }
-          else if (window.cal13doBackup) { window.cal13doBackup(); window.cal13backupDone(); }
+          if (r) r.click();
+          else if (window.cal13doBackup) window.cal13doBackup();
         } catch (e) {}
       };
       el.appendChild(t); el.appendChild(b);
     } catch (e) {}
   }
 
-  // Marca automática: si el usuario usa el diálogo de respaldo, queda fechado.
-  function hook() {
-    try {
-      document.addEventListener('click', function (e) {
-        var t = e.target;
-        if (t && (t.id === 'cfgBackupBtn' || t.id === 'btnBackup')) {
-          setTimeout(function () { try { window.cal13backupDone(); } catch (_) {} }, 2000);
-        }
-      });
-    } catch (e) {}
-  }
-
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function () { hook(); setTimeout(check, 4000); });
-  else { hook(); setTimeout(check, 4000); }
+  // Sin hook de clic: antes se fechaba el respaldo 2 s después de pulsar el
+  // botón, aunque el usuario cancelara el diálogo o fallara la descarga.
+  // La única fuente de verdad es doBackup() tras un resultado válido.
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function () { setTimeout(check, 4000); });
+  else { setTimeout(check, 4000); }
 })();
