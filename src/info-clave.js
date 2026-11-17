@@ -8,7 +8,8 @@
 
   var EXCLUIR = {
     dayDialog: 1, searchDialog: 1, infoClaveDialog: 1,
-    userDialog: 1, configDialog: 1
+    userDialog: 1, configDialog: 1,
+    sudokuDialog: 1, cruciDialog: 1, ajedrezDialog: 1
   };
 
   // Contenedores de bitácoras / registros (subsecciones con filas individuales).
@@ -427,6 +428,9 @@
   function esDialogPropio(dlg) {
     if (!dlg || dlg.tagName !== 'DIALOG') return false;
     if (EXCLUIR[dlg.id]) return false;
+    try {
+      if (dlg.classList.contains('sk-full') || dlg.classList.contains('cr-full')) return false;
+    } catch (e) {}
     if (dlg.id === '') return false;
     return true;
   }
