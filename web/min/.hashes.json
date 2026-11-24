@@ -73,7 +73,7 @@
  "src/qrcode-lib.js": "0f94bf6786b2b64be2ad9fad542120ba79b1e341",
  "src/recetas-naturales-modulo.js": "41342321d84534a6522ea3a27386a717ae003b0d",
  "src/red-comunitaria-modulo.js": "41df9bfd4a7734b3ed8f86f0c9679ffd7654390a",
- "src/renderer.js": "cc47c381f3a5063de10e02709e7d6783c230bfd1",
+ "src/renderer.js": "29548f4adab8ac468b5bbdb2a114706c24f0cb2d",
  "src/retos-21-modulo.js": "37826f4b2ca76a870439420111163d1d05bbafbd",
  "src/semillero-guias.js": "96f55245135d4b89cd931536a779a02861644398",
  "src/sopa-letras-modulo.js": "7e2d7ccb424402d705432ff804f6364a178ea704",
@@ -143,9 +143,11 @@
  "src/mujer-medicina-modulo.js": "0102722973d2b188bc354bce5ebd41b1614d1fa4",
  "src/medicina-tradicional-china-modulo.js": "e0893ac24ddc92b597c2a35fb219f2fda1447c79",
  "src/biblioteca-penco.js": "2e2b7bc52844d25dd658cb525b04d3bb831bf023",
- "src/enlaces-relacionados-modulo.js": "31dfe3b9bb64a21dd74c9727d08087e915a79de5",
+ "src/enlaces-relacionados-modulo.js": "427d2eecb37c5a7e7da3c4ac4592ed964ffede4d",
  "src/cumpleanos-modulo.js": "9968d6ab8a15ce8352875ea98535c9745686d8c8",
  "src/data-schema.js": "e54edf96eddece0077996ed58fed7b3b6870496b",
  "src/core-cifrado.js": "65a18f359316548b0c179612fc40ca62da502fe4",
- "src/arte-modulo.js": "2968d41fdcef39284ca47f93733f3d3a31b2171f"
+ "src/arte-modulo.js": "2968d41fdcef39284ca47f93733f3d3a31b2171f",
+ "src/canciones-modulo.js": "6d91409451ef245eca1ce52b72630dac07aeb7c2",
+ "src/cartas-universo-modulo.js": "0c72682c1fba17a1f0b68039b87d8a4cb1c27a19"
 }

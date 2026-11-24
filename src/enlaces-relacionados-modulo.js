@@ -85,7 +85,7 @@ var POR_SUB = {
     ex: [['📖 RAE · Español', 'https://www.rae.es'], ['🗣️ CONADI · Pueblos originarios', 'https://www.conadi.gob.cl']]
   },
   'musica': {
-    in: ['btnAprenderInstrumento', 'btnGuitar', 'btnUkelele', 'btnFlauta', 'btnTeclado', 'btnCajon', 'btnCanto', 'btnViolin', 'btnMusicaPractica'],
+    in: ['btnCanciones', 'btnMusicaMedicina', 'btnAprenderInstrumento', 'btnGuitar', 'btnUkelele', 'btnFlauta', 'btnTeclado', 'btnCajon', 'btnCanto', 'btnViolin', 'btnMusicaPractica'],
     ex: [['🎶 Biblioteca Pública Digital · Música', 'https://www.bpdigital.cl'], ['🎭 Ministerio de las Culturas', 'https://www.cultura.gob.cl']]
   },
   'juegos': {
@@ -182,6 +182,8 @@ var POR_BTN = {
   'btnNutri': { in: ['btnMeal', 'btnHuerta', 'btnBodega', 'btnDespensa', 'btnSiembra'], ex: [['🥗 Guías alimentarias MINSAL', 'https://www.minsal.cl'], ['🌱 FAO · Nutrición', 'https://www.fao.org']] },
   'btnMedic': { in: ['btnLawen', 'btnFirstAid', 'btnNutri', 'btnMujerMedicina', 'btnFerti'], ex: [['🌿 MINSAL · Medicina complementaria', 'https://www.minsal.cl']] },
   'btnAdicciones': { in: ['btnPsicologia', 'btnDueloFull', 'btnApoyo', 'btnGratitud', 'btnHabits'], ex: [['🌿 SENDA · Ayuda *4141', 'https://www.senda.gob.cl'], ['📞 Salud Responde 600 360 7777', 'https://www.minsal.cl']] },
+  'btnCanciones': { in: ['btnMusicaMedicina', 'btnGuitar', 'btnUkelele', 'btnCanto', 'btnMusicaPractica', 'btnBreath', 'btnEnergia'], ex: [['🎶 Biblioteca Pública Digital · Música', 'https://www.bpdigital.cl'], ['🎭 Ministerio de las Culturas', 'https://www.cultura.gob.cl']] },
+  'btnMusicaMedicina': { in: ['btnCanciones', 'btnBreath', 'btnEnergia', 'btnCircadian', 'btnEspiritu', 'btnDueloFull'], ex: [['🧠 Salud mental (MINSAL)', 'https://www.minsal.cl'], ['📞 Salud Responde 600 360 7777', 'https://www.minsal.cl']] },
   'btnFirstAid': { in: ['btnEvac', 'btnBomberos', 'btnApoyo', 'btnMedic', 'btnNatacion'], ex: [['🩹 SAMU 131 · MINSAL', 'https://www.minsal.cl'], ['🚒 Bomberos 132', 'https://www.bomberos.cl']] }
 };
 
